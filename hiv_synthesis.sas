@@ -576,6 +576,7 @@ newp_seed = 7;
 * ind_effect_art_hiv_disease_death; 	ind_effect_art_hiv_disease_death = 0.6;
 
 * SEX WORKERS;
+* age_effect_stop_sexwork;	age_effect_stop_sexwork=3;
 
 * base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
 							* dependent_on_time_step_length ;
@@ -4133,7 +4134,7 @@ if sw=1 then  ever_sw = 1;
 ;
 
 * dependent_on_time_step_length ;
-rate_stop_sexwork = base_rate_stop_sexwork; if age >= 40 then rate_stop_sexwork = rate_stop_sexwork * 3;
+rate_stop_sexwork = base_rate_stop_sexwork; if age >= 40 then rate_stop_sexwork = rate_stop_sexwork * age_effect_stop_sexwork;
 if t ge 2 then do;
 	if sw_tm1=1 then do;
 		d_sw=rand('uniform');
@@ -7412,6 +7413,8 @@ naive=1;
 *allow for diagnosis in primary infection, i.e. caldate{t}=infection;
 * can get diagnosed during primary infection and hence (re-)initiation of prep (if it happened above in this time step) is reversed ;
 
+* LBM Jul23;
+if sw=1 then eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
 
 * test type;
 
@@ -7421,9 +7424,6 @@ naive=1;
 
 if t ge 2 then do; 
 
-	* LBM Jul23;
-	e_eff_prob_loss_at_diag = eff_prob_loss_at_diag ;
-	if sw=1 then e_eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
 
 	*4th gen (Ag/Ab);
 	if hivtest_type=4 then do; 		
@@ -12813,25 +12813,28 @@ end;
 
 ***For rates;
 age_deb_sw1519_=0;age_deb_sw2024_=0;age_deb_sw2529_=0;age_deb_sw3039_=0;age_deb_swov40_=0;
+actdur_sw_0to3=0;actdur_sw_3to5=0;actdur_sw_6to9=0;actdur_sw_10to19=0;actdur_sw_ov20=0;
+totdur_sw_0to3=0;totdur_sw_3to5=0;totdur_sw_6to9=0;totdur_sw_10to19=0;totdur_sw_ov20=0;
+
+if sw=1 then do;
 if 15 le age_deb_sw lt 20 then age_deb_sw1519_=1;
 if 20 le age_deb_sw lt 25 then age_deb_sw2024_=1;
 if 25 le age_deb_sw lt 30 then age_deb_sw2529_=1;
 if 30 le age_deb_sw lt 40 then age_deb_sw3039_=1;
 if       age_deb_sw ge 40 then age_deb_swov40_=1;
 
-actdur_sw_0to3=0;actdur_sw_3to5=0;actdur_sw_6to9=0;actdur_sw_10to19=0;actdur_sw_ov20=0;
 if 0 lt act_dur_sw lt 3 then actdur_sw_0to3=1;
 if 3 le act_dur_sw lt 6 then actdur_sw_3to5=1;
 if 6 le act_dur_sw lt 10 then actdur_sw_6to9=1;
 if 10 le act_dur_sw lt 20 then actdur_sw_10to19=1;
 if act_dur_sw ge 20 then actdur_sw_ov20=1;
 
-totdur_sw_0to3=0;totdur_sw_3to5=0;totdur_sw_6to9=0;totdur_sw_10to19=0;totdur_sw_ov20=0;
 if 0 lt tot_dur_sw lt 3 then totdur_sw_0to3=1;
 if 3 le tot_dur_sw lt 6 then totdur_sw_3to5=1;
 if 6 le tot_dur_sw lt 10 then totdur_sw_6to9=1;
 if 10 le tot_dur_sw lt 20 then totdur_sw_10to19=1;
 if tot_dur_sw ge 20 then totdur_sw_ov20=1;
+end;
 
 totdur_eversw_0to3=0;totdur_eversw_3to5=0;totdur_eversw_6to9=0;totdur_eversw_10to19=0;totdur_eversw_ov20=0;
 if 0 lt tot_dur_eversw lt 3 then totdur_eversw_0to3=1;
