@@ -102,7 +102,9 @@ n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
 prevalence1549m prevalence1549w
 prevalence1549_ prevalence_sw prevalence_hiv_preg prevalence1549preg prevalence1524preg prevalence_vg1000_  incidence1549_ incidence1549m incidence1549w incidence1564_ 
 incidence1524w incidence1524m incidence2534w incidence2534m incidence3544w incidence3544m incidence4554w incidence4554m 
-incidence5564w incidence5564m incidence_sw n_tested n_tested_m n_tested_w n_tested_sw n_tested_anc 
+incidence5564w incidence5564m incidence_sw 
+n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w
+n_tested n_tested_m n_tested_w n_tested_sw n_tested_anc 
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_tested1st_anc n_tested1st_labdel n_tested1st_pd n_tested_anc_prevdiag
 p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd
@@ -213,8 +215,8 @@ g0_53  g0_54  g0_55  g0_56  g0_57  g0_58  g0_59  g0_60 g0_61  g0_62  g0_63  g0_6
 g0_79  g0_80  g0_81  g0_82  g0_83  g0_84  g0_85  g0_86  g0_87  g0_88  g0_89  g0_90 g0_91  g0_92  g0_93  g0_94  g0_95  g0_96  g0_97  g0_98  g0_99  g0_100 g0_101 g0_102 g0_103 g0_104
 g0_105 g0_106 g0_107 g0_108 g0_109 g0_110 g0_111 g0_112 g0_113 g0_114 g0_115 g0_116 g0_117 g0_118 g0_119 g0_120 g0_121 g0_122 g0_123 g0_124 g0_125 g0_126 g0_127 g0_128 g0_129 g0_130 
 g0_131 g0_132 g0_133 g0_134 g0_135 g0_136 g0_137 g0_138 g0_139 g0_140 g0_141 g0_142 g0_143 g0_144 g0_145 g0_146 g0_147 g0_148 g0_149 g0_150 g0_151 g0_152 g0_153 g0_154 g0_155 g0_156
-g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 g0_176 g0_177 g0_178 g0_179 g0_180 /*g0_181 g0_182
-g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
+g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182
+g0_183 g0_184 /*g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
 g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234
 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 g0_251 g0_252 
 */
@@ -281,6 +283,31 @@ band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 filla
 scatter x=cald y=o_pop_1549_Zi_cens / markerattrs = (symbol=square color=green size = 10);
 *scatter x=cald y=o_pop_all_Zi_CIA / markerattrs = (symbol=triangle color=grey size = 10);
 scatter x=cald y=o_pop_1565_Zi_CIA / markerattrs = (symbol=triangle color=brown size = 10);
+run;quit;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_alive by age in men";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by  2500000) valueattrs=(size=10);*20000000 is stoping in 2023;
+label p50_n_alive_1524m_0 = "Baseline (median) - 15-24 M";
+label p50_n_alive_2549m_0 = "Baseline (median) - 25-49 M";
+series  x=cald y=p50_n_alive_1524m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_alive_1524m_0 	upper=p95_n_alive_1524m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_alive_2549m_0/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_alive_2549m_0 	upper=p95_n_alive_2549m_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_alive by age in women";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by  2500000) valueattrs=(size=10);*20000000 is stoping in 2023;
+label p50_n_alive_1524w_0 = "Baseline (median) - 15-24 W";
+label p50_n_alive_2549w_0 = "Baseline (median) - 25-49 W";
+series  x=cald y=p50_n_alive_1524w_0/	lineattrs = (color=darkorange thickness = 2);
+band    x=cald lower=p5_n_alive_1524w_0 	upper=p95_n_alive_1524w_0  / transparency=0.9 fillattrs = (color=darkorange) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_alive_2549w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_n_alive_2549w_0 	upper=p95_n_alive_2549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
 run;quit;
 /*
 proc sgplot data=d; 
@@ -426,6 +453,9 @@ band    x=cald lower=p5_n_give_birth_w_hiv_0 	upper=p95_n_give_birth_w_hiv_0  / 
 scatter x=cald y=o_n_births_hivposmother / markerattrs = (symbol=square color=orange size = 10);
 run;
 quit;
+
+*To understand why it is increasing the Number women living with HIV giving birth;
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of pregnant women attending ANC";
@@ -723,10 +753,10 @@ scatter  x=cald y=o_p_fsw_1849_Zim_garpr /	markerattrs = (color=orange);
 scatter  x=cald y=o_p_fsw_1849_Bulaw_garpr /	markerattrs = (color=red);
 scatter  x=cald y=o_p_fsw_1849_Harare_garpr /	markerattrs = (color=pink);
 run;quit;
-/*proc print data=d;var p50_prop_w_1549_sw_0 p5_prop_w_1549_sw_0 p95_prop_w_1549_sw_0;where cald=2020;run;*/
+proc print data=d;var p50_prop_w_1549_sw_0 p5_prop_w_1549_sw_0 p95_prop_w_1549_sw_0; where cald in (2022.5 2040.5);run;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of female sex workers (FSW)";
+Title    height=1.5 justify=center "Proportion of ever female sex workers (FSW)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15 by 0.025) valueattrs=(size=10);
 label p50_prop_w_ever_sw_0 = "Ever FSW 15-64 op 0 (median) ";
@@ -952,6 +982,33 @@ scatter x=cald y=o_prev4549w_Z_anc  /  markerattrs = (color=darkbrown);
 run;quit;
 */
 
+*Number living with HIV;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number living with HIV by age - Male";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
+label p50_n_hiv1524m_0 = "Baseline (median) - 15-24";
+label p50_n_hiv2549m_0 = "Baseline (median) - 25-49";
+series  x=cald y=p50_n_hiv1524m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_hiv1524m_0 	upper=p95_n_hiv1524m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_hiv2549m_0/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_hiv2549m_0 	upper=p95_n_hiv2549m_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+
+run;quit;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number living with HIV by age - Female";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
+label p50_n_hiv1524w_0 = "Baseline (median) - 15-24";
+label p50_n_hiv2549w_0 = "Baseline (median) - 25-49";
+series  x=cald y=p50_n_hiv1524w_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_hiv1524w_0 	upper=p95_n_hiv1524w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_hiv2549w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_n_hiv2549w_0 	upper=p95_n_hiv2549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
+run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
@@ -971,7 +1028,7 @@ proc print data=d;var cald p50_incidence1549__0; where cald in (2022.5 2040.5);r
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence (age 15-49)";
+Title    height=1.5 justify=center "Incidence (age 15-49) - ZOOM";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_incidence1549__0 = "Option 0 (median) ";
@@ -985,7 +1042,28 @@ run;
 quit;
 
 
-
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of new HIV infections in men by age";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000 by  5000) valueattrs=(size=10);*20000000 is stoping in 2023;
+label p50_n_new_inf1524m_0 = "Baseline (median) - 15-24 M";
+label p50_n_new_inf2549m_0 = "Baseline (median) - 25-49 M";
+series  x=cald y=p50_n_new_inf1524m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_new_inf1524m_0 	upper=p95_n_new_inf1524m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_new_inf2549m_0/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_new_inf2549m_0 	upper=p95_n_new_inf2549m_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of new HIV infections in women by age";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000 by  5000) valueattrs=(size=10);*20000000 is stoping in 2023;
+label p50_n_new_inf1524w_0 = "Baseline (median) - 15-24 M";
+label p50_n_new_inf2549w_0 = "Baseline (median) - 25-49 M";
+series  x=cald y=p50_n_new_inf1524w_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_new_inf1524w_0 	upper=p95_n_new_inf1524w_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_new_inf2549w_0/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_new_inf2549w_0 	upper=p95_n_new_inf2549w_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-64)";
