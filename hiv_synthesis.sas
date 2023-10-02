@@ -9,7 +9,6 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000  ; 
-
 %let year_interv = 2024;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
