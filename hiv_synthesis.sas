@@ -17598,7 +17598,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * testing turn_prep_off;
 proc print; var
-caldate&j option age gender hiv death newp ep agyw sw sdc plw 
+caldate&j option age gender death
 turn_prep_off
 rate_test_startprep_any eff_rate_test_startprep_any
 prob_prep_oral_b eff_prob_prep_oral_b
