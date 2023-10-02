@@ -1687,19 +1687,17 @@ eff_prob_vl_meas_done = prob_vl_meas_done;
 * define effective pr_switch_line;
 eff_pr_switch_line = pr_switch_line;
 
-
 * define effective rate_test_startprep_any;
 eff_rate_test_startprep_any = rate_test_startprep_any;
 
-*eff_prob_prep_oral_b, eff_prob_prep_inj_b and eff_prob_prep_vr_b are defined later on;
+* define effective prob_prep_ variables;
+eff_prob_prep_oral_b = prob_prep_oral_b;		*JAS Oct23;
+eff_prob_prep_inj_b = prob_prep_inj_b;
+eff_prob_prep_vr_b = prob_prep_vr_b;
 
-* define effective rate_choose_stop_prep_oral;
+* define effective rate_choose_stop_prep_ variables;
 eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral;
-
-* define effective rate_choose_stop_prep_inj;
 eff_rate_choose_stop_prep_inj = rate_choose_stop_prep_inj;
-
-* define effective rate_choose_stop_prep_vr;
 eff_rate_choose_stop_prep_vr = rate_choose_stop_prep_vr;
 
 * define effective prob_prep_any_restart_choice;
@@ -2185,81 +2183,82 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	*PrEP interventions;	*JAS Apr2023 and Oct23;
+	if 15 <= option <= 26 then turn_prep_off=0;		* QUERY DO WE NEED THIS? do we want following parameters to be able to be overwritten at all? JAS Oct23;
 
 	* Oral PrEP; 	
 	*option 15: Oral TDF/FTC PrEP for AGWY;
 	if option = 15 then do;
-			*Following values need to change;
-			eff_rate_test_startprep_any=0.95;	*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
-			eff_prob_prep_oral_b=0.95;
-			eff_rate_choose_stop_prep_oral=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		*Following values need to change;
+		eff_rate_test_startprep_any=0.95;	*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
+		eff_prob_prep_oral_b=0.95;
+		eff_rate_choose_stop_prep_oral=0.001;
+		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
 	*option 16: Oral TDF/FTC PrEP for FSW;
 	if option = 16 then do;	
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_oral_b=0.95;
-			eff_rate_choose_stop_prep_oral=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_oral_b=0.95;
+		eff_rate_choose_stop_prep_oral=0.001;
+		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
 	*option 17: Oral TDF/FTC PrEP for sero-discordant couples (SDC);
 	if option = 17 then do;
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_oral_b=0.95;
-			eff_rate_choose_stop_prep_oral=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_oral_b=0.95;
+		eff_rate_choose_stop_prep_oral=0.001;
+	eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
 	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women (PLW);
 	if option = 18 then do;
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_oral_b=0.95;
-			eff_rate_choose_stop_prep_oral=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_oral_b=0.95;
+		eff_rate_choose_stop_prep_oral=0.001;
+		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
 	* Dapivirine ring; 
 	*option 19: Dapivirine ring for AGYW;
 	if option = 19 then do;
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_vr_b=0.95;
-			eff_rate_choose_stop_prep_vr=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_vr_b=0.95;
+		eff_rate_choose_stop_prep_vr=0.001;
+		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
 	*option 20: Dapivirine ring for FSW;
 	if option = 20 then do;
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_vr_b=0.95;
-			eff_rate_choose_stop_prep_vr=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_vr_b=0.95;
+		eff_rate_choose_stop_prep_vr=0.001;
+		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
 	*option 21: Dapivirine ring for SDC;
 	if option = 21 then do;
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_vr_b=0.95;
-			eff_rate_choose_stop_prep_oral=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_vr_b=0.95;
+		eff_rate_choose_stop_prep_oral=0.001;
+		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
 	*option 22: Dapivirine ring for PLW;
 	if option = 22 then do;
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_vr_b=0.95;
-			eff_rate_choose_stop_prep_oral=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_vr_b=0.95;
+		eff_rate_choose_stop_prep_oral=0.001;
+		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
 	* Injectable PrEP; 
 	*option 23: Injectable PrEP for AGYW;
 	if option = 23 then do;
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_inj_b=0.95;
-			eff_rate_choose_stop_prep_inj=0.001;
-			eff_prob_prep_any_restart_choice=0.25;		
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_inj_b=0.95;
+		eff_rate_choose_stop_prep_inj=0.001;
+		eff_prob_prep_any_restart_choice=0.25;		
 	end;
 
 	*option 24: Injectable PrEP for FSW;
@@ -2272,18 +2271,18 @@ who may be dead and hence have caldate{t} missing;
 
 	*option 25: Injectable PrEP for SDC;
 	if option = 25 then do;
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_inj_b=0.95;
-			eff_rate_choose_stop_prep_inj=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_inj_b=0.95;
+		eff_rate_choose_stop_prep_inj=0.001;
+		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
 	*option 26: Injectable PrEP for PLW;
 	if option = 26 then do;
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_inj_b=0.95;
-			eff_rate_choose_stop_prep_inj=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_inj_b=0.95;
+		eff_rate_choose_stop_prep_inj=0.001;
+		eff_prob_prep_any_restart_choice=0.25;	
 	end;	
 
 	* All oral PrEP options;
@@ -2360,22 +2359,26 @@ prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 
 * Oral prep scale-up over 4 years;
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
-else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) 
-		then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
-else 	eff_prob_prep_oral_b = prob_prep_oral_b;
+else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and turn_prep_off ne 1
+	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
+else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and turn_prep_off ne 1
+	then eff_prob_prep_oral_b = prob_prep_oral_b;
+
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
 * Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
 if 		. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then eff_prob_prep_inj_b = 0;
-else if . < date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) 
-		then eff_prob_prep_inj_b = 0.05 +  (  (prob_prep_inj_b-0.05) * ( 1 -    (date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
-else 	eff_prob_prep_inj_b = prob_prep_inj_b;
+else if . < date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) and turn_prep_off ne 1
+	then eff_prob_prep_inj_b = 0.05 +  (  (prob_prep_inj_b-0.05) * ( 1 -    (date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
+else if caldate{t} >= (date_prep_inj_intro + dur_prep_inj_scaleup) and turn_prep_off ne 1
+	then eff_prob_prep_inj_b = prob_prep_inj_b;
 
 * DPV VR prep scale-up; * dpv-vr JAS Sep2021;
 if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then eff_prob_prep_vr_b = 0;
-else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) 
-		then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
-else 	eff_prob_prep_vr_b = prob_prep_vr_b;
+else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) and turn_prep_off ne 1
+	then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
+else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and turn_prep_off ne 1
+	then eff_prob_prep_vr_b = prob_prep_vr_b;
 
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
@@ -17590,11 +17593,19 @@ proc print; var
 caldate&j option age gender hiv death newp ep agyw sw sdc plw 
 turn_prep_off
 rate_test_startprep_any eff_rate_test_startprep_any
+prob_prep_oral_b eff_prob_prep_oral_b
+prob_prep_vr_b eff_prob_prep_vr_b
+prob_prep_inj_b eff_prob_prep_inj_b
 ;
 where serial_no<150 and age ge 15 and death=.;
 run;
 
-proc freq; tables option rate_test_startprep_any eff_rate_test_startprep_any; run;
+proc freq; tables caldate&j option 
+rate_test_startprep_any eff_rate_test_startprep_any
+prob_prep_oral_b eff_prob_prep_oral_b
+prob_prep_inj_b eff_prob_prep_inj_b
+prob_prep_vr_b eff_prob_prep_vr_b
+; run;
 
 
 * testing prep options;
