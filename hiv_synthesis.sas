@@ -1690,8 +1690,8 @@ eff_pr_switch_line = pr_switch_line;
 * define effective rate_test_startprep_any;
 eff_rate_test_startprep_any = rate_test_startprep_any;
 
-* define effective prob_prep_ variables;
-eff_prob_prep_oral_b = prob_prep_oral_b;		*JAS Oct23;
+* define effective prob_prep_ variables;		*JAS Oct23;
+eff_prob_prep_oral_b = prob_prep_oral_b;
 eff_prob_prep_inj_b = prob_prep_inj_b;
 eff_prob_prep_vr_b = prob_prep_vr_b;
 
@@ -2584,8 +2584,10 @@ if caldate{t} = &year_interv then do;
 						inc_p_prep_any_restart_choi_yr_i = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_any_restart_choi_yr_i = 1; 
-							eff_prob_prep_any_restart_choice = 0.8 ; 
-							eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
+							if turn_prep_off ne 1 then do;
+								eff_prob_prep_any_restart_choice = 0.8 ; 
+								eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
+							end;
 						end;		
 
 * prep_any_strategy;
@@ -2802,8 +2804,8 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
 			eff_rate_choose_stop_prep_inj=0.05;
 			eff_rate_choose_stop_prep_vr=0.05;
+			eff_prob_prep_any_restart_choice=0.7;
 		end;
-		eff_prob_prep_any_restart_choice=0.7;
 		* lapr and dpv-vr - consider if any needs to change ;
 		end;
 	end;
@@ -2823,8 +2825,8 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 			eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;	*due to availability of inj prep;	
 			eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
+			eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
 		end;
-		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
 		* lapr and dpv-vr - consider if any needs to change ;
 end; 
 
@@ -17605,6 +17607,7 @@ prob_prep_inj_b eff_prob_prep_inj_b
 rate_choose_stop_prep_oral eff_rate_choose_stop_prep_oral
 rate_choose_stop_prep_inj eff_rate_choose_stop_prep_inj
 rate_choose_stop_prep_vr eff_rate_choose_stop_prep_vr
+prob_prep_any_restart_choice eff_prob_prep_any_restart_choice
 ;
 where serial_no<150 and age ge 15 and death=.;
 run;
@@ -17617,6 +17620,7 @@ run;
 /*rate_choose_stop_prep_oral eff_rate_choose_stop_prep_oral*/
 /*rate_choose_stop_prep_inj eff_rate_choose_stop_prep_inj*/
 /*rate_choose_stop_prep_vr eff_rate_choose_stop_prep_vr*/
+/*prob_prep_any_restart_choice eff_prob_prep_any_restart_choice*/
 /*; run;*/
 
 
