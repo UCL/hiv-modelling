@@ -75,7 +75,7 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 69  ;*out of 100;*out of 860;
+%let nfit = 148  ;*out of 100;*out of 860;
 %let year_end = 2072.5;
 run;
 /*proc freq data=b;table cald;run;*/
@@ -261,7 +261,7 @@ proc contents data=a.d;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V17_20230927_69sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V17_20230927_148sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
@@ -756,6 +756,17 @@ scatter x=cald y=o_prev_fsw_rds /  yerrorlower=o_prev_fsw_ll_rds yerrorupper=o_p
 run;quit;
 /*proc print data=d;var p50_prop_sw_hiv_0 p5_prop_sw_hiv_0 p95_prop_sw_hiv_0;where cald=2020;run;
 proc freq data=d;table p95_n_prep_0;run;*/
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence sw";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+label p50_incidence_sw_0 = "Option 0 (median) ";
+series  x=cald y=p50_incidence_sw_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence_sw_0 	upper=p95_incidence_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;
+quit;
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -956,6 +967,24 @@ scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphi
 run;
 quit;
 proc print data=d;var cald p50_incidence1549__0; where cald in (2022.5 2040.5);run;
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_incidence1549__0 = "Option 0 (median) ";
+label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
+label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
+series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
+scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+run;
+quit;
+
+
 
 /*
 proc sgplot data=d; 
