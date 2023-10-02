@@ -8,9 +8,9 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000  ; 
+%let population = 100000  ; 
 
-%let year_interv = 2023;
+%let year_interv = 2024;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -768,7 +768,8 @@ end;
 
 * date_prep_vr_intro;			date_prep_vr_intro=2100; 		* Introduction of DPV-VR PrEP ;
 * prep_vr_efficacy;				prep_vr_efficacy=0.31; 			* DPV-VR PrEP effectiveness with 100% adherence (assuming always 100% adherence in first month) ; 
-																* REF The Ring Study Nel NEJM 2016 - but does this represent effectiveness rather than efficacy? - also see follow-up DREAM OLE Nel Lancet 2021 - higher protection ;
+																* REF The Ring Study Nel NEJM 2016 - but does this represent effectiveness rather than efficacy? ;
+																* Also see follow-up DREAM OLE Nel Lancet 2021 - higher protection. We may change to sample this parameter JAS Oct23 ;
 * dur_prep_vr_scaleup;			dur_prep_vr_scaleup=2;			* Assume 2 years to scale up DPV ring; * lapr;
 * prob_prep_vr_b;				prob_prep_vr_b = prob_prep_oral_b;	* probability of starting vr PrEP in people (who are eligible and willing to take vr prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj and vr, dont think we need separate values of this for oral and vr and inj 
@@ -876,9 +877,9 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_07.sas";
-* %include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
-%include "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\prep_uptake_26thSept2023\Zim_parameters_08_a.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_07.sas";
+* %include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
+* %include "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\prep_uptake_26thSept2023\Zim_parameters_08_a.sas";
 
 
 * ===================== ;
@@ -3308,6 +3309,7 @@ if option ne . and option ne 0 and caldate{t} >= &year_interv then do;
 	eff_prob_prep_any_restart_choice=0;	
 end;   
 */
+
 * MIHPSA Oral PrEP; *JAS Apr2023;
 if option = 15 and caldate{t} >= &year_interv then do;		*Essential + Oral TDF/FTC PrEP for AGWY;
 		*Following values need to change;
