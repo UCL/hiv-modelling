@@ -2240,7 +2240,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 21 then do;
 		eff_rate_test_startprep_any=0.95;
 		eff_prob_prep_vr_b=0.95;
-		eff_rate_choose_stop_prep_oral=0.001;
+		eff_rate_choose_stop_prep_vr=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
@@ -2248,7 +2248,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 22 then do;
 		eff_rate_test_startprep_any=0.95;
 		eff_prob_prep_vr_b=0.95;
-		eff_rate_choose_stop_prep_oral=0.001;
+		eff_rate_choose_stop_prep_vr=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
@@ -2574,8 +2574,10 @@ if caldate{t} = &year_interv then do;
 						decr_r_choose_stopprep_oral_yr_i = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stopprep_oral_yr_i = 1; 
-							eff_rate_choose_stop_prep_oral = 0.03 ; 
-							eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
+							if turn_prep_off ne 1 then do;
+								eff_rate_choose_stop_prep_oral = 0.03 ; 
+								eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
+							end;
 						end;		
 
 * inc_p_prep_any_restart_choi_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
@@ -2795,10 +2797,12 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
-		if prep_any_willing=1 and turn_prep_off ne 1 then eff_rate_test_startprep_any=1;
-		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
-		eff_rate_choose_stop_prep_inj=0.05;
-		eff_rate_choose_stop_prep_vr=0.05;
+		if turn_prep_off ne 1 then do;
+			if prep_any_willing=1 then eff_rate_test_startprep_any=1;
+			eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
+			eff_rate_choose_stop_prep_inj=0.05;
+			eff_rate_choose_stop_prep_vr=0.05;
+		end;
 		eff_prob_prep_any_restart_choice=0.7;
 		* lapr and dpv-vr - consider if any needs to change ;
 		end;
@@ -2814,10 +2818,12 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		eff_sw_higher_int = sw_higher_int;
 		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-		if turn_prep_off ne 1 then eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
-		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;	*due to availability of inj prep;	
-		eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
+		if turn_prep_off ne 1 then do;
+			eff_rate_test_startprep_any=rate_test_startprep_any;
+			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
+			eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;	*due to availability of inj prep;	
+			eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
+		end;
 		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
 		* lapr and dpv-vr - consider if any needs to change ;
 end; 
@@ -3454,14 +3460,14 @@ end;
 if option = 21 and caldate{t} >= &year_interv then do;		*Essential + dapivirine ring for serodiscordant couples;
 		eff_rate_test_startprep_any=0.95;
 		eff_prob_prep_vr_b=0.95;
-		eff_rate_choose_stop_prep_oral=0.001;
+		eff_rate_choose_stop_prep_vr=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
 if option = 22 and caldate{t} >= &year_interv then do;		*Essential + dapivirine ring for pregnant and breastfeeding women;
 		eff_rate_test_startprep_any=0.95;
 		eff_prob_prep_vr_b=0.95;
-		eff_rate_choose_stop_prep_oral=0.001;
+		eff_rate_choose_stop_prep_vr=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
@@ -17596,16 +17602,22 @@ rate_test_startprep_any eff_rate_test_startprep_any
 prob_prep_oral_b eff_prob_prep_oral_b
 prob_prep_vr_b eff_prob_prep_vr_b
 prob_prep_inj_b eff_prob_prep_inj_b
+rate_choose_stop_prep_oral eff_rate_choose_stop_prep_oral
+rate_choose_stop_prep_inj eff_rate_choose_stop_prep_inj
+rate_choose_stop_prep_vr eff_rate_choose_stop_prep_vr
 ;
 where serial_no<150 and age ge 15 and death=.;
 run;
 
-proc freq; tables caldate&j option 
-rate_test_startprep_any eff_rate_test_startprep_any
-prob_prep_oral_b eff_prob_prep_oral_b
-prob_prep_inj_b eff_prob_prep_inj_b
-prob_prep_vr_b eff_prob_prep_vr_b
-; run;
+/*proc freq; tables caldate&j option */
+/*rate_test_startprep_any eff_rate_test_startprep_any*/
+/*prob_prep_oral_b eff_prob_prep_oral_b*/
+/*prob_prep_inj_b eff_prob_prep_inj_b*/
+/*prob_prep_vr_b eff_prob_prep_vr_b*/
+/*rate_choose_stop_prep_oral eff_rate_choose_stop_prep_oral*/
+/*rate_choose_stop_prep_inj eff_rate_choose_stop_prep_inj*/
+/*rate_choose_stop_prep_vr eff_rate_choose_stop_prep_vr*/
+/*; run;*/
 
 
 * testing prep options;
