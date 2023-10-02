@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000  ; 
+%let population = 1000  ; 
 %let year_interv = 2023;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -1995,7 +1995,8 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 option = &s;			
 * options mprint;
 
-option = 0;	* SQ;
+/*option = 0;	* SQ;*/
+option = 1;	* Essential;
 /*option = 15;	* MIHPSA: oral PrEP for AGYW;*/
 /*option = 16;	* MIHPSA: oral PrEP for FSW;*/
 /*option = 17;	* MIHPSA: oral PrEP for SDC;*/
@@ -2554,7 +2555,7 @@ if caldate{t} = &year_interv then do;
 * inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_any_yr_i = 1; 
-							if turn_prep_off=0 then do;
+							if turn_prep_off ne 1 then do;
 								eff_rate_test_startprep_any = 0.9; 
 								eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
 							end;
@@ -2791,7 +2792,7 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
-		if prep_any_willing=1 and turn_prep_off=0 then eff_rate_test_startprep_any=1;
+		if prep_any_willing=1 and turn_prep_off ne 1 then eff_rate_test_startprep_any=1;
 		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
 		eff_rate_choose_stop_prep_inj=0.05;
 		eff_rate_choose_stop_prep_vr=0.05;
@@ -2810,7 +2811,7 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		eff_sw_higher_int = sw_higher_int;
 		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-		if turn_prep_off=0 then eff_rate_test_startprep_any=rate_test_startprep_any;
+		if turn_prep_off ne 1 then eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;	*due to availability of inj prep;	
 		eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
@@ -17593,6 +17594,8 @@ rate_test_startprep_any eff_rate_test_startprep_any
 where serial_no<150 and age ge 15 and death=.;
 run;
 
+proc freq; tables option rate_test_startprep_any eff_rate_test_startprep_any; run;
+
 
 * testing prep options;
 /*proc print; var*/
@@ -19286,11 +19289,11 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 ***Zim specific;
-
+/*
 if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
 if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
 if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
-
+*/
 /*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
