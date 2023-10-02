@@ -2522,7 +2522,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do; * SW program stays at current impact (low);
 	end;
-
+/*
 	if option = 1  then do; *SW program has higher impact;
 		eff_sw_program=1;sw_program=1;
 		%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
@@ -2566,7 +2566,7 @@ who may be dead and hence have caldate{t} missing;
 end;
 
 
-
+*/
 *  ======================================================================================================================================== ;
 
 if caldate{t} = date_sw_prog_intro then eff_sw_program=sw_program;
@@ -20156,7 +20156,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=349,h=356,j=350,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=349,h=356,j=351,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=352,s=0);
-
+/*
 
 data r1; set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=1);
@@ -20351,7 +20351,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=349,h=356,j=350,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=349,h=356,j=351,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=352,s=1);
-
+*/
 * ts1m:  need more update statements ;
 
 
