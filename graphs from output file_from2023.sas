@@ -7,6 +7,7 @@ libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\ou
 run;
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
+  proc freq data=a.l_base_02_10_2023;table cald;run;
 /*
 proc freq data=a.l_base_from2023_03_07_23;table 
 n_tested_w_sympt n_tested_m_sympt 
@@ -28,8 +29,9 @@ n_prep_inj_sdc
 - number of PrEP initiations a lot higher than the number on PrEP
 - variables regarding sdc not exported yet;
 data b;
-set a.l_base_from2023_03_07_23;
-
+*set a.l_base_from2023_03_07_23;
+set a.l_base_02_10_2023; 
+where cald ge 2023;
 
 p_onart_vl1000_all = .;
 
