@@ -1,13 +1,16 @@
 
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\core3_out\";
+* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\";
+* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\zim_out\";
+  libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\f_i_f_out\";
+
 
 ods html close;
 
 data a;
-set b.out:; ***INSERT OUTPUT FILENAME; 
+set b.out:  ; ***INSERT OUTPUT FILENAME; 
 
 
 
@@ -326,7 +329,7 @@ sw_art_disadv prep_dependent_prev_vg1000
 
 
 
-data a.core_l; set y;
+data a.f_i_f_l; set y;
 
 
 
@@ -489,18 +492,41 @@ sw_art_disadv
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_core;
+data gh; set a.wide_f_i_f;
 merge   wide_outputs  wide_par ;  
 by run;
 
 r_incidence_23_43 = incidence1549_43_1 / incidence1549_23 ;
 
+r_p_newp_ge1_age1549_23_43 = p_newp_ge1_age1549_43_1 / p_newp_ge1_age1549_23;
 
-proc contents data=a.wide_core; run; 
 
-proc univariate data=a.core;
-var p_diag_w_23 p_diag_m_23; 
+ods html;
+
+proc glm data=gh ; 
+
+class 
+  ych_risk_beh_newp       
+  ych_risk_beh_ep      
+  p_rred_p           
+  p_hsb_p        
+  newp_factor        
+  ych2_risk_beh_newp;
+
+model r_p_newp_ge1_age1549_23_43 = 
+  ych_risk_beh_newp       
+  ych_risk_beh_ep      
+  p_rred_p           
+  p_hsb_p        
+  newp_factor        
+  ych2_risk_beh_newp
+/ solution;   
+
 run;
+
+ods html close;
+
+
 
 
 

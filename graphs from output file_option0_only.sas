@@ -6,14 +6,16 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
+  libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\";
+* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
+
 
 proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 ods html close;
 
 data b;
-set a.core_l;
+set a.zim_d_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -24,9 +26,10 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_vl1000_ = p_vl1000;
 p_onart_vl1000_ = p_onart_vl1000;
 n_vg1000_ = n_vg1000;
-p_newp_ge1_age1549_=p_newp_ge1_age1549;
+p_newp_ge1_age1549_ = p_newp_ge1_age1549;
+* incidence1549_ = incidence1549w ;
 
-%let single_var = incidence_sw       ;
+%let single_var = incidence_sw     ;
 
 
 * if adh_pattern = 2 ;
@@ -42,7 +45,7 @@ prop_w_vlg1  prop_w_vlg2  prop_w_vlg3  prop_w_vlg4  prop_w_vlg5 prop_w_vlg6  pro
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 300   ;
+%let nfit = 92    ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -282,10 +285,8 @@ run;quit;
 
 ods html close;
 
-
 /*
-
-
+ 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_inf_w_sw";
@@ -492,7 +493,6 @@ run;quit;
 ods html close;
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge1_age1549";
@@ -508,7 +508,6 @@ label p50_p_newp_ge1_age1549__0 = "option 0";
 run;quit;
 
 ods html close;
-
 
 
 ods html;
