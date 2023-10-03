@@ -398,6 +398,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_tested_swprog;				n_tested_swprog = s_tested_f_sw * &sf * 4;
 * n_tested;						n_tested = (s_tested + s_tested_anc_prevdiag)* &sf * 4;
 * n_tested_anc;					n_tested_anc = (s_tested_anc + s_tested_anc_prevdiag) * &sf * 4;
+*Note: tested_Anc assumes value of 1 at 2 time point dt_start_pregn+0.25 and dt_start_pregn+0.5,
+so the one above is the annual number of tests conducted in ANC;
 * p_anc;						p_anc = s_anc /(s_pregnant+s_birth);*pregnant=1 at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5
 																	 birth=1    at dt_start_pregn+0.75
 																	 anc=1      at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5, dt_start_pregn+0.75;
@@ -519,6 +521,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 *Currently on PrEP: Number of clients actively taking PrEP during the last month of the date range displayed;
 *Note we can't do the last month so we will do the last 3 months;
 * n_prep_1524w;					n_prep_1524w = s_onprep_1524w * &sf;
+* n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * &sf;
+* n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * &sf;
 
 *Number initiated for the first time on PrEP;
 * n_init_prep_oral_1524w;  		n_init_prep_oral_1524w = s_init_prep_oral_1524w * 4 * &sf; 
@@ -550,7 +554,6 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_prep_vr_1524w;    		n_prep_vr_1524w   = s_prep_vr_w_1524 * &sf;    
 * n_prep_vr_sw;   			n_prep_vr_sw      = s_prep_vr_sw * &sf;   
 * n_prep_vr_sdc; 			n_prep_vr_sdc     = s_prep_vr_sdc * &sf;
-
 
 *PrEP_CT: Number of clients actively taking the indicated PrEP method(s) 
          (excluding newly enrolled) during the last quarter of the date range displayed.
@@ -1035,7 +1038,6 @@ end;
 *future YLL (assuming age and gender specific life expectancy), all incurred at the calendar year of death (for adults aged 15+ years old); 
 * n_total_yllag;				n_total_yllag = s_total_yllag * &sf;
 * n_dyll_GBD;					n_dyll_GBD = s_dyll_GBD * &sf;
-
 * n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
 * n_hiv;						n_hiv = s_hivge15 * &sf;
@@ -1206,8 +1208,6 @@ n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4  rate_dead_hivneg_cause4 
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 /*rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause*/ n_death_2059_m n_death_2059_w
 n_total_yllag 	n_dyll_GBD
-
-
 /*n_death_hiv_m n_death_hiv_w*/ n_cd4_lt50 n_cd4_lt200
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 

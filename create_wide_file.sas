@@ -3,9 +3,9 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v17_uptoend2072_2023Sep27_out";
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v18_2023Oct02_out";
 
-data a.base_27_09_2023;   set b.out:;run;
+data a.base_02_10_2023;   set b.out:;run;
 
 *Investigating why p_newp_ge1 is going down;
 /*
@@ -20,8 +20,8 @@ proc sort data=a.base_16_06_23; by run; run;
 proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
 ods html close;
 ods listing;
-proc freq data=a.base_27_09_2023; table run;run;
-proc freq data=a.base_27_09_2023; table cald;run;*148 simulations;
+proc freq data=a.base_02_10_2023; table run;run;
+proc freq data=a.base_02_10_2023; table cald;run;*148 simulations;
 
 /*
 proc freq data=a.base_25_05_23;
@@ -33,7 +33,7 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_27_09_2023;
+data g; set  a.base_02_10_2023;
 
 proc sort data=g; 
 by run cald option;run;
@@ -475,6 +475,9 @@ so the one above is the annual number of tests conducted in ANC;
 * n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * &sf;
 * n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * &sf;
 * n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * &sf;
+
+*Currently on PrEP: Number of clients actively taking PrEP during the last month of the date range displayed;
+*Note we can't do the last month so we will do the last 3 months;
 * n_prep_w_1524  ;				n_prep_w_1524   =    s_prep_w_1524       * &sf;
 * n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * &sf;
 * n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * &sf;
@@ -499,6 +502,16 @@ so the one above is the annual number of tests conducted in ANC;
 * n_prep_vr_ly_1524w;  			n_prep_vr_ly_1524w     = s_prep_vr_ly_1524w * &sf;       
 * n_prep_vr_ly_sw;    			n_prep_vr_ly_sw        = s_prep_vr_ly_sw * &sf;     
 * n_prep_vr_ly_sdc;   			n_prep_vr_ly_sdc       = s_prep_vr_ly_sdc * &sf;   
+
+* n_prep_oral_1524w; 		n_prep_oral_1524w = s_prep_oral_w_1524 * &sf;
+* n_prep_oral_sw; 			n_prep_oral_sw    = s_prep_oral_sw * &sf; 
+* n_prep_oral_sdc; 			n_prep_oral_sdc   = s_prep_oral_sdc * &sf; 
+* n_prep_inj_1524w; 		n_prep_inj_1524w  = s_prep_inj_w_1524 * &sf;   
+* n_prep_inj_sw; 			n_prep_inj_sw     = s_prep_inj_sw * &sf; 
+* n_prep_inj_sdc; 			n_prep_inj_sdc    = s_prep_inj_sdc * &sf; 
+* n_prep_vr_1524w;    		n_prep_vr_1524w   = s_prep_vr_w_1524 * &sf;    
+* n_prep_vr_sw;   			n_prep_vr_sw      = s_prep_vr_sw * &sf;   
+* n_prep_vr_sdc; 			n_prep_vr_sdc     = s_prep_vr_sdc * &sf;
 
 *PrEP_CT: Number of clients actively taking the indicated PrEP method(s) 
          (excluding newly enrolled) during the last quarter of the date range displayed.
@@ -980,6 +993,9 @@ end;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * &sf ;
 													
+*future YLL (assuming age and gender specific life expectancy), all incurred at the calendar year of death (for adults aged 15+ years old); 
+* n_total_yllag;				n_total_yllag = s_total_yllag * &sf;
+* n_dyll_GBD;					n_dyll_GBD = s_dyll_GBD * &sf;
 * n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
 * n_hiv;						n_hiv = s_hivge15 * &sf;
@@ -1110,9 +1126,12 @@ p_prep_ever
 n_init_prep_oral_1524w  n_init_prep_oral_sw  n_init_prep_oral_sdc
 n_init_prep_inj_1524w   n_init_prep_inj_sw   n_init_prep_inj_sdc
 n_init_prep_vr_1524w    n_init_prep_vr_sw    n_init_prep_vr_sdc
-n_prep_oral_ly_1524w	n_prep_oral_ly_sw	n_prep_oral_ly_sdc
+/*n_prep_oral_ly_1524w	n_prep_oral_ly_sw	n_prep_oral_ly_sdc
 n_prep_inj_ly_1524w		n_prep_inj_ly_sw	n_prep_inj_ly_sdc
-n_prep_vr_ly_1524w		n_prep_vr_ly_sw		n_prep_vr_ly_sdc
+n_prep_vr_ly_1524w		n_prep_vr_ly_sw		n_prep_vr_ly_sdc*/
+n_prep_oral_1524w 		n_prep_oral_sw		n_prep_oral_sdc
+n_prep_inj_1524w		n_prep_inj_sw		n_prep_inj_sdc
+n_prep_vr_1524w			n_prep_vr_sw		n_prep_vr_sdc
 n_contprep_oral_1524w	n_contprep_oral_sw	n_contprep_oral_sdc	n_contprep_inj_1524w	n_contprep_inj_sw
 n_contprep_inj_sdc		n_contprep_vr_1524w n_contprep_vr_sw	n_contprep_vr_sdc
 n_prep_oral_ever_1524w	n_prep_oral_ever_sw  n_prep_oral_ever_sdc
@@ -1146,6 +1165,7 @@ n_dead_hivpos_cause2  rate_dead_hivpos_cause2 	n_dead_hivpos_cause3  rate_dead_h
 n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_hivneg_cvd n_dead_hivneg_tb  rate_dead_hivneg_tb
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4  rate_dead_hivneg_cause4 
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 /*rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause*/ n_death_2059_m n_death_2059_w
+n_total_yllag 	n_dyll_GBD
 /*n_death_hiv_m n_death_hiv_w*/ n_cd4_lt50 n_cd4_lt200
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
@@ -1229,7 +1249,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_27_09_2023; set y;  run;
+data a.l_base_02_10_2023; set y;  run;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
