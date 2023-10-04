@@ -7,7 +7,6 @@ libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\ou
 run;
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
-  proc freq data=a.l_base_02_10_2023;table cald;run;
 /*
 proc freq data=a.l_base_from2023_03_07_23;table 
 n_tested_w_sympt n_tested_m_sympt 
@@ -31,7 +30,7 @@ n_prep_inj_sdc
 data b;
 *set a.l_base_from2023_03_07_23;
 set a.l_base_02_10_2023; 
-where cald ge 2023;
+where cald ge 2023 and cald ne .;
 
 p_onart_vl1000_all = .;
 
@@ -93,7 +92,7 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 
 proc sort data=b; by option cald run ;run;
 data b;set b; if cald ne .;run;*100 records deleted;
-proc freq data=b;table option cald run run_forward_id;run;*Run_forward_id not there at the beginning of July;
+proc freq data=b;table option cald run;* run_forward_id;run;*Run_forward_id not there at the beginning of July;
 /*proc freq data=b;table cald*option/norow nocol noperc;run;*/
 
 *run_forward_id has not been saved;
@@ -101,7 +100,7 @@ proc freq data=b;table option cald run run_forward_id;run;*Run_forward_id not th
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 100  ;
+%let nfit = 54  ;
 %let year_start = 2023;
 %let year_end = 2072.75;
 run;
@@ -132,7 +131,9 @@ n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
 prevalence1549m prevalence1549w
 prevalence1549_ prevalence_sw prevalence_hiv_preg prevalence1549preg prevalence1524preg prevalence_vg1000_  incidence1549_ incidence1549m incidence1549w incidence1564_ 
 incidence1524w incidence1524m incidence2534w incidence2534m incidence3544w incidence3544m incidence4554w incidence4554m 
-incidence5564w incidence5564m incidence_sw n_tested n_tested_m n_tested_w n_tested_sw n_tested_anc 
+incidence5564w incidence5564m incidence_sw 
+n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w
+n_tested n_tested_m n_tested_w n_tested_sw n_tested_anc 
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_tested1st_anc n_tested1st_labdel n_tested1st_pd n_tested_anc_prevdiag
 p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd
@@ -226,8 +227,8 @@ g0_53  g0_54  g0_55  g0_56  g0_57  g0_58  g0_59  g0_60 g0_61  g0_62  g0_63  g0_6
 g0_79  g0_80  g0_81  g0_82  g0_83  g0_84  g0_85  g0_86  g0_87  g0_88  g0_89  g0_90 g0_91  g0_92  g0_93  g0_94  g0_95  g0_96  g0_97  g0_98  g0_99  g0_100 g0_101 g0_102 g0_103 g0_104
 g0_105 g0_106 g0_107 g0_108 g0_109 g0_110 g0_111 g0_112 g0_113 g0_114 g0_115 g0_116 g0_117 g0_118 g0_119 g0_120 g0_121 g0_122 g0_123 g0_124 g0_125 g0_126 g0_127 g0_128 g0_129 g0_130 
 g0_131 g0_132 g0_133 g0_134 g0_135 g0_136 g0_137 g0_138 g0_139 g0_140 g0_141 g0_142 g0_143 g0_144 g0_145 g0_146 g0_147 g0_148 g0_149 g0_150 g0_151 g0_152 g0_153 g0_154 g0_155 g0_156
-g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 g0_176 g0_177 g0_178 g0_179 /*g0_180 g0_181 g0_182
-g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
+g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182
+g0_183 /*g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
 g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234
 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 g0_251 g0_252 
 */
@@ -239,8 +240,8 @@ g1_53  g1_54  g1_55  g1_56  g1_57  g1_58  g1_59  g1_60 g1_61  g1_62  g1_63  g1_6
 g1_79  g1_80  g1_81  g1_82  g1_83  g1_84  g1_85  g1_86  g1_87  g1_88  g1_89  g1_90 g1_91  g1_92  g1_93  g1_94  g1_95  g1_96  g1_97  g1_98  g1_99  g1_100 g1_101 g1_102 g1_103 g1_104
 g1_105 g1_106 g1_107 g1_108 g1_109 g1_110 g1_111 g1_112 g1_113 g1_114 g1_115 g1_116 g1_117 g1_118 g1_119 g1_120 g1_121 g1_122 g1_123 g1_124 g1_125 g1_126 g1_127 g1_128 g1_129 g1_130
 g1_131 g1_132 g1_133 g1_134 g1_135 g1_136 g1_137 g1_138 g1_139 g1_140 g1_141 g1_142 g1_143 g1_144 g1_145 g1_146 g1_147 g1_148 g1_149 g1_150 g1_151 g1_152 g1_153 g1_154 g1_155 g1_156
-g1_157 g1_158 g1_159 g1_160 g1_161 g1_162 g1_163 g1_164 g1_165 g1_166 g1_167 g1_168 g1_169 g1_170 g1_171 g1_172 g1_173 g1_174 g1_175 g1_176 g1_177 g1_178 g1_179 /*g1_180 g1_181 g1_182
-g1_183 g1_184 g1_185 g1_186 g1_187 g1_188 g1_189 g1_190 g1_191 g1_192 g1_193 g1_194 g1_195 g1_196 g1_197 g1_198 g1_199 g1_200 g1_201 g1_202 g1_203 g1_204 g1_205 g1_206 g1_207 g1_208
+g1_157 g1_158 g1_159 g1_160 g1_161 g1_162 g1_163 g1_164 g1_165 g1_166 g1_167 g1_168 g1_169 g1_170 g1_171 g1_172 g1_173 g1_174 g1_175 g1_176 g1_177 g1_178 g1_179 g1_180 g1_181 g1_182
+g1_183 /*g1_184 g1_185 g1_186 g1_187 g1_188 g1_189 g1_190 g1_191 g1_192 g1_193 g1_194 g1_195 g1_196 g1_197 g1_198 g1_199 g1_200 g1_201 g1_202 g1_203 g1_204 g1_205 g1_206 g1_207 g1_208
 g1_209 g1_210 g1_211 g1_212 g1_213 g1_214 g1_215 g1_216 g1_217 g1_218 g1_219 g1_220 g1_221 g1_222 g1_223 g1_224 g1_225 g1_226 g1_227 g1_228 g1_229 g1_230 g1_231 g1_232 g1_233 g1_234
 g1_235 g1_236 g1_237 g1_238 g1_239 g1_240 g1_241 g1_242 g1_243 g1_244 g1_245 g1_246 g1_247 g1_248 g1_249 g1_250 g1_251 g1_252 
 */
@@ -252,8 +253,8 @@ g15_53  g15_54  g15_55  g15_56  g15_57  g15_58  g15_59  g15_60 g15_61  g15_62  g
 g15_79  g15_80  g15_81  g15_82  g15_83  g15_84  g15_85  g15_86  g15_87  g15_88  g15_89  g15_90 g15_91  g15_92  g15_93  g15_94  g15_95  g15_96  g15_97  g15_98  g15_99  g15_100 g15_101 g15_102 g15_103 g15_104
 g15_105 g15_106 g15_107 g15_108 g15_109 g15_110 g15_111 g15_112 g15_113 g15_114 g15_115 g15_116 g15_117 g15_118 g15_119 g15_120 g15_121 g15_122 g15_123 g15_124 g15_125 g15_126 g15_127 g15_128 g15_129 g15_130 
 g15_131 g15_132 g15_133 g15_134 g15_135 g15_136 g15_137 g15_138 g15_139 g15_140 g15_141 g15_142 g15_143 g15_144 g15_145 g15_146 g15_147 g15_148 g15_149 g15_150 g15_151 g15_152 g15_153 g15_154 g15_155 g15_156
-g15_157 g15_158 g15_159 g15_160 g15_161 g15_162 g15_163 g15_164 g15_165 g15_166 g15_167 g15_168 g15_169 g15_170 g15_171 g15_172 g15_173 g15_174 g15_175 g15_176 g15_177 g15_178 g15_179 /*g15_180 g15_181 g15_182
-g15_183 g15_184 g15_185 g15_186 g15_187 g15_188 g15_189 g15_190 g15_191 g15_192 g15_193 g15_194 g15_195 g15_196 g15_197 g15_198 g15_199 g15_200 g15_201 g15_202 g15_203 g15_204 g15_205 g15_206 g15_207 g15_208
+g15_157 g15_158 g15_159 g15_160 g15_161 g15_162 g15_163 g15_164 g15_165 g15_166 g15_167 g15_168 g15_169 g15_170 g15_171 g15_172 g15_173 g15_174 g15_175 g15_176 g15_177 g15_178 g15_179 g15_180 g15_181 g15_182
+g15_183 /*g15_184 g15_185 g15_186 g15_187 g15_188 g15_189 g15_190 g15_191 g15_192 g15_193 g15_194 g15_195 g15_196 g15_197 g15_198 g15_199 g15_200 g15_201 g15_202 g15_203 g15_204 g15_205 g15_206 g15_207 g15_208
 g15_209 g15_210 g15_211 g15_212 g15_213 g15_214 g15_215 g15_216 g15_217 g15_218 g15_219 g15_220 g15_221 g15_222 g15_223 g15_224 g15_225 g15_226 g15_227 g15_228 g15_229 g15_230 g15_231 g15_232 g15_233 g15_234
 g15_235 g15_236 g15_237 g15_238 g15_239 g15_240 g15_241 g15_242 g15_243 g15_244 g15_245 g15_246 g15_247 g15_248 g15_249 g15_250 g15_251 g15_252 
 */
@@ -270,7 +271,7 @@ data a.d_from2023;set d;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V13_20230703_from2023_100sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20231002_from2023_54sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
@@ -321,7 +322,29 @@ scatter x=cald y=o_pop_1549m_Zi_cens / markerattrs = (symbol=square color=lightb
 scatter x=cald y=o_pop_1549w_Zi_cens / markerattrs = (symbol=square color=orange size = 10);
 run;quit;
 */
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_alive by age in men";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by  2500000) valueattrs=(size=10);*20000000 is stoping in 2023;
+label p50_n_alive_1524m_0 = "Baseline (median) - 15-24 M";
+label p50_n_alive_2549m_0 = "Baseline (median) - 25-49 M";
+series  x=cald y=p50_n_alive_1524m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_alive_1524m_0 	upper=p95_n_alive_1524m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_alive_2549m_0/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_alive_2549m_0 	upper=p95_n_alive_2549m_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_alive by age in women";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by  2500000) valueattrs=(size=10);*20000000 is stoping in 2023;
+label p50_n_alive_1524w_0 = "Baseline (median) - 15-24 W";
+label p50_n_alive_2549w_0 = "Baseline (median) - 25-49 W";
+series  x=cald y=p50_n_alive_1524w_0/	lineattrs = (color=darkorange thickness = 2);
+band    x=cald lower=p5_n_alive_1524w_0 	upper=p95_n_alive_1524w_0  / transparency=0.9 fillattrs = (color=darkorange) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_alive_2549w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_n_alive_2549w_0 	upper=p95_n_alive_2549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
 
+run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -1010,6 +1033,17 @@ scatter x=cald y=o_prev_fsw_rds /  yerrorlower=o_prev_fsw_ll_rds yerrorupper=o_p
 run;quit;
 /*proc print data=d;var p50_prop_sw_hiv_0 p5_prop_sw_hiv_0 p95_prop_sw_hiv_0;where cald=2020;run;
 proc freq data=d;table p95_n_prep_0;run;*/
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence sw";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+label p50_incidence_sw_0 = "Option 0 (median) ";
+series  x=cald y=p50_incidence_sw_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence_sw_0 	upper=p95_incidence_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;
+quit;
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -1316,6 +1350,28 @@ run;
 quit;
 
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of new HIV infections in men by age";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000 by  5000) valueattrs=(size=10);*20000000 is stoping in 2023;
+label p50_n_new_inf1524m_0 = "Baseline (median) - 15-24 M";
+label p50_n_new_inf2549m_0 = "Baseline (median) - 25-49 M";
+series  x=cald y=p50_n_new_inf1524m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_new_inf1524m_0 	upper=p95_n_new_inf1524m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_new_inf2549m_0/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_new_inf2549m_0 	upper=p95_n_new_inf2549m_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of new HIV infections in women by age";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000 by  5000) valueattrs=(size=10);*20000000 is stoping in 2023;
+label p50_n_new_inf1524w_0 = "Baseline (median) - 15-24 M";
+label p50_n_new_inf2549w_0 = "Baseline (median) - 25-49 M";
+series  x=cald y=p50_n_new_inf1524w_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_new_inf1524w_0 	upper=p95_n_new_inf1524w_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_new_inf2549w_0/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_new_inf2549w_0 	upper=p95_n_new_inf2549w_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-64)";
@@ -1568,7 +1624,33 @@ band    x=cald lower=p5_mtct_prop_0 	upper=p95_mtct_prop_0  / transparency=0.9 f
 run;quit;
 */
 
+*Number living with HIV;
 
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number living with HIV by age - Male";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
+label p50_n_hiv1524m_0 = "Baseline (median) - 15-24";
+label p50_n_hiv2549m_0 = "Baseline (median) - 25-49";
+series  x=cald y=p50_n_hiv1524m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_hiv1524m_0 	upper=p95_n_hiv1524m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_hiv2549m_0/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_hiv2549m_0 	upper=p95_n_hiv2549m_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+
+run;quit;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number living with HIV by age - Female";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
+label p50_n_hiv1524w_0 = "Baseline (median) - 15-24";
+label p50_n_hiv2549w_0 = "Baseline (median) - 25-49";
+series  x=cald y=p50_n_hiv1524w_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_hiv1524w_0 	upper=p95_n_hiv1524w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_hiv2549w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_n_hiv2549w_0 	upper=p95_n_hiv2549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
+run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of men with hiv 15+, proportion diagnosed";
@@ -2300,11 +2382,11 @@ run;
 %stock(o=0);
 %stock(o=1);
 %stock(o=15);
-PROC export data=s0 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20230703_revised20230801" dbms=xlsx REPLACE;
+PROC export data=s0 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20231003" dbms=xlsx REPLACE;
 sheet="Base_STOCK";  RUN;
-PROC export data=s1 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20230703_revised20230801" dbms=xlsx REPLACE;
+PROC export data=s1 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20231003" dbms=xlsx REPLACE;
 sheet="Ess_STOCK";  RUN;
-PROC export data=s15 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20230703_revised20230801" dbms=xlsx REPLACE;
+PROC export data=s15 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20231003" dbms=xlsx REPLACE;
 sheet="TDFPrEP_F1524_STOCK";  RUN;
 options nomprint;
 option nospool;
@@ -3071,11 +3153,11 @@ P50_n_pmtct_&o
 %flow(o=1);
 %flow(o=15);
 
-PROC export data=wide_allyears_out_0 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20230703_revised20230801" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_0 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20231003" dbms=xlsx REPLACE;
 sheet="Base_FLOW";  RUN;
-PROC export data=wide_allyears_out_1 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20230703_revised20230801" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_1 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20231003" dbms=xlsx REPLACE;
 sheet="Ess_FLOW";  RUN;
-PROC export data=wide_allyears_out_15 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20230703_revised20230801" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_15 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20231003" dbms=xlsx REPLACE;
 sheet="TDFPrEP_F1524_FLOW";  RUN;
 
 	
