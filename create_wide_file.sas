@@ -21,7 +21,7 @@ proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
 ods html close;
 ods listing;
 proc freq data=a.base_02_10_2023; table run;run;
-proc freq data=a.base_02_10_2023; table cald;run;*54 simulations;
+proc freq data=a.base_02_10_2023; table cald;run;*105 simulations;
 
 /*
 proc freq data=a.base_25_05_23;
@@ -37,7 +37,7 @@ data g; set  a.base_02_10_2023;
 
 proc sort data=g; 
 by run cald option;run;
-*54 out of 500;
+*105 out of 1000;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;

@@ -13,7 +13,7 @@ n_tested_w_sympt n_tested_m_sympt
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 data b;
-set a.l_base_27_09_2023;
+set a.l_base_02_10_2023;
 
 
 p_onart_vl1000_all = .;
@@ -75,7 +75,7 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 148  ;*out of 100;*out of 860;
+%let nfit = 105  ;*out of 1000;*out of 860;
 %let year_end = 2072.5;
 run;
 /*proc freq data=b;table cald;run;*/
@@ -167,7 +167,7 @@ run;quit;
 *I created one single macro;
 ***transpose given name; *starts with %macro and ends with %mend;
 proc freq data=b;table option;run;
-
+data b;set b;where option=0 and cald ne .;run;
 %macro option_(s);
 data option_&s;set b;
 if option=&s;
