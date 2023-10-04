@@ -878,8 +878,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_07.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_07.sas";
- %include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
-* %include "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\prep_uptake_26thSept2023\Zim_parameters_08_a.sas";
+* %include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
+%include "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\prep_uptake_26thSept2023\Zim_parameters_08_a.sas";
 
 
 * ===================== ;
@@ -1995,8 +1995,8 @@ option = &s;
 * options mprint;
 
 /*option = 0;	* SQ;*/
-option = 1;	* Essential;
-/*option = 15;	* MIHPSA: oral PrEP for AGYW;*/
+/*option = 1;	* Essential;*/
+option = 15;	* MIHPSA: oral PrEP for AGYW;
 /*option = 16;	* MIHPSA: oral PrEP for FSW;*/
 /*option = 17;	* MIHPSA: oral PrEP for SDC;*/
 /*option = 18;	* MIHPSA: oral PrEP for PLW;*/
@@ -2098,7 +2098,7 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 * INTERVENTIONS / CHANGES in year_interv ;
 
-turn_prep_off=0;	* JAS Sep23;
+turn_off_prep=0;	* JAS Sep23;
 
 if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
@@ -2116,8 +2116,11 @@ who may be dead and hence have caldate{t} missing;
 
 
 	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do;
-	*ESSENTIAL;
+	*MINIMAL;
+		mihpsa_minimal = 1;		* Marker to indicate using MIHPSA Minimal scenario; * QUERY NOT CURRENTLY USING THIS ONE ; * JAS Oct23;
+
 		*Testing;
+		turn_off_testing = 1;	* Marker to turn off testing JASOct23;
 		incr_test_year_i = 4;*No testing in the general population;
 		sw_program = 0;		 *No SW program;
 		*Note: at the moment the other testing modalities to be swicthed off are not modelled;
@@ -2125,10 +2128,11 @@ who may be dead and hence have caldate{t} missing;
 		*Prevention;
 		*Condom promotion and provision: currently not in essential scenario but under discussion;
 		*SBCC: not explicitly modelled, but the switch off is;
+		turn_off_prevention=1;		* marker to turn off condom and VMMC interventions JASOct23;
 		condom_incr_year_i=2;    *Switchs off SBCC;
 		circ_inc_rate_year_i = 2;*No VMMC;
 
-		turn_prep_off=1;					* marker not to update PrEP eff_ parameters off downstream JAS Sep23;
+		turn_off_prep=1;					* marker not to update PrEP eff_ parameters downstream. Note that this remains off for all MIHPSA options. JAS Sep23;
 		eff_rate_test_startprep_any=0;		*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
 		eff_prob_prep_oral_b=0;
 		eff_prob_prep_inj_b=0; 
@@ -2146,13 +2150,15 @@ who may be dead and hence have caldate{t} missing;
 
 		*Linkage, management, ART Interv;	* QUERY double check can move these to here; *JAS Jul23;
 		*PCP is part of the essential scenario;
-		absence_cd4_year_i = 1;*If CD4 and VL are both not available clinical monitoring is assumed;
-		absence_vl_year_i = 1; *If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
-		crag_cd4_l200=0;*Switch off for screening for Cryptococcal disease;
+		turn_off_cd4_vl_monitoring = 1;		* marker to turn off CD4 and VL monitoring. JAS Oct23;
+		absence_cd4_year_i = 1;		*If CD4 and VL are both not available clinical monitoring is assumed;
+		absence_vl_year_i = 1; 		*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
+		crag_cd4_l200=0;			*Switch off for screening for Cryptococcal disease;
 		tblam_cd4_l200=0;
 		*VL monitoring is switched off as clinical monitoring is assumed;
 		*POC CD4: not modelled yet?;
 		*POC VL: not modelled yet?;
+		poc_vl_monitoring_i=0;
 
 		*DREAMS: ok to assume that is has not been included so far?;
 	end;
@@ -2184,7 +2190,7 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	*PrEP interventions;	*JAS Apr2023 and Oct23;
-	if 15 <= option <= 26 then turn_prep_off=0;		* QUERY DO WE NEED THIS? do we want following parameters to be able to be overwritten at all? JAS Oct23;
+/*	if 15 <= option <= 26 then turn_off_prep=0;		* QUERY DO WE NEED THIS? do we want following parameters to be able to be overwritten at all? JAS Oct23;*/
 
 	* Oral PrEP; 	
 	*option 15: Oral TDF/FTC PrEP for AGWY;
@@ -2328,10 +2334,10 @@ who may be dead and hence have caldate{t} missing;
 		absence_cd4_year_i = 0; tblam_cd4_l200=1;										  
 	end;
 	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,etc);
-	absence_vl_year_i = 0;					   
+		absence_vl_year_i = 0;					   
 	end;
 	if option = 34 then do; * poc vl monitoring ;
-	absence_vl_year_i = 0; poc_vl_monitoring_i = 1 ;
+		absence_vl_year_i = 0; poc_vl_monitoring_i = 1 ;
 	end;
 
 	*Structural interventions and social enablers;
@@ -2360,25 +2366,25 @@ prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 
 * Oral prep scale-up over 4 years;
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
-else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and turn_prep_off ne 1
+else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and turn_off_prep ne 1
 	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
-else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and turn_prep_off ne 1
+else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and turn_off_prep ne 1
 	then eff_prob_prep_oral_b = prob_prep_oral_b;
 
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
 * Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
 if 		. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then eff_prob_prep_inj_b = 0;
-else if . < date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) and turn_prep_off ne 1
+else if . < date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) and turn_off_prep ne 1
 	then eff_prob_prep_inj_b = 0.05 +  (  (prob_prep_inj_b-0.05) * ( 1 -    (date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
-else if caldate{t} >= (date_prep_inj_intro + dur_prep_inj_scaleup) and turn_prep_off ne 1
+else if caldate{t} >= (date_prep_inj_intro + dur_prep_inj_scaleup) and turn_off_prep ne 1
 	then eff_prob_prep_inj_b = prob_prep_inj_b;
 
 * DPV VR prep scale-up; * dpv-vr JAS Sep2021;
 if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then eff_prob_prep_vr_b = 0;
-else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) and turn_prep_off ne 1
+else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) and turn_off_prep ne 1
 	then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
-else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and turn_prep_off ne 1
+else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and turn_off_prep ne 1
 	then eff_prob_prep_vr_b = prob_prep_vr_b;
 
 
@@ -2530,7 +2536,7 @@ if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 8;
 ***Changes in ART coverage (~20% lower in 3% of runs) and oral PrEP coverage after option start date;
 if caldate{t} = &year_interv then do;
 
-*lower future ART coverage;
+	*lower future ART coverage;
 	if lower_future_art_cov=1 then do;							
 		eff_rate_int_choice = eff_rate_int_choice * 1.25;
 		eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.25;
@@ -2545,144 +2551,144 @@ if caldate{t} = &year_interv then do;
 		eff_prob_return_adc = eff_prob_return_adc  * 0.8;
 	end;
 
-*higher future oral prep coverage;
+	*higher future oral prep coverage;
 	if	higher_future_prep_oral_cov=1 then do;
 	* lapr and dpv-vr - consider inclusion of scale up of lapr and dpv-vr ;
 
-* incr_adh_prep_oral_yr_i;
+	* incr_adh_prep_oral_yr_i;
 						incr_adh_prep_oral_yr_i = 0;  
 						if _u25 < 0.95 then do; 
 							incr_adh_prep_oral_yr_i = 1; 
 							adhav_prep_oral = adhav*1.00; 
 						end;		
 
-* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
+	* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_any_yr_i = 1; 
-							if turn_prep_off ne 1 then do;
+							if turn_off_prep ne 1 then do;
 								eff_rate_test_startprep_any = 0.9; 
 								eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
 							end;
 						end;		
 
-* incr_r_test_restartprep_any_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
+	* incr_r_test_restartprep_any_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						incr_r_test_restartprep_any_yr_i = 0;  
 						if _u28 <= 0.95 then do; 
 							incr_r_test_restartprep_any_yr_i = 1; 
 						end;		
 
-* decr_r_choose_stopprep_oral_yr_i; * dependent_on_time_step_length;
+	* decr_r_choose_stopprep_oral_yr_i; * dependent_on_time_step_length;
 						decr_r_choose_stopprep_oral_yr_i = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stopprep_oral_yr_i = 1; 
-							if turn_prep_off ne 1 then do;
+							if turn_off_prep ne 1 then do;
 								eff_rate_choose_stop_prep_oral = 0.03 ; 
 								eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
 							end;
 						end;		
 
-* inc_p_prep_any_restart_choi_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
+	* inc_p_prep_any_restart_choi_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_p_prep_any_restart_choi_yr_i = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_any_restart_choi_yr_i = 1; 
-							if turn_prep_off ne 1 then do;
+							if turn_off_prep ne 1 then do;
 								eff_prob_prep_any_restart_choice = 0.8 ; 
 								eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
 							end;
 						end;		
 
-* prep_any_strategy;
+	* prep_any_strategy;
 						prep_any_strategy = 5;								* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
 
-		end;
+	end;
 
-*Other potential changes after year_i which can be turned on in the Options code;
-*(impact of changes are coded below the options code);
+	*Other potential changes after year_i which can be turned on in the Options code;
+	*(impact of changes are coded below the options code);
 
-*increase in testing;
-incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022, 4=no testing in the general population;
+	*increase in testing;
+	if turn_off_testing ne 1 then incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022, 4=no testing in the general population;
 
-*decrease in the proportion of people hard to reach;
-decr_hard_reach_year_i = 0;
+	*decrease in the proportion of people hard to reach;
+	decr_hard_reach_year_i = 0;
 
-*decrease in probability of being lost at diagnosis; 
-decr_prob_loss_at_diag_year_i = 0;
+	*decrease in probability of being lost at diagnosis; 
+	decr_prob_loss_at_diag_year_i = 0;
 
-*absence CD4;
-absence_cd4_year_i = 0;
+	*absence CD4;
+	if turn_off_cd4_vl_monitoring ne 1 then absence_cd4_year_i = 0;
 
-*absence VL;
-absence_vl_year_i = 0;
+	*absence VL;
+	if turn_off_cd4_vl_monitoring ne 1 then absence_vl_year_i = 0;
 
-* crag cd4 < 200;
-crag_cd4_l200 = 0;
+	* crag cd4 < 200;
+	if turn_off_cd4_vl_monitoring = 1 then crag_cd4_l200 = 0;		* QUERY check I have got this the right way round JAS Oct23;
 
-* tblam cd4 < 200;
-tblam_cd4_l200 = 0;
+	* tblam cd4 < 200;
+	if turn_off_cd4_vl_monitoring = 1 then tblam_cd4_l200 = 0;		* QUERY check I have got this the right way round JAS Oct23;
 
-*decrease in the rate of being lost;
-decr_rate_lost_year_i = 0;
+	*decrease in the rate of being lost;
+	decr_rate_lost_year_i = 0;
 
-*decrease in the rate of being lost whilst on ART;
-decr_rate_lost_art_year_i = 0; 
+	*decrease in the rate of being lost whilst on ART;
+	decr_rate_lost_art_year_i = 0; 
 
-*increase in the rate of return;
-incr_rate_return_year_i = 0 ;
+	*increase in the rate of return;
+	incr_rate_return_year_i = 0 ;
 
-*increase in the rate of restarting ART;
-incr_rate_restart_year_i = 0;
+	*increase in the rate of restarting ART;
+	incr_rate_restart_year_i = 0;
 
-*increase in the rate of ART initiation;
-incr_rate_init_year_i = 0 ;
+	*increase in the rate of ART initiation;
+	incr_rate_init_year_i = 0 ;
 
-*increase in adherence;
-incr_adh_year_i = 0;
+	*increase in adherence;
+	incr_adh_year_i = 0;
 
-*decrease in the rate of interruption by choice;
-decr_rate_int_choice_year_i = 0 ;
+	*decrease in the rate of interruption by choice;
+	decr_rate_int_choice_year_i = 0 ;
 
-*increase in the the probability of a VL measure being done;
-incr_prob_vl_meas_done_year_i = 0;  
+	*increase in the the probability of a VL measure being done;
+	incr_prob_vl_meas_done_year_i = 0;  
 
-* poc viral load monitoring;
-poc_vl_monitoring_i = 0 ;										 
+	* poc viral load monitoring;
+	poc_vl_monitoring_i = 0 ;						* QUERY how does this work with MIHPSA option 34? JAS Oct23;				 
 
-*ART monitoring drug levels;
-art_mon_drug_levels_year_i = 0;
+	*ART monitoring drug levels;
+	art_mon_drug_levels_year_i = 0;
 
-*increase in the probabilty of switching lines;
-incr_pr_switch_line_year_i = 0 ;
+	*increase in the probabilty of switching lines;
+	incr_pr_switch_line_year_i = 0 ;
 
-*increase in test targeting;
-incr_test_targeting_year_i = 0;
+	*increase in test targeting;
+	incr_test_targeting_year_i = 0;
 
-*switching regimens;
-reg_option_switch_year_i = 0;
+	*switching regimens;
+	reg_option_switch_year_i = 0;
 
-*tenofovir is taf, rather than tdf as it is by default;
-ten_is_taf_year_i = 0; *coded within core (not below options code);
+	*tenofovir is taf, rather than tdf as it is by default;
+	ten_is_taf_year_i = 0; *coded within core (not below options code);
 
-*increase in rates of circumcision;
-circ_inc_rate_year_i = 0; *variations coded in circumcision section;
+	*increase in rates of circumcision;
+	if turn_off_prevention ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
 
-*increase in condom use;
-condom_incr_year_i = 0; *coded within core (not below options code);
+	*increase in condom use;
+	if turn_off_prevention ne 1 then condom_incr_year_i = 0; *coded within core (not below options code);
 
-*population wide tld;
-pop_wide_tld = 0;
-pop_wide_tld_year_i = 0;
+	*population wide tld;
+	pop_wide_tld = 0;
+	pop_wide_tld_year_i = 0;
 
-*covid disruption variables;
-vmmc_disrup_covid = 0 ; 
-condom_disrup_covid = 0; 
-prep_oral_disrup_covid = 0; 	* lapr and dpv-vr - no change as this is before lapr and dpv-vr introduced ;
-testing_disrup_covid = 0; 
-art_init_disrup_covid = 0; 
-vl_adh_switch_disrup_covid = 0; 
-cotrim_disrup_covid = 0; 
-inc_death_rate_aids_disrup_covid = 0; 
-no_art_disrup_covid = 0; 
-art_low_adh_disrup_covid = 0; 
+	*covid disruption variables;
+	vmmc_disrup_covid = 0 ; 
+	condom_disrup_covid = 0; 
+	prep_oral_disrup_covid = 0; 	* lapr and dpv-vr - no change as this is before lapr and dpv-vr introduced ;
+	testing_disrup_covid = 0; 
+	art_init_disrup_covid = 0; 
+	vl_adh_switch_disrup_covid = 0; 
+	cotrim_disrup_covid = 0; 
+	inc_death_rate_aids_disrup_covid = 0; 
+	no_art_disrup_covid = 0; 
+	art_low_adh_disrup_covid = 0; 
 
 
 end;
@@ -2800,7 +2806,7 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
-		if turn_prep_off ne 1 then do;
+		if turn_off_prep ne 1 then do;
 			if prep_any_willing=1 then eff_rate_test_startprep_any=1;
 			eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
 			eff_rate_choose_stop_prep_inj=0.05;
@@ -2821,7 +2827,7 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		eff_sw_higher_int = sw_higher_int;
 		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-		if turn_prep_off ne 1 then do;
+		if turn_off_prep ne 1 then do;
 			eff_rate_test_startprep_any=rate_test_startprep_any;
 			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 			eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;	*due to availability of inj prep;	
@@ -17599,10 +17605,10 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-* testing turn_prep_off;
+* testing turn_off_prep;
 proc print; var
 caldate&j option age gender death
-turn_prep_off
+turn_off_prep
 rate_test_startprep_any eff_rate_test_startprep_any
 prob_prep_oral_b eff_prob_prep_oral_b
 prob_prep_vr_b eff_prob_prep_vr_b
@@ -17615,16 +17621,16 @@ prob_prep_any_restart_choice eff_prob_prep_any_restart_choice
 where serial_no<150 and age ge 15 and death=.;
 run;
 
-/*proc freq; tables caldate&j option */
-/*rate_test_startprep_any eff_rate_test_startprep_any*/
-/*prob_prep_oral_b eff_prob_prep_oral_b*/
-/*prob_prep_inj_b eff_prob_prep_inj_b*/
-/*prob_prep_vr_b eff_prob_prep_vr_b*/
-/*rate_choose_stop_prep_oral eff_rate_choose_stop_prep_oral*/
-/*rate_choose_stop_prep_inj eff_rate_choose_stop_prep_inj*/
-/*rate_choose_stop_prep_vr eff_rate_choose_stop_prep_vr*/
-/*prob_prep_any_restart_choice eff_prob_prep_any_restart_choice*/
-/*; run;*/
+proc freq; tables caldate&j option 
+rate_test_startprep_any eff_rate_test_startprep_any
+prob_prep_oral_b eff_prob_prep_oral_b
+prob_prep_inj_b eff_prob_prep_inj_b
+prob_prep_vr_b eff_prob_prep_vr_b
+rate_choose_stop_prep_oral eff_rate_choose_stop_prep_oral
+rate_choose_stop_prep_inj eff_rate_choose_stop_prep_inj
+rate_choose_stop_prep_vr eff_rate_choose_stop_prep_vr
+prob_prep_any_restart_choice eff_prob_prep_any_restart_choice
+; run;
 
 
 * testing prep options;
