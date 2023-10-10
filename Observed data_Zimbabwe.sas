@@ -54,32 +54,33 @@
 *******************************************************************************************
 ************************************     CONTENT   ************************************
 *******************************************************************************************
-1.  Population...................................Line 78
-2.  Fertility....................................Line 343
-3.  Mortality....................................Line 439
-4.  Prevalence...................................Line 615
-5.  Incidence....................................Line 1027
-6.  Number living with HIV ......................Line 1179
-7.  Sexual behaviour.............................Line 1239
-8.  Testing......................................Line 1426
+1.  Population...................................Line 85
+2.  Fertility....................................Line 342
+3.  Mortality....................................Line 447
+4.  Prevalence...................................Line 625
+5.  Incidence....................................Line 1037
+6.  Number living with HIV ......................Line 1190
+7.  Sexual behaviour.............................Line 1250
+8.  Testing......................................Line 1430
 	8a. % ever tested for HIV and tested in the last year in the general population ...Line 1432
     8b. Number of HIV tests performed & positivity rate in the general population .....Line 1550
     8c. Diagnosed with HIV in the general population...................................Line 1750
     8d. Testing in female sex workers..................................................Line 1890
     8e. Testing in Pregnant women......................................................Line 1854
     8f. PMTCT..........................................................................Line 1966
-9.  Linkage from testing to ART Uptake...........Line 
-10. On ART: In need, started, on ART.............Line 
-11. Median CD4 at diagnosis and ART initiation...Line 2388
-12. Virological outcomes on 1st line.............Line 2447
-13. Retention on ART.............................Line 2557
-14. Resistance...................................Line 2725
-15. Male circumcision............................Line 2850
-16. Packages of HIV combination prevention services for key populations ...............Line 2950
+9.  Linkage from testing to ART Uptake...........Line 2060
+10. On ART: In need, started, on ART.............Line 2093
+11. Median CD4 at diagnosis and ART initiation...Line 2462
+12. Virological outcomes on 1st line.............Line 2523
+13. Retention on ART.............................Line 2640
+14. Resistance...................................Line 2807
+15. Male circumcision............................Line 2875
+16. Packages of HIV combination prevention services for key populations ...............Line 3007
 17. PrEP.........................................Line 2949
 18. Structural intervention and social enablers..Line 2919
 19. Sexually transmitted infections..............Line 2929
 20. Tubercolosis.................................Line 2939
+
 
 *******************************************************************************************
 *********************************     1. Population    ************************************
@@ -109,16 +110,6 @@ if cald=2012.5 then do;
 	o_pop_1549m_Zi_cens	=3226126;
 	o_pop_1549w_Zi_cens	=3291432;
 end;
-
-*Compare to:
-- s_alive1549_w  
-- s_alive1549_m  
-t_alive1549_
-t_alive1565_
-- s_age_1549
-t_alive1565m_  t_alive1565w_
-t_ageg1m  t_ageg6m
-  t_ageg1w  t_ageg6w;
 
 *Source: "Zimbabwe data.xls" sent by David Wilson;
 if cald=2002.5 then do;
@@ -314,7 +305,7 @@ if cald=2011.5 then do;
 end;
 
 *Source: email from Debra tenBrink on 22/12/2021 reporting as source 2016 Respondent Driven Sampling Survey;
-if cald=2016.5 then o_p_fsw_1549w_rdss=0.012;
+if cald=2016.5 then o_p_fsw_1549w_rds=0.012;
 *In Goals 1.2% of women 15-49 are FSW based on 45,000 FSW from UNAIDS Key Population Atlas and a 15-49 female population of 3,634,000 from World Population Prospects 2019;
 
 
@@ -343,6 +334,7 @@ if cald=2013.75 then do;
 	o_p_3039_fsw_rds= 0.360; o_p_3039_fsw_ll_rds= 0.286; o_p_3039_fsw_ul_rds= 0.417;
 	o_p_ab40_fsw_rds= 0.151; o_p_ab40_fsw_ll_rds= 0.090; o_p_ab40_fsw_ul_rds= 0.198;
 end;
+
 
 
 
@@ -434,7 +426,6 @@ if cald=2022.5 then o_s_exppregn_MoH=508952;*VCMar2023;
 ***Number of pregnant women;
 if cald=2011.5 then o_s_pregnant_MoH=412122;
 if cald=2013.5 then o_s_pregnant_WHO=398474;
-if cald=2016.5 then o_s_pregnant_Mhangara=433914; *expected;
 
 *Source: Census 2012 - Fertility rates by age, Page 111;
 if cald=2012 then do;
@@ -625,6 +616,8 @@ if cald=2016.5 then do;o_r_aidsdeath_Zim_GARPR=0.00155;o_ll_r_aidsdeath_Zim_GARP
 if cald=2017.5 then do;o_r_aidsdeath_Zim_GARPR=0.00152;o_ll_r_aidsdeath_Zim_GARPR=0.00122;o_ul_r_aidsdeath_Zim_GARPR=0.00185;end;
 if cald=2018.5 then do;o_r_aidsdeath_Zim_GARPR=0.00140;o_ll_r_aidsdeath_Zim_GARPR=0.00115;o_ul_r_aidsdeath_Zim_GARPR=0.00165;end;
 if cald=2019.5 then do;o_r_aidsdeath_Zim_GARPR=0.001267;o_ll_r_aidsdeath_Zim_GARPR=0.00105;o_ul_r_aidsdeath_Zim_GARPR=0.00155;end;
+
+
 
 
 
@@ -1021,8 +1014,6 @@ end;
 
 
 
-
-
 ***LBM Feb 2017;
 ***Prevalence stratified by age and duration of FSW;
 *Source: Draft Paper  - "How can programmes better support female sex workers to avoid HIV infection in Zimbabwe" (Cowen 2017)? ;
@@ -1037,6 +1028,8 @@ end;
 if cald=2013.5 then do;
 	o_prev_1824fsw_rds=0.39;		o_prev_2529fsw_rds=0.62;		o_prev_3039fsw_rds=0.76;		o_prev_ov40fsw_rds=0.78;
 end;
+
+
 
 
 
@@ -1188,6 +1181,7 @@ end;
 if cald=2011.5 then o_HIVIncid_fsw=0.10*100;
 
 *Sisters with a Voice Programme cited by Global AIDS Response Progress Report 2015 also says around 10% but year not indicated;
+
 
 
 
@@ -1963,9 +1957,9 @@ end;
 
 ** Source for all of the following: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
 *# of women who were tested for the first time in ANC (it does not includes those tested for the first time at delivery);
-if cald=2022.5 then o_n_firsttested_anc =411830;
+if cald=2022.5 then o_n_firsttested_anc =411830;*Probably it means teatsed for the first time during the ANC period;
 *# test done in ANC;
-if cald=2022.5 then o_n_tests_anc =411830+150337;
+if cald=2022.5 then o_n_tests_anc =411830+150337; *This is higher than the number of live births;
 *# Women tested for the first time in Labour and Delivery;
 if cald=2022.5 then o_n_firsttested_labdel =6864;
 *# Women tested during Labour and Delivery;
@@ -2523,6 +2517,8 @@ if cald=2005 then o_medcd4_artinit=91;
 
 
 
+
+
 *******************************************************************************************
 *********************     12. Virological outcomes on 1st line     ************************
 *******************************************************************************************
@@ -2635,6 +2631,7 @@ if cald=2020.5 then o_p_vll1000_6mart_garcpr=0.889;
 ***Virological rebound
 ***Virological failure
 *Currently no data but check old observed file to see what % to look for;
+
 
 
 
@@ -2801,7 +2798,6 @@ if cald=2008.5 then o_p_lost_12m_art_WHORes=0.017;
 *Source: Antiretroviral therapy outcomes among adolescents and youth in rural Zimbabwe, Bygrave 2012, Page 3;
 *Definition of lost to follow-up is >90 days late since end of last prescription;
 if cald=2007 then do; o_ratelfu_art_1924_msfb=0.168; o_ratelfu_art_1924_ll_msfb=0.116; o_ratelfu_art_1924_ul_msfb=0.243; end;
-
 
 
 
@@ -2995,6 +2991,7 @@ if cald=2016   then o_p_circ_15pl_DHIS2_z=0.143;
 
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
 		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+*The following have been revised as with discussion with Getrude the hope is to achieve 80% by 2040;
 if cald=2018.75   then o_p_circ_1549m_NSP=0.43;
 if cald=2020.75   then target_p_circ_1549m_NSP=0.43;
 if cald=2021.75   then target_p_circ_1549m_NSP=0.50;

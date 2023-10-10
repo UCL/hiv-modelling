@@ -13,7 +13,7 @@ n_tested_w_sympt n_tested_m_sympt
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 data b;
-set a.l_base_02_10_2023;
+set a.l_base_06_10_2023;
 
 
 p_onart_vl1000_all = .;
@@ -75,7 +75,7 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 105  ;*out of 1000;*out of 860;
+%let nfit = 102  ;*out of 1000;*out of 860;
 %let year_end = 2072.5;
 run;
 /*proc freq data=b;table cald;run;*/
@@ -83,7 +83,8 @@ proc sort;by cald option ;run;
 
 *INCLUDE ONLY STOCK VARIABLE AND VARIABLES THAT WE WANT TO GRAPH;
 %let var =  
-n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_sw_1564_	prev_sti_sw
+n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive0_
+n_sw_1564_	prev_sti_sw
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
@@ -216,7 +217,7 @@ g0_79  g0_80  g0_81  g0_82  g0_83  g0_84  g0_85  g0_86  g0_87  g0_88  g0_89  g0_
 g0_105 g0_106 g0_107 g0_108 g0_109 g0_110 g0_111 g0_112 g0_113 g0_114 g0_115 g0_116 g0_117 g0_118 g0_119 g0_120 g0_121 g0_122 g0_123 g0_124 g0_125 g0_126 g0_127 g0_128 g0_129 g0_130 
 g0_131 g0_132 g0_133 g0_134 g0_135 g0_136 g0_137 g0_138 g0_139 g0_140 g0_141 g0_142 g0_143 g0_144 g0_145 g0_146 g0_147 g0_148 g0_149 g0_150 g0_151 g0_152 g0_153 g0_154 g0_155 g0_156
 g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182
-g0_183 g0_184 /*g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
+g0_183 g0_184 g0_185 /*g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
 g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234
 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 g0_251 g0_252 
 */
@@ -263,7 +264,7 @@ proc contents data=a.d;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V17_20231002_105sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20231006_102sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
@@ -292,10 +293,14 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by  2500000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_alive_1524m_0 = "Baseline (median) - 15-24 M";
 label p50_n_alive_2549m_0 = "Baseline (median) - 25-49 M";
+label o_pop_1524m_Zi_CIA = "CIA - Men 15-24";
+label o_pop_2544m_Zi_CIA = "CIA - Men 25-54";
 series  x=cald y=p50_n_alive_1524m_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_alive_1524m_0 	upper=p95_n_alive_1524m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_alive_2549m_0/	lineattrs = (color=lightblue thickness = 2);
 band    x=cald lower=p5_n_alive_2549m_0 	upper=p95_n_alive_2549m_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+scatter x=cald y=o_pop_1524m_Zi_CIA / markerattrs = (symbol=triangle color=blue size = 10);
+scatter x=cald y=o_pop_2554m_Zi_CIA / markerattrs = (symbol=triangle color=lightblue size = 10);
 run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive by age in women";
@@ -303,11 +308,14 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by  2500000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_alive_1524w_0 = "Baseline (median) - 15-24 W";
 label p50_n_alive_2549w_0 = "Baseline (median) - 25-49 W";
+label o_pop_1524w_Zi_CIA = "CIA - Women 15-24";
+label o_pop_2544w_Zi_CIA = "CIA - Women 25-54";
 series  x=cald y=p50_n_alive_1524w_0/	lineattrs = (color=darkorange thickness = 2);
 band    x=cald lower=p5_n_alive_1524w_0 	upper=p95_n_alive_1524w_0  / transparency=0.9 fillattrs = (color=darkorange) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_alive_2549w_0/	lineattrs = (color=orange thickness = 2);
 band    x=cald lower=p5_n_alive_2549w_0 	upper=p95_n_alive_2549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
-
+scatter x=cald y=o_pop_1524w_Zi_CIA / markerattrs = (symbol=triangle color=darkorange size = 10);
+scatter x=cald y=o_pop_2554w_Zi_CIA / markerattrs = (symbol=triangle color=orange size = 10);
 run;quit;
 /*
 proc sgplot data=d; 
@@ -434,10 +442,13 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "Number of live births";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1400000 by 200000) valueattrs=(size=10);*900000 if stopping in 2023;
-label p50_n_birth_0 = "Option 0 (median) ";
+label p50_n_birth_0 = "Option 0 (median) - based on pregnancies";
+label p50_n_alive0__0 = "Option 0 (median) - based on pregnancies";
 label o_s_exppregn_MoH = "Number of expected pregnancies";
 series  x=cald y=p50_n_birth_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_birth_0 	upper=p95_n_birth_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+series  x=cald y=p50_n_alive0__0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_alive0__0 	upper=p95_n_alive0__0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Option 0 90% range";
 scatter x=cald y=o_s_exppregn_MoH / markerattrs = (symbol=square color=orange size = 10);
 run;
 quit;
@@ -455,7 +466,31 @@ run;
 quit;
 
 *To understand why it is increasing the Number women living with HIV giving birth;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number living with HIV by age - Female";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
+label p50_n_hiv1524w_0 = "Baseline (median) - 15-24";
+label p50_n_hiv2549w_0 = "Baseline (median) - 25-49";
+label o_livingHIV_ov15w = "UNAIDS - Women 15+";
+series  x=cald y=p50_n_hiv1524w_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_hiv1524w_0 	upper=p95_n_hiv1524w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_hiv2549w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_n_hiv2549w_0 	upper=p95_n_hiv2549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+scatter x=cald y=o_livingHIV_ov15w / markerattrs = (symbol=square color=green size = 10);
+run;quit;
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number living with HIV by age - Male";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
+label p50_n_hiv1524m_0 = "Baseline (median) - 15-24";
+label p50_n_hiv2549m_0 = "Baseline (median) - 25-49";
+series  x=cald y=p50_n_hiv1524m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_hiv1524m_0 	upper=p95_n_hiv1524m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_hiv2549m_0/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_hiv2549m_0 	upper=p95_n_hiv2549m_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of pregnant women attending ANC";
@@ -475,12 +510,12 @@ Title    height=1.5 justify=center "Annual number of tests conducted in ANC";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1400000 by 200000) valueattrs=(size=10);
 label p50_n_tested_anc_0  = "Baseline (median) - 15+";
-label o_n_tests_anc = "Number of women tested in ANC";*It includes the following;
-*label o_n_firsttested_anc = "Number of women tested for the first time in ANC";
+*label o_n_tests_anc = "Number of women tested in ANC";*It includes the following;
+label o_n_firsttested_anc = "Number of women tested at least once in ANC";
 series  x=cald y=p50_n_tested_anc_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_tested_anc_0 	upper=p95_n_tested_anc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 *scatter x=cald y=o_n_tests_anc / markerattrs = (symbol=square color=orange size = 10); *This is higher than the number of live births;
-*scatter x=cald y=o_n_firsttested_anc / markerattrs = (symbol=square color=blue size = 10);
+scatter x=cald y=o_n_firsttested_anc / markerattrs = (symbol=square color=blue size = 10);
 run;quit;
 
 *# of women who were tested for the first time in ANC: o_n_firsttested_an";
@@ -622,9 +657,11 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  6000000 by 1000000) valueattrs=(size=10);*5000000 if stopping in 2023;
 label p50_n_tested_0  = "Baseline (median) - 15+";
 label o_s_test_15ov_py_z = "CAL - Number of tests performed 15+";
+label o_s_tested_1549_py_garcpr = "GARCPR - Number tested 15+";
 series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 scatter  x=cald y=o_s_test_15ov_py_z/	markerattrs = (color=black ) ;
+scatter  x=cald y=o_s_tested_1549_py_garcpr/	markerattrs = (color=blue ) ;
 run;quit;
 
 proc sgplot data=d; 
@@ -984,31 +1021,6 @@ run;quit;
 
 *Number living with HIV;
 
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Number living with HIV by age - Male";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
-label p50_n_hiv1524m_0 = "Baseline (median) - 15-24";
-label p50_n_hiv2549m_0 = "Baseline (median) - 25-49";
-series  x=cald y=p50_n_hiv1524m_0/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_hiv1524m_0 	upper=p95_n_hiv1524m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_hiv2549m_0/	lineattrs = (color=lightblue thickness = 2);
-band    x=cald lower=p5_n_hiv2549m_0 	upper=p95_n_hiv2549m_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
-
-run;quit;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Number living with HIV by age - Female";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
-label p50_n_hiv1524w_0 = "Baseline (median) - 15-24";
-label p50_n_hiv2549w_0 = "Baseline (median) - 25-49";
-series  x=cald y=p50_n_hiv1524w_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_hiv1524w_0 	upper=p95_n_hiv1524w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_hiv2549w_0/	lineattrs = (color=orange thickness = 2);
-band    x=cald lower=p5_n_hiv2549w_0 	upper=p95_n_hiv2549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
-
-run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
