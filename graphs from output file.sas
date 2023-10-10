@@ -12,6 +12,7 @@ run;
 n_tested_w_sympt n_tested_m_sympt 
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
+proc freq data=a.l_base_06_10_2023;table n_alive0_;run;
 data b;
 set a.l_base_06_10_2023;
 
@@ -90,7 +91,7 @@ n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
 n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_ p_newp_ge1_ p_newp_ge5_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
-p_mcirc_1549m	n_new_vmmc1549m 		
+p_mcirc_1549m	n_new_vmmc1549m 	n_new_vmmc1049m	p_vmmc_1549m
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  p_w1524newpge1_onprep prop_1564_onprep 	
 n_prep n_prep_1524w n_prep_ever
 n_init_prep_oral_1524w	n_init_prep_oral_sw		n_init_prep_oral_sdc	
@@ -217,7 +218,7 @@ g0_79  g0_80  g0_81  g0_82  g0_83  g0_84  g0_85  g0_86  g0_87  g0_88  g0_89  g0_
 g0_105 g0_106 g0_107 g0_108 g0_109 g0_110 g0_111 g0_112 g0_113 g0_114 g0_115 g0_116 g0_117 g0_118 g0_119 g0_120 g0_121 g0_122 g0_123 g0_124 g0_125 g0_126 g0_127 g0_128 g0_129 g0_130 
 g0_131 g0_132 g0_133 g0_134 g0_135 g0_136 g0_137 g0_138 g0_139 g0_140 g0_141 g0_142 g0_143 g0_144 g0_145 g0_146 g0_147 g0_148 g0_149 g0_150 g0_151 g0_152 g0_153 g0_154 g0_155 g0_156
 g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182
-g0_183 g0_184 g0_185 /*g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
+g0_183 g0_184 g0_185 g0_186 g0_187 /*g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
 g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234
 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 g0_251 g0_252 
 */
@@ -443,7 +444,7 @@ Title    height=1.5 justify=center "Number of live births";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1400000 by 200000) valueattrs=(size=10);*900000 if stopping in 2023;
 label p50_n_birth_0 = "Option 0 (median) - based on pregnancies";
-label p50_n_alive0__0 = "Option 0 (median) - based on pregnancies";
+label p50_n_alive0__0 = "Option 0 (median) - based on pop structure";
 label o_s_exppregn_MoH = "Number of expected pregnancies";
 series  x=cald y=p50_n_birth_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_birth_0 	upper=p95_n_birth_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
@@ -750,29 +751,48 @@ run;quit;
 
 *!!!!!Note that the observed data are 15+;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of men age 15-49 circumcised (Data 15+)";
+Title    height=1.5 justify=center "Proportion of men age 15-49 circumcised";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_mcirc_1549m_0 = "Option 0 (median)";
 *label p50_p_mcirc_0 = "Option 0 (median) - 15+?";
-label o_p_circ_15pl_DHIS2_z= "CAL - DHIS2 men 15+";
+label o_p_circ_15pl_DHS_z= "CAL - DHIS2 men 15+";
+label o_p_circ_1549_zimphia= "ZIMPHIA - men 15-49";
+label o_p_tradcirc_1549_zimphia= "ZIMPHIA traditional circumcision - men 15-49";
+
 series  x=cald y=p50_p_mcirc_1549m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 *series  x=cald y=p50_p_mcirc_0/	lineattrs = (color=black thickness = 2);
 *band    x=cald lower=p5_p_mcirc_0 	upper=p95_p_mcirc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-scatter  x=cald y=o_p_circ_15pl_DHIS2_z /	markerattrs = (color=blue);
+scatter  x=cald y=o_p_circ_15pl_DHS_z /	markerattrs = (color=blue);
+scatter  x=cald y=o_p_circ_1549_zimphia /	markerattrs = (color=green);
+scatter  x=cald y=o_p_tradcirc_15ov_zimphia /	markerattrs = (color=red);
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of men age 15-49 circumcised using VMMC";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_p_vmmc_1549m_0 = "Option 0 (median)";
+label o_p_medcirc_1549_zimphia= "ZIMPHIA VMMC - men 15-49";
+series  x=cald y=p50_p_vmmc_1549m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_vmmc_1549m_0 	upper=p95_p_vmmc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter  x=cald y=o_p_medcirc_1549_zimphia /	markerattrs = (color=red);
 run;quit;
 
  
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Annual # new circumcisions";
+Title    height=1.5 justify=center "Annual # VMMC";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 50000) valueattrs=(size=10);
-label p50_n_new_vmmc1549m_0 = "Option 0 (median) ";
-label o_s_test_15ov_py_z = "CAL - Annual number of new circumcisions 10-49";
-series  x=cald y=p50_n_new_vmmc1549m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_new_vmmc1549m_0 	upper=p95_n_new_vmmc1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-scatter  x=cald y=o_s_new_mcirc/	markerattrs = (color=blue ) ;
+label p50_n_new_vmmc1549m_0 = "Option 0 (median) 15-49";
+label p50_n_new_vmmc1049m_0 = "Option 0 (median) 10-49";
+label o_s_new_mcirc = "CAL - Annual number of new circumcisions 10-49";
+series  x=cald y=p50_n_new_vmmc1049m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_new_vmmc1049m_0 	upper=p95_n_new_vmmc1049m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_new_vmmc1549m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_new_vmmc1549m_0 	upper=p95_n_new_vmmc1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+scatter  x=cald y=o_s_new_mcirc/	markerattrs = (color=blakc ) ;
 run;quit;
 
 
@@ -780,17 +800,18 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "Proportion of current female sex workers (FSW)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15 by 0.025) valueattrs=(size=10);
-label p50_prop_w_1549_sw_0 = "Option 0 (median) ";
+label p50_prop_w_1549_sw_0 = "Option 0 (median) - 15-49 ";
 label o_p_fsw_1849_Zim_garpr = "GARPR - current FSW 18-49";
 label o_p_fsw_1849_Bulaw_garpr = "GARPR - current FSW 18-49 - Bulaw";
 label o_p_fsw_1849_Harare_garpr = "GARPR - current FSW 18-49 - Harare";
+label o_p_fsw_1549w_rds = "RDS - current FSW 15-49";
 series  x=cald y=p50_prop_w_1549_sw_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_w_1549_sw_0 	upper=p95_prop_w_1549_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 scatter  x=cald y=o_p_fsw_1849_Zim_garpr /	markerattrs = (color=orange);
 scatter  x=cald y=o_p_fsw_1849_Bulaw_garpr /	markerattrs = (color=red);
-scatter  x=cald y=o_p_fsw_1849_Harare_garpr /	markerattrs = (color=pink);
+scatter  x=cald y=o_p_fsw_1549w_rds /	markerattrs = (color=pink);
 run;quit;
-proc print data=d;var p50_prop_w_1549_sw_0 p5_prop_w_1549_sw_0 p95_prop_w_1549_sw_0; where cald in (2022.5 2040.5);run;
+proc print data=d;var cald p50_prop_w_1549_sw_0 p5_prop_w_1549_sw_0 p95_prop_w_1549_sw_0; where cald in (2022.5 2040.5);run;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of ever female sex workers (FSW)";

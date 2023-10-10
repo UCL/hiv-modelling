@@ -6,7 +6,7 @@ libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\ou
 libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v18_2023Oct06_out";
 
 data a.base_06_10_2023;   set b.out:;run;
-
+proc freq data=a.base_06_10_2023;table s_new_vmmc1014m;run;
 *Investigating why p_newp_ge1 is going down;
 /*
 proc freq data=a.base_09_08_2023; table ych2_risk_beh_newp;run;
@@ -419,7 +419,7 @@ so the one above is the annual number of tests conducted in ANC;
 * p_vmmc_4049m;					p_vmmc_4049m = s_vmmc4049m / (s_ageg4044m + s_ageg4549m) ;
 * p_vmmc_5064m;					p_vmmc_5064m = s_vmmc5064m / (s_ageg5054m + s_ageg5559m + s_ageg6064m) ;
 * p_vmmc_1549m;					p_vmmc_1549m = s_vmmc1549m / s_ageg1549m ;
-
+* n_new_vmmc1049m;				n_new_vmmc1049m = (s_new_vmmc1014m+s_new_vmmc1519m+s_new_vmmc2024m+s_new_vmmc2529m+s_new_vmmc3034m+s_new_vmmc3539m+s_new_vmmc4044m+s_new_vmmc4549m) * &sf * 4;
 * n_new_vmmc1549m;				n_new_vmmc1549m = (s_new_vmmc1519m+s_new_vmmc2024m+s_new_vmmc2529m+s_new_vmmc3034m+s_new_vmmc3539m+s_new_vmmc4044m+s_new_vmmc4549m) * &sf * 4;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
@@ -1066,7 +1066,7 @@ n_new_inf2549w = (s_primary1549w - s_primary1519w - s_primary2024w) * &sf * 4;
 
 keep run option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 
 n_hiv n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
-n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive0_
+n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive0_ 
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050 n_not_on_art_cd450200 n_not_on_art_cd4200350 n_not_on_art_cd4350500 n_not_on_art_cd4ge500 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
@@ -1075,7 +1075,7 @@ p_newp_sw  n_tested_m  n_tested_w p_tested_past_year_1549m  p_tested_past_year_1
 p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_vm p_vm_ly_onart n_pcp_p p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m
 p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m	
-n_new_vmmc1549m 
+n_new_vmmc1549m n_new_vmmc1049m
 prop_w_1549_sw  prop_w_1564_sw	prop_w_ever_sw prop_sw_program_visit
 prop_sw_hiv prop_w_1524_onprep p_w1524newpge1_onprep prop_1564_hivneg_onprep prop_sw_onprep p_prep_adhg80
 prevalence1549m prevalence1549w prevalence1549 
@@ -1252,6 +1252,7 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_06_10_2023; set y;  run;
+proc freq data=a.l_base_06_10_2023;table n_alive0_;run;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w

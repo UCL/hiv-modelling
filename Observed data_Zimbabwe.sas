@@ -2985,9 +2985,25 @@ end;
 
 ***Proportion of men aged 15+ who report that they have been circumcised (household surveys) - MIHPSA optional;
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
-if cald=2006   then o_p_circ_15pl_DHIS2_z=0.105;
-if cald=2010.5 then o_p_circ_15pl_DHIS2_z=0.091;
-if cald=2016   then o_p_circ_15pl_DHIS2_z=0.143;
+if cald=2006   then o_p_circ_15pl_DHS_z=0.105;
+if cald=2010.5 then o_p_circ_15pl_DHS_z=0.091;
+if cald=2016   then do;
+	o_p_circ_1549_zimphia=0.143;
+	o_p_medcirc_1549_zimphia=0.124;
+	o_p_tradcirc_1549_zimphia=0.019;
+end;
+
+if cald=2020 then do;
+	o_p_circ_15pl_zimphia=0.231;
+	o_p_medcirc_15pl_zimphia=0.192;
+	o_p_tradcirc_15pl_zimphia=0.039;
+
+	o_p_circ_1549_zimphia=0.249;
+	o_p_medcirc_1549_zimphia=0.218;
+	o_p_tradcirc_1549_zimphia=0.032;
+
+	o_p_medcirc_1524_zimphia=0.344;
+end;
 
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
 		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
