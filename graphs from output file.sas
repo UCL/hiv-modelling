@@ -13,7 +13,7 @@ proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthes
 ods html close;
 
 data b;
-set a.f_i_e_l;
+set a.f_i_f_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -26,7 +26,7 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 
-%let single_var = cost               ;
+%let single_var = n_tested               ;
 
 
 * if prep_dependent_prev_vg1000 = 0; 
@@ -44,7 +44,7 @@ prop_w_vlg1  prop_w_vlg2  prop_w_vlg3  prop_w_vlg4  prop_w_vlg5 prop_w_vlg6
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 630   ;
+%let nfit = 900   ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -282,7 +282,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d ; 
@@ -304,6 +304,8 @@ label p50_n_tested_2 = "option_2";
 run;quit;
 
 ods html close;
+
+/*
 
 
 ods html;
@@ -842,7 +844,6 @@ ods html close;
 
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_onart";
@@ -864,7 +865,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -887,7 +888,7 @@ run;quit;
 
 ods html close;
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
