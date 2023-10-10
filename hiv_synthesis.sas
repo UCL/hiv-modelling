@@ -2098,7 +2098,10 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 * INTERVENTIONS / CHANGES in year_interv ;
 
-turn_off_prep=0;	* JAS Sep23;
+turn_off_testing = 0;			* JAS Oct23;
+turn_off_prevention=0;
+turn_off_prep=0;
+turn_off_cd4_vl_monitoring=0;
 
 if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
@@ -2117,7 +2120,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do;
 	*MINIMAL;
-		mihpsa_minimal = 1;		* Marker to indicate using MIHPSA Minimal scenario; * QUERY NOT CURRENTLY USING THIS ONE ; * JAS Oct23;
+		*mihpsa_minimal = 1;		* Marker to indicate using MIHPSA Minimal scenario; * QUERY NOT CURRENTLY USING THIS ONE ; * JAS Oct23;
 
 		*Testing;
 		turn_off_testing = 1;	* Marker to turn off testing JASOct23;
@@ -2151,9 +2154,9 @@ who may be dead and hence have caldate{t} missing;
 		*Linkage, management, ART Interv;	* QUERY double check can move these to here; *JAS Jul23;
 		*PCP is part of the essential scenario;
 		turn_off_cd4_vl_monitoring = 1;		* marker to turn off CD4 and VL monitoring. JAS Oct23;
-		absence_cd4_year_i = 1;		*If CD4 and VL are both not available clinical monitoring is assumed;
-		absence_vl_year_i = 1; 		*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
-		crag_cd4_l200=0;			*Switch off for screening for Cryptococcal disease;
+		absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
+		absence_vl_year_i = 1; 				*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
+		crag_cd4_l200=0;					*Switch off for screening for Cryptococcal disease;
 		tblam_cd4_l200=0;
 		*VL monitoring is switched off as clinical monitoring is assumed;
 		*POC CD4: not modelled yet?;
@@ -2393,7 +2396,6 @@ else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and turn_off_pr
 
 *It is Zim specific : %sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) - 
 						with this distribution between 0.185 to 0.365 have prep_oral_willing=1;		* To calibrate to Zim oral PrEP uptake 2018-present; 
-* QUERY is the intention to re-sample every time step? does this code fit best here? JAS Jul23;
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
@@ -2414,7 +2416,6 @@ if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr
 
 * highest_prep_pref;
 * does not show people who are not willing to take any PrEP type;
-* QUERY note that Vale is updating this bit - or I will in next PR - could add 0 option if all pref values are below threshold? JAS Jul23;
 * QUERY also double check prep_xxx_willling variables re threshold and for FSW JAS Jul23;
 if 		pref_prep_oral > pref_prep_inj and pref_prep_oral > pref_prep_vr then highest_prep_pref=1;	* 1=preference for oral PrEP;
 else if pref_prep_inj > pref_prep_oral and pref_prep_inj > pref_prep_vr then highest_prep_pref=2;	* 2=preference for injectable PrEP;
@@ -3405,7 +3406,7 @@ if caldate{t} >= &year_interv and condom_incr_year_i = 2 then
 ch_risk_beh_ep = ch_risk_beh_ep2000_+((1-ch_risk_beh_ep2000_)*prop_redattr_sbcc);
 
 
-* MIHPSA PrEP options that cannot go in main options section; * QUERY because they have to come after the testing section? JAS Jul23;
+* MIHPSA PrEP options that cannot go in main options section; 
 *In the essential scenario no one is on PrEP;
 
 *JAS Sep23 comment this option bit out and move into main options section;
