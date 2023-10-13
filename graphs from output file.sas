@@ -13,7 +13,7 @@ proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthes
 ods html close;
 
 data b;
-set a.f_i_f_l;
+set a.f_i_g_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -26,7 +26,7 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 
-%let single_var = n_tested               ;
+%let single_var = incidence1549_               ;
 
 
 * if prep_dependent_prev_vg1000 = 0; 
@@ -282,7 +282,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 ods html;
 proc sgplot data=d ; 
@@ -305,7 +305,7 @@ run;quit;
 
 ods html close;
 
-/*
+
 
 
 ods html;
@@ -384,7 +384,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -407,7 +407,7 @@ run;quit;
 
 ods html close;
 
-
+/*
  
 ods html;
 proc sgplot data=d; 

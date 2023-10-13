@@ -4,7 +4,7 @@
 * libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\";
 * libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\zim_out\";
   libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\f_i_f_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\f_i_h_out\";
 
 
 ods html close;
@@ -329,7 +329,7 @@ sw_art_disadv prep_dependent_prev_vg1000
 
 
 
-data a.f_i_f_l; set y;
+data a.f_i_h_l; set y;
 
 
 
@@ -492,7 +492,7 @@ sw_art_disadv
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data gh; set a.wide_f_i_f;
+data gh; set a.wide_f_i_h;
 merge   wide_outputs  wide_par ;  
 by run;
 
