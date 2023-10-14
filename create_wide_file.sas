@@ -242,6 +242,8 @@ s_hiv = s_hivge15 ;
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
+* n_infected_primary;			n_infected_primary = s_infected_primary * &sf;
+
 * incidence_sw;					incidence_sw = (s_primary_sw * 4 * 100) / s_sw_1549 ; 
 
 * prop_inf_w_sw;				if s_primary1549w > 0 then prop_inf_w_sw = s_primary_sw /	s_primary1549w ;
@@ -296,8 +298,8 @@ dart_cost
 
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
-sw_trans_matrix
-rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl 
+sw_trans_matrix  
+rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl  n_infected_primary
 
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  rred_initial newp_factor 
 fold_tr_newp
@@ -492,13 +494,23 @@ sw_art_disadv
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data gh; set a.wide_f_i_h;
+data a.wide_f_i_h;
 merge   wide_outputs  wide_par ;  
 by run;
+
+
+data gh; set a.wide_f_i_h;
+
 
 r_incidence_23_43 = incidence1549_43_1 / incidence1549_23 ;
 
 r_p_newp_ge1_age1549_23_43 = p_newp_ge1_age1549_43_1 / p_newp_ge1_age1549_23;
+
+
+proc freq; tables incidence1549_23 ; run;
+proc print noobs; var run; where incidence1549_23 < 0.05; run;
+
+
 
 
 ods html;

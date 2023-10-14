@@ -13,7 +13,7 @@ proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthes
 ods html close;
 
 data b;
-set a.f_i_g_l;
+set a.f_i_h_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -26,7 +26,48 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 
-%let single_var = incidence1549_               ;
+%let single_var = n_prep_any           ;
+
+
+* f_i_h remove runs with incidence1549_23 < 0.05;
+if run in ( 3448857
+                                                                                                          16970274
+                                                                                                          70568225
+                                                                                                         175610157
+                                                                                                         267946544
+                                                                                                         300812359
+                                                                                                         301102807
+                                                                                                         343529747
+                                                                                                         419080852
+                                                                                                         436865108
+                                                                                                         490547854
+                                                                                                         491069594
+                                                                                                         498920369
+                                                                                                         542913031
+                                                                                                         594656299
+                                                                                                         597859074
+                                                                                                         634123098
+                                                                                                         702951479
+                                                                                                         704629838
+                                                                                                         732217652
+                                                                                                         738864996
+                                                                                                         778675261
+                                                                                                         786463951
+                                                                                                         788985032
+                                                                                                         812058134
+                                                                                                         868501880
+                                                                                                         902231283
+                                                                                                         979393654
+)
+then delete;
+
+
+/*
+proc freq; tables incidence1549_; where option=0 and cald > 2065;
+proc freq; tables incidence1549_; where option=1 and cald > 2065;
+proc freq; tables incidence1549_; where option=2 and cald > 2065;
+run;
+*/
 
 
 * if prep_dependent_prev_vg1000 = 0; 
@@ -44,7 +85,7 @@ prop_w_vlg1  prop_w_vlg2  prop_w_vlg3  prop_w_vlg4  prop_w_vlg5 prop_w_vlg6
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 900   ;
+%let nfit = 447   ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -384,8 +425,6 @@ run;quit;
 
 ods html close;
 
-*/
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "incidence";
@@ -407,7 +446,30 @@ run;quit;
 
 ods html close;
 
-/*
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "incidence";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.4   by 0.05 ) valueattrs=(size=10);
+
+label p50_incidence1549__0 = "option 0";
+label p50_incidence1549__1 = "option_1";
+label p50_incidence1549__2 = "option_2";
+
+  series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549__1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549__2/	lineattrs = (color=blue  thickness = 4);
+  band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=blue ) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
  
 ods html;
 proc sgplot data=d; 
@@ -475,6 +537,31 @@ ods html close;
 
 
 
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_infected_primary";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000 by 100000 ) valueattrs=(size=10);
+
+label p50_n_infected_primary_0 = "option 0";
+label p50_n_infected_primary_1 = "option_1";
+label p50_n_infected_primary_2 = "option_2";
+
+  series  x=cald y=p50_n_infected_primary_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_n_infected_primary_0 	upper=p95_n_infected_primary_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_n_infected_primary_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_n_infected_primary_1 	upper=p95_n_infected_primary_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_n_infected_primary_2/	lineattrs = (color=red   thickness = 4);
+  band    x=cald lower=p5_n_infected_primary_2 	upper=p95_n_infected_primary_2  / transparency=0.9 fillattrs = (color=red  ) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_vg1000";
@@ -496,6 +583,7 @@ run;quit;
 
 ods html close;
 
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -518,7 +606,7 @@ run;quit;
 
 ods html close;
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
