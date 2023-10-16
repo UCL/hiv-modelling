@@ -3,10 +3,9 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v18_2023Oct06_out";
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v18_2023Oct10_out";
 
-data a.base_06_10_2023;   set b.out:;run;
-proc freq data=a.base_06_10_2023;table s_new_vmmc1014m;run;
+data a.base_10_10_2023;   set b.out:;run;
 *Investigating why p_newp_ge1 is going down;
 /*
 proc freq data=a.base_09_08_2023; table ych2_risk_beh_newp;run;
@@ -20,8 +19,8 @@ proc sort data=a.base_16_06_23; by run; run;
 proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
 ods html close;
 ods listing;
-proc freq data=a.base_06_10_2023; table run;run;
-proc freq data=a.base_06_10_2023; table cald;run;*102 simulations;
+proc freq data=a.base_10_10_2023; table run;run;
+proc freq data=a.base_10_10_2023; table cald;run;*117 simulations;
 
 /*
 proc freq data=a.base_25_05_23;
@@ -33,11 +32,11 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_06_10_2023;
+data g; set  a.base_10_10_2023;
 
 proc sort data=g; 
 by run cald option;run;
-*102 out of 1000;
+*117 out of 1000;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
@@ -1251,8 +1250,8 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_06_10_2023; set y;  run;
-proc freq data=a.l_base_06_10_2023;table n_alive0_;run;
+data a.l_base_10_10_2023; set y;  run;
+
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
