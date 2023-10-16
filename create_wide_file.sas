@@ -6,6 +6,8 @@ libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\ou
 libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v18_2023Oct10_out";
 
 data a.base_10_10_2023;   set b.out:;run;
+proc contents  ata a.base_10_10_2023; 
+proc freq data=a.base_10_10_2023;table s_birth_circ ;run;
 *Investigating why p_newp_ge1 is going down;
 /*
 proc freq data=a.base_09_08_2023; table ych2_risk_beh_newp;run;
@@ -409,6 +411,8 @@ so the one above is the annual number of tests conducted in ANC;
 * p_mcirc_4549m;				p_mcirc_4549m = s_mcirc_4549m / s_ageg4549m ;
 * p_mcirc_5064m;				p_mcirc_5064m = s_mcirc_5064m / (s_ageg5054m + s_ageg5559m + s_ageg6064m) ;
 * p_mcirc_1549m;				p_mcirc_1549m = s_mcirc_1549m / s_ageg1549m ;
+* p_mcirc_1049m;				p_mcirc_1049m = (s_mcirc_1014m + s_mcirc_1549m) / (s_ageg1014m + s_ageg1549m) ;
+
 
 * p_vmmc;						p_vmmc = s_vmmc / s_alive_m ;
 * p_vmmc_1519m;					p_vmmc_1519m = s_vmmc1519m / s_ageg1519m ;
@@ -418,8 +422,11 @@ so the one above is the annual number of tests conducted in ANC;
 * p_vmmc_4049m;					p_vmmc_4049m = s_vmmc4049m / (s_ageg4044m + s_ageg4549m) ;
 * p_vmmc_5064m;					p_vmmc_5064m = s_vmmc5064m / (s_ageg5054m + s_ageg5559m + s_ageg6064m) ;
 * p_vmmc_1549m;					p_vmmc_1549m = s_vmmc1549m / s_ageg1549m ;
+* p_vmmc_1049m;					p_vmmc_1049m = (s_vmmc1014m + s_vmmc1549m) / (s_ageg1014m + s_ageg1549m) ;
+
 * n_new_vmmc1049m;				n_new_vmmc1049m = (s_new_vmmc1014m+s_new_vmmc1519m+s_new_vmmc2024m+s_new_vmmc2529m+s_new_vmmc3034m+s_new_vmmc3539m+s_new_vmmc4044m+s_new_vmmc4549m) * &sf * 4;
 * n_new_vmmc1549m;				n_new_vmmc1549m = (s_new_vmmc1519m+s_new_vmmc2024m+s_new_vmmc2529m+s_new_vmmc3034m+s_new_vmmc3539m+s_new_vmmc4044m+s_new_vmmc4549m) * &sf * 4;
+* n_birth_circ;					n_birth_circ = s_birth_circ * &sf * 4;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw = s_sw_1564 / s_alive1564_w ;
@@ -1072,9 +1079,9 @@ n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_a
 s_alive n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_everpregn_w1524 n_everpregn_hiv_w1524 p_newp_ge1 p_1524_newp_ge1 n_w1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m  n_tested_w p_tested_past_year_1549m  p_tested_past_year_1549w n_pmtct
 p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_vm p_vm_ly_onart n_pcp_p p_onart_cd4_l200
-p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m
-p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m	
-n_new_vmmc1549m n_new_vmmc1049m
+p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m  p_mcirc_1049m 
+p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m p_vmmc_1049m	
+n_new_vmmc1549m n_new_vmmc1049m n_birth_circ
 prop_w_1549_sw  prop_w_1564_sw	prop_w_ever_sw prop_sw_program_visit
 prop_sw_hiv prop_w_1524_onprep p_w1524newpge1_onprep prop_1564_hivneg_onprep prop_sw_onprep p_prep_adhg80
 prevalence1549m prevalence1549w prevalence1549 
