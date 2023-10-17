@@ -2131,6 +2131,11 @@ who may be dead and hence have caldate{t} missing;
 		condom_incr_year_i=2;    		*Switchs off SBCC;
 		circ_inc_rate_year_i = 2;		*No VMMC;
 
+		*Prep;
+		prep_any_strategy=0;
+		date_prep_oral_intro=2100;
+		date_prep_inj_intro=2100;
+		date_prep_vr_intro=2100;
 		eff_rate_test_startprep_any=0;	*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
 		eff_prob_prep_oral_b=0;
 		eff_prob_prep_inj_b=0; 
@@ -2139,12 +2144,6 @@ who may be dead and hence have caldate{t} missing;
 		eff_rate_choose_stop_prep_inj=1;
 		eff_rate_choose_stop_prep_vr=1;
 		eff_prob_prep_any_restart_choice=0;	
-
-		*More PrEP variables are switched off later on;
-		prep_any_strategy=0;
-		date_prep_oral_intro=2100;
-		date_prep_inj_intro=2100;
-		date_prep_vr_intro=2100;
 
 		*Linkage, management, ART Interv;	* QUERY double check can move these to here; *JAS Jul23;
 		*PCP is part of the essential scenario;
@@ -2187,6 +2186,37 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	*PrEP interventions;	*JAS Apr2023 and Oct23;
+
+	* All oral PrEP options;
+	if option in (15 16 17 18) then do;
+		date_prep_oral_intro=&year_interv;
+		if caldate{t}=&year_interv then do;
+			pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;		* From Vales code, this is to match oral PrEP uptake to Zim target MIHPSA JAS Jul23;
+			pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);
+		end;
+	end;
+	* All vaginal ring PrEP options;
+	if option in (19 20 21 22) then do;
+		date_prep_vr_intro=&year_interv;
+		if caldate{t}=&year_interv then do;
+			pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3;			* MIHPSA: can adjust this to match vr PrEP uptake to oral PrEP target JAS Jul23;
+			pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5);	* women only;
+		end;
+	end;
+	* All injectable PrEP options;
+	if option in (23 24 25 26) then do;
+		date_prep_inj_intro=&year_interv;
+		if caldate{t}=&year_interv then do;
+			pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match inj PrEP uptake to oral PrEP target JAS Jul23;
+			pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);
+		end;
+	end;
+	* QUERY may need to scale pref_prep_xxx_beta_s1 differently for other PrEP options JAS Jul23;
+	
+	if option in (15 19 23) then prep_any_strategy=3;		* All PrEP options for AGYW;
+	if option in (16 20 24) then prep_any_strategy=2;		* All PrEP options for FSW;
+	if option in (17 21 25) then prep_any_strategy=15;		* All PrEP options for SDC;
+	if option in (18 22 26) then prep_any_strategy=16;		* All PrEP options for PLW;
 
 	* Oral PrEP; 	
 	*option 15: Oral TDF/FTC PrEP for AGWY;
@@ -2287,37 +2317,6 @@ who may be dead and hence have caldate{t} missing;
 		eff_rate_choose_stop_prep_inj=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 	end;	
-
-	* All oral PrEP options;
-	if option in (15 16 17 18) then do;
-		date_prep_oral_intro=&year_interv;
-		if caldate{t}=&year_interv then do;
-			pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;		* From Vales code, this is to match oral PrEP uptake to Zim target MIHPSA JAS Jul23;
-			pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);
-		end;
-	end;
-	* All vaginal ring PrEP options;
-	if option in (19 20 21 22) then do;
-		date_prep_vr_intro=&year_interv;
-		if caldate{t}=&year_interv then do;
-			pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3;			* MIHPSA: can adjust this to match vr PrEP uptake to oral PrEP target JAS Jul23;
-			pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5);	* women only;
-		end;
-	end;
-	* All injectable PrEP options;
-	if option in (23 24 25 26) then do;
-		date_prep_inj_intro=&year_interv;
-		if caldate{t}=&year_interv then do;
-			pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match inj PrEP uptake to oral PrEP target JAS Jul23;
-			pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);
-		end;
-	end;
-	* QUERY may need to scale pref_prep_xxx_beta_s1 differently for other PrEP options JAS Jul23;
-	
-	if option in (15 19 23) then prep_any_strategy=3;		* All PrEP options for AGYW;
-	if option in (16 20 24) then prep_any_strategy=2;		* All PrEP options for FSW;
-	if option in (17 21 25) then prep_any_strategy=15;		* All PrEP options for SDC;
-	if option in (18 22 26) then prep_any_strategy=16;		* All PrEP options for PLW;
 
 	
 	*Linkage, management, ART Interv;
