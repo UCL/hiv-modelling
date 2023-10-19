@@ -1,3 +1,6 @@
+* These parameters are up to date at 17th Oct 2023;
+* Note that rate_anc_inc has been updated from rate_testanc_inc (used in some other SA analyses) to be consistent with the current core program;
+* JAS Oct23;
 
 ****% on ART of those diag too high***
 
@@ -6,6 +9,9 @@
 ******************     SOUTH AFRICA SPECIFIC PARAMETERS    ******************
 /***************************************************************************/
 
+* country;					country='South Africa';
+* caldate1;					caldate1 = 1984;		*core: 1989;
+* caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 * inc_cat; 					inc_cat = 3;
@@ -30,6 +36,10 @@ newp_seed = 10 ;
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
 
+
+* INTRODUCTION OF HIV;
+* startyr;					startyr = 1993 + 0.25;
+							* ts1m;	/* startyr = 1993 + 1/12; */
 
 * TRANSMISSION;
 
