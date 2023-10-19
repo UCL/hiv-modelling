@@ -1,4 +1,6 @@
 * These parameters are up to date at 17th Oct 2023;
+* caldate1, caldate_never_dot and startyr specified here to overwrite core value (could also be added to Zim parameter file?);
+* country added to switch on SA-spcific abort statements;
 * Note that rate_anc_inc has been updated from rate_testanc_inc (used in some other SA analyses) to be consistent with the current core program;
 * JAS Oct23;
 
