@@ -40,8 +40,7 @@ newp_seed = 10 ;
 
 
 * INTRODUCTION OF HIV;
-* startyr;					startyr = 1993 + 0.25;
-							* ts1m;	/* startyr = 1993 + 1/12; */
+* startyr;					startyr = 1993;
 
 * TRANSMISSION;
 
