@@ -2882,15 +2882,15 @@ if cald=2011 then do; o_p_mcirc_1524m_dw = 0.07; o_p_mcirc_2549m_dw = 0.11; o_p_
 if cald=2014 then do; o_p_mcirc_1524m_dw = 0.24; o_p_mcirc_2549m_dw = 0.11; o_p_mcirc_50plm_dw = 0.11; end;
 
 
-*** New male circumcisions per year;
+*** New VMMC per year;
 *Source: WHO. Progress in scaling up voluntary medical male circumcision for HIV prevention in East and Southern Africa: January-December 2011. WHO 2011 September [cited 2014 Mar 15] 
 		      Available from: URL: http://www.malecircumcision.org/country_updates/documents/FINAL%20VMMC%20Progress%20Report%20Jan-Dec%202011%20WHO.pdf;
 
 *(LBM: These reports go up to 2012 but same figures are reported in GARPR reports);
-if cald = 2008.5 then o_s_new_mcirc=0;
-if cald = 2009.5 then o_s_new_mcirc=2801;
-if cald = 2010.5 then o_s_new_mcirc=11176;
-if cald = 2011.5 then o_s_new_mcirc=36603;
+if cald = 2008.5 then o_s_new_vmmc=0;
+if cald = 2009.5 then o_s_new_vmmc=2801;
+if cald = 2010.5 then o_s_new_vmmc=11176;
+if cald = 2011.5 then o_s_new_vmmc=36603;
 
 ***LBM Update Sep 2016;
 *Source: Global AIDS Response Country Progress Report Zimbabwe 2016. Page 8 Table 3
@@ -2898,43 +2898,43 @@ if cald = 2011.5 then o_s_new_mcirc=36603;
 
 *Updated using HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,
 they are reported as 2008-2009, 2009-2010, age range 10-49;
-if cald = 2009.5  then o_s_new_mcirc=2784 ;
-if cald = 2010.5  then o_s_new_mcirc=9381;*9384;  *slightly updated based on Isaac;
-if cald = 2011.5  then o_s_new_mcirc=27973;*27971;*slightly updated based on Isaac;
-if cald = 2012.5  then o_s_new_mcirc=29321;*29625;*slightly updated based on Isaac;
-if cald = 2013.5  then o_s_new_mcirc=65679;*65613;*slightly updated based on Isaac;
+if cald = 2009.5  then o_s_new_vmmc_1049m=2784 ;
+if cald = 2010.5  then o_s_new_vmmc_1049m=9381;*9384;  *slightly updated based on Isaac;
+if cald = 2011.5  then o_s_new_vmmc_1049m=27973;*27971;*slightly updated based on Isaac;
+if cald = 2012.5  then o_s_new_vmmc_1049m=29321;*29625;*slightly updated based on Isaac;
+if cald = 2013.5  then o_s_new_vmmc_1049m=65679;*65613;*slightly updated based on Isaac;
 
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,;
-if cald = 2014.5  then o_s_new_mcirc=110163;
-if cald = 2015.5  then o_s_new_mcirc=133012;
-if cald = 2016.5  then o_s_new_mcirc=136986;
-if cald = 2017.5  then o_s_new_mcirc=159476;
-if cald = 2018.5  then o_s_new_mcirc=197705;
-if cald = 2019.5  then o_s_new_mcirc=207375;
-if cald = 2020.5  then o_s_new_mcirc=53743;
+if cald = 2014.5  then o_s_new_vmmc_1049m=110163;
+if cald = 2015.5  then o_s_new_vmmc_1049m=133012;
+if cald = 2016.5  then o_s_new_vmmc_1049m=136986;
+if cald = 2017.5  then o_s_new_vmmc_1049m=159476;
+if cald = 2018.5  then o_s_new_vmmc_1049m=197705;
+if cald = 2019.5  then o_s_new_vmmc_1049m=207375;
+if cald = 2020.5  then o_s_new_vmmc_1049m=53743;
 
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
 *page 22;
 *Note: the age range is not indicated so probably all ages;
-if cald = 2013.5  then o_s_new_mcirc_all=112084;
-if cald = 2014.5  then o_s_new_mcirc_all=209125;
-if cald = 2015.5  then o_s_new_mcirc_all=188732;
-if cald = 2016.5  then o_s_new_mcirc_all=205784;
-if cald = 2017.5  then o_s_new_mcirc_all=301366;
-if cald = 2018.5  then o_s_new_mcirc_all=326012;
-if cald = 2019.5  then o_s_new_mcirc_all=354819;
+if cald = 2013.5  then o_s_new_vmmc_all=112084;
+if cald = 2014.5  then o_s_new_vmmc_all=209125;
+if cald = 2015.5  then o_s_new_vmmc_all=188732;
+if cald = 2016.5  then o_s_new_vmmc_all=205784;
+if cald = 2017.5  then o_s_new_vmmc_all=301366;
+if cald = 2018.5  then o_s_new_vmmc_all=326012;
+if cald = 2019.5  then o_s_new_vmmc_all=354819;
 
 ***Source: Draft 2023 HIV Prevention Targets Handbook 20022023 (1).docs sent by Ngwarai on 28/6/2023;
-if cald=2023.75 then target_s_new_mcirc=211526;
+if cald=2023.75 then target_s_new_vmmc=211526;
 
 **Target: Number of Men aged 15+ years circumcised as part of the minimum package of male 
 circumcision for HIV prevention services;
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
 		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
-if cald=2018.75 then o_s_new_mcirc_NSP=299302;
-if cald=2024.75 then target_s_new_mcirc_NSP=463448;*These could have been changed given COVID;
-if cald=2025.75 then target_s_new_mcirc_NSP=175211;*These could have been changed given COVID;
+if cald=2018.75 then o_s_new_vmmc_NSP=299302;
+if cald=2024.75 then target_s_new_vmmc_NSP=463448;*These could have been changed given COVID;
+if cald=2025.75 then target_s_new_vmmc_NSP=175211;*These could have been changed given COVID;
 
 
 
@@ -2943,25 +2943,25 @@ if cald=2025.75 then target_s_new_mcirc_NSP=175211;*These could have been change
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
 *page 10;
-if cald = 2013.5  then o_cum_mcirc=112084; 
-if cald = 2014.5  then o_cum_mcirc=400235;
-if cald = 2015.5  then o_cum_mcirc=601303;
-if cald = 2016.5  then o_cum_mcirc=839681;
-if cald = 2017.5  then o_cum_mcirc=1141046;
-if cald = 2018.5  then o_cum_mcirc=1466731;
-if cald = 2019.5  then o_cum_mcirc=1821550;
+if cald = 2013.5  then o_cum_vmmc=112084; 
+if cald = 2014.5  then o_cum_vmmc=400235;
+if cald = 2015.5  then o_cum_vmmc=601303;
+if cald = 2016.5  then o_cum_vmmc=839681;
+if cald = 2017.5  then o_cum_vmmc=1141046;
+if cald = 2018.5  then o_cum_vmmc=1466731;
+if cald = 2019.5  then o_cum_vmmc=1821550;
 
 *Reply from Tsitsi on 5th July 2016: Circumcisions are performed both in the health facilities (mainly) and also by some NGOs such as PSI;
 
 ***Number of <15 year olds circumcised;
 *Source: Global AIDS Response Country Progress Report Zimbabwe 2016. Page 8 Table 3;
-if cald = 2009.5  then o_s_child1314_mcirc=17;
-if cald = 2010.5 then o_s_child1314_mcirc=1792;
-if cald = 2011.5  then o_s_child1314_mcirc=8771 ;
-if cald = 2012.5 then o_s_child1314_mcirc=11087;
-if cald = 2013.5  then o_s_child1314_mcirc=46471 ;
-if cald = 2014.5 then o_s_child1314_mcirc=97687;
-if cald = 2015.5  then o_s_child1014_mcirc=78623;
+if cald = 2009.5  then o_s_child1314_vmmc=17;
+if cald = 2010.5 then o_s_child1314_vmmc=1792;
+if cald = 2011.5  then o_s_child1314_vmmc=8771 ;
+if cald = 2012.5 then o_s_child1314_vmmc=11087;
+if cald = 2013.5  then o_s_child1314_vmmc=46471 ;
+if cald = 2014.5 then o_s_child1314_vmmc=97687;
+if cald = 2015.5  then o_s_child1014_vmmc=78623;
 
  
 ***LBM Update feb 2017;
