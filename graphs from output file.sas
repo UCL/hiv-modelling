@@ -91,7 +91,7 @@ n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
 n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_ p_newp_ge1_ p_newp_ge5_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
-p_mcirc_1549m	p_mcirc_1049m	n_new_vmmc1549m 	n_new_vmmc1049m  n_new_vmmc1014m	n_new_mcirc n_new_mcirc_1549m 	n_new_mcirc_1049m
+p_mcirc_1549m	p_mcirc_1049m	n_new_vmmc1549m 	n_new_vmmc1049m  n_new_vmmc1014m	n_new_birth_circ n_new_mcirc n_new_mcirc_1549m 	n_new_mcirc_1049m
 p_vmmc_1549m	p_vmmc_1049m
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  p_w1524newpge1_onprep prop_1564_onprep 	
 n_prep n_prep_1524w n_prep_ever
@@ -787,6 +787,7 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 500
 label p50_n_new_vmmc1549m_0 = "Option 0 (median) - VMMC 15-49";
 label p50_n_new_vmmc1049m_0 = "Option 0 (median) - VMMC 10-49";
 label p50_n_new_vmmc1014m_0 = "Option 0 (median) - VMMC 10-14";
+label p50_n_new_birth_circ_0 = "Option 0 (median) - Traditional";
 label p50_n_new_mcirc_0       = "Option 0 (median) - VMMC+trad";
 label o_s_new_vmmc_1049m = "CAL - Annual number of new VMMC 10-49";
 
@@ -796,6 +797,8 @@ series  x=cald y=p50_n_new_vmmc1049m_0/	lineattrs = (color=grey thickness = 2);
 band    x=cald lower=p5_n_new_vmmc1049m_0 	upper=p95_n_new_vmmc1049m_0  / transparency=0.9 fillattrs = (color=grey) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_new_vmmc1549m_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_new_vmmc1549m_0 	upper=p95_n_new_vmmc1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_new_birth_circ_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_new_birth_circ_0 	upper=p95_n_new_birth_circ_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_new_mcirc_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_n_new_mcirc_0 	upper=p95_n_new_mcirc_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 scatter  x=cald y=o_s_new_vmmc_1049m/	markerattrs = (color=blakc ) ;
