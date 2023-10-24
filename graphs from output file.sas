@@ -805,7 +805,21 @@ scatter  x=cald y=o_s_new_vmmc_1049m/	markerattrs = (color=blakc ) ;
 run;quit;
 *s_new_vmmc for all ages was not exported;
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Annual traditional circumcision";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1983 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  800000 by 50000) valueattrs=(size=10);
 
+label p50_n_new_birth_circ_0 = "Option 0 (median) - Traditional";
+label p50_n_alive0__0 = "Option 0 (median) - based on pop structure";
+
+
+series  x=cald y=p50_n_new_birth_circ_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_new_birth_circ_0 	upper=p95_n_new_birth_circ_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_alive0__0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_alive0__0 	upper=p95_n_alive0__0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Option 0 90% range";
+
+run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of current female sex workers (FSW)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
