@@ -3,11 +3,11 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v19_2023Oct16_out";
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v19_2023Oct24_out";
 
-data a.base_16_10_2023;   set b.out:;run;
+data a.base_24_10_2023;   set b.out:;run;
 
-proc freq data=a.base_16_10_2023;table s_new_birth_circ
+proc freq data=a.base_24_10_2023;table s_new_birth_circ
 /*s_new_vmmc s_new_mcirc
 s_new_mcirc_1014m
 s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
@@ -25,8 +25,8 @@ proc sort data=a.base_16_06_23; by run; run;
 proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
 ods html close;
 ods listing;
-proc freq data=a.base_16_10_2023; table run;run;
-proc freq data=a.base_16_10_2023; table cald;run;*117 simulations;
+proc freq data=a.base_24_10_2023; table run;run;
+proc freq data=a.base_24_10_2023; table cald;run;*117 simulations;
 
 /*
 proc freq data=a.base_25_05_23;
@@ -38,7 +38,7 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_16_10_2023;
+data g; set  a.base_24_10_2023;
 
 proc sort data=g; 
 by run cald option;run;
@@ -1035,6 +1035,12 @@ end;
 * n_alive_2549w;				n_alive_2549w = (s_alive1549_w - s_ageg1w) * &sf; *VCFeb2023; 
 * n_alive0_;					n_alive0_ = s_alive0_ * &sf *4;*otherwise it is only the births in a 3 month periodl;
 
+* n_alive_1014m;				n_alive_1014m = s_ageg1014m * &sf; 
+* n_alive_1524_;				n_alive_1524_ = (s_ageg1m+s_ageg1w) * &sf; 
+* n_alive_2564_;				n_alive_2564_ = (s_alive1564-s_ageg1m-s_ageg1w) * &sf;
+* n_alive_65pl;					n_alive_65pl = (s_ageg65plm + s_ageg65plw) * &sf;
+
+
 *Number of HIV-negative  adults 15+ years old in a sero-discordant relationship;
 * n_hivneg_sdpartner;			n_hivneg_sdpartner = (s_hiv0epi1_w + s_hiv0epi1_m) * &sf; *VCFeb2023; 
 *Number of HIV-negative  adults 15+ years old in a sero-discordant relationship, whom partner is not on ART; 
@@ -1085,7 +1091,8 @@ n_new_inf2549w = (s_primary1549w - s_primary1519w - s_primary2024w) * &sf * 4;
 
 keep run option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 
 n_hiv n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
-n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive0_ 
+n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive0_ 
+n_alive_1524_	 n_alive_2564_		n_alive_65pl									
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050 n_not_on_art_cd450200 n_not_on_art_cd4200350 n_not_on_art_cd4350500 n_not_on_art_cd4ge500 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
@@ -1270,7 +1277,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_16_10_2023; set y;  run;
+data a.l_base_24_10_2023; set y;  run;
 
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
