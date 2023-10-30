@@ -2487,6 +2487,7 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 * ==========================================================================================================================================;
 
+* options_code ;
 
 * OPTIONS TO IMPLEMENT FROM year_i onwards;
 
@@ -2506,10 +2507,11 @@ end;
  
 if option = 1 then do;
 
-* increase rate of oral prep uptake and persistance (assume strategy = 4 and remains so with option=1)
-* increase rate of testing
-* improve 30 90's
-* improve vmmc uptake
+* increase rate of oral prep uptake and persistance (assume strategy = 4 and remains so with option=1);
+
+* 1st 90; fold_rate_decr_test_future = fold_rate_decr_test_future + (0.1 * (1-fold_rate_decr_test_future));
+* 2nd 90; eff_rate_int_choice = 0.9 * eff_rate_int_choice;  eff_prob_loss_at_diag = 0.9 * eff_prob_loss_at_diag ; 
+* 3rd 90; increase_adherence=1;  
 
 ;
 
@@ -8643,6 +8645,9 @@ if artvis0_lower_adh = 1 and onartvisit0 = 1 and _p1 < 0.5  then adh = adh - ran
 
 * if on pop_wide_tld_prep as pep then equivalent to 0 adherence;
 if pop_wide_tld_prep=1 and registd ne 1 and pop_wide_tld_as_art ne 1 and pep_not_prep=1 then adh=0;
+
+* for trial_simulation;
+if increase_adherence=1 then adh=adh + 0.05;
 
 
 * REDUCED CD4 RISE FOR FASTER CD4 RISERS AFTER LONGER ON ART;
