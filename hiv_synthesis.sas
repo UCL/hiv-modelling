@@ -876,7 +876,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_07.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_07.sas";
-%include "/home/rmjlaph/Malawi_parameters.sas";
+%include "/home/rmjlja9/Malawi_parameters.sas";
 
 
 * ===================== ;
