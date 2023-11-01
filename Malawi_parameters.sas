@@ -1,7 +1,16 @@
+* These parameters are up to date at 1st Nov 2023, based on "Malawi parameters" file in core;
+* caldate1 and caldate_never_dot specified here to overwrite core value (could also be added to Zim parameter file?);
+* country added to switch on SA-spcific abort statements;
+* JAS Nov23;
+
+
 /***************************************************************************/
 ******************     MALAWI SPECIFIC PARAMETERS    ******************
 /***************************************************************************/
 
+* country;					country='Malawi';
+* caldate1;					caldate1 = 1984;		*core: 1989;
+* caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
