@@ -1,107 +1,8 @@
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
-%let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   
-%let tmpfilename = %scan(&sysparm,2," ");
 
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\trial_simulation\";
 
-* proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
-
-%let population = 100000  ; 
-%let year_interv = 2024;
-
-options ps=1000 ls=220 cpucount=4 spool fullstimer ;
-
-/*
-Macro for sampling from a categorical distribution.
-
-Usage:
-%sample(<variable name>, <list of possible values>, <list of probabilities>)
-
-Example:
-To set a variable my_var to 0, 1 or 5 with probabilities 0.2, 0.1 and 0.7 respectively, use:
-%sample(my_var, 0 1 5, 0.2 0.1 0.7);
-
-The above example is essentially the same as:
-
-r = rand('uniform');
-if r < 0.2 then my_var = 0;
-if 0.2 <= r < 0.2 + 0.1 then my_var = 1;
-if 0.2 + 0.1 <= r then my_var = 5;
-
-Note that the values must be separated by spaces, as must the probabilities.
-The list of probabilities must sum to 1.
-The lengths of the two lists (values and probabilities) must be equal.
-*/
-%macro sample(name, v, p);
-	%let cnt=%sysfunc(countw(&p,,s));
-	%let cnt_v=%sysfunc(countw(&v,,s));
-	%if &cnt ^= &cnt_v %then %do; * stop if p and v have different lengths;
-		%put ERROR: mismatched values and probabilities for &name;
-		%abort cancel;
-	%end;
-	randvar = rand('uniform');
-	%let cum_prob=%scan(&p,1,,s); * cumulative probability;
-	if randvar < &cum_prob then
-		&name = %scan(&v,1,,s);
-	%do i=2 %to &cnt;
-		%let cum_prob = %sysevalf(&cum_prob + %scan(&p,&i,,s));
-		%let value=%scan(&v,&i,,S);
-		else %if &i < &cnt %then if randvar < &cum_prob then;
-			&name = &value;
-	%end;
-%mend sample;
-
-/*
-Macro for sampling from a discrete uniform distribution.
-
-Usage:
-%sample_uniform(<variable name>, <list of possible values>)
-
-A variant of %sample where all the values have equal weights/probabilities,
-which therefore dont need to be specified.
-
-The values can be specified in two ways:
-(a) as a space-separated list, as for %sample: %sample_uniform(my_var, 1 2 3 4 5);
-(b) as a range of the form low:high, as in: %sample_uniform(my_var, 1:5);
-
-The two examples above are equivalent, and will result in 20% probability for
-each of the values 1-5. They are also equivalent to
-%sample(my_var, 1 2 3 4 5, 0.2 0.2 0.2 0.2 0.2);
-
-Form (a) is more flexible, allowing to choose from any set of values.
-Form (b) is more concise but can only be used for consecutive integer values.
-Note that the range does not have to start from 1; for example, integer ages
-between 18-49 can be sampled using %sample_uniform(my_var, 18:49);
-*/
-%macro sample_uniform(name, v);
-	* First determine whether v is a range or not, by checking the presence of :;
-	%let split_ind=%index(&v, :);
-	%if &split_ind = 0 %then
-		%do; * values enumerated explicitly, count them and use them directly;
-			%let cnt=%sysfunc(countw(&v,,s));
-			%let first_value=%scan(&v,1,,s);
-		%end;
-	%else
-		%do; * values given as range, infer length and get limits of range;
-			%let lower_value=%substr(&v, 1, %eval(&split_ind-1));
-			%let upper_value=%substr(&v, %eval(&split_ind+1));
-			%let cnt=%sysevalf(&upper_value - &lower_value + 1);
-			%let first_value=&lower_value;
-		%end;
-	randvar = rand('uniform');
-	if randvar < 1/&cnt then
-		&name = &first_value;
-	%do i=2 %to &cnt;
-		%if &split_ind = 0 %then
-			%let value=%scan(&v,&i,,S);
-		%else
-			%let value=%sysevalf(&lower_value + &i - 1);
-		else %if &i < &cnt %then if randvar < &i/&cnt then;
-			&name = &value;
-	%end;
-%mend sample_uniform;
+%let population = 3000  ; 
 
 
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
@@ -150,7 +51,7 @@ startyr = 1989 + 1/12;
 */
 
 
-newp_seed = 7;  
+newp_seed = 2;  
 
 
 * ======================
@@ -507,8 +408,8 @@ newp_seed = 7;
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
-* rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.02, 
-														0.3  0.3  0.3  0.1 );  * trial_simulation ;
+* rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.02 0.05, 
+														0.35 0.40 0.20 0.04 0.01);  * change sep22 for pop_wide_tld;
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
@@ -632,7 +533,7 @@ newp_seed = 7;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14); prep_any_strategy=4; * trial_simulation;
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14); prep_any_strategy=4;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -644,7 +545,7 @@ newp_seed = 7;
 * prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.1 0.15 0.3);  * trial_simulation;
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
@@ -667,8 +568,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05 0.1 ); 	*  trial simulation;
-	* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.1  0.3 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -2509,13 +2409,12 @@ end;
 if option = 1 then do;
 
 * increase rate of oral prep uptake and persistance (assume strategy = 4 and remains so with option=1);
-		eff_rate_test_startprep_any = eff_rate_test_startprep_any + (0.5 * (1 - eff_rate_test_startprep_any));
+		eff_rate_test_startprep = eff_rate_test_startprep + (0.9 * (1 - eff_rate_test_startprep));
 		eff_rate_choose_stop_prep_oral = 0.5 * eff_rate_choose_stop_prep_oral ;
-		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + (0.5 * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 5;
-* 1st 90; fold_rate_decr_test_future = fold_rate_decr_test_future + (0.5 * (1-fold_rate_decr_test_future));
+* 1st 90; fold_rate_decr_test_future = fold_rate_decr_test_future + (0.9 * (1-fold_rate_decr_test_future));
 * 2nd 90; eff_rate_int_choice = 0.5 * eff_rate_int_choice;  eff_prob_loss_at_diag = 0.5 * eff_prob_loss_at_diag ; 
-* 3rd 90; increase_adherence=1;   
+* 3rd 90; increase_adherence=1;  
 
 ;
 
@@ -17212,6 +17111,16 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
+proc print; var cald option eff_rate_int_choice ;
+where hiv=1 and serial_no < 10000;
+run;
+
+proc means; var option adh increase_adherence ; 
+where onart=1;
+run;
+
+
+
 /*
 
 proc freq; tables cald hiv ; where death=.; run;
@@ -19761,7 +19670,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -19899,6 +19808,13 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
+
+data a.erer; set r1;
+
+*/
+
+data r1; set a.erer;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
