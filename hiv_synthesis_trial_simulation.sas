@@ -494,7 +494,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.05	0.75	0.10	0.05	0.03	0.01	0.01);
+								0.05	0.50	0.20	0.10	0.10	0.04	0.01); * trial_simulation; 
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
@@ -507,8 +507,8 @@ newp_seed = 7;
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
-* rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.02, 
-														0.3  0.3  0.3  0.1 );  * trial_simulation ;
+* rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.015 0.02, 
+														0.2  0.2  0.2  0.2  0.2);  * trial_simulation ;
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
@@ -678,7 +678,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* changed from 0.7 to 0.8 after discussion due to low overall adherence resulting from 0.7;
 * prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
 
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.02 0.10 0.30);
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.10 0.30  0.50);  * trial_simulation; 
 								* dependent_on_time_step_length ;
 
 * higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
@@ -2508,22 +2508,37 @@ end;
  
 if option = 1 then do;
 
-* increase rate of oral prep uptake and persistance (assume strategy = 4 and remains so with option=1);
-		eff_rate_test_startprep_any = eff_rate_test_startprep_any + (0.5 * (1 - eff_rate_test_startprep_any));
-		eff_rate_choose_stop_prep_oral = 0.5 * eff_rate_choose_stop_prep_oral ;
-		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + (0.5 * (1 - eff_prob_prep_any_restart_choice));
-		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 5;
-* 1st 90; fold_rate_decr_test_future = fold_rate_decr_test_future + (0.5 * (1-fold_rate_decr_test_future));
-* 2nd 90; eff_rate_int_choice = 0.5 * eff_rate_int_choice;  eff_prob_loss_at_diag = 0.5 * eff_prob_loss_at_diag ; 
-* 3rd 90; increase_adherence=1;   
-
-;
+	* increase rate of oral prep uptake and persistance (assume strategy = 4 and remains so with option=1);
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any + ((0.3 + (0.7*rand('uniform'))) * (1 - eff_rate_test_startprep_any));
+		eff_rate_choose_stop_prep_oral = (0.5*rand('uniform')) * eff_rate_choose_stop_prep_oral ;
+		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ((0.3 + (0.7*rand('uniform')))  * (1 - eff_prob_prep_any_restart_choice));
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b * (rand('uniform')*10) ;
+	* 1st 90; fold_rate_decr_test_future = fold_rate_decr_test_future + ((0.3 + (0.7*rand('uniform'))) * (1-fold_rate_decr_test_future));
+	* 2nd 90; eff_rate_int_choice = (0.5*rand('uniform')) * eff_rate_int_choice;  eff_prob_loss_at_diag = (0.5*rand('uniform')) * eff_prob_loss_at_diag ; 
+	* 3rd 90; increase_adherence=1; increase_adherence_amount=(0.05 + (0.45*rand('uniform')));
 
 end;
 
-tsr=rand('uniform');
-randomized_group=0; if tsr < 0.5 then randomized_group=1;
-	
+
+if option = 2 then do;
+
+* above etc
+
+end;
+
+if option = 3 then do;
+
+end;
+
+if option = 4 then do;
+
+end;
+
+if option = 5 then do;
+
+end;
+
+
 end;
 
 
@@ -5892,7 +5907,7 @@ end;
 
 * if exposed elsewhere externaly, partners may be less likely to be suppressed, i.e u1=lower % supressed;
 if exp_setting_lower_p_vl1000 = 1 and 20 <= age < 50 then do;
-	r=rand('uniform');  * dependent_on_time_step_length;
+	r=rand('uniform');  * dependent_on_time_step_length;   
 	if (gender = 1 and r < rate_exp_set_lower_p_vl1000) or (gender = 2 and r < rate_exp_set_lower_p_vl1000 / 2) then do;
 		u1 = u1 / external_exp_factor;
 	end;
@@ -8654,7 +8669,7 @@ if artvis0_lower_adh = 1 and onartvisit0 = 1 and _p1 < 0.5  then adh = adh - ran
 if pop_wide_tld_prep=1 and registd ne 1 and pop_wide_tld_as_art ne 1 and pep_not_prep=1 then adh=0;
 
 * for trial_simulation;
-if increase_adherence=1 then adh=adh + 0.5;
+if increase_adherence=1 then adh=adh + increase_adherence_amount;
 
 
 * REDUCED CD4 RISE FOR FASTER CD4 RISERS AFTER LONGER ON ART;
@@ -19907,6 +19922,10 @@ end;
 data a ;  set r1 ;
 
 
+
+
+* option 0;
+
 data r1 ; set a ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
@@ -19919,27 +19938,11 @@ data r1 ; set a ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
 
-/*
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
-
-*/
-
 data outputs_0; set r2 ;
-if age ge 15 and death = .;
-keep run caldate_never_dot option  randomized_group age gender  registd onart vl prep_any hiv infection ;
 
+
+
+* option 1;
 
 data r1; set a      ;
 
@@ -19953,32 +19956,92 @@ data r1; set a      ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
 
-/*
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);													  
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=1);
-
-*/
-
 data outputs_1; set r2 ;
-if age ge 15 and death = .;
-keep run caldate_never_dot option randomized_group age gender registd onart vl prep_any hiv infection ;
+
+
+
+* option 2;
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=2);
+
+data outputs_2; set r2 ;
+
+
+
+* option 3;
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
+
+data outputs_3; set r2 ;
+
+
+
+
+* option 4;
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=4);
+
+data outputs_4; set r2 ;
+
+
+
+* option 5;
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=5);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=5);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=5);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=5);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=5);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=5);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=5);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=5);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=5);
+
+data outputs_5; set r2 ;
+
+
+
 
 data a.outputs_&dataset_id(compress=binary);
-set outputs_0 outputs_1;
+set outputs_0  outputs_1  outputs_2  outputs_3  outputs_4  outputs_5 ;
+if age ge 15 and death = .;
+keep run caldate_never_dot option randomized_group age gender registd onart vl prep_any hiv infection ;
 run;
 
-* ts1m:  need more update statements ;
+
+
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;

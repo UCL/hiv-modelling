@@ -11,7 +11,6 @@ end;
 recent_infection=0;
 if hiv=1 and 0 <= 2025.75 - infection <= 0.25 then recent_infection=1;
 
-proc print; run;
 
 proc sort; by option;
 
