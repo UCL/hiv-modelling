@@ -1,14 +1,6 @@
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\trial_simulation\";
 
-data e; set a.out:;
-
-pregnant_hiv_diagnosed = s_pregnant - s_pregnant_not_diagnosed_pos;
-
-s_m_newp = s_m_1524_newp  +	 s_m_2534_newp  +  s_m_3544_newp +   s_m_4554_newp  +	s_m_5564_newp ;
-s_w_newp = s_w_1524_newp  +	 s_w_2534_newp  +  s_w_3544_newp +   s_w_4554_newp  +	s_w_5564_newp ;
-
-s_i_m_newp = s_i_age1_m_newp + s_i_age2_m_newp + s_i_age3_m_newp + s_i_age4_m_newp + s_i_age5_m_newp ;
-s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_newp + s_i_age5_w_newp ;
+data e; set a.out: ; 
 
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
@@ -38,15 +30,37 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
-proc means; var prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000 ;
+
+data a.summary; set e;
+
+n_onprep = s_prep_any;
+n_newly_hiv_infected = s_primary;
+who_takes_prep = prep_any_strategy;
+
+if cald ge 2010;
+
+caldate = cald;
+
+keep run caldate who_takes_prep rate_exp_set_lower_p_vl1000  
+prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000  n_onprep n_newly_hiv_infected option ;
+
+proc means; var prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000 n_onprep ;
+where caldate=2023;
 run;
 
 proc sort; by option;
-proc means; var s_prep_any p_diag p_onart_diag p_onart_vl1000 s_primary;
+proc means; var n_onprep p_diag p_onart_diag p_onart_vl1000 n_newly_hiv_infected;
 by option;
-where cald ge 2024.25;
+where caldate ge 2024.25;
 run;
 
+proc sort; by run caldate option; option;
+proc print;
+var
+run caldate option who_takes_prep rate_exp_set_lower_p_vl1000  
+prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000  n_onprep n_newly_hiv_infected ;
+run;
 
-
-
+proc export data = a.summary 
+outfile = 'C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\trial_simulation\summary.csv' DBMS = csv replace;
+run;
