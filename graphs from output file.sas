@@ -14,7 +14,7 @@ n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 
 data b;
-set a.l_base_24_10_2023;
+set a.l_base_26_10_2023;
 
 
 p_onart_vl1000_all = .;
@@ -76,8 +76,8 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 94  ;*out of 1000;*out of 860;
-%let year_end = 2072.5;
+%let nfit = 111  ;*out of 1000;*out of 860;
+%let year_end = 2072.75;
 run;
 /*proc freq data=b;table cald;run;*/
 proc sort;by cald option ;run;
