@@ -1245,7 +1245,7 @@ inc13=0.012;
 end;
 
 *Vale 20230808;
-*This is used for Zimbabwe;
+*This is used for Zimbabwe and Malawi;
 											 
 if inc_cat=1 and caldate1=1984  then do;
 *Inc1 is obtained as 0.18 (inc1 for inc_Cat)/14*19=0.2443;
