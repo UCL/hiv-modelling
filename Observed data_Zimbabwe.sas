@@ -192,6 +192,25 @@ https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryrep
 *"according to the 2017 Inter -Censual Demographic Projections Report";
 if cald=2019.5 then o_pop_all_Zi=15800000;
 
+*Source: World Population Prospect, file "World Population Prospect 2022.pdf";
+if cald=2025.5 then do;
+	o_pop_014_WPP =7000000;
+	o_pop_1524_WPP=3500000;
+	o_pop_2564_WPP=6000000;
+	o_pop_65pl_WPP=1000000;
+end;
+if cald=2050.5 then do;
+	o_pop_014_WPP = 8000000;
+	o_pop_1524_WPP= 4900000;
+	o_pop_2564_WPP=12500000;
+	o_pop_65pl_WPP= 1800000;
+end;
+if cald=2070.5 then do;
+	o_pop_014_WPP = 7600000;
+	o_pop_1524_WPP= 5200000;
+	o_pop_2564_WPP=17000000;
+	o_pop_65pl_WPP= 2500000;
+end;
 
 
 

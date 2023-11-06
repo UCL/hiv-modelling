@@ -293,6 +293,10 @@ label p50_n_alive_1014m_0 = "Baseline (median) - Male 10-14 ";
 label p50_n_alive_1524__0 = "Baseline (median) - 15-24 ";
 label p50_n_alive_2564__0 = "Baseline (median) - 25-64 ";
 label p50_n_alive_65pl_0 = "Baseline (median) - 65+";
+label o_pop_014_WPP ="WPP 0-14";
+label o_pop_1524_WPP="WPP 15-24";
+label o_pop_2564_WPP="WPP 25-64";
+label o_pop_65pl_WPP="WPP 65+";
 series  x=cald y=p50_n_alive_1014m_0/	lineattrs = (color=orange thickness = 2);
 band    x=cald lower=p5_n_alive_1014m_0 	upper=p95_n_alive_1014m_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_alive_1524__0/	lineattrs = (color=lightgreen thickness = 2);
@@ -301,6 +305,13 @@ series  x=cald y=p50_n_alive_2564__0/	lineattrs = (color=lightblue thickness = 2
 band    x=cald lower=p5_n_alive_2564__0 	upper=p95_n_alive_2564__0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_alive_65pl_0/	lineattrs = (color=violet thickness = 2);
 band    x=cald lower=p5_n_alive_65pl_0 	upper=p95_n_alive_65pl_0  / transparency=0.9 fillattrs = (color=violet) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_pop_014_WPP / markerattrs = (symbol=triangle color=brown size = 10);
+scatter x=cald y=o_pop_1524_WPP / markerattrs = (symbol=triangle color=lightgreen size = 10);
+scatter x=cald y=o_pop_2564_WPP / markerattrs = (symbol=triangle color=lightblue size = 10);
+scatter x=cald y=o_pop_65pl_WPP / markerattrs = (symbol=triangle color=violet size = 10);
+
+
 run;quit;
 
 proc sgplot data=d; 
