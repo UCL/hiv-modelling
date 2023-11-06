@@ -1297,6 +1297,27 @@ inc12=0.026;
 inc13=0.020;
 end;
 
+*JAS Nov23;
+*This is used for South Africa;
+											 
+if inc_cat=3 and caldate1=1984  then do;
+*Inc1 is obtained as 0.128 (inc1 for inc_Cat)/14*19=0.1737;
+*1.0457= 1 + (0.1737-0.128);
+inc1=0.1737/1.0457;*19 years instead of 14, so a total of 139 years;
+inc2=0.1190/1.0457;
+inc3=0.1130/1.0457;
+inc4=0.1040/1.0457;
+inc5=0.0970/1.0457;
+inc6=0.0900/1.0457;
+inc7=0.0810/1.0457;
+inc8=0.074/1.0457;
+inc9 =0.060/1.0457;
+inc10=0.050/1.0457;
+inc11=0.038/1.0457;
+inc12=0.026/1.0457;
+inc13=0.020/1.0457;
+end;
+
 
 cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7=cum6+inc7;cum8=cum7+inc8;
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; 
