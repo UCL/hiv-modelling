@@ -6,7 +6,6 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-  libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\";
 * libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
 
 
