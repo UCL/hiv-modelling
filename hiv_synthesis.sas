@@ -182,9 +182,6 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * prob_pregnancy_base;  	r=rand('uniform'); prob_pregnancy_base=0.06 + r*0.05;  
-							if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
-							if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
-							prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 * rate_birth_with_infected_child; 
 							%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);
 
@@ -880,6 +877,11 @@ non_hiv_tb_prob_diag_e = 0.5 ;
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_07.sas";
 * %include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
 %include "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\prep_uptake_26thSept2023\Zim_parameters_08_a.sas";
+
+* inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
+if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
+if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
+prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 
 
 * ===================== ;
@@ -2128,7 +2130,7 @@ who may be dead and hence have caldate{t} missing;
 		*Prevention;
 		*Condom promotion and provision: currently not in essential scenario but under discussion;
 		*SBCC: not explicitly modelled, but the switch off is;
-		condom_incr_year_i=2;    		*Switchs off SBCC;
+		*condom_incr_year_i=2;    		*Switches off SBCC;
 		circ_inc_rate_year_i = 2;		*No VMMC;
 
 		*Prep;
