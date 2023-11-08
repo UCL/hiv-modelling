@@ -1,5 +1,9 @@
 # hiv-modelling
 
+# Version
+   17th Oct 2023: hiv-modelling is now a public repository on GitHub but remains a work in progress. 
+   For a specific version, please refer to the relevant journal article for the project in question. 
+
 # Running HIV SAS Code on UCL HPC cluster Myriad
 
 A set of scripts are available that allow to do the following:
