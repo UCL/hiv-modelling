@@ -1995,7 +1995,6 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 
 
 
-
 * primary - currently in primary infection;
 array caldate{8} caldate&g-caldate&h; * calendar date 1980.00 , 1980.25, etc;
 * adh is the adherence between t-1 and t, not from t to t+1;
@@ -2128,7 +2127,7 @@ who may be dead and hence have caldate{t} missing;
 		date_prep_oral_intro=2100;
 		date_prep_inj_intro=2100;
 		date_prep_vr_intro=2100;
-		eff_rate_test_startprep_any=0;	*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
+		eff_rate_test_startprep_any=0;
 		eff_prob_prep_oral_b=0;
 		eff_prob_prep_inj_b=0; 
 		eff_prob_prep_vr_b=0;
@@ -2178,6 +2177,18 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	*PrEP interventions;	*JAS Apr2023 and Oct23;
+	*option 15: Oral TDF/FTC PrEP for AGWY;	
+	*option 16: Oral TDF/FTC PrEP for FSW;	
+	*option 17: Oral TDF/FTC PrEP for sero-discordant couples;	
+	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women;	
+	*option 19: Dapivirine ring for AGYW;	
+	*option 20: Dapivirine ring for FSW;	
+	*option 21: Dapivirine ring for sero-discordant couples;	
+	*option 22: Dapivirine ring for pregnant and breastfeeding women;	
+	*option 23: Injectable PrEP for AGYW;	
+	*option 24: Injectable PrEP for FSW;	
+	*option 25: Injectable PrEP for Sero-discordant couples;	
+	*option 26: Injectable PrEP for pregnant and breastfeeding women;
 
 	if option in (15 19 23) then prep_any_strategy=3;		* All PrEP options for AGYW;
 	if option in (16 20 24) then prep_any_strategy=2;		* All PrEP options for FSW;
@@ -2208,13 +2219,12 @@ who may be dead and hence have caldate{t} missing;
 			pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);
 		end;
 	end;
-	* QUERY may need to scale pref_prep_xxx_beta_s1 differently for other PrEP options JAS Jul23;
 	
 	* Oral PrEP; 	
 	*option 15: Oral TDF/FTC PrEP for AGWY;
 	if option = 15 then do;
 		*Following values need to change;
-		eff_rate_test_startprep_any=0.95;	*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
+		eff_rate_test_startprep_any=0.95;
 		eff_prob_prep_oral_b=0.95;
 		eff_rate_choose_stop_prep_oral=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
@@ -2378,9 +2388,6 @@ else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_para
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
-*It is Zim specific : %sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) - 
-						with this distribution between 0.185 to 0.365 have prep_oral_willing=1;		* To calibrate to Zim oral PrEP uptake 2018-present; 
-
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
@@ -2400,7 +2407,6 @@ if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr
 
 * highest_prep_pref;
 * does not show people who are not willing to take any PrEP type;
-* QUERY also double check prep_xxx_willling variables re threshold and for FSW JAS Jul23;
 if 		pref_prep_oral > pref_prep_inj and pref_prep_oral > pref_prep_vr then highest_prep_pref=1;	* 1=preference for oral PrEP;
 else if pref_prep_inj > pref_prep_oral and pref_prep_inj > pref_prep_vr then highest_prep_pref=2;	* 2=preference for injectable PrEP;
 else if pref_prep_vr > pref_prep_oral and pref_prep_vr > pref_prep_inj then highest_prep_pref=3;	* 3=preference for vaginal ring;			
@@ -4703,8 +4709,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-		* QUERY check numbers in strategies 15 and 16 below against MIHPSA targets;
-	if prep_any_strategy=15 then do;	* New for MIHPSA - serodiscordant couples; *JAS Apr2023;
+	if prep_any_strategy=15 then do;	* New for MIHPSA Zimbabwe - serodiscordant couples; *JAS Apr2023;
 		* Limited to a proportion based on age (not gender) and a random fraction;
 		* QUERY do we want random element to change every time step? think about how to code JAS Jul23;
 
@@ -4712,7 +4717,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 /*      	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or */
 /*      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.01 or (r < 0.5 and epi=1)) ) */
 /*		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;*/
-/*		* QUERY note under this definition there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;*/
+/*		* note under this definition there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;*/
 
 		r_prep_tm1=r_prep;	* keep;
 		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
@@ -4720,11 +4725,11 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
       	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
       	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)) ) 
 		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;
-		* QUERY note under this definition there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;
+		* note under this definition there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;
 
 	end;
 
-	if prep_any_strategy=16 then do;	* New for MIHPSA - pregnant and breastfeeding women *JAS Apr2023;
+	if prep_any_strategy=16 then do;	* New for MIHPSA Zimbabwe - pregnant and breastfeeding women *JAS Apr2023;
 		* QUERY discuss whether there should be a component of sexual behaviour in prep eligibility for pregnant and breastfeeding women;
 		* All pregnant and breastfeeding women - check numbers against MIHPSA targets;
       	if gender=2 and (pregnant=1 or breastfeeding=1) and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
