@@ -2137,7 +2137,7 @@ who may be dead and hence have caldate{t} missing;
 		eff_rate_choose_stop_prep_vr=1;
 		eff_prob_prep_any_restart_choice=0;	
 
-		*Linkage, management, ART Interv;	* QUERY double check can move these to here; *JAS Jul23;
+		*Linkage, management, ART Interv;
 		*PCP is part of the essential scenario;
 		absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
 		absence_vl_year_i = 1; 				*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
@@ -2765,8 +2765,6 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 * if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
 * reg_option 107 is used for people who seroconverted on prep_inj / cab ;
-
-* QUERY I have moved the MIHPSA options section upwards to come before the prep willingness and preference section JAS Jul23;
 
 
 
@@ -4710,29 +4708,19 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=15 then do;	* New for MIHPSA Zimbabwe - serodiscordant couples; *JAS Apr2023;
+	if prep_any_strategy=15 then do;	* Serodiscordant couples - new for MIHPSA Zimbabwe; *JAS Apr2023;
 		* Limited to a proportion based on age (not gender) and a random fraction;
-		* QUERY do we want random element to change every time step? think about how to code JAS Jul23;
-
-/*    	r = rand('Uniform');*/
-/*      	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or */
-/*      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.01 or (r < 0.5 and epi=1)) ) */
-/*		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;*/
-/*		* note under this definition there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;*/
-
-		r_prep_tm1=r_prep;	* keep;
+		* Note that there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;
+		r_prep_tm1=r_prep;
 		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
 		else r_prep = rand('Uniform');
       	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
       	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)) ) 
-		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;
-		* note under this definition there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;
-
+		then prep_any_elig=1; 	* Note changed from 5pc to 1pc of eps who may not have HIV JAS Jul23;
 	end;
 
-	if prep_any_strategy=16 then do;	* New for MIHPSA Zimbabwe - pregnant and breastfeeding women *JAS Apr2023;
-		* QUERY discuss whether there should be a component of sexual behaviour in prep eligibility for pregnant and breastfeeding women;
-		* All pregnant and breastfeeding women - check numbers against MIHPSA targets;
+	if prep_any_strategy=16 then do;	* Pregnant and breastfeeding women (PLW) - new for MIHPSA Zimbabwe; *JAS Apr2023;
+		* Note that there is a component of sexual behaviour in prep eligibility for pregnant and breastfeeding women;
       	if gender=2 and (pregnant=1 or breastfeeding=1) and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
 	end;
 
