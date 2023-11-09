@@ -2089,6 +2089,7 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 * INTERVENTIONS / CHANGES in year_interv ;
 
+option = &s;
 mihpsa_params_set_in_options=0;				* JAS Oct23;
 
 if caldate_never_dot >= &year_interv then do;
@@ -2642,7 +2643,7 @@ if caldate{t} = &year_interv then do;
 	incr_prob_vl_meas_done_year_i = 0;  
 
 	* poc viral load monitoring;
-	poc_vl_monitoring_i = 0 ;						* QUERY how does this work with MIHPSA option 34? JAS Oct23;				 
+	*poc_vl_monitoring_i = 0 ;						* commented out as already used above JAS Nov23;				 
 
 	*ART monitoring drug levels;
 	art_mon_drug_levels_year_i = 0;
