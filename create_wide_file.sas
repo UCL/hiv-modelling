@@ -507,6 +507,17 @@ r_incidence_23_43 = incidence1549_43_1 / incidence1549_23 ;
 r_p_newp_ge1_age1549_23_43 = p_newp_ge1_age1549_43_1 / p_newp_ge1_age1549_23;
 
 
+
+
+
+
+
+
+
+
+/*
+
+
 proc freq; tables incidence1549_23 ; run;
 proc print noobs; var run; where incidence1549_23 < 0.05; run;
 
@@ -614,3 +625,4 @@ run;
 
 
 
+*/
