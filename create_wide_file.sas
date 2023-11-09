@@ -506,6 +506,11 @@ r_incidence_23_43 = incidence1549_43_1 / incidence1549_23 ;
 
 r_p_newp_ge1_age1549_23_43 = p_newp_ge1_age1549_43_1 / p_newp_ge1_age1549_23;
 
+ods html;
+proc means  n p50 p5 p95 min max;  
+var prevalence1549w_23 prevalence1549m_23 incidence1549_23 p_diag_23 p_onart_diag_23 p_onart_vl1000_23 p_vl1000_23 prevalence_vg1000_23   ;
+run;
+ods html close;
 
 
 
