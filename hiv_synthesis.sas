@@ -1991,17 +1991,9 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 
 %macro update_r1(da1=,da2=,e=,f=,g=,h=,a=,b=,i=,k=,l=,x=,j=,s=);
 
-option = &s;			
 * options mprint;
 
-/*option = 0;	* SQ;*/
-/*option = 1;	* Essential;*/
-option = 15;	* MIHPSA: oral PrEP for AGYW;
-/*option = 16;	* MIHPSA: oral PrEP for FSW;*/
-/*option = 17;	* MIHPSA: oral PrEP for SDC;*/
-/*option = 18;	* MIHPSA: oral PrEP for PLW;*/
-/*option = 19;	* MIHPSA: VR PrEP for AGYW;*/
-/*option = 23;	* MIHPSA: inj PrEP for AGYW;*/
+
 
 
 * primary - currently in primary infection;
