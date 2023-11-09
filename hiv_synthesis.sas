@@ -3046,7 +3046,7 @@ end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 ***Zim specific; 
-if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;
+/*if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;*/
 
 
 * ts1m;
@@ -3144,8 +3144,8 @@ if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*o
 end;
 
 ***Zim specific; 
-if 2020.5 le caldate{t} lt 2021.5 then prob_circ = prob_circ*0.5;
-if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
+/*if 2020.5 le caldate{t} lt 2021.5 then prob_circ = prob_circ*0.5;*/
+/*if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;*/
 
 
 if prob_circ ne . then prob_circ = min(prob_circ,1);
