@@ -2094,7 +2094,7 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 option = &s;
 mihpsa_params_set_in_options=0;				* JAS Oct23;
 
-if caldate_never_dot >= &year_interv then do;
+if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -2102,6 +2102,16 @@ if option = 0 then do;
 end;
 
 if option = 1 then do;
+
+		prep_any_strategy = 4;   
+		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
+		eff_rate_choose_stop_prep = 0.05 ; 
+		eff_prob_prep_restart_choice = 0.7 ;
+		adhav_prep = adhav*1.00;
+		if _u38 < 0.333 then do;  			r=rand('uniform'); if prep_willing = 0 and r < 0.50  then prep_willing = 1; end;
+		if 0.333 <= _u38 < 0.666 then do;  	r=rand('uniform'); if prep_willing = 0 and r < 0.75 then prep_willing = 1; end;
+		if 0.666 <= _u38         then do;  	r=rand('uniform'); if prep_willing = 0 and r < 0.95 then prep_willing = 1; end;
+		add_prepuptake_sw = 0.95;	
 
 end;
 
