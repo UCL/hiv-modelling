@@ -1,10 +1,8 @@
 
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
-* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\";
-* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\zim_out\";
   libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\f_i_h_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\f_i_j_out\";
 
 
 ods html close;
@@ -331,7 +329,7 @@ sw_art_disadv prep_dependent_prev_vg1000
 
 
 
-data a.f_i_h_l; set y;
+data a.f_i_j_l; set y;
 
 
 
@@ -494,23 +492,23 @@ sw_art_disadv
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_f_i_h;
+data a.wide_f_i_j;
 merge   wide_outputs  wide_par ;  
 by run;
 
 
-data gh; set a.wide_f_i_h;
+data gh; set a.wide_f_i_j;
 
 
 r_incidence_23_43 = incidence1549_43_1 / incidence1549_23 ;
 
 r_p_newp_ge1_age1549_23_43 = p_newp_ge1_age1549_43_1 / p_newp_ge1_age1549_23;
 
-ods html;
-proc means  n p50 p5 p95 min max;  
+
+proc means  p50 p5 p95 ;  
 var prevalence1549w_23 prevalence1549m_23 incidence1549_23 p_diag_23 p_onart_diag_23 p_onart_vl1000_23 p_vl1000_23 prevalence_vg1000_23   ;
 run;
-ods html close;
+
 
 
 
