@@ -2101,26 +2101,23 @@ who may be dead and hence have caldate{t} missing;
 if option = 0 then do;
 end;
 
-if option = 1 then do;
-
-		prep_any_strategy = 4;   
-		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
-		eff_rate_choose_stop_prep = 0.05 ; 
-		eff_prob_prep_restart_choice = 0.7 ;
-		adhav_prep = adhav*1.00;
-		if _u38 < 0.333 then do;  			r=rand('uniform'); if prep_willing = 0 and r < 0.50  then prep_willing = 1; end;
-		if 0.333 <= _u38 < 0.666 then do;  	r=rand('uniform'); if prep_willing = 0 and r < 0.75 then prep_willing = 1; end;
-		if 0.666 <= _u38         then do;  	r=rand('uniform'); if prep_willing = 0 and r < 0.95 then prep_willing = 1; end;
-		add_prepuptake_sw = 0.95;	
-
+if option = 1 then do;  * dcp without cab;
+		eff_rate_test_startprep_any = 0.9;
+		eff_rate_choose_stop_prep_oral = 0.05 ; 
+		pref_prep_oral_beta_s1 = 1.7;
 end;
 
-
-if option = 2 then do
-date_prep_inj_intro=2024;  dur_prep_inj_scaleup=2;
+if option = 2 then do;  * cab without dcp;
+	date_prep_inj_intro=2024;  dur_prep_inj_scaleup=2;
 end;
 
-
+if option = 3 then do;  * dcp with cab;
+		eff_rate_test_startprep_any = 0.9;
+		eff_rate_choose_stop_prep_oral = 0.05 ; 
+		pref_prep_oral_beta_s1 = 1.7; 
+		pref_prep_in_beta_s1 = pref_prep_oral_beta_s1 + 0.3;
+		date_prep_inj_intro=2024;  dur_prep_inj_scaleup=2;
+end;
 
 
 *  ======================================================================================================================================== ;
