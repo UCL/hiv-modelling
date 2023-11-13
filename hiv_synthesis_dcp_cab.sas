@@ -2107,7 +2107,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;  * dcp without cab;
 		eff_rate_test_startprep_any = 0.9;
 		eff_rate_choose_stop_prep_oral = 0.05 ; 		
-		pref_prep_oral_changed_in_options=1; pref_prep_oral_beta_s1 = 1.7;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = 1.7;
 	end;
 
 	if option = 2 then do;  * cab without dcp;
@@ -2117,8 +2117,8 @@ who may be dead and hence have caldate{t} missing;
 	if option = 3 then do;  * dcp with cab;
 		eff_rate_test_startprep_any = 0.9;
 		eff_rate_choose_stop_prep_oral = 0.05 ; 
-		pref_prep_oral_changed_in_options=1; pref_prep_oral_beta_s1 = 1.7; 
-		pref_prep_inj_changed_in_options=1; pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.3;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = 1.7; 
+		pref_prep_inj_ch_in_options=1; pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.3;
 		date_prep_inj_intro=2024;  dur_prep_inj_scaleup=2;
 	end;
 
@@ -2169,18 +2169,18 @@ else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_para
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) 
-or (caldate_never_dot = &year_interv and pref_prep_oral_changed_in_options=1) then do;
+or (caldate_never_dot = &year_interv and pref_prep_oral_ch_in_options=1) then do;
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
 
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) 
-or (caldate_never_dot = &year_interv and pref_prep_inj_changed_in_options=1) then do;
+or (caldate_never_dot = &year_interv and pref_prep_inj_ch_in_options=1) then do;
 	if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
 	* pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);
 end;
 
 if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) or 
-(caldate_never_dot = &year_interv and pref_prep_vr_changed_in_options=1) then do;
+(caldate_never_dot = &year_interv and pref_prep_vr_ch_in_options=1) then do;
 	* pref_prep_vr;		pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	*women only;		
 end;
 
