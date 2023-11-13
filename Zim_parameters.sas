@@ -67,8 +67,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 * rate_disengage_sw_program;	%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
 
 * date_sw_prog_intro;		date_sw_prog_intro=2010;
-* sw_program;               %sample(sw_program, 0 1, 0.2 0.8);sw_program=1;***Discuss;
-
+* sw_program;               %sample(sw_program, 0 1, 0.2 0.8);sw_program=1;*Discuss;
 					            if sw_program = 1  then do; 
 								%sample_uniform(rate_engage_sw_program, 0.10 0.20); 
 								%sample_uniform(rate_disengage_sw_program, 0.02 0.05);
