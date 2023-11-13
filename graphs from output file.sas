@@ -34,7 +34,7 @@ p_newp_ge1_age1549_=p_newp_ge1_age1549;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 447   ;
+%let nfit = 1188  ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -179,7 +179,6 @@ run;
 
 
 
-/*
 
 data option_3;
 set b;
@@ -225,12 +224,12 @@ run;
 run;
 
 
-*/
+
 
 
 
 data d; * this is number of variables in %let var = above ;
-merge g1  h1 i1  ;
+merge g1  h1 i1  j1 ;
 by cald;
 
 
@@ -383,6 +382,7 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.8   by 0.05 
 label mean_incidence1549__0 = "option 0";
 label mean_incidence1549__1 = "option_1";
 label mean_incidence1549__2 = "option_2";
+label mean_incidence1549__3 = "option_3";
 
   series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -390,33 +390,13 @@ label mean_incidence1549__2 = "option_2";
   band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
   series  x=cald y=mean_incidence1549__2/	lineattrs = (color=blue  thickness = 4);
   band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=blue ) legendlabel= "90% range";
+  series  x=cald y=mean_incidence1549__3/	lineattrs = (color=lilac thickness = 4);
+  band    x=cald lower=p5_incidence1549__3 	upper=p95_incidence1549__3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
-
-
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "incidence";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2070 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.4   by 0.05 ) valueattrs=(size=10);
-
-label p50_incidence1549__0 = "option 0";
-label p50_incidence1549__1 = "option_1";
-label p50_incidence1549__2 = "option_2";
-
-  series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__2/	lineattrs = (color=blue  thickness = 4);
-  band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=blue ) legendlabel= "90% range";
-
-run;quit;
-
-ods html close;
 
 
  
@@ -543,6 +523,7 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000  by 100
 label p50_n_prep_any_0 = "option 0";
 label p50_n_prep_any_1 = "option_1";
 label p50_n_prep_any_2 = "option_2";
+label p50_n_prep_any_3 = "option_3";
 
   series  x=cald y=p50_n_prep_any_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_prep_any_0 	upper=p95_n_prep_any_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -550,6 +531,8 @@ label p50_n_prep_any_2 = "option_2";
   band    x=cald lower=p5_n_prep_any_1 	upper=p95_n_prep_any_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
   series  x=cald y=p50_n_prep_any_2/	lineattrs = (color=blue   thickness = 4);
   band    x=cald lower=p5_n_prep_any_2 	upper=p95_n_prep_any_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_3/	lineattrs = (color=lilac  thickness = 4);
+  band    x=cald lower=p5_n_prep_any_3 	upper=p95_n_prep_any_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
 
 run;quit;
 
