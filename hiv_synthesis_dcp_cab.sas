@@ -680,7 +680,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* changed from 0.7 to 0.8 after discussion due to low overall adherence resulting from 0.7;
 * prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
 
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.02 0.10 0.30);
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.10 0.30); * dcp_cab ;
 								* dependent_on_time_step_length ;
 
 * higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
@@ -2098,27 +2098,28 @@ if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-if option = 0 then do;
-end;
+	if option = 0 then do;
+	end;
 
-if option = 1 then do;  * dcp without cab;
+	if option = 1 then do;  * dcp without cab;
 		eff_rate_test_startprep_any = 0.9;
 		eff_rate_choose_stop_prep_oral = 0.05 ; 
 		pref_prep_oral_beta_s1 = 1.7;
-end;
+	end;
 
-if option = 2 then do;  * cab without dcp;
-	date_prep_inj_intro=2024;  dur_prep_inj_scaleup=2;
-end;
+	if option = 2 then do;  * cab without dcp;
+		date_prep_inj_intro=2024;  dur_prep_inj_scaleup=2;
+	end;
 
-if option = 3 then do;  * dcp with cab;
+	if option = 3 then do;  * dcp with cab;
 		eff_rate_test_startprep_any = 0.9;
 		eff_rate_choose_stop_prep_oral = 0.05 ; 
 		pref_prep_oral_beta_s1 = 1.7; 
 		pref_prep_in_beta_s1 = pref_prep_oral_beta_s1 + 0.3;
 		date_prep_inj_intro=2024;  dur_prep_inj_scaleup=2;
-end;
+	end;
 
+end;
 
 *  ======================================================================================================================================== ;
 
