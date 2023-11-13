@@ -101,7 +101,10 @@ between 18-49 can be sampled using %sample_uniform(my_var, 18:49);
 		else %if &i < &cnt %then if randvar < &i/&cnt then;
 			&name = &value;
 
+	%end;
+
 %mend sample_uniform;
+
 
 
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
