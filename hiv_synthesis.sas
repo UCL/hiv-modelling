@@ -1231,7 +1231,7 @@ Age Group	Total (%)   % of 15-65 (47.2% are 15-65)
 ;
 
 *Malawi JAS Nov23;
-* inc_cat=1;
+* inc_cat=4;
 * Running for 87 years - 1984 - 2071;
 
 ***LBM Jul19;

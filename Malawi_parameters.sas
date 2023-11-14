@@ -14,7 +14,7 @@
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					 inc_cat = 1 ;  
+* inc_cat; 					 inc_cat = 4 ;  	* Changed to new inc_cat 4 (specified for Zim) from inc_cat 1 JAS Nov23;
 
 * SEXUAL BEHAVIOUR;
 
