@@ -26,7 +26,7 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 
-%let single_var = n_prep_any           ;
+%let single_var = incidence1549_         ;
 
 
 
@@ -373,6 +373,9 @@ run;quit;
 
 ods html close;
 
+*/
+
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "incidence";
@@ -398,7 +401,7 @@ run;quit;
 ods html close;
 
 
-
+/*
  
 ods html;
 proc sgplot data=d; 
@@ -512,7 +515,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -538,7 +541,7 @@ run;quit;
 
 ods html close;
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
