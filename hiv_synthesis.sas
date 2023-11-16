@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 10000  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -2106,6 +2106,7 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 * INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
+option = 17;	* Delete when used - JAS Nov23;
 mihpsa_params_set_in_options=0;				* JAS Oct23;
 
 if caldate_never_dot >= &year_interv then do;
@@ -2196,16 +2197,16 @@ who may be dead and hence have caldate{t} missing;
 	*PrEP interventions;	*JAS Apr2023 and Oct23;
 	*option 15: Oral TDF/FTC PrEP for AGWY;	
 	*option 16: Oral TDF/FTC PrEP for FSW;	
-	*option 17: Oral TDF/FTC PrEP for sero-discordant couples;	
-	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women;	
+	*option 17: Oral TDF/FTC PrEP for sero-discordant couples (SDC);	
+	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women (PLW);	
 	*option 19: Dapivirine ring for AGYW;	
 	*option 20: Dapivirine ring for FSW;	
-	*option 21: Dapivirine ring for sero-discordant couples;	
-	*option 22: Dapivirine ring for pregnant and breastfeeding women;	
+	*option 21: Dapivirine ring for sero-discordant couples (SDC);	
+	*option 22: Dapivirine ring for pregnant and breastfeeding women (PLW);	
 	*option 23: Injectable PrEP for AGYW;	
 	*option 24: Injectable PrEP for FSW;	
-	*option 25: Injectable PrEP for Sero-discordant couples;	
-	*option 26: Injectable PrEP for pregnant and breastfeeding women;
+	*option 25: Injectable PrEP for Sero-discordant couples (SDC);	
+	*option 26: Injectable PrEP for pregnant and breastfeeding women (PLW);
 
 	if option in (15 19 23) then prep_any_strategy=3;		* All PrEP options for AGYW;
 	if option in (16 20 24) then prep_any_strategy=2;		* All PrEP options for FSW;
@@ -2315,10 +2316,10 @@ who may be dead and hence have caldate{t} missing;
 
 	*option 24: Injectable PrEP for FSW;
 	if option = 24 then do;
-			eff_rate_test_startprep_any=0.95;
-			eff_prob_prep_inj_b=0.95;
-			eff_rate_choose_stop_prep_inj=0.001;
-			eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_inj_b=0.95;
+		eff_rate_choose_stop_prep_inj=0.001;
+		eff_prob_prep_any_restart_choice=0.25;	
 	end;
 
 	*option 25: Injectable PrEP for SDC;
