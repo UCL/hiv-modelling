@@ -14596,6 +14596,22 @@ if prep_vr_tm3=1 or prep_vr_tm2=1 or prep_vr_tm1=1 or prep_vr=1 then do;
 	if pregnant=1 or breastfeeding=1 	then prep_vr_ly_plw=1;
 end;
 
+*To calculate number of current users (SDC and PLW only, AGYW and SW are coded above);
+prep_any_sdc = 0; prep_oral_sdc = 0; prep_inj_sdc = 0; prep_vr_sdc = 0;
+if sdc = 1 then do; 
+	if prep_any = 1 then prep_any_sdc = 1;
+	if prep_oral = 1 then prep_oral_sdc = 1;
+	if prep_inj = 1 then prep_inj_sdc = 1;
+	if prep_vr = 1 then prep_vr_sdc = 1;
+end;
+prep_any_plw = 0; prep_oral_plw = 0; prep_inj_plw = 0; prep_vr_plw = 0;
+if sdc = 1 then do; 
+	if prep_any = 1 then prep_any_plw = 1;
+	if prep_oral = 1 then prep_oral_plw = 1;
+	if prep_inj = 1 then prep_inj_plw = 1;
+	if prep_vr = 1 then prep_vr_plw = 1;
+end;
+
 * To calculate number ever initiated on oral PrEP;
 prep_oral_ever_1524w=0;prep_oral_ever_sw=0;prep_oral_ever_sdc=0;prep_oral_ever_plw=0;
 if prep_oral_ever=1 then do;
