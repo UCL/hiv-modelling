@@ -14274,9 +14274,10 @@ if gender = 2 and 25 <= age < 35 then do;  if prep_any=1 then prep_any_w_2534 = 
 if gender = 2 and 35 <= age < 45 then do;  if prep_any=1 then prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_w_1549 = 1;  end;
 
-
 elig_prep_any_m_1564 = 0; if gender = 1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
-
+prep_any_m_1549 = 0; prep_any_m_1564 = 0; 
+if gender = 1 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_m_1549 = 1;  end;
+if gender = 1 and 15 <= age < 64 then do;  if prep_any=1 then prep_any_m_1564 = 1;  end;
 
 * number on prep women age 15-24;
 prep_oral_w_1524 = 0 ; 	if prep_oral=1 and gender =2 and 15 <= age < 25 then prep_oral_w_1524 = 1 ;
