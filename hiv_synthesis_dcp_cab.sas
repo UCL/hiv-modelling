@@ -2116,7 +2116,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 3 then do;  * dcp with cab;
 		eff_rate_test_startprep_any = 0.9;
-		eff_rate_choose_stop_prep_oral = 0.05 ; 
+		eff_rate_choose_stop_prep_oral = 0.05 ; eff_rate_choose_stop_prep_inj  = 0.05 ; 
 		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = 1.7; 
 		pref_prep_inj_ch_in_options=1; pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.3;
 		date_prep_inj_intro=2024;  dur_prep_inj_scaleup=2;

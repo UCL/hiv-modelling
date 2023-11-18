@@ -26,7 +26,7 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 
-%let single_var = incidence1549_         ;
+%let single_var = prop_elig_on_prep            ;
 
 
 
@@ -373,7 +373,6 @@ run;quit;
 
 ods html close;
 
-*/
 
 
 ods html;
@@ -401,8 +400,7 @@ run;quit;
 ods html close;
 
 
-/*
- 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_inf_w_sw";
@@ -521,12 +519,12 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_prep_any";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000  by 10000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000  by 100000 ) valueattrs=(size=10);
 
-label p50_n_prep_any_0 = "option 0";
-label p50_n_prep_any_1 = "option_1";
-label p50_n_prep_any_2 = "option_2";
-label p50_n_prep_any_3 = "option_3";
+label p50_n_prep_any_0 = "status quo";
+label p50_n_prep_any_1 = "dcp";
+label p50_n_prep_any_2 = "cab";
+label p50_n_prep_any_3 = "dcp + cab";
 
   series  x=cald y=p50_n_prep_any_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_prep_any_0 	upper=p95_n_prep_any_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -541,7 +539,35 @@ run;quit;
 
 ods html close;
 
+*/
 
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "prop_elig_on_prep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1       by 0.1    ) valueattrs=(size=10);
+
+label p50_prop_elig_on_prep_0 = "status quo";
+label p50_prop_elig_on_prep_1 = "dcp";
+label p50_prop_elig_on_prep_2 = "cab";
+label p50_prop_elig_on_prep_3 = "dcp + cab";
+
+  series  x=cald y=p50_prop_elig_on_prep_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_0 	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_on_prep_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_on_prep_2/	lineattrs = (color=blue   thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_2 	upper=p95_prop_elig_on_prep_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_on_prep_3/	lineattrs = (color=lilac  thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_3 	upper=p95_prop_elig_on_prep_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+/*
 
 ods html;
 proc sgplot data=d; 
