@@ -2508,11 +2508,25 @@ if option = 0 then do;
 end;
  
 if option = 1 then do;  
-
+* prep; * moderate ;
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any + (  0.3 * (1 - eff_rate_test_startprep_any)  );
+		eff_rate_choose_stop_prep_oral =  0.7 * eff_rate_choose_stop_prep_oral ;
+		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.3  * (1 - eff_prob_prep_any_restart_choice));
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
 end;
 
 if option = 2 then do;  
-
+* hiv testing; * moderate;
+		an_lin_incr_test = 1.3 * an_lin_incr_test ;
+		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 1.3);
+* hiv care;  * moderate;
+		eff_pr_art_init = eff_pr_art_init * 1.3;
+		eff_rate_return = min(1, eff_rate_return * 1.3);
+		eff_rate_restart = min(1, eff_rate_restart * 1.3);
+		eff_rate_int_choice = eff_rate_int_choice / 1.3 ;
+		clinic_not_aw_int_frac = clinic_not_aw_int_frac / 1.3;
+		eff_prob_vl_meas_done = min(1, eff_prob_vl_meas_done * 1.3);
+		increase_adherence=1; increase_adherence_amount=0.05;
 end;
 
 if option = 3 then do;  
@@ -2535,23 +2549,15 @@ if option = 3 then do;
 end;
 
 if option = 4 then do;  
-
-end;
-
-if option = 5 then do;  
-
-end;
-
-if option = 6 then do;  
 * prep; * optimistic ;
-		eff_rate_test_startprep_any = eff_rate_test_startprep_any + (  0.3 * (1 - eff_rate_test_startprep_any)  );
-		eff_rate_choose_stop_prep_oral =  0.7 * eff_rate_choose_stop_prep_oral ;
-		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.3  * (1 - eff_prob_prep_any_restart_choice));
-		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
-* hiv testing; * optimistic;
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any + (  0.7 * (1 - eff_rate_test_startprep_any)  );
+		eff_rate_choose_stop_prep_oral =  0.3 * eff_rate_choose_stop_prep_oral ;
+		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.7  * (1 - eff_prob_prep_any_restart_choice));
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 5.0;
+* hiv testing; * moderate;
 		an_lin_incr_test = 1.3 * an_lin_incr_test ;
 		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 1.3);
-* hiv care;  * optimistic;
+* hiv care;  * moderate;
 		eff_pr_art_init = eff_pr_art_init * 1.3;
 		eff_rate_return = min(1, eff_rate_return * 1.3);
 		eff_rate_restart = min(1, eff_rate_restart * 1.3);
@@ -2559,6 +2565,44 @@ if option = 6 then do;
 		clinic_not_aw_int_frac = clinic_not_aw_int_frac / 1.3;
 		eff_prob_vl_meas_done = min(1, eff_prob_vl_meas_done * 1.3);
 		increase_adherence=1; increase_adherence_amount=0.05;
+end;
+
+if option = 5 then do;  
+* prep; * moderate ;
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any + (  0.3 * (1 - eff_rate_test_startprep_any)  );
+		eff_rate_choose_stop_prep_oral =  0.7 * eff_rate_choose_stop_prep_oral ;
+		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.3  * (1 - eff_prob_prep_any_restart_choice));
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
+* hiv testing; * optimistic;
+		an_lin_incr_test = 2.0 * an_lin_incr_test ;
+		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2.0);
+* hiv care;  * optimistic;
+		eff_pr_art_init = eff_pr_art_init * 2.0;
+		eff_rate_return = min(1, eff_rate_return * 2.0);
+		eff_rate_restart = min(1, eff_rate_restart * 2.0);
+		eff_rate_int_choice = eff_rate_int_choice / 2.0 ;
+		clinic_not_aw_int_frac = clinic_not_aw_int_frac / 2.0;
+		eff_prob_vl_meas_done = min(1, eff_prob_vl_meas_done * 2.0);
+		increase_adherence=1; increase_adherence_amount=0.20;
+end;
+
+if option = 6 then do;  
+* prep; * optimistic ;
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any + (  0.7 * (1 - eff_rate_test_startprep_any)  );
+		eff_rate_choose_stop_prep_oral =  0.3 * eff_rate_choose_stop_prep_oral ;
+		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.7  * (1 - eff_prob_prep_any_restart_choice));
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 5.0;
+* hiv testing; * optimistic;
+		an_lin_incr_test = 2.0 * an_lin_incr_test ;
+		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2.0);
+* hiv care;  * optimistic;
+		eff_pr_art_init = eff_pr_art_init * 2.0;
+		eff_rate_return = min(1, eff_rate_return * 2.0);
+		eff_rate_restart = min(1, eff_rate_restart * 2.0);
+		eff_rate_int_choice = eff_rate_int_choice / 2.0 ;
+		clinic_not_aw_int_frac = clinic_not_aw_int_frac / 2.0;
+		eff_prob_vl_meas_done = min(1, eff_prob_vl_meas_done * 2.0);
+		increase_adherence=1; increase_adherence_amount=0.20;
 end;
 
 
