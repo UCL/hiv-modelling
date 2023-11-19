@@ -52,23 +52,24 @@ prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000  n_onprep n_newl
 
 proc means; var prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000 n_onprep prop_ever_tested_1549 prop_tested_past_year_1549 
 prop_onprep_1549 prop_elig_on_prep p_vl1000;
-where caldate=2023;
+where 2023 <= caldate <= 2023.25 ;
 run;
 
 proc sort; by option;
 proc means; var n_onprep p_diag p_onart_diag p_onart_vl1000 n_newly_hiv_infected prop_ever_tested_1549 prop_tested_past_year_1549 prop_elig_on_prep
 prop_onprep_1549 p_vl1000;
 by option;
-where caldate ge 2023.5;
+where 2025.5 <= caldate <= 2025.75;
 run;
 
-proc sort; by run caldate option; option;
-proc print;
-var
-run caldate option who_takes_prep rate_exp_set_lower_p_vl1000 prop_ever_tested_1549  prop_tested_past_year_1549  prop_elig_on_prep prop_onprep_1549
-prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000  n_onprep n_newly_hiv_infected p_vl1000;
-run;
+* proc sort; 
+* by run caldate option; 
+* proc print;
+* var
+* run caldate option who_takes_prep rate_exp_set_lower_p_vl1000 prop_ever_tested_1549  prop_tested_past_year_1549  prop_elig_on_prep prop_onprep_1549
+* prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000  n_onprep n_newly_hiv_infected p_vl1000;
+* run;
 
-proc export data = a.summary 
-outfile = 'C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\trial_simulation\summary.csv' DBMS = csv replace;
-run;
+* proc export data = a.summary  
+  outfile = 'C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\trial_simulation\summary_18nov.csv' DBMS = csv replace;
+* run;
