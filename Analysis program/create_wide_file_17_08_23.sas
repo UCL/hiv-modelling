@@ -1,5 +1,7 @@
 * options user="/folders/myfolders/";
 
+***This file used for the paper;
+
 libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
@@ -49,7 +51,7 @@ by run ;
 * note discounting is from start of intervention - no adjustment needed;
 
 %let year_start_disc=2023;
-*discount_3py = 1/(1.03**(cald-&year_start_disc)); ***This is already calculated in HIV Synthesis;
+discount_3py = 1/(1.03**(cald-&year_start_disc)); ***This is already calculated in HIV Synthesis;
 discount_5py = 1/(1.05**(cald-&year_start_disc));
 discount_10py = 1/(1.10**(cald-&year_start_disc));
 *The following can be changed if we want instead 10% discount rate;
@@ -139,11 +141,15 @@ dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
+s_cost_sw_program=19000;
+dcost_sw_program= s_cost_sw_program* &discount;
+
+
 ***Will need to add the cost of VG when included in HIV Synthesis;
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj  /*+ 
-		dcost_sw_program*/;
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
+		dcost_sw_program;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
@@ -505,7 +511,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_17_08_23;
+data a.wide_fsw_17_08_23a;
 merge   wide_outputs  wide_par ;  
 by run;run;
 

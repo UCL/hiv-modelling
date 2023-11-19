@@ -1,8 +1,11 @@
 
-libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\zim";
+libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW";
 
+
+***This version used for the paper;
 data a; 
-set a.wide_fsw_18_09_23;
+set a.wide_fsw_17_08_23; ***Used for the paper;
+set a.wide_fsw_17_08_23a;***this is with a cost of $19m for a SW program to check if it's CE;
 if incidence1549_22 <0.02 then delete;
 run;
 
@@ -392,11 +395,6 @@ proc means n mean p50 p5 p95 lclm uclm;
 var maxcost_low_v_none maxcost_high_v_none;where incidence=4;run;
 proc means n mean p50 p5 p95 lclm uclm;
 var maxcost_low_v_none maxcost_high_v_none;where incidence=5;run;
-
-
-
-
-
 
 
 
