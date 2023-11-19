@@ -2111,14 +2111,16 @@ else 	eff_prob_prep_vr_b = prob_prep_vr_b;
 
 if low_prep_inj_uptake = 1 then date_prep_inj_intro = .; 
 
-if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
-* pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
+if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) 
+or (caldate_never_dot = &year_interv and pref_prep_oral_ch_in_options=1) then do;
+	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;
-																															 
+																														 
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
 					if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
 * pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 					* median 0.5 ;	
-end;
+end;	
+
 
 if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro) then do;
 * pref_prep_vr;					pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	* median 0.26 (women only);		
@@ -2500,7 +2502,7 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 option = &s;
 
-if caldate_never_dot = 2023.5      then do;
+if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -2513,6 +2515,7 @@ if option = 1 then do;
 		eff_rate_choose_stop_prep_oral =  0.7 * eff_rate_choose_stop_prep_oral ;
 		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.3  * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.2;
 end;
 
 if option = 2 then do;  
@@ -2535,6 +2538,7 @@ if option = 3 then do;
 		eff_rate_choose_stop_prep_oral =  0.7 * eff_rate_choose_stop_prep_oral ;
 		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.3  * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.2;
 * hiv testing; * moderate;
 		an_lin_incr_test = 1.3 * an_lin_incr_test ;
 		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 1.3);
@@ -2554,6 +2558,7 @@ if option = 4 then do;
 		eff_rate_choose_stop_prep_oral =  0.3 * eff_rate_choose_stop_prep_oral ;
 		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.7  * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 5.0;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.5;
 * hiv testing; * moderate;
 		an_lin_incr_test = 1.3 * an_lin_incr_test ;
 		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 1.3);
@@ -2573,6 +2578,7 @@ if option = 5 then do;
 		eff_rate_choose_stop_prep_oral =  0.7 * eff_rate_choose_stop_prep_oral ;
 		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.3  * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.2;
 * hiv testing; * optimistic;
 		an_lin_incr_test = 2.0 * an_lin_incr_test ;
 		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2.0);
@@ -2592,6 +2598,7 @@ if option = 6 then do;
 		eff_rate_choose_stop_prep_oral =  0.3 * eff_rate_choose_stop_prep_oral ;
 		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.7  * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 5.0;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.5;
 * hiv testing; * optimistic;
 		an_lin_incr_test = 2.0 * an_lin_incr_test ;
 		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2.0);
