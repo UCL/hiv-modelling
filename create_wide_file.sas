@@ -30,6 +30,12 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
+* prop_ever_tested_1549;		prop_ever_tested_1549 = (s_ever_tested_m1549_ + s_ever_tested_w1549_)/(s_alive1549_w + s_alive1549_m);
+* prop_tested_past_year_1549;	prop_tested_past_year_1549 = (s_tested_4p_m1549_ + s_tested_4p_w1549_) 
+									/ ((s_alive1549_w + s_alive1549_m) - (s_diag_m1549_ + s_diag_w1549_));
+* prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;if s_prep_any_elig = 0 then prop_elig_on_prep = 0;
+* prop_onprep_1549;				prop_onprep_1549 = s_onprep_1549 / ((s_alive1549_w + s_alive1549_m) - s_diag_m1549_);
+
 
 data a.summary; set e;
 
@@ -41,24 +47,26 @@ if cald ge 2010;
 
 caldate = cald;
 
-keep run caldate who_takes_prep rate_exp_set_lower_p_vl1000  
+keep run caldate who_takes_prep rate_exp_set_lower_p_vl1000 prop_ever_tested_1549  prop_tested_past_year_1549 prop_onprep_1549  p_vl1000
 prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000  n_onprep n_newly_hiv_infected option ;
 
-proc means; var prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000 n_onprep ;
+proc means; var prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000 n_onprep prop_ever_tested_1549 prop_tested_past_year_1549 
+prop_onprep_1549 prop_elig_on_prep p_vl1000;
 where caldate=2023;
 run;
 
 proc sort; by option;
-proc means; var n_onprep p_diag p_onart_diag p_onart_vl1000 n_newly_hiv_infected;
+proc means; var n_onprep p_diag p_onart_diag p_onart_vl1000 n_newly_hiv_infected prop_ever_tested_1549 prop_tested_past_year_1549 prop_elig_on_prep
+prop_onprep_1549 p_vl1000;
 by option;
-where caldate ge 2024.25;
+where caldate ge 2023.5;
 run;
 
 proc sort; by run caldate option; option;
 proc print;
 var
-run caldate option who_takes_prep rate_exp_set_lower_p_vl1000  
-prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000  n_onprep n_newly_hiv_infected ;
+run caldate option who_takes_prep rate_exp_set_lower_p_vl1000 prop_ever_tested_1549  prop_tested_past_year_1549  prop_elig_on_prep prop_onprep_1549
+prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000  n_onprep n_newly_hiv_infected p_vl1000;
 run;
 
 proc export data = a.summary 
