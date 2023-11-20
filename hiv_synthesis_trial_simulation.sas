@@ -14496,7 +14496,7 @@ end;
 * ts1m:  this is last 4 periods so 4 months if time step 1 month;
 tested_4p_m1549_=0; tested_4p_m1519_=0; tested_4p_m2024_=0; tested_4p_m2529_=0;tested_4p_m3039_=0; tested_4p_m4049_=0; tested_4p_m5064_=0;
 tested_4p_w1549_=0; tested_4p_w1519_=0; tested_4p_w2024_=0; tested_4p_w2529_=0;tested_4p_w3039_=0; tested_4p_w4049_=0; tested_4p_w5064_=0; 
-tested_4p_sw=0;
+tested_4p_sw=0;tested_4p_m1549_prep_elig=0;tested_4p_w1549_prep_elig=0;
 
 if t ge 4 and (tested=1 or tested_tm1=1 or tested_tm2=1 or tested_tm3=1) then do;
 	if gender=1 then do;
@@ -14520,6 +14520,9 @@ if t ge 4 and (tested=1 or tested_tm1=1 or tested_tm2=1 or tested_tm3=1) then do
 
 	end;
 end;
+
+if tested_4p_w1549_=1 and prep_any_elig=1 then tested_4p_w1549_prep_elig=1;
+if tested_4p_m1549_=1 and prep_any_elig=1 then tested_4p_m1549_prep_elig=1;
 
 
 ever_tested_m=.;if gender=1 and ever_tested=1 then ever_tested_m=1;
@@ -16702,6 +16705,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_diag_w + diag_w ; s_epdiag_m + epdiag_m ; s_epdiag_w + epdiag_w ; s_epi_m  + epi_m  ; s_epi_w + epi_w ; s_diag_ep + diag_ep ;
  	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ;  
 	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;  s_test_not_costed + test_not_costed;
+	s_tested_4p_w1549_prep_elig + tested_4p_w1549_prep_elig; s_tested_4p_m1549_prep_elig + tested_4p_m1549_prep_elig; 
 
 	/*VL and CD4*/
 
@@ -18431,6 +18435,7 @@ s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested154
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
 s_tested_4p_sw	s_tested_sw
+	s_tested_4p_w1549_prep_elig  s_tested_4p_m1549_prep_elig 
 
 s_ever_tested_m1549_  s_ever_tested_m1519_  s_ever_tested_m2024_  s_ever_tested_m2529_  s_ever_tested_m3034_  s_ever_tested_m3539_
 s_ever_tested_m4044_  s_ever_tested_m4549_  s_ever_tested_m5054_  s_ever_tested_m5559_  s_ever_tested_m6064_ 
@@ -19375,6 +19380,7 @@ s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested154
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
 s_tested_4p_sw		s_tested_sw
+s_tested_4p_m1549_prep_elig s_tested_4p_w1549_prep_elig
 
 s_ever_tested_m1549_  s_ever_tested_m1519_  s_ever_tested_m2024_  s_ever_tested_m2529_  s_ever_tested_m3034_  s_ever_tested_m3539_
 s_ever_tested_m4044_  s_ever_tested_m4549_  s_ever_tested_m5054_  s_ever_tested_m5559_  s_ever_tested_m6064_ 
@@ -20291,7 +20297,7 @@ prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd
 
 s_ever_tested_m1549_   s_ever_tested_w1549_    s_tested_4p_m1549_   s_tested_4p_w1549_  
 s_alive1549_w  s_alive1549_m   s_diag_m1549_   s_diag_w1549_ s_prep_any   s_prep_any_elig 
-s_onprep_1549  s_vl1000  s_vg1000_1549
+s_onprep_1549  s_vl1000  s_vg1000_1549  s_tested_4p_m1549_prep_elig  s_tested_4p_w1549_prep_elig  s_elig_prep_any_w_1549  s_elig_prep_any_m_1549
 ;
 
 
