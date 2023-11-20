@@ -58,14 +58,14 @@ keep run caldate who_takes_prep rate_exp_set_lower_p_vl1000 prop_ever_tested_154
 prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000  n_onprep n_newly_hiv_infected option prop_elig_on_prep 
 prevalence_vg1000_1549 prevalence_vg1000;
 
-proc means; var prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000 n_onprep prop_ever_tested_1549 prop_tested_past_year_1549 
+proc means; var prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000 prop_ever_tested_1549 prop_tested_past_year_1549 
 prop_onprep_1549 prop_elig_on_prep p_vl1000 prevalence_vg1000;
 where 2023 <= caldate <= 2023.25 ;
 run;
 
 proc sort; by option;
-proc means; var n_onprep p_diag p_onart_diag p_onart_vl1000 n_newly_hiv_infected prop_ever_tested_1549 prop_tested_past_year_1549 prop_elig_on_prep
-prop_onprep_1549 p_vl1000 prevalence_vg1000;
+proc means; var prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000 prop_ever_tested_1549 prop_tested_past_year_1549 
+prop_onprep_1549 prop_elig_on_prep p_vl1000 prevalence_vg1000;
 by option;
 where 2025.5 <= caldate <= 2025.75;
 run;
