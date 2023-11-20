@@ -20291,7 +20291,7 @@ prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd
 
 s_ever_tested_m1549_   s_ever_tested_w1549_    s_tested_4p_m1549_   s_tested_4p_w1549_  
 s_alive1549_w  s_alive1549_m   s_diag_m1549_   s_diag_w1549_ s_prep_any   s_prep_any_elig 
-s_onprep_1549  s_diag_m1549_  s_diag_w1549
+s_onprep_1549  s_vl1000  s_vg1000_1549
 ;
 
 
