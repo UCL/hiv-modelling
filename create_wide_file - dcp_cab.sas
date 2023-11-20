@@ -7,8 +7,8 @@
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\";
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_out\";
 
-data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
-data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
+data i1; set a.out1:; data i2; set a.out2:; data i3; set a.out3:; data i4; set a.out4:; data i5; set a.out5:; 
+data i6; set a.out6:; data i7; set a.out7:; data i8; set a.out8:; data i9; set a.out9:;  
 
 
 %let laprv =  dcp_cab  ;
@@ -1102,7 +1102,7 @@ data y ; set a.l_dcp_cab_y;
 
 data e; set y; keep &v run cald option ;
 
-proc means  noprint data=e; var &v; output out=y_23 mean= &v._23; by run ; where 2023.0 <= cald < 2023.75; 
+proc means  noprint data=e; var &v; output out=y_23 mean= &v._23; by run ; where 2023.0 <= cald <= 2023.25; 
 
 proc means noprint data=e; var &v; output out=y_20y mean= &v._20y; by run option ; where 2023.5 <= cald < 2043.50;   
 
