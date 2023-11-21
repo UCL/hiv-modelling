@@ -7,8 +7,9 @@ libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\ou
 
 data a.base_26_10_2023;   set b.out:;run;
 
-proc freq data=a.base_26_10_2023;table s_new_birth_circ
-/*s_new_vmmc s_new_mcirc
+proc freq data=a.base_26_10_2023;table s_ageg014_
+/*s_new_birth_circ
+s_new_vmmc s_new_mcirc
 s_new_mcirc_1014m
 s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
 s_new_mcirc_4044m  s_new_mcirc_4549m*/;run;
@@ -1034,7 +1035,7 @@ end;
 * n_alive_2549m;				n_alive_2549m = (s_alive1549_m - s_ageg1m) * &sf; *VCFeb2023; 
 * n_alive_2549w;				n_alive_2549w = (s_alive1549_w - s_ageg1w) * &sf; *VCFeb2023; 
 * n_alive0_;					n_alive0_ = s_alive0_ * &sf *4;*otherwise it is only the births in a 3 month periodl;
-
+* n_alive_014_;					n_alive_014_ = (s_ageg014_) * &sf; 
 * n_alive_1014m;				n_alive_1014m = s_ageg1014m * &sf; 
 * n_alive_1524_;				n_alive_1524_ = (s_ageg1m+s_ageg1w) * &sf; 
 * n_alive_2564_;				n_alive_2564_ = (s_alive1564-s_ageg1m-s_ageg1w) * &sf;
@@ -1092,7 +1093,7 @@ n_new_inf2549w = (s_primary1549w - s_primary1519w - s_primary2024w) * &sf * 4;
 keep run option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 
 n_hiv n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive0_ 
-n_alive_1524_	 n_alive_2564_		n_alive_65pl									
+n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050 n_not_on_art_cd450200 n_not_on_art_cd4200350 n_not_on_art_cd4350500 n_not_on_art_cd4ge500 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
