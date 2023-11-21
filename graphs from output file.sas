@@ -6,7 +6,8 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\";
+
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_a_out\";
 
 proc printto ;
 
@@ -26,7 +27,9 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 
-%let single_var = prop_elig_on_prep          ;
+
+%let single_var = p_vl1000_                    ;
+
 
 
 
@@ -34,7 +37,9 @@ p_newp_ge1_age1549_=p_newp_ge1_age1549;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 796   ;
+
+%let nfit = 1084  ;
+
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -275,7 +280,7 @@ ods html close;
 
 ods html;
 proc sgplot data=d ; 
-Title    height=1.5 justify=center "Number of people tested";
+Title    height=1.5 justify=center "Number of people tested per year";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2073 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  6000000   by 1000000 ) valueattrs=(size=10);
 
@@ -322,27 +327,35 @@ run;quit;
 ods html close;
 
 
+*/
+
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion with vl < 1000";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.7 to 1   by 0.05 ) valueattrs=(size=10);
 
-label p50_p_vl1000__0 = "option 0";
-label p50_p_vl1000__1 = "option_1";
-label p50_p_vl1000__2 = "option_2";
+label p50_p_vl1000__0 = "status quo";
+label p50_p_vl1000__1 = "dcp";
+label p50_p_vl1000__2 = "cab";
+label p50_p_vl1000__3 = "dcp + cab";
 
-  series  x=cald y=p50_p_vl1000__0/	lineattrs = (color=black thickness = 4);
+
+ series  x=cald y=p50_p_vl1000__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_vl1000__1/	lineattrs = (color=green thickness = 4);
   band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_p_vl1000__2/	lineattrs = (color=red   thickness = 4);
-
+  series  x=cald y=p50_p_vl1000__2/	lineattrs = (color=blue   thickness = 4);
+  band    x=cald lower=p5_p_vl1000__2 	upper=p95_p_vl1000__2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+ series  x=cald y=p50_p_vl1000__3/	lineattrs = (color=lilac  thickness = 4);
+  band    x=cald lower=p5_p_vl1000__3 	upper=p95_p_vl1000__3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
+/*
 
 
 ods html;
@@ -378,7 +391,6 @@ ods html close;
 
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "incidence";
@@ -402,7 +414,6 @@ label mean_incidence1549__3 = "option_3";
 run;quit;
 
 ods html close;
-
 
 
 
@@ -544,7 +555,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -570,7 +581,7 @@ run;quit;
 
 ods html close;
 
-/*
+
 
 ods html;
 proc sgplot data=d; 

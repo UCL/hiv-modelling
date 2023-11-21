@@ -4,18 +4,16 @@
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\";
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_out\";
 
-data i1; set a.out1:; data i2; set a.out2:; data i3; set a.out3:; data i4; set a.out4:; data i5; set a.out5:; 
-data i6; set a.out6:; data i7; set a.out7:; data i8; set a.out8:; data i9; set a.out9:;  
-
+data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
+data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 %let laprv =  dcp_cab  ;
 
-data a.k_dcp_cab;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_dcp_cab;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-proc sort data=a.k_dcp_cab; 
+proc sort data=b.k_dcp_cab; 
 by run cald option;
 run;
 
@@ -24,7 +22,9 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set a.k_dcp_cab ;
+
+set b.k_dcp_cab ;
+
 
 if cald=2023   ;
 s_alive = s_alive_m + s_alive_w ;
@@ -42,7 +42,8 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge a.k_dcp_cab sf;
+
+merge b.k_dcp_cab sf;
 by run ;
 
 * preparatory code ;
@@ -199,11 +200,15 @@ dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 * ;
 
 
+dcp_cost=0;
+if option=1 or option=3 then dcp_cost = 20; * $20 million ;
+ddcp_cost = dcp_cost * discount;
+
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv + dcost_non_aids_pre_death ;
+		dcost_child_hiv + dcost_non_aids_pre_death + ddcp_cost;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost; 
@@ -1082,12 +1087,10 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_dcp_cab_y; set y;  
 
+data    b.l_dcp_cab_y; set y;  
 
-run;
-
-data y ; set a.l_dcp_cab_y; 
+data y ; set b.l_dcp_cab_y; 
 
 
   options nomprint;
@@ -1255,7 +1258,9 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_ai_naive_no_pmtct_e_inm);
 
 
-data   a.wide_outputs; merge 
+
+data   b.wide_outputs; merge 
+
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
 dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
@@ -1398,7 +1403,9 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
 
-data a.wide_par2; merge 
+
+data b.wide_par2; merge 
+
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
@@ -1450,8 +1457,8 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  a.w_dcp_cab     ; 
-  merge a.wide_outputs   a.wide_par2    ;
+  data  b.w_dcp_cab     ; 
+  merge b.wide_outputs   b.wide_par2    ;
   by run;
 
 
@@ -1610,33 +1617,42 @@ var prevalence1549w_23 prevalence1549m_23 incidence1549_23 p_diag_23 p_onart_dia
 run;
 
 
-proc means data = a.w_dcp_cab  n p50 p5 p95 ;  
+
+proc means   data = b.w_dcp_cab  n p50 p5 p95 min max;  
+var prevalence1549w_23 prevalence1549m_23 incidence1549_23 p_diag_23 p_onart_diag_23 p_onart_vl1000_23 p_vl1000_23 prevalence_vg1000_23 
+prop_elig_on_prep_23  ;
+run;
+
+
+proc means data = b.w_dcp_cab  n p50 p5 p95 ;  
 var
 prop_1564_onprep_20y_1  prop_1564_onprep_20y_2   prop_1564_onprep_20y_3   prop_1564_onprep_20y_4 
 d_prop_1564_onprep_20y_2_1  d_prop_1564_onprep_20y_3_1  d_prop_1564_onprep_20y_4_1  
 ;
 
-proc means data = a.w_dcp_cab  n p50 p5 p95 ;  
+
+proc means data = b.w_dcp_cab  n p50 p5 p95 ;  
 var 
 prop_elig_on_prep_20y_1 prop_elig_on_prep_20y_2  prop_elig_on_prep_20y_3 prop_elig_on_prep_20y_4 
 d_prop_elig_on_prep_20y_2_1  d_prop_elig_on_prep_20y_3_1  d_prop_elig_on_prep_20y_4_1  
 ;
 
 
-proc means data = a.w_dcp_cab  n p50 p5 p95 ;  
+proc means data = b.w_dcp_cab  n p50 p5 p95 ;  
 var
 prop_prep_inj_20y_1  prop_prep_inj_20y_2   prop_prep_inj_20y_3   prop_prep_inj_20y_4 
 d_prop_prep_inj_20y_2_1  d_prop_prep_inj_20y_3_1  d_prop_prep_inj_20y_4_1  
 ;
 
-proc means data = a.w_dcp_cab  n p50 p5 p95 ;  
+proc means data = b.w_dcp_cab  n p50 p5 p95 ;  
 var
 p_prep_any_ever_43_1  p_prep_any_ever_43_2   p_prep_any_ever_43_3   p_prep_any_ever_43_4 
 d_p_prep_any_ever_43_2_1  d_p_prep_any_ever_43_3_1  d_p_prep_any_ever_43_4_1  
 ;
 run;
 
-proc means  data = a.w_dcp_cab  n p50 p5 p95 ;  
+
+proc means  data = b.w_dcp_cab  n p50 p5 p95 ;  
 var
 incidence1549_20y_1 incidence1549_20y_2  incidence1549_20y_3 incidence1549_20y_4  
 r_incidence1549_20y_2_1 r_incidence1549_20y_3_1 r_incidence1549_20y_4_1
