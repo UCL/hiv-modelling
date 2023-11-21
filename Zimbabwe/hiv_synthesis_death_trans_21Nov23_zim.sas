@@ -873,9 +873,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-* %include "/home/rmjlaph/SA_parameters.sas";
-* %include "/home/rmjlvca/Zim_parameters_08_f.sas";
- *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
+%include "/home/rmjllob/Zim_parameters.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
@@ -7364,7 +7362,7 @@ nactive = round(nactive,0.25);
 (the program below only determines whether a person is infected from a person diagnosed or 
 naive or not, I would leave this as it is);
 
-i*LBMJan23;
+*LBM Nov23;
 if vl_source_inf=1 and c_rm_inf=0 then do;
 t_prop_diag				= t_prop_vlg1_rm0_diag;
 t_prop_naive			= t_prop_vlg1_rm0_naive; 
@@ -7574,7 +7572,7 @@ if infected_newp=1 then do;
 	infected_diagnosed=0; infected_naive=1;
 	g=rand('uniform');
     if g < t_prop_diag then infected_diagnosed=1;
-	*LBMJan23;
+	*LBM Nov23;
 	*partner is undiagnosed;
 	I_undiag_newp = 1-infected_diagnosed;
 
@@ -7635,7 +7633,7 @@ infected_diagnosed=.;
 if infected_ep=1 then do;
 	infected_diagnosed=0; if epdiag_tm1=1 then infected_diagnosed=1; 
 
-	*LBMJan23;*
+	*LBM Nov23;*
 	*partner is undiagnosed;
 	I_undiag_ep = 1-infected_diagnosed;
  	
@@ -7725,13 +7723,13 @@ if gender=1 then do;
 	I_undiag1519m=I_undiag; I_diag_naive1519m=I_diag_naive; I_diag_startart1519m=I_diag_startart; I_onart1519m=I_onart; 
 	I_offart1519m=I_offart; I_onart_lt6m1519m=I_onart_lt6m; I_onart_lt6m_nvs1519m=I_onart_lt6m_nvs;
 	I_onart_gt6m_nvs1519m=I_onart_gt6m_nvs;	I_onart_gt6m_vs1519m=I_onart_gt6m_vs;I_offart_1stI1519m=I_offart_1stI;
-	I_offart_SI1519m=I_offart_SI; I_offart_SIlt6m1519m=I_diag_startart; I_offart_SIgt6m1519m=I_offart_SIgt6m; 
+	I_offart_SI1519m=I_offart_SI; I_offart_SIlt6m1519m=I_offart_SIlt6m; I_offart_SIgt6m1519m=I_offart_SIgt6m; 
 	end;
 	if 20 <= age < 25 then do;
 	I_undiag2024m=I_undiag; I_diag_naive2024m=I_diag_naive; I_diag_startart2024m=I_diag_startart; I_onart2024m=I_onart;
 	I_offart2024m=I_offart; I_onart_lt6m2024m=I_onart_lt6m; I_onart_lt6m_nvs2024m=I_onart_lt6m_nvs; 
 	I_onart_gt6m_nvs2024m=I_onart_gt6m_nvs;	I_onart_gt6m_vs2024m=I_onart_gt6m_vs;I_offart_1stI2024m=I_offart_1stI;
-	I_offart_SI2024m=I_offart_SI; I_offart_SIlt6m2024m=I_diag_startart; I_offart_SIgt6m2024m=I_offart_SIgt6m; 
+	I_offart_SI2024m=I_offart_SI; I_offart_SIlt6m2024m=I_offart_SIlt6m; I_offart_SIgt6m2024m=I_offart_SIgt6m; 
 	end;
 	if 25 <= age < 30 then do;
 	I_undiag2529m=I_undiag; I_diag_naive2529m=I_diag_naive; I_diag_startart2529m=I_diag_startart; I_onart2529m=I_onart; 
@@ -7817,13 +7815,13 @@ if gender=2 then do;
 	I_undiag1519w=I_undiag; I_diag_naive1519w=I_diag_naive; I_diag_startart1519w=I_diag_startart; I_onart1519w=I_onart; 
 	I_offart1519w=I_offart; I_onart_lt6m1519w=I_onart_lt6m; I_onart_lt6m_nvs1519w=I_onart_lt6m_nvs;
 	I_onart_gt6m_nvs1519w=I_onart_gt6m_nvs;	I_onart_gt6m_vs1519w=I_onart_gt6m_vs;I_offart_1stI1519w=I_offart_1stI;
-	I_offart_SI1519w=I_offart_SI; I_offart_SIlt6m1519w=I_diag_startart; I_offart_SIgt6m1519w=I_offart_SIgt6m; 
+	I_offart_SI1519w=I_offart_SI; I_offart_SIlt6m1519w=I_offart_SIlt6m; I_offart_SIgt6m1519w=I_offart_SIgt6m; 
 	end;
 	if 20 <= age < 25 then do;
 	I_undiag2024w=I_undiag; I_diag_naive2024w=I_diag_naive; I_diag_startart2024w=I_diag_startart; I_onart2024w=I_onart;
 	I_offart2024w=I_offart; I_onart_lt6m2024w=I_onart_lt6m; I_onart_lt6m_nvs2024w=I_onart_lt6m_nvs; 
 	I_onart_gt6m_nvs2024w=I_onart_gt6m_nvs;	I_onart_gt6m_vs2024w=I_onart_gt6m_vs;I_offart_1stI2024w=I_offart_1stI;
-	I_offart_SI2024w=I_offart_SI; I_offart_SIlt6m2024w=I_diag_startart; I_offart_SIgt6m2024w=I_offart_SIgt6m; 
+	I_offart_SI2024w=I_offart_SI; I_offart_SIlt6m2024w=I_offart_SIlt6m; I_offart_SIgt6m2024w=I_offart_SIgt6m; 
 	end;
 	if 25 <= age < 30 then do;
 	I_undiag2529w=I_undiag; I_diag_naive2529w=I_diag_naive; I_diag_startart2529w=I_diag_startart; I_onart2529w=I_onart; 
@@ -14421,7 +14419,7 @@ if 15 <= age     then do;
 
 	i_naive_vlg6_rm0_np=0; if hiv=1 and naive=1 and vlg6=1 and registd=1 and rm_=0 then i_naive_vlg6_rm0_np=np;
 	i_naive_vlg6_rm1_np=0; if hiv=1 and naive=1 and vlg6=1 and registd=1 and rm_=1 then i_naive_vlg6_rm1_np=np;
-	***LBMJan23;
+	***LBM Nov23;
 	***Diagnosed, have started ART;
 	i_startart_vlg1_rm0_np=0; if hiv=1 and naive ne 1 and vlg1=1 and registd=1 and rm_=0 then i_startart_vlg1_rm0_np=np;
 	i_startart_vlg1_rm1_np=0; if hiv=1 and naive ne 1 and vlg1=1 and registd=1 and rm_=1 then i_startart_vlg1_rm1_np=np;
@@ -16427,7 +16425,7 @@ end;
 
 
 
-***LBMJan23;
+***LBM Nov23;
 ***Status at death for attribution of deaths project;
 *'A' means 'on ART';
 hiv_death=0; hiv_death_m=0; hiv_death_w=0;
@@ -18707,7 +18705,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_diagprim + diagprim ; s_diagprim_prep_oral + diagprim_prep_oral ; s_diagprim_prep_inj + diagprim_prep_inj ; s_diagprim_prep_vr  + diagprim_prep_vr  ;
 
-		/*LBMJan23*/
+		/*LBM Nov23*/
 
 	***Transmission sources variables;
 	/*Inf partner started ART*/
@@ -20979,7 +20977,7 @@ s_prop_vlg4_rm0_naive=0; if s_i_diag_vlg4_rm0_np >0 then do; s_prop_vlg4_rm0_nai
 s_prop_vlg5_rm0_naive=0; if s_i_diag_vlg5_rm0_np >0 then do; s_prop_vlg5_rm0_naive = max(0,s_i_naive_vlg5_rm0_np) / s_i_diag_vlg5_rm0_np ; end;
 s_prop_vlg6_rm0_naive=0; if s_i_diag_vlg6_rm0_np >0 then do; s_prop_vlg6_rm0_naive = max(0,s_i_naive_vlg6_rm0_np) / s_i_diag_vlg6_rm0_np ; end;
 
-*LBMJan23;
+*LBM Nov23;
 
 *Of those diagnosed, those who have started ART;
 s_p_vlg1_rm1_startart=0; if s_i_diag_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_startart = max(0,s_i_startart_vlg1_rm1_np / s_i_diag_vlg1_rm1_np ) ;end;
@@ -21398,7 +21396,7 @@ s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np
 
 s_diagprim s_diagprim_prep_oral s_diagprim_prep_inj s_diagprim_prep_vr 
 
-/*LBMJan23*/
+/*LBM Nov23*/
 
 /*Inf partner started ART*/
 s_i_startart_vlg1_rm0_np  s_i_startart_vlg2_rm0_np  s_i_startart_vlg3_rm0_np  s_i_startart_vlg4_rm0_np
@@ -22503,11 +22501,11 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 ***Zim specific;
-/*
+
 if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
 if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
 if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
-*/
+
 /*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -22681,7 +22679,7 @@ t_prop_vlg6_rm0_naive = s_prop_vlg6_rm0_naive ;
 t_prop_vlg6_rm1_diag = s_prop_vlg6_rm1_diag ;  
 t_prop_vlg6_rm1_naive = s_prop_vlg6_rm1_naive ;  
 
-*LBMJan23;
+*LBM Nov23;
 *Started ART;
 t_p_vlg1_rm0_startart = s_p_vlg1_rm0_startart;
 t_p_vlg2_rm0_startart = s_p_vlg2_rm0_startart;
@@ -22900,7 +22898,7 @@ s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np
 
 s_diagprim s_diagprim_prep_oral s_diagprim_prep_inj s_diagprim_prep_vr 
 
-/*LBMJan23*/
+/*LBM Nov23*/
 
 /*Inf partner started ART*/
 s_i_startart_vlg1_rm0_np  s_i_startart_vlg2_rm0_np  s_i_startart_vlg3_rm0_np  s_i_startart_vlg4_rm0_np
@@ -24932,7 +24930,7 @@ s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np
 
 s_diagprim s_diagprim_prep_oral s_diagprim_prep_inj s_diagprim_prep_vr 
 
-/*LBMJan23*/
+/*LBM Nov23*/
 
 /*Inf partner started ART*/
 s_i_startart_vlg1_rm0_np  s_i_startart_vlg2_rm0_np  s_i_startart_vlg3_rm0_np  s_i_startart_vlg4_rm0_np
