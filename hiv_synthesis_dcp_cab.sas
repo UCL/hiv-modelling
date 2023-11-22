@@ -2184,8 +2184,7 @@ or (caldate_never_dot = &year_interv and pref_prep_inj_ch_in_options=1) then do;
 	* pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);
 end;
 
-if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) or 
-(caldate_never_dot = &year_interv and pref_prep_vr_ch_in_options=1) then do;
+if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) then do;
 	* pref_prep_vr;		pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	*women only;		
 end;
 
