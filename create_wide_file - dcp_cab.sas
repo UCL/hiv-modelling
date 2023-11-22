@@ -1003,7 +1003,7 @@ run cald option
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
 dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
-dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost    n_hiv
+dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost    n_hiv  ddcp_cost
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
@@ -1165,7 +1165,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=aids_death_rate);    %var(v=death_rate_onart);     %var(v=dcost);    %var(v= dart_cost_y);
   %var(v=dadc_cost);     %var(v=dcd4_cost);     %var(v=dvl_cost);     %var(v=dvis_cost);      %var(v=dcot_cost);     %var(v=dtb_cost);   
   %var(v=dres_cost);    %var(v=dtest_cost);     %var(v=d_t_adh_int_cost);     %var(v=dswitchline_cost);    %var(v=dtaz_cost);     %var(v=dcost_drug_level_test);
-  %var(v=dclin_cost );  %var(v=dnon_tb_who3_cost); 
+  %var(v=dclin_cost );  %var(v=dnon_tb_who3_cost); %var(v=ddcp_cost);
   %var(v=dcost_circ );    %var(v=dcost_condom_dn);
    %var(v=dcost_prep_oral);   %var(v=dcost_prep_inj);
  %var(v=dcost_prep_visit );   %var(v=dcost_prep_visit_oral );   %var(v=dcost_prep_visit_inj );     %var(v=dcost_prep );   * %var(v=dcost_drug_level_test ); 
@@ -1255,7 +1255,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_started_prep_inj_hiv); %var(v=n_started_prep_any_hiv); 
 %var(v=prop_prep_tot5yrs); %var(v=n_start_rest_prep_inj_hiv); %var(v=n_prep_inj);%var(v=p_prep_adhg80);
 %var(v=p_nactive_art_start_lt1p5);   %var(v=p_nactive_art_start_lt2);   %var(v=p_nactive_art_start_lt3); 
-%var(v=n_ai_naive_no_pmtct_e_inm);
+%var(v=n_ai_naive_no_pmtct_e_inm); 
 
 
 
@@ -1264,7 +1264,7 @@ data   b.wide_outputs; merge
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
 dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
-dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost    n_hiv
+dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost  n_hiv
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
@@ -1460,6 +1460,7 @@ proc sort; by run;run;
   data  b.w_dcp_cab     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
+
 
 
 d_prop_elig_on_prep_20y_2_1 = prop_elig_on_prep_20y_2 - prop_elig_on_prep_20y_1; 
@@ -1673,6 +1674,7 @@ run;
 
 proc means  n mean p5 p95;
 var
+ddcp_cost_50y_1 ddcp_cost_50y_2 ddcp_cost_50y_3 ddcp_cost_50y_4 
 dart_cost_y_50y_1  dart_cost_y_50y_2  dart_cost_y_50y_3  dart_cost_y_50y_4  
 dadc_cost_50y_1  dadc_cost_50y_2  dadc_cost_50y_3  dadc_cost_50y_4  
 dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3  dcd4_cost_50y_4  
