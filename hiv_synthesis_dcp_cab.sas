@@ -3,8 +3,15 @@
 
 
 
-* define a person who is dcp reached ;
+* 
 
+define a person who is dcp reached 
+
+could it be a person with indication for prep who is tested ?
+
+dcp some fixed cost plus a unit cost per person reached with dcp
+
+;
 
 
 
