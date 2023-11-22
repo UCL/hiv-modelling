@@ -204,6 +204,9 @@ dcp_cost=0;
 if option=1 or option=3 then dcp_cost = 20; * $20 million ;
 ddcp_cost = dcp_cost * discount;
 
+****** instead: some fixed cost plus a unit cost "per person with indication for prep + test";
+
+
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
