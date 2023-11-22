@@ -1,5 +1,18 @@
 
 
+
+
+* see *** below;
+
+
+
+
+
+
+
+
+
+
 * options user="/folders/myfolders/";
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
@@ -199,12 +212,13 @@ dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * ;
 
-
+/*
 dcp_cost=0;
 if option=1 or option=3 then dcp_cost = 20; * $20 million ;
 ddcp_cost = dcp_cost * discount;
+*/
 
-****** instead: some fixed cost plus a unit cost "per person with indication for prep + test";
+****** instead of above: some fixed cost plus a unit cost "per person with indication for prep + tested" ?;
 
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
