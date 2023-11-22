@@ -60,7 +60,7 @@ prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000  n_onprep n_newl
 prevalence_vg1000_1549 prevalence_vg1000;
 
 proc means; var prevalence1549 incidence1549 p_diag p_onart_diag p_onart_vl1000 prop_ever_tested_1549 prop_tested_past_year_1549 
-prop_onprep_1549 prop_elig_on_prep p_vl1000 prevalence_vg1000;
+prop_onprep_1549 prop_elig_on_prep p_vl1000 prevalence_vg1000 prop_tested_past_year_1549;
 where 2023 <= caldate <= 2023.25 ;
 run;
 
