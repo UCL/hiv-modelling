@@ -1,4 +1,26 @@
 
+
+
+
+  
+* aim for targets agreed;
+
+* ultimately aim for 3000 runs;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -20160,13 +20182,16 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=6);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=6);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=6);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=6);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=6);
+
 
 data outputs_6; set r2 ;
 
+***
 
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=6);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=6);
 
+***
 
 
 data a._outputs_&dataset_id(compress=binary);
