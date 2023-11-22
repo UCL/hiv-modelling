@@ -2112,7 +2112,7 @@ else 	eff_prob_prep_vr_b = prob_prep_vr_b;
 if low_prep_inj_uptake = 1 then date_prep_inj_intro = .; 
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) 
-or (caldate_never_dot = &year_interv and pref_prep_oral_ch_in_options=1) then do;
+or (caldate_never_dot = &year_interv + 0.25 and pref_prep_oral_ch_in_options=1) then do;
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;
 																														 
@@ -2520,8 +2520,8 @@ end;
 
 if option = 2 then do;  
 * hiv testing; * moderate;
-		fold_rate_decr_test_future = fold_rate_decr_test_future * 2 ;
-		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 1.3);
+		incr_testing_year_interv = 2 ;
+		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2);
 * hiv care;  * moderate;
 		eff_pr_art_init = eff_pr_art_init * 1.3;
 		eff_rate_return = min(1, eff_rate_return * 1.3);
@@ -2540,8 +2540,8 @@ if option = 3 then do;
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
 		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.5;
 * hiv testing; * moderate;
-		fold_rate_decr_test_future = fold_rate_decr_test_future * 2 ;
-		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 1.3);
+		incr_testing_year_interv = 2 ;
+		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2);
 * hiv care;  * moderate;
 		eff_pr_art_init = eff_pr_art_init * 1.3;
 		eff_rate_return = min(1, eff_rate_return * 1.3);
@@ -2560,8 +2560,8 @@ if option = 4 then do;
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 5.0;
 		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 1.0;
 * hiv testing; * moderate;
-		fold_rate_decr_test_future = fold_rate_decr_test_future * 2 ;
-		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 1.3);
+		incr_testing_year_interv =  2 ;
+		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2);
 * hiv care;  * moderate;
 		eff_pr_art_init = eff_pr_art_init * 1.3;
 		eff_rate_return = min(1, eff_rate_return * 1.3);
@@ -2580,8 +2580,8 @@ if option = 5 then do;
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
 		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.5;
 * hiv testing; * optimistic;
-		fold_rate_decr_test_future = fold_rate_decr_test_future * 5 ;
-		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2.0);
+		incr_testing_year_interv =  5 ;
+		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 5.0);
 * hiv care;  * optimistic;
 		eff_pr_art_init = eff_pr_art_init * 2.0;
 		eff_rate_return = min(1, eff_rate_return * 2.0);
@@ -2600,8 +2600,8 @@ if option = 6 then do;
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 5.0;
 		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 1.0;
 * hiv testing; * optimistic;
-		fold_rate_decr_test_future = fold_rate_decr_test_future * 5 ;
-		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2.0);
+		incr_testing_year_interv =  5 ;
+		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 5.0);
 * hiv care;  * optimistic;
 		eff_pr_art_init = eff_pr_art_init * 2.0;
 		eff_rate_return = min(1, eff_rate_return * 2.0);
@@ -2867,7 +2867,7 @@ end;
 
 tested_anc=.;
 
-if t ge 2 and date_start_testing <= caldate{t} then do; 
+if t ge 2 and date_start_testing <= caldate{t} and caldate{t} < &year_interv then do; 
 
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
@@ -2877,18 +2877,8 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 
 end;
 
-if caldate{t} >= &year_interv then do;
-	if incr_test_year_i = 1              then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-	***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
-	if incr_test_year_i = 3 then do; 
-		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
-		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
-		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
-		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
-		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
-	end;
-	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
+if caldate{t} = &year_interv then do;  * trial_sim;
+	rate_1sttest = rate_1sttest * incr_testing_year_interv; rate_reptest = rate_reptest * incr_testing_year_interv; 
 end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
@@ -20178,22 +20168,39 @@ data outputs_6; set r2 ;
 
 
 
+
 data a._outputs_&dataset_id(compress=binary);
 set outputs_0  outputs_1  outputs_2  outputs_3  outputs_4  outputs_5  outputs_6;
 if age ge 15 and death = .;
 caldate=caldate_never_dot;
 who_takes_prep = prep_any_strategy;
+
 diagnosed=registd;
+diagnosed_tm1=registd_tm1;
+
 viral_load_suppressed=.;
 if onart=1 then viral_load_suppressed=0;
 if onart=1 and . < vl < 3 then viral_load_suppressed=1;
-onprep = prep_any; 
+
+viral_load_suppressed_tm1=.;
+if onart_tm1=1 then viral_load_suppressed_tm1=0;
+if onart_tm1=1 and . < vl_tm1 < 3 then viral_load_suppressed_tm1=1;
+
+onprep = prep_any;
+onprep_tm1 = prep_any_tm1;
+
 adherence=adh;
+adherence_tm1=adh_tm1;
+
 date_infected = infection;
 infected_past_6m=0;
 if hiv=1 and 0 <= 2025.75 - infection <= 0.25 then infected_past_6m=1;
-keep run who_takes_prep caldate option age gender diagnosed onart viral_load_suppressed onprep adherence hiv date_infected infected_past_6m ;
+
+keep run who_takes_prep caldate option age gender diagnosed diagnosed_tm1 onart onart_tm1 viral_load_suppressed viral_load_suppressed_tm1  
+onprep_tm1 onprep adherence adherence_tm1 hiv date_infected infected_past_6m mcirc sti sti_tm1 sw sw_tm1;
 run;
+
+
 
 
 
