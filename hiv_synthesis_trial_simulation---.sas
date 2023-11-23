@@ -7,6 +7,8 @@
 
 * ultimately aim for 3000 runs;
 
+* reconcile program with dcp-cab / core ;
+
 
 
 
