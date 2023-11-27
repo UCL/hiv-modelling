@@ -584,7 +584,7 @@ newp_seed = 7;
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
-* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.25 0.75);
+* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.15 0.85);
                               if sw_art_disadv=0  then do; sw_higher_int = 1; rel_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1;end;
 
 						   	  if sw_art_disadv=1  then do; 
@@ -593,17 +593,46 @@ newp_seed = 7;
 						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 3);
 							  end;
 
-* date_sw_prog_intro;		date_sw_prog_intro=2015;
-* sw_program;               %sample(sw_program, 0 1, 0.8 0.2);
-					            if sw_program = 1  then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
+* date_sw_prog_intro;		date_sw_prog_intro=2010;
+* sw_program;               %sample(sw_program, 0 1, 0.1 0.9);
 
-* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp, 0.05 0.1 0.2);
-* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.25 0.50 0.75);
-* effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.3 0.5 0.8);
-* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.25 0.5 0.75);
-* effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.3 0.5 0.8);
-* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.8 0.95);
-* effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
+* sw_prog_intensity;		if sw_program = 1  then do;
+
+%sample(sw_prog_intensity, 1 2, 0.8 0.2);*1=low, 2=high;
+
+***These parameters initially set for all SW programs and then overwritten below for high intensity programs;
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05, 0.10); *previously 0.10;
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02, 0.04); *previously 0.025;
+* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
+* effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
+* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.10 0.15 0.25);
+* effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
+* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.05 0.10);
+* effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.10 0.20);
+
+***These factors increase the impact of the low intensity SW program by sampled fold factor;
+* fold_hi_sw_prog_newp;		%sample_uniform(fold_hi_sw_prog_newp, 2 3);
+* fold_hi_sw_prog_6mtest;	%sample_uniform(fold_hi_sw_prog_6mtest, 1.5 2);
+* fold_hi_sw_prog_int	;	%sample_uniform(fold_hi_sw_prog_int, 1.5 2 3);
+* fold_hi_sw_prog_adh	;	%sample_uniform(fold_hi_sw_prog_adh, 2 3 4);
+* fold_hi_sw_prog_lossdiag;	%sample_uniform(fold_hi_sw_prog_lossdiag, 1.5 2 3);
+* fold_hi_sw_prog_prep;		%sample_uniform(fold_hi_sw_prog_prep, 2 2.5);
+* fold_hi_sw_prog_sti;		%sample_uniform(fold_hi_sw_prog_sti, 3 4);
+
+if sw_prog_intensity=2 then do;
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
+* effect_sw_prog_newp;	   effect_sw_prog_newp		 =	effect_sw_prog_newp * fold_hi_sw_prog_newp;
+* effect_sw_prog_6mtest;   effect_sw_prog_6mtest	 =	effect_sw_prog_6mtest * fold_hi_sw_prog_6mtest;
+* effect_sw_prog_int;      effect_sw_prog_int		 = 	effect_sw_prog_int / fold_hi_sw_prog_int;
+* effect_sw_prog_adh;      effect_sw_prog_adh		 = 	effect_sw_prog_adh * fold_hi_sw_prog_adh;
+* effect_sw_prog_lossdiag; effect_sw_prog_lossdiag 	 =  effect_sw_prog_lossdiag / fold_hi_sw_prog_lossdiag;
+* effect_sw_prog_prep_any; effect_sw_prog_prep_any   = 	effect_sw_prog_prep_any * fold_hi_sw_prog_prep;
+* effect_sw_prog_pers_sti; effect_sw_prog_pers_sti   =	effect_sw_prog_pers_sti * fold_hi_sw_prog_sti;
+end; 
+
+end;
 
 
 
@@ -2130,7 +2159,7 @@ who may be dead and hence have caldate{t} missing;
 
 		*Testing;
 		incr_test_year_i = 4;			*No testing in the general population;
-		sw_program = 0;		 			*No SW program;
+		eff_sw_program = 0;		 			*No SW program;
 		*Note: at the moment the other testing modalities to be swicthed off are not modelled;
 
 		*Prevention;
@@ -2785,7 +2814,7 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 
 
-if caldate{t} = date_sw_prog_intro or caldate_never_dot = &year_interv then eff_sw_program=sw_program;
+if caldate{t} = date_sw_prog_intro then eff_sw_program=sw_program;
 
 * Attendance at SW program (if it exists) and effects of program;
 
