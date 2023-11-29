@@ -4,8 +4,8 @@ libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 ***This version used for the paper;
 data a; 
-*set a.wide_fsw_17_08_23; ***Used for the paper;
-set a.wide_fsw_17_08_23a;***this is with a cost of $19m for a SW program to check if it's CE;
+set a.wide_fsw_17_08_23; ***Used for the paper;
+*set a.wide_fsw_17_08_23a;***this is with a cost of $19m for a SW program to check if it's CE;
 if incidence1549_22 <0.02 then delete;
 run;
 
@@ -141,7 +141,7 @@ run;
 
 
 **Impact of specific aspects of a SW program;
-
+/*
 **Assuming SW only improves PrEP;
 data prep;
 set a.wide_fsw_16_08_22_prep;
@@ -250,7 +250,7 @@ d_p_fsw_newp0__30	d_prop_sw_onprep_30		d_p_sti_sw_30	d_incidence_sw_30	d_prevale
 d_p_diag_sw_30		d_p_onart_diag_sw_30	d_p_onart_vl1000_sw_30
 d_incidence1549_30	d_prevalence1549_30		d_p_diag_30	  	d_p_onart_diag_30   d_p_onart_vl1000_30;
 run;
-
+*/
 
 data costs;
 set a;
