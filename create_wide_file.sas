@@ -1,5 +1,5 @@
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\trial_simulation\trial_sim_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\trial_simulation\trial_sim_out\";
 
 data e; set a.out: ; 
 

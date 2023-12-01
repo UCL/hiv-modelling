@@ -695,7 +695,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1 ); * dcp_cab;	
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.02 0.05 ); * dcp_cab;	
 																* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
@@ -2131,12 +2131,12 @@ if option = 1 then do;
 		eff_rate_choose_stop_prep_oral =  0.7 * eff_rate_choose_stop_prep_oral ;
 		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.3  * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
-		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.5;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.8;
 end;
 
 if option = 2 then do;  
 * hiv testing; * moderate;
-		incr_testing_year_interv = 2 ;
+		incr_testing_year_interv = 10 ;
 		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2);
 * hiv care;  * moderate;
 		eff_pr_art_init = eff_pr_art_init * 1.3;
@@ -2145,7 +2145,7 @@ if option = 2 then do;
 		eff_rate_int_choice = eff_rate_int_choice / 1.3 ;
 		clinic_not_aw_int_frac = clinic_not_aw_int_frac / 1.3;
 		eff_prob_vl_meas_done = min(1, eff_prob_vl_meas_done * 1.3);
-		increase_adherence=1; increase_adherence_amount=0.05;
+		increase_adherence=1; increase_adherence_amount=0.10;
 end;
 
 if option = 3 then do;  
@@ -2154,9 +2154,9 @@ if option = 3 then do;
 		eff_rate_choose_stop_prep_oral =  0.7 * eff_rate_choose_stop_prep_oral ;
 		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.3  * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
-		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.5;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.8;
 * hiv testing; * moderate;
-		incr_testing_year_interv = 2 ;
+		incr_testing_year_interv = 10 ;
 		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2);
 * hiv care;  * moderate;
 		eff_pr_art_init = eff_pr_art_init * 1.3;
@@ -2165,7 +2165,7 @@ if option = 3 then do;
 		eff_rate_int_choice = eff_rate_int_choice / 1.3 ;
 		clinic_not_aw_int_frac = clinic_not_aw_int_frac / 1.3;
 		eff_prob_vl_meas_done = min(1, eff_prob_vl_meas_done * 1.3);
-		increase_adherence=1; increase_adherence_amount=0.05;
+		increase_adherence=1; increase_adherence_amount=0.10;
 end;
 
 if option = 4 then do;  
@@ -2174,9 +2174,9 @@ if option = 4 then do;
 		eff_rate_choose_stop_prep_oral =  0.3 * eff_rate_choose_stop_prep_oral ;
 		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.7  * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 5.0;
-		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 1.0;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 1.5;
 * hiv testing; * moderate;
-		incr_testing_year_interv =  2 ;
+		incr_testing_year_interv =  10 ;
 		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 2);
 * hiv care;  * moderate;
 		eff_pr_art_init = eff_pr_art_init * 1.3;
@@ -2185,7 +2185,7 @@ if option = 4 then do;
 		eff_rate_int_choice = eff_rate_int_choice / 1.3 ;
 		clinic_not_aw_int_frac = clinic_not_aw_int_frac / 1.3;
 		eff_prob_vl_meas_done = min(1, eff_prob_vl_meas_done * 1.3);
-		increase_adherence=1; increase_adherence_amount=0.05;
+		increase_adherence=1; increase_adherence_amount=0.10;
 end;
 
 if option = 5 then do;  
@@ -2194,9 +2194,9 @@ if option = 5 then do;
 		eff_rate_choose_stop_prep_oral =  0.7 * eff_rate_choose_stop_prep_oral ;
 		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.3  * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 1.5;
-		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.5;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 0.8;
 * hiv testing; * optimistic;
-		incr_testing_year_interv =  5 ;
+		incr_testing_year_interv =  30 ;
 		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 5.0);
 * hiv care;  * optimistic;
 		eff_pr_art_init = eff_pr_art_init * 2.0;
@@ -2205,7 +2205,7 @@ if option = 5 then do;
 		eff_rate_int_choice = eff_rate_int_choice / 2.0 ;
 		clinic_not_aw_int_frac = clinic_not_aw_int_frac / 2.0;
 		eff_prob_vl_meas_done = min(1, eff_prob_vl_meas_done * 2.0);
-		increase_adherence=1; increase_adherence_amount=0.20;
+		increase_adherence=1; increase_adherence_amount=0.30;
 end;
 
 if option = 6 then do;  
@@ -2214,9 +2214,9 @@ if option = 6 then do;
 		eff_rate_choose_stop_prep_oral =  0.3 * eff_rate_choose_stop_prep_oral ;
 		eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice + ( 0.7  * (1 - eff_prob_prep_any_restart_choice));
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 5.0;
-		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 1.0;
+		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + 1.5;
 * hiv testing; * optimistic;
-		incr_testing_year_interv =  5 ;
+		incr_testing_year_interv =  30 ;
 		prob_test_2ndtrim = min(1, prob_test_2ndtrim * 5.0);
 * hiv care;  * optimistic;
 		eff_pr_art_init = eff_pr_art_init * 2.0;
@@ -2225,7 +2225,7 @@ if option = 6 then do;
 		eff_rate_int_choice = eff_rate_int_choice / 2.0 ;
 		clinic_not_aw_int_frac = clinic_not_aw_int_frac / 2.0;
 		eff_prob_vl_meas_done = min(1, eff_prob_vl_meas_done * 2.0);
-		increase_adherence=1; increase_adherence_amount=0.20;
+		increase_adherence=1; increase_adherence_amount=0.30;
 end;
 
 
@@ -20130,7 +20130,8 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
-
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
 
 data outputs_1; set r2 ;
 
@@ -20149,7 +20150,8 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=2);
-
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=2);
 
 data outputs_2; set r2 ;
 
@@ -20168,7 +20170,8 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
-
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
 
 data outputs_3; set r2 ;
 
@@ -20188,7 +20191,8 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=4);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=4);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=4);
-
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=4);
 
 data outputs_4; set r2 ;
 
@@ -20207,6 +20211,8 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=5);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=5);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=5);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=5);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=5);
 
 data outputs_5; set r2 ;
 
@@ -20225,7 +20231,8 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=6);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=6);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=6);
-
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=6);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=6);
 
 data outputs_6; set r2 ;
 
