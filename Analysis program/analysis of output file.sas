@@ -4,8 +4,9 @@ libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 ***This version used for the paper;
 data a; 
-set a.wide_fsw_17_08_23; ***Used for the paper;
-*set a.wide_fsw_17_08_23a;***this is with a cost of $19m for a SW program to check if it's CE;
+*set a.wide_fsw_17_08_23; ***Used for the paper;
+set a.wide_fsw_17_08_23b;***this is with various costs for a SW program to check if it's CE;
+
 if incidence1549_22 <0.02 then delete;
 run;
 

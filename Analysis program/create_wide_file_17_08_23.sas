@@ -50,12 +50,16 @@ by run ;
 * discount rate is 3%; 
 * note discounting is from start of intervention - no adjustment needed;
 
+
 %let year_start_disc=2023;
-discount_3py = 1/(1.03**(cald-&year_start_disc)); ***This is already calculated in HIV Synthesis;
-discount_5py = 1/(1.05**(cald-&year_start_disc));
-discount_10py = 1/(1.10**(cald-&year_start_disc));
+discount_3py = 1/(1.03**(cald-&year_start_disc)); if cald lt 2023 then discount_3py=1; ***This is already calculated in HIV Synthesis;
+discount_5py = 1/(1.05**(cald-&year_start_disc));if cald lt 2023 then discount_5py=1;
+discount_10py = 1/(1.10**(cald-&year_start_disc));if cald lt 2023 then discount_10py=1;
 *The following can be changed if we want instead 10% discount rate;
 %let discount=discount_3py;
+
+***remove ab
+
 
 * ================================================================================= ;
 
@@ -126,11 +130,16 @@ dcost_prep_visit_inj  = s_dcost_prep_visit_inj * &sf * 4 / 1000;
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
 dcost_sw_program = s_dcost_sw_program  * &sf * 4 / 1000; 
-dcost_avail_self_test = s_dcost_avail_self_test * &sf * 4 / 1000; 
+
+dcost_avail_self_test = s_dcost_avail_self_test * &sf * 4 / 1000; ***not correctly calculated in sum statement;
+dcost_avail_self_test = s_cost_avail_self_test * &sf * 4  * &discount / 1000; 
 
 dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
 dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
-dcost_condom_dn = s_dcost_condom_dn * &sf * 4 / 1000; 
+
+*dcost_condom_dn = s_dcost_condom_dn * &sf * 4 / 1000; ***not correctly calculated in sum statement;
+dcost_condom_dn = s_cost_condom_dn * &sf * 4 * &discount / 1000;
+
 dswitchline_cost = s_dcost_switch_line * &sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
@@ -160,6 +169,13 @@ end;
 
 
 if option=0 then do;
+s_cost_sw_program19=0;*19m;
+s_cost_sw_program30=0;
+s_cost_sw_program35=0;
+s_cost_sw_program40=0;
+s_cost_sw_program45=0;
+s_cost_sw_program50=0;
+
 dcost_sw_program19_=0;
 dcost_sw_program30_=0;
 dcost_sw_program35_=0;
@@ -190,7 +206,7 @@ dcost35_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_
 		dcost_sw_program35_;
 
 dcost40_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ  + dcost_condom_dn +
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
 		dcost_sw_program40_;
 
@@ -212,6 +228,89 @@ cost_clin_care = dcost_clin_care / discount;
 
 cost = dcost / discount;
 
+
+run;
+
+data y1;
+set y;
+
+***undiscounted prep costs have not been outputted so remove all prep costs from total costs for comparison;
+
+if option=1 then delete;
+
+***undiscounted costs;
+test_cost_sw = s_cost_test_f_sw * &sf * 4 / 1000;
+
+art_cost = s_art_cost * &sf * 4 / 1000;
+adc_cost = s_adc_cost * &sf * 4 / 1000;
+cd4_cost = s_cd4_cost * &sf * 4 / 1000;
+vl_cost = s_vl_cost * &sf * 4 / 1000;
+vis_cost = s_vis_cost * &sf * 4 / 1000;
+non_tb_who3_cost = s_non_tb_who3_cost * &sf * 4 / 1000;
+cot_cost = s_cot_cost * &sf * 4 / 1000;
+tb_cost = s_tb_cost * &sf * 4 / 1000;
+res_cost = s_res_cost * &sf * 4 / 1000;
+test_cost = s_cost_test * &sf * 4 / 1000;
+t_adh_int_cost = s_t_adh_int_cost * &sf * 4 / 1000;
+switchline_cost = s_cost_switch_line * &sf * 4 / 1000;
+cost_drug_level_test = s_drug_level_test_cost * &sf * 4 / 1000;
+cost_circ = s_cost_circ * &sf * 4 / 1000;
+cost_condom_dn = s_cost_condom_dn * &sf * 4 / 1000;
+cost_avail_self_test = s_cost_avail_self_test * &sf * 4 / 1000;
+
+dcost45_=.;
+
+dcost45_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		+ dcost_avail_self_test + dcost_sw_program45_;
+ 
+cost45_ = art_cost + adc_cost + cd4_cost + vl_cost + vis_cost + non_tb_who3_cost + cot_cost + tb_cost + res_cost +
+		test_cost + t_adh_int_cost + switchline_cost + cost_drug_level_test + cost_circ + cost_condom_dn +
+		+ cost_avail_self_test + s_cost_sw_program45;
+
+proc sort;by option cald;run;
+proc means;var cost45_ dcost45_ s_cost_sw_program45 dcost_sw_program45_ test_cost dtest_cost test_cost_sw dtest_cost_sw
+art_cost dart_cost adc_cost dadc_cost cd4_cost dcd4_cost vl_cost dvl_cost vis_cost dvis_cost non_tb_who3_cost dnon_tb_who3_cost
+cot_cost dcot_cost tb_cost dtb_cost res_cost dres_cost test_cost dtest_cost t_adh_int_cost d_t_adh_int_cost
+switchline_cost dswitchline_cost cost_drug_level_test dcost_drug_level_test cost_circ dcost_circ cost_condom_dn dcost_condom_dn
+cost_avail_self_test dcost_avail_self_test;
+by option cald;
+output out=b mean=;run;
+
+*Create datasets with ONLY option=0 and another with option=2;
+data op0;
+set b;
+if option=2 then delete;
+run;
+
+data op2;
+set b;
+if option=0 then delete;
+run;
+
+*rename the variables in option=2 ready for merge;
+proc sql noprint;
+select cats(name,"=",name,"_2") 
+into :rename_vars separated by " "
+from dictionary.columns
+where libname="WORK" and memname="OP2";
+quit; 
+
+%PUT &rename_vars.;
+
+data op2a;
+set WORK.OP2 (rename=(&rename_vars.));
+run;
+
+data op2b;
+set op2a;
+rename cald_2=cald;run;
+
+data all;
+merge op0 op2b;by cald;run;
+
+
+*/
 * ================================================================================= ;
 
 
@@ -363,7 +462,7 @@ effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti		sw_tr
 sw_higher_int sw_higher_prob_loss_at_diag
 
 /*Costs*/
-dcost ddaly dcost_sw_program
+dcost ddaly dcost_sw_program  dcost_sw_program45_
 dart_cost_y		dadc_cost  			dcd4_cost		  dvl_cost  dvis_cost	dnon_tb_who3_cost	dcot_cost 		 dtb_cost  dres_cost 
 dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_circ  		dcost_condom_dn  dcost_avail_self_test 		
 dcost_prep_visit_oral  				dcost_prep_oral   dcost_prep_visit_inj  dcost_prep_inj 		dtest_cost_sw
@@ -506,7 +605,7 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_72 t_23_24 t_22_27 t_22_42 t_22_72;
 %var(v=p_diag_sw);		%var(v=p_onart_diag_sw);	%var(v=p_onart_vl1000_sw);	%var(v=p_sti_sw);
 %var(v=dcost);			%var(v=ddaly);
 %var(v=dcost19_);		%var(v=dcost30_);			%var(v=dcost35_);		%var(v=dcost40_);
-%var(v=dcost45_);		%var(v=dcost50_);
+%var(v=dcost45_);		%var(v=dcost50_);			%var(v=dcost_sw_program45_);
 
 %var(v=dart_cost_y);	  %var(v=dadc_cost);		%var(v=dcd4_cost);		%var(v=dvl_cost);  	%var(v=dvis_cost);	
 %var(v=dnon_tb_who3_cost);%var(v=dcot_cost);		%var(v=dtb_cost);  		%var(v=dres_cost); 	%var(v=dtest_cost);
@@ -540,7 +639,7 @@ p_totdur_0to3_  p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_
 p_sw_prog_vis   n_tested_sw	   	   p_tested_past_year_sw  prop_sw_onprep	prevalence_sw	  incidence_sw
 p_diag_sw		p_onart_diag_sw	   p_onart_vl1000_sw	p_sti_sw
 dcost			ddaly
-dcost19_		dcost30_			dcost35_	dcost40_		dcost45_	dcost50_
+dcost19_		dcost30_			dcost35_	dcost40_		dcost45_	dcost50_	dcost_sw_program45_
 dart_cost_y		dadc_cost		dcd4_cost		dvl_cost  	 	dvis_cost		dnon_tb_who3_cost	
 dcot_cost		dtb_cost  		dres_cost 		dtest_cost		dtest_cost_sw	d_t_adh_int_cost  	dswitchline_cost
 dcost_drug_level_test			dcost_circ 		dcost_condom_dn	dcost_avail_self_test 	
@@ -569,7 +668,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_17_08_23a;
+data a.wide_fsw_17_08_23b;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
