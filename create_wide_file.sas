@@ -37,15 +37,15 @@ by run ;
 
 * ================================================================================= ;
 
-* discount rate is 3%; 
-* note discounting is from start of intervention - no adjustment needed;
+* discount rate is by default 3% already calculated in core;
+*The code below should only be used for sensitivity analyses if needing to calculate 5% or 10% discount; 
 
+* note discounting is from start of intervention - no adjustment needed;
+*check year_start_disc is the same as year_interv+1 in core; 
 %let year_start_disc=2023;
-*discount_3py = 1/(1.03**(cald-&year_start_disc)); ***This is already calculated in HIV Synthesis;
 discount_5py = 1/(1.05**(cald-&year_start_disc));
 discount_10py = 1/(1.10**(cald-&year_start_disc));
-*The following can be changed if we want instead 10% discount rate;
-%let discount=discount_3py;
+
 
 * ================================================================================= ;
 
