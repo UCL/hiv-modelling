@@ -5,7 +5,7 @@ libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 ***This version used for the paper;
 data a; 
 *set a.wide_fsw_17_08_23; ***Used for the paper;
-set a.wide_fsw_17_08_23b;***this is with various costs for a SW program to check if it's CE;
+set a.wide_fsw_17_08_23c;***this is with various costs for a SW program to check if it's CE;
 
 if incidence1549_22 <0.02 then delete;
 run;
@@ -285,11 +285,19 @@ diff_testcost_sw_low_v_none = dtest_cost_sw_22_72_2 - dtest_cost_sw_22_72_1;
 
 ***difference in costs considering different costs for sw programs;
 diff_dcost_high_v_none19_ = dcost19__22_72_3 - dcost19__22_72_1;
+
+diff_dcost_high_v_none10_ = dcost10__22_72_3 - dcost10__22_72_1;
+diff_dcost_high_v_none15_ = dcost15__22_72_3 - dcost15__22_72_1;
+diff_dcost_high_v_none20_ = dcost20__22_72_3 - dcost20__22_72_1;
+diff_dcost_high_v_none25_ = dcost25__22_72_3 - dcost25__22_72_1;
 diff_dcost_high_v_none30_ = dcost30__22_72_3 - dcost30__22_72_1;
 diff_dcost_high_v_none35_ = dcost35__22_72_3 - dcost35__22_72_1;
 diff_dcost_high_v_none40_ = dcost40__22_72_3 - dcost40__22_72_1;
 diff_dcost_high_v_none45_ = dcost45__22_72_3 - dcost45__22_72_1;
 diff_dcost_high_v_none50_ = dcost50__22_72_3 - dcost50__22_72_1;
+diff_dcost_high_v_none55_ = dcost55__22_72_3 - dcost55__22_72_1;
+diff_dcost_high_v_none60_ = dcost60__22_72_3 - dcost60__22_72_1;
+
 
 *difference in dalys (dalys averted);
 diff_ddaly_high_v_none = ddaly_22_72_3 - ddaly_22_72_1;
@@ -367,21 +375,33 @@ maxcost_swprog_high_v_low= diff_netdalys_swprog_high_v_low*500;
 
 ***ICER;
 cost_daly_averted_high_v_none19_ = (diff_dcost_high_v_none19_/diff_ddaly_high_v_none)*1000000;
+
+cost_daly_averted_high_v_none10_ = (diff_dcost_high_v_none10_/diff_ddaly_high_v_none)*1000000;
+cost_daly_averted_high_v_none15_ = (diff_dcost_high_v_none15_/diff_ddaly_high_v_none)*1000000;
+cost_daly_averted_high_v_none20_ = (diff_dcost_high_v_none20_/diff_ddaly_high_v_none)*1000000;
+cost_daly_averted_high_v_none25_ = (diff_dcost_high_v_none25_/diff_ddaly_high_v_none)*1000000;
 cost_daly_averted_high_v_none30_ = (diff_dcost_high_v_none30_/diff_ddaly_high_v_none)*1000000;
 cost_daly_averted_high_v_none35_ = (diff_dcost_high_v_none35_/diff_ddaly_high_v_none)*1000000;
 cost_daly_averted_high_v_none40_ = (diff_dcost_high_v_none40_/diff_ddaly_high_v_none)*1000000;
 cost_daly_averted_high_v_none45_ = (diff_dcost_high_v_none45_/diff_ddaly_high_v_none)*1000000;
 cost_daly_averted_high_v_none50_ = (diff_dcost_high_v_none50_/diff_ddaly_high_v_none)*1000000;
+cost_daly_averted_high_v_none55_ = (diff_dcost_high_v_none55_/diff_ddaly_high_v_none)*1000000;
+cost_daly_averted_high_v_none60_ = (diff_dcost_high_v_none60_/diff_ddaly_high_v_none)*1000000;
 
 
 proc means n mean p5 p95 lclm uclm;var
 cost_daly_averted_high_v_none19_
+cost_daly_averted_high_v_none10_
+cost_daly_averted_high_v_none15_
+cost_daly_averted_high_v_none20_
+cost_daly_averted_high_v_none25_
 cost_daly_averted_high_v_none30_
 cost_daly_averted_high_v_none35_
 cost_daly_averted_high_v_none40_
 cost_daly_averted_high_v_none45_
 cost_daly_averted_high_v_none50_
-
+cost_daly_averted_high_v_none55_
+cost_daly_averted_high_v_none60_
 ;run;
 
 
