@@ -344,17 +344,17 @@ netdalys500_low_swprog50 =  ddaly_22_72_2 + (dcost50__22_72_2)/0.0005;
 netdalys500_low_swprog55 =  ddaly_22_72_2 + (dcost55__22_72_2)/0.0005;
 netdalys500_low_swprog60 =  ddaly_22_72_2 + (dcost60__22_72_2)/0.0005;
 
-netdalys500_high_swprog10 =  ddaly_22_72_1 + (dcost10__22_72_1)/0.0005;
-netdalys500_high_swprog15 =  ddaly_22_72_1 + (dcost15__22_72_1)/0.0005;
-netdalys500_high_swprog20 =  ddaly_22_72_1 + (dcost20__22_72_1)/0.0005;
-netdalys500_high_swprog25 =  ddaly_22_72_1 + (dcost25__22_72_1)/0.0005;
-netdalys500_high_swprog30 =  ddaly_22_72_1 + (dcost30__22_72_1)/0.0005;
-netdalys500_high_swprog35 =  ddaly_22_72_1 + (dcost35__22_72_1)/0.0005;
-netdalys500_high_swprog40 =  ddaly_22_72_1 + (dcost40__22_72_1)/0.0005;
-netdalys500_high_swprog45 =  ddaly_22_72_1 + (dcost45__22_72_1)/0.0005;
-netdalys500_high_swprog50 =  ddaly_22_72_1 + (dcost50__22_72_1)/0.0005;
-netdalys500_high_swprog55 =  ddaly_22_72_1 + (dcost55__22_72_1)/0.0005;
-netdalys500_high_swprog60 =  ddaly_22_72_1 + (dcost60__22_72_1)/0.0005;
+netdalys500_high_swprog10 =  ddaly_22_72_3 + (dcost10__22_72_3)/0.0005;
+netdalys500_high_swprog15 =  ddaly_22_72_3 + (dcost15__22_72_3)/0.0005;
+netdalys500_high_swprog20 =  ddaly_22_72_3 + (dcost20__22_72_3)/0.0005;
+netdalys500_high_swprog25 =  ddaly_22_72_3 + (dcost25__22_72_3)/0.0005;
+netdalys500_high_swprog30 =  ddaly_22_72_3 + (dcost30__22_72_3)/0.0005;
+netdalys500_high_swprog35 =  ddaly_22_72_3 + (dcost35__22_72_3)/0.0005;
+netdalys500_high_swprog40 =  ddaly_22_72_3 + (dcost40__22_72_3)/0.0005;
+netdalys500_high_swprog45 =  ddaly_22_72_3 + (dcost45__22_72_3)/0.0005;
+netdalys500_high_swprog50 =  ddaly_22_72_3 + (dcost50__22_72_3)/0.0005;
+netdalys500_high_swprog55 =  ddaly_22_72_3 + (dcost55__22_72_3)/0.0005;
+netdalys500_high_swprog60 =  ddaly_22_72_3 + (dcost60__22_72_3)/0.0005;
 
 *300;
 netdalys300_no_swprog10 =  ddaly_22_72_1 + (dcost10__22_72_1)/0.0003;
@@ -576,7 +576,7 @@ cost_daly_averted_high_v_none55_ = (diff_dcost_high_v_none55_/diff_ddaly_high_v_
 cost_daly_averted_high_v_none60_ = (diff_dcost_high_v_none60_/diff_ddaly_high_v_none)*1000000;
 run;
 
-proc means n mean p5 p95 lclm uclm;var
+proc means n mean p5 p95;var
 cost_daly_averted_high_v_none19_
 cost_daly_averted_high_v_none10_
 cost_daly_averted_high_v_none15_
@@ -591,7 +591,8 @@ cost_daly_averted_high_v_none55_
 cost_daly_averted_high_v_none60_
 ;run;
 
-proc means n mean p5 p95 lclm uclm;var
+***Figure 1;
+proc means n mean p5 p95;var
 d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
 d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
 d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
@@ -624,6 +625,60 @@ d_netdalys100_sw25_low_v_none  d_netdalys100_sw30_low_v_none  d_netdalys100_sw35
 d_netdalys100_sw40_low_v_none  d_netdalys100_sw45_low_v_none  d_netdalys100_sw50_low_v_none
 d_netdalys100_sw55_low_v_none  d_netdalys100_sw60_low_v_none;
 run;
+
+**By incidence;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
+d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
+d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=1;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
+d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
+d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=2;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
+d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
+d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=3;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
+d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
+d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=4 ;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
+d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
+d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=5;run;
+
+proc means n mean p5 p95;var
+d_netdalys500_sw10_low_v_none  d_netdalys500_sw15_low_v_none  d_netdalys500_sw20_low_v_none
+d_netdalys500_sw25_low_v_none  d_netdalys500_sw30_low_v_none  d_netdalys500_sw35_low_v_none
+d_netdalys500_sw40_low_v_none  d_netdalys500_sw45_low_v_none  d_netdalys500_sw50_low_v_none
+d_netdalys500_sw55_low_v_none  d_netdalys500_sw60_low_v_none;;where incidence=1;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_low_v_none  d_netdalys500_sw15_low_v_none  d_netdalys500_sw20_low_v_none
+d_netdalys500_sw25_low_v_none  d_netdalys500_sw30_low_v_none  d_netdalys500_sw35_low_v_none
+d_netdalys500_sw40_low_v_none  d_netdalys500_sw45_low_v_none  d_netdalys500_sw50_low_v_none
+d_netdalys500_sw55_low_v_none  d_netdalys500_sw60_low_v_none;;where incidence=2;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_low_v_none  d_netdalys500_sw15_low_v_none  d_netdalys500_sw20_low_v_none
+d_netdalys500_sw25_low_v_none  d_netdalys500_sw30_low_v_none  d_netdalys500_sw35_low_v_none
+d_netdalys500_sw40_low_v_none  d_netdalys500_sw45_low_v_none  d_netdalys500_sw50_low_v_none
+d_netdalys500_sw55_low_v_none  d_netdalys500_sw60_low_v_none;;where incidence=3;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_low_v_none  d_netdalys500_sw15_low_v_none  d_netdalys500_sw20_low_v_none
+d_netdalys500_sw25_low_v_none  d_netdalys500_sw30_low_v_none  d_netdalys500_sw35_low_v_none
+d_netdalys500_sw40_low_v_none  d_netdalys500_sw45_low_v_none  d_netdalys500_sw50_low_v_none
+d_netdalys500_sw55_low_v_none  d_netdalys500_sw60_low_v_none;;where incidence=4 ;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_low_v_none  d_netdalys500_sw15_low_v_none  d_netdalys500_sw20_low_v_none
+d_netdalys500_sw25_low_v_none  d_netdalys500_sw30_low_v_none  d_netdalys500_sw35_low_v_none
+d_netdalys500_sw40_low_v_none  d_netdalys500_sw45_low_v_none  d_netdalys500_sw50_low_v_none
+d_netdalys500_sw55_low_v_none  d_netdalys500_sw60_low_v_none;;where incidence=5;run;
+
 
 
 proc means n mean p50 p5 p95 lclm uclm;var dcost_23_24_1 dcost_23_24_2 dcost_23_24_3;run;
