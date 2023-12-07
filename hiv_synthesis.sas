@@ -585,7 +585,7 @@ newp_seed = 7;
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
-* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.25 0.75);
+* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.15 0.85);
                               if sw_art_disadv=0  then do; sw_higher_int = 1; rel_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1;end;
 
 						   	  if sw_art_disadv=1  then do; 
@@ -594,17 +594,46 @@ newp_seed = 7;
 						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 3);
 							  end;
 
-* date_sw_prog_intro;		date_sw_prog_intro=2015;
-* sw_program;               %sample(sw_program, 0 1, 0.8 0.2);
-					            if sw_program = 1  then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
+* date_sw_prog_intro;		date_sw_prog_intro=2010;
+* sw_program;               %sample(sw_program, 0 1, 0.1 0.9);
 
-* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp, 0.05 0.1 0.2);
-* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.25 0.50 0.75);
-* effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.3 0.5 0.8);
-* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.25 0.5 0.75);
-* effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.3 0.5 0.8);
-* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.8 0.95);
-* effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
+* sw_prog_intensity;		if sw_program = 1  then do;
+
+%sample(sw_prog_intensity, 1 2, 0.8 0.2);*1=low, 2=high;
+
+***These parameters initially set for all SW programs and then overwritten below for high intensity programs;
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05, 0.10); *previously 0.10;
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02, 0.04); *previously 0.025;
+* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
+* effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
+* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.10 0.15 0.25);
+* effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
+* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.05 0.10);
+* effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.10 0.20);
+
+***These factors increase the impact of the low intensity SW program by sampled fold factor;
+* fold_hi_sw_prog_newp;		%sample_uniform(fold_hi_sw_prog_newp, 2 3);
+* fold_hi_sw_prog_6mtest;	%sample_uniform(fold_hi_sw_prog_6mtest, 1.5 2);
+* fold_hi_sw_prog_int	;	%sample_uniform(fold_hi_sw_prog_int, 1.5 2 3);
+* fold_hi_sw_prog_adh	;	%sample_uniform(fold_hi_sw_prog_adh, 2 3 4);
+* fold_hi_sw_prog_lossdiag;	%sample_uniform(fold_hi_sw_prog_lossdiag, 1.5 2 3);
+* fold_hi_sw_prog_prep;		%sample_uniform(fold_hi_sw_prog_prep, 2 2.5);
+* fold_hi_sw_prog_sti;		%sample_uniform(fold_hi_sw_prog_sti, 3 4);
+
+if sw_prog_intensity=2 then do;
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
+* effect_sw_prog_newp;	   effect_sw_prog_newp		 =	effect_sw_prog_newp * fold_hi_sw_prog_newp;
+* effect_sw_prog_6mtest;   effect_sw_prog_6mtest	 =	effect_sw_prog_6mtest * fold_hi_sw_prog_6mtest;
+* effect_sw_prog_int;      effect_sw_prog_int		 = 	effect_sw_prog_int / fold_hi_sw_prog_int;
+* effect_sw_prog_adh;      effect_sw_prog_adh		 = 	effect_sw_prog_adh * fold_hi_sw_prog_adh;
+* effect_sw_prog_lossdiag; effect_sw_prog_lossdiag 	 =  effect_sw_prog_lossdiag / fold_hi_sw_prog_lossdiag;
+* effect_sw_prog_prep_any; effect_sw_prog_prep_any   = 	effect_sw_prog_prep_any * fold_hi_sw_prog_prep;
+* effect_sw_prog_pers_sti; effect_sw_prog_pers_sti   =	effect_sw_prog_pers_sti * fold_hi_sw_prog_sti;
+end; 
+
+end;
 
 
 
@@ -989,7 +1018,7 @@ cost_switch_line_a = 0.020 ;
 cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ;
-sw_program_cost = 0.010 ; * placeholder;
+sw_program_cost = 0.010 ; * placeholder; *consider varying by intensity;
 cost_antihyp = 0.0015; * cost per 3 months of anti-hypertensive drug (in $1000) ;
 cost_vis_hypert = 0.0015; * clinic cost per hypertension visit (in $1000);
 
@@ -2133,7 +2162,7 @@ who may be dead and hence have caldate{t} missing;
 
 		*Testing;
 		incr_test_year_i = 4;			*No testing in the general population;
-		sw_program = 0;		 			*No SW program;
+		eff_sw_program = 0;		 			*No SW program;
 		*Note: at the moment the other testing modalities to be swicthed off are not modelled;
 
 		*Prevention;
@@ -2788,7 +2817,7 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 
 
-if caldate{t} = date_sw_prog_intro or caldate_never_dot = &year_interv then eff_sw_program=sw_program;
+if caldate{t} = date_sw_prog_intro then eff_sw_program=sw_program;
 
 * Attendance at SW program (if it exists) and effects of program;
 
@@ -17489,10 +17518,10 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	*discounted; 
 	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
 	s_dfull_vis_cost + _dfull_vis_cost ;  s_dadc_cost + _dadc_cost ;  s_dnon_tb_who3_cost + _dnon_tb_who3_cost ; s_dcot_cost + _dcot_cost ; 
-	s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;  s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + dcost_condom_dn ; 
-	s_dcost_sw_program + _dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + dtest_cost_type1;
+	s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;  s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + _dcost_condom_dn ; 
+	s_dcost_sw_program + _dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + _dtest_cost_type1;
 	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep_oral + _dcost_prep_oral ; s_dcost_prep_inj + _dcost_prep_inj ; s_dcost_prep_vr + _dcost_prep_vr ; 
-	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_avail_self_test + dcost_avail_self_test;
+	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_avail_self_test + _dcost_avail_self_test;
 	s_dcost_prep_visit_inj + _dcost_prep_visit_inj; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
 	s_dcost_test_m_sympt + _dcost_test_m_sympt ; s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ;
 																																		  
