@@ -20241,7 +20241,9 @@ data a._outputs_&dataset_id(compress=binary);
 set outputs_0  outputs_1  outputs_2  outputs_3  outputs_4  outputs_5  outputs_6;
 if age ge 15 and death = .;
 caldate=caldate_never_dot;
-who_takes_prep = prep_any_strategy;
+
+definition_prep_indication = prep_any_strategy;
+current_prep_indication = prep_any_elig;
 
 diagnosed=registd;
 diagnosed_tm1=registd_tm1;
@@ -20264,8 +20266,8 @@ date_infected = infection;
 infected_past_6m=0;
 if hiv=1 and 0 <= 2025.75 - infection <= 0.25 then infected_past_6m=1;
 
-keep run who_takes_prep caldate option age gender diagnosed diagnosed_tm1 onart onart_tm1 viral_load_suppressed viral_load_suppressed_tm1  
-onprep_tm1 onprep adherence adherence_tm1 hiv date_infected infected_past_6m mcirc sti sti_tm1 sw sw_tm1;
+keep run definition_prep_indication current_prep_indication caldate option age gender diagnosed diagnosed_tm1 onart onart_tm1 viral_load_suppressed 
+viral_load_suppressed_tm1 onprep_tm1 onprep adherence adherence_tm1 hiv date_infected infected_past_6m mcirc sti sti_tm1 sw sw_tm1;
 run;
 
 
