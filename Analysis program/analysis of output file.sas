@@ -298,6 +298,11 @@ diff_dcost_high_v_none50_ = dcost50__22_72_3 - dcost50__22_72_1;
 diff_dcost_high_v_none55_ = dcost55__22_72_3 - dcost55__22_72_1;
 diff_dcost_high_v_none60_ = dcost60__22_72_3 - dcost60__22_72_1;
 
+diff_dcost_high_v_none65_ = dcost65__22_72_3 - dcost65__22_72_1;
+diff_dcost_high_v_none70_ = dcost70__22_72_3 - dcost70__22_72_1;
+diff_dcost_high_v_none75_ = dcost75__22_72_3 - dcost75__22_72_1;
+diff_dcost_high_v_none80_ = dcost80__22_72_3 - dcost80__22_72_1;
+
 
 *difference in dalys (dalys averted);
 diff_ddaly_high_v_none = ddaly_22_72_3 - ddaly_22_72_1;
@@ -331,6 +336,10 @@ netdalys500_no_swprog45 =  ddaly_22_72_1 + (dcost45__22_72_1)/0.0005;
 netdalys500_no_swprog50 =  ddaly_22_72_1 + (dcost50__22_72_1)/0.0005;
 netdalys500_no_swprog55 =  ddaly_22_72_1 + (dcost55__22_72_1)/0.0005;
 netdalys500_no_swprog60 =  ddaly_22_72_1 + (dcost60__22_72_1)/0.0005;
+netdalys500_no_swprog65 =  ddaly_22_72_1 + (dcost65__22_72_1)/0.0005;
+netdalys500_no_swprog70 =  ddaly_22_72_1 + (dcost70__22_72_1)/0.0005;
+netdalys500_no_swprog75 =  ddaly_22_72_1 + (dcost75__22_72_1)/0.0005;
+netdalys500_no_swprog80 =  ddaly_22_72_1 + (dcost80__22_72_1)/0.0005;
 
 netdalys500_low_swprog10 =  ddaly_22_72_2 + (dcost10__22_72_2)/0.0005;
 netdalys500_low_swprog15 =  ddaly_22_72_2 + (dcost15__22_72_2)/0.0005;
@@ -343,6 +352,10 @@ netdalys500_low_swprog45 =  ddaly_22_72_2 + (dcost45__22_72_2)/0.0005;
 netdalys500_low_swprog50 =  ddaly_22_72_2 + (dcost50__22_72_2)/0.0005;
 netdalys500_low_swprog55 =  ddaly_22_72_2 + (dcost55__22_72_2)/0.0005;
 netdalys500_low_swprog60 =  ddaly_22_72_2 + (dcost60__22_72_2)/0.0005;
+netdalys500_low_swprog65 =  ddaly_22_72_2 + (dcost65__22_72_2)/0.0005;
+netdalys500_low_swprog70 =  ddaly_22_72_2 + (dcost70__22_72_2)/0.0005;
+netdalys500_low_swprog75 =  ddaly_22_72_2 + (dcost75__22_72_2)/0.0005;
+netdalys500_low_swprog80 =  ddaly_22_72_2 + (dcost80__22_72_2)/0.0005;
 
 netdalys500_high_swprog10 =  ddaly_22_72_3 + (dcost10__22_72_3)/0.0005;
 netdalys500_high_swprog15 =  ddaly_22_72_3 + (dcost15__22_72_3)/0.0005;
@@ -355,6 +368,10 @@ netdalys500_high_swprog45 =  ddaly_22_72_3 + (dcost45__22_72_3)/0.0005;
 netdalys500_high_swprog50 =  ddaly_22_72_3 + (dcost50__22_72_3)/0.0005;
 netdalys500_high_swprog55 =  ddaly_22_72_3 + (dcost55__22_72_3)/0.0005;
 netdalys500_high_swprog60 =  ddaly_22_72_3 + (dcost60__22_72_3)/0.0005;
+netdalys500_high_swprog65 =  ddaly_22_72_3 + (dcost65__22_72_3)/0.0005;
+netdalys500_high_swprog70 =  ddaly_22_72_3 + (dcost70__22_72_3)/0.0005;
+netdalys500_high_swprog75 =  ddaly_22_72_3 + (dcost75__22_72_3)/0.0005;
+netdalys500_high_swprog80 =  ddaly_22_72_3 + (dcost80__22_72_3)/0.0005;
 
 *300;
 netdalys300_no_swprog10 =  ddaly_22_72_1 + (dcost10__22_72_1)/0.0003;
@@ -368,6 +385,10 @@ netdalys300_no_swprog45 =  ddaly_22_72_1 + (dcost45__22_72_1)/0.0003;
 netdalys300_no_swprog50 =  ddaly_22_72_1 + (dcost50__22_72_1)/0.0003;
 netdalys300_no_swprog55 =  ddaly_22_72_1 + (dcost55__22_72_1)/0.0003;
 netdalys300_no_swprog60 =  ddaly_22_72_1 + (dcost60__22_72_1)/0.0003;
+netdalys300_no_swprog65 =  ddaly_22_72_1 + (dcost65__22_72_1)/0.0003;
+netdalys300_no_swprog70 =  ddaly_22_72_1 + (dcost70__22_72_1)/0.0003;
+netdalys300_no_swprog75 =  ddaly_22_72_1 + (dcost75__22_72_1)/0.0003;
+netdalys300_no_swprog80 =  ddaly_22_72_1 + (dcost80__22_72_1)/0.0003;
 
 netdalys300_low_swprog10 =  ddaly_22_72_2 + (dcost10__22_72_2)/0.0003;
 netdalys300_low_swprog15 =  ddaly_22_72_2 + (dcost15__22_72_2)/0.0003;
@@ -380,6 +401,10 @@ netdalys300_low_swprog45 =  ddaly_22_72_2 + (dcost45__22_72_2)/0.0003;
 netdalys300_low_swprog50 =  ddaly_22_72_2 + (dcost50__22_72_2)/0.0003;
 netdalys300_low_swprog55 =  ddaly_22_72_2 + (dcost55__22_72_2)/0.0003;
 netdalys300_low_swprog60 =  ddaly_22_72_2 + (dcost60__22_72_2)/0.0003;
+netdalys300_low_swprog65 =  ddaly_22_72_2 + (dcost65__22_72_2)/0.0003;
+netdalys300_low_swprog70 =  ddaly_22_72_2 + (dcost70__22_72_2)/0.0003;
+netdalys300_low_swprog75 =  ddaly_22_72_2 + (dcost75__22_72_2)/0.0003;
+netdalys300_low_swprog80 =  ddaly_22_72_2 + (dcost80__22_72_2)/0.0003;
 
 netdalys300_high_swprog10 =  ddaly_22_72_3 + (dcost10__22_72_3)/0.0003;
 netdalys300_high_swprog15 =  ddaly_22_72_3 + (dcost15__22_72_3)/0.0003;
@@ -392,6 +417,10 @@ netdalys300_high_swprog45 =  ddaly_22_72_3 + (dcost45__22_72_3)/0.0003;
 netdalys300_high_swprog50 =  ddaly_22_72_3 + (dcost50__22_72_3)/0.0003;
 netdalys300_high_swprog55 =  ddaly_22_72_3 + (dcost55__22_72_3)/0.0003;
 netdalys300_high_swprog60 =  ddaly_22_72_3 + (dcost60__22_72_3)/0.0003;
+netdalys300_high_swprog65 =  ddaly_22_72_3 + (dcost65__22_72_3)/0.0003;
+netdalys300_high_swprog70 =  ddaly_22_72_3 + (dcost70__22_72_3)/0.0003;
+netdalys300_high_swprog75 =  ddaly_22_72_3 + (dcost75__22_72_3)/0.0003;
+netdalys300_high_swprog80 =  ddaly_22_72_3 + (dcost80__22_72_3)/0.0003;
 
 *100;
 netdalys100_no_swprog10 =  ddaly_22_72_1 + (dcost10__22_72_1)/0.0001;
@@ -405,6 +434,10 @@ netdalys100_no_swprog45 =  ddaly_22_72_1 + (dcost45__22_72_1)/0.0001;
 netdalys100_no_swprog50 =  ddaly_22_72_1 + (dcost50__22_72_1)/0.0001;
 netdalys100_no_swprog55 =  ddaly_22_72_1 + (dcost55__22_72_1)/0.0001;
 netdalys100_no_swprog60 =  ddaly_22_72_1 + (dcost60__22_72_1)/0.0001;
+netdalys100_no_swprog65 =  ddaly_22_72_1 + (dcost65__22_72_1)/0.0001;
+netdalys100_no_swprog70 =  ddaly_22_72_1 + (dcost70__22_72_1)/0.0001;
+netdalys100_no_swprog75 =  ddaly_22_72_1 + (dcost75__22_72_1)/0.0001;
+netdalys100_no_swprog80 =  ddaly_22_72_1 + (dcost80__22_72_1)/0.0001;
 
 netdalys100_low_swprog10 =  ddaly_22_72_2 + (dcost10__22_72_2)/0.0001;
 netdalys100_low_swprog15 =  ddaly_22_72_2 + (dcost15__22_72_2)/0.0001;
@@ -417,6 +450,10 @@ netdalys100_low_swprog45 =  ddaly_22_72_2 + (dcost45__22_72_2)/0.0001;
 netdalys100_low_swprog50 =  ddaly_22_72_2 + (dcost50__22_72_2)/0.0001;
 netdalys100_low_swprog55 =  ddaly_22_72_2 + (dcost55__22_72_2)/0.0001;
 netdalys100_low_swprog60 =  ddaly_22_72_2 + (dcost60__22_72_2)/0.0001;
+netdalys100_low_swprog65 =  ddaly_22_72_2 + (dcost65__22_72_2)/0.0001;
+netdalys100_low_swprog70 =  ddaly_22_72_2 + (dcost70__22_72_2)/0.0001;
+netdalys100_low_swprog75 =  ddaly_22_72_2 + (dcost75__22_72_2)/0.0001;
+netdalys100_low_swprog80 =  ddaly_22_72_2 + (dcost80__22_72_2)/0.0001;
 
 netdalys100_high_swprog10 =  ddaly_22_72_3 + (dcost10__22_72_3)/0.0001;
 netdalys100_high_swprog15 =  ddaly_22_72_3 + (dcost15__22_72_3)/0.0001;
@@ -429,7 +466,10 @@ netdalys100_high_swprog45 =  ddaly_22_72_3 + (dcost45__22_72_3)/0.0001;
 netdalys100_high_swprog50 =  ddaly_22_72_3 + (dcost50__22_72_3)/0.0001;
 netdalys100_high_swprog55 =  ddaly_22_72_3 + (dcost55__22_72_3)/0.0001;
 netdalys100_high_swprog60 =  ddaly_22_72_3 + (dcost60__22_72_3)/0.0001;
-
+netdalys100_high_swprog65 =  ddaly_22_72_3 + (dcost65__22_72_3)/0.0001;
+netdalys100_high_swprog70 =  ddaly_22_72_3 + (dcost70__22_72_3)/0.0001;
+netdalys100_high_swprog75 =  ddaly_22_72_3 + (dcost75__22_72_3)/0.0001;
+netdalys100_high_swprog80 =  ddaly_22_72_3 + (dcost80__22_72_3)/0.0001;
 
 
 *net dalys averted;
@@ -447,6 +487,11 @@ d_netdalys500_sw45_high_v_none = netdalys500_high_swprog45 - netdalys500_no_swpr
 d_netdalys500_sw50_high_v_none = netdalys500_high_swprog50 - netdalys500_no_swprog50;
 d_netdalys500_sw55_high_v_none = netdalys500_high_swprog55 - netdalys500_no_swprog55;
 d_netdalys500_sw60_high_v_none = netdalys500_high_swprog60 - netdalys500_no_swprog60;
+d_netdalys500_sw65_high_v_none = netdalys500_high_swprog65 - netdalys500_no_swprog65;
+d_netdalys500_sw70_high_v_none = netdalys500_high_swprog70 - netdalys500_no_swprog70;
+d_netdalys500_sw75_high_v_none = netdalys500_high_swprog75 - netdalys500_no_swprog75;
+d_netdalys500_sw80_high_v_none = netdalys500_high_swprog80 - netdalys500_no_swprog80;
+
 ***high vs. none, 300 threshold;
 d_netdalys300_sw10_high_v_none = netdalys300_high_swprog10 - netdalys300_no_swprog10;
 d_netdalys300_sw15_high_v_none = netdalys300_high_swprog15 - netdalys300_no_swprog15;
@@ -459,6 +504,11 @@ d_netdalys300_sw45_high_v_none = netdalys300_high_swprog45 - netdalys300_no_swpr
 d_netdalys300_sw50_high_v_none = netdalys300_high_swprog50 - netdalys300_no_swprog50;
 d_netdalys300_sw55_high_v_none = netdalys300_high_swprog55 - netdalys300_no_swprog55;
 d_netdalys300_sw60_high_v_none = netdalys300_high_swprog60 - netdalys300_no_swprog60;
+d_netdalys300_sw65_high_v_none = netdalys300_high_swprog65 - netdalys300_no_swprog65;
+d_netdalys300_sw70_high_v_none = netdalys300_high_swprog70 - netdalys300_no_swprog70;
+d_netdalys300_sw75_high_v_none = netdalys300_high_swprog75 - netdalys300_no_swprog75;
+d_netdalys300_sw80_high_v_none = netdalys300_high_swprog80 - netdalys300_no_swprog80;
+
 ***high vs. none, 100 threshold;
 d_netdalys100_sw10_high_v_none = netdalys100_high_swprog10 - netdalys100_no_swprog10;
 d_netdalys100_sw15_high_v_none = netdalys100_high_swprog15 - netdalys100_no_swprog15;
@@ -471,6 +521,10 @@ d_netdalys100_sw45_high_v_none = netdalys100_high_swprog45 - netdalys100_no_swpr
 d_netdalys100_sw50_high_v_none = netdalys100_high_swprog50 - netdalys100_no_swprog50;
 d_netdalys100_sw55_high_v_none = netdalys100_high_swprog55 - netdalys100_no_swprog55;
 d_netdalys100_sw60_high_v_none = netdalys100_high_swprog60 - netdalys100_no_swprog60;
+d_netdalys100_sw65_high_v_none = netdalys100_high_swprog65 - netdalys100_no_swprog65;
+d_netdalys100_sw70_high_v_none = netdalys100_high_swprog70 - netdalys100_no_swprog70;
+d_netdalys100_sw75_high_v_none = netdalys100_high_swprog75 - netdalys100_no_swprog75;
+d_netdalys100_sw80_high_v_none = netdalys100_high_swprog80 - netdalys100_no_swprog80;
 
 ***low vs. none, 500 threshold;
 d_netdalys500_sw10_low_v_none = netdalys500_low_swprog10 - netdalys500_no_swprog10;
@@ -484,6 +538,10 @@ d_netdalys500_sw45_low_v_none = netdalys500_low_swprog45 - netdalys500_no_swprog
 d_netdalys500_sw50_low_v_none = netdalys500_low_swprog50 - netdalys500_no_swprog50;
 d_netdalys500_sw55_low_v_none = netdalys500_low_swprog55 - netdalys500_no_swprog55;
 d_netdalys500_sw60_low_v_none = netdalys500_low_swprog60 - netdalys500_no_swprog60;
+d_netdalys500_sw65_low_v_none = netdalys500_low_swprog65 - netdalys500_no_swprog65;
+d_netdalys500_sw70_low_v_none = netdalys500_low_swprog70 - netdalys500_no_swprog70;
+d_netdalys500_sw75_low_v_none = netdalys500_low_swprog75 - netdalys500_no_swprog75;
+d_netdalys500_sw80_low_v_none = netdalys500_low_swprog80 - netdalys500_no_swprog80;
 ***low vs. none, 300 threshold;
 d_netdalys300_sw10_low_v_none = netdalys300_low_swprog10 - netdalys300_no_swprog10;
 d_netdalys300_sw15_low_v_none = netdalys300_low_swprog15 - netdalys300_no_swprog15;
@@ -496,6 +554,10 @@ d_netdalys300_sw45_low_v_none = netdalys300_low_swprog45 - netdalys300_no_swprog
 d_netdalys300_sw50_low_v_none = netdalys300_low_swprog50 - netdalys300_no_swprog50;
 d_netdalys300_sw55_low_v_none = netdalys300_low_swprog55 - netdalys300_no_swprog55;
 d_netdalys300_sw60_low_v_none = netdalys300_low_swprog60 - netdalys300_no_swprog60;
+d_netdalys300_sw65_low_v_none = netdalys300_low_swprog65 - netdalys300_no_swprog65;
+d_netdalys300_sw70_low_v_none = netdalys300_low_swprog70 - netdalys300_no_swprog70;
+d_netdalys300_sw75_low_v_none = netdalys300_low_swprog75 - netdalys300_no_swprog75;
+d_netdalys300_sw80_low_v_none = netdalys300_low_swprog80 - netdalys300_no_swprog80;
 ***low vs. none, 100 threshold;
 d_netdalys100_sw10_low_v_none = netdalys100_low_swprog10 - netdalys100_no_swprog10;
 d_netdalys100_sw15_low_v_none = netdalys100_low_swprog15 - netdalys100_no_swprog15;
@@ -508,6 +570,10 @@ d_netdalys100_sw45_low_v_none = netdalys100_low_swprog45 - netdalys100_no_swprog
 d_netdalys100_sw50_low_v_none = netdalys100_low_swprog50 - netdalys100_no_swprog50;
 d_netdalys100_sw55_low_v_none = netdalys100_low_swprog55 - netdalys100_no_swprog55;
 d_netdalys100_sw60_low_v_none = netdalys100_low_swprog60 - netdalys100_no_swprog60;
+d_netdalys100_sw65_low_v_none = netdalys100_low_swprog65 - netdalys100_no_swprog65;
+d_netdalys100_sw70_low_v_none = netdalys100_low_swprog70 - netdalys100_no_swprog70;
+d_netdalys100_sw75_low_v_none = netdalys100_low_swprog75 - netdalys100_no_swprog75;
+d_netdalys100_sw80_low_v_none = netdalys100_low_swprog80 - netdalys100_no_swprog80;
 
 
 *net monetary benefit (Dalys * cost-effectivenss threshold) + costs;
@@ -591,67 +657,52 @@ cost_daly_averted_high_v_none55_
 cost_daly_averted_high_v_none60_
 ;run;
 
-***Figure 1;
+***Figure 1;*max cost is when the diff in netdalys crosses 0;
+**For the graphs, multiply by -1 to get DALYs averted rather than difference;
+
 proc means n mean p5 p95;var
 d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
 d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
 d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
-d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none	d_netdalys500_sw65_high_v_none 
+d_netdalys500_sw70_high_v_none	d_netdalys500_sw75_high_v_none  d_netdalys500_sw80_high_v_none
 
 d_netdalys300_sw10_high_v_none  d_netdalys300_sw15_high_v_none  d_netdalys300_sw20_high_v_none
 d_netdalys300_sw25_high_v_none  d_netdalys300_sw30_high_v_none  d_netdalys300_sw35_high_v_none
 d_netdalys300_sw40_high_v_none  d_netdalys300_sw45_high_v_none  d_netdalys300_sw50_high_v_none
-d_netdalys300_sw55_high_v_none  d_netdalys300_sw60_high_v_none
+d_netdalys300_sw55_high_v_none  d_netdalys300_sw60_high_v_none	d_netdalys300_sw65_high_v_none 
+d_netdalys300_sw70_high_v_none	d_netdalys300_sw75_high_v_none  d_netdalys300_sw80_high_v_none
 
 d_netdalys100_sw10_high_v_none  d_netdalys100_sw15_high_v_none  d_netdalys100_sw20_high_v_none
 d_netdalys100_sw25_high_v_none  d_netdalys100_sw30_high_v_none  d_netdalys100_sw35_high_v_none
 d_netdalys100_sw40_high_v_none  d_netdalys100_sw45_high_v_none  d_netdalys100_sw50_high_v_none
-d_netdalys100_sw55_high_v_none  d_netdalys100_sw60_high_v_none;
+d_netdalys100_sw55_high_v_none  d_netdalys100_sw60_high_v_none	d_netdalys100_sw65_high_v_none 
+d_netdalys100_sw70_high_v_none	d_netdalys100_sw75_high_v_none  d_netdalys100_sw80_high_v_none
+;
 run;
 
-proc means n mean p5 p95 lclm uclm;var
+proc means n mean p5 p95;var
 d_netdalys500_sw10_low_v_none  d_netdalys500_sw15_low_v_none  d_netdalys500_sw20_low_v_none
 d_netdalys500_sw25_low_v_none  d_netdalys500_sw30_low_v_none  d_netdalys500_sw35_low_v_none
 d_netdalys500_sw40_low_v_none  d_netdalys500_sw45_low_v_none  d_netdalys500_sw50_low_v_none
-d_netdalys500_sw55_low_v_none  d_netdalys500_sw60_low_v_none
+d_netdalys500_sw55_low_v_none  d_netdalys500_sw60_low_v_none	d_netdalys500_sw65_low_v_none 
+d_netdalys500_sw70_low_v_none	d_netdalys500_sw75_low_v_none  d_netdalys500_sw80_low_v_none
 
 d_netdalys300_sw10_low_v_none  d_netdalys300_sw15_low_v_none  d_netdalys300_sw20_low_v_none
 d_netdalys300_sw25_low_v_none  d_netdalys300_sw30_low_v_none  d_netdalys300_sw35_low_v_none
 d_netdalys300_sw40_low_v_none  d_netdalys300_sw45_low_v_none  d_netdalys300_sw50_low_v_none
-d_netdalys300_sw55_low_v_none  d_netdalys300_sw60_low_v_none
+d_netdalys300_sw55_low_v_none  d_netdalys300_sw60_low_v_none	d_netdalys300_sw65_low_v_none 
+d_netdalys300_sw70_low_v_none	d_netdalys300_sw75_low_v_none  d_netdalys300_sw80_low_v_none
 
 d_netdalys100_sw10_low_v_none  d_netdalys100_sw15_low_v_none  d_netdalys100_sw20_low_v_none
 d_netdalys100_sw25_low_v_none  d_netdalys100_sw30_low_v_none  d_netdalys100_sw35_low_v_none
 d_netdalys100_sw40_low_v_none  d_netdalys100_sw45_low_v_none  d_netdalys100_sw50_low_v_none
-d_netdalys100_sw55_low_v_none  d_netdalys100_sw60_low_v_none;
+d_netdalys100_sw55_low_v_none  d_netdalys100_sw60_low_v_none	d_netdalys100_sw65_low_v_none 
+d_netdalys100_sw70_low_v_none	d_netdalys100_sw75_low_v_none  d_netdalys100_sw80_low_v_none
+;
 run;
-
 **By incidence;
-proc means n mean p5 p95;var
-d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
-d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
-d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
-d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=1;run;
-proc means n mean p5 p95;var
-d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
-d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
-d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
-d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=2;run;
-proc means n mean p5 p95;var
-d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
-d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
-d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
-d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=3;run;
-proc means n mean p5 p95;var
-d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
-d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
-d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
-d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=4 ;run;
-proc means n mean p5 p95;var
-d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
-d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
-d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
-d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=5;run;
+***multiply by -1 and record last positive value;
 
 proc means n mean p5 p95;var
 d_netdalys500_sw10_low_v_none  d_netdalys500_sw15_low_v_none  d_netdalys500_sw20_low_v_none
@@ -678,6 +729,35 @@ d_netdalys500_sw10_low_v_none  d_netdalys500_sw15_low_v_none  d_netdalys500_sw20
 d_netdalys500_sw25_low_v_none  d_netdalys500_sw30_low_v_none  d_netdalys500_sw35_low_v_none
 d_netdalys500_sw40_low_v_none  d_netdalys500_sw45_low_v_none  d_netdalys500_sw50_low_v_none
 d_netdalys500_sw55_low_v_none  d_netdalys500_sw60_low_v_none;;where incidence=5;run;
+
+
+proc means n mean p5 p95;var
+d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
+d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
+d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=1;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
+d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
+d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=2;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
+d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
+d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=3;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
+d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
+d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none;;where incidence=4 ;run;
+proc means n mean p5 p95;var
+d_netdalys500_sw10_high_v_none  d_netdalys500_sw15_high_v_none  d_netdalys500_sw20_high_v_none
+d_netdalys500_sw25_high_v_none  d_netdalys500_sw30_high_v_none  d_netdalys500_sw35_high_v_none
+d_netdalys500_sw40_high_v_none  d_netdalys500_sw45_high_v_none  d_netdalys500_sw50_high_v_none
+d_netdalys500_sw55_high_v_none  d_netdalys500_sw60_high_v_none	d_netdalys500_sw65_high_v_none  
+d_netdalys500_sw70_high_v_none;;where incidence=5;run;
+
 
 
 

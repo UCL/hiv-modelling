@@ -164,6 +164,10 @@ s_cost_sw_program45=45;
 s_cost_sw_program50=50;
 s_cost_sw_program55=55;
 s_cost_sw_program60=60;
+s_cost_sw_program65=65;
+s_cost_sw_program70=70;
+s_cost_sw_program75=75;
+s_cost_sw_program80=80;
 
 dcost_sw_program19_= s_cost_sw_program19 * &discount;
 dcost_sw_program10_= s_cost_sw_program10 * &discount;
@@ -177,6 +181,10 @@ dcost_sw_program45_= s_cost_sw_program45 * &discount;
 dcost_sw_program50_= s_cost_sw_program50 * &discount;
 dcost_sw_program55_= s_cost_sw_program55 * &discount;
 dcost_sw_program60_= s_cost_sw_program60 * &discount;
+dcost_sw_program65_= s_cost_sw_program65 * &discount;
+dcost_sw_program70_= s_cost_sw_program70 * &discount;
+dcost_sw_program75_= s_cost_sw_program75 * &discount;
+dcost_sw_program80_= s_cost_sw_program80 * &discount;
 end;
 
 
@@ -193,6 +201,11 @@ s_cost_sw_program45=0;dcost_sw_program45_=0;
 s_cost_sw_program50=0;dcost_sw_program50_=0;
 s_cost_sw_program55=0;dcost_sw_program55_=0;
 s_cost_sw_program60=0;dcost_sw_program60_=0;
+s_cost_sw_program65=0;dcost_sw_program65_=0;
+s_cost_sw_program70=0;dcost_sw_program70_=0;
+s_cost_sw_program75=0;dcost_sw_program75_=0;
+s_cost_sw_program80=0;dcost_sw_program80_=0;
+
 end;
 
 ***Will need to add the cost of VG when included in HIV Synthesis;
@@ -261,6 +274,25 @@ dcost60_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
 		dcost_sw_program60_;
 
+dcost65_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
+		dcost_sw_program65_;
+
+dcost70_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
+		dcost_sw_program70_;
+
+dcost75_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
+		dcost_sw_program75_;
+
+dcost80_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
+		dcost_sw_program80_;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
@@ -515,6 +547,8 @@ dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_cir
 dcost_prep_visit_oral  				dcost_prep_oral   dcost_prep_visit_inj  dcost_prep_inj 		dtest_cost_sw
 effect_sw_prog_newp
 dcost19_  dcost10_ dcost15_ dcost20_  dcost25_ dcost30_ dcost35_ dcost40_  dcost45_ dcost50_ dcost55_ dcost60_ 
+dcost65_  dcost70_ dcost75_ dcost80_ 
+
 s_tested s_tested_m s_tested_f n_pregnant p_linked_diag_sw
 ;
 
@@ -654,6 +688,7 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_72 t_23_24 t_22_27 t_22_42 t_22_72;
 %var(v=dcost);			%var(v=ddaly);
 %var(v=dcost19_);		%var(v=dcost10_);			%var(v=dcost15_);		    %var(v=dcost20_);	%var(v=dcost25_);	%var(v=dcost30_);
 %var(v=dcost35_);		%var(v=dcost40_);			%var(v=dcost45_);			%var(v=dcost50_);	%var(v=dcost55_);	%var(v=dcost60_);	
+%var(v=dcost65_);		%var(v=dcost70_);			%var(v=dcost75_);			%var(v=dcost80_);
 
 %var(v=dcost_sw_program45_);
 
@@ -690,7 +725,9 @@ p_sw_prog_vis   n_tested_sw	   	   p_tested_past_year_sw  prop_sw_onprep	prevale
 p_diag_sw		p_onart_diag_sw	   p_onart_vl1000_sw	p_sti_sw
 dcost			ddaly
 dcost19_		dcost10_		dcost15_		dcost20_		dcost25_		dcost30_		dcost35_	dcost40_
-dcost45_		dcost50_		dcost55_		dcost60_		dcost_sw_program45_
+dcost45_		dcost50_		dcost55_		dcost60_		dcost65_		dcost70_		dcost75_	dcost80_
+
+dcost_sw_program45_
 dart_cost_y		dadc_cost		dcd4_cost		dvl_cost  	 	dvis_cost		dnon_tb_who3_cost	
 dcot_cost		dtb_cost  		dres_cost 		dtest_cost		dtest_cost_sw	d_t_adh_int_cost  	dswitchline_cost
 dcost_drug_level_test			dcost_circ 		dcost_condom_dn	dcost_avail_self_test 	
