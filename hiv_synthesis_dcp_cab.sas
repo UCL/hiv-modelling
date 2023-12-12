@@ -7,6 +7,13 @@
 
 define a person who is dcp reached 
 
+this will be predicted by those prep_elig (or recently prep elig ?) (+ tested=1 ?) and person starting prep will become dcp = 1
+
+those with dcp=1 will have greater prep retention, greater prep restart rate, greater propensity to test
+
+dropout of dcp will only be possible for those not on prep - will be at random and also predicted by whether recently prep elig  
+
+
 could it be a person with indication for prep who is tested ?
 
 dcp some fixed cost plus a unit cost per person reached with dcp
