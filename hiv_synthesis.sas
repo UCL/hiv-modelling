@@ -580,7 +580,6 @@ newp_seed = 7;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
 							* dependent_on_time_step_length ;
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.10 0.80 0.10);
-* sw_init_newp;    			%sample(sw_init_newp, 1 2, 0.9 0.1);
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
@@ -4082,8 +4081,8 @@ if sw=1 then  ever_sw = 1;
 
 * sw newp levels are 
 1 	newp = 0
-2   newp 1-6
-3   newp 7-20
+2   newp 1-3
+3   newp 4-20
 4   newp 21-50
 5   newp 51-150
 ;
@@ -4129,8 +4128,8 @@ if sw = 1 then do;
 
 * sw newp levels are 
 1 	newp = 0
-2   newp 1-6
-3   newp 7-20
+2   newp 1-3
+3   newp 4-20
 4   newp 21-50 
 5   newp 50-150
 
@@ -4171,8 +4170,8 @@ end;
 
 * sw newp levels are 
 1 	newp = 0
-2   newp 1-6 / 3
-3   newp 7-20 /3 
+2   newp 1-4 / 3
+3   newp 4-20 /3 
 4   newp 21-50 /3
 5   newp 51-150 /3
 
@@ -19036,7 +19035,7 @@ rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program  sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
+nnrti_res_no_effect  sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
@@ -21782,7 +21781,7 @@ rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_ga
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75  death_r_iris_pop_wide_tld
 sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
+sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
 effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
