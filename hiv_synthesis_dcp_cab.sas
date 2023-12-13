@@ -685,7 +685,7 @@ newp_seed = 7;
 * prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.1  0.15  0.3); * dcp_cab;
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.05  0.1  0.15 ); * dcp_cab;
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
@@ -2137,15 +2137,13 @@ if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
+dcp=0;  * dcp introuced as a variable ;
+
 	if option = 0 then do;
 	end;
 
 	if option = 1 then do;  * dcp without cab;
-		eff_rate_test_startprep_any = 0.3 ;
-		eff_rate_choose_stop_prep_oral = 0.05 ; 		
-		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = 1.7;
-		if hard_reach=1 then do; s= rand('uniform'); if s < 0.5 then hard_reach=0;  end;
-		incr_rate_test_if_prep_elig=1; * means 3 fold increase in rate testing;
+		dcp_program=1;
 	end;
 
 	if option = 2 then do;  * cab without dcp;
@@ -2153,18 +2151,38 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	if option = 3 then do;  * dcp with cab;
-		eff_rate_test_startprep_any = 0.3 ;
-		eff_rate_choose_stop_prep_oral = 0.05 ; eff_rate_choose_stop_prep_inj  = 0.05 ; 
-		pref_prep_oral_ch_in_options=1; pref_prep_oral_beta_s1 = 1.7; 
-		if hard_reach=1 then do; s= rand('uniform'); if s < 0.5 then hard_reach=0;  end;
-		incr_rate_test_if_prep_elig=1; * means 3 fold increase in rate testing;
+		dcp_program=1;
 		date_prep_inj_intro=2024.5;  dur_prep_inj_scaleup=2;
-		pref_prep_inj_ch_in_options=1; pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.3;
 	end;
 
 end;
 
 *  ======================================================================================================================================== ;
+
+
+* becoming dcp = 1
+
+if prep=1 or 
+
+
+* dropping out of dcp
+
+
+* remember to revert individual parameter changes if drop out of dcp ;
+
+
+* effects of dcp (dynamic choice prevention) if introduced; 
+	if dcp = 1 then do;
+		eff_rate_test_startprep_any = 0.3 ;
+		eff_rate_choose_stop_prep_oral = 0.05 ; 		
+		if caldate{t} >= date_prep_inj_intro  then eff_rate_choose_stop_prep_inj = 0.05 ;																				end;
+	end;
+
+* remember to revert individual parameter changes if drop out of dcp ;
+
+* decide on where to place this code ;
+
+
 
 
 
@@ -2864,7 +2882,7 @@ if caldate{t} >= &year_interv then do;
 end;
 
 * cab/dcp ;
-if incr_rate_test_if_prep_elig = 1 and prep_any_elig = 1 then do;
+if dcp = 1 then do;
 rate_1sttest = rate_1sttest * 3.0; rate_reptest = rate_reptest * 3.0;
 end;
 
