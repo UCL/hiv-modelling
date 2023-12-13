@@ -2137,7 +2137,7 @@ end;
 * becoming dcp = 1 ;
 
 d=rand('uniform');
-if dcp_progam = 1 and (prep_any=1 or (prep_any_elig =1 and d <rate_start_dcp_not_prep) then dcp=1; 
+if dcp_progam = 1 and (prep_any=1 or (prep_any_elig =1 and d <rate_start_dcp_not_prep)) then dcp=1; 
 
 
 if dcp = 1 then do;
