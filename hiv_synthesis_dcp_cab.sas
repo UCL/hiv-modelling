@@ -2149,7 +2149,7 @@ if dcp = 1 then do;
 
 		* dropping out of dcp ;
 		c=rand('uniform'); 
-		if c < rate_stop_dcp then dcp=0 or (prep_any_elig ne 1 and prep_any_elig_tm1 ne 1 and prep_any_elig_tm2 ne 1 and prep_any_elig_tm3 ne 1) then do;
+		if c < rate_stop_dcp or (prep_any_elig ne 1 and prep_any_elig_tm1 ne 1 and prep_any_elig_tm2 ne 1 and prep_any_elig_tm3 ne 1) then do;
 			dcp=0; 
 			* revert to pre-dcp values of prep parameters;
 			eff_rate_test_startprep_any = rate_test_startprep_any ;
