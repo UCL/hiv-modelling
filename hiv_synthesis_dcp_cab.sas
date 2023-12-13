@@ -2144,7 +2144,7 @@ end;
 * becoming dcp = 1 ;
 
 d=rand('uniform');
-if dcp_progam = 1 and (prep_any=1 or (prep_any_elig =1 and d <rate_start_dcp_not_prep)) then dcp=1; 
+if dcp_progam = 1 and registd ne 1 and (prep_any=1 or (prep_any_elig =1 and d <rate_start_dcp_not_prep)) then dcp=1; 
 
 
 if dcp = 1 then do;
@@ -2156,7 +2156,8 @@ if dcp = 1 then do;
 
 		* dropping out of dcp ;
 		c=rand('uniform'); 
-		if c < rate_stop_dcp or (prep_any_elig ne 1 and prep_any_elig_tm1 ne 1 and prep_any_elig_tm2 ne 1 and prep_any_elig_tm3 ne 1) then do;
+		if c < rate_stop_dcp or (prep_any_elig ne 1 and prep_any_elig_tm1 ne 1 and prep_any_elig_tm2 ne 1 and prep_any_elig_tm3 ne 1) 
+		of registd=1 then do;
 			dcp=0; 
 			* revert to pre-dcp values of prep parameters;
 			eff_rate_test_startprep_any = rate_test_startprep_any ;
