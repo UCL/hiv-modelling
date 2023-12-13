@@ -2,6 +2,18 @@
 
 
 
+
+* check this against maya notes ;
+
+
+
+
+
+
+
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -2077,6 +2089,8 @@ age_tm1=age;
 
 prep_any_elig_tm1=prep_any_elig; prep_any_elig_tm2=prep_any_elig_tm1; prep_any_elig_tm3=prep_any_elig_tm2; 
 dcp_tm1 = dcp;
+
+if prep_any_elig=1 then ever_prep_elig = 1;
 
 art_initiation=0;  * started art this period - intentional that this appears in code for all adults, not just those with hiv;
 
