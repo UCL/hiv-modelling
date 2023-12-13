@@ -2099,6 +2099,9 @@ sw_tm1=sw;
 hiv_tm1 = hiv; 
 age_tm1=age;
 
+prep_any_elig_tm1=prep_any_elig; prep_any_elig_tm2=prep_any_elig_tm1; prep_any_elig_tm3=prep_any_elig_tm2; 
+dcp_tm1 = dcp;
+
 art_initiation=0;  * started art this period - intentional that this appears in code for all adults, not just those with hiv;
 
 
@@ -2144,6 +2147,7 @@ dcp=0;  * dcp introuced as a variable ;
 
 	if option = 1 then do;  * dcp without cab;
 		dcp_program=1;
+		rate_stop_dcp = 0.05;  rate_start_dcp_not_prep = 0.05;   incr_test_rate_dcp = 3; * sample these;
 	end;
 
 	if option = 2 then do;  * cab without dcp;
@@ -2152,7 +2156,8 @@ dcp=0;  * dcp introuced as a variable ;
 
 	if option = 3 then do;  * dcp with cab;
 		dcp_program=1;
-		date_prep_inj_intro=2024.5;  dur_prep_inj_scaleup=2;
+		rate_stop_dcp = 0.05;  rate_start_dcp_not_prep = 0.05; incr_test_rate_dcp = 3; * sample these;
+		date_prep_inj_intro=2024.5;  dur_prep_inj_scaleup=2;  
 	end;
 
 end;
@@ -2160,31 +2165,31 @@ end;
 *  ======================================================================================================================================== ;
 
 
-* becoming dcp = 1
+* dynamic choice prevention (dcp);
 
-if prep=1 or 
+* becoming dcp = 1 ;
 
-
-* dropping out of dcp
-
-
-* remember to revert individual parameter changes if drop out of dcp ;
+d=rand('uniform');
+if dcp_progam = 1 and (prep_any=1 or (prep_any_elig =1 and d <rate_start_dcp_not_prep) then dcp=1; 
 
 
-* effects of dcp (dynamic choice prevention) if introduced; 
-	if dcp = 1 then do;
+if dcp = 1 then do;
+
+		* effects of dcp (dynamic choice prevention) ; 
 		eff_rate_test_startprep_any = 0.3 ;
 		eff_rate_choose_stop_prep_oral = 0.05 ; 		
-		if caldate{t} >= date_prep_inj_intro  then eff_rate_choose_stop_prep_inj = 0.05 ;																				end;
-	end;
+		if caldate{t} >= date_prep_inj_intro  then eff_rate_choose_stop_prep_inj = 0.05 ;	
 
-* remember to revert individual parameter changes if drop out of dcp ;
-
-* decide on where to place this code ;
-
-
-
-
+		* dropping out of dcp ;
+		c=rand('uniform'); 
+		if c < rate_stop_dcp then dcp=0 or (prep_any_elig ne 1 and prep_any_elig_tm1 ne 1 and prep_any_elig_tm2 ne 1 and prep_any_elig_tm3 ne 1) then do;
+			dcp=0; 
+			* revert to pre-dcp values of prep parameters;
+			eff_rate_test_startprep_any = rate_test_startprep_any ;
+			eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral ; 		
+			eff_rate_choose_stop_prep_inj = rate_choose_stop_prep_inj ;	
+		end;
+end;
 
 
 
@@ -2883,7 +2888,7 @@ end;
 
 * cab/dcp ;
 if dcp = 1 then do;
-rate_1sttest = rate_1sttest * 3.0; rate_reptest = rate_reptest * 3.0;
+rate_1sttest = rate_1sttest * incr_test_rate_dcp; rate_reptest = rate_reptest * incr_test_rate_dcp;
 end;
 
 
@@ -4458,7 +4463,6 @@ plw=0; if pregnant=1 or breastfeeding=1 then plw=1;		* MIHPSA JAS Jul23;
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
 
-prep_any_elig_tm1=prep_any_elig;
 prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and different eligibility for new users than previous users;
 
 * note this code below changed from kzn_prep program as only need newp ge 1 for sw to be eligible;
