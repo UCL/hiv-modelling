@@ -789,6 +789,14 @@ end;
 
 * new for pop_wide_tld ;
 
+
+* DYNAMIC CHOICE PREVENTION (dcp);
+
+* rate_stop_dcp;				%sample_uniform(rate_stop_dcp, 0.01  0.03  0.1);
+* rate_start_dcp_not_prep ; 	%sample_uniform(rate_start_dcp_not_prep, 0.05  0.1  0.15);
+* incr_test_rate_dcp;			%sample_uniform(incr_test_rate_dcp, 2  3  5  10);
+
+
 * POP WIDE TLD * ;
 
 * rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1.5 2 3 5);
@@ -2116,7 +2124,6 @@ dcp = 0;  * dcp introuced as a variable ;
 
 	if option = 1 then do;  * dcp without cab;
 		dcp_program=1;
-		%sample_uniform(rate_stop_dcp, 0.01  0.03  0.1);%sample_uniform(rate_start_dcp_not_prep, 0.05  0.1  0.15);%sample_uniform(incr_test_rate_dcp, 2  3  5  10);
 	end;
 
 	if option = 2 then do;  * cab without dcp;
@@ -2125,7 +2132,6 @@ dcp = 0;  * dcp introuced as a variable ;
 
 	if option = 3 then do;  * dcp with cab;
 		dcp_program=1;
-		%sample_uniform(rate_stop_dcp, 0.01  0.03  0.1);%sample_uniform(rate_start_dcp_not_prep, 0.05  0.1  0.15);%sample_uniform(incr_test_rate_dcp, 2  3  5  10);
 		date_prep_inj_intro=2024.5;  dur_prep_inj_scaleup=2;  
 	end;
 
