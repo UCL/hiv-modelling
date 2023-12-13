@@ -2,38 +2,6 @@
 
 
 
-
-* 
-
-define a person who is dcp reached 
-
-this will be predicted by those prep_elig (or recently prep elig ?) (+ tested=1 ?) and person starting prep will become dcp = 1
-
-those with dcp=1 will have greater prep retention, greater prep restart rate, greater propensity to test
-
-dropout of dcp will only be possible for those not on prep - will be at random and also predicted by whether recently prep elig  
-
-
-could it be a person with indication for prep who is tested ?
-
-dcp some fixed cost plus a unit cost per person reached with dcp
-
-;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -2140,14 +2108,14 @@ if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-dcp=0;  * dcp introuced as a variable ;
+dcp = 0;  * dcp introuced as a variable ;
 
 	if option = 0 then do;
 	end;
 
 	if option = 1 then do;  * dcp without cab;
 		dcp_program=1;
-		rate_stop_dcp = 0.05;  rate_start_dcp_not_prep = 0.05;   incr_test_rate_dcp = 3; * sample these;
+		%sample_uniform(rate_stop_dcp, 0.01, 0.03, 0.1);%sample_uniform(rate_start_dcp_not_prep, 0.05, 0.1, 0.15);%sample_uniform(incr_test_rate_dcp, 2, 3, 5, 10);
 	end;
 
 	if option = 2 then do;  * cab without dcp;
@@ -2156,14 +2124,13 @@ dcp=0;  * dcp introuced as a variable ;
 
 	if option = 3 then do;  * dcp with cab;
 		dcp_program=1;
-		rate_stop_dcp = 0.05;  rate_start_dcp_not_prep = 0.05; incr_test_rate_dcp = 3; * sample these;
+		%sample_uniform(rate_stop_dcp, 0.01, 0.03, 0.1);%sample_uniform(rate_start_dcp_not_prep, 0.05, 0.1, 0.15);%sample_uniform(incr_test_rate_dcp, 2, 3, 5, 10);
 		date_prep_inj_intro=2024.5;  dur_prep_inj_scaleup=2;  
 	end;
 
 end;
 
 *  ======================================================================================================================================== ;
-
 
 * dynamic choice prevention (dcp);
 
@@ -2190,8 +2157,6 @@ if dcp = 1 then do;
 			eff_rate_choose_stop_prep_inj = rate_choose_stop_prep_inj ;	
 		end;
 end;
-
-
 
 
 * Oral PREP introduction in fsw/agyw 2018; 
@@ -17331,11 +17296,17 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-
 /*
 
 proc freq; tables cald hiv ; where death=.; run;
 
+
+proc print;
+var caldate&j dcp_program  dcp  prep_any_elig prep_oral prep_inj  tested  
+rate_stop_dcp  rate_start_dcp_not_prep  incr_test_rate_dcp eff_rate_test_startprep_any  rate_test_startprep_any 
+eff_rate_choose_stop_prep_oral  rate_choose_stop_prep_oral eff_rate_choose_stop_prep_inj  rate_choose_stop_prep_inj
+;
+	
 */
 
 /*
@@ -18827,6 +18798,8 @@ rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy  prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
 artvis0_lower_adh  pop_wide_prep_adh_effect 
+
+rate_stop_dcp    rate_start_dcp_not_prep    incr_test_rate_dcp
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
@@ -21569,6 +21542,8 @@ rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner p
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 artvis0_lower_adh  pop_wide_prep_adh_effect 
+
+rate_stop_dcp    rate_start_dcp_not_prep    incr_test_rate_dcp
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
