@@ -5,7 +5,16 @@
 
 * check this against maya notes ;
 
+* decide on a mix of clinic and self testing and take a mean sensitivity and mean test cost accordingly;
 
+* include choice between pep and prep ;
+
+* just use PrEP testing to capture increased chance of starting while on DCP, and set Prob of 
+  starting PrEP following other testing to 0 for persons on DCP ? ;
+
+* currently not changing the keenness values;
+
+* make sure have all outputs needed for costing ;
 
 
 
@@ -699,7 +708,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* changed from 0.7 to 0.8 after discussion due to low overall adherence resulting from 0.7;
 * prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
 
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.10 0.30  0.50); * dcp_cab ;
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral,  0.10 0.30  0.50); * dcp_cab ;
 								* dependent_on_time_step_length ;
 
 * higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
@@ -807,6 +816,8 @@ end;
 * rate_stop_dcp;				%sample_uniform(rate_stop_dcp, 0.01  0.03  0.1);
 * rate_start_dcp_not_prep ; 	%sample_uniform(rate_start_dcp_not_prep, 0.05  0.1  0.15);
 * incr_test_rate_dcp;			%sample_uniform(incr_test_rate_dcp, 2  3  5  10);
+
+* prop_tests_self;				%sample_uniform(prop_tests_self, 0.25  0.5  0.75);
 
 
 * POP WIDE TLD * ;
@@ -949,7 +960,13 @@ end;
 *3= 3rd gen (Ab) tests / community-based POC tests / rapid tests ; 
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 if hivtest_type=1 then do; sens_primary=0.86; sens_vct=0.98; spec_vct=1;     end; 
-else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; sens_vct=0.98; spec_vct=0.992; end;
+
+else if hivtest_type=3 then do; 
+	if prop_tests_self = 0.25 then do; sens_primary=(3 * sens_primary_testtype3 + 0)/4;  sens_vct=((3 * 0.98) + (1 * 0.92))/4;  end;
+	if prop_tests_self = 0.5 then do; sens_primary=(2 * sens_primary_testtype3 + (2 * 0))/4;  sens_vct=((2 * 0.98) + (2 * 0.92))/4;   end;
+	if prop_tests_self = 0.75 then do; sens_primary=(3 * sens_primary_testtype3 + 0)/4; sens_vct=((1 * 0.98) + (3 * 0.92))/4;   end;
+	spec_vct=0.992;
+	end;
 else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; end;
 
 
@@ -2158,7 +2175,7 @@ end;
 * becoming dcp = 1 ;
 
 d=rand('uniform');
-if dcp_progam = 1 and registd ne 1 and (prep_any=1 or (prep_any_elig =1 and d <rate_start_dcp_not_prep)) then dcp=1; 
+if dcp_program = 1 and registd ne 1 and (prep_any=1 or (prep_any_elig =1 and d <rate_start_dcp_not_prep)) then dcp=1; 
 
 
 if dcp = 1 then do;
@@ -2166,7 +2183,8 @@ if dcp = 1 then do;
 		* effects of dcp (dynamic choice prevention) ; 
 		eff_rate_test_startprep_any = 0.3 ;
 		eff_rate_choose_stop_prep_oral = 0.05 ; 		
-		if caldate{t} >= date_prep_inj_intro  then eff_rate_choose_stop_prep_inj = 0.05 ;	
+		eff_prob_prep_oral_b = 0.2;
+		if caldate{t} >= date_prep_inj_intro  then do; eff_rate_choose_stop_prep_inj = 0.05 ; eff_prob_prep_inj_b = 0.2; end;
 
 		* dropping out of dcp ;
 		c=rand('uniform'); 
@@ -2176,7 +2194,9 @@ if dcp = 1 then do;
 			* revert to pre-dcp values of prep parameters;
 			eff_rate_test_startprep_any = rate_test_startprep_any ;
 			eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral ; 		
+			eff_prob_prep_oral_b = prob_prep_oral_b;
 			eff_rate_choose_stop_prep_inj = rate_choose_stop_prep_inj ;	
+			eff_prob_prep_inj_b = prob_prep_inj_b;
 		end;
 end;
 
@@ -16676,6 +16696,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_started_prep_any_hiv + started_prep_any_hiv;  s_pop_wide_tld_hiv + pop_wide_tld_hiv;  s_pop_wide_tld_prep_elig + pop_wide_tld_prep_elig ; 
 	s_pop_wide_tld_neg_prep_inelig + pop_wide_tld_neg_prep_inelig;
 
+	s_dcp + dcp;
 	
 	/*testing and diagnosis*/
 
@@ -18447,7 +18468,7 @@ s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_
 s_prep_elig_onprep_vr 
 s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
-
+s_dcp
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -18821,7 +18842,7 @@ prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b pr
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
 artvis0_lower_adh  pop_wide_prep_adh_effect 
 
-rate_stop_dcp    rate_start_dcp_not_prep    incr_test_rate_dcp
+rate_stop_dcp    rate_start_dcp_not_prep    incr_test_rate_dcp  prop_tests_self
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
@@ -19396,6 +19417,8 @@ s_start_rest_prep_inj_prim_cabr
 s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
 s_prep_elig_onprep_vr
 s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
+
+s_dcp
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -21195,6 +21218,8 @@ s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_
 s_prep_elig_onprep_vr
 s_prep_oral_restart_date_choice s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
+s_dcp
+
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		 s_tested1549_		s_tested1549m       s_tested1549w
@@ -21565,7 +21590,7 @@ inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wid
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 artvis0_lower_adh  pop_wide_prep_adh_effect 
 
-rate_stop_dcp    rate_start_dcp_not_prep    incr_test_rate_dcp
+rate_stop_dcp    rate_start_dcp_not_prep    incr_test_rate_dcp  prop_tests_self
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
