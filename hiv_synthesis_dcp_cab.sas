@@ -3,16 +3,10 @@
 
 
 
-* check this against maya notes ;
-
-* decide on a mix of clinic and self testing and take a mean sensitivity and mean test cost accordingly;
-
 * include choice between pep and prep ;
 
 * just use PrEP testing to capture increased chance of starting while on DCP, and set Prob of 
-  starting PrEP following other testing to 0 for persons on DCP ? ;
-
-* currently not changing the keenness values;
+  starting PrEP following other testing to 0 for persons on DCP ? (leave as is for now) ;  
 
 * make sure have all outputs needed for costing ;
 
