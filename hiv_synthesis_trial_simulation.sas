@@ -7,7 +7,11 @@
 
 * ultimately aim for 3000 runs;
 
-
+*
+(1) We are moving the primary endpoint to 2years (not 2.5 years) of follow-up. So would you kindly adjust your output (if needed)?
+(2) Also, would it be possible to include onprep and adherence for the period before endline (i.e, _tm1)? This will give us flexibility to look at biomedical prevention coverage over 6mo (vs. 3mo).
+(2) We would like a viral suppression cutoff of <400 c/mL if possible. 
+;
 
 
 
