@@ -1,4 +1,20 @@
 
+
+* unlikely to put this in core anytime soon - only if and when we are very confident in it;
+
+* generally a variable qith a _m for male refers to heterosexual men only - this is always the case when the variable relates to sexual behaviour ;
+
+* when there is no gender specificity to the variable then it nearly always refers to all men and women ;
+
+* the _allm means all men, heterosexual and msm ;
+
+* note the code for serodiscordant couples relates only to heterosexuals ;
+
+
+
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -8,7 +24,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 10000  ; * msm ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -600,8 +616,8 @@ newp_seed = 7;
 %sample(sw_prog_intensity, 1 2, 0.8 0.2);*1=low, 2=high;
 
 ***These parameters initially set for all SW programs and then overwritten below for high intensity programs;
-* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05, 0.10); *previously 0.10;
-* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02, 0.04); *previously 0.025;
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
 * effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
@@ -1197,7 +1213,11 @@ data r1; set r1;
 
 %sample_uniform(gender, 1 2);
 
+* msm ;
+o = rand('uniform'); if gender=1 and o < 0.03 then gender=3; end;
+
 if gender ne . then do; obs+1; end;
+
 
 
 *
@@ -1498,6 +1518,12 @@ if cu3/cu4 <= a < cu4/cu4 then do; if e < 0.22 then newp=10; if 0.22 <= e < 0.42
 
 end;
 
+ 
+
+* msm todo: baseline newp in gender =3;
+
+
+
 
 * RISK BEHAVIOUR AT TIME 0 - FEMALES;
 
@@ -1590,13 +1616,15 @@ end;
 * newp=round(newp,1);
 
 
-if 15 <= age < 65 then do; ep =0; ageg_ep=0; epmono=0; end;
+if 15 <= age < 65  then do; ep =0; ageg_ep=0; epmono=0; end; * msm ;
+if gender in (1,2) then do; * msm ;
 u=rand('uniform');
 if 15 <= age < 25 and u < 0.40 then do; ep=1; ageg_ep=1; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
 if 25 <= age < 35 and u < 0.50 then do; ep=1; ageg_ep=2; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
 if 35 <= age < 45 and u < 0.60 then do; ep=1; ageg_ep=3; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
 if 45 <= age < 55 and u < 0.60 then do; ep=1; ageg_ep=4; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
 if 55 <= age < 65 and u < 0.60 then do; ep=1; ageg_ep=5; d=rand('uniform'); if d < 0.33 then lep=1; if 0.33 <= d then lep=2; end;
+end;
 
 if newp ge 1 then ever_newp=1;
 if ep=1 then ever_ep=1;
@@ -1965,7 +1993,7 @@ dead_tm1=0;
 ***LBM21 Assume a proportion of men were circumcised at birth prior to 1989; 
 mcirc =0;birth_circ=0;new_birth_circ=0;
 
-if  gender=1 and age gt 0.25 then do;
+if  gender in (1, 3) and age gt 0.25 then do; * msm ;
 h = rand('uniform'); 
 if h < prob_birth_circ then do;mcirc =1;birth_circ=1;new_birth_circ=1;end;
 if mcirc =1 then date_mcirc=0;
@@ -1973,7 +2001,7 @@ end;
 
 
 p=rand('uniform'); q=rand('uniform');
-if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
+if (gender in (1, 3) and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1; * msm - todo: different for gender = 3 ?;
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
 
@@ -3214,7 +3242,7 @@ if 2012 < caldate{t} < 2023 then eff_prob_birth_circ =  (prob_birth_circ-((calda
 
 new_mcirc=0; new_birth_circ=0; 
 u=rand('uniform');
-if t ge 2 and age = 0.25 and gender=1 then do;
+if t ge 2 and age = 0.25 and gender in (1, 3) then do; * msm;
 		if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then eff_prob_birth_circ = 0;	
 		if u < eff_prob_birth_circ then do;
 			mcirc=1;     
@@ -3231,7 +3259,7 @@ end;
 u_circ=rand('uniform');
 tested_circ=0;
 
-if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1
+if t ge 2 and caldate{t} >= mc_int > . and gender in (1, 3) and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1
 and age < 50 then do; 
 
 	if u_circ lt prob_circ then do;
@@ -3530,7 +3558,7 @@ if 0.90 > w55r or w55r > 1.11 then do; rred_a_55w=rred_a_55w*w55r; end;
 if 0.90 > w55r or w55r > 1.11 then do; rred_a_60w=rred_a_60w*w55r; end;
 
 
-if gender=1 then do;
+if gender=1 then do; * msm - deliberately left as gender=1 and not gender in (1, 3);
 
 if 15 <= age < 20 then rred_a=rred_a_15m; 
 if 20 <= age < 25 then rred_a=rred_a_20m;
@@ -3580,7 +3608,7 @@ end;
 
 rred_balance= 1 ;
 
-if gender=1 then do;
+if gender=1 then do; * msm - deliberately left as gender=1 and not gender in (1, 3);
 		 if          d_s_newp >= 10000 then rred_balance = 0.10 ;
 	else if  3000 <= d_s_newp <  10000 then rred_balance = 0.70 ;
 	else if   500 <= d_s_newp <  3000 then rred_balance = 0.70 ;
@@ -3621,7 +3649,7 @@ the magnitude of an epidemic generated for a given mean level of condomless sex;
 
 
 
-if gender=1 and t ge 2 then do;
+if gender=1 and t ge 2 then do;  * msm - deliberately left as gender=1 and not gender in (1, 3);
 
 if sex_beh_trans_matrix_m=1 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.995; *newp=1; s2=0.005; *newp >= 2; s3=0.005; *newp 10x; s4=0.00005; end;
@@ -4270,7 +4298,7 @@ end;
 
 
 e=rand('uniform');
-if gender=1 then do;
+if gender=1 then do;  * msm - deliberately left as gender=1 and not gender in (1, 3);
 	if      15 <= age < 25 then do;
 		if 0 < r_s_ep_m15w15 <0.95 then e=e/(3*r_s_ep_m15w15); end;
 	else if 25 <= age < 35 then do;
@@ -4337,6 +4365,8 @@ if ep_tm1=0 and 45 <= age < 55 and u < eprate/3 then do;
 	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
 if ep_tm1=0 and 55 <= age < 65 and u < eprate/5 then do;
 	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if 0.30 <= d then lep=2;  end;
+
+if gender = 3 then ep = 0; * msm ;
 
 if t ge 2 and newp ge 1 then ever_newp=1;
 if t ge 2 and ep =  1 then ever_ep=1;
@@ -4511,12 +4541,12 @@ end;
 
 
 if gender=2 and d_hiv_epi_wm > 0 then epi=0;
-if gender=1 and d_hiv_epi_mw > 0 then epi=0;
+if gender=1 and d_hiv_epi_mw > 0 then epi=0;  * msm - deliberately left as gender=1 and not gender in (1, 3);
 
 end;
 
 
-if hiv=1 and epi=1 then do;
+if hiv=1 and epi=1 then do; * msm - deliberately left as gender=1 and not gender in (1, 3);
 	if gender=2 and     r_hiv_epi_both > 1 then do; g=rand('uniform'); if g > 1/r_hiv_epi_both > . then do; epi=.; ep=0; epmono=.; ageg_ep=.; end; end;
 	if gender=1 and . < r_hiv_epi_both < 1 then do; g=rand('uniform'); if g >   r_hiv_epi_both > . then do; epi=.; ep=0; epmono=.; ageg_ep=.; end; end;
 end;
@@ -4532,7 +4562,7 @@ if epi=1 then do;
 	if epdiag_tm1 ne 1 then do;
 		epdiag=0; s=rand('uniform');
 
-		if gender=1 then do;
+		if gender=1 then do; * msm - deliberately left as gender=1 and not gender in (1, 3);
 			if    0 > d_diag_w     	   then j=0;
  			if 0.05 > d_diag_w >= 0    then j=p_diag_w/5; 
 			if 0.1  > d_diag_w >= 0.05 then j=p_diag_w/2;  
@@ -4705,7 +4735,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
+	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;  * msm - includes availability in msm; 
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
@@ -5553,7 +5583,7 @@ w45m15 =0.00 *s_m_1524_newp; w45m25=0.00*s_m_2534_newp; w45m35=0.00*s_m_3544_new
 w55m15 =0.00 *s_m_1524_newp; w55m25=0.00*s_m_2534_newp; w55m35=0.00*s_m_3544_newp; w55m45=0.01*s_m_4554_newp; w55m55=0.10*s_m_5564_newp;
 */
 
-if gender=1 and sex_age_mixing_matrix_m=1 then do;
+if gender=1 and sex_age_mixing_matrix_m=1 then do; * msm - deliberately left as gender=1 and not gender in (1, 3);
 if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.865  then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.865<= e < 0.975  then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
@@ -5655,7 +5685,7 @@ ptnewp55_w=(0.00*s_m_1524_newp )+(0.00*s_m_2534_newp)+(0.00*s_m_3544_newp)+(0.07
 					   
 		   
 
-if gender=1 and sex_age_mixing_matrix_m=2 then do;
+if gender=1 and sex_age_mixing_matrix_m=2 then do; * msm - deliberately left as gender=1 and not gender in (1, 3);
 if 15 <= age < 25 then do;e=rand('uniform'); * dec17;
 if              e < 0.865 /*(then newp age 15-25)*/ then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.865<= e < 0.975 /*(then newp age 25-35)*/ then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
@@ -5753,7 +5783,7 @@ w45m15 =0.02 *s_m_1524_newp; w45m25=0.02*s_m_2534_newp; w45m35=0.05*s_m_3544_new
 w55m15 =0.01 *s_m_1524_newp; w55m25=0.01*s_m_2534_newp; w55m35=0.01*s_m_3544_newp; w55m45=0.07*s_m_4554_newp; w55m55=0.32*s_m_5564_newp;
 */
 
-if gender=1 and sex_age_mixing_matrix_m=3 then do;
+if gender=1 and sex_age_mixing_matrix_m=3 then do; * msm - deliberately left as gender=1 and not gender in (1, 3);
 if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.90   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.90 <= e < 0.95   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
@@ -5858,7 +5888,7 @@ ptnewp55_w=(0.00*s_m_1524_newp)+(0.01*s_m_2534_newp)+(0.00*s_m_3544_newp)+(0.03*
 end;
 */
 
-if gender=1 and sex_age_mixing_matrix_m=4 then do;
+if gender=1 and sex_age_mixing_matrix_m=4 then do;  * msm - deliberately left as gender=1 and not gender in (1, 3);
 if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.93   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.93 <= e < 0.98   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
@@ -5966,7 +5996,7 @@ end;
 
 */
 
-if gender=1 and sex_age_mixing_matrix_m=5 then do;
+if gender=1 and sex_age_mixing_matrix_m=5 then do;  * msm - deliberately left as gender=1 and not gender in (1, 3);
 if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.94   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.94 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
@@ -6067,7 +6097,7 @@ w55m15 =0.00 *s_m_1524_newp; w55m25=0.00*s_m_2534_newp; w55m35=0.00*s_m_3544_new
 end;
 */
 
-if gender=1 and sex_age_mixing_matrix_m=6 then do;
+if gender=1 and sex_age_mixing_matrix_m=6 then do;  * msm - deliberately left as gender=1 and not gender in (1, 3);
 if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.94   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.94 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
@@ -6166,6 +6196,8 @@ end;
 
 
 * probability of infection from infected new partner;
+
+* msm - deliberately left as gender=1 and not gender in (1, 3) in this section ;
 
 u1=0; u2=0; u3=0; u4=0; u5=0; u6=0;
 
@@ -8934,15 +8966,16 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	down so applies after tox, tb/adc, pi effects;
 e=rand('uniform');
 
-* note no effect when using e < 0.0;
-if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+* note no effect when using e < 0.0;  
+* msm ;
+if gender in (1, 3) and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender in (1, 3) and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender in (1, 3) and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender in (1, 3) and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender in (1, 3) and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender in (1, 3) and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender in (1, 3) and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender in (1, 3) and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 
 * _n6_ ;
 if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
@@ -11744,7 +11777,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 
 
 * based on SA death rates in 1997 (pre most AIDS deaths); 
-		if gender=1 then do; 
+		if gender in (1, 3) then do; * msm ;
 			if 15 <= age < 20 then ac_death_rate = 0.00200;
 			if 20 <= age < 25 then ac_death_rate = 0.00320;
 			if 25 <= age < 30 then ac_death_rate = 0.00580;
@@ -12107,13 +12140,13 @@ cost_onart=0; if onart=1 then cost_onart=max(0,art_cost) + max (0, cd4_cost) + m
 + max (0,adc_cost) + max (0, non_tb_who3_cost) + max (0, tb_cost) + max(0, cot_cost) +  max (0, res_cost) + max(0,t_adh_int_cost)
 + max (0, cost_switch_line) +  max(0,drug_level_test_cost);
 
-cost_test_m=0; if gender=1 then cost_test_m = cost_test;
+cost_test_m=0; if gender in (1, 3) then cost_test_m = cost_test;
 cost_test_f=0; if gender=2 then cost_test_f = cost_test;
 
-cost_test_m_sympt=0; if gender=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
+cost_test_m_sympt=0; if gender in (1, 3) and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
 then cost_test_m_sympt=cost_test;
 
-cost_test_m_circ=0; if gender=1 and tested_circ=1 then cost_test_m_circ=cost_test;
+cost_test_m_circ=0; if gender in (1, 3) and tested_circ=1 then cost_test_m_circ=cost_test;
 
 cost_test_f_anc=0; if gender=2 and tested_anc=1 then cost_test_f_anc=cost_test;
 
@@ -12166,7 +12199,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 
 
 * based on SA death rates in 1997 (pre most AIDS deaths); 
-		if gender=1 then do; 
+		if  in (1, 3) then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00200*0.93;
 			if 20 <= age < 25 then ac_death_rate = 0.00320*0.93;
 			if 25 <= age < 30 then ac_death_rate = 0.00580*0.93;
@@ -12210,7 +12243,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 * increased risk of death due to tdf toxicity (ckd / osteoporosis);
 	if prep_oral=1 and tot_yrs_prep_oral > 5  then ac_death_rate = ac_death_rate * rr_mort_tdf_prep ;
 
-	if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
+	if gender  in (1, 3) then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
 	if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
 
 	ac_deathrix = 1 - exp(-0.25*ac_death_rate); x3=rand('uniform');
@@ -12396,7 +12429,7 @@ if 55 <= age < 65 then ageg=5;
 
 alive0_=0; if age=0 then alive0_=1;
 
-if gender=1 then do;
+if gender in (1, 3) then do;
 	if 15 <= age < 25 then ageg1m=1;else ageg1m=0;
 	if 25 <= age < 35 then ageg2m=1;else ageg2m=0;
 	if 35 <= age < 45 then ageg3m=1;else ageg3m=0;
@@ -12457,18 +12490,18 @@ if gender=2 then do;
 	if 15 <= age < 50 then ageg1549w=1;else ageg1549w=0;
 end;
 
-alive_m = 0;  if age ge 15 and gender=1 then alive_m = 1;
+alive_m = 0;  if age ge 15 and  in (1, 3) then alive_m = 1;
 alive_w = 0;  if age ge 15 and gender=2 then alive_w = 1;
 if 15 <= age < 50 then alive1549=1;else alive1549=0;
-if 15 <= age < 50 and gender=1 then alive1549_m=1;else alive1549_m=0;
+if 15 <= age < 50 and gender in (1, 3) then alive1549_m=1;else alive1549_m=0;
 if 15 <= age < 50 and gender=2 then alive1549_w=1;else alive1549_w=0;
 if 15 <= age < 65 then alive1564=1;else alive1564=0;
-if 15 <= age < 65 and gender=1 then alive1564_m=1;else alive1564_m=0;
+if 15 <= age < 65 and gender in (1, 3) then alive1564_m=1;else alive1564_m=0;
 if 15 <= age < 65 and gender=2 then alive1564_w=1;else alive1564_w=0;
 
 ageg014_=0;if  0 <= age < 15 then ageg014_=1; 
 age_1849w=0;if 18 <= age < 50 and gender=2 then age_1849w=1;
-age_1844m=0;if 18 <= age < 45 and gender=1 then age_1844m=1;
+age_1844m=0;if 18 <= age < 45 and gender in (1, 3) then age_1844m=1;
 age_1844w=0;if 18 <= age < 45 and gender=2 then age_1844w=1;
 
 
@@ -12484,7 +12517,9 @@ hiv_pregnant=0; if pregnant=1 and hiv=1 then hiv_pregnant=1;
 hiv_anc=0;      if anc=1      and hiv=1 then hiv_anc=1;
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*;
 
-primary1519m=0; if gender=1 and primary=1 and 15 <= age < 20 then primary1519m=1;
+
+* msm  - left as is - general approach is that sexual behaviour related variables that are created for men and women relate to het sexual men only - gender = 1;
+primary1519m=0; if gender=1  and primary=1 and 15 <= age < 20 then primary1519m=1;
 primary2024m=0; if gender=1 and primary=1 and 20 <= age < 25 then primary2024m=1;
 primary2529m=0; if gender=1 and primary=1 and 25 <= age < 30 then primary2529m=1;
 primary3034m=0; if gender=1 and primary=1 and 30 <= age < 35 then primary3034m=1;
@@ -12493,7 +12528,7 @@ primary4044m=0; if gender=1 and primary=1 and 40 <= age < 45 then primary4044m=1
 primary4549m=0; if gender=1 and primary=1 and 45 <= age < 50 then primary4549m=1;
 primary5054m=0; if gender=1 and primary=1 and 50 <= age < 55 then primary5054m=1;
 primary5559m=0; if gender=1 and primary=1 and 55 <= age < 60 then primary5559m=1;
-primary6064m=0; if gender=1 and primary=1 and 60 <= age < 65 then primary6064m=1;
+primary6064m=0; if gender =1 and primary=1 and 60 <= age < 65 then primary6064m=1;
 
 primary1549m=0; if gender=1 and primary=1 and 15 <= age < 50 then primary1549m=1;
 
@@ -12512,7 +12547,7 @@ primary1549w=0; if gender=2 and primary=1 and 15 <= age < 50 then primary1549w=1
 
 primary1549=0; if primary=1 and 15 <= age < 50 then primary1549=1;
 
-
+* msm - leave as is;
 primary1524m_ep=0; if gender=1 and primary=1 and 15 <= age < 25 and ep=1 then primary1524m_ep=1;
 primary2534m_ep=0; if gender=1 and primary=1 and 25 <= age < 35 and ep=1 then primary2534m_ep=1;
 primary3544m_ep=0; if gender=1 and primary=1 and 35 <= age < 45 and ep=1 then primary3544m_ep=1;
@@ -12524,6 +12559,7 @@ primary3544w_ep=0; if gender=2 and primary=1 and 35 <= age < 45 and ep=1 then pr
 primary4554w_ep=0; if gender=2 and primary=1 and 45 <= age < 55 and ep=1 then primary4554w_ep=1;
 primary5564w_ep=0; if gender=2 and primary=1 and 55 <= age < 65 and ep=1 then primary5564w_ep=1;
 
+* msm  - leave as is;
 primary1524m_epnewp=0; if gender=1 and primary=1 and 15 <= age < 25 and ep=1 and newp ge 1 then primary1524m_epnewp=1;
 primary2534m_epnewp=0; if gender=1 and primary=1 and 25 <= age < 35 and ep=1 and newp ge 1 then primary2534m_epnewp=1;
 primary3544m_epnewp=0; if gender=1 and primary=1 and 35 <= age < 45 and ep=1 and newp ge 1 then primary3544m_epnewp=1;
@@ -12535,13 +12571,28 @@ primary3544w_epnewp=0; if gender=2 and primary=1 and 35 <= age < 45 and ep=1 and
 primary4554w_epnewp=0; if gender=2 and primary=1 and 45 <= age < 55 and ep=1 and newp ge 1 then primary4554w_epnewp=1;
 primary5564w_epnewp=0; if gender=2 and primary=1 and 55 <= age < 65 and ep=1 and newp ge 1 then primary5564w_epnewp=1;
 
-primary_ep_m=0; if primary=1 and ep=1 and epi  =0 and gender=1 then primary_ep_m=1;
+primary_ep_m=0; if primary=1 and ep=1 and epi  =0 and gender in (1, 3) then primary_ep_m=1;
 primary_ep_w=0; if primary=1 and ep=1 and epi  =0 and gender=2 then primary_ep_w=1;
 
 * this is denominator for incidence of hiv in those with ep=1 epi=0
-  only uninfected, as these are at risk of infection ;
-eph0_m=0; if ep=1 and hiv=0  and epi  =0 and gender=1 then eph0_m=1;
+  only uninfected, as these are at risk of infection ;  * msm ;
+eph0_m=0; if ep=1 and hiv=0  and epi  =0 and gender in (1, 3) then eph0_m=1;
 eph0_w=0; if ep=1 and hiv=0  and epi  =0 and gender=2 then eph0_w=1;
+
+
+/* msm - s_ gender variablea used in t_ that need protecting:
+ 
+s_prop_newp_i_m_1524 etc
+
+s_prop_ageg1_m_vlg1 etc
+
+s_prop_m_vlg1 etc
+  
+s_m_newp 
+
+* msm  - general approach is that sexual behaviour related variables that are created for men and women relate to het sexual men only - gender = 1;
+
+*/
 
 i_m_1524_newp=0; if hiv=1 and gender=1 and 15 <= age < 25 then i_m_1524_newp=newp;
 i_m_2534_newp=0; if hiv=1 and gender=1 and 25 <= age < 35 then i_m_2534_newp=newp;
@@ -13302,25 +13353,25 @@ art_dur_l6m=art_tdur_l6m; art_dur_g6m=art_tdur_g6m;  end;
 end;
 
 
-*** Total circumcisions and new circumcisions;
-mcirc_1014m=0;new_mcirc_1014m=0;vmmc1014m=0;new_vmmc1014m=0;if gender=1 and 10 le age lt 15 then do; mcirc_1014m=mcirc; new_mcirc_1014m=new_mcirc; new_vmmc1014m=new_vmmc; vmmc1014m=vmmc; end;
+*** Total circumcisions and new circumcisions; * msm ;
+mcirc_1014m=0;new_mcirc_1014m=0;vmmc1014m=0;new_vmmc1014m=0;if gender in (1, 3) and 10 le age lt 15 then do; mcirc_1014m=mcirc; new_mcirc_1014m=new_mcirc; new_vmmc1014m=new_vmmc; vmmc1014m=vmmc; end;
 
-mcirc_1519m=0;new_mcirc_1519m=0;vmmc1519m=0;new_vmmc1519m=0;if gender=1 and 15 le age lt 20 then do; mcirc_1519m=mcirc; new_mcirc_1519m=new_mcirc; new_vmmc1519m=new_vmmc; vmmc1519m=vmmc; end;
-mcirc_2024m=0;new_mcirc_2024m=0;vmmc2024m=0;new_vmmc2024m=0;if gender=1 and 20 le age lt 25 then do; mcirc_2024m=mcirc; new_mcirc_2024m=new_mcirc; new_vmmc2024m=new_vmmc; vmmc2024m=vmmc; end;
-mcirc_2529m=0;new_mcirc_2529m=0;vmmc2529m=0;new_vmmc2529m=0;if gender=1 and 25 le age lt 30 then do; mcirc_2529m=mcirc; new_mcirc_2529m=new_mcirc; new_vmmc2529m=new_vmmc; vmmc2529m=vmmc; end;
-mcirc_3034m=0;new_mcirc_3034m=0;vmmc3034m=0;new_vmmc3034m=0;if gender=1 and 30 le age lt 35 then do; mcirc_3034m=mcirc; new_mcirc_3034m=new_mcirc; new_vmmc3034m=new_vmmc; vmmc3034m=vmmc; end;
-mcirc_3539m=0;new_mcirc_3539m=0;vmmc3539m=0;new_vmmc3539m=0;if gender=1 and 35 le age lt 40 then do; mcirc_3539m=mcirc; new_mcirc_3539m=new_mcirc; new_vmmc3539m=new_vmmc; vmmc3539m=vmmc; end;
-mcirc_4044m=0;new_mcirc_4044m=0;vmmc4044m=0;new_vmmc4044m=0;if gender=1 and 40 le age lt 45 then do; mcirc_4044m=mcirc; new_mcirc_4044m=new_mcirc; new_vmmc4044m=new_vmmc; vmmc4044m=vmmc; end;
-mcirc_4549m=0;new_mcirc_4549m=0;vmmc4549m=0;new_vmmc4549m=0;if gender=1 and 45 le age lt 50 then do; mcirc_4549m=mcirc; new_mcirc_4549m=new_mcirc; new_vmmc4549m=new_vmmc; vmmc4549m=vmmc; end;
-mcirc_50plm=0;new_mcirc_50plm=0;vmmc50plm=0;new_vmmc50plm=0;if gender=1 and       age ge 50 then do; mcirc_50plm=mcirc; new_mcirc_50plm=new_mcirc; new_vmmc50plm=new_vmmc; vmmc50plm=vmmc; end;
-mcirc_5054m=0;new_mcirc_5054m=0;vmmc5054m=0;new_vmmc5054m=0;if gender=1 and 50 le age lt 55 then do; mcirc_5054m=mcirc; new_mcirc_5054m=new_mcirc; new_vmmc5054m=new_vmmc; vmmc5054m=vmmc; end;
-mcirc_5559m=0;new_mcirc_5559m=0;vmmc5559m=0;new_vmmc5559m=0;if gender=1 and 55 le age lt 60 then do; mcirc_5559m=mcirc; new_mcirc_5559m=new_mcirc; new_vmmc5559m=new_vmmc; vmmc5559m=vmmc; end;
-mcirc_6064m=0;new_mcirc_6064m=0;vmmc6064m=0;new_vmmc6064m=0;if gender=1 and 60 le age lt 65 then do; mcirc_6064m=mcirc; new_mcirc_6064m=new_mcirc; new_vmmc6064m=new_vmmc; vmmc6064m=vmmc; end;
-mcirc_6569m=0;new_mcirc_6569m=0;vmmc6569m=0;new_vmmc6569m=0;if gender=1 and 65 le age lt 70 then do; mcirc_6569m=mcirc; new_mcirc_6569m=new_mcirc; new_vmmc6569m=new_vmmc; vmmc6569m=vmmc; end;
-mcirc_7074m=0;new_mcirc_7074m=0;vmmc7074m=0;new_vmmc7074m=0;if gender=1 and 70 le age lt 75 then do; mcirc_7074m=mcirc; new_mcirc_7074m=new_mcirc; new_vmmc7074m=new_vmmc; vmmc7074m=vmmc; end;
-mcirc_7579m=0;new_mcirc_7579m=0;vmmc7579m=0;new_vmmc7579m=0;if gender=1 and 75 le age lt 80 then do; mcirc_7579m=mcirc; new_mcirc_7579m=new_mcirc; new_vmmc7579m=new_vmmc; vmmc7579m=vmmc; end;
-mcirc_8084m=0;new_mcirc_8084m=0;vmmc8084m=0;new_vmmc8084m=0;if gender=1 and 80 le age lt 85 then do; mcirc_8084m=mcirc; new_mcirc_8084m=new_mcirc; new_vmmc8084m=new_vmmc; vmmc8084m=vmmc; end;
-mcirc_85plm=0;new_mcirc_85plm=0;vmmc85plm=0;new_vmmc85plm=0;if gender=1 and 85 le age       then do; mcirc_85plm=mcirc; new_mcirc_85plm=new_mcirc; new_vmmc85plm=new_vmmc; vmmc85plm=vmmc; end;
+mcirc_1519m=0;new_mcirc_1519m=0;vmmc1519m=0;new_vmmc1519m=0;if gender in (1, 3) and 15 le age lt 20 then do; mcirc_1519m=mcirc; new_mcirc_1519m=new_mcirc; new_vmmc1519m=new_vmmc; vmmc1519m=vmmc; end;
+mcirc_2024m=0;new_mcirc_2024m=0;vmmc2024m=0;new_vmmc2024m=0;if gender in (1, 3) and 20 le age lt 25 then do; mcirc_2024m=mcirc; new_mcirc_2024m=new_mcirc; new_vmmc2024m=new_vmmc; vmmc2024m=vmmc; end;
+mcirc_2529m=0;new_mcirc_2529m=0;vmmc2529m=0;new_vmmc2529m=0;if gender in (1, 3) and 25 le age lt 30 then do; mcirc_2529m=mcirc; new_mcirc_2529m=new_mcirc; new_vmmc2529m=new_vmmc; vmmc2529m=vmmc; end;
+mcirc_3034m=0;new_mcirc_3034m=0;vmmc3034m=0;new_vmmc3034m=0;if gender in (1, 3) and 30 le age lt 35 then do; mcirc_3034m=mcirc; new_mcirc_3034m=new_mcirc; new_vmmc3034m=new_vmmc; vmmc3034m=vmmc; end;
+mcirc_3539m=0;new_mcirc_3539m=0;vmmc3539m=0;new_vmmc3539m=0;if gender in (1, 3) and 35 le age lt 40 then do; mcirc_3539m=mcirc; new_mcirc_3539m=new_mcirc; new_vmmc3539m=new_vmmc; vmmc3539m=vmmc; end;
+mcirc_4044m=0;new_mcirc_4044m=0;vmmc4044m=0;new_vmmc4044m=0;if gender in (1, 3) and 40 le age lt 45 then do; mcirc_4044m=mcirc; new_mcirc_4044m=new_mcirc; new_vmmc4044m=new_vmmc; vmmc4044m=vmmc; end;
+mcirc_4549m=0;new_mcirc_4549m=0;vmmc4549m=0;new_vmmc4549m=0;if gender in (1, 3) and 45 le age lt 50 then do; mcirc_4549m=mcirc; new_mcirc_4549m=new_mcirc; new_vmmc4549m=new_vmmc; vmmc4549m=vmmc; end;
+mcirc_50plm=0;new_mcirc_50plm=0;vmmc50plm=0;new_vmmc50plm=0;if gender in (1, 3) and       age ge 50 then do; mcirc_50plm=mcirc; new_mcirc_50plm=new_mcirc; new_vmmc50plm=new_vmmc; vmmc50plm=vmmc; end;
+mcirc_5054m=0;new_mcirc_5054m=0;vmmc5054m=0;new_vmmc5054m=0;if gender in (1, 3) and 50 le age lt 55 then do; mcirc_5054m=mcirc; new_mcirc_5054m=new_mcirc; new_vmmc5054m=new_vmmc; vmmc5054m=vmmc; end;
+mcirc_5559m=0;new_mcirc_5559m=0;vmmc5559m=0;new_vmmc5559m=0;if gender in (1, 3) and 55 le age lt 60 then do; mcirc_5559m=mcirc; new_mcirc_5559m=new_mcirc; new_vmmc5559m=new_vmmc; vmmc5559m=vmmc; end;
+mcirc_6064m=0;new_mcirc_6064m=0;vmmc6064m=0;new_vmmc6064m=0;if gender in (1, 3) and 60 le age lt 65 then do; mcirc_6064m=mcirc; new_mcirc_6064m=new_mcirc; new_vmmc6064m=new_vmmc; vmmc6064m=vmmc; end;
+mcirc_6569m=0;new_mcirc_6569m=0;vmmc6569m=0;new_vmmc6569m=0;if gender in (1, 3) and 65 le age lt 70 then do; mcirc_6569m=mcirc; new_mcirc_6569m=new_mcirc; new_vmmc6569m=new_vmmc; vmmc6569m=vmmc; end;
+mcirc_7074m=0;new_mcirc_7074m=0;vmmc7074m=0;new_vmmc7074m=0;if gender in (1, 3) and 70 le age lt 75 then do; mcirc_7074m=mcirc; new_mcirc_7074m=new_mcirc; new_vmmc7074m=new_vmmc; vmmc7074m=vmmc; end;
+mcirc_7579m=0;new_mcirc_7579m=0;vmmc7579m=0;new_vmmc7579m=0;if gender in (1, 3) and 75 le age lt 80 then do; mcirc_7579m=mcirc; new_mcirc_7579m=new_mcirc; new_vmmc7579m=new_vmmc; vmmc7579m=vmmc; end;
+mcirc_8084m=0;new_mcirc_8084m=0;vmmc8084m=0;new_vmmc8084m=0;if gender in (1, 3) and 80 le age lt 85 then do; mcirc_8084m=mcirc; new_mcirc_8084m=new_mcirc; new_vmmc8084m=new_vmmc; vmmc8084m=vmmc; end;
+mcirc_85plm=0;new_mcirc_85plm=0;vmmc85plm=0;new_vmmc85plm=0;if gender in (1, 3) and 85 le age       then do; mcirc_85plm=mcirc; new_mcirc_85plm=new_mcirc; new_vmmc85plm=new_vmmc; vmmc85plm=vmmc; end;
 
 
 * uncertain about this code here below - currently setting all variables to . so they do not come up as errors in proc univariate;
@@ -13356,6 +13407,7 @@ sw_vg1000=0;if sw=1                 and vl > 3.0 then sw_vg1000=1;
 
 
 ***People with long term partners;
+* msm  - general approach is that sexual behaviour related variables that are created for men and women relate to het sexual men only - gender = 1;
 ep_m  =0; if gender=1 and ep=1 then ep_m  =1;
 ep_w  =0; if gender=2 and ep=1 then ep_w  =1;
 
@@ -13388,6 +13440,7 @@ w_5564_epnewp=0;if  gender=2 and 55 <= age < 65 and ep=1 and newp ge 1 then w_55
 
 ***For each man, whether they have had 1, 2 or 5 newp in their lifetime (but note this is newp since 1989 only)
    To try to understand % of men who had FSW partnership;
+* msm  - general approach is that sexual behaviour related variables that are created for men and women relate to het sexual men only - gender = 1;
 m_1524_ge1newpever=0;m_2534_ge1newpever=0;m_3544_ge1newpever=0;m_4554_ge1newpever=0;m_5564_ge1newpever=0;
 m_1524_ge2newpever=0;m_2534_ge2newpever=0;m_3544_ge2newpever=0;m_4554_ge2newpever=0;m_5564_ge2newpever=0;
 m_1524_ge5newpever=0;m_2534_ge5newpever=0;m_3544_ge5newpever=0;m_4554_ge5newpever=0;m_5564_ge5newpever=0;
@@ -13422,26 +13475,28 @@ end;
 hiv1564=hiv; if age >= 65 then hiv1564=.;
 hiv1549=0; if hiv=1 and 15 <= age < 50 then hiv1549=1;
 
-hiv1517m=0; if hiv=1 and gender=1 and 15 <= age < 18 then hiv1517m=1;
-hiv1819m=0; if hiv=1 and gender=1 and 18 <= age < 20 then hiv1819m=1;
-hiv1519m=0; if hiv=1 and gender=1 and 15 <= age < 20 then hiv1519m=1;
-hiv2024m=0; if hiv=1 and gender=1 and 20 <= age < 25 then hiv2024m=1;
-hiv2529m=0; if hiv=1 and gender=1 and 25 <= age < 30 then hiv2529m=1;
-hiv3034m=0; if hiv=1 and gender=1 and 30 <= age < 35 then hiv3034m=1;
-hiv3539m=0; if hiv=1 and gender=1 and 35 <= age < 40 then hiv3539m=1;
-hiv4044m=0; if hiv=1 and gender=1 and 40 <= age < 45 then hiv4044m=1;
-hiv4549m=0; if hiv=1 and gender=1 and 45 <= age < 50 then hiv4549m=1;
-hiv5054m=0; if hiv=1 and gender=1 and 50 <= age < 55 then hiv5054m=1;
-hiv5559m=0; if hiv=1 and gender=1 and 55 <= age < 60 then hiv5559m=1;
-hiv6064m=0; if hiv=1 and gender=1 and 60 <= age < 65 then hiv6064m=1;
-hiv6569m=0; if hiv=1 and gender=1 and 65 <= age < 70 then hiv6569m=1;
-hiv7074m=0; if hiv=1 and gender=1 and 70 <= age < 75 then hiv7074m=1;
-hiv7579m=0; if hiv=1 and gender=1 and 75 <= age < 80 then hiv7579m=1;
-hiv8084m=0; if hiv=1 and gender=1 and 80 <= age < 85 then hiv8084m=1;
-hiv85plm=0; if hiv=1 and gender=1 and 85 <= age      then hiv85plm=1;
+* this includes msm becuase it is not a variable related to sexual behaviour;
 
-hiv1564m=0; if hiv=1 and gender=1 and 15 <= age < 65 then hiv1564m=1;
-hiv1549m=0; if hiv=1 and gender=1 and 15 <= age < 50 then hiv1549m=1;
+hiv1517m=0; if hiv=1 and gender in (1, 3) and 15 <= age < 18 then hiv1517m=1;
+hiv1819m=0; if hiv=1 and gender in (1, 3) and 18 <= age < 20 then hiv1819m=1;
+hiv1519m=0; if hiv=1 and gender in (1, 3) and 15 <= age < 20 then hiv1519m=1;
+hiv2024m=0; if hiv=1 and gender in (1, 3) and 20 <= age < 25 then hiv2024m=1;
+hiv2529m=0; if hiv=1 and gender in (1, 3) and 25 <= age < 30 then hiv2529m=1;
+hiv3034m=0; if hiv=1 and gender in (1, 3) and 30 <= age < 35 then hiv3034m=1;
+hiv3539m=0; if hiv=1 and gender in (1, 3) and 35 <= age < 40 then hiv3539m=1;
+hiv4044m=0; if hiv=1 and gender in (1, 3) and 40 <= age < 45 then hiv4044m=1;
+hiv4549m=0; if hiv=1 and gender in (1, 3) and 45 <= age < 50 then hiv4549m=1;
+hiv5054m=0; if hiv=1 and gender in (1, 3) and 50 <= age < 55 then hiv5054m=1;
+hiv5559m=0; if hiv=1 and gender in (1, 3) and 55 <= age < 60 then hiv5559m=1;
+hiv6064m=0; if hiv=1 and gender in (1, 3) and 60 <= age < 65 then hiv6064m=1;
+hiv6569m=0; if hiv=1 and gender in (1, 3) and 65 <= age < 70 then hiv6569m=1;
+hiv7074m=0; if hiv=1 and gender in (1, 3) and 70 <= age < 75 then hiv7074m=1;
+hiv7579m=0; if hiv=1 and gender in (1, 3) and 75 <= age < 80 then hiv7579m=1;
+hiv8084m=0; if hiv=1 and gender in (1, 3) and 80 <= age < 85 then hiv8084m=1;
+hiv85plm=0; if hiv=1 and gender in (1, 3) and 85 <= age      then hiv85plm=1;
+
+hiv1564m=0; if hiv=1 and gender in (1, 3) and 15 <= age < 65 then hiv1564m=1;
+hiv1549m=0; if hiv=1 and gender in (1, 3) and 15 <= age < 50 then hiv1549m=1;
 
 hiv1517w=0; if hiv=1 and gender=2 and 15 <= age < 18 then hiv1517w=1;
 hiv1819w=0; if hiv=1 and gender=2 and 18 <= age < 20 then hiv1819w=1;
@@ -13532,6 +13587,12 @@ if hiv =1 then do;
 	if 15 <= age < 25 then do; vg1000_m_1524=0; if vg1000 = 1 then vg1000_m_1524=1 ;  end ;
 	end;
 
+	* msm ;
+	if gender in (1, 3) then do;
+	vl1000_allm = vl1000;
+	end;
+
+
 	if 15 <= age < 50 then do; vg1000_1549=0; if vg1000=1 then vg1000_1549=1;   end;
 
 	if gender = 2 then do;
@@ -13556,6 +13617,7 @@ sti present, vl500 takes the vl as it is;
 
 ***Used to calculate the viral load distribution of people during new partnerships (ep+newp);
 
+* msm - leave alone as related to sexual behaviour ;
 if 15 <= age < 65 then do;
 
 	i_v1_np=0; i_v2_np=0; i_v3_np=0; i_v4_np=0; i_v5_np=0; i_v6_np=0; 
@@ -13791,6 +13853,8 @@ end;
 
 if 15 <= age     then do;
 
+* msm - as a simplification, plan to use these for resistance transmission also in msm;
+
 	* whether diagnosed, according to viral load and resistance;
 	i_diag_vlg1_rm0_np=0; if hiv=1 and registd=1 and vlg1=1 and rm_=0 then i_diag_vlg1_rm0_np=np;
 	i_diag_vlg1_rm1_np=0; if hiv=1 and registd=1 and vlg1=1 and rm_=1 then i_diag_vlg1_rm1_np=np;
@@ -13912,12 +13976,12 @@ end;
 
 
 	art_start=0; nnm_art=0; im_art=0; r_art=0; nactive_art_start_lt3 = .;nactive_art_start_lt2 = .;nactive_art_start_lt1p5 = .;nn_res_pmtct_art_notdr=0;
-	nnm_art_m=0;art_start_m=0; art_start_w=0; art_start_pregnant=0;  * note that currently art_start_pregnant does not fully capture all starts in
+	nnm_art_m=0;art_start_m=0; art_start_allm=0; art_start_w=0; art_start_pregnant=0;  * note that currently art_start_pregnant does not fully capture all starts in
 	pregnancy or breastfeeding because pregnant=1 only in the period of birth, not the two previous periods;
 
 	if caldate&j=yrart >. then do;
 		art_start=1;
-		if gender=1 then art_start_m=1; if gender=2 then art_start_w=1; 
+		if gender=1 then art_start_m=1;  * msm ; if gender in (1, 3) then art_start_allm=1; if gender=2 then art_start_w=1; 
 		if gender=2 and pregnant=1 then art_start_pregnant=1;
 
 		if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then nnm_art=1;
@@ -14021,6 +14085,7 @@ hiv0epprim=0; if hiv=0 and epi  =1 and epi_tm1=0 and ep_tm1=1 then hiv0epprim=1;
 diag_age1564 = 0; if registd=1 and 15 <= age < 65 then diag_age1564 = 1; 
 diag_w_age1564 = 0; if registd=1 and gender=2 and 15 <= age < 65 then diag_w_age1564 = 1; 
 diag_m_age1564 = 0; if registd=1 and gender=1 and 15 <= age < 65 then diag_m_age1564 = 1; 
+diag_allm_age1564 = 0; if registd=1 and gender in (1, 3) and 15 <= age < 65 then diag_allm_age1564 = 1; 
 
 onart_age1564 = 0;  if 15 <= age < 65 and onart=1 then onart_age1564 = 1; 
 
@@ -14078,6 +14143,20 @@ if gender=1 then do;
 
 	onart_gt6m_iicu_m	= onart_gt6m_iicu;
 	vl1000_art_gt6m_iicu_m = vl1000_art_gt6m_iicu;
+end;
+
+* msm ;
+if gender in (1, 3) then do;
+	vl1000_art_allm 		= vl1000_art;
+
+	onart_iicu_allm 		= onart_iicu;
+	vl1000_art_iicu_allm 	= vl1000_art_iicu;
+
+	onart_gt6m_allm 		= onart_gt6m;
+	vl1000_art_gt6m_allm	= vl1000_art_gt6m;
+
+	onart_gt6m_iicu_allm	= onart_gt6m_iicu;
+	vl1000_art_gt6m_iicu_allm = vl1000_art_gt6m_iicu;
 end;
 
 if gender=2 then do;
@@ -14191,6 +14270,7 @@ if yrart = caldate&j-1 > . then do;
 	visit_12m=0;  if visit=1 then visit_12m=1;
 end;
 
+
 if caldate&j = yrart+2 > . then do; art_24m=1; vl1000_art_24m = vl1000; end;
 
 *** VL at 12m on 2nd line;
@@ -14241,13 +14321,15 @@ end;
 *** Diagnosed and on ART by sex and ep;
 artexp=0; if naive=0 then artexp=1;
 artexp_m=0;    if gender=1        and artexp=1 then artexp_m=1;
+* msm; artexp_allm=0;    if gender in (1, 3)   and artexp=1 then artexp_allm=1;
 artexp_w=0;    if gender=2        and artexp=1 then artexp_w=1;
 artexp_1524_=0;if 15 le age lt 25 and artexp=1 then artexp_1524_=1;
 artexp_sw=0;   if sw=1            and artexp=1 then artexp_sw=1;
 artexp_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and artexp=1 then artexp_w1524evpreg=1;
  
 if      gender=1 then do; diag_m=registd; epdiag_m=epdiag; epi_m=epi  ; onart_m=onart; eponart_m=epart; end;
-else if gender=2 then do; diag_w=registd; epdiag_w=epdiag; epi_w=epi  ; onart_w=onart; eponart_w=epart; end;
+if      gender in (1, 3) then do; diag_allm=registd; onart_allm=onart; end;
+if gender=2 then do; diag_w=registd; epdiag_w=epdiag; epi_w=epi  ; onart_w=onart; eponart_w=epart; end;
 onart_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and onart=1 then onart_w1524evpreg=1;
 
 ***VL on 2nd line;
@@ -14266,6 +14348,8 @@ prep_inj_w=0; 	if gender=2 and prep_inj=1 	then prep_inj_w=1;
 prep_vr_w=0; 	if gender=2 and prep_vr =1 	then prep_vr_w=1;
 prep_oral_m=0; 	if gender=1 and prep_oral=1 then prep_oral_m=1;
 prep_inj_m=0; 	if gender=1 and prep_inj=1 	then prep_inj_m=1;
+prep_oral_allm=0; 	if gender in (1, 3) and prep_oral=1 then prep_oral_allm=1;
+prep_inj_allm=0; 	if gender in (1, 3) and prep_inj=1 	then prep_inj_allm=1;
 
 prep_any_ever=0; if prep_oral_ever=1 or prep_inj_ever=1 or prep_vr_ever=1 then prep_any_ever=1;
 
@@ -14303,6 +14387,7 @@ if gender = 2 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_w_1549 = 
 
 
 elig_prep_any_m_1564 = 0; if gender = 1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
+* msm ; elig_prep_any_allm_1564 = 0; if gender in (1, 3) and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_allm_1564 = 1;  end;
 
 
 * number on prep women age 15-24;
@@ -14561,16 +14646,17 @@ prep_adh5080=0;	if prep_oral=1 and 0.5 lt adh le 0.8	then prep_adh5080=1;
 prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
 
 *To calculate proportion of people on PrEP;
+* msm ;
 onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;onprep_w1524_newpge1_=0;onprep_inj_m=0; onprep_inj_w=0; onprep_oral_m=0; onprep_oral_w=0; 
-onprep_vr_w=0;
+onprep_vr_w=0;  onprep_allm=0; onprep_oral_allm=0; onprep_inj_allm=0;
 if prep_any=1 then do;
 	if (15<=age<49) then onprep_1549=1;
-	if gender=1 then onprep_m=1;
+	if gender=1 then onprep_m=1;	if gender in (1, 3) then onprep_allm=1;
 	if gender=2 then onprep_w=1;
-	if gender=1 and prep_inj=1 then onprep_inj_m=1;
+	if gender=1 and prep_inj=1 then onprep_inj_m=1;	if gender in (1, 3) and prep_inj=1 then onprep_inj_allm=1;
 	if gender=2 and prep_inj=1 then onprep_inj_w=1;
 	if gender=2 and prep_vr =1 then onprep_vr_w=1;
-	if gender=1 and prep_oral=1 then onprep_oral_m=1;
+	if gender=1 and prep_oral=1 then onprep_oral_m=1;	if gender in (1, 3) and prep_oral=1 then onprep_oral_allm=1;
 	if gender=2 and prep_oral=1 then onprep_oral_w=1;
 	if sw=1 then onprep_sw=1;
 	if (15<=age<25) then onprep_1524=1;
@@ -14578,7 +14664,9 @@ if prep_any=1 then do;
 	if gender=2 and 15 le age lt 25 and newp >= 1 then onprep_w1524_newpge1_=1;
 end;
 
+
 *To calculate number initiated for the first time on different types of PrEP;
+* msm - note the code for serodiscordant couples relates only to heterosexuals ;
 init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;init_prep_oral_plw=0;
 if caldate&j = prep_oral_first_start_date then do;
 	if gender=2 and 15 le age lt 25 	then init_prep_oral_1524w=1;
@@ -14602,6 +14690,7 @@ if caldate&j = prep_vr_first_start_date then do;
 end;
 
 * To calculate number who used PrEP in the last year;
+* msm - note the code for serodiscordant couples relates only to heterosexuals ;
 prep_oral_ly_1524w=0;prep_oral_ly_sw=0;prep_oral_ly_sdc=0;prep_oral_ly_plw=0;
 if prep_oral_tm3=1 or prep_oral_tm2=1 or prep_oral_tm1=1 or prep_oral=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_oral_ly_1524w=1;
@@ -14625,6 +14714,7 @@ if prep_vr_tm3=1 or prep_vr_tm2=1 or prep_vr_tm1=1 or prep_vr=1 then do;
 end;
 
 * To calculate number ever initiated on oral PrEP;
+* msm - note the code for serodiscordant couples relates only to heterosexuals ;
 prep_oral_ever_1524w=0;prep_oral_ever_sw=0;prep_oral_ever_sdc=0;prep_oral_ever_plw=0;
 if prep_oral_ever=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_oral_ever_1524w=1;
@@ -14724,6 +14814,7 @@ infected_newp_m=0; if gender=1 and infected_newp=1 then infected_newp_m=infected
 
 if 15 le age lt 50 then tested1549_=tested;
 if gender=1 and 15 le age lt 50 then tested1549m=tested;
+* msm ;if gender in (1, 3) and 15 le age lt 50 then tested1549allm=tested;
 if gender=2 and 15 le age lt 50 then tested1549w=tested;
 tested_sw=.; if sw=1 then tested_sw=tested;
 
@@ -14752,6 +14843,15 @@ if t ge 4 and (tested=1 or tested_tm1=1 or tested_tm2=1 or tested_tm3=1) then do
 		if 40 le age lt 50 then tested_4p_m4049_=1;
 		if 50 le age lt 65 then tested_4p_m5064_=1;
 	end;
+* msm;		if gender in (1, 3) then do;
+		if 15 le age lt 50 then tested_4p_allm1549_=1; 
+		if 15 le age lt 20 then tested_4p_allm1519_=1; 
+		if 20 le age lt 25 then tested_4p_allm2024_=1;
+		if 25 le age lt 30 then tested_4p_allm2529_=1;
+		if 30 le age lt 40 then tested_4p_allm3039_=1;
+		if 40 le age lt 50 then tested_4p_allm4049_=1;
+		if 50 le age lt 65 then tested_4p_allm5064_=1;
+	end;
 	else if gender=2 then do;
 		if 15 le age lt 50 then tested_4p_w1549_=1;
 		if 15 le age lt 20 then tested_4p_w1519_=1;
@@ -14767,11 +14867,15 @@ end;
 
 
 ever_tested_m=.;if gender=1 and ever_tested=1 then ever_tested_m=1;
+* msm ; ever_tested_allm=.;if gender in (1, 3) and ever_tested=1 then ever_tested_allm=1;
 ever_tested_w=.;if gender=2 and ever_tested=1 then ever_tested_w=1;
 
 ever_tested_m1549_=0;ever_tested_m1564_=0;
 ever_tested_m1519_=0;ever_tested_m2024_=0;ever_tested_m2529_=0;ever_tested_m3034_=0;ever_tested_m3539_=0;ever_tested_m4044_=0;
 ever_tested_m4549_=0;ever_tested_m5054_=0;ever_tested_m5559_=0;ever_tested_m6064_=0;  
+* msm; ever_tested_allm1549_=0;ever_tested_allm1564_=0;
+ever_tested_allm1519_=0;ever_tested_allm2024_=0;ever_tested_allm2529_=0;ever_tested_allm3034_=0;ever_tested_allm3539_=0;ever_tested_allm4044_=0;
+ever_tested_allm4549_=0;ever_tested_allm5054_=0;ever_tested_allm5559_=0;ever_tested_allm6064_=0;  
 ever_tested_w1549_=0;ever_tested_w1564_=0;
 ever_tested_w1519_=0;ever_tested_w2024_=0;ever_tested_w2529_=0;ever_tested_w3034_=0;ever_tested_w3539_=0;ever_tested_w4044_=0;
 ever_tested_w4549_=0;ever_tested_w5054_=0;ever_tested_w5559_=0;ever_tested_w6064_=0;  
@@ -14781,6 +14885,8 @@ test_not_costed=0; if tested=1 and cost_test <= 0 then test_not_costed=1;
 
 diag_m1549_=0;diag_m1564_=0;
 diag_m1519_=0;diag_m2024_=0;diag_m2529_=0;diag_m3034_=0;diag_m3539_=0;diag_m4044_=0;diag_m4549_=0;diag_m5054_=0;diag_m5559_=0;diag_m6064_=0;  
+* msm ; diag_allm1549_=0;diag_allm1564_=0;
+diag_allm1519_=0;diag_allm2024_=0;diag_allm2529_=0;diag_allm3034_=0;diag_allm3539_=0;diag_allm4044_=0;diag_allm4549_=0;diag_allm5054_=0;diag_allm5559_=0;diag_allm6064_=0;  
 diag_w1549_=0;diag_w1564_=0;
 diag_w1519_=0;diag_w2024_=0;diag_w2529_=0;diag_w3034_=0;diag_w3539_=0;diag_w4044_=0;diag_w4549_=0;diag_w5054_=0;diag_w5559_=0;diag_w6064_=0;  
 diag_sw=0; 	
@@ -14788,6 +14894,9 @@ diag_sw=0;
 onart_m1549_=0;onart_m1564_=0;
 onart_m1519_=0;onart_m2024_=0;onart_m2529_=0;onart_m3034_=0;onart_m3539_=0;onart_m4044_=0;onart_m4549_=0;onart_m5054_=0;onart_m5559_=0;onart_m6064_=0;
 onart_m6569_=0;onart_m7074_=0;onart_m7579_=0;onart_m8084_=0;onart_m85pl_=0;
+* msm ; onart_allm1549_=0;onart_allm1564_=0;
+onart_allm1519_=0;onart_allm2024_=0;onart_allm2529_=0;onart_allm3034_=0;onart_allm3539_=0;onart_allm4044_=0;onart_allm4549_=0;onart_allm5054_=0;onart_allm5559_=0;onart_allm6064_=0;
+onart_allm6569_=0;onart_allm7074_=0;onart_allm7579_=0;onart_allm8084_=0;onart_allm85pl_=0;
 onart_w1549_=0;onart_w1564_=0;
 onart_w1519_=0;onart_w2024_=0;onart_w2529_=0;onart_w3034_=0;onart_w3539_=0;onart_w4044_=0;onart_w4549_=0;onart_w5054_=0;onart_w5559_=0;onart_w6064_=0; 
 onart_w6569_=0;onart_w7074_=0;onart_w7579_=0;onart_w8084_=0;onart_w85pl_=0; 
@@ -14812,7 +14921,26 @@ if gender=1 then do;
 	else if 80 le age lt 85 then do; diag_m8084_=registd;  onart_m8084_=onart; end;
 	else if 85 le age       then do; diag_m85pl_=registd;  onart_m85pl_=onart; end;
 end;
-else if gender=2 then do;
+if gender in (1, 3) then do;
+	if      15 le age lt 50 then do; ever_tested_allm1549_=ever_tested; diag_allm1549_=registd;  onart_allm1549_=onart; end;
+	if      15 le age lt 65 then do; ever_tested_allm1564_=ever_tested; diag_allm1564_=registd;  onart_allm1564_=onart; end;
+	if      15 le age lt 20 then do; ever_tested_allm1519_=ever_tested; diag_allm1519_=registd;  onart_allm1519_=onart; end;
+	else if 20 le age lt 25 then do; ever_tested_allm2024_=ever_tested; diag_allm2024_=registd;  onart_allm2024_=onart; end;
+	else if 25 le age lt 30 then do; ever_tested_allm2529_=ever_tested; diag_allm2529_=registd;  onart_allm2529_=onart; end;
+	else if 30 le age lt 35 then do; ever_tested_allm3034_=ever_tested; diag_allm3034_=registd;  onart_allm3034_=onart; end;
+	else if 35 le age lt 40 then do; ever_tested_allm3539_=ever_tested; diag_allm3539_=registd;  onart_allm3539_=onart; end;
+	else if 40 le age lt 45 then do; ever_tested_allm4044_=ever_tested; diag_allm4044_=registd;  onart_allm4044_=onart; end;
+	else if 45 le age lt 50 then do; ever_tested_allm4549_=ever_tested; diag_allm4549_=registd;  onart_allm4549_=onart; end;
+	else if 50 le age lt 55 then do; ever_tested_allm5054_=ever_tested; diag_allm5054_=registd;  onart_allm5054_=onart; end;
+	else if 55 le age lt 60 then do; ever_tested_allm5559_=ever_tested; diag_allm5559_=registd;  onart_allm5559_=onart; end;
+	else if 60 le age lt 65 then do; ever_tested_allm6064_=ever_tested; diag_allm6064_=registd;  onart_allm6064_=onart; end;
+	else if 65 le age lt 70 then do; diag_allm6569_=registd;  onart_allm6569_=onart; end;
+	else if 70 le age lt 75 then do; diag_allm7074_=registd;  onart_allm7074_=onart; end;
+	else if 75 le age lt 80 then do; diag_allm7579_=registd;  onart_allm7579_=onart; end;
+	else if 80 le age lt 85 then do; diag_allm8084_=registd;  onart_allm8084_=onart; end;
+	else if 85 le age       then do; diag_allm85pl_=registd;  onart_allm85pl_=onart; end;
+end;
+if gender=2 then do;
 	if      15 le age lt 50 then do; ever_tested_w1549_=ever_tested; diag_w1549_=registd;  onart_w1549_=onart; end;
 	if      15 le age lt 65 then do; ever_tested_w1564_=ever_tested; diag_w1564_=registd;  onart_w1564_=onart; end;
 	if      15 le age lt 20 then do; ever_tested_w1519_=ever_tested; diag_w1519_=registd;  onart_w1519_=onart; end;
@@ -14898,6 +15026,25 @@ if gender=1 then do;
 	if 80 <= age < 85 then dead8084m_all=dead;
 	if 85 <= age      then dead85plm_all=dead;
 end;
+* msm ;
+if gender in (1, 3) then do;
+	dead_m=dead  ;
+	if 15 <= age < 20 then dead1519allm_all=dead;
+	if 20 <= age < 25 then dead2024allm_all=dead;
+	if 25 <= age < 30 then dead2529allm_all=dead;
+	if 30 <= age < 35 then dead3034allm_all=dead;
+	if 35 <= age < 40 then dead3539allm_all=dead;
+	if 40 <= age < 45 then dead4044allm_all=dead;
+	if 45 <= age < 50 then dead4549allm_all=dead;
+	if 50 <= age < 55 then dead5054allm_all=dead;
+	if 55 <= age < 60 then dead5559allm_all=dead;
+	if 60 <= age < 65 then dead6064allm_all=dead;
+	if 65 <= age < 70 then dead6569allm_all=dead;
+	if 70 <= age < 75 then dead7074allm_all=dead;
+	if 75 <= age < 80 then dead7579allm_all=dead;
+	if 80 <= age < 85 then dead8084allm_all=dead;
+	if 85 <= age      then dead85plallm_all=dead;
+end;
 if gender=2 then do;
 	dead_w=dead;
 	if 15 <= age < 20 then dead1519w_all=dead;
@@ -14919,10 +15066,12 @@ end;
 
 dead_all=dead;
 if gender=1  then deadm_all=dead;
+* msm ; if gender in (1, 3)  then deadallm_all=dead;
 if gender=2  then deadw_all=dead;
 
 death_hivrel=0;   if caldate&j = death > . and dcause=1 then death_hivrel=dead;
 death_hivrel_m=0; if caldate&j = death > . and dcause=1 and gender=1 then death_hivrel_m=dead;
+death_hivrel_allm=0; if caldate&j = death > . and dcause=1 and gender in (1, 3) then death_hivrel_allm=dead;
 
 death_dcause3 = 0; if caldate&j = death > . and dcause=3 then death_dcause3 = dead ;
 
@@ -15014,6 +15163,12 @@ if gender=1 and (onart=1 or int_clinic_not_aw=1) then do;
 adh_low_m=0; if adh < 0.5 or int_clinic_not_aw=1 then adh_low_m=1; 
 adh_med_m=0; if 0.5 <= adh < 0.8 then adh_med_m=1; 
 adh_hi_m=0; if 0.8 <= adh then adh_hi_m=1;
+end;
+* msm ; adh_low_allm=.; adh_med_allm=.; adh_hi_allm=.;
+if gender in (1, 3) and (onart=1 or int_clinic_not_aw=1) then do; 
+adh_low_allm=0; if adh < 0.5 or int_clinic_not_aw=1 then adh_low_allm=1; 
+adh_med_allm=0; if 0.5 <= adh < 0.8 then adh_med_allm=1; 
+adh_hi_allm=0; if 0.8 <= adh then adh_hi_allm=1;
 end;
 
 
@@ -15147,85 +15302,85 @@ dyll_Optima80=0;dyll_GBD=0;
 if caldate&j = death and death ne . then do;
 	total_yll80le=80-agedeath;
 
-
+* msm - replace gender = 1 with gender in (1, 3)
 	*Life expectancies are WestLevel26, as in Global burden of disease;
-	if 15 le agedeath lt 16 then do; if gender=2 then total_yllag=68.02; if gender=1 then total_yllag=65.41; end;
-	if 16 le agedeath lt 17 then do; if gender=2 then total_yllag=67.032;if gender=1 then total_yllag=64.416;end;
-	if 17 le agedeath lt 18 then do; if gender=2 then total_yllag=66.044;if gender=1 then total_yllag=63.422;end;
-	if 18 le agedeath lt 19 then do; if gender=2 then total_yllag=65.056;if gender=1 then total_yllag=62.428;end;
-	if 19 le agedeath lt 20 then do; if gender=2 then total_yllag=64.068;if gender=1 then total_yllag=61.434;end;
-	if 20 le agedeath lt 21 then do; if gender=2 then total_yllag=63.08; if gender=1 then total_yllag=60.44; end;
-	if 21 le agedeath lt 22 then do; if gender=2 then total_yllag=62.098;if gender=1 then total_yllag=59.446;end;
-	if 22 le agedeath lt 23 then do; if gender=2 then total_yllag=61.116;if gender=1 then total_yllag=58.452;end;
-	if 23 le agedeath lt 24 then do; if gender=2 then total_yllag=60.134;if gender=1 then total_yllag=57.458;end;
-	if 24 le agedeath lt 25 then do; if gender=2 then total_yllag=59.152;if gender=1 then total_yllag=56.464;end;
-	if 25 le agedeath lt 26 then do; if gender=2 then total_yllag=58.17; if gender=1 then total_yllag=55.47; end;
-	if 26 le agedeath lt 27 then do; if gender=2 then total_yllag=57.19; if gender=1 then total_yllag=54.478;end;
-	if 27 le agedeath lt 28 then do; if gender=2 then total_yllag=56.21; if gender=1 then total_yllag=53.486;end;
-	if 28 le agedeath lt 29 then do; if gender=2 then total_yllag=55.23; if gender=1 then total_yllag=52.494;end;
-	if 29 le agedeath lt 30 then do; if gender=2 then total_yllag=54.25; if gender=1 then total_yllag=51.502;end;
-	if 30 le agedeath lt 31 then do; if gender=2 then total_yllag=53.27; if gender=1 then total_yllag=50.51; end;
-	if 31 le agedeath lt 32 then do; if gender=2 then total_yllag=52.292;if gender=1 then total_yllag=49.52; end;
-	if 32 le agedeath lt 33 then do; if gender=2 then total_yllag=51.314;if gender=1 then total_yllag=48.53; end;
-	if 33 le agedeath lt 34 then do; if gender=2 then total_yllag=50.336;if gender=1 then total_yllag=47.54; end;
-	if 34 le agedeath lt 35 then do; if gender=2 then total_yllag=49.358;if gender=1 then total_yllag=46.55; end;
-	if 35 le agedeath lt 36 then do; if gender=2 then total_yllag=48.38; if gender=1 then total_yllag=45.56; end;
-	if 36 le agedeath lt 37 then do; if gender=2 then total_yllag=47.41; if gender=1 then total_yllag=44.576;end;
-	if 37 le agedeath lt 38 then do; if gender=2 then total_yllag=46.44; if gender=1 then total_yllag=43.592;end;
-	if 38 le agedeath lt 39 then do; if gender=2 then total_yllag=45.47; if gender=1 then total_yllag=42.608;end;
-	if 39 le agedeath lt 40 then do; if gender=2 then total_yllag=44.5;  if gender=1 then total_yllag=41.624;end;
-	if 40 le agedeath lt 41 then do; if gender=2 then total_yllag=43.53; if gender=1 then total_yllag=40.64; end;
-	if 41 le agedeath lt 42 then do; if gender=2 then total_yllag=42.568;if gender=1 then total_yllag=39.666;end;
-	if 42 le agedeath lt 43 then do; if gender=2 then total_yllag=41.606;if gender=1 then total_yllag=38.692;end;
-	if 43 le agedeath lt 44 then do; if gender=2 then total_yllag=40.644;if gender=1 then total_yllag=37.718;end;
-	if 44 le agedeath lt 45 then do; if gender=2 then total_yllag=39.682;if gender=1 then total_yllag=36.744;end;
-	if 45 le agedeath lt 46 then do; if gender=2 then total_yllag=38.72; if gender=1 then total_yllag=35.77; end;
-	if 46 le agedeath lt 47 then do; if gender=2 then total_yllag=37.774;if gender=1 then total_yllag=34.814;end;
-	if 47 le agedeath lt 48 then do; if gender=2 then total_yllag=36.828;if gender=1 then total_yllag=33.858;end;
-	if 48 le agedeath lt 49 then do; if gender=2 then total_yllag=35.882;if gender=1 then total_yllag=32.902;end;
-	if 49 le agedeath lt 50 then do; if gender=2 then total_yllag=34.936;if gender=1 then total_yllag=31.946;end;
-	if 50 le agedeath lt 51 then do; if gender=2 then total_yllag=33.99; if gender=1 then total_yllag=30.99;end;
-	if 51 le agedeath lt 52 then do; if gender=2 then total_yllag=33.066;if gender=1 then total_yllag=30.056;end;
-	if 52 le agedeath lt 53 then do; if gender=2 then total_yllag=32.142;if gender=1 then total_yllag=29.122;end;
-	if 53 le agedeath lt 54 then do; if gender=2 then total_yllag=31.218;if gender=1 then total_yllag=28.188;end;
-	if 54 le agedeath lt 55 then do; if gender=2 then total_yllag=30.294;if gender=1 then total_yllag=27.254;end;
-	if 55 le agedeath lt 56 then do; if gender=2 then total_yllag=29.37; if gender=1 then total_yllag=26.32; end;
-	if 56 le agedeath lt 57 then do; if gender=2 then total_yllag=28.462;if gender=1 then total_yllag=25.418;end;
-	if 57 le agedeath lt 58 then do; if gender=2 then total_yllag=27.554;if gender=1 then total_yllag=24.516;end;
-	if 58 le agedeath lt 59 then do; if gender=2 then total_yllag=26.646;if gender=1 then total_yllag=23.614;end;
-	if 59 le agedeath lt 60 then do; if gender=2 then total_yllag=25.738;if gender=1 then total_yllag=22.712;end;
-	if 60 le agedeath lt 61 then do; if gender=2 then total_yllag=24.83; if gender=1 then total_yllag=21.81;end;
-	if 61 le agedeath lt 62 then do; if gender=2 then total_yllag=23.952;if gender=1 then total_yllag=20.948;end;
-	if 62 le agedeath lt 63 then do; if gender=2 then total_yllag=23.074;if gender=1 then total_yllag=20.086;end;
-	if 63 le agedeath lt 64 then do; if gender=2 then total_yllag=22.196;if gender=1 then total_yllag=19.224;end;
-	if 64 le agedeath lt 65 then do; if gender=2 then total_yllag=21.318;if gender=1 then total_yllag=18.362;end;
-	if 65 le agedeath lt 66 then do; if gender=2 then total_yllag=20.44; if gender=1 then total_yllag=17.50; end;
-	if 66 le agedeath lt 67 then do; if gender=2 then total_yllag=19.592;if gender=1 then total_yllag=16.716;end;
-	if 67 le agedeath lt 68 then do; if gender=2 then total_yllag=18.744;if gender=1 then total_yllag=15.932;end;
-	if 68 le agedeath lt 69 then do; if gender=2 then total_yllag=17.896;if gender=1 then total_yllag=15.148;end;
-	if 69 le agedeath lt 70 then do; if gender=2 then total_yllag=17.048;if gender=1 then total_yllag=14.364;end;
-	if 70 le agedeath lt 71 then do; if gender=2 then total_yllag=16.20; if gender=1 then total_yllag=13.58; end;
-	if 71 le agedeath lt 72 then do; if gender=2 then total_yllag=15.416;if gender=1 then total_yllag=12.898;end;
-	if 72 le agedeath lt 73 then do; if gender=2 then total_yllag=14.632;if gender=1 then total_yllag=12.216;end;
-	if 73 le agedeath lt 74 then do; if gender=2 then total_yllag=13.848;if gender=1 then total_yllag=11.534;end;
-	if 74 le agedeath lt 75 then do; if gender=2 then total_yllag=13.064;if gender=1 then total_yllag=10.852;end;
-	if 75 le agedeath lt 76 then do; if gender=2 then total_yllag=12.28; if gender=1 then total_yllag=10.17; end;
-	if 76 le agedeath lt 77 then do; if gender=2 then total_yllag=11.604;if gender=1 then total_yllag= 9.626;end;
-	if 77 le agedeath lt 78 then do; if gender=2 then total_yllag=10.928;if gender=1 then total_yllag= 9.082;end;
-	if 78 le agedeath lt 79 then do; if gender=2 then total_yllag=10.252;if gender=1 then total_yllag= 8.538;end;
-	if 79 le agedeath lt 80 then do; if gender=2 then total_yllag= 9.576;if gender=1 then total_yllag= 7.994;end;
-	if 80 le agedeath lt 81 then do; if gender=2 then total_yllag= 8.90; if gender=1 then total_yllag= 7.45; end;
-	if 81 le agedeath lt 82 then do; if gender=2 then total_yllag= 8.345;if gender=1 then total_yllag= 7.000;end;
-	if 82 le agedeath lt 83 then do; if gender=2 then total_yllag= 7.825;if gender=1 then total_yllag= 6.578;end;
-	if 83 le agedeath lt 84 then do; if gender=2 then total_yllag= 7.337;if gender=1 then total_yllag= 6.181;end;
-	if 84 le agedeath lt 85 then do; if gender=2 then total_yllag= 6.879;if gender=1 then total_yllag= 5.808;end;
-	if 85 le agedeath lt 86 then do; if gender=2 then total_yllag= 6.450;if gender=1 then total_yllag= 5.457;end;
-	if 86 le agedeath lt 87 then do; if gender=2 then total_yllag= 6.048;if gender=1 then total_yllag= 5.128;end;
-	if 87 le agedeath lt 88 then do; if gender=2 then total_yllag= 5.671;if gender=1 then total_yllag= 4.819;end;
-	if 88 le agedeath lt 89 then do; if gender=2 then total_yllag= 5.317;if gender=1 then total_yllag= 4.528;end;
-	if 89 le agedeath lt 90 then do; if gender=2 then total_yllag= 4.986;if gender=1 then total_yllag= 4.255;end;
-	if 90 le agedeath lt 91 then do; if gender=2 then total_yllag= 4.675;if gender=1 then total_yllag= 3.998;end;
-	if 91 le agedeath lt 92 then do; if gender=2 then total_yllag= 4.383;if gender=1 then total_yllag= 3.757;end;
+	if 15 le agedeath lt 16 then do; if gender=2 then total_yllag=68.02; if gender in (1, 3) then total_yllag=65.41; end;
+	if 16 le agedeath lt 17 then do; if gender=2 then total_yllag=67.032;if gender in (1, 3) then total_yllag=64.416;end;
+	if 17 le agedeath lt 18 then do; if gender=2 then total_yllag=66.044;if gender in (1, 3) then total_yllag=63.422;end;
+	if 18 le agedeath lt 19 then do; if gender=2 then total_yllag=65.056;if gender in (1, 3) then total_yllag=62.428;end;
+	if 19 le agedeath lt 20 then do; if gender=2 then total_yllag=64.068;if gender in (1, 3) then total_yllag=61.434;end;
+	if 20 le agedeath lt 21 then do; if gender=2 then total_yllag=63.08; if gender in (1, 3) then total_yllag=60.44; end;
+	if 21 le agedeath lt 22 then do; if gender=2 then total_yllag=62.098;if gender in (1, 3) then total_yllag=59.446;end;
+	if 22 le agedeath lt 23 then do; if gender=2 then total_yllag=61.116;if gender in (1, 3) then total_yllag=58.452;end;
+	if 23 le agedeath lt 24 then do; if gender=2 then total_yllag=60.134;if gender in (1, 3) then total_yllag=57.458;end;
+	if 24 le agedeath lt 25 then do; if gender=2 then total_yllag=59.152;if gender in (1, 3) then total_yllag=56.464;end;
+	if 25 le agedeath lt 26 then do; if gender=2 then total_yllag=58.17; if gender in (1, 3) then total_yllag=55.47; end;
+	if 26 le agedeath lt 27 then do; if gender=2 then total_yllag=57.19; if gender in (1, 3) then total_yllag=54.478;end;
+	if 27 le agedeath lt 28 then do; if gender=2 then total_yllag=56.21; if gender in (1, 3) then total_yllag=53.486;end;
+	if 28 le agedeath lt 29 then do; if gender=2 then total_yllag=55.23; if gender in (1, 3) then total_yllag=52.494;end;
+	if 29 le agedeath lt 30 then do; if gender=2 then total_yllag=54.25; if gender in (1, 3) then total_yllag=51.502;end;
+	if 30 le agedeath lt 31 then do; if gender=2 then total_yllag=53.27; if gender in (1, 3) then total_yllag=50.51; end;
+	if 31 le agedeath lt 32 then do; if gender=2 then total_yllag=52.292;if gender in (1, 3) then total_yllag=49.52; end;
+	if 32 le agedeath lt 33 then do; if gender=2 then total_yllag=51.314;if gender in (1, 3) then total_yllag=48.53; end;
+	if 33 le agedeath lt 34 then do; if gender=2 then total_yllag=50.336;if gender in (1, 3) then total_yllag=47.54; end;
+	if 34 le agedeath lt 35 then do; if gender=2 then total_yllag=49.358;if gender in (1, 3) then total_yllag=46.55; end;
+	if 35 le agedeath lt 36 then do; if gender=2 then total_yllag=48.38; if gender in (1, 3) then total_yllag=45.56; end;
+	if 36 le agedeath lt 37 then do; if gender=2 then total_yllag=47.41; if gender in (1, 3) then total_yllag=44.576;end;
+	if 37 le agedeath lt 38 then do; if gender=2 then total_yllag=46.44; if gender in (1, 3) then total_yllag=43.592;end;
+	if 38 le agedeath lt 39 then do; if gender=2 then total_yllag=45.47; if gender in (1, 3) then total_yllag=42.608;end;
+	if 39 le agedeath lt 40 then do; if gender=2 then total_yllag=44.5;  if gender in (1, 3) then total_yllag=41.624;end;
+	if 40 le agedeath lt 41 then do; if gender=2 then total_yllag=43.53; if gender in (1, 3) then total_yllag=40.64; end;
+	if 41 le agedeath lt 42 then do; if gender=2 then total_yllag=42.568;if gender in (1, 3) then total_yllag=39.666;end;
+	if 42 le agedeath lt 43 then do; if gender=2 then total_yllag=41.606;if gender in (1, 3) then total_yllag=38.692;end;
+	if 43 le agedeath lt 44 then do; if gender=2 then total_yllag=40.644;if gender in (1, 3) then total_yllag=37.718;end;
+	if 44 le agedeath lt 45 then do; if gender=2 then total_yllag=39.682;if gender in (1, 3) then total_yllag=36.744;end;
+	if 45 le agedeath lt 46 then do; if gender=2 then total_yllag=38.72; if gender in (1, 3) then total_yllag=35.77; end;
+	if 46 le agedeath lt 47 then do; if gender=2 then total_yllag=37.774;if gender in (1, 3) then total_yllag=34.814;end;
+	if 47 le agedeath lt 48 then do; if gender=2 then total_yllag=36.828;if gender in (1, 3) then total_yllag=33.858;end;
+	if 48 le agedeath lt 49 then do; if gender=2 then total_yllag=35.882;if gender in (1, 3) then total_yllag=32.902;end;
+	if 49 le agedeath lt 50 then do; if gender=2 then total_yllag=34.936;if gender in (1, 3) then total_yllag=31.946;end;
+	if 50 le agedeath lt 51 then do; if gender=2 then total_yllag=33.99; if gender in (1, 3) then total_yllag=30.99;end;
+	if 51 le agedeath lt 52 then do; if gender=2 then total_yllag=33.066;if gender in (1, 3) then total_yllag=30.056;end;
+	if 52 le agedeath lt 53 then do; if gender=2 then total_yllag=32.142;if gender in (1, 3) then total_yllag=29.122;end;
+	if 53 le agedeath lt 54 then do; if gender=2 then total_yllag=31.218;if gender in (1, 3) then total_yllag=28.188;end;
+	if 54 le agedeath lt 55 then do; if gender=2 then total_yllag=30.294;if gender in (1, 3) then total_yllag=27.254;end;
+	if 55 le agedeath lt 56 then do; if gender=2 then total_yllag=29.37; if gender in (1, 3) then total_yllag=26.32; end;
+	if 56 le agedeath lt 57 then do; if gender=2 then total_yllag=28.462;if gender in (1, 3) then total_yllag=25.418;end;
+	if 57 le agedeath lt 58 then do; if gender=2 then total_yllag=27.554;if gender in (1, 3) then total_yllag=24.516;end;
+	if 58 le agedeath lt 59 then do; if gender=2 then total_yllag=26.646;if gender in (1, 3) then total_yllag=23.614;end;
+	if 59 le agedeath lt 60 then do; if gender=2 then total_yllag=25.738;if gender in (1, 3) then total_yllag=22.712;end;
+	if 60 le agedeath lt 61 then do; if gender=2 then total_yllag=24.83; if gender in (1, 3) then total_yllag=21.81;end;
+	if 61 le agedeath lt 62 then do; if gender=2 then total_yllag=23.952;if gender in (1, 3) then total_yllag=20.948;end;
+	if 62 le agedeath lt 63 then do; if gender=2 then total_yllag=23.074;if gender in (1, 3) then total_yllag=20.086;end;
+	if 63 le agedeath lt 64 then do; if gender=2 then total_yllag=22.196;if gender in (1, 3) then total_yllag=19.224;end;
+	if 64 le agedeath lt 65 then do; if gender=2 then total_yllag=21.318;if gender in (1, 3) then total_yllag=18.362;end;
+	if 65 le agedeath lt 66 then do; if gender=2 then total_yllag=20.44; if gender in (1, 3) then total_yllag=17.50; end;
+	if 66 le agedeath lt 67 then do; if gender=2 then total_yllag=19.592;if gender in (1, 3) then total_yllag=16.716;end;
+	if 67 le agedeath lt 68 then do; if gender=2 then total_yllag=18.744;if gender in (1, 3) then total_yllag=15.932;end;
+	if 68 le agedeath lt 69 then do; if gender=2 then total_yllag=17.896;if gender in (1, 3) then total_yllag=15.148;end;
+	if 69 le agedeath lt 70 then do; if gender=2 then total_yllag=17.048;if gender in (1, 3) then total_yllag=14.364;end;
+	if 70 le agedeath lt 71 then do; if gender=2 then total_yllag=16.20; if gender in (1, 3) then total_yllag=13.58; end;
+	if 71 le agedeath lt 72 then do; if gender=2 then total_yllag=15.416;if gender in (1, 3) then total_yllag=12.898;end;
+	if 72 le agedeath lt 73 then do; if gender=2 then total_yllag=14.632;if gender in (1, 3) then total_yllag=12.216;end;
+	if 73 le agedeath lt 74 then do; if gender=2 then total_yllag=13.848;if gender in (1, 3) then total_yllag=11.534;end;
+	if 74 le agedeath lt 75 then do; if gender=2 then total_yllag=13.064;if gender in (1, 3) then total_yllag=10.852;end;
+	if 75 le agedeath lt 76 then do; if gender=2 then total_yllag=12.28; if gender in (1, 3) then total_yllag=10.17; end;
+	if 76 le agedeath lt 77 then do; if gender=2 then total_yllag=11.604;if gender in (1, 3) then total_yllag= 9.626;end;
+	if 77 le agedeath lt 78 then do; if gender=2 then total_yllag=10.928;if gender in (1, 3) then total_yllag= 9.082;end;
+	if 78 le agedeath lt 79 then do; if gender=2 then total_yllag=10.252;if gender in (1, 3) then total_yllag= 8.538;end;
+	if 79 le agedeath lt 80 then do; if gender=2 then total_yllag= 9.576;if gender in (1, 3) then total_yllag= 7.994;end;
+	if 80 le agedeath lt 81 then do; if gender=2 then total_yllag= 8.90; if gender in (1, 3) then total_yllag= 7.45; end;
+	if 81 le agedeath lt 82 then do; if gender=2 then total_yllag= 8.345;if gender in (1, 3) then total_yllag= 7.000;end;
+	if 82 le agedeath lt 83 then do; if gender=2 then total_yllag= 7.825;if gender in (1, 3) then total_yllag= 6.578;end;
+	if 83 le agedeath lt 84 then do; if gender=2 then total_yllag= 7.337;if gender in (1, 3) then total_yllag= 6.181;end;
+	if 84 le agedeath lt 85 then do; if gender=2 then total_yllag= 6.879;if gender in (1, 3) then total_yllag= 5.808;end;
+	if 85 le agedeath lt 86 then do; if gender=2 then total_yllag= 6.450;if gender in (1, 3) then total_yllag= 5.457;end;
+	if 86 le agedeath lt 87 then do; if gender=2 then total_yllag= 6.048;if gender in (1, 3) then total_yllag= 5.128;end;
+	if 87 le agedeath lt 88 then do; if gender=2 then total_yllag= 5.671;if gender in (1, 3) then total_yllag= 4.819;end;
+	if 88 le agedeath lt 89 then do; if gender=2 then total_yllag= 5.317;if gender in (1, 3) then total_yllag= 4.528;end;
+	if 89 le agedeath lt 90 then do; if gender=2 then total_yllag= 4.986;if gender in (1, 3) then total_yllag= 4.255;end;
+	if 90 le agedeath lt 91 then do; if gender=2 then total_yllag= 4.675;if gender in (1, 3) then total_yllag= 3.998;end;
+	if 91 le agedeath lt 92 then do; if gender=2 then total_yllag= 4.383;if gender in (1, 3) then total_yllag= 3.757;end;
 
 	if caldate&j ge &year_interv then do;
 	    i=0;
@@ -15308,13 +15463,15 @@ _dcost_dol = cost_dol * discount;
 
 _dcost_vl_not_done = cost_vl_not_done * discount; 
 
+
 *** Diagnosed this period;
-diag_this_period=.;diag_this_period_m=.;diag_this_period_f=.;diag_this_period_f_anc=.;diag_this_period_f_non_anc=.;
+diag_this_period=.;diag_this_period_m=.;diag_this_period_allm=.;diag_this_period_f=.;diag_this_period_f_anc=.;diag_this_period_f_non_anc=.;
 diag_this_period_f_labdel=.;diag_this_period_f_pd=.;
 diag_this_period_m_sympt=.;diag_this_period_f_sympt=.;
 diag_thisper_anclabpd=.;diag_thisper_progsw=.;diag_thisper_sw=.;diag_thisper_1524f=.;
 if date1pos = caldate&j > . then diag_this_period=1;
 if gender=1 and diag_this_period=1 then diag_this_period_m=1;
+if gender in (1, 3) and diag_this_period=1 then diag_this_period_allm=1;
 if gender=2 and diag_this_period=1 then diag_this_period_f=1;
 if gender=2 and diag_this_period=1 and tested_anc=1 then diag_this_period_f_anc=1;
 if gender=2 and diag_this_period=1 and tested_anc ne 1 then diag_this_period_f_non_anc=1;
@@ -15332,6 +15489,10 @@ if gender=2 and diag_this_period=1 and 15 <= age < 25 then diag_thisper_1524f=1;
 tested_m=0; if gender=1 and tested=1 then tested_m=1;
 tested_m_sympt=0; if gender=1 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
 then tested_m_sympt=1;
+tested_m_circ=0; if gender=1 and tested=1 and tested_circ=1 then tested_m_circ=1;
+* msm; tested_allm=0; if gender in (1, 3) and tested=1 then tested_allm=1;
+tested_allm_sympt=0; if gender in (1, 3) and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
+then tested_allm_sympt=1;
 tested_m_circ=0; if gender=1 and tested=1 and tested_circ=1 then tested_m_circ=1;
 * allocation of tests in women 1 anc  2 symptoms  3  sw;
 tested_f=0; if gender=2 and tested=1 then tested_f=1;
@@ -15509,9 +15670,11 @@ firsttest_pd=0;    if caldate&j=date1test > . and gender=2 and tested_pd=1 then 
 
 *** Naive by gender;
 if naive=1 and gender=1 then naive_m=1;
+* msm ; if naive=1 and gender in (1, 3) then naive_allm=1;
 if naive=1 and gender=2 then naive_w=1;
 
 m_npge1=0; if gender=1 and np ge 1 then m_npge1=1;
+allm_npge1=0; if gender in (1, 3) and np ge 1 then allm_npge1=1;
 w_npge1=0; if gender=2 and np ge 1 then w_npge1=1;
 w1524_npge1=0; if gender=2 and 15 <= age < 25 and np ge 1 then w1524_npge1=1;
 sw_npge1=0; if sw=1 and np ge 1 then sw_npge1=1;
@@ -15542,10 +15705,10 @@ if prep_any=1 then newp_this_per_age1524w_onprep=1;
 if prep_any ne 1 then newp_this_per_age1524w_onprep=0;
 end;
 
-
+* msm;
 newp_this_per_art_or_prep=0;   newp_this_per_art=0;   newp_this_per_prep=0;  newp_this_per_prep_sw=0;  
 newp_this_per_elig_prep_any=0;  newp_this_per_elig_prep_any_sw=0;  newp_this_per_hivneg = 0; newp_this_per_hivneg_1549=0; newp_this_per_1549=0;
-newp_this_per_hivneg_m = 0; newp_this_per_hivneg_w = 0; newp_this_per_hivneg_age1524w = 0; newp_this_per_hivneg_sw = 0;
+newp_this_per_hivneg_m = 0;newp_this_per_hivneg_allm = 0; newp_this_per_hivneg_w = 0; newp_this_per_hivneg_age1524w = 0; newp_this_per_hivneg_sw = 0;
 newp_this_per=0; if newp ge 1 then newp_this_per=1;
 if newp_this_per=1 then do;
 	if onart=1 then newp_this_per_art=1;
@@ -15557,16 +15720,17 @@ if newp_this_per=1 then do;
 	if hiv ne 1 then newp_this_per_hivneg=1;
 	if hiv ne 1 and 15 <= age < 50 then newp_this_per_hivneg_1549=1;
 	if 15 <= age < 50 then newp_this_per_1549=1;
-	if gender=1 then newp_this_per_hivneg_m = 1;
+	if gender=1 then newp_this_per_hivneg_m = 1;	if gender in (1, 3) then newp_this_per_hivneg_allm = 1;
 	if gender=2 then newp_this_per_hivneg_w = 1;
 	if gender=2 and 15 <= age < 25 then newp_this_per_hivneg_age1524w = 1;
 	if sw=1 then newp_this_per_hivneg_sw = 1;
 
 end;
 
-newp_this_per_hivneg_m_prep = 0; newp_this_per_hivneg_w_prep = 0; newp_tp_hivneg_age1524w_prep = 0; newp_this_per_hivneg_sw_prep = 0 ;
+newp_this_per_hivneg_m_prep = 0; newp_this_per_hivneg_allm_prep = 0; newp_this_per_hivneg_w_prep = 0; newp_tp_hivneg_age1524w_prep = 0; newp_this_per_hivneg_sw_prep = 0 ;
 if prep_any=1 then do;
 if newp_this_per_hivneg_m = 1 then newp_this_per_hivneg_m_prep = 1;
+* msm ;if newp_this_per_hivneg_allm = 1 then newp_this_per_hivneg_allm_prep = 1;
 if newp_this_per_hivneg_w = 1 then newp_this_per_hivneg_w_prep = 1;
 if newp_this_per_hivneg_age1524w = 1 then newp_tp_hivneg_age1524w_prep = 1;
 if newp_this_per_hivneg_sw = 1 then newp_this_per_hivneg_sw_prep = 1 ;
@@ -15849,12 +16013,13 @@ if hiv ne 1 and dcause=3 then dead_hivneg_cause3=1;
 if hiv ne 1 and dcause=4 then do; dead_hivneg_cause4=1; dead_hivneg_cvd=1; dead_cvd=1; end;
 if hiv ne 1 and dcause=5 then do; dead_hivneg_cause5=1; dead_hivneg_tb=1; dead_tb=1; end;
 if hiv ne 1 then dead_hivneg_anycause=1;
-if dcause=4 and 30 <= age < 39 and gender=1 then dead_cvd_3039m=1;
-if dcause=4 and 40 <= age < 49 and gender=1 then dead_cvd_4049m=1;
-if dcause=4 and 50 <= age < 59 and gender=1 then dead_cvd_5059m=1;
-if dcause=4 and 60 <= age < 69 and gender=1 then dead_cvd_6069m=1;
-if dcause=4 and 70 <= age < 79 and gender=1 then dead_cvd_7079m=1;
-if dcause=4 and 80 <= age      and gender=1 then dead_cvd_ge80m=1;
+* msm - leave name as is;
+if dcause=4 and 30 <= age < 39 and gender in (1, 3) then dead_cvd_3039m=1;
+if dcause=4 and 40 <= age < 49 and gender in (1, 3) then dead_cvd_4049m=1;
+if dcause=4 and 50 <= age < 59 and gender in (1, 3) then dead_cvd_5059m=1;
+if dcause=4 and 60 <= age < 69 and gender in (1, 3) then dead_cvd_6069m=1;
+if dcause=4 and 70 <= age < 79 and gender in (1, 3) then dead_cvd_7079m=1;
+if dcause=4 and 80 <= age      and gender in (1, 3) then dead_cvd_ge80m=1;
 if dcause=4 and 30 <= age < 39 and gender=2 then dead_cvd_3039w=1;
 if dcause=4 and 40 <= age < 49 and gender=2 then dead_cvd_4049w=1;
 if dcause=4 and 50 <= age < 59 and gender=2 then dead_cvd_5059w=1;
@@ -15865,7 +16030,7 @@ end;
 
 
 
-***Newp groups;
+***Newp groups;  * note that here _m means heterosexual men;
 newp_g_m_0 = .; newp_g_m_1 = .; newp_g_m_2 = .; newp_g_m_3 = .; newp_g_m_4 = .;newp_g_m_5 = .;newp_g_m_6 = .;
 n_newp_g_m_0 = .; n_newp_g_m_1 = .; n_newp_g_m_2 = .; n_newp_g_m_3 = .; n_newp_g_m_4 = .;n_newp_g_m_5 = .;n_newp_g_m_6 = .;
 
@@ -15910,7 +16075,7 @@ end;
 
 * number of np had by hiv-ve people (not counting those adherent on prep +/- those circumcised); 
 
-if hiv ne 1 then do;
+if hiv ne 1 then do;  * these _m variables refer to heterosexual men;
 	if gender=1 and 15 <= age < 50 and (prep_any ne 1 or adh < 0.8) then do;  susc_np_1549_m = newp + ep;   end;
 	if gender=1 and 15 <= age < 50 and (prep_any ne 1 or adh < 0.8) and mcirc   ne 1 then do;  susc_np_inc_circ_1549_m = newp + ep;   end;
 	if gender=2 and 15 <= age < 50 and (prep_any ne 1 or adh < 0.8) then do;  susc_np_1549_w = newp + ep;   end;
@@ -16322,6 +16487,7 @@ if death = caldate&j and onart=1 and rdcause=2 then dead_onart_rdcause2=1;
 
 * variables to follow newp andd infection risk dynamics ;
 
+* _m variables here refer to heterosexual men;
 nip_w=.; if gender=2 then nip_w = nip   ;
 nip_m=.; if gender=1 then nip_m = nip   ;
 
@@ -16377,87 +16543,87 @@ on1drug_antihyp_ge80=0; on2drug_antihyp_ge80=0; on3drug_antihyp_ge80=0;
 
 if 15 <= age < 50 then do; 
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_1549 = 1 ;
-	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_1549m = 1 ;
+	if diagnosed_hypertension = 1 and gender in (1, 3) then diagnosed_hypertension_1549m = 1 ;
 	if diagnosed_hypertension = 1 and gender=2 then diagnosed_hypertension_1549w = 1 ;
 
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_1549 = 1 ;
-	if on_anti_hypertensive ge 1 and gender=1 then on_anti_hypertensive_1549m = 1 ;
+	if on_anti_hypertensive ge 1 and gender in (1, 3) then on_anti_hypertensive_1549m = 1 ;
 	if on_anti_hypertensive ge 1 and gender=2 then on_anti_hypertensive_1549w = 1 ;
 	if on_anti_hypertensive = 1 then on1drug_antihyp_1549 = 1 ;
 	if on_anti_hypertensive = 2 then on2drug_antihyp_1549 = 1 ;
 	if on_anti_hypertensive = 3 then on3drug_antihyp_1549 = 1 ;
 
 	if hypertension = 1 then hypertension_1549 = 1;
-	if hypertension = 1 and gender=1 then hypertension_1549m = 1;
+	if hypertension = 1 and gender in (1, 3) then hypertension_1549m = 1;
 	if hypertension = 1 and gender=2 then hypertension_1549w = 1;
 	if hypertens180 = 1 then hypertens180_1549 = 1;
 end;
 if 50 <= age < 59 then do; 
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_5059 = 1 ;
-	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_5059m = 1 ;
+	if diagnosed_hypertension = 1 and gender in (1, 3) then diagnosed_hypertension_5059m = 1 ;
 	if diagnosed_hypertension = 1 and gender=2 then diagnosed_hypertension_5059w = 1 ;
 
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_5059 = 1 ;
-	if on_anti_hypertensive ge 1 and gender=1 then on_anti_hypertensive_5059m = 1 ;
+	if on_anti_hypertensive ge 1 and gender in (1, 3) then on_anti_hypertensive_5059m = 1 ;
 	if on_anti_hypertensive ge 1 and gender=2 then on_anti_hypertensive_5059w = 1 ;
 	if on_anti_hypertensive = 1 then on1drug_antihyp_5059 = 1 ;
 	if on_anti_hypertensive = 2 then on2drug_antihyp_5059 = 1 ;
 	if on_anti_hypertensive = 3 then on3drug_antihyp_5059 = 1 ;
 
 	if hypertension = 1 then hypertension_5059 = 1;
-	if hypertension = 1 and gender=1 then hypertension_5059m = 1;
+	if hypertension = 1 and gender in (1, 3) then hypertension_5059m = 1;
 	if hypertension = 1 and gender=2 then hypertension_5059w = 1;
 	if hypertens180 = 1 then hypertens180_5059 = 1;
 end;
 if 60 <= age < 69 then do; 
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_6069 = 1 ;
-	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_6069m = 1 ;
+	if diagnosed_hypertension = 1 and gender in (1, 3) then diagnosed_hypertension_6069m = 1 ;
 	if diagnosed_hypertension = 1 and gender=2 then diagnosed_hypertension_6069w = 1 ;
 
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_6069 = 1 ;
-	if on_anti_hypertensive ge 1 and gender=1 then on_anti_hypertensive_6069m = 1 ;
+	if on_anti_hypertensive ge 1 and gender in (1, 3) then on_anti_hypertensive_6069m = 1 ;
 	if on_anti_hypertensive ge 1 and gender=2 then on_anti_hypertensive_6069w = 1 ;
 	if on_anti_hypertensive = 1 then on1drug_antihyp_6069 = 1 ;
 	if on_anti_hypertensive = 2 then on2drug_antihyp_6069 = 1 ;
 	if on_anti_hypertensive = 3 then on3drug_antihyp_6069 = 1 ;
 
 	if hypertension = 1 then hypertension_6069 = 1;
-	if hypertension = 1 and gender=1 then hypertension_6069m = 1;
+	if hypertension = 1 and gender in (1, 3) then hypertension_6069m = 1;
 	if hypertension = 1 and gender=2 then hypertension_6069w = 1;
 	if hypertens180 = 1 then hypertens180_6069 = 1;
 end;
 if 70 <= age < 79 then do; 
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_7079 = 1 ;
-	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_7079m = 1 ;
+	if diagnosed_hypertension = 1 and gender in (1, 3) then diagnosed_hypertension_7079m = 1 ;
 	if diagnosed_hypertension = 1 and gender=2 then diagnosed_hypertension_7079w = 1 ;
 
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_7079 = 1 ;
-	if on_anti_hypertensive ge 1 and gender=1 then on_anti_hypertensive_7079m = 1 ;
+	if on_anti_hypertensive ge 1 and  gender in (1, 3) then on_anti_hypertensive_7079m = 1 ;
 	if on_anti_hypertensive ge 1 and gender=2 then on_anti_hypertensive_7079w = 1 ;
 	if on_anti_hypertensive = 1 then on1drug_antihyp_7079 = 1 ;
 	if on_anti_hypertensive = 2 then on2drug_antihyp_7079 = 1 ;
 	if on_anti_hypertensive = 3 then on3drug_antihyp_7079 = 1 ;
 
 	if hypertension = 1 then hypertension_7079 = 1;
-	if hypertension = 1 and gender=1 then hypertension_7079m = 1;
+	if hypertension = 1 and  gender in (1, 3) then hypertension_7079m = 1;
 	if hypertension = 1 and gender=2 then hypertension_7079w = 1;
 	if hypertens180 = 1 then hypertens180_7079 = 1;
 end;
 
 if 80 <= age      then do; 
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_ge80 = 1 ;
-	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_ge80m = 1 ;
+	if diagnosed_hypertension = 1 and  gender in (1, 3) then diagnosed_hypertension_ge80m = 1 ;
 	if diagnosed_hypertension = 1 and gender=2 then diagnosed_hypertension_ge80w = 1 ;
 
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_ge80 = 1 ;
-	if on_anti_hypertensive ge 1 and gender=1 then on_anti_hypertensive_ge80m = 1 ;
+	if on_anti_hypertensive ge 1 and gender in (1, 3) then on_anti_hypertensive_ge80m = 1 ;
 	if on_anti_hypertensive ge 1 and gender=2 then on_anti_hypertensive_ge80w = 1 ;
 	if on_anti_hypertensive = 1 then on1drug_antihyp_ge80 = 1 ;
 	if on_anti_hypertensive = 2 then on2drug_antihyp_ge80 = 1 ;
 	if on_anti_hypertensive = 3 then on3drug_antihyp_ge80 = 1 ;
 
 	if hypertension = 1 then hypertension_ge80 = 1;
-	if hypertension = 1 and gender=1 then hypertension_ge80m = 1;
+	if hypertension = 1 and  gender in (1, 3)then hypertension_ge80m = 1;
 	if hypertension = 1 and gender=2 then hypertension_ge80w = 1;
 	if hypertens180 = 1 then hypertens180_ge80 = 1;
 end;
@@ -17551,11 +17717,11 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
-*/
+
+
 
 /*
 
