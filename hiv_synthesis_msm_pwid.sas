@@ -10,13 +10,7 @@
 
 * note the code for serodiscordant couples ("sdc") relates only to heterosexuals ;
 
-
-
-
-* search on "gender" to check choice of 1 or 1,3 makes sense ;
-
-* check s_ variables that become t_ variables are included once only in sum statement and that they are dealt with as for het variables ;
-
+* _msm and _allm variables to be added to sum statements and thereafter if want outputs ;
 
 
 
@@ -265,7 +259,11 @@ newp_seed = 7;
 * higher_newp_with_lower_adhav;
 							%sample(higher_newp_with_lower_adhav, 0 1, 0.8 0.2);
 
+* PWID;
 
+* prob_start_pwid;			prob_start_pwid=0.001;
+* prob_stop_pwid;			prob_stop_pwid=0.05;
+* rr_pwid_female;			rr_pwid_female = 4 ;
 
 * TRANSMISSION;
 
@@ -277,6 +275,7 @@ newp_seed = 7;
 
 * fold_tr;					%sample_uniform(fold_tr, 1/1.5 1 1.5);
 * fold_tr_msm;				%sample_uniform(fold_tr_msm, 5 10 15);
+* fold_tr_pwid;				%sample_uniform(fold_tr_pwid, 10 15 20);
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
 * fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3  );
@@ -2023,6 +2022,10 @@ if h < prob_birth_circ then do;mcirc =1;birth_circ=1;new_birth_circ=1;end;
 if mcirc =1 then date_mcirc=0;
 end;
 
+* pwid;
+
+pwid=0;
+
 
 p=rand('uniform'); q=rand('uniform');
 if (gender in (1, 3) and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1; * msm - todo: consider making different for gender = 3;
@@ -2136,6 +2139,7 @@ np_tm2=np_tm1;
 registd_tm2 = registd_tm1;
 onart_tm2=onart_tm1;
 sw_tm2=sw_tm1; 
+pwid_tm1 = pwid;
 
 tested_tm1=tested; tested=0;
 visit_hypertension_tm1 = visit_hypertension;
@@ -3351,6 +3355,15 @@ if t ge 2 and gender=2 then do;
 end;
 
 
+* PWID;
+
+if 15 <= age < 50 and pwid_tm1 ne 1 then do;
+v=rand('uniform'); 
+if gender in (1, 3) and and v < prob_start_pwid then pwid=1; 
+if gender = 2 and v < prob_start_pwid * rr_pwid_female then pwid=1;  then pwid=1; 
+end;
+z=rand('uniform'); if pwid_tm1 = 1 and z < prob_stop_pwid then pwid=0;
+
 
 * SBP AND HYPERTENSION DIAGNOSIS AND TREATMENT  ;  * update_24_4_21;
 
@@ -4419,6 +4432,7 @@ sti=0;hiv=0;
 np=0; newp=0; ep=0;
 newp_ever = 0;
 np_ever = 0;
+pwid=0;
 end;
 
 
@@ -6736,6 +6750,208 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 	goto xx77;
 	end;
 end;
+
+
+
+* INFECTION IN PWID;
+
+if pwid=1 then do;
+risk_pwid_share_hiv = t_prop_i_pwid ; 
+u1 = t_prop_pwid_vlg1; u2= t_prop_pwid_vlg2; u3= t_prop_pwid_vlg3; u4= t_prop_pwid_vlg4; u5= t_prop_pwid_vlg5; u6= t_prop_pwid_vlg6; 
+end;
+
+cu_1=.;cu_2=.;cu_3=.;cu_4=.;cu_5=.;cu_6=.;
+cu_1=u1;cu_2=cu_1+u2;cu_3=cu_2+u3;cu_4=cu_3+u4;cu_5=cu_4+u5; cu_6=cu_5+u6;
+
+*   vlg1 < 2.7    vlg2  2.7-3.7  vlg3  3.7-4.7   vlg4  4.7-5.7    vlg5  > 5.7    vlg6  primary;
+
+* (resistance profile assumed from heterosexuals for simplicity) 
+k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.; p46m=.; p47m=.;  p50lm=.; p50vm=.; 
+p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  in118m=.; in140m=.; in148m=.; in155m=.; in263m=.; 
+k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.;  m184m_p=.;  q151m_p=.;  tam_p=.;  p32m_p=.;  p33m_p=.;  p46m_p=.;  p47m_p=.; 
+p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.; p90m_p=.;  in118m_p=.; in140m_p=.; in148m_p=.; in155m_p=.;  
+in263m_p=.; 
+
+b=rand('uniform');
+if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
+	risk_pwid=0;  * dependent_on_time_step_length ;  
+	a=rand('uniform');
+	if                   a < cu_1/cu_6 then do; risk_pwid = max(0,(tr_rate_undetec_vl*fold_tr_pwid)+(0.000025*rand('normal'))); vl_source=1; t_prop_rm=t_prop_vlg1_rm; end;
+		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_pwid = max(0,(0.01*fold_tr*fold_tr_pwid)+(0.0025*rand('normal')));       vl_source=2; t_prop_rm=t_prop_vlg2_rm; end; 
+		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_pwid = max(0,(0.03*fold_tr*fold_tr_pwid)+(0.0075*rand('normal')));       vl_source=3; t_prop_rm=t_prop_vlg3_rm; end;
+		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_pwid = max(0,(0.06*fold_tr*fold_tr_pwid)+(0.015*rand('normal')));        vl_source=4; t_prop_rm=t_prop_vlg4_rm; end;
+		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_pwid = max(0,(0.10*fold_tr*fold_tr_pwid)+(0.025*rand('normal')));        vl_source=5; t_prop_rm=t_prop_vlg5_rm; end; 
+		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_pwid = max(0,(tr_rate_primary*fold_tr_pwid)+(0.075*rand('normal')));       vl_source=6; t_prop_rm=t_prop_vlg6_rm; end;
+
+		  m184m_p=0; tam_p=0;   k65m_p=0;  q151m_p=0; k103m_p=0;  y181m_p=0;  g190m_p=0;  
+		  p32m_p=0;  p33m_p=0;  p46m_p=0;  p47m_p=0;  p50lm_p=0;  p50vm_p=0;  p54m_p=0;  
+		  p76m_p=0;  p82m_p=0;  p84m_p=0;  p88m_p=0;  p90m_p=0;   in118m_p=0; in140m_p=0; in148m_p=0; in155m_p=0;  in263m_p=0; 
+		  mut_p=.;
+
+		  e=rand('uniform'); if e < t_prop_rm  then do;
+			*in order to have at least one mutation for all subjects who are supposed to have at least one;
+
+		  f=1;do until ((f=10) or (mut_p ge 1));  
+
+		  * resistance virus in partner - tams;
+
+                * resistance virus in partner - tams;
+                t_prop_tam = t_prop_tam1+t_prop_tam2+t_prop_tam3;
+                g=rand('uniform');
+                if g < t_prop_tam  then  do; tam_p=max(1,rand('poisson',1)); if tam_p ge 6 then tam_p=6;end;
+
+				* resistance virus in partner - 184m;
+				g=rand('uniform');
+				if g < t_prop_m184m  then m184m_p=1;
+	
+				* resistance virus in partner - k65m;
+				g=rand('uniform');
+				if g < t_prop_k65m  then k65m_p=1;
+	
+				* resistance virus in partner - q151m;
+				g=rand('uniform');
+				if g < t_prop_q151m  then q151m_p=1;
+
+				* resistance virus in partner - nnrti;
+				g=rand('uniform');
+				if g < t_prop_k103m then k103m_p=1;
+
+				g=rand('uniform');
+				if g < t_prop_y181m then y181m_p=1;
+
+				g=rand('uniform');
+				if g < t_prop_g190m then g190m_p=1;
+
+				* resistance virus in partner - pr 32;
+				g=rand('uniform');
+				if g < t_prop_p32m  then p32m_p=1;
+
+				* resistance virus in partner - pr 33;
+				g=rand('uniform');
+				if g < t_prop_p33m  then p33m_p=1;
+
+				* resistance virus in partner - pr 46;
+				g=rand('uniform');
+				if g < t_prop_p46m  then p46m_p=1;
+
+				* resistance virus in partner - pr 47;
+				g=rand('uniform');
+				if g < t_prop_p47m  then p47m_p=1;
+
+				* resistance virus in partner - pr 50l;
+				g=rand('uniform');
+				if g < t_prop_p50lm  then p50lm_p=1;
+
+				* resistance virus in partner - pr 50v;
+				g=rand('uniform');
+				if g < t_prop_p50vm  then p50vm_p=1;
+
+				* resistance virus in partner - pr 54;
+				g=rand('uniform');
+				if g < t_prop_p54m  then p54m_p=1;
+
+				* resistance virus in partner - pr 76;
+				g=rand('uniform');
+				if g < t_prop_p76m  then p76m_p=1;
+
+				* resistance virus in partner - pr 82;
+				g=rand('uniform');
+				if g < t_prop_p82m  then p82m_p=1;
+
+				* resistance virus in partner - pr 84;
+				g=rand('uniform');
+				if g < t_prop_p84m  then p84m_p=1;
+
+				* resistance virus in partner - pr 88;
+				g=rand('uniform');
+				if g < t_prop_p88m  then p88m_p=1;
+
+				* resistance virus in partner - pr 90;
+				g=rand('uniform');
+				if g < t_prop_p90m  then p90m_p=1;
+
+				* resistance virus in partner - in118;
+				g=rand('uniform');
+				if g < t_prop_in118m  then in118m_p=1;
+
+				* resistance virus in partner - in140;
+				g=rand('uniform');
+				if g < t_prop_in140m  then in140m_p=1;
+
+				* resistance virus in partner - in148;
+				g=rand('uniform');
+				if g < t_prop_in148m  then in148m_p=1;
+
+				* resistance virus in partner - in155;
+				g=rand('uniform');
+				if g < t_prop_in155m  then in155m_p=1;
+
+				* resistance virus in partner - in263;
+				g=rand('uniform');
+				if g < t_prop_in263m  then in263m_p=1;
+
+
+				mut_p = tam_p + m184m_p + k65m_p + q151m_p + k103m_p + y181m_p + g190m_p 
+				+ p32m_p + p33m_p + p46m_p + p47m_p + p50lm_p + p50vm_p + p54m_p 
+				+ p76m_p + p82m_p + p84m_p + p88m_p + p90m_p  + in118m_p  + in140m_p + in148m_p + in155m_p + in263m_p;
+
+				f=f+1;
+			end;  
+		end;
+
+		if prep_oral   =1 then do; 	* lapr and dpv-vr - this will be different for lapr and dpv-vr ;
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
+			if pop_wide_tld_prep=1 then do;
+				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
+				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
+				alrady positive from previous exposures;
+				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_nip = risk_nip * (1-(adh * prev_efficacy));
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
+			end;
+		end;
+		if prep_inj   =1 then do; 	
+			risk_nip = risk_nip * (1-prep_inj_efficacy); 
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * gender_spec_prep_inj_eff));
+		end;
+
+		a=rand('uniform'); if a < risk_pwid then do;
+		    if hiv=1 then do;
+    		if onart    ne 1 then super_infection_i=1;  
+			end;
+			if hiv=0 then do;
+				vl_source_inf = vl_source;
+			    infected_primary=0;infected_vlsupp=0; infected_from_pwid=1;
+			    hiv=1; infected_newp=0; infected_ep=0; infection=caldate{t};
+				if vl_source_inf=1 then infected_vlsupp=1;
+		    	if vl_source_inf=6 then infected_primary=1; 
+				infected_prep_any=0; infected_prep_oral=0; infected_prep_inj=0; infected_prep_vr=0;
+				inf_prep_any_source_prep_r=0; 
+				if prep_oral=1 then do; 
+					infected_prep_oral=1;	inf_prep_oral_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then inf_prep_oral_source_prep_r=1; 
+					infected_prep_any=1;	if inf_prep_oral_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+					if pop_wide_tld_prep=1 and in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then do; inf_prep_oral_source_prep_r=1; inf_prep_any_source_prep_r=1; end;
+				end;
+				if prep_inj=1 then do; 
+					infected_prep_inj=1;	inf_prep_inj_source_prep_r=0; if (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p) ge 1 then inf_prep_inj_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_inj_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				end;
+				if prep_inj_ever = 1 and currently_in_prep_inj_tail=1 then infected_prep_inj_tail=1;
+			end;
+			goto xx77;
+		end;
+	d=d+1;
+	end;
+end;
+
+
 
 
 * if have new existing partner, are they infected ?; * heterosexual men only ;
@@ -13842,7 +14058,7 @@ end;
 * MSM ;
 i_msm_newp=0; i_v1_msm_newp=0; i_v2_msm_newp=0; i_v3_msm_newp=0; i_v4_msm_newp=0; i_v5_msm_newp=0; i_v6_msm_newp=0; 
 
-if gender=3 and 15 <= age < 65 then do;
+if gender=3 and hiv=1 and 15 <= age < 65 then do;
 	if  .  <  vl < 2.7 and primary=0  then  i_v1_msm_newp=newp; 
 	if 2.7 <= vl < 3.7 and primary=0  then  i_v2_msm_newp=newp; 
 	if 3.7 <= vl < 4.7 and primary=0  then  i_v3_msm_newp=newp; 
@@ -13852,6 +14068,20 @@ if gender=3 and 15 <= age < 65 then do;
 	i_msm_newp=newp;
 end;
 
+
+* PWID ;
+
+i_pwid=0; i_v1_pwid=0; i_v2_pwid=0; i_v3_pwid=0; i_v4_pwid=0; i_v5_pwid=0; i_v6_pwid=0; 
+
+if pwid=1 and hiv=1 and 15 <= age < 65 then do;
+	if  .  <  vl < 2.7 and primary=0  then  i_v1_pwid=1; 
+	if 2.7 <= vl < 3.7 and primary=0  then  i_v2_pwid=1; 
+	if 3.7 <= vl < 4.7 and primary=0  then  i_v3_pwid=1; 
+	if 4.7 <= vl < 5.7 and primary=0  then  i_v4_pwid=1; 
+	if 5.7 <= vl		and primary=0 then  i_v5_pwid=1; 
+	if 					    primary=1 then  i_v6_pwid=1;
+	i_pwid=1;
+end;
 
 
 * consider primary infection length * dependent_on_time_step_length ;
@@ -14401,7 +14631,7 @@ end;
 *** Diagnosed and on ART by sex and ep;
 artexp=0; if naive=0 then artexp=1;
 artexp_m=0;    if gender=1        and artexp=1 then artexp_m=1;
-* msm; artexp_allm=0;    if gender in (1, 3)   and artexp=1 then artexp_allm=1;
+* msm; artexp_allm=0;    if gender in (1, 3)   and artexp=1 then artexp_allm=1; artexp_msm=0;    if gender = 3 and artexp=1 then artexp_msm=1;
 artexp_w=0;    if gender=2        and artexp=1 then artexp_w=1;
 artexp_1524_=0;if 15 le age lt 25 and artexp=1 then artexp_1524_=1;
 artexp_sw=0;   if sw=1            and artexp=1 then artexp_sw=1;
@@ -14409,6 +14639,7 @@ artexp_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastb
  
 if      gender=1 then do; diag_m=registd; epdiag_m=epdiag; epi_m=epi  ; onart_m=onart; eponart_m=epart; end;
 if      gender in (1, 3) then do; diag_allm=registd; onart_allm=onart; end;
+if      gender = 3  then do; diag_msm=registd; onart_msm=onart; end;
 if gender=2 then do; diag_w=registd; epdiag_w=epdiag; epi_w=epi  ; onart_w=onart; eponart_w=epart; end;
 onart_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and onart=1 then onart_w1524evpreg=1;
 
@@ -14430,6 +14661,8 @@ prep_oral_m=0; 	if gender=1 and prep_oral=1 then prep_oral_m=1;
 prep_inj_m=0; 	if gender=1 and prep_inj=1 	then prep_inj_m=1;
 prep_oral_allm=0; 	if gender in (1, 3) and prep_oral=1 then prep_oral_allm=1;
 prep_inj_allm=0; 	if gender in (1, 3) and prep_inj=1 	then prep_inj_allm=1;
+prep_oral_msm=0; 	if gender = 3 and prep_oral=1 then prep_oral_msm=1;
+prep_inj_msm=0; 	if gender = 3  and prep_inj=1 	then prep_inj_msm=1;
 
 prep_any_ever=0; if prep_oral_ever=1 or prep_inj_ever=1 or prep_vr_ever=1 then prep_any_ever=1;
 
@@ -14468,6 +14701,7 @@ if gender = 2 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_w_1549 = 
 
 elig_prep_any_m_1564 = 0; if gender = 1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
 * msm ; elig_prep_any_allm_1564 = 0; if gender in (1, 3) and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_allm_1564 = 1;  end;
+* msm ; elig_prep_any_msm_1564 = 0; if gender = 3 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_msm_1564 = 1;  end;
 
 
 * number on prep women age 15-24;
@@ -14728,15 +14962,15 @@ prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
 *To calculate proportion of people on PrEP;
 * msm ;
 onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;onprep_w1524_newpge1_=0;onprep_inj_m=0; onprep_inj_w=0; onprep_oral_m=0; onprep_oral_w=0; 
-onprep_vr_w=0;  onprep_allm=0; onprep_oral_allm=0; onprep_inj_allm=0;
+onprep_vr_w=0;  onprep_allm=0; onprep_oral_allm=0; onprep_inj_allm=0; onprep_msm=0; onprep_oral_msm=0; onprep_inj_msm=0;
 if prep_any=1 then do;
 	if (15<=age<49) then onprep_1549=1;
-	if gender=1 then onprep_m=1;	if gender in (1, 3) then onprep_allm=1;
+	if gender=1 then onprep_m=1;	if gender in (1, 3) then onprep_allm=1;if gender=3 then onprep_msm=1;
 	if gender=2 then onprep_w=1;
-	if gender=1 and prep_inj=1 then onprep_inj_m=1;	if gender in (1, 3) and prep_inj=1 then onprep_inj_allm=1;
+	if gender=1 and prep_inj=1 then onprep_inj_m=1;	if gender in (1, 3) and prep_inj=1 then onprep_inj_allm=1;	if gender=3 and prep_inj=1 then onprep_inj_msm=1;
 	if gender=2 and prep_inj=1 then onprep_inj_w=1;
 	if gender=2 and prep_vr =1 then onprep_vr_w=1;
-	if gender=1 and prep_oral=1 then onprep_oral_m=1;	if gender in (1, 3) and prep_oral=1 then onprep_oral_allm=1;
+	if gender=1 and prep_oral=1 then onprep_oral_m=1;	if gender in (1, 3) and prep_oral=1 then onprep_oral_allm=1;if gender = 3 and prep_oral=1 then onprep_oral_msm=1;
 	if gender=2 and prep_oral=1 then onprep_oral_w=1;
 	if sw=1 then onprep_sw=1;
 	if (15<=age<25) then onprep_1524=1;
@@ -14881,7 +15115,7 @@ if 0 <= caldate&j - date_most_recent_prep_any_elig < 5 then prep_any_elig_past_5
 
 continuous_prep_oral_ge1yr=0; if prep_oral=1 and continuous_prep_oral_use >= 1 then continuous_prep_oral_ge1yr=1;
 
-
+* heterosexual men;
 infected_ep_w=0; if gender=2 and infected_ep=1 then infected_ep_w=infected_ep;
 infected_ep_m=0; if gender=1 and infected_ep=1 then infected_ep_m=infected_ep;
 infected_newp_w=0; if gender=2 and infected_newp=1 then infected_newp_w=infected_newp;
@@ -14894,7 +15128,7 @@ infected_newp_m=0; if gender=1 and infected_newp=1 then infected_newp_m=infected
 
 if 15 le age lt 50 then tested1549_=tested;
 if gender=1 and 15 le age lt 50 then tested1549m=tested;
-* msm ;if gender in (1, 3) and 15 le age lt 50 then tested1549allm=tested;
+* msm ;if gender in (1, 3) and 15 le age lt 50 then tested1549allm=tested;* msm ;if gender=3 and 15 le age lt 50 then tested1549msm=tested;
 if gender=2 and 15 le age lt 50 then tested1549w=tested;
 tested_sw=.; if sw=1 then tested_sw=tested;
 
@@ -14910,6 +15144,7 @@ end;
 
 * ts1m:  this is last 4 periods so 4 months if time step 1 month;
 tested_4p_m1549_=0; tested_4p_m1519_=0; tested_4p_m2024_=0; tested_4p_m2529_=0;tested_4p_m3039_=0; tested_4p_m4049_=0; tested_4p_m5064_=0;
+tested_4p_allm1549_=0; tested_4p_allm1519_=0; tested_4p_allm2024_=0; tested_4p_allm2529_=0;tested_4p_allm3039_=0; tested_4p_allm4049_=0; tested_4p_allm5064_=0;
 tested_4p_w1549_=0; tested_4p_w1519_=0; tested_4p_w2024_=0; tested_4p_w2529_=0;tested_4p_w3039_=0; tested_4p_w4049_=0; tested_4p_w5064_=0; 
 tested_4p_sw=0;
 
@@ -14948,12 +15183,13 @@ end;
 
 ever_tested_m=.;if gender=1 and ever_tested=1 then ever_tested_m=1;
 * msm ; ever_tested_allm=.;if gender in (1, 3) and ever_tested=1 then ever_tested_allm=1;
+* msm ; ever_tested_msm=.;if gender=3 and ever_tested=1 then ever_tested_msm=1;
 ever_tested_w=.;if gender=2 and ever_tested=1 then ever_tested_w=1;
 
 ever_tested_m1549_=0;ever_tested_m1564_=0;
 ever_tested_m1519_=0;ever_tested_m2024_=0;ever_tested_m2529_=0;ever_tested_m3034_=0;ever_tested_m3539_=0;ever_tested_m4044_=0;
 ever_tested_m4549_=0;ever_tested_m5054_=0;ever_tested_m5559_=0;ever_tested_m6064_=0;  
-* msm; ever_tested_allm1549_=0;ever_tested_allm1564_=0;
+* msm; ever_tested_allm1549_=0;ever_tested_allm1564_=0;ever_tested_msm1549_=0;ever_tested_msm1564_=0;
 ever_tested_allm1519_=0;ever_tested_allm2024_=0;ever_tested_allm2529_=0;ever_tested_allm3034_=0;ever_tested_allm3539_=0;ever_tested_allm4044_=0;
 ever_tested_allm4549_=0;ever_tested_allm5054_=0;ever_tested_allm5559_=0;ever_tested_allm6064_=0;  
 ever_tested_w1549_=0;ever_tested_w1564_=0;
@@ -14965,7 +15201,7 @@ test_not_costed=0; if tested=1 and cost_test <= 0 then test_not_costed=1;
 
 diag_m1549_=0;diag_m1564_=0;
 diag_m1519_=0;diag_m2024_=0;diag_m2529_=0;diag_m3034_=0;diag_m3539_=0;diag_m4044_=0;diag_m4549_=0;diag_m5054_=0;diag_m5559_=0;diag_m6064_=0;  
-* msm ; diag_allm1549_=0;diag_allm1564_=0;
+* msm ; diag_allm1549_=0;diag_allm1564_=0;diag_msm1549_=0;diag_msm1564_=0;
 diag_allm1519_=0;diag_allm2024_=0;diag_allm2529_=0;diag_allm3034_=0;diag_allm3539_=0;diag_allm4044_=0;diag_allm4549_=0;diag_allm5054_=0;diag_allm5559_=0;diag_allm6064_=0;  
 diag_w1549_=0;diag_w1564_=0;
 diag_w1519_=0;diag_w2024_=0;diag_w2529_=0;diag_w3034_=0;diag_w3539_=0;diag_w4044_=0;diag_w4549_=0;diag_w5054_=0;diag_w5559_=0;diag_w6064_=0;  
@@ -14974,7 +15210,7 @@ diag_sw=0;
 onart_m1549_=0;onart_m1564_=0;
 onart_m1519_=0;onart_m2024_=0;onart_m2529_=0;onart_m3034_=0;onart_m3539_=0;onart_m4044_=0;onart_m4549_=0;onart_m5054_=0;onart_m5559_=0;onart_m6064_=0;
 onart_m6569_=0;onart_m7074_=0;onart_m7579_=0;onart_m8084_=0;onart_m85pl_=0;
-* msm ; onart_allm1549_=0;onart_allm1564_=0;
+* msm ; onart_allm1549_=0;onart_allm1564_=0;onart_msm1549_=0;onart_msm1564_=0;
 onart_allm1519_=0;onart_allm2024_=0;onart_allm2529_=0;onart_allm3034_=0;onart_allm3539_=0;onart_allm4044_=0;onart_allm4549_=0;onart_allm5054_=0;onart_allm5559_=0;onart_allm6064_=0;
 onart_allm6569_=0;onart_allm7074_=0;onart_allm7579_=0;onart_allm8084_=0;onart_allm85pl_=0;
 onart_w1549_=0;onart_w1564_=0;
@@ -15019,6 +15255,25 @@ if gender in (1, 3) then do;
 	else if 75 le age lt 80 then do; diag_allm7579_=registd;  onart_allm7579_=onart; end;
 	else if 80 le age lt 85 then do; diag_allm8084_=registd;  onart_allm8084_=onart; end;
 	else if 85 le age       then do; diag_allm85pl_=registd;  onart_allm85pl_=onart; end;
+end;
+if gender=3 then do;
+	if      15 le age lt 50 then do; ever_tested_msm1549_=ever_tested; diag_msm1549_=registd;  onart_msm1549_=onart; end;
+	if      15 le age lt 65 then do; ever_tested_msm1564_=ever_tested; diag_msm1564_=registd;  onart_msm1564_=onart; end;
+	if      15 le age lt 20 then do; ever_tested_msm1519_=ever_tested; diag_msm1519_=registd;  onart_msm1519_=onart; end;
+	else if 20 le age lt 25 then do; ever_tested_msm2024_=ever_tested; diag_msm2024_=registd;  onart_msm2024_=onart; end;
+	else if 25 le age lt 30 then do; ever_tested_msm2529_=ever_tested; diag_msm2529_=registd;  onart_msm2529_=onart; end;
+	else if 30 le age lt 35 then do; ever_tested_msm3034_=ever_tested; diag_msm3034_=registd;  onart_msm3034_=onart; end;
+	else if 35 le age lt 40 then do; ever_tested_msm3539_=ever_tested; diag_msm3539_=registd;  onart_msm3539_=onart; end;
+	else if 40 le age lt 45 then do; ever_tested_msm4044_=ever_tested; diag_msm4044_=registd;  onart_msm4044_=onart; end;
+	else if 45 le age lt 50 then do; ever_tested_msm4549_=ever_tested; diag_msm4549_=registd;  onart_msm4549_=onart; end;
+	else if 50 le age lt 55 then do; ever_tested_msm5054_=ever_tested; diag_msm5054_=registd;  onart_msm5054_=onart; end;
+	else if 55 le age lt 60 then do; ever_tested_msm5559_=ever_tested; diag_msm5559_=registd;  onart_msm5559_=onart; end;
+	else if 60 le age lt 65 then do; ever_tested_msm6064_=ever_tested; diag_msm6064_=registd;  onart_msm6064_=onart; end;
+	else if 65 le age lt 70 then do; diag_msm6569_=registd;  onart_msm6569_=onart; end;
+	else if 70 le age lt 75 then do; diag_msm7074_=registd;  onart_msm7074_=onart; end;
+	else if 75 le age lt 80 then do; diag_msm7579_=registd;  onart_msm7579_=onart; end;
+	else if 80 le age lt 85 then do; diag_msm8084_=registd;  onart_msm8084_=onart; end;
+	else if 85 le age       then do; diag_msm85pl_=registd;  onart_msm85pl_=onart; end;
 end;
 if gender=2 then do;
 	if      15 le age lt 50 then do; ever_tested_w1549_=ever_tested; diag_w1549_=registd;  onart_w1549_=onart; end;
@@ -15145,13 +15400,11 @@ if gender=2 then do;
 end;
 
 dead_all=dead;
-if gender=1  then deadm_all=dead;
-* msm ; if gender in (1, 3)  then deadallm_all=dead;
+if gender in (1, 3)  then deadm_all=dead;
 if gender=2  then deadw_all=dead;
 
 death_hivrel=0;   if caldate&j = death > . and dcause=1 then death_hivrel=dead;
-death_hivrel_m=0; if caldate&j = death > . and dcause=1 and gender=1 then death_hivrel_m=dead;
-death_hivrel_allm=0; if caldate&j = death > . and dcause=1 and gender in (1, 3) then death_hivrel_allm=dead;
+death_hivrel_m=0; if caldate&j = death > . and dcause=1 and gender in (1, 3) then death_hivrel_m=dead;
 
 death_dcause3 = 0; if caldate&j = death > . and dcause=3 then death_dcause3 = dead ;
 
@@ -15239,16 +15492,16 @@ end;
 
 * adh level by gender - apr 19 ;
 adh_low_m=.; adh_med_m=.; adh_hi_m=.;
-if gender=1 and (onart=1 or int_clinic_not_aw=1) then do; 
+if gender in (1, 3) and (onart=1 or int_clinic_not_aw=1) then do; 
 adh_low_m=0; if adh < 0.5 or int_clinic_not_aw=1 then adh_low_m=1; 
 adh_med_m=0; if 0.5 <= adh < 0.8 then adh_med_m=1; 
 adh_hi_m=0; if 0.8 <= adh then adh_hi_m=1;
 end;
-* msm ; adh_low_allm=.; adh_med_allm=.; adh_hi_allm=.;
-if gender in (1, 3) and (onart=1 or int_clinic_not_aw=1) then do; 
-adh_low_allm=0; if adh < 0.5 or int_clinic_not_aw=1 then adh_low_allm=1; 
-adh_med_allm=0; if 0.5 <= adh < 0.8 then adh_med_allm=1; 
-adh_hi_allm=0; if 0.8 <= adh then adh_hi_allm=1;
+* msm ; adh_low_msm=.; adh_med_msm=.; adh_hi_msm=.;
+if gender = 3 and (onart=1 or int_clinic_not_aw=1) then do; 
+adh_low_msm=0; if adh < 0.5 or int_clinic_not_aw=1 then adh_low_msm=1; 
+adh_med_msm=0; if 0.5 <= adh < 0.8 then adh_med_msm=1; 
+adh_hi_msm=0; if 0.8 <= adh then adh_hi_msm=1;
 end;
 
 
@@ -15550,14 +15803,14 @@ diag_this_period_f_labdel=.;diag_this_period_f_pd=.;
 diag_this_period_m_sympt=.;diag_this_period_f_sympt=.;
 diag_thisper_anclabpd=.;diag_thisper_progsw=.;diag_thisper_sw=.;diag_thisper_1524f=.;
 if date1pos = caldate&j > . then diag_this_period=1;
-if gender=1 and diag_this_period=1 then diag_this_period_m=1;
-if gender in (1, 3) and diag_this_period=1 then diag_this_period_allm=1;
+if gender in (1, 3) and diag_this_period=1 then diag_this_period_m=1;
+if gender = 3 and diag_this_period=1 then diag_this_period_msm=1;
 if gender=2 and diag_this_period=1 then diag_this_period_f=1;
 if gender=2 and diag_this_period=1 and tested_anc=1 then diag_this_period_f_anc=1;
 if gender=2 and diag_this_period=1 and tested_anc ne 1 then diag_this_period_f_non_anc=1;
 if gender=2 and diag_this_period=1 and tested_labdel=1 then diag_this_period_f_labdel=1;
 if gender=2 and diag_this_period=1 and tested_pd=1 then diag_this_period_f_pd=1;
-if gender=1 and diag_this_period=1 and sympt_diag = 1 then diag_this_period_m_sympt=1;
+if gender in (1, 3) and diag_this_period=1 and sympt_diag = 1 then diag_this_period_m_sympt=1;
 if gender=2 and diag_this_period=1 and sympt_diag = 1 then diag_this_period_f_sympt=1;
 if gender=2 and diag_this_period=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then diag_thisper_anclabpd=1;
 if gender=2 and diag_this_period=1 and tested_as_sw=1 and tested_anc ne 1 and tested_labdel ne 1 and tested_pd ne 1 and 
@@ -15567,13 +15820,14 @@ if gender=2 and diag_this_period=1 and 15 <= age < 25 then diag_thisper_1524f=1;
 
 ***Reason for HIV test;
 tested_m=0; if gender=1 and tested=1 then tested_m=1;
-tested_m_sympt=0; if gender=1 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
+tested_m_sympt=0; if gender in (1, 3) and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
 then tested_m_sympt=1;
-tested_m_circ=0; if gender=1 and tested=1 and tested_circ=1 then tested_m_circ=1;
-* msm; tested_allm=0; if gender in (1, 3) and tested=1 then tested_allm=1;
-tested_allm_sympt=0; if gender in (1, 3) and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
-then tested_allm_sympt=1;
-tested_m_circ=0; if gender=1 and tested=1 and tested_circ=1 then tested_m_circ=1;
+tested_m_circ=0; if gender in (1, 3) and tested=1 and tested_circ=1 then tested_m_circ=1;
+* msm; tested_allm=0; if gender=3 and tested=1 then tested_msm=1;
+tested_msm_sympt=0; if gender =3 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
+then tested_msm_sympt=1;
+
+tested_m_circ=0; if gender in (1, 3) and tested=1 and tested_circ=1 then tested_m_circ=1;
 * allocation of tests in women 1 anc  2 symptoms  3  sw;
 tested_f=0; if gender=2 and tested=1 then tested_f=1;
 tested_f_anc=0; if gender=2 and tested=1 and tested_anc = 1 then tested_f_anc=1;
@@ -15639,7 +15893,7 @@ death_hiv_age_1524=0; death_hiv_age_2534=0; death_hiv_age_3544=0; death_hiv_age_
 death_hiv_inf_pre_year_interv=.; death_hiv_inf_post_year_interv=.; 
 
 if hiv=1 and caldate&j=death and dead_ = 1 and rdcause=1 then do;
-death_hiv=1;if gender=1 then death_hiv_m=1;
+death_hiv=1;if gender in (1, 3) then death_hiv_m=1;
 
 if infection_pre_year_interv=1 then death_hiv_inf_pre_year_interv=1; 
 if infection_post_year_interv=1 then death_hiv_inf_post_year_interv=1; 
@@ -15751,8 +16005,10 @@ firsttest_pd=0;    if caldate&j=date1test > . and gender=2 and tested_pd=1 then 
 *** Naive by gender;
 if naive=1 and gender=1 then naive_m=1;
 * msm ; if naive=1 and gender in (1, 3) then naive_allm=1;
+* msm ; if naive=1 and gender = 3 then naive_msm=1;
 if naive=1 and gender=2 then naive_w=1;
 
+* here _m refers to heterosexual men only;
 m_npge1=0; if gender=1 and np ge 1 then m_npge1=1;
 allm_npge1=0; if gender in (1, 3) and np ge 1 then allm_npge1=1;
 w_npge1=0; if gender=2 and np ge 1 then w_npge1=1;
@@ -15788,8 +16044,8 @@ end;
 * msm;
 newp_this_per_art_or_prep=0;   newp_this_per_art=0;   newp_this_per_prep=0;  newp_this_per_prep_sw=0;  
 newp_this_per_elig_prep_any=0;  newp_this_per_elig_prep_any_sw=0;  newp_this_per_hivneg = 0; newp_this_per_hivneg_1549=0; newp_this_per_1549=0;
-newp_this_per_hivneg_m = 0;newp_this_per_hivneg_allm = 0; newp_this_per_hivneg_w = 0; newp_this_per_hivneg_age1524w = 0; newp_this_per_hivneg_sw = 0;
-newp_this_per=0; if newp ge 1 then newp_this_per=1;
+newp_this_per_hivneg_m = 0;newp_this_per_hivneg_allm = 0; newp_this_per_hivneg_msm = 0; newp_this_per_hivneg_w = 0; newp_this_per_hivneg_age1524w = 0; 
+newp_this_per_hivneg_sw = 0;newp_this_per=0; if newp ge 1 then newp_this_per=1;
 if newp_this_per=1 then do;
 	if onart=1 then newp_this_per_art=1;
 	if prep_any=1 then newp_this_per_prep=1;
@@ -15800,7 +16056,7 @@ if newp_this_per=1 then do;
 	if hiv ne 1 then newp_this_per_hivneg=1;
 	if hiv ne 1 and 15 <= age < 50 then newp_this_per_hivneg_1549=1;
 	if 15 <= age < 50 then newp_this_per_1549=1;
-	if gender=1 then newp_this_per_hivneg_m = 1;	if gender in (1, 3) then newp_this_per_hivneg_allm = 1;
+	if gender=1 then newp_this_per_hivneg_m = 1;	if gender in (1, 3) then newp_this_per_hivneg_allm = 1; if gender = 3 then newp_this_per_hivneg_msm = 1;
 	if gender=2 then newp_this_per_hivneg_w = 1;
 	if gender=2 and 15 <= age < 25 then newp_this_per_hivneg_age1524w = 1;
 	if sw=1 then newp_this_per_hivneg_sw = 1;
@@ -16570,18 +16826,22 @@ if death = caldate&j and onart=1 and rdcause=2 then dead_onart_rdcause2=1;
 * _m variables here refer to heterosexual men;
 nip_w=.; if gender=2 then nip_w = nip   ;
 nip_m=.; if gender=1 then nip_m = nip   ;
+nip_msm=.; if gender=3 then nip_msm = nip   ;
 
 risk_nippnp_w=.; if gender=2 then risk_nippnp_w = risk_nippnp;
 risk_nippnp_m=.; if gender=1 then risk_nippnp_m = risk_nippnp;
+risk_nippnp_msm=.; if gender=3 then risk_nippnp_msm = risk_nippnp;
 
 risk_nip_w=.; if gender=2 then risk_nip_w = risk_nip;
 risk_nip_m=.; if gender=1 then risk_nip_m = risk_nip;
+risk_nip_msm=.; if gender=3 then risk_nip_msm = risk_nip;
 
 epi_w=0; if gender=2 then epi_w = epi  ;
 epi_m=0; if gender=1 then epi_m = epi  ;
 
 newp_ge1_w=0; if gender=2 then newp_ge1_w = newp_ge1;
 newp_ge1_m=0; if gender=1 then newp_ge1_m = newp_ge1;
+newp_ge1_msm=0; if gender=3 then newp_ge1_msm = newp_ge1;
 
 if gender=2 and 15 <= age < 50 then do;
 sw1549=0; if sw = 1 then sw1549=1; 
@@ -17000,9 +17260,11 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_i_v6_age1_m_ep + i_v6_age1_m_ep ; s_i_v6_age2_m_ep + i_v6_age2_m_ep ; s_i_v6_age3_m_ep + i_v6_age3_m_ep ; 
 	s_i_v6_age4_m_ep + i_v6_age4_m_ep ; s_i_v6_age5_m_ep + i_v6_age5_m_ep ; 
 
-	* mem;
 	s_i_msm_newp + i_msm_newp ; s_i_v1_msm_newp + i_v1_msm_newp; s_i_v2_msm_newp + i_v2_msm_newp ; s_i_v3_msm_newp + i_v3_msm_newp ;
 	s_i_v4_msm_newp + i_v4_msm_newp ; s_i_v5_msm_newp + i_v5_msm_newp ;s_i_v6_msm_newp + i_v6_msm_newp  ;
+
+	s_i_pwid + i_pwid ; s_i_v1_pwid + i_v1_pwid; s_i_v2_pwid + i_v2_pwid ; s_i_v3_pwid + i_v3_pwid ;
+	s_i_v4_pwid + i_v4_pwid ; s_i_v5_pwid + i_v5_pwid ;s_i_v6_pwid + i_v6_pwid  ;
 
 	s_i_age1_m_np + i_age1_m_np ; s_i_age2_m_np + i_age2_m_np ; s_i_age3_m_np + i_age3_m_np ; s_i_age4_m_np + i_age4_m_np ; s_i_age5_m_np + i_age5_m_np ; 
 	s_i_age1_w_np + i_age1_w_np ; s_i_age2_w_np + i_age2_w_np ; s_i_age3_w_np + i_age3_w_np ; s_i_age4_w_np + i_age4_w_np ; s_i_age5_w_np + i_age5_w_np ; 
@@ -17805,16 +18067,26 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
+/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
+*/
+
+/*
 
 proc print; var caldate&j age gender sex_beh_trans_matrix_m newp ep np 
-
 s_i_msm_newp  s_msm_newp  t_prop_newp_i_msm
-
 risk_nippnp hiv infected_newp vl_source_inf infected_prep_any prep_any  ; 
 where 15 <= age < 65 and ((serial_no < 300 and gender=1) or (gender = 3)) and death=.;
+run; 
+
+*/
+
+proc print; var caldate&j age gender pwid hiv infected_newp infected_ep infected_pwid  
+t_prop_i_pwid t_prop_pwid_vlg1 t_prop_pwid_vlg2 t_prop_pwid_vlg3 t_prop_pwid_vlg4 t_prop_pwid_vlg5 t_prop_pwid_vlg6
+s_i_pwid  t_prop_i_pwid ; 
+where 15 <= age < 65 and serial_no < 300  and death=.;
 run; 
 
 
@@ -18359,6 +18631,14 @@ s_prop_msm_vlg3 = max(0,s_i_v3_msm_newp / s_i_msm_newp) ; s_prop_msm_vlg4 = max(
 s_prop_msm_vlg5 = max(0,s_i_v5_msm_newp / s_i_msm_newp) ; s_prop_msm_vlg6 = max(0,s_i_v6_msm_newp / s_i_msm_newp) ;
 end;
 
+* pwid;
+
+if s_i_pwid > 0  then do;
+s_prop_pwid_vlg1 = max(0,s_i_v1_pwid / s_i_pwid) ; s_prop_pwid_vlg2 = max(0,s_i_v2_pwid / s_i_pwid) ;
+s_prop_pwid_vlg3 = max(0,s_i_v3_pwid / s_i_pwid) ; s_prop_pwid_vlg4 = max(0,s_i_v4_pwid / s_i_pwid) ;
+s_prop_pwid_vlg5 = max(0,s_i_v5_pwid / s_i_pwid) ; s_prop_pwid_vlg6 = max(0,s_i_v6_pwid / s_i_pwid) ;
+end;
+
 
 * if no infected people in age and gender group chosen then use non age-specific distribution ;
 s_i_m_newp = s_i_age1_m_newp + s_i_age2_m_newp + s_i_age3_m_newp + s_i_age4_m_newp + s_i_age5_m_newp ;
@@ -18839,6 +19119,9 @@ s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp
 
 s_i_msm_newp s_i_v1_msm_newp s_i_v2_msm_newp s_i_v3_msm_newp s_i_v4_msm_newp s_i_v5_msm_newp s_i_v6_msm_newp s_msm_newp  s_prop_newp_i_msm
 
+s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid
+
+
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
@@ -19304,7 +19587,7 @@ rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_optio
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
-prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_msm switch_for_tox 
+prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_msm fold_tr_pwid switch_for_tox 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
@@ -19423,6 +19706,8 @@ s_prop_ageg4_m_vlg1  s_prop_ageg4_m_vlg2  s_prop_ageg4_m_vlg3   s_prop_ageg4_m_v
 s_prop_ageg5_m_vlg1  s_prop_ageg5_m_vlg2  s_prop_ageg5_m_vlg3   s_prop_ageg5_m_vlg4   s_prop_ageg5_m_vlg5   s_prop_ageg5_m_vlg6  
 
 s_prop_msm_vlg1  s_prop_msm_vlg2 s_prop_msm_vlg3  s_prop_msm_vlg4  s_prop_msm_vlg5  s_prop_msm_vlg6 
+
+s_prop_pwid_vlg1  s_prop_pwid_vlg2 s_prop_pwid_vlg3  s_prop_pwid_vlg4  s_prop_pwid_vlg5  s_prop_pwid_vlg6 
 
 s_prop_ageg1_w_vlg1  s_prop_ageg1_w_vlg2  s_prop_ageg1_w_vlg3   s_prop_ageg1_w_vlg4   s_prop_ageg1_w_vlg5   s_prop_ageg1_w_vlg6  
 s_prop_ageg2_w_vlg1  s_prop_ageg2_w_vlg2  s_prop_ageg2_w_vlg3   s_prop_ageg2_w_vlg4   s_prop_ageg2_w_vlg5   s_prop_ageg2_w_vlg6  
@@ -19581,6 +19866,14 @@ t_prop_msm_vlg3 = s_prop_msm_vlg3 ;
 t_prop_msm_vlg4 = s_prop_msm_vlg4 ;
 t_prop_msm_vlg5 = s_prop_msm_vlg5 ;
 t_prop_msm_vlg6 = s_prop_msm_vlg6 ;
+
+t_prop_i_pwid = s_prop_i_pwid ;
+t_prop_pwid_vlg1 = s_prop_pwid_vlg1 ;  
+t_prop_pwid_vlg2 = s_prop_pwid_vlg2 ;
+t_prop_pwid_vlg3 = s_prop_pwid_vlg3 ;
+t_prop_pwid_vlg4 = s_prop_pwid_vlg4 ;
+t_prop_pwid_vlg5 = s_prop_pwid_vlg5 ;
+t_prop_pwid_vlg6 = s_prop_pwid_vlg6 ;
 
 t_prop_vlg1_rm = s_prop_vlg1_rm ;  
 t_prop_vlg2_rm = s_prop_vlg2_rm ; 
@@ -19800,6 +20093,8 @@ s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 s_i_m_1549_np  s_i_w_1549_np   s_i_w_newp  s_i_m_newp
 
 s_i_msm_newp  s_i_v1_msm_newp s_i_v2_msm_newp  s_i_v3_msm_newp  s_i_v4_msm_newp  s_i_v5_msm_newp  si_v6_msm_newp  s_msm_newp
+
+s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid
 
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -20292,8 +20587,6 @@ s_prop_ageg2_m_vlg4    s_prop_ageg2_m_vlg5   s_prop_ageg2_m_vlg6  s_prop_ageg2_w
 s_prop_ageg2_w_vlg3    s_prop_ageg2_w_vlg4     s_prop_ageg2_w_vlg5  s_prop_ageg2_w_vlg6   s_prop_ageg3_m_vlg1 
 s_prop_ageg3_m_vlg2    s_prop_ageg3_m_vlg3    s_prop_ageg3_m_vlg4    s_prop_ageg3_m_vlg5     s_prop_ageg3_m_vlg6   
 
-s_prop_msm_vlg1 s_prop_msm_vlg2  s_prop_msm_vlg3 s_prop_msm_vlg4 s_prop_msm_vlg5 s_prop_msm_vlg6 
-
 s_prop_ageg3_w_vlg1    s_prop_ageg3_w_vlg2    s_prop_ageg3_w_vlg3     s_prop_ageg3_w_vlg4   s_prop_ageg3_w_vlg5  
 s_prop_ageg3_w_vlg6    s_prop_ageg4_m_vlg1   s_prop_ageg4_m_vlg2  s_prop_ageg4_m_vlg3   s_prop_ageg4_m_vlg4   s_prop_ageg4_m_vlg5 
 s_prop_ageg4_m_vlg6    s_prop_ageg4_w_vlg1    s_prop_ageg4_w_vlg2   s_prop_ageg4_w_vlg3    s_prop_ageg4_w_vlg4  s_prop_ageg4_w_vlg5  
@@ -20312,7 +20605,11 @@ s_prop_vlg4_rm0_diag    s_prop_vlg4_rm0_naive   s_prop_vlg4_rm1_diag     s_prop_
 s_prop_vlg5_rm0_diag    s_prop_vlg5_rm0_naive    s_prop_vlg5_rm1_diag  s_prop_vlg5_rm1_naive  s_prop_vlg6_rm s_prop_vlg6_rm0_diag 
 s_prop_vlg6_rm0_naive  s_prop_vlg6_rm1_diag    s_prop_vlg6_rm1_naive s_prop_w_vlg1   s_prop_w_vlg2 s_prop_w_vlg3   s_prop_w_vlg4  
 s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp 
-s_prop_newp_i_msm s_prop_msm_vlg1   s_prop_msm_vlg2 s_prop_msm_vlg3 s_prop_msm_vlg4 s_prop_msm_vlg5 s_prop_msm_vlg6 
+s_prop_newp_i_msm  s_prop_i_pwid
+
+s_prop_msm_vlg1 s_prop_msm_vlg2  s_prop_msm_vlg3 s_prop_msm_vlg4 s_prop_msm_vlg5 s_prop_msm_vlg6 
+
+s_prop_pwid_vlg1 s_prop_pwid_vlg2  s_prop_pwid_vlg3 s_prop_pwid_vlg4 s_prop_pwid_vlg5 s_prop_pwid_vlg6  s_prop_i_pwid
 ;
 
 
@@ -21613,6 +21910,8 @@ s_i_m_1549_np  s_i_w_1549_np    s_i_w_newp  s_i_m_newp
 
 s_i_msm_newp  s_i_v1_msm_newp s_i_v2_msm_newp  s_i_v3_msm_newp  s_i_v4_msm_newp  s_i_v5_msm_newp  s_i_v6_msm_newp   s_msm_newp
 
+s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid
+
  
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -22071,7 +22370,7 @@ rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_optio
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
-prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr fold_tr_msm switch_for_tox 
+prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr fold_tr_msm fold_tr_pwid switch_for_tox 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14  circ_inc_15_19  circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
@@ -22188,8 +22487,6 @@ s_prop_ageg3_m_vlg1  s_prop_ageg3_m_vlg2  s_prop_ageg3_m_vlg3   s_prop_ageg3_m_v
 s_prop_ageg4_m_vlg1  s_prop_ageg4_m_vlg2  s_prop_ageg4_m_vlg3   s_prop_ageg4_m_vlg4   s_prop_ageg4_m_vlg5   s_prop_ageg4_m_vlg6  
 s_prop_ageg5_m_vlg1  s_prop_ageg5_m_vlg2  s_prop_ageg5_m_vlg3   s_prop_ageg5_m_vlg4   s_prop_ageg5_m_vlg5   s_prop_ageg5_m_vlg6  
 
-s_prop_msm_vlg1 s_prop_msm_vlg2 s_prop_msm_vlg3 s_prop_msm_vlg4 s_prop_msm_vlg5 s_prop_msm_vlg6 
-
 s_prop_ageg1_w_vlg1  s_prop_ageg1_w_vlg2  s_prop_ageg1_w_vlg3   s_prop_ageg1_w_vlg4   s_prop_ageg1_w_vlg5   s_prop_ageg1_w_vlg6  
 s_prop_ageg2_w_vlg1  s_prop_ageg2_w_vlg2  s_prop_ageg2_w_vlg3   s_prop_ageg2_w_vlg4   s_prop_ageg2_w_vlg5   s_prop_ageg2_w_vlg6  
 s_prop_ageg3_w_vlg1  s_prop_ageg3_w_vlg2  s_prop_ageg3_w_vlg3   s_prop_ageg3_w_vlg4   s_prop_ageg3_w_vlg5   s_prop_ageg3_w_vlg6  
@@ -22200,6 +22497,8 @@ s_prop_m_vlg1  s_prop_m_vlg2  s_prop_m_vlg3  s_prop_m_vlg4  s_prop_m_vlg5 s_prop
 s_prop_w_vlg1  s_prop_w_vlg2  s_prop_w_vlg3  s_prop_w_vlg4  s_prop_w_vlg5 s_prop_w_vlg6
 
 s_prop_newp_i_msm s_prop_msm_vlg1   s_prop_msm_vlg2 s_prop_msm_vlg3 s_prop_msm_vlg4 s_prop_msm_vlg5 s_prop_msm_vlg6 
+
+s_prop_i_pwid s_prop_pwid_vlg1 s_prop_pwid_vlg2  s_prop_pwid_vlg3 s_prop_pwid_vlg4 s_prop_pwid_vlg5 s_prop_pwid_vlg6  
 
 p_onart_vls  p_onart_epvls  d_vls
 p_diag  p_diag_onart  p_diag_eponart  p_diag_m  p_diag_w  p_epdiag_m  p_epdiag_w  d_diag_m  d_diag_w
