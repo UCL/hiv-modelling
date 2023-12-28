@@ -4,7 +4,7 @@
 
 * generally a variable qith a _m for male refers to heterosexual men only - this is always the case when the variable relates to sexual behaviour ;
 
-* when there is no gender specificity to the variable then it nearly always refers to all men and women ;
+* when there is no gender specificity to the variable then it nearly always refers to all men and women, including msm ;
 
 * the _allm means all men, heterosexual and msm ;
 
@@ -190,7 +190,7 @@ newp_seed = 7;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
 * hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (rand('uniform')*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
 * p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
-
+* prop_m_msm;				prop_m_msm=0.03;
 
 
 * PREGNANCY AND BREASTFEEDING;
@@ -1222,7 +1222,7 @@ data r1; set r1;
 %sample_uniform(gender, 1 2);
 
 * msm ;
-o = rand('uniform'); if gender=1 and o < 0.03 then gender=3; 
+o = rand('uniform'); if gender=1 and o < prop_m_msm then gender=3; 
 
 if gender ne . then do; obs+1; end;
 
@@ -1641,7 +1641,7 @@ end;
 
 
 ep =0; ageg_ep=0; epmono=0; * msm ;
-if gender in (1,2) then do; * msm ;
+if gender in (1,2) then do; * msm - ep modelled only for heterosexuals;
 u=rand('uniform');
 if 15 <= age < 25 and u < 0.40 then do; ep=1; ageg_ep=1; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
 if 25 <= age < 35 and u < 0.50 then do; ep=1; ageg_ep=2; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
@@ -2025,7 +2025,7 @@ end;
 
 
 p=rand('uniform'); q=rand('uniform');
-if (gender in (1, 3) and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1; * msm - todo: different for gender = 3 ?;
+if (gender in (1, 3) and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1; * msm - todo: consider making different for gender = 3;
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
 
@@ -3126,7 +3126,7 @@ end;
 
 if caldate{t} >= &year_interv then do;
 	if incr_test_year_i = 1              then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+	if incr_test_year_i = 2 and gender in (1, 3) then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
 	if incr_test_year_i = 3 then do; 
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
@@ -3632,7 +3632,7 @@ end;
 
 rred_balance= 1 ;
 
-if gender=1 then do; * msm - deliberately left as gender=1 and not gender in (1, 3);
+if gender=1 then do; * msm - deliberately left as gender=1 and not gender in (1, 3) as this is about balance between heterosexual men and women;
 		 if          d_s_newp >= 10000 then rred_balance = 0.10 ;
 	else if  3000 <= d_s_newp <  10000 then rred_balance = 0.70 ;
 	else if   500 <= d_s_newp <  3000 then rred_balance = 0.70 ;
@@ -4373,7 +4373,7 @@ if  ep_tm1=1 and lep=3 and e < (1-(0.02*z)) then ep=1;
 u=rand('uniform');
 if       r_ep_mw >  1.2 and gender=2 then u=u/4;
 if 1.1 < r_ep_mw <= 1.2 and gender=2 then u=u/2;
-if 0.8 <= r_ep_mw < 0.9 and gender=1 then u=u/2;
+if 0.8 <= r_ep_mw < 0.9 and gender=1 then u=u/2; * msm - here and below left as gender=1 as this is for heterosexual men;
 if .   <  r_ep_mw < 0.8 and gender=1 then u=u/4;
 
 * reduction in sexual behaviour following hiv+ test ;
@@ -4482,7 +4482,7 @@ if ep >= 1 then epi=0;
 
 if t ge 2 and ep=1 and epi_tm1 =1 then epi=1;
 
-f=rand('uniform');if gender=1 and epi=1 and d_hiv_epi_mw > 50 and f < 0.1 then epi=0;
+f=rand('uniform');if gender=1 and epi=1 and d_hiv_epi_mw > 50 and f < 0.1 then epi=0;  * msm - ep only for gender=1 and 2;
 
 if t ge 2 and ep_tm1=1 then do;
 	mr_epi=epi_tm1;
@@ -4516,7 +4516,7 @@ if s_hiv1564 =0 then do; d_hiv_epi_mw=0; d_hiv_epi_wm=0; end;
 
 e=rand('uniform');  
 * yes, it is this way around below;
-if gender=1 and ep_incidence_factor_w gt 0 then e=e/ep_incidence_factor_w; 
+if gender=1 and ep_incidence_factor_w gt 0 then e=e/ep_incidence_factor_w; * ep modelled only for heterosexuals ; 
 if gender=2 and ep_incidence_factor_m gt 0 then e=e/ep_incidence_factor_m;
 
 epmono=.;
@@ -4525,7 +4525,7 @@ if ep=1 then do; epmono=0;
 	if (gender=2 and ((ageg_ep=1 and s < prop_mono_m_1524) or (ageg_ep=2 and s < prop_mono_m_2534) or (ageg_ep=3 and s < prop_mono_m_3544) 
 	or (ageg_ep=4 and s < prop_mono_m_4554) or (ageg_ep=5 and s < prop_mono_m_5564))) or 
 	   (gender=1 and ((ageg_ep=1 and s < prop_mono_w_1524) or (ageg_ep=2 and s < prop_mono_w_2534) or (ageg_ep=3 and s < prop_mono_w_3544) 
-	or (ageg_ep=4 and s < prop_mono_w_4554) or (ageg_ep=5 and s < prop_mono_w_5564))) then epmono=1;
+	or (ageg_ep=4 and s < prop_mono_w_4554) or (ageg_ep=5 and s < prop_mono_w_5564))) then epmono=1; * ep modelled only for heterosexuals ; 
 	if epmono=1 and epi ne 1 then do;
 		if hiv=1 then do;  * rep * dependent_on_time_step_length ;
 
@@ -6223,11 +6223,6 @@ end;
 *--------------------------------------------------------------------------------------------------------------------;
 
 
-
-* msm - todo: code for risk of infection for msm;
-* to here ;
-
-
 * NUMBER OF NEW INFECTED PARTNERS ;
 * risk of infected partner per new partner;
 nip=0;
@@ -6238,7 +6233,7 @@ end;
 
 * probability of infection from infected new partner;
 
-* msm - deliberately left as gender=1 and not gender in (1, 3) in this section ;
+* msm - deliberately left as gender=1 and not gender in (1, 3) in this section as this is heterosexual transmission;
 
 u1=0; u2=0; u3=0; u4=0; u5=0; u6=0;
 
@@ -6276,7 +6271,7 @@ end;
 
 
 * MSM;
-if gender = 3;
+if gender = 3 then do;
 u1 = t_prop_msm_vlg1; u2= t_prop_msm_vlg2; u3= t_prop_msm_vlg3; u4= t_prop_msm_vlg4; u5= t_prop_msm_vlg5; u6= t_prop_msm_vlg6; 
 end;
 
@@ -6460,7 +6455,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		if gender=2 and       age >= 20 then risk_nip = risk_nip * fold_change_w;  * higher transmission risk in women;
 		if gender=2 and 15 <= age <  20 then risk_nip = risk_nip * fold_change_yw;  * higher transmission risk in women;
 		if sti=1                        then risk_nip = risk_nip * fold_change_sti;  * higher transmission risk with sti;
-		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4;  * lower transmission risk in men circumcised;
+		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4;  * lower heterosexual transmission risk in men circumcised;
 		if prep_oral   =1 then do; 	* lapr and dpv-vr - this will be different for lapr and dpv-vr ;
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
@@ -6743,7 +6738,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 end;
 
 
-* if have new existing partner, are they infected ?;
+* if have new existing partner, are they infected ?; * heterosexual men only ;
 if gender=1 then do;
 	if ageg_ep = 1 then prev=prevalence1524w;
 	if ageg_ep = 2 then prev=prevalence2534w;
@@ -6894,8 +6889,8 @@ end;
 
 * INTRODUCE HIV INTO POPULATION ;
 
-d=rand('uniform');
-if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do; 
+d=rand('uniform');  * msm - make sure some msm are infected ;
+if caldate{t}=startyr and ((newp >= newp_seed and d < 0.8) or (gender=3 and newp >= 3)) and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
@@ -12247,7 +12242,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 
 
 * based on SA death rates in 1997 (pre most AIDS deaths); 
-		if  in (1, 3) then do; 
+		if gender in (1, 3) then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00200*0.93;
 			if 20 <= age < 25 then ac_death_rate = 0.00320*0.93;
 			if 25 <= age < 30 then ac_death_rate = 0.00580*0.93;
@@ -12328,7 +12323,8 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 * cvd mortality; * update_24_4_21;
 
 * risk of cvd death per 3 months according to sbp, age and gender ; * remember this appears twice - once for hiv +ve people ;
-	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+	tempg=gender; if gender=3 then tempg=1; * this done due to introduction of gender=3;
+	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(tempg - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
 
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
@@ -12540,11 +12536,14 @@ end;
 
 alive_m = 0;  if age ge 15 and  in (1, 3) then alive_m = 1;
 alive_w = 0;  if age ge 15 and gender=2 then alive_w = 1;
+alive_msm = 0; if age ge 15 and gender=3 then alive_msm=1;
 if 15 <= age < 50 then alive1549=1;else alive1549=0;
 if 15 <= age < 50 and gender in (1, 3) then alive1549_m=1;else alive1549_m=0;
+if 15 <= age < 50 and gender = 3 then alive1549_msm=1;else alive1549_msm=0;
 if 15 <= age < 50 and gender=2 then alive1549_w=1;else alive1549_w=0;
 if 15 <= age < 65 then alive1564=1;else alive1564=0;
 if 15 <= age < 65 and gender in (1, 3) then alive1564_m=1;else alive1564_m=0;
+if 15 <= age < 65 and gender = 3 then alive1564_msm=1;else alive1564_msm=0;
 if 15 <= age < 65 and gender=2 then alive1564_w=1;else alive1564_w=0;
 
 ageg014_=0;if  0 <= age < 15 then ageg014_=1; 
@@ -12579,6 +12578,7 @@ primary5559m=0; if gender in (1, 3) and primary=1 and 55 <= age < 60 then primar
 primary6064m=0; if gender in (1, 3) and primary=1 and 60 <= age < 65 then primary6064m=1;
 
 primary1549m=0; if gender in (1, 3) and primary=1 and 15 <= age < 50 then primary1549m=1;
+primary1549msm=0; if gender=3 and primary=1 and 15 <= age < 50 then primary1549msm=1;
 
 primary1519w=0; if gender=2 and primary=1 and 15 <= age < 20 then primary1519w=1;
 primary2024w=0; if gender=2 and primary=1 and 20 <= age < 25 then primary2024w=1;
@@ -12626,22 +12626,7 @@ primary_ep_w=0; if primary=1 and ep=1 and epi  =0 and gender=2 then primary_ep_w
   only uninfected, as these are at risk of infection ;  * msm ;
 eph0_m=0; if ep=1 and hiv=0  and epi  =0 and gender in (1, 3) then eph0_m=1;
 eph0_w=0; if ep=1 and hiv=0  and epi  =0 and gender=2 then eph0_w=1;
-
-
-/* msm - s_ gender variablea used in t_ that need protecting:
- 
-s_prop_newp_i_m_1524 etc
-
-s_prop_ageg1_m_vlg1 etc
-
-s_prop_m_vlg1 etc
-  
-s_m_newp 
-
-* msm  - general approach is that sexual behaviour related variables that are created for men and women relate to het sexual men only - gender = 1;
-
-*/
-
+* for heterosexual men;
 i_m_1524_newp=0; if hiv=1 and gender=1 and 15 <= age < 25 then i_m_1524_newp=newp;
 i_m_2534_newp=0; if hiv=1 and gender=1 and 25 <= age < 35 then i_m_2534_newp=newp;
 i_m_3544_newp=0; if hiv=1 and gender=1 and 35 <= age < 45 then i_m_3544_newp=newp;
@@ -12756,7 +12741,7 @@ conc=0;
 if ((ep=1 and newp ge 1) or newp ge 2) or ((ep_tm1=1 and newp_tm1 ge 1) or newp_tm1 ge 2) or 
    ((ep_tm2=1 and newp_tm2 ge 1) or newp_tm2 ge 2) or ((ep_tm3=1 and newp_tm3 ge 1) or newp_tm3 ge 2) then conc=1;
 * l4p means last 4 periods - so for 3 month time steps this is last year as before;
-npgt1conc_l4p_1524m=0;if gender=1 and 15 <= age < 25 then npgt1conc_l4p_1524m=conc;
+npgt1conc_l4p_1524m=0;if gender=1 and 15 <= age < 25 then npgt1conc_l4p_1524m=conc;  *applies heterosexual men;
 npgt1conc_l4p_1524w=0;if gender=2 and 15 <= age < 25 then npgt1conc_l4p_1524w=conc;
 npgt1conc_l4p_2549m=0;if gender=1 and 25 <= age <=49 then npgt1conc_l4p_2549m=conc;
 npgt1conc_l4p_2549w=0;if gender=2 and 25 <= age <=49 then npgt1conc_l4p_2549w=conc;
@@ -12771,7 +12756,7 @@ npgt1conc_l4p_1519w=0;if gender=2 and 15 <= age < 20 then npgt1conc_l4p_1519w=co
 *1>= np;
 
 * l4p means last 4 periods;
-
+*applies heterosexual men;
 npge1_l4p_1564m=0;if gender=1 and 15 <= age < 65 and (nnewp_l4p ge 1 or (nnewp_l4p=0 and (ep=1 or ep_tm1=1 or ep_tm2=1 or ep_tm3=1))) then npge1_l4p_1564m=1;
 npge1_l4p_1524m=0;if gender=1 and 15 <= age < 25 and (nnewp_l4p ge 1 or (nnewp_l4p=0 and (ep=1 or ep_tm1=1 or ep_tm2=1 or ep_tm3=1))) then npge1_l4p_1524m=1;
 npge1_l4p_2534m=0;if gender=1 and 25 <= age < 35 and (nnewp_l4p ge 1 or (nnewp_l4p=0 and (ep=1 or ep_tm1=1 or ep_tm2=1 or ep_tm3=1))) then npge1_l4p_2534m=1;
@@ -13457,7 +13442,7 @@ sw_vg1000=0;if sw=1                 and vl > 3.0 then sw_vg1000=1;
 
 
 ***People with long term partners;
-* msm  - general approach is that sexual behaviour related variables that are created for men and women relate to het sexual men only - gender = 1;
+* msm  - general approach is that sexual behaviour related variables that are created for men and women relate to heterosexual men only - gender = 1;
 ep_m  =0; if gender=1 and ep=1 then ep_m  =1;
 ep_w  =0; if gender=2 and ep=1 then ep_w  =1;
 
@@ -13495,7 +13480,7 @@ m_1524_ge1newpever=0;m_2534_ge1newpever=0;m_3544_ge1newpever=0;m_4554_ge1newpeve
 m_1524_ge2newpever=0;m_2534_ge2newpever=0;m_3544_ge2newpever=0;m_4554_ge2newpever=0;m_5564_ge2newpever=0;
 m_1524_ge5newpever=0;m_2534_ge5newpever=0;m_3544_ge5newpever=0;m_4554_ge5newpever=0;m_5564_ge5newpever=0;
 w_ge1newpever=0;w_ge2newpever=0;w_ge5newpever=0;
-if gender=1 then do;
+if gender=1 then do; * heterosexual men ;
 	if 15 <= age < 25 and newp_ever ge 1 then m_1524_ge1newpever=1; 
 	if 25 <= age < 35 and newp_ever ge 1 then m_2534_ge1newpever=1; 
 	if 35 <= age < 45 and newp_ever ge 1 then m_3544_ge1newpever=1; 
@@ -13547,6 +13532,9 @@ hiv85plm=0; if hiv=1 and gender in (1, 3) and 85 <= age      then hiv85plm=1;
 
 hiv1564m=0; if hiv=1 and gender in (1, 3) and 15 <= age < 65 then hiv1564m=1;
 hiv1549m=0; if hiv=1 and gender in (1, 3) and 15 <= age < 50 then hiv1549m=1;
+
+hiv1564msm=0; if hiv=1 and gender = 3 and 15 <= age < 65 then hiv1564msm=1;
+hiv1549msm=0; if hiv=1 and gender = 3 and 15 <= age < 50 then hiv1549msm=1;
 
 hiv1517w=0; if hiv=1 and gender=2 and 15 <= age < 18 then hiv1517w=1;
 hiv1819w=0; if hiv=1 and gender=2 and 18 <= age < 20 then hiv1819w=1;
@@ -13641,6 +13629,9 @@ if hiv =1 then do;
 	if gender in (1, 3) then do;
 	vl1000_allm = vl1000;
 	end;
+	if gender = 3 then do;
+	vl1000_msm = vl1000;
+	end;
 
 
 	if 15 <= age < 50 then do; vg1000_1549=0; if vg1000=1 then vg1000_1549=1;   end;
@@ -13724,7 +13715,7 @@ if 15 <= age < 65 then do;
 	if 5.7 <= vl		and primary=0  then do; i_v5_np=np; i_v5_ep=ep; i_v5_newp=newp; end;
 	if 					    primary=1  then do; i_v6_np=np; i_v6_ep=ep; i_v6_newp=newp; end;
 
-	if  gender = 1 and .  <  vl < 3 and primary=0  then do; i_vl1000_m_np=np; i_v11000_m_ep=ep; i_vl1000_m_newp=newp; end;
+	if  gender = 1 and .  <  vl < 3 and primary=0  then do; i_vl1000_m_np=np; i_v11000_m_ep=ep; i_vl1000_m_newp=newp; end;  * for heterosexual men;
 	if  gender = 2 and .  <  vl < 3 and primary=0  then do; i_vl1000_w_np=np; i_v11000_w_ep=ep; i_vl1000_w_newp=newp; end;
 
 	if gender=1 and 15 <= age < 25 then do;
@@ -13861,7 +13852,6 @@ if gender=3 and 15 <= age < 65 then do;
 	i_msm_newp=newp;
 end;
 
-* to here ;
 
 
 * consider primary infection length * dependent_on_time_step_length ;
@@ -14046,12 +14036,13 @@ end;
 
 
 	art_start=0; nnm_art=0; im_art=0; r_art=0; nactive_art_start_lt3 = .;nactive_art_start_lt2 = .;nactive_art_start_lt1p5 = .;nn_res_pmtct_art_notdr=0;
-	nnm_art_m=0;art_start_m=0; art_start_allm=0; art_start_w=0; art_start_pregnant=0;  * note that currently art_start_pregnant does not fully capture all starts in
+	nnm_art_m=0;art_start_m=0; art_start_msm=0; art_start_allm=0; art_start_w=0; art_start_pregnant=0;  
+	* note that currently art_start_pregnant does not fully capture all starts in
 	pregnancy or breastfeeding because pregnant=1 only in the period of birth, not the two previous periods;
 
 	if caldate&j=yrart >. then do;
 		art_start=1;
-		if gender=1 then art_start_m=1;  * msm ; if gender in (1, 3) then art_start_allm=1; if gender=2 then art_start_w=1; 
+		if gender=1 then art_start_m=1;  * msm ; if gender in (1, 3) then art_start_allm=1; if gender=3 then art_start_msm=1; if gender=2 then art_start_w=1; 
 		if gender=2 and pregnant=1 then art_start_pregnant=1;
 
 		if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then nnm_art=1;
@@ -14132,20 +14123,20 @@ sympt_aids=0;    if hiv=1 and                    adc =  1 then sympt_aids=1;
 
 end; * this closes loop for hiv + only;
 
-*** Status of concordant/discordant partnerships;
+*** Status of concordant/discordant partnerships; 
 hiv0epi1_w=0; if gender=2 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi1_w=1; 
 hiv1epi0_w=0; if gender=2 and hiv=1 and 15 <= age < 65 and  epi  =0 then hiv1epi0_w=1; 
 hiv1epi1_w=0; if gender=2 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi1_w=1; 
-hiv0epi1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi1_m=1; 
+hiv0epi1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi1_m=1;  * for heterosexuals only;
 hiv1epi0_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =0 then hiv1epi0_m=1; 
 hiv1epi1_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi1_m=1; 
 sdc=0;	if hiv0epi1_w=1 or hiv0epi1_m=1 then sdc=1;		* MIHPSA JAS Jul23;
 
 primaryepi1_w=0;if gender=2 and primary=1 and 15 <= age < 65 and epi=1 then primaryepi1_w=1;
-primaryepi1_m=0;if gender=1 and primary=1 and 15 <= age < 65 and epi=1 then primaryepi1_m=1;
+primaryepi1_m=0;if gender=1 and primary=1 and 15 <= age < 65 and epi=1 then primaryepi1_m=1;  * for heterosexuals only;
 
 hiv0epart1_w=0; if gender=2 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_w=1;
-hiv0epart1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_m=1;
+hiv0epart1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_m=1;  * for heterosexuals only;
 
 *** Existing partner infected this period;
 hiv0epprim=0; if hiv=0 and epi  =1 and epi_tm1=0 and ep_tm1=1 then hiv0epprim=1; 
@@ -14155,6 +14146,7 @@ hiv0epprim=0; if hiv=0 and epi  =1 and epi_tm1=0 and ep_tm1=1 then hiv0epprim=1;
 diag_age1564 = 0; if registd=1 and 15 <= age < 65 then diag_age1564 = 1; 
 diag_w_age1564 = 0; if registd=1 and gender=2 and 15 <= age < 65 then diag_w_age1564 = 1; 
 diag_m_age1564 = 0; if registd=1 and gender=1 and 15 <= age < 65 then diag_m_age1564 = 1; 
+diag_msm_age1564 = 0; if registd=1 and gender=3 and 15 <= age < 65 then diag_msm_age1564 = 1; 
 diag_allm_age1564 = 0; if registd=1 and gender in (1, 3) and 15 <= age < 65 then diag_allm_age1564 = 1; 
 
 onart_age1564 = 0;  if 15 <= age < 65 and onart=1 then onart_age1564 = 1; 
@@ -14193,6 +14185,8 @@ tld_notest_notprepelig_neg = 0; if hiv=0 and tld_notest_notprepelig = 1 then tld
 
 ***As above, stratified by gender;
 vl1000_art_m =.;onart_iicu_m=.;vl1000_art_iicu_m=.;onart_gt6m_m=.;vl1000_art_gt6m_m=.;onart_gt6m_iicu_m=.;vl1000_art_gt6m_iicu_m=.;
+vl1000_art_allm =.;onart_iicu_allm=.;vl1000_art_iicu_allm=.;onart_gt6m_allm=.;vl1000_art_gt6m_allm=.;onart_gt6m_iicu_allm=.;vl1000_art_gt6m_iicu_allm=.;
+vl1000_art_msm =.;onart_iicu_msm=.;vl1000_art_iicu_msm=.;onart_gt6m_msm=.;vl1000_art_gt6m_msm=.;onart_gt6m_iicu_msm=.;vl1000_art_gt6m_iicu_msm=.;
 vl1000_art_w =.;onart_iicu_w=.;vl1000_art_iicu_w=.;onart_gt6m_w=.;vl1000_art_gt6m_w=.;onart_gt6m_iicu_w=.;vl1000_art_gt6m_iicu_w=.;
 vl1000_art_1524_ 		= .;	onart_iicu_1524_ 		= .;	vl1000_art_iicu_1524_ 	= .;	onart_gt6m_1524_		= .; 
 vl1000_art_gt6m_1524_	= .;	onart_gt6m_iicu_1524_	= .;	vl1000_art_gt6m_iicu_1524_ = .;	vl1000_art_2549_ 		= .;
@@ -14228,6 +14222,22 @@ if gender in (1, 3) then do;
 	onart_gt6m_iicu_allm	= onart_gt6m_iicu;
 	vl1000_art_gt6m_iicu_allm = vl1000_art_gt6m_iicu;
 end;
+
+
+* msm ;
+if gender=3 then do;
+	vl1000_art_msm 		= vl1000_art;
+
+	onart_iicu_msm 		= onart_iicu;
+	vl1000_art_iicu_msm 	= vl1000_art_iicu;
+
+	onart_gt6m_msm 		= onart_gt6m;
+	vl1000_art_gt6m_msm	= vl1000_art_gt6m;
+
+	onart_gt6m_iicu_msm	= onart_gt6m_iicu;
+	vl1000_art_gt6m_iicu_msm = vl1000_art_gt6m_iicu;
+end;
+
 
 if gender=2 then do;
 	vl1000_art_w 		= vl1000_art;
@@ -17796,12 +17806,15 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-
 proc freq; tables cald hiv ; where death=.; run;
 
 
-proc print; var caldate&j age gender newp ep np hiv nfected_newp vl_source_inf infected_prep_any prep_any ; 
-where 15 <= age < 65 and ((serial_no < 500 and gender=1) or (gender = 3)) and death=.;
+proc print; var caldate&j age gender sex_beh_trans_matrix_m newp ep np 
+
+s_i_msm_newp  s_msm_newp  t_prop_newp_i_msm
+
+risk_nippnp hiv infected_newp vl_source_inf infected_prep_any prep_any  ; 
+where 15 <= age < 65 and ((serial_no < 300 and gender=1) or (gender = 3)) and death=.;
 run; 
 
 
@@ -18824,7 +18837,7 @@ s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
 s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp
 
-s_i_msm_newp s_i_v1_msm_newp s_i_v2_msm_newp s_i_v3_msm_newp s_i_v4_msm_newp s_i_v5_msm_newp s_i_v6_msm_newp s_msm_newp
+s_i_msm_newp s_i_v1_msm_newp s_i_v2_msm_newp s_i_v3_msm_newp s_i_v4_msm_newp s_i_v5_msm_newp s_i_v6_msm_newp s_msm_newp  s_prop_newp_i_msm
 
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -19561,6 +19574,7 @@ t_prop_w_vlg4 = s_prop_w_vlg4 ;
 t_prop_w_vlg5 = s_prop_w_vlg5 ;  
 t_prop_w_vlg6 = s_prop_w_vlg6 ;  
 
+t_prop_newp_i_msm = s_prop_newp_i_msm ;
 t_prop_msm_vlg1 = s_prop_msm_vlg1 ;  
 t_prop_msm_vlg2 = s_prop_msm_vlg2 ;
 t_prop_msm_vlg3 = s_prop_msm_vlg3 ;
@@ -20297,7 +20311,9 @@ s_prop_vlg3_rm0_diag   s_prop_vlg3_rm0_naive    s_prop_vlg3_rm1_diag   s_prop_vl
 s_prop_vlg4_rm0_diag    s_prop_vlg4_rm0_naive   s_prop_vlg4_rm1_diag     s_prop_vlg4_rm1_naive  s_prop_vlg5_rm  
 s_prop_vlg5_rm0_diag    s_prop_vlg5_rm0_naive    s_prop_vlg5_rm1_diag  s_prop_vlg5_rm1_naive  s_prop_vlg6_rm s_prop_vlg6_rm0_diag 
 s_prop_vlg6_rm0_naive  s_prop_vlg6_rm1_diag    s_prop_vlg6_rm1_naive s_prop_w_vlg1   s_prop_w_vlg2 s_prop_w_vlg3   s_prop_w_vlg4  
-s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp ;
+s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp 
+s_prop_newp_i_msm s_prop_msm_vlg1   s_prop_msm_vlg2 s_prop_msm_vlg3 s_prop_msm_vlg4 s_prop_msm_vlg5 s_prop_msm_vlg6 
+;
 
 
 data r&da2; set r&da2; 
@@ -22182,6 +22198,8 @@ s_prop_ageg5_w_vlg1  s_prop_ageg5_w_vlg2  s_prop_ageg5_w_vlg3   s_prop_ageg5_w_v
 
 s_prop_m_vlg1  s_prop_m_vlg2  s_prop_m_vlg3  s_prop_m_vlg4  s_prop_m_vlg5 s_prop_m_vlg6 
 s_prop_w_vlg1  s_prop_w_vlg2  s_prop_w_vlg3  s_prop_w_vlg4  s_prop_w_vlg5 s_prop_w_vlg6
+
+s_prop_newp_i_msm s_prop_msm_vlg1   s_prop_msm_vlg2 s_prop_msm_vlg3 s_prop_msm_vlg4 s_prop_msm_vlg5 s_prop_msm_vlg6 
 
 p_onart_vls  p_onart_epvls  d_vls
 p_diag  p_diag_onart  p_diag_eponart  p_diag_m  p_diag_w  p_epdiag_m  p_epdiag_w  d_diag_m  d_diag_w
