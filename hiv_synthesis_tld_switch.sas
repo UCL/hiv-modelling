@@ -17377,7 +17377,7 @@ proc print; var caldate&j reg_option art_monitoring_strategy visit artline int_c
 yrart  time_of_first_vm time_since_last_vm   date_last_vm_attempt eff_prob_vl_meas_done min_time_repeat_vm vm_type drug_level_test vm date_last_vlm_g1000  
 date_vl_switch_eval time_since_last_vm 	date_v_alert o_dol_2nd_vlg1000 date_conf_vl_measure_done vm_format value_last_vm  vl_threshold  adh_tm1 linefail  
 d1stlfail o_zdv f_zdv o_3tc f_3tc o_ten f_ten o_nev f_nev o_efa f_efa o_lpr f_lpr o_taz f_taz o_dar f_dar o_dol f_dol ;
-where death=. and yrart ne .;
+where serial_no < 500 and death=. and yrart ne .;
 run;
 
 
