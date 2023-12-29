@@ -263,7 +263,7 @@ newp_seed = 7;
 
 * prob_start_pwid;			prob_start_pwid=0.1;
 * prob_stop_pwid;			prob_stop_pwid=0.05;
-* rr_pwid_female;			rr_pwid_female = 4 ;
+* rr_pwid_female;			rr_pwid_female = 0.25 ;
 
 * TRANSMISSION;
 
@@ -3359,7 +3359,7 @@ end;
 if 15 <= age < 50 and pwid_tm1 ne 1 then do;
 	v=rand('uniform'); 
 	if gender in (1, 3) and v < prob_start_pwid then do; pwid=1; ever_pwid=1; end; 
-	if gender = 2 and v < prob_start_pwid / rr_pwid_female then do; pwid=1; ever_pwid=1; end;   
+	if gender = 2 and v < prob_start_pwid * rr_pwid_female then do; pwid=1; ever_pwid=1; end;   
 end;
 z=rand('uniform'); if pwid_tm1 = 1 and z < prob_stop_pwid then pwid=0;
 
