@@ -3,6 +3,8 @@
 
 * todo:
 
+replace libname at "here !" below before running on myriad
+
 define the new art monitoring strategies
 
 introduce dar instead of taz / lpr from 2025.0 / year_interv
@@ -24,17 +26,17 @@ with previous virologic failure
 
 
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
-%let outputdir = %scan(&sysparm,1," ");
+ libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
-  libname a "&outputdir/";   
+%let outputdir = %scan(&sysparm,1," ");
+* libname a "&outputdir/";   * here ! ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 10000   ; 
 %let year_interv = 2025;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -625,8 +627,8 @@ newp_seed = 7;
 %sample(sw_prog_intensity, 1 2, 0.8 0.2);*1=low, 2=high;
 
 ***These parameters initially set for all SW programs and then overwritten below for high intensity programs;
-* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05, 0.10); *previously 0.10;
-* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02, 0.04); *previously 0.025;
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
 * effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
@@ -10444,6 +10446,7 @@ end;
 
 * added condition below : onartvisit0 ne 1;
 
+
 if art_monitoring_strategy=150  and visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
 and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and 
@@ -10480,7 +10483,6 @@ and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_fro
 			if o_dol=1 then f_dol=1;
 	end; 
 end;
-
 
 
 * art_monitoring_strategy = 1500.  viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test;
@@ -10605,11 +10607,11 @@ end;
 
 
 *VL measurement to inform possible switching in regimen for those o_dol=1 and p_taz=1 and artline=2;
-if ((reg_option in (103 116)) or (reg_option in (104, 125) and art_monitoring_strategy ne 1500)) and artline=2 and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 and absence_vl_year_i ne 1 then do; 
+if ((reg_option in (103 116)) or (reg_option = 104 and art_monitoring_strategy ne 1500)) and artline=2 and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 and absence_vl_year_i ne 1 then do; 
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
-		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 then do; 
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
 		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
@@ -10643,6 +10645,8 @@ then do;
 			if o_dol=1 then f_dol=1;
 	end; 
 end;
+
+
 
 * vl monitoring for for those o_dol=1 and artline=2 and p_taz=1;
 if (reg_option = 117 or (reg_option in (104, 125) and art_monitoring_strategy = 1500) or reg_option = 118 or reg_option=119)  and artline=2 
@@ -17373,11 +17377,12 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 proc freq; tables cald hiv ; where death=.; run;
 
 
-proc print; var caldate&j reg_option art_monitoring_strategy visit artline int_clinic_not_aw linefail_tm1 and restart    restart_tm1  date_transition_from_nnrti 
-yrart  time_of_first_vm time_since_last_vm   date_last_vm_attempt eff_prob_vl_meas_done min_time_repeat_vm vm_type drug_level_test vm date_last_vlm_g1000  
-date_vl_switch_eval time_since_last_vm 	date_v_alert o_dol_2nd_vlg1000 date_conf_vl_measure_done vm_format value_last_vm  vl_threshold  adh_tm1 linefail  
-d1stlfail o_zdv f_zdv o_3tc f_3tc o_ten f_ten o_nev f_nev o_efa f_efa o_lpr f_lpr o_taz f_taz o_dar f_dar o_dol f_dol ;
-where serial_no < 500 and death=. and yrart ne .;
+proc print; var caldate&j reg_option art_monitoring_strategy linefail_tm1 linefail eff_pr_switch_line artline  visit  int_clinic_not_aw  restart    restart_tm1  
+date_transition_from_nnrti yrart  time_of_first_vm time_since_last_vm   date_last_vm_attempt eff_prob_vl_meas_done min_time_repeat_vm vm_type drug_level_test vl 
+vm date_last_vlm_g1000  date_vl_switch_eval time_since_last_vm 	date_v_alert o_dol_2nd_vlg1000 date_conf_vl_measure_done vm_format value_last_vm  vl_threshold  
+adh_tm1 d1stlfail o_zdv  f_3tc f_ten f_nev f_efa f_lpr f_taz f_dar f_dol  o_zdv  o_3tc o_ten o_nev o_efa o_lpr o_taz o_dar o_dol  
+r_zdv  r_3tc r_ten r_nev r_efa r_lpr r_taz r_dar r_dol  ;
+where serial_no < 1000  and death=. and yrart ne .;
 run;
 
 
@@ -19935,6 +19940,8 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
+/*
+
 * 1989;
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -20080,6 +20087,14 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=109,h=116,j=114,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=109,h=116,j=115,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=109,h=116,j=116,s=0);
+
+
+data a.keepie1; set r1;
+
+*/
+
+data r1; set a.keepie1;
+
 * 2018;
 %update_r1(da1=1,da2=2,e=5,f=6,g=113,h=120,j=117,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=113,h=120,j=118,s=0);
@@ -20116,9 +20131,9 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
 
-data a; set r1;
+data a.keepie2; set r1;
 
-data r1; set a;
+data r1; set a.keepie2;
 * 2025;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
