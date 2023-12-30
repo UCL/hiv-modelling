@@ -3,11 +3,9 @@
 
 * todo:
 
-replace libname at "here !" below before running on myriad
+(replace libname at "here !" below before running on myriad)
 
 define the new art monitoring strategies
-
-introduce dar instead of taz / lpr from 2025.0 / year_interv
 
 check with proc prints that reg_option 125 doing what intended
 
@@ -8364,6 +8362,13 @@ reg_option in (104 105 106 111 116 117 118 125)  or ( reg_option in (103 119) an
 end;
 
 
+* transition to use of dar in place of taz or lpr;  * AP 30-12-23;
+
+if caldate{t} ge 2024.5 then do;
+	if o_taz=1 then do; o_dar=1; p_dar=1; o_taz=0; p_taz=1;  end;
+	if o_lpr=1 then do; o_dar=1; p_dar=1; o_lpr=0; p_lpr=1;  end;
+end;
+
 
 
 * monitoring strategy 1500 is only for people on dol who have not failed previously;
@@ -8525,6 +8530,11 @@ start_line2_this_period=.;
 			if o_taz=0 and o_nev=0 and (f_efa=0 and t_efa=0) then o_efa=1;
 			if (t_ten=0 and f_ten=0) or reg_option=125 then do; o_ten=1; goto vv66; end;
 			if (t_ten=1 or f_ten=1) and t_zdv=0  and f_zdv=0 then do; o_zdv=1; goto vv66; end;
+	end;
+
+ 	if caldate{t} >= 2024.5 and f_dol=1 then do;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
+			o_3tc=1; o_dar=1; o_ten=1; goto vv66; 
 	end;
 
 	if reg_option in (999) and f_dol=1 then do;
@@ -10439,6 +10449,9 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 end;
 
 
+/*
+
+
 * art_monitoring_strategy = 150.  viral load monitoring (6m, 12m, annual) - who ;
 * takes account of time delay for DBS or plasma measurement of vl, compared with POC ;
 
@@ -10530,8 +10543,72 @@ and restart    ne 1 and restart_tm1  ne 1 and (caldate{t} - date_transition_from
 	end; 
 end;
 
+*/
 
 
+
+* TLD_SWITCH comparison  ; 
+
+drug_level_test=0; res_test_dol=0;
+
+if (art_monitoring_strategy in (150, 160, 1500, 1600)  and visit=1 and o_dol=1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 and restart ne 1 
+and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
+	
+	* evaluate if a viral load test is indicated;
+	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or 
+	(min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and (caldate{t} - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; 
+
+		* if indicated, evaluate if a viral load test is actually done;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+			* measure the viral load ;
+			if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+			if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+			if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+			if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+			value_last_vm = vm ;
+			vl_cost_inc = 1;
+
+			* if viral load > 1000.....;
+			if vm gt log10(vl_threshold) then do; 
+				date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
+				if date_v_alert=. then date_v_alert=caldate{t};  
+			end;
+
+			* if this is a second viral load test after a previous viral load > 1000...........;
+			if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; 
+				date_conf_vl_measure_done = caldate{t} ; 
+				if value_last_vm gt log10(vl_threshold)) then second_vlg1000=1;
+				if art_monitoring_strategy in (1500, 1600) then do; date_drug_level_test = caldate{t}; drug_level_test=1; end;
+				if art_monitoring_strategy = 160 and second_vlg1000=1 then do; date_res_test_tld = caldate{t}; res_test_dol=1; end;
+				if art_monitoring_strategy = 1600 and second_vlg1000=1 and adh > 0.8 then do; date_res_test_tld = caldate{t}; res_test_dol=1; end;
+			end;
+
+			if art_monitoring_strategy = 150 or (art_monitoring_strategy = 1500 and adh > 0.8) or (art_monitoring_strategy = 160 and r_dol > 0) 
+			or (art_monitoring_strategy = 1600 and adh > 0.8 and r_dol > 0) then do;
+				linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
+				if o_zdv=1 then f_zdv=1;
+				if o_3tc=1 then f_3tc=1;
+				if o_ten=1 then f_ten=1;
+				if o_nev=1 then f_nev=1;
+				if o_efa=1 then f_efa=1;
+				if o_lpr=1 then f_lpr=1;
+				if o_taz=1 then f_taz=1;
+				if o_dar=1 then f_dar=1;
+				if o_dol=1 then f_dol=1;
+			end; 
+
+		end;  
+		
+	end;
+
+end;
+
+
+
+
+
+* eee;
+if o_dol=1 and (caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold)) then o_dol_2nd_vlg1000 = 1;
 
 
 * art_monitoring_strategy = 152. as 150 with 2 yearly viral load monitoring;
@@ -17378,11 +17455,13 @@ proc freq; tables cald hiv ; where death=.; run;
 
 
 proc print; var caldate&j reg_option art_monitoring_strategy linefail_tm1 linefail eff_pr_switch_line artline  visit  int_clinic_not_aw  restart    restart_tm1  
-date_transition_from_nnrti yrart  time_of_first_vm time_since_last_vm   date_last_vm_attempt eff_prob_vl_meas_done min_time_repeat_vm vm_type drug_level_test vl 
-vm date_last_vlm_g1000  date_vl_switch_eval time_since_last_vm 	date_v_alert o_dol_2nd_vlg1000 date_conf_vl_measure_done vm_format value_last_vm  vl_threshold  
+yrart  time_of_first_vm time_since_last_vm   date_last_vm_attempt eff_prob_vl_meas_done min_time_repeat_vm vm_type drug_level_test date_drug_level_test vl 
+vm date_last_vlm_g1000  date_vl_switch_eval time_since_last_vm 	date_v_alert  date_conf_vl_measure_done  value_last_vm  vl_threshold 
 adh_tm1 d1stlfail o_zdv  f_3tc f_ten f_nev f_efa f_lpr f_taz f_dar f_dol  o_zdv  o_3tc o_ten o_nev o_efa o_lpr o_taz o_dar o_dol  
-r_zdv  r_3tc r_ten r_nev r_efa r_lpr r_taz r_dar r_dol  ;
-where serial_no < 1000  and death=. and yrart ne .;
+r_zdv  r_3tc r_ten r_nev r_efa r_lpr r_taz r_dar r_dol  value_last_vm  second_vlg1000 date_res_test_tld  res_test_dol  vm_format
+;
+  where serial_no < 1000  and death=. and yrart ne .;
+* where death=. and yrart ne . and f_dol=1;
 run;
 
 
