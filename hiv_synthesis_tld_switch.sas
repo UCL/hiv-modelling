@@ -10551,7 +10551,7 @@ end;
 
 drug_level_test=0; res_test_dol=0;
 
-if (art_monitoring_strategy in (150, 160, 1500, 1600)  and visit=1 and o_dol=1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 and restart ne 1 
+if art_monitoring_strategy in (150, 160, 1500, 1600) and visit=1 and o_dol=1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 and restart ne 1 
 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	
 	* evaluate if a viral load test is indicated;
@@ -10559,7 +10559,8 @@ and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date
 	(min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and (caldate{t} - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; 
 
 		* if indicated, evaluate if a viral load test is actually done;
-		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	
+		if s < eff_prob_vl_meas_done then do; 
 			* measure the viral load ;
 			if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 			if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
@@ -10577,14 +10578,14 @@ and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date
 			* if this is a second viral load test after a previous viral load > 1000...........;
 			if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; 
 				date_conf_vl_measure_done = caldate{t} ; 
-				if value_last_vm gt log10(vl_threshold)) then second_vlg1000=1;
+				if value_last_vm gt log10(vl_threshold) then second_vlg1000=1;
 				if art_monitoring_strategy in (1500, 1600) then do; date_drug_level_test = caldate{t}; drug_level_test=1; end;
 				if art_monitoring_strategy = 160 and second_vlg1000=1 then do; date_res_test_tld = caldate{t}; res_test_dol=1; end;
 				if art_monitoring_strategy = 1600 and second_vlg1000=1 and adh > 0.8 then do; date_res_test_tld = caldate{t}; res_test_dol=1; end;
 			end;
 
-			if art_monitoring_strategy = 150 or (art_monitoring_strategy = 1500 and adh > 0.8) or (art_monitoring_strategy = 160 and r_dol > 0) 
-			or (art_monitoring_strategy = 1600 and adh > 0.8 and r_dol > 0) then do;
+			if second_vlg1000=1 and (art_monitoring_strategy = 150 or (art_monitoring_strategy = 1500 and adh > 0.8) or 
+			(art_monitoring_strategy = 160 and r_dol > 0) or (art_monitoring_strategy = 1600 and adh > 0.8 and r_dol > 0)) then do;
 				linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
 				if o_zdv=1 then f_zdv=1;
 				if o_3tc=1 then f_3tc=1;
