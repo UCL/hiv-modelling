@@ -4,7 +4,20 @@
 
 (replace libname at "here !" below before running on myriad)
 
+
+consider points from jonathan schapiro:
+
+Sensitivity of resistance assays for detecting mutations varies – with “false negative” results for mutations of 5 – 20% if population sequencing used 
+(that I assume in most of these settings)
+ 
+Duration of failure can impact mutation levels, with mutation levels increasing over time, “unmasking” mutations with longer duration of failure. Patient 
+with mutations not detected might show mutations if tested a week later.
+
+Adherence required for viral suppression are higher than those sufficient for selecting for mutations. Would the tenofovir drug level account for this?
+
+
 ;
+
 
 
 
