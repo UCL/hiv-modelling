@@ -15,6 +15,7 @@ with mutations not detected might show mutations if tested a week later.
 
 Adherence required for viral suppression are higher than those sufficient for selecting for mutations. Would the tenofovir drug level account for this?
 
+read bob shafer rapid review on dtg resistance
 
 ;
 
