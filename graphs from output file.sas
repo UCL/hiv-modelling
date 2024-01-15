@@ -2337,54 +2337,68 @@ run;
 
 
 
-
-data   wide_allyears_0; merge 
-l_n_birth_0  l_n_give_birth_w_hiv_0  /*l_n_everpregn_w1524__0  l_n_everpregn_hiv_w1524__0*/ l_n_birth_with_inf_child_0
-l_incidence1549m_0	l_incidence1549w_0  l_incidence1549__0  l_incidence1524w_0  l_incidence_sw_0  l_incidence_sd1564__0  l_incidence_sd1564w_0
-l_n_new_inf1564m_0	l_n_new_inf1564w_0  l_n_new_inf1549m_0	l_n_new_inf1549w_0  l_n_new_inf1549_0
-l_n_new_inf1524m_0	l_n_new_inf1524w_0  l_n_new_inf2549m_0	l_n_new_inf2549w_0
-l_n_death_hivrel_m_0	l_n_death_hivrel_w_0	l_n_death_hivrel_0
-l_n_death_m_0  l_n_death_w_0
+%macro wide(s);
+data   wide_allyears_&s; merge 
+l_n_birth_&s  l_n_give_birth_w_hiv_&s  l_n_everpregn_w1524__&s  l_n_everpregn_hiv_w1524__&s l_n_birth_with_inf_child_&s
+l_incidence1549m_&s	l_incidence1549w_&s  l_incidence1549__&s  l_incidence1524w_&s  l_incidence_sw_&s  
+l_incidence_sd1564__&s  l_incidence_sd1564w_&s
+l_n_new_inf1564m_&s	l_n_new_inf1564w_&s  l_n_new_inf1549m_&s	l_n_new_inf1549w_&s  l_n_new_inf1549__&s
+l_n_new_inf1524m_&s	l_n_new_inf1524w_&s  l_n_new_inf2549m_&s	l_n_new_inf2549w_&s
+l_n_death_hivrel_m_&s	l_n_death_hivrel_w_&s	l_n_death_hivrel_&s
+l_n_death_m_&s  l_n_death_w_&s
 /* YLL_80yLifeExpect_3Disc_A1599_M */
+l_n_total_yllag_&s 	l_n_dyll_GBD_&s
 
-l_n_tested_ancpd_0  l_n_test_anclabpd_0
+l_n_tested_ancpd_&s  l_n_test_anclabpd_&s
 /* HIVST...*/
-l_n_tested_m_sympt_0  l_n_tested_w_sympt_0
+l_n_tested_m_sympt_&s  l_n_tested_w_sympt_&s
 /*Ntests_FACNOSYMPT_M1599_M... Ntests_IndexFAC_M1599_M...Ntests_RecInf_M1599_M ... Ntests_COM_M1599_M*/
-l_n_tested_swprog_0  l_n_tested_sw_0  l_n_tested_m_0  l_n_tested_w_0  l_n_tested_0
+l_n_tested_swprog_&s  l_n_tested_sw_&s  l_n_tested_m_&s  l_n_tested_w_&s  l_n_tested_&s
 /*TOTHIVST_M1599_M...*/
 
-l_n_diag_anclabpd_0
+l_n_diag_anclabpd_&s
 /*NPosConfHIVST_PD_M1599_M.... NPosTests_FAC_M1599_M... NPosTests_IndexFAC_M1599_M...NPosTests_RecInf_M1599_M ... NPosTests_COM_M1599_M*/
-l_n_diag_progsw_0  l_n_diag_m_0  l_n_diag_w_0
+l_n_diag_progsw_&s  l_n_diag_m_&s  l_n_diag_w_&s 	l_n_diag_sw_&s
 /* TOTPosConfHIVST_M1599_M..*/
 
-l_test_proppos_m_0  l_test_proppos_m_0  l_test_proppos_m_0 
-l_test_proppos_w_0  l_test_proppos_w_0  l_test_proppos_w_0
-l_test_prop_positive_0	l_test_prop_positive_0  l_test_prop_positive_0
-l_test_proppos_1524w_0   l_test_proppos_sw_0 
+l_test_proppos_m_&s  l_test_proppos_m_&s  l_test_proppos_m_&s 
+l_test_proppos_w_&s  l_test_proppos_w_&s  l_test_proppos_w_&s
+l_test_prop_positive_&s	l_test_prop_positive_&s  l_test_prop_positive_&s
+l_test_proppos_1524w_&s   l_test_proppos_sw_&s 
 
 /* DREAMS */
 
 /*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
 /*NSBCC_A1599_M ...NCUPP_A1599_M ... NCondoms_A1599_M*/
-l_n_new_vmmc1549m_0
-l_n_init_prep_oral_1524w_0 l_n_prep_oral_ly_1524w_0   l_n_prep_oral_ever_1524w_0 
-l_n_init_prep_oral_sw_0    l_n_prep_oral_ly_sw_0 		l_n_prep_oral_ever_sw_0 
-l_n_init_prep_oral_sdc_0   l_n_prep_oral_ly_sdc_0 	l_n_prep_oral_ever_sdc_0
+l_n_new_vmmc1549m_&s
+l_n_init_prep_oral_1524w_&s 	l_n_prep_oral_1524w_&s 		l_n_contprep_oral_1524w_&s 
+l_n_prep_oral_ever_1524w_&s 
+l_n_init_prep_oral_sw_&s    	l_n_prep_oral_sw_&s 		l_n_contprep_oral_sw_&s
+l_n_prep_oral_ever_sw_&s 
+l_n_init_prep_oral_sdc_&s   	l_n_prep_oral_sdc_&s		l_n_contprep_oral_sdc_&s
+l_n_prep_oral_ever_sdc_&s
 /*NTDFPrEPinit_pregbfF1549_M    NTDFPrEP_pregbfF1549_M  NTDFPrEPEver_pregbfF1549_M*/
-l_n_init_prep_vr_1524w_0   l_n_prep_vr_ly_1524w_0		l_n_prep_vr_ever_1524w_0 
-l_n_init_prep_vr_sw_0 	  l_n_prep_vr_ly_sw_0 		l_n_prep_vr_ever_sw_0
-l_n_init_prep_vr_sdc_0     l_n_prep_vr_ly_sdc_0	 	l_n_prep_vr_ever_sdc_0
+l_n_init_prep_vr_1524w_&s   	l_n_prep_vr_1524w_&s 		/*l_n_contprep_vr_1524w_&s*/
+l_n_prep_vr_ever_1524w_&s 
+l_n_init_prep_vr_sw_&s 	  		l_n_prep_vr_sw_&s 			/*l_n_contprep_vr_sw_&s*/
+l_n_prep_vr_ever_sw_&s
+l_n_init_prep_vr_sdc_&s     	l_n_prep_vr_sdc_&s 			/*l_n_contprep_vr_sdc_&s*/
+l_n_prep_vr_ever_sdc_&s
 /*NDPVPrEPinit_pregbfF1549_M    NDPVPrEP_pregbfF1549_M  NDPVPrEPEver_pregbfF1549_M*/
-l_n_init_prep_inj_1524w_0  l_n_prep_inj_ly_1524w_0	l_n_prep_inj_ever_1524w_0
-l_n_init_prep_inj_sw_0     l_n_prep_inj_ly_sw_0		l_n_prep_inj_ever_sw_0 
-l_n_init_prep_inj_sdc_0    l_n_prep_inj_ly_sdc_0 		l_n_prep_inj_ever_sdc_0
+l_n_init_prep_inj_1524w_&s  	l_n_prep_inj_1524w_&s 		/*l_n_contprep_inj_1524w_&s*/
+l_n_prep_inj_ever_1524w_&s
+l_n_init_prep_inj_sw_&s     	l_n_prep_inj_sw_&s			/*l_n_contprep_inj_sw_&s*/
+l_n_prep_inj_ever_sw_&s 
+l_n_init_prep_inj_sdc_&s    	l_n_prep_inj_sdc_&s 		/*l_n_contprep_inj_sdc_&s*/
+l_n_prep_inj_ever_sdc_&s
 /*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/	
-;
+
+l_n_pmtct_&s;
 run;
-
-
+%mend;
+%wide(0);
+%wide(1);
+%wide(15);
 *FLOW;
 %macro flow(o=);
 data wide_allyears_&o;
