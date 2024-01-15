@@ -100,7 +100,6 @@ sf = (16320000 * 0.581) / s_alive;
 
 keep run sf;
 proc sort; by run;
-
 proc means data=sf;var sf;run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
@@ -416,7 +415,7 @@ so the one above is the annual number of tests conducted in ANC;
 * n_tested1st_anc;				n_tested1st_anc = s_tested1st_anc * &sf * 4;*VCMar2023;
 * n_tested1st_labdel;			n_tested1st_labdel = s_tested1st_labdel * &sf * 4;*VCMar2023;
 * n_tested1st_pd;				n_tested1st_pd = s_tested1st_pd * &sf * 4;*VCMar2023;
-
+* n_tested_sbcc_program;		n_tested_sbcc_program = s_tested_sbcc_program * &sf * 4;*VCDec2023;
 
 * n_diagnosed;					n_diagnosed = s_diag_this_period * &sf * 4;
 * n_diag_m;						n_diag_m = s_diag_this_period_m * &sf * 4;*VCMay2023;
@@ -453,6 +452,7 @@ so the one above is the annual number of tests conducted in ANC;
 * p_mcirc_4549m;				p_mcirc_4549m = s_mcirc_4549m / s_ageg4549m ;
 * p_mcirc_5064m;				p_mcirc_5064m = s_mcirc_5064m / (s_ageg5054m + s_ageg5559m + s_ageg6064m) ;
 * p_mcirc_1549m;				p_mcirc_1549m = s_mcirc_1549m / s_ageg1549m ;
+* p_mcirc_1049m;				p_mcirc_1049m = (s_mcirc_1014m + s_mcirc_1549m) / (s_ageg1014m + s_ageg1549m) ;																							   																							   
 
 * p_vmmc;						p_vmmc = s_vmmc / s_alive_m ;
 * p_vmmc_1519m;					p_vmmc_1519m = s_vmmc1519m / s_ageg1519m ;
@@ -462,9 +462,17 @@ so the one above is the annual number of tests conducted in ANC;
 * p_vmmc_4049m;					p_vmmc_4049m = s_vmmc4049m / (s_ageg4044m + s_ageg4549m) ;
 * p_vmmc_5064m;					p_vmmc_5064m = s_vmmc5064m / (s_ageg5054m + s_ageg5559m + s_ageg6064m) ;
 * p_vmmc_1549m;					p_vmmc_1549m = s_vmmc1549m / s_ageg1549m ;
+* p_vmmc_1049m;					p_vmmc_1049m = (s_vmmc1014m + s_vmmc1549m) / (s_ageg1014m + s_ageg1549m) ;
 
+* n_new_vmmc1014m;				n_new_vmmc1014m = s_new_vmmc1014m * &sf * 4;
+* n_new_vmmc1049m;				n_new_vmmc1049m = (s_new_vmmc1014m+s_new_vmmc1519m+s_new_vmmc2024m+s_new_vmmc2529m+s_new_vmmc3034m+s_new_vmmc3539m+s_new_vmmc4044m+s_new_vmmc4549m) * &sf * 4;
 * n_new_vmmc1549m;				n_new_vmmc1549m = (s_new_vmmc1519m+s_new_vmmc2024m+s_new_vmmc2529m+s_new_vmmc3034m+s_new_vmmc3539m+s_new_vmmc4044m+s_new_vmmc4549m) * &sf * 4;
 
+* n_new_birth_circ;				n_new_birth_circ = s_new_birth_circ * &sf * 4;
+
+* n_new_mcirc; 					n_new_mcirc = s_new_mcirc * &sf * 4;
+* n_new_mcirc_1049m; 			n_new_mcirc_1049m = (s_new_mcirc_1014m+s_new_mcirc_1519m+s_new_mcirc_2024m+s_new_mcirc_2529m+s_new_mcirc_3034m+s_new_mcirc_3539m+s_new_mcirc_4044m+ s_new_mcirc_4549m) * &sf * 4;
+* n_new_mcirc_1049m; 			n_new_mcirc_1549m = (s_new_mcirc_1519m+s_new_mcirc_2024m+s_new_mcirc_2529m+s_new_mcirc_3034m+s_new_mcirc_3539m+s_new_mcirc_4044m+ s_new_mcirc_4549m) * &sf * 4;
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw = s_sw_1564 / s_alive1564_w ;
 * prop_w_ever_sw;				if s_alive_w gt 0 then prop_w_ever_sw = s_ever_sw / s_alive_w ;
@@ -474,7 +482,16 @@ so the one above is the annual number of tests conducted in ANC;
 								prop_sw_newp0 = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp = s_sw_newp/s_sw_1564;
 
+* prop_reached_sbcc_program;	prop_reached_sbcc_program = s_sbcc_program_visit / s_alive1564 ;
+* n_sbcc_program_visit_1524m;  	n_sbcc_program_visit_1524m = s_sbcc_program_visit_1524m * &sf;*No need to multiply by 4 as it lasts for 1 yearl; 
+* n_sbcc_program_visit_1524w;	n_sbcc_program_visit_1524w = s_sbcc_program_visit_1524w * &sf; 
+* n_sbcc_program_visit_2564_; 	n_sbcc_program_visit_2564_ = s_sbcc_program_visit_2564_ * &sf; 
 
+* n_tested_sbcc_program_1524m; 	n_tested_sbcc_program_1524m = s_tested_sbcc_program_1524m * &sf * 4;
+* n_tested_sbcc_program_1524w; 	n_tested_sbcc_program_1524w = s_tested_sbcc_program_1524w * &sf * 4;
+* n_tested_sbcc_program_2564_;	n_tested_sbcc_program_2564_ = s_tested_sbcc_program_2564_* &sf * 4;
+
+* prop_pos_tested_sbcc;			if s_tested_sbcc_program gt 0 then prop_pos_tested_sbcc = s_diag_this_period_sbcc / s_tested_sbcc_program;																													
 * prep;
 
 * proportion of those on prep who have ge 1 newp in the period ;
@@ -1056,6 +1073,12 @@ end;
 * n_alive_1524w;				n_alive_1524w = s_ageg1w * &sf; *VCFeb2023;
 * n_alive_2549m;				n_alive_2549m = (s_alive1549_m - s_ageg1m) * &sf; *VCFeb2023; 
 * n_alive_2549w;				n_alive_2549w = (s_alive1549_w - s_ageg1w) * &sf; *VCFeb2023; 
+* n_alive0_;					n_alive0_ = s_alive0_ * &sf *4;*otherwise it is only the births in a 3 month periodl;
+* n_alive_014_;					n_alive_014_ = (s_ageg014_) * &sf; 
+* n_alive_1014m;				n_alive_1014m = s_ageg1014m * &sf; 
+* n_alive_1524_;				n_alive_1524_ = (s_ageg1m+s_ageg1w) * &sf; 
+* n_alive_2564_;				n_alive_2564_ = (s_alive1564-s_ageg1m-s_ageg1w) * &sf;
+* n_alive_65pl;					n_alive_65pl = (s_ageg65plm + s_ageg65plw) * &sf;
 *Number of HIV-negative  adults 15+ years old in a sero-discordant relationship;
 * n_hivneg_sdpartner;			n_hivneg_sdpartner = (s_hiv0epi1_w + s_hiv0epi1_m) * &sf; *VCFeb2023; 
 *Number of HIV-negative  adults 15+ years old in a sero-discordant relationship, whom partner is not on ART; 
@@ -1106,17 +1129,18 @@ n_new_inf2549w = (s_primary1549w - s_primary1519w - s_primary2024w) * &sf * 4;
 
 keep run run_forward_id option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 
 n_hiv n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
-n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w
+n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive0_ 
+n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050 n_not_on_art_cd450200 n_not_on_art_cd4200350 n_not_on_art_cd4350500 n_not_on_art_cd4ge500 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
 s_alive n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_everpregn_w1524 n_everpregn_hiv_w1524 p_newp_ge1 p_1524_newp_ge1 n_w1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m  n_tested_w p_tested_past_year_1549m  p_tested_past_year_1549w n_pmtct
 p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_vm p_vm_ly_onart n_pcp_p p_onart_cd4_l200
-p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m
-p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m	
-n_new_vmmc1549m 
-prop_w_1549_sw  prop_w_1564_sw	prop_w_ever_sw prop_sw_program_visit
+p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m  p_mcirc_1049m 
+p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m p_vmmc_1049m	
+n_new_vmmc1549m n_new_vmmc1049m n_new_vmmc1014m n_new_birth_circ n_new_mcirc n_new_mcirc_1549m n_new_mcirc_1049m
+prop_w_1549_sw  prop_w_1564_sw	prop_w_ever_sw prop_sw_program_visit prop_reached_sbcc_program
 prop_sw_hiv prop_w_1524_onprep p_w1524newpge1_onprep prop_1564_hivneg_onprep prop_sw_onprep p_prep_adhg80
 prevalence1549m prevalence1549w prevalence1549 
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
@@ -1130,6 +1154,8 @@ r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
 incidence1549 incidence1564 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary 
 p_sw_newinf p_w1524_newinf p_w25ov_newinf p_m1524_newinf p_m25ov_newinf mtct_prop  incidence_onprep
 p_diag p_diag_m p_diag_w prop_diag_infection_1yr p_ai_no_arv_c_nnm prop_sw_newp0  t_sw_newp
+n_sbcc_program_visit_1524m n_sbcc_program_visit_1524w n_sbcc_program_visit_2564_
+n_tested_sbcc_program_1524m n_tested_sbcc_program_1524w n_tested_sbcc_program_2564_ prop_pos_tested_sbcc
 p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
 p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_onart_diag_w1524_ p_onart_diag_1524_
 p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 
@@ -1159,7 +1185,8 @@ p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_tested_swprog n_tested_anc n_tested_ancpd n_test_anclabpd
 n_tested_anc_prevdiag
-n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd n_tested1st_anc n_tested1st_labdel n_tested1st_pd
+n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd n_tested1st_anc n_tested1st_labdel n_tested1st_pd 
+n_tested_sbcc_program					 
 p_anc n_diagnosed n_diag_m n_diag_w n_diag_anc n_diag_labdel  n_diag_pd  n_diag_anclabpd  n_diag_progsw  n_diag_sw 
 p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep n_prep_1524w n_start_rest_prep_oral n_start_rest_prep_oral n_prep_ever  n_covid  n_death_covid n_death 
