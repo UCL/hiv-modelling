@@ -6,9 +6,9 @@ libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\ou
 
 run;
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
-
-  /*
-  proc freq data=a.l_base_24_03_23;table 
+/*
+ proc freq data=a.l_base_26_10_2023;table
+n_everpregn_w1524 n_everpregn_hiv_w1524 
 n_tested_w_sympt n_tested_m_sympt 
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
