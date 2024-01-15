@@ -72,6 +72,7 @@ logm55r = log(m55r+0.0001);
 p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 
 
+n_new_inf1549_ = n_new_inf1549;							   
 n_everpregn_w1524_ = n_everpregn_w1524;
 n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 
