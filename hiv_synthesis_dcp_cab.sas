@@ -17332,6 +17332,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
+
 /*
 
 proc freq; tables cald hiv ; where death=.; run;
