@@ -8,12 +8,9 @@
 * just use PrEP testing to capture increased chance of starting while on DCP, and set Prob of 
   starting PrEP following other testing to 0 for persons on DCP ? (leave as is for now) ;  
 
-* make sure have all outputs needed for costing ;
+* make sure have all outputs needed for costing ;              
 
-
-
-
-
+;
 
 
 
@@ -2175,22 +2172,24 @@ if dcp_program = 1 and registd ne 1 and (prep_any=1 or (prep_any_elig =1 and d <
 if dcp = 1 then do;
 
 		* effects of dcp (dynamic choice prevention) ; 
+		* dcp increases testing by incr_test_rate_dcp ;
 		eff_rate_test_startprep_any = 0.3 ;
 		eff_rate_choose_stop_prep_oral = 0.05 ; 		
 		eff_prob_prep_oral_b = 0.2;
 		if caldate{t} >= date_prep_inj_intro  then do; eff_rate_choose_stop_prep_inj = 0.05 ; eff_prob_prep_inj_b = 0.2; end;
 
+
 		* dropping out of dcp ;
 		c=rand('uniform'); 
 		if c < rate_stop_dcp or (prep_any_elig ne 1 and prep_any_elig_tm1 ne 1 and prep_any_elig_tm2 ne 1 and prep_any_elig_tm3 ne 1) 
-		or registd=1 then do;
+		or registd=1 then do; 
 			dcp=0; 
-			* revert to pre-dcp values of prep parameters;
-			eff_rate_test_startprep_any = rate_test_startprep_any ;
-			eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral ; 		
-			eff_prob_prep_oral_b = prob_prep_oral_b;
-			eff_rate_choose_stop_prep_inj = rate_choose_stop_prep_inj ;	
-			eff_prob_prep_inj_b = prob_prep_inj_b;
+			* check if this below is what we want, or instead to revert to pre-dcp values for these;
+			eff_rate_test_startprep_any = 0;                      
+			eff_rate_choose_stop_prep_oral = 1;                            
+			eff_prob_prep_oral_b = 0;                
+			eff_rate_choose_stop_prep_inj = 1;                          
+			eff_prob_prep_inj_b = 0;
 		end;
 end;
 
