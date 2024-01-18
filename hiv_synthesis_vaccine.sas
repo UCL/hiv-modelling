@@ -2148,6 +2148,19 @@ end;
 *  ======================================================================================================================================== ;
 
 
+* vaccine ;
+
+w=rand('uniform'); q=rand('uniform'); g=rand('uniform');
+if vaccine_introduced = 1 and 16 <= age < 50 and hiv ne 1 and 
+((caldate{t} = &year_interv and q < 0.75) or (caldate{t}-date_last_vaccine = 5 and w < 0.5) or (age = 16 and g < 0.75)) then do;
+		ever_vaccinated=1; date_last_vaccine = caldate{t}; 
+end;
+
+current_vaccine_efficacy = .;
+if 0 <= caldate{t}-date_last_vaccine < 5 then current_vaccine_efficacy = 0.7;  
+if 5 <= caldate{t}-date_last_vaccine < 10 then current_vaccine_efficacy = 0.35;  
+if 10 <= caldate{t}-date_last_vaccine then current_vaccine_efficacy = 0;  
+
 
 
 
@@ -4151,6 +4164,18 @@ if s < rate_non_hiv_symptoms then do;u=rand('uniform');
 	end;
 end;
 end;
+
+
+
+
+* tested for vaccine;
+
+if caldate{t} = date_last_vaccine   then do;
+			tested=1; 
+			if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+			np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+end;
+
 
 
 *choice of value for rate_non_hiv_symptoms will be informed by data in proportion of people who are tested for 
