@@ -97,7 +97,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 * rel_incr_circ_post_2013;	%sample(rel_incr_circ_post_2013, 
 								2		3		4, 
 								0.25	0.5		0.25); *Vale - 20230823;
-* incr_circ_post_2023;	%sample(incr_circ_post_2023, 
+* rel_incr_circ_post_2023;	%sample(rel_incr_circ_post_2023, 
 								2		3		4, 
 								0.25	0.5		0.25); *Vale - 20231010;
 
