@@ -1671,12 +1671,23 @@ d_p_prep_any_ever_43_2_1  d_p_prep_any_ever_43_3_1  d_p_prep_any_ever_43_4_1
 run;
 
 
-proc means  data = b.w_dcp_cab_b  n p50 p5 p95 ;  
+proc means  data = b.w_dcp_cab_b  n mean p50 p5 p95 clm;  
 var
 incidence1549_20y_1 incidence1549_20y_2  incidence1549_20y_3 incidence1549_20y_4  
 r_incidence1549_20y_2_1 r_incidence1549_20y_3_1 r_incidence1549_20y_4_1
 ;
 run;
+
+
+ods html;
+proc means  data = b.w_dcp_cab_b  n mean clm;  
+var
+incidence1549_20y_1 incidence1549_20y_2  incidence1549_20y_3 incidence1549_20y_4  
+r_incidence1549_20y_2_1 r_incidence1549_20y_3_1 r_incidence1549_20y_4_1
+;
+run;
+ods html close;
+
 
 
 proc means  n mean p5 p95;
