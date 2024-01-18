@@ -17,16 +17,16 @@
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_a_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_b_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-%let laprv =  dcp_cab  ;
+%let laprv =  dcp_cab_b  ;
 
-data b.k_dcp_cab;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_dcp_cab_b;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-proc sort data=b.k_dcp_cab; 
+proc sort data=b.k_dcp_cab_b; 
 by run cald option;
 run;
 
@@ -36,7 +36,7 @@ run;
 data sf;
 
 
-set b.k_dcp_cab ;
+set b.k_dcp_cab_b ;
 
 
 if cald=2023   ;
@@ -56,7 +56,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_dcp_cab sf;
+merge b.k_dcp_cab_b sf;
 by run ;
 
 * preparatory code ;
@@ -1105,9 +1105,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_dcp_cab_y; set y;  
+data    b.l_dcp_cab_b_y; set y;  
 
-data y ; set b.l_dcp_cab_y; 
+data y ; set b.l_dcp_cab_b_y; 
 
 
   options nomprint;
@@ -1474,7 +1474,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  b.w_dcp_cab     ; 
+  data  b.w_dcp_cab_b     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1630,39 +1630,39 @@ d_p_ai_no_arv_e_inm_50y_3_2 = p_ai_no_arv_e_inm_50y_3 - p_ai_no_arv_e_inm_50y_2;
 
 * table 1;
 
-proc means   data = a.w_dcp_cab  n p50 p5 p95 min max;  
+proc means   data = b.w_dcp_cab_b  n p50 p5 p95 min max;  
 var prevalence1549w_23 prevalence1549m_23 incidence1549_23 p_diag_23 p_onart_diag_23 p_onart_vl1000_23 p_vl1000_23 prevalence_vg1000_23   ;
 run;
 
 
 
-proc means   data = b.w_dcp_cab  n p50 p5 p95 min max;  
+proc means   data = b.w_dcp_cab_b  n p50 p5 p95 min max;  
 var prevalence1549w_23 prevalence1549m_23 incidence1549_23 p_diag_23 p_onart_diag_23 p_onart_vl1000_23 p_vl1000_23 prevalence_vg1000_23 
 prop_elig_on_prep_23  ;
 run;
 
 
-proc means data = b.w_dcp_cab  n p50 p5 p95 ;  
+proc means data = b.w_dcp_cab_b  n p50 p5 p95 ;  
 var
 prop_1564_onprep_20y_1  prop_1564_onprep_20y_2   prop_1564_onprep_20y_3   prop_1564_onprep_20y_4 
 d_prop_1564_onprep_20y_2_1  d_prop_1564_onprep_20y_3_1  d_prop_1564_onprep_20y_4_1  
 ;
 
 
-proc means data = b.w_dcp_cab  n p50 p5 p95 ;  
+proc means data = b.w_dcp_cab_b  n p50 p5 p95 ;  
 var 
 prop_elig_on_prep_20y_1 prop_elig_on_prep_20y_2  prop_elig_on_prep_20y_3 prop_elig_on_prep_20y_4 
 d_prop_elig_on_prep_20y_2_1  d_prop_elig_on_prep_20y_3_1  d_prop_elig_on_prep_20y_4_1  
 ;
 
 
-proc means data = b.w_dcp_cab  n p50 p5 p95 ;  
+proc means data = b.w_dcp_cab_b  n p50 p5 p95 ;  
 var
 prop_prep_inj_20y_1  prop_prep_inj_20y_2   prop_prep_inj_20y_3   prop_prep_inj_20y_4 
 d_prop_prep_inj_20y_2_1  d_prop_prep_inj_20y_3_1  d_prop_prep_inj_20y_4_1  
 ;
 
-proc means data = b.w_dcp_cab  n p50 p5 p95 ;  
+proc means data = b.w_dcp_cab_b  n p50 p5 p95 ;  
 var
 p_prep_any_ever_43_1  p_prep_any_ever_43_2   p_prep_any_ever_43_3   p_prep_any_ever_43_4 
 d_p_prep_any_ever_43_2_1  d_p_prep_any_ever_43_3_1  d_p_prep_any_ever_43_4_1  
@@ -1670,7 +1670,7 @@ d_p_prep_any_ever_43_2_1  d_p_prep_any_ever_43_3_1  d_p_prep_any_ever_43_4_1
 run;
 
 
-proc means  data = b.w_dcp_cab  n p50 p5 p95 ;  
+proc means  data = b.w_dcp_cab_b  n p50 p5 p95 ;  
 var
 incidence1549_20y_1 incidence1549_20y_2  incidence1549_20y_3 incidence1549_20y_4  
 r_incidence1549_20y_2_1 r_incidence1549_20y_3_1 r_incidence1549_20y_4_1

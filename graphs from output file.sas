@@ -7,14 +7,14 @@
 ***Use 'include' statment in analysis program to read the code below in;
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_b_out\";
 
 proc printto ;
 
 ods html close;
 
 data b;
-set a.l_dcp_cab_y;
+set a.l_dcp_cab_b_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -28,7 +28,7 @@ n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 
 
-%let single_var = p_vl1000_                    ;
+%let single_var = p_diag                       ;
 
 
 
@@ -38,7 +38,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 1084  ;
+%let nfit = 1200  ;
 
 %let year_end = 2070.00 ;
 run;
@@ -238,7 +238,8 @@ merge g1  h1 i1  j1 ;
 by cald;
 
 
-proc print; run;
+* proc print; 
+* run;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
@@ -327,7 +328,7 @@ run;quit;
 ods html close;
 
 
-*/
+
 
 
 ods html;
@@ -355,7 +356,7 @@ run;quit;
 
 ods html close;
 
-/*
+
 
 
 ods html;
@@ -581,17 +582,18 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion diagnosed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05 ) valueattrs=(size=10);
+Title    height=1.5 justify=center "percent diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2073 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (70 to 100     by 10     ) valueattrs=(size=10);
 
-label p50_p_diag_0 = "option 0";
-label p50_p_diag_1 = "option_1";
-label p50_p_diag_2 = "option_2";
+label p50_p_diag_0 = "status quo";
+label p50_p_diag_1 = "dcp";
+label p50_p_diag_2 = "cab";
+label p50_p_diag_3 = "dcp + cab";
 
   series  x=cald y=p50_p_diag_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_diag_0 	upper=p95_p_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -599,11 +601,14 @@ label p50_p_diag_2 = "option_2";
   band    x=cald lower=p5_p_diag_1 	upper=p95_p_diag_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
   series  x=cald y=p50_p_diag_2/	lineattrs = (color=blue   thickness = 4);
   band    x=cald lower=p5_p_diag_2 	upper=p95_p_diag_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_diag_3/	lineattrs = (color=lilac  thickness = 4);
+  band    x=cald lower=p5_p_diag_3 	upper=p95_p_diag_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
+/*
 
 
 ods html;
