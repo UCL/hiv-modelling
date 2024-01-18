@@ -2161,6 +2161,8 @@ if 0 <= caldate{t}-date_last_vaccine < 5 then current_vaccine_efficacy = 0.7;
 if 5 <= caldate{t}-date_last_vaccine < 10 then current_vaccine_efficacy = 0.35;  
 if 10 <= caldate{t}-date_last_vaccine then current_vaccine_efficacy = 0;  
 
+* todo: check that this below will bring back to the correct eff_ values after vaccine efficacy drops (or do we want to keep prep at 0 - thats easier);
+
 if ever_vaccinated ne 1 then do; 
 	a_eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral;	a_eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj;
 	a_eff_prob_prep_oral_b = eff_prob_prep_oral_b;	a_eff_prob_prep_inj = eff_prob_prep_inj_b;
