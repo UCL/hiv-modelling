@@ -59,29 +59,6 @@ data y;
 merge b.k_dcp_cab_b sf;
 by run ;
 
-n_hiv = s_hiv * &sf;
-
-x = s_alive * &sf;
-
-proc print; var run cald s_alive &sf n_hiv ; 
-run;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * preparatory code ;
 
 * ================================================================================= ;
