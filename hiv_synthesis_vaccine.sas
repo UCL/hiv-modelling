@@ -2161,7 +2161,9 @@ if 0 <= caldate{t}-date_last_vaccine < 5 then current_vaccine_efficacy = 0.7;
 if 5 <= caldate{t}-date_last_vaccine < 10 then current_vaccine_efficacy = 0.35;  
 if 10 <= caldate{t}-date_last_vaccine then current_vaccine_efficacy = 0;  
 
-
+if ever_vaccinated ne 1 then a_eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral;
+if current_vaccine_efficacy = 0.7 then do;  eff_rate_choose_stop_prep_oral = 0; end;
+if current_vaccine_efficacy ne 0.7 then eff_rate_choose_stop_prep_oral = a_eff_rate_choose_stop_prep_oral;
 
 
 
