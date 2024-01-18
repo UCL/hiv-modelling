@@ -2161,10 +2161,21 @@ if 0 <= caldate{t}-date_last_vaccine < 5 then current_vaccine_efficacy = 0.7;
 if 5 <= caldate{t}-date_last_vaccine < 10 then current_vaccine_efficacy = 0.35;  
 if 10 <= caldate{t}-date_last_vaccine then current_vaccine_efficacy = 0;  
 
-if ever_vaccinated ne 1 then a_eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral;
-if current_vaccine_efficacy = 0.7 then do;  eff_rate_choose_stop_prep_oral = 0; end;
-if current_vaccine_efficacy ne 0.7 then eff_rate_choose_stop_prep_oral = a_eff_rate_choose_stop_prep_oral;
-
+if ever_vaccinated ne 1 then do; 
+	a_eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral;	a_eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj;
+	a_eff_prob_prep_oral_b = eff_prob_prep_oral_b;	a_eff_prob_prep_inj = eff_prob_prep_inj_b;
+	a_eff_testfor_prep_oral = eff_testfor_prep_oral;	a_eff_testfor_prep_inj = eff_testfor_prep_inj;
+end;
+if current_vaccine_efficacy = 0.7 then do;  
+	eff_rate_choose_stop_prep_oral = 1;eff_rate_choose_stop_prep_inj = 1; eff_prob_prep_oral_b=0; 
+	eff_prob_prep_inj_b=0;eff_testfor_prep_oral=0;eff_testfor_prep_inj=0;
+end;
+if current_vaccine_efficacy ne 0.7 then do; 
+	eff_rate_choose_stop_prep_oral = a_eff_rate_choose_stop_prep_oral;
+	eff_rate_choose_stop_prep_inj = a_eff_rate_choose_stop_prep_inj;
+	eff_prob_prep_oral_b = a_eff_prob_prep_oral_b;	eff_prob_prep_inj = a_eff_prob_prep_inj_b;
+	eff_testfor_prep_oral = a_eff_testfor_prep_oral;	eff_testfor_prep_inj = a_eff_testfor_prep_inj;
+end;
 
 
 * Oral PREP introduction in fsw/agyw 2018; 
