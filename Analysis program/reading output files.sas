@@ -1,6 +1,5 @@
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\fsw_22_06_23\";
-libname b "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
-
+libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\18sep\";
+libname b "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim";
 
 
 data b;
@@ -8,8 +7,7 @@ set a.out:;
 run;
 
 
-
-data b.fsw_22_06_23_;
+data b.fsw_18_09_23;
 set b;
 run;
 
