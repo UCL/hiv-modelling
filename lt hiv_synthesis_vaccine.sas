@@ -1,14 +1,17 @@
+ 
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
+ libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc";  
+ 
+
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   
+* libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 10000  ; 
 %let year_interv = 2040;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -2164,8 +2167,6 @@ if vaccine_introduced = 1 and 16 <= age < 50 and hiv ne 1 and
 ((caldate{t} = &year_interv and q < 0.75) or (caldate{t}-date_last_vaccine = vaccine_duration_effect and w < 0.5) or (age = 16 and g < 0.75)) then do;
 		ever_vaccinated=1; date_last_vaccine = caldate{t}; 
 end;
-* note that this above could be modelled more explicitly by testing registd=0 for vaccine and only vaccinating if test negative and the people diagnosed 
-have the usual chance of being linked to care;
 
 current_vaccine_efficacy = .;
 if 0 <= caldate{t}-date_last_vaccine < vaccine_duration_effect then current_vaccine_efficacy = vaccine_efficacy;  
@@ -17375,16 +17376,16 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-/*
+
 
 proc freq; tables cald hiv ; where death=.; run;
 
 
-proc print; var age ever_vaccinated current_vaccine_efficacy ;
-where death = .;
+proc print; var caldate&j age ever_vaccinated current_vaccine_efficacy ;
+where death = . and age ge 15 and cald ge 2039;
 run;
 
-*/
+
 
 
 
@@ -19940,6 +19941,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim starts in 1984 JAS Sep23;
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -20148,9 +20150,11 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=0);
 
-data a ;  set r1 ;
+data a.keep_vaccine ;  set r1 ;
 
-data r1 ; set a ;
+
+
+data r1 ; set a.keep_vaccine ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=0);
@@ -20308,6 +20312,11 @@ data r1 ; set a ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=356,s=0);		
 
 data r1 ; set a ;
+
+*/
+
+
+data r1 ; set a.keep_vaccine ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=1);
