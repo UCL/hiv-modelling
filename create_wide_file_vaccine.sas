@@ -210,16 +210,6 @@ dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
 
-* ;
-
-/*
-dcp_cost=0;
-if option=1 or option=3 then dcp_cost = 20; * $20 million ;
-ddcp_cost = dcp_cost * discount;
-*/
-
-****** instead of above: some fixed cost plus a unit cost "per person with indication for prep + tested" ?;
-
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
@@ -484,7 +474,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * proportion of primary infections in which inm is present or arises due to cab ;
 * p_cab_res_primary	;			p_cab_res_primary = s_cab_res_primary / s_primary;
 
-***** ^^^^^ ******;
 * n_prep_any_start;				n_prep_any_start = s_prep_any_start * &sf; 
 * n_prep_oral_start;			n_prep_oral_start = s_prep_oral_start * &sf; 
 * n_prep_inj_start;				n_prep_inj_start = s_prep_inj_start * &sf; 
@@ -1316,7 +1305,7 @@ proc sort; by run; run;
 
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 data f; set y; 
-if cald=2023;
+if cald=2024;
 
 keep 
 
