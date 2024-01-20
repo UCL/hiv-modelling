@@ -1,4 +1,4 @@
- 
+
 
  libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc";  
  
@@ -13,6 +13,7 @@
 
 %let population = 10000  ; 
 %let year_interv = 2040;	* Using 2023 for MIHPSA only JAS Oct23;
+
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -724,7 +725,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
 								* note we have switched this off - apr 2022;
 								* lapr - leave for now but we may want to specify the extent to which this is tdf/3tc versus la cab versus dpv-vr;
-* pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 1.1 1.3 1.5) ;
+* pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 1.05 1.1 1.3) ;  * bmgf_vaccine ;  
 
 * pop_wide_tld_prob_egfr;		pop_wide_tld_prob_egfr=0.0; 	* probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 								* dependent_on_time_step_length ;
@@ -763,7 +764,8 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * new for pop_wide_tld ;
 
-* pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.3 ; * tends to be more preference for inj ;
+* pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.15 ; 
+								* tends to be more preference for inj but extent of higher level low - bmgf_vaccine ;
 
 * hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
 								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
@@ -2167,6 +2169,8 @@ if vaccine_introduced = 1 and 16 <= age < 50 and hiv ne 1 and
 ((caldate{t} = &year_interv and q < 0.75) or (caldate{t}-date_last_vaccine = vaccine_duration_effect and w < 0.5) or (age = 16 and g < 0.75)) then do;
 		ever_vaccinated=1; date_last_vaccine = caldate{t}; 
 end;
+* note that this above could be modelled more explicitly by testing registd=0 for vaccine and only vaccinating if test negative and the people diagnosed 
+have the usual chance of being linked to care;
 
 current_vaccine_efficacy = .;
 if 0 <= caldate{t}-date_last_vaccine < vaccine_duration_effect then current_vaccine_efficacy = vaccine_efficacy;  
@@ -2182,7 +2186,7 @@ if ever_vaccinated ne 1 then do;
 end;
 */
 * no prep use once vaccinated;
-if current_vaccine_efficacy = vaccine_efficacy then do;  
+if ever_vaccinated = 1 then do;  
 	eff_rate_choose_stop_prep_oral = 1;eff_rate_choose_stop_prep_inj = 1; eff_prob_prep_oral_b=0; 
 	eff_prob_prep_inj_b=0;eff_testfor_prep_oral=0;eff_testfor_prep_inj=0;
 end;
@@ -14075,9 +14079,11 @@ onart_cd4_g500=0;  if (onart=1 or int_clinic_not_aw=1) and cd4 >= 500 then onart
 
 *** vaccine **********************************************************************************************************************;
 
-current_full_vaccine_efficacy=0; if current_full_vaccine_efficacy = vaccine_efficacy then current_full_vaccine_efficacy=1;
-current_helf_vaccine_efficacy=0; if current_full_vaccine_efficacy = vaccine_efficacy/2 then current_half_vaccine_efficacy=1;
+current_full_vaccine_efficacy=0; if current_vaccine_efficacy = vaccine_efficacy then current_full_vaccine_efficacy=1;
+current_helf_vaccine_efficacy=0; if current_vaccine_efficacy = vaccine_efficacy/2 then current_half_vaccine_efficacy=1;
 
+current_full_vaccine_e_1564=0; if 15 <= age < 65 and current_full_vaccine_efficacy=1 then current_full_vaccine_e_1564=1;
+current_half_vaccine_e_1564=0; if 15 <= age < 65 and current_half_vaccine_efficacy=1 then current_half_vaccine_e_1564=1;
 
 **** PrEP ************************************************************************************************************************;
 
@@ -16770,6 +16776,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/* vaccine */
 
 	s_current_full_vaccine_efficacy + current_full_vaccine_efficacy; s_current_half_vaccine_efficacy + current_half_vaccine_efficacy;
+	s_current_full_vaccine_e_1564 + current_full_vaccine_e_1564; s_current_half_vaccine_e_1564 + current_helf_vaccine_e_1564; 
 	s_ever_vaccinated + ever_vaccinated; 
 
 	/*VL and CD4*/
@@ -17376,16 +17383,29 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
+proc freq; tables cald hiv ; where death=.; run;
 
+/*
+proc print; var caldate&j age ever_vaccinated current_vaccine_efficacy ;
+where death = . and age ge 15 and cald ge 2039;
+run;
+*/
+
+proc freq; tables ever_vaccinated ;
+where (death = . or death=caldate&j) and age ge 15 and cald ge 2039;
+run;
+
+
+/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
 
-proc print; var caldate&j age ever_vaccinated current_vaccine_efficacy ;
-where death = . and age ge 15 and cald ge 2039;
+proc print; var age ever_vaccinated current_vaccine_efficacy ;
+where death = .;
 run;
 
-proc freq; tables ever_vaccinated; run;
+*/
 
 
 
@@ -18506,11 +18526,10 @@ s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_
 s_prep_elig_onprep_vr 
 s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
-
-
 /* vaccine */
 
-s_current_full_vaccine_efficacy  s_current_half_vaccine_efficacy s_ever_vaccinated  
+s_current_full_vaccine_efficacy  s_current_half_vaccine_efficacy s_ever_vaccinated  s_current_full_vaccine_e_1564 s_current_half_vaccine_e_1564
+
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -19036,7 +19055,9 @@ values from that 3 month period
 
 data cum_l&da2; set cum_l&da1 sums;
 
+
 proc print; var s_ever_vaccinated;
+
 
 data s;set sums;
 do i=1 to &population; 
@@ -19458,6 +19479,10 @@ s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_
 s_prep_elig_onprep_vr
 s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
+
+/* vaccine */
+
+s_current_full_vaccine_efficacy  s_current_half_vaccine_efficacy s_ever_vaccinated  s_current_full_vaccine_e_1564 s_current_half_vaccine_e_1564
 
 
 /*testing and diagnosis*/
@@ -19942,6 +19967,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
+
 /*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim starts in 1984 JAS Sep23;
@@ -20151,11 +20177,11 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=0);
 
-data a.keep_vaccine ;  set r1 ;
+data a.keep_vaccine_2 ;  set r1 ;
 
 
 
-data r1 ; set a.keep_vaccine ;
+data r1 ; set a.keep_vaccine_2 ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=0);
@@ -20312,12 +20338,9 @@ data r1 ; set a.keep_vaccine ;
 %update_r1(da1=1,da2=2,e=7,f=8,g=349,h=356,j=355,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=356,s=0);		
 
-data r1 ; set a ;
-
 */
 
-
-data r1 ; set a.keep_vaccine ;
+data r1 ; set a.keep_vaccine_2 ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=1);
@@ -20511,7 +20534,7 @@ put
 */
 
 
-data a.vaccine_out_file; set cum_l1;
+data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
 
 
 keep
@@ -20786,7 +20809,7 @@ s_prep_oral_restart_date_choice s_started_prep_vr_hiv s_started_prep_any_hiv  s_
 
 /* vaccine */
 
-s_current_full_vaccine_efficacy  s_current_half_vaccine_efficacy s_ever_vaccinated  
+s_current_full_vaccine_efficacy  s_current_half_vaccine_efficacy s_ever_vaccinated  s_current_full_vaccine_e_1564 s_current_half_vaccine_e_1564
 
 
 /*testing and diagnosis*/
@@ -21280,8 +21303,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ; 
 
 * note need to keep one s_n ! ;
-
-proc print; var cald s_ever_vaccinated;
 
 run;
 

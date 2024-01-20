@@ -1,19 +1,19 @@
 
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_b_out\";
 
 proc printto ;
 
 ods html close;
 
 data b;
-set a.l_vaccine_a_y;
+set a.l_vaccine_b_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
 incidence1549_ = incidence1549;
-prevalence1549_ = prevalence1549;
+prevalence1549_ = prevalence1549 * 100;
 p_onart_vl1000_ = p_onart_vl1000;
 prevalence_vg1000_ = prevalence_vg1000;
 p_vl1000_ = p_vl1000;
@@ -23,14 +23,16 @@ p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
 
 
-%let single_var = p_agege15_ever_vaccinated ;
+%let single_var =  p_agege15_ever_vaccinated     ;
+
+* p_agege15_ever_vaccinated  prop_elig_on_prep  prop_prep_any  n_tested  p_diag  p_onart_diag  p_onart_vl1000_  incidence1549_;
 
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 600   ;
+%let nfit = 100   ;
 
 %let year_end = 2070.00 ;
 run;
@@ -144,6 +146,10 @@ by cald;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
+  
+
+
+
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Proportion of adults ever vaccinated";
@@ -163,12 +169,34 @@ run;quit;
 ods html close;
 
 
+
 /*
 
 ods html;
 proc sgplot data=d ; 
+Title    height=1.5 justify=center "Proportion of adults with any current vaccaine efficacy";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1       by 0.1     ) valueattrs=(size=10);
+
+label p50_p_current_any_vaccine_eff_0 = "no vaccine";
+label p50_p_current_any_vaccine_eff_1 = "vaccine";
+
+ series  x=cald y=p50_p_current_any_vaccine_eff_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_current_any_vaccine_eff_0 	upper=p95_p_current_any_vaccine_eff_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_current_any_vaccine_eff_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_current_any_vaccine_eff_1 	upper=p95_p_current_any_vaccine_eff_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+
+ods html;
+proc sgplot data=d ; 
 Title    height=1.5 justify=center "Number of living adults age 15+";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  30000000   by 10000000 ) valueattrs=(size=10);
 
 label p50_n_alive_0 = "no vaccine";
@@ -186,29 +214,202 @@ ods html close;
 
 
 
-"Number of HIV tests done per year";
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  6000000   by 1000000 ) valueattrs=(size=10);
-label p50_n_tested_0 = "status quo";
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Proportion people with a PrEP indication taking PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1  by 0.1 ) valueattrs=(size=10);
+
+label p50_prop_elig_on_prep_0 = "no vaccine";
+label p50_prop_elig_on_prep_1 = "vaccine";
+
+ series  x=cald y=p50_prop_elig_on_prep_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_0 	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_on_prep_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Percentage of adults taking PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (0 to 7  by 1 ) valueattrs=(size=10);
+
+label p50_prop_prep_any_0 = "no vaccine";
+label p50_prop_prep_any_1 = "vaccine";
+
+ series  x=cald y=p50_prop_prep_any_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prop_prep_any_0 	upper=p95_prop_prep_any_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prop_prep_any_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_prop_prep_any_1 	upper=p95_prop_prep_any_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Number of HIV tests done per 3 months";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000   by 1000000 ) valueattrs=(size=10);
+
+label p50_n_tested_0 = "no vaccine";
+label p50_n_tested_1 = "vaccine";
+
+ series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_n_tested_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Percent of all PLHIV diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (70 to 100     by 10     ) valueattrs=(size=10);
+
+label p50_p_diag_0 = "no vaccine";
+label p50_p_diag_1 = "vaccine";
+
+ series  x=cald y=p50_p_diag_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_diag_0 	upper=p95_p_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_diag_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_diag_1 	upper=p95_p_diag_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Of those diagnosed, proportion on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0.7 to 1   by 0.05 ) valueattrs=(size=10);
+
+label p50_p_onart_diag_0 = "no vaccine";
+label p50_p_onart_diag_1 = "vaccine";
+
+ series  x=cald y=p50_p_onart_diag_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_onart_diag_0 	upper=p95_p_onart_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_diag_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_onart_diag_1 	upper=p95_p_onart_diag_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Of those on ART, proportion with vl < 1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0.7 to 1   by 0.05 ) valueattrs=(size=10);
+
+label p50_p_onart_vl1000__0 = "no vaccine";
+label p50_p_onart_vl1000__1 = "vaccine";
+
+ series  x=cald y=p50_p_onart_vl1000__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Proportion of all PLHIV (diagnosed or undiagnosed) with vl < 1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.7 to 1   by 0.05 ) valueattrs=(size=10);
+
+label p50_p_vl1000__0 = "no vaccine";
+label p50_p_vl1000__1 = "vaccine";
+
+ series  x=cald y=p50_p_vl1000__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_vl1000__1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Incidence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.7       by 0.1     ) valueattrs=(size=10);
+
+label p50_incidence1549__0 = "no vaccine";
+label p50_incidence1549__1 = "vaccine";
+
+ series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549__1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Prevalence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (0 to  20       by 1     ) valueattrs=(size=10);
+
+label p50_prevalence1549__0 = "no vaccine";
+label p50_prevalence1549__1 = "vaccine";
+
+ series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+*/
+
+
+
+/*
+
+"n_prep_any";
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000  by 100000 ) valueattrs=(size=10);
+label p50_n_prep_any_0 = "status quo";
 
 
 "Proportion on ART";
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05 ) valueattrs=(size=10);
 label p50_p_onart_0 = "option 0";
 
-
-"Proportion of all PLHIV (diagnosed or undiagnosed) with vl < 1000";
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.7 to 1   by 0.05 ) valueattrs=(size=10);
-label p50_p_vl1000__0 = "status quo";
-
-
 "Proportion with adhav >80%";
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05 ) valueattrs=(size=10);
 label p50_p_adhav_hi_onart_0 = "option 0";
 
-
-"Incidence (age 15-49)";
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1.4       by 0.1     ) valueattrs=(size=10);
-label p50_incidence1549__0 = "status quo";
 
 
 "prop_inf_w_sw";
@@ -236,31 +437,6 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000 by 1000
 label p50_n_vg1000__0 = "option 0";
 
 
-"n_prep_any";
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000  by 100000 ) valueattrs=(size=10);
-label p50_n_prep_any_0 = "status quo";
-
-
-"Percentage of adults taking PrEP";
-yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (0 to 7  by 1 ) valueattrs=(size=10);
-label p50_prop_prep_any_0 = "status quo";
-
-
-"Proportion people with a PrEP indication taking PrEP";
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1       by 0.1    ) valueattrs=(size=10);
-label p50_prop_elig_on_prep_0 = "status quo";
-
-
-"Percent of all PLHIV diagnosed";
-yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (70 to 100     by 10     ) valueattrs=(size=10);
-label p50_p_diag_0 = "status quo";
-
-
-"Of those diagnosed, proportion on ART";
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.7 to 1   by 0.05 ) valueattrs=(size=10);
-label p50_p_onart_diag_0 = "option 0";
-
-
 "prop_w_1549_sw";
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to 0.05 by 0.005 ) valueattrs=(size=10);
 label p50_prop_w_1549_sw_0 = "option 0";
@@ -274,11 +450,6 @@ label p50_p_inf_diag_0 = "option 0";
 "p_newp_ge1_age1549";
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to 0.05 by 0.005 ) valueattrs=(size=10);
 label p50_p_newp_ge1_age1549__0 = "option 0";
-
-
-"Of those on ART, proportion with vl < 1000";
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.80 to 1   by 0.05 ) valueattrs=(size=10);
-label p50_p_onart_vl1000__0 = "option 0";
 
 
 "Of sw on ART, proportion with vl < 1000";
@@ -328,3 +499,5 @@ label p50_cost_0 = "option 0";
 "prop_w_vlg1";
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to 1   by 0.1  ) valueattrs=(size=10);
 label p50_prop_w_vlg1_0 = "option 0";
+
+*/

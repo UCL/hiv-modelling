@@ -18508,6 +18508,9 @@ s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_
 s_prep_elig_onprep_vr 
 s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
+/* vaccine */
+
+s_current_full_vaccine_efficacy  s_current_half_vaccine_efficacy s_ever_vaccinated  s_current_full_vaccine_e_1564 s_current_half_vaccine_e_1564
 
 
 /*testing and diagnosis*/
@@ -19454,12 +19457,6 @@ s_start_rest_prep_inj_prim_cabr
 s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
 s_prep_elig_onprep_vr
 s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
-
-
-/* vaccine */
-
-s_current_full_vaccine_efficacy  s_current_half_vaccine_efficacy s_ever_vaccinated  s_current_full_vaccine_e_1564 s_current_half_vaccine_e_1564
-
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
