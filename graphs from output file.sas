@@ -22,14 +22,15 @@ n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
 
-%let single_var = n_death_hiv     ;
+
+%let single_var = p_agege15_ever_vaccinated ;
 
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 1200  ;
+%let nfit = 600   ;
 
 %let year_end = 2070.00 ;
 run;
@@ -143,12 +144,31 @@ by cald;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Proportion of adults ever vaccinated";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 1) valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to  1   by 0.1 ) valueattrs=(size=10);
+
+label p50_p_agege15_ever_vaccinated_0 = "no vaccine";
+label p50_p_agege15_ever_vaccinated_1 = "vaccine";
+
+ series  x=cald y=p50_p_agege15_ever_vaccinated_0/	lineattrs = (color=black thickness = 4);
+ band    x=cald lower=p5_p_agege15_ever_vaccinated_0 	upper=p95_p_agege15_ever_vaccinated_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+ series  x=cald y=p50_p_agege15_ever_vaccinated_1/	lineattrs = (color=green thickness = 4);
+ band    x=cald lower=p5_p_agege15_ever_vaccinated_1 	upper=p95_p_agege15_ever_vaccinated_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
 /*
 
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Number of living adults age 15+";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2073 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  30000000   by 10000000 ) valueattrs=(size=10);
 
 label p50_n_alive_0 = "no vaccine";
