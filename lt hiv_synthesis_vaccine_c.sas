@@ -17382,13 +17382,14 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
+/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
-/*
 proc print; var caldate&j age ever_vaccinated current_vaccine_efficacy ;
 where death = . and age ge 15 and cald ge 2039;
 run;
+
 */
 
 proc freq; tables ever_vaccinated ;

@@ -1,14 +1,14 @@
 
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_b_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_c_out\";
 
 proc printto ;
 
 ods html close;
 
 data b;
-set a.l_vaccine_b_y;
+set a.l_vaccine_c_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -22,8 +22,10 @@ n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
 
+proc print; var p_current_full_vaccine_eff; run;
 
-%let single_var =  p_agege15_ever_vaccinated     ;
+
+%let single_var =  incidence1549_   ;
 
 * p_agege15_ever_vaccinated  prop_elig_on_prep  prop_prep_any  n_tested  p_diag  p_onart_diag  p_onart_vl1000_  incidence1549_;
 
@@ -32,7 +34,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 100   ;
+%let nfit = 600   ;
 
 %let year_end = 2070.00 ;
 run;
@@ -148,7 +150,7 @@ ods html ;
 
   
 
-
+/*
 
 ods html;
 proc sgplot data=d ; 
@@ -168,9 +170,6 @@ run;quit;
 
 ods html close;
 
-
-
-/*
 
 ods html;
 proc sgplot data=d ; 
@@ -351,7 +350,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d ; 
@@ -371,7 +370,7 @@ run;quit;
 
 ods html close;
 
-
+/*
 
 ods html;
 proc sgplot data=d ; 
