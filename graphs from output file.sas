@@ -21,13 +21,13 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
+p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564; 
+p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
-proc print; var p_current_full_vaccine_eff; run;
 
+%let single_var = prevalence1549_              ;
 
-%let single_var =  incidence1549_   ;
-
-* p_agege15_ever_vaccinated  prop_elig_on_prep  prop_prep_any  n_tested  p_diag  p_onart_diag  p_onart_vl1000_  incidence1549_;
+* p_agege15_ever_vaccinated pp_cur_full_vac_e_1564_ prop_elig_on_prep  prop_prep_any  n_tested  p_diag  p_onart_diag  p_onart_vl1000_  incidence1549_;
 
 
 proc sort data=b; by cald run ;run;
@@ -154,7 +154,7 @@ ods html ;
 
 ods html;
 proc sgplot data=d ; 
-Title    height=1.5 justify=center "Proportion of adults ever vaccinated";
+Title    height=1.5 justify=center "Proportion of adults age 15+ ever vaccinated";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 1) valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to  1   by 0.1 ) valueattrs=(size=10);
 
@@ -171,24 +171,24 @@ run;quit;
 ods html close;
 
 
+
 ods html;
 proc sgplot data=d ; 
-Title    height=1.5 justify=center "Proportion of adults with any current vaccaine efficacy";
+Title    height=1.5 justify=center "Proportion of adults age 15-64 with full current vaccine efficacy";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1       by 0.1     ) valueattrs=(size=10);
 
-label p50_p_current_any_vaccine_eff_0 = "no vaccine";
-label p50_p_current_any_vaccine_eff_1 = "vaccine";
+label p50_p_cur_full_vac_e_1564__0 = "no vaccine";
+label p50_p_cur_full_vac_e_1564__1 = "vaccine";
 
- series  x=cald y=p50_p_current_any_vaccine_eff_0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_p_current_any_vaccine_eff_0 	upper=p95_p_current_any_vaccine_eff_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_current_any_vaccine_eff_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_current_any_vaccine_eff_1 	upper=p95_p_current_any_vaccine_eff_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+ series  x=cald y=p50_p_cur_full_vac_e_1564__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_cur_full_vac_e_1564__0 	upper=p95_p_cur_full_vac_e_1564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_cur_full_vac_e_1564__1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_cur_full_vac_e_1564__1 	upper=p95_p_cur_full_vac_e_1564__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
-
 
 
 
@@ -237,7 +237,7 @@ ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Percentage of adults taking PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (0 to 7  by 1 ) valueattrs=(size=10);
+yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (0 to 5  by 1 ) valueattrs=(size=10);
 
 label p50_prop_prep_any_0 = "no vaccine";
 label p50_prop_prep_any_1 = "vaccine";
@@ -311,6 +311,7 @@ run;quit;
 
 ods html close;
 
+  
 
 ods html;
 proc sgplot data=d ; 
@@ -350,7 +351,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 ods html;
 proc sgplot data=d ; 
@@ -370,7 +371,7 @@ run;quit;
 
 ods html close;
 
-/*
+*/
 
 ods html;
 proc sgplot data=d ; 
@@ -389,8 +390,6 @@ label p50_prevalence1549__1 = "vaccine";
 run;quit;
 
 ods html close;
-
-*/
 
 
 

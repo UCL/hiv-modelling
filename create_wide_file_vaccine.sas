@@ -350,8 +350,8 @@ s_hiv = s_hivge15 ;
 * p_current_full_vaccine_eff;	p_current_full_vaccine_eff = s_current_full_vaccine_efficacy / s_alive;
 * p_current_half_vaccine_eff;	p_current_half_vaccine_eff = s_current_half_vaccine_efficacy / s_alive;
 * p_current_any_vaccine_eff;	p_current_any_vaccine_eff = p_current_full_vaccine_eff + p_current_half_vaccine_eff;
-* p_current_full_vac_e_1564;	p_current_full_vac_e_1564 = s_current_full_vac_e_1564 / s_alive1564;
-* p_current_half_vac_e_1564;	p_current_half_vac_e_1564 = s_current_half_vac_e_1564 / s_alive1564;
+* p_current_full_vac_e_1564;	p_current_full_vac_e_1564 = s_current_full_vaccine_e_1564 / s_alive1564;
+* p_current_half_vac_e_1564;	p_current_half_vac_e_1564 = s_current_half_vaccine_e_1564 / s_alive1564;
 * p_current_any_vac_e_1564;		p_current_any_vac_e_1564 = p_current_full_vac_e_1564 + p_current_half_vac_e_1564;
 
 
