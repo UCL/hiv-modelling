@@ -3,20 +3,26 @@
 ***Use 'include' statment in analysis program to read the code below in;
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\19Apr23";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a;
-set a.zim19Apr;  
+set a.fsw_zim_19jan24;  
+
+if option=1 then delete; ***first look at overall incidence according to baseline SW program (option=1= amesthist);
 proc sort;by run;
-proc freq;table cald;run;
+proc freq;table cald option;run;
 
 data sf;
 set a;
- 
-if cald=2023;
+
+if cald=2023.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2023 = 10000000 / s_alive;
+sf_2023 = (16665409 * 0.581) / s_alive; 
+*Source for Zimbabwe population is https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
+*accessed 22/1/2024;
+* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
 keep run sf_2023;
+
 proc sort; by run;run;
 
 %let sf=sf_2023;
@@ -28,11 +34,6 @@ run;
 
 data b;
 set a1;
-
-***ERROR IN AGE DEBUT CALCULATION;
-
-
-
 
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
@@ -84,6 +85,8 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_sw_age2024_;					p_sw_age2024_=s_sw_2024/s_sw_1564;
 * p_sw_age2529_;					p_sw_age2529_=s_sw_2529/s_sw_1564;
 * p_sw_age3039_;					p_sw_age3039_=s_sw_3039/s_sw_1564;
+* p_sw_age40+_;						p_sw_ageab40_=s_sw_3039/s_sw_1564;
+
 								end;
 
 
@@ -91,10 +94,6 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_age_deb_sw2024_;			p_age_deb_sw2024_ = s_age_deb_sw2024_ /s_sw_1564;
 * p_age_deb_sw2529_;			p_age_deb_sw2529_ = s_age_deb_sw2529_ /s_sw_1564;
 * p_age_deb_sw3039_;			p_age_deb_sw3039_ = s_age_deb_sw3039_ /s_sw_1564;
-
-proc freq;table p_age_deb_sw1519_;run;
-
-proc freq;table 
 
 * sw_episodes;					sw_episodes = s_episodes_sw/s_ever_sw;
 * p_sw_gt1ep;					p_sw_gt1ep   = s_sw_gt1ep     / s_ever_sw;
@@ -141,7 +140,7 @@ proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 160   ;
+%let nfit = 317;
 %let year_end = 2050.00 ;
 run;
 proc sort;by cald option ;run;
@@ -217,22 +216,22 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\19Apr2023.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\22jan2023.doc' startpage=never; 
 
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "FSW Population (age 15-49)";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000)  valueattrs=(size=10);
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2040 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 200000 by 50000)  valueattrs=(size=10);
 label p50_n_sw_1549_	                  = "model age 15-49 (median)";
 
-label o_pop_fsw_1549w_Fearnon			  = "All FSW age 15-49 - Fearon";
+label o_pop_fsw_1549w_Fearon			  = "All FSW age 15-49 - Fearon";
 series  x=cald y=p50_n_sw_1549_  /           lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_sw_1549_      upper=p95_n_sw_1549_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
-scatter x=cald y=o_pop_fsw_1549w_Fearnon / markerattrs = (symbol=circle color=black size = 12)
-										   yerrorlower=o_pop_fsw_ll_1549w_Fearnon yerrorupper=o_pop_fsw_ul_1549w_Fearnon errorbarattrs= (color=black thickness = 2);
+scatter x=cald y=o_pop_fsw_1549w_Fearon / markerattrs = (symbol=circle color=black size = 12)
+										   yerrorlower=o_pop_fsw_ll_1549w_Fearon yerrorupper=o_pop_fsw_ul_1549w_Fearon errorbarattrs= (color=black thickness = 2);
 run;quit;
  
 
@@ -244,16 +243,59 @@ yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.05 by 
 label p50_prop_w_1549_sw   = "model - median ";
 
 label o_p_fsw_ab1ts6m_1849w_nbcs = "NBCP: >  1 TSP (age 18-49)";
-label o_p_fsw_1549w_Fearnon		 = "Fearon 15-49";
+label o_p_fsw_1549w_Fearon		 = "Fearon 15-49";
 
 series  x=cald y=p50_prop_w_1549_sw  / 	 lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_prop_w_1549_sw 	 upper=p95_prop_w_1549_sw / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
 
 scatter x=cald y=o_p_fsw_ab1ts6m_1849w_nbcs / markerattrs = (symbol=circle       color=blue size = 12);
-scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle       color=green size = 12)
-										 yerrorlower=o_p_fsw_ll_1549w_Fearnon yerrorupper=o_p_fsw_ul_1549w_Fearnon errorbarattrs= (color=green thickness = 2);
+scatter x=cald y=o_p_fsw_1549w_Fearon / markerattrs = (symbol=circle       color=green size = 12)
+										 yerrorlower=o_p_fsw_ll_1549w_Fearon yerrorupper=o_p_fsw_ul_1549w_Fearon errorbarattrs= (color=green thickness = 2);
 run;quit;
 
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Current age of sex workers";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'          labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
+label p50_p_sw_age1519_	              = "15-19 years (median)";
+label p50_p_sw_age2024_	              = "20-24 years (median)";
+label p50_p_sw_age2529_	              = "25-29 years (median)";
+label p50_p_sw_age3039_	              = "30-39 years (median)";
+
+label o_p_1824_fsw_rds				  = "18-24 years Sapphire";
+label o_p_2529_fsw_rds				  = "25-29 years Sapphire";
+label o_p_3039_fsw_rds				  = "30-39 years Sapphire";
+label o_p_ab40_fsw_rds				  = "40+ years Sapphire";
+
+label o_p_1819_fsw_AMT				  = "18-19 years Amethist";
+label o_p_2024_fsw_AMT				  = "20-24 years Amethist";
+label o_p_2529_fsw_AMT				  = "25-29 years Amethist";
+label o_p_3039_fsw_AMT				  = "30-39 years Amethist";
+label o_p_ab40_fsw_AMT				  = "40+ years Amethist";
+
+
+series  x=cald y=p50_p_sw_age1519_  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_sw_age1519_      upper=p95_p_sw_age1519_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "15-19y 90% range";
+series  x=cald y=p50_p_sw_age2024_  /           lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_sw_age2024_      upper=p95_p_sw_age2024_ / transparency=0.9 fillattrs = (color=green) legendlabel= "20-24yy 90% range";
+series  x=cald y=p50_p_sw_age2529_  /           lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_sw_age2529_      upper=p95_p_sw_age2529_ / transparency=0.9 fillattrs = (color=red) legendlabel= "25-29y 90% range";
+series  x=cald y=p50_p_sw_age3039_  /           lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_sw_age3039_      upper=p95_p_sw_age3039_ / transparency=0.9 fillattrs = (color=orange) legendlabel= "30-39y 90% range";
+
+scatter x=cald y=o_p_1824_fsw_rds / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_2529_fsw_rds / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_3039_fsw_rds / markerattrs = (symbol=circle     color=orange size = 12);
+scatter x=cald y=o_p_ab40_fsw_rds / markerattrs = (symbol=circle     color=orange size = 12);
+
+scatter x=cald y=o_p_1819_fsw_AMT / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_p_2024_fsw_AMT / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_2529_fsw_AMT / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_3039_fsw_AMT / markerattrs = (symbol=circle     color=orange size = 12);
+scatter x=cald y=o_p_ab40_fsw_AMT / markerattrs = (symbol=circle     color=orange size = 12);
+
+run;quit;
 
 
 proc sgplot data=e; 
@@ -353,23 +395,6 @@ scatter x=cald y=o_p_fsw_agedeb2529_AMT / markerattrs = (symbol=circle       col
 scatter x=cald y=o_p_fsw_agedebge30_AMT / markerattrs = (symbol=circle     color=orange size = 12);
 
 run;quit;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 proc sgplot data=e; 
