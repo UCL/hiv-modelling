@@ -388,6 +388,21 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;
 								if s_prep_any_elig = 0 then prop_elig_on_prep = 0;
 
+* prop_ever_tested_1549;		prop_ever_tested_1549 = (s_ever_tested_m1549_ + s_ever_tested_w1549_)/(s_alive1549_w + s_alive1549_m);
+* prop_ever_tested_1549m;		prop_ever_tested_1549m = (s_ever_tested_m1549_)/ s_alive1549_m;
+* prop_ever_tested_1549w;		prop_ever_tested_1549w = (s_ever_tested_w1549_)/ s_alive1549_w;
+* prop_tested_past_year_1549;	prop_tested_past_year_1549 = (s_tested_4p_m1549_ + s_tested_4p_w1549_) 
+									/ ((s_alive1549_w + s_alive1549_m) - (s_diag_m1549_ + s_diag_w1549_));
+
+* prop_tested_past_year_1549m;	prop_tested_past_year_1549m = (s_tested_4p_m1549_ ) 
+									/ ((s_alive1549_m) - (s_diag_m1549_));
+
+* prop_tested_past_year_1549w;	prop_tested_past_year_1549w = (s_tested_4p_w1549_ ) 
+									/ ((s_alive1549_w) - (s_diag_w1549_));
+
+* prop_onprep_1549;				prop_onprep_1549 = s_onprep_1549 / ((s_alive1549_w + s_alive1549_m) - (s_diag_m1549_ + s_diag_w1549_));
+
+
 * dcp;
 * prop_elig_dcp;				prop_elig_dcp = s_dcp / s_prep_any_elig;
 
@@ -1017,6 +1032,8 @@ n_new_inf1549 = s_primary1549 * &sf * 4;
 n_infection  = s_primary     * &sf * 4;
 
 
+
+
 keep 
 
 run cald option
@@ -1054,6 +1071,9 @@ p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_pr
 n_started_prep_inj_hiv n_started_prep_any_hiv   p_prep_adhg80  n_em_inm_res_o_cab
 
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai_naive_no_pmtct_e_inm
+
+prop_ever_tested_1549 prop_tested_past_year_1549 prop_onprep_1549
+prop_ever_tested_1549m prop_ever_tested_1549w  prop_tested_past_year_1549m prop_tested_past_year_1549w
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1276,8 +1296,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_started_prep_inj_hiv); %var(v=n_started_prep_any_hiv); 
 %var(v=prop_prep_tot5yrs); %var(v=n_start_rest_prep_inj_hiv); %var(v=n_prep_inj);%var(v=p_prep_adhg80);
 %var(v=p_nactive_art_start_lt1p5);   %var(v=p_nactive_art_start_lt2);   %var(v=p_nactive_art_start_lt3); 
-%var(v=n_ai_naive_no_pmtct_e_inm); 
-
+%var(v=n_ai_naive_no_pmtct_e_inm); %var(v=prop_ever_tested_1549); %var(v=prop_tested_past_year_1549); %var(v=prop_onprep_1549);
+%var(v=prop_ever_tested_1549m);  %var(v=prop_ever_tested_1549w);  %var(v=prop_tested_past_year_1549m);  %var(v=prop_tested_past_year_1549w); 
 
 
 data   b.wide_outputs; merge 
@@ -1310,7 +1330,10 @@ p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
 pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
-p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm;
+p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm
+prop_ever_tested_1549 prop_tested_past_year_1549 prop_onprep_1549 prop_ever_tested_1549m prop_ever_tested_1549w
+prop_tested_past_year_1549m prop_tested_past_year_1549w
+;
 
 
 proc contents; run;
@@ -1482,29 +1505,90 @@ proc sort; by run;run;
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
+d_prop_elig_on_prep_50y_2_1 = prop_elig_on_prep_50y_2 - prop_elig_on_prep_50y_1; 
+d_prop_elig_on_prep_50y_3_1 = prop_elig_on_prep_50y_3 - prop_elig_on_prep_50y_1; 
+d_prop_elig_on_prep_50y_4_1 = prop_elig_on_prep_50y_4 - prop_elig_on_prep_50y_1; 
 
+d_prop_1564_onprep_50y_2_1 = prop_1564_onprep_50y_2 - prop_1564_onprep_50y_1;
+d_prop_1564_onprep_50y_3_1 = prop_1564_onprep_50y_3 - prop_1564_onprep_50y_1;
+d_prop_1564_onprep_50y_4_1 = prop_1564_onprep_50y_4 - prop_1564_onprep_50y_1;
 
-d_prop_elig_on_prep_20y_2_1 = prop_elig_on_prep_20y_2 - prop_elig_on_prep_20y_1; 
-d_prop_elig_on_prep_20y_3_1 = prop_elig_on_prep_20y_3 - prop_elig_on_prep_20y_1; 
-d_prop_elig_on_prep_20y_4_1 = prop_elig_on_prep_20y_4 - prop_elig_on_prep_20y_1; 
-
-d_prop_1564_onprep_20y_2_1 = prop_1564_onprep_20y_2 - prop_1564_onprep_20y_1;
-d_prop_1564_onprep_20y_3_1 = prop_1564_onprep_20y_3 - prop_1564_onprep_20y_1;
-d_prop_1564_onprep_20y_4_1 = prop_1564_onprep_20y_4 - prop_1564_onprep_20y_1;
-
-d_prop_prep_inj_20y_2_1 = prop_prep_inj_20y_2 - prop_prep_inj_20y_1 ;
-d_prop_prep_inj_20y_3_1 = prop_prep_inj_20y_3 - prop_prep_inj_20y_1 ;
-d_prop_prep_inj_20y_4_1 = prop_prep_inj_20y_4 - prop_prep_inj_20y_1 ;
+d_prop_prep_inj_50y_2_1 = prop_prep_inj_50y_2 - prop_prep_inj_50y_1 ;
+d_prop_prep_inj_50y_3_1 = prop_prep_inj_50y_3 - prop_prep_inj_50y_1 ;
+d_prop_prep_inj_50y_4_1 = prop_prep_inj_50y_4 - prop_prep_inj_50y_1 ;
 
 d_p_prep_any_ever_44_2_1 = p_prep_any_ever_44_2 - p_prep_any_ever_44_1 ;
 d_p_prep_any_ever_44_3_1 = p_prep_any_ever_44_3 - p_prep_any_ever_44_1 ;
 d_p_prep_any_ever_44_4_1 = p_prep_any_ever_44_4 - p_prep_any_ever_44_1 ;
 
-r_incidence1549_20y_2_1 = incidence1549_20y_2 / incidence1549_20y_1 ;
-r_incidence1549_20y_3_1 = incidence1549_20y_3 / incidence1549_20y_1 ;
-r_incidence1549_20y_4_1 = incidence1549_20y_4 / incidence1549_20y_1 ;
+r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1 ;
+r_incidence1549_50y_3_1 = incidence1549_50y_3 / incidence1549_50y_1 ;
+r_incidence1549_50y_4_1 = incidence1549_50y_4 / incidence1549_50y_1 ;
 
-* checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
+
+
+label 
+
+prop_ever_tested_1549_23 = "Percent of women aged 15-49 who have previously tested for HIV"
+prop_ever_tested_1549m_23 = "Percent of men aged 15-49 who have previously tested for HIV"
+prop_tested_past_year_1549w_23 = "Percent of women aged 15-49 who have tested for HIV in the past 1 year"
+prop_tested_past_year_1549m_23 = "Percent of men aged 15-49 who have tested for HIV in the past 1 year"
+prop_elig_dcp_23 = "Proportion of people who are eligible for DCP (PrEP) who are under DCP"
+p_elig_prep_23 = "Percent of adults age 15-64 with indication for DCP/PrEP"
+p_elig_on_prep_23 = "Percent of people with a current PrEP indication who take PrEP"
+prop_1564_onprep_23 = "Percent of HIV negative adults aged 15-64 who are taking PrEP"
+prevalence1549w_23 = "HIV prevalence in women age 15-49"
+prevalence1549m_23 = "HIV prevalence in men age 15-49"
+incidence1549w_23 = "HIV incidence in women age 15-49 (/100 person years)"  
+incidence1549m_23 = "HIV incidence in men age 15-49 (/100 person years)"  
+p_diag_w_23 = "Proportion of HIV positive women age 15+ who are diagnosed"  
+p_diag_m_23 = "Proportion of HIV positive men age 15+ who are diagnosed"  
+p_onart_diag_w_23 = "Proportion of diagnosed HIV+ women on ART"
+p_onart_diag_m_23 = "Proportion of diagnosed HIV+ men on ART"
+p_vl1000_23 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)"
+prevalence_vg1000_23 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)"
+p_onart_vl1000_w_23 = "Of women on ART, proportion with VL < 1000"
+p_onart_vl1000_m_23 = "Of men on ART, proportion with VL < 1000"
+;
+
+
+* table 1;
+
+proc means   data = b.w_dcp_cab_b  n p50 p5 p95;  
+var
+prop_ever_tested_1549w_23 
+prop_ever_tested_1549m_23 
+prop_tested_past_year_1549w_23 
+prop_tested_past_year_1549m_23 
+prop_elig_dcp_23 
+p_elig_prep_23 
+p_elig_on_prep_23 
+prop_1564_onprep_23 
+prevalence1549w_23 
+prevalence1549m_23 
+incidence1549w_23 
+incidence1549m_23 
+p_diag_w_23 
+p_diag_m_23 
+p_onart_diag_w_23 
+p_onart_diag_m_23 
+p_vl1000_23 
+prevalence_vg1000_23 
+p_onart_vl1000_w_23 
+p_onart_vl1000_m_23 
+;
+run;
+
+
+
+
+
+
+
+
+
+
+/*
   
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
@@ -1555,9 +1639,6 @@ if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
 if netdaly500_3 = min_netdaly500 then lowest_netdaly=3;
 if netdaly500_4 = min_netdaly500 then lowest_netdaly=4;
 
-
-
-/*
 
 dcost_hiv_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
@@ -1630,37 +1711,9 @@ d_p_ai_no_arv_e_inm_50y_3_2 = p_ai_no_arv_e_inm_50y_3 - p_ai_no_arv_e_inm_50y_2;
 
 */
 
-label 
-
-Percent of women aged 15-49 who have previously tested for HIV
-Percent of men aged 15-49 who have previously tested for HIV
-Percent of women aged 15-49 who have tested for HIV in the past 1 year
-Percent of men aged 15-49 who have tested for HIV in the past 1 year
-Percent of adults age 15-64 with indication for DCP/PrEP
-Percent of people with a current PrEP indication who take PrEP
-Percent of HIV negative adults aged 15-49 who are taking PrEP
-HIV prevalence in women age 15-49
-HIV prevalence in men age 15-49
-HIV incidence in women age 15-49 (/100 person years)  
-HIV incidence in men age 15-49 (/100 person years)  
-
-Proportion of HIV positive women age 15+ who are diagnosed  
-Proportion of diagnosed HIV+ women on ART
-Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)
-Of adult population, proportion with viral load > 1000 copies/mL (age 15+)
-Of women on ART, proportion with VL < 1000
-Of men on ART, proportion with VL < 1000
 
 
-
-
-
-* table 1;
-
-proc means   data = b.w_dcp_cab_b  n p50 p5 p95 min max;  
-var prevalence1549w_23 prevalence1549m_23 incidence1549_23 p_diag_23 p_onart_diag_23 p_onart_vl1000_23 p_vl1000_23 prevalence_vg1000_23   ;
-run;
-
+/*
 
 
 proc means   data = b.w_dcp_cab_b  n p50 p5 p95 min max;  
@@ -1753,31 +1806,6 @@ dcost_prep_inj_50y_1 dcost_prep_inj_50y_2 dcost_prep_inj_50y_3 dcost_prep_inj_50
 ;
 run;
 
-
-/*
-
-Percent of women aged 15-49 who have previously tested for HIV
-Percent of men aged 15-49 who have previously tested for HIV
-Percent of women aged 15-49 who have tested for HIV in the past 1 year
-Percent of men aged 15-49 who have tested for HIV in the past 1 year
-Percent of adults age 15-64 with indication for DCP/PrEP
-Percent of people with a current PrEP indication who take PrEP
-Percent of HIV negative adults aged 15-49 who are taking PrEP
-HIV prevalence in women age 15-49
-HIV prevalence in men age 15-49
-HIV incidence in women age 15-49 (/100 person years)  
-HIV incidence in men age 15-49 (/100 person years)  
-
-Proportion of HIV positive women age 15+ who are diagnosed  
-Proportion of diagnosed HIV+ women on ART
-Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)
-Of adult population, proportion with viral load > 1000 copies/mL (age 15+)
-Of women on ART, proportion with VL < 1000
-Of men on ART, proportion with VL < 1000
-
-*/
-
-/*
 
 * table 2;
 
