@@ -30,6 +30,8 @@ prop_prep_any = (n_prep_any / n_alive) * 100;
 
 %let single_var = n_death_hiv     ;
 
+p_elig_prep
+p_elig_dcp
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
