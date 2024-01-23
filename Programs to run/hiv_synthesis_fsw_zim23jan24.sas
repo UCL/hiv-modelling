@@ -908,7 +908,7 @@ non_hiv_tb_risk = 0.0005;
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
-%include "/home/rmjllob/Zim_parameters1.sas";
+%include "/home/rmjllob/Zim_parameters2.sas";
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
