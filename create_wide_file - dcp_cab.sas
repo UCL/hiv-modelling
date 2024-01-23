@@ -1630,6 +1630,29 @@ d_p_ai_no_arv_e_inm_50y_3_2 = p_ai_no_arv_e_inm_50y_3 - p_ai_no_arv_e_inm_50y_2;
 
 */
 
+label 
+
+Percent of women aged 15-49 who have previously tested for HIV
+Percent of men aged 15-49 who have previously tested for HIV
+Percent of women aged 15-49 who have tested for HIV in the past 1 year
+Percent of men aged 15-49 who have tested for HIV in the past 1 year
+Percent of adults age 15-64 with indication for DCP/PrEP
+Percent of people with a current PrEP indication who take PrEP
+Percent of HIV negative adults aged 15-49 who are taking PrEP
+HIV prevalence in women age 15-49
+HIV prevalence in men age 15-49
+HIV incidence in women age 15-49 (/100 person years)  
+HIV incidence in men age 15-49 (/100 person years)  
+
+Proportion of HIV positive women age 15+ who are diagnosed  
+Proportion of diagnosed HIV+ women on ART
+Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)
+Of adult population, proportion with viral load > 1000 copies/mL (age 15+)
+Of women on ART, proportion with VL < 1000
+Of men on ART, proportion with VL < 1000
+
+
+
 
 
 * table 1;
@@ -1731,16 +1754,34 @@ dcost_prep_inj_50y_1 dcost_prep_inj_50y_2 dcost_prep_inj_50y_3 dcost_prep_inj_50
 run;
 
 
+/*
 
+Percent of women aged 15-49 who have previously tested for HIV
+Percent of men aged 15-49 who have previously tested for HIV
+Percent of women aged 15-49 who have tested for HIV in the past 1 year
+Percent of men aged 15-49 who have tested for HIV in the past 1 year
+Percent of adults age 15-64 with indication for DCP/PrEP
+Percent of people with a current PrEP indication who take PrEP
+Percent of HIV negative adults aged 15-49 who are taking PrEP
+HIV prevalence in women age 15-49
+HIV prevalence in men age 15-49
+HIV incidence in women age 15-49 (/100 person years)  
+HIV incidence in men age 15-49 (/100 person years)  
 
+Proportion of HIV positive women age 15+ who are diagnosed  
+Proportion of diagnosed HIV+ women on ART
+Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)
+Of adult population, proportion with viral load > 1000 copies/mL (age 15+)
+Of women on ART, proportion with VL < 1000
+Of men on ART, proportion with VL < 1000
 
-
+*/
 
 /*
 
 * table 2;
 
-proc means  n mean p5 p95 min max;
+proc means  n mean p5 p95 min max clm;
 var 
 prop_elig_on_prep_20y_2 prop_elig_on_prep_20y_3  d_prop_elig_on_prep_20y_3_2
 prop_1564_onprep_20y_2  prop_1564_onprep_20y_3  d_prop_1564_onprep_20y_3_2
