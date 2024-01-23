@@ -5,8 +5,10 @@
 
 * include choice between pep and prep ;
 
-* just use PrEP testing to capture increased chance of starting while on DCP, and set Prob of 
+* just use PrEP testing to capture increased chance of starting while on DCP, and set prob of 
   starting PrEP following other testing to 0 for persons on DCP ? (leave as is for now) ;  
+
+* check on prop_tests_self code and resulting sensitivity of tests ;
 
 * make sure have all outputs needed for costing ;              
 

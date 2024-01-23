@@ -28,10 +28,8 @@ n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
 
-%let single_var = n_death_hiv     ;
+%let single_var = prop_elig_dcp     ;
 
-p_elig_prep
-p_elig_dcp
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
@@ -557,6 +555,63 @@ ods html close;
 
 
 
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of adults eligible for PrEP / DCP (eligibility criteria are the same for both)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (0 to 0.2  by 0.05 ) valueattrs=(size=10);
+
+label p50_p_elig_prep_0 = "status quo";
+label p50_p_elig_prep_1 = "dcp";
+label p50_p_elig_prep_2 = "cab";
+label p50_p_elig_prep_3 = "dcp + cab";
+
+  series  x=cald y=p50_p_elig_prep_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_elig_prep_0 	upper=p95_p_elig_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_elig_prep_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_elig_prep_1 	upper=p95_p_elig_prep_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_p_elig_prep_2/	lineattrs = (color=blue   thickness = 4);
+  band    x=cald lower=p5_p_elig_prep_2 	upper=p95_p_elig_prep_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_elig_prep_3/	lineattrs = (color=lilac  thickness = 4);
+  band    x=cald lower=p5_p_elig_prep_3 	upper=p95_p_elig_prep_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+*/
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of people eligible for DCP who are under DCP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (0 to 0.2  by 0.05 ) valueattrs=(size=10);
+
+label p50_prop_elig_dcp_0 = "status quo";
+label p50_prop_elig_dcp_1 = "dcp";
+label p50_prop_elig_dcp_2 = "cab";
+label p50_prop_elig_dcp_3 = "dcp + cab";
+
+  series  x=cald y=p50_prop_elig_dcp_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prop_elig_dcp_0 	upper=p95_prop_elig_dcp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_dcp_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_prop_elig_dcp_1 	upper=p95_prop_elig_dcp_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_dcp_2/	lineattrs = (color=blue   thickness = 4);
+  band    x=cald lower=p5_prop_elig_dcp_2 	upper=p95_prop_elig_dcp_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_dcp_3/	lineattrs = (color=lilac  thickness = 4);
+  band    x=cald lower=p5_prop_elig_dcp_3 	upper=p95_prop_elig_dcp_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+/*
+
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Percentage of adults taking PrEP";
@@ -889,7 +944,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 
 
@@ -919,8 +974,6 @@ ods html close;
 
 
 
-
-/*
 
 
 ods html;
