@@ -2223,7 +2223,7 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	*PrEP interventions;	*JAS Apr2023 and Oct23;
-	*option 15: Oral TDF/FTC PrEP for AGWY;	
+	*option 15: Oral TDF/FTC PrEP for AGYW;	
 	*option 16: Oral TDF/FTC PrEP for FSW;	
 	*option 17: Oral TDF/FTC PrEP for sero-discordant couples (SDC);	
 	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women (PLW);	
@@ -2267,7 +2267,7 @@ who may be dead and hence have caldate{t} missing;
 	end;
 	
 	* Oral PrEP; 	
-	*option 15: Oral TDF/FTC PrEP for AGWY;
+	*option 15: Oral TDF/FTC PrEP for AGYW;
 	if option = 15 then do;
 		*Following values need to change;
 		eff_rate_test_startprep_any=0.95;
@@ -14635,7 +14635,7 @@ if sdc = 1 then do;
 	if prep_vr = 1 then prep_vr_sdc = 1;
 end;
 prep_any_plw = 0; prep_oral_plw = 0; prep_inj_plw = 0; prep_vr_plw = 0;
-if sdc = 1 then do; 
+if plw = 1 then do; 
 	if prep_any = 1 then prep_any_plw = 1;
 	if prep_oral = 1 then prep_oral_plw = 1;
 	if prep_inj = 1 then prep_inj_plw = 1;
@@ -16775,6 +16775,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_i_m_1549_np + i_m_1549_np ; s_i_w_1549_np +  i_w_1549_np ;
 
+	s_sdc + sdc ;
+
 	/*resistance*/
 
 	s_tam1_ + tam1_ ; s_tam2_ + tam2_ ; s_tam3_ + tam3_ ; s_m184m_ + m184m_ ; s_k103m_ + k103m_ ; s_y181m_ + y181m_ ; s_g190m_ + g190m_ ; 
@@ -17399,7 +17401,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_pregnant_onart_vl_vhigh + pregnant_onart_vl_vhigh ; s_pregnant_onart_vl_vvhigh + pregnant_onart_vl_vvhigh ; 
 	s_birth_with_inf_child + birth_with_inf_child ; s_child_with_resistant_hiv + child_with_resistant_hiv ; s_give_birth_with_hiv + give_birth_with_hiv ;
 	s_onart_birth_with_inf_child_res + onart_birth_with_inf_child_res ; s_onart_birth_with_inf_child + onart_birth_with_inf_child ;	 
-	s_breastfeeding + breastfeeding ; 
+	s_breastfeeding + breastfeeding ; s_plw + plw;
 
 	/*circumcision*/
 
@@ -18580,7 +18582,8 @@ s_i_age1_w_np	s_i_age2_w_np	s_i_age3_w_np	s_i_age4_w_np	s_i_age5_w_np
 s_i_age1_m_newp s_i_age2_m_newp	s_i_age3_m_newp	s_i_age4_m_newp	s_i_age5_m_newp
 s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
-s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp
+s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp 
+s_sdc
 
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -18999,7 +19002,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child    
-s_breastfeeding
+s_breastfeeding s_plw
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -19532,6 +19535,7 @@ s_i_age1_m_newp s_i_age2_m_newp	s_i_age3_m_newp	s_i_age4_m_newp	s_i_age5_m_newp
 s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
 s_i_m_1549_np  s_i_w_1549_np   s_i_w_newp  s_i_m_newp
+s_sdc
 
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -19942,7 +19946,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child    
-s_breastfeeding
+s_breastfeeding s_plw
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -20689,6 +20693,7 @@ s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r 
 
 s_i_m_1549_np  s_i_w_1549_np    s_i_w_newp  s_i_m_newp
+s_sdc
  
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -21097,7 +21102,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child  
-s_breastfeeding
+s_breastfeeding s_plw
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
