@@ -2184,7 +2184,7 @@ end;
 * no prep use once vaccinated;
 if ever_vaccinated = 1 then do;  
 	eff_rate_choose_stop_prep_oral = 1;eff_rate_choose_stop_prep_inj = 1; eff_prob_prep_oral_b=0; 
-	eff_prob_prep_inj_b=0;eff_testfor_prep_oral=0;eff_testfor_prep_inj=0;
+	eff_prob_prep_inj_b=0;eff_testfor_prep_oral=0;eff_testfor_prep_inj=0; eff_prob_prep_any_restart_choice=0; prep_willingness_threshold=1;
 end;
 /*
 * this code added if want prep use to recover after vaccine effect expired;
