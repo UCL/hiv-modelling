@@ -600,8 +600,8 @@ newp_seed = 7;
 %sample(sw_prog_intensity, 1 2, 0.8 0.2);*1=low, 2=high;
 
 ***These parameters initially set for all SW programs and then overwritten below for high intensity programs;
-* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05, 0.10); *previously 0.10;
-* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02, 0.04); *previously 0.025;
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
 * effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
