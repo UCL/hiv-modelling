@@ -2,12 +2,13 @@
 
 
 
-* code at *** to be amended;
+* code at *** to be amended
+
+proportion of adults age 15-49
+also produce table of outputs for 1yr
 
 
-
-
-
+;
 
 
 
@@ -404,7 +405,15 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 
 * dcp;
+
 * prop_elig_dcp;				prop_elig_dcp = s_dcp / s_prep_any_elig;
+
+
+
+s_tested_tm1_prep_elig  s_tested_tm1_onprep  s_prep_tm1_remain_elig s_prep_tm1_remain_elig_onprep  s_prep_past3yr_cur_elig 
+s_prep_past3yr_cur_elig_onprep   s_dcp_tm1_remain_elig 	s_dcp_tm1_remain_elig_off_dcp   s_dcp_tm1  s_dcp_drop_off_this_period 
+
+
 
 
 * p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  * proportion of all newp for which person is on prep;

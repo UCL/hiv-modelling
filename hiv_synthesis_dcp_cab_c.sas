@@ -1,12 +1,6 @@
 
 *
 
-of those with a test in the last period, prop of eligible on prep
-proportion of prep/dcp eligible people who have taken prep in the past 3 years who remain on prep  
-proportion who are on dcp and remain eligible who drop off per 3 months
-proportion who were on dcp who drop off  
-
-
 * include choice between pep and prep ? (probably no need - just adjust prep cost according to proportion pep ?)  ;
 
 * some dcp cost fixed and some unit cost per 3 month dcp=1
@@ -5127,6 +5121,11 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 		end; 
 	end;
 end;
+
+
+* dcp; 
+
+if prep_any = 1 then date_last_took_prep = caldate{t};
 
 
 * tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
@@ -15412,7 +15411,34 @@ visit_prep_oral_dtc=0; if visit_prep_oral=3 then visit_prep_oral_dtc=1;	*drug pi
 
 dcp_no_prep = 0; if dcp=1 and prep_any ne 1 then dcp_no_prep = 1; 
 
+* to calculate: of those with a test in the last period, prop of eligible on prep;
+tested_tm1_prep_elig = 0; tested_tm1_onprep = 0;
+if tested_tm1 = 1 and prep_any_elig = 1 then do;  	
+	tested_tm1_prep_elig = 1; if prep_any = 1 then tested_tm1_onprep = 1; 
+end;
 
+* to calculate: proportion of prep/dcp eligible people who took prep in the last 3 months who remain on prep ; 
+prep_tm1_remain_elig = 0; prep_tm1_remain_elig_onprep = 0;
+if prep_any_tm1 = 1 and prep_any_elig = 1 then do;
+	prep_tm1_remain_elig = 1; if prep_any = 1 then prep_tm1_remain_elig_onprep = 1;
+end;
+
+* to calculate: proportion of prep/dcp eligible people who have taken prep in the past 3 years who remain on prep  ; 
+prep_past3yr_cur_elig = 0; prep_past3yr_cur_elig_onprep = 0;
+if 0 <= caldate{t} - date_last_took_prep < 3 and prep_any_elig = 1 then do;
+	prep_past3yr_cur_elig = 1; if prep_any = 1 then prep_past3yr_cur_elig_onprep = 1;
+end;
+
+* to calculate: proportion who are on dcp and remain eligible who drop off per 3 months ;
+dcp_tm1_remain_elig = 0; dcp_tm1_remain_elig_off_dcp = 0;
+if dcp_tm1 = 1 and prep_any_elig = 1 then do;
+	dcp_tm1_remain_elig = 1; if dcp=0 then dcp_tm1_remain_elig_off_dcp = 1;
+end;
+
+
+* to calculate: proportion who were on dcp who drop off ;
+dcp_drop_off_this_period = 0; if dcp_tm1 = 1 and dcp = 0 then dcp_drop_off_this_period = 1;
+ 
 
 
 *added Mar2017;
@@ -16728,7 +16754,12 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_started_prep_any_hiv + started_prep_any_hiv;  s_pop_wide_tld_hiv + pop_wide_tld_hiv;  s_pop_wide_tld_prep_elig + pop_wide_tld_prep_elig ; 
 	s_pop_wide_tld_neg_prep_inelig + pop_wide_tld_neg_prep_inelig;
 
-	s_dcp + dcp;   s_dcp_no_prep + dcp_no_prep;
+	s_dcp + dcp;   s_dcp_no_prep + dcp_no_prep; 
+	s_tested_tm1_prep_elig + tested_tm1_prep_elig; s_tested_tm1_onprep + tested_tm1_onprep; s_prep_tm1_remain_elig + prep_tm1_remain_elig;
+	s_prep_tm1_remain_elig_onprep + prep_tm1_remain_elig_onprep;  s_prep_past3yr_cur_elig + prep_past3yr_cur_elig;
+	s_prep_past3yr_cur_elig_onprep + prep_past3yr_cur_elig_onprep;  s_dcp_tm1_remain_elig + dcp_tm1_remain_elig;
+	s_dcp_tm1_remain_elig_off_dcp + dcp_tm1_remain_elig_off_dcp;  s_dcp_tm1 + dcp_tm1 ; s_dcp_drop_off_this_period + dcp_drop_off_this_period;
+
 	
 	/*testing and diagnosis*/
 
@@ -18502,6 +18533,8 @@ s_prep_elig_onprep_vr
 s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 s_dcp  s_dcp_no_prep
+s_tested_tm1_prep_elig  s_tested_tm1_onprep  s_prep_tm1_remain_elig s_prep_tm1_remain_elig_onprep  s_prep_past3yr_cur_elig 
+s_prep_past3yr_cur_elig_onprep   s_dcp_tm1_remain_elig 	s_dcp_tm1_remain_elig_off_dcp   s_dcp_tm1  s_dcp_drop_off_this_period 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -19452,6 +19485,8 @@ s_prep_elig_onprep_vr
 s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 s_dcp   s_dcp_no_prep
+s_tested_tm1_prep_elig  s_tested_tm1_onprep  s_prep_tm1_remain_elig s_prep_tm1_remain_elig_onprep  s_prep_past3yr_cur_elig 
+s_prep_past3yr_cur_elig_onprep   s_dcp_tm1_remain_elig 	s_dcp_tm1_remain_elig_off_dcp   s_dcp_tm1  s_dcp_drop_off_this_period 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -21252,6 +21287,8 @@ s_prep_elig_onprep_vr
 s_prep_oral_restart_date_choice s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 s_dcp   s_dcp_no_prep
+s_tested_tm1_prep_elig  s_tested_tm1_onprep  s_prep_tm1_remain_elig s_prep_tm1_remain_elig_onprep  s_prep_past3yr_cur_elig 
+s_prep_past3yr_cur_elig_onprep   s_dcp_tm1_remain_elig 	s_dcp_tm1_remain_elig_off_dcp   s_dcp_tm1  s_dcp_drop_off_this_period 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
