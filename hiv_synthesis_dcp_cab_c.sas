@@ -1,13 +1,15 @@
 
+*
+
+of those with a test in the last period, prop of eligible on prep
+proportion of prep/dcp eligible people who have taken prep in the past 3 years who remain on prep  
+proportion who are on dcp and remain eligible who drop off per 3 months
+proportion who were on dcp who drop off  
 
 
+* include choice between pep and prep ? (probably no need - just adjust prep cost according to proportion pep ?)  ;
 
-* include choice between pep and prep ;
-
-* just use PrEP testing to capture increased chance of starting while on DCP, and set prob of 
-  starting PrEP following other testing to 0 for persons on DCP ? (leave as is for now) ;  
-
-* check on prop_tests_self code and resulting sensitivity of tests ;
+* some dcp cost fixed and some unit cost per 3 month dcp=1
 
 * make sure have all outputs needed for costing ;              
 
@@ -805,11 +807,19 @@ end;
 
 * DYNAMIC CHOICE PREVENTION (dcp);
 
-* rate_stop_dcp;				%sample_uniform(rate_stop_dcp, 0.01  0.03  0.1);
+* rate_stop_dcp;				%sample_uniform(rate_stop_dcp, 0.01  0.03  0.1);	
 * rate_start_dcp_not_prep ; 	%sample_uniform(rate_start_dcp_not_prep, 0.05  0.1  0.15);
 * incr_test_rate_dcp;			%sample_uniform(incr_test_rate_dcp, 2  3  5  10);
 
-* prop_tests_self;				%sample_uniform(prop_tests_self, 0.25  0.5  0.75);
+* prop_tests_self;				%sample_uniform(prop_tests_self, 0.05  0.1  0.20);
+
+								*	this applies after 2018, regardless of dcp. this determines the extent to which sensitivity of tests are lower on average;
+
+* add_prop_tests_self_dcp;		%sample_uniform(add_prop_tests_self_dcp, 0.1  0.3  0.5  0.7);
+
+								* 	this is the additional proportion of tests that are self tests for people on dcp - this determines the extent to which 
+									sens of a test is lower in people on dcp - we count tests done in people on dcp separately and will apply a lower cost 
+									accordingly;
 
 
 * POP WIDE TLD * ;
@@ -954,11 +964,10 @@ end;
 if hivtest_type=1 then do; sens_primary=0.86; sens_vct=0.98; spec_vct=1;     end; 
 
 else if hivtest_type=3 then do; 
-	if prop_tests_self = 0.25 then do; sens_primary=(3 * sens_primary_testtype3 + 0)/4;  sens_vct=((3 * 0.98) + (1 * 0.92))/4;  end;
-	if prop_tests_self = 0.5 then do; sens_primary=(2 * sens_primary_testtype3 + (2 * 0))/4;  sens_vct=((2 * 0.98) + (2 * 0.92))/4;   end;
-	if prop_tests_self = 0.75 then do; sens_primary=(3 * sens_primary_testtype3 + 0)/4; sens_vct=((1 * 0.98) + (3 * 0.92))/4;   end;
+ 	sens_primary= sens_primary_testtype3;  sens_vct=0.98;
 	spec_vct=0.992;
 	end;
+
 else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; end;
 
 
@@ -1697,6 +1706,7 @@ if low_preg_risk=1 then prob_pregnancy_b=0;
 * define effective max_freq_testing;
 eff_max_freq_testing = max_freq_testing;
 
+
 * define effectve rate of restart;
 eff_rate_restart = rate_restart;
 
@@ -2162,7 +2172,16 @@ end;
 
 *  ======================================================================================================================================== ;
 
+
 * dynamic choice prevention (dcp);
+
+* note this code applies regardless of dcp = 0 or 1;
+
+if caldate{t} < 2018 then eff_prop_tests_self = 0; if caldate{t} = 2018 then eff_prop_tests_self = prop_tests_self;
+
+sens_primary = (1 - eff_prop_tests_self) * sens_primary_testtype3; * self test sens zero for primary infection;
+sens_vct = (eff_prop_tests_self * 0.92) + ((1-eff_prop_tests_self) * 0.98);
+
 
 * becoming dcp = 1 ;
 
@@ -2175,6 +2194,7 @@ if dcp = 1 then do;
 		* effects of dcp (dynamic choice prevention) ; 
 		* dcp increases testing by incr_test_rate_dcp ;
 		eff_rate_test_startprep_any = 0.3 ;
+		eff_prop_tests_self = prop_tests_self + add_prop_tests_self_dcp;
 		eff_rate_choose_stop_prep_oral = 0.05 ; 		
 		eff_prob_prep_oral_b = 0.2;
 		if caldate{t} >= date_prep_inj_intro  then do; eff_rate_choose_stop_prep_inj = 0.05 ; eff_prob_prep_inj_b = 0.2; end;
@@ -2185,6 +2205,7 @@ if dcp = 1 then do;
 		if c < rate_stop_dcp or (prep_any_elig ne 1 and prep_any_elig_tm1 ne 1 and prep_any_elig_tm2 ne 1 and prep_any_elig_tm3 ne 1) 
 		or registd=1 then do; 
 			dcp=0; 
+			eff_prop_tests_self = prop_tests_self ;
 			* check if this below is what we want, or instead to revert to pre-dcp values for these;
 			eff_rate_test_startprep_any = 0;                      
 			eff_rate_choose_stop_prep_oral = 1;                            
@@ -4804,6 +4825,15 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 
 end;
+
+
+
+* dcp-cab;
+
+* so we can separate out dcp tests for cost purposes ;
+
+tested_dcp=0;  if dcp=1 and tested=1 then tested_dcp = 1;
+
 
 
 
@@ -16711,7 +16741,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tested_4p_m4049_ + tested_4p_m4049_ ; s_tested_4p_m5064_ + tested_4p_m5064_ ; s_tested_4p_w1549_ + tested_4p_w1549_ ; 
 	s_tested_4p_w1519_ + tested_4p_w1519_ ; s_tested_4p_w2024_ + tested_4p_w2024_ ; s_tested_4p_w2529_ + tested_4p_w2529_ ;
 	s_tested_4p_w3039_ + tested_4p_w3039_ ; s_tested_4p_w4049_ + tested_4p_w4049_ ; s_tested_4p_w5064_ + tested_4p_w5064_ ;
- 	s_tested_4p_sw + tested_4p_sw ; s_tested_sw + tested_sw;
+ 	s_tested_4p_sw + tested_4p_sw ; s_tested_sw + tested_sw;  s_tested_dcp + tested_dcp;
 	s_ever_tested_m1549_ + ever_tested_m1549_ ; s_ever_tested_m1519_ + ever_tested_m1519_ ;
     s_ever_tested_m2024_ + ever_tested_m2024_ ; s_ever_tested_m2529_ + ever_tested_m2529_ ; s_ever_tested_m3034_ + ever_tested_m3034_ ;
    	s_ever_tested_m3539_ + ever_tested_m3539_ ; s_ever_tested_m4044_ + ever_tested_m4044_ ; s_ever_tested_m4549_ + ever_tested_m4549_ ;
@@ -18478,7 +18508,7 @@ s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc s_tested_ancpd s_test_ancla
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
-s_tested_4p_sw	s_tested_sw
+s_tested_4p_sw	s_tested_sw  s_tested_dcp
 	s_tested_4p_w1549_prep_elig  s_tested_4p_m1549_prep_elig 
 
 
@@ -18845,7 +18875,7 @@ prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b pr
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
 artvis0_lower_adh  pop_wide_prep_adh_effect 
 
-rate_stop_dcp    rate_start_dcp_not_prep    incr_test_rate_dcp  prop_tests_self
+rate_stop_dcp    rate_start_dcp_not_prep    incr_test_rate_dcp  prop_tests_self  add_prop_tests_self_dcp
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
@@ -19428,7 +19458,7 @@ s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_ancl
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
-s_tested_4p_sw		s_tested_sw
+s_tested_4p_sw		s_tested_sw  s_tested_dcp
 s_tested_4p_m1549_prep_elig s_tested_4p_w1549_prep_elig
 
 s_ever_tested_m1549_  s_ever_tested_m1519_  s_ever_tested_m2024_  s_ever_tested_m2529_  s_ever_tested_m3034_  s_ever_tested_m3539_
@@ -21228,7 +21258,7 @@ s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_ancl
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		 s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
-s_tested_4p_sw		s_tested_sw s_tested_4p_m1549_prep_elig  s_tested_4p_w1549_prep_elig
+s_tested_4p_sw		s_tested_sw s_tested_4p_m1549_prep_elig  s_tested_4p_w1549_prep_elig s_tested_dcp
 
 s_ever_tested_m1549_  s_ever_tested_m1519_  s_ever_tested_m2024_  s_ever_tested_m2529_  s_ever_tested_m3034_  s_ever_tested_m3539_
 s_ever_tested_m4044_  s_ever_tested_m4549_  s_ever_tested_m5054_  s_ever_tested_m5559_  s_ever_tested_m6064_ 
@@ -21593,7 +21623,7 @@ inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wid
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 artvis0_lower_adh  pop_wide_prep_adh_effect 
 
-rate_stop_dcp    rate_start_dcp_not_prep    incr_test_rate_dcp  prop_tests_self
+rate_stop_dcp    rate_start_dcp_not_prep    incr_test_rate_dcp  prop_tests_self  add_prop_tests_self_dcp
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
