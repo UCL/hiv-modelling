@@ -10,10 +10,10 @@
 ;
 
 
-
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
+  libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc"; 
+ 
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";   
+libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc";  
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
@@ -15409,6 +15409,7 @@ visit_prep_oral_dtc=0; if visit_prep_oral=3 then visit_prep_oral_dtc=1;	*drug pi
 
 * dcp;
 
+
 dcp_no_prep = 0; if dcp=1 and prep_any ne 1 then dcp_no_prep = 1; 
 
 * to calculate: of those with a test in the last period, prop of eligible on prep;
@@ -15425,7 +15426,7 @@ end;
 
 * to calculate: proportion of prep/dcp eligible people who have taken prep in the past 3 years who remain on prep  ; 
 prep_past3yr_cur_elig = 0; prep_past3yr_cur_elig_onprep = 0;
-if 0 <= caldate{t} - date_last_took_prep < 3 and prep_any_elig = 1 then do;
+if 0 <= caldate&j  - date_last_took_prep < 3 and prep_any_elig = 1 then do;
 	prep_past3yr_cur_elig = 1; if prep_any = 1 then prep_past3yr_cur_elig_onprep = 1;
 end;
 
@@ -15435,10 +15436,10 @@ if dcp_tm1 = 1 and prep_any_elig = 1 then do;
 	dcp_tm1_remain_elig = 1; if dcp=0 then dcp_tm1_remain_elig_off_dcp = 1;
 end;
 
-
 * to calculate: proportion who were on dcp who drop off ;
 dcp_drop_off_this_period = 0; if dcp_tm1 = 1 and dcp = 0 then dcp_drop_off_this_period = 1;
  
+
 
 
 *added Mar2017;
@@ -17403,10 +17404,12 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-/*
+
 
 proc freq; tables cald hiv ; where death=.; run;
 
+
+/*
 
 proc print;
 var caldate&j dcp_program  dcp  prep_any_elig prep_oral prep_inj  tested  
@@ -19063,6 +19066,8 @@ values from that 3 month period
 
 
 data cum_l&da2; set cum_l&da1 sums;
+
+proc print; run;
 
 
 data s;set sums;

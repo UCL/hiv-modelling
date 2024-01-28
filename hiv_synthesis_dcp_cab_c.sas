@@ -15425,7 +15425,7 @@ end;
 
 * to calculate: proportion of prep/dcp eligible people who have taken prep in the past 3 years who remain on prep  ; 
 prep_past3yr_cur_elig = 0; prep_past3yr_cur_elig_onprep = 0;
-if 0 <= caldate{t} - date_last_took_prep < 3 and prep_any_elig = 1 then do;
+if 0 <= caldate&j - date_last_took_prep < 3 and prep_any_elig = 1 then do;
 	prep_past3yr_cur_elig = 1; if prep_any = 1 then prep_past3yr_cur_elig_onprep = 1;
 end;
 
