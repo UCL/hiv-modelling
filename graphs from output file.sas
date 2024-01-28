@@ -1,14 +1,14 @@
 
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_d_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_e_out\";
 
 proc printto ;
 
 ods html close;
 
 data b;
-set a.l_vaccine_d_y;
+set a.l_vaccine_e_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -25,7 +25,7 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-%let single_var = n_alive           ;
+%let single_var = p_diag                      ;
 
 * p_agege15_ever_vaccinated  p_cur_full_vac_e_1564_ prop_elig_on_prep  prop_1564_hivneg_onprep  n_tested  p_diag  p_onart_diag  p_onart_vl1000_  incidence1549_;
 
@@ -172,6 +172,7 @@ ods html close;
 
 
 
+
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Proportion of adults age 15-64 with any current vaccine efficacy";
@@ -190,7 +191,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 
 ods html;
@@ -213,7 +214,6 @@ run;quit;
 ods html close;
 
 
-/*
 
 ods html;
 proc sgplot data=d ; 
@@ -232,7 +232,6 @@ label p50_prop_elig_on_prep_1 = "vaccine";
 run;quit;
 
 ods html close;
-
 
 
 
@@ -274,7 +273,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 
 ods html;
@@ -296,6 +295,7 @@ run;quit;
 ods html close;
 
 
+/*
 
 ods html;
 proc sgplot data=d ; 

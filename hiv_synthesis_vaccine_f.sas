@@ -1,14 +1,14 @@
 
-  libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc";  
+* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";   
+  libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 3000  ; 
+%let population = 100000  ; 
 %let year_interv = 2040;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -356,7 +356,7 @@ newp_seed = 7;
 * test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	       , 
+								0.0001	0.0003 	0.0010 	0.0100 	0.0200 	       , 
 								0.30	0.35	0.25	0.05	0.05 	     );  * vaccine ;
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
@@ -472,7 +472,7 @@ newp_seed = 7;
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.15 	0.35 	0.50, 
 
-								0.60 	0.30	0.05	0.04	0.01	); * change sep22 for pop_wide_tld;
+								0.50 	0.30	0.10	0.09	0.01	); * vaccine ;
 
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
@@ -511,7 +511,7 @@ newp_seed = 7;
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
 * rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.02 0.05, 
-														0.35 0.40 0.20 0.04 0.01);  * change sep22 for pop_wide_tld;
+														0.35 0.37 0.20 0.06 0.02);  * vaccine ;
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
@@ -2173,6 +2173,7 @@ if 0 <= caldate{t}-date_last_vaccine < vaccine_duration_effect then current_vacc
 if vaccine_duration_effect <= caldate{t}-date_last_vaccine < vaccine_duration_effect*2 then current_vaccine_efficacy = vaccine_efficacy/2;  
 if vaccine_duration_effect*2 <= caldate{t}-date_last_vaccine then current_vaccine_efficacy = 0;  
 
+
 /*
 * this code added if want prep use to recover after vaccine effect expired - note that prep_any_elig currently set to 0 if ever_vaccainated=1
 if ever_vaccinated ne 1 then do; 
@@ -2189,6 +2190,7 @@ if current_vaccine_efficacy ne vaccine_efficacy then do;
 	eff_testfor_prep_oral = a_eff_testfor_prep_oral;	eff_testfor_prep_inj = a_eff_testfor_prep_inj;
 end;
 */
+
 
 
 * Oral PREP introduction in fsw/agyw 2018; 
@@ -16772,7 +16774,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/* vaccine */
 
 	s_current_full_vaccine_efficacy + current_full_vaccine_efficacy; s_current_half_vaccine_efficacy + current_half_vaccine_efficacy;
-	s_current_full_vaccine_e_1564 + current_full_vaccine_e_1564; s_current_half_vaccine_e_1564 + current_helf_vaccine_e_1564; 
+	s_current_full_vaccine_e_1564 + current_full_vaccine_e_1564; s_current_half_vaccine_e_1564 + current_half_vaccine_e_1564; 
 	s_ever_vaccinated + ever_vaccinated; 
 
 	/*VL and CD4*/
@@ -17379,16 +17381,16 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-
+/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
 
-proc freq; tables ever_vaccinated * prep_any ;
-where death = . and caldate&j ge 2039 ; 
+proc print; var age ever_vaccinated current_vaccine_efficacy ;
+where death = .;
 run;
 
-
+*/
 
 
 
@@ -19947,7 +19949,6 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim starts in 1984 JAS Sep23;
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -20154,9 +20155,7 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=0);
 
-data a.dfdf ;  set r1 ;
-
-
+data a ;  set r1 ;
 
 data r1 ; set a ;
 
@@ -20318,9 +20317,7 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=7,f=8,g=349,h=356,j=355,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=356,s=0);		
 
-*/
-
-data r1 ; set a.dfdf ;
+data r1 ; set a ;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=1);
