@@ -415,7 +415,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_prep_tm1_elig_onprep;		p_prep_tm1_elig_onprep = s_prep_tm1_remain_elig_onprep / s_prep_tm1_remain_elig ;
 
 * proportion of prep/dcp eligible people who have taken prep in the past 3 years who remain on prep  ; 
-* p_prep_past3yr_cur_elig_onprep; p_prep_past3yr_cur_elig_onprep = s_prep_past3yr_cur_elig_onprep / s_prep_past3yr_cur_elig ;
+* p_prep_past3yr_elig_onprep; p_prep_past3yr_elig_onprep = s_prep_past3yr_cur_elig_onprep / s_prep_past3yr_cur_elig ;
 
 * to calculate: proportion who are on dcp and remain eligible who drop off per 3 months ;
 * p_dcp_tm1_rema_elig_off_dcp;	p_dcp_tm1_rema_elig_off_dcp = s_dcp_tm1_remain_elig_off_dcp / s_dcp_tm1_remain_elig ; 	   
@@ -1023,7 +1023,7 @@ run;
 * n_hiv;						n_hiv = s_hivge15 * &sf;
 * n_alive;						n_alive = s_alive * &sf;
 
-* p_alive_1549;					p_alive1549 = (s_alive1549_w + s_alive1549_m) / s_alive;
+* p_alive_1549;					p_alive_1549 = (s_alive1549_w + s_alive1549_m) / s_alive;
 
 * n_art_initiation;				n_art_initiation = s_art_initiation * 4 * &sf;
 * n_restart;					n_restart = s_restart * 4 * &sf;
@@ -1093,7 +1093,7 @@ p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai
 prop_ever_tested_1549 p_tested_past_year_1549 prop_onprep_1549
 prop_ever_tested_1549m prop_ever_tested_1549w  p_tested_past_year_1549m p_tested_past_year_1549w
 
-p_tested_tm1_elig_onprep  p_alive_1549  p_prep_tm1_elig_onprep  p_prep_past3yr_cur_elig_onprep  p_dcp_tm1_rema_elig_off_dcp  p_dcp_drop_off_this_period
+p_tested_tm1_elig_onprep  p_alive_1549  p_prep_tm1_elig_onprep  p_prep_past3yr_elig_onprep  p_dcp_tm1_rema_elig_off_dcp  p_dcp_drop_off_this_period
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1318,7 +1318,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_ai_naive_no_pmtct_e_inm); %var(v=prop_ever_tested_1549); %var(v=p_tested_past_year_1549); %var(v=prop_onprep_1549);
 %var(v=prop_ever_tested_1549m);  %var(v=prop_ever_tested_1549w);  %var(v=p_tested_past_year_1549m);  %var(v=p_tested_past_year_1549w); 
 
-%var(v=p_tested_tm1_elig_onprep);  %var(v=p_alive_1549);  %var(v=p_prep_tm1_elig_onprep);  %var(v=p_prep_past3yr_cur_elig_onprep);  
+%var(v=p_tested_tm1_elig_onprep);  %var(v=p_alive_1549);  %var(v=p_prep_tm1_elig_onprep);  %var(v=p_prep_past3yr_elig_onprep);  
 %var(v=p_dcp_tm1_rema_elig_off_dcp);  %var(v=p_dcp_drop_off_this_period);
 
 
@@ -1355,7 +1355,7 @@ pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm
 prop_ever_tested_1549 p_tested_past_year_1549 prop_onprep_1549 prop_ever_tested_1549m prop_ever_tested_1549w
 p_tested_past_year_1549m p_tested_past_year_1549w
-p_tested_tm1_elig_onprep  p_alive_1549  p_prep_tm1_elig_onprep  p_prep_past3yr_cur_elig_onprep  p_dcp_tm1_rema_elig_off_dcp  p_dcp_drop_off_this_period
+p_tested_tm1_elig_onprep  p_alive_1549  p_prep_tm1_elig_onprep  p_prep_past3yr_elig_onprep  p_dcp_tm1_rema_elig_off_dcp  p_dcp_drop_off_this_period
 
 ;
 
@@ -1577,7 +1577,7 @@ p_onart_vl1000_m_23 = "Of men on ART, proportion with VL < 1000"
 p_alive_1549_23 = "Proportion of adults aged 15-49";
 p_tested_tm1_elig_onprep_23 =  "Of those with a test in the last period, prop of eligible on PrEP";
 p_prep_tm1_elig_onprep_23 = "Proportion of PrEP/DCP eligible people who took prep in the last 3 months who remain on PrEP" ; 
-p_prep_past3yr_cur_elig_onprep_23 = "Proportion of PrEP/DCP eligible people who have taken prep in the past 3 years who remain on PrEP"  ; 
+p_prep_past3yr_elig_onprep_23 = "Proportion of PrEP/DCP eligible people who have taken prep in the past 3 years who remain on PrEP"  ; 
 p_dcp_tm1_rema_elig_off_dcp_23 = "Proportion who are on DCP and remain eligible who drop off per 3 months" ;
 p_dcp_drop_off_this_period_23 = "Proportion who were on DCP 3 months ago who drop off this period";
 
@@ -1589,6 +1589,16 @@ label
 &l._50y_2 = "DCP",
 &l._50y_3 = "Cab-LA PrEP",
 &l._50y_4 = "DCP + Cab-LA PrEP";
+
+%mend;
+
+%macro lab(z=);
+
+label 
+&z._50y_1 = "status quo",
+&z._50y_2 = "DCP",
+&z._50y_3 = "Cab-LA PrEP",
+&z._50y_4 = "DCP + Cab-LA PrEP";
 
 %mend;
 
@@ -1628,147 +1638,147 @@ run;
 
 ods html;
 data s; set b.w_dcp_cab_c;
-%lab(l=prop_ever_tested_1549w); 
+%lab(z=prop_ever_tested_1549w); 
 title "Proportion of women aged 15-49 who have previously tested for HIV";
 proc means  n p50 p5 p95 ;  
 var prop_ever_tested_1549w_1y_1 prop_ever_tested_1549w_1y_2 prop_ever_tested_1549w_1y_3 prop_ever_tested_1549w_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=prop_ever_tested_1549m); 
+%lab(z=prop_ever_tested_1549m); 
 title "Proportion of men aged 15-49 who have previously tested for HIV";
 proc means  n p50 p5 p95 ;  
 var prop_ever_tested_1549m_1y_1 prop_ever_tested_1549m_1y_2 prop_ever_tested_1549m_1y_3 prop_ever_tested_1549m_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_tested_past_year_1549w); 
+%lab(z=p_tested_past_year_1549w); 
 title "Proportion of women aged 15-49 who have tested for HIV in the past 1 year";
 proc means    n p50 p5 p95 ;  
 var p_tested_past_year_1549w_1y_1 p_tested_past_year_1549w_1y_2 p_tested_past_year_1549w_1y_3 p_tested_past_year_1549w_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_tested_past_year_1549m); 
+%lab(z=p_tested_past_year_1549m); 
 title "Proportion of men aged 15-49 who have tested for HIV in the past 1 year";
 proc means    n p50 p5 p95 ;  
 var p_tested_past_year_1549m_1y_1 p_tested_past_year_1549m_1y_2 p_tested_past_year_1549m_1y_3 p_tested_past_year_1549m_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=prop_elig_dcp); 
+%lab(z=prop_elig_dcp); 
 title "Proportion of people who are eligible for DCP (PrEP) who are under DCP";
 proc means    n p50 p5 p95 ;  
 var prop_elig_dcp_1y_1 prop_elig_dcp_1y_2 prop_elig_dcp_1y_3 prop_elig_dcp_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_elig_prep); 
+%lab(z=p_elig_prep); 
 title "Proportion of adults age 15-64 with indication for DCP/PrEP";
 proc means    n p50 p5 p95 ;  
 var p_elig_prep_1y_1 p_elig_prep_1y_2 p_elig_prep_1y_3 p_elig_prep_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=prop_elig_on_prep); 
+%lab(z=prop_elig_on_prep); 
 title "Proportion of people with a current PrEP indication who take PrEP";
 proc means    n p50 p5 p95 ;  
 var prop_elig_on_prep_1y_1 prop_elig_on_prep_1y_2 prop_elig_on_prep_1y_3 prop_elig_on_prep_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=prop_1564_onprep); 
+%lab(z=prop_1564_onprep); 
 title "Proportion of HIV negative adults aged 15-64 who are taking PrEP";
 proc means    n p50 p5 p95 ;  
 var prop_1564_onprep_1y_1 prop_1564_onprep_1y_2 prop_1564_onprep_1y_3 prop_1564_onprep_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=prevalence1549w); 
+%lab(z=prevalence1549w); 
 title "HIV prevalence in women age 15-49";
 proc means    n p50 p5 p95 ;  
 var prevalence1549w_1y_1 prevalence1549w_1y_2 prevalence1549w_1y_3 prevalence1549w_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=prevalence1549m); 
+%lab(z=prevalence1549m); 
 title "HIV prevalence in men age 15-49";
 proc means    n p50 p5 p95 ;  
-var prevalence1549m_1y_1 prevalence_1549m_1y_2 prevalence1549m_1y_3 prevalence1549m_1y_4;
+var prevalence1549m_1y_1 prevalence1549m_1y_2 prevalence1549m_1y_3 prevalence1549m_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=incidence1549w); 
+%lab(z=incidence1549w); 
 title "HIV incidence in women age 15-49";
 proc means    n p50 p5 p95 ;  
 var incidence1549w_1y_1 incidence1549w_1y_2 incidence1549w_1y_3 incidence1549w_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=incidence1549m); 
+%lab(z=incidence1549m); 
 title "HIV incidence in men age 15-49";
 proc means    n p50 p5 p95 ;  
 var incidence1549m_1y_1 incidence1549m_1y_2 incidence1549m_1y_3 incidence1549m_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_diag_w); 
+%lab(z=p_diag_w); 
 title "Proportion of HIV positive women age 15+ who are diagnosed";
 proc means    n p50 p5 p95 ;  
 var p_diag_w_1y_1 p_diag_w_1y_2 p_diag_w_1y_3 p_diag_w_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_diag_m); 
+%lab(z=p_diag_m); 
 title "Proportion of HIV positive men age 15+ who are diagnosed";
 proc means    n p50 p5 p95 ;  
 var p_diag_m_1y_1 p_diag_m_1y_2 p_diag_m_1y_3 p_diag_m_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_onart_diag_w); 
+%lab(z=p_onart_diag_w); 
 title "Proportion of diagnosed HIV+ women on ART";
 proc means    n p50 p5 p95 ;  
 var p_onart_diag_w_1y_1 p_onart_diag_w_1y_2 p_onart_diag_w_1y_3 p_onart_diag_w_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_onart_diag_m); 
+%lab(z=p_onart_diag_m); 
 title "Proportion of diagnosed HIV+ men on ART";
 proc means    n p50 p5 p95 ;  
 var p_onart_diag_m_1y_1 p_onart_diag_m_1y_2 p_onart_diag_m_1y_3 p_onart_diag_m_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_vl1000); 
+%lab(z=p_vl1000); 
 title "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)";
 proc means    n p50 p5 p95 ;  
 var p_vl1000_1y_1 p_vl1000_1y_2 p_vl1000_1y_3 p_vl1000_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=prevalence_vg1000); 
+%lab(z=prevalence_vg1000); 
 title "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)";
 proc means    n p50 p5 p95 ;  
 var prevalence_vg1000_1y_1 prevalence_vg1000_1y_2 prevalence_vg1000_1y_3 prevalence_vg1000_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_onart_vl1000_w); 
+%lab(z=p_onart_vl1000_w); 
 title "Of women on ART, proportion with VL < 1000";
 proc means    n p50 p5 p95 ;  
 var p_onart_vl1000_w_1y_1 p_onart_vl1000_w_1y_2 p_onart_vl1000_w_1y_3 p_onart_vl1000_w_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_onart_vl1000_m); 
+%lab(z=p_onart_vl1000_m); 
 title "Of men on ART, proportion with VL < 1000";
 proc means    n p50 p5 p95 ;  
 var p_onart_vl1000_m_1y_1 p_onart_vl1000_m_1y_2 p_onart_vl1000_m_1y_3 p_onart_vl1000_m_1y_4;
 run;
 
 data s; set b.w_dcp_cab_c;
-%lab(l=p_alive_1549); 
+%lab(z=p_alive_1549); 
 title "Proportion of adults aged 15-49";
 proc means    n p50 p5 p95 ;  
 var p_alive_1549_1y_1 p_alive_1549_1y_2 p_alive_1549_1y_3 p_alive_1549_1y_4;

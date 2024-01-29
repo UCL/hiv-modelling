@@ -28,14 +28,14 @@ n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
 
-%let single_var = prop_elig_dcp     ;
+%let single_var = n_alive           ;
 
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 1200  ;
+%let nfit = 1192  ;
 
 %let year_end = 2070.00 ;
 run;
@@ -242,7 +242,7 @@ by cald;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
-/*
+
 
 ods html;
 proc sgplot data=d ; 
@@ -258,17 +258,19 @@ label p50_n_alive_3 = "dcp + cab";
 
  series  x=cald y=p50_n_alive_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_alive_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_alive_1 	upper=p95_n_alive_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_n_alive_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_n_alive_2 	upper=p95_n_alive_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
- series  x=cald y=p50_n_alive_3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_n_alive_3 	upper=p95_n_alive_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_n_alive_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_n_alive_1 	upper=p95_n_alive_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_n_alive_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_n_alive_2 	upper=p95_n_alive_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+ series  x=cald y=p50_n_alive_3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_n_alive_3 	upper=p95_n_alive_3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
+
+/*
 
 
 ods html;
@@ -285,12 +287,12 @@ label p50_n_tested_3 = "dcp + cab";
 
  series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_tested_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_n_tested_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_n_tested_2 	upper=p95_n_tested_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
- series  x=cald y=p50_n_tested_3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_n_tested_3 	upper=p95_n_tested_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_n_tested_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_n_tested_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_n_tested_2 	upper=p95_n_tested_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+ series  x=cald y=p50_n_tested_3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_n_tested_3 	upper=p95_n_tested_3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -310,10 +312,10 @@ label p50_p_onart_2 = "option_2";
 
   series  x=cald y=p50_p_onart_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_onart_0 	upper=p95_p_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_onart_1 	upper=p95_p_onart_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_2/	lineattrs = (color=blue  thickness = 4);
-  band    x=cald lower=p5_p_onart_2 	upper=p95_p_onart_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_onart_1 	upper=p95_p_onart_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_2/	lineattrs = (color=rose  thickness = 4);
+  band    x=cald lower=p5_p_onart_2 	upper=p95_p_onart_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
 
 run;quit;
 
@@ -336,12 +338,12 @@ label p50_p_vl1000__3 = "dcp + cab";
 
  series  x=cald y=p50_p_vl1000__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_vl1000__1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_p_vl1000__2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_p_vl1000__2 	upper=p95_p_vl1000__2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
- series  x=cald y=p50_p_vl1000__3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_p_vl1000__3 	upper=p95_p_vl1000__3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_p_vl1000__1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_p_vl1000__2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_p_vl1000__2 	upper=p95_p_vl1000__2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+ series  x=cald y=p50_p_vl1000__3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_p_vl1000__3 	upper=p95_p_vl1000__3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -365,14 +367,14 @@ label p50_p_adhav_hi_onart_5 = "option_5";
 
   series  x=cald y=p50_p_adhav_hi_onart_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_adhav_hi_onart_0 	upper=p95_p_adhav_hi_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_adhav_hi_onart_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_adhav_hi_onart_1 	upper=p95_p_adhav_hi_onart_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_p_adhav_hi_onart_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_adhav_hi_onart_1 	upper=p95_p_adhav_hi_onart_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
   series  x=cald y=p50_p_adhav_hi_onart_2/	lineattrs = (color=red   thickness = 4);
   band    x=cald lower=p5_p_adhav_hi_onart_2 	upper=p95_p_adhav_hi_onart_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
   series  x=cald y=p50_p_adhav_hi_onart_3/	lineattrs = (color=yellow thickness = 4);
   band    x=cald lower=p5_p_adhav_hi_onart_3 	upper=p95_p_adhav_hi_onart_3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
-  series  x=cald y=p50_p_adhav_hi_onart_4/	lineattrs = (color=blue  thickness = 4);
-  band    x=cald lower=p5_p_adhav_hi_onart_4 	upper=p95_p_adhav_hi_onart_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_adhav_hi_onart_4/	lineattrs = (color=rose  thickness = 4);
+  band    x=cald lower=p5_p_adhav_hi_onart_4 	upper=p95_p_adhav_hi_onart_4  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
   series  x=cald y=p50_p_adhav_hi_onart_5/	lineattrs = (color=orange thickness = 4);
   band    x=cald lower=p5_p_adhav_hi_onart_5 	upper=p95_p_adhav_hi_onart_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
@@ -398,12 +400,12 @@ label p50_incidence1549__3 = "dcp + cab";
 
  series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
- series  x=cald y=p50_incidence1549__3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_incidence1549__3 	upper=p95_incidence1549__3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549__1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549__2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+ series  x=cald y=p50_incidence1549__3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_incidence1549__3 	upper=p95_incidence1549__3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -422,8 +424,8 @@ label mean_prop_inf_w_sw_1 = "option_1";
 
   series  x=cald y=mean_prop_inf_w_sw_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_prop_inf_w_sw_0 	upper=p95_prop_inf_w_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=mean_prop_inf_w_sw_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_prop_inf_w_sw_1 	upper=p95_prop_inf_w_sw_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=mean_prop_inf_w_sw_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_prop_inf_w_sw_1 	upper=p95_prop_inf_w_sw_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
 
 run;quit;
 
@@ -445,12 +447,12 @@ label p50_prevalence1549__3 = "dcp + cab";
 
  series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_prevalence1549__2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_prevalence1549__2 	upper=p95_prevalence1549__2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
- series  x=cald y=p50_prevalence1549__3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_prevalence1549__3 	upper=p95_prevalence1549__3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence1549__2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_prevalence1549__2 	upper=p95_prevalence1549__2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+ series  x=cald y=p50_prevalence1549__3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_prevalence1549__3 	upper=p95_prevalence1549__3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -471,8 +473,8 @@ label p50_prevalence_vg1000__2 = "option_2";
 
   series  x=cald y=p50_prevalence_vg1000__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_prevalence_vg1000__0 	upper=p95_prevalence_vg1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_prevalence_vg1000__1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence_vg1000__1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
   series  x=cald y=p50_prevalence_vg1000__2/	lineattrs = (color=red   thickness = 4);
   band    x=cald lower=p5_prevalence_vg1000__2 	upper=p95_prevalence_vg1000__2  / transparency=0.9 fillattrs = (color=red  ) legendlabel= "90% range";
 
@@ -495,8 +497,8 @@ label p50_n_infected_primary_2 = "option_2";
 
   series  x=cald y=p50_n_infected_primary_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_infected_primary_0 	upper=p95_n_infected_primary_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_infected_primary_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_infected_primary_1 	upper=p95_n_infected_primary_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_n_infected_primary_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_n_infected_primary_1 	upper=p95_n_infected_primary_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
   series  x=cald y=p50_n_infected_primary_2/	lineattrs = (color=red   thickness = 4);
   band    x=cald lower=p5_n_infected_primary_2 	upper=p95_n_infected_primary_2  / transparency=0.9 fillattrs = (color=red  ) legendlabel= "90% range";
 
@@ -519,8 +521,8 @@ label p50_n_vg1000__2 = "option_2";
 
   series  x=cald y=p50_n_vg1000__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_vg1000__0 	upper=p95_n_vg1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_vg1000__1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_vg1000__1 	upper=p95_n_vg1000__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_n_vg1000__1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_n_vg1000__1 	upper=p95_n_vg1000__1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
   series  x=cald y=p50_n_vg1000__2/	lineattrs = (color=red   thickness = 4);
   band    x=cald lower=p5_n_vg1000__2 	upper=p95_n_vg1000__2  / transparency=0.9 fillattrs = (color=red  ) legendlabel= "90% range";
 
@@ -542,12 +544,12 @@ label p50_n_prep_any_3 = "dcp + cab";
 
   series  x=cald y=p50_n_prep_any_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_prep_any_0 	upper=p95_n_prep_any_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_prep_any_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_prep_any_1 	upper=p95_n_prep_any_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_n_prep_any_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_n_prep_any_2 	upper=p95_n_prep_any_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_n_prep_any_3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_n_prep_any_3 	upper=p95_n_prep_any_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_n_prep_any_1 	upper=p95_n_prep_any_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_n_prep_any_2 	upper=p95_n_prep_any_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_n_prep_any_3 	upper=p95_n_prep_any_3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -570,18 +572,18 @@ label p50_p_elig_prep_3 = "dcp + cab";
 
   series  x=cald y=p50_p_elig_prep_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_elig_prep_0 	upper=p95_p_elig_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_elig_prep_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_elig_prep_1 	upper=p95_p_elig_prep_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_p_elig_prep_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_p_elig_prep_2 	upper=p95_p_elig_prep_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_p_elig_prep_3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_p_elig_prep_3 	upper=p95_p_elig_prep_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_p_elig_prep_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_elig_prep_1 	upper=p95_p_elig_prep_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_p_elig_prep_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_p_elig_prep_2 	upper=p95_p_elig_prep_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+  series  x=cald y=p50_p_elig_prep_3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_p_elig_prep_3 	upper=p95_p_elig_prep_3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
-*/
+
 
 
 ods html;
@@ -597,19 +599,19 @@ label p50_prop_elig_dcp_3 = "dcp + cab";
 
   series  x=cald y=p50_prop_elig_dcp_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_prop_elig_dcp_0 	upper=p95_prop_elig_dcp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_prop_elig_dcp_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_prop_elig_dcp_1 	upper=p95_prop_elig_dcp_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_prop_elig_dcp_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_prop_elig_dcp_2 	upper=p95_prop_elig_dcp_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_prop_elig_dcp_3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_prop_elig_dcp_3 	upper=p95_prop_elig_dcp_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_dcp_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_prop_elig_dcp_1 	upper=p95_prop_elig_dcp_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_dcp_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_prop_elig_dcp_2 	upper=p95_prop_elig_dcp_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_dcp_3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_prop_elig_dcp_3 	upper=p95_prop_elig_dcp_3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
 
-/*
+
 
 
 ods html;
@@ -625,12 +627,12 @@ label p50_prop_prep_any_3 = "dcp + cab";
 
   series  x=cald y=p50_prop_prep_any_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_prop_prep_any_0 	upper=p95_prop_prep_any_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_prop_prep_any_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_prop_prep_any_1 	upper=p95_prop_prep_any_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_prop_prep_any_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_prop_prep_any_2 	upper=p95_prop_prep_any_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_prop_prep_any_3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_prop_prep_any_3 	upper=p95_prop_prep_any_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_prop_prep_any_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_prop_prep_any_1 	upper=p95_prop_prep_any_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_prop_prep_any_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_prop_prep_any_2 	upper=p95_prop_prep_any_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+  series  x=cald y=p50_prop_prep_any_3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_prop_prep_any_3 	upper=p95_prop_prep_any_3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -651,12 +653,12 @@ label p50_prop_elig_on_prep_3 = "dcp + cab";
 
   series  x=cald y=p50_prop_elig_on_prep_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_prop_elig_on_prep_0 	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_prop_elig_on_prep_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_prop_elig_on_prep_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_prop_elig_on_prep_2 	upper=p95_prop_elig_on_prep_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_prop_elig_on_prep_3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_prop_elig_on_prep_3 	upper=p95_prop_elig_on_prep_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_on_prep_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_on_prep_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_2 	upper=p95_prop_elig_on_prep_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+  series  x=cald y=p50_prop_elig_on_prep_3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_3 	upper=p95_prop_elig_on_prep_3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -677,12 +679,12 @@ label p50_p_diag_3 = "dcp + cab";
 
   series  x=cald y=p50_p_diag_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_diag_0 	upper=p95_p_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_diag_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_diag_1 	upper=p95_p_diag_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_p_diag_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_p_diag_2 	upper=p95_p_diag_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_p_diag_3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_p_diag_3 	upper=p95_p_diag_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_p_diag_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_diag_1 	upper=p95_p_diag_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_p_diag_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_p_diag_2 	upper=p95_p_diag_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+  series  x=cald y=p50_p_diag_3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_p_diag_3 	upper=p95_p_diag_3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -703,8 +705,8 @@ label p50_p_onart_diag_2 = "option_2";
 
   series  x=cald y=p50_p_onart_diag_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_onart_diag_0 	upper=p95_p_onart_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_diag_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_onart_diag_1 	upper=p95_p_onart_diag_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_diag_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_onart_diag_1 	upper=p95_p_onart_diag_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_diag_2/	lineattrs = (color=red    thickness = 4);
   band    x=cald lower=p5_p_onart_diag_2 	upper=p95_p_onart_diag_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
 
@@ -726,8 +728,8 @@ label p50_prop_w_1549_sw_2 = "option_2";
 
   series  x=cald y=p50_prop_w_1549_sw_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_prop_w_1549_sw_0 	upper=p95_prop_w_1549_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_prop_w_1549_sw_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_prop_w_1549_sw_1 	upper=p95_prop_w_1549_sw_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_prop_w_1549_sw_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_prop_w_1549_sw_1 	upper=p95_prop_w_1549_sw_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
   series  x=cald y=p50_prop_w_1549_sw_2/	lineattrs = (color=red    thickness = 4);
   band    x=cald lower=p5_prop_w_1549_sw_2 	upper=p95_prop_w_1549_sw_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
 
@@ -750,8 +752,8 @@ label p50_p_inf_diag_2 = "option_2";
 
   series  x=cald y=p50_p_inf_diag_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_inf_diag_0 	upper=p95_p_inf_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_diag_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_inf_diag_1 	upper=p95_p_inf_diag_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_diag_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_inf_diag_1 	upper=p95_p_inf_diag_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
   series  x=cald y=p50_p_inf_diag_2/	lineattrs = (color=red    thickness = 4);
   band    x=cald lower=p5_p_inf_diag_2 	upper=p95_p_inf_diag_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
 
@@ -773,10 +775,10 @@ label p50_p_newp_ge1_age1549__2 = "option_2";
 
   series  x=cald y=p50_p_newp_ge1_age1549__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_newp_ge1_age1549__0 	upper=p95_p_newp_ge1_age1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_newp_ge1_age1549__1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_newp_ge1_age1549__1 	upper=p95_p_newp_ge1_age1549__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_p_newp_ge1_age1549__2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_p_newp_ge1_age1549__2 	upper=p95_p_newp_ge1_age1549__2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_newp_ge1_age1549__1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_newp_ge1_age1549__1 	upper=p95_p_newp_ge1_age1549__1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_p_newp_ge1_age1549__2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_p_newp_ge1_age1549__2 	upper=p95_p_newp_ge1_age1549__2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
   series  x=cald y=p50_p_newp_ge1_age1549__3/	lineattrs = (color=orange thickness = 4);
   band    x=cald lower=p5_p_newp_ge1_age1549__3 	upper=p95_p_newp_ge1_age1549__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
@@ -799,10 +801,10 @@ label p50_p_onart_vl1000__3 = "option_3";
 
   series  x=cald y=p50_p_onart_vl1000__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_vl1000__2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_p_onart_vl1000__2 	upper=p95_p_onart_vl1000__2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_vl1000__2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_p_onart_vl1000__2 	upper=p95_p_onart_vl1000__2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_vl1000__3/	lineattrs = (color=orange   thickness = 4);
   band    x=cald lower=p5_p_onart_vl1000__3 	upper=p95_p_onart_vl1000__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
@@ -827,14 +829,14 @@ label p50_p_onart_vl1000_sw_5 = "option_5";
 
   series  x=cald y=p50_p_onart_vl1000_sw_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_onart_vl1000_sw_0 	upper=p95_p_onart_vl1000_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_vl1000_sw_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_onart_vl1000_sw_1 	upper=p95_p_onart_vl1000_sw_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_vl1000_sw_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_onart_vl1000_sw_1 	upper=p95_p_onart_vl1000_sw_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_vl1000_sw_2/	lineattrs = (color=red    thickness = 4);
   band    x=cald lower=p5_p_onart_vl1000_sw_2 	upper=p95_p_onart_vl1000_sw_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_vl1000_sw_3/	lineattrs = (color=yellow thickness = 4);
   band    x=cald lower=p5_p_onart_vl1000_sw_3 	upper=p95_p_onart_vl1000_sw_3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_vl1000_sw_4/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_p_onart_vl1000_sw_4 	upper=p95_p_onart_vl1000_sw_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_vl1000_sw_4/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_p_onart_vl1000_sw_4 	upper=p95_p_onart_vl1000_sw_4  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_vl1000_sw_5/	lineattrs = (color=orange thickness = 4);
   band    x=cald lower=p5_p_onart_vl1000_sw_5 	upper=p95_p_onart_vl1000_sw_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
@@ -858,10 +860,10 @@ label p50_test_prop_positive_3 = "option_3";
 
   series  x=cald y=p50_test_prop_positive_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_test_prop_positive_0 	upper=p95_test_prop_positive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_test_prop_positive_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_test_prop_positive_1 	upper=p95_test_prop_positive_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_test_prop_positive_2/	lineattrs = (color=blue    thickness = 4);
-  band    x=cald lower=p5_test_prop_positive_2 	upper=p95_test_prop_positive_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_test_prop_positive_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_test_prop_positive_1 	upper=p95_test_prop_positive_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_test_prop_positive_2/	lineattrs = (color=rose    thickness = 4);
+  band    x=cald lower=p5_test_prop_positive_2 	upper=p95_test_prop_positive_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
   series  x=cald y=p50_test_prop_positive_3/	lineattrs = (color=orange thickness = 4);
   band    x=cald lower=p5_test_prop_positive_3 	upper=p95_test_prop_positive_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
@@ -884,8 +886,8 @@ label p50_n_undiag_2 = "option_2";
 
   series  x=cald y=p50_n_undiag_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_undiag_0 	upper=p95_n_undiag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_undiag_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_undiag_1 	upper=p95_n_undiag_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_n_undiag_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_n_undiag_1 	upper=p95_n_undiag_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
   series  x=cald y=p50_n_undiag_2/	lineattrs = (color=red    thickness = 4);
   band    x=cald lower=p5_n_undiag_2 	upper=p95_n_undiag_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
 
@@ -907,10 +909,10 @@ label p50_n_vg1000_np_3 = "option_3";
 
   series  x=cald y=p50_n_vg1000_np_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_vg1000_np_0 	upper=p95_n_vg1000_np_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_vg1000_np_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_vg1000_np_1 	upper=p95_n_vg1000_np_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_n_vg1000_np_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_n_vg1000_np_2 	upper=p95_n_vg1000_np_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_n_vg1000_np_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_n_vg1000_np_1 	upper=p95_n_vg1000_np_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_n_vg1000_np_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_n_vg1000_np_2 	upper=p95_n_vg1000_np_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
   series  x=cald y=p50_n_vg1000_np_3/	lineattrs = (color=orange thickness = 4);
   band    x=cald lower=p5_n_vg1000_np_3 	upper=p95_n_vg1000_np_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
@@ -933,10 +935,10 @@ label p50_p_mcirc_3 = "option_3";
 
   series  x=cald y=p50_p_mcirc_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_mcirc_0 	upper=p95_p_mcirc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_mcirc_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_mcirc_1 	upper=p95_p_mcirc_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_p_mcirc_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_p_mcirc_2 	upper=p95_p_mcirc_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_mcirc_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_p_mcirc_1 	upper=p95_p_mcirc_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_p_mcirc_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_p_mcirc_2 	upper=p95_p_mcirc_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
   series  x=cald y=p50_p_mcirc_3/	lineattrs = (color=orange thickness = 4);
   band    x=cald lower=p5_p_mcirc_3 	upper=p95_p_mcirc_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
@@ -961,12 +963,12 @@ label p50_n_death_hiv_3 = "dcp + cab";
 
   series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_death_hiv_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_n_death_hiv_2/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_n_death_hiv_2 	upper=p95_n_death_hiv_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_n_death_hiv_3/	lineattrs = (color=lilac  thickness = 4);
-  band    x=cald lower=p5_n_death_hiv_3 	upper=p95_n_death_hiv_3  / transparency=0.9 fillattrs = (color=lilac) legendlabel= "90% range";
+  series  x=cald y=p50_n_death_hiv_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_n_death_hiv_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_n_death_hiv_2 	upper=p95_n_death_hiv_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+  series  x=cald y=p50_n_death_hiv_3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_n_death_hiv_3 	upper=p95_n_death_hiv_3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -988,10 +990,10 @@ label p50_n_hiv_2 = "option_2";
 
   series  x=cald y=p50_n_hiv_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_hiv_0 	upper=p95_n_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_hiv_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_hiv_1 	upper=p95_n_hiv_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_n_hiv_2/	lineattrs = (color=blue    thickness = 4);
-  band    x=cald lower=p5_n_hiv_2 	upper=p95_n_hiv_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_n_hiv_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_n_hiv_1 	upper=p95_n_hiv_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_n_hiv_2/	lineattrs = (color=rose    thickness = 4);
+  band    x=cald lower=p5_n_hiv_2 	upper=p95_n_hiv_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
 
 run;quit;
 
@@ -1011,10 +1013,10 @@ label p50_n_onart_2 = "option_2";
 
   series  x=cald y=p50_n_onart_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_n_onart_0 	upper=p95_n_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_onart_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_onart_1 	upper=p95_n_onart_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_n_onart_2/	lineattrs = (color=blue    thickness = 4);
-  band    x=cald lower=p5_n_onart_2 	upper=p95_n_onart_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_n_onart_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_n_onart_1 	upper=p95_n_onart_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_n_onart_2/	lineattrs = (color=rose    thickness = 4);
+  band    x=cald lower=p5_n_onart_2 	upper=p95_n_onart_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
 
 run;quit;
 
@@ -1034,10 +1036,10 @@ label p50_cost_2 = "option_2";
 
   series  x=cald y=p50_cost_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_cost_0 	upper=p95_cost_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_cost_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_cost_1 	upper=p95_cost_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_cost_2/	lineattrs = (color=blue    thickness = 4);
-  band    x=cald lower=p5_cost_2 	upper=p95_cost_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_cost_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_cost_1 	upper=p95_cost_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_cost_2/	lineattrs = (color=rose    thickness = 4);
+  band    x=cald lower=p5_cost_2 	upper=p95_cost_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
 
 run;quit;
 
@@ -1060,14 +1062,14 @@ label p50_prop_w_vlg1_5 = "option_5";
 
   series  x=cald y=p50_prop_w_vlg1_0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_prop_w_vlg1_0 	upper=p95_prop_w_vlg1_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_prop_w_vlg1_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_prop_w_vlg1_1 	upper=p95_prop_w_vlg1_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_prop_w_vlg1_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_prop_w_vlg1_1 	upper=p95_prop_w_vlg1_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
   series  x=cald y=p50_prop_w_vlg1_2/	lineattrs = (color=red    thickness = 4);
   band    x=cald lower=p5_prop_w_vlg1_2 	upper=p95_prop_w_vlg1_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
   series  x=cald y=p50_prop_w_vlg1_3/	lineattrs = (color=yellow thickness = 4);
   band    x=cald lower=p5_prop_w_vlg1_3 	upper=p95_prop_w_vlg1_3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
-  series  x=cald y=p50_prop_w_vlg1_4/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_prop_w_vlg1_4 	upper=p95_prop_w_vlg1_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_prop_w_vlg1_4/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_prop_w_vlg1_4 	upper=p95_prop_w_vlg1_4  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
   series  x=cald y=p50_prop_w_vlg1_5/	lineattrs = (color=orange thickness = 4);
   band    x=cald lower=p5_prop_w_vlg1_5 	upper=p95_prop_w_vlg1_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
