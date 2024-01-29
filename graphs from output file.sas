@@ -1,14 +1,14 @@
 
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_e_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_f_out\";
 
 proc printto ;
 
 ods html close;
 
 data b;
-set a.l_vaccine_e_y;
+set a.l_vaccine_f_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;

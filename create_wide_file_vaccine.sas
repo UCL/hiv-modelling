@@ -4,15 +4,15 @@
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_e_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_f_out\";
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_e;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_f;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 
-proc sort data=b.k_vaccine_e; 
+proc sort data=b.k_vaccine_f; 
 by run cald option;
 run;
 
@@ -22,7 +22,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_e ;
+set b.k_vaccine_f ;
 
 
 if cald=2024   ;
@@ -42,7 +42,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_e sf;
+merge b.k_vaccine_f sf;
 by run ;
 
 * preparatory code ;
@@ -347,11 +347,11 @@ s_hiv = s_hivge15 ;
 
 * n_ever_vaccinated;			n_ever_vaccinated = max(0, s_ever_vaccinated * &sf);
 * p_agege15_ever_vaccinated;	p_agege15_ever_vaccinated = max(0, s_ever_vaccinated) / s_alive;
-* p_current_full_vaccine_eff;	p_current_full_vaccine_eff = s_current_full_vaccine_efficacy / s_alive;
-* p_current_half_vaccine_eff;	p_current_half_vaccine_eff = s_current_half_vaccine_efficacy / s_alive;
-* p_current_any_vaccine_eff;	p_current_any_vaccine_eff = p_current_full_vaccine_eff + p_current_half_vaccine_eff;
-* p_current_full_vac_e_1564;	p_current_full_vac_e_1564 = s_current_full_vaccine_e_1564 / s_alive1564;
-* p_current_half_vac_e_1564;	p_current_half_vac_e_1564 = s_current_half_vaccine_e_1564 / s_alive1564;
+* p_current_full_vaccine_fff;	p_current_full_vaccine_fff = s_current_full_vaccine_ffficacy / s_alive;
+* p_current_half_vaccine_fff;	p_current_half_vaccine_fff = s_current_half_vaccine_ffficacy / s_alive;
+* p_current_any_vaccine_fff;	p_current_any_vaccine_fff = p_current_full_vaccine_fff + p_current_half_vaccine_fff;
+* p_current_full_vac_e_1564;	p_current_full_vac_e_1564 = s_current_full_vaccine_f_1564 / s_alive1564;
+* p_current_half_vac_e_1564;	p_current_half_vac_e_1564 = s_current_half_vaccine_f_1564 / s_alive1564;
 * p_current_any_vac_e_1564;		p_current_any_vac_e_1564 = p_current_full_vac_e_1564 + p_current_half_vac_e_1564;
 
 
@@ -1042,7 +1042,7 @@ n_started_prep_inj_hiv n_started_prep_any_hiv   p_prep_adhg80  n_em_inm_res_o_ca
 
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai_naive_no_pmtct_e_inm
 
-n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_eff  p_current_half_vaccine_eff  p_current_any_vaccine_eff
+n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_fff  p_current_half_vaccine_fff  p_current_any_vaccine_fff
 p_current_full_vac_e_1564 p_current_half_vac_e_1564  p_current_any_vac_e_1564
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1099,9 +1099,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_vaccine_e_y; set y;  
+data    b.l_vaccine_f_y; set y;  
 
-data y ; set b.l_vaccine_e_y; 
+data y ; set b.l_vaccine_f_y; 
 
 
   options nomprint;
@@ -1259,8 +1259,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prop_prep_tot5yrs); %var(v=n_start_rest_prep_inj_hiv); %var(v=n_prep_inj);%var(v=p_prep_adhg80);
 %var(v=p_nactive_art_start_lt1p5);   %var(v=p_nactive_art_start_lt2);   %var(v=p_nactive_art_start_lt3); 
 %var(v=n_ai_naive_no_pmtct_e_inm); 
-%var(v=n_ever_vaccinated);   %var(v=p_agege15_ever_vaccinated);   %var(v=p_current_full_vaccine_eff);   %var(v=p_current_half_vaccine_eff);   
-%var(v=p_current_any_vaccine_eff); 
+%var(v=n_ever_vaccinated);   %var(v=p_agege15_ever_vaccinated);   %var(v=p_current_full_vaccine_fff);   %var(v=p_current_half_vaccine_fff);   
+%var(v=p_current_any_vaccine_fff); 
 %var(v=p_current_full_vac_e_1564);  %var(v=p_current_half_vac_e_1564);   %var(v=p_current_any_vac_e_1564); 
 
 data   b.wide_outputs; merge 
@@ -1294,7 +1294,7 @@ dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
 pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm
-n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_eff  p_current_half_vaccine_eff  p_current_any_vaccine_eff
+n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_fff  p_current_half_vaccine_fff  p_current_any_vaccine_fff
 p_current_full_vac_e_1564 p_current_half_vac_e_1564  p_current_any_vac_e_1564
 ;
 
@@ -1464,7 +1464,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  b.w_vaccine_e     ; 
+  data  b.w_vaccine_f     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1509,33 +1509,33 @@ if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
 
 * table 1;
 
-proc means   data = b.w_vaccine_e  n p50 p5 p95 min max;  
+proc means   data = b.w_vaccine_f  n p50 p5 p95 min max;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   ;
 run;
 
 
 
-proc means   data = b.w_vaccine_e  n p50 p5 p95 min max;  
+proc means   data = b.w_vaccine_f  n p50 p5 p95 min max;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24 
 prop_elig_on_prep_24  ;
 run;
 
 
-proc means data = b.w_vaccine_e  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_f  n p50 p5 p95 ;  
 var
 prop_1564_onprep_30y_1  prop_1564_onprep_30y_2   
 d_prop_1564_onprep_30y_2_1  
 ;
 
 
-proc means data = b.w_vaccine_e  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_f  n p50 p5 p95 ;  
 var 
 prop_elig_on_prep_30y_1 prop_elig_on_prep_30y_2  
 d_prop_elig_on_prep_30y_2_1  
 ;
 
 
-proc means data = b.w_vaccine_e  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_f  n p50 p5 p95 ;  
 var
 prop_prep_inj_30y_1  prop_prep_inj_30y_2  
 d_prop_prep_inj_30y_2_1  
@@ -1543,7 +1543,7 @@ d_prop_prep_inj_30y_2_1
 
 
 
-proc means  data = b.w_vaccine_e  n mean p50 p5 p95 clm;  
+proc means  data = b.w_vaccine_f  n mean p50 p5 p95 clm;  
 var
 incidence1549_30y_1 incidence1549_30y_2  
 r_incidence1549_30y_2_1 
@@ -1552,7 +1552,7 @@ run;
 
 
 ods html;
-proc means  data = b.w_vaccine_e  n mean clm;  
+proc means  data = b.w_vaccine_f  n mean clm;  
 var
 incidence1549_30y_1 incidence1549_30y_2 
 r_incidence1549_30y_2_1 
