@@ -347,11 +347,11 @@ s_hiv = s_hivge15 ;
 
 * n_ever_vaccinated;			n_ever_vaccinated = max(0, s_ever_vaccinated * &sf);
 * p_agege15_ever_vaccinated;	p_agege15_ever_vaccinated = max(0, s_ever_vaccinated) / s_alive;
-* p_current_full_vaccine_fff;	p_current_full_vaccine_fff = s_current_full_vaccine_ffficacy / s_alive;
-* p_current_half_vaccine_fff;	p_current_half_vaccine_fff = s_current_half_vaccine_ffficacy / s_alive;
-* p_current_any_vaccine_fff;	p_current_any_vaccine_fff = p_current_full_vaccine_fff + p_current_half_vaccine_fff;
-* p_current_full_vac_e_1564;	p_current_full_vac_e_1564 = s_current_full_vaccine_f_1564 / s_alive1564;
-* p_current_half_vac_e_1564;	p_current_half_vac_e_1564 = s_current_half_vaccine_f_1564 / s_alive1564;
+* p_current_full_vaccine_eff;	p_current_full_vaccine_eff = s_current_full_vaccine_efficacy / s_alive;
+* p_current_half_vaccine_eff;	p_current_half_vaccine_eff = s_current_half_vaccine_efficacy / s_alive;
+* p_current_any_vaccine_eff;	p_current_any_vaccine_eff = p_current_full_vaccine_eff + p_current_half_vaccine_eff;
+* p_current_full_vac_e_1564;	p_current_full_vac_e_1564 = s_current_full_vaccine_e_1564 / s_alive1564;
+* p_current_half_vac_e_1564;	p_current_half_vac_e_1564 = s_current_half_vaccine_e_1564 / s_alive1564;
 * p_current_any_vac_e_1564;		p_current_any_vac_e_1564 = p_current_full_vac_e_1564 + p_current_half_vac_e_1564;
 
 
@@ -1042,7 +1042,7 @@ n_started_prep_inj_hiv n_started_prep_any_hiv   p_prep_adhg80  n_em_inm_res_o_ca
 
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai_naive_no_pmtct_e_inm
 
-n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_fff  p_current_half_vaccine_fff  p_current_any_vaccine_fff
+n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_eff  p_current_half_vaccine_eff  p_current_any_vaccine_eff
 p_current_full_vac_e_1564 p_current_half_vac_e_1564  p_current_any_vac_e_1564
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1259,8 +1259,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prop_prep_tot5yrs); %var(v=n_start_rest_prep_inj_hiv); %var(v=n_prep_inj);%var(v=p_prep_adhg80);
 %var(v=p_nactive_art_start_lt1p5);   %var(v=p_nactive_art_start_lt2);   %var(v=p_nactive_art_start_lt3); 
 %var(v=n_ai_naive_no_pmtct_e_inm); 
-%var(v=n_ever_vaccinated);   %var(v=p_agege15_ever_vaccinated);   %var(v=p_current_full_vaccine_fff);   %var(v=p_current_half_vaccine_fff);   
-%var(v=p_current_any_vaccine_fff); 
+%var(v=n_ever_vaccinated);   %var(v=p_agege15_ever_vaccinated);   %var(v=p_current_full_vaccine_eff);   %var(v=p_current_half_vaccine_eff);   
+%var(v=p_current_any_vaccine_eff); 
 %var(v=p_current_full_vac_e_1564);  %var(v=p_current_half_vac_e_1564);   %var(v=p_current_any_vac_e_1564); 
 
 data   b.wide_outputs; merge 
@@ -1294,7 +1294,7 @@ dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
 pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm
-n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_fff  p_current_half_vaccine_fff  p_current_any_vaccine_fff
+n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_eff  p_current_half_vaccine_eff  p_current_any_vaccine_eff
 p_current_full_vac_e_1564 p_current_half_vac_e_1564  p_current_any_vac_e_1564
 ;
 

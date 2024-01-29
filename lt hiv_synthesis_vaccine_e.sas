@@ -17384,7 +17384,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 proc freq; tables cald hiv ; where death=.; run;
 
 
-proc freq; tables ever_vaccinated * prep_any ;
+proc freq; tables  prep_any  ever_vaccinated * prep_any ;
 where death = . and caldate&j ge 2039 ; 
 run;
 
