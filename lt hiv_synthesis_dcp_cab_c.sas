@@ -20,7 +20,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc";
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 3000  ; 
+%let population = 1000  ; 
 %let year_interv = 2024.5;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -17404,8 +17404,6 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-
-
 proc freq; tables cald hiv ; where death=.; run;
 
 
@@ -19067,8 +19065,6 @@ values from that 3 month period
 
 data cum_l&da2; set cum_l&da1 sums;
 
-proc print; run;
-
 
 data s;set sums;
 do i=1 to &population; 
@@ -19992,6 +19988,9 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=5,h=12,j=10,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=5,h=12,j=11,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=5,h=12,j=12,s=0);
+
+/*
+
 * 1992;
 %update_r1(da1=1,da2=2,e=5,f=6,g=9,h=16,j=13,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=9,h=16,j=14,s=0);
@@ -20155,6 +20154,9 @@ end;
 * 2024;
 %update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
+
+
+
 
 data a; set r1;
 
@@ -20975,7 +20977,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
 
-
+*/
 
 
 
@@ -21002,29 +21004,17 @@ data r1; set a;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*
 
-data x; set cum_l1;
-
-file "/home/rmjlxxx/Scratch/_output_base_28_05_21_&dataset_id";  
+ libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc"; 
 
 
-put   
- 
+data a.xzxz; set cum_l1;
 
-  libname b '/home/rmjlaph/Scratch/';
-* libname b '/home/rmjllob/Scratch/';
-* libname b '/home/rmjlvca/Scratch/';
-* libname b '/home/rmjljes/Scratch/';
-
-*/
-
-
-data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
+* file "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc\testt";  
 
 
 keep
-
+ 
 
 
 /*general*/
