@@ -2246,7 +2246,7 @@ who may be dead and hence have caldate{t} missing;
 		date_prep_oral_intro=&year_interv;
 		if caldate{t}=&year_interv then do;
 			pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;		* From Vales code, this is to match oral PrEP uptake to Zim target MIHPSA JAS Jul23;
-			pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);
+/*			pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);*/	* Commented out here as this is assigned later on ;	* JAS Jan24;
 		end;
 	end;
 	* All vaginal ring PrEP options;
@@ -2254,7 +2254,7 @@ who may be dead and hence have caldate{t} missing;
 		date_prep_vr_intro=&year_interv;
 		if caldate{t}=&year_interv then do;
 			pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3;			* MIHPSA: can adjust this to match vr PrEP uptake to oral PrEP target JAS Jul23;
-			pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5);	* women only;
+/*			pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5);	* women only;*/
 		end;
 	end;
 	* All injectable PrEP options;
@@ -2262,7 +2262,7 @@ who may be dead and hence have caldate{t} missing;
 		date_prep_inj_intro=&year_interv;
 		if caldate{t}=&year_interv then do;
 			pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match inj PrEP uptake to oral PrEP target JAS Jul23;
-			pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);
+/*			pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);*/
 		end;
 	end;
 	
