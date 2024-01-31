@@ -28,7 +28,7 @@ n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
 
-%let single_var = n_alive           ;
+%let single_var = prop_elig_on_prep              ;
 
 
 proc sort data=b; by cald run ;run;
@@ -243,6 +243,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
+/*
 
 ods html;
 proc sgplot data=d ; 
@@ -270,8 +271,6 @@ run;quit;
 ods html close;
 
 
-/*
-
 
 ods html;
 proc sgplot data=d ; 
@@ -297,6 +296,7 @@ label p50_n_tested_3 = "dcp + cab";
 run;quit;
 
 ods html close;
+
 
 
 
@@ -639,6 +639,8 @@ run;quit;
 ods html close;
 
 
+*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -664,6 +666,8 @@ run;quit;
 
 ods html close;
 
+
+/*
 
 
 ods html;

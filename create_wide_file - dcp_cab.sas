@@ -1785,10 +1785,6 @@ var p_alive_1549_1y_1 p_alive_1549_1y_2 p_alive_1549_1y_3 p_alive_1549_1y_4;
 run;
 
 
-
-
-
-
 ods html;
 data s; set b.w_dcp_cab_c;
 %lab(l=prop_ever_tested_1549w); 
