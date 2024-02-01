@@ -6,7 +6,7 @@
 libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a;
-set a.fsw_zim_19jan24;  
+set a.fsw_zim_23jan24;  
 
 if option=1 then delete; ***first look at overall incidence according to baseline SW program (option=1= amesthist);
 proc sort;by run;
@@ -34,6 +34,7 @@ run;
 
 data b;
 set a1;
+
 
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
@@ -125,6 +126,9 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 
 * n_tested_sw;					n_tested_sw = s_tested_sw * sf_2023 * 4;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
+* prop_sw_onprep_prog; 			if (s_sw_1564 - s_hiv_sw) gt 0 and s_sw_program_visit gt 0 then prop_sw_onprep_prog = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
+* prop_sw_onprep_noprog; 		if (s_sw_1564 - s_hiv_sw) gt 0 and s_sw_program_visit = 0 then prop_sw_onprep_noprog = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
+
 
 * p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
@@ -136,11 +140,14 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 
 *sti;							p_sti_sw = s_sti_sw/s_sw_1564;
 
+
+proc means p50;var incidence_sw;where cald in (2023, 2023.25, 2023.5, 2023.75) and sw_trans_matrix=3;run;
+
 proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 317;
+%let nfit = 293;
 %let year_end = 2050.00 ;
 run;
 proc sort;by cald option ;run;
@@ -158,7 +165,8 @@ p_totdur_sw_0to3_  p_totdur_sw_3to5_  p_totdur_sw_6to9_  p_totdur_sw_10to19_
 p_fsw_newp0_  av_sw_newp  p_newp_sw
 
 p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
-prevalence_sw  incidence_sw p_sti_sw incidence1549_;
+prevalence_sw  incidence_sw p_sti_sw incidence1549_
+prop_sw_onprep_prog prop_sw_onprep_noprog;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro transpose;
@@ -197,7 +205,7 @@ run;
 data d;
 merge b
 a1   a2   a3   a4   a5   a6   a7   a8   a9   a10  a11  a12  a13  a14  a15  a16  a17  a18  a19  a20  a21  a22  a23  a24  a25  a26 
-a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42/*  a43  a44  a45  a46  a47  a48  a49  a50  a51  a52 
+a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42  a43  a44  a45 /* a46  a47  a48  a49  a50  a51  a52 
 a53  a54  a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
 a79  a80  a81  a82  a83  a84  a85  a86  a87  a88  a89  a90  a91  a92  a93  a94  a95  a96  a97  a98  a99  a100 a101 a102 a103 a104
 a105 a106 a107 a108 a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130
@@ -216,7 +224,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\22jan2023.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\23jan2023.doc' startpage=never; 
 
 
 proc sgplot data=e; 
@@ -463,6 +471,24 @@ label p50_p_fsw_newp0_ = "Median";
 
 series  x=cald y=p50_p_fsw_newp0_  / 	 lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_fsw_newp0_	 upper=p95_p_fsw_newp0_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of FSW on PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2030 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.02 ) valueattrs=(size=10);
+
+label p50_prop_sw_onprep = "Median";
+label p50_prop_sw_onprep_prog = "SW prog";
+label p50_prop_sw_onprep_noprog = "No SW prog";
+
+series  x=cald y=p50_prop_sw_onprep/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_sw_onprep 	upper=p95_prop_sw_onprep  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_sw_onprep_prog/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_sw_onprep_prog 	upper=p95_prop_sw_onprep_prog  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_sw_onprep_noprog/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_prop_sw_onprep_noprog 	upper=p95_prop_sw_onprep_noprog  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
 run;quit;
 
