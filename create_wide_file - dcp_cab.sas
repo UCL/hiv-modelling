@@ -426,6 +426,11 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * p_dcp_elig_offprep_tm1_start;  p_dcp_elig_offprep_tm1_start = s_dcp_elig_offprep_tm1_start / s_dcp_elig_offprep_tm1 ;
 
+s_dcp_elig_offprep_tm1_prepinj 
+
+s_dcp_elig_offprep_tm1_preporal 
+
+
 * prop_dcp_elig_prep_oral;		prop_dcp_elig_prep_oral = s_prep_oral / s_on_dcp_prep_elig ;
 * prop_dcp_elig_prep_inj;		prop_dcp_elig_prep_inj  = s_prep_inj  / s_on_dcp_prep_elig ;
 
@@ -435,6 +440,7 @@ s_elig_offprep_tm1
 s_elig_offprep_tm1_oralprep 
 
 s_elig_offprep_tm1_oralinj 
+
 
 
 

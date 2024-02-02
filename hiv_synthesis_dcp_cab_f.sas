@@ -3,19 +3,6 @@
 
 *
 
-Of people on DCP not on Prep & at risk, rate of starting oral PrEP, rate of starting CAB
-
-Of people not on Prep and at risk, rate of starting oral PrEP, rate of starting CAB
-
-;
-
-
-
-
-
-
-*
-
 * include choice between pep and prep ? (probably no need - just adjust prep cost according to proportion pep ?)  ;
 
 * some dcp cost fixed and some unit cost per 3 month dcp=1
@@ -15443,13 +15430,14 @@ end;
 * to calculate: Of people on DCP not on Prep & prep_elig, rate of starting oral PrEP, rate of starting prep inj;
 dcp_elig_offprep_tm1 = 0; dcp_elig_offprep_tm1_start=0; 
 if dcp_tm1=1 and dcp=1 and prep_any_elig=1 and prep_any_tm1 ne 1 then do;
-	dcp_elig_offprep_tm1 = 1; if prep_any = 1 then dcp_elig_offprep_tm1_start=1; 
+	dcp_elig_offprep_tm1 = 1; if prep_any = 1 then dcp_elig_offprep_tm1_start=1; if prep_inj = 1 then dcp_elig_offprep_tm1_prepinj=1; 
+	if prep_oral = 1 then dcp_elig_offprep_tm1_preporal=1; 
 end;
 
 * to calculate: Of people not on Prep and at risk, rate of starting oral PrEP, rate of starting prep inj;
-elig_offprep_tm1 = 0; elig_offprep_tm1_oralprep=0; 
+elig_offprep_tm1 = 0; elig_offprep_tm1_oralprep=0; elig_offprep_tm1_injprep=0; 
 if prep_any_elig=1 and prep_any_tm1 ne 1 then do;
-	elig_offprep_tm1 = 1; if prep_oral = 1 then elig_offprep_tm1_oralprep=1; 
+	elig_offprep_tm1 = 1; if prep_oral = 1 then elig_offprep_tm1_oralprep=1; if prep_inj = 1 then elig_offprep_tm1_injprep=1; 
 end;
 
 * to calculate: proportion of prep/dcp eligible people who took prep in the last 3 months who remain on prep ; 
@@ -16798,6 +16786,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_past3yr_cur_elig_onprep + prep_past3yr_cur_elig_onprep;  s_dcp_tm1_remain_elig + dcp_tm1_remain_elig;
 	s_dcp_tm1_remain_elig_off_dcp + dcp_tm1_remain_elig_off_dcp;  s_dcp_tm1 + dcp_tm1 ; s_dcp_drop_off_this_period + dcp_drop_off_this_period;
 	s_on_dcp_prep_elig + on_dcp_prep_elig; s_elig_offprep_tm1 + elig_offprep_tm1;  s_elig_offprep_tm1_oralprep + elig_offprep_tm1_oralprep; 
+	s_elig_offprep_tm1_injprep + elig_offprep_tm1_injprep;  s_dcp_elig_offprep_tm1_prepinj + dcp_elig_offprep_tm1_prepinj;
+	s_dcp_elig_offprep_tm1_preporal + dcp_elig_offprep_tm1_preporal;
 	
 	/*testing and diagnosis*/
 
@@ -18573,7 +18563,7 @@ s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_
 s_dcp  s_dcp_no_prep  s_dcp_elig_offprep_tm1 s_dcp_elig_offprep_tm1_start
 s_tested_tm1_prep_elig  s_tested_tm1_onprep  s_prep_tm1_remain_elig s_prep_tm1_remain_elig_onprep  s_prep_past3yr_cur_elig s_on_dcp_prep_elig
 s_prep_past3yr_cur_elig_onprep   s_dcp_tm1_remain_elig 	s_dcp_tm1_remain_elig_off_dcp   s_dcp_tm1  s_dcp_drop_off_this_period 
-s_elig_offprep_tm1  s_elig_offprep_tm1_oralprep  
+s_elig_offprep_tm1  s_elig_offprep_tm1_oralprep  s_elig_offprep_tm1_injprep  s_dcp_elig_offprep_tm1_prepinj s_dcp_elig_offprep_tm1_preporal 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -19526,7 +19516,7 @@ s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_
 s_dcp   s_dcp_no_prep   s_dcp_elig_offprep_tm1 s_dcp_elig_offprep_tm1_start
 s_tested_tm1_prep_elig  s_tested_tm1_onprep  s_prep_tm1_remain_elig s_prep_tm1_remain_elig_onprep  s_prep_past3yr_cur_elig s_on_dcp_prep_elig
 s_prep_past3yr_cur_elig_onprep   s_dcp_tm1_remain_elig 	s_dcp_tm1_remain_elig_off_dcp   s_dcp_tm1  s_dcp_drop_off_this_period 
-s_elig_offprep_tm1  s_elig_offprep_tm1_oralprep 
+s_elig_offprep_tm1  s_elig_offprep_tm1_oralprep  s_elig_offprep_tm1_injprep  s_dcp_elig_offprep_tm1_prepinj s_dcp_elig_offprep_tm1_preporal 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -21329,7 +21319,7 @@ s_prep_oral_restart_date_choice s_started_prep_vr_hiv s_started_prep_any_hiv  s_
 s_dcp   s_dcp_no_prep   s_dcp_elig_offprep_tm1 s_dcp_elig_offprep_tm1_start
 s_tested_tm1_prep_elig  s_tested_tm1_onprep  s_prep_tm1_remain_elig s_prep_tm1_remain_elig_onprep  s_prep_past3yr_cur_elig s_on_dcp_prep_elig
 s_prep_past3yr_cur_elig_onprep   s_dcp_tm1_remain_elig 	s_dcp_tm1_remain_elig_off_dcp   s_dcp_tm1  s_dcp_drop_off_this_period 
-s_elig_offprep_tm1  s_elig_offprep_tm1_oralprep 
+s_elig_offprep_tm1  s_elig_offprep_tm1_oralprep s_elig_offprep_tm1_injprep  s_dcp_elig_offprep_tm1_prepinj s_dcp_elig_offprep_tm1_preporal 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
