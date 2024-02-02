@@ -54,32 +54,33 @@
 *******************************************************************************************
 ************************************     CONTENT   ************************************
 *******************************************************************************************
-1.  Population...................................Line 85
-2.  Fertility....................................Line 342
-3.  Mortality....................................Line 447
-4.  Prevalence...................................Line 625
-5.  Incidence....................................Line 1037
-6.  Number living with HIV ......................Line 1190
-7.  Sexual behaviour.............................Line 1250
-8.  Testing......................................Line 1430
-	8a. % ever tested for HIV and tested in the last year in the general population ...Line 1432
-    8b. Number of HIV tests performed & positivity rate in the general population .....Line 1550
-    8c. Diagnosed with HIV in the general population...................................Line 1750
-    8d. Testing in female sex workers..................................................Line 1890
-    8e. Testing in Pregnant women......................................................Line 1854
-    8f. PMTCT..........................................................................Line 1966
-9.  Linkage from testing to ART Uptake...........Line 2060
-10. On ART: In need, started, on ART.............Line 2093
-11. Median CD4 at diagnosis and ART initiation...Line 2462
-12. Virological outcomes on 1st line.............Line 2523
-13. Retention on ART.............................Line 2640
-14. Resistance...................................Line 2807
-15. Male circumcision............................Line 2875
-16. Packages of HIV combination prevention services for key populations ...............Line 3007
-17. PrEP.........................................Line 2949
-18. Structural intervention and social enablers..Line 2919
-19. Sexually transmitted infections..............Line 2929
-20. Tubercolosis.................................Line 2939
+1.  Population...................................Line 87
+2.  Fertility....................................Line 362
+3.  Mortality....................................Line 467
+4.  Prevalence...................................Line 645
+5.  Incidence....................................Line 1057
+6.  Number living with HIV ......................Line 1210
+7.  Sexual behaviour.............................Line 1270
+8.  Testing......................................Line 1450
+	8a. % ever tested for HIV and tested in the last year in the general population ...Line 1453
+    8b. Number of HIV tests performed & positivity rate in the general population .....Line 1574
+    8c. Diagnosed with HIV in the general population...................................Line 1777
+    8d. Testing in female sex workers..................................................Line 1811
+    8e. Testing in Pregnant women......................................................Line 1900
+    8f. PMTCT..........................................................................Line 2009
+9.  Linkage from testing to ART Uptake...........Line 2077
+10. On ART: In need, started, on ART.............Line 2110
+11. Median CD4 at diagnosis and ART initiation...Line 2481
+12. Virological outcomes on 1st line.............Line 2543
+13. Retention on ART.............................Line 2660
+14. Resistance...................................Line 2828
+15. Male circumcision............................Line 2896
+16. Packages of HIV combination prevention services for key populations ...............Line 3046
+17. PrEP.........................................Line 3077
+18. Structural intervention and social enablers..Line 3166
+19. Social behavioural change communication		 Line 3179
+20. Sexually transmitted infections..............Line 3190
+21. Tubercolosis.................................Line 3202
 
 
 *******************************************************************************************
@@ -358,7 +359,7 @@ end;
 
 
 *******************************************************************************************
-************************************     Fertility     ************************************
+************************************    2. Fertility     ************************************
 *******************************************************************************************
 
 ***Total births per woman;
@@ -463,7 +464,7 @@ end;
 
 
 *******************************************************************************************
-************************************     Mortality     ************************************
+************************************   3. Mortality     ************************************
 *******************************************************************************************
 
 ***HIV Deaths Adults and Children;
@@ -641,7 +642,7 @@ if cald=2019.5 then do;o_r_aidsdeath_Zim_GARPR=0.001267;o_ll_r_aidsdeath_Zim_GAR
 
 
 *******************************************************************************************
-************************************    Prevalence     ************************************
+************************************   4. Prevalence     ************************************
 *******************************************************************************************
 
 *** Antenatal clinics;
@@ -1053,7 +1054,7 @@ end;
 
 
 *******************************************************************************************
-************************************     Incidence     ************************************
+************************************   5. Incidence     ************************************
 *******************************************************************************************
 
 *** Pregnant women;
@@ -1206,7 +1207,7 @@ if cald=2011.5 then o_HIVIncid_fsw=0.10*100;
 
 
 *******************************************************************************************
-******************************     Number living with HIV     *****************************
+******************************   6. Number living with HIV     *****************************
 *******************************************************************************************
 
 *Source: Avert 2009;
@@ -1439,6 +1440,9 @@ if cald=2006 then do; o_p_cls_last_1524w_zdhs=0.58;o_p_cls_last_1524m_zdhs=0.32;
 if cald=2011 then do; o_p_cls_last_1524w_zdhs=0.61;o_p_cls_last_1524m_zdhs=0.49;end;
 if cald=2016 then do; o_p_cls_last_1524w_zdhs=0.56;o_p_cls_last_1524m_zdhs=0.34;end;
 *Zimphia in 2016 the same as DHS except for o_p_cls_last_1524m_zimphia=0.38;
+
+
+
 
 
 
@@ -1770,10 +1774,6 @@ if cald=2011 then o_rct_max_p_repeat_test=0.28;
 
 
 
-
-
-
-
 **** 8c. Diagnosed with HIV in the general population;
 *Source: DHS 2010-11
 		 Table 14.10 page 227 "Percent distribution of women and men age 15-49 who tested HIV positive...");
@@ -1815,6 +1815,7 @@ if  cald=2025.75 then do;
 	target_p_diag_1524m_NSP=0.95;
 	target_p_diag_1524w_NSP=0.95;
 end;
+
 
 
 **** 8d. Testing in female sex workers;
@@ -1893,7 +1894,6 @@ if cald=2022.5 then target_p_diag_fsw_NSP=0.95;
 if cald=2023.5 then target_p_diag_fsw_NSP=0.95;
 if cald=2024.5 then target_p_diag_fsw_NSP=0.95;
 if cald=2025.5 then target_p_diag_fsw_NSP=0.95;
-
 
 
 
@@ -2003,8 +2003,6 @@ if cald=2022.5 then o_n_hiv_postdel =368;*VCMar2023;
 *** # of deliveries by HIV+ women ;
 *Source: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
 if cald=2022.5 then o_n_births_hivposmother =40988;*VCMar2023;
-
-
 
 
 
@@ -2477,6 +2475,8 @@ end;
 
 
 
+
+
 *******************************************************************************************
 ***************    11. Median CD4 at diagnosis and ART initiation     *******************
 *******************************************************************************************
@@ -2533,6 +2533,7 @@ end;
 *Source: Outcomes of antiretroviral treatment programs in rural Southern Africa, Wandeler 2012
  Zaka, Zimbabwe, n=1254;
 if cald=2005 then o_medcd4_artinit=91;
+
 
 
 
@@ -2646,10 +2647,10 @@ if cald=2019.5 then o_p_vll1000_6mart_garcpr=0.82;
 if cald=2020.5 then o_p_vll1000_6mart_garcpr=0.889;
 
 
-
 ***Virological rebound
 ***Virological failure
 *Currently no data but check old observed file to see what % to look for;
+
 
 
 
@@ -2822,6 +2823,7 @@ if cald=2007 then do; o_ratelfu_art_1924_msfb=0.168; o_ratelfu_art_1924_ll_msfb=
 
 
 
+
 *******************************************************************************************
 *********************************     14. Resistance     ***********************************
 *******************************************************************************************
@@ -2883,8 +2885,8 @@ if cald=2008 then do;
 	o_p_k219_resvfail_1y_WHORes=0.067;
 	o_p_ab2tam_resvfail_1y_WHORes=0.333;
 	o_p_nnrti_resvfail_1y_WHORes=0.60;
-
 end;
+
 
 
 
@@ -3038,6 +3040,8 @@ if cald=2025.75   then target_p_circ_1549m_NSP=0.80;
 
 
 
+
+
 *******************************************************************************************
 ********   16. Packages of HIV combination prevention services for key populations ********
 *******************************************************************************************
@@ -3063,6 +3067,10 @@ if cald=2022.75 then o_FSWprog_NSP = 38250;
 if cald=2023.75 then o_FSWprog_NSP = 40500;
 if cald=2024.75 then o_FSWprog_NSP = 42750;
 if cald=2025.75 then o_FSWprog_NSP = 42750;
+
+
+
+
 
 
 *******************************************************************************************
@@ -3150,8 +3158,12 @@ if cald=2026.75 then do;
 if cald=2023.75 then target_prep=79092; *not clear exactly what it is;
 
 
+
+
+
+
 *******************************************************************************************
-*************    17. Structural intervention and social enablers..Line 2919    ************
+*******************    18. Structural intervention and social enablers.    ***************
 *******************************************************************************************
 
 *** Number of adolescnet girls and young women receving DREAMS;
@@ -3160,8 +3172,27 @@ if cald=2021.5 then o_w1524_dreams=31930;*VCMar2023;
 
 
 
+
+
+
 *******************************************************************************************
-********************     18. Sexually transmitted infections     **************************
+******************    19. Social behavioural change communication	************************	
+*******************************************************************************************
+*Source: MIHPSA Zimbabwe modellers call 21Nov2023_withNotes.ppt Data shared by Amon Mpofu;
+if cald=2022.5 then do;
+	o_n_reached_sbcc_1024m=11627;	o_n_tested_sbcc_1024m=1525;	p_tested_sbcc_1024m=0.13;
+	*The following includes SISTA2SISTA and DREAMS;
+	o_n_reached_sbcc_1024w=113723;	o_n_tested_sbcc_1024w=31902;p_tested_sbcc_1024w=0.28;
+	o_n_reached_sbcc_2564=14557;	o_n_tested_sbcc_2564=2241;	p_tested_sbcc_2564=0.15;
+end;
+
+
+
+
+
+
+*******************************************************************************************
+********************     20. Sexually transmitted infections     **************************
 *******************************************************************************************
 
 *Source: RDS surveys last quarter 2013;
@@ -3170,8 +3201,10 @@ if cald=2013.75 then do; o_p_ever_sti_fsw_rds=0.374; o_p_ever_sti_fsw_ll_rds=0.1
 
 
 
+
+
 *******************************************************************************************
-*******************************     19. Tubercolosis     **********************************
+*******************************    21. Tubercolosis     **********************************
 *******************************************************************************************
 
 *Source: "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo
