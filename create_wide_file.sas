@@ -3,11 +3,12 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v19_2023Oct26_out";
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v20_2023Dec11_out";
 
-data a.base_26_10_2023;   set b.out:;run;
 
-proc freq data=a.base_26_10_2023;table s_ageg014_
+data a.base_11_12_2023;   set b.out:;run;
+
+proc freq data=a.base_11_12_2023;table s_ageg014_
 /*s_new_birth_circ
 s_new_vmmc s_new_mcirc
 s_new_mcirc_1014m
@@ -26,8 +27,10 @@ proc sort data=a.base_16_06_23; by run; run;
 proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
 ods html close;
 ods listing;
-proc freq data=a.base_26_10_2023; table run;run;
-proc freq data=a.base_26_10_2023; table cald option;run;*117 simulations;
+proc freq data=a.base_11_12_2023; table run;run;
+proc freq data=a.base_11_12_2023; table cald option;run;
+*54 simulations
+4 options from 2023: 0,1,11,12;
 
 /*
 proc freq data=a.base_25_05_23;
@@ -39,11 +42,11 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_26_10_2023;
+data g; set  a.base_11_12_2023;
 
 proc sort data=g; 
 by run cald option;run;
-*117 out of 1000;
+*54 out of 500;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
@@ -382,7 +385,7 @@ so the one above is the annual number of tests conducted in ANC;
 * n_tested1st_anc;				n_tested1st_anc = s_tested1st_anc * &sf * 4;*VCMar2023;
 * n_tested1st_labdel;			n_tested1st_labdel = s_tested1st_labdel * &sf * 4;*VCMar2023;
 * n_tested1st_pd;				n_tested1st_pd = s_tested1st_pd * &sf * 4;*VCMar2023;
-* n_tested_sbcc_program;		n_tested_sbcc_program = s_tested_sbcc_program * &sf * 4;*VCDec2023;
+* n_tested_sbcc;		n_tested_sbcc = s_tested_sbcc_program * &sf * 4;*VCDec2023;
 
 * n_diagnosed;					n_diagnosed = s_diag_this_period * &sf * 4;
 * n_diag_m;						n_diag_m = s_diag_this_period_m * &sf * 4;*VCMay2023;
@@ -452,13 +455,13 @@ so the one above is the annual number of tests conducted in ANC;
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp = s_sw_newp/s_sw_1564;
 
 * prop_reached_sbcc_program;	prop_reached_sbcc_program = s_sbcc_program_visit / s_alive1564 ;
-* n_sbcc_program_visit_1524m;  	n_sbcc_program_visit_1524m = s_sbcc_program_visit_1524m * &sf;*No need to multiply by 4 as it lasts for 1 yearl; 
-* n_sbcc_program_visit_1524w;	n_sbcc_program_visit_1524w = s_sbcc_program_visit_1524w * &sf; 
-* n_sbcc_program_visit_2564_; 	n_sbcc_program_visit_2564_ = s_sbcc_program_visit_2564_ * &sf; 
+* n_sbcc_visit_1524m;  		n_sbcc_visit_1524m = s_sbcc_program_visit_1524m * &sf;*No need to multiply by 4 as it lasts for 1 yearl; 
+* n_sbcc_visit_1524w;		n_sbcc_visit_1524w = s_sbcc_program_visit_1524w * &sf; 
+* n_sbcc_visit_2564_; 		n_sbcc_visit_2564_ = s_sbcc_program_visit_2564_ * &sf; 
 
-* n_tested_sbcc_program_1524m; 	n_tested_sbcc_program_1524m = s_tested_sbcc_program_1524m * &sf * 4;
-* n_tested_sbcc_program_1524w; 	n_tested_sbcc_program_1524w = s_tested_sbcc_program_1524w * &sf * 4;
-* n_tested_sbcc_program_2564_;	n_tested_sbcc_program_2564_ = s_tested_sbcc_program_2564_* &sf * 4;
+* n_tested_sbcc_1524m; 	n_tested_sbcc_1524m = s_tested_sbcc_program_1524m * &sf * 4;
+* n_tested_sbcc_1524w; 	n_tested_sbcc_1524w = s_tested_sbcc_program_1524w * &sf * 4;
+* n_tested_sbcc_2564_;	n_tested_sbcc_2564_ = s_tested_sbcc_program_2564_* &sf * 4;
 
 * prop_pos_tested_sbcc;			if s_tested_sbcc_program gt 0 then prop_pos_tested_sbcc = s_diag_this_period_sbcc / s_tested_sbcc_program;
 
@@ -1127,8 +1130,8 @@ r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
 incidence1549 incidence1564 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary 
 p_sw_newinf p_w1524_newinf p_w25ov_newinf p_m1524_newinf p_m25ov_newinf mtct_prop  incidence_onprep
 p_diag p_diag_m p_diag_w prop_diag_infection_1yr p_ai_no_arv_c_nnm prop_sw_newp0  t_sw_newp
-n_sbcc_program_visit_1524m n_sbcc_program_visit_1524w n_sbcc_program_visit_2564_
-n_tested_sbcc_program_1524m n_tested_sbcc_program_1524w n_tested_sbcc_program_2564_ prop_pos_tested_sbcc
+n_sbcc_visit_1524m n_sbcc_visit_1524w n_sbcc_visit_2564_
+n_tested_sbcc_1524m n_tested_sbcc_1524w n_tested_sbcc_2564_ prop_pos_tested_sbcc
 p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
 p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_onart_diag_w1524_ p_onart_diag_1524_
 p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 
@@ -1159,7 +1162,7 @@ ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtc
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_tested_swprog n_tested_anc n_tested_ancpd n_test_anclabpd
 n_tested_anc_prevdiag
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd n_tested1st_anc n_tested1st_labdel n_tested1st_pd 
-n_tested_sbcc_program
+n_tested_sbcc
 p_anc n_diagnosed n_diag_m n_diag_w n_diag_anc n_diag_labdel  n_diag_pd  n_diag_anclabpd  n_diag_progsw  n_diag_sw 
 p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep n_prep_1524w n_start_rest_prep_oral n_start_rest_prep_oral n_prep_ever  n_covid  n_death_covid n_death 
@@ -1291,7 +1294,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_26_10_2023; set y;  run;
+data a.l_base_11_12_2023; set y;  run;
 
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 

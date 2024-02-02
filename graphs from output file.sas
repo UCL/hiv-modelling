@@ -7,14 +7,14 @@ libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\ou
 run;
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 /*
- proc freq data=a.l_base_26_10_2023;table option;run;
+ proc freq data=a.l_base_11_12_2023;table option;run;
 n_everpregn_w1524 n_everpregn_hiv_w1524 
 n_tested_w_sympt n_tested_m_sympt 
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 
 data b;
-set a.l_base_26_10_2023;
+set a.l_base_11_12_2023;
 
 
 p_onart_vl1000_all = .;
@@ -77,11 +77,12 @@ n_everpregn_w1524_ = n_everpregn_w1524;
 n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 
 
-
+data b;set b;where cald ge 2023;run;
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 111  ;*out of 1000;*out of 860;
+%let nfit = 54  ;*out of 1000;*out of 860;
+%let year_start = 2023;*&year_start;
 %let year_end = 2072.75;
 run;
 /*proc freq data=b;table cald count_csim count_csim*option;run;*/
@@ -96,7 +97,7 @@ n_sw_1564_	prev_sti_sw
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
-n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_ p_newp_ge1_ p_newp_ge5_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
+n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_ p_newp_ge1_ p_newp_ge5_ p_1524_newp_ge1 p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
 p_mcirc_1549m	p_mcirc_1049m	n_new_vmmc1549m 	n_new_vmmc1049m  n_new_vmmc1014m	n_new_birth_circ n_new_mcirc n_new_mcirc_1549m 	n_new_mcirc_1049m
 p_vmmc_1549m	p_vmmc_1049m
@@ -113,12 +114,12 @@ prevalence1549m prevalence1549w
 prevalence1549_ prevalence_sw prevalence_hiv_preg prevalence1549preg prevalence1524preg prevalence_vg1000_  incidence1549_ incidence1549m incidence1549w incidence1564_ 
 incidence1524w incidence1524m incidence2534w incidence2534m incidence3544w incidence3544m incidence4554w incidence4554m 
 incidence5564w incidence5564m incidence_sw 
-n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w
+n_new_inf1549_ n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w
 n_tested n_tested_m n_tested_w n_tested_sw n_tested_anc 
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
-n_tested1st_anc n_tested1st_labdel n_tested1st_pd n_tested_anc_prevdiag n_tested_sbcc_program
-n_sbcc_program_visit_1524m 	n_sbcc_program_visit_1524w 	n_sbcc_program_visit_2564_
-n_tested_sbcc_program_1524m n_tested_sbcc_program_1524w n_tested_sbcc_program_2564_ prop_pos_tested_sbcc
+n_tested1st_anc n_tested1st_labdel n_tested1st_pd n_tested_anc_prevdiag n_tested_sbcc
+n_sbcc_visit1524m 	n_sbcc_visit1524w 	n_sbcc_visit2564_
+n_tested_sbcc_1524m n_tested_sbcc_1524w n_tested_sbcc_2564_ prop_pos_tested_sbcc
 p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd
 test_prop_positive
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
@@ -156,7 +157,7 @@ av_p_newp_ge1_0 = mean(of p_newp_ge1_1-p_newp_ge1_&nfit);run;
 ods listing;
 proc sgplot data=g0_a; 
 Title    height=1.5 justify=center "p_newp_ge1_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
 label av_p_newp_ge1_0  = "Baseline (median) - 15+";
 series  x=cald y=av_p_newp_ge1_0/	lineattrs = (color=black thickness = 2);
@@ -168,7 +169,7 @@ av_p_newp_ge5_0 = mean(of p_newp_ge5_1-p_newp_ge5_&nfit);run;
 ods listing;
 proc sgplot data=g0_b; 
 Title    height=1.5 justify=center "p_newp_ge5_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) valueattrs=(size=10);
 label av_p_newp_ge5_0  = "Baseline (median) - 15+";
 series  x=cald y=av_p_newp_ge5_0/	lineattrs = (color=black thickness = 2);
@@ -214,22 +215,24 @@ run;
 
 %option_(0);
 %option_(1);
-%option_(15);
+%option_(11);
+%option_(12);
+*%option_(15);
 run;
 
 
-data d; * this is number of variables in %let var = above ;
+data d_a; * this is number of variables in %let var = above ;
 merge 
 g0_1   g0_2   g0_3   g0_4   g0_5   g0_6   g0_7   g0_8   g0_9   g0_10  g0_11  g0_12  g0_13  g0_14  g0_15  g0_16  g0_17  g0_18  g0_19  g0_20  g0_21  g0_22  g0_23  g0_24  g0_25  g0_26 
 g0_27  g0_28  g0_29  g0_30  g0_31  g0_32  g0_33  g0_34  g0_35  g0_36  g0_37  g0_38  g0_39  g0_40  g0_41  g0_42  g0_43  g0_44  g0_45  g0_46  g0_47  g0_48   g0_49  g0_50 
 g0_51  g0_52 
 g0_53  g0_54  g0_55  g0_56  g0_57  g0_58  g0_59  g0_60 g0_61  g0_62  g0_63  g0_64  g0_65  g0_66  g0_67  g0_68  g0_69  g0_70  g0_71 g0_72 g0_73 g0_74 g0_75  g0_76  g0_77 g0_78 
 g0_79  g0_80  g0_81  g0_82  g0_83  g0_84  g0_85  g0_86  g0_87  g0_88  g0_89  g0_90 g0_91  g0_92  g0_93  g0_94  g0_95  g0_96  g0_97  g0_98  g0_99  g0_100 g0_101 g0_102 g0_103 g0_104
-g0_105 g0_106 g0_107 g0_108 g0_109 g0_110 g0_111 g0_112 g0_113 g0_114 g0_115 g0_116 g0_117 g0_118 g0_119 g0_120 g0_121 g0_122 g0_123 g0_124 g0_125 /*g0_126 g0_127 g0_128 g0_129 g0_130 
-g0_131 g0_132 g0_133*/ g0_134 g0_135 g0_136 g0_137 g0_138 g0_139 g0_140 g0_141 g0_142 g0_143 g0_144 g0_145 g0_146 g0_147 g0_148 g0_149 g0_150 g0_151 g0_152 g0_153 g0_154 g0_155 g0_156
+g0_105 g0_106 g0_107 g0_108 g0_109 g0_110 g0_111 g0_112 g0_113 g0_114 g0_115 g0_116 g0_117 g0_118 g0_119 g0_120 g0_121 g0_122 g0_123 g0_124 g0_125 g0_126 g0_127 g0_128 g0_129 g0_130 
+g0_131 g0_132 g0_133 g0_134 g0_135 g0_136 g0_137 g0_138 g0_139 g0_140 g0_141 g0_142 g0_143 g0_144 g0_145 g0_146 g0_147 g0_148 g0_149 g0_150 g0_151 g0_152 g0_153 g0_154 g0_155 g0_156
 g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182
-g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 /*g0_208
-g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234
+g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
+g0_209 /*g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234
 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 g0_251 g0_252 
 */
 
@@ -238,30 +241,63 @@ g1_27  g1_28  g1_29  g1_30  g1_31  g1_32  g1_33  g1_34  g1_35  g1_36  g1_37  g1_
 g1_51  g1_52 
 g1_53  g1_54  g1_55  g1_56  g1_57  g1_58  g1_59  g1_60 g1_61  g1_62  g1_63  g1_64  g1_65  g1_66  g1_67  g1_68  g1_69  g1_70  g1_71 g1_72 g1_73 g1_74 g1_75  g1_76  g1_77 g1_78 
 g1_79  g1_80  g1_81  g1_82  g1_83  g1_84  g1_85  g1_86  g1_87  g1_88  g1_89  g1_90 g1_91  g1_92  g1_93  g1_94  g1_95  g1_96  g1_97  g1_98  g1_99  g1_100 g1_101 g1_102 g1_103 g1_104
-g1_105 g1_106 g1_107 g1_108 g1_109 g1_110 g1_111 g1_112 g1_113 g1_114 g1_115 g1_116 g1_117 g1_118 g1_119 g1_120 g1_121 g1_122 g1_123 g1_124 g1_125 /*g1_126 g1_127 g1_128 g1_129 g1_130
-g1_131 g1_132 g1_133*/ g1_134 g1_135 g1_136 g1_137 g1_138 g1_139 g1_140 g1_141 g1_142 g1_143 g1_144 g1_145 g1_146 g1_147 g1_148 g1_149 g1_150 g1_151 g1_152 g1_153 g1_154 g1_155 g1_156
+g1_105 g1_106 g1_107 g1_108 g1_109 g1_110 g1_111 g1_112 g1_113 g1_114 g1_115 g1_116 g1_117 g1_118 g1_119 g1_120 g1_121 g1_122 g1_123 g1_124 g1_125 g1_126 g1_127 g1_128 g1_129 g1_130
+g1_131 g1_132 g1_133 g1_134 g1_135 g1_136 g1_137 g1_138 g1_139 g1_140 g1_141 g1_142 g1_143 g1_144 g1_145 g1_146 g1_147 g1_148 g1_149 g1_150 g1_151 g1_152 g1_153 g1_154 g1_155 g1_156
 g1_157 g1_158 g1_159 g1_160 g1_161 g1_162 g1_163 g1_164 g1_165 g1_166 g1_167 g1_168 g1_169 g1_170 g1_171 g1_172 g1_173 g1_174 g1_175 g1_176 g1_177 g1_178 g1_179 g1_180 g1_181 g1_182
-g1_183 g1_184 g1_185 g1_186 g1_187 g1_188 g1_189 g1_190 g1_191 g1_192 g1_193 g1_194 g1_195 g1_196 g1_197 g1_198 g1_199 g1_200 g1_201 g1_202 g1_203 g1_204 g1_205 g1_206 g1_207 /*g1_208
-g1_209 g1_210 g1_211 g1_212 g1_213 g1_214 g1_215 g1_216 g1_217 g1_218 g1_219 g1_220 g1_221 g1_222 g1_223 g1_224 g1_225 g1_226 g1_227 g1_228 g1_229 g1_230 g1_231 g1_232 g1_233 g1_234
+g1_183 g1_184 g1_185 g1_186 g1_187 g1_188 g1_189 g1_190 g1_191 g1_192 g1_193 g1_194 g1_195 g1_196 g1_197 g1_198 g1_199 g1_200 g1_201 g1_202 g1_203 g1_204 g1_205 g1_206 g1_207 g1_208
+g1_209 /*g1_210 g1_211 g1_212 g1_213 g1_214 g1_215 g1_216 g1_217 g1_218 g1_219 g1_220 g1_221 g1_222 g1_223 g1_224 g1_225 g1_226 g1_227 g1_228 g1_229 g1_230 g1_231 g1_232 g1_233 g1_234
 g1_235 g1_236 g1_237 g1_238 g1_239 g1_240 g1_241 g1_242 g1_243 g1_244 g1_245 g1_246 g1_247 g1_248 g1_249 g1_250 g1_251 g1_252 
+*/;
+by cald;run;
+data d_b; * this is number of variables in %let var = above ;
+merge 
+g11_1   g11_2   g11_3   g11_4   g11_5   g11_6   g11_7   g11_8   g11_9   g11_10  g11_11  g11_12  g11_13  g11_14  g11_15  g11_16  g11_17  g11_18  g11_19  g11_20  g11_21  g11_22  g11_23  g11_24  g11_25  g11_26 
+g11_27  g11_28  g11_29  g11_30  g11_31  g11_32  g11_33  g11_34  g11_35  g11_36  g11_37  g11_38  g11_39  g11_40  g11_41  g11_42  g11_43  g11_44  g11_45  g11_46  g11_47  g11_48   g11_49  g11_50 
+g11_51  g11_52 
+g11_53  g11_54  g11_55  g11_56  g11_57  g11_58  g11_59  g11_60 g11_61  g11_62  g11_63  g11_64  g11_65  g11_66  g11_67  g11_68  g11_69  g11_70  g11_71 g11_72 g11_73 g11_74 g11_75  g11_76  g11_77 g11_78 
+g11_79  g11_80  g11_81  g11_82  g11_83  g11_84  g11_85  g11_86  g11_87  g11_88  g11_89  g11_90 g11_91  g11_92  g11_93  g11_94  g11_95  g11_96  g11_97  g11_98  g11_99  g11_100 g11_101 g11_102 g11_103 g11_104
+g11_105 g11_106 g11_107 g11_108 g11_109 g11_110 g11_111 g11_112 g11_113 g11_114 g11_115 g11_116 g11_117 g11_118 g11_119 g11_120 g11_121 g11_122 g11_123 g11_124 g11_125 g11_126 g11_127 g11_128 g11_129 g11_130 
+g11_131 g11_132 g11_133 g11_134 g11_135 g11_136 g11_137 g11_138 g11_139 g11_140 g11_141 g11_142 g11_143 g11_144 g11_145 g11_146 g11_147 g11_148 g11_149 g11_150 g11_151 g11_152 g11_153 g11_154 g11_155 g11_156
+g11_157 g11_158 g11_159 g11_160 g11_161 g11_162 g11_163 g11_164 g11_165 g11_166 g11_167 g11_168 g11_169 g11_170 g11_171 g11_172 g11_173 g11_174 g11_175 g11_176 g11_177 g11_178 g11_179 g11_180 g11_181 g11_182
+g11_183 g11_184 g11_185 g11_186 g11_187 g11_188 g11_189 g11_190 g11_191 g11_192 g11_193 g11_194 g11_195 g11_196 g11_197 g11_198 g11_199 g11_200 g11_201 g11_202 g11_203 g11_204 g11_205 g11_206 g11_207 g11_208
+g11_209 /*g11_210 g11_211 g11_212 g11_213 g11_214 g11_215 g11_216 g11_217 g11_218 g11_219 g11_220 g11_221 g11_222 g11_223 g11_224 g11_225 g11_226 g11_227 g11_228 g11_229 g11_230 g11_231 g11_232 g11_233 g11_234
+g11_235 g11_236 g11_237 g11_238 g11_239 g11_240 g11_241 g11_242 g11_243 g11_244 g11_245 g11_246 g11_247 g11_248 g11_249 g11_250 g11_251 g11_252 
 */
 
+g12_1   g12_2   g12_3   g12_4   g12_5   g12_6   g12_7   g12_8   g12_9   g12_10  g12_11  g12_12  g12_13  g12_14  g12_15  g12_16  g12_17  g12_18  g12_19  g12_20  g12_21  g12_22  g12_23  g12_24  g12_25  g12_26 
+g12_27  g12_28  g12_29  g12_30  g12_31  g12_32  g12_33  g12_34  g12_35  g12_36  g12_37  g12_38  g12_39  g12_40  g12_41  g12_42  g12_43  g12_44  g12_45  g12_46  g12_47  g12_48   g12_49  g12_50 
+g12_51  g12_52 
+g12_53  g12_54  g12_55  g12_56  g12_57  g12_58  g12_59  g12_60 g12_61  g12_62  g12_63  g12_64  g12_65  g12_66  g12_67  g12_68  g12_69  g12_70  g12_71 g12_72 g12_73 g12_74 g12_75  g12_76  g12_77 g12_78 
+g12_79  g12_80  g12_81  g12_82  g12_83  g12_84  g12_85  g12_86  g12_87  g12_88  g12_89  g12_90 g12_91  g12_92  g12_93  g12_94  g12_95  g12_96  g12_97  g12_98  g12_99  g12_100 g12_101 g12_102 g12_103 g12_104
+g12_105 g12_106 g12_107 g12_108 g12_109 g12_110 g12_111 g12_112 g12_113 g12_114 g12_115 g12_116 g12_117 g12_118 g12_119 g12_120 g12_121 g12_122 g12_123 g12_124 g12_125 g12_126 g12_127 g12_128 g12_129 g12_130 
+g12_131 g12_132 g12_133 g12_134 g12_135 g12_136 g12_137 g12_138 g12_139 g12_140 g12_141 g12_142 g12_143 g12_144 g12_145 g12_146 g12_147 g12_148 g12_149 g12_150 g12_151 g12_152 g12_153 g12_154 g12_155 g12_156
+g12_157 g12_158 g12_159 g12_160 g12_161 g12_162 g12_163 g12_164 g12_165 g12_166 g12_167 g12_168 g12_169 g12_170 g12_171 g12_172 g12_173 g12_174 g12_175 g12_176 g12_177 g12_178 g12_179 g12_180 g12_181 g12_182
+g12_183 g12_184 g12_185 g12_186 g12_187 g12_188 g12_189 g12_190 g12_191 g12_192 g12_193 g12_194 g12_195 g12_196 g12_197 g12_198 g12_199 g12_200 g12_201 g12_202 g12_203 g12_204 g12_205 g12_206 g12_207 g12_208
+g12_209 /*g12_210 g12_211 g12_212 g12_213 g12_214 g12_215 g12_216 g12_217 g12_218 g12_219 g12_220 g12_221 g12_222 g12_223 g12_224 g12_225 g12_226 g12_227 g12_228 g12_229 g12_230 g12_231 g12_232 g12_233 g12_234
+g12_235 g12_236 g12_237 g12_238 g12_239 g12_240 g12_241 g12_242 g12_243 g12_244 g12_245 g12_246 g12_247 g12_248 g12_249 g12_250 g12_251 g12_252 
+*/
+
+/*
 g15_1   g15_2   g15_3   g15_4   g15_5   g15_6   g15_7   g15_8   g15_9   g15_10  g15_11  g15_12  g15_13  g15_14  g15_15  g15_16  g15_17  g15_18  g15_19  g15_20  g15_21  g15_22  g15_23  g15_24  g15_25  g15_26 
 g15_27  g15_28  g15_29  g15_30  g15_31  g15_32  g15_33  g15_34  g15_35  g15_36  g15_37  g15_38  g15_39  g15_40  g15_41  g15_42  g15_43  g15_44  g15_45  g15_46  g15_47  g15_48   g15_49  g15_50 
 g15_51  g15_52 
 g15_53  g15_54  g15_55  g15_56  g15_57  g15_58  g15_59  g15_60 g15_61  g15_62  g15_63  g15_64  g15_65  g15_66  g15_67  g15_68  g15_69  g15_70  g15_71 g15_72 g15_73 g15_74 g15_75  g15_76  g15_77 g15_78 
 g15_79  g15_80  g15_81  g15_82  g15_83  g15_84  g15_85  g15_86  g15_87  g15_88  g15_89  g15_90 g15_91  g15_92  g15_93  g15_94  g15_95  g15_96  g15_97  g15_98  g15_99  g15_100 g15_101 g15_102 g15_103 g15_104
-g15_105 g15_106 g15_107 g15_108 g15_109 g15_110 g15_111 g15_112 g15_113 g15_114 g15_115 g15_116 g15_117 g15_118 g15_119 g15_120 g15_121 g15_122 g15_123 g15_124 g15_125 /*g15_126 g15_127 g15_128 g15_129 g15_130 
-g15_131 g15_132 g15_133*/ g15_134 g15_135 g15_136 g15_137 g15_138 g15_139 g15_140 g15_141 g15_142 g15_143 g15_144 g15_145 g15_146 g15_147 g15_148 g15_149 g15_150 g15_151 g15_152 g15_153 g15_154 g15_155 g15_156
+g15_105 g15_106 g15_107 g15_108 g15_109 g15_110 g15_111 g15_112 g15_113 g15_114 g15_115 g15_116 g15_117 g15_118 g15_119 g15_120 g15_121 g15_122 g15_123 g15_124 g15_125 g15_126 g15_127 g15_128 g15_129 g15_130 
+g15_131 g15_132 g15_133 g15_134 g15_135 g15_136 g15_137 g15_138 g15_139 g15_140 g15_141 g15_142 g15_143 g15_144 g15_145 g15_146 g15_147 g15_148 g15_149 g15_150 g15_151 g15_152 g15_153 g15_154 g15_155 g15_156
 g15_157 g15_158 g15_159 g15_160 g15_161 g15_162 g15_163 g15_164 g15_165 g15_166 g15_167 g15_168 g15_169 g15_170 g15_171 g15_172 g15_173 g15_174 g15_175 g15_176 g15_177 g15_178 g15_179 g15_180 g15_181 g15_182
-g15_183 g15_184 g15_185 g15_186 g15_187 g15_188 g15_189 g15_190 g15_191 g15_192 g15_193 g15_194 g15_195 g15_196 g15_197 g15_198 g15_199 g15_200 g15_201 g15_202 g15_203 g15_204 g15_205 g15_206 g15_207 /*g15_208
+g15_183 g15_184 g15_185 g15_186 g15_187 g15_188 g15_189 g15_190 g15_191 g15_192 g15_193 g15_194 g15_195 g15_196 g15_197 g15_198 g15_199 g15_200 g15_201 g15_202 g15_203 g15_204 g15_205 g15_206 g15_207 g15_208
 g15_209 g15_210 g15_211 g15_212 g15_213 g15_214 g15_215 g15_216 g15_217 g15_218 g15_219 g15_220 g15_221 g15_222 g15_223 g15_224 g15_225 g15_226 g15_227 g15_228 g15_229 g15_230 g15_231 g15_232 g15_233 g15_234
 g15_235 g15_236 g15_237 g15_238 g15_239 g15_240 g15_241 g15_242 g15_243 g15_244 g15_245 g15_246 g15_247 g15_248 g15_249 g15_250 g15_251 g15_252 
 */
 ;
-by cald;
-%include "C:\Users\Valentina\OneDrive - University College London\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas";
+by cald;run;
+data d; * this is number of variables in %let var = above ;
+merge d_a d_b;
+%include "C:\Users\Valentina\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas";
 run;
+
+*arrivata qua;
 
 /*data a.d;set d;run;
 data d;set a.d;run;*/
@@ -271,13 +307,13 @@ proc contents data=a.d;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20231026_111sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20231211_54sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive 15+";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 25000000 by  5000000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_alive_0 = "Baseline (median) - 15+ ";
 *label p50_n_alive1549__0 = "Option 0 (median) - 15-49 ";
@@ -295,7 +331,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive 15+";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 25000000 by  5000000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_alive_014__0 = "Baseline (median) - 0-14 ";
 label p50_n_alive_1524__0 = "Baseline (median) - 15-24 ";
@@ -324,7 +360,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive by age in men";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by  2500000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_alive_1524m_0 = "Baseline (median) - 15-24 M";
 label p50_n_alive_2549m_0 = "Baseline (median) - 25-49 M";
@@ -339,7 +375,7 @@ scatter x=cald y=o_pop_2554m_Zi_CIA / markerattrs = (symbol=triangle color=light
 run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive by age in women";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by  2500000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_alive_1524w_0 = "Baseline (median) - 15-24 W";
 label p50_n_alive_2549w_0 = "Baseline (median) - 25-49 W";
@@ -355,7 +391,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Population 15+ by gender";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000000 by  5000000) valueattrs=(size=10);
 label p50_n_alive_m_0 = "Option 0 (median) - Males 15+ ";
 label p50_n_alive_w_0 = "Option 0 (median) - Females 15+ ";
@@ -376,7 +412,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.025) valueattrs=(size=10);
 label p50_p_w_giv_birth_this_per_0 = "Option 0 (median) ";
 series  x=cald y=p50_p_w_giv_birth_this_per_0/	lineattrs = (color=black thickness = 2);
@@ -388,7 +424,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge1_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.025) valueattrs=(size=10);
 label p50_p_newp_ge1__0  = "Baseline (median) - 15+";
 series  x=cald y=p50_p_newp_ge1__0/	lineattrs = (color=black thickness = 2);
@@ -397,7 +433,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_1524_newp_ge1_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
 label p50_p_1524_newp_ge1__0 = "Option 0 (median) - Both";
 label p50_p_1524_newp_ge1__1 = "Option 1 (median) ";
@@ -419,7 +455,7 @@ run;quit;
 *"Number of AGYW at elevated risk" n_w1524_newp_ge1; 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of AGYW at elevated risk - n_w1524_newp_ge1";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 label p50_n_w1524_newp_ge1__0  = "Baseline (median) - 15+";
 series  x=cald y=p50_n_w1524_newp_ge1__0/	lineattrs = (color=black thickness = 2);
@@ -429,7 +465,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge5_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.025 by 0.005) valueattrs=(size=10);
 label p50_p_newp_ge5__0  = "Baseline (median) - 15+";
 series  x=cald y=p50_p_newp_ge5__0/	lineattrs = (color=black thickness = 2);
@@ -439,7 +475,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "log_gender_r_newp";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'log_gender_r_newp'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
 label p50_log_gender_r_newp_0  = "Baseline (median) - 15+";
 series  x=cald y=p50_log_gender_r_newp_0/	lineattrs = (color=black thickness = 2);
@@ -448,7 +484,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_ep";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_ep_0  = "Baseline (median) - 15+";
 series  x=cald y=p50_p_ep_0/	lineattrs = (color=black thickness = 2);
@@ -475,7 +511,7 @@ where cald in (2016.5 2022.5);run;*/
 *tested_anc=1 if tested at dt_start_pregn+0.25 or dt_start_pregn+0.5;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of live births";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1400000 by 200000) valueattrs=(size=10);*900000 if stopping in 2023;
 label p50_n_birth_0 = "Option 0 (median) - based on pregnancies";
 label p50_n_alive0__0 = "Option 0 (median) - based on pop structure";
@@ -490,7 +526,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number women living with HIV giving birth";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 200000 by 25000) valueattrs=(size=10);*200000 if stopping in 2023;
 label p50_n_give_birth_w_hiv_0 = "Option 0 (median) ";
 label o_n_hiv_labdel = "Number HIV+ in labour and delivery";
@@ -503,7 +539,7 @@ quit;
 *To understand why it is increasing the Number women living with HIV giving birth;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number living with HIV by age - Female";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
 label p50_n_hiv1524w_0 = "Baseline (median) - 15-24";
 label p50_n_hiv2549w_0 = "Baseline (median) - 25-49";
@@ -517,7 +553,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number living with HIV by age - Male";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
 label p50_n_hiv1524m_0 = "Baseline (median) - 15-24";
 label p50_n_hiv2549m_0 = "Baseline (median) - 25-49";
@@ -529,7 +565,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of pregnant women attending ANC";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_anc_0  = "Baseline (median) - 15+";
 label o_p_testedanc_1549_zdhs = "DHS - 15-49";
@@ -542,7 +578,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Annual number of tests conducted in ANC";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1400000 by 200000) valueattrs=(size=10);
 label p50_n_tested_anc_0  = "Baseline (median) - 15+";
 *label o_n_tests_anc = "Number of women tested in ANC";*It includes the following;
@@ -568,7 +604,7 @@ run;quit;
 */
 proc sgplot data=d; 
 Title    height=1.5 justify=center "New diagnoses in ANC and during labour and delivery";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  40000 by 5000) valueattrs=(size=10);
 label p50_n_diag_anc_0  = "Baseline (median) - 15+";
 label o_n_newdiag_anc = "Number of women diagnosed in ANC";
@@ -581,7 +617,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w_labdel";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
 label p50_n_tested_w_labdel_0  = "Baseline (median) - 15+";
 label o_n_tested_labdel = "Number of woment tested during labour and delivery";
@@ -593,7 +629,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "# Women tested for the first time in Labour and Delivery";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  700000 by 100000) valueattrs=(size=10);
 label p50_n_tested1st_labdel_0  = "Baseline (median) - 15+";
 label o_n_firsttested_labdel = "Number of woment tested for the first time during labour and delivery";
@@ -604,7 +640,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "New diagnoses during labour and delivery";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2000 by 250) valueattrs=(size=10);
 label p50_n_diag_labdel_0  = "Baseline (median) - 15+";
 label o_n_newdiag_labdel = "Number of women diagnosed during labour and delivery";
@@ -615,7 +651,7 @@ run;quit;*/
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w_pd";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 25000) valueattrs=(size=10);
 label p50_n_tested_w_pd_0  = "Baseline (median) - 15+";
 label o_n_tested_postdel = "Number of woment tested post delivery";
@@ -626,7 +662,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "# Women tested for the first time post-delivery";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  700000 by 100000) valueattrs=(size=10);
 label p50_n_tested1st_pd_0  = "Baseline (median) - 15+";
 label o_n_firsttested_postdel = "Number of woment tested for the first time post delivery";
@@ -637,7 +673,7 @@ run;quit;*/
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "New diagnoses in post-delivery";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2000 by 250) valueattrs=(size=10);
 label p50_n_diag_pd_0  = "Baseline (median) - 15+";
 label o_n_newdiag_postdel = "Number of women diagnosed in post-delivery";
@@ -647,7 +683,7 @@ scatter x=cald y=o_n_newdiag_postdel / markerattrs = (symbol=square color=orange
 run;quit;*/
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_sw";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
 label p50_n_tested_sw_0  = "Baseline (median) - 15+";
 label o_nfswtested_sistclin = "Number of FSW tested in the Sisters clinics";
@@ -659,7 +695,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w_sympt";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
 label p50_n_tested_w_sympt_0  = "Baseline (median) - 15+";
 series  x=cald y=p50_n_tested_w_sympt_0/	lineattrs = (color=black thickness = 2);
@@ -668,7 +704,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  4000000 by 500000) valueattrs=(size=10);*2500000 if stopping in 2023;
 label p50_n_tested_w_0  = "Baseline (median) - 15+";
 series  x=cald y=p50_n_tested_w_0/	lineattrs = (color=black thickness = 2);
@@ -677,7 +713,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_tested_past_year_1549w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_tested_past_year_1549w_0  = "Baseline (median) - 15+";
 label o_p_testedly_1549w_zdhs = "DHS";
@@ -689,7 +725,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  6000000 by 1000000) valueattrs=(size=10);*5000000 if stopping in 2023;
 label p50_n_tested_0  = "Baseline (median) - 15+";
 label p50_n_tested_1  = "Minimal (median) - 15+";
@@ -708,7 +744,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2000000 by 250000) valueattrs=(size=10);*5000000 if stopping in 2023;
 label p50_n_tested_m_0  = "Baseline (median) - 15+";
 series  x=cald y=p50_n_tested_m_0/	lineattrs = (color=black thickness = 2);
@@ -717,7 +753,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_m_sympt";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000 by 50000) valueattrs=(size=10);
 label p50_n_tested_m_sympt_0  = "Baseline (median) - 15+";
 series  x=cald y=p50_n_tested_m_sympt_0/	lineattrs = (color=black thickness = 2);
@@ -726,7 +762,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_m_circ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000 by 50000) valueattrs=(size=10);
 label p50_n_tested_m_circ_0  = "Baseline (median) - 15+";
 series  x=cald y=p50_n_tested_m_circ_0/	lineattrs = (color=black thickness = 2);
@@ -735,7 +771,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_tested_past_year_1549m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_tested_past_year_1549m_0  = "Baseline (median) - 15+";
 label o_p_testedly_1549m_zdhs = "DHS";
@@ -749,7 +785,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w_non_anc";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000 by 100000) valueattrs=(size=10);
 label p50_n_tested_w_non_anc_0  = "Baseline (median) - 15+";
 series  x=cald y=p50_n_tested_w_non_anc_0/	lineattrs = (color=black thickness = 2);
@@ -764,7 +800,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Positivity rate";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.8 by 0.2) valueattrs=(size=10);
 label p50_test_prop_positive_0  = "Baseline (median)";
 label o_pos_rate_15ov_z = "CAL - Public sector";
@@ -777,7 +813,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of new diagnoses with HIV";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by  50000) valueattrs=(size=10);
 label p50_n_diagnosed_0 = "Baseline (median)";
 series  x=cald y=p50_n_diagnosed_0/	lineattrs = (color=black thickness = 2);
@@ -785,23 +821,23 @@ band    x=cald lower=p5_n_diagnosed_0 	upper=p95_n_diagnosed_0  / transparency=0
 run;quit;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_tested_sbcc_program";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+Title    height=1.5 justify=center "n_tested_sbcc";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
-label p50_n_tested_sbcc_program_0  = "Baseline (median) - 15+";
-label p50_n_tested_sbcc_program_1  = "Minimal (median) - 15+";
-label p50_n_tested_sbcc_program_11 = "Minimal+SBCC (median) - 15+";
-series  x=cald y=p50_n_tested_sbcc_program_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_program_0 	upper=p95_n_tested_sbcc_program_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_tested_sbcc_program_1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_program_1 	upper=p95_n_tested_sbcc_program_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_tested_sbcc_program_11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_program_11 	upper=p95_n_tested_sbcc_program_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+label p50_n_tested_sbcc_0  = "Baseline (median) - 15+";
+label p50_n_tested_sbcc_1  = "Minimal (median) - 15+";
+label p50_n_tested_sbcc_11 = "Minimal+SBCC (median) - 15+";
+series  x=cald y=p50_n_tested_sbcc_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_0 	upper=p95_n_tested_sbcc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_sbcc_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_1 	upper=p95_n_tested_sbcc_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_sbcc_11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_11 	upper=p95_n_tested_sbcc_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Positivity rate - Tested SBCC";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.1) valueattrs=(size=10);
 label p50_prop_pos_tested_sbcc_0  = "Baseline (median)";
 label p50_prop_pos_tested_sbcc_1  = "Minimal (median)";
@@ -817,7 +853,7 @@ run;quit;
 *!!!!!Note that the observed data are 15+;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion circumcised";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_mcirc_1549m_0 = "Option 0 (median) - 15-49";
 label p50_p_mcirc_1049m_0 = "Option 0 (median) - 10-49";
@@ -834,7 +870,7 @@ scatter  x=cald y=o_p_circ_1549_zimphia /	markerattrs = (color=green);
 run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion circumcised using VMMC";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_vmmc_1549m_0 = "Option 0 (median) 15-49";
 label p50_p_vmmc_1049m_0 = "Option 0 (median) 10-49";
@@ -850,7 +886,7 @@ run;quit;
  
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Annual # circumcision";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 50000) valueattrs=(size=10);
 label p50_n_new_vmmc1549m_0 = "Option 0 (median) - VMMC 15-49";
 label p50_n_new_vmmc1049m_0 = "Option 0 (median) - VMMC 10-49";
@@ -890,7 +926,7 @@ band    x=cald lower=p5_n_alive0__0 	upper=p95_n_alive0__0  / transparency=0.9 f
 run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of current female sex workers (FSW)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15 by 0.025) valueattrs=(size=10);
 label p50_prop_w_1549_sw_0 = "Option 0 (median) - 15-49 ";
 label o_p_fsw_1849_Zim_garpr = "GARPR - current FSW 18-49";
@@ -907,7 +943,7 @@ proc print data=d;var cald p50_prop_w_1549_sw_0 p5_prop_w_1549_sw_0 p95_prop_w_1
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of ever female sex workers (FSW)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15 by 0.025) valueattrs=(size=10);
 label p50_prop_w_ever_sw_0 = "Ever FSW 15-64 op 0 (median) ";
 label o_p_ever_fsw_1ts_1849w_nbcs = "NBCS - Ever transactional sex 18-49";
@@ -918,7 +954,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of FSW, proportion with HIV";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_prop_sw_hiv_0 = "FSW with HIV 15-64 op 0 (median) ";
 label o_prev_fsw_dw = "David Wilson";
@@ -939,7 +975,7 @@ proc freq data=d;table p95_n_prep_0;run;*/
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence sw";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence_sw_0 = "Option 0 (median) ";
 series  x=cald y=p50_incidence_sw_0/	lineattrs = (color=black thickness = 2);
@@ -949,7 +985,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people on PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 350000   by 50000 ) valueattrs=(size=10);
 label p50_n_prep_0 = "Option 0 (median) ";
 series  x=cald y=p50_n_prep_0/	lineattrs = (color=black thickness = 2);
@@ -958,7 +994,7 @@ run;quit;
 *target_prepinit_1524w;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of women aged 15-24 on PrEP (n_prep_1524w)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 25000 ) valueattrs=(size=10);
 label p50_n_prep_1524w_0 = "Option 0 (median) ";
 label target_prep_1524w_lq = "Target (PrEP_CT)";
@@ -969,7 +1005,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people ever on PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2500000   by 50000 ) valueattrs=(size=10);
 label p50_n_prep_ever_0 = "Option 0 (median) ";
 label o_n_prep_ever = "Cumulative Number of People Initiating PrEP";
@@ -980,7 +1016,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women aged 15-24 on PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
 label p50_prop_w_1524_onprep_0 = "Option 0 (median) ";
 series  x=cald y=p50_prop_w_1524_onprep_0/	lineattrs = (color=black thickness = 2);
@@ -989,7 +1025,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women aged 15-24 on PrEP among those with at least 1 newp";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 label p50_p_w1524newpge1_onprep_0 = "Option 0 (median) ";
 series  x=cald y=p50_p_w1524newpge1_onprep_0/	lineattrs = (color=black thickness = 2);
@@ -998,7 +1034,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people aged 15-64 on PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05   by 0.01 ) valueattrs=(size=10);
 label p50_prop_1564_onprep_0 = "Option 0 (median) ";
 series  x=cald y=p50_prop_1564_onprep_0/	lineattrs = (color=black thickness = 2);
@@ -1008,7 +1044,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.35 by 0.05) valueattrs=(size=10);
 label p50_prevalence1549__0 = "All Option 0 (median) ";
 label o_prev1549_Z_ess = "CAL - ZIMPHIA or DHS";
@@ -1020,7 +1056,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence Men 15-49";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.35 by 0.05) valueattrs=(size=10);
 label p50_prevalence1549m_0 = "Option 0 (median) ";
 label o_prev1549m_Z_ess = "CAL - ZIMPHIA or DHS - men";
@@ -1033,7 +1069,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence Women 15-49";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.35 by 0.05) valueattrs=(size=10);
 label p50_prevalence1549w_0 = "Option 0 (median) ";
 label o_prev1549w_Z_ess = "CAL - ZIMPHIA or DHS - women";
@@ -1048,7 +1084,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence among pregnant women";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
 label p50_prevalence_hiv_preg_0 = "All Option 0 (median) ";
 label o_prev1549w_Z_anc = "CAL - ZIMPHIA or DHS";
@@ -1060,7 +1096,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence 15-24 - by gender";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
 label p50_prevalence1524m_0 = "Option 0 (median) - Males 15-24";
 label p50_prevalence1524w_0 = "Option 0 (median) - Females 15-24";
@@ -1082,7 +1118,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence 25-49 - by gender";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
 label p50_prevalence2549m_0 = "Option 0 (median) - Males 25-49";
 label p50_prevalence2549w_0 = "Option 0 (median) - Females 25-49";
@@ -1100,7 +1136,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence among pregnant women - by age";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
 label p50_prevalence_hiv_preg_0 = "All Option 0 (median) ";
 label o_prev1549w_Z_anc = "CAL - ZIMPHIA or DHS";
@@ -1137,7 +1173,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1549__0 = "Option 0 (median) ";
 label p50_incidence1549__1  = "Minimal (median)";
@@ -1160,7 +1196,7 @@ proc print data=d;var cald p50_incidence1549__0; where cald in (2022.5 2040.5);r
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49) - ZOOM";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_incidence1549__0 = "Option 0 (median) ";
 label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
@@ -1175,7 +1211,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of new HIV infections in men by age";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000 by  5000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_new_inf1524m_0 = "Baseline (median) - 15-24 M";
 label p50_n_new_inf2549m_0 = "Baseline (median) - 25-49 M";
@@ -1186,7 +1222,7 @@ band    x=cald lower=p5_n_new_inf2549m_0 	upper=p95_n_new_inf2549m_0  / transpar
 run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of new HIV infections in women by age";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000 by  5000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_new_inf1524w_0 = "Baseline (median) - 15-24 M";
 label p50_n_new_inf2549w_0 = "Baseline (median) - 25-49 M";
@@ -1198,7 +1234,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-64)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1564__0 = "Option 0 (median) ";
 label o_HIVincid_1564_Zimphia = "ZIMPHIA 15-64";
@@ -1212,7 +1248,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 15-49";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1549m_0 = "Option 0 (median) - Men";
 label p50_incidence1549w_0 = "Option 0 (median) - Women";
@@ -1232,7 +1268,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 15-24";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1524m_0 = "Option 0 (median) - Men";
 label p50_incidence1524w_0 = "Option 0 (median) - Women";
@@ -1252,7 +1288,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 2534";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence2534m_0 = "Option 0 (median) - Men";
 label p50_incidence2534w_0 = "Option 0 (median) - Women";
@@ -1269,7 +1305,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 3544";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence3544m_0 = "Option 0 (median) - Men";
 label p50_incidence3544w_0 = "Option 0 (median) - Women";
@@ -1287,7 +1323,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 4554";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence4554m_0 = "Option 0 (median) - Men";
 label p50_incidence4554w_0 = "Option 0 (median) - Women";
@@ -1302,7 +1338,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 5564";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence5564m_0 = "Option 0 (median) - Men";
 label p50_incidence5564w_0 = "Option 0 (median) - Women";
@@ -1316,7 +1352,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_ep";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_ep_0 = "Option 0 (median) ";
 series  x=cald y=p50_p_inf_ep_0/	lineattrs = (color=black thickness = 2);
@@ -1326,7 +1362,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_newp";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_newp_0 = "Option 0 (median) ";
 series  x=cald y=p50_p_inf_newp_0/	lineattrs = (color=black thickness = 2);
@@ -1336,7 +1372,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prop infections coming from people VL suppressed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_vlsupp_0 = "Option 0 (median) ";
 series  x=cald y=p50_p_inf_vlsupp_0/	lineattrs = (color=black thickness = 2);
@@ -1346,7 +1382,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_primary";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_primary_0 = "Option 0 (median) ";
 
@@ -1358,7 +1394,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_naive";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_naive_0 = "Option 0 (median) ";
 series  x=cald y=p50_p_inf_naive_0/	lineattrs = (color=black thickness = 2);
@@ -1368,7 +1404,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_diag";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_diag_0 = "Option 0 (median) ";
 series  x=cald y=p50_p_inf_diag_0/	lineattrs = (color=black thickness = 2);
@@ -1379,7 +1415,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of women giving birth with HIV, proportion of children infected";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 label p50_mtct_prop_0 = "Option 0 (median) ";
 series  x=cald y=p50_mtct_prop_0/	lineattrs = (color=black thickness = 2);
@@ -1391,7 +1427,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of men with hiv 15+, proportion diagnosed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_diag_m_0 = "Option 0 (median)";
 label o_p_diag_m1549_dhs = "DHS - 15-49";
@@ -1407,7 +1443,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of women with hiv, proportion diagnosed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_diag_w_0 = "Option 0 (median) _ 15+";
 label o_p_diag_w1549_dhs = "DHS - 15-49";
@@ -1423,7 +1459,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of naive art initiators with NNRTI mutation";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 
 label p50_p_ai_no_arv_c_nnm_0 = "Option 0 (median) ";
@@ -1433,7 +1469,7 @@ run;quit;
 */
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of diagnosed people who are ART experienced";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_artexp_diag_0 = "Option 0 (median) ";
 series  x=cald y=p50_p_artexp_diag_0/	lineattrs = (color=black thickness = 2);
@@ -1443,7 +1479,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of diagnosed men on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_diag_m_0 = "Option 0  (median)";
 label o_p_onart_1564m_diag_zimphia = "ZIMPHIA - 15-64";
@@ -1458,7 +1494,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of diagnosed women on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_diag_w_0  = "Option 0  (median) ";
 label o_p_onart_1564f_diag_zimphia = "ZIMPHIA - 15-64";
@@ -1471,7 +1507,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of 1st ART initiations";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by  50000) valueattrs=(size=10);
 *label p50_n_all_ai_y_0 = "Option 0 (median) - all";
 label p50_n_art_start_y_0 = "Option 0 (median)";
@@ -1483,7 +1519,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 250000) valueattrs=(size=10);
 label p50_n_onart_0 = "Option 0  (median)";
 label o_s_all_onart_NAC = "CAL - NAC";
@@ -1499,7 +1535,7 @@ proc print data=d;var cald p50_n_onart_0; where cald in (2022.5 2040.5);run;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of pregnant women receiving PMCTCT";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 250000 by 50000) valueattrs=(size=10);
 label p50_n_pmtct_0 = "Option 0  (median)";
 label o_s_pregnant_pmtct_Z_GF = "Global fund";
@@ -1512,7 +1548,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people on ART for >6 months with VL<1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_vl1000__0 = "Option 0  (median)";
 label o_p_vll1000_6mart_garcpr = "CAL - GARCPR";
@@ -1525,7 +1561,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of men on ART >6 months with VL <1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_vl1000_m_0  = "Option 0 (median) ";
 series  x=cald y=p50_p_onart_vl1000_m_0/	lineattrs = (color=black thickness = 2);
@@ -1534,7 +1570,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women on ART >6 months with VL <1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_vl1000_w_0 = "Option 0 (median) ";
 series  x=cald y=p50_p_onart_vl1000_w_0/	lineattrs = (color=black thickness = 2);
@@ -1543,7 +1579,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV positive people with VL<1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_vl1000__0 = "Option 0 (median)";
 label o_p_vlsupp_hiv_15pl_phia = "ZIMPHIA 15+";
@@ -1558,7 +1594,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV positive people with VL > 1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_vg1000__0 = "Option 0 (median)";
 series  x=cald y=p50_p_vg1000__0/	lineattrs = (color=black thickness = 2);
@@ -1567,7 +1603,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of all hiv positive men on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_m_0 = "Option 0 (median)";
 series  x=cald y=p50_p_onart_m_0/	lineattrs = (color=black thickness = 2);
@@ -1576,7 +1612,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of all hiv positive women on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_w_0 = "Option 0 (median)";
 series  x=cald y=p50_p_onart_w_0/	lineattrs = (color=black thickness = 2);
@@ -1585,7 +1621,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prevalence_vg1000_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
 label p50_prevalence_vg1000__0 = "Option 0 (median) ";
 series  x=cald y=p50_prevalence_vg1000__0/	lineattrs = (color=black thickness = 2);
@@ -1594,7 +1630,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Rate of death ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Rate (per 100 person-years)'		labelattrs=(size=12)  values = (0 to 10 by 1) valueattrs=(size=10);
 label p50_rate_dead_allage_0 = "Option 0 (median) - 15+ both";
 label p50_rate_dead_allage_m_0 = "Option 0 (median) - 15+ Men";
@@ -1620,7 +1656,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 label p50_n_death_2059_w_0 = "Option 0 (median) - Women 20-59";
 label p50_n_death_hiv_w_0 = "Option 0  (median) - women with HIV";
@@ -1633,7 +1669,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 label p50_n_death_2059_m_0 = "Option 0 (median) - Men 20-59";
 series  x=cald y=p50_n_death_2059_m_0/	lineattrs = (color=blue thickness = 2);
@@ -1647,7 +1683,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Annual number of CD4 measurements";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 250000) valueattrs=(size=10);
 label p50_n_cm_0 = "Option 0  (median)";
 label o_s_all_onart_NAC = "Number on ART - NAC";
@@ -1659,7 +1695,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Annual number of VL measurements";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 250000) valueattrs=(size=10);
 label p50_n_vm_0 = "Option 0  (median)";
 label o_s_all_onart_NAC = "Number on ART - NAC";
@@ -1672,7 +1708,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion on ART with VL measurement in the last year";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_vm_ly_onart_0 = "Option 0  (median)";
 label o_p_vlmeasuredly_onart = "MoH";
@@ -1684,7 +1720,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_pcp_p";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2500000 by 250000) valueattrs=(size=10);
 label p50_n_pcp_p_0 = "Option 0  (median)";
 label o_s_all_onart_NAC = "on ART - NAC";
@@ -1692,75 +1728,299 @@ series  x=cald y=p50_n_pcp_p_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_pcp_p_0 	upper=p95_n_pcp_p_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 scatter x=cald y=o_s_all_onart_NAC / markerattrs = (symbol=square color=black size = 10);
 run;quit;
+ods rtf close;run;
+
+
+
+
+
+
+
+ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_CheckSBCC&CMMC_20231211_54sim.doc' startpage=never; 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_sbcc_program_visit_1524m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+Title    height=1.5 justify=center "n_sbcc_visit1524m";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
-label p50_n_sbcc_program_visit_1524m_1  = "Minimal (median) - 15+";
-label p50_n_sbcc_program_visit_1524m_11 = "Minimal+SBCC (median) - 15+";
-series  x=cald y=p50_n_sbcc_program_visit_1524m_1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_sbcc_program_visit_1524m_1 	upper=p95_n_sbcc_program_visit_1524m_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_sbcc_program_visit_1524m_11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_sbcc_program_visit_1524m_11 	upper=p95_n_sbcc_program_visit_1524m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-run;quit;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "n_sbcc_program_visit_1524w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
-label p50_n_sbcc_program_visit_1524w_1  = "Minimal (median) - 15+";
-label p50_n_sbcc_program_visit_1524w_11 = "Minimal+SBCC (median) - 15+";
-series  x=cald y=p50_n_sbcc_program_visit_1524w_1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_sbcc_program_visit_1524w_1 	upper=p95_n_sbcc_program_visit_1524w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_sbcc_program_visit_1524w_11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_sbcc_program_visit_1524w_11 	upper=p95_n_sbcc_program_visit_1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-run;quit;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "n_sbcc_program_visit_2564_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
-label p50_n_sbcc_program_visit_2564__1  = "Minimal (median) - 15+";
-label p50_n_sbcc_program_visit_2564__11 = "Minimal+SBCC (median) - 15+";
-series  x=cald y=p50_n_sbcc_program_visit_2564__1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_sbcc_program_visit_2564__1 	upper=p95_n_sbcc_program_visit_2564__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_sbcc_program_visit_2564__11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_sbcc_program_visit_2564__11 	upper=p95_n_sbcc_program_visit_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+label p50_n_sbcc_visit_1524m_0  = "Baseline (median) - 15+";
+label p50_n_sbcc_visit_1524m_1  = "Minimal (median) - 15+";
+label p50_n_sbcc_visit_1524m_11 = "Minimal+SBCC (median) - 15+";
+series  x=cald y=p50_n_sbcc_visit_1524m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit_1524m_0 	upper=p95_n_sbcc_visit1524m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sbcc_visit_1524m_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit_1524m_1 	upper=p95_n_sbcc_visit1524m_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sbcc_visit_1524m_11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit_1524m_11 	upper=p95_n_sbcc_visit_1524m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_tested_sbcc_program_1524m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+Title    height=1.5 justify=center "n_sbcc_visit_1524w";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
-label p50_n_tested_sbcc_program_1524m_1  = "Minimal (median) - 15+";
-label p50_n_tested_sbcc_program_1524m_11 = "Minimal+SBCC (median) - 15+";
-series  x=cald y=p50_n_tested_sbcc_program_1524m_1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_program_1524m_1 	upper=p95_n_tested_sbcc_program_1524m_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_tested_sbcc_program_1524m_11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_program_1524m_11 	upper=p95_n_tested_sbcc_program_1524m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+label p50_n_sbcc_visit_1524w_0  = "Baseline (median) - 15+";
+label p50_n_sbcc_visit_1524w_1  = "Minimal (median) - 15+";
+label p50_n_sbcc_visit_1524w_11 = "Minimal+SBCC (median) - 15+";
+series  x=cald y=p50_n_sbcc_visit1524w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit1524w_0 	upper=p95_n_sbcc_visit1524w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sbcc_visit1524w_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit1524w_1 	upper=p95_n_sbcc_visit1524w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sbcc_visit1524w_11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit1524w_11 	upper=p95_n_sbcc_visit1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_tested_sbcc_program_1524w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+Title    height=1.5 justify=center "n_sbcc_visit2564_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
-label p50_n_tested_sbcc_program_1524w_1  = "Minimal (median) - 15+";
-label p50_n_tested_sbcc_program_1524w_11 = "Minimal+SBCC (median) - 15+";
-series  x=cald y=p50_n_tested_sbcc_program_1524w_1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_program_1524w_1 	upper=p95_n_tested_sbcc_program_1524w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_tested_sbcc_program_1524w_11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_program_1524w_11 	upper=p95_n_tested_sbcc_program_1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+label p50_n_sbcc_visit2564__0  = "Baseline (median) - 15+";
+label p50_n_sbcc_visit2564__1  = "Minimal (median) - 15+";
+label p50_n_sbcc_visit2564__11 = "Minimal+SBCC (median) - 15+";
+series  x=cald y=p50_n_sbcc_visit2564__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit2564__0 	upper=p95_n_sbcc_visit2564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sbcc_visit2564__1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit2564__1 	upper=p95_n_sbcc_visit2564__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sbcc_visit2564__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit2564__11 	upper=p95_n_sbcc_visit2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_tested_sbcc_1524m";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
+label p50_n_tested_sbcc_1524m_0  = "Baseline (median) - 15+";
+label p50_n_tested_sbcc_1524m_1  = "Minimal (median) - 15+";
+label p50_n_tested_sbcc_1524m_11 = "Minimal+SBCC (median) - 15+";
+series  x=cald y=p50_n_tested_sbcc_1524m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_1524m_0 	upper=p95_n_tested_sbcc_1524m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_sbcc_1524m_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_1524m_1 	upper=p95_n_tested_sbcc_1524m_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_sbcc_1524m_11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_1524m_11 	upper=p95_n_tested_sbcc_1524m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_tested_sbcc_program_2564_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+Title    height=1.5 justify=center "n_tested_sbcc_1524w";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
-label p50_n_tested_sbcc_program_2564__1  = "Minimal (median) - 15+";
-label p50_n_tested_sbcc_program_2564__11 = "Minimal+SBCC (median) - 15+";
-series  x=cald y=p50_n_tested_sbcc_program_2564__1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_program_2564__1 	upper=p95_n_tested_sbcc_program_2564__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_tested_sbcc_program_2564__11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_program_2564__11 	upper=p95_n_tested_sbcc_program_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+label p50_n_tested_sbcc_1524w_0  = "Baseline (median) - 15+";
+label p50_n_tested_sbcc_1524w_1  = "Minimal (median) - 15+";
+label p50_n_tested_sbcc_1524w_11 = "Minimal+SBCC (median) - 15+";
+series  x=cald y=p50_n_tested_sbcc_1524w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_1524w_0 	upper=p95_n_tested_sbcc_1524w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_sbcc_1524w_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_1524w_1 	upper=p95_n_tested_sbcc_1524w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_sbcc_1524w_11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_1524w_11 	upper=p95_n_tested_sbcc_1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_tested_sbcc_2564_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
+label p50_n_tested_sbcc_2564__0  = "Baseline (median) - 15+";
+label p50_n_tested_sbcc_2564__1  = "Minimal (median) - 15+";
+label p50_n_tested_sbcc_2564__11 = "Minimal+SBCC (median) - 15+";
+series  x=cald y=p50_n_tested_sbcc_2564__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_2564__1 	upper=p95_n_tested_sbcc_2564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_sbcc_2564__1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_2564__1 	upper=p95_n_tested_sbcc_2564__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_sbcc_2564__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_sbcc_2564__11 	upper=p95_n_tested_sbcc_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_newp_ge1_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.025) valueattrs=(size=10);
+label p50_p_newp_ge1__0  = "Baseline (median) - 15+";
+label p50_p_newp_ge1__1  = "Minimal (median) - 15+";
+label p50_p_newp_ge1__11 = "Minimal+SBCC (median) - 15+";
+label p50_p_newp_ge1__12 = "Minimal+CMMC (median) - 15+";
+series  x=cald y=p50_p_newp_ge1__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_newp_ge1__0 	upper=p95_p_newp_ge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_newp_ge1__1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_newp_ge1__1 	upper=p95_p_newp_ge1__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_newp_ge1__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_newp_ge1__11 	upper=p95_p_newp_ge1__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_newp_ge1__12/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_newp_ge1__12 	upper=p95_p_newp_ge1__12  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_1524_newp_ge1_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
+label p50_p_1524_newp_ge1__0 = "Baseline (median)";
+label p50_p_1524_newp_ge1__1 = "Minimal (median)";
+label p50_p_1524_newp_ge1__11 = "Minimal+SBCC (median)";
+label p50_p_1524_newp_ge1__12 = "Minimal+CMMC (median)";
+series  x=cald y=p50_p_1524_newp_ge1__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_1524_newp_ge1__0 	upper=p95_p_1524_newp_ge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_1524_newp_ge1__1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_1524_newp_ge1__1 	upper=p95_p_1524_newp_ge1__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_1524_newp_ge1__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_1524_newp_ge1__11 	upper=p95_p_1524_newp_ge1__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_1524_newp_ge1__12/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_1524_newp_ge1__12 	upper=p95_p_1524_newp_ge1__12  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_newp_ge5_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.025 by 0.005) valueattrs=(size=10);
+label p50_p_newp_ge5__0  = "Baseline (median) - 15+";
+label p50_p_newp_ge5__1  = "Minimal (median) - 15+";
+label p50_p_newp_ge5__11 = "Minimal+SBCC (median) - 15+";
+label p50_p_newp_ge5__12 = "Minimal+CMMC (median) - 15+";
+series  x=cald y=p50_p_newp_ge5__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_newp_ge5__0 	upper=p95_p_newp_ge5__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_newp_ge5__1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_newp_ge5__1 	upper=p95_p_newp_ge5__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_newp_ge5__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_newp_ge5__11 	upper=p95_p_newp_ge5__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_newp_ge5__12/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_newp_ge5__12 	upper=p95_p_newp_ge5__12  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_ep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_ep_0  = "Baseline (median) - 15+";
+label p50_p_ep_1  = "Minimal (median) - 15+";
+label p50_p_ep_12  = "Minimal+CMMC (median) - 15+";
+series  x=cald y=p50_p_ep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_ep_0 	upper=p95_p_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_ep_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_ep_1 	upper=p95_p_ep_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_ep_12/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_ep_12 	upper=p95_p_ep_12  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_tested";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  6000000 by 1000000) valueattrs=(size=10);*5000000 if stopping in 2023;
+label p50_n_tested_0  = "Baseline (median) - 15+";
+label p50_n_tested_1  = "Minimal (median) - 15+";
+label p50_n_tested_11 = "Minimal+SBCC (median) - 15+";
+label o_s_test_15ov_py_z = "CAL - Number of tests performed 15+";
+label o_s_tested_1549_py_garcpr = "GARCPR - Number tested 15+";
+series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_11 upper=p95_n_tested_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_s_test_15ov_py_z/	markerattrs = (color=black ) ;
+scatter  x=cald y=o_s_tested_1549_py_garcpr/	markerattrs = (color=blue ) ;
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_tested_w";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  4000000 by 500000) valueattrs=(size=10);*2500000 if stopping in 2023;
+label p50_n_tested_w_0  = "Baseline (median) - 15+";
+label p50_n_tested_w_1  = "Minimal (median) - 15+";
+label p50_n_tested_w_11 = "Minimal+SBCC (median) - 15+";
+series  x=cald y=p50_n_tested_w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_w_0 	upper=p95_n_tested_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_w_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_tested_w_1 	upper=p95_n_tested_w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_w_11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_w_11 	upper=p95_n_tested_w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_tested_m";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2000000 by 250000) valueattrs=(size=10);*5000000 if stopping in 2023;
+label p50_n_tested_m_0  = "Baseline (median) - 15+";
+label p50_n_tested_m_1  = "Minimal (median) - 15+";
+label p50_n_tested_m_11  = "Minimal+SBCC (median) - 15+";
+series  x=cald y=p50_n_tested_m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_m_0 	upper=p95_n_tested_m_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_m_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_tested_m_1 	upper=p95_n_tested_m_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_tested_m_11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_m_11 	upper=p95_n_tested_m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_tested_past_year_1549w";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_p_tested_past_year_1549w_0  = "Baseline (median) - 15+";
+label p50_p_tested_past_year_1549w_1  = "Minimal (median) - 15+";
+label p50_p_tested_past_year_1549w_11 = "Minimal+SBCC (median) - 15+";
+label o_p_testedly_1549w_zdhs = "DHS";
+series  x=cald y=p50_p_tested_past_year_1549w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_tested_past_year_1549w_0 	upper=p95_p_tested_past_year_1549w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_tested_past_year_1549w_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_tested_past_year_1549w_1 	upper=p95_p_tested_past_year_1549w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_tested_past_year_1549w_11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_tested_past_year_1549w_11 	upper=p95_p_tested_past_year_1549w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_p_testedly_1549w_zdhs/	markerattrs = (color=black) ;
+run;quit;
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+label p50_incidence1549__0 = "Baseline (median) ";
+label p50_incidence1549__1  = "Minimal (median)";
+label p50_incidence1549__11 = "Minimal+SBCC (median)";
+label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
+label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
+series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1549__11 	upper=p95_incidence1549__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
+scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+run;
+quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence (age 15-49) - ZOOM";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_incidence1549__0 = "Option 0 (median) ";
+label p50_incidence1549__1  = "Minimal (median)";
+label p50_incidence1549__11 = "Minimal+SBCC (median)";
+label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
+label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
+series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1549__11 	upper=p95_incidence1549__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
+scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+run;
+quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of new HIV infections 15-49";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000 by  5000) valueattrs=(size=10);*20000000 is stoping in 2023;
+label p50_n_new_inf1549__0 = "Baseline (median)";
+label p50_n_new_inf1549__1 = "Minimal (median)";
+label p50_n_new_inf1549__11 = "Minimal+SBCC (median)";
+
+series  x=cald y=p50_n_new_inf1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__0 	upper=p95_n_new_inf1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_new_inf1549__1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__1 	upper=p95_n_new_inf1549__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_new_inf1549__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__11 	upper=p95_n_new_inf1549__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
 
 ods rtf close;run;
 
@@ -2405,7 +2665,7 @@ data wide_allyears_0;set a.wide_allyears_0;run;
 *FLOW;
 %macro flow(o=);
 data wide_allyears_out_&o;set wide_allyears_&o;
-*note that 1991 would refer to the period 1990.5-1991.5;
+*note that 1991 would refer to the period &year_start.5-1991.5;
 
 *** PREGNANCIES BIRTHS;
 *# of females 15+ years old who gave birth in the last year:
