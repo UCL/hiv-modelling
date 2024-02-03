@@ -7,14 +7,14 @@
 ***Use 'include' statment in analysis program to read the code below in;
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_c_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_e_out\";
 
 proc printto ;
 
 ods html close;
 
 data b;
-set a.l_dcp_cab_c_y;
+set a.l_dcp_cab_e_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -646,7 +646,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion people with a PrEP indication taking PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2073 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1       by 0.1    ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5       by 0.1    ) valueattrs=(size=10);
 
 label p50_prop_elig_on_prep_0 = "status quo";
 label p50_prop_elig_on_prep_1 = "dcp";
