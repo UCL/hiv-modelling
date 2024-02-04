@@ -819,6 +819,15 @@ end;
 
 *  effect_dcp_pref_prep;		%sample_uniform(effect_dcp_pref_prep, 0.3  0.5  0.7);  
 
+* prob_prep_b_dcp;				%sample_uniform(prob_prep_b_dcp, 0.5 0.7 0.9);
+
+* rate_choose_stop_prep_dcp;	%sample_uniform(rate_choose_stop_prep_dcp, 0.01  0.02  0.05);
+
+* rate_test_startprep_any_dcp;	%sample_uniform(rate_test_startprep_any_dcp, 0.3 0.5 0.7);
+
+* prep_willingness_th_dcp;		%sample_uniform(prep_willingness_th_dcp, 0.05 0.1 0.15);
+
+
 
 * POP WIDE TLD * ;
 
@@ -2191,13 +2200,12 @@ if dcp = 1 then do;
 
 		* effects of dcp (dynamic choice prevention) ; 
 		* dcp increases testing by incr_test_rate_dcp ;
-		eff_rate_test_startprep_any = 0.5 ;
+		eff_rate_test_startprep_any = rate_test_startprep_any_dcp ;
 		eff_prop_tests_self = prop_tests_self + add_prop_tests_self_dcp;
-		eff_rate_choose_stop_prep_oral = 0.02 ; 		
-		prep_willingness_threshold = 0.1 ; *so this lasts after stopping dcp;
-		eff_prob_prep_oral_b = 0.7;
-		if caldate{t} >= date_prep_inj_intro  then do; eff_rate_choose_stop_prep_inj = 0.02 ; eff_prob_prep_inj_b = 0.7; end;
-
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_dcp ; 		
+		prep_willingness_threshold = prep_willingness_th_dcp ; *so this lasts after stopping dcp;
+		eff_prob_prep_oral_b = prob_prep_b_dcp;
+		if caldate{t} >= date_prep_inj_intro  then do; eff_rate_choose_stop_prep_inj = rate_choose_stop_prep_dcp ; eff_prob_prep_inj_b = prob_prep_b_dcp; end;
 
 		* dropping out of dcp ;
 		c=rand('uniform'); 
@@ -18914,7 +18922,9 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice effect_dcp_pref_prep rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice effect_dcp_pref_prep 
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp
+rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
@@ -21666,7 +21676,9 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice effect_dcp_pref_prep rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice effect_dcp_pref_prep 
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp
+rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  

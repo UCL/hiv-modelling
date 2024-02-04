@@ -1172,6 +1172,9 @@ p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 
 pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  effect_dcp_pref_prep  rate_start_dcp_not_prep  rate_stop_dcp  incr_test_rate_dcp
+
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp
+
 ;
 
 
@@ -1513,6 +1516,8 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
 %par(p=effect_dcp_pref_prep); %par(p=rate_start_dcp_not_prep); %par(p=rate_stop_dcp);  %par(p=incr_test_rate_dcp);
+%par(p=prob_prep_b_dcp); %par(p=rate_choose_stop_prep_dcp); %par(p=rate_test_startprep_any_dcp);  %par(p=prep_willingness_th_dcp);
+
 
 data b.wide_par2; merge 
 
@@ -1559,6 +1564,8 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
  prob_prep_pop_wide_tld
 
 p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol effect_dcp_pref_prep rate_start_dcp_not_prep  rate_stop_dcp  incr_test_rate_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp
+
 ;
 
 run;
