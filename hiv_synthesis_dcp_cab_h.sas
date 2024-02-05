@@ -660,7 +660,7 @@ newp_seed = 7;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14 17 18);  * dcp_cab _h ;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -2201,7 +2201,7 @@ sens_vct = (eff_prop_tests_self * 0.92) + ((1-eff_prop_tests_self) * 0.98);
 * becoming dcp = 1 ;
 
 d=rand('uniform');  * dcp_cab_f ;
-if dcp_program = 1 and tested_tm1 = 1 and registd ne 1 and (prep_any=1 or (prep_any_elig =1 and d <rate_start_dcp_not_prep)) then dcp=1; 
+if dcp_program = 1 and tested_tm1 = 1 and registd ne 1 and (prep_any=1 or ((prep_any_elig =1 or prep_any_elig_tm1 =1 ) and d <rate_start_dcp_not_prep)) then dcp=1; 
 
 
 if dcp = 1 then do;
@@ -4615,6 +4615,21 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		* Note that there is a component of sexual behaviour in prep eligibility for pregnant and breastfeeding women;
       	if gender=2 and (pregnant=1 or breastfeeding=1) and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
 	end;
+
+	if prep_any_strategy=17 then do;		* as 4 but different prob if ep=1;
+    	r = rand('Uniform');
+      	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.01 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
+	end;
+
+	if prep_any_strategy=18 then do;		* as 14 but different prob if ep=1;
+    	r = rand('Uniform');
+      	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.01 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
+	end;
+
+
+
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 

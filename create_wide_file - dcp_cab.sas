@@ -416,15 +416,15 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * prop_dcp_oral_prep;			prop_dcp_oral_prep = s_prep_oral / s_dcp;
 * prop_dcp_oral_inj;			prop_dcp_inj_prep = s_prep_inj / s_dcp;
 
-* p_dcp_elig_offprep_tm1_start;  p_dcp_elig_offprep_tm1_start = s_dcp_elig_offprep_tm1_start / s_dcp_elig_offprep_tm1 ;
-* p_dcp_elig_offpr_tm1_proral;  p_dcp_elig_offpr_tm1_proral = s_dcp_elig_offprep_tm1_preporal / s_dcp_elig_offprep_tm1 ;
-* p_dcp_elig_offpr_tm1_prinj;  p_dcp_elig_offpr_tm1_prinj = s_dcp_elig_offprep_tm1_prepinj / s_dcp_elig_offprep_tm1 ;
+* p_dcp_elig_offp_tm1_start;  p_dcp_elig_offp_tm1_start = s_dcp_elig_offprep_tm1_start / s_dcp_elig_offprep_tm1 ;
+* p_dcp_elig_offp_tm1_poral;  p_dcp_elig_offp_tm1_poral = s_dcp_elig_offprep_tm1_preporal / s_dcp_elig_offprep_tm1 ;
+* p_dcp_elig_offp_tm1_pinj;  p_dcp_elig_offp_tm1_pinj = s_dcp_elig_offprep_tm1_prepinj / s_dcp_elig_offprep_tm1 ;
 
 * prop_dcp_elig_prep_oral;		prop_dcp_elig_prep_oral = s_prep_oral / s_on_dcp_prep_elig ;
 * prop_dcp_elig_prep_inj;		prop_dcp_elig_prep_inj  = s_prep_inj  / s_on_dcp_prep_elig ;
 
-* p_elig_offprep_tm1_oralprep;  p_elig_offprep_tm1_oralprep = s_elig_offprep_tm1_oralprep / s_elig_offprep_tm1 ;
-* p_elig_offprep_tm1_injprep;   p_elig_offprep_tm1_injprep = s_elig_offprep_tm1_injprep / s_elig_offprep_tm1 ;
+* p_elig_offp_tm1_oralprep;  p_elig_offp_tm1_oralprep = s_elig_offprep_tm1_oralprep / s_elig_offprep_tm1 ;
+* p_elig_offp_tm1_injprep;   p_elig_offp_tm1_injprep = s_elig_offprep_tm1_injprep / s_elig_offprep_tm1 ;
 
 
 * prop_elig_dcp;				prop_elig_dcp = s_dcp / s_prep_any_elig;
@@ -441,7 +441,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_prep_past3yr_elig_onprep; p_prep_past3yr_elig_onprep = s_prep_past3yr_cur_elig_onprep / s_prep_past3yr_cur_elig ;
 
 * to calculate: proportion who are on dcp and remain eligible who drop off per 3 months ;
-* p_dcp_tm1_rema_elig_off_dcp;	p_dcp_tm1_rema_elig_off_dcp = s_dcp_tm1_remain_elig_off_dcp / s_dcp_tm1_remain_elig ; 	   
+* p_dcp_tm1_rem_elig_offdcp;	p_dcp_tm1_rem_elig_offdcp = s_dcp_tm1_remain_elig_off_dcp / s_dcp_tm1_remain_elig ; 	   
 
 * proportion who were on dcp who drop off;
 * p_dcp_drop_off_this_period;  p_dcp_drop_off_this_period =  s_dcp_drop_off_this_period / s_dcp_tm1 ; 
@@ -1116,10 +1116,10 @@ p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai
 prop_ever_tested_1549 p_tested_past_year_1549 prop_onprep_1549
 prop_ever_tested_1549m prop_ever_tested_1549w  p_tested_past_year_1549m p_tested_past_year_1549w
 
-p_tested_tm1_elig_onprep  p_alive_1549  p_prep_tm1_elig_onprep  p_prep_past3yr_elig_onprep  p_dcp_tm1_rema_elig_off_dcp  p_dcp_drop_off_this_period
+p_tested_tm1_elig_onprep  p_alive_1549  p_prep_tm1_elig_onprep  p_prep_past3yr_elig_onprep  p_dcp_tm1_rem_elig_offdcp  p_dcp_drop_off_this_period
 prop_1564_ondcp  prop_dcp_oral_prep prop_dcp_inj_prep  prop_dcp_elig_prep_oral prop_dcp_elig_prep_inj
-p_dcp_elig_offprep_tm1_start  prop_elig_on_prep_oral prop_elig_on_prep_inj  p_dcp_elig_offpr_tm1_proral   p_dcp_elig_offpr_tm1_prinj
-p_elig_offprep_tm1_oralprep  p_elig_offprep_tm1_injprep
+p_dcp_elig_offp_tm1_start  prop_elig_on_prep_oral prop_elig_on_prep_inj  p_dcp_elig_offp_tm1_poral   p_dcp_elig_offp_tm1_pinj
+p_elig_offp_tm1_oralprep  p_elig_offp_tm1_injprep
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1167,7 +1167,7 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
 
 pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  effect_dcp_pref_prep  rate_start_dcp_not_prep  rate_stop_dcp  incr_test_rate_dcp
 
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prob_prep_oral_b
 
 ;
 
@@ -1340,17 +1340,17 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_prep_primary_prevented); %var(v=p_u_vfail1_this_period); 
 %var(v=n_art_initiation);  %var(v=n_restart);     %var(v=n_line1_fail_this_period);    %var(v=n_need_cd4m);
 %var(v=p_elig_all_prep_criteria);  %var(v=p_elig_all_prep_cri_hivneg);  %var(v=p_elig_hivneg_onprep);  %var(v=p_prep_elig_onprep_inj);
-%var(v=prop_1564_hivneg_onprep); %var(v=prop_hivneg_onprep); %var(v=pref_prep_oral_beta_s1);
+%var(v=prop_1564_hivneg_onprep); %var(v=prop_hivneg_onprep); 
 %var(v=n_started_prep_inj_hiv); %var(v=n_started_prep_any_hiv); 
 %var(v=prop_prep_tot5yrs); %var(v=n_start_rest_prep_inj_hiv); %var(v=n_prep_inj);%var(v=p_prep_adhg80);
 %var(v=p_nactive_art_start_lt1p5);   %var(v=p_nactive_art_start_lt2);   %var(v=p_nactive_art_start_lt3); 
 %var(v=n_ai_naive_no_pmtct_e_inm); %var(v=prop_ever_tested_1549); %var(v=p_tested_past_year_1549); %var(v=prop_onprep_1549);
 %var(v=prop_ever_tested_1549m);  %var(v=prop_ever_tested_1549w);  %var(v=p_tested_past_year_1549m);  %var(v=p_tested_past_year_1549w); 
 %var(v=p_tested_tm1_elig_onprep);  %var(v=p_alive_1549);  %var(v=p_prep_tm1_elig_onprep);  %var(v=p_prep_past3yr_elig_onprep);  
-%var(v=p_dcp_tm1_rema_elig_off_dcp);  %var(v=p_dcp_drop_off_this_period); %var(v=prop_1564_ondcp);
+%var(v=p_dcp_tm1_rem_elig_offdcp);  %var(v=p_dcp_drop_off_this_period); %var(v=prop_1564_ondcp);
 %var(v=prop_dcp_oral_prep); %var(v=prop_dcp_inj_prep); %var(v=prop_dcp_elig_prep_oral); %var(v=prop_dcp_elig_prep_inj);
-%var(v=p_dcp_elig_offprep_tm1_start);  %var(v=prop_elig_on_prep_oral); %var(v= prop_elig_on_prep_inj);
-%var(v=p_dcp_elig_offpr_tm1_proral);  %var(v= p_dcp_elig_offpr_tm1_prinj); %var(v=p_elig_offprep_tm1_oralprep);  %var(v=p_elig_offprep_tm1_injprep);
+%var(v=p_dcp_elig_offp_tm1_start);  %var(v=prop_elig_on_prep_oral); %var(v= prop_elig_on_prep_inj);
+%var(v=p_dcp_elig_offp_tm1_poral);  %var(v= p_dcp_elig_offp_tm1_pinj); %var(v=p_elig_offp_tm1_oralprep);  %var(v=p_elig_offp_tm1_injprep);
 
 
 
@@ -1383,14 +1383,14 @@ p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_ona
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
-pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
+n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm
 prop_ever_tested_1549 p_tested_past_year_1549 prop_onprep_1549 prop_ever_tested_1549m prop_ever_tested_1549w
 p_tested_past_year_1549m p_tested_past_year_1549w
-p_tested_tm1_elig_onprep  p_alive_1549  p_prep_tm1_elig_onprep  p_prep_past3yr_elig_onprep  p_dcp_tm1_rema_elig_off_dcp  p_dcp_drop_off_this_period
-prop_1564_ondcp prop_dcp_oral_prep prop_dcp_inj_prep prop_dcp_elig_prep_oral prop_dcp_elig_prep_inj p_dcp_elig_offprep_tm1_start
-prop_elig_on_prep_oral prop_elig_on_prep_inj p_dcp_elig_offpr_tm1_proral   p_dcp_elig_offpr_tm1_prinj
-p_elig_offprep_tm1_oralprep  p_elig_offprep_tm1_injprep
+p_tested_tm1_elig_onprep  p_alive_1549  p_prep_tm1_elig_onprep  p_prep_past3yr_elig_onprep  p_dcp_tm1_rem_elig_offdcp  p_dcp_drop_off_this_period
+prop_1564_ondcp prop_dcp_oral_prep prop_dcp_inj_prep prop_dcp_elig_prep_oral prop_dcp_elig_prep_inj p_dcp_elig_offp_tm1_start
+prop_elig_on_prep_oral prop_elig_on_prep_inj p_dcp_elig_offp_tm1_poral   p_dcp_elig_offp_tm1_pinj
+p_elig_offp_tm1_oralprep  p_elig_offp_tm1_injprep
 
 ;
 
@@ -1450,7 +1450,8 @@ p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
 effect_dcp_pref_prep  rate_start_dcp_not_prep rate_stop_dcp  incr_test_rate_dcp
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prob_prep_oral_b  pref_prep_oral_beta_s1
+
 ;
 
 %macro par(p=);
@@ -1507,7 +1508,10 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
 %par(p=effect_dcp_pref_prep); %par(p=rate_start_dcp_not_prep); %par(p=rate_stop_dcp);  %par(p=incr_test_rate_dcp);
-%par(p=prob_prep_b_dcp); %par(p=rate_choose_stop_prep_dcp); %par(p=rate_test_startprep_any_dcp);  %par(p=prep_willingness_th_dcp);
+%par(p=prob_prep_b_dcp); %par(p=rate_choose_stop_prep_dcp); %par(p=rate_test_startprep_any_dcp);  %par(p=prep_willingness_th_dcp)
+%par(p=prob_prep_oral_b); %par(p= pref_prep_oral_beta_s1);
+
+
 
 
 data b.wide_par2; merge 
@@ -1555,7 +1559,7 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
  prob_prep_pop_wide_tld
 
 p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol effect_dcp_pref_prep rate_start_dcp_not_prep  rate_stop_dcp  incr_test_rate_dcp
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prob_prep_oral_b  pref_prep_oral_beta_s1
 
 ;
 
@@ -1620,34 +1624,24 @@ p_alive_1549_23 = "Proportion of adults aged 15-49"
 p_tested_tm1_elig_onprep_23 =  "Of those with a test in the last period, prop of eligible on PrEP" 
 p_prep_tm1_elig_onprep_23 = "Proportion of PrEP/DCP eligible people who took prep in the last 3 months who remain on PrEP"   
 p_prep_past3yr_elig_onprep_23 = "Proportion of PrEP/DCP eligible people who have taken prep in the past 3 years who remain on PrEP"    
-p_dcp_tm1_rema_elig_off_dcp_23 = "Proportion who are on DCP and remain eligible who drop off per 3 months"  
+p_dcp_tm1_rem_elig_offdcp_23 = "Proportion who are on DCP and remain eligible who drop off per 3 months"  
 p_dcp_drop_off_this_period_23 = "Proportion who were on DCP 3 months ago who drop off this period" 
 prop_dcp_oral_prep_23 = "Proportion of people on DCP who are on oral PrEP"  
 prop_dcp_inj_prep_23 = "Proportion of people on DCP who are on Cab-LA PrEP" 
 prop_dcp_elig_prep_oral_23 = "Proportion of people on DCP who have an indication for PrEP who are on oral PrEP"  
 prop_dcp_elig_prep_inj_23 = "Proportion of people on DCP who have an indication for PrEP who are on Cab-LA PrEP"  
-p_dcp_elig_offprep_tm1_start_23 = "Of people on DCP and PrEP eligible but off PrEP, proportion starting PrEP"   
-p_dcp_elig_offpr_tm1_proral_23 = "Of people on DCP and PrEP eligible but off PrEP, proportion starting oral PrEP"   
-p_dcp_elig_offpr_tm1_prinj_23 = "Of people on DCP and PrEP eligible but off PrEP, proportion starting Cab-LA PrEP"   
+p_dcp_elig_offp_tm1_start_23 = "Of people on DCP and PrEP eligible but off PrEP, proportion starting PrEP"   
+p_dcp_elig_offp_tm1_poral_23 = "Of people on DCP and PrEP eligible but off PrEP, proportion starting oral PrEP"   
+p_dcp_elig_offp_tm1_pinj_23 = "Of people on DCP and PrEP eligible but off PrEP, proportion starting Cab-LA PrEP"   
 prop_elig_on_prep_oral_23 = "Of people with indication for PrEP proportion on oral PrEP"  
 prop_elig_on_prep_inj_23 = "Of people with indication for PrEP proportion on cab-LA PrEP"  
-p_elig_offprep_tm1_oralprep_23 = "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on oral PrEP"    
-p_elig_offprep_tm1_injprep_23 = "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on Cab-LA PrEP"    
+p_elig_offp_tm1_oralprep_23 = "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on oral PrEP"    
+p_elig_offp_tm1_injprep_23 = "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on Cab-LA PrEP"    
 ;
 
 
+
 %macro lab(l=);
-
-label 
-&l._50y_1 = "status quo",
-&l._50y_2 = "DCP",
-&l._50y_3 = "Cab-LA PrEP",
-&l._50y_4 = "DCP + Cab-LA PrEP"
-
-%mend;
-
-
-%macro lab3(l=);
 
 label 
 &l._20y_1 = "status quo",
@@ -1689,9 +1683,25 @@ run;
 
 
 proc glm data= b.w_dcp_cab_g;
+class effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy;
 model d_prop_elig_on_prep_20y_2_1 = effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy
 / solution; run;
+
+
+proc glm data= b.w_dcp_cab_g;
+class effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy
+prob_prep_oral_b rate_choose_stop_prep_oral pref_prep_oral_beta_s1
+;
+
+model prop_elig_on_prep_20y_1 = effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy
+prob_prep_oral_b rate_choose_stop_prep_oral pref_prep_oral_beta_s1
+
+/ solution; run;
+
 
 
 ods html;
@@ -1744,6 +1754,7 @@ proc means    n p50 p5 p95 ;
 var prop_elig_on_prep_20y_1 prop_elig_on_prep_20y_2 prop_elig_on_prep_20y_3 prop_elig_on_prep_20y_4;
 run;
 
+
 data s; set b.w_dcp_cab_g;
 %lab(l=prop_1564_onprep); 
 title "Proportion of HIV negative adults aged 15-64 who are taking PrEP";
@@ -1762,7 +1773,7 @@ data s; set b.w_dcp_cab_g;
 %lab(l=prevalence1549m); 
 title "HIV prevalence in men age 15-49";
 proc means    n p50 p5 p95 ;  
-var prevalence1549m_20y_1 prevalence_1549m_20y_2 prevalence1549m_20y_3 prevalence1549m_20y_4;
+var prevalence1549m_20y_1 prevalence1549m_20y_2 prevalence1549m_20y_3 prevalence1549m_20y_4;
 run;
 
 data s; set b.w_dcp_cab_g;
@@ -1868,10 +1879,10 @@ run;
 
 
 data s; set b.w_dcp_cab_g;
-%lab(l=p_dcp_tm1_rema_elig_off); 
+%lab(l=p_dcp_tm1_rem_elig_offdcp); 
 title "Proportion who are on DCP and remain eligible who drop off per 3 months";
 proc means    n p50 p5 p95 ;  
-var p_dcp_tm1_rema_elig_off_20y_1 p_dcp_tm1_rema_elig_off_20y_2 p_dcp_tm1_rema_elig_off_20y_3 p_dcp_tm1_rema_elig_off_20y_4;
+var p_dcp_tm1_rem_elig_offdcp_20y_1 p_dcp_tm1_rem_elig_offdcp_20y_2 p_dcp_tm1_rem_elig_offdcp_20y_3 p_dcp_tm1_rem_elig_offdcp_20y_4;
 run;
 
 
@@ -1916,26 +1927,26 @@ run;
 
 
 data s; set b.w_dcp_cab_g;
-%lab(l=p_dcp_elig_offprep_tm1_start); 
+%lab(l=p_dcp_elig_offp_tm1_start); 
 title "Of people on DCP and PrEP eligible but off PrEP, proportion starting PrEP";
 proc means    n p50 p5 p95 ;  
-var p_dcp_elig_offprep_tm1_start_20y_1 p_dcp_elig_offprep_tm1_start_20y_2 p_dcp_elig_offprep_tm1_start_20y_3 p_dcp_elig_offprep_tm1_start_20y_4;
+var p_dcp_elig_offp_tm1_start_20y_1 p_dcp_elig_offp_tm1_start_20y_2 p_dcp_elig_offp_tm1_start_20y_3 p_dcp_elig_offp_tm1_start_20y_4;
 run;
 
 
 data s; set b.w_dcp_cab_g;
-%lab(l=p_dcp_elig_offpr_tm1_proral); 
+%lab(l=p_dcp_elig_offp_tm1_poral); 
 title "Of people on DCP and PrEP eligible but off PrEP, proportion starting oral PrEP" ;
 proc means    n p50 p5 p95 ;  
-var p_dcp_elig_offpr_tm1_proral_20y_1 p_dcp_elig_offpr_tm1_proral_20y_2 p_dcp_elig_offpr_tm1_proral_20y_3 p_dcp_elig_offpr_tm1_proral_20y_4;
+var p_dcp_elig_offp_tm1_poral_20y_1 p_dcp_elig_offp_tm1_poral_20y_2 p_dcp_elig_offp_tm1_poral_20y_3 p_dcp_elig_offp_tm1_poral_20y_4;
 run;
 
 
 data s; set b.w_dcp_cab_g;
-%lab(l=p_dcp_elig_offpr_tm1_prinj); 
+%lab(l=p_dcp_elig_offp_tm1_pinj); 
 title "Of people on DCP and PrEP eligible but off PrEP, proportion starting Cab-LA PrEP"   ;
 proc means    n p50 p5 p95 ;  
-var p_dcp_elig_offpr_tm1_prinj_20y_1 p_dcp_elig_offpr_tm1_prinj_20y_2 p_dcp_elig_offpr_tm1_prinj_20y_3 p_dcp_elig_offpr_tm1_prinj_20y_4;
+var p_dcp_elig_offp_tm1_pinj_20y_1 p_dcp_elig_offp_tm1_pinj_20y_2 p_dcp_elig_offp_tm1_pinj_20y_3 p_dcp_elig_offp_tm1_pinj_20y_4;
 run;
 
 data s; set b.w_dcp_cab_g;
@@ -1955,18 +1966,18 @@ run;
 
 
 data s; set b.w_dcp_cab_g;
-%lab(l=p_elig_offprep_tm1_oralprep); 
+%lab(l=p_elig_offp_tm1_oralprep); 
 title "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on oral PrEP";
 proc means    n p50 p5 p95 ;  
-var p_elig_offprep_tm1_oralprep_20y_1 p_elig_offprep_tm1_oralprep_20y_2 p_elig_offprep_tm1_oralprep_20y_3 p_elig_offprep_tm1_oralprep_20y_4;
+var p_elig_offp_tm1_oralprep_20y_1 p_elig_offp_tm1_oralprep_20y_2 p_elig_offp_tm1_oralprep_20y_3 p_elig_offp_tm1_oralprep_20y_4;
 run;
 
 
 data s; set b.w_dcp_cab_g;
-%lab(l=p_elig_offprep_tm1_injprep); 
+%lab(l=p_elig_offp_tm1_injprep); 
 title "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on Cab-LA PrEP";
 proc means    n p50 p5 p95 ;  
-var p_elig_offprep_tm1_injprep_20y_1 p_elig_offprep_tm1_injprep_20y_2 p_elig_offprep_tm1_injprep_20y_3 p_elig_offprep_tm1_injprep_20y_4;
+var p_elig_offp_tm1_injprep_20y_1 p_elig_offp_tm1_injprep_20y_2 p_elig_offp_tm1_injprep_20y_3 p_elig_offp_tm1_injprep_20y_4;
 run;
 
 
