@@ -1436,7 +1436,7 @@ effect_sw_prog_prep_any  prob_prep_any_restart_choice
 adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
 prob_prep_any_restart_choice  
-pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
+prob_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
 rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
 rel_pr_inm_inj_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_inj   hivtest_type_1_prep_inj
@@ -1450,7 +1450,7 @@ p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
 effect_dcp_pref_prep  rate_start_dcp_not_prep rate_stop_dcp  incr_test_rate_dcp
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prob_prep_oral_b  pref_prep_oral_beta_s1
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp   pref_prep_oral_beta_s1
 
 ;
 
@@ -1496,7 +1496,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=effect_sw_prog_prep_any);  %par(p=prob_prep_any_restart_choice);  
 %par(p=prob_prep_any_visit_counsel);  %par(p=rate_test_onprep_any); %par(p=prep_willingness_threshold);  
 %par(p=prob_prep_any_restart_choice);  
-%par(p=pr_prep_oral_b);  %par(p=rel_prep_oral_adh_younger); %par(p=prep_oral_efficacy);    
+%par(p=prob_prep_oral_b);  %par(p=rel_prep_oral_adh_younger); %par(p=prep_oral_efficacy);    
 %par(p=rate_choose_stop_prep_oral);  %par(p=higher_future_prep_oral_cov);  %par(p=pr_prep_inj_b);  %par(p=prep_inj_efficacy);
 %par(p=rate_choose_stop_prep_inj);   %par(p=prep_inj_effect_inm_partner);  %par(p=res_trans_factor_ii);
 %par(p=rel_pr_inm_inj_prep_tail_primary);      %par(p=rr_res_cab_dol);  %par(p=hivtest_type_1_init_prep_inj);   %par(p=hivtest_type_1_prep_inj);
@@ -1509,7 +1509,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
 %par(p=effect_dcp_pref_prep); %par(p=rate_start_dcp_not_prep); %par(p=rate_stop_dcp);  %par(p=incr_test_rate_dcp);
 %par(p=prob_prep_b_dcp); %par(p=rate_choose_stop_prep_dcp); %par(p=rate_test_startprep_any_dcp);  %par(p=prep_willingness_th_dcp)
-%par(p=prob_prep_oral_b); %par(p= pref_prep_oral_beta_s1);
+%par(p= pref_prep_oral_beta_s1);
 
 
 
@@ -1545,7 +1545,7 @@ effect_sw_prog_prep_any  prob_prep_any_restart_choice
 adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
 prob_prep_any_restart_choice  
-pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
+prob_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
 rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
 rel_pr_inm_inj_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_inj   hivtest_type_1_prep_inj
