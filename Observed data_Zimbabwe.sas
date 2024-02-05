@@ -3179,11 +3179,12 @@ if cald=2021.5 then o_w1524_dreams=31930;*VCMar2023;
 ******************    19. Social behavioural change communication	************************	
 *******************************************************************************************
 *Source: MIHPSA Zimbabwe modellers call 21Nov2023_withNotes.ppt Data shared by Amon Mpofu;
-if cald=2022.5 then do;
-	o_n_reached_sbcc_1024m=11627;	o_n_tested_sbcc_1024m=1525;	p_tested_sbcc_1024m=0.13;
+*The correct calendar year is 2022 but I want it to appear in the graph going forward)
+if cald in (2022.5 2023.5) then do;
+	o_n_reached_sbcc_1024m=11627;	o_n_tested_sbcc_1024m=1525;	o_p_tested_sbcc_1024m=0.13;
 	*The following includes SISTA2SISTA and DREAMS;
-	o_n_reached_sbcc_1024w=113723;	o_n_tested_sbcc_1024w=31902;p_tested_sbcc_1024w=0.28;
-	o_n_reached_sbcc_2564=14557;	o_n_tested_sbcc_2564=2241;	p_tested_sbcc_2564=0.15;
+	o_n_reached_sbcc_1024w=113723;	o_n_tested_sbcc_1024w=31902;o_p_tested_sbcc_1024w=0.28;
+	o_n_reached_sbcc_2564=14557;	o_n_tested_sbcc_2564=2241;	o_p_tested_sbcc_2564=0.15;
 end;
 
 
