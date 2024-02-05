@@ -21,7 +21,17 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 * add this in; 
 
-data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
+data i1; set b.out1:; 
+
+proc print; var s_dcp s_prep_any_elig s_prep_oral  s_on_dcp_prep_elig ; run; 
+
+
+
+
+
+
+
+data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9: ;
 
 %let laprv =  dcp_cab_g  ;
@@ -1684,14 +1694,6 @@ run;
 
 proc glm data= b.w_dcp_cab_g;
 class effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy;
-model d_prop_elig_on_prep_20y_2_1 = effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy
-/ solution; run;
-
-
-proc glm data= b.w_dcp_cab_g;
-class effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
 prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy
 prob_prep_oral_b rate_choose_stop_prep_oral pref_prep_oral_beta_s1
 ;
@@ -1701,6 +1703,24 @@ prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_will
 prob_prep_oral_b rate_choose_stop_prep_oral pref_prep_oral_beta_s1
 
 / solution; run;
+
+
+proc glm data= b.w_dcp_cab_g;
+class effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy
+prob_prep_oral_b rate_choose_stop_prep_oral pref_prep_oral_beta_s1
+;
+
+model d_prop_elig_on_prep_20y_2_1 = effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy
+prob_prep_oral_b rate_choose_stop_prep_oral pref_prep_oral_beta_s1
+
+/ solution; run;
+
+
+proc means p50 p5 p95 min max;
+var d_prop_elig_on_prep_20y_2_1; run;
+
 
 
 

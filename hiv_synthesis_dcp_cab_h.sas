@@ -1,16 +1,6 @@
 
 
 
-*
-
-* change prep strategies ?
-
-* allow dcp eligibility if recent prep any eligible - not necessarily now
-
-
-
-
-
 * include choice between pep and prep ? (probably no need - just adjust prep cost according to proportion pep ?)  
 
 * some dcp cost fixed and some unit cost per 3 month dcp=1
@@ -5167,7 +5157,9 @@ end;
 
 * dcp; 
 
-if prep_any = 1 then date_last_took_prep = caldate{t};
+if prep_any = 1 then do;
+	date_last_took_prep = caldate{t}; dcp=1;  * dcp_cab_h ;
+end;
 
 
 * tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
@@ -15460,7 +15452,7 @@ if tested_tm1 = 1 and prep_any_elig = 1 then do;
 end;
 
 * to calculate: Of people on DCP not on Prep & prep_elig, rate of starting oral PrEP, rate of starting prep inj;
-dcp_elig_offprep_tm1 = 0; dcp_elig_offprep_tm1_start=0; 
+dcp_elig_offprep_tm1 = 0; dcp_elig_offprep_tm1_start=0; dcp_elig_offprep_tm1_prepinj=1; dcp_elig_offprep_tm1_preporal=1;
 if dcp_tm1=1 and dcp=1 and prep_any_elig=1 and prep_any_tm1 ne 1 then do;
 	dcp_elig_offprep_tm1 = 1; if prep_any = 1 then dcp_elig_offprep_tm1_start=1; if prep_inj = 1 then dcp_elig_offprep_tm1_prepinj=1; 
 	if prep_oral = 1 then dcp_elig_offprep_tm1_preporal=1; 
