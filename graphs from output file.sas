@@ -119,7 +119,7 @@ n_new_inf1549_ n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w
 n_tested n_tested_m n_tested_w n_tested_sw n_tested_anc 
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_tested1st_anc n_tested1st_labdel n_tested1st_pd n_tested_anc_prevdiag n_tested_sbcc
-n_sbcc_visit_1524m 	n_sbcc_visit_1524w 	n_sbcc_visit_2564_
+n_sbcc_visit_1524m 	n_sbcc_visit_1524w n_sbcc_visit_1524_	n_sbcc_visit_2564_
 n_tested_sbcc_1524m n_tested_sbcc_1524w n_tested_sbcc_2564_ 
 p_tested_sbcc_1524m p_tested_sbcc_1524w p_tested_sbcc_2564_ p_pos_tested_sbcc
 p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd
@@ -1731,7 +1731,7 @@ ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_sbcc_visit_1524m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  300000 by 50000) valueattrs=(size=10);
 label p50_n_sbcc_visit_1524m_0  = "Baseline (median)";
 label p50_n_sbcc_visit_1524m_1  = "Minimal (median)";
 label p50_n_sbcc_visit_1524m_11 = "Minimal+SBCC (median)";
@@ -1742,13 +1742,14 @@ series  x=cald y=p50_n_sbcc_visit_1524m_1/	lineattrs = (color=blue thickness = 2
 band    x=cald lower=p5_n_sbcc_visit_1524m_1 	upper=p95_n_sbcc_visit_1524m_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_sbcc_visit_1524m_11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_sbcc_visit_1524m_11 	upper=p95_n_sbcc_visit_1524m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter  x=cald y=o_n_reached_sbcc_1024m/	markerattrs = (color=pink ) ;
+scatter  x=cald y=o_n_reached_sbcc_1024m/	markerattrs = (color=red) ;
+
 run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_sbcc_visit_1524w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 25000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  600000 by 50000) valueattrs=(size=10);
 label p50_n_sbcc_visit_1524w_0  = "Baseline (median)";
 label p50_n_sbcc_visit_1524w_1  = "Minimal (median)";
 label p50_n_sbcc_visit_1524w_11 = "Minimal+SBCC (median)";
@@ -1759,31 +1760,52 @@ series  x=cald y=p50_n_sbcc_visit_1524w_1/	lineattrs = (color=blue thickness = 2
 band    x=cald lower=p5_n_sbcc_visit_1524w_1 	upper=p95_n_sbcc_visit_1524w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_sbcc_visit_1524w_11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_sbcc_visit_1524w_11 	upper=p95_n_sbcc_visit_1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter  x=cald y=o_n_reached_sbcc_1024w/	markerattrs = (color=pink ) ;
+scatter  x=cald y=o_n_reached_sbcc_1024w/	markerattrs = (color=red ) ;
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_sbcc_visit_1524_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  600000 by 50000) valueattrs=(size=10);
+label p50_n_sbcc_visit_1524__0  = "Baseline (median)";
+label p50_n_sbcc_visit_1524__1  = "Minimal (median)";
+label p50_n_sbcc_visit_1524__11 = "Minimal+SBCC (median)";
+label o_n_reached_sbcc_1024 = "Observed Sista2sista&DREAMS 10-24 - NAC";
+label target_n_reached_sbcc_1524_ = "Target 15-24 M&e plan";
+series  x=cald y=p50_n_sbcc_visit_1524__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit_1524__0 	upper=p95_n_sbcc_visit_1524__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sbcc_visit_1524__1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit_1524__1 	upper=p95_n_sbcc_visit_1524__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sbcc_visit_1524__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_sbcc_visit_1524__11 	upper=p95_n_sbcc_visit_1524__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_n_reached_sbcc_1024_/	markerattrs = (color=red ) ;
+scatter  x=cald y=target_n_reached_sbcc_1524/	markerattrs = (color=darkred );
 run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_sbcc_visit_2564_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 25000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  600000 by 50000) valueattrs=(size=10);
 label p50_n_sbcc_visit_2564__0  = "Baseline (median)";
 label p50_n_sbcc_visit_2564__1  = "Minimal (median)";
 label p50_n_sbcc_visit_2564__11 = "Minimal+SBCC (median)";
 label o_n_reached_sbcc_2564 = "Observed Peer Led - NAC";
+label target_n_reached_sbcc_2564 = "Target 15-24 M&e plan";
 series  x=cald y=p50_n_sbcc_visit_2564__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_sbcc_visit_2564__0 	upper=p95_n_sbcc_visit_2564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_sbcc_visit_2564__1/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_sbcc_visit_2564__1 	upper=p95_n_sbcc_visit_2564__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_sbcc_visit_2564__11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_sbcc_visit_2564__11 	upper=p95_n_sbcc_visit_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter  x=cald y=o_n_reached_sbcc_2564/	markerattrs = (color=pink ) ;
+scatter  x=cald y=o_n_reached_sbcc_2564/	markerattrs = (color=red) ;
+scatter  x=cald y=target_n_reached_sbcc_2564/	markerattrs = (color=darkred) ;
 run;quit;
 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_sbcc_1524m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 25000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 50000) valueattrs=(size=10);
 label p50_n_tested_sbcc_1524m_0  = "Baseline (median)";
 label p50_n_tested_sbcc_1524m_1  = "Minimal (median)";
 label p50_n_tested_sbcc_1524m_11 = "Minimal+SBCC (median)";
@@ -1794,13 +1816,13 @@ series  x=cald y=p50_n_tested_sbcc_1524m_1/	lineattrs = (color=blue thickness = 
 band    x=cald lower=p5_n_tested_sbcc_1524m_1 	upper=p95_n_tested_sbcc_1524m_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_tested_sbcc_1524m_11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_tested_sbcc_1524m_11 	upper=p95_n_tested_sbcc_1524m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter  x=cald y=o_n_tested_sbcc_1024m/	markerattrs = (color=pink ) ;
+scatter  x=cald y=o_n_tested_sbcc_1024m/	markerattrs = (color=red ) ;
 run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_sbcc_1524w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 25000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  600000 by 50000) valueattrs=(size=10);
 label p50_n_tested_sbcc_1524w_0  = "Baseline (median)";
 label p50_n_tested_sbcc_1524w_1  = "Minimal (median)";
 label p50_n_tested_sbcc_1524w_11 = "Minimal+SBCC (median)";
@@ -1811,13 +1833,13 @@ series  x=cald y=p50_n_tested_sbcc_1524w_1/	lineattrs = (color=blue thickness = 
 band    x=cald lower=p5_n_tested_sbcc_1524w_1 	upper=p95_n_tested_sbcc_1524w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_tested_sbcc_1524w_11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_tested_sbcc_1524w_11 	upper=p95_n_tested_sbcc_1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter  x=cald y=o_n_tested_sbcc_1024w/	markerattrs = (color=pink ) ;
+scatter  x=cald y=o_n_tested_sbcc_1024w/	markerattrs = (color=red ) ;
 run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_sbcc_2564_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 50000) valueattrs=(size=10);
 label p50_n_tested_sbcc_2564__0  = "Baseline (median)";
 label p50_n_tested_sbcc_2564__1  = "Minimal (median)";
 label p50_n_tested_sbcc_2564__11 = "Minimal+SBCC (median)";
@@ -1828,7 +1850,7 @@ series  x=cald y=p50_n_tested_sbcc_2564__1/	lineattrs = (color=blue thickness = 
 band    x=cald lower=p5_n_tested_sbcc_2564__1 	upper=p95_n_tested_sbcc_2564__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_tested_sbcc_2564__11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_tested_sbcc_2564__11 	upper=p95_n_tested_sbcc_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter  x=cald y=o_n_tested_sbcc_2564/	markerattrs = (color=pink ) ;
+scatter  x=cald y=o_n_tested_sbcc_2564/	markerattrs = (color=red ) ;
 run;quit;
 /*
 	p_tested_sbcc_1024m=0.13;
@@ -1851,13 +1873,13 @@ series  x=cald y=p50_p_tested_sbcc_1524m_1/	lineattrs = (color=blue thickness = 
 band    x=cald lower=p5_p_tested_sbcc_1524m_1 	upper=p95_p_tested_sbcc_1524m_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_tested_sbcc_1524m_11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_sbcc_1524m_11 	upper=p95_p_tested_sbcc_1524m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter  x=cald y=o_p_tested_sbcc_1024m/	markerattrs = (color=pink ) ;
+scatter  x=cald y=o_p_tested_sbcc_1024m/	markerattrs = (color=red ) ;
 run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_tested_sbcc_1524w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 25000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1 by 0.1) valueattrs=(size=10);
 label p50_p_tested_sbcc_1524w_0  = "Baseline (median)";
 label p50_p_tested_sbcc_1524w_1  = "Minimal (median)";
 label p50_p_tested_sbcc_1524w_11 = "Minimal+SBCC (median)";
@@ -1868,13 +1890,13 @@ series  x=cald y=p50_p_tested_sbcc_1524w_1/	lineattrs = (color=blue thickness = 
 band    x=cald lower=p5_p_tested_sbcc_1524w_1 	upper=p95_p_tested_sbcc_1524w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_tested_sbcc_1524w_11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_sbcc_1524w_11 	upper=p95_p_tested_sbcc_1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter  x=cald y=o_p_tested_sbcc_1024w/	markerattrs = (color=pink ) ;
+scatter  x=cald y=o_p_tested_sbcc_1024w/	markerattrs = (color=red ) ;
 run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_tested_sbcc_2564_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_tested_sbcc_2564__0  = "Baseline (median)";
 label p50_p_tested_sbcc_2564__1  = "Minimal (median)";
 label p50_p_tested_sbcc_2564__11 = "Minimal+SBCC (median)";
@@ -1885,13 +1907,13 @@ series  x=cald y=p50_p_tested_sbcc_2564__1/	lineattrs = (color=blue thickness = 
 band    x=cald lower=p5_p_tested_sbcc_2564__1 	upper=p95_p_tested_sbcc_2564__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_tested_sbcc_2564__11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_sbcc_2564__11 	upper=p95_p_tested_sbcc_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter  x=cald y=o_p_tested_sbcc_2564/	markerattrs = (color=pink ) ;
+scatter  x=cald y=o_p_tested_sbcc_2564/	markerattrs = (color=red ) ;
 run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge1_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.025) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.125 by 0.025) valueattrs=(size=10);
 label p50_p_newp_ge1__0  = "Baseline (median) - 15+";
 label p50_p_newp_ge1__1  = "Minimal (median) - 15+";
 label p50_p_newp_ge1__11 = "Minimal+SBCC (median) - 15+";
@@ -1909,7 +1931,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_1524_newp_ge1_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) valueattrs=(size=10);
 label p50_p_1524_newp_ge1__0 = "Baseline (median)";
 label p50_p_1524_newp_ge1__1 = "Minimal (median)";
 label p50_p_1524_newp_ge1__11 = "Minimal+SBCC (median)";
@@ -1927,7 +1949,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge5_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.025 by 0.005) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.02 by 0.0025) valueattrs=(size=10);
 label p50_p_newp_ge5__0  = "Baseline (median) - 15+";
 label p50_p_newp_ge5__1  = "Minimal (median) - 15+";
 label p50_p_newp_ge5__11 = "Minimal+SBCC (median) - 15+";
@@ -1945,7 +1967,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_ep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.7 by 0.1) valueattrs=(size=10);
 label p50_p_ep_0  = "Baseline (median) - 15+";
 label p50_p_ep_1  = "Minimal (median) - 15+";
 label p50_p_ep_12  = "Minimal+CMMC (median) - 15+";
@@ -2027,7 +2049,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Positivity rate - Tested SBCC";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.01) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.005) valueattrs=(size=10);
 label p50_p_pos_tested_sbcc_0  = "Baseline (median)";
 label p50_p_pos_tested_sbcc_1  = "Minimal (median)";
 label p50_p_pos_tested_sbcc_11 = "Minimal+SBCC (median)";
@@ -2082,7 +2104,7 @@ quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of new HIV infections 15-49";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000 by  5000) valueattrs=(size=10);*20000000 is stoping in 2023;
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000 by  10000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_new_inf1549__0 = "Baseline (median)";
 label p50_n_new_inf1549__1 = "Minimal (median)";
 label p50_n_new_inf1549__11 = "Minimal+SBCC (median)";
