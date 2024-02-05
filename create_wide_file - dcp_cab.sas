@@ -18,9 +18,6 @@ also produce table of outputs for 1yr
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_f_out\";
 
 
-/*
-
-
 
 * add this in; 
 
@@ -56,9 +53,6 @@ proc sort; by run;
 in the keep statement, macro par and merge we are still using the variable sf_2019;
 %let sf=sf_2023;
 
-
-
-*/
 
 
 
