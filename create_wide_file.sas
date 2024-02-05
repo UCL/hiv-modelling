@@ -454,7 +454,7 @@ so the one above is the annual number of tests conducted in ANC;
 								prop_sw_newp0 = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp = s_sw_newp/s_sw_1564;
 
-* prop_reached_sbcc_program;	prop_reached_sbcc_program = s_sbcc_program_visit / s_alive1564 ;
+* p_reached_sbcc;	p_reached_sbcc = s_sbcc_program_visit / s_alive1564 ;
 * n_sbcc_visit_1524m;  		n_sbcc_visit_1524m = s_sbcc_program_visit_1524m * &sf;*No need to multiply by 4 as it lasts for 1 yearl; 
 * n_sbcc_visit_1524w;		n_sbcc_visit_1524w = s_sbcc_program_visit_1524w * &sf; 
 * n_sbcc_visit_2564_; 		n_sbcc_visit_2564_ = s_sbcc_program_visit_2564_ * &sf; 
@@ -463,7 +463,11 @@ so the one above is the annual number of tests conducted in ANC;
 * n_tested_sbcc_1524w; 	n_tested_sbcc_1524w = s_tested_sbcc_program_1524w * &sf * 4;
 * n_tested_sbcc_2564_;	n_tested_sbcc_2564_ = s_tested_sbcc_program_2564_* &sf * 4;
 
-* prop_pos_tested_sbcc;			if s_tested_sbcc_program gt 0 then prop_pos_tested_sbcc = s_diag_this_period_sbcc / s_tested_sbcc_program;
+* p_tested_sbcc_1524m; 	p_tested_sbcc_1524m = s_tested_sbcc_program_1524m / s_sbcc_program_visit_1524m;
+* p_tested_sbcc_1524w; 	p_tested_sbcc_1524w = s_tested_sbcc_program_1524w / s_sbcc_program_visit_1524w;
+* p_tested_sbcc_2564_;	p_tested_sbcc_2564_ = s_tested_sbcc_program_2564_ / s_sbcc_program_visit_2564_;
+
+* p_pos_tested_sbcc;			if s_tested_sbcc_program gt 0 then p_pos_tested_sbcc = s_diag_this_period_sbcc / s_tested_sbcc_program;
 
 * prep;
 
@@ -1116,7 +1120,7 @@ p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_vm p_vm_ly_onart n_pcp_p p_onart_cd4_
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m  p_mcirc_1049m 
 p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m p_vmmc_1049m	
 n_new_vmmc1549m n_new_vmmc1049m n_new_vmmc1014m n_new_birth_circ n_new_mcirc n_new_mcirc_1549m n_new_mcirc_1049m
-prop_w_1549_sw  prop_w_1564_sw	prop_w_ever_sw prop_sw_program_visit prop_reached_sbcc_program
+prop_w_1549_sw  prop_w_1564_sw	prop_w_ever_sw prop_sw_program_visit p_reached_sbcc
 prop_sw_hiv prop_w_1524_onprep p_w1524newpge1_onprep prop_1564_hivneg_onprep prop_sw_onprep p_prep_adhg80
 prevalence1549m prevalence1549w prevalence1549 
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
@@ -1131,7 +1135,9 @@ incidence1549 incidence1564 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_
 p_sw_newinf p_w1524_newinf p_w25ov_newinf p_m1524_newinf p_m25ov_newinf mtct_prop  incidence_onprep
 p_diag p_diag_m p_diag_w prop_diag_infection_1yr p_ai_no_arv_c_nnm prop_sw_newp0  t_sw_newp
 n_sbcc_visit_1524m n_sbcc_visit_1524w n_sbcc_visit_2564_
-n_tested_sbcc_1524m n_tested_sbcc_1524w n_tested_sbcc_2564_ prop_pos_tested_sbcc
+n_tested_sbcc_1524m n_tested_sbcc_1524w n_tested_sbcc_2564_ 
+p_tested_sbcc_1524m p_tested_sbcc_1524w p_tested_sbcc_2564_
+p_pos_tested_sbcc
 p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
 p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_onart_diag_w1524_ p_onart_diag_1524_
 p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 
