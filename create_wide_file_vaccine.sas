@@ -1516,15 +1516,6 @@ var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_dia
 run;
 
 
-
-proc print   data = b.w_vaccine_g noobs; var run;
-* where incidence1549_24 >= 0.2 and d_incidence1549_24_30y_1 < 0.03;
-  where incidence1549_24 >= 0.2 and 0.25 <= d_incidence1549_24_30y_1 ;
-run;
-
-
-
-
 proc means   data = b.w_vaccine_g  n p50 p5 p95 min max;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24 
 prop_elig_on_prep_24  ;
