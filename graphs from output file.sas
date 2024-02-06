@@ -7,14 +7,14 @@
 ***Use 'include' statment in analysis program to read the code below in;
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_g_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_h_out\";
 
 proc printto ;
 
 ods html close;
 
 data b;
-set a.l_dcp_cab_g_y;
+set a.l_dcp_cab_h_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -28,7 +28,7 @@ n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
 
-%let single_var = prop_elig_on_prep              ;
+%let single_var = prop_1564_ondcp              ;
 
 
 proc sort data=b; by cald run ;run;
@@ -638,9 +638,35 @@ run;quit;
 
 ods html close;
 
-
 */
 
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion under DCP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.05 ) valueattrs=(size=10);
+
+label p50_prop_1564_ondcp_0 = "status quo";
+label p50_prop_1564_ondcp_1 = "dcp";
+label p50_prop_1564_ondcp_2 = "cab";
+label p50_prop_1564_ondcp_3 = "dcp + cab";
+
+  series  x=cald y=p50_prop_1564_ondcp_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prop_1564_ondcp_0 	upper=p95_prop_1564_ondcp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_ondcp_1/	lineattrs = (color=lime thickness = 4);
+  band    x=cald lower=p5_prop_1564_ondcp_1 	upper=p95_prop_1564_ondcp_1  / transparency=0.9 fillattrs = (color=lime) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_ondcp_2/	lineattrs = (color=rose   thickness = 4);
+  band    x=cald lower=p5_prop_1564_ondcp_2 	upper=p95_prop_1564_ondcp_2  / transparency=0.9 fillattrs = (color=rose) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_ondcp_3/	lineattrs = (color=violet  thickness = 4);
+  band    x=cald lower=p5_prop_1564_ondcp_3 	upper=p95_prop_1564_ondcp_3  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -667,7 +693,6 @@ run;quit;
 ods html close;
 
 
-/*
 
 
 ods html;
