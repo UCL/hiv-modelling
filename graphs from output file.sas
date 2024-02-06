@@ -1,14 +1,14 @@
 
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_f_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_g_out\";
 
 proc printto ;
 
-ods html close;
+* ods html close;
 
 data b;
-set a.l_vaccine_f_y;
+set a.l_vaccine_g_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -25,7 +25,55 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-%let single_var = n_alive                        ;
+  if run in (
+702777688
+                                             703368657
+                                             706612076
+                                             711362670
+                                             712293778
+                                             713795085
+                                             721089646
+                                             726461872
+                                             727334129
+                                             740828129
+                                             761422746
+                                             766235453
+                                             785207511
+                                             787183173
+                                             801961098
+                                             804796602
+                                             815012992
+                                             833033157
+                                             842120172
+                                             848090602
+                                             867062589
+                                             889652667
+                                             898042364
+                                             905919154
+                                             908467620
+                                             908946162
+                                             909317692
+                                             910909332
+                                             921853390
+                                             931225868
+                                             936014238
+                                             945143081
+                                             946483159
+                                             947883002
+                                             964787871
+                                             968383664
+                                             969498331
+                                             987283072
+                                             988922799
+                                             989271497
+                                             998628576
+                                             999872901
+
+);
+
+
+%let single_var = incidence1549_                        ;
+
 
 * p_agege15_ever_vaccinated  p_cur_full_vac_e_1564_ prop_elig_on_prep  prop_1564_hivneg_onprep  n_tested  p_diag  p_onart_diag  p_onart_vl1000_  incidence1549_;
 
@@ -34,7 +82,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 600   ;
+%let nfit = 84    ;
 
 %let year_end = 2070.00 ;
 run;
@@ -191,7 +239,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 ods html;
 proc sgplot data=d ; 
@@ -213,7 +261,6 @@ run;quit;
 ods html close;
 
 
-/*
 
 ods html;
 proc sgplot data=d ; 
@@ -359,14 +406,14 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.7       by 0.1     ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2040 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
 
 label p50_incidence1549__0 = "no vaccine";
 label p50_incidence1549__1 = "vaccine";
@@ -381,7 +428,7 @@ run;quit;
 ods html close;
 
 
-
+/*
 
 ods html;
 proc sgplot data=d ; 

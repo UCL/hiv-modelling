@@ -1,42 +1,6 @@
 
 
 
-
-
-* generate a range of assumptions on future prep use and sample from parameters determining this 
-
-essentially on future cab-la uptake
-
-zero uptake (a)
-
-as now some uptake in 2027
-
-higher uptake in 2027
-
-very high uptake in 2027
-
-
-
-use
-
-rate_choose_stop_prep_inj
-
-as well as 
-
-inj_prep_incr_pref
-
-;
-
-
-
-
-
-
-
-
-
-
-
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -784,8 +748,6 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* REF HIV MC joint project - this takes into account delayed or skipped injections ;
 
 * prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
-* rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
-								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_prep_inj/vr or one indicating the relative rate compared with oral prep;
 * prep_inj_effect_inm_partner;	%sample_uniform(prep_inj_effect_inm_partner, 0.0 0.25 0.5 );				
 
@@ -796,11 +758,13 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 
-* new for pop_wide_tld ;
+* future_prep_inj_use ;			%sample_uniform(future_prep_inj_use, 1 2 3 4);
 
-* pref_prep_inj_beta_s1;		%sample_uniform(inj_prep_incr_pref, 0  0.15  0.4  0.9);
-								pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + inj_prep_incr_pref ; 
-								* tends to be more preference for inj but extent of higher level low - bmgf_vaccine ;
+								if future_prep_inj_use = 1 then do; pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 / 5; rate_choose_stop_prep_inj = 0.9; end;
+								if future_prep_inj_use = 2 then do; pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1; rate_choose_stop_prep_inj = 0.3; end;
+								if future_prep_inj_use = 3 then do; pref_prep_inj_beta_s1 = min(1, pref_prep_oral_beta_s1 + 0.4); rate_choose_stop_prep_inj = 0.05; end;
+								if future_prep_inj_use = 4 then do; pref_prep_inj_beta_s1 = min(1, pref_prep_oral_beta_s1 + 0.9); rate_choose_stop_prep_inj = 0.02;  end;
+
 
 * hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
 								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
@@ -18923,7 +18887,7 @@ rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy  prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
-artvis0_lower_adh  pop_wide_prep_adh_effect inj_prep_incr_pref
+artvis0_lower_adh  pop_wide_prep_adh_effect future_prep_inj_use
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
@@ -21198,7 +21162,7 @@ prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b pr
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
-artvis0_lower_adh  pop_wide_prep_adh_effect inj_prep_incr_pref
+artvis0_lower_adh  pop_wide_prep_adh_effect future_prep_inj_use
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
