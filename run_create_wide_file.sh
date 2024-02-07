@@ -19,5 +19,3 @@ do
 done
 sas $sas_infile -sysparm "$SASOUTPUTDIR"
 tar cvzf $HOME/Scratch/combined_data_out/sv_$JOB_ID.tgz $TMPDIR
-
-

@@ -1,8 +1,8 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run 96 all;
+* run 99 all;
 * Matt local machine input;
-libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\test';
+libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\test';
 %let tmpfilename = out;
 */
 
@@ -12,11 +12,12 @@ libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\test';
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
+
  proc printto; *log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; *run;
 
 	
 %let population = 100000 ; 
-%let year_interv = 2023.5;
+%let year_interv = 2024;
 
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -949,8 +950,9 @@ cost_htn_drug2 = 0.0015;
 cost_htn_drug3 = 0.0030;
 cost_ihd_tx = 2.27;
 cost_cva_tx = 2.42;
-cost_ihd_tx_lowqual = cost_ihd_tx / 2;
-cost_cva_tx_lowqual = cost_cva_tx / 2;
+%sample_uniform(cost_lowqual_cvdcare, 0.25 0.5 1.0);
+cost_ihd_tx_lowqual = cost_ihd_tx * cost_lowqual_cvdcare;
+cost_cva_tx_lowqual = cost_cva_tx * cost_lowqual_cvdcare;
 
 ** CVD events;
 	* Ischemic heart disease (IHD);
@@ -2707,7 +2709,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 3 then do;
 		** CHW community screening without voucher;
-		first_comm_test = 2023.5;
+		first_comm_test = 2024;
 		* prob testing in commmunity;
 		%sample_uniform(prob_test_sbp_comm, 0.75 0.80 0.85);
 		* prob link from community testing to clinic;
@@ -2715,7 +2717,7 @@ who may be dead and hence have caldate{t} missing;
 		* comm test interval;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 50;
+		comm_test_age = 40;
 
 		*relative risk of BP testing at HIV visit if out of hypertension care;
 		rr_test_sbp_hiv =10;
@@ -2772,10 +2774,10 @@ who may be dead and hence have caldate{t} missing;
 		cost_htn_link_voucher = 0;
 		cost_htn_screen_comm = 0.003;
 	end;
-
+/*
 	if option = 4 then do;
 		** CHV Community Screening with voucher;
-		first_comm_test = 2023.5;
+		first_comm_test = 2024;
 		* prob testing in commmunity;
 		%sample_uniform(prob_test_sbp_comm, 0.75 0.80 0.85);
 		* prob link from community testing to clinic;
@@ -2840,10 +2842,10 @@ who may be dead and hence have caldate{t} missing;
 		cost_htn_link_voucher = 0.005;
 		cost_htn_screen_comm = 0.003;
 	end;
-/*
+
 	if option = 5 then do; * PERFECT IMPLEMENTATION;
 		** CHV Community Screening with voucher;
-		first_comm_test = 2023.5;
+		first_comm_test = 2024;
 		* prob testing in commmunity;
 		prob_test_sbp_comm = 1;
 		* prob link from community testing to clinic;
@@ -16142,45 +16144,61 @@ end;
 dead_hivpos_cause1=0;dead_hivpos_tb=0; dead_hivpos_crypm=0; dead_hivpos_sbi=0; dead_hivpos_oth_adc=0; dead_hivpos_cause2=0;dead_hivpos_cause3=0;
 dead_hivpos_cause4=0; dead_hivpos_cvd=0; dead_cvd=0; dead_hivneg_cause4=0;dead_hivneg_cause3=0;dead_hivneg_cause2=0; 
 dead_hivneg_cvd=0; dead_cvd=0; dead_hivneg_cause5=0; dead_hivneg_tb=0; dead_tb=0; dead_hivpos_anycause=0;dead_hivneg_anycause=0;
+
+dead_hivpos_cvd_ge18=0; dead_hivpos_anycause_ge18=0; dead_hivneg_cvd_ge18=0; dead_hivneg_anycause_ge18=0;
+
+dead_cvd_ge18=0; dead_cvd_2544=0;dead_cvd_4564=0;dead_cvd_ge65=0;
 dead_cvd_3039m=0;dead_cvd_4049m=0;dead_cvd_5059m=0;dead_cvd_6069m=0;dead_cvd_7079m=0;dead_cvd_ge80m=0;
 dead_cvd_3039w=0;dead_cvd_4049w=0;dead_cvd_5059w=0;dead_cvd_6069w=0;dead_cvd_7079w=0;dead_cvd_ge80w=0;
+
 * death by cause and hiv status ;
 if dead=1 and caldate&j = death then do;
-	if hiv=1 and dcause=1 then dead_hivpos_cause1=1;
-	if hiv=1 and dcause=1 and dead_hiv_tb=1 then dead_hivpos_tb=1; 
-	if hiv=1 and dcause=1 and dead_crypm=1 then dead_hivpos_crypm=1; 
-	if hiv=1 and dcause=1 and dead_sbi=1 then dead_hivpos_sbi=1; 
-	if hiv=1 and dcause=1 and dead_oth_adc=1 then dead_hivpos_oth_adc=1; 
-	if hiv=1 and dcause=2 then dead_hivpos_cause2=1;
-	if hiv=1 and dcause=3 then dead_hivpos_cause3=1;
-	if hiv=1 and dcause=4 then do; dead_hivpos_cause4=1; dead_hivpos_cvd=1; dead_cvd=1; end;
-	if hiv=1 then dead_hivpos_anycause=1;
-	if hiv ne 1 and dcause=2 then dead_hivneg_cause2=1;
-	if hiv ne 1 and dcause=3 then dead_hivneg_cause3=1;
-	if hiv ne 1 and dcause=4 then do; dead_hivneg_cause4=1; dead_hivneg_cvd=1; dead_cvd=1; end;
-	if hiv ne 1 and dcause=5 then do; dead_hivneg_cause5=1; dead_hivneg_tb=1; dead_tb=1; end;
-	if hiv ne 1 then dead_hivneg_anycause=1;
+	if hiv=1 then do;
+		if dcause=1 then dead_hivpos_cause1=1;
+		if dcause=1 and dead_hiv_tb=1 then dead_hivpos_tb=1; 
+		if dcause=1 and dead_crypm=1 then dead_hivpos_crypm=1; 
+		if dcause=1 and dead_sbi=1 then dead_hivpos_sbi=1; 
+		if dcause=1 and dead_oth_adc=1 then dead_hivpos_oth_adc=1; 
+		if dcause=2 then dead_hivpos_cause2=1;
+		if dcause=3 then dead_hivpos_cause3=1;
+		if dcause=4 then do; dead_hivpos_cause4=1; dead_hivpos_cvd=1; dead_cvd=1; end;
+		if 18 <= age and dcause=4 then dead_hivpos_cvd_ge18 = 1;
+		if 18 <= age then dead_hivpos_anycause_ge18 = 1;
+		dead_hivpos_anycause=1;
+	end;
+	if hiv ne 1 then do;
+		if dcause=2 then dead_hivneg_cause2=1;
+		if dcause=3 then dead_hivneg_cause3=1;
+		if dcause=4 then do; dead_hivneg_cause4=1; dead_hivneg_cvd=1; dead_cvd=1; end;
+		if dcause=5 then do; dead_hivneg_cause5=1; dead_hivneg_tb=1; dead_tb=1; end;
+		if 18 <= age and dcause=4 then dead_hivneg_cvd_ge18 = 1;
+		if 18 <= age then dead_hivneg_anycause_ge18 = 1;
+		dead_hivneg_anycause=1;
+	end;
 	if 18 <= age then dead_allcause_ge18=1;
 	if 20 <= age < 40 then dead_allcause_2039=1;
 	if 40 <= age < 60 then dead_allcause_4059=1;
 	if 60 <= age < 79 then dead_allcause_6079=1;
-	if dcause=4 and 30 <= age < 40 and gender=1 then dead_cvd_3039m=1;
-	if dcause=4 and 40 <= age < 50 and gender=1 then dead_cvd_4049m=1;
-	if dcause=4 and 50 <= age < 60 and gender=1 then dead_cvd_5059m=1;
-	if dcause=4 and 60 <= age < 70 and gender=1 then dead_cvd_6069m=1;
-	if dcause=4 and 70 <= age < 80 and gender=1 then dead_cvd_7079m=1;
-	if dcause=4 and 80 <= age      and gender=1 then dead_cvd_ge80m=1;
-	if dcause=4 and 30 <= age < 40 and gender=2 then dead_cvd_3039w=1;
-	if dcause=4 and 40 <= age < 50 and gender=2 then dead_cvd_4049w=1;
-	if dcause=4 and 50 <= age < 60 and gender=2 then dead_cvd_5059w=1;
-	if dcause=4 and 60 <= age < 70 and gender=2 then dead_cvd_6069w=1;
-	if dcause=4 and 70 <= age < 80 and gender=2 then dead_cvd_7079w=1;
-	if dcause=4 and 80 <= age      and gender=2 then dead_cvd_ge80w=1;
-	if dcause=4 and 18 <= age then dead_cvd_ge18 = 1;
-	if dcause=4 and htn_true = 1 and 18 <= age then dead_cvd_htn_ge18 = 1;
+	if dcause=4 then do;
+		if 30 <= age < 40 and gender=1 then dead_cvd_3039m=1;
+		if 40 <= age < 50 and gender=1 then dead_cvd_4049m=1;
+		if 50 <= age < 60 and gender=1 then dead_cvd_5059m=1;
+		if 60 <= age < 70 and gender=1 then dead_cvd_6069m=1;
+		if 70 <= age < 80 and gender=1 then dead_cvd_7079m=1;
+		if 80 <= age      and gender=1 then dead_cvd_ge80m=1;
+		if 30 <= age < 40 and gender=2 then dead_cvd_3039w=1;
+		if 40 <= age < 50 and gender=2 then dead_cvd_4049w=1;
+		if 50 <= age < 60 and gender=2 then dead_cvd_5059w=1;
+		if 60 <= age < 70 and gender=2 then dead_cvd_6069w=1;
+		if 70 <= age < 80 and gender=2 then dead_cvd_7079w=1;
+		if 80 <= age      and gender=2 then dead_cvd_ge80w=1;
+		if 18 <= age then dead_cvd_ge18 = 1;
+		if 25 <= age < 45 then dead_cvd_2544 = 1;
+		if 45 <= age < 65 then dead_cvd_4564 = 1;
+		if 65 <= age      then dead_cvd_ge65=1;
+		if htn_true = 1 and 18 <= age then dead_cvd_htn_ge18 = 1;
+	end;
 end;
-
-
 
 ***Newp groups;
 newp_g_m_0 = .; newp_g_m_1 = .; newp_g_m_2 = .; newp_g_m_3 = .; newp_g_m_4 = .;newp_g_m_5 = .;newp_g_m_6 = .;
@@ -16716,6 +16734,14 @@ cva_inc_all_modsev_7079m = 0; cva_inc_all_modsev_7079w = 0;
 ihd_inc_all_modsev_ge80m = 0; ihd_inc_all_modsev_ge80w = 0;
 cva_inc_all_modsev_ge80m = 0; cva_inc_all_modsev_ge80w = 0;
 
+
+ihd_inc_all_modsev_2544 = 0;
+cva_inc_all_modsev_2544 = 0;
+ihd_inc_all_modsev_4564 = 0;
+cva_inc_all_modsev_4564 = 0;
+ihd_inc_all_modsev_ge65 = 0;
+cva_inc_all_modsev_ge65 = 0;
+
 prior_ihd_ge18m = 0; prior_ihd_ge18w = 0; 
 prior_cva_ge18m = 0; prior_cva_ge18w = 0; 
 prior_ihd_2039m=0; prior_cva_2039m=0; prior_ihd_2039w=0; prior_cva_2039w=0;
@@ -16984,8 +17010,20 @@ if 65 <= age 	 then do;
 		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_ge65 = 1;
 	end;
 	if normotensive = 1 then normotensive_ge65 = 1;
+	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_ge65 = 1; 
+	if cva_this_per_modsev=1 then cva_inc_all_modsev_ge65 = 1;
 end;
 
+* CVD event and mortality incidence age groupings (added 6-feb-24 for lancet gh reviews);
+if 25 <= age < 45 then do;
+	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_2544 = 1; 
+	if cva_this_per_modsev=1 then cva_inc_all_modsev_2544 = 1;
+end;
+
+if 45 <= age < 65 then do;
+	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_4564 = 1; 
+	if cva_this_per_modsev=1 then cva_inc_all_modsev_4564 = 1;
+end;
 
 if 15 <= age < 20 then sbp_1519 = sbp;  if 20 <= age < 25 then sbp_2024 = sbp;
 if 25 <= age < 30 then sbp_2529 = sbp;  if 30 <= age < 35 then sbp_3034 = sbp;
@@ -17718,6 +17756,13 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_ihd_inc_all_modsev_ge80m + ihd_inc_all_modsev_ge80m ; s_ihd_inc_all_modsev_ge80w + ihd_inc_all_modsev_ge80w ;
 	s_cva_inc_all_modsev_ge80m + cva_inc_all_modsev_ge80m ; s_cva_inc_all_modsev_ge80w + cva_inc_all_modsev_ge80w ;
 
+	s_ihd_inc_all_modsev_2544 + ihd_inc_all_modsev_2544;
+	s_cva_inc_all_modsev_2544 + cva_inc_all_modsev_2544;
+	s_ihd_inc_all_modsev_4564 + ihd_inc_all_modsev_4564;
+	s_cva_inc_all_modsev_4564 + cva_inc_all_modsev_4564;
+	s_ihd_inc_all_modsev_ge65 + ihd_inc_all_modsev_ge65;
+	s_cva_inc_all_modsev_ge65 + cva_inc_all_modsev_ge65;
+
 	s_ihd_prev_ge18 + prior_ihd_ge18; 
 	s_cva_prev_ge18 + prior_cva_ge18;
 	s_ihd_prev_2039 + prior_ihd_2039; s_ihd_prev_2039m + prior_ihd_2039m; s_ihd_prev_2039w + prior_ihd_2039w; 
@@ -17778,8 +17823,13 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dead_hivneg_cause2 + dead_hivneg_cause2 ;  s_dead_hivneg_cvd + dead_hivneg_cvd ; 
 	s_dead_hivneg_cause5 + dead_hivneg_cause5 ; s_dead_hivneg_tb + dead_hivneg_tb ;
 	s_dead_hivneg_anycause + dead_hivneg_anycause;  s_dead_hivpos_anycause + dead_hivpos_anycause;  
+	s_dead_hivpos_cvd_ge18 + dead_hivpos_cvd_ge18; s_dead_hivpos_anycause_ge18 + dead_hivpos_anycause_ge18; 
+	s_dead_hivneg_cvd_ge18 + dead_hivneg_cvd_ge18; s_dead_hivneg_anycause_ge18 + dead_hivneg_anycause_ge18;
 	s_dead_allcause_ge18 + dead_allcause_ge18; s_dead_allcause_2039 + dead_allcause_2039; s_dead_allcause_4059 + dead_allcause_4059;  s_dead_allcause_6079 + dead_allcause_6079;
 	s_dead_cvd_ge18 + dead_cvd_ge18 ;
+	s_dead_cvd_2544 + dead_cvd_2544 ;
+	s_dead_cvd_4564 + dead_cvd_4564 ;
+	s_dead_cvd_ge65 + dead_cvd_ge65 ;
 	s_dead_cvd_htn_ge18 + dead_cvd_htn_ge18 ;
 	s_dead_cvd_3039m + dead_cvd_3039m ; s_dead_cvd_4049m + dead_cvd_4049m ; s_dead_cvd_5059m + dead_cvd_5059m ;s_dead_cvd_6069m + dead_cvd_6069m ;
 	s_dead_cvd_7079m + dead_cvd_7079m ; s_dead_cvd_ge80m + dead_cvd_ge80m ;
@@ -18183,7 +18233,7 @@ run;
 /*
 proc print; 
 var option caldate&j death age sbp sbp_comm_m sbp_m sbp_m_tm1 most_recent_sbp_m last_bp_ge140 sbp_last_start_anti_hyp max_sbp tested_bp dx_htn htn_lifestyle_counsel htn_lifestyle_counsel_tm1 visit_hypertension start_anti_hyp_this_per on_tx_htn previous_anti_hyp ever_on_anti_hyp htn_visit_count  ;
-where sbp >=160 and caldate&j >= 2023.5 ;  
+where sbp >=160 and caldate&j >= 2024 ;  
 run;
 
 proc print; 
@@ -19523,7 +19573,9 @@ s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
-s_dead_cvd_ge18 s_dead_cvd_htn_ge18
+s_dead_hivpos_cvd_ge18 s_dead_hivpos_anycause_ge18 
+s_dead_hivneg_cvd_ge18 s_dead_hivneg_anycause_ge18 
+s_dead_cvd_ge18 s_dead_cvd_htn_ge18 s_dead_cvd_2544 s_dead_cvd_4564 s_dead_cvd_ge65
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m s_dead_cvd_3039w  s_dead_cvd_4049w
 s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
@@ -19665,6 +19717,13 @@ s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 	s_ihd_inc_all_modsev_ge80m s_ihd_inc_all_modsev_ge80w 
 	s_cva_inc_all_modsev_ge80m s_cva_inc_all_modsev_ge80w 
 
+	s_ihd_inc_all_modsev_2544
+	s_cva_inc_all_modsev_2544
+	s_ihd_inc_all_modsev_4564 
+	s_cva_inc_all_modsev_4564 
+	s_ihd_inc_all_modsev_ge65 
+	s_cva_inc_all_modsev_ge65 
+
 	s_ihd_prev_ge18m s_ihd_prev_ge18w
 	s_cva_prev_ge18m s_cva_prev_ge18w
 	s_ihd_prev_2039m s_ihd_prev_2039w 
@@ -19728,7 +19787,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   e
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 
-prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed
+prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
 prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
 prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
 prob_visit_htn_lifestyle
@@ -20499,7 +20558,9 @@ s_dead_hivneg_anycause  s_dead_hivpos_anycause
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
-s_dead_cvd_ge18 s_dead_cvd_htn_ge18
+s_dead_hivpos_cvd_ge18 s_dead_hivpos_anycause_ge18 
+s_dead_hivneg_cvd_ge18 s_dead_hivneg_anycause_ge18 
+s_dead_cvd_ge18 s_dead_cvd_htn_ge18 s_dead_cvd_2544 s_dead_cvd_4564 s_dead_cvd_ge65
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
 s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
@@ -20638,6 +20699,13 @@ s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 	s_cva_inc_all_modsev_7079m s_cva_inc_all_modsev_7079w 
 	s_ihd_inc_all_modsev_ge80m s_ihd_inc_all_modsev_ge80w 
 	s_cva_inc_all_modsev_ge80m s_cva_inc_all_modsev_ge80w 
+
+	s_ihd_inc_all_modsev_2544
+	s_cva_inc_all_modsev_2544
+	s_ihd_inc_all_modsev_4564
+	s_cva_inc_all_modsev_4564
+	s_ihd_inc_all_modsev_ge65
+	s_cva_inc_all_modsev_ge65
 
 	s_ihd_prev_ge18m s_ihd_prev_ge18w
 	s_cva_prev_ge18m s_cva_prev_ge18w
@@ -20945,13 +21013,14 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1); *2023.5;
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
+
 
 data b; set r1;
 
 data r1; set b;
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1); *2023.5;
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1); *2024.0;
 %update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
@@ -21159,9 +21228,7 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=8,f=9,g=333,h=340,j=340,s=1);
 
 data r1; set b;
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=2); *2024.0;
 %update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=2);
@@ -21370,9 +21437,7 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=8,f=9,g=333,h=340,j=340,s=2);
 
 data r1; set b;
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=3);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3); *2024.0;
 %update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
@@ -21578,11 +21643,9 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=6,f=7,g=333,h=340,j=338,s=3);
 %update_r1(da1=1,da2=2,e=7,f=8,g=333,h=340,j=339,s=3);
 %update_r1(da1=2,da2=1,e=8,f=9,g=333,h=340,j=340,s=3);
-
+/*
 data r1; set b;
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=4);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=4);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=4); *2024.0;
 %update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=4);
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=4);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=4);
@@ -21784,11 +21847,9 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=6,f=7,g=333,h=340,j=338,s=4);
 %update_r1(da1=1,da2=2,e=7,f=8,g=333,h=340,j=339,s=4);
 %update_r1(da1=2,da2=1,e=8,f=9,g=333,h=340,j=340,s=4);
-/*
+
 data r1; set b;
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=5);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=5);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=5);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=5); *2024.0;
 %update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=5);
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=5);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=5);
@@ -22509,7 +22570,9 @@ s_dead_hivneg_anycause  s_dead_hivpos_anycause
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
-s_dead_cvd_ge18 s_dead_cvd_htn_ge18
+s_dead_hivpos_cvd_ge18 s_dead_hivpos_anycause_ge18 
+s_dead_hivneg_cvd_ge18 s_dead_hivneg_anycause_ge18 
+s_dead_cvd_ge18 s_dead_cvd_htn_ge18 s_dead_cvd_2544 s_dead_cvd_4564 s_dead_cvd_ge65
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
 s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
@@ -22602,7 +22665,7 @@ s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
 
 /* *HYPERTENSION* */
-prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link
 
 s_hypertension_ge18 s_hypertension_2534 s_hypertension_3544 s_hypertension_4554 s_hypertension_5564 s_hypertension_ge65
 s_dx_htn_ge18 s_dx_htn_2534 s_dx_htn_3544 s_dx_htn_4554 s_dx_htn_5564 s_dx_htn_ge65
@@ -22648,6 +22711,13 @@ s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 	s_cva_inc_all_modsev_7079m s_cva_inc_all_modsev_7079w 
 	s_ihd_inc_all_modsev_ge80m s_ihd_inc_all_modsev_ge80w 
 	s_cva_inc_all_modsev_ge80m s_cva_inc_all_modsev_ge80w 
+
+	s_ihd_inc_all_modsev_2544
+	s_cva_inc_all_modsev_2544
+	s_ihd_inc_all_modsev_4564
+	s_cva_inc_all_modsev_4564
+	s_ihd_inc_all_modsev_ge65
+	s_cva_inc_all_modsev_ge65
 
 	s_ihd_prev_ge18m s_ihd_prev_ge18w
 	s_cva_prev_ge18m s_cva_prev_ge18w 
@@ -22718,7 +22788,7 @@ prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 
 prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
 prob_visit_htn_lifestyle
 prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
-rr_cvd_tx rr_cvd_tx_effective
+rr_cvd_tx rr_cvd_tx_effective 
 discount
 
 /*year_i interventions*/

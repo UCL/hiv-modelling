@@ -11,5 +11,3 @@ module load sas/9.4/64
 cp $SASINPUT/$SASMODEL .
 sleep $[ ( $RANDOM % 10 ) + 1 ]s
 sas $SASMODEL -sysparm "$SASOUTPUTDIR $SASTMPFILES"
-
-
