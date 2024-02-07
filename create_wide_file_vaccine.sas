@@ -4,15 +4,15 @@
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_g_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_h_out\";
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_g;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_h;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 
-proc sort data=b.k_vaccine_g; 
+proc sort data=b.k_vaccine_h; 
 by run cald option;
 run;
 
@@ -22,7 +22,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_g ;
+set b.k_vaccine_h ;
 
 
 if cald=2024   ;
@@ -42,7 +42,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_g sf;
+merge b.k_vaccine_h sf;
 by run ;
 
 * preparatory code ;
@@ -1073,7 +1073,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 effect_sw_prog_prep_any  prob_prep_any_restart_choice 
 adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
-prob_prep_any_restart_choice  inj_prep_incr_pref
+prob_prep_any_restart_choice  future_prep_inj_use
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
 rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
@@ -1099,9 +1099,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_vaccine_g_y; set y;  
+data    b.l_vaccine_h_y; set y;  
 
-data y ; set b.l_vaccine_g_y; 
+data y ; set b.l_vaccine_h_y; 
 
 
   options nomprint;
@@ -1324,7 +1324,7 @@ poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
 red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
 prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
-fold_tr fold_tr_newp switch_for_tox  inj_prep_incr_pref
+fold_tr fold_tr_newp switch_for_tox  future_prep_inj_use
 circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
@@ -1359,7 +1359,7 @@ p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_
 %macro par(p=);
 
 * &p ;
-proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2023; run;
+proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2024; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
@@ -1375,7 +1375,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=test_targeting ); %par(p=fx );  %par(p=gx );  %par(p=adh_pattern ); %par(p=prob_loss_at_diag ); %par(p=pr_art_init ); 
 %par(p=rate_lost ); %par(p=prob_lost_art ); %par(p=rate_return ); %par(p=rate_restart ); %par(p=rate_int_choice );
 %par(p=clinic_not_aw_int_frac ); %par(p=res_trans_factor_nn ); %par(p=rate_loss_persistence ); %par(p=incr_rate_int_low_adh );
-%par(p=poorer_cd4rise_fail_nn ); %par(p=poorer_cd4rise_fail_ii ); %par(p=rate_res_ten );  %par(p=inj_prep_incr_pref);
+%par(p=poorer_cd4rise_fail_nn ); %par(p=poorer_cd4rise_fail_ii ); %par(p=rate_res_ten );  %par(p=future_prep_inj_use);
 %par(p=fold_change_mut_risk ); %par(p=adh_effect_of_meas_alert ); %par(p=pr_switch_line ); %par(p=prob_vl_meas_done );
 %par(p=red_adh_tb_adc ); %par(p=red_adh_tox_pop ); %par(p=add_eff_adh_nnrti ); %par(p=altered_adh_sec_line_pop );
 %par(p=prob_return_adc ); %par(p=prob_lossdiag_adctb ); %par(p=prob_lossdiag_non_tb_who3e); %par(p=higher_newp_less_engagement );
@@ -1426,7 +1426,7 @@ poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
 red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
 prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
-fold_tr fold_tr_newp switch_for_tox  inj_prep_incr_pref
+fold_tr fold_tr_newp switch_for_tox  future_prep_inj_use
 circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
@@ -1462,9 +1462,12 @@ run;
 proc sort; by run;run;
 
 
+proc freq data=b.wide_par2; tables future_prep_inj_use ; run;  
+
+
 * To get one row per run;
 
-  data  b.w_vaccine_g     ; 
+  data  b.w_vaccine_h     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1511,32 +1514,44 @@ if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
 
 * table 1;
 
-proc means   data = b.w_vaccine_g  n p50 p5 p95 min max;  
+proc means   data = b.w_vaccine_h  n p50 p5 p95 min max;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   ;
 run;
 
 
-proc means   data = b.w_vaccine_g  n p50 p5 p95 min max;  
+
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_h_out\";
+proc glm  data = b.w_vaccine_h ;
+class future_prep_inj_use;
+model prop_elig_on_prep_30y_1 = future_prep_inj_use / solution;
+run;
+
+
+
+
+
+
+proc means   data = b.w_vaccine_h  n p50 p5 p95 min max;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24 
 prop_elig_on_prep_24  ;
 run;
 
 
-proc means data = b.w_vaccine_g  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_h  n p50 p5 p95 ;  
 var
 prop_1564_onprep_30y_1  prop_1564_onprep_30y_2   
 d_prop_1564_onprep_30y_2_1  
 ;
 
 
-proc means data = b.w_vaccine_g  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_h  n p50 p5 p95 ;  
 var 
 prop_elig_on_prep_30y_1 prop_elig_on_prep_30y_2  
 d_prop_elig_on_prep_30y_2_1  
 ;
 
 
-proc means data = b.w_vaccine_g  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_h  n p50 p5 p95 ;  
 var
 prop_prep_inj_30y_1  prop_prep_inj_30y_2  
 d_prop_prep_inj_30y_2_1  
@@ -1544,7 +1559,7 @@ d_prop_prep_inj_30y_2_1
 
 
 
-proc means  data = b.w_vaccine_g  n mean p50 p5 p95 clm;  
+proc means  data = b.w_vaccine_h  n mean p50 p5 p95 clm;  
 var
 incidence1549_30y_1 incidence1549_30y_2  
 r_incidence1549_30y_2_1 
@@ -1553,7 +1568,7 @@ run;
 
 
 ods html;
-proc means  data = b.w_vaccine_g  n mean clm;  
+proc means  data = b.w_vaccine_h  n mean clm;  
 var
 incidence1549_30y_1 incidence1549_30y_2 
 r_incidence1549_30y_2_1 

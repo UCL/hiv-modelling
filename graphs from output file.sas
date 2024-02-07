@@ -1,14 +1,14 @@
 
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_g_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_h_out\";
 
 proc printto ;
 
 * ods html close;
 
 data b;
-set a.l_vaccine_g_y;
+set a.l_vaccine_h_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -25,51 +25,96 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-  if run in (
-702777688
-                                             703368657
-                                             706612076
-                                             711362670
-                                             712293778
-                                             713795085
-                                             721089646
-                                             726461872
-                                             727334129
-                                             740828129
-                                             761422746
-                                             766235453
-                                             785207511
-                                             787183173
-                                             801961098
-                                             804796602
-                                             815012992
-                                             833033157
-                                             842120172
-                                             848090602
-                                             867062589
-                                             889652667
-                                             898042364
-                                             905919154
-                                             908467620
-                                             908946162
-                                             909317692
-                                             910909332
-                                             921853390
-                                             931225868
-                                             936014238
-                                             945143081
-                                             946483159
-                                             947883002
-                                             964787871
-                                             968383664
-                                             969498331
-                                             987283072
-                                             988922799
-                                             989271497
-                                             998628576
-                                             999872901
+/*
+
+
+proc print data=a.l_vaccine_h_y noobs;var run; where future_prep_inj_use=1 and cald = 2028; run;
+
+
+*/
+
+
+if run in (
+7390571 
+29857800 
+33533407 
+34050094 
+36963507 
+52381950 
+87452085 
+88648247 
+93899671 
+105174823 
+123142191 
+147571142 
+147715940 
+170600436 
+178020852 
+203856319 
+212769904 
+214444110 
+237829424 
+253635830 
+272386105 
+278795796 
+283192818 
+286282667 
+294698428 
+302243669 
+310336628 
+324965112 
+340130278 
+352341233 
+362354838 
+367339557 
+370000720 
+386637746 
+386686242 
+411273631 
+443199185 
+461408303 
+473944267 
+490949130 
+493335432 
+512765480 
+518053947 
+552023345 
+576352438 
+606408031 
+612470150 
+651099436 
+652170370 
+673995744 
+675181862 
+684415124 
+758693921 
+761595183 
+767767411 
+804899849 
+818192372 
+818678547 
+833258275 
+844839000 
+864904550 
+884537354 
+887550076 
+888781375 
+917727520 
+918743833 
+919353661 
+938550994 
+952082932 
+984305711 
+987196884 
+994699929 
+998582763 
+
+
 
 );
+
+
+
 
 
 %let single_var = incidence1549_                        ;
@@ -82,7 +127,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 84    ;
+%let nfit = 150    ;
 
 %let year_end = 2070.00 ;
 run;
@@ -425,7 +470,7 @@ label p50_incidence1549__1 = "vaccine";
 
 run;quit;
 
-ods html close;
+* ods html close;
 
 
 /*
