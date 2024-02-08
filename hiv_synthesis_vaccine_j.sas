@@ -1,26 +1,5 @@
 
 
-
-
-*
-
-decrease prep use for the period from introduction to 2024
-
-increase in condomless sex with future_condom_prep = 1
-
-;
-
-
-
-
-
-
-
-
-
-
-
-
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -704,7 +683,7 @@ end;
 * prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.1  0.15  0.3 );  * vaccine_i;
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.05  0.1  0.15 );  * vaccine_j;
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
@@ -729,7 +708,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.02  0.05  0.1 ); * vaccine_i ; 
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1 ); * vaccine_j ; 
 																* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
@@ -740,13 +719,13 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* changed from 0.7 to 0.8 after discussion due to low overall adherence resulting from 0.7;
 * prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
 
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.10 0.30);  * vaccine_j ;
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.10 0.30  0.50);  * vaccine_j ;
 								* dependent_on_time_step_length ;
 
 * higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
 								* note we have switched this off - apr 2022;
 								* lapr - leave for now but we may want to specify the extent to which this is tdf/3tc versus la cab versus dpv-vr;
-* pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 1.05 1.1 1.3) ;  * bmgf_vaccine ;  
+* pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 1.05 1.1 1.3 1.5) ;  * bmgf_vaccine ;  
 
 * pop_wide_tld_prob_egfr;		pop_wide_tld_prob_egfr=0.0; 	* probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 								* dependent_on_time_step_length ;
@@ -2167,7 +2146,7 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 * future prep use;
 if caldate{t} = 2027 then do;
 
-	if future_prep_condom = 1 then do;
+	if future_prep_condom = 1 then do; * note also below there is increase in condomless sex;
 		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral * 10; eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj * 10; 
 		eff_rate_test_startprep_any = eff_rate_test_startprep_any / 10; 
 		eff_prob_prep_oral_b = eff_prob_prep_oral_b / 10; eff_prob_prep_inj_b = eff_prob_prep_inj_b / 10;
@@ -2183,9 +2162,10 @@ if caldate{t} = 2027 then do;
 	end;
 
 	if future_prep_condom = 4 then do;
-		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral / 10; eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj / 10; 
-		eff_rate_test_startprep_any = eff_rate_test_startprep_any * 10; 
-		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 10; eff_prob_prep_inj_b = eff_prob_prep_inj_b * 10;
+		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral / 50; eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj / 50; 
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any * 50; 
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 50; eff_prob_prep_inj_b = eff_prob_prep_inj_b * 50;
+		prep_willingness_threshold = 0.05;
 	end;
 
 end;
