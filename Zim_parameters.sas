@@ -15,7 +15,7 @@ startyr = 1991 + 0.25;
 
 * date_start_testing;       date_start_testing = 2005  ;
 * test_targeting;   		%sample(test_targeting, 1 1.1 1.3, 0.7 0.2 0.1);*Vale - 20220105;
-* an_lin_incr_test;         %sample(an_lin_incr_test, 
+* an_lin_incr_test;         %sample(an_lin_incr_test, 	
 								0.005 0.01 0.015, 
 								0.6    0.3   0.1);*Vale - 20220105;
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
