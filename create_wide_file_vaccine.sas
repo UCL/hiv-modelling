@@ -6,10 +6,15 @@
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_i_out\";
 
+
+/*
+
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 data b.k_vaccine_i;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+
+*/
 
 
 proc sort data=b.k_vaccine_i; 
@@ -1118,11 +1123,13 @@ data e; set y; keep &v run cald option ;
 
 proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2024.0 <= cald <= 2024.25; 
 
+proc means  noprint data=e; var &v; output out=y_39 mean= &v._39; by run ; where 2039.0 <= cald <= 2040.0; 
+
 proc means noprint data=e; var &v; output out=y_30y mean= &v._30y; by run option ; where 2040.0 <= cald < 2070.00;   
 																				   
 proc sort data=y_30y    ; by run; proc transpose data=y_30y  out=t_30y  prefix=&v._30y_  ; var &v._30y    ; by run; 																																																						
 
-data &v ; merge y_24 t_30y ;  
+data &v ; merge y_24 t_30y y_39 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1519,12 +1526,29 @@ var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_dia
 run;
 
 
-
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_i_out\";
 proc glm  data = b.w_vaccine_i ;
 class future_prep_use;
-model prop_elig_on_prep_30y_1 = future_prep_use / solution;
+model prop_elig_on_prep_39 = future_prep_use / solution;
 run;
+
+proc glm  data = b.w_vaccine_i ;
+class future_prep_use;
+model incidence1549_30y_1 = future_prep_use / solution;
+run;
+
+proc sort data = b.w_vaccine_i; by future_prep_use;
+proc means  data = b.w_vaccine_i ;
+var prop_elig_on_prep_39  incidence1549_39   ;
+by future_prep_use;
+run;
+
+ods html;
+proc print noobs; var run;  where future_prep_use = 1;
+ods html close;
+
+
+
+
 
 
 
