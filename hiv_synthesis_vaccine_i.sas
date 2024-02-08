@@ -684,7 +684,7 @@ end;
 * prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.1  015  0.3 );  * vaccine_i;
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
@@ -709,7 +709,8 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.1  0.3 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05 0.1 ); * vaccine_i ; 
+																* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -2145,8 +2146,27 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 * future prep use;
 if caldate{t} = 2027 then do;
+
 	if future_prep_use = 1 then do;
-		rate_choose_stop_prep_oral = 0.02; 
+		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral * 10; eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj * 10; 
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any / 10; 
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b / 10; eff_prob_prep_inj_b = eff_prob_prep_inj_b / 10;
+	end;
+
+	if future_prep_use = 2 then do;
+	end;
+
+	if future_prep_use = 3 then do;
+		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral / 3; eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj / 3; 
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any * 3; 
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 3; eff_prob_prep_inj_b = eff_prob_prep_inj_b * 3;
+	end;
+
+	if future_prep_use = 4 then do;
+		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral / 10; eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj / 10; 
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any * 10; 
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 10; eff_prob_prep_inj_b = eff_prob_prep_inj_b * 10;
+	end;
 
 end;
 
