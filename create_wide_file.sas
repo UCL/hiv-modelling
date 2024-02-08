@@ -3,10 +3,10 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v20_2023Dec11_out";
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v20_2024Feb05_out";
 
 
-data a.base_11_12_2023;   set b.out:;run;
+data a.base_05_02_2024;   set b.out:;run;
 
 proc freq data=a.base_11_12_2023;table s_ageg014_
 /*s_new_birth_circ
@@ -27,8 +27,8 @@ proc sort data=a.base_16_06_23; by run; run;
 proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
 ods html close;
 ods listing;
-proc freq data=a.base_11_12_2023; table run;run;
-proc freq data=a.base_11_12_2023; table cald option;run;
+proc freq data=a.base_05_02_2024; table run;run;
+proc freq data=a.base_05_02_2024; table cald option;run;
 *54 simulations
 4 options from 2023: 0,1,11,12;
 
@@ -42,7 +42,7 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_11_12_2023;
+data g; set  a.base_05_02_2024;
 
 proc sort data=g; 
 by run cald option;run;
@@ -1301,7 +1301,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_11_12_2023; set y;  run;
+data a.l_base_05_02_2024; set y;  run;
 
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 

@@ -7,14 +7,14 @@ libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\ou
 run;
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 /*
- proc freq data=a.l_base_11_12_2023;table option;run;
+ proc freq data=a.l_base_05_02_2024;table option;run;
 n_everpregn_w1524 n_everpregn_hiv_w1524 
 n_tested_w_sympt n_tested_m_sympt 
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 
 data b;
-set a.l_base_11_12_2023;
+set a.l_base_05_02_2024;
 
 
 p_onart_vl1000_all = .;
@@ -82,7 +82,7 @@ data b;set b;where cald ge 2023;run;
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 54  ;*out of 1000;*out of 860;
+%let nfit = 102  ;*out of 1000;*out of 860;
 %let year_start = 2023;*&year_start;
 %let year_end = 2072.75;
 run;
@@ -1726,7 +1726,7 @@ ods rtf close;run;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_CheckSBCC&CMMC_20231211_54sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_CheckSBCC&CMMC_20240205_102sim.doc' startpage=never; 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_sbcc_visit_1524m";
