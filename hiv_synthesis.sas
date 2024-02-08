@@ -4694,16 +4694,32 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=2 then do;		*FSW;
-		r = rand('Uniform');
+/*	if prep_any_strategy=2 then do;		*FSW;*/
+/*		r = rand('Uniform');*/
+/*		if gender=2 and sw=1 and */
+/*		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; */
+/*	end;*/
+
+	if prep_any_strategy=2 then do;		*FSW;	* Continuous r_prep JAS 5thFeb2024;
+		r_prep_tm1=r_prep;
+		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
+		else r_prep = rand('Uniform');
 		if gender=2 and sw=1 and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=3 then do;		*AGYW;
-		r = rand('Uniform');
+/*	if prep_any_strategy=3 then do;		*AGYW;*/
+/*		r = rand('Uniform');*/
+/*		if gender=2 and 15<=age<25 and */
+/*		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; */
+/*	end;*/
+
+	if prep_any_strategy=3 then do;		*AGYW;	* Continuous r_prep JAS 5thFeb2024;
+		r_prep_tm1=r_prep;
+		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
+		else r_prep = rand('Uniform');
 		if gender=2 and 15<=age<25 and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
