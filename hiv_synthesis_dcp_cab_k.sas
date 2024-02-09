@@ -2192,8 +2192,13 @@ sens_vct = (eff_prop_tests_self * 0.92) + ((1-eff_prop_tests_self) * 0.98);
 
 * dcp program increases testing by incr_test_rate_dcp even for individuals not previously under dcp (so dcp not necessarily = 1);  * dcp_cab_i;
 if dcp_program_start = caldate{t} then do; 
-	eff_rate_test_startprep_any = rate_test_startprep_any_dcp; eff_prob_prep_oral_b = prob_prep_b_dcp; eff_prob_prep_inj_b = prob_prep_b_dcp; 
+	eff_prob_prep_oral_b = prob_prep_b_dcp; eff_prob_prep_inj_b = prob_prep_b_dcp; 
 end;
+
+if ever_dcp = 1 then do;
+	eff_rate_test_startprep_any = rate_test_startprep_any_dcp;
+end;
+
 
 * becoming dcp = 1 ;
 
@@ -2202,6 +2207,8 @@ if dcp_program = 1 and tested_tm1 = 1 and registd ne 1 and (prep_any=1 or ((prep
 
 
 if dcp = 1 then do;
+
+		ever_dcp=1;
 
 		* effects of dcp (dynamic choice prevention) ; 
 		eff_prop_tests_self = prop_tests_self + add_prop_tests_self_dcp;
