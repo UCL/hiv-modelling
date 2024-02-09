@@ -4,7 +4,7 @@
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_i_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_j_out\";
 
 
 /*
@@ -12,12 +12,14 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_i;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_j;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+
+run;
 
 */
 
 
-proc sort data=b.k_vaccine_i; 
+proc sort data=b.k_vaccine_j; 
 by run cald option;
 run;
 
@@ -27,7 +29,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_i ;
+set b.k_vaccine_j ;
 
 
 if cald=2024   ;
@@ -47,7 +49,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_i sf;
+merge b.k_vaccine_j sf;
 by run ;
 
 * preparatory code ;
@@ -1104,9 +1106,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_vaccine_i_y; set y;  
+data    b.l_vaccine_j_y; set y;  
 
-data y ; set b.l_vaccine_i_y; 
+data y ; set b.l_vaccine_j_y; 
 
 
   options nomprint;
@@ -1474,7 +1476,7 @@ proc freq data=b.wide_par2; tables future_prep_use ; run;
 
 * To get one row per run;
 
-  data  b.w_vaccine_i     ; 
+  data  b.w_vaccine_j     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1521,23 +1523,23 @@ if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
 
 * table 1;
 
-proc means   data = b.w_vaccine_i  n p50 p5 p95 min max;  
+proc means   data = b.w_vaccine_j  n p50 p5 p95 min max;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   ;
 run;
 
 
-proc glm  data = b.w_vaccine_i ;
+proc glm  data = b.w_vaccine_j ;
 class future_prep_use;
 model prop_elig_on_prep_39 = future_prep_use / solution;
 run;
 
-proc glm  data = b.w_vaccine_i ;
+proc glm  data = b.w_vaccine_j ;
 class future_prep_use;
 model incidence1549_30y_1 = future_prep_use / solution;
 run;
 
-proc sort data = b.w_vaccine_i; by future_prep_use;
-proc means  data = b.w_vaccine_i ;
+proc sort data = b.w_vaccine_j; by future_prep_use;
+proc means  data = b.w_vaccine_j ;
 var prop_elig_on_prep_39  incidence1549_39   ;
 by future_prep_use;
 run;
@@ -1555,27 +1557,27 @@ ods html close;
 
 
 
-proc means   data = b.w_vaccine_i  n p50 p5 p95 min max;  
+proc means   data = b.w_vaccine_j  n p50 p5 p95 min max;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24 
 prop_elig_on_prep_24  ;
 run;
 
 
-proc means data = b.w_vaccine_i  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_j  n p50 p5 p95 ;  
 var
 prop_1564_onprep_30y_1  prop_1564_onprep_30y_2   
 d_prop_1564_onprep_30y_2_1  
 ;
 
 
-proc means data = b.w_vaccine_i  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_j  n p50 p5 p95 ;  
 var 
 prop_elig_on_prep_30y_1 prop_elig_on_prep_30y_2  
 d_prop_elig_on_prep_30y_2_1  
 ;
 
 
-proc means data = b.w_vaccine_i  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_j  n p50 p5 p95 ;  
 var
 prop_prep_inj_30y_1  prop_prep_inj_30y_2  
 d_prop_prep_inj_30y_2_1  
@@ -1583,7 +1585,7 @@ d_prop_prep_inj_30y_2_1
 
 
 
-proc means  data = b.w_vaccine_i  n mean p50 p5 p95 clm;  
+proc means  data = b.w_vaccine_j  n mean p50 p5 p95 clm;  
 var
 incidence1549_30y_1 incidence1549_30y_2  
 r_incidence1549_30y_2_1 
@@ -1592,7 +1594,7 @@ run;
 
 
 ods html;
-proc means  data = b.w_vaccine_i  n mean clm;  
+proc means  data = b.w_vaccine_j  n mean clm;  
 var
 incidence1549_30y_1 incidence1549_30y_2 
 r_incidence1549_30y_2_1 
