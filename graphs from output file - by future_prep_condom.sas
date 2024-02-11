@@ -25,87 +25,12 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-/*
+option = future_prep_condom;
 
-ods html;
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_k_out\";
-proc print data=a.l_vaccine_k_y noobs;var run; where future_prep_condom = 1 and cald = 2028; run;
-ods html close; 
-
-*/
+if cald le 2040;
 
 
-  if run in (6604349 
-22271435 
-30825855 
-52727740 
-73664966 
-119136269 
-125805558 
-126579518 
-134674522 
-155198334 
-165939215 
-208048812 
-216395430 
-223994386 
-226024783 
-228999483 
-240375955 
-259846352 
-262760581 
-271475908 
-272930150 
-273186665 
-295643237 
-312584242 
-383954444 
-388612822 
-391062586 
-430907584 
-436555584 
-446404831 
-448670374 
-455604082 
-475132885 
-477942271 
-504477215 
-506030266 
-546661396 
-547626612 
-607724403 
-635095107 
-637614514 
-652551377 
-655939935 
-658606875 
-661558845 
-727222702 
-728276517 
-731626725 
-736596192 
-740347732 
-752969457 
-763867013 
-781110922 
-781913949 
-782912383 
-806092316 
-818080723 
-844711327 
-854110774 
-865593548 
-909140478 
-915079426 
-922431010 
-938594234 
-940834315 
-941431641 
-961028474 
-);
-
-
-%let single_var = incidence1549_                        ;
+%let single_var = p_onart_vl1000_                       ;
 
 
 * p_agege15_ever_vaccinated  p_cur_full_vac_e_1564_ prop_elig_on_prep  prop_1564_hivneg_onprep  n_tested  p_diag  p_onart_diag  p_onart_vl1000_  incidence1549_;
@@ -115,55 +40,11 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 134    ;
+%let nfit = 600    ;
 
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
-
-***Two macros, one for each option. Gives medians ranges etc by option;
-data option_0;
-set b;
-if option =  0 ;
-
-%let var = &single_var   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_0;
-%let p25_var = p25_&var_0;
-%let p75_var = p75_&var_0;
-%let p5_var = p5_&var_0;
-%let p95_var = p95_&var_0;
-%let p50_var = median_&var_0;
-%let mean_var = mean_&var_0;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-
-      
-proc transpose data=option_0 out=g&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data g&count;set g&count;***creates one dataset per variable;
-p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._0 = median(of &varb.1-&varb.&nfit);
-mean_&varb._0 = mean(of &varb.1-&varb.&nfit);
-
-keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 mean_&varb._0;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  gg&count;quit;run;
-%end;
-%mend;
-
-
-%option_0;
-run;
 
 
 
@@ -172,7 +53,6 @@ set b;
 if option =  1 ;
 
 %let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
-
 
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -215,10 +95,158 @@ run;
 
 
 
+data option_2;
+set b;
+if option =  2 ;
+
+%let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+
+
+***transpose given name; *starts with %macro and ends with %mend;
+%macro option_2;
+%let p25_var = p25_&var_2;
+%let p75_var = p75_&var_2;
+%let p5_var = p5_&var_2;
+%let p95_var = p95_&var_2;
+%let p50_var = median_&var_2;
+%let mean_var = mean_&var_2;
+
+%let count = 0;
+%do %while (%qscan(&var, &count+1, %str( )) ne %str());
+%let count = %eval(&count + 1);
+%let varb = %scan(&var, &count, %str( ));
+
+
+proc transpose data=option_2 out=i&count prefix=&varb;var &varb; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data i&count;set i&count;***creates one dataset per variable;
+p25_&varb._2  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._2 = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._2  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._2 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._2 = median(of &varb.1-&varb.&nfit);
+mean_&varb._2 = mean(of &varb.1-&varb.&nfit);
+
+keep cald option_ p5_&varb._2 p95_&varb._2 p50_&varb._2 p25_&varb._2 p75_&varb._2 mean_&varb._2;
+run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  ii&count;quit;run;
+%end;
+%mend;
+
+
+%option_2;
+run;
+
+
+
+
+
+data option_3;
+set b;
+if option =  3 ;
+
+%let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+
+
+***transpose given name; *starts with %macro and ends with %mend;
+%macro option_3;
+%let p25_var = p25_&var_3;
+%let p75_var = p75_&var_3;
+%let p5_var = p5_&var_3;
+%let p95_var = p95_&var_3;
+%let p50_var = median_&var_3;
+%let mean_var = mean_&var_3;
+
+%let count = 0;
+%do %while (%qscan(&var, &count+1, %str( )) ne %str());
+%let count = %eval(&count + 1);
+%let varb = %scan(&var, &count, %str( ));
+
+
+proc transpose data=option_3 out=j&count prefix=&varb;var &varb; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data j&count;set j&count;***creates one dataset per variable;
+p25_&varb._3  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._3 = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._3  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._3 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._3 = median(of &varb.1-&varb.&nfit);
+mean_&varb._3 = mean(of &varb.1-&varb.&nfit);
+
+keep cald option_ p5_&varb._3 p95_&varb._3 p50_&varb._3 p25_&varb._3 p75_&varb._3 mean_&varb._3;
+run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  jj&count;quit;run;
+%end;
+%mend;
+
+
+%option_3;
+run;
+
+
+
+
+
+
+data option_4;
+set b;
+if option =  4 ;
+
+%let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+
+
+***transpose given name; *starts with %macro and ends with %mend;
+%macro option_4;
+%let p25_var = p25_&var_4;
+%let p75_var = p75_&var_4;
+%let p5_var = p5_&var_4;
+%let p95_var = p95_&var_4;
+%let p50_var = median_&var_4;
+%let mean_var = mean_&var_4;
+
+%let count = 0;
+%do %while (%qscan(&var, &count+1, %str( )) ne %str());
+%let count = %eval(&count + 1);
+%let varb = %scan(&var, &count, %str( ));
+
+
+proc transpose data=option_4 out=k&count prefix=&varb;var &varb; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data k&count;set k&count;***creates one dataset per variable;
+p25_&varb._4  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._4 = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._4  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._4 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._4 = median(of &varb.1-&varb.&nfit);
+mean_&varb._4 = mean(of &varb.1-&varb.&nfit);
+
+keep cald option_ p5_&varb._4 p95_&varb._4 p50_&varb._4 p25_&varb._4 p75_&varb._4 mean_&varb._4;
+run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  kk&count;quit;run;
+%end;
+%mend;
+
+
+%option_4;
+run;
+
+
+
+
+
+
+
+
 
 
 data d; * this is number of variables in %let var = above ;
-merge g1  h1  ;
+merge   h1  i1  j1  k1;
 by cald;
 
 
@@ -231,6 +259,83 @@ ods html ;
 
   
 /*
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Incidence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2039 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
+
+label mean_incidence1549__1 = "A";
+label mean_incidence1549__2 = "B";
+label mean_incidence1549__3 = "C";
+label mean_incidence1549__4 = "D";
+
+ series  x=cald y=mean_incidence1549__1/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=mean_incidence1549__2/	lineattrs = (color=green  thickness = 4);
+  band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=green ) legendlabel= "90% range";
+  series  x=cald y=mean_incidence1549__3/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_incidence1549__3 	upper=p95_incidence1549__3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=mean_incidence1549__4/	lineattrs = (color=red    thickness = 4);
+  band    x=cald lower=p5_incidence1549__4 	upper=p95_incidence1549__4  / transparency=0.9 fillattrs = (color=red   ) legendlabel= "90% range";
+
+run;quit;
+
+* ods html close;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Proportion of people with a PrEP indication taking PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2039 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
+
+label mean_prop_elig_on_prep_1 = "A";
+label mean_prop_elig_on_prep_2 = "B";
+label mean_prop_elig_on_prep_3 = "C";
+label mean_prop_elig_on_prep_4 = "D";
+
+ series  x=cald y=mean_prop_elig_on_prep_1/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=mean_prop_elig_on_prep_2/	lineattrs = (color=green  thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_2 	upper=p95_prop_elig_on_prep_2  / transparency=0.9 fillattrs = (color=green ) legendlabel= "90% range";
+  series  x=cald y=mean_prop_elig_on_prep_3/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_3 	upper=p95_prop_elig_on_prep_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=mean_prop_elig_on_prep_4/	lineattrs = (color=red    thickness = 4);
+  band    x=cald lower=p5_prop_elig_on_prep_4 	upper=p95_prop_elig_on_prep_4  / transparency=0.9 fillattrs = (color=red   ) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Of those on ART, proportion with vl < 1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2039 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0.8 to  1.0       by 0.05     ) valueattrs=(size=10);
+
+label mean_p_onart_vl1000__1 = "A";
+label mean_p_onart_vl1000__2 = "B";
+label mean_p_onart_vl1000__3 = "C";
+label mean_p_onart_vl1000__4 = "D";
+
+ series  x=cald y=mean_p_onart_vl1000__1/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=mean_p_onart_vl1000__2/	lineattrs = (color=green  thickness = 4);
+  band    x=cald lower=p5_p_onart_vl1000__2 	upper=p95_p_onart_vl1000__2  / transparency=0.9 fillattrs = (color=green ) legendlabel= "90% range";
+  series  x=cald y=mean_p_onart_vl1000__3/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_p_onart_vl1000__3 	upper=p95_p_onart_vl1000__3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=mean_p_onart_vl1000__4/	lineattrs = (color=red    thickness = 4);
+  band    x=cald lower=p5_p_onart_vl1000__4 	upper=p95_p_onart_vl1000__4  / transparency=0.9 fillattrs = (color=red   ) legendlabel= "90% range";
+
+run;quit;
+
+
 
 
 ods html;
@@ -312,7 +417,6 @@ label p50_prop_elig_on_prep_1 = "vaccine";
 run;quit;
 
 ods html close;
-
 
 
 
@@ -398,27 +502,7 @@ run;quit;
 ods html close;
 
 
-  
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Of those on ART, proportion with vl < 1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0.7 to 1   by 0.05 ) valueattrs=(size=10);
-
-label p50_p_onart_vl1000__0 = "no vaccine";
-label p50_p_onart_vl1000__1 = "vaccine";
-
- series  x=cald y=p50_p_onart_vl1000__0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=violet thickness = 4);
-  band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
-
-run;quit;
-
-ods html close;
-
-
+ 
 
 
 ods html;
@@ -439,29 +523,6 @@ run;quit;
 
 ods html close;
 
-*/
-
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Incidence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
-
-label mean_incidence1549__0 = "no vaccine";
-label mean_incidence1549__1 = "vaccine";
-
- series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=mean_incidence1549__1/	lineattrs = (color=violet thickness = 4);
-  band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
-
-run;quit;
-
-* ods html close;
-
-
-/*
 
 ods html;
 proc sgplot data=d ; 
