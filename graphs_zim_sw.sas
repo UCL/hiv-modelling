@@ -6,11 +6,11 @@
 libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a;
-set a.fsw_zim_23jan24;  
+set a.fsw_zim_08feb24;  
 
 if option=1 then delete; ***first look at overall incidence according to baseline SW program (option=1= amesthist);
 proc sort;by run;
-proc freq;table cald option;run;
+proc freq;table cald option effect_sw_prog_6mtest;run;
 
 data sf;
 set a;
@@ -134,6 +134,8 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
+* p_diag_sw_inprog;				if s_hiv_sw gt 0 then p_diag_sw_inprog	= s_diag_sw_inprog / s_hiv_sw; 
+diag_sw_inprog
 * prevalence_sw;				prevalence_sw = s_hiv_sw1549_ / s_sw_1549; 
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw =(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
@@ -147,7 +149,7 @@ proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 293;
+%let nfit = 306;
 %let year_end = 2050.00 ;
 run;
 proc sort;by cald option ;run;
@@ -166,7 +168,9 @@ p_fsw_newp0_  av_sw_newp  p_newp_sw
 
 p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
 prevalence_sw  incidence_sw p_sti_sw incidence1549_
-prop_sw_onprep_prog prop_sw_onprep_noprog;
+prop_sw_onprep_prog prop_sw_onprep_noprog
+
+p_diag_w p_diag_m p_diag;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro transpose;
@@ -224,7 +228,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\23jan2023.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\08feb2024.doc' startpage=never; 
 
 
 proc sgplot data=e; 
@@ -533,4 +537,32 @@ ods rtf close;
 ods listing;
 run;
 
+proc sgplot data=e; 
 
+title    height=1.5 justify=center "HIV PREVALENCE in general population";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2040 by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 2 by 0.2)    valueattrs=(size=10);
+
+label p50_incidence1549_ = "Median ";
+series  x=cald y=p50_prevalence_sw /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence_sw  upper=p95_prevalence_sw / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+
+run;quit;
+
+
+proc sgplot data=e; 
+
+title    height=1.5 justify=center "Women diagnosed";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2040 by 2)       valueattrs=(size=10); 
+yaxis grid label = '%'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
+
+label p50_incidence1549_ = "Median ";
+series  x=cald y=p50_p_diag_w /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_w  upper=p95_p_diag_w / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+
+run;quit;
+
+
+p_diag_w
+
+***PREVALENCE BY AGE - SANNI'S PAPER;
