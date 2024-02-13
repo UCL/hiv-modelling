@@ -908,7 +908,7 @@ non_hiv_tb_risk = 0.0005;
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
-%include "/home/rmjllob/Zim_parameters4.sas";
+%include "/home/rmjllob/Zim_parameters5.sas";
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
@@ -2621,7 +2621,7 @@ if caldate{t} = date_sw_prog_intro then eff_sw_program=sw_program;
 if eff_sw_program=1 and sw=1 then do;
 
 if sw_program_visit=0 then do; e=rand('uniform');
-	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
+	if (caldate{t} lt 2016 and e < rate_engage_sw_program/1.5) or (caldate{t} ge 2016 and e < rate_engage_sw_program) then do; * dependent_on_time_step_length ;
 		sw_program_visit=1 ; 
 		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
 
@@ -17104,7 +17104,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_diag_sw_noprog + diag_sw_noprog; 	s_diag_sw_inprog + diag_sw_inprog;
 	s_onart_sw_noprog + onart_sw_noprog; s_onart_sw_inprog + onart_sw_inprog;
 	s_vl1000_art_gt6m_iicu_sw_noprog + vl1000_art_gt6m_iicu_sw_noprog; s_vl1000_art_gt6m_iicu_sw_inprog + vl1000_art_gt6m_iicu_sw_inprog;
-	s_sw_hiv_inprog + sw_hiv_inprog s_sw_hiv_noprog + sw_hiv_noprog
+	s_sw_hiv_inprog + sw_hiv_inprog; s_sw_hiv_noprog + sw_hiv_noprog;
 	s_sw1519_tp1 + sw1519_tp1; s_sw2024_tp1 + sw2024_tp1; s_sw2529_tp1 + sw2529_tp1; s_sw3039_tp1 + sw3039_tp1; s_swov40_tp1 + swov40_tp1;
 
 	s_sti_sw + sti_sw;
