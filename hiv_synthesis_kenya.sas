@@ -19178,6 +19178,13 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
+** kenya;
+
+if cald = 1990 and (prevalence1549 > 0.08) then do; abort abend; end;
+if cald = 1994 and (prevalence1549 < 0.07) then do; abort abend; end;
+
+
+
 ***Zim specific;
 /*
 if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;

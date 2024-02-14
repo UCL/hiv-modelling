@@ -324,6 +324,10 @@ end;
 * placeholder;
 if cald=2019.00 then do; n_tests_f_obs_kya = 0 ; n_tests_m_obs_kya = 0 ;  end;
 
+* https://nsdcc.go.ke/hiv-situation-in-kenya/#:~:text=In%202008%2C%20860%2C000%20people%20were,introduction%20of%20self%2Dtesting%20kits.;
+if cald=2015 then n_tests_obs_kya = 9900000;
+
+
 if cald=2012 then prop_m_1549_circ_obs_kya = 0.91;
 
 if cald=2012 then do;
@@ -350,8 +354,12 @@ if cald=2012 then do;
 	ever_tested_m_6064_obs_kya= 0.50;
 end;
 
-* ############ add ever tested 2022 from dhs above ####################################################################################;
-* ############ add tested past year 2022 from dhs above ####################################################################################;
+if cald=2022 then do;
+	ever_tested_w_1549_obs_kya= 0.85;
+	ever_tested_m_1549_obs_kya= 0.72;
+	tested_past_year_w_1549_obs_kya = 0.47;
+	tested_past_year_m_1549_obs_kya = 0.39;
+end;
 
 
 if cald=2005.00 then n_onart_m_obs_kya= 24000 ;
@@ -485,7 +493,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  8000000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  12000000 by 1000000) valueattrs=(size=10);
 label p50_n_tested_0 = "Option 0 (median) ";
 label p50_n_tested_1 = "Option 1 (median) ";
 
@@ -494,6 +502,8 @@ band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fil
 
 series  x=cald y=p50_n_tested_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+scatter  x=cald y=n_tests_obs_kya/	markerattrs = (symbol=square color=green size = 10);
 
 run;quit;
 
@@ -512,6 +522,8 @@ band    x=cald lower=p5_p_tested_past_year_1549m_0 	upper=p95_p_tested_past_year
 series  x=cald y=p50_p_tested_past_year_1549m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_past_year_1549m_1 	upper=p95_p_tested_past_year_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
+scatter  x=cald y=tested_past_year_m_1549_obs_kya/	markerattrs = (symbol=square color=green size = 10);
+
 run;quit;
 
 
@@ -528,6 +540,8 @@ band    x=cald lower=p5_p_tested_past_year_1549w_0 	upper=p95_p_tested_past_year
 
 series  x=cald y=p50_p_tested_past_year_1549w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_past_year_1549w_1 	upper=p95_p_tested_past_year_1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+scatter  x=cald y=tested_past_year_w_1549_obs_kya/	markerattrs = (symbol=square color=green size = 10);
 
 run;quit;
 
@@ -643,7 +657,7 @@ band    x=cald lower=p5_prevalence1549m_0 	upper=p95_prevalence1549m_0  / transp
 series  x=cald y=p50_prevalence1549m_1/	lineattrs = (color=lightgreen thickness = 2);
 band    x=cald lower=p5_prevalence1549m_1 	upper=p95_prevalence1549m_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
-series  x=cald y=prevalence1549_m_obs_kya/	lineattrs = (color=blue  thickness = 3) ;
+scatter  x=cald y=prevalence1549_m_obs_kya/	lineattrs = (color=blue  thickness = 3) ;
 
 run;quit;
 
@@ -664,7 +678,7 @@ band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transp
 series  x=cald y=p50_prevalence1549w_1/	lineattrs = (color=lightgreen thickness = 2);
 band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
-series  x=cald y=prevalence1549_w_obs_kya/	lineattrs = (color=blue  thickness = 3) ;
+scatter  x=cald y=prevalence1549_w_obs_kya/	lineattrs = (color=blue  thickness = 3) ;
 
 run;quit;
 

@@ -7,11 +7,17 @@
 
 * inc_cat; 					 inc_cat = 1 ;  
 
-
 * circ_inc_rate; 			circ_inc_rate = 0.1;  
 
 * prob_birth_circ; 			prob_birth_circ = 0.21 ; * KIAS 2012;
 				
+
+* HIV TESTING;
+
+* an_lin_incr_test;         %sample_uniform(an_lin_incr_test, 0.001 0.003 0.01);
+
+* date_test_rate_plateau;   date_test_rate_plateau = 2015 ;
+                          
 
 
 /*
@@ -28,16 +34,7 @@
                                 0.95    0.99    1   ,
                                 0.3     0.3     4   );
 
-* HIV TESTING;
 
-* date_start_testing;       date_start_testing = 2005  ;
-
-* an_lin_incr_test;         %sample(an_lin_incr_test,
-                                        0.0100 0.015  0.0200  ,
-                                        0.50   0.50    0.00    );
-
-* date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
-                          
 
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
