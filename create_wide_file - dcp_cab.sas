@@ -432,7 +432,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_elig_offp_tm1_injprep;   p_elig_offp_tm1_injprep = s_elig_offprep_tm1_injprep / s_elig_offprep_tm1 ;
 
 
-* prop_elig_dcp;				prop_elig_dcp = s_dcp / s_prep_any_elig;
+* prop_elig_dcp;				prop_elig_dcp = s_on_dcp_prep_elig / s_prep_any_elig;
 
 * prop_1564_ondcp;				prop_1564_ondcp =   max(s_dcp, 0) / (s_alive1564_w + s_alive1564_m)  ;
 
@@ -1608,7 +1608,7 @@ prop_ever_tested_1549w_23 = "Proportion of women aged 15-49 who have previously 
 prop_ever_tested_1549m_23 = "Proportion of men aged 15-49 who have previously tested for HIV"
 p_tested_past_year_1549w_23 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
 p_tested_past_year_1549m_23 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
-prop_elig_dcp_23 = "Proportion of people who are eligible for DCP (PrEP) who are under DCP"
+prop_elig_dcp_23 = "Proportion of people who are eligible for PrEP who are under DCP"
 prop_1564_ondcp_23 = "Proportion of people aged 15-64 who are under DCP" 
 p_elig_prep_23 = "Proportion of adults age 15-64 with indication for DCP/PrEP"
 prop_elig_on_prep_23 = "Proportion of people with a current PrEP indication who take PrEP"
