@@ -1572,6 +1572,7 @@ run;
 proc sort; by run;run;
 
 
+
 * To get one row per run;
 
   data  b.w_dcp_cab_l     ; 
@@ -1721,9 +1722,10 @@ proc means    n p50 p5 p95 ;
 var p_tested_past_year_1549m_20y_1 p_tested_past_year_1549m_20y_2 p_tested_past_year_1549m_20y_3 p_tested_past_year_1549m_20y_4;
 run;
 
+ods html;
 data s; set b.w_dcp_cab_l;
 %lab(l=prop_elig_dcp); 
-title "Proportion of people who are eligible for DCP (PrEP) who are under DCP";
+title "Proportion of people who are eligible for PrEP who are under DCP";
 proc means    n p50 p5 p95 ;  
 var prop_elig_dcp_20y_1 prop_elig_dcp_20y_2 prop_elig_dcp_20y_3 prop_elig_dcp_20y_4;
 run;
