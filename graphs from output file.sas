@@ -7,14 +7,14 @@
 ***Use 'include' statment in analysis program to read the code below in;
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_k_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_l_out\";
 
 proc printto ;
 
 * ods html close;
 
 data b;
-set a.l_dcp_cab_k_y;
+set a.l_dcp_cab_l_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
