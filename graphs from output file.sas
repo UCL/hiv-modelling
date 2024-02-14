@@ -858,7 +858,7 @@ scatter  x=cald y=o_p_circ_1549_zimphia /	markerattrs = (color=green);
 *scatter  x=cald y=o_p_tradcirc_15ov_zimphia /	markerattrs = (color=red);
 run;quit;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion circumcised using VMMC";
+Title    height=1.5 justify=center "Prevalence of VMMC";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_vmmc_1549m_0 = "Option 0 (median) 15-49";
@@ -1727,7 +1727,7 @@ ods rtf close;run;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_CheckSBCC&CMMC_20240205_102sim.doc' startpage=never; 
-
+/*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_sbcc_visit_1524m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -1762,6 +1762,7 @@ series  x=cald y=p50_n_sbcc_visit_1524w_11/	lineattrs = (color=red thickness = 2
 band    x=cald lower=p5_n_sbcc_visit_1524w_11 	upper=p95_n_sbcc_visit_1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter  x=cald y=o_n_reached_sbcc_1024w/	markerattrs = (color=red ) ;
 run;quit;
+*/
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_sbcc_visit_1524_";
@@ -1859,18 +1860,16 @@ run;quit;
 	p_tested_sbcc_2564=0.15;
 */
 
+*Minimal not printed for the following as denominator is zero;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_tested_sbcc_1524m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1 by 0.1) valueattrs=(size=10);
 label p50_p_tested_sbcc_1524m_0  = "Baseline (median)";
-label p50_p_tested_sbcc_1524m_1  = "Minimal (median)";
 label p50_p_tested_sbcc_1524m_11 = "Minimal+SBCC (median)";
 label o_p_tested_sbcc_1024m = "Observed Brotha2brotha 10-24 - NAC";
 series  x=cald y=p50_p_tested_sbcc_1524m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_tested_sbcc_1524m_0 	upper=p95_p_tested_sbcc_1524m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_tested_sbcc_1524m_1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_tested_sbcc_1524m_1 	upper=p95_p_tested_sbcc_1524m_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_tested_sbcc_1524m_11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_sbcc_1524m_11 	upper=p95_p_tested_sbcc_1524m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter  x=cald y=o_p_tested_sbcc_1024m/	markerattrs = (color=red ) ;
@@ -1881,13 +1880,10 @@ Title    height=1.5 justify=center "p_tested_sbcc_1524w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1 by 0.1) valueattrs=(size=10);
 label p50_p_tested_sbcc_1524w_0  = "Baseline (median)";
-label p50_p_tested_sbcc_1524w_1  = "Minimal (median)";
 label p50_p_tested_sbcc_1524w_11 = "Minimal+SBCC (median)";
 label o_p_tested_sbcc_1024w = "Observed - Sista2sista&DREAMS 10-24 - NAC";
 series  x=cald y=p50_p_tested_sbcc_1524w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_tested_sbcc_1524w_0 	upper=p95_p_tested_sbcc_1524w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_tested_sbcc_1524w_1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_tested_sbcc_1524w_1 	upper=p95_p_tested_sbcc_1524w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_tested_sbcc_1524w_11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_sbcc_1524w_11 	upper=p95_p_tested_sbcc_1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter  x=cald y=o_p_tested_sbcc_1024w/	markerattrs = (color=red ) ;
@@ -1903,11 +1899,37 @@ label p50_p_tested_sbcc_2564__11 = "Minimal+SBCC (median)";
 label o_n_reached_sbcc_2564 = "Observed Peer Led - NAC";
 series  x=cald y=p50_p_tested_sbcc_2564__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_tested_sbcc_2564__0 	upper=p95_p_tested_sbcc_2564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_tested_sbcc_2564__1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_tested_sbcc_2564__1 	upper=p95_p_tested_sbcc_2564__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_tested_sbcc_2564__11/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_sbcc_2564__11 	upper=p95_p_tested_sbcc_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter  x=cald y=o_p_tested_sbcc_2564/	markerattrs = (color=red ) ;
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "of men with hiv 15-24, proportion diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_diag_m1524__0 = "Baseline (median)";
+label p50_p_diag_m1524__11 = "Minimal+SBCC (median)";
+
+series  x=cald y=p50_p_diag_m1524__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_m1524__0 	upper=p95_p_diag_m1524__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_m1524__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diag_m1524__11 	upper=p95_p_diag_m1524__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "of women with hiv 15-24, proportion diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_diag_w1524__0 = "Baseline (median)";
+label p50_p_diag_w1524__11 = "Minimal+SBCC (median)";
+
+series  x=cald y=p50_p_diag_w1524__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_w1524__0 	upper=p95_p_diag_w1524__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_w1524__11/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diag_w1524__11 	upper=p95_p_diag_w1524__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
 run;quit;
 
 proc sgplot data=d; 
@@ -1953,11 +1975,14 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.7 by 0.1) valueattrs=(size=10);
 label p50_p_ep_0  = "Baseline (median) - 15+";
 label p50_p_ep_1  = "Minimal (median) - 15+";
+label p50_p_ep_11  = "Minimal+SBCC (median) - 15+";
 label p50_p_ep_12  = "Minimal+CMMC (median) - 15+";
 series  x=cald y=p50_p_ep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_ep_0 	upper=p95_p_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_ep_1/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_p_ep_1 	upper=p95_p_ep_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_ep_11/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_ep_11 	upper=p95_p_ep_11  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_ep_12/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_p_ep_12 	upper=p95_p_ep_12  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 run;quit;
