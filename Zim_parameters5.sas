@@ -49,7 +49,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 * SEX WORKERS;	
 
 * base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020, 0.5 0.5);*20231002;
-* base_rate_stop_sexwork ;	%sample(base_rate_stop_sexwork, 0.015 0.030 0.045, 0.40 0.40 0.20);
+* base_rate_stop_sexwork ;	%sample(base_rate_stop_sexwork, 0.005 0.010 0.015, 0.40 0.40 0.20);
 
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.60;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.50;
