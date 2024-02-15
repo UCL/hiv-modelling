@@ -5,7 +5,7 @@
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					 inc_cat = 1 ;  
+* inc_cat; 					inc_cat = 1 ;  
 
 * circ_inc_rate; 			circ_inc_rate = 0.1;  
 
@@ -14,12 +14,15 @@
 
 * HIV TESTING;
 
-* an_lin_incr_test;         * %sample_uniform(an_lin_incr_test, 0.001 ); an_lin_incr_test = 0.0005;
+* an_lin_incr_test;         * %sample_uniform(an_lin_incr_test, 0.001 ); an_lin_incr_test = 0.0002;
 
 * date_test_rate_plateau;   date_test_rate_plateau = 2015 ;
 
 * test_targeting;			test_targeting = 1;
                           
+* p_hard_reach_w;  			p_hard_reach_w = 0.2; p_hard_reach_w = round(p_hard_reach_w, 0.01);
+* hard_reach_higher_in_men; hard_reach_higher_in_men = 0.1 ; hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
+* p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
 
 
 /*
