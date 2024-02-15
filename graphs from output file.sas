@@ -78,12 +78,13 @@ n_everpregn_w1524_ = n_everpregn_w1524;
 n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 
 
-data b;set b;where cald ge 2023;run;
+data b;set b;*where option=0;where cald ge 2023;run;
+
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
 %let nfit = 102  ;*out of 1000;*out of 860;
-%let year_start = 2023;*&year_start;
+%let year_start = 2000;*2023;*&year_start;
 %let year_end = 2072.75;
 run;
 /*proc freq data=b;table cald count_csim count_csim*option;run;*/
@@ -309,7 +310,7 @@ proc contents data=a.d;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20231211_54sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20240205_102sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
@@ -1519,6 +1520,21 @@ band    x=cald lower=p5_n_onart_0 	upper=p95_n_onart_0  / transparency=0.9 filla
 scatter x=cald y=o_s_all_onart_NAC / markerattrs = (symbol=square color=black size = 10);
 scatter x=cald y=o_s_onart_adults_garpr / markerattrs = (symbol=square color=black size = 10);
 run;quit;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of women on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 250000) valueattrs=(size=10);
+label p50_n_onart_0 = "Option 0  (median)";
+label o_s_allfemale_onart_NAC = "CAL - NAC";
+series  x=cald y=p50_n_onart_w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_onart_w_0 	upper=p95_n_onart_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*MIHPSA essential;
+scatter x=cald y=o_s_allfemale_onart_NAC / markerattrs = (symbol=square color=black size = 10);
+
+run;quit;
+
 
 proc print data=d;var cald p50_n_onart_0; where cald in (2022.5 2040.5);run;
 
