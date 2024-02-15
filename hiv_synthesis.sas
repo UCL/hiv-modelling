@@ -128,6 +128,7 @@ run = rand('uniform')*1000000000;  run=round(run,1);
 dataset_id=trim(left(run));
 call symput('dataset_id',dataset_id);
 
+* overwritten in country-specific include statements (SA, Zim, MW) JAS Feb24;
 caldate1=1989;
 caldate_never_dot=1989;
 
@@ -143,7 +144,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 
 
 * start of epidemic;
-startyr = 1989 + 0.25;
+startyr = 1989 + 0.25;		* overwritten in country-specific include statements (SA, Zim) JAS Feb24;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
@@ -19222,7 +19223,26 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
-***Zim specific;	*JAS Feb24;
+***Malawi specific;			*JAS Feb24;
+if country = 'Malawi' then do;
+	if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
+	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
+	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+end;
+
+***South Africa specific;	*JAS Feb24;
+if country = 'South Africa' then do;
+	if cald = 2017.5 and (prevalence1549 < 0.166 or prevalence1549 > 0.246) then do;
+	  abort abend;
+	end;
+	if cald = 2021 and (s_onart < 3333 or s_onart > 6400) then do;
+	  abort abend;
+	end;
+end;
+
+***Zim specific;			*JAS Feb24;
 if country = 'Zimbabwe' then do;
 	if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
 	if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
@@ -20158,7 +20178,7 @@ end;
 
 
 
-%update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim starts in 1984 JAS Sep23;
+%update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim, SA and Malawi start in 1984 JAS Sep23;
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=0);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=0);
@@ -20513,7 +20533,7 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=349,h=356,j=353,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=349,h=356,j=354,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=349,h=356,j=355,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=356,s=0);		* end of 2077 (core), end of 2072 (Zim) JAS Sep23;
+%update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=356,s=0);		* end of 2077 (core), end of 2072 (Malawi, SA, Zim) JAS Sep23;
 
 * end of s=0 JAS Sep2023;
 
