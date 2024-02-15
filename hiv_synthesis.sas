@@ -901,6 +901,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
+%include "/home/rmjlja9/Zim_parameters.sas";
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
@@ -2270,100 +2271,100 @@ who may be dead and hence have caldate{t} missing;
 	*option 15: Oral TDF/FTC PrEP for AGYW;
 	if option = 15 then do;
 		*Following values need to change;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_oral_b=0.95;
-		eff_rate_choose_stop_prep_oral=0.001;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.4;
+		eff_prob_prep_oral_b=0.9;
+		eff_rate_choose_stop_prep_oral=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	*option 16: Oral TDF/FTC PrEP for FSW;
 	if option = 16 then do;	
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_oral_b=0.95;
-		eff_rate_choose_stop_prep_oral=0.001;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.4;
+		eff_prob_prep_oral_b=0.4;
+		eff_rate_choose_stop_prep_oral=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	*option 17: Oral TDF/FTC PrEP for sero-discordant couples (SDC);
 	if option = 17 then do;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_oral_b=0.95;
-		eff_rate_choose_stop_prep_oral=0.001;
-	eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.4;
+		eff_prob_prep_oral_b=0.4;
+		eff_rate_choose_stop_prep_oral=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women (PLW);
 	if option = 18 then do;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_oral_b=0.95;
-		eff_rate_choose_stop_prep_oral=0.001;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.2;
+		eff_prob_prep_oral_b=0.9;
+		eff_rate_choose_stop_prep_oral=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	* Dapivirine ring; 
 	*option 19: Dapivirine ring for AGYW;
 	if option = 19 then do;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_vr_b=0.95;
-		eff_rate_choose_stop_prep_vr=0.001;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.4;
+		eff_prob_prep_vr_b=0.9;
+		eff_rate_choose_stop_prep_vr=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	*option 20: Dapivirine ring for FSW;
 	if option = 20 then do;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_vr_b=0.95;
-		eff_rate_choose_stop_prep_vr=0.001;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.6;
+		eff_prob_prep_vr_b=0.6;
+		eff_rate_choose_stop_prep_vr=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	*option 21: Dapivirine ring for SDC;
 	if option = 21 then do;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_vr_b=0.95;
-		eff_rate_choose_stop_prep_vr=0.001;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.6;
+		eff_prob_prep_vr_b=0.6;
+		eff_rate_choose_stop_prep_vr=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	*option 22: Dapivirine ring for PLW;
 	if option = 22 then do;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_vr_b=0.95;
-		eff_rate_choose_stop_prep_vr=0.001;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.2;
+		eff_prob_prep_vr_b=0.9;
+		eff_rate_choose_stop_prep_vr=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	* Injectable PrEP; 
 	*option 23: Injectable PrEP for AGYW;
 	if option = 23 then do;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_inj_b=0.95;
-		eff_rate_choose_stop_prep_inj=0.001;
-		eff_prob_prep_any_restart_choice=0.25;		
+		eff_rate_test_startprep_any=0.4;
+		eff_prob_prep_inj_b=0.9;
+		eff_rate_choose_stop_prep_inj=0.01;
+		eff_prob_prep_any_restart_choice=0.5;		
 	end;
 
 	*option 24: Injectable PrEP for FSW;
 	if option = 24 then do;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_inj_b=0.95;
-		eff_rate_choose_stop_prep_inj=0.001;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.4;
+		eff_prob_prep_inj_b=0.4;
+		eff_rate_choose_stop_prep_inj=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	*option 25: Injectable PrEP for SDC;
 	if option = 25 then do;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_inj_b=0.95;
-		eff_rate_choose_stop_prep_inj=0.001;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.4;
+		eff_prob_prep_inj_b=0.4;
+		eff_rate_choose_stop_prep_inj=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	*option 26: Injectable PrEP for PLW;
 	if option = 26 then do;
-		eff_rate_test_startprep_any=0.95;
-		eff_prob_prep_inj_b=0.95;
-		eff_rate_choose_stop_prep_inj=0.001;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.2;
+		eff_prob_prep_inj_b=0.9;
+		eff_rate_choose_stop_prep_inj=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;	
 
 	
@@ -3088,9 +3089,11 @@ if caldate{t} >= &year_interv then do;
 end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
-***Zim specific; 
-/*if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;*/
 
+***Zim specific;	* JAS Feb24;
+if country = 'Zimbabwe' then do;
+	if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;
+end;
 
 * ts1m;
 * rate_1sttest = 1 - (1 - rate_1sttest )**(1/3) ;
@@ -3202,9 +3205,11 @@ if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*o
     end;
 end;
 
-***Zim specific; 
-/*if 2020.5 le caldate{t} lt 2021.5 then prob_circ = prob_circ*0.5;*/
-/*if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;*/
+***Zim specific;	*JAS Feb24;
+if country = 'Zimbabwe' then do;
+	if 2020.5 le caldate{t} lt 2021.5 then prob_circ = prob_circ*0.5;
+	if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
+end;
 
 
 if prob_circ ne . then prob_circ = min(prob_circ,1);
@@ -4719,7 +4724,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
 		else r_prep = rand('Uniform');
 		if gender=2 and 15<=age<25 and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
@@ -19217,12 +19222,12 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
-***Zim specific;
-/*
-if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
-if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
-if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
-*/
+***Zim specific;	*JAS Feb24;
+if country = 'Zimbabwe' then do;
+	if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
+	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
+end;
 /*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
