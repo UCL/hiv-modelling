@@ -30,7 +30,7 @@ option = future_prep_condom;
 if cald le 2040;
 
 
-%let single_var = p_vl1000_                   ;
+%let single_var = prop_elig_on_prep                ;
 
 
 * p_agege15_ever_vaccinated  p_cur_full_vac_e_1564_ prop_elig_on_prep  prop_1564_hivneg_onprep  n_tested  p_diag  p_onart_diag  p_onart_vl1000_  incidence1549_;
@@ -267,102 +267,121 @@ Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2039 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.9       by 0.1     ) valueattrs=(size=10);
 
-label mean_incidence1549__1 = "A (median)";
-label mean_incidence1549__2 = "B (median)";
-label mean_incidence1549__3 = "C (median)";
-label mean_incidence1549__4 = "D (median)";
+label p50_incidence1549__1 = "A (median)";
+label p50_incidence1549__2 = "B (median)";
+label p50_incidence1549__3 = "C (median)";
+label p50_incidence1549__4 = "D (median)";
 
- series  x=cald y=mean_incidence1549__1/	lineattrs = (color=black thickness = 4);
+ series  x=cald y=p50_incidence1549__1/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=mean_incidence1549__2/	lineattrs = (color=green  thickness = 4);
+  series  x=cald y=p50_incidence1549__2/	lineattrs = (color=green  thickness = 4);
   band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=green ) legendlabel= "90% range";
-  series  x=cald y=mean_incidence1549__3/	lineattrs = (color=charcoal thickness = 4);
+  series  x=cald y=p50_incidence1549__3/	lineattrs = (color=charcoal thickness = 4);
   band    x=cald lower=p5_incidence1549__3 	upper=p95_incidence1549__3  / transparency=0.9 fillattrs = (color=charcoal) legendlabel= "90% range";
-  series  x=cald y=mean_incidence1549__4/	lineattrs = (color=grey    thickness = 4);
+  series  x=cald y=p50_incidence1549__4/	lineattrs = (color=grey    thickness = 4);
   band    x=cald lower=p5_incidence1549__4 	upper=p95_incidence1549__4  / transparency=0.9 fillattrs = (color=grey   ) legendlabel= "90% range";
 
 run;quit;
 
 * ods html close;
 
+*/
 
 
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Proportion of people with a PrEP indication taking PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2039 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
 
-label mean_prop_elig_on_prep_1 = "A";
-label mean_prop_elig_on_prep_2 = "B";
-label mean_prop_elig_on_prep_3 = "C";
-label mean_prop_elig_on_prep_4 = "D";
+label p50_prop_elig_on_prep_1 = "A";
+label p50_prop_elig_on_prep_2 = "B";
+label p50_prop_elig_on_prep_3 = "C";
+label p50_prop_elig_on_prep_4 = "D";
 
- series  x=cald y=mean_prop_elig_on_prep_1/	lineattrs = (color=black thickness = 4);
+ series  x=cald y=p50_prop_elig_on_prep_1/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=mean_prop_elig_on_prep_2/	lineattrs = (color=green  thickness = 4);
+  series  x=cald y=p50_prop_elig_on_prep_2/	lineattrs = (color=green  thickness = 4);
   band    x=cald lower=p5_prop_elig_on_prep_2 	upper=p95_prop_elig_on_prep_2  / transparency=0.9 fillattrs = (color=green ) legendlabel= "90% range";
-  series  x=cald y=mean_prop_elig_on_prep_3/	lineattrs = (color=charcoal thickness = 4);
+  series  x=cald y=p50_prop_elig_on_prep_3/	lineattrs = (color=charcoal thickness = 4);
   band    x=cald lower=p5_prop_elig_on_prep_3 	upper=p95_prop_elig_on_prep_3  / transparency=0.9 fillattrs = (color=charcoal) legendlabel= "90% range";
-  series  x=cald y=mean_prop_elig_on_prep_4/	lineattrs = (color=grey    thickness = 4);
+  series  x=cald y=p50_prop_elig_on_prep_4/	lineattrs = (color=grey    thickness = 4);
   band    x=cald lower=p5_prop_elig_on_prep_4 	upper=p95_prop_elig_on_prep_4  / transparency=0.9 fillattrs = (color=grey   ) legendlabel= "90% range";
 
 run;quit;
-
-
-*/
-
-
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Proportion of all PLHIV (diagnosed or undiagnosed) with vl < 1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2039 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
-
-label mean_p_vl1000__1 = "A";
-label mean_p_vl1000__2 = "B";
-label mean_p_vl1000__3 = "C";
-label mean_p_vl1000__4 = "D";
-
- series  x=cald y=mean_p_vl1000__1/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=mean_p_vl1000__2/	lineattrs = (color=green  thickness = 4);
-  band    x=cald lower=p5_p_vl1000__2 	upper=p95_p_vl1000__2  / transparency=0.9 fillattrs = (color=green ) legendlabel= "90% range";
-  series  x=cald y=mean_p_vl1000__3/	lineattrs = (color=charcoal thickness = 4);
-  band    x=cald lower=p5_p_vl1000__3 	upper=p95_p_vl1000__3  / transparency=0.9 fillattrs = (color=charcoal) legendlabel= "90% range";
-  series  x=cald y=mean_p_vl1000__4/	lineattrs = (color=grey    thickness = 4);
-  band    x=cald lower=p5_p_vl1000__4 	upper=p95_p_vl1000__4  / transparency=0.9 fillattrs = (color=grey   ) legendlabel= "90% range";
-
-run;quit;
-
-
 
 
 /*
 
 ods html;
 proc sgplot data=d ; 
+Title    height=1.5 justify=center "Proportion of all PLHIV (diagnosed or undiagnosed) with vl < 1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2039 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
+
+label p50_p_vl1000__1 = "A";
+label p50_p_vl1000__2 = "B";
+label p50_p_vl1000__3 = "C";
+label p50_p_vl1000__4 = "D";
+
+ series  x=cald y=p50_p_vl1000__1/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_vl1000__2/	lineattrs = (color=green  thickness = 4);
+  band    x=cald lower=p5_p_vl1000__2 	upper=p95_p_vl1000__2  / transparency=0.9 fillattrs = (color=green ) legendlabel= "90% range";
+  series  x=cald y=p50_p_vl1000__3/	lineattrs = (color=charcoal thickness = 4);
+  band    x=cald lower=p5_p_vl1000__3 	upper=p95_p_vl1000__3  / transparency=0.9 fillattrs = (color=charcoal) legendlabel= "90% range";
+  series  x=cald y=p50_p_vl1000__4/	lineattrs = (color=grey    thickness = 4);
+  band    x=cald lower=p5_p_vl1000__4 	upper=p95_p_vl1000__4  / transparency=0.9 fillattrs = (color=grey   ) legendlabel= "90% range";
+
+run;quit;
+
+
+ods html;
+proc sgplot data=d ; 
 Title    height=1.5 justify=center "Of those on ART, proportion with vl < 1000";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2039 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0.8 to  1.0       by 0.05     ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.8 to  1.0       by 0.05     ) valueattrs=(size=10);
 
-label mean_p_onart_vl1000__1 = "A";
-label mean_p_onart_vl1000__2 = "B";
-label mean_p_onart_vl1000__3 = "C";
-label mean_p_onart_vl1000__4 = "D";
+label p50_p_onart_vl1000__1 = "A";
+label p50_p_onart_vl1000__2 = "B";
+label p50_p_onart_vl1000__3 = "C";
+label p50_p_onart_vl1000__4 = "D";
 
- series  x=cald y=mean_p_onart_vl1000__1/	lineattrs = (color=black thickness = 4);
+ series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=mean_p_onart_vl1000__2/	lineattrs = (color=green  thickness = 4);
+  series  x=cald y=p50_p_onart_vl1000__2/	lineattrs = (color=green  thickness = 4);
   band    x=cald lower=p5_p_onart_vl1000__2 	upper=p95_p_onart_vl1000__2  / transparency=0.9 fillattrs = (color=green ) legendlabel= "90% range";
-  series  x=cald y=mean_p_onart_vl1000__3/	lineattrs = (color=blue thickness = 4);
+  series  x=cald y=p50_p_onart_vl1000__3/	lineattrs = (color=blue thickness = 4);
   band    x=cald lower=p5_p_onart_vl1000__3 	upper=p95_p_onart_vl1000__3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=mean_p_onart_vl1000__4/	lineattrs = (color=red    thickness = 4);
+  series  x=cald y=p50_p_onart_vl1000__4/	lineattrs = (color=red    thickness = 4);
   band    x=cald lower=p5_p_onart_vl1000__4 	upper=p95_p_onart_vl1000__4  / transparency=0.9 fillattrs = (color=red   ) legendlabel= "90% range";
 
 run;quit;
 
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Proportion of HIV negative adults age 15-64 taking PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2039 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.0 to  0.3       by 0.05     ) valueattrs=(size=10);
+
+label p50_prop_1564_hivneg_onprep_1 = "A";
+label p50_prop_1564_hivneg_onprep_2 = "B";
+label p50_prop_1564_hivneg_onprep_3 = "C";
+label p50_prop_1564_hivneg_onprep_4 = "D";
+
+ series  x=cald y=p50_prop_1564_hivneg_onprep_1/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prop_1564_hivneg_onprep_1 	upper=p95_prop_1564_hivneg_onprep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_hivneg_onprep_2/	lineattrs = (color=green  thickness = 4);
+  band    x=cald lower=p5_prop_1564_hivneg_onprep_2 	upper=p95_prop_1564_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=green ) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_hivneg_onprep_3/	lineattrs = (color=charcoal thickness = 4);
+  band    x=cald lower=p5_prop_1564_hivneg_onprep_3 	upper=p95_prop_1564_hivneg_onprep_3  / transparency=0.9 fillattrs = (color=charcoal) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_hivneg_onprep_4/	lineattrs = (color=grey    thickness = 4);
+  band    x=cald lower=p5_prop_1564_hivneg_onprep_4 	upper=p95_prop_1564_hivneg_onprep_4  / transparency=0.9 fillattrs = (color=grey   ) legendlabel= "90% range";
+
+run;quit;
 
 
 
@@ -441,26 +460,6 @@ label p50_prop_elig_on_prep_1 = "vaccine";
   band    x=cald lower=p5_prop_elig_on_prep_0 	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_prop_elig_on_prep_1/	lineattrs = (color=violet thickness = 4);
   band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
-
-run;quit;
-
-ods html close;
-
-
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Proportion of adults age 15-64 taking PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1  by 0.01 ) valueattrs=(size=10);
-
-label p50_prop_1564_hivneg_onprep_0 = "no vaccine";
-label p50_prop_1564_hivneg_onprep_1 = "vaccine";
-
- series  x=cald y=p50_prop_1564_hivneg_onprep_0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_prop_1564_hivneg_onprep_0 	upper=p95_prop_1564_hivneg_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_prop_1564_hivneg_onprep_1/	lineattrs = (color=violet thickness = 4);
-  band    x=cald lower=p5_prop_1564_hivneg_onprep_1 	upper=p95_prop_1564_hivneg_onprep_1  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
