@@ -902,7 +902,8 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjlja9/Zim_parameters.sas";
+* %include "/home/rmjlja9/Zim_parameters_24thJan24.sas";
+* %include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
@@ -17601,7 +17602,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 /*
 
-proc freq; tables cald hiv ; where death=.; run;
+proc freq; tables country cald hiv ; where death=.; run;
 
 */
 

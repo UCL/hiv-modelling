@@ -1,3 +1,8 @@
+* These parameters are up to date at 17th Oct 2023;
+* caldate1, caldate_never_dot and startyr specified here to overwrite core value;
+* country added to switch on SA-spcific abort statements;
+* Note that rate_anc_inc has been updated from rate_testanc_inc (used in some other SA analyses) to be consistent with the current core program;
+* JAS Oct23;		
 
 ****% on ART of those diag too high***
 
@@ -6,6 +11,9 @@
 ******************     SOUTH AFRICA SPECIFIC PARAMETERS    ******************
 /***************************************************************************/
 
+* country;					country='South Africa';
+* caldate1;					caldate1 = 1984;		*core: 1989;
+* caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 * inc_cat; 					inc_cat = 3;
@@ -14,7 +22,9 @@
 
 * fold_change_ac_death_rate;fold_change_ac_death_rate_w = 0.65; fold_change_ac_death_rate_m = 0.65; 
 
-newp_seed = 10 ;
+* INTRODUCTION OF HIV;
+* startyr;					startyr = 1993;
+* newp_seed;				newp_seed = 10 ;
 
 * SEXUAL BEHAVIOUR;
 * ych_risk_beh_newp;  		ych_risk_beh_newp = 1;
@@ -29,6 +39,8 @@ newp_seed = 10 ;
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
+
+
 
 
 * TRANSMISSION;
