@@ -8,8 +8,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_c    ;
-
+  set a.l_base_kenya_d    ;
 
 p_onart_vl1000_all = .;
 
@@ -24,6 +23,7 @@ p_vg1000_ = p_vg1000;
 prevalence_vg1000_ = prevalence_vg1000;
 p_newp_ge1_ = p_newp_ge1 ;
 p_newp_ge5_ = p_newp_ge5 ;  
+n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 
 loggender_r_newp = log(gender_r_newp+0.0001);
 
@@ -49,7 +49,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  133   ;
+%let nfit =  65    ;
 %let year_end = 2024.00 ;
 run;
 proc sort;by cald option ;run;
@@ -71,7 +71,7 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart_m n_onart_w n_death_2059_m n_death_2059_w  n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
+n_onart_m n_onart_w n_dead_hivpos_cause1_ n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
@@ -136,7 +136,7 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart_m n_onart_w  n_death_2059_m n_death_2059_w  n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
+n_onart_m n_onart_w  n_dead_hivpos_cause1_ n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
@@ -1328,43 +1328,23 @@ band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / 
 run;quit;
 
 
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "n_death_2059_w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
-
-label p50_n_death_2059_w_0 = "Option 0 (median) ";
-label p50_n_death_2059_w_1 = "Option 1  (median) ";
-
-series  x=cald y=p50_n_death_2059_w_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_2059_w_0 	upper=p95_n_death_2059_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_death_2059_w_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_death_2059_w_1 	upper=p95_n_death_2059_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_n_death_hiv_w_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_hiv_w_0 	upper=p95_n_death_hiv_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-
-run;quit;
-
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_death_2059_m";
+Title    height=1.5 justify=center "n_dead_hivpos_cause1";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 
-label p50_n_death_2059_m_0 = "Option 0 (median) ";
-label p50_n_death_2059_m_1 = "Option 1  (median) ";
+label p50_n_dead_hivpos_cause1__0 = "Option 0 (median) ";
+label p50_n_dead_hivpos_cause1__1 = "Option 1  (median) ";
 
-series  x=cald y=p50_n_death_2059_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_2059_m_0 	upper=p95_n_death_2059_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_death_2059_m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_death_2059_m_1 	upper=p95_n_death_2059_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_dead_hivpos_cause1__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_dead_hivpos_cause1__0 	upper=p95_n_dead_hivpos_cause1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_dead_hivpos_cause1__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_dead_hivpos_cause1__1 	upper=p95_n_dead_hivpos_cause1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-series  x=cald y=p50_n_death_hiv_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_hiv_m_0 	upper=p95_n_death_hiv_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_dead_hivpos_cause1__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_dead_hivpos_cause1__0 	upper=p95_n_dead_hivpos_cause1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 
 run;quit;
