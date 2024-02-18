@@ -2,9 +2,9 @@
 
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
-*libname b "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check\20230621";
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v20_2024Feb13_from2023_test_out";
-data a.base_from2023_20240213;   set b.out:;
+libname b "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check";
+*libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v20_2024Feb13_from2023_test_out";
+data a.base_from2023_20240213;   set b.out20240218_4462081;*set b.out:;
 *8 dataset had dataset id with 8 characters,
  the other 92 had datset id with 9 characters so the issue is that these others datasets are empty, 
  as it was trucnating dataset_id;
