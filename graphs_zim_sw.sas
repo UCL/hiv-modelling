@@ -6,7 +6,7 @@
 libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a;
-set a.fsw_zim_12feb24;  
+set a.fsw_zim_15feb24;  
 
 if option=1 then delete; ***first look at overall incidence according to baseline SW program (option=1= amesthist);
 proc sort;by run;
@@ -34,7 +34,6 @@ run;
 
 data b;
 set a1;
-
 
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
@@ -134,12 +133,14 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
-* p_diag_sw_inprog;				if s_hiv_sw gt 0 then p_diag_sw_inprog	= s_diag_sw_inprog / s_sw_hiv_inprog; 
+* p_diag_sw_inprog;				if s_sw_hiv_inprog gt 0 then p_diag_sw_inprog	= s_diag_sw_inprog / s_sw_hiv_inprog; 
 
 * prevalence_sw;				prevalence_sw = s_hiv_sw1549_ / s_sw_1549; 
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw =(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
-* incidence_sw_inprog;			*if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_inprog =(s_primary_sw_inprog * 4 * 100) / (s_sw_inprog  - s_sw_hiv_inprog  + s_primary_sw_inprog);
+* incidence_sw_inprog;			if (s_sw_inprog  - s_sw_hiv_inprog  + s_primary_sw_inprog) gt 0 then incidence_sw_inprog =(s_primary_sw_inprog * 4 * 100) / (s_sw_inprog  - s_sw_hiv_inprog  + s_primary_sw_inprog);
+* incidence_sw_noprog;			if (s_sw_noprog  - s_sw_hiv_noprog  + s_primary_sw_noprog) gt 0 then incidence_sw_noprog =(s_primary_sw_noprog * 4 * 100) / (s_sw_noprog  - s_sw_hiv_noprog  + s_primary_sw_noprog);
+
 
 
 * sti;							p_sti_sw = s_sti_sw/s_sw_1564;
@@ -151,7 +152,7 @@ proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 280;
+%let nfit = 294;
 %let year_end = 2050.00 ;
 run;
 proc sort;by cald option ;run;
@@ -171,7 +172,7 @@ p_fsw_newp0_  av_sw_newp  p_newp_sw
 p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
 prevalence_sw  incidence_sw p_sti_sw incidence1549_
 prop_sw_onprep_prog prop_sw_onprep_noprog
-
+p_diag_sw_inprog	incidence_sw_inprog	incidence_sw_noprog
 p_diag_w p_diag_m p_diag;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -181,6 +182,7 @@ p_diag_w p_diag_m p_diag;
 %let p5_var = p5_&var;
 %let p95_var = p95_&var;
 %let p50_var = median_&var;
+%let mean_var=mean_&var;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -195,8 +197,9 @@ p75_&varb = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb = median(of &varb.1-&varb.&nfit);
+mean_&varb = mean(of &varb.1-&varb.&nfit);
 
-keep cald p5_&varb p95_&varb p50_&varb p25_&varb p75_&varb;
+keep cald p5_&varb p95_&varb p50_&varb p25_&varb p75_&varb mean_&varb;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -211,7 +214,7 @@ run;
 data d;
 merge b
 a1   a2   a3   a4   a5   a6   a7   a8   a9   a10  a11  a12  a13  a14  a15  a16  a17  a18  a19  a20  a21  a22  a23  a24  a25  a26 
-a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42  a43  a44  a45  a46  a47  a48/*  a49  a50  a51  a52 
+a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42  a43  a44  a45  a46  a47  a48  a49  a50  a51/*  a52 
 a53  a54  a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
 a79  a80  a81  a82  a83  a84  a85  a86  a87  a88  a89  a90  a91  a92  a93  a94  a95  a96  a97  a98  a99  a100 a101 a102 a103 a104
 a105 a106 a107 a108 a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130
@@ -230,7 +233,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\12feb2024.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\15feb2024.doc' startpage=never; 
 
 
 proc sgplot data=e; 
@@ -503,7 +506,7 @@ proc sgplot data=e;
 
 title    height=1.5 justify=center "HIV incidence amongst sex workers";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (1995 to 2025 by 2)       valueattrs=(size=10); 
-yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 50 by 5)    valueattrs=(size=10);
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 10 by 1)    valueattrs=(size=10);
 
 label p50_incidence_sw  = "Median";
 label o_HIVIncid_fsw = "JH JAIDS";
@@ -514,6 +517,10 @@ label o_HIVIncid1539_fsw_hj = "15-39 HJones";
 
 series  x=cald y=p50_incidence_sw /  lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence_sw  upper=p95_incidence_sw / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+series  x=cald y=p50_incidence_sw_inprog /  lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence_sw_inprog  upper=p95_incidence_sw_inprog / transparency=0.9 fillattrs = (color=red) legendlabel= "No program - model 90% range";
+series  x=cald y=p50_incidence_sw_noprog /  lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_incidence_sw_noprog  upper=p95_incidence_sw_noprog / transparency=0.9 fillattrs = (color=green) legendlabel= "No program - model 90% range";
 
 scatter x=cald y=o_HIVIncid_fsw / markerattrs = (symbol=circle       color=blue size = 12);
 scatter x=cald y=o_HIVIncid1824_fsw / markerattrs = (symbol=circle       color=green size = 12);
@@ -577,7 +584,3 @@ band    x=cald lower=p5_p_diag_w  upper=p95_p_diag_w / transparency=0.9 fillattr
 
 run;quit;
 
-
-p_diag_w
-
-***PREVALENCE BY AGE - SANNI'S PAPER;
