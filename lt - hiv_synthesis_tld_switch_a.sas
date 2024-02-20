@@ -28,17 +28,17 @@ read bob shafer rapid review on dtg resistance
 
 
 
-*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
+ libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   * here ! ;
+* libname a "&outputdir/";   * here ! ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 10000   ; 
 %let year_interv = 2025;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -13185,19 +13185,6 @@ if hiv=1 and naive=0 and dol_pi_fail_by_year_interv ne 1 then do;
 	if r_dol >= 0.75 then r_dol_ge_p75_tldsw=1;
 end;
 
-uvl2_elig=0; o_dar_uvl2 =0; o_dol_uvl2=0;  onart_uvl2=0; vl1000_uvl2=0;  vl200_uvl2=0; dead_uvl2=0;dead_hiv_uvl2=0;c_tox_uvl2=0; r_dol_ge_p75_uvl2=0;
-if naive=0 and date_last_second_vlg1000 ne . then do;
-	uvl2_elig=1;
-	if o_dar=1 then o_dar_uvl2=1;
-	if o_dol=1 then o_dol_uvl2=1;
-	if onart=1 then onart_uvl2=1;
-	if . < vl < 3.0 then vl1000_uvl2=1; 
-	if . < vl < 2.3 then vl200_uvl2=1; 
-	if caldate&j = death then dead_uvl2=1;
-	if caldate&j = death and dcause=1 then dead_hiv_uvl2=1;
-	if c_tox=1 then c_tox_uvl2=1;
-	if r_dol >= 0.75 then r_dol_ge_p75_uvl2=1;
-end;
 
 
 
@@ -17020,9 +17007,6 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl200_tldsw  + vl200_tldsw  ; s_dead_tldsw   + dead_tldsw   ;s_dead_hiv_tldsw +   dead_hiv_tldsw ;  s_c_tox_tldsw  + c_tox_tldsw  ; 
 	s_r_dol_ge_p75_tldsw  +  r_dol_ge_p75_tldsw ;
 
-	s_uvl2_elig  +  uvl2_elig ; s_o_dar_uvl2  + o_dar_uvl2 ; s_o_dol_uvl2  + o_dol_uvl2 ;  s_onart_uvl2  +  onart_uvl2 ;  s_vl1000_uvl2 +  vl1000_uvl2 ;   
-	s_vl200_uvl2  + vl200_uvl2  ; s_dead_uvl2   + dead_uvl2   ;s_dead_hiv_uvl2 +   dead_hiv_uvl2 ;  s_c_tox_uvl2  + c_tox_uvl2  ; 
-	s_r_dol_ge_p75_uvl2  +  r_dol_ge_p75_uvl2 ;
 
 	/* blood pressure */
 
@@ -17497,26 +17481,28 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
+
 /*
 
 proc freq; tables cald hiv ; where death=.; run;
 
-
+*/
 
 * adhav = 0.75; * adhvar=0.20;
 * eff_prob_vl_meas_done=1;
 
-proc print; var art_monitoring_strategy caldate&j dol_pi_fail_by_year_interv f_dol_tm1 f_dol date_f_dol o_dol o_dar eff_pr_switch_line  visit onart  
+proc print; var art_monitoring_strategy caldate&j dol_pi_fail_by_year_interv f_dol_tm1 f_dol date_f_dol o_dol o_dar o_ten o_3tc o_zdv 
+eff_pr_switch_line  visit onart  
 int_clinic_not_aw restart restart_tm1 vm vl 
 yrart time_since_last_vm value_last_vm  second_vlg1000 date_last_second_vlg1000 eff_prob_vl_meas_done date_last_vlm_g1000  date_vl_switch_eval 
 time_since_last_vm 
 date_v_alert date_conf_vl_measure_done adh r_dol date_res_test_tld  res_test_dol drug_level_test date_drug_level_test reg_option 
 ;
-  where yrart ne .  and death=. and date_last_second_vlg1000 ne . ;
+  where yrart ne .  and death=.  and date_last_second_vlg1000 ne .  ;
 run;
 
 
-*/
+
 
 
 
@@ -18764,8 +18750,6 @@ s_infected_inm  s_infected_inm_this_per
 s_onartvisit0 s_onartvisit0_vl1000
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p75_tldsw 
-s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p75_uvl2 
-
 
 /* note s_ variables below are for up to age 80 */
 
@@ -19712,8 +19696,6 @@ s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_in
 s_onartvisit0 s_onartvisit0_vl1000
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p75_tldsw 
-s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p75_uvl2 
-
 
 
 /* note s_ variables below are for up to age 80 */
@@ -20076,7 +20058,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-
+/*
 
 * 1989;
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
@@ -20266,11 +20248,13 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
 
-data a.keepie2; set r1;
+data a.saved; set r1;
 
+*/
 
+/*
 
-data r1; set a.keepie2;
+data r1; set a.saved;
 * 2025;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
@@ -20477,6 +20461,7 @@ data r1; set a.keepie2;
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=0);
 
+*/
 
 data r1; set a;
 * 2025;
@@ -21520,7 +21505,6 @@ s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_i
 s_onartvisit0  s_onartvisit0_vl1000
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p75_tldsw 
-s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p75_uvl2 
 
 
 /* note s_ variables below are for up to age 80 */
