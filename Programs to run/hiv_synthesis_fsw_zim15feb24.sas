@@ -910,7 +910,7 @@ non_hiv_tb_risk = 0.0005;
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
-* %include "/home/rmjllob/Zim_parameters5.sas";
+%include "/home/rmjllob/Zim_parameters5.sas";
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
@@ -12543,13 +12543,13 @@ npge2_l4p_1549w=0;if gender=2 and 18 <= age < 50 and (nnewp_l4p ge 2 or (nnewp_l
 newpge1_l4p_1529m=0;if gender=1 and 15 <= age < 30 and (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or newp_tm3 ge 1) then newpge1_l4p_1529m=1;
 newpge1_l4p_1529w=0;if gender=2 and 15 <= age < 30 and (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or newp_tm3 ge 1) then newpge1_l4p_1529w=1;
 
-sw_1564=0;sw_1549=0;sw_1849=0;sw_1539=0;sw_1519=0;sw_2024=0;sw_2529=0;sw_3039=0;sw_ov40=0;sw_newp=0;sw1524_newp=0;
+sw_1564=0;sw_1549=0;sw_1849=0;sw_1839=0;sw_1519=0;sw_2024=0;sw_2529=0;sw_3039=0;sw_ov40=0;sw_newp=0;sw1524_newp=0;
 
 if gender=2 and sw=1 then do;
 	if 15 le age lt 65 then sw_1564=1;
 	if 15 le age lt 50 then sw_1549=1;
 	if 18 le age lt 50 then sw_1849=1;
-	if 15 le age lt 40 then sw_1539=1;
+	if 18 le age lt 40 then sw_1839=1;
 	if 15 le age lt 20 then sw_1519=1;
 	if 20 le age lt 25 then sw_2024=1;
 	if 25 le age lt 30 then sw_2529=1;
@@ -13155,7 +13155,7 @@ primary_sw1519_=0;  if sw_1519=1    and primary=1 then primary_sw1519_=1;
 primary_sw2024_=0;  if sw_2024=1    and primary=1 then primary_sw2024_=1;
 primary_sw2529_=0;  if sw_2529=1    and primary=1 then primary_sw2529_=1;
 primary_sw3039_=0;  if sw_3039=1    and primary=1 then primary_sw3039_=1;
-primary_sw1539_=0;  if sw_1539=1    and primary=1 then primary_sw1539_=1;
+primary_sw1839_=0;  if sw_1839=1    and primary=1 then primary_sw1839_=1;
 
 sw_vg1000=0;if sw=1                 and vl > 3.0 then sw_vg1000=1;
 
@@ -13280,13 +13280,13 @@ end;
 
 
 ***HIV amongst FSW;
-hiv_sw=0;hiv_sw1849_=0;hiv_sw1549_=0;hiv_sw1539_=0;hiv_sw1519_=0;hiv_sw2024_=0;hiv_sw2529_=0;hiv_sw3039_=0;hiv_swov40_=0;
+hiv_sw=0;hiv_sw1849_=0;hiv_sw1549_=0;hiv_sw1839_=0;hiv_sw1519_=0;hiv_sw2024_=0;hiv_sw2529_=0;hiv_sw3039_=0;hiv_swov40_=0;
 
 if hiv=1 and sw=1 then do;
 	hiv_sw=1;
 	if 18 le age lt 50 then hiv_sw1849_=1;
 	if 15 le age lt 50 then hiv_sw1549_=1;
-	if 15 le age lt 40 then hiv_sw1539_=1;
+	if 18 le age lt 40 then hiv_sw1839_=1;
 	if 15 le age lt 20 then hiv_sw1519_=1;
 	if 20 le age lt 25 then hiv_sw2024_=1;	
 	if 25 le age lt 30 then hiv_sw2529_=1;
@@ -16368,7 +16368,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_primary4554w_ep + primary4554w_ep ; s_primary5564w_ep + primary5564w_ep ;  
 	
 	s_primary_sw + primary_sw ; s_primary_sw1519_ + primary_sw1519_; s_primary_sw2024_ + primary_sw2024_; 
-	s_primary_sw2529_ + primary_sw2529_; s_primary_sw3039_ + primary_sw3039_; s_primary_sw1539_ + primary_sw1539_;
+	s_primary_sw2529_ + primary_sw2529_; s_primary_sw3039_ + primary_sw3039_; s_primary_sw1839_ + primary_sw1839_;
 
 	s_inf_vlsupp + inf_vlsupp ; s_inf_newp + inf_newp ; s_inf_ep + inf_ep ; s_inf_diag + inf_diag ; s_inf_naive + inf_naive ;
 
@@ -17088,11 +17088,11 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	/*sex workers*/
 
-	s_base_rate_sw + base_rate_sw ; s_sw + sw ; s_sw_1549 + sw_1549 ; s_sw_1849 + sw_1849 ; s_sw_1539 + sw_1539 ;
+	s_base_rate_sw + base_rate_sw ; s_sw + sw ; s_sw_1549 + sw_1549 ; s_sw_1849 + sw_1849 ; s_sw_1839 + sw_1839 ;
 	s_sw_1519 + sw_1519 ; s_sw_2024 + sw_2024 ; s_sw_2529 + sw_2529 ; s_sw_3039 + sw_3039 ; 
 	s_sw_ov40 + sw_ov40 ; s_ever_sw + ever_sw ; s_sw_1564 + sw_1564 ;
 	s_ever_sw_hiv + ever_sw_hiv ; s_ever_sw_diag + ever_sw_diag ; s_hiv_sw + hiv_sw ; s_hiv_sw1849_ + hiv_sw1849_ ;
-	s_hiv_sw1549_ + hiv_sw1549_ ; s_hiv_sw1539_ + hiv_sw1539_ ; 
+	s_hiv_sw1549_ + hiv_sw1549_ ; s_hiv_sw1839_ + hiv_sw1839_ ; 
   	s_hiv_sw1519_ + hiv_sw1519_ ; s_hiv_sw2024_ + hiv_sw2024_ ; s_hiv_sw2529_ + hiv_sw2529_ ; s_hiv_sw3039_ + hiv_sw3039_ ; s_hiv_swov40_ + hiv_swov40_ ;              
 	s_i_fsw_v1_np + i_fsw_v1_np ; s_i_fsw_v2_np + i_fsw_v2_np ; s_i_fsw_v3_np + i_fsw_v3_np ; s_i_fsw_v4_np + i_fsw_v4_np ; 
 	s_i_fsw_v5_np + i_fsw_v5_np ; s_i_fsw_v6_np + i_fsw_v6_np ; s_sw_newp + sw_newp ; s_sw1524_newp + sw1524_newp ; s_sw_newp_cat1 + sw_newp_cat1 ;
@@ -18268,7 +18268,7 @@ s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_pr
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
-s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_  s_primary_sw1539_
+s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_  s_primary_sw1839_
 s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
 
 /*outputs amongst those infected*/
@@ -18725,9 +18725,9 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849  s_sw_1539  s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849  s_sw_1839  s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
-s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1539_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
+s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1839_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
 s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
 s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp
@@ -19217,7 +19217,7 @@ s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_pr
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
-s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_  s_primary_sw1539_
+s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_  s_primary_sw1839_
 s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
 
 /*outputs amongst those infected*/
@@ -19668,9 +19668,9 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849  s_sw_1539  s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849  s_sw_1839  s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
-s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1539_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
+s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1839_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
 s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
 s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp
@@ -20583,7 +20583,7 @@ s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_pr
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
-s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_  s_primary_sw1539_
+s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_  s_primary_sw1839_
 s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
 
 /*outputs amongst those infected*/
@@ -21035,9 +21035,9 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849 s_sw_1539   s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849 s_sw_1839   s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
-s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1539_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
+s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1839_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
 s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
 s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp
