@@ -17491,7 +17491,15 @@ proc freq; tables cald hiv ; where death=.; run;
 * adhav = 0.75; * adhvar=0.20;
 * eff_prob_vl_meas_done=1;
 
-proc print; var art_monitoring_strategy caldate&j dol_pi_fail_by_year_interv f_dol_tm1 f_dol date_f_dol o_dol o_dar o_ten o_3tc o_zdv 
+clinic_not_aw_int_frac=0.99;
+eff_rate_int_choice=0.2;
+eff_prob_lost_art=0.01;
+eff_rate_restart=0;
+eff_prob_vl_meas_done=1;
+
+proc freq; tables onart int_clinic_not_aw; where naive=0;
+
+proc print; var clinic_not_aw_int_frac art_monitoring_strategy caldate&j dol_pi_fail_by_year_interv f_dol_tm1 f_dol date_f_dol o_dol o_dar o_ten o_3tc o_zdv 
 eff_pr_switch_line  visit onart  
 int_clinic_not_aw restart restart_tm1 vm vl 
 yrart time_since_last_vm value_last_vm  second_vlg1000 date_last_second_vlg1000 eff_prob_vl_meas_done date_last_vlm_g1000  date_vl_switch_eval 
@@ -20461,9 +20469,9 @@ data r1; set a.saved;
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=0);
 
-*/
 
-data r1; set a;
+
+data r1; set a.saved;
 * 2025;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
@@ -20668,7 +20676,7 @@ data r1; set a;
 
 
 
-data r1; set a;
+data r1; set a.saved;
 * 2025;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
@@ -20871,9 +20879,9 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=2);
 
+*/
 
-
-data r1; set a;
+data r1; set a.saved;
 * 2025;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
