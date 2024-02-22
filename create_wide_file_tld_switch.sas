@@ -830,7 +830,12 @@ run;
 * p_nnme;						p_nnme = s_nnme_ / s_hivge15 ;
 
 
-* tld_switch;
+* TLD_SWITCH ;
+
+* prop_artexp_elig_tldsw;		prop_artexp_elig_tldsw = s_tldsw_elig / s_artexp;
+* prop_tldsw_uvl2;				prop_tldsw_uvl2 = s_uvl2_elig / s_tldsw_elig;
+* prop_tldsw_elig_vl1000;		prop_tldsw_elig_vl1000 = s_vl1000_tldsw / s_tldsw_elig;
+* prop_uvl2_vl1000;				prop_uvl2_vl1000 =  s_vl1000_uvl2 /  s_uvl2_elig ;
 
 *
 
@@ -1062,8 +1067,7 @@ n_started_prep_inj_hiv n_started_prep_any_hiv   p_prep_adhg80  n_em_inm_res_o_ca
 
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai_naive_no_pmtct_e_inm
 
-n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_eff  p_current_half_vaccine_eff  p_current_any_vaccine_eff
-p_current_full_vac_e_1564 p_current_half_vac_e_1564  p_current_any_vac_e_1564
+prop_artexp_elig_tldsw  prop_tldsw_uvl2 prop_tldsw_elig_vl1000 prop_uvl2_vl1000
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1281,9 +1285,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prop_prep_tot5yrs); %var(v=n_start_rest_prep_inj_hiv); %var(v=n_prep_inj);%var(v=p_prep_adhg80);
 %var(v=p_nactive_art_start_lt1p5);   %var(v=p_nactive_art_start_lt2);   %var(v=p_nactive_art_start_lt3); 
 %var(v=n_ai_naive_no_pmtct_e_inm); 
-%var(v=n_ever_vaccinated);   %var(v=p_agege15_ever_vaccinated);   %var(v=p_current_full_vaccine_eff);   %var(v=p_current_half_vaccine_eff);   
-%var(v=p_current_any_vaccine_eff); 
-%var(v=p_current_full_vac_e_1564);  %var(v=p_current_half_vac_e_1564);   %var(v=p_current_any_vac_e_1564); 
+%var(v=prop_artexp_elig_tldsw);  %var(v=prop_tldsw_uvl2);  %var(v=prop_tldsw_elig_vl1000); %var(v=prop_uvl2_vl1000);
 
 data   b.wide_outputs; merge 
 
@@ -1316,8 +1318,7 @@ dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
 pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm
-n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_eff  p_current_half_vaccine_eff  p_current_any_vaccine_eff
-p_current_full_vac_e_1564 p_current_half_vac_e_1564  p_current_any_vac_e_1564
+prop_artexp_elig_tldsw  prop_tldsw_uvl2 prop_tldsw_elig_vl1000 prop_uvl2_vl1000
 ;
 
 
@@ -1546,8 +1547,14 @@ proc means   data = b.w_tld_switch_a  n p50 p5 p95 min max;
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   ;
 run;
 
-
-
+proc means   data = b.w_tld_switch_a  n p50 p5 p95 min max;  
+var 
+prop_artexp_elig_tldsw_10y_1  prop_artexp_elig_tldsw_10y_2  prop_artexp_elig_tldsw_10y_3  prop_artexp_elig_tldsw_10y_4  
+prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 prop_tldsw_uvl2_10y_4 
+prop_tldsw_elig_vl1000_10y_1  prop_tldsw_elig_vl1000_10y_2  prop_tldsw_elig_vl1000_10y_3  prop_tldsw_elig_vl1000_10y_4  
+prop_uvl2_vl1000_10_1 prop_uvl2_vl1000_10_2 prop_uvl2_vl1000_10_3 prop_uvl2_vl1000_10_4 
+;
+run;
 
 
 proc means  n mean p5 p95;
