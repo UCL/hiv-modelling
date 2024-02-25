@@ -1523,8 +1523,49 @@ if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
 
 
 
+* label 
+
+prop_ever_tested_1549w_24 = "Proportion of women aged 15-49 who have previously tested for HIV"
+prop_ever_tested_1549m_24 = "Proportion of men aged 15-49 who have previously tested for HIV"
+p_tested_past_year_1549w_24 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
+p_tested_past_year_1549m_24 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
+prop_elig_on_prep_24 = "Proportion of people with a current PrEP indication who take PrEP"
+prop_1564_onprep_24 = "Proportion of HIV negative adults aged 15-64 who are taking PrEP"
+prevalence1549w_24 = "HIV prevalence in women age 15-49"
+prevalence1549m_24 = "HIV prevalence in men age 15-49"
+incidence1549_24 = "HIV incidence age 15-49 (/100 person years)"  
+p_diag_24 = "Proportion of HIV positive people age 15+ who are diagnosed"  
+p_onart_diag_24 = "Proportion of diagnosed HIV+ people on ART"
+p_vl1000_24 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)"
+prevalence_vg1000_24 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)"
+p_onart_vl1000_24 = "Of people on ART, proportion with VL < 1000"
+  
+;
+
+* label 
+
+prop_ever_tested_1549w_39 = "Proportion of women aged 15-49 who have previously tested for HIV"
+prop_ever_tested_1549m_39 = "Proportion of men aged 15-49 who have previously tested for HIV"
+p_tested_past_year_1549w_39 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
+p_tested_past_year_1549m_39 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
+prop_elig_on_prep_39 = "Proportion of people with a current PrEP indication who take PrEP"
+prop_1564_onprep_39 = "Proportion of HIV negative adults aged 15-64 who are taking PrEP"
+prevalence1549w_39 = "HIV prevalence in women age 15-49"
+prevalence1549m_39 = "HIV prevalence in men age 15-49"
+incidence1549_39 = "HIV incidence age 15-49 (/100 person years)"  
+p_diag_39 = "Proportion of HIV positive people age 15+ who are diagnosed"  
+p_onart_diag_39 = "Proportion of diagnosed HIV+ people on ART"
+p_vl1000_39 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)"
+prevalence_vg1000_39 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)"
+p_onart_vl1000_39 = "Of people on ART, proportion with VL < 1000"
+  
+;
+
+
 
 * table 1;
+
+
 
 proc means   data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   ;
@@ -1533,6 +1574,7 @@ run;
 proc means   data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;  
 var prevalence1549w_39 prevalence1549m_39 incidence1549_39 p_diag_39 p_onart_diag_39 p_onart_vl1000_39 p_vl1000_39 prevalence_vg1000_39   ;
 run;
+
 
 
 
