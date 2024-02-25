@@ -383,14 +383,14 @@ band    x=cald lower=p5_n_death_hiv_3 upper=p95_n_death_hiv_3 / transparency=0.9
 
 run;quit;
 
-*/
+
 
 
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Discounted DALYs";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000   by 100000    ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000   by 1000000    ) valueattrs=(size=10);
 
 label p50_ddaly_0 = "no vaccine";
 label p50_ddaly_1 = "vaccine 1";
@@ -412,7 +412,7 @@ band    x=cald lower=p5_ddaly_3 upper=p95_ddaly_3 / transparency=0.9 fillattrs =
 run;quit;
 
 
-/*
+
 
 ods html;
 proc sgplot data=d ; 
