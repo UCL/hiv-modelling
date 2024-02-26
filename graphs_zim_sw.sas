@@ -6,7 +6,7 @@
 libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a;
-set a.fsw_zim_15feb24;  
+set a.fsw_zim_22feb24;  
 
 if option=1 then delete; ***first look at overall incidence according to baseline SW program (option=1= amesthist);
 proc sort;by run;
@@ -59,7 +59,6 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
 * prevalence1549_;				prevalence1549_ = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
-
 * incidence1549_;				incidence1549_ = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
@@ -152,7 +151,7 @@ proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 278;
+%let nfit = 332;
 %let year_end = 2050.00 ;
 run;
 proc sort;by cald option ;run;
@@ -233,7 +232,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\15feb2024.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\22feb2024.doc' startpage=never; 
 
 
 proc sgplot data=e; 
@@ -504,7 +503,7 @@ run;quit;
 
 proc sgplot data=e; 
 
-title    height=1.5 justify=center "HIV incidence amongst sex workers";
+title    height=1.5 justify=center " MEDIAN HIV incidence amongst sex workers";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (1995 to 2025 by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 10 by 1)    valueattrs=(size=10);
 
@@ -520,6 +519,34 @@ band    x=cald lower=p5_incidence_sw  upper=p95_incidence_sw / transparency=0.9 
 series  x=cald y=p50_incidence_sw_inprog /  lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence_sw_inprog  upper=p95_incidence_sw_inprog / transparency=0.9 fillattrs = (color=red) legendlabel= "No program - model 90% range";
 series  x=cald y=p50_incidence_sw_noprog /  lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_incidence_sw_noprog  upper=p95_incidence_sw_noprog / transparency=0.9 fillattrs = (color=green) legendlabel= "No program - model 90% range";
+
+scatter x=cald y=o_HIVIncid_fsw / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_HIVIncid1824_fsw / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_HIVIncid2539_fsw / markerattrs = (symbol=circle       color=yellow size = 12);
+scatter x=cald y=o_HIVIncid_fsw_dreams / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_HIVIncid1539_fsw_hj / markerattrs = (symbol=circle       color=black size = 12);
+
+run;quit;
+
+proc sgplot data=e; 
+
+title    height=1.5 justify=center "MEAN HIV incidence amongst sex workers";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (1995 to 2025 by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 20 by 1)    valueattrs=(size=10);
+
+label mean_incidence_sw  = "Median";
+label o_HIVIncid_fsw = "JH JAIDS";
+label o_HIVIncid1824_fsw= "18-24 SAli";
+label o_HIVIncid2539_fsw= "25-39 SAli";
+label o_HIVIncid_fsw_dreams = "DREAMS";
+label o_HIVIncid1539_fsw_hj = "15-39 HJones";
+
+series  x=cald y=mean_incidence_sw /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence_sw  upper=p95_incidence_sw / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+series  x=cald y=mean_incidence_sw_inprog /  lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence_sw_inprog  upper=p95_incidence_sw_inprog / transparency=0.9 fillattrs = (color=red) legendlabel= "No program - model 90% range";
+series  x=cald y=mean_incidence_sw_noprog /  lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_incidence_sw_noprog  upper=p95_incidence_sw_noprog / transparency=0.9 fillattrs = (color=green) legendlabel= "No program - model 90% range";
 
 scatter x=cald y=o_HIVIncid_fsw / markerattrs = (symbol=circle       color=blue size = 12);
