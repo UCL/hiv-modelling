@@ -905,6 +905,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
 
+call symput('caldate1',caldate1);
+
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
@@ -2033,7 +2035,7 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-%macro update_r1(da1=,da2=,e=,f=,g=,h=,a=,b=,i=,k=,l=,x=,j=,s=);
+%macro update_r1(da1=,da2=,e=,f=,g=,h=,j=,y=,s=);		*Deleted a,b,i,k,l,x and added y - JAS Feb24;
 
 * options mprint;
 
@@ -2058,9 +2060,8 @@ do until (t=&f);
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
  
 
-if t ge 2 then caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time_step_length ;
-* ts1m ; * change this line to: 
-caldate_never_dot = caldate_never_dot + (1/12);
+if t ge 2 then caldate_never_dot = &year; 		*JAS Feb24;
+
 
 
  * note that age variable continues to increase after death so need to be aware of death status - dont try to change this without
@@ -20105,6 +20106,55 @@ end;
 
 
 
+* Define macro run_update_r1 to run update_r1 multiple times;		*JAS Feb24;
+* Inputs are: start year (can be &caldate1 as defined in code above), end year, option number (s);
+* dependent_on_time_step_length;
+
+%macro run_update_r1(r1_start_year,r1_end_year,intervention_option);
+
+	%do ii = (1 + 4*(&r1_start_year-&caldate1)) %to (1 + 4*(&r1_end_year-&caldate1));
+	
+		%let year = %sysevalf(&caldate1 + 0.25*(&ii-1));
+		%let aa = %sysevalf(%sysfunc(mod(%sysevalf(&ii+1),2)) + 1);
+		%let bb = %sysevalf(3 - &aa);
+		%let ee = %sysfunc(min(&ii, %sysevalf(%sysfunc(mod(%sysevalf(&ii+3),4))+5)));
+		%let ff = %sysevalf(&ee + 1);
+		%let gg = %sysevalf(1 + %sysevalf(4*%sysfunc(ceil(%sysfunc(max(0,(%sysevalf(&year-&caldate1-1.75))))))) );
+		%let hh = %sysevalf(&gg + 7);
+		%let jj = &ii;
+
+		%update_r1(da1=&aa, da2=&bb, e=&ee, f=&ff, g=&gg, h=&hh, j=&jj, y=&year, s=&intervention_option);
+
+	%end;
+
+%mend;
+
+
+
+
+*** RUN PROGRAM; 
+
+*1) Run from caldate1 to current date;
+%run_update_r1(&caldate1,2023.75,0);
+
+* 2) Save dataset at this point;
+data a ;  set r1 ;
+data r1 ; set a ;
+
+* 3) Repetition 1;
+%run_update_r1(2024,2080,0);
+
+* 4) Repetition 2;
+data r1; set a;
+%run_update_r1(2024,2080,0);
+
+* 5) Repetition 3;
+data r1; set a;
+%run_update_r1(2024,2080,0);
+
+
+
+/*
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim starts in 1984 JAS Sep23;
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=0);
@@ -21113,7 +21163,7 @@ set a;
 
 
 * end of s=3 JAS Sep2023;
-
+*/
 
 
 * ts1m:  need more update statements ;
