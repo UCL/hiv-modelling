@@ -2,6 +2,18 @@
 
 * 
 
+
+underlying risk of fdtg resistance consider lower
+
+lower pr_res_dol
+
+
+
+
+
+
+
+
 consider points from jonathan schapiro:
 
 Sensitivity of resistance assays for detecting mutations varies – with “false negative” results for mutations of 5 – 20% if population sequencing used 
@@ -516,7 +528,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.05	0.45	0.30	0.10	0.05	0.03	0.02); * tld_switch;
+								0.05	0.20	0.20	0.20	0.15	0.15	0.05) ; * tld_switch;
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
@@ -530,13 +542,13 @@ newp_seed = 7;
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
 * rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.02 0.05, 
-														0.35 0.40 0.20 0.04 0.01);  * change sep22 for pop_wide_tld;
+														0.30 0.30 0.25 0.10 0.05);  * tld_switch;
 
-* clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
+* clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.5 0.7 0.9);  * tld_switch;
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
-								0.0		0.1		0.7		1,
-								0.05	0.30	0.50	0.15);
+									0.3	   0.5  	0.7		1,
+									0.25   0.25 	0.25	0.25); * tld_switch;
 
 * red_int_risk_poc_vl;		%sample_uniform(red_int_risk_poc_vl, 0.7  0.8   0.9);  * relative reduction in risk of interrupting ART with poc vl monitoring;
 
@@ -13171,33 +13183,41 @@ end;
 * tld_switch outputs; 
 
 tldsw_elig=0; o_dar_tldsw =0; o_dol_tldsw=0;  onart_tldsw=0; vl1000_tldsw=0;  vl200_tldsw=0; dead_tldsw=0;dead_hiv_tldsw=0;c_tox_tldsw=0; r_dol_ge_p75_tldsw=0;
+onart_iicu_tldsw=0; adh_lt80_tldsw=0; vis_tldsw=0;
 if hiv=1 and naive=0 and dol_pi_fail_by_year_interv ne 1 then do;
 	tldsw_elig=1;
 	if o_dar=1 then o_dar_tldsw=1;
 	if o_dol=1 then o_dol_tldsw=1;
 	if onart=1 then onart_tldsw=1;
+	if onart=1 or int_clinic_not_aw = 1 then onart_iicu_tldsw=1;
+	if adh < 0.8 or int_clinic_not_aw = 1 then adh_lt80_tldsw=1;
 	if . < vl < 3.0 then vl1000_tldsw=1; 
 	if . < vl < 2.3 then vl200_tldsw=1; 
 	if caldate&j = death then dead_tldsw=1;
 	if caldate&j = death and dcause=1 then dead_hiv_tldsw=1;
 	if c_tox=1 then c_tox_tldsw=1;
 	if r_dol >= 0.75 then r_dol_ge_p75_tldsw=1;
+	if visit=1 then vis_tldsw=1;
 end;
 
+
 uvl2_elig=0; o_dar_uvl2 =0; o_dol_uvl2=0;  onart_uvl2=0; vl1000_uvl2=0;  vl200_uvl2=0; dead_uvl2=0;dead_hiv_uvl2=0;c_tox_uvl2=0; r_dol_ge_p75_uvl2=0;
-adh_ge80_uvl2=0;
+adh_ge80_uvl2=0; onart_iicu_uvl2=0; adh_lt80_uvl2=0; vis_uvl2=0;
 if naive=0 and date_last_second_vlg1000 ne . then do;
 	uvl2_elig=1;
 	if o_dar=1 then o_dar_uvl2=1;
 	if o_dol=1 then o_dol_uvl2=1;
 	if onart=1 then onart_uvl2=1;
+	if onart=1 or int_clinic_not_aw = 1 then onart_iicu_uvl2=1;
+	if adh < 0.8 or int_clinic_not_aw = 1 then adh_lt80_uvl2=1;
 	if . < vl < 3.0 then vl1000_uvl2=1; 
 	if . < vl < 2.3 then vl200_uvl2=1; 
 	if caldate&j = death then dead_uvl2=1;
 	if caldate&j = death and dcause=1 then dead_hiv_uvl2=1;
 	if c_tox=1 then c_tox_uvl2=1;
 	if r_dol >= 0.75 then r_dol_ge_p75_uvl2=1;
-	if adh >= 0.85 then adhl_ge80_uvl2=1;
+	if adh >= 0.80 then adhl_ge80_uvl2=1;
+	if visit=1 then vis_uvl2=1;
 end;
 
 
@@ -17019,11 +17039,12 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_tldsw_elig  +  tldsw_elig ; s_o_dar_tldsw  + o_dar_tldsw ; s_o_dol_tldsw  + o_dol_tldsw ;  s_onart_tldsw  +  onart_tldsw ;  s_vl1000_tldsw +  vl1000_tldsw ;   
 	s_vl200_tldsw  + vl200_tldsw  ; s_dead_tldsw   + dead_tldsw   ;s_dead_hiv_tldsw +   dead_hiv_tldsw ;  s_c_tox_tldsw  + c_tox_tldsw  ; 
-	s_r_dol_ge_p75_tldsw  +  r_dol_ge_p75_tldsw ;
+	s_r_dol_ge_p75_tldsw  +  r_dol_ge_p75_tldsw ;  s_onart_iicu_tldsw + onart_iicu_tldsw;   s_adh_lt80_tldsw + adh_lt80_tldsw;  s_vis_tldsw + vis_tldsw;
 
 	s_uvl2_elig  +  uvl2_elig ; s_o_dar_uvl2  + o_dar_uvl2 ; s_o_dol_uvl2  + o_dol_uvl2 ;  s_onart_uvl2  +  onart_uvl2 ;  s_vl1000_uvl2 +  vl1000_uvl2 ;   
 	s_vl200_uvl2  + vl200_uvl2  ; s_dead_uvl2   + dead_uvl2   ;s_dead_hiv_uvl2 +   dead_hiv_uvl2 ;  s_c_tox_uvl2  + c_tox_uvl2  ; 
-	s_r_dol_ge_p75_uvl2  +  r_dol_ge_p75_uvl2 ;  s_adhl_ge80_uvl2 + adhl_ge80_uvl2;
+	s_r_dol_ge_p75_uvl2  +  r_dol_ge_p75_uvl2 ;  s_adhl_ge80_uvl2 + adhl_ge80_uvl2;  s_onart_iicu_uvl2 + onart_iicu_uvl2;   s_adh_lt80_uvl2 + adh_lt80_uvl2;
+	s_vis_uvl2  + vis_uvl2 ;
 
 	/* blood pressure */
 
@@ -18766,7 +18787,8 @@ s_onartvisit0 s_onartvisit0_vl1000
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p75_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p75_uvl2 
-s_adhl_ge80_uvl2
+s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt80_uvl2 s_vis_uvl2  s_vis_tldsw
+
 
 
 /* note s_ variables below are for up to age 80 */
@@ -19715,7 +19737,7 @@ s_onartvisit0 s_onartvisit0_vl1000
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p75_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p75_uvl2 
-s_adhl_ge80_uvl2
+s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt80_uvl2  s_vis_uvl2  s_vis_tldsw
 
 
 /* note s_ variables below are for up to age 80 */
@@ -21728,7 +21750,7 @@ s_onartvisit0  s_onartvisit0_vl1000
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p75_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p75_uvl2 
-s_adhl_ge80_uvl2
+s_adhl_ge80_uvl2  s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt80_uvl2  s_vis_uvl2  s_vis_tldsw
 
 /* note s_ variables below are for up to age 80 */
 
