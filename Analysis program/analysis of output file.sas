@@ -1,13 +1,13 @@
 
-libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
 
 
 ***This version used for the paper;
 data a; 
-set a.wide_fsw_22_06_23 ;
-if incidence_sw_22 <0.1 then delete;
-*set a.wide_fsw_17_08_23; ***Used for the paper;
-set a.wide_fsw_17_08_23c;***this is with various costs for a SW program to check if it's CE;
+*set a.wide_fsw_22_06_23 ;
+*if incidence_sw_22 <0.1 then delete;
+set a.wide_fsw_17_08_23; ***Used for the paper;
+*set a.wide_fsw_17_08_23c;***this is with various costs for a SW program to check if it's CE;
 
 if incidence1549_22 <0.02 then delete;
 run;
