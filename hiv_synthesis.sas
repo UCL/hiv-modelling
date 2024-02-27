@@ -19540,6 +19540,7 @@ s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
 s_i_m_1549_np  s_i_w_1549_np   s_i_w_newp  s_i_m_newp
 s_sdc
+
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
@@ -19595,6 +19596,7 @@ s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544
 s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
 s_prep_any_sdc			s_prep_oral_sdc			s_prep_inj_sdc			s_prep_vr_sdc
 s_prep_any_plw			s_prep_oral_plw			s_prep_inj_plw			s_prep_vr_plw
+
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary  	s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
 s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
@@ -21346,6 +21348,7 @@ m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r
 
 s_i_m_1549_np  s_i_w_1549_np    s_i_w_newp  s_i_m_newp
 s_sdc
+
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
@@ -21401,6 +21404,7 @@ s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544
 s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
 s_prep_any_sdc			s_prep_oral_sdc			s_prep_inj_sdc			s_prep_vr_sdc
 s_prep_any_plw			s_prep_oral_plw			s_prep_inj_plw			s_prep_vr_plw
+
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary  	s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
 s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
