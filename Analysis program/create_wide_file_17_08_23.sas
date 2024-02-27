@@ -8,6 +8,7 @@ data a;
 set a.fsw_17_08_23;  
 if run=. then delete; 
 
+*if run > 774141319 then delete;
 
 proc sort;
 by run cald option;run;
