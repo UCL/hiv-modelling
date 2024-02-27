@@ -2,14 +2,15 @@
 ******************     ZIMBABWE SPECIFIC PARAMETERS    ******************
 /***************************************************************************/
 
+* country;					country='Zimbabwe';
+* caldate1;					caldate1 = 1984;		*core: 1989;
+* caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
-caldate1=1984;
-caldate_never_dot=1984;
-startyr = 1991 + 0.25;
+* inc_cat; 					inc_cat = 4 ;  
 
-* inc_cat; 					 inc_cat = 4 ;  
-
+* INTRODUCTION OF HIV;
+* startyr;					startyr = 1991 + 0.25;
 
 * HIV TESTING;
 
