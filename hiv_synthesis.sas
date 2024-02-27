@@ -144,7 +144,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 
 
 * start of epidemic;
-startyr = 1989 + 0.25;
+startyr = 1989 + 0.25;		* overwritten in country-specific include statements (SA, Zim) JAS Feb24;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
@@ -3088,8 +3088,10 @@ if caldate{t} >= &year_interv then do;
 end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
-***Zim specific; 
-/*if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;*/
+***Zim specific;	* JAS Feb24;
+if country = 'Zimbabwe' then do;
+	if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;
+end;
 
 
 * ts1m;
@@ -3202,9 +3204,11 @@ if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*o
     end;
 end;
 
-***Zim specific; 
-/*if 2020.5 le caldate{t} lt 2021.5 then prob_circ = prob_circ*0.5;*/
-/*if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;*/
+***Zim specific;	*JAS Feb24;
+if country = 'Zimbabwe' then do;
+	if 2020.5 le caldate{t} lt 2021.5 then prob_circ = prob_circ*0.5;
+	if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
+end;
 
 
 if prob_circ ne . then prob_circ = min(prob_circ,1);
@@ -17554,7 +17558,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 /*
 
-proc freq; tables cald hiv ; where death=.; run;
+proc freq; tables country cald hiv ; where death=.; run;
 
 */
 
@@ -19173,13 +19177,32 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
-***Zim specific;
-/*
-if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
-if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
-if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
-*/
-/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
+***Malawi specific;			*JAS Feb24;
+if country = 'Malawi' then do;
+	if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
+	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
+	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+end;
+
+***South Africa specific;	*JAS Feb24;
+if country = 'South Africa' then do;
+	if cald = 2017.5 and (prevalence1549 < 0.166 or prevalence1549 > 0.246) then do;
+	  abort abend;
+	end;
+	if cald = 2021 and (s_onart < 3333 or s_onart > 6400) then do;
+	  abort abend;
+	end;
+end;
+
+***Zim specific;			*JAS Feb24;
+if country = 'Zimbabwe' then do;
+	if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
+	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
+end;
+/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/	*QUERY should we be using this line for Zim? JAS Feb24;
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
