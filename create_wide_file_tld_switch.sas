@@ -847,6 +847,8 @@ run;
 * p_adh_lt80_iicu_tldsw;		p_adh_lt80_iicu_tldsw = s_adh_lt80_tldsw / s_onart_iicu_tldsw ;
 * p_adh_lt80_iicu_uvl2 ;		p_adh_lt80_iicu_uvl2  = s_adh_lt80_uvl2  / s_onart_iicu_uvl2  ;
 
+* p_vis_tldsw;					p_vis_tldsw = s_vis_tldsw / s_tldsw_elig;
+* p_vis_uvl2;					p_vis_uvl2 = s_vis_uvl2 / s_uvl2_elig;
 
 
 * blood pressure;
@@ -1070,9 +1072,9 @@ n_started_prep_inj_hiv n_started_prep_any_hiv   p_prep_adhg80  n_em_inm_res_o_ca
 
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai_naive_no_pmtct_e_inm
 
-prop_artexp_elig_tldsw  prop_tldsw_uvl2 prop_tldsw_elig_vl1000 prop_uvl2_vl1000 prop_tldsw_o_dar
+prop_artexp_elig_tldsw  prop_tldsw_uvl2 prop_tldsw_elig_vl1000 prop_uvl2_vl1000 prop_tldsw_o_dar prop_r_dol_ge_p75_uvl2
 
-p_adh_lt80_iicu_tldsw   p_onart_iicu_tldsw   p_onart_iicu_uvl2   p_adh_lt80_iicu_tldsw   p_adh_lt80_iicu_uvl2 
+p_adh_lt80_iicu_tldsw   p_onart_iicu_tldsw   p_onart_iicu_uvl2   p_adh_lt80_iicu_tldsw   p_adh_lt80_iicu_uvl2 p_vis_tldsw p_vis_uvl2
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1146,7 +1148,7 @@ data y ; set b.l_tld_switch_d_y;
 data e; set y; keep &v run cald option ;
 
 proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2024.0 <= cald <= 2024.25; 
-proc means  noprint data=e; var &v; output out=y_24 mean= &v._25; by run ; where 2025.0 <= cald <= 2025.25; 
+proc means  noprint data=e; var &v; output out=y_25 mean= &v._25; by run ; where 2025.0 <= cald <= 2025.25; 
 
 proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2025.0 <= cald < 2035.00;   
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2025.0 <= cald < 2075.00;   
@@ -1293,7 +1295,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_ai_naive_no_pmtct_e_inm); 
 %var(v=prop_artexp_elig_tldsw);  %var(v=prop_tldsw_uvl2);  %var(v=prop_tldsw_elig_vl1000); %var(v=prop_uvl2_vl1000); %var(v=prop_tldsw_o_dar); 
 %var(v=p_adh_lt80_iicu_tldsw);   %var(v=p_onart_iicu_tldsw);   %var(v=p_onart_iicu_uvl2);   %var(v=p_adh_lt80_iicu_tldsw);   %var(v=p_adh_lt80_iicu_uvl2); 
-
+%var(v=p_vis_tldsw); %var(v=p_vis_uvl2); %var(v=prop_r_dol_ge_p75_uvl2);
 
 
 data   b.wide_outputs; merge 
@@ -1328,8 +1330,7 @@ p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_pr
 pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm
 prop_artexp_elig_tldsw  prop_tldsw_uvl2 prop_tldsw_elig_vl1000 prop_uvl2_vl1000 prop_tldsw_o_dar
-p_adh_lt80_iicu_tldsw   p_onart_iicu_tldsw   p_onart_iicu_uvl2   p_adh_lt80_iicu_tldsw   p_adh_lt80_iicu_uvl2 
-
+p_adh_lt80_iicu_tldsw   p_onart_iicu_tldsw   p_onart_iicu_uvl2   p_adh_lt80_iicu_tldsw   p_adh_lt80_iicu_uvl2 p_vis_tldsw p_vis_uvl2 prop_r_dol_ge_p75_uvl2
 ;
 
 
@@ -1556,19 +1557,26 @@ if netdaly500_4 = min_netdaly500 then lowest_netdaly=4;
 
 proc means   data = b.w_tld_switch_d  n p50 p5 p95 ;  
 var prevalence1549w_25 prevalence1549m_25 incidence1549_25 p_diag_25 p_onart_diag_25 p_onart_vl1000_25 p_vl1000_25 prevalence_vg1000_25   
-prop_artexp_elig_tldsw_25  prop_tldsw_uvl2_25  prop_tldsw_elig_vl1000_25  prop_uvl2_vl1000_25 prop_tldsw_o_dar_25  
-p_adh_lt80_iicu_tldsw_25   p_onart_iicu_tldsw_25   p_onart_iicu_uvl2_25   p_adh_lt80_iicu_uvl2_25 
+prop_artexp_elig_tldsw_25  prop_tldsw_uvl2_25  prop_tldsw_elig_vl1000_25  prop_uvl2_vl1000_25 prop_tldsw_o_dar_25  prop_r_dol_ge_p75_uvl2_25
+p_adh_lt80_iicu_tldsw_25   p_onart_iicu_tldsw_25   p_onart_iicu_uvl2_25   p_adh_lt80_iicu_uvl2_25  p_vis_tldsw_25 p_vis_uvl2_25
 ;
 run;
 
 
-proc means   data = b.w_tld_switch_d  n p50 p5 p95 min max;  
+proc means   data = b.w_tld_switch_d  n p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw_10y_1  prop_artexp_elig_tldsw_10y_2  prop_artexp_elig_tldsw_10y_3  prop_artexp_elig_tldsw_10y_4   prop_artexp_elig_tldsw_10y_5  
 prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 prop_tldsw_uvl2_10y_4  prop_tldsw_uvl2_10y_5
 prop_tldsw_elig_vl1000_10y_1  prop_tldsw_elig_vl1000_10y_2  prop_tldsw_elig_vl1000_10y_3  prop_tldsw_elig_vl1000_10y_4  prop_tldsw_elig_vl1000_10y_5
 prop_uvl2_vl1000_10y_1 prop_uvl2_vl1000_10y_2 prop_uvl2_vl1000_10y_3 prop_uvl2_vl1000_10y_4 prop_uvl2_vl1000_10y_5
 prop_tldsw_o_dar_10y_1 prop_tldsw_o_dar_10y_2 prop_tldsw_o_dar_10y_3 prop_tldsw_o_dar_10y_4  prop_tldsw_o_dar_10y_5
+p_vis_tldsw_10y_1 p_vis_tldsw_10y_2 p_vis_tldsw_10y_3 p_vis_tldsw_10y_4 p_vis_tldsw_10y_5 
+p_vis_uvl2_10y_1 p_vis_uvl2_10y_2 p_vis_uvl2_10y_3 p_vis_uvl2_10y_4 p_vis_uvl2_10y_5 
+p_adh_lt80_iicu_tldsw_10y_1  p_adh_lt80_iicu_tldsw_10y_2  p_adh_lt80_iicu_tldsw_10y_3  p_adh_lt80_iicu_tldsw_10y_4  p_adh_lt80_iicu_tldsw_10y_5   
+p_onart_iicu_tldsw_10y_1  p_onart_iicu_tldsw_10y_2  p_onart_iicu_tldsw_10y_3  p_onart_iicu_tldsw_10y_4  p_onart_iicu_tldsw_10y_5    
+p_onart_iicu_uvl2_10y_1   p_onart_iicu_uvl2_10y_2   p_onart_iicu_uvl2_10y_3   p_onart_iicu_uvl2_10y_4   p_onart_iicu_uvl2_10y_5   
+p_adh_lt80_iicu_uvl2_10y_1 p_adh_lt80_iicu_uvl2_10y_2 p_adh_lt80_iicu_uvl2_10y_3 p_adh_lt80_iicu_uvl2_10y_4 p_adh_lt80_iicu_uvl2_10y_5 
+prop_r_dol_ge_p75_uvl2_10y_1 prop_r_dol_ge_p75_uvl2_10y_2 prop_r_dol_ge_p75_uvl2_10y_3 prop_r_dol_ge_p75_uvl2_10y_4 prop_r_dol_ge_p75_uvl2_10y_5 
 ;
 run;
 
