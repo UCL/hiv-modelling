@@ -67,7 +67,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 							  end;
 */
 
-* rate_engage_sw_program;	%sample(rate_engage_sw_program, 0.05 0.10 0.20, 0.40 0.40 0.20); 
+* rate_engage_sw_program;	%sample(rate_engage_sw_program, 0.05 0.10 0.15, 0.45 0.45 0.10); 
 
 
 * rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
