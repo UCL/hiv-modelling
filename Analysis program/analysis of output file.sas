@@ -6,13 +6,11 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data a; 
 *set a.wide_fsw_22_06_23 ;
 *if incidence_sw_22 <0.1 then delete;
-set a.wide_fsw_17_08_23; ***Used for the paper;
+set a.wide_fsw_17_08_23d; ***Used for the paper without the 'd' - the d file just added in 2 more parameters so should be the same as orignal file;
 *set a.wide_fsw_17_08_23c;***this is with various costs for a SW program to check if it's CE;
 
 if incidence1549_22 <0.02 then delete;
 run;
-
-proc freq;table s_prep_any_willing;where cald=2024 and option=0;run;
 
 proc freq;table incidence1549_22;run;
 
@@ -624,6 +622,7 @@ diff_testcost_swprog_low_v_none = dtest_cost_22_72_2 - dtest_cost_22_72_1;
 
 *net dalys averted;
 diff_netdalys_swprog_low_v_none = netdalys_swprog_low - netdalys_no_swprog; *take absolute number;
+ce=0;if diff_ddaly_high_v_none lt 0 then ce=1;
 
 ***cost of SW prog;
 maxcost_swprog_low_v_none= diff_netdalys_swprog_low_v_none * 500;
@@ -851,13 +850,6 @@ run;
 
 
 
-
-
-
-
-
-
-
 proc means n p50;VAR
 dart_cost_y_22_72_1
 dadc_cost_22_72_1 dcd4_cost_22_72_1 dvl_cost_22_72_1 dvis_cost_22_72_1 dnon_tb_who3_cost_22_72_1 dcot_cost_22_72_1
@@ -892,3 +884,92 @@ if diff_ddaly_swprog_high gt 0 then cost_daly_avert_swprog_high = (diff_dcost_sw
 
 
 proc means n mean p50 p5 p95 lclm uclm;var cost_daly_avert_swprog_high;run;
+
+
+***Predictors of CE scenarios;
+data costs_1;
+set costs;
+
+*incidence;
+if 0  le incidence1549_22 le 0.17 then incid_cat3=1;
+if 0.17 lt incidence1549_22 le 0.47 then incid_cat3=2;
+if 0.47 lt incidence1549_22 then incid_cat3=3;
+
+*prop diag;
+if 0.60 le p_diag_22 le 0.88 then p_diag=1;
+if 0.88 lt p_diag_22 le 0.92 then p_diag=2;
+if 0.92 lt p_diag_22 le 1 then p_diag=3;
+
+*on ART of those diag;
+if 0.00 lt p_onart_diag_22 le 0.95 then artcov=1;
+if 0.95 lt p_onart_diag_22 le 0.97 then artcov=2;
+if 0.97 lt p_onart_diag_22 le 1 then artcov=3;
+
+*On ART with VL<1000;
+if 0.50 le p_onart_vl1000_22 le 0.90 then onart_vl1000=1;
+if 0.90 lt p_onart_vl1000_22 le 0.95 then onart_vl1000=2;
+if 0.95 lt p_onart_vl1000_22 le 1.00 then onart_vl1000=3;
+
+
+*incidence_SW;
+if 0  le incidence_sw_22 le 4 then incid_sw_cat3=1;
+if 4 lt incidence_sw_22 le 10 then incid_sw_cat3=2;
+if 10 lt incidence_sw_22 then incid_sw_cat3=3;
+
+*prop diag_sw_SW;
+if 0.00 le p_diag_sw_22 le 0.90 then p_diag_sw=1;
+if 0.90 lt p_diag_sw_22 le 0.94 then p_diag_sw=2;
+if 0.94 lt p_diag_sw_22 le 1 then p_diag_sw=3;
+
+*on ART of those diag_sw;
+if 0.00 le p_onart_diag_sw_22 le 0.85 then artcov_sw=1;
+if 0.85 lt p_onart_diag_sw_22 le 0.93 then artcov_sw=2;
+if 0.93 lt p_onart_diag_sw_22 le 1 then artcov_sw=3;
+
+*On ART with VL<1000;
+if 0.50 le p_onart_vl1000_sw_22 le 0.82 then onart_vl1000_sw=1;
+if 0.82 lt p_onart_vl1000_sw_22 le 0.92 then onart_vl1000_sw=2;
+if 0.92 lt p_onart_vl1000_sw_22 le 1.00 then onart_vl1000_sw=3;
+
+run;
+
+
+***CHECK***;
+
+proc freq;table sw_higher_prob_loss_at_diag;run;
+
+proc freq;table ce*onart_vl1000_sw;run;
+
+
+Proc logistic desc;class incid_cat3 (ref="1") ;
+model  ce  = incid_cat3;run;
+Proc logistic desc;class p_diag (ref="3") ;
+model  ce  =p_diag;run;
+Proc logistic desc;class  artcov (ref="3") ;
+model  ce  = artcov;run;
+Proc logistic desc;class onart_vl1000 (ref="3") ;
+model  ce  = onart_vl1000;run;
+
+
+Proc logistic desc;class incid_sw_cat3 (ref="1") ;
+model  ce  = incid_sw_cat3;run;
+Proc logistic desc;class  p_diag_sw (ref="1") ;
+model  ce  =p_diag_sw;run;
+Proc logistic desc;class artcov_sw (ref="3") ;
+model  ce  = artcov_sw;run;
+Proc logistic desc;class  onart_vl1000_sw (ref="3") ;
+model  ce  = onart_vl1000_sw;run;
+Proc logistic desc;class  sw_higher_int (ref="2") ;
+model  ce  = sw_higher_int;run;
+Proc logistic desc;class  sw_higher_prob_loss_at_diag (ref="2") ;
+model  ce  = sw_higher_prob_loss_at_diag;run;
+
+
+Proc logistic desc;class incid_cat3 (ref="1") incid_sw_cat3 (ref="1")  p_diag_sw (ref="1");
+model  ce  = incid_cat3 incid_sw_cat3 p_diag_sw;run;
+
+Proc logistic desc;class incid_cat3 (ref="1") incid_sw_cat3 (ref="1")  p_diag_sw (ref="1");
+model  ce  = incid_cat3 p_diag_sw;run;
+
+Proc logistic desc;class incid_cat3 (ref="1") incid_sw_cat3 (ref="1")  p_diag_sw (ref="1");
+model  ce  =  incid_sw_cat3 p_diag_sw;run;

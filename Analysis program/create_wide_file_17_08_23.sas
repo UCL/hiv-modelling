@@ -749,17 +749,18 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %mend par; 
 %par(p=sw_art_disadv);		%par(p=sw_program);			%par(p=effect_sw_prog_newp);	%par(p=effect_sw_prog_6mtest);	
 %par(p=effect_sw_prog_int);	%par(p=effect_sw_prog_adh);	%par(p=effect_sw_prog_lossdiag);%par(p=effect_sw_prog_prep_any);
-%par(p=effect_sw_prog_pers_sti); %par(p=sw_trans_matrix);
+%par(p=effect_sw_prog_pers_sti); %par(p=sw_trans_matrix); %par(p=sw_higher_int); %par(p=sw_higher_prob_loss_at_diag);
+
 run;
 
-
+ 
 data wide_par; merge 
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
-sw_trans_matrix;
+sw_trans_matrix  sw_higher_int  sw_higher_prob_loss_at_diag;
 ;proc sort; by run;run;
 
-data a.wide_fsw_17_08_23c;
+data a.wide_fsw_17_08_23d;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
