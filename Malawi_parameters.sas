@@ -3,21 +3,25 @@
 /***************************************************************************/
 
 
+* country;					country='Malawi';
+* caldate1;					caldate1 = 1984;		*core: 1989;
+* caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
+
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					 inc_cat = 1 ;  
+* inc_cat; 					 inc_cat = 4 ;  	* Changed to new inc_cat 4 (specified for Zim) from inc_cat 1 JAS Nov23;
 
 * SEXUAL BEHAVIOUR;
 
-* ych_risk_beh_newp;        %sample(ych_risk_beh_newp, 0.5 0.6 0.7 , 0.4 0.3 0.3); 
-* ych_risk_beh_ep;          %sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95);
-* p_rred_p;                 %sample_uniform(p_rred_p, 0.4 0.5 0.6);
-* p_hsb_p;                  %sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.25 0.25 0.25  0.25);
-* newp_factor;              %sample_uniform(newp_factor, 1 2 3 5 ); 
-
-* ych2_risk_beh_newp;       %sample(ych2_risk_beh_newp,
-                                0.95    0.99    1   ,
-                                0.3     0.3     0.4   );
+/** ych_risk_beh_newp;        %sample(ych_risk_beh_newp, 0.5 0.6 0.7 , 0.4 0.3 0.3); */
+/** ych_risk_beh_ep;          %sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95);*/
+/** p_rred_p;                 %sample_uniform(p_rred_p, 0.4 0.5 0.6);*/
+/** p_hsb_p;                  %sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.25 0.25 0.25  0.25);*/
+/** newp_factor;              %sample_uniform(newp_factor, 1 2 3 5 ); */
+/**/
+/** ych2_risk_beh_newp;       %sample(ych2_risk_beh_newp,*/
+/*                                0.95    0.99    1   ,*/
+/*                                0.3     0.3     0.4   );*/
 
 * HIV TESTING;
 
