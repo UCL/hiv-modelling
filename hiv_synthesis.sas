@@ -13,7 +13,7 @@ libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\test';
 
 
 
- proc printto; *log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; *run;
+ /* proc printto log="synthesis_log.log"; run; */
 
 	
 %let population = 100000 ; 
@@ -2642,7 +2642,7 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 option = &s;
 
-if caldate_never_dot >= &year_interv then do;
+if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -18218,19 +18218,18 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-
-
-
 /*
 proc freq; tables cald hiv ; where death=.; run;
-*/
-/*
+
 proc print; 
 var option caldate&j dead dcause sbp visit_hypertension htn_visit_count sbp_m deintensify_anti_hyp_this_per on_tx_htn sbp_last_start_anti_hyp visit_hypertension_tm1 deintensify_anti_hyp_tm1 previous_anti_hyp ever_on_anti_hyp htn_visit_count  ;
 where htn_over_dx = 1 and ever_on_anti_hyp = 1 ;  
 run;
-*/
-/*
+
+proc print; 
+var option caldate&j prob_htn_link prob_start_htn_tx_s2  ;
+run;
+
 proc print; 
 var option caldate&j death age sbp sbp_comm_m sbp_m sbp_m_tm1 most_recent_sbp_m last_bp_ge140 sbp_last_start_anti_hyp max_sbp tested_bp dx_htn htn_lifestyle_counsel htn_lifestyle_counsel_tm1 visit_hypertension start_anti_hyp_this_per on_tx_htn previous_anti_hyp ever_on_anti_hyp htn_visit_count  ;
 where sbp >=160 and caldate&j >= 2024 ;  
@@ -18240,392 +18239,11 @@ proc print;
 var caldate&j age sbp hiv ihd_this_per ihd_severity cva_this_per cva_severity prior_cvd htn_cost_cvd cvd_death_risk xcvd dcause dead live_daly live_ddaly dead_daly;
 where hiv = 1 and age >=40 ;
 run;
-*/
-/*
-proc print;
-var caldate&j age hiv covid prev_covid xcovid cov_deathrix;
-where caldate&j <2021 ;
-run;
-/*
- 
+
 hiv 
 ihd_this_per severity_ihd_this_per cva_this_per severity_cva_this_per cvd_death_risk
 visit dx_htn visit_hypertension tested_bp on_tx_htn hard_reach symp_hypertension
 proc freq; tables onartvisit0; where onart=1 and death=.; run;
-*/
-
-
-
-/*
-
-prep_inj_willing=1; hard_reach=0;
-prep_inj_efficacy = 0.1;
-prob_prep_inj_b =1;
-rate_choose_stop_prep_inj=0;
-
-
-proc freq; tables cald hiv ; where death=.; run;
-
-proc print; var caldate&j infection  prep_inj_tm1 prep_inj currently_in_prep_inj_tail  prep_oral  option prep_any_elig o_cab nactive_tm1 nactive 
-tcur_tm1 tcur newmut_tm1 adh_dl_tm1 adh_dl r_cab hiv infection dt_prep_inj_s dt_prep_inj_rs dt_prep_inj_c tested  c_in118m c_in140m c_in148m c_in263m 
-registd onart yrart
-;
-where prep_inj_ever =1 and hiv=1 and death=. ;
-run;
-
-*/
-
-
-/*
-
-prep_inj_efficacy=0.2;
-
-proc freq; tables cald hiv ; where death=.; run;
-
-proc print; 
-var caldate&j infection  prep_inj_tm1   prep_inj prep_oral prep_o_cab_off_3m_prim reg_option_107 reg_option onart o_dol o_taz  registd;
-
-where infection > 2022.75 and prep_inj_ever=1 and yrart ne .; 
-run;
-
-*/
-
-
-/*
-
-proc print; 
-var 
-caldate&j infection prep_any_strategy prep_any_elig prep_oral_ever prep_inj_ever prep_any_ever dt_prep_oral_s  dt_prep_inj_s  prep_inj_tm1   prep_inj
-prep_oral prep_o_cab_off_3m_prim reg_option onart o_dol o_taz 
-date_last_stop_prep_inj stop_prep_any_choice
-diagprim_prep_inj  prep_primary_prevented  diagprim_prep_oral  o_cab   r_cab r_3tc r_ten  primary     start_prep_inj_unl_prim_hiv_det
-o_cab_or_o_cab_tm1_no_r   prep_o_cab_off_3m_prim  em_inm_res_o_cab_off_3m_npr 
-em_inm_res_o_cab_off_3m_pr emerge_inm_res_cab_tail_pr
-cab_res_prep_inj_primary cab_res_primary
-emerge_inm_res_cab_tail  prep_inj_init_prim_res prep_inj_init_prim  prep_inj_reinit_prim_res prep_inj_init_prim_res prep_inj_reinit_prim   prep_inj_init_prim
-em_inm_res_o_cab_off_3m 
-cur_in_prep_inj_tail_no_r  tss_cab cab_time_to_lower_threshold currently_in_prep_inj_tail  dt_prep_inj_rs  registd date1pos 
-adh_dl_tm1 adh_dl dol_higher_potency nactive_tm1 nactive newmut_tm1  pr_res_dol  rr_res_cab_dol  
-prep_inj_ever prep_oral_ever hivtest_type_1_init_prep_inj  hivtest_type_1_prep_inj
-sens_ttype1_prep_inj_primary  sens_ttype1_prep_inj_inf3m   sens_ttype1_prep_inj_infge6m 
-sens_ttype3_prep_inj_primary  sens_ttype3_prep_inj_inf3m   sens_ttype3_prep_inj_infge6m 
-pr_inm_inj_prep_primary 
-;
-
-where infection > 2022.75 and prep_inj_ever=1 and yrart ne .; run;
-
-* where 15 <= age  and (diagprim_prep_inj=1 or diagprim_prep_oral=1 or prep_primary_prevented=1 or prep_any_ever=1) and infection > 2022  and death = . ;
-
-run;
-
-*/
-
-/*
-
-proc print; var  caldate&j infection in118m in118m_p in140m in140m_p in148m in148m_p in263m in263m_p t_prop_in263m res_trans_factor_ii r_dol r_cab ;
-
-where hiv=1 and death=. and primary=1 ;
-run;
-
-*/
-
-/* option registd yrart _ai_naive_no_pmtct_ onart r_cab r_dol o_cab o_dol _ai_naive_no_pmtct_e_inm_ */
-
-/*
-
-prep_inj_efficacy = 0.2;
-if caldate&j ge 2020 then fold_tr = 50;
-
-proc freq; tables cald hiv hivtest_type_1_init_prep_inj primary; where death=.; run;
-
-
-
-*/
-
-/*
-
-hivtest_type_1_prep_inj=1;
-cost_test_g=0.022;
-
-proc freq; tables cald hiv;
-
-proc print; var cald prep_inj tested cost_test cost_test_g hiv ; 
-where tested=1 and death = . and prep_any_elig=1;
-run;
-
-*/
-
-/*
-
-proc freq; tables cald hiv ; where death=.; run;
-
-proc print; var   cald   dt_prep_inj_s    prep_inj    o_cab   em_inm_res_o_cab_off_3m    cab_res_prep_inj_primary    primary     r_cab_tm1    r_cab ;
-
-where hiv=1 and dt_prep_inj_s > . and death=.  and primary ne 1; run;
-
-*/
-
-  
-
-/*
-
-proc freq; tables cald incidence1549w ; run;
-
-
-proc print; var cald onart reg_option o_dol o_lpr o_taz o_3tc o_ten o_zdv o_efa o_nev nod nactive 
-p_dol p_lpr p_taz p_3tc p_ten p_zdv p_efa p_nev ;
-
-where hiv=1 and registd=1 and (death = . or death = caldate&j);
-run;
- 
-
-proc freq; tables cald caldate&j incidence1549w ; 
-
-proc print; var caldate&j prep_any_elig dt_prep_inj_s  primary  hiv  o_cab o_cab_tm1  prep_inj prep_inj_tm1 time_hiv_cab 
-o_cab_or_o_cab_tm1 o_cab_or_o_cab_tm1_no_r em_inm_res_o_cab_off_3m 
-
-currently_in_prep_inj_tail  
-cur_in_prep_inj_tail_hiv   cur_in_prep_inj_tail_no_r  emerge_inm_res_cab_tail  
-
-prep_primary_prevented
-
-prep_inj_at_infection hiv_cab o_cab_or_o_cab_tm1 o_cab_or_o_cab_tm1_no_r em_inm_res_o_cab_off_3m   diagprim_prep_inj cab_res_primary
-
-r_cab  cab_res_primary         
-
-diagprim  hiv_cab_3m  hiv_cab_6m  hiv_cab_9m  hiv_cab_ge12m  hivtest_type_1_init_prep_inj  hivtest_type_1_prep_inj  eff_sens_vct 
-eff_sens_primary  tested  registd
-
-sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
-sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
-sens_vct_testtype3_cab_tail sens_primary_testtype3
-
-; 
-
-where hiv = 1 and (prep_inj=1 or prep_inj_tm1=1 or currently_in_prep_inj_tail=1 or prep_primary_prevented=1) and (death=. or caldate&j=death) ;
-
-run;
-
-
-
-proc freq; tables caldate&j incidence1549w prevalence1549  ; 
-
-proc print; var caldate&j infection primary diagprim prep_any_elig prep_inj hiv o_cab tss_cab time_hiv_cab tested sens_vct eff_sens_vct registd 
-hivtest_type_1_init_prep_inj; 
-where (prep_inj=1 or prep_inj_tm1=1) and  hiv=1 and primary ne 1 ; 
-
-run; 
-
-
-proc print; var caldate&j
-primary diagprim diagprim_prep_inj tested sens_primary o111 hiv registd 
-hivtest_type hivtest_type_1_init_prep_inj dt_prep_inj_s
-
-;
-where age ge 15 and primary=1 and (death=. or dead=1)  ;
-run;
-
-
-
-proc freq; tables caldate&j ; 
-proc freq; tables caldate&j sw * prep_any  prep_inj prep_oral ; where prep_any_elig = 1;
-
-var 
-caldate&j prep_any_strategy prep_any_elig rate_test_startprep_any hard_reach rate_test_startprep_any prob_prep_inj_b  
-prob_prep_oral_b testfor_prep_oral  prep_oral_ever prep_inj_ever prep_any_ever 
-an_lin_incr_test testfor_prep_inj tested  switch_prep_from_oral  switch_prep_from_inj switch_prep_to_oral  switch_prep_to_inj 
-highest_prep_pref prep_oral_willing prep_inj_willing pref_prep_oral pref_prep_inj prep_oral prep_inj sw higher_future_prep_oral_cov
-stop_prep_inj_choice stop_prep_oral_choice
-;
-where age ge 15 and prep_any_elig=1 and (death=. or dead=1) and serial_no <  3000 ;
-run;
-
-run;
-
-*/
-
-
-/*
-
-
-* prep inj tetsing and cab resistance ;
-
-proc print; var caldate&j o_cab nactive
-prep_any_strategy prep_any_elig testfor_prep_inj prep_inj_tm1 prep_inj tot_yrs_prep_inj prep_inj_start_date 
-date_last_stop_prep_inj eff_rate_choose_stop_prep_inj infected_prep_inj infected_prep_inj_tail onprep_3 onprep_6 onprep_9 onprep_18 
-stop_prep_inj_choice  continuous_prep_inj_use  dt_prep_oral_rs
-hiv infection tested prep_falseneg sens_vct eff_sens_vct primary hivtest_type dt_last_test annual_testing_prep_inj
-registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl vl r_cab cab_res_o_cab cab_res_tail cab_res_primary 
-started_prep_hiv_test_sens_e 
-nactive nod onart 
-o_zdv o_3tc o_ten o_dar o_efa o_nev o_taz o_lpr o_dol o_cab r_zdv r_3tc r_ten r_dar r_efa r_nev r_taz r_lpr r_dol r_cab
-;
-where age ge 15 and (infected_prep_inj = 1 or infected_prep_inj_tail=1) and registd=0 and (death=. or dead=1) and hiv=1;
-run;
-
-*/
-
-/*
-
-
-proc print; var caldate&j newp ep age  date_prep_inj_intro prob_prep_inj_b highest_prep_pref tested hiv registd 
-prep_any_elig prep_oral_willing prep_inj_willing 	testfor_prep_oral testfor_prep_inj testfor_prep_vr 
-	prep_oral prep_inj prep_vr prep_any prep_oral_ever prep_inj_ever prep_vr_ever prep_any_ever 
-	last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_any_choice
-	stop_prep_oral_elig stop_prep_inj_elig stop_prep_vr_elig stop_prep_any_elig
-	 dt_prep_any_rs dt_prep_any_c tmp_prep dt_last_test;
-where age ge 15 and prep_inj_ever = 1 and (death=. or dead=1);
-run; 
-
-*/
-
-/*
-
-proc means; var prep_oral prep_inj prep_vr prep_any prep_oral_ever prep_inj_ever prep_vr_ever prep_any_ever;
-where age ge 15 and death = . and caldate&j=1995; run;
-
-proc univariate; var dt_prep_any_rs ; where caldate&j=2021.75; run;
-
-proc freq; tables tmp_prep  ; where caldate&j=2021.75; run;
-
-*/   
-
-/*proc univariate; var highest_prep_pref ; */
-/*proc univariate; var prep_oral_willing prep_inj_willing prep_vr_willing ; */
-/*proc univariate; var pref_prep_oral pref_prep_inj pref_prep_vr ; */
-
-
-
-
-
-
-/*
-
-ods html;
-proc print; var caldate&j
-age tested_bp_tm1  tested_bp hypertension max_sbp sbp sbp_m_tm1  sbp_m   on_tx_htn   dx_htn  visit_hypertension 
-start_anti_hyp_this_per restart_anti_hyp_this_per ever_on_anti_hyp date_start_anti_hyp date_last_stop_anti_hyp 
-effect_anti_hyp_1 effect_anti_hyp_2 effect_anti_hyp_3 date_restart_anti_hyp 
-intensify_anti_hyp_this_per_1_2 intensify_anti_hyp_this_per_2_3 symp_hypertension cvd_death death
-s_cost_hypert_vis_80 s_cost_hypert_drug_80  
-;
-where age ge 60 and (death = . or caldate&j = death) and serial_no < 1000   ;
-run;
-ods html close;
-
-* not sure if we should keep this commented out code on procs we ran to test changes ;
-
-proc print; var caldate&j cald age sbp dx_htn on_tx_htn sbp_start_anti_hyp start_anti_hyp_this_per  
-ever_on_anti_hyp effect_anti_hyp cvd_death_risk non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
-where age ge 15 and dx_htn=1 and death =.;
-run; 
-
-proc print; var caldate&j cald age dead hiv date_last_non_hiv_tb  tested  test_rate_tb non_hiv_tb non_hiv_tb_death
-non_hiv_tb_risk non_hiv_tb_diag_e  non_hiv_tb_prob_diag_e 
-non_hiv_tb_diag_e cur_non_hiv_tb_death_risk  non_hiv_tb_death_risk  rel_rate_death_tb_diag_e death  dcause ; 
-where date_last_non_hiv_tb ne . ; 
-run; 
-
-proc means; var cald non_hiv_tb non_hiv_tb_death ;
-where age ge 15 and (death = . or caldate&j = death);
-run;
-
-proc means; var cald cvd_death ;
-where gender=1 and 60 <= age < 99 and (death = . or caldate&j = death); run; 
-
-*/
-
-
-/*
-
-proc print; var cald age sbp dx_htn on_tx_htn sbp_start_anti_hyp start_anti_hyp_this_per  ever_on_anti_hyp effect_anti_hyp
-cvd_death_risk non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
-
-where age ge 15 and ever_on_anti_hyp=1;
-
-run; 
-
-*/
-
-/*
-
-proc print; var cald cd4 tb_rate tb_risk  tb who3_rate non_tb_who3_rate  non_tb_who3_risk non_tb_who3_ev who3_event dead ; 
-where age ge 15 and hiv=1 and (death = . or death=caldate&j) and 0 <= cd4 < 100;
-run;
-
-proc freq; tables hiv cald  ; run;
-
-*/
-
-/*
-
-proc freq; tables 
-cd4_g * non_tb_who3_ev vl_g * non_tb_who3_ev age_g * non_tb_who3_ev  pcp_p * non_tb_who3_ev  onart * non_tb_who3_ev 
-cd4_g * tb vl_g * tb age_g * tb  pcp_p * tb  onart * tb  
-cd4_g * adc vl_g * adc age_g * adc  pcp_p * adc  onart * adc 
-; where hiv=1 and (death = . or caldate&j = death ) ;
-
-proc freq; tables 
-cd4_g * dead  vl_g * dead age_g * dead  pcp_p * dead  onart * dead ; where hiv=1 and (death = . or caldate&j = death ) ;
-
-proc freq; tables 
-non_tb_who3_ev * dead  adc * in_care_time_of_adc_tb * dead  tb * in_care_time_of_adc_tb * dead; where hiv=1 and (death = . or caldate&j = death ) ;
-
-*/
-
-/*
-
-proc print; var cald death registd yrart visit interrupt lost date1pos date_1st_hiv_care_visit return restart tcur onart nactive 
-vl vm cd4 tb crypm sbi oth_adc who3_event death_rix tb_diag_e crypm_diag_e sbi_diag_e dead ; 
-where age ge 15 and hiv=1 and (death = . or death=caldate&j) and 0 <= cd4 < 250;
-run;
-
-*/
-
-
-
-/*
-
-proc print; var  cald  yrart  onart art_monitoring_strategy  linefail artline vl vm nod o_efa f_efa o_dol f_dol o_taz 
-f_taz  o_ten f_ten  o_zdv f_zdv  o_3tc f_3tc  pi_after_dtg_fail  restart_pi_after_dtg_fail; 
-where p_dol=1 and  linefail ge 1 and death = .;
-run;
-
-
-proc print; var cald option no_art_disrup_covid was_on_art_covid_disrup interrupt interrupt_choice lost return restart onart vl ;
-where serial_no < 500 and naive=0 and was_on_art_covid_disrup=1 and death = .;
-run; 
-
-
-proc print; var serial_no caldate&j sw sw_program  sw_program_visit onart adh sw_program_effect sw_test_6mthly
-eff_sw_program eff_sw_higher_int  eff_sw_higher_prob_loss_at_diag  eff_prob_sw_lower_adh
-sw_lower_art_use_adh sw_higher_int prob_sw_lower_adh  sw_higher_prob_loss_at_diag  
-rate_engage_sw_program rate_disengage_sw_program cost_sw_program   ;
-where gender=2 and age ge 15 and death = . and sw=1 ;
-run;
-
-
-proc print; var serial_no caldate&j 
-prep prep_any_strategy prep_any_elig  prep_any_ever  dt_prep_oral_s   continuous_prep_any_use
-rate_test_startprep_any  rate_choose_stop_prep_oral prob_prep_any_restart_choice 
-eff_rate_test_startprep_any eff_rate_choose_stop_prep_oral eff_prob_prep_any_restart_choice 
-annual_testing_prep_oral hivtest_type prep_oral_efficacy factor_prep_adh_older rate_test_onprep_any prob_prep_oral_b prob_prep_any_restart prob_prep_any_visit_counsel
-tot_yrs_prep_oral prob_prep_any_restart_choice  pop_wide_tld_prob_egfr;
-where age ge 15 and hiv ne 1;
-run;
-
-proc freq; tables caldate&j s_hiv1564; where serial_no=100000; run;
-
-proc print; var serial_no caldate&j infection yrart prointer onart onart_gt6m_iicu vl1000_art_gt6m_iicu tcur 
-int_clinic_not_aw nactive_tm1 adh vl  vmax_tm1 cc_tm1 cd4_tm1 cd4 cmin toffart rate_int_choice death ;
-where age ge 15 and registd = 1 and death = . and serial_no < 1000 ;
-run;
-
-proc freq; tables  registd  vl1000_art_gt6m_iicu  onart_gt6m_iicu  vg1000 naive  onart ; where death = . or caldate&j = death ; run;
-
-proc print; var   caldate&j  cald  s_vl1000_art_gt6m_iicu  s_onart_gt6m_iicu  s_naive  s_onart  s_diag  s_vg1000  s_hiv1564;
-where serial_no = 10000;
-run;
 
 */
 
@@ -19792,7 +19410,7 @@ prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 
 prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
 prob_visit_htn_lifestyle
 prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
-rr_cvd_tx rr_cvd_tx_effective
+rr_cvd_tx rr_cvd_tx_effective cost_lowqual_cvdcare
 discount
 
 /*year_i interventions*/
@@ -22665,7 +22283,7 @@ s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
 
 /* *HYPERTENSION* */
-prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
 
 s_hypertension_ge18 s_hypertension_2534 s_hypertension_3544 s_hypertension_4554 s_hypertension_5564 s_hypertension_ge65
 s_dx_htn_ge18 s_dx_htn_2534 s_dx_htn_3544 s_dx_htn_4554 s_dx_htn_5564 s_dx_htn_ge65
@@ -22783,12 +22401,12 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 
-prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed 
+prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
 prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
 prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
 prob_visit_htn_lifestyle
 prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
-rr_cvd_tx rr_cvd_tx_effective 
+rr_cvd_tx rr_cvd_tx_effective cost_lowqual_cvdcare
 discount
 
 /*year_i interventions*/
@@ -22839,6 +22457,7 @@ s_covid
 prevalence1549  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw  prev_vg1000_1549
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
+
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
 s_prop_vlg1_rm0_diag  s_prop_vlg2_rm0_diag  s_prop_vlg3_rm0_diag  s_prop_vlg4_rm0_diag  s_prop_vlg5_rm0_diag  s_prop_vlg6_rm0_diag  
 s_prop_vlg1_rm1_diag  s_prop_vlg2_rm1_diag  s_prop_vlg3_rm1_diag  s_prop_vlg4_rm1_diag  s_prop_vlg5_rm1_diag  s_prop_vlg6_rm1_diag  

@@ -1,13 +1,13 @@
-/*
+
 * Matt's local machine input;
-libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\test";
+libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run100";
 data hiv_synthesis_base; set a.out:;
-*/
+/*
 * Myriad input;
 %let sasoutputdir = %scan(&sysparm,1," ");
 libname a "&sasoutputdir/";
-data hiv_synthesis_base; set a.concatenated_data;
-
+data hiv_synthesis_base; set a.concatenated_data; option FULLSTIMER;
+*/
 
 /* proc contents; run;
 * proc print; var cald s_hiv1549; run; */
@@ -79,7 +79,7 @@ ddaly = s_ddaly * &sf * 4;
 
 ***These are additional potential DALYs to include which have not so far been included;
 
-ddaly_mtct = s_ddaly_mtct * &sf * 4;  ***Crude estimate of number of DALYs incurred in a child born with HIV;
+*ddaly_mtct = s_ddaly_mtct * &sf * 4;  ***Crude estimate of number of DALYs incurred in a child born with HIV;
 
 
 * ================================================================================= ;
@@ -92,6 +92,7 @@ ddaly_mtct = s_ddaly_mtct * &sf * 4;  ***Crude estimate of number of DALYs incur
 * ts1m - 12 instead of 4; 
 
 ***These are scaled up discounted costs;
+/*
 dzdv_cost = s_dcost_zdv * &sf * 4 / 1000;
 dten_cost = s_dcost_ten * &sf * 4 / 1000;
 d3tc_cost = s_dcost_3tc * &sf * 4 / 1000; 
@@ -144,7 +145,7 @@ dcost_drug_level_test = s_dcost_drug_level_test * &sf * 4 / 1000;
 dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; 
 
 dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
-
+*/
 * HYPERTENSION COSTS;
 htn_cost_scr = s_htn_cost_scr * 4 / 1000 * &sf; 
 htn_cost_drug = s_htn_cost_drug * 4 / 1000 * &sf; 
@@ -160,35 +161,37 @@ dhtn_cost_total = dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cv
 
 dhtn_cost_tothalf = dhtn_cost_total / 2 ;
 dhtn_cost_totdrughalf = dhtn_cost_scr + (dhtn_cost_drug / 2) + dhtn_cost_clin + dhtn_cost_cvd ; 
-dhtn_cost_totclinhalf = dhtn_cost_scr + dhtn_cost_drug + (dhtn_cost_clin / 2) + (dhtn_cost_cvd / 2) ; 
+dhtn_cost_totcvdhalf = dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + (dhtn_cost_cvd / 2) ; 
+dhtn_cost_totclinhalf = dhtn_cost_scr + dhtn_cost_drug + (dhtn_cost_clin / 2) + dhtn_cost_cvd ; 
 dhtn_cost_totscrnhalf = (dhtn_cost_scr / 2) + dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd ; 
-dhtn_cost_cvdquarter = dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + (dhtn_cost_cvd / 4) ; 
+dhtn_cost_totcvdquart = dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + (dhtn_cost_cvd / 4) ; 
 
 dhtn_cost_totdoub = dhtn_cost_total * 2 ;
 dhtn_cost_totdrugdoub = (dhtn_cost_scr + (dhtn_cost_drug * 2) + dhtn_cost_clin + dhtn_cost_cvd) ; 
-dhtn_cost_totclindoub = (dhtn_cost_scr + dhtn_cost_drug + (dhtn_cost_clin * 2) + dhtn_cost_cvd * 2) ; 
+dhtn_cost_totclindoub = (dhtn_cost_scr + dhtn_cost_drug + (dhtn_cost_clin * 2) + dhtn_cost_cvd) ; 
+dhtn_cost_totcvddoub = (dhtn_cost_scr + dhtn_cost_drug + (dhtn_cost_clin) + dhtn_cost_cvd * 2) ; 
 dhtn_cost_totscrndoub = ((dhtn_cost_scr * 2) + dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd) ; 
-dhtn_cost_cvd4x = dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + (dhtn_cost_cvd * 4) ;
+dhtn_cost_totcvd4x = dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + (dhtn_cost_cvd * 4) ;
 
-dhtn_cost_total_imp = (dhtn_cost_scr * 1.1) + (dhtn_cost_drug * 1.1) + (dhtn_cost_clin * 1.1) + dhtn_cost_cvd ; 
+*dhtn_cost_total_imp = (dhtn_cost_scr * 1.1) + (dhtn_cost_drug * 1.1) + (dhtn_cost_clin * 1.1) + dhtn_cost_cvd ; 
 
-dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
+*dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
 ***Will need to add the cost of VG when included in HIV Synthesis;
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+*dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
 		dcost_sw_program +
 		dhtn_cost_total;
 
-dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
+*dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost + 
 				  dhtn_cost_total; 
 
 ***This reverses the discount (if needed);
-cost_clin_care = dcost_clin_care / discount;
+*cost_clin_care = dcost_clin_care / discount;
 
-cost = dcost / discount;
+*cost = dcost / discount;
 
 * ================================================================================= ;
 * ================================================================================= ;
@@ -199,20 +202,6 @@ cost = dcost / discount;
 
 * derived variables relating to population, not only those with hiv ;
 
-if s_ai_naive_no_pmtct_c_nnm_ = . then s_ai_naive_no_pmtct_c_nnm_ = 0; 
-if s_ai_naive_no_pmtct_c_pim_ = . then s_ai_naive_no_pmtct_c_pim_ = 0;
-if s_ai_naive_no_pmtct_c_inm_ = . then s_ai_naive_no_pmtct_c_inm_ = 0;
-if s_ai_naive_no_pmtct_c_rt184m_ = . then s_ai_naive_no_pmtct_c_rt184m_ = 0;
-if s_ai_naive_no_pmtct_c_rt65m_ = . then s_ai_naive_no_pmtct_c_rt65m_ = 0;
-if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
-
-s_mcirc_1549m = s_mcirc_1519m + s_mcirc_2024m + s_mcirc_2529m + s_mcirc_3034m + s_mcirc_3539m + s_mcirc_4044m + s_mcirc_4549m ;
-s_mcirc_3039m = s_mcirc_3034m + s_mcirc_3539m;
-s_mcirc_4049m = s_mcirc_4044m + s_mcirc_4549m;
-
-s_vmmc1549m = s_vmmc1519m + s_vmmc2024m + s_vmmc2529m + s_vmmc3034m + s_vmmc3539m + s_vmmc4044m + s_vmmc4549m ;
-s_vmmc3039m = s_vmmc3034m + s_vmmc3539m;
-s_vmmc4049m = s_vmmc4044m + s_vmmc4549m;
 
 s_hiv1524m = s_hiv1519m + s_hiv2024m ;
 s_hiv1524w = s_hiv1519w + s_hiv2024w ;
@@ -231,13 +220,14 @@ s_hiv_ge18 = s_hiv_ge18m + s_hiv_ge18w ;
 s_ageg65plm = s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg8084m + s_ageg85plm ;
 s_ageg65plw = s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85plw ;
 
-s_onart_m50pl = s_onart_m5054_ + s_onart_m5559_ + s_onart_m6064_ + s_onart_m6569_	+ s_onart_m7074_ + s_onart_m7579_ + s_onart_m8084_ + s_onart_m85pl_	;
-s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569_	+ s_onart_w7074_ + s_onart_w7579_ + s_onart_w8084_ + s_onart_w85pl_	;
+*s_onart_m50pl = s_onart_m5054_ + s_onart_m5559_ + s_onart_m6064_ + s_onart_m6569_	+ s_onart_m7074_ + s_onart_m7579_ + s_onart_m8084_ + s_onart_m85pl_	;
+*s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569_	+ s_onart_w7074_ + s_onart_w7579_ + s_onart_w8084_ + s_onart_w85pl_	;
 
 * p_age1549_hiv ; 				p_age1549_hiv = (s_hiv1549m + s_hiv1549w) / s_hivge15 ;
 * p_age1549_hivneg ;			p_age1549_hivneg = ((s_alive1549_w + s_alive1549_m) - (s_hiv1549m + s_hiv1549w)) / ((s_alive_m + s_alive_w) - s_hivge15);
 
 * s_alive;						s_alive = s_alive_m + s_alive_w ;
+/*
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
 * gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; log_gender_r_newp  = log(gender_r_newp);
 
@@ -367,7 +357,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 * p_vg1000, p_vl1000;			if s_hiv1564  > 0 then p_vg1000 = s_vg1000 / s_hiv1564 ;  p_vl1000 = 1- p_vg1000 ;
 * prevalence_vg1000;			if (s_alive1549_w + s_alive1549_m) > 0 then prevalence_vg1000 = s_vg1000 / (s_alive1549_w + s_alive1549_m);
-
+*/
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
 * prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
@@ -403,7 +393,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * prevalence1524m;				prevalence1524m =  s_hiv1524m  / (s_ageg1519m + s_ageg2024m) ;
 
 * prevalence_sw;				prevalence_sw = s_hiv_sw / s_sw_1564; 
-
+/*
 * r_prev_1519w_4549w;			r_prev_1519w_4549w = prevalence1519w / prevalence4549w ;
 * r_prev_2024w_4549w;			r_prev_2024w_4549w = prevalence2024w / prevalence4549w ;
 * r_prev_2529w_4549w;			r_prev_2529w_4549w = prevalence2529w / prevalence4549w ;
@@ -594,7 +584,7 @@ end;
 * p_iime;						p_iime = s_iime_ / s_hiv1564 ;
 * p_pime;						p_pime = s_pime_ / s_hiv1564 ;
 * p_nnme;						p_nnme = s_nnme_ / s_hiv1564 ;
-
+*/
 * *HYPERTENSION* ;
 
 * pop size;
@@ -891,7 +881,7 @@ rate_cva_modsev_ge65 =  (s_cva_inc_all_modsev_ge65 * 4 * 100) / (s_ageg6569m + s
 n_ihd_ge18 = (s_ihd_inc_all_modsev_ge18m + s_ihd_inc_all_modsev_ge18w) * 4 * &sf; 
 n_cvd_ge18 = (s_cva_inc_all_modsev_ge18m + s_cva_inc_all_modsev_ge18w) * 4 * &sf; 
 
-prev_ihd_ge18 = ((s_ihd_prev_ge18m + s_ihd_prev_ge1w) * 100) / popge18;
+prev_ihd_ge18 = ((s_ihd_prev_ge18m + s_ihd_prev_ge18w) * 100) / popge18;
 prev_ihd_4049m = (s_ihd_prev_4049m * 100) / (s_ageg4044m + s_ageg4549m) ;
 prev_ihd_5059m = (s_ihd_prev_5059m * 100) / (s_ageg5054m + s_ageg5559m) ;
 prev_ihd_6069m = (s_ihd_prev_6069m * 100) / (s_ageg6064m + s_ageg6569m) ;
@@ -919,7 +909,7 @@ prev_cva_ge80w = (s_cva_prev_ge80w * 100) / (s_ageg8084w + s_ageg85plw) ;
 prev_cva_4059 = ((s_cva_prev_4049m + s_cva_prev_5059m + s_cva_prev_4049w + s_cva_prev_5059w) * 100) / (s_ageg4044m + s_ageg4549m + s_ageg5054m + s_ageg5559m + s_ageg4044w + s_ageg4549w + s_ageg5054w + s_ageg5559w) ;
 prev_cva_6079 = ((s_cva_prev_6069m + s_cva_prev_7079m + s_cva_prev_6069w + s_cva_prev_7079w) * 100) / (s_ageg6064m + s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg6064w + s_ageg6569w + s_ageg7074w + s_ageg7579w) ;
  
-
+/*
 * p_ahd_re_enter_care_100;		p_ahd_re_enter_care_100 = s_ahd_re_enter_care_100 / s_re_enter_care;
 * p_ahd_re_enter_care_200;		p_ahd_re_enter_care_200 = s_ahd_re_enter_care_200 / s_re_enter_care;
 
@@ -934,7 +924,7 @@ prev_cva_6079 = ((s_cva_prev_6069m + s_cva_prev_7079m + s_cva_prev_6069w + s_cva
 * death_rate_hiv_all;			if s_alive1564 > 0 then death_rate_hiv_all = (4 * 100 * s_death_hiv) / s_alive1564;
 				 				if s_alive1564_m > 0 then death_rate_hiv_all_m = (4 * 100 * s_death_hiv_m) / s_alive1564_m;
 								if s_alive1564_w > 0 then death_rate_hiv_all_w = (4 * 100 * s_death_hiv_w) / s_alive1564_w;
-
+*/
 * CVD and all cause deaths (n and rate) ;
 
 			* HIV positive;
@@ -981,7 +971,7 @@ prev_cva_6079 = ((s_cva_prev_6069m + s_cva_prev_7079m + s_cva_prev_6069w + s_cva
 * p_death_hivrel_age_le64;		if s_death_hivrel_allage gt 0 then p_death_hivrel_age_le64 = s_death_hivrel / s_death_hivrel_allage ;
 
 * number of women with hiv giving birth per year;
-
+/*
 n_give_birth_w_hiv = s_give_birth_with_hiv * &sf * 4;
 n_birth_with_inf_child = s_birth_with_inf_child * &sf * 4;
 s_pregnant_ntd = s_pregnant_ntd * (0.0022 / 0.0058);
@@ -995,19 +985,20 @@ n_vmmc1549_ = s_vmmc1549m * &sf * 4;
 n_vmmc1549_3m = s_vmmc1549m * &sf;
 n_new_inf1549m = s_primary1549m * &sf * 4;
 n_new_inf1549 = s_primary1549 * &sf * 4;
-
+*/
 keep run option cald 
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m
 /*
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
 death_rate  death_rate_hiv 
+dcost
 */
-dcost ddaly
+ ddaly
 inc_cat
 
 /* *HYPERTENSION */
-prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
 s_alive popge18 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85
 popsizege18 popsizege40
 p_hypert_ge18 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
@@ -1098,8 +1089,7 @@ dhtn_cost_totdrughalf dhtn_cost_totdrugdoub
 dhtn_cost_totclinhalf dhtn_cost_totclindoub 
 dhtn_cost_totscrnhalf dhtn_cost_totscrndoub 
 dhtn_cost_tothalf dhtn_cost_totdoub
-dhtn_cost_cvdquarter dhtn_cost_cvd4x
-dhtn_cost_total_imp
+dhtn_cost_totcvdquart dhtn_cost_totcvdhalf dhtn_cost_totcvddoub dhtn_cost_totcvd4x
 
 rate_dead_cvd_ge18 rate_dead_cvd_2544 rate_dead_cvd_4564 rate_dead_cvd_ge65
 n_dead_cvd_ge18
@@ -1165,17 +1155,18 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_diag);	 		%var(v=p_diag_m);	 		%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
 %var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);
 %var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000); %var(v=death_rate_hiv);
+%var(v=dcost);	 
 */
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
-%var(v=dcost);	 		%var(v=ddaly);
+		%var(v=ddaly);
 
 */ADD IN PROJECT SPECIFIC OUTPUTS/*;
 %var(v=s_alive); %var(v=popsizege18); %var(v=popsizege40);
 %var(v=popge18); %var(v=pop2534); %var(v=pop3544); %var(v=pop4554); %var(v=pop5564); %var(v=pop6574); %var(v=pop7584); %var(v=popge85);
 
 
-%var(v=prob_sbp_increase); %var(v=sbp_cal_eff); %var(v=rr_cvd_tx); %var(v=rr_cvd_tx_effective);
+%var(v=prob_sbp_increase); %var(v=sbp_cal_eff); %var(v=rr_cvd_tx); %var(v=rr_cvd_tx_effective); %var(v=prob_htn_link); %var(v=cost_lowqual_cvdcare);
 
 %var(v=p_hypert_ge18); %var(v=p_hypert_2534); %var(v=p_hypert_3544); %var(v=p_hypert_4554); %var(v=p_hypert_5564); %var(v=p_hypert_ge65); 
 %var(v=p_htn_true_ge18); %var(v=p_htn_true_2534); %var(v=p_htn_true_3544); %var(v=p_htn_true_4554); %var(v=p_htn_true_5564); %var(v=p_htn_true_ge65); 
@@ -1257,8 +1248,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=dhtn_cost_totclinhalf); %var(v=dhtn_cost_totclindoub); 
 %var(v=dhtn_cost_totscrnhalf); %var(v=dhtn_cost_totscrndoub); 
 %var(v=dhtn_cost_tothalf); %var(v=dhtn_cost_totdoub);
-%var(v=dhtn_cost_cvdquarter); %var(v=dhtn_cost_cvd4x);
-%var(v=dhtn_cost_total_imp);
+%var(v=dhtn_cost_totcvdquart); %var(v=dhtn_cost_totcvdhalf); %var(v=dhtn_cost_totcvddoub); %var(v=dhtn_cost_totcvd4x);
 
 %var(v=rate_dead_cvd_ge18); %var(v=rate_dead_cvd_2544); %var(v=rate_dead_cvd_4564); %var(v=rate_dead_cvd_ge65); 
 %var(v=rate_dead_hivpos_cvd_ge18); %var(v=rate_dead_hivpos_ac_ge18);
@@ -1278,16 +1268,17 @@ drop _NAME_ _TYPE_ _FREQ_;
 data wide_outputs;merge
 /* p_diag	 		p_diag_m	 		p_diag_w   			p_onart_diag  	p_onart_diag_w
 p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m
-p_vg1000 		p_vl1000			prevalence_vg1000 death_rate_hiv */
+p_vg1000 		p_vl1000			prevalence_vg1000 death_rate_hiv 
+dcost*/
 prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
-dcost			ddaly
+			ddaly
 
  
 inc_cat
 s_alive popsizege18 popsizege40
 popge18 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85
 
-prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
 
 p_hypert_ge18 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
 p_htn_true_ge18 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
@@ -1389,8 +1380,8 @@ dhtn_cost_totdrughalf dhtn_cost_totdrugdoub
 dhtn_cost_totclinhalf dhtn_cost_totclindoub 
 dhtn_cost_totscrnhalf dhtn_cost_totscrndoub 
 dhtn_cost_tothalf dhtn_cost_totdoub
-dhtn_cost_cvdquarter dhtn_cost_cvd4x
-dhtn_cost_total_imp
+dhtn_cost_totcvdquart dhtn_cost_totcvdhalf dhtn_cost_totcvddoub dhtn_cost_totcvd4x
+
 
 ;
 

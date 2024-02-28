@@ -4,14 +4,15 @@
 #$ -pe smp 4
 #$ -t 1
 #$ -A HIVSynthMod
-#$ -l mem=16G
+#$ -P Gold
+#$ -l mem=2G
 #$ -j y
 #$ -N output
-#$ -wd /home/sejj463/Scratch/combined_data_out
+#$ -wd /lustre/scratch/scratch/sejj463/combined_data_out
 #$ -o /dev/null
 #$ -e /dev/null
-#$ -l tmpfs=1000G
-module load sas/9.4/64
+#$ -l tmpfs=100G
+module load sas/9.4-m7/64
 cd $TMPDIR
 for file in `echo $addinfiles | tr ':' ' '` 
 do 

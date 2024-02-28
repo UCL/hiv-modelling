@@ -7,7 +7,7 @@
 #$ -l mem=16G
 #$ -j y
 #$ -N output
-#$ -wd /home/sejj463/Scratch/combined_data_out
+#$ -wd /lustre/scratch/scratch/sejj463/combined_data_out
 #$ -o /dev/null
 #$ -e /dev/null
 #$ -l tmpfs=1000G
@@ -18,4 +18,4 @@ do
  cp $file . 
 done
 sas $SASINPUT/combine.sas -sysparm "$SASOUTPUTDIR"
-tar cvzf $HOME/Scratch/combined_data_out/sv_combine_$JOB_ID.tgz $TMPDIR
+tar cvzf $SASOUTPUTDIR/sv_combine_$JOB_ID.tgz $TMPDIR

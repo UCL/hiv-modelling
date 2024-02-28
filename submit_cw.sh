@@ -1,4 +1,5 @@
 #!/bin/bash -l
+#$ -l tmpfs=100G
 inputdir="${HOME}/hiv-modelling"
 tmpfiles="out"
 combinedsas="combined_data"
@@ -21,7 +22,7 @@ do
         t) tmpfiles=${OPTARG};;
     esac
 done
-finaloutdir="${HOME}/Scratch/${combinedsas}_${tmpfiles}"
+finaloutdir="/lustre/scratch/scratch/sejj463/combined_data_out"
 
 
 echo "===== JOB SUMMARY ======="

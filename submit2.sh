@@ -21,7 +21,7 @@ do
         t) tmpfiles=${OPTARG};;
     esac
 done
-finaloutdir="${HOME}/Scratch/${combinedsas}_${tmpfiles}"
+finaloutdir="/lustre/scratch/scratch/sejj463/combined_data_out"
 echo "===== JOB SUMMARY ======="
 echo "directory of input files: $inputdir";
 if [ -d $finaloutdir ]
