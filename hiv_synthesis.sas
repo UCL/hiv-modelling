@@ -4689,77 +4689,66 @@ prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and differ
 if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) > . then do;  
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
-	if prep_any_strategy=1 then do;
-		r = rand('Uniform');			*FSW and/or AGYW;
+	r_prep_tm1=r_prep;
+	if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
+	else r_prep = rand('Uniform');
+
+	if prep_any_strategy=1 then do;		*FSW and/or AGYW;
 		if gender=2 and (sw=1 or 15<=age<25) and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=2 then do;		*FSW;	* Continuous r_prep JAS 5thFeb2024;
-		r_prep_tm1=r_prep;
-		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
-		else r_prep = rand('Uniform');
 		if gender=2 and sw=1 and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=3 then do;		*AGYW;	* Continuous r_prep JAS 5thFeb2024;
-		r_prep_tm1=r_prep;
-		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
-		else r_prep = rand('Uniform');
 		if gender=2 and 15<=age<25 and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
-    	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=5 then do;   
-     	r = rand('Uniform');
-    	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
+    	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1) ) ) )
         and 15 <= age < 50 then prep_any_elig=1; 
     end;
 
 	if prep_any_strategy=6 then do;	* as 4 but women only;	
-    	r = rand('Uniform');
       	if gender=2 and 
 		((newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) )) then prep_any_elig=1; 
+      	(15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1))) )) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=7 then do; * as 5 but women only ;        
-     	r = rand('Uniform');
     	if gender=2 and 
-		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
+		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1) ) ) )
         and 15 <= age < 50) then prep_any_elig=1; 
     end;
 
 	if prep_any_strategy=8 then do;	* as 4 but change in prop ep;
-    	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.1  or (r_prep < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=9 then do; * as 5 but change in prop ep;     
-     	r = rand('Uniform');
-    	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
+    	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r_prep < 0.1  or (r_prep < 0.5 and epi=1) ) ) )
         and 15 <= age < 50 then prep_any_elig=1; 
     end;
 
 	if prep_any_strategy=10 then do;* as 6 but change in prop ep;
-    	r = rand('Uniform');
       	if gender=2 and 
 		((newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1))) )) then prep_any_elig=1; 
+      	(15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.1  or (r_prep < 0.5 and epi=1))) )) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=11 then do; * as 7 but change in prop ep;     
-     	r = rand('Uniform');
     	if gender=2 and 
-		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
+		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r_prep < 0.1  or (r_prep < 0.5 and epi=1) ) ) )
         and 15 <= age < 50) then prep_any_elig=1; 
     end;
 
@@ -4772,17 +4761,13 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
     end;
 
 	if prep_any_strategy=14 then do;	* as 4 but with newp_tm1 ge 1 also;	
-    	r = rand('Uniform');
       	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=15 then do;	* Serodiscordant couples - new for MIHPSA Zimbabwe; *JAS Apr2023;
 		* Limited to a proportion based on age (not gender) and a random fraction;
 		* Note that there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;
-		r_prep_tm1=r_prep;
-		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
-		else r_prep = rand('Uniform');
       	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
       	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)) ) 
 		then prep_any_elig=1; 	* Note changed from 5pc to 1pc of eps who may not have HIV JAS Jul23;
@@ -4791,7 +4776,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 	if prep_any_strategy=16 then do;	* Pregnant and breastfeeding women (PLW) - new for MIHPSA Zimbabwe; *JAS Apr2023;
 		* Note that there is a component of sexual behaviour in prep eligibility for pregnant and breastfeeding women;
       	if gender=2 and (pregnant=1 or breastfeeding=1) and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 		*( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 	* replaced with code to match AGYW above Jan24;
 	end;
 
