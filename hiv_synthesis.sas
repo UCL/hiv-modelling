@@ -2249,7 +2249,6 @@ who may be dead and hence have caldate{t} missing;
 		date_prep_oral_intro=&year_interv;
 		if caldate{t}=&year_interv then do;
 			pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;		* From Vales code, this is to match oral PrEP uptake to Zim target MIHPSA JAS Jul23;
-/*			pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);*/	* Commented out here as this is assigned later on ;	* JAS Jan24;
 		end;
 	end;
 	* All vaginal ring PrEP options;
@@ -2257,7 +2256,6 @@ who may be dead and hence have caldate{t} missing;
 		date_prep_vr_intro=&year_interv;
 		if caldate{t}=&year_interv then do;
 			pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3;			* MIHPSA: can adjust this to match vr PrEP uptake to oral PrEP target JAS Jul23;
-/*			pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5);	* women only;*/
 		end;
 	end;
 	* All injectable PrEP options;
@@ -2265,7 +2263,6 @@ who may be dead and hence have caldate{t} missing;
 		date_prep_inj_intro=&year_interv;
 		if caldate{t}=&year_interv then do;
 			pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match inj PrEP uptake to oral PrEP target JAS Jul23;
-/*			pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);*/
 		end;
 	end;
 	
@@ -4701,12 +4698,6 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-/*	if prep_any_strategy=2 then do;		*FSW;*/
-/*		r = rand('Uniform');*/
-/*		if gender=2 and sw=1 and */
-/*		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; */
-/*	end;*/
-
 	if prep_any_strategy=2 then do;		*FSW;	* Continuous r_prep JAS 5thFeb2024;
 		r_prep_tm1=r_prep;
 		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
@@ -4714,12 +4705,6 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		if gender=2 and sw=1 and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
-
-/*	if prep_any_strategy=3 then do;		*AGYW;*/
-/*		r = rand('Uniform');*/
-/*		if gender=2 and 15<=age<25 and */
-/*		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; */
-/*	end;*/
 
 	if prep_any_strategy=3 then do;		*AGYW;	* Continuous r_prep JAS 5thFeb2024;
 		r_prep_tm1=r_prep;
@@ -18609,7 +18594,7 @@ s_i_age1_w_np	s_i_age2_w_np	s_i_age3_w_np	s_i_age4_w_np	s_i_age5_w_np
 s_i_age1_m_newp s_i_age2_m_newp	s_i_age3_m_newp	s_i_age4_m_newp	s_i_age5_m_newp
 s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
-s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp 
+s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp
 s_sdc
 
 /*resistance*/
@@ -19249,7 +19234,8 @@ if country = 'Zimbabwe' then do;
 	if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
 	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 end;
-/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
+/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/	*QUERY should we be using this line for Zim? JAS Feb24;
+
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -20740,7 +20726,7 @@ m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r
 
 s_i_m_1549_np  s_i_w_1549_np    s_i_w_newp  s_i_m_newp
 s_sdc
- 
+
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
