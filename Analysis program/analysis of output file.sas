@@ -964,6 +964,9 @@ model  ce  = sw_higher_int;run;
 Proc logistic desc;class  sw_higher_prob_loss_at_diag (ref="2") ;
 model  ce  = sw_higher_prob_loss_at_diag;run;
 
+proc freq;table incid_cat3* incid_sw_cat3;run;
+
+proc corr spearman ;var incid_cat3 incid_sw_cat3;run;
 
 Proc logistic desc;class incid_cat3 (ref="1") incid_sw_cat3 (ref="1")  p_diag_sw (ref="1");
 model  ce  = incid_cat3 incid_sw_cat3 p_diag_sw;run;

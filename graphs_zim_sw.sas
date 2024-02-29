@@ -9,9 +9,13 @@ data a;
 set a.fsw_zim_26feb24;  
 
 if option=1 then delete; ***first look at overall incidence according to baseline SW program (option=1= amesthist);
-proc sort;by run;
-proc freq;table cald option effect_sw_prog_6mtest;run;
 
+if rate_engage_sw_program ge 0.15 then delete;
+
+proc sort;by run;
+proc freq;table rate_engage_sw_program;run;
+
+proc freq data=a;table cald;run;
 data sf;
 set a;
 
@@ -140,9 +144,23 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * incidence_sw_inprog;			if (s_sw_inprog  - s_sw_hiv_inprog  + s_primary_sw_inprog) gt 0 then incidence_sw_inprog =(s_primary_sw_inprog * 4 * 100) / (s_sw_inprog  - s_sw_hiv_inprog  + s_primary_sw_inprog);
 * incidence_sw_noprog;			if (s_sw_noprog  - s_sw_hiv_noprog  + s_primary_sw_noprog) gt 0 then incidence_sw_noprog =(s_primary_sw_noprog * 4 * 100) / (s_sw_noprog  - s_sw_hiv_noprog  + s_primary_sw_noprog);
 
+***To smooth incidence lines, take averages across 4 periods;
+lag1_inc_sw=lag(incidence_sw); lag2_inc_sw=lag2(incidence_sw); lag3_inc_sw=lag3(incidence_sw);
+lag1_inc_sw_inprog=lag(incidence_sw_inprog); lag2_inc_sw_inprog=lag2(incidence_sw_inprog); lag3_inc_sw_inprog=lag3(incidence_sw_inprog);
+lag1_inc_sw_noprog=lag(incidence_sw_noprog); lag2_inc_sw_noprog=lag2(incidence_sw_noprog); lag3_inc_sw_noprog=lag3(incidence_sw_noprog);
 
+if cald=int(cald) then cald_yr=cald;
+
+if cald_yr ne . then do;
+mean_sw_inc =(incidence_sw + lag1_inc_sw + lag2_inc_sw + lag3_inc_sw)/4;
+mean_sw_inc_inprog = (incidence_sw_inprog + lag1_inc_sw_inprog + lag2_inc_sw_inprog + lag3_inc_sw_inprog)/4;
+mean_sw_inc_noprog = (incidence_sw_noprog + lag1_inc_sw_noprog + lag2_inc_sw_noprog + lag3_inc_sw_noprog)/4;
+end;
 
 * sti;							p_sti_sw = s_sti_sw/s_sw_1564;
+
+run;
+
 
 
 proc means p50;var incidence_sw;where cald in (2023, 2023.25, 2023.5, 2023.75) and sw_trans_matrix=3;run;
@@ -151,7 +169,7 @@ proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 120;
+%let nfit = 226;
 %let year_end = 2050.00 ;
 run;
 proc sort;by cald option ;run;
@@ -171,7 +189,7 @@ p_fsw_newp0_  av_sw_newp  p_newp_sw
 p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
 prevalence_sw  incidence_sw p_sti_sw incidence1549_
 prop_sw_onprep_prog prop_sw_onprep_noprog
-p_diag_sw_inprog	incidence_sw_inprog	incidence_sw_noprog
+p_diag_sw_inprog	incidence_sw_inprog	incidence_sw_noprog mean_sw_inc mean_sw_inc_inprog mean_sw_inc_noprog
 p_diag_w p_diag_m p_diag;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -213,8 +231,8 @@ run;
 data d;
 merge b
 a1   a2   a3   a4   a5   a6   a7   a8   a9   a10  a11  a12  a13  a14  a15  a16  a17  a18  a19  a20  a21  a22  a23  a24  a25  a26 
-a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42  a43  a44  a45  a46  a47  a48  a49  a50  a51/*  a52 
-a53  a54  a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
+a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42  a43  a44  a45  a46  a47  a48  a49  a50  a51  a52 
+a53  a54 /* a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
 a79  a80  a81  a82  a83  a84  a85  a86  a87  a88  a89  a90  a91  a92  a93  a94  a95  a96  a97  a98  a99  a100 a101 a102 a103 a104
 a105 a106 a107 a108 a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130
 a131 a132 a133 a134 a135 a136 a137 a138 a139 a140 a141 a142 a143 a144 a145 a146 a147 a148 a149 a150 a151 a152 a153 a154 a155 a156
@@ -232,7 +250,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\26feb2024.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\26feb2024b.doc' startpage=never; 
 
 
 proc sgplot data=e; 
@@ -557,6 +575,41 @@ scatter x=cald y=o_HIVIncid1539_fsw_hj / markerattrs = (symbol=circle       colo
 
 run;quit;
 
+***FOR SUNGAI CROI POSTER;
+proc sgplot data=e; 
+
+title    height=1.5 justify=center "HIV incidence amongst female sex workers (FSW) aged 18-39";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2012 to 2024 by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 30 by 5)    valueattrs=(size=10);
+
+label mean_mean_sw_inc  = "Incidence amongst all female sex workers";
+label mean_mean_sw_inc_inprog  = "Incidence amongst female sex workers attending a sex-worker program";
+label mean_mean_sw_inc_noprog  = "Incidence amongst female sex workers not attending a sex-worker program";
+label o_HIVIncid_fsw = "JH JAIDS";
+label o_HIVIncid1824_fsw= "18-24 SAli";
+label o_HIVIncid2539_fsw= "25-39 SAli";
+label o_HIVIncid_fsw_dreams = "DREAMS";
+label o_HIVIncid1539_fsw_hj = "15-39 HJones";
+
+series  x=cald y=mean_mean_sw_inc /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_mean_sw_inc  upper=p95_mean_sw_inc / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for incidence amongst all sex workers ";
+series  x=cald y=mean_mean_sw_inc_inprog /  lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_mean_sw_inc_inprog  upper=p95_mean_sw_inc_inprog / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range for incidence amongst sex workers attendng a program";
+series  x=cald y=mean_mean_sw_inc_noprog /  lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_mean_sw_inc_noprog  upper=p95_mean_sw_inc_noprog / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range for incidence amongst sex workers not attending a program";
+/*
+scatter x=cald y=o_HIVIncid_fsw / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_HIVIncid1824_fsw / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_HIVIncid2539_fsw / markerattrs = (symbol=circle       color=yellow size = 12);
+scatter x=cald y=o_HIVIncid_fsw_dreams / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_HIVIncid1539_fsw_hj / markerattrs = (symbol=circle       color=black size = 12);
+*/
+run;quit;
+
+proc means data=e;var mean_mean_sw_inc_inprog;where cald=2012;run;
+
+proc means data=e;var mean_mean_sw_inc_inprog;where cald=2022;run;
+
 proc sgplot data=e; 
 
 title    height=1.5 justify=center "HIV incidence in general population";
@@ -575,16 +628,43 @@ run;
 
 proc sgplot data=e; 
 
-title    height=1.5 justify=center "HIV PREVALENCE in general population";
+title    height=1.5 justify=center "HIV prevalence in SW";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2040 by 2)       valueattrs=(size=10); 
-yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 2 by 0.2)    valueattrs=(size=10);
+yaxis grid label = '%'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
 
-label p50_incidence1549_ = "Median ";
+label p50_prevalence_sw = "Median ";
+label o_prev_fsw_rds_mut = "RDS Mutare";
+label o_prev_fsw_rds_vf = "RDS Vic Falls";
+label o_prev_fsw_rds_hwa = "RDS Hwange";
+label o_prev_fsw_rds = "RDS Sapphire";
+label o_prev_fsw_AMT = "RDS Amethist";
+
 series  x=cald y=p50_prevalence_sw /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prevalence_sw  upper=p95_prevalence_sw / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+band   x=cald lower=p5_prevalence_sw  upper=p95_prevalence_sw / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_prev_fsw_rds_mut / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_prev_fsw_rds_vf / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_prev_fsw_rds_hwa / markerattrs = (symbol=circle       color=purple size = 12);
+scatter x=cald y=o_prev_fsw_rds / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_prev_fsw_AMT / markerattrs = (symbol=circle       color=black size = 12);
+ 
 
 run;quit;
 
+
+proc sgplot data=e; 
+
+title    height=1.5 justify=center "HIV prevalence";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2040 by 2)       valueattrs=(size=10); 
+yaxis grid label = '%'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
+
+label p50_prevalence1549__ = "Median ";
+
+
+series  x=cald y=p50_prevalence1549__ /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549__ upper=p95_prevalence1549__ / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;quit;
 
 proc sgplot data=e; 
 
@@ -598,16 +678,4 @@ band    x=cald lower=p5_p_diag_w  upper=p95_p_diag_w / transparency=0.9 fillattr
 
 run;quit;
 
-
-proc sgplot data=e; 
-
-title    height=1.5 justify=center "women diagnosed";
-xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2040 by 2)       valueattrs=(size=10); 
-yaxis grid label = '%'          labelattrs=(size=12)    values = (0 to 1 by 0.1)    valueattrs=(size=10);
-
-label p50_incidence1549_ = "Median ";
-series  x=cald y=p50_p_diag_w /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_diag_w  upper=p95_p_diag_w / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
-
-run;quit;
 

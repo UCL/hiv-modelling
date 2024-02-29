@@ -156,8 +156,10 @@ end;
 		 with HIV prevention and care cascades among female sex workers in Zimbabwe: the results of a cluster randomised
 		 trial; 
 if cald=2021.75 then do;
-	o_prev_1824fsw_rds=0.39;		o_prev_2529fsw_rds=0.62;		o_prev_3039fsw_rds=0.76;		o_prev_ov40fsw_rds=0.78;
-end;
+	o_prev_fsw_AMT=0.46;/*
+	o_prev_1824fsw_amt=0.39;		o_prev_2529fsw_amt=0.62;		o_prev_3039fsw_amt=0.76;		o_prev_ov40fsw_amt=0.78;
+*/
+	end;
 
 
 *********************************************************************************************************************
@@ -234,7 +236,7 @@ end;
 *Source: Amethist draft paper 'a risk-differentiated, community-led intervention to strengthen uptake and engagement with
 		 HIV prevention and care cascades among female sex workers in Zimbabwe: the results of a cluster randomised trial 
 		 (Cowan 2023)
-		 (Data taken from spreadsheet shared by Sungail Jan 24, 'HIV_treatment_&_PrEP_cascades');
+		 (Data taken from spreadsheet shared by Sungai Jan 24, 'HIV_treatment_&_PrEP_cascades');
 if cald=2022 then do;
 	obs_p_diag_fsw_AMT=0.89;
 	obs_p_art_fsw_AMT=0.95;
