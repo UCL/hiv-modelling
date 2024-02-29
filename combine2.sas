@@ -8,6 +8,8 @@ s_alive s_alive_m s_alive_w
 discount_3py
 p_hard_reach_w hard_reach_higher_in_men p_hard_reach_m inc_cat 
 
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
+
 s_htn_cost_scr  s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd  
 
@@ -214,6 +216,8 @@ s_alive s_alive_m s_alive_w
 discount_3py
 p_hard_reach_w hard_reach_higher_in_men p_hard_reach_m inc_cat 
 
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
+
 s_htn_cost_scr  s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd  
 
@@ -418,6 +422,8 @@ keep run cald option
 s_alive s_alive_m s_alive_w
 discount_3py
 p_hard_reach_w hard_reach_higher_in_men p_hard_reach_m inc_cat 
+
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
 
 s_htn_cost_scr  s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd  
@@ -829,6 +835,8 @@ s_alive s_alive_m s_alive_w
 discount_3py
 p_hard_reach_w hard_reach_higher_in_men p_hard_reach_m inc_cat 
 
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
+
 s_htn_cost_scr  s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd  
 
@@ -1033,6 +1041,8 @@ keep run cald option
 s_alive s_alive_m s_alive_w
 discount_3py
 p_hard_reach_w hard_reach_higher_in_men p_hard_reach_m inc_cat 
+
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
 
 s_htn_cost_scr  s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd  
@@ -1239,6 +1249,8 @@ s_alive s_alive_m s_alive_w
 discount_3py
 p_hard_reach_w hard_reach_higher_in_men p_hard_reach_m inc_cat 
 
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
+
 s_htn_cost_scr  s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd  
 
@@ -1444,6 +1456,8 @@ s_alive s_alive_m s_alive_w
 discount_3py
 p_hard_reach_w hard_reach_higher_in_men p_hard_reach_m inc_cat 
 
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
+
 s_htn_cost_scr  s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd  
 
@@ -1648,6 +1662,8 @@ keep run cald option
 s_alive s_alive_m s_alive_w
 discount_3py
 p_hard_reach_w hard_reach_higher_in_men p_hard_reach_m inc_cat 
+
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
 
 s_htn_cost_scr  s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd  
