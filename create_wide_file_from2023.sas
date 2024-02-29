@@ -4,7 +4,7 @@
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 *libname b "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check";
 libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v20_2024Feb13_from2023_out";
-data a.base_from2023_20240213;   set b.out:;
+data a.base_from2023_20240213;   set b.out:;run;
 
 /* show the contents of the input SAS file */
 
@@ -31,11 +31,12 @@ proc freq data=a.base_from2023_20240213; table option*cald/norow nocol nopercent
 *run refers to the dataset they are starting from
  We have the following simulations starting from 2023 up to 2072.75:
 	300 simulations (30 for each of the 10 dataset) for option 0
-	90  simulations (9  for each of the 10 dataset) for option 1
-	100 simulations (10 for each of the 10 dataset) for option 10
-
-	90  simulations (8  for each of the 5 dataset) for option 15
-	75  simulations (15  for each of the 5 dataset) for option 16-25;
+	300 simulations (30 for each of the 10 dataset) for option 1
+	150 simulations (15 for each of the 10 dataset) for option 10
+	300 simulations (30 for each of the 10 dataset) for option 11
+	300 simulations (30 for each of the 10 dataset) for option 12
+	90  simulations (18 for each of the 5 dataset) for option 15
+	75  simulations (15 for each of the 5 dataset) for option 16-25;
 
 
 
@@ -1325,7 +1326,7 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_from2023_20240213; set y;
 if cald=. then delete;run;
-*96000;
+*438000;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
