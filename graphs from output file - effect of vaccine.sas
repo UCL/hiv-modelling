@@ -25,7 +25,7 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-%let single_var = p_onart_vl1000_                        ;
+%let single_var = prop_1564_hivneg_onprep                       ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_
@@ -414,35 +414,35 @@ band    x=cald lower=p5_ddaly_3 upper=p95_ddaly_3 / transparency=0.9 fillattrs =
 
 run;quit;
 
-
+*/
 
 ods html;
 proc sgplot data=d ; 
-Title    height=1.5 justify=center "Proportion of people with a PrEP indication taking PrEP";
+Title    height=1.5 justify=center "Proportion of adults age 15-64 taking PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.4       by 0.05    ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.05      by 0.01    ) valueattrs=(size=10);
 
-label p50_prop_elig_on_prep_0 = "no vaccine";
-label p50_prop_elig_on_prep_1 = "vaccine 1";
-label p50_prop_elig_on_prep_2 = "vaccine 2";
-label p50_prop_elig_on_prep_3 = "vaccine 3";
+label p50_prop_1564_hivneg_onprep_0 = "no vaccine";
+label p50_prop_1564_hivneg_onprep_1 = "vaccine 1";
+label p50_prop_1564_hivneg_onprep_2 = "vaccine 2";
+label p50_prop_1564_hivneg_onprep_3 = "vaccine 3";
 
-series  x=cald y=p50_prop_elig_on_prep_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prop_elig_on_prep_0 upper=p95_prop_elig_on_prep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_prop_1564_hivneg_onprep_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_prop_1564_hivneg_onprep_0 upper=p95_prop_1564_hivneg_onprep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_prop_elig_on_prep_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_prop_elig_on_prep_1 upper=p95_prop_elig_on_prep_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_prop_1564_hivneg_onprep_1 / lineattrs = (color=navy thickness = 4);
+band    x=cald lower=p5_prop_1564_hivneg_onprep_1 upper=p95_prop_1564_hivneg_onprep_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
 
-series  x=cald y=p50_prop_elig_on_prep_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_prop_elig_on_prep_2 upper=p95_prop_elig_on_prep_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_prop_1564_hivneg_onprep_2 / lineattrs = (color=blue thickness = 4);
+band    x=cald lower=p5_prop_1564_hivneg_onprep_2 upper=p95_prop_1564_hivneg_onprep_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
 
-series  x=cald y=p50_prop_elig_on_prep_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_prop_elig_on_prep_3 upper=p95_prop_elig_on_prep_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_prop_1564_hivneg_onprep_3 / lineattrs = (color=lightblue thickness = 4);
+band    x=cald lower=p5_prop_1564_hivneg_onprep_3 upper=p95_prop_1564_hivneg_onprep_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
 
 run;quit;
 
 
-
+/*
 
 
 ods html;
@@ -499,7 +499,6 @@ band    x=cald lower=p5_p_onart_diag_3 upper=p95_p_onart_diag_3 / transparency=0
 run;quit;
 
 
-*/
 
 
 ods html;
