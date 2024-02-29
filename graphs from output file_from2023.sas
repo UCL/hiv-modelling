@@ -104,7 +104,7 @@ proc sort;by cald option ;run;
 %let var =  
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive0_
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
-n_sw_1564_	prev_sti_sw
+n_sw_1564_	prev_sti_sw /*n_sw_inprog_ly  n_sw_inprog_ever*/
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
@@ -3129,7 +3129,7 @@ test_proppos_1524w  test_proppos_sw
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*n_sw_inprog_ly  n_sw_inprog_ever*/
 n_sbcc_visit_1564_ 		n_tested_sbcc
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 n_new_vmmc1549m
@@ -3197,7 +3197,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(0,n_sw_inprog_ly);%var_cy(0,n_sw_inprog_ever);*/
 %var_cy(0,n_sbcc_visit_1564_);%var_cy(0,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(0,n_new_vmmc1549m);
@@ -3261,7 +3261,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(1,n_sw_inprog_ly);%var_cy(1,n_sw_inprog_ever);*/
 %var_cy(1,n_sbcc_visit_1564_);%var_cy(1,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(1,n_new_vmmc1549m);
@@ -3324,7 +3324,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(10,n_sw_inprog_ly);%var_cy(10,n_sw_inprog_ever);*/
 %var_cy(10,n_sbcc_visit_1564_);%var_cy(10,n_tested_sbcc);
 
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
@@ -3387,7 +3387,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(11,n_sw_inprog_ly);%var_cy(11,n_sw_inprog_ever);*/
 %var_cy(11,n_sbcc_visit_1564_);%var_cy(11,n_tested_sbcc);
 
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
@@ -3450,7 +3450,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(12,n_sw_inprog_ly);%var_cy(12,n_sw_inprog_ever);*/
 %var_cy(12,n_sbcc_visit_1564_);%var_cy(12,n_tested_sbcc);
 
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
@@ -3512,7 +3512,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(15,n_sw_inprog_ly);%var_cy(15,n_sw_inprog_ever);*/
 %var_cy(15,n_sbcc_visit_1564_);%var_cy(15,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(15,n_new_vmmc1549m);
@@ -3575,7 +3575,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(16,n_sw_inprog_ly);%var_cy(16,n_sw_inprog_ever);*/
 %var_cy(16,n_sbcc_visit_1564_);%var_cy(16,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(16,n_new_vmmc1549m);
@@ -3637,7 +3637,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(17,n_sw_inprog_ly);%var_cy(17,n_sw_inprog_ever);*/
 %var_cy(17,n_sbcc_visit_1564_);%var_cy(17,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(17,n_new_vmmc1549m);
@@ -3699,7 +3699,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(18,n_sw_inprog_ly);%var_cy(18,n_sw_inprog_ever);*/
 %var_cy(18,n_sbcc_visit_1564_);%var_cy(18,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(18,n_new_vmmc1549m);
@@ -3761,7 +3761,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(19,n_sw_inprog_ly);%var_cy(19,n_sw_inprog_ever);*/
 %var_cy(19,n_sbcc_visit_1564_);%var_cy(19,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(19,n_new_vmmc1549m);
@@ -3823,7 +3823,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(20,n_sw_inprog_ly);%var_cy(20,n_sw_inprog_ever);*/
 %var_cy(20,n_sbcc_visit_1564_);%var_cy(20,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(20,n_new_vmmc1549m);
@@ -3885,7 +3885,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(21,n_sw_inprog_ly);%var_cy(21,n_sw_inprog_ever);*/
 %var_cy(21,n_sbcc_visit_1564_);%var_cy(21,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(21,n_new_vmmc1549m);
@@ -3947,7 +3947,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(22,n_sw_inprog_ly);%var_cy(22,n_sw_inprog_ever);*/
 %var_cy(22,n_sbcc_visit_1564_);%var_cy(22,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(22,n_new_vmmc1549m);
@@ -4009,7 +4009,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(23,n_sw_inprog_ly);%var_cy(23,n_sw_inprog_ever);*/
 %var_cy(23,n_sbcc_visit_1564_);%var_cy(23,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(23,n_new_vmmc1549m);
@@ -4071,7 +4071,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(24,n_sw_inprog_ly);%var_cy(24,n_sw_inprog_ever);*/
 %var_cy(24,n_sbcc_visit_1564_);%var_cy(24,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(24,n_new_vmmc1549m);
@@ -4133,7 +4133,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(25,n_sw_inprog_ly);%var_cy(25,n_sw_inprog_ever);*/
 %var_cy(25,n_sbcc_visit_1564_);%var_cy(25,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(25,n_new_vmmc1549m);
@@ -4195,7 +4195,7 @@ run;
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*%var_cy(26,n_sw_inprog_ly);%var_cy(26,n_sw_inprog_ever);*/
 %var_cy(26,n_sbcc_visit_1564_);%var_cy(26,n_tested_sbcc);
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
 %var_cy(26,n_new_vmmc1549m);
@@ -4260,7 +4260,7 @@ l_test_proppos_1524w_&s   l_test_proppos_sw_&s
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*l_n_sw_inprog_ly_&s    		l_n_sw_inprog_ever_&s*/
 l_n_sbcc_visit_1564__&s 		l_n_tested_sbcc_&s
 
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
@@ -4514,8 +4514,8 @@ rename P50_test_proppos_sw_&o = PosRate_FSW1599_M;
 
 
 *** PREVENTION;
-*rename P50_ _&o = NFSWprog_FSW1599_M;
-*rename P50_ _&o = NFSWprogEver_FSW1599_M;
+*rename P50_n_sw_inprog_ly_&o = NFSWprog_FSW1599_M;
+*rename P50_n_sw_inprog_ever_&o = NFSWprogEver_FSW1599_M;
 *Number of adults 15+ years old recipient of SBCC intervention;
 rename P50_n_sbcc_visit_1564__&o = NSBCC_A1599_M;
 *Ntested_SBCC_A1599_M;
@@ -4682,7 +4682,7 @@ P50_test_proppos_1524w_&o   P50_test_proppos_sw_&o
 
 /* DREAMS */
 
-/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+P50_n_sw_inprog_ly_&o 		P50_n_sw_inprog_ever_&o
 P50_n_sbcc_visit_1564__&o      p50_n_tested_sbcc_&o
 
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
