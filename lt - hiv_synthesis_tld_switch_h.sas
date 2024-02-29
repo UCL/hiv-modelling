@@ -18,17 +18,17 @@ Adherence required for viral suppression are higher than those sufficient for se
 
 
 
-*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
+ libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   * here ! ;
+* libname a "&outputdir/";   * here ! ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 10000  ; 
 %let year_interv = 2025;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -17617,7 +17617,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-/*
+
 
 proc freq; tables cald hiv ; where death=.; run;
 
@@ -17630,13 +17630,14 @@ proc print; var art_monitoring_strategy caldate&j dol_pi_fail_by_year_interv f_d
 int_clinic_not_aw restart restart_tm1 vm vl 
 yrart time_since_last_vm value_last_vm  second_vlg1000 date_last_second_vlg1000 eff_prob_vl_meas_done date_last_vlm_g1000  date_vl_switch_eval 
 time_since_last_vm 
-date_v_alert date_conf_vl_measure_done adh r_dol date_res_test_tld  res_test_dol drug_level_test date_drug_level_test reg_option 
+date_v_alert date_conf_vl_measure_done adh r_dol date_res_test_tld  res_test_dol  res_cost  drug_level_test drug_level_test_cost
+date_drug_level_test reg_option 
 ;
   where yrart ne .  and death=. and date_last_second_vlg1000 ne . ;
 run;
 
 
-*/
+
 
 
 
@@ -20405,11 +20406,11 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
 
-data a; set r1;
+data a.fhs; set r1;
 
 
 
-data r1; set a;
+data r1; set a.fhs;
 * 2025;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);

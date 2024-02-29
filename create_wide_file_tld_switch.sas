@@ -1715,6 +1715,7 @@ dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2   dnon_tb_who3_cost_50y_3   dno
 dcot_cost_50y_1  dcot_cost_50y_2   dcot_cost_50y_3   dcot_cost_50y_4   dcot_cost_50y_5   
 dtb_cost_50y_1  dtb_cost_50y_2  dtb_cost_50y_3  dtb_cost_50y_4  dtb_cost_50y_5  
 dres_cost_50y_1  dres_cost_50y_2  dres_cost_50y_3  dres_cost_50y_4  dres_cost_50y_5 
+dcost_drug_level_test_50y_1 dcost_drug_level_test_50y_2 dcost_drug_level_test_50y_3 dcost_drug_level_test_50y_4 dcost_drug_level_test_50y_5 
 dtest_cost_50y_1 dtest_cost_50y_2  dtest_cost_50y_3  dtest_cost_50y_4  dtest_cost_50y_5 
 d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2   d_t_adh_int_cost_50y_3   d_t_adh_int_cost_50y_4   d_t_adh_int_cost_50y_5   
 dswitchline_cost_50y_1  dswitchline_cost_50y_2  dswitchline_cost_50y_3  dswitchline_cost_50y_4  dswitchline_cost_50y_5   
