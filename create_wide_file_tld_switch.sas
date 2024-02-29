@@ -33,6 +33,7 @@ data sf;
 set b.k_tld_switch_f ;
 
 
+
 if cald=2024   ;
 s_alive = s_alive_m + s_alive_w ;
 sf_2023 = 10000000 / s_alive;
