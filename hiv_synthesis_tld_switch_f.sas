@@ -2169,6 +2169,11 @@ who may be dead and hence have caldate{t} missing;
 
 art_mon_strategy_in_options = 1;
 
+
+/*
+
+* ASSUMING SAME POLICY REGARDLESS OF any_vfail_by_year_interv;
+
 if option = 0 then art_monitoring_strategy = 150; * no change ;
 
 if option = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1500;
@@ -2179,7 +2184,23 @@ if option = 3 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar 
 
 if option = 4 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1700;
 
-* note: can also have options where monitoring strategy is different depending on any_vfail_by_year_interv ;
+*/
+
+* CONSIDERING SWITCH ONLY IF any_vfail_by_year_interv = 1 ;
+
+art_monitoring_strategy = 150; 
+if any_vfail_by_year_interv ne 1 then art_monitoring_strategy = 1700; 
+
+if option = 0 then do; end; * no change;                
+
+if option = 1 and any_vfail_by_year_interv = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1500;
+
+if option = 2 and any_vfail_by_year_interv = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 160;
+
+if option = 3 and any_vfail_by_year_interv = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1600;
+
+if option = 4 and any_vfail_by_year_interv = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1700;
+
 
 end;
 
