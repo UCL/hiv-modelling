@@ -1130,7 +1130,7 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 
 proc means  noprint data=e; var &v; output out=y_39 mean= &v._39; by run ; where 2039.0 <= cald <= 2040.0; 
 
-proc means  noprint data=e; var &v; output out=y_69 mean= &v._69; by run ; where 2069.0 <= cald <  2070.0; 
+proc means  noprint data=e; var &v; output out=y_69 mean= &v._69; by run  option ; where 2069.0 <= cald <  2070.0; 
 
 proc means noprint data=e; var &v; output out=y_30y mean= &v._30y; by run option ; where 2040.0 <= cald < 2070.00;   
 																				   
@@ -1497,15 +1497,19 @@ d_prop_prep_inj_30y_2_1 = prop_prep_inj_30y_2 - prop_prep_inj_30y_1 ;
 
 r_incidence1549_30y_2_1 = incidence1549_30y_2 / incidence1549_30y_1 ;
 r_incidence1549_30y_3_1 = incidence1549_30y_3 / incidence1549_30y_1 ;
+r_incidence1549_30y_4_1 = incidence1549_30y_4 / incidence1549_30y_1 ;
 
 d_incidence1549_30y_2_1 = incidence1549_30y_1 - incidence1549_30y_2 ;
 d_incidence1549_30y_3_1 = incidence1549_30y_1 - incidence1549_30y_3 ;
+d_incidence1549_30y_4_1 = incidence1549_30y_1 - incidence1549_30y_4 ;
 
 r_incidence1549_69_2_1 = incidence1549_69_2 / incidence1549_69_1 ;
 r_incidence1549_69_3_1 = incidence1549_69_3 / incidence1549_69_1 ;
+r_incidence1549_69_4_1 = incidence1549_69_4 / incidence1549_69_1 ;
 
 d_incidence1549_69_2_1 = incidence1549_69_1 - incidence1549_69_2 ;
 d_incidence1549_69_3_1 = incidence1549_69_1 - incidence1549_69_3 ;
+d_incidence1549_69_4_1 = incidence1549_69_1 - incidence1549_69_4 ;
 
 d_incidence1549_24_30y_1 = incidence1549_24 - incidence1549_30y_1 ; 
 
@@ -1529,8 +1533,12 @@ dcost_30y_3 = dart_cost_y_30y_3 + dadc_cost_30y_3 + dcd4_cost_30y_3 + dvl_cost_3
 					dcost_circ_30y_3 + dcost_condom_dn_30y_3 + dcost_child_hiv_30y_3 + dcost_non_aids_pre_death_30y_3
 					+ (dcost_prep_visit_oral_30y_3) + (dcost_prep_oral_30y_3) ;
 
-d_dcost_30y_2_1 = dcost_30y_2 - dcost_30y_1;
+dcost_30y_4 = dart_cost_y_30y_4 + dadc_cost_30y_4 + dcd4_cost_30y_4 + dvl_cost_30y_4 + dvis_cost_30y_4 + dnon_tb_who3_cost_30y_4 + 
+					dcot_cost_30y_4 + dtb_cost_30y_4 + dres_cost_30y_4 + dtest_cost_30y_4 + d_t_adh_int_cost_30y_4 + dswitchline_cost_30y_4 + 
+					dcost_circ_30y_4 + dcost_condom_dn_30y_4 + dcost_child_hiv_30y_4 + dcost_non_aids_pre_death_30y_4
+					+ (dcost_prep_visit_oral_30y_4) + (dcost_prep_oral_30y_4) ;
 
+d_dcost_30y_2_1 = dcost_30y_2 - dcost_30y_1;
 d_ddaly_30y_2_1 = ddaly_30y_2 - ddaly_30y_1;
 
 netdaly500_1 = ddaly_30y_1 + (dcost_30y_1 / 0.0005);
@@ -1598,14 +1606,10 @@ run;
 
 proc means  data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;
 var
-r_incidence1549_30y_2_1 
-r_incidence1549_30y_3_1 
-d_incidence1549_30y_2_1 
-d_incidence1549_30y_3_1 
-r_incidence1549_69_2_1 
-r_incidence1549_69_3_1 
-d_incidence1549_69_2_1 
-d_incidence1549_69_3_1 
+r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
+d_incidence1549_30y_2_1 d_incidence1549_30y_3_1  d_incidence1549_30y_4_1 
+r_incidence1549_69_2_1 r_incidence1549_69_3_1  r_incidence1549_69_4_1 
+d_incidence1549_69_2_1 d_incidence1549_69_3_1  d_incidence1549_69_4_1 
 ;
 run;
 
@@ -1613,22 +1617,22 @@ run;
 
 proc means  n mean p5 p95;
 var
-dcost_30y_1 dcost_30y_2 dcost_30y_3 
-dart_cost_y_30y_1  dart_cost_y_30y_2    dart_cost_y_30y_3  
-dadc_cost_30y_1  dadc_cost_30y_2   dadc_cost_30y_3  
-dcd4_cost_30y_1  dcd4_cost_30y_2  dcd4_cost_30y_3  
-dvl_cost_30y_1  dvl_cost_30y_2  dvl_cost_30y_3 
-dvis_cost_30y_1 dvis_cost_30y_2  dvis_cost_30y_3 
-dnon_tb_who3_cost_30y_1  dnon_tb_who3_cost_30y_2  dnon_tb_who3_cost_30y_3   		
-dcot_cost_30y_1  dcot_cost_30y_2    dcot_cost_30y_3   
-dtb_cost_30y_1  dtb_cost_30y_2   dtb_cost_30y_3  
-dtest_cost_30y_1 dtest_cost_30y_2  dtest_cost_30y_3 
-dcost_circ_30y_1  dcost_circ_30y_2  dcost_circ_30y_3 
-dcost_non_aids_pre_death_30y_1 dcost_non_aids_pre_death_30y_2  dcost_non_aids_pre_death_30y_3 
-dcost_prep_visit_oral_30y_1  dcost_prep_visit_oral_30y_2  dcost_prep_visit_oral_30y_3 
-dcost_prep_oral_30y_1 dcost_prep_oral_30y_2 dcost_prep_oral_30y_3 
-dcost_prep_visit_inj_30y_1  dcost_prep_visit_inj_30y_2 dcost_prep_visit_inj_30y_3
-dcost_prep_inj_30y_1 dcost_prep_inj_30y_2  dcost_prep_inj_30y_3 
+dcost_30y_1 dcost_30y_2 dcost_30y_3  dcost_30y_4 
+dart_cost_y_30y_1  dart_cost_y_30y_2    dart_cost_y_30y_3   dart_cost_y_30y_4  
+dadc_cost_30y_1  dadc_cost_30y_2   dadc_cost_30y_3   dadc_cost_30y_4  
+dcd4_cost_30y_1  dcd4_cost_30y_2  dcd4_cost_30y_3   dcd4_cost_30y_4  
+dvl_cost_30y_1  dvl_cost_30y_2  dvl_cost_30y_3  dvl_cost_30y_4 
+dvis_cost_30y_1 dvis_cost_30y_2  dvis_cost_30y_3  dvis_cost_30y_4 
+dnon_tb_who3_cost_30y_1  dnon_tb_who3_cost_30y_2  dnon_tb_who3_cost_30y_3  dnon_tb_who3_cost_30y_4   		
+dcot_cost_30y_1  dcot_cost_30y_2    dcot_cost_30y_3  dcot_cost_30y_4   
+dtb_cost_30y_1  dtb_cost_30y_2   dtb_cost_30y_3  dtb_cost_30y_4  
+dtest_cost_30y_1 dtest_cost_30y_2  dtest_cost_30y_3  dtest_cost_30y_4 
+dcost_circ_30y_1  dcost_circ_30y_2  dcost_circ_30y_3  dcost_circ_30y_4 
+dcost_non_aids_pre_death_30y_1 dcost_non_aids_pre_death_30y_2  dcost_non_aids_pre_death_30y_3  dcost_non_aids_pre_death_30y_4
+dcost_prep_visit_oral_30y_1  dcost_prep_visit_oral_30y_2  dcost_prep_visit_oral_30y_3  dcost_prep_visit_oral_30y_4 
+dcost_prep_oral_30y_1 dcost_prep_oral_30y_2 dcost_prep_oral_30y_3 dcost_prep_oral_30y_4 
+dcost_prep_visit_inj_30y_1  dcost_prep_visit_inj_30y_2 dcost_prep_visit_inj_30y_3 dcost_prep_visit_inj_30y_4
+dcost_prep_inj_30y_1 dcost_prep_inj_30y_2  dcost_prep_inj_30y_3  dcost_prep_inj_30y_4 
 ;
 run;
 
