@@ -1,7 +1,7 @@
 
 * Matt's local machine input;
-libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run100";
-data hiv_synthesis_base; set a.out:;
+libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run101";
+data hiv_synthesis_base(compress=binary); set a.out:;
 /*
 * Myriad input;
 %let sasoutputdir = %scan(&sysparm,1," ");

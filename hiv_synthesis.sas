@@ -1,6 +1,6 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run 99 all;
+* run 102 all;
 * Matt local machine input;
 libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\test';
 %let tmpfilename = out;
@@ -944,7 +944,7 @@ cost_htn_link_voucher = .;
 cost_htn_screen_comm = .;
 cost_htn_visit1 = 0.005;
 cost_htn_visit2 = 0.010;
-cost_htn_visitInt = 0;
+cost_htn_visitInt = 0.5;
 cost_htn_drug1 = 0.0015;
 cost_htn_drug2 = 0.0015;
 cost_htn_drug3 = 0.0030;
@@ -2717,7 +2717,7 @@ who may be dead and hence have caldate{t} missing;
 		* comm test interval;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 50;
+		comm_test_age = 40;
 
 		*relative risk of BP testing at HIV visit if out of hypertension care;
 		rr_test_sbp_hiv =10;
@@ -3586,9 +3586,10 @@ if test_sbp_comm =1 then do;
 	if sbp_comm_m >=140 and visit_hypertension = 1 then htn_cost_scr = htn_cost_scr + cost_htn_link_voucher;
 end;
 if visit_hypertension = 1 then do;
-	if visit = 1 and integration = 1 then htn_cost_clin = cost_htn_visitInt;
-	else if sbp_m <  140 then htn_cost_clin = cost_htn_visit1;
-	else if sbp_m >= 140 then htn_cost_clin = cost_htn_visit2;	
+	if sbp_m <  140 then htn_cost_clin = cost_htn_visit1;
+	if sbp_m >= 140 then htn_cost_clin = cost_htn_visit2;
+
+	if visit = 1 and integration = 1 then htn_cost_clin = htn_cost_clin * cost_htn_visitInt;
 end;
 if on_tx_htn = 1 then htn_cost_drug = cost_htn_drug1;
 if on_tx_htn = 2 then htn_cost_drug = cost_htn_drug1 + cost_htn_drug2;
