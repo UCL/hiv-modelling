@@ -1135,8 +1135,9 @@ proc means  noprint data=e; var &v; output out=y_69 mean= &v._69; by run  option
 proc means noprint data=e; var &v; output out=y_30y mean= &v._30y; by run option ; where 2040.0 <= cald < 2070.00;   
 																				   
 proc sort data=y_30y    ; by run; proc transpose data=y_30y  out=t_30y  prefix=&v._30y_  ; var &v._30y    ; by run; 																																																						
+proc sort data=y_69     ; by run; proc transpose data=y_69   out=t_69   prefix=&v._69_  ; var &v._69     ; by run; 																																																						
 
-data &v ; merge y_24 t_30y y_39 y_69 ;  
+data &v ; merge y_24 t_30y y_39 t_69 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1539,6 +1540,9 @@ dcost_30y_4 = dart_cost_y_30y_4 + dadc_cost_30y_4 + dcd4_cost_30y_4 + dvl_cost_3
 					+ (dcost_prep_visit_oral_30y_4) + (dcost_prep_oral_30y_4) ;
 
 d_dcost_30y_2_1 = dcost_30y_2 - dcost_30y_1;
+d_dcost_30y_3_1 = dcost_30y_3 - dcost_30y_1;
+d_dcost_30y_4_1 = dcost_30y_4 - dcost_30y_1;
+
 d_ddaly_30y_2_1 = ddaly_30y_2 - ddaly_30y_1;
 
 netdaly500_1 = ddaly_30y_1 + (dcost_30y_1 / 0.0005);
@@ -1589,6 +1593,12 @@ p_onart_vl1000_39 = "Of people on ART, proportion with VL < 1000"
   
 ;
 
+label
+r_incidence1549_30y_2_1  = "vaccine_1"  
+r_incidence1549_30y_3_1  = "vaccine_2"  
+r_incidence1549_30y_4_1  = "vaccine_3"  
+;
+
 
 
 * table 1;
@@ -1604,6 +1614,23 @@ var prevalence1549w_39 prevalence1549m_39 incidence1549_39 p_diag_39 p_onart_dia
 run;
 
 
+ods html;
+title "Relative incidence (age 15-49) compared with no vaccine";
+proc means  data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;
+var
+r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
+;
+run;
+ods html close;
+
+
+proc means  data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;
+var
+r_incidence1549_69_2_1 r_incidence1549_69_3_1  r_incidence1549_69_4_1  
+;
+run;
+
+
 proc means  data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;
 var
 r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
@@ -1613,7 +1640,13 @@ d_incidence1549_69_2_1 d_incidence1549_69_3_1  d_incidence1549_69_4_1
 ;
 run;
 
-
+proc means  n mean p5 p95;
+var
+d_dcost_30y_2_1
+d_dcost_30y_3_1
+d_dcost_30y_4_1
+;
+run;
 
 proc means  n mean p5 p95;
 var
