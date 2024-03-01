@@ -2,25 +2,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_f_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_h_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_f_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_h_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_f;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_h;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_tld_switch_f; 
+proc sort data=b.k_tld_switch_h; 
 by run cald option;
 run;
 
@@ -30,7 +30,7 @@ run;
 data sf;
 
 
-set b.k_tld_switch_f ;
+set b.k_tld_switch_h ;
 
 
 
@@ -51,7 +51,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_tld_switch_f sf;
+merge b.k_tld_switch_h sf;
 by run ;
 
 * preparatory code ;
@@ -1163,9 +1163,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_tld_switch_f_y; set y;  
+data    b.l_tld_switch_h_y; set y;  
 
-data y ; set b.l_tld_switch_f_y; 
+data y ; set b.l_tld_switch_h_y; 
 
   options nomprint;
   option nospool;
@@ -1550,7 +1550,7 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 * To get one row per run;
 
-  data  b.w_tld_switch_f     ; 
+  data  b.w_tld_switch_h     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1619,7 +1619,7 @@ if netdaly500_1 < netdaly500_5 then one_vs_five_ce=1; else one_vs_five_ce =0;
 
 * table 1;
 
-proc means   data = b.w_tld_switch_f  n p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_h  n p50 p5 p95 ;  
 var prevalence1549w_25 prevalence1549m_25 incidence1549_25 p_diag_25 p_onart_diag_25 p_onart_vl1000_25 p_vl1000_25 prevalence_vg1000_25   
 prop_artexp_elig_tldsw_25  prop_tldsw_uvl2_25  prop_tldsw_elig_vl1000_25  prop_uvl2_vl1000_25 prop_tldsw_o_dar_25  prop_r_dol_ge_p75_uvl2_25
 p_adh_lt80_iicu_tldsw_25   p_onart_iicu_tldsw_25   p_onart_iicu_uvl2_25   p_adh_lt80_iicu_uvl2_25  p_vis_tldsw_25 p_vis_uvl2_25
@@ -1631,7 +1631,7 @@ p_adh_lt80_iicu_tldsw2_25   p_onart_iicu_tldsw2_25   p_onart_iicu_uvl22_25   p_a
 run;
 
 
-proc means   data = b.w_tld_switch_f  n p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_h  n p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw_10y_1  prop_artexp_elig_tldsw_10y_2  prop_artexp_elig_tldsw_10y_3  prop_artexp_elig_tldsw_10y_4   prop_artexp_elig_tldsw_10y_5  
 prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 prop_tldsw_uvl2_10y_4  prop_tldsw_uvl2_10y_5
@@ -1651,7 +1651,7 @@ d_n_death_hiv_10y_2_1 d_n_death_hiv_10y_3_1 d_n_death_hiv_10y_4_1 d_n_death_hiv_
 run;
 
 
-proc means   data = b.w_tld_switch_f  n p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_h  n p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw1_10y_1  prop_artexp_elig_tldsw1_10y_2  prop_artexp_elig_tldsw1_10y_3  prop_artexp_elig_tldsw1_10y_4   prop_artexp_elig_tldsw1_10y_5  
 prop_tldsw1_uvl21_10y_1 prop_tldsw1_uvl21_10y_2 prop_tldsw1_uvl21_10y_3 prop_tldsw1_uvl21_10y_4  prop_tldsw1_uvl21_10y_5
@@ -1669,7 +1669,7 @@ prop_r_dol_ge_p75_uvl21_10y_1 prop_r_dol_ge_p75_uvl21_10y_2 prop_r_dol_ge_p75_uv
 run;
 
 
-proc means   data = b.w_tld_switch_f  n p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_h  n p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw2_10y_1  prop_artexp_elig_tldsw2_10y_2  prop_artexp_elig_tldsw2_10y_3  prop_artexp_elig_tldsw2_10y_4   prop_artexp_elig_tldsw2_10y_5  
 prop_tldsw2_uvl22_10y_1 prop_tldsw2_uvl22_10y_2 prop_tldsw2_uvl22_10y_3 prop_tldsw2_uvl22_10y_4  prop_tldsw2_uvl22_10y_5
