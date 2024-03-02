@@ -1687,6 +1687,17 @@ run;
 
 
 
+proc glm  data = b.w_tld_switch_i; 
+class adh_pattern;
+model prop_r_dol_ge_p75_uvl2_25 = adh_pattern  pr_res_dol / solution ;
+run;
+
+
+proc glm  data = b.w_tld_switch_i; 
+class adh_pattern;
+model p_adh_lt80_iicu_tldsw_25 = adh_pattern  / solution ;
+run;
+
 
 
 proc means  n mean p5 p95;

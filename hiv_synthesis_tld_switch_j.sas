@@ -18,17 +18,17 @@ Adherence required for viral suppression are higher than those sufficient for se
 
 
 
- libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
+*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";   * here ! ;
+  libname a "&outputdir/";   * here ! ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000  ; 
+%let population = 100000  ; 
 %let year_interv = 2025;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -516,7 +516,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.00	0.00	0.25	0.25	0.25	0.25	0.00) ; * tld_switch;
+								0.00	0.00	0.20	0.20	0.20	0.20	0.20) ; * tld_switch;
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
@@ -560,7 +560,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;	
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							* dependent_on_time_step_length ;
-* pr_res_dol;				%sample_uniform(pr_res_dol, 0.002  0.005 0.010 );   * tld_switch ;      
+* pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  );   * tld_switch ;      
 * rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1 1.5 2  );
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
@@ -2128,9 +2128,9 @@ art_initiation=0;  * started art this period - intentional that this appears in 
 * note that caldate{t} becomes = . when a person dies - need to use caldate_never_dot if want to change value of a population-wide parameter
 value at a certain calendar time;
 
-if t ge 2 and caldate{t-1} < &year_interv + 50 and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
+if t ge 2 and caldate{t-1} < &year_interv + 50  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
-if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
+if t ge 2 and caldate{t-1} < &year_interv + 50  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
 ;
 
 age=age+0.25;  * dependent_on_time_step_length ;
@@ -2183,6 +2183,8 @@ if option = 3 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar 
 
 if option = 4 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1700;
 
+
+
 /*
 
 * CONSIDERING SWITCH ONLY IF any_vfail_by_year_interv = 1 ;
@@ -2201,6 +2203,7 @@ if option = 3 and any_vfail_by_year_interv = 1 and (o_dol=1 or p_dol=1) and (f_t
 if option = 4 and any_vfail_by_year_interv = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1700;
 
 */
+
 
 end;
 
@@ -3081,7 +3084,7 @@ new_vmmc=0;if new_mcirc=1 and birth_circ ne 1 then new_vmmc=1;
 
 * treatment / follow-up status stays the same from t-1 to t, unless changed later in program;
 
-if t ge 2 and death =.  then do;	* removed caldate{t} < 2072.5 clause JAS Jul23;
+if t ge 2 and death =.  then do;	* removed caldate{t} < &year_interv + 50 clause JAS Jul23;
 
 cost=0;cost_test=0;
 
@@ -11949,7 +11952,7 @@ cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_
 
 	cost_drug_level_test = 0;
 
-	if caldate{t} = date_drug_level_test then drug_level_test_cost = cost_drug_level_test;
+	if caldate{t} = date_drug_level_test or drug_level_test =1 then drug_level_test_cost = cost_drug_level_test;
 
 	if t ge 2 and dead_tm1=1 then dead   =.;
 
@@ -17617,7 +17620,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-
+/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
@@ -17626,21 +17629,17 @@ proc freq; tables cald hiv ; where death=.; run;
 * adhav = 0.75; * adhvar=0.20;
 * eff_prob_vl_meas_done=1;
 
-proc print; var options art_monitoring_strategy caldate&j dol_pi_fail_by_year_interv f_dol_tm1 f_dol date_f_dol o_dol o_dar eff_pr_switch_line  visit onart  
+proc print; var art_monitoring_strategy caldate&j dol_pi_fail_by_year_interv f_dol_tm1 f_dol date_f_dol o_dol o_dar eff_pr_switch_line  visit onart  
 int_clinic_not_aw restart restart_tm1 vm vl 
 yrart time_since_last_vm value_last_vm  second_vlg1000 date_last_second_vlg1000 eff_prob_vl_meas_done date_last_vlm_g1000  date_vl_switch_eval 
 time_since_last_vm 
-date_v_alert date_conf_vl_measure_done adh r_dol date_res_test_tld  res_test_dol  res_cost  drug_level_test drug_level_test_cost
-date_drug_level_test reg_option 
+date_v_alert date_conf_vl_measure_done adh r_dol date_res_test_tld  res_test_dol drug_level_test date_drug_level_test reg_option 
 ;
   where yrart ne .  and death=. and date_last_second_vlg1000 ne . ;
 run;
 
-proc freq; tables res_test_dol  res_cost ; run;
 
-
-
-
+*/
 
 
 
@@ -18896,7 +18895,7 @@ s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	
 s_adhl_ge80_uvl21 s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1
 
 s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tldsw2 	s_vl200_tldsw2  s_dead_tldsw2  s_dead_hiv_tldsw2  s_c_tox_tldsw2  s_r_dol_ge_p75_tldsw2 
-s_uvl21_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p75_uvl22 
+s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p75_uvl22 
 s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2
 
 
@@ -19854,7 +19853,7 @@ s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	
 s_adhl_ge80_uvl21 s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1
 
 s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tldsw2 	s_vl200_tldsw2  s_dead_tldsw2  s_dead_hiv_tldsw2  s_c_tox_tldsw2  s_r_dol_ge_p75_tldsw2 
-s_uvl21_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p75_uvl22 
+s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p75_uvl22 
 s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2
 
 
@@ -20219,7 +20218,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-/*
+
 
 * 1989;
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
@@ -20409,84 +20408,84 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
 
-data a.fhs; set r1;
+data a; set r1;
 
-*/
 
-data r1; set a.fhs;
+
+data r1; set a;
 * 2025;
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=1);		
-%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);		
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=1);   
-%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=0);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
@@ -21877,7 +21876,7 @@ s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	
 s_adhl_ge80_uvl21 s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1
 
 s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tldsw2 	s_vl200_tldsw2  s_dead_tldsw2  s_dead_hiv_tldsw2  s_c_tox_tldsw2  s_r_dol_ge_p75_tldsw2 
-s_uvl21_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p75_uvl22 
+s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p75_uvl22 
 s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2
 
 
