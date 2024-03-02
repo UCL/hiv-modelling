@@ -1179,7 +1179,7 @@ data y ; set b.l_tld_switch_i_y;
 data e; set y; keep &v run cald option ;
 
 proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2024.0 <= cald <= 2024.25; 
-proc means  noprint data=e; var &v; output out=y_25 mean= &v._25; by run ; where 2025.0 <= cald <= 2025.25; 
+proc means  noprint data=e; var &v; output out=y_25 mean= &v._25; by run ; where  cald = 2024.5 ; 
 
 proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2025.0 <= cald < 2035.00;   
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2025.0 <= cald < 2075.00;   
@@ -1622,10 +1622,10 @@ proc means   data = b.w_tld_switch_i  n p50 p5 p95 ;
 var prevalence1549w_25 prevalence1549m_25 incidence1549_25 p_diag_25 p_onart_diag_25 p_onart_vl1000_25 p_vl1000_25 prevalence_vg1000_25   
 prop_artexp_elig_tldsw_25  prop_tldsw_uvl2_25  prop_tldsw_elig_vl1000_25  prop_uvl2_vl1000_25 prop_tldsw_o_dar_25  prop_r_dol_ge_p75_uvl2_25
 p_adh_lt80_iicu_tldsw_25   p_onart_iicu_tldsw_25   p_onart_iicu_uvl2_25   p_adh_lt80_iicu_uvl2_25  p_vis_tldsw_25 p_vis_uvl2_25
-prop_artexp_elig_tldsw1_25  prop_tldsw1_uvl21_25  prop_tldsw1_elig_vl1000_25  prop_uvl21_vl1000_25 prop_tldsw1_o_dar_25  prop_r_dol_ge_p75_uvl21_25
+/* prop_artexp_elig_tldsw1_25  prop_tldsw1_uvl21_25  prop_tldsw1_elig_vl1000_25  prop_uvl21_vl1000_25 prop_tldsw1_o_dar_25  prop_r_dol_ge_p75_uvl21_25
 p_adh_lt80_iicu_tldsw1_25   p_onart_iicu_tldsw1_25   p_onart_iicu_uvl21_25   p_adh_lt80_iicu_uvl21_25  p_vis_tldsw1_25 p_vis_uvl21_25
 prop_artexp_elig_tldsw2_25  prop_tldsw2_uvl22_25  prop_tldsw2_elig_vl1000_25  prop_uvl22_vl1000_25 prop_tldsw2_o_dar_25  prop_r_dol_ge_p75_uvl22_25
-p_adh_lt80_iicu_tldsw2_25   p_onart_iicu_tldsw2_25   p_onart_iicu_uvl22_25   p_adh_lt80_iicu_uvl22_25  p_vis_tldsw2_25 p_vis_uvl22_25 
+p_adh_lt80_iicu_tldsw2_25   p_onart_iicu_tldsw2_25   p_onart_iicu_uvl22_25   p_adh_lt80_iicu_uvl22_25  p_vis_tldsw2_25 p_vis_uvl22_25 */
 ;
 run;
 
