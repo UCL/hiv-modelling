@@ -11950,7 +11950,7 @@ cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_
 
 	res_cost=0; if date_res_test_tld = caldate{t} then res_cost=res_cost_a;
 
-	cost_drug_level_test = 0;
+	drug_level_test_cost = 0;
 
 	if caldate{t} = date_drug_level_test or drug_level_test =1 then drug_level_test_cost = cost_drug_level_test;
 
