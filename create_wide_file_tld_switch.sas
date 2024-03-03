@@ -2,25 +2,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_i_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_j_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_i_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_j_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_i;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_j;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_tld_switch_i; 
+proc sort data=b.k_tld_switch_j; 
 by run cald option;
 run;
 
@@ -30,7 +30,7 @@ run;
 data sf;
 
 
-set b.k_tld_switch_i ;
+set b.k_tld_switch_j ;
 
 
 if cald=2024   ;
@@ -50,7 +50,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_tld_switch_i sf;
+merge b.k_tld_switch_j sf;
 by run ;
 
 * preparatory code ;
@@ -820,10 +820,14 @@ run;
 * prev_vg1000_newp_m;			prev_vg1000_newp_m = (s_i_m_newp - s_i_vl1000_m_newp) /  s_m_newp;
 * prev_vg1000_newp_w;			prev_vg1000_newp_w = (s_i_w_newp - s_i_vl1000_w_newp) /  s_w_newp;
 * r_efa_hiv;					if s_hivge15 > 0 then r_efa_hiv = s_r_efa / s_hivge15 ;
+
 * p_dol_2vg1000_dolr1_adh0;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr1_adh0 = s_o_dol_2nd_vlg1000_dolr1_adh0 / s_o_dol_2nd_vlg1000 ;
 * p_dol_2vg1000_dolr1_adh1;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr1_adh1 = s_o_dol_2nd_vlg1000_dolr1_adh1 / s_o_dol_2nd_vlg1000 ;
 * p_dol_2vg1000_dolr0_adh0;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr0_adh0 = s_o_dol_2nd_vlg1000_dolr0_adh0 / s_o_dol_2nd_vlg1000 ;
 * p_dol_2vg1000_dolr0_adh1;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr0_adh1 = s_o_dol_2nd_vlg1000_dolr0_adh1 / s_o_dol_2nd_vlg1000 ;
+
+* p_dol_2vg1000_dolr1 ;			if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr1 = (s_o_dol_2nd_vlg1000_dolr1_adh1 + s_o_dol_2nd_vlg1000_dolr1_adh1)
+																						/ s_o_dol_2nd_vlg1000 ;
 
 * p_iime;						p_iime = s_iime_ / s_hivge15 ;
 * p_pime;						p_pime = s_pime_ / s_hivge15 ;
@@ -1152,7 +1156,7 @@ p_emerge_inm_res_cab_notpr
 
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 
-pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol
+pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  p_dol_2vg1000_dolr1
 ;
 
 
@@ -1162,9 +1166,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_tld_switch_i_y; set y;  
+data    b.l_tld_switch_j_y; set y;  
 
-data y ; set b.l_tld_switch_i_y; 
+data y ; set b.l_tld_switch_j_y; 
 
   options nomprint;
   option nospool;
@@ -1335,7 +1339,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=prop_artexp_elig_tldsw2);  %var(v=prop_tldsw2_uvl22);  %var(v=prop_tldsw2_elig_vl1000); %var(v=prop_uvl22_vl1000); %var(v=prop_tldsw2_o_dar); 
 %var(v=p_adh_lt80_iicu_tldsw2);   %var(v=p_onart_iicu_tldsw2);   %var(v=p_onart_iicu_uvl22);   %var(v=p_adh_lt80_iicu_tldsw2);   %var(v=p_adh_lt80_iicu_uvl22); 
-%var(v=p_vis_tldsw2); %var(v=p_vis_uvl22); %var(v=prop_r_dol_ge_p75_uvl22);
+%var(v=p_vis_tldsw2); %var(v=p_vis_uvl22); %var(v=prop_r_dol_ge_p75_uvl22);  %var(v=p_dol_2vg1000_dolr1);
 
 
 data   b.wide_outputs; merge 
@@ -1377,6 +1381,8 @@ p_adh_lt80_iicu_tldsw1   p_onart_iicu_tldsw1   p_onart_iicu_uvl21   p_adh_lt80_i
 
 prop_artexp_elig_tldsw2  prop_tldsw2_uvl22 prop_tldsw2_elig_vl1000 prop_uvl22_vl1000 prop_tldsw2_o_dar prop_r_dol_ge_p75_uvl22
 p_adh_lt80_iicu_tldsw2   p_onart_iicu_tldsw2   p_onart_iicu_uvl22   p_adh_lt80_iicu_tldsw2   p_adh_lt80_iicu_uvl22 p_vis_tldsw2 p_vis_uvl22
+
+p_dol_2vg1000_dolr1
 ;
 
 
@@ -1549,7 +1555,7 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 * To get one row per run;
 
-  data  b.w_tld_switch_i     ; 
+  data  b.w_tld_switch_j     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1618,10 +1624,10 @@ if netdaly500_1 < netdaly500_5 then one_vs_five_ce=1; else one_vs_five_ce =0;
 
 * table 1;
 
-proc means   data = b.w_tld_switch_i  n p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_j  n p50 p5 p95 ;  
 var prevalence1549w_25 prevalence1549m_25 incidence1549_25 p_diag_25 p_onart_diag_25 p_onart_vl1000_25 p_vl1000_25 prevalence_vg1000_25   
 prop_artexp_elig_tldsw_25  prop_tldsw_uvl2_25  prop_tldsw_elig_vl1000_25  prop_uvl2_vl1000_25 prop_tldsw_o_dar_25  prop_r_dol_ge_p75_uvl2_25
-p_adh_lt80_iicu_tldsw_25   p_onart_iicu_tldsw_25   p_onart_iicu_uvl2_25   p_adh_lt80_iicu_uvl2_25  p_vis_tldsw_25 p_vis_uvl2_25
+p_adh_lt80_iicu_tldsw_25   p_onart_iicu_tldsw_25   p_onart_iicu_uvl2_25   p_adh_lt80_iicu_uvl2_25  p_vis_tldsw_25 p_vis_uvl2_25  p_dol_2vg1000_dolr1_25
 /* prop_artexp_elig_tldsw1_25  prop_tldsw1_uvl21_25  prop_tldsw1_elig_vl1000_25  prop_uvl21_vl1000_25 prop_tldsw1_o_dar_25  prop_r_dol_ge_p75_uvl21_25
 p_adh_lt80_iicu_tldsw1_25   p_onart_iicu_tldsw1_25   p_onart_iicu_uvl21_25   p_adh_lt80_iicu_uvl21_25  p_vis_tldsw1_25 p_vis_uvl21_25
 prop_artexp_elig_tldsw2_25  prop_tldsw2_uvl22_25  prop_tldsw2_elig_vl1000_25  prop_uvl22_vl1000_25 prop_tldsw2_o_dar_25  prop_r_dol_ge_p75_uvl22_25
@@ -1630,7 +1636,7 @@ p_adh_lt80_iicu_tldsw2_25   p_onart_iicu_tldsw2_25   p_onart_iicu_uvl22_25   p_a
 run;
 
 
-proc means   data = b.w_tld_switch_i  n p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_j  n p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw_10y_1  prop_artexp_elig_tldsw_10y_2  prop_artexp_elig_tldsw_10y_3  prop_artexp_elig_tldsw_10y_4   prop_artexp_elig_tldsw_10y_5  
 prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 prop_tldsw_uvl2_10y_4  prop_tldsw_uvl2_10y_5
@@ -1650,7 +1656,7 @@ d_n_death_hiv_10y_2_1 d_n_death_hiv_10y_3_1 d_n_death_hiv_10y_4_1 d_n_death_hiv_
 run;
 
 
-proc means   data = b.w_tld_switch_i  n p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_j  n p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw1_10y_1  prop_artexp_elig_tldsw1_10y_2  prop_artexp_elig_tldsw1_10y_3  prop_artexp_elig_tldsw1_10y_4   prop_artexp_elig_tldsw1_10y_5  
 prop_tldsw1_uvl21_10y_1 prop_tldsw1_uvl21_10y_2 prop_tldsw1_uvl21_10y_3 prop_tldsw1_uvl21_10y_4  prop_tldsw1_uvl21_10y_5
@@ -1668,7 +1674,7 @@ prop_r_dol_ge_p75_uvl21_10y_1 prop_r_dol_ge_p75_uvl21_10y_2 prop_r_dol_ge_p75_uv
 run;
 
 
-proc means   data = b.w_tld_switch_i  n p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_j  n p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw2_10y_1  prop_artexp_elig_tldsw2_10y_2  prop_artexp_elig_tldsw2_10y_3  prop_artexp_elig_tldsw2_10y_4   prop_artexp_elig_tldsw2_10y_5  
 prop_tldsw2_uvl22_10y_1 prop_tldsw2_uvl22_10y_2 prop_tldsw2_uvl22_10y_3 prop_tldsw2_uvl22_10y_4  prop_tldsw2_uvl22_10y_5
@@ -1687,13 +1693,13 @@ run;
 
 
 
-proc glm  data = b.w_tld_switch_i; 
+proc glm  data = b.w_tld_switch_j; 
 class adh_pattern;
 model prop_r_dol_ge_p75_uvl2_25 = adh_pattern  pr_res_dol / solution ;
 run;
 
 
-proc glm  data = b.w_tld_switch_i; 
+proc glm  data = b.w_tld_switch_j; 
 class adh_pattern;
 model p_adh_lt80_iicu_tldsw_25 = adh_pattern  / solution ;
 run;
