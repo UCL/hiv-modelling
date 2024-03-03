@@ -1565,6 +1565,10 @@ d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_5_1 = n_death_hiv_10y_5 - n_death_hiv_10y_1;
 
+d_n_iime_10y_2_1 = n_iime_10y_2 -   n_iime_10y_1 ; 
+d_n_iime_10y_3_1 = n_iime_10y_3 -   n_iime_10y_1 ; 
+d_n_iime_10y_4_1 = n_iime_10y_4 -   n_iime_10y_1 ; 
+d_n_iime_10y_5_1 = n_iime_10y_5 -   n_iime_10y_1 ; 
 
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
@@ -1657,7 +1661,8 @@ p_adh_lt80_iicu_uvl2_10y_1 p_adh_lt80_iicu_uvl2_10y_2 p_adh_lt80_iicu_uvl2_10y_3
 n_death_hiv_10y_1 n_death_hiv_10y_2 n_death_hiv_10y_3 n_death_hiv_10y_4 n_death_hiv_10y_5 
 d_n_death_hiv_10y_2_1 d_n_death_hiv_10y_3_1 d_n_death_hiv_10y_4_1 d_n_death_hiv_10y_5_1
 p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 p_iime_10y_4 p_iime_10y_5 
-n_iime_1 n_iime_2 n_iime_3 n_iime_4 n_iime_5
+n_iime_10y_1 n_iime_10y_2 n_iime_10y_3 n_iime_10y_4 n_iime_10y_5
+d_n_iime_10y_2_1 d_n_iime_10y_3_1 d_n_iime_10y_4_1 d_n_iime_10y_5_1
 ;
 run;
 
