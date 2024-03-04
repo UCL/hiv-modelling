@@ -844,7 +844,8 @@ run;
 * prop_uvl2_vl1000;				prop_uvl2_vl1000 =  s_vl1000_uvl2 /  s_uvl2_elig ;
 * prop_tldsw_o_dar;				prop_tldsw_o_dar = s_o_dar_tldsw / s_tldsw_elig;
 * prop_r_dol_ge_p5_uvl2;		prop_r_dol_ge_p5_uvl2 =  s_r_dol_ge_p5_uvl2 /  s_uvl2_elig ;
-* n_dead_hiv_uvl2;				n_dead_hiv_uvl2 = n_dead_hiv_uvl2 * &sf * 4;
+* n_dead_hiv_uvl2;				n_dead_hiv_uvl2 = s_dead_hiv_uvl2 * &sf * 4;
+* hiv_death_rate_uvl2;			hiv_death_rate_uvl2 = (s_dead_hiv_uvl2 * 4) / s_uvl2_elig ; 
 * p_adh_lt80_iicu_tldsw;		p_adh_lt80_iicu_tldsw = s_adh_lt80_tldsw / s_onart_iicu_tldsw ;
 * p_onart_iicu_tldsw; 			p_onart_iicu_tldsw=  s_onart_iicu_tldsw	/ s_tldsw_elig;
 * p_onart_iicu_uvl2; 			p_onart_iicu_uvl2=  s_onart_iicu_uvl2	/ s_uvl2_elig;
@@ -853,6 +854,7 @@ run;
 * p_vis_tldsw;					p_vis_tldsw = s_vis_tldsw / s_tldsw_elig;
 * p_vis_uvl2;					p_vis_uvl2 = s_vis_uvl2 / s_uvl2_elig;
 * p_cd4_lt200_uvl2;				p_cd4_lt200_uvl2 = s_cd4_lt200_uvl2 / s_uvl2_elig;
+* p_o_dar_uvl2;					p_o_dar_uvl2 = s_o_dar_uvl2 / s_uvl2_elig ;
 
 * prop_artexp_elig_tldsw1;		prop_artexp_elig_tldsw1 = s_tldsw1_elig / s_artexp;
 * prop_tldsw1_uvl21;			prop_tldsw1_uvl21 = s_uvl21_elig / s_tldsw1_elig;
@@ -1109,6 +1111,7 @@ p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_pr
 n_started_prep_inj_hiv n_started_prep_any_hiv   p_prep_adhg80  n_em_inm_res_o_cab
 
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai_naive_no_pmtct_e_inm  p_hivpos_new_dol_r  n_incident_r_dol n_uvl2_elig
+hiv_death_rate_uvl2
 
 prop_artexp_elig_tldsw  prop_tldsw_uvl2 prop_tldsw_elig_vl1000 prop_uvl2_vl1000 prop_tldsw_o_dar prop_r_dol_ge_p5_uvl2
 p_adh_lt80_iicu_tldsw   p_onart_iicu_tldsw   p_onart_iicu_uvl2   p_adh_lt80_iicu_tldsw   p_adh_lt80_iicu_uvl2 p_vis_tldsw p_vis_uvl2 p_cd4_lt200_uvl2
@@ -1163,7 +1166,7 @@ p_emerge_inm_res_cab_notpr
 
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 
-pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  p_dol_2vg1000_dolr1
+pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  p_dol_2vg1000_dolr1  p_o_dar_uvl2
 ;
 
 
@@ -1345,8 +1348,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=prop_artexp_elig_tldsw2);  %var(v=prop_tldsw2_uvl22);  %var(v=prop_tldsw2_elig_vl1000); %var(v=prop_uvl22_vl1000); %var(v=prop_tldsw2_o_dar); 
 %var(v=p_adh_lt80_iicu_tldsw2);   %var(v=p_onart_iicu_tldsw2);   %var(v=p_onart_iicu_uvl22);   %var(v=p_adh_lt80_iicu_tldsw2);   %var(v=p_adh_lt80_iicu_uvl22); 
-%var(v=p_vis_tldsw2); %var(v=p_vis_uvl22); %var(v=prop_r_dol_ge_p5_uvl22);  %var(v=p_dol_2vg1000_dolr1);
-%var(v=p_hivpos_new_dol_r);  %var(v=n_incident_r_dol);  %var(v=n_dead_hivrel_onart); %var(v=p_cd4_lt200_uvl2); %var(v=n_uvl2_elig);
+%var(v=p_vis_tldsw2); %var(v=p_vis_uvl22); %var(v=prop_r_dol_ge_p5_uvl22);  %var(v=p_dol_2vg1000_dolr1);  %var(v=hiv_death_rate_uvl2);
+%var(v=p_hivpos_new_dol_r);  %var(v=n_incident_r_dol);  %var(v=n_dead_hivrel_onart); %var(v=p_cd4_lt200_uvl2); %var(v=n_uvl2_elig); %var(v=p_o_dar_uvl2);
 
 
 data   b.wide_outputs; merge 
@@ -1389,7 +1392,7 @@ p_adh_lt80_iicu_tldsw1   p_onart_iicu_tldsw1   p_onart_iicu_uvl21   p_adh_lt80_i
 prop_artexp_elig_tldsw2  prop_tldsw2_uvl22 prop_tldsw2_elig_vl1000 prop_uvl22_vl1000 prop_tldsw2_o_dar prop_r_dol_ge_p5_uvl22
 p_adh_lt80_iicu_tldsw2   p_onart_iicu_tldsw2   p_onart_iicu_uvl22   p_adh_lt80_iicu_tldsw2   p_adh_lt80_iicu_uvl22 p_vis_tldsw2 p_vis_uvl22
 
-p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_onart  p_cd4_lt200_uvl2 n_uvl2_elig
+p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_onart  p_cd4_lt200_uvl2 n_uvl2_elig hiv_death_rate_uvl2 p_o_dar_uvl2
 ;
 
 
@@ -1620,9 +1623,14 @@ netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
 netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
 netdaly500_3 = ddaly_50y_3 + (dcost_50y_3 / 0.0005);
 netdaly500_4 = ddaly_50y_4 + (dcost_50y_4 / 0.0005);
-netdaly500_5 = ddaly_50y_4 + (dcost_50y_4 / 0.0005);
+netdaly500_5 = ddaly_50y_5 + (dcost_50y_5 / 0.0005);
 
 min_netdaly500 = min(netdaly500_1, netdaly500_2, netdaly500_3, netdaly500_4, netdaly500_5);
+
+d_netdaly500_2_1 = netdaly500_2 - netdaly500_1;
+d_netdaly500_3_1 = netdaly500_3 - netdaly500_1;
+d_netdaly500_4_1 = netdaly500_4 - netdaly500_1;
+d_netdaly500_5_1 = netdaly500_5 - netdaly500_1;
 
 if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
 if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
@@ -1636,7 +1644,7 @@ if netdaly500_1 < netdaly500_5 then one_vs_five_ce=1; else one_vs_five_ce =0;
 
 * table 1;
 
-proc means   data = b.w_tld_switch_l  n mean p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_l  n p50 p5 p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   
 prop_artexp_elig_tldsw_24  prop_tldsw_uvl2_24  prop_tldsw_elig_vl1000_24  prop_uvl2_vl1000_24 prop_tldsw_o_dar_24  prop_r_dol_ge_p5_uvl2_24
 p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24   p_onart_iicu_uvl2_24   p_adh_lt80_iicu_uvl2_24  p_vis_tldsw_24 p_vis_uvl2_24  p_dol_2vg1000_dolr1_24
@@ -1674,7 +1682,11 @@ n_dead_hivrel_onart_10y_1 n_dead_hivrel_onart_10y_2 n_dead_hivrel_onart_10y_3 n_
 p_onart_cd4_l200_10y_1 p_onart_cd4_l200_10y_2 p_onart_cd4_l200_10y_3 p_onart_cd4_l200_10y_4 p_onart_cd4_l200_10y_5 
 p_cd4_lt200_uvl2_10y_1 p_cd4_lt200_uvl2_10y_2 p_cd4_lt200_uvl2_10y_3 p_cd4_lt200_uvl2_10y_4 p_cd4_lt200_uvl2_10y_5 
 n_uvl2_elig_10y_1 n_uvl2_elig_10y_2 n_uvl2_elig_10y_3 n_uvl2_elig_10y_4 n_uvl2_elig_10y_5 
+hiv_death_rate_uvl2_10y_1 hiv_death_rate_uvl2_10y_2 hiv_death_rate_uvl2_10y_3 hiv_death_rate_uvl2_10y_4 hiv_death_rate_uvl2_10y_5 
+p_vl1000_10y_1 p_vl1000_10y_2 p_vl1000_10y_3 p_vl1000_10y_4 p_vl1000_10y_5 
+p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 p_onart_vl1000_10y_3 p_onart_vl1000_10y_4 p_onart_vl1000_10y_5 
 ;
+* p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 p_o_dar_uvl2_10y_3 p_o_dar_uvl2_10y_4 p_o_dar_uvl2_10y_5 ;
 run;
 
 
@@ -1741,6 +1753,7 @@ proc means  n mean p5 p95;
 ddaly_50y_1 ddaly_50y_2  ddaly_50y_3 ddaly_50y_4  ddaly_50y_5   d_ddaly_50y_2_1   d_ddaly_50y_3_1   d_ddaly_50y_4_1   d_ddaly_50y_5_1  
 dcost_50y_1   dcost_50y_2   dcost_50y_3   dcost_50y_4   dcost_50y_5   d_dcost_50y_2_1  d_dcost_50y_3_1  d_dcost_50y_4_1  d_dcost_50y_5_1 
 netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 netdaly500_5 
+d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_4_1 d_netdaly500_5_1 
 ;
 
 run;
@@ -1769,9 +1782,8 @@ dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3  dcost_circ_50y_4  dcost_ci
 dcost_condom_dn_50y_1  dcost_condom_dn_50y_2  dcost_condom_dn_50y_3  dcost_condom_dn_50y_4  dcost_condom_dn_50y_5 
 dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3  dcost_child_hiv_50y_4  dcost_child_hiv_50y_5
 dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2  dcost_non_aids_pre_death_50y_3  dcost_non_aids_pre_death_50y_4  dcost_non_aids_pre_death_50y_5 
-dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2  dcost_prep_visit_oral_50y_3  dcost_prep_visit_oral_50y_4 dcost_prep_visit_oral_50y_5 
+dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3  dcost_prep_visit_50y_4 dcost_prep_visit_50y_5 
 dcost_prep_oral_50y_1 dcost_prep_oral_50y_2  dcost_prep_oral_50y_3  dcost_prep_oral_50y_4  dcost_prep_oral_50y_5 
-dcost_prep_visit_inj_50y_1  dcost_prep_visit_inj_50y_2 dcost_prep_visit_inj_50y_3 dcost_prep_visit_inj_50y_4 dcost_prep_visit_inj_50y_5
 dcost_prep_inj_50y_1 dcost_prep_inj_50y_2  dcost_prep_inj_50y_3  dcost_prep_inj_50y_4  dcost_prep_inj_50y_5 
 ;
 run;
