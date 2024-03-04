@@ -2,25 +2,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_j_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_l_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_j_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_l_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_j;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_l;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_tld_switch_j; 
+proc sort data=b.k_tld_switch_l; 
 by run cald option;
 run;
 
@@ -30,7 +30,8 @@ run;
 data sf;
 
 
-set b.k_tld_switch_j ;
+set b.k_tld_switch_l ;
+
 
 
 if cald=2024   ;
@@ -50,7 +51,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_tld_switch_j sf;
+merge b.k_tld_switch_l sf;
 by run ;
 
 * preparatory code ;
@@ -851,6 +852,7 @@ run;
 * p_adh_lt80_iicu_uvl2 ;		p_adh_lt80_iicu_uvl2  = s_adh_lt80_uvl2  / s_onart_iicu_uvl2  ;
 * p_vis_tldsw;					p_vis_tldsw = s_vis_tldsw / s_tldsw_elig;
 * p_vis_uvl2;					p_vis_uvl2 = s_vis_uvl2 / s_uvl2_elig;
+* p_cd4_lt200_uvl2;				p_cd4_lt200_uvl2 = s_cd4_lt200_uvl2 / s_uvl2_elig;
 
 * prop_artexp_elig_tldsw1;		prop_artexp_elig_tldsw1 = s_tldsw1_elig / s_artexp;
 * prop_tldsw1_uvl21;			prop_tldsw1_uvl21 = s_uvl21_elig / s_tldsw1_elig;
@@ -882,6 +884,9 @@ run;
 * p_vis_tldsw2;					p_vis_tldsw2 = s_vis_tldsw2 / s_tldsw2_elig;
 * p_vis_uvl22;					p_vis_uvl22 = s_vis_uvl21 / s_uvl22_elig;
 
+* n_incident_r_dol;				n_incident_r_dol = s_incident_r_dol * 4 *&sf ;
+* p_hivpos_new_dol_r;			p_hivpos_new_dol_r = s_incident_r_dol / s_hivge15 ;
+* n_uvl2_elig;					n_uvl2_elig = s_uvl2_elig * 4 * &sf ;
 
 * blood pressure;
 
@@ -1025,6 +1030,7 @@ run;
 
 * n_death_hiv;					n_death_hiv = s_death_hiv  * 4* &sf;
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* &sf;
+* n_dead_hivrel_onart;			n_dead_hivrel_onart = s_dead_hivrel_onart * 4 * &sf ;
 * n_death;						n_death = s_dead  * 4 * &sf;
 * n_covid;						n_covid = s_covid  * 4 * &sf;
 * n_death_hivneg_anycause;		n_death_hivneg_anycause = s_dead_hivneg_anycause  * 4 * &sf;
@@ -1079,10 +1085,10 @@ prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw in
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
 p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
-p_ten p_zdv p_dol p_3tc p_lpr p_nev p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  
+p_ten p_zdv p_dol p_3tc p_lpr p_nev p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  p_onart_cd4_l200
 p_vl1000_art_12m p_vl1000_art_12m_onart  p_onart_vl1000_w p_onart_vl1000_m  p_startedline2 p_linefail_ge1 m15r  m25r  m35r  m45r  m55r  w15r  
 w25r  w35r  w45r  w55r p_onart_cd4_l500  prop_art_or_prep  prop_prep_tot5yrs prop_sw_onprep   p_onart p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz death_rate_hiv 
-death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w p_iime n_infected_inm n_iime
+death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w  n_dead_hivrel_onart  p_iime n_infected_inm n_iime
 n_tested n_tested_sw test_prop_positive p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  
 p_prep_any_ever p_hiv1_prep  p_hiv1_prep_inj p_hiv1_prep_oral   incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
 prop_prep_inj   ratio_inj_prep_on_tail    pr_ever_prep_inj_res_cab    pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab    prop_cab_res_tail    
@@ -1102,10 +1108,10 @@ death_rate_hiv death_rate_hiv_all  n_onart  n_art_or_prep n_prep_inj n_death_hiv
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj n_start_rest_prep_inj_hiv  prop_hivneg_onprep
 n_started_prep_inj_hiv n_started_prep_any_hiv   p_prep_adhg80  n_em_inm_res_o_cab
 
-p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai_naive_no_pmtct_e_inm
+p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai_naive_no_pmtct_e_inm  p_hivpos_new_dol_r  n_incident_r_dol n_uvl2_elig
 
 prop_artexp_elig_tldsw  prop_tldsw_uvl2 prop_tldsw_elig_vl1000 prop_uvl2_vl1000 prop_tldsw_o_dar prop_r_dol_ge_p5_uvl2
-p_adh_lt80_iicu_tldsw   p_onart_iicu_tldsw   p_onart_iicu_uvl2   p_adh_lt80_iicu_tldsw   p_adh_lt80_iicu_uvl2 p_vis_tldsw p_vis_uvl2
+p_adh_lt80_iicu_tldsw   p_onart_iicu_tldsw   p_onart_iicu_uvl2   p_adh_lt80_iicu_tldsw   p_adh_lt80_iicu_uvl2 p_vis_tldsw p_vis_uvl2 p_cd4_lt200_uvl2
 
 prop_artexp_elig_tldsw1  prop_tldsw1_uvl21 prop_tldsw1_elig_vl1000 prop_uvl21_vl1000 prop_tldsw1_o_dar prop_r_dol_ge_p5_uvl21
 p_adh_lt80_iicu_tldsw1   p_onart_iicu_tldsw1   p_onart_iicu_uvl21   p_adh_lt80_iicu_tldsw1   p_adh_lt80_iicu_uvl21 p_vis_tldsw1 p_vis_uvl21
@@ -1167,9 +1173,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_tld_switch_j_y; set y;  
+data    b.l_tld_switch_l_y; set y;  
 
-data y ; set b.l_tld_switch_j_y; 
+data y ; set b.l_tld_switch_l_y; 
 
   options nomprint;
   option nospool;
@@ -1244,7 +1250,7 @@ drop _NAME_ _TYPE_ _FREQ_;
   %var(v=dcost_clin_care );    %var(v=dcost_non_aids_pre_death );    %var(v=dcost_child_hiv );    %var(v=dzdv_cost );     %var(v=dten_cost );     %var(v=d3tc_cost );   
   %var(v=dnev_cost );     %var(v=dlpr_cost );     %var(v=ddar_cost );     %var(v=dtaz_cost );      %var(v=defa_cost );     %var(v=ddol_cost );
 %var(v=m15r);  %var(v=m25r);  %var(v=m35r);  %var(v=m45r);  %var(v=m55r);  %var(v=w15r);  %var(v=w25r);  %var(v=w35r);  %var(v=w45r);  %var(v=w55r)
-* %var(v=r_efa_hiv); * %var(v=p_onart_cd4_l200);
+* %var(v=r_efa_hiv);   %var(v=p_onart_cd4_l200);
 * %var(v=p_dol_2vg1000_dolr1_adh0); * %var(v=p_dol_2vg1000_dolr1_adh1); * %var(v=p_dol_2vg1000_dolr0_adh0); * %var(v=p_dol_2vg1000_dolr0_adh1);
 %var(v=p_onart_cd4_l500);  %var(v=prop_art_or_prep);  * %var(v=n_sw_1564); * %var(v=n_sw_1549);   %var(v=prop_sw_onprep);   %var(v=p_onart);
 * %var(v=p_o_zdv_tox);   * %var(v=p_o_3tc_tox);   * %var(v=p_o_ten_tox);   * %var(v=p_o_taz_tox);   * %var(v=p_o_lpr_tox);   * %var(v=p_o_efa_tox);   
@@ -1340,6 +1346,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prop_artexp_elig_tldsw2);  %var(v=prop_tldsw2_uvl22);  %var(v=prop_tldsw2_elig_vl1000); %var(v=prop_uvl22_vl1000); %var(v=prop_tldsw2_o_dar); 
 %var(v=p_adh_lt80_iicu_tldsw2);   %var(v=p_onart_iicu_tldsw2);   %var(v=p_onart_iicu_uvl22);   %var(v=p_adh_lt80_iicu_tldsw2);   %var(v=p_adh_lt80_iicu_uvl22); 
 %var(v=p_vis_tldsw2); %var(v=p_vis_uvl22); %var(v=prop_r_dol_ge_p5_uvl22);  %var(v=p_dol_2vg1000_dolr1);
+%var(v=p_hivpos_new_dol_r);  %var(v=n_incident_r_dol);  %var(v=n_dead_hivrel_onart); %var(v=p_cd4_lt200_uvl2); %var(v=n_uvl2_elig);
 
 
 data   b.wide_outputs; merge 
@@ -1354,7 +1361,7 @@ prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw in
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
 p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
-p_ten p_zdv p_dol p_3tc p_lpr p_nev p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  
+p_ten p_zdv p_dol p_3tc p_lpr p_nev p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  p_onart_cd4_l200
 p_vl1000_art_12m p_vl1000_art_12m_onart  p_onart_vl1000_w p_onart_vl1000_m  p_startedline2 p_linefail_ge1 m15r  m25r  m35r  m45r  m55r  w15r  
 w25r  w35r  w45r  w55r p_onart_cd4_l500  prop_art_or_prep  prop_sw_onprep   p_onart p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz death_rate_hiv 
 death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w p_iime n_infected_inm n_iime
@@ -1382,7 +1389,7 @@ p_adh_lt80_iicu_tldsw1   p_onart_iicu_tldsw1   p_onart_iicu_uvl21   p_adh_lt80_i
 prop_artexp_elig_tldsw2  prop_tldsw2_uvl22 prop_tldsw2_elig_vl1000 prop_uvl22_vl1000 prop_tldsw2_o_dar prop_r_dol_ge_p5_uvl22
 p_adh_lt80_iicu_tldsw2   p_onart_iicu_tldsw2   p_onart_iicu_uvl22   p_adh_lt80_iicu_tldsw2   p_adh_lt80_iicu_uvl22 p_vis_tldsw2 p_vis_uvl22
 
-p_dol_2vg1000_dolr1 p_pime
+p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_onart  p_cd4_lt200_uvl2 n_uvl2_elig
 ;
 
 
@@ -1555,7 +1562,7 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 * To get one row per run;
 
-  data  b.w_tld_switch_j     ; 
+  data  b.w_tld_switch_l     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1627,15 +1634,13 @@ if netdaly500_1 < netdaly500_5 then one_vs_five_ce=1; else one_vs_five_ce =0;
 
 
 
-
-
 * table 1;
 
-proc means   data = b.w_tld_switch_j  n mean p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_l  n mean p50 p5 p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   
 prop_artexp_elig_tldsw_24  prop_tldsw_uvl2_24  prop_tldsw_elig_vl1000_24  prop_uvl2_vl1000_24 prop_tldsw_o_dar_24  prop_r_dol_ge_p5_uvl2_24
 p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24   p_onart_iicu_uvl2_24   p_adh_lt80_iicu_uvl2_24  p_vis_tldsw_24 p_vis_uvl2_24  p_dol_2vg1000_dolr1_24
-p_dol_24 p_iime_24  n_iime_24
+p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24
 /* prop_artexp_elig_tldsw1_24  prop_tldsw1_uvl21_24  prop_tldsw1_elig_vl1000_24  prop_uvl21_vl1000_24 prop_tldsw1_o_dar_24  prop_r_dol_ge_p5_uvl21_24
 p_adh_lt80_iicu_tldsw1_24   p_onart_iicu_tldsw1_24   p_onart_iicu_uvl21_24   p_adh_lt80_iicu_uvl21_24  p_vis_tldsw1_24 p_vis_uvl21_24
 prop_artexp_elig_tldsw2_24  prop_tldsw2_uvl22_24  prop_tldsw2_elig_vl1000_24  prop_uvl22_vl1000_24 prop_tldsw2_o_dar_24  prop_r_dol_ge_p5_uvl22_24
@@ -1644,7 +1649,7 @@ p_adh_lt80_iicu_tldsw2_24   p_onart_iicu_tldsw2_24   p_onart_iicu_uvl22_24   p_a
 run;
 
 
-proc means   data = b.w_tld_switch_j  n mean p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_l  n mean p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw_10y_1  prop_artexp_elig_tldsw_10y_2  prop_artexp_elig_tldsw_10y_3  prop_artexp_elig_tldsw_10y_4   prop_artexp_elig_tldsw_10y_5  
 prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 prop_tldsw_uvl2_10y_4  prop_tldsw_uvl2_10y_5
@@ -1657,17 +1662,23 @@ p_adh_lt80_iicu_tldsw_10y_1  p_adh_lt80_iicu_tldsw_10y_2  p_adh_lt80_iicu_tldsw_
 p_onart_iicu_tldsw_10y_1  p_onart_iicu_tldsw_10y_2  p_onart_iicu_tldsw_10y_3  p_onart_iicu_tldsw_10y_4  p_onart_iicu_tldsw_10y_5    
 p_onart_iicu_uvl2_10y_1   p_onart_iicu_uvl2_10y_2   p_onart_iicu_uvl2_10y_3   p_onart_iicu_uvl2_10y_4   p_onart_iicu_uvl2_10y_5   
 p_adh_lt80_iicu_uvl2_10y_1 p_adh_lt80_iicu_uvl2_10y_2 p_adh_lt80_iicu_uvl2_10y_3 p_adh_lt80_iicu_uvl2_10y_4 p_adh_lt80_iicu_uvl2_10y_5 
-/* prop_r_dol_ge_p5_uvl2_10y_1 prop_r_dol_ge_p5_uvl2_10y_2 prop_r_dol_ge_p5_uvl2_10y_3 prop_r_dol_ge_p5_uvl2_10y_4 prop_r_dol_ge_p5_uvl2_10y_5 */
+prop_r_dol_ge_p5_uvl2_10y_1 prop_r_dol_ge_p5_uvl2_10y_2 prop_r_dol_ge_p5_uvl2_10y_3 prop_r_dol_ge_p5_uvl2_10y_4 prop_r_dol_ge_p5_uvl2_10y_5 
 n_death_hiv_10y_1 n_death_hiv_10y_2 n_death_hiv_10y_3 n_death_hiv_10y_4 n_death_hiv_10y_5 
 d_n_death_hiv_10y_2_1 d_n_death_hiv_10y_3_1 d_n_death_hiv_10y_4_1 d_n_death_hiv_10y_5_1
 p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 p_iime_10y_4 p_iime_10y_5 
 n_iime_10y_1 n_iime_10y_2 n_iime_10y_3 n_iime_10y_4 n_iime_10y_5
 d_n_iime_10y_2_1 d_n_iime_10y_3_1 d_n_iime_10y_4_1 d_n_iime_10y_5_1
+p_hivpos_new_dol_r_10y_1 p_hivpos_new_dol_r_10y_2 p_hivpos_new_dol_r_10y_3 p_hivpos_new_dol_r_10y_4 p_hivpos_new_dol_r_10y_5 
+n_incident_r_dol_10y_1 n_incident_r_dol_10y_2 n_incident_r_dol_10y_3 n_incident_r_dol_10y_4 n_incident_r_dol_10y_5 
+n_dead_hivrel_onart_10y_1 n_dead_hivrel_onart_10y_2 n_dead_hivrel_onart_10y_3 n_dead_hivrel_onart_10y_4 n_dead_hivrel_onart_10y_5 
+p_onart_cd4_l200_10y_1 p_onart_cd4_l200_10y_2 p_onart_cd4_l200_10y_3 p_onart_cd4_l200_10y_4 p_onart_cd4_l200_10y_5 
+p_cd4_lt200_uvl2_10y_1 p_cd4_lt200_uvl2_10y_2 p_cd4_lt200_uvl2_10y_3 p_cd4_lt200_uvl2_10y_4 p_cd4_lt200_uvl2_10y_5 
+n_uvl2_elig_10y_1 n_uvl2_elig_10y_2 n_uvl2_elig_10y_3 n_uvl2_elig_10y_4 n_uvl2_elig_10y_5 
 ;
 run;
 
 
-proc means   data = b.w_tld_switch_j  n mean p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_l  n mean p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw1_10y_1  prop_artexp_elig_tldsw1_10y_2  prop_artexp_elig_tldsw1_10y_3  prop_artexp_elig_tldsw1_10y_4   prop_artexp_elig_tldsw1_10y_5  
 prop_tldsw1_uvl21_10y_1 prop_tldsw1_uvl21_10y_2 prop_tldsw1_uvl21_10y_3 prop_tldsw1_uvl21_10y_4  prop_tldsw1_uvl21_10y_5
@@ -1685,7 +1696,7 @@ prop_r_dol_ge_p5_uvl21_10y_1 prop_r_dol_ge_p5_uvl21_10y_2 prop_r_dol_ge_p5_uvl21
 run;
 
 
-proc means   data = b.w_tld_switch_j  n mean p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_l  n mean p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw2_10y_1  prop_artexp_elig_tldsw2_10y_2  prop_artexp_elig_tldsw2_10y_3  prop_artexp_elig_tldsw2_10y_4   prop_artexp_elig_tldsw2_10y_5  
 prop_tldsw2_uvl22_10y_1 prop_tldsw2_uvl22_10y_2 prop_tldsw2_uvl22_10y_3 prop_tldsw2_uvl22_10y_4  prop_tldsw2_uvl22_10y_5
@@ -1704,19 +1715,19 @@ run;
 
 
 
-proc glm  data = b.w_tld_switch_j; 
+proc glm  data = b.w_tld_switch_l; 
 class adh_pattern;
 model prop_r_dol_ge_p5_uvl2_24 = adh_pattern  pr_res_dol / solution ;
 run;
 
 
-proc glm  data = b.w_tld_switch_j; 
+proc glm  data = b.w_tld_switch_l; 
 class adh_pattern;
 model p_adh_lt80_iicu_tldsw_24 = adh_pattern  / solution ;
 run;
 
 
-proc means data = b.w_tld_switch_j mean stderr; 
+proc means data = b.w_tld_switch_l mean stderr; 
 var 
 p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 p_iime_10y_4 p_iime_10y_5 
 p_iime_50y_1 p_iime_50y_2 p_iime_50y_3 p_iime_50y_4 p_iime_50y_5 
