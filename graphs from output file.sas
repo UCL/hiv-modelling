@@ -1,6 +1,6 @@
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_c_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_m_out\";
 
 
 proc printto ;
@@ -8,7 +8,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_tld_switch_c_y;
+set a.l_tld_switch_m_y;
 
 
 * for this program, variable names cannot end on a number;
@@ -27,9 +27,10 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 prop_tldsw_elig_vl1000_ = prop_tldsw_elig_vl1000;
 prop_uvl2_vl1000_ = prop_uvl2_vl1000 ;
+hiv_death_rate_uvl2_ = hiv_death_rate_uvl2 * 100;
 
 
-%let single_var = prop_uvl2_vl1000_                      ;
+%let single_var = hiv_death_rate_uvl2_                      ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_
@@ -40,7 +41,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 1495   ;
+%let nfit = 3478   ;
 
 %let year_end = 2070.00 ;
 run;
@@ -395,7 +396,6 @@ run;quit;
 
 * ods html close;
 
-*/
 
 
 ods html;
@@ -428,6 +428,44 @@ band    x=cald lower=p5_prop_uvl2_vl1000__4 upper=p95_prop_uvl2_vl1000__4 / tran
 run;quit;
 
 * ods html close;
+
+*/
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Of those who have experienced sustained unsuppressed VL on TLD since 2025, rate of HIV-related death";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Rate per 100 person years'		labelattrs=(size=12)  values = (0 to  10      by   1     ) valueattrs=(size=10);
+
+label mean_hiv_death_rate_uvl2__0 = "option 1";
+label mean_hiv_death_rate_uvl2__1 = "option 2";
+label mean_hiv_death_rate_uvl2__2 = "option 3";
+label mean_hiv_death_rate_uvl2__3 = "option 4";
+label mean_hiv_death_rate_uvl2__4 = "option 5";
+
+series  x=cald y=mean_hiv_death_rate_uvl2__0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_hiv_death_rate_uvl2__0 upper=p95_hiv_death_rate_uvl2__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=mean_hiv_death_rate_uvl2__1 / lineattrs = (color=navy thickness = 4);
+band    x=cald lower=p5_hiv_death_rate_uvl2__1 upper=p95_hiv_death_rate_uvl2__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+
+series  x=cald y=mean_hiv_death_rate_uvl2__2 / lineattrs = (color=blue thickness = 4);
+band    x=cald lower=p5_hiv_death_rate_uvl2__2 upper=p95_hiv_death_rate_uvl2__2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+
+series  x=cald y=mean_hiv_death_rate_uvl2__3 / lineattrs = (color=lightblue thickness = 4);
+band    x=cald lower=p5_hiv_death_rate_uvl2__3 upper=p95_hiv_death_rate_uvl2__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+
+series  x=cald y=mean_hiv_death_rate_uvl2__4 / lineattrs = (color=black     thickness = 4);
+band    x=cald lower=p5_hiv_death_rate_uvl2__4 upper=p95_hiv_death_rate_uvl2__4 / transparency=0.9 fillattrs = (color=black    ) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
+
+
 
 /*
 

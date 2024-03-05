@@ -10,7 +10,7 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_m_out\";
 
 
-data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
+data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 data b.k_tld_switch_m;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
@@ -1571,8 +1571,7 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
   by run;
 
 * consider: ;
-* if prevalence1549_24 < 0.3 and incidence1549_24 >= 0.1;
-
+if 0.03 <= prevalence1549_24 < 0.3 and incidence1549_24 >= 0.1;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1695,6 +1694,38 @@ run;
 
 proc means   data = b.w_tld_switch_m  n mean p50 p5 p95 ;  
 var 
+prop_artexp_elig_tldsw_50y_1  prop_artexp_elig_tldsw_50y_2  prop_artexp_elig_tldsw_50y_3  prop_artexp_elig_tldsw_50y_4   prop_artexp_elig_tldsw_50y_5  
+prop_tldsw_uvl2_50y_1 prop_tldsw_uvl2_50y_2 prop_tldsw_uvl2_50y_3 prop_tldsw_uvl2_50y_4  prop_tldsw_uvl2_50y_5
+prop_tldsw_elig_vl1000_50y_1  prop_tldsw_elig_vl1000_50y_2  prop_tldsw_elig_vl1000_50y_3  prop_tldsw_elig_vl1000_50y_4  prop_tldsw_elig_vl1000_50y_5
+prop_uvl2_vl1000_50y_1 prop_uvl2_vl1000_50y_2 prop_uvl2_vl1000_50y_3 prop_uvl2_vl1000_50y_4 prop_uvl2_vl1000_50y_5
+prop_tldsw_o_dar_50y_1 prop_tldsw_o_dar_50y_2 prop_tldsw_o_dar_50y_3 prop_tldsw_o_dar_50y_4  prop_tldsw_o_dar_50y_5
+p_vis_tldsw_50y_1 p_vis_tldsw_50y_2 p_vis_tldsw_50y_3 p_vis_tldsw_50y_4 p_vis_tldsw_50y_5 
+p_vis_uvl2_50y_1 p_vis_uvl2_50y_2 p_vis_uvl2_50y_3 p_vis_uvl2_50y_4 p_vis_uvl2_50y_5 
+p_adh_lt80_iicu_tldsw_50y_1  p_adh_lt80_iicu_tldsw_50y_2  p_adh_lt80_iicu_tldsw_50y_3  p_adh_lt80_iicu_tldsw_50y_4  p_adh_lt80_iicu_tldsw_50y_5   
+p_onart_iicu_tldsw_50y_1  p_onart_iicu_tldsw_50y_2  p_onart_iicu_tldsw_50y_3  p_onart_iicu_tldsw_50y_4  p_onart_iicu_tldsw_50y_5    
+p_onart_iicu_uvl2_50y_1   p_onart_iicu_uvl2_50y_2   p_onart_iicu_uvl2_50y_3   p_onart_iicu_uvl2_50y_4   p_onart_iicu_uvl2_50y_5   
+p_adh_lt80_iicu_uvl2_50y_1 p_adh_lt80_iicu_uvl2_50y_2 p_adh_lt80_iicu_uvl2_50y_3 p_adh_lt80_iicu_uvl2_50y_4 p_adh_lt80_iicu_uvl2_50y_5 
+prop_r_dol_ge_p5_uvl2_50y_1 prop_r_dol_ge_p5_uvl2_50y_2 prop_r_dol_ge_p5_uvl2_50y_3 prop_r_dol_ge_p5_uvl2_50y_4 prop_r_dol_ge_p5_uvl2_50y_5 
+n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 n_death_hiv_50y_4 n_death_hiv_50y_5 
+p_iime_50y_1 p_iime_50y_2 p_iime_50y_3 p_iime_50y_4 p_iime_50y_5 
+n_iime_50y_1 n_iime_50y_2 n_iime_50y_3 n_iime_50y_4 n_iime_50y_5
+p_hivpos_new_dol_r_50y_1 p_hivpos_new_dol_r_50y_2 p_hivpos_new_dol_r_50y_3 p_hivpos_new_dol_r_50y_4 p_hivpos_new_dol_r_50y_5 
+n_incident_r_dol_50y_1 n_incident_r_dol_50y_2 n_incident_r_dol_50y_3 n_incident_r_dol_50y_4 n_incident_r_dol_50y_5 
+n_dead_hivrel_onart_50y_1 n_dead_hivrel_onart_50y_2 n_dead_hivrel_onart_50y_3 n_dead_hivrel_onart_50y_4 n_dead_hivrel_onart_50y_5 
+p_onart_cd4_l200_50y_1 p_onart_cd4_l200_50y_2 p_onart_cd4_l200_50y_3 p_onart_cd4_l200_50y_4 p_onart_cd4_l200_50y_5 
+p_cd4_lt200_uvl2_50y_1 p_cd4_lt200_uvl2_50y_2 p_cd4_lt200_uvl2_50y_3 p_cd4_lt200_uvl2_50y_4 p_cd4_lt200_uvl2_50y_5 
+n_uvl2_elig_50y_1 n_uvl2_elig_50y_2 n_uvl2_elig_50y_3 n_uvl2_elig_50y_4 n_uvl2_elig_50y_5 
+hiv_death_rate_uvl2_50y_1 hiv_death_rate_uvl2_50y_2 hiv_death_rate_uvl2_50y_3 hiv_death_rate_uvl2_50y_4 hiv_death_rate_uvl2_50y_5 
+p_vl1000_50y_1 p_vl1000_50y_2 p_vl1000_50y_3 p_vl1000_50y_4 p_vl1000_50y_5 
+p_onart_vl1000_50y_1 p_onart_vl1000_50y_2 p_onart_vl1000_50y_3 p_onart_vl1000_50y_4 p_onart_vl1000_50y_5 
+p_o_dar_uvl2_50y_1 p_o_dar_uvl2_50y_2 p_o_dar_uvl2_50y_3 p_o_dar_uvl2_50y_4 p_o_dar_uvl2_50y_5
+; 
+run;
+
+
+
+proc means   data = b.w_tld_switch_m  n mean p50 p5 p95 ;  
+var 
 prop_artexp_elig_tldsw1_10y_1  prop_artexp_elig_tldsw1_10y_2  prop_artexp_elig_tldsw1_10y_3  prop_artexp_elig_tldsw1_10y_4   prop_artexp_elig_tldsw1_10y_5  
 prop_tldsw1_uvl21_10y_1 prop_tldsw1_uvl21_10y_2 prop_tldsw1_uvl21_10y_3 prop_tldsw1_uvl21_10y_4  prop_tldsw1_uvl21_10y_5
 prop_tldsw1_elig_vl1000_10y_1  prop_tldsw1_elig_vl1000_10y_2  prop_tldsw1_elig_vl1000_10y_3  prop_tldsw1_elig_vl1000_10y_4  prop_tldsw1_elig_vl1000_10y_5
@@ -1750,7 +1781,7 @@ p_iime_50y_1 p_iime_50y_2 p_iime_50y_3 p_iime_50y_4 p_iime_50y_5
 run;
 
 
-proc means  n mean p5 p95;
+proc means data = b.w_tld_switch_m  n mean p5 p95;
   var 
                 
 ddaly_50y_1 ddaly_50y_2  ddaly_50y_3 ddaly_50y_4  ddaly_50y_5   d_ddaly_50y_2_1   d_ddaly_50y_3_1   d_ddaly_50y_4_1   d_ddaly_50y_5_1  
@@ -1792,28 +1823,50 @@ dcost_prep_inj_50y_1 dcost_prep_inj_50y_2  dcost_prep_inj_50y_3  dcost_prep_inj_
 run;
 
 
-* NOTE this is an analysis on file y ;
 
-proc glm data=y;
+proc univariate  data = b.w_tld_switch_m; 
+var 
+d_ddaly_50y_2_1   d_ddaly_50y_3_1   d_ddaly_50y_4_1   d_ddaly_50y_5_1   
+d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_4_1 d_netdaly500_5_1 
+; 
+run;
+
+
+
+
+
+
+* NOTE this is an analysis on file b.l_tld_switch_m_y ;
+
+proc glm b.l_tld_switch_m_y;
 class option;
 model p_iime = option / solution;
 where 2025 <= cald < 2035;
 run;
 
 
-
-proc glm data=y;
+proc glm b.l_tld_switch_m_y;
 class option;
 model prop_r_dol_ge_p75_tldsw = option / solution;
 where 2025 <= cald < 2035;
 run;
 
 
-proc glm data=y;
+proc glm b.l_tld_switch_m_y;
 class option;
 model n_hiv = option / solution;
 where 2025 <= cald < 2035;
 run;
+
+
+proc glm data = b.l_tld_switch_m_y;
+class option;
+model ddaly = option / solution;
+where 2025 <= cald < 2075;
+run;
+
+
+
 
 
 
