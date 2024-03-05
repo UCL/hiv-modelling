@@ -1688,8 +1688,8 @@ n_uvl2_elig_10y_1 n_uvl2_elig_10y_2 n_uvl2_elig_10y_3 n_uvl2_elig_10y_4 n_uvl2_e
 hiv_death_rate_uvl2_10y_1 hiv_death_rate_uvl2_10y_2 hiv_death_rate_uvl2_10y_3 hiv_death_rate_uvl2_10y_4 hiv_death_rate_uvl2_10y_5 
 p_vl1000_10y_1 p_vl1000_10y_2 p_vl1000_10y_3 p_vl1000_10y_4 p_vl1000_10y_5 
 p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 p_onart_vl1000_10y_3 p_onart_vl1000_10y_4 p_onart_vl1000_10y_5 
-;
-* p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 p_o_dar_uvl2_10y_3 p_o_dar_uvl2_10y_4 p_o_dar_uvl2_10y_5 ;
+p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 p_o_dar_uvl2_10y_3 p_o_dar_uvl2_10y_4 p_o_dar_uvl2_10y_5
+; 
 run;
 
 
