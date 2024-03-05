@@ -220,6 +220,7 @@ cost_clin_care = dcost_clin_care / discount;
 cost = dcost / discount;
 
 
+
 * checks;
 
 * proc print; 
@@ -1569,6 +1570,9 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
+* consider: ;
+* if prevalence1549_24 < 0.3 and incidence1549_24 >= 0.1;
+
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1586,28 +1590,27 @@ d_n_iime_10y_5_1 = n_iime_10y_5 -   n_iime_10y_1 ;
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
 					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1
-					+ (dcost_prep_visit_oral_50y_1) + (dcost_prep_oral_50y_1) 
-;			
+					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1;			
 
 dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
 					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
 					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2
-					+ (dcost_prep_visit_oral_50y_2) + (dcost_prep_oral_50y_2) ;
+					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2;
 
 dcost_50y_3 = dart_cost_y_50y_3 + dadc_cost_50y_3 + dcd4_cost_50y_3 + dvl_cost_50y_3 + dvis_cost_50y_3 + dnon_tb_who3_cost_50y_3 + 
 					dcot_cost_50y_3 + dtb_cost_50y_3 + dres_cost_50y_3 + dtest_cost_50y_3 + d_t_adh_int_cost_50y_3 + dswitchline_cost_50y_3 + 
 					dcost_circ_50y_3 + dcost_condom_dn_50y_3 + dcost_child_hiv_50y_3 + dcost_non_aids_pre_death_50y_3
-					+ (dcost_prep_visit_oral_50y_3) + (dcost_prep_oral_50y_3) ;
+					+ dcost_prep_visit_50y_3 + dcost_prep_50y_3;
 
 dcost_50y_4 = dart_cost_y_50y_4 + dadc_cost_50y_4 + dcd4_cost_50y_4 + dvl_cost_50y_4 + dvis_cost_50y_4 + dnon_tb_who3_cost_50y_4 + 
 					dcot_cost_50y_4 + dtb_cost_50y_4 + dres_cost_50y_4 + dtest_cost_50y_4 + d_t_adh_int_cost_50y_4 + dswitchline_cost_50y_4 + 
 					dcost_circ_50y_4 + dcost_condom_dn_50y_4 + dcost_child_hiv_50y_4 + dcost_non_aids_pre_death_50y_4
-					+ (dcost_prep_visit_oral_50y_4) + (dcost_prep_oral_50y_4) ;
+					+ dcost_prep_visit_50y_4 + dcost_prep_50y_4;
 
 dcost_50y_5 = dart_cost_y_50y_5 + dadc_cost_50y_5 + dcd4_cost_50y_5 + dvl_cost_50y_5 + dvis_cost_50y_5 + dnon_tb_who3_cost_50y_5 + 
 					dcot_cost_50y_5 + dtb_cost_50y_5 + dres_cost_50y_5 + dtest_cost_50y_5 + d_t_adh_int_cost_50y_5 + dswitchline_cost_50y_5 + 
 					dcost_circ_50y_5 + dcost_condom_dn_50y_5 + dcost_child_hiv_50y_5 + dcost_non_aids_pre_death_50y_5
-					+ (dcost_prep_visit_oral_50y_5) + (dcost_prep_oral_50y_5) ;
+					+ dcost_prep_visit_50y_5 + dcost_prep_50y_5;
 
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
 d_dcost_50y_3_1 = dcost_50y_3 - dcost_50y_1;
@@ -1787,9 +1790,6 @@ dcost_prep_oral_50y_1 dcost_prep_oral_50y_2  dcost_prep_oral_50y_3  dcost_prep_o
 dcost_prep_inj_50y_1 dcost_prep_inj_50y_2  dcost_prep_inj_50y_3  dcost_prep_inj_50y_4  dcost_prep_inj_50y_5 
 ;
 run;
-
-
-
 
 
 * NOTE this is an analysis on file y ;
