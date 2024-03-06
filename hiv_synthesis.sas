@@ -635,6 +635,26 @@ end;
 end;
 
 
+* OTHER PROGRAMS;
+
+* MENS HEALTH CLINICS - modelled as a percentage of men who attend a men only health clinic. These men are have reduced attrition compared to 
+	men who initiated care at other clinics;	*JAS Mar2024;
+
+* mens_clinics;				mens_clinics = 1;
+* prop_attend_mens_clinic;	prop_attend_mens_clinic = 0.05;		* 5% of men aged 15+ access care via men only health clinics;
+* rel_attr_mens_clinic;		rel_attr_mens_clinic = 0.71;		* HR = 0.71 (Cassidy et al AIDS Behav 2022);
+
+
+
+* sbcc_program;				sbcc_program = 1;
+* p_reached_sbcc_1524m; 	*%sample(p_reached_sbcc_1524m, 0.005  0.007 0.009, 0.25 0.5 0.25);
+							%sample(p_reached_sbcc_1524m, 0.0125 0.0175 0.0225, 0.25 0.5 0.25);
+* fold_sbcc_agyw;			fold_sbcc_agyw=10;
+* fold_sbcc_2564_;			*fold_sbcc_2564_=0.25;fold_sbcc_2564_=0.1;
+* prob_red_newp_sbcc_prog;	*%sample(prob_red_newp_sbcc_prog, 0.08 0.13 0.19, 0.25 0.5 0.25);
+							 %sample(prob_red_newp_sbcc_prog, 0.24 0.52 0.76, 0.25 0.5 0.25);
+* sbcc_effect_duration;		%sample(sbcc_effect_duration, 1.5 3 5 10 20,0.5 0.25 0.15 0.07 0.03);*The duration is from the date_1st_sbcc_prog_vis;
+
 
 * CIRCUMCISION;
 
@@ -1018,6 +1038,7 @@ cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ;
 sw_program_cost = 0.010 ; * placeholder; *consider varying by intensity;
+*mens_clinic_cost * placeholder - per person reached; * JAS Mar24;
 cost_antihyp = 0.0015; * cost per 3 months of anti-hypertensive drug (in $1000) ;
 cost_vis_hypert = 0.0015; * clinic cost per hypertension visit (in $1000);
 
@@ -1931,6 +1952,15 @@ prep_inj_willing = 0;
 prep_vr_willing = 0; 	
 prep_any_willing = 0; 
 
+prep_any = 0;			
+prep_oral = 0;
+prep_inj = 0;
+prep_vr = 0;
+
+tot_yrs_prep_any = 0;	
+tot_yrs_prep_oral = 0;
+tot_yrs_prep_inj = 0;
+tot_yrs_prep_vr = 0;
 
 if cab_time_to_lower_threshold_g = 1 then do; * the tail is conceptualized as the time when levels are above 75% of therapeutic dose;
 	aa=rand('uniform'); 
@@ -1943,26 +1973,19 @@ if cab_time_to_lower_threshold_g = 2 then do;
 end;
 
 
+* ATTENDANCE AT MENS HEALTH CLINICS;	*JAS Mar24;
+* Assigned to all men regardless of age, men may attend clinics at 15+;
+if gender=1 then do; 
+	attend_mens_clinic = 0;
+	if rand('uniform')<prop_attend_mens_clinic then attend_mens_clinic = 1;
+end;
 
 hiv=0;
 nip=0;
 pcp_p  = 0;
 
-prep_any = 0;			
-prep_oral = 0;
-prep_inj = 0;
-prep_vr = 0;
-
-tot_yrs_prep_any = 0;	
-tot_yrs_prep_oral = 0;
-tot_yrs_prep_inj = 0;
-tot_yrs_prep_vr = 0;
-
 tcur=.;
 dead_tm1=0;
-
-
-
 
 
 ***LBM21 Assume a proportion of men were circumcised at birth prior to 1989; 
@@ -2170,6 +2193,7 @@ who may be dead and hence have caldate{t} missing;
 		*SBCC: not explicitly modelled, but the switch off is;
 		*condom_incr_year_i=2;    		*Switches off SBCC;
 		circ_inc_rate_year_i = 2;		*No VMMC;
+		mens_clinics = 0;				*No mens health clinics;
 
 		*Prep;
 		prep_any_strategy=0;
@@ -2221,6 +2245,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 12 then do;*Increase in Condom use promotion and provision;
 	end;
 	if option = 13 then do;*General population mens health clinics (for men from the general population);
+		mens_clinics = 1;				*Mens health clinics switched on;	*JAS Mar24;
 	end;
 	if option = 14 then do;*VMMC in 15-49 years old;
 	end;
@@ -8220,6 +8245,7 @@ res_test=.;
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
 		if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then prointer = prointer * 1.5; * mar19;  
+		if mens_clinics=1 and attend_mens_clinic=1 then prointer = prointer * rel_attr_mens_clinic;		*JAS Mar24; 
 		r=rand('uniform');if r < prointer then do; 
 				interrupt_choice   =1; 
 				int_clinic_not_aw=0; f=rand('uniform'); if f < clinic_not_aw_int_frac then int_clinic_not_aw=1;
@@ -16279,7 +16305,8 @@ outc_ten3tc_r_f_1_3=0; if outc_ten3tc_r_f_1 =3 then outc_ten3tc_r_f_1_3=1;outc_t
 outc_ten3tc_r_f_1_5=0; if outc_ten3tc_r_f_1 =5 then outc_ten3tc_r_f_1_5=1;outc_ten3tc_r_f_1_6=0; if outc_ten3tc_r_f_1 = 6 then outc_ten3tc_r_f_1_6=1;
 outc_ten3tc_r_f_1_7=0; if outc_ten3tc_r_f_1 =7 then outc_ten3tc_r_f_1_7=1;
 
-
+* Number attending mens clinics;
+art_mens_clinic=0; if mens_clinics=1 and age ge 15 and attend_mens_clinic=1 and onart=1 then art_mens_clinic=1;
 
 ***Pregnancy outcomes;
 pregnant_vlg1000 = 0;
@@ -17111,6 +17138,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
 
 	s_onartvisit0 + onartvisit0; s_onartvisit0_vl1000 + onartvisit0_vl1000;
+	s_art_mens_clinic + art_mens_clinic;
 
 
 
@@ -17593,6 +17621,19 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 proc freq; tables country cald hiv ; where death=.; run;
 
 */
+
+
+/*
+proc print; var caldate&j gender age mens_clinics prop_attend_mens_clinic rel_attr_mens_clinic attend_mens_clinic hiv onart prointer art_mens_clinic s_art_mens_clinic; 
+where gender=1 and age>15 and hiv>0 and death = .; 
+run;
+
+proc freq; tables attend_mens_clinic art_mens_clinic; where gender=1 and age>15 and death = .; run;
+
+proc means ; var prointer; where gender=1 and age ge 15 and art_mens_clinic=1 and death = . ; run;
+proc means ; var prointer; where gender=1 and age ge 15 and art_mens_clinic ne 1 and death = . ; run;
+*/
+
 
 /*
 
@@ -18839,6 +18880,7 @@ s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_in
 s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
+s_art_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
@@ -19806,6 +19848,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m  s_infected_inm s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
+s_art_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
@@ -20961,6 +21004,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in155m s_infected_in263m  s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0  s_onartvisit0_vl1000
+s_art_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
