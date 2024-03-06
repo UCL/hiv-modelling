@@ -637,10 +637,10 @@ end;
 
 * OTHER PROGRAMS;
 
-* MENS HEALTH CLINICS - modelled as a percentage of men who attend a men only health clinic. These men are have reduced attrition compared to 
+* MENS HEALTH CLINICS - modelled as a percentage of men who attend a men only health clinic. These men have reduced attrition on ART compared to 
 	men who initiated care at other clinics;	*JAS Mar2024;
 
-* mens_clinics;				mens_clinics = 1;
+* mens_clinics;				mens_clinics = 0;
 * prop_attend_mens_clinic;	prop_attend_mens_clinic = 0.05;		* 5% of men aged 15+ access care via men only health clinics;
 * rel_attr_mens_clinic;		rel_attr_mens_clinic = 0.71;		* HR = 0.71 (Cassidy et al AIDS Behav 2022);
 
