@@ -2160,7 +2160,7 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 * INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
-option = 17;	* Delete when used - JAS Nov23;
+option = 0;	* Delete when used - JAS Nov23;
 mihpsa_params_set_in_options=0;				* JAS Oct23;
 
 if caldate_never_dot >= &year_interv then do;
@@ -2193,6 +2193,7 @@ who may be dead and hence have caldate{t} missing;
 		*SBCC: not explicitly modelled, but the switch off is;
 		*condom_incr_year_i=2;    		*Switches off SBCC;
 		circ_inc_rate_year_i = 2;		*No VMMC;
+		rel_prob_circ_mihpsa=1;			*No change in prob_circ;
 		mens_clinics = 0;				*No mens health clinics;
 
 		*Prep;
@@ -2248,6 +2249,8 @@ who may be dead and hence have caldate{t} missing;
 		mens_clinics = 1;				*Mens health clinics switched on;	*JAS Mar24;
 	end;
 	if option = 14 then do;*VMMC in 15-49 years old;
+		circ_inc_rate_year_i=0;
+		%sample_uniform(rel_prob_circ_mihpsa, 2 5 10);
 	end;
 
 	*PrEP interventions;	*JAS Apr2023 and Oct23;
@@ -3228,6 +3231,9 @@ if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*o
       prob_circ = 0;test_link_circ_prob=0;
     end;
 end;
+
+if mihpsa_params_set_in_options=1 and t ge 2 and &year_interv <= caldate{t} < (&year_interv+4) and gender=1 and 15 <= age < 50 then prob_circ = prob_circ*rel_prob_circ_mihpsa;
+
 
 ***Zim specific;	*JAS Feb24;
 if country = 'Zimbabwe' then do;
@@ -17624,6 +17630,13 @@ proc freq; tables country cald hiv ; where death=.; run;
 
 
 /*
+proc print; var caldate&j gender age rel_prob_circ_mihpsa prob_circ; 
+where gender=1 and age>15 and serial_no<100 and death = .; 
+run;
+*/
+
+
+/*
 proc print; var caldate&j gender age mens_clinics prop_attend_mens_clinic rel_attr_mens_clinic attend_mens_clinic hiv onart prointer art_mens_clinic s_art_mens_clinic; 
 where gender=1 and age>15 and hiv>0 and death = .; 
 run;
@@ -19110,7 +19123,8 @@ res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_lo
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
+rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b 
+circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50	rel_prob_circ_mihpsa
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
@@ -21234,7 +21248,8 @@ res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14  circ_inc_15_19  circ_red_20_30  circ_red_30_50
+rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b 
+circ_inc_rate circ_red_10_14  circ_inc_15_19  circ_red_20_30  circ_red_30_50	rel_prob_circ_mihpsa
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
