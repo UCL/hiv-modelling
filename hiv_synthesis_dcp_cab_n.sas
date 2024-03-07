@@ -11,10 +11,6 @@
 
 
 
-prob_prep_b_dcp  , effect_dcp_pref_prep and rate_test_startprep_any_dcp
-
-
-
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
