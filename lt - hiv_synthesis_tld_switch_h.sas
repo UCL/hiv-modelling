@@ -2056,7 +2056,6 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 * options mprint;
 
 
-
 * primary - currently in primary infection;
 array caldate{8} caldate&g-caldate&h; * calendar date 1980.00 , 1980.25, etc;
 * adh is the adherence between t-1 and t, not from t to t+1;
@@ -2080,6 +2079,9 @@ if t ge 2 then caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time
 * ts1m ; * change this line to: 
 caldate_never_dot = caldate_never_dot + (1/12);
 
+if &j ge 145 then do;
+  call streaminit(123);
+end;
 
  * note that age variable continues to increase after death so need to be aware of death status - dont try to change this without
 careful checking of whether serial_no = obs 
@@ -20138,6 +20140,10 @@ s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp ;
 
 data r&da2; set r&da2; 
 
+if &j ge 145 then do;
+  call streaminit(123);
+end;
+
 /*if age  >= lowest_age_at_start;*/		* commented out to prevent dead people being removed from overall dataset when age=. JAS Aug23;
 
 
@@ -20418,9 +20424,9 @@ data a.fhs; set r1;
 data r1; set a.fhs;
 
 * 2025;
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=4);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=4);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=4); 
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=4); 
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=4); 
 %update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=4);
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=4);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=4);

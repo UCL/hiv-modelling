@@ -1583,7 +1583,6 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 
 * NOTE;
-* if 0.05 <= prevalence1549_24 ;
   if p_onart_vl1000_24 < 0.97;
 
 
@@ -1702,7 +1701,6 @@ p_adh_lt80_iicu_tldsw1_24   p_onart_iicu_tldsw1_24   p_onart_iicu_uvl21_24   p_a
 prop_artexp_elig_tldsw2_24  prop_tldsw2_uvl22_24  prop_tldsw2_elig_vl1000_24  prop_uvl22_vl1000_24 prop_tldsw2_o_dar_24  prop_r_dol_ge_p5_uvl22_24
 p_adh_lt80_iicu_tldsw2_24   p_onart_iicu_tldsw2_24   p_onart_iicu_uvl22_24   p_adh_lt80_iicu_uvl22_24  p_vis_tldsw2_24 p_vis_uvl22_24 */
 ;
-where adh_pattern=7;
 run;
 
 
@@ -1844,14 +1842,12 @@ run;
 
 
 proc means data = b.w_tld_switch_o  n mean p5 p95;
-  var 
-                
+  var               
 ddaly_50y_1 ddaly_50y_2  ddaly_50y_3 ddaly_50y_4  ddaly_50y_5   d_ddaly_50y_2_1   d_ddaly_50y_3_1   d_ddaly_50y_4_1   d_ddaly_50y_5_1  
 dcost_50y_1   dcost_50y_2   dcost_50y_3   dcost_50y_4   dcost_50y_5   d_dcost_50y_2_1  d_dcost_50y_3_1  d_dcost_50y_4_1  d_dcost_50y_5_1 
 netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 netdaly500_5 
 d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_4_1 d_netdaly500_5_1 
 ;
-where adh_pattern=7;
 run;
 
 proc freq; tables lowest_netdaly one_vs_five_ce lowest_ddaly  lowest_dcost; 
