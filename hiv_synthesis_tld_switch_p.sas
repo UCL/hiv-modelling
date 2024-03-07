@@ -8772,24 +8772,18 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 	e=rand('uniform');
 
-	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3*2   then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2*2   then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1*2   then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.6     then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.4     then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.2     then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 50 <= age      and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
 
-	* _n6_ ;
-	if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2*2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=2 and 20 <= age < 25 and adh < 0.8 and e < 0.1/2 then adh=0.90;
-	if gender=2 and 25 <= age < 30 and adh < 0.8 and e < 0.3/2 then adh=0.90;
-	if gender=2 and 30 <= age < 35 and adh < 0.8 and e < 0.5/2 then adh=0.90;
-	if gender=2 and 35 <= age < 40 and adh < 0.8 and e < 0.8/2 then adh=0.90;
-	if gender=2 and 40 <= age < 45 and adh < 0.8 and e < 0.8/2 then adh=0.90;
-	if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.8/2 then adh=0.90;
-	if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9/2 then adh=0.90;
+	if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.4   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=2 and 20 <= age < 25 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+
 
 	/*  ***adh tld_switch - this replaced as above - becuase seems like overall p_onart_vl1000 is on the high side
 
