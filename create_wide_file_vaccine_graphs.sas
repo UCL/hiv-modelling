@@ -1130,15 +1130,74 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 
 proc means  noprint data=e; var &v; output out=y_39 mean= &v._39; by run ; where 2039.0 <= cald <= 2040.0; 
 
+proc means  noprint data=e; var &v; output out=y_40 mean= &v._40; by run  option ; where 2040.0 <= cald <  2041.0; 
+proc means  noprint data=e; var &v; output out=y_41 mean= &v._41; by run  option ; where 2041.0 <= cald <  2042.0; 
+proc means  noprint data=e; var &v; output out=y_42 mean= &v._42; by run  option ; where 2042.0 <= cald <  2043.0; 
+proc means  noprint data=e; var &v; output out=y_43 mean= &v._43; by run  option ; where 2043.0 <= cald <  2044.0; 
+proc means  noprint data=e; var &v; output out=y_44 mean= &v._44; by run  option ; where 2044.0 <= cald <  2045.0; 
+proc means  noprint data=e; var &v; output out=y_45 mean= &v._45; by run  option ; where 2045.0 <= cald <  2046.0; 
+proc means  noprint data=e; var &v; output out=y_46 mean= &v._46; by run  option ; where 2046.0 <= cald <  2047.0; 
+proc means  noprint data=e; var &v; output out=y_47 mean= &v._47; by run  option ; where 2047.0 <= cald <  2048.0; 
+proc means  noprint data=e; var &v; output out=y_48 mean= &v._48; by run  option ; where 2048.0 <= cald <  2049.0; 
+proc means  noprint data=e; var &v; output out=y_49 mean= &v._49; by run  option ; where 2049.0 <= cald <  2050.0; 
+proc means  noprint data=e; var &v; output out=y_50 mean= &v._50; by run  option ; where 2050.0 <= cald <  2051.0; 
+proc means  noprint data=e; var &v; output out=y_51 mean= &v._51; by run  option ; where 2051.0 <= cald <  2052.0; 
+proc means  noprint data=e; var &v; output out=y_52 mean= &v._52; by run  option ; where 2052.0 <= cald <  2053.0; 
+proc means  noprint data=e; var &v; output out=y_53 mean= &v._53; by run  option ; where 2053.0 <= cald <  2054.0; 
+proc means  noprint data=e; var &v; output out=y_54 mean= &v._54; by run  option ; where 2054.0 <= cald <  2055.0; 
+proc means  noprint data=e; var &v; output out=y_55 mean= &v._55; by run  option ; where 2055.0 <= cald <  2056.0; 
+proc means  noprint data=e; var &v; output out=y_56 mean= &v._56; by run  option ; where 2056.0 <= cald <  2057.0; 
+proc means  noprint data=e; var &v; output out=y_57 mean= &v._57; by run  option ; where 2057.0 <= cald <  2058.0; 
+proc means  noprint data=e; var &v; output out=y_58 mean= &v._58; by run  option ; where 2058.0 <= cald <  2059.0; 
+proc means  noprint data=e; var &v; output out=y_59 mean= &v._59; by run  option ; where 2059.0 <= cald <  2060.0; 
+proc means  noprint data=e; var &v; output out=y_60 mean= &v._60; by run  option ; where 2060.0 <= cald <  2061.0; 
+proc means  noprint data=e; var &v; output out=y_61 mean= &v._61; by run  option ; where 2061.0 <= cald <  2062.0; 
+proc means  noprint data=e; var &v; output out=y_62 mean= &v._62; by run  option ; where 2062.0 <= cald <  2063.0; 
+proc means  noprint data=e; var &v; output out=y_63 mean= &v._63; by run  option ; where 2063.0 <= cald <  2064.0; 
+proc means  noprint data=e; var &v; output out=y_64 mean= &v._64; by run  option ; where 2064.0 <= cald <  2065.0; 
+proc means  noprint data=e; var &v; output out=y_65 mean= &v._65; by run  option ; where 2065.0 <= cald <  2066.0; 
+proc means  noprint data=e; var &v; output out=y_66 mean= &v._66; by run  option ; where 2066.0 <= cald <  2067.0; 
+proc means  noprint data=e; var &v; output out=y_67 mean= &v._67; by run  option ; where 2067.0 <= cald <  2068.0; 
+proc means  noprint data=e; var &v; output out=y_68 mean= &v._68; by run  option ; where 2068.0 <= cald <  2069.0; 
 proc means  noprint data=e; var &v; output out=y_69 mean= &v._69; by run  option ; where 2069.0 <= cald <  2070.0; 
 
 proc means noprint data=e; var &v; output out=y_30y mean= &v._30y; by run option ; where 2040.0 <= cald < 2070.00;   
 																				   
 proc sort data=y_30y    ; by run; proc transpose data=y_30y  out=t_30y  prefix=&v._30y_  ; var &v._30y    ; by run; 																																																						
-																																																
+
+proc sort data=y_40     ; by run; proc transpose data=y_40   out=t_40   prefix=&v._40_  ; var &v._40     ; by run; 																																																						
+proc sort data=y_41     ; by run; proc transpose data=y_41   out=t_41   prefix=&v._41_  ; var &v._41     ; by run; 																																																						
+proc sort data=y_42     ; by run; proc transpose data=y_42   out=t_42   prefix=&v._42_  ; var &v._42     ; by run; 																																																						
+proc sort data=y_43     ; by run; proc transpose data=y_43   out=t_43   prefix=&v._43_  ; var &v._43     ; by run; 																																																						
+proc sort data=y_44     ; by run; proc transpose data=y_44   out=t_44   prefix=&v._44_  ; var &v._44     ; by run; 																																																						
+proc sort data=y_45     ; by run; proc transpose data=y_45   out=t_45   prefix=&v._45_  ; var &v._45     ; by run; 																																																						
+proc sort data=y_46     ; by run; proc transpose data=y_46   out=t_46   prefix=&v._46_  ; var &v._46     ; by run; 																																																						
+proc sort data=y_47     ; by run; proc transpose data=y_47   out=t_47   prefix=&v._47_  ; var &v._47     ; by run; 																																																						
+proc sort data=y_48     ; by run; proc transpose data=y_48   out=t_48   prefix=&v._48_  ; var &v._48     ; by run; 																																																						
+proc sort data=y_49     ; by run; proc transpose data=y_49   out=t_49   prefix=&v._49_  ; var &v._49     ; by run; 																																																						
+proc sort data=y_50     ; by run; proc transpose data=y_50   out=t_50   prefix=&v._50_  ; var &v._50     ; by run; 																																																						
+proc sort data=y_51     ; by run; proc transpose data=y_51   out=t_51   prefix=&v._51_  ; var &v._51     ; by run; 																																																						
+proc sort data=y_52     ; by run; proc transpose data=y_52   out=t_52   prefix=&v._52_  ; var &v._52     ; by run; 																																																						
+proc sort data=y_53     ; by run; proc transpose data=y_53   out=t_53   prefix=&v._53_  ; var &v._53     ; by run; 																																																						
+proc sort data=y_54     ; by run; proc transpose data=y_54   out=t_54   prefix=&v._54_  ; var &v._54     ; by run; 																																																						
+proc sort data=y_55     ; by run; proc transpose data=y_55   out=t_55   prefix=&v._55_  ; var &v._55     ; by run; 																																																						
+proc sort data=y_56     ; by run; proc transpose data=y_56   out=t_56   prefix=&v._56_  ; var &v._56     ; by run; 																																																						
+proc sort data=y_57     ; by run; proc transpose data=y_57   out=t_57   prefix=&v._57_  ; var &v._57     ; by run; 																																																						
+proc sort data=y_58     ; by run; proc transpose data=y_58   out=t_58   prefix=&v._58_  ; var &v._58     ; by run; 																																																						
+proc sort data=y_59     ; by run; proc transpose data=y_59   out=t_59   prefix=&v._59_  ; var &v._59     ; by run; 																																																						
+proc sort data=y_60     ; by run; proc transpose data=y_60   out=t_60   prefix=&v._60_  ; var &v._60     ; by run; 																																																						
+proc sort data=y_61     ; by run; proc transpose data=y_61   out=t_61   prefix=&v._61_  ; var &v._61     ; by run; 																																																						
+proc sort data=y_62     ; by run; proc transpose data=y_62   out=t_62   prefix=&v._62_  ; var &v._62     ; by run; 																																																						
+proc sort data=y_63     ; by run; proc transpose data=y_63   out=t_63   prefix=&v._63_  ; var &v._63     ; by run; 																																																						
+proc sort data=y_64     ; by run; proc transpose data=y_64   out=t_64   prefix=&v._64_  ; var &v._64     ; by run; 																																																						
+proc sort data=y_65     ; by run; proc transpose data=y_65   out=t_65   prefix=&v._65_  ; var &v._65     ; by run; 																																																						
+proc sort data=y_66     ; by run; proc transpose data=y_66   out=t_66   prefix=&v._66_  ; var &v._66     ; by run; 																																																						
+proc sort data=y_67     ; by run; proc transpose data=y_67   out=t_67   prefix=&v._67_  ; var &v._67     ; by run; 																																																						
+proc sort data=y_68     ; by run; proc transpose data=y_68   out=t_68   prefix=&v._68_  ; var &v._68     ; by run; 																																																						
 proc sort data=y_69     ; by run; proc transpose data=y_69   out=t_69   prefix=&v._69_  ; var &v._69     ; by run; 																																																						
 
-data &v ; merge y_24 t_30y y_39  t_69 ;  
+data &v ; merge y_24 t_30y y_39 t_40 t_41 t_42 t_43 t_44 t_45 t_46 t_47 t_48 t_49 t_50 t_51 t_52 t_53 t_54 t_55 t_56 t_57 t_58 t_59 t_60 
+t_61 t_62 t_63 t_64 t_65 t_66 t_67 t_68 t_69 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1278,46 +1337,6 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_ever_vaccinated);   %var(v=p_agege15_ever_vaccinated);   %var(v=p_current_full_vaccine_eff);   %var(v=p_current_half_vaccine_eff);   
 %var(v=p_current_any_vaccine_eff); 
 %var(v=p_current_full_vac_e_1564);  %var(v=p_current_half_vac_e_1564);   %var(v=p_current_any_vac_e_1564); 
-
-data   b.wide_outputs; merge 
-
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
-dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
-dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
-dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost  n_hiv n_alive
-n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
-prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
-prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
-p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw
-p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
-p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
-p_ten p_zdv p_dol p_3tc p_lpr p_nev p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  
-p_vl1000_art_12m p_vl1000_art_12m_onart  p_onart_vl1000_w p_onart_vl1000_m  p_startedline2 p_linefail_ge1 m15r  m25r  m35r  m45r  m55r  w15r  
-w25r  w35r  w45r  w55r p_onart_cd4_l500  prop_art_or_prep  prop_sw_onprep   p_onart p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz death_rate_hiv 
-death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w p_iime n_infected_inm 
-n_tested n_tested_sw test_prop_positive p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  
-p_prep_any_ever p_hiv1_prep p_hiv1_prep_inj p_hiv1_prep_oral incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
-prop_prep_inj   ratio_inj_prep_on_tail    pr_ever_prep_inj_res_cab    pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab    prop_cab_res_tail    
-prop_prep_inj_at_inf_diag   of_all_o_cab_prop_dur_3m of_all_o_cab_prop_dur_6m   p_prep_inj_hiv  prop_cab_dol_res_attr_cab   
-n_cur_res_cab  n_cur_res_dol  n_emerge_inm_res_cab  n_switch_prep_from_oral n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  
-n_prep_any_start n_prep_oral_start  n_prep_inj_start n_prep_vr_start n_prep_any prop_elig_on_prep p_elig_prep  prop_onprep_newpge1 
-p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_inj n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
-ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m
-s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
-p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
-p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
-dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
-p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
-pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
-p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm
-n_ever_vaccinated  p_agege15_ever_vaccinated  p_current_full_vaccine_eff  p_current_half_vaccine_eff  p_current_any_vaccine_eff
-p_current_full_vac_e_1564 p_current_half_vac_e_1564  p_current_any_vac_e_1564
-;
-
-
-proc contents; run;
-
-proc sort; by run; run;
 
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 data f; set y; 
@@ -1486,214 +1505,95 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 * To get one row per run;
 
-  data  b.w_vaccine_k_fcp2     ; 
-  merge b.wide_outputs   b.wide_par2    ;
+  data  b.w_vaccine_k_fcp2_graphs;
+  merge   b.wide_par2  incidence1549    ;
   by run;
 
-proc contents; run;
 
 
 
-
-
-d_prop_elig_on_prep_30y_2_1 = prop_elig_on_prep_30y_2 - prop_elig_on_prep_30y_1; 
-
-d_prop_1564_onprep_30y_2_1 = prop_1564_onprep_30y_2 - prop_1564_onprep_30y_1;
-
-d_prop_prep_inj_30y_2_1 = prop_prep_inj_30y_2 - prop_prep_inj_30y_1 ;
-
-r_incidence1549_30y_2_1 = incidence1549_30y_2 / incidence1549_30y_1 ;
-r_incidence1549_30y_3_1 = incidence1549_30y_3 / incidence1549_30y_1 ;
-r_incidence1549_30y_4_1 = incidence1549_30y_4 / incidence1549_30y_1 ;
-
-d_incidence1549_30y_2_1 = incidence1549_30y_1 - incidence1549_30y_2 ;
-d_incidence1549_30y_3_1 = incidence1549_30y_1 - incidence1549_30y_3 ;
-d_incidence1549_30y_4_1 = incidence1549_30y_1 - incidence1549_30y_4 ;
-
-r_incidence1549_69_2_1 = incidence1549_69_2 / incidence1549_69_1 ;
-r_incidence1549_69_3_1 = incidence1549_69_3 / incidence1549_69_1 ;
-r_incidence1549_69_4_1 = incidence1549_69_4 / incidence1549_69_1 ;
-
-d_incidence1549_69_2_1 = incidence1549_69_1 - incidence1549_69_2 ;
-d_incidence1549_69_3_1 = incidence1549_69_1 - incidence1549_69_3 ;
-d_incidence1549_69_4_1 = incidence1549_69_1 - incidence1549_69_4 ;
-
-d_incidence1549_24_30y_1 = incidence1549_24 - incidence1549_30y_1 ; 
-
-
-* checked that this the same as dcost_30y_1 etc so over-writing so can change individual costs;
-  
-dcost_30y_1 = dart_cost_y_30y_1 + dadc_cost_30y_1 + dcd4_cost_30y_1 + dvl_cost_30y_1 + dvis_cost_30y_1 + dnon_tb_who3_cost_30y_1 + 
-					dcot_cost_30y_1 + dtb_cost_30y_1 + dres_cost_30y_1 + dtest_cost_30y_1 + d_t_adh_int_cost_30y_1 + dswitchline_cost_30y_1 + 
-					dcost_circ_30y_1 + dcost_condom_dn_30y_1 + dcost_child_hiv_30y_1 + dcost_non_aids_pre_death_30y_1
-					+ (dcost_prep_visit_oral_30y_1) + (dcost_prep_oral_30y_1) 
-;			
-
-* todo: vaccine cost to be added;
-dcost_30y_2 = dart_cost_y_30y_2 + dadc_cost_30y_2 + dcd4_cost_30y_2 + dvl_cost_30y_2 + dvis_cost_30y_2 + dnon_tb_who3_cost_30y_2 + 
-					dcot_cost_30y_2 + dtb_cost_30y_2 + dres_cost_30y_2 + dtest_cost_30y_2 + d_t_adh_int_cost_30y_2 + dswitchline_cost_30y_2 + 
-					dcost_circ_30y_2 + dcost_condom_dn_30y_2 + dcost_child_hiv_30y_2 + dcost_non_aids_pre_death_30y_2
-					+ (dcost_prep_visit_oral_30y_2) + (dcost_prep_oral_30y_2) ;
-
-dcost_30y_3 = dart_cost_y_30y_3 + dadc_cost_30y_3 + dcd4_cost_30y_3 + dvl_cost_30y_3 + dvis_cost_30y_3 + dnon_tb_who3_cost_30y_3 + 
-					dcot_cost_30y_3 + dtb_cost_30y_3 + dres_cost_30y_3 + dtest_cost_30y_3 + d_t_adh_int_cost_30y_3 + dswitchline_cost_30y_3 + 
-					dcost_circ_30y_3 + dcost_condom_dn_30y_3 + dcost_child_hiv_30y_3 + dcost_non_aids_pre_death_30y_3
-					+ (dcost_prep_visit_oral_30y_3) + (dcost_prep_oral_30y_3) ;
-
-dcost_30y_4 = dart_cost_y_30y_4 + dadc_cost_30y_4 + dcd4_cost_30y_4 + dvl_cost_30y_4 + dvis_cost_30y_4 + dnon_tb_who3_cost_30y_4 + 
-					dcot_cost_30y_4 + dtb_cost_30y_4 + dres_cost_30y_4 + dtest_cost_30y_4 + d_t_adh_int_cost_30y_4 + dswitchline_cost_30y_4 + 
-					dcost_circ_30y_4 + dcost_condom_dn_30y_4 + dcost_child_hiv_30y_4 + dcost_non_aids_pre_death_30y_4
-					+ (dcost_prep_visit_oral_30y_4) + (dcost_prep_oral_30y_4) ;
-
-d_dcost_30y_2_1 = dcost_30y_2 - dcost_30y_1;
-d_dcost_30y_3_1 = dcost_30y_3 - dcost_30y_1;
-d_dcost_30y_4_1 = dcost_30y_4 - dcost_30y_1;
-
-d_ddaly_30y_2_1 = ddaly_30y_2 - ddaly_30y_1;
-
-netdaly500_1 = ddaly_30y_1 + (dcost_30y_1 / 0.0005);
-netdaly500_2 = ddaly_30y_2 + (dcost_30y_2 / 0.0005);
-
-min_netdaly500 = min(netdaly500_1, netdaly500_2);
-
-if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
-if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
-
-
-
-* label 
-
-prop_ever_tested_1549w_24 = "Proportion of women aged 15-49 who have previously tested for HIV"
-prop_ever_tested_1549m_24 = "Proportion of men aged 15-49 who have previously tested for HIV"
-p_tested_past_year_1549w_24 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
-p_tested_past_year_1549m_24 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
-prop_elig_on_prep_24 = "Proportion of people with a current PrEP indication who take PrEP"
-prop_1564_onprep_24 = "Proportion of HIV negative adults aged 15-64 who are taking PrEP"
-prevalence1549w_24 = "HIV prevalence in women age 15-49"
-prevalence1549m_24 = "HIV prevalence in men age 15-49"
-incidence1549_24 = "HIV incidence age 15-49 (/100 person years)"  
-p_diag_24 = "Proportion of HIV positive people age 15+ who are diagnosed"  
-p_onart_diag_24 = "Proportion of diagnosed HIV+ people on ART"
-p_vl1000_24 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)"
-prevalence_vg1000_24 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)"
-p_onart_vl1000_24 = "Of people on ART, proportion with VL < 1000"
-  
-;
-
-* label 
-
-prop_ever_tested_1549w_39 = "Proportion of women aged 15-49 who have previously tested for HIV"
-prop_ever_tested_1549m_39 = "Proportion of men aged 15-49 who have previously tested for HIV"
-p_tested_past_year_1549w_39 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
-p_tested_past_year_1549m_39 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
-prop_elig_on_prep_39 = "Proportion of people with a current PrEP indication who take PrEP"
-prop_1564_onprep_39 = "Proportion of HIV negative adults aged 15-64 who are taking PrEP"
-prevalence1549w_39 = "HIV prevalence in women age 15-49"
-prevalence1549m_39 = "HIV prevalence in men age 15-49"
-incidence1549_39 = "HIV incidence age 15-49 (/100 person years)"  
-p_diag_39 = "Proportion of HIV positive people age 15+ who are diagnosed"  
-p_onart_diag_39 = "Proportion of diagnosed HIV+ people on ART"
-p_vl1000_39 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)"
-prevalence_vg1000_39 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)"
-p_onart_vl1000_39 = "Of people on ART, proportion with VL < 1000"
-  
-;
-
-label
-r_incidence1549_30y_2_1  = "vaccine_1"  
-r_incidence1549_30y_3_1  = "vaccine_2"  
-r_incidence1549_30y_4_1  = "vaccine_3"  
-;
-
-
-
-* table 1;
-
-
-
-proc means   data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;  
-var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   ;
-run;
-
-proc means   data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;  
-var prevalence1549w_39 prevalence1549m_39 incidence1549_39 p_diag_39 p_onart_diag_39 p_onart_vl1000_39 p_vl1000_39 prevalence_vg1000_39   ;
+proc print data=b.w_vaccine_k_fcp2_graphs;
 run;
 
 
-ods html;
-title "Relative incidence (age 15-49) compared with no vaccine";
-proc means  data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;
-var
-r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
-;
-run;
-ods html close;
-
-
-proc means  data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;
-var
-r_incidence1549_69_2_1 r_incidence1549_69_3_1  r_incidence1549_69_4_1  
-;
-run;
-
-
-proc means  data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;
-var
-r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
-d_incidence1549_30y_2_1 d_incidence1549_30y_3_1  d_incidence1549_30y_4_1 
-r_incidence1549_69_2_1 r_incidence1549_69_3_1  r_incidence1549_69_4_1 
-d_incidence1549_69_2_1 d_incidence1549_69_3_1  d_incidence1549_69_4_1 
-;
-run;
-
-proc means  n mean p5 p95;
-var
-d_dcost_30y_2_1
-d_dcost_30y_3_1
-d_dcost_30y_4_1
-;
-run;
-
-proc means  n mean p5 p95;
-var
-dcost_30y_1 dcost_30y_2 dcost_30y_3  dcost_30y_4 
-dart_cost_y_30y_1  dart_cost_y_30y_2    dart_cost_y_30y_3   dart_cost_y_30y_4  
-dadc_cost_30y_1  dadc_cost_30y_2   dadc_cost_30y_3   dadc_cost_30y_4  
-dcd4_cost_30y_1  dcd4_cost_30y_2  dcd4_cost_30y_3   dcd4_cost_30y_4  
-dvl_cost_30y_1  dvl_cost_30y_2  dvl_cost_30y_3  dvl_cost_30y_4 
-dvis_cost_30y_1 dvis_cost_30y_2  dvis_cost_30y_3  dvis_cost_30y_4 
-dnon_tb_who3_cost_30y_1  dnon_tb_who3_cost_30y_2  dnon_tb_who3_cost_30y_3  dnon_tb_who3_cost_30y_4   		
-dcot_cost_30y_1  dcot_cost_30y_2    dcot_cost_30y_3  dcot_cost_30y_4   
-dtb_cost_30y_1  dtb_cost_30y_2   dtb_cost_30y_3  dtb_cost_30y_4  
-dtest_cost_30y_1 dtest_cost_30y_2  dtest_cost_30y_3  dtest_cost_30y_4 
-dcost_circ_30y_1  dcost_circ_30y_2  dcost_circ_30y_3  dcost_circ_30y_4 
-dcost_non_aids_pre_death_30y_1 dcost_non_aids_pre_death_30y_2  dcost_non_aids_pre_death_30y_3  dcost_non_aids_pre_death_30y_4
-dcost_prep_visit_oral_30y_1  dcost_prep_visit_oral_30y_2  dcost_prep_visit_oral_30y_3  dcost_prep_visit_oral_30y_4 
-dcost_prep_oral_30y_1 dcost_prep_oral_30y_2 dcost_prep_oral_30y_3 dcost_prep_oral_30y_4 
-dcost_prep_visit_inj_30y_1  dcost_prep_visit_inj_30y_2 dcost_prep_visit_inj_30y_3 dcost_prep_visit_inj_30y_4
-dcost_prep_inj_30y_1 dcost_prep_inj_30y_2  dcost_prep_inj_30y_3  dcost_prep_inj_30y_4 
-;
-run;
-
-
-
-
-proc means   data = b.w_vaccine_k_fcp2  n mean  p50 p5 p95 ;
+proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_1  incidence1549_41_1  incidence1549_42_1  incidence1549_43_1  incidence1549_44_1  incidence1549_45_1  incidence1549_46_1  incidence1549_47_1  
 incidence1549_48_1  incidence1549_49_1  incidence1549_50_1  incidence1549_51_1  incidence1549_52_1  incidence1549_53_1  incidence1549_54_1  incidence1549_55_1  
 incidence1549_56_1  incidence1549_57_1  incidence1549_58_1  incidence1549_59_1  incidence1549_60_1  incidence1549_61_1  incidence1549_62_1  incidence1549_63_1  
 incidence1549_64_1  incidence1549_65_1  incidence1549_66_1  incidence1549_67_1  incidence1549_68_1  incidence1549_69_1                                          
-
-incidence1549_40_2  incidence1549_41_2  incidence1549_42_2  incidence1549_43_2  incidence1549_44_2  incidence1549_45_2  incidence1549_46_2  incidence1549_47_2  
-incidence1549_48_2  incidence1549_49_2  incidence1549_50_2  incidence1549_51_2  incidence1549_52_2  incidence1549_53_2  incidence1549_54_2  incidence1549_55_2  
-incidence1549_56_2  incidence1549_57_2  incidence1549_58_2  incidence1549_59_2  incidence1549_60_2  incidence1549_61_2  incidence1549_62_2  incidence1549_63_2  
-incidence1549_64_2  incidence1549_65_2  incidence1549_66_2  incidence1549_67_2  incidence1549_68_2  incidence1549_69_2      
-
 ;
+
+output out=median_option_1 median= / autoname;
+
+* output out=summary_stats
+        n=Count
+        mean=Mean
+        p50=Median
+        p5=P5
+        p95=P95 
+;
+
 run; 
 
+data graph; set median_option_1;
 
+proc transpose data=graph out=transposed_graph;
+    /* Your transpose options here */
+run;
+
+data final; set transposed_graph;
+
+incidence_1 = col1;
+
+if _NAME_ = '_TYPE_' then delete;
+if _NAME_ = '_FREQ_' then delete;
+
+proc print data = final;
+run;
+
+data years;
+input year;
+cards;
+2039
+2040
+2041
+2042
+2043
+2044
+2045
+2046
+2047
+2048 
+2049
+2050
+2051
+2052
+2053
+2054
+2055
+2056
+2057
+2058 
+2059
+2060
+2061
+2062
+2063
+2064
+2065
+2066
+2067
+2068 
+2069
+;
+
+data joint;
+merge years final; 
+
+drop _NAME_ col1;
+
+proc print; run;
 
 
 /*
@@ -1724,101 +1624,6 @@ band    x=cald lower=p5_prop_1564_hivneg_onprep_3 upper=p95_prop_1564_hivneg_onp
 run;quit;
 
 */
-
-
-
-
-
-/*
-
-
-
-proc glm  data = b.w_vaccine_k_fcp2 ;
-class future_prep_condom;
-model prop_elig_on_prep_39 = future_prep_condom / solution;
-run;
-
-proc glm  data = b.w_vaccine_k_fcp2 ;
-class future_prep_condom;
-model incidence1549_30y_1 = future_prep_condom / solution;
-run;
-
-proc sort data = b.w_vaccine_k_fcp2; by future_prep_condom;
-proc means  data = b.w_vaccine_k_fcp2 ;
-var prop_elig_on_prep_39  incidence1549_39 incidence1549_30y_1  ;
-by future_prep_condom;
-run;
-
-ods html;
-proc print noobs; var run;  where future_prep_condom = 1;
-ods html close;
-
-
-
-
-
-
-
-
-proc means   data = b.w_vaccine_k_fcp2  n p50 p5 p95 min max;  
-var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24 
-prop_elig_on_prep_24  ;
-run;
-
-
-proc means data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;  
-var
-prop_1564_onprep_30y_1  prop_1564_onprep_30y_2   
-d_prop_1564_onprep_30y_2_1  
-;
-
-
-proc means data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;  
-var 
-prop_elig_on_prep_30y_1 prop_elig_on_prep_30y_2  
-d_prop_elig_on_prep_30y_2_1  
-;
-
-
-proc means data = b.w_vaccine_k_fcp2  n p50 p5 p95 ;  
-var
-prop_prep_inj_30y_1  prop_prep_inj_30y_2  
-d_prop_prep_inj_30y_2_1  
-;
-
-
-
-proc means  data = b.w_vaccine_k_fcp2  n mean p50 p5 p95 clm;  
-var
-incidence1549_30y_1 incidence1549_30y_2  
-r_incidence1549_30y_2_1 
-;
-run;
-
-
-ods html;
-proc means  data = b.w_vaccine_k_fcp2  n mean clm;  
-var
-incidence1549_30y_1 incidence1549_30y_2 
-r_incidence1549_30y_2_1 
-;
-run;
-ods html close;
-
-
-
-proc means  n mean p5 p95;
-  var 
-n_death_hiv_30y_1 n_death_hiv_30y_2                   
-ddaly_30y_1 ddaly_30y_2    d_ddaly_30y_2_1  
-dcost_30y_1   dcost_30y_2   d_dcost_30y_2_1 
-netdaly500_1 netdaly500_2 
-;
-
-run;
-
-
-
 
 
 
