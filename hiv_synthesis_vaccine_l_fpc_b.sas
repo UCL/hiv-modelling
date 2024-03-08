@@ -2066,10 +2066,11 @@ if t ge 2 then caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time
 * ts1m ; * change this line to: 
 caldate_never_dot = caldate_never_dot + (1/12);
 
+/*
 if &j ge 203 then do;
   call streaminit(123);
 end;
-
+*/
 
  * note that age variable continues to increase after death so need to be aware of death status - dont try to change this without
 careful checking of whether serial_no = obs 
@@ -19909,9 +19910,11 @@ s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp ;
 
 data r&da2; set r&da2; 
 
+/*
 if &j ge 203 then do;
   call streaminit(123);
 end;
+*/
 
 /*if age  >= lowest_age_at_start;*/		* commented out to prevent dead people being removed from overall dataset when age=. JAS Aug23;
 
