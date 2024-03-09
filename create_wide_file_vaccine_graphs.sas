@@ -4,25 +4,25 @@
 
  proc printto ; 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_k_fcp2_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_l_fpc_b_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_k_fcp2_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_l_fpc_b_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_k_fcp2;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_l_fpc_b;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_vaccine_k_fcp2; 
+proc sort data=b.k_vaccine_l_fpc_b; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_k_fcp2 ;
+set b.k_vaccine_l_fpc_b ;
 
 
 if cald=2024   ;
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_k_fcp2 sf;
+merge b.k_vaccine_l_fpc_b sf;
 by run ;
 
 * preparatory code ;
@@ -1109,9 +1109,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_vaccine_k_fcp2_y; set y;  
+data    b.l_vaccine_l_fpc_b_y; set y;  
 
-data y ; set b.l_vaccine_k_fcp2_y; 
+data y ; set b.l_vaccine_l_fpc_b_y; 
 
 
   options nomprint;
@@ -1497,25 +1497,63 @@ run;
 proc sort; by run;run;
 
 
-proc freq data=b.wide_par2; tables future_prep_condom ; run;  
-
-
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_k_fcp2_out\";
 
 
 
 
+
+
+
+
+
+
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_l_fpc_b_out\";
 
 
 
 data  b.incidence1549 ;
-set  incidence1549    ;
-by run;
+merge  incidence1549  prevalence1549   ;
+
+if prevalence1549_24 > 0.03;
+
+
+d_incidence1549_40_2_1 = incidence1549_40_2 - incidence1549_40_1 ; d_incidence1549_40_3_1 = incidence1549_40_3 - incidence1549_40_1 ;d_incidence1549_40_4_1 = incidence1549_40_4 - incidence1549_40_1 ;
+
+d_incidence1549_41_2_1 = incidence1549_41_2 - incidence1549_41_1 ; d_incidence1549_41_3_1 = incidence1549_41_3 - incidence1549_41_1 ;d_incidence1549_41_4_1 = incidence1549_41_4 - incidence1549_41_1 ;
+d_incidence1549_42_2_1 = incidence1549_42_2 - incidence1549_42_1 ; d_incidence1549_42_3_1 = incidence1549_42_3 - incidence1549_42_1 ;d_incidence1549_42_4_1 = incidence1549_42_4 - incidence1549_42_1 ;
+d_incidence1549_43_2_1 = incidence1549_43_2 - incidence1549_43_1 ; d_incidence1549_43_3_1 = incidence1549_43_3 - incidence1549_43_1 ;d_incidence1549_43_4_1 = incidence1549_43_4 - incidence1549_43_1 ;
+d_incidence1549_44_2_1 = incidence1549_44_2 - incidence1549_44_1 ; d_incidence1549_44_3_1 = incidence1549_44_3 - incidence1549_44_1 ;d_incidence1549_44_4_1 = incidence1549_44_4 - incidence1549_44_1 ;
+d_incidence1549_45_2_1 = incidence1549_45_2 - incidence1549_45_1 ; d_incidence1549_45_3_1 = incidence1549_45_3 - incidence1549_45_1 ;d_incidence1549_45_4_1 = incidence1549_45_4 - incidence1549_45_1 ;
+d_incidence1549_46_2_1 = incidence1549_46_2 - incidence1549_46_1 ; d_incidence1549_46_3_1 = incidence1549_46_3 - incidence1549_46_1 ;d_incidence1549_46_4_1 = incidence1549_46_4 - incidence1549_46_1 ;
+d_incidence1549_47_2_1 = incidence1549_47_2 - incidence1549_47_1 ; d_incidence1549_47_3_1 = incidence1549_47_3 - incidence1549_47_1 ;d_incidence1549_47_4_1 = incidence1549_47_4 - incidence1549_47_1 ;
+d_incidence1549_48_2_1 = incidence1549_48_2 - incidence1549_48_1 ; d_incidence1549_48_3_1 = incidence1549_48_3 - incidence1549_48_1 ;d_incidence1549_48_4_1 = incidence1549_48_4 - incidence1549_48_1 ;
+d_incidence1549_49_2_1 = incidence1549_49_2 - incidence1549_49_1 ; d_incidence1549_49_3_1 = incidence1549_49_3 - incidence1549_49_1 ;d_incidence1549_49_4_1 = incidence1549_49_4 - incidence1549_49_1 ;
+d_incidence1549_50_2_1 = incidence1549_50_2 - incidence1549_50_1 ; d_incidence1549_50_3_1 = incidence1549_50_3 - incidence1549_50_1 ;d_incidence1549_50_4_1 = incidence1549_50_4 - incidence1549_50_1 ;
+d_incidence1549_51_2_1 = incidence1549_51_2 - incidence1549_51_1 ; d_incidence1549_51_3_1 = incidence1549_51_3 - incidence1549_51_1 ;d_incidence1549_51_4_1 = incidence1549_51_4 - incidence1549_51_1 ;
+d_incidence1549_52_2_1 = incidence1549_52_2 - incidence1549_52_1 ; d_incidence1549_52_3_1 = incidence1549_52_3 - incidence1549_52_1 ;d_incidence1549_52_4_1 = incidence1549_52_4 - incidence1549_52_1 ;
+d_incidence1549_53_2_1 = incidence1549_53_2 - incidence1549_53_1 ; d_incidence1549_53_3_1 = incidence1549_53_3 - incidence1549_53_1 ;d_incidence1549_53_4_1 = incidence1549_53_4 - incidence1549_53_1 ;
+d_incidence1549_54_2_1 = incidence1549_54_2 - incidence1549_54_1 ; d_incidence1549_54_3_1 = incidence1549_54_3 - incidence1549_54_1 ;d_incidence1549_54_4_1 = incidence1549_54_4 - incidence1549_54_1 ;
+d_incidence1549_55_2_1 = incidence1549_55_2 - incidence1549_55_1 ; d_incidence1549_55_3_1 = incidence1549_55_3 - incidence1549_55_1 ;d_incidence1549_55_4_1 = incidence1549_55_4 - incidence1549_55_1 ;
+d_incidence1549_56_2_1 = incidence1549_56_2 - incidence1549_56_1 ; d_incidence1549_56_3_1 = incidence1549_56_3 - incidence1549_56_1 ;d_incidence1549_56_4_1 = incidence1549_56_4 - incidence1549_56_1 ;
+d_incidence1549_57_2_1 = incidence1549_57_2 - incidence1549_57_1 ; d_incidence1549_57_3_1 = incidence1549_57_3 - incidence1549_57_1 ;d_incidence1549_57_4_1 = incidence1549_57_4 - incidence1549_57_1 ;
+d_incidence1549_58_2_1 = incidence1549_58_2 - incidence1549_58_1 ; d_incidence1549_58_3_1 = incidence1549_58_3 - incidence1549_58_1 ;d_incidence1549_58_4_1 = incidence1549_58_4 - incidence1549_58_1 ;
+d_incidence1549_59_2_1 = incidence1549_59_2 - incidence1549_59_1 ; d_incidence1549_59_3_1 = incidence1549_59_3 - incidence1549_59_1 ;d_incidence1549_59_4_1 = incidence1549_59_4 - incidence1549_59_1 ;
+d_incidence1549_60_2_1 = incidence1549_60_2 - incidence1549_60_1 ; d_incidence1549_60_3_1 = incidence1549_60_3 - incidence1549_60_1 ;d_incidence1549_60_4_1 = incidence1549_60_4 - incidence1549_60_1 ;
+d_incidence1549_61_2_1 = incidence1549_61_2 - incidence1549_61_1 ; d_incidence1549_61_3_1 = incidence1549_61_3 - incidence1549_61_1 ;d_incidence1549_61_4_1 = incidence1549_61_4 - incidence1549_61_1 ;
+d_incidence1549_62_2_1 = incidence1549_62_2 - incidence1549_62_1 ; d_incidence1549_62_3_1 = incidence1549_62_3 - incidence1549_62_1 ;d_incidence1549_62_4_1 = incidence1549_62_4 - incidence1549_62_1 ;
+d_incidence1549_63_2_1 = incidence1549_63_2 - incidence1549_63_1 ; d_incidence1549_63_3_1 = incidence1549_63_3 - incidence1549_63_1 ;d_incidence1549_63_4_1 = incidence1549_63_4 - incidence1549_63_1 ;
+d_incidence1549_64_2_1 = incidence1549_64_2 - incidence1549_64_1 ; d_incidence1549_64_3_1 = incidence1549_64_3 - incidence1549_64_1 ;d_incidence1549_64_4_1 = incidence1549_64_4 - incidence1549_64_1 ;
+d_incidence1549_65_2_1 = incidence1549_65_2 - incidence1549_65_1 ; d_incidence1549_65_3_1 = incidence1549_65_3 - incidence1549_65_1 ;d_incidence1549_65_4_1 = incidence1549_65_4 - incidence1549_65_1 ;
+d_incidence1549_66_2_1 = incidence1549_66_2 - incidence1549_66_1 ; d_incidence1549_66_3_1 = incidence1549_66_3 - incidence1549_66_1 ;d_incidence1549_66_4_1 = incidence1549_66_4 - incidence1549_66_1 ;
+d_incidence1549_67_2_1 = incidence1549_67_2 - incidence1549_67_1 ; d_incidence1549_67_3_1 = incidence1549_67_3 - incidence1549_67_1 ;d_incidence1549_67_4_1 = incidence1549_67_4 - incidence1549_67_1 ;
+d_incidence1549_68_2_1 = incidence1549_68_2 - incidence1549_68_1 ; d_incidence1549_68_3_1 = incidence1549_68_3 - incidence1549_68_1 ;d_incidence1549_68_4_1 = incidence1549_68_4 - incidence1549_68_1 ;
+d_incidence1549_69_2_1 = incidence1549_69_2 - incidence1549_69_1 ; d_incidence1549_69_3_1 = incidence1549_69_3 - incidence1549_69_1 ;d_incidence1549_69_4_1 = incidence1549_69_4 - incidence1549_69_1 ;
+
 
 
 /* OPTION 1 */
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint  data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_1  incidence1549_41_1  incidence1549_42_1  incidence1549_43_1  incidence1549_44_1  incidence1549_45_1  incidence1549_46_1  incidence1549_47_1  
 incidence1549_48_1  incidence1549_49_1  incidence1549_50_1  incidence1549_51_1  incidence1549_52_1  incidence1549_53_1  incidence1549_54_1  incidence1549_55_1  
@@ -1526,7 +1564,7 @@ proc transpose data=median_option_1 out=t_median_option_1;
 data f_median_option_1; set t_median_option_1; median_incidence1549_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_1  incidence1549_41_1  incidence1549_42_1  incidence1549_43_1  incidence1549_44_1  incidence1549_45_1  incidence1549_46_1  incidence1549_47_1  
 incidence1549_48_1  incidence1549_49_1  incidence1549_50_1  incidence1549_51_1  incidence1549_52_1  incidence1549_53_1  incidence1549_54_1  incidence1549_55_1  
@@ -1537,7 +1575,7 @@ proc transpose data=mean_option_1 out=t_mean_option_1;
 data f_mean_option_1; set t_mean_option_1; mean_incidence1549_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_1  incidence1549_41_1  incidence1549_42_1  incidence1549_43_1  incidence1549_44_1  incidence1549_45_1  incidence1549_46_1  incidence1549_47_1  
 incidence1549_48_1  incidence1549_49_1  incidence1549_50_1  incidence1549_51_1  incidence1549_52_1  incidence1549_53_1  incidence1549_54_1  incidence1549_55_1  
@@ -1548,7 +1586,7 @@ proc transpose data=p5_option_1 out=t_p5_option_1;
 data f_p5_option_1; set t_p5_option_1; p5_incidence1549_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p950 p95 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p950 p95 p95 ;
 var incidence1549_39 
 incidence1549_40_1  incidence1549_41_1  incidence1549_42_1  incidence1549_43_1  incidence1549_44_1  incidence1549_45_1  incidence1549_46_1  incidence1549_47_1  
 incidence1549_48_1  incidence1549_49_1  incidence1549_50_1  incidence1549_51_1  incidence1549_52_1  incidence1549_53_1  incidence1549_54_1  incidence1549_55_1  
@@ -1562,7 +1600,7 @@ if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ 
 
 /* OPTION 2 */
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_2  incidence1549_41_2  incidence1549_42_2  incidence1549_43_2  incidence1549_44_2  incidence1549_45_2  incidence1549_46_2  incidence1549_47_2  
 incidence1549_48_2  incidence1549_49_2  incidence1549_50_2  incidence1549_51_2  incidence1549_52_2  incidence1549_53_2  incidence1549_54_2  incidence1549_55_2  
@@ -1573,7 +1611,7 @@ proc transpose data=median_option_2 out=t_median_option_2;
 data f_median_option_2; set t_median_option_2; median_incidence1549_2 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_2  incidence1549_41_2  incidence1549_42_2  incidence1549_43_2  incidence1549_44_2  incidence1549_45_2  incidence1549_46_2  incidence1549_47_2  
 incidence1549_48_2  incidence1549_49_2  incidence1549_50_2  incidence1549_51_2  incidence1549_52_2  incidence1549_53_2  incidence1549_54_2  incidence1549_55_2  
@@ -1584,7 +1622,7 @@ proc transpose data=mean_option_2 out=t_mean_option_2;
 data f_mean_option_2; set t_mean_option_2; mean_incidence1549_2 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_2  incidence1549_41_2  incidence1549_42_2  incidence1549_43_2  incidence1549_44_2  incidence1549_45_2  incidence1549_46_2  incidence1549_47_2  
 incidence1549_48_2  incidence1549_49_2  incidence1549_50_2  incidence1549_51_2  incidence1549_52_2  incidence1549_53_2  incidence1549_54_2  incidence1549_55_2  
@@ -1595,7 +1633,7 @@ proc transpose data=p5_option_2 out=t_p5_option_2;
 data f_p5_option_2; set t_p5_option_2; p5_incidence1549_2 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p950 p95 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p950 p95 p95 ;
 var incidence1549_39 
 incidence1549_40_2  incidence1549_41_2  incidence1549_42_2  incidence1549_43_2  incidence1549_44_2  incidence1549_45_2  incidence1549_46_2  incidence1549_47_2  
 incidence1549_48_2  incidence1549_49_2  incidence1549_50_2  incidence1549_51_2  incidence1549_52_2  incidence1549_53_2  incidence1549_54_2  incidence1549_55_2  
@@ -1609,8 +1647,8 @@ if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ 
 
 * differences compared with option 1 ;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
+var 
 d_incidence1549_40_2_1  d_incidence1549_41_2_1  d_incidence1549_42_2_1  d_incidence1549_43_2_1  d_incidence1549_44_2_1  d_incidence1549_45_2_1  d_incidence1549_46_2_1  d_incidence1549_47_2_1  
 d_incidence1549_48_2_1  d_incidence1549_49_2_1  d_incidence1549_50_2_1  d_incidence1549_51_2_1  d_incidence1549_52_2_1  d_incidence1549_53_2_1  d_incidence1549_54_2_1  d_incidence1549_55_2_1  
 d_incidence1549_56_2_1  d_incidence1549_57_2_1  d_incidence1549_58_2_1  d_incidence1549_59_2_1  d_incidence1549_60_2_1  d_incidence1549_61_2_1  d_incidence1549_62_2_1  d_incidence1549_63_2_1  
@@ -1620,8 +1658,8 @@ proc transpose data=median_d_option_2_1 out=t_median_d_option_2_1;
 data f_median_d_option_2_1; set t_median_d_option_2_1; median_d_incidence1549_2_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
+var 
 d_incidence1549_40_2_1  d_incidence1549_41_2_1  d_incidence1549_42_2_1  d_incidence1549_43_2_1  d_incidence1549_44_2_1  d_incidence1549_45_2_1  d_incidence1549_46_2_1  d_incidence1549_47_2_1  
 d_incidence1549_48_2_1  d_incidence1549_49_2_1  d_incidence1549_50_2_1  d_incidence1549_51_2_1  d_incidence1549_52_2_1  d_incidence1549_53_2_1  d_incidence1549_54_2_1  d_incidence1549_55_2_1  
 d_incidence1549_56_2_1  d_incidence1549_57_2_1  d_incidence1549_58_2_1  d_incidence1549_59_2_1  d_incidence1549_60_2_1  d_incidence1549_61_2_1  d_incidence1549_62_2_1  d_incidence1549_63_2_1  
@@ -1631,8 +1669,8 @@ proc transpose data=mean_d_option_2_1 out=t_mean_d_option_2_1;
 data f_mean_d_option_2_1; set t_mean_d_option_2_1; mean_d_incidence1549_2_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
+var 
 d_incidence1549_40_2_1  d_incidence1549_41_2_1  d_incidence1549_42_2_1  d_incidence1549_43_2_1  d_incidence1549_44_2_1  d_incidence1549_45_2_1  d_incidence1549_46_2_1  d_incidence1549_47_2_1  
 d_incidence1549_48_2_1  d_incidence1549_49_2_1  d_incidence1549_50_2_1  d_incidence1549_51_2_1  d_incidence1549_52_2_1  d_incidence1549_53_2_1  d_incidence1549_54_2_1  d_incidence1549_55_2_1  
 d_incidence1549_56_2_1  d_incidence1549_57_2_1  d_incidence1549_58_2_1  d_incidence1549_59_2_1  d_incidence1549_60_2_1  d_incidence1549_61_2_1  d_incidence1549_62_2_1  d_incidence1549_63_2_1  
@@ -1642,8 +1680,8 @@ proc transpose data=p5_d_option_2_1 out=t_p5_d_option_2_1;
 data f_p5_d_option_2_1; set t_p5_d_option_2_1; p5_d_incidence1549_2_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p950 p95 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p950 p95 p95 ;
+var  
 d_incidence1549_40_2_1  d_incidence1549_41_2_1  d_incidence1549_42_2_1  d_incidence1549_43_2_1  d_incidence1549_44_2_1  d_incidence1549_45_2_1  d_incidence1549_46_2_1  d_incidence1549_47_2_1  
 d_incidence1549_48_2_1  d_incidence1549_49_2_1  d_incidence1549_50_2_1  d_incidence1549_51_2_1  d_incidence1549_52_2_1  d_incidence1549_53_2_1  d_incidence1549_54_2_1  d_incidence1549_55_2_1  
 d_incidence1549_56_2_1  d_incidence1549_57_2_1  d_incidence1549_58_2_1  d_incidence1549_59_2_1  d_incidence1549_60_2_1  d_incidence1549_61_2_1  d_incidence1549_62_2_1  d_incidence1549_63_2_1  
@@ -1657,7 +1695,7 @@ if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ 
 
 /* OPTION 3 */
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_3  incidence1549_41_3  incidence1549_42_3  incidence1549_43_3  incidence1549_44_3  incidence1549_45_3  incidence1549_46_3  incidence1549_47_3  
 incidence1549_48_3  incidence1549_49_3  incidence1549_50_3  incidence1549_51_3  incidence1549_52_3  incidence1549_53_3  incidence1549_54_3  incidence1549_55_3  
@@ -1668,7 +1706,7 @@ proc transpose data=median_option_3 out=t_median_option_3;
 data f_median_option_3; set t_median_option_3; median_incidence1549_3 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_3  incidence1549_41_3  incidence1549_42_3  incidence1549_43_3  incidence1549_44_3  incidence1549_45_3  incidence1549_46_3  incidence1549_47_3  
 incidence1549_48_3  incidence1549_49_3  incidence1549_50_3  incidence1549_51_3  incidence1549_52_3  incidence1549_53_3  incidence1549_54_3  incidence1549_55_3  
@@ -1679,7 +1717,7 @@ proc transpose data=mean_option_3 out=t_mean_option_3;
 data f_mean_option_3; set t_mean_option_3; mean_incidence1549_3 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_3  incidence1549_41_3  incidence1549_42_3  incidence1549_43_3  incidence1549_44_3  incidence1549_45_3  incidence1549_46_3  incidence1549_47_3  
 incidence1549_48_3  incidence1549_49_3  incidence1549_50_3  incidence1549_51_3  incidence1549_52_3  incidence1549_53_3  incidence1549_54_3  incidence1549_55_3  
@@ -1690,7 +1728,7 @@ proc transpose data=p5_option_3 out=t_p5_option_3;
 data f_p5_option_3; set t_p5_option_3; p5_incidence1549_3 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p950 p95 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p950 p95 p95 ;
 var incidence1549_39 
 incidence1549_40_3  incidence1549_41_3  incidence1549_42_3  incidence1549_43_3  incidence1549_44_3  incidence1549_45_3  incidence1549_46_3  incidence1549_47_3  
 incidence1549_48_3  incidence1549_49_3  incidence1549_50_3  incidence1549_51_3  incidence1549_52_3  incidence1549_53_3  incidence1549_54_3  incidence1549_55_3  
@@ -1704,8 +1742,8 @@ if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ 
 
 * differences compared with option 1 ;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
+var 
 d_incidence1549_40_3_1  d_incidence1549_41_3_1  d_incidence1549_42_3_1  d_incidence1549_43_3_1  d_incidence1549_44_3_1  d_incidence1549_45_3_1  d_incidence1549_46_3_1  d_incidence1549_47_3_1  
 d_incidence1549_48_3_1  d_incidence1549_49_3_1  d_incidence1549_50_3_1  d_incidence1549_51_3_1  d_incidence1549_52_3_1  d_incidence1549_53_3_1  d_incidence1549_54_3_1  d_incidence1549_55_3_1  
 d_incidence1549_56_3_1  d_incidence1549_57_3_1  d_incidence1549_58_3_1  d_incidence1549_59_3_1  d_incidence1549_60_3_1  d_incidence1549_61_3_1  d_incidence1549_62_3_1  d_incidence1549_63_3_1  
@@ -1715,8 +1753,8 @@ proc transpose data=median_d_option_3_1 out=t_median_d_option_3_1;
 data f_median_d_option_3_1; set t_median_d_option_3_1; median_d_incidence1549_3_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
+var 
 d_incidence1549_40_3_1  d_incidence1549_41_3_1  d_incidence1549_42_3_1  d_incidence1549_43_3_1  d_incidence1549_44_3_1  d_incidence1549_45_3_1  d_incidence1549_46_3_1  d_incidence1549_47_3_1  
 d_incidence1549_48_3_1  d_incidence1549_49_3_1  d_incidence1549_50_3_1  d_incidence1549_51_3_1  d_incidence1549_52_3_1  d_incidence1549_53_3_1  d_incidence1549_54_3_1  d_incidence1549_55_3_1  
 d_incidence1549_56_3_1  d_incidence1549_57_3_1  d_incidence1549_58_3_1  d_incidence1549_59_3_1  d_incidence1549_60_3_1  d_incidence1549_61_3_1  d_incidence1549_62_3_1  d_incidence1549_63_3_1  
@@ -1726,8 +1764,8 @@ proc transpose data=mean_d_option_3_1 out=t_mean_d_option_3_1;
 data f_mean_d_option_3_1; set t_mean_d_option_3_1; mean_d_incidence1549_3_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
+var 
 d_incidence1549_40_3_1  d_incidence1549_41_3_1  d_incidence1549_42_3_1  d_incidence1549_43_3_1  d_incidence1549_44_3_1  d_incidence1549_45_3_1  d_incidence1549_46_3_1  d_incidence1549_47_3_1  
 d_incidence1549_48_3_1  d_incidence1549_49_3_1  d_incidence1549_50_3_1  d_incidence1549_51_3_1  d_incidence1549_52_3_1  d_incidence1549_53_3_1  d_incidence1549_54_3_1  d_incidence1549_55_3_1  
 d_incidence1549_56_3_1  d_incidence1549_57_3_1  d_incidence1549_58_3_1  d_incidence1549_59_3_1  d_incidence1549_60_3_1  d_incidence1549_61_3_1  d_incidence1549_62_3_1  d_incidence1549_63_3_1  
@@ -1737,8 +1775,8 @@ proc transpose data=p5_d_option_3_1 out=t_p5_d_option_3_1;
 data f_p5_d_option_3_1; set t_p5_d_option_3_1; p5_d_incidence1549_3_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p950 p95 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p950 p95 p95 ;
+var  
 d_incidence1549_40_3_1  d_incidence1549_41_3_1  d_incidence1549_42_3_1  d_incidence1549_43_3_1  d_incidence1549_44_3_1  d_incidence1549_45_3_1  d_incidence1549_46_3_1  d_incidence1549_47_3_1  
 d_incidence1549_48_3_1  d_incidence1549_49_3_1  d_incidence1549_50_3_1  d_incidence1549_51_3_1  d_incidence1549_52_3_1  d_incidence1549_53_3_1  d_incidence1549_54_3_1  d_incidence1549_55_3_1  
 d_incidence1549_56_3_1  d_incidence1549_57_3_1  d_incidence1549_58_3_1  d_incidence1549_59_3_1  d_incidence1549_60_3_1  d_incidence1549_61_3_1  d_incidence1549_62_3_1  d_incidence1549_63_3_1  
@@ -1753,7 +1791,7 @@ if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ 
 
 /* OPTION 4 */
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_4  incidence1549_41_4  incidence1549_42_4  incidence1549_43_4  incidence1549_44_4  incidence1549_45_4  incidence1549_46_4  incidence1549_47_4  
 incidence1549_48_4  incidence1549_49_4  incidence1549_50_4  incidence1549_51_4  incidence1549_52_4  incidence1549_53_4  incidence1549_54_4  incidence1549_55_4  
@@ -1764,7 +1802,7 @@ proc transpose data=median_option_4 out=t_median_option_4;
 data f_median_option_4; set t_median_option_4; median_incidence1549_4 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_4  incidence1549_41_4  incidence1549_42_4  incidence1549_43_4  incidence1549_44_4  incidence1549_45_4  incidence1549_46_4  incidence1549_47_4  
 incidence1549_48_4  incidence1549_49_4  incidence1549_50_4  incidence1549_51_4  incidence1549_52_4  incidence1549_53_4  incidence1549_54_4  incidence1549_55_4  
@@ -1775,7 +1813,7 @@ proc transpose data=mean_option_4 out=t_mean_option_4;
 data f_mean_option_4; set t_mean_option_4; mean_incidence1549_4 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_4  incidence1549_41_4  incidence1549_42_4  incidence1549_43_4  incidence1549_44_4  incidence1549_45_4  incidence1549_46_4  incidence1549_47_4  
 incidence1549_48_4  incidence1549_49_4  incidence1549_50_4  incidence1549_51_4  incidence1549_52_4  incidence1549_53_4  incidence1549_54_4  incidence1549_55_4  
@@ -1786,7 +1824,7 @@ proc transpose data=p5_option_4 out=t_p5_option_4;
 data f_p5_option_4; set t_p5_option_4; p5_incidence1549_4 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p950 p95 p95 ;
+proc means noprint   data = b.incidence1549  n mean  p950 p95 p95 ;
 var incidence1549_39 
 incidence1549_40_4  incidence1549_41_4  incidence1549_42_4  incidence1549_43_4  incidence1549_44_4  incidence1549_45_4  incidence1549_46_4  incidence1549_47_4  
 incidence1549_48_4  incidence1549_49_4  incidence1549_50_4  incidence1549_51_4  incidence1549_52_4  incidence1549_53_4  incidence1549_54_4  incidence1549_55_4  
@@ -1798,10 +1836,10 @@ data f_p95_option_4; set t_p95_option_4; p95_incidence1549_4 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
 
-* diffrences compared with option 1 ;
+* differences compared with option 1 ;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
+var 
 d_incidence1549_40_4_1  d_incidence1549_41_4_1  d_incidence1549_42_4_1  d_incidence1549_43_4_1  d_incidence1549_44_4_1  d_incidence1549_45_4_1  d_incidence1549_46_4_1  d_incidence1549_47_4_1  
 d_incidence1549_48_4_1  d_incidence1549_49_4_1  d_incidence1549_50_4_1  d_incidence1549_51_4_1  d_incidence1549_52_4_1  d_incidence1549_53_4_1  d_incidence1549_54_4_1  d_incidence1549_55_4_1  
 d_incidence1549_56_4_1  d_incidence1549_57_4_1  d_incidence1549_58_4_1  d_incidence1549_59_4_1  d_incidence1549_60_4_1  d_incidence1549_61_4_1  d_incidence1549_62_4_1  d_incidence1549_63_4_1  
@@ -1811,8 +1849,8 @@ proc transpose data=median_d_option_4_1 out=t_median_d_option_4_1;
 data f_median_d_option_4_1; set t_median_d_option_4_1; median_d_incidence1549_4_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
+var 
 d_incidence1549_40_4_1  d_incidence1549_41_4_1  d_incidence1549_42_4_1  d_incidence1549_43_4_1  d_incidence1549_44_4_1  d_incidence1549_45_4_1  d_incidence1549_46_4_1  d_incidence1549_47_4_1  
 d_incidence1549_48_4_1  d_incidence1549_49_4_1  d_incidence1549_50_4_1  d_incidence1549_51_4_1  d_incidence1549_52_4_1  d_incidence1549_53_4_1  d_incidence1549_54_4_1  d_incidence1549_55_4_1  
 d_incidence1549_56_4_1  d_incidence1549_57_4_1  d_incidence1549_58_4_1  d_incidence1549_59_4_1  d_incidence1549_60_4_1  d_incidence1549_61_4_1  d_incidence1549_62_4_1  d_incidence1549_63_4_1  
@@ -1822,8 +1860,8 @@ proc transpose data=mean_d_option_4_1 out=t_mean_d_option_4_1;
 data f_mean_d_option_4_1; set t_mean_d_option_4_1; mean_d_incidence1549_4_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p50 p5 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p50 p5 p95 ;
+var 
 d_incidence1549_40_4_1  d_incidence1549_41_4_1  d_incidence1549_42_4_1  d_incidence1549_43_4_1  d_incidence1549_44_4_1  d_incidence1549_45_4_1  d_incidence1549_46_4_1  d_incidence1549_47_4_1  
 d_incidence1549_48_4_1  d_incidence1549_49_4_1  d_incidence1549_50_4_1  d_incidence1549_51_4_1  d_incidence1549_52_4_1  d_incidence1549_53_4_1  d_incidence1549_54_4_1  d_incidence1549_55_4_1  
 d_incidence1549_56_4_1  d_incidence1549_57_4_1  d_incidence1549_58_4_1  d_incidence1549_59_4_1  d_incidence1549_60_4_1  d_incidence1549_61_4_1  d_incidence1549_62_4_1  d_incidence1549_63_4_1  
@@ -1833,8 +1871,8 @@ proc transpose data=p5_d_option_4_1 out=t_p5_d_option_4_1;
 data f_p5_d_option_4_1; set t_p5_d_option_4_1; p5_d_incidence1549_4_1 = col1;
 if _NAME_ = '_TYPE_' then delete; if _NAME_ = '_FREQ_' then delete; drop _NAME_ col1;
 
-proc means   data = b.w_vaccine_k_fcp2_graphs  n mean  p950 p95 p95 ;
-var d_incidence1549_39 
+proc means noprint   data = b.incidence1549  n mean  p950 p95 p95 ;
+var 
 d_incidence1549_40_4_1  d_incidence1549_41_4_1  d_incidence1549_42_4_1  d_incidence1549_43_4_1  d_incidence1549_44_4_1  d_incidence1549_45_4_1  d_incidence1549_46_4_1  d_incidence1549_47_4_1  
 d_incidence1549_48_4_1  d_incidence1549_49_4_1  d_incidence1549_50_4_1  d_incidence1549_51_4_1  d_incidence1549_52_4_1  d_incidence1549_53_4_1  d_incidence1549_54_4_1  d_incidence1549_55_4_1  
 d_incidence1549_56_4_1  d_incidence1549_57_4_1  d_incidence1549_58_4_1  d_incidence1549_59_4_1  d_incidence1549_60_4_1  d_incidence1549_61_4_1  d_incidence1549_62_4_1  d_incidence1549_63_4_1  
@@ -1896,7 +1934,7 @@ f_median_option_4 f_mean_option_4 f_p5_option_4 f_p95_option_4 f_median_d_option
 
 ods html;
 proc sgplot data=joint ; 
-Title    height=1.5 justify=center "Incidence";
+Title    height=1.5 justify=center "Mean incidence1549";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (0 to  1.0       by 0.02    ) valueattrs=(size=10);
 
@@ -1925,7 +1963,7 @@ run;
 
 ods html;
 proc sgplot data=joint ; 
-Title    height=1.5 justify=center "Incidence";
+Title    height=1.5 justify=center "Median incidence1549";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (0 to  1.0       by 0.02    ) valueattrs=(size=10);
 
@@ -1954,9 +1992,9 @@ run;
 
 ods html;
 proc sgplot data=joint ; 
-Title    height=1.5 justify=center "Incidence";
+Title    height=1.5 justify=center "Mean difference in incidence1549 compared with no vaccine";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (-1 to  +1       by 0.1    ) valueattrs=(size=10);
+yaxis grid label	= 'Difference in incidence (per 100 person-years)'		labelattrs=(size=12)  values = (-1 to  +1       by 0.1    ) valueattrs=(size=10);
 
 label mean_d_incidence1549_2_1 = "vaccine_1";
 label mean_d_incidence1549_3_1 = "vaccine_2";
@@ -1974,3 +2012,26 @@ band    x=year lower=p5_d_incidence1549_4_1 upper=p95_d_incidence1549_4_1 / tran
 run;
 
 
+
+ods html;
+proc sgplot data=joint ; 
+Title    height=1.5 justify=center "Median difference in incidence1549 compared with no vaccine";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Difference in incidence (per 100 person-years)'		labelattrs=(size=12)  values = (-1 to  +1       by 0.1    ) valueattrs=(size=10);
+
+label median_d_incidence1549_2_1 = "vaccine_1";
+label median_d_incidence1549_3_1 = "vaccine_2";
+label median_d_incidence1549_4_1 = "vaccine_3";
+
+series  x=year y=median_d_incidence1549_2_1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=year lower=p5_d_incidence1549_2_1 upper=p95_d_incidence1549_2_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
+
+series  x=year y=median_d_incidence1549_3_1 / lineattrs = (color=cyan thickness = 4);
+band    x=year lower=p5_d_incidence1549_3_1 upper=p95_d_incidence1549_3_1 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
+
+series  x=year y=median_d_incidence1549_4_1 / lineattrs = (color=violet thickness = 4);
+band    x=year lower=p5_d_incidence1549_4_1 upper=p95_d_incidence1549_4_1 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
+
+run;
+
+ods html close;
