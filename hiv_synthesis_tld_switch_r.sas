@@ -520,7 +520,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0   	0   	0   	0.25	0.25	0.25	0.25) ; * tld_switch;  * note also change below at ***adh tld_switch ;
+								0   	0   	0.20	0.20	0.20	0.20	0.20) ; * tld_switch;  * note also change below at ***adh tld_switch ;
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
@@ -8778,16 +8778,16 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 	e=rand('uniform');
 
-	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.5   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.35  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.15  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.15  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.15  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.15  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.15  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 50 <= age      and adh > 0.8 and e < 0.15  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=1 and 50 <= age      and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
 
-	if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.35  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
+	if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
 	if gender=2 and 20 <= age < 25 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
 
 

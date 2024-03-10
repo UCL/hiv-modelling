@@ -1691,7 +1691,8 @@ if dcost_50y_5 = min_dcost_50y then lowest_dcost=5;
 * table 1;
 
 proc means   data = b.w_tld_switch_q  n p50 p5 p95 ;  
-var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   
+var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
+p_vl1000_24 prevalence_vg1000_24   
 prop_artexp_elig_tldsw_24  prop_tldsw_uvl2_24  prop_tldsw_elig_vl1000_24  prop_uvl2_vl1000_24 prop_tldsw_o_dar_24  prop_r_dol_ge_p5_uvl2_24
 p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24   p_onart_iicu_uvl2_24   p_adh_lt80_iicu_uvl2_24  p_vis_tldsw_24 p_vis_uvl2_24  p_dol_2vg1000_dolr1_24
 p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24
@@ -1703,9 +1704,9 @@ p_adh_lt80_iicu_tldsw2_24   p_onart_iicu_tldsw2_24   p_onart_iicu_uvl22_24   p_a
 run;
 
 
-proc glm; 
-class adh_pattern;
-model p_onart_vl1000_24 = adh_pattern rate_int_choice / solution;
+proc glm  data = b.w_tld_switch_q; 
+class adh_pattern adh_effect_of_meas_alert;
+model p_onart_vl1000_24 = adh_pattern  adh_effect_of_meas_alert/ solution;
 run;
 
 
