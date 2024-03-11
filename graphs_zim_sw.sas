@@ -6,14 +6,14 @@
 libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a;
-set a.fsw_zim_26feb24;  
+set a.fsw_zim_28feb24;  
 
 if option=1 then delete; ***first look at overall incidence according to baseline SW program (option=1= amesthist);
 
 if rate_engage_sw_program ge 0.15 then delete;
 
 proc sort;by run;
-proc freq;table rate_engage_sw_program;run;
+proc freq;table cald;run;
 
 proc freq data=a;table cald;run;
 data sf;
@@ -169,7 +169,7 @@ proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 226;
+%let nfit = 302;
 %let year_end = 2050.00 ;
 run;
 proc sort;by cald option ;run;
@@ -250,7 +250,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\26feb2024b.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\28feb2024.doc' startpage=never; 
 
 
 proc sgplot data=e; 

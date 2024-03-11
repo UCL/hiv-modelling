@@ -5,7 +5,7 @@
 libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_17_08_23;  
+set a.fsw_17_08_23_final;  
 if run=. then delete; 
 
 *if run > 774141319 then delete;

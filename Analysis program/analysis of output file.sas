@@ -891,13 +891,13 @@ data costs_1;
 set costs;
 
 *incidence;
-if 0  le incidence1549_22 le 0.17 then incid_cat3=1;
-if 0.17 lt incidence1549_22 le 0.47 then incid_cat3=2;
-if 0.47 lt incidence1549_22 then incid_cat3=3;
+if 0  le incidence1549_22 le 0.20 then incid_cat3=1;
+if 0.20 lt incidence1549_22 le 0.50 then incid_cat3=2;
+if 0.50 lt incidence1549_22 then incid_cat3=3;
 
 *prop diag;
-if 0.60 le p_diag_22 le 0.88 then p_diag=1;
-if 0.88 lt p_diag_22 le 0.92 then p_diag=2;
+if 0.00 le p_diag_22 le 0.89 then p_diag=1;
+if 0.89 lt p_diag_22 le 0.92 then p_diag=2;
 if 0.92 lt p_diag_22 le 1 then p_diag=3;
 
 *on ART of those diag;
@@ -905,8 +905,9 @@ if 0.00 lt p_onart_diag_22 le 0.95 then artcov=1;
 if 0.95 lt p_onart_diag_22 le 0.97 then artcov=2;
 if 0.97 lt p_onart_diag_22 le 1 then artcov=3;
 
+
 *On ART with VL<1000;
-if 0.50 le p_onart_vl1000_22 le 0.90 then onart_vl1000=1;
+if 0.00 le p_onart_vl1000_22 le 0.90 then onart_vl1000=1;
 if 0.90 lt p_onart_vl1000_22 le 0.95 then onart_vl1000=2;
 if 0.95 lt p_onart_vl1000_22 le 1.00 then onart_vl1000=3;
 
@@ -917,9 +918,9 @@ if 4 lt incidence_sw_22 le 10 then incid_sw_cat3=2;
 if 10 lt incidence_sw_22 then incid_sw_cat3=3;
 
 *prop diag_sw_SW;
-if 0.00 le p_diag_sw_22 le 0.90 then p_diag_sw=1;
-if 0.90 lt p_diag_sw_22 le 0.94 then p_diag_sw=2;
-if 0.94 lt p_diag_sw_22 le 1 then p_diag_sw=3;
+if 0.00 le p_diag_sw_22 le 0.89 then p_diag_sw=1;
+if 0.89 lt p_diag_sw_22 le 0.93 then p_diag_sw=2;
+if 0.93 lt p_diag_sw_22 le 1 then p_diag_sw=3;
 
 *on ART of those diag_sw;
 if 0.00 le p_onart_diag_sw_22 le 0.85 then artcov_sw=1;
@@ -933,10 +934,11 @@ if 0.92 lt p_onart_vl1000_sw_22 le 1.00 then onart_vl1000_sw=3;
 
 run;
 
+proc freq;table p_diag_sw;run;
 
 ***CHECK***;
 
-proc freq;table sw_higher_prob_loss_at_diag;run;
+proc freq;table sw_higher_int sw_higher_prob_loss_at_diag;run;
 
 proc freq;table ce*onart_vl1000_sw;run;
 

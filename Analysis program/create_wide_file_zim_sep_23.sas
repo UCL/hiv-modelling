@@ -1,9 +1,9 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a;
-set a.fsw_zim_18sep23;  
+set a.fsw_zim_28feb24;  
 if run=. then delete; 
 proc sort;
 by run cald option;run;
