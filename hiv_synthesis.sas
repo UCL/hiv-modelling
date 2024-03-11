@@ -1,6 +1,6 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run 103 all;
+* run 100 all;
 * Matt local machine input;
 libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\test';
 %let tmpfilename = out;
@@ -177,7 +177,7 @@ newp_seed = 7;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
 * hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (rand('uniform')*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
 * p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
-* hard_reach_lower_htn;		hard_reach_lower_htn = 0;* + (rand('uniform')*0.05); *hard_reach_lower_htn = round(hard_reach_lower_htn,0.01); *Sensitivity analysis HYPERTENSION run 103 only;
+* hard_reach_lower_htn;		hard_reach_lower_htn = 0 + (rand('uniform')*0.05); hard_reach_lower_htn = round(hard_reach_lower_htn,0.01);
 * p_hard_reach_htn_w;		p_hard_reach_htn_w = p_hard_reach_w - hard_reach_lower_htn;
 * p_hard_reach_htn_m;		p_hard_reach_htn_m = p_hard_reach_m - hard_reach_lower_htn;
 
@@ -2713,7 +2713,7 @@ who may be dead and hence have caldate{t} missing;
 		* prob testing in commmunity;
 		%sample_uniform(prob_test_sbp_comm, 0.75 0.80 0.85);
 		* prob link from community testing to clinic;
-		*%sample_uniform(prob_htn_link, 0.60 0.65 0.70); prob_htn_link = 0.5; *sensitivity analysis Run 103 HYPERTENSION;
+		%sample_uniform(prob_htn_link, 0.60 0.65 0.70);
 		* comm test interval;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
