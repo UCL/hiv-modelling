@@ -1596,6 +1596,7 @@ proc sort; by run;run;
 
 
 
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_n_out\";
 
 data g; set b.w_dcp_cab_n ;
 
@@ -1681,14 +1682,13 @@ label
 * table 1;
 
 ods html close;
-ods rtf close;
+* ods rtf close;
 
 options linesize = 240;
 
+* ods rtf file="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\output_n.rtf";
 
-ods rtf file="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\output_n.rtf";
-
-* ods html;
+ods html;
 title "Characteristics in 2023";
 proc means  data = g    n p50 p5 p95 ;  
 var
