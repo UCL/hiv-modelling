@@ -1,14 +1,14 @@
 
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_l_fpc_b_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_fpc_b_out\";
 
 proc printto ;
 
 * ods html close;
 
 data b;
-set a.l_vaccine_l_fpc_b_y;
+set a.l_vaccine_m_fpc_b_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -25,7 +25,7 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-%let single_var = incidence1549_                      ;
+%let single_var = n_death_hiv     ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_
@@ -36,7 +36,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 2028   ;
+%let nfit = 5784   ;
 
 %let year_end = 2070.00 ;
 run;
@@ -241,37 +241,37 @@ by cald;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
-
+/*
 
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.5       by 0.1     ) valueattrs=(size=10);
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1         by 0.1     ) valueattrs=(size=10);
 
 label p50_incidence1549__0 = "no vaccine";
 label p50_incidence1549__1 = "vaccine 1";
 label p50_incidence1549__2 = "vaccine 2";
 label p50_incidence1549__3 = "vaccine 3";
 
-series  x=cald y=p50_incidence1549__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_incidence1549__0 / lineattrs = (color=orange thickness = 3);
+band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=cald y=p50_incidence1549__1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_incidence1549__1 upper=p95_incidence1549__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_incidence1549__1 / lineattrs = (color=lightgreen thickness = 3);
+band    x=cald lower=p5_incidence1549__1 upper=p95_incidence1549__1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=cald y=p50_incidence1549__2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_incidence1549__2 upper=p95_incidence1549__2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_incidence1549__2 / lineattrs = (color=cyan thickness = 3);
+band    x=cald lower=p5_incidence1549__2 upper=p95_incidence1549__2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=cald y=p50_incidence1549__3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_incidence1549__3 upper=p95_incidence1549__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_incidence1549__3 / lineattrs = (color=violet thickness = 3);
+band    x=cald lower=p5_incidence1549__3 upper=p95_incidence1549__3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
 * ods html close;
 
 
-/*
+
 
 ods html;
 proc sgplot data=d ; 
@@ -284,21 +284,22 @@ label p50_prevalence1549__1 = "vaccine 1";
 label p50_prevalence1549__2 = "vaccine 2";
 label p50_prevalence1549__3 = "vaccine 3";
 
-series  x=cald y=p50_prevalence1549__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prevalence1549__0 upper=p95_prevalence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_prevalence1549__0 / lineattrs = (color=orange thickness = 4);
+band    x=cald lower=p5_prevalence1549__0 upper=p95_prevalence1549__0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=cald y=p50_prevalence1549__1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_prevalence1549__1 upper=p95_prevalence1549__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_prevalence1549__1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_prevalence1549__1 upper=p95_prevalence1549__1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=cald y=p50_prevalence1549__2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_prevalence1549__2 upper=p95_prevalence1549__2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_prevalence1549__2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_prevalence1549__2 upper=p95_prevalence1549__2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=cald y=p50_prevalence1549__3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_prevalence1549__3 upper=p95_prevalence1549__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_prevalence1549__3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_prevalence1549__3 upper=p95_prevalence1549__3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
 * ods html close;
+
 
 
 
@@ -313,17 +314,17 @@ label p50_p_agege15_ever_vaccinated_1 = "vaccine 1";
 label p50_p_agege15_ever_vaccinated_2 = "vaccine 2";
 label p50_p_agege15_ever_vaccinated_3 = "vaccine 3";
 
-series  x=cald y=p50_p_agege15_ever_vaccinated_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_p_agege15_ever_vaccinated_0 upper=p95_p_agege15_ever_vaccinated_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_p_agege15_ever_vaccinated_0 / lineattrs = (color=orange thickness = 4);
+band    x=cald lower=p5_p_agege15_ever_vaccinated_0 upper=p95_p_agege15_ever_vaccinated_0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=cald y=p50_p_agege15_ever_vaccinated_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_p_agege15_ever_vaccinated_1 upper=p95_p_agege15_ever_vaccinated_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_p_agege15_ever_vaccinated_1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_p_agege15_ever_vaccinated_1 upper=p95_p_agege15_ever_vaccinated_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=cald y=p50_p_agege15_ever_vaccinated_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_p_agege15_ever_vaccinated_2 upper=p95_p_agege15_ever_vaccinated_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_p_agege15_ever_vaccinated_2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_p_agege15_ever_vaccinated_2 upper=p95_p_agege15_ever_vaccinated_2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=cald y=p50_p_agege15_ever_vaccinated_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_p_agege15_ever_vaccinated_3 upper=p95_p_agege15_ever_vaccinated_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_p_agege15_ever_vaccinated_3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_p_agege15_ever_vaccinated_3 upper=p95_p_agege15_ever_vaccinated_3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -342,21 +343,22 @@ label p50_p_cur_any_vac_e_1564__1 = "vaccine 1";
 label p50_p_cur_any_vac_e_1564__2 = "vaccine 2";
 label p50_p_cur_any_vac_e_1564__3 = "vaccine 3";
 
-series  x=cald y=p50_p_cur_any_vac_e_1564__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_p_cur_any_vac_e_1564__0 upper=p95_p_cur_any_vac_e_1564__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_p_cur_any_vac_e_1564__0 / lineattrs = (color=orange thickness = 4);
+band    x=cald lower=p5_p_cur_any_vac_e_1564__0 upper=p95_p_cur_any_vac_e_1564__0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=cald y=p50_p_cur_any_vac_e_1564__1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_p_cur_any_vac_e_1564__1 upper=p95_p_cur_any_vac_e_1564__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_p_cur_any_vac_e_1564__1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_p_cur_any_vac_e_1564__1 upper=p95_p_cur_any_vac_e_1564__1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=cald y=p50_p_cur_any_vac_e_1564__2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_p_cur_any_vac_e_1564__2 upper=p95_p_cur_any_vac_e_1564__2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_p_cur_any_vac_e_1564__2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_p_cur_any_vac_e_1564__2 upper=p95_p_cur_any_vac_e_1564__2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=cald y=p50_p_cur_any_vac_e_1564__3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_p_cur_any_vac_e_1564__3 upper=p95_p_cur_any_vac_e_1564__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_p_cur_any_vac_e_1564__3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_p_cur_any_vac_e_1564__3 upper=p95_p_cur_any_vac_e_1564__3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
 
+*/
 
 
 ods html;
@@ -370,22 +372,22 @@ label p50_n_death_hiv_1 = "vaccine 1";
 label p50_n_death_hiv_2 = "vaccine 2";
 label p50_n_death_hiv_3 = "vaccine 3";
 
-series  x=cald y=p50_n_death_hiv_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_n_death_hiv_0 upper=p95_n_death_hiv_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_n_death_hiv_0 / lineattrs = (color=orange thickness = 4);
+band    x=cald lower=p5_n_death_hiv_0 upper=p95_n_death_hiv_0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=cald y=p50_n_death_hiv_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_n_death_hiv_1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=cald y=p50_n_death_hiv_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_n_death_hiv_2 upper=p95_n_death_hiv_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_n_death_hiv_2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_n_death_hiv_2 upper=p95_n_death_hiv_2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=cald y=p50_n_death_hiv_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_n_death_hiv_3 upper=p95_n_death_hiv_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_n_death_hiv_3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_n_death_hiv_3 upper=p95_n_death_hiv_3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
 
-
+/*
 
 
 ods html;
@@ -399,17 +401,17 @@ label p50_ddaly_1 = "vaccine 1";
 label p50_ddaly_2 = "vaccine 2";
 label p50_ddaly_3 = "vaccine 3";
 
-series  x=cald y=p50_ddaly_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_ddaly_0 upper=p95_ddaly_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_ddaly_0 / lineattrs = (color=orange thickness = 4);
+band    x=cald lower=p5_ddaly_0 upper=p95_ddaly_0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=cald y=p50_ddaly_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_ddaly_1 upper=p95_ddaly_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_ddaly_1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_ddaly_1 upper=p95_ddaly_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=cald y=p50_ddaly_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_ddaly_2 upper=p95_ddaly_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_ddaly_2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_ddaly_2 upper=p95_ddaly_2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=cald y=p50_ddaly_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_ddaly_3 upper=p95_ddaly_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_ddaly_3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_ddaly_3 upper=p95_ddaly_3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -426,17 +428,17 @@ label p50_prop_1564_hivneg_onprep_1 = "vaccine 1";
 label p50_prop_1564_hivneg_onprep_2 = "vaccine 2";
 label p50_prop_1564_hivneg_onprep_3 = "vaccine 3";
 
-series  x=cald y=p50_prop_1564_hivneg_onprep_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prop_1564_hivneg_onprep_0 upper=p95_prop_1564_hivneg_onprep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_prop_1564_hivneg_onprep_0 / lineattrs = (color=orange thickness = 4);
+band    x=cald lower=p5_prop_1564_hivneg_onprep_0 upper=p95_prop_1564_hivneg_onprep_0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=cald y=p50_prop_1564_hivneg_onprep_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_prop_1564_hivneg_onprep_1 upper=p95_prop_1564_hivneg_onprep_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_prop_1564_hivneg_onprep_1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_prop_1564_hivneg_onprep_1 upper=p95_prop_1564_hivneg_onprep_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=cald y=p50_prop_1564_hivneg_onprep_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_prop_1564_hivneg_onprep_2 upper=p95_prop_1564_hivneg_onprep_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_prop_1564_hivneg_onprep_2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_prop_1564_hivneg_onprep_2 upper=p95_prop_1564_hivneg_onprep_2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=cald y=p50_prop_1564_hivneg_onprep_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_prop_1564_hivneg_onprep_3 upper=p95_prop_1564_hivneg_onprep_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_prop_1564_hivneg_onprep_3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_prop_1564_hivneg_onprep_3 upper=p95_prop_1564_hivneg_onprep_3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -454,17 +456,17 @@ label p50_p_diag_1 = "vaccine 1";
 label p50_p_diag_2 = "vaccine 2";
 label p50_p_diag_3 = "vaccine 3";
 
-series  x=cald y=p50_p_diag_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_p_diag_0 upper=p95_p_diag_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_p_diag_0 / lineattrs = (color=orange thickness = 4);
+band    x=cald lower=p5_p_diag_0 upper=p95_p_diag_0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=cald y=p50_p_diag_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_p_diag_1 upper=p95_p_diag_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_p_diag_1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_p_diag_1 upper=p95_p_diag_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=cald y=p50_p_diag_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_p_diag_2 upper=p95_p_diag_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_p_diag_2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_p_diag_2 upper=p95_p_diag_2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=cald y=p50_p_diag_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_p_diag_3 upper=p95_p_diag_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_p_diag_3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_p_diag_3 upper=p95_p_diag_3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -482,17 +484,17 @@ label p50_p_onart_diag_1 = "vaccine 1";
 label p50_p_onart_diag_2 = "vaccine 2";
 label p50_p_onart_diag_3 = "vaccine 3";
 
-series  x=cald y=p50_p_onart_diag_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_p_onart_diag_0 upper=p95_p_onart_diag_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_diag_0 / lineattrs = (color=orange thickness = 4);
+band    x=cald lower=p5_p_onart_diag_0 upper=p95_p_onart_diag_0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=cald y=p50_p_onart_diag_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_p_onart_diag_1 upper=p95_p_onart_diag_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_diag_1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_p_onart_diag_1 upper=p95_p_onart_diag_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=cald y=p50_p_onart_diag_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_p_onart_diag_2 upper=p95_p_onart_diag_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_diag_2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_p_onart_diag_2 upper=p95_p_onart_diag_2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=cald y=p50_p_onart_diag_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_p_onart_diag_3 upper=p95_p_onart_diag_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_diag_3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_p_onart_diag_3 upper=p95_p_onart_diag_3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
@@ -510,17 +512,17 @@ label p50_p_onart_vl1000__1 = "vaccine 1";
 label p50_p_onart_vl1000__2 = "vaccine 2";
 label p50_p_onart_vl1000__3 = "vaccine 3";
 
-series  x=cald y=p50_p_onart_vl1000__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_p_onart_vl1000__0 upper=p95_p_onart_vl1000__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_vl1000__0 / lineattrs = (color=orange thickness = 4);
+band    x=cald lower=p5_p_onart_vl1000__0 upper=p95_p_onart_vl1000__0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=cald y=p50_p_onart_vl1000__1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_p_onart_vl1000__1 upper=p95_p_onart_vl1000__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_vl1000__1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_p_onart_vl1000__1 upper=p95_p_onart_vl1000__1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=cald y=p50_p_onart_vl1000__2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_p_onart_vl1000__2 upper=p95_p_onart_vl1000__2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_vl1000__2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_p_onart_vl1000__2 upper=p95_p_onart_vl1000__2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=cald y=p50_p_onart_vl1000__3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_p_onart_vl1000__3 upper=p95_p_onart_vl1000__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_vl1000__3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_p_onart_vl1000__3 upper=p95_p_onart_vl1000__3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 

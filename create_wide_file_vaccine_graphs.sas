@@ -719,29 +719,37 @@ f_median_option_3 f_mean_option_3 f_p5_option_3 f_p95_option_3 f_median_d_option
 f_median_option_4 f_mean_option_4 f_p5_option_4 f_p95_option_4 f_median_d_option_4_1 f_mean_d_option_4_1 f_p5_d_option_4_1 f_p95_d_option_4_1
 ;
 
+if year=2039 then do;
+mean_d_incidence1549_2_1=0; mean_d_incidence1549_3_1=0;mean_d_incidence1549_4_1=0;
+median_d_incidence1549_2_1=0; median_d_incidence1549_3_1=0;median_d_incidence1549_4_1=0;
+end;
+
+mean_d_incidence1549_1_1=0;
+median_d_incidence1549_1_1=0;
+
 
 
 ods html;
 proc sgplot data=joint ; 
 Title    height=1.5 justify=center "Mean incidence1549";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (0 to  1.0       by 0.02    ) valueattrs=(size=10);
+yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (0 to  1.0       by 0.05    ) valueattrs=(size=10);
 
 label mean_incidence1549_1 = "no vaccine";
 label mean_incidence1549_2 = "vaccine_1";
 label mean_incidence1549_3 = "vaccine_2";
 label mean_incidence1549_4 = "vaccine_3";
 
-series  x=year y=mean_incidence1549_1 / lineattrs = (color=orange thickness = 4);
+series  x=year y=mean_incidence1549_1 / lineattrs = (color=orange thickness = 3);
 band    x=year lower=p5_incidence1549_1 upper=p95_incidence1549_1 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=year y=mean_incidence1549_2 / lineattrs = (color=lightgreen thickness = 4);
+series  x=year y=mean_incidence1549_2 / lineattrs = (color=lightgreen thickness = 3);
 band    x=year lower=p5_incidence1549_2 upper=p95_incidence1549_2 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=year y=mean_incidence1549_3 / lineattrs = (color=cyan thickness = 4);
+series  x=year y=mean_incidence1549_3 / lineattrs = (color=cyan thickness = 3);
 band    x=year lower=p5_incidence1549_3 upper=p95_incidence1549_3 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=year y=mean_incidence1549_4 / lineattrs = (color=violet thickness = 4);
+series  x=year y=mean_incidence1549_4 / lineattrs = (color=violet thickness = 3);
 band    x=year lower=p5_incidence1549_4 upper=p95_incidence1549_4 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;
@@ -754,23 +762,23 @@ ods html;
 proc sgplot data=joint ; 
 Title    height=1.5 justify=center "Median incidence1549";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (0 to  1.0       by 0.02    ) valueattrs=(size=10);
+yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (0 to  1.0       by 0.05    ) valueattrs=(size=10);
 
 label median_incidence1549_1 = "no vaccine";
 label median_incidence1549_2 = "vaccine_1";
 label median_incidence1549_3 = "vaccine_2";
 label median_incidence1549_4 = "vaccine_3";
 
-series  x=year y=median_incidence1549_1 / lineattrs = (color=orange thickness = 4);
+series  x=year y=median_incidence1549_1 / lineattrs = (color=orange thickness = 3);
 band    x=year lower=p5_incidence1549_1 upper=p95_incidence1549_1 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
-series  x=year y=median_incidence1549_2 / lineattrs = (color=lightgreen thickness = 4);
+series  x=year y=median_incidence1549_2 / lineattrs = (color=lightgreen thickness = 3);
 band    x=year lower=p5_incidence1549_2 upper=p95_incidence1549_2 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=year y=median_incidence1549_3 / lineattrs = (color=cyan thickness = 4);
+series  x=year y=median_incidence1549_3 / lineattrs = (color=cyan thickness = 3);
 band    x=year lower=p5_incidence1549_3 upper=p95_incidence1549_3 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=year y=median_incidence1549_4 / lineattrs = (color=violet thickness = 4);
+series  x=year y=median_incidence1549_4 / lineattrs = (color=violet thickness = 3);
 band    x=year lower=p5_incidence1549_4 upper=p95_incidence1549_4 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;
@@ -789,14 +797,16 @@ label mean_d_incidence1549_2_1 = "vaccine_1";
 label mean_d_incidence1549_3_1 = "vaccine_2";
 label mean_d_incidence1549_4_1 = "vaccine_3";
 
-series  x=year y=mean_d_incidence1549_2_1 / lineattrs = (color=lightgreen thickness = 4);
+series  x=year y=mean_d_incidence1549_2_1 / lineattrs = (color=lightgreen thickness = 3);
 band    x=year lower=p5_d_incidence1549_2_1 upper=p95_d_incidence1549_2_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=year y=mean_d_incidence1549_3_1 / lineattrs = (color=cyan thickness = 4);
+series  x=year y=mean_d_incidence1549_3_1 / lineattrs = (color=cyan thickness = 3);
 band    x=year lower=p5_d_incidence1549_3_1 upper=p95_d_incidence1549_3_1 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=year y=mean_d_incidence1549_4_1 / lineattrs = (color=violet thickness = 4);
+series  x=year y=mean_d_incidence1549_4_1 / lineattrs = (color=violet thickness = 3);
 band    x=year lower=p5_d_incidence1549_4_1 upper=p95_d_incidence1549_4_1 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
+
+series  x=year y=median_d_incidence1549_1_1 / lineattrs = (color=black thickness = 1);
 
 run;
 
@@ -812,15 +822,82 @@ label median_d_incidence1549_2_1 = "vaccine_1";
 label median_d_incidence1549_3_1 = "vaccine_2";
 label median_d_incidence1549_4_1 = "vaccine_3";
 
-series  x=year y=median_d_incidence1549_2_1 / lineattrs = (color=lightgreen thickness = 4);
+series  x=year y=median_d_incidence1549_2_1 / lineattrs = (color=lightgreen thickness = 3);
 band    x=year lower=p5_d_incidence1549_2_1 upper=p95_d_incidence1549_2_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
 
-series  x=year y=median_d_incidence1549_3_1 / lineattrs = (color=cyan thickness = 4);
+series  x=year y=median_d_incidence1549_3_1 / lineattrs = (color=cyan thickness = 3);
 band    x=year lower=p5_d_incidence1549_3_1 upper=p95_d_incidence1549_3_1 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
 
-series  x=year y=median_d_incidence1549_4_1 / lineattrs = (color=violet thickness = 4);
+series  x=year y=median_d_incidence1549_4_1 / lineattrs = (color=violet thickness = 3);
 band    x=year lower=p5_d_incidence1549_4_1 upper=p95_d_incidence1549_4_1 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
+
+series  x=year y=mean_d_incidence1549_1_1 / lineattrs = (color=black thickness = 1);
 
 run;
 
 ods html close;
+
+
+
+
+
+
+
+
+
+ods html;
+proc sgplot data=joint ; 
+Title    height=1.5 justify=center "Incidence1549";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (0 to  1.0       by 0.05    ) valueattrs=(size=10);
+
+label median_incidence1549_1 = "no vaccine";
+label median_incidence1549_2 = "vaccine_1";
+label median_incidence1549_3 = "vaccine_2";
+label median_incidence1549_4 = "vaccine_3";
+
+series  x=year y=median_incidence1549_1 / lineattrs = (color=orange thickness = 3);
+band    x=year lower=p5_incidence1549_1 upper=p95_incidence1549_1 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+
+series  x=year y=median_incidence1549_2 / lineattrs = (color=lightgreen thickness = 3);
+band    x=year lower=p5_incidence1549_2 upper=p95_incidence1549_2 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
+
+series  x=year y=median_incidence1549_3 / lineattrs = (color=cyan thickness = 3);
+band    x=year lower=p5_incidence1549_3 upper=p95_incidence1549_3 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
+
+series  x=year y=median_incidence1549_4 / lineattrs = (color=violet thickness = 3);
+band    x=year lower=p5_incidence1549_4 upper=p95_incidence1549_4 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
+
+run;
+
+
+
+
+ods html;
+proc sgplot data=joint ; 
+Title    height=1.5 justify=center "Difference in incidence1549 compared with no vaccine";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Difference in incidence (per 100 person-years)'		labelattrs=(size=12)  values = (-0.5 to  +0.5       by 0.1    ) valueattrs=(size=10);
+
+label median_d_incidence1549_1_1 = "";
+label median_d_incidence1549_2_1 = "vaccine_1";
+label median_d_incidence1549_3_1 = "vaccine_2";
+label median_d_incidence1549_4_1 = "vaccine_3";
+
+series  x=year y=median_d_incidence1549_2_1 / lineattrs = (color=lightgreen thickness = 3);
+band    x=year lower=p5_d_incidence1549_2_1 upper=p95_d_incidence1549_2_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
+
+series  x=year y=median_d_incidence1549_3_1 / lineattrs = (color=cyan thickness = 3);
+band    x=year lower=p5_d_incidence1549_3_1 upper=p95_d_incidence1549_3_1 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
+
+series  x=year y=median_d_incidence1549_4_1 / lineattrs = (color=violet thickness = 3);
+band    x=year lower=p5_d_incidence1549_4_1 upper=p95_d_incidence1549_4_1 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
+
+series  x=year y=median_d_incidence1549_1_1 / lineattrs = (color=black thickness = 1);
+
+run;
+
+
+ods html close;
+
+
