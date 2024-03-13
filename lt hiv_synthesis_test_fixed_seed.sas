@@ -2089,9 +2089,9 @@ if &j ge 145 then do;
 end;
 
 
-test_draw_tm1 = test_draw;
 test_draw = .;
-test_draw = rand('uniform');
+test_draw = rand('uniform'); test_draw_1 = test_draw;
+test_draw = rand('uniform'); test_draw_2 = test_draw;
 
 
 
@@ -17657,7 +17657,8 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 end;
 
 
-s_test_draw + test_draw;
+s_test_draw_1 + test_draw_1 ;
+s_test_draw_2 + test_draw_2 ;
 
 
 cald = caldate_never_dot ;
@@ -17685,7 +17686,7 @@ j=&j;
 proc freq; tables cald hiv ; where death=.; run;
 
 
-proc print; var cald age option  replicate  j test_draw  t_test_draw ;
+proc print; var cald age option  replicate  j test_draw_1  t_test_draw_1  test_draw_2 t_test_draw_2 ;
   where serial_no < 20;
 * where uvl2_elig = 1 ;
 run;
@@ -19341,7 +19342,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020   
 
-s_test_draw  seed_post_year_interv  replicate
+s_test_draw_1 s_test_draw_2  seed_post_year_interv  replicate
 
 ;
 
@@ -19529,7 +19530,8 @@ t_m_newp = s_m_newp;
 t_w_newp = s_w_newp;
 
 
-t_test_draw = s_test_draw;
+t_test_draw_1 = s_test_draw_1 ;
+t_test_draw_2 = s_test_draw_2 ;
 
 
 
@@ -20215,7 +20217,7 @@ s_prop_vlg5_rm0_diag    s_prop_vlg5_rm0_naive    s_prop_vlg5_rm1_diag  s_prop_vl
 s_prop_vlg6_rm0_naive  s_prop_vlg6_rm1_diag    s_prop_vlg6_rm1_naive s_prop_w_vlg1   s_prop_w_vlg2 s_prop_w_vlg3   s_prop_w_vlg4  
 s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp 
 
-s_test_draw
+s_test_draw_1 s_test_draw_2 
 
 ;
 
@@ -20533,6 +20535,16 @@ data r1; set rep1;
 
 data r1; set rep1;
 * 2025;
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
+
+
+data r1; set rep1;
+* 2025;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=2);
@@ -20589,6 +20601,16 @@ data r1; set rep2;
 %update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
+
+
+data r1; set rep2;
+* 2025;
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
 
 
 data r1; set rep2;
@@ -21426,7 +21448,7 @@ m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
 ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
-s_test_draw  seed_post_year_interv  replicate
+s_test_draw_1 s_test_draw_2  seed_post_year_interv  replicate
 
 ; 
 
