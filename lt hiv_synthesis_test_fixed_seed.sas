@@ -2089,6 +2089,7 @@ if &j ge 145 then do;
 end;
 
 
+test_draw_tm1 = test_draw;
 test_draw = .;
 test_draw = rand('uniform');
 
@@ -17685,8 +17686,10 @@ proc freq; tables cald hiv ; where death=.; run;
 
 
 proc print; var cald age option  replicate  j test_draw  t_test_draw ;
-where serial_no <=  20 ;
+  where serial_no < 20;
+* where uvl2_elig = 1 ;
 run;
+
 
 
 
