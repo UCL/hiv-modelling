@@ -3,25 +3,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\test_no_fixed_seed_out";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\test_fixed_seed_out";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\test_no_fixed_seed_out";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\test_fixed_seed_out";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.test_no_fixed_seed_out;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.test_fixed_seed_out;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.test_no_fixed_seed_out; 
+proc sort data=b.test_fixed_seed_out; 
 by run cald option;
 run;
 
@@ -31,7 +31,7 @@ run;
 data sf;
 
 
-set b.test_no_fixed_seed_out ;
+set b.test_fixed_seed_out ;
 
 
 
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.test_no_fixed_seed_out sf;
+merge b.test_fixed_seed_out sf;
 by run ;
 
 * preparatory code ;
@@ -1185,9 +1185,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_test_no_fixed_seed_out; set y;  
+data    b.l_test_fixed_seed_out; set y;  
 
-data y ; set b.l_test_no_fixed_seed_out; 
+data y ; set b.l_test_fixed_seed_out; 
 
   options nomprint;
   option nospool;
@@ -1583,10 +1583,10 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\test_no_fixed_seed_out";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\test_fixed_seed_out";
 
 
-  data  b.w_test_no_fixed_seed_out    ; 
+  data  b.w_test_fixed_seed_out    ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1640,14 +1640,14 @@ if dcost_10y_2 = min_dcost_10y then lowest_dcost=2;
 
 * table 1;
 
-proc means   data = b.w_test_no_fixed_seed_out  n p50 p5 p95 ;  
+proc means   data = b.w_test_fixed_seed_out  n p50 p5 p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
 ;
 run;
 
 
 
-proc means data = b.w_test_no_fixed_seed_out  n mean p5 p95;  var               
+proc means data = b.w_test_fixed_seed_out  n mean p5 p95;  var               
 p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 d_p_o_dar_uvl2_10y_2_1 
 n_death_hiv_10y_1 n_death_hiv_10y_2 d_n_death_hiv_10y_2_1 
 ddaly_10y_1 ddaly_10y_2  d_ddaly_10y_2_1  
