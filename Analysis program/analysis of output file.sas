@@ -4,15 +4,25 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 ***This version used for the paper;
 data a; 
-*set a.wide_fsw_22_06_23 ;
+
 *if incidence_sw_22 <0.1 then delete;
-set a.wide_fsw_17_08_23d; ***Used for the paper without the 'd' - the d file just added in 2 more parameters so should be the same as orignal file;
+*set a.wide_fsw_17_08_23d; ***Used for the paper without the 'd' - the d file just added in 2 more parameters so should be the same as orignal file;
 *set a.wide_fsw_17_08_23c;***this is with various costs for a SW program to check if it's CE;
 
-if incidence1549_22 <0.02 then delete;
-run;
+set a.wide_fsw_17_08_23_final ;
 
-proc freq;table incidence1549_22;run;
+
+if incidence1549_22 =0 then delete;
+
+if p_diag_sw_22 gt 0.9457 then delete;
+
+proc freq;table p_diag_sw_22;run;
+
+*if incidence1549_22 <  0.0152 then delete; *to get 1000 runs (remove implausible incidence and p_diag);
+
+
+proc freq;table run;run;
+
 
 data b;
 set a;
