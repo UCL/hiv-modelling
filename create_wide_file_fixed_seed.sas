@@ -1573,28 +1573,30 @@ proc sort; by run;run;
 proc freq data=b.wide_par2; tables future_prep_condom ; run;  
 
 
-* To get one row per run;
 
-  data  b.w_test_no_fixed_seed_out_y    ; 
+
+
+
+
+
+
+
+
+
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\test_no_fixed_seed_out";
+
+
+  data  b.w_test_no_fixed_seed_out    ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
 
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
-d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
-d_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 - n_death_hiv_10y_1;
-d_n_death_hiv_10y_5_1 = n_death_hiv_10y_5 - n_death_hiv_10y_1;
 
 d_n_iime_10y_2_1 = n_iime_10y_2 -   n_iime_10y_1 ; 
-d_n_iime_10y_3_1 = n_iime_10y_3 -   n_iime_10y_1 ; 
-d_n_iime_10y_4_1 = n_iime_10y_4 -   n_iime_10y_1 ; 
-d_n_iime_10y_5_1 = n_iime_10y_5 -   n_iime_10y_1 ; 
 
 d_p_o_dar_uvl2_10y_2_1 = p_o_dar_uvl2_10y_2 -   p_o_dar_uvl2_10y_1 ; 
-d_p_o_dar_uvl2_10y_3_1 = p_o_dar_uvl2_10y_3 -   p_o_dar_uvl2_10y_1 ; 
-d_p_o_dar_uvl2_10y_4_1 = p_o_dar_uvl2_10y_4 -   p_o_dar_uvl2_10y_1 ; 
-d_p_o_dar_uvl2_10y_5_1 = p_o_dar_uvl2_10y_5 -   p_o_dar_uvl2_10y_1 ; 
 
 
 * checked that this the same as dcost_10y_1 etc so over-writing so can change individual costs;
@@ -1609,80 +1611,29 @@ dcost_10y_2 = dart_cost_y_10y_2 + dadc_cost_10y_2 + dcd4_cost_10y_2 + dvl_cost_1
 					dcost_circ_10y_2 + dcost_condom_dn_10y_2 + dcost_child_hiv_10y_2 + dcost_non_aids_pre_death_10y_2
 					+ dcost_prep_visit_10y_2 + dcost_prep_10y_2;
 
-dcost_10y_3 = dart_cost_y_10y_3 + dadc_cost_10y_3 + dcd4_cost_10y_3 + dvl_cost_10y_3 + dvis_cost_10y_3 + dnon_tb_who3_cost_10y_3 + 
-					dcot_cost_10y_3 + dtb_cost_10y_3 + dres_cost_10y_3 + dtest_cost_10y_3 + d_t_adh_int_cost_10y_3 + dswitchline_cost_10y_3 + 
-					dcost_circ_10y_3 + dcost_condom_dn_10y_3 + dcost_child_hiv_10y_3 + dcost_non_aids_pre_death_10y_3
-					+ dcost_prep_visit_10y_3 + dcost_prep_10y_3;
-
-dcost_10y_4 = dart_cost_y_10y_4 + dadc_cost_10y_4 + dcd4_cost_10y_4 + dvl_cost_10y_4 + dvis_cost_10y_4 + dnon_tb_who3_cost_10y_4 + 
-					dcot_cost_10y_4 + dtb_cost_10y_4 + dres_cost_10y_4 + dtest_cost_10y_4 + d_t_adh_int_cost_10y_4 + dswitchline_cost_10y_4 + 
-					dcost_circ_10y_4 + dcost_condom_dn_10y_4 + dcost_child_hiv_10y_4 + dcost_non_aids_pre_death_10y_4
-					+ dcost_prep_visit_10y_4 + dcost_prep_10y_4;
-
-dcost_10y_5 = dart_cost_y_10y_5 + dadc_cost_10y_5 + dcd4_cost_10y_5 + dvl_cost_10y_5 + dvis_cost_10y_5 + dnon_tb_who3_cost_10y_5 + 
-					dcot_cost_10y_5 + dtb_cost_10y_5 + dres_cost_10y_5 + dtest_cost_10y_5 + d_t_adh_int_cost_10y_5 + dswitchline_cost_10y_5 + 
-					dcost_circ_10y_5 + dcost_condom_dn_10y_5 + dcost_child_hiv_10y_5 + dcost_non_aids_pre_death_10y_5
-					+ dcost_prep_visit_10y_5 + dcost_prep_10y_5;
-
 d_dcost_10y_2_1 = dcost_10y_2 - dcost_10y_1;
-d_dcost_10y_3_1 = dcost_10y_3 - dcost_10y_1;
-d_dcost_10y_4_1 = dcost_10y_4 - dcost_10y_1;
-d_dcost_10y_5_1 = dcost_10y_5 - dcost_10y_1;
 
 d_ddaly_10y_2_1 = ddaly_10y_2 - ddaly_10y_1;
-d_ddaly_10y_3_1 = ddaly_10y_3 - ddaly_10y_1;
-d_ddaly_10y_4_1 = ddaly_10y_4 - ddaly_10y_1;
-d_ddaly_10y_5_1 = ddaly_10y_5 - ddaly_10y_1;
 
 netdaly500_1 = ddaly_10y_1 + (dcost_10y_1 / 0.0005);
 netdaly500_2 = ddaly_10y_2 + (dcost_10y_2 / 0.0005);
-netdaly500_3 = ddaly_10y_3 + (dcost_10y_3 / 0.0005);
-netdaly500_4 = ddaly_10y_4 + (dcost_10y_4 / 0.0005);
-netdaly500_5 = ddaly_10y_5 + (dcost_10y_5 / 0.0005);
 
-min_netdaly500 = min(netdaly500_1, netdaly500_2, netdaly500_3, netdaly500_4, netdaly500_5);
+min_netdaly500 = min(netdaly500_1, netdaly500_2);
 
 d_netdaly500_2_1 = netdaly500_2 - netdaly500_1;
-d_netdaly500_3_1 = netdaly500_3 - netdaly500_1;
-d_netdaly500_4_1 = netdaly500_4 - netdaly500_1;
-d_netdaly500_5_1 = netdaly500_5 - netdaly500_1;
 
 if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
 if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
-if netdaly500_3 = min_netdaly500 then lowest_netdaly=3;
-if netdaly500_4 = min_netdaly500 then lowest_netdaly=4;
-if netdaly500_5 = min_netdaly500 then lowest_netdaly=5;
-
-if netdaly500_1 < netdaly500_5 then one_vs_five_ce=1; else one_vs_five_ce =0;
-
 
 min_ddaly_10y = min(ddaly_10y_1, ddaly_10y_2, ddaly_10y_3, ddaly_10y_4, ddaly_10y_5);
 
 if ddaly_10y_1 = min_ddaly_10y then lowest_ddaly=1;
 if ddaly_10y_2 = min_ddaly_10y then lowest_ddaly=2;
-if ddaly_10y_3 = min_ddaly_10y then lowest_ddaly=3;
-if ddaly_10y_4 = min_ddaly_10y then lowest_ddaly=4;
-if ddaly_10y_5 = min_ddaly_10y then lowest_ddaly=5;
-
 
 min_dcost_10y = min(dcost_10y_1, dcost_10y_2, dcost_10y_3, dcost_10y_4, dcost_10y_5);
 
 if dcost_10y_1 = min_dcost_10y then lowest_dcost=1;
 if dcost_10y_2 = min_dcost_10y then lowest_dcost=2;
-if dcost_10y_3 = min_dcost_10y then lowest_dcost=3;
-if dcost_10y_4 = min_dcost_10y then lowest_dcost=4;
-if dcost_10y_5 = min_dcost_10y then lowest_dcost=5;
-
-
-* s_uvl2_elig_10y_1 = n_uvl2_elig_10y_1 / sf_2024 ;  
-* restrict to s onart iicu vlg1000 ;
-* if s_uvl2_elig_10y_1 > 300;
-* proc freq; 
-* tables s_o_dol_2nd_vlg1000_24 s_vl1000_art_gt6m_iicu_24 ;
-* run;
-
-
-
 
 
 
@@ -1691,28 +1642,21 @@ if dcost_10y_5 = min_dcost_10y then lowest_dcost=5;
 
 proc means   data = b.w_test_no_fixed_seed_out  n p50 p5 p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
-p_vl1000_24 prevalence_vg1000_24   
-prop_artexp_elig_tldsw_24  prop_tldsw_uvl2_24  prop_tldsw_elig_vl1000_24  prop_uvl2_vl1000_24 prop_tldsw_o_dar_24  prop_r_dol_ge_p5_uvl2_24
-p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24   p_onart_iicu_uvl2_24   p_adh_lt80_iicu_uvl2_24  p_vis_tldsw_24 p_vis_uvl2_24  p_dol_2vg1000_dolr1_24
-p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24
 ;
 run;
 
 
 
 proc means data = b.w_test_no_fixed_seed_out  n mean p5 p95;  var               
-p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 p_o_dar_uvl2_10y_3 p_o_dar_uvl2_10y_4 p_o_dar_uvl2_10y_5
-d_p_o_dar_uvl2_10y_2_1 d_p_o_dar_uvl2_10y_3_1 d_p_o_dar_uvl2_10y_4_1 d_p_o_dar_uvl2_10y_5_1
-n_death_hiv_10y_1 n_death_hiv_10y_2 n_death_hiv_10y_3 n_death_hiv_10y_4 n_death_hiv_10y_5 
-d_n_death_hiv_10y_2_1 d_n_death_hiv_10y_3_1 d_n_death_hiv_10y_4_1 d_n_death_hiv_10y_5_1
-ddaly_10y_1 ddaly_10y_2  ddaly_10y_3 ddaly_10y_4  ddaly_10y_5   d_ddaly_10y_2_1   d_ddaly_10y_3_1   d_ddaly_10y_4_1   d_ddaly_10y_5_1  
-dcost_10y_1   dcost_10y_2   dcost_10y_3   dcost_10y_4   dcost_10y_5   d_dcost_10y_2_1  d_dcost_10y_3_1  d_dcost_10y_4_1  d_dcost_10y_5_1 
-netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 netdaly500_5 
-d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_4_1 d_netdaly500_5_1 
+p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 d_p_o_dar_uvl2_10y_2_1 
+n_death_hiv_10y_1 n_death_hiv_10y_2 d_n_death_hiv_10y_2_1 
+ddaly_10y_1 ddaly_10y_2  d_ddaly_10y_2_1  
+dcost_10y_1   dcost_10y_2   d_dcost_10y_2_1 
+netdaly500_1 netdaly500_2 d_netdaly500_2_1 
 ;
 run;
 
-proc freq; tables lowest_netdaly one_vs_five_ce lowest_ddaly  lowest_dcost; 
+proc freq; tables lowest_netdaly lowest_ddaly  lowest_dcost; 
 run;
 
 
