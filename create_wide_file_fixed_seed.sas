@@ -1586,6 +1586,7 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\test_fixed_seed_out";
 
 
+
   data  b.w_test_fixed_seed_out    ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
@@ -1638,6 +1639,40 @@ if dcost_10y_2 = min_dcost_10y then lowest_dcost=2;
 
 
 
+
+
+
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\test_no_fixed_seed_out";
+
+
+* table 1;
+
+proc means   data = b.w_test_no_fixed_seed_out  n p50 p5 p95 ;  
+var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
+;
+run;
+
+
+
+proc means data = b.w_test_no_fixed_seed_out  n mean p5 p95;  var               
+p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 d_p_o_dar_uvl2_10y_2_1 
+n_death_hiv_10y_1 n_death_hiv_10y_2 d_n_death_hiv_10y_2_1 
+ddaly_10y_1 ddaly_10y_2  d_ddaly_10y_2_1  
+dcost_10y_1   dcost_10y_2   d_dcost_10y_2_1 
+netdaly500_1 netdaly500_2 d_netdaly500_2_1 
+;
+run;
+
+proc freq  data = b.w_test_no_fixed_seed_out ; tables lowest_netdaly lowest_ddaly  lowest_dcost; 
+run;
+
+
+
+
+
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\test_fixed_seed_out";
+
+
 * table 1;
 
 proc means   data = b.w_test_fixed_seed_out  n p50 p5 p95 ;  
@@ -1656,7 +1691,7 @@ netdaly500_1 netdaly500_2 d_netdaly500_2_1
 ;
 run;
 
-proc freq; tables lowest_netdaly lowest_ddaly  lowest_dcost; 
+proc freq  data = b.w_test_fixed_seed_out ; tables lowest_netdaly lowest_ddaly  lowest_dcost; 
 run;
 
 
