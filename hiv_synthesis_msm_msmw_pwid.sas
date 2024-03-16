@@ -17,7 +17,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; *
+%let population = 100000 ;  
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -176,7 +176,7 @@ newp_seed = 7;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
 * hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (rand('uniform')*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
 * p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
-* prop_m_msm;				prop_m_msm=0.03;
+
 
 
 * PREGNANCY AND BREASTFEEDING;
@@ -227,7 +227,6 @@ newp_seed = 7;
 * rred_initial;				rred_initial = 1;  * this is to allow changes to the initial proportions in newp categories (applies in first period only);
 * p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5, 0.30 0.30 0.30);  * change sep22 for pop_wide_tld;
 * p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15); 
-* msm_rred;					%sample_uniform(msm_rred, 1.5 2 3 5); * extent to which p_rred_p is higher in msm than het men;
 
 * exp_setting_lower_p_vl1000;	
 * external_exp_factor;			
@@ -252,11 +251,17 @@ newp_seed = 7;
 * higher_newp_with_lower_adhav;
 							%sample(higher_newp_with_lower_adhav, 0 1, 0.8 0.2);
 
+* MSM;
+
+* msm_rred;					%sample_uniform(msm_rred, 1.5 2 3 5); * extent to which p_rred_p is higher in msm than het men;
+* prop_m_msm;				%sample_uniform(msm_rred, 0.01 0.03 0.05); 
+
 * PWID;
 
-* prob_start_pwid;			prob_start_pwid=0.1;
+* prob_start_pwid;			prob_start_pwid=0.001;
 * prob_stop_pwid;			prob_stop_pwid=0.05;
 * rr_pwid_female;			rr_pwid_female = 0.25 ;
+
 
 * TRANSMISSION;
 
@@ -267,7 +272,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * fold_tr;					%sample_uniform(fold_tr, 1/1.5 1 1.5);
-* fold_tr_msm;				%sample_uniform(fold_tr_msm, 5 10 30 ); *but note this is not per newp / ep ;
+* fold_tr_msm;				%sample_uniform(fold_tr_msm, 3 5 10 ); *but note this is not per newp / ep ;
 * fold_tr_pwid;				%sample_uniform(fold_tr_pwid, 10 15 20);
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
@@ -6243,7 +6248,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			if hiv=0 then do;
 				vl_source_inf = vl_source;
 			    infected_primary=0;infected_vlsupp=0;
-			    hiv=1; infected_newp=1; infected_ep=0; infected_from_pwid=0; infection=caldate{t};* prob infected by person in primary;
+			    hiv=1; infected_newp=1; infected_ep=0; infected_from_pwid=0; infected_from_msm=0;  infection=caldate{t};* prob infected by person in primary;
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
 				if gender in (1, 2) then age_source_inf=age_newp;
@@ -6459,7 +6464,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 
 		if hiv=0 then do;
 			vl_source_inf = vl_source ;
-			hiv=1; infected_ep=1;infected_newp=0; infected_from_pwid=0; infection=caldate{t};
+			hiv=1; infected_ep=1;infected_newp=0; infected_from_pwid=0; infected_from_msm=0; infection=caldate{t};
 			infected_primary=0;	if ep_primary=1 then infected_primary=1;
 			infected_vlsupp=0;  if vl_source=1 then infected_vlsupp=1;
 			age_source_inf=ageg_ep;
@@ -6666,7 +6671,7 @@ if t ge 2 and msm=1 and b < risk_hiv_msm then do;
 			end;
 			if hiv=0 then do;
 				vl_source_inf = vl_source;
-			    infected_primary=0;infected_vlsupp=0; infected_from_msm =1;
+			    infected_primary=0;infected_vlsupp=0; infected_from_msm =1; infected_from_pwid=0;
 			    hiv=1; infected_newp=0; infected_ep=0; infection=caldate{t};
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
@@ -6866,7 +6871,7 @@ if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
 			end;
 			if hiv=0 then do;
 				vl_source_inf = vl_source;
-			    infected_primary=0;infected_vlsupp=0; infected_from_pwid=1;
+			    infected_primary=0;infected_vlsupp=0; infected_from_pwid=1; infected_from_msm=0;
 			    hiv=1; infected_newp=0; infected_ep=0; infection=caldate{t};
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
@@ -14004,16 +14009,16 @@ end;
 
 
 * MSM ;
-i_msm_newp=0; i_v1_msm_newp=0; i_v2_msm_newp=0; i_v3_msm_newp=0; i_v4_msm_newp=0; i_v5_msm_newp=0; i_v6_msm_newp=0; 
+i_msm     =0; i_v1_msm     =0; i_v2_msm     =0; i_v3_msm     =0; i_v4_msm     =0; i_v5_msm     =0; i_v6_msm     =0; 
 
 if msm=1 and hiv=1 and 15 <= age < 65 then do;
-	if  .  <  vl < 2.7 and primary=0  then  i_v1_msm_newp=newp; 
-	if 2.7 <= vl < 3.7 and primary=0  then  i_v2_msm_newp=newp; 
-	if 3.7 <= vl < 4.7 and primary=0  then  i_v3_msm_newp=newp; 
-	if 4.7 <= vl < 5.7 and primary=0  then  i_v4_msm_newp=newp; 
-	if 5.7 <= vl		and primary=0 then  i_v5_msm_newp=newp; 
-	if 					    primary=1 then  i_v6_msm_newp=newp; 
-	i_msm_newp=newp;
+	if  .  <  vl < 2.7 and primary=0  then  i_v1_msm     =1   ; 
+	if 2.7 <= vl < 3.7 and primary=0  then  i_v2_msm     =1   ; 
+	if 3.7 <= vl < 4.7 and primary=0  then  i_v3_msm     =1   ; 
+	if 4.7 <= vl < 5.7 and primary=0  then  i_v4_msm     =1   ; 
+	if 5.7 <= vl		and primary=0 then  i_v5_msm     =1   ; 
+	if 					    primary=1 then  i_v6_msm     =1   ; 
+	i_msm     =1   ;
 end;
 
 
@@ -18066,7 +18071,15 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 proc freq; tables cald hiv ; where death=.; run;
 
+proc print; var caldate&j age gender msm hiv infection infected_newp infected_ep infected_from_msm infected_from_pwid vl_source_inf
+i_msm  vl t_prop_i_msm t_prop_msm_vlg1 t_prop_msm_vlg2 t_prop_msm_vlg3 t_prop_msm_vlg4 t_prop_msm_vlg5 t_prop_msm_vlg6  ; 
+where 15 <= age < 65 and msm=1 and death=.;
+run; 
+
 */
+
+
+
 
 /*
 
@@ -18077,13 +18090,6 @@ where 15 <= age < 65 and ((serial_no < 300 and gender=1) or (msm=1)) and death=.
 run; 
 
 */
-
-proc print; var caldate&j age gender msm hiv infected_newp infected_ep infected_from_msm  
-t_prop_i_msm t_prop_msm_vlg1 t_prop_msm_vlg2 t_prop_msm_vlg3 t_prop_msm_vlg4 t_prop_msm_vlg5 t_prop_msm_vlg6
-s_i_msm  ; 
-where 15 <= age < 65 and serial_no < 300  and death=.;
-run; 
-
 
 
 /*
@@ -19112,10 +19118,6 @@ s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
 s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp
 
-s_i_msm s_i_v1_msm s_i_v2_msm s_i_v3_msm s_i_v4_msm s_i_v5_msm s_i_v6_msm s_msm  s_prop_i_msm
-
-s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid
-
 
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -19494,6 +19496,7 @@ s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_15
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_  s_diag_msm1549_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  
 s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ s_onart_msm1564_
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
+s_i_msm s_i_v1_msm s_i_v2_msm s_i_v3_msm s_i_v4_msm s_i_v5_msm s_i_v6_msm s_msm  s_prop_i_msm
 
 
 /* PWID */ 
@@ -19504,6 +19507,8 @@ s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_inj_pwid  s_elig_prep_any_pw
 s_ever_tested_pwid  s_ever_tested_pwid1549_  s_ever_tested_pwid1564_  s_diag_pwid1549_   s_diag_pwid1564_  s_onart_pwid1549_  s_onart_pwid1564_  
 s_ever_tested_pwid1549_   s_diag_pwid1549_  s_onart_pwid1549_    s_ever_tested_pwid1564_  s_diag_pwid1564_ s_onart_pwid1564_
 s_diag_this_period_pwid  s_tested_pwid  s_naive_pwid  s_newp_this_per_hivneg_pwid 
+
+s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid
 
 
 
@@ -20109,9 +20114,6 @@ s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
 s_i_m_1549_np  s_i_w_1549_np   s_i_w_newp  s_i_m_newp
 
-s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  si_v6_msm  s_msm
-
-s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid
 
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -20481,7 +20483,9 @@ s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1
 s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_inj_msm  s_tested1549msm
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_  s_diag_msm1549_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  
 s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ s_onart_msm1564_
-s_diag_this_period_msm  s_tested_msm  s_naive_msm  
+s_diag_this_period_msm  s_tested_msm  s_naive_msm
+s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  si_v6_msm  s_msm
+
 
 /* PWID */ 
 
@@ -20491,6 +20495,7 @@ s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_inj_pwid  s_elig_prep_any_pw
 s_ever_tested_pwid  s_ever_tested_pwid1549_  s_ever_tested_pwid1564_  s_diag_pwid1549_   s_diag_pwid1564_  s_onart_pwid1549_  s_onart_pwid1564_  
 s_ever_tested_pwid1549_   s_diag_pwid1549_  s_onart_pwid1549_    s_ever_tested_pwid1564_  s_diag_pwid1564_ s_onart_pwid1564_
 s_diag_this_period_pwid  s_tested_pwid  s_naive_pwid  s_newp_this_per_hivneg_pwid 
+s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid 
 
 
 /*ADC etc*/
@@ -20881,6 +20886,9 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
+
+/*
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
@@ -21742,7 +21750,7 @@ set a;
 
 * end of s=3 JAS Sep2023;
 
-
+*/
 
 * ts1m:  need more update statements ;
 
@@ -21943,10 +21951,6 @@ s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r 
 
 s_i_m_1549_np  s_i_w_1549_np    s_i_w_newp  s_i_m_newp
-
-s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm
-
-s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid
 
  
 /*resistance*/
@@ -22316,6 +22320,8 @@ s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_15
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_  s_diag_msm1549_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  
 s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ s_onart_msm1564_
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
+s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm
+
 
 /* PWID */ 
 
@@ -22325,6 +22331,9 @@ s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_inj_pwid  s_elig_prep_any_pw
 s_ever_tested_pwid  s_ever_tested_pwid1549_  s_ever_tested_pwid1564_  s_diag_pwid1549_   s_diag_pwid1564_  s_onart_pwid1549_  s_onart_pwid1564_  
 s_ever_tested_pwid1549_   s_diag_pwid1549_  s_onart_pwid1549_    s_ever_tested_pwid1564_  s_diag_pwid1564_ s_onart_pwid1564_
 s_diag_this_period_pwid  s_tested_pwid  s_naive_pwid  s_newp_this_per_hivneg_pwid 
+
+s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid
+
 
 
 /*ADC etc*/
