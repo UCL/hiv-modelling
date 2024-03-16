@@ -12740,6 +12740,7 @@ primary6064m=0; if gender = 1  and primary=1 and 60 <= age < 65 then primary6064
 
 primary1549m=0; if gender = 1  and primary=1 and 15 <= age < 50 then primary1549m=1;
 primary1549msm=0; if msm=1 and primary=1 and 15 <= age < 50 then primary1549msm=1;
+primary1564msm=0; if msm=1 and primary=1 and 15 <= age < 65 then primary1564msm=1;
 primary1549pwid=0; if pwid=1 and primary=1 and 15 <= age < 50 then primary1549pwid=1;
 
 primary1519w=0; if gender=2 and primary=1 and 15 <= age < 20 then primary1519w=1;
@@ -12757,7 +12758,6 @@ primary1549w=0; if gender=2 and primary=1 and 15 <= age < 50 then primary1549w=1
 
 primary1549=0; if primary=1 and 15 <= age < 50 then primary1549=1;
 
-* msm - leave as is since this relates to ep;
 primary1524m_ep=0; if gender=1 and primary=1 and 15 <= age < 25 and ep=1 then primary1524m_ep=1;
 primary2534m_ep=0; if gender=1 and primary=1 and 25 <= age < 35 and ep=1 then primary2534m_ep=1;
 primary3544m_ep=0; if gender=1 and primary=1 and 35 <= age < 45 and ep=1 then primary3544m_ep=1;
@@ -12769,7 +12769,6 @@ primary3544w_ep=0; if gender=2 and primary=1 and 35 <= age < 45 and ep=1 then pr
 primary4554w_ep=0; if gender=2 and primary=1 and 45 <= age < 55 and ep=1 then primary4554w_ep=1;
 primary5564w_ep=0; if gender=2 and primary=1 and 55 <= age < 65 and ep=1 then primary5564w_ep=1;
 
-* msm  - leave as is since this relates to people with ep;
 primary1524m_epnewp=0; if gender=1 and primary=1 and 15 <= age < 25 and ep=1 and newp ge 1 then primary1524m_epnewp=1;
 primary2534m_epnewp=0; if gender=1 and primary=1 and 25 <= age < 35 and ep=1 and newp ge 1 then primary2534m_epnewp=1;
 primary3544m_epnewp=0; if gender=1 and primary=1 and 35 <= age < 45 and ep=1 and newp ge 1 then primary3544m_epnewp=1;
@@ -13697,6 +13696,7 @@ hiv1549m=0; if hiv=1 and gender = 1  and 15 <= age < 50 then hiv1549m=1;
 
 hiv1564msm=0; if hiv=1 and msm=1 and 15 <= age < 65 then hiv1564msm=1;
 hiv1549msm=0; if hiv=1 and msm=1 and 15 <= age < 50 then hiv1549msm=1;
+hiv_msm=0; if hiv=1 and msm=1 then hiv_msm=1;
 
 hiv1564pwid=0; if hiv=1 and pwid=1 and 15 <= age < 65 then hiv1564pwid=1;
 hiv1549pwid=0; if hiv=1 and pwid=1 and 15 <= age < 50 then hiv1549pwid=1;
@@ -13755,7 +13755,7 @@ diag_epun=0;if registd=1 and ep=1 and epdiag ne 1 then diag_epun=ep;
 
 
 ***HIV specific outputs;
-vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vg1000_w=.; vg1000_m_1524=.;vg1000_w_1524=.;vg1000_w_1524=.;vg1000_1549=.;
+vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vl1000_msm=.; vg1000_msm=.;vlg1000_msm=.; vg1000_w=.; vg1000_m_1524=.;vg1000_w_1524=.;vg1000_w_1524=.;vg1000_1549=.;
 ever_ep_hiv=.;ever_ep_diag=.;ever_newp_hiv=.;ever_newp_diag=.;
 ever_sw_hiv=.;ever_sw_diag=.;
 dead_=.;dead_diag=.;
@@ -13790,12 +13790,12 @@ if hiv =1 then do;
 	if 15 <= age < 25 then do; vg1000_m_1524=0; if vg1000 = 1 then vg1000_m_1524=1 ;  end ;
 	end;
 
-	* msm ;
 	if gender = 1 then do;
 	vl1000_allm = vl1000;
 	end;
 	if msm=1 then do;
 	vl1000_msm = vl1000;
+	vlg1000_msm = vlg1000;
 	end;
 	* pwid;
 	if pwid=1 then do;
@@ -17795,16 +17795,17 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	/* MSM */
 
-	s_alive_msm + alive_msm; s_alive1549_msm + alive1549_msm; s_alive1564_msm + alive1564_msm; s_primary1549msm + primary1549msm;  s_hiv1564msm + hiv1564msm;  
+	s_alive_msm + alive_msm; s_alive1549_msm + alive1549_msm; s_alive1564_msm + alive1564_msm; s_primary1549msm + primary1549msm; s_primary1564msm + primary1564msm;  
+	s_hiv1564msm + hiv1564msm; s_hiv1549msm + hiv1549msm;  s_hiv_msm + hiv_msm; s_vl1000_msm + vl1000_msm;
 	s_vl1000_art_msm + vl1000_art_msm;  s_onart_iicu_msm + onart_iicu_msm;  s_vl1000_art_iicu_msm + vl1000_art_iicu_msm;  s_onart_gt6m_msm + onart_gt6m_msm;
 	s_vl1000_art_gt6m_msm + vl1000_art_gt6m_msm;  s_onart_gt6m_iicu_msm + onart_gt6m_iicu_msm; s_vl1000_art_gt6m_iicu_msm + s_vl1000_art_gt6m_iicu_msm;
 	s_artexp_msm + artexp_msm; 	s_diag_msm + diag_msm ; s_onart_msm + onart_msm;  s_prep_oral_msm + prep_oral_msm;  s_prep_inj_msm + prep_inj_msm ;
 	s_elig_prep_any_msm_1564 + elig_prep_any_msm_1564;  s_onprep_msm + onprep_msm;  s_onprep_oral_msm + onprep_oral_msm; s_onprep_inj_msm + onprep_inj_msm;  
 	s_tested1549msm + tested1549msm; s_ever_tested_msm + ever_tested_msm;  s_ever_tested_msm1549_ + ever_tested_msm1549_; 
 	s_ever_tested_msm1564_ + ever_tested_msm1564_;  s_diag_msm1549_ + diag_msm1549_;   s_diag_msm1564_ + diag_msm1564_;  s_onart_msm1549_ + onart_msm1549_;  
-	s_onart_msm1564_ + onart_msm1564_;  s_ever_tested_msm1549_ + ever_tested_msm1549_;   s_diag_msm1549_ + diag_msm1549_;  s_onart_msm1549_ + onart_msm1549_;
-	s_ever_tested_msm1564_ + ever_tested_msm1564_;  s_diag_msm1564_ + diag_msm1564_; s_onart_msm1564_ + onart_msm1564_;  
-	s_diag_this_period_msm + diag_this_period_msm ;  s_tested_msm + tested_msm;  s_naive_msm + naive_msm;  
+	s_onart_msm1564_ + onart_msm1564_;  s_ever_tested_msm1549_ + ever_tested_msm1549_;    
+	s_ever_tested_msm1564_ + ever_tested_msm1564_;    
+	s_diag_this_period_msm + diag_this_period_msm ;  s_tested_msm + tested_msm;  s_naive_msm + naive_msm;  s_art_start_msm + art_start_msm; 
 
 	
 	/* PWID */
@@ -19490,11 +19491,11 @@ s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1 s_sti_sw
 
 /* MSM */
 
-s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_hiv1564msm   s_hiv1549msm  s_vl1000_msm  s_art_start_msm   s_diag_msm_age1564  
+s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_primary1564msm s_hiv1564msm  s_hiv_msm s_hiv1549msm  s_vl1000_msm  s_art_start_msm   s_diag_msm_age1564  
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
 s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_inj_msm  s_tested1549msm
-s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_  s_diag_msm1549_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  
-s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ s_onart_msm1564_
+s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_   s_onart_msm1564_  
+s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
 s_i_msm s_i_v1_msm s_i_v2_msm s_i_v3_msm s_i_v4_msm s_i_v5_msm s_i_v6_msm s_msm  s_prop_i_msm
 
@@ -20478,11 +20479,11 @@ s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1	s_sti_sw
 
 /* MSM */
 
-s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_hiv1564msm   s_hiv1549msm  s_vl1000_msm  s_art_start_msm   s_diag_msm_age1564  
+s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm s_primary1564msm s_hiv1564msm  s_hiv_msm s_hiv1549msm  s_vl1000_msm  s_art_start_msm   s_diag_msm_age1564  
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
 s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_inj_msm  s_tested1549msm
-s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_  s_diag_msm1549_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  
-s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ s_onart_msm1564_
+s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  
+s_ever_tested_msm1549_   s_diag_msm1549_     s_ever_tested_msm1564_   s_onart_msm1564_
 s_diag_this_period_msm  s_tested_msm  s_naive_msm
 s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  si_v6_msm  s_msm
 
@@ -22314,11 +22315,11 @@ s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1  s_sti_sw
 
 /* MSM */
 
-s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_hiv1564msm   s_hiv1549msm  s_vl1000_msm  s_art_start_msm   s_diag_msm_age1564  
+s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_primary1564msm s_hiv1564msm s_hiv_msm  s_hiv1549msm  s_vl1000_msm  s_art_start_msm   s_diag_msm_age1564  
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
 s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_inj_msm  s_tested1549msm
-s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_  s_diag_msm1549_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  
-s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ s_onart_msm1564_
+s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  
+s_ever_tested_msm1549_   s_diag_msm1549_    s_ever_tested_msm1564_   s_onart_msm1564_
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
 s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm
 
