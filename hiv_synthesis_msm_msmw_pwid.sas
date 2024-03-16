@@ -1,35 +1,8 @@
 
 
 
-
-
-
-
-
-* lower number of newp and chance of ep for msm than het men 
-
-
-
-
-
-
-
-
-
-
-
-
 * unlikely to put this in core anytime soon - only if and when we are very confident in it;
 
-* generally a variable qith a _m for male refers to heterosexual men only - this is always the case when the variable relates to sexual behaviour ;
-
-* when there is no gender specificity to the variable then it nearly always refers to all men and women, including msm ;
-
-* the _allm means all men, heterosexual and msm ;
-
-* note the code for serodiscordant couples ("sdc") relates only to heterosexuals ;
-
-* _msm and _allm variables to be added to sum statements and thereafter if want outputs ;
 
 
 
@@ -6519,18 +6492,6 @@ end;
 
 
 * INFECTION FROM MSM;
-
-/*
-
-t_prop_i_msm = s_prop_i_msm ;
-t_prop_msm_vlg1 = s_prop_msm_vlg1 ;  
-t_prop_msm_vlg2 = s_prop_msm_vlg2 ;
-t_prop_msm_vlg3 = s_prop_msm_vlg3 ;
-t_prop_msm_vlg4 = s_prop_msm_vlg4 ;
-t_prop_msm_vlg5 = s_prop_msm_vlg5 ;
-t_prop_msm_vlg6 = s_prop_msm_vlg6 ;
-
-*/
 
 if msm=1 then do;
 risk_hiv_msm = t_prop_i_msm ; 
@@ -18117,9 +18078,9 @@ run;
 
 */
 
-proc print; var caldate&j age gender pwid hiv infected_newp infected_ep infected_from_pwid  
-t_prop_i_pwid t_prop_pwid_vlg1 t_prop_pwid_vlg2 t_prop_pwid_vlg3 t_prop_pwid_vlg4 t_prop_pwid_vlg5 t_prop_pwid_vlg6
-s_i_pwid  t_prop_i_pwid ; 
+proc print; var caldate&j age gender msm hiv infected_newp infected_ep infected_from_msm  
+t_prop_i_msm t_prop_msm_vlg1 t_prop_msm_vlg2 t_prop_msm_vlg3 t_prop_msm_vlg4 t_prop_msm_vlg5 t_prop_msm_vlg6
+s_i_msm  ; 
 where 15 <= age < 65 and serial_no < 300  and death=.;
 run; 
 
