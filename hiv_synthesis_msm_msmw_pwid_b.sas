@@ -17,7 +17,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ;  
+%let population = 10000  ;  
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -254,7 +254,7 @@ newp_seed = 7;
 * MSM;
 
 * msm_rred;					%sample_uniform(msm_rred, 1.5 2 3 5); * extent to which p_rred_p is higher in msm than het men;
-* prop_m_msm;				%sample_uniform(msm_rred, 0.01 0.03 0.05); 
+* prop_m_msm;				%sample_uniform(prop_m_msm, 0.01 0.03 0.05); 
 
 * PWID;
 
@@ -18068,16 +18068,16 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-/*
+
 
 proc freq; tables cald hiv ; where death=.; run;
 
-proc print; var caldate&j age gender msm hiv infection infected_newp infected_ep infected_from_msm infected_from_pwid vl_source_inf
+proc print; var caldate&j age gender msm hiv s_hiv_msm infection infected_newp infected_ep infected_from_msm infected_from_pwid vl_source_inf
 i_msm  vl t_prop_i_msm t_prop_msm_vlg1 t_prop_msm_vlg2 t_prop_msm_vlg3 t_prop_msm_vlg4 t_prop_msm_vlg5 t_prop_msm_vlg6  ; 
 where 15 <= age < 65 and msm=1 and death=.;
 run; 
 
-*/
+
 
 
 

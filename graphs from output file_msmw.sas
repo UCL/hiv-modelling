@@ -3,12 +3,12 @@
 ***Use 'include' statment in analysis program to read the code below in;
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\msmw\";
 
-  proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
+  proc printto   ; 
 
 data b;
-  set a.l_base_kenya_e    ;
+  set a.l_base_msmw ;
 
 p_onart_vl1000_all = .;
 
