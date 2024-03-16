@@ -975,6 +975,8 @@ red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop
 prob_return_adc   higher_newp_less_engagement  
 fold_tr fold_tr_newp  switch_for_tox   adh_pattern_prep    base_rate_sw  
 
+msm_rred prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_female  fold_tr_pwid fold_tr_msm
+
 condom_incr_year_i     		 incr_test_year_i              decr_hard_reach_year_i   
 decr_prob_loss_at_diag_year_i  	decr_rate_lost_year_i 		decr_rate_lost_art_year_i     incr_rate_return_year_i      
 incr_rate_restart_year_i         incr_rate_init_year_i        decr_rate_int_choice_year_i  
@@ -1293,6 +1295,8 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=sw_init_newp); %par(p=sw_trans_matrix);
 %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); 
+%par(p=msm_rred);  %par(p=prop_m_msm);  %par(p=prob_start_pwid);  %par(p=prob_stop_pwid);  %par(p=rr_pwid_female);   %par(p=fold_tr_pwid fold_tr_msm); 
+
 run;
 
 data wide_par; merge 
@@ -1320,6 +1324,7 @@ effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_p
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
+msm_rred prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_female  fold_tr_pwid fold_tr_msm
 ;
 
 proc contents; run;
