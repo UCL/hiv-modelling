@@ -1,14 +1,14 @@
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_fpc_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_fpc_a_out\";
 
 proc printto ;
 
 * ods html close;
 
 data b;
-set b.l_vaccine_m_fpc_d_y;
+set b.l_vaccine_m_fpc_a_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -25,7 +25,7 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-%let single_var = n_death_hiv      ;
+%let single_var = prevalence1549_      ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_
@@ -36,7 +36,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 2616   ;
+%let nfit = 2760   ;
 
 %let year_end = 2070.00 ;
 run;
@@ -244,6 +244,7 @@ ods html ;
 
 /*
 
+
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
@@ -271,8 +272,7 @@ run;quit;
 
 * ods html close;
 
-
-
+*/
 
 ods html;
 proc sgplot data=d ; 
@@ -301,8 +301,7 @@ run;quit;
 
 * ods html close;
 
-
-
+/*
 
 ods html;
 proc sgplot data=d ; 
@@ -357,7 +356,6 @@ band    x=cald lower=p5_p_cur_any_vac_e_1564__3 upper=p95_p_cur_any_vac_e_1564__
 
 run;quit;
 
-*/
 
 
 ods html;
@@ -386,7 +384,7 @@ band    x=cald lower=p5_n_death_hiv_3 upper=p95_n_death_hiv_3 / transparency=0.9
 run;quit;
 
 
-/*
+
 
 ods html;
 proc sgplot data=d ; 
@@ -440,6 +438,8 @@ series  x=cald y=p50_prop_1564_hivneg_onprep_3 / lineattrs = (color=violet thick
 band    x=cald lower=p5_prop_1564_hivneg_onprep_3 upper=p95_prop_1564_hivneg_onprep_3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
+
+
 
 
 
