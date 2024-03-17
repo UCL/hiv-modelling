@@ -1,7 +1,6 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\msmw\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\msmw\msmw_a_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\msmw\msmw_b_out\";
 
 data g ; set b.out: ;
 
@@ -1019,9 +1018,9 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_msmw; set y;  
+data b.l_base_msmw; set y;  
 
-data y; set a.l_base_msmw; 
+data y; set b.l_base_msmw; 
 
   options nomprint;
   option nospool;
@@ -1335,7 +1334,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_msmw; 
+  data b.w_base_msmw; 
   merge   wide_outputs  wide_par ;  
   by run;
 
