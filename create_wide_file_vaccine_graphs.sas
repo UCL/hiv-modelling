@@ -303,8 +303,6 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data  b.incidence1549 ;
 merge  incidence1549  prevalence1549   ;
 
-if prevalence1549_24 > 0.03;
-
 
 d_incidence1549_40_2_1 = incidence1549_40_2 - incidence1549_40_1 ; d_incidence1549_40_3_1 = incidence1549_40_3 - incidence1549_40_1 ;d_incidence1549_40_4_1 = incidence1549_40_4 - incidence1549_40_1 ;
 
@@ -735,13 +733,13 @@ Title    height=1.5 justify=center "Mean incidence1549";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (0 to  1.0       by 0.05    ) valueattrs=(size=10);
 
-label mean_incidence1549_1 = "no vaccine";
-label mean_incidence1549_2 = "vaccine_1";
-label mean_incidence1549_3 = "vaccine_2";
-label mean_incidence1549_4 = "vaccine_3";
+label mean_incidence1549_1 = "noVaccine";
+label mean_incidence1549_2 = "withVaccine_highTPP";
+label mean_incidence1549_3 = "withVaccine_moderateTPP";
+label mean_incidence1549_4 = "withVaccine_lowTPP";
 
-series  x=year y=mean_incidence1549_1 / lineattrs = (color=orange thickness = 3);
-band    x=year lower=p5_incidence1549_1 upper=p95_incidence1549_1 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+series  x=year y=mean_incidence1549_1 / lineattrs = (color=red thickness = 3);
+band    x=year lower=p5_incidence1549_1 upper=p95_incidence1549_1 / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
 
 series  x=year y=mean_incidence1549_2 / lineattrs = (color=lightgreen thickness = 3);
 band    x=year lower=p5_incidence1549_2 upper=p95_incidence1549_2 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
@@ -764,13 +762,13 @@ Title    height=1.5 justify=center "Median incidence1549";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (0 to  1.0       by 0.05    ) valueattrs=(size=10);
 
-label median_incidence1549_1 = "no vaccine";
-label median_incidence1549_2 = "vaccine_1";
-label median_incidence1549_3 = "vaccine_2";
-label median_incidence1549_4 = "vaccine_3";
+label median_incidence1549_1 = "noVaccine";
+label median_incidence1549_2 = "withVaccine_highTPP";
+label median_incidence1549_3 = "withVaccine_moderateTPP";
+label median_incidence1549_4 = "withVaccine_lowTPP";
 
-series  x=year y=median_incidence1549_1 / lineattrs = (color=orange thickness = 3);
-band    x=year lower=p5_incidence1549_1 upper=p95_incidence1549_1 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+series  x=year y=median_incidence1549_1 / lineattrs = (color=red thickness = 3);
+band    x=year lower=p5_incidence1549_1 upper=p95_incidence1549_1 / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
 
 series  x=year y=median_incidence1549_2 / lineattrs = (color=lightgreen thickness = 3);
 band    x=year lower=p5_incidence1549_2 upper=p95_incidence1549_2 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
@@ -793,9 +791,9 @@ Title    height=1.5 justify=center "Mean difference in incidence1549 compared wi
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Difference in incidence (per 100 person-years)'		labelattrs=(size=12)  values = (-1 to  +1       by 0.1    ) valueattrs=(size=10);
 
-label mean_d_incidence1549_2_1 = "vaccine_1";
-label mean_d_incidence1549_3_1 = "vaccine_2";
-label mean_d_incidence1549_4_1 = "vaccine_3";
+label mean_d_incidence1549_2_1 = "withVaccine_highTPP";
+label mean_d_incidence1549_3_1 = "withVaccine_moderateTPP";
+label mean_d_incidence1549_4_1 = "withVaccine_lowTPP";
 
 series  x=year y=mean_d_incidence1549_2_1 / lineattrs = (color=lightgreen thickness = 3);
 band    x=year lower=p5_d_incidence1549_2_1 upper=p95_d_incidence1549_2_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
@@ -818,9 +816,9 @@ Title    height=1.5 justify=center "Median difference in incidence1549 compared 
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Difference in incidence (per 100 person-years)'		labelattrs=(size=12)  values = (-1 to  +1       by 0.1    ) valueattrs=(size=10);
 
-label median_d_incidence1549_2_1 = "vaccine_1";
-label median_d_incidence1549_3_1 = "vaccine_2";
-label median_d_incidence1549_4_1 = "vaccine_3";
+label median_d_incidence1549_2_1 = "withVaccine_highTPP";
+label median_d_incidence1549_3_1 = "withVaccine_moderateTPP";
+label median_d_incidence1549_4_1 = "withVaccine_lowTPP";
 
 series  x=year y=median_d_incidence1549_2_1 / lineattrs = (color=lightgreen thickness = 3);
 band    x=year lower=p5_d_incidence1549_2_1 upper=p95_d_incidence1549_2_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
@@ -851,13 +849,13 @@ Title    height=1.5 justify=center "Incidence1549";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence'		labelattrs=(size=12)  values = (0 to  1.0       by 0.05    ) valueattrs=(size=10);
 
-label median_incidence1549_1 = "no vaccine";
-label median_incidence1549_2 = "vaccine_1";
-label median_incidence1549_3 = "vaccine_2";
-label median_incidence1549_4 = "vaccine_3";
+label median_incidence1549_1 = "noVaccine";
+label median_incidence1549_2 = "withVaccine_highTPP";
+label median_incidence1549_3 = "withVaccine_moderateTPP";
+label median_incidence1549_4 = "withVaccine_lowTPP";
 
-series  x=year y=median_incidence1549_1 / lineattrs = (color=orange thickness = 3);
-band    x=year lower=p5_incidence1549_1 upper=p95_incidence1549_1 / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+series  x=year y=median_incidence1549_1 / lineattrs = (color=red thickness = 3);
+band    x=year lower=p5_incidence1549_1 upper=p95_incidence1549_1 / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
 
 series  x=year y=median_incidence1549_2 / lineattrs = (color=lightgreen thickness = 3);
 band    x=year lower=p5_incidence1549_2 upper=p95_incidence1549_2 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
@@ -880,9 +878,9 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (2039 to 2069 by 1)	 	 va
 yaxis grid label	= 'Difference in incidence (per 100 person-years)'		labelattrs=(size=12)  values = (-0.5 to  +0.5       by 0.1    ) valueattrs=(size=10);
 
 label median_d_incidence1549_1_1 = "";
-label median_d_incidence1549_2_1 = "vaccine_1";
-label median_d_incidence1549_3_1 = "vaccine_2";
-label median_d_incidence1549_4_1 = "vaccine_3";
+label median_d_incidence1549_2_1 = "withVaccine_highTPP";
+label median_d_incidence1549_3_1 = "withVaccine_moderateTPP";
+label median_d_incidence1549_4_1 = "withVaccine_lowTPP";
 
 series  x=year y=median_d_incidence1549_2_1 / lineattrs = (color=lightgreen thickness = 3);
 band    x=year lower=p5_d_incidence1549_2_1 upper=p95_d_incidence1549_2_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
