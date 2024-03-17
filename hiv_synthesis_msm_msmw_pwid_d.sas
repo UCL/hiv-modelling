@@ -264,7 +264,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * fold_tr;					%sample_uniform(fold_tr, 1/1.5 1 1.5);
-* fold_tr_msm;				%sample_uniform(fold_tr_msm, 3 5 10 ); *but note this is not per newp / ep ;
+* fold_tr_msm;				%sample_uniform(fold_tr_msm, 0.7 1 2 3 ); *but note this is not per newp / ep ;
 * fold_tr_pwid;				%sample_uniform(fold_tr_pwid, 10 15 20);
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
