@@ -2,13 +2,12 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\msmw\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\msmw\msmw_c_out\";
 
   proc printto   ; 
 
 data b;
-  set a.l_base_msmw ;
+  set b.l_base_msmw ;
 
 p_onart_vl1000_all = .;
 
@@ -49,7 +48,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  75    ;
+%let nfit =  150   ;
 %let year_end = 2024.00 ;
 run;
 proc sort;by cald option ;run;

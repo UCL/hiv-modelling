@@ -13747,7 +13747,7 @@ diag_epun=0;if registd=1 and ep=1 and epdiag ne 1 then diag_epun=ep;
 
 
 ***HIV specific outputs;
-vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vl1000_msm=.; vg1000_msm=.;vlg1000_msm=.; vg1000_w=.; vg1000_m_1524=.;vg1000_w_1524=.;vg1000_w_1524=.;vg1000_1549=.;
+vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vl1000_msm=.; vg1000_msm=.;vg1000_msm=.; vg1000_w=.; vg1000_m_1524=.;vg1000_w_1524=.;vg1000_w_1524=.;vg1000_1549=.;
 ever_ep_hiv=.;ever_ep_diag=.;ever_newp_hiv=.;ever_newp_diag=.;
 ever_sw_hiv=.;ever_sw_diag=.;
 dead_=.;dead_diag=.;
@@ -13787,7 +13787,7 @@ if hiv =1 then do;
 	end;
 	if msm=1 then do;
 	vl1000_msm = vl1000;
-	vlg1000_msm = vlg1000;
+	vg1000_msm = vg1000;
 	end;
 	* pwid;
 	if pwid=1 then do;
@@ -15788,7 +15788,8 @@ tested_m=0; if gender=1 and tested=1 then tested_m=1;
 tested_m_sympt=0; if gender = 1  and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
 then tested_m_sympt=1;
 tested_m_circ=0; if gender = 1  and tested=1 and tested_circ=1 then tested_m_circ=1;
-* msm; tested_allm=0; if msm=1 and tested=1 then tested_msm=1;if pwid=1 and tested=1 then tested_pwid=1;
+* msm; tested_msm=0; if msm=1 and tested=1 then tested_msm=1;
+* pwid; tested_pwid=0; if pwid=1 and tested=1 then tested_pwid=1;
 tested_msm_sympt=0; if msm=1 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
 then tested_msm_sympt=1;
 
@@ -17796,7 +17797,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tested1549msm + tested1549msm; s_ever_tested_msm + ever_tested_msm;  s_ever_tested_msm1549_ + ever_tested_msm1549_; 
 	s_ever_tested_msm1564_ + ever_tested_msm1564_;  s_diag_msm1549_ + diag_msm1549_;   s_diag_msm1564_ + diag_msm1564_;  s_onart_msm1549_ + onart_msm1549_;  
 	s_onart_msm1564_ + onart_msm1564_;  s_ever_tested_msm1549_ + ever_tested_msm1549_;    
-	s_ever_tested_msm1564_ + ever_tested_msm1564_;    
+	s_ever_tested_msm1564_ + ever_tested_msm1564_;   s_vg1000_msm + vg1000_msm;  
 	s_diag_this_period_msm + diag_this_period_msm ;  s_tested_msm + tested_msm;  s_naive_msm + naive_msm;  s_art_start_msm + art_start_msm; 
 
 	
@@ -19483,7 +19484,8 @@ s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1 s_sti_sw
 
 /* MSM */
 
-s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_primary1564msm s_hiv1564msm  s_hiv_msm s_hiv1549msm  s_vl1000_msm  s_art_start_msm   s_diag_msm_age1564  
+s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_primary1564msm s_hiv1564msm  s_hiv_msm s_hiv1549msm  s_vl1000_msm  
+s_art_start_msm   s_diag_msm_age1564   s_vg1000_msm
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
 s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_inj_msm  s_tested1549msm
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_   s_onart_msm1564_  s_infected_from_msm
@@ -20472,7 +20474,8 @@ s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1	s_sti_sw
 
 /* MSM */
 
-s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm s_primary1564msm s_hiv1564msm  s_hiv_msm s_hiv1549msm  s_vl1000_msm  s_art_start_msm   s_diag_msm_age1564  
+s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm s_primary1564msm s_hiv1564msm  s_hiv_msm s_hiv1549msm  s_vl1000_msm  
+s_art_start_msm   s_diag_msm_age1564   s_vg1000_msm
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
 s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_inj_msm  s_tested1549msm
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  s_infected_from_msm
@@ -22308,7 +22311,8 @@ s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1  s_sti_sw
 
 /* MSM */
 
-s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_primary1564msm s_hiv1564msm s_hiv_msm  s_hiv1549msm  s_vl1000_msm  s_art_start_msm   s_diag_msm_age1564  
+s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_primary1564msm s_hiv1564msm s_hiv_msm  s_hiv1549msm  s_vl1000_msm  
+s_art_start_msm   s_diag_msm_age1564   s_vg1000_msm
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
 s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_inj_msm  s_tested1549msm
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  s_infected_from_msm

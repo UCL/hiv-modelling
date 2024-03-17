@@ -1,6 +1,6 @@
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\msmw\msmw_b_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\msmw\msmw_c_out\";
 
 data g ; set b.out: ;
 
@@ -671,7 +671,6 @@ end;
 * p_elig_prep_any_msm_1564;		p_elig_prep_any_msm_1564 = s_elig_prep_any_msm_1564 / (s_alive1564_msm - s_hiv1564msm);
 * p_onprep_msm;					p_onprep_msm = s_onprep_msm / (s_alive1564_msm - s_hiv1564msm);
 * p_onart_msm;					if s_hiv_msm  > 0 then p_onart_msm = s_onart_msm / s_hiv_msm  ;
-* p_onart_vl1000_msm;			if s_onart_gt6m_iicu_msm   > 0 then p_onart_vl1000_msm = s_vl1000_art_gt6m_iicu_msm / s_onart_gt6m_iicu_msm ; 
 * prevalence_vg1000_msm;		prevalence_vg1000_msm = s_vg1000_msm / s_alive_msm;
 * p_diag_msm;					p_diag_msm = s_diag_msm / s_hiv_msm  ;
 * p_onart_diag_msm;				p_onart_diag_msm = s_onart_msm / s_diag_msm ;
@@ -1008,7 +1007,7 @@ n_alive  n_diagnosed  n_hiv  prevalence1524w prevalence1524m prevalence2549w pre
 n_prep_elig_past_year
 
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564 p_onprep_msm				
- p_onart_msm  p_onart_vl1000_msm prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
+ p_onart_msm   prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period p_msm_infected_from_msm   n_alive1564_msm
 
 ;
@@ -1018,9 +1017,9 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data b.l_base_msmw; set y;  
+data b.l_msmw_c; set y;  
 
-data y; set b.l_base_msmw; 
+data y; set b.l_msmw_c; 
 
   options nomprint;
   option nospool;
@@ -1157,7 +1156,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive);  %var(v=n_diagnosed);   %var (v=n_hiv); %var(v=n_tested)
 %var(v=prevalence1524w);  %var(v=prevalence1524m);  %var(v=prevalence2549w);  %var(v=prevalence2549m);  %var(v=prevalence_sw); 
 %var(v=n_alive_msm);	 %var(v=n_alive1564_msm); %var(v=incidence1549msm); %var(v=incidence1564msm);  %var(v=prevalence1549_msm);	%var(v=prevalence1564_msm);  
-%var(v=p_elig_prep_any_msm_1564); %var(v=p_onprep_msm);  %var(v=p_onart_msm);  %var(v=p_onart_vl1000_msm); %var(v=prevalence_vg1000_msm);	 %var(v=p_diag_msm);	 
+%var(v=p_elig_prep_any_msm_1564); %var(v=p_onprep_msm);  %var(v=p_onart_msm);   %var(v=prevalence_vg1000_msm);	 %var(v=p_diag_msm);	 
 %var(v=p_onart_diag_msm);  %var(v=p_vl1000_art_gt6m_msm);	 %var(v=p_ever_tested_msm); 	%var(v=p_tested_this_period);  %var(v=p_msm_infected_from_msm)
 %var(v=incidence1564); %var(v=n_alive1564_msm);
 
@@ -1249,7 +1248,7 @@ p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_new_inf1549m n_new_inf1549w n_death_hiv_m 
 n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_diagnosed  n_hiv
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564 p_onprep_msm				
- p_onart_msm  p_onart_vl1000_msm prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
+ p_onart_msm  prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period p_msm_infected_from_msm n_alive1564_msm
 ;
 
@@ -1334,7 +1333,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data b.w_base_msmw; 
+  data b.w_msmw_c; 
   merge   wide_outputs  wide_par ;  
   by run;
 
@@ -1342,7 +1341,7 @@ proc sort; by run;run;
 
 proc means; var
 n_alive_msm_24  n_alive1564_msm_24 incidence1549msm_24 incidence1564msm_24  prevalence1549_msm_24	prevalence1564_msm_24  p_elig_prep_any_msm_1564_24 
-p_onprep_msm_24  p_onart_msm_24  p_onart_vl1000_msm_24 prevalence_vg1000_msm_24	 p_diag_msm_24	 p_onart_diag_msm_24 p_vl1000_art_gt6m_msm_24	 
+p_onprep_msm_24  p_onart_msm_24  prevalence_vg1000_msm_24	 p_diag_msm_24	 p_onart_diag_msm_24 p_vl1000_art_gt6m_msm_24	 
 p_ever_tested_msm_24  p_tested_this_period_24 p_msm_infected_from_msm_24
 ;
 run;
