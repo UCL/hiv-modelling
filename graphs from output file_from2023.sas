@@ -2,9 +2,11 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";run;
+libname a "C:\Users\Valentina\Dropbox (UCL)\output files\zimbabwe";run;
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 proc freq data=a.l_base_from2023_20240213;table cald sf;run;
+
+%let pth_export_mihpsa= C:\Users\Valentina\Dropbox (UCL)\MIHPSA Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis;run;
 
 data b;
 set a.l_base_from2023_20240213;
@@ -3026,43 +3028,43 @@ run;
 
 
 
-PROC export data=s0 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s0 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="Base_STOCK";  RUN;
-PROC export data=s1 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s1 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="Min_STOCK";  RUN;
 
-PROC export data=s10 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s10 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="T_FSWTestprog_STOCK";  RUN;
-PROC export data=s11 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s11 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="SBCC_STOCK";  RUN;
-PROC export data=s12 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s12 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CMMC_STOCK";  RUN;
 
-PROC export data=s15 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s15 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="TDFPrEP_F1524_STOCK";  RUN;
-PROC export data=s16 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s16 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="TDFPrEP_FSW1599_STOCK";  RUN;
-PROC export data=s17 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s17 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="TDFPrEP_SDCA1599_STOCK";  RUN;
-PROC export data=s18 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s18 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="TDFPrEP_pregnbfF1549_STOCK";  RUN;
 
-PROC export data=s19 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s19 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="DPVPrEP_F1524_STOCK";  RUN;
-PROC export data=s20 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s20 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="DPVPrEP_FSW1599_STOCK";  RUN;
-PROC export data=s21 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s21 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="DPVPrEP_SDCF1599_STOCK";  RUN;
-PROC export data=s22 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s22 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="DPVPrEP_pregnbfF1549_STOCK";  RUN;
 
-PROC export data=s23 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s23 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CABPrEP_F1524_STOCK";  RUN;
-PROC export data=s24 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s24 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CABPrEP_FSW1599_STOCK";  RUN;
-PROC export data=s25 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s25 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CABPrEP_SDCA1599_STOCK";  RUN;
-PROC export data=s26 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s26 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CABPrEP_pregnbfF1549_STOCK";  RUN;
 
 options nomprint;
@@ -4342,7 +4344,7 @@ run;
 %wide(23);
 %wide(24);
 %wide(25);
-*%wide(26);
+%wide(26);
 /*
 proc freq data=wide_allyears_0;
 table p50_n_pmtct_0 p50_n_everpregn_w1524__0
@@ -4753,48 +4755,48 @@ P50_n_pmtct_&o
 %flow(o=23);
 %flow(o=24);
 %flow(o=25);
-*%flow(o=26);
+%flow(o=26);
 
-PROC export data=wide_allyears_out_0 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_0 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="Base_FLOW";  RUN;
-PROC export data=wide_allyears_out_1 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_1 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="Min_FLOW";  RUN;
-PROC export data=wide_allyears_out_10 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_10 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="T_FSWTestprog_FLOW";  RUN;
 
-PROC export data=wide_allyears_out_11 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_11 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="SBCC_FLOW";  RUN;
-PROC export data=wide_allyears_out_12 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_12 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CMMC_FLOW";  RUN;
 
 
-PROC export data=wide_allyears_out_15 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_15 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="TDFPrEP_F1524_FLOW";  RUN;
-PROC export data=wide_allyears_out_16 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_16 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="TDFPrEP_FSW1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_17 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_17 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="TDFPrEP_SDCA1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_18 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_18 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="TDFPrEP_pregnbfF1549_FLOW";  RUN;
 
 
-PROC export data=wide_allyears_out_19 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_19 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="DPVPrEP_F1524_FLOW";  RUN;
-PROC export data=wide_allyears_out_20 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_20 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="DPVPrEP_FSW1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_21 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_21 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="DPVPrEP_SDCF1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_22 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_22 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="DPVPrEP_pregnbfF1549_FLOW";  RUN;
 
-PROC export data=wide_allyears_out_23 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_23 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CABPrEP_F1524_FLOW";  RUN;
-PROC export data=wide_allyears_out_24 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_24 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CABPrEP_FSW1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_25 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_25 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CABPrEP_SDCA1599_FLOW";  RUN;
-/*PROC export data=wide_allyears_out_26 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_26 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CABPrEP_pregnbfF1549_FLOW";  RUN;
-*/
+
 
 	

@@ -34,9 +34,9 @@ proc freq data=a.base_from2023_20240213; table option*cald/norow nocol nopercent
 	150 simulations (15 for each of the 10 dataset) for option 10
 	300 simulations (30 for each of the 10 dataset) for option 11
 	300 simulations (30 for each of the 10 dataset) for option 12
-		190 simulations(23 for each of the 5 dataset + 5 for other datasets) for option 15
-		175  simulations (15 for each of the 5 dataset) for option 16-25
-		100  simulations (5 for each of the 20 datasets) for option 26;
+	190 simulations(23 for each of the 5 dataset + 5 for other datasets) for option 15
+	175  simulations (15 for each of the 5 dataset) for option 16-25
+	100  simulations (5 for each of the 20 datasets) for option 26;
 
 
 
