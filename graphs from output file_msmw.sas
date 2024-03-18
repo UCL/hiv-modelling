@@ -2,12 +2,12 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\msmw\msmw_c_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\msmw\msmw_d_out\";
 
   proc printto   ; 
 
 data b;
-  set b.l_base_msmw ;
+  set b.l_msmw_d;
 
 p_onart_vl1000_all = .;
 
@@ -23,6 +23,8 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_newp_ge1_ = p_newp_ge1 ;
 p_newp_ge5_ = p_newp_ge5 ;  
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
+p_elig_prep_any_msm_1564_ = p_elig_prep_any_msm_1564;
+
 
 loggender_r_newp = log(gender_r_newp+0.0001);
 
@@ -75,6 +77,9 @@ prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
 n_alive n_diagnosed n_hiv  n_infected  incidence1564msm  prevalence1564_msm
+p_msm_infected_from_msm  p_elig_prep_any_msm_1564_ p_onprep_msm	 p_onart_msm  prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm 
+p_vl1000_art_gt6m_msm	 p_ever_tested_msm 	 p_tested_this_period_msm
+
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -126,8 +131,7 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93 g94  g95 g96 g97  g98  g99  g100  g101  g102 
-g103 g104
-
+g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114
 ;
 by cald;
 
@@ -137,8 +141,6 @@ by cald;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
-
-/*
 
 
 ods html ;
@@ -1163,12 +1165,6 @@ run;
 
 quit;
 
-ods html close;
-
-
-*/
-
-
 
 ods html;
 proc sgplot data=d; 
@@ -1201,6 +1197,187 @@ band    x=cald lower=p5_prevalence1564_msm_0 	upper=p95_prevalence1564_msm_0  / 
 
 run;
 quit;
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_msm_infected_from_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+
+label p50_p_msm_infected_from_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_p_msm_infected_from_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_msm_infected_from_msm_0 	upper=p95_p_msm_infected_from_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;
+quit;
+
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_elig_prep_any_msm_1564_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+
+label p50_p_elig_prep_any_msm_1564__0 = "Option 0 (median) ";
+
+series  x=cald y=p50_p_elig_prep_any_msm_1564__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_prep_any_msm_1564__0 	upper=p95_p_elig_prep_any_msm_1564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;
+quit;
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_onprep_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+
+label p50_p_onprep_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_p_onprep_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onprep_msm_0 	upper=p95_p_onprep_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;
+quit;
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_onart_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+
+label p50_p_onart_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_p_onart_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_msm_0 	upper=p95_p_onart_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;
+quit;
+
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "prevalence_vg1000_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+
+label p50_prevalence_vg1000_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_prevalence_vg1000_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence_vg1000_msm_0 	upper=p95_prevalence_vg1000_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;
+quit;
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_diag_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+
+label p50_p_diag_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_p_diag_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_msm_0 	upper=p95_p_diag_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;
+quit;
+
+
+
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_onart_diag_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+
+label p50_p_onart_diag_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_p_onart_diag_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_diag_msm_0 	upper=p95_p_onart_diag_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;
+quit;
+
+
+
+
+
+	  
+	  	 
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_vl1000_art_gt6m_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+
+label p50_p_vl1000_art_gt6m_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_p_vl1000_art_gt6m_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_vl1000_art_gt6m_msm_0 	upper=p95_p_vl1000_art_gt6m_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;
+quit;
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_ever_tested_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+
+label p50_p_ever_tested_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_p_ever_tested_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_ever_tested_msm_0 	upper=p95_p_ever_tested_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;
+quit;
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_tested_this_period_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+
+label p50_p_tested_this_period_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_p_tested_this_period_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_tested_this_period_msm_0 	upper=p95_p_tested_this_period_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;
+quit;
+
+
+
+
+ods html close;
+
 
 
 
