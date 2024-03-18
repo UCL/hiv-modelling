@@ -1,5 +1,6 @@
 
 
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -247,6 +248,9 @@ newp_seed = 7;
 
 * msm_rred;					%sample_uniform(msm_rred, 1.5 2 3 5); * extent to which p_rred_p is higher in msm than het men;
 * prop_m_msm;				%sample_uniform(prop_m_msm, 0.01 0.03 0.05); 
+* msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.1 0.2 0.3); * risk of one or mroe cls partners in msm per period ;
+* msm_tr_factor;			%sample_uniform(msm_tr_factor, 5 10 15); * factor determining the transmission risk per period given 
+																		the represetative vl in the parter(s) in the period ;	
 
 * PWID;
 
@@ -254,7 +258,7 @@ newp_seed = 7;
 * prob_stop_pwid;			prob_stop_pwid=0.05;
 * rr_pwid_female;			rr_pwid_female = 0.25 ;
 
-
+ 
 * TRANSMISSION;
 
 * tr_rate_primary;			tr_rate_primary = 0.16; 
@@ -264,7 +268,6 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * fold_tr;					%sample_uniform(fold_tr, 1/1.5 1 1.5);
-* fold_tr_msm;				%sample_uniform(fold_tr_msm, 0.7 1 2 3 ); *but note this is not per newp / ep ;
 * fold_tr_pwid;				%sample_uniform(fold_tr_pwid, 10 15 20);
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
@@ -6491,7 +6494,12 @@ end;
 * INFECTION FROM MSM;
 
 if msm=1 then do;
-risk_hiv_msm = t_prop_i_msm ; 
+
+eff_msm_risk_cls = msm_risk_cls;
+if 50 <= age < 65 then msm_risk_cls = eff_msm_risk_cls / 5;
+if age ge 65 then eff_msm_risk_cls = 0;
+
+risk_hiv_msm = t_prop_i_msm * eff_msm_risk_cls ; 
 u1 = t_prop_msm_vlg1; u2= t_prop_msm_vlg2; u3= t_prop_msm_vlg3; u4= t_prop_msm_vlg4; u5= t_prop_msm_vlg5; u6= t_prop_msm_vlg6; 
 end;
 
@@ -6511,12 +6519,12 @@ b=rand('uniform');
 if t ge 2 and msm=1 and b < risk_hiv_msm then do;
 	risk_msm=0;  * dependent_on_time_step_length ;  
 	a=rand('uniform');
-	if                   a < cu_1/cu_6 then do; risk_msm  = max(0,(tr_rate_undetec_vl*fold_tr_msm )+(0.000025*rand('normal'))); vl_source=1; t_prop_rm=t_prop_vlg1_rm; end;
-		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_msm  = max(0,(0.01*fold_tr*fold_tr_msm )+(0.0025*rand('normal')));       vl_source=2; t_prop_rm=t_prop_vlg2_rm; end; 
-		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_msm  = max(0,(0.03*fold_tr*fold_tr_msm )+(0.0075*rand('normal')));       vl_source=3; t_prop_rm=t_prop_vlg3_rm; end;
-		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_msm  = max(0,(0.06*fold_tr*fold_tr_msm )+(0.015*rand('normal')));        vl_source=4; t_prop_rm=t_prop_vlg4_rm; end;
-		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_msm  = max(0,(0.10*fold_tr*fold_tr_msm )+(0.025*rand('normal')));        vl_source=5; t_prop_rm=t_prop_vlg5_rm; end; 
-		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_msm  = max(0,(tr_rate_primary*fold_tr_msm )+(0.075*rand('normal')));       vl_source=6; t_prop_rm=t_prop_vlg6_rm; end;
+	if                   a < cu_1/cu_6 then do; risk_msm  = max(0,(tr_rate_undetec_vl*msm_tr_factor )+(0.000025*rand('normal'))); vl_source=1; t_prop_rm=t_prop_vlg1_rm; end;
+		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_msm  = max(0,(0.01*fold_tr*msm_tr_factor )+(0.0025*rand('normal')));       vl_source=2; t_prop_rm=t_prop_vlg2_rm; end; 
+		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_msm  = max(0,(0.03*fold_tr*msm_tr_factor )+(0.0075*rand('normal')));       vl_source=3; t_prop_rm=t_prop_vlg3_rm; end;
+		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_msm  = max(0,(0.06*fold_tr*msm_tr_factor )+(0.015*rand('normal')));        vl_source=4; t_prop_rm=t_prop_vlg4_rm; end;
+		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_msm  = max(0,(0.10*fold_tr*msm_tr_factor )+(0.025*rand('normal')));        vl_source=5; t_prop_rm=t_prop_vlg5_rm; end; 
+		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_msm  = max(0,(tr_rate_primary*msm_tr_factor )+(0.075*rand('normal')));       vl_source=6; t_prop_rm=t_prop_vlg6_rm; end;
 
 		  m184m_p=0; tam_p=0;   k65m_p=0;  q151m_p=0; k103m_p=0;  y181m_p=0;  g190m_p=0;  
 		  p32m_p=0;  p33m_p=0;  p46m_p=0;  p47m_p=0;  p50lm_p=0;  p50vm_p=0;  p54m_p=0;  
