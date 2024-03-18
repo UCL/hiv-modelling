@@ -901,7 +901,7 @@ prob_intensify_2_3 = 0.1;
 * effect of sbp on risk of cvd death;
 effect_sbp_cvd_death = 0.05;
 * effect of gender on risk of cvd death;
-gender = 1  = 0.4;
+effect_gender_cvd_death = 0.4;
 * effect of age on risk of cvd death;
 effect_age_cvd_death = 0.03;
 * base risk of cvd (before adding effects of age, gender, sbp);
@@ -1608,14 +1608,14 @@ end;
 
 
 ep =0; ageg_ep=0; epmono=0; * msm ;
-if gender in (1,2) then do; 
+
 u=rand('uniform');
 if 15 <= age < 25 and u < 0.40 then do; ep=1; ageg_ep=1; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
 if 25 <= age < 35 and u < 0.50 then do; ep=1; ageg_ep=2; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
 if 35 <= age < 45 and u < 0.60 then do; ep=1; ageg_ep=3; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
 if 45 <= age < 55 and u < 0.60 then do; ep=1; ageg_ep=4; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
 if 55 <= age < 65 and u < 0.60 then do; ep=1; ageg_ep=5; d=rand('uniform'); if d < 0.33 then lep=1; if 0.33 <= d then lep=2; end;
-end;
+
 
 if newp ge 1 then ever_newp=1;
 if ep=1 then ever_ep=1;
@@ -1984,7 +1984,7 @@ dead_tm1=0;
 ***LBM21 Assume a proportion of men were circumcised at birth prior to 1989; 
 mcirc =0;birth_circ=0;new_birth_circ=0;
 
-if  gender =1 and age gt 0.25 then do; * msm ;
+if  gender =1 and age gt 0.25 then do; 
 h = rand('uniform'); 
 if h < prob_birth_circ then do;mcirc =1;birth_circ=1;new_birth_circ=1;end;
 if mcirc =1 then date_mcirc=0;
@@ -2132,9 +2132,9 @@ art_initiation=0;  * started art this period - intentional that this appears in 
 * note that caldate{t} becomes = . when a person dies - need to use caldate_never_dot if want to change value of a population-wide parameter
 value at a certain calendar time;
 
-if t ge 2 and caldate{t-1} < 2072.5  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
+if t ge 2 and caldate{t-1} < (&year_interv + 50)  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
-if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
+if t ge 2 and caldate{t-1} < (&year_interv + 50)  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
 ;
 
 age=age+0.25;  * dependent_on_time_step_length ;
@@ -3650,7 +3650,7 @@ rred= newp_factor*(rred_a * rred_p * rred_adc * rred_d * rred_rc * rred_balance 
 * rred_ep lower or greater concurrence with ep - to introduce a potential dependence of newp on ep - which could influence
 the magnitude of an epidemic generated for a given mean level of condomless sex;
 
-if gender = 1 and t ge 2 then do;  * msm - this code below used to determine new in msm and heterosexual men;
+if gender = 1 and t ge 2 then do; 
 
 if sex_beh_trans_matrix_m=1 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.995; *newp=1; s2=0.005; *newp >= 2; s3=0.005; *newp 10x; s4=0.00005; end;
@@ -4144,7 +4144,7 @@ if registd_tm1=1 then u=u/ch_risk_diag;
 if caldate{t} ge 1995 then u=u/ch_risk_beh_ep;
 * less chance of starting longer term unprotected sex partnership after hiv diagnosis
 in subject; * dependent_on_time_step_length ;
-if gender in (1, 2) then do; * heterosexuals only;
+
 if ep_tm1=0 and 15 <= age < 25 and u < eprate then do; 
 	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
 if ep_tm1=0 and 25 <= age < 35 and u < eprate then do; 
@@ -4155,7 +4155,7 @@ if ep_tm1=0 and 45 <= age < 55 and u < eprate/3 then do;
 	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
 if ep_tm1=0 and 55 <= age < 65 and u < eprate/5 then do;
 	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if 0.30 <= d then lep=2;  end;
-end;
+
 
 if t ge 2 and newp ge 1 then ever_newp=1;
 if t ge 2 and ep =  1 then ever_ep=1;
@@ -6243,7 +6243,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			    hiv=1; infected_newp=1; infected_ep=0; infected_from_pwid=0; infected_from_msm=0;  infection=caldate{t};* prob infected by person in primary;
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
-				if gender in (1, 2) then age_source_inf=age_newp;
+				age_source_inf=age_newp;
 				infected_prep_any=0; infected_prep_oral=0; infected_prep_inj=0; infected_prep_vr=0;
 				inf_prep_any_source_prep_r=0; 
 				if prep_oral=1 then do; 
@@ -7768,7 +7768,7 @@ if hiv=1 then do;
 
 
 
-if t ge 2 and . < infection < caldate{t} < 2072.5 and dead_tm1 ne 1  then do;
+if t ge 2 and . < infection < caldate{t} < (&year_interv + 50) and dead_tm1 ne 1  then do;
 
 sympt_diag=0;
 
