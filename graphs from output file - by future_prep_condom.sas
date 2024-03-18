@@ -1,4 +1,58 @@
 
+* code used to create datasets to plot graphs of scenarios 2015 - 2040 ;
+
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\";
+
+data fpc_a; set a.fpc_a;   p95_incidence1549_fpc_a = p95_incidence1549__0; p50_incidence1549_fpc_a = p50_incidence1549__0; p5_incidence1549_fpc_a = p5_incidence1549__0;
+data fpc_b; set a.fpc_b;   p95_incidence1549_fpc_b = p95_incidence1549__0; p50_incidence1549_fpc_b = p50_incidence1549__0; p5_incidence1549_fpc_b = p5_incidence1549__0;
+data fpc_c; set a.fpc_c;   p95_incidence1549_fpc_c = p95_incidence1549__0; p50_incidence1549_fpc_c = p50_incidence1549__0; p5_incidence1549_fpc_c = p5_incidence1549__0;
+data fpc_d; set a.fpc_d;   p95_incidence1549_fpc_d = p95_incidence1549__0; p50_incidence1549_fpc_d = p50_incidence1549__0; p5_incidence1549_fpc_d = p5_incidence1549__0;
+data plot;
+merge   fpc_a   fpc_b   fpc_c   fpc_d ;
+by cald;
+proc print; run;
+
+
+ods html;
+proc sgplot data=plot ; 
+Title    height=1.5 justify=center "Incidence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2039 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1         by 0.1     ) valueattrs=(size=10);
+
+label p50_incidence1549_fpc_a = "scenarioA_worse";
+label p50_incidence1549_fpc_b = "scenarioB_base";
+label p50_incidence1549_fpc_c = "scenarioC_better";
+label p50_incidence1549_fpc_d = "scenarioD_best";
+
+ series  x=cald y=p50_incidence1549_fpc_a/	lineattrs = (color=lightgrey thickness = 4);
+  band    x=cald lower=p5_incidence1549_fpc_a 	upper=p95_incidence1549_fpc_a  / transparency=0.9 fillattrs = (color=lightgrey) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549_fpc_b/	lineattrs = (color=grey  thickness = 4);
+  band    x=cald lower=p5_incidence1549_fpc_b 	upper=p95_incidence1549_fpc_b  / transparency=0.9 fillattrs = (color=grey ) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549_fpc_c/	lineattrs = (color=charcoal thickness = 4);
+  band    x=cald lower=p5_incidence1549_fpc_c 	upper=p95_incidence1549_fpc_c  / transparency=0.9 fillattrs = (color=charcoal) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549_fpc_d/	lineattrs = (color=black    thickness = 4);
+  band    x=cald lower=p5_incidence1549_fpc_d 	upper=p95_incidence1549_fpc_d  / transparency=0.9 fillattrs = (color=black  ) legendlabel= "90% range";
+
+run;quit;
+
+* ods html close;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
 
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_k_out\";
@@ -285,7 +339,6 @@ run;quit;
 
 * ods html close;
 
-*/
 
 
 ods html;
@@ -311,7 +364,6 @@ label p50_prop_elig_on_prep_4 = "D";
 run;quit;
 
 
-/*
 
 ods html;
 proc sgplot data=d ; 

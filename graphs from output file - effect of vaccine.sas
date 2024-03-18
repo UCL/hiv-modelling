@@ -25,7 +25,7 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-%let single_var = prevalence1549_      ;
+%let single_var = incidence1549_      ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_
@@ -242,6 +242,23 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
+
+
+* code used to create datasets to plot graphs of scenarios 2015 - 2040 ;
+
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\";
+
+data a.fpc_a;
+set d;
+keep cald  p5_incidence1549__0 p50_incidence1549__0 p95_incidence1549__0 ;
+if 2015 <= cald < 2040;
+proc print; run;
+run;
+
+
+
+
+
 /*
 
 
@@ -272,7 +289,7 @@ run;quit;
 
 * ods html close;
 
-*/
+
 
 ods html;
 proc sgplot data=d ; 
@@ -301,7 +318,7 @@ run;quit;
 
 * ods html close;
 
-/*
+
 
 ods html;
 proc sgplot data=d ; 
