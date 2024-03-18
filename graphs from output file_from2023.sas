@@ -82,17 +82,20 @@ proc means max data=b;var count_csim cald;where option=1;run;*300;
 proc means max data=b;var count_csim cald;where option=10;run;*150;
 proc means max data=b;var count_csim cald;where option=11;run;*300;
 proc means max data=b;var count_csim cald;where option=12;run;*300;
-proc means max data=b;var count_csim cald;where option=15;run;*90;
-proc means max data=b;var count_csim cald;where option=16;run;*75;
-proc means max data=b;var count_csim cald;where option=17;run;*75;
-proc means max data=b;var count_csim cald;where option=18;run;*75;
-proc means max data=b;var count_csim cald;where option=19;run;*75;
-proc means max data=b;var count_csim cald;where option=20;run;*75;
-proc means max data=b;var count_csim cald;where option=21;run;*75;
-proc means max data=b;var count_csim cald;where option=22;run;*75;
-proc means max data=b;var count_csim cald;where option=23;run;*75;
-proc means max data=b;var count_csim cald;where option=24;run;*75;
-proc means max data=b;var count_csim cald;where option=25;run;*75;
+
+proc means max data=b;var count_csim cald;where option=15;run;*140;
+proc means max data=b;var count_csim cald;where option=16;run;*125;
+proc means max data=b;var count_csim cald;where option=17;run;*125;
+proc means max data=b;var count_csim cald;where option=18;run;*125;
+proc means max data=b;var count_csim cald;where option=19;run;*125;
+proc means max data=b;var count_csim cald;where option=20;run;*125;
+proc means max data=b;var count_csim cald;where option=21;run;*125;
+proc means max data=b;var count_csim cald;where option=22;run;*125;
+proc means max data=b;var count_csim cald;where option=23;run;*125;
+proc means max data=b;var count_csim cald;where option=24;run;*125;
+proc means max data=b;var count_csim cald;where option=25;run;*125;
+proc means max data=b;var count_csim cald;where option=26;run;*50;
+
 
 %let year_start = 2023;
 %let year_end = 2072.75;
@@ -154,6 +157,7 @@ run;
 /*
 *June 2023;
 *Create means across simulations starting from the same dataset;
+*For MIHPSA we disucssed and decided this is not needed;
 data option_0;set b;keep cald run option count_csim n_alive;if option=0;run;
 proc transpose data=option_0 out=a0_1 prefix=n_alive;var n_alive; by cald; id count_csim;run;
 data a0_1;set a0_1;***creates one dataset per variable;
@@ -215,34 +219,35 @@ run;
 %let nfit=150;%option_(10);
 %let nfit=300;%option_(11);
 %let nfit=300;%option_(12);
-%let nfit=90;%option_(15);
-%let nfit=75;%option_(16);
-%let nfit=75;%option_(17);
-%let nfit=75;%option_(18);
-%let nfit=75;%option_(19);
-%let nfit=75;%option_(20);
-%let nfit=75;%option_(21);
-%let nfit=75;%option_(22);
-%let nfit=75;%option_(23);
-%let nfit=75;%option_(24);
-%let nfit=75;%option_(25);
+
+%let nfit=140;%option_(15);
+%let nfit=125;%option_(16);
+%let nfit=125;%option_(17);
+%let nfit=125;%option_(18);
+%let nfit=125;%option_(19);
+%let nfit=125;%option_(20);
+%let nfit=125;%option_(21);
+%let nfit=125;%option_(22);
+%let nfit=125;%option_(23);
+%let nfit=125;%option_(24);
+%let nfit=125;%option_(25);
+%let nfit=50;%option_(26);
 run;
 
 
 data d_a; * this is number of variables in %let var = above ;
 merge 
-g0_1   g0_2   g0_3   g0_4   g0_5   g0_6   g0_7   g0_8   g0_9   g0_10  g0_11  g0_12  g0_13  g0_14  g0_15  g0_16  g0_17  g0_18  g0_19  g0_20  g0_21  g0_22  g0_23  g0_24  g0_25  g0_26 
-g0_27  g0_28  g0_29  g0_30  g0_31  g0_32  g0_33  g0_34  g0_35  g0_36  g0_37  g0_38  g0_39  g0_40  g0_41  g0_42  g0_43  g0_44  g0_45  g0_46  g0_47  g0_48   g0_49  g0_50 
-g0_51  g0_52 
-g0_53  g0_54  g0_55  g0_56  g0_57  g0_58  g0_59  g0_60 g0_61  g0_62  g0_63  g0_64  g0_65  g0_66  g0_67  g0_68  g0_69  g0_70  g0_71 g0_72 g0_73 g0_74 g0_75  g0_76  g0_77 g0_78 
-g0_79  g0_80  g0_81  g0_82  g0_83  g0_84  g0_85  g0_86  g0_87  g0_88  g0_89  g0_90 g0_91  g0_92  g0_93  g0_94  g0_95  g0_96  g0_97  g0_98  g0_99  g0_100 g0_101 g0_102 g0_103 g0_104
-g0_105 g0_106 g0_107 g0_108 g0_109 g0_110 g0_111 g0_112 g0_113 g0_114 g0_115 g0_116 g0_117 g0_118 g0_119 g0_120 g0_121 g0_122 g0_123 g0_124 g0_125 g0_126 g0_127 g0_128 g0_129 g0_130 
-g0_131 g0_132 g0_133 g0_134 g0_135 g0_136 g0_137 g0_138 g0_139 g0_140 g0_141 g0_142 g0_143 g0_144 g0_145 g0_146 g0_147 g0_148 g0_149 g0_150 g0_151 g0_152 g0_153 g0_154 g0_155 g0_156
-g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182
-g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
-g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234
-g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 /*g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 g0_251 g0_252 
-*/
+g0_1   g0_2   g0_3   g0_4   g0_5   g0_6   g0_7   g0_8   g0_9   g0_10  g0_11  g0_12  g0_13  g0_14  g0_15  g0_16  g0_17  g0_18  g0_19  g0_20  g0_21  g0_22  g0_23  g0_24  g0_25  
+g0_26  g0_27  g0_28  g0_29  g0_30  g0_31  g0_32  g0_33  g0_34  g0_35  g0_36  g0_37  g0_38  g0_39  g0_40  g0_41  g0_42  g0_43  g0_44  g0_45  g0_46  g0_47  g0_48  g0_49  g0_50 
+g0_51  g0_52  g0_53  g0_54  g0_55  g0_56  g0_57  g0_58  g0_59  g0_60  g0_61  g0_62  g0_63  g0_64  g0_65  g0_66  g0_67  g0_68  g0_69  g0_70  g0_71  g0_72  g0_73  g0_74  g0_75  
+g0_76  g0_77  g0_78  g0_79  g0_80  g0_81  g0_82  g0_83  g0_84  g0_85  g0_86  g0_87  g0_88  g0_89  g0_90  g0_91  g0_92  g0_93  g0_94  g0_95  g0_96  g0_97  g0_98  g0_99  g0_100 
+g0_101 g0_102 g0_103 g0_104 g0_105 g0_106 g0_107 g0_108 g0_109 g0_110 g0_111 g0_112 g0_113 g0_114 g0_115 g0_116 g0_117 g0_118 g0_119 g0_120 g0_121 g0_122 g0_123 g0_124 g0_125 
+g0_126 g0_127 g0_128 g0_129 g0_130 g0_131 g0_132 g0_133 g0_134 g0_135 g0_136 g0_137 g0_138 g0_139 g0_140 g0_141 g0_142 g0_143 g0_144 g0_145 g0_146 g0_147 g0_148 g0_149 g0_150 
+g0_151 g0_152 g0_153 g0_154 g0_155 g0_156 g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 
+g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182 g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 
+g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208 g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 
+g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 /*g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 
+g0_251 g0_252 */
 
 g1_1   g1_2   g1_3   g1_4   g1_5   g1_6   g1_7   g1_8   g1_9   g1_10  g1_11  g1_12  g1_13  g1_14  g1_15  g1_16  g1_17  g1_18  g1_19  g1_20  g1_21  g1_22  g1_23  g1_24  g1_25  g1_26 
 g1_27  g1_28  g1_29  g1_30  g1_31  g1_32  g1_33  g1_34  g1_35  g1_36  g1_37  g1_38  g1_39  g1_40  g1_41  g1_42  g1_43  g1_44  g1_45  g1_46  g1_47  g1_48   g1_49  g1_50 
@@ -435,9 +440,24 @@ g25_209 g25_210 g25_211 g25_212 g25_213 g25_214 g25_215 g25_216 g25_217 g25_218 
 g25_235 g25_236 g25_237 g25_238 g25_239 g25_240 /*g25_241 g25_242 g25_243 g25_244 g25_245 g25_246 g25_247 g25_248 g25_249 g25_250 g25_251 g25_252 */
 ;
 by cald;run;
+data d_i; * this is number of variables in %let var = above ;
+merge 
+g26_1   g26_2   g26_3   g26_4   g26_5   g26_6   g26_7   g26_8   g26_9   g26_10  g26_11  g26_12  g26_13  g26_14  g26_15  g26_16  g26_17  g26_18  g26_19  g26_20  g26_21  g26_22  g26_23  g26_24  g26_25  g26_26 
+g26_27  g26_28  g26_29  g26_30  g26_31  g26_32  g26_33  g26_34  g26_35  g26_36  g26_37  g26_38  g26_39  g26_40  g26_41  g26_42  g26_43  g26_44  g26_45  g26_46  g26_47  g26_48   g26_49  g26_50 
+g26_51  g26_52  g26_53  g26_54  g26_55  g26_56  g26_57  g26_58  g26_59  g26_60 g26_61  g26_62  g26_63  g26_64  g26_65  g26_66  g26_67  g26_68  g26_69  g26_70  g26_71 g26_72 g26_73 g26_74 g26_75  g26_76  g26_77 g26_78 
+g26_79  g26_80  g26_81  g26_82  g26_83  g26_84  g26_85  g26_86  g26_87  g26_88  g26_89  g26_90 g26_91  g26_92  g26_93  g26_94  g26_95  g26_96  g26_97  g26_98  g26_99  g26_100 g26_101 g26_102 g26_103 g26_104
+g26_105 g26_106 g26_107 g26_108 g26_109 g26_110 g26_111 g26_112 g26_113 g26_114 g26_115 g26_116 g26_117 g26_118 g26_119 g26_120 g26_121 g26_122 g26_123 g26_124 g26_125 g26_126 g26_127 g26_128 g26_129 g26_130 
+g26_131 g26_132 g26_133 g26_134 g26_135 g26_136 g26_137 g26_138 g26_139 g26_140 g26_141 g26_142 g26_143 g26_144 g26_145 g26_146 g26_147 g26_148 g26_149 g26_150 g26_151 g26_152 g26_153 g26_154 g26_155 g26_156
+g26_157 g26_158 g26_159 g26_160 g26_161 g26_162 g26_163 g26_164 g26_165 g26_166 g26_167 g26_168 g26_169 g26_170 g26_171 g26_172 g26_173 g26_174 g26_175 g26_176 g26_177 g26_178 g26_179 g26_180 g26_181 g26_182
+g26_183 g26_184 g26_185 g26_186 g26_187 g26_188 g26_189 g26_190 g26_191 g26_192 g26_193 g26_194 g26_195 g26_196 g26_197 g26_198 g26_199 g26_200 g26_201 g26_202 g26_203 g26_204 g26_205 g26_206 g26_207 g26_208
+g26_209 g26_210 g26_211 g26_212 g26_213 g26_214 g26_215 g26_216 g26_217 g26_218 g26_219 g26_220 g26_221 g26_222 g26_223 g26_224 g26_225 g26_226 g26_227 g26_228 g26_229 g26_230 g26_231 g26_232 g26_233 g26_234
+g26_235 g26_236 g26_237 g26_238 g26_239 g26_240 /*g26_241 g26_242 g26_243 g26_244 g26_245 g26_246 g26_247 g26_248 g26_249 g26_250 g26_251 g26_252 */
+;
+by cald;run;
+
 
 data d; * this is number of variables in %let var = above ;
-merge d_a d_b d_c d_d d_e d_f d_g d_h;
+merge d_a d_b d_c d_d d_e d_f d_g d_h d_i;
 by cald;
 %include "C:\Users\Valentina\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas";
 run;
@@ -446,10 +466,17 @@ data a.d_from2023;set d;run;
 /*data d;set a.d;run;*/
 /*proc freq data=d;table cald;run;*/
 
-***Graphs comparing observed data to outputs;
+
+
+
+
+
+
+
+***Graphs comparing observed data to outputs for option 0 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20231002_from2023_54sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20240213_from2023_75_300sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
@@ -2694,7 +2721,11 @@ ods rtf close;run;
 *Output about cotrimaxazole (s_pcp_p_adc s_pcp_p_crypm s_pcp_p_dead s_pcp_p_sbi s_pcp_p_tb s_pcp_p_who3 );
 *Output about VL measured (vl_cost_inc reset to 0);
 
-*Partire da qua;
+
+
+
+
+*The following code is to export data in format for MIHPSA Zimbabwe;
 
 
 /***********************************************************************************************/
@@ -2991,7 +3022,7 @@ run;
 %stock(o=23);
 %stock(o=24);
 %stock(o=25);
-*%stock(o=26);
+%stock(o=26);
 
 
 
@@ -2999,9 +3030,9 @@ PROC export data=s0 outFILE= "C:\Users\Valentina\OneDrive - University College L
 sheet="Base_STOCK";  RUN;
 PROC export data=s1 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="Min_STOCK";  RUN;
+
 PROC export data=s10 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="T_FSWTestprog_STOCK";  RUN;
-
 PROC export data=s11 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="SBCC_STOCK";  RUN;
 PROC export data=s12 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
@@ -3031,9 +3062,9 @@ PROC export data=s24 outFILE= "C:\Users\Valentina\OneDrive - University College 
 sheet="CABPrEP_FSW1599_STOCK";  RUN;
 PROC export data=s25 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CABPrEP_SDCA1599_STOCK";  RUN;
-/*PROC export data=s26 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s26 outFILE= "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
 sheet="CABPrEP_pregnbfF1549_STOCK";  RUN;
-*/
+
 options nomprint;
 option nospool;
 
