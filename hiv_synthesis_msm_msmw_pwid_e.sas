@@ -254,6 +254,7 @@ newp_seed = 7;
 * msm_tr_factor;			%sample_uniform(msm_tr_factor, 5 10 15); * factor determining the transmission risk per period given 
 																		the represetative vl in the parter(s) in the period ;	
 
+
 * PWID;
 
 * prob_start_pwid;			prob_start_pwid=0.001;
@@ -6431,7 +6432,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		if gender=2 and       age >= 20 then risk_nip = risk_nip * fold_change_w;  * higher transmission risk in women;
 		if gender=2 and 15 <= age <  20 then risk_nip = risk_nip * fold_change_yw;  * higher transmission risk in women;
 		if sti=1                        then risk_nip = risk_nip * fold_change_sti;  * higher transmission risk with sti;
-		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4;  * lower heterosexual transmission risk in men circumcised;
+		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4;  
 		if prep_oral   =1 then do; 	* lapr and dpv-vr - this will be different for lapr and dpv-vr ;
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
@@ -6734,7 +6735,6 @@ cu_1=u1;cu_2=cu_1+u2;cu_3=cu_2+u3;cu_4=cu_3+u4;cu_5=cu_4+u5; cu_6=cu_5+u6;
 
 *   vlg1 < 2.7    vlg2  2.7-3.7  vlg3  3.7-4.7   vlg4  4.7-5.7    vlg5  > 5.7    vlg6  primary;
 
-* (resistance profile assumed from heterosexuals for simplicity) ;
 k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.; p46m=.; p47m=.;  p50lm=.; p50vm=.; 
 p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  in118m=.; in140m=.; in148m=.; in155m=.; in263m=.; 
 k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.;  m184m_p=.;  q151m_p=.;  tam_p=.;  p32m_p=.;  p33m_p=.;  p46m_p=.;  p47m_p=.; 
@@ -6868,6 +6868,8 @@ if t ge 2 and msm=1 and b < risk_hiv_msm then do;
 		end;  
 	end;
 
+		if sti=1                        then risk_msm = risk_msm * fold_change_sti;  * higher transmission risk with sti;
+
 		if prep_oral   =1 then do; 	* lapr and dpv-vr - this will be different for lapr and dpv-vr ;
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_msm = risk_msm * (1-(adh * prep_oral_efficacy));
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_msm = risk_msm * (1-(adh * prep_oral_efficacy));
@@ -6934,7 +6936,7 @@ cu_1=u1;cu_2=cu_1+u2;cu_3=cu_2+u3;cu_4=cu_3+u4;cu_5=cu_4+u5; cu_6=cu_5+u6;
 
 *   vlg1 < 2.7    vlg2  2.7-3.7  vlg3  3.7-4.7   vlg4  4.7-5.7    vlg5  > 5.7    vlg6  primary;
 
-* (resistance profile assumed from heterosexuals for simplicity) ;
+
 k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.; p46m=.; p47m=.;  p50lm=.; p50vm=.; 
 p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  in118m=.; in140m=.; in148m=.; in155m=.; in263m=.; 
 k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.;  m184m_p=.;  q151m_p=.;  tam_p=.;  p32m_p=.;  p33m_p=.;  p46m_p=.;  p47m_p=.; 
@@ -7122,7 +7124,7 @@ end;
 
 
 
-* if have new existing partner, are they infected ?; * heterosexual men only ;
+
 if gender=1 then do;
 	if ageg_ep = 1 then prev=prevalence1524w;
 	if ageg_ep = 2 then prev=prevalence2534w;
@@ -7273,7 +7275,7 @@ end;
 
 * INTRODUCE HIV INTO POPULATION ;
 
-d=rand('uniform');  * msm - make sure some msm are infected ;
+d=rand('uniform'); 
 if caldate{t}=startyr and (newp >= newp_seed and d < 0.8) and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
@@ -11393,7 +11395,7 @@ end;tb_diag_e = .; tb_prob_diag_l = .;
 * measure cd4 crag tb lam when (re)entering care;
 crag_measured_this_per = 0; tblam_measured_this_per = 0; cm_this_per =0; cd4_enter_care=.; enter_care=0;
 if cm_1stvis_return_vlmg1000=1 and (date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)) then do; 
-	if cm  =. and absence_cd4_year_i ne 1 then do; cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_incur = 1; end;
+	if cm  =. and absence_cd4_year_i ne 1 then do; cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 1; end;
 	if (crag_cd4_l200=1 and 0 <= cm < 200) or (crag_cd4_l100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
 	if (tblam_cd4_l200=1 and 0 <= cm < 200) or (tblam_cd4_l100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
 end;
@@ -12204,7 +12206,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 
 
 * based on SA death rates in 1997 (pre most AIDS deaths); 
-		if gender = 1  then do; * msm ;
+		if gender = 1  then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00200;
 			if 20 <= age < 25 then ac_death_rate = 0.00320;
 			if 25 <= age < 30 then ac_death_rate = 0.00580;
@@ -12918,7 +12920,7 @@ if gender=2 then do;
 	if 15 <= age < 50 then ageg1549w=1;else ageg1549w=0;
 end;
 
-alive_m = 0;  if age ge 15 and  in (1, 3) then alive_m = 1;
+alive_m = 0;  if age ge 15 and gender=1   then alive_m = 1;
 alive_w = 0;  if age ge 15 and gender=2 then alive_w = 1;
 alive_msm = 0; if age ge 15 and msm=1 then alive_msm=1;
 alive_pwid = 0; if age ge 15 and pwid=1 then alive_pwid=1;
@@ -12952,7 +12954,6 @@ hiv_anc=0;      if anc=1      and hiv=1 then hiv_anc=1;
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*;
 
 
-* msm  ;
 primary1519m=0; if gender = 1   and primary=1 and 15 <= age < 20 then primary1519m=1;
 primary2024m=0; if gender = 1  and primary=1 and 20 <= age < 25 then primary2024m=1;
 primary2529m=0; if gender = 1  and primary=1 and 25 <= age < 30 then primary2529m=1;
@@ -13009,11 +13010,9 @@ primary5564w_epnewp=0; if gender=2 and primary=1 and 55 <= age < 65 and ep=1 and
 primary_ep_m=0; if primary=1 and ep=1 and epi  =0 and gender = 1 then primary_ep_m=1;
 primary_ep_w=0; if primary=1 and ep=1 and epi  =0 and gender=2 then primary_ep_w=1;
 
-* this is denominator for incidence of hiv in those with ep=1 epi=0
-  only uninfected, as these are at risk of infection ;  * msm ;
 eph0_m=0; if ep=1 and hiv=0  and epi  =0 and gender = 1 then eph0_m=1;
 eph0_w=0; if ep=1 and hiv=0  and epi  =0 and gender=2 then eph0_w=1;
-* for heterosexual men;
+
 i_m_1524_newp=0; if hiv=1 and gender=1 and 15 <= age < 25 then i_m_1524_newp=newp;
 i_m_2534_newp=0; if hiv=1 and gender=1 and 25 <= age < 35 then i_m_2534_newp=newp;
 i_m_3544_newp=0; if hiv=1 and gender=1 and 35 <= age < 45 then i_m_3544_newp=newp;
@@ -13128,7 +13127,7 @@ conc=0;
 if ((ep=1 and newp ge 1) or newp ge 2) or ((ep_tm1=1 and newp_tm1 ge 1) or newp_tm1 ge 2) or 
    ((ep_tm2=1 and newp_tm2 ge 1) or newp_tm2 ge 2) or ((ep_tm3=1 and newp_tm3 ge 1) or newp_tm3 ge 2) then conc=1;
 * l4p means last 4 periods - so for 3 month time steps this is last year as before;
-npgt1conc_l4p_1524m=0;if gender=1 and 15 <= age < 25 then npgt1conc_l4p_1524m=conc;  *applies heterosexual men;
+npgt1conc_l4p_1524m=0;if gender=1 and 15 <= age < 25 then npgt1conc_l4p_1524m=conc;  
 npgt1conc_l4p_1524w=0;if gender=2 and 15 <= age < 25 then npgt1conc_l4p_1524w=conc;
 npgt1conc_l4p_2549m=0;if gender=1 and 25 <= age <=49 then npgt1conc_l4p_2549m=conc;
 npgt1conc_l4p_2549w=0;if gender=2 and 25 <= age <=49 then npgt1conc_l4p_2549w=conc;
@@ -13143,7 +13142,7 @@ npgt1conc_l4p_1519w=0;if gender=2 and 15 <= age < 20 then npgt1conc_l4p_1519w=co
 *1>= np;
 
 * l4p means last 4 periods;
-*applies heterosexual men;
+
 npge1_l4p_1564m=0;if gender=1 and 15 <= age < 65 and (nnewp_l4p ge 1 or (nnewp_l4p=0 and (ep=1 or ep_tm1=1 or ep_tm2=1 or ep_tm3=1))) then npge1_l4p_1564m=1;
 npge1_l4p_1524m=0;if gender=1 and 15 <= age < 25 and (nnewp_l4p ge 1 or (nnewp_l4p=0 and (ep=1 or ep_tm1=1 or ep_tm2=1 or ep_tm3=1))) then npge1_l4p_1524m=1;
 npge1_l4p_2534m=0;if gender=1 and 25 <= age < 35 and (nnewp_l4p ge 1 or (nnewp_l4p=0 and (ep=1 or ep_tm1=1 or ep_tm2=1 or ep_tm3=1))) then npge1_l4p_2534m=1;
@@ -13775,7 +13774,7 @@ art_dur_l6m=art_tdur_l6m; art_dur_g6m=art_tdur_g6m;  end;
 end;
 
 
-*** Total circumcisions and new circumcisions; * msm ;
+*** Total circumcisions and new circumcisions; 
 mcirc_1014m=0;new_mcirc_1014m=0;vmmc1014m=0;new_vmmc1014m=0;if gender = 1  and 10 le age lt 15 then do; mcirc_1014m=mcirc; new_mcirc_1014m=new_mcirc; new_vmmc1014m=new_vmmc; vmmc1014m=vmmc; end;
 
 mcirc_1519m=0;new_mcirc_1519m=0;vmmc1519m=0;new_vmmc1519m=0;if gender = 1  and 15 le age lt 20 then do; mcirc_1519m=mcirc; new_mcirc_1519m=new_mcirc; new_vmmc1519m=new_vmmc; vmmc1519m=vmmc; end;
@@ -13829,7 +13828,6 @@ sw_vg1000=0;if sw=1                 and vl > 3.0 then sw_vg1000=1;
 
 
 ***People with long term partners;
-* msm  - general approach is that sexual behaviour related variables that are created for men and women relate to heterosexual men only - gender = 1;
 ep_m  =0; if gender=1 and ep=1 then ep_m  =1;
 ep_w  =0; if gender=2 and ep=1 then ep_w  =1;
 
@@ -13862,12 +13860,11 @@ w_5564_epnewp=0;if  gender=2 and 55 <= age < 65 and ep=1 and newp ge 1 then w_55
 
 ***For each man, whether they have had 1, 2 or 5 newp in their lifetime (but note this is newp since 1989 only)
    To try to understand % of men who had FSW partnership;
-* msm  - general approach is that sexual behaviour related variables that are created for men and women relate to het sexual men only - gender = 1;
 m_1524_ge1newpever=0;m_2534_ge1newpever=0;m_3544_ge1newpever=0;m_4554_ge1newpever=0;m_5564_ge1newpever=0;
 m_1524_ge2newpever=0;m_2534_ge2newpever=0;m_3544_ge2newpever=0;m_4554_ge2newpever=0;m_5564_ge2newpever=0;
 m_1524_ge5newpever=0;m_2534_ge5newpever=0;m_3544_ge5newpever=0;m_4554_ge5newpever=0;m_5564_ge5newpever=0;
 w_ge1newpever=0;w_ge2newpever=0;w_ge5newpever=0;
-if gender=1 then do; * heterosexual men ;
+if gender=1 then do; 
 	if 15 <= age < 25 and newp_ever ge 1 then m_1524_ge1newpever=1; 
 	if 25 <= age < 35 and newp_ever ge 1 then m_2534_ge1newpever=1; 
 	if 35 <= age < 45 and newp_ever ge 1 then m_3544_ge1newpever=1; 
@@ -14050,10 +14047,6 @@ sti present, vl500 takes the vl as it is;
 
 ***Used to calculate the viral load distribution of people during new partnerships (ep+newp);
 
-* msm - leave alone as related to sexual behaviour ;
-
-* msm - todo: create equivalent of i_v4_age1_m_newp etc and i_age1_m_newp for msm ; 
-
 if 15 <= age < 65 then do;
 
 	i_v1_np=0; i_v2_np=0; i_v3_np=0; i_v4_np=0; i_v5_np=0; i_v6_np=0; 
@@ -14107,7 +14100,7 @@ if 15 <= age < 65 then do;
 	if 5.7 <= vl		and primary=0  then do; i_v5_np=np; i_v5_ep=ep; i_v5_newp=newp; end;
 	if 					    primary=1  then do; i_v6_np=np; i_v6_ep=ep; i_v6_newp=newp; end;
 
-	if  gender = 1 and .  <  vl < 3 and primary=0  then do; i_vl1000_m_np=np; i_v11000_m_ep=ep; i_vl1000_m_newp=newp; end;  * for heterosexual men;
+	if  gender = 1 and .  <  vl < 3 and primary=0  then do; i_vl1000_m_np=np; i_v11000_m_ep=ep; i_vl1000_m_newp=newp; end; 
 	if  gender = 2 and .  <  vl < 3 and primary=0  then do; i_vl1000_w_np=np; i_v11000_w_ep=ep; i_vl1000_w_newp=newp; end;
 
 	if gender=1 and 15 <= age < 25 then do;
@@ -14534,16 +14527,16 @@ end; * this closes loop for hiv + only;
 hiv0epi1_w=0; if gender=2 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi1_w=1; 
 hiv1epi0_w=0; if gender=2 and hiv=1 and 15 <= age < 65 and  epi  =0 then hiv1epi0_w=1; 
 hiv1epi1_w=0; if gender=2 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi1_w=1; 
-hiv0epi1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi1_m=1;  * for heterosexuals only;
+hiv0epi1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi1_m=1;  
 hiv1epi0_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =0 then hiv1epi0_m=1; 
 hiv1epi1_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi1_m=1; 
 sdc=0;	if hiv0epi1_w=1 or hiv0epi1_m=1 then sdc=1;		* MIHPSA JAS Jul23;
 
 primaryepi1_w=0;if gender=2 and primary=1 and 15 <= age < 65 and epi=1 then primaryepi1_w=1;
-primaryepi1_m=0;if gender=1 and primary=1 and 15 <= age < 65 and epi=1 then primaryepi1_m=1;  * for heterosexuals only;
+primaryepi1_m=0;if gender=1 and primary=1 and 15 <= age < 65 and epi=1 then primaryepi1_m=1;  
 
 hiv0epart1_w=0; if gender=2 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_w=1;
-hiv0epart1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_m=1;  * for heterosexuals only;
+hiv0epart1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_m=1;  
 
 *** Existing partner infected this period;
 hiv0epprim=0; if hiv=0 and epi  =1 and epi_tm1=0 and ep_tm1=1 then hiv0epprim=1; 
@@ -14869,6 +14862,8 @@ if gender = 2 and 35 <= age < 45 then do; if prep_any_elig=1 then elig_prep_any_
 if gender = 2 and 15 <= age < 50 then do; if prep_any_elig=1 then elig_prep_any_w_1549 = 1;  end;
 if gender = 2 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_w_1564 = 1;  end;
 if sw=1 then do; elig_prep_any_sw = 0; if prep_any_elig = 1 then elig_prep_any_sw = 1;   end;
+if sdc=1 then do; elig_prep_any_sdc = 0; if prep_any_elig = 1 then elig_prep_any_sdc = 1;   end;
+if plw=1 then do; elig_prep_any_plw = 0; if prep_any_elig = 1 then elig_prep_any_plw = 1;   end;
 
 prep_any_w_1524 = 0; prep_any_w_2534 = 0; prep_any_w_3544 = 0; prep_any_w_1549 = 0;
 if gender = 2 and 15 <= age < 25 then do;  if prep_any=1 then prep_any_w_1524 = 1;  end;
@@ -15160,7 +15155,7 @@ end;
 
 
 *To calculate number initiated for the first time on different types of PrEP;
-* msm - note the code for serodiscordant couples relates only to heterosexuals ;
+
 init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;init_prep_oral_plw=0;
 if caldate&j = prep_oral_first_start_date then do;
 	if gender=2 and 15 le age lt 25 	then init_prep_oral_1524w=1;
@@ -15183,8 +15178,24 @@ if caldate&j = prep_vr_first_start_date then do;
 	if pregnant=1 or breastfeeding=1 	then init_prep_vr_plw=1;
 end;
 
+*To calculate number of current users (SDC and PLW only, AGYW and SW are coded above);
+prep_any_sdc = 0; prep_oral_sdc = 0; prep_inj_sdc = 0; prep_vr_sdc = 0;
+if sdc = 1 then do; 
+	if prep_any = 1 then prep_any_sdc = 1;
+	if prep_oral = 1 then prep_oral_sdc = 1;
+	if prep_inj = 1 then prep_inj_sdc = 1;
+	if prep_vr = 1 then prep_vr_sdc = 1;
+end;
+prep_any_plw = 0; prep_oral_plw = 0; prep_inj_plw = 0; prep_vr_plw = 0;
+if plw = 1 then do; 
+	if prep_any = 1 then prep_any_plw = 1;
+	if prep_oral = 1 then prep_oral_plw = 1;
+	if prep_inj = 1 then prep_inj_plw = 1;
+	if prep_vr = 1 then prep_vr_plw = 1;
+end;
+
 * To calculate number who used PrEP in the last year;
-* msm - note the code for serodiscordant couples relates only to heterosexuals ;
+
 prep_oral_ly_1524w=0;prep_oral_ly_sw=0;prep_oral_ly_sdc=0;prep_oral_ly_plw=0;
 if prep_oral_tm3=1 or prep_oral_tm2=1 or prep_oral_tm1=1 or prep_oral=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_oral_ly_1524w=1;
@@ -15208,7 +15219,7 @@ if prep_vr_tm3=1 or prep_vr_tm2=1 or prep_vr_tm1=1 or prep_vr=1 then do;
 end;
 
 * To calculate number ever initiated on oral PrEP;
-* msm - note the code for serodiscordant couples relates only to heterosexuals ;
+
 prep_oral_ever_1524w=0;prep_oral_ever_sw=0;prep_oral_ever_sdc=0;prep_oral_ever_plw=0;
 if prep_oral_ever=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_oral_ever_1524w=1;
@@ -15295,7 +15306,7 @@ if 0 <= caldate&j - date_most_recent_prep_any_elig < 5 then prep_any_elig_past_5
 
 continuous_prep_oral_ge1yr=0; if prep_oral=1 and continuous_prep_oral_use >= 1 then continuous_prep_oral_ge1yr=1;
 
-* heterosexual men;
+
 infected_ep_w=0; if gender=2 and infected_ep=1 then infected_ep_w=infected_ep;
 infected_ep_m=0; if gender=1 and infected_ep=1 then infected_ep_m=infected_ep;
 infected_newp_w=0; if gender=2 and infected_newp=1 then infected_newp_w=infected_newp;
@@ -15753,7 +15764,7 @@ dyll_Optima80=0;dyll_GBD=0;
 if caldate&j = death and death ne . then do;
 	total_yll80le=80-agedeath;
 
-* msm - replace gender = 1 with gender = 1 
+
 	*Life expectancies are WestLevel26, as in Global burden of disease;
 	if 15 le agedeath lt 16 then do; if gender=2 then total_yllag=68.02; if gender = 1  then total_yllag=65.41; end;
 	if 16 le agedeath lt 17 then do; if gender=2 then total_yllag=67.032;if gender = 1  then total_yllag=64.416;end;
@@ -16128,7 +16139,6 @@ if naive=1 and gender=1 then naive_m=1;
 * pwid ; if naive=1 and pwid=1 then naive_pwid=1;
 if naive=1 and gender=2 then naive_w=1;
 
-* here _m refers to heterosexual men only;
 m_npge1=0; if gender=1 and np ge 1 then m_npge1=1;
 w_npge1=0; if gender=2 and np ge 1 then w_npge1=1;
 w1524_npge1=0; if gender=2 and 15 <= age < 25 and np ge 1 then w1524_npge1=1;
@@ -16484,7 +16494,7 @@ end;
 
 
 
-***Newp groups;  * note that here _m means heterosexual men;
+***Newp groups;  
 newp_g_m_0 = .; newp_g_m_1 = .; newp_g_m_2 = .; newp_g_m_3 = .; newp_g_m_4 = .;newp_g_m_5 = .;newp_g_m_6 = .;
 n_newp_g_m_0 = .; n_newp_g_m_1 = .; n_newp_g_m_2 = .; n_newp_g_m_3 = .; n_newp_g_m_4 = .;n_newp_g_m_5 = .;n_newp_g_m_6 = .;
 
@@ -16529,7 +16539,7 @@ end;
 
 * number of np had by hiv-ve people (not counting those adherent on prep +/- those circumcised); 
 
-if hiv ne 1 then do;  * these _m variables refer to heterosexual men;
+if hiv ne 1 then do; 
 	if gender=1 and 15 <= age < 50 and (prep_any ne 1 or adh < 0.8) then do;  susc_np_1549_m = newp + ep;   end;
 	if gender=1 and 15 <= age < 50 and (prep_any ne 1 or adh < 0.8) and mcirc   ne 1 then do;  susc_np_inc_circ_1549_m = newp + ep;   end;
 	if gender=2 and 15 <= age < 50 and (prep_any ne 1 or adh < 0.8) then do;  susc_np_1549_w = newp + ep;   end;
@@ -17096,8 +17106,6 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-* msm - todo: decide which variable to create sums of - make sure it works to take the value for 100000th person;
-
 * thoughts :
 
 need to ensure that all s_ variables below are not included in data set
@@ -17387,7 +17395,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_i_age1_m_newp + i_age1_m_newp ; s_i_age2_m_newp + i_age2_m_newp ; s_i_age3_m_newp + i_age3_m_newp ; s_i_age4_m_newp + i_age4_m_newp ; s_i_age5_m_newp + i_age5_m_newp ; 
 	s_i_age1_w_newp + i_age1_w_newp ; s_i_age2_w_newp + i_age2_w_newp ; s_i_age3_w_newp + i_age3_w_newp ; s_i_age4_w_newp + i_age4_w_newp ; s_i_age5_w_newp + i_age5_w_newp ; 
 
-	s_i_m_1549_np + i_m_1549_np ; s_i_w_1549_np +  i_w_1549_np ;
+	s_i_m_1549_np + i_m_1549_np ; s_i_w_1549_np +  i_w_1549_np ;  	s_sdc + sdc ;
 
 	/*resistance*/
 
@@ -17423,6 +17431,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_prep_oral_w + prep_oral_w; s_prep_inj_w + prep_inj_w; s_prep_oral_m + prep_oral_m; s_prep_vr_w + prep_vr_w;
 	s_prep_inj_m + prep_inj_m; 	s_prep_any_sw + prep_any_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_inj_sw + prep_inj_sw ; s_prep_vr_sw + prep_vr_sw ; 
 	s_prep_any_w_1524 + prep_any_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_inj_w_1524 + prep_inj_w_1524 ; s_prep_vr_w_1524 + prep_vr_w_1524 ; 
+	s_prep_any_sdc + prep_any_sdc; s_prep_oral_sdc + prep_oral_sdc; s_prep_inj_sdc + prep_inj_sdc; s_prep_vr_sdc + prep_vr_sdc;
+	s_prep_any_plw + prep_any_plw; s_prep_oral_plw + prep_oral_plw; s_prep_inj_plw + prep_inj_plw; s_prep_vr_plw + prep_vr_plw;
 	s_elig_prep_any_m_1564 + elig_prep_any_m_1564 ;s_elig_prep_any_w_1564 + elig_prep_any_w_1564 ;
 	s_infected_prep_any + infected_prep_any ; s_infected_prep_oral + infected_prep_oral ; s_infected_prep_inj + infected_prep_inj ; s_infected_prep_vr + infected_prep_vr ;
 	s_prep_any_ever + prep_any_ever ; s_primary_prep + primary_prep ; s_hiv1_prep_oral + hiv1_prep_oral ; s_prim_r_prep + prim_r_prep ; 
@@ -17456,7 +17466,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_oral_ever_1524w + prep_oral_ever_1524w; s_prep_oral_ever_sw + prep_oral_ever_sw; s_prep_oral_ever_sdc + prep_oral_ever_sdc; s_prep_oral_ever_plw + prep_oral_ever_plw;
 	s_prep_inj_ever_1524w + prep_inj_ever_1524w; s_prep_inj_ever_sw + prep_inj_ever_sw; s_prep_inj_ever_sdc + prep_inj_ever_sdc; s_prep_inj_ever_plw + prep_inj_ever_plw;
 	s_prep_vr_ever_1524w + prep_vr_ever_1524w; s_prep_vr_ever_sw + prep_vr_ever_sw; s_prep_vr_ever_sdc + prep_vr_ever_sdc; s_prep_vr_ever_plw + prep_vr_ever_plw;
-	s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
+	s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_sdc + elig_prep_any_sdc ; s_elig_prep_any_plw + elig_prep_any_plw ; 
+	s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
 	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
     s_prep_any_w_2534 + prep_any_w_2534 ; s_prep_any_w_3544 + prep_any_w_3544 ; s_inf_prep_any_source_prep_r + inf_prep_any_source_prep_r ;
     s_prepinfect_prep_r + prepinfect_prep_r ; s_prepinfect_prep_r_p + prepinfect_prep_r_p ; s_infected_prep_no_r + infected_prep_no_r ;
@@ -18041,7 +18052,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_pregnant_onart_vl_vhigh + pregnant_onart_vl_vhigh ; s_pregnant_onart_vl_vvhigh + pregnant_onart_vl_vvhigh ; 
 	s_birth_with_inf_child + birth_with_inf_child ; s_child_with_resistant_hiv + child_with_resistant_hiv ; s_give_birth_with_hiv + give_birth_with_hiv ;
 	s_onart_birth_with_inf_child_res + onart_birth_with_inf_child_res ; s_onart_birth_with_inf_child + onart_birth_with_inf_child ;	 
-	s_breastfeeding + breastfeeding ; 
+	s_breastfeeding + breastfeeding ; s_plw + plw;
 
 	/*circumcision*/
 
@@ -19088,7 +19099,7 @@ if s_w_5564_newp gt 0 then w55r = ptnewp55_w / s_w_5564_newp;
 
 *Used in abort statements below;
 if s_alive1549 gt 0 then prevalence1549 = (s_hiv1549w + s_hiv1549m) / (s_alive1549 );
-if s_alive1549_m gt 0 then prevalence1549m =  s_hiv1549m / s_alive1549_m; * this refers to all men, as intended;
+if s_alive1549_m gt 0 then prevalence1549m =  s_hiv1549m / s_alive1549_m; 
 if s_alive1549_w gt 0 then prevalence1549w =  s_hiv1549w / s_alive1549_w;
 if prevalence1524m gt 0 then prev_ratio_1524 = prevalence1524w / prevalence1524m ;
 
@@ -19261,7 +19272,8 @@ s_i_age1_w_np	s_i_age2_w_np	s_i_age3_w_np	s_i_age4_w_np	s_i_age5_w_np
 s_i_age1_m_newp s_i_age2_m_newp	s_i_age3_m_newp	s_i_age4_m_newp	s_i_age5_m_newp
 s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
-s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp
+s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp  
+s_sdc
 
 
 /*resistance*/
@@ -19313,12 +19325,14 @@ s_prep_vr_ly_1524w    	s_prep_vr_ly_sw    	s_prep_vr_ly_sdc 		s_prep_vr_ly_plw
 s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_ever_plw
 s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever_plw 
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
-s_elig_prep_any_sw  
+s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw  
 s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
 s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
+s_prep_any_sdc			s_prep_oral_sdc			s_prep_inj_sdc			s_prep_vr_sdc
+s_prep_any_plw			s_prep_oral_plw			s_prep_inj_plw	
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
@@ -19705,7 +19719,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child    
-s_breastfeeding
+s_breastfeeding s_plw
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -19755,7 +19769,7 @@ rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_optio
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
-prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid fold_tr_msm switch_for_tox 
+prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid msm_risk_cls   msm_tr_factor switch_for_tox 
 msm_rred prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_female
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
@@ -19905,13 +19919,32 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
-***Zim specific;
-/*
-if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
-if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
-if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
-*/
-/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
+***Malawi specific;			*JAS Feb24;
+if country = 'Malawi' then do;
+	if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
+	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
+	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+end;
+
+***South Africa specific;	*JAS Feb24;
+if country = 'South Africa' then do;
+	if cald = 2017.5 and (prevalence1549 < 0.166 or prevalence1549 > 0.246) then do;
+	  abort abend;
+	end;
+	if cald = 2021 and (s_onart < 3333 or s_onart > 6400) then do;
+	  abort abend;
+	end;
+end;
+
+***Zim specific;			*JAS Feb24;
+if country = 'Zimbabwe' then do;
+	if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
+	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
+end;
+/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/	*QUERY should we be using this line for Zim? JAS Feb24;
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -20260,7 +20293,7 @@ s_i_age1_m_newp s_i_age2_m_newp	s_i_age3_m_newp	s_i_age4_m_newp	s_i_age5_m_newp
 s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
 s_i_m_1549_np  s_i_w_1549_np   s_i_w_newp  s_i_m_newp
-
+s_sdc
 
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -20308,13 +20341,15 @@ s_prep_vr_ly_1524w    	s_prep_vr_ly_sw    	s_prep_vr_ly_sdc 		s_prep_vr_ly_plw
 s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_ever_plw
 s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever_plw 
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
-s_elig_prep_any_sw  
+s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
 
 s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
 s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
+s_prep_any_sdc			s_prep_oral_sdc			s_prep_inj_sdc			s_prep_vr_sdc
+s_prep_any_plw			s_prep_oral_plw			s_prep_inj_plw	
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary  	s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
@@ -20692,7 +20727,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child    
-s_breastfeeding
+s_breastfeeding s_plw
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -22147,13 +22182,15 @@ s_prep_vr_ly_1524w    	s_prep_vr_ly_sw    	s_prep_vr_ly_sdc 		s_prep_vr_ly_plw
 s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_ever_plw
 s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever_plw 
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
-s_elig_prep_any_sw  
+s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw  
 
 s_onprep_inj_m s_onprep_inj_w  s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
 s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
+s_prep_any_sdc			s_prep_oral_sdc			s_prep_inj_sdc			s_prep_vr_sdc
+s_prep_any_plw			s_prep_oral_plw			s_prep_inj_plw	
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary  	s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
@@ -22531,7 +22568,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child  
-s_breastfeeding
+s_breastfeeding s_plw
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -22583,7 +22620,7 @@ rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_optio
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
-prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid fold_tr_msm switch_for_tox 
+prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid msm_risk_cls   msm_tr_factor switch_for_tox 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14  circ_inc_15_19  circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
