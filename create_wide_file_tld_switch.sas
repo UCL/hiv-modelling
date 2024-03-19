@@ -1581,12 +1581,6 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
   by run;
 
 
-
-* NOTE;
-  if p_onart_vl1000_24 < 0.97;
-
-
-
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 - n_death_hiv_10y_1;
@@ -1690,16 +1684,10 @@ if dcost_50y_5 = min_dcost_50y then lowest_dcost=5;
 
 * table 1;
 
-proc means   data = b.w_tld_switch_t  n p50 p5 p95 ;  
+proc means   data = b.w_tld_switch_t  n p50 p1 p5 p25 p50 p75 p95 p99;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
-p_vl1000_24 prevalence_vg1000_24   
-prop_artexp_elig_tldsw_24  prop_tldsw_uvl2_24  prop_tldsw_elig_vl1000_24  prop_uvl2_vl1000_24 prop_tldsw_o_dar_24  prop_r_dol_ge_p5_uvl2_24
-p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24   p_onart_iicu_uvl2_24   p_adh_lt80_iicu_uvl2_24  p_vis_tldsw_24 p_vis_uvl2_24  p_dol_2vg1000_dolr1_24
-p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24
-/* prop_artexp_elig_tldsw1_24  prop_tldsw1_uvl21_24  prop_tldsw1_elig_vl1000_24  prop_uvl21_vl1000_24 prop_tldsw1_o_dar_24  prop_r_dol_ge_p5_uvl21_24
-p_adh_lt80_iicu_tldsw1_24   p_onart_iicu_tldsw1_24   p_onart_iicu_uvl21_24   p_adh_lt80_iicu_uvl21_24  p_vis_tldsw1_24 p_vis_uvl21_24
-prop_artexp_elig_tldsw2_24  prop_tldsw2_uvl22_24  prop_tldsw2_elig_vl1000_24  prop_uvl22_vl1000_24 prop_tldsw2_o_dar_24  prop_r_dol_ge_p5_uvl22_24
-p_adh_lt80_iicu_tldsw2_24   p_onart_iicu_tldsw2_24   p_onart_iicu_uvl22_24   p_adh_lt80_iicu_uvl22_24  p_vis_tldsw2_24 p_vis_uvl22_24 */
+p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  
+p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    p_vis_tldsw_24  p_dol_2vg1000_dolr1_24 p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24
 ;
 run;
 
@@ -1709,13 +1697,8 @@ class adh_pattern adh_effect_of_meas_alert;
 model p_onart_vl1000_24 = adh_pattern  adh_effect_of_meas_alert/ solution;
 run;
 
-
-
-
-
-
-
-proc means   data = b.w_tld_switch_t  n mean p50 p5 p95 ;  
+ods html;
+proc means   data = b.w_tld_switch_t  n p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw_10y_1  prop_artexp_elig_tldsw_10y_2  prop_artexp_elig_tldsw_10y_3  prop_artexp_elig_tldsw_10y_4   prop_artexp_elig_tldsw_10y_5  
 prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 prop_tldsw_uvl2_10y_4  prop_tldsw_uvl2_10y_5
@@ -1748,6 +1731,7 @@ p_first_uvl2_dol_r_10y_1 p_first_uvl2_dol_r_10y_2 p_first_uvl2_dol_r_10y_3 p_fir
 deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 deathr_dol_r_uvl2_10y_4 deathr_dol_r_uvl2_10y_5  
 ;
 run;
+ods html close;
 
 
 proc means   data = b.w_tld_switch_t  n mean p50 p5 p95 ;  
