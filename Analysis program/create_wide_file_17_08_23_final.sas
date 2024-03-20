@@ -29,9 +29,19 @@ s_prep_any_sw  s_hiv_sw  s_onart_sw  s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iic
 s_linked_diag_sw  s_diag_thisper_sw  s_cost_condom_dn
 sw_art_disadv  sw_program  effect_sw_prog_newp   effect_sw_prog_6mtest   effect_sw_prog_int   effect_sw_prog_adh
  effect_sw_prog_lossdiag effect_sw_prog_prep_any  effect_sw_prog_pers_sti  sw_trans_matrix   sw_higher_int   sw_higher_prob_loss_at_diag
-effect_sw_prog_newp
+effect_sw_prog_newp s_rm_sw /*remove s_rm_sw when setting one dataset on top of another as the one below doesnt have it*/
 ;
 run;
+
+data res;
+set a1;
+
+if s_sw_1564>0 then p_res_sw= s_rm_sw/s_sw_1564;
+
+proc means mean p5 p95;var p_res_sw;where option=0 and cald=2030;run;
+proc means mean p5 p95;var p_res_sw;where option=1 and cald=2030;run;
+proc means mean p5 p95;var p_res_sw;where option=2 and cald=2030;run;
+
 
 data a2;
 set a.fsw_17_08_23;
@@ -58,7 +68,7 @@ s_prep_any_sw  s_hiv_sw  s_onart_sw  s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iic
 s_linked_diag_sw  s_diag_thisper_sw  s_cost_condom_dn
 sw_art_disadv  sw_program  effect_sw_prog_newp   effect_sw_prog_6mtest   effect_sw_prog_int   effect_sw_prog_adh
  effect_sw_prog_lossdiag effect_sw_prog_prep_any  effect_sw_prog_pers_sti  sw_trans_matrix   sw_higher_int   sw_higher_prob_loss_at_diag
-effect_sw_prog_newp
+effect_sw_prog_newp 
 ;
 run;
 
