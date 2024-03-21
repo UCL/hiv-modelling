@@ -1,9 +1,10 @@
 
-libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim";
+
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a; 
-set a.wide_fsw_10_09_23;
-if incidence1549_22 <0.02 then delete;
+set a.wide_fsw_28_02_24;
+if incidence1549_23 <0.02 then delete;
 run;
 
 
@@ -48,11 +49,13 @@ run;
 
 ***table 1;
 proc means n p50 p5 p95 min max;var
-prevalence1549_22 	 prevalence1549w_22 	prevalence1549m_22 	incidence1549_22 	incidence1549w_22 	incidence1549m_22
-p_diag_22	 		 p_onart_diag_22   		p_onart_vl1000_22	p_vg1000_22 		p_vl1000_22 		prevalence_vg1000_22
-incidence_sw_22		p_fsw_newp0__22
+prevalence1549_23 	 prevalence1549w_23 	prevalence1549m_23 	 incidence1549_23 	incidence1549w_23 	incidence1549m_23
+p_diag_23			 p_diag_w_23			p_diag_m_23 		 p_onart_diag_23	p_onart_diag_w_23	p_onart_diag_m_23
+p_onart_vl1000_23	 p_onart_vl1000_w_23	p_onart_vl1000_m_23	 p_vl1000_23 		
+p_vg1000_23 		 prevalence_vg1000_23
 
-p_diag_w_22 p_diag_m_22;
+incidence_sw_23		p_fsw_newp0__23
+
 ;run;
 
 /*

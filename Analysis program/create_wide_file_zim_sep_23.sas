@@ -21,14 +21,18 @@ proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cos
 data sf;
 set a;
 
-if cald=2023.25; ***Update as required;
+if cald=2024.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2023 = 10000000 / s_alive; ***If calibrating to a specific setting, change 10000000 to desired 15+ population size;
-keep run sf_2023;
+sf_2024 = (16665409 * 0.581) / s_alive; 
+*Source for Zimbabwe population is https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
+*accessed 22/1/2024;
+* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
+keep run sf_2024;
+
 proc sort; by run;run;
 
 
-%let sf=sf_2023;
+%let sf=sf_2024;
 
 
 data y; 

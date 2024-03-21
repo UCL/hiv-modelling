@@ -1037,18 +1037,6 @@ data a.fsw_17_08_23_final_short; set y;run;
 
 data y; set a.fsw_17_08_23_final_short;run;
 
-data c;
-set y;
-
-if cald<2021.5 then delete;
-if cald>=2023.5 then delete;
-if run in (148738401, 266427800) then a=1;
-if a ne 1 then delete;
-keep run cald n_sw_1564_ mean_n_sw_1564_;run;
-
-proc means mean;var p_fsw_newp0_ mean_p_fsw_newp0_;where 2022.5 <= cald < 2023.5; run;
-
-
 /*
 
 

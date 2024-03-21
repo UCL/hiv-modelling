@@ -1,18 +1,18 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a;
-set a.fsw_07_08_23;  
+set a.fsw_zim_28feb24;  
 if run=. then delete; 
 proc sort;
 by run cald option;run;
 
 proc freq;table run;where cald=2020;run;
 
-proc freq;table cald;run;
+proc freq;table cald option;run;
 
-proc freq data=a;table effect_sw_prog_newp;where option =1;run;
+
 /*
 proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cost_test_f_sw;where option=0 and cald>2023.5;run;
 proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cost_test_f_sw;where option=2 and cald>2023.5;run;
@@ -21,14 +21,18 @@ proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cos
 data sf;
 set a;
 
-if cald=2023.25; ***Update as required;
+if cald=2024.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2023 = 10000000 / s_alive; ***If calibrating to a specific setting, change 10000000 to desired 15+ population size;
-keep run sf_2023;
+sf_2024 = (16665409 * 0.581) / s_alive; 
+*Source for Zimbabwe population is https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
+*accessed 22/1/2024;
+* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
+keep run sf_2024;
+
 proc sort; by run;run;
 
 
-%let sf=sf_2023;
+%let sf=sf_2024;
 
 
 data y; 
@@ -155,6 +159,7 @@ cost = dcost / discount;
 
 * ================================================================================= ;
 
+p_newp_ge1_ = s_newp_ge1 / s_alive1564;
 
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
@@ -185,21 +190,21 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
-* n_tested;						n_tested = s_tested * sf_2023 * 4;
+* n_tested;						n_tested = s_tested * sf_2024 * 4;
 
-n_tested_m = s_tested_m * sf_2023 * 4;
-n_tested_m_sympt = s_tested_m_sympt * sf_2023 * 4;
-n_tested_m_circ = s_tested_m_circ * sf_2023 * 4;
-n_tested_f = s_tested_f * sf_2023 * 4;
-n_tested_f_anc = s_tested_f_anc * sf_2023 * 4;
-n_tested_f_sympt = s_tested_f_sympt * sf_2023 * 4;
-n_tested_f_non_anc = s_tested_f_non_anc * sf_2023 * 4;
-n_tested_at_return = s_tested_at_return * sf_2023 * 4;
-n_pregnant = s_pregnant * sf_2023 * 4;
+n_tested_m = s_tested_m * sf_2024 * 4;
+n_tested_m_sympt = s_tested_m_sympt * sf_2024 * 4;
+n_tested_m_circ = s_tested_m_circ * sf_2024 * 4;
+n_tested_f = s_tested_f * sf_2024 * 4;
+n_tested_f_anc = s_tested_f_anc * sf_2024 * 4;
+n_tested_f_sympt = s_tested_f_sympt * sf_2024 * 4;
+n_tested_f_non_anc = s_tested_f_non_anc * sf_2024 * 4;
+n_tested_at_return = s_tested_at_return * sf_2024 * 4;
+n_pregnant = s_pregnant * sf_2024 * 4;
 
 ***FSW;
-* n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2023;
-* n_sw_1564;					n_sw_1564_ = s_sw_1564 * sf_2023;
+* n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2024;
+* n_sw_1564;					n_sw_1564_ = s_sw_1564 * sf_2024;
 
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
@@ -217,12 +222,14 @@ n_pregnant = s_pregnant * sf_2023 * 4;
 * p_sw_age2024_;					p_sw_age2024_=s_sw_2024/s_sw_1564;
 * p_sw_age2529_;					p_sw_age2529_=s_sw_2529/s_sw_1564;
 * p_sw_age3039_;					p_sw_age3039_=s_sw_3039/s_sw_1564;
+* p_sw_age40pl_;					p_sw_age40pl_=s_sw_ov40/s_sw_1564;
 								end;
 
 * p_age_deb_sw1519_;			p_age_deb_sw1519_ = s_age_deb_sw1519_ /s_sw_1564;
 * p_age_deb_sw2024_;			p_age_deb_sw2024_ = s_age_deb_sw2024_ /s_sw_1564;
 * p_age_deb_sw2529_;			p_age_deb_sw2529_ = s_age_deb_sw2529_ /s_sw_1564;
 * p_age_deb_sw3039_;			p_age_deb_sw3039_ = s_age_deb_sw3039_ /s_sw_1564;
+* p_age_deb_sw40pl_;		    p_age_deb_sw40pl_ =	s_age_deb_swov40_ /s_sw_1564;
 
 * sw_episodes;					sw_episodes = s_episodes_sw/s_ever_sw;
 * p_sw_gt1ep;					p_sw_gt1ep   = s_sw_gt1ep     / s_ever_sw;
@@ -252,7 +259,7 @@ n_pregnant = s_pregnant * sf_2023 * 4;
 
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
 
-* n_tested_sw;					n_tested_sw = s_tested_sw * sf_2023 * 4;
+* n_tested_sw;					n_tested_sw = s_tested_sw * sf_2024 * 4;
 * p_tested_past_year_sw;		if s_sw_1564 - s_diag_sw > 0 then p_tested_past_year_sw = s_tested_4p_sw /  (s_sw_1564 - s_diag_sw) ;
 
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
@@ -265,12 +272,14 @@ n_pregnant = s_pregnant * sf_2023 * 4;
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw =(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
+
+
 *sti;							p_sti_sw = s_sti_sw/s_sw_1564;
 
-* linked_diag_sw;				if s_diag_thisper_sw>0 then p_linked_diag_sw = s_linked_diag_sw/s_diag_thisper_sw;
+* linked_diag_sw;				*if s_diag_thisper_sw>0 then p_linked_diag_sw = s_linked_diag_sw/s_diag_thisper_sw;
 
 
-keep run option cald 
+keep run option cald p_newp_ge1_
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
@@ -286,8 +295,8 @@ n_tested_at_return
 
 n_sw_1564_  	 	 n_sw_1549_ 	 	prop_w_1564_sw		prop_w_1549_sw 	 	prop_w_ever_sw  
 p_fsw1519_	  		 p_fsw2024_		  	p_fsw2529_			p_fsw3039_	
-p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_sw_age3039_
-p_age_deb_sw1519_  	 p_age_deb_sw2024_  p_age_deb_sw2529_   p_age_deb_sw3039_
+p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_sw_age3039_ 		p_sw_age40pl_
+p_age_deb_sw1519_  	 p_age_deb_sw2024_  p_age_deb_sw2529_   p_age_deb_sw3039_   p_age_deb_sw40pl_
 sw_episodes 	  	 p_sw_gt1ep
 p_fsw_newp0_   	 	 p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_  p_fsw_newpov130_
 av_sw_newp	 		 p_newp_sw
@@ -310,47 +319,28 @@ dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_cir
 dcost_prep_visit_oral  				dcost_prep_oral   dcost_prep_visit_inj  dcost_prep_inj 		dtest_cost_sw
 effect_sw_prog_newp
 
-s_tested s_tested_m s_tested_f n_pregnant p_linked_diag_sw
+s_tested s_tested_m s_tested_f n_pregnant
 ;
 
 proc sort data=y;by run option;run;
 
-proc freq;table sw_higher_int;run;
-proc means n sum p50;var p_fsw_newp0_;where option=0 and sw_trans_matrix=1 and cald=2030;run;
+/*
+data a.fsw_17_08_23_short; set y;run;
 
-proc freq;table dcost_sw_program;where option=0 and cald=2024;run;
+data y; set a.fsw_17_08_23_short;run;
+*/
 
-proc means n p50;var 
-n_tested  n_tested_m  n_tested_m_sympt  n_tested_m_circ  n_tested_f  n_tested_sw n_tested_f_anc  n_tested_f_sympt  n_tested_f_non_anc
-n_tested_at_return n_pregnant; where option=0 and cald>2023;run;
-proc means n p50;var 
-n_tested  n_tested_m  n_tested_m_sympt  n_tested_m_circ  n_tested_f  n_tested_sw n_tested_f_anc  n_tested_f_sympt  n_tested_f_non_anc
-n_tested_at_return n_pregnant; where option=2 and cald>2023;run;
 
-proc freq;table effect_sw_prog_lossdiag;where option=2 and cald=2030;run;
+proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2011<= cald <2014 and option=0 ;run;
+proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2014<= cald <2017 and option=0 ;run;
+proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2017<= cald <2020 and option=0 ;run;
+proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2020<= cald <2023 and option=0 ;run;
 
-proc print;var cald option effect_sw_prog_lossdiag p_onart_diag_sw;where run =346254;run;
 
-proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=0 and cald>2023.5 ;run;
-proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=2 and cald>2023.5  and effect_sw_prog_newp=0.05;run;
 
-proc means n p50 p5 p95;var p_onart_diag_sw;where option=1 and effect_sw_prog_lossdiag=0.3 and cald=2030;run;
-proc means n p50 p5 p95;var p_onart_diag_sw;where option=1 and effect_sw_prog_lossdiag=0.5 and cald=2030;run;
-proc means n p50 p5 p95;var p_onart_diag_sw;where option=1 and effect_sw_prog_lossdiag=0.7 and cald=2030;run;
+proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2022< cald <2025 and option=0 ;run;
 
-proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.1 and cald=2030;run;
-proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.25 and cald=2030;run;
-proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.35 and cald=2030;run;
 
-proc freq;table effect_sw_prog_lossdiag;where option=2;run;
-
-data a.fsw_07_08_23_short; set y;run;
-
-data y; set a.fsw_07_08_23_short;run;
-
-proc means n sum mean P50;var n_tested_sw dtest_cost ;where cald >2030 and cald<2040 and option=0;run;
-
-proc means n sum mean P50;var n_tested_sw dtest_cost;where cald >2030 and cald<2040 and option=2;run;
 
 /*
 
@@ -392,30 +382,27 @@ options nomprint;
 %macro var(v=);
 
 
-proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run; where 2010.0 <= cald < 2011.0; 
-proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run; where 2015.0 <= cald < 2016.0; 
-proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run; where 2020.0 <= cald < 2021.0; 
-
-***baseline outputs in 2022;
-proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 2022.5 <= cald < 2023.5; 
+***baseline outputs in 2023;
+proc means  noprint data=y; var &v; output out=y_23 mean= &v._23; by run; where 2023 < cald <= 2024; 
 
 ***outputs in 2030 by option;
 proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
 
-**Outputs for CE analyses, 5, 20 and 50 years by option;
-proc means noprint data=y; var &v; output out=y_23_24 mean= &v._23_24; by run option ; where 2023.5 <= cald < 2024.50;
 
-proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option ; where 2023.5 <= cald < 2028.50;
-proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option ; where 2023.5 <= cald < 2043.50;
-proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option ; where 2023.5 <= cald < 2073.50;
+**Outputs for CE analyses,1, 5, 20 and 50 years by option;
+proc means noprint data=y; var &v; output out=y_24_25 mean= &v._24_25; by run option ; where 2024 < cald < 2025.25;
+
+proc means noprint data=y; var &v; output out=y_24_29 mean= &v._24_29; by run option ; where 2024 < cald < 2029.25;
+proc means noprint data=y; var &v; output out=y_24_44 mean= &v._24_44; by run option ; where 2024 < cald < 2044.25;
+proc means noprint data=y; var &v; output out=y_24_74 mean= &v._24_74; by run option ; where 2024 < cald < 2074.25;
 
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
-proc sort data=y_23_24; by run; proc transpose data=y_23_24 out=t_23_24 prefix=&v._23_24_; var &v._23_24; by run;
-proc sort data=y_22_27; by run; proc transpose data=y_22_27 out=t_22_27 prefix=&v._22_27_; var &v._22_27; by run;
-proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&v._22_42_; var &v._22_42; by run;
-proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
+proc sort data=y_24_25; by run; proc transpose data=y_24_25 out=t_24_25 prefix=&v._24_25_; var &v._24_25; by run;
+proc sort data=y_24_29; by run; proc transpose data=y_24_29 out=t_24_29 prefix=&v._24_29_; var &v._24_29; by run;
+proc sort data=y_24_44; by run; proc transpose data=y_24_44 out=t_24_44 prefix=&v._24_44_; var &v._24_44; by run;
+proc sort data=y_24_74; by run; proc transpose data=y_24_74 out=t_24_74 prefix=&v._24_74_; var &v._24_74; by run;
 
-data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_23_24 t_22_27 t_22_42 t_22_72;  
+data &v ; merge y_23 t_30 t_24_25 t_24_29 t_24_44 t_24_74;  
 
 %mend var;
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
@@ -428,8 +415,8 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_23_24 t_22_27 t_22_42 t_22_72;
 %var(v=n_sw_1564_);     %var(v=n_sw_1549_);		    %var(v=prop_w_1564_sw);		%var(v=prop_w_1549_sw); %var(v=prop_w_ever_sw);  
 %var(v=p_fsw1519_);	  	%var(v=p_fsw2024_);		    %var(v=p_fsw2529_);			%var(v=p_fsw3039_);	
 
-%var(v=p_sw_age1519_);	  %var(v=p_sw_age2024_);	%var(v=p_sw_age2529_) 		%var(v=p_sw_age3039_);
-%var(v=p_age_deb_sw1519_);%var(v=p_age_deb_sw2024_);%var(v=p_age_deb_sw2529_)  	%var(v=p_age_deb_sw3039_);
+%var(v=p_sw_age1519_);	  %var(v=p_sw_age2024_);	%var(v=p_sw_age2529_) 		%var(v=p_sw_age3039_);	%var(v=p_sw_age40pl_);
+%var(v=p_age_deb_sw1519_);%var(v=p_age_deb_sw2024_);%var(v=p_age_deb_sw2529_)  	%var(v=p_age_deb_sw3039_); %var(v=p_age_deb_sw40pl_);
 
 %var(v=sw_episodes); 	%var(v=p_sw_gt1ep);
 %var(v=p_fsw_newp0_);   %var(v=p_fsw_newp1to5_);    %var(v=p_fsw_newp6to40_);  	%var(v=p_fsw_newp41to130_);%var(v=p_fsw_newpov130_);
@@ -462,8 +449,8 @@ p_vg1000 		p_vl1000			prevalence_vg1000
 n_sw_1564_      n_sw_1549_		    prop_w_1564_sw		prop_w_1549_sw 	prop_w_ever_sw  
 p_fsw1519_	  	p_fsw2024_		    p_fsw2529_			p_fsw3039_	
 
-p_sw_age1519_	  p_sw_age2024_		p_sw_age2529_ 		p_sw_age3039_
-p_age_deb_sw1519_ p_age_deb_sw2024_ p_age_deb_sw2529_  	p_age_deb_sw3039_
+p_sw_age1519_	  p_sw_age2024_		p_sw_age2529_ 		p_sw_age3039_ 	p_sw_age40pl_
+p_age_deb_sw1519_ p_age_deb_sw2024_ p_age_deb_sw2529_  	p_age_deb_sw3039_ p_age_deb_sw40pl_
 
 sw_episodes 	p_sw_gt1ep
 p_fsw_newp0_   	p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_	p_fsw_newpov130_
@@ -505,7 +492,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_07_08_23;
+data a.wide_fsw_zim_28_02_24;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
@@ -517,7 +504,7 @@ by run;run;
 
 ***Use this to identify runs with implausible incidence and delete below;
 data a1;
-set a.wide_fsw_07_05_23;
+set a.wide_fsw_15_09_23;
 proc freq;table run;where incidence1549_22 <0.02;run;
 
 
@@ -530,18 +517,19 @@ data b;set y;
 proc sort;by cald;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 480  ;
+%let nfit = 440  ;
 proc sort;by cald option ;run;
 
 
 ***Two macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
-if option =1 or option =2 then delete;
+if option =1 then delete;
 
-%let var =  
+%let var =  p_newp_ge1_   prop_w_1549_sw incidence_sw incidence1549w;
 
-n_sw_1564_  n_sw_1549_  prop_w_1564_sw  prop_w_1549_sw  prop_w_ever_sw  p_fsw1519_  p_fsw2024_  p_fsw2529_  p_fsw3039_
+/*
+n_sw_1564_  n_sw_1549_  prop_w_1564_sw   prop_w_ever_sw  p_fsw1519_  p_fsw2024_  p_fsw2529_  p_fsw3039_
 p_sw_age1519_  p_sw_age2024_  p_sw_age2529_  p_sw_age3039_ p_age_deb_sw1519_  p_age_deb_sw2024_  p_age_deb_sw2529_  p_age_deb_sw3039_
 sw_episodes  p_sw_gt1ep  tot_dur_sw  act_dur_sw
 p_actdur_0to3_  p_actdur_3to5_  p_actdur_6to9_  p_actdur_10to19_
@@ -549,7 +537,8 @@ p_totdur_0to3_  p_totdur_3to5_  p_totdur_6to9_  p_totdur_10to19_
 p_fsw_newp0_  av_sw_newp   p_newp_sw
 
 p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
-prevalence_sw  incidence_sw p_sti_sw;
+prevalence_sw   p_sti_sw;
+*/
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -558,6 +547,7 @@ prevalence_sw  incidence_sw p_sti_sw;
 %let p5_var = p5_&var_0;
 %let p95_var = p95_&var_0;
 %let p50_var = median_&var_0;
+%let pmean_var = mean_&var_0;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -572,8 +562,9 @@ p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
+pmean_&varb._0 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0;
+keep cald option p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 pmean_&varb._0;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -583,7 +574,7 @@ run;
 
 %option_0;
 run;
-
+/*
 ***Two macros, one for each option. Gives medians ranges etc by option;
 data option_1;
 set b;
@@ -685,13 +676,13 @@ run;
 
 %option_2;
 run;
-
+*/
 
 
 data d; * this is number of variables in %let var = above ;
 merge 
-g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
-g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41 /* g42  g43  g44  g45  g46  g47  g48   g49  g50 
+g1   g2   g3   g4 /*  g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
+g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 g73 g74 g75  g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
@@ -699,14 +690,14 @@ g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
 g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
 g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
-g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252 */
+g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252 
 
 h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
-h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41 /* h42  h43  h44  h45  h46  h47  h48  h49  h50 
+h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72 h73
-*/
+
 i1   i2   i3   i4   i5   i6   i7   i8   i9   i10  i11  i12  i13  i14  i15  i16  i17  i18  i19  i20  i21  i22  i23  i24  i25  i26 
-i27  i28  i29  i30  i31  i32  i33  i34  i35  i36  i37  i38  i39  i40  i41
+i27  i28  i29  i30  i31  i32  i33  i34  i35  i36  i37  i38  i39  i40  i41*/
 ;
 by cald;
 run;
@@ -719,13 +710,59 @@ run;
 
 
 
-data a.fsw_07_05_23_graphs; set e;run;
+data a.fsw_18_09_23_graphs; set e;run;
 
-data e; set a.fsw_07_05_23_graphs;run;
+data e; set a.fsw_18_09_23_graphs;run;
 
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
 ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\25Apr2023.doc' startpage=never; 
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "newp_ge1";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2050 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 0.1 by 0.02)  valueattrs=(size=10);
+label p50_p_newp_ge1__0	               = "Median";
+
+series  x=cald y=p50_p_newp_ge1__0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_newp_ge1__0     upper=p95_p_newp_ge1__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+run;quit;
+
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "FSW Incidence";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2022 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 60 by 0.2)  valueattrs=(size=10);
+label pmean_incidence_sw_0	               = "Mean";
+label p50_incidence_sw_0	               = "Median";
+
+
+series  x=cald y=pmean_incidence_sw_0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=pmean_incidence_sw_0     upper=pmean_incidence_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+series  x=cald y=p50_incidence_sw_0  /           lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_incidence_sw_0     upper=p95_incidence_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+
+run;quit;
+
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Incidence";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2050 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
+label p50_incidence1549w_0	               = "Median";
+
+series  x=cald y=p50_incidence1549w_0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_incidence1549w_0     upper=p95_incidence1549w_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+run;quit;
+
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "FSW Population (age 15-49)";
@@ -746,7 +783,7 @@ run;quit;
 proc sgplot data=e; 
 title    height=1.5 justify=center "Proportion of women who are sex workers (age 15-49)";
 footnote1 height=0.9  "";
-xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2050) 		valueattrs=(size=10); 
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) 		valueattrs=(size=10);
 label p50_prop_w_1549_sw_0   = "model - median ";
 
@@ -853,3 +890,6 @@ run;quit;
 proc print;var p50_n_tested_sw_0 p50_n_tested_sw_1 p50_n_tested_sw_2;run;
 proc contents;run;
 run;
+
+
+
