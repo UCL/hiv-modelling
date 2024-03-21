@@ -13,13 +13,12 @@ set a.wide_fsw_17_08_23_final ;
 
 
 if incidence1549_22 =0 then delete;
+if n_sw_1549__22 <15000 then delete; ***low number of sw, greater stochastic effects;
+ 
+if p_diag_sw_22=. then p_diag_sw_22=1;
+if p_diag_sw_22 gt  0.9499370033
 
-if p_diag_sw_22 gt 0.9457 then delete;
-
-proc freq;table p_diag_sw_22;run;
-
-*if incidence1549_22 <  0.0152 then delete; *to get 1000 runs (remove implausible incidence and p_diag);
-
+then delete;
 
 proc freq;table run;run;
 
@@ -89,11 +88,6 @@ incidence_sw_22		prevalence_sw_22
 p_diag_sw_22		p_onart_diag_sw_22		p_onart_vl1000_sw_22 p_sw_prog_vis_22;
 run;
 
-
-proc means n p50 p5 p95;var
-p_diag_w_22		p_onart_diag_w_22		p_onart_vl1000_w_22 ;
-run;
-
 proc freq;table p_sw_prog_vis_1 p_sw_prog_vis_2 p_sw_prog_vis_3;run;
 
 ***table 3 - characteristics in 2030 by option;
@@ -124,7 +118,7 @@ run;
 incidence1549_72_1 incidence1549_72_2 incidence1549_72_3 d_incidence1549_72_1_50y;run;
 
 
-***Within run differences;
+***Within run differences - means;
 proc means n mean lclm uclm;var 
 d_p_tested_past_year_sw_lo_none 
 d_p_diag_sw_lo_none		d_p_onart_diag_sw_lo_none	d_p_onart_vl1000_sw_lo_none
@@ -136,7 +130,7 @@ d_p_diag_sw_hi_none		d_p_onart_diag_sw_hi_none	d_p_onart_vl1000_sw_hi_none
 d_p_fsw_newp0_hi_none	d_prop_sw_onprep_hi_none		d_p_sti_sw_hi_none	d_incidence_sw_hi_none	d_prevalence_sw_hi_none
 d_incidence1549_hi_none	d_prevalence1549_hi_none		d_p_diag_hi_none	  	d_p_onart_diag_hi_none   d_p_onart_vl1000_hi_none;
 run;
-
+*medians;
 proc means n p50 p5 p95;var 
 d_p_tested_past_year_sw_lo_none 
 d_p_diag_sw_lo_none		d_p_onart_diag_sw_lo_none	d_p_onart_vl1000_sw_lo_none
@@ -148,6 +142,15 @@ d_p_diag_sw_hi_none		d_p_onart_diag_sw_hi_none	d_p_onart_vl1000_sw_hi_none
 d_p_fsw_newp0_hi_none	d_prop_sw_onprep_hi_none		d_p_sti_sw_hi_none	d_incidence_sw_hi_none	d_prevalence_sw_hi_none
 d_incidence1549_hi_none	d_prevalence1549_hi_none		d_p_diag_hi_none	  	d_p_onart_diag_hi_none   d_p_onart_vl1000_hi_none;
 run;
+
+***runs in which outputs have not improved;
+proc print;var run d_p_onart_diag_sw_lo_none p_onart_diag_sw_30_1  p_onart_diag_sw_30_2
+ ;where d_p_onart_diag_sw_lo_none<0;run;
+
+proc print;var run d_p_diag_sw_lo_none p_diag_sw_30_1 p_diag_sw_30_2 n_sw_1549__22
+ ;where d_p_diag_sw_lo_none<0;run;
+
+d_p_diag_sw_lo_none = (p_diag_sw_30_2 - p_diag_sw_30_1)*100;
 
 
 **Impact of specific aspects of a SW program;
@@ -1107,111 +1110,114 @@ d_netdalys100_sw250_low_v_none = netdalys100_low_swprog250 - netdalys100_no_swpr
 
 
 
-if  d_netdalys500_sw10_high_v_none > 0 then do;min_cost_sw_program_high = 0;  goto xx;end;
-if  d_netdalys500_sw15_high_v_none > 0 then do;min_cost_sw_program_high = 10;  goto xx;end; 
-if  d_netdalys500_sw20_high_v_none > 0 then do;min_cost_sw_program_high = 15;  goto xx;end; 
-if  d_netdalys500_sw25_high_v_none > 0 then do;min_cost_sw_program_high = 20;  goto xx;end; 
-if  d_netdalys500_sw30_high_v_none > 0 then do;min_cost_sw_program_high = 25;  goto xx;end; 
-if  d_netdalys500_sw35_high_v_none > 0 then do;min_cost_sw_program_high = 30;  goto xx;end; 
-if  d_netdalys500_sw40_high_v_none > 0 then do;min_cost_sw_program_high = 35;  goto xx;end;
-if  d_netdalys500_sw45_high_v_none > 0 then do;min_cost_sw_program_high = 40;  goto xx;end; 
-if  d_netdalys500_sw50_high_v_none > 0 then do;min_cost_sw_program_high = 45;  goto xx;end; 
-if  d_netdalys500_sw55_high_v_none > 0 then do;min_cost_sw_program_high = 50;  goto xx;end; 
-if  d_netdalys500_sw60_high_v_none > 0 then do;min_cost_sw_program_high = 55;  goto xx;end; 
-if  d_netdalys500_sw65_high_v_none > 0 then do;min_cost_sw_program_high = 60;  goto xx;end; 
-if  d_netdalys500_sw70_high_v_none > 0 then do;min_cost_sw_program_high = 65;  goto xx;end;
-if  d_netdalys500_sw75_high_v_none > 0 then do;min_cost_sw_program_high = 70;  goto xx;end; 
-if  d_netdalys500_sw80_high_v_none > 0 then do;min_cost_sw_program_high = 75;  goto xx;end; 
-if  d_netdalys500_sw85_high_v_none > 0 then do;min_cost_sw_program_high = 90;  goto xx;end;
-if  d_netdalys500_sw90_high_v_none > 0 then do;min_cost_sw_program_high = 85;  goto xx;end; 
-if  d_netdalys500_sw95_high_v_none > 0 then do;min_cost_sw_program_high = 90;  goto xx;end; 
-if  d_netdalys500_sw100_high_v_none > 0 then do;min_cost_sw_program_high = 95;  goto xx;end; 
-if  d_netdalys500_sw105_high_v_none > 0 then do;min_cost_sw_program_high = 100;  goto xx;end; 
-if  d_netdalys500_sw110_high_v_none > 0 then do;min_cost_sw_program_high = 105;  goto xx;end; 
-if  d_netdalys500_sw115_high_v_none > 0 then do;min_cost_sw_program_high = 110;  goto xx;end;
-if  d_netdalys500_sw120_high_v_none > 0 then do;min_cost_sw_program_high = 115;  goto xx;end; 
-if  d_netdalys500_sw125_high_v_none > 0 then do;min_cost_sw_program_high = 120;  goto xx;end; 
-if  d_netdalys500_sw130_high_v_none > 0 then do;min_cost_sw_program_high = 125;  goto xx;end; 
-if  d_netdalys500_sw135_high_v_none > 0 then do;min_cost_sw_program_high = 130;  goto xx;end; 
-if  d_netdalys500_sw140_high_v_none > 0 then do;min_cost_sw_program_high = 135;  goto xx;end; 
-if  d_netdalys500_sw145_high_v_none > 0 then do;min_cost_sw_program_high = 140;  goto xx;end;
-if  d_netdalys500_sw150_high_v_none > 0 then do;min_cost_sw_program_high = 145;  goto xx;end; 
-if  d_netdalys500_sw155_high_v_none > 0 then do;min_cost_sw_program_high = 150;  goto xx;end; 
-if  d_netdalys500_sw160_high_v_none > 0 then do;min_cost_sw_program_high = 155;  goto xx;end;
-if  d_netdalys500_sw165_high_v_none > 0 then do;min_cost_sw_program_high = 160;  goto xx;end; 
-if  d_netdalys500_sw170_high_v_none > 0 then do;min_cost_sw_program_high = 165;  goto xx;end; 
-if  d_netdalys500_sw175_high_v_none > 0 then do;min_cost_sw_program_high = 170;  goto xx;end; 
-if  d_netdalys500_sw180_high_v_none > 0 then do;min_cost_sw_program_high = 175;  goto xx;end; 
-if  d_netdalys500_sw185_high_v_none > 0 then do;min_cost_sw_program_high = 180;  goto xx;end; 
-if  d_netdalys500_sw190_high_v_none > 0 then do;min_cost_sw_program_high = 185;  goto xx;end;
-if  d_netdalys500_sw195_high_v_none > 0 then do;min_cost_sw_program_high = 190;  goto xx;end; 
-if  d_netdalys500_sw200_high_v_none > 0 then do;min_cost_sw_program_high = 195;  goto xx;end; 
-if  d_netdalys500_sw205_high_v_none > 0 then do;min_cost_sw_program_high = 200;  goto xx;end; 
-if  d_netdalys500_sw210_high_v_none > 0 then do;min_cost_sw_program_high = 205;  goto xx;end; 
-if  d_netdalys500_sw215_high_v_none > 0 then do;min_cost_sw_program_high = 210;  goto xx;end;
-if  d_netdalys500_sw220_high_v_none > 0 then do;min_cost_sw_program_high = 215;  goto xx;end; 
-if  d_netdalys500_sw225_high_v_none > 0 then do;min_cost_sw_program_high = 220;  goto xx;end; 
-if  d_netdalys500_sw230_high_v_none > 0 then do;min_cost_sw_program_high = 225;  goto xx;end; 
-if  d_netdalys500_sw235_high_v_none > 0 then do;min_cost_sw_program_high = 230;  goto xx;end; 
-if  d_netdalys500_sw240_high_v_none > 0 then do;min_cost_sw_program_high = 235;  goto xx;end; 
-if  d_netdalys500_sw245_high_v_none > 0 then do;min_cost_sw_program_high = 240;  goto xx;end;
-if  d_netdalys500_sw250_high_v_none > 0 then do;min_cost_sw_program_high = 245;  goto xx;end; 
+if  d_netdalys500_sw10_high_v_none > 0 then do;max_cost_sw_program_high = 0;  goto xx;end;
+if  d_netdalys500_sw15_high_v_none > 0 then do;max_cost_sw_program_high = 10;  goto xx;end; 
+if  d_netdalys500_sw20_high_v_none > 0 then do;max_cost_sw_program_high = 15;  goto xx;end; 
+if  d_netdalys500_sw25_high_v_none > 0 then do;max_cost_sw_program_high = 20;  goto xx;end; 
+if  d_netdalys500_sw30_high_v_none > 0 then do;max_cost_sw_program_high = 25;  goto xx;end; 
+if  d_netdalys500_sw35_high_v_none > 0 then do;max_cost_sw_program_high = 30;  goto xx;end; 
+if  d_netdalys500_sw40_high_v_none > 0 then do;max_cost_sw_program_high = 35;  goto xx;end;
+if  d_netdalys500_sw45_high_v_none > 0 then do;max_cost_sw_program_high = 40;  goto xx;end; 
+if  d_netdalys500_sw50_high_v_none > 0 then do;max_cost_sw_program_high = 45;  goto xx;end; 
+if  d_netdalys500_sw55_high_v_none > 0 then do;max_cost_sw_program_high = 50;  goto xx;end; 
+if  d_netdalys500_sw60_high_v_none > 0 then do;max_cost_sw_program_high = 55;  goto xx;end; 
+if  d_netdalys500_sw65_high_v_none > 0 then do;max_cost_sw_program_high = 60;  goto xx;end; 
+if  d_netdalys500_sw70_high_v_none > 0 then do;max_cost_sw_program_high = 65;  goto xx;end;
+if  d_netdalys500_sw75_high_v_none > 0 then do;max_cost_sw_program_high = 70;  goto xx;end; 
+if  d_netdalys500_sw80_high_v_none > 0 then do;max_cost_sw_program_high = 75;  goto xx;end; 
+if  d_netdalys500_sw85_high_v_none > 0 then do;max_cost_sw_program_high = 90;  goto xx;end;
+if  d_netdalys500_sw90_high_v_none > 0 then do;max_cost_sw_program_high = 85;  goto xx;end; 
+if  d_netdalys500_sw95_high_v_none > 0 then do;max_cost_sw_program_high = 90;  goto xx;end; 
+if  d_netdalys500_sw100_high_v_none > 0 then do;max_cost_sw_program_high = 95;  goto xx;end; 
+if  d_netdalys500_sw105_high_v_none > 0 then do;max_cost_sw_program_high = 100;  goto xx;end; 
+if  d_netdalys500_sw110_high_v_none > 0 then do;max_cost_sw_program_high = 105;  goto xx;end; 
+if  d_netdalys500_sw115_high_v_none > 0 then do;max_cost_sw_program_high = 110;  goto xx;end;
+if  d_netdalys500_sw120_high_v_none > 0 then do;max_cost_sw_program_high = 115;  goto xx;end; 
+if  d_netdalys500_sw125_high_v_none > 0 then do;max_cost_sw_program_high = 120;  goto xx;end; 
+if  d_netdalys500_sw130_high_v_none > 0 then do;max_cost_sw_program_high = 125;  goto xx;end; 
+if  d_netdalys500_sw135_high_v_none > 0 then do;max_cost_sw_program_high = 130;  goto xx;end; 
+if  d_netdalys500_sw140_high_v_none > 0 then do;max_cost_sw_program_high = 135;  goto xx;end; 
+if  d_netdalys500_sw145_high_v_none > 0 then do;max_cost_sw_program_high = 140;  goto xx;end;
+if  d_netdalys500_sw150_high_v_none > 0 then do;max_cost_sw_program_high = 145;  goto xx;end; 
+if  d_netdalys500_sw155_high_v_none > 0 then do;max_cost_sw_program_high = 150;  goto xx;end; 
+if  d_netdalys500_sw160_high_v_none > 0 then do;max_cost_sw_program_high = 155;  goto xx;end;
+if  d_netdalys500_sw165_high_v_none > 0 then do;max_cost_sw_program_high = 160;  goto xx;end; 
+if  d_netdalys500_sw170_high_v_none > 0 then do;max_cost_sw_program_high = 165;  goto xx;end; 
+if  d_netdalys500_sw175_high_v_none > 0 then do;max_cost_sw_program_high = 170;  goto xx;end; 
+if  d_netdalys500_sw180_high_v_none > 0 then do;max_cost_sw_program_high = 175;  goto xx;end; 
+if  d_netdalys500_sw185_high_v_none > 0 then do;max_cost_sw_program_high = 180;  goto xx;end; 
+if  d_netdalys500_sw190_high_v_none > 0 then do;max_cost_sw_program_high = 185;  goto xx;end;
+if  d_netdalys500_sw195_high_v_none > 0 then do;max_cost_sw_program_high = 190;  goto xx;end; 
+if  d_netdalys500_sw200_high_v_none > 0 then do;max_cost_sw_program_high = 195;  goto xx;end; 
+if  d_netdalys500_sw205_high_v_none > 0 then do;max_cost_sw_program_high = 200;  goto xx;end; 
+if  d_netdalys500_sw210_high_v_none > 0 then do;max_cost_sw_program_high = 205;  goto xx;end; 
+if  d_netdalys500_sw215_high_v_none > 0 then do;max_cost_sw_program_high = 210;  goto xx;end;
+if  d_netdalys500_sw220_high_v_none > 0 then do;max_cost_sw_program_high = 215;  goto xx;end; 
+if  d_netdalys500_sw225_high_v_none > 0 then do;max_cost_sw_program_high = 220;  goto xx;end; 
+if  d_netdalys500_sw230_high_v_none > 0 then do;max_cost_sw_program_high = 225;  goto xx;end; 
+if  d_netdalys500_sw235_high_v_none > 0 then do;max_cost_sw_program_high = 230;  goto xx;end; 
+if  d_netdalys500_sw240_high_v_none > 0 then do;max_cost_sw_program_high = 235;  goto xx;end; 
+if  d_netdalys500_sw245_high_v_none > 0 then do;max_cost_sw_program_high = 240;  goto xx;end;
+if  d_netdalys500_sw250_high_v_none > 0 then do;max_cost_sw_program_high = 245;  goto xx;end; 
 xx:
 
 
-if  d_netdalys500_sw10_low_v_none > 0 then do;min_cost_sw_program_low = 0;  goto yy;end;
-if  d_netdalys500_sw15_low_v_none > 0 then do;min_cost_sw_program_low = 10;  goto yy;end; 
-if  d_netdalys500_sw20_low_v_none > 0 then do;min_cost_sw_program_low = 15;  goto yy;end; 
-if  d_netdalys500_sw25_low_v_none > 0 then do;min_cost_sw_program_low = 20;  goto yy;end; 
-if  d_netdalys500_sw30_low_v_none > 0 then do;min_cost_sw_program_low = 25;  goto yy;end; 
-if  d_netdalys500_sw35_low_v_none > 0 then do;min_cost_sw_program_low = 30;  goto yy;end; 
-if  d_netdalys500_sw40_low_v_none > 0 then do;min_cost_sw_program_low = 35;  goto yy;end;
-if  d_netdalys500_sw45_low_v_none > 0 then do;min_cost_sw_program_low = 40;  goto yy;end; 
-if  d_netdalys500_sw50_low_v_none > 0 then do;min_cost_sw_program_low = 45;  goto yy;end; 
-if  d_netdalys500_sw55_low_v_none > 0 then do;min_cost_sw_program_low = 50;  goto yy;end; 
-if  d_netdalys500_sw60_low_v_none > 0 then do;min_cost_sw_program_low = 55;  goto yy;end; 
-if  d_netdalys500_sw65_low_v_none > 0 then do;min_cost_sw_program_low = 60;  goto yy;end; 
-if  d_netdalys500_sw70_low_v_none > 0 then do;min_cost_sw_program_low = 65;  goto yy;end;
-if  d_netdalys500_sw75_low_v_none > 0 then do;min_cost_sw_program_low = 70;  goto yy;end; 
-if  d_netdalys500_sw80_low_v_none > 0 then do;min_cost_sw_program_low = 75;  goto yy;end; 
-if  d_netdalys500_sw85_low_v_none > 0 then do;min_cost_sw_program_low = 90;  goto yy;end;
-if  d_netdalys500_sw90_low_v_none > 0 then do;min_cost_sw_program_low = 85;  goto yy;end; 
-if  d_netdalys500_sw95_low_v_none > 0 then do;min_cost_sw_program_low = 90;  goto yy;end; 
-if  d_netdalys500_sw100_low_v_none > 0 then do;min_cost_sw_program_low = 95;  goto yy;end; 
-if  d_netdalys500_sw105_low_v_none > 0 then do;min_cost_sw_program_low = 100;  goto yy;end; 
-if  d_netdalys500_sw110_low_v_none > 0 then do;min_cost_sw_program_low = 105;  goto yy;end; 
-if  d_netdalys500_sw115_low_v_none > 0 then do;min_cost_sw_program_low = 110;  goto yy;end;
-if  d_netdalys500_sw120_low_v_none > 0 then do;min_cost_sw_program_low = 115;  goto yy;end; 
-if  d_netdalys500_sw125_low_v_none > 0 then do;min_cost_sw_program_low = 120;  goto yy;end; 
-if  d_netdalys500_sw130_low_v_none > 0 then do;min_cost_sw_program_low = 125;  goto yy;end; 
-if  d_netdalys500_sw135_low_v_none > 0 then do;min_cost_sw_program_low = 130;  goto yy;end; 
-if  d_netdalys500_sw140_low_v_none > 0 then do;min_cost_sw_program_low = 135;  goto yy;end; 
-if  d_netdalys500_sw145_low_v_none > 0 then do;min_cost_sw_program_low = 140;  goto yy;end;
-if  d_netdalys500_sw150_low_v_none > 0 then do;min_cost_sw_program_low = 145;  goto yy;end; 
-if  d_netdalys500_sw155_low_v_none > 0 then do;min_cost_sw_program_low = 150;  goto yy;end; 
-if  d_netdalys500_sw160_low_v_none > 0 then do;min_cost_sw_program_low = 155;  goto yy;end;
-if  d_netdalys500_sw165_low_v_none > 0 then do;min_cost_sw_program_low = 160;  goto yy;end; 
-if  d_netdalys500_sw170_low_v_none > 0 then do;min_cost_sw_program_low = 165;  goto yy;end; 
-if  d_netdalys500_sw175_low_v_none > 0 then do;min_cost_sw_program_low = 170;  goto yy;end; 
-if  d_netdalys500_sw180_low_v_none > 0 then do;min_cost_sw_program_low = 175;  goto yy;end; 
-if  d_netdalys500_sw185_low_v_none > 0 then do;min_cost_sw_program_low = 180;  goto yy;end; 
-if  d_netdalys500_sw190_low_v_none > 0 then do;min_cost_sw_program_low = 185;  goto yy;end;
-if  d_netdalys500_sw195_low_v_none > 0 then do;min_cost_sw_program_low = 190;  goto yy;end; 
-if  d_netdalys500_sw200_low_v_none > 0 then do;min_cost_sw_program_low = 195;  goto yy;end; 
-if  d_netdalys500_sw205_low_v_none > 0 then do;min_cost_sw_program_low = 200;  goto yy;end; 
-if  d_netdalys500_sw210_low_v_none > 0 then do;min_cost_sw_program_low = 205;  goto yy;end; 
-if  d_netdalys500_sw215_low_v_none > 0 then do;min_cost_sw_program_low = 210;  goto yy;end;
-if  d_netdalys500_sw220_low_v_none > 0 then do;min_cost_sw_program_low = 215;  goto yy;end; 
-if  d_netdalys500_sw225_low_v_none > 0 then do;min_cost_sw_program_low = 220;  goto yy;end; 
-if  d_netdalys500_sw230_low_v_none > 0 then do;min_cost_sw_program_low = 225;  goto yy;end; 
-if  d_netdalys500_sw235_low_v_none > 0 then do;min_cost_sw_program_low = 230;  goto yy;end; 
-if  d_netdalys500_sw240_low_v_none > 0 then do;min_cost_sw_program_low = 235;  goto yy;end; 
-if  d_netdalys500_sw245_low_v_none > 0 then do;min_cost_sw_program_low = 240;  goto yy;end;
-if  d_netdalys500_sw250_low_v_none > 0 then do;min_cost_sw_program_low = 245;  goto yy;end; 
+if  d_netdalys500_sw10_low_v_none > 0 then do;max_cost_sw_program_low = 0;  goto yy;end;
+if  d_netdalys500_sw15_low_v_none > 0 then do;max_cost_sw_program_low = 10;  goto yy;end; 
+if  d_netdalys500_sw20_low_v_none > 0 then do;max_cost_sw_program_low = 15;  goto yy;end; 
+if  d_netdalys500_sw25_low_v_none > 0 then do;max_cost_sw_program_low = 20;  goto yy;end; 
+if  d_netdalys500_sw30_low_v_none > 0 then do;max_cost_sw_program_low = 25;  goto yy;end; 
+if  d_netdalys500_sw35_low_v_none > 0 then do;max_cost_sw_program_low = 30;  goto yy;end; 
+if  d_netdalys500_sw40_low_v_none > 0 then do;max_cost_sw_program_low = 35;  goto yy;end;
+if  d_netdalys500_sw45_low_v_none > 0 then do;max_cost_sw_program_low = 40;  goto yy;end; 
+if  d_netdalys500_sw50_low_v_none > 0 then do;max_cost_sw_program_low = 45;  goto yy;end; 
+if  d_netdalys500_sw55_low_v_none > 0 then do;max_cost_sw_program_low = 50;  goto yy;end; 
+if  d_netdalys500_sw60_low_v_none > 0 then do;max_cost_sw_program_low = 55;  goto yy;end; 
+if  d_netdalys500_sw65_low_v_none > 0 then do;max_cost_sw_program_low = 60;  goto yy;end; 
+if  d_netdalys500_sw70_low_v_none > 0 then do;max_cost_sw_program_low = 65;  goto yy;end;
+if  d_netdalys500_sw75_low_v_none > 0 then do;max_cost_sw_program_low = 70;  goto yy;end; 
+if  d_netdalys500_sw80_low_v_none > 0 then do;max_cost_sw_program_low = 75;  goto yy;end; 
+if  d_netdalys500_sw85_low_v_none > 0 then do;max_cost_sw_program_low = 90;  goto yy;end;
+if  d_netdalys500_sw90_low_v_none > 0 then do;max_cost_sw_program_low = 85;  goto yy;end; 
+if  d_netdalys500_sw95_low_v_none > 0 then do;max_cost_sw_program_low = 90;  goto yy;end; 
+if  d_netdalys500_sw100_low_v_none > 0 then do;max_cost_sw_program_low = 95;  goto yy;end; 
+if  d_netdalys500_sw105_low_v_none > 0 then do;max_cost_sw_program_low = 100;  goto yy;end; 
+if  d_netdalys500_sw110_low_v_none > 0 then do;max_cost_sw_program_low = 105;  goto yy;end; 
+if  d_netdalys500_sw115_low_v_none > 0 then do;max_cost_sw_program_low = 110;  goto yy;end;
+if  d_netdalys500_sw120_low_v_none > 0 then do;max_cost_sw_program_low = 115;  goto yy;end; 
+if  d_netdalys500_sw125_low_v_none > 0 then do;max_cost_sw_program_low = 120;  goto yy;end; 
+if  d_netdalys500_sw130_low_v_none > 0 then do;max_cost_sw_program_low = 125;  goto yy;end; 
+if  d_netdalys500_sw135_low_v_none > 0 then do;max_cost_sw_program_low = 130;  goto yy;end; 
+if  d_netdalys500_sw140_low_v_none > 0 then do;max_cost_sw_program_low = 135;  goto yy;end; 
+if  d_netdalys500_sw145_low_v_none > 0 then do;max_cost_sw_program_low = 140;  goto yy;end;
+if  d_netdalys500_sw150_low_v_none > 0 then do;max_cost_sw_program_low = 145;  goto yy;end; 
+if  d_netdalys500_sw155_low_v_none > 0 then do;max_cost_sw_program_low = 150;  goto yy;end; 
+if  d_netdalys500_sw160_low_v_none > 0 then do;max_cost_sw_program_low = 155;  goto yy;end;
+if  d_netdalys500_sw165_low_v_none > 0 then do;max_cost_sw_program_low = 160;  goto yy;end; 
+if  d_netdalys500_sw170_low_v_none > 0 then do;max_cost_sw_program_low = 165;  goto yy;end; 
+if  d_netdalys500_sw175_low_v_none > 0 then do;max_cost_sw_program_low = 170;  goto yy;end; 
+if  d_netdalys500_sw180_low_v_none > 0 then do;max_cost_sw_program_low = 175;  goto yy;end; 
+if  d_netdalys500_sw185_low_v_none > 0 then do;max_cost_sw_program_low = 180;  goto yy;end; 
+if  d_netdalys500_sw190_low_v_none > 0 then do;max_cost_sw_program_low = 185;  goto yy;end;
+if  d_netdalys500_sw195_low_v_none > 0 then do;max_cost_sw_program_low = 190;  goto yy;end; 
+if  d_netdalys500_sw200_low_v_none > 0 then do;max_cost_sw_program_low = 195;  goto yy;end; 
+if  d_netdalys500_sw205_low_v_none > 0 then do;max_cost_sw_program_low = 200;  goto yy;end; 
+if  d_netdalys500_sw210_low_v_none > 0 then do;max_cost_sw_program_low = 205;  goto yy;end; 
+if  d_netdalys500_sw215_low_v_none > 0 then do;max_cost_sw_program_low = 210;  goto yy;end;
+if  d_netdalys500_sw220_low_v_none > 0 then do;max_cost_sw_program_low = 215;  goto yy;end; 
+if  d_netdalys500_sw225_low_v_none > 0 then do;max_cost_sw_program_low = 220;  goto yy;end; 
+if  d_netdalys500_sw230_low_v_none > 0 then do;max_cost_sw_program_low = 225;  goto yy;end; 
+if  d_netdalys500_sw235_low_v_none > 0 then do;max_cost_sw_program_low = 230;  goto yy;end; 
+if  d_netdalys500_sw240_low_v_none > 0 then do;max_cost_sw_program_low = 235;  goto yy;end; 
+if  d_netdalys500_sw245_low_v_none > 0 then do;max_cost_sw_program_low = 240;  goto yy;end;
+if  d_netdalys500_sw250_low_v_none > 0 then do;max_cost_sw_program_low = 245;  goto yy;end; 
 yy:
 
-if min_cost_sw_program_high=. then min_cost_sw_program_high=350;
-if min_cost_sw_program_low=. then min_cost_sw_program_low=350;
+if max_cost_sw_program_high=. then max_cost_sw_program_high=350;
+if max_cost_sw_program_low=. then max_cost_sw_program_low=350;
+
+cost_sw_prog_per_sw_high=
+
 
 
 *net monetary benefit (Dalys * cost-effectivenss threshold) + costs;
@@ -1284,7 +1290,7 @@ cost_daly_averted_high_v_none60_ = (diff_dcost_high_v_none60_/diff_ddaly_high_v_
 
 ***Table 4;
 ***Absolute costs;
-proc means n mean p50 p5 p95 lclm uclm;
+proc means n mean p5 p95 lclm uclm;
 var dcost_22_72_1 dcost_22_72_2 dcost_22_72_3
 	dart_cost_y_22_72_1 dart_cost_y_22_72_2 dart_cost_y_22_72_3
 	dtest_cost_22_72_1 dtest_cost_22_72_2 dtest_cost_22_72_3
@@ -1292,13 +1298,13 @@ var dcost_22_72_1 dcost_22_72_2 dcost_22_72_3
 ;run;
 
 ***Difference in costs - high vs. none;
-proc means n mean p50 p5 p95 lclm uclm;
+proc means n mean p5 p95 lclm uclm;
 var diff_dcost_low_v_none diff_artcost_low_v_none diff_testcost_low_v_none diff_testcost_sw_low_v_none
 	diff_dcost_high_v_none diff_artcost_high_v_none diff_testcost_high_v_none diff_testcost_sw_high_v_none;
 run;
 
 ***DALYs;
-proc means n mean p50 p5 p95 lclm uclm;
+proc means n mean p5 p95 lclm uclm;
 var	ddaly_22_72_1 ddaly_22_72_2 ddaly_22_72_3
 	diff_ddaly_low_v_none diff_ddaly_high_v_none;
 run;
@@ -1375,17 +1381,17 @@ d_netdalys100_sw70_low_v_none	d_netdalys100_sw75_low_v_none  d_netdalys100_sw80_
 run;
 
 ***This gives the max cost of the SW program with uncertainty ranges;
-proc means mean p5 p95 lclm uclm ;var min_cost_sw_program_low min_cost_sw_program_high;run;
+proc means mean p5 p95 lclm uclm ;var max_cost_sw_program_low max_cost_sw_program_high;run;
 
-proc means mean p5 p95 lclm uclm ;var min_cost_sw_program_low min_cost_sw_program_high;where incidence=1;run;
+proc means mean p5 p95 lclm uclm ;var max_cost_sw_program_low max_cost_sw_program_high;where incidence=1;run;
 
-proc means mean p5 p95 lclm uclm ;var min_cost_sw_program_low min_cost_sw_program_high;where incidence=2;run;
+proc means mean p5 p95 lclm uclm ;var max_cost_sw_program_low max_cost_sw_program_high;where incidence=2;run;
 
-proc means mean p5 p95 lclm uclm ;var min_cost_sw_program_low min_cost_sw_program_high;where incidence=3;run;
+proc means mean p5 p95 lclm uclm ;var max_cost_sw_program_low max_cost_sw_program_high;where incidence=3;run;
 
-proc means mean p5 p95 lclm uclm ;var min_cost_sw_program_low min_cost_sw_program_high;where incidence=4;run;
+proc means mean p5 p95 lclm uclm ;var max_cost_sw_program_low max_cost_sw_program_high;where incidence=4;run;
 
-proc means mean p5 p95 lclm uclm ;var min_cost_sw_program_low min_cost_sw_program_high;where incidence=5;run;
+proc means mean p5 p95 lclm uclm ;var max_cost_sw_program_low max_cost_sw_program_high;where incidence=5;run;
 
 
 ***This should be very similar to above;
@@ -1541,24 +1547,15 @@ if 0.50 le p_onart_vl1000_sw_22 le 0.82 then onart_vl1000_sw=1;
 if 0.82 lt p_onart_vl1000_sw_22 le 0.92 then onart_vl1000_sw=2;
 if 0.92 lt p_onart_vl1000_sw_22 le 1.00 then onart_vl1000_sw=3;
 
-run;
-
-proc freq;table p_diag_sw;run;
-
-***CHECK***;
-
-proc freq;table sw_higher_int sw_higher_prob_loss_at_diag;run;
-
-proc freq;table ce*onart_vl1000_sw;run;
-
+proc freq;table p_diag_sw_22;run;
 
 Proc logistic desc;class incid_cat3 (ref="1") ;
 model  ce  = incid_cat3;run;
-Proc logistic desc;class p_diag (ref="3") ;
+Proc logistic desc;class p_diag (ref="1") ;
 model  ce  =p_diag;run;
-Proc logistic desc;class  artcov (ref="3") ;
+Proc logistic desc;class  artcov (ref="1") ;
 model  ce  = artcov;run;
-Proc logistic desc;class onart_vl1000 (ref="3") ;
+Proc logistic desc;class onart_vl1000 (ref="1") ;
 model  ce  = onart_vl1000;run;
 
 
@@ -1566,24 +1563,24 @@ Proc logistic desc;class incid_sw_cat3 (ref="1") ;
 model  ce  = incid_sw_cat3;run;
 Proc logistic desc;class  p_diag_sw (ref="1") ;
 model  ce  =p_diag_sw;run;
-Proc logistic desc;class artcov_sw (ref="3") ;
+Proc logistic desc;class artcov_sw (ref="1") ;
 model  ce  = artcov_sw;run;
-Proc logistic desc;class  onart_vl1000_sw (ref="3") ;
+Proc logistic desc;class  onart_vl1000_sw (ref="1") ;
 model  ce  = onart_vl1000_sw;run;
 Proc logistic desc;class  sw_higher_int (ref="2") ;
 model  ce  = sw_higher_int;run;
 Proc logistic desc;class  sw_higher_prob_loss_at_diag (ref="2") ;
 model  ce  = sw_higher_prob_loss_at_diag;run;
 
-proc freq;table incid_cat3* incid_sw_cat3;run;
-
 proc corr spearman ;var incid_cat3 incid_sw_cat3;run;
+proc corr spearman ;var p_diag  p_diag_sw;run;
+proc corr spearman ;var artcov artcov_sw;run;
+proc corr spearman ;var onart_vl1000 onart_vl1000_sw;run;
 
-Proc logistic desc;class incid_cat3 (ref="1") incid_sw_cat3 (ref="1")  p_diag_sw (ref="1");
-model  ce  = incid_cat3 incid_sw_cat3 p_diag_sw;run;
 
-Proc logistic desc;class incid_cat3 (ref="1") incid_sw_cat3 (ref="1")  p_diag_sw (ref="1");
-model  ce  = incid_cat3 p_diag_sw;run;
+proc corr spearman ;var onart_vl1000 incid_sw_cat3;run;
 
-Proc logistic desc;class incid_cat3 (ref="1") incid_sw_cat3 (ref="1")  p_diag_sw (ref="1");
-model  ce  =  incid_sw_cat3 p_diag_sw;run;
+
+Proc logistic desc;class incid_cat3 (ref="1") p_diag (ref="1") artcov (ref="1")  onart_vl1000 (ref="1")
+p_diag_sw (ref="1") artcov_sw (ref="1") onart_vl1000_sw (ref="1");
+model  ce  = incid_cat3 p_diag artcov onart_vl1000;run;

@@ -773,6 +773,7 @@ n_tested_at_return = s_tested_at_return * sf_2023 * 4;
 n_pregnant = s_pregnant * sf_2023 * 4;
 
 ***FSW;
+
 * n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2023;
 * n_sw_1564;					n_sw_1564_ = s_sw_1564 * sf_2023;
 
@@ -844,6 +845,102 @@ n_pregnant = s_pregnant * sf_2023 * 4;
 
 * linked_diag_sw;				if s_diag_thisper_sw>0 then p_linked_diag_sw = s_linked_diag_sw/s_diag_thisper_sw;
 
+/*
+***Small number of FSW so take averages across 4 periods;
+
+**The ‘lag’ function takes the previous value of incidence_sw etc., lag2 takes 2 values before and so on;
+lag1_n1549_sw=lag(n_sw_1549_); lag2_n1549_sw=lag2(n_sw_1549_); lag3_n1549_sw=lag3(n_sw_1549_);
+lag1_n1564_sw=lag(n_sw_1564_); lag2_n1564_sw=lag2(n_sw_1564_); lag3_n1564_sw=lag3(n_sw_1564_);
+lag1_p1549_sw=lag(prop_w_1549_sw); lag2_p1549_sw=lag2(prop_w_1549_sw); lag3_p1549_sw=lag3(prop_w_1549_sw);
+lag1_p1564_sw=lag(prop_w_1564_sw); lag2_p1564_sw=lag2(prop_w_1564_sw); lag3_p1564_sw=lag3(prop_w_1564_sw);
+lag1_p_ever_sw=lag(prop_w_ever_sw); lag2_p_ever_sw=lag(prop_w_ever_sw); lag3_p_ever_sw=lag(prop_w_ever_sw);
+
+lag1_p1519_sw=lag(p_fsw1519_); lag2_p1519_sw=lag2(p_fsw1519_); lag3_p1519_sw=lag3(p_fsw1519_);
+lag1_p2024_sw=lag(p_fsw2024_); lag2_p2024_sw=lag2(p_fsw2024_); lag3_p2024_sw=lag3(p_fsw2024_);
+lag1_p2529_sw=lag(p_fsw2529_); lag2_p2529_sw=lag2(p_fsw2529_); lag3_p2529_sw=lag3(p_fsw2529_);
+lag1_p3039_sw=lag(p_fsw3039_); lag2_p3039_sw=lag2(p_fsw3039_); lag3_p3039_sw=lag3(p_fsw3039_);
+
+lag1_ep_sw=lag(sw_episodes); lag2_ep_sw=lag2(sw_episodes); lag3_ep_sw=lag3(sw_episodes);
+lag1_ep_gt1_sw=lag(p_sw_gt1ep); lag2_ep_gt1_sw=lag2(p_sw_gt1ep); lag3_ep_gt1_sw=lag3(p_sw_gt1ep);
+
+lag1_totdur_sw=lag(tot_dur_sw); lag2_totdur_sw=lag2(tot_dur_sw); lag3_totdur_sw=lag3(tot_dur_sw);
+lag1_actdur_sw=lag(act_dur_sw); lag2_actdur_sw=lag2(act_dur_sw); lag3_actdur_sw=lag3(act_dur_sw);
+
+lag1_p_actdur03_sw=lag(p_actdur_0to3_); lag2_p_actdur03_sw=lag2(p_actdur_0to3_); lag3_p_actdur03_sw=lag3(p_actdur_0to3_);
+lag1_p_actdur35_sw=lag(p_actdur_3to5_); lag2_p_actdur35_sw=lag2(p_actdur_3to5_); lag3_p_actdur35_sw=lag3(p_actdur_3to5_);
+lag1_p_actdur69_sw=lag(p_actdur_6to9_); lag2_p_actdur69_sw=lag2(p_actdur_6to9_); lag3_p_actdur69_sw=lag3(p_actdur_6to9_);
+lag1_p_actdur1019_sw=lag(p_actdur_10to19_); lag2_p_actdur1019_sw=lag2(p_actdur_10to19_); lag3_p_actdur1019_sw=lag3(p_actdur_10to19_);
+lag1_p_totdur03_sw=lag(p_totdur_0to3_); lag2_p_totdur03_sw=lag2(p_totdur_0to3_); lag3_p_totdur03_sw=lag3(p_totdur_0to3_);
+lag1_p_totdur35_sw=lag(p_totdur_3to5_); lag2_p_totdur35_sw=lag2(p_totdur_3to5_); lag3_p_totdur35_sw=lag3(p_totdur_3to5_);
+lag1_p_totdur69_sw=lag(p_totdur_6to9_); lag2_p_totdur69_sw=lag2(p_totdur_6to9_); lag3_p_totdur69_sw=lag3(p_totdur_6to9_);
+lag1_p_totdur1019_sw=lag(p_totdur_10to19_); lag2_p_totdur1019_sw=lag2(p_totdur_10to19_); lag3_p_totdur1019_sw=lag3(p_totdur_10to19_);
+
+lag1_p_newp0_sw=lag(p_fsw_newp0_); lag2_p_newp0_sw=lag2(p_fsw_newp0_); lag3_p_newp0_sw=lag3(p_fsw_newp0_);
+lag1_p_av_newp_sw=lag(av_sw_newp); lag2_p_av_newp_sw=lag2(av_sw_newp); lag3_p_av_newp_sw=lag3(av_sw_newp);
+
+lag1_p_sw_prog_vis=lag(p_sw_prog_vis); lag2_p_sw_prog_vis=lag2(p_sw_prog_vis); lag3_p_sw_prog_vis=lag3(p_sw_prog_vis);
+
+lag1_n_tested_sw=lag(n_tested_sw); lag2_n_tested_sw=lag2(n_tested_sw); lag3_n_tested_sw=lag3(n_tested_sw);
+lag1_p_tested_py_sw=lag(p_tested_past_year_sw); lag2_p_tested_py_sw=lag2(p_tested_past_year_sw); lag3_p_tested_py_sw=lag3(p_tested_past_year_sw);
+lag1_p_onprep_sw=lag(prop_sw_onprep); lag2_p_onprep_sw=lag2(prop_sw_onprep); lag3_p_onprep_sw=lag3(prop_sw_onprep);
+
+lag1_p_diag_sw=lag(p_diag_sw); lag2_p_diag_sw=lag2(p_diag_sw); lag3_p_diag_sw=lag3(p_diag_sw);
+lag1_p_onart_diag_sw=lag(p_onart_diag_sw); lag2_p_onart_diag_sw=lag2(p_onart_diag_sw); lag3_p_onart_diag_sw=lag3(p_onart_diag_sw);
+lag1_p_onart_vl1000_sw=lag(p_onart_vl1000_sw); lag2_p_onart_vl1000_sw=lag2(p_onart_vl1000_sw); lag3_p_onart_vl1000_sw=lag3(p_onart_vl1000_sw);
+
+lag1_prev_sw=lag(prevalence_sw); lag2_prev_sw=lag2(prevalence_sw); lag3_prev_sw=lag3(prevalence_sw);
+lag1_inc_sw=lag(incidence_sw); lag2_inc_sw=lag2(incidence_sw); lag3_inc_sw=lag3(incidence_sw);
+
+lag1_p_sti_sw=lag(p_sti_sw); lag2_p_sti_sw=lag2(p_sti_sw); lag3_p_sti_sw=lag3(p_sti_sw);
+
+
+**Now will have 4 columns per period – incidence_sw, lag1_inc_sw, lag2_inc_sw, lag3_inc_sw. Keep rows for each calendar year (rather than period); 
+if cald=int(cald) then cald_yr=cald; *cald_yr is 2000,2001,2002 etc;
+
+**Calculate mean across the 4 rows for cald_yr;
+if cald_yr ne . then do;
+	mean_incidence_sw =(incidence_sw + lag1_inc_sw + lag2_inc_sw + lag3_inc_sw)/4;
+	mean_n_sw_1549_ = (n_sw_1549_ + lag1_n1549_sw + lag2_n1549_sw + lag3_n1549_sw)/4;
+	mean_n_sw_1564_ = (n_sw_1564_ + lag1_n1564_sw + lag2_n1564_sw + lag3_n1564_sw)/4;
+	mean_prop_w_1549_sw = (prop_w_1549_sw + lag1_p1549_sw + lag2_p1549_sw + lag3_p1549_sw)/4;
+	mean_prop_w_1564_sw = (prop_w_1564_sw + lag1_p1564_sw + lag2_p1564_sw + lag3_p1549_sw)/4;
+	mean_prop_w_ever_sw = (prop_w_ever_sw + lag1_p_ever_sw + lag2_p_ever_sw + lag3_p_ever_sw)/4; 
+
+	mean_p_sw_age1519_ = (p_sw_age1519_ + lag1_p1519_sw + lag2_p1519_sw + lag3_p1519_sw)/4;
+	mean_p_sw_age2024_ = (p_sw_age2024_ + lag1_p2024_sw + lag2_p2024_sw + lag3_p2024_sw)/4;
+	mean_p_sw_age2529_ = (p_sw_age2529_ + lag1_p2529_sw + lag2_p2529_sw + lag3_p2529_sw)/4;
+	mean_p_sw_age3039_ = (p_sw_age3039_ + lag1_p3039_sw + lag2_p3039_sw + lag3_p3039_sw)/4;
+
+	mean_sw_episodes = (sw_episodes + lag1_ep_sw + lag2_ep_sw + lag3_ep_sw)/4;
+	mean_p_sw_gt1ep = (p_sw_gt1ep + lag1_ep_gt1_sw + lag2_ep_gt1_sw + lag3_ep_gt1_sw)/4;
+
+	mean_tot_dur_sw = (tot_dur_sw + lag1_totdur_sw+ lag2_totdur_sw + lag3_totdur_sw)/4;
+	mean_act_dur_sw = (act_dur_sw + lag1_actdur_sw+ lag2_actdur_sw + lag3_actdur_sw)/4;
+	mean_p_actdur_0to3_ = (p_actdur_0to3_ + lag1_p_actdur03_sw + lag2_p_actdur03_sw + lag3_p_actdur03_sw)/4;
+	mean_p_actdur_3to5_ = (p_actdur_3to5_ + lag1_p_actdur35_sw + lag2_p_actdur35_sw + lag3_p_actdur35_sw)/4;
+	mean_p_actdur_6to9_ = (p_actdur_6to9_ + lag1_p_actdur69_sw + lag2_p_actdur69_sw + lag3_p_actdur69_sw)/4;
+	mean_p_actdur_10to19_ = (p_actdur_10to19_ + lag1_p_actdur1019_sw + lag2_p_actdur1019_sw + lag3_p_actdur1019_sw)/4;
+	mean_p_totdur_0to3_ = (p_totdur_0to3_ + lag1_p_totdur03_sw + lag2_p_totdur03_sw + lag3_p_totdur03_sw)/4;
+	mean_p_totdur_3to5_ = (p_totdur_3to5_ + lag1_p_totdur35_sw + lag2_p_totdur35_sw + lag3_p_totdur35_sw)/4;
+	mean_p_totdur_6to9_ = (p_totdur_6to9_ + lag1_p_totdur69_sw + lag2_p_totdur69_sw + lag3_p_totdur69_sw)/4;
+	mean_p_totdur_10to19_ = (p_totdur_10to19_ + lag1_p_totdur1019_sw + lag2_p_totdur1019_sw + lag3_p_totdur1019_sw)/4;
+
+	mean_p_fsw_newp0_ = (p_fsw_newp0_ + lag1_p_newp0_sw + lag2_p_newp0_sw + lag3_p_newp0_sw)/4;
+	mean_av_sw_newp = (av_sw_newp + lag1_p_av_newp_sw + lag2_p_av_newp_sw + lag3_p_av_newp_sw)/4;
+	mean_p_sw_prog_vis = (p_sw_prog_vis + lag1_p_sw_prog_vis + lag2_p_sw_prog_vis + lag3_p_sw_prog_vis)/4;
+	mean_n_tested_sw = (n_tested_sw + lag1_n_tested_sw + lag2_n_tested_sw + lag3_n_tested_sw)/4;
+	mean_p_tested_past_year_sw = (p_tested_past_year_sw + lag1_p_tested_py_sw + lag2_p_tested_py_sw + lag3_p_tested_py_sw)/4;
+	mean_prop_sw_onprep = (prop_sw_onprep + lag1_p_onprep_sw + lag2_p_onprep_sw + lag3_p_onprep_sw)/4;
+
+	mean_p_diag_sw = (p_diag_sw + lag1_p_diag_sw + lag2_p_diag_sw + lag3_p_diag_sw)/4;
+	mean_p_onart_diag_sw = (p_onart_diag_sw + lag1_p_onart_diag_sw + lag2_p_onart_diag_sw + lag3_p_onart_diag_sw)/4;
+	mean_p_onart_vl1000_sw = (p_onart_vl1000_sw + lag1_p_onart_vl1000_sw + lag2_p_onart_vl1000_sw + lag3_p_onart_vl1000_sw)/4;
+
+	mean_prevalence_sw = (prevalence_sw + lag1_prev_sw + lag2_prev_sw + lag3_prev_sw)/4;
+	mean_incidence_sw = (incidence_sw + lag1_inc_sw + lag2_inc_sw + lag3_inc_sw)/4;
+	mean_p_sti_sw = (p_sti_sw + lag1_p_sti_sw + lag2_p_sti_sw + lag3_p_sti_sw)/4;
+end;
+*/
 
 keep run option cald 
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m
@@ -858,7 +955,18 @@ n_tested_f_anc
 n_tested_f_sympt
 n_tested_f_non_anc
 n_tested_at_return
-
+/*
+mean_n_sw_1564_  	 	 mean_n_sw_1549_ 	 	mean_prop_w_1564_sw		mean_prop_w_1549_sw 	 	mean_prop_w_ever_sw  
+mean_p_sw_age1519_	  	 mean_p_sw_age2024_	  	mean_p_sw_age2529_ 		mean_p_sw_age3039_
+mean_sw_episodes 	  	 mean_p_sw_gt1ep
+mean_p_fsw_newp0_   	 mean_av_sw_newp	 		 
+mean_tot_dur_sw  		 mean_act_dur_sw  	 
+mean_p_actdur_0to3_  	 mean_p_actdur_3to5_    mean_p_actdur_6to9_  	mean_p_actdur_10to19_ 
+mean_p_totdur_0to3_  	 mean_p_totdur_3to5_    mean_p_totdur_6to9_  	mean_p_totdur_10to19_ 
+mean_p_sw_prog_vis		 mean_n_tested_sw	    mean_prop_sw_onprep		mean_prevalence_sw	  	mean_incidence_sw
+mean_p_diag_sw			 mean_p_onart_diag_sw	mean_p_onart_vl1000_sw
+mean_p_sti_sw			 mean_p_tested_past_year_sw
+*/
 n_sw_1564_  	 	 n_sw_1549_ 	 	prop_w_1564_sw		prop_w_1549_sw 	 	prop_w_ever_sw  
 p_fsw1519_	  		 p_fsw2024_		  	p_fsw2529_			p_fsw3039_	
 p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_sw_age3039_
@@ -928,6 +1036,18 @@ proc freq;table effect_sw_prog_lossdiag;where option=2;run;
 data a.fsw_17_08_23_final_short; set y;run;
 
 data y; set a.fsw_17_08_23_final_short;run;
+
+data c;
+set y;
+
+if cald<2021.5 then delete;
+if cald>=2023.5 then delete;
+if run in (148738401, 266427800) then a=1;
+if a ne 1 then delete;
+keep run cald n_sw_1564_ mean_n_sw_1564_;run;
+
+proc means mean;var p_fsw_newp0_ mean_p_fsw_newp0_;where 2022.5 <= cald < 2023.5; run;
+
 
 /*
 
@@ -1008,7 +1128,7 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_72 t_23_24 t_22_27 t_22_42 t_22_72;
 %var(v=n_sw_1564_);     %var(v=n_sw_1549_);		    %var(v=prop_w_1564_sw);		%var(v=prop_w_1549_sw); %var(v=prop_w_ever_sw);  
 %var(v=p_fsw1519_);	  	%var(v=p_fsw2024_);		    %var(v=p_fsw2529_);			%var(v=p_fsw3039_);	
 
-%var(v=p_sw_age1519_);	  %var(v=p_sw_age2024_);	%var(v=p_sw_age2529_) 		%var(v=p_sw_age3039_);
+%var(v=p_sw_age1519_);	  %var(v=p_sw_age2024_);	%var(v=p_sw_age2529_); 		%var(v=p_sw_age3039_);
 %var(v=p_age_deb_sw1519_);%var(v=p_age_deb_sw2024_);%var(v=p_age_deb_sw2529_)  	%var(v=p_age_deb_sw3039_);
 
 %var(v=sw_episodes); 	%var(v=p_sw_gt1ep);
@@ -1022,6 +1142,23 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_72 t_23_24 t_22_27 t_22_42 t_22_72;
 %var(v=p_sw_prog_vis);  %var(v=n_tested_sw);	    %var(v=p_tested_past_year_sw);
 %var(v=prop_sw_onprep);	%var(v=prevalence_sw);	    %var(v=incidence_sw);
 %var(v=p_diag_sw);		%var(v=p_onart_diag_sw);	%var(v=p_onart_vl1000_sw);	%var(v=p_sti_sw);
+/*
+%var(v=mean_n_sw_1564_);     %var(v=mean_n_sw_1549_);	%var(v=mean_prop_w_1564_sw);	%var(v=mean_prop_w_1549_sw); 
+%var(v=mean_prop_w_ever_sw);  
+
+%var(v=mean_p_sw_age1519_);	   %var(v=mean_p_sw_age2024_);	%var(v=mean_p_sw_age2529_);	%var(v=mean_p_sw_age3039_);
+
+%var(v=mean_sw_episodes); 	%var(v=mean_p_sw_gt1ep);
+%var(v=mean_p_fsw_newp0_);  %var(v=mean_av_sw_newp);
+
+%var(v=mean_tot_dur_sw);  	 %var(v=mean_act_dur_sw);  	 
+%var(v=mean_p_actdur_0to3_); %var(v=mean_p_actdur_3to5_);     %var(v=mean_p_actdur_6to9_);  	%var(v=mean_p_actdur_10to19_); 
+%var(v=mean_p_totdur_0to3_); %var(v=mean_p_totdur_3to5_);     %var(v=mean_p_totdur_6to9_);  	%var(v=mean_p_totdur_10to19_); 
+
+%var(v=mean_p_sw_prog_vis);  %var(v=mean_n_tested_sw);	    %var(v=mean_p_tested_past_year_sw);
+%var(v=mean_prop_sw_onprep); %var(v=mean_prevalence_sw);	%var(v=mean_incidence_sw);
+%var(v=mean_p_diag_sw);		 %var(v=mean_p_onart_diag_sw);	%var(v=mean_p_onart_vl1000_sw);	%var(v=mean_p_sti_sw);
+*/
 %var(v=dcost);			%var(v=ddaly);
 
 %var(v=dcost19_);	%var(v=dcost10_);	%var(v=dcost15_);	%var(v=dcost20_);	%var(v=dcost25_);	%var(v=dcost30_);
@@ -1067,6 +1204,23 @@ p_totdur_0to3_  p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_
 
 p_sw_prog_vis   n_tested_sw	   	   p_tested_past_year_sw  prop_sw_onprep	prevalence_sw	  incidence_sw
 p_diag_sw		p_onart_diag_sw	   p_onart_vl1000_sw	p_sti_sw
+/*
+mean_n_sw_1564_     mean_n_sw_1549_	mean_prop_w_1564_sw	mean_prop_w_1549_sw 
+mean_prop_w_ever_sw  
+
+mean_p_sw_age1519_	   mean_p_sw_age2024_	mean_p_sw_age2529_ 		mean_p_sw_age3039_
+
+mean_sw_episodes 	   mean_p_sw_gt1ep
+mean_p_fsw_newp0_  	   mean_av_sw_newp
+
+mean_tot_dur_sw  	mean_act_dur_sw  	 
+mean_p_actdur_0to3_ mean_p_actdur_3to5_     mean_p_actdur_6to9_  	mean_p_actdur_10to19_ 
+mean_p_totdur_0to3_ mean_p_totdur_3to5_     mean_p_totdur_6to9_  	mean_p_totdur_10to19_ 
+
+mean_p_sw_prog_vis  mean_n_tested_sw	    mean_p_tested_past_year_sw
+mean_prop_sw_onprep mean_prevalence_sw		mean_incidence_sw
+mean_p_diag_sw		mean_p_onart_diag_sw	mean_p_onart_vl1000_sw	mean_p_sti_sw
+*/
 dcost			ddaly
 dcost19_		dcost10_		dcost15_		dcost20_		dcost25_		dcost30_		dcost35_	dcost40_
 dcost45_		dcost50_		dcost55_		dcost60_		dcost65_		dcost70_		dcost75_	dcost80_
