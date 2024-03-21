@@ -1,14 +1,14 @@
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_fpc_a_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_fpc_d_out\";
 
 proc printto ;
 
 * ods html close;
 
 data b;
-set b.l_vaccine_m_fpc_a_y;
+set b.l_vaccine_m_fpc_d_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -25,7 +25,7 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-%let single_var = incidence1549_      ;
+%let single_var = p_vl1000_      ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_
@@ -36,7 +36,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 2760   ;
+%let nfit = 2616   ;
 
 %let year_end = 2070.00 ;
 run;
@@ -243,6 +243,7 @@ ods html ;
 
 
 
+/*
 
 * code used to create datasets to plot graphs of scenarios 2015 - 2040 ;
 
@@ -255,7 +256,7 @@ if 2015 <= cald < 2040;
 proc print; run;
 run;
 
-
+*/
 
 
 
@@ -541,8 +542,37 @@ band    x=cald lower=p5_p_onart_vl1000__3 upper=p95_p_onart_vl1000__3 / transpar
 
 run;quit;
 
-  
+
 */
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Of those living with HIV, proportion with vl < 1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.5 to  1       by 0.05    ) valueattrs=(size=10);
+
+label p50_p_vl1000__0 = "noVaccine";
+label p50_p_vl1000__1 = "withVaccine_highTPP";
+label p50_p_vl1000__2 = "withVaccine_moderateTPP";
+label p50_p_vl1000__3 = "withVaccine_lowTPP";
+
+series  x=cald y=p50_p_vl1000__0 / lineattrs = (color=red thickness = 4);
+band    x=cald lower=p5_p_vl1000__0 upper=p95_p_vl1000__0 / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+
+series  x=cald y=p50_p_vl1000__1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_p_vl1000__1 upper=p95_p_vl1000__1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
+
+series  x=cald y=p50_p_vl1000__2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_p_vl1000__2 upper=p95_p_vl1000__2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
+
+series  x=cald y=p50_p_vl1000__3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_p_vl1000__3 upper=p95_p_vl1000__3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
+
+run;quit;
+
+  
+
 
 
 
