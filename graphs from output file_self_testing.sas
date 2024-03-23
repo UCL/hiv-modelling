@@ -10,6 +10,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data b;
   set a.l_self_testing;  ;
 
+
 p_onart_vl1000_all = .;
 
 * NB: note lines below, because variable names cannot end with a number;
@@ -40,6 +41,8 @@ logm55r = log(m55r+0.0001);
 
 incidence1564_ = incidence1564;
 
+if option=2 then option=1;
+
 
 
 * n_onprep_m  n_onprep_w ;
@@ -49,8 +52,8 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  75    ;
-%let year_end = 2024.00 ;
+%let nfit =  298   ;
+%let year_end = 2036.00 ;
 run;
 proc sort;by cald option ;run;
 
@@ -76,7 +79,7 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive n_diagnosed n_hiv  n_infected 
+n_alive n_diagnosed n_hiv  n_infected n_self_tested
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -141,7 +144,7 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive n_diagnosed n_hiv n_infected
+n_alive n_diagnosed n_hiv n_infected  n_self_tested
 ;
 
 
@@ -311,120 +314,6 @@ age 15–49 had an HIV test.
 
 */
 
-
-
-* ########### * need to outputs from model and create graph #############################################################;
-
-if cald=2022 then do; 
-prop_w1549_newpge1_past_year_kya = 0.12;
-prop_m1549_newpge1_past_year_kya = 0.11;
-end;
-
-
-
-* placeholder;
-if cald=2019.00 then do; n_tests_f_obs_kya = 0 ; n_tests_m_obs_kya = 0 ;  end;
-
-* https://nsdcc.go.ke/hiv-situation-in-kenya/#:~:text=In%202008%2C%20860%2C000%20people%20were,introduction%20of%20self%2Dtesting%20kits.;
-if cald=2015 then n_tests_obs_kya = 9900000;
-
-
-if cald=2012 then prop_m_1549_circ_obs_kya = 0.91;
-
-if cald=2012 then do;
-	ever_tested_w_1524_obs_kya= 0.56;
-	ever_tested_w_2524_obs_kya= 0.92;
-	ever_tested_w_2529_obs_kya= 0.94;
-	ever_tested_w_3034_obs_kya= 0.94;
-	ever_tested_w_3539_obs_kya= 0.89;
-	ever_tested_w_4044_obs_kya= 0.79;
-	ever_tested_w_4549_obs_kya= 0.72;
-	ever_tested_w_5054_obs_kya= 0.64;
-	ever_tested_w_5559_obs_kya= 0.51;
-	ever_tested_w_6064_obs_kya= 0.46;
-
-	ever_tested_m_1524_obs_kya= 0.45;
-	ever_tested_m_2524_obs_kya= 0.67;
-	ever_tested_m_2529_obs_kya= 0.75;
-	ever_tested_m_3034_obs_kya= 0.72;
-	ever_tested_m_3539_obs_kya= 0.71;
-	ever_tested_m_4044_obs_kya= 0.68;
-	ever_tested_m_4549_obs_kya= 0.59;
-	ever_tested_m_5054_obs_kya= 0.57;
-	ever_tested_m_5559_obs_kya= 0.46;
-	ever_tested_m_6064_obs_kya= 0.50;
-end;
-
-if cald=2022 then do;
-	ever_tested_w_1549_obs_kya= 0.85;
-	ever_tested_m_1549_obs_kya= 0.72;
-	tested_past_year_w_1549_obs_kya = 0.47;
-	tested_past_year_m_1549_obs_kya = 0.39;
-end;
-
-
-if cald=2005.00 then n_onart_m_obs_kya= 24000 ;
-if cald=2010.00 then n_onart_m_obs_kya= 172000 ;
-if cald=2015.00 then n_onart_m_obs_kya= 262000 ;
-if cald=2020.00 then n_onart_m_obs_kya= 337000 ;
-
-if cald=2005.00 then n_onart_w_obs_kya= 30000 ;
-if cald=2010.00 then n_onart_w_obs_kya= 224000 ;
-if cald=2015.00 then n_onart_w_obs_kya= 564000 ;
-if cald=2020.00 then n_onart_w_obs_kya= 717000 ;
-
-
-* spectrum aim;
-
-if cald=1980 then prevalence1549_m_obs_kya= 0.001;
-if cald=1985 then prevalence1549_m_obs_kya= 0.007;
-if cald=1990 then prevalence1549_m_obs_kya= 0.038;
-if cald=1995 then prevalence1549_m_obs_kya= 0.073;
-if cald=2000 then prevalence1549_m_obs_kya= 0.065;
-if cald=2005 then prevalence1549_m_obs_kya= 0.048;
-if cald=2010 then prevalence1549_m_obs_kya= 0.042;
-if cald=2015 then prevalence1549_m_obs_kya= 0.035;
-if cald=2020 then prevalence1549_m_obs_kya= 0.028;
-
-if cald=1980 then prevalence1549_w_obs_kya= 0.001;
-if cald=1985 then prevalence1549_w_obs_kya= 0.008;
-if cald=1990 then prevalence1549_w_obs_kya= 0.058;
-if cald=1995 then prevalence1549_w_obs_kya= 0.124;
-if cald=2000 then prevalence1549_w_obs_kya= 0.115;
-if cald=2005 then prevalence1549_w_obs_kya= 0.087;
-if cald=2010 then prevalence1549_w_obs_kya= 0.074;
-if cald=2015 then prevalence1549_w_obs_kya= 0.073;
-if cald=2020 then prevalence1549_w_obs_kya= 0.065;
-
-if cald=2007.5 then incidence1564_m_obs_kya= 0.90;
-if cald=2007.5 then incidence1564_w_obs_kya= 1.10;
-if cald=2012.5 then incidence1564_m_obs_kya= 0.70;
-if cald=2012.5 then incidence1564_w_obs_kya= 0.90;
-if cald=2018.5 then incidence1564_m_obs_kya= 0.15;
-if cald=2018.5 then incidence1564_w_obs_kya= 0.15;
-
-if cald=2012.5 then p_diag_obs_kya = 0.47;
-if cald=2018.5 then p_diag_m_obs_kya = 0.73;
-if cald=2018.5 then p_diag_w_obs_kya = 0.83;
-if cald=2018.5 then p_diag_obs_kya = 0.80;
-
-if cald=2018.5 then p_onart_diag_m_obs_kya = 0.95;
-if cald=2018.5 then p_onart_diag_w_obs_kya = 0.97;
-if cald=2018.5 then p_onart_diag_obs_kya = 0.96;
-
-if cald=2020.5 then p_onart_vl1000_m_obs_kya= 0.91;
-if cald=2020.5 then p_onart_vl1000_w_obs_kya= 0.91;
-if cald=2020.5 then p_onart_vl1000_obs_kya= 0.91;
-
-if cald=2003 then n_death_hiv_kya = 130000;
-if cald=2022 then n_death_hiv_kya = 16000;
-
-if cald = 2010 then n_infected_obs_kya = 70000; * this includes children;
-if cald = 2022 then n_infected_obs_kya = 18000; * this is age 15 and over;
-
-if cald = 2022 then n_hiv_kya = 1300000;
-
-
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
@@ -510,6 +399,23 @@ band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fil
 
 series  x=cald y=p50_n_tested_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+scatter  x=cald y=n_tests_obs_kya/	markerattrs = (symbol=square color=green size = 10);
+
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_self_tested";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  12000000 by 1000000) valueattrs=(size=10);
+label p50_n_self_tested_0 = "Option 0 (median) ";
+label p50_n_self_tested_1 = "Option 1 (median) ";
+
+series  x=cald y=p50_n_self_tested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_self_tested_0 	upper=p95_n_self_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=p50_n_self_tested_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_self_tested_1 	upper=p95_n_self_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 scatter  x=cald y=n_tests_obs_kya/	markerattrs = (symbol=square color=green size = 10);
 

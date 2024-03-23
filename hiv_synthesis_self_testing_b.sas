@@ -2165,6 +2165,17 @@ who may be dead and hence have caldate{t} missing;
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
+
+	if option = 2 then do; *Self-test kits distributed (Primary distribution);
+		prob_self_test_hard_reach = 0.1;
+		self_test_targeting = 1.5;
+		rate_self_test = 0.03;
+	end;
+
+
+
+/*
+
 	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do;
 	*MINIMAL;
 
@@ -2401,8 +2412,11 @@ who may be dead and hence have caldate{t} missing;
 	*Structural interventions and social enablers;
 	if option = 40 then do;*DREAMS;
 	end;
+
+*/
 	
 end;
+
 
 
 *  ======================================================================================================================================== ;
