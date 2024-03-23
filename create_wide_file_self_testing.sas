@@ -1,7 +1,7 @@
 * options user="/folders/myfolders/";
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\core\core_23_3_24_out";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\self_testing\self_testing_out";
 
 data g ; set b.out: ;
 
@@ -291,6 +291,9 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
+
+* n_self_tested;				n_self_tested = s_self_tested * &sf * 4 ;	
+* n_diagnosed_self_test;		n_diagnosed_self_test = s_diagnosed_self_test * &sf * 4 ;	 
 
 * p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;
 * p_mcirc_1519m;				p_mcirc_1519m = s_mcirc_1519m / s_ageg1519m ;
@@ -926,8 +929,7 @@ p_on1drug_antihyp_1549 p_on2drug_antihyp_1549 p_on3drug_antihyp_1549  p_on1drug_
 p_on3drug_antihyp_5059  p_on1drug_antihyp_6069  p_on2drug_antihyp_6069  p_on3drug_antihyp_6069  p_on1drug_antihyp_7079  p_on2drug_antihyp_7079 
 p_on3drug_antihyp_7079  p_on1drug_antihyp_ge80  p_on2drug_antihyp_ge80  p_on3drug_antihyp_ge80 
 
-p_ahd_re_enter_care_100 p_ahd_re_enter_care_200  n_infected
-
+p_ahd_re_enter_care_100 p_ahd_re_enter_care_200  n_infected    n_self_tested		 n_diagnosed_self_test
 n_dead_hivpos_cause1  rate_dead_hivpos_cause1 n_dead_hivpos_tb  rate_dead_hivpos_tb n_dead_hivpos_cause4  rate_dead_hivpos_cause4 
 n_dead_hivpos_crypm  rate_dead_hivpos_crypm n_dead_hivpos_sbi  rate_dead_hivpos_sbi n_dead_hivpos_oth_adc  rate_dead_hivpos_oth_adc 
 n_dead_hivpos_cause2  rate_dead_hivpos_cause2 	n_dead_hivpos_cause3  rate_dead_hivpos_cause3 	n_dead_hivpos_cvd  rate_dead_hivpos_cvd 
@@ -995,6 +997,8 @@ testing_disrup_covid  art_tld_disrup_covid  art_tld_eod_disrup_covid   art_init_
 vl_adh_switch_disrup_covid  cotrim_disrup_covid    no_art_disrup_covid 
 inc_adeathr_disrup_covid art_low_adh_disrup_covid  cov_death_risk_mult 
 
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens
+
 n_mcirc1549_  n_mcirc1549_3m n_vmmc1549_ n_vmmc1549_3m n_new_inf1549m n_new_inf1549w n_new_inf1549 
 
 p_prep_newp  prop_1564m_onprep  prop_1564w_onprep  p_prep_elig_past_year  p_prep_elig_past_5year  mean_newp_ppers_prep  prop_onprep_newpge1
@@ -1020,9 +1024,9 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data b.l_core_23_3_24_out; set y;  
+data b.l_self_testing_out; set y;  
 
-data y; set b.l_core_23_3_24_out; 
+data y; set b.l_self_testing_out; 
 
   options nomprint;
   option nospool;
@@ -1155,13 +1159,13 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); 
 %var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); %var(v=n_onart);
 %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
-%var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
-%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive);  %var(v=n_diagnosed);   %var (v=n_hiv); %var(v=n_tested)
+%var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); 
+%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive);  %var(v=n_diagnosed);   %var (v=n_hiv); 
 %var(v=prevalence1524w);  %var(v=prevalence1524m);  %var(v=prevalence2549w);  %var(v=prevalence2549m);  %var(v=prevalence_sw); 
 %var(v=n_alive_msm);	 %var(v=n_alive1564_msm); %var(v=incidence1549msm); %var(v=incidence1564msm);  %var(v=prevalence1549_msm);	%var(v=prevalence1564_msm);  
 %var(v=p_elig_prep_any_msm_1564); %var(v=p_onprep_msm);  %var(v=p_onart_msm);   %var(v=prevalence_vg1000_msm);	 %var(v=p_diag_msm);	 
 %var(v=p_onart_diag_msm);  %var(v=p_vl1000_art_gt6m_msm);	 %var(v=p_ever_tested_msm); 	%var(v=p_tested_this_period_msm);  %var(v=p_msm_infected_from_msm)
-%var(v=incidence1564); %var(v=n_alive1564_msm);
+%var(v=incidence1564); %var(v=n_alive1564_msm);   %var(v=n_self_tested);  		  %var(v=n_diagnosed_self_test);  
 
 
 data   wide_outputs; merge 
@@ -1252,7 +1256,7 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
 n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_diagnosed  n_hiv
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564 p_onprep_msm				
  p_onart_msm  prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
- p_tested_this_period_msm p_msm_infected_from_msm n_alive1564_msm
+ p_tested_this_period_msm p_msm_infected_from_msm n_alive1564_msm  n_self_tested		 n_diagnosed_self_test
 ;
 
 proc sort; by run; run;
@@ -1297,7 +1301,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); 
 %par(p=msm_rred);  %par(p=prop_m_msm);  %par(p=prob_start_pwid);  %par(p=prob_stop_pwid);  %par(p=rr_pwid_female);   %par(p=fold_tr_pwid fold_tr_msm); 
-%par(p=sw_program);
+%par(p=sw_program); %par(p=prob_self_test_hard_reach);   %par(p=self_test_targeting);   %par(p=rate_self_test);   %par(p=self_test_sens);
 run;
 
 data wide_par; merge 
@@ -1326,7 +1330,7 @@ rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 msm_rred prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_female  fold_tr_pwid fold_tr_msm
-sw_program;
+sw_program prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens;
 
 proc contents; run;
 
@@ -1336,7 +1340,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data b.w_core_23_3_24_out; 
+  data b.w_self_testing_out; 
   merge   wide_outputs  wide_par ;  
   by run;
 
