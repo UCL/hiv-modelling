@@ -1,14 +1,14 @@
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_fpc_b_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_fpc_d_out\";
 
 proc printto ;
 
 * ods html close;
 
 data b;
-set b.l_vaccine_m_fpc_b_y;
+set b.l_vaccine_m_fpc_d_y;
 
 
 n_k65m = p_k65m * n_hiv;
@@ -26,7 +26,7 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-%let single_var = p_newp_ge1_      ;
+%let single_var = incidence1549_     ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_
@@ -37,7 +37,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 5784   ;
+%let nfit = 2616   ;
 
 %let year_end = 2070.00 ;
 run;
@@ -250,10 +250,10 @@ ods html ;
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\";
 
-data a.fpc_a;
+data a.fpc_d_2;
 set d;
 keep cald  p5_incidence1549__0 p50_incidence1549__0 p95_incidence1549__0 ;
-if 2015 <= cald < 2040;
+if 2015 <= cald < 2070;
 proc print; run;
 run;
 
