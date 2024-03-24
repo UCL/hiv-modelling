@@ -1612,6 +1612,16 @@ d_n_iime_10y_3_1 = n_iime_10y_3 -   n_iime_10y_1 ;
 d_n_iime_10y_4_1 = n_iime_10y_4 -   n_iime_10y_1 ; 
 d_n_iime_10y_5_1 = n_iime_10y_5 -   n_iime_10y_1 ; 
 
+d_n_death_hiv_50y_2_1 = n_death_hiv_50y_2 - n_death_hiv_50y_1;
+d_n_death_hiv_50y_3_1 = n_death_hiv_50y_3 - n_death_hiv_50y_1;
+d_n_death_hiv_50y_4_1 = n_death_hiv_50y_4 - n_death_hiv_50y_1;
+d_n_death_hiv_50y_5_1 = n_death_hiv_50y_5 - n_death_hiv_50y_1;
+
+d_n_iime_50y_2_1 = n_iime_50y_2 -   n_iime_50y_1 ; 
+d_n_iime_50y_3_1 = n_iime_50y_3 -   n_iime_50y_1 ; 
+d_n_iime_50y_4_1 = n_iime_50y_4 -   n_iime_50y_1 ; 
+d_n_iime_50y_5_1 = n_iime_50y_5 -   n_iime_50y_1 ; 
+
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -1700,7 +1710,7 @@ if dcost_50y_5 = min_dcost_50y then lowest_dcost=5;
 
 * table 1;
 
-proc means   data = b  n p50 p1 p5 p25 p50 p75 p95 p99;  
+proc means   data = b  n p50  p5  p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  
 p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    p_vis_tldsw_24  p_dol_2vg1000_dolr1_24 p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24
@@ -1746,11 +1756,14 @@ p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 p_o_dar_uvl2_10y_3 p_o_dar_uvl2_10y_4 p_o_
 p_first_uvl2_dol_r_10y_1 p_first_uvl2_dol_r_10y_2 p_first_uvl2_dol_r_10y_3 p_first_uvl2_dol_r_10y_4 p_first_uvl2_dol_r_10y_5  
 deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 deathr_dol_r_uvl2_10y_4 deathr_dol_r_uvl2_10y_5  
 ;
+* p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 p_tldsw2_elig_tldsw_10y_4 p_tldsw2_elig_tldsw_10y_5 ;
 run;
 ods html close;
 
 
-proc means   data = b  n mean p50 p5 p95 ;  
+
+ods html;
+proc means   data = b  n p50 p5 p95 ;  
 var 
 prop_artexp_elig_tldsw_50y_1  prop_artexp_elig_tldsw_50y_2  prop_artexp_elig_tldsw_50y_3  prop_artexp_elig_tldsw_50y_4   prop_artexp_elig_tldsw_50y_5  
 prop_tldsw_uvl2_50y_1 prop_tldsw_uvl2_50y_2 prop_tldsw_uvl2_50y_3 prop_tldsw_uvl2_50y_4  prop_tldsw_uvl2_50y_5
@@ -1765,8 +1778,10 @@ p_onart_iicu_uvl2_50y_1   p_onart_iicu_uvl2_50y_2   p_onart_iicu_uvl2_50y_3   p_
 p_adh_lt80_iicu_uvl2_50y_1 p_adh_lt80_iicu_uvl2_50y_2 p_adh_lt80_iicu_uvl2_50y_3 p_adh_lt80_iicu_uvl2_50y_4 p_adh_lt80_iicu_uvl2_50y_5 
 prop_r_dol_ge_p5_uvl2_50y_1 prop_r_dol_ge_p5_uvl2_50y_2 prop_r_dol_ge_p5_uvl2_50y_3 prop_r_dol_ge_p5_uvl2_50y_4 prop_r_dol_ge_p5_uvl2_50y_5 
 n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 n_death_hiv_50y_4 n_death_hiv_50y_5 
+d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 d_n_death_hiv_50y_4_1 d_n_death_hiv_50y_5_1
 p_iime_50y_1 p_iime_50y_2 p_iime_50y_3 p_iime_50y_4 p_iime_50y_5 
 n_iime_50y_1 n_iime_50y_2 n_iime_50y_3 n_iime_50y_4 n_iime_50y_5
+d_n_iime_50y_2_1 d_n_iime_50y_3_1 d_n_iime_50y_4_1 d_n_iime_50y_5_1
 p_hivpos_new_dol_r_50y_1 p_hivpos_new_dol_r_50y_2 p_hivpos_new_dol_r_50y_3 p_hivpos_new_dol_r_50y_4 p_hivpos_new_dol_r_50y_5 
 n_incident_r_dol_50y_1 n_incident_r_dol_50y_2 n_incident_r_dol_50y_3 n_incident_r_dol_50y_4 n_incident_r_dol_50y_5 
 n_dead_hivrel_onart_50y_1 n_dead_hivrel_onart_50y_2 n_dead_hivrel_onart_50y_3 n_dead_hivrel_onart_50y_4 n_dead_hivrel_onart_50y_5 
@@ -1777,9 +1792,11 @@ hiv_death_rate_uvl2_50y_1 hiv_death_rate_uvl2_50y_2 hiv_death_rate_uvl2_50y_3 hi
 p_vl1000_50y_1 p_vl1000_50y_2 p_vl1000_50y_3 p_vl1000_50y_4 p_vl1000_50y_5 
 p_onart_vl1000_50y_1 p_onart_vl1000_50y_2 p_onart_vl1000_50y_3 p_onart_vl1000_50y_4 p_onart_vl1000_50y_5 
 p_o_dar_uvl2_50y_1 p_o_dar_uvl2_50y_2 p_o_dar_uvl2_50y_3 p_o_dar_uvl2_50y_4 p_o_dar_uvl2_50y_5
-; 
+p_first_uvl2_dol_r_50y_1 p_first_uvl2_dol_r_50y_2 p_first_uvl2_dol_r_50y_3 p_first_uvl2_dol_r_50y_4 p_first_uvl2_dol_r_50y_5  
+deathr_dol_r_uvl2_50y_1 deathr_dol_r_uvl2_50y_2 deathr_dol_r_uvl2_50y_3 deathr_dol_r_uvl2_50y_4 deathr_dol_r_uvl2_50y_5  
+;
 run;
-
+ods html close;
 
 
 proc means   data = b  n mean p50 p5 p95 ;  
