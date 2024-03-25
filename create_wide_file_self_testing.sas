@@ -1,11 +1,7 @@
 * options user="/folders/myfolders/";
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc";
-<<<<<<< Updated upstream
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\self_testing\self_testing_b_out";
-=======
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\self_testing\self_testing_out";
->>>>>>> Stashed changes
 
 data g ; set b.out: ;
 
@@ -1028,15 +1024,9 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-<<<<<<< Updated upstream
 data b.l_self_testing_b; set y;  
 
 data y; set b.l_self_testing_b; 
-=======
-data b.l_self_testing_out; set y;  
-
-data y; set b.l_self_testing_out; 
->>>>>>> Stashed changes
 
   options nomprint;
   option nospool;
@@ -1350,11 +1340,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-<<<<<<< Updated upstream
   data b.w_self_testing_b; 
-=======
-  data b.w_self_testing_out; 
->>>>>>> Stashed changes
   merge   wide_outputs  wide_par ;  
   by run;
 
