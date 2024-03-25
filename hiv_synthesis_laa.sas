@@ -1,25 +1,5 @@
 
 
-
-
-* 
-
-consider points from jonathan schapiro:
-
-Sensitivity of resistance assays for detecting mutations varies – with “false negative” results for mutations of 5 – 20% if population sequencing used 
-(that I assume in most of these settings)
- 
-Duration of failure can impact mutation levels, with mutation levels increasing over time, “unmasking” mutations with longer duration of failure. Patient 
-with mutations not detected might show mutations if tested a week later.
-
-Adherence required for viral suppression are higher than those sufficient for selecting for mutations. Would the tenofovir drug level account for this?
-
-;
-
-
-
-
-
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -433,6 +413,7 @@ newp_seed = 7;
 * ntd_risk_dol;				ntd_risk_dol = 0;
 * dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.25 0.75);		
 																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
+* len_higher_potency;		%sample(len_higher_potency, 0.5 1 , 0.25 0.75);	
 * efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
 																* updated to equal dol potency JAS Nov2021;
 * pir_higher_potency;		pir_higher_potency=1; 
@@ -563,6 +544,7 @@ newp_seed = 7;
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							* dependent_on_time_step_length ;
 * pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  );   * tld_switch ;      
+* pr_res_len;				%sample_uniform(pr_res_len, 0.005  0.01  0.02  0.05);     
 * rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1 1.5 2  );
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
@@ -588,6 +570,7 @@ newp_seed = 7;
 * prop_bmi_ge23;			%sample_uniform(prop_bmi_ge23, 0.5 0.75);
 * nnrti_res_no_effect; 		%sample(nnrti_res_no_effect, 0 0.25 0.5, 0.75 0.2 0.05);
 * res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.5 0.75 1.00, 0.2 0.6 0.2 ); * tld_switch;
+* res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
 
 * effect_pcp_p_death_rate;	 	effect_pcp_p_death_rate = 0.8;
@@ -995,6 +978,9 @@ cost_lpr_a=(0.152/4)*1.2;
 cost_taz_a=(0.133/4)*1.2;   * chai 2022 zl-taz 216 ;
 cost_dol_a=(0.011/4)*1.2;   * chai 2022 - $54 for tld;
 cost_dar_a=(0.210/4)*1.2;	
+prep_inj_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost; 
+cost_cab_a = prep_inj_drug_cost ; * note that when cab used at treatment we use cost_cab_a rather than prep_inj_drug_cost;
+cost_len_a = (0.050 * 1.2) / 4; * placeholder ;
 tb_cost_a=(.050); * todo: this cost to be re-considered;
 cot_cost_a=(.005/4);
 vis_cost_a=(.020); 
@@ -1002,7 +988,6 @@ redn_in_vis_cost_vlm_supp = 0.010 ;
 cost_child_hiv_a = 0.030; 
 cost_child_hiv_mo_art_a = 0.030; 
 prep_oral_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
-prep_inj_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 prep_vr_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 	* lapr and dpv-vr - may need to update for cab and dpv in future;
 prep_tld_drug_cost = (0.054 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
@@ -1012,7 +997,7 @@ cost_prep_vr_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HI
 cost_prep_any_clinic_couns = 0.010; *Further clinic costs relating to adherence counselling;
 av_cost_self_test_avail = 0.001; * this is under pop wide tld with self test kits available - we dont know how frequently they will be used - we 
 									dont explicitly model self tests use, it only helps status informed tld use - cost ;
- 
+
 * not * dependent_on_time_step_length ;
 * todo: add in crag and tb lam test costs, add in cost of treating tb crypm sbi (may be higher if diagnosed early, + costs of tb crypm prophylaxis;
 adc_cost_a=(.200); 
@@ -1048,139 +1033,6 @@ util_non_tb_who3 = rand('beta',8,2);  util_non_tb_who3 = 0.78;
 util_tb = rand('beta',7,7);  util_tb = 0.60;
 util_adc = rand('beta',2,6); util_adc = 0.46;
 * util_rec_ntd = 0.8; * removed aug18 - since dont have this for mtct;
-
-
-
-/*
-* ts1m: running with monthly time steps - transformation of rate parameters  ;
-
-rate_ch_art_init_str = 1 - (1 - rate_ch_art_init_str)**(1/3) ;
-rate_want_no_more_children = 1 - (1 - rate_want_no_more_children )**(1/3) ;
-rate_sti = 1 - (1 - rate_sti )**(1/3) ;
-rate_persist_sti = 1 - (1 - rate_persist_sti )**(1/3) ;
-sw_newp_lev_1_1 = 1 - (1 - sw_newp_lev_1_1 )**(1/3) ;  
-sw_newp_lev_1_2 = 1 - (1 - sw_newp_lev_1_2 )**(1/3) ;
-sw_newp_lev_1_3 = 1 - (1 - sw_newp_lev_1_3 )**(1/3) ;
-sw_newp_lev_1_4 = 1 - (1 - sw_newp_lev_1_4 )**(1/3) ;
-sw_newp_lev_1_5 = 1 - (1 - sw_newp_lev_1_5 )**(1/3) ;
-sw_newp_lev_2_1 = 1 - (1 - sw_newp_lev_2_1 )**(1/3) ; 
-sw_newp_lev_2_2 = 1 - (1 - sw_newp_lev_2_2 )**(1/3) ; 
-sw_newp_lev_2_3 = 1 - (1 - sw_newp_lev_2_3 )**(1/3) ; 
-sw_newp_lev_2_4 = 1 - (1 - sw_newp_lev_2_4  )**(1/3) ; 
-sw_newp_lev_2_5 = 1 - (1 - sw_newp_lev_2_5 )**(1/3) ;
-sw_newp_lev_3_1 = 1 - (1 - sw_newp_lev_3_1 )**(1/3) ; 
-sw_newp_lev_3_2 = 1 - (1 - sw_newp_lev_3_2 )**(1/3) ;
-sw_newp_lev_3_3 = 1 - (1 - sw_newp_lev_3_2 )**(1/3) ;
-sw_newp_lev_3_4 = 1 - (1 - sw_newp_lev_3_4 )**(1/3) ; 
-sw_newp_lev_3_5 = 1 - (1 - sw_newp_lev_3_5 )**(1/3) ; 
-sw_newp_lev_4_1 = 1 - (1 - sw_newp_lev_4_1 )**(1/3) ;  
-sw_newp_lev_4_2 = 1 - (1 - sw_newp_lev_4_2 )**(1/3) ; 
-sw_newp_lev_4_3 = 1 - (1 - sw_newp_lev_4_3 )**(1/3) ; 
-sw_newp_lev_4_4 = 1 - (1 - sw_newp_lev_4_4 )**(1/3) ; 
-sw_newp_lev_4_5 = 1 - (1 - sw_newp_lev_4_5 )**(1/3) ; 
-sw_newp_lev_5_1 = 1 - (1 - sw_newp_lev_5_1 )**(1/3) ; 
-sw_newp_lev_5_2 = 1 - (1 - sw_newp_lev_5_2 )**(1/3) ; 
-sw_newp_lev_5_3 = 1 - (1 - sw_newp_lev_5_3 )**(1/3) ; 
-sw_newp_lev_5_4 = 1 - (1 - sw_newp_lev_5_4 )**(1/3) ; 
-sw_newp_lev_5_5 = 1 - (1 - sw_newp_lev_5_5 )**(1/3) ;
-rate_newp0_rred_rc = 1 - (1 - rate_newp0_rred_rc )**(1/3) ;
-rate_non_hiv_symptoms = 1 - (1 - rate_non_hiv_symptoms )**(1/3) ;
-r_swi_efa_cns = 1 - (1 - r_swi_efa_cns )**(1/3) ;
-r_swi_efa_ras = 1 - (1 - r_swi_efa_ras )**(1/3) ;
-r_swi_nev_hep = 1 - (1 - r_swi_nev_hep )**(1/3) ;
-r_swi_nev_ras = 1 - (1 - r_swi_nev_ras )**(1/3) ;
-r_swi_zdv_nau = 1 - (1 - r_swi_zdv_nau )**(1/3) ;
-r_swi_zdv_head = 1 - (1 - r_swi_zdv_head )**(1/3) ;
-r_swi_zdv_lip= 1 - (1 - r_swi_zdv_lip  )**(1/3) ;
-r_swi_zdv_ane = 1 - (1 - r_swi_zdv_ane )**(1/3) ;
-r_swi_zdv_lac = 1 - (1 - r_swi_zdv_lac )**(1/3) ;
-r_swi_ten_neph = 1 - (1 - r_swi_ten_neph  )**(1/3) ;
-r_swi_lpr_nau = 1 - (1 - r_swi_lpr_nau )**(1/3) ;
-r_swi_lpr_dia = 1 - (1 - r_swi_lpr_dia )**(1/3) ;
-r_swi_taz_nau = 1 - (1 - r_swi_taz_nau )**(1/3) ;
-r_swi_taz_dia = 1 - (1 - r_swi_taz_dia )**(1/3) ;
-r_swi_dol_cns = 1 - (1 - r_swi_dol_cns )**(1/3) ;
-rate_loss_acq_pim_offart = 1 - (1 - rate_loss_acq_pim_offart )**(1/3) ; 
-rate_loss_acq_iim_offart = 1 - (1 - rate_loss_acq_iim_offart  )**(1/3) ; 
-r_nau_start_zdv_lpr = 1 - (1 - r_nau_start_zdv_lpr )**(1/3) ;
-p_nau_stops_zdv_lpr = 1 - (1 - p_nau_stops_zdv_lpr )**(1/3) ;
-r_dia_start_lpr = 1 - (1 - r_dia_start_lpr )**(1/3) ;
-p_dia_stops_lpr = 1 - (1 - p_dia_stops_lpr )**(1/3) ;
-r_dia_start_taz_dar = 1 - (1 - r_dia_start_taz_dar )**(1/3) ;
-p_dia_stops_taz_dar = 1 - (1 - p_dia_stops_taz_dar  )**(1/3) ;
-r_ras_start_efa = 1 - (1 - r_ras_start_efa  )**(1/3) ;
-r_res_start_nev = 1 - (1 - r_res_start_nev )**(1/3) ;
-r_weightg_start_dol = 1 - (1 - r_weightg_start_dol )**(1/3) ;
-r_cns_start_efa = 1 - (1 - r_cns_start_efa )**(1/3) ;
-p_cns_stops_efa = 1 - (1 - p_cns_stops_efa  )**(1/3) ;
-r_cns_start_dol = 1 - (1 - r_cns_start_dol )**(1/3) ;
-p_cns_stops_dol = 1 - (1 - p_cns_stops_dol  )**(1/3) ;
-r_lip_start_zdv = 1 - (1 - r_lip_start_zdv  )**(1/3) ;
-r_hep_start_nev = 1 - (1 - r_hep_start_nev  )**(1/3) ;
-r_otx_start = 1 - (1 - r_otx_start )**(1/3) ;
-r_ane_start_zdv = 1 - (1 - r_ane_start_zdv )**(1/3) ;
-p_ane_stops_zdv = 1 - (1 - p_ane_stops_zdv   )**(1/3) ;
-r_head_start_zdv = 1 - (1 - r_head_start_zdv )**(1/3) ;
-p_head_stops_zdv = 1 - (1 - p_head_stops_zdv  )**(1/3) ;
-r_lac_start_zdv = 1 - (1 - r_lac_start_zdv  )**(1/3) ;
-r_neph_start_ten = 1 - (1 - r_neph_start_ten )**(1/3) ;
-p_neph_stops_ten = 1 - (1 - p_neph_stops_ten )**(1/3) ;
-p_neph_stops_after_ten = 1 - (1 - p_neph_stops_after_ten  )**(1/3) ; 
-eprate   = 1 - (1 - eprate  )**(1/3) ; 
-rate_exp_set_lower_p_vl1000  = 1 - (1 - rate_exp_set_lower_p_vl1000   )**(1/3) ; 
-prob_pregnancy_base   = 1 - (1 - prob_pregnancy_base  )**(1/3) ;
-rate_loss_persistence   = 1 - (1 - rate_loss_persistence  )**(1/3) ;
-rate_loss_nnres_pmtct_maj = 1 - (1 - rate_loss_nnres_pmtct_maj  )**(1/3) ;
-initial_rate_1sttest  = 1 - (1 - initial_rate_1sttest )**(1/3) ;
-test_rate_who4   = 1 - (1 - test_rate_who4  )**(1/3) ;
-test_rate_tb  = 1 - (1 - test_rate_tb  )**(1/3) ;
-test_rate_non_tb_who3   = 1 - (1 - test_rate_non_tb_who3  )**(1/3) ;
-rate_lost   = 1 - (1 - rate_lost  )**(1/3) ;
-rate_return   = 1 - (1 - rate_return )**(1/3) ;
-rate_restart   = 1 - (1 - rate_restart   )**(1/3) ;
-pr_art_init  = 1 - (1 - pr_art_init  )**(1/3) ;
-pr_switch_line   = 1 - (1 - pr_switch_line   )**(1/3) ;
-prob_supply_interrupted    = 1 - (1 - prob_supply_interrupted  )**(1/3) ;
-prob_supply_resumed = 1 - (1 - prob_supply_resumed  )**(1/3) ;
-poorer_cd4rise_fail_nn     = 1 - (1 - poorer_cd4rise_fail_nn  )**(1/3) ;
-rate_int_choice   = 1 - (1 - rate_int_choice  )**(1/3) ;
-rate_loss_acq_nnm_offart  = 1 - (1 - rate_loss_acq_nnm_offart   )**(1/3) ;
-rate_test_onprep_any     = 1 - (1 - rate_test_onprep_any   )**(1/3) ;
-prob_prep_any_restart_choice   = 1 - (1 - prob_prep_any_restart_choice  )**(1/3) ;
-pop_wide_tld_prob_egfr = 1 - (1 - pop_wide_tld_prob_egfr  )**(1/3) ;
-base_rate_sw   = 1 - (1 - base_rate_sw   )**(1/3) ;
-base_rate_stop_sexwork   = 1 - (1 - base_rate_stop_sexwork   )**(1/3) ;
-rate_anc_inc  = 1 - (1 - rate_anc_inc  )**(1/3) ;
-incr_test_rate_sympt   = 1 - (1 - incr_test_rate_sympt   )**(1/3) ;
-prob_lost_art   = 1 - (1 - prob_lost_art   )**(1/3) ;
-rate_res_ten     = 1 - (1 - rate_res_ten  )**(1/3) ;
-rate_test_startprep_any   = 1 - (1 - rate_test_startprep_any  )**(1/3) ;
-rate_choose_stop_prep_oral  = 1 - (1 - rate_choose_stop_prep_oral  )**(1/3) ;
-poorer_cd4rise_fail_nn = poorer_cd4rise_fail_nn / 3;
-poorer_cd4rise_fail_ii = poorer_cd4rise_fail_ii / 3;
-cost_zdv_a  = cost_zdv_a  / 3;
-cost_3tc_a  = cost_3tc_a   / 3;
-cost_ten_a  = cost_ten_a    / 3;
-cost_taf   =  cost_taf  / 3;
-cost_nev_a  =  cost_nev_a / 3;
-cost_efa_a  =  cost_efa_a   / 3;
-cost_lpr_a   = cost_lpr_a   / 3;
-cost_taz_a  =  cost_taz_a  / 3;
-cost_dol_a  =  cost_dol_a / 3;
-cost_dar_a  =  cost_dar_a  / 3;
-tb_cost_a =  tb_cost_a / 3;
-cot_cost_a =  cot_cost_a  / 3;
-vis_cost_a   = vis_cost_a    / 3;
-prep_oral_drug_cost  =  prep_oral_drug_cost  / 3;
-prep_inj_drug_cost  =  prep_inj_drug_cost  / 3;
-prep_vr_drug_cost  =  prep_vr_drug_cost  / 3;
-* prep_tld_drug_cost  ? ;
-cost_prep_oral_clinic  = cost_prep_oral_clinic   / 3;
-cost_prep_inj_clinic  = cost_prep_inj_clinic   / 3;
-cost_prep_vr_clinic  = cost_prep_vr_clinic   / 3;
-cost_prep_any_clinic_couns =  cost_prep_any_clinic_couns  / 3;
-
-*/
 
 
 
@@ -6750,6 +6602,7 @@ o_lpr = 0;
 o_taz = 0;
 o_dol = 0;
 o_cab = 0;
+o_len = 0;
 
 if prep_oral = 1 then o_3tc = 1;
 if prep_oral = 1 then o_ten = 1;
@@ -6773,6 +6626,7 @@ p_lpr = 0;
 p_taz = 0;
 p_dol = 0;
 p_cab = 0;
+p_len = 0;
 
 if prep_oral = 1 then p_3tc = 1;
 if prep_oral = 1 then p_ten = 1;
@@ -6788,6 +6642,8 @@ tss_efa = .;
 tss_lpr = .;
 tss_taz = .;
 tss_dol = .;
+tss_cab = .;
+tss_len = .;
 
 
 * for those off ART - drug used in most recent regimen ;
@@ -6801,6 +6657,7 @@ mr_lpr = 0;
 mr_taz = 0;
 mr_dol = 0;
 mr_cab = 0;
+mr_len = 0;
 
 
 * previous virological failure of drugs;
@@ -6814,6 +6671,7 @@ f_lpr = 0;
 f_taz = 0;
 f_dol = 0;
 f_cab = 0;
+f_len = 0;
 
 
 toffart=.;
@@ -6981,7 +6839,7 @@ r_lpr = 0;
 r_taz = 0;
 r_dol = 0;
 r_cab = 0;
-
+r_len = 0;
 
 * 3tc;
 if e_rt65m=1 or e_rt151m=1 then r_3tc=0.25;
@@ -7102,6 +6960,14 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if prep_o_cab_off_3m_prim =1 and cab_res_primary=1 then cab_res_prep_inj_primary=1;
 
 
+* LENACAPAVIR;
+
+* len;
+	* placeholder ;
+	r_dol = 0;
+
+
+
 * if in prep_inj tail and infected with hiv;
 cur_in_prep_inj_tail_hiv=0; if currently_in_prep_inj_tail = 1 then cur_in_prep_inj_tail_hiv=1;
 cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerge_inm_res_cab_tail=1) then cur_in_prep_inj_tail_no_r=1;
@@ -7171,6 +7037,7 @@ t_lpr = 0;
 t_taz = 0;
 t_dol = 0;
 t_cab = 0;
+t_len = 0;
 
 line1=0; line2=0;  line3=0;
 onart   =0;
@@ -7342,7 +7209,7 @@ if prep_oral=1 and pop_wide_tld_prep=1 then do;
 	onart=1; time0=caldate{t}; yrart=time0;  started_art_as_tld_prep=1;
 	linefail=0; artline=1; tcur=0; cd4_tcur0=cd4; line1=1; vfail1=0; naive=0; 
 	o_3tc=1; o_ten=1; o_dol=1;  art_initiation=1; 
-	o_zdv=0; o_nev=0; o_lpr=0; o_taz=0; o_efa=0; 
+	o_zdv=0; o_nev=0; o_lpr=0; o_taz=0; o_efa=0; o_cab=0; o_len=0;
 end;
 
 
@@ -7424,6 +7291,7 @@ visit_tm1=visit;
 	p_taz_tm1=p_taz; 	f_taz_tm1=f_taz; 	t_taz_tm1=t_taz;	r_taz_tm1=r_taz; 	o_taz_tm1=o_taz; 	
     p_dol_tm1=p_dol;	f_dol_tm1=f_dol; 	t_dol_tm1=t_dol;	r_dol_tm1=r_dol;	o_dol_tm3=o_dol_tm2; 	o_dol_tm2=o_dol_tm1; 	o_dol_tm1=o_dol;	
     p_cab_tm1=p_cab;	f_cab_tm1=f_cab; 	t_cab_tm1=t_cab;	r_cab_tm1=r_cab;	o_cab_tm3=o_cab_tm2; 	o_cab_tm2=o_cab_tm1; 	o_cab_tm1=o_cab;  	* lapr - added cab variables; * JAS Nov2021;
+	p_len_tm1=p_len;	f_len_tm1=f_len; 	t_len_tm1=t_len;	r_len_tm1=r_len;	o_len_tm3=o_len_tm2; 	o_len_tm2=o_len_tm1; 	o_len_tm1=o_len;  	
 
 
 	vfail1_tm1 = vfail1;
@@ -7433,7 +7301,7 @@ visit_tm1=visit;
 	if prep_oral = 1 and pop_wide_tld_prep = 1 then do;	* lapr and dpv-vr - does not change for lapr & dpv-vr assuming a person on tld_prep would not also be on lapr / dpv-vr;
 	onart   =1; if time0 = . then time0=caldate{t}; yrart=time0; started_art_as_tld_prep=1;art_initiation=1;
 	linefail=0; artline=1; tcur  =0; cd4_tcur0 = cd4; line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; 
-	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_cab=0; 
+	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_cab=0;o_len=0;
 	end;
 
 
@@ -7476,6 +7344,7 @@ visit_tm1=visit;
 	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
 	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
 	mr_cab_tm1=mr_cab; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
+	mr_len_tm1=mr_cab; if tss_len ge 0 and o_len_tm1=0 then tss_len = tss_len+0.25;	
 
 	c_lip_tm1=c_lip ;  	c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
 	c_cns_tm1=c_cns ;   c_hep_tm1=c_hep ;   c_nau_tm1=c_nau ;   c_otx_tm1=c_otx ;   
@@ -8083,7 +7952,8 @@ res_test=.;
 		if o_taz_tm1=1 then do;  mr_taz=1;tss_taz=0; end;
 		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;	* lapr - add rla and cab;
 		if o_cab_tm1=1 then do;  mr_cab=1;tss_cab=0; end;
-		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0; o_cab=0;
+		if o_len_tm1=1 then do;  mr_len=1;tss_len=0; end;
+		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0; o_cab=0; o_len=0;
 		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;	* lapr - add rla and cab;
 		v_inter=vl_tm1; tcur_inter=tcur;
 	end;
@@ -8168,6 +8038,8 @@ end;
 		o_lpr=mr_lpr_tm1;
 		o_taz=mr_taz_tm1;
 		o_dol=mr_dol_tm1;	* lapr - add rla and cab;
+		o_cab=mr_cab_tm1;
+		o_len=mr_len_tm1;
 
 		* if return    =1 then do; * jan18 - think this should apply when restarting even if return ne 1;
 
@@ -8206,7 +8078,7 @@ if onart ne 1 then onartvisit0=0;
 
 if yrart=caldate{t} and onart    ne 1 and  art_intro_date <= yrart then do;
 tcur=0; cd4_tcur0 = cd4; naive=0;artline=1;onart   =1;linefail=0;line1=1;vfail1=0; art_initiation=1;
-o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;
+o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_cab=0;o_len=0;
 
     if caldate{t} < 2010.5 then do; o_zdv=1; o_3tc=1; o_efa=1; end;
     if 2010.5 <= caldate{t} and reg_option < 100 then do; o_ten=1; o_3tc=1; o_efa=1; end; 
@@ -8477,7 +8349,9 @@ if onart = 1 and switch_for_tox = 1 then do;
 		if t_taz_tm1=0  and o_taz ne 1  then do; t_dol=1;tss_dol   =0; o_taz=1;o_dol=0; goto x9; end;
 	x9: end;
  
-* lapr - add rla and cla;
+* cab ; * placeholder ;
+
+* len ; * placeholder ;
 
 	end;
 
@@ -8490,14 +8364,14 @@ start_line2_this_period=.;
 
 
 	if art_intro_date <= caldate{t} < 2010.5 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0; o_len=0;
 			o_3tc=1;
 			if t_lpr=0 then o_lpr=1;
 			if t_zdv=0 then do; o_zdv=1; goto vv66; end;
 	end;
 
  	if caldate{t} >= 2010.5 and caldate{t} < 2014 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;	
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;o_len=0;
 			o_3tc=1;
 			if f_lpr=0 and t_lpr=0 then o_lpr=1;
 			if o_lpr=0 and f_nev=0 and t_nev=0 then o_nev=1;  if o_lpr=0 and f_nev=0 and t_nev=1 and t_efa=0 then o_efa=1;
@@ -8506,7 +8380,7 @@ start_line2_this_period=.;
 	end;
 
  	if caldate{t} >= 2014 and caldate{t} < 2015 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;o_len=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if t_lpr=0 and t_taz=1 then o_lpr=1;
@@ -8521,7 +8395,7 @@ start_line2_this_period=.;
 * AP 20-7-19;
 
  	if caldate{t} >= 2015 and caldate{t} < 2024.5 and f_dol=1 and reg_option in (102 103 104 113 115 116 117 118 119 120 121 125) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;o_len=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if o_taz=0 and (t_nev=0 and f_nev=0) then o_nev=1;
@@ -8539,7 +8413,7 @@ start_line2_this_period=.;
 	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1) and (caldate{t} < 2019.5 or reg_option in (101 102 107 108 109 112 113 115 ) ) 
 	then do; * dec17; * note 100 is for msfm;
 	* note if returing to former definition of policy 103 then need to add 103 in here;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;	
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;o_len=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if t_lpr=0 and t_taz=1 then o_lpr=1;
@@ -8550,14 +8424,14 @@ start_line2_this_period=.;
 	end;
 
 	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1)  and reg_option in (103 110 111 114 116 117 119 120 121)  then do; * aug18;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;o_len=0;
 			o_3tc=1;
 			if f_dol ne 1 then o_dol=1; if f_dol=1 then o_taz=1;
 			o_zdv=1; goto vv66; 
 	end;
 
  	if caldate{t} >= 2015 and (f_taz=1 or f_lpr=1) and reg_option in (107 ) then do;  
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0; o_len=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			* if t_lpr=1 and t_taz=1 and t_nev=0 then o_nev=1; 
@@ -8566,20 +8440,20 @@ start_line2_this_period=.;
 	end;
 
 	if reg_option in (999) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0; o_len=0;
 			o_3tc=1;
 			o_dol=1;
 			o_zdv=1; goto vv66; 
 	end;
 	
 	if reg_option in (105) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;o_len=0;
 			o_3tc=1;
 			o_dol=1;
 			if t_ten=0 then o_ten=1; if t_ten=1 then o_zdv=1; goto vv66; 
 	end;
 	if reg_option in (106) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;o_len=0;
 			o_3tc=1;
 			o_dol=1;
 			if t_zdv=0 then o_zdv=1; if t_zdv=1 then o_ten=1; goto vv66; 
@@ -8597,7 +8471,7 @@ vv66:
 			if o_lpr_tm1=1  and o_lpr=0 then do;  tss_lpr=0; end;
 			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;	
 			if o_cab_tm1=1  and o_cab=0 then do;  tss_cab=0; end;	
-
+			if o_len_tm1=1  and o_len=0 then do;  tss_len=0; end;	
 	end;
 end;
 
@@ -8619,12 +8493,13 @@ if choose_line3=1  then do;
 			if o_lpr_tm1=1  and o_lpr=0 then do;  tss_lpr=0; end;
 			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;	
 			if o_cab_tm1=1  and o_cab=0 then do;  tss_cab=0; end;	
+			if o_len_tm1=1  and o_len=0 then do;  tss_len=0; end;	
 	end;
 
 if pi_after_dtg_fail=1  then do;  
 			pi_after_dtg_fail=.;
 			if artline=2 then artline=3; line3=1;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;o_cab=0;o_len=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			if t_zdv ne 1 then do; o_zdv=1;  end;
@@ -8637,7 +8512,7 @@ end;
 
 if restart_pi_after_dtg_fail=1  then do;  
 			restart_pi_after_dtg_fail=.;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;o_cab=0;o_len=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			if t_zdv ne 1 then do; o_zdv=1;  end;
@@ -8662,6 +8537,7 @@ then do;
 		if o_dar=1 then f_dar=1;
 		if o_dol=1 then f_dol=1;	
 		if o_cab=1 then f_cab=1;	
+		if o_len=1 then f_len=1;	
 end;
 end;
 end; 
@@ -8697,6 +8573,7 @@ if onart ne 1 then onartvisit0=0;
 		mr_taz=o_taz;
 		mr_dol=o_dol;
 		mr_cab=o_cab;
+		mr_len=o_len;
 	end;
 
 
@@ -8711,6 +8588,7 @@ if onart ne 1 then onartvisit0=0;
 	if o_taz=1 then p_taz=1;
 	if o_dol=1 then p_dol=1;
 	if o_cab=1 then p_cab=1;
+	if o_len=1 then p_len=1;
 
 
 * date first start specific drugs;	
@@ -10136,6 +10014,10 @@ and starting another, non-x-resistant, regimen;
 		a=rand('uniform');if c_in155m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in155m=c_in155m_inf;	
 		a=rand('uniform');if c_in263m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in263m=c_in263m_inf;	
 
+	* lenacapavit; 
+
+		* placeholder;
+
 end;
 
 
@@ -10169,6 +10051,7 @@ x=rand('uniform'); if c_in148m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in
 x=rand('uniform'); if c_in155m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in155m=1 and x < rate_loss_persistence then c_in155m=0; 
 x=rand('uniform'); if c_in263m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in263m=1 and x < rate_loss_persistence then c_in263m=0; 
 
+* placeholder for len;
 
 
 * LOSS OF MUTATIONS ACQUIRED IN PMTCT FROM MAJORITY and minoririty VIRUS ;
@@ -10204,7 +10087,7 @@ x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1
 	if e_in148m=1  and (o_dol=1 or o_cab=1 ) then c_in148m=1;
 	if e_in155m=1  and (o_dol=1 or o_cab=1 ) then c_in155m=1;
 	if e_in263m=1  and (o_dol=1 or o_cab=1 ) then c_in263m=1;
-	
+	* placeholder for len;
 
 
 
@@ -10296,6 +10179,8 @@ and 0.5 <= caldate{t}-date_who3_4_event_switch_eval <= 1.0 then do;
 		if o_taz=1 then f_taz=1;						
 		if o_dar=1 then f_dar=1;
 		if o_dol=1 then f_dol=1;
+		if o_cab=1 then f_cab=1;
+		if o_len=1 then f_len=1;
 	end;
 end;
 
@@ -10328,6 +10213,8 @@ if t ge 2  and visit=1 and onartvisit0 ne 1 and art_monitoring_strategy=8 and (a
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
+				if o_cab=1 then f_cab=1;
+				if o_len=1 then f_len=1;
 			end;
 			conf_measured_c=.;   
 		end;
@@ -10347,6 +10234,8 @@ if t ge 2  and visit=1 and onartvisit0 ne 1 and art_monitoring_strategy=8 and (a
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
+				if o_cab=1 then f_cab=1;
+				if o_len=1 then f_len=1;
 			end;
 			conf_measured_c=.;
 		end;
@@ -10390,6 +10279,8 @@ if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clini
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
+				if o_cab=1 then f_cab=1;
+				if o_len=1 then f_len=1;
 			end;
 		conf_measured_c=.;
 		end;
@@ -10421,6 +10312,8 @@ if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clini
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
+				if o_cab=1 then f_cab=1;
+				if o_len=1 then f_len=1;
 			end;
 			conf_measured_c=.;
 		end;
@@ -10491,6 +10384,8 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
+				if o_cab=1 then f_cab=1;
+				if o_len=1 then f_len=1;
 			end;
 		end;
 end;
@@ -10538,58 +10433,10 @@ and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_fro
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;
+			if o_len=1 then f_len=1;
 	end; 
 end;
-
-/*
-
-* art_monitoring_strategy = 1500.  viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test;
-* takes account of time delay for DBS or plasma measurement of vl, compared with POC ;  * dependent_on_time_step_length ;
-
-drug_level_test=0;
-if art_monitoring_strategy=1500  and visit=1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
-and restart    ne 1 and restart_tm1  ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
-	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and 
-	(caldate{t} - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; * jan15;
-		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
-		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; date_conf_vl_measure_done = caldate{t} ; date_drug_level_test = caldate{t};
-		drug_level_test=1; end;
-		end;  
-		vl_cost_inc = 1;
-		if vm gt log10(vl_threshold) then do; 
-			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
-			if date_v_alert=. then date_v_alert=caldate{t};  
-		end;
-	end;
-
-	* eee;	
-	if o_dol=1 and (caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold)) then o_dol_2nd_vlg1000 = 1;
-
-	if (
-	(caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold) and adh > 0.8) 
-	or
-	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold) and adh_tm1 > 0.8)
-	) 
-	then do;
-			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
-			if o_zdv=1 then f_zdv=1;
-			if o_3tc=1 then f_3tc=1;
-			if o_ten=1 then f_ten=1;
-			if o_nev=1 then f_nev=1;
-			if o_efa=1 then f_efa=1;
-			if o_lpr=1 then f_lpr=1;
-			if o_taz=1 then f_taz=1;
-			if o_dar=1 then f_dar=1;
-			if o_dol=1 then f_dol=1;
-	end; 
-end;
-
-*/
-
 
 
 * TLD_SWITCH comparison  ; 
@@ -10647,7 +10494,8 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
-			
+				if o_cab=1 then f_cab=1;
+				if o_len=1 then f_len=1;			
 			end; 
 
 		end;  
@@ -10699,6 +10547,8 @@ and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and (caldate{t} - d
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;
+			if o_len=1 then f_len=1;
 	end; 
 end;
 
@@ -10730,6 +10580,8 @@ and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and (caldate{t} - d
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;
+			if o_len=1 then f_len=1;
 		end;
 	end;
 		
@@ -10773,6 +10625,8 @@ then do;
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;
+			if o_len=1 then f_len=1;
 	end; 
 end;
 
@@ -10821,6 +10675,8 @@ then do;
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;
+			if o_len=1 then f_len=1;
 	end; 
 end;
 
@@ -10867,6 +10723,8 @@ then do;
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;
+			if o_len=1 then f_len=1;
 	end; 
 end;
 
@@ -10934,6 +10792,8 @@ if res_test_6m_if_vlg1000=1 and t ge 2 and absence_vl_year_i ne 1 then do; *VCMa
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;
+			if o_len=1 then f_len=1;
 			end; goto ff13;
 
 ff13: end;
@@ -11066,6 +10926,12 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if r_cab=res_level_dol_cab_mut and r_cab_tm1 <= 0 then do;  if o_cab=1 or caldate{t}-prep_inj_last_stop_date = 0 then cab_res_o_cab = 1; 
 	if currently_in_prep_inj_tail = 1 then cab_res_tail = 1; end; 
 
+* len;
+
+	* len placeholder;
+
+
+
 * if in prep_inj tail and infected with hiv;
 cur_in_prep_inj_tail_hiv=0; if currently_in_prep_inj_tail = 1 then cur_in_prep_inj_tail_hiv=1;
 cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerge_inm_res_cab_tail=1) then cur_in_prep_inj_tail_no_r=1;
@@ -11073,7 +10939,8 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	* DEFINE NACTIVE - number of active drugs in the regimen ;
 
 	nactive=nod   -((o_zdv*r_zdv)+(o_3tc*r_3tc)+(o_ten*r_ten)
-	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol)+(o_cab*r_cab));	* lapr - add cab & consider tail code from LAI;
+	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol)+(o_cab*r_cab)+(o_len*r_len));
+					  * lapr - add cab & consider tail code from LAI;
 
 	* zdv lower potency ;
 	if o_zdv=1 and zdv_potency_p75=1 then nactive=nactive - 0.25*(1-r_zdv);
@@ -11089,6 +10956,9 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	cab_higher_potency = dol_higher_potency ;
 	if prep_inj =1 or 0 <= tss_cab <= cab_time_to_lower_threshold then nactive = (1 + cab_higher_potency) * (1 - r_cab); 
 	
+	if o_len=1 then nactive=nactive + len_higher_potency * (1 - r_len);    
+	* len placeholder - consider len tail ;
+
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
 	if o_efa=1 then nactive=nactive+ (0.5*(1-r_efa)); 
@@ -11105,7 +10975,7 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	* date of first having resistance (intermediate or resistant) to at least one drug;
 	if res_drug=. then do;
 		if r_zdv >= 0.5 or  r_3tc  >= 0.5 or  r_dar >= 0.5 or   r_efa >= 0.5 or r_nev >= 0.5 or  
-		r_ten >= 0.5 or  r_lpr ge 0.5 or  r_taz ge 0.5 or  r_dol >= 0.5  or r_cab >= 0.5  
+		r_ten >= 0.5 or  r_lpr ge 0.5 or  r_taz ge 0.5 or  r_dol >= 0.5  or r_cab >= 0.5 or r_len >= 0.5
 		then res_drug=caldate{t};							* lapr - added r_cab JAS Nov2021;
 
 	end;
@@ -11238,6 +11108,8 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	c_tox=0;
 	if c_nau=1 or c_lip = 1 or c_pen = 1 or c_ras = 1 or c_cns = 1 or c_lac=1 or c_ane=1
 	or c_hep = 1 or c_dia = 1 or c_otx = 1 or c_neph = 1 or c_weightg=1	then c_tox=1;
+
+* len placeholder - add in len and cab tox ;
 
 
 	* PCP prophylaxis; * amended nov19;
@@ -11392,6 +11264,10 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 
 * ------------------------------------------------------------------------------------------------------- ;
 			f=rand('uniform');
+
+
+* len here here ;
+
 
 			if t ge 3 and art_monitoring_strategy = 1 and f < prob_who3_diagnosed then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 
