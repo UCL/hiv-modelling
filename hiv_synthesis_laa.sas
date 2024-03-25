@@ -264,6 +264,8 @@ newp_seed = 7;
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
 * res_trans_factor_ii;		%sample(res_trans_factor_ii, 0.2 0.4 0.6 0.8, 0.25 0.25 0.25 0.25);
 
+* res_trans_factor_ca;		%sample(res_trans_factor_ca, 0.2 0.5 0.8, 0.33 0.33 0.33); 
+
 * super_inf_res;			%sample(super_inf_res, 0.2 0.8, 0.9 0.1);
 
 * rate_loss_persistence;	%sample(rate_loss_persistence, 
@@ -442,6 +444,7 @@ newp_seed = 7;
 * r_swi_dol_cns;			r_swi_dol_cns = 	0.02;
 * rate_loss_acq_pim_offart;	rate_loss_acq_pim_offart = 0.2;
 * rate_loss_acq_iim_offart;	rate_loss_acq_iim_offart = 0.2;
+* rate_loss_acq_cam_offart;	rate_loss_acq_cam_offart = 0.2; * len placeholder;
 
 * all * dependent_on_time_step_length ;
 * r_otx_start;				r_otx_start = 			0.03;
@@ -1499,11 +1502,11 @@ dcause = . ; * can be who4_=1 / liver=2 / CVD=3 / drug death=4 / other=5 ( or 1=
 ccsqr = . ;  e_rt184_tm1 = . ;  e_rt65_tm1 = . ;  e_rt151_tm1 = . ; 
 e_rt103_tm1 = . ;  e_rt181_tm1 = . ;  e_rt190_tm1 = . ;  e_pr32_tm1 = . ;  e_pr33_tm1 = . ;  e_pr46_tm1 = . ;  e_pr47_tm1 = . ;  e_pr50v_tm1 = . ; 
 e_pr50l_tm1 = . ;  e_pr54_tm1 = . ;  e_pr76_tm1 = . ;  e_pr82_tm1 = . ;  e_pr84_tm1 = . ;  e_pr88_tm1 = . ;  e_pr90_tm1 = . ;  
-e_in118_tm1=.; e_in140_tm1=.; e_in148_tm1=.; e_in155_tm1=.; e_in263_tm1=.; 
+e_in118_tm1=.; e_in140_tm1=.; e_in148_tm1=.; e_in155_tm1=.; e_in263_tm1=.;  e_ca66_tm1=.;
 c_rt184_tm1 = . ; 
 c_rt65_tm1 = . ;  c_rt151_tm1 = . ;  c_rt103_tm1 = . ;  c_rt181_tm1 = . ;  c_rt190_tm1 = . ;  c_pr32_tm1 = . ;  c_pr33_tm1 = . ;  c_pr46_tm1 = . ; 
 c_pr47_tm1 = . ;  c_pr50v_tm1 = . ;  c_pr50l_tm1 = . ;  c_pr54_tm1 = . ;  c_pr76_tm1 = . ;  c_pr82_tm1 = . ;  c_pr84_tm1 = . ;  c_pr88_tm1 = . ; 
-c_pr90_tm1 = . ;  c_in118_tm1=.; c_in140_tm1=.; c_in148_tm1=.; c_in263_tm1=.;
+c_pr90_tm1 = . ;  c_in118_tm1=.; c_in140_tm1=.; c_in148_tm1=.; c_in263_tm1=.; c_ca66_tm1=.;
 restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184  = . ;  r_nau_start_taz_dar = . ; 
 p_nau_stops_taz_dar = . ;  onart_gt6m_vlg500 = . ;  rm_inf = . ;  util_cns_efa_tox = . ;  util_cns_dol_tox = . ;  cost_art_init = . ; 
 newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2449m = . ;  npgt1conc_l4p_2449w = . ;
@@ -5910,10 +5913,10 @@ if hiv=1 then super_infection_i=0;
 
 *NNRTI resistance modelled separately as K103N, Y181C and G190A, rather than c_rtnnm   ;
 k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.; p46m=.; p47m=.;  p50lm=.; p50vm=.; 
-p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  in118m=.; in140m=.; in148m=.; in155m=.; in263m=.; 
+p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  in118m=.; in140m=.; in148m=.; in155m=.; in263m=.; ca66m=.;
 k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.;  m184m_p=.;  q151m_p=.;  tam_p=.;  p32m_p=.;  p33m_p=.;  p46m_p=.;  p47m_p=.; 
 p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.; p90m_p=.;  in118m_p=.; in140m_p=.; in148m_p=.; in155m_p=.;  
-in263m_p=.; 
+in263m_p=.; ca66m_p=.;
 
 *prob infection in 3mths from the infected partner;
 
@@ -5944,7 +5947,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 
 		  m184m_p=0; tam_p=0;   k65m_p=0;  q151m_p=0; k103m_p=0;  y181m_p=0;  g190m_p=0;  
 		  p32m_p=0;  p33m_p=0;  p46m_p=0;  p47m_p=0;  p50lm_p=0;  p50vm_p=0;  p54m_p=0;  
-		  p76m_p=0;  p82m_p=0;  p84m_p=0;  p88m_p=0;  p90m_p=0;   in118m_p=0; in140m_p=0; in148m_p=0; in155m_p=0;  in263m_p=0; 
+		  p76m_p=0;  p82m_p=0;  p84m_p=0;  p88m_p=0;  p90m_p=0;   in118m_p=0; in140m_p=0; in148m_p=0; in155m_p=0;  in263m_p=0; ca66m_p=0;
 		  mut_p=.;
 
 		  e=rand('uniform'); if e < t_prop_rm  then do;
@@ -6049,10 +6052,14 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 				g=rand('uniform');
 				if g < t_prop_in263m  then in263m_p=1;
 
+				* resistance virus in partner - ca66 ;
+				g=rand('uniform');
+				if g < t_prop_ca66m  then ca66m_p=1;
+
 
 				mut_p = tam_p + m184m_p + k65m_p + q151m_p + k103m_p + y181m_p + g190m_p 
 				+ p32m_p + p33m_p + p46m_p + p47m_p + p50lm_p + p50vm_p + p54m_p 
-				+ p76m_p + p82m_p + p84m_p + p88m_p + p90m_p  + in118m_p  + in140m_p + in148m_p + in155m_p + in263m_p;
+				+ p76m_p + p82m_p + p84m_p + p88m_p + p90m_p  + in118m_p  + in140m_p + in148m_p + in155m_p + in263m_p + ca66m_p ;
 
 				f=f+1;
 			end;  
@@ -6159,7 +6166,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 
 		  m184m_p=0;  tam_p=0;  k65m_p=0;  q151m_p=0; k103m_p=0; y181m_p=0;  g190m_p=0;  
 		  p32m_p=0;   p33m_p=0; p46m_p=0;  p47m_p=0;  p50lm_p=0; p50vm_p=0;  p54m_p=0;  
-		  p76m_p=0;   p82m_p=0; p84m_p=0;  p88m_p=0;  p90m_p=0;  in118m_p=0;   in140m_p=0;  in148m_p=0;  in155m_p=0;  in263m_p=0;
+		  p76m_p=0;   p82m_p=0; p84m_p=0;  p88m_p=0;  p90m_p=0;  in118m_p=0;   in140m_p=0;  in148m_p=0;  in155m_p=0;  in263m_p=0;  ca66m_p=0;
 		  mut_p=.;
 
 		  e=rand('uniform'); if e < t_prop_rm  then do;
@@ -6262,10 +6269,13 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 				g=rand('uniform');
 				if g < t_prop_in263m  then in263m_p=1;
 
+				* resistance virus in partner - ca66 ;
+				g=rand('uniform');
+				if g < t_prop_ca66m  then ca66m_p=1;
 
 				mut_p = tam_p + m184m_p + k65m_p + q151m_p + k103m_p + y181m_p + g190m_p 
 				+ p32m_p + p33m_p + p46m_p + p47m_p + p50lm_p + p50vm_p + p54m_p 
-				+ p76m_p + p82m_p + p84m_p + p88m_p + p90m_p  + in118m_p  + in140m_p + in148m_p + in155m_p + in263m_p;
+				+ p76m_p + p82m_p + p84m_p + p88m_p + p90m_p  + in118m_p  + in140m_p + in148m_p + in155m_p + in263m_p + ca66m_p;
 
 				f=f+1;
 			end;  
@@ -6427,7 +6437,7 @@ if hiv=1 then do;
 		k103m=k103m_p;  y181m=y181m_p;  g190m=g190m_p;  k65m=k65m_p;  m184m=m184m_p;  q151m=q151m_p;  tam=tam_p;
 		p32m=p32m_p;    p33m=p33m_p;    p46m=p46m_p;    p47m=p47m_p;  p50lm=p50lm_p;
 		p50vm=p50vm_p;  p54m=p54m_p;    p76m=p76m_p;    p82m=p82m_p;  p84m=p84m_p;  p88m=p88m_p;  p90m=p90m_p; 
-		in118m=in118m_p;  in140m=in140m_p;  in148m=in148m_p;  in155m=in155m_p;   in263m=in263m_p;  
+		in118m=in118m_p;  in140m=in140m_p;  in148m=in148m_p;  in155m=in155m_p;   in263m=in263m_p;  ca66m = ca66m_p;
 	* res_trans_factor now only considers nnrti - mar16 - to concentrate on key parameter
 	castro, jain and yang papers suggest that rate loss for nnrti mutations is probably lower than we have assumed (rate loss 0.04 per 3 mths) so this should
 	be reduced (in mar16). 
@@ -6465,6 +6475,7 @@ if hiv=1 then do;
 		if in155m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in155m=0; end; 
 		if in263m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in263m=0; end; 
 
+		if ca66m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ca then ca66m=0;  end;	
 
 * xx33; 
 end;
@@ -6500,7 +6511,7 @@ if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
-		p50vm=0; p54m=0;  p76m=0;  p82m=0;  p84m=0;  p88m=0;  p90m=0;  in118m=0; in140m=0; in148m=0; in155m=0; in263m=0;
+		p50vm=0; p54m=0;  p76m=0;  p82m=0;  p84m=0;  p88m=0;  p90m=0;  in118m=0; in140m=0; in148m=0; in155m=0; in263m=0; ca66m=0;
 end;
 
 
@@ -6703,6 +6714,8 @@ c_in148m=max(0,in148m);
 c_in155m=max(0,in155m);
 c_in263m=max(0,in263m);
 
+c_ca66m=max(0,ca66m);
+
 if o_cab_or_o_cab_tm1=1 and c_in118m ne 1 and c_in140m ne 1 and c_in148m ne 1 and c_in155m ne 1 and c_in263m ne 1 then do;
 	o_cab_or_o_cab_tm1_no_r=1; o_cab_or_o_cab_tm1_no_r_prim=1; * note that o_cab_or_o_cab_tm1_no_r can also be 1 after primary infection;
 end;
@@ -6786,6 +6799,7 @@ c_in140m_inf=c_in140m;
 c_in148m_inf=c_in148m;
 c_in155m_inf=c_in155m;
 c_in263m_inf=c_in263m;
+c_ca66m_inf=c_ca66m;
 
 
 if c_pr32m=1 or c_pr33m=1 or 
@@ -6795,7 +6809,7 @@ c_pr76m=1 or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or
 c_pr90m=1 then c_prm_inf=1; else c_prm_inf=0;
 
 if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 or c_rt65m=1 or c_rt184m=1 or c_rttams >= 1 
-or c_prm_inf=1 or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1  or c_in263m=1 or c_rt151m then c_rm_inf=1 ; else c_rm_inf=0;
+or c_prm_inf=1 or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1  or c_in263m=1 or c_rt151m or c_ca66m=1 then c_rm_inf=1 ; else c_rm_inf=0;
 
 
 e_rttams = c_rttams;
@@ -6815,7 +6829,6 @@ e_pr84m = c_pr84m  ;
 e_pr88m = c_pr88m  ;
 e_pr90m = c_pr90m   ;
 
-
 e_rt103m = c_rt103m;
 e_rt181m = c_rt181m;
 e_rt190m = c_rt190m;
@@ -6824,7 +6837,7 @@ e_in140m = c_in140m   ;
 e_in148m = c_in148m   ;
 e_in155m = c_in155m   ;
 e_in263m = c_in263m   ;
-
+e_ca66m = c_ca66m ;
 
 
 * resistance for the purposes of determining response to current regimen
@@ -6963,8 +6976,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 * LENACAPAVIR;
 
 * len;
-	* placeholder ;
-	r_dol = 0;
+	if e_ca66m=1 then r_len = res_level_len_mut;
 
 
 
@@ -7397,6 +7409,7 @@ visit_tm1=visit;
 	e_in148m_tm2=e_in148m_tm1;	e_in148m_tm1=e_in148m;
 	e_in155m_tm2=e_in155m_tm1;	e_in155m_tm1=e_in155m;
 	e_in263m_tm2=e_in263m_tm1;	e_in263m_tm1=e_in263m;
+	e_ca66m_tm2=e_ca66m_tm1;	e_ca66m_tm1=e_ca66m;
 
 	c_rttams_tm2=c_rttams_tm1; 	c_rttams_tm1=c_rttams; 
 	c_rt184m_tm2=c_rt184m_tm1;	c_rt184m_tm1=c_rt184m;
@@ -7422,6 +7435,7 @@ visit_tm1=visit;
 	c_in148m_tm2=c_in148m_tm1;	c_in148m_tm1=c_in148m;
 	c_in155m_tm2=c_in155m_tm1;	c_in155m_tm1=c_in155m;
 	c_in263m_tm2=c_in263m_tm1;	c_in263m_tm1=c_in263m;
+	c_ca66m_tm2=c_ca66m_tm1;	c_ca66m_tm1=c_ca66m;
 
 
 
@@ -7441,9 +7455,11 @@ visit_tm1=visit;
 			c_pr76m=max(p76m,c_pr76m);		c_pr82m=max(p82m,c_pr82m);		c_pr84m=max(p84m,c_pr84m);
 			c_pr88m=max(p88m,c_pr88m);		c_pr90m=max(p90m,c_pr90m);
 			c_in118m=max(in118m,c_in118m);	c_in140m=max(in140m,c_in140m);	c_in148m=max(in148m,c_in148m);c_in155m=max(in155m,c_in155m);	c_in263m=max(in263m,c_in263m);	
+			c_ca66m=max(ca66m,c_ca66m);
 
 			if tam=1 or k103m=1 or y181m=1 or g190m=1 or m184m=1 or q151m=1 or k65m=1 or p32m=1 or p33m=1 or p46m=1 or 
-			p47m=1 or p50lm=1 or p50vm=1 or p54m=1 or p76m=1 or p82m=1 or p84m=1 or p88m=1 or p90m=1 or in118m=1 or in140m=1 or in148m=1  or in155m=1 or in263m=1 then  
+			p47m=1 or p50lm=1 or p50vm=1 or p54m=1 or p76m=1 or p82m=1 or p84m=1 or p88m=1 or p90m=1 or in118m=1 or in140m=1 or in148m=1  or in155m=1 or in263m=1
+			or ca66m=1 then  
 			super_i_r=1;
 			if k103m=1 or y181m=1 or g190m=1 then super_nnm=1;   * lapr - missing 101, 138, 188 from LAI code;
 		end;
@@ -9770,7 +9786,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			or c_rt151m_tm1=1  or c_pr32m_tm1=1  or c_pr33m_tm1=1 or c_pr46m_tm1=1  or c_pr47m_tm1=1
 			or c_pr50vm_tm1=1  or c_pr50lm_tm1=1 or c_pr54m_tm1=1
 			or c_pr76m_tm1=1  or c_pr82m_tm1=1  or c_pr84m_tm1=1   or c_pr88m_tm1=1  or c_pr90m_tm1=1  
-			or c_in118m_tm1=1   or c_in140m_tm1=1  or c_in148m_tm1=1  or c_in155m_tm1=1  or c_in263m_tm1=1 then child_with_resistant_hiv=1;
+			or c_in118m_tm1=1   or c_in140m_tm1=1  or c_in148m_tm1=1  or c_in155m_tm1=1  or c_in263m_tm1=1 or c_ca66m_tm1 =1 then child_with_resistant_hiv=1;
 			birth_with_inf_child_lt1yrfi=0; if . < caldate{t} - infection <= 1 then birth_with_inf_child_lt1yrfi = 1; 		
 		end;
 	end;
@@ -9894,7 +9910,7 @@ end;
 
 c_totmut=c_rt184m+c_rttams+c_rt65m+c_rt151m+c_rt103m+c_rt181m+c_rt190m
 	+c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
-	+c_pr82m+c_pr84m+c_pr88m+c_pr90m+c_in118m+c_in140m+c_in148m+c_in155m+c_in263m;
+	+c_pr82m+c_pr84m+c_pr88m+c_pr90m+c_in118m+c_in140m+c_in148m+c_in155m+c_in263m+c_ca66m;
 
 c_totmut_pi=.;
 c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
@@ -9919,7 +9935,7 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
 	acq_rt184m=0; if e_rt184m ne 1 and c_rt184m=1 then do; acq_rt184m=1;dt_acq_rt184m=caldate{t}; end;
 	acq_rtm=0;    if e_totmut    lt 1 and (c_rt184m=1 or c_rttams ge 1 or c_rt65m=1 or c_rt151m=1 or c_rt103m=1 or c_rt181m=1 or c_rt190m=1
 	 			or c_pr32m=1 or c_pr33m=1 or c_pr46m=1 or c_pr47m=1 or c_pr50vm=1 or c_pr50lm=1 
-				or c_pr54m=1  or c_pr76m=1 or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_in118m=1 or c_in140m=1 or c_in148m or c_in262m)  
+				or c_pr54m=1  or c_pr76m=1 or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in262m=1 or c_ca66m=1)  
 				then do; acq_rtm=1; dt_acq_rtm=caldate{t}; end;
 	if c_rt184m=1 then e_rt184m=1;
 	if t ge 2 and c_rttams >= 1 then e_rttams=max(c_rttams,e_rttams_tm1);
@@ -9945,9 +9961,10 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
 	if c_in148m=1 then e_in148m=1 ;
 	if c_in155m=1 then e_in155m=1 ;
 	if c_in263m=1 then e_in263m=1 ;
+	if c_ca66m=1 then e_ca66m=1;
 	e_totmut   =e_rt184m+e_rttams+e_rt65m+e_rt151m+e_rt103m+e_rt181m+e_rt190m
 	+e_pr32m+e_pr33m+e_pr46m+e_pr47m+e_pr50vm+e_pr50lm+e_pr54m+e_pr76m
-	+e_pr82m+e_pr84m+e_pr88m+e_pr90m+e_in118m+e_in140m+e_in148m+e_in155m+e_in263m;
+	+e_pr82m+e_pr84m+e_pr88m+e_pr90m+e_in118m+e_in140m+e_in148m+e_in155m+e_in263m+e_ca66m;
 
 
     e_nnmut=.;
@@ -10016,7 +10033,8 @@ and starting another, non-x-resistant, regimen;
 
 	* lenacapavit; 
 
-		* placeholder;
+		a=rand('uniform');if c_ca66m = 1 and (tss_len ge 0.25 or p_len=0) and a < rate_loss_acq_cam_offart then c_ca66m=c_ca66m_inf;	
+
 
 end;
 
@@ -10051,7 +10069,8 @@ x=rand('uniform'); if c_in148m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in
 x=rand('uniform'); if c_in155m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in155m=1 and x < rate_loss_persistence then c_in155m=0; 
 x=rand('uniform'); if c_in263m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in263m=1 and x < rate_loss_persistence then c_in263m=0; 
 
-* placeholder for len;
+x=rand('uniform'); if c_ca66m_inf = 1  and o_len ne 1 and c_ca66m=1 and x < rate_loss_persistence then c_ca66m=0; 
+
 
 
 * LOSS OF MUTATIONS ACQUIRED IN PMTCT FROM MAJORITY and minoririty VIRUS ;
@@ -10087,7 +10106,7 @@ x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1
 	if e_in148m=1  and (o_dol=1 or o_cab=1 ) then c_in148m=1;
 	if e_in155m=1  and (o_dol=1 or o_cab=1 ) then c_in155m=1;
 	if e_in263m=1  and (o_dol=1 or o_cab=1 ) then c_in263m=1;
-	* placeholder for len;
+	if e_ca66m=1  and o_len=1 then c_ca66m=1;
 
 
 
@@ -10928,7 +10947,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 * len;
 
-	* len placeholder;
+      if e_ca66m=1 then r_len=res_level_len_mut; 
 
 
 
@@ -11282,6 +11301,8 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 					if o_dar=1 then f_dar=1;
 					if o_taz=1 then f_taz=1;
 					if o_dol=1 then f_dol=1;
+					if o_cab=1 then f_cab=1;
+					if o_len=1 then f_len=1;
 				end;
 			end;
 
@@ -11307,6 +11328,8 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 						if o_dar=1 then f_dar=1;
 						if o_taz=1 then f_taz=1;
 						if o_dol=1 then f_dol=1;
+						if o_cab=1 then f_cab=1;
+						if o_len=1 then f_len=1;
 					end;
 				end;
 			end;
@@ -11421,6 +11444,8 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 					if o_dar=1 then f_dar=1;
 					if o_taz=1 then f_taz=1;
 					if o_dol=1 then f_dol=1;
+					if o_cab=1 then f_cab=1;
+					if o_len=1 then f_len=1;
 				end;
 			end;
 
@@ -11447,6 +11472,8 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 						if o_dar=1 then f_dar=1;
 						if o_taz=1 then f_taz=1;
 						if o_dol=1 then f_dol=1;
+						if o_cab=1 then f_cab=1;
+						if o_len=1 then f_len=1;
 					end;
 				end;
 			end;
@@ -11786,7 +11813,13 @@ end;
  * dol ;
 	cost_dol=0; if o_dol=1 then cost_dol=cost_dol_a;
 
+ * cab ;
+	cost_cab=0; if o_cab=1 then cost_cab=cost_cab_a;
+
+ * len ;
+	cost_len=0; if o_len=1 then cost_len=cost_len_a;
  
+
 * ADC costs;
 	adc_cost=0;
 	if adc=1 then adc_cost=adc_cost_a;
@@ -11912,7 +11945,7 @@ if start_line2_this_period=1 then cost_switch_line=cost_switch_line_a;
 	art_cost=0;
 
     art_cost=(o_zdv*cost_zdv) + (o_ten*cost_ten) + (o_3tc*cost_3tc) + (o_nev*cost_nev) +
-    (o_lpr*cost_lpr) + (o_dar*cost_dar) + (o_taz*cost_taz) + (o_efa*cost_efa) + (o_dol*cost_dol) ;
+    (o_lpr*cost_lpr) + (o_dar*cost_dar) + (o_taz*cost_taz) + (o_efa*cost_efa) + (o_dol*cost_dol)  + (o_cab*cost_cab)  + (o_cab*cost_cab) ;
 
 
 	* ART initiation cost;
@@ -12134,19 +12167,19 @@ if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from cald
 	e_totmut   =.; non_tb_who3_ev=.;							 
 	cmin   =.;
 	o_zdv=.;	o_3tc=.;	o_dar=.;	o_ten=.;
-	o_efa=.;	o_lpr=.;	o_taz=.;	o_dol=.;	o_cab=.;
-	p_zdv=.;	p_3tc=.;	p_dar=.;	p_ten=.;
-	p_efa=.;	p_lpr=.;	p_taz=.;	p_dol=.;	p_cab=.;
+	o_efa=.;	o_lpr=.;	o_taz=.;	o_dol=.;	o_cab=.;  o_len=.;
+	p_zdv=.;	p_3tc=.;	p_dar=.;	p_ten=.;  
+	p_efa=.;	p_lpr=.;	p_taz=.;	p_dol=.;	p_cab=.; p_len = .;
 	f_zdv=.;	f_3tc=.;	f_dar=.;	f_ten=.;
-	f_efa=.;	f_lpr=.;	f_taz=.;	f_dol=.;	f_cab=.;
+	f_efa=.;	f_lpr=.;	f_taz=.;	f_dol=.;	f_cab=.; f_len = .;
 	r_zdv=.;	r_3tc=.;	r_dar=.;	r_ten=.;
-	r_efa=.;	r_lpr=.;	r_taz=.;	r_dol=.;	r_cab=.;
+	r_efa=.;	r_lpr=.;	r_taz=.;	r_dol=.;	r_cab=.;  r_len = .;
 	t_zdv=.;	t_3tc=.;	t_dar=.;	t_ten=.;
-	t_efa=.;	t_lpr=.;	t_taz=.;	t_dol=.;	t_cab=.;
+	t_efa=.;	t_lpr=.;	t_taz=.;	t_dol=.;	t_cab=.;  t_len = .;
 	c_rt184m=.;	c_rttams=.;	c_rt65m=.;	c_rt103m=.;	c_rt181m=.;	c_rt190m=.;	c_rt151m=.;	c_pr32m=.;	c_pr47m=.;
-	c_pr33m=.;	c_pr46m=.;	c_pr54m=.;	c_pr76m=.;	c_pr50vm=.;	c_pr50lm=.;	c_pr82m=.;	c_pr84m=.;	c_pr88m=.;	c_pr90m=.;	c_inpm=.;	c_insm=.;
+	c_pr33m=.;	c_pr46m=.;	c_pr54m=.;	c_pr76m=.;	c_pr50vm=.;	c_pr50lm=.;	c_pr82m=.;	c_pr84m=.;	c_pr88m=.;	c_pr90m=.;	c_inpm=.;	c_insm=.;c_ca66m=.;
 	e_rt184m=.;	e_rttams=.;	e_rt65m=.;	e_rt103m=.;	e_rt181m=.;	e_rt190m=.;	e_rt151m=.;	e_pr32m=.;	e_pr47m=.;
-	e_pr33m=.;	e_pr46m=.;	e_pr54m=.;	e_pr76m=.;	e_pr50vm=.;	e_pr50lm=.;	e_pr82m=.;	e_pr84m=.;	e_pr88m=.;	e_pr90m=.;	e_inpm=.;	e_insm=.;
+	e_pr33m=.;	e_pr46m=.;	e_pr54m=.;	e_pr76m=.;	e_pr50vm=.;	e_pr50lm=.;	e_pr82m=.;	e_pr84m=.;	e_pr88m=.;	e_pr90m=.;	e_inpm=.;	e_insm=.; e_ca66m=.;
 	c_lip=.;c_pen=.;c_ras=.;c_cns=.;c_hep=.;x4v=.;
 	c_nau=.;c_otx=.;c_tox=.;c_head=.;c_dia=.;c_ane=.;c_lac=.;
 	c_neph = .;
@@ -13708,17 +13741,18 @@ end;
 
 
 	 rm_tm1 = rm_ ;  nnm_tm1=nnm_;  pim_tm1=pim_; in118m_tm1=i118pm_; in140m_tm1=in140m_;  in148m_tm1=in148m_;  in155m_tm1=in155m_;  in263m_tm1=in263m_; 
+	 ca66m_tm1=ca66m;
 
 
 	* presence of any mutation;
 	rm_=0; if hiv=1 and (c_rt103m=1 or c_rt181m=1 or c_rt190m=1 or c_rt65m=1 or c_rt184m=1 or c_rt151m=1 or c_rttams >= 1 
 	or c_pr32m=1 or c_pr33m=1 or c_pr46m=1 or c_pr47m=1 or c_pr50vm=1 or c_pr50lm=1 or c_pr54m=1  or c_pr76m=1 
-	or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_in118m=1 or c_in140m=1 or c_in148m=1  or c_in155m=1 or c_in263m=1) then rm_=1;
+	or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_in118m=1 or c_in140m=1 or c_in148m=1  or c_in155m=1 or c_in263m=1 or c_ca66m=1) then rm_=1;
 	
 	* presence of any mutation;
 	rme_=0; if hiv=1 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1 or e_rt65m=1  or e_rt184m=1 or e_rt151m=1 or e_rttams >= 1 
 	or e_pr32m=1 or e_pr33m=1 or e_pr46m=1 or e_pr47m=1 or e_pr50vm=1 or e_pr50lm=1 or e_pr54m=1  or e_pr76m=1 
-	or e_pr82m=1 or e_pr84m=1 or e_pr88m=1 or e_pr90m=1 or e_in118m=1 or e_in140m=1 or e_in148m=1  or e_in155m=1 or e_in263m=1) then rme_=1;
+	or e_pr82m=1 or e_pr84m=1 or e_pr88m=1 or e_pr90m=1 or e_in118m=1 or e_in140m=1 or e_in148m=1  or e_in155m=1 or e_in263m=1 or e_ca66m=1) then rme_=1;
 
 	* presence of any ii mutation;
 	iime_=0; if hiv=1 and (e_in118m=1 or e_in140m=1 or e_in148m=1  or e_in155m=1  or e_in263m=1) then iime_=1;
@@ -13826,6 +13860,7 @@ end;
 		in148m_=0; if c_in148m=1 then in148m_=1;
 		in155m_=0; if c_in155m=1 then in155m_=1;
 		in263m_=0; if c_in263m=1 then in263m_=1;
+		ca66m_=0; if c_ca66m=1 then ca66m_=1;
 		pim_=0; 
 		if p32m_=1 or p33m_=1 or p46m_=1 or
 		p47m_=1 or p50vm_=1 or p50lm_=1 or 
@@ -13834,12 +13869,13 @@ end;
 		inm_=0;  if c_in118m=1 or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1  or c_in263m=1  then inm_=1;
 	end;
 
-	i_tam=0; i_nnm=0; i_im=0; i_184m=0; i_pim=0; i_65m=0;
+	i_tam=0; i_nnm=0; i_im=0; i_184m=0; i_pim=0; i_65m=0; i_len=0;
 	if primary=1 then do; 
 		i_pim=max(0,pim_); 
 		if c_rttams ge 1 then i_tam = 1;  
 		i_184m=c_rt184m;
 		i_65m=c_rt65m;
+		i_len=c_ca66m;
 		if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then i_nnm=1;
 		if c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1 or c_in263m=1 then i_im=1;  
 		i_rm=rm_; 
@@ -13847,12 +13883,12 @@ end;
 
 	if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 or c_rt65m=1 or c_rt184m=1 or c_rttams >= 1 or c_rt151m=1
 	or c_pr32m=1  or c_pr33m=1 	or c_pr46m=1  or c_pr47m=1 or c_pr50vm=1 or c_pr50lm=1 or c_pr54m=1 
-	or c_pr76m=1  or c_pr82m=1  or c_pr84m=1  or c_pr88m=1 or c_pr90m=1  or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1 or c_in263m=1
+	or c_pr76m=1  or c_pr82m=1  or c_pr84m=1  or c_pr88m=1 or c_pr90m=1  or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1 or c_in263m=1 or c_ca66m=1
 	then i_rm=1; if primary ne 1 then i_rm=.;
 
 	if primary=1 then do; r_=0;
 		if r_zdv  >= 0.5 or r_efa  >= 0.5 or r_nev  >= 0.5 or r_ten  >= 0.5 or r_3tc  >= 0.5 
-		or r_dar >= 0.5 or r_lpr >= 0.5  or r_taz >= 0.5 or r_dol >= 0.5 or r_cab >= 0.5 then r_=1;
+		or r_dar >= 0.5 or r_lpr >= 0.5  or r_taz >= 0.5 or r_dol >= 0.5 or r_cab >= 0.5 or r_len >= 0.5 then r_=1;
 	end;
 
 
@@ -13891,7 +13927,7 @@ end;
 		if c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1 or c_in263m=1 then im_art = 1;
 		r_art=0;
 		if r_zdv  >= 0.5 or r_efa  >= 0.5 or r_nev  >= 0.5 or r_ten  >= 0.5 or r_3tc  >= 0.5 
-		or r_dar >= 0.5 or r_lpr >= 0.5 or r_taz >= 0.5 or r_dol >= 0.5 then r_art=1; 
+		or r_dar >= 0.5 or r_lpr >= 0.5 or r_taz >= 0.5 or r_dol >= 0.5 or r_cab >= 0.5 or r_len >= 0.5 then r_art=1; 
 		nactive_art_start_lt3 = 0; if . < nactive_start_art < 3 then nactive_art_start_lt3 = 1;
 		nactive_art_start_lt2 = 0; if . < nactive_start_art < 2 then nactive_art_start_lt2 = 1;
 		nactive_art_start_lt1p5 = 0; if . < nactive_start_art < 1.5 then nactive_art_start_lt1p5 = 1;
@@ -14341,7 +14377,8 @@ if primary_prep=1 and started_prep_any_in_primary_e ne 1 then do;
 	if in140m_p >= 1 then prepinfect_in140m_p=1;
 	if in148m_p >= 1 then prepinfect_in148m_p=1;
 	if in155m_p >= 1 then prepinfect_in155m_p=1;
-	if in1263_p >= 1 then prepinfect_in263m_p=1;
+	if in1263m_p >= 1 then prepinfect_in263m_p=1;
+	if ca66m_p >= 1 then prepinfect_ca66m_p=1;
 
 	*Whether these resistant virus were passed onto the individual;
 	if rm_inf = 1 then prepinfect_rtm=1; * may17;
@@ -14355,6 +14392,7 @@ if primary_prep=1 and started_prep_any_in_primary_e ne 1 then do;
 	if c_in155m_inf = 1 then prepinfect_in155m=1;
 	if c_in263m_inf = 1 then prepinfect_in263m=1;
 	if c_rttams_inf >= 1 then prepinfect_tam=1;
+	if c_ca66m_inf >= 1 then prepinfect_ca66m=1;
 	if prepinfect_prep_r ne 1 then do; infected_prep_no_r=1; ev_infected_prep_no_r=1; end;
 	if prepinfect_prep_r = 1 then infected_prep_r=1;
 end;
@@ -14371,13 +14409,15 @@ cur_res_ten=0; if r_ten > 0  then cur_res_ten=1;
 cur_res_efa=0; if r_efa > 0  then cur_res_efa=1;
 cur_res_dol=0; if r_dol > 0  then cur_res_dol=1;
 cur_res_cab=0; if hiv=1 and (e_in118m=1 or e_in140m=1 or e_in148m=1  or e_in155m=1 or e_in263m=1 or r_cab > 0)  then cur_res_cab=1;
+cur_res_len=0; if r_len > 0 then cur_res_len=1;
 
 * number of people infectious with resistance mutations;
 cur_res_3tc_vlg1000=0; if c_rt184m=1 and vg1000 = 1 then cur_res_3tc_vlg1000=1;
 cur_res_ten_vlg1000=0; if c_rt65m=1 and vg1000 = 1 then cur_res_ten_vlg1000=1;
-cur_res_efa_vlg1000=0; if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then cur_res_efa_vlg1000=1; * may17 h;
-cur_res_dol_vlg1000=0; if c_in118m=1 or c_in140m=1 or  c_in148m=1 or  c_in155m=1 or c_in263m=1 then cur_res_dol_vlg1000=1;
-cur_res_cab_vlg1000=0; if c_in118m=1 or c_in140m=1 or  c_in148m=1 or  c_in155m=1 or c_in263m=1 then cur_res_cab_vlg1000=1;
+cur_res_efa_vlg1000=0; if (c_rt103m=1 or c_rt181m=1 or c_rt190m=1)  and vg1000 = 1 then cur_res_efa_vlg1000=1; * may17 h;
+cur_res_dol_vlg1000=0; if (c_in118m=1 or c_in140m=1 or  c_in148m=1 or  c_in155m=1 or c_in263m=1)  and vg1000 = 1 then cur_res_dol_vlg1000=1;
+cur_res_cab_vlg1000=0; if (c_in118m=1 or c_in140m=1 or  c_in148m=1 or  c_in155m=1 or c_in263m=1)  and vg1000 = 1 then cur_res_cab_vlg1000=1;
+cur_res_len_vlg1000=0; if r_len > 0  and vg1000 = 1 then cur_res_cab_vlg1000=1;
 
 
 *If on PrEP and HIV-positive;
@@ -15266,6 +15306,9 @@ _dcost_dar = cost_dar * discount;
 _dcost_taz = cost_taz * discount;
 _dcost_efa = cost_efa * discount;
 _dcost_dol = cost_dol * discount;
+_dcost_cab = cost_cab * discount;
+_dcost_len = cost_len * discount;
+
 
 _dcost_vl_not_done = cost_vl_not_done * discount; 
 
@@ -15920,6 +15963,7 @@ if yrart=caldate&j > .  and ever_nvp_pmtct ne 1 then do;
     if e_rt184m=1 then _ai_naive_no_pmtct_e_rt184m_=1;
     if e_rt65m=1 then _ai_naive_no_pmtct_e_rt65m_=1;
     if e_rttams ge 1 then _ai_naive_no_pmtct_e_rttams_=1;
+	if e_ca66m_tm1=1 then _ai_naive_no_pmtct_c_ca66m_=1;
 end;
 
 
@@ -15942,6 +15986,7 @@ if (return   =1 and restart=1) or yrart=caldate&j > . then do;
     if e_inmut ge 1 then _all_ai_e_inm_=1;
     if e_rt184m=1 then _all_ai_e_rt184m_=1;
     if e_rt65m=1 then _all_ai_e_rt65m_=1;
+    if e_ca66m=1 then _all_ai_e_ca66m_=1;
     if e_rttams ge 1 then _all_ai_e_rttams_=1;
 end;
 
@@ -16723,10 +16768,11 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tam1_ + tam1_ ; s_tam2_ + tam2_ ; s_tam3_ + tam3_ ; s_m184m_ + m184m_ ; s_k103m_ + k103m_ ; s_y181m_ + y181m_ ; s_g190m_ + g190m_ ; 
 	s_nnm_ + nnm_ ; s_q151m_ + q151m_ ; s_k65m_ + k65m_ ; s_p32m_ + p32m_ ; s_p33m_ + p33m_ ; s_p46m_ + p46m_ ; s_p47m_ + p47m_ ; s_p50vm_ + p50vm_ ;
 	s_p50lm_ + p50lm_ ; s_p54m_ + p54m_ ; s_p76m_ + p76m_ ; s_p82m_ + p82m_ ; s_p84m_ + p84m_ ; s_p88m_ + p88m_ ; s_p90m_ + p90m_ ; s_pim_ + pim_;
-    s_in118m_ + in118m_ ; s_in140m_ + in140m_ ; s_in148m_ + in148m_ ; s_in155m_ + in155m_ ; s_in263m_ + in263m_ ;
+    s_in118m_ + in118m_ ; s_in140m_ + in140m_ ; s_in148m_ + in148m_ ; s_in155m_ + in155m_ ; s_in263m_ + in263m_ ; s_ca66m + ca66m_ ;
 	s_rm_ + rm_ ; s_i_nnm + i_nnm ; s_i_rm + i_rm ; s_i_pim + i_pim ; s_i_tam + i_tam ; s_i_im + i_im ;
     s_inm_ + inm_ ; s_i_184m + i_184m ; s_im_art + im_art ; s_pim_art + pim_art ; s_tam_art + tam_art ; s_m184_art + m184_art ; s_r_ + r_ ;
     s_r_3tc + r_3tc ; s_r_nev + r_nev ; s_r_lpr + r_lpr ; s_r_taz + r_taz ; s_r_efa + r_efa ; s_r_ten + r_ten ; s_r_zdv + r_zdv ; s_r_dol + r_dol ;
+	s_r_cab + r_cab ; s_r_len + r_len ;
  	s_rme_ + rme_ ; s_iime_ + iime_ ; s_nnme_ + nnme_ ; s_pime_ + pime_ ; s_nrtime_ + nrtime_ ; s_res_1stline_startline2 + res_1stline_startline2 ;
 	s_nnm_art + nnm_art ; s_nnm_art_m + nnm_art_m ; s_nnm_art_w + nnm_art_w ; s_r_art + r_art ; s_acq_rt65m + acq_rt65m ; s_acq_rt184m + acq_rt184m ;
 	s_acq_rtm + acq_rtm ; s_onart_iicu_res + onart_iicu_res ; s_nactive_art_start_lt2 + nactive_art_start_lt2 ; s_nactive_art_start_lt3 + nactive_art_start_lt3 ;
@@ -16955,7 +17001,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_onart_sw + onart_sw ; s_onart_w1524evpreg + onart_w1524evpreg; s_art_dur_l6m + art_dur_l6m ; s_art_dur_g6m + art_dur_g6m ; s_art_tdur_l6m + art_tdur_l6m ; s_art_tdur_g6m + art_tdur_g6m ;
 	s_eponart_m + eponart_m ; s_eponart_w + eponart_w ; s_hiv1564_onart + hiv1564_onart ; 
 	s_non_tb_who3_art_init + non_tb_who3_art_init ; s_who4_art_init + who4_art_init ; s_art_start_pregnant + art_start_pregnant ; 
-	s_lpr + o_lpr ; s_taz + o_taz ; s_3tc + o_3tc ; s_nev + o_nev ; s_efa + o_efa ; s_ten + o_ten ; s_zdv + o_zdv ; s_dol + o_dol ; s_cab + o_cab ;
+	s_lpr + o_lpr ; s_taz + o_taz ; s_3tc + o_3tc ; s_nev + o_nev ; s_efa + o_efa ; s_ten + o_ten ; s_zdv + o_zdv ; s_dol + o_dol ; s_cab + o_cab ; s_len + o_len ;
 	s_o_cab_or_o_cab_tm1 + o_cab_or_o_cab_tm1 ; s_o_cab_or_o_cab_tm1_no_r + o_cab_or_o_cab_tm1_no_r ; s_o_cab_or_o_cab_tm1_no_r_prim + o_cab_or_o_cab_tm1_no_r_prim;
 	s_onefa_linefail1 + onefa_linefail1 ; s_ev_art_g1k_l1k + ev_art_g1k_l1k ; s_ev_art_g1k_not2l + ev_art_g1k_not2l ; 
 	s_ev_art_g1k_not2l_l1k + ev_art_g1k_not2l_l1k ; s_ev_art_g1k + ev_art_g1k ; s_ev_art_g1k_not2l_adc + ev_art_g1k_not2l_adc ;
@@ -17032,7 +17078,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl1000_art_age1564 + vl1000_art_age1564; s_onart_age1564 + onart_age1564 ;
 
 	s_infected_in118m + infected_in118m ; s_infected_in140m + infected_in140m ; s_infected_in148m + infected_in148m ;  s_infected_in155m + infected_in155m ; 
-	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
+	s_infected_in263m + infected_in263m ;s_infected_ca66m + infected_ca66m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
 
 	s_onartvisit0 + onartvisit0; s_onartvisit0_vl1000 + onartvisit0_vl1000;
 
@@ -17500,7 +17546,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_pi_cost + pi_cost;  s_cost_switch_line + cost_switch_line;  s_cost_art_init + cost_art_init;
 	s_art_1_cost + art_1_cost; s_art_2_cost + art_2_cost;  s_art_3_cost + art_3_cost; s_cost_vl_not_done + cost_vl_not_done; 
 	s_cost_zdv + cost_zdv; s_cost_ten + cost_ten; s_cost_3tc + cost_3tc; s_cost_nev + cost_nev; s_cost_lpr + cost_lpr; 
-	s_cost_dar + cost_dar; s_cost_taz + cost_taz; s_cost_efa + cost_efa; s_cost_dol + cost_dol;  
+	s_cost_dar + cost_dar; s_cost_taz + cost_taz; s_cost_efa + cost_efa; s_cost_dol + cost_dol;  s_cost_cab + cost_cab; 
 	s_cost_non_aids_pre_death + cost_non_aids_pre_death ; s_drug_level_test_cost + drug_level_test_cost;
 	s_cost_child_hiv + cost_child_hiv;  s_cost_child_hiv_mo_art + cost_child_hiv_mo_art;
 	s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;  
@@ -17518,7 +17564,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dpi_cost + _dpi_cost ; s_dcost_switch_line + _dcost_switch_line ; s_dcost_art_init + _dcost_art_init ;               
    	s_dart_1_cost + _dart_1_cost ; s_dart_2_cost + _dart_2_cost ; s_dart_3_cost + _dart_3_cost ; s_dcost_vl_not_done + _dcost_vl_not_done ;	
 	s_dcost_zdv + _dcost_zdv; s_dcost_ten + _dcost_ten; s_dcost_3tc + _dcost_3tc; s_dcost_nev + _dcost_nev; s_dcost_lpr + _dcost_lpr; 
-	s_dcost_dar + _dcost_dar; s_dcost_taz + _dcost_taz; s_dcost_efa + _dcost_efa; s_dcost_dol + _dcost_dol; 
+	s_dcost_dar + _dcost_dar; s_dcost_taz + _dcost_taz; s_dcost_efa + _dcost_efa; s_dcost_dol + _dcost_dol; s_dcost_cab + _dcost_cab; s_dcost_len + _dcost_len; 
 	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
  	s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ;
 	s_dcost_hypert_vis + _dcost_hypert_vis; s_dcost_hypert_drug + _dcost_hypert_drug;  
@@ -18167,7 +18213,7 @@ s_prop_tam1 = .;s_prop_tam2 = .;s_prop_tam3 = .;s_prop_k103m =.;s_prop_y181m =.;
 s_prop_m184m =.;s_prop_q151m =.;s_prop_k65m =.;
 s_prop_p32m =.;s_prop_p33m =.; s_prop_p46m =.;s_prop_p47m =.; ;s_prop_p50vm =.;
 s_prop_p50lm =.; s_prop_p54m =.;s_prop_p76m =.; s_prop_p82m =.;s_prop_p84m =.;s_prop_p88m =.; s_prop_p90m =.;s_prop_pim =.;
-s_prop_in118m =.; s_prop_in140m =.; s_prop_in148m =.; s_prop_in155m =.; s_prop_in263m =.;
+s_prop_in118m =.; s_prop_in140m =.; s_prop_in148m =.; s_prop_in155m =.; s_prop_in263m =.; s_prop_ca66m=.;
 
 
 s_prop_vlg1_rm=0; if s_i_v1_np >0 then do; s_prop_vlg1_rm = max(0,s_i_r_vlg1_np) / s_i_v1_np ; end;
@@ -18240,6 +18286,7 @@ s_prop_in140m 		 = max(0,s_in140m_   / s_rm_);
 s_prop_in148m 		 = max(0,s_in148m_   / s_rm_);
 s_prop_in155m 		 = max(0,s_in155m_   / s_rm_);
 s_prop_in263m 		 = max(0,s_in263m_   / s_rm_);
+s_prop_ca66m 		 = max(0,s_ca66m_   / s_rm_);
 
 
 end;
@@ -18574,8 +18621,8 @@ s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
-s_in118m_  s_in140m_  s_in148m_  s_in155m_ s_in263m_ s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art 
-s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
+s_in118m_  s_in140m_  s_in148m_  s_in155m_ s_in263m_ s_ca66m_ s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art 
+s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  s_r_cab  s_r_len
 s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
 s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
@@ -18755,7 +18802,7 @@ s_onart_sw 	s_onart_w1524evpreg
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart   s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
-s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r  s_o_cab_or_o_cab_tm1_no_r_prim
+s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab s_len  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r  s_o_cab_or_o_cab_tm1_no_r_prim
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
 s_art_12m  s_vl1000_art_12m  s_art_24m  s_vl1000_art_24m  s_art_12m_onart  s_vl1000_art_12m_onart
 s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_line2_incl_int_clinic_not_aw
@@ -18804,7 +18851,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
 
-s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m s_infected_ca66m
 s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
@@ -18881,7 +18928,7 @@ s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
-s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol   	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len 	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
 s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
@@ -18891,7 +18938,7 @@ s_dcost_prep_vr  s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_i
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
-s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol s_dcost_cab s_dcost_len 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
@@ -19061,7 +19108,7 @@ rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_r
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency  prop_bmi_ge23 pr_res_dol pr_res_len cab_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program  sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
@@ -19081,7 +19128,7 @@ sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_inf
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3   testt1_prep_inj_eff_on_res_prim   reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_hiv_concern  prob_onartvis0_1_to_0 prob_onartvis0_0_to_1
-pref_prep_oral_beta_s1 prob_prep_pop_wide_tld  pop_wide_tld  prob_test_pop_wide_tld_prep  pop_wide_tld_selective_hiv res_level_dol_cab_mut
+pref_prep_oral_beta_s1 prob_prep_pop_wide_tld  pop_wide_tld  prob_test_pop_wide_tld_prep  pop_wide_tld_selective_hiv res_level_dol_cab_mut res_level_len_mut
 super_inf_res  oral_prep_eff_3tc_ten_res  rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
@@ -19153,7 +19200,7 @@ s_prop_tam1   s_prop_tam2   s_prop_tam3  s_prop_k103m  s_prop_y181m  s_prop_g190
 s_prop_m184m  s_prop_q151m  s_prop_k65m   
 s_prop_p32m   s_prop_p33m   s_prop_p46m  s_prop_p47m  s_prop_p50vm   
 s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_in118m  s_prop_in140m   
-s_prop_in148m s_prop_in155m  s_prop_in263m   
+s_prop_in148m s_prop_in155m  s_prop_in263m  s_prop_ca66m   
 
 
 prevalence1524m  prevalence2534m  prevalence3544m  prevalence4554m  prevalence5564m
@@ -19359,6 +19406,7 @@ t_prop_in140m = s_prop_in140m ;
 t_prop_in148m = s_prop_in148m ; 
 t_prop_in155m = s_prop_in155m ; 
 t_prop_in263m = s_prop_in263m ; 
+t_prop_ca66m = s_prop_ca66m ; 
 t_prop_vlg1_rm0_diag = s_prop_vlg1_rm0_diag ;  
 t_prop_vlg1_rm0_naive = s_prop_vlg1_rm0_naive ; 
 t_prop_vlg1_rm1_diag = s_prop_vlg1_rm1_diag ;  
@@ -19547,8 +19595,8 @@ s_i_m_1549_np  s_i_w_1549_np   s_i_w_newp  s_i_m_newp
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
-s_in118m_  s_in140m_ s_in148m_  s_in155m_ s_in263m_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art 
-s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
+s_in118m_  s_in140m_ s_in148m_  s_in155m_ s_in263m_  s_ca66m_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art 
+s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  s_r_cab  s_r_len
 s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
 s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
@@ -19724,7 +19772,7 @@ s_onart_sw 	s_onart_w1524evpreg
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart    s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
-s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r s_o_cab_or_o_cab_tm1_no_r_prim
+s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol s_cab s_len s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r s_o_cab_or_o_cab_tm1_no_r_prim
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
 s_art_12m  s_vl1000_art_12m  s_art_24m  s_vl1000_art_24m  s_art_12m_onart  s_vl1000_art_12m_onart
 s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_line2_incl_int_clinic_not_aw
@@ -19773,7 +19821,9 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
-s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m  s_infected_inm s_infected_inm_this_per
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m 
+s_infected_ca66m 
+s_infected_inm s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
 
@@ -19847,7 +19897,7 @@ s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
-s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol   	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
 s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
 				   
@@ -19858,7 +19908,7 @@ s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_v
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
-s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol s_dcost_cab s_dcost_len	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
 s_dead_daly	   s_dead_ddaly   
@@ -20058,7 +20108,8 @@ s_prop_ageg3_w_vlg6    s_prop_ageg4_m_vlg1   s_prop_ageg4_m_vlg2  s_prop_ageg4_m
 s_prop_ageg4_m_vlg6    s_prop_ageg4_w_vlg1    s_prop_ageg4_w_vlg2   s_prop_ageg4_w_vlg3    s_prop_ageg4_w_vlg4  s_prop_ageg4_w_vlg5  
 s_prop_ageg4_w_vlg6     s_prop_ageg5_m_vlg1   s_prop_ageg5_m_vlg2    s_prop_ageg5_m_vlg3   s_prop_ageg5_m_vlg4 
 s_prop_ageg5_m_vlg5   s_prop_ageg5_m_vlg6    s_prop_ageg5_w_vlg1   s_prop_ageg5_w_vlg2   s_prop_ageg5_w_vlg3   s_prop_ageg5_w_vlg4
-s_prop_ageg5_w_vlg5   s_prop_ageg5_w_vlg6   s_prop_g190m  s_prop_in118m   s_prop_in140m  s_prop_in148m  s_prop_in155m s_prop_in263m s_prop_k103m   s_prop_k65m 
+s_prop_ageg5_w_vlg5   s_prop_ageg5_w_vlg6   s_prop_g190m  s_prop_in118m   s_prop_in140m  s_prop_in148m  s_prop_in155m s_prop_in263m s_prop_ca66m
+s_prop_k103m   s_prop_k65m 
 s_prop_m184m    s_prop_m_vlg1    s_prop_m_vlg2   s_prop_m_vlg3    s_prop_m_vlg4    s_prop_m_vlg5   
 s_prop_m_vlg6     s_prop_newp_i_m_1524   s_prop_newp_i_m_2534   s_prop_newp_i_m_3544   s_prop_newp_i_m_4554 s_prop_newp_i_m_5564 
 s_prop_newp_i_w_1524   s_prop_newp_i_w_2534    s_prop_newp_i_w_3544   s_prop_newp_i_w_4554   s_prop_newp_i_w_5564 
@@ -25694,8 +25745,8 @@ s_i_m_1549_np  s_i_w_1549_np    s_i_w_newp  s_i_m_newp
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
-s_in118m_  s_in140m_ s_in148m_  s_in155m_ s_in263m_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
-s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
+s_in118m_  s_in140m_ s_in148m_  s_in155m_ s_in263m_  s_ca66m_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
+s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  s_r_cab  s_r_len
 s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
 s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
@@ -25868,7 +25919,7 @@ s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart   s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
-s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r s_o_cab_or_o_cab_tm1_no_r_prim
+s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab s_len s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r s_o_cab_or_o_cab_tm1_no_r_prim
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
 s_art_12m  s_vl1000_art_12m  s_art_24m  s_vl1000_art_24m  s_art_12m_onart  s_vl1000_art_12m_onart
 s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_line2_incl_int_clinic_not_aw
@@ -25917,7 +25968,8 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
-s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in155m s_infected_in263m  s_infected_inm  s_infected_inm_this_per
+s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in155m s_infected_in263m s_infected_ca66m 
+s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0  s_onartvisit0_vl1000
 
@@ -25991,7 +26043,7 @@ s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
-s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol   	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len 	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
 s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
@@ -26002,7 +26054,7 @@ s_dcost_prep_visit  s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
-s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol s_dcost_cab s_dcost_len	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
 s_dead_daly	   s_dead_ddaly   
@@ -26172,7 +26224,7 @@ rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_r
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency prop_bmi_ge23 pr_res_dol pr_res_len cab_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75  death_r_iris_pop_wide_tld
 sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
@@ -26184,7 +26236,7 @@ prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_depende
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy   prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
-inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
+inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut res_level_len_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 artvis0_lower_adh  pop_wide_prep_adh_effect 
 
@@ -26264,7 +26316,7 @@ s_prop_tam1   s_prop_tam2   s_prop_tam3  s_prop_k103m  s_prop_y181m  s_prop_g190
 s_prop_m184m  s_prop_q151m  s_prop_k65m   
 s_prop_p32m   s_prop_p33m   s_prop_p46m  s_prop_p47m  s_prop_p50vm   
 s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_in118m  s_prop_in140m s_prop_in148m 
-s_prop_in155m s_prop_in263m 
+s_prop_in155m s_prop_in263m  s_prop_ca66m 
 
 prevalence1524m  prevalence2534m  prevalence3544m  prevalence4554m  prevalence5564m
 prevalence1524w  prevalence2534w  prevalence3544w  prevalence4554w  prevalence5564w
