@@ -2165,7 +2165,6 @@ who may be dead and hence have caldate{t} missing;
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
-<<<<<<< Updated upstream
 
 	if option = 2 then do; *Self-test kits distributed (Primary distribution);
 		prob_self_test_hard_reach = 0.1;
@@ -2177,8 +2176,6 @@ who may be dead and hence have caldate{t} missing;
 
 /*
 
-=======
->>>>>>> Stashed changes
 	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do;
 	*MINIMAL;
 
@@ -2415,19 +2412,13 @@ who may be dead and hence have caldate{t} missing;
 	*Structural interventions and social enablers;
 	if option = 40 then do;*DREAMS;
 	end;
-<<<<<<< Updated upstream
 
 */
-=======
->>>>>>> Stashed changes
 	
 end;
 
 
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 *  ======================================================================================================================================== ;
 
 
@@ -4918,9 +4909,9 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	end;
 
 	v = rand('uniform');
-	if self_tested_tm1 = 1 and hiv = 1 and v < self_test_sens then do; 
+	if self_tested_tm1 = 1 and hiv = 1 and v < self_test_sens then do; * add in prob of this occurring ;
 	tested=1; tested_due_to_self_test=1;
-	dt_last_test=caldate{t}; 
+	dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 	end;
 
 
@@ -7942,7 +7933,7 @@ if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is 
 * end;
 end;
 
-if registd=1 and registd_tm1=0 and tested_tm1=1 then diagnosed_self_test = 1;
+if registd=1 and registd_tm1=0 and self_tested_tm1=1 then diagnosed_self_test = 1;
 
 
 * AP 22-7-19;
