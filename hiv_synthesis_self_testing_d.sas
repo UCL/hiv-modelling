@@ -4925,7 +4925,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
  	if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
 	if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
 	if secondary_self_test=1 and eponart=1 then u_self_test/secondary_self_test_targeting;  end;
-		if tested ne 1 and u_self_test < rate_self_test then do;
+		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
 			self_tested=1; 
 			dt_last_self_test=caldate{t}; 
 		end;
@@ -4936,6 +4936,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	tested=1; tested_due_to_self_test=1;
 	dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 	end;
+	* note this depends on primary infection lasting 3 months - ts1m ;
+
 
 
 
