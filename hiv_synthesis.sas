@@ -2167,16 +2167,6 @@ who may be dead and hence have caldate{t} missing;
 
 
 
-	if option = 2 then do; *Self-test kits distributed (Primary distribution);
-		prob_self_test_hard_reach = 0.1;
-		self_test_targeting = 1.5;
-		rate_self_test = 0.03;
-	end;
-
-
-
-/*
-
 	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do;
 	*MINIMAL;
 
@@ -2221,6 +2211,7 @@ who may be dead and hence have caldate{t} missing;
 		*DREAMS: ok to assume that is has not been included so far?;
 	end;
  
+
 	*TESTING;
 	if option = 2 then do; *Self-test kits distributed (Primary distribution);
 		prob_self_test_hard_reach = 0.1;
@@ -2232,6 +2223,10 @@ who may be dead and hence have caldate{t} missing;
 	if option = 3  then do; *Self-test kits distributed (Secondary distribution, excluding for partners) [S2];
 	end;
 	if option = 4 then do; *Self-test kits distributed (Secondary distribution, for sexual partners) [S3];
+		* values suggest lower amounts of tests but perhaps better targeted at recent sexual risk and perhaps getting more at hard to reach ;
+		prob_self_test_hard_reach = 0.2;
+		self_test_targeting = 2.0;
+		rate_self_test = 0.01;
 	end;
 	if option = 5 then do; *Clients tested for HIV at facility, excluding ANC & PD, infant testing, contacts testing for HIV at the facility and testing of FSW ;
 	end;
@@ -2414,7 +2409,6 @@ who may be dead and hence have caldate{t} missing;
 	if option = 40 then do;*DREAMS;
 	end;
 
-*/
 	
 end;
 
@@ -4903,7 +4897,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	u_self_test=rand('uniform');
  	if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
 	if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
-		if u_self_test < rate_self_test then do;
+		if tested ne 1 and u_self_test < rate_self_test then do;
 			self_tested=1; 
 			dt_last_self_test=caldate{t}; 
 		end;
