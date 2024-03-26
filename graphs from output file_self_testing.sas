@@ -3,12 +3,12 @@
 ***Use 'include' statment in analysis program to read the code below in;
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\self_testing\self_testing_b_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\self_testing\self_testing_c_out\";
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_self_testing_b   ;
+  set a.l_self_testing_c   ;
 
 p_onart_vl1000_all = .;
 
@@ -40,8 +40,6 @@ logm55r = log(m55r+0.0001);
 
 incidence1564_ = incidence1564;
 
-if option=2 then option=1;
-
 
 
 * n_onprep_m  n_onprep_w ;
@@ -59,7 +57,7 @@ proc sort;by cald option ;run;
 ***Two macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
-if option =1 then delete;
+if option ne 0 then delete;
 
 %let var =  
 
@@ -124,7 +122,7 @@ run;
 
 data option_1;
 set b;
-if option =0 then delete;
+if option ne 2 then delete;
 
 %let var =  
 
@@ -188,6 +186,85 @@ run;
 
 
 
+
+
+
+
+data option_2;
+set b;
+if option ne 4 then delete;
+
+%let var =  
+
+p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
+p_mcirc_1549m	  n_prep_elig_w  n_prep_elig_m   n_onprep_w  n_onprep_m  n_newp_ge1_w
+prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
+prevalence_vg1000_   
+incidence1564_  incidence1564m incidence1564w incidence1549m incidence1549w n_tested n_tested_m
+  n_tested n_tested_m
+p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
+mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag  
+p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
+p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
+p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
+n_onart_m n_onart_w  n_dead_hivpos_cause1_ n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
+prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
+prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
+prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
+prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
+n_alive n_diagnosed n_hiv n_infected  n_self_tested
+;
+
+
+***transpose given name; *starts with %macro and ends with %mend;
+%macro option_2;
+%let p25_var = p25_&var_2;
+%let p75_var = p75_&var_2;
+%let p5_var = p5_&var_2;
+%let p95_var = p95_&var_2;
+%let p2p5_var = p2p5_&var_2;
+%let p97p5_var = p97p5_&var_2;
+%let p50_var = median_&var_2;
+
+%let count = 0;
+%do %while (%qscan(&var, &count+1, %str( )) ne %str());
+%let count = %eval(&count + 1);
+%let varb = %scan(&var, &count, %str( ));
+      
+proc transpose data=option_1 out=i&count prefix=&varb;var &varb; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data i&count;set i&count;***creates one dataset per variable;
+p25_&varb._2  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._2 = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._2  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._2 = PCTL(95,of &varb.1-&varb.&nfit);
+p2p5_&varb._2  = PCTL(2.5,of &varb.1-&varb.&nfit);
+p97p5_&varb._2 = PCTL(97.5,of &varb.1-&varb.&nfit);
+p50_&varb._2 = median(of &varb.1-&varb.&nfit);
+
+keep cald option_ p5_&varb._2 p95_&varb._2 p50_&varb._2 p25_&varb._2 p75_&varb._2 p2p5_&varb._2 p97p5_&varb._2;
+run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  ii&count;quit;run;
+%end;
+%mend;
+
+
+%option_2;
+run;
+
+
+
+
+
+
+
+
+
+
+
+
 data d; * this is number of variables in %let var = above ;
 merge 
 g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14 
@@ -201,6 +278,14 @@ h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48   h49  h50 
 h51  h52  h53  h54  h55  h56  h57  h58  h59  h60 h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71 h72  h73  h74 h75 h76  h77  h78 
 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h93 h94  h95 h96 h97  h98  h99  h100  h101  h102 h103 h104 h105
+
+i1   i2   i3   i4   i5   i6   i7   i8   i9   i10  i11  i12  i13  i14 
+ i15  i16  i17  i18  i19  i20  i21  i22  i23  i24  i25  i26 
+i27  i28  i29  i30  i31  i32  i33  i34  i35  i36  i37  i38  i39  i40  i41  i42  i43  i44  i45  i46  i47  i48   i49  i50 
+i51  i52  i53  i54  i55  i56  i57  i58  i59  i60 i61  i62  i63  i64  i65  i66  i67  i68  i69  i70  i71 i72  i73  i74 i75 i76  i77  i78 
+i79  i80  i81  i82  i83  i84  i85  i86  i87  i88  i89  i90  i91  i92  i93 i94  i95 i96 i97  i98  i99  i100  i101  i102 i103 i104 i105
+
+
 ;
 by cald;
 
