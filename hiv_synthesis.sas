@@ -379,7 +379,13 @@ newp_seed = 7;
 
 * self_test_sens;			self_test_sens = 0.93;          
 
-* prob_pos_self_test_conf;	prob_pos_self_test_conf = 0.6;
+* prob_pos_self_test_conf;	prob_pos_self_test_conf = 0.8;
+
+* secondary_dist_self_test;		secondary_dist_self_test = 0; 
+* intervention in place to give to sexual partners ;
+
+* secondary_self_test_targeting; secondary_self_test_targeting = 1;
+
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
@@ -2213,13 +2219,12 @@ who may be dead and hence have caldate{t} missing;
  
 
 	*TESTING;
+	*TESTING;
 	if option = 2 then do; *Self-test kits distributed (Primary distribution);
 		prob_self_test_hard_reach = 0.1;
 		self_test_targeting = 1.5;
 		rate_self_test = 0.03;
 	end;
-
-
 	if option = 3  then do; *Self-test kits distributed (Secondary distribution, excluding for partners) [S2];
 	end;
 	if option = 4 then do; *Self-test kits distributed (Secondary distribution, for sexual partners) [S3];
@@ -2227,6 +2232,7 @@ who may be dead and hence have caldate{t} missing;
 		prob_self_test_hard_reach = 0.2;
 		self_test_targeting = 2.0;
 		rate_self_test = 0.01;
+		secondary_dist_self_test = 1; secondary_self_test_targeting = 3;
 	end;
 	if option = 5 then do; *Clients tested for HIV at facility, excluding ANC & PD, infant testing, contacts testing for HIV at the facility and testing of FSW ;
 	end;
@@ -2408,7 +2414,6 @@ who may be dead and hence have caldate{t} missing;
 	*Structural interventions and social enablers;
 	if option = 40 then do;*DREAMS;
 	end;
-
 	
 end;
 
@@ -4897,7 +4902,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	u_self_test=rand('uniform');
  	if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
 	if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
-		if tested ne 1 and u_self_test < rate_self_test then do;
+	if secondary_self_test=1 and eponart=1 then u_self_test/secondary_self_test_targeting;  end;
+		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
 			self_tested=1; 
 			dt_last_self_test=caldate{t}; 
 		end;
@@ -4908,6 +4914,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	tested=1; tested_due_to_self_test=1;
 	dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 	end;
+	* note this depends on primary infection lasting 3 months - ts1m ;
+
 
 
 
@@ -20475,6 +20483,63 @@ data r1 ; set a ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
+
+
+
+
+
+data r1 ; set a ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=4);		* end of 2027 (core), end of 2022 (Zim) JAS Sep23;
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=4);		* end of 2030 (core) JAS Jul23;
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=4);
 
 
 

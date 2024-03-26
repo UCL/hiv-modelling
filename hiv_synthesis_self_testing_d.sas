@@ -2173,26 +2173,6 @@ who may be dead and hence have caldate{t} missing;
 
 
 
-
-	*TESTING;
-	if option = 2 then do; *Self-test kits distributed (Primary distribution);
-		prob_self_test_hard_reach = 0.1;
-		self_test_targeting = 1.5;
-		rate_self_test = 0.03;
-	end;
-
-	if option = 4 then do; *Self-test kits distributed (Secondary distribution, for sexual partners) [S3];
-		* values suggest lower amounts of tests but perhaps better targeted at recent sexual risk and perhaps getting more at hard to reach ;
-		prob_self_test_hard_reach = 0.2;
-		self_test_targeting = 2.0;
-		rate_self_test = 0.01;
-		secondary_dist_self_test = 1; secondary_self_test_targeting = 3;
-	end;
-
-
-/*
-
-
 	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do;
 	*MINIMAL;
 
@@ -2239,13 +2219,12 @@ who may be dead and hence have caldate{t} missing;
  
 
 	*TESTING;
+	*TESTING;
 	if option = 2 then do; *Self-test kits distributed (Primary distribution);
 		prob_self_test_hard_reach = 0.1;
 		self_test_targeting = 1.5;
 		rate_self_test = 0.03;
 	end;
-
-
 	if option = 3  then do; *Self-test kits distributed (Secondary distribution, excluding for partners) [S2];
 	end;
 	if option = 4 then do; *Self-test kits distributed (Secondary distribution, for sexual partners) [S3];
@@ -2253,6 +2232,7 @@ who may be dead and hence have caldate{t} missing;
 		prob_self_test_hard_reach = 0.2;
 		self_test_targeting = 2.0;
 		rate_self_test = 0.01;
+		secondary_dist_self_test = 1; secondary_self_test_targeting = 3;
 	end;
 	if option = 5 then do; *Clients tested for HIV at facility, excluding ANC & PD, infant testing, contacts testing for HIV at the facility and testing of FSW ;
 	end;
@@ -2434,8 +2414,6 @@ who may be dead and hence have caldate{t} missing;
 	*Structural interventions and social enablers;
 	if option = 40 then do;*DREAMS;
 	end;
-
-*/
 	
 end;
 
