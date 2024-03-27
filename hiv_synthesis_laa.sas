@@ -8722,6 +8722,13 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 adh_dl=adh;
 
+
+* len ;
+
+if o_cab = 1 or o_len = 1 then adh_dl = 1;
+
+
+
 newmut_tm1 = .; * note that we only have newmut_tm1, newmut is not defined;
 
 cab_higher_potency = dol_higher_potency ;
