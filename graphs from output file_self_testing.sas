@@ -3,12 +3,12 @@
 ***Use 'include' statment in analysis program to read the code below in;
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\self_testing\self_testing_c_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\self_testing\self_testing_d_out\";
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_self_testing_c   ;
+  set a.l_self_testing_d   ;
 
 p_onart_vl1000_all = .;
 
@@ -374,12 +374,16 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  12000000 by 1000000) valueattrs=(size=10);
 label p50_n_tested_0 = "Option 0 (median) ";
 label p50_n_tested_1 = "Option 1 (median) ";
+label p50_n_tested_2 = "Option 2 (median) ";
 
 series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 series  x=cald y=p50_n_tested_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=p50_n_tested_2/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_tested_2 	upper=p95_n_tested_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -390,12 +394,16 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  12000000 by 1000000) valueattrs=(size=10);
 label p50_n_self_tested_0 = "Option 0 (median) ";
 label p50_n_self_tested_1 = "Option 1 (median) ";
+label p50_n_self_tested_2 = "Option 2 (median) ";
 
 series  x=cald y=p50_n_self_tested_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_self_tested_0 	upper=p95_n_self_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 series  x=cald y=p50_n_self_tested_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_self_tested_1 	upper=p95_n_self_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=p50_n_self_tested_2/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_self_tested_2 	upper=p95_n_self_tested_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -780,6 +788,8 @@ band    x=cald lower=p5_mtct_prop_1 	upper=p95_mtct_prop_1  / transparency=0.9 f
 run;quit;
 
 
+
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of men with hiv, % diagnosed";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -787,40 +797,14 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 100 by 10)
 
 label p50_p_diag_m_0 = "Option 0 (median) ";
 label p50_p_diag_m_1 = "Option 1  (median) ";
+label p50_p_diag_m_2 = "Option 2  (median) ";
 
 series  x=cald y=p50_p_diag_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_diag_m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_diag_m_1 	upper=p95_p_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "of men with hiv, % diagnosed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (70 to 100 by 5) valueattrs=(size=10);
-
-label p50_p_diag_m_0 = "Option 0 (median) ";
-label p50_p_diag_m_1 = "Option 1  (median) ";
-
-series  x=cald y=p50_p_diag_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_diag_m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_diag_m_1 	upper=p95_p_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "of women with hiv, % diagnosed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 100 by 10) valueattrs=(size=10);
-
-label p50_p_diag_w_0 = "Option 0 (median) ";
-label p50_p_diag_w_1 = "Option 1  (median) ";
-
-series  x=cald y=p50_p_diag_w_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_diag_w_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_diag_w_1 	upper=p95_p_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_m_2/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_diag_m_2 	upper=p95_p_diag_m_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -832,13 +816,20 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (70 to 100 by 5)
 
 label p50_p_diag_w_0 = "Option 0 (median) ";
 label p50_p_diag_w_1 = "Option 1  (median) ";
+label p50_p_diag_w_2 = "Option 2  (median) ";
 
 series  x=cald y=p50_p_diag_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_diag_w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_diag_w_1 	upper=p95_p_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_w_2/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_diag_w_2 	upper=p95_p_diag_w_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
+
+
+
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of naive art initiators with NNRTI mutation";

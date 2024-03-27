@@ -2161,6 +2161,23 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
+
+	if option = 2 then do; *Self-test kits distributed (Primary distribution);
+		prob_self_test_hard_reach = 0.1;
+		self_test_targeting = 1.5;
+		rate_self_test = 0.03;
+	end;
+	if option = 4 then do; *Self-test kits distributed (Secondary distribution, for sexual partners) [S3];
+		* values suggest lower amounts of tests but perhaps better targeted at recent sexual risk and perhaps getting more at hard to reach ;
+		prob_self_test_hard_reach = 0.2;
+		self_test_targeting = 2.0;
+		rate_self_test = 0.01;
+		secondary_dist_self_test = 1; secondary_self_test_targeting = 3;
+	end;
+
+/*
+
+
  	*Option 0 is continuation at current rates;
  	*Option 1 is essential scenario for Zimbabwe;
 	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;						 *Vale;
@@ -2170,8 +2187,6 @@ who may be dead and hence have caldate{t} missing;
 	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops; *Jenny;
 	*Option 30,31,32,33,34 are essential + Linkage, management, ART Interv;			 *Andrew;	
 	*Option 40			   is  essential + DREAMS;									 *Vale;
-
-
 
 	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do;
 	*MINIMAL;
@@ -2414,6 +2429,8 @@ who may be dead and hence have caldate{t} missing;
 	*Structural interventions and social enablers;
 	if option = 40 then do;*DREAMS;
 	end;
+
+*/
 	
 end;
 
@@ -4899,10 +4916,10 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	w = rand('uniform');	
 	if hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach) then do;
 												
-	u_self_test=rand('uniform');
- 	if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
-	if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
-	if secondary_self_test=1 and eponart=1 then u_self_test/secondary_self_test_targeting;  end;
+		u_self_test=rand('uniform');
+ 		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
+		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
+		if secondary_self_test=1 and eponart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  
 		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
 			self_tested=1; 
 			dt_last_self_test=caldate{t}; 
@@ -19145,7 +19162,7 @@ sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger
-prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens 
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test  secondary_self_test_targeting 
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy  prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
@@ -22036,7 +22053,7 @@ zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_futu
 rate_tb_proph_init rate_sbi_proph_init 
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
-prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test  secondary_self_test_targeting 
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy   prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
