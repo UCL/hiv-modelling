@@ -8724,6 +8724,15 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 adh_dl=adh;
 
+
+
+* len ;
+
+if o_cab = 1 or o_len = 1 then adh_dl = 1;
+
+
+
+
 newmut_tm1 = .; * note that we only have newmut_tm1, newmut is not defined;
 
 cab_higher_potency = dol_higher_potency ;
@@ -17555,7 +17564,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 proc freq; tables cald hiv ; where death=.; run;
 
 
-proc print; var reg_option onart art_monitoring_strategy adh adh_dl o_dol o_3tc o_ten o_cab o_len nactive  r_cab r_len f_cab f_len ;
+proc print; var reg_option onart art_monitoring_strategy adh adh_dl vl o_dol o_3tc o_ten o_cab o_len nactive  r_cab r_len f_cab f_len ;
 where naive=0 and caldate&j ge 2025;
 run;
 
