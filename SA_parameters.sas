@@ -22,7 +22,9 @@
 
 * fold_change_ac_death_rate;fold_change_ac_death_rate_w = 0.65; fold_change_ac_death_rate_m = 0.65; 
 
-newp_seed = 10 ;
+* INTRODUCTION OF HIV;
+* startyr;					startyr = 1993;
+* newp_seed;				newp_seed = 10 ;
 
 * SEXUAL BEHAVIOUR;
 * ych_risk_beh_newp;  		ych_risk_beh_newp = 1;
@@ -39,8 +41,6 @@ newp_seed = 10 ;
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
 
 
-* INTRODUCTION OF HIV;
-* startyr;					startyr = 1993;
 
 * TRANSMISSION;
 
