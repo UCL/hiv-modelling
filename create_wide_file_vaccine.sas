@@ -4,25 +4,25 @@
 
  proc printto ; 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_fpc_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_fpc_b_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_fpc_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_fpc_b_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_m_fpc_d;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_n_fpc_b;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_vaccine_m_fpc_d; 
+proc sort data=b.k_vaccine_n_fpc_b; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_m_fpc_d ;
+set b.k_vaccine_n_fpc_b ;
 
 
 if cald=2024   ;
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_m_fpc_d sf;
+merge b.k_vaccine_n_fpc_b sf;
 by run ;
 
 * preparatory code ;
@@ -650,6 +650,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_inf_diag ;					p_inf_diag = s_inf_diag   / s_primary;
 * p_inf_naive ; 				p_inf_naive = s_inf_naive / s_primary;
 * p_inf_primary ;				p_inf_primary = s_inf_primary / s_primary;
+* n_inf_primary;				n_inf_primary = s_inf_primary * &sf * 4;
 
 *The meaning of the following is: among newly infected people, which proportion are SW, etc..;
 * p_sw_newinf;				    p_sw_newinf = s_primary_sw / s_primary;		
@@ -1046,7 +1047,7 @@ n_prep_any_start n_prep_oral_start  n_prep_inj_start n_prep_vr_start n_prep_any 
 p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_inj n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
 ddaly daly_ac_mtct p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m
 s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
-p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
+p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection n_inf_primary
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m  n_alive
 
@@ -1115,9 +1116,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_vaccine_m_fpc_d_y; set y;  
+data    b.l_vaccine_n_fpc_b_y; set y;  
 
-data y ; set b.l_vaccine_m_fpc_d_y; 
+data y ; set b.l_vaccine_n_fpc_b_y; 
 
 
   options nomprint;
@@ -1164,7 +1165,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=prevalence1519w); * %var(v=prevalence1519m); * %var(v=prevalence2024w); * %var(v=prevalence2024m); * %var(v=prevalence2529w);  	  
 * %var(v=prevalence2529m); * %var(v=prevalence3034w);*  %var(v=prevalence3034m);* %var(v=prevalence3539w); * %var(v=prevalence3539m);  	  
 * %var(v=prevalence4044w); *  %var(v=prevalence4044m); *  %var(v=prevalence4549w); *  %var(v=prevalence4549m);  
-%var(v=prevalence_vg1000); %var(v=incidence1549);  %var(v=incidence1564);  %var(v=n_infection);  %var(v=incidence_onprep);
+%var(v=prevalence_vg1000); %var(v=incidence1549);  %var(v=incidence1564);  %var(v=n_infection);  %var(v=incidence_onprep); %var(v=n_inf_primary);
 %var(v=prevalence1524w); *  %var(v=prevalence1524m); %var(v=prevalence_sw);
 * %var(v=prevalence5054w); * %var(v=prevalence5054m); * %var(v=prevalence5559w); * %var(v=prevalence5559m); * %var(v=prevalence6064w); * %var(v=prevalence6064m); 
 * %var(v=prevalence65plw); * %var(v=prevalence65plm); * %var(v=r_prev_sex_1549); * %var(v=prevalence_hiv_preg);
@@ -1300,7 +1301,7 @@ p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_ona
 p_ten p_zdv p_dol p_3tc p_lpr p_nev p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  
 p_vl1000_art_12m p_vl1000_art_12m_onart  p_onart_vl1000_w p_onart_vl1000_m  p_startedline2 p_linefail_ge1 m15r  m25r  m35r  m45r  m55r  w15r  
 w25r  w35r  w45r  w55r p_onart_cd4_l500  prop_art_or_prep  prop_sw_onprep   p_onart p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz death_rate_hiv 
-death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w p_iime n_infected_inm 
+death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w p_iime n_infected_inm n_inf_primary
 n_tested n_tested_sw test_prop_positive p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  
 p_prep_any_ever p_hiv1_prep p_hiv1_prep_inj p_hiv1_prep_oral incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
 prop_prep_inj   ratio_inj_prep_on_tail    pr_ever_prep_inj_res_cab    pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab    prop_cab_res_tail    
@@ -1487,12 +1488,12 @@ proc sort; by run;run;
 proc freq data=b.wide_par2; tables future_prep_condom ; run;  
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_fpc_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_fpc_b_out\";
 
 
 * To get one row per run;
 
-  data  b.w_vaccine_m_fpc_d     ; 
+  data  b.w_vaccine_n_fpc_b     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1611,18 +1612,18 @@ r_incidence1549_30y_4_1  = "vaccine_3"
 
 
 
-proc means   data = b.w_vaccine_m_fpc_d  n p50 p5 p95 ;  
+proc means   data = b.w_vaccine_n_fpc_b  n p50 p5 p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   ;
 run;
 
-proc means   data = b.w_vaccine_m_fpc_d  n p50 p5 p95 ;  
+proc means   data = b.w_vaccine_n_fpc_b  n p50 p5 p95 ;  
 var prevalence1549w_39 prevalence1549m_39 incidence1549_39 p_diag_39 p_onart_diag_39 p_onart_vl1000_39 p_vl1000_39 prevalence_vg1000_39   ;
 run;
 
 
 ods html;
 title "Relative incidence (age 15-49) compared with no vaccine";
-proc means  data = b.w_vaccine_m_fpc_d  n p50 p5 p95 ;
+proc means  data = b.w_vaccine_n_fpc_b  n p50 p5 p95 ;
 var
 r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
 ;
@@ -1630,14 +1631,14 @@ run;
 ods html close;
 
 
-proc means  data = b.w_vaccine_m_fpc_d  n p50 p5 p95 ;
+proc means  data = b.w_vaccine_n_fpc_b  n p50 p5 p95 ;
 var
 r_incidence1549_69_2_1 r_incidence1549_69_3_1  r_incidence1549_69_4_1  
 ;
 run;
 
 
-proc means  data = b.w_vaccine_m_fpc_d  n p50 p5 p95 ;
+proc means  data = b.w_vaccine_n_fpc_b  n p50 p5 p95 ;
 var
 r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
 d_incidence1549_30y_2_1 d_incidence1549_30y_3_1  d_incidence1549_30y_4_1 
@@ -1678,7 +1679,7 @@ run;
 
 
 
-proc means   data = b.w_vaccine_m_fpc_d  n mean  p50 p5 p95 ;
+proc means   data = b.w_vaccine_n_fpc_b  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_1  incidence1549_41_1  incidence1549_42_1  incidence1549_43_1  incidence1549_44_1  incidence1549_45_1  incidence1549_46_1  incidence1549_47_1  
 incidence1549_48_1  incidence1549_49_1  incidence1549_50_1  incidence1549_51_1  incidence1549_52_1  incidence1549_53_1  incidence1549_54_1  incidence1549_55_1  
@@ -1733,18 +1734,18 @@ run;quit;
 
 
 
-proc glm  data = b.w_vaccine_m_fpc_d ;
+proc glm  data = b.w_vaccine_n_fpc_b ;
 class future_prep_condom;
 model prop_elig_on_prep_39 = future_prep_condom / solution;
 run;
 
-proc glm  data = b.w_vaccine_m_fpc_d ;
+proc glm  data = b.w_vaccine_n_fpc_b ;
 class future_prep_condom;
 model incidence1549_30y_1 = future_prep_condom / solution;
 run;
 
-proc sort data = b.w_vaccine_m_fpc_d; by future_prep_condom;
-proc means  data = b.w_vaccine_m_fpc_d ;
+proc sort data = b.w_vaccine_n_fpc_b; by future_prep_condom;
+proc means  data = b.w_vaccine_n_fpc_b ;
 var prop_elig_on_prep_39  incidence1549_39 incidence1549_30y_1  ;
 by future_prep_condom;
 run;
@@ -1760,27 +1761,27 @@ ods html close;
 
 
 
-proc means   data = b.w_vaccine_m_fpc_d  n p50 p5 p95 min max;  
+proc means   data = b.w_vaccine_n_fpc_b  n p50 p5 p95 min max;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24 
 prop_elig_on_prep_24  ;
 run;
 
 
-proc means data = b.w_vaccine_m_fpc_d  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_n_fpc_b  n p50 p5 p95 ;  
 var
 prop_1564_onprep_30y_1  prop_1564_onprep_30y_2   
 d_prop_1564_onprep_30y_2_1  
 ;
 
 
-proc means data = b.w_vaccine_m_fpc_d  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_n_fpc_b  n p50 p5 p95 ;  
 var 
 prop_elig_on_prep_30y_1 prop_elig_on_prep_30y_2  
 d_prop_elig_on_prep_30y_2_1  
 ;
 
 
-proc means data = b.w_vaccine_m_fpc_d  n p50 p5 p95 ;  
+proc means data = b.w_vaccine_n_fpc_b  n p50 p5 p95 ;  
 var
 prop_prep_inj_30y_1  prop_prep_inj_30y_2  
 d_prop_prep_inj_30y_2_1  
@@ -1788,7 +1789,7 @@ d_prop_prep_inj_30y_2_1
 
 
 
-proc means  data = b.w_vaccine_m_fpc_d  n mean p50 p5 p95 clm;  
+proc means  data = b.w_vaccine_n_fpc_b  n mean p50 p5 p95 clm;  
 var
 incidence1549_30y_1 incidence1549_30y_2  
 r_incidence1549_30y_2_1 
@@ -1797,7 +1798,7 @@ run;
 
 
 ods html;
-proc means  data = b.w_vaccine_m_fpc_d  n mean clm;  
+proc means  data = b.w_vaccine_n_fpc_b  n mean clm;  
 var
 incidence1549_30y_1 incidence1549_30y_2 
 r_incidence1549_30y_2_1 
