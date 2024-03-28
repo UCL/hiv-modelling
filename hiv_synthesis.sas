@@ -351,9 +351,9 @@ newp_seed = 7;
 * np_lasttest;				np_lasttest=0;  
 * newp_lasttest;			newp_lasttest=0; 
 
-* rate_anc_inc; 		%sample_uniform(rate_anc_inc, 0.005 0.01 0.03 0.05 0.10);
-* prob_test_2ndtrim;	%sample_uniform(prob_test_2ndtrim, 0.7 0.8 0.9 1.00);
-* prob_test_postdel;	prob_test_postdel=0.95;
+* rate_anc_inc; 			%sample_uniform(rate_anc_inc, 0.005 0.01 0.03 0.05 0.10);
+* prob_test_2ndtrim;		%sample_uniform(prob_test_2ndtrim, 0.7 0.8 0.9 1.00);
+* prob_test_postdel;		prob_test_postdel=0.95;
 * test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
@@ -370,6 +370,23 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * rr_testing_female;		rr_testing_female=1.5;
+
+* prob_self_test_hard_reach;prob_self_test_hard_reach = 0;
+
+* self_test_targeting;		self_test_targeting = test_targeting;
+
+* rate_self_test;			rate_self_test = 0;
+
+* self_test_sens;			self_test_sens = 0.93;          
+
+* prob_pos_self_test_conf;	prob_pos_self_test_conf = 0.8;
+
+* secondary_dist_self_test;		secondary_dist_self_test = 0; 
+* intervention in place to give to sexual partners ;
+
+* secondary_self_test_targeting; secondary_self_test_targeting = 1;
+
+
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
@@ -1756,8 +1773,10 @@ eff_prob_lossdiag_adctb = prob_lossdiag_adctb ;
 eff_prob_return_adc = prob_return_adc ;
 
 * define effective test_targeting;
-
 eff_test_targeting = test_targeting;
+
+* define effective self_test_targeting;
+eff_self_test_targeting = self_test_targeting;
 
 * define eff_prob_birth_circ;
 eff_prob_birth_circ=prob_birth_circ;
@@ -2087,6 +2106,7 @@ onart_tm2=onart_tm1;
 sw_tm2=sw_tm1; 
 
 tested_tm1=tested; tested=0;
+self_tested_tm1=self_tested; self_tested=0;
 visit_hypertension_tm1 = visit_hypertension;
 tested_bp_tm1 = tested_bp;
 sbp_m_tm1 = sbp_m;
@@ -2152,6 +2172,7 @@ who may be dead and hence have caldate{t} missing;
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
+
 	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do;
 	*MINIMAL;
 
@@ -2196,12 +2217,22 @@ who may be dead and hence have caldate{t} missing;
 		*DREAMS: ok to assume that is has not been included so far?;
 	end;
  
+
+	*TESTING;
 	*TESTING;
 	if option = 2 then do; *Self-test kits distributed (Primary distribution);
+		prob_self_test_hard_reach = 0.1;
+		self_test_targeting = 1.5;
+		rate_self_test = 0.03;
 	end;
 	if option = 3  then do; *Self-test kits distributed (Secondary distribution, excluding for partners) [S2];
 	end;
 	if option = 4 then do; *Self-test kits distributed (Secondary distribution, for sexual partners) [S3];
+		* values suggest lower amounts of tests but perhaps better targeted at recent sexual risk and perhaps getting more at hard to reach ;
+		prob_self_test_hard_reach = 0.2;
+		self_test_targeting = 2.0;
+		rate_self_test = 0.01;
+		secondary_dist_self_test = 1; secondary_self_test_targeting = 3;
 	end;
 	if option = 5 then do; *Clients tested for HIV at facility, excluding ANC & PD, infant testing, contacts testing for HIV at the facility and testing of FSW ;
 	end;
@@ -2385,6 +2416,7 @@ who may be dead and hence have caldate{t} missing;
 	end;
 	
 end;
+
 
 
 *  ======================================================================================================================================== ;
@@ -4859,6 +4891,36 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		end;
 	end;
 
+
+* SELF-TESTING;
+
+	eff_self_test_targeting = self_test_targeting;
+
+	w = rand('uniform');	
+	if hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach) then do;
+												
+		u_self_test=rand('uniform');
+ 		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
+		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
+		if secondary_self_test=1 and eponart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  
+		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
+			self_tested=1; 
+			dt_last_self_test=caldate{t}; 
+		end;
+	end;
+
+	v = rand('uniform'); z = rand('uniform');
+	if self_tested = 1 and hiv = 1 and z < prob_pos_self_test_conf and v < self_test_sens then do; 
+	tested=1; tested_due_to_self_test=1;
+	dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+	end;
+	* note this depends on primary infection lasting 3 months - ts1m ;
+
+
+
+
+
+* TESTING IN RELATION TO PrEP;
 
 	a=rand('uniform');
 
@@ -7873,6 +7935,8 @@ if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is 
 *	if cost_test=0 then cost_test= cost_test_c;
 * end;
 end;
+
+if registd=1 and registd_tm1=0 and self_tested=1 then diagnosed_self_test = 1;
 
 
 * AP 22-7-19;
@@ -14868,6 +14932,8 @@ if 2 <= caldate&j - infection < 3 and registd_tm1 ne 1 then do; year_3_infection
 if 3 <= caldate&j - infection < 4 and registd_tm1 ne 1 then do; year_4_infection=1; if date1pos=caldate&j then year_4_infection_diag=1;  end;
 if 4 <= caldate&j - infection < 5 and registd_tm1 ne 1 then do; year_5_infection=1; if date1pos=caldate&j then year_5_infection_diag=1;  end;
 
+self_tested_m=0; if gender=1 and self_tested=1 then self_tested_m=1;
+self_tested_w=0; if gender=2 and self_tested=1 then self_tested_w=1;
 
 
 ***Pregnancy outcomes;
@@ -16978,6 +17044,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ;  
 	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;  s_test_not_costed + test_not_costed;
 
+	s_self_tested + self_tested;  s_tested_due_to_self_test + tested_due_to_self_test;  s_diagnosed_self_test + diagnosed_self_test;
+	s_self_tested_m + self_tested_m ; s_self_tested_w + self_tested_w ; 
+
 	/*VL and CD4*/
 
 	s_vlg1 + vlg1 ; s_vlg2 + vlg2 ; s_vlg3 + vlg3 ; s_vlg4 + vlg4 ; s_vlg5 + vlg5 ; s_vlg6 + vlg6 ; 
@@ -18745,6 +18814,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500  
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return   s_test_not_costed
+s_self_tested s_self_tested_m s_self_tested_w  s_tested_due_to_self_test  s_diagnosed_self_test
 
 
 /*VL and CD4*/
@@ -19075,6 +19145,7 @@ sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test  secondary_self_test_targeting 
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy  prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
@@ -19712,6 +19783,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return   s_test_not_costed
+s_self_tested  s_self_tested_m s_self_tested_w  s_tested_due_to_self_test s_diagnosed_self_test
 
 
 /*VL and CD4*/
@@ -20301,6 +20373,11 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
+
+data a ;  set r1 ;
+
+data r1 ; set a ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
@@ -20317,12 +20394,6 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);		* end of 2027 (core), end of 2022 (Zim) JAS Sep23;
-
-
-data a ;  set r1 ;
-
-data r1 ; set a ;
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
@@ -20339,7 +20410,6 @@ data r1 ; set a ;
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
@@ -20358,6 +20428,123 @@ data r1 ; set a ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
+
+
+
+data r1 ; set a ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);		* end of 2027 (core), end of 2022 (Zim) JAS Sep23;
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=2);		* end of 2030 (core) JAS Jul23;
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
+
+
+
+
+
+data r1 ; set a ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=4);		* end of 2027 (core), end of 2022 (Zim) JAS Sep23;
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=4);		* end of 2030 (core) JAS Jul23;
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=4);
+
+
+
+
+/*
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
@@ -21167,6 +21354,7 @@ set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=349,h=356,j=355,s=3);
 %update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=356,s=3);		* end of 2077 (core), end of 2072 (Zim) JAS Sep23;
 
+*/
 
 * end of s=3 JAS Sep2023;
 
@@ -21518,6 +21706,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350  s_not_on_art_cd4350500  s_not_on_art_cd4ge500
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return  s_test_not_costed
+s_self_tested  s_self_tested_m s_self_tested_w  s_tested_due_to_self_test s_diagnosed_self_test
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -21847,6 +22036,8 @@ zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_futu
 rate_tb_proph_init rate_sbi_proph_init 
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test  secondary_self_test_targeting 
+
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy   prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
