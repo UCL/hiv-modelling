@@ -10,6 +10,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data b;
   set a.l_self_testing_d   ;
 
+
 p_onart_vl1000_all = .;
 
 * NB: note lines below, because variable names cannot end with a number;
@@ -49,7 +50,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  300   ;
+%let nfit =  231   ;
 %let year_end = 2036.00 ;
 run;
 proc sort;by cald option ;run;
@@ -231,7 +232,7 @@ n_alive n_diagnosed n_hiv n_infected  n_self_tested
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
       
-proc transpose data=option_1 out=i&count prefix=&varb;var &varb; by cald; id count_csim;run;
+proc transpose data=option_2 out=i&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
 data i&count;set i&count;***creates one dataset per variable;
 p25_&varb._2  = PCTL(25,of &varb.1-&varb.&nfit);
@@ -291,8 +292,6 @@ by cald;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
-
-
 
 
 
@@ -793,7 +792,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of men with hiv, % diagnosed";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 100 by 10) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (70 to 100 by 10) valueattrs=(size=10);
 
 label p50_p_diag_m_0 = "Option 0 (median) ";
 label p50_p_diag_m_1 = "Option 1  (median) ";

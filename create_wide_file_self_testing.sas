@@ -5,7 +5,6 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 data g ; set b.out: ;
 
-
 proc sort data=g; 
 by run cald option;run;
 
@@ -1343,9 +1342,6 @@ proc sort; by run;run;
   data b.w_self_testing_d; 
   merge   wide_outputs  wide_par ;  
   by run;
-
-run;
-
 
 
 
