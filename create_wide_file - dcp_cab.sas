@@ -2009,6 +2009,12 @@ run;
 
 
 
+proc glm; model prop_elig_on_prep_20y_1 = effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
+prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy
+prob_prep_oral_b rate_choose_stop_prep_oral pref_prep_oral_beta_s1 / solution;
+run;
+
+
 
 
 

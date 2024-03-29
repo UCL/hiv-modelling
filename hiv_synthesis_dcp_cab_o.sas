@@ -696,7 +696,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* changed from 0.7 to 0.8 after discussion due to low overall adherence resulting from 0.7;
 * prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
 
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral,  0.10 0.30  0.50); * dcp_cab ;
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral,  0.3 0.5 0.7); * dcp_cab ;
 								* dependent_on_time_step_length ;
 
 * higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
@@ -819,7 +819,7 @@ end;
 
 * prob_prep_b_dcp;				%sample_uniform(prob_prep_b_dcp, 0.05 0.1  0.2 );
 
-* rate_choose_stop_prep_dcp;	%sample_uniform(rate_choose_stop_prep_dcp, 0.05  0.1); 
+* rate_choose_stop_prep_dcp;	%sample_uniform(rate_choose_stop_prep_dcp, 0.04  0.08); 
 
 * rate_test_startprep_any_dcp;	%sample_uniform(rate_test_startprep_any_dcp, 0.15  0.2  );
 
