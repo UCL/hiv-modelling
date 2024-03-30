@@ -549,7 +549,7 @@ newp_seed = 7;
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							* dependent_on_time_step_length ;
 * pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  );   * tld_switch ;      
-* pr_res_len;				%sample_uniform(pr_res_len, 0.005  0.01  0.02  0.05);     
+* pr_res_len;				%sample_uniform(pr_res_len, 0.005  0.01  0.02  0.05);   * here here if onart=0 and 0.25 <= tss_len <=0.5  .... ;  
 * rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1 1.5 2  );
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
@@ -8729,8 +8729,6 @@ adh_dl=adh;
 * len ;
 
 if o_cab = 1 or o_len = 1 then adh_dl = 1;
-
-
 
 
 newmut_tm1 = .; * note that we only have newmut_tm1, newmut is not defined;
@@ -20375,11 +20373,11 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
 
-data a.gse; set r1;
+data a.gse2; set r1;
 
 
 
-data r1; set a.gse;
+data r1; set a.gse2;
 * 2025;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
