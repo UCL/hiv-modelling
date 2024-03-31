@@ -671,7 +671,7 @@ end;
 
 * ALL PREP ;
 
-* These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
+* These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
 * prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
 
@@ -700,7 +700,7 @@ end;
 
 * Oral PrEP assumed introduced in fsw/agyw 2018 - with level of coverage and retention; 
 * note there are multiple parameters that affect use of oral prep besides the prep_any_strategy: prob_prep_oral_b is prob of starting if prep_any_elig=1 and tested=1
-and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral > pref_prep_vr
+and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and pref_prep_oral > pref_prep_vr
 * a person cannot be prep_any_elig=1 if hard_reach=1; 
 * a person prep_any_elig=1 will only actually have a chance of starting prep if prep_any_willing=1;
 * lapr and dpv-vr - assume following all apply unless stated ; * lapr - add specific testing routines?
@@ -738,39 +738,57 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * oral_prep_eff_3tc_ten_res;	%sample_uniform(oral_prep_eff_3tc_ten_res, 0.25 0.5);
 
 
-* INJECTABLE CABOTEGRAVIR PREP ; * lapr;
+* INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ; * lapr;
 
-* date_prep_inj_intro;			date_prep_inj_intro=2027;		* Introduction of injectable PrEP ;
-* dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep;
-* prob_prep_inj_b;				prob_prep_inj_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
-																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
+* date_prep_cab_intro;			date_prep_cab_intro=2027;		* Introduction of injectable cab PrEP ;
+* date_prep_len_intro;			date_prep_len_intro=2027;		* Introduction of injectable len PrEP ;
+* dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;			* Assume 5 years to scale up injectable cab prep;
+* dur_prep_len_scaleup;			dur_prep_len_scaleup=5;			* Assume 5 years to scale up injectable len prep;
+* prob_prep_cab_b;				prob_prep_cab_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
+* prob_prep_len_b;				prob_prep_len_b = prob_prep_oral_b;	* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
 
-* annual_testing_prep_inj;		annual_testing_prep_inj=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
-																* REF HIV MC joint project - this takes into account delayed or skipped injections ;
+* annual_testing_prep_cab;		annual_testing_prep_cab=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
+* annual_testing_prep_len;		annual_testing_prep_len=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
+														* REF HIV MC joint project - this takes into account delayed or skipped injections ;
 
-* prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
-* rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
+* prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
+* prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
+* rate_choose_stop_prep_cab; 	%sample(rate_choose_stop_prep_cab, 0.05 0.15 0.30, 0.8 0.1 0.1);
+* rate_choose_stop_prep_len; 	%sample(rate_choose_stop_prep_len, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_prep_inj/vr or one indicating the relative rate compared with oral prep;
-* prep_inj_effect_inm_partner;	%sample_uniform(prep_inj_effect_inm_partner, 0.0 0.25 0.5 );				
+* prep_cab_effect_inm_partner;	%sample_uniform(prep_cab_effect_inm_partner, 0.0 0.25 0.5 );				
+* prep_len_effect_cam_partner;	%sample_uniform(prep_len_effect_cam_partner, 0.0 0.25 0.5 );				
 
 * cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
+* len_time_to_lower_threshold_g; 	%sample_uniform(len_time_to_lower_threshold_g, 1 2); 
 
-* pr_inm_inj_prep_primary ;		%sample_uniform(pr_inm_inj_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation - any mutation gives r_cab = 0.75;
-* rel_pr_inm_inj_prep_tail_primary; %sample_uniform(rel_pr_inm_inj_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
+* pr_inm_cab_prep_primary ;		%sample_uniform(pr_inm_cab_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation ;
+* pr_cam_len_prep_primary ;		%sample_uniform(pr_cam_len_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation ;
+* rel_pr_inm_cab_prep_tail_primary; %sample_uniform(rel_pr_inm_cab_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
+* rel_pr_inm_len_prep_tail_primary; %sample_uniform(rel_pr_inm_len_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
+* incr_res_risk_len_inf_3m;		%sample_uniform(incr_res_risk_len_inf_3m, 1 3 5 10 20 50);
 
 * new for pop_wide_tld ;
 
-* pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.3 ; * tends to be more preference for inj ;
+* pref_prep_cab_beta_s1;		pref_prep_cab_beta_s1 = pref_prep_oral_beta_s1 + 0.3 ; * tends to be more preference for inj ;
+* pref_prep_len_beta_s1;		pref_prep_len_beta_s1 = pref_prep_oral_beta_s1 + 0.3 ; * tends to be more preference for inj ;
 
-* hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
-								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
-* hivtest_type_1_prep_inj;		if hivtest_type_1_init_prep_inj=1 then do; %sample(hivtest_type_1_prep_inj, 0 1, 0.5 0.5);end;
-								%sample_uniform(testt1_prep_inj_eff_on_res_prim, 0.25 0.5 0.75); 
-								if hivtest_type_1_prep_inj=1 then do; 
-									pr_inm_inj_prep_primary = pr_inm_inj_prep_primary * testt1_prep_inj_eff_on_res_prim;   
+* hivtest_type_1_init_prep_cab; %sample(hivtest_type_1_init_prep_cab, 0 1, 0.5 0.5);
+								if hivtest_type_1_init_prep_cab=0 then hivtest_type_1_prep_cab=0;
+* hivtest_type_1_init_prep_len; %sample(hivtest_type_1_init_prep_len, 0 1, 0.5 0.5);
+								if hivtest_type_1_init_prep_len=0 then hivtest_type_1_prep_len=0;
+* hivtest_type_1_prep_cab;		if hivtest_type_1_init_prep_cab=1 then do; %sample(hivtest_type_1_prep_cab, 0 1, 0.5 0.5);end;
+								%sample_uniform(testt1_prep_cab_eff_on_res_prim, 0.25 0.5 0.75); 
+								if hivtest_type_1_prep_cab=1 then do; 
+									pr_inm_cab_prep_primary = pr_inm_cab_prep_primary * testt1_prep_cab_eff_on_res_prim;   
+								end;
+* hivtest_type_1_prep_len;		if hivtest_type_1_init_prep_len=1 then do; %sample(hivtest_type_1_prep_len, 0 1, 0.5 0.5);end;
+								%sample_uniform(testt1_prep_len_eff_on_res_prim, 0.25 0.5 0.75); 
+								if hivtest_type_1_prep_len=1 then do; 
+									pr_cam_len_prep_primary = pr_cam_len_prep_primary * testt1_prep_len_eff_on_res_prim;   
 								end;
 
 * sens_tests_prep_inj;			%sample_uniform(sens_tests_prep_inj, 1 2 3 4); 
