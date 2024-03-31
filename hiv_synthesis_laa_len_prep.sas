@@ -6919,11 +6919,6 @@ if o_len_or_o_len_tm1=1 and c_ca66m ne 1 then do;
 end;
 
 
-
-* here here ;
-
-
-
 * note that risk of resistance needs to be dealt with directly in this first period of infection - after this period it is dealt with through
 o_cab, o_len, nactive, adh_dl etc ;
 
@@ -7841,22 +7836,36 @@ if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is 
 	bb1 = rand('uniform');
 	eff_sens_vct=sens_vct;* note that eff_sens_vct does not apply 
 	for a person in primary infection so a person in primary infection will have a high value of eff_sens_vct in this period but will not be regist=1; 
-	if prep_inj = 1 or pop_wide_tld_prep=1 then do;
-		if hivtest_type_1_prep_inj ne 1 then do;
-			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype3_prep_inj_primary; 
-			if caldate{t} - infection = 0.25 then eff_sens_vct=sens_ttype3_prep_inj_inf3m; 
-			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype3_prep_inj_infge6m;  
+	if prep_cab = 1 or pop_wide_tld_prep=1 then do;
+		if hivtest_type_1_prep_cab ne 1 then do;
+			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype3_prep_cab_primary; 
+			if caldate{t} - infection = 0.25 then eff_sens_vct=sens_ttype3_prep_cab_inf3m; 
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype3_prep_cab_infge6m;  
 		end;
-		if hivtest_type_1_prep_inj = 1 then do;
-			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype1_prep_inj_primary;  
-			if caldate{t} - infection = 0.25 then eff_sens_vct=sens_ttype1_prep_inj_inf3m;  
-			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype1_prep_inj_infge6m; 
+		if hivtest_type_1_prep_cab = 1 then do;
+			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype1_prep_cab_primary;  
+			if caldate{t} - infection = 0.25 then eff_sens_vct=sens_ttype1_prep_cab_inf3m;  
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype1_prep_cab_infge6m; 
 			cost_test = cost_test_g * 1.5; cost_test_type1=cost_test;
+		end;
+	end;
+	if prep_len = 1 or pop_wide_tld_prep=1 then do;
+		if hivtest_type_1_prep_len ne 1 then do;
+			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype3_prep_len_primary; 
+			if caldate{t} - infection = 0.25 then eff_sens_vct=sens_ttype3_prep_len_inf3m; 
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype3_prep_len_infge6m;  
+		end;
+		if hivtest_type_1_prep_len = 1 then do;
+			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype1_prep_len_primary;  
+			if caldate{t} - infection = 0.25 then eff_sens_vct=sens_ttype1_prep_len_inf3m;  
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype1_prep_len_infge6m; 
+			cost_test = cost_test_g ; cost_test_type1=cost_test;
 		end;
 	end;
 
 	* assumed rna based testing will not be done in people who have stopped cab-la;
-	if currently_in_prep_inj_tail =1 then eff_sens_vct = sens_vct_testtype3_cab_tail; 
+	if currently_in_prep_cab_tail =1 then eff_sens_vct = sens_vct_testtype3_cab_tail; 
+	if currently_in_prep_len_tail =1 then eff_sens_vct = sens_vct_testtype3_len_tail; 
 
 
 	if t ge 3 and bb1 < eff_sens_vct then do; 
@@ -7900,11 +7909,15 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 	end;
 
 	* lapr and dpv-vr;
-	if  prep_inj = 1 and registd=1 and registd_tm1=0  then do; 
-		prep_inj = 0; o_cab=0; tss_cab   =0; toffart = 0;mr_cab=1;
+	if  prep_cab = 1 and registd=1 and registd_tm1=0  then do; 
+		prep_cab = 0; o_cab=0; tss_cab   =0; toffart = 0;mr_cab=1;
+	end;
+	if  prep_len = 1 and registd=1 and registd_tm1=0  then do; 
+		prep_len = 0; o_len=0; tss_len   =0; toffart = 0;mr_len=1;
 	end;
 
 	if o_cab_tm1 = 1 and o_cab = 0 then do; tss_cab = 0; toffart = 0;mr_cab=1; end;
+	if o_len_tm1 = 1 and o_len = 0 then do; tss_len = 0; toffart = 0;mr_len=1; end;
 
 	if  prep_vr = 1 and registd=1 and registd_tm1=0  then prep_vr = 0;
 
@@ -7964,7 +7977,7 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 
 * viral load changes from t-1 to t, if ART-naive at time t-1;
 
-	if t ge 2 and prep_oral ne 1 and prep_inj ne 1 then do;  * lapr - any_prep ? ;
+	if t ge 2 and prep_oral ne 1 and prep_cab ne 1  and prep_len ne 1 then do;  * lapr - any_prep ? ;
 	* dependent_on_time_step_length ;
 		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0.25) then do;
 			vc_tm1 =(gx*0.02275 + (0.05 * rand('normal')))+ ((age_tm1-35)*0.00075);
@@ -7979,7 +7992,7 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 
 
 * CD4 changes from t-1 to t, if ART-naive at time t-1;
-	if t ge 3 and prep_oral ne 1 and prep_inj ne 1 then do; * lapr - anyprep ?;
+	if t ge 3 and prep_oral ne 1 and prep_cab ne 1  and prep_len ne 1 then do; * lapr - anyprep ?;
 	* dependent_on_time_step_length ;
 		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0 and 0 <= cd4_tm1-cmin_tm1  < 300) or (toffart    gt 0
 		and (resumec_tm1 =1 or resumec_tm2 =1)) then do;
@@ -8282,7 +8295,8 @@ res_test=.;
 	end;
 
 	if prep_oral_tm1 =1 and prep_oral=0 then toffart   =0;
-	if prep_inj_tm1 =1 and prep_inj=0 then toffart   =0;
+	if prep_cab_tm1 =1 and prep_cab=0 then toffart   =0;
+	if prep_len_tm1 =1 and prep_len=0 then toffart   =0;
 
 	if t ge 2 and interrupt_tm1=1 then tcur=.;
 
@@ -8424,7 +8438,8 @@ if reg_option = 130 then flr=3;
 end;
 
 	if prep_oral_tm1 =0 and prep_oral=1 then do; tss_ten=.; tss_3tc=.; tcur=0; cd4_tcur0 = cd4; end; 
-	if prep_inj_tm1 =0 and prep_inj=1 then do; tss_cab=.; tcur=0; cd4_tcur0 = cd4; end; 
+	if prep_cab_tm1 =0 and prep_cab=1 then do; tss_cab=.; tcur=0; cd4_tcur0 = cd4; end; 
+	if prep_len_tm1 =0 and prep_len=1 then do; tss_len=.; tcur=0; cd4_tcur0 = cd4; end; 
 
 
 * INITIATION OF 2ND LINE HAART ;
@@ -9103,20 +9118,35 @@ if o_cab = 1 or o_len = 1 then adh_dl = 1;
 newmut_tm1 = .; * note that we only have newmut_tm1, newmut is not defined;
 
 cab_higher_potency = dol_higher_potency ;
-if prep_inj = 1 or prep_inj_tm1 = 1 or currently_in_prep_inj_tail = 1 then do;
+if prep_cab = 1 or prep_cab_tm1 = 1 or currently_in_prep_cab_tail = 1 then do;
 	adh_dl = 1; adh_dl_tm1=1; 
-	if currently_in_prep_inj_tail = 1 and prep_oral ne 1 then do; * this condition about prep_oral added mar24; 
+	if currently_in_prep_cab_tail = 1 and prep_oral ne 1 then do; * this condition about prep_oral added mar24; 
 		tcur_tm1=0;
 		if tss_cab = 0.25 then do; adh_dl = 0.65; adh_dl_tm1=1;  end;  
 		if 0.50 <= tss_cab then do; adh_dl = 0.65; adh_dl_tm1=0.65; end;  
 	end;
-	if currently_in_prep_inj_tail = 1 and prep_oral=1 then do; * this condition about prep_oral added mar24; 
+	if currently_in_prep_cab_tail = 1 and prep_oral=1 then do; * this condition about prep_oral added mar24; 
 		tcur_tm1=0;
 		if tss_cab = 0.25 then do; adh_dl = max(0.65, adh_dl); adh_dl_tm1=1;  end;  
 		if 0.50 <= tss_cab then do; adh_dl = max(0.65, adh_dl); adh_dl_tm1=max(0.65, adh_dl); end;  
 	end;
-	if prep_inj = 1 or prep_inj_tm1 = 1 or currently_in_prep_inj_tail = 1 then 
+	if prep_cab = 1 or prep_cab_tm1 = 1 or currently_in_prep_cab_tail = 1 then 
 		nactive_tm1 = (1 + cab_higher_potency) * (1 - r_cab_tm1); 
+end;
+if prep_len = 1 or prep_len_tm1 = 1 or currently_in_prep_len_tail = 1 then do;
+	adh_dl = 1; adh_dl_tm1=1; 
+	if currently_in_prep_len_tail = 1 and prep_oral ne 1 then do; * this condition about prep_oral added mar24; 
+		tcur_tm1=0;
+		if tss_len = 0.25 then do; adh_dl = 0.65; adh_dl_tm1=1;  end;  
+		if 0.50 <= tss_len then do; adh_dl = 0.65; adh_dl_tm1=0.65; end;  
+	end;
+	if currently_in_prep_len_tail = 1 and prep_oral=1 then do; * this condition about prep_oral added mar24; 
+		tcur_tm1=0;
+		if tss_len = 0.25 then do; adh_dl = max(0.65, adh_dl); adh_dl_tm1=1;  end;  
+		if 0.50 <= tss_len then do; adh_dl = max(0.65, adh_dl); adh_dl_tm1=max(0.65, adh_dl); end;  
+	end;
+	if prep_len = 1 or prep_len_tm1 = 1 or currently_in_prep_len_tail = 1 then 
+		nactive_tm1 = (1 + len_higher_potency) * (1 - r_len_tm1); 
 end;
 
 
@@ -10241,7 +10271,7 @@ if t ge 2 and d lt newmut_tm1 then do;
 			end;		
 		end;
 
-* len;	if o_len_tm1=1 or (onart=0 and 0.25 <= tss_len <=0.5) then do;
+* len;	if o_len_tm1=1  or o_len=1 or currently_in_prep_len_tail = 1 or (onart=0 and 0.25 <= tss_len <=0.5) then do;
 			eff_pr_res_len = pr_res_len;
 			if onart=0 and 0.25 <= tss_len <=0.5 then eff_pr_res_len=eff_pr_res_len*incr_len_res_mono;
 			if o_len_tm1=1 then eff_pr_res_len = pr_res_len;
@@ -11287,18 +11317,22 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 * cab;
       if (e_in118m=1 or e_in140m=1 or e_in148m=1   or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;   
 	
-	if r_cab=res_level_dol_cab_mut and r_cab_tm1 <= 0 then do;  if o_cab=1 or caldate{t}-prep_inj_last_stop_date = 0 then cab_res_o_cab = 1; 
-	if currently_in_prep_inj_tail = 1 then cab_res_tail = 1; end; 
+	if r_cab=res_level_dol_cab_mut and r_cab_tm1 <= 0 then do;  if o_cab=1 or caldate{t}-prep_cab_last_stop_date = 0 then cab_res_o_cab = 1; 
+	if currently_in_prep_cab_tail = 1 then cab_res_tail = 1; end; 
 
 * len;
 
       if e_ca66m=1 then r_len=res_level_len_mut; 
 
+  	if r_len=res_level_len_mut and r_len_tm1 <= 0 then do;  if o_len=1 or caldate{t}-prep_len_last_stop_date = 0 then len_res_o_len = 1; 
+	if currently_in_prep_len_tail = 1 then len_res_tail = 1; end; 
 
 
 * if in prep_inj tail and infected with hiv;
-cur_in_prep_inj_tail_hiv=0; if currently_in_prep_inj_tail = 1 then cur_in_prep_inj_tail_hiv=1;
-cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerge_inm_res_cab_tail=1) then cur_in_prep_inj_tail_no_r=1;
+cur_in_prep_cab_tail_hiv=0; if currently_in_prep_cab_tail = 1 then cur_in_prep_cab_tail_hiv=1;
+cur_in_prep_cab_tail_no_r=0; if cur_in_prep_cab_tail_hiv=1 and (r_cab=0 or emerge_inm_res_cab_tail=1) then cur_in_prep_cab_tail_no_r=1;
+cur_in_prep_len_tail_hiv=0; if currently_in_prep_len_tail = 1 then cur_in_prep_len_tail_hiv=1;
+cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerge_cam_res_len_tail=1) then cur_in_prep_len_tail_no_r=1;
 
 	* DEFINE NACTIVE - number of active drugs in the regimen ;
 
@@ -11318,10 +11352,11 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	* dol_higher_potency (assumed to apply the same to dol and cab);
 	if o_dol=1 then nactive=nactive + dol_higher_potency * (1 - r_dol);    
 	cab_higher_potency = dol_higher_potency ;
-	if prep_inj =1 or 0 <= tss_cab <= cab_time_to_lower_threshold then nactive = (1 + cab_higher_potency) * (1 - r_cab); 
+	if prep_cab =1 or 0 <= tss_cab <= cab_time_to_lower_threshold then nactive = (1 + cab_higher_potency) * (1 - r_cab); 
 	
 	if o_len=1 then nactive=nactive + len_higher_potency * (1 - r_len);    
 	* len placeholder - consider len tail ;
+	if prep_len =1 or 0 <= tss_len <= len_time_to_lower_threshold then nactive = (1 + len_higher_potency) * (1 - r_len); 
 
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
@@ -12238,7 +12273,7 @@ cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_
 
 
 * f_prep - Cost of oral PrEP - tests costed separately - from kzn mar19;
-cost_prep_oral=0; cost_prep_inj=0; cost_prep_vr=0;
+cost_prep_oral=0; cost_prep_cab=0; cost_prep_len=0; cost_prep_vr=0;
 cost_prep_visit=0; cost_prep_ac_adh=0; cost_prep_visit_oral=0; cost_prep_visit_inj=0; cost_prep_visit_vr=0;
 cost_avail_self_test=0;
 if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
@@ -12250,11 +12285,17 @@ if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 	cost_prep_visit_oral=cost_prep_visit;
 	*cost depends on whether they are just picking up the drug or also receiving further clinic time (counselling);
 end;
-if prep_inj =1 then do;
-	cost_prep_inj  = prep_inj_drug_cost ;   
-	if visit_prep_inj  = 2 then cost_prep_visit = cost_prep_inj_clinic; 
-	if visit_prep_inj  = 3 then cost_prep_visit = cost_prep_inj_clinic+cost_prep_any_clinic_couns;
-	cost_prep_visit_inj =cost_prep_visit;
+if prep_cab =1 then do;
+	cost_prep_cab  = prep_cab_drug_cost ;   
+	if visit_prep_cab  = 2 then cost_prep_visit = cost_prep_cab_clinic; 
+	if visit_prep_cab  = 3 then cost_prep_visit = cost_prep_cab_clinic+cost_prep_any_clinic_couns;
+	cost_prep_visit_cab =cost_prep_visit;
+end;
+if prep_len =1 then do;
+	cost_prep_len  = prep_len_drug_cost ;   
+	if visit_prep_len  = 2 then cost_prep_visit = cost_prep_len_clinic; 
+	if visit_prep_len  = 3 then cost_prep_visit = cost_prep_len_clinic+cost_prep_any_clinic_couns;
+	cost_prep_visit_len =cost_prep_visit;
 end;
 if prep_vr  =1 then do;
 	cost_prep_vr   = prep_vr_drug_cost ;  
@@ -12308,8 +12349,8 @@ cost_hypert_vis = 0; if visit_hypertension=1 then cost_hypert_vis = cost_vis_hyp
 cost_hypert_drug = 0; if on_anti_hypertensive ge 1 then cost_hypert_drug = on_anti_hypertensive * cost_antihyp ; 
  
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
-+max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_inj) + max(0, cost_prep_vr )
-+ max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
++max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_cab) + max(0, cost_prep_len) 
++ max(0, cost_prep_vr )+ max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
 
 
 cost_onart=0; if onart=1 then cost_onart=max(0,art_cost) + max (0, cd4_cost) + max (0, vl_cost) + max (0, vis_cost)
@@ -12335,9 +12376,9 @@ cost_test_f_sw=0; if gender=2 and tested_as_sw=1 and tested_anc ne 1 and
 cost_test_f_non_anc=0; if gender=2 and tested_anc ne 1 then cost_test_f_non_anc=cost_test;
 
 if dead   =. then do; cost=0; cost_onart=0; art_cost=0;adc_cost=0;cd4_cost=0;vl_cost=0;vis_cost=0;non_tb_who3_cost=0;cot_cost=0;tb_cost=0;
-res_cost=0;t_adh_int_cost =0; cost_test=0; cost_prep_oral=0; cost_prep_inj =0; cost_prep_vr = 0;
+res_cost=0;t_adh_int_cost =0; cost_test=0; cost_prep_oral=0; cost_prep_cab =0; cost_prep_len =0; cost_prep_vr = 0;
  cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0;
- cost_prep_visit=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0; cost_prep_visit_vr=0;cost_avail_self_test=0;end;
+ cost_prep_visit=0;cost_prep_visit_oral=0;cost_prep_visit_cab=0; cost_prep_visit_len=0; cost_prep_visit_vr=0;cost_avail_self_test=0;end;
 
 * this below is cost of care of hiv infected child and should hold even after mothers death - estimate $30 per 3 months for total care incl art;
 * low cost partially is to take account of possibility of child dying ;
@@ -12531,10 +12572,10 @@ if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from cald
 	ever_ep=.;ever_newp=.;ever_sw=.;years_sw=.;
 	acq_rt65m=.;acq_rt184m=.;acq_rtm=.;
 	time_acq_rt65m=.;time_acq_rt184m=.;time_acq_rtm=.;time_stop_prep=.;
-	prep_any=.;prep_oral=.;prep_inj=.;prep_vr=.;
+	prep_any=.;prep_oral=.;prep_cab=.;prep_len=.;prep_vr=.;
 	prep_any_elig=.;	primary_prep=.; 
 	hiv1_prep_oral=.;hiv1_prep_any=.;
-	infected_prep_any=.; infected_prep_oral=.; infected_prep_inj=.; infected_prep_vr=.;
+	infected_prep_any=.; infected_prep_oral=.; infected_prep_cab=.; infected_prep_len=.; infected_prep_vr=.;
 	ever_prim_nor_prep=.;prim_r_prep=.;
 	rt65m_3_prep=.;rt184m_3_prep=.;rtm_3_prep=.;rt65m_6_prep=.;rt184m_6_prep=.;rtm_6_prep=.;rt65m_9_prep=.;rt184m_9_prep=.;rtm_9_prep=.;
 	rt65m_12_prep=.;rt184m_12_prep=.;rtm_12_prep=.;rt65m_18_prep=.;rt184m_18_prep=.;rtm_18_prep=.;onprep_3=.;onprep_6=.;onprep_9=.;onprep_12=.;onprep_18=.;
@@ -12544,7 +12585,7 @@ if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from cald
 	episodes_sw=.;sw_gt1ep=.; age_deb_sw=.; sw=.;
 	tested_circ=.;tested_anc_prevdiag=.;
 	ever_hiv1_prep_any=.; ever_hiv1_prep_oral=.; visit_prep_oral=.;  ever_stopped_prep_oral_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
-	prep_inj_start=.; prep_oral_start=.;  prep_vr_start=.;  pop_wide_tld_as_art=.;
+	prep_cab_start=.; prep_len_start=.; prep_oral_start=.;  prep_vr_start=.;  pop_wide_tld_as_art=.;
 end;
 
 
@@ -14599,6 +14640,12 @@ onart_cd4_g500=0;  if (onart=1 or int_clinic_not_aw=1) and cd4 >= 500 then onart
 
 
 **** PrEP ************************************************************************************************************************;
+
+
+
+* here here - need to search inj and cab ;
+
+
 
 prep_oral_w=0; 	if gender=2 and prep_oral=1 then prep_oral_w=1;
 prep_inj_w=0; 	if gender=2 and prep_inj=1 	then prep_inj_w=1;
