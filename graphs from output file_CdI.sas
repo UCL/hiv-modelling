@@ -50,10 +50,10 @@ set b;
 
 %let var =  
 
-p_w_giv_birth_this_per p_newp_ge1_ p_newp_ge5_  p_tested_past_year_1549m p_tested_past_year_1549w;
+p_w_giv_birth_this_per p_newp_ge1_ p_newp_ge5_  p_tested_past_year_1549m p_tested_past_year_1549w
 
  
-p_mcirc_1549m	  n_prep_elig_w  n_prep_elig_m	 n_onprep_w  n_onprep_m  n_newp_ge1_w
+p_mcirc_1549m	n_onprep_w  n_onprep_m  n_newp_ge1_w
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
 prevalence_vg1000_   
 incidence1564_  incidence1564m incidence1564w incidence1549m incidence1549w n_tested n_tested_m
@@ -62,7 +62,7 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart_m n_onart_w n_dead_hivpos_cause1_ n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
+n_onart_m n_onart_w  n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
@@ -109,7 +109,7 @@ run;
 run;
 
 
-
+/*
 data option_1;
 set b;
 if option =0 then delete;
@@ -174,7 +174,7 @@ run;
 %option_1;
 run;
 
-
+*/
 
 data d; * this is number of variables in %let var = above ;
 merge 
@@ -183,8 +183,8 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14
  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
-g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93 g94  g95 g96 g97  g98  g99  g100  g101  g102 
-/* g103  g104
+g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93 g94  g95 g96 g97  g98/*  g99  g100  g101  g102 
+g103  g104
 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
@@ -195,219 +195,16 @@ g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 
 
 ;
 by cald;
-
 run;
-/*
 
+***LOok at Spectrum AIM file;
+***Number of HIV tests done;
+***Ever tested;
+***Number on ART;
+*Circ;
+*90-90-90s;
+*Of adults on art, proportion on efavirenz, dolutegravir, boosted PI – men women;
 
-Number of HIV tests done per year in adults (women, men, all adults)
-
-
-* dhs ; 
-ever_tested  
-KIAS 2012
-men 15-19 45%  20-24 67%  25-29  75%  30-34: 72%  35-39: 71%  40-44  68%   45-49  59%  50-54: 57%   55-59  46%  60-64  50%  
-women 15-19 56%  20-24 92%  25-29  94%  30-34: 94%  35-39: 89%  40-44  79%   45-49  72%  50-54: 64%   55-59  51%  60-64  46%  
-
-
-
-Number of new diagnoses per year in adults  
-
-
-
-
-Number of adults on art  
-Aim file
-Men
-05: 24000   10: 172000    15: 262000    20: 337000
-Women
-05: 30000   10: 224000   15: 564000   20: 717000
-
-
-* spectrum aim;
-Prevalence 15-49   
-Men           75: 0.0   80: 0.1  85: 0.7  90: 3.8  95: 7.3  00: 6.5  05: 4.8  10: 4.2  15: 3.5   20:2.8   
-Women     75: 0.0   80: 0.1  85: 0.8  90: 5.8 95: 12.4  00: 11.5  05: 8.7  10:7.4  15: 7.3  20:  6.5    
-
-
-Prevalence 15-49
-KDHS 2003
-Men  4.6%   women 8.9%
-KAIS 2007
-Men 5.6%  women 9.0%
-KAIS 2012
-Men 4.2%  women  6.9%
-KENPHIA 2018
-Men 2.7%   women 6.2%
-
-Prevalence by age 
-KENPHIA  2018 
-Men 15-19   0.5   20-24  0.6   25-29  2.2  30-34  3.2  35-39  4.3   40-44  6.3  45-49  8.3   50-54  6.6   55-59  5.9   60-64  5.6
-Women 15-19   1.2   20-24  3.4   25-29  6.0  30-34  9.5  35-39  8.7   40-44  11.9  45-49  10.6   50-54  11.7   55-59  9.0   60-64  6.2
-
-
-Incidence 15-64  
-KAIS 2007
-Men              0.9
-Women        1.1
-2012
-Men              0.7
-Women:      0.9
-2018  KENPHIA  15-64
-Men        0.15
-Women  0.15
-
-Proportion men circumcised:  KAIS 2012:  91%
-
-
-Proportion HIV+ diagnosed  
-2012  KAIS
-All age 15-64   47%%  
-2018   KENPHIA
-Men age 15-64   72.6%   Women  82.7%   all  79.5%
-
-Proportion hiv+ diagnosed on art  
-2018  KENPHIA
-Men  94.5%   women 96.6%   all 96.0%
-
-
-Proportion adults on ART with VL < 1000 
-2018
-Men 90.9%  women 90.9%   all 90.9%
-
-
-Of adults on art, proportion on efavirenz, dolutegravir, boosted PI – men women
-
-
-dhs 2022
-
-Nineteen percent of women age 15–49 had intercourse with a person who was neither their husband or lived with them in the past year, of whom 37% used a
-condom. Thirty-five percent of men age 15–49 had intercourse with a person who was neither their wife or lived with them in the past year, of whom 68% used a
-condom.
-
-Taking this as accurate implies ~ 19% x 0.63 =~ 12% having new ge 1 in past year for women and 35% x 0.32 = 11% for men.
-
-(Thirteen percent of women and 6% of men age 15–49 have had an STI or symptoms of an STI in the past 12 months.)
-(The average number of sexual partners in a lifetime for men and women age 15–49 is 7.4 and 2.3, respectively.
-
-Eighty-five percent of women and 72% of men age 15–49 have been tested for HIV. In in the last 12 months, 47% of women and 39% of men
-age 15–49 had an HIV test.
-
-
-*/
-
-
-
-* ########### * need to outputs from model and create graph #############################################################;
-
-if cald=2022 then do; 
-prop_w1549_newpge1_past_year_kya = 0.12;
-prop_m1549_newpge1_past_year_kya = 0.11;
-end;
-
-
-
-* placeholder;
-if cald=2019.00 then do; n_tests_f_obs_kya = 0 ; n_tests_m_obs_kya = 0 ;  end;
-
-* https://nsdcc.go.ke/hiv-situation-in-kenya/#:~:text=In%202008%2C%20860%2C000%20people%20were,introduction%20of%20self%2Dtesting%20kits.;
-if cald=2015 then n_tests_obs_kya = 9900000;
-
-
-if cald=2012 then prop_m_1549_circ_obs_kya = 0.91;
-
-if cald=2012 then do;
-	ever_tested_w_1524_obs_kya= 0.56;
-	ever_tested_w_2524_obs_kya= 0.92;
-	ever_tested_w_2529_obs_kya= 0.94;
-	ever_tested_w_3034_obs_kya= 0.94;
-	ever_tested_w_3539_obs_kya= 0.89;
-	ever_tested_w_4044_obs_kya= 0.79;
-	ever_tested_w_4549_obs_kya= 0.72;
-	ever_tested_w_5054_obs_kya= 0.64;
-	ever_tested_w_5559_obs_kya= 0.51;
-	ever_tested_w_6064_obs_kya= 0.46;
-
-	ever_tested_m_1524_obs_kya= 0.45;
-	ever_tested_m_2524_obs_kya= 0.67;
-	ever_tested_m_2529_obs_kya= 0.75;
-	ever_tested_m_3034_obs_kya= 0.72;
-	ever_tested_m_3539_obs_kya= 0.71;
-	ever_tested_m_4044_obs_kya= 0.68;
-	ever_tested_m_4549_obs_kya= 0.59;
-	ever_tested_m_5054_obs_kya= 0.57;
-	ever_tested_m_5559_obs_kya= 0.46;
-	ever_tested_m_6064_obs_kya= 0.50;
-end;
-
-if cald=2022 then do;
-	ever_tested_w_1549_obs_kya= 0.85;
-	ever_tested_m_1549_obs_kya= 0.72;
-	tested_past_year_w_1549_obs_kya = 0.47;
-	tested_past_year_m_1549_obs_kya = 0.39;
-end;
-
-
-if cald=2005.00 then n_onart_m_obs_kya= 24000 ;
-if cald=2010.00 then n_onart_m_obs_kya= 172000 ;
-if cald=2015.00 then n_onart_m_obs_kya= 262000 ;
-if cald=2020.00 then n_onart_m_obs_kya= 337000 ;
-
-if cald=2005.00 then n_onart_w_obs_kya= 30000 ;
-if cald=2010.00 then n_onart_w_obs_kya= 224000 ;
-if cald=2015.00 then n_onart_w_obs_kya= 564000 ;
-if cald=2020.00 then n_onart_w_obs_kya= 717000 ;
-
-
-* spectrum aim;
-
-if cald=1980 then prevalence1549_m_obs_kya= 0.001;
-if cald=1985 then prevalence1549_m_obs_kya= 0.007;
-if cald=1990 then prevalence1549_m_obs_kya= 0.038;
-if cald=1995 then prevalence1549_m_obs_kya= 0.073;
-if cald=2000 then prevalence1549_m_obs_kya= 0.065;
-if cald=2005 then prevalence1549_m_obs_kya= 0.048;
-if cald=2010 then prevalence1549_m_obs_kya= 0.042;
-if cald=2015 then prevalence1549_m_obs_kya= 0.035;
-if cald=2020 then prevalence1549_m_obs_kya= 0.028;
-
-if cald=1980 then prevalence1549_w_obs_kya= 0.001;
-if cald=1985 then prevalence1549_w_obs_kya= 0.008;
-if cald=1990 then prevalence1549_w_obs_kya= 0.058;
-if cald=1995 then prevalence1549_w_obs_kya= 0.124;
-if cald=2000 then prevalence1549_w_obs_kya= 0.115;
-if cald=2005 then prevalence1549_w_obs_kya= 0.087;
-if cald=2010 then prevalence1549_w_obs_kya= 0.074;
-if cald=2015 then prevalence1549_w_obs_kya= 0.073;
-if cald=2020 then prevalence1549_w_obs_kya= 0.065;
-
-if cald=2007.5 then incidence1564_m_obs_kya= 0.90;
-if cald=2007.5 then incidence1564_w_obs_kya= 1.10;
-if cald=2012.5 then incidence1564_m_obs_kya= 0.70;
-if cald=2012.5 then incidence1564_w_obs_kya= 0.90;
-if cald=2018.5 then incidence1564_m_obs_kya= 0.15;
-if cald=2018.5 then incidence1564_w_obs_kya= 0.15;
-
-if cald=2012.5 then p_diag_obs_kya = 0.47;
-if cald=2018.5 then p_diag_m_obs_kya = 0.73;
-if cald=2018.5 then p_diag_w_obs_kya = 0.83;
-if cald=2018.5 then p_diag_obs_kya = 0.80;
-
-if cald=2018.5 then p_onart_diag_m_obs_kya = 0.95;
-if cald=2018.5 then p_onart_diag_w_obs_kya = 0.97;
-if cald=2018.5 then p_onart_diag_obs_kya = 0.96;
-
-if cald=2020.5 then p_onart_vl1000_m_obs_kya= 0.91;
-if cald=2020.5 then p_onart_vl1000_w_obs_kya= 0.91;
-if cald=2020.5 then p_onart_vl1000_obs_kya= 0.91;
-
-if cald=2003 then n_death_hiv_kya = 130000;
-if cald=2022 then n_death_hiv_kya = 16000;
-
-if cald = 2010 then n_infected_obs_kya = 70000; * this includes children;
-if cald = 2022 then n_infected_obs_kya = 18000; * this is age 15 and over;
-
-if cald = 2022 then n_hiv_kya = 1300000;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
