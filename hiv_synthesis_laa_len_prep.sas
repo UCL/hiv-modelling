@@ -2066,7 +2066,7 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-if option=1 then reg_option=130; * len_cab art for all aged 15 - 25;
+if option=1 then reg_option_set_in_options = 130; * len_cab art for all aged 15 - 25;
 
 
 end;
@@ -2503,6 +2503,8 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 
 if caldate{t} ge 2021 then reg_option = 125;
 
+if reg_option_set_in_options ne . then reg_option = reg_option_set_in_options;
+
 * if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
 * reg_option 107 is used for people who seroconverted on prep_inj / cab ;
 
@@ -2700,7 +2702,7 @@ if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup
 
 if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121 125) then flr=2; 
 if reg_option in (107) then flr=1;
-if reg_option = 130 then flr=3;
+if reg_option = 130 and 15 <= age < 25 then flr=3;
 
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
@@ -8387,11 +8389,12 @@ end;
 
 		* if return    =1 then do; * jan18 - think this should apply when restarting even if return ne 1;
 
-			if reg_option     in (104 105 106 116 117 118 125) then do; if (o_efa=1 or o_nev=1) and t_dol ne 1 then do;o_efa=0; o_nev=0; o_dol=1; end; end;
-			if reg_option     in (104 105 118 125) then do; if (o_taz=1 or o_lpr=1) and t_dol ne 1 then do;o_taz=0; o_lpr=0; o_dol=1; end; end;
+			if reg_option     in (104 105 106 116 117 118 125) or (reg_option=130 and age ge 25) then do; if (o_efa=1 or o_nev=1) and t_dol ne 1 then do;o_efa=0; o_nev=0; o_dol=1; end; end;
+			if reg_option     in (104 105 118 125)  or (reg_option=130 and age ge 25) then do; if (o_taz=1 or o_lpr=1) and t_dol ne 1 then do;o_taz=0; o_lpr=0; o_dol=1; end; end;
 			if reg_option     in (106) then do; if (o_taz=1 or o_lpr=1) and t_dol ne 1 and t_zdv ne 1 then do;o_taz=0; o_lpr=0; o_dol=1; o_ten=0;o_zdv=1; end; end;
-			if reg_option     in (104 105 118 125) then do; if t_ten ne 1 then do;o_ten=1; o_zdv=0; end; end;
-			if reg_option = 130 then do; o_len=1; o_cab=1;    end;
+			if reg_option     in (104 105 118 125)  or (reg_option=130 and age ge 25) then do; if t_ten ne 1 then do;o_ten=1; o_zdv=0; end; end;
+	 		if reg_option = 130 and 15 <= age < 45 and f_dol ne 1 then do; o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_dar=0;o_efa=0;o_lpr=0;o_taz=0;o_dol=0;o_len=1; o_cab=1;    end;
+
 	
 			if restart_res_test=1 then do;
 			res_test=1;
@@ -8626,14 +8629,25 @@ end;
 
 * transition from tld to len_cab as indicated ;
 
-if reg_option=130 and 15 <= age < 25 then do;
+if reg_option=130 and registd=1 and 15 <= age < 25 and interrupt=0 and o_dol=1 and f_dol ne 1 and (o_ten=1 or o_zdv=1) and o_3tc=1 then do;
 
 	if o_dol=1 then do; o_dol=0; tss_dol=0; end;
 	if o_ten=1 then do; o_ten=0; tss_ten=0; end;
+	if o_zdv=1 then do; o_zdv=0; tss_zdv=0; end;
 	if o_3tc=1 then do; o_3tc=0; tss_3tc=0; end;
 	o_len=1; o_cab=1; 
 
 end;
+
+if reg_option=130 and registd = 1 and age > 25 and interrupt=0 and o_cab = 1 and o_len=1 and f_dol ne 1 then do;
+
+	if o_cab=1 then do; o_cab=0; tss_cab=0; end;
+	if o_len=1 then do; o_len=0; tss_len=0; end;
+	o_dol=1; o_3tc=1;  o_ten=1; 
+
+end;
+
+
 
 
 
@@ -8769,7 +8783,7 @@ start_line2_this_period=.;
 	end;
 
  	if caldate{t} >= 2024.5 and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;o_len=0;
 			o_3tc=1; o_dar=1; o_ten=1; goto vv66; 
 	end;
 
@@ -11359,11 +11373,12 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 	* dol_higher_potency (assumed to apply the same to dol and cab);
 	if o_dol=1 then nactive=nactive + dol_higher_potency * (1 - r_dol);    
 	cab_higher_potency = dol_higher_potency ;
-	if prep_cab =1 or 0 <= tss_cab <= cab_time_to_lower_threshold then nactive = (1 + cab_higher_potency) * (1 - r_cab); 
+	if prep_cab =1 or o_cab=1 or 0 <= tss_cab <= cab_time_to_lower_threshold then nactive = (1 + cab_higher_potency) * (1 - r_cab); 
 	
 	if o_len=1 then nactive=nactive + len_higher_potency * (1 - r_len);    
 	* len placeholder - consider len tail ;
-	if prep_len =1 or 0 <= tss_len <= len_time_to_lower_threshold then nactive = (1 + len_higher_potency) * (1 - r_len); 
+	if prep_len =1 or o_len=1 and or 0 <= tss_len <= len_time_to_lower_threshold then nactive = (1 + len_higher_potency) * (1 - r_len); 
+
 
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
