@@ -667,7 +667,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence men (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
 
 label p50_prevalence1549__0 = "All Option 0 (median) ";
 label p50_prevalence1549__1 = "All Option 1  (median) ";
@@ -688,7 +688,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence women (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
 
 label p50_prevalence1549__0 = "All Option 0 (median) ";
 label p50_prevalence1549__1 = "All Option 1  (median) ";
@@ -1500,7 +1500,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence msm (age 15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 50 by 1) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 3  by 0.5) valueattrs=(size=10);
 
 label p50_incidence1564msm_0 = "Option 0 (median) ";
 
@@ -1518,7 +1518,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence msm (age 15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
 
 label p50_prevalence1564_msm_0 = "Option 0 (median) ";
 
