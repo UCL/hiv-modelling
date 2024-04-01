@@ -18027,7 +18027,7 @@ proc freq; tables cald hiv ; where death=.; run;
 proc print; var cald option yrart flr age reg_option onart linefail line1 line2 art_monitoring_strategy adh adh_dl o_dol o_3tc o_ten o_zdv o_taz o_dar 
 o_cab o_len prep_cab prep_len nactive r_cab r_len r_3tc r_ten f_dol f_cab f_len dol_higher_potency len_higher_potency 
 ;
-where naive=0 and caldate&j ge 2025 and f_dol ne 1 and 15 <= age < 50 and serial_no < 10000;
+where naive=0 and caldate&j ge 2025 and f_dol ne 1 and 15 <= age < 50 and o_len=1;
 run;
 
 
