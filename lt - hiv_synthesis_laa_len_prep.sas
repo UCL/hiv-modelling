@@ -8929,7 +8929,7 @@ if onart ne 1 then onartvisit0=0;
 
 
 * current number of drugs on;
-	nod   =o_zdv+o_3tc+o_ten+o_nev+o_dar+o_lpr+o_taz+o_efa+o_dol+o_cab; 
+	nod   =o_zdv+o_3tc+o_ten+o_nev+o_dar+o_lpr+o_taz+o_efa+o_dol+o_cab+o_len; 
 
 
 * current number of nucs on;
@@ -11371,11 +11371,13 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 	* dol_higher_potency (assumed to apply the same to dol and cab);
 	if o_dol=1 then nactive=nactive + dol_higher_potency * (1 - r_dol);    
 	cab_higher_potency = dol_higher_potency ;
-	if prep_cab =1 or 0 <= tss_cab <= cab_time_to_lower_threshold then nactive = (1 + cab_higher_potency) * (1 - r_cab); 
+	if registd = 1 and (o_cab=1 or (p_cab = 1 and 0 <= tss_cab <= cab_time_to_lower_threshold)) then nactive=nactive + cab_higher_potency * (1 - r_cab);  
+ 
+	if registd ne 1 and (prep_cab =1 or 0 <= tss_cab <= cab_time_to_lower_threshold) then nactive = (1 + cab_higher_potency) * (1 - r_cab); 
 	
-	if o_len=1 then nactive=nactive + len_higher_potency * (1 - r_len);    
+	if registd = 1 and (o_len=1  or (p_len=1 and 0 <= tss_len <= len_time_to_lower_threshold)) then nactive=nactive + len_higher_potency * (1 - r_len);    
 	* len placeholder - consider len tail ;
-	if prep_len =1 or 0 <= tss_len <= len_time_to_lower_threshold then nactive = (1 + len_higher_potency) * (1 - r_len); 
+	if regist ne 1 and (prep_len =1 or 0 <= tss_len <= len_time_to_lower_threshold) then nactive = (1 + len_higher_potency) * (1 - r_len); 
 
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
@@ -18017,13 +18019,18 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 * procs;
 
 
+dol_higher_potency=0; len_higher_potency=0; rr_res_cab_dol=100; pr_res_len=0.2;
+
+
 proc freq; tables cald hiv ; where death=.; run;
 
 proc print; var cald option yrart flr age reg_option onart linefail line1 line2 art_monitoring_strategy adh adh_dl o_dol o_3tc o_ten o_zdv o_taz o_dar 
-o_cab o_len prep_cab prep_len nactive  r_cab r_len r_3tc r_ten f_dol f_cab f_len dol_higher_potency len_higher_potency
+o_cab o_len prep_cab prep_len nactive r_cab r_len r_3tc r_ten f_dol f_cab f_len dol_higher_potency len_higher_potency 
 ;
 where naive=0 and caldate&j ge 2025 and f_dol ne 1 and 15 <= age < 50 and serial_no < 10000;
 run;
+
+
 
 
 
