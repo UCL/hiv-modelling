@@ -2075,12 +2075,13 @@ end;
 *  ======================================================================================================================================== ;
 
 
+
 /* PrEP */
 
-if caldate{t} < date_prep_oral_intro then oral_prep_available=1;
-if caldate{t} < date_prep_cab_intro and cab_prep_replaced_len ne 1 then cab_prep_available=1;
-if caldate{t} < date_prep_len_intro then len_prep_available=1;
-if caldate{t} < date_prep_vr_intro then vr_prep_available=1;
+* by default currently introduction of len prep leads to moving all inj prep to len;
+cab_prep_available=0; if caldate{t} >= date_prep_cab_intro and (caldate{t} < date_prep_len_intro or date_prep_len_intro=.) then cab_prep_available=1;
+
+
 
 * Oral PREP introduction in fsw/agyw 2018; 
 
@@ -4937,7 +4938,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 						prep_cab_first_start_date=caldate{t};	prep_cab_ever=1;
 					end;
 				end;	
-				if highest_prep_pref = 3 then do;						* switch to injectable PrEP;3
+				if highest_prep_pref = 3 then do;						* switch to injectable PrEP;
 					switch_prep_from_oral=1;	switch_prep_to_len=1;	continuous_prep_oral_use=0;
 					prep_len=1;		continuous_prep_len_use=0.25;		prep_len_current_start_date=caldate{t};		prep_len_switch_date=caldate{t};
 					if prep_len_ever ne 1 then do; 
@@ -5094,6 +5095,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 							when (highest_prep_pref=3)	do; 
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_len=1; 	continuous_prep_len_use=0.25; 	prep_len_current_start_date=caldate{t};		prep_len_restart_date=caldate{t};	prep_len_restart_date_choice=caldate{t};	stop_prep_len_choice=0; 	
+								if prep_len_ever ne 1 then prep_len_first_start_date=caldate{t};
 							end; 					
 
 							when (highest_prep_pref=4)	do; 
@@ -5121,6 +5123,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 							when (highest_prep_pref=3) do; 
 								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
 								prep_len=1;		continuous_prep_len_use = 0.25;		prep_len_current_start_date=caldate{t};		prep_len_restart_date=caldate{t};	prep_len_restart_date_eligible=caldate{t};
+								if prep_len_ever ne 1 then prep_len_first_start_date=caldate{t};
 							end;
 							when (highest_prep_pref=4)	do; 
 								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
@@ -5245,7 +5248,7 @@ on_risk_informed_prep_oral = 0;
 if prep_oral_ever=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_oral_choice ne 1 then on_risk_informed_prep_oral = 1;
 
 on_risk_informed_prep_cab  = 0; 
-if prep_cab_ever=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_cab_choice ne 1 then on_risk_informed_prep_cab  = 1;
+if prep_cab_ever=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_cab_choice ne 1 and cab_prep_available then on_risk_informed_prep_cab  = 1;
 
 on_risk_informed_prep_len  = 0; 
 if prep_len_ever=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_len_choice ne 1 then on_risk_informed_prep_len  = 1;
@@ -14128,7 +14131,7 @@ end;
 
 
 	 rm_tm1 = rm_ ;  nnm_tm1=nnm_;  pim_tm1=pim_; in118m_tm1=i118pm_; in140m_tm1=in140m_;  in148m_tm1=in148m_;  in155m_tm1=in155m_;  in263m_tm1=in263m_; 
-	 ca66m_tm1=ca66m;
+	 ca66m_tm1=ca66m_;
 
 
 	* presence of any mutation;
@@ -14730,7 +14733,7 @@ started_prep_oral_in_primary =0; 	if hiv=1 and (prep_oral_first_start_date=calda
 started_prep_cab_in_primary =0; 	if hiv=1 and (prep_cab_first_start_date=caldate&j or prep_cab_restart_date=caldate&j)	and primary = 1 then do; started_prep_cab_in_primary =1; 	started_prep_cab_in_primary_e =1; end;
 started_prep_len_in_primary =0; 	if hiv=1 and (prep_len_first_start_date=caldate&j or prep_len_restart_date=caldate&j)	and primary = 1 then do; started_prep_len_in_primary =1; 	started_prep_len_in_primary_e =1; end;
 started_prep_vr_in_primary =0; 		if hiv=1 and (prep_vr_first_start_date=caldate&j or prep_vr_restart_date=caldate&j)		and primary = 1 then do; started_prep_vr_in_primary =1; 	started_prep_vr_in_primary_e =1; end;
-started_prep_any_in_primary =0; 	if (started_prep_oral_in_primary=1 or started_prep_cab_in_primary=1 o started_prep_len_in_primary=1 or started_prep_vr_in_primary=1) then do; 
+started_prep_any_in_primary =0; 	if (started_prep_oral_in_primary=1 or started_prep_cab_in_primary=1 or started_prep_len_in_primary=1 or started_prep_vr_in_primary=1) then do; 
 	started_prep_any_in_primary =1;	started_prep_any_in_primary_e =1; 
 end;		
 
