@@ -1,4 +1,17 @@
 
+
+
+
+* consider that in msm risk of hiv from other msm may be higher if newp with women is lower (need a personal attribute for exlusively msm or has sex with women ?)
+
+
+;  
+
+
+
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
