@@ -505,6 +505,8 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_inf_diag ;					p_inf_diag = s_inf_diag   / s_primary;
 * p_inf_naive ; 				p_inf_naive = s_inf_naive / s_primary;
 * p_inf_primary ;				p_inf_primary = s_inf_primary / s_primary;
+* p_inf_msm;					p_inf_msm = s_infected_from_msm / s_primary;
+* p_inf_pwid;					p_inf_pwid = s_infected_from_pwid / s_primary;
 
 *The meaning of the following is: among newly infected people, which proportion are SW, etc..;
 * p_sw_newinf;				    p_sw_newinf = s_primary_sw / s_primary;		
@@ -889,7 +891,7 @@ r_prev_4044w_4549w  r_prev_5054w_4549w r_prev_5559w_4549w r_prev_6064w_4549w r_p
 r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_prev_3539m_4549w r_prev_4044m_4549w r_prev_4549m_4549w
 r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
 incidence1549 incidence1564 incidence1549w  incidence1549m  incidence1564m incidence1564w
-p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary 
+p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary p_inf_msm p_inf_pwid
 p_sw_newinf p_w1524_newinf p_w25ov_newinf p_m1524_newinf p_m25ov_newinf mtct_prop
 p_diag p_diag_m p_diag_w p_ai_no_arv_c_nnm prop_sw_newp0  t_sw_newp
 p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
@@ -1118,8 +1120,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=r_prev_3034m_4549w );  %var(v=r_prev_3539m_4549w  );  %var(v=r_prev_4044m_4549w );  %var(v=r_prev_4549m_4549w  );  %var(v=r_prev_5054m_4549w );
 %var(v=r_prev_5559m_4549w );  %var(v=r_prev_6064m_4549w );  %var(v=r_prev_65plm_4549w );
 %var(v=incidence1549w);  %var(v=incidence1549m);  %var(v=incidence_sw); 
-%var(v=p_inf_vlsupp);  %var(v=p_inf_newp);  %var(v=p_inf_ep);  %var(v=p_inf_diag);  %var(v=p_inf_naive);   %var(v=p_inf_primary); 
-%var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);
+%var(v=p_inf_vlsupp);  %var(v=p_inf_newp);  %var(v=p_inf_ep);  %var(v=p_inf_diag);  %var(v=p_inf_naive);   %var(v=p_inf_primary);  %var(v=p_inf_msm);
+%var(v=p_inf_pwid); %var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);
 %var(v=p_diag_m1524); %var(v=p_diag_w1524);
 %var(v=p_ai_no_arv_c_nnm); %var(v=p_ai_no_arv_c_pim); %var(v=p_ai_no_arv_c_rt184m); %var(v=p_ai_no_arv_c_rt65m); %var(v=p_ai_no_arv_c_rttams); 
 %var(v=p_ai_no_arv_c_inm); 
@@ -1232,7 +1234,7 @@ r_prev_4044w_4549w  r_prev_5054w_4549w r_prev_5559w_4549w r_prev_6064w_4549w r_p
 r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_prev_3539m_4549w r_prev_4044m_4549w r_prev_4549m_4549w
 r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
 incidence1564 incidence1564m incidence1564w incidence1549w  incidence1549m incidence_sw  n_infected
-p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary 
+p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary  p_inf_msm  p_inf_pwid
 mtct_prop  p_diag  p_diag_m  p_diag_w  p_diag_sw  p_diag_m1524  p_diag_w1524
 p_ai_no_arv_c_nnm  p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m  p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm 
 p_artexp_diag  p_onart_diag  p_onart_diag_w  p_onart_diag_m  p_onart_diag_sw  
