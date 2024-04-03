@@ -269,8 +269,8 @@ newp_seed = 7;
 
 * PWID;
 
-* prob_start_pwid;			prob_start_pwid=0.001;
-* prob_stop_pwid;			prob_stop_pwid=0.05;
+* prob_start_pwid;			prob_start_pwid=0.0005;
+* prob_stop_pwid;			prob_stop_pwid=0.20;
 * rr_pwid_female;			rr_pwid_female = 0.25 ;
 
 
@@ -284,7 +284,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * fold_tr;					%sample_uniform(fold_tr, 1/1.5 1 1.5);
-* fold_tr_pwid;				%sample_uniform(fold_tr_pwid, 10 15 20);
+* fold_tr_pwid;				%sample_uniform(fold_tr_pwid, 2 3 10);
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
 * fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3  );

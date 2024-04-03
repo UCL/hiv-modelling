@@ -12,16 +12,16 @@
 
 
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
+ libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc\";   
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   
+* libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 10000   ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -18021,11 +18021,15 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
-*/
+proc print; var cald gender msm newp ep nip epi infected_newp infected_ep infected_from_msm infected_from_pwid ;
+
+where primary = 1;
+
+run;
+
 
 /*
 
@@ -19702,17 +19706,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020   
 
 ;
-
-** kenya;
-
-if cald = 1990 and (prevalence1549w > 0.08) then do; abort abend; end;
-if cald = 1995 and (prevalence1549w < 0.06) then do; abort abend; end;
-if cald = 2010 and (prevalence1549w > 0.12) then do; abort abend; end;
-
-if cald = 1990 and (prevalence1549m > 0.07) then do; abort abend; end;
-if cald = 1995 and (prevalence1549m < 0.02) then do; abort abend; end;
-if cald = 2010 and (prevalence1549m > 0.07) then do; abort abend; end;
-
 
 
 ***Zim specific;

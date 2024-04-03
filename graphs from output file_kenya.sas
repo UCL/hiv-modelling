@@ -8,7 +8,8 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_g    ;
+  set a.l_base_kenya_h    ;
+
 
 p_onart_vl1000_all = .;
 
@@ -50,7 +51,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  16    ;
+%let nfit =  40    ;
 %let year_end = 2024.00 ;
 run;
 proc sort;by cald option ;run;
@@ -800,7 +801,7 @@ quit;
 
 
 
-n_infected
+
 
 
 proc sgplot data=d; 
@@ -971,6 +972,9 @@ band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fil
 series  x=cald y=p50_p_diag_m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_diag_m_1 	upper=p95_p_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
+
+scatter x=cald y=p_diag_m_obs_kya / 		markerattrs = (symbol=square color=green size = 10);
+
 run;quit;
 
 proc sgplot data=d; 
@@ -985,6 +989,8 @@ series  x=cald y=p50_p_diag_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_diag_w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_diag_w_1 	upper=p95_p_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+scatter x=cald y=p_diag_w_obs_kya / 		markerattrs = (symbol=square color=green size = 10);
 
 run;quit;
 
