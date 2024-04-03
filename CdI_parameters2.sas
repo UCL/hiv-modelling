@@ -15,11 +15,12 @@ startyr = 1985 + 0.25;
 								0.1		0.50	0.40);
 
 * prob_birth_circ; 			%sample(prob_birth_circ, 
-									0.1		0.40	0.9, 
-									0.30	0.40	0.30);
+									0.20	0.40,	 
+									0.50	0.50	);
 
+* base_rate_sw;				%sample(base_rate_sw, 0.0005 0.0010 0.0015, 0.3 0.3 0.4);
 
-				
+				0.0015
 
 * HIV TESTING;
 
