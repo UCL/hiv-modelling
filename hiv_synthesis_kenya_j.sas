@@ -12,16 +12,16 @@
 
 
 
- libname a "C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc\";   
+* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";   
+  libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000   ; 
+%let population = 100000  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -269,8 +269,8 @@ newp_seed = 7;
 
 * PWID;
 
-* prob_start_pwid;			prob_start_pwid=0.01;
-* prob_stop_pwid;			prob_stop_pwid=0.05;
+* prob_start_pwid;			prob_start_pwid=0.0005;
+* prob_stop_pwid;			prob_stop_pwid=0.20;
 * rr_pwid_female;			rr_pwid_female = 0.25 ;
 
 
@@ -284,7 +284,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * fold_tr;					%sample_uniform(fold_tr, 1/1.5 1 1.5);
-* fold_tr_pwid;				%sample_uniform(fold_tr_pwid, 10 15 20);
+* fold_tr_pwid;				%sample_uniform(fold_tr_pwid, 2 3 10);
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
 * fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3  );
@@ -936,7 +936,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
-  %include "/home/rmjlaph/kenya_parameters_d.sas";
+  %include "/home/rmjlaph/kenya_parameters_j.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
@@ -3089,7 +3089,6 @@ end;
 * PWID;
 
 if 15.5 <= age < 50 and pwid_tm1 ne 1 then do; *start 15.5 becuase elsewhere in code we set hiv to zero in people aged 15.25;
-
 	v=rand('uniform'); 
 	if gender = 1 and v < prob_start_pwid then do; pwid=1; ever_pwid=1; end; 
 	if gender = 2 and v < prob_start_pwid * rr_pwid_female then do; pwid=1; ever_pwid=1; end;   
@@ -14280,7 +14279,7 @@ sympt_aids=0;    if hiv=1 and                    adc =  1 then sympt_aids=1;
 
 
 ***Outputs for specific periods;
-	inf_primary=0; inf_vlsupp=0;inf_newp=0;inf_ep=0;inf_diag=0;inf_naive=0;inf_msm=0;inf_pwid=0;  fff=rand('uniform');
+	inf_primary=0; inf_vlsupp=0;inf_newp=0;inf_ep=0;inf_diag=0;inf_naive=0;inf_msm=0;inf_pwid=0;
 
 	if primary=1 then do;
 		if infected_primary=1 then inf_primary=1;
@@ -18022,15 +18021,11 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
+/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
-proc print; var cald gender age death msm newp ep nip epi infection hiv primary infected_newp infected_ep infected_from_msm infected_from_pwid inf_msm inf_newp inf_pwid fff;
-
-where primary=1 or inf_msm = 1 or inf_pwid = 1 ; 
-
-run;
-
+*/
 
 /*
 
@@ -19707,6 +19702,17 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020   
 
 ;
+
+** kenya;
+
+if cald = 1990 and (prevalence1549w > 0.08) then do; abort abend; end;
+if cald = 1995 and (prevalence1549w < 0.06) then do; abort abend; end;
+if cald = 2010 and (prevalence1549w > 0.12) then do; abort abend; end;
+
+if cald = 1990 and (prevalence1549m > 0.07) then do; abort abend; end;
+if cald = 1995 and (prevalence1549m < 0.02) then do; abort abend; end;
+if cald = 2010 and (prevalence1549m > 0.07) then do; abort abend; end;
+
 
 
 ***Zim specific;
