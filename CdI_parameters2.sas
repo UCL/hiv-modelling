@@ -20,13 +20,21 @@ startyr = 1985 + 0.25;
 
 * base_rate_sw;				%sample(base_rate_sw, 0.0005 0.0010 0.0015, 0.3 0.3 0.4);
 
-				0.0015
+* sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3 4, 0.10 0.40 0.10 0.40);
 
 * HIV TESTING;
 
-* an_lin_incr_test;         an_lin_incr_test = 0.00005;
+* an_lin_incr_test;         an_lin_incr_test = 0.00001;
 
-* date_test_rate_plateau;   date_test_rate_plateau = 2015 ;
+* date_test_rate_plateau;   date_test_rate_plateau = 2013 ;
 
-* test_targeting;			test_targeting = 0.7;
+* test_targeting;			test_targeting = 0.4;
                           
+* prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
+								0.02 	0.05 	0.15 	0.35 	0.50, 
+
+								0.40 	0.30	0.25	0.04	0.01	); 
+
+* adh_pattern; 				%sample(adh_pattern, 
+								1		2		3		4		5		6		7, 
+								0.01	0.20	0.03	0.05	0.30	0.01	0.40);

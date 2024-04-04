@@ -38,6 +38,7 @@ if cald=2005 then o_plhiv_UNAIDS=620000;
 if cald=2010 then o_plhiv_UNAIDS=520000;
 if cald=2015 then o_plhiv_UNAIDS=460000;
 if cald=2020 then o_plhiv_UNAIDS=420000;
+if cald=2022 then o_plhiv_UNAIDS=390000; 
 
 ***********************
 *SEXUAL BEHAVIOUR;
@@ -85,12 +86,12 @@ end;
 ***********************;
 *Source: PHIA https://www.cdc.gov/globalhivtb/what-we-do/phia/cote-divoire-phia-summary-sheet-2020.pdf;
 if cald=2018 then do; 
-	o_Incid1549_phia = 3.0;o_Incid1549m_phia = 3;o_Incid1549w_phia = 3;
+	o_Incid1549_phia = 0.03;o_Incid1549m_phia = 0.03;o_Incid1549w_phia = 0.03;
 end;
 
 * Source: UNAIDS https://www.unaids.org/en/regionscountries/countries/ctedivoire;
 if cald=2022 then do;
-	o_Incid1549_UNAIDS=4.5; o_prev1549m_UNAIDS=0.011; o_prev1549w_UNAIDS=0.026;
+	o_Incid1549_UNAIDS=0.045; 
 end;
 
 ***********************
@@ -127,6 +128,14 @@ if cald=2022 then do;
 	o_diag1564_UNAIDS = 0.82; 
 	o_onart1564_UNAIDS = 0.72;  *of PLHIV (NOT of those diag);
 	o_vs1564_UNAIDS = 0.62; 	*of PLHIV (NOT of those on ART);
+end;
+
+***********************
+*NUMBER ON ART;
+***********************;
+if cald=2022 then do;
+	o_n_onart_m_UNAIDS=77428;
+	o_n_onart_w_UNAIDS=205939;
 end;
 
 

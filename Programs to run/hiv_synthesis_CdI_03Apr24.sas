@@ -902,7 +902,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/CdI_parameters.sas";
+%include "/home/rmjllob/CdI_parameters2.sas";
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
@@ -1810,7 +1810,7 @@ if adh_pattern=2 then do;
 e=rand('uniform');
 if         e < 0.03 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.03 <= e < 0.06 then do; adhav = 0.79; adhvar=0.20; end;
-if 0.06 <= e < 0.20 then do; adhav = 0.9 ; adhvar=0.06; end;
+if 0.06 <= e < 0.20 then do; adhav = 0.90; adhvar=0.06; end;
 if 0.20 <= e < 0.42 then do; adhav = 0.95; adhvar=0.05; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.95; adhvar=0.05; end;
 if 0.62 <= e        then do; adhav = 0.95; adhvar=0.05; end;
@@ -18432,6 +18432,7 @@ if prevalence1524m gt 0 then prev_ratio_1524 = prevalence1524w / prevalence1524m
 prevalence2024w = s_hiv2024w  / s_ageg2024w ;
 prevalence2024m = s_hiv2024m  / s_ageg2024m ;
 prevalence2529w = s_hiv2529w  / s_ageg2529w ;
+prevalence3034m = s_hiv3034m  / s_ageg3034m ;
 incidence1549w = (4 * 100 * s_primary1549w) / (s_alive1549_w - s_hiv1549w + s_primary1549w);
 incidence1549m = (4 * 100 * s_primary1549m) / (s_alive1549_m - s_hiv1549m + s_primary1549m);
 
@@ -19217,7 +19218,7 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 if cald = 1990 and (prevalence1549w > 0.06) then do; abort abend; end;
 if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
-
+if cald = 2018 and (prevalence3034m > 0.05) then do; abort abend; end;
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
@@ -20174,7 +20175,7 @@ end;
 
 
 
-%update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim, SA and Malawi start in 1984 JAS Sep23;
+%update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);*1980;			* core starts in 1989, Zim, SA and Malawi start in 1984 JAS Sep23;
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=0);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=0);
@@ -20329,13 +20330,7 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);		* end of 2027 (core), end of 2022 (Zim) JAS Sep23;
-
-
-data a ;  set r1 ;
-
-data r1 ; set a ;
-
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);		
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
@@ -20347,7 +20342,7 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);		* end of 2030 (core) JAS Jul23;
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);		
 %update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
@@ -20382,6 +20377,12 @@ data r1 ; set a ;
 %update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=0);   
+
+
+
+data a ;  set r1 ;
+data r1 ; set a ;
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
@@ -21179,7 +21180,7 @@ set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=349,h=356,j=354,s=3);
 %update_r1(da1=1,da2=2,e=7,f=8,g=349,h=356,j=355,s=3);
 %update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=356,s=3);		* end of 2077 (core), end of 2072 (Zim) JAS Sep23;
-
+*/
 
 * end of s=3 JAS Sep2023;
 
