@@ -443,6 +443,8 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * prop_1564_ondcp;				prop_1564_ondcp =   max(s_dcp, 0) / (s_alive1564_w + s_alive1564_m)  ;
 
+* prop_dcp_prep_elig;			prop_dcp_prep_elig = s_on_dcp_prep_elig / s_dcp;	
+
 * of those with a test in the last period, prop of eligible on prep;
 * p_tested_tm1_elig_onprep;		p_tested_tm1_elig_onprep =   s_tested_tm1_onprep  / s_tested_tm1_prep_elig;
 
@@ -1090,7 +1092,7 @@ n_infection  = s_primary     * &sf * 4;
 keep 
 
 run cald option
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y  prop_elig_dcp
+s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y  prop_elig_dcp prop_dcp_prep_elig
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
 dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost    n_hiv  ddcp_cost
@@ -1228,7 +1230,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %mend var; 
 
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
-%var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep); %var(v=prop_elig_dcp);
+%var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep); %var(v=prop_elig_dcp);  %var(v=prop_dcp_prep_elig);
 %var(v=n_tested_m);
 %var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;
 %var(v=p_mcirc) ; * %var(v=p_mcirc_1519m); * %var(v=p_mcirc_2024m);* %var(v=p_mcirc_2529m);
@@ -1371,7 +1373,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 data   b.wide_outputs; merge 
 
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y  prop_elig_dcp
+s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y  prop_elig_dcp  prop_dcp_prep_elig
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
 dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost  n_hiv n_alive
@@ -1630,6 +1632,7 @@ prop_ever_tested_1549m_23 = "Proportion of men aged 15-49 who have previously te
 p_tested_past_year_1549w_23 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
 p_tested_past_year_1549m_23 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
 prop_elig_dcp_23 = "Proportion of people who are eligible for PrEP who are under DCP"
+prop_dcp_prep_elig = "Proportion of people on DCP who are currently PrEP eligible"
 prop_1564_ondcp_23 = "Proportion of people aged 15-64 who are under DCP" 
 p_elig_prep_23 = "Proportion of adults age 15-64 with indication for DCP/PrEP"
 prop_elig_on_prep_23 = "Proportion of people with a current PrEP indication who take PrEP"
@@ -1909,6 +1912,14 @@ run;
 
 
 data s; set g;
+%lab(l=prop_dcp_prep_elig); 
+title "Proportion of people on DCP who are currently PrEP eligible";
+proc means    n p50 p5 p95 ;  
+var prop_dcp_prep_elig_20y_1 prop_dcp_prep_elig_20y_2 prop_dcp_prep_elig_20y_3 prop_dcp_prep_elig_20y_4;
+run;
+
+
+data s; set g;
 %lab(l=prop_dcp_oral_prep); 
 title "Proportion of people on DCP who are on oral PrEP";
 proc means    n p50 p5 p95 ;  
@@ -2003,18 +2014,18 @@ run;
 
 
 
-* ods html close;
+ods html close;
 
 
 
-
+/*
 
 proc glm; model prop_elig_on_prep_20y_1 = effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
 prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy
 prob_prep_oral_b rate_choose_stop_prep_oral pref_prep_oral_beta_s1 / solution;
 run;
 
-
+*/
 
 
 
