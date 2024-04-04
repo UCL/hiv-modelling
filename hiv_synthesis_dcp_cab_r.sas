@@ -7,6 +7,8 @@
 
 * make sure have all outputs needed for costing              
 
+* specify prop_tests_self or sample (as now) ?
+
 ;
 
 
