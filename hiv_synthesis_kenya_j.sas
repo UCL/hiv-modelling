@@ -262,7 +262,7 @@ newp_seed = 7;
 
 * msm_rred;					%sample_uniform(msm_rred, 1.5 2 3 5); * extent to which p_rred_p is higher in msm than het men;
 * prop_m_msm;				%sample(prop_m_msm, 0.01 0.03 0.05, 0.2 0.6 0.2); 
-* msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.05 0.1 0.2); * risk of one or more cls partners in msm per period ;
+* msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.1 0.2 0.3); * risk of one or more cls partners in msm per period ;
 * msm_tr_factor;			%sample_uniform(msm_tr_factor, 3 5 10 ); * factor determining the transmission risk per period given 
 																		the represetative vl in the parter(s) in the period ;	
 
