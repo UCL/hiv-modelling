@@ -470,6 +470,8 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 
 * prevalence_sw;				prevalence_sw = s_hiv_sw / s_sw_1564; 
 
+* prevalence_pwid;				prevalence_pwid = s_hiv_pwid / s_pwid; 
+
 * n_diagnosed (per yr);			n_diagnosed = s_diag_this_period * 4 * &sf;
 
 * r_prev_1519w_4549w;			r_prev_1519w_4549w = prevalence1519w / prevalence4549w ;
@@ -507,7 +509,6 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_inf_primary ;				p_inf_primary = s_inf_primary / s_primary;
 * p_inf_msm;					p_inf_msm = s_inf_msm / s_primary;
 * p_inf_pwid;					p_inf_pwid = s_inf_pwid / s_primary;
-
 
 *The meaning of the following is: among newly infected people, which proportion are SW, etc..;
 * p_sw_newinf;				    p_sw_newinf = s_primary_sw / s_primary;		
@@ -886,7 +887,7 @@ prevalence1549m prevalence1549w prevalence1549
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 		
 prevalence5054w prevalence5054m prevalence5559w prevalence5559m prevalence6064w prevalence6064m prevalence65plw prevalence65plm
-prevalence1524w prevalence1524m  prevalence_sw  r_prev_sex_1549  prevalence_hiv_preg
+prevalence1524w prevalence1524m  prevalence_sw  r_prev_sex_1549  prevalence_hiv_preg  prevalence_pwid
 r_prev_1519w_4549w r_prev_2024w_4549w r_prev_2529w_4549w r_prev_3034w_4549w r_prev_3539w_4549w 	
 r_prev_4044w_4549w  r_prev_5054w_4549w r_prev_5559w_4549w r_prev_6064w_4549w r_prev_65plw_4549w 
 r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_prev_3539m_4549w r_prev_4044m_4549w r_prev_4549m_4549w
@@ -1017,7 +1018,7 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 test_prop_positive
 
-n_alive  n_diagnosed  n_hiv  prevalence1524w prevalence1524m prevalence2549w prevalence2549m prevalence_sw
+n_alive  n_diagnosed  n_hiv  prevalence1524w prevalence1524m prevalence2549w prevalence2549m prevalence_sw prevalence_pwid
 n_prep_elig_past_year
 
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564 p_onprep_msm				
@@ -1112,7 +1113,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prevalence2529m);    %var(v=prevalence3034w);    %var(v=prevalence3034m);  	%var(v=prevalence3539w);  	  %var(v=prevalence3539m);  	  
 %var(v=prevalence4044w);  	 %var(v=prevalence4044m);  	  %var(v=prevalence4549w);  	  %var(v=prevalence4549m);  
 %var(v=prevalence_vg1000); %var(v=incidence1549);  %var(v=incidence1564m); %var(v=incidence1564w); 
-%var(v=prevalence1524w); %var(v=prevalence1524m);   %var(v=prevalence_sw);
+%var(v=prevalence1524w); %var(v=prevalence1524m);   %var(v=prevalence_sw);  %var(v=prevalence_pwid);
 %var(v=prevalence5054w); %var(v=prevalence5054m); %var(v=prevalence5559w); %var(v=prevalence5559m); %var(v=prevalence6064w); %var(v=prevalence6064m); 
 %var(v=prevalence65plw); %var(v=prevalence65plm); %var(v=r_prev_sex_1549); %var(v=prevalence_hiv_preg);
 %var(v=r_prev_1519w_4549w );  %var(v=r_prev_2024w_4549w  );  %var(v=r_prev_2529w_4549w );  %var(v=r_prev_3034w_4549w  ); 
@@ -1208,7 +1209,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
 %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
 %var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive);  %var(v=n_diagnosed);   %var (v=n_hiv); %var(v=n_tested)
-%var(v=prevalence1524w);  %var(v=prevalence1524m);  %var(v=prevalence2549w);  %var(v=prevalence2549m);  %var(v=prevalence_sw); 
+%var(v=prevalence1524w);  %var(v=prevalence1524m);  %var(v=prevalence2549w);  %var(v=prevalence2549m); 
 %var(v=n_alive_msm);	 %var(v=n_alive1564_msm); %var(v=incidence1549msm); %var(v=incidence1564msm);  %var(v=prevalence1549_msm);	%var(v=prevalence1564_msm);  
 %var(v=p_elig_prep_any_msm_1564); %var(v=p_onprep_msm);  %var(v=p_onart_msm);   %var(v=prevalence_vg1000_msm);	 %var(v=p_diag_msm);	 
 %var(v=p_onart_diag_msm);  %var(v=p_vl1000_art_gt6m_msm);	 %var(v=p_ever_tested_msm); 	%var(v=p_tested_this_period_msm);  %var(v=p_msm_infected_from_msm)
@@ -1229,7 +1230,7 @@ prevalence1549m  prevalence1549w  prevalence1549  prevalence1519w  prevalence151
 prevalence2529w  prevalence2529m  prevalence3034w prevalence3034m  prevalence3539w  prevalence3539m  	  
 prevalence4044w  prevalence4044m  prevalence4549w prevalence4549m  
 prevalence5054w prevalence5054m prevalence5559w prevalence5559m prevalence6064w prevalence6064m prevalence65plw prevalence65plm
-prevalence_vg1000  incidence1549  prevalence1524w prevalence1524m   prevalence_sw  r_prev_sex_1549 prevalence_hiv_preg
+prevalence_vg1000  incidence1549  prevalence1524w prevalence1524m   prevalence_sw  r_prev_sex_1549 prevalence_hiv_preg prevalence_pwid
 r_prev_1519w_4549w r_prev_2024w_4549w r_prev_2529w_4549w r_prev_3034w_4549w r_prev_3539w_4549w 	
 r_prev_4044w_4549w  r_prev_5054w_4549w r_prev_5559w_4549w r_prev_6064w_4549w r_prev_65plw_4549w 
 r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_prev_3539m_4549w r_prev_4044m_4549w r_prev_4549m_4549w

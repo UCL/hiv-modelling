@@ -13699,6 +13699,7 @@ hiv_msm=0; if hiv=1 and msm=1 then hiv_msm=1;
 hiv1564pwid=0; if hiv=1 and pwid=1 and 15 <= age < 65 then hiv1564pwid=1;
 hiv1549pwid=0; if hiv=1 and pwid=1 and 15 <= age < 50 then hiv1549pwid=1;
 
+hiv_pwid = 0; if hiv=1 and pwid=1 then hiv_pwid = 1;
 
 hiv1517w=0; if hiv=1 and gender=2 and 15 <= age < 18 then hiv1517w=1;
 hiv1819w=0; if hiv=1 and gender=2 and 18 <= age < 20 then hiv1819w=1;
@@ -17177,7 +17178,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_i_msm + i_msm ; s_i_v1_msm + i_v1_msm; s_i_v2_msm + i_v2_msm ; s_i_v3_msm + i_v3_msm ;
 	s_i_v4_msm + i_v4_msm ; s_i_v5_msm + i_v5_msm ;s_i_v6_msm + i_v6_msm  ;
 
-	s_pwid + pwid ;
+	s_pwid + pwid ;  s_hiv_pwid + hiv_pwid;
 
 	s_i_pwid + i_pwid ; s_i_v1_pwid + i_v1_pwid; s_i_v2_pwid + i_v2_pwid ; s_i_v3_pwid + i_v3_pwid ;
 	s_i_v4_pwid + i_v4_pwid ; s_i_v5_pwid + i_v5_pwid ;s_i_v6_pwid + i_v6_pwid  ;
@@ -19447,7 +19448,7 @@ s_ever_tested_pwid  s_ever_tested_pwid1549_  s_ever_tested_pwid1564_  s_diag_pwi
 s_ever_tested_pwid1549_   s_diag_pwid1549_  s_onart_pwid1549_    s_ever_tested_pwid1564_  s_diag_pwid1564_ s_onart_pwid1564_
 s_diag_this_period_pwid  s_tested_pwid  s_naive_pwid  s_newp_this_per_hivneg_pwid 
 
-s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid
+s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid s_hiv_pwid
 
 
 
@@ -20458,7 +20459,7 @@ s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_inj_pwid  s_elig_prep_any_pw
 s_ever_tested_pwid  s_ever_tested_pwid1549_  s_ever_tested_pwid1564_  s_diag_pwid1549_   s_diag_pwid1564_  s_onart_pwid1549_  s_onart_pwid1564_  
 s_ever_tested_pwid1549_   s_diag_pwid1549_  s_onart_pwid1549_    s_ever_tested_pwid1564_  s_diag_pwid1564_ s_onart_pwid1564_
 s_diag_this_period_pwid  s_tested_pwid  s_naive_pwid  s_newp_this_per_hivneg_pwid 
-s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid 
+s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid  s_hiv_pwid
 
 
 
@@ -21494,7 +21495,7 @@ s_ever_tested_pwid  s_ever_tested_pwid1549_  s_ever_tested_pwid1564_  s_diag_pwi
 s_ever_tested_pwid1549_   s_diag_pwid1549_  s_onart_pwid1549_    s_ever_tested_pwid1564_  s_diag_pwid1564_ s_onart_pwid1564_
 s_diag_this_period_pwid  s_tested_pwid  s_naive_pwid  s_newp_this_per_hivneg_pwid 
 
-s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid
+s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid   s_hiv_pwid
 
 
 
