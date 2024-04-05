@@ -13909,6 +13909,7 @@ vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vg1000_w=.; v
 ever_ep_hiv=.;ever_ep_diag=.;ever_newp_hiv=.;ever_newp_diag=.;
 ever_sw_hiv=.;ever_sw_diag=.;
 dead_=.;dead_diag=.;
+vl1000_onart_1524m=.; vl1000_onart_1524w=.;  vl1000_1524m=.; vl1000_1524w=.; r_len_1524m=.; r_len_1524w=.; r_cab_1524m=.; r_cab_1524w=.; 
 
 if hiv =1 then do;
 
@@ -13947,6 +13948,11 @@ if hiv =1 then do;
 	vg1000_w=0;	if vg1000 = 1 then  vg1000_w = vg1000;
 	if 15 <= age < 25 then do; vg1000_w_1524=0; if vg1000 = 1 then vg1000_w_1524=1 ;  end ;
 	end;
+
+	if gender=1 and 15 <= age < 25 and onart=1 then vl1000_onart_1524m=1; 
+	if gender=2 and 15 <= age < 25 and onart=1 then vl1000_onart_1524w=1; 
+	if gender=1 and 15 <= age < 25 then vl1000_1524m=1; 
+	if gender=2 and 15 <= age < 25 then vl1000_1524w=1; 
 
 * two variables indicate vl < 500: vlg1 indexes infectivity and viral load is increased by 0.5 log when
 sti present, vl500 takes the vl as it is;
@@ -14192,6 +14198,11 @@ end;
 	i_r_vlg4_np=0; if hiv1564=1 and rm_=1 and  15 <= age < 65 and vlg4=1 then i_r_vlg4_np=np;
 	i_r_vlg5_np=0; if hiv1564=1 and rm_=1 and  15 <= age < 65 and vlg5=1 then i_r_vlg5_np=np;
 	i_r_vlg6_np=0; if hiv1564=1 and rm_=1 and  15 <= age < 65 and primary=1 then i_r_vlg6_np=np;
+
+	if gender=1 and 15 <= age < 25 and r_len > 0 then r_len_1524m=1;
+	if gender=2 and 15 <= age < 25 and r_len > 0 then r_len_1524w=1;
+	if gender=1 and 15 <= age < 25 and r_cab > 0 then r_cab_1524m=1;
+	if gender=2 and 15 <= age < 25 and r_cab > 0 then r_cab_1524w=1;
 
 	* survival time from start of art to v failure with resistance ;
 	if date_rm_maj_vf=. and rm_=1 and onart_gt6m_vlg1000=1 then date_rm_maj_vf = caldate&j; 
@@ -17208,7 +17219,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_em_cam_res_o_len_off_3m_npr + em_cam_res_o_len_off_3m_npr; 	s_em_cam_res_len_tail_npr + em_cam_res_len_tail_npr; 
 	s_em_cam_res_o_len_off_3m_pr + em_cam_res_o_len_off_3m_pr;  s_emerge_cam_res_len_tail_pr + emerge_cam_res_len_tail_pr;
 	s_em_cam_res_o_len + em_cam_res_o_len; s_len_res_emerge_primary + len_res_emerge_primary;  
-
+	s_r_len_1524m + r_len_1524m;    s_r_len_1524w + r_len_1524w;    s_r_cab_1524m + r_cab_1524m ;   s_r_cab_1524w + r_cab_1524w ;   
 
 
 		/*prep*/
@@ -17553,6 +17564,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dol_pi_failed + dol_pi_failed; 
 
 	s_dead_dol_r_uvl2 + dead_dol_r_uvl2;  s_second_vlg1000_first + second_vlg1000_first; s_second_vlg1000_first_dol_r + second_vlg1000_first_dol_r ;
+
+	s_vl1000_onart_1524m + vl1000_onart_1524m;   s_vl1000_onart_1524w + vl1000_onart_1524w;     s_vl1000_1524m + vl1000_1524m;    s_vl1000_1524w + vl1000_1524w;    
 
 	/* blood pressure */
 
@@ -19093,6 +19106,7 @@ s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  
 s_cur_res_len s_em_cam_res_o_len_off_3m
 s_emerge_cam_res_len_tail   s_em_cam_res_o_len_off_3m_npr 	s_em_cam_res_len_tail_npr 
 s_em_cam_res_o_len_off_3m_pr  s_emerge_cam_res_len_tail_pr  s_em_cam_res_o_len  s_len_res_emerge_primary
+	s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w 
 
 
 /*prep*/
@@ -19344,6 +19358,7 @@ s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
+s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w 	
 
 
 /* note s_ variables below are for up to age 80 */
@@ -20086,7 +20101,6 @@ s_ai_naive_no_pmtct_ s_ai_naive_no_pmtct_c_nnm_  s_ai_naive_no_pmtct_e_inm_
 s_ai_naive_no_pmtct_c_pim_  s_ai_naive_no_pmtct_c_inm_   s_ai_naive_no_pmtct_c_rt184m_  s_ai_naive_no_pmtct_c_rt65m_  s_ai_naive_no_pmtct_c_rttams_ 
 s_o_dol_2nd_vlg1000 s_o_dol_2nd_vlg1000_dolr1_adh0  s_o_dol_2nd_vlg1000_dolr1_adh1  s_o_dol_2nd_vlg1000_dolr0_adh0 s_o_dol_2nd_vlg1000_dolr0_adh1 s_incident_r_dol
 
-
 s_ontle  s_vlg1000_ontle  s_vlg1000_184m_ontle  s_vlg1000_65m_ontle  s_vlg1000_nnm_ontle s_ontld  s_vlg1000_ontld  s_vlg1000_65m_ontld 
 s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld  s_cur_res_cab  s_cur_res_len s_em_inm_res_o_cab_off_3m
  s_em_cam_res_o_len_off_3m
@@ -20094,6 +20108,8 @@ s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail
 s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  s_cab_res_emerge_primary  s_res_test_dol 
 s_emerge_cam_res_len_tail   s_em_cam_res_o_len_off_3m_npr 	s_em_cam_res_len_tail_npr 
 s_em_cam_res_o_len_off_3m_pr  s_emerge_cam_res_len_tail_pr  s_em_cam_res_o_len  s_len_res_emerge_primary
+
+s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w 
 
 
 /*prep*/
@@ -20344,6 +20360,7 @@ s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
+s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w 
 
 /* note s_ variables below are for up to age 80 */
 
@@ -21527,7 +21544,7 @@ s_em_cam_res_o_len_off_3m
 s_emerge_cam_res_len_tail   s_em_cam_res_o_len_off_3m_npr 	s_em_cam_res_len_tail_npr 
 s_em_cam_res_o_len_off_3m_pr  s_emerge_cam_res_len_tail_pr  s_em_cam_res_o_len  s_len_res_emerge_primary  
 
-s_res_test_dol 
+s_res_test_dol  s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w 
 
 
 /*prep*/
@@ -21776,6 +21793,9 @@ s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_ad
 s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
+
+s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w 
+
 
 
 /* note s_ variables below are for up to age 80 */
