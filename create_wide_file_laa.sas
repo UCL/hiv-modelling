@@ -1666,9 +1666,24 @@ if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
 
 * table 1;
 
-proc means   data = b  n p50  p5  p95 ;  
+proc means    n p50  p5  p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_vl1000_24 prevalence_vg1000_24   p_onart_cd4_l200_24
 ;
 run;
+
+
+proc means  n p50  p5  p95 ;  
+var 
+p_len_10y_1 p_len_10y_2 
+p_cab_10y_1 p_cab_10y_2 
+p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 
+p_vl1000_10y_1 p_vl1000_10y_2 
+p_vl1000_m_1524_10y_1 p_vl1000_m_1524_10y_2 
+p_vl1000_w_1524_10y_1  p_vl1000_w_1524_10y_2  
+incidence1549_10y_1 incidence1549_10y_2 
+n_death_hiv_10y_1 n_death_hiv_10y_2  
+;
+run;
+
 
