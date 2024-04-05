@@ -8,7 +8,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_i    ;
+  set a.l_base_kenya_a    ;
 
 p_onart_vl1000_all = .;
 
@@ -50,7 +50,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  136   ;
+%let nfit =  177   ;
 %let year_end = 2024.00 ;
 run;
 proc sort;by cald option ;run;
@@ -206,9 +206,9 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93 g94  g95 g96 g97  g98  g99  g100  g101  g102 
- g103  g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125
+ g103  g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 
 
-/*
+/* g123 g124 g125
 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
@@ -222,7 +222,7 @@ h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72  h73  h74  h75
 h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92   h93  h94  h95  h96 h97  h98  h99  h100   h101
-h102  h103  h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 h114 h115 h116 h117 h118 h119 h120 h121 h122 h123 h124 h125
+h102  h103  h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 h114 h115 h116 h117 h118 h119 h120 h121 h122 
 ;
 by cald;
 
@@ -421,6 +421,7 @@ if cald=2012.5 then p_diag_obs_kya = 0.47*100;
 if cald=2018.5 then p_diag_m_obs_kya = 0.73*100;
 if cald=2018.5 then p_diag_w_obs_kya = 0.83*100;
 if cald=2018.5 then p_diag_obs_kya = 0.80*100;
+if cald=2022   then p_diag_obs_kya = 0.94*100; * unaids 2022 factsheet;
 
 if cald=2018.5 then p_onart_diag_m_obs_kya = 0.95;
 if cald=2018.5 then p_onart_diag_w_obs_kya = 0.97;
@@ -437,6 +438,97 @@ if cald = 2010 then n_infected_obs_kya = 70000; * this includes children;
 if cald = 2022 then n_infected_obs_kya = 18000; * this is age 15 and over;
 
 if cald = 2022 then n_hiv_kya = 1300000;
+
+
+/*
+
+Country factsheets 	
+KENYA  | 2022		
+	
+HIV and AIDS Estimates				
+Adults and children living with HIV	 1 400 000	 1 200 000	 1 600 000	
+Adults aged 15 and over living with HIV	 1 300 000	 1 200 000	 1 500 000	
+Women aged 15 and over living with HIV	 860 000	 770 000	 1 000 000	
+Men aged 15 and over living with HIV	 450 000	 400 000	 520 000	
+Children aged 0 to 14 living with HIV	 68 000	 56 000	 86 000	
+Adult aged 15 to 49 HIV prevalence rate	3.7	3.3	4.1	
+Women aged 15 to 49 HIV prevalence rate	4.9	4.4	5.6	
+Men aged 15 to 49 HIV prevalence rate	2.4	2	2.7	
+HIV prevalence among young women	1.7	1.3	2.2	
+HIV prevalence among young men	1.1	0.9	1.3	
+Adults and children newly infected with HIV	 22 000	 13 000	 36 000	
+Adults aged 15 and over newly infected with HIV	 18 000	 10 000	 30 000	
+Women aged 15 and over newly infected with HIV	 13 000	7000	 21 000	
+Men aged 15 and over newly infected with HIV	5100	2900	8900	
+Children aged 0 to 14 newly infected with HIV	4500	3000	7400	
+HIV incidence per 1000 population (adults 15-49)	0.68	0.38	1.13	
+HIV incidence per 1000 population (all ages)	0.46	0.27	0.74	
+Adult and child deaths due to AIDS	 18 000	 15 000	 27 000	
+Deaths due to AIDS among adults aged 15 and over	 16 000	 13 000	 24 000	
+Deaths due to AIDS among women aged 15 and over	8500	6700	 13 000	
+Deaths due to AIDS among men aged 15 and over	7600	6100	 11 000	
+
+
+HIV testing and treatment cascade				
+People living with HIV	 1 400 000	 1 200 000	 1 600 000	
+People living with HIV who know their status	 1 300 000	 	 	
+Percent of people living with HIV who know their status	94	84	 >98	
+People living with HIV who are on ART	 1 300 000	 	 	
+Percent of people living with HIV who are on ART	94	84	 >98	
+People living with HIV who have suppressed viral loads	 1 200 000	 	 	
+Percent of people living with HIV who have suppressed viral loads	89	79	 >98	
+
+Antiretroviral therapy (ART)				
+Coverage of adults and children receiving ART (%)	94	84	 >98	
+Adults aged 15 and over receiving ART	95	84	 >98	
+Women aged 15 and over receiving ART	97	86	 >98	
+Men aged 15 and over receiving ART	89	80	 >98	
+Children aged 0 to 14 receiving ART	85	70	 >98	
+Number of adults and children receiving ART (#)	 1 297 822	 	 	
+Adults aged 15 and over receiving ART	 1 240 454	 	 	
+Women aged 15 and over receiving ART	 842 285	 	 	
+Men aged 15 and over receiving ART	 398 169	 	 	
+Children aged 0 to 14 receiving ART	 57 368	 	 	
+
+Elimination of vertical transmission				
+Coverage of pregnant women who receive ARV for PMTCT (%)	90	76	 >98	
+Pregnant women who received ARV for PMTCT (#)	 46 361	 	 	
+Pregnant women needing ARV for PMTCT (#)	 52 000	 44 000	 61 000	
+Early infant diagnosis (%)	 >98	85	 >98	
+Final vertical transmission rate including during breastfeeding	8.64	6.4	11.81	
+New HIV infections averted due to PMTCT (%)	 11 000	7300	 18 000	
+Number of HIV-exposed children who are uninfected	 780 000	 660 000	 870 000	
+
+Sex workers				
+Population size estimate (#)	 197 100	 	 	Region: National; Methods: Unique object and unique event multiplier, service multiplier, anchored multiplier, 3 sources CRC, literature review, SSPSE, multiple indicator regression and consensus; Source: National AIDS and STI Control Programme (NASCOP), Key Population Size Estimates in Kenya, 2020
+Antiretroviral therapy coverage (%)	33.7	 	 	Source: MOH 731 Key Population Summary
+
+Men who have sex with men				
+Population size estimate (#)	 32 600	 	 	Region: 30 couties; Method: Programmatic mapping
+Antiretroviral therapy coverage (%)	38.8	 	 	Source: MOH 731 B PLUS (KEY POPULATION)
+
+People who inject drugs				
+Population size estimate (#)	 16 000	 	 	
+Antiretroviral therapy coverage (%)	26.2	 	 	Source: MOH 731 B PLUS KEY POPULATION SUMMARY
+Condom use (%)	75.9	 	 	Source: Polling Booth Survey 2017
+Safe injecting practices (%)	88.4	 	 	Source: Poll booth survey 2017
+Needles and syringes distributed per person who injects drugs (#)	4	 	 	
+Coverage of opioid substitution therapy	13.3	 	 	Source: National programme data, 2021
+
+Transgender people				
+Population size estimate (#)	4300	 	 	Region: 31 counties; Method: Programmatic mapping;
+Antiretroviral therapy coverage (%)	7.3	 	 	Source: MOH 731 PLUS KEY POPULATION SUMMARY
+Combination prevention				
+
+People receiving pre-exposure prophylaxis (PrEP) (#)	 155 526	 	 	
+
+Condom use at last high-risk sex among adults aged 15 to 49 (%)	67.9	 	 	Source: 2022 DHS
+- Condom use at last high-risk sex among women aged 15 to 49 (%)	36.7	 	 	Source: 2022 DHS
+- Condom use at last high-risk sex among men aged 15 to 49 (%)	68	 	 	Source: 2022 DHS
+
+
+*/
+
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
@@ -983,6 +1075,25 @@ band    x=cald lower=p5_p_diag_w_1 	upper=p95_p_diag_w_1  / transparency=0.9 fil
 scatter x=cald y=p_diag_w_obs_kya / 		markerattrs = (symbol=square color=green size = 10);
 
 run;quit;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "of people with hiv, % diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 100 by 10) valueattrs=(size=10);
+
+label p50_p_diag_0 = "Option 0 (median) ";
+label p50_p_diag_1 = "Option 1  (median) ";
+
+series  x=cald y=p50_p_diag_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_0 	upper=p95_p_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diag_1 	upper=p95_p_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+scatter x=cald y=p_diag_obs_kya / 		markerattrs = (symbol=square color=green size = 10);
+
+run;quit;
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of naive art initiators with NNRTI mutation";
