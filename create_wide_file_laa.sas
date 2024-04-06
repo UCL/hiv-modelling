@@ -717,8 +717,8 @@ run;
 * p_len;						if s_onart > 0 then p_len = s_len / s_onart ;
 * p_cab;						if s_onart > 0 then p_cab = s_cab / s_onart ;
 
-* p_len_1524;					if (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) > 0 then p_len_1524 = s_len_1524 / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_);
-* p_cab_1524;					if (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) > 0 then p_cab_1524 = s_cab_1524 / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_);
+* p_len_1524;					if (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) > 0 then p_len_1524 = (s_o_len_1524m + s_o_len_1524w) / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_);
+* p_cab_1524;					if (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) > 0 then p_cab_1524 = (s_o_cab_1524m + s_o_cab_1524m) / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_);
 
 * p_onart_1524;					p_onart_1524 = (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) / (s_hiv1524w + s_hiv1524m) ; 
 
@@ -727,8 +727,8 @@ run;
 
 * p_r_len;						p_r_len = s_r_len / s_hiv;
 * p_r_cab;						p_r_cab = s_r_cab / s_hiv;
-* p_r_len_1524;					p_r_len = (s_r_len_1524m + s_r_len_1524w) / (s_hiv1524w + s_hiv1524m);
-* p_r_cab_1524;					p_r_cab = (s_r_cab_1524m + s_r_cab_1524w) / (s_hiv1524w + s_hiv1524m);
+* p_r_len_1524;					p_r_len_1524 = (s_r_len_1524m + s_r_len_1524w) / (s_hiv1524w + s_hiv1524m);
+* p_r_cab_1524;					p_r_cab_1524 = (s_r_cab_1524m + s_r_cab_1524w) / (s_hiv1524w + s_hiv1524m);
 
 * p_tle;						if s_onart > 0 then p_tle = s_tle / s_onart ;
 * p_tld;						if s_onart > 0 then p_tld = s_tld / s_onart ;
@@ -1200,7 +1200,7 @@ pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  p_dol_2vg1000_dolr1  
 
 s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 
-p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len p_r_cab 
+p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
 ;
 
@@ -1388,7 +1388,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=s_o_dol_2nd_vlg1000); %var(v=s_vl1000_art_gt6m_iicu);  %var(v=p_first_uvl2_dol_r);  %var(v= deathr_dol_r_uvl2);  %var(v=p_tldsw2_elig_tldsw);
 
 %var(v=p_len);  %var(v=p_cab);  %var(v=p_len_1524);  %var(v=p_cab_1524);  %var(v=p_onart_1524);   %var(v=incidence1524);  %var(v=p_onart_vl1000_w_1524);   
-%var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len);  %var(v=p_r_cab);  
+%var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524);  
 
 
 data   b.wide_outputs; merge 
@@ -1435,7 +1435,7 @@ p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_o
 
 s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
-p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len p_r_cab 
+p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
 ;
 
@@ -1677,12 +1677,22 @@ proc means  n p50  p5  p95 ;
 var 
 p_len_10y_1 p_len_10y_2 
 p_cab_10y_1 p_cab_10y_2 
+p_len_1524_10y_1 p_len_1524_10y_2
+p_cab_1524_10y_1 p_cab_1524_10y_2
+p_onart_1524_10y_1 p_onart_1524_10y_2 
 p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 
 p_vl1000_10y_1 p_vl1000_10y_2 
 p_vl1000_m_1524_10y_1 p_vl1000_m_1524_10y_2 
 p_vl1000_w_1524_10y_1  p_vl1000_w_1524_10y_2  
+p_onart_vl1000_w_1524_10y_1 p_onart_vl1000_w_1524_10y_2 
+p_onart_vl1000_m_1524_10y_1 p_onart_vl1000_m_1524_10y_2
 incidence1549_10y_1 incidence1549_10y_2 
+incidence1524_10y_1 incidence1524_10y_2
 n_death_hiv_10y_1 n_death_hiv_10y_2  
+p_r_len_10y_1 p_r_len_10y_2
+p_r_cab_10y_1 p_r_cab_10y_2
+p_r_len_1524_10y_1 p_r_len_1524_10y_2
+p_r_cab_1524_10y_1 p_r_cab_1524_10y_2
 ;
 run;
 
