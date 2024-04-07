@@ -15,27 +15,27 @@ also produce table of outputs for 1yr
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_q_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_r_out\";
 
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_q_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_r_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9: ;
 
-%let laprv =  dcp_cab_q  ;
+%let laprv =  dcp_cab_r  ;
 
-data b.k_dcp_cab_q;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_dcp_cab_r;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_dcp_cab_q; 
+proc sort data=b.k_dcp_cab_r; 
 by run cald option;
 run;
 
@@ -43,7 +43,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_dcp_cab_q ;
+set b.k_dcp_cab_r ;
 
 if cald=2023   ;
 s_alive = s_alive_m + s_alive_w ;
@@ -63,7 +63,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_dcp_cab_q sf;
+merge b.k_dcp_cab_r sf;
 by run ;
 
 
@@ -1194,9 +1194,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_dcp_cab_q_y; set y;  
+data    b.l_dcp_cab_r_y; set y;  
 
-data y ; set b.l_dcp_cab_q_y; 
+data y ; set b.l_dcp_cab_r_y; 
 
 
   options nomprint;
@@ -1585,7 +1585,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  b.w_dcp_cab_q     ; 
+  data  b.w_dcp_cab_r     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1598,9 +1598,9 @@ proc sort; by run;run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_q_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_r_out\";
 
-data g; set b.w_dcp_cab_q ;
+data g; set b.w_dcp_cab_r ;
 
 d_prop_elig_on_prep_20y_2_1 = prop_elig_on_prep_20y_2 - prop_elig_on_prep_20y_1; 
 d_prop_elig_on_prep_20y_3_1 = prop_elig_on_prep_20y_3 - prop_elig_on_prep_20y_1; 
