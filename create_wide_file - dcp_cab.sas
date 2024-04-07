@@ -202,18 +202,6 @@ dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000;
 dcost_dcp_visit = max(0, s_dcost_dcp_visit * &sf * 4 / 1000);
 
 
-
-
-
-* note this to be removed for _s ;
-
-dcost_dcp_visit = dcost_dcp_visit /   5 ;
-
-
-
-
-
-
 * note this below can be used if outputs are from program beyond 1-1-20;
   dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
   dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
