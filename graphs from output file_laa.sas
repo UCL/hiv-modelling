@@ -30,7 +30,7 @@ prop_uvl2_vl1000_ = prop_uvl2_vl1000 ;
 hiv_death_rate_uvl2_ = hiv_death_rate_uvl2 * 100;
 deathr_dol_r_first_uvl2_ = deathr_dol_r_first_uvl2;
 
-%let single_var =  hiv_death_rate_uvl2_                       ;
+%let single_var =  hiv_death_rate_uvl2_                 ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
