@@ -193,12 +193,25 @@ dcot_cost = s_dcot_cost * &sf * 4 / 1000;
 dres_cost = s_dres_cost * &sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
 dcost_prep = s_dcost_prep * &sf * 4 / 1000; 
-dcost_prep_inj = s_dcost_prep_inj * &sf * 4 / 1000; 
+dcost_prep_inj = max(0,s_dcost_prep_inj * &sf * 4 / 1000); 
 dcost_prep_oral = s_dcost_prep_oral * &sf * 4 / 1000; 
 dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 	
-dcost_prep_visit_inj  = s_dcost_prep_visit_inj * &sf * 4 / 1000; 	
+dcost_prep_visit_inj  = max(0,s_dcost_prep_visit_inj * &sf * 4 / 1000); 	
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
+dcost_dcp_visit = max(0, s_dcost_dcp_visit * &sf * 4 / 1000);
+
+
+
+
+
+* note this to be removed for _s ;
+
+dcost_dcp_visit = dcost_dcp_visit /   5 ;
+
+
+
+
 
 
 * note this below can be used if outputs are from program beyond 1-1-20;
@@ -220,11 +233,6 @@ dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * ;
 
-/*
-dcp_cost=0;
-if option=1 or option=3 then dcp_cost = 20; * $20 million ;
-ddcp_cost = dcp_cost * discount;
-*/
 
 ****** instead of above: some fixed cost plus a unit cost "per person with indication for prep + tested" ?;
 
@@ -233,7 +241,7 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv + dcost_non_aids_pre_death + ddcp_cost;
+		dcost_child_hiv + dcost_non_aids_pre_death + dcost_dcp_visit;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost; 
@@ -1093,7 +1101,7 @@ keep
 
 run cald option
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y  prop_elig_dcp prop_dcp_prep_elig
-dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
+dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn dcost_dcp_visit
 dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost    n_hiv  ddcp_cost
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
@@ -1277,7 +1285,7 @@ drop _NAME_ _TYPE_ _FREQ_;
   %var(v=dcost_clin_care );    %var(v=dcost_non_aids_pre_death );    %var(v=dcost_child_hiv );    %var(v=dzdv_cost );     %var(v=dten_cost );     %var(v=d3tc_cost );   
   %var(v=dnev_cost );     %var(v=dlpr_cost );     %var(v=ddar_cost );     %var(v=dtaz_cost );      %var(v=defa_cost );     %var(v=ddol_cost );
 %var(v=m15r);  %var(v=m25r);  %var(v=m35r);  %var(v=m45r);  %var(v=m55r);  %var(v=w15r);  %var(v=w25r);  %var(v=w35r);  %var(v=w45r);  %var(v=w55r)
-* %var(v=r_efa_hiv); * %var(v=p_onart_cd4_l200);
+* %var(v=r_efa_hiv); * %var(v=p_onart_cd4_l200);  %var(v=dcost_dcp_visit);
 * %var(v=p_dol_2vg1000_dolr1_adh0); * %var(v=p_dol_2vg1000_dolr1_adh1); * %var(v=p_dol_2vg1000_dolr0_adh0); * %var(v=p_dol_2vg1000_dolr0_adh1);
 %var(v=p_onart_cd4_l500);  %var(v=prop_art_or_prep);  * %var(v=n_sw_1564); * %var(v=n_sw_1549);   %var(v=prop_sw_onprep);   %var(v=p_onart);
 * %var(v=p_o_zdv_tox);   * %var(v=p_o_3tc_tox);   * %var(v=p_o_ten_tox);   * %var(v=p_o_taz_tox);   * %var(v=p_o_lpr_tox);   * %var(v=p_o_efa_tox);   
@@ -1374,7 +1382,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 data   b.wide_outputs; merge 
 
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y  prop_elig_dcp  prop_dcp_prep_elig
-dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
+dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn dcost_dcp_visit
 dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost  n_hiv n_alive
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
@@ -1622,8 +1630,57 @@ r_incidence1549_20y_2_1 = incidence1549_20y_2 / incidence1549_20y_1 ;
 r_incidence1549_20y_3_1 = incidence1549_20y_3 / incidence1549_20y_1 ;
 r_incidence1549_20y_4_1 = incidence1549_20y_4 / incidence1549_20y_1 ;
 
+d_ddaly_50y_2_1 = ddaly_50y_2 - ddaly_50y_1;
+d_ddaly_50y_3_1 = ddaly_50y_3 - ddaly_50y_1;
+d_ddaly_50y_4_1 = ddaly_50y_4 - ddaly_50y_1;
+
 p_diag_w_23 = p_diag_w_23 / 100;
 p_diag_m_23 = p_diag_m_23 / 100;
+
+
+dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
+					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
+					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1
+					+ (dcost_prep_visit_oral_50y_1) + (dcost_prep_oral_50y_1) + (dcost_prep_visit_inj_50y_1) + (dcost_prep_inj_50y_1) 
+					+ dcost_dcp_visit_50y_1;
+
+
+dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
+					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
+					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2
+					+ (dcost_prep_visit_oral_50y_2) + (dcost_prep_oral_50y_2) + (dcost_prep_visit_inj_50y_2) + (dcost_prep_inj_50y_2) 
+					+ dcost_dcp_visit_50y_2;
+
+
+dcost_50y_3 = dart_cost_y_50y_3 + dadc_cost_50y_3 + dcd4_cost_50y_3 + dvl_cost_50y_3 + dvis_cost_50y_3 + dnon_tb_who3_cost_50y_3 + 
+					dcot_cost_50y_3 + dtb_cost_50y_3 + dres_cost_50y_3 + dtest_cost_50y_3 + d_t_adh_int_cost_50y_3 + dswitchline_cost_50y_3 + 
+					dcost_circ_50y_3 + dcost_condom_dn_50y_3 + dcost_child_hiv_50y_3 + dcost_non_aids_pre_death_50y_3
+					+ (dcost_prep_visit_oral_50y_3) + (dcost_prep_oral_50y_3) + (dcost_prep_visit_inj_50y_3) + (dcost_prep_inj_50y_3) 
+					+ dcost_dcp_visit_50y_3;
+
+
+dcost_50y_4 = dart_cost_y_50y_4 + dadc_cost_50y_4 + dcd4_cost_50y_4 + dvl_cost_50y_4 + dvis_cost_50y_4 + dnon_tb_who3_cost_50y_4 + 
+					dcot_cost_50y_4 + dtb_cost_50y_4 + dres_cost_50y_4 + dtest_cost_50y_4 + d_t_adh_int_cost_50y_4 + dswitchline_cost_50y_4 + 
+					dcost_circ_50y_4 + dcost_condom_dn_50y_4 + dcost_child_hiv_50y_4 + dcost_non_aids_pre_death_50y_4
+					+ (dcost_prep_visit_oral_50y_4) + (dcost_prep_oral_50y_4) + (dcost_prep_visit_inj_50y_4) + (dcost_prep_inj_50y_4) 
+					+ dcost_dcp_visit_50y_4;
+
+
+d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
+d_dcost_50y_3_1 = dcost_50y_3 - dcost_50y_1;
+d_dcost_50y_4_1 = dcost_50y_4 - dcost_50y_1;
+
+netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
+netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
+netdaly500_3 = ddaly_50y_3 + (dcost_50y_3 / 0.0005);
+netdaly500_4 = ddaly_50y_4 + (dcost_50y_4 / 0.0005);
+
+min_netdaly500 = min(netdaly500_1, netdaly500_2, netdaly500_3, netdaly500_4);
+
+if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
+if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
+if netdaly500_3 = min_netdaly500 then lowest_netdaly=3;
+if netdaly500_4 = min_netdaly500 then lowest_netdaly=4;
 
 * label 
 
@@ -1691,7 +1748,7 @@ options linesize = 240;
 
 * ods rtf file="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\output_n.rtf";
 
-ods html;
+* ods html;
 title "Characteristics in 2023";
 proc means  data = g    n p50 p5 p95 ;  
 var
@@ -1718,6 +1775,45 @@ p_onart_vl1000_m_23 ;
 run;
 
 
+
+proc means  n mean p5 p95;
+var
+dcost_dcp_visit_50y_1 dcost_dcp_visit_50y_2 dcost_dcp_visit_50y_3 dcost_dcp_visit_50y_4 
+dart_cost_y_50y_1  dart_cost_y_50y_2  dart_cost_y_50y_3  dart_cost_y_50y_4  
+dadc_cost_50y_1  dadc_cost_50y_2  dadc_cost_50y_3  dadc_cost_50y_4  
+dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3  dcd4_cost_50y_4  
+dvl_cost_50y_1  dvl_cost_50y_2  dvl_cost_50y_3  dvl_cost_50y_4  
+dvis_cost_50y_1 dvis_cost_50y_2 dvis_cost_50y_3 dvis_cost_50y_4  
+dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2  dnon_tb_who3_cost_50y_3  dnon_tb_who3_cost_50y_4  		
+dcot_cost_50y_1  dcot_cost_50y_2  dcot_cost_50y_3  dcot_cost_50y_4  
+dtb_cost_50y_1  dtb_cost_50y_2  dtb_cost_50y_3  dtb_cost_50y_4  
+dres_cost_50y_1  dres_cost_50y_2  dres_cost_50y_3  dres_cost_50y_4  
+dtest_cost_50y_1 dtest_cost_50y_2 dtest_cost_50y_3 dtest_cost_50y_4  
+d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2  d_t_adh_int_cost_50y_3  d_t_adh_int_cost_50y_4  
+dswitchline_cost_50y_1  dswitchline_cost_50y_2  dswitchline_cost_50y_3  dswitchline_cost_50y_4  
+dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3  dcost_circ_50y_4  
+dcost_condom_dn_50y_1  dcost_condom_dn_50y_2  dcost_condom_dn_50y_3  dcost_condom_dn_50y_4  
+dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3  dcost_child_hiv_50y_4  
+dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2 dcost_non_aids_pre_death_50y_3 dcost_non_aids_pre_death_50y_4
+dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2  dcost_prep_visit_oral_50y_3  dcost_prep_visit_oral_50y_4  
+dcost_prep_oral_50y_1 dcost_prep_oral_50y_2 dcost_prep_oral_50y_3 dcost_prep_oral_50y_4 
+dcost_prep_visit_inj_50y_1  dcost_prep_visit_inj_50y_2  dcost_prep_visit_inj_50y_3  dcost_prep_visit_inj_50y_4  
+dcost_prep_inj_50y_1 dcost_prep_inj_50y_2 dcost_prep_inj_50y_3 dcost_prep_inj_50y_4 
+;
+run;
+
+
+
+proc means  n mean p5 p95;
+  var 
+r_incidence1549_20y_2_1 r_incidence1549_20y_3_1 r_incidence1549_20y_4_1 
+ddaly_50y_1 ddaly_50y_2 ddaly_50y_3 ddaly_50y_4    d_ddaly_50y_2_1  d_ddaly_50y_3_1  d_ddaly_50y_4_1
+dcost_50y_1   dcost_50y_2 dcost_50y_3   dcost_50y_4  d_dcost_50y_2_1 d_dcost_50y_3_1 d_dcost_50y_4_1
+netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 
+;
+run;
+
+proc freq; tables lowest_netdaly; run; 
 
 
 
@@ -2015,6 +2111,25 @@ run;
 
 
 ods html close;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
