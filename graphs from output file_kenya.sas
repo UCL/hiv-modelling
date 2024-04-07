@@ -8,7 +8,9 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_k    ;
+  set a.l_base_kenya_l    ;
+
+
 
 p_onart_vl1000_all = .;
 
@@ -50,7 +52,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  113   ;
+%let nfit =  65    ;
 %let year_end = 2024.00 ;
 run;
 proc sort;by cald option ;run;
@@ -82,8 +84,7 @@ n_alive n_diagnosed n_hiv  n_infected
 
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564_ p_onprep_msm				
  p_onart_msm   prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
- p_tested_this_period_msm p_msm_infected_from_msm   n_alive1564_msm   prevalence_pwid
-
+ p_tested_this_period_msm p_msm_infected_from_msm   n_alive1564_msm   prevalence_pwid  n_pwid 
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -153,7 +154,7 @@ n_alive n_diagnosed n_hiv n_infected
 
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564_ p_onprep_msm				
  p_onart_msm   prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
- p_tested_this_period_msm p_msm_infected_from_msm   n_alive1564_msm  prevalence_pwid
+ p_tested_this_period_msm p_msm_infected_from_msm   n_alive1564_msm  prevalence_pwid  n_pwid
 
 ;
 
@@ -206,9 +207,9 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93 g94  g95 g96 g97  g98  g99  g100  g101  g102 
- g103  g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123
+ g103  g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124
 
-/* g124 g125
+/* g125
 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
@@ -222,7 +223,7 @@ h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72  h73  h74  h75
 h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92   h93  h94  h95  h96 h97  h98  h99  h100   h101
-h102  h103  h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 h114 h115 h116 h117 h118 h119 h120 h121 h122 h123
+h102  h103  h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 h114 h115 h116 h117 h118 h119 h120 h121 h122 h123 h124
 ;
 by cald;
 
@@ -323,6 +324,12 @@ Eighty-five percent of women and 72% of men age 15–49 have been tested for HIV. 
 age 15–49 had an HIV test.
 
 
+Prevalence sex workers naiobi  28% 2019  Beattie et al 
+
+proportion of women sex workers  197000 / 14100000 women age 1549 in 2020 = 1.4%
+
+
+
 */
 
 
@@ -412,6 +419,8 @@ if cald=2010 then prevalence1549_w_obs_kya= 0.074;
 if cald=2015 then prevalence1549_w_obs_kya= 0.073;
 if cald=2020 then prevalence1549_w_obs_kya= 0.065;
 
+if cald=2019 then prevalence_sw_obs_kya = 0.28;
+
 if cald=2007.5 then incidence1564_m_obs_kya= 0.90;
 if cald=2007.5 then incidence1564_w_obs_kya= 1.10;
 if cald=2012.5 then incidence1564_m_obs_kya= 0.70;
@@ -441,6 +450,9 @@ if cald = 2022 then n_infected_obs_kya = 18000; * this is age 15 and over;
 
 if cald = 2022 then n_hiv_kya = 1300000;
 
+if  cald = 2020 then p_w_1549_sw_obs_kya = 0.014;
+
+if cald = 2020  then  n_msm_obs_kya = 61000 ;
 
 /*
 
@@ -687,7 +699,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of female sex workers (FSW)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.02) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) valueattrs=(size=10);
 label p50_prop_w_1549_sw_0 = "Current FSW 15-49 op 0 (median) ";
 label p50_prop_w_1549_sw_1 = "Current FSW 15-49 op 1 (median) ";
 
@@ -704,6 +716,8 @@ band    x=cald lower=p5_prop_w_ever_sw_0 	upper=p95_prop_w_ever_sw_0  / transpar
 series  x=cald y=p50_prop_w_ever_sw_1/	lineattrs = (color=lightgreen thickness = 2);
 band    x=cald lower=p5_prop_w_ever_sw_1 	upper=p95_prop_w_ever_sw_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
+series  x=cald y=p_w_1549_sw_obs_kya/	lineattrs = (color=blue  thickness = 3) ;
+
 run;quit;
 
 
@@ -719,6 +733,8 @@ series  x=cald y=p50_prop_sw_hiv_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_sw_hiv_0 	upper=p95_prop_sw_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_prop_sw_hiv_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_prop_sw_hiv_1 	upper=p95_prop_sw_hiv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=prevalence_sw_obs_kya/	lineattrs = (color=blue  thickness = 3) ;
 
 run;quit;
 
@@ -1650,6 +1666,35 @@ band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 filla
 run;quit;
 
 
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_pwid";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 60000000 by  1000000) valueattrs=(size=10);
+
+label p50_n_pwid_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_n_pwid_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_pwid_0 	upper=p95_n_pwid_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_alive1564_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 60000000 by  1000000) valueattrs=(size=10);
+
+label p50_n_alive1564_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_n_alive1564_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_alive1564_msm_0 	upper=p95_n_alive1564_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y = n_msm_obs_kya/ 		markerattrs = (symbol=square color=green size = 10);;
+
+run;quit;
 
 
 

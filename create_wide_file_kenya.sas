@@ -2,7 +2,7 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_k_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_l_out\";
 
 data g ; set b.out: ;
 
@@ -545,9 +545,9 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_onart_m;					if s_hivge15m gt 0 then p_onart_m = s_onart_m / s_hivge15m;
 * p_onart;						if s_hivge15 gt 0 then p_onart = s_onart / s_hivge15; 
 
-* onart_w;					onart_w = s_onart_w * &sf;
-* onart_m;					onart_m = s_onart_m * &sf;
-* onart  ;					onart   = s_onart   * &sf;
+* n_onart_w;					n_onart_w = s_onart_w * &sf;
+* n_onart_m;					n_onart_m = s_onart_m * &sf;
+* n_onart  ;					n_onart   = s_onart   * &sf;
 
 * p_efa;						if s_onart > 0 then p_efa = s_efa / s_onart ;
 * p_taz;						if s_onart > 0 then p_taz = s_taz / s_onart ;
@@ -694,6 +694,12 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_ever_tested_msm; 			p_ever_tested_msm = s_ever_tested_msm / s_msm;
 * p_tested_this_period_msm;		p_tested_this_period_msm = s_tested_msm / (s_msm - s_diag_msm) ;
 * p_msm_infected_from_msm;		p_msm_infected_from_msm = s_infected_from_msm / s_hiv_msm ;
+
+
+* PWID;
+
+* n_pwid;						n_pwid = s_pwid * &sf ;
+
 
 
 * blood pressure;
@@ -887,7 +893,7 @@ prevalence1549m prevalence1549w prevalence1549
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 		
 prevalence5054w prevalence5054m prevalence5559w prevalence5559m prevalence6064w prevalence6064m prevalence65plw prevalence65plm
-prevalence1524w prevalence1524m  prevalence_sw  r_prev_sex_1549  prevalence_hiv_preg  prevalence_pwid
+prevalence1524w prevalence1524m  prevalence_sw  r_prev_sex_1549  prevalence_hiv_preg  prevalence_pwid   n_pwid
 r_prev_1519w_4549w r_prev_2024w_4549w r_prev_2529w_4549w r_prev_3034w_4549w r_prev_3539w_4549w 	
 r_prev_4044w_4549w  r_prev_5054w_4549w r_prev_5559w_4549w r_prev_6064w_4549w r_prev_65plw_4549w 
 r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_prev_3539m_4549w r_prev_4044m_4549w r_prev_4549m_4549w
@@ -1014,7 +1020,7 @@ prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep   n_newp_ge1_w
 
 p_onart_m_age50pl p_onart_w_age50pl  onart
 
-prevalence_hiv_preg p_onart_w p_onart_m onart_w onart_m  p_diag_w p_diag_m p_onart_vl1000 
+prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m n_onart  p_diag_w p_diag_m p_onart_vl1000 
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 test_prop_positive
 
@@ -1031,9 +1037,9 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_k; set y;  
+data a.l_base_kenya_l; set y;  
 
-data y; set a.l_base_kenya_k; 
+data y; set a.l_base_kenya_l; 
 
 /*
 if cald = 2017;
@@ -1113,7 +1119,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prevalence2529m);    %var(v=prevalence3034w);    %var(v=prevalence3034m);  	%var(v=prevalence3539w);  	  %var(v=prevalence3539m);  	  
 %var(v=prevalence4044w);  	 %var(v=prevalence4044m);  	  %var(v=prevalence4549w);  	  %var(v=prevalence4549m);  
 %var(v=prevalence_vg1000); %var(v=incidence1549);  %var(v=incidence1564m); %var(v=incidence1564w); 
-%var(v=prevalence1524w); %var(v=prevalence1524m);   %var(v=prevalence_sw);  %var(v=prevalence_pwid);
+%var(v=prevalence1524w); %var(v=prevalence1524m);   %var(v=prevalence_sw);  %var(v=prevalence_pwid);  %var(v=n_pwid);
 %var(v=prevalence5054w); %var(v=prevalence5054m); %var(v=prevalence5559w); %var(v=prevalence5559m); %var(v=prevalence6064w); %var(v=prevalence6064m); 
 %var(v=prevalence65plw); %var(v=prevalence65plm); %var(v=r_prev_sex_1549); %var(v=prevalence_hiv_preg);
 %var(v=r_prev_1519w_4549w );  %var(v=r_prev_2024w_4549w  );  %var(v=r_prev_2529w_4549w );  %var(v=r_prev_3034w_4549w  ); 
@@ -1213,7 +1219,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_alive_msm);	 %var(v=n_alive1564_msm); %var(v=incidence1549msm); %var(v=incidence1564msm);  %var(v=prevalence1549_msm);	%var(v=prevalence1564_msm);  
 %var(v=p_elig_prep_any_msm_1564); %var(v=p_onprep_msm);  %var(v=p_onart_msm);   %var(v=prevalence_vg1000_msm);	 %var(v=p_diag_msm);	 
 %var(v=p_onart_diag_msm);  %var(v=p_vl1000_art_gt6m_msm);	 %var(v=p_ever_tested_msm); 	%var(v=p_tested_this_period_msm);  %var(v=p_msm_infected_from_msm)
-%var(v=incidence1564); %var(v=n_alive1564_msm);
+%var(v=incidence1564); 
 
 
 
@@ -1230,7 +1236,7 @@ prevalence1549m  prevalence1549w  prevalence1549  prevalence1519w  prevalence151
 prevalence2529w  prevalence2529m  prevalence3034w prevalence3034m  prevalence3539w  prevalence3539m  	  
 prevalence4044w  prevalence4044m  prevalence4549w prevalence4549m  
 prevalence5054w prevalence5054m prevalence5559w prevalence5559m prevalence6064w prevalence6064m prevalence65plw prevalence65plm
-prevalence_vg1000  incidence1549  prevalence1524w prevalence1524m   prevalence_sw  r_prev_sex_1549 prevalence_hiv_preg prevalence_pwid
+prevalence_vg1000  incidence1549  prevalence1524w prevalence1524m   prevalence_sw  r_prev_sex_1549 prevalence_hiv_preg prevalence_pwid  n_pwid
 r_prev_1519w_4549w r_prev_2024w_4549w r_prev_2529w_4549w r_prev_3034w_4549w r_prev_3539w_4549w 	
 r_prev_4044w_4549w  r_prev_5054w_4549w r_prev_5559w_4549w r_prev_6064w_4549w r_prev_65plw_4549w 
 r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_prev_3539m_4549w r_prev_4044m_4549w r_prev_4549m_4549w
@@ -1306,7 +1312,7 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
 n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_diagnosed  n_hiv
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564 p_onprep_msm				
  p_onart_msm  prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
- p_tested_this_period_msm p_msm_infected_from_msm n_alive1564_msm
+ p_tested_this_period_msm p_msm_infected_from_msm 
 ;
 
 proc sort; by run; run;
@@ -1391,7 +1397,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_kenya_k; 
+  data a.w_base_kenya_l; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
@@ -1400,7 +1406,7 @@ proc sort; by run;run;
 
 ods html;
 
-proc means data=a.w_base_kenya_k n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_l n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_98	p_mcirc_98	prevalence1549m_98 prevalence1549w_98
 incidence1549w_98  incidence1549m_98   incidence_sw_98  	p_diag_98 	p_diag_m_98   p_diag_w_98	p_ai_no_arv_c_nnm_98   
 prop_w_1549_sw_98  mtct_prop_98  prop_1564_onprep_98
@@ -1427,7 +1433,7 @@ r_prev_6064m_4549w_98 r_prev_65plm_4549w_98  p_age1549_hivneg_98 p_age1549_hiv_9
 ;
 run;
 
-proc means data=a.w_base_kenya_k n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_l n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_05	p_mcirc_05		prevalence1549m_05 prevalence1549w_05
 incidence1549w_05  incidence1549m_05   incidence_sw_05  	p_diag_05 	p_diag_m_05   p_diag_w_05	p_ai_no_arv_c_nnm_05   
 prop_w_1549_sw_05  mtct_prop_05  prop_1564_onprep_05
@@ -1455,7 +1461,7 @@ n_death_2059_w_05 n_death_hivrel_05
 ;
 run;
 
-proc means data=a.w_base_kenya_k n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_l n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_15	p_mcirc_15	prevalence1549m_15 prevalence1549w_15
 incidence1549w_15  incidence1549m_15   incidence_sw_15  	p_diag_15 	p_diag_m_15   p_diag_w_15	p_ai_no_arv_c_nnm_15   
 prop_w_1549_sw_15  mtct_prop_15  prop_1564_onprep_15
@@ -1485,7 +1491,7 @@ run;
 
 
 
-proc means data=a.w_base_kenya_k n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_l n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549_21	prevalence1549m_21 prevalence1549w_21  prevalence_hiv_preg_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
@@ -1534,7 +1540,7 @@ run;
 
 
 
-proc means data=a.w_base_kenya_k n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_l n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1549m_40 	prevalence1549w_40
 incidence1549w_40  incidence1549m_40   incidence_sw_40  	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
 prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
@@ -1560,7 +1566,7 @@ r_prev_6064m_4549w_40 r_prev_65plm_4549w_40 p_age1549_hivneg_40 p_age1549_hiv_40
 ;
 run;
 
-proc means data=a.w_base_kenya_k n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_l n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_70	p_mcirc_70		prevalence1549m_70 prevalence1549w_70
 incidence1549w_70  incidence1549m_70   incidence_sw_70  	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
 prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
@@ -1590,7 +1596,7 @@ ods html close;
 
 
 
-data q1; set a.w_base_kenya_k;
+data q1; set a.w_base_kenya_l;
 
 /*
 if n_onart_15 < 700000 and r_prev_4044w_4549w_17 > 0.9  and 0.08 <= prevalence1549_17 < 0.12 and 0.06 <= prevalence1549_98 < 0.19
@@ -1634,7 +1640,7 @@ run;
 
 
 
-data a.l_base_keep_kenya_k; merge a.l_base_kenya_k q1 ; by run;
+data a.l_base_keep_kenya_l; merge a.l_base_kenya_l q1 ; by run;
 
 if run_keep ne .;
 
@@ -1645,7 +1651,7 @@ run;
 ods html close;
 
 
-proc freq data = a.l_base_keep_kenya_k; tables
+proc freq data = a.l_base_keep_kenya_l; tables
 sf_2022 /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
