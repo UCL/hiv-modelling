@@ -8,48 +8,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_l    ;
-
-
-if run in (
- 129475901
-                                                                                                         228570131
-                                                                                                         250381954
-                                                                                                         373434789
-                                                                                                         388750911
-                                                                                                         434406882
-                                                                                                         444042047
-                                                                                                         460436432
-                                                                                                         465222962
-                                                                                                         518673670
-                                                                                                         523119818
-                                                                                                         599497781
-                                                                                                         633024753
-                                                                                                         700044873
-                                                                                                         709247845
-                                                                                                         755981920
-                                                                                                         764250914
-                                                                                                         766529857
-                                                                                                         767129543
-                                                                                                         812619706
-                                                                                                         813626783
-                                                                                                         823445482
-                                                                                                         836625211
-                                                                                                         839665162
-                                                                                                         845488012
-                                                                                                         861345383
-                                                                                                         873991250
-                                                                                                         879681117
-                                                                                                         890804367
-                                                                                                         893630101
-                                                                                                         905447868
-                                                                                                         938672303
-                                                                                                         960750147
-                                                                                                         984582262
-
-);
-
-
+  set a.l_base_kenya_m    ;
 
 
 p_onart_vl1000_all = .;
@@ -92,7 +51,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  34    ;
+%let nfit =   7    ;
 %let year_end = 2024.00 ;
 run;
 proc sort;by cald option ;run;
