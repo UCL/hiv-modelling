@@ -936,7 +936,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
-  %include "/home/rmjlaph/kenya_parameters_l.sas";
+  %include "/home/rmjlaph/kenya_parameters_m.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
@@ -18885,6 +18885,9 @@ if s_alive1549_m gt 0 then prevalence1549m =  s_hiv1549m / s_alive1549_m;
 if s_alive1549_w gt 0 then prevalence1549w =  s_hiv1549w / s_alive1549_w;
 if prevalence1524m gt 0 then prev_ratio_1524 = prevalence1524w / prevalence1524m ;
 
+scale_factor_2022 = (54000000 * 0.62) / (s_alive_m + s_alive_w); 
+n_onart_2022_for_abort = scale_factor_2022 * s_onart ; 
+
 prevalence2024w = s_hiv2024w  / s_ageg2024w ;
 prevalence2024m = s_hiv2024m  / s_ageg2024m ;
 prevalence2529w = s_hiv2529w  / s_ageg2529w ;
@@ -19636,7 +19639,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549 prevalence1549w prevalence1549m  
+prevalence1549 prevalence1549w prevalence1549m  n_onart_2022_for_abort
 prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
@@ -19706,13 +19709,15 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ** kenya;
 
-if cald = 1990 and (prevalence1549w > 0.10) then do; abort abend; end;
-if cald = 1995 and (prevalence1549w < 0.06) then do; abort abend; end;
+if cald = 1990 and (prevalence1549w > 0.12) then do; abort abend; end;
+if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 if cald = 2010 and (prevalence1549w > 0.12) then do; abort abend; end;
 
-if cald = 1990 and (prevalence1549m > 0.08) then do; abort abend; end;
-if cald = 1995 and (prevalence1549m < 0.02) then do; abort abend; end;
-if cald = 2010 and (prevalence1549m > 0.07) then do; abort abend; end;
+if cald = 1990 and (prevalence1549m > 0.10) then do; abort abend; end;
+if cald = 1995 and (prevalence1549m < 0.01) then do; abort abend; end;
+if cald = 2010 and (prevalence1549m > 0.08) then do; abort abend; end;
+
+if cald = 2022 and (n_onart_2022_for_abort < 900000 or n_onart_2022_for_abort > 1700000) then do; abort abend; end;
 
 
 
@@ -20907,6 +20912,10 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=0);   
 
+libname b '/home/rmjlaph/Scratch/';
+
+data b.kenya_&dataset_id; 
+set r1;
 
 
 

@@ -11,6 +11,46 @@ data b;
   set a.l_base_kenya_l    ;
 
 
+if run in (
+ 129475901
+                                                                                                         228570131
+                                                                                                         250381954
+                                                                                                         373434789
+                                                                                                         388750911
+                                                                                                         434406882
+                                                                                                         444042047
+                                                                                                         460436432
+                                                                                                         465222962
+                                                                                                         518673670
+                                                                                                         523119818
+                                                                                                         599497781
+                                                                                                         633024753
+                                                                                                         700044873
+                                                                                                         709247845
+                                                                                                         755981920
+                                                                                                         764250914
+                                                                                                         766529857
+                                                                                                         767129543
+                                                                                                         812619706
+                                                                                                         813626783
+                                                                                                         823445482
+                                                                                                         836625211
+                                                                                                         839665162
+                                                                                                         845488012
+                                                                                                         861345383
+                                                                                                         873991250
+                                                                                                         879681117
+                                                                                                         890804367
+                                                                                                         893630101
+                                                                                                         905447868
+                                                                                                         938672303
+                                                                                                         960750147
+                                                                                                         984582262
+
+);
+
+
+
 
 p_onart_vl1000_all = .;
 
@@ -52,7 +92,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  65    ;
+%let nfit =  34    ;
 %let year_end = 2024.00 ;
 run;
 proc sort;by cald option ;run;
@@ -1671,7 +1711,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_pwid";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 60000000 by  1000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000 by  100000) valueattrs=(size=10);
 
 label p50_n_pwid_0 = "Option 0 (median) ";
 
@@ -1685,7 +1725,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive1564_msm";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 60000000 by  1000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000 by  100000) valueattrs=(size=10);
 
 label p50_n_alive1564_msm_0 = "Option 0 (median) ";
 

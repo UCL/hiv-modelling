@@ -1069,6 +1069,7 @@ proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run ; where
 proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where 2016.5 <= cald < 2017.5; 
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where 2019.5 <= cald < 2020.5; 
 proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where 2020.5 <= cald < 2021.5; 
+proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run ; where 2021.5 <= cald < 2022.5; 
 proc means  noprint data=y; var &v; output out=y_40 mean= &v._40; by run ; where 2039.5 <= cald < 2040.5; 
 proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where 2069.5 <= cald < 2070.5; 
 
@@ -1096,7 +1097,7 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 
  proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&v._21_71_; var &v._21_71; by run;  
 
-data &v ; merge y_95 y_98 y_99 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 ;  
+data &v ; merge y_95 y_98 y_99 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_22 y_40 y_70 t_21_26 t_21_22 t_21_71 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 
@@ -1404,6 +1405,24 @@ proc sort; by run;run;
   by run;
 
 
+if 900000 <= n_onart_22 <= 1600000 ;
+
+
+proc print noobs;
+var run;
+run;
+
+
+
+
+
+
+
+
+/*
+
+
+
 ods html;
 
 proc means data=a.w_base_kenya_l n p50 p5 p95 mean;
@@ -1502,7 +1521,7 @@ s_alive_21
 rate_dead_hivpos_cause1_21   rate_dead_hivpos_tb_21  rate_dead_hivpos_cause4_21 rate_dead_hivpos_crypm_21 
 rate_dead_hivpos_sbi_21  rate_dead_hivpos_oth_adc_21  rate_dead_hivpos_cause2_21  rate_dead_hivpos_cause3_21  rate_dead_hivpos_cvd_21 
 rate_dead_cvd_21 rate_dead_tb_21  rate_dead_hivneg_cvd_21  rate_dead_hivneg_tb_21  rate_dead_hivneg_cause2_21 rate_dead_hivneg_cause3_21 
-rate_dead_hivneg_cause4_21 rate_dead_hivneg_cause5_21 /*  rate_dead_allage_21  rate_dead_hivneg_anycause_21 rate_dead_hivpos_anycause_21 */
+rate_dead_hivneg_cause4_21 rate_dead_hivneg_cause5_21   rate_dead_allage_21  rate_dead_hivneg_anycause_21 rate_dead_hivpos_anycause_21 
 n_cd4_lt50_21 n_cd4_lt200_21
 p_ahd_re_enter_care_100_21 p_ahd_re_enter_care_200_21
 incidence1524w_21   incidence1524m_21 incidence2534w_21   incidence2534m_21 incidence3544w_21   incidence3544m_21 
@@ -1598,14 +1617,14 @@ ods html close;
 
 data q1; set a.w_base_kenya_l;
 
-/*
+
 if n_onart_15 < 700000 and r_prev_4044w_4549w_17 > 0.9  and 0.08 <= prevalence1549_17 < 0.12 and 0.06 <= prevalence1549_98 < 0.19
 and p_vl1000_20 > 0.75 and incidence1549_20 < 0.50 ;
-*/
+
 
 run_keep = run;
 
-/*
+
 proc freq; tables sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
@@ -1631,7 +1650,7 @@ rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 ; run;
-*/
+
 
 keep run run_keep;
 
@@ -1652,7 +1671,7 @@ ods html close;
 
 
 proc freq data = a.l_base_keep_kenya_l; tables
-sf_2022 /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2022 dataset sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
