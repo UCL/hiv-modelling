@@ -10305,7 +10305,7 @@ if t ge 2 and d lt newmut_tm1 then do;
 
 * len;	if o_len_tm1=1  or o_len=1 or currently_in_prep_len_tail = 1 or (onart=0 and 0.25 <= tss_len <=0.5) then do;
 			eff_pr_res_len = pr_res_len;
-			if onart=0 and 0.25 <= tss_len <=0.5 or currently_in_prep_len_tail = 1 then eff_pr_res_len=eff_pr_res_len*incr_len_res_mono;
+			if onart=0 and 0.25 <= tss_len <=0.5 then eff_pr_res_len=eff_pr_res_len*incr_len_res_mono;
 			ax=rand('uniform'); if ax < eff_pr_res_len then c_ca66m=1;  
 		end;
 
