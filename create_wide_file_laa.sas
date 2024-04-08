@@ -3,25 +3,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_e_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_e_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_laa_d;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_laa_e;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_laa_d; 
+proc sort data=b.k_laa_e; 
 by run cald option;
 run;
 
@@ -31,7 +31,7 @@ run;
 data sf;
 
 
-set b.k_laa_d ;
+set b.k_laa_e ;
 
 
 
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_laa_d sf;
+merge b.k_laa_e sf;
 by run ;
 
 * preparatory code ;
@@ -153,6 +153,8 @@ ddar_cost = s_dcost_dar * &sf * 4 / 1000;
 dtaz_cost = s_dcost_taz * &sf * 4 / 1000;
 defa_cost = s_dcost_efa * &sf * 4 / 1000;
 ddol_cost = s_dcost_dol * &sf * 4 / 1000;
+dcab_cost = s_dcost_cab * &sf * 4 / 1000;
+dlen_cost = s_dcost_len * &sf * 4 / 1000;
 
 if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_prep_oral=. then s_dcost_prep_oral=0;
@@ -207,7 +209,7 @@ dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 * sens analysis;
 
 
-dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
+dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
@@ -1211,9 +1213,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_laa_d_y; set y;  
+data    b.l_laa_e_y; set y;  
 
-data y ; set b.l_laa_d_y; 
+data y ; set b.l_laa_e_y; 
 
   options nomprint;
   option nospool;
@@ -1611,7 +1613,7 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 
 
-  data  b.w_laa_d     ; 
+  data  b.w_laa_e     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1629,13 +1631,14 @@ d_n_iime_50y_2_1 = n_iime_50y_2 -   n_iime_50y_1 ;
   
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
-					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1
+					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 + dcost_drug_level_test_50y_1
 					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1;			
 
 dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
 					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
-					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2
+					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2 + dcost_drug_level_test_50y_2
 					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2;
+
 
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
 
