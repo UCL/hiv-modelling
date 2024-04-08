@@ -674,7 +674,6 @@ run;quit;
 
 
 
-
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of men age 15-49 circumcised";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
