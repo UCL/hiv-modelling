@@ -5,15 +5,17 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data b;
-set a.l_base_CdI1;
+set a.l_base_CdI2;
 
 proc contents;run;
 
 proc sort; by cald run ;run;
+proc freq;table cald;run;
+
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  332    ;
-%let year_end = 2024.00 ;
+%let nfit =  333    ;
+%let year_end = 2029.00 ;
 run;
 proc sort;by cald option ;run;
 
