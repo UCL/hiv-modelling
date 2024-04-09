@@ -1806,6 +1806,27 @@ dcost_prep_inj_50y_1 dcost_prep_inj_50y_2 dcost_prep_inj_50y_3 dcost_prep_inj_50
 ;
 run;
 
+*
+art - art drug
+adc - treating people with who stage 4 conditions
+dcp - dcp visits
+vl - viral load tests
+cd4 - cd4 counts
+vis - visit costs for people with hiv
+non_tb_who3 - treatment for people with who stage 3 conditions apart from tb
+tb - tb treatment
+test - hiv tests
+t_adh_int - adherence intervention
+switchline - switching line of treatment (non-drug costs)
+circ - vmmc
+child_hiv - a notional cost of treating a child with hiv (children not explicitly modelled)
+non_aids_pre_death - costs of treating people for non aids conditions for which risk is raised with hiv
+prep_visit_oral - clinic visits for oral prep
+prep_oral - oral prep drug
+prep_visit_inj - clinic visits for cab prep
+prep_inj - cab prep drug 
+;
+
 
 
 proc means  n mean p5 p95;
