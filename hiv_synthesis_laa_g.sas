@@ -1257,7 +1257,7 @@ cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; cum13=cum12+inc13; 
 
 e=rand('uniform');
-if 0.0 <= e < inc1    then age=-71+rand('uniform')*16;   
+if 0.0 <= e < inc1    then age=-72+rand('uniform')*17;   
 if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
 if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
 if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
@@ -1291,7 +1291,7 @@ end;
 
 age =round(age ,.25);
 
-lowest_age_at_start=-71;
+lowest_age_at_start=-72;
 if caldate1=1984 then lowest_age_at_start=-74;									 
 
 if age  >= lowest_age_at_start;
@@ -21132,6 +21132,12 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=0);
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=341,h=348,j=345,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=341,h=348,j=346,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=341,h=348,j=347,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=341,h=348,j=348,s=0);
+
+
 
 data r1; set a;
 
@@ -21332,6 +21338,10 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=1);
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=341,h=348,j=345,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=341,h=348,j=346,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=341,h=348,j=347,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=341,h=348,j=348,s=1);
 
 
 
