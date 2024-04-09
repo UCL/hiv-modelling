@@ -1775,12 +1775,10 @@ dvis_cost_50y_1 dvis_cost_50y_2 dvis_cost_50y_3 dvis_cost_50y_4
 dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2  dnon_tb_who3_cost_50y_3  dnon_tb_who3_cost_50y_4  		
 dcot_cost_50y_1  dcot_cost_50y_2  dcot_cost_50y_3  dcot_cost_50y_4  
 dtb_cost_50y_1  dtb_cost_50y_2  dtb_cost_50y_3  dtb_cost_50y_4  
-dres_cost_50y_1  dres_cost_50y_2  dres_cost_50y_3  dres_cost_50y_4  
 dtest_cost_50y_1 dtest_cost_50y_2 dtest_cost_50y_3 dtest_cost_50y_4  
 d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2  d_t_adh_int_cost_50y_3  d_t_adh_int_cost_50y_4  
 dswitchline_cost_50y_1  dswitchline_cost_50y_2  dswitchline_cost_50y_3  dswitchline_cost_50y_4  
 dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3  dcost_circ_50y_4  
-dcost_condom_dn_50y_1  dcost_condom_dn_50y_2  dcost_condom_dn_50y_3  dcost_condom_dn_50y_4  
 dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3  dcost_child_hiv_50y_4  
 dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2 dcost_non_aids_pre_death_50y_3 dcost_non_aids_pre_death_50y_4
 dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2  dcost_prep_visit_oral_50y_3  dcost_prep_visit_oral_50y_4  
