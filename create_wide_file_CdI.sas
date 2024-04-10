@@ -4,27 +4,31 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data a;
-set a.cdi_31mar24;
+set a.cdi_03Apr24;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
+data a1;
+set a;
+t_circ=s_birth_circ+s_vmmc;
+proc print;var cald s_birth_circ s_vmmc t_circ s_mcirc;run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 set a;
 
-if cald=2023;
+if cald=2024; 
 s_alive = s_alive_m + s_alive_w ;
 
 
-sf_2023 = (29600000 * 0.58) / s_alive;  
+sf_2024 = (29600000 * 0.58) / s_alive;  
 * https://worldpopulationreview.com/countries/ivory-coast-population
-* 58% of CdI population in 2023 >= age 15 (https://www.unfpa.org/data/world-population/CI);
-keep run sf_2023;
+* 58% of CdI population in 2022 >= age 15 (https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=CI&view=chart);
+keep run sf_2024;
 
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
-%let sf=sf_2023;
+%let sf=sf_2024;
 
 data y; 
 merge a sf;
@@ -232,12 +236,12 @@ s_alive = s_alive_m + s_alive_w ;
 * p_ai_no_arv_c_nnm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_nnm = s_ai_naive_no_pmtct_c_nnm_ / s_ai_naive_no_pmtct_;
 
 * p_newp_ge1;					p_newp_ge1_ = s_newp_ge1 / s_alive1564 ;
-* p_newp_ge1m;					p_newp_ge1m_ = s_m1549_newp_ge1 / s_alive1564_m ;
-* p_newp_ge1w;					p_newp_ge1w_ = s_w1549_newp_ge1 / s_alive1564_w ;
+* p_newp_ge1m;					p_newp_ge1m_ = s_m1549_newp_ge1 / s_alive1549_m ;*check;
+* p_newp_ge1w;					p_newp_ge1w_ = s_w1549_newp_ge1 / s_alive1549_w ;
 
 
 * p_newp_ge5;					p_newp_ge5_ = s_newp_ge5 / s_alive1564 ;
-* gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; *log_gender_r_newp  = log(gender_r_newp);
+* gender_r_newp;				if s_w_newp gt 0 then gender_r_newp = s_m_newp / s_w_newp; *log_gender_r_newp  = log(gender_r_newp);
 * n_tested;						n_tested = s_tested * &sf * 4;
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
@@ -250,8 +254,10 @@ s_alive = s_alive_m + s_alive_w ;
 * n_new_vmmc1549m;				n_new_vmmc1549m = s_new_vmmc1549m * &sf * 4;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
+* prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw = s_sw_1564 / s_alive1564_w ;
 * prop_w_ever_sw;				if s_alive1564_w gt 0 then prop_w_ever_sw = s_ever_sw / s_alive_w ;
-* prop_sw_hiv;					prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
+* prop_sw_hiv;					if s_sw_1564 gt 0 then prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
+* n_sw_1549_;					n_sw_1549_ = s_sw_1549 * &sf;
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -369,11 +375,12 @@ s_alive = s_alive_m + s_alive_w ;
 * prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / ((s_ageg1519w + s_ageg2024w) - s_hiv1524w) ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
 
-keep	cald	run		option
+keep	cald	run		option	inc_cat
 p_w_giv_birth_this_per	mtct_prop		p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_		p_newp_ge1w_		
 n_tested	p_tested_past_year_1549m	p_tested_past_year_1549w	test_prop_positive
-p_mcirc				p_mcirc_1549m		n_new_vmmc1549m 	p_trad_circ			p_vmmc				prop_w_1549_sw		prop_w_ever_sw	
-prop_sw_hiv			prop_w_1524_onprep	prop_1564_onprep	prevalence1549_		prevalence1549m		prevalence1549w	
+p_mcirc				p_mcirc_1549m		n_new_vmmc1549m 	p_trad_circ			p_vmmc				
+prop_w_1549_sw		prop_w_1564_sw		prop_w_ever_sw		prop_sw_hiv			n_sw_1549_	prop_w_1524_onprep	prop_1564_onprep	
+prevalence1549_		prevalence1549m		prevalence1549w	
 prevalence1519w		prevalence1519m		prevalence2024w		prevalence2024m		prevalence2529w		prevalence2529m
 prevalence3034w		prevalence3034m		prevalence3539w		prevalence3539m		prevalence4044w		prevalence4044m
 prevalence4549w		prevalence4549m
@@ -397,7 +404,7 @@ n_prep 				n_prep_ever			p_prep_ever			adh_pattern	;
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI1; 
+data a.l_base_CdI2; 
 set y;  
 run;
 

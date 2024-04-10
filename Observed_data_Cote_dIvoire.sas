@@ -4,7 +4,9 @@
 POPULATION
 ***********************;
 *Source:  https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=CI&view=chart
-	    -->~41% of the population are under 15 so multiply World Population numbers by 59%;
+		  Use exact figures for 15-64 population as given
+	    -->~41% of the population are under 15 in 2022. Multiply World Population numbers by given % for each year;
+		  *For 15+ population, use numbers from https://worldpopulationreview.com/countries/ivory-coast-population;
 		
 if cald=1990 then do;o_pop1564=6.0;o_pop1564m=3.1;o_pop1564w=2.9;o_pop15plus=11.9*0.53;end;
 if cald=1995 then do;o_pop1564=7.4;o_pop1564m=3.8;o_pop1564w=3.6;o_pop15plus=14.3*0.55;end;
@@ -13,18 +15,17 @@ if cald=2005 then do;o_pop1564=9.9;o_pop1564m=5.0;o_pop1564w=4.9;o_pop15plus=19.
 if cald=2010 then do;o_pop1564=11.3;o_pop1564m=5.7;o_pop1564w=5.6;o_pop15plus=21.1*0.56;end;
 if cald=2015 then do;o_pop1564=12.7;o_pop1564m=6.5;o_pop1564w=6.3;o_pop15plus=23.6*0.56;end;
 if cald=2020 then do;o_pop1564=14.9;o_pop1564m=7.5;o_pop1564w=7.3;o_pop15plus=26.8*0.58;end;
-*https://worldpopulationreview.com/countries/ivory-coast-population;
-if cald=2024 then do;o_pop15plus=29.4*0.59;end;
+
+***For future population projections, use https://worldpopulationreview.com/countries/ivory-coast-population;
+
+if cald=2024 then do;o_pop15plus=29.6*0.58;end;*58% comes from 2020 estimates above;
+if cald=2030 then do;o_pop15plus=34.2*0.58;end;
+if cald=2040 then do;o_pop15plus=42.6*0.58;end;
+if cald=2050 then do;o_pop15plus=51.4*0.58;end;
+if cald=2060 then do;o_pop15plus=60.3*0.58;end;
+if cald=2070 then do;o_pop15plus=68.9*0.58;end;
 
 o_pop1564=o_pop1564*1000000;o_pop1564m=o_pop1564m*1000000;o_pop1564w=o_pop1564w*1000000;o_pop15plus=o_pop15plus*1000000;
-
-*Source: https://countrymeters.info/en/Cote_D%27ivoire;
-o_pop15plus_m=o_pop15plus*0.509;
-o_pop15plus_w=o_pop15plus*0.491;
-
-***2024 population = 29m * 0.59 = 17.1m;
-
-
 
 
 ***********************
@@ -80,6 +81,11 @@ if cald=2022 then do;
 	o_prev1549_UNAIDS=0.018; o_prev1549m_UNAIDS=0.011; o_prev1549w_UNAIDS=0.026;
 end;
 
+* Source: https://dhsprogram.com/pubs/pdf/HF14/CotedIvoire_HIV_factsheet_eng.pdf;
+if cald=2005 then do;
+		o_prev1549_dhs=0.047; o_prev1549m_dhs=0.029; o_prev1549w_dhs=0.064;
+end;
+
 
 ***********************
 *HIV INCIDENCE
@@ -119,6 +125,8 @@ end;
 *Source: PHIA https://www.cdc.gov/globalhivtb/what-we-do/phia/cote-divoire-phia-summary-sheet-2020.pdf;
 if cald=2018 then do; 
 	o_diag1564_phia = 0.498; o_diag1564m_phia = 0.404; o_diag1564w_phia = 0.540; 
+	o_diag_all_UNAIDS=0.82;*Source: UNAIDS https://www.unaids.org/en/regionscountries/countries/ctedivoire;
+
 	o_diag_onart1564_phia = 0.920; o_diag_onart1564m_phia = 0.850; o_diag_onart1564w_phia = 0.944; 
 	o_art_vs1564_phia = 0.737; o_art_vs1564m_phia = 0.628; o_art_vs1564w_phia = 0.769; 
 end;
@@ -126,7 +134,8 @@ end;
 * Source: UNAIDS https://www.unaids.org/en/regionscountries/countries/ctedivoire;
 if cald=2022 then do;
 	o_diag1564_UNAIDS = 0.82; 
-	o_onart1564_UNAIDS = 0.72;  *of PLHIV (NOT of those diag);
+	o_n_plhiv15plus_UNAIDS=390000;
+	o_onart15plus_UNAIDS = 0.73; o_onart15plus_m_UNAIDS = 0.61;o_onart15plus_w_UNAIDS = 0.79;  *of PLHIV (NOT of those diag);
 	o_vs1564_UNAIDS = 0.62; 	*of PLHIV (NOT of those on ART);
 end;
 
@@ -165,11 +174,20 @@ if cald=2022 then o_prep_UNAIDS=15773;
 ***********************
 *FSW
 ***********************;
-* Source: UNAIDS https://www.unaids.org/en/regionscountries/countries/ctedivoire;
-*Population;
+
+*Population (just under 1%);
+* Source: UNAIDS https://www.unaids.org/en/regionscountries/countries/ctedivoire - 66,600;
+* Source: https://www.populationpyramid.net/c%C3%B4te-divoire/2022/ for 15-49 female population in 2022
+		  24.5% of total population of 28,000,000 =6,860,000 females aged 15-49
+		  66,600/6,860,000=	0.97%;
+
+
 *Prevalence;
+
+
+
 if cald=2022 then do;
-	o_pop_fsw_UNAIDS=66600;o_p_fsw_UNAIDS=0.0085; *66600(UNAIDS)/7800000=7.8m females aged 15-64 in 2022 according to WorldBank;
+	o_pop_fsw_UNAIDS=66600;o_p_fsw_UNAIDS=0.0097; 
 	o_prev_fsw_UNAIDS=0.048;
 end;
 
