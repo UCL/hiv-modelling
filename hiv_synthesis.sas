@@ -9,7 +9,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000  ; 
-%let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
+%let year_interv = 2023;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -197,7 +197,7 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-* condom_incr_year_i;		condom_incr_year_i = 0; 			* mar19; * initialising condom_incr_year_i - this is set again in year_i variables section;
+* condom_change_year_i;		condom_change_year_i = 0; 			* mar19; * initialising condom_change_year_i - this is set again in year_i variables section;
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.80;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
@@ -211,7 +211,9 @@ newp_seed = 7;
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.975  0.990  0.995  	1	1/0.995  1/0.990  1/0.975, 	0.05  0.05  0.15  0.5  0.15  0.05  0.05);
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  
-* prop_redattr_sbcc;		%sample_uniform(prop_redattr_sbcc,0.1 0.3 0.5);
+* prop_redattr_newp_cmmc;	%sample(prop_redattr_newp_cmmc,0.015 0.05 0.1, 0.25 0.5 0.25);
+* prop_redattr_ep_cmmc;		%sample(prop_redattr_ep_cmmc,0.09 0.33 0.6, 0.25 0.5 0.25);
+
 * eprate;					eprate = 0.1* exp(rand('normal')*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
@@ -635,6 +637,15 @@ end;
 end;
 
 
+*OTHER PROGRAMS;
+* sbcc_program;				sbcc_program = 1;
+* p_reached_sbcc_1524m; 	*%sample(p_reached_sbcc_1524m, 0.005  0.007 0.009, 0.25 0.5 0.25);
+							%sample(p_reached_sbcc_1524m, 0.0125 0.0175 0.0225, 0.25 0.5 0.25);
+* fold_sbcc_agyw;			fold_sbcc_agyw=10;
+* fold_sbcc_2564_;			*fold_sbcc_2564_=0.25;fold_sbcc_2564_=0.1;
+* prob_red_newp_sbcc_prog;	*%sample(prob_red_newp_sbcc_prog, 0.08 0.13 0.19, 0.25 0.5 0.25);
+							 %sample(prob_red_newp_sbcc_prog, 0.24 0.52 0.76, 0.25 0.5 0.25);
+* sbcc_effect_duration;		%sample(sbcc_effect_duration, 1.5 3 5 10 20,0.5 0.25 0.15 0.07 0.03);*The duration is from the date_1st_sbcc_prog_vis;
 
 * CIRCUMCISION;
 
@@ -916,7 +927,6 @@ if inc_cat = 4 then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
 prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 
 
-
 * ===================== ;
 * END OF PARAMETER LIST ;
 * ===================== ;
@@ -1019,7 +1029,8 @@ cost_switch_line_a = 0.020 ;
 cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ;
-sw_program_cost = 0.010 ; * placeholder; *consider varying by intensity;
+sw_program_cost = 0.010 ; * placeholder - per visit; *consider varying by intensity;
+sbcc_program_cost=0.010; * placeholder - per person reached;
 cost_antihyp = 0.0015; * cost per 3 months of anti-hypertensive drug (in $1000) ;
 cost_vis_hypert = 0.0015; * clinic cost per hypertension visit (in $1000);
 
@@ -1799,6 +1810,10 @@ eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
 eff_rate_persist_sti=rate_persist_sti;
 sw_program_visit=0;
 
+* eff SBCC program variables;
+eff_sbcc_program=0;
+sbcc_program_visit=0;
+
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
 
 * ADHERENCE PATTERN;
@@ -2114,6 +2129,7 @@ onart_tm2=onart_tm1;
 sw_tm2=sw_tm1; 
 
 tested_tm1=tested; tested=0;
+tested_sbcc_program_tm1=tested_sbcc_program; tested_sbcc_program=0;
 visit_hypertension_tm1 = visit_hypertension;
 tested_bp_tm1 = tested_bp;
 sbp_m_tm1 = sbp_m;
@@ -2168,13 +2184,13 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
- 	*Option 0 is continuation at current rates;
- 	*Option 1 is essential scenario for Zimbabwe;
+ 	*Option 0 is continuation at current rates - status quo;
+ 	*Option 1 is minimal scenario for Zimbabwe;
 	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;						 *Vale;
 	*Option 10,11,12,13,14 are essential + different prevention strategies;			 *Jenny;
-	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops; *Jenny;
-	*Option 19,20,21,22    are essential + Dapivirine ring   for different sub-pops; *Jenny;
-	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops; *Jenny;
+	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for respectively AGYW(15), FSW(16), SDC(17), PLW(18); *Jenny;
+	*Option 19,20,21,22    are essential + Dapivirine ring   for respectively AGYW(19),..; *Jenny;
+	*Option 23,24,25,26    are essential + Injectable PrEP   for respectively AGYW(23),...; *Jenny;
 	*Option 30,31,32,33,34 are essential + Linkage, management, ART Interv;			 *Andrew;	
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
@@ -2190,9 +2206,16 @@ who may be dead and hence have caldate{t} missing;
 		*Note: at the moment the other testing modalities to be swicthed off are not modelled;
 
 		*Prevention;
-		*Condom promotion and provision: currently not in essential scenario but under discussion;
-		*SBCC: not explicitly modelled, but the switch off is;
-		*condom_incr_year_i=2;    		*Switches off SBCC;
+		*Condom mass media campaign (CMMC): not explicitly modelled, but the switch off is;
+		condom_change_year_i=2;    		*Switches off CMMC;
+		*Social and behavioral change communication (SBCC) programs: 
+		it was decided to combine the following interventions:
+			- SISTA2SISTA: Peer-led AGYW 10-24 (in Synthesis 15-24)
+			- BROTHA2BROTHA: Peer-led ABYM 10-24 (in Synthesis 15-24)
+			- PEER LED: Men and women
+			- DREAMS: ?;
+		*SBCC in not explicitly modelled, but the switch off is;
+		sbcc_program = 0;
 		circ_inc_rate_year_i = 2;		*No VMMC;
 
 		*Prep;
@@ -2240,9 +2263,11 @@ who may be dead and hence have caldate{t} missing;
 	*PREVENTION;
 	if option = 10 then do;*HIV P&T program targeting FSWf;
 	end;
-	if option = 11 then do;*Social and behavioral change communication (SBCC);
+	if option = 11 then do;*Social and behavioral change communication (SBCC) programs;
+		sbcc_program=1;*As in the status quo from year_interv;
 	end;
-	if option = 12 then do;*Increase in Condom use promotion and provision;
+	if option = 12 then do;*Switch on Condom Mass Media Campaign;
+		condom_change_year_i=0;*As in the status quo;
 	end;
 	if option = 13 then do;*General population mens health clinics (for men from the general population);
 	end;
@@ -2733,8 +2758,10 @@ if caldate{t} = &year_interv then do;
 	if mihpsa_params_set_in_options ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
 
 	*increase in condom use;
-	if mihpsa_params_set_in_options ne 1 then condom_incr_year_i = 0; *coded within core (not below options code);
+	if mihpsa_params_set_in_options ne 1 then sbcc_program = 1; *coded within core (not below options code);
 
+	*SBCC;
+	if mihpsa_params_set_in_options ne 1 then condom_change_year_i = 0; *coded within core (not below options code);
 	*population wide tld;
 	pop_wide_tld = 0;
 	pop_wide_tld_year_i = 0;
@@ -2848,7 +2875,6 @@ if sw_program_visit=0 then do; e=rand('uniform');
 	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
 		sw_program_visit=1 ; 
 		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
-
 		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
 		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
 		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
@@ -2925,7 +2951,18 @@ if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_
 	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
 end;
 
-
+*SBCC programs. These are in the general population;
+if caldate_never_dot = &year_interv then eff_sbcc_program=sbcc_program;
+e = rand('uniform');
+if eff_sbcc_program=1 and date_1st_sbcc_prog_vis=. then do;
+	if gender=1 and 15 le age lt 25 and e lt p_reached_sbcc_1524m    			 then date_1st_sbcc_prog_vis=caldate{t};
+	*The multiplication by 10 assumes that this includes DREAMS;
+	if gender=2 and 15 le age lt 25 and e lt p_reached_sbcc_1524m*fold_sbcc_agyw then date_1st_sbcc_prog_vis=caldate{t};
+ 	if              25 le age lt 65 and e lt p_reached_sbcc_1524m*fold_sbcc_2564_ then date_1st_sbcc_prog_vis=caldate{t};
+end;
+*sbcc_program_visit is used to know how many are reached by the SBCC program;
+sbcc_program_visit=0;
+if date_1st_sbcc_prog_vis le caldate{t} lt date_1st_sbcc_prog_vis+1 then sbcc_program_visit=1;
 ***Impact of potential changes in policy after year_i;
 
 * decr_hard_reach_year_i; 
@@ -3460,22 +3497,18 @@ if 2021 < caldate{t}         then rred_rc = rred_rc2021_;
 
 if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc * 1.5;
 *
- condom_incr_year_i = 2 refers to SBCC being switched off,
- SBCC in Zimbabwe was introduced at least in 2011
+ condom_change_year_i = 2 refers to CMMC being switched off,
+ CMMC in Zimbabwe was introduced at least since 2004
  In 2011 rred_rc depending on the sampling varies from 0.031 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
 													   0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
 													to 1.026 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
  In 2021                                          from 0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
 													   0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
 													to 1.321 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975);
-*Proportion in reduction attributable to SBCC: prop_redattr_sbcc;
-*We are using rred_rc2011_ if sbbc was implemented from 2011 (this needs to be cheked),
-and 1 if we assume it was implemented from 1995
-if SBBC implemented before 2000 then it shoudl affect ch_risk_beh_ep.
-We have not modelled SBBC retrospectively and so we have not included its cost;
-if caldate{t} >= &year_interv and condom_incr_year_i = 2 then do;
-*rred_rc =rred_rc2021_+((rred_rc2011_-rred_rc2021_)*prop_redattr_sbcc);
-rred_rc =rred_rc2021_+((1-rred_rc2021_)*prop_redattr_sbcc);
+*Proportion in reduction attributable to CMMC: prop_redattr_newp_cmmc;
+*We have not modelled CMMC retrospectively and so we have not included its cost;
+if caldate{t} >= &year_interv and condom_change_year_i = 2 then do;
+rred_rc =rred_rc2021_+((1-rred_rc2021_)*prop_redattr_newp_cmmc);
 end;
 
 * not * dependent_on_time_step_length ;
@@ -3483,8 +3516,8 @@ ch_risk_beh_ep=1.0;
 if 1995 < caldate{t} <= 2000 then ch_risk_beh_ep = ych_risk_beh_ep**(caldate{t}-1995);
 if        caldate{t} =  2000 then ch_risk_beh_ep2000_ = ych_risk_beh_ep**(2000-1995);
 if        caldate{t} >  2000 then ch_risk_beh_ep = ch_risk_beh_ep2000_;
-if caldate{t} >= &year_interv and condom_incr_year_i = 2 then 
-ch_risk_beh_ep = ch_risk_beh_ep2000_+((1-ch_risk_beh_ep2000_)*prop_redattr_sbcc);
+if caldate{t} >= &year_interv and condom_change_year_i = 2 then 
+ch_risk_beh_ep = ch_risk_beh_ep2000_+((1-ch_risk_beh_ep2000_)*prop_redattr_ep_cmmc);
 
 
 
@@ -4288,12 +4321,19 @@ if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
 	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
 end;
 
-
-
 * Reducing newp by 50% if condom incr =1;
-if caldate{t} = &year_interv and condom_incr_year_i = 1 then do;
+if caldate{t} = &year_interv and condom_change_year_i = 1 then do;
 	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
 end;
+
+* From year_interv onwards reducing newp for people reached by the SBCC program and at risk of HIV, 
+and therefore tested for HIV at date_1st_sbcc_prog_vis for a sampled duration.
+we have agreed that they have the visit and therefopre testing because of SBCC for 1 year but the intrevntion on newp can be longer;
+u=rand('uniform');
+if caldate{t} ge &year_interv and registd ne 1 
+and date_1st_sbcc_prog_vis lt caldate{t} le date_1st_sbcc_prog_vis+sbcc_effect_duration 
+and u lt prob_red_newp_sbcc_prog and newp ge 1 then newp=newp-1; 
+newp=round(newp,1);
 
 
 
@@ -5053,7 +5093,16 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 end;
 
-
+*The SBCC programmes (which consist in a series of sessions) last for one year or more;
+if registd ne 1 and tested ne 1 and caldate{t} ge &year_interv and eff_sbcc_program=1 and 
+date_1st_sbcc_prog_vis le caldate{t} lt date_1st_sbcc_prog_vis+1 and 
+np_lasttest ge 1 then do;
+	if (((gender=1 and 15 le age lt 25) or 25 le age lt 65) and u lt 0.5) or  (gender=2 and 15 le age lt 25) then do;
+		tested_sbcc_program=1; tested=1;
+		dt_last_test=caldate{t}; 
+		np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+	end;
+end;
 
 
 * PREP INITIATION AND CONTINUATION;
@@ -12128,14 +12177,16 @@ cost_circ=0; if new_mcirc=1 then cost_circ=circ_cost_a;
 
 cost_condom_dn=0; if caldate{t} ge 1995 and 15 <= age < 65 then cost_condom_dn=condom_dn_cost;
 
-cost_sw_program=0; if sw_program_visit=1 then cost_sw_program = sw_program_cost;
+cost_sw_program=0;  if sw_program_visit=1 then cost_sw_program = sw_program_cost;
+cost_sbcc_program=0;if date_1st_sbcc_prog_visit=caldate{t} then cost_sbcc_program = sbcc_program_cost;*Cost is per person reached;
+
 
 cost_hypert_vis = 0; if visit_hypertension=1 then cost_hypert_vis = cost_vis_hypert ; 
 cost_hypert_drug = 0; if on_anti_hypertensive ge 1 then cost_hypert_drug = on_anti_hypertensive * cost_antihyp ; 
  
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
 +max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_inj) + max(0, cost_prep_vr )
-+ max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
++ max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program)+ max(0,cost_sbcc_program);
 
 
 cost_onart=0; if onart=1 then cost_onart=max(0,art_cost) + max (0, cd4_cost) + max (0, vl_cost) + max (0, vis_cost)
@@ -12162,7 +12213,7 @@ cost_test_f_non_anc=0; if gender=2 and tested_anc ne 1 then cost_test_f_non_anc=
 
 if dead   =. then do; cost=0; cost_onart=0; art_cost=0;adc_cost=0;cd4_cost=0;vl_cost=0;vis_cost=0;non_tb_who3_cost=0;cot_cost=0;tb_cost=0;
 res_cost=0;t_adh_int_cost =0; cost_test=0; cost_prep_oral=0; cost_prep_inj =0; cost_prep_vr = 0;
- cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0;
+ cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0;cost_sbcc_program=0;
  cost_prep_visit=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0; cost_prep_visit_vr=0;cost_avail_self_test=0;end;
 
 * this below is cost of care of hiv infected child and should hold even after mothers death - estimate $30 per 3 months for total care incl art;
@@ -14196,6 +14247,15 @@ if sw=1 then sti_sw=sti;
 vl1000_art_incintcun_sw=.;   if sw=1      then vl1000_art_incintcun_sw    = vl1000_art_iicu;
 
 
+sbcc_program_visit_1524m=0;if gender=1 and 15 le age lt 25 and sbcc_program_visit=1 then sbcc_program_visit_1524m=1;
+sbcc_program_visit_1524w=0;if gender=2 and 15 le age lt 25 and sbcc_program_visit=1 then sbcc_program_visit_1524w=1;
+sbcc_program_visit_2564_=0;if              25 le age lt 65 and sbcc_program_visit=1 then sbcc_program_visit_2564_=1;
+tested_sbcc_program_1524m=0;if gender=1 and 15 le age lt 25 and tested_sbcc_program=1 then tested_sbcc_program_1524m=1;
+tested_sbcc_program_1524w=0;if gender=2 and 15 le age lt 25 and tested_sbcc_program=1 then tested_sbcc_program_1524w=1;
+tested_sbcc_program_2564_=0;if              25 le age lt 65 and tested_sbcc_program=1 then tested_sbcc_program_2564_=1;
+diag_this_period_sbcc=0;if date1pos = caldate&j > . and tested_sbcc_program=1 then diag_this_period_sbcc=1;
+
+
 *** On ART, VL >1000;
 onart_vlg1000=0; if onart=1 and vl1000=0 then onart_vlg1000=1;
 *** On ART for >6m, VL (and measured vl) EVER >1000;
@@ -15328,6 +15388,7 @@ _dpi_cost=pi_cost*discount;
 _dcost_circ = cost_circ*discount;
 _dcost_condom_dn = cost_condom_dn*discount;
 _dcost_sw_program = cost_sw_program*discount;
+_dcost_sbcc_program = cost_sbcc_program*discount;
 _dcost_switch_line = cost_switch_line*discount;
 _dcost_child_hiv = cost_child_hiv*discount;
 _dcost_child_hiv_mo_art = cost_child_hiv_mo_art*discount;
@@ -17353,7 +17414,11 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_totdur_eversw_10to19 + totdur_eversw_10to19;  
 	s_act_dur_sw + act_dur_sw;  s_tot_dur_sw + tot_dur_sw;
 
-	s_sw_program_visit + sw_program_visit ;
+	s_sw_program_visit + sw_program_visit ;s_sbcc_program_visit + sbcc_program_visit ; s_tested_sbcc_program + tested_sbcc_program;
+	s_sbcc_program_visit_1524m + sbcc_program_visit_1524m; s_sbcc_program_visit_1524w + sbcc_program_visit_1524w;
+	s_sbcc_program_visit_2564_ + sbcc_program_visit_2564_; s_tested_sbcc_program_1524m + tested_sbcc_program_1524m;
+	s_tested_sbcc_program_1524w + tested_sbcc_program_1524w; s_tested_sbcc_program_2564_ + tested_sbcc_program_2564_;
+	s_diag_this_period_sbcc + diag_this_period_sbcc;
 	s_diag_sw_noprog + diag_sw_noprog; 	s_diag_sw_inprog + diag_sw_inprog;
 	s_onart_sw_noprog + onart_sw_noprog; s_onart_sw_inprog + onart_sw_inprog;
 	s_vl1000_art_gt6m_iicu_sw_noprog + vl1000_art_gt6m_iicu_sw_noprog; s_vl1000_art_gt6m_iicu_sw_inprog + vl1000_art_gt6m_iicu_sw_inprog;
@@ -17556,7 +17621,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 																											  
 	s_full_vis_cost + full_vis_cost; s_adc_cost + adc_cost; s_non_tb_who3_cost + non_tb_who3_cost; s_cot_cost + cot_cost;  
 	s_tb_cost + tb_cost;  s_cost_test + cost_test; s_res_cost + res_cost;  s_cost_circ + cost_circ;  s_cost_condom_dn + cost_condom_dn; 
-	s_cost_sw_program + cost_sw_program;  s_t_adh_int_cost + t_adh_int_cost; s_cost_test_m + cost_test_m; 
+	s_cost_sw_program + cost_sw_program; s_cost_sbcc_program + cost_sbcc_program;  s_t_adh_int_cost + t_adh_int_cost; s_cost_test_m + cost_test_m; 
 	s_cost_test_f + cost_test_f; s_cost_prep + cost_prep; s_cost_prep_visit + cost_prep_visit; s_cost_avail_self_test + cost_avail_self_test ; 
 	s_cost_prep_visit_oral + cost_prep_visit_oral; 
 	s_cost_prep_visit_inj + cost_prep_visit_inj; s_cost_prep_visit_vr + cost_prep_visit_vr; 	s_cost_prep_ac_adh + cost_prep_ac_adh; 
@@ -17573,7 +17638,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
 	s_dfull_vis_cost + _dfull_vis_cost ;  s_dadc_cost + _dadc_cost ;  s_dnon_tb_who3_cost + _dnon_tb_who3_cost ; s_dcot_cost + _dcot_cost ; 
 	s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;  s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + _dcost_condom_dn ; 
-	s_dcost_sw_program + _dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + _dtest_cost_type1;
+	s_dcost_sw_program + _dcost_sw_program ; s_dcost_sbcc_program + _dcost_sbcc_program ; s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + _dtest_cost_type1;
 	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep_oral + _dcost_prep_oral ; s_dcost_prep_inj + _dcost_prep_inj ; s_dcost_prep_vr + _dcost_prep_vr ; 
 	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_avail_self_test + _dcost_avail_self_test;
 	s_dcost_prep_visit_inj + _dcost_prep_visit_inj; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
@@ -18908,7 +18973,7 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 /*costs and dalys (default to age 80) */
 s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
 s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
-s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_visit s_cost_avail_self_test
+s_cost_sw_program  			s_cost_sbcc_program  	  s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_visit s_cost_avail_self_test
 s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
@@ -18918,7 +18983,7 @@ s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost
 
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
-s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj  
+s_dcost_sw_program      	s_dcost_sbcc_program 	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj  
 s_dcost_prep_vr  s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr s_dcost_avail_self_test
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
@@ -18984,7 +19049,7 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
-s_sw_program_visit
+s_sw_program_visit s_sbcc_program_visit s_tested_sbcc_program
 
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
@@ -19079,7 +19144,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 /*parameters sampled*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
-eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
+eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_newp_cmmc prop_redattr_ep_cmmc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
@@ -19095,8 +19160,8 @@ prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
-sw_program  sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-nnrti_res_no_effect  sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
+sw_program sbcc_program sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program p_reached_sbcc_1524m fold_sbcc_agyw
+nnrti_res_no_effect  sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp red_newp_sbcc_prog sbcc_effect_duration
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
@@ -19129,7 +19194,7 @@ discount
 
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
-condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
+condom_change_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
 decr_prob_loss_at_diag_year_i 	 absence_cd4_year_i  absence_vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
 incr_pr_switch_line_year_i    	 incr_adh_prep_oral_yr_i  poc_vl_monitoring_i 
@@ -19887,7 +19952,7 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 /*costs and dalys (default to age 80) */
 s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
 s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
-s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_visit   s_cost_avail_self_test
+s_cost_sw_program  			s_cost_sbcc_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_visit   s_cost_avail_self_test
 s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr 
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
@@ -19898,7 +19963,7 @@ s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost
 				   
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
-s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj  s_dcost_prep_vr 
+s_dcost_sw_program      	s_dcost_sbcc_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj  s_dcost_prep_vr 
 s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr s_dcost_avail_self_test
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
@@ -19962,7 +20027,9 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw s_tot_dur_sw
 
-s_sw_program_visit
+s_sw_program_visit	s_sbcc_program_visit s_tested_sbcc_program
+s_sbcc_program_visit_1524m  s_sbcc_program_visit_1524w 	s_sbcc_program_visit_2564_
+s_tested_sbcc_program_1524m s_tested_sbcc_program_1524w s_tested_sbcc_program_2564_ s_diag_this_period_sbcc
 
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
@@ -20358,11 +20425,21 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+
+data a.sa_end2022_&dataset_id ;  set r1 ;run;
+/*
+data a ;  set r1 ;
+
+data r1 ; set a ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);		* end of 2028 (core), end of 2023 (Zim and SA) JAS Oct23;
 
+
+
+*/  
 
 
 * ts1m:  need more update statements ;
@@ -20844,7 +20921,7 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 /*costs and dalys (default to age 80) */
 s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
 s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
-s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_visit   s_cost_avail_self_test
+s_cost_sw_program  			s_cost_sbcc_program  	s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_visit   s_cost_avail_self_test
 s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr 
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
@@ -20854,7 +20931,7 @@ s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost
 
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
-s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj   
+s_dcost_sw_program      	s_dcost_sbcc_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj   
  s_dcost_prep_vr    
 s_dcost_prep_visit  s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr  s_dcost_avail_self_test
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
@@ -20920,8 +20997,9 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
-s_sw_program_visit
-
+s_sw_program_visit s_sbcc_program_visit s_tested_sbcc_program
+s_sbcc_program_visit_1524m  s_sbcc_program_visit_1524w 	s_sbcc_program_visit_2564_
+s_tested_sbcc_program_1524m s_tested_sbcc_program_1524w s_tested_sbcc_program_2564_ s_diag_this_period_sbcc
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
@@ -21016,7 +21094,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 /*parameters sampled*/
 
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  rred_initial newp_factor  fold_tr_newp
-eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
+eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_newp_cmmc prop_redattr_ep_cmmc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
@@ -21032,8 +21110,8 @@ prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75  death_r_iris_pop_wide_tld
-sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
+sw_program  sbcc_program  sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program p_reached_sbcc_1524m fold_sbcc_agyw fold_sbcc_2564_
+sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp prob_red_newp_sbcc_prog  sbcc_effect_duration
 effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
@@ -21066,7 +21144,7 @@ prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd
 discount
 
 /*year_i interventions*/
-condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
+condom_change_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
 decr_prob_loss_at_diag_year_i 	   absence_cd4_year_i  absence_vl_year_i	 decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
 incr_pr_switch_line_year_i    	 incr_adh_prep_oral_yr_i poc_vl_monitoring_i 
