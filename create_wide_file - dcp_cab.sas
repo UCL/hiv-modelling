@@ -1581,6 +1581,9 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 data g; set b.w_dcp_cab_t ;
 
+if incidence1549_23 ge 0.1;
+
+
 d_prop_elig_on_prep_20y_2_1 = prop_elig_on_prep_20y_2 - prop_elig_on_prep_20y_1; 
 d_prop_elig_on_prep_20y_3_1 = prop_elig_on_prep_20y_3 - prop_elig_on_prep_20y_1; 
 d_prop_elig_on_prep_20y_4_1 = prop_elig_on_prep_20y_4 - prop_elig_on_prep_20y_1; 
@@ -1600,6 +1603,10 @@ d_p_prep_any_ever_44_4_1 = p_prep_any_ever_44_4 - p_prep_any_ever_44_1 ;
 r_incidence1549_20y_2_1 = incidence1549_20y_2 / incidence1549_20y_1 ;
 r_incidence1549_20y_3_1 = incidence1549_20y_3 / incidence1549_20y_1 ;
 r_incidence1549_20y_4_1 = incidence1549_20y_4 / incidence1549_20y_1 ;
+
+r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1 ;
+r_incidence1549_50y_3_1 = incidence1549_50y_3 / incidence1549_50y_1 ;
+r_incidence1549_50y_4_1 = incidence1549_50y_4 / incidence1549_50y_1 ;
 
 d_ddaly_50y_2_1 = ddaly_50y_2 - ddaly_50y_1;
 d_ddaly_50y_3_1 = ddaly_50y_3 - ddaly_50y_1;
@@ -1669,7 +1676,7 @@ if netdaly_ac_mtct_500_2 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=
 if netdaly_ac_mtct_500_3 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=3;
 if netdaly_ac_mtct_500_4 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=4;
 
-* label 
+label 
 
 prop_ever_tested_1549w_23 = "Proportion of women aged 15-49 who have previously tested for HIV"
 prop_ever_tested_1549m_23 = "Proportion of men aged 15-49 who have previously tested for HIV"
@@ -1735,7 +1742,7 @@ options linesize = 240;
 
 * ods rtf file="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\output_n.rtf";
 
-* ods html;
+ods html;
 title "Characteristics in 2023";
 proc means  data = g    n p50 p5 p95 ;  
 var
@@ -1762,68 +1769,6 @@ p_onart_vl1000_m_23 ;
 run;
 
 
-
-proc means  n mean p5 p95;
-var
-dcost_dcp_visit_50y_1 dcost_dcp_visit_50y_2 dcost_dcp_visit_50y_3 dcost_dcp_visit_50y_4 
-dart_cost_y_50y_1  dart_cost_y_50y_2  dart_cost_y_50y_3  dart_cost_y_50y_4  
-dadc_cost_50y_1  dadc_cost_50y_2  dadc_cost_50y_3  dadc_cost_50y_4  
-dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3  dcd4_cost_50y_4  
-dvl_cost_50y_1  dvl_cost_50y_2  dvl_cost_50y_3  dvl_cost_50y_4  
-dvis_cost_50y_1 dvis_cost_50y_2 dvis_cost_50y_3 dvis_cost_50y_4  
-dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2  dnon_tb_who3_cost_50y_3  dnon_tb_who3_cost_50y_4  		
-dcot_cost_50y_1  dcot_cost_50y_2  dcot_cost_50y_3  dcot_cost_50y_4  
-dtb_cost_50y_1  dtb_cost_50y_2  dtb_cost_50y_3  dtb_cost_50y_4  
-dtest_cost_50y_1 dtest_cost_50y_2 dtest_cost_50y_3 dtest_cost_50y_4  
-d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2  d_t_adh_int_cost_50y_3  d_t_adh_int_cost_50y_4  
-dswitchline_cost_50y_1  dswitchline_cost_50y_2  dswitchline_cost_50y_3  dswitchline_cost_50y_4  
-dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3  dcost_circ_50y_4  
-dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3  dcost_child_hiv_50y_4  
-dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2 dcost_non_aids_pre_death_50y_3 dcost_non_aids_pre_death_50y_4
-dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2  dcost_prep_visit_oral_50y_3  dcost_prep_visit_oral_50y_4  
-dcost_prep_oral_50y_1 dcost_prep_oral_50y_2 dcost_prep_oral_50y_3 dcost_prep_oral_50y_4 
-dcost_prep_visit_inj_50y_1  dcost_prep_visit_inj_50y_2  dcost_prep_visit_inj_50y_3  dcost_prep_visit_inj_50y_4  
-dcost_prep_inj_50y_1 dcost_prep_inj_50y_2 dcost_prep_inj_50y_3 dcost_prep_inj_50y_4 
-;
-run;
-
-*
-art - art drug
-adc - treating people with who stage 4 conditions
-dcp - dcp visits
-vl - viral load tests
-cd4 - cd4 counts
-vis - visit costs for people with hiv
-non_tb_who3 - treatment for people with who stage 3 conditions apart from tb
-tb - tb treatment
-test - hiv tests
-t_adh_int - adherence intervention
-switchline - switching line of treatment (non-drug costs)
-circ - vmmc
-child_hiv - a notional cost of treating a child with hiv (children not explicitly modelled)
-non_aids_pre_death - costs of treating people for non aids conditions for which risk is raised with hiv
-prep_visit_oral - clinic visits for oral prep
-prep_oral - oral prep drug
-prep_visit_inj - clinic visits for cab prep
-prep_inj - cab prep drug 
-;
-
-
-
-proc means  n mean p5 p95;
-  var 
-r_incidence1549_20y_2_1 r_incidence1549_20y_3_1 r_incidence1549_20y_4_1 
-ddaly_50y_1 ddaly_50y_2 ddaly_50y_3 ddaly_50y_4    d_ddaly_50y_2_1  d_ddaly_50y_3_1  d_ddaly_50y_4_1
-dcost_50y_1   dcost_50y_2 dcost_50y_3   dcost_50y_4  d_dcost_50y_2_1 d_dcost_50y_3_1 d_dcost_50y_4_1
-netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 
-;
-run;
-
-proc freq; tables lowest_netdaly; run; 
-
-
-
-* ods html;
 data s; set g;
 %lab(l=prop_ever_tested_1549w); 
 title "Proportion of women aged 15-49 who have previously tested for HIV";
@@ -2115,19 +2060,73 @@ var p_elig_offp_tm1_injprep_20y_1 p_elig_offp_tm1_injprep_20y_2 p_elig_offp_tm1_
 run;
 
 
+title 'Breakdown of costs (in $ millions) by policy option';
+
+proc means data = g  n mean p5 p95;
+var
+dcost_dcp_visit_50y_1 dcost_dcp_visit_50y_2 dcost_dcp_visit_50y_3 dcost_dcp_visit_50y_4 
+dart_cost_y_50y_1  dart_cost_y_50y_2  dart_cost_y_50y_3  dart_cost_y_50y_4  
+dadc_cost_50y_1  dadc_cost_50y_2  dadc_cost_50y_3  dadc_cost_50y_4  
+dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3  dcd4_cost_50y_4  
+dvl_cost_50y_1  dvl_cost_50y_2  dvl_cost_50y_3  dvl_cost_50y_4  
+dvis_cost_50y_1 dvis_cost_50y_2 dvis_cost_50y_3 dvis_cost_50y_4  
+dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2  dnon_tb_who3_cost_50y_3  dnon_tb_who3_cost_50y_4  		
+dcot_cost_50y_1  dcot_cost_50y_2  dcot_cost_50y_3  dcot_cost_50y_4  
+dtb_cost_50y_1  dtb_cost_50y_2  dtb_cost_50y_3  dtb_cost_50y_4  
+dtest_cost_50y_1 dtest_cost_50y_2 dtest_cost_50y_3 dtest_cost_50y_4  
+d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2  d_t_adh_int_cost_50y_3  d_t_adh_int_cost_50y_4  
+dswitchline_cost_50y_1  dswitchline_cost_50y_2  dswitchline_cost_50y_3  dswitchline_cost_50y_4  
+dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3  dcost_circ_50y_4  
+dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3  dcost_child_hiv_50y_4  
+dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2 dcost_non_aids_pre_death_50y_3 dcost_non_aids_pre_death_50y_4
+dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2  dcost_prep_visit_oral_50y_3  dcost_prep_visit_oral_50y_4  
+dcost_prep_oral_50y_1 dcost_prep_oral_50y_2 dcost_prep_oral_50y_3 dcost_prep_oral_50y_4 
+dcost_prep_visit_inj_50y_1  dcost_prep_visit_inj_50y_2  dcost_prep_visit_inj_50y_3  dcost_prep_visit_inj_50y_4  
+dcost_prep_inj_50y_1 dcost_prep_inj_50y_2 dcost_prep_inj_50y_3 dcost_prep_inj_50y_4 
+;
+run;
+
+*
+art - art drug
+adc - treating people with who stage 4 conditions
+dcp - dcp visits
+vl - viral load tests
+cd4 - cd4 counts
+vis - visit costs for people with hiv
+non_tb_who3 - treatment for people with who stage 3 conditions apart from tb
+tb - tb treatment
+test - hiv tests
+t_adh_int - adherence intervention
+switchline - switching line of treatment (non-drug costs)
+circ - vmmc
+child_hiv - a notional cost of treating a child with hiv (children not explicitly modelled)
+non_aids_pre_death - costs of treating people for non aids conditions for which risk is raised with hiv
+prep_visit_oral - clinic visits for oral prep
+prep_oral - oral prep drug
+prep_visit_inj - clinic visits for cab prep
+prep_inj - cab prep drug 
+;
+
+
+
+title 'Effects of policies on incidence, DALYs, cost and cost-effectiveness (net DALYs) over 50 years';
+
+proc means data = g n mean p50 p5 p95;
+  var 
+r_incidence1549_50y_2_1 r_incidence1549_50y_3_1 r_incidence1549_50y_4_1 
+ddaly_50y_1 ddaly_50y_2 ddaly_50y_3 ddaly_50y_4    d_ddaly_50y_2_1  d_ddaly_50y_3_1  d_ddaly_50y_4_1
+dcost_50y_1   dcost_50y_2 dcost_50y_3   dcost_50y_4  d_dcost_50y_2_1 d_dcost_50y_3_1 d_dcost_50y_4_1
+netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 
+;
+run;
+
+
+title 'Which policy is cost-effective for each model run';
+
+proc freq; tables lowest_netdaly; run; 
+
 
 ods html close;
-
-
-
-
-
-
-
-
-
-
-
 
 
 

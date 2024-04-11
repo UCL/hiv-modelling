@@ -7,14 +7,14 @@
 ***Use 'include' statment in analysis program to read the code below in;
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_l_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_t_out\";
 
 proc printto ;
 
 * ods html close;
 
 data b;
-set a.l_dcp_cab_l_y;
+set a.l_dcp_cab_t_y;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -28,14 +28,14 @@ n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
 
-%let single_var = prop_elig_on_prep              ;
+%let single_var = incidence1549_            ;
 
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 1192  ;
+%let nfit = 400    ;
 
 %let year_end = 2070.00 ;
 run;
@@ -383,7 +383,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 
 ods html;
@@ -411,6 +411,8 @@ run;quit;
 
 ods html close;
 
+
+/*
 
 
 ods html;
@@ -665,7 +667,7 @@ run;quit;
 ods html close;
 
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -692,7 +694,7 @@ run;quit;
 * ods html close;
 
 
-/*
+   
 
 
 ods html;
