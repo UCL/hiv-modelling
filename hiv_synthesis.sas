@@ -1368,7 +1368,7 @@ cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; cum13=cum12+inc13; 
 
 e=rand('uniform');
-if 0.0 <= e < inc1    then age=-69+rand('uniform')*14;
+if 0.0 <= e < inc1    then age=-69+rand('uniform')*14;   
 if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
 if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
 if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
@@ -2187,21 +2187,34 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
- 	*Option 0 is continuation at current rates - status quo;
- 	*Option 1 is minimal scenario for Zimbabwe;
-	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;						 *Vale;
-	*Option 10,11,12,13,14 are essential + different prevention strategies;			 *Jenny;
-	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for respectively AGYW(15), FSW(16), SDC(17), PLW(18); *Jenny;
-	*Option 19,20,21,22    are essential + Dapivirine ring   for respectively AGYW(19),..; *Jenny;
-	*Option 23,24,25,26    are essential + Injectable PrEP   for respectively AGYW(23),...; *Jenny;
-	*Option 30,31,32,33,34 are essential + Linkage, management, ART Interv;			 *Andrew;	
-	*Option 40			   is  essential + DREAMS;									 *Vale;
+	*** SOUTH AFRICA MIHPSA OPTIONS ***
+	*Option 0 is continuation at current rates - status quo;
+ 	*Option 99 is minimal scenario for South Africa (used for Phase I);
+		*Including: ANC HIV testing/PMTCT, HIV patient care, universal ART eligibility, including CD4 before ART start and VL monitoring;
+	*Option 1 is SQ + 	Dapivirine ring for adolescent girls and young women 15 to 24 years (AGYW) [Zim O19];
+	*Option 2 is SQ + 	Oral PrEP for pregnant and breastfeeding women [Zim O18];
+	*Option 3 is SQ + 	Injectable PrEP for AGYW [Zim O23];
+	*Option 4 is SQ + 	Injectable PrEP switching 30% from oral PrEP to Injectible long acting PrEP [[Zim O0 + change date_prep_inj_intro];
+	*Option 5 is SQ + 	U = U messaging [new for SA];
+	*Option 6 is SQ + 	Self-test distribution in health facilities [Zim O2];
+	*Option 7 is SQ + 	Self-test distribution to partners of HIV-positive individuals [Zim O4];
+	*Option 8 is SQ + 	Establishment of men’s health clinics [Zim O13];
+	*Option 9 is SQ + 	VMMC for males aged 10-14 [coded but not in Zim MIHPSA];
+	*Option 10 is SQ + 	VMMC for males aged 15+ [Zim O14];
+	*Option 11 is SQ + 	Community-based peer navigators to support ART linkage & retention [new for SA];
+	*Option 12 is SQ + 	Point-of-care viral load testing [coded but not in Zim MIHPSA];
+	*Option 13 is SQ + 	Condom distribution - condom scale up [use CMMC?];
 
 
-	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do;
+	if option in (99 1 2 3 4 5 6 7 8 9 10 11 12 13) then do;
+		mihpsa_params_set_in_options=1;		* Marker to prevent MIHPSA parameters from being overwritten JAS Oct23;
+	end;
+
+	if option = 99 then do;
+
 	*MINIMAL;
 
-		mihpsa_params_set_in_options=1;		* Marker to prevent MIHPSA parameters from being overwritten JAS Oct23;
+		* !!! CHECK WHICH INTERVENTIONS TO SCALE BACK !!! - JAS Apr24;
 
 		*Testing;
 		incr_test_year_i = 4;			*No testing in the general population;
@@ -2249,196 +2262,86 @@ who may be dead and hence have caldate{t} missing;
 		*DREAMS: ok to assume that is has not been included so far?;
 	end;
  
-	*TESTING;
-	if option = 2 then do; *Self-test kits distributed (Primary distribution);
-	end;
-	if option = 3  then do; *Self-test kits distributed (Secondary distribution, excluding for partners) [S2];
-	end;
-	if option = 4 then do; *Self-test kits distributed (Secondary distribution, for sexual partners) [S3];
-	end;
-	if option = 5 then do; *Clients tested for HIV at facility, excluding ANC & PD, infant testing, contacts testing for HIV at the facility and testing of FSW ;
-	end;
-	if option = 6 then do; *Contacts tested for HIV at the facility [B11];
-	end;
-	if option = 7 then do; *Testing program for FSW;
-	end;
-
-	*PREVENTION;
-	if option = 10 then do;*HIV P&T program targeting FSWf;
-	end;
-	if option = 11 then do;*Social and behavioral change communication (SBCC) programs;
-		sbcc_program=1;*As in the status quo from year_interv;
-	end;
-	if option = 12 then do;*Switch on Condom Mass Media Campaign;
-		condom_change_year_i=0;*As in the status quo;
-	end;
-	if option = 13 then do;*General population mens health clinics (for men from the general population);
-	end;
-	if option = 14 then do;*VMMC in 15-49 years old;
-	end;
-
-	*PrEP interventions;	*JAS Apr2023 and Oct23;
-	*option 15: Oral TDF/FTC PrEP for AGYW;	
-	*option 16: Oral TDF/FTC PrEP for FSW;	
-	*option 17: Oral TDF/FTC PrEP for sero-discordant couples (SDC);	
-	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women (PLW);	
-	*option 19: Dapivirine ring for AGYW;	
-	*option 20: Dapivirine ring for FSW;	
-	*option 21: Dapivirine ring for sero-discordant couples (SDC);	
-	*option 22: Dapivirine ring for pregnant and breastfeeding women (PLW);	
-	*option 23: Injectable PrEP for AGYW;	
-	*option 24: Injectable PrEP for FSW;	
-	*option 25: Injectable PrEP for Sero-discordant couples (SDC);	
-	*option 26: Injectable PrEP for pregnant and breastfeeding women (PLW);
-
-	if option in (15 19 23) then prep_any_strategy=3;		* All PrEP options for AGYW;
-	if option in (16 20 24) then prep_any_strategy=2;		* All PrEP options for FSW;
-	if option in (17 21 25) then prep_any_strategy=15;		* All PrEP options for SDC;
-	if option in (18 22 26) then prep_any_strategy=16;		* All PrEP options for PLW;
-
-	* All oral PrEP options;
-	if option in (15 16 17 18) then do;
-		date_prep_oral_intro=&year_interv;
-		if caldate{t}=&year_interv then do;
-			pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;		* From Vales code, this is to match oral PrEP uptake to Zim target MIHPSA JAS Jul23;
-		end;
-	end;
-	* All vaginal ring PrEP options;
-	if option in (19 20 21 22) then do;
+	* Option 1 is SQ +	Dapivirine ring for adolescent girls and young women 15 to 24 years (AGYW) [Zim O19];
+	if option = 1 then do; 
+		prep_any_strategy=3;
 		date_prep_vr_intro=&year_interv;
 		if caldate{t}=&year_interv then do;
 			pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3;			* MIHPSA: can adjust this to match vr PrEP uptake to oral PrEP target JAS Jul23;
 		end;
+		eff_rate_test_startprep_any=0.4;
+		eff_prob_prep_vr_b=0.9;
+		eff_rate_choose_stop_prep_vr=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
 	end;
-	* All injectable PrEP options;
-	if option in (23 24 25 26) then do;
+
+	*Option 2 is SQ + 	Oral PrEP for pregnant and breastfeeding women [Zim O18];
+	if option = 2 then do;
+		prep_any_strategy=16;
+		date_prep_oral_intro=&year_interv;
+		if caldate{t}=&year_interv then do;
+			pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;		* From Vales code, this is to match oral PrEP uptake to Zim target MIHPSA JAS Jul23;
+		end;
+		eff_rate_test_startprep_any=0.2;
+		eff_prob_prep_oral_b=0.9;
+		eff_rate_choose_stop_prep_oral=0.01;
+		eff_prob_prep_any_restart_choice=0.5;	
+	end;
+
+	*Option 3 is SQ + 	Injectable PrEP for AGYW [Zim O23];
+	if option = 3 then do;
+		prep_any_strategy=3
 		date_prep_inj_intro=&year_interv;
 		if caldate{t}=&year_interv then do;
 			pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match inj PrEP uptake to oral PrEP target JAS Jul23;
 		end;
-	end;
-	
-	* Oral PrEP; 	
-	*option 15: Oral TDF/FTC PrEP for AGYW;
-	if option = 15 then do;
-		*Following values need to change;
-		eff_rate_test_startprep_any=0.4;
-		eff_prob_prep_oral_b=0.9;
-		eff_rate_choose_stop_prep_oral=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
-	end;
-
-	*option 16: Oral TDF/FTC PrEP for FSW;
-	if option = 16 then do;	
-		eff_rate_test_startprep_any=0.4;
-		eff_prob_prep_oral_b=0.4;
-		eff_rate_choose_stop_prep_oral=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
-	end;
-
-	*option 17: Oral TDF/FTC PrEP for sero-discordant couples (SDC);
-	if option = 17 then do;
-		eff_rate_test_startprep_any=0.4;
-		eff_prob_prep_oral_b=0.4;
-		eff_rate_choose_stop_prep_oral=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
-	end;
-
-	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women (PLW);
-	if option = 18 then do;
-		eff_rate_test_startprep_any=0.2;
-		eff_prob_prep_oral_b=0.9;
-		eff_rate_choose_stop_prep_oral=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
-	end;
-
-	* Dapivirine ring; 
-	*option 19: Dapivirine ring for AGYW;
-	if option = 19 then do;
-		eff_rate_test_startprep_any=0.4;
-		eff_prob_prep_vr_b=0.9;
-		eff_rate_choose_stop_prep_vr=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
-	end;
-
-	*option 20: Dapivirine ring for FSW;
-	if option = 20 then do;
-		eff_rate_test_startprep_any=0.6;
-		eff_prob_prep_vr_b=0.6;
-		eff_rate_choose_stop_prep_vr=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
-	end;
-
-	*option 21: Dapivirine ring for SDC;
-	if option = 21 then do;
-		eff_rate_test_startprep_any=0.6;
-		eff_prob_prep_vr_b=0.6;
-		eff_rate_choose_stop_prep_vr=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
-	end;
-
-	*option 22: Dapivirine ring for PLW;
-	if option = 22 then do;
-		eff_rate_test_startprep_any=0.2;
-		eff_prob_prep_vr_b=0.9;
-		eff_rate_choose_stop_prep_vr=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
-	end;
-
-	* Injectable PrEP; 
-	*option 23: Injectable PrEP for AGYW;
-	if option = 23 then do;
 		eff_rate_test_startprep_any=0.4;
 		eff_prob_prep_inj_b=0.9;
 		eff_rate_choose_stop_prep_inj=0.01;
 		eff_prob_prep_any_restart_choice=0.5;		
 	end;
 
-	*option 24: Injectable PrEP for FSW;
-	if option = 24 then do;
-		eff_rate_test_startprep_any=0.4;
-		eff_prob_prep_inj_b=0.4;
-		eff_rate_choose_stop_prep_inj=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
+	*Option 4 is SQ + 	Injectable PrEP switching 30% from oral PrEP to Injectible long acting PrEP [[Zim O0 + change date_prep_inj_intro];
+	if option = 4 then do;
+		
 	end;
 
-	*option 25: Injectable PrEP for SDC;
-	if option = 25 then do;
-		eff_rate_test_startprep_any=0.4;
-		eff_prob_prep_inj_b=0.4;
-		eff_rate_choose_stop_prep_inj=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
+	*Option 5 is SQ + 	U = U messaging [new for SA];
+	if option = 5 then do;
 	end;
 
-	*option 26: Injectable PrEP for PLW;
-	if option = 26 then do;
-		eff_rate_test_startprep_any=0.2;
-		eff_prob_prep_inj_b=0.9;
-		eff_rate_choose_stop_prep_inj=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
-	end;	
-
-	
-	*Linkage, management, ART Interv;
-	*The option "CD4 at initiation, re-initiation and treatment failure to identify AHD and cotrimoxazole in people with CD4 less than 350 or to everyone if no CD4 available" has been removed,
-	as cotrimoxazole is part of the essential;
-	if option = 31 then do;*CD4 at initiation and re-initiation + Screening for Cryptococcal disease when CD4 is <200 cells/ml. if positive in blood and negative in cerebral spinal fluid (CSF) they give preventive treatment (fluconozale), if positive on both they are treated;
-		absence_cd4_year_i = 0; crag_cd4_l200=1;											  
-	end;
-	if option = 32 then do;*CD4 at initiation and re-initiation+ TBLAM when CD4 is <200 or clical stage 3 o 4;
-		absence_cd4_year_i = 0; tblam_cd4_l200=1;										  
-	end;
-	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,etc);
-		absence_vl_year_i = 0;					   
-	end;
-	if option = 34 then do; * poc vl monitoring ;
-		absence_vl_year_i = 0; poc_vl_monitoring_i = 1 ;
+	*Option 6 is SQ + 	Self-test distribution in health facilities [Zim O2];
+	if option = 6 then do;
 	end;
 
-	*Structural interventions and social enablers;
-	if option = 40 then do;*DREAMS;
+	*Option 7 is SQ + 	Self-test distribution to partners of HIV-positive individuals [Zim O4];
+	if option = 7 then do;
 	end;
-	
+
+	*Option 8 is SQ + 	Establishment of men’s health clinics [Zim O13];
+	if option = 8 then do;
+	end;
+
+	*Option 9 is SQ + 	VMMC for males aged 10-14 [coded but not in Zim MIHPSA];
+	if option = 9 then do;
+	end;
+
+	*Option 10 is SQ + 	VMMC for males aged 15+ [Zim O14];
+	if option = 10 then do;
+	end;
+
+	*Option 11 is SQ + 	Community-based peer navigators to support ART linkage & retention [new for SA];
+	if option = 11 then do;
+	end;
+
+	*Option 12 is SQ + 	Point-of-care viral load testing [coded but not in Zim MIHPSA];
+	if option = 12 then do;
+	end;
+
+	*Option 13 is SQ + 	Condom distribution - condom scale up [use CMMC?];
+	if option = 13 then do;
+	end;
+
 end;
 
 
@@ -12180,7 +12083,7 @@ cost_circ=0; if new_mcirc=1 then cost_circ=circ_cost_a;
 
 cost_condom_dn=0; if caldate{t} ge 1995 and 15 <= age < 65 then cost_condom_dn=condom_dn_cost;
 
-cost_sw_program=0;  if sw_program_visit=1 then cost_sw_program = sw_program_cost;
+cost_sw_program=0; if sw_program_visit=1 then cost_sw_program = sw_program_cost;
 cost_sbcc_program=0;if date_1st_sbcc_prog_visit=caldate{t} then cost_sbcc_program = sbcc_program_cost;*Cost is per person reached;
 
 
