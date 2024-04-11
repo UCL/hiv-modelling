@@ -1833,15 +1833,68 @@ if dcost_50y_1 = min_dcost_50y then lowest_dcost=1;
 if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
 
 
+label 
+prevalence1549w_24 = "HIV prevalence in women age 15-49 in 2024"
+prevalence1549m_24 = "HIV prevalence in men age 15-49 in 2024"
+incidence1549_24 = "HIV incidence in people age 15-49 (/100 person years) in 2024"  
+p_diag_24 = "Proportion of HIV positive people age 15+ who are diagnosed in 2024"  
+p_onart_diag_24 = "Proportion of diagnosed HIV+ people on ART in 2024"
+p_vl1000_24 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+) in 2024"
+prevalence_vg1000_24 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+) in 2024"
+p_onart_vl1000_w_24 = "Of women on ART, proportion with VL < 1000 in 2024"
+p_onart_vl1000_m_24 = "Of men on ART, proportion with VL < 1000 in 2024"
+p_onart_vl1000_w_1524_24 = "Of women aged 15-24 on ART, proportion with VL < 1000 in 2024"
+p_onart_vl1000_m_1524_24 = "Of men aged 15-24 on ART, proportion with VL < 1000 in 2024"
+p_onart_cd4_l200_24 = "Of people on ART, proportion with CD4 count < 200 in 2024"
+
+p_len_10y_1 = "Of all people on ART, mean proportion on lenacapavir over 10 years under status quo"
+p_len_10y_2 = "Of all people on ART, mean proportion on lenacapavir over 10 years under cab/len for aged 15-24"
+p_cab_10y_1 = "Of all people on ART, mean proportion on cabotegravir over 10 years under status quo"
+p_cab_10y_2 = "Of all people on ART, mean proportion on cabotegravir over 10 years under cab/len for aged 15-24"
+p_len_1524_10y_1 = "Of all 15-24 year olds on ART, mean proportion on lenacapavir over 10 years under status quo"
+p_len_1524_10y_2 = "Of all 15-24 year olds on ART, mean proportion on lenacapavir over 10 years under cab/len for aged 15-24"
+p_cab_1524_10y_1 = "Of all 15-24 year olds on ART, mean proportion on cabotegravir over 10 years under status quo"
+p_cab_1524_10y_2 = "Of all 15-24 year olds on ART, mean proportion on cabotegravir over 10 years under cab/len for aged 15-24"
+p_onart_1524_10y_1 = "Of all 15-24 year olds on ART, mean proportion on ART over 10 years under status quo"
+p_onart_1524_10y_2 = "Of all 15-24 year olds on ART, mean proportion on ART over 10 years under onart/len for aged 15-24"
+p_onart_vl1000_10y_1  = "Of all people on ART, mean proportion with viral load < 1000 over 10 years under status quo" 
+p_onart_vl1000_10y_2  = "Of all people on ART, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24" 
+p_onart_vl1000_m_1524_10y_1  = "Of all 15-24 year old males on ART, mean proportion with viral load < 1000 over 10 years under status quo" 
+p_onart_vl1000_m_1524_10y_2  = "Of all 15-24 year old males on ART, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
+p_onart_vl1000_w_1524_10y_1  = "Of all 15-24 year old females on ART, mean proportion with viral load < 1000 over 10 years under status quo" 
+p_onart_vl1000_w_1524_10y_2  = "Of all 15-24 year old females on ART, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
+p_vl1000_m_1524_10y_1  = "Of all 15-24 year old males, mean proportion with viral load < 1000 over 10 years under status quo" 
+p_vl1000_m_1524_10y_2  = "Of all 15-24 year old males, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
+p_vl1000_w_1524_10y_1  = "Of all 15-24 year old females, mean proportion with viral load < 1000 over 10 years under status quo" 
+p_vl1000_w_1524_10y_2  = "Of all 15-24 year old females, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
+incidence1549_10y_1 = "Mean incidence of HIV in people aged 15-49 over 10 years under status quo"
+incidence1549_10y_2 = "Mean incidence of HIV in people aged 15-49 over 10 years under under onart/len for aged 15-24"  
+incidence1524_10y_1 = "Mean incidence of HIV in people aged 15-24 over 10 years under status quo"  
+incidence1524_10y_2 = "Mean incidence of HIV in people aged 15-24 over 10 years under under onart/len for aged 15-24"  
+n_death_hiv_10y_1 = "Mean mumber of deaths from HIV per year over 10 years under status quo"  
+n_death_hiv_10y_2 = "Mean mumber of deaths from HIV per year over 10 years under onart/len for aged 15-24"  
+n_death_hiv_age_1524_10y_1 = "Mean mumber of deaths from HIV per year in 15-24 year olds over 10 years under status quo"  
+n_death_hiv_age_1524_10y_2 = "Mean mumber of deaths from HIV per year in 15-24 year olds over 10 years under onart/len for aged 15-24"  
+p_r_len_1524_10y_1 = "Mean proportion of 15-24 year olds with capsid codon 66 resistance mutation over 10 years under status quo" 
+p_r_len_1524_10y_2 = "Mean proportion of 15-24 year olds with capsid codon 66 resistance mutation over 10 years under onart/len for aged 15-24" 
+p_r_cab_1524_10y_1 = "Mean proportion of 15-24 year olds with insti resistance mutation over 10 years under status quo" 
+p_r_cab_1524_10y_2 = "Mean proportion of 15-24 year olds with insti resistance mutation over 10 years under onart/len for aged 15-24" 
+mtct_prop_10y_1 = "Mean proportion of births in women with HIV in which the child is infected over 10 years under status quo"  
+mtct_prop_10y_2 = "Mean proportion of births in women with HIV in which the child is infected over 10 years under onart/len for aged 15-24"  
+
+
+;
 
 
 
+ods html;
 
 * table 1;
 
 proc means    n p50  p5  p95 ;  
-var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
+var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24  p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_vl1000_24 prevalence_vg1000_24   p_onart_cd4_l200_24
+p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24 
 ;
 run;
 
@@ -1854,7 +1907,6 @@ p_len_1524_10y_1 p_len_1524_10y_2
 p_cab_1524_10y_1 p_cab_1524_10y_2
 p_onart_1524_10y_1 p_onart_1524_10y_2 
 p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 
-p_vl1000_10y_1 p_vl1000_10y_2 
 p_vl1000_m_1524_10y_1 p_vl1000_m_1524_10y_2 
 p_vl1000_w_1524_10y_1  p_vl1000_w_1524_10y_2  
 p_onart_vl1000_w_1524_10y_1 p_onart_vl1000_w_1524_10y_2 
@@ -1862,12 +1914,10 @@ p_onart_vl1000_m_1524_10y_1 p_onart_vl1000_m_1524_10y_2
 incidence1549_10y_1 incidence1549_10y_2 
 incidence1524_10y_1 incidence1524_10y_2
 n_death_hiv_10y_1 n_death_hiv_10y_2  
-n_death_hiv_age_1524_10y_1 n_death_hiv_age_1524_10y_2 d_n_death_hiv_age_1524_10y_2_1
-p_r_len_10y_1 p_r_len_10y_2
-p_r_cab_10y_1 p_r_cab_10y_2
+n_death_hiv_age_1524_10y_1 
 p_r_len_1524_10y_1 p_r_len_1524_10y_2
 p_r_cab_1524_10y_1 p_r_cab_1524_10y_2
-mtct_prop_10y_1 mtct_prop_10y_2 d_mtct_prop_10y_2_1
+mtct_prop_10y_1 mtct_prop_10y_2 
 ;
 run;
 
@@ -1938,6 +1988,6 @@ netdaly_ac_mtct_500_1 netdaly_ac_mtct_500_2
 ;
 run;
 
-
+ods html close;
 
 
