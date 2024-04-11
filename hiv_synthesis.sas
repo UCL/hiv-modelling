@@ -654,7 +654,15 @@ end;
 end;
 
 
-*OTHER PROGRAMS;
+* OTHER PROGRAMS;
+
+* MENS HEALTH CLINICS - modelled as a percentage of men who attend a men only health clinic. These men have reduced attrition on ART compared to 
+	men who initiated care at other clinics;	*JAS Mar2024;
+* mens_clinics;				mens_clinics = 0;
+* prop_attend_mens_clinic;	prop_attend_mens_clinic = 0.05;		* 5% of men aged 15+ access care via men only health clinics;
+* rel_attr_mens_clinic;		rel_attr_mens_clinic = 0.71;		* HR = 0.71 (Cassidy et al AIDS Behav 2022);
+
+* SBCC PROGRAM;
 * sbcc_program;				sbcc_program = 1;
 * p_reached_sbcc_1524m; 	*%sample(p_reached_sbcc_1524m, 0.005  0.007 0.009, 0.25 0.5 0.25);
 							%sample(p_reached_sbcc_1524m, 0.0125 0.0175 0.0225, 0.25 0.5 0.25);
@@ -663,6 +671,7 @@ end;
 * prob_red_newp_sbcc_prog;	*%sample(prob_red_newp_sbcc_prog, 0.08 0.13 0.19, 0.25 0.5 0.25);
 							 %sample(prob_red_newp_sbcc_prog, 0.24 0.52 0.76, 0.25 0.5 0.25);
 * sbcc_effect_duration;		%sample(sbcc_effect_duration, 1.5 3 5 10 20,0.5 0.25 0.15 0.07 0.03);*The duration is from the date_1st_sbcc_prog_vis;
+
 
 * CIRCUMCISION;
 
@@ -1047,6 +1056,7 @@ cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ;
 sw_program_cost = 0.010 ; * placeholder - per visit; *consider varying by intensity;
+*mens_clinic_cost * placeholder - per person reached; * JAS Mar24;
 sbcc_program_cost=0.010; * placeholder - per person reached;
 cost_antihyp = 0.0015; * cost per 3 months of anti-hypertensive drug (in $1000) ;
 cost_vis_hypert = 0.0015; * clinic cost per hypertension visit (in $1000);
@@ -1990,6 +2000,15 @@ prep_inj_willing = 0;
 prep_vr_willing = 0; 	
 prep_any_willing = 0; 
 
+prep_any = 0;			
+prep_oral = 0;
+prep_inj = 0;
+prep_vr = 0;
+
+tot_yrs_prep_any = 0;	
+tot_yrs_prep_oral = 0;
+tot_yrs_prep_inj = 0;
+tot_yrs_prep_vr = 0;
 
 if cab_time_to_lower_threshold_g = 1 then do; * the tail is conceptualized as the time when levels are above 75% of therapeutic dose;
 	aa=rand('uniform'); 
@@ -2001,21 +2020,16 @@ if cab_time_to_lower_threshold_g = 2 then do;
 	if aa >= 0.90 then cab_time_to_lower_threshold = 1;
 end;
 
-
+* ATTENDANCE AT MENS HEALTH CLINICS;	*JAS Mar24;
+* Assigned to all men regardless of age, men may attend clinics at 15+;
+if gender=1 then do; 
+	attend_mens_clinic = 0;
+	if rand('uniform')<prop_attend_mens_clinic then attend_mens_clinic = 1;
+end;
 
 hiv=0;
 nip=0;
 pcp_p  = 0;
-
-prep_any = 0;			
-prep_oral = 0;
-prep_inj = 0;
-prep_vr = 0;
-
-tot_yrs_prep_any = 0;	
-tot_yrs_prep_oral = 0;
-tot_yrs_prep_inj = 0;
-tot_yrs_prep_vr = 0;
 
 tcur=.;
 dead_tm1=0;
@@ -2304,6 +2318,7 @@ who may be dead and hence have caldate{t} missing;
 
 	*Option 8 is SQ + 	Establishment of men’s health clinics [Zim O13];
 	if option = 8 then do;
+		mens_clinics = 1;				*Mens health clinics switched on;	*JAS Mar24;
 	end;
 
 	*Option 9 is SQ + 	VMMC for males aged 10-14 [coded but not in Zim MIHPSA];
@@ -2312,6 +2327,8 @@ who may be dead and hence have caldate{t} missing;
 
 	*Option 10 is SQ + 	VMMC for males aged 15+ [Zim O14];
 	if option = 10 then do;
+		circ_inc_rate_year_i=0;
+		%sample_uniform(rel_prob_circ_mihpsa, 2 5 10);
 	end;
 
 	*Option 11 is SQ + 	Community-based peer navigators to support ART linkage & retention [new for SA];
@@ -3154,6 +3171,9 @@ if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*o
       prob_circ = 0;test_link_circ_prob=0;
     end;
 end;
+
+if mihpsa_params_set_in_options=1 and t ge 2 and &year_interv <= caldate{t} < (&year_interv+4) and gender=1 and 15 <= age < 50 then prob_circ = prob_circ*rel_prob_circ_mihpsa;
+
 
 ***Zim specific;	*JAS Feb24;
 if country = 'Zimbabwe' then do;
@@ -4747,9 +4767,13 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 
 	if prep_any_strategy=16 then do;	* Pregnant and breastfeeding women (PLW) - new for MIHPSA Zimbabwe; *JAS Apr2023;
 		* Note that there is a component of sexual behaviour in prep eligibility for pregnant and breastfeeding women;
+		r_prep_tm1=r_prep;
+		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
+		else r_prep = rand('Uniform');
       	if gender=2 and (pregnant=1 or breastfeeding=1) and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 		*( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 	* replaced with code to match AGYW above Jan24;
+		* Note changed from 5pc to 1pc of eps who may not have HIV JAS Apr24;
 	end;
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
@@ -8212,6 +8236,7 @@ res_test=.;
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
 		if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then prointer = prointer * 1.5; * mar19;  
+		if mens_clinics=1 and attend_mens_clinic=1 then prointer = prointer * rel_attr_mens_clinic;		*JAS Mar24; 
 		r=rand('uniform');if r < prointer then do; 
 				interrupt_choice   =1; 
 				int_clinic_not_aw=0; f=rand('uniform'); if f < clinic_not_aw_int_frac then int_clinic_not_aw=1;
@@ -12162,7 +12187,7 @@ at time zero is the same as that in later years;
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
 
-CVD death ~ 10% of deaths in > 50s  3% in 15-49
+CVD death ~ 10% of deaths in > 50s  3% in 15-49s
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 
 so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
@@ -16285,6 +16310,8 @@ outc_ten3tc_r_f_1_3=0; if outc_ten3tc_r_f_1 =3 then outc_ten3tc_r_f_1_3=1;outc_t
 outc_ten3tc_r_f_1_5=0; if outc_ten3tc_r_f_1 =5 then outc_ten3tc_r_f_1_5=1;outc_ten3tc_r_f_1_6=0; if outc_ten3tc_r_f_1 = 6 then outc_ten3tc_r_f_1_6=1;
 outc_ten3tc_r_f_1_7=0; if outc_ten3tc_r_f_1 =7 then outc_ten3tc_r_f_1_7=1;
 
+* Number attending mens clinics;
+art_mens_clinic=0; if mens_clinics=1 and age ge 15 and attend_mens_clinic=1 and onart=1 then art_mens_clinic=1;
 
 
 ***Pregnancy outcomes;
@@ -17120,6 +17147,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
 
 	s_onartvisit0 + onartvisit0; s_onartvisit0_vl1000 + onartvisit0_vl1000;
+	s_art_mens_clinic + art_mens_clinic;
 
 
 
@@ -18853,6 +18881,7 @@ s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_in
 s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
+s_art_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
@@ -19082,7 +19111,8 @@ res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_lo
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
+rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b 
+circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50	rel_prob_circ_mihpsa
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
@@ -19094,7 +19124,7 @@ effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_pro
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
-rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger
+prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test  secondary_self_test_targeting 
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy  prop_pep  pep_efficacy 
@@ -19824,6 +19854,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m  s_infected_inm s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
+s_art_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
@@ -20804,6 +20835,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in155m s_infected_in263m  s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0  s_onartvisit0_vl1000
+s_art_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
@@ -21034,7 +21066,8 @@ res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14  circ_inc_15_19  circ_red_20_30  circ_red_30_50
+rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b 
+circ_inc_rate circ_red_10_14  circ_inc_15_19  circ_red_20_30  circ_red_30_50	rel_prob_circ_mihpsa
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
