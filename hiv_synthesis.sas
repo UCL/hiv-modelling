@@ -365,13 +365,30 @@ newp_seed = 7;
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
 
-*% fold_rate_decr_test_future; %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
+* fold_rate_decr_test_future; %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
 
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
 
 * rr_testing_female;		rr_testing_female=1.5;
+
+* prob_self_test_hard_reach;prob_self_test_hard_reach = 0;
+
+* self_test_targeting;		self_test_targeting = test_targeting;
+
+* rate_self_test;			rate_self_test = 0;
+
+* self_test_sens;			self_test_sens = 0.93;          
+
+* prob_pos_self_test_conf;	prob_pos_self_test_conf = 0.8;
+
+* secondary_dist_self_test;		secondary_dist_self_test = 0; 
+* intervention in place to give to sexual partners ;
+
+* secondary_self_test_targeting; secondary_self_test_targeting = 1;
+
+
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
@@ -1794,8 +1811,10 @@ eff_prob_lossdiag_adctb = prob_lossdiag_adctb ;
 eff_prob_return_adc = prob_return_adc ;
 
 * define effective test_targeting;
-
 eff_test_targeting = test_targeting;
+
+* define effective self_test_targeting;
+eff_self_test_targeting = self_test_targeting;
 
 * define eff_prob_birth_circ;
 eff_prob_birth_circ=prob_birth_circ;
@@ -2129,6 +2148,7 @@ onart_tm2=onart_tm1;
 sw_tm2=sw_tm1; 
 
 tested_tm1=tested; tested=0;
+self_tested_tm1=self_tested; self_tested=0;
 tested_sbcc_program_tm1=tested_sbcc_program; tested_sbcc_program=0;
 visit_hypertension_tm1 = visit_hypertension;
 tested_bp_tm1 = tested_bp;
@@ -2210,56 +2230,12 @@ who may be dead and hence have caldate{t} missing;
 		mihpsa_params_set_in_options=1;		* Marker to prevent MIHPSA parameters from being overwritten JAS Oct23;
 	end;
 
+	*Option 99 is Minimal;
 	if option = 99 then do;
 
-	*MINIMAL;
+		* !!! CHECK WHICH INTERVENTIONS TO SCALE BACK FROM PHASE I CODE !!! - JAS Apr24;
+		*Including: ANC HIV testing/PMTCT, HIV patient care, universal ART eligibility, including CD4 before ART start and VL monitoring;
 
-		* !!! CHECK WHICH INTERVENTIONS TO SCALE BACK !!! - JAS Apr24;
-
-		*Testing;
-		incr_test_year_i = 4;			*No testing in the general population;
-		eff_sw_program = 0;		 			*No SW program;
-		*Note: at the moment the other testing modalities to be swicthed off are not modelled;
-
-		*Prevention;
-		*Condom mass media campaign (CMMC): not explicitly modelled, but the switch off is;
-		condom_change_year_i=2;    		*Switches off CMMC;
-		*Social and behavioral change communication (SBCC) programs: 
-		it was decided to combine the following interventions:
-			- SISTA2SISTA: Peer-led AGYW 10-24 (in Synthesis 15-24)
-			- BROTHA2BROTHA: Peer-led ABYM 10-24 (in Synthesis 15-24)
-			- PEER LED: Men and women
-			- DREAMS: ?;
-		*SBCC in not explicitly modelled, but the switch off is;
-		sbcc_program = 0;
-		circ_inc_rate_year_i = 2;		*No VMMC;
-
-		*Prep;
-		prep_any_strategy=0;
-		date_prep_oral_intro=2100;
-		date_prep_inj_intro=2100;
-		date_prep_vr_intro=2100;
-		eff_rate_test_startprep_any=0;
-		eff_prob_prep_oral_b=0;
-		eff_prob_prep_inj_b=0; 
-		eff_prob_prep_vr_b=0;
-		eff_rate_choose_stop_prep_oral=1;
-		eff_rate_choose_stop_prep_inj=1;
-		eff_rate_choose_stop_prep_vr=1;
-		eff_prob_prep_any_restart_choice=0;	
-
-		*Linkage, management, ART Interv;
-		*PCP is part of the essential scenario;
-		absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
-		absence_vl_year_i = 1; 				*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
-		crag_cd4_l200=0;					*Switch off for screening for Cryptococcal disease;
-		tblam_cd4_l200=0;
-		*VL monitoring is switched off as clinical monitoring is assumed;
-		*POC CD4: not modelled yet?;
-		*POC VL: not modelled yet?;
-		poc_vl_monitoring_i=0;
-
-		*DREAMS: ok to assume that is has not been included so far?;
 	end;
  
 	* Option 1 is SQ +	Dapivirine ring for adolescent girls and young women 15 to 24 years (AGYW) [Zim O19];
@@ -2312,10 +2288,18 @@ who may be dead and hence have caldate{t} missing;
 
 	*Option 6 is SQ + 	Self-test distribution in health facilities [Zim O2];
 	if option = 6 then do;
+		prob_self_test_hard_reach = 0.1;
+		self_test_targeting = 1.5;
+		rate_self_test = 0.03;
 	end;
 
 	*Option 7 is SQ + 	Self-test distribution to partners of HIV-positive individuals [Zim O4];
 	if option = 7 then do;
+		* values suggest lower amounts of tests but perhaps better targeted at recent sexual risk and perhaps getting more at hard to reach ;
+		prob_self_test_hard_reach = 0.2;
+		self_test_targeting = 2.0;
+		rate_self_test = 0.01;
+		secondary_dist_self_test = 1; secondary_self_test_targeting = 3;
 	end;
 
 	*Option 8 is SQ + 	Establishment of men’s health clinics [Zim O13];
@@ -4832,6 +4816,36 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		end;
 	end;
 
+
+* SELF-TESTING;
+
+	eff_self_test_targeting = self_test_targeting;
+
+	w = rand('uniform');	
+	if hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach) then do;
+
+		u_self_test=rand('uniform');
+ 		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
+		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
+		if secondary_self_test=1 and eponart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  
+		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
+			self_tested=1; 
+			dt_last_self_test=caldate{t}; 
+		end;
+	end;
+
+	v = rand('uniform'); z = rand('uniform');
+	if self_tested = 1 and hiv = 1 and z < prob_pos_self_test_conf and v < self_test_sens then do; 
+	tested=1; tested_due_to_self_test=1;
+	dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+	end;
+	* note this depends on primary infection lasting 3 months - ts1m ;
+
+
+
+
+
+* TESTING IN RELATION TO PrEP;
 
 	a=rand('uniform');
 
@@ -7855,6 +7869,8 @@ if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is 
 *	if cost_test=0 then cost_test= cost_test_c;
 * end;
 end;
+
+if registd=1 and registd_tm1=0 and self_tested=1 then diagnosed_self_test = 1;
 
 
 * AP 22-7-19;
@@ -14861,6 +14877,8 @@ if 2 <= caldate&j - infection < 3 and registd_tm1 ne 1 then do; year_3_infection
 if 3 <= caldate&j - infection < 4 and registd_tm1 ne 1 then do; year_4_infection=1; if date1pos=caldate&j then year_4_infection_diag=1;  end;
 if 4 <= caldate&j - infection < 5 and registd_tm1 ne 1 then do; year_5_infection=1; if date1pos=caldate&j then year_5_infection_diag=1;  end;
 
+self_tested_m=0; if gender=1 and self_tested=1 then self_tested_m=1;
+self_tested_w=0; if gender=2 and self_tested=1 then self_tested_w=1;
 
 
 ***Pregnancy outcomes;
@@ -16972,6 +16990,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ;  
 	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;  s_test_not_costed + test_not_costed;
 
+	s_self_tested + self_tested;  s_tested_due_to_self_test + tested_due_to_self_test;  s_diagnosed_self_test + diagnosed_self_test;
+	s_self_tested_m + self_tested_m ; s_self_tested_w + self_tested_w ; 
+
 	/*VL and CD4*/
 
 	s_vlg1 + vlg1 ; s_vlg2 + vlg2 ; s_vlg3 + vlg3 ; s_vlg4 + vlg4 ; s_vlg5 + vlg5 ; s_vlg6 + vlg6 ; 
@@ -18743,6 +18764,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500  
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return   s_test_not_costed
+s_self_tested s_self_tested_m s_self_tested_w  s_tested_due_to_self_test  s_diagnosed_self_test
 
 
 /*VL and CD4*/
@@ -19073,6 +19095,7 @@ sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test  secondary_self_test_targeting 
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy  prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
@@ -19206,9 +19229,16 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 
 
-***South Africa specific;
+***Malawi specific;			*JAS Feb24;
+if country = 'Malawi' then do;
+	if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
+	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
+	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+end;
 
-*South Africa JAS Oct23;
+***South Africa specific;	*JAS Feb24;
 if country = 'South Africa' then do;
 	if cald = 2017.5 and (prevalence1549 < 0.166 or prevalence1549 > 0.246) then do;
 	  abort abend;
@@ -19217,6 +19247,14 @@ if country = 'South Africa' then do;
 	  abort abend;
 	end;
 end;
+
+***Zim specific;			*JAS Feb24;
+if country = 'Zimbabwe' then do;
+	if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
+	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
+end;
+/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/	*QUERY should we be using this line for Zim? JAS Feb24;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -19698,6 +19736,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return   s_test_not_costed
+s_self_tested  s_self_tested_m s_self_tested_w  s_tested_due_to_self_test s_diagnosed_self_test
 
 
 /*VL and CD4*/
@@ -20678,6 +20717,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350  s_not_on_art_cd4350500  s_not_on_art_cd4ge500
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return  s_test_not_costed
+s_self_tested  s_self_tested_m s_self_tested_w  s_tested_due_to_self_test s_diagnosed_self_test
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -21008,6 +21048,8 @@ zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_futu
 rate_tb_proph_init rate_sbi_proph_init 
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test  secondary_self_test_targeting 
+
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy   prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
