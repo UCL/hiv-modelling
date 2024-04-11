@@ -125,8 +125,6 @@ end;
 *Source: PHIA https://www.cdc.gov/globalhivtb/what-we-do/phia/cote-divoire-phia-summary-sheet-2020.pdf;
 if cald=2018 then do; 
 	o_diag1564_phia = 0.498; o_diag1564m_phia = 0.404; o_diag1564w_phia = 0.540; 
-	o_diag_all_UNAIDS=0.82;*Source: UNAIDS https://www.unaids.org/en/regionscountries/countries/ctedivoire;
-
 	o_diag_onart1564_phia = 0.920; o_diag_onart1564m_phia = 0.850; o_diag_onart1564w_phia = 0.944; 
 	o_art_vs1564_phia = 0.737; o_art_vs1564m_phia = 0.628; o_art_vs1564w_phia = 0.769; 
 end;
