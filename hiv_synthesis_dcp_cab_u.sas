@@ -819,11 +819,11 @@ end;
 
 * effect_dcp_pref_prep;			%sample_uniform(effect_dcp_pref_prep, 0.1 0.2 0.3  );  
 
-* prob_prep_b_dcp;				%sample_uniform(prob_prep_b_dcp, 0.05 0.1  0.2 );
+* prob_prep_b_dcp;				%sample_uniform(prob_prep_b_dcp, 0.1  0.2  0.3);
 
 * rate_choose_stop_prep_dcp;	%sample_uniform(rate_choose_stop_prep_dcp, 0.04  0.08); 
 
-* rate_test_startprep_any_dcp;	%sample_uniform(rate_test_startprep_any_dcp, 0.15  0.2  );
+* rate_test_startprep_any_dcp;	%sample_uniform(rate_test_startprep_any_dcp, 0.15  0.2  0.3 );
 
 * prep_willingness_th_dcp;		%sample_uniform(prep_willingness_th_dcp, 0.05 0.1 0.15);
 
