@@ -1790,41 +1790,22 @@ dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_5
 
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
 
-d_ddaly_50y_2_1 = ddaly_50y_2 - ddaly_50y_1;
-d_ddaly_ac_mtct_50y_2_1 = ddaly_ac_mtct_50y_2 - ddaly_ac_mtct_50y_1;
+d_ddaly_50y_2_1 = ddaly_50y_1 - ddaly_50y_2; * dalys averted;
 
 netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
 netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
 
 min_netdaly500 = min(netdaly500_1, netdaly500_2);
 
-d_netdaly500_2_1 = netdaly500_2 - netdaly500_1;
+d_netdaly500_2_1 = netdaly500_1 - netdaly500_2; * net dalys averted ;
 
-if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
-if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
-
+if netdaly500_1 = min_netdaly500 then lowest_netdaly=0;
+if netdaly500_2 = min_netdaly500 then lowest_netdaly=1;
 
 min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_2);
 
 if ddaly_50y_1 = min_ddaly_50y then lowest_ddaly=1;
 if ddaly_50y_2 = min_ddaly_50y then lowest_ddaly=2;
-
-
-
-netdaly_ac_mtct_500_1 = ddaly_ac_mtct_50y_1 + (dcost_50y_1 / 0.0005);
-netdaly_ac_mtct_500_2 = ddaly_ac_mtct_50y_2 + (dcost_50y_2 / 0.0005);
-
-min_netdaly_ac_mtct_500 = min(netdaly_ac_mtct_500_1, netdaly_ac_mtct_500_2);
-
-d_netdaly_ac_mtct_500_2_1 = netdaly_ac_mtct_500_2 - netdaly_ac_mtct_500_1;
-
-if netdaly_ac_mtct_500_1 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=1;
-if netdaly_ac_mtct_500_2 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=2;
-
-min_ddaly_ac_mtct_50y = min(ddaly_ac_mtct_50y_1, ddaly_ac_mtct_50y_2);
-
-if ddaly_ac_mtct_50y_1 = min_ddaly_ac_mtct_50y then lowest_ddaly_ac_mtct_=1;
-if ddaly_ac_mtct_50y_2 = min_ddaly_ac_mtct_50y then lowest_ddaly_ac_mtct_=2;
 
 
 min_dcost_50y = min(dcost_50y_1, dcost_50y_2);
@@ -1875,22 +1856,69 @@ n_death_hiv_10y_1 = "Mean mumber of deaths from HIV per year over 10 years under
 n_death_hiv_10y_2 = "Mean mumber of deaths from HIV per year over 10 years under onart/len for aged 15-24"  
 n_death_hiv_age_1524_10y_1 = "Mean mumber of deaths from HIV per year in 15-24 year olds over 10 years under status quo"  
 n_death_hiv_age_1524_10y_2 = "Mean mumber of deaths from HIV per year in 15-24 year olds over 10 years under onart/len for aged 15-24"  
-p_r_len_1524_10y_1 = "Mean proportion of 15-24 year olds with capsid codon 66 resistance mutation over 10 years under status quo" 
-p_r_len_1524_10y_2 = "Mean proportion of 15-24 year olds with capsid codon 66 resistance mutation over 10 years under onart/len for aged 15-24" 
+p_r_len_1524_10y_1 = "Mean proportion of 15-24 year olds with capsid codon 66/67 resistance mutation over 10 years under status quo" 
+p_r_len_1524_10y_2 = "Mean proportion of 15-24 year olds with capsid codon 66/67 resistance mutation over 10 years under onart/len for aged 15-24" 
 p_r_cab_1524_10y_1 = "Mean proportion of 15-24 year olds with insti resistance mutation over 10 years under status quo" 
 p_r_cab_1524_10y_2 = "Mean proportion of 15-24 year olds with insti resistance mutation over 10 years under onart/len for aged 15-24" 
 mtct_prop_10y_1 = "Mean proportion of births in women with HIV in which the child is infected over 10 years under status quo"  
 mtct_prop_10y_2 = "Mean proportion of births in women with HIV in which the child is infected over 10 years under onart/len for aged 15-24"  
 
+dart_cost_y_50y_1  = "Mean cost of ART drug over 50 years under status quo"
+dart_cost_y_50y_2  = "Mean cost of ART drug over 50 years under onart/len for aged 15-24"
+dadc_cost_50y_1  = "Mean cost of treating people with who stage 4 conditions  over 50 years under status quo"
+dadc_cost_50y_2  = "Mean cost of treating people with who stage 4 conditions over 50 years under onart/len for aged 15-24"
+dcd4_cost_50y_1   = "Mean cost of cd4 count tests over 50 years under status quo"
+dcd4_cost_50y_2  = "Mean cost of cd4 counts tests over 50 years under onart/len for aged 15-24"
+dvl_cost_50y_1   = "Mean cost of viral load tests over 50 years under status quo"
+dvl_cost_50y_2  = "Mean cost of viral load tests over 50 years under onart/len for aged 15-24"
+dvis_cost_50y_1  = "Mean cost of clinic visits for people with hiv over 50 years under status quo"
+dvis_cost_50y_2 = "Mean cost of clinic visits for people with hiv over 50 years under onart/len for aged 15-24"
+dnon_tb_who3_cost_50y_1   = "Mean cost of treatment for people with who stage 3 conditions apart from tb over 50 years under status quo"
+dnon_tb_who3_cost_50y_2  	 = "Mean cost of treatment for people with who stage 3 conditions apart from tb over 50 years under onart/len for aged 15-24"
+dcot_cost_50y_1   = "Mean cost of cotrimoxazole over 50 years under status quo"
+dcot_cost_50y_2  = "Mean cost of cotrimoxazole over 50 years under onart/len for aged 15-24"
+dtb_cost_50y_1   = "Mean cost of tb treatment over 50 years under status quo"
+dtb_cost_50y_2   = "Mean cost of tb treatment over 50 years under onart/len for aged 15-24"
+dtest_cost_50y_1  = "Mean cost of hiv tests over 50 years under status quo"
+dtest_cost_50y_2  = "Mean cost of hiv tests over 50 years under onart/len for aged 15-24"
+d_t_adh_int_cost_50y_1   = "Mean cost of adherence intervention over 50 years under status quo"
+d_t_adh_int_cost_50y_2   = "Mean cost of adherence intervention over 50 years under onart/len for aged 15-24"
+dswitchline_cost_50y_1   = "Mean cost of switching line of treatment (non-drug costs) over 50 years under status quo"
+dswitchline_cost_50y_2  = "Mean cost of switching line of treatment (non-drug costs) over 50 years under onart/len for aged 15-24"
+dcost_circ_50y_1   = "Mean cost of vmmc over 50 years under status quo"
+dcost_circ_50y_2   = "Mean cost of vmmc over 50 years under onart/len for aged 15-24"
+dcost_child_hiv_50y_1   = "Mean cost of a notional cost of treating a child with hiv (children not explicitly modelled) over 50 years under status quo"
+dcost_child_hiv_50y_2    = "Mean cost of a notional cost of treating a child with hiv (children not explicitly modelled) over 50 years under onart/len for aged 15-24"
+dcost_non_aids_pre_death_50y_1  = "Mean cost of costs of treating people for non aids conditions for which risk is raised with hiv over 50 years under status quo"
+dcost_non_aids_pre_death_50y_2  = "Mean cost of costs of treating people for non aids conditions for which risk is raised with hiv over 50 years under onart/len for aged 15-24"
+dcost_prep_visit_oral_50y_1   = "Mean cost of clinic visits for oral prep over 50 years under status quo"
+dcost_prep_visit_oral_50y_2   = "Mean cost of clinic visits for oral prep over 50 years under onart/len for aged 15-24"
+dcost_prep_oral_50y_1  = "Mean cost of oral prep drug over 50 years under status quo"
+dcost_prep_oral_50y_2  = "Mean cost of oral prep drug over 50 years under onart/len for aged 15-24"
+dcost_prep_visit_cab_50y_1   = "Mean cost of clinic visits for cab prep over 50 years under status quo"
+dcost_prep_visit_cab_50y_2   = "Mean cost of clinic visits for cab prep over 50 years under onart/len for aged 15-24"
+dcost_prep_cab_50y_1  = "Mean cost of cab prep drug over 50 years under status quo"
+dcost_prep_cab_50y_2  = "Mean cost of cab prep drug over 50 years under onart/len for aged 15-24"
 
+d_ddaly_50y_2_1 = "Mean DALYs averted across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
+dcost_50y_1  = "Mean total cost over 50 years under status quo"
+dcost_50y_2  = "Mean total cost over 50 years under onart/len for aged 15-24"
+d_dcost_50y_2_1 = "Mean difference in costs across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
+d_netdaly500_2_1 = "Mean net DALYs averted across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
+
+lowest_netdaly = "Proportion of setting scenarios in which cab/len to 15-24 year-olds is cost-effective"
 ;
 
 
 
 ods html;
 
+
 * table 1;
 
+
+title 'Characteristics of the setting scenarios in 2024 (median, 90% range)';
+ods noproctitle;
 proc means    n p50  p5  p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24  p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_vl1000_24 prevalence_vg1000_24   p_onart_cd4_l200_24
@@ -1898,7 +1926,8 @@ p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24
 ;
 run;
 
-
+title 'Effects over 10 years of the policy of cab/len for people aged 15-24 (median, 90% range)';
+ods noproctitle;
 proc means  n p50  p5  p95 ;  
 var 
 p_len_10y_1 p_len_10y_2 
@@ -1914,7 +1943,7 @@ p_onart_vl1000_m_1524_10y_1 p_onart_vl1000_m_1524_10y_2
 incidence1549_10y_1 incidence1549_10y_2 
 incidence1524_10y_1 incidence1524_10y_2
 n_death_hiv_10y_1 n_death_hiv_10y_2  
-n_death_hiv_age_1524_10y_1 
+n_death_hiv_age_1524_10y_1 n_death_hiv_age_1524_10y_2
 p_r_len_1524_10y_1 p_r_len_1524_10y_2
 p_r_cab_1524_10y_1 p_r_cab_1524_10y_2
 mtct_prop_10y_1 mtct_prop_10y_2 
@@ -1922,30 +1951,8 @@ mtct_prop_10y_1 mtct_prop_10y_2
 run;
 
 
-proc means  n mean p5 p95;
-var
-dart_cost_y_10y_1  dart_cost_y_10y_2  
-dadc_cost_10y_1  dadc_cost_10y_2 
-dcd4_cost_10y_1  dcd4_cost_10y_2 
-dvl_cost_10y_1  dvl_cost_10y_2 
-dvis_cost_10y_1 dvis_cost_10y_2
-dnon_tb_who3_cost_10y_1  dnon_tb_who3_cost_10y_2  	
-dcot_cost_10y_1  dcot_cost_10y_2 
-dtb_cost_10y_1  dtb_cost_10y_2  
-dtest_cost_10y_1 dtest_cost_10y_2 
-d_t_adh_int_cost_10y_1  d_t_adh_int_cost_10y_2  
-dswitchline_cost_10y_1  dswitchline_cost_10y_2 
-dcost_circ_10y_1  dcost_circ_10y_2  
-dcost_child_hiv_10y_1  dcost_child_hiv_10y_2   
-dcost_non_aids_pre_death_10y_1 dcost_non_aids_pre_death_10y_2 
-dcost_prep_visit_oral_10y_1  dcost_prep_visit_oral_10y_2  
-dcost_prep_oral_10y_1 dcost_prep_oral_10y_2 
-dcost_prep_visit_cab_10y_1  dcost_prep_visit_cab_10y_2  
-dcost_prep_cab_10y_1 dcost_prep_cab_10y_2 
-;
-run;
-
-
+title 'Effects over 50 years of the policy of cab/len for people aged 15-24 on discounted costs in $ million (mean, 90% range)';
+ods noproctitle;
 proc means  n mean p5 p95;
 var
 dart_cost_y_50y_1  dart_cost_y_50y_2  
@@ -1966,27 +1973,32 @@ dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2
 dcost_prep_oral_50y_1 dcost_prep_oral_50y_2 
 dcost_prep_visit_cab_50y_1  dcost_prep_visit_cab_50y_2  
 dcost_prep_cab_50y_1 dcost_prep_cab_50y_2 
+dcost_50y_1 dcost_50y_2
 ;
+footnote;
+footnote 'Cab is assumed to cost $60 per year including supply chain cost, Len is assumed to cost $36 per year including supply chain cost.  
+TLD is assumed to cost $65 per year including supply chain cost.  Being on cab-len is assumed to increase clinic visit costs by $15 per 3 months.
+Standard cost effectiveness analysis takes a lifetime time horizon to allow all effects of the policy to play out. 
+Discounting of costs and health effects is applied at 3% per year.';
 run;
 
 
-proc means; var 
-dcab_cost_50y_1 dcab_cost_50y_2 
-dlen_cost_50y_1 dlen_cost_50y_2
-;
-run;
-
-
-
-proc means mean p50 p5 p95 ;
+title 'Effects of the policy of cab/len for people aged 15-24 on DALYs and costs';
+ods noproctitle;
+proc means mean  ;
 var 
-ddaly_50y_1  ddaly_50y_2  d_ddaly_50y_2_1 
-ddaly_ac_mtct_50y_1  ddaly_ac_mtct_50y_2  d_ddaly_ac_mtct_50y_2_1 
-dcost_50y_1 dcost_50y_2  d_dcost_50y_2_1
-netdaly500_1 netdaly500_2
-netdaly_ac_mtct_500_1 netdaly_ac_mtct_500_2
+d_ddaly_50y_2_1 
+d_dcost_50y_2_1
+d_netdaly500_2_1 
+lowest_netdaly
 ;
+footnote;
+footnote 'These preliminary results suggest overall that the policy of providing cab/len to 15-24 year-olds would lead to a reduction in DALYs and actually
+ be cost-saving. The policy was cost-effective in 91% of setting scenarios';
 run;
+
+title;
+footnote;
 
 ods html close;
 
