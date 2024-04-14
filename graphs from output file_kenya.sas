@@ -9,7 +9,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_o    ;
+  set a.l_base_kenya_p    ;
 
 
 p_onart_vl1000_all = .;
@@ -53,7 +53,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =   15   ;
+%let nfit =   5   ;
 %let year_end = 2024.00 ;
 run;
 proc sort;by cald option ;run;
@@ -408,6 +408,7 @@ if cald=2005 then prevalence1549_m_obs_kya= 0.048;
 if cald=2010 then prevalence1549_m_obs_kya= 0.042;
 if cald=2015 then prevalence1549_m_obs_kya= 0.035;
 if cald=2020 then prevalence1549_m_obs_kya= 0.028;
+if cald=2022 then prevalence1549_m_obs_kya= 0.024;
 
 if cald=1980 then prevalence1549_w_obs_kya= 0.001;
 if cald=1985 then prevalence1549_w_obs_kya= 0.008;
@@ -418,6 +419,7 @@ if cald=2005 then prevalence1549_w_obs_kya= 0.087;
 if cald=2010 then prevalence1549_w_obs_kya= 0.074;
 if cald=2015 then prevalence1549_w_obs_kya= 0.073;
 if cald=2020 then prevalence1549_w_obs_kya= 0.065;
+if cald=2022 then prevalence1549_w_obs_kya= 0.049;
 
 if cald=2019 then prevalence_sw_obs_kya = 0.28;
 
