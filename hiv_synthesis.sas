@@ -2292,8 +2292,9 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	*Option 4 is SQ + 	Injectable PrEP switching 30% from oral PrEP to Injectible long acting PrEP [[Zim O0 + change date_prep_inj_intro];
+	* !!! CHECK OUTCOMES FOR THIS OPTION !!!;
 	if option = 4 then do;
-		
+		date_prep_inj_intro=&year_interv;
 	end;
 
 	*Option 5 is SQ + 	U = U messaging [new for SA];
@@ -2323,12 +2324,14 @@ who may be dead and hence have caldate{t} missing;
 
 	*Option 9 is SQ + 	VMMC for males aged 10-14 [coded but not in Zim MIHPSA];
 	if option = 9 then do;
+		circ_inc_rate_year_i=0;
+		rel_prob_circ_mihpsa_10_14=5;
 	end;
 
 	*Option 10 is SQ + 	VMMC for males aged 15+ [Zim O14];
 	if option = 10 then do;
 		circ_inc_rate_year_i=0;
-		%sample_uniform(rel_prob_circ_mihpsa, 2 5 10);
+		rel_prob_circ_mihpsa_15_49=5;
 	end;
 
 	*Option 11 is SQ + 	Community-based peer navigators to support ART linkage & retention [new for SA];
@@ -3172,7 +3175,11 @@ if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*o
     end;
 end;
 
-if mihpsa_params_set_in_options=1 and t ge 2 and &year_interv <= caldate{t} < (&year_interv+4) and gender=1 and 15 <= age < 50 then prob_circ = prob_circ*rel_prob_circ_mihpsa;
+* MIHPSA interventions; 	*JAS Apr24;
+if mihpsa_params_set_in_options=1 and t ge 2 and caldate{t} >= &year_interv and gender=1 then do;
+	if 10 <= age < 14 then prob_circ = prob_circ*rel_prob_circ_mihpsa_10_14;
+	if 15 <= age < 50 then prob_circ = prob_circ*rel_prob_circ_mihpsa_15_49;
+end;
 
 
 ***Zim specific;	*JAS Feb24;
@@ -20218,191 +20225,54 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
+* Define macro run_update_r1 to run update_r1 multiple times;		*JAS Feb24;
+* Inputs are: start year (can be &caldate1 as defined in code above), end year, option number (s);
+* dependent_on_time_step_length;
 
-%update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim, SA and Malawi start in 1984 JAS Sep23;
-%update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
-%update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=0);
-%update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=1,h=8,j=6,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=1,h=8,j=7,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=1,h=8,j=8,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=5,h=12,j=9,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=5,h=12,j=10,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=5,h=12,j=11,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=5,h=12,j=12,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=9,h=16,j=13,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=9,h=16,j=14,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=9,h=16,j=15,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=9,h=16,j=16,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=13,h=20,j=17,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=13,h=20,j=18,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=13,h=20,j=19,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=13,h=20,j=20,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=17,h=24,j=21,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=17,h=24,j=22,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=17,h=24,j=23,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=17,h=24,j=24,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=21,h=28,j=25,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=21,h=28,j=26,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=21,h=28,j=27,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=21,h=28,j=28,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=25,h=32,j=29,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=25,h=32,j=30,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=25,h=32,j=31,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=25,h=32,j=32,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=29,h=36,j=33,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=29,h=36,j=34,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=29,h=36,j=35,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=29,h=36,j=36,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=33,h=40,j=37,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=33,h=40,j=38,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=33,h=40,j=39,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=33,h=40,j=40,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=37,h=44,j=41,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=37,h=44,j=42,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=37,h=44,j=43,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=37,h=44,j=44,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=41,h=48,j=45,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=41,h=48,j=46,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=41,h=48,j=47,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=41,h=48,j=48,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=45,h=52,j=49,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=45,h=52,j=50,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=45,h=52,j=51,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=45,h=52,j=52,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=49,h=56,j=53,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=49,h=56,j=54,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=49,h=56,j=55,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=49,h=56,j=56,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=53,h=60,j=57,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=53,h=60,j=58,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=53,h=60,j=59,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=53,h=60,j=60,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=57,h=64,j=61,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=57,h=64,j=62,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=57,h=64,j=63,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=57,h=64,j=64,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=61,h=68,j=65,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=61,h=68,j=66,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=61,h=68,j=67,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=61,h=68,j=68,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=65,h=72,j=69,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=65,h=72,j=70,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=65,h=72,j=71,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=65,h=72,j=72,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=69,h=76,j=73,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=69,h=76,j=74,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=69,h=76,j=75,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=69,h=76,j=76,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=73,h=80,j=77,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=73,h=80,j=78,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=73,h=80,j=79,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=73,h=80,j=80,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=77,h=84,j=81,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=77,h=84,j=82,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=77,h=84,j=83,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=77,h=84,j=84,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=81,h=88,j=85,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=81,h=88,j=86,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=81,h=88,j=87,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=81,h=88,j=88,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=85,h=92,j=89,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=85,h=92,j=90,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=85,h=92,j=91,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=85,h=92,j=92,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=89,h=96,j=93,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=89,h=96,j=94,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=89,h=96,j=95,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=89,h=96,j=96,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=93,h=100,j=97,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=93,h=100,j=98,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=93,h=100,j=99,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=93,h=100,j=100,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=97,h=104,j=101,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=97,h=104,j=102,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=97,h=104,j=103,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=97,h=104,j=104,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=101,h=108,j=105,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=101,h=108,j=106,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=101,h=108,j=107,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=101,h=108,j=108,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=105,h=112,j=109,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=105,h=112,j=110,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=105,h=112,j=111,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=105,h=112,j=112,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=109,h=116,j=113,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=109,h=116,j=114,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=109,h=116,j=115,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=109,h=116,j=116,s=0);	
-%update_r1(da1=1,da2=2,e=5,f=6,g=113,h=120,j=117,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=113,h=120,j=118,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=113,h=120,j=119,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=113,h=120,j=120,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=117,h=124,j=121,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=117,h=124,j=122,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=117,h=124,j=123,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=117,h=124,j=124,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=121,h=128,j=125,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=125,h=132,j=129,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
+%macro run_update_r1(r1_start_year,r1_end_year,intervention_option);
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
+	%do ii = %sysevalf((1 + 4*(&r1_start_year-&caldate1))) %to %sysevalf((1 + 4*(&r1_end_year-&caldate1)));
+	
+		%let year = %sysevalf(&caldate1 + 0.25*(&ii-1));
+		%let aa = %sysevalf(%sysfunc(mod(%sysevalf(&ii+1),2)) + 1);
+		%let bb = %sysevalf(3 - &aa);
+		%let ee = %sysfunc(min(&ii, %sysevalf(%sysfunc(mod(%sysevalf(&ii+3),4))+5)));
+		%let ff = %sysevalf(&ee + 1);
+		%let gg = %sysevalf(1 + %sysevalf(4*%sysfunc(ceil(%sysfunc(max(0,(%sysevalf(&year-&caldate1-1.75))))))) );
+		%let hh = %sysevalf(&gg + 7);
+		%let jj = &ii;
+
+		%update_r1(da1=&aa, da2=&bb, e=&ee, f=&ff, g=&gg, h=&hh, j=&jj, y=&year, s=&intervention_option);
+
+	%end;
+
+%mend;
 
 
-* ts1m:  need more update statements ;
+
+
+*** RUN PROGRAM; 
+
+*1) Run from caldate1 to current date;
+%run_update_r1(&caldate1,&year_interv-0.25,0);
+
+* 2) Save dataset at this point;
+data a ;  set r1 ;
+data r1 ; set a ;
+
+* 3) Repetition 1;
+%run_update_r1(&year_interv,&year_interv+50,0);
+
+* 4) Repetition 2;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,1);
+
+* 5) Repetition 3;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,15);
+
+
+
 
 
 
