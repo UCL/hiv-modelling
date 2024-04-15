@@ -261,7 +261,7 @@ newp_seed = 7;
 * MSM;
 
 * msm_rred;					%sample_uniform(msm_rred, 1.5 2 3 5); * extent to which p_rred_p is higher in msm than het men;
-* prop_m_msm;				%sample(prop_m_msm, 0.002  0.003 0.07 , 0.33 0.33 0.33  ); 
+* prop_m_msm;				%sample(prop_m_msm, 0.002  0.003 0.007 , 0.33 0.33 0.33  ); 
 * msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.2 0.3 0.5); * risk of one or more cls partners in msm per period ;
 * msm_tr_factor;			%sample_uniform(msm_tr_factor, 3 5 8 ); * factor determining the transmission risk per period given 
 																		the represetative vl in the parter(s) in the period ;	
@@ -936,7 +936,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
-  %include "/home/rmjlaph/kenya_parameters_q.sas";
+  %include "/home/rmjlaph/kenya_parameters_r.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
@@ -20926,7 +20926,7 @@ end;
 
 libname b '/home/rmjlaph/Scratch/';
 
-data b.kenya_q_&dataset_id; 
+data b.kenya_r_&dataset_id; 
 set r1;
 
 
