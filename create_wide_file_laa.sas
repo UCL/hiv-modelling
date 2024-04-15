@@ -192,6 +192,12 @@ dcost_prep_visit_len  = s_dcost_prep_visit_len * &sf * 4 / 1000;
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
 
+dtb_lam_cost =  s_dtb_lam_cost  * &sf * 4 / 1000;  
+dtb_proph_cost = s_dtb_proph_cost * &sf * 4 / 1000;  
+dcrag_cost =  s_dcrag_cost  * &sf * 4 / 1000;  
+dcrypm_proph_cost = s_dcrypm_proph_cost * &sf * 4 / 1000;  
+dsbi_proph_cost = s_dsbi_proph_cost  * &sf * 4 / 1000; 
+
 
 * note this below can be used if outputs are from program beyond 1-1-20;
   dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
@@ -215,10 +221,11 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv + dcost_non_aids_pre_death ;
+		dcost_child_hiv + dcost_non_aids_pre_death + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost 
+;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
-				dswitchline_cost; 
+				dswitchline_cost + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost ; 
 
 cost_clin_care = dcost_clin_care / discount;
 
@@ -1780,12 +1787,14 @@ d_mtct_prop_10y_2_1 = mtct_prop_10y_2 - mtct_prop_10y_1 ;
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
 					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 + dcost_drug_level_test_50y_1
-					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1;			
+					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1  + dtb_lam_cost_50y_1 + dtb_proph_cost_50y_1 + dcrag_cost_50y_1 + dcrypm_proph_cost_50y_1 
+					+ dsbi_proph_cost_50y_1 ;			
 
 dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
 					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
 					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2 + dcost_drug_level_test_50y_2
-					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2;
+					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2 + dtb_lam_cost_50y_2 + dtb_proph_cost_50y_2 + dcrag_cost_50y_2 + dcrypm_proph_cost_50y_2 
+					+ dsbi_proph_cost_50y_2 ;
 
 
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
@@ -1899,13 +1908,21 @@ dcost_prep_visit_cab_50y_1   = "Mean cost of clinic visits for cab prep over 50 
 dcost_prep_visit_cab_50y_2   = "Mean cost of clinic visits for cab prep over 50 years under onart/len for aged 15-24"
 dcost_prep_cab_50y_1  = "Mean cost of cab prep drug over 50 years under status quo"
 dcost_prep_cab_50y_2  = "Mean cost of cab prep drug over 50 years under onart/len for aged 15-24"
-
+dtb_lam_cost_50y_1  = "Mean cost of tb-lam testing over 50 years under status quo"
+dtb_lam_cost_50y_2 = "Mean cost of tb-lam testing over 50 years under onart/len for aged 15-24"
+dtb_proph_cost_50y_1  = "Mean cost of tb prophylaxis over 50 years under status quo"
+dtb_proph_cost_50y_2  = "Mean cost of tb prophylaxis over 50 years under onart/len for aged 15-24"
+dcrag_cost_50y_1  = "Mean cost of crag testing over 50 years under status quo"
+dcrag_cost_50y_2   = "Mean cost of crag testing over 50 years under onart/len for aged 15-24"
+dcrypm_proph_cost_50y_1 = "Mean cost of cm prophylaxis over 50 years under status quo"
+dcrypm_proph_cost_50y_2 = "Mean cost of cm prophylaxis over 50 years under onart/len for aged 15-24"
+dsbi_proph_cost_50y_1  = "Mean cost of sbi prophylaxis over 50 years under status quo"
+dsbi_proph_cost_50y_2 = "Mean cost of sbi prophylaxis over 50 years under onart/len for aged 15-24"
 d_ddaly_50y_2_1 = "Mean DALYs averted across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
 dcost_50y_1  = "Mean total cost over 50 years under status quo"
 dcost_50y_2  = "Mean total cost over 50 years under onart/len for aged 15-24"
 d_dcost_50y_2_1 = "Mean difference in costs across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
 d_netdaly500_2_1 = "Mean net DALYs averted across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
-
 lowest_netdaly = "Proportion of setting scenarios in which cab/len to 15-24 year-olds is cost-effective"
 ;
 
@@ -1973,6 +1990,11 @@ dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2
 dcost_prep_oral_50y_1 dcost_prep_oral_50y_2 
 dcost_prep_visit_cab_50y_1  dcost_prep_visit_cab_50y_2  
 dcost_prep_cab_50y_1 dcost_prep_cab_50y_2 
+dtb_lam_cost_50y_1 dtb_lam_cost_50y_2 
+dtb_proph_cost_50y_1 dtb_proph_cost_50y_2 
+dcrag_cost_50y_1 dcrag_cost_50y_2 
+dcrypm_proph_cost_50y_1 dcrypm_proph_cost_50y_2 
+dsbi_proph_cost_50y_1 dsbi_proph_cost_50y_2 
 dcost_50y_1 dcost_50y_2
 ;
 footnote;
