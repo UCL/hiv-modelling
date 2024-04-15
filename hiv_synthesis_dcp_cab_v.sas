@@ -23,7 +23,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000  ; 
-%let year_interv = 2024.5;	* Using 2023 for MIHPSA only JAS Oct23;
+%let year_interv = 2025.0;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -2159,7 +2159,7 @@ if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-dcp = 0;  * dcp introuced as a variable ;
+dcp = 0;  * dcp introduced as a variable ;
 
 
 	if option = 0 then do;
@@ -2170,12 +2170,12 @@ dcp = 0;  * dcp introuced as a variable ;
 	end;
 
 	if option = 2 then do;  * cab without dcp;
-		date_prep_inj_intro=2024.5;  dur_prep_inj_scaleup=2;
+		date_prep_inj_intro=2025.5;  dur_prep_inj_scaleup=2;
 	end;
 
 	if option = 3 then do;  * dcp with cab;
 		dcp_program=1;  dcp_program_start = &year_interv;
-		date_prep_inj_intro=2024.5;  dur_prep_inj_scaleup=2;  
+		date_prep_inj_intro=2025.5;  dur_prep_inj_scaleup=2;  
 	end;
 
 end;
