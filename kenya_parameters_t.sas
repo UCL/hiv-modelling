@@ -36,7 +36,7 @@
 * SEX WORKERS;
 
 * sw_art_disadv;           	sw_art_disadv = 1;
-						   	sw_higher_int = 3
+						   	sw_higher_int = 3;
 						   	rel_sw_lower_adh = 0.8 ;
 							sw_higher_prob_loss_at_diag = 3;
 
