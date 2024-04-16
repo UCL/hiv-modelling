@@ -108,7 +108,23 @@ if cald=2018 then do;
 	o_evertested_m_PHIA=0.31;	o_evertested_w_PHIA=0.53;
 end;
 
-
+***********************
+*NUMBER OF HIV TESTS
+***********************;
+*Source: John Stover, data used in Shiny 90 for UNAIDS estimates;
+if cald=2010 then o_n_tests_JS=1032084;
+if cald=2011 then o_n_tests_JS=863137;
+if cald=2012 then o_n_tests_JS=1588431;
+if cald=2013 then o_n_tests_JS=1952542;
+if cald=2014 then o_n_tests_JS=1685281;
+if cald=2015 then o_n_tests_JS=2094382;
+if cald=2016 then o_n_tests_JS=2380506;
+if cald=2017 then o_n_tests_JS=2445133;
+if cald=2018 then o_n_tests_JS=2712569;
+if cald=2019 then o_n_tests_JS=2807089;
+if cald=2020 then o_n_tests_JS=2073676;
+if cald=2021 then o_n_tests_JS=2415909;
+if cald=2012 then o_n_tests_JS=2572224;
 
 ***********************
 *CIRCUMCISION;
