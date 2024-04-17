@@ -7364,7 +7364,7 @@ nactive = round(nactive,0.25);
 (the program below only determines whether a person is infected from a person diagnosed or 
 naive or not, I would leave this as it is);
 
-i*LBMJan23;
+*LBMJan23;
 if vl_source_inf=1 and c_rm_inf=0 then do;
 t_prop_diag				= t_prop_vlg1_rm0_diag;
 t_prop_naive			= t_prop_vlg1_rm0_naive; 
