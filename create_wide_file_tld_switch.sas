@@ -895,6 +895,9 @@ run;
 * p_first_uvl2_dol_r; 			p_first_uvl2_dol_r = s_second_vlg1000_first_dol_r / s_second_vlg1000_first ;
 * deathr_dol_r_uvl2;			deathr_dol_r_uvl2 = (s_dead_dol_r_uvl2 * 4) / s_uvl2_elig ;
     
+* p_dlt_adh_high_r_dol; 		p_dlt_adh_high_r_dol = s_drug_level_test_adh_high_r_dol / s_drug_level_test_adh_high ;
+* p_dlt_adh_low_r_dol; 			p_dlt_adh_low_r_dol = s_drug_level_test_adh_low_r_dol / s_drug_level_test_adh_low ;
+
 
 * blood pressure;
 
@@ -1129,7 +1132,7 @@ prop_artexp_elig_tldsw2  prop_tldsw2_uvl22 prop_tldsw2_elig_vl1000 prop_uvl22_vl
 p_adh_lt80_iicu_tldsw2   p_onart_iicu_tldsw2   p_onart_iicu_uvl22   p_adh_lt80_iicu_tldsw2   p_adh_lt80_iicu_uvl22 p_vis_tldsw2 p_vis_uvl22
 p_tldsw2_elig_tldsw
 
-p_first_uvl2_dol_r  deathr_dol_r_uvl2
+p_first_uvl2_dol_r  deathr_dol_r_uvl2  p_dlt_adh_high_r_dol  p_dlt_adh_low_r_dol
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1362,6 +1365,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_vis_tldsw2); %var(v=p_vis_uvl22); %var(v=prop_r_dol_ge_p5_uvl22);  %var(v=p_dol_2vg1000_dolr1);  %var(v=hiv_death_rate_uvl2);
 %var(v=p_hivpos_new_dol_r);  %var(v=n_incident_r_dol);  %var(v=n_dead_hivrel_onart); %var(v=p_cd4_lt200_uvl2); %var(v=n_uvl2_elig); %var(v=p_o_dar_uvl2);
 %var(v=s_o_dol_2nd_vlg1000); %var(v=s_vl1000_art_gt6m_iicu);  %var(v=p_first_uvl2_dol_r);  %var(v= deathr_dol_r_uvl2);  %var(v=p_tldsw2_elig_tldsw);
+%var(v= p_dlt_adh_high_r_dol);  %var(v= p_dlt_adh_low_r_dol);
+
 
 data   b.wide_outputs; merge 
 
@@ -1405,7 +1410,7 @@ p_adh_lt80_iicu_tldsw2   p_onart_iicu_tldsw2   p_onart_iicu_uvl22   p_adh_lt80_i
 p_tldsw2_elig_tldsw
 p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_onart  p_cd4_lt200_uvl2 n_uvl2_elig hiv_death_rate_uvl2 p_o_dar_uvl2
 
-s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2
+s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2   p_dlt_adh_high_r_dol  p_dlt_adh_low_r_dol
 ;
 
 
@@ -1755,6 +1760,8 @@ p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 p_onart_vl1000_10y_3 p_onart_vl1000_10
 p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 p_o_dar_uvl2_10y_3 p_o_dar_uvl2_10y_4 p_o_dar_uvl2_10y_5
 p_first_uvl2_dol_r_10y_1 p_first_uvl2_dol_r_10y_2 p_first_uvl2_dol_r_10y_3 p_first_uvl2_dol_r_10y_4 p_first_uvl2_dol_r_10y_5  
 deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 deathr_dol_r_uvl2_10y_4 deathr_dol_r_uvl2_10y_5  
+p_dlt_adh_high_r_dol_10y_1 p_dlt_adh_high_r_dol_10y_2 p_dlt_adh_high_r_dol_10y_3 p_dlt_adh_high_r_dol_10y_4 p_dlt_adh_high_r_dol_10y_5 
+p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 p_dlt_adh_low_r_dol_10y_4 p_dlt_adh_low_r_dol_10y_5 
 ;
 * p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 p_tldsw2_elig_tldsw_10y_4 p_tldsw2_elig_tldsw_10y_5 ;
 run;
