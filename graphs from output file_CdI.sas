@@ -5,17 +5,18 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data b;
-set a.l_base_CdI2;
+set a.l_base_CdI3;
+s_sw_1549_ = s_sw_1549;
 
-*if inc_cat ne 1 then delete;
-proc contents;run;
+*if ych2_risk_beh_newp=1.1 then delete;
+
 
 proc sort; by cald run ;run;
 proc freq;table cald;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  186    ;
+%let nfit =  177    ;
 %let year_end = 2029.00 ;
 run;
 proc sort;by cald option ;run;
@@ -27,7 +28,7 @@ set b;
 %let var = 
 p_w_giv_birth_this_per	mtct_prop		p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_		p_newp_ge1w_	
 n_tested	p_tested_past_year_1549m	p_tested_past_year_1549w	test_prop_positive
-p_mcirc		n_new_vmmc1549m 			p_trad_circ			p_vmmc				
+p_mcirc		n_new_vmmc1549m 			p_trad_circ			p_vmmc				s_sw_1549_
 prop_w_1549_sw		prop_w_1564_sw		prop_w_ever_sw		prop_sw_hiv			n_sw_1549_	prop_w_1524_onprep	prop_1564_onprep	
 prevalence1549_		prevalence1549m		prevalence1549w	
 prevalence1519w		prevalence1519m		prevalence2024w		prevalence2024m		prevalence2529w		prevalence2529m
@@ -181,9 +182,8 @@ by cald;
 
 run;
 
-
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\lovel\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\03Apr2024.doc' startpage=never; 
+ods rtf file = 'C:\Users\lovel\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\09Apr2024a.doc' startpage=never; 
 
 
 proc sgplot data=d; 
@@ -340,6 +340,9 @@ label p50_n_tested_0 = "Option 0 (median) ";
 
 series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter  x=cald y=o_n_tests_JS/	markerattrs = (symbol=square color=green  size = 10) ;
+
 run;quit;
 
 ***look at dhs;
@@ -401,7 +404,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of female sex workers (FSW)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.02) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) valueattrs=(size=10);
 label p50_prop_w_1549_sw_0 = "Current FSW 15-49";
 label p50_prop_w_ever_sw_0 = "Ever FSW 15-64";
 label o_p_fsw_UNAIDS="% FSW of 15-49 women";
@@ -424,6 +427,17 @@ label o_pop_fsw_UNAIDS= "Number of FSW 15-49 (UNAIDS)";
 series  x=cald y=p50_n_sw_1549__0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_n_sw_1549__0 	upper=p95_n_sw_1549__0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 scatter  x=cald y=o_pop_fsw_UNAIDS/	markerattrs = (symbol=square color=green  size = 10) ;
+run;quit;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of female sex workers (FSW) using s_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 300 by 50) valueattrs=(size=10);
+label p50_s_sw_1549__0 = "Current FSW 15-49";
+
+series  x=cald y=p50_s_sw_1549__0/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_sw_1549__0 	upper=p95_n_sw_1549__0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -757,12 +771,13 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 
 label p50_p_diag_m_0 = "Model";
 label o_diag1564m_phia = "PHIA";
-label o_diag_all_UNAIDS = "UNAIDS ALL";
+label o_diag1564_UNAIDS = "UNAIDS ALL";
+
 series  x=cald y=p50_p_diag_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 scatter x=cald y=o_diag1564m_phia / 		markerattrs = (symbol=square color=green size = 10);
-scatter x=cald y=o_diag_all_UNAIDS / 		markerattrs = (symbol=square color=blue size = 10);
+scatter x=cald y=o_diag1564_UNAIDS / 		markerattrs = (symbol=square color=blue size = 10);
 
 run;quit;
 
@@ -773,12 +788,13 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 
 label p50_p_diag_w_0 = "Model ";
 label o_diag1564w_phia = "PHIA";
+label o_diag1564_UNAIDS = "UNAIDS ALL";
 
 series  x=cald y=p50_p_diag_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 scatter x=cald y=o_diag1564w_phia / 		markerattrs = (symbol=square color=green size = 10);
-
+scatter x=cald y=o_diag1564_UNAIDS / 		markerattrs = (symbol=square color=blue size = 10);
 run;quit;
 
 proc sgplot data=d; 
@@ -893,16 +909,14 @@ run;quit;
 ***LEAVE NUMBER GRAPHS UNTIL POPULATION IS BETTER FITTING;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number diagnosed with HIV";
+Title    height=1.5 justify=center "Number diagnosed with HIV this period";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 400000 by  50000) valueattrs=(size=10);
 
 label p50_n_diagnosed_0 = "Option 0 (median) ";
-label o_n_diag15plus_UNAIDS = "UNAIDS LIVING with HIV";
 
 series  x=cald y=p50_n_diagnosed_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_diagnosed_0 	upper=p95_n_diagnosed_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-scatter x=cald y = o_n_plhiv15plus_UNAIDS/ 		markerattrs = (symbol=square color=green size = 10);
 
 run;quit;
 
