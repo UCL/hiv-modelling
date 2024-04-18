@@ -1787,14 +1787,14 @@ d_mtct_prop_10y_2_1 = mtct_prop_10y_2 - mtct_prop_10y_1 ;
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
 					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 + dcost_drug_level_test_50y_1
-					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1  + dtb_lam_cost_50y_1 + dtb_proph_cost_50y_1 + dcrag_cost_50y_1 + dcrypm_proph_cost_50y_1 
-					+ dsbi_proph_cost_50y_1 ;			
+					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1 /*  + dtb_lam_cost_50y_1 + dtb_proph_cost_50y_1 + dcrag_cost_50y_1 + dcrypm_proph_cost_50y_1 
+					+ dsbi_proph_cost_50y_1 */ ;			
 
 dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
 					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
 					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2 + dcost_drug_level_test_50y_2
-					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2 + dtb_lam_cost_50y_2 + dtb_proph_cost_50y_2 + dcrag_cost_50y_2 + dcrypm_proph_cost_50y_2 
-					+ dsbi_proph_cost_50y_2 ;
+					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2 /* + dtb_lam_cost_50y_2 + dtb_proph_cost_50y_2 + dcrag_cost_50y_2 + dcrypm_proph_cost_50y_2 
+					+ dsbi_proph_cost_50y_2 */ ;
 
 
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
@@ -1874,6 +1874,10 @@ mtct_prop_10y_2 = "Mean proportion of births in women with HIV in which the chil
 
 dart_cost_y_50y_1  = "Mean cost of ART drug over 50 years under status quo"
 dart_cost_y_50y_2  = "Mean cost of ART drug over 50 years under onart/len for aged 15-24"
+dlen_cost_50y_1  = "Mean cost of len drug over 50 years under status quo"
+dlen_cost_50y_2  = "Mean cost of len drug over 50 years under onart/len for aged 15-24"
+dcab_cost_50y_1  = "Mean cost of cab drug over 50 years under status quo"
+dcab_cost_50y_2  = "Mean cost of cab drug over 50 years under onart/len for aged 15-24"
 dadc_cost_50y_1  = "Mean cost of treating people with who stage 4 conditions  over 50 years under status quo"
 dadc_cost_50y_2  = "Mean cost of treating people with who stage 4 conditions over 50 years under onart/len for aged 15-24"
 dcd4_cost_50y_1   = "Mean cost of cd4 count tests over 50 years under status quo"
@@ -1973,6 +1977,8 @@ ods noproctitle;
 proc means  n mean p5 p95;
 var
 dart_cost_y_50y_1  dart_cost_y_50y_2  
+dlen_cost_50y_1  dlen_cost_50y_2
+dcab_cost_50y_1  dcab_cost_50y_2
 dadc_cost_50y_1  dadc_cost_50y_2 
 dcd4_cost_50y_1  dcd4_cost_50y_2 
 dvl_cost_50y_1  dvl_cost_50y_2 
@@ -1990,11 +1996,13 @@ dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2
 dcost_prep_oral_50y_1 dcost_prep_oral_50y_2 
 dcost_prep_visit_cab_50y_1  dcost_prep_visit_cab_50y_2  
 dcost_prep_cab_50y_1 dcost_prep_cab_50y_2 
+/*
 dtb_lam_cost_50y_1 dtb_lam_cost_50y_2 
 dtb_proph_cost_50y_1 dtb_proph_cost_50y_2 
 dcrag_cost_50y_1 dcrag_cost_50y_2 
 dcrypm_proph_cost_50y_1 dcrypm_proph_cost_50y_2 
 dsbi_proph_cost_50y_1 dsbi_proph_cost_50y_2 
+*/
 dcost_50y_1 dcost_50y_2
 ;
 footnote;
@@ -2025,3 +2033,5 @@ footnote;
 ods html close;
 
 
+
+ 
