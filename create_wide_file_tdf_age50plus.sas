@@ -3,25 +3,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_u_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tdf_age50plus\tdf_age50plus_a_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_u_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tdf_age50plus\tdf_age50plus_a_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_u;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tdf_age50plus_a;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_tld_switch_u; 
+proc sort data=b.k_tdf_age50plus_a; 
 by run cald option;
 run;
 
@@ -31,7 +31,7 @@ run;
 data sf;
 
 
-set b.k_tld_switch_u ;
+set b.k_tdf_age50plus_a ;
 
 
 
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_tld_switch_u sf;
+merge b.k_tdf_age50plus_a sf;
 by run ;
 
 * preparatory code ;
@@ -838,7 +838,7 @@ run;
 
 * n_iime ;						n_iime = s_iime_ * &sf * 4;
 
-* TLD_SWITCH ;
+* tdf_age50plus ;
 
 * prop_artexp_elig_tldsw;		prop_artexp_elig_tldsw = s_tldsw_elig / s_artexp;
 * prop_tldsw_uvl2;				prop_tldsw_uvl2 = s_uvl2_elig / s_tldsw_elig;
@@ -1190,9 +1190,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_tld_switch_u_y; set y;  
+data    b.l_tdf_age50plus_a_y; set y;  
 
-data y ; set b.l_tld_switch_u_y; 
+data y ; set b.l_tdf_age50plus_a_y; 
 
   options nomprint;
   option nospool;
@@ -1585,25 +1585,9 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 
 
-  data  b.w_tld_switch_u     ; 
+  data  b.w_tdf_age50plus_a     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
-
-
-
-
-
-
-
-
-
-
-
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_u_out\";
-libname c "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_t_out\";
-
-data b;
-set c.w_tld_switch_t  b.w_tld_switch_u   ;
 
 
 

@@ -538,7 +538,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;	
 * incr_rate_int_low_adh;	%sample(incr_rate_int_low_adh, 1 2 5, 0.5 0.25 0.25);
 * prob_return_adc; 			%sample(prob_return_adc, 0.7 0.8 0.9, 0.05 0.15 0.8); * change sep22 for pop_wide_tld;
-* switch_for_tox; 			%sample(switch_for_tox, 0 1, 0.8 0.2);
+* switch_for_tox; 			%sample(switch_for_tox, 0 1, 0.5 0.5);
 * higher_newp_less_engagement; 
 							%sample(higher_newp_less_engagement, 0 1, 0.8 0.2);
 							* are people with more newp less likely to be engaged with care; 
@@ -2079,14 +2079,15 @@ who may be dead and hence have caldate{t} missing;
 
 if option=0 then do; end;
 
-if option=1 then do;
+if option=1 then do; 
 	if age > 50 and naive=0 and reg_option=125 and o_dol=1 and o_ten=1 and o_3tc=1 
-	and . < vm < vl_threshold and (. < vm_tm6 < vl_threshold or . < vm_tm5 < vl_threshold or . < vm_tm4 < vl_threshold
-	or . < vm_tm3 < vl_threshold) and (vm_tm6 < vl_threshold and vm_tm5 < vl_threshold and vm_tm4 < vl_threshold and 
-	vm_tm3 < vl_threshold and vm_tm2 < vl_threshold and vm_tm1 < vl_threshold) then reg_option=140; * so at least two measured values < threshold and no 
+	and . < vm < 3  and (. < vm_tm6 < 3 or . < vm_tm5 < 3 or . < vm_tm4 < 3
+	or . < vm_tm3 < 3) and (vm_tm6 < 3 and vm_tm5 < 3 and vm_tm4 < 3 and 
+	vm_tm3 < 3 and vm_tm2 < 3 and vm_tm1 < 3) then do; reg_option=140; reg_option_set_in_options=140;  end;* so at least two measured values < threshold and no 
 	value higher;
 end;
 
+end;
 
 * status quo
 
@@ -8683,9 +8684,8 @@ end;
 * transition from tld to ld in people aged > 50 with viral suppression;
 
 if reg_option=140 and interrupt=0 
-and age > 50 and o_dol=1 and o_ten=1 and o_3tc=1 and . < vm < vl_threshold and (. < vm_tm6 < vl_threshold or . < vm_tm5 < vl_threshold or . < vm_tm4 < vl_threshold
-	or . < vm_tm3 < vl_threshold) and (vm_tm6 < vl_threshold and vm_tm5 < vl_threshold and vm_tm4 < vl_threshold and 
-	vm_tm3 < vl_threshold and vm_tm2 < vl_threshold and vm_tm1 < vl_threshold) then do;
+and age > 50 and o_dol=1 and o_ten=1 and o_3tc=1 and . < vm_tm1 < 3 and (. < vm_tm6 < 3 or . < vm_tm5 < 3 or . < vm_tm4 < 3
+	or . < vm_tm3 < 3) and (vm_tm6 < 3 and vm_tm5 < 3 and vm_tm4 < 3 and vm_tm3 < 3 and vm_tm2 < 3 and vm_tm1 < 3) then do;
 o_ten=0; tss_ten=0; 
 end;
 
@@ -8733,18 +8733,6 @@ if onart = 1 and switch_for_tox = 1 then do;
                   t_zdv=1;tss_zdv   =0;o_zdv=0;
             x3:end;
 
-* ten;		* annual egfr testing ;
-			egfr_test=0;
-			f=rand('uniform'); if f < prob_egfr_test and o_ten_tm1 = 1 and o_ten_tm2 = 1 and o_ten_tm3 = 1  
-			and (caldate{t} - date_last_egfr > 1  or date_last_egfr = .) then do; 
-				egfr_test = 1;  date_last_egfr = caldate{t};
-			end;
-
-            s=rand('uniform'); if t ge 2  and interrupt=0 and o_ten_tm1=1 and (c_neph_tm1=1 and egfr_test = 1 and s lt r_swi_ten_neph) then do;
-                  sw_toxicity=1;
-	              if t_zdv_tm1=0  and o_zdv ne 1 then do; t_ten=1;tss_ten   =0; o_zdv=1;o_ten=0; goto x6; end;
-	              t_ten=1;tss_ten   =0;o_ten=0;
-            x6:end;
 
 * lpr;
 		s=rand('uniform'); r=rand('uniform'); if t ge 2  and interrupt=0 and o_lpr_tm1=1 and
@@ -18140,7 +18128,7 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 * procs;
 
-
+/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
@@ -18148,7 +18136,7 @@ proc print; var option age reg_option onart art_monitoring_strategy o_dol o_3tc 
 where naive=0 and caldate&j ge 2025;
 run;
 
-
+*/
 
 /*
 
@@ -21018,16 +21006,20 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
 
-data a; set r1;
-
-
-
-data r1; set a;
 * 2025;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
+
+
+data a; set r1;
+
+
+
+data r1; set a;
+
+* 2026;
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
@@ -21231,11 +21223,6 @@ data r1; set a;
 
 
 data r1; set a;
-* 2025;
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
