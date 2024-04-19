@@ -386,6 +386,8 @@ label p50_p_vmmc_0 = "VMMC";
 label o_circ1549_phia = "PHIA All";
 label o_trad_circ1549_phia = "PHIA traditional";
 label o_vmmc1549_phia = "PHIA VMMC";
+label o_circ1549_dhs = "All, DHS";
+
 
 series  x=cald y=p50_p_mcirc_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_mcirc_0 	upper=p95_p_mcirc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
@@ -397,6 +399,8 @@ band    x=cald lower=p5_p_vmmc_0 	upper=p95_p_vmmc_0  / transparency=0.9 fillatt
 scatter  x=cald y=o_circ1549_phia/	markerattrs = (symbol=square color=black  size = 10) ;
 scatter  x=cald y=o_trad_circ1549_phia/	markerattrs = (symbol=square color=blue  size = 10) ;
 scatter  x=cald y=o_vmmc1549_phia/	markerattrs = (symbol=square color=green  size = 10) ;
+scatter  x=cald y=o_circ1549_dhs/	markerattrs = (symbol=square color=red  size = 10) ;
+
 run;quit;
 
 ods html;
@@ -448,10 +452,15 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) 
 
 label p50_prop_sw_hiv_0 = "FSW with HIV 15-64 op 0 (median) ";
 label o_prev_fsw_UNAIDS = "UNAIDS";
+label o_prev_fsw_abid_kof = "Abidjan (Koffi)";
+label o_prev_fsw_abid_ghys = "Abidjan (Ghys)";
+
 
 series  x=cald y=p50_prop_sw_hiv_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_sw_hiv_0 	upper=p95_prop_sw_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 scatter  x=cald y=o_prev_fsw_UNAIDS/	markerattrs = (symbol=square color=green  size = 10) ;
+scatter  x=cald y=o_prev_fsw_abid_kof/	markerattrs = (symbol=square color=orange  size = 10) ;
+scatter  x=cald y=o_prev_fsw_abid_ghys/	markerattrs = (symbol=square color=blue  size = 10) ;
 
 run;quit;
 
@@ -491,12 +500,19 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.20 by 0.
 label p50_prevalence1549m_0 = "Model";
 label o_prev1549m_phia = "PHIA";
 label o_prev1549_UNAIDS = "UNAIDS";
+label o_prev_m_urb_Benoit = "Benoit urban";
+label o_prev_m_rur_Benoit = "Benoit rural";
+label o_prev1549m_dhs = "DHS";
 
 series  x=cald y=p50_prevalence1549m_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prevalence1549m_0 	upper=p95_prevalence1549m_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
-scatter  x=cald y=o_prev1549m_phia/	markerattrs = (symbol=square color=green  size = 10) ;
+scatter  x=cald y=o_prev1549m_phia/	markerattrs = (symbol=square color=red  size = 10) ;
 scatter  x=cald y=o_prev1549m_UNAIDS/	markerattrs = (symbol=square color=green  size = 10) ;
+scatter  x=cald y=o_prev_m_urb_Benoit/	markerattrs = (symbol=square color=blue  size = 10) ;
+scatter  x=cald y=o_prev_m_rur_Benoit/	markerattrs = (symbol=square color=orange  size = 10) ;
+scatter  x=cald y=o_prev1549m_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+
 run;quit;
 
 
@@ -509,12 +525,19 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.0
 label p50_prevalence1549w_0 = "Model";
 label o_prev1549w_phia = "PHIA";
 label o_prev1549w_UNAIDS = "UNAIDS";
+label o_prev_w_urb_Benoit = "Benoit urban";
+label o_prev_w_rur_Benoit = "Benoit rural";
+label o_prev1549w_dhs = "DHS";
 
 series  x=cald y=p50_prevalence1549w_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
-scatter  x=cald y=o_prev1549w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
+scatter  x=cald y=o_prev1549w_phia/	markerattrs = (symbol=square color=red  size = 10) ;
 scatter  x=cald y=o_prev1549w_UNAIDS/	markerattrs = (symbol=square color=green  size = 10) ;
+scatter  x=cald y=o_prev_w_urb_Benoit/	markerattrs = (symbol=square color=blue  size = 10) ;
+scatter  x=cald y=o_prev_w_rur_Benoit/	markerattrs = (symbol=square color=orange  size = 10) ;
+scatter  x=cald y=o_prev1549w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+
 run;quit;
 
 
@@ -527,6 +550,9 @@ label p50_prevalence1519w_0 = "Women";
 label p50_prevalence1519m_0 = "Men";
 label o_prev1519w_phia = "Women PHIA";
 label o_prev1519m_phia = "Men PHIA";
+label o_prev1519w_dhs = "Women DHS";
+label o_prev1519m_dhs = "Men DHS";
+
 
 series  x=cald y=p50_prevalence1519w_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prevalence1519w_0 	upper=p95_prevalence1519w_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
@@ -535,6 +561,8 @@ band    x=cald lower=p5_prevalence1519m_0 	upper=p95_prevalence1519m_0  / transp
 
 scatter  x=cald y=o_prev1519w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev1519m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
+scatter  x=cald y=o_prev1519w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev1519m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
 run;quit;
 
 proc sgplot data=d; 
@@ -546,6 +574,8 @@ label p50_prevalence2024w_0 = "Women";
 label p50_prevalence2024m_0 = "Men";
 label o_prev2024w_phia = "Women PHIA";
 label o_prev2024m_phia = "Men PHIA";
+label o_prev2024w_dhs = "Women DHS";
+label o_prev2024m_dhs = "Men DHS";
 
 series  x=cald y=p50_prevalence2024w_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prevalence2024w_0 	upper=p95_prevalence2024w_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
@@ -554,6 +584,9 @@ band    x=cald lower=p5_prevalence2024m_0 	upper=p95_prevalence2024m_0  / transp
 
 scatter  x=cald y=o_prev2024w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev2024m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
+scatter  x=cald y=o_prev2024w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev2024m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
+
 run;quit;
 
 proc sgplot data=d; 
@@ -565,6 +598,8 @@ label p50_prevalence2529w_0 = "Women";
 label p50_prevalence2529m_0 = "Men";
 label o_prev2529w_phia = "Women PHIA";
 label o_prev2529m_phia = "Men PHIA";
+label o_prev2529w_dhs = "Women DHS";
+label o_prev2529m_dhs = "Men DHS";
 
 series  x=cald y=p50_prevalence2529w_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prevalence2529w_0 	upper=p95_prevalence2529w_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
@@ -573,6 +608,9 @@ band    x=cald lower=p5_prevalence2529m_0 	upper=p95_prevalence2529m_0  / transp
 
 scatter  x=cald y=o_prev2529w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev2529m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
+scatter  x=cald y=o_prev2529w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev2529m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
+
 run;quit;
 
 proc sgplot data=d; 
@@ -584,6 +622,8 @@ label p50_prevalence3034w_0 = "Women";
 label p50_prevalence3034m_0 = "Men";
 label o_prev3034w_phia = "Women PHIA";
 label o_prev3034m_phia = "Men PHIA";
+label o_prev3034w_dhs = "Women DHS";
+label o_prev3034m_dhs = "Men DHS";
 
 series  x=cald y=p50_prevalence3034w_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prevalence3034w_0 	upper=p95_prevalence3034w_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
@@ -592,6 +632,9 @@ band    x=cald lower=p5_prevalence3034m_0 	upper=p95_prevalence3034m_0  / transp
 
 scatter  x=cald y=o_prev3034w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev3034m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
+scatter  x=cald y=o_prev3034w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev3034m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
+
 run;quit;
 
 proc sgplot data=d; 
@@ -603,6 +646,8 @@ label p50_prevalence3539w_0 = "Women";
 label p50_prevalence3539m_0 = "Men";
 label o_prev3539w_phia = "Women PHIA";
 label o_prev3539m_phia = "Men PHIA";
+label o_prev3539w_dhs = "Women DHS";
+label o_prev3539m_dhs = "Men DHS";
 
 series  x=cald y=p50_prevalence3539w_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prevalence3539w_0 	upper=p95_prevalence3539w_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
@@ -611,6 +656,9 @@ band    x=cald lower=p5_prevalence3539m_0 	upper=p95_prevalence3539m_0  / transp
 
 scatter  x=cald y=o_prev3539w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev3539m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
+scatter  x=cald y=o_prev3539w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev3539m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
+
 run;quit;
 
 proc sgplot data=d; 
@@ -622,6 +670,8 @@ label p50_prevalence4044w_0 = "Women";
 label p50_prevalence4044m_0 = "Men";
 label o_prev4044w_phia = "Women PHIA";
 label o_prev4044m_phia = "Men PHIA";
+label o_prev4044w_dhs = "Women DHS";
+label o_prev4044m_dhs = "Men DHS";
 
 series  x=cald y=p50_prevalence4044w_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prevalence4044w_0 	upper=p95_prevalence4044w_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
@@ -630,6 +680,9 @@ band    x=cald lower=p5_prevalence4044m_0 	upper=p95_prevalence4044m_0  / transp
 
 scatter  x=cald y=o_prev4044w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev4044m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
+scatter  x=cald y=o_prev4044w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev4044m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
+
 run;quit;
 
 proc sgplot data=d; 
@@ -641,6 +694,8 @@ label p50_prevalence4549w_0 = "Women";
 label p50_prevalence4549m_0 = "Men";
 label o_prev4549w_phia = "Women PHIA";
 label o_prev4549m_phia = "Men PHIA";
+label o_prev4549w_dhs = "Women DHS";
+label o_prev4549m_dhs = "Men DHS";
 
 series  x=cald y=p50_prevalence4549w_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prevalence4549w_0 	upper=p95_prevalence4549w_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
@@ -649,6 +704,9 @@ band    x=cald lower=p5_prevalence4549m_0 	upper=p95_prevalence4549m_0  / transp
 
 scatter  x=cald y=o_prev4549w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev4549m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
+scatter  x=cald y=o_prev4549w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev4549m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
+
 run;quit;
 
 ods html;

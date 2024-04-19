@@ -4,8 +4,7 @@
 
 ***Turn off options code;
 
-***17 APR 24. THIS FILE HAS NOT BEEN USED YET. EXPECT HIGHER BIRTH CIRC AND % FSW
-***USE IT WITH THE 16 APR FILE WHICH HAS THE 2.2 PROP DIAG RATE FOR MEN;
+***USE WITH THE 16 APR FILE WHICH HAS THE 2.2 PROP DIAG RATE FOR MEN;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 caldate1=1980;
@@ -52,4 +51,4 @@ startyr = 1985 + 0.25;
 
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.05	0.05	0.15	0.15	0.20	0.20	0.20);
+								0.01	0.01	0.03	0.15	0.30	0.30	0.20);

@@ -81,11 +81,34 @@ if cald=2022 then do;
 	o_prev1549_UNAIDS=0.018; o_prev1549m_UNAIDS=0.011; o_prev1549w_UNAIDS=0.026;
 end;
 
-* Source: https://dhsprogram.com/pubs/pdf/HF14/CotedIvoire_HIV_factsheet_eng.pdf;
+***DHS data;
+* Source: https://dhsprogram.com/pubs/pdf/HF14/CotedIvoire_HIV_factsheet_eng.pdf (table 13.5 and 13.7 in DHS);
 if cald=2005 then do;
 		o_prev1549_dhs=0.047; o_prev1549m_dhs=0.029; o_prev1549w_dhs=0.064;
+		o_prev1519_dhs=0.003; o_prev1519m_dhs=0.002; o_prev1519w_dhs=0.004;
+		o_prev2024_dhs=0.025; o_prev2024m_dhs=0.003; o_prev2024w_dhs=0.045;
 end;
 
+* Source: https://dhsprogram.com/pubs/pdf/FR272/FR272.pdf (table 14.3 in DHS);
+if cald=2012 then do;
+		o_prev1549_dhs=0.037; o_prev1549m_dhs=0.027; o_prev1549w_dhs=0.046;
+		o_prev1519_dhs=0.005; o_prev1519m_dhs=0.001; o_prev1519w_dhs=0.008;
+		o_prev2024_dhs=0.022; o_prev2024m_dhs=0.005; o_prev2024w_dhs=0.036;
+		o_prev2529_dhs=0.037; o_prev2529m_dhs=0.013; o_prev2529w_dhs=0.056;
+		o_prev3034_dhs=0.047; o_prev3034m_dhs=0.026; o_prev3034w_dhs=0.068;
+		o_prev3539_dhs=0.051; o_prev3539m_dhs=0.049; o_prev3539w_dhs=0.054;
+		o_prev4044_dhs=0.075; o_prev4044m_dhs=0.077; o_prev4044w_dhs=0.073;
+		o_prev4549_dhs=0.078; o_prev4549m_dhs=0.079; o_prev4549w_dhs=0.077;
+end;
+
+
+
+* Source: Seroprevalence of HIV infection in the general population of the Côte d'Ivoire, West Africa
+		  Benoit, 1990, JAIDS;
+if cald=1989 then do;
+	o_prev_m_urb_Benoit=0.09;o_prev_w_urb_Benoit=0.06;
+	o_prev_m_rur_Benoit=0.064;o_prev_w_rur_Benoit=0.036;
+end;
 
 ***********************
 *HIV INCIDENCE
@@ -134,6 +157,11 @@ if cald=2018 then do;
 	o_trad_circ1549_phia = 0.509; o_vmmc1549_phia = 0.283; o_circ1549_phia = 0.792;
 end;
 
+*Source: DHS 2005 table 13.10, DHS 2015 table, DHS 2021 table 13.10 ;
+
+if cald=2005 then o_circ1549_dhs=0.96;
+if cald=2016 then o_circ1549_dhs=0.967;
+if cald=2021 then o_circ1549_dhs=0.97;
 
 ***********************
 *CARE CASCADE;
@@ -195,16 +223,48 @@ if cald=2022 then o_prep_UNAIDS=15773;
 		  24.5% of total population of 28,000,000 =6,860,000 females aged 15-49
 		  66,600/6,860,000=	0.97%;
 
-
-*Prevalence;
-
-
+* FSW Prevalence;
 
 if cald=2022 then do;
 	o_pop_fsw_UNAIDS=66600;o_p_fsw_UNAIDS=0.0097; 
 	o_prev_fsw_UNAIDS=0.048;
 end;
 
+* Source: Rapid Spread of HIV Infections in Abidjan, Ivory Coast, 1987-1990, Koffi 1992, Eur J Clin Microbiol Infect Dis; 
+if cald=1986 then o_prev_fsw_abid_kof=0.376;
+if cald=1987 then o_prev_fsw_abid_kof=0.397;
+if cald=1989 then o_prev_fsw_abid_kof=0.483;
+if cald=1990 then o_prev_fsw_abid_kof=0.694;
+
+* Source: Increase in condom use and decline in HIV and sexually transmitted diseases among female sex workers in Abidjan, 
+		  Côte d'Ivoire, 1991–1998, Ghys, AIDS 2002; 
+if cald=1992 then o_prev_fsw_abid_ghys=0.89;
+if cald=1993 then o_prev_fsw_abid_ghys=0.79;
+if cald=1994 then o_prev_fsw_abid_ghys=0.68;
+if cald=1995 then o_prev_fsw_abid_ghys=0.53;
+if cald=1996 then o_prev_fsw_abid_ghys=0.52;
+if cald=1997 then o_prev_fsw_abid_ghys=0.52;
+if cald=1998 then o_prev_fsw_abid_ghys=0.32;
+
+* Source: Innovative Positive Outcomes of Associations Fight against HIV/ Trust Area Sexual health-oriented services 
+  Innovative measures of associations Fight against HIV/AIDS in West Africa, 2013, Page 15;
+if cald=1999 then o_prev_fsw_abid_ghys=0.32;
+if cald=2000 then o_prev_fsw_abid_ghys=0.28;
+if cald=2001 then o_prev_fsw_abid_ghys=0.29;
+if cald=2002 then o_prev_fsw_abid_ghys=0.28;
+if cald=2003 then o_prev_fsw_abid_ghys=0.31;
+if cald=2004 then o_prev_fsw_abid_ghys=0.28;
+if cald=2005 then o_prev_fsw_abid_ghys=0.18;
+if cald=2006 then o_prev_fsw_abid_ghys=0.19;
+if cald=2007 then o_prev_fsw_abid_ghys=0.20;
+if cald=2008 then o_prev_fsw_abid_ghys=0.19;
+if cald=2009 then o_prev_fsw_abid_ghys=0.19;
+if cald=2010 then o_prev_fsw_abid_ghys=0.20;
+
+**90% condom use since 2005;
+
+
+* FSW Incidence;
 *Source: HIV incidence among women engaging in sex work in sub-Saharan Africa: a systematic review and meta-analysis (HJones);
 *Incidence;
 if cald=1996 then o_Incid_fsw1539_HJ=16.3;
