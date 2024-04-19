@@ -258,6 +258,8 @@ s_alive = s_alive_m + s_alive_w ;
 * prop_w_ever_sw;				if s_alive1564_w gt 0 then prop_w_ever_sw = s_ever_sw / s_alive_w ;
 * prop_sw_hiv;					if s_sw_1564 gt 0 then prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
 * n_sw_1549_;					n_sw_1549_ = s_sw_1549 * &sf;
+* p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
+
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -398,7 +400,7 @@ prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w	
 rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
 n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive_m			n_alive_w	n_alive1564_
 n_art_start_y		n_alive1564m		n_alive1564w
-n_prep 				n_prep_ever			p_prep_ever			adh_pattern	;		
+n_prep 				n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_;		
 
 
 proc sort data=y;by run option;run;

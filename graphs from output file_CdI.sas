@@ -46,7 +46,7 @@ p_onart_m			p_onart_w			p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w	p_vg1
 prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w
 rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
 n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive_m			n_alive_w	n_alive1564_
-n_alive1564m		n_alive1564w		n_art_start_y 		n_prep				n_prep_ever			p_prep_ever			;
+n_alive1564m		n_alive1564w		n_art_start_y 		n_prep				n_prep_ever			p_prep_ever	p_fsw_newp0_
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -464,6 +464,18 @@ scatter  x=cald y=o_prev_fsw_abid_ghys/	markerattrs = (symbol=square color=blue 
 
 run;quit;
 
+proc sgplot data=e; 
+title    height=1.5 justify=center "Proportion of sex workers with 0 condomless partners";
+footnote1 height=0.9  "";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+
+label p50_p_fsw_newp0_ = "Median";
+
+series  x=cald y=p50_p_fsw_newp0_  / 	 lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_fsw_newp0_	 upper=p95_p_fsw_newp0_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+
+run;quit;
 
 ods html;
 proc sgplot data=d; 

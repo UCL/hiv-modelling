@@ -238,30 +238,29 @@ if cald=1990 then o_prev_fsw_abid_kof=0.694;
 
 * Source: Increase in condom use and decline in HIV and sexually transmitted diseases among female sex workers in Abidjan, 
 		  Côte d'Ivoire, 1991–1998, Ghys, AIDS 2002; 
-if cald=1992 then o_prev_fsw_abid_ghys=0.89;
-if cald=1993 then o_prev_fsw_abid_ghys=0.79;
-if cald=1994 then o_prev_fsw_abid_ghys=0.68;
-if cald=1995 then o_prev_fsw_abid_ghys=0.53;
-if cald=1996 then o_prev_fsw_abid_ghys=0.52;
-if cald=1997 then o_prev_fsw_abid_ghys=0.52;
-if cald=1998 then o_prev_fsw_abid_ghys=0.32;
+*(condom use source is from the report below);
+if cald=1992 then do; o_prev_fsw_abid_ghys=0.89;o_condom_lastsex=0.20;
+if cald=1993 then do; o_prev_fsw_abid_ghys=0.79;o_condom_lastsex=0.22;
+if cald=1994 then do; o_prev_fsw_abid_ghys=0.68;o_condom_lastsex=0.40;
+if cald=1995 then do; o_prev_fsw_abid_ghys=0.53;o_condom_lastsex=0.45;
+if cald=1996 then do; o_prev_fsw_abid_ghys=0.52;o_condom_lastsex=0.59;
+if cald=1997 then do; o_prev_fsw_abid_ghys=0.52;o_condom_lastsex=0.80;
+if cald=1998 then do; o_prev_fsw_abid_ghys=0.32;o_condom_lastsex=0.85;
 
 * Source: Innovative Positive Outcomes of Associations Fight against HIV/ Trust Area Sexual health-oriented services 
-  Innovative measures of associations Fight against HIV/AIDS in West Africa, 2013, Page 15;
-if cald=1999 then o_prev_fsw_abid_ghys=0.32;
-if cald=2000 then o_prev_fsw_abid_ghys=0.28;
-if cald=2001 then o_prev_fsw_abid_ghys=0.29;
-if cald=2002 then o_prev_fsw_abid_ghys=0.28;
-if cald=2003 then o_prev_fsw_abid_ghys=0.31;
-if cald=2004 then o_prev_fsw_abid_ghys=0.28;
-if cald=2005 then o_prev_fsw_abid_ghys=0.18;
-if cald=2006 then o_prev_fsw_abid_ghys=0.19;
-if cald=2007 then o_prev_fsw_abid_ghys=0.20;
-if cald=2008 then o_prev_fsw_abid_ghys=0.19;
-if cald=2009 then o_prev_fsw_abid_ghys=0.19;
-if cald=2010 then o_prev_fsw_abid_ghys=0.20;
-
-**90% condom use since 2005;
+ Innovative measures of associations Fight against HIV/AIDS in West Africa, 2013, Page 15;
+if cald=1999 then do; o_prev_fsw_abid_ghys=0.32; o_condom_lastsex=0.85;
+if cald=2000 then do; o_prev_fsw_abid_ghys=0.28; o_condom_lastsex=0.84;
+if cald=2001 then do; o_prev_fsw_abid_ghys=0.29; o_condom_lastsex=0.85;
+if cald=2002 then do; o_prev_fsw_abid_ghys=0.28; o_condom_lastsex=0.85;
+if cald=2003 then do; o_prev_fsw_abid_ghys=0.31; o_condom_lastsex=0.85;
+if cald=2004 then do; o_prev_fsw_abid_ghys=0.28; o_condom_lastsex=0.85;
+if cald=2005 then do; o_prev_fsw_abid_ghys=0.18; o_condom_lastsex=0.90;
+if cald=2006 then do; o_prev_fsw_abid_ghys=0.19; o_condom_lastsex=0.90;
+if cald=2007 then do; o_prev_fsw_abid_ghys=0.20; o_condom_lastsex=0.90;
+if cald=2008 then do; o_prev_fsw_abid_ghys=0.19; o_condom_lastsex=0.90;
+if cald=2009 then do; o_prev_fsw_abid_ghys=0.19; o_condom_lastsex=0.90;
+if cald=2010 then do; o_prev_fsw_abid_ghys=0.20; o_condom_lastsex=0.90;
 
 
 * FSW Incidence;
