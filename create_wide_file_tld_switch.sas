@@ -1590,20 +1590,8 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
   by run;
 
 
-
-
-
-
-
-
-
-
-
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_w_out\";
-libname c "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_t_out\";
-
 data b;
-set c.w_tld_switch_t  b.w_tld_switch_w   ;
+set b.w_tld_switch_w   ;
 
 
 
