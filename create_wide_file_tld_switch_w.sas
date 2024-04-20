@@ -1019,6 +1019,11 @@ run;
 * p_first_uvl2_dol_r; 			p_first_uvl2_dol_r = s_second_vlg1000_first_dol_r / s_second_vlg1000_first ;
 * deathr_dol_r_uvl2;			deathr_dol_r_uvl2 = (s_dead_dol_r_uvl2 * 4) / s_uvl2_elig ;
     
+    
+* p_dlt_adh_high_r_dol; 		p_dlt_adh_high_r_dol = s_drug_level_test_adh_high_r_dol / s_drug_level_test_adh_high ;
+* p_dlt_adh_low_r_dol; 			p_dlt_adh_low_r_dol = s_drug_level_test_adh_low_r_dol / s_drug_level_test_adh_low ;
+
+
 
 * blood pressure;
 
@@ -1312,6 +1317,8 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
+p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol
+
 ;
 
 
@@ -1507,7 +1514,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=p_len);  %var(v=p_cab);  %var(v=p_len_1524);  %var(v=p_cab_1524);  %var(v=p_onart_1524);   %var(v=incidence1524);  %var(v=p_onart_vl1000_w_1524);   
 %var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524);  
-
+%var(v=p_dlt_adh_high_r_dol); %var(v= p_dlt_adh_low_r_dol);
 
 data   b.wide_outputs; merge 
 
@@ -1562,6 +1569,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
+p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol
 ;
 
 
@@ -1928,8 +1936,11 @@ p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 p_
 
 p_dlt_adh_high_r_dol_10y_1 p_dlt_adh_high_r_dol_10y_2 p_dlt_adh_high_r_dol_10y_3 p_dlt_adh_high_r_dol_10y_4 
 p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 p_dlt_adh_low_r_dol_10y_4 
+
+p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 p_tldsw2_elig_tldsw_10y_4 p_tldsw2_elig_tldsw_10y_5 
 ;
-* p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 p_tldsw2_elig_tldsw_10y_4 p_tldsw2_elig_tldsw_10y_5 ;
+
+
 run;
 ods html close;
 
