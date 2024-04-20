@@ -12,6 +12,15 @@
 
 * vary assumptions on effect of each insti mutation
 
+* consider also cost of national committees making decision on switch
+
+* make clear that cost of resistance test includes accounts for the chance of failure of amplification
+
+* consider a separate strategy in which this final strategy is altered if/when population level INSTI resistance exceeds a certain threshold ?
+
+* consider that combinations of insti mutations lead to additional resistance
+
+; 
 
 
 
