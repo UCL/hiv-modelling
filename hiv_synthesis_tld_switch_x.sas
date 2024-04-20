@@ -6,7 +6,7 @@
 
 * consider atazanavir as the PI ?
 
-* “switching” could include doubling the dose of DTG if HIVDR testing indicates a low or moderate DTG resistance score ?
+* switching could include doubling the dose of DTG if HIVDR testing indicates a low or moderate DTG resistance score ?
 
 * consider other adh values for defining positive tdf level test 
 
