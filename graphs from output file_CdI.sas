@@ -471,9 +471,11 @@ xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		va
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
 
 label p50_p_fsw_newp0_ = "Median";
+label o_condom_lastsex = "Condom use last sex";
 
 series  x=cald y=p50_p_fsw_newp0_  / 	 lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_fsw_newp0_	 upper=p95_p_fsw_newp0_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+scatter  x=cald y=o_condom_lastsex/	markerattrs = (symbol=square color=green  size = 10) ;
 
 run;quit;
 
