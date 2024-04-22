@@ -3,25 +3,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tdf_age50plus\tdf_age50plus_a_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tdf_age50plus\tdf_age50plus_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tdf_age50plus\tdf_age50plus_a_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tdf_age50plus_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tdf_age50plus_a;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tdf_age50plus;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_tdf_age50plus_a; 
+proc sort data=b.k_tdf_age50plus; 
 by run cald option;
 run;
 
@@ -31,8 +31,7 @@ run;
 data sf;
 
 
-set b.k_tdf_age50plus_a ;
-
+set b.k_tdf_age50plus ;
 
 
 if cald=2024   ;
@@ -52,7 +51,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_tdf_age50plus_a sf;
+merge b.k_tdf_age50plus sf;
 by run ;
 
 * preparatory code ;
@@ -130,7 +129,7 @@ ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odab
 
 ddaly_all = ddaly_ntd_mtct_odab_napd;
 
-
+ddaly_ac_mtct = ddaly + ddaly_mtct ;
 
 * ================================================================================= ;
 
@@ -153,17 +152,20 @@ ddar_cost = s_dcost_dar * &sf * 4 / 1000;
 dtaz_cost = s_dcost_taz * &sf * 4 / 1000;
 defa_cost = s_dcost_efa * &sf * 4 / 1000;
 ddol_cost = s_dcost_dol * &sf * 4 / 1000;
+dcab_cost = s_dcost_cab * &sf * 4 / 1000;
+dlen_cost = s_dcost_len * &sf * 4 / 1000;
 
 if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_prep_oral=. then s_dcost_prep_oral=0;
-if s_dcost_prep_inj=. then s_dcost_prep_inj=0;
+
 if s_dcost_prep_visit=. then s_dcost_prep_visit=0;
 if s_dcost_prep_ac_adh=. then s_dcost_prep_ac_adh=0;
 if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
-s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_inj;
-s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_inj;
+s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_cab +  s_dcost_prep_len ;
+s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_cab + s_dcost_prep_visit_len   ;
+
 
 * ts1m - 12 instead of 4; 
 dvis_cost = s_dvis_cost * &sf * 4 / 1000;
@@ -181,12 +183,20 @@ dcot_cost = s_dcot_cost * &sf * 4 / 1000;
 dres_cost = s_dres_cost * &sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
 dcost_prep = s_dcost_prep * &sf * 4 / 1000; 
-dcost_prep_inj = s_dcost_prep_inj * &sf * 4 / 1000; 
+dcost_prep_cab = s_dcost_prep_cab * &sf * 4 / 1000; 
+dcost_prep_len = s_dcost_prep_len * &sf * 4 / 1000; 
 dcost_prep_oral = s_dcost_prep_oral * &sf * 4 / 1000; 
 dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 	
-dcost_prep_visit_inj  = s_dcost_prep_visit_inj * &sf * 4 / 1000; 	
+dcost_prep_visit_cab  = s_dcost_prep_visit_cab * &sf * 4 / 1000; 	
+dcost_prep_visit_len  = s_dcost_prep_visit_len * &sf * 4 / 1000; 	
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
+
+dtb_lam_cost =  s_dtb_lam_cost  * &sf * 4 / 1000;  
+dtb_proph_cost = s_dtb_proph_cost * &sf * 4 / 1000;  
+dcrag_cost =  s_dcrag_cost  * &sf * 4 / 1000;  
+dcrypm_proph_cost = s_dcrypm_proph_cost * &sf * 4 / 1000;  
+dsbi_proph_cost = s_dsbi_proph_cost  * &sf * 4 / 1000; 
 
 
 * note this below can be used if outputs are from program beyond 1-1-20;
@@ -207,14 +217,15 @@ dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 * sens analysis;
 
 
-dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
+dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv + dcost_non_aids_pre_death ;
+		dcost_child_hiv + dcost_non_aids_pre_death + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost 
+;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
-				dswitchline_cost; 
+				dswitchline_cost + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost ; 
 
 cost_clin_care = dcost_clin_care / discount;
 
@@ -225,7 +236,7 @@ cost = dcost / discount;
 * checks;
 
 * proc print; 
-* var run cald option dcost_prep_inj  dcost_prep_oral   dcost_prep  dcost_prep_visit;
+* var run cald option dcost_prep_cab dcost_prep_len  dcost_prep_oral   dcost_prep  dcost_prep_visit;
 
 * ================================================================================= ;
 
@@ -402,7 +413,8 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * p_elig_hivneg_onprep;			p_elig_hivneg_onprep = s_prep_elig_hivneg_onprep / s_prep_elig_hivneg;
 
-* p_prep_elig_onprep_inj;		p_prep_elig_onprep_inj = s_prep_elig_onprep_inj / s_prep_elig_hivneg_onprep ;
+* p_prep_elig_onprep_cab;		p_prep_elig_onprep_cab = s_prep_elig_onprep_cab / s_prep_elig_hivneg_onprep ;
+* p_prep_elig_onprep_len;		p_prep_elig_onprep_len = s_prep_elig_onprep_len / s_prep_elig_hivneg_onprep ;
 
 * prop_1564_hivneg_onprep;		prop_1564_hivneg_onprep =   max((s_prep_any -s_hiv1_prep_any), 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
 * prop_hivneg_onprep;			prop_hivneg_onprep =   max((s_prep_any -s_hiv1_prep_any), 0) / (s_alive - s_hiv) ;
@@ -416,7 +428,8 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * n_prep_any;					n_prep_any = s_prep_any * &sf;
 * n_prep_oral;					n_prep_oral = s_prep_oral * &sf;
-* n_prep_inj;					n_prep_inj = s_prep_inj * &sf;
+* n_prep_cab;					n_prep_cab = s_prep_cab * &sf;
+* n_prep_len;					n_prep_len = s_prep_len * &sf;
 
 * n_prep_ever;					n_prep_ever = s_prep_any_ever * &sf;
 * p_prep_any_ever;				p_prep_any_ever = s_prep_any_ever / s_alive;
@@ -437,27 +450,38 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * p_prep_adhg80 ;				if s_prep_oral gt 0 then p_prep_adhg80 = s_prep_adhg80 / s_prep_oral ;
 
-* prop_prep_inj ; 				if s_prep_any > 0 then prop_prep_inj = s_prep_inj / s_prep_any ;
+* prop_prep_cab ; 				if s_prep_any > 0 then prop_prep_cab = s_prep_cab / s_prep_any ;
+* prop_prep_len ; 				if s_prep_any > 0 then prop_prep_len = s_prep_len / s_prep_any ;
 
-* ratio_inj_prep_on_tail;		if s_prep_inj > 0 then ratio_inj_prep_on_tail = s_currently_in_prep_inj_tail / s_prep_inj ;
+* ratio_cab_prep_on_tail;		if s_prep_cab > 0 then ratio_cab_prep_on_tail = s_currently_in_prep_cab_tail / s_prep_cab ;
+* ratio_len_prep_on_tail;		if s_prep_len > 0 then ratio_len_prep_on_tail = s_currently_in_prep_len_tail / s_prep_len ;
 
-* pr_ever_prep_inj_res_cab;		pr_ever_prep_inj_res_cab = (s_em_inm_res_o_cab_off_3m + s_emerge_inm_res_cab_tail) / s_prep_inj_ever ;
-* pr_ev_prep_inj_res_cab_hiv;	pr_ev_prep_inj_res_cab_hiv = (s_em_inm_res_o_cab_off_3m + s_emerge_inm_res_cab_tail)  / s_prep_inj_ever_hiv ; 
+* pr_ever_prep_cab_res_cab;		pr_ever_prep_cab_res_cab = (s_em_inm_res_o_cab_off_3m + s_emerge_inm_res_cab_tail) / s_prep_cab_ever ;
+* pr_ev_prep_cab_res_cab_hiv;	pr_ev_prep_cab_res_cab_hiv = (s_em_inm_res_o_cab_off_3m + s_emerge_inm_res_cab_tail)  / s_prep_cab_ever_hiv ; 
+* pr_ever_prep_len_res_len;		pr_ever_prep_len_res_len = (s_em_cam_res_o_len_off_3m + s_emerge_cam_res_len_tail) / s_prep_len_ever ;
+* pr_ev_prep_len_res_len_hiv;	pr_ev_prep_len_res_len_hiv = (s_em_cam_res_o_len_off_3m + s_emerge_cam_res_len_tail)  / s_prep_len_ever_hiv ; 
 
 * of people with resistance emerging on cab-la or tail, proportion on cab-la;  
 * prop_cab_res_o_cab;			prop_cab_res_o_cab = s_em_inm_res_o_cab_off_3m / (s_em_inm_res_o_cab_off_3m + s_emerge_inm_res_cab_tail)  ;
 * of people with resistance emerging on cab-la or tail, proportion in tail;
 * prop_cab_res_tail;			prop_cab_res_tail = s_emerge_inm_res_cab_tail / (s_em_inm_res_o_cab_off_3m + s_emerge_inm_res_cab_tail)  ;
+* of people with resistance emerging on len-la or tail, proportion on len-la;  
+* prop_len_res_o_len;			prop_len_res_o_len = s_em_cam_res_o_len_off_3m / (s_em_cam_res_o_len_off_3m + s_emerge_cam_res_len_tail)  ;
+* of people with resistance emerging on len-la or tail, proportion in tail;
+* prop_len_res_tail;			prop_len_res_tail = s_emerge_cam_res_len_tail / (s_em_cam_res_o_len_off_3m + s_emerge_cam_res_len_tail)  ;
 
 * of people with resistance emerging on cab-la or tail, proportion in whom it emerges in primary infection; 
 * prop_cab_res_primary	;		prop_cab_res_primary = (s_em_inm_res_o_cab_off_3m_pr + s_emerge_inm_res_cab_tail_pr) / 
 								(s_em_inm_res_o_cab_off_3m + s_emerge_inm_res_cab_tail) ;
+* of people with resistance emerging on len-la or tail, proportion in whom it emerges in primary infection; 
+* prop_len_res_primary	;		prop_len_res_primary = (s_em_cam_res_o_len_off_3m_pr + s_emerge_cam_res_len_tail_pr) / 
+								(s_em_cam_res_o_len_off_3m + s_emerge_cam_res_len_tail) ;
 
-* of people who initiate prep_inj in same period as primary infection, proportion developing insti resistance in the period; 
-* p_prep_inj_init_prim_res;		p_prep_inj_init_prim_res = s_prep_inj_reinit_prim_res / s_prep_inj_init_prim;
+* of people who initiate prep_cab in same period as primary infection, proportion developing insti resistance in the period; 
+* p_prep_cab_init_prim_res;		p_prep_cab_init_prim_res = s_prep_cab_reinit_prim_res / s_prep_cab_init_prim;
 * as above but including also all reinitiations of prep;
-* p_prep_inj_reinit_prim_res;	p_prep_inj_reinit_prim_res = (s_prep_inj_reinit_prim_res + s_prep_inj_init_prim_res) / 
-															(s_prep_inj_reinit_prim + s_prep_inj_init_prim);
+* p_prep_cab_reinit_prim_res;	p_prep_cab_reinit_prim_res = (s_prep_cab_reinit_prim_res + s_prep_cab_init_prim_res) / 
+															(s_prep_cab_reinit_prim + s_prep_cab_init_prim);
 * of people with hiv on cab who do not have resistance, proportion developing resistance in given period; 
 * p_emerge_inm_res_cab ;		p_emerge_inm_res_cab = s_em_inm_res_o_cab_off_3m /  s_o_cab_or_o_cab_tm1_no_r;
 * as above but not including people in primary infection ;
@@ -466,55 +490,111 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * p_cab_res_emerge_primary;		p_cab_res_emerge_primary = s_cab_res_emerge_primary / s_o_cab_or_o_cab_tm1_no_r_prim ;
 
-* p_emerge_inm_res_cab_tail_pr; p_emerge_inm_res_cab_tail_pr = s_emerge_inm_res_cab_tail_pr / s_cur_in_prep_inj_tail_prim  ; 
+* p_emerge_inm_res_cab_tail_pr; p_emerge_inm_res_cab_tail_pr = s_emerge_inm_res_cab_tail_pr / s_cur_in_prep_cab_tail_prim  ; 
 
 * number of people developing insti drug resistance when in primary infection and in the period of prep initiation or re-initiation ;
-* n_prep_inj_init_reinit_prim_res;  n_prep_inj_reinit_prim_res = (s_prep_inj_reinit_prim_res + s_prep_inj_init_prim_res) * &sf;
+* n_prep_cab_init_reinit_prim_res;  n_prep_cab_reinit_prim_res = (s_prep_cab_reinit_prim_res + s_prep_cab_init_prim_res) * &sf;
 
 
 * of people with hiv in cab tail period who do not have resistance, proportion developing resistance in given period; 
-* p_emerge_inm_res_cab_tail ;	p_emerge_inm_res_cab_tail = s_emerge_inm_res_cab_tail / s_cur_in_prep_inj_tail_no_r; 
+* p_emerge_inm_res_cab_tail ;	p_emerge_inm_res_cab_tail = s_emerge_inm_res_cab_tail / s_cur_in_prep_cab_tail_no_r; 
 
 * of people on cab at time of infection, proportion developing resistance in primary infection period;
-* p_emerge_inm_res_cab_prim;	p_emerge_inm_res_cab_prim = s_cab_res_prep_inj_primary / s_prep_inj_inf_or_off_3m;
+* p_emerge_inm_res_cab_prim;	p_emerge_inm_res_cab_prim = s_cab_res_prep_cab_primary / s_prep_cab_inf_or_off_3m;
 
 * n_infected_inm;				n_infected_inm = s_infected_inm * &sf ;
+
+
+
+* of people who initiate prep_len in same period as primary infection, proportion developing insti resistance in the period; 
+* p_prep_len_init_prim_res;		p_prep_len_init_prim_res = s_prep_len_reinit_prim_res / s_prep_len_init_prim;
+* as above but including also all reinitiations of prep;
+* p_prep_len_reinit_prim_res;	p_prep_len_reinit_prim_res = (s_prep_len_reinit_prim_res + s_prep_len_init_prim_res) / 
+															(s_prep_len_reinit_prim + s_prep_len_init_prim);
+* of people with hiv on len who do not have resistance, proportion developing resistance in given period; 
+* p_emerge_cam_res_len ;		p_emerge_cam_res_len = s_em_cam_res_o_len_off_3m /  s_o_len_or_o_len_tm1_no_r;
+* as above but not including people in primary infection ;
+* p_emerge_cam_res_len_notpr ; 	p_emerge_cam_res_len_notpr = s_em_cam_res_o_len_off_3m_npr /  
+															 (s_o_len_or_o_len_tm1_no_r - s_o_len_or_o_len_tm1_no_r_prim);
+
+* p_len_res_emerge_primary;		p_len_res_emerge_primary = s_len_res_emerge_primary / s_o_len_or_o_len_tm1_no_r_prim ;
+
+* p_emerge_cam_res_len_tail_pr; p_emerge_cam_res_len_tail_pr = s_emerge_cam_res_len_tail_pr / s_cur_in_prep_len_tail_prim  ; 
+
+* number of people developing insti drug resistance when in primary infection and in the period of prep initiation or re-initiation ;
+* n_prep_len_init_reinit_prim_res;  n_prep_len_reinit_prim_res = (s_prep_len_reinit_prim_res + s_prep_len_init_prim_res) * &sf;
+
+
+* of people with hiv in len tail period who do not have resistance, proportion developing resistance in given period; 
+* p_emerge_cam_res_len_tail ;	p_emerge_cam_res_len_tail = s_emerge_cam_res_len_tail / s_cur_in_prep_len_tail_no_r; 
+
+* of people on len at time of infection, proportion developing resistance in primary infection period;
+* p_emerge_cam_res_len_prim;	p_emerge_cam_res_len_prim = s_len_res_prep_len_primary / s_prep_len_inf_or_off_3m;
+
+* n_infected_cam;				n_infected_cam = s_infected_cam * &sf ;
+
+
 
 * proportion of incident infections for which prep initiation or re-initiation was prevented due to positive hiv test;
 * p_primary_prep_use_prevented;	p_primary_prep_use_prevented = s_prep_primary_prevented / s_primary;
 
 * proportion of primary infections in which inm is present or arises due to cab ;
 * p_cab_res_primary	;			p_cab_res_primary = s_cab_res_primary / s_primary;
+* proportion of primary infections in which cam is present or arises due to len ;
+* p_len_res_primary	;			p_len_res_primary = s_len_res_primary / s_primary;
 
 * n_prep_any_start;				n_prep_any_start = s_prep_any_start * &sf; 
 * n_prep_oral_start;			n_prep_oral_start = s_prep_oral_start * &sf; 
-* n_prep_inj_start;				n_prep_inj_start = s_prep_inj_start * &sf; 
+* n_prep_cab_start;				n_prep_cab_start = s_prep_cab_start * &sf; 
+* n_prep_len_start;				n_prep_len_start = s_prep_len_start * &sf; 
 * n_prep_vr_start;				n_prep_vr_start = s_prep_vr_start * &sf; 
 
-* n_start_restart_prep_inj; 		n_start_restart_prep_inj = s_start_restart_prep_inj * &sf ;
-* n_start_restart_prep_inj_prim; 	n_start_restart_prep_inj_prim = s_start_restart_prep_inj_prim * &sf ;
-* n_start_rest_prep_inj_hiv; 	n_start_rest_prep_inj_hiv = s_start_restart_prep_inj_hiv * &sf ;
+* n_start_restart_prep_cab; 		n_start_restart_prep_cab = s_start_restart_prep_cab * &sf ;
+* n_start_restart_prep_cab_prim; 	n_start_restart_prep_cab_prim = s_start_restart_prep_cab_prim * &sf ;
+* n_start_rest_prep_cab_hiv; 	n_start_rest_prep_cab_hiv = s_start_restart_prep_cab_hiv * &sf ;
 
-* n_start_rest_prep_inj_hiv_cabr; 	n_start_rest_prep_inj_hiv_cabr = s_start_rest_prep_inj_hiv_cabr * &sf ;
-* n_start_rest_prep_inj_prim_cabr; 	n_start_rest_prep_inj_prim_cabr = s_start_rest_prep_inj_prim_cabr * &sf ;
+* n_start_rest_prep_cab_hiv_cabr; 	n_start_rest_prep_cab_hiv_cabr = s_start_rest_prep_cab_hiv_cabr * &sf ;
+* n_start_rest_prep_cab_prim_cabr; 	n_start_rest_prep_cab_prim_cabr = s_start_rest_prep_cab_prim_cabr * &sf ;
 * n_em_inm_res_o_cab;				n_em_inm_res_o_cab = s_em_inm_res_o_cab * &sf;
+
+
+* n_start_restart_prep_len; 		n_start_restart_prep_len = s_start_restart_prep_len * &sf ;
+* n_start_restart_prep_len_prim; 	n_start_restart_prep_len_prim = s_start_restart_prep_len_prim * &sf ;
+* n_start_rest_prep_len_hiv; 	n_start_rest_prep_len_hiv = s_start_restart_prep_len_hiv * &sf ;
+
+* n_start_rest_prep_len_hiv_lenr; 	n_start_rest_prep_len_hiv_lenr = s_start_rest_prep_len_hiv_lenr * &sf ;
+* n_start_rest_prep_len_prim_lenr; 	n_start_rest_prep_len_prim_lenr = s_start_rest_prep_len_prim_lenr * &sf ;
+* n_em_inm_res_o_len;				n_em_inm_res_o_len = s_em_inm_res_o_len * &sf;
+
 
 * n_hiv1_prep;						n_hiv1_prep = s_hiv1_prep_any * &sf;
 * n_hiv1_prep_oral;					n_hiv1_prep_oral = s_hiv1_prep_oral * &sf;
-* n_hiv1_prep_inj;					n_hiv1_prep_inj = s_hiv1_prep_inj * &sf;
+* n_hiv1_prep_cab;					n_hiv1_prep_cab = s_hiv1_prep_cab * &sf;
+* n_hiv1_prep_len;					n_hiv1_prep_len = s_hiv1_prep_len * &sf;
 * p_hiv1_prep;						if s_prep_any gt 0 then p_hiv1_prep = s_hiv1_prep_any / s_prep_any ;
-* p_hiv1_prep_inj;					if s_prep_inj gt 0 then p_hiv1_prep_inj = s_hiv1_prep_inj / s_prep_inj ;
-* p_hiv1_prep_oral;					if s_prep_inj gt 0 then p_hiv1_prep_oral = s_hiv1_prep_oral / s_prep_oral ;
+* p_hiv1_prep_cab;					if s_prep_cab gt 0 then p_hiv1_prep_cab = s_hiv1_prep_cab / s_prep_cab ;
+* p_hiv1_prep_len;					if s_prep_len gt 0 then p_hiv1_prep_len = s_hiv1_prep_len / s_prep_len ;
+* p_hiv1_prep_oral;					if s_prep_oral gt 0 then p_hiv1_prep_oral = s_hiv1_prep_oral / s_prep_oral ;
 
-* n_infected_on_prep_inj; 			n_infected_on_prep_inj = s_infected_on_prep_inj * &sf ;
+* n_infected_on_prep_cab; 			n_infected_on_prep_cab = s_infected_on_prep_cab * &sf ;
 * n_em_inm_res_o_cab;				n_s_em_inm_res_o_cab = s_em_inm_res_o_cab * &sf;
 
-* p_cabr_start_rest_prep_inj;		p_cabr_start_rest_prep_inj = s_start_rest_prep_inj_hiv_cabr / s_em_inm_res_o_cab_off_3m ;
+* p_cabr_start_rest_prep_cab;		p_cabr_start_rest_prep_cab = s_start_rest_prep_cab_hiv_cabr / s_em_inm_res_o_cab_off_3m ;
 
-* n_started_prep_inj_hiv;			n_started_prep_inj_hiv = s_started_prep_inj_hiv * 4 * &sf ;
+* n_started_prep_cab_hiv;			n_started_prep_cab_hiv = s_started_prep_cab_hiv * 4 * &sf ;
 * n_started_prep_any_hiv;			n_started_prep_any_hiv = s_started_prep_any_hiv * 4 * &sf ;
- 
-* prop_prep_tot5yrs;				prop_prep_tot5yrs = (s_tot_yrs_prep_oral_gt_5 + s_tot_yrs_prep_inj_gt_5) / (s_prep_oral_ever + s_prep_inj_ever) ;   
+
+
+* n_infected_on_prep_len; 			n_infected_on_prep_len = s_infected_on_prep_len * &sf ;
+* n_em_cam_res_o_len;				n_s_em_cam_res_o_len = s_em_cam_res_o_len * &sf;
+
+* p_lenr_start_rest_prep_len;		p_lenr_start_rest_prep_len = s_start_rest_prep_len_hiv_lenr / s_em_cam_res_o_len_off_3m ;
+
+* n_started_prep_len_hiv;			n_started_prep_len_hiv = s_started_prep_len_hiv * 4 * &sf ;
+* n_started_prep_any_hiv;			n_started_prep_any_hiv = s_started_prep_any_hiv * 4 * &sf ;
+
+
+* prop_prep_tot5yrs;				prop_prep_tot5yrs = (s_tot_yrs_prep_oral_gt_5 + s_tot_yrs_prep_cab_gt_5) / (s_prep_oral_ever + s_prep_cab_ever) ;   
 
 * n_prep_primary_prevented;		n_prep_primary_prevented = s_prep_primary_prevented * &sf;
 
@@ -523,7 +603,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * prop_cab_dol_res_attr_cab ;	prop_cab_dol_res_attr_cab = (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_primary) / s_cur_res_cab ;
 
-* prop_prep_inj_at_inf_diag;	if s_prep_inj_at_infection + s_diagprim_prep_inj > 0 then prop_prep_inj_at_inf_diag =  s_diagprim_prep_inj /  (s_prep_inj_at_infection + s_diagprim_prep_inj);
+* prop_prep_cab_at_inf_diag;	if s_prep_cab_at_infection + s_diagprim_prep_cab > 0 then prop_prep_cab_at_inf_diag =  s_diagprim_prep_cab /  (s_prep_cab_at_infection + s_diagprim_prep_cab);
 
 * n_o_cab_at_3m;				n_o_cab_at_3m = s_hiv_cab_3m * &sf;  
 * n_o_cab_at_6m;				n_o_cab_at_6m = s_hiv_cab_6m * &sf;  
@@ -535,17 +615,40 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * of_all_o_cab_prop_dur_9m;  	if s_hiv_cab > 0 then of_all_o_cab_prop_dur_9m = s_hiv_cab_9m / s_hiv_cab ;
 * of_all_o_cab_prop_dur_ge12m ; if s_hiv_cab > 0 then of_all_o_cab_prop_dur_ge12m = s_hiv_cab_ge12m / s_hiv_cab ;
 
-* p_prep_inj_hiv;				if s_prep_inj > 0 then p_prep_inj_hiv = s_hiv_cab / s_prep_inj ; 
+* p_prep_cab_hiv;				if s_prep_cab > 0 then p_prep_cab_hiv = s_hiv_cab / s_prep_cab ; 
 								  
 * n_emerge_inm_res_cab ;		n_emerge_inm_res_cab = s_emerge_inm_res_cab * &sf;
-* p_em_inm_res_ever_prep_inj ;	p_em_inm_res_ever_prep_inj = s_emerge_inm_res_cab / s_prep_inj_ever ;
+* p_em_inm_res_ever_prep_cab ;	p_em_inm_res_ever_prep_cab = s_emerge_inm_res_cab / s_prep_cab_ever ;
 
 * n_switch_prep_from_oral ; 	n_switch_prep_from_oral = s_switch_prep_from_oral  * &sf;
-* n_switch_prep_from_inj ;		n_switch_prep_from_inj = s_switch_prep_from_inj * &sf ;
+* n_switch_prep_from_cab ;		n_switch_prep_from_cab = s_switch_prep_from_cab * &sf ;
 * n_switch_prep_to_oral ; 		n_switch_prep_to_oral = s_switch_prep_to_oral * &sf ;
-* n_switch_prep_to_inj ;		n_switch_prep_to_inj = s_switch_prep_to_inj * &sf ;
+* n_switch_prep_to_cab ;		n_switch_prep_to_cab = s_switch_prep_to_cab * &sf ;
+
+
+* prop_prep_len_at_inf_diag;	if s_prep_len_at_infection + s_diagprim_prep_len > 0 then prop_prep_len_at_inf_diag =  s_diagprim_prep_len /  (s_prep_len_at_infection + s_diagprim_prep_len);
+
+* n_o_len_at_3m;				n_o_len_at_3m = s_hiv_len_3m * &sf;  
+* n_o_len_at_6m;				n_o_len_at_6m = s_hiv_len_6m * &sf;  
+* n_o_len_at_9m;				n_o_len_at_9m = s_hiv_len_9m * &sf;  
+* n_o_len_at_ge12m;				n_o_len_at_ge12m = s_hiv_len_ge12m * &sf;  
+
+* of_all_o_len_prop_dur_3m ;    if s_hiv_len > 0 then of_all_o_len_prop_dur_3m = s_hiv_len_3m / s_hiv_len ;
+* of_all_o_len_prop_dur_6m ;    if s_hiv_len > 0 then of_all_o_len_prop_dur_6m = s_hiv_len_6m / s_hiv_len ;
+* of_all_o_len_prop_dur_9m;  	if s_hiv_len > 0 then of_all_o_len_prop_dur_9m = s_hiv_len_9m / s_hiv_len ;
+* of_all_o_len_prop_dur_ge12m ; if s_hiv_len > 0 then of_all_o_len_prop_dur_ge12m = s_hiv_len_ge12m / s_hiv_len ;
+
+* p_prep_len_hiv;				if s_prep_len > 0 then p_prep_len_hiv = s_hiv_len / s_prep_len ; 
+								  
+* n_emerge_inm_res_len ;		n_emerge_inm_res_len = s_emerge_inm_res_len * &sf;
+* p_em_inm_res_ever_prep_len ;	p_em_inm_res_ever_prep_len = s_emerge_inm_res_len / s_prep_len_ever ;
+
+* n_switch_prep_from_len ;		n_switch_prep_from_len = s_switch_prep_from_len * &sf ;
+* n_switch_prep_to_len ;		n_switch_prep_to_len = s_switch_prep_to_len * &sf ;
+
 
 * n_cur_res_cab;				n_cur_res_cab = s_cur_res_cab * &sf ;
+* n_cur_res_len;				n_cur_res_len = s_cur_res_len * &sf ;
 * n_cur_res_dol;				n_cur_res_dol = s_iime_ * &sf ;
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
@@ -563,6 +666,11 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 									(s_ageg1519w + s_ageg2024w - s_hiv1519w - s_hiv2024w + s_primary1519w + s_primary2024w);
 * incidence1524m;				incidence1524m = ((s_primary1519m + s_primary2024m) * 4 * 100) / 
 									(s_ageg1519m + s_ageg2024m - s_hiv1519m - s_hiv2024m + s_primary1519m + s_primary2024m);
+
+* incidence1524;				incidence1524 = ((s_primary1519w + s_primary2024w + s_primary1519m + s_primary2024m) * 4 * 100) / 
+									(s_ageg1519w + s_ageg2024w + s_ageg1519m + s_ageg2024m - s_hiv1519w - s_hiv2024w  - s_hiv1519m - s_hiv2024m 
+										+ s_primary1519w + s_primary2024w+ s_primary1519m + s_primary2024m);
+
 * incidence2534w;				incidence2534w = ((s_primary2529w + s_primary3034w) * 4 * 100) / 
 									(s_ageg2529w + s_ageg3034w - s_hiv2529w - s_hiv3034w + s_primary2529w + s_primary3034w);
 * incidence2534m;				incidence2534m = ((s_primary2529m + s_primary3034m) * 4 * 100) / 
@@ -709,6 +817,22 @@ run;
 * p_lpr; 						if s_onart > 0 then p_lpr = s_lpr / s_onart ;
 * p_nev;						if s_onart > 0 then p_nev = s_nev / s_onart ;
 
+* p_len;						if s_onart > 0 then p_len = s_len / s_onart ;
+* p_cab;						if s_onart > 0 then p_cab = s_cab / s_onart ;
+
+* p_len_1524;					if (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) > 0 then p_len_1524 = (s_o_len_1524m + s_o_len_1524w) / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_);
+* p_cab_1524;					if (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) > 0 then p_cab_1524 = (s_o_cab_1524m + s_o_cab_1524w) / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_);
+
+* p_onart_1524;					p_onart_1524 = (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) / (s_hiv1524w + s_hiv1524m) ; 
+
+* p_onart_vl1000_w_1524;		if s_onart_w1519_ + s_onart_w2024_ > 0 then p_onart_vl1000_w_1524 = s_vl1000_onart_1524w / (s_onart_w1519_ + s_onart_w2024_) ; 
+* p_onart_vl1000_m_1524;		if s_onart_m1519_ + s_onart_m2024_ > 0 then p_onart_vl1000_m_1524 = s_vl1000_onart_1524m / (s_onart_m1519_ + s_onart_m2024_) ; 
+
+* p_r_len;						p_r_len = s_r_len / s_hiv;
+* p_r_cab;						p_r_cab = s_r_cab / s_hiv;
+* p_r_len_1524;					p_r_len_1524 = (s_r_len_1524m + s_r_len_1524w) / (s_hiv1524w + s_hiv1524m);
+* p_r_cab_1524;					p_r_cab_1524 = (s_r_cab_1524m + s_r_cab_1524w) / (s_hiv1524w + s_hiv1524m);
+
 * p_tle;						if s_onart > 0 then p_tle = s_tle / s_onart ;
 * p_tld;						if s_onart > 0 then p_tld = s_tld / s_onart ;
 * p_zld;						if s_onart > 0 then p_zld = s_zld / s_onart ;
@@ -810,7 +934,7 @@ run;
 * p_onart_w;					if s_hivge15w  > 0 then p_onart_w = s_onart_w / s_hivge15w  ;  
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
-* p_onart_vl1000_1524;			if s_onart_gt6m_iicu_1524_ > 0 then p_onart_vl1000_1524 = s_vl1000_art_gt6m_iicu_1524_ / s_onart_gt6m_iicu_1524_ ;
+* p_onart_iicu_vl1000_1524;			if s_onart_gt6m_iicu_1524_ > 0 then p_onart_iicu_vl1000_1524 = s_vl1000_art_gt6m_iicu_1524_ / s_onart_gt6m_iicu_1524_ ;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
 * p_vl1000_art_12m;				if s_art_12m > 0 then p_vl1000_art_12m = s_vl1000_art_12m / s_art_12m ;
@@ -838,7 +962,7 @@ run;
 
 * n_iime ;						n_iime = s_iime_ * &sf * 4;
 
-* tdf_age50plus ;
+* TLD_SWITCH ;
 
 * prop_artexp_elig_tldsw;		prop_artexp_elig_tldsw = s_tldsw_elig / s_artexp;
 * prop_tldsw_uvl2;				prop_tldsw_uvl2 = s_uvl2_elig / s_tldsw_elig;
@@ -895,8 +1019,10 @@ run;
 * p_first_uvl2_dol_r; 			p_first_uvl2_dol_r = s_second_vlg1000_first_dol_r / s_second_vlg1000_first ;
 * deathr_dol_r_uvl2;			deathr_dol_r_uvl2 = (s_dead_dol_r_uvl2 * 4) / s_uvl2_elig ;
     
+    
 * p_dlt_adh_high_r_dol; 		p_dlt_adh_high_r_dol = s_drug_level_test_adh_high_r_dol / s_drug_level_test_adh_high ;
 * p_dlt_adh_low_r_dol; 			p_dlt_adh_low_r_dol = s_drug_level_test_adh_low_r_dol / s_drug_level_test_adh_low ;
+
 
 
 * blood pressure;
@@ -1040,6 +1166,7 @@ run;
 
 
 * n_death_hiv;					n_death_hiv = s_death_hiv  * 4* &sf;
+* n_death_hiv_age_1524; 		n_death_hiv_age_1524 = s_death_hiv_age_1524 * 4 * &sf;
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* &sf;
 * n_dead_hivrel_onart;			n_dead_hivrel_onart = s_dead_hivrel_onart * 4 * &sf ;
 * n_death;						n_death = s_dead  * 4 * &sf;
@@ -1087,8 +1214,8 @@ keep
 
 run cald option
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
-dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
-dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
+dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn dlen_cost dcab_cost
+dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost    n_hiv  ddcp_cost dcost_drug_level_test p_drug_level_test
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
@@ -1101,23 +1228,25 @@ p_vl1000_art_12m p_vl1000_art_12m_onart  p_onart_vl1000_w p_onart_vl1000_m  p_st
 w25r  w35r  w45r  w55r p_onart_cd4_l500  prop_art_or_prep  prop_prep_tot5yrs prop_sw_onprep   p_onart p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz death_rate_hiv 
 death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w  n_dead_hivrel_onart  p_iime n_infected_inm n_iime
 n_tested n_tested_sw test_prop_positive p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  
-p_prep_any_ever p_hiv1_prep  p_hiv1_prep_inj p_hiv1_prep_oral   incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
-prop_prep_inj   ratio_inj_prep_on_tail    pr_ever_prep_inj_res_cab    pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab    prop_cab_res_tail    
-prop_prep_inj_at_inf_diag   of_all_o_cab_prop_dur_3m of_all_o_cab_prop_dur_6m   p_prep_inj_hiv  prop_cab_dol_res_attr_cab   
-n_cur_res_cab  n_cur_res_dol  n_emerge_inm_res_cab  n_switch_prep_from_oral n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  
-n_prep_any_start n_prep_oral_start  n_prep_inj_start n_prep_vr_start n_prep_any prop_elig_on_prep p_elig_prep  p_hiv1_prep  prop_onprep_newpge1 
-p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_inj n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
-ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m
-s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
-p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
+p_prep_any_ever p_hiv1_prep  p_hiv1_prep_cab  p_hiv1_prep_len p_hiv1_prep_oral   incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
+prop_prep_cab prop_prep_len   ratio_cab_prep_on_tail  ratio_len_prep_on_tail    pr_ever_prep_cab_res_cab  pr_ever_prep_len_res_cab    
+pr_ev_prep_cab_res_cab_hiv pr_ev_prep_len_res_cab_hiv prop_cab_res_o_cab    prop_cab_res_tail    
+prop_prep_cab_at_inf_diag prop_prep_len_at_inf_diag   of_all_o_cab_prop_dur_3m of_all_o_cab_prop_dur_6m   p_prep_cab_hiv p_prep_cab_hiv  prop_cab_dol_res_attr_cab   
+n_cur_res_cab  n_cur_res_dol  n_emerge_inm_res_cab  n_switch_prep_from_oral n_switch_prep_from_cab n_switch_prep_from_len  n_switch_prep_to_oral 
+n_switch_prep_to_cab  n_switch_prep_to_len  
+n_prep_any_start n_prep_oral_start  n_prep_cab_start n_prep_len_start n_prep_vr_start n_prep_any prop_elig_on_prep p_elig_prep  p_hiv1_prep  prop_onprep_newpge1 
+p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_cab p_em_inm_res_ever_prep_len n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
+ddaly ddaly_ac_mtct p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m
+s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_cab_tail_no_r   s_cur_in_prep_len_tail_no_r  p_emerge_inm_res_cab 
+p_cabr_start_rest_prep_cab p_cabr_start_rest_prep_len p_emerge_inm_res_cab_tail  n_death_hiv n_death_hiv_age_1524 death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
-dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m  n_alive
+dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_cab  dcost_prep_len  n_line1_fail_this_period  n_need_cd4m  n_alive
 
 prop_1564_hivneg_onprep  p_newp_prep_hivneg cost n_cd4_lt200 n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  
-death_rate_hiv death_rate_hiv_all  n_onart  n_art_or_prep n_prep_inj n_death_hivneg_anycause
+death_rate_hiv death_rate_hiv_all  n_onart  n_art_or_prep n_prep_cab n_prep_len n_death_hivneg_anycause
 
-p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj n_start_rest_prep_inj_hiv  prop_hivneg_onprep
-n_started_prep_inj_hiv n_started_prep_any_hiv   p_prep_adhg80  n_em_inm_res_o_cab
+p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_cab  p_prep_elig_onprep_len n_start_rest_prep_cab_hiv 
+n_start_rest_prep_len_hiv prop_hivneg_onprep n_started_prep_cab_hiv  n_started_prep_len_hiv n_started_prep_any_hiv   p_prep_adhg80  n_em_inm_res_o_cab
 
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  n_ai_naive_no_pmtct_e_inm  p_hivpos_new_dol_r  n_incident_r_dol n_uvl2_elig
 hiv_death_rate_uvl2
@@ -1132,7 +1261,7 @@ prop_artexp_elig_tldsw2  prop_tldsw2_uvl22 prop_tldsw2_elig_vl1000 prop_uvl22_vl
 p_adh_lt80_iicu_tldsw2   p_onart_iicu_tldsw2   p_onart_iicu_uvl22   p_adh_lt80_iicu_tldsw2   p_adh_lt80_iicu_uvl22 p_vis_tldsw2 p_vis_uvl22
 p_tldsw2_elig_tldsw
 
-p_first_uvl2_dol_r  deathr_dol_r_uvl2  p_dlt_adh_high_r_dol  p_dlt_adh_low_r_dol
+p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1164,15 +1293,19 @@ adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
 prob_prep_any_restart_choice  future_prep_condom
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
-higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
-rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
-rel_pr_inm_inj_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_inj   hivtest_type_1_prep_inj
-sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m
-sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
+higher_future_prep_oral_cov  pr_prep_cab_b   pr_prep_len_b  prep_cab_efficacy prep_len_efficacy
+rate_choose_stop_prep_cab rate_choose_stop_prep_len   prep_cab_effect_inm_partner   prep_len_effect_inm_partner  res_trans_factor_ii
+rel_pr_inm_cab_prep_tail_primary  rel_pr_inm_len_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_cab  hivtest_type_1_init_prep_len   
+hivtest_type_1_prep_cab hivtest_type_1_prep_len 
+sens_ttype1_prep_cab_primary sens_ttype1_prep_cab_inf3m sens_ttype1_prep_cab_infge6m
+sens_ttype3_prep_cab_primary sens_ttype3_prep_cab_inf3m sens_ttype3_prep_cab_infge6m
+sens_ttype1_prep_len_primary sens_ttype1_prep_len_inf3m sens_ttype1_prep_len_infge6m
+sens_ttype3_prep_len_primary sens_ttype3_prep_len_inf3m sens_ttype3_prep_len_infge6m
 
 effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
-sens_tests_prep_inj  pr_inm_inj_prep_primary
-pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
+sens_tests_prep_cab sens_tests_prep_len  pr_inm_cab_prep_primary pr_inm_len_prep_primary
+pref_prep_cab_beta_s1 pref_prep_len_beta_s1  testt1_prep_cab_eff_on_res_prim    testt1_prep_len_eff_on_res_prim  
+incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 
 p_emerge_inm_res_cab_notpr
 
@@ -1181,6 +1314,11 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
 pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  p_dol_2vg1000_dolr1  p_o_dar_uvl2
 
 s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
+
+p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
+
+p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol
+
 ;
 
 
@@ -1190,9 +1328,9 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_tdf_age50plus_a_y; set y;  
+data    b.l_tdf_age50plus_y; set y;  
 
-data y ; set b.l_tdf_age50plus_a_y; 
+data y ; set b.l_tdf_age50plus_y; 
 
   options nomprint;
   option nospool;
@@ -1259,13 +1397,14 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=p_tle);  * %var(v=p_tld);  * %var(v=p_zld);  * %var(v=p_zla);  * %var(v=p_otherreg);   %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
 * %var(v=aids_death_rate);    %var(v=death_rate_onart);     %var(v=dcost);    %var(v= dart_cost_y);
   %var(v=dadc_cost);     %var(v=dcd4_cost);     %var(v=dvl_cost);     %var(v=dvis_cost);      %var(v=dcot_cost);     %var(v=dtb_cost);   
-  %var(v=dres_cost);    %var(v=dtest_cost);     %var(v=d_t_adh_int_cost);     %var(v=dswitchline_cost);    %var(v=dtaz_cost);     %var(v=dcost_drug_level_test);
+  %var(v=dres_cost);    %var(v=dtest_cost);     %var(v=d_t_adh_int_cost);     %var(v=dswitchline_cost);    %var(v=dtaz_cost);   %var(v=dcab_cost);   %var(v=dlen_cost); 
+%var(v=dcost_drug_level_test);
   %var(v=dclin_cost );  %var(v=dnon_tb_who3_cost); %var(v=ddcp_cost);
   %var(v=dcost_circ );    %var(v=dcost_condom_dn);
-   %var(v=dcost_prep_oral);   %var(v=dcost_prep_inj);
- %var(v=dcost_prep_visit );   %var(v=dcost_prep_visit_oral );   %var(v=dcost_prep_visit_inj );     %var(v=dcost_prep );  
+   %var(v=dcost_prep_oral);   %var(v=dcost_prep_cab);%var(v=dcost_prep_len);
+ %var(v=dcost_prep_visit );   %var(v=dcost_prep_visit_oral );   %var(v=dcost_prep_visit_cab );   %var(v=dcost_prep_visit_len );     %var(v=dcost_prep );  
   %var(v=dcost_clin_care );    %var(v=dcost_non_aids_pre_death );    %var(v=dcost_child_hiv );    %var(v=dzdv_cost );     %var(v=dten_cost );     %var(v=d3tc_cost );   
-  %var(v=dnev_cost );     %var(v=dlpr_cost );     %var(v=ddar_cost );     %var(v=dtaz_cost );      %var(v=defa_cost );     %var(v=ddol_cost );
+  %var(v=dnev_cost );     %var(v=dlpr_cost );     %var(v=ddar_cost );       %var(v=defa_cost );     %var(v=ddol_cost );
 %var(v=m15r);  %var(v=m25r);  %var(v=m35r);  %var(v=m45r);  %var(v=m55r);  %var(v=w15r);  %var(v=w25r);  %var(v=w35r);  %var(v=w45r);  %var(v=w55r)
 * %var(v=r_efa_hiv);   %var(v=p_onart_cd4_l200);
 * %var(v=p_dol_2vg1000_dolr1_adh0); * %var(v=p_dol_2vg1000_dolr1_adh1); * %var(v=p_dol_2vg1000_dolr0_adh0); * %var(v=p_dol_2vg1000_dolr0_adh1);
@@ -1286,8 +1425,8 @@ drop _NAME_ _TYPE_ _FREQ_;
   %var(v=n_birth_with_inf_child);  %var(v=n_tested); %var(v=n_tested_sw); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   * %var(v= n_hiv1_prep);
 * %var(v= n_hiv1_prep_inj); * %var(v= n_hiv1_prep_oral);
-  %var(v= n_prep_any); * %var(v=n_covid); * %var(v=n_death_covid);  * %var(v=n_death);   %var(v=n_death_hiv);   %var(v= n_hiv);
-%var(v=p_prep_any_ever); %var(v=p_hiv1_prep);  %var(v=p_hiv1_prep_inj); %var(v=p_hiv1_prep_oral); %var(v=incidence1524w);   * %var(v=incidence1524m) ;
+  %var(v= n_prep_any); * %var(v=n_covid); * %var(v=n_death_covid);  * %var(v=n_death);   %var(v=n_death_hiv); %var(v=n_death_hiv_age_1524);  %var(v= n_hiv);
+%var(v=p_prep_any_ever); %var(v=p_hiv1_prep);  %var(v=p_hiv1_prep_cab);  %var(v=p_hiv1_prep_len); %var(v=p_hiv1_prep_oral); %var(v=incidence1524w);   * %var(v=incidence1524m) ;
 * %var(v=incidence2534w);   * %var(v=incidence2534m) ; * %var(v=incidence3544w);   * %var(v=incidence3544m) ;* %var(v=incidence4554w);   * %var(v=incidence4554m) ;
 * %var(v=incidence5564w);   * %var(v=incidence5564m) ;  %var(v=incidence_sw);  * %var (v=n_mcirc1549_3m) ;* %var (v=n_vmmc1549_3m); 
 * %var(v=n_new_inf1549m); * %var(v=n_new_inf1549w); * %var(v=n_new_inf1549);* %var(v=t_sw_newp) ;
@@ -1329,26 +1468,33 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); * %var(v=n_onart_w); * %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
 %var(v=p_onart_vl1000);  * %var(v=n_new_inf1549m); * %var(v=n_new_inf1549w); 
 %var(v=n_tested_w); %var(v=test_prop_positive);
-%var(v=prop_prep_inj);   %var(v=ratio_inj_prep_on_tail);    %var(v=pr_ever_prep_inj_res_cab);    %var(v=pr_ev_prep_inj_res_cab_hiv);
-%var(v=prop_cab_res_o_cab);    %var(v=prop_cab_res_tail);      %var(v=prop_prep_inj_at_inf_diag);   
+%var(v=prop_prep_cab);  %var(v=prop_prep_len);   %var(v=ratio_cab_prep_on_tail);  %var(v=ratio_len_prep_on_tail);  
+%var(v=pr_ever_prep_cab_res_cab); %var(v=pr_ever_prep_len_res_cab);    %var(v=pr_ev_prep_cab_res_cab_hiv); %var(v=pr_ev_prep_len_res_len_hiv);
+
+%var(v=prop_cab_res_o_cab);    %var(v=prop_cab_res_tail);      %var(v=prop_prep_cab_at_inf_diag);   %var(v=prop_prep_len_at_inf_diag);   
 %var(v=of_all_o_cab_prop_dur_3m);
-%var(v=of_all_o_cab_prop_dur_6m);   %var(v=p_prep_inj_hiv);  %var(v=prop_cab_dol_res_attr_cab);   %var(v=n_cur_res_cab);  %var(v=n_cur_res_dol);  
-%var(v=n_emerge_inm_res_cab);  %var(v=n_switch_prep_from_oral); %var(v=n_switch_prep_from_inj);  %var(v=n_switch_prep_to_oral);  
-%var(v=n_switch_prep_to_inj);  %var(v=n_prep_any_start); %var(v=n_prep_oral_start);  %var(v=n_prep_inj_start); %var(v=n_prep_vr_start);
+%var(v=of_all_o_cab_prop_dur_6m);   %var(v=p_prep_cab_hiv);  %var(v=p_prep_len_hiv);  %var(v=prop_cab_dol_res_attr_cab);   %var(v=n_cur_res_cab);  
+%var(v=n_cur_res_dol);  
+%var(v=n_emerge_inm_res_cab);  %var(v=n_switch_prep_from_oral); %var(v=n_switch_prep_from_cab);  %var(v=n_switch_prep_from_len);  %var(v=n_switch_prep_to_oral);  
+%var(v=n_switch_prep_to_cab); %var(v=n_switch_prep_to_len);  %var(v=n_prep_any_start); %var(v=n_prep_oral_start);  %var(v=n_prep_cab_start);  %var(v=n_prep_len_start); 
+%var(v=n_prep_vr_start);
 %var(v=n_prep_any); %var(v=prop_elig_on_prep); %var(v=p_elig_prep);  %var(v=prop_onprep_newpge1); %var(v=p_prep_elig_past_year); 
-%var(v=p_prep_newp); %var(v=prop_sw_onprep);  %var(v=p_em_inm_res_ever_prep_inj);  %var(v=p_cabr_start_rest_prep_inj);
+%var(v=p_prep_newp); %var(v=prop_sw_onprep);  %var(v=p_em_inm_res_ever_prep_cab);  %var(v=p_em_cam_res_ever_prep_len);  %var(v=p_cabr_start_rest_prep_cab);
+ %var(v=p_lenr_start_rest_prep_len);
 %var(v=n_o_cab_at_3m);    %var(v=n_o_cab_at_6m);    %var(v=n_o_cab_at_9m);   %var(v=n_o_cab_at_ge12m); 
-%var(v=ddaly); %var(v=p_emerge_inm_res_cab);  %var(v=p_emerge_inm_res_cab_tail); %var(v=ddaly_ac_ntd_mtct);
+%var(v=ddaly); %var(v=p_emerge_inm_res_cab);  %var(v=p_emerge_inm_res_cab_tail); %var(v=ddaly_ac_ntd_mtct);  %var(v=ddaly_ac_mtct);
 %var(v=of_all_o_cab_prop_dur_9m); %var(v=of_all_o_cab_prop_dur_ge12m);
-%var(v=s_em_inm_res_o_cab_off_3m);  %var(v=s_o_cab_or_o_cab_tm1_no_r);   %var(v=s_emerge_inm_res_cab_tail);   %var(v=s_cur_in_prep_inj_tail_no_r);
+%var(v=s_em_inm_res_o_cab_off_3m);  %var(v=s_o_cab_or_o_cab_tm1_no_r);   %var(v=s_emerge_inm_res_cab_tail);   %var(v=s_cur_in_prep_cab_tail_no_r);  
+%var(v=s_cur_in_prep_len_tail_no_r);
 %var(v=p_emerge_inm_res_cab); %var(v=p_emerge_inm_res_cab_tail);
 %var(v=p_prep_init_primary_res); %var(v=p_prep_reinit_primary_res);   %var(v=p_emerge_inm_res_cab_prim);  %var(v=n_prep_primary_prevented);   
 %var(v=p_prep_primary_prevented); %var(v=p_u_vfail1_this_period); 
 %var(v=n_art_initiation);  %var(v=n_restart);     %var(v=n_line1_fail_this_period);    %var(v=n_need_cd4m);
-%var(v=p_elig_all_prep_criteria);  %var(v=p_elig_all_prep_cri_hivneg);  %var(v=p_elig_hivneg_onprep);  %var(v=p_prep_elig_onprep_inj);
+%var(v=p_elig_all_prep_criteria);  %var(v=p_elig_all_prep_cri_hivneg);  %var(v=p_elig_hivneg_onprep);  %var(v=p_prep_elig_onprep_cab);  %var(v=p_prep_elig_onprep_len);
 %var(v=prop_1564_hivneg_onprep); %var(v=prop_hivneg_onprep); %var(v=pref_prep_oral_beta_s1);
-%var(v=n_started_prep_inj_hiv); %var(v=n_started_prep_any_hiv); 
-%var(v=prop_prep_tot5yrs); %var(v=n_start_rest_prep_inj_hiv); %var(v=n_prep_inj);%var(v=p_prep_adhg80);
+%var(v=n_started_prep_cab_hiv); %var(v=n_started_prep_len_hiv); %var(v=n_started_prep_any_hiv); 
+%var(v=prop_prep_tot5yrs); %var(v=n_start_rest_prep_cab_hiv); %var(v=n_start_rest_prep_len_hiv); %var(v=n_prep_cab);%var(v=n_prep_len);
+%var(v=p_prep_adhg80);
 %var(v=p_nactive_art_start_lt1p5);   %var(v=p_nactive_art_start_lt2);   %var(v=p_nactive_art_start_lt3); 
 %var(v=n_ai_naive_no_pmtct_e_inm); 
 
@@ -1365,14 +1511,16 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_vis_tldsw2); %var(v=p_vis_uvl22); %var(v=prop_r_dol_ge_p5_uvl22);  %var(v=p_dol_2vg1000_dolr1);  %var(v=hiv_death_rate_uvl2);
 %var(v=p_hivpos_new_dol_r);  %var(v=n_incident_r_dol);  %var(v=n_dead_hivrel_onart); %var(v=p_cd4_lt200_uvl2); %var(v=n_uvl2_elig); %var(v=p_o_dar_uvl2);
 %var(v=s_o_dol_2nd_vlg1000); %var(v=s_vl1000_art_gt6m_iicu);  %var(v=p_first_uvl2_dol_r);  %var(v= deathr_dol_r_uvl2);  %var(v=p_tldsw2_elig_tldsw);
-%var(v= p_dlt_adh_high_r_dol);  %var(v= p_dlt_adh_low_r_dol);
 
+%var(v=p_len);  %var(v=p_cab);  %var(v=p_len_1524);  %var(v=p_cab_1524);  %var(v=p_onart_1524);   %var(v=incidence1524);  %var(v=p_onart_vl1000_w_1524);   
+%var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524);  
+%var(v=p_dlt_adh_high_r_dol); %var(v= p_dlt_adh_low_r_dol);
 
 data   b.wide_outputs; merge 
 
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
-dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
-dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
+dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost  dcab_cost  dlen_cost   dclin_cost  dcost_circ dcost_condom_dn 
+dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost dcost_drug_level_test n_hiv n_alive  p_drug_level_test
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
@@ -1385,19 +1533,26 @@ p_vl1000_art_12m p_vl1000_art_12m_onart  p_onart_vl1000_w p_onart_vl1000_m  p_st
 w25r  w35r  w45r  w55r p_onart_cd4_l500  prop_art_or_prep  prop_sw_onprep   p_onart p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz death_rate_hiv 
 death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w p_iime n_infected_inm n_iime
 n_tested n_tested_sw test_prop_positive p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  
-p_prep_any_ever p_hiv1_prep p_hiv1_prep_inj p_hiv1_prep_oral incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
-prop_prep_inj   ratio_inj_prep_on_tail    pr_ever_prep_inj_res_cab    pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab    prop_cab_res_tail    
-prop_prep_inj_at_inf_diag   of_all_o_cab_prop_dur_3m of_all_o_cab_prop_dur_6m   p_prep_inj_hiv  prop_cab_dol_res_attr_cab   
-n_cur_res_cab  n_cur_res_dol  n_emerge_inm_res_cab  n_switch_prep_from_oral n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  
-n_prep_any_start n_prep_oral_start  n_prep_inj_start n_prep_vr_start n_prep_any prop_elig_on_prep p_elig_prep  prop_onprep_newpge1 
-p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_inj n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
-ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m
-s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
-p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
+p_prep_any_ever p_hiv1_prep p_hiv1_prep_cab p_hiv1_prep_len p_hiv1_prep_oral incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
+prop_prep_cab   ratio_cab_prep_on_tail    pr_ever_prep_cab_res_cab    pr_ev_prep_cab_res_cab_hiv 
+prop_prep_len   ratio_len_prep_on_tail     pr_ev_prep_len_res_len_hiv 
+prop_cab_res_o_cab    prop_cab_res_tail    
+prop_prep_cab_at_inf_diag prop_prep_len_at_inf_diag   of_all_o_cab_prop_dur_3m of_all_o_cab_prop_dur_6m   p_prep_cab_hiv  p_prep_len_hiv  
+prop_cab_dol_res_attr_cab   
+n_cur_res_cab  n_cur_res_dol  n_emerge_inm_res_cab  n_switch_prep_from_oral n_switch_prep_from_cab  n_switch_prep_from_len  n_switch_prep_to_oral 
+n_switch_prep_to_cab  n_switch_prep_to_len  
+n_prep_any_start n_prep_oral_start  n_prep_cab_start n_prep_len_start n_prep_vr_start n_prep_any prop_elig_on_prep p_elig_prep  prop_onprep_newpge1 
+p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_cab  p_em_cam_res_ever_prep_len n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
+ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m  ddaly_ac_mtct
+s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_cab_tail_no_r  s_cur_in_prep_len_tail_no_r  p_emerge_inm_res_cab 
+p_cabr_start_rest_prep_cab p_lenr_start_rest_prep_len  p_emerge_inm_res_cab_tail  n_death_hiv n_death_hiv_age_1524 death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
-dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
-p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
-pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
+dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_cab   dcost_prep_len n_line1_fail_this_period  n_need_cd4m
+p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_cab  p_prep_elig_onprep_len prop_1564_hivneg_onprep prop_hivneg_onprep
+pref_prep_oral_beta_s1 n_started_prep_cab_hiv  n_started_prep_len_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_cab_hiv n_start_rest_prep_len_hiv 
+n_prep_cab 
+ n_start_rest_prep_len_hiv n_prep_len 
+n_prep_any
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm
 prop_artexp_elig_tldsw  prop_tldsw_uvl2 prop_tldsw_elig_vl1000 prop_uvl2_vl1000 prop_tldsw_o_dar
 p_adh_lt80_iicu_tldsw   p_onart_iicu_tldsw   p_onart_iicu_uvl2   p_adh_lt80_iicu_tldsw   p_adh_lt80_iicu_uvl2 p_vis_tldsw p_vis_uvl2 prop_r_dol_ge_p5_uvl2
@@ -1410,7 +1565,11 @@ p_adh_lt80_iicu_tldsw2   p_onart_iicu_tldsw2   p_onart_iicu_uvl22   p_adh_lt80_i
 p_tldsw2_elig_tldsw
 p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_onart  p_cd4_lt200_uvl2 n_uvl2_elig hiv_death_rate_uvl2 p_o_dar_uvl2
 
-s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2   p_dlt_adh_high_r_dol  p_dlt_adh_low_r_dol
+s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2
+
+p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
+
+p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol
 ;
 
 
@@ -1456,15 +1615,23 @@ adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
 prob_prep_any_restart_choice  
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
-higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
-rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
-rel_pr_inm_inj_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_inj   hivtest_type_1_prep_inj
-sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m
-sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
+higher_future_prep_oral_cov  pr_prep_cab_b  pr_prep_len_b  prep_cab_efficacy prep_len_efficacy
+rate_choose_stop_prep_cab   prep_cab_effect_inm_partner  
+rate_choose_stop_prep_len   prep_len_effect_cam_partner 
+res_trans_factor_ii   rr_res_cab_dol 
+rel_pr_inm_cab_prep_tail_primary  hivtest_type_1_init_prep_cab   hivtest_type_1_prep_cab
+sens_ttype1_prep_cab_primary sens_ttype1_prep_cab_inf3m sens_ttype1_prep_cab_infge6m
+sens_ttype3_prep_cab_primary sens_ttype3_prep_cab_inf3m sens_ttype3_prep_cab_infge6m
+rel_pr_cam_len_prep_tail_primary  hivtest_type_1_init_prep_len   hivtest_type_1_prep_len
+sens_ttype1_prep_len_primary sens_ttype1_prep_len_inf3m sens_ttype1_prep_len_infge6m
+sens_ttype3_prep_len_primary sens_ttype3_prep_len_inf3m sens_ttype3_prep_len_infge6m
 
 effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
-sens_tests_prep_inj  pr_inm_inj_prep_primary
-pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
+sens_tests_prep_cab  pr_inm_cab_prep_primary
+sens_tests_prep_len  pr_cam_len_prep_primary
+pref_prep_cab_beta_s1  testt1_prep_cab_eff_on_res_prim 
+pref_prep_len_beta_s1  testt1_prep_len_eff_on_res_prim  
+incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
@@ -1514,13 +1681,23 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=prob_prep_any_visit_counsel);  %par(p=rate_test_onprep_any); %par(p=prep_willingness_threshold);  
 %par(p=prob_prep_any_restart_choice);  
 %par(p=pr_prep_oral_b);  %par(p=rel_prep_oral_adh_younger); %par(p=prep_oral_efficacy);    
-%par(p=rate_choose_stop_prep_oral);  %par(p=higher_future_prep_oral_cov);  %par(p=pr_prep_inj_b);  %par(p=prep_inj_efficacy);
-%par(p=rate_choose_stop_prep_inj);   %par(p=prep_inj_effect_inm_partner);  %par(p=res_trans_factor_ii);
-%par(p=rel_pr_inm_inj_prep_tail_primary);      %par(p=rr_res_cab_dol);  %par(p=hivtest_type_1_init_prep_inj);   %par(p=hivtest_type_1_prep_inj);
- %par(p=sens_ttype1_prep_inj_primary);  %par(p=sens_ttype1_prep_inj_inf3m);  %par(p=sens_ttype1_prep_inj_infge6m);
- %par(p=sens_ttype3_prep_inj_primary);  %par(p=sens_ttype3_prep_inj_inf3m);  %par(p=sens_ttype3_prep_inj_infge6m);
-%par(p=dol_higher_potency); %par(p=cab_time_to_lower_threshold_g);  %par(p=sens_tests_prep_inj);  %par(p=pr_inm_inj_prep_primary);
-%par(p=pref_prep_inj_beta_s1); %par(p=testt1_prep_inj_eff_on_res_prim);  %par(p=incr_res_risk_cab_inf_3m);
+%par(p=rate_choose_stop_prep_oral);  %par(p=higher_future_prep_oral_cov);  %par(p=pr_prep_cab_b);  %par(p=prep_cab_efficacy);
+ %par(p=pr_prep_len_b);  %par(p=prep_len_efficacy);
+%par(p=rate_choose_stop_prep_cab);   %par(p=prep_cab_effect_inm_partner);  
+%par(p=rate_choose_stop_prep_len);   %par(p=prep_len_effect_cam_partner); 
+%par(p=res_trans_factor_ii);   %par(p=rr_res_cab_dol); %par(p=dol_higher_potency); %par(p=cab_time_to_lower_threshold_g); 
+
+%par(p=rel_pr_inm_cab_prep_tail_primary);      %par(p=hivtest_type_1_init_prep_cab);   %par(p=hivtest_type_1_prep_cab);
+ %par(p=sens_ttype1_prep_cab_primary);  %par(p=sens_ttype1_prep_cab_inf3m);  %par(p=sens_ttype1_prep_cab_infge6m);
+ %par(p=sens_ttype3_prep_cab_primary);  %par(p=sens_ttype3_prep_cab_inf3m);  %par(p=sens_ttype3_prep_cab_infge6m);
+ %par(p=sens_tests_prep_cab);  %par(p=pr_inm_cab_prep_primary); %par(p=pr_cam_len_prep_primary);
+%par(p=pref_prep_cab_beta_s1); %par(p=testt1_prep_cab_eff_on_res_prim);  
+%par(p=rel_pr_inm_len_prep_tail_primary);      %par(p=hivtest_type_1_init_prep_len);   %par(p=hivtest_type_1_prep_len);
+ %par(p=sens_ttype1_prep_len_primary);  %par(p=sens_ttype1_prep_len_inf3m);  %par(p=sens_ttype1_prep_len_infge6m);
+ %par(p=sens_ttype3_prep_len_primary);  %par(p=sens_ttype3_prep_len_inf3m);  %par(p=sens_ttype3_prep_len_infge6m);
+ %par(p=sens_tests_prep_len);  %par(p=pr_inm_len_prep_primary);
+%par(p=pref_prep_len_beta_s1); %par(p=testt1_prep_len_eff_on_res_prim);  
+%par(p=incr_res_risk_cab_inf_3m);
 %par(p=p_emerge_inm_res_cab_notpr);
 %par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
@@ -1559,15 +1736,27 @@ adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
 prob_prep_any_restart_choice  
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
-higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
-rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
-rel_pr_inm_inj_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_inj   hivtest_type_1_prep_inj
-sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m
-sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
+higher_future_prep_oral_cov  pr_prep_cab_b  prep_cab_efficacy pr_prep_len_b  prep_len_efficacy
+  res_trans_factor_ii  rr_res_cab_dol  
+
+rate_choose_stop_prep_cab   prep_cab_effect_inm_partner
+rel_pr_inm_cab_prep_tail_primary    hivtest_type_1_init_prep_cab   hivtest_type_1_prep_cab
+sens_ttype1_prep_cab_primary sens_ttype1_prep_cab_inf3m sens_ttype1_prep_cab_infge6m
+sens_ttype3_prep_cab_primary sens_ttype3_prep_cab_inf3m sens_ttype3_prep_cab_infge6m
+
+rate_choose_stop_prep_len   prep_len_effect_cam_partner
+rel_pr_inm_len_prep_tail_primary    hivtest_type_1_init_prep_len   hivtest_type_1_prep_len
+sens_ttype1_prep_len_primary sens_ttype1_prep_len_inf3m sens_ttype1_prep_len_infge6m
+sens_ttype3_prep_len_primary sens_ttype3_prep_len_inf3m sens_ttype3_prep_len_infge6m
 
 effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
-sens_tests_prep_inj  pr_inm_inj_prep_primary
-pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
+sens_tests_prep_cab  pr_inm_cab_prep_primary sens_tests_prep_len  pr_cam_len_prep_primary
+
+pref_prep_cab_beta_s1  testt1_prep_cab_eff_on_res_prim  
+
+pref_prep_len_beta_s1  testt1_prep_len_eff_on_res_prim  
+
+incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
  prob_prep_pop_wide_tld
 
@@ -1578,18 +1767,16 @@ run;
 proc sort; by run;run;
 
 
-proc freq data=b.wide_par2; tables future_prep_condom ; run;  
-
-
 * To get one row per run;
 
 
-
-  data  b.w_tdf_age50plus_a     ; 
+  data  b.w_tdf_age50plus     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
 
+data b;
+set b.w_tdf_age50plus   ;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1746,8 +1933,14 @@ p_first_uvl2_dol_r_10y_1 p_first_uvl2_dol_r_10y_2 p_first_uvl2_dol_r_10y_3 p_fir
 deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 deathr_dol_r_uvl2_10y_4 deathr_dol_r_uvl2_10y_5  
 p_dlt_adh_high_r_dol_10y_1 p_dlt_adh_high_r_dol_10y_2 p_dlt_adh_high_r_dol_10y_3 p_dlt_adh_high_r_dol_10y_4 p_dlt_adh_high_r_dol_10y_5 
 p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 p_dlt_adh_low_r_dol_10y_4 p_dlt_adh_low_r_dol_10y_5 
+
+p_dlt_adh_high_r_dol_10y_1 p_dlt_adh_high_r_dol_10y_2 p_dlt_adh_high_r_dol_10y_3 p_dlt_adh_high_r_dol_10y_4 
+p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 p_dlt_adh_low_r_dol_10y_4 
+
+p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 p_tldsw2_elig_tldsw_10y_4 p_tldsw2_elig_tldsw_10y_5 
 ;
-* p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 p_tldsw2_elig_tldsw_10y_4 p_tldsw2_elig_tldsw_10y_5 ;
+
+
 run;
 ods html close;
 
@@ -1886,8 +2079,7 @@ dcost_condom_dn_50y_1  dcost_condom_dn_50y_2  dcost_condom_dn_50y_3  dcost_condo
 dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3  dcost_child_hiv_50y_4  dcost_child_hiv_50y_5
 dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2  dcost_non_aids_pre_death_50y_3  dcost_non_aids_pre_death_50y_4  dcost_non_aids_pre_death_50y_5 
 dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3  dcost_prep_visit_50y_4 dcost_prep_visit_50y_5 
-dcost_prep_oral_50y_1 dcost_prep_oral_50y_2  dcost_prep_oral_50y_3  dcost_prep_oral_50y_4  dcost_prep_oral_50y_5 
-dcost_prep_inj_50y_1 dcost_prep_inj_50y_2  dcost_prep_inj_50y_3  dcost_prep_inj_50y_4  dcost_prep_inj_50y_5 
+dcost_prep_50y_1 dcost_prep_50y_2  dcost_prep_50y_3  dcost_prep_50y_4  dcost_prep_50y_5 
 ;
 run;
 
