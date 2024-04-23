@@ -1781,6 +1781,7 @@ proc sort; by run;run;
 
 
 
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tdf_age50plus\tdf_age50plus_a_out\";
 
 data b;
 set b.w_tdf_age50plus_a   ;

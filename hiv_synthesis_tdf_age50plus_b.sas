@@ -5,6 +5,8 @@
 
 * hep b testing also required before removing tdf ;
 
+* modify tld drug costs;
+
 
 
 
