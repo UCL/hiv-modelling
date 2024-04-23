@@ -242,3 +242,11 @@ if cald=2022 then do;
 	obs_p_art_fsw_AMT=0.95;
 	obs_p_vs_fsw_AMT=0.93;
 end;
+
+
+
+****GENERAL POPULATION ZIMPHIA RESULTS;
+if cald=2016.25 then do;
+	o_prev_1549w_zimphia=0.159;o_prev_1549m_zimphia=0.107;o_prev_1549_zimphia=0.134;
+	o_inc_1549w_zimphia=0.57;o_inc_1549m_zimphia=0.30;o_inc_1549_zimphia=0.44;
+end;
