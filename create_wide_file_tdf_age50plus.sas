@@ -1319,6 +1319,8 @@ p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1
 
 p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol
 
+s_dead_ddaly s_live_ddaly
+
 ;
 
 
@@ -1515,6 +1517,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_len);  %var(v=p_cab);  %var(v=p_len_1524);  %var(v=p_cab_1524);  %var(v=p_onart_1524);   %var(v=incidence1524);  %var(v=p_onart_vl1000_w_1524);   
 %var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524);  
 %var(v=p_dlt_adh_high_r_dol); %var(v= p_dlt_adh_low_r_dol);
+%var(v=s_dead_ddaly); %var(v=s_live_ddaly);
+
 
 data   b.wide_outputs; merge 
 
@@ -1569,7 +1573,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
-p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol
+p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol  s_dead_ddaly s_live_ddaly
 ;
 
 
@@ -1787,6 +1791,9 @@ data b;
 set b.w_tdf_age50plus_a   ;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
+d_n_death_hiv_50y_2_1 = n_death_hiv_50y_2 - n_death_hiv_50y_1;
+
+d_n_death_50y_2_1 = n_death_50y_2 - n_death_50y_1 ; 
 
 d_n_iime_10y_2_1 = n_iime_10y_2 -   n_iime_10y_1 ; 
 
@@ -1855,12 +1862,21 @@ n_death_10y_1 n_death_10y_2
 run;
 
 
-proc means   data = b  n p50 p5 p95 ;  
+proc means   data = b  n mean p50 p5 p95 ;  
 var 
 p_onart_vl1000_50y_1 p_onart_vl1000_50y_2 
 p_iime_50y_1 p_iime_50y_2
 n_death_hiv_50y_1 n_death_hiv_50y_2 
 n_death_50y_1 n_death_50y_2 
+ddaly_50y_1 ddaly_50y_2 
+s_dead_ddaly_50y_1 s_dead_ddaly_50y_2 
+s_live_ddaly_50y_1 s_live_ddaly_50y_2 
+;
+run;
+
+
+proc univariate; var 
+d_n_death_50y_2_1  d_ddaly_50y_2_1 d_n_death_hiv_50y_2_1
 ;
 run;
 

@@ -1,6 +1,7 @@
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_q_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tdf_age50plus\tdf_age50plus_a_out\";
+
 
 
 proc printto ;
@@ -8,7 +9,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_tld_switch_q_y;
+set a.l_tdf_age50plus_a_y;
 
 
 * for this program, variable names cannot end on a number;
@@ -30,7 +31,7 @@ prop_uvl2_vl1000_ = prop_uvl2_vl1000 ;
 hiv_death_rate_uvl2_ = hiv_death_rate_uvl2 * 100;
 deathr_dol_r_first_uvl2_ = deathr_dol_r_first_uvl2;
 
-%let single_var =  hiv_death_rate_uvl2_                       ;
+%let single_var =  dcost                      ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -41,7 +42,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 560    ;
+%let nfit = 128    ;
 
 %let year_end = 2070.00 ;
 run;
@@ -138,153 +139,8 @@ run;
 
 
 
-
-data option_2;
-set b;
-if option =  2 ;
-
-%let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
-
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_2;
-%let p25_var = p25_&var_2;
-%let p75_var = p75_&var_2;
-%let p5_var = p5_&var_2;
-%let p95_var = p95_&var_2;
-%let p50_var = median_&var_2;
-%let mean_var = mean_&var_2;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-
-
-proc transpose data=option_2 out=i&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data i&count;set i&count;***creates one dataset per variable;
-p25_&varb._2  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._2 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._2  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._2 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._2 = median(of &varb.1-&varb.&nfit);
-mean_&varb._2 = mean(of &varb.1-&varb.&nfit);
-
-keep cald option_ p5_&varb._2 p95_&varb._2 p50_&varb._2 p25_&varb._2 p75_&varb._2 mean_&varb._2;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  ii&count;quit;run;
-%end;
-%mend;
-
-
-%option_2;
-run;
-
-
-
-
-
-data option_3;
-set b;
-if option =  3 ;
-
-%let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
-
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_3;
-%let p25_var = p25_&var_3;
-%let p75_var = p75_&var_3;
-%let p5_var = p5_&var_3;
-%let p95_var = p95_&var_3;
-%let p50_var = median_&var_3;
-%let mean_var = mean_&var_3;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-
-
-proc transpose data=option_3 out=j&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data j&count;set j&count;***creates one dataset per variable;
-p25_&varb._3  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._3 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._3  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._3 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._3 = median(of &varb.1-&varb.&nfit);
-mean_&varb._3 = mean(of &varb.1-&varb.&nfit);
-
-keep cald option_ p5_&varb._3 p95_&varb._3 p50_&varb._3 p25_&varb._3 p75_&varb._3 mean_&varb._3;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  jj&count;quit;run;
-%end;
-%mend;
-
-
-%option_3;
-run;
-
-
-
-
-
-
-
-data option_4;
-set b;
-if option =  4 ;
-
-%let var = &single_var    ; 
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_4;
-%let p25_var = p25_&var_4;
-%let p75_var = p75_&var_4;
-%let p5_var = p5_&var_4;
-%let p95_var = p95_&var_4;
-%let p50_var = median_&var_4;
-%let mean_var = mean_&var_4;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-
-
-proc transpose data=option_4 out=k&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data k&count;set k&count;***creates one dataset per variable;
-p25_&varb._4  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._4 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._4  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._4 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._4 = median(of &varb.1-&varb.&nfit);
-mean_&varb._4 = mean(of &varb.1-&varb.&nfit);
-
-keep cald option_ p5_&varb._4 p95_&varb._4 p50_&varb._4 p25_&varb._4 p75_&varb._4 mean_&varb._4;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  kk&count;quit;run;
-%end;
-%mend;
-
-
-%option_4;
-run;
-
-
-
-
 data d; * this is number of variables in %let var = above ;
-merge g1 h1 i1  j1 k1 ;
+merge g1 h1 ;
 by cald;
 
 
@@ -463,7 +319,6 @@ run;quit;
 
 * ods html close;
 
-*/
 
 
 ods html;
@@ -495,9 +350,6 @@ band    x=cald lower=p5_hiv_death_rate_uvl2__4 upper=p95_hiv_death_rate_uvl2__4 
 
 run;quit;
 
-
-
-/*
 
 
 
@@ -679,30 +531,20 @@ run;quit;
 
 ods html;
 proc sgplot data=d ; 
-Title    height=1.5 justify=center "Number of HIV-related deaths";
+Title    height=1.5 justify=center "Number of deaths";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  20000   by 1000    ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2000000   by 100000    ) valueattrs=(size=10);
 
-label p50_n_death_hiv_0 = "no vaccine";
-label p50_n_death_hiv_1 = "vaccine 1";
-label p50_n_death_hiv_2 = "vaccine 2";
-label p50_n_death_hiv_3 = "vaccine 3";
+label p50_n_death_0 = "";
+label p50_n_death_1 = "";
 
-series  x=cald y=p50_n_death_hiv_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_n_death_hiv_0 upper=p95_n_death_hiv_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_n_death_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_death_0 upper=p95_n_death_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_n_death_hiv_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
-
-series  x=cald y=p50_n_death_hiv_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_n_death_hiv_2 upper=p95_n_death_hiv_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-
-series  x=cald y=p50_n_death_hiv_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_n_death_hiv_3 upper=p95_n_death_hiv_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_n_death_1 / lineattrs = (color=navy thickness = 4);
+band    x=cald lower=p5_n_death_1 upper=p95_n_death_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
 
 run;quit;
-
-
 
 
 
@@ -712,10 +554,8 @@ Title    height=1.5 justify=center "Discounted DALYs";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000   by 1000000    ) valueattrs=(size=10);
 
-label p50_ddaly_0 = "no vaccine";
-label p50_ddaly_1 = "vaccine 1";
-label p50_ddaly_2 = "vaccine 2";
-label p50_ddaly_3 = "vaccine 3";
+label p50_ddaly_0 = "";
+label p50_ddaly_1 = "";
 
 series  x=cald y=p50_ddaly_0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_ddaly_0 upper=p95_ddaly_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
@@ -723,14 +563,30 @@ band    x=cald lower=p5_ddaly_0 upper=p95_ddaly_0 / transparency=0.9 fillattrs =
 series  x=cald y=p50_ddaly_1 / lineattrs = (color=navy thickness = 4);
 band    x=cald lower=p5_ddaly_1 upper=p95_ddaly_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
 
-series  x=cald y=p50_ddaly_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_ddaly_2 upper=p95_ddaly_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+run;quit;
 
-series  x=cald y=p50_ddaly_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_ddaly_3 upper=p95_ddaly_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+
+*/
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Discounted DALYs";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000   by 1000000    ) valueattrs=(size=10);
+
+label p50_dcost_0 = "";
+label p50_dcost_1 = "";
+
+series  x=cald y=p50_dcost_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_dcost_0 upper=p95_dcost_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_dcost_1 / lineattrs = (color=navy thickness = 4);
+band    x=cald lower=p5_dcost_1 upper=p95_dcost_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
 
 run;quit;
 
+/*
 
 
 ods html;
