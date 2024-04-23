@@ -20,6 +20,9 @@
 
 * consider that combinations of insti mutations lead to additional resistance
 
+* modify tld drug costs;
+
+
 ; 
 
 
