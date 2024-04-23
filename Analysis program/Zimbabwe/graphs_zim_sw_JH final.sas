@@ -193,7 +193,7 @@ p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_v
 prevalence_sw  incidence_sw p_sti_sw incidence1549_
 prop_sw_onprep_prog prop_sw_onprep_noprog
 p_diag_sw_inprog	incidence_sw_inprog	incidence_sw_noprog mean_sw_inc mean_sw_inc_inprog mean_sw_inc_noprog
-p_diag_w p_diag_m p_diag;
+p_diag_w p_diag_m p_diag prevalence1549_;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro transpose;
@@ -235,7 +235,7 @@ data d;
 merge b
 a1   a2   a3   a4   a5   a6   a7   a8   a9   a10  a11  a12  a13  a14  a15  a16  a17  a18  a19  a20  a21  a22  a23  a24  a25  a26 
 a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42  a43  a44  a45  a46  a47  a48  a49  a50  a51  a52 
-a53  a54 /* a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
+a53  a54  a55 /* a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
 a79  a80  a81  a82  a83  a84  a85  a86  a87  a88  a89  a90  a91  a92  a93  a94  a95  a96  a97  a98  a99  a100 a101 a102 a103 a104
 a105 a106 a107 a108 a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130
 a131 a132 a133 a134 a135 a136 a137 a138 a139 a140 a141 a142 a143 a144 a145 a146 a147 a148 a149 a150 a151 a152 a153 a154 a155 a156
@@ -619,9 +619,12 @@ title    height=1.5 justify=center "HIV incidence in general population";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 2 by 0.2)    valueattrs=(size=10);
 
-label p50_incidence1549_ = "Median ";
+label p50_incidence1549_ = "Model Median ";
+label o_inc_1549_zimphia = "ZIMPHIA";
 series  x=cald y=p50_incidence1549_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence1549_  upper=p95_incidence1549_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+band    x=cald lower=p5_incidence1549_  upper=p95_incidence1549_ / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_inc_1549_zimphia / markerattrs = (symbol=circle       color=black size = 12);
 
 run;quit;
 
@@ -657,15 +660,17 @@ run;quit;
 
 proc sgplot data=e; 
 
-title    height=1.5 justify=center "HIV prevalence";
-xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2040 by 2)       valueattrs=(size=10); 
-yaxis grid label = '%'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
+title    height=1.5 justify=center "HIV prevalence in the general population";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Proportion'          labelattrs=(size=12)    values = (0 to 0.5 by 0.1)    valueattrs=(size=10);
 
-label p50_prevalence1549__ = "Median ";
+label p50_prevalence1549_ = "Model Median ";
+label o_prev_1549_zimphia = "ZIMPHIA";
 
+series  x=cald y=p50_prevalence1549_ /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549_ upper=p95_prevalence1549_ / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=p50_prevalence1549__ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prevalence1549__ upper=p95_prevalence1549__ / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter x=cald y=o_prev_1549_zimphia / markerattrs = (symbol=circle       color=black size = 12);
 
 run;quit;
 
