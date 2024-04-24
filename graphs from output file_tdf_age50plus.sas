@@ -533,18 +533,19 @@ ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Number of deaths";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2000000   by 100000    ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  350000   by 50000    ) valueattrs=(size=10);
 
 label p50_n_death_0 = "";
 label p50_n_death_1 = "";
 
-series  x=cald y=p50_n_death_0 / lineattrs = (color=grey thickness = 4);
+series  x=cald y=p50_n_death_0 / lineattrs = (color=grey thickness = 2);
 band    x=cald lower=p5_n_death_0 upper=p95_n_death_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_n_death_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_n_death_1 upper=p95_n_death_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_n_death_1 / lineattrs = (color=pink thickness = 2);
+band    x=cald lower=p5_n_death_1 upper=p95_n_death_1 / transparency=0.9 fillattrs = (color=pink) legendlabel= "90% range";
 
 run;quit;
+
 
 
 
@@ -557,13 +558,14 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000   by 
 label p50_ddaly_0 = "";
 label p50_ddaly_1 = "";
 
-series  x=cald y=p50_ddaly_0 / lineattrs = (color=grey thickness = 4);
+series  x=cald y=p50_ddaly_0 / lineattrs = (color=grey thickness = 2);
 band    x=cald lower=p5_ddaly_0 upper=p95_ddaly_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_ddaly_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_ddaly_1 upper=p95_ddaly_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_ddaly_1 / lineattrs = (color=pink thickness = 2);
+band    x=cald lower=p5_ddaly_1 upper=p95_ddaly_1 / transparency=0.9 fillattrs = (color=pink) legendlabel= "90% range";
 
 run;quit;
+
 
 
 */
@@ -571,22 +573,24 @@ run;quit;
 
 ods html;
 proc sgplot data=d ; 
-Title    height=1.5 justify=center "Discounted DALYs";
+Title    height=1.5 justify=center "Discounted costs";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000   by 1000000    ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to   500   by 50         ) valueattrs=(size=10);
 
 label p50_dcost_0 = "";
 label p50_dcost_1 = "";
 
-series  x=cald y=p50_dcost_0 / lineattrs = (color=grey thickness = 4);
+series  x=cald y=p50_dcost_0 / lineattrs = (color=grey thickness = 2);
 band    x=cald lower=p5_dcost_0 upper=p95_dcost_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_dcost_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_dcost_1 upper=p95_dcost_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_dcost_1 / lineattrs = (color=pink thickness = 2);
+band    x=cald lower=p5_dcost_1 upper=p95_dcost_1 / transparency=0.9 fillattrs = (color=pink) legendlabel= "90% range";
 
 run;quit;
 
+
 /*
+
 
 
 ods html;

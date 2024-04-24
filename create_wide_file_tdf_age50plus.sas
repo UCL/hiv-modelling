@@ -1,5 +1,8 @@
 
 
+* note: critical that means over follow -up periods start at year_interv;
+
+
 
 * options user="/folders/myfolders/";
 
@@ -53,6 +56,8 @@ data y;
 
 merge b.k_tdf_age50plus_a sf;
 by run ;
+
+
 
 * preparatory code ;
 
@@ -231,6 +236,19 @@ cost_clin_care = dcost_clin_care / discount;
 
 cost = dcost / discount;
 
+
+/*
+
+proc sort; by option;
+proc means; var dcost;
+by option;
+where cald ge 2026;
+run;
+proc glm; model dcost = option;
+where cald ge 2026;
+run;
+
+*/
 
 
 * checks;
@@ -1324,8 +1342,8 @@ s_dead_ddaly s_live_ddaly
 ;
 
 
-
 proc sort data=y;by run option;run;
+
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
@@ -1348,8 +1366,12 @@ data e; set y; keep &v run cald option ;
 
 proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2023.5 <= cald <= 2024.75; 
 
-proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2025.0 <= cald < 2035.00;   
-proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2025.0 <= cald < 2075.00;   
+
+* note: it is critical that this starts at year_interv;
+
+
+proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2026.0 <= cald < 2036.00;   
+proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2026.0 <= cald < 2076.00;   
 																				   
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
@@ -1358,6 +1380,8 @@ data &v ; merge y_24 t_10y t_50y ;
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
+
+
 
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
@@ -1869,16 +1893,9 @@ p_iime_50y_1 p_iime_50y_2
 n_death_hiv_50y_1 n_death_hiv_50y_2 
 n_death_50y_1 n_death_50y_2 
 ddaly_50y_1 ddaly_50y_2 
-s_dead_ddaly_50y_1 s_dead_ddaly_50y_2 
-s_live_ddaly_50y_1 s_live_ddaly_50y_2 
 ;
 run;
 
-
-proc univariate; var 
-d_n_death_50y_2_1  d_ddaly_50y_2_1 d_n_death_hiv_50y_2_1
-;
-run;
 
 
 proc means  n mean p5 p95;
