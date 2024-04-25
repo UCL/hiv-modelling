@@ -1116,6 +1116,17 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
+* check on when branching to options occurs;
+proc freq; tables option; where cald=2039.00;
+proc freq; tables option; where cald=2039.25;
+proc freq; tables option; where cald=2039.50;
+proc freq; tables option; where cald=2039.75;
+proc freq; tables option; where cald=2040.00;
+proc freq; tables option; where cald=2040.25;
+proc freq; tables option; where cald=2040.50;
+run;
+
+
 data    b.l_vaccine_m_b_keep_prep_y; set y;  
 
 data y ; set b.l_vaccine_m_b_keep_prep_y; 
@@ -1127,16 +1138,6 @@ data y ; set b.l_vaccine_m_b_keep_prep_y;
 ***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;
 * user to decide what years and year ranges to include ;
 
-
-* check on when branching to options occurs;
-proc freq; tables option; where cald=2039.00;
-proc freq; tables option; where cald=2039.25;
-proc freq; tables option; where cald=2039.50;
-proc freq; tables option; where cald=2039.75;
-proc freq; tables option; where cald=2040.00;
-proc freq; tables option; where cald=2040.25;
-proc freq; tables option; where cald=2040.50;
-run;
 
 
 %macro var(v=);
