@@ -1168,6 +1168,17 @@ prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_will
 proc sort data=y;by run option;run;
 
 
+* check on when branching to options occurs;
+proc freq; tables option; where cald=2025.00;
+proc freq; tables option; where cald=2025.25;
+proc freq; tables option; where cald=2025.50;
+proc freq; tables option; where cald=2025.75;
+proc freq; tables option; where cald=2026.00;
+proc freq; tables option; where cald=2026.25;
+proc freq; tables option; where cald=2026.50;
+run;
+
+
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
