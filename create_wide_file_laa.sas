@@ -1321,6 +1321,17 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
+* check on when branching to options occurs;
+proc freq; tables option; where cald=2025.00;
+proc freq; tables option; where cald=2025.25;
+proc freq; tables option; where cald=2025.50;
+proc freq; tables option; where cald=2025.75;
+proc freq; tables option; where cald=2026.00;
+proc freq; tables option; where cald=2026.25;
+proc freq; tables option; where cald=2026.50;
+run;
+
+
 data    b.l_laa_g_y; set y;  
 
 data y ; set b.l_laa_g_y; 
