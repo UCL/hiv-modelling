@@ -1117,13 +1117,13 @@ proc sort data=y;by run option;run;
 
 
 * check on when branching to options occurs;
-proc freq; tables option; where cald=2039.00;
-proc freq; tables option; where cald=2039.25;
-proc freq; tables option; where cald=2039.50;
-proc freq; tables option; where cald=2039.75;
-proc freq; tables option; where cald=2040.00;
-proc freq; tables option; where cald=2040.25;
-proc freq; tables option; where cald=2040.50;
+proc freq; tables cald option; where cald=2039.00;
+proc freq; tables cald option; where cald=2039.25;
+proc freq; tables cald option; where cald=2039.50;
+proc freq; tables cald option; where cald=2039.75;
+proc freq; tables cald option; where cald=2040.00;
+proc freq; tables cald option; where cald=2040.25;
+proc freq; tables cald option; where cald=2040.50;
 run;
 
 
