@@ -2,8 +2,6 @@
 
 
 
-* gender_spec_prep_cab_eff and gender_spec_prep_len_eff ? 
-
 * consider atazanavir as the PI ?
 
 * switching could include doubling the dose of DTG if HIVDR testing indicates a low or moderate DTG resistance score ?
