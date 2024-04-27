@@ -1200,7 +1200,7 @@ data y ; set b.l_dcp_cab_v_y;
 
 data e; set y; keep &v run cald option ;
 
-proc means  noprint data=e; var &v; output out=y_23 mean= &v._23; by run ; where 2023.0 <= cald <= 2023.25; 
+proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2024.0 <= cald <= 2024.25; 
 
 proc means  noprint data=e; var &v; output out=y_25 mean= &v._25; by run ; where 2025.0 <= cald <= 2025.25; 
 
@@ -1215,7 +1215,7 @@ proc sort data=y_1y    ; by run; proc transpose data=y_1y     out=t_1y     prefi
 																													
 proc sort data=y_45; by run; proc transpose data=y_45 out=t_45 prefix=&v._45_; var &v._45; by run; 																														
 
-data &v ; merge y_23 y_25 t_20y t_45 t_1y t_50y ;  
+data &v ; merge y_24 y_25 t_20y t_45 t_1y t_50y ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1593,7 +1593,7 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 data g; set b.w_dcp_cab_v ;
 
-if incidence1549_23 ge 0.1;
+if incidence1549_24 ge 0.1;
 
 
 d_prop_elig_on_prep_20y_2_1 = prop_elig_on_prep_20y_2 - prop_elig_on_prep_20y_1; 
@@ -1628,8 +1628,8 @@ d_ddaly_ac_mtct_50y_2_1 = ddaly_ac_mtct_50y_2 - ddaly_ac_mtct_50y_1;
 d_ddaly_ac_mtct_50y_3_1 = ddaly_ac_mtct_50y_3 - ddaly_ac_mtct_50y_1;
 d_ddaly_ac_mtct_50y_4_1 = ddaly_ac_mtct_50y_4 - ddaly_ac_mtct_50y_1;
 
-p_diag_w_23 = p_diag_w_23 / 100;
-p_diag_m_23 = p_diag_m_23 / 100;
+p_diag_w_24 = p_diag_w_24 / 100;
+p_diag_m_24 = p_diag_m_24 / 100;
 
 
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
@@ -1690,46 +1690,46 @@ if netdaly_ac_mtct_500_4 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=
 
 label 
 
-prop_ever_tested_1549w_23 = "Proportion of women aged 15-49 who have previously tested for HIV"
-prop_ever_tested_1549m_23 = "Proportion of men aged 15-49 who have previously tested for HIV"
-p_tested_past_year_1549w_23 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
-p_tested_past_year_1549m_23 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
-prop_elig_dcp_23 = "Proportion of people who are eligible for PrEP who are under DCP"
+prop_ever_tested_1549w_24 = "Proportion of women aged 15-49 who have previously tested for HIV"
+prop_ever_tested_1549m_24 = "Proportion of men aged 15-49 who have previously tested for HIV"
+p_tested_past_year_1549w_24 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
+p_tested_past_year_1549m_24 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
+prop_elig_dcp_24 = "Proportion of people who are eligible for PrEP who are under DCP"
 prop_dcp_prep_elig = "Proportion of people on DCP who are currently PrEP eligible"
-prop_1564_ondcp_23 = "Proportion of people aged 15-64 who are under DCP" 
-p_elig_prep_23 = "Proportion of adults age 15-64 with indication for DCP/PrEP"
-prop_elig_on_prep_23 = "Proportion of people with a current PrEP indication who take PrEP"
-prop_1564_onprep_23 = "Proportion of HIV negative adults aged 15-64 who are taking PrEP"
-prevalence1549w_23 = "HIV prevalence in women age 15-49"
-prevalence1549m_23 = "HIV prevalence in men age 15-49"
-incidence1549w_23 = "HIV incidence in women age 15-49 (/100 person years)"  
-incidence1549m_23 = "HIV incidence in men age 15-49 (/100 person years)"  
-p_diag_w_23 = "Proportion of HIV positive women age 15+ who are diagnosed"  
-p_diag_m_23 = "Proportion of HIV positive men age 15+ who are diagnosed"  
-p_onart_diag_w_23 = "Proportion of diagnosed HIV+ women on ART"
-p_onart_diag_m_23 = "Proportion of diagnosed HIV+ men on ART"
-p_vl1000_23 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)"
-prevalence_vg1000_23 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)"
-p_onart_vl1000_w_23 = "Of women on ART, proportion with VL < 1000"
-p_onart_vl1000_m_23 = "Of men on ART, proportion with VL < 1000"
-p_alive_1549_23 = "Proportion of adults aged 15-49"  
-p_tested_tm1_elig_onprep_23 =  "Of those with a test in the last period, prop of eligible on PrEP" 
-p_prep_tm1_elig_onprep_23 = "Proportion of PrEP/DCP eligible people who took prep in the last 3 months who remain on PrEP"   
-p_prep_past3yr_elig_onprep_23 = "Proportion of PrEP/DCP eligible people who have taken prep in the past 3 years who remain on PrEP"    
-p_dcp_tm1_rem_elig_offdcp_23 = "Proportion who are on DCP and remain eligible who drop off per 3 months"  
-p_dcp_drop_off_this_period_23 = "Proportion who were on DCP 3 months ago who drop off this period" 
-prop_dcp_oral_prep_23 = "Proportion of people on DCP who are on oral PrEP"  
-prop_dcp_inj_prep_23 = "Proportion of people on DCP who are on Cab-LA PrEP" 
-prop_dcp_prep_any_23 = "Proportion of people on DCP who are on any PrEP (or PEP)"
-prop_dcp_elig_prep_oral_23 = "Proportion of people on DCP who have an indication for PrEP who are on oral PrEP"  
-prop_dcp_elig_prep_inj_23 = "Proportion of people on DCP who have an indication for PrEP who are on Cab-LA PrEP"  
-prop_elig_on_prep_oral_23 = "Of people with indication for PrEP proportion on oral PrEP"  
-prop_elig_on_prep_inj_23 = "Of people with indication for PrEP proportion on cab-LA PrEP"  
-p_elig_offp_tm1_oralprep_23 = "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on oral PrEP"    
-p_elig_offp_tm1_injprep_23 = "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on Cab-LA PrEP"    
-p_dcp_v1_prep_elig_oralp_23 = "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on oral PrEP"
-p_dcp_v1_prep_elig_injp_23 = "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on prep inj"
-p_dcp_v1_prep_elig_onprep_23 = "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on PrEP"
+prop_1564_ondcp_24 = "Proportion of people aged 15-64 who are under DCP" 
+p_elig_prep_24 = "Proportion of adults age 15-64 with indication for DCP/PrEP"
+prop_elig_on_prep_24 = "Proportion of people with a current PrEP indication who take PrEP"
+prop_1564_onprep_24 = "Proportion of HIV negative adults aged 15-64 who are taking PrEP"
+prevalence1549w_24 = "HIV prevalence in women age 15-49"
+prevalence1549m_24 = "HIV prevalence in men age 15-49"
+incidence1549w_24 = "HIV incidence in women age 15-49 (/100 person years)"  
+incidence1549m_24 = "HIV incidence in men age 15-49 (/100 person years)"  
+p_diag_w_24 = "Proportion of HIV positive women age 15+ who are diagnosed"  
+p_diag_m_24 = "Proportion of HIV positive men age 15+ who are diagnosed"  
+p_onart_diag_w_24 = "Proportion of diagnosed HIV+ women on ART"
+p_onart_diag_m_24 = "Proportion of diagnosed HIV+ men on ART"
+p_vl1000_24 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)"
+prevalence_vg1000_24 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)"
+p_onart_vl1000_w_24 = "Of women on ART, proportion with VL < 1000"
+p_onart_vl1000_m_24 = "Of men on ART, proportion with VL < 1000"
+p_alive_1549_24 = "Proportion of adults aged 15-49"  
+p_tested_tm1_elig_onprep_24 =  "Of those with a test in the last period, prop of eligible on PrEP" 
+p_prep_tm1_elig_onprep_24 = "Proportion of PrEP/DCP eligible people who took prep in the last 3 months who remain on PrEP"   
+p_prep_past3yr_elig_onprep_24 = "Proportion of PrEP/DCP eligible people who have taken prep in the past 3 years who remain on PrEP"    
+p_dcp_tm1_rem_elig_offdcp_24 = "Proportion who are on DCP and remain eligible who drop off per 3 months"  
+p_dcp_drop_off_this_period_24 = "Proportion who were on DCP 3 months ago who drop off this period" 
+prop_dcp_oral_prep_24 = "Proportion of people on DCP who are on oral PrEP"  
+prop_dcp_inj_prep_24 = "Proportion of people on DCP who are on Cab-LA PrEP" 
+prop_dcp_prep_any_24 = "Proportion of people on DCP who are on any PrEP (or PEP)"
+prop_dcp_elig_prep_oral_24 = "Proportion of people on DCP who have an indication for PrEP who are on oral PrEP"  
+prop_dcp_elig_prep_inj_24 = "Proportion of people on DCP who have an indication for PrEP who are on Cab-LA PrEP"  
+prop_elig_on_prep_oral_24 = "Of people with indication for PrEP proportion on oral PrEP"  
+prop_elig_on_prep_inj_24 = "Of people with indication for PrEP proportion on cab-LA PrEP"  
+p_elig_offp_tm1_oralprep_24 = "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on oral PrEP"    
+p_elig_offp_tm1_injprep_24 = "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on Cab-LA PrEP"    
+p_dcp_v1_prep_elig_oralp_24 = "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on oral PrEP"
+p_dcp_v1_prep_elig_injp_24 = "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on prep inj"
+p_dcp_v1_prep_elig_onprep_24 = "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on PrEP"
 ;
 
 
@@ -1758,26 +1758,25 @@ ods html;
 title "Characteristics in 2023";
 proc means  data = g    n p50 p5 p95 ;  
 var
-prop_ever_tested_1549w_23 
-prop_ever_tested_1549m_23 
-p_tested_past_year_1549w_23 
-p_tested_past_year_1549m_23 
-prop_elig_dcp_23 
-p_elig_prep_23 
-prop_elig_on_prep_23 
-prop_1564_onprep_23 
-prevalence1549w_23 
-prevalence1549m_23 
-incidence1549w_23 
-incidence1549m_23 
-p_diag_w_23 
-p_diag_m_23 
-p_onart_diag_w_23 
-p_onart_diag_m_23 
-p_vl1000_23 
-prevalence_vg1000_23 
-p_onart_vl1000_w_23 
-p_onart_vl1000_m_23 ;
+prop_ever_tested_1549w_24 
+prop_ever_tested_1549m_24 
+p_tested_past_year_1549w_24 
+p_tested_past_year_1549m_24 
+p_elig_prep_24 
+prop_elig_on_prep_24 
+prop_1564_onprep_24 
+prevalence1549w_24 
+prevalence1549m_24 
+incidence1549w_24 
+incidence1549m_24 
+p_diag_w_24 
+p_diag_m_24 
+p_onart_diag_w_24 
+p_onart_diag_m_24 
+p_vl1000_24 
+prevalence_vg1000_24 
+p_onart_vl1000_w_24 
+p_onart_vl1000_m_24 ;
 run;
 
 
@@ -2296,8 +2295,8 @@ d_p_ai_no_arv_e_inm_50y_3_2 = p_ai_no_arv_e_inm_50y_3 - p_ai_no_arv_e_inm_50y_2;
 
 
 proc means   data = g  n p50 p5 p95 min max;  
-var prevalence1549w_23 prevalence1549m_23 incidence1549_23 p_diag_23 p_onart_diag_23 p_onart_vl1000_23 p_vl1000_23 prevalence_vg1000_23 
-prop_elig_on_prep_23  ;
+var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24 
+prop_elig_on_prep_24  ;
 run;
 
 
