@@ -867,6 +867,8 @@ run;
 * p_onart_w_age50pl;			p_onart_w_age50pl = s_onart_w50pl / (s_onart_w1549_ + s_onart_w50pl);
 
 * prevalence_vg1000;			if s_alive > 0 then prevalence_vg1000 = s_vg1000 / s_alive;
+* prevalence_vg1000_w;			if s_alive_w > 0 then prevalence_vg1000_w = s_vg1000_w / s_alive_w;
+* prevalence_vg1000_m;			if s_alive_m > 0 then prevalence_vg1000_m = s_vg1000_m / s_alive_m;
 * prev_vg1000_newp_m;			prev_vg1000_newp_m = (s_i_m_newp - s_i_vl1000_m_newp) /  s_m_newp;
 * prev_vg1000_newp_w;			prev_vg1000_newp_w = (s_i_w_newp - s_i_vl1000_w_newp) /  s_w_newp;
 * r_efa_hiv;					if s_hivge15 > 0 then r_efa_hiv = s_r_efa / s_hivge15 ;
@@ -1076,6 +1078,7 @@ dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
+prevalence_vg1000_w prevalence_vg1000_m
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
 p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
@@ -1236,7 +1239,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=prevalence2529m); * %var(v=prevalence3034w);*  %var(v=prevalence3034m);* %var(v=prevalence3539w); * %var(v=prevalence3539m);  	  
 * %var(v=prevalence4044w); *  %var(v=prevalence4044m); *  %var(v=prevalence4549w); *  %var(v=prevalence4549m);  
 %var(v=prevalence_vg1000); %var(v=incidence1549);  %var(v=incidence1564);  %var(v=n_infection);  %var(v=incidence_onprep);
-%var(v=prevalence1524w); *  %var(v=prevalence1524m); %var(v=prevalence_sw);
+%var(v=prevalence_vg1000_w);  %var(v=prevalence_vg1000_m); %var(v=prevalence1524w); *  %var(v=prevalence1524m); %var(v=prevalence_sw);
 * %var(v=prevalence5054w); * %var(v=prevalence5054m); * %var(v=prevalence5559w); * %var(v=prevalence5559m); * %var(v=prevalence6064w); * %var(v=prevalence6064m); 
 * %var(v=prevalence65plw); * %var(v=prevalence65plm); * %var(v=r_prev_sex_1549); * %var(v=prevalence_hiv_preg);
 * %var(v=r_prev_1519w_4549w );  * %var(v=r_prev_2024w_4549w  );  * %var(v=r_prev_2529w_4549w );  * %var(v=r_prev_3034w_4549w  ); 
@@ -1399,7 +1402,7 @@ p_tested_tm1_elig_onprep  p_alive_1549  p_prep_tm1_elig_onprep  p_prep_past3yr_e
 prop_1564_ondcp prop_dcp_oral_prep prop_dcp_inj_prep prop_dcp_elig_prep_oral prop_dcp_elig_prep_inj p_dcp_elig_offp_tm1_start
 prop_elig_on_prep_oral prop_elig_on_prep_inj p_dcp_elig_offp_tm1_poral   p_dcp_elig_offp_tm1_pinj
 p_elig_offp_tm1_oralprep  p_elig_offp_tm1_injprep  prop_dcp_prep_any p_dcp_v1_prep_elig_oralp  p_dcp_v1_prep_elig_injp  p_dcp_v1_prep_elig_onprep
-
+prevalence_vg1000_w prevalence_vg1000_m
 ;
 
 
@@ -1669,12 +1672,28 @@ netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
 netdaly500_3 = ddaly_50y_3 + (dcost_50y_3 / 0.0005);
 netdaly500_4 = ddaly_50y_4 + (dcost_50y_4 / 0.0005);
 
+d_netdaly500_2_1 = netdaly500_2 - netdaly500_1 ;
+d_netdaly500_3_1 = netdaly500_3 - netdaly500_1 ;
+d_netdaly500_4_1 = netdaly500_4 - netdaly500_1 ;
+
 min_netdaly500 = min(netdaly500_1, netdaly500_2, netdaly500_3, netdaly500_4);
+min_ddaly = min(ddaly_50y_1, ddaly_50y_2, ddaly_50y_3, ddaly_50y_4);
+min_dcost = min(dcost_50y_1, dcost_50y_2, dcost_50y_3, dcost_50y_4);
 
 if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
 if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
 if netdaly500_3 = min_netdaly500 then lowest_netdaly=3;
 if netdaly500_4 = min_netdaly500 then lowest_netdaly=4;
+
+if ddaly_50y_1 = min_ddaly then lowest_ddaly=1;
+if ddaly_50y_2 = min_ddaly then lowest_ddaly=2;
+if ddaly_50y_3 = min_ddaly then lowest_ddaly=3;
+if ddaly_50y_4 = min_ddaly then lowest_ddaly=4;
+
+if dcost_50y_1 = min_dcost then lowest_dcost=1;
+if dcost_50y_2 = min_dcost then lowest_dcost=2;
+if dcost_50y_3 = min_dcost then lowest_dcost=3;
+if dcost_50y_4 = min_dcost then lowest_dcost=4;
 
 netdaly_ac_mtct_500_1 = ddaly_ac_mtct_50y_1 + (dcost_50y_1 / 0.0005);
 netdaly_ac_mtct_500_2 = ddaly_ac_mtct_50y_2 + (dcost_50y_2 / 0.0005);
@@ -1773,10 +1792,24 @@ p_diag_w_24
 p_diag_m_24 
 p_onart_diag_w_24 
 p_onart_diag_m_24 
-p_vl1000_24 
-prevalence_vg1000_24 
+p_vl1000_m_24 
+p_vl1000_w_24 
+prevalence_vg1000_m_24 
+prevalence_vg1000_w_24 
 p_onart_vl1000_w_24 
 p_onart_vl1000_m_24 ;
+run;
+
+
+proc means n p50 p5 p95;
+var 
+prop_prep_inj_20y_1 prop_prep_inj_20y_2 prop_prep_inj_20y_3 prop_prep_inj_20y_4 
+prevalence1549_20y_1 prevalence1549_20y_2 prevalence1549_20y_3 prevalence1549_20y_4
+incidence1549_20y_1 incidence1549_20y_2 incidence1549_20y_3 incidence1549_20y_4
+p_vl1000_20y_1 p_vl1000_20y_2 p_vl1000_20y_3 p_vl1000_20y_4 
+p_diag_20y_1 p_diag_20y_2 p_diag_20y_3 p_diag_20y_4 
+prevalence_vg1000_20y_1 prevalence_vg1000_20y_2 prevalence_vg1000_20y_3 prevalence_vg1000_20y_4 
+;
 run;
 
 
@@ -2127,14 +2160,14 @@ proc means data = g n mean p50 p5 p95;
 r_incidence1549_50y_2_1 r_incidence1549_50y_3_1 r_incidence1549_50y_4_1 
 ddaly_50y_1 ddaly_50y_2 ddaly_50y_3 ddaly_50y_4    d_ddaly_50y_2_1  d_ddaly_50y_3_1  d_ddaly_50y_4_1
 dcost_50y_1   dcost_50y_2 dcost_50y_3   dcost_50y_4  d_dcost_50y_2_1 d_dcost_50y_3_1 d_dcost_50y_4_1
-netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 
+netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_4_1
 ;
 run;
 
 
 title 'Which policy is cost-effective for each model run';
 
-proc freq; tables lowest_netdaly; run; 
+proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost; run; 
 
 
 ods html close;
