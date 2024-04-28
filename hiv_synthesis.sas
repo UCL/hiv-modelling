@@ -2232,7 +2232,7 @@ who may be dead and hence have caldate{t} missing;
 	*Option 5 is SQ + 	U = U messaging [new for SA];
 	*Option 6 is SQ + 	Self-test distribution in health facilities [Zim O2];
 	*Option 7 is SQ + 	Self-test distribution to partners of HIV-positive individuals [Zim O4];
-	*Option 8 is SQ + 	Establishment of men’s health clinics [Zim O13];
+	*Option 8 is SQ + 	Establishment of menï¿½s health clinics [Zim O13];
 	*Option 9 is SQ + 	VMMC for males aged 10-14 [coded but not in Zim MIHPSA];
 	*Option 10 is SQ + 	VMMC for males aged 15+ [Zim O14];
 	*Option 11 is SQ + 	Community-based peer navigators to support ART linkage & retention [new for SA];
@@ -2317,7 +2317,7 @@ who may be dead and hence have caldate{t} missing;
 		secondary_dist_self_test = 1; secondary_self_test_targeting = 3;
 	end;
 
-	*Option 8 is SQ + 	Establishment of men’s health clinics [Zim O13];
+	*Option 8 is SQ + 	Establishment of menï¿½s health clinics [Zim O13];
 	if option = 8 then do;
 		mens_clinics = 1;				*Mens health clinics switched on;	*JAS Mar24;
 	end;
@@ -4878,7 +4878,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 * TESTING IN RELATION TO PrEP;
 
-	a=rand('uniform');
+a=rand('uniform');
 
 	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and hard_reach=0 and 
 	((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (pop_wide_tld_prep ne 1 or (pop_wide_tld_prep=1 and a < prob_test_pop_wide_tld_prep))  
@@ -17025,7 +17025,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;  s_test_not_costed + test_not_costed;
 
 	s_self_tested + self_tested;  s_tested_due_to_self_test + tested_due_to_self_test;  s_diagnosed_self_test + diagnosed_self_test;
-	s_self_tested_m + self_tested_m ; s_self_tested_w + self_tested_w ; 
+	s_self_tested_m + self_tested_m ; s_self_tested_w + self_tested_w ;
 
 	/*VL and CD4*/
 
@@ -18799,7 +18799,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500  
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return   s_test_not_costed
-s_self_tested s_self_tested_m s_self_tested_w  s_tested_due_to_self_test  s_diagnosed_self_test
+s_self_tested s_self_tested_m s_self_tested_w s_tested_due_to_self_test s_diagnosed_self_test
 
 
 /*VL and CD4*/
@@ -19132,7 +19132,7 @@ sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
-prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test  secondary_self_test_targeting 
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test  secondary_self_test_targeting
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy  prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
@@ -19264,6 +19264,32 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
+***Malawi specific;			*JAS Feb24;
+if country = 'Malawi' then do;
+	if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
+	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
+	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+end;
+
+***South Africa specific;	*JAS Feb24;
+if country = 'South Africa' then do;
+	if cald = 2017.5 and (prevalence1549 < 0.166 or prevalence1549 > 0.246) then do;
+	  abort abend;
+	end;
+	if cald = 2021 and (s_onart < 3333 or s_onart > 6400) then do;
+	  abort abend;
+	end;
+end;
+
+***Zim specific;			*JAS Feb24;
+if country = 'Zimbabwe' then do;
+	if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
+	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
+end;
+/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/	*QUERY should we be using this line for Zim? JAS Feb24;
 
 
 ***Malawi specific;			*JAS Feb24;
@@ -19773,7 +19799,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return   s_test_not_costed
-s_self_tested  s_self_tested_m s_self_tested_w  s_tested_due_to_self_test s_diagnosed_self_test
+s_self_tested s_self_tested_m s_self_tested_w s_tested_due_to_self_test s_diagnosed_self_test
 
 
 /*VL and CD4*/
@@ -20618,7 +20644,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350  s_not_on_art_cd4350500  s_not_on_art_cd4ge500
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return  s_test_not_costed
-s_self_tested  s_self_tested_m s_self_tested_w  s_tested_due_to_self_test s_diagnosed_self_test
+s_self_tested s_self_tested_m s_self_tested_w s_tested_due_to_self_test s_diagnosed_self_test
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -20951,7 +20977,7 @@ zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_futu
 rate_tb_proph_init rate_sbi_proph_init 
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
-prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test  secondary_self_test_targeting 
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy   prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
