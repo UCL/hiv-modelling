@@ -34,6 +34,8 @@ data sf;
 
 set b.k_vaccine_m_b_r_eff_dur ;
 
+if option <= 1;
+
 
 if cald=2024   ;
 s_alive = s_alive_m + s_alive_w ;
@@ -1617,7 +1619,7 @@ ods html;
 title "Relative incidence (age 15-49) compared with no vaccine";
 proc means  data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 ;
 var
-r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
+r_incidence1549_30y_2_1 
 ;
 run;
 ods html close;
@@ -1625,193 +1627,7 @@ ods html close;
 
 proc means  data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 ;
 var
-r_incidence1549_69_2_1 r_incidence1549_69_3_1  r_incidence1549_69_4_1  
+r_incidence1549_69_2_1 
 ;
 run;
-
-
-proc means  data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 ;
-var
-r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
-d_incidence1549_30y_2_1 d_incidence1549_30y_3_1  d_incidence1549_30y_4_1 
-r_incidence1549_69_2_1 r_incidence1549_69_3_1  r_incidence1549_69_4_1 
-d_incidence1549_69_2_1 d_incidence1549_69_3_1  d_incidence1549_69_4_1 
-;
-run;
-
-proc means  n mean p5 p95;
-var
-d_dcost_30y_2_1
-d_dcost_30y_3_1
-d_dcost_30y_4_1
-;
-run;
-
-proc means  n mean p5 p95;
-var
-dcost_30y_1 dcost_30y_2 dcost_30y_3  dcost_30y_4 
-dart_cost_y_30y_1  dart_cost_y_30y_2    dart_cost_y_30y_3   dart_cost_y_30y_4  
-dadc_cost_30y_1  dadc_cost_30y_2   dadc_cost_30y_3   dadc_cost_30y_4  
-dcd4_cost_30y_1  dcd4_cost_30y_2  dcd4_cost_30y_3   dcd4_cost_30y_4  
-dvl_cost_30y_1  dvl_cost_30y_2  dvl_cost_30y_3  dvl_cost_30y_4 
-dvis_cost_30y_1 dvis_cost_30y_2  dvis_cost_30y_3  dvis_cost_30y_4 
-dnon_tb_who3_cost_30y_1  dnon_tb_who3_cost_30y_2  dnon_tb_who3_cost_30y_3  dnon_tb_who3_cost_30y_4   		
-dcot_cost_30y_1  dcot_cost_30y_2    dcot_cost_30y_3  dcot_cost_30y_4   
-dtb_cost_30y_1  dtb_cost_30y_2   dtb_cost_30y_3  dtb_cost_30y_4  
-dtest_cost_30y_1 dtest_cost_30y_2  dtest_cost_30y_3  dtest_cost_30y_4 
-dcost_circ_30y_1  dcost_circ_30y_2  dcost_circ_30y_3  dcost_circ_30y_4 
-dcost_non_aids_pre_death_30y_1 dcost_non_aids_pre_death_30y_2  dcost_non_aids_pre_death_30y_3  dcost_non_aids_pre_death_30y_4
-dcost_prep_visit_oral_30y_1  dcost_prep_visit_oral_30y_2  dcost_prep_visit_oral_30y_3  dcost_prep_visit_oral_30y_4 
-dcost_prep_oral_30y_1 dcost_prep_oral_30y_2 dcost_prep_oral_30y_3 dcost_prep_oral_30y_4 
-dcost_prep_visit_inj_30y_1  dcost_prep_visit_inj_30y_2 dcost_prep_visit_inj_30y_3 dcost_prep_visit_inj_30y_4
-dcost_prep_inj_30y_1 dcost_prep_inj_30y_2  dcost_prep_inj_30y_3  dcost_prep_inj_30y_4 
-;
-run;
-
-
-
-
-proc means   data = b.w_vaccine_m_b_r_eff_dur  n mean  p50 p5 p95 ;
-var incidence1549_39 
-incidence1549_40_1  incidence1549_41_1  incidence1549_42_1  incidence1549_43_1  incidence1549_44_1  incidence1549_45_1  incidence1549_46_1  incidence1549_47_1  
-incidence1549_48_1  incidence1549_49_1  incidence1549_50_1  incidence1549_51_1  incidence1549_52_1  incidence1549_53_1  incidence1549_54_1  incidence1549_55_1  
-incidence1549_56_1  incidence1549_57_1  incidence1549_58_1  incidence1549_59_1  incidence1549_60_1  incidence1549_61_1  incidence1549_62_1  incidence1549_63_1  
-incidence1549_64_1  incidence1549_65_1  incidence1549_66_1  incidence1549_67_1  incidence1549_68_1  incidence1549_69_1                                          
-
-incidence1549_40_2  incidence1549_41_2  incidence1549_42_2  incidence1549_43_2  incidence1549_44_2  incidence1549_45_2  incidence1549_46_2  incidence1549_47_2  
-incidence1549_48_2  incidence1549_49_2  incidence1549_50_2  incidence1549_51_2  incidence1549_52_2  incidence1549_53_2  incidence1549_54_2  incidence1549_55_2  
-incidence1549_56_2  incidence1549_57_2  incidence1549_58_2  incidence1549_59_2  incidence1549_60_2  incidence1549_61_2  incidence1549_62_2  incidence1549_63_2  
-incidence1549_64_2  incidence1549_65_2  incidence1549_66_2  incidence1549_67_2  incidence1549_68_2  incidence1549_69_2      
-
-;
-run; 
-
-
-
-
-/*
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Proportion of adults age 15-64 taking PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.05      by 0.01    ) valueattrs=(size=10);
-
-label p50_prop_1564_hivneg_onprep_0 = "no vaccine";
-label p50_prop_1564_hivneg_onprep_1 = "vaccine 1";
-label p50_prop_1564_hivneg_onprep_2 = "vaccine 2";
-label p50_prop_1564_hivneg_onprep_3 = "vaccine 3";
-
-series  x=cald y=p50_prop_1564_hivneg_onprep_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prop_1564_hivneg_onprep_0 upper=p95_prop_1564_hivneg_onprep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_1564_hivneg_onprep_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_prop_1564_hivneg_onprep_1 upper=p95_prop_1564_hivneg_onprep_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_1564_hivneg_onprep_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_prop_1564_hivneg_onprep_2 upper=p95_prop_1564_hivneg_onprep_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_1564_hivneg_onprep_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_prop_1564_hivneg_onprep_3 upper=p95_prop_1564_hivneg_onprep_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
-
-run;quit;
-
-*/
-
-
-
-
-
-/*
-
-
-
-proc glm  data = b.w_vaccine_m_b_r_eff_dur ;
-class future_prep_condom;
-model prop_elig_on_prep_39 = future_prep_condom / solution;
-run;
-
-proc glm  data = b.w_vaccine_m_b_r_eff_dur ;
-class future_prep_condom;
-model incidence1549_30y_1 = future_prep_condom / solution;
-run;
-
-proc sort data = b.w_vaccine_m_b_r_eff_dur; by future_prep_condom;
-proc means  data = b.w_vaccine_m_b_r_eff_dur ;
-var prop_elig_on_prep_39  incidence1549_39 incidence1549_30y_1  ;
-by future_prep_condom;
-run;
-
-ods html;
-proc print noobs; var run;  where future_prep_condom = 1;
-ods html close;
-
-
-
-
-
-
-
-
-proc means   data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 min max;  
-var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24 
-prop_elig_on_prep_24  ;
-run;
-
-
-proc means data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 ;  
-var
-prop_1564_onprep_30y_1  prop_1564_onprep_30y_2   
-d_prop_1564_onprep_30y_2_1  
-;
-
-
-proc means data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 ;  
-var 
-prop_elig_on_prep_30y_1 prop_elig_on_prep_30y_2  
-d_prop_elig_on_prep_30y_2_1  
-;
-
-
-proc means data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 ;  
-var
-prop_prep_inj_30y_1  prop_prep_inj_30y_2  
-d_prop_prep_inj_30y_2_1  
-;
-
-
-
-proc means  data = b.w_vaccine_m_b_r_eff_dur  n mean p50 p5 p95 clm;  
-var
-incidence1549_30y_1 incidence1549_30y_2  
-r_incidence1549_30y_2_1 
-;
-run;
-
-
-ods html;
-proc means  data = b.w_vaccine_m_b_r_eff_dur  n mean clm;  
-var
-incidence1549_30y_1 incidence1549_30y_2 
-r_incidence1549_30y_2_1 
-;
-run;
-ods html close;
-
-
-
-proc means  n mean p5 p95;
-  var 
-n_death_hiv_30y_1 n_death_hiv_30y_2                   
-ddaly_30y_1 ddaly_30y_2    d_ddaly_30y_2_1  
-dcost_30y_1   dcost_30y_2   d_dcost_30y_2_1 
-netdaly500_1 netdaly500_2 
-;
-
-run;
-
-
-
-
-
 
