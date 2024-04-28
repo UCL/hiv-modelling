@@ -1517,20 +1517,11 @@ d_prop_1564_onprep_30y_2_1 = prop_1564_onprep_30y_2 - prop_1564_onprep_30y_1;
 d_prop_prep_inj_30y_2_1 = prop_prep_inj_30y_2 - prop_prep_inj_30y_1 ;
 
 r_incidence1549_30y_2_1 = incidence1549_30y_2 / incidence1549_30y_1 ;
-r_incidence1549_30y_3_1 = incidence1549_30y_3 / incidence1549_30y_1 ;
-r_incidence1549_30y_4_1 = incidence1549_30y_4 / incidence1549_30y_1 ;
 
 d_incidence1549_30y_2_1 = incidence1549_30y_1 - incidence1549_30y_2 ;
-d_incidence1549_30y_3_1 = incidence1549_30y_1 - incidence1549_30y_3 ;
-d_incidence1549_30y_4_1 = incidence1549_30y_1 - incidence1549_30y_4 ;
-
 r_incidence1549_69_2_1 = incidence1549_69_2 / incidence1549_69_1 ;
-r_incidence1549_69_3_1 = incidence1549_69_3 / incidence1549_69_1 ;
-r_incidence1549_69_4_1 = incidence1549_69_4 / incidence1549_69_1 ;
 
 d_incidence1549_69_2_1 = incidence1549_69_1 - incidence1549_69_2 ;
-d_incidence1549_69_3_1 = incidence1549_69_1 - incidence1549_69_3 ;
-d_incidence1549_69_4_1 = incidence1549_69_1 - incidence1549_69_4 ;
 
 d_incidence1549_24_30y_1 = incidence1549_24 - incidence1549_30y_1 ; 
 
@@ -1549,19 +1540,8 @@ dcost_30y_2 = dart_cost_y_30y_2 + dadc_cost_30y_2 + dcd4_cost_30y_2 + dvl_cost_3
 					dcost_circ_30y_2 + dcost_condom_dn_30y_2 + dcost_child_hiv_30y_2 + dcost_non_aids_pre_death_30y_2
 					+ (dcost_prep_visit_oral_30y_2) + (dcost_prep_oral_30y_2) ;
 
-dcost_30y_3 = dart_cost_y_30y_3 + dadc_cost_30y_3 + dcd4_cost_30y_3 + dvl_cost_30y_3 + dvis_cost_30y_3 + dnon_tb_who3_cost_30y_3 + 
-					dcot_cost_30y_3 + dtb_cost_30y_3 + dres_cost_30y_3 + dtest_cost_30y_3 + d_t_adh_int_cost_30y_3 + dswitchline_cost_30y_3 + 
-					dcost_circ_30y_3 + dcost_condom_dn_30y_3 + dcost_child_hiv_30y_3 + dcost_non_aids_pre_death_30y_3
-					+ (dcost_prep_visit_oral_30y_3) + (dcost_prep_oral_30y_3) ;
-
-dcost_30y_4 = dart_cost_y_30y_4 + dadc_cost_30y_4 + dcd4_cost_30y_4 + dvl_cost_30y_4 + dvis_cost_30y_4 + dnon_tb_who3_cost_30y_4 + 
-					dcot_cost_30y_4 + dtb_cost_30y_4 + dres_cost_30y_4 + dtest_cost_30y_4 + d_t_adh_int_cost_30y_4 + dswitchline_cost_30y_4 + 
-					dcost_circ_30y_4 + dcost_condom_dn_30y_4 + dcost_child_hiv_30y_4 + dcost_non_aids_pre_death_30y_4
-					+ (dcost_prep_visit_oral_30y_4) + (dcost_prep_oral_30y_4) ;
 
 d_dcost_30y_2_1 = dcost_30y_2 - dcost_30y_1;
-d_dcost_30y_3_1 = dcost_30y_3 - dcost_30y_1;
-d_dcost_30y_4_1 = dcost_30y_4 - dcost_30y_1;
 
 d_ddaly_30y_2_1 = ddaly_30y_2 - ddaly_30y_1;
 
@@ -1615,8 +1595,7 @@ p_onart_vl1000_39 = "Of people on ART, proportion with VL < 1000"
 
 label
 r_incidence1549_30y_2_1  = "vaccine_1"  
-r_incidence1549_30y_3_1  = "vaccine_2"  
-r_incidence1549_30y_4_1  = "vaccine_3"  
+ 
 ;
 
 
