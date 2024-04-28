@@ -57,6 +57,8 @@ data y;
 merge b.k_vaccine_m_b_r_eff_dur sf;
 by run ;
 
+if option <= 1;
+
 * preparatory code ;
 
 * ================================================================================= ;
@@ -1347,7 +1349,7 @@ if cald=2040;
 
 keep 
 
-run cald 
+run cald option
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp  n_alive
@@ -1397,7 +1399,7 @@ p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_
 %macro par(p=);
 
 * &p ;
-proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2024; run;
+proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2040 and option=1; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
@@ -1511,6 +1513,7 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   data  b.w_vaccine_m_b_r_eff_dur     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
+
 
 d_prop_elig_on_prep_30y_2_1 = prop_elig_on_prep_30y_2 - prop_elig_on_prep_30y_1; 
 
@@ -1630,4 +1633,15 @@ var
 r_incidence1549_69_2_1 
 ;
 run;
+
+
+proc glm data = b.w_vaccine_m_b_r_eff_dur; 
+model r_incidence1549_69_2_1 = vaccine_efficacy  vaccine_duration_effect / solution ; 
+run;
+
+
+
+proc print  data = b.w_vaccine_m_b_r_eff_dur; var r_incidence1549_69_2_1 vaccine_efficacy  vaccine_duration_effect; run;
+
+
 
