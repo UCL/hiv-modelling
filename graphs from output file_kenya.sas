@@ -461,7 +461,8 @@ if cald = 2022 then n_msm_obs_kya = 32600 ;
 
 if cald = 2022 then n_pwid_obs_kya = 16000;
 
-if cald = 2022 then n_onprep_obs_kya = 156000;
+if cald = 2022 then n_onprep_obs_kya = 21000;  * pharmacy data;
+if cald = 2024 then n_onprep_obs_kya = 70000; * pharmacy data;
 
 /*
 
