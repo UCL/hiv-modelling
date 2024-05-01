@@ -2225,6 +2225,7 @@ who may be dead and hence have caldate{t} missing;
 	*Option 0 is continuation at current rates - status quo;
  	*Option 99 is minimal scenario for South Africa (used for Phase I);
 		*Including: ANC HIV testing/PMTCT, HIV patient care, universal ART eligibility, including CD4 before ART start and VL monitoring;
+
 	*Option 1 is SQ + 	Dapivirine ring for adolescent girls and young women 15 to 24 years (AGYW) [Zim O19];
 	*Option 2 is SQ + 	Oral PrEP for pregnant and breastfeeding women [Zim O18];
 	*Option 3 is SQ + 	Injectable PrEP for AGYW [Zim O23];
@@ -2232,7 +2233,7 @@ who may be dead and hence have caldate{t} missing;
 	*Option 5 is SQ + 	U = U messaging [new for SA];
 	*Option 6 is SQ + 	Self-test distribution in health facilities [Zim O2];
 	*Option 7 is SQ + 	Self-test distribution to partners of HIV-positive individuals [Zim O4];
-	*Option 8 is SQ + 	Establishment of men�s health clinics [Zim O13];
+	*Option 8 is SQ + 	Establishment of mens health clinics [Zim O13];
 	*Option 9 is SQ + 	VMMC for males aged 10-14 [coded but not in Zim MIHPSA];
 	*Option 10 is SQ + 	VMMC for males aged 15+ [Zim O14];
 	*Option 11 is SQ + 	Community-based peer navigators to support ART linkage & retention [new for SA];
