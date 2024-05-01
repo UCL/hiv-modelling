@@ -1150,19 +1150,19 @@ data y ; set b.l_vaccine_n_b_r_eff_dur_y;
 
 data e; set y; keep &v run cald option ;
 
-proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2024.0 <= cald <= 2024.25; 
+proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2023.25 <= cald <= 2024.25; 
 
 proc means  noprint data=e; var &v; output out=y_39 mean= &v._39; by run ; where 2039.0 <= cald <= 2040.0; 
 
-proc means  noprint data=e; var &v; output out=y_69 mean= &v._69; by run  option ; where 2069.0 <= cald <  2070.0; 
+proc means  noprint data=e; var &v; output out=y_6570 mean= &v._6570; by run  option ; where 2065.0 <= cald <  2070.0; 
 
 proc means noprint data=e; var &v; output out=y_30y mean= &v._30y; by run option ; where 2040.0 <= cald < 2070.00;   
 																				   
 proc sort data=y_30y    ; by run; proc transpose data=y_30y  out=t_30y  prefix=&v._30y_  ; var &v._30y    ; by run; 																																																						
 																																																
-proc sort data=y_69     ; by run; proc transpose data=y_69   out=t_69   prefix=&v._69_  ; var &v._69     ; by run; 																																																						
+proc sort data=y_6570     ; by run; proc transpose data=y_6570   out=t_6570   prefix=&v._6570_  ; var &v._6570     ; by run; 																																																						
 
-data &v ; merge y_24 t_30y y_39  t_69 ;  
+data &v ; merge y_24 t_30y y_39  t_6570 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1514,6 +1514,8 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
+if incidence1549_24 > 0.1 and incidence1549_24 < 2.0;
+
 
 d_prop_elig_on_prep_30y_2_1 = prop_elig_on_prep_30y_2 - prop_elig_on_prep_30y_1; 
 
@@ -1522,11 +1524,19 @@ d_prop_1564_onprep_30y_2_1 = prop_1564_onprep_30y_2 - prop_1564_onprep_30y_1;
 d_prop_prep_inj_30y_2_1 = prop_prep_inj_30y_2 - prop_prep_inj_30y_1 ;
 
 r_incidence1549_30y_2_1 = incidence1549_30y_2 / incidence1549_30y_1 ;
+r_incidence1549_6570_2_1 = incidence1549_6570_2 / incidence1549_6570_1 ;
+
+r_incidence1549_30y_2_1_getp5 = 0; if r_incidence1549_30y_2_1 < 0.5 then r_incidence1549_30y_2_1_getp5 = 1;
+x_r_incidence1549_30y_2_1_getp5 = 1 - r_incidence1549_30y_2_1_getp5;
+
+r_incidence1549_6570_2_1_getp5 = 0; if r_incidence1549_6570_2_1 < 0.5 then r_incidence1549_6570_2_1_getp5 = 1;
+x_r_incidence1549_6570_2_1_getp5 = 1 - r_incidence1549_6570_2_1_getp5;
+
 
 d_incidence1549_30y_2_1 = incidence1549_30y_1 - incidence1549_30y_2 ;
-r_incidence1549_69_2_1 = incidence1549_69_2 / incidence1549_69_1 ;
+r_incidence1549_6570_2_1 = incidence1549_6570_2 / incidence1549_6570_1 ;
 
-d_incidence1549_69_2_1 = incidence1549_69_1 - incidence1549_69_2 ;
+d_incidence1549_6570_2_1 = incidence1549_6570_1 - incidence1549_6570_2 ;
 
 d_incidence1549_24_30y_1 = incidence1549_24 - incidence1549_30y_1 ; 
 
@@ -1559,6 +1569,12 @@ if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
 if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
 
 
+if r_incidence1549_6570_2_1 > 1 then r_incidence1549_6570_2_1 = 1;
+
+
+
+* vaccine_efficacy = vaccine_efficacy - 0.5;
+* vaccine_duration_effect = vaccine_duration_effect - 10;
 
 * label 
 
@@ -1604,9 +1620,10 @@ r_incidence1549_30y_2_1  = "vaccine_1"
 ;
 
 
+title '';
+
 
 * table 1;
-
 
 
 proc means   data = b.w_vaccine_n_b_r_eff_dur  n p50 p5 p95 ;  
@@ -1630,18 +1647,100 @@ ods html close;
 
 proc means  data = b.w_vaccine_n_b_r_eff_dur  n p50 p5 p95 ;
 var
-r_incidence1549_69_2_1 
+r_incidence1549_6570_2_1 
 ;
 run;
 
 
+
+
+proc freq; tables r_incidence1549_6570_2_1 ; run;  
+
+
+ods html;
 proc glm data = b.w_vaccine_n_b_r_eff_dur; 
-model r_incidence1549_69_2_1 = vaccine_efficacy  vaccine_duration_effect / solution ; 
+model r_incidence1549_6570_2_1 = vaccine_efficacy  vaccine_duration_effect vaccine_efficacy*vaccine_duration_effect / solution ;
+where vaccine_duration_effect <= 10 ;
+* proc logistic  data = b.w_vaccine_n_b_r_eff_dur;
+* model x_r_incidence1549_6570_2_1_getp5 = vaccine_efficacy  vaccine_duration_effect;
+run;
+ods html close;
+
+* cum infections 2040-2070 ; 
+* cum deaths ;
+* sens analysis around druation dropping off cliff :
+* dalys - each way;
+
+
+
+proc freq; tables incidence1549_24; run; 
+
+
+
+proc freq; tables vaccine_efficacy * r_incidence1549_30y_2_1_getp5  vaccine_duration_effect * r_incidence1549_30y_2_1_getp5
+;
 run;
 
 
 
-proc print  data = b.w_vaccine_n_b_r_eff_dur; var r_incidence1549_69_2_1 vaccine_efficacy  vaccine_duration_effect; run;
+proc print  data = b.w_vaccine_n_b_r_eff_dur; var r_incidence1549_6570_2_1 r_incidence1549_30y_2_1_getp5  
+ r_incidence1549_6570_2_1_getp5 r_incidence1549_6570_2_1  vaccine_efficacy  vaccine_duration_effect; run;
+
+ods html;
+proc print noobs;
+var   vaccine_efficacy  vaccine_duration_effect  r_incidence1549_6570_2_1_getp5;
+run;
+ods html close;
+
+
+proc freq; tables vaccine_efficacy * r_incidence1549_6570_2_1_getp5 ;
+where vaccine_duration_effect ge 10;
+run;
+
+proc freq; tables vaccine_duration_effect * r_incidence1549_6570_2_1_getp5 ;
+* where vaccine_duration_effect ge 10;
+run;
+
+
+proc freq; tables vaccine_duration_effect * vaccine_efficacy * r_incidence1549_6570_2_1_getp5 ;
+run;
 
 
 
+
+ods html;
+proc sgplot ;
+  heatmap x=vaccine_efficacy y=vaccine_duration_effect / 
+    colorresponse=r_incidence1549_6570_2_1_getp5
+    colormodel=(red blue);
+run;
+ods html close;
+
+
+
+/* Assuming your data is already in a SAS dataset named 'your_dataset' */
+
+/* Calculate the proportion of 1's for each combination */
+proc means noprint;
+  class vaccine_efficacy vaccine_duration_effect;
+  var r_incidence1549_6570_2_1_getp5;
+  output out=proportion_of_setting_scenarios(drop=_type_ _freq_) mean=proportion_of_setting_scenarios;
+run;
+
+/* Start a new SAS session */
+
+/* Start by calling 'proc sgplot' */
+proc sgplot data=proportion_of_setting_scenarios;
+  
+  /* Specify the heatmap with proportion_of_ones as the color response */
+  heatmap x=vaccine_efficacy y=vaccine_duration_effect / 
+    colorresponse=proportion_of_setting_scenarios
+    colormodel=(pink navy);
+styleattrs datacolors=(pink navy) datacontrastcolors=(black);
+  
+  title 'Proportion of setting scenarios in which HIV incidence in 2065-2070 is at least 50% lower with vaccine vs no vaccine, according to vaccine 
+	efficacy and vaccine duration of effect';
+  xaxis label='Vaccine Efficacy';
+  yaxis label='Vaccine Duration Effect';
+
+run;

@@ -2240,7 +2240,7 @@ who may be dead and hence have caldate{t} missing;
 if option = 1 then do;
 vaccine_introduced=1; 
 * vaccine_efficacy;			%sample_uniform(vaccine_efficacy,0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.95);
-* vaccine_duration_effect;	%sample_uniform(vaccine_duration_effect, 2 3 4 5 6 7 8 9 10 15 20 );
+* vaccine_duration_effect;	%sample_uniform(vaccine_duration_effect, 2 3 4 5 6 7 8 9 10 );
 * vaccine_uptake;			vaccine_uptake = 0.75 * 0.85;
 * prob_booster;				prob_booster = 0.50;
 end;
@@ -19099,7 +19099,8 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 
 if cald = 2024.5 and prevalence1549 < 0.03 then do; abort abend; end;
-
+if cald = 2024.5 and incidence1549 < 0.1 then do; abort abend; end;
+if cald = 2024.5 and incidence1549 > 2.0 then do; abort abend; end;
 
 
 
