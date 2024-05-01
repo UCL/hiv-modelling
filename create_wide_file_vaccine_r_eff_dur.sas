@@ -15,14 +15,14 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_m_b_r_eff_dur;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_n_b_r_eff_dur;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_vaccine_m_b_r_eff_dur; 
+proc sort data=b.k_vaccine_n_b_r_eff_dur; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_m_b_r_eff_dur ;
+set b.k_vaccine_n_b_r_eff_dur ;
 
 if option <= 1;
 
@@ -54,7 +54,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_m_b_r_eff_dur sf;
+merge b.k_vaccine_n_b_r_eff_dur sf;
 by run ;
 
 if option <= 1;
@@ -1131,9 +1131,9 @@ proc freq; tables cald option; where cald=2040.50;
 run;
 
 
-data    b.l_vaccine_m_b_r_eff_dur_y; set y;  
+data    b.l_vaccine_n_b_r_eff_dur_y; set y;  
 
-data y ; set b.l_vaccine_m_b_r_eff_dur_y; 
+data y ; set b.l_vaccine_n_b_r_eff_dur_y; 
 
 
   options nomprint;
@@ -1510,7 +1510,7 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 * To get one row per run;
 
-  data  b.w_vaccine_m_b_r_eff_dur     ; 
+  data  b.w_vaccine_n_b_r_eff_dur     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1609,18 +1609,18 @@ r_incidence1549_30y_2_1  = "vaccine_1"
 
 
 
-proc means   data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 ;  
+proc means   data = b.w_vaccine_n_b_r_eff_dur  n p50 p5 p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   ;
 run;
 
-proc means   data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 ;  
+proc means   data = b.w_vaccine_n_b_r_eff_dur  n p50 p5 p95 ;  
 var prevalence1549w_39 prevalence1549m_39 incidence1549_39 p_diag_39 p_onart_diag_39 p_onart_vl1000_39 p_vl1000_39 prevalence_vg1000_39   ;
 run;
 
 
 ods html;
 title "Relative incidence (age 15-49) compared with no vaccine";
-proc means  data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 ;
+proc means  data = b.w_vaccine_n_b_r_eff_dur  n p50 p5 p95 ;
 var
 r_incidence1549_30y_2_1 
 ;
@@ -1628,20 +1628,20 @@ run;
 ods html close;
 
 
-proc means  data = b.w_vaccine_m_b_r_eff_dur  n p50 p5 p95 ;
+proc means  data = b.w_vaccine_n_b_r_eff_dur  n p50 p5 p95 ;
 var
 r_incidence1549_69_2_1 
 ;
 run;
 
 
-proc glm data = b.w_vaccine_m_b_r_eff_dur; 
+proc glm data = b.w_vaccine_n_b_r_eff_dur; 
 model r_incidence1549_69_2_1 = vaccine_efficacy  vaccine_duration_effect / solution ; 
 run;
 
 
 
-proc print  data = b.w_vaccine_m_b_r_eff_dur; var r_incidence1549_69_2_1 vaccine_efficacy  vaccine_duration_effect; run;
+proc print  data = b.w_vaccine_n_b_r_eff_dur; var r_incidence1549_69_2_1 vaccine_efficacy  vaccine_duration_effect; run;
 
 
 
