@@ -20,6 +20,11 @@
 
 * modify tld drug costs;
 
+* sensitivity around loss of dol activity with each mutation ;
+
+* adherence to second line - better or more likely worse (2 larger pills per day) ? 
+
+* sensitivity analysis around potency 
 
 ; 
 
