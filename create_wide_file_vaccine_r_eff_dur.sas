@@ -1516,6 +1516,7 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 if incidence1549_24 > 0.1 and incidence1549_24 < 2.0;
+if vaccine_duration_effect <= 10 ;
 
 
 d_prop_elig_on_prep_30y_2_1 = prop_elig_on_prep_30y_2 - prop_elig_on_prep_30y_1; 
@@ -1644,9 +1645,6 @@ proc freq; tables r_incidence1549_6570_2_1 ; run;
 ods html;
 proc glm data = b.w_vaccine_n_b_r_eff_dur; 
 model r_incidence1549_6570_2_1 = vaccine_efficacy  vaccine_duration_effect vaccine_efficacy*vaccine_duration_effect / solution ;
-where vaccine_duration_effect <= 10 ;
-* proc logistic  data = b.w_vaccine_n_b_r_eff_dur;
-* model x_r_incidence1549_6570_2_1_getp5 = vaccine_efficacy  vaccine_duration_effect;
 run;
 ods html close;
 
@@ -1664,6 +1662,10 @@ ods html close;
 
 
 
+
+
+proc logistic  data = b.w_vaccine_n_b_r_eff_dur;
+model x_r_incidence1549_6570_2_1_getp5 = vaccine_efficacy  vaccine_duration_effect;
 
 ods html;
 title "Relative incidence (age 15-49) compared with no vaccine";
