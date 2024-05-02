@@ -1,27 +1,5 @@
 
 
-
-
-
-
-
-* cum infections 2040-2070 ; 
-* cum deaths ;
-* sens analysis around duration being stepwise :
-* dalys - each way;
-
-
-
-
-
-
-
-
-
-
-
-
-
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -708,7 +686,7 @@ end;
 * add_prep_any_uptake_sw;		add_prep_any_uptake_sw=0; 		***this may be sampled at a later date; 
 																* lapr this could be defined for all prep types or for each modality individually ;
 
-* future_prep_condom ;				%sample_uniform(future_prep_condom, 1 2 3 4);  future_prep_condom = 2;
+* future_prep_condom ;				%sample_uniform(future_prep_condom, 1 2 3 4);  future_prep_condom = 4;
 
 
 * ORAL PREP ;

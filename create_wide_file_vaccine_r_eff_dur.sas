@@ -1514,6 +1514,7 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
+
 if incidence1549_24 > 0.1 and incidence1549_24 < 2.0;
 
 
@@ -1635,6 +1636,35 @@ var prevalence1549w_39 prevalence1549m_39 incidence1549_39 p_diag_39 p_onart_dia
 run;
 
 
+
+
+proc freq; tables r_incidence1549_6570_2_1 ; run;  
+
+
+ods html;
+proc glm data = b.w_vaccine_n_b_r_eff_dur; 
+model r_incidence1549_6570_2_1 = vaccine_efficacy  vaccine_duration_effect vaccine_efficacy*vaccine_duration_effect / solution ;
+where vaccine_duration_effect <= 10 ;
+* proc logistic  data = b.w_vaccine_n_b_r_eff_dur;
+* model x_r_incidence1549_6570_2_1_getp5 = vaccine_efficacy  vaccine_duration_effect;
+run;
+ods html close;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ods html;
 title "Relative incidence (age 15-49) compared with no vaccine";
 proc means  data = b.w_vaccine_n_b_r_eff_dur  n p50 p5 p95 ;
@@ -1650,27 +1680,6 @@ var
 r_incidence1549_6570_2_1 
 ;
 run;
-
-
-
-
-proc freq; tables r_incidence1549_6570_2_1 ; run;  
-
-
-ods html;
-proc glm data = b.w_vaccine_n_b_r_eff_dur; 
-model r_incidence1549_6570_2_1 = vaccine_efficacy  vaccine_duration_effect vaccine_efficacy*vaccine_duration_effect / solution ;
-where vaccine_duration_effect <= 10 ;
-* proc logistic  data = b.w_vaccine_n_b_r_eff_dur;
-* model x_r_incidence1549_6570_2_1_getp5 = vaccine_efficacy  vaccine_duration_effect;
-run;
-ods html close;
-
-* cum infections 2040-2070 ; 
-* cum deaths ;
-* sens analysis around druation dropping off cliff :
-* dalys - each way;
-
 
 
 proc freq; tables incidence1549_24; run; 
