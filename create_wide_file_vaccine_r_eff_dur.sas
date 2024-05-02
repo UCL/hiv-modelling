@@ -1658,7 +1658,7 @@ ods html close;
 
 
 
-
+/*
 
 
 
@@ -1729,21 +1729,15 @@ ods html close;
 
 
 
-/* Assuming your data is already in a SAS dataset named 'your_dataset' */
-
-/* Calculate the proportion of 1's for each combination */
 proc means noprint;
   class vaccine_efficacy vaccine_duration_effect;
   var r_incidence1549_6570_2_1_getp5;
   output out=proportion_of_setting_scenarios(drop=_type_ _freq_) mean=proportion_of_setting_scenarios;
 run;
 
-/* Start a new SAS session */
 
-/* Start by calling 'proc sgplot' */
 proc sgplot data=proportion_of_setting_scenarios;
   
-  /* Specify the heatmap with proportion_of_ones as the color response */
   heatmap x=vaccine_efficacy y=vaccine_duration_effect / 
     colorresponse=proportion_of_setting_scenarios
     colormodel=(pink navy);
