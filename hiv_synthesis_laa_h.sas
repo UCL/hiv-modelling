@@ -441,6 +441,9 @@ newp_seed = 7;
 
 * isl_higher_potency;		%sample(isl_higher_potency, 0.5 1 , 0.25 0.75);	
 
+* isl_ole_adh_improve;		%sample_uniform(isl_ole_adh_improve, 0.25 0.5 0.75);
+
+
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.4;rate_ch_art_init_str_10 = 0.4;rate_ch_art_init_str_3 = 0.4;	
 							* dependent_on_time_step_length ;
@@ -9136,6 +9139,10 @@ if t ge 2 then adhmin=min(adh,adhmin_tm1);
 
 * effect of art_low_adh_disrup_covid ;
 if art_low_adh_disrup_covid = 1 then adh = adh - 0.25 ;
+
+* effect of weekly isl / ole on adherence;
+if o_ole=1 and o_isl=1 then adh = ahd + ( isl_ole_adh_improve * (1 - adh)) ;
+
 
 * effect of onartvisit0 on adh (in context of pop_wide_tld=1) - if artvis0_lower_adh = 1 then 20% of people with artvisit0 have reduced adherence; 
 if artvis0_lower_adh = 1 and onartvisit0 = 1 and _p1 < 0.5  then adh = adh - rand('beta', 1.5, 10);  
@@ -19752,7 +19759,8 @@ rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_r
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency  isl_higher_potency  prop_bmi_ge23 pr_res_dol eff_pr_res_len incr_len_res_mono
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency  isl_higher_potency  isl_ole_adh_improve
+prop_bmi_ge23 pr_res_dol eff_pr_res_len incr_len_res_mono
 cab_time_to_lower_threshold_g len_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program  sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
@@ -22203,7 +22211,8 @@ rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_r
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency isl_higher_potency prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency isl_higher_potency isl_ole_adh_improve
+prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono
 cab_time_to_lower_threshold_g  len_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75  death_r_iris_pop_wide_tld
 sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
