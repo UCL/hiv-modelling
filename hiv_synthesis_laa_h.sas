@@ -491,6 +491,8 @@ newp_seed = 7;
 * p_neph_stops_ten;			p_neph_stops_ten = 		0 ;
 * p_neph_stops_after_ten;	p_neph_stops_after_ten = 0.1;
 
+* note - not including toxicity of oral len (ole) or islatravir (isl) ;
+
 							* AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
@@ -1039,6 +1041,8 @@ prep_cab_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply ch
 prep_len_drug_cost = (0.030 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost; 
 cost_cab_a = prep_cab_drug_cost ; * note that when cab used as treatment we use cost_cab_a rather than prep_cab_drug_cost;
 cost_len_a = prep_len_drug_cost ; * placeholder ;
+cost_isl_a = (0.030/4)*1.2; * placeholder;  * isl = weekly islatravir;
+cost_ole_a = (0.030/4)*1.2; * placeholder; * ole = oral weekly lenacapavir;
 tb_cost_a=(.050); * todo: this cost to be re-considered;
 
 cost_tb_lam = 0.015 ; * placeholder ;
@@ -6828,6 +6832,8 @@ o_taz = 0;
 o_dol = 0;
 o_cab = 0;
 o_len = 0;
+o_ole = 0;
+o_isl = 0;
 
 if prep_oral = 1 then o_3tc = 1;
 if prep_oral = 1 then o_ten = 1;
@@ -6857,6 +6863,8 @@ p_taz = 0;
 p_dol = 0;
 p_cab = 0;
 p_len = 0;
+p_ole = 0;
+p_isl = 0;
 
 if prep_oral = 1 then p_3tc = 1;
 if prep_oral = 1 then p_ten = 1;
@@ -6875,6 +6883,8 @@ tss_taz = .;
 tss_dol = .;
 tss_cab = .;
 tss_len = .;
+tss_ole = .;
+tss_isl = .;
 
 
 * for those off ART - drug used in most recent regimen ;
@@ -6889,6 +6899,8 @@ mr_taz = 0;
 mr_dol = 0;
 mr_cab = 0;
 mr_len = 0;
+mr_ole = 0;
+mr_isl = 0;
 
 
 * previous virological failure of drugs;
@@ -6903,6 +6915,8 @@ f_taz = 0;
 f_dol = 0;
 f_cab = 0;
 f_len = 0;
+f_ole = 0;
+f_isl = 0;
 
 
 toffart=.;
@@ -7110,11 +7124,15 @@ r_taz = 0;
 r_dol = 0;
 r_cab = 0;
 r_len = 0;
+r_ole = 0;
+r_isl = 0;
 
 * 3tc;
 if e_rt65m=1 or e_rt151m=1 then r_3tc=0.25;
 if e_rt184m=1                 then r_3tc=0.75;  
 if zero_3tc_activity_m184 =1 and (e_rt65m=1 or e_rt151m=1) then r_3tc=1.00 ;
+
+if e_rt184m=1 then r_isl = 0.25; * placeholder based on diamond et al 2022;
 
 * zdv;
 if 1 <= e_rttams < 3 and (o_3tc=0 )                  then do; r_zdv=0.5 ;  end;
@@ -7233,7 +7251,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 * LENACAPAVIR;
 
 * len;
-	if e_ca66m=1 then r_len = res_level_len_mut;
+	if e_ca66m=1 then do; r_len = res_level_len_mut; r_ole = res_level_len_mut; end;  * note it is deliberate that we refer to res_level_len_mut twice here;
 
 
 
@@ -7313,6 +7331,8 @@ t_taz = 0;
 t_dol = 0;
 t_cab = 0;
 t_len = 0;
+t_ole = 0;
+t_isl = 0;
 
 line1=0; line2=0;  line3=0;
 onart   =0;
@@ -7618,7 +7638,8 @@ visit_tm1=visit;
     p_dol_tm1=p_dol;	f_dol_tm1=f_dol; 	t_dol_tm1=t_dol;	r_dol_tm1=r_dol;	o_dol_tm3=o_dol_tm2; 	o_dol_tm2=o_dol_tm1; 	o_dol_tm1=o_dol;	
     p_cab_tm1=p_cab;	f_cab_tm1=f_cab; 	t_cab_tm1=t_cab;	r_cab_tm1=r_cab;	o_cab_tm3=o_cab_tm2; 	o_cab_tm2=o_cab_tm1; 	o_cab_tm1=o_cab;  	* lapr - added cab variables; * JAS Nov2021;
 	p_len_tm1=p_len;	f_len_tm1=f_len; 	t_len_tm1=t_len;	r_len_tm1=r_len;	o_len_tm3=o_len_tm2; 	o_len_tm2=o_len_tm1; 	o_len_tm1=o_len;  	
-
+	p_ole_tm1=p_ole;	f_ole_tm1=f_ole; 	t_ole_tm1=t_ole;	r_ole_tm1=r_ole;	o_ole_tm3=o_ole_tm2; 	o_ole_tm2=o_ole_tm1; 	o_ole_tm1=o_ole;  	
+	p_isl_tm1=p_isl;	f_isl_tm1=f_isl; 	t_isl_tm1=t_isl;	r_isl_tm1=r_isl;	o_isl_tm3=o_isl_tm2; 	o_isl_tm2=o_isl_tm1; 	o_isl_tm1=o_isl;  	
 
 	vfail1_tm1 = vfail1;
 
@@ -7687,7 +7708,18 @@ visit_tm1=visit;
 	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
 	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
 	mr_cab_tm1=mr_cab; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
-	mr_len_tm1=mr_cab; if tss_len ge 0 and o_len_tm1=0 then tss_len = tss_len+0.25;	
+	mr_len_tm1=mr_len; if tss_len ge 0 and o_len_tm1=0 then tss_len = tss_len+0.25;	
+	mr_ole_tm1=mr_ole; if tss_ole ge 0 and o_ole_tm1=0 then tss_ole = tss_ole+0.25;	
+	mr_isl_tm1=mr_isl; if tss_isl ge 0 and o_isl_tm1=0 then tss_isl = tss_isl+0.25;
+
+
+
+
+* here here ;
+
+
+
+	
 
 	c_lip_tm1=c_lip ;  	c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
 	c_cns_tm1=c_cns ;   c_hep_tm1=c_hep ;   c_nau_tm1=c_nau ;   c_otx_tm1=c_otx ;   
