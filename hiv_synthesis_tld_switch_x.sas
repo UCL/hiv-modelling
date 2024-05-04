@@ -1,30 +1,29 @@
 
 
 
-
-* consider atazanavir as the PI ?
-
-* switching could include doubling the dose of DTG if HIVDR testing indicates a low or moderate DTG resistance score ?
-
 * consider other adh values for defining positive tdf level test 
 
 * vary assumptions on effect of each insti mutation
-
-* consider also cost of national committees making decision on switch
-
-* make clear that cost of resistance test includes accounts for the chance of failure of amplification
 
 * consider a separate strategy in which this final strategy is altered if/when population level INSTI resistance exceeds a certain threshold ?
 
 * consider that combinations of insti mutations lead to additional resistance
 
-* modify tld drug costs;
-
-* sensitivity around loss of dol activity with each mutation ;
-
 * adherence to second line - better or more likely worse (2 larger pills per day) ? 
 
-* sensitivity analysis around potency 
+* wider distribution around potency ?
+
+
+
+* consider atazanavir as the PI ?
+
+* switching could include doubling the dose of dol if resistance testing indicates low or moderate dol resistance ?
+
+* consider also cost of national committees making decision on switch
+
+* make clear that cost of resistance test includes accounts for the chance of failure of amplification
+
+* modify tld drug costs;
 
 ; 
 
