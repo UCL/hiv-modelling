@@ -21,6 +21,7 @@ data b.k_dcp_cab_w;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
+
 */
 
 
@@ -1774,7 +1775,7 @@ options linesize = 240;
 * ods rtf file="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\output_n.rtf";
 
 ods html;
-title "Characteristics in 2023";
+title "Characteristics in 2024";
 proc means  data = g    n p50 p5 p95 ;  
 var
 prop_ever_tested_1549w_24 
