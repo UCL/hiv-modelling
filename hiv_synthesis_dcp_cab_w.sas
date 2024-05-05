@@ -9,7 +9,9 @@
 
 * specify prop_tests_self or sample (as now) ?
 
-* modify tld drug costs;
+* modify tld drug costs
+
+* add cost of condom distribution ?
 
 
 ;
