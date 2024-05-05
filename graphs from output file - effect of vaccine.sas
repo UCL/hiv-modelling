@@ -1,14 +1,14 @@
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_a_keep_prep_out\";
 
 proc printto ;
 
 * ods html close;
 
 data b;
-set b.l_vaccine_m_b_keep_prep_y;
+set b.l_vaccine_n_a_keep_prep_y;
 
 
 n_k65m = p_k65m * n_hiv;
@@ -40,7 +40,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = /* 5784 */ 5544  ;
+%let nfit = /* 5784 */ 1392  ;
 
 %let year_end = 2070.00 ;
 run;
@@ -260,11 +260,7 @@ if 2015 <= cald < 2070;
 proc print; run;
 run;
 
-*/
 
-
-
-/*
 
 
 ods html;
@@ -323,7 +319,6 @@ band    x=cald lower=p5_prevalence1549__3 upper=p95_prevalence1549__3 / transpar
 run;quit;
 
 * ods html close;
-
 
 
 
@@ -468,7 +463,6 @@ run;quit;
 
 
 
-
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Percent of all PLHIV diagnosed";
@@ -550,7 +544,6 @@ band    x=cald lower=p5_p_onart_vl1000__3 upper=p95_p_onart_vl1000__3 / transpar
 
 run;quit;
 
-
 */
 
 
@@ -581,8 +574,6 @@ run;quit;
 
 
 /*
-  
-
 
 
 ods html;
