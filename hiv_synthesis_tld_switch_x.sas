@@ -543,8 +543,6 @@ newp_seed = 7;
 							* reduced adherence in those with toxicity;
 * add_eff_adh_nnrti; 		add_eff_adh_nnrti=round(0.10* exp(rand('normal')*0.30),.01);	
 							* additional "effective" adh of nnrti due to longer half life;
-* altered_adh_sec_line_pop; altered_adh_sec_line_pop = round(0.05 +(rand('normal')*0.05),.01); 
-							* better adherence on second line (pi);
 * adh_effect_of_meas_alert; %sample(adh_effect_of_meas_alert, 0.35 0.50 , 0.5 0.5);  * tld_switch (in core this is/was 0.35 0.70 0.90, 0.15 0.7 0.15);
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
@@ -1853,10 +1851,6 @@ if h <  adh_effect_of_meas_alert then do;
 	if 0.4 <= a  then v_alert_6m_incr_adh = 1; 
 end;
 
-
-* ALTERED ADHERENCE SECOND LINE;
-
-altered_adh_sec_line = altered_adh_sec_line_pop * exp(rand('normal')*1.0);  altered_adh_sec_line = round(altered_adh_sec_line,0.01);
 
 * effect of tox on adherence differs by individual;
 red_adh_tox = red_adh_tox_pop * exp(rand('normal')*0.3); red_adh_tox=round(red_adh_tox,.01); 
@@ -9099,7 +9093,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 		r=rand('uniform'); if c_tox_tm1=1 and r < 0.5 then adh=adh-red_adh_tox;
 
 * reduced adherence if regimen is not 1 pill once a day - red_adh_multi_pill;
-		if o_zdv = 1 or o_taz = 1 or o_lpr = 1 then adh = adh - red_adh_multi_pill ;
+		if o_zdv = 1 or o_taz = 1 or o_lpr = 1 or o_dar = 1 then adh = adh - red_adh_multi_pill ;
 
 
 * poorer "adherence" (lower drug levels) if have "current" tb or adc;  
@@ -19735,7 +19729,7 @@ pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choic
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
-prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
+prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
@@ -24855,7 +24849,7 @@ pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choic
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac   ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
-prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
+prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti   prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14  circ_inc_15_19  circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
