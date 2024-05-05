@@ -1624,6 +1624,10 @@ r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1 ;
 r_incidence1549_50y_3_1 = incidence1549_50y_3 / incidence1549_50y_1 ;
 r_incidence1549_50y_4_1 = incidence1549_50y_4 / incidence1549_50y_1 ;
 
+d_n_death_hiv_50y_2_1 = n_death_hiv_50y_2 - n_death_hiv_50y_1;
+d_n_death_hiv_50y_3_1 = n_death_hiv_50y_3 - n_death_hiv_50y_1;
+d_n_death_hiv_50y_4_1 = n_death_hiv_50y_4 - n_death_hiv_50y_1;
+
 d_ddaly_50y_2_1 = ddaly_50y_2 - ddaly_50y_1;
 d_ddaly_50y_3_1 = ddaly_50y_3 - ddaly_50y_1;
 d_ddaly_50y_4_1 = ddaly_50y_4 - ddaly_50y_1;
@@ -1639,30 +1643,39 @@ p_diag_m_24 = p_diag_m_24 / 100;
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
 					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1
-					+ (dcost_prep_visit_oral_50y_1) + (dcost_prep_oral_50y_1) + (dcost_prep_visit_inj_50y_1) + (dcost_prep_inj_50y_1) 
+					+ (dcost_prep_visit_50y_1) + (dcost_prep_oral_50y_1) + (dcost_prep_inj_50y_1) 
 					+ dcost_dcp_visit_50y_1;
 
 
 dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
 					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
 					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2
-					+ (dcost_prep_visit_oral_50y_2) + (dcost_prep_oral_50y_2) + (dcost_prep_visit_inj_50y_2) + (dcost_prep_inj_50y_2) 
+					+ (dcost_prep_visit_50y_2) + (dcost_prep_oral_50y_2) + (dcost_prep_inj_50y_2) 
 					+ dcost_dcp_visit_50y_2;
 
 
 dcost_50y_3 = dart_cost_y_50y_3 + dadc_cost_50y_3 + dcd4_cost_50y_3 + dvl_cost_50y_3 + dvis_cost_50y_3 + dnon_tb_who3_cost_50y_3 + 
 					dcot_cost_50y_3 + dtb_cost_50y_3 + dres_cost_50y_3 + dtest_cost_50y_3 + d_t_adh_int_cost_50y_3 + dswitchline_cost_50y_3 + 
 					dcost_circ_50y_3 + dcost_condom_dn_50y_3 + dcost_child_hiv_50y_3 + dcost_non_aids_pre_death_50y_3
-					+ (dcost_prep_visit_oral_50y_3) + (dcost_prep_oral_50y_3) + (dcost_prep_visit_inj_50y_3) + (dcost_prep_inj_50y_3) 
+					+ (dcost_prep_visit_50y_3) + (dcost_prep_oral_50y_3) + (dcost_prep_inj_50y_3) 
 					+ dcost_dcp_visit_50y_3;
 
 
 dcost_50y_4 = dart_cost_y_50y_4 + dadc_cost_50y_4 + dcd4_cost_50y_4 + dvl_cost_50y_4 + dvis_cost_50y_4 + dnon_tb_who3_cost_50y_4 + 
 					dcot_cost_50y_4 + dtb_cost_50y_4 + dres_cost_50y_4 + dtest_cost_50y_4 + d_t_adh_int_cost_50y_4 + dswitchline_cost_50y_4 + 
 					dcost_circ_50y_4 + dcost_condom_dn_50y_4 + dcost_child_hiv_50y_4 + dcost_non_aids_pre_death_50y_4
-					+ (dcost_prep_visit_oral_50y_4) + (dcost_prep_oral_50y_4) + (dcost_prep_visit_inj_50y_4) + (dcost_prep_inj_50y_4) 
+					+ (dcost_prep_visit_50y_4) + (dcost_prep_oral_50y_4) + (dcost_prep_inj_50y_4) 
 					+ dcost_dcp_visit_50y_4;
 
+dvis_plus_cost_50y_1 = dvis_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 ;
+dvis_plus_cost_50y_2 = dvis_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 ;
+dvis_plus_cost_50y_3 = dvis_cost_50y_3 + d_t_adh_int_cost_50y_3 + dswitchline_cost_50y_3 ;
+dvis_plus_cost_50y_4 = dvis_cost_50y_4 + d_t_adh_int_cost_50y_4 + dswitchline_cost_50y_4 ;
+
+dclinical_care_costs_50y_1 = dadc_cost_50y_1 + dnon_tb_who3_cost_50y_1 + dtb_cost_50y_1 + dcost_non_aids_pre_death_50y_1; 
+dclinical_care_costs_50y_2 = dadc_cost_50y_2 + dnon_tb_who3_cost_50y_2 + dtb_cost_50y_2 + dcost_non_aids_pre_death_50y_2; 
+dclinical_care_costs_50y_3 = dadc_cost_50y_3 + dnon_tb_who3_cost_50y_3 + dtb_cost_50y_3 + dcost_non_aids_pre_death_50y_3; 
+dclinical_care_costs_50y_4 = dadc_cost_50y_4 + dnon_tb_who3_cost_50y_4 + dtb_cost_50y_4 + dcost_non_aids_pre_death_50y_4; 
 
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
 d_dcost_50y_3_1 = dcost_50y_3 - dcost_50y_1;
@@ -2124,24 +2137,19 @@ proc means data = g  n mean p5 p95;
 var
 dcost_dcp_visit_50y_1 dcost_dcp_visit_50y_2 dcost_dcp_visit_50y_3 dcost_dcp_visit_50y_4 
 dart_cost_y_50y_1  dart_cost_y_50y_2  dart_cost_y_50y_3  dart_cost_y_50y_4  
-dadc_cost_50y_1  dadc_cost_50y_2  dadc_cost_50y_3  dadc_cost_50y_4  
+dclinical_care_costs_50y_1 dclinical_care_costs_50y_2 dclinical_care_costs_50y_3 dclinical_care_costs_50y_4
 dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3  dcd4_cost_50y_4  
 dvl_cost_50y_1  dvl_cost_50y_2  dvl_cost_50y_3  dvl_cost_50y_4  
-dvis_cost_50y_1 dvis_cost_50y_2 dvis_cost_50y_3 dvis_cost_50y_4  
-dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2  dnon_tb_who3_cost_50y_3  dnon_tb_who3_cost_50y_4  		
+dvis_plus_cost_50y_1 dvis_plus_cost_50y_2 dvis_plus_cost_50y_3 dvis_plus_cost_50y_4  
 dcot_cost_50y_1  dcot_cost_50y_2  dcot_cost_50y_3  dcot_cost_50y_4  
-dtb_cost_50y_1  dtb_cost_50y_2  dtb_cost_50y_3  dtb_cost_50y_4  
 dtest_cost_50y_1 dtest_cost_50y_2 dtest_cost_50y_3 dtest_cost_50y_4  
-d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2  d_t_adh_int_cost_50y_3  d_t_adh_int_cost_50y_4  
-dswitchline_cost_50y_1  dswitchline_cost_50y_2  dswitchline_cost_50y_3  dswitchline_cost_50y_4  
 dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3  dcost_circ_50y_4  
 dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3  dcost_child_hiv_50y_4  
-dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2 dcost_non_aids_pre_death_50y_3 dcost_non_aids_pre_death_50y_4
 dcost_condom_dn_50y_1 
-dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2  dcost_prep_visit_oral_50y_3  dcost_prep_visit_oral_50y_4  
+dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3  dcost_prep_visit_50y_4  
 dcost_prep_oral_50y_1 dcost_prep_oral_50y_2 dcost_prep_oral_50y_3 dcost_prep_oral_50y_4 
-dcost_prep_visit_inj_50y_1  dcost_prep_visit_inj_50y_2  dcost_prep_visit_inj_50y_3  dcost_prep_visit_inj_50y_4  
 dcost_prep_inj_50y_1 dcost_prep_inj_50y_2 dcost_prep_inj_50y_3 dcost_prep_inj_50y_4 
+dcost_50y_1   dcost_50y_2 dcost_50y_3   dcost_50y_4 
 ;
 run;
 
@@ -2172,6 +2180,7 @@ title 'Effects of policies on incidence, DALYs, cost and cost-effectiveness (net
 
 proc means data = g n mean p50 p5 p95;
   var 
+d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 d_n_death_hiv_50y_4_1
 r_incidence1549_50y_2_1 r_incidence1549_50y_3_1 r_incidence1549_50y_4_1 
 ddaly_50y_1 ddaly_50y_2 ddaly_50y_3 ddaly_50y_4    d_ddaly_50y_2_1  d_ddaly_50y_3_1  d_ddaly_50y_4_1
 dcost_50y_1   dcost_50y_2 dcost_50y_3   dcost_50y_4  d_dcost_50y_2_1 d_dcost_50y_3_1 d_dcost_50y_4_1
