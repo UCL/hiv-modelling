@@ -1548,9 +1548,9 @@ run;quit;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence (age 15-49)";
+Title    height=1.5 justify=center "Incidence (age 15-49) - Min, SQ and ORAL PREP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 1) valueattrs=(size=10);
 label p50_incidence1549__0 = "Option 0 (median) ";
 label p50_incidence1549__1 = "Option 1  (median) ";
 label p50_incidence1549__15 = "Option 15  (median) ";
@@ -1562,11 +1562,71 @@ series  x=cald y=p50_incidence1549__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 series  x=cald y=p50_incidence1549__15/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_incidence1549__15 	upper=p95_incidence1549__15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
-scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+series  x=cald y=p50_incidence1549__16/	lineattrs = (color=lightgreen thickness = 2);
+band    x=cald lower=p5_incidence1549__16 	upper=p95_incidence1549__16  / transparency=0.9 fillattrs = (color=LIGHTgreen) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__17/	lineattrs = (color=darkgreen thickness = 2);
+band    x=cald lower=p5_incidence1549__17 	upper=p95_incidence1549__17  / transparency=0.9 fillattrs = (color=darkgreen) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__18/	lineattrs = (color=verydarkgreen thickness = 2);
+band    x=cald lower=p5_incidence1549__18 	upper=p95_incidence1549__18  / transparency=0.9 fillattrs = (color=verydarkgreen) legendlabel= "Model 90% range";
+
+*scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
+*scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
 
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence (age 15-49)Min, SQ and VAGINAL RING PREP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 1) valueattrs=(size=10);
+label p50_incidence1549__0 = "Option 0 (median) ";
+label p50_incidence1549__1 = "Option 1  (median) ";
+label p50_incidence1549__15 = "Option 15  (median) ";
+label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
+label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
+series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__19/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_incidence1549__19 	upper=p95_incidence1549__19  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__20/	lineattrs = (color=lightgreen thickness = 2);
+band    x=cald lower=p5_incidence1549__20 	upper=p95_incidence1549__20  / transparency=0.9 fillattrs = (color=LIGHTgreen) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__21/	lineattrs = (color=darkgreen thickness = 2);
+band    x=cald lower=p5_incidence1549__21 	upper=p95_incidence1549__21  / transparency=0.9 fillattrs = (color=darkgreen) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__22/	lineattrs = (color=verydarkgreen thickness = 2);
+band    x=cald lower=p5_incidence1549__22 	upper=p95_incidence1549__22  / transparency=0.9 fillattrs = (color=verydarkgreen) legendlabel= "Model 90% range";
+
+*scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
+*scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+run;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence (age 15-49)Min, SQ and INJECTABLE PREP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 1) valueattrs=(size=10);
+label p50_incidence1549__0 = "Option 0 (median) ";
+label p50_incidence1549__1 = "Option 1  (median) ";
+label p50_incidence1549__15 = "Option 15  (median) ";
+label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
+label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
+series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__23/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_incidence1549__23 	upper=p95_incidence1549__23  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__24/	lineattrs = (color=lightgreen thickness = 2);
+band    x=cald lower=p5_incidence1549__24 	upper=p95_incidence1549__24  / transparency=0.9 fillattrs = (color=LIGHTgreen) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__25/	lineattrs = (color=darkgreen thickness = 2);
+band    x=cald lower=p5_incidence1549__25 	upper=p95_incidence1549__25  / transparency=0.9 fillattrs = (color=darkgreen) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549__26/	lineattrs = (color=verydarkgreen thickness = 2);
+band    x=cald lower=p5_incidence1549__26 	upper=p95_incidence1549__26  / transparency=0.9 fillattrs = (color=verydarkgreen) legendlabel= "Model 90% range";
+
+*scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
+*scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+run;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of new HIV infections in men by age";
@@ -4368,6 +4428,7 @@ p50_n_prep_oral_sdc_0    p50_n_contprep_oral_sdc_0
 p50_n_prep_vr_1524w_0 	p50_n_prep_vr_sw_0    	p50_n_prep_vr_sdc_0   
 p50_n_prep_inj_1524w_0 	p50_n_prep_inj_sw_0    	p50_n_prep_inj_sdc_0;run;*/
 
+
 *FLOW;
 %macro flow(o=);
 data wide_allyears_out_&o; set wide_allyears_&o;
@@ -4562,7 +4623,6 @@ rename P50_test_proppos_sw_&o = PosRate_FSW1599_M;
 *rename P50_n_sw_inprog_ever_&o = NFSWprogEver_FSW1599_M;
 *Number of adults 15+ years old recipient of SBCC intervention;
 rename P50_n_sbcc_visit_1564__&o = NSBCC_A1599_M;
-*Ntested_SBCC_A1599_M;
 rename P50_n_tested_sbcc_&o = Ntested_SBCC_A1599_M;
 *Number of adults 15+ years old recipient of condoms;
 *rename P50_ _&o = NCUPP_A1599_M;
