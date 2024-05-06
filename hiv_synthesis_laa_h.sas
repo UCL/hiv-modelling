@@ -600,8 +600,8 @@ newp_seed = 7;
 * res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.5 0.75 1.00, 0.2 0.6 0.2 ); * tld_switch;
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 
-* lencab_uptake;			%sample(lencab_uptake, 0.05 0.1 0.3, 0.33  0.34  0.33 ); 
-* rel_lencab_uptake_vls;	%sample(rel_lencab_uptake_vls, 0.01 0.05 0.1 0.2, 0.25  0.25  0.25  0.25); 
+* lencab_uptake;			%sample(lencab_uptake, 0.5 0.7 0.9, 0.33  0.34  0.33 ); 
+* lencab_uptake_vls;		%sample(lencab_uptake_vls, 0.001 0.003 0.005 0.01, 0.25  0.25  0.25  0.25); 
 
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
 
@@ -2102,8 +2102,10 @@ if option=2 and 15 <= age < 25 then reg_option_set_in_options = 130;
 
 if option=3 and p_len ne 1 then do; * dont include p_cab because could have been as prep - p_len implies p_cab automatically;  
 	s = rand('uniform');
-	if vm > 3 and caldate{t} - date_v_alert >= 0.25 and s < lencab_uptake then reg_option_set_in_options = 130; 
-	if vm <= 3 and s < lencab_uptake * rel_lencab_uptake_vls then reg_option_set_in_options = 130; 
+	if vm > 3 and caldate{t} - date_v_alert >= 0.25 and lencab_offered ne 1 then do;
+		lencab_offered=1; if s < lencab_uptake then reg_option_set_in_options = 130; 
+	end;
+	if vm <= 3 and s < lencab_uptake_vls then reg_option_set_in_options = 130; 
 end;
 
 
@@ -19807,7 +19809,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
-rel_lencab_uptake_vls lencab_uptake
+lencab_uptake_vls lencab_uptake
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
@@ -22678,7 +22680,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
-rel_lencab_uptake_vls lencab_uptake
+lencab_uptake_vls lencab_uptake
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac   ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
