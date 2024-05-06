@@ -1,19 +1,10 @@
 
 
 
-* consider other adh values for defining positive tdf level test 
-
-* vary assumptions on effect of each insti mutation
 
 * consider a separate strategy in which this final strategy is altered if/when population level INSTI resistance exceeds a certain threshold ?
 
-* consider that combinations of insti mutations lead to additional resistance
-
-* adherence to second line - better or more likely worse (2 larger pills per day) ? 
-
-* wider distribution around potency ?
-
-
+* run as additional analysis with strategies only applying to those with previous virologic failure, or those with previous art experience before tld
 
 * consider atazanavir as the PI ?
 
@@ -23,7 +14,18 @@
 
 * make clear that cost of resistance test includes accounts for the chance of failure of amplification
 
-* modify tld drug costs;
+* modify tld drug costs
+
+
+
+Special considerations in undertaking this work include the following:  (i) With tenofovir drug level testing, there may be some pill-taking just before a 
+clinic appointment, resulting in the appearance of high adherence when, in fact, pill-taking is low.  We will consider the possibility of the existence of 
+such “false positive” tests. (ii) Data are only just starting to accrue on the profile of INSTI mutations acquired in people on TLD.  Data on the evolution 
+of INSTI drug resistance mutations in people on TLD with prolonged viral non-suppression are lacking.  We will have to consider alternative possibilities and 
+see whether they affect the answer to the question.  (iii) There is uncertainty over how likely a person being infected from a person with INSTI resistance 
+mutations will themselves have virus with these INSTI resistance mutations (ie. Transmission of INSTI mutations) – we will again make a range of assumptions 
+informed by the limited data available.     
+
 
 ; 
 
@@ -556,6 +558,8 @@ newp_seed = 7;
 									0.3	   0.5  	0.7		1,
 									0.05   0.05 	0.05	0.85); * tld_switch;
 
+* sd_measured_adh;			%sample_uniform(sd_measured_adh, 0 0.05 0.1);
+
 * red_int_risk_poc_vl;		%sample_uniform(red_int_risk_poc_vl, 0.7  0.8   0.9);  * relative reduction in risk of interrupting ART with poc vl monitoring;
 
 * incr_adh_poc_vl;		   %sample_uniform(incr_adh_poc_vl, 0.1  0.2  0.3  0.4);   * effect of poc vl monitoring on ART adherence;
@@ -605,7 +609,7 @@ newp_seed = 7;
 								0.20	0.40	0.20	0.20);
 * prop_bmi_ge23;			%sample_uniform(prop_bmi_ge23, 0.5 0.75);
 * nnrti_res_no_effect; 		%sample(nnrti_res_no_effect, 0 0.25 0.5, 0.75 0.2 0.05);
-* res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.5 0.75 1.00, 0.2 0.6 0.2 ); * tld_switch;
+* res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.5 0.75, 0.5 0.5 ); * tld_switch;
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
 
@@ -7296,9 +7300,12 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 * dol;
 	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_dol = res_level_dol_cab_mut;
+	if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_dol = 1.00;
+
 
 * cab;
 	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;
+	if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_cab = 1.00;
 	if r_cab=res_level_dol_cab_mut then cab_res_primary=1;
 	if r_cab=res_level_dol_cab_mut and in118m ne 1 and in140m ne 1 and in148m ne 1 and in155m ne 1 and in263m ne 1 then cab_res_emerge_primary=1;
 	if prep_o_cab_off_3m_prim =1 and cab_res_primary=1 then cab_res_prep_cab_primary=1;
@@ -7720,6 +7727,7 @@ visit_tm1=visit;
 	if prep_len=0 and prep_len_tm1=1 then tss_len=0;	
 
 	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;
+	if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_dol = 1.00;
 	if e_ca66m=1 then r_len=res_level_len_mut;
 
 	o_cab_or_o_cab_tm1=0;  o_cab_or_o_cab_tm1_no_r=0;  o_cab_or_o_cab_tm1_no_r_prim=0; 
@@ -10992,8 +11000,9 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 			end;
 
 			if drug_level_test=1 then do; 
-				drug_level_test_adh_high=0; if adh > 0.8 then drug_level_test_adh_high = 1; 
-				drug_level_test_adh_low=0; if adh <= 0.8 then drug_level_test_adh_low = 1; 
+				measured_adh = adh + rand('normal')*sd_measured_adh;
+				drug_level_test_adh_high=0; if measured_adh > 0.8 then drug_level_test_adh_high = 1; 
+				drug_level_test_adh_low=0; if measured_adh <= 0.8 then drug_level_test_adh_low = 1; 
 			end; * these new variable used for outputs only;
 
 			if second_vlg1000=1 and (art_monitoring_strategy = 150 or (art_monitoring_strategy = 1500 and caldate{t} = date_drug_level_test and adh > 0.8) or 
@@ -11434,10 +11443,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 * dol;
       if (e_in118m=1 or e_in140m=1 or e_in148m=1  or e_in155m=1 or e_in263m=1) then r_dol=0.75;
-
+	  if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_dol = 1.00;
 
 * cab;
-      if (e_in118m=1 or e_in140m=1 or e_in148m=1   or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;   
+      if (e_in118m=1 or e_in140m=1 or e_in148m=1   or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut; 
+	if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_cab = 1.00; 
 	
 	if r_cab=res_level_dol_cab_mut and r_cab_tm1 <= 0 then do;  if o_cab=1 or caldate{t}-prep_cab_last_stop_date = 0 then cab_res_o_cab = 1; 
 	if currently_in_prep_cab_tail = 1 then cab_res_tail = 1; end; 
@@ -19725,7 +19735,7 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl sd_measured_adh
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
@@ -22085,8 +22095,6 @@ data r1; set a;
 
 
 
-/*
-
 data r1; set a;
 * 2025;
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
@@ -24143,7 +24151,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=4);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=4);
 
-*/
+
 
 
 
@@ -24845,7 +24853,7 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl sd_measured_adh
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac   ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
