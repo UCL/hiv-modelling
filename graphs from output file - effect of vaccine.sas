@@ -1,14 +1,14 @@
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_a_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
 
 proc printto ;
 
 * ods html close;
 
 data b;
-set b.l_vaccine_n_a_keep_prep_y;
+set b.l_vaccine_n_c_keep_prep_y;
 
 
 n_k65m = p_k65m * n_hiv;
@@ -26,7 +26,7 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-%let single_var = p_vl1000_       ;
+%let single_var = p_vl1000_         ;
 
 
 * p_inf_newp p_inf_ep p_inf_diag p_inf_naive p_inf_primary ;
@@ -40,7 +40,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = /* 5784 */ 1392  ;
+%let nfit = /* 5784 */ 1368  ;
 
 %let year_end = 2070.00 ;
 run;
@@ -291,7 +291,7 @@ run;quit;
 * ods html close;
 
 
-
+  
 
 ods html;
 proc sgplot data=d ; 
@@ -378,7 +378,6 @@ run;quit;
 
 
 
-
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Number of HIV-related deaths";
@@ -431,7 +430,6 @@ series  x=cald y=p50_ddaly_3 / lineattrs = (color=violet thickness = 4);
 band    x=cald lower=p5_ddaly_3 upper=p95_ddaly_3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
-
 
 
 
