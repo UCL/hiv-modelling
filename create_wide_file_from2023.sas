@@ -10,19 +10,65 @@ if cald=. or run=. then delete;run;
 /* show the contents of the input SAS file */
 
 proc contents data=a.base_from2023_20240213;run;
-proc freq data=a.base_from2023_20240213;table 
-/*s_init_prep_oral_plw  	s_init_prep_inj_plw s_init_prep_vr_plw
+ods html close;
+ods listing;
+
+*The following ouputs were not available when preparing the graphs comparing with other models;
+proc freq data=a.base_from2023_20240213;
+table /*option cald run
+s_init_prep_oral_plw  	s_init_prep_inj_plw s_init_prep_vr_plw
 s_prep_oral_plw			s_prep_inj_plw		s_prep_vr_plw
 s_prep_oral_ever_plw 	s_prep_inj_ever_plw s_prep_vr_ever_plw 
-s_init_prep_oral_sw  	s_init_prep_inj_sw s_init_prep_vr_sw
+s_init_prep_oral_sw  	s_init_prep_inj_sw s_init_prep_vr_sw*/
 s_prep_oral_sw			s_prep_inj_sw		s_prep_vr_sw
-s_init_prep_oral_sdc  	s_init_prep_inj_sdc s_init_prep_vr_sdc
-s_prep_oral_sdc			s_prep_inj_sdc		s_prep_vr_sdc
+/*s_init_prep_oral_sdc  	s_init_prep_inj_sdc s_init_prep_vr_sdc
+s_prep_oral_sdc			s_prep_inj_sdc		s_prep_vr_sdc*/
 s_init_prep_oral_1524w  	s_init_prep_inj_1524w s_init_prep_vr_1524w
-s_prep_oral_w_1524			s_prep_inj_w_1524		s_prep_vr_w_1524*/
-s_prep_oral_ever_plw	s_prep_vr_ever_plw	s_prep_inj_ever_plw
-;run;
+s_prep_oral_w_1524			s_prep_inj_w_1524		s_prep_vr_w_1524
+/*s_prep_oral_ever_plw	s_prep_vr_ever_plw	s_prep_inj_ever_plw*/
+/*
+s_prep_oral_plw 		s_init_prep_oral_plw
+s_prep_oral_sdc 		s_init_prep_oral_sdc
+s_prep_vr_sdc 			s_init_prep_vr_sdc
+s_prep_vr_plw 			s_init_prep_vr_plw
+s_prep_inj_sw
+s_prep_inj_sdc 			s_init_prep_inj_sdc
+s_prep_inj_plw 			s_init_prep_inj_plw*/;
+where option=1;*minimal;
+run;
+*All the s_prep for SW and w1524 are 0;
+*All the s_prep for PLW, SDC.... are missing
+s_init_prep have a value of 0 or a number, checking why this is the case;
+proc print;var run cald;
+proc freq; table cald;
+where option=1 and (
+s_init_prep_oral_1524w ne 0 or s_init_prep_oral_sw ne 0 or s_init_prep_oral_plw ne 0 or s_init_prep_oral_sdc ne 0 or 
+s_init_prep_vr_1524w   ne 0 or s_init_prep_vr_sw   ne 0 or s_init_prep_vr_plw   ne 0 or s_init_prep_vr_sdc   ne 0 or
+s_init_prep_inj_1524w   ne 0 or s_init_prep_inj_sw   ne 0 or s_init_prep_inj_plw   ne 0 or s_init_prep_inj_sdc   ne 0);
+run;
+*There were some  PrEP initiation in minimal but they were all in 2072.75,
+so I do think it is OK to overwrite them;
 
+*The following output was not available when preparing the graphs comparing with other models;
+proc freq data=a.base_from2023_20240213;
+table s_prep_inj_sw;where option=24;run;
+
+data a.base_from2023_20240213;set a.base_from2023_20240213;
+if option=1 then do;*minimal;
+	if s_prep_oral_plw=. then s_prep_oral_plw=0;
+	if s_prep_oral_sdc=. then s_prep_oral_sdc=0;
+	if s_prep_vr_sdc=.   then s_prep_vr_sdc=0;
+	if s_prep_vr_plw=.   then s_prep_vr_plw=0;
+	if s_prep_inj_sw=.   then s_prep_inj_sw=0;
+	if s_prep_inj_sdc=.  then s_prep_inj_sdc=0;
+	if s_prep_inj_plw=.  then s_prep_inj_plw=0;
+	if cald=2072.75 then do;
+		s_init_prep_oral_1524w=0; s_init_prep_oral_sw=0; s_init_prep_oral_plw=0; s_init_prep_oral_sdc=0;
+		s_init_prep_vr_1524w=0;   s_init_prep_vr_sw=0;   s_init_prep_vr_plw=0;   s_init_prep_vr_sdc=0;
+		s_init_prep_inj_1524w=0;  s_init_prep_inj_sw=0;  s_init_prep_inj_plw=0;  s_init_prep_inj_sdc=0;
+	end;
+end;
+run;
 
 proc freq data=a.base_from2023_20240213; table run option;where cald=2023.75;run;
 proc freq data=a.base_from2023_20240213; table run*option/norow nocol nopercent; where cald=2023.75;run;
@@ -30,13 +76,13 @@ proc freq data=a.base_from2023_20240213; table run cald option;run;
 proc freq data=a.base_from2023_20240213; table option*cald/norow nocol nopercent;run;
 *run refers to the dataset they are starting from
  We have the following simulations starting from 2023 up to 2072.75:
-	300 simulations (30 for each of the 10 dataset) for option 0 (note that SBCC is not final)
-	300 simulations (30 for each of the 10 dataset) for option 1
-	150 simulations (15 for each of the 10 dataset) for option 10
-	300 simulations (30 for each of the 10 dataset) for option 11
-	300 simulations (30 for each of the 10 dataset) for option 12
-	190 simulations(23 for each of the 5 dataset + 5 for other datasets) for option 15
-	175  simulations (15 for each of the 5 dataset) for option 16-25
+	300 simulations  (30 for each of the 10 dataset) for option 0 (note that SBCC is not final)
+	300 simulations  (30 for each of the 10 dataset) for option 1
+	150 simulations  (15 for each of the 10 dataset) for option 10
+	300 simulations  (30 for each of the 10 dataset) for option 11
+	300 simulations  (30 for each of the 10 dataset) for option 12
+	190 simulations  (23 for each of the 5 dataset + 5 for other 15 datasets) for option 15
+	175  simulations (20 for each of the 5 dataset + 5 for other 15 datasets) for option 16-25
 	100  simulations (5 for each of the 20 datasets) for option 26;
 
 
@@ -44,9 +90,6 @@ proc freq data=a.base_from2023_20240213; table option*cald/norow nocol nopercent
 ods html close;
 ods listing;
 
-data a.base_from2023_20240213;set a.base_from2023_20240213;
-
-run;
 data g; set  a.base_from2023_20240213;
 *keeping the runs that I have for all the options;
 where run in (
@@ -54,6 +97,8 @@ where run in (
 791615574 796060145 811056701 874842792 946265352);run;
 proc freq data=g; table run*option/norow nocol nopercent; where cald=2023.75;run;
 *So now:
+	300 simulations  (30 for each of the 10 datasets) for option 0,1,11,12
+	150 simulations  (15 for each of the 10 datasets) for option 10
 	140 simulations  (23 for each of the 5 dataset + 5 for other 5 datasets) for option 15
 	125  simulations (20 for each of the 5 dataset + 5 for other 5 datasets) for option 16-25
 	50  simulations  (5 for each of the 10 datasets) for option 26;
@@ -137,7 +182,7 @@ ddaly = s_ddaly * sf * 4;
 
 ***These are additional potential DALYs to include which have not so far been included;
 
-ddaly_mtct = s_ddaly_mtct * &sf * 4;  ***Crude estimate of number of DALYs incurred in a child born with HIV;
+ddaly_mtct = s_ddaly_mtct * sf * 4;  ***Crude estimate of number of DALYs incurred in a child born with HIV;
 
 
 * ================================================================================= ;
@@ -473,29 +518,29 @@ so the one above is the annual number of tests conducted in ANC;
 
 
 * n_prep;						n_prep = s_prep_any * sf;
-* n_prep_w_1549;				n_prep_w_1549 = s_prep_any_w_1549 * &sf;
-* n_prep_m_1549;				n_prep_m_1549 = s_prep_any_m_1549 * &sf;
-* n_prep_oral;					n_prep_oral = s_prep_oral * &sf;
-* n_prep_inj;					n_prep_inj = s_prep_inj * &sf;
-* n_prep_vr;					n_prep_vr = s_prep_vr * &sf;
+* n_prep_w_1549;				n_prep_w_1549 = s_prep_any_w_1549 * sf;
+* n_prep_m_1549;				n_prep_m_1549 = s_prep_any_m_1549 * sf;
+* n_prep_oral;					n_prep_oral = s_prep_oral * sf;
+* n_prep_inj;					n_prep_inj = s_prep_inj * sf;
+* n_prep_vr;					n_prep_vr = s_prep_vr * sf;
 
-* n_prep_oral_w;				n_prep_oral_w = s_prep_oral_w * &sf;
-* n_prep_oral_m;				n_prep_oral_m = s_prep_oral_m * &sf;
-* n_prep_inj_w;					n_prep_inj_w = s_prep_inj_w * &sf;
-* n_prep_inj_m;					n_prep_inj_m = s_prep_inj_m * &sf;
-* n_prep_vr_w;					n_prep_vr_w = s_prep_vr_w * &sf;
+* n_prep_oral_w;				n_prep_oral_w = s_prep_oral_w * sf;
+* n_prep_oral_m;				n_prep_oral_m = s_prep_oral_m * sf;
+* n_prep_inj_w;					n_prep_inj_w = s_prep_inj_w * sf;
+* n_prep_inj_m;					n_prep_inj_m = s_prep_inj_m * sf;
+* n_prep_vr_w;					n_prep_vr_w = s_prep_vr_w * sf;
 * n_prep_w;						n_prep_w = n_prep_oral_w + n_prep_inj_w + n_prep_vr_w;	* Note check these outputs against n_prep_w_1549 and n_prep_m_1549;
 * n_prep_m;						n_prep_m = n_prep_oral_m + n_prep_inj_m;
 
 * n_prep_1524w;					n_prep_1524w = s_onprep_1524w * sf;
-* n_prep_sw;					n_prep_sw = s_prep_any_sw * &sf;
-* n_prep_sdc;					n_prep_sdc = s_prep_any_sdc * &sf;
-* n_prep_plw;					n_prep_plw = s_prep_any_plw * &sf;
+* n_prep_sw;					n_prep_sw = s_prep_any_sw * sf;
+* n_prep_sdc;					n_prep_sdc = s_prep_any_sdc * sf;
+* n_prep_plw;					n_prep_plw = s_prep_any_plw * sf;
 
-* n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep_any * &sf;
+* n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep_any * sf;
 * p_hiv1_prep;					if s_prep_any gt 0 then p_hiv1_prep = s_hiv1_prep_any / s_prep_any ;
 
-* n_start_rest_prep_oral;		n_start_rest_prep_oral = s_start_restart_prep_oral * &sf;*Mar2023;
+* n_start_rest_prep_oral;		n_start_rest_prep_oral = s_start_restart_prep_oral * sf;*Mar2023;
 
 * n_prep_ever;					n_prep_ever = s_prep_any_ever * sf;
 * p_prep_ever;					p_prep_ever = s_prep_any_ever / (s_alive1564_w + s_alive1564_m) ;
@@ -504,9 +549,9 @@ so the one above is the annual number of tests conducted in ANC;
 * n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_any_w_2534  * sf;
 * n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_any_w_3544  * sf;
 
-* n_elig_prep_sw ;				n_elig_prep_sw = s_elig_prep_any_sw  * &sf;
-* n_elig_prep_sdc ;				n_elig_prep_sdc = s_elig_prep_any_sdc  * &sf;
-* n_elig_prep_plw ;				n_elig_prep_plw = s_elig_prep_any_plw  * &sf;
+* n_elig_prep_sw ;				n_elig_prep_sw = s_elig_prep_any_sw  * sf;
+* n_elig_prep_sdc ;				n_elig_prep_sdc = s_elig_prep_any_sdc  * sf;
+* n_elig_prep_plw ;				n_elig_prep_plw = s_elig_prep_any_plw  * sf;
 										 
 *Currently on PrEP: Number of clients actively taking PrEP during the last month of the date range displayed;
 *Note we can't do the last month so we will do the last 3 months;
@@ -583,13 +628,13 @@ so the one above is the annual number of tests conducted in ANC;
 * n_prep_vr_ever_sdc; 			n_prep_vr_ever_sdc     = s_prep_vr_ever_sdc * sf; 
 * n_prep_vr_ever_plw;  			n_prep_vr_ever_plw     = s_prep_vr_ever_plw * sf;    *Feb2024;
 * Number in each MIHPSA PrEP priority group;
-* n_agyw;						n_agyw = s_ageg1w * &sf;
+* n_agyw;						n_agyw = s_ageg1w * sf;
 * n_fsw;						n_fsw = n_sw_1564;
-* n_sdc;						n_sdc = s_sdc * &sf;
-* n_plw;						n_plw = s_plw * &sf;
+* n_sdc;						n_sdc = s_sdc * sf;
+* n_plw;						n_plw = s_plw * sf;
 
 * Proportion on PrEP in each MIHPSA priority group;
-* p_prep_agyw;					p_prep_agyw = n_prep_1524w / (n_agyw-(s_hiv1524w * &sf));	* last part defined as s_hiv1524w below;
+* p_prep_agyw;					p_prep_agyw = n_prep_1524w / (n_agyw-(s_hiv1524w * sf));	* last part defined as s_hiv1524w below;
 * p_prep_fsw;					p_prep_fsw = prop_sw_onprep;
 * p_prep_sdc;					p_prep_sdc = n_prep_sdc / n_sdc;	* need to subtract HIV+ from deniminator JAS Jan24;
 * p_prep_plw;					p_prep_plw = n_prep_plw / n_plw;	* need to subtract HIV+ from deniminator JAS Jan24;

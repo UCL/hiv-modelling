@@ -2,7 +2,7 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\Valentina\Dropbox (UCL)\output files\zimbabwe";run;
+libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 proc freq data=a.l_base_from2023_20240213;table cald sf;run;
 
@@ -70,15 +70,25 @@ n_new_inf1549_ = n_new_inf1549;
 n_everpregn_w1524_ = n_everpregn_w1524;
 n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 
+*In trying to figure out why the PrEP simualtions are not averting infections,
+I'm going to select only 5 simulations for each of the 10 datasets;
+proc sort data=b;by option run cald;run;
+data b;set b;count_provasim+1;by option run cald ;if first.run or first.cald then count_provasim=1;run;
+***counts the NUMBER OF RUNS for each dataset to 2023;
+proc print data=b; var option run cald count_provasim;run;
+data b;set b;where count_provasim in (1 2 3 4 5);run;
+
 proc sort data=b; by option cald run ;run;
 proc freq; table cald;run;
 proc freq data=b;table option cald run;run;
 *run_forward_id has not been saved;
 
+proc print data=b; var option cald count_csim;run;
 *At the moment is the median across all runs by option;
 *Note that different options have a different number of runs;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
  ***number of runs - this is manually inputted in nfit in the macros below;
+*We are now keeping only 5 simualtions starting for each dataset;
 proc means max data=b;var count_csim cald;where option=0;run;*300;
 proc means max data=b;var count_csim cald;where option=1;run;*300;
 proc means max data=b;var count_csim cald;where option=10;run;*150;
@@ -216,24 +226,25 @@ run;
 %end;
 %mend;
 
-%let nfit=300;%option_(0);
-%let nfit=300;%option_(1);
-%let nfit=150;%option_(10);
-%let nfit=300;%option_(11);
-%let nfit=300;%option_(12);
-
-%let nfit=140;%option_(15);
-%let nfit=125;%option_(16);
-%let nfit=125;%option_(17);
-%let nfit=125;%option_(18);
-%let nfit=125;%option_(19);
-%let nfit=125;%option_(20);
-%let nfit=125;%option_(21);
-%let nfit=125;%option_(22);
-%let nfit=125;%option_(23);
-%let nfit=125;%option_(24);
-%let nfit=125;%option_(25);
-%let nfit=50;%option_(26);
+*We are selecting only 50 simulations for each option: 5 for each of the 10 datasets;
+%let nfit=50;
+*%let nfit=300;%option_(0);
+*%let nfit=300;%option_(1);
+*%let nfit=150;%option_(10);
+*%let nfit=300;%option_(11);
+*%let nfit=300;%option_(12);
+*%let nfit=140;%option_(15);
+*%let nfit=125;%option_(16);
+*%let nfit=125;%option_(17);
+*%let nfit=125;%option_(18);
+*%let nfit=125;%option_(19);
+*%let nfit=125;%option_(20);
+*%let nfit=125;%option_(21);
+*%let nfit=125;%option_(22);
+*%let nfit=125;%option_(23);
+*%let nfit=125;%option_(24);
+*%let nfit=125;%option_(25);
+*%let nfit=50;%option_(26);
 run;
 
 
