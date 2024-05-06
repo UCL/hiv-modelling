@@ -827,6 +827,8 @@ run;
 
 * p_onart_vl1000_w_1524;		if s_onart_w1519_ + s_onart_w2024_ > 0 then p_onart_vl1000_w_1524 = s_vl1000_onart_1524w / (s_onart_w1519_ + s_onart_w2024_) ; 
 * p_onart_vl1000_m_1524;		if s_onart_m1519_ + s_onart_m2024_ > 0 then p_onart_vl1000_m_1524 = s_vl1000_onart_1524m / (s_onart_m1519_ + s_onart_m2024_) ; 
+* p_onart_vl1000_1524;			if s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_ > 0 then 
+								p_onart_vl1000_1524 = (s_vl1000_onart_1524m + s_vl1000_onart_1524w) / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) ; 
 
 * p_r_len;						p_r_len = s_r_len / s_hiv;
 * p_r_cab;						p_r_cab = s_r_cab / s_hiv;
@@ -1312,6 +1314,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
+p_onart_vl1000_1524
 ;
 
 
@@ -1401,7 +1404,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_vl1000); %var(v=p_vg1000); %var(v=p_vl1000_m);  %var(v=p_vl1000_w);  %var(v=p_vl1000_m_1524);  %var(v=p_vl1000_w_1524);  
 %var(v=p_vl1000_art_12m); %var(v=p_vl1000_art_12m_onart); 
 * %var(v=p_onart_m); * %var(v=p_onart_w); 
-%var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); * %var(v= p_onart_vl1000_1524); * %var(v=p_onart_vl1000_sw);
+%var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524); * %var(v=p_onart_vl1000_sw);
 * %var(v=prev_vg1000_newp_m); * %var(v=prev_vg1000_newp_w);  %var(v= p_startedline2) ;  %var(v=n_alive);
 * %var(v=p_tle);  * %var(v=p_tld);  * %var(v=p_zld);  * %var(v=p_zla);  * %var(v=p_otherreg);   %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
 * %var(v=aids_death_rate);    %var(v=death_rate_onart);     %var(v=dcost);    %var(v= dart_cost_y);
@@ -1577,7 +1580,7 @@ p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_o
 s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
-
+p_onart_vl1000_1524
 ;
 
 
