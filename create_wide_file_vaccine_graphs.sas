@@ -4,11 +4,11 @@
 
  proc printto ; 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_d_keep_prep_out\";
 
 
 
-data y ; set b.l_vaccine_n_c_keep_prep_y; 
+data y ; set b.l_vaccine_n_d_keep_prep_y; 
 
 
   options nomprint;
