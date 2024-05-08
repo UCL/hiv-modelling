@@ -1663,23 +1663,17 @@ ods html close;
 proc logistic  data = r;
 model x_incidence1549_2_lt1p1000 =  incidence1549_39  ;
 output out= pr predicted=pred;
+where incidence1549_39 > 0.1;
+
 proc logistic  data = r;
 model x_incidence1549_2_lt1p1000 =  incidence1549_39  vaccine_efficacy  vaccine_duration_effect  vaccine_efficacy*vaccine_duration_effect;
 output out= pr predicted=pred;
+where incidence1549_39 > 0.1;
+
 proc print data=pr;
 var incidence1549_39  vaccine_efficacy  vaccine_duration_effect pred; run; 
 run;
 
-
-proc logistic  data = r;
-model x_incidence1549_2_lt1p1000 =  incidence1549_39  vaccine_efficacy  vaccine_duration_effect  vaccine_efficacy*vaccine_duration_effect;
-output out= pr predicted=pred;
-where 0.5  <= incidence1549_39 < 1;
-run;
-
-proc sort; by vaccine_efficacy  vaccine_duration_effect;
-proc print data=pr noobs;
-var incidence1549_39  vaccine_efficacy  vaccine_duration_effect pred; run; 
 
 
 proc sgplot data=pr ;
