@@ -4,25 +4,25 @@
 
  proc printto ; 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_r_eff_dur_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_r_eff_dur_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_n_b_r_eff_dur;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_n_b_keep_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_vaccine_n_b_r_eff_dur; 
+proc sort data=b.k_vaccine_n_b_keep_prep; 
 by run cald option;
 run;
 
@@ -32,9 +32,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_n_b_r_eff_dur ;
-
-if option <= 1;
+set b.k_vaccine_n_b_keep_prep ;
 
 
 if cald=2024   ;
@@ -54,10 +52,8 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_n_b_r_eff_dur sf;
+merge b.k_vaccine_n_b_keep_prep sf;
 by run ;
-
-if option <= 1;
 
 * preparatory code ;
 
@@ -1131,9 +1127,9 @@ proc freq; tables cald option; where cald=2040.50;
 run;
 
 
-data    b.l_vaccine_n_b_r_eff_dur_y; set y;  
+data    b.l_vaccine_n_b_output_file; set y;  
 
-data y ; set b.l_vaccine_n_b_r_eff_dur_y; 
+data y ; set b.l_vaccine_n_b_output_file; 
 
 
   options nomprint;
@@ -1143,26 +1139,84 @@ data y ; set b.l_vaccine_n_b_r_eff_dur_y;
 * user to decide what years and year ranges to include ;
 
 
-
 %macro var(v=);
 
 * &v ;
 
 data e; set y; keep &v run cald option ;
 
-proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2023.25 <= cald <= 2024.25; 
+proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2024.0 <= cald <= 2024.25; 
 
 proc means  noprint data=e; var &v; output out=y_39 mean= &v._39; by run ; where 2039.0 <= cald <= 2040.0; 
 
-proc means  noprint data=e; var &v; output out=y_6570 mean= &v._6570; by run  option ; where 2065.0 <= cald <  2070.0; 
+proc means  noprint data=e; var &v; output out=y_40 mean= &v._40; by run  option ; where 2040.0 <= cald <  2041.0; 
+proc means  noprint data=e; var &v; output out=y_41 mean= &v._41; by run  option ; where 2041.0 <= cald <  2042.0; 
+proc means  noprint data=e; var &v; output out=y_42 mean= &v._42; by run  option ; where 2042.0 <= cald <  2043.0; 
+proc means  noprint data=e; var &v; output out=y_43 mean= &v._43; by run  option ; where 2043.0 <= cald <  2044.0; 
+proc means  noprint data=e; var &v; output out=y_44 mean= &v._44; by run  option ; where 2044.0 <= cald <  2045.0; 
+proc means  noprint data=e; var &v; output out=y_45 mean= &v._45; by run  option ; where 2045.0 <= cald <  2046.0; 
+proc means  noprint data=e; var &v; output out=y_46 mean= &v._46; by run  option ; where 2046.0 <= cald <  2047.0; 
+proc means  noprint data=e; var &v; output out=y_47 mean= &v._47; by run  option ; where 2047.0 <= cald <  2048.0; 
+proc means  noprint data=e; var &v; output out=y_48 mean= &v._48; by run  option ; where 2048.0 <= cald <  2049.0; 
+proc means  noprint data=e; var &v; output out=y_49 mean= &v._49; by run  option ; where 2049.0 <= cald <  2050.0; 
+proc means  noprint data=e; var &v; output out=y_50 mean= &v._50; by run  option ; where 2050.0 <= cald <  2051.0; 
+proc means  noprint data=e; var &v; output out=y_51 mean= &v._51; by run  option ; where 2051.0 <= cald <  2052.0; 
+proc means  noprint data=e; var &v; output out=y_52 mean= &v._52; by run  option ; where 2052.0 <= cald <  2053.0; 
+proc means  noprint data=e; var &v; output out=y_53 mean= &v._53; by run  option ; where 2053.0 <= cald <  2054.0; 
+proc means  noprint data=e; var &v; output out=y_54 mean= &v._54; by run  option ; where 2054.0 <= cald <  2055.0; 
+proc means  noprint data=e; var &v; output out=y_55 mean= &v._55; by run  option ; where 2055.0 <= cald <  2056.0; 
+proc means  noprint data=e; var &v; output out=y_56 mean= &v._56; by run  option ; where 2056.0 <= cald <  2057.0; 
+proc means  noprint data=e; var &v; output out=y_57 mean= &v._57; by run  option ; where 2057.0 <= cald <  2058.0; 
+proc means  noprint data=e; var &v; output out=y_58 mean= &v._58; by run  option ; where 2058.0 <= cald <  2059.0; 
+proc means  noprint data=e; var &v; output out=y_59 mean= &v._59; by run  option ; where 2059.0 <= cald <  2060.0; 
+proc means  noprint data=e; var &v; output out=y_60 mean= &v._60; by run  option ; where 2060.0 <= cald <  2061.0; 
+proc means  noprint data=e; var &v; output out=y_61 mean= &v._61; by run  option ; where 2061.0 <= cald <  2062.0; 
+proc means  noprint data=e; var &v; output out=y_62 mean= &v._62; by run  option ; where 2062.0 <= cald <  2063.0; 
+proc means  noprint data=e; var &v; output out=y_63 mean= &v._63; by run  option ; where 2063.0 <= cald <  2064.0; 
+proc means  noprint data=e; var &v; output out=y_64 mean= &v._64; by run  option ; where 2064.0 <= cald <  2065.0; 
+proc means  noprint data=e; var &v; output out=y_65 mean= &v._65; by run  option ; where 2065.0 <= cald <  2066.0; 
+proc means  noprint data=e; var &v; output out=y_66 mean= &v._66; by run  option ; where 2066.0 <= cald <  2067.0; 
+proc means  noprint data=e; var &v; output out=y_67 mean= &v._67; by run  option ; where 2067.0 <= cald <  2068.0; 
+proc means  noprint data=e; var &v; output out=y_68 mean= &v._68; by run  option ; where 2068.0 <= cald <  2069.0; 
+proc means  noprint data=e; var &v; output out=y_69 mean= &v._69; by run  option ; where 2069.0 <= cald <  2070.0; 
 
 proc means noprint data=e; var &v; output out=y_30y mean= &v._30y; by run option ; where 2040.0 <= cald < 2070.00;   
 																				   
 proc sort data=y_30y    ; by run; proc transpose data=y_30y  out=t_30y  prefix=&v._30y_  ; var &v._30y    ; by run; 																																																						
-																																																
-proc sort data=y_6570     ; by run; proc transpose data=y_6570   out=t_6570   prefix=&v._6570_  ; var &v._6570     ; by run; 																																																						
 
-data &v ; merge y_24 t_30y y_39  t_6570 ;  
+proc sort data=y_40     ; by run; proc transpose data=y_40   out=t_40   prefix=&v._40_  ; var &v._40     ; by run; 																																																						
+proc sort data=y_41     ; by run; proc transpose data=y_41   out=t_41   prefix=&v._41_  ; var &v._41     ; by run; 																																																						
+proc sort data=y_42     ; by run; proc transpose data=y_42   out=t_42   prefix=&v._42_  ; var &v._42     ; by run; 																																																						
+proc sort data=y_43     ; by run; proc transpose data=y_43   out=t_43   prefix=&v._43_  ; var &v._43     ; by run; 																																																						
+proc sort data=y_44     ; by run; proc transpose data=y_44   out=t_44   prefix=&v._44_  ; var &v._44     ; by run; 																																																						
+proc sort data=y_45     ; by run; proc transpose data=y_45   out=t_45   prefix=&v._45_  ; var &v._45     ; by run; 																																																						
+proc sort data=y_46     ; by run; proc transpose data=y_46   out=t_46   prefix=&v._46_  ; var &v._46     ; by run; 																																																						
+proc sort data=y_47     ; by run; proc transpose data=y_47   out=t_47   prefix=&v._47_  ; var &v._47     ; by run; 																																																						
+proc sort data=y_48     ; by run; proc transpose data=y_48   out=t_48   prefix=&v._48_  ; var &v._48     ; by run; 																																																						
+proc sort data=y_49     ; by run; proc transpose data=y_49   out=t_49   prefix=&v._49_  ; var &v._49     ; by run; 																																																						
+proc sort data=y_50     ; by run; proc transpose data=y_50   out=t_50   prefix=&v._50_  ; var &v._50     ; by run; 																																																						
+proc sort data=y_51     ; by run; proc transpose data=y_51   out=t_51   prefix=&v._51_  ; var &v._51     ; by run; 																																																						
+proc sort data=y_52     ; by run; proc transpose data=y_52   out=t_52   prefix=&v._52_  ; var &v._52     ; by run; 																																																						
+proc sort data=y_53     ; by run; proc transpose data=y_53   out=t_53   prefix=&v._53_  ; var &v._53     ; by run; 																																																						
+proc sort data=y_54     ; by run; proc transpose data=y_54   out=t_54   prefix=&v._54_  ; var &v._54     ; by run; 																																																						
+proc sort data=y_55     ; by run; proc transpose data=y_55   out=t_55   prefix=&v._55_  ; var &v._55     ; by run; 																																																						
+proc sort data=y_56     ; by run; proc transpose data=y_56   out=t_56   prefix=&v._56_  ; var &v._56     ; by run; 																																																						
+proc sort data=y_57     ; by run; proc transpose data=y_57   out=t_57   prefix=&v._57_  ; var &v._57     ; by run; 																																																						
+proc sort data=y_58     ; by run; proc transpose data=y_58   out=t_58   prefix=&v._58_  ; var &v._58     ; by run; 																																																						
+proc sort data=y_59     ; by run; proc transpose data=y_59   out=t_59   prefix=&v._59_  ; var &v._59     ; by run; 																																																						
+proc sort data=y_60     ; by run; proc transpose data=y_60   out=t_60   prefix=&v._60_  ; var &v._60     ; by run; 																																																						
+proc sort data=y_61     ; by run; proc transpose data=y_61   out=t_61   prefix=&v._61_  ; var &v._61     ; by run; 																																																						
+proc sort data=y_62     ; by run; proc transpose data=y_62   out=t_62   prefix=&v._62_  ; var &v._62     ; by run; 																																																						
+proc sort data=y_63     ; by run; proc transpose data=y_63   out=t_63   prefix=&v._63_  ; var &v._63     ; by run; 																																																						
+proc sort data=y_64     ; by run; proc transpose data=y_64   out=t_64   prefix=&v._64_  ; var &v._64     ; by run; 																																																						
+proc sort data=y_65     ; by run; proc transpose data=y_65   out=t_65   prefix=&v._65_  ; var &v._65     ; by run; 																																																						
+proc sort data=y_66     ; by run; proc transpose data=y_66   out=t_66   prefix=&v._66_  ; var &v._66     ; by run; 																																																						
+proc sort data=y_67     ; by run; proc transpose data=y_67   out=t_67   prefix=&v._67_  ; var &v._67     ; by run; 																																																						
+proc sort data=y_68     ; by run; proc transpose data=y_68   out=t_68   prefix=&v._68_  ; var &v._68     ; by run; 																																																						
+proc sort data=y_69     ; by run; proc transpose data=y_69   out=t_69   prefix=&v._69_  ; var &v._69     ; by run; 																																																						
+
+data &v ; merge y_24 t_30y y_39 t_40 t_41 t_42 t_43 t_44 t_45 t_46 t_47 t_48 t_49 t_50 t_51 t_52 t_53 t_54 t_55 t_56 t_57 t_58 t_59 t_60 
+t_61 t_62 t_63 t_64 t_65 t_66 t_67 t_68 t_69 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1349,7 +1403,7 @@ if cald=2040;
 
 keep 
 
-run cald option
+run cald 
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp  n_alive
@@ -1399,7 +1453,9 @@ p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_
 %macro par(p=);
 
 * &p ;
-proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2040 and option=1; run;
+proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2024; run;
+
+
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
@@ -1502,285 +1558,21 @@ run;
 proc sort; by run;run;
 
 
-proc freq data=b.wide_par2; tables future_prep_condom ; run;  
 
 
-  data  b.w_vaccine_n_b_r_eff_dur     ; 
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
+
+
+* To get one row per run;
+
+  data  b.w_vaccine_n_b_output_file     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
-
-
-
-
-
-
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_r_eff_dur_out\";
-
-data r; set b.w_vaccine_n_b_r_eff_dur;
-
-if incidence1549_24 > 0.1 and incidence1549_24 < 2.0;
-if vaccine_duration_effect <= 10 ;
-
-
-
-incidence1549_2_lt1p1000 = 0; if incidence1549_6570_2 < 0.1 then incidence1549_2_lt1p1000 = 1;
-x_incidence1549_2_lt1p1000 = 1 - incidence1549_2_lt1p1000 = 1;
-
-
-d_prop_elig_on_prep_30y_2_1 = prop_elig_on_prep_30y_2 - prop_elig_on_prep_30y_1; 
-
-d_prop_1564_onprep_30y_2_1 = prop_1564_onprep_30y_2 - prop_1564_onprep_30y_1;
-
-d_prop_prep_inj_30y_2_1 = prop_prep_inj_30y_2 - prop_prep_inj_30y_1 ;
-
-r_incidence1549_30y_2_1 = incidence1549_30y_2 / incidence1549_30y_1 ;
-r_incidence1549_6570_2_1 = incidence1549_6570_2 / incidence1549_6570_1 ;
-
-r_incidence1549_30y_2_1_getp5 = 0; if r_incidence1549_30y_2_1 < 0.5 then r_incidence1549_30y_2_1_getp5 = 1;
-x_r_incidence1549_30y_2_1_getp5 = 1 - r_incidence1549_30y_2_1_getp5;
-
-r_incidence1549_6570_2_1_getp5 = 0; if r_incidence1549_6570_2_1 < 0.5 then r_incidence1549_6570_2_1_getp5 = 1;
-x_r_incidence1549_6570_2_1_getp5 = 1 - r_incidence1549_6570_2_1_getp5;
-
-
-d_incidence1549_30y_2_1 = incidence1549_30y_1 - incidence1549_30y_2 ;
-r_incidence1549_6570_2_1 = incidence1549_6570_2 / incidence1549_6570_1 ;
-
-d_incidence1549_6570_2_1 = incidence1549_6570_1 - incidence1549_6570_2 ;
-
-d_incidence1549_24_30y_1 = incidence1549_24 - incidence1549_30y_1 ; 
-
-
-* checked that this the same as dcost_30y_1 etc so over-writing so can change individual costs;
-  
-dcost_30y_1 = dart_cost_y_30y_1 + dadc_cost_30y_1 + dcd4_cost_30y_1 + dvl_cost_30y_1 + dvis_cost_30y_1 + dnon_tb_who3_cost_30y_1 + 
-					dcot_cost_30y_1 + dtb_cost_30y_1 + dres_cost_30y_1 + dtest_cost_30y_1 + d_t_adh_int_cost_30y_1 + dswitchline_cost_30y_1 + 
-					dcost_circ_30y_1 + dcost_condom_dn_30y_1 + dcost_child_hiv_30y_1 + dcost_non_aids_pre_death_30y_1
-					+ (dcost_prep_visit_oral_30y_1) + (dcost_prep_oral_30y_1) 
-;			
-
-* todo: vaccine cost to be added;
-dcost_30y_2 = dart_cost_y_30y_2 + dadc_cost_30y_2 + dcd4_cost_30y_2 + dvl_cost_30y_2 + dvis_cost_30y_2 + dnon_tb_who3_cost_30y_2 + 
-					dcot_cost_30y_2 + dtb_cost_30y_2 + dres_cost_30y_2 + dtest_cost_30y_2 + d_t_adh_int_cost_30y_2 + dswitchline_cost_30y_2 + 
-					dcost_circ_30y_2 + dcost_condom_dn_30y_2 + dcost_child_hiv_30y_2 + dcost_non_aids_pre_death_30y_2
-					+ (dcost_prep_visit_oral_30y_2) + (dcost_prep_oral_30y_2) ;
-
-
-d_dcost_30y_2_1 = dcost_30y_2 - dcost_30y_1;
-
-d_ddaly_30y_2_1 = ddaly_30y_2 - ddaly_30y_1;
-
-netdaly500_1 = ddaly_30y_1 + (dcost_30y_1 / 0.0005);
-netdaly500_2 = ddaly_30y_2 + (dcost_30y_2 / 0.0005);
-
-min_netdaly500 = min(netdaly500_1, netdaly500_2);
-
-if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
-if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
-
-
-if r_incidence1549_6570_2_1 > 1 then r_incidence1549_6570_2_1 = 1;
-
-
-
-* vaccine_efficacy = vaccine_efficacy - 0.5;
-* vaccine_duration_effect = vaccine_duration_effect - 10;
-
-* label 
-
-prop_ever_tested_1549w_24 = "Proportion of women aged 15-49 who have previously tested for HIV"
-prop_ever_tested_1549m_24 = "Proportion of men aged 15-49 who have previously tested for HIV"
-p_tested_past_year_1549w_24 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
-p_tested_past_year_1549m_24 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
-prop_elig_on_prep_24 = "Proportion of people with a current PrEP indication who take PrEP"
-prop_1564_onprep_24 = "Proportion of HIV negative adults aged 15-64 who are taking PrEP"
-prevalence1549w_24 = "HIV prevalence in women age 15-49"
-prevalence1549m_24 = "HIV prevalence in men age 15-49"
-incidence1549_24 = "HIV incidence age 15-49 (/100 person years)"  
-p_diag_24 = "Proportion of HIV positive people age 15+ who are diagnosed"  
-p_onart_diag_24 = "Proportion of diagnosed HIV+ people on ART"
-p_vl1000_24 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)"
-prevalence_vg1000_24 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)"
-p_onart_vl1000_24 = "Of people on ART, proportion with VL < 1000"
-  
-;
-
-* label 
-
-prop_ever_tested_1549w_39 = "Proportion of women aged 15-49 who have previously tested for HIV"
-prop_ever_tested_1549m_39 = "Proportion of men aged 15-49 who have previously tested for HIV"
-p_tested_past_year_1549w_39 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
-p_tested_past_year_1549m_39 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
-prop_elig_on_prep_39 = "Proportion of people with a current PrEP indication who take PrEP"
-prop_1564_onprep_39 = "Proportion of HIV negative adults aged 15-64 who are taking PrEP"
-prevalence1549w_39 = "HIV prevalence in women age 15-49"
-prevalence1549m_39 = "HIV prevalence in men age 15-49"
-incidence1549_39 = "HIV incidence age 15-49 (/100 person years)"  
-p_diag_39 = "Proportion of HIV positive people age 15+ who are diagnosed"  
-p_onart_diag_39 = "Proportion of diagnosed HIV+ people on ART"
-p_vl1000_39 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)"
-prevalence_vg1000_39 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)"
-p_onart_vl1000_39 = "Of people on ART, proportion with VL < 1000"
-  
-;
-
-label
-r_incidence1549_30y_2_1  = "vaccine_1"  
- 
-;
-
-
-title '';
-
-
-* table 1;
-
-
-proc means   data = r  n p50 p5 p95 ;  
+proc means   data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   ;
 run;
 
-proc means   data = r  n p50 p5 p95 ;  
+proc means   data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 ;  
 var prevalence1549w_39 prevalence1549m_39 incidence1549_39 p_diag_39 p_onart_diag_39 p_onart_vl1000_39 p_vl1000_39 prevalence_vg1000_39   ;
-run;
-
-
-
-
-proc freq; tables r_incidence1549_6570_2_1 ; run;  
-
-
-ods html;
-proc glm data = r   PLOTS = CONTOURFIT(obs=NONE); 
-model r_incidence1549_6570_2_1 = vaccine_efficacy  vaccine_duration_effect vaccine_efficacy*vaccine_duration_effect / solution;
-title 'Contour Plot of relative effect of vaccine in 2065-2070';
-run;
-ods html close;
-
-
-
-proc logistic  data = r;
-model x_incidence1549_2_lt1p1000 =  incidence1549_39  ;
-output out= pr predicted=pred;
-proc logistic  data = r;
-model x_incidence1549_2_lt1p1000 =  incidence1549_39  vaccine_efficacy  vaccine_duration_effect  vaccine_efficacy*vaccine_duration_effect;
-output out= pr predicted=pred;
-proc print data=pr;
-var incidence1549_39  vaccine_efficacy  vaccine_duration_effect pred; run; 
-run;
-
-
-proc logistic  data = r;
-model x_incidence1549_2_lt1p1000 =  incidence1549_39  vaccine_efficacy  vaccine_duration_effect  vaccine_efficacy*vaccine_duration_effect;
-output out= pr predicted=pred;
-where 0.5  <= incidence1549_39 < 1;
-run;
-
-proc sort; by vaccine_efficacy  vaccine_duration_effect;
-proc print data=pr noobs;
-var incidence1549_39  vaccine_efficacy  vaccine_duration_effect pred; run; 
-
-
-proc sgplot data=pr ;
- heatmap x=vaccine_efficacy y=vaccine_duration_effect / colorresponse = pred;
-where 0.5  <= incidence1549_39 < 1;
-run;
-
-
-
-
-/*
-
-
-goptions reset=all border;
-proc g3d data = pr;
-* scatter  vaccine_efficacy*vaccine_duration_effect = pred / ;
-plot  vaccine_efficacy*vaccine_duration_effect = pred / ;
-where 0.75 <= incidence1549_39 < 1;
-run; 
-
-
-
-ods html;
-title "Relative incidence (age 15-49) compared with no vaccine";
-proc means  data = r  n p50 p5 p95 ;
-var
-r_incidence1549_30y_2_1 
-;
-run;
-ods html close;
-
-
-proc means  data = r  n p50 p5 p95 ;
-var
-r_incidence1549_6570_2_1 
-;
-run;
-
-
-proc freq; tables incidence1549_24; run; 
-
-
-
-proc freq; tables vaccine_efficacy * r_incidence1549_30y_2_1_getp5  vaccine_duration_effect * r_incidence1549_30y_2_1_getp5
-;
-run;
-
-
-
-proc print  data = r; var r_incidence1549_6570_2_1 r_incidence1549_30y_2_1_getp5  
- r_incidence1549_6570_2_1_getp5 r_incidence1549_6570_2_1  vaccine_efficacy  vaccine_duration_effect; run;
-
-ods html;
-proc print noobs;
-var   vaccine_efficacy  vaccine_duration_effect  r_incidence1549_6570_2_1_getp5;
-run;
-ods html close;
-
-
-proc freq; tables vaccine_efficacy * r_incidence1549_6570_2_1_getp5 ;
-where vaccine_duration_effect ge 10;
-run;
-
-proc freq; tables vaccine_duration_effect * r_incidence1549_6570_2_1_getp5 ;
-* where vaccine_duration_effect ge 10;
-run;
-
-
-proc freq; tables vaccine_duration_effect * vaccine_efficacy * r_incidence1549_6570_2_1_getp5 ;
-run;
-
-
-
-
-ods html;
-proc sgplot ;
-  heatmap x=vaccine_efficacy y=vaccine_duration_effect / 
-    colorresponse=r_incidence1549_6570_2_1_getp5
-    colormodel=(red blue);
-run;
-ods html close;
-
-
-
-proc means noprint;
-  class vaccine_efficacy vaccine_duration_effect;
-  var r_incidence1549_6570_2_1_getp5;
-  output out=proportion_of_setting_scenarios(drop=_type_ _freq_) mean=proportion_of_setting_scenarios;
-run;
-
-
-proc sgplot data=proportion_of_setting_scenarios;
-  
-  heatmap x=vaccine_efficacy y=vaccine_duration_effect / 
-    colorresponse=proportion_of_setting_scenarios
-    colormodel=(pink navy);
-styleattrs datacolors=(pink navy) datacontrastcolors=(black);
-  
-  title 'Proportion of setting scenarios in which HIV incidence in 2065-2070 is at least 50% lower with vaccine vs no vaccine, according to vaccine 
-	efficacy and vaccine duration of effect';
-  xaxis label='Vaccine Efficacy';
-  yaxis label='Vaccine Duration Effect';
-
 run;
