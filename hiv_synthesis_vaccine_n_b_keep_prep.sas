@@ -2293,6 +2293,8 @@ end;
 
 * vaccine ;
 
+ever_vaccinated_tm1 = ever_vaccinated;
+
 w=rand('uniform'); q=rand('uniform'); g=rand('uniform');
 if vaccine_introduced = 1 and (16 <= age < 30 or (16 <= age < 50 and vaccine_efficacy ge 0.5)) and hiv ne 1 and 
 ((caldate{t} = &year_interv and q < vaccine_uptake) or (caldate{t}-date_last_vaccine = vaccine_duration_effect and w < prob_booster) or (age = 16 and g < vaccine_uptake)) 
@@ -2307,7 +2309,8 @@ if 0 <= caldate{t}-date_last_vaccine < vaccine_duration_effect then current_vacc
 if vaccine_duration_effect <= caldate{t}-date_last_vaccine < vaccine_duration_effect*2 then current_vaccine_efficacy = vaccine_efficacy/2;  
 if vaccine_duration_effect*2 <= caldate{t}-date_last_vaccine then current_vaccine_efficacy = 0;  
 
-
+first_vaccine_this_period = 0; if date_last_vaccine = caldate{t} and ever_vaccinated_tm1 ne 1 then first_vaccine_this_period = 1;
+vaccine_this_period = 0; if date_last_vaccine = caldate{t} then vaccine_this_period = 1;
 
 
 * Oral PREP introduction in fsw/agyw 2018; 
@@ -16897,7 +16900,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_current_full_vaccine_efficacy + current_full_vaccine_efficacy; s_current_half_vaccine_efficacy + current_half_vaccine_efficacy;
 	s_current_full_vaccine_e_1564 + current_full_vaccine_e_1564; s_current_half_vaccine_e_1564 + current_half_vaccine_e_1564; 
-	s_ever_vaccinated + ever_vaccinated; 
+	s_ever_vaccinated + ever_vaccinated; s_vaccine_this_period + vaccine_this_period ;  s_first_vaccine_this_period + first_vaccine_this_period ;
 
 	/*VL and CD4*/
 
@@ -18636,6 +18639,7 @@ s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_
 /* vaccine */
 
 s_current_full_vaccine_efficacy  s_current_half_vaccine_efficacy s_ever_vaccinated  s_current_full_vaccine_e_1564 s_current_half_vaccine_e_1564
+s_vaccine_this_period  s_first_vaccine_this_period 
 
 
 /*testing and diagnosis*/
@@ -19594,6 +19598,7 @@ s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_
 /* vaccine */
 
 s_current_full_vaccine_efficacy  s_current_half_vaccine_efficacy s_ever_vaccinated  s_current_full_vaccine_e_1564 s_current_half_vaccine_e_1564
+s_vaccine_this_period  s_first_vaccine_this_period 
 
 
 /*testing and diagnosis*/
@@ -22524,6 +22529,7 @@ s_prep_oral_restart_date_choice s_started_prep_vr_hiv s_started_prep_any_hiv  s_
 /* vaccine */
 
 s_current_full_vaccine_efficacy  s_current_half_vaccine_efficacy s_ever_vaccinated  s_current_full_vaccine_e_1564 s_current_half_vaccine_e_1564
+s_vaccine_this_period  s_first_vaccine_this_period 
 
 
 /*testing and diagnosis*/
