@@ -83,12 +83,7 @@ data b1; set a.fsw_17_08_23_final_allruns;run;
 
 data b;
 set b1;
-if rate_engage_sw_program ne 0.10 then delete;*THIS WAS DONE FOR SENS ANALYSES TO SEE WHICH FACTORS OF SW PROGS ARE ASSOCIATED WITH CE IF % ATTENDING ARE THE SAME IN BOTH PROGS;
 run;
-
-proc freq;table option rate_engage_sw_program;run;
-proc freq;table run;where cald=2030;run;
-
 
 
 /*
@@ -1010,7 +1005,7 @@ dcost245_ dcost250_
 s_tested s_tested_m s_tested_f n_pregnant p_linked_diag_sw
 ;
 
-proc sort data=y;by run option;run;
+proc sort;by run option;run;
 
 proc freq;table p_sw_prog_vis;where option=0 and cald>2023.5;run;
 proc freq;table sw_higher_int;run;
@@ -1077,15 +1072,10 @@ proc glm; class sw_trans_matrix; model incidence_sw= sw_trans_matrix/solutions;w
 options nomprint;
   option nospool;
 
-
-
-
-
 ***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;
 * user to decide what years and year ranges to include ;
 
 %macro var(v=);
-
 
 proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run; where 2010.0 <= cald < 2011.0; 
 proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run; where 2015.0 <= cald < 2016.0; 
@@ -1106,6 +1096,7 @@ proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run op
 proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option ; where 2023.5 <= cald < 2073.50;
 
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
+
 proc sort data=y_72; by run; proc transpose data=y_72 out=t_72 prefix=&v._72_; var &v._72; by run;
 
 proc sort data=y_23_24; by run; proc transpose data=y_23_24 out=t_23_24 prefix=&v._23_24_; var &v._23_24; by run;
@@ -1113,11 +1104,14 @@ proc sort data=y_22_27; by run; proc transpose data=y_22_27 out=t_22_27 prefix=&
 proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&v._22_42_; var &v._22_42; by run;
 proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
 
-data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_72 t_23_24 t_22_27 t_22_42 t_22_72;  
+data &v ; merge y_10 y_15 y_20 y_22 t_30 t_72 t_23_24 t_22_27 t_22_42 t_22_72;  
 
 
 
 %mend var;
+%var(v=p_sw_prog_vis);
+run;
+
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
 
@@ -1261,7 +1255,6 @@ sw_trans_matrix  sw_higher_int  sw_higher_prob_loss_at_diag;
 ;proc sort; by run;run;
 
 data a.wide_fsw_17_08_23_final;
-*data a.wide_fsw_17_08_23_final_progvis;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
