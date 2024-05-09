@@ -9,7 +9,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_t    ;
+  set a.l_base_kenya_u    ;
 
 
 
@@ -55,8 +55,8 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =   12  ;
-%let year_end = 2024.00 ;
+%let nfit =   15  ;
+%let year_end = 2040.00 ;
 run;
 proc sort;by cald option ;run;
 
@@ -422,6 +422,9 @@ if cald=2010 then prevalence1549_w_obs_kya= 0.074;
 if cald=2015 then prevalence1549_w_obs_kya= 0.073;
 if cald=2020 then prevalence1549_w_obs_kya= 0.065;
 if cald=2022 then prevalence1549_w_obs_kya= 0.049;
+
+if cald=2010 then prevalence_msm_obs_kya = 0.182;
+if cald=2010 then prevalence_pwid_obs_kya = 0.187;
 
 if cald=2019 then prevalence_sw_obs_kya = 0.28;
 
@@ -1635,7 +1638,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center " n_onprep_w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000 by 10000) valueattrs=(size=10);
 
 label p50_n_onprep_w_0 = "Option 0 (median) ";
 label p50_n_onprep_w_1 = "Option 1  (median) ";
@@ -1652,7 +1655,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center " n_onprep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 
 label p50_n_onprep_0 = "Option 0 (median) ";
 label p50_n_onprep_1 = "Option 1  (median) ";
@@ -1662,7 +1665,7 @@ band    x=cald lower=p5_n_onprep_0 	upper=p95_n_onprep_0  / transparency=0.9 fil
 series  x=cald y=p50_n_onprep_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_onprep_1 	upper=p95_n_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-scatter  x=cald y=n_onprep_obs_kya/	lineattrs = (color=blue  thickness = 3) ;
+scatter  x=cald y=n_onprep_obs_kya/	markerattrs = (symbol=square color=green size = 10);
 
 run;quit;
 
@@ -1752,14 +1755,16 @@ quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Prevalence msm (age 15-64)";
+Title    height=1.5 justify=center "Prevalence msm (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 
-label p50_prevalence1564_msm_0 = "Option 0 (median) ";
+label p50_prevalence1549_msm_0 = "Option 0 (median) ";
 
-series  x=cald y=p50_prevalence1564_msm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prevalence1564_msm_0 	upper=p95_prevalence1564_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_prevalence1549_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549_msm_0 	upper=p95_prevalence1549_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y = prevalence_msm_obs_kya/ 		markerattrs = (symbol=square color=green size = 10);
 
 run;
 quit;
@@ -1775,6 +1780,9 @@ label p50_prevalence_pwid_0 = "Option 0 (median) ";
 
 series  x=cald y=p50_prevalence_pwid_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prevalence_pwid_0 	upper=p95_prevalence_pwid_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y = prevalence_pwid_obs_kya/ 		markerattrs = (symbol=square color=green size = 10);
+
 
 run;
 quit;
