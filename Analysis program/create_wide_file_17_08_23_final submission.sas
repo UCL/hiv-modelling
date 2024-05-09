@@ -29,7 +29,7 @@ s_prep_any_sw  s_hiv_sw  s_onart_sw  s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iic
 s_linked_diag_sw  s_diag_thisper_sw  s_cost_condom_dn
 sw_art_disadv  sw_program  effect_sw_prog_newp   effect_sw_prog_6mtest   effect_sw_prog_int   effect_sw_prog_adh
  effect_sw_prog_lossdiag effect_sw_prog_prep_any  effect_sw_prog_pers_sti  sw_trans_matrix   sw_higher_int   sw_higher_prob_loss_at_diag
-effect_sw_prog_newp s_rm_sw /*remove s_rm_sw when setting one dataset on top of another as the one below doesnt have it*/
+effect_sw_prog_newp rate_engage_sw_program/*s_rm_sw remove s_rm_sw when setting one dataset on top of another as the one below doesnt have it*/
 ;
 run;
 
@@ -68,17 +68,27 @@ s_prep_any_sw  s_hiv_sw  s_onart_sw  s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iic
 s_linked_diag_sw  s_diag_thisper_sw  s_cost_condom_dn
 sw_art_disadv  sw_program  effect_sw_prog_newp   effect_sw_prog_6mtest   effect_sw_prog_int   effect_sw_prog_adh
  effect_sw_prog_lossdiag effect_sw_prog_prep_any  effect_sw_prog_pers_sti  sw_trans_matrix   sw_higher_int   sw_higher_prob_loss_at_diag
-effect_sw_prog_newp 
+effect_sw_prog_newp rate_engage_sw_program
 ;
 run;
 
 data b;
 set a1 a2;
+
 proc sort;by run;run;
 
 data a.fsw_17_08_23_final_allruns; set b;run;
 
-data b; set a.fsw_17_08_23_final_allruns;run;
+data b1; set a.fsw_17_08_23_final_allruns;run;
+
+data b;
+set b1;
+if rate_engage_sw_program ne 0.10 then delete;*THIS WAS DONE FOR SENS ANALYSES TO SEE WHICH FACTORS OF SW PROGS ARE ASSOCIATED WITH CE IF % ATTENDING ARE THE SAME IN BOTH PROGS;
+run;
+
+proc freq;table option rate_engage_sw_program;run;
+proc freq;table run;where cald=2030;run;
+
 
 
 /*
@@ -97,7 +107,6 @@ proc sort; by run;run;
 
 
 %let sf=sf_2023;
-
 
 data y; 
 merge b sf;
@@ -1003,7 +1012,7 @@ s_tested s_tested_m s_tested_f n_pregnant p_linked_diag_sw
 
 proc sort data=y;by run option;run;
 
-
+proc freq;table p_sw_prog_vis;where option=0 and cald>2023.5;run;
 proc freq;table sw_higher_int;run;
 proc means n sum p50;var p_fsw_newp0_;where option=0 and sw_trans_matrix=1 and cald=2030;run;
 
@@ -1037,6 +1046,7 @@ data a.fsw_17_08_23_final_short; set y;run;
 
 data y; set a.fsw_17_08_23_final_short;run;
 
+proc means mean p5 p95;var p_sw_prog_vis;where option=0 and  2029.0 <= cald < 2030.25;;run;
 /*
 
 
@@ -1104,6 +1114,8 @@ proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&
 proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
 
 data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_72 t_23_24 t_22_27 t_22_42 t_22_72;  
+
+
 
 %mend var;
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
@@ -1249,11 +1261,9 @@ sw_trans_matrix  sw_higher_int  sw_higher_prob_loss_at_diag;
 ;proc sort; by run;run;
 
 data a.wide_fsw_17_08_23_final;
+*data a.wide_fsw_17_08_23_final_progvis;
 merge   wide_outputs  wide_par ;  
 by run;run;
-
-
-
 
 
 
