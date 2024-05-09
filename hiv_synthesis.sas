@@ -4412,6 +4412,8 @@ end;
 sw_gt1ep=0;if episodes_sw  gt 1 then sw_gt1ep=1;
 
 
+
+
 * OCCURRENCE OF NON-HIV SYMPTOMS THAT LEAD TO TESTING FOR HIV AS PART OF DIAGNOSTIC WORK UP (OR TRIGGERED BY DIAGNOSIS OF TB ETC);
 
 if t ge 2 then do;
@@ -4830,13 +4832,40 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 end;
 
 
+
+	* SELF-TESTING;
+
+	eff_self_test_targeting = self_test_targeting;
+
+	w = rand('uniform');	
+	if hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach) then do;
+
+		u_self_test=rand('uniform');
+ 		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
+		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
+		if secondary_self_test=1 and eponart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  
+		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
+			self_tested=1; 
+			dt_last_self_test=caldate{t}; 
+		end;
+	end;
+
+	v = rand('uniform'); z = rand('uniform');
+	if self_tested = 1 and hiv = 1 and z < prob_pos_self_test_conf and v < self_test_sens then do; 
+	tested=1; tested_due_to_self_test=1;
+	dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+	end;
+	* note this depends on primary infection lasting 3 months - ts1m ;
+
+
+
 * HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65 (although note testing due to symptoms can occur at older ages);
 
 tested_as_sw=.;
 
 testfor_prep_oral=0; testfor_prep_inj=0; testfor_prep_vr=0;
  
-if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1 
+if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1 and self_tested ne 1 
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if t ge 2 and sw_test_6mthly=1 and sw=1 and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
@@ -4888,33 +4917,6 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 			end;
 		end;
 	end;
-
-
-	* SELF-TESTING;
-
-	eff_self_test_targeting = self_test_targeting;
-
-	w = rand('uniform');	
-	if hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach) then do;
-
-		u_self_test=rand('uniform');
- 		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
-		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
-		if secondary_self_test=1 and eponart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  
-		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
-			self_tested=1; 
-			dt_last_self_test=caldate{t}; 
-		end;
-	end;
-
-	v = rand('uniform'); z = rand('uniform');
-	if self_tested = 1 and hiv = 1 and z < prob_pos_self_test_conf and v < self_test_sens then do; 
-	tested=1; tested_due_to_self_test=1;
-	dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
-	end;
-	* note this depends on primary infection lasting 3 months - ts1m ;
-
-
 
 
 
