@@ -1765,5 +1765,11 @@ d_n_daly_gbd ;
 proc print; run;
 
 
+proc export 
+data=n dbms=xlsx
+outfile="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\output_file_for_jacob" replace; 
+run;
+
+
 
 
