@@ -112,6 +112,9 @@ ddaly = s_ddaly * &sf * 4;
 daly = s_daly * &sf * 4;
 
 
+n_daly_gbd = ((s_dyll_GBD + s_live_ddaly) / discount) * &sf * 4;
+
+
 
 * sensitivity analysis;
 * dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
@@ -136,6 +139,8 @@ ddaly_all = ddaly_ntd_mtct_odab_napd;
 
 
 daly_ac_mtct = daly + daly_mtct ;
+
+
 
 
 * ================================================================================= ;
@@ -377,10 +382,12 @@ s_hiv = s_hivge15 ;
 * p_current_half_vac_e_1564;	p_current_half_vac_e_1564 = s_current_half_vaccine_e_1564 / s_alive1564;
 * p_current_any_vac_e_1564;		p_current_any_vac_e_1564 = p_current_full_vac_e_1564 + p_current_half_vac_e_1564;
 
-* n_cur_full_vaccine_efficacy;	n_cur_full_vaccine_efficacy = s_current_full_vaccine_efficacy * &sf;
-* n_any_cur_vaccine_efficacy;	n_any_cur_vaccine_efficacy = (s_current_full_vaccine_eff + s_current_half_vaccine_eff) * &sf;
-* n_vaccinated_this_year;	   	n_vaccinated_this_year =  s_first_vaccine_this_period * &sf * 4; 
-* n_boosted_this_year ;			n_boosted_this_year = (s_vaccine_this_period - s_first_vaccine_this_period) * &sf * 4;
+* n_cur_full_vac_eff;	n_cur_full_vac_eff = s_current_full_vaccine_efficacy * &sf;
+* n_any_cur_vac_eff;	n_any_cur_vac_eff = (s_current_full_vaccine_efficacy + s_current_half_vaccine_efficacy) * &sf;
+* n_vac_this_year;	   			n_vac_this_year =  s_first_vaccine_this_period * &sf * 4; 
+* n_boost_this_year ;			n_boost_this_year = (s_vaccine_this_period - s_first_vaccine_this_period) * &sf * 4;
+
+
 
 
 * prep;
@@ -1131,16 +1138,16 @@ n_newp_ge1
 n_ep 
 n_new_vmmc 
 incidence1549 
-n_hiv_death 
+n_death_hiv 
 p_vl1000 
 n_ever_vaccinated 
-n_cur_full_vaccine_efficacy 
-n_any_cur_vaccine_efficacy 
-n_vaccinated_this_year 
-n_boosted_this_year 
-n_ddaly
-;
+n_cur_full_vac_eff 
+n_any_cur_vac_eff 
+n_vac_this_year 
+n_boost_this_year 
+n_daly_gbd
 
+;
 
 
 proc sort data=y;by run option;run;
@@ -1262,14 +1269,14 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_ep); 
 %var(v=n_new_vmmc); 
 %var(v=incidence1549); 
-%var(v=n_hiv_death); 
+%var(v=n_death_hiv); 
 %var(v=p_vl1000); 
 %var(v=n_ever_vaccinated); 
-%var(v=n_cur_full_vaccine_efficacy); 
-%var(v=n_any_cur_vaccine_efficacy); 
-%var(v=n_vaccinated_this_year); 
-%var(v=n_boosted_this_year); 
-%var(v=n_ddaly); 
+%var(v=n_cur_full_vac_eff); 
+%var(v=n_any_cur_vac_eff); 
+%var(v=n_vac_this_year); 
+%var(v=n_boost_this_year); 
+%var(v=n_daly_gbd); 
 ;
 
 data   b.wide_outputs; merge 
@@ -1282,14 +1289,14 @@ n_newp_ge1
 n_ep 
 n_new_vmmc 
 incidence1549 
-n_hiv_death 
+n_death_hiv 
 p_vl1000 
 n_ever_vaccinated 
-n_cur_full_vaccine_efficacy 
-n_any_cur_vaccine_efficacy 
-n_vaccinated_this_year 
-n_boosted_this_year 
-n_ddaly 
+n_cur_full_vac_eff 
+n_any_cur_vac_eff 
+n_vac_this_year 
+n_boost_this_year 
+n_daly_gbd 
 ;
 
 proc contents; run; 
@@ -1338,34 +1345,36 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 * To get one row per run;
 
   data  b.w_vaccine_n_b_output_file     ; 
-  merge b.wide_outputs   b.wide_par2    ;
+  merge b.wide_outputs   ;
   by run;
 
   data e; set b.w_vaccine_n_b_output_file ;
 
 
-
 * n_prep_inj;
-%macro median_n_prep_inj(y=);data ee; set e;keep n_prep_inj_&y._1 ; 
-proc means noprint p50 data = e ;var n_prep_inj_&y._1 ;output out=n_prep_inj_&y._1 median = median_n_prep_inj_no_vac_&y. ; %mend;
-%median_n_prep_inj(y=40);%median_n_prep_inj(y=41);%median_n_prep_inj(y=42);%median_n_prep_inj(y=43);
-%median_n_prep_inj(y=44);%median_n_prep_inj(y=45);%median_n_prep_inj(y=46);%median_n_prep_inj(y=47);%median_n_prep_inj(y=48);%median_n_prep_inj(y=49);
-%median_n_prep_inj(y=50);%median_n_prep_inj(y=51);%median_n_prep_inj(y=52);%median_n_prep_inj(y=53);%median_n_prep_inj(y=54);%median_n_prep_inj(y=55);
-%median_n_prep_inj(y=56);%median_n_prep_inj(y=57);%median_n_prep_inj(y=58);%median_n_prep_inj(y=59);%median_n_prep_inj(y=60);%median_n_prep_inj(y=61);
-%median_n_prep_inj(y=62);%median_n_prep_inj(y=63);%median_n_prep_inj(y=64);%median_n_prep_inj(y=65);%median_n_prep_inj(y=66);%median_n_prep_inj(y=67);
-%median_n_prep_inj(y=68);%median_n_prep_inj(y=69);%median_n_prep_inj(y=70);
+%macro med_n_prep_inj(y=);data ee; set e;keep n_prep_inj_&y._1 ; 
+proc means noprint p50 data = ee ;var n_prep_inj_&y._1 ;output out=n_prep_inj_&y._1 median = med_n_prep_inj_no_vac_&y. ; %mend;
+%med_n_prep_inj(y=40);%med_n_prep_inj(y=41);%med_n_prep_inj(y=42);%med_n_prep_inj(y=43);
+%med_n_prep_inj(y=44);%med_n_prep_inj(y=45);%med_n_prep_inj(y=46);%med_n_prep_inj(y=47);%med_n_prep_inj(y=48);%med_n_prep_inj(y=49);
+%med_n_prep_inj(y=50);%med_n_prep_inj(y=51);%med_n_prep_inj(y=52);%med_n_prep_inj(y=53);%med_n_prep_inj(y=54);%med_n_prep_inj(y=55);
+%med_n_prep_inj(y=56);%med_n_prep_inj(y=57);%med_n_prep_inj(y=58);%med_n_prep_inj(y=59);%med_n_prep_inj(y=60);%med_n_prep_inj(y=61);
+%med_n_prep_inj(y=62);%med_n_prep_inj(y=63);%med_n_prep_inj(y=64);%med_n_prep_inj(y=65);%med_n_prep_inj(y=66);%med_n_prep_inj(y=67);
+%med_n_prep_inj(y=68);%med_n_prep_inj(y=69);%med_n_prep_inj(y=70);
 data n_prep_inj_1; merge n_prep_inj_40_1 n_prep_inj_41_1 n_prep_inj_42_1 n_prep_inj_43_1 n_prep_inj_44_1 n_prep_inj_45_1 n_prep_inj_46_1 n_prep_inj_47_1
 n_prep_inj_48_1 n_prep_inj_49_1 n_prep_inj_50_1 n_prep_inj_51_1 n_prep_inj_52_1 n_prep_inj_53_1 n_prep_inj_54_1 n_prep_inj_55_1 n_prep_inj_56_1 n_prep_inj_57_1
 n_prep_inj_58_1 n_prep_inj_59_1 n_prep_inj_60_1 n_prep_inj_61_1 n_prep_inj_62_1 n_prep_inj_63_1 n_prep_inj_64_1 n_prep_inj_65_1 n_prep_inj_66_1 n_prep_inj_67_1  
 n_prep_inj_68_1 n_prep_inj_69_1 n_prep_inj_70_1;drop _TYPE_ _FREQ_;
-%macro 	median_n_prep_inj(y=);data ee; set e;keep n_prep_inj_&y._3 ; 
-proc means noprint p50 data = e ;var n_prep_inj_&y._3 ;output out=n_prep_inj_&y._3 median = median_n_prep_inj_vac_&y. ; %mend;
-%median_n_prep_inj(y=40);%median_n_prep_inj(y=41);%median_n_prep_inj(y=42);%median_n_prep_inj(y=43);
-%median_n_prep_inj(y=44);%median_n_prep_inj(y=45);%median_n_prep_inj(y=46);%median_n_prep_inj(y=47);%median_n_prep_inj(y=48);%median_n_prep_inj(y=49);
-%median_n_prep_inj(y=50);%median_n_prep_inj(y=51);%median_n_prep_inj(y=52);%median_n_prep_inj(y=53);%median_n_prep_inj(y=54);%median_n_prep_inj(y=55);
-%median_n_prep_inj(y=56);%median_n_prep_inj(y=57);%median_n_prep_inj(y=58);%median_n_prep_inj(y=59);%median_n_prep_inj(y=60);%median_n_prep_inj(y=61);
-%median_n_prep_inj(y=62);%median_n_prep_inj(y=63);%median_n_prep_inj(y=64);%median_n_prep_inj(y=65);%median_n_prep_inj(y=66);%median_n_prep_inj(y=67);
-%median_n_prep_inj(y=68);%median_n_prep_inj(y=69);%median_n_prep_inj(y=70);
+
+
+
+%macro 	med_n_prep_inj(y=);data ee; set e;keep n_prep_inj_&y._3 ; 
+proc means noprint p50 data = ee ;var n_prep_inj_&y._3 ;output out=n_prep_inj_&y._3 median = med_n_prep_inj_vac_&y. ; %mend;
+%med_n_prep_inj(y=40);%med_n_prep_inj(y=41);%med_n_prep_inj(y=42);%med_n_prep_inj(y=43);
+%med_n_prep_inj(y=44);%med_n_prep_inj(y=45);%med_n_prep_inj(y=46);%med_n_prep_inj(y=47);%med_n_prep_inj(y=48);%med_n_prep_inj(y=49);
+%med_n_prep_inj(y=50);%med_n_prep_inj(y=51);%med_n_prep_inj(y=52);%med_n_prep_inj(y=53);%med_n_prep_inj(y=54);%med_n_prep_inj(y=55);
+%med_n_prep_inj(y=56);%med_n_prep_inj(y=57);%med_n_prep_inj(y=58);%med_n_prep_inj(y=59);%med_n_prep_inj(y=60);%med_n_prep_inj(y=61);
+%med_n_prep_inj(y=62);%med_n_prep_inj(y=63);%med_n_prep_inj(y=64);%med_n_prep_inj(y=65);%med_n_prep_inj(y=66);%med_n_prep_inj(y=67);
+%med_n_prep_inj(y=68);%med_n_prep_inj(y=69);%med_n_prep_inj(y=70);
 data n_prep_inj_3; merge n_prep_inj_40_3 n_prep_inj_41_3 n_prep_inj_42_3 n_prep_inj_43_3 n_prep_inj_44_3 n_prep_inj_45_3 n_prep_inj_46_3 n_prep_inj_47_3
 n_prep_inj_48_3 n_prep_inj_49_3 n_prep_inj_50_3 n_prep_inj_51_3 n_prep_inj_52_3 n_prep_inj_53_3 n_prep_inj_54_3 n_prep_inj_55_3 n_prep_inj_56_3 n_prep_inj_57_3
 n_prep_inj_58_3 n_prep_inj_59_3 n_prep_inj_60_3 n_prep_inj_61_3 n_prep_inj_62_3 n_prep_inj_63_3 n_prep_inj_64_3 n_prep_inj_65_3 n_prep_inj_66_3 n_prep_inj_67_3 
@@ -1374,26 +1383,26 @@ n_prep_inj_68_3 n_prep_inj_69_3 n_prep_inj_70_3;drop _TYPE_ _FREQ_;
 
 
 * n_alive;
-%macro median_n_alive(y=);data ee; set e;keep n_alive_&y._1 ; 
-proc means noprint p50 data = e ;var n_alive_&y._1 ;output out=n_alive_&y._1 median = median_n_alive_no_vac_&y. ; %mend;
-%median_n_alive(y=40);%median_n_alive(y=41);%median_n_alive(y=42);%median_n_alive(y=43);
-%median_n_alive(y=44);%median_n_alive(y=45);%median_n_alive(y=46);%median_n_alive(y=47);%median_n_alive(y=48);%median_n_alive(y=49);
-%median_n_alive(y=50);%median_n_alive(y=51);%median_n_alive(y=52);%median_n_alive(y=53);%median_n_alive(y=54);%median_n_alive(y=55);
-%median_n_alive(y=56);%median_n_alive(y=57);%median_n_alive(y=58);%median_n_alive(y=59);%median_n_alive(y=60);%median_n_alive(y=61);
-%median_n_alive(y=62);%median_n_alive(y=63);%median_n_alive(y=64);%median_n_alive(y=65);%median_n_alive(y=66);%median_n_alive(y=67);
-%median_n_alive(y=68);%median_n_alive(y=69);%median_n_alive(y=70);
+%macro med_n_alive(y=);data ee; set e;keep n_alive_&y._1 ; 
+proc means noprint p50 data = ee ;var n_alive_&y._1 ;output out=n_alive_&y._1 median = med_n_alive_no_vac_&y. ; %mend;
+%med_n_alive(y=40);%med_n_alive(y=41);%med_n_alive(y=42);%med_n_alive(y=43);
+%med_n_alive(y=44);%med_n_alive(y=45);%med_n_alive(y=46);%med_n_alive(y=47);%med_n_alive(y=48);%med_n_alive(y=49);
+%med_n_alive(y=50);%med_n_alive(y=51);%med_n_alive(y=52);%med_n_alive(y=53);%med_n_alive(y=54);%med_n_alive(y=55);
+%med_n_alive(y=56);%med_n_alive(y=57);%med_n_alive(y=58);%med_n_alive(y=59);%med_n_alive(y=60);%med_n_alive(y=61);
+%med_n_alive(y=62);%med_n_alive(y=63);%med_n_alive(y=64);%med_n_alive(y=65);%med_n_alive(y=66);%med_n_alive(y=67);
+%med_n_alive(y=68);%med_n_alive(y=69);%med_n_alive(y=70);
 data n_alive_1; merge n_alive_40_1 n_alive_41_1 n_alive_42_1 n_alive_43_1 n_alive_44_1 n_alive_45_1 n_alive_46_1 n_alive_47_1
 n_alive_48_1 n_alive_49_1 n_alive_50_1 n_alive_51_1 n_alive_52_1 n_alive_53_1 n_alive_54_1 n_alive_55_1 n_alive_56_1 n_alive_57_1
 n_alive_58_1 n_alive_59_1 n_alive_60_1 n_alive_61_1 n_alive_62_1 n_alive_63_1 n_alive_64_1 n_alive_65_1 n_alive_66_1 n_alive_67_1  
 n_alive_68_1 n_alive_69_1 n_alive_70_1;drop _TYPE_ _FREQ_;
-%macro 	median_n_alive(y=);data ee; set e;keep n_alive_&y._3 ; 
-proc means noprint p50 data = e ;var n_alive_&y._3 ;output out=n_alive_&y._3 median = median_n_alive_vac_&y. ; %mend;
-%median_n_alive(y=40);%median_n_alive(y=41);%median_n_alive(y=42);%median_n_alive(y=43);
-%median_n_alive(y=44);%median_n_alive(y=45);%median_n_alive(y=46);%median_n_alive(y=47);%median_n_alive(y=48);%median_n_alive(y=49);
-%median_n_alive(y=50);%median_n_alive(y=51);%median_n_alive(y=52);%median_n_alive(y=53);%median_n_alive(y=54);%median_n_alive(y=55);
-%median_n_alive(y=56);%median_n_alive(y=57);%median_n_alive(y=58);%median_n_alive(y=59);%median_n_alive(y=60);%median_n_alive(y=61);
-%median_n_alive(y=62);%median_n_alive(y=63);%median_n_alive(y=64);%median_n_alive(y=65);%median_n_alive(y=66);%median_n_alive(y=67);
-%median_n_alive(y=68);%median_n_alive(y=69);%median_n_alive(y=70);
+%macro 	med_n_alive(y=);data ee; set e;keep n_alive_&y._3 ; 
+proc means noprint p50 data = ee ;var n_alive_&y._3 ;output out=n_alive_&y._3 median = med_n_alive_vac_&y. ; %mend;
+%med_n_alive(y=40);%med_n_alive(y=41);%med_n_alive(y=42);%med_n_alive(y=43);
+%med_n_alive(y=44);%med_n_alive(y=45);%med_n_alive(y=46);%med_n_alive(y=47);%med_n_alive(y=48);%med_n_alive(y=49);
+%med_n_alive(y=50);%med_n_alive(y=51);%med_n_alive(y=52);%med_n_alive(y=53);%med_n_alive(y=54);%med_n_alive(y=55);
+%med_n_alive(y=56);%med_n_alive(y=57);%med_n_alive(y=58);%med_n_alive(y=59);%med_n_alive(y=60);%med_n_alive(y=61);
+%med_n_alive(y=62);%med_n_alive(y=63);%med_n_alive(y=64);%med_n_alive(y=65);%med_n_alive(y=66);%med_n_alive(y=67);
+%med_n_alive(y=68);%med_n_alive(y=69);%med_n_alive(y=70);
 data n_alive_3; merge n_alive_40_3 n_alive_41_3 n_alive_42_3 n_alive_43_3 n_alive_44_3 n_alive_45_3 n_alive_46_3 n_alive_47_3
 n_alive_48_3 n_alive_49_3 n_alive_50_3 n_alive_51_3 n_alive_52_3 n_alive_53_3 n_alive_54_3 n_alive_55_3 n_alive_56_3 n_alive_57_3
 n_alive_58_3 n_alive_59_3 n_alive_60_3 n_alive_61_3 n_alive_62_3 n_alive_63_3 n_alive_64_3 n_alive_65_3 n_alive_66_3 n_alive_67_3 
@@ -1402,26 +1411,26 @@ n_alive_68_3 n_alive_69_3 n_alive_70_3;drop _TYPE_ _FREQ_;
 
 
 * n_prep_elig;
-%macro median_n_prep_elig(y=);data ee; set e;keep n_prep_elig_&y._1 ; 
-proc means noprint p50 data = e ;var n_prep_elig_&y._1 ;output out=n_prep_elig_&y._1 median = median_n_prep_elig_no_vac_&y. ; %mend;
-%median_n_prep_elig(y=40);%median_n_prep_elig(y=41);%median_n_prep_elig(y=42);%median_n_prep_elig(y=43);
-%median_n_prep_elig(y=44);%median_n_prep_elig(y=45);%median_n_prep_elig(y=46);%median_n_prep_elig(y=47);%median_n_prep_elig(y=48);%median_n_prep_elig(y=49);
-%median_n_prep_elig(y=50);%median_n_prep_elig(y=51);%median_n_prep_elig(y=52);%median_n_prep_elig(y=53);%median_n_prep_elig(y=54);%median_n_prep_elig(y=55);
-%median_n_prep_elig(y=56);%median_n_prep_elig(y=57);%median_n_prep_elig(y=58);%median_n_prep_elig(y=59);%median_n_prep_elig(y=60);%median_n_prep_elig(y=61);
-%median_n_prep_elig(y=62);%median_n_prep_elig(y=63);%median_n_prep_elig(y=64);%median_n_prep_elig(y=65);%median_n_prep_elig(y=66);%median_n_prep_elig(y=67);
-%median_n_prep_elig(y=68);%median_n_prep_elig(y=69);%median_n_prep_elig(y=70);
+%macro med_n_prep_elig(y=);data ee; set e;keep n_prep_elig_&y._1 ; 
+proc means noprint p50 data = ee ;var n_prep_elig_&y._1 ;output out=n_prep_elig_&y._1 median = med_n_prep_elig_no_vac_&y. ; %mend;
+%med_n_prep_elig(y=40);%med_n_prep_elig(y=41);%med_n_prep_elig(y=42);%med_n_prep_elig(y=43);
+%med_n_prep_elig(y=44);%med_n_prep_elig(y=45);%med_n_prep_elig(y=46);%med_n_prep_elig(y=47);%med_n_prep_elig(y=48);%med_n_prep_elig(y=49);
+%med_n_prep_elig(y=50);%med_n_prep_elig(y=51);%med_n_prep_elig(y=52);%med_n_prep_elig(y=53);%med_n_prep_elig(y=54);%med_n_prep_elig(y=55);
+%med_n_prep_elig(y=56);%med_n_prep_elig(y=57);%med_n_prep_elig(y=58);%med_n_prep_elig(y=59);%med_n_prep_elig(y=60);%med_n_prep_elig(y=61);
+%med_n_prep_elig(y=62);%med_n_prep_elig(y=63);%med_n_prep_elig(y=64);%med_n_prep_elig(y=65);%med_n_prep_elig(y=66);%med_n_prep_elig(y=67);
+%med_n_prep_elig(y=68);%med_n_prep_elig(y=69);%med_n_prep_elig(y=70);
 data n_prep_elig_1; merge n_prep_elig_40_1 n_prep_elig_41_1 n_prep_elig_42_1 n_prep_elig_43_1 n_prep_elig_44_1 n_prep_elig_45_1 n_prep_elig_46_1 n_prep_elig_47_1
 n_prep_elig_48_1 n_prep_elig_49_1 n_prep_elig_50_1 n_prep_elig_51_1 n_prep_elig_52_1 n_prep_elig_53_1 n_prep_elig_54_1 n_prep_elig_55_1 n_prep_elig_56_1 n_prep_elig_57_1
 n_prep_elig_58_1 n_prep_elig_59_1 n_prep_elig_60_1 n_prep_elig_61_1 n_prep_elig_62_1 n_prep_elig_63_1 n_prep_elig_64_1 n_prep_elig_65_1 n_prep_elig_66_1 n_prep_elig_67_1  
 n_prep_elig_68_1 n_prep_elig_69_1 n_prep_elig_70_1;drop _TYPE_ _FREQ_;
-%macro 	median_n_prep_elig(y=);data ee; set e;keep n_prep_elig_&y._3 ; 
-proc means noprint p50 data = e ;var n_prep_elig_&y._3 ;output out=n_prep_elig_&y._3 median = median_n_prep_elig_vac_&y. ; %mend;
-%median_n_prep_elig(y=40);%median_n_prep_elig(y=41);%median_n_prep_elig(y=42);%median_n_prep_elig(y=43);
-%median_n_prep_elig(y=44);%median_n_prep_elig(y=45);%median_n_prep_elig(y=46);%median_n_prep_elig(y=47);%median_n_prep_elig(y=48);%median_n_prep_elig(y=49);
-%median_n_prep_elig(y=50);%median_n_prep_elig(y=51);%median_n_prep_elig(y=52);%median_n_prep_elig(y=53);%median_n_prep_elig(y=54);%median_n_prep_elig(y=55);
-%median_n_prep_elig(y=56);%median_n_prep_elig(y=57);%median_n_prep_elig(y=58);%median_n_prep_elig(y=59);%median_n_prep_elig(y=60);%median_n_prep_elig(y=61);
-%median_n_prep_elig(y=62);%median_n_prep_elig(y=63);%median_n_prep_elig(y=64);%median_n_prep_elig(y=65);%median_n_prep_elig(y=66);%median_n_prep_elig(y=67);
-%median_n_prep_elig(y=68);%median_n_prep_elig(y=69);%median_n_prep_elig(y=70);
+%macro 	med_n_prep_elig(y=);data ee; set e;keep n_prep_elig_&y._3 ; 
+proc means noprint p50 data = ee ;var n_prep_elig_&y._3 ;output out=n_prep_elig_&y._3 median = med_n_prep_elig_vac_&y. ; %mend;
+%med_n_prep_elig(y=40);%med_n_prep_elig(y=41);%med_n_prep_elig(y=42);%med_n_prep_elig(y=43);
+%med_n_prep_elig(y=44);%med_n_prep_elig(y=45);%med_n_prep_elig(y=46);%med_n_prep_elig(y=47);%med_n_prep_elig(y=48);%med_n_prep_elig(y=49);
+%med_n_prep_elig(y=50);%med_n_prep_elig(y=51);%med_n_prep_elig(y=52);%med_n_prep_elig(y=53);%med_n_prep_elig(y=54);%med_n_prep_elig(y=55);
+%med_n_prep_elig(y=56);%med_n_prep_elig(y=57);%med_n_prep_elig(y=58);%med_n_prep_elig(y=59);%med_n_prep_elig(y=60);%med_n_prep_elig(y=61);
+%med_n_prep_elig(y=62);%med_n_prep_elig(y=63);%med_n_prep_elig(y=64);%med_n_prep_elig(y=65);%med_n_prep_elig(y=66);%med_n_prep_elig(y=67);
+%med_n_prep_elig(y=68);%med_n_prep_elig(y=69);%med_n_prep_elig(y=70);
 data n_prep_elig_3; merge n_prep_elig_40_3 n_prep_elig_41_3 n_prep_elig_42_3 n_prep_elig_43_3 n_prep_elig_44_3 n_prep_elig_45_3 n_prep_elig_46_3 n_prep_elig_47_3
 n_prep_elig_48_3 n_prep_elig_49_3 n_prep_elig_50_3 n_prep_elig_51_3 n_prep_elig_52_3 n_prep_elig_53_3 n_prep_elig_54_3 n_prep_elig_55_3 n_prep_elig_56_3 n_prep_elig_57_3
 n_prep_elig_58_3 n_prep_elig_59_3 n_prep_elig_60_3 n_prep_elig_61_3 n_prep_elig_62_3 n_prep_elig_63_3 n_prep_elig_64_3 n_prep_elig_65_3 n_prep_elig_66_3 n_prep_elig_67_3 
@@ -1430,26 +1439,26 @@ n_prep_elig_68_3 n_prep_elig_69_3 n_prep_elig_70_3;drop _TYPE_ _FREQ_;
 
 
 * n_prep_oral;
-%macro median_n_prep_oral(y=);data ee; set e;keep n_prep_oral_&y._1 ; 
-proc means noprint p50 data = e ;var n_prep_oral_&y._1 ;output out=n_prep_oral_&y._1 median = median_n_prep_oral_no_vac_&y. ; %mend;
-%median_n_prep_oral(y=40);%median_n_prep_oral(y=41);%median_n_prep_oral(y=42);%median_n_prep_oral(y=43);
-%median_n_prep_oral(y=44);%median_n_prep_oral(y=45);%median_n_prep_oral(y=46);%median_n_prep_oral(y=47);%median_n_prep_oral(y=48);%median_n_prep_oral(y=49);
-%median_n_prep_oral(y=50);%median_n_prep_oral(y=51);%median_n_prep_oral(y=52);%median_n_prep_oral(y=53);%median_n_prep_oral(y=54);%median_n_prep_oral(y=55);
-%median_n_prep_oral(y=56);%median_n_prep_oral(y=57);%median_n_prep_oral(y=58);%median_n_prep_oral(y=59);%median_n_prep_oral(y=60);%median_n_prep_oral(y=61);
-%median_n_prep_oral(y=62);%median_n_prep_oral(y=63);%median_n_prep_oral(y=64);%median_n_prep_oral(y=65);%median_n_prep_oral(y=66);%median_n_prep_oral(y=67);
-%median_n_prep_oral(y=68);%median_n_prep_oral(y=69);%median_n_prep_oral(y=70);
+%macro med_n_prep_oral(y=);data ee; set e;keep n_prep_oral_&y._1 ; 
+proc means noprint p50 data = ee ;var n_prep_oral_&y._1 ;output out=n_prep_oral_&y._1 median = med_n_prep_oral_no_vac_&y. ; %mend;
+%med_n_prep_oral(y=40);%med_n_prep_oral(y=41);%med_n_prep_oral(y=42);%med_n_prep_oral(y=43);
+%med_n_prep_oral(y=44);%med_n_prep_oral(y=45);%med_n_prep_oral(y=46);%med_n_prep_oral(y=47);%med_n_prep_oral(y=48);%med_n_prep_oral(y=49);
+%med_n_prep_oral(y=50);%med_n_prep_oral(y=51);%med_n_prep_oral(y=52);%med_n_prep_oral(y=53);%med_n_prep_oral(y=54);%med_n_prep_oral(y=55);
+%med_n_prep_oral(y=56);%med_n_prep_oral(y=57);%med_n_prep_oral(y=58);%med_n_prep_oral(y=59);%med_n_prep_oral(y=60);%med_n_prep_oral(y=61);
+%med_n_prep_oral(y=62);%med_n_prep_oral(y=63);%med_n_prep_oral(y=64);%med_n_prep_oral(y=65);%med_n_prep_oral(y=66);%med_n_prep_oral(y=67);
+%med_n_prep_oral(y=68);%med_n_prep_oral(y=69);%med_n_prep_oral(y=70);
 data n_prep_oral_1; merge n_prep_oral_40_1 n_prep_oral_41_1 n_prep_oral_42_1 n_prep_oral_43_1 n_prep_oral_44_1 n_prep_oral_45_1 n_prep_oral_46_1 n_prep_oral_47_1
 n_prep_oral_48_1 n_prep_oral_49_1 n_prep_oral_50_1 n_prep_oral_51_1 n_prep_oral_52_1 n_prep_oral_53_1 n_prep_oral_54_1 n_prep_oral_55_1 n_prep_oral_56_1 n_prep_oral_57_1
 n_prep_oral_58_1 n_prep_oral_59_1 n_prep_oral_60_1 n_prep_oral_61_1 n_prep_oral_62_1 n_prep_oral_63_1 n_prep_oral_64_1 n_prep_oral_65_1 n_prep_oral_66_1 n_prep_oral_67_1  
 n_prep_oral_68_1 n_prep_oral_69_1 n_prep_oral_70_1;drop _TYPE_ _FREQ_;
-%macro 	median_n_prep_oral(y=);data ee; set e;keep n_prep_oral_&y._3 ; 
-proc means noprint p50 data = e ;var n_prep_oral_&y._3 ;output out=n_prep_oral_&y._3 median = median_n_prep_oral_vac_&y. ; %mend;
-%median_n_prep_oral(y=40);%median_n_prep_oral(y=41);%median_n_prep_oral(y=42);%median_n_prep_oral(y=43);
-%median_n_prep_oral(y=44);%median_n_prep_oral(y=45);%median_n_prep_oral(y=46);%median_n_prep_oral(y=47);%median_n_prep_oral(y=48);%median_n_prep_oral(y=49);
-%median_n_prep_oral(y=50);%median_n_prep_oral(y=51);%median_n_prep_oral(y=52);%median_n_prep_oral(y=53);%median_n_prep_oral(y=54);%median_n_prep_oral(y=55);
-%median_n_prep_oral(y=56);%median_n_prep_oral(y=57);%median_n_prep_oral(y=58);%median_n_prep_oral(y=59);%median_n_prep_oral(y=60);%median_n_prep_oral(y=61);
-%median_n_prep_oral(y=62);%median_n_prep_oral(y=63);%median_n_prep_oral(y=64);%median_n_prep_oral(y=65);%median_n_prep_oral(y=66);%median_n_prep_oral(y=67);
-%median_n_prep_oral(y=68);%median_n_prep_oral(y=69);%median_n_prep_oral(y=70);
+%macro 	med_n_prep_oral(y=);data ee; set e;keep n_prep_oral_&y._3 ; 
+proc means noprint p50 data = ee ;var n_prep_oral_&y._3 ;output out=n_prep_oral_&y._3 median = med_n_prep_oral_vac_&y. ; %mend;
+%med_n_prep_oral(y=40);%med_n_prep_oral(y=41);%med_n_prep_oral(y=42);%med_n_prep_oral(y=43);
+%med_n_prep_oral(y=44);%med_n_prep_oral(y=45);%med_n_prep_oral(y=46);%med_n_prep_oral(y=47);%med_n_prep_oral(y=48);%med_n_prep_oral(y=49);
+%med_n_prep_oral(y=50);%med_n_prep_oral(y=51);%med_n_prep_oral(y=52);%med_n_prep_oral(y=53);%med_n_prep_oral(y=54);%med_n_prep_oral(y=55);
+%med_n_prep_oral(y=56);%med_n_prep_oral(y=57);%med_n_prep_oral(y=58);%med_n_prep_oral(y=59);%med_n_prep_oral(y=60);%med_n_prep_oral(y=61);
+%med_n_prep_oral(y=62);%med_n_prep_oral(y=63);%med_n_prep_oral(y=64);%med_n_prep_oral(y=65);%med_n_prep_oral(y=66);%med_n_prep_oral(y=67);
+%med_n_prep_oral(y=68);%med_n_prep_oral(y=69);%med_n_prep_oral(y=70);
 data n_prep_oral_3; merge n_prep_oral_40_3 n_prep_oral_41_3 n_prep_oral_42_3 n_prep_oral_43_3 n_prep_oral_44_3 n_prep_oral_45_3 n_prep_oral_46_3 n_prep_oral_47_3
 n_prep_oral_48_3 n_prep_oral_49_3 n_prep_oral_50_3 n_prep_oral_51_3 n_prep_oral_52_3 n_prep_oral_53_3 n_prep_oral_54_3 n_prep_oral_55_3 n_prep_oral_56_3 n_prep_oral_57_3
 n_prep_oral_58_3 n_prep_oral_59_3 n_prep_oral_60_3 n_prep_oral_61_3 n_prep_oral_62_3 n_prep_oral_63_3 n_prep_oral_64_3 n_prep_oral_65_3 n_prep_oral_66_3 n_prep_oral_67_3 
@@ -1458,26 +1467,26 @@ n_prep_oral_68_3 n_prep_oral_69_3 n_prep_oral_70_3;drop _TYPE_ _FREQ_;
 
 
 * n_newp_ge1;
-%macro median_n_newp_ge1(y=);data ee; set e;keep n_newp_ge1_&y._1 ; 
-proc means noprint p50 data = e ;var n_newp_ge1_&y._1 ;output out=n_newp_ge1_&y._1 median = median_n_newp_ge1_no_vac_&y. ; %mend;
-%median_n_newp_ge1(y=40);%median_n_newp_ge1(y=41);%median_n_newp_ge1(y=42);%median_n_newp_ge1(y=43);
-%median_n_newp_ge1(y=44);%median_n_newp_ge1(y=45);%median_n_newp_ge1(y=46);%median_n_newp_ge1(y=47);%median_n_newp_ge1(y=48);%median_n_newp_ge1(y=49);
-%median_n_newp_ge1(y=50);%median_n_newp_ge1(y=51);%median_n_newp_ge1(y=52);%median_n_newp_ge1(y=53);%median_n_newp_ge1(y=54);%median_n_newp_ge1(y=55);
-%median_n_newp_ge1(y=56);%median_n_newp_ge1(y=57);%median_n_newp_ge1(y=58);%median_n_newp_ge1(y=59);%median_n_newp_ge1(y=60);%median_n_newp_ge1(y=61);
-%median_n_newp_ge1(y=62);%median_n_newp_ge1(y=63);%median_n_newp_ge1(y=64);%median_n_newp_ge1(y=65);%median_n_newp_ge1(y=66);%median_n_newp_ge1(y=67);
-%median_n_newp_ge1(y=68);%median_n_newp_ge1(y=69);%median_n_newp_ge1(y=70);
+%macro med_n_newp_ge1(y=);data ee; set e;keep n_newp_ge1_&y._1 ; 
+proc means noprint p50 data = ee ;var n_newp_ge1_&y._1 ;output out=n_newp_ge1_&y._1 median = med_n_newp_ge1_no_vac_&y. ; %mend;
+%med_n_newp_ge1(y=40);%med_n_newp_ge1(y=41);%med_n_newp_ge1(y=42);%med_n_newp_ge1(y=43);
+%med_n_newp_ge1(y=44);%med_n_newp_ge1(y=45);%med_n_newp_ge1(y=46);%med_n_newp_ge1(y=47);%med_n_newp_ge1(y=48);%med_n_newp_ge1(y=49);
+%med_n_newp_ge1(y=50);%med_n_newp_ge1(y=51);%med_n_newp_ge1(y=52);%med_n_newp_ge1(y=53);%med_n_newp_ge1(y=54);%med_n_newp_ge1(y=55);
+%med_n_newp_ge1(y=56);%med_n_newp_ge1(y=57);%med_n_newp_ge1(y=58);%med_n_newp_ge1(y=59);%med_n_newp_ge1(y=60);%med_n_newp_ge1(y=61);
+%med_n_newp_ge1(y=62);%med_n_newp_ge1(y=63);%med_n_newp_ge1(y=64);%med_n_newp_ge1(y=65);%med_n_newp_ge1(y=66);%med_n_newp_ge1(y=67);
+%med_n_newp_ge1(y=68);%med_n_newp_ge1(y=69);%med_n_newp_ge1(y=70);
 data n_newp_ge1_1; merge n_newp_ge1_40_1 n_newp_ge1_41_1 n_newp_ge1_42_1 n_newp_ge1_43_1 n_newp_ge1_44_1 n_newp_ge1_45_1 n_newp_ge1_46_1 n_newp_ge1_47_1
 n_newp_ge1_48_1 n_newp_ge1_49_1 n_newp_ge1_50_1 n_newp_ge1_51_1 n_newp_ge1_52_1 n_newp_ge1_53_1 n_newp_ge1_54_1 n_newp_ge1_55_1 n_newp_ge1_56_1 n_newp_ge1_57_1
 n_newp_ge1_58_1 n_newp_ge1_59_1 n_newp_ge1_60_1 n_newp_ge1_61_1 n_newp_ge1_62_1 n_newp_ge1_63_1 n_newp_ge1_64_1 n_newp_ge1_65_1 n_newp_ge1_66_1 n_newp_ge1_67_1  
 n_newp_ge1_68_1 n_newp_ge1_69_1 n_newp_ge1_70_1;drop _TYPE_ _FREQ_;
-%macro 	median_n_newp_ge1(y=);data ee; set e;keep n_newp_ge1_&y._3 ; 
-proc means noprint p50 data = e ;var n_newp_ge1_&y._3 ;output out=n_newp_ge1_&y._3 median = median_n_newp_ge1_vac_&y. ; %mend;
-%median_n_newp_ge1(y=40);%median_n_newp_ge1(y=41);%median_n_newp_ge1(y=42);%median_n_newp_ge1(y=43);
-%median_n_newp_ge1(y=44);%median_n_newp_ge1(y=45);%median_n_newp_ge1(y=46);%median_n_newp_ge1(y=47);%median_n_newp_ge1(y=48);%median_n_newp_ge1(y=49);
-%median_n_newp_ge1(y=50);%median_n_newp_ge1(y=51);%median_n_newp_ge1(y=52);%median_n_newp_ge1(y=53);%median_n_newp_ge1(y=54);%median_n_newp_ge1(y=55);
-%median_n_newp_ge1(y=56);%median_n_newp_ge1(y=57);%median_n_newp_ge1(y=58);%median_n_newp_ge1(y=59);%median_n_newp_ge1(y=60);%median_n_newp_ge1(y=61);
-%median_n_newp_ge1(y=62);%median_n_newp_ge1(y=63);%median_n_newp_ge1(y=64);%median_n_newp_ge1(y=65);%median_n_newp_ge1(y=66);%median_n_newp_ge1(y=67);
-%median_n_newp_ge1(y=68);%median_n_newp_ge1(y=69);%median_n_newp_ge1(y=70);
+%macro 	med_n_newp_ge1(y=);data ee; set e;keep n_newp_ge1_&y._3 ; 
+proc means noprint p50 data = ee ;var n_newp_ge1_&y._3 ;output out=n_newp_ge1_&y._3 median = med_n_newp_ge1_vac_&y. ; %mend;
+%med_n_newp_ge1(y=40);%med_n_newp_ge1(y=41);%med_n_newp_ge1(y=42);%med_n_newp_ge1(y=43);
+%med_n_newp_ge1(y=44);%med_n_newp_ge1(y=45);%med_n_newp_ge1(y=46);%med_n_newp_ge1(y=47);%med_n_newp_ge1(y=48);%med_n_newp_ge1(y=49);
+%med_n_newp_ge1(y=50);%med_n_newp_ge1(y=51);%med_n_newp_ge1(y=52);%med_n_newp_ge1(y=53);%med_n_newp_ge1(y=54);%med_n_newp_ge1(y=55);
+%med_n_newp_ge1(y=56);%med_n_newp_ge1(y=57);%med_n_newp_ge1(y=58);%med_n_newp_ge1(y=59);%med_n_newp_ge1(y=60);%med_n_newp_ge1(y=61);
+%med_n_newp_ge1(y=62);%med_n_newp_ge1(y=63);%med_n_newp_ge1(y=64);%med_n_newp_ge1(y=65);%med_n_newp_ge1(y=66);%med_n_newp_ge1(y=67);
+%med_n_newp_ge1(y=68);%med_n_newp_ge1(y=69);%med_n_newp_ge1(y=70);
 data n_newp_ge1_3; merge n_newp_ge1_40_3 n_newp_ge1_41_3 n_newp_ge1_42_3 n_newp_ge1_43_3 n_newp_ge1_44_3 n_newp_ge1_45_3 n_newp_ge1_46_3 n_newp_ge1_47_3
 n_newp_ge1_48_3 n_newp_ge1_49_3 n_newp_ge1_50_3 n_newp_ge1_51_3 n_newp_ge1_52_3 n_newp_ge1_53_3 n_newp_ge1_54_3 n_newp_ge1_55_3 n_newp_ge1_56_3 n_newp_ge1_57_3
 n_newp_ge1_58_3 n_newp_ge1_59_3 n_newp_ge1_60_3 n_newp_ge1_61_3 n_newp_ge1_62_3 n_newp_ge1_63_3 n_newp_ge1_64_3 n_newp_ge1_65_3 n_newp_ge1_66_3 n_newp_ge1_67_3 
@@ -1486,26 +1495,26 @@ n_newp_ge1_68_3 n_newp_ge1_69_3 n_newp_ge1_70_3;drop _TYPE_ _FREQ_;
 
 
 * n_ep;
-%macro median_n_ep(y=);data ee; set e;keep n_ep_&y._1 ; 
-proc means noprint p50 data = e ;var n_ep_&y._1 ;output out=n_ep_&y._1 median = median_n_ep_no_vac_&y. ; %mend;
-%median_n_ep(y=40);%median_n_ep(y=41);%median_n_ep(y=42);%median_n_ep(y=43);
-%median_n_ep(y=44);%median_n_ep(y=45);%median_n_ep(y=46);%median_n_ep(y=47);%median_n_ep(y=48);%median_n_ep(y=49);
-%median_n_ep(y=50);%median_n_ep(y=51);%median_n_ep(y=52);%median_n_ep(y=53);%median_n_ep(y=54);%median_n_ep(y=55);
-%median_n_ep(y=56);%median_n_ep(y=57);%median_n_ep(y=58);%median_n_ep(y=59);%median_n_ep(y=60);%median_n_ep(y=61);
-%median_n_ep(y=62);%median_n_ep(y=63);%median_n_ep(y=64);%median_n_ep(y=65);%median_n_ep(y=66);%median_n_ep(y=67);
-%median_n_ep(y=68);%median_n_ep(y=69);%median_n_ep(y=70);
+%macro med_n_ep(y=);data ee; set e;keep n_ep_&y._1 ; 
+proc means noprint p50 data = ee ;var n_ep_&y._1 ;output out=n_ep_&y._1 median = med_n_ep_no_vac_&y. ; %mend;
+%med_n_ep(y=40);%med_n_ep(y=41);%med_n_ep(y=42);%med_n_ep(y=43);
+%med_n_ep(y=44);%med_n_ep(y=45);%med_n_ep(y=46);%med_n_ep(y=47);%med_n_ep(y=48);%med_n_ep(y=49);
+%med_n_ep(y=50);%med_n_ep(y=51);%med_n_ep(y=52);%med_n_ep(y=53);%med_n_ep(y=54);%med_n_ep(y=55);
+%med_n_ep(y=56);%med_n_ep(y=57);%med_n_ep(y=58);%med_n_ep(y=59);%med_n_ep(y=60);%med_n_ep(y=61);
+%med_n_ep(y=62);%med_n_ep(y=63);%med_n_ep(y=64);%med_n_ep(y=65);%med_n_ep(y=66);%med_n_ep(y=67);
+%med_n_ep(y=68);%med_n_ep(y=69);%med_n_ep(y=70);
 data n_ep_1; merge n_ep_40_1 n_ep_41_1 n_ep_42_1 n_ep_43_1 n_ep_44_1 n_ep_45_1 n_ep_46_1 n_ep_47_1
 n_ep_48_1 n_ep_49_1 n_ep_50_1 n_ep_51_1 n_ep_52_1 n_ep_53_1 n_ep_54_1 n_ep_55_1 n_ep_56_1 n_ep_57_1
 n_ep_58_1 n_ep_59_1 n_ep_60_1 n_ep_61_1 n_ep_62_1 n_ep_63_1 n_ep_64_1 n_ep_65_1 n_ep_66_1 n_ep_67_1  
 n_ep_68_1 n_ep_69_1 n_ep_70_1;drop _TYPE_ _FREQ_;
-%macro 	median_n_ep(y=);data ee; set e;keep n_ep_&y._3 ; 
-proc means noprint p50 data = e ;var n_ep_&y._3 ;output out=n_ep_&y._3 median = median_n_ep_vac_&y. ; %mend;
-%median_n_ep(y=40);%median_n_ep(y=41);%median_n_ep(y=42);%median_n_ep(y=43);
-%median_n_ep(y=44);%median_n_ep(y=45);%median_n_ep(y=46);%median_n_ep(y=47);%median_n_ep(y=48);%median_n_ep(y=49);
-%median_n_ep(y=50);%median_n_ep(y=51);%median_n_ep(y=52);%median_n_ep(y=53);%median_n_ep(y=54);%median_n_ep(y=55);
-%median_n_ep(y=56);%median_n_ep(y=57);%median_n_ep(y=58);%median_n_ep(y=59);%median_n_ep(y=60);%median_n_ep(y=61);
-%median_n_ep(y=62);%median_n_ep(y=63);%median_n_ep(y=64);%median_n_ep(y=65);%median_n_ep(y=66);%median_n_ep(y=67);
-%median_n_ep(y=68);%median_n_ep(y=69);%median_n_ep(y=70);
+%macro 	med_n_ep(y=);data ee; set e;keep n_ep_&y._3 ; 
+proc means noprint p50 data = ee ;var n_ep_&y._3 ;output out=n_ep_&y._3 median = med_n_ep_vac_&y. ; %mend;
+%med_n_ep(y=40);%med_n_ep(y=41);%med_n_ep(y=42);%med_n_ep(y=43);
+%med_n_ep(y=44);%med_n_ep(y=45);%med_n_ep(y=46);%med_n_ep(y=47);%med_n_ep(y=48);%med_n_ep(y=49);
+%med_n_ep(y=50);%med_n_ep(y=51);%med_n_ep(y=52);%med_n_ep(y=53);%med_n_ep(y=54);%med_n_ep(y=55);
+%med_n_ep(y=56);%med_n_ep(y=57);%med_n_ep(y=58);%med_n_ep(y=59);%med_n_ep(y=60);%med_n_ep(y=61);
+%med_n_ep(y=62);%med_n_ep(y=63);%med_n_ep(y=64);%med_n_ep(y=65);%med_n_ep(y=66);%med_n_ep(y=67);
+%med_n_ep(y=68);%med_n_ep(y=69);%med_n_ep(y=70);
 data n_ep_3; merge n_ep_40_3 n_ep_41_3 n_ep_42_3 n_ep_43_3 n_ep_44_3 n_ep_45_3 n_ep_46_3 n_ep_47_3
 n_ep_48_3 n_ep_49_3 n_ep_50_3 n_ep_51_3 n_ep_52_3 n_ep_53_3 n_ep_54_3 n_ep_55_3 n_ep_56_3 n_ep_57_3
 n_ep_58_3 n_ep_59_3 n_ep_60_3 n_ep_61_3 n_ep_62_3 n_ep_63_3 n_ep_64_3 n_ep_65_3 n_ep_66_3 n_ep_67_3 
@@ -1514,26 +1523,26 @@ n_ep_68_3 n_ep_69_3 n_ep_70_3;drop _TYPE_ _FREQ_;
 
 
 * n_new_vmmc;
-%macro median_n_new_vmmc(y=);data ee; set e;keep n_new_vmmc_&y._1 ; 
-proc means noprint p50 data = e ;var n_new_vmmc_&y._1 ;output out=n_new_vmmc_&y._1 median = median_n_new_vmmc_no_vac_&y. ; %mend;
-%median_n_new_vmmc(y=40);%median_n_new_vmmc(y=41);%median_n_new_vmmc(y=42);%median_n_new_vmmc(y=43);
-%median_n_new_vmmc(y=44);%median_n_new_vmmc(y=45);%median_n_new_vmmc(y=46);%median_n_new_vmmc(y=47);%median_n_new_vmmc(y=48);%median_n_new_vmmc(y=49);
-%median_n_new_vmmc(y=50);%median_n_new_vmmc(y=51);%median_n_new_vmmc(y=52);%median_n_new_vmmc(y=53);%median_n_new_vmmc(y=54);%median_n_new_vmmc(y=55);
-%median_n_new_vmmc(y=56);%median_n_new_vmmc(y=57);%median_n_new_vmmc(y=58);%median_n_new_vmmc(y=59);%median_n_new_vmmc(y=60);%median_n_new_vmmc(y=61);
-%median_n_new_vmmc(y=62);%median_n_new_vmmc(y=63);%median_n_new_vmmc(y=64);%median_n_new_vmmc(y=65);%median_n_new_vmmc(y=66);%median_n_new_vmmc(y=67);
-%median_n_new_vmmc(y=68);%median_n_new_vmmc(y=69);%median_n_new_vmmc(y=70);
+%macro med_n_new_vmmc(y=);data ee; set e;keep n_new_vmmc_&y._1 ; 
+proc means noprint p50 data = ee ;var n_new_vmmc_&y._1 ;output out=n_new_vmmc_&y._1 median = med_n_new_vmmc_no_vac_&y. ; %mend;
+%med_n_new_vmmc(y=40);%med_n_new_vmmc(y=41);%med_n_new_vmmc(y=42);%med_n_new_vmmc(y=43);
+%med_n_new_vmmc(y=44);%med_n_new_vmmc(y=45);%med_n_new_vmmc(y=46);%med_n_new_vmmc(y=47);%med_n_new_vmmc(y=48);%med_n_new_vmmc(y=49);
+%med_n_new_vmmc(y=50);%med_n_new_vmmc(y=51);%med_n_new_vmmc(y=52);%med_n_new_vmmc(y=53);%med_n_new_vmmc(y=54);%med_n_new_vmmc(y=55);
+%med_n_new_vmmc(y=56);%med_n_new_vmmc(y=57);%med_n_new_vmmc(y=58);%med_n_new_vmmc(y=59);%med_n_new_vmmc(y=60);%med_n_new_vmmc(y=61);
+%med_n_new_vmmc(y=62);%med_n_new_vmmc(y=63);%med_n_new_vmmc(y=64);%med_n_new_vmmc(y=65);%med_n_new_vmmc(y=66);%med_n_new_vmmc(y=67);
+%med_n_new_vmmc(y=68);%med_n_new_vmmc(y=69);%med_n_new_vmmc(y=70);
 data n_new_vmmc_1; merge n_new_vmmc_40_1 n_new_vmmc_41_1 n_new_vmmc_42_1 n_new_vmmc_43_1 n_new_vmmc_44_1 n_new_vmmc_45_1 n_new_vmmc_46_1 n_new_vmmc_47_1
 n_new_vmmc_48_1 n_new_vmmc_49_1 n_new_vmmc_50_1 n_new_vmmc_51_1 n_new_vmmc_52_1 n_new_vmmc_53_1 n_new_vmmc_54_1 n_new_vmmc_55_1 n_new_vmmc_56_1 n_new_vmmc_57_1
 n_new_vmmc_58_1 n_new_vmmc_59_1 n_new_vmmc_60_1 n_new_vmmc_61_1 n_new_vmmc_62_1 n_new_vmmc_63_1 n_new_vmmc_64_1 n_new_vmmc_65_1 n_new_vmmc_66_1 n_new_vmmc_67_1  
 n_new_vmmc_68_1 n_new_vmmc_69_1 n_new_vmmc_70_1;drop _TYPE_ _FREQ_;
-%macro 	median_n_new_vmmc(y=);data ee; set e;keep n_new_vmmc_&y._3 ; 
-proc means noprint p50 data = e ;var n_new_vmmc_&y._3 ;output out=n_new_vmmc_&y._3 median = median_n_new_vmmc_vac_&y. ; %mend;
-%median_n_new_vmmc(y=40);%median_n_new_vmmc(y=41);%median_n_new_vmmc(y=42);%median_n_new_vmmc(y=43);
-%median_n_new_vmmc(y=44);%median_n_new_vmmc(y=45);%median_n_new_vmmc(y=46);%median_n_new_vmmc(y=47);%median_n_new_vmmc(y=48);%median_n_new_vmmc(y=49);
-%median_n_new_vmmc(y=50);%median_n_new_vmmc(y=51);%median_n_new_vmmc(y=52);%median_n_new_vmmc(y=53);%median_n_new_vmmc(y=54);%median_n_new_vmmc(y=55);
-%median_n_new_vmmc(y=56);%median_n_new_vmmc(y=57);%median_n_new_vmmc(y=58);%median_n_new_vmmc(y=59);%median_n_new_vmmc(y=60);%median_n_new_vmmc(y=61);
-%median_n_new_vmmc(y=62);%median_n_new_vmmc(y=63);%median_n_new_vmmc(y=64);%median_n_new_vmmc(y=65);%median_n_new_vmmc(y=66);%median_n_new_vmmc(y=67);
-%median_n_new_vmmc(y=68);%median_n_new_vmmc(y=69);%median_n_new_vmmc(y=70);
+%macro 	med_n_new_vmmc(y=);data ee; set e;keep n_new_vmmc_&y._3 ; 
+proc means noprint p50 data = ee ;var n_new_vmmc_&y._3 ;output out=n_new_vmmc_&y._3 median = med_n_new_vmmc_vac_&y. ; %mend;
+%med_n_new_vmmc(y=40);%med_n_new_vmmc(y=41);%med_n_new_vmmc(y=42);%med_n_new_vmmc(y=43);
+%med_n_new_vmmc(y=44);%med_n_new_vmmc(y=45);%med_n_new_vmmc(y=46);%med_n_new_vmmc(y=47);%med_n_new_vmmc(y=48);%med_n_new_vmmc(y=49);
+%med_n_new_vmmc(y=50);%med_n_new_vmmc(y=51);%med_n_new_vmmc(y=52);%med_n_new_vmmc(y=53);%med_n_new_vmmc(y=54);%med_n_new_vmmc(y=55);
+%med_n_new_vmmc(y=56);%med_n_new_vmmc(y=57);%med_n_new_vmmc(y=58);%med_n_new_vmmc(y=59);%med_n_new_vmmc(y=60);%med_n_new_vmmc(y=61);
+%med_n_new_vmmc(y=62);%med_n_new_vmmc(y=63);%med_n_new_vmmc(y=64);%med_n_new_vmmc(y=65);%med_n_new_vmmc(y=66);%med_n_new_vmmc(y=67);
+%med_n_new_vmmc(y=68);%med_n_new_vmmc(y=69);%med_n_new_vmmc(y=70);
 data n_new_vmmc_3; merge n_new_vmmc_40_3 n_new_vmmc_41_3 n_new_vmmc_42_3 n_new_vmmc_43_3 n_new_vmmc_44_3 n_new_vmmc_45_3 n_new_vmmc_46_3 n_new_vmmc_47_3
 n_new_vmmc_48_3 n_new_vmmc_49_3 n_new_vmmc_50_3 n_new_vmmc_51_3 n_new_vmmc_52_3 n_new_vmmc_53_3 n_new_vmmc_54_3 n_new_vmmc_55_3 n_new_vmmc_56_3 n_new_vmmc_57_3
 n_new_vmmc_58_3 n_new_vmmc_59_3 n_new_vmmc_60_3 n_new_vmmc_61_3 n_new_vmmc_62_3 n_new_vmmc_63_3 n_new_vmmc_64_3 n_new_vmmc_65_3 n_new_vmmc_66_3 n_new_vmmc_67_3 
@@ -1544,7 +1553,7 @@ n_new_vmmc_68_3 n_new_vmmc_69_3 n_new_vmmc_70_3;drop _TYPE_ _FREQ_;
 
 * incidence1549;
 %macro median_incidence1549(y=);data ee; set e;keep incidence1549_&y._1 ; 
-proc means noprint p50 data = e ;var incidence1549_&y._1 ;output out=incidence1549_&y._1 median = median_incidence1549_no_vac_&y. ; %mend;
+proc means noprint p50 data = ee ;var incidence1549_&y._1 ;output out=incidence1549_&y._1 median = median_incidence1549_no_vac_&y. ; %mend;
 %median_incidence1549(y=40);%median_incidence1549(y=41);%median_incidence1549(y=42);%median_incidence1549(y=43);
 %median_incidence1549(y=44);%median_incidence1549(y=45);%median_incidence1549(y=46);%median_incidence1549(y=47);%median_incidence1549(y=48);%median_incidence1549(y=49);
 %median_incidence1549(y=50);%median_incidence1549(y=51);%median_incidence1549(y=52);%median_incidence1549(y=53);%median_incidence1549(y=54);%median_incidence1549(y=55);
@@ -1556,7 +1565,7 @@ incidence1549_48_1 incidence1549_49_1 incidence1549_50_1 incidence1549_51_1 inci
 incidence1549_58_1 incidence1549_59_1 incidence1549_60_1 incidence1549_61_1 incidence1549_62_1 incidence1549_63_1 incidence1549_64_1 incidence1549_65_1 incidence1549_66_1 incidence1549_67_1  
 incidence1549_68_1 incidence1549_69_1 incidence1549_70_1;drop _TYPE_ _FREQ_;
 %macro 	median_incidence1549(y=);data ee; set e;keep incidence1549_&y._3 ; 
-proc means noprint p50 data = e ;var incidence1549_&y._3 ;output out=incidence1549_&y._3 median = median_incidence1549_vac_&y. ; %mend;
+proc means noprint p50 data = ee ;var incidence1549_&y._3 ;output out=incidence1549_&y._3 median = median_incidence1549_vac_&y. ; %mend;
 %median_incidence1549(y=40);%median_incidence1549(y=41);%median_incidence1549(y=42);%median_incidence1549(y=43);
 %median_incidence1549(y=44);%median_incidence1549(y=45);%median_incidence1549(y=46);%median_incidence1549(y=47);%median_incidence1549(y=48);%median_incidence1549(y=49);
 %median_incidence1549(y=50);%median_incidence1549(y=51);%median_incidence1549(y=52);%median_incidence1549(y=53);%median_incidence1549(y=54);%median_incidence1549(y=55);
@@ -1570,37 +1579,37 @@ incidence1549_68_3 incidence1549_69_3 incidence1549_70_3;drop _TYPE_ _FREQ_;
 
 
 
-* n_hiv_death;
-%macro median_n_hiv_death(y=);data ee; set e;keep n_hiv_death_&y._1 ; 
-proc means noprint p50 data = e ;var n_hiv_death_&y._1 ;output out=n_hiv_death_&y._1 median = median_n_hiv_death_no_vac_&y. ; %mend;
-%median_n_hiv_death(y=40);%median_n_hiv_death(y=41);%median_n_hiv_death(y=42);%median_n_hiv_death(y=43);
-%median_n_hiv_death(y=44);%median_n_hiv_death(y=45);%median_n_hiv_death(y=46);%median_n_hiv_death(y=47);%median_n_hiv_death(y=48);%median_n_hiv_death(y=49);
-%median_n_hiv_death(y=50);%median_n_hiv_death(y=51);%median_n_hiv_death(y=52);%median_n_hiv_death(y=53);%median_n_hiv_death(y=54);%median_n_hiv_death(y=55);
-%median_n_hiv_death(y=56);%median_n_hiv_death(y=57);%median_n_hiv_death(y=58);%median_n_hiv_death(y=59);%median_n_hiv_death(y=60);%median_n_hiv_death(y=61);
-%median_n_hiv_death(y=62);%median_n_hiv_death(y=63);%median_n_hiv_death(y=64);%median_n_hiv_death(y=65);%median_n_hiv_death(y=66);%median_n_hiv_death(y=67);
-%median_n_hiv_death(y=68);%median_n_hiv_death(y=69);%median_n_hiv_death(y=70);
-data n_hiv_death_1; merge n_hiv_death_40_1 n_hiv_death_41_1 n_hiv_death_42_1 n_hiv_death_43_1 n_hiv_death_44_1 n_hiv_death_45_1 n_hiv_death_46_1 n_hiv_death_47_1
-n_hiv_death_48_1 n_hiv_death_49_1 n_hiv_death_50_1 n_hiv_death_51_1 n_hiv_death_52_1 n_hiv_death_53_1 n_hiv_death_54_1 n_hiv_death_55_1 n_hiv_death_56_1 n_hiv_death_57_1
-n_hiv_death_58_1 n_hiv_death_59_1 n_hiv_death_60_1 n_hiv_death_61_1 n_hiv_death_62_1 n_hiv_death_63_1 n_hiv_death_64_1 n_hiv_death_65_1 n_hiv_death_66_1 n_hiv_death_67_1  
-n_hiv_death_68_1 n_hiv_death_69_1 n_hiv_death_70_1;drop _TYPE_ _FREQ_;
-%macro 	median_n_hiv_death(y=);data ee; set e;keep n_hiv_death_&y._3 ; 
-proc means noprint p50 data = e ;var n_hiv_death_&y._3 ;output out=n_hiv_death_&y._3 median = median_n_hiv_death_vac_&y. ; %mend;
-%median_n_hiv_death(y=40);%median_n_hiv_death(y=41);%median_n_hiv_death(y=42);%median_n_hiv_death(y=43);
-%median_n_hiv_death(y=44);%median_n_hiv_death(y=45);%median_n_hiv_death(y=46);%median_n_hiv_death(y=47);%median_n_hiv_death(y=48);%median_n_hiv_death(y=49);
-%median_n_hiv_death(y=50);%median_n_hiv_death(y=51);%median_n_hiv_death(y=52);%median_n_hiv_death(y=53);%median_n_hiv_death(y=54);%median_n_hiv_death(y=55);
-%median_n_hiv_death(y=56);%median_n_hiv_death(y=57);%median_n_hiv_death(y=58);%median_n_hiv_death(y=59);%median_n_hiv_death(y=60);%median_n_hiv_death(y=61);
-%median_n_hiv_death(y=62);%median_n_hiv_death(y=63);%median_n_hiv_death(y=64);%median_n_hiv_death(y=65);%median_n_hiv_death(y=66);%median_n_hiv_death(y=67);
-%median_n_hiv_death(y=68);%median_n_hiv_death(y=69);%median_n_hiv_death(y=70);
-data n_hiv_death_3; merge n_hiv_death_40_3 n_hiv_death_41_3 n_hiv_death_42_3 n_hiv_death_43_3 n_hiv_death_44_3 n_hiv_death_45_3 n_hiv_death_46_3 n_hiv_death_47_3
-n_hiv_death_48_3 n_hiv_death_49_3 n_hiv_death_50_3 n_hiv_death_51_3 n_hiv_death_52_3 n_hiv_death_53_3 n_hiv_death_54_3 n_hiv_death_55_3 n_hiv_death_56_3 n_hiv_death_57_3
-n_hiv_death_58_3 n_hiv_death_59_3 n_hiv_death_60_3 n_hiv_death_61_3 n_hiv_death_62_3 n_hiv_death_63_3 n_hiv_death_64_3 n_hiv_death_65_3 n_hiv_death_66_3 n_hiv_death_67_3 
-n_hiv_death_68_3 n_hiv_death_69_3 n_hiv_death_70_3;drop _TYPE_ _FREQ_;
+* n_death_hiv;
+%macro med_n_death_hiv(y=);data ee; set e;keep n_death_hiv_&y._1 ; 
+proc means noprint p50 data = ee ;var n_death_hiv_&y._1 ;output out=n_death_hiv_&y._1 median = med_n_death_hiv_no_vac_&y. ; %mend;
+%med_n_death_hiv(y=40);%med_n_death_hiv(y=41);%med_n_death_hiv(y=42);%med_n_death_hiv(y=43);
+%med_n_death_hiv(y=44);%med_n_death_hiv(y=45);%med_n_death_hiv(y=46);%med_n_death_hiv(y=47);%med_n_death_hiv(y=48);%med_n_death_hiv(y=49);
+%med_n_death_hiv(y=50);%med_n_death_hiv(y=51);%med_n_death_hiv(y=52);%med_n_death_hiv(y=53);%med_n_death_hiv(y=54);%med_n_death_hiv(y=55);
+%med_n_death_hiv(y=56);%med_n_death_hiv(y=57);%med_n_death_hiv(y=58);%med_n_death_hiv(y=59);%med_n_death_hiv(y=60);%med_n_death_hiv(y=61);
+%med_n_death_hiv(y=62);%med_n_death_hiv(y=63);%med_n_death_hiv(y=64);%med_n_death_hiv(y=65);%med_n_death_hiv(y=66);%med_n_death_hiv(y=67);
+%med_n_death_hiv(y=68);%med_n_death_hiv(y=69);%med_n_death_hiv(y=70);
+data n_death_hiv_1; merge n_death_hiv_40_1 n_death_hiv_41_1 n_death_hiv_42_1 n_death_hiv_43_1 n_death_hiv_44_1 n_death_hiv_45_1 n_death_hiv_46_1 n_death_hiv_47_1
+n_death_hiv_48_1 n_death_hiv_49_1 n_death_hiv_50_1 n_death_hiv_51_1 n_death_hiv_52_1 n_death_hiv_53_1 n_death_hiv_54_1 n_death_hiv_55_1 n_death_hiv_56_1 n_death_hiv_57_1
+n_death_hiv_58_1 n_death_hiv_59_1 n_death_hiv_60_1 n_death_hiv_61_1 n_death_hiv_62_1 n_death_hiv_63_1 n_death_hiv_64_1 n_death_hiv_65_1 n_death_hiv_66_1 n_death_hiv_67_1  
+n_death_hiv_68_1 n_death_hiv_69_1 n_death_hiv_70_1;drop _TYPE_ _FREQ_;
+%macro 	med_n_death_hiv(y=);data ee; set e;keep n_death_hiv_&y._3 ; 
+proc means noprint p50 data = ee ;var n_death_hiv_&y._3 ;output out=n_death_hiv_&y._3 median = med_n_death_hiv_vac_&y. ; %mend;
+%med_n_death_hiv(y=40);%med_n_death_hiv(y=41);%med_n_death_hiv(y=42);%med_n_death_hiv(y=43);
+%med_n_death_hiv(y=44);%med_n_death_hiv(y=45);%med_n_death_hiv(y=46);%med_n_death_hiv(y=47);%med_n_death_hiv(y=48);%med_n_death_hiv(y=49);
+%med_n_death_hiv(y=50);%med_n_death_hiv(y=51);%med_n_death_hiv(y=52);%med_n_death_hiv(y=53);%med_n_death_hiv(y=54);%med_n_death_hiv(y=55);
+%med_n_death_hiv(y=56);%med_n_death_hiv(y=57);%med_n_death_hiv(y=58);%med_n_death_hiv(y=59);%med_n_death_hiv(y=60);%med_n_death_hiv(y=61);
+%med_n_death_hiv(y=62);%med_n_death_hiv(y=63);%med_n_death_hiv(y=64);%med_n_death_hiv(y=65);%med_n_death_hiv(y=66);%med_n_death_hiv(y=67);
+%med_n_death_hiv(y=68);%med_n_death_hiv(y=69);%med_n_death_hiv(y=70);
+data n_death_hiv_3; merge n_death_hiv_40_3 n_death_hiv_41_3 n_death_hiv_42_3 n_death_hiv_43_3 n_death_hiv_44_3 n_death_hiv_45_3 n_death_hiv_46_3 n_death_hiv_47_3
+n_death_hiv_48_3 n_death_hiv_49_3 n_death_hiv_50_3 n_death_hiv_51_3 n_death_hiv_52_3 n_death_hiv_53_3 n_death_hiv_54_3 n_death_hiv_55_3 n_death_hiv_56_3 n_death_hiv_57_3
+n_death_hiv_58_3 n_death_hiv_59_3 n_death_hiv_60_3 n_death_hiv_61_3 n_death_hiv_62_3 n_death_hiv_63_3 n_death_hiv_64_3 n_death_hiv_65_3 n_death_hiv_66_3 n_death_hiv_67_3 
+n_death_hiv_68_3 n_death_hiv_69_3 n_death_hiv_70_3;drop _TYPE_ _FREQ_;
 
 
 
 * p_vl1000;
 %macro median_p_vl1000(y=);data ee; set e;keep p_vl1000_&y._1 ; 
-proc means noprint p50 data = e ;var p_vl1000_&y._1 ;output out=p_vl1000_&y._1 median = median_p_vl1000_no_vac_&y. ; %mend;
+proc means noprint p50 data = ee ;var p_vl1000_&y._1 ;output out=p_vl1000_&y._1 median = median_p_vl1000_no_vac_&y. ; %mend;
 %median_p_vl1000(y=40);%median_p_vl1000(y=41);%median_p_vl1000(y=42);%median_p_vl1000(y=43);
 %median_p_vl1000(y=44);%median_p_vl1000(y=45);%median_p_vl1000(y=46);%median_p_vl1000(y=47);%median_p_vl1000(y=48);%median_p_vl1000(y=49);
 %median_p_vl1000(y=50);%median_p_vl1000(y=51);%median_p_vl1000(y=52);%median_p_vl1000(y=53);%median_p_vl1000(y=54);%median_p_vl1000(y=55);
@@ -1612,7 +1621,7 @@ p_vl1000_48_1 p_vl1000_49_1 p_vl1000_50_1 p_vl1000_51_1 p_vl1000_52_1 p_vl1000_5
 p_vl1000_58_1 p_vl1000_59_1 p_vl1000_60_1 p_vl1000_61_1 p_vl1000_62_1 p_vl1000_63_1 p_vl1000_64_1 p_vl1000_65_1 p_vl1000_66_1 p_vl1000_67_1  
 p_vl1000_68_1 p_vl1000_69_1 p_vl1000_70_1;drop _TYPE_ _FREQ_;
 %macro 	median_p_vl1000(y=);data ee; set e;keep p_vl1000_&y._3 ; 
-proc means noprint p50 data = e ;var p_vl1000_&y._3 ;output out=p_vl1000_&y._3 median = median_p_vl1000_vac_&y. ; %mend;
+proc means noprint p50 data = ee ;var p_vl1000_&y._3 ;output out=p_vl1000_&y._3 median = median_p_vl1000_vac_&y. ; %mend;
 %median_p_vl1000(y=40);%median_p_vl1000(y=41);%median_p_vl1000(y=42);%median_p_vl1000(y=43);
 %median_p_vl1000(y=44);%median_p_vl1000(y=45);%median_p_vl1000(y=46);%median_p_vl1000(y=47);%median_p_vl1000(y=48);%median_p_vl1000(y=49);
 %median_p_vl1000(y=50);%median_p_vl1000(y=51);%median_p_vl1000(y=52);%median_p_vl1000(y=53);%median_p_vl1000(y=54);%median_p_vl1000(y=55);
@@ -1626,14 +1635,14 @@ p_vl1000_58_3 p_vl1000_59_3 p_vl1000_60_3 p_vl1000_61_3 p_vl1000_62_3 p_vl1000_6
 
 
 * n_ever_vaccinated;
-%macro 	median_n_ever_vaccinated(y=);data ee; set e;keep n_ever_vaccinated_&y._3 ; 
-proc means noprint p50 data = e ;var n_ever_vaccinated_&y._3 ;output out=n_ever_vaccinated_&y._3 median = median_n_ever_vaccinated_vac_&y. ; %mend;
-%median_n_ever_vaccinated(y=40);%median_n_ever_vaccinated(y=41);%median_n_ever_vaccinated(y=42);%median_n_ever_vaccinated(y=43);
-%median_n_ever_vaccinated(y=44);%median_n_ever_vaccinated(y=45);%median_n_ever_vaccinated(y=46);%median_n_ever_vaccinated(y=47);%median_n_ever_vaccinated(y=48);%median_n_ever_vaccinated(y=49);
-%median_n_ever_vaccinated(y=50);%median_n_ever_vaccinated(y=51);%median_n_ever_vaccinated(y=52);%median_n_ever_vaccinated(y=53);%median_n_ever_vaccinated(y=54);%median_n_ever_vaccinated(y=55);
-%median_n_ever_vaccinated(y=56);%median_n_ever_vaccinated(y=57);%median_n_ever_vaccinated(y=58);%median_n_ever_vaccinated(y=59);%median_n_ever_vaccinated(y=60);%median_n_ever_vaccinated(y=61);
-%median_n_ever_vaccinated(y=62);%median_n_ever_vaccinated(y=63);%median_n_ever_vaccinated(y=64);%median_n_ever_vaccinated(y=65);%median_n_ever_vaccinated(y=66);%median_n_ever_vaccinated(y=67);
-%median_n_ever_vaccinated(y=68);%median_n_ever_vaccinated(y=69);%median_n_ever_vaccinated(y=70);
+%macro 	med_n_ever_vaccinated(y=);data ee; set e;keep n_ever_vaccinated_&y._3 ; 
+proc means noprint p50 data = ee ;var n_ever_vaccinated_&y._3 ;output out=n_ever_vaccinated_&y._3 median = med_n_ever_vaccinated_vac_&y. ; %mend;
+%med_n_ever_vaccinated(y=40);%med_n_ever_vaccinated(y=41);%med_n_ever_vaccinated(y=42);%med_n_ever_vaccinated(y=43);
+%med_n_ever_vaccinated(y=44);%med_n_ever_vaccinated(y=45);%med_n_ever_vaccinated(y=46);%med_n_ever_vaccinated(y=47);%med_n_ever_vaccinated(y=48);%med_n_ever_vaccinated(y=49);
+%med_n_ever_vaccinated(y=50);%med_n_ever_vaccinated(y=51);%med_n_ever_vaccinated(y=52);%med_n_ever_vaccinated(y=53);%med_n_ever_vaccinated(y=54);%med_n_ever_vaccinated(y=55);
+%med_n_ever_vaccinated(y=56);%med_n_ever_vaccinated(y=57);%med_n_ever_vaccinated(y=58);%med_n_ever_vaccinated(y=59);%med_n_ever_vaccinated(y=60);%med_n_ever_vaccinated(y=61);
+%med_n_ever_vaccinated(y=62);%med_n_ever_vaccinated(y=63);%med_n_ever_vaccinated(y=64);%med_n_ever_vaccinated(y=65);%med_n_ever_vaccinated(y=66);%med_n_ever_vaccinated(y=67);
+%med_n_ever_vaccinated(y=68);%med_n_ever_vaccinated(y=69);%med_n_ever_vaccinated(y=70);
 data n_ever_vaccinated_3; merge n_ever_vaccinated_40_3 n_ever_vaccinated_41_3 n_ever_vaccinated_42_3 n_ever_vaccinated_43_3 n_ever_vaccinated_44_3 n_ever_vaccinated_45_3 n_ever_vaccinated_46_3 n_ever_vaccinated_47_3
 n_ever_vaccinated_48_3 n_ever_vaccinated_49_3 n_ever_vaccinated_50_3 n_ever_vaccinated_51_3 n_ever_vaccinated_52_3 n_ever_vaccinated_53_3 n_ever_vaccinated_54_3 n_ever_vaccinated_55_3 n_ever_vaccinated_56_3 n_ever_vaccinated_57_3
 n_ever_vaccinated_58_3 n_ever_vaccinated_59_3 n_ever_vaccinated_60_3 n_ever_vaccinated_61_3 n_ever_vaccinated_62_3 n_ever_vaccinated_63_3 n_ever_vaccinated_64_3 n_ever_vaccinated_65_3 n_ever_vaccinated_66_3 n_ever_vaccinated_67_3 
@@ -1641,102 +1650,118 @@ n_ever_vaccinated_68_3 n_ever_vaccinated_69_3 n_ever_vaccinated_70_3;drop _TYPE_
 
 
 
-* n_cur_full_vaccine_efficacy;
-%macro 	median_n_cur_full_vaccine_efficacy(y=);data ee; set e;keep n_cur_full_vaccine_efficacy_&y._3 ; 
-proc means noprint p50 data = e ;var n_cur_full_vaccine_efficacy_&y._3 ;output out=n_cur_full_vaccine_efficacy_&y._3 median = median_n_cur_full_vaccine_efficacy_vac_&y. ; %mend;
-%median_n_cur_full_vaccine_efficacy(y=40);%median_n_cur_full_vaccine_efficacy(y=41);%median_n_cur_full_vaccine_efficacy(y=42);%median_n_cur_full_vaccine_efficacy(y=43);
-%median_n_cur_full_vaccine_efficacy(y=44);%median_n_cur_full_vaccine_efficacy(y=45);%median_n_cur_full_vaccine_efficacy(y=46);%median_n_cur_full_vaccine_efficacy(y=47);%median_n_cur_full_vaccine_efficacy(y=48);%median_n_cur_full_vaccine_efficacy(y=49);
-%median_n_cur_full_vaccine_efficacy(y=50);%median_n_cur_full_vaccine_efficacy(y=51);%median_n_cur_full_vaccine_efficacy(y=52);%median_n_cur_full_vaccine_efficacy(y=53);%median_n_cur_full_vaccine_efficacy(y=54);%median_n_cur_full_vaccine_efficacy(y=55);
-%median_n_cur_full_vaccine_efficacy(y=56);%median_n_cur_full_vaccine_efficacy(y=57);%median_n_cur_full_vaccine_efficacy(y=58);%median_n_cur_full_vaccine_efficacy(y=59);%median_n_cur_full_vaccine_efficacy(y=60);%median_n_cur_full_vaccine_efficacy(y=61);
-%median_n_cur_full_vaccine_efficacy(y=62);%median_n_cur_full_vaccine_efficacy(y=63);%median_n_cur_full_vaccine_efficacy(y=64);%median_n_cur_full_vaccine_efficacy(y=65);%median_n_cur_full_vaccine_efficacy(y=66);%median_n_cur_full_vaccine_efficacy(y=67);
-%median_n_cur_full_vaccine_efficacy(y=68);%median_n_cur_full_vaccine_efficacy(y=69);%median_n_cur_full_vaccine_efficacy(y=70);
-data n_cur_full_vaccine_efficacy_3; merge n_cur_full_vaccine_efficacy_40_3 n_cur_full_vaccine_efficacy_41_3 n_cur_full_vaccine_efficacy_42_3 n_cur_full_vaccine_efficacy_43_3 n_cur_full_vaccine_efficacy_44_3 n_cur_full_vaccine_efficacy_45_3 n_cur_full_vaccine_efficacy_46_3 n_cur_full_vaccine_efficacy_47_3
-n_cur_full_vaccine_efficacy_48_3 n_cur_full_vaccine_efficacy_49_3 n_cur_full_vaccine_efficacy_50_3 n_cur_full_vaccine_efficacy_51_3 n_cur_full_vaccine_efficacy_52_3 n_cur_full_vaccine_efficacy_53_3 n_cur_full_vaccine_efficacy_54_3 n_cur_full_vaccine_efficacy_55_3 n_cur_full_vaccine_efficacy_56_3 n_cur_full_vaccine_efficacy_57_3
-n_cur_full_vaccine_efficacy_58_3 n_cur_full_vaccine_efficacy_59_3 n_cur_full_vaccine_efficacy_60_3 n_cur_full_vaccine_efficacy_61_3 n_cur_full_vaccine_efficacy_62_3 n_cur_full_vaccine_efficacy_63_3 n_cur_full_vaccine_efficacy_64_3 n_cur_full_vaccine_efficacy_65_3 n_cur_full_vaccine_efficacy_66_3 n_cur_full_vaccine_efficacy_67_3 
-n_cur_full_vaccine_efficacy_68_3 n_cur_full_vaccine_efficacy_69_3 n_cur_full_vaccine_efficacy_70_3;drop _TYPE_ _FREQ_;
+* n_cur_full_vac_eff;
+%macro 	med_n_cur_full_vac_eff(y=);data ee; set e;keep n_cur_full_vac_eff_&y._3 ; 
+proc means noprint p50 data = ee ;var n_cur_full_vac_eff_&y._3 ;output out=n_cur_full_vac_eff_&y._3 median = med_n_cur_full_vac_eff_vac_&y. ; %mend;
+%med_n_cur_full_vac_eff(y=40);%med_n_cur_full_vac_eff(y=41);%med_n_cur_full_vac_eff(y=42);%med_n_cur_full_vac_eff(y=43);
+%med_n_cur_full_vac_eff(y=44);%med_n_cur_full_vac_eff(y=45);%med_n_cur_full_vac_eff(y=46);%med_n_cur_full_vac_eff(y=47);%med_n_cur_full_vac_eff(y=48);%med_n_cur_full_vac_eff(y=49);
+%med_n_cur_full_vac_eff(y=50);%med_n_cur_full_vac_eff(y=51);%med_n_cur_full_vac_eff(y=52);%med_n_cur_full_vac_eff(y=53);%med_n_cur_full_vac_eff(y=54);%med_n_cur_full_vac_eff(y=55);
+%med_n_cur_full_vac_eff(y=56);%med_n_cur_full_vac_eff(y=57);%med_n_cur_full_vac_eff(y=58);%med_n_cur_full_vac_eff(y=59);%med_n_cur_full_vac_eff(y=60);%med_n_cur_full_vac_eff(y=61);
+%med_n_cur_full_vac_eff(y=62);%med_n_cur_full_vac_eff(y=63);%med_n_cur_full_vac_eff(y=64);%med_n_cur_full_vac_eff(y=65);%med_n_cur_full_vac_eff(y=66);%med_n_cur_full_vac_eff(y=67);
+%med_n_cur_full_vac_eff(y=68);%med_n_cur_full_vac_eff(y=69);%med_n_cur_full_vac_eff(y=70);
+data n_cur_full_vac_eff_3; merge n_cur_full_vac_eff_40_3 n_cur_full_vac_eff_41_3 n_cur_full_vac_eff_42_3 n_cur_full_vac_eff_43_3 n_cur_full_vac_eff_44_3 n_cur_full_vac_eff_45_3 n_cur_full_vac_eff_46_3 n_cur_full_vac_eff_47_3
+n_cur_full_vac_eff_48_3 n_cur_full_vac_eff_49_3 n_cur_full_vac_eff_50_3 n_cur_full_vac_eff_51_3 n_cur_full_vac_eff_52_3 n_cur_full_vac_eff_53_3 n_cur_full_vac_eff_54_3 n_cur_full_vac_eff_55_3 n_cur_full_vac_eff_56_3 n_cur_full_vac_eff_57_3
+n_cur_full_vac_eff_58_3 n_cur_full_vac_eff_59_3 n_cur_full_vac_eff_60_3 n_cur_full_vac_eff_61_3 n_cur_full_vac_eff_62_3 n_cur_full_vac_eff_63_3 n_cur_full_vac_eff_64_3 n_cur_full_vac_eff_65_3 n_cur_full_vac_eff_66_3 n_cur_full_vac_eff_67_3 
+ n_cur_full_vac_eff_68_3 n_cur_full_vac_eff_69_3 n_cur_full_vac_eff_70_3;drop _TYPE_ _FREQ_;
 
 
 
 
-* n_any_cur_vaccine_efficacy;
-%macro 	median_n_any_cur_vaccine_efficacy(y=);data ee; set e;keep n_any_cur_vaccine_efficacy_&y._3 ; 
-proc means noprint p50 data = e ;var n_any_cur_vaccine_efficacy_&y._3 ;output out=n_any_cur_vaccine_efficacy_&y._3 median = median_n_any_cur_vaccine_efficacy_vac_&y. ; %mend;
-%median_n_any_cur_vaccine_efficacy(y=40);%median_n_any_cur_vaccine_efficacy(y=41);%median_n_any_cur_vaccine_efficacy(y=42);%median_n_any_cur_vaccine_efficacy(y=43);
-%median_n_any_cur_vaccine_efficacy(y=44);%median_n_any_cur_vaccine_efficacy(y=45);%median_n_any_cur_vaccine_efficacy(y=46);%median_n_any_cur_vaccine_efficacy(y=47);%median_n_any_cur_vaccine_efficacy(y=48);%median_n_any_cur_vaccine_efficacy(y=49);
-%median_n_any_cur_vaccine_efficacy(y=50);%median_n_any_cur_vaccine_efficacy(y=51);%median_n_any_cur_vaccine_efficacy(y=52);%median_n_any_cur_vaccine_efficacy(y=53);%median_n_any_cur_vaccine_efficacy(y=54);%median_n_any_cur_vaccine_efficacy(y=55);
-%median_n_any_cur_vaccine_efficacy(y=56);%median_n_any_cur_vaccine_efficacy(y=57);%median_n_any_cur_vaccine_efficacy(y=58);%median_n_any_cur_vaccine_efficacy(y=59);%median_n_any_cur_vaccine_efficacy(y=60);%median_n_any_cur_vaccine_efficacy(y=61);
-%median_n_any_cur_vaccine_efficacy(y=62);%median_n_any_cur_vaccine_efficacy(y=63);%median_n_any_cur_vaccine_efficacy(y=64);%median_n_any_cur_vaccine_efficacy(y=65);%median_n_any_cur_vaccine_efficacy(y=66);%median_n_any_cur_vaccine_efficacy(y=67);
-%median_n_any_cur_vaccine_efficacy(y=68);%median_n_any_cur_vaccine_efficacy(y=69);%median_n_any_cur_vaccine_efficacy(y=70);
-data n_any_cur_vaccine_efficacy_3; merge n_any_cur_vaccine_efficacy_40_3 n_any_cur_vaccine_efficacy_41_3 n_any_cur_vaccine_efficacy_42_3 n_any_cur_vaccine_efficacy_43_3 n_any_cur_vaccine_efficacy_44_3 n_any_cur_vaccine_efficacy_45_3 n_any_cur_vaccine_efficacy_46_3 n_any_cur_vaccine_efficacy_47_3
-n_any_cur_vaccine_efficacy_48_3 n_any_cur_vaccine_efficacy_49_3 n_any_cur_vaccine_efficacy_50_3 n_any_cur_vaccine_efficacy_51_3 n_any_cur_vaccine_efficacy_52_3 n_any_cur_vaccine_efficacy_53_3 n_any_cur_vaccine_efficacy_54_3 n_any_cur_vaccine_efficacy_55_3 n_any_cur_vaccine_efficacy_56_3 n_any_cur_vaccine_efficacy_57_3
-n_any_cur_vaccine_efficacy_58_3 n_any_cur_vaccine_efficacy_59_3 n_any_cur_vaccine_efficacy_60_3 n_any_cur_vaccine_efficacy_61_3 n_any_cur_vaccine_efficacy_62_3 n_any_cur_vaccine_efficacy_63_3 n_any_cur_vaccine_efficacy_64_3 n_any_cur_vaccine_efficacy_65_3 n_any_cur_vaccine_efficacy_66_3 n_any_cur_vaccine_efficacy_67_3 
-n_any_cur_vaccine_efficacy_68_3 n_any_cur_vaccine_efficacy_69_3 n_any_cur_vaccine_efficacy_70_3;drop _TYPE_ _FREQ_;
+* n_any_cur_vac_eff;
+%macro 	med_n_any_cur_vac_eff(y=);data ee; set e;keep n_any_cur_vac_eff_&y._3 ; 
+proc means noprint p50 data = ee ;var n_any_cur_vac_eff_&y._3 ;output out=n_any_cur_vac_eff_&y._3 median = med_n_any_cur_vac_eff_vac_&y. ; %mend;
+%med_n_any_cur_vac_eff(y=40);%med_n_any_cur_vac_eff(y=41);%med_n_any_cur_vac_eff(y=42);%med_n_any_cur_vac_eff(y=43);
+%med_n_any_cur_vac_eff(y=44);%med_n_any_cur_vac_eff(y=45);%med_n_any_cur_vac_eff(y=46);%med_n_any_cur_vac_eff(y=47);%med_n_any_cur_vac_eff(y=48);%med_n_any_cur_vac_eff(y=49);
+%med_n_any_cur_vac_eff(y=50);%med_n_any_cur_vac_eff(y=51);%med_n_any_cur_vac_eff(y=52);%med_n_any_cur_vac_eff(y=53);%med_n_any_cur_vac_eff(y=54);%med_n_any_cur_vac_eff(y=55);
+%med_n_any_cur_vac_eff(y=56);%med_n_any_cur_vac_eff(y=57);%med_n_any_cur_vac_eff(y=58);%med_n_any_cur_vac_eff(y=59);%med_n_any_cur_vac_eff(y=60);%med_n_any_cur_vac_eff(y=61);
+%med_n_any_cur_vac_eff(y=62);%med_n_any_cur_vac_eff(y=63);%med_n_any_cur_vac_eff(y=64);%med_n_any_cur_vac_eff(y=65);%med_n_any_cur_vac_eff(y=66);%med_n_any_cur_vac_eff(y=67);
+%med_n_any_cur_vac_eff(y=68);%med_n_any_cur_vac_eff(y=69);%med_n_any_cur_vac_eff(y=70);
+data n_any_cur_vac_eff_3; merge n_any_cur_vac_eff_40_3 n_any_cur_vac_eff_41_3 n_any_cur_vac_eff_42_3 n_any_cur_vac_eff_43_3 n_any_cur_vac_eff_44_3 n_any_cur_vac_eff_45_3 n_any_cur_vac_eff_46_3 n_any_cur_vac_eff_47_3
+n_any_cur_vac_eff_48_3 n_any_cur_vac_eff_49_3 n_any_cur_vac_eff_50_3 n_any_cur_vac_eff_51_3 n_any_cur_vac_eff_52_3 n_any_cur_vac_eff_53_3 n_any_cur_vac_eff_54_3 n_any_cur_vac_eff_55_3 n_any_cur_vac_eff_56_3 n_any_cur_vac_eff_57_3
+n_any_cur_vac_eff_58_3 n_any_cur_vac_eff_59_3 n_any_cur_vac_eff_60_3 n_any_cur_vac_eff_61_3 n_any_cur_vac_eff_62_3 n_any_cur_vac_eff_63_3 n_any_cur_vac_eff_64_3 n_any_cur_vac_eff_65_3 n_any_cur_vac_eff_66_3 n_any_cur_vac_eff_67_3 
+n_any_cur_vac_eff_68_3 n_any_cur_vac_eff_69_3 n_any_cur_vac_eff_70_3;drop _TYPE_ _FREQ_;
 
 
-* n_boosted_this_year;
-%macro 	median_n_boosted_this_year(y=);data ee; set e;keep n_boosted_this_year_&y._3 ; 
-proc means noprint p50 data = e ;var n_boosted_this_year_&y._3 ;output out=n_boosted_this_year_&y._3 median = median_n_boosted_this_year_vac_&y. ; %mend;
-%median_n_boosted_this_year(y=40);%median_n_boosted_this_year(y=41);%median_n_boosted_this_year(y=42);%median_n_boosted_this_year(y=43);
-%median_n_boosted_this_year(y=44);%median_n_boosted_this_year(y=45);%median_n_boosted_this_year(y=46);%median_n_boosted_this_year(y=47);%median_n_boosted_this_year(y=48);%median_n_boosted_this_year(y=49);
-%median_n_boosted_this_year(y=50);%median_n_boosted_this_year(y=51);%median_n_boosted_this_year(y=52);%median_n_boosted_this_year(y=53);%median_n_boosted_this_year(y=54);%median_n_boosted_this_year(y=55);
-%median_n_boosted_this_year(y=56);%median_n_boosted_this_year(y=57);%median_n_boosted_this_year(y=58);%median_n_boosted_this_year(y=59);%median_n_boosted_this_year(y=60);%median_n_boosted_this_year(y=61);
-%median_n_boosted_this_year(y=62);%median_n_boosted_this_year(y=63);%median_n_boosted_this_year(y=64);%median_n_boosted_this_year(y=65);%median_n_boosted_this_year(y=66);%median_n_boosted_this_year(y=67);
-%median_n_boosted_this_year(y=68);%median_n_boosted_this_year(y=69);%median_n_boosted_this_year(y=70);
-data n_boosted_this_year_3; merge n_boosted_this_year_40_3 n_boosted_this_year_41_3 n_boosted_this_year_42_3 n_boosted_this_year_43_3 n_boosted_this_year_44_3 n_boosted_this_year_45_3 n_boosted_this_year_46_3 n_boosted_this_year_47_3
-n_boosted_this_year_48_3 n_boosted_this_year_49_3 n_boosted_this_year_50_3 n_boosted_this_year_51_3 n_boosted_this_year_52_3 n_boosted_this_year_53_3 n_boosted_this_year_54_3 n_boosted_this_year_55_3 n_boosted_this_year_56_3 n_boosted_this_year_57_3
-n_boosted_this_year_58_3 n_boosted_this_year_59_3 n_boosted_this_year_60_3 n_boosted_this_year_61_3 n_boosted_this_year_62_3 n_boosted_this_year_63_3 n_boosted_this_year_64_3 n_boosted_this_year_65_3 n_boosted_this_year_66_3 n_boosted_this_year_67_3 
- n_boosted_this_year_68_3 n_boosted_this_year_69_3 n_boosted_this_year_70_3;drop _TYPE_ _FREQ_;
+* n_boost_this_year;
+%macro 	med_n_boost_this_year(y=);data ee; set e;keep n_boost_this_year_&y._3 ; 
+proc means noprint p50 data = ee ;var n_boost_this_year_&y._3 ;output out=n_boost_this_year_&y._3 median = med_n_boost_this_year_vac_&y. ; %mend;
+%med_n_boost_this_year(y=40);%med_n_boost_this_year(y=41);%med_n_boost_this_year(y=42);%med_n_boost_this_year(y=43);
+%med_n_boost_this_year(y=44);%med_n_boost_this_year(y=45);%med_n_boost_this_year(y=46);%med_n_boost_this_year(y=47);%med_n_boost_this_year(y=48);%med_n_boost_this_year(y=49);
+%med_n_boost_this_year(y=50);%med_n_boost_this_year(y=51);%med_n_boost_this_year(y=52);%med_n_boost_this_year(y=53);%med_n_boost_this_year(y=54);%med_n_boost_this_year(y=55);
+%med_n_boost_this_year(y=56);%med_n_boost_this_year(y=57);%med_n_boost_this_year(y=58);%med_n_boost_this_year(y=59);%med_n_boost_this_year(y=60);%med_n_boost_this_year(y=61);
+%med_n_boost_this_year(y=62);%med_n_boost_this_year(y=63);%med_n_boost_this_year(y=64);%med_n_boost_this_year(y=65);%med_n_boost_this_year(y=66);%med_n_boost_this_year(y=67);
+%med_n_boost_this_year(y=68);%med_n_boost_this_year(y=69);%med_n_boost_this_year(y=70);
+data n_boost_this_year_3; merge n_boost_this_year_40_3 n_boost_this_year_41_3 n_boost_this_year_42_3 n_boost_this_year_43_3 n_boost_this_year_44_3 n_boost_this_year_45_3 n_boost_this_year_46_3 n_boost_this_year_47_3
+n_boost_this_year_48_3 n_boost_this_year_49_3 n_boost_this_year_50_3 n_boost_this_year_51_3 n_boost_this_year_52_3 n_boost_this_year_53_3 n_boost_this_year_54_3 n_boost_this_year_55_3 n_boost_this_year_56_3 n_boost_this_year_57_3
+n_boost_this_year_58_3 n_boost_this_year_59_3 n_boost_this_year_60_3 n_boost_this_year_61_3 n_boost_this_year_62_3 n_boost_this_year_63_3 n_boost_this_year_64_3 n_boost_this_year_65_3 n_boost_this_year_66_3 n_boost_this_year_67_3 
+ n_boost_this_year_68_3 n_boost_this_year_69_3 n_boost_this_year_70_3;drop _TYPE_ _FREQ_;
 
 
+* n_vac_this_year;
+%macro 	med_n_vac_this_year(y=);data ee; set e;keep n_vac_this_year_&y._3 ; 
+proc means noprint p50 data = ee ;var n_vac_this_year_&y._3 ;output out=n_vac_this_year_&y._3 median = med_n_vac_this_year_vac_&y. ; %mend;
+%med_n_vac_this_year(y=40);%med_n_vac_this_year(y=41);%med_n_vac_this_year(y=42);%med_n_vac_this_year(y=43);
+%med_n_vac_this_year(y=44);%med_n_vac_this_year(y=45);%med_n_vac_this_year(y=46);%med_n_vac_this_year(y=47);%med_n_vac_this_year(y=48);%med_n_vac_this_year(y=49);
+%med_n_vac_this_year(y=50);%med_n_vac_this_year(y=51);%med_n_vac_this_year(y=52);%med_n_vac_this_year(y=53);%med_n_vac_this_year(y=54);%med_n_vac_this_year(y=55);
+%med_n_vac_this_year(y=56);%med_n_vac_this_year(y=57);%med_n_vac_this_year(y=58);%med_n_vac_this_year(y=59);%med_n_vac_this_year(y=60);%med_n_vac_this_year(y=61);
+%med_n_vac_this_year(y=62);%med_n_vac_this_year(y=63);%med_n_vac_this_year(y=64);%med_n_vac_this_year(y=65);%med_n_vac_this_year(y=66);%med_n_vac_this_year(y=67);
+%med_n_vac_this_year(y=68);%med_n_vac_this_year(y=69);%med_n_vac_this_year(y=70);
+data n_vac_this_year_3; merge n_vac_this_year_40_3 n_vac_this_year_41_3 n_vac_this_year_42_3 n_vac_this_year_43_3 n_vac_this_year_44_3 n_vac_this_year_45_3 n_vac_this_year_46_3 n_vac_this_year_47_3
+n_vac_this_year_48_3 n_vac_this_year_49_3 n_vac_this_year_50_3 n_vac_this_year_51_3 n_vac_this_year_52_3 n_vac_this_year_53_3 n_vac_this_year_54_3 n_vac_this_year_55_3 n_vac_this_year_56_3 n_vac_this_year_57_3
+n_vac_this_year_58_3 n_vac_this_year_59_3 n_vac_this_year_60_3 n_vac_this_year_61_3 n_vac_this_year_62_3 n_vac_this_year_63_3 n_vac_this_year_64_3 n_vac_this_year_65_3 n_vac_this_year_66_3 n_vac_this_year_67_3 
+ n_vac_this_year_68_3 n_vac_this_year_69_3 n_vac_this_year_70_3;drop _TYPE_ _FREQ_;
 
 
 * HERE NEED DIFFERENCE IN DALYS PER RUN AND THEN MEDIAN;
 
 
-* n_ddaly;
-%macro median_n_ddaly(y=);data ee; set e;keep n_ddaly_&y._1 ; 
-proc means noprint p50 data = e ;var n_ddaly_&y._1 ;output out=n_ddaly_&y._1 median = median_n_ddaly_no_vac_&y. ; %mend;
-%median_n_ddaly(y=40);%median_n_ddaly(y=41);%median_n_ddaly(y=42);%median_n_ddaly(y=43);
-%median_n_ddaly(y=44);%median_n_ddaly(y=45);%median_n_ddaly(y=46);%median_n_ddaly(y=47);%median_n_ddaly(y=48);%median_n_ddaly(y=49);
-%median_n_ddaly(y=50);%median_n_ddaly(y=51);%median_n_ddaly(y=52);%median_n_ddaly(y=53);%median_n_ddaly(y=54);%median_n_ddaly(y=55);
-%median_n_ddaly(y=56);%median_n_ddaly(y=57);%median_n_ddaly(y=58);%median_n_ddaly(y=59);%median_n_ddaly(y=60);%median_n_ddaly(y=61);
-%median_n_ddaly(y=62);%median_n_ddaly(y=63);%median_n_ddaly(y=64);%median_n_ddaly(y=65);%median_n_ddaly(y=66);%median_n_ddaly(y=67);
-%median_n_ddaly(y=68);%median_n_ddaly(y=69);%median_n_ddaly(y=70);
-data n_ddaly_1; merge n_ddaly_40_1 n_ddaly_41_1 n_ddaly_42_1 n_ddaly_43_1 n_ddaly_44_1 n_ddaly_45_1 n_ddaly_46_1 n_ddaly_47_1
-n_ddaly_48_1 n_ddaly_49_1 n_ddaly_50_1 n_ddaly_51_1 n_ddaly_52_1 n_ddaly_53_1 n_ddaly_54_1 n_ddaly_55_1 n_ddaly_56_1 n_ddaly_57_1
-n_ddaly_58_1 n_ddaly_59_1 n_ddaly_60_1 n_ddaly_61_1 n_ddaly_62_1 n_ddaly_63_1 n_ddaly_64_1 n_ddaly_65_1 n_ddaly_66_1 n_ddaly_67_1  
-n_ddaly_68_1 n_ddaly_69_1 n_ddaly_70_1;drop _TYPE_ _FREQ_;
-%macro 	median_n_ddaly(y=);data ee; set e;keep n_ddaly_&y._3 ; 
-proc means noprint p50 data = e ;var n_ddaly_&y._3 ;output out=n_ddaly_&y._3 median = median_n_ddaly_vac_&y. ; %mend;
-%median_n_ddaly(y=40);%median_n_ddaly(y=41);%median_n_ddaly(y=42);%median_n_ddaly(y=43);
-%median_n_ddaly(y=44);%median_n_ddaly(y=45);%median_n_ddaly(y=46);%median_n_ddaly(y=47);%median_n_ddaly(y=48);%median_n_ddaly(y=49);
-%median_n_ddaly(y=50);%median_n_ddaly(y=51);%median_n_ddaly(y=52);%median_n_ddaly(y=53);%median_n_ddaly(y=54);%median_n_ddaly(y=55);
-%median_n_ddaly(y=56);%median_n_ddaly(y=57);%median_n_ddaly(y=58);%median_n_ddaly(y=59);%median_n_ddaly(y=60);%median_n_ddaly(y=61);
-%median_n_ddaly(y=62);%median_n_ddaly(y=63);%median_n_ddaly(y=64);%median_n_ddaly(y=65);%median_n_ddaly(y=66);%median_n_ddaly(y=67);
-%median_n_ddaly(y=68);%median_n_ddaly(y=69);%median_n_ddaly(y=70);
-data n_ddaly_3; merge n_ddaly_40_3 n_ddaly_41_3 n_ddaly_42_3 n_ddaly_43_3 n_ddaly_44_3 n_ddaly_45_3 n_ddaly_46_3 n_ddaly_47_3
-n_ddaly_48_3 n_ddaly_49_3 n_ddaly_50_3 n_ddaly_51_3 n_ddaly_52_3 n_ddaly_53_3 n_ddaly_54_3 n_ddaly_55_3 n_ddaly_56_3 n_ddaly_57_3
-n_ddaly_58_3 n_ddaly_59_3 n_ddaly_60_3 n_ddaly_61_3 n_ddaly_62_3 n_ddaly_63_3 n_ddaly_64_3 n_ddaly_65_3 n_ddaly_66_3 n_ddaly_67_3 
- n_ddaly_68_3 n_ddaly_69_3 n_ddaly_70_3;drop _TYPE_ _FREQ_;
+* n_daly_gbd;
+data z; set e;
+d_n_daly_gbd_40 = n_daly_gbd_40_3 - n_daly_gbd_40_1;d_n_daly_gbd_41 = n_daly_gbd_41_3 - n_daly_gbd_41_1;d_n_daly_gbd_42 = n_daly_gbd_42_3 - n_daly_gbd_42_1;
+d_n_daly_gbd_43 = n_daly_gbd_43_3 - n_daly_gbd_43_1;d_n_daly_gbd_44 = n_daly_gbd_44_3 - n_daly_gbd_44_1;d_n_daly_gbd_45 = n_daly_gbd_45_3 - n_daly_gbd_45_1;
+d_n_daly_gbd_46 = n_daly_gbd_46_3 - n_daly_gbd_46_1;d_n_daly_gbd_47 = n_daly_gbd_47_3 - n_daly_gbd_47_1;d_n_daly_gbd_48 = n_daly_gbd_48_3 - n_daly_gbd_48_1;
+d_n_daly_gbd_49 = n_daly_gbd_49_3 - n_daly_gbd_49_1;d_n_daly_gbd_50 = n_daly_gbd_50_3 - n_daly_gbd_50_1;d_n_daly_gbd_51 = n_daly_gbd_51_3 - n_daly_gbd_51_1;
+d_n_daly_gbd_52 = n_daly_gbd_52_3 - n_daly_gbd_52_1;d_n_daly_gbd_53 = n_daly_gbd_53_3 - n_daly_gbd_53_1;d_n_daly_gbd_54 = n_daly_gbd_54_3 - n_daly_gbd_54_1;
+d_n_daly_gbd_55 = n_daly_gbd_55_3 - n_daly_gbd_55_1;d_n_daly_gbd_56 = n_daly_gbd_56_3 - n_daly_gbd_56_1;d_n_daly_gbd_57 = n_daly_gbd_57_3 - n_daly_gbd_57_1;
+d_n_daly_gbd_58 = n_daly_gbd_58_3 - n_daly_gbd_58_1;d_n_daly_gbd_59 = n_daly_gbd_59_3 - n_daly_gbd_59_1;d_n_daly_gbd_60 = n_daly_gbd_60_3 - n_daly_gbd_60_1;
+d_n_daly_gbd_61 = n_daly_gbd_61_3 - n_daly_gbd_61_1;d_n_daly_gbd_62 = n_daly_gbd_62_3 - n_daly_gbd_62_1;d_n_daly_gbd_63 = n_daly_gbd_63_3 - n_daly_gbd_63_1;
+d_n_daly_gbd_64 = n_daly_gbd_64_3 - n_daly_gbd_64_1;d_n_daly_gbd_65 = n_daly_gbd_65_3 - n_daly_gbd_65_1;d_n_daly_gbd_66 = n_daly_gbd_66_3 - n_daly_gbd_66_1;
+d_n_daly_gbd_67 = n_daly_gbd_67_3 - n_daly_gbd_67_1;d_n_daly_gbd_68 = n_daly_gbd_68_3 - n_daly_gbd_68_1;d_n_daly_gbd_69 = n_daly_gbd_69_3 - n_daly_gbd_69_1;
+d_n_daly_gbd_70 = n_daly_gbd_70_3 - n_daly_gbd_70_1;
+%macro med_d_n_daly_gbd(y=);
+proc means noprint p50 data = z ;var d_n_daly_gbd_&y ;output out=d_n_daly_gbd_&y median = med_d_n_daly_gbd_&y. ; %mend;
+%med_d_n_daly_gbd(y=40);%med_d_n_daly_gbd(y=41);%med_d_n_daly_gbd(y=42);%med_d_n_daly_gbd(y=43);
+%med_d_n_daly_gbd(y=44);%med_d_n_daly_gbd(y=45);%med_d_n_daly_gbd(y=46);%med_d_n_daly_gbd(y=47);%med_d_n_daly_gbd(y=48);%med_d_n_daly_gbd(y=49);
+%med_d_n_daly_gbd(y=50);%med_d_n_daly_gbd(y=51);%med_d_n_daly_gbd(y=52);%med_d_n_daly_gbd(y=53);%med_d_n_daly_gbd(y=54);%med_d_n_daly_gbd(y=55);
+%med_d_n_daly_gbd(y=56);%med_d_n_daly_gbd(y=57);%med_d_n_daly_gbd(y=58);%med_d_n_daly_gbd(y=59);%med_d_n_daly_gbd(y=60);%med_d_n_daly_gbd(y=61);
+%med_d_n_daly_gbd(y=62);%med_d_n_daly_gbd(y=63);%med_d_n_daly_gbd(y=64);%med_d_n_daly_gbd(y=65);%med_d_n_daly_gbd(y=66);%med_d_n_daly_gbd(y=67);
+%med_d_n_daly_gbd(y=68);%med_d_n_daly_gbd(y=69);%med_d_n_daly_gbd(y=70);
+data d_n_daly_gbd; merge d_n_daly_gbd_40 d_n_daly_gbd_41 d_n_daly_gbd_42 d_n_daly_gbd_43 d_n_daly_gbd_44 d_n_daly_gbd_45 d_n_daly_gbd_46 d_n_daly_gbd_47
+d_n_daly_gbd_48 d_n_daly_gbd_49 d_n_daly_gbd_50 d_n_daly_gbd_51 d_n_daly_gbd_52 d_n_daly_gbd_53 d_n_daly_gbd_54 d_n_daly_gbd_55 d_n_daly_gbd_56 d_n_daly_gbd_57
+d_n_daly_gbd_58 d_n_daly_gbd_59 d_n_daly_gbd_60 d_n_daly_gbd_61 d_n_daly_gbd_62 d_n_daly_gbd_63 d_n_daly_gbd_64 d_n_daly_gbd_65 d_n_daly_gbd_66 d_n_daly_gbd_67  
+ d_n_daly_gbd_68 d_n_daly_gbd_69 d_n_daly_gbd_70;drop _TYPE_ _FREQ_;
+
+
+data n ; merge 
+n_alive_1 n_alive_3
+n_prep_elig_1 n_prep_elig_3
+n_prep_oral_1 n_prep_oral_3
+n_prep_inj_1 n_prep_inj_3
+n_newp_ge1_1  n_newp_ge1_3
+n_ep_1 n_ep_3
+n_new_vmmc_1 n_new_vmmc_3
+incidence1549_1 incidence1549_3 
+n_death_hiv_1  n_death_hiv_3
+p_vl1000_1 p_vl1000_3 
+n_ever_vaccinated_3
+n_cur_full_vac_eff_3 
+n_any_cur_vac_eff_3 
+n_vac_this_year_3 
+n_boost_this_year_3 
+d_n_daly_gbd ;
 
 
 
-data n ; merge n_alive
-n_prep_elig
-n_prep_oral
-n_prep_inj
-n_newp_ge1
-n_ep 
-n_new_vmmc 
-incidence1549 
-n_hiv_death 
-p_vl1000 
-n_ever_vaccinated 
-n_cur_full_vaccine_efficacy 
-n_any_cur_vaccine_efficacy 
-n_vaccinated_this_year 
-n_boosted_this_year 
-n_ddaly ;
 proc print; run;
 
 
