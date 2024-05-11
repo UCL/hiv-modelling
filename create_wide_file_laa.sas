@@ -1803,8 +1803,7 @@ proc sort; by run;run;
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
-
-  if incidence1549_24 > 0.1;
+* if incidence1549_24 > 0.1;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 
@@ -2074,5 +2073,5 @@ ods html close;
 
  
 proc glm; class lencab_uptake lencab_uptake_vls;
-model d_netdaly500_2_1 = lencab_uptake lencab_uptake_vls / solution; 
+model d_netdaly500_2_1 = lencab_uptake lencab_uptake_vls incidence1549_24 p_onart_vl1000_24/ solution; 
 run; 
