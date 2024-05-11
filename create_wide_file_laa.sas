@@ -831,6 +831,9 @@ run;
 * p_len;						if s_onart > 0 then p_len = s_len / s_onart ;
 * p_cab;						if s_onart > 0 then p_cab = s_cab / s_onart ;
 
+* n_started_lencab_vmgt1000;	n_started_lencab_vmgt1000 = s_started_lencab_vmgt1000 * &sf;
+* n_started_lencab_vmlt1000;	n_started_lencab_vmlt1000 = s_started_lencab_vmlt1000 * &sf;	
+
 * p_len_1524;					if (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) > 0 then p_len_1524 = (s_o_len_1524m + s_o_len_1524w) / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_);
 * p_cab_1524;					if (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) > 0 then p_cab_1524 = (s_o_cab_1524m + s_o_cab_1524w) / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_);
 
@@ -1315,6 +1318,8 @@ sens_tests_prep_cab sens_tests_prep_len  pr_inm_cab_prep_primary pr_inm_len_prep
 pref_prep_cab_beta_s1 pref_prep_len_beta_s1  testt1_prep_cab_eff_on_res_prim    testt1_prep_len_eff_on_res_prim  
 incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 
+lencab_uptake lencab_uptake_vls
+
 p_emerge_inm_res_cab_notpr
 
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
@@ -1325,7 +1330,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
-p_onart_vl1000_1524
+p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab_vmlt1000
 ;
 
 
@@ -1536,7 +1541,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=s_o_dol_2nd_vlg1000); %var(v=s_vl1000_art_gt6m_iicu);  %var(v=p_first_uvl2_dol_r);  %var(v= deathr_dol_r_uvl2);  %var(v=p_tldsw2_elig_tldsw);
 
 %var(v=p_len);  %var(v=p_cab);  %var(v=p_len_1524);  %var(v=p_cab_1524);  %var(v=p_onart_1524);   %var(v=incidence1524);  %var(v=p_onart_vl1000_w_1524);   
-%var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524);  
+%var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524); %var(v=n_started_lencab_vmgt1000);  
+%var(v=n_started_lencab_vmlt1000);
 
 
 data   b.wide_outputs; merge 
@@ -1591,7 +1597,7 @@ p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_o
 s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
-p_onart_vl1000_1524
+p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab_vmlt1000
 ;
 
 
@@ -1657,7 +1663,7 @@ incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
-
+lencab_uptake lencab_uptake_vls
 ;
 
 %macro par(p=);
@@ -1723,7 +1729,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=p_emerge_inm_res_cab_notpr);
 %par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
-
+%par(p=lencab_uptake); %par(p=lencab_uptake_vls);
 
 
 data b.wide_par2; merge 
@@ -1782,7 +1788,7 @@ incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
  prob_prep_pop_wide_tld
 
-p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol
+p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  lencab_uptake lencab_uptake_vls
 ;
 
 run;
@@ -1983,6 +1989,8 @@ proc means  n p50  p5  p95 ;
 var 
 p_len_10y_1 p_len_10y_2 
 p_cab_10y_1 p_cab_10y_2 
+n_started_lencab_vmgt1000_10y_1 n_started_lencab_vmgt1000_10y_2   
+n_started_lencab_vmlt1000_10y_1  n_started_lencab_vmlt1000_10y_2
 p_len_1524_10y_1 p_len_1524_10y_2
 p_cab_1524_10y_1 p_cab_1524_10y_2
 p_onart_1524_10y_1 p_onart_1524_10y_2 
@@ -2065,3 +2073,6 @@ ods html close;
 
 
  
+proc glm; class lencab_uptake lencab_uptake_vls;
+model d_netdaly500_2_1 = lencab_uptake lencab_uptake_vls / solution; 
+run; 
