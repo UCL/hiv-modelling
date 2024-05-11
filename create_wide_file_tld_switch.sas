@@ -3,25 +3,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_w_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_x_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_w_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_x_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_w;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_x;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_tld_switch_w; 
+proc sort data=b.k_tld_switch_x; 
 by run cald option;
 run;
 
@@ -31,7 +31,7 @@ run;
 data sf;
 
 
-set b.k_tld_switch_w ;
+set b.k_tld_switch_x ;
 
 
 if cald=2024   ;
@@ -51,7 +51,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_tld_switch_w sf;
+merge b.k_tld_switch_x sf;
 by run ;
 
 * preparatory code ;
@@ -1339,9 +1339,9 @@ run;
 
 
 
-data    b.l_tld_switch_w_y; set y;  
+data    b.l_tld_switch_x_y; set y;  
 
-data y ; set b.l_tld_switch_w_y; 
+data y ; set b.l_tld_switch_x_y; 
 
   options nomprint;
   option nospool;
@@ -1789,7 +1789,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_w     ; 
+  data  b.w_tld_switch_x     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1797,10 +1797,10 @@ proc sort; by run;run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_w_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_x_out\";
 
 data b;
-set b.w_tld_switch_w   ;
+set b.w_tld_switch_x   ;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
