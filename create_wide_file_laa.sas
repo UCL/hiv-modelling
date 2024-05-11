@@ -54,6 +54,17 @@ data y;
 merge b.k_laa_i sf;
 by run ;
 
+
+
+
+
+if 0 <= option <= 1; 
+
+
+
+
+
+
 * preparatory code ;
 
 * ================================================================================= ;
@@ -1842,7 +1853,7 @@ if dcost_50y_1 = min_dcost_50y then lowest_dcost=1;
 if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
 
 
-label 
+* label 
 prevalence1549w_24 = "HIV prevalence in women age 15-49 in 2024"
 prevalence1549m_24 = "HIV prevalence in men age 15-49 in 2024"
 incidence1549_24 = "HIV incidence in people age 15-49 (/100 person years) in 2024"  
@@ -1960,8 +1971,8 @@ ods html;
 title 'Characteristics of the setting scenarios in 2024 (median, 90% range)';
 ods noproctitle;
 proc means    n p50  p5  p95 ;  
-var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24  p_onart_vl1000_m_24 p_onart_vl1000_w_24
-p_vl1000_24 prevalence_vg1000_24   p_onart_cd4_l200_24
+var prevalence1549w_24 prevalence1549m_24 incidence1549m_24 incidence1549w_24 p_diag_24 p_onart_diag_24  
+p_onart_vl1000_m_24 p_onart_vl1000_w_24 p_vl1000_24 prevalence_vg1000_24   p_onart_cd4_l200_24
 p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24 
 ;
 run;
