@@ -58,7 +58,7 @@ by run ;
 
 
 
-if 0 <= option <= 1; 
+if option = 0 or option=3; 
 
 
 
