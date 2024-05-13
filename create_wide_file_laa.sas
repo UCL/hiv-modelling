@@ -55,7 +55,14 @@ merge b.k_laa_k sf;
 by run ;
 
 
-if option = 0 or option=3; 
+
+
+
+
+if option = 0 or option = 2;
+
+
+
 
 
 
@@ -1799,7 +1806,14 @@ proc sort; by run;run;
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
-* if incidence1549_24 > 0.1;
+
+
+if incidence1549_24 > 0.1;
+
+if p_onart_vl1000_m_24 > 0.80;
+
+
+
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 
