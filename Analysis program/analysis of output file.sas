@@ -9,8 +9,8 @@ data a;
 *set a.wide_fsw_17_08_23d; ***Used for the paper without the 'd' - the d file just added in 2 more parameters so should be the same as orignal file;
 *set a.wide_fsw_17_08_23c;***this is with various costs for a SW program to check if it's CE;
 
-*set a.wide_fsw_17_08_23_final ;
-set a.wide_fsw_17_08_23_final_progvis;*THIS WAS DONE FOR SENS ANALYSES TO SEE WHICH FACTORS OF SW PROGS ARE ASSOCIATED WITH CE IF % ATTENDING ARE THE SAME IN BOTH PROGS;
+set a.wide_fsw_17_08_23_final ;
+*set a.wide_fsw_17_08_23_final_progvis;*THIS WAS DONE FOR SENS ANALYSES TO SEE WHICH FACTORS OF SW PROGS ARE ASSOCIATED WITH CE IF % ATTENDING ARE THE SAME IN BOTH PROGS;
 
 if incidence1549_22 =0 then delete;
 if n_sw_1549__22 <15000 then delete; ***low number of sw, greater stochastic effects;
@@ -1945,26 +1945,55 @@ d_p_tested_past_year_sw_hi_low = (p_tested_past_year_sw_22_27_3-p_tested_past_ye
 d_p_fsw_newp0_hi_low = (p_fsw_newp0__22_27_3 - p_fsw_newp0__22_27_2)*100;
 d_prop_sw_onprep_hi_low = (prop_sw_onprep_22_27_3 - prop_sw_onprep_22_27_2)*100;
 d_p_sti_sw_hi_low = (p_sti_sw_22_27_3 - p_sti_sw_22_27_2)*100;
-d_incidence_sw_hi_low = incidence_sw_22_27_3 - incidence_sw_22_27_2;
-d_prevalence_sw_hi_low = (prevalence_sw_22_27_3 - prevalence_sw_22_27_2)*100;
 d_p_diag_sw_hi_low = (p_diag_sw_22_27_3 - p_diag_sw_22_27_2)*100;
 d_p_onart_diag_sw_hi_low = (p_onart_diag_sw_22_27_3 - p_onart_diag_sw_22_27_2)*100;
 d_p_onart_vl1000_sw_hi_low = (p_onart_vl1000_sw_22_27_3 - p_onart_vl1000_sw_22_27_2)*100;
 
+if d_p_sw_prog_vis_hi_low lt 20 then d_vis=1;
+if 20 le d_p_sw_prog_vis_hi_low lt 30 then d_vis=2;
+if 30 le d_p_sw_prog_vis_hi_low lt 50 then d_vis=3;
+if d_p_sw_prog_vis_hi_low ge 50 then d_vis=4;
 
-run;
+if d_p_tested_past_year_sw_hi_low lt 10 then d_tested=1;
+if 10 le d_p_tested_past_year_sw_hi_low lt 20 then d_tested=2;
+if d_p_tested_past_year_sw_hi_low ge 20 then d_tested=3;
 
-proc means mean;var p_sw_prog_vis_22_27_3 p_sw_prog_vis_22_27_2 p_sw_prog_vis_22_27_1 p_sw_prog_vis_30_1;run;
+if d_p_fsw_newp0_hi_low le 5 then d_newp=1;
+if 5 lt d_p_fsw_newp0_hi_low le 10 then d_newp=2;
+if d_p_fsw_newp0_hi_low gt 10 then d_newp=3;
+
+if d_prop_sw_onprep_hi_low lt 0 then d_prep=1;
+if 0 le d_prop_sw_onprep_hi_low lt 4 then d_prep=2;
+if d_prop_sw_onprep_hi_low ge 4 then d_prep=3;
+
+if d_p_sti_sw_hi_low lt -3 then d_sti=1;
+if -3 le d_p_sti_sw_hi_low lt -1 then d_sti=2;
+if d_p_sti_sw_hi_low ge -1 then d_sti=3;
+
+if d_p_diag_sw_hi_low lt 2 then d_diag=1;
+if 2 le d_p_diag_sw_hi_low lt 5 then d_diag=2;
+if d_p_diag_sw_hi_low ge 5 then d_diag=3;
+
+if d_p_onart_diag_sw_hi_low lt 2 then d_art=1;
+if 2 le d_p_onart_diag_sw_hi_low lt 5 then d_art=2;
+if d_p_onart_diag_sw_hi_low ge 5 then d_art=3;
+
+if d_p_onart_vl1000_sw_hi_low lt 2 then d_vs=1;
+if 2 le d_p_onart_vl1000_sw_hi_low lt 5 then d_vs=2;
+if d_p_onart_vl1000_sw_hi_low ge 5 then d_vs=3;
+
+
+
 ***difference in parameters resulting in sceanrios being CE;
+proc logistic desc;class d_vis (ref="1"); model  ce  = d_vis;run;
+proc logistic desc;class d_tested (ref="1"); model  ce  = d_tested;run;
+proc logistic desc;class d_newp (ref="1"); model  ce  = d_newp;run;
+proc logistic desc;class d_prep (ref="1"); model  ce  = d_prep;run;
+proc logistic desc;class d_sti (ref="1"); model  ce  = d_sti;run;
+proc logistic desc;class d_diag (ref="1"); model  ce  = d_diag;run;
+proc logistic desc;class d_art (ref="1"); model  ce  = d_art;run;
+proc logistic desc;class d_vs (ref="1"); model  ce  = d_vs;run;
 
-proc logistic desc; model  ce  = d_p_sw_prog_vis_hi_low;run;
-proc logistic desc; model  ce  = d_p_tested_past_year_sw_hi_low;run;
-proc logistic desc; model  ce  = d_p_fsw_newp0_hi_low;run;
-proc logistic desc; model  ce  = d_prop_sw_onprep_hi_low;run;
-proc logistic desc; model  ce  = d_p_sti_sw_hi_low;run;
-proc logistic desc; model  ce  = d_p_diag_sw_hi_low;run;
-proc logistic desc; model  ce  = d_p_onart_diag_sw_hi_low;run;
-proc logistic desc; model  ce  = d_p_onart_vl1000_sw_hi_low;run;
 
 proc logistic desc; model  ce  = d_p_sw_prog_vis_hi_none d_p_fsw_newp0_hi_none d_p_sti_sw_hi_none
 d_p_onart_diag_sw_hi_none d_p_onart_vl1000_sw_hi_none;run;
