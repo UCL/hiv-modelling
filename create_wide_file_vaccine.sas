@@ -1501,14 +1501,22 @@ proc sort; by run;run;
 proc freq data=b.wide_par2; tables future_prep_condom ; run;  
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
-
-
 * To get one row per run;
 
   data  b.w_vaccine_n_b_keep_prep     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
+
+
+
+
+
+
+
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
+
+data zz; set b.w_vaccine_n_b_keep_prep ;
+
 
 d_prop_elig_on_prep_30y_2_1 = prop_elig_on_prep_30y_2 - prop_elig_on_prep_30y_1; 
 
@@ -1625,18 +1633,18 @@ r_incidence1549_30y_4_1  = "vaccine_3"
 
 
 
-proc means   data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 ;  
+proc means   data = zz  n p50 p5 p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   ;
 run;
 
-proc means   data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 ;  
+proc means   data = zz  n p50 p5 p95 ;  
 var prevalence1549w_39 prevalence1549m_39 incidence1549_39 p_diag_39 p_onart_diag_39 p_onart_vl1000_39 p_vl1000_39 prevalence_vg1000_39   ;
 run;
 
 
 ods html;
 title "Relative incidence (age 15-49) compared with no vaccine";
-proc means  data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 ;
+proc means  data = zz  n p50 p5 p95 ;
 var
 r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
 ;
@@ -1644,14 +1652,14 @@ run;
 ods html close;
 
 
-proc means  data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 ;
+proc means  data = zz  n p50 p5 p95 ;
 var
 r_incidence1549_69_2_1 r_incidence1549_69_3_1  r_incidence1549_69_4_1  
 ;
 run;
 
 
-proc means  data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 ;
+proc means  data = zz  n p50 p5 p95 ;
 var
 r_incidence1549_30y_2_1 r_incidence1549_30y_3_1 r_incidence1549_30y_4_1 
 d_incidence1549_30y_2_1 d_incidence1549_30y_3_1  d_incidence1549_30y_4_1 
@@ -1692,7 +1700,7 @@ run;
 
 
 
-proc means   data = b.w_vaccine_n_b_keep_prep  n mean  p50 p5 p95 ;
+proc means   data = zz  n mean  p50 p5 p95 ;
 var incidence1549_39 
 incidence1549_40_1  incidence1549_41_1  incidence1549_42_1  incidence1549_43_1  incidence1549_44_1  incidence1549_45_1  incidence1549_46_1  incidence1549_47_1  
 incidence1549_48_1  incidence1549_49_1  incidence1549_50_1  incidence1549_51_1  incidence1549_52_1  incidence1549_53_1  incidence1549_54_1  incidence1549_55_1  
@@ -1747,18 +1755,18 @@ run;quit;
 
 
 
-proc glm  data = b.w_vaccine_n_b_keep_prep ;
+proc glm  data = zz ;
 class future_prep_condom;
 model prop_elig_on_prep_39 = future_prep_condom / solution;
 run;
 
-proc glm  data = b.w_vaccine_n_b_keep_prep ;
+proc glm  data = zz ;
 class future_prep_condom;
 model incidence1549_30y_1 = future_prep_condom / solution;
 run;
 
-proc sort data = b.w_vaccine_n_b_keep_prep; by future_prep_condom;
-proc means  data = b.w_vaccine_n_b_keep_prep ;
+proc sort data = zz; by future_prep_condom;
+proc means  data = zz ;
 var prop_elig_on_prep_39  incidence1549_39 incidence1549_30y_1  ;
 by future_prep_condom;
 run;
@@ -1774,27 +1782,27 @@ ods html close;
 
 
 
-proc means   data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 min max;  
+proc means   data = zz  n p50 p5 p95 min max;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24 
 prop_elig_on_prep_24  ;
 run;
 
 
-proc means data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 ;  
+proc means data = zz  n p50 p5 p95 ;  
 var
 prop_1564_onprep_30y_1  prop_1564_onprep_30y_2   
 d_prop_1564_onprep_30y_2_1  
 ;
 
 
-proc means data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 ;  
+proc means data = zz  n p50 p5 p95 ;  
 var 
 prop_elig_on_prep_30y_1 prop_elig_on_prep_30y_2  
 d_prop_elig_on_prep_30y_2_1  
 ;
 
 
-proc means data = b.w_vaccine_n_b_keep_prep  n p50 p5 p95 ;  
+proc means data = zz  n p50 p5 p95 ;  
 var
 prop_prep_inj_30y_1  prop_prep_inj_30y_2  
 d_prop_prep_inj_30y_2_1  
@@ -1802,7 +1810,7 @@ d_prop_prep_inj_30y_2_1
 
 
 
-proc means  data = b.w_vaccine_n_b_keep_prep  n mean p50 p5 p95 clm;  
+proc means  data = zz  n mean p50 p5 p95 clm;  
 var
 incidence1549_30y_1 incidence1549_30y_2  
 r_incidence1549_30y_2_1 
@@ -1811,7 +1819,7 @@ run;
 
 
 ods html;
-proc means  data = b.w_vaccine_n_b_keep_prep  n mean clm;  
+proc means  data = zz  n mean clm;  
 var
 incidence1549_30y_1 incidence1549_30y_2 
 r_incidence1549_30y_2_1 
