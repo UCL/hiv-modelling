@@ -4,6 +4,15 @@
 
 
 
+
+*  why did adherence drop in 2017 ? ;
+
+
+
+
+
+
+
 * also add in effect of offering len-cab in bringing people back into care ?
 
 
@@ -2101,15 +2110,7 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-if option=1 and p_len ne 1 and caldate{t} < &year_interv + 10 then do; * dont include p_cab because could have been as prep - p_len implies p_cab automatically;  
-	s = rand('uniform');
-	if vm > 3 and caldate{t} - date_v_alert >= 0.25 and lencab_offered ne 1 then do;
-		lencab_offered=1; if s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; end;
-	end;
-	if vm <= 3 and s < lencab_uptake_vls then do; reg_option_set_in_options = 130; started_lencab_vmlt1000=1; end;
-end;
-
-if option=2 and p_len ne 1 then do; * dont include p_cab because could have been as prep - p_len implies p_cab automatically;  
+if option=1 and p_len ne 1 then do; * dont include p_cab because could have been as prep - p_len implies p_cab automatically;  
 	s = rand('uniform');
 	if vm > 3 and caldate{t} - date_v_alert >= 0.25 and lencab_offered ne 1 then do;
 		lencab_offered=1; if s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; end;
@@ -2822,13 +2823,13 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 
 end;
 
-if caldate{t} >= &year_interv then do;
+if caldate{t} >= 2022        then do;
 	if incr_test_year_i = 1              then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
 	if incr_test_year_i = 3 then do; 
-		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
-		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
+		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-2022)*an_lin_incr_test*fold_rate_decr_test_future);
+		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-2022)*an_lin_incr_test*fold_rate_decr_test_future);
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
 		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
@@ -2920,25 +2921,25 @@ if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-201
 end;
 
 * note circ_inc_rate_year_i = 1 means circ stops in 10-15 year olds;
-if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
+if t ge 2 and 2022         <= caldate{t} and circ_inc_rate_year_i = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
 if  age lt 15 then prob_circ =0;
 if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013)*circ_inc_15_19;
 if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
-if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 2 then do; *option=2 - no further circ;
+if t ge 2 and 2022         <= caldate{t} and circ_inc_rate_year_i = 2 then do; *option=2 - no further circ;
 prob_circ = 0;test_link_circ_prob=0;
 end;
 
-if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
+if t ge 2 and 2022         <= caldate{t} and circ_inc_rate_year_i = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
 if age lt 15 then prob_circ =0;
 if 15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if 20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if 30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
-if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*option=4 - no circ in under 15s, no increased rate in 15-19yo, stop VMMC after 5 years;
+if t ge 2 and 2022         <= caldate{t} and circ_inc_rate_year_i = 4 then do;*option=4 - no circ in under 15s, no increased rate in 15-19yo, stop VMMC after 5 years;
 	if caldate{t} <= 2026.5 then do;
       if age lt 15 then prob_circ =0;
       if 15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
@@ -10964,7 +10965,7 @@ end;
 
 drug_level_test=0; res_test_dol=0; second_vlg1000_first=0; second_vlg1000_first_dol_r=0;
 
-if caldate{t} ge 2026 and art_monitoring_strategy in (150, 160, 1500, 1600, 1700) and visit=1 and (o_dol=1 or (mr_dol_tm1 = 1 and int_clinic_not_aw=1)) and f_dol ne 1 and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1)
+if art_monitoring_strategy in (150, 160, 1500, 1600, 1700) and visit=1 and (o_dol=1 or (mr_dol_tm1 = 1 and int_clinic_not_aw=1)) and f_dol ne 1 and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1)
 and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	
 	* evaluate if a viral load test is indicated;
@@ -11031,7 +11032,7 @@ end;
 
 * for monitoring people on len/cab - currently no nothing regardless of viral load ;
 
-if caldate{t} ge 2026 and art_monitoring_strategy = 1700 and visit=1 and o_cab=1 and o_len=1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do;  
+if art_monitoring_strategy = 1700 and visit=1 and o_cab=1 and o_len=1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do;  
 	
 	* evaluate if a viral load test is indicated;
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or 
@@ -19999,7 +20000,7 @@ if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do;
 */
 /*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
-if cald = 2024 and prevalence1549 < 0.05 then do; abort abend; end;
+if cald = 2024 and prevalence1549 < 0.03 then do; abort abend; end;
 
 
 
@@ -21582,214 +21583,6 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=341,h=348,j=346,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=341,h=348,j=347,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=341,h=348,j=348,s=1);
-
-
-
-
-data r1; set a;
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=2);		
-%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=2);   
-%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);		
-%update_r1(da1=1,da2=2,e=7,f=8,g=329,h=336,j=335,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=329,h=336,j=336,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=333,h=340,j=337,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=333,h=340,j=338,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=333,h=340,j=339,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=333,h=340,j=340,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=337,h=344,j=341,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=337,h=344,j=342,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=2);
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=341,h=348,j=345,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=341,h=348,j=346,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=341,h=348,j=347,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=341,h=348,j=348,s=2);
-
 
 
 

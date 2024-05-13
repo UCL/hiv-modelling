@@ -58,7 +58,6 @@ by run ;
 
 
 
-
 if option = 0 or option = 2;
 
 
@@ -1808,9 +1807,9 @@ proc sort; by run;run;
 
 
 
-if incidence1549_24 > 0.1;
+* if incidence1549_24 > 0.1;
 
-if p_onart_vl1000_m_24 > 0.80;
+  if p_onart_vl1000_m_24 > 0.85;
 
 
 
@@ -1986,7 +1985,7 @@ ods html;
 title 'Characteristics of the setting scenarios in 2024 (median, 90% range)';
 ods noproctitle;
 proc means    n p50  p5  p95 ;  
-var prevalence1549w_24 prevalence1549m_24 incidence1549m_24 incidence1549w_24 p_diag_24 p_onart_diag_24  
+var prevalence1549w_24 prevalence1549m_24 prevalence1549_24 incidence1549m_24 incidence1549w_24 p_diag_24 p_onart_diag_24  
 p_onart_vl1000_m_24 p_onart_vl1000_w_24 p_vl1000_24 prevalence_vg1000_24   p_onart_cd4_l200_24
 p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24 
 ;
@@ -2078,7 +2077,6 @@ title;
 footnote;
 
 ods html close;
-
 
 
  
