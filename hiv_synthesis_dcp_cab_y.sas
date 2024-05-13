@@ -519,7 +519,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.10 	0.20	0.20	0.20	0.10	0.10	0.10) ; * tld_switch;  * note also change below at ***adh tld_switch ;
+								0.15	0.40	0.20	0.10	0.10	0.03	0.02) ; * tld_switch;  * note also change below at ***adh tld_switch ;
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
