@@ -1,6 +1,6 @@
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_q_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_y_out\";
 
 
 proc printto ;
@@ -8,7 +8,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_tld_switch_q_y;
+set a.l_tld_switch_y;
 
 
 * for this program, variable names cannot end on a number;
