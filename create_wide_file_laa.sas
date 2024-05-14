@@ -1,6 +1,21 @@
 
 
 
+
+
+
+
+
+* add daly benefit from mtct effect ;
+
+
+
+
+
+
+
+
+
 * options user="/folders/myfolders/";
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_l_out\";
@@ -53,17 +68,6 @@ data y;
 
 merge b.k_laa_l sf;
 by run ;
-
-
-
-
-
-if option = 0 or option = 2;
-
-
-
-
-
 
 
 * preparatory code ;
@@ -1807,6 +1811,8 @@ proc sort; by run;run;
 
 
   if incidence1549_24 > 0.1;
+  if p_onart_vl1000_24 > 0.90;
+
 
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
@@ -1820,6 +1826,9 @@ d_n_death_hiv_50y_2_1 = n_death_hiv_50y_2 - n_death_hiv_50y_1;
 d_n_iime_50y_2_1 = n_iime_50y_2 -   n_iime_50y_1 ; 
 
 d_mtct_prop_10y_2_1 = mtct_prop_10y_2 - mtct_prop_10y_1 ;
+
+p_started_lencab_vmgt1000_10y_2 = n_started_lencab_vmgt1000_10y_2 / (n_started_lencab_vmgt1000_10y_2 + n_started_lencab_vmlt1000_10y_2); 
+
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -2074,7 +2083,18 @@ footnote;
 ods html close;
 
 
- 
+ods html; 
 proc glm; class lencab_uptake lencab_uptake_vls;
 model d_netdaly500_2_1 = lencab_uptake lencab_uptake_vls incidence1549_24 p_onart_vl1000_24/ solution; 
 run; 
+ods html close;
+
+
+ods html; 
+proc glm; class lencab_uptake lencab_uptake_vls;
+model d_netdaly500_2_1 = p_started_lencab_vmgt1000_10y_2 incidence1549_24 p_onart_vl1000_24/ solution; 
+run; 
+ods html close;
+
+
+
