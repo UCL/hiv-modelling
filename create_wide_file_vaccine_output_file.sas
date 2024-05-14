@@ -1277,6 +1277,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_vac_this_year); 
 %var(v=n_boost_this_year); 
 %var(v=n_daly_gbd); 
+%var(v=n_infection);
+%var(v=n_onart);
 ;
 
 data   b.wide_outputs; merge 
@@ -1297,6 +1299,8 @@ n_any_cur_vac_eff
 n_vac_this_year 
 n_boost_this_year 
 n_daly_gbd 
+n_infection
+n_onart
 ;
 
 proc contents; run; 
@@ -1579,6 +1583,63 @@ incidence1549_68_3 incidence1549_69_3 incidence1549_70_3;drop _TYPE_ _FREQ_;
 
 
 
+
+* n_infection;
+%macro median_n_infection(y=);data ee; set e;keep n_infection_&y._1 ; 
+proc means noprint p50 data = ee ;var n_infection_&y._1 ;output out=n_infection_&y._1 median = median_n_infection_no_vac_&y. ; %mend;
+%median_n_infection(y=40);%median_n_infection(y=41);%median_n_infection(y=42);%median_n_infection(y=43);
+%median_n_infection(y=44);%median_n_infection(y=45);%median_n_infection(y=46);%median_n_infection(y=47);%median_n_infection(y=48);%median_n_infection(y=49);
+%median_n_infection(y=50);%median_n_infection(y=51);%median_n_infection(y=52);%median_n_infection(y=53);%median_n_infection(y=54);%median_n_infection(y=55);
+%median_n_infection(y=56);%median_n_infection(y=57);%median_n_infection(y=58);%median_n_infection(y=59);%median_n_infection(y=60);%median_n_infection(y=61);
+%median_n_infection(y=62);%median_n_infection(y=63);%median_n_infection(y=64);%median_n_infection(y=65);%median_n_infection(y=66);%median_n_infection(y=67);
+%median_n_infection(y=68);%median_n_infection(y=69);%median_n_infection(y=70);
+data n_infection_1; merge n_infection_40_1 n_infection_41_1 n_infection_42_1 n_infection_43_1 n_infection_44_1 n_infection_45_1 n_infection_46_1 n_infection_47_1
+n_infection_48_1 n_infection_49_1 n_infection_50_1 n_infection_51_1 n_infection_52_1 n_infection_53_1 n_infection_54_1 n_infection_55_1 n_infection_56_1 n_infection_57_1
+n_infection_58_1 n_infection_59_1 n_infection_60_1 n_infection_61_1 n_infection_62_1 n_infection_63_1 n_infection_64_1 n_infection_65_1 n_infection_66_1 n_infection_67_1  
+n_infection_68_1 n_infection_69_1 n_infection_70_1;drop _TYPE_ _FREQ_;
+%macro 	median_n_infection(y=);data ee; set e;keep n_infection_&y._3 ; 
+proc means noprint p50 data = ee ;var n_infection_&y._3 ;output out=n_infection_&y._3 median = median_n_infection_vac_&y. ; %mend;
+%median_n_infection(y=40);%median_n_infection(y=41);%median_n_infection(y=42);%median_n_infection(y=43);
+%median_n_infection(y=44);%median_n_infection(y=45);%median_n_infection(y=46);%median_n_infection(y=47);%median_n_infection(y=48);%median_n_infection(y=49);
+%median_n_infection(y=50);%median_n_infection(y=51);%median_n_infection(y=52);%median_n_infection(y=53);%median_n_infection(y=54);%median_n_infection(y=55);
+%median_n_infection(y=56);%median_n_infection(y=57);%median_n_infection(y=58);%median_n_infection(y=59);%median_n_infection(y=60);%median_n_infection(y=61);
+%median_n_infection(y=62);%median_n_infection(y=63);%median_n_infection(y=64);%median_n_infection(y=65);%median_n_infection(y=66);%median_n_infection(y=67);
+%median_n_infection(y=68);%median_n_infection(y=69);%median_n_infection(y=70);
+data n_infection_3; merge n_infection_40_3 n_infection_41_3 n_infection_42_3 n_infection_43_3 n_infection_44_3 n_infection_45_3 n_infection_46_3 n_infection_47_3
+n_infection_48_3 n_infection_49_3 n_infection_50_3 n_infection_51_3 n_infection_52_3 n_infection_53_3 n_infection_54_3 n_infection_55_3 n_infection_56_3 n_infection_57_3
+n_infection_58_3 n_infection_59_3 n_infection_60_3 n_infection_61_3 n_infection_62_3 n_infection_63_3 n_infection_64_3 n_infection_65_3 n_infection_66_3 n_infection_67_3 
+n_infection_68_3 n_infection_69_3 n_infection_70_3;drop _TYPE_ _FREQ_;
+
+
+
+* n_onart;
+%macro median_n_onart(y=);data ee; set e;keep n_onart_&y._1 ; 
+proc means noprint p50 data = ee ;var n_onart_&y._1 ;output out=n_onart_&y._1 median = median_n_onart_no_vac_&y. ; %mend;
+%median_n_onart(y=40);%median_n_onart(y=41);%median_n_onart(y=42);%median_n_onart(y=43);
+%median_n_onart(y=44);%median_n_onart(y=45);%median_n_onart(y=46);%median_n_onart(y=47);%median_n_onart(y=48);%median_n_onart(y=49);
+%median_n_onart(y=50);%median_n_onart(y=51);%median_n_onart(y=52);%median_n_onart(y=53);%median_n_onart(y=54);%median_n_onart(y=55);
+%median_n_onart(y=56);%median_n_onart(y=57);%median_n_onart(y=58);%median_n_onart(y=59);%median_n_onart(y=60);%median_n_onart(y=61);
+%median_n_onart(y=62);%median_n_onart(y=63);%median_n_onart(y=64);%median_n_onart(y=65);%median_n_onart(y=66);%median_n_onart(y=67);
+%median_n_onart(y=68);%median_n_onart(y=69);%median_n_onart(y=70);
+data n_onart_1; merge n_onart_40_1 n_onart_41_1 n_onart_42_1 n_onart_43_1 n_onart_44_1 n_onart_45_1 n_onart_46_1 n_onart_47_1
+n_onart_48_1 n_onart_49_1 n_onart_50_1 n_onart_51_1 n_onart_52_1 n_onart_53_1 n_onart_54_1 n_onart_55_1 n_onart_56_1 n_onart_57_1
+n_onart_58_1 n_onart_59_1 n_onart_60_1 n_onart_61_1 n_onart_62_1 n_onart_63_1 n_onart_64_1 n_onart_65_1 n_onart_66_1 n_onart_67_1  
+n_onart_68_1 n_onart_69_1 n_onart_70_1;drop _TYPE_ _FREQ_;
+%macro 	median_n_onart(y=);data ee; set e;keep n_onart_&y._3 ; 
+proc means noprint p50 data = ee ;var n_onart_&y._3 ;output out=n_onart_&y._3 median = median_n_onart_vac_&y. ; %mend;
+%median_n_onart(y=40);%median_n_onart(y=41);%median_n_onart(y=42);%median_n_onart(y=43);
+%median_n_onart(y=44);%median_n_onart(y=45);%median_n_onart(y=46);%median_n_onart(y=47);%median_n_onart(y=48);%median_n_onart(y=49);
+%median_n_onart(y=50);%median_n_onart(y=51);%median_n_onart(y=52);%median_n_onart(y=53);%median_n_onart(y=54);%median_n_onart(y=55);
+%median_n_onart(y=56);%median_n_onart(y=57);%median_n_onart(y=58);%median_n_onart(y=59);%median_n_onart(y=60);%median_n_onart(y=61);
+%median_n_onart(y=62);%median_n_onart(y=63);%median_n_onart(y=64);%median_n_onart(y=65);%median_n_onart(y=66);%median_n_onart(y=67);
+%median_n_onart(y=68);%median_n_onart(y=69);%median_n_onart(y=70);
+data n_onart_3; merge n_onart_40_3 n_onart_41_3 n_onart_42_3 n_onart_43_3 n_onart_44_3 n_onart_45_3 n_onart_46_3 n_onart_47_3
+n_onart_48_3 n_onart_49_3 n_onart_50_3 n_onart_51_3 n_onart_52_3 n_onart_53_3 n_onart_54_3 n_onart_55_3 n_onart_56_3 n_onart_57_3
+n_onart_58_3 n_onart_59_3 n_onart_60_3 n_onart_61_3 n_onart_62_3 n_onart_63_3 n_onart_64_3 n_onart_65_3 n_onart_66_3 n_onart_67_3 
+n_onart_68_3 n_onart_69_3 n_onart_70_3;drop _TYPE_ _FREQ_;
+
+
+
 * n_death_hiv;
 %macro med_n_death_hiv(y=);data ee; set e;keep n_death_hiv_&y._1 ; 
 proc means noprint p50 data = ee ;var n_death_hiv_&y._1 ;output out=n_death_hiv_&y._1 median = med_n_death_hiv_no_vac_&y. ; %mend;
@@ -1709,10 +1770,8 @@ proc means noprint p50 data = ee ;var n_vac_this_year_&y._3 ;output out=n_vac_th
 data n_vac_this_year_3; merge n_vac_this_year_40_3 n_vac_this_year_41_3 n_vac_this_year_42_3 n_vac_this_year_43_3 n_vac_this_year_44_3 n_vac_this_year_45_3 n_vac_this_year_46_3 n_vac_this_year_47_3
 n_vac_this_year_48_3 n_vac_this_year_49_3 n_vac_this_year_50_3 n_vac_this_year_51_3 n_vac_this_year_52_3 n_vac_this_year_53_3 n_vac_this_year_54_3 n_vac_this_year_55_3 n_vac_this_year_56_3 n_vac_this_year_57_3
 n_vac_this_year_58_3 n_vac_this_year_59_3 n_vac_this_year_60_3 n_vac_this_year_61_3 n_vac_this_year_62_3 n_vac_this_year_63_3 n_vac_this_year_64_3 n_vac_this_year_65_3 n_vac_this_year_66_3 n_vac_this_year_67_3 
- n_vac_this_year_68_3 n_vac_this_year_69_3 n_vac_this_year_70_3;drop _TYPE_ _FREQ_;
+  n_vac_this_year_68_3 n_vac_this_year_69_3 n_vac_this_year_70_3;drop _TYPE_ _FREQ_;
 
-
-* HERE NEED DIFFERENCE IN DALYS PER RUN AND THEN MEDIAN;
 
 
 * n_daly_gbd;
@@ -1751,6 +1810,8 @@ n_newp_ge1_1  n_newp_ge1_3
 n_ep_1 n_ep_3
 n_new_vmmc_1 n_new_vmmc_3
 incidence1549_1 incidence1549_3 
+n_infection_1 n_infection_3
+n_onart_1 n_onart_3
 n_death_hiv_1  n_death_hiv_3
 p_vl1000_1 p_vl1000_3 
 n_ever_vaccinated_3
@@ -1767,7 +1828,7 @@ proc print; run;
 
 proc export 
 data=n dbms=xlsx
-outfile="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\output_file_for_jacob_update" replace; 
+outfile="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\output_file_for_jacob_update_2" replace; 
 run;
 
 
