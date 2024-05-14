@@ -1833,8 +1833,9 @@ h=rand('uniform');
 a=rand('uniform');
 v_alert_perm_incr_adh=0;  v_alert_6m_incr_adh=0;
 if h <  adh_effect_of_meas_alert then do;
-	if a < 0.4 then v_alert_perm_incr_adh = 1; 
-	if 0.4 <= a  then v_alert_6m_incr_adh = 1; 
+	if a < 0.9 then v_alert_perm_incr_adh = 1; * this value of 0.9 changed from 0.4 for tld_switch and laa - also with change in dist of adh_effect_of_meas_alert
+	seems more plausible that a smaller proportion of people have an an effect but the effect is more likely to be permanent than for 6 months;
+	if 0.9 <= a  then v_alert_6m_incr_adh = 1; 
 end;
 
 
@@ -9068,6 +9069,8 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 	e=rand('uniform');
 
+/*
+
 	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
 	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
 	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
@@ -9080,8 +9083,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
 	if gender=2 and 20 <= age < 25 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
 
-
-	/*  ***adh tld_switch - this replaced as above - becuase seems like overall p_onart_vl1000 is on the high side
+*/
 
 	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
@@ -9092,7 +9094,6 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=1 and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 
-	* _n6_ ;
 	if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=2 and 20 <= age < 25 and adh < 0.8 and e < 0.1 then adh=0.90;
 	if gender=2 and 25 <= age < 30 and adh < 0.8 and e < 0.3 then adh=0.90;
@@ -9102,7 +9103,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.8 then adh=0.90;
 	if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 
-	*/
+	
 
 if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have disadvantages;
 
