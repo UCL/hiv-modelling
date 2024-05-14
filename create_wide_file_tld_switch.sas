@@ -1318,7 +1318,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
-p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol  p_artexp_dol_pi_failed
+p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol  p_artexp_dol_pi_failed  p_adh_hi
 
 ;
 
@@ -1341,9 +1341,9 @@ run;
 
 
 
-data    b.l_tld_switch_y_y; set y;  
+data    b.l_tld_switch_y; set y;  
 
-data y ; set b.l_tld_switch_y_y; 
+data y ; set b.l_tld_switch_y; 
 
   options nomprint;
   option nospool;
@@ -1430,7 +1430,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=p_o_nev_tox);  * %var(v=p_o_dol_tox);   * %var(v=p_o_zdv_adh_hi);   * %var(v=p_o_3tc_adh_hi);   * %var(v=p_o_ten_adh_hi);  
 * %var(v=p_o_taz_adh_hi);   * %var(v=p_o_lpr_adh_hi);   * %var(v=p_o_efa_adh_hi);   * %var(v=p_o_nev_adh_hi);   * %var(v=p_o_dol_adh_hi);  
 * %var(v= p_o_tle_tox);   * %var(v=p_o_tld_tox);   * %var(v=p_o_zla_tox);   * %var(v=p_o_zld_tox);    * %var(v=p_o_tle_adh_hi);   * %var(v=p_o_tld_adh_hi);   
-* %var(v=p_o_zla_adh_hi);   * %var(v=p_o_zld_adh_hi);   * %var(v=p_adh_hi);    * %var(v=s_a_zld_if_reg_op_116);
+* %var(v=p_o_zla_adh_hi);   * %var(v=p_o_zld_adh_hi);     %var(v=p_adh_hi);    * %var(v=s_a_zld_if_reg_op_116);
 * %var(v=p_nactive_ge2p75_xyz);  * %var(v=p_adh_hi_xyz_ot1);   * %var(v=p_adh_hi_xyz_ot2);   * %var(v=p_adh_hi_xyz_itt);   * %var(v=p_e_rt65m_xyz);   
 %var(v=p_nactive_ge2p00_xyz);   %var(v=p_nactive_ge1p50_xyz); 
 * %var(v=p_184m_ontle_vlg1000);  * %var(v=p_65m_ontle_vlg1000);  * %var(v=p_nnm_ontle_vlg1000);   * %var(v=p_184m_ontld_vlg1000);   * %var(v=p_65m_ontld_vlg1000);  
@@ -1586,7 +1586,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
-p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol  p_artexp_dol_pi_failed  
+p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol  p_artexp_dol_pi_failed  p_adh_hi
 ;
 
 
@@ -1963,9 +1963,15 @@ p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 p_
 p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 p_tldsw2_elig_tldsw_10y_4 p_tldsw2_elig_tldsw_10y_5 
 ;
 
-
-run;
 ods html close;
+
+
+proc glm; model prop_uvl2_vl1000_10y_1 = red_adh_multi_pill_pop ; run;
+proc glm; model p_adh_hi_10y_1  = red_adh_multi_pill_pop ; run;
+proc glm; model prop_uvl2_vl1000_10y_1 = p_adh_hi_10y_1 ; run;
+proc univariate; var p_adh_hi_10y_1 p_adh_hi_10y_5; run;
+proc freq; tables red_adh_multi_pill_pop; run;
+proc means; var prop_uvl2_vl1000_10y_1; where red_adh_multi_pill_pop <= 0.02; run;
 
 
 
