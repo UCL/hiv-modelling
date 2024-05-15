@@ -18,12 +18,12 @@ startyr = 1985 + 0.25;
 								0.1		0.50	0.40);
 
 * prob_birth_circ; 			%sample(prob_birth_circ, 
-									0.20	0.40,	 
-									0.45	0.55	);
+									0.20	0.40,  
+									0.75	0.25	);
 
-* base_rate_sw;				%sample(base_rate_sw, 0.0005 0.0010 0.0015, 0.20 0.35 0.45);
+* base_rate_sw;				%sample(base_rate_sw, 0.0005 0.0010 0.0015, 0.15 0.40 0.45);
 
-* sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3 4, 0.10 0.40 0.10 0.40);
+* sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3 4, 0.01 0.39 0.01 0.59);
 
 * HIV TESTING;
 
@@ -37,7 +37,7 @@ startyr = 1985 + 0.25;
 
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15);
 
-* rr_testing_female;		rr_testing_female=1.2;
+* rr_testing_female;		rr_testing_female=1.0;
 
 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
@@ -51,5 +51,5 @@ startyr = 1985 + 0.25;
 
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.01	0.01	0.03	0.15	0.30	0.30	0.20);
+								0.0 	0.0	    0.0	   0.05	    0.30	0.30	0.35);
 
