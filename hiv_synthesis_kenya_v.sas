@@ -1461,7 +1461,7 @@ end;
 
 *-----------------------------------------------------------------------------------------------------------------------------------;
 
-if msm =1 then p_rred_p = p_rred_p * msm_rred ;
+if msm =1 then p_rred_p = p_rred_p * msm_rred ;  * life sex risk incresaes with increasing life_sex_risk ;
 
 r=rand('uniform');
 if gender=2 then life_sex_risk=2; 
