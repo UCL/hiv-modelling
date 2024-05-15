@@ -1811,7 +1811,6 @@ proc sort; by run;run;
 
 
   if incidence1549_24 > 0.1;
-  if p_onart_vl1000_24 > 0.90;
 
 
 
