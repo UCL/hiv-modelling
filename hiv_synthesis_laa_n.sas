@@ -2,9 +2,6 @@
 
 
 
-
-
-
 * check on vis cost in people on len cab;
 
 * also add in effect of offering len-cab in bringing people back into care ?
@@ -21,8 +18,6 @@
 * modify tld drug costs;
 
 * present results as joint cost of len/cab - present analysis as one of what cost is needed to be cost-effective / cost-saving ;
-
-
 
 
 
@@ -537,7 +532,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.15	0.40	0.20	0.10	0.10	0.03	0.02) ; * tld_switch;  * note also change below at ***adh tld_switch ;
+								0.05	0.30	0.35	0.15	0.10	0.03	0.02) ; * tld_switch;  * note also change below at ***adh tld_switch ;
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
@@ -609,8 +604,11 @@ newp_seed = 7;
 * res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.5 0.75 1.00, 0.2 0.6 0.2 ); * tld_switch;
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 
-* lencab_uptake;			%sample(lencab_uptake, 0.5 0.7 0.9, 0.33  0.34  0.33 ); 
-* lencab_uptake_vls;		%sample(lencab_uptake_vls, 0.0001 0.0003 0.001 0.003, 0.25  0.25  0.25  0.25); 
+* lencab_uptake_vlg1000;		%sample(lencab_uptake_vlg1000, 0.5 0.7 0.9, 0.33  0.34  0.33 ); 
+* lencab_uptake;			%sample(lencab_uptake, 0.0001 0.0003 0.001 0.003, 0.25  0.25  0.25  0.25); 
+
+* rate_return_for_lencab;  %sample_uniform(rate_return_for_lencab, 0.3 0.5 0.7); 
+
 
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
 
@@ -2106,14 +2104,17 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-if option=1 and p_len ne 1 then do; * dont include p_cab because could have been as prep - p_len implies p_cab automatically;  
-	s = rand('uniform');
-	if vm > 3 and caldate{t} - date_v_alert >= 0.25 and lencab_offered ne 1 then do;
-		lencab_offered=1; if s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; end;
+if option=1 then do;
+	lencab_available=1; * this affects rate of return to care;
+	if p_len ne 1 then do; * dont include p_cab because could have been as prep - p_len implies p_cab automatically;  
+		s = rand('uniform');
+		if vm > 3 and caldate{t} - date_v_alert >= 0.25 and lencab_offered ne 1 then do;
+			lencab_offered=1; if s < lencab_uptake_vlg1000 then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
+		end;
+		f = rand('uniform');
+		if s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
 	end;
-	if vm <= 3 and s < lencab_uptake_vls then do; reg_option_set_in_options = 130; started_lencab_vmlt1000=1; end;
 end;
-
 
 end;
 
@@ -8026,6 +8027,16 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 		if t ge 2 and lost_tm1 =1 and registd_tm1=1 and
 		((adc_tm1=1 and s < prob_return_adc) or s < e_rate_return/3) then do;return=1;lost=0;visit=1;end;
 	end;
+
+
+* return for lencab;
+
+if t ge 2 and lost_tm1 =1 and registd_tm1=1 and lencab_available=1 and offered_return_for_lencab ne 1 then do;
+	offered_return_for_lencab=1;
+	if s < rate_return_for_lencab then do;
+		return=1;lost=0;visit=1; reg_option_set_in_options = 130;
+	end;
+end;
 
 
 * pregnancy leads to re-engagement once option b+ implemented; 
@@ -19829,7 +19840,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
-lencab_uptake_vls lencab_uptake
+lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
@@ -22285,7 +22296,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
-lencab_uptake_vls lencab_uptake
+lencab_uptake_vlg1000 lencab_uptake  rate_return_for_lencab
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac   ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  

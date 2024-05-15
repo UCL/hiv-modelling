@@ -2030,6 +2030,36 @@ mtct_prop_10y_1 mtct_prop_10y_2
 run;
 
 
+
+title 'Effects over 10 years of the policy of cab/len for people aged 15-24 (median, 90% range)';
+ods noproctitle;
+proc means  n p50  p5  p95 ;  
+var 
+p_len_50y_1 p_len_50y_2 
+p_cab_50y_1 p_cab_50y_2 
+n_started_lencab_vmgt1000_50y_1 n_started_lencab_vmgt1000_50y_2   
+n_started_lencab_vmlt1000_50y_1  n_started_lencab_vmlt1000_50y_2
+p_len_1524_50y_1 p_len_1524_50y_2
+p_cab_1524_50y_1 p_cab_1524_50y_2
+p_onart_1524_50y_1 p_onart_1524_50y_2 
+p_onart_vl1000_50y_1 p_onart_vl1000_50y_2 
+p_vl1000_m_1524_50y_1 p_vl1000_m_1524_50y_2 
+p_vl1000_w_1524_50y_1  p_vl1000_w_1524_50y_2  
+p_onart_vl1000_w_1524_50y_1 p_onart_vl1000_w_1524_50y_2 
+p_onart_vl1000_m_1524_50y_1 p_onart_vl1000_m_1524_50y_2
+incidence1549_50y_1 incidence1549_50y_2 
+incidence1524_50y_1 incidence1524_50y_2
+n_death_hiv_50y_1 n_death_hiv_50y_2  
+n_death_hiv_age_1524_50y_1 n_death_hiv_age_1524_50y_2
+p_r_len_1524_50y_1 p_r_len_1524_50y_2
+p_r_cab_1524_50y_1 p_r_cab_1524_50y_2
+mtct_prop_50y_1 mtct_prop_50y_2 
+;
+run;
+
+
+
+
 title 'Effects over 50 years of the policy of cab/len for people aged 15-24 on discounted costs in $ million (mean, 90% range)';
 ods noproctitle;
 proc means  n mean p5 p95;
@@ -2075,12 +2105,14 @@ title 'Effects of the policy of cab/len for people aged 15-24 on DALYs and costs
 ods noproctitle;
 proc means mean  ;
 var 
-ddaly_birth_with_inf_child_50y_1 ddaly_birth_with_inf_child_50y_2
+/* ddaly_birth_with_inf_child_50y_1 ddaly_birth_with_inf_child_50y_2 */
 d_ddaly_50y_2_1 
 d_dcost_50y_2_1
 d_netdaly500_2_1 
 lowest_netdaly
 ;
+run;
+
 footnote;
 footnote 'These preliminary results suggest overall that the policy of providing cab/len to 15-24 year-olds would lead to a reduction in DALYs and similar overall
 costs. The policy was cost-effective in 58% of setting scenarios';
@@ -2098,12 +2130,27 @@ model d_netdaly500_2_1 = lencab_uptake lencab_uptake_vls incidence1549_24 p_onar
 run; 
 ods html close;
 
+ods html; 
+proc glm; class lencab_uptake lencab_uptake_vls;
+model d_ddaly_50y_2_1 = lencab_uptake lencab_uptake_vls incidence1549_24 p_onart_vl1000_24/ solution; 
+run; 
+ods html close;
+
 
 ods html; 
 proc glm; class lencab_uptake lencab_uptake_vls;
 model d_netdaly500_2_1 = p_started_lencab_vmgt1000_10y_2 incidence1549_24 p_onart_vl1000_24/ solution; 
 run; 
 ods html close;
+
+
+ods html; 
+proc glm; class lencab_uptake lencab_uptake_vls;
+model d_ddaly_50y_2_1 = p_started_lencab_vmgt1000_10y_2 incidence1549_24 p_onart_vl1000_24/ solution; 
+run; 
+ods html close;
+
+
 
 
 

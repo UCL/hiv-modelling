@@ -2,7 +2,7 @@
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_l_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_m_out\";
 
 footnote;
 
@@ -11,7 +11,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_laa_l_y;
+set a.l_laa_m_y;
 
 * for this program, variable names cannot end on a number;
 n_k65m = p_k65m * n_hiv;
@@ -45,7 +45,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 944    ;
+%let nfit = 840    ;
 
 %let year_end = 2076.00 ;
 run;

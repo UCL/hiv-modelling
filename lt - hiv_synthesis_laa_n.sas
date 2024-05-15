@@ -5,8 +5,6 @@
 
 
 
-* check on vis cost in people on len cab;
-
 * also add in effect of offering len-cab in bringing people back into care ?
 
 
@@ -18286,6 +18284,13 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 proc freq; tables cald hiv ; where death=.; run;
+
+proc print; var cald option onart visit vis_cost sv o_dol o_len  cost_dol cost_len cost_ten cost_3tc ;
+where o_len=1; 
+
+run;
+
+
 
 
 /*
