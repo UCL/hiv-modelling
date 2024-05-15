@@ -51,4 +51,5 @@ startyr = 1985 + 0.25;
 
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.01	0.01	0.03	0.15	0.30	0.30	0.20);
+								0.0		0.0	   0.0	  0.05	  0.30	 0.30	0.35);
++ gender effect line 8951
