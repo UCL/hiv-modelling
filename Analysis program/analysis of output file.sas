@@ -1626,31 +1626,9 @@ diff_testcost_swprog_low_v_none = dtest_cost_22_72_2 - dtest_cost_22_72_1;
 
 *net dalys averted;
 diff_netdalys_swprog_low_v_none = netdalys_swprog_low - netdalys_no_swprog; *take absolute number;
+
 ce=0;if diff_ddaly_high_v_none lt 0 then ce=1;
 
-***cost of SW prog;
-maxcost_swprog_low_v_none= diff_netdalys_swprog_low_v_none * 500;
-***(DALYs averted *500) - difference in costs;
-
-
-***All this below was not included in the paper;
-***Low program vs. high impact;
-*dalys averted;
-diff_ddaly_swprog_high_v_low = ddaly_22_72_3 - ddaly_22_72_2;
-
-*difference in total costs;
-diff_dcost_swprog_high_v_low = dcost_22_72_3 - dcost_22_72_2;
-
-***look at individual costs;
-diff_artcost_swprog_high_v_low = dart_cost_y_22_72_3 - dart_cost_y_22_72_2;
-diff_testcost_swprog_high_v_low = dtest_cost_22_72_3 - dtest_cost_22_72_2;
-diff_prepcost_swprog_high_v_low = dcost_prep_22_72_3 - dcost_prep_22_72_2;
-
-*net dalys averted;
-diff_netdalys_swprog_high_v_low = netdalys_swprog_high - netdalys_swprog_low; *take absolute number;
-
-***cost of SW prog;
-maxcost_swprog_high_v_low= diff_netdalys_swprog_high_v_low*500;
 
 ***Over 1 year;
 ***ICER for various costs of a SW program;
@@ -1938,68 +1916,25 @@ if 0.93 lt p_onart_diag_sw_22 le 1 then artcov_sw=3;
 if 0.50 le p_onart_vl1000_sw_22 le 0.82 then onart_vl1000_sw=1;
 if 0.82 lt p_onart_vl1000_sw_22 le 0.92 then onart_vl1000_sw=2;
 if 0.92 lt p_onart_vl1000_sw_22 le 1.00 then onart_vl1000_sw=3;
+ 
+***Early differences (1 year) in outcomes between high impact and no program;
+d_p_sw_prog_vis_hi_no= (p_sw_prog_vis_23_24_3 - p_sw_prog_vis_23_24_1)*100; 
+d_p_tested_past_year_sw_hi_no = (p_tested_past_year_sw_23_24_3-p_tested_past_year_sw_23_24_1)*100;
+d_p_fsw_newp0_hi_no = (p_fsw_newp0__23_24_3 - p_fsw_newp0__23_24_1)*100;
+d_prop_sw_onprep_hi_no = (prop_sw_onprep_23_24_3 - prop_sw_onprep_23_24_1)*100;
+d_p_sti_sw_hi_no = (p_sti_sw_23_24_3 - p_sti_sw_23_24_1)*100;
+d_p_diag_sw_hi_no = (p_diag_sw_23_24_3 - p_diag_sw_23_24_1)*100;
+d_p_onart_diag_sw_hi_no = (p_onart_diag_sw_23_24_3 - p_onart_diag_sw_23_24_1)*100;
+d_p_onart_vl1000_sw_hi_no = (p_onart_vl1000_sw_23_24_3 - p_onart_vl1000_sw_23_24_1)*100;
 
-***Early differences in outcomes between high and low impact programs;
-d_p_sw_prog_vis_hi_low= (p_sw_prog_vis_22_27_3 - p_sw_prog_vis_22_27_2)*100; 
-d_p_tested_past_year_sw_hi_low = (p_tested_past_year_sw_22_27_3-p_tested_past_year_sw_22_27_2)*100;
-d_p_fsw_newp0_hi_low = (p_fsw_newp0__22_27_3 - p_fsw_newp0__22_27_2)*100;
-d_prop_sw_onprep_hi_low = (prop_sw_onprep_22_27_3 - prop_sw_onprep_22_27_2)*100;
-d_p_sti_sw_hi_low = (p_sti_sw_22_27_3 - p_sti_sw_22_27_2)*100;
-d_p_diag_sw_hi_low = (p_diag_sw_22_27_3 - p_diag_sw_22_27_2)*100;
-d_p_onart_diag_sw_hi_low = (p_onart_diag_sw_22_27_3 - p_onart_diag_sw_22_27_2)*100;
-d_p_onart_vl1000_sw_hi_low = (p_onart_vl1000_sw_22_27_3 - p_onart_vl1000_sw_22_27_2)*100;
 
-if d_p_sw_prog_vis_hi_low lt 20 then d_vis=1;
-if 20 le d_p_sw_prog_vis_hi_low lt 30 then d_vis=2;
-if 30 le d_p_sw_prog_vis_hi_low lt 50 then d_vis=3;
-if d_p_sw_prog_vis_hi_low ge 50 then d_vis=4;
-
-if d_p_tested_past_year_sw_hi_low lt 10 then d_tested=1;
-if 10 le d_p_tested_past_year_sw_hi_low lt 20 then d_tested=2;
-if d_p_tested_past_year_sw_hi_low ge 20 then d_tested=3;
-
-if d_p_fsw_newp0_hi_low le 5 then d_newp=1;
-if 5 lt d_p_fsw_newp0_hi_low le 10 then d_newp=2;
-if d_p_fsw_newp0_hi_low gt 10 then d_newp=3;
-
-if d_prop_sw_onprep_hi_low lt 0 then d_prep=1;
-if 0 le d_prop_sw_onprep_hi_low lt 4 then d_prep=2;
-if d_prop_sw_onprep_hi_low ge 4 then d_prep=3;
-
-if d_p_sti_sw_hi_low lt -3 then d_sti=1;
-if -3 le d_p_sti_sw_hi_low lt -1 then d_sti=2;
-if d_p_sti_sw_hi_low ge -1 then d_sti=3;
-
-if d_p_diag_sw_hi_low lt 2 then d_diag=1;
-if 2 le d_p_diag_sw_hi_low lt 5 then d_diag=2;
-if d_p_diag_sw_hi_low ge 5 then d_diag=3;
-
-if d_p_onart_diag_sw_hi_low lt 2 then d_art=1;
-if 2 le d_p_onart_diag_sw_hi_low lt 5 then d_art=2;
-if d_p_onart_diag_sw_hi_low ge 5 then d_art=3;
-
-if d_p_onart_vl1000_sw_hi_low lt 2 then d_vs=1;
-if 2 le d_p_onart_vl1000_sw_hi_low lt 5 then d_vs=2;
-if d_p_onart_vl1000_sw_hi_low ge 5 then d_vs=3;
+proc glm;model diff_ddaly_high_v_none=
+d_p_sw_prog_vis_hi_no  d_p_tested_past_year_sw_hi_no  d_p_fsw_newp0_hi_no  d_prop_sw_onprep_hi_no  d_p_sti_sw_hi_no
+d_p_onart_diag_sw_hi_no  d_p_onart_vl1000_sw_hi_no/solution;run;
 
 
 
-***difference in parameters resulting in sceanrios being CE;
-proc logistic desc;class d_vis (ref="1"); model  ce  = d_vis;run;
-proc logistic desc;class d_tested (ref="1"); model  ce  = d_tested;run;
-proc logistic desc;class d_newp (ref="1"); model  ce  = d_newp;run;
-proc logistic desc;class d_prep (ref="1"); model  ce  = d_prep;run;
-proc logistic desc;class d_sti (ref="1"); model  ce  = d_sti;run;
-proc logistic desc;class d_diag (ref="1"); model  ce  = d_diag;run;
-proc logistic desc;class d_art (ref="1"); model  ce  = d_art;run;
-proc logistic desc;class d_vs (ref="1"); model  ce  = d_vs;run;
-
-
-proc logistic desc; model  ce  = d_p_sw_prog_vis_hi_none d_p_fsw_newp0_hi_none d_p_sti_sw_hi_none
-d_p_onart_diag_sw_hi_none d_p_onart_vl1000_sw_hi_none;run;
-
-proc freq;table p_diag_sw_22;run;
-
+***Baseline factors associated with programs being CE;
 Proc logistic desc;class incid_cat3 (ref="1") ;
 model  ce  = incid_cat3;run;
 Proc logistic desc;class p_diag (ref="1") ;
