@@ -1422,12 +1422,18 @@ end;
 *-----------------------------------------------------------------------------------------------------------------------------------;
 
 
-
 r=rand('uniform');
-if gender=2 then life_sex_risk=2; 
-rred_p=1;
-if r < p_rred_p then do; life_sex_risk = 1;  rred_p=0.00001; end;
-if gender=2 and 1-p_hsb_p < r < 1 then life_sex_risk = 3; 
+rred_p=1; if r < p_rred_p then rred_p=0.00001;
+
+* life_sex_risk used for determining sw=1; 
+if gender=2 then do;
+	life_sex_risk=2;
+	if r < p_rred_p then life_sex_risk = 1; 
+	if 1-p_hsb_p < r then life_sex_risk = 3; 
+end;
+
+
+
 
 ever_newp=0;
 
