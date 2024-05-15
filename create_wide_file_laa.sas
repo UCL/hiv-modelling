@@ -129,7 +129,7 @@ ddaly = s_ddaly * &sf * 4;
 * dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
 
 
-ddaly_birth_with_infected_child = s_birth_with_infected_child * &f * 4 * 3  * discount ; * 3 dalys per infected child ;  
+ddaly_birth_with_inf_child = s_birth_with_infected_child * &sf * 4 * 3  * discount ; * 3 dalys per infected child ;  
 
 dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * &sf * 4; * odabe ;
 
@@ -1260,7 +1260,7 @@ s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail
 p_cabr_start_rest_prep_cab p_cabr_start_rest_prep_len p_emerge_inm_res_cab_tail  n_death_hiv n_death_hiv_age_1524 death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_cab  dcost_prep_len  n_line1_fail_this_period  n_need_cd4m  n_alive
-ddaly_birth_with_infected_child
+ddaly_birth_with_inf_child
 
 prop_1564_hivneg_onprep  p_newp_prep_hivneg cost n_cd4_lt200 n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  
 death_rate_hiv death_rate_hiv_all  n_onart  n_art_or_prep n_prep_cab n_prep_len n_death_hivneg_anycause
@@ -1551,7 +1551,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=p_len);  %var(v=p_cab);  %var(v=p_len_1524);  %var(v=p_cab_1524);  %var(v=p_onart_1524);   %var(v=incidence1524);  %var(v=p_onart_vl1000_w_1524);   
 %var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524); %var(v=n_started_lencab_vmgt1000);  
-%var(v=n_started_lencab_vmlt1000); %var(v=ddaly_birth_with_infected_child);
+%var(v=n_started_lencab_vmlt1000); %var(v=ddaly_birth_with_inf_child);
 
 
 data   b.wide_outputs; merge 
@@ -1606,7 +1606,7 @@ p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_o
 s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
-p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab_vmlt1000  p_adh_hi ddaly_birth_with_infected_child
+p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab_vmlt1000  p_adh_hi ddaly_birth_with_inf_child
 ;
 
 
@@ -1813,9 +1813,15 @@ proc sort; by run;run;
   by run;
 
 
+
+
+
+
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_m_out\";
+
+data f; set b.w_laa_m;
+
   if incidence1549_24 > 0.1;
-
-
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 
@@ -2069,6 +2075,7 @@ title 'Effects of the policy of cab/len for people aged 15-24 on DALYs and costs
 ods noproctitle;
 proc means mean  ;
 var 
+ddaly_birth_with_inf_child_50y_1 ddaly_birth_with_inf_child_50y_2
 d_ddaly_50y_2_1 
 d_dcost_50y_2_1
 d_netdaly500_2_1 
