@@ -18,25 +18,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_o_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_p_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_o_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_p_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_laa_o;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_laa_p;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_laa_o; 
+proc sort data=b.k_laa_p; 
 by run cald option;
 run;
 
@@ -46,7 +46,7 @@ run;
 data sf;
 
 
-set b.k_laa_o ;
+set b.k_laa_p ;
 
 
 if cald=2024   ;
@@ -66,7 +66,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_laa_o sf;
+merge b.k_laa_p sf;
 by run ;
 
 
@@ -1327,6 +1327,9 @@ sens_tests_prep_cab sens_tests_prep_len  pr_inm_cab_prep_primary pr_inm_len_prep
 pref_prep_cab_beta_s1 pref_prep_len_beta_s1  testt1_prep_cab_eff_on_res_prim    testt1_prep_len_eff_on_res_prim  
 incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 
+dzdv_cost dten_cost  d3tc_cost  dnev_cost  dlpr_cost  ddar_cost  defa_cost
+ ddol_cost  dcab_cost  dlen_cost
+
 lencab_uptake lencab_uptake_vlg1000   rate_return_for_lencab
 
 p_emerge_inm_res_cab_notpr
@@ -1360,9 +1363,9 @@ proc freq; tables cald option; where cald=2026.50;
 run;
 
 
-data    b.l_laa_o_y; set y;  
+data    b.l_laa_p_y; set y;  
 
-data y ; set b.l_laa_o_y; 
+data y ; set b.l_laa_p_y; 
 
   options nomprint;
   option nospool;
@@ -1558,6 +1561,10 @@ data   b.wide_outputs; merge
 
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost  dcab_cost  dlen_cost   dclin_cost  dcost_circ dcost_condom_dn 
+
+dzdv_cost dten_cost  d3tc_cost  dnev_cost  dlpr_cost  ddar_cost  defa_cost
+ ddol_cost  dcab_cost  dlen_cost
+
 dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost dcost_drug_level_test n_hiv n_alive  p_drug_level_test
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
@@ -1808,7 +1815,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_o     ; 
+  data  b.w_laa_p     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1817,11 +1824,15 @@ proc sort; by run;run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_o_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_p_out\";
 
-data f; set b.w_laa_o;
+data f; set b.w_laa_p;
+
 
   if incidence1549_24 > 0.1;
+  if p_onart_vl1000_m_24 < 0.98;
+  if p_onart_vl1000_w_24 < 0.98;
+
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 
@@ -2116,7 +2127,7 @@ dsbi_proph_cost_50y_1 dsbi_proph_cost_50y_2
 dcost_50y_1 dcost_50y_2
 ;
 footnote;
-footnote 'Cab is assumed to cost $60 per year including supply chain cost, Len is assumed to cost $36 per year including supply chain cost.  
+* footnote 'Cab is assumed to cost $60 per year including supply chain cost, Len is assumed to cost $36 per year including supply chain cost.  
 TLD is assumed to cost $65 per year including supply chain cost.  Being on cab-len is assumed to increase clinic visit costs by $15 per 3 months.
 Standard cost effectiveness analysis takes a lifetime time horizon to allow all effects of the policy to play out. 
 Discounting of costs and health effects is applied at 3% per year.';
@@ -2136,7 +2147,7 @@ lowest_netdaly
 run;
 
 footnote;
-footnote 'These preliminary results suggest overall that the policy of providing cab/len to 15-24 year-olds would lead to a reduction in DALYs and similar overall
+* footnote 'These preliminary results suggest overall that the policy of providing cab/len to 15-24 year-olds would lead to a reduction in DALYs and similar overall
 costs. The policy was cost-effective in 58% of setting scenarios';
 run;
 

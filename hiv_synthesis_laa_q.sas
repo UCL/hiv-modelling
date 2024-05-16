@@ -605,9 +605,10 @@ newp_seed = 7;
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 
 * lencab_uptake_vlg1000;		%sample_uniform(lencab_uptake_vlg1000, 0.1 0.3 0.5 0.7 0.9); 
-* lencab_uptake;			%sample_uniform(lencab_uptake, 0.00003 0.0001 0.0003 0.001 ); 
+* lencab_uptake;			%sample_uniform(lencab_uptake, 0.001 0.003 0.01 0.03); 
 
 * rate_return_for_lencab;  %sample_uniform(rate_return_for_lencab, 0.3 0.5 0.7 0.9); 
+* prob_strong_pref_lencab;	 %sample_uniform(prob_strong_pref_lencab, 0.05 0.1 0.2 0.5 );  
 
 
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
@@ -1842,6 +1843,13 @@ if 0.70 <= e        then do; adhav = 0.90; adhvar=0.05; end;
 end;
 
 
+* lencab;
+
+v=rand('uniform');
+strong_pref_lencab = 0; if v < prob_strong_pref_lencab then strong_pref_lencab = 1;
+
+
+
 
 * EFFECT OF VIRAL LOAD MEASURED HIGH, NO RESISTANCE ON RESISTANCE TEST AND LOW ADHERENCE ON ADHERENCE TEST ON SUBSEQUENT ADHERENCE;
 
@@ -2111,7 +2119,7 @@ if option=1 then do;
 		if vm > 3 and caldate{t} - date_v_alert >= 0.25 and (caldate{t} - date_lencab_last_offered > 1 or date_lencab_last_offered =.) then do;
 			date_lencab_last_offered=caldate{t}; if s < lencab_uptake_vlg1000 then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
 		end;
-		if vm ne . and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
+		if prob_strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
 	end;
 end;
 
@@ -8033,7 +8041,7 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 if t ge 2 and lost_tm1 =1 and registd_tm1=1 and lencab_available=1 and offered_return_for_lencab ne 1 then do;
 	offered_return_for_lencab=1;
 	if s < rate_return_for_lencab then do;
-		return=1;lost=0;visit=1; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1;
+		return=1;lost=0;visit=1; reg_option_set_in_options = 130; started_lencab_offart=1; started_lencab=1;
 	end;
 end;
 
@@ -17821,7 +17829,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_vl1000_onart_1524m + vl1000_onart_1524m;   s_vl1000_onart_1524w + vl1000_onart_1524w;     s_vl1000_1524m + vl1000_1524m;    s_vl1000_1524w + vl1000_1524w;    
 
-	s_started_lencab_vmgt1000 + started_lencab_vmgt1000 ; s_started_lencab + started_lencab ; 
+	s_started_lencab_vmgt1000 + started_lencab_vmgt1000 ; s_started_lencab + started_lencab ; s_started_lencab_offart + started_lencab_offart;
 
 
 	/* blood pressure */
@@ -19624,7 +19632,7 @@ s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
-s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w 	 s_started_lencab_vmgt1000  s_started_lencab 
+s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w 	 s_started_lencab_vmgt1000  s_started_lencab s_started_lencab_offart
 
 
 /* note s_ variables below are for up to age 80 */
@@ -19851,7 +19859,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
-lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab
+lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
@@ -20630,7 +20638,7 @@ s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
-s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w  s_started_lencab_vmgt1000  s_started_lencab 
+s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w  s_started_lencab_vmgt1000  s_started_lencab s_started_lencab_offart
 
 /* note s_ variables below are for up to age 80 */
 
@@ -22078,7 +22086,7 @@ s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
-s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w   s_started_lencab_vmgt1000  s_started_lencab 
+s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w   s_started_lencab_vmgt1000  s_started_lencab s_started_lencab_offart
 
 
 
@@ -22307,7 +22315,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
-lencab_uptake_vlg1000 lencab_uptake  rate_return_for_lencab
+lencab_uptake_vlg1000 lencab_uptake  rate_return_for_lencab prob_strong_pref_lencab
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac   ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
