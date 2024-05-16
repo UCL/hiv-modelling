@@ -14715,15 +14715,15 @@ if prep_vr_ever=1 then do;
 	if pregnant=1 or breastfeeding=1 	then prep_vr_ever_plw=1;
 end;
 
-*To calculate number initiating oral PrEP for men / women and for the first time / restarting;
-init_prep_oral_first_w=0;init_prep_oral_first_m=0; init_prep_oral_current_w=0;init_prep_oral_current_m=0;
+*To calculate number initiating oral PrEP for men / women and for the first time or including retarting;	*MIHPSA-SA JAS May24;
+init_prep_oral_first_w=0;init_prep_oral_first_m=0; init_prep_oral_curr_w=0;init_prep_oral_curr_m=0;
 if caldate&j = prep_oral_first_start_date then do;
 	if gender=2		then init_prep_oral_first_w=1;
 	if gender=1		then init_prep_oral_first_m=1;
 end;
 if caldate&j = prep_oral_current_start_date then do;
-	if gender=2 	then init_prep_oral_current_w=1;
-	if gender=1 	then init_prep_oral_current_m=1;
+	if gender=2 	then init_prep_oral_curr_w=1;
+	if gender=1 	then init_prep_oral_curr_m=1;
 end;
 
 * whether fulfil all criteria for prep (although also need to test negative to actually start prep [except under pop_wide_tld]);
@@ -16984,7 +16984,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_inj_ever_1524w + prep_inj_ever_1524w; s_prep_inj_ever_sw + prep_inj_ever_sw; s_prep_inj_ever_sdc + prep_inj_ever_sdc; s_prep_inj_ever_plw + prep_inj_ever_plw;
 	s_prep_vr_ever_1524w + prep_vr_ever_1524w; s_prep_vr_ever_sw + prep_vr_ever_sw; s_prep_vr_ever_sdc + prep_vr_ever_sdc; s_prep_vr_ever_plw + prep_vr_ever_plw;
 	s_init_prep_oral_first_w + init_prep_oral_first_w; s_init_prep_oral_first_m + init_prep_oral_first_m; 
-	s_init_prep_oral_current_w + init_prep_oral_current_w; s_init_prep_oral_current_m + init_prep_oral_current_m;
+	s_init_prep_oral_curr_w + init_prep_oral_curr_w; s_init_prep_oral_curr_m + init_prep_oral_curr_m;
 	s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_sdc + elig_prep_any_sdc ; s_elig_prep_any_plw + elig_prep_any_plw ; 
 	s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
 	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
@@ -18794,7 +18794,7 @@ s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_eve
 s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever_plw 
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_init_prep_oral_first_w 	s_init_prep_oral_first_m
-s_init_prep_oral_current_w 	s_init_prep_oral_current_m
+s_init_prep_oral_curr_w 	s_init_prep_oral_curr_m
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
 s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
@@ -19772,7 +19772,7 @@ s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_eve
 s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever_plw 
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_init_prep_oral_first_w 	s_init_prep_oral_first_m
-s_init_prep_oral_current_w 	s_init_prep_oral_current_m
+s_init_prep_oral_curr_w 	s_init_prep_oral_curr_m
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
 
 s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
@@ -20610,7 +20610,7 @@ s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_eve
 s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever_plw 
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_init_prep_oral_first_w 	s_init_prep_oral_first_m
-s_init_prep_oral_current_w 	s_init_prep_oral_current_m
+s_init_prep_oral_curr_w 	s_init_prep_oral_curr_m
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
 
 s_onprep_inj_m s_onprep_inj_w  s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
