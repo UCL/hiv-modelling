@@ -17812,7 +17812,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_vl1000_onart_1524m + vl1000_onart_1524m;   s_vl1000_onart_1524w + vl1000_onart_1524w;     s_vl1000_1524m + vl1000_1524m;    s_vl1000_1524w + vl1000_1524w;    
 
-	s_started_lencab_vmgt1000 + started_lencab_vmgt1000 ; s_started_lencab_vmlt1000 + started_lencab_vmlt1000 ; 
+	s_started_lencab_vmgt1000 + started_lencab_vmgt1000 ; s_started_lencab + started_lencab ; 
 
 
 	/* blood pressure */
@@ -19613,7 +19613,7 @@ s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
-s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w 	 s_started_lencab_vmgt1000  s_started_lencab_vmlt1000 
+s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w 	 s_started_lencab_vmgt1000  s_started_lencab 
 
 
 /* note s_ variables below are for up to age 80 */
@@ -20619,7 +20619,7 @@ s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
-s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w  s_started_lencab_vmgt1000  s_started_lencab_vmlt1000 
+s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w  s_started_lencab_vmgt1000  s_started_lencab 
 
 /* note s_ variables below are for up to age 80 */
 
@@ -22067,7 +22067,7 @@ s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
-s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w   s_started_lencab_vmgt1000  s_started_lencab_vmlt1000 
+s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w   s_started_lencab_vmgt1000  s_started_lencab 
 
 
 
