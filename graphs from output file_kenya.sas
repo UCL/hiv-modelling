@@ -98,6 +98,7 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
 %let p2p5_var = p2p5_&var_0;
 %let p97p5_var = p97p5_&var_0;
 %let p50_var = median_&var_0;
+%let mean_var = mean_&var_0;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -114,8 +115,9 @@ p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
 p2p5_&varb._0  = PCTL(2.5,of &varb.1-&varb.&nfit);
 p97p5_&varb._0 = PCTL(97.5,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
+mean_&varb._0 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 p2p5_&varb._0 p97p5_&varb._0;
+keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 p2p5_&varb._0 p97p5_&varb._0 mean_&varb._0;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -170,6 +172,7 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
 %let p2p5_var = p2p5_&var_1;
 %let p97p5_var = p97p5_&var_1;
 %let p50_var = median_&var_1;
+%let mean_var = mean_&var_1;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -186,8 +189,10 @@ p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
 p2p5_&varb._1  = PCTL(2.5,of &varb.1-&varb.&nfit);
 p97p5_&varb._1 = PCTL(97.5,of &varb.1-&varb.&nfit);
 p50_&varb._1 = median(of &varb.1-&varb.&nfit);
+mean_&varb._1 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 p2p5_&varb._1 p97p5_&varb._1;
+
+keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 p2p5_&varb._1 p97p5_&varb._1 mean_&varb._1;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -1739,11 +1744,11 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence msm (age 15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 3  by 0.5) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 20  by 1) valueattrs=(size=10);
 
-label p50_incidence1564msm_0 = "Option 0 (median) ";
+label mean_incidence1564msm_0 = "Option 0 (mean) ";
 
-series  x=cald y=p50_incidence1564msm_0/	lineattrs = (color=black thickness = 2);
+series  x=cald y=mean_incidence1564msm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1564msm_0 	upper=p95_incidence1564msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 run;
