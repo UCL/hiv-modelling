@@ -1,5 +1,6 @@
 * options user="/folders/myfolders/";
 
+
 ***This file used for the paper;
 
 libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
@@ -220,6 +221,20 @@ dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
+***Assuming a cost of $150 per SW (Email from Frances and Primrose 15may24 - SW program costs $8.5m and reaches 40,000 SW=$212.50/SW. These analyses are across SSA and expect running costs to 
+reduce if more SW are reached so assume $150). 
+This will be used to determine factors of CE;
+
+
+if option ge 1 then do;
+cost_sw_prog150perSW=0.00015;
+s_cost_sw_prog150perSW=0.00015*s_sw_1549;
+dcost_sw_prog150perSW = s_cost_sw_prog150perSW * &discount *&sf;
+end;
+
+if option=0 then dcost_sw_prog150perSW=0;
+
+***The below method wasn't used in the final analyses;
 **Trial and error - at what cost could a SW program be CE?;
 if option ge 1 then do;
 s_cost_sw_program19=19;*19m;
@@ -385,6 +400,14 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj /*+ 
 		dcost_sw_program*/;
 
+dcost_withSWprog = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
+		dcost_sw_prog150perSW;
+
+
+
+***The below method isn't used for the final paper;
 dcost19_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
@@ -777,7 +800,6 @@ n_tested_at_return = s_tested_at_return * sf_2023 * 4;
 n_pregnant = s_pregnant * sf_2023 * 4;
 
 ***FSW;
-
 * n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2023;
 * n_sw_1564;					n_sw_1564_ = s_sw_1564 * sf_2023;
 
@@ -971,6 +993,7 @@ mean_p_sw_prog_vis		 mean_n_tested_sw	    mean_prop_sw_onprep		mean_prevalence_s
 mean_p_diag_sw			 mean_p_onart_diag_sw	mean_p_onart_vl1000_sw
 mean_p_sti_sw			 mean_p_tested_past_year_sw
 */
+
 n_sw_1564_  	 	 n_sw_1549_ 	 	prop_w_1564_sw		prop_w_1549_sw 	 	prop_w_ever_sw  
 p_fsw1519_	  		 p_fsw2024_		  	p_fsw2529_			p_fsw3039_	
 p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_sw_age3039_
@@ -991,6 +1014,7 @@ effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti		sw_tr
 sw_higher_int sw_higher_prob_loss_at_diag
 
 /*Costs*/
+dcost_sw_prog150perSW  dcost_withSWprog
 dcost ddaly dcost_sw_program  dcost_sw_program45_
 dart_cost_y		dadc_cost  			dcd4_cost		  dvl_cost  dvis_cost	dnon_tb_who3_cost	dcot_cost 		 dtb_cost  dres_cost 
 dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_circ  		dcost_condom_dn  dcost_avail_self_test 		
@@ -1109,8 +1133,6 @@ data &v ; merge y_10 y_15 y_20 y_22 t_30 t_72 t_23_24 t_22_27 t_22_42 t_22_72;
 
 
 %mend var;
-%var(v=p_sw_prog_vis);
-run;
 
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
@@ -1172,8 +1194,9 @@ run;
 %var(v=dtest_cost_sw)     %var(v=d_t_adh_int_cost); %var(v=dswitchline_cost); %var(v=dcost_drug_level_test);
 %var(v=dcost_circ); 	  %var(v=dcost_condom_dn);  %var(v=dcost_avail_self_test); 	%var(v=dcost_prep_visit_oral);  	
 %var(v=dcost_prep_oral);  %var(v=dcost_prep_visit_inj);  %var(v=dcost_prep_inj); 
-
+%var(v=dcost_sw_prog150perSW); %var(v=dcost_withSWprog);
 run;
+ 
 
 data wide_outputs;merge
 prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
@@ -1224,11 +1247,12 @@ dcost165_		dcost170_		dcost175_		dcost180_		dcost185_		dcost190_		dcost195_	dcos
 dcost205_		dcost210_		dcost215_		dcost220_		dcost225_		dcost230_		dcost235_	dcost240_
 dcost245_		dcost250_
 
-dcost_sw_program45_
+dcost_sw_program45_ 
 dart_cost_y		dadc_cost		dcd4_cost		dvl_cost  	 	dvis_cost		dnon_tb_who3_cost	
 dcot_cost		dtb_cost  		dres_cost 		dtest_cost		dtest_cost_sw	d_t_adh_int_cost  	dswitchline_cost
 dcost_drug_level_test			dcost_circ 		dcost_condom_dn	dcost_avail_self_test 	
 dcost_prep_visit_oral  			dcost_prep_oral dcost_prep_visit_inj  	dcost_prep_inj
+dcost_sw_prog150perSW			dcost_withSWprog
 
 ;
 
@@ -1254,7 +1278,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix  sw_higher_int  sw_higher_prob_loss_at_diag;
 ;proc sort; by run;run;
 
-data a.wide_fsw_17_08_23_final;
+data a.wide_fsw_17_08_23_final1;*the 1 here is just including the new sw_program cost assuming $150 pp. Did not want to overwrite original file so just being cautious;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
