@@ -1795,10 +1795,9 @@ proc sort; by run;run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_w_out\";
 
 data b;
-set b.w_tld_switch_w  ;
+set b.w_tld_switch_z  ;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1962,6 +1961,7 @@ p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 p_
 
 p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 p_tldsw2_elig_tldsw_10y_4 p_tldsw2_elig_tldsw_10y_5 
 ;
+run;
 
 ods html close;
 
