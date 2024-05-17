@@ -2032,6 +2032,15 @@ p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24
 ;
 run;
 
+
+
+/*
+
+
+
+
+
+
 title 'Effects over 10 years of the policy of cab/len for people aged 15-24 (median, 90% range)';
 ods noproctitle;
 proc means  n p50  p5  p95 ;  
@@ -2117,13 +2126,7 @@ dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2
 dcost_prep_oral_50y_1 dcost_prep_oral_50y_2 
 dcost_prep_visit_cab_50y_1  dcost_prep_visit_cab_50y_2  
 dcost_prep_cab_50y_1 dcost_prep_cab_50y_2 
-/*
-dtb_lam_cost_50y_1 dtb_lam_cost_50y_2 
-dtb_proph_cost_50y_1 dtb_proph_cost_50y_2 
-dcrag_cost_50y_1 dcrag_cost_50y_2 
-dcrypm_proph_cost_50y_1 dcrypm_proph_cost_50y_2 
-dsbi_proph_cost_50y_1 dsbi_proph_cost_50y_2 
-*/
+
 dcost_50y_1 dcost_50y_2
 ;
 footnote;
