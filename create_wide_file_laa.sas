@@ -18,25 +18,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_q_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_r_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_q_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_r_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_laa_q;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_laa_r;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_laa_q; 
+proc sort data=b.k_laa_r; 
 by run cald option;
 run;
 
@@ -46,7 +46,7 @@ run;
 data sf;
 
 
-set b.k_laa_q ;
+set b.k_laa_r ;
 
 
 if cald=2024   ;
@@ -66,7 +66,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_laa_q sf;
+merge b.k_laa_r sf;
 by run ;
 
 
@@ -844,8 +844,8 @@ run;
 * p_len;						if s_onart > 0 then p_len = s_len / s_onart ;
 * p_cab;						if s_onart > 0 then p_cab = s_cab / s_onart ;
 
-* p_len_vl1000;					p_len_vl1000 = s_o_len_vl1000 / s_o_len;
-* p_cab_vl1000;					p_cab_vl1000 = s_o_cab_vl1000 / s_o_cab;
+* p_len_vl1000;					p_len_vl1000 = s_o_len_vl1000 / s_len;
+* p_cab_vl1000;					p_cab_vl1000 = s_o_cab_vl1000 / s_cab;
 
 * n_started_lencab_vmgt1000;	n_started_lencab_vmgt1000 = s_started_lencab_vmgt1000 * &sf;
 * n_started_lencab_offart;		n_started_lencab_offart = s_started_lencab_offart * &sf;
@@ -1372,9 +1372,9 @@ proc freq; tables cald option; where cald=2026.50;
 run;
 
 
-data    b.l_laa_q_y; set y;  
+data    b.l_laa_r_y; set y;  
 
-data y ; set b.l_laa_q_y; 
+data y ; set b.l_laa_r_y; 
 
   options nomprint;
   option nospool;
@@ -1623,6 +1623,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000
+rate_return_for_lencab
 ;
 
 
@@ -1824,14 +1825,14 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_q     ; 
+  data  b.w_laa_r     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
 
-* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_q_out\";
+* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_r_out\";
 
-data f; set b.w_laa_q;
+data f; set b.w_laa_r;
 
 
   if incidence1549_24 > 0.1;
@@ -2187,8 +2188,9 @@ ods html close;
 
 
 ods html; 
-proc glm; class lencab_uptake lencab_uptake_vlg1000;
-model d_netdaly500_2_1 = lencab_uptake lencab_uptake_vlg1000 incidence1549_24 p_onart_vl1000_24/ solution; 
+proc glm; 
+model d_netdaly500_2_1 = rate_return_for_lencab prob_strong_pref_lencab 
+lencab_uptake lencab_uptake_vlg1000 lencab_uptake_offart incidence1549_24 p_onart_vl1000_24/ solution; 
 run; 
 ods html close;
 
