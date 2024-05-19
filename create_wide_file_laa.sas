@@ -2401,20 +2401,26 @@ len_cab_total_cost=120;
 
 data all; set ds_60_60 ds_120_120  ds_80_80;
 
+if 0.1 <= incidence1549_24 < 0.3 then incg=1;            
+if 0.3 <= incidence1549_24 < 0.5 then incg=2;      
+if 0.5 <= incidence1549_24 < 0.8 then incg=3;      
+if 0.8 <= incidence1549_24 then incg=4;                    
+
+if p_vl1000_24 < 0.65 then vlg=1;
+if 0.65 <= p_vl1000_24 < 0.75  then vlg=2; 
+if 0.75 <= p_vl1000_24 < 0.85 then vlg=3; 
+if 0.85 <= p_vl1000_24  then vlg=4;       
+
+
+keep lowest_netdaly d_netdaly500_2_1 incidence1549_24 p_vl1000_24 vlg incg len_cab_total_cost ;
+
+
+proc freq; tables len_cab_total_cost*vlg*incg*lowest_netdaly; run;
+
+
+
+
 /*
-if 0.1 <= incidence1549_24 < 0.2             
-if 0.2 <= incidence1549_24 < 0.3 
-if 0.3 <= incidence1549_24 < 0.5              
-if 0.5 <= incidence1549_24 < 0.8 
-if 0.8 <= incidence1549_24                    
-
-if p_vl1000_24 < 0.65 
-if 0.65 <= p_vl1000_24 < 0.75  
-if 0.75 <= p_vl1000_24 < 0.85 
-if 0.85 <= p_vl1000_24        
-*/
-
-keep lowest_netdaly d_netdaly500_2_1 incidence1549_24 p_vl1000_24 len_cab_total_cost ;
 
 incidence1549_24 = incidence1549_24 - 0.5;
 len_cab_total_cost = len_cab_total_cost - 200;
@@ -2435,6 +2441,7 @@ run;
 
 ods html close;
 
+*/
 
 
 
