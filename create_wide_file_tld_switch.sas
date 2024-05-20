@@ -1916,7 +1916,7 @@ proc means   data = b  n p50  p5  p95 ;
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  
 p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    p_vis_tldsw_24  p_dol_2vg1000_dolr1_24 p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24
-/* p_artexp_dol_pi_failed_24 */ s_o_dol_2nd_vlg1000_24 n_second_vlg1000_first_24 s_second_vlg1000_first_24
+/* p_artexp_dol_pi_failed_24 */ s_o_dol_2nd_vlg1000_24 n_second_vlg1000_first_24 s_second_vlg1000_first_24 &sf
 ;
 run;
 
@@ -1967,6 +1967,8 @@ p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 p_
 p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 p_tldsw2_elig_tldsw_10y_4 p_tldsw2_elig_tldsw_10y_5 
 
 n_second_vlg1000_first_10y_1 n_second_vlg1000_first_10y_2 n_second_vlg1000_first_10y_3 n_second_vlg1000_first_10y_4 n_second_vlg1000_first_10y_5 
+
+p_dol_2vg1000_dolr1_10y_1 p_dol_2vg1000_dolr1_10y_2 p_dol_2vg1000_dolr1_10y_3 p_dol_2vg1000_dolr1_10y_4 p_dol_2vg1000_dolr1_10y_5 
 ;
 run;
 
