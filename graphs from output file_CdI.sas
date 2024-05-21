@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data b;
-set a.l_base_CdI3;
+set a.l_base_CdI5;
 s_sw_1549_ = s_sw_1549;
 
 *if ych2_risk_beh_newp=1.1 then delete;

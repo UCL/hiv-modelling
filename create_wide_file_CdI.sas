@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data a;
-set a.cdi_16Apr24;
+set a.cdi_15May24;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
@@ -248,7 +248,7 @@ s_alive = s_alive_m + s_alive_w ;
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
 * p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;
-* p_mcirc_1549m;				*p_mcirc_1549m = s_mcirc_1549m / s_ageg1549m ;
+* p_mcirc_1549m;				p_mcirc_1549m = s_mcirc_1549m / s_ageg1549m ;
 * p_trad_circ;					p_trad_circ = s_birth_circ /s_alive_m;
 * p_vmmc;						p_vmmc = s_vmmc /s_alive_m ;
 * n_new_vmmc1549m;				n_new_vmmc1549m = s_new_vmmc1549m * &sf * 4;
@@ -378,8 +378,6 @@ s_alive = s_alive_m + s_alive_w ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
 
 
-proc print;var p_mcirc p_trad_circ p_vmmc s_mcirc s_birth_circ s_vmmc s_alive_m;run;
-
 keep	cald	run		option	inc_cat	ych2_risk_beh_newp
 p_w_giv_birth_this_per	mtct_prop		p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_		p_newp_ge1w_		
 n_tested	p_tested_past_year_1549m	p_tested_past_year_1549w	test_prop_positive
@@ -409,7 +407,7 @@ n_prep 				n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_;
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI4; 
+data a.l_base_CdI5; 
 set y;  
 run;
 
