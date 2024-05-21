@@ -4154,20 +4154,6 @@ if caldate{t} ge 1995 then u=u/ch_risk_beh_ep;
 in subject; * dependent_on_time_step_length ;
 
 
-
-
-
-
-
-
-
-
-* ######################
-
-develop this below
-
-########################;
-
 if msm=1 then u=u/red_chance_ep_msm;
 * less chance of starting longer term unprotected sex partnership with woman if msm ;
 

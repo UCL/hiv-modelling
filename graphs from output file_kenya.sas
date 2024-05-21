@@ -87,6 +87,7 @@ n_alive n_diagnosed n_hiv  n_infected
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564_ p_onprep_msm				
  p_onart_msm   prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period_msm p_msm_infected_from_msm   n_alive1564_msm   prevalence_pwid  n_pwid  p_onprep_pwid  p_onart_pwid  p_onart_sw
+ n_vm_per_year
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -159,7 +160,7 @@ n_alive n_diagnosed n_hiv n_infected
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564_ p_onprep_msm				
  p_onart_msm   prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period_msm p_msm_infected_from_msm   n_alive1564_msm  prevalence_pwid  n_pwid  p_onprep_pwid  p_onart_pwid  p_onart_sw
-
+n_vm_per_year
 ;
 
 
@@ -473,6 +474,9 @@ if cald = 2022 then n_pwid_obs_kya = 16000;
 if cald = 2020 then n_onprep_obs_kya = 28000;  * pharmacy data;
 if cald = 2022 then n_onprep_obs_kya = 21000;  * pharmacy data;
 if cald = 2024 then n_onprep_obs_kya = 70000; * pharmacy data;
+
+if cald = 2024 then n_vm_obs_kya = 845000;
+
 
 /*
 
@@ -1274,6 +1278,23 @@ label p50_n_onart_0 = "Option 0 (median) ";
 series  x=cald y=p50_n_onart_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_onart_0 	upper=p95_n_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=n_onart_obs_kya/	lineattrs = (color=blue  thickness = 3) ;;
+
+
+run;quit;
+
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of viral load tests per year";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 100000) valueattrs=(size=10);
+
+label p50_n_vm_per_year_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_n_vm_per_year_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_vm_per_year_0 	upper=p95_n_vm_per_year_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=n_vm_obs_kya/	lineattrs = (color=blue  thickness = 3) ;;
 
 
 run;quit;
@@ -2204,7 +2225,7 @@ p95_prevalence5559w_0 	p95_prevalence5559m_0 p95_prevalence6064m_0 p95_prevalenc
 
 ods html;
 
-proc sgplot data=all; Title 'prevalence by age - women'   height=1.5 justify=center ;
+proc sgplot data=all; Title 'prevalence by age - women 2018'   height=1.5 justify=center ;
 xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 60 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 0.2 by 0.02) valueattrs=(size=10);
 series  x=ageg y=p50_prevalence/	lineattrs = (color=black thickness = 2);
@@ -2214,7 +2235,7 @@ where sex=2;
 run;
 
 
-proc sgplot data=all; Title 'prevalence by age - men'   height=1.5 justify=center ;
+proc sgplot data=all; Title 'prevalence by age - men 2018'   height=1.5 justify=center ;
 xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 60 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 0.2 by 0.02) valueattrs=(size=10);
 series  x=ageg y=p50_prevalence/	lineattrs = (color=black thickness = 2);
