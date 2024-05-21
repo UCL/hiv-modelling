@@ -2188,7 +2188,6 @@ who may be dead and hence have caldate{t} missing;
 		*Note: at the moment the other testing modalities to be swicthed off are not modelled;
 
 		*Prevention;
-		*Condom promotion and provision: currently not in essential scenario but under discussion;
 		*SBCC: not explicitly modelled, but the switch off is;
 		*condom_change_year_i=2;    		*Switches off SBCC;
 		circ_inc_rate_year_i = 2;		*No VMMC;
@@ -2223,7 +2222,6 @@ who may be dead and hence have caldate{t} missing;
 
 
 	*TESTING;
-	*TESTING;
 	if option = 2 then do; *Self-test kits distributed (Primary distribution);
 		prob_self_test_hard_reach = 0.1;
 		self_test_targeting = 1.5;
@@ -2247,6 +2245,7 @@ who may be dead and hence have caldate{t} missing;
 
 	*PREVENTION;
 	if option = 10 then do;*HIV P&T program targeting FSWf;
+		eff_sw_program = 1;
 	end;
 	if option = 11 then do;*Social and behavioral change communication (SBCC);
 	end;
@@ -18761,7 +18760,7 @@ s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep s_pep_not_prep
 
 s_testfor_prep_oral  s_testfor_prep_inj s_testfor_prep_vr   s_prep_oral s_prep_inj s_prep_vr s_prep_oral_ever  s_prep_inj_ever  s_prep_vr_ever
-s_last_prep_used  s_stop_prep_inj_choice 
+s_last_prep_used  s_stop_prep_inj_choice s_stop_prep_vr_choice
 s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_any_elig s_prep_oral_willing s_prep_inj_willing s_prep_oral_at_infection s_prep_inj_at_infection 
 s_stop_prep_vr_elig  s_prep_vr_willing s_prep_vr_at_infection 
 
@@ -19308,7 +19307,7 @@ if country = 'Zimbabwe' then do;
 	if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
 	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 end;
-/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/	*QUERY should we be using this line for Zim? JAS Feb24;
+
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
