@@ -261,6 +261,7 @@ newp_seed = 7;
 * MSM;
 
 * msm_rred;					%sample_uniform(msm_rred, 1.5 2 3 5); * extent to which p_rred_p is higher in msm than het men;
+* red_chance_ep_msm;		%sample_uniform(red_chance_ep_msm, 0.67 0.5 0.2);
 * prop_m_msm;				%sample(prop_m_msm,   0.003  0.005 , 0.5  0.5   ); 
 * msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.2 0.3 0.4); * risk of one or more cls partners in msm per period ;
 * msm_tr_factor;			%sample_uniform(msm_tr_factor, 3 5   ); * factor determining the transmission risk per period given 
@@ -956,7 +957,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
-  %include "/home/rmjlaph/kenya_parameters_v.sas";
+  %include "/home/rmjlaph/kenya_parameters_w.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
@@ -4151,6 +4152,25 @@ if registd_tm1=1 then u=u/ch_risk_diag;
 if caldate{t} ge 1995 then u=u/ch_risk_beh_ep;
 * less chance of starting longer term unprotected sex partnership after hiv diagnosis
 in subject; * dependent_on_time_step_length ;
+
+
+
+
+
+
+
+
+
+
+* ######################
+
+develop this below
+
+########################;
+
+if msm=1 then u=u/red_chance_ep_msm;
+* less chance of starting longer term unprotected sex partnership with woman if msm ;
+
 if ep_tm1=0 and 15 <= age < 25 and u < eprate then do; 
 	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
 if ep_tm1=0 and 25 <= age < 35 and u < eprate then do; 
@@ -12865,7 +12885,11 @@ m_3544_newp=0;if  gender=1 and 35 <= age < 45 then m_3544_newp=newp;
 m_4554_newp=0;if  gender=1 and 45 <= age < 55 then m_4554_newp=newp;
 m_5564_newp=0;if  gender=1 and 55 <= age < 65 then m_5564_newp=newp;
 
-* msm ; msm_newp=0; if msm=1 then msm_newp=newp;
+* msm ; 
+msm_newp=0; if msm=1 then msm_newp=newp;
+msm_ep=0; if msm=1 then msm_ep=ep;
+m_ge1newp=0;if gender=1 and newp ge 1 then m_ge1newp=1;
+msm_ge1newp=0; if msm=1 and newp ge 1 then msm_ge1newp=0;
 
 i_w_1524_newp=0; if hiv=1 and gender=2 and 15 <= age < 25 then i_w_1524_newp=newp;
 i_w_2534_newp=0; if hiv=1 and gender=2 and 25 <= age < 35 then i_w_2534_newp=newp;
@@ -17089,7 +17113,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_m_1524_newp + m_1524_newp ; s_m_2534_newp + m_2534_newp ; s_m_3544_newp + m_3544_newp ; s_m_4554_newp + m_4554_newp ; s_m_5564_newp + m_5564_newp ;
 	s_w_1524_newp + w_1524_newp ; s_w_2534_newp + w_2534_newp ; s_w_3544_newp + w_3544_newp ; s_w_4554_newp + w_4554_newp ; s_w_5564_newp + w_5564_newp ;
 
-	s_msm + msm;
+	s_msm + msm;  s_msm_ep + msm_ep; s_m_ge1newp + m_ge1newp;  s_msm_ge1newp + msm_ge1newp;
 
 	s_m_1524_epnewp + m_1524_epnewp ; s_m_2534_epnewp + m_2534_epnewp ; s_m_3544_epnewp + m_3544_epnewp ; s_m_4554_epnewp + m_4554_epnewp ; s_m_5564_epnewp + m_5564_epnewp ;
 	s_w_1524_epnewp + w_1524_epnewp ; s_w_2534_epnewp + w_2534_epnewp ; s_w_3544_epnewp + w_3544_epnewp ; s_w_4554_epnewp + w_4554_epnewp ; s_w_5564_epnewp + w_5564_epnewp ;
@@ -19511,7 +19535,7 @@ s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1
 s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
 s_i_msm s_i_v1_msm s_i_v2_msm s_i_v3_msm s_i_v4_msm s_i_v5_msm s_i_v6_msm s_msm  s_prop_i_msm  s_prep_any_msm  s_prep_any_m  s_prep_any_pwid
-
+s_msm_ep s_m_ge1newp s_msm_ge1newp 
 
 /* PWID */ 
 
@@ -19625,7 +19649,7 @@ poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_a
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti   prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid prob_prep_elig_pwid msm_risk_cls  prob_prep_elig_msm
 msm_tr_factor switch_for_tox 
-msm_rred prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_female msm_rr_loss_at_diag pwid_rr_loss_at_diag
+msm_rred red_chance_ep_msm prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_female msm_rr_loss_at_diag pwid_rr_loss_at_diag
 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
@@ -20538,7 +20562,7 @@ s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_   s_diag_msm15
 s_ever_tested_msm1549_   s_diag_msm1549_     s_ever_tested_msm1564_   s_onart_msm1564_
 s_diag_this_period_msm  s_tested_msm  s_naive_msm
 s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  si_v6_msm  s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
-
+s_msm_ep s_m_ge1newp s_msm_ge1newp 
 
 /* PWID */ 
 
@@ -21720,7 +21744,7 @@ s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1
 s_ever_tested_msm1549_   s_diag_msm1549_    s_ever_tested_msm1564_   s_onart_msm1564_
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
 s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
-
+s_msm_ep s_m_ge1newp s_msm_ge1newp 
 
 /* PWID */ 
 
@@ -21843,7 +21867,7 @@ greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  pro
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75  death_r_iris_pop_wide_tld
 sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
-msm_rred prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_female  msm_rr_loss_at_diag pwid_rr_loss_at_diag
+msm_rred red_chance_ep_msm prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_female  msm_rr_loss_at_diag pwid_rr_loss_at_diag
 effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
