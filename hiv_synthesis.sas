@@ -2165,8 +2165,8 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
- 	*Option 0 is continuation at current rates;
- 	*Option 1 is essential scenario for Zimbabwe;
+ 	*Option 0 is continuation at current rates - status quo;
+ 	*Option 1 is minimal scenario for Zimbabwe;
 	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;						 *Vale;
 	*Option 10,11,12,13,14 are essential + different prevention strategies;			 *Jenny;
 	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops; *Jenny;
