@@ -14759,6 +14759,10 @@ if prep_elig_hivneg = 1 and (prep_any=1 or prep_oral=1 or prep_inj=1 or prep_vr=
 prep_elig_onprep = 0;
 if prep_any_elig=1 and (prep_any=1 or prep_oral=1 or prep_inj=1 or prep_vr=1) then prep_elig_onprep = 1;
 
+* of people on prep, proportion on prep_oral;
+prep_elig_onprep_oral=0;
+if prep_elig_onprep = 1 and prep_oral=1 then prep_elig_onprep_oral=1;
+
 * of people on prep, proportion on prep_inj;
 prep_elig_onprep_inj=0;
 if prep_elig_onprep = 1 and prep_inj=1 then prep_elig_onprep_inj=1;
@@ -16999,10 +17003,12 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_on_risk_informed_prep_oral + on_risk_informed_prep_oral; s_on_risk_informed_prep_inj + on_risk_informed_prep_inj;
  	s_on_risk_informed_prep_vr + on_risk_informed_prep_vr;
 
-	s_all_prep_criteria + all_prep_criteria ; s_all_prep_criteria_hivneg + all_prep_criteria_hivneg; s_prep_elig_hivneg + prep_elig_hivneg ;
-	s_prep_elig_hivneg_onprep + prep_elig_hivneg_onprep ;  s_prep_elig_onprep + prep_elig_onprep ;s_prep_elig_onprep_inj + prep_elig_onprep_inj;
-	s_started_prep_oral_hiv + started_prep_oral_hiv; s_started_prep_inj_hiv + started_prep_inj_hiv; s_prep_elig_onprep_vr + prep_elig_onprep_vr; 	s_started_prep_vr_hiv + started_prep_vr_hiv;
- 	s_started_prep_any_hiv + started_prep_any_hiv;  s_pop_wide_tld_hiv + pop_wide_tld_hiv;  s_pop_wide_tld_prep_elig + pop_wide_tld_prep_elig ; 
+	s_all_prep_criteria + all_prep_criteria ; s_all_prep_criteria_hivneg + all_prep_criteria_hivneg ; s_prep_elig_hivneg + prep_elig_hivneg ;
+	s_prep_elig_hivneg_onprep + prep_elig_hivneg_onprep ; s_prep_elig_onprep + prep_elig_onprep ;
+	s_prep_elig_onprep_oral + prep_elig_onprep_oral ; s_prep_elig_onprep_inj + prep_elig_onprep_inj ; s_prep_elig_onprep_vr + prep_elig_onprep_vr ;
+	s_started_prep_any_hiv + started_prep_any_hiv ;
+	s_started_prep_oral_hiv + started_prep_oral_hiv ; s_started_prep_inj_hiv + started_prep_inj_hiv ; s_started_prep_vr_hiv + started_prep_vr_hiv ;
+ 	s_pop_wide_tld_hiv + pop_wide_tld_hiv;  s_pop_wide_tld_prep_elig + pop_wide_tld_prep_elig ; 
 	s_pop_wide_tld_neg_prep_inelig + pop_wide_tld_neg_prep_inelig;
 
 	
@@ -18776,9 +18782,10 @@ s_on_risk_informed_prep_oral s_on_risk_informed_prep_inj s_on_risk_informed_prep
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim  s_start_rest_prep_inj_prim_cabr
 s_start_restart_prep_vr s_start_restart_prep_vr_prim 
 
-s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj 
-s_prep_elig_onprep_vr 
-s_started_prep_oral_hiv s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep 
+s_prep_elig_onprep s_prep_elig_onprep_oral s_prep_elig_onprep_inj s_prep_elig_onprep_vr 
+s_started_prep_any_hiv s_started_prep_oral_hiv s_started_prep_inj_hiv s_started_prep_vr_hiv
+s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 
 
@@ -19747,9 +19754,10 @@ s_on_risk_informed_prep_oral s_on_risk_informed_prep_inj s_on_risk_informed_prep
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_vr s_start_restart_prep_inj_prim s_start_restart_prep_vr_prim 
 s_start_rest_prep_inj_prim_cabr
 
-s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
-s_prep_elig_onprep_vr
-s_started_prep_oral_hiv s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep
+s_prep_elig_onprep s_prep_elig_onprep_oral s_prep_elig_onprep_inj s_prep_elig_onprep_vr 
+s_started_prep_any_hiv s_started_prep_oral_hiv s_started_prep_inj_hiv s_started_prep_vr_hiv
+s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -20726,9 +20734,10 @@ s_on_risk_informed_prep_oral s_on_risk_informed_prep_inj s_on_risk_informed_prep
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_vr s_start_restart_prep_inj_prim s_start_restart_prep_vr_prim 
 s_start_rest_prep_inj_prim_cabr
 
-s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
-s_prep_elig_onprep_vr
-s_started_prep_oral_hiv s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep
+s_prep_elig_onprep s_prep_elig_onprep_oral s_prep_elig_onprep_inj s_prep_elig_onprep_vr 
+s_started_prep_any_hiv s_started_prep_oral_hiv s_started_prep_inj_hiv s_started_prep_vr_hiv
+s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
