@@ -4,25 +4,25 @@
 
  proc printto ; 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_n_b_keep_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_n_c_keep_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_vaccine_n_b_keep_prep; 
+proc sort data=b.k_vaccine_n_c_keep_prep; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_n_b_keep_prep ;
+set b.k_vaccine_n_c_keep_prep ;
 
 
 if cald=2024   ;
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_n_b_keep_prep sf;
+merge b.k_vaccine_n_c_keep_prep sf;
 by run ;
 
 * preparatory code ;
@@ -1166,9 +1166,9 @@ proc freq; tables cald option; where cald=2040.50;
 run;
 
 
-data    b.l_vaccine_n_b_output_file; set y;  
+data    b.l_vaccine_n_c_output_file; set y;  
 
-data y ; set b.l_vaccine_n_b_output_file; 
+data y ; set b.l_vaccine_n_c_output_file; 
 
   options nomprint;
   option nospool;
@@ -1343,16 +1343,16 @@ proc sort; by run;run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
 
 
 * To get one row per run;
 
-  data  b.w_vaccine_n_b_output_file     ; 
+  data  b.w_vaccine_n_c_output_file     ; 
   merge b.wide_outputs   ;
   by run;
 
-  data e; set b.w_vaccine_n_b_output_file ;
+  data e; set b.w_vaccine_n_c_output_file ;
 
 
 * n_prep_inj;
@@ -1774,7 +1774,38 @@ n_vac_this_year_58_3 n_vac_this_year_59_3 n_vac_this_year_60_3 n_vac_this_year_6
 
 
 
+
+
 * n_daly_gbd;
+%macro med_n_daly_gbd(y=);data ee; set e;keep n_daly_gbd_&y._1 ; 
+proc means noprint p50 data = ee ;var n_daly_gbd_&y._1 ;output out=n_daly_gbd_&y._1 median = med_n_daly_gbd_no_vac_&y. ; %mend;
+%med_n_daly_gbd(y=40);%med_n_daly_gbd(y=41);%med_n_daly_gbd(y=42);%med_n_daly_gbd(y=43);
+%med_n_daly_gbd(y=44);%med_n_daly_gbd(y=45);%med_n_daly_gbd(y=46);%med_n_daly_gbd(y=47);%med_n_daly_gbd(y=48);%med_n_daly_gbd(y=49);
+%med_n_daly_gbd(y=50);%med_n_daly_gbd(y=51);%med_n_daly_gbd(y=52);%med_n_daly_gbd(y=53);%med_n_daly_gbd(y=54);%med_n_daly_gbd(y=55);
+%med_n_daly_gbd(y=56);%med_n_daly_gbd(y=57);%med_n_daly_gbd(y=58);%med_n_daly_gbd(y=59);%med_n_daly_gbd(y=60);%med_n_daly_gbd(y=61);
+%med_n_daly_gbd(y=62);%med_n_daly_gbd(y=63);%med_n_daly_gbd(y=64);%med_n_daly_gbd(y=65);%med_n_daly_gbd(y=66);%med_n_daly_gbd(y=67);
+%med_n_daly_gbd(y=68);%med_n_daly_gbd(y=69);%med_n_daly_gbd(y=70);
+data n_daly_gbd_1; merge n_daly_gbd_40_1 n_daly_gbd_41_1 n_daly_gbd_42_1 n_daly_gbd_43_1 n_daly_gbd_44_1 n_daly_gbd_45_1 n_daly_gbd_46_1 n_daly_gbd_47_1
+n_daly_gbd_48_1 n_daly_gbd_49_1 n_daly_gbd_50_1 n_daly_gbd_51_1 n_daly_gbd_52_1 n_daly_gbd_53_1 n_daly_gbd_54_1 n_daly_gbd_55_1 n_daly_gbd_56_1 n_daly_gbd_57_1
+n_daly_gbd_58_1 n_daly_gbd_59_1 n_daly_gbd_60_1 n_daly_gbd_61_1 n_daly_gbd_62_1 n_daly_gbd_63_1 n_daly_gbd_64_1 n_daly_gbd_65_1 n_daly_gbd_66_1 n_daly_gbd_67_1  
+n_daly_gbd_68_1 n_daly_gbd_69_1 n_daly_gbd_70_1;drop _TYPE_ _FREQ_;
+%macro 	med_n_daly_gbd(y=);data ee; set e;keep n_daly_gbd_&y._3 ; 
+proc means noprint p50 data = ee ;var n_daly_gbd_&y._3 ;output out=n_daly_gbd_&y._3 median = med_n_daly_gbd_vac_&y. ; %mend;
+%med_n_daly_gbd(y=40);%med_n_daly_gbd(y=41);%med_n_daly_gbd(y=42);%med_n_daly_gbd(y=43);
+%med_n_daly_gbd(y=44);%med_n_daly_gbd(y=45);%med_n_daly_gbd(y=46);%med_n_daly_gbd(y=47);%med_n_daly_gbd(y=48);%med_n_daly_gbd(y=49);
+%med_n_daly_gbd(y=50);%med_n_daly_gbd(y=51);%med_n_daly_gbd(y=52);%med_n_daly_gbd(y=53);%med_n_daly_gbd(y=54);%med_n_daly_gbd(y=55);
+%med_n_daly_gbd(y=56);%med_n_daly_gbd(y=57);%med_n_daly_gbd(y=58);%med_n_daly_gbd(y=59);%med_n_daly_gbd(y=60);%med_n_daly_gbd(y=61);
+%med_n_daly_gbd(y=62);%med_n_daly_gbd(y=63);%med_n_daly_gbd(y=64);%med_n_daly_gbd(y=65);%med_n_daly_gbd(y=66);%med_n_daly_gbd(y=67);
+%med_n_daly_gbd(y=68);%med_n_daly_gbd(y=69);%med_n_daly_gbd(y=70);
+data n_daly_gbd_3; merge n_daly_gbd_40_3 n_daly_gbd_41_3 n_daly_gbd_42_3 n_daly_gbd_43_3 n_daly_gbd_44_3 n_daly_gbd_45_3 n_daly_gbd_46_3 n_daly_gbd_47_3
+n_daly_gbd_48_3 n_daly_gbd_49_3 n_daly_gbd_50_3 n_daly_gbd_51_3 n_daly_gbd_52_3 n_daly_gbd_53_3 n_daly_gbd_54_3 n_daly_gbd_55_3 n_daly_gbd_56_3 n_daly_gbd_57_3
+n_daly_gbd_58_3 n_daly_gbd_59_3 n_daly_gbd_60_3 n_daly_gbd_61_3 n_daly_gbd_62_3 n_daly_gbd_63_3 n_daly_gbd_64_3 n_daly_gbd_65_3 n_daly_gbd_66_3 n_daly_gbd_67_3 
+n_daly_gbd_68_3 n_daly_gbd_69_3 n_daly_gbd_70_3;drop _TYPE_ _FREQ_;
+
+
+
+
+* d_n_daly_gbd;
 data z; set e;
 d_n_daly_gbd_40 = n_daly_gbd_40_3 - n_daly_gbd_40_1;d_n_daly_gbd_41 = n_daly_gbd_41_3 - n_daly_gbd_41_1;d_n_daly_gbd_42 = n_daly_gbd_42_3 - n_daly_gbd_42_1;
 d_n_daly_gbd_43 = n_daly_gbd_43_3 - n_daly_gbd_43_1;d_n_daly_gbd_44 = n_daly_gbd_44_3 - n_daly_gbd_44_1;d_n_daly_gbd_45 = n_daly_gbd_45_3 - n_daly_gbd_45_1;
@@ -1818,7 +1849,8 @@ n_ever_vaccinated_3
 n_cur_full_vac_eff_3 
 n_any_cur_vac_eff_3 
 n_vac_this_year_3 
-n_boost_this_year_3 
+n_boost_this_year_3
+n_daly_gbd_1 n_daly_gbd_3
 d_n_daly_gbd ;
 
 
@@ -1828,7 +1860,7 @@ proc print; run;
 
 proc export 
 data=n dbms=xlsx
-outfile="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\output_file_for_jacob_update_2" replace; 
+outfile="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\output_file_for_jacob_scenario_c" replace; 
 run;
 
 
