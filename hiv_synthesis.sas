@@ -20196,7 +20196,7 @@ Inputs are:
 
 *** RUN PROGRAM; 
 
-*1) Run from caldate1 to current date;
+*1) Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
 * 2) Save dataset at this point;
