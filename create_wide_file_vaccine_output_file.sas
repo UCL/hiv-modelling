@@ -4,25 +4,25 @@
 
  proc printto ; 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_n_c_keep_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_m_b_keep_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_vaccine_n_c_keep_prep; 
+proc sort data=b.k_vaccine_m_b_keep_prep; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_n_c_keep_prep ;
+set b.k_vaccine_m_b_keep_prep ;
 
 
 if cald=2024   ;
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_n_c_keep_prep sf;
+merge b.k_vaccine_m_b_keep_prep sf;
 by run ;
 
 * preparatory code ;
@@ -1166,9 +1166,9 @@ proc freq; tables cald option; where cald=2040.50;
 run;
 
 
-data    b.l_vaccine_n_c_output_file; set y;  
+data    b.l_vaccine_m_b_output_file; set y;  
 
-data y ; set b.l_vaccine_n_c_output_file; 
+data y ; set b.l_vaccine_m_b_output_file; 
 
   options nomprint;
   option nospool;
@@ -1343,16 +1343,16 @@ proc sort; by run;run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\";
 
 
 * To get one row per run;
 
-  data  b.w_vaccine_n_c_output_file     ; 
+  data  b.w_vaccine_m_b_output_file     ; 
   merge b.wide_outputs   ;
   by run;
 
-  data e; set b.w_vaccine_n_c_output_file ;
+  data e; set b.w_vaccine_m_b_output_file ;
 
 
 * n_prep_inj;
@@ -1860,7 +1860,7 @@ proc print; run;
 
 proc export 
 data=n dbms=xlsx
-outfile="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\output_file_for_jacob_scenario_c" replace; 
+outfile="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\output_file_for_jacob_scenario_m_b" replace; 
 run;
 
 
