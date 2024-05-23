@@ -4848,7 +4848,7 @@ end;
 		u_self_test=rand('uniform');
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
 		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
-		if secondary_self_test=1 and eponart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  
+		if secondary_self_test=1 and epart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  
 		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
 			self_tested=1; 
 			dt_last_self_test=caldate{t}; 
