@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data b;
-set a.l_base_CdI5;
+set a.l_base_CdI6;
 s_sw_1549_ = s_sw_1549;
 
 *if ych2_risk_beh_newp=1.1 then delete;
@@ -16,7 +16,7 @@ proc freq;table cald;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  177    ;
+%let nfit =  155    ;
 %let year_end = 2029.00 ;
 run;
 proc sort;by cald option ;run;
@@ -183,7 +183,7 @@ by cald;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\lovel\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\09Apr2024a.doc' startpage=never; 
+ods rtf file = 'C:\Users\lovel\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\19may24.doc' startpage=never; 
 
 
 proc sgplot data=d; 
@@ -525,7 +525,7 @@ scatter  x=cald y=o_prev1549m_phia/	markerattrs = (symbol=square color=red  size
 scatter  x=cald y=o_prev1549m_UNAIDS/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev_m_urb_Benoit/	markerattrs = (symbol=square color=blue  size = 10) ;
 scatter  x=cald y=o_prev_m_rur_Benoit/	markerattrs = (symbol=square color=orange  size = 10) ;
-scatter  x=cald y=o_prev1549m_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev1549m_dhs/	markerattrs = (symbol=square color=purple  size = 10) ;
 
 run;quit;
 
@@ -550,7 +550,7 @@ scatter  x=cald y=o_prev1549w_phia/	markerattrs = (symbol=square color=red  size
 scatter  x=cald y=o_prev1549w_UNAIDS/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev_w_urb_Benoit/	markerattrs = (symbol=square color=blue  size = 10) ;
 scatter  x=cald y=o_prev_w_rur_Benoit/	markerattrs = (symbol=square color=orange  size = 10) ;
-scatter  x=cald y=o_prev1549w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev1549w_dhs/	markerattrs = (symbol=square color=purple  size = 10) ;
 
 run;quit;
 
@@ -575,7 +575,7 @@ band    x=cald lower=p5_prevalence1519m_0 	upper=p95_prevalence1519m_0  / transp
 
 scatter  x=cald y=o_prev1519w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev1519m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
-scatter  x=cald y=o_prev1519w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev1519w_dhs/	markerattrs = (symbol=square color=purple  size = 10) ;
 scatter  x=cald y=o_prev1519m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
 run;quit;
 
@@ -598,7 +598,7 @@ band    x=cald lower=p5_prevalence2024m_0 	upper=p95_prevalence2024m_0  / transp
 
 scatter  x=cald y=o_prev2024w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev2024m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
-scatter  x=cald y=o_prev2024w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev2024w_dhs/	markerattrs = (symbol=square color=purple size = 10) ;
 scatter  x=cald y=o_prev2024m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
 
 run;quit;
@@ -622,7 +622,7 @@ band    x=cald lower=p5_prevalence2529m_0 	upper=p95_prevalence2529m_0  / transp
 
 scatter  x=cald y=o_prev2529w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev2529m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
-scatter  x=cald y=o_prev2529w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev2529w_dhs/	markerattrs = (symbol=square color=purple size = 10) ;
 scatter  x=cald y=o_prev2529m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
 
 run;quit;
@@ -646,7 +646,7 @@ band    x=cald lower=p5_prevalence3034m_0 	upper=p95_prevalence3034m_0  / transp
 
 scatter  x=cald y=o_prev3034w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev3034m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
-scatter  x=cald y=o_prev3034w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev3034w_dhs/	markerattrs = (symbol=square color=purple  size = 10) ;
 scatter  x=cald y=o_prev3034m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
 
 run;quit;
@@ -670,7 +670,7 @@ band    x=cald lower=p5_prevalence3539m_0 	upper=p95_prevalence3539m_0  / transp
 
 scatter  x=cald y=o_prev3539w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev3539m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
-scatter  x=cald y=o_prev3539w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev3539w_dhs/	markerattrs = (symbol=square color=purple  size = 10) ;
 scatter  x=cald y=o_prev3539m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
 
 run;quit;
@@ -694,7 +694,7 @@ band    x=cald lower=p5_prevalence4044m_0 	upper=p95_prevalence4044m_0  / transp
 
 scatter  x=cald y=o_prev4044w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev4044m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
-scatter  x=cald y=o_prev4044w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev4044w_dhs/	markerattrs = (symbol=square color=purple  size = 10) ;
 scatter  x=cald y=o_prev4044m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
 
 run;quit;
@@ -718,7 +718,7 @@ band    x=cald lower=p5_prevalence4549m_0 	upper=p95_prevalence4549m_0  / transp
 
 scatter  x=cald y=o_prev4549w_phia/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_prev4549m_phia/	markerattrs = (symbol=square color=black  size = 10) ;
-scatter  x=cald y=o_prev4549w_dhs/	markerattrs = (symbol=square color=yellow  size = 10) ;
+scatter  x=cald y=o_prev4549w_dhs/	markerattrs = (symbol=square color=purple  size = 10) ;
 scatter  x=cald y=o_prev4549m_dhs/	markerattrs = (symbol=square color=orange  size = 10) ;
 
 run;quit;
