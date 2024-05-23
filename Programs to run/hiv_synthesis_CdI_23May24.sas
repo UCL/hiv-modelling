@@ -8953,7 +8953,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 e=rand('uniform');
 
 
-***LBM May2024 - Reducing mens adh to calibrate to Cote d'Ivoire;
+***LBM May2024 - Reducing mens adh to calibrate to Cote d Ivoire;
 
 * note no effect when using e < 0.0;
 if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.4 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
