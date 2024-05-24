@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data a;
-set a.cdi_21May24;
+set a.cdi_23May24;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
@@ -407,7 +407,7 @@ n_prep 				n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_;
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI6; 
+data a.l_base_CdI7; 
 set y;  
 run;
 
