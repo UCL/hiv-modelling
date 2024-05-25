@@ -12,7 +12,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set b.l_vaccine_m_b_keep_prep_y;
+set b.l_vaccine_m_b_keep_prep_may24;
 
 
 n_k65m = p_k65m * n_hiv;
@@ -30,7 +30,7 @@ p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564;
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
 
-%let single_var = p_vl1000_          ;
+%let single_var = n_daly_gbd          ;
 
 
 * p_inf_newp p_inf_ep p_inf_diag p_inf_naive p_inf_primary ;
@@ -435,8 +435,38 @@ band    x=cald lower=p5_ddaly_3 upper=p95_ddaly_3 / transparency=0.9 fillattrs =
 
 run;quit;
 
+*/
 
 
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "DALYs GBD";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000   by 1000000    ) valueattrs=(size=10);
+
+label p50_n_daly_gbd_0 = "noVaccine";
+label p50_n_daly_gbd_1 = "withVaccine_highTPP";
+label p50_n_daly_gbd_2 = "withVaccine_moderateTPP";
+label p50_n_daly_gbd_3 = "withVaccine_lowTPP";
+
+series  x=cald y=p50_n_daly_gbd_0 / lineattrs = (color=red thickness = 4);
+band    x=cald lower=p5_n_daly_gbd_0 upper=p95_n_daly_gbd_0 / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+
+series  x=cald y=p50_n_daly_gbd_1 / lineattrs = (color=lightgreen thickness = 4);
+band    x=cald lower=p5_n_daly_gbd_1 upper=p95_n_daly_gbd_1 / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
+
+series  x=cald y=p50_n_daly_gbd_2 / lineattrs = (color=cyan thickness = 4);
+band    x=cald lower=p5_n_daly_gbd_2 upper=p95_n_daly_gbd_2 / transparency=0.9 fillattrs = (color=cyan) legendlabel= "90% range";
+
+series  x=cald y=p50_n_daly_gbd_3 / lineattrs = (color=violet thickness = 4);
+band    x=cald lower=p5_n_daly_gbd_3 upper=p95_n_daly_gbd_3 / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
+
+run;quit;
+
+
+
+/*
 
 ods html;
 proc sgplot data=d ; 
@@ -548,7 +578,7 @@ band    x=cald lower=p5_p_onart_vl1000__3 upper=p95_p_onart_vl1000__3 / transpar
 run;quit;
 
 
-*/
+
 
 ods html;
 proc sgplot data=d ; 
@@ -576,7 +606,7 @@ band    x=cald lower=p5_p_vl1000__3 upper=p95_p_vl1000__3 / transparency=0.9 fil
 run;quit;
 
 
-/*
+
 
 ods html;
 proc sgplot data=d ; 

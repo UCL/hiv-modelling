@@ -4,25 +4,25 @@
 
  proc printto ; 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_n_b_keep_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_m_b_keep_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_vaccine_n_b_keep_prep; 
+proc sort data=b.k_vaccine_m_b_keep_prep; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_n_b_keep_prep ;
+set b.k_vaccine_m_b_keep_prep ;
 
 
 if cald=2024   ;
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_n_b_keep_prep sf;
+merge b.k_vaccine_m_b_keep_prep sf;
 by run ;
 
 * preparatory code ;
@@ -110,6 +110,9 @@ dead_ddaly_ntd = s_dead_ddaly_ntd * &sf * 4 * (0.0022 / 0.0058);
 
 ddaly = s_ddaly * &sf * 4;
 daly = s_daly * &sf * 4;
+
+
+n_daly_gbd = ((s_dyll_GBD + s_live_ddaly) / discount) * &sf * 4;
 
 
 
@@ -1050,6 +1053,7 @@ s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail
 p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection n_inf_primary
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m  n_alive
+n_daly_gbd
 
 prop_1564_hivneg_onprep  p_newp_prep_hivneg cost n_cd4_lt200 n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  
 death_rate_hiv death_rate_hiv_all  n_onart  n_art_or_prep n_prep_inj n_death_hivneg_anycause
@@ -1127,9 +1131,9 @@ proc freq; tables cald option; where cald=2040.50;
 run;
 
 
-data    b.l_vaccine_n_b_keep_prep_y; set y;  
+data    b.l_vaccine_m_b_keep_prep_may24; set y;  
 
-data y ; set b.l_vaccine_n_b_keep_prep_y; 
+data y ; set b.l_vaccine_m_b_keep_prep_may24; 
 
 
   options nomprint;
@@ -1282,7 +1286,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_prep_any); %var(v=prop_elig_on_prep); %var(v=p_elig_prep);  %var(v=prop_onprep_newpge1); %var(v=p_prep_elig_past_year); 
 %var(v=p_prep_newp); %var(v=prop_sw_onprep);  %var(v=p_em_inm_res_ever_prep_inj);  %var(v=p_cabr_start_rest_prep_inj);
 %var(v=n_o_cab_at_3m);    %var(v=n_o_cab_at_6m);    %var(v=n_o_cab_at_9m);   %var(v=n_o_cab_at_ge12m); 
-%var(v=ddaly); %var(v=daly_ac_mtct); %var(v=p_emerge_inm_res_cab);  %var(v=p_emerge_inm_res_cab_tail); %var(v=ddaly_ac_ntd_mtct);
+%var(v=ddaly); %var(v=n_daly_gbd); %var(v=daly_ac_mtct); %var(v=p_emerge_inm_res_cab);  %var(v=p_emerge_inm_res_cab_tail); %var(v=ddaly_ac_ntd_mtct);
 %var(v=of_all_o_cab_prop_dur_9m); %var(v=of_all_o_cab_prop_dur_ge12m);
 %var(v=s_em_inm_res_o_cab_off_3m);  %var(v=s_o_cab_or_o_cab_tm1_no_r);   %var(v=s_emerge_inm_res_cab_tail);   %var(v=s_cur_in_prep_inj_tail_no_r);
 %var(v=p_emerge_inm_res_cab); %var(v=p_emerge_inm_res_cab_tail);
@@ -1322,7 +1326,7 @@ prop_prep_inj_at_inf_diag   of_all_o_cab_prop_dur_3m of_all_o_cab_prop_dur_6m   
 n_cur_res_cab  n_cur_res_dol  n_emerge_inm_res_cab  n_switch_prep_from_oral n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  
 n_prep_any_start n_prep_oral_start  n_prep_inj_start n_prep_vr_start n_prep_any prop_elig_on_prep p_elig_prep  prop_onprep_newpge1 
 p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_inj n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
-ddaly daly_ac_mtct p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m
+ddaly  n_daly_gbd  daly_ac_mtct p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m
 s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
 p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
@@ -1503,7 +1507,7 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 * To get one row per run;
 
-  data  b.w_vaccine_n_b_keep_prep     ; 
+  data  b.w_vaccine_m_b_keep_prep_may24     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1513,9 +1517,9 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\";
 
-data zz; set b.w_vaccine_n_b_keep_prep ;
+data zz; set b.w_vaccine_m_b_keep_prep_may24 ;
 
 
 d_prop_elig_on_prep_30y_2_1 = prop_elig_on_prep_30y_2 - prop_elig_on_prep_30y_1; 
@@ -1581,6 +1585,8 @@ min_netdaly500 = min(netdaly500_1, netdaly500_2);
 if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
 if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
 
+
+d_n_daly_gbd_30y_3_1 = n_daly_gbd_30y_1 - n_daly_gbd_30y_3 ;
 
 
 * label 
@@ -1714,6 +1720,22 @@ incidence1549_64_2  incidence1549_65_2  incidence1549_66_2  incidence1549_67_2  
 
 ;
 run; 
+
+
+
+
+
+
+proc means data=zz   n mean p50 p5 p95 lclm uclm;
+
+var n_daly_gbd_30y_1 n_daly_gbd_30y_3  d_n_daly_gbd_30y_3_1;
+
+run; 
+
+
+
+
+
 
 
 
