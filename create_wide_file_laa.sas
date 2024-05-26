@@ -1837,14 +1837,13 @@ proc sort; by run;run;
 
 
 
-* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_r2_out\";
+ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_r2_out\";
 
 data f; set b.w_laa_r2;
 
-
-  if incidence1549_24 > 0.1;
-  if p_onart_vl1000_m_24 < 0.98;
-  if p_onart_vl1000_w_24 < 0.98;
+  if incidence1549_24 >= 0.0999;
+  if p_onart_vl1000_m_24 <= 0.98;
+  if p_onart_vl1000_w_24 <= 0.98;
 
 
 
@@ -1888,6 +1887,8 @@ dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_c
 dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_cost_50y_2 + dlpr_cost_50y_2 + ddar_cost_50y_2 + dtaz_cost_50y_2 +  defa_cost_50y_2
 + ddol_cost_50y_2 + dcab_cost_50y_2 + dlen_cost_50y_2;
 
+dvis_cost_50y_1 = dvis_cost_50y_1 / 2;* due to data from hero - so $5 per vis if vls, $10 if not vls or on len/ca;
+dvis_cost_50y_2 = dvis_cost_50y_2 / 2;* due to data from hero - so $5 per vis if vls, $10 if not vls or on len/ca;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
  
@@ -2041,7 +2042,7 @@ lowest_netdaly = "Proportion of setting scenarios in which cab/len to 15-24 year
 
 
 
-ods html;
+* * ods html;
 
 
 * table 1;
@@ -2196,26 +2197,26 @@ run;
 title;
 footnote;
 
-ods html close;
+* * ods html close;
 
 
 
 
-ods html; 
+* ods html; 
 proc glm; 
 model d_netdaly500_2_1 = rate_return_for_lencab prob_strong_pref_lencab lencab_uptake lencab_uptake_vlg1000 incidence1549_24 p_onart_vl1000_24/ solution; 
 run; 
-ods html close;
+* ods html close;
 
 
 
 
 
-ods html; 
-proc glm; 
-model d_netdaly500_2_1 =  incidence1549_24 p_onart_vl1000_24  / solution; 
+* ods html; 
+proc glm data=f; 
+model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24  / solution; 
 run; 
-ods html close;
+* ods html close;
 
 
 
@@ -2232,7 +2233,7 @@ ods html close;
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_r2_out\";
 
-data ds_80_80; set b.w_laa_r2;
+data ds_120; set b.w_laa_r2;
 
   if incidence1549_24 > 0.1;
   if p_onart_vl1000_m_24 < 0.98;
@@ -2253,119 +2254,10 @@ dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_c
 dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_cost_50y_2 + dlpr_cost_50y_2 + ddar_cost_50y_2 + dtaz_cost_50y_2 +  defa_cost_50y_2
 + ddol_cost_50y_2 + dcab_cost_50y_2 + dlen_cost_50y_2;
 
-dvis_cost_50y_1 = dvis_cost_no_lencab_50y_1 + dvis_cost_lencab_50y_1 ;
-dvis_cost_50y_2 = dvis_cost_no_lencab_50y_2 + dvis_cost_lencab_50y_2 ;
- 
-dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
-					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
-					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 + dcost_drug_level_test_50y_1
-					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1 /*  + dtb_lam_cost_50y_1 + dtb_proph_cost_50y_1 + dcrag_cost_50y_1 + dcrypm_proph_cost_50y_1 
-					+ dsbi_proph_cost_50y_1 */ ;			
 
-dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
-					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
-					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2 + dcost_drug_level_test_50y_2
-					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2 /* + dtb_lam_cost_50y_2 + dtb_proph_cost_50y_2 + dcrag_cost_50y_2 + dcrypm_proph_cost_50y_2 
-					+ dsbi_proph_cost_50y_2 */ ;
+dvis_cost_50y_1 = dvis_cost_50y_1 / 2;* due to data from hero - so $5 per vis if vls, $10 if not vls or on len/ca;
+dvis_cost_50y_2 = dvis_cost_50y_2 / 2;* due to data from hero - so $5 per vis if vls, $10 if not vls or on len/ca;
 
-
-d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
-
-d_ddaly_50y_2_1 = ddaly_50y_1 - ddaly_50y_2; * dalys averted;
-
-d_ddaly_gbd_50y_2_1 = ddaly_gbd_50y_1 - ddaly_gbd_50y_2; * dalys averted;
-
-netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
-netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
-
-min_netdaly500 = min(netdaly500_1, netdaly500_2);
-
-d_netdaly500_2_1 = netdaly500_1 - netdaly500_2; * net dalys averted ;
-
-if netdaly500_1 = min_netdaly500 then lowest_netdaly=0;
-if netdaly500_2 = min_netdaly500 then lowest_netdaly=1;
-
-len_cab_total_cost=160;
-
-
-
-data ds_120_120; set b.w_laa_r2;
-
-  if incidence1549_24 > 0.1;
-  if p_onart_vl1000_m_24 < 0.98;
-  if p_onart_vl1000_w_24 < 0.98;
-
-* since %80 per year is the annual cost of lencab drugs and clinic visits for lencab, we can increase the overall cost from $160 per year to £240
-  per year by multiplying the 0.80 by 2 etc;
-
-dcab_cost_50y_1 = dcab_cost_50y_1 * 1.60 / 0.96 ;
-dcab_cost_50y_2 = dcab_cost_50y_2 * 1.60 / 0.96;
-dlen_cost_50y_1 = dlen_cost_50y_1 * 1.60 / 0.96;
-dlen_cost_50y_2 = dlen_cost_50y_2 * 1.60 / 0.96;
-
-dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
-+ ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
-
-dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_cost_50y_2 + dlpr_cost_50y_2 + ddar_cost_50y_2 + dtaz_cost_50y_2 +  defa_cost_50y_2
-+ ddol_cost_50y_2 + dcab_cost_50y_2 + dlen_cost_50y_2;
-
-dvis_cost_50y_1 = dvis_cost_no_lencab_50y_1 + dvis_cost_lencab_50y_1 ;
-dvis_cost_50y_2 = dvis_cost_no_lencab_50y_2 + dvis_cost_lencab_50y_2 ;
- 
-dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
-					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
-					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 + dcost_drug_level_test_50y_1
-					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1 /*  + dtb_lam_cost_50y_1 + dtb_proph_cost_50y_1 + dcrag_cost_50y_1 + dcrypm_proph_cost_50y_1 
-					+ dsbi_proph_cost_50y_1 */ ;			
-
-dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
-					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
-					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2 + dcost_drug_level_test_50y_2
-					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2 /* + dtb_lam_cost_50y_2 + dtb_proph_cost_50y_2 + dcrag_cost_50y_2 + dcrypm_proph_cost_50y_2 
-					+ dsbi_proph_cost_50y_2 */ ;
-
-
-d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
-
-d_ddaly_50y_2_1 = ddaly_50y_1 - ddaly_50y_2; * dalys averted;
-
-d_ddaly_gbd_50y_2_1 = ddaly_gbd_50y_1 - ddaly_gbd_50y_2; * dalys averted;
-
-netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
-netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
-
-min_netdaly500 = min(netdaly500_1, netdaly500_2);
-
-d_netdaly500_2_1 = netdaly500_1 - netdaly500_2; * net dalys averted ;
-
-if netdaly500_1 = min_netdaly500 then lowest_netdaly=0;
-if netdaly500_2 = min_netdaly500 then lowest_netdaly=1;
-
-len_cab_total_cost=240;
-
-
-data ds_60_60; set b.w_laa_r2;
-
-  if incidence1549_24 > 0.1;
-  if p_onart_vl1000_m_24 < 0.98;
-  if p_onart_vl1000_w_24 < 0.98;
-
-* since %80 per year is the annual cost of lencab drugs and clinic visits for lencab, we can increase the overall cost from $160 per year to £240
-  per year by multiplying the 0.80 by 2 etc;
-
-dcab_cost_50y_1 = dcab_cost_50y_1 * 0.40 / 0.96 ; * so total cost drug + clinic costs = $120;
-dcab_cost_50y_2 = dcab_cost_50y_2 * 0.40 / 0.96;
-dlen_cost_50y_1 = dlen_cost_50y_1 * 0.40 / 0.96;
-dlen_cost_50y_2 = dlen_cost_50y_2 * 0.40 / 0.96;
-
-dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
-+ ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
-
-dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_cost_50y_2 + dlpr_cost_50y_2 + ddar_cost_50y_2 + dtaz_cost_50y_2 +  defa_cost_50y_2
-+ ddol_cost_50y_2 + dcab_cost_50y_2 + dlen_cost_50y_2;
-
-dvis_cost_50y_1 = dvis_cost_no_lencab_50y_1 + dvis_cost_lencab_50y_1 ;
-dvis_cost_50y_2 = dvis_cost_no_lencab_50y_2 + dvis_cost_lencab_50y_2 ;
  
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
@@ -2399,7 +2291,120 @@ if netdaly500_2 = min_netdaly500 then lowest_netdaly=1;
 len_cab_total_cost=120;
 
 
-data all; set ds_60_60 ds_120_120  ds_80_80;
+
+data ds_160    ; set b.w_laa_r2;
+
+  if incidence1549_24 > 0.1;
+  if p_onart_vl1000_m_24 < 0.98;
+  if p_onart_vl1000_w_24 < 0.98;
+
+* since %80 per year is the annual cost of lencab drugs and clinic visits for lencab, we can increase the overall cost from $160 per year to £240
+  per year by multiplying the 0.80 by 2 etc;
+
+dcab_cost_50y_1 = dcab_cost_50y_1 * 1.20 / 0.96 ;
+dcab_cost_50y_2 = dcab_cost_50y_2 * 1.20 / 0.96;
+dlen_cost_50y_1 = dlen_cost_50y_1 * 1.20 / 0.96;
+dlen_cost_50y_2 = dlen_cost_50y_2 * 1.20 / 0.96;
+
+dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
++ ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
+
+dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_cost_50y_2 + dlpr_cost_50y_2 + ddar_cost_50y_2 + dtaz_cost_50y_2 +  defa_cost_50y_2
++ ddol_cost_50y_2 + dcab_cost_50y_2 + dlen_cost_50y_2;
+
+
+dvis_cost_50y_1 = dvis_cost_50y_1 / 2;* due to data from hero - so $5 per vis if vls, $10 if not vls or on len/ca;
+dvis_cost_50y_2 = dvis_cost_50y_2 / 2;* due to data from hero - so $5 per vis if vls, $10 if not vls or on len/ca;
+
+ 
+dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
+					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
+					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 + dcost_drug_level_test_50y_1
+					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1 /*  + dtb_lam_cost_50y_1 + dtb_proph_cost_50y_1 + dcrag_cost_50y_1 + dcrypm_proph_cost_50y_1 
+					+ dsbi_proph_cost_50y_1 */ ;			
+
+dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
+					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
+					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2 + dcost_drug_level_test_50y_2
+					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2 /* + dtb_lam_cost_50y_2 + dtb_proph_cost_50y_2 + dcrag_cost_50y_2 + dcrypm_proph_cost_50y_2 
+					+ dsbi_proph_cost_50y_2 */ ;
+
+
+d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
+
+d_ddaly_50y_2_1 = ddaly_50y_1 - ddaly_50y_2; * dalys averted;
+
+d_ddaly_gbd_50y_2_1 = ddaly_gbd_50y_1 - ddaly_gbd_50y_2; * dalys averted;
+
+netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
+netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
+
+min_netdaly500 = min(netdaly500_1, netdaly500_2);
+
+d_netdaly500_2_1 = netdaly500_1 - netdaly500_2; * net dalys averted ;
+
+if netdaly500_1 = min_netdaly500 then lowest_netdaly=0;
+if netdaly500_2 = min_netdaly500 then lowest_netdaly=1;
+
+len_cab_total_cost=200;
+
+
+data ds_80; set b.w_laa_r2;
+
+  if incidence1549_24 > 0.1;
+  if p_onart_vl1000_m_24 < 0.98;
+  if p_onart_vl1000_w_24 < 0.98;
+
+* since %80 per year is the annual cost of lencab drugs and clinic visits for lencab, we can increase the overall cost from $160 per year to £240
+  per year by multiplying the 0.80 by 2 etc;
+
+dcab_cost_50y_1 = dcab_cost_50y_1 * 0.40 / 0.96 ; * so total cost drug + clinic costs = $120;
+dcab_cost_50y_2 = dcab_cost_50y_2 * 0.40 / 0.96;
+dlen_cost_50y_1 = dlen_cost_50y_1 * 0.40 / 0.96;
+dlen_cost_50y_2 = dlen_cost_50y_2 * 0.40 / 0.96;
+
+dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
++ ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
+
+dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_cost_50y_2 + dlpr_cost_50y_2 + ddar_cost_50y_2 + dtaz_cost_50y_2 +  defa_cost_50y_2
++ ddol_cost_50y_2 + dcab_cost_50y_2 + dlen_cost_50y_2;
+
+dvis_cost_50y_1 = dvis_cost_50y_1 / 2;* due to data from hero - so $5 per vis if vls, $10 if not vls or on len/ca;
+dvis_cost_50y_2 = dvis_cost_50y_2 / 2;* due to data from hero - so $5 per vis if vls, $10 if not vls or on len/ca;
+ 
+dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
+					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
+					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 + dcost_drug_level_test_50y_1
+					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1 /*  + dtb_lam_cost_50y_1 + dtb_proph_cost_50y_1 + dcrag_cost_50y_1 + dcrypm_proph_cost_50y_1 
+					+ dsbi_proph_cost_50y_1 */ ;			
+
+dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
+					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
+					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2 + dcost_drug_level_test_50y_2
+					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2 /* + dtb_lam_cost_50y_2 + dtb_proph_cost_50y_2 + dcrag_cost_50y_2 + dcrypm_proph_cost_50y_2 
+					+ dsbi_proph_cost_50y_2 */ ;
+
+
+d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
+
+d_ddaly_50y_2_1 = ddaly_50y_1 - ddaly_50y_2; * dalys averted;
+
+d_ddaly_gbd_50y_2_1 = ddaly_gbd_50y_1 - ddaly_gbd_50y_2; * dalys averted;
+
+netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
+netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
+
+min_netdaly500 = min(netdaly500_1, netdaly500_2);
+
+d_netdaly500_2_1 = netdaly500_1 - netdaly500_2; * net dalys averted ;
+
+if netdaly500_1 = min_netdaly500 then lowest_netdaly=0;
+if netdaly500_2 = min_netdaly500 then lowest_netdaly=1;
+
+len_cab_total_cost=80;
+
+
+data all; set ds_80    ds_120      ds_160  ;
 
 if 0.1 <= incidence1549_24 < 0.3 then incg=1;            
 if 0.3 <= incidence1549_24 < 0.5 then incg=2;      
@@ -2417,7 +2422,9 @@ keep lowest_netdaly d_netdaly500_2_1 incidence1549_24 p_vl1000_24 vlg incg len_c
 
 proc freq; tables len_cab_total_cost*vlg*incg*lowest_netdaly; run;
 
-
+proc glm data=all; 
+model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24 len_cab_total_cost / solution; 
+run; 
 
 
 /*
@@ -2427,7 +2434,7 @@ len_cab_total_cost = len_cab_total_cost - 200;
 p_vl1000_24 = p_vl1000_24 - 0.75;
 
 
-ods html; 
+* ods html; 
 proc logistic desc ; 
 model lowest_netdaly  =  incidence1549_24 p_vl1000_24 len_cab_total_cost incidence1549_24*p_vl1000_24 incidence1549_24*len_cab_total_cost
 ; 
@@ -2439,7 +2446,7 @@ proc sort data=predicted_values; by p_vl1000_24 incidence1549_24 ;
 proc print data=predicted_values ; 
 run;
 
-ods html close;
+* ods html close;
 
 */
 
@@ -2447,20 +2454,20 @@ ods html close;
 
 /*
 
-ods html; 
+* ods html; 
 proc glm; 
 model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24 len_cab_total_cost incidence1549_24*p_onart_vl1000_24 incidence1549_24*len_cab_total_cost
 p_onart_vl1000_24*len_cab_total_cost
 / solution; 
 run; 
-ods html close;
+* ods html close;
 
 
-ods html; 
+* ods html; 
 proc logistic desc ; 
 model lowest_netdaly  =  incidence1549_24 p_vl1000_24 len_cab_total_cost ;
 run;
-ods html close;
+* ods html close;
 
 
 

@@ -2,6 +2,12 @@
 
 
 
+
+
+
+
+* adjust costs to avoid having to do this in create_wide_file
+
 * check on vis cost in people on len cab;
 
 * also add in effect of offering len-cab in bringing people back into care ?
