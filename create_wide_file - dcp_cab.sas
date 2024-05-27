@@ -4,20 +4,20 @@
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_w_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_y_out\";
 
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_w_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_y_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9: ;
 
-%let laprv =  dcp_cab_w  ;
+%let laprv =  dcp_cab_y  ;
 
-data b.k_dcp_cab_w;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_dcp_cab_y;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -25,7 +25,7 @@ run;
 */
 
 
-proc sort data=b.k_dcp_cab_w; 
+proc sort data=b.k_dcp_cab_y; 
 by run cald option;
 run;
 
@@ -33,7 +33,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_dcp_cab_w ;
+set b.k_dcp_cab_y ;
 
 if cald=2023   ;
 s_alive = s_alive_m + s_alive_w ;
@@ -53,7 +53,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_dcp_cab_w sf;
+merge b.k_dcp_cab_y sf;
 by run ;
 
 
@@ -1187,9 +1187,9 @@ run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_dcp_cab_w_y; set y;  
+data    b.l_dcp_cab_y_y; set y;  
 
-data y ; set b.l_dcp_cab_w_y; 
+data y ; set b.l_dcp_cab_y_y; 
 
 
   options nomprint;
@@ -1580,7 +1580,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  b.w_dcp_cab_w     ; 
+  data  b.w_dcp_cab_y     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1593,9 +1593,9 @@ proc sort; by run;run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_w_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_y_out\";
 
-data g; set b.w_dcp_cab_w ;
+data g; set b.w_dcp_cab_y ;
 
 if incidence1549_24 ge 0.1;
 
@@ -1811,11 +1811,13 @@ p_vl1000_w_24
 p_vl1000_24
 prevalence_vg1000_m_24 
 prevalence_vg1000_w_24 
+prevalence_vg1000_24 
 p_onart_vl1000_w_24 
 p_onart_vl1000_m_24 ;
 run;
 
 
+ods html;
 proc means n p50 p5 p95;
 var 
 p_tested_past_year_1549w_20y_1 p_tested_past_year_1549w_20y_2 p_tested_past_year_1549w_20y_3 p_tested_past_year_1549w_20y_4
@@ -1839,6 +1841,7 @@ p_diag_20y_1 p_diag_20y_2 p_diag_20y_3 p_diag_20y_4
 prevalence_vg1000_20y_1 prevalence_vg1000_20y_2 prevalence_vg1000_20y_3 prevalence_vg1000_20y_4 
 ;
 run;
+
 
 
 data s; set g;
