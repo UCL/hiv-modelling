@@ -1599,6 +1599,10 @@ data g; set b.w_dcp_cab_y ;
 
 if incidence1549_24 ge 0.1;
 
+if 0.1 <= incidence1549_24 < 0.3 then incidence1549_24_g = 1;
+if 0.3 <= incidence1549_24 < 0.5 then incidence1549_24_g = 2;
+if 0.5 <= incidence1549_24 < 0.8 then incidence1549_24_g = 3;
+if 0.8 <= incidence1549_24       then incidence1549_24_g = 4;
 
 d_prop_elig_on_prep_20y_2_1 = prop_elig_on_prep_20y_2 - prop_elig_on_prep_20y_1; 
 d_prop_elig_on_prep_20y_3_1 = prop_elig_on_prep_20y_3 - prop_elig_on_prep_20y_1; 
@@ -1615,6 +1619,15 @@ d_prop_prep_inj_20y_4_1 = prop_prep_inj_20y_4 - prop_prep_inj_20y_1 ;
 d_p_prep_any_ever_44_2_1 = p_prep_any_ever_44_2 - p_prep_any_ever_44_1 ;
 d_p_prep_any_ever_44_3_1 = p_prep_any_ever_44_3 - p_prep_any_ever_44_1 ;
 d_p_prep_any_ever_44_4_1 = p_prep_any_ever_44_4 - p_prep_any_ever_44_1 ;
+
+if prop_elig_dcp_20y_2 < 0.19 then prop_elig_dcp_20y_2_g = 1; 
+if 0.19 <= prop_elig_dcp_20y_2 < 0.24 then prop_elig_dcp_20y_2_g = 2; 
+if 0.24 <= prop_elig_dcp_20y_2 then prop_elig_dcp_20y_2_g = 3; 
+
+if prop_elig_dcp_20y_4 < 0.33 then prop_elig_dcp_20y_4_g = 1; 
+if 0.33 <= prop_elig_dcp_20y_4 < 0.41 then prop_elig_dcp_20y_4_g = 2; 
+if 0.41 <= prop_elig_dcp_20y_4 then prop_elig_dcp_20y_4_g = 3; 
+
 
 r_incidence1549_20y_2_1 = incidence1549_20y_2 / incidence1549_20y_1 ;
 r_incidence1549_20y_3_1 = incidence1549_20y_3 / incidence1549_20y_1 ;
@@ -1720,6 +1733,11 @@ if netdaly_ac_mtct_500_1 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=
 if netdaly_ac_mtct_500_2 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=2;
 if netdaly_ac_mtct_500_3 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=3;
 if netdaly_ac_mtct_500_4 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=4;
+
+
+ce_dcp_in_cab_context = 0; if netdaly_ac_mtct_500_4 < netdaly_ac_mtct_500_3 then ce_dcp_in_cab_context = 1;
+ce_dcp_no_cab = 0; if netdaly_ac_mtct_500_2 < netdaly_ac_mtct_500_1 then ce_dcp_no_cab = 1;
+
 
 label 
 
@@ -2197,8 +2215,34 @@ title 'Which policy is cost-effective for each model run';
 
 proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost; run; 
 
+proc freq; tables incidence1549_24_g * ce_dcp_in_cab_context ; run; 
+
+proc freq; tables prop_elig_dcp_20y_4 prop_elig_dcp_20y_4_g * ce_dcp_in_cab_context ;
+
+
+proc logistic desc; 
+model ce_dcp_in_cab_context = incidence1549_24 ; 
+run;
+
+proc freq; tables incidence1549_24_g * ce_dcp_no_cab ; run; 
+
+proc freq; tables prop_elig_dcp_20y_2 prop_elig_dcp_20y_2_g * ce_dcp_no_cab ;
+
+proc logistic desc; 
+model ce_dcp_no_cab = incidence1549_24 ; 
+run;
+
+
+
+
+
+
+
+
 
 ods html close;
+
+
 
 
 
