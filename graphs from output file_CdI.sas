@@ -37,14 +37,14 @@ incidence1524m		incidence1524w		incidence2534m		incidence2534w		incidence3544m		
 incidence4554m		incidence4554w		incidence5564m		incidence5564w	
 p_inf_vlsupp		p_inf_ep			p_inf_newp			p_inf_naive			p_inf_primary		p_inf_diag	
 p_diag_m			p_diag_w			p_artexp_diag		p_artexp_diag		p_onart_diag_m		p_onart_diag_w
-n_diagnosed	 		n_onart				n_onart_w			n_onart_m			p_ai_no_arv_c_nnm
+n_diagnosed	 		n_onart				n_onart_w			n_onart_m			p_ai_no_arv_c_nnm	
 p_efa				p_taz				p_ten				p_zdv				p_dol		p_3tc	p_lpr		p_nev	
 p_onart_m			p_onart_w			p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w	p_vg1000_	p_vl1000_
 prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w
 rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
 n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive_m			n_alive_w	n_alive1564_
 n_alive1564m		n_alive1564w		n_art_start_y 		n_prep				n_prep_ever			p_prep_ever	p_fsw_newp0_
-;
+n_pregnant			n_newinf;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -228,10 +228,10 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 100
 label p50_n_newinf_0 = "Model";
 label o_newinf = "UNAIDS";
 
-series  x=cald y=p50_n_hiv_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_hiv_0 	upper=p95_n_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_newinf_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_newinf_0 	upper=p95_n_newinf_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-scatter x=cald y = o_newinf/ 		markerattrs = (symbol=square color=green size = 10);;
+scatter x=cald y = o_newinf_unaids/ 		markerattrs = (symbol=square color=green size = 10);;
 
 run;quit;
 
@@ -251,6 +251,20 @@ scatter x=cald y = o_plhiv_UNAIDS/ 		markerattrs = (symbol=square color=green si
 run;quit;
 
 proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of pregnant women";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)   valueattrs=(size=10);
+label p50_n_pregnant_0 = "Option 0 (median) ";
+label o_preg_UNAIDS = "UNAIDS";
+
+series  x=cald y=p50_n_pregnant_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p2p5_n_pregnant_0 	upper=p97p5_n_pregnant_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+scatter x=cald y = o_preg_UNAIDS/ 		markerattrs = (symbol=square color=green size = 10);;
+
+run;quit;
+
+proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
@@ -258,9 +272,7 @@ label p50_p_w_giv_birth_this_per_0 = "Option 0 (median) ";
 
 series  x=cald y=p50_p_w_giv_birth_this_per_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p2p5_p_w_giv_birth_this_per_0 	upper=p97p5_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
-run;
-
-quit;
+run;quit;
 
 ods html;
 proc sgplot data=d; 
@@ -853,12 +865,15 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 label p50_p_diag_m_0 = "Model";
 label o_diag1564m_phia = "PHIA";
 label o_diag1564_UNAIDS = "UNAIDS ALL";
+label o_diag_NSPm = "NSP";
 
 series  x=cald y=p50_p_diag_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 scatter x=cald y=o_diag1564m_phia / 		markerattrs = (symbol=square color=green size = 10);
 scatter x=cald y=o_diag1564_UNAIDS / 		markerattrs = (symbol=square color=blue size = 10);
+scatter x=cald y=o_diag_NSPm / 		markerattrs = (symbol=square color=orange size = 10);
+
 
 run;quit;
 
@@ -870,12 +885,16 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 label p50_p_diag_w_0 = "Model ";
 label o_diag1564w_phia = "PHIA";
 label o_diag1564_UNAIDS = "UNAIDS ALL";
+label o_diag_NSPw = "NSP";
+
 
 series  x=cald y=p50_p_diag_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 scatter x=cald y=o_diag1564w_phia / 		markerattrs = (symbol=square color=green size = 10);
 scatter x=cald y=o_diag1564_UNAIDS / 		markerattrs = (symbol=square color=blue size = 10);
+scatter x=cald y=o_diag_NSPw / 		markerattrs = (symbol=square color=orange size = 10);
+
 run;quit;
 
 proc sgplot data=d; 
@@ -885,11 +904,14 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 
 label p50_p_onart_diag_m_0 = "Model";
 label o_diag_onart1564m_phia = "PHIA";
+label o_onart_NSPm = "NSP";
 
 series  x=cald y=p50_p_onart_diag_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_diag_m_0 	upper=p95_p_onart_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 scatter x=cald y=o_diag_onart1564m_phia / 		markerattrs = (symbol=square color=green size = 10);
+scatter x=cald y=o_onart_NSPm / 		markerattrs = (symbol=square color=orange size = 10);
+
 run;quit;
 
 proc sgplot data=d; 
@@ -899,11 +921,14 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 
 label p50_p_onart_diag_w_0 = "Model";
 label o_diag_onart1564w_phia = "PHIA";
+label o_onart_NSPw = "NSP";
+
 
 series  x=cald y=p50_p_onart_diag_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_diag_w_0 	upper=p95_p_onart_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 scatter x=cald y=o_diag_onart1564w_phia / 		markerattrs = (symbol=square color=green size = 10);
+scatter x=cald y=o_onart_NSPw / 		markerattrs = (symbol=square color=orange size = 10);
 
 run;quit;
 

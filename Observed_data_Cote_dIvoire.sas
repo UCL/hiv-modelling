@@ -130,7 +130,7 @@ end;
 * Source: MoH Donnees Spectrum 2023 ;
 
 if cald=2023 then do;
-	o_newinf=7340; o_newinf_m=2513; o_newinf_w=4827;
+	o_newinf_UNAIDS=7340; o_newinf_m_UNAIDS=2513; o_newinf_w_UNAIDS=4827;
 end;
 
 
@@ -193,6 +193,15 @@ if cald=2022 then do;
 	o_vs1564_UNAIDS = 0.62; 	*of PLHIV (NOT of those on ART);
 end;
 
+*Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan;
+if cald=2023 then do;
+	o_diag_NSPm=0.74;o_diag_NSPw=0.85;
+	o_onart_NSPm=0.61;o_onart_NSPw=0.79;
+	o_vs_NSP=0.72;
+end;
+
+
+
 ***********************
 *NUMBER ON ART;
 ***********************;
@@ -218,6 +227,9 @@ if cald=2010 then o_AIDSdeaths_UNAIDS=34000;
 if cald=2015 then o_AIDSdeaths_UNAIDS=22000;
 if cald=2020 then o_AIDSdeaths_UNAIDS=11000;
 
+* Source: MoH Donnees Spectrum 2023 ;
+if cald=2023 then o_AIDSdeaths_UNAIDS=8875;
+
 ***********************
 *PrEP
 ***********************;
@@ -227,11 +239,23 @@ if cald=2022 then o_prep_UNAIDS=15773;
 ***********************
 *PREGNANT WOMEN;
 ***********************;
+
+*Number pregnant
 * Source: MoH Donnees Spectrum 2023 ;
 if cald=2021 then o_preg_unaids=15207;
 if cald=2022 then o_preg_unaids=14094;
 if cald=2023 then o_preg_unaids=15077;
 
+
+*Positivity rate amongst pregnant women;
+* Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026);
+if cald= then preg_hiv_UNAIDS=
+if cald= then preg_hiv_UNAIDS=
+if cald= then preg_hiv_UNAIDS=
+if cald= then preg_hiv_UNAIDS=
+if cald= then preg_hiv_UNAIDS=
+if cald= then preg_hiv_UNAIDS=
+if cald= then preg_hiv_UNAIDS=
 
 ***********************
 *FSW
