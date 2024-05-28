@@ -364,6 +364,7 @@ s_alive = s_alive_m + s_alive_w ;
 
 * n_cd4_lt200;					n_cd4_lt200_ = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_hiv;						n_hiv = s_hivge15 * &sf;
+* n_newinf;						n_newinf = s_primary * &sf;
 * n_alive;						n_alive = s_alive * &sf;
 * n_alive1549_;					n_alive1549_ = s_alive1549* &sf;
 * n_alive1564_;					n_alive1564_ = s_alive1564* &sf;
@@ -373,6 +374,7 @@ s_alive = s_alive_m + s_alive_w ;
 * n_alive_w;					n_alive_w = s_alive_w * &sf;
 * n_prep;						n_prep = s_prep_any * &sf;
 * n_prep_ever;					n_prep_ever = s_prep_any_ever * &sf;
+* n_pregnant;					n_pregnant= s_alive1564_w* &sf;
 * p_prep_ever;					p_prep_ever = s_prep_any_ever / (s_alive1564_w + s_alive1564_m) ;
 * prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / ((s_ageg1519w + s_ageg2024w) - s_hiv1524w) ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
@@ -400,7 +402,7 @@ p_onart_m			p_onart_w			p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w	p_vg1
 prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w		n_death_hiv
 rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
 n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive_m			n_alive_w	n_alive1564_
-n_art_start_y		n_alive1564m		n_alive1564w
+n_art_start_y		n_alive1564m		n_alive1564w		n_newinf
 n_prep 				n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_
 sw_trans_matrix		;
 

@@ -220,7 +220,20 @@ scatter x=cald y=o_pop1564m / markerattrs = (symbol=square color=blue size = 10)
 scatter x=cald y=o_pop1564w / markerattrs = (symbol=square color=green size = 10);
 run;quit;
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of new infections - NEW GRAPH";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980   to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 100000) valueattrs=(size=10);
 
+label p50_n_newinf_0 = "Model";
+label o_newinf = "UNAIDS";
+
+series  x=cald y=p50_n_hiv_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_hiv_0 	upper=p95_n_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y = o_newinf/ 		markerattrs = (symbol=square color=green size = 10);;
+
+run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number with HIV";

@@ -40,6 +40,7 @@ if cald=2010 then o_plhiv_UNAIDS=520000;
 if cald=2015 then o_plhiv_UNAIDS=460000;
 if cald=2020 then o_plhiv_UNAIDS=420000;
 if cald=2022 then o_plhiv_UNAIDS=390000; 
+if cald=2023 then o_plhiv_UNAIDS=386614;*MoH Donnees SPectrum 2023; 
 
 ***********************
 *SEXUAL BEHAVIOUR;
@@ -122,6 +123,17 @@ end;
 if cald=2022 then do;
 	o_Incid1549_UNAIDS=0.045; 
 end;
+
+***********************
+*NEW INFECTIONS;
+***********************;
+* Source: MoH Donnees Spectrum 2023 ;
+
+if cald=2023 then do;
+	o_newinf=7340; o_newinf_m=2513; o_newinf_w=4827;
+end;
+
+
 
 ***********************
 *HIV TESTING
@@ -211,6 +223,14 @@ if cald=2020 then o_AIDSdeaths_UNAIDS=11000;
 ***********************;
 * Source: UNAIDS https://www.unaids.org/en/regionscountries/countries/ctedivoire;
 if cald=2022 then o_prep_UNAIDS=15773;
+
+***********************
+*PREGNANT WOMEN;
+***********************;
+* Source: MoH Donnees Spectrum 2023 ;
+if cald=2021 then o_preg_unaids=15207;
+if cald=2022 then o_preg_unaids=14094;
+if cald=2023 then o_preg_unaids=15077;
 
 
 ***********************
