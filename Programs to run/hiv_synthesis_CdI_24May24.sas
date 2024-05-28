@@ -17426,7 +17426,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_breastfeeding + breastfeeding ; s_plw + plw;
 
 	/*circumcision*/
-	s_mcirc + mcirc;
+	s_mcirc + mcirc;s_birth_circ + birth_circ ;
 	s_mcirc_1519m + mcirc_1519m ; s_mcirc_2024m + mcirc_2024m ; s_mcirc_2529m + mcirc_2529m ; s_mcirc_3034m + mcirc_3034m ; 
 	s_mcirc_3539m + mcirc_3539m ; s_mcirc_4044m + mcirc_4044m ; s_mcirc_4549m + mcirc_4549m ; s_mcirc_50plm + mcirc_50plm ;
 	s_mcirc_5054m + mcirc_5054m ; s_mcirc_5559m + mcirc_5559m ; s_mcirc_6064m + mcirc_6064m ; s_mcirc_6569m + mcirc_6569m ;
@@ -17503,7 +17503,7 @@ end;
 
 
 if 0 <= age and (death = . or caldate&j = death ) then do;
-	s_birth_circ + birth_circ ; s_new_birth_circ + new_birth_circ; 	s_mcirc_1014m + mcirc_1014m ; 
+	 s_new_birth_circ + new_birth_circ; 	s_mcirc_1014m + mcirc_1014m ; 
 
 	
 	s_new_mcirc + new_mcirc ;	s_new_mcirc_1014m + new_mcirc_1014m ;
