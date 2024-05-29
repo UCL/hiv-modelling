@@ -23,7 +23,7 @@ data option_0;
 set b;
 *if option =1 then delete;
 %let var = 
-p_w_giv_birth_this_per	mtct_prop		p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_		p_newp_ge1w_	
+p_w_giv_birth_this_per	mtct_prop		prevalence_hiv_preg		p_anc		p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_		p_newp_ge1w_	
 n_tested	p_tested_past_year_1549m	p_tested_past_year_1549w	test_prop_positive
 p_mcirc		n_new_vmmc1549m 			p_trad_circ			p_vmmc				s_sw_1549_
 prop_w_1549_sw		prop_w_1564_sw		prop_w_ever_sw		prop_sw_hiv			n_sw_1549_	prop_w_1524_onprep	prop_1564_onprep	
@@ -39,7 +39,7 @@ p_inf_vlsupp		p_inf_ep			p_inf_newp			p_inf_naive			p_inf_primary		p_inf_diag
 p_diag_m			p_diag_w			p_artexp_diag		p_artexp_diag		p_onart_diag_m		p_onart_diag_w
 n_diagnosed	 		n_onart				n_onart_w			n_onart_m			p_ai_no_arv_c_nnm	
 p_efa				p_taz				p_ten				p_zdv				p_dol		p_3tc	p_lpr		p_nev	
-p_onart_m			p_onart_w			p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w	p_vg1000_	p_vl1000_
+p_onart_m			p_onart_w			p_onart				p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w	p_vg1000_	p_vl1000_
 prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w
 rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
 n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive_m			n_alive_w	n_alive1564_
@@ -258,9 +258,23 @@ label p50_n_pregnant_0 = "Option 0 (median) ";
 label o_preg_UNAIDS = "UNAIDS";
 
 series  x=cald y=p50_n_pregnant_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p2p5_n_pregnant_0 	upper=p97p5_n_pregnant_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+band    x=cald lower=p5_n_pregnant_0 	upper=p95_n_pregnant_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
 
 scatter x=cald y = o_preg_UNAIDS/ 		markerattrs = (symbol=square color=green size = 10);;
+
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of pregnant women with HIV";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)   valueattrs=(size=10);
+label p50_prevalence_hiv_preg_0 = "Option 0 (median) ";
+label preg_hiv_UNAIDS = "NSP";
+
+series  x=cald y=p50_prevalence_hiv_preg_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence_hiv_preg_0 	upper=p95_prevalence_hiv_preg_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+scatter x=cald y = preg_hiv_UNAIDS/ 		markerattrs = (symbol=square color=green size = 10);;
 
 run;quit;
 
@@ -271,8 +285,40 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.0
 label p50_p_w_giv_birth_this_per_0 = "Option 0 (median) ";
 
 series  x=cald y=p50_p_w_giv_birth_this_per_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p2p5_p_w_giv_birth_this_per_0 	upper=p97p5_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+band    x=cald lower=p25_p_w_giv_birth_this_per_0 	upper=p975_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
 run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Mother to child transmissio";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
+label p50_mtct_prop_0 = "Option 0 (median) ";
+label mtct_nsp = "NSP";
+
+series  x=cald y=p50_mtct_prop_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p25_mtct_prop_0 	upper=p975_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+scatter x=cald y = o_p_mtct_nsp/ 		markerattrs = (symbol=square color=green size = 10);;
+
+run;quit;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of pregnant women attending ANC";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_p_anc_0 = "Option 0 (median) ";
+label o_p_anc_nsp = "NSP (1st trimester)";
+
+series  x=cald y=p50_p_anc_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_anc_0 	upper=p95_p_anc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+scatter x=cald y = o_p_anc_nsp/ 		markerattrs = (symbol=square color=green size = 10);;
+
+run;quit;
+
+mtct_prop
+
 
 ods html;
 proc sgplot data=d; 
@@ -1028,6 +1074,22 @@ run;quit;
 
 
 proc sgplot data=d; 
+Title    height=1.5 justify=center "Number on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1200000 by 100000) valueattrs=(size=10);
+
+label p50_n_onart_0 = "Model";
+label o_n_onart_UNAIDS = "UNAIDS";
+
+series  x=cald y=p50_n_onart_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_onart_0 	upper=p95_n_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y = o_n_onart_UNAIDS/ 		markerattrs = (symbol=square color=green size = 10);
+
+run;quit;
+
+
+proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of men on ART";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1200000 by 100000) valueattrs=(size=10);
@@ -1111,9 +1173,13 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label p50_p_dol_0 = "Option 0 (median) ";
+label o_p_dtg_nsp = "On DTG (NSP)";
 
 series  x=cald y=p50_p_dol_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_dol_0 	upper=p95_p_dol_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y = o_p_dtg_nsp/ 		markerattrs = (symbol=square color=green size = 10);
+
 run;quit;
 
 proc sgplot data=d; 
@@ -1149,6 +1215,19 @@ series  x=cald y=p50_p_nev_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_nev_0 	upper=p95_p_nev_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
 
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of all hiv positive people on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label p50_p_onart_0 = "Model";
+label o_p_onart_nsp= "NSP";
+series  x=cald y=p50_p_onart_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_0 	upper=p95_p_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y = o_p_onart_nsp/ 		markerattrs = (symbol=square color=green size = 10);
+run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of all hiv positive men on ART";

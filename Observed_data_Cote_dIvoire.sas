@@ -127,8 +127,17 @@ end;
 ***********************
 *NEW INFECTIONS;
 ***********************;
-* Source: MoH Donnees Spectrum 2023 ;
 
+* Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026) Page 89 Table 10;;
+if cald=2021 then do;
+	o_newinf_m_UNAIDS=1611;	o_newinf_w_UNAIDS=2513;
+end;
+
+if cald=2022 then do;
+	o_newinf_m_UNAIDS=3094;	o_newinf_w_UNAIDS=4825;
+end;
+	
+* Source: MoH Donnees Spectrum 2023 ;
 if cald=2023 then do;
 	o_newinf_UNAIDS=7340; o_newinf_m_UNAIDS=2513; o_newinf_w_UNAIDS=4827;
 end;
@@ -159,7 +168,7 @@ if cald=2018 then o_n_tests_JS=2712569;
 if cald=2019 then o_n_tests_JS=2807089;
 if cald=2020 then o_n_tests_JS=2073676;
 if cald=2021 then o_n_tests_JS=2415909;
-if cald=2012 then o_n_tests_JS=2572224;
+if cald=2022 then o_n_tests_JS=2572224;
 
 ***********************
 *CIRCUMCISION;
@@ -193,13 +202,6 @@ if cald=2022 then do;
 	o_vs1564_UNAIDS = 0.62; 	*of PLHIV (NOT of those on ART);
 end;
 
-*Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan;
-if cald=2023 then do;
-	o_diag_NSPm=0.74;o_diag_NSPw=0.85;
-	o_onart_NSPm=0.61;o_onart_NSPw=0.79;
-	o_vs_NSP=0.72;
-end;
-
 
 
 ***********************
@@ -209,6 +211,25 @@ if cald=2022 then do;
 	o_n_onart_m_UNAIDS=77428;
 	o_n_onart_w_UNAIDS=205939;
 end;
+
+* Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026);
+if cald=2019 then o_n_onart_UNAIDS=257805;
+if cald=2020 then o_n_onart_UNAIDS=270515;
+if cald=2021 then o_n_onart_UNAIDS=279404;
+if cald=2022 then o_n_onart_UNAIDS=283367;
+
+*Proportion on DTG;
+* Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026) Page 35 Table 10;
+if cald=2021 then o_p_dtg_nsp=0.829;
+if cald=2022 then o_p_dtg_nsp=0.91;
+
+*Proportion on ART;
+* Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026) Page 35 Table 10;;
+if cald=2019 then o_p_onart_nsp=0.65;
+if cald=2020 then o_p_onart_nsp=0.68;
+if cald=2021 then o_p_onart_nsp=0.78;
+if cald=2022 then o_p_onart_nsp=0.79;
+
 
 
 ***********************
@@ -227,6 +248,8 @@ if cald=2010 then o_AIDSdeaths_UNAIDS=34000;
 if cald=2015 then o_AIDSdeaths_UNAIDS=22000;
 if cald=2020 then o_AIDSdeaths_UNAIDS=11000;
 
+if cald=2022 then o_AIDSdeaths_UNAIDS=9952;*NSP;
+
 * Source: MoH Donnees Spectrum 2023 ;
 if cald=2023 then o_AIDSdeaths_UNAIDS=8875;
 
@@ -240,22 +263,33 @@ if cald=2022 then o_prep_UNAIDS=15773;
 *PREGNANT WOMEN;
 ***********************;
 
-*Number pregnant
+*Number pregnant;
 * Source: MoH Donnees Spectrum 2023 ;
 if cald=2021 then o_preg_unaids=15207;
 if cald=2022 then o_preg_unaids=14094;
 if cald=2023 then o_preg_unaids=15077;
 
+*Proportion seen in ANC;
+* Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026);
+if cald=2023 then o_p_anc_nsp=0.35;*In first trimester;
 
 *Positivity rate amongst pregnant women;
 * Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026);
-if cald= then preg_hiv_UNAIDS=
-if cald= then preg_hiv_UNAIDS=
-if cald= then preg_hiv_UNAIDS=
-if cald= then preg_hiv_UNAIDS=
-if cald= then preg_hiv_UNAIDS=
-if cald= then preg_hiv_UNAIDS=
-if cald= then preg_hiv_UNAIDS=
+if cald=2014 then preg_hiv_UNAIDS=0.02;
+if cald=2015 then preg_hiv_UNAIDS=0.016;
+if cald=2016 then preg_hiv_UNAIDS=0.012;
+if cald=2017 then preg_hiv_UNAIDS=0.001;
+if cald=2018 then preg_hiv_UNAIDS=0.009;
+if cald=2019 then preg_hiv_UNAIDS=0.007;
+if cald=2020 then preg_hiv_UNAIDS=0.006;
+if cald=2021 then preg_hiv_UNAIDS=0.0053;
+if cald=2022 then preg_hiv_UNAIDS=0.0047;
+
+*MTCT;
+* Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026) via SPECTRUM;
+
+if cald=2017 then mtct_nsp=0.1423;
+if cald=2023 then mtct_nsp=0.1087;
 
 ***********************
 *FSW
@@ -314,4 +348,8 @@ if cald=1996 then o_Incid_fsw1539_HJ=16.3;
 if cald=1998 then o_Incid_fsw1539_HJ=7.4;
 if cald=2017 then do; o_Incid_fsw1539_SP=3.3;*San Pedro;Incid_fsw1539_A=1.6;*Abidjan;end;
 
-
+* FSW attending a program;
+if cald=2021 then o_sw_in_prog=0.615;
+if cald=2022 then o_sw_in_prog=0.507;
+if cald=2023 then o_sw_in_prog=0.618;
+if cald=2024 then o_sw_in_prog=0.729;
