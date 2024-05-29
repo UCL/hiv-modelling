@@ -1319,7 +1319,7 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
 
 pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  p_dol_2vg1000_dolr1  p_o_dar_uvl2
 
-s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
+s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  n_death
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
@@ -1447,7 +1447,7 @@ drop _NAME_ _TYPE_ _FREQ_;
   %var(v=n_birth_with_inf_child);  %var(v=n_tested); %var(v=n_tested_sw); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   * %var(v= n_hiv1_prep);
 * %var(v= n_hiv1_prep_inj); * %var(v= n_hiv1_prep_oral);
-  %var(v= n_prep_any); * %var(v=n_covid); * %var(v=n_death_covid);  * %var(v=n_death);   %var(v=n_death_hiv); %var(v=n_death_hiv_age_1524);  %var(v= n_hiv);
+  %var(v= n_prep_any); * %var(v=n_covid); * %var(v=n_death_covid);    %var(v=n_death);   %var(v=n_death_hiv); %var(v=n_death_hiv_age_1524);  %var(v= n_hiv);
 %var(v=p_prep_any_ever); %var(v=p_hiv1_prep);  %var(v=p_hiv1_prep_cab);  %var(v=p_hiv1_prep_len); %var(v=p_hiv1_prep_oral); %var(v=incidence1524w);   * %var(v=incidence1524m) ;
 * %var(v=incidence2534w);   * %var(v=incidence2534m) ; * %var(v=incidence3544w);   * %var(v=incidence3544m) ;* %var(v=incidence4554w);   * %var(v=incidence4554m) ;
 * %var(v=incidence5564w);   * %var(v=incidence5564m) ;  %var(v=incidence_sw);  * %var (v=n_mcirc1549_3m) ;* %var (v=n_vmmc1549_3m); 
@@ -1591,7 +1591,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
-p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol  p_artexp_dol_pi_failed  p_adh_hi  n_second_vlg1000_first s_second_vlg1000_first
+p_dlt_adh_high_r_dol p_dlt_adh_low_r_dol  p_artexp_dol_pi_failed  p_adh_hi  n_second_vlg1000_first s_second_vlg1000_first n_death
 ;
 
 
@@ -1973,6 +1973,8 @@ p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 p_
 n_second_vlg1000_first_10y_1 n_second_vlg1000_first_10y_2 n_second_vlg1000_first_10y_3 n_second_vlg1000_first_10y_4 n_second_vlg1000_first_10y_5 
 
 p_dol_2vg1000_dolr1_10y_1 p_dol_2vg1000_dolr1_10y_2 p_dol_2vg1000_dolr1_10y_3 p_dol_2vg1000_dolr1_10y_4 p_dol_2vg1000_dolr1_10y_5 
+incidence1549_10y_1 incidence1549_10y_2 incidence1549_10y_3 incidence1549_10y_4 incidence1549_10y_5 
+
 ;
 run;
 
@@ -2020,6 +2022,7 @@ p_onart_vl1000_50y_1 p_onart_vl1000_50y_2 p_onart_vl1000_50y_3 p_onart_vl1000_50
 p_o_dar_uvl2_50y_1 p_o_dar_uvl2_50y_2 p_o_dar_uvl2_50y_3 p_o_dar_uvl2_50y_4 p_o_dar_uvl2_50y_5
 p_first_uvl2_dol_r_50y_1 p_first_uvl2_dol_r_50y_2 p_first_uvl2_dol_r_50y_3 p_first_uvl2_dol_r_50y_4 p_first_uvl2_dol_r_50y_5  
 deathr_dol_r_uvl2_50y_1 deathr_dol_r_uvl2_50y_2 deathr_dol_r_uvl2_50y_3 deathr_dol_r_uvl2_50y_4 deathr_dol_r_uvl2_50y_5  
+incidence1549_50y_1 incidence1549_50y_2 incidence1549_50y_3 incidence1549_50y_4 incidence1549_50y_5 
 ;
 run;
 ods html close;
