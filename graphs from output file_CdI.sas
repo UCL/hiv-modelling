@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data b;
-set a.l_base_CdI8;
+set a.l_base_CdI8a;
 s_sw_1549_ = s_sw_1549;
 
 proc sort; by cald run ;run;
@@ -25,7 +25,7 @@ set b;
 %let var = 
 p_w_giv_birth_this_per	mtct_prop		prevalence_hiv_preg		p_anc		p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_		p_newp_ge1w_	
 n_tested	p_tested_past_year_1549m	p_tested_past_year_1549w	test_prop_positive
-p_mcirc		n_new_vmmc1549m 			p_trad_circ			p_vmmc				s_sw_1549_
+p_mcirc		n_new_vmmc1549m 			p_trad_circ			p_vmmc				s_sw_1549_	p_sw_prog_vis
 prop_w_1549_sw		prop_w_1564_sw		prop_w_ever_sw		prop_sw_hiv			n_sw_1549_	prop_w_1524_onprep	prop_1564_onprep	
 prevalence1549_		prevalence1549m		prevalence1549w	
 prevalence1519w		prevalence1519m		prevalence2024w		prevalence2024m		prevalence2529w		prevalence2529m
@@ -44,7 +44,7 @@ prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w
 rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
 n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive_m			n_alive_w	n_alive1564_
 n_alive1564m		n_alive1564w		n_art_start_y 		n_prep				n_prep_ever			p_prep_ever	p_fsw_newp0_
-n_pregnant			n_newinf;
+n_pregnant			n_newinf		n_prep_oral_ever_sw;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -179,7 +179,7 @@ by cald;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\lovel\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\24may24.doc' startpage=never; 
+ods rtf file = 'C:\Users\lovel\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\24may24a.doc' startpage=never; 
 
 
 proc sgplot data=d; 
@@ -316,8 +316,6 @@ band    x=cald lower=p5_p_anc_0 	upper=p95_p_anc_0  / transparency=0.9 fillattrs
 scatter x=cald y = o_p_anc_nsp/ 		markerattrs = (symbol=square color=green size = 10);;
 
 run;quit;
-
-mtct_prop
 
 
 ods html;
@@ -538,15 +536,51 @@ xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		va
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
 
 label p50_p_fsw_newp0_ = "Median";
-label o_condom_lastsex = "Condom use last sex";
+label o_condom_lastsex = "Condom use last sex - Ghys";
+label o_condom_lastsex = "Condom use last sex - NSP";
 
 series  x=cald y=p50_p_fsw_newp0_  / 	 lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_fsw_newp0_	 upper=p95_p_fsw_newp0_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 scatter  x=cald y=o_condom_lastsex/	markerattrs = (symbol=square color=green  size = 10) ;
+scatter  x=cald y=o_condom_lastsex_nsp/	markerattrs = (symbol=square color=blue  size = 10) ;
 
 run;quit;
 
-ods html;
+proc sgplot data=e; 
+title    height=1.5 justify=center "Proportion of sex workers attending a program";
+footnote1 height=0.9  "";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+
+label p50_p_sw_prog_vis_ = "Median";
+label o_sw_in_prog_nsp= "NSP";
+
+series  x=cald y=p50_p_sw_prog_vis_  / 	 lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_sw_prog_vis_	 upper=p95_p_sw_prog_vis_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+scatter  x=cald y=o_sw_in_prog_nsp/	markerattrs = (symbol=square color=green  size = 10) ;
+
+run;quit;
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of FSW who have started PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)   valueattrs=(size=10);
+
+label p50_n_prep_oral_ever_sw_0 = "Model";
+label o_fsw_start_prep_PEPFAR = "PEPFAR";
+
+series  x=cald y=p50_n_prep_oral_ever_sw_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_oral_ever_sw_0 	upper=p95_n_prep_oral_ever_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter  x=cald y=o_fsw_start_prep_PEPFAR/	markerattrs = (symbol=square color=green  size = 10) ;
+
+
+run;quit;
+
+
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women aged 15-24 on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -569,6 +603,21 @@ label p50_prop_1564_onprep_0 = "Option 0 (median) ";
 
 series  x=cald y=p50_prop_1564_onprep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_1564_onprep_0 	upper=p95_prop_1564_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of 15+ adults who ever started PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)   valueattrs=(size=10);
+
+label p50_n_prep_ever_0 = "Option 0 (median) ";
+label o_prepstart_pepfar = "PEPFAR";
+
+series  x=cald y=p50_n_prep_ever_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_ever_0 	upper=p95_n_prep_ever_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter  x=cald y=o_prepstart_pepfar/	markerattrs = (symbol=square color=red  size = 10) ;
+
 run;quit;
 
 

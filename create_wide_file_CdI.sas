@@ -233,8 +233,8 @@ s_alive = s_alive_m + s_alive_w ;
 
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
 * mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
-* p_anc;						p_anc = s_anc /(s_pregnant+s_birth);*pregnant=1 at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5
-* prevalence_hiv_preg;			prevalence_hiv_preg = s_hiv_pregnant / s_pregnant ;
+* p_anc;						if (s_pregnant+s_birth) gt 0 then p_anc = s_anc /(s_pregnant+s_birth);*pregnant=1 at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5
+* prevalence_hiv_preg;			if s_pregnant gt 0 then prevalence_hiv_preg = s_hiv_pregnant / s_pregnant ;
 
 
 * p_ai_no_arv_c_nnm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_nnm = s_ai_naive_no_pmtct_c_nnm_ / s_ai_naive_no_pmtct_;
@@ -263,6 +263,7 @@ s_alive = s_alive_m + s_alive_w ;
 * prop_sw_hiv;					if s_sw_1564 gt 0 then prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
 * n_sw_1549_;					n_sw_1549_ = s_sw_1549 * &sf;
 * p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
+* p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
 
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
@@ -354,7 +355,7 @@ s_alive = s_alive_m + s_alive_w ;
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 
-* p_vg1000, p_vl1000;			if s_hivge15  > 0 then p_vg1000_ = s_vg1000 / s_hivge15 ;  p_vl1000_ = 1- p_vg1000_ ;
+* p_vg1000, p_vl1000;			if s_hivge15_  > 0 then p_vg1000_ = s_vg1000 / s_hivge15_ ;  p_vl1000_ = 1- p_vg1000_ ;
 * prevalence_vg1000;			if s_alive > 0 then prevalence_vg1000_ = s_vg1000 / s_alive;
 * n_death_2059_m;				n_death_2059_m = 	(s_dead2024m_all+ s_dead2529m_all+ s_dead3034m_all+ s_dead3539m_all+
 													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all)  * 4 * &sf ;
@@ -369,7 +370,7 @@ s_alive = s_alive_m + s_alive_w ;
 * rate_dead_allage_w;			rate_dead_allage_w = (s_deadw_all * 4 * 100) / s_alive_w ; 
 
 * n_cd4_lt200;					n_cd4_lt200_ = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
-* n_hiv;						n_hiv = s_hivge15 * &sf;
+* n_hiv;						n_hiv = s_hivge15_ * &sf;
 * n_newinf;						n_newinf = s_primary * &sf;
 * n_alive;						n_alive = s_alive * &sf;
 * n_alive1549_;					n_alive1549_ = s_alive1549* &sf;
@@ -384,12 +385,14 @@ s_alive = s_alive_m + s_alive_w ;
 * p_prep_ever;					p_prep_ever = s_prep_any_ever / (s_alive1564_w + s_alive1564_m) ;
 * prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / ((s_ageg1519w + s_ageg2024w) - s_hiv1524w) ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
+* n_prep_oral_ever_sw;  		n_prep_oral_ever_sw    = s_prep_oral_ever_sw * &sf;   
+
 
 
 keep	cald	run		option	inc_cat	ych2_risk_beh_newp
 p_w_giv_birth_this_per	mtct_prop		p_anc		prevalence_hiv_preg	p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_		p_newp_ge1w_		
 n_tested	p_tested_past_year_1549m	p_tested_past_year_1549w	test_prop_positive
-p_mcirc				p_mcirc_1549m		n_new_vmmc1549m 	p_trad_circ			p_vmmc		s_sw_1549	
+p_mcirc				p_mcirc_1549m		n_new_vmmc1549m 	p_trad_circ			p_vmmc		s_sw_1549	p_sw_prog_vis
 prop_w_1549_sw		prop_w_1564_sw		prop_w_ever_sw		prop_sw_hiv			n_sw_1549_	prop_w_1524_onprep	prop_1564_onprep	
 prevalence1549_		prevalence1549m		prevalence1549w	
 prevalence1519w		prevalence1519m		prevalence2024w		prevalence2024m		prevalence2529w		prevalence2529m
@@ -409,13 +412,13 @@ prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w	
 rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
 n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive_m			n_alive_w	n_alive1564_
 n_art_start_y		n_alive1564m		n_alive1564w		n_newinf			n_pregnant
-n_prep 				n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_
+n_prep 				n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_	n_prep_oral_ever_sw
 sw_trans_matrix		;
 
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI8; 
+data a.l_base_CdI8a; 
 set y;  
 run;
 

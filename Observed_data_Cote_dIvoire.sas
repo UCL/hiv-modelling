@@ -202,7 +202,10 @@ if cald=2022 then do;
 	o_vs1564_UNAIDS = 0.62; 	*of PLHIV (NOT of those on ART);
 end;
 
+* Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026) Page 102 Table 10;
 
+if cald=2021 then o_p_onartdiag_nsp=0.96;
+if cald=2022 then o_p_onartdiag_nsp=0.87;
 
 ***********************
 *NUMBER ON ART;
@@ -223,13 +226,22 @@ if cald=2022 then o_n_onart_UNAIDS=283367;
 if cald=2021 then o_p_dtg_nsp=0.829;
 if cald=2022 then o_p_dtg_nsp=0.91;
 
-*Proportion on ART;
+*Proportion on ART of PLHIV;
 * Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026) Page 35 Table 10;;
 if cald=2019 then o_p_onart_nsp=0.65;
 if cald=2020 then o_p_onart_nsp=0.68;
 if cald=2021 then o_p_onart_nsp=0.78;
 if cald=2022 then o_p_onart_nsp=0.79;
 
+***********************
+*PREP;
+***********************;
+
+*Number who ever started PrEP;
+* Source: Donnees Prevention PEPFAR 2023_Modelisation_PrEP;
+if cald=2023 then do;
+	o_prepstart_pepfar=14264;o_prepstart_pepfar_m=5959; o_prepstart_pepfar_w=8305;
+end;
 
 
 ***********************
@@ -314,6 +326,7 @@ if cald=1987 then o_prev_fsw_abid_kof=0.397;
 if cald=1989 then o_prev_fsw_abid_kof=0.483;
 if cald=1990 then o_prev_fsw_abid_kof=0.694;
 
+* Condom use at last sex;
 * Source: Increase in condom use and decline in HIV and sexually transmitted diseases among female sex workers in Abidjan, 
 		  Côte d'Ivoire, 1991–1998, Ghys, AIDS 2002; 
 *(condom use source is from the report below);
@@ -340,6 +353,9 @@ if cald=2008 then do; o_prev_fsw_abid_ghys=0.19; o_condom_lastsex=0.90;end;
 if cald=2009 then do; o_prev_fsw_abid_ghys=0.19; o_condom_lastsex=0.90;end;
 if cald=2010 then do; o_prev_fsw_abid_ghys=0.20; o_condom_lastsex=0.90;end;
 
+* Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026) Page 94;
+if cald=2021 then o_condom_lastsex_nsp=0.92;
+if cald=2022 then o_condom_lastsex_nsp=0.91;
 
 * FSW Incidence;
 *Source: HIV incidence among women engaging in sex work in sub-Saharan Africa: a systematic review and meta-analysis (HJones);
@@ -349,7 +365,15 @@ if cald=1998 then o_Incid_fsw1539_HJ=7.4;
 if cald=2017 then do; o_Incid_fsw1539_SP=3.3;*San Pedro;Incid_fsw1539_A=1.6;*Abidjan;end;
 
 * FSW attending a program;
-if cald=2021 then o_sw_in_prog=0.615;
-if cald=2022 then o_sw_in_prog=0.507;
-if cald=2023 then o_sw_in_prog=0.618;
-if cald=2024 then o_sw_in_prog=0.729;
+* Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026) Page 90;
+
+if cald=2021 then o_sw_in_prog_nsp=0.615;
+if cald=2022 then o_sw_in_prog_nsp=0.507;
+if cald=2023 then o_sw_in_prog_nsp=0.618;
+if cald=2024 then o_sw_in_prog_nsp=0.729;
+
+* FSW started PrEP;
+* Source: Donnees Prevention PEPFAR 2023_Modelisation_PrEP;
+if cald=2023 then o_fsw_start_prep_PEPFAR=1701;
+
+
