@@ -8,10 +8,8 @@ set a.cdi_24May24;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
-data a1;
-set a;
-t_circ=s_birth_circ+s_vmmc;
-proc print;var cald s_birth_circ s_vmmc t_circ s_mcirc;run;
+
+
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 set a;
@@ -265,6 +263,7 @@ s_alive = s_alive_m + s_alive_w ;
 * p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
 
+proc glm; model prop_sw_hiv=sw_trans_matrix;run;
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;

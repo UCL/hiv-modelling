@@ -203,7 +203,10 @@ if cald=2022 then do;
 end;
 
 * Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026) Page 102 Table 10;
+***Diag;
+if cald=2022 then do; o_diag_NSPm=0.74; o_diag_NSPw=0.85;end;
 
+***Diag on ART;
 if cald=2021 then o_p_onartdiag_nsp=0.96;
 if cald=2022 then o_p_onartdiag_nsp=0.87;
 
@@ -300,8 +303,8 @@ if cald=2022 then preg_hiv_UNAIDS=0.0047;
 *MTCT;
 * Source: Revue et extension CIV_VIH_PSN_2021-2026_CORRIGEE_VFF_National strategiv plan (NSP 2021-2026) via SPECTRUM;
 
-if cald=2017 then mtct_nsp=0.1423;
-if cald=2023 then mtct_nsp=0.1087;
+if cald=2017 then o_p_mtct_nsp=0.1423;
+if cald=2023 then o_p_mtct_nsp=0.1087;
 
 ***********************
 *FSW

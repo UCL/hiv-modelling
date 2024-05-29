@@ -40,7 +40,7 @@ p_diag_m			p_diag_w			p_artexp_diag		p_artexp_diag		p_onart_diag_m		p_onart_diag
 n_diagnosed	 		n_onart				n_onart_w			n_onart_m			p_ai_no_arv_c_nnm	
 p_efa				p_taz				p_ten				p_zdv				p_dol		p_3tc	p_lpr		p_nev	
 p_onart_m			p_onart_w			p_onart				p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w	p_vg1000_	p_vl1000_
-prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w
+prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w		n_death_hiv
 rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
 n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive_m			n_alive_w	n_alive1564_
 n_alive1564m		n_alive1564w		n_art_start_y 		n_prep				n_prep_ever			p_prep_ever	p_fsw_newp0_
@@ -68,11 +68,11 @@ p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
-p2p5_&varb._0  = PCTL(2.5,of &varb.1-&varb.&nfit);
-p97p5_&varb._0 = PCTL(97.5,of &varb.1-&varb.&nfit);
+*p2p5_&varb._0  = PCTL(2.5,of &varb.1-&varb.&nfit);
+*p97p5_&varb._0 = PCTL(97.5,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
 
-keep cald p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 p2p5_&varb._0 p97p5_&varb._0;
+keep cald p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 /*p2p5_&varb._0 p97p5_&varb._0*/;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -157,7 +157,7 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  
 g26  g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48  g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71  g72  g73  g74  g75
 g76  g77  g78  g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100  g101  g102 
-g103 g104 g105 g106 g107 g108 g109 g110 /*g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
+g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 /*g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
 g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
@@ -221,12 +221,12 @@ scatter x=cald y=o_pop1564w / markerattrs = (symbol=square color=green size = 10
 run;quit;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of new infections - NEW GRAPH";
+Title    height=1.5 justify=center "Number of new infections";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980   to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000 by 10000) valueattrs=(size=10);
 
 label p50_n_newinf_0 = "Model";
-label o_newinf = "UNAIDS";
+label o_newinf_unaids = "UNAIDS";
 
 series  x=cald y=p50_n_newinf_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_newinf_0 	upper=p95_n_newinf_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
@@ -285,11 +285,11 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.0
 label p50_p_w_giv_birth_this_per_0 = "Option 0 (median) ";
 
 series  x=cald y=p50_p_w_giv_birth_this_per_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p25_p_w_giv_birth_this_per_0 	upper=p975_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+band    x=cald lower=p25_p_w_giv_birth_this_per_0 	upper=p95_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
 run;quit;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Mother to child transmissio";
+Title    height=1.5 justify=center "Mother to child transmission";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
 label p50_mtct_prop_0 = "Option 0 (median) ";
@@ -325,12 +325,9 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
 
 label p50_p_newp_ge1__0 = "Option 0 (median) ";
-label o_p_cls_m_PHIA = "% who had comdomless sex at last sex";
 
 series  x=cald y=p50_p_newp_ge1__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_newp_ge1__0 	upper=p95_p_newp_ge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-
 run;quit;
 
 proc sgplot data=d; 
@@ -529,34 +526,34 @@ scatter  x=cald y=o_prev_fsw_abid_ghys/	markerattrs = (symbol=square color=blue 
 
 run;quit;
 
-proc sgplot data=e; 
+proc sgplot data=d; 
 title    height=1.5 justify=center "Proportion of sex workers with 0 condomless partners";
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
 
-label p50_p_fsw_newp0_ = "Median";
+label p50_p_fsw_newp0__0 = "Median";
 label o_condom_lastsex = "Condom use last sex - Ghys";
 label o_condom_lastsex = "Condom use last sex - NSP";
 
-series  x=cald y=p50_p_fsw_newp0_  / 	 lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_fsw_newp0_	 upper=p95_p_fsw_newp0_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_p_fsw_newp0__0  / 	 lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_fsw_newp0__0	 upper=p95_p_fsw_newp0__0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 scatter  x=cald y=o_condom_lastsex/	markerattrs = (symbol=square color=green  size = 10) ;
 scatter  x=cald y=o_condom_lastsex_nsp/	markerattrs = (symbol=square color=blue  size = 10) ;
 
 run;quit;
 
-proc sgplot data=e; 
+proc sgplot data=d; 
 title    height=1.5 justify=center "Proportion of sex workers attending a program";
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
 
-label p50_p_sw_prog_vis_ = "Median";
+label p50_p_sw_prog_vis_0 = "Median";
 label o_sw_in_prog_nsp= "NSP";
 
-series  x=cald y=p50_p_sw_prog_vis_  / 	 lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_sw_prog_vis_	 upper=p95_p_sw_prog_vis_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_p_sw_prog_vis_0  / 	 lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_sw_prog_vis_0	 upper=p95_p_sw_prog_vis_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 scatter  x=cald y=o_sw_in_prog_nsp/	markerattrs = (symbol=square color=green  size = 10) ;
 
 run;quit;
@@ -609,7 +606,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of 15+ adults who ever started PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)   valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)   values = (0 to 1500000 by 100000) valueattrs=(size=10);
 
 label p50_n_prep_ever_0 = "Option 0 (median) ";
 label o_prepstart_pepfar = "PEPFAR";
@@ -999,13 +996,11 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 
 label p50_p_onart_diag_m_0 = "Model";
 label o_diag_onart1564m_phia = "PHIA";
-label o_onart_NSPm = "NSP";
 
 series  x=cald y=p50_p_onart_diag_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_diag_m_0 	upper=p95_p_onart_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 scatter x=cald y=o_diag_onart1564m_phia / 		markerattrs = (symbol=square color=green size = 10);
-scatter x=cald y=o_onart_NSPm / 		markerattrs = (symbol=square color=orange size = 10);
 
 run;quit;
 
@@ -1016,14 +1011,12 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 
 label p50_p_onart_diag_w_0 = "Model";
 label o_diag_onart1564w_phia = "PHIA";
-label o_onart_NSPw = "NSP";
 
 
 series  x=cald y=p50_p_onart_diag_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_diag_w_0 	upper=p95_p_onart_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 scatter x=cald y=o_diag_onart1564w_phia / 		markerattrs = (symbol=square color=green size = 10);
-scatter x=cald y=o_onart_NSPw / 		markerattrs = (symbol=square color=orange size = 10);
 
 run;quit;
 
