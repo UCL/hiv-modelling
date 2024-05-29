@@ -1800,9 +1800,11 @@ proc sort; by run;run;
 
 
 
-
 data b;
 set b.w_tld_switch_aa  ;
+
+if p_dol_2vg1000_dolr1_24 < 0.3;
+
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1912,13 +1914,15 @@ if dcost_50y_5 = min_dcost_50y then lowest_dcost=5;
 
 * table 1;
 
+ods html;
 proc means   data = b  n p50  p5  p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  
 p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    p_vis_tldsw_24  p_dol_2vg1000_dolr1_24 p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24
-/* p_artexp_dol_pi_failed_24 */ s_o_dol_2nd_vlg1000_24 n_second_vlg1000_first_24 s_second_vlg1000_first_24 &sf
+p_artexp_dol_pi_failed_24  s_o_dol_2nd_vlg1000_24  n_second_vlg1000_first_24 s_second_vlg1000_first_24  &sf
 ;
 run;
+ods html close;
 
 
 proc glm  data = b; 
@@ -2078,6 +2082,7 @@ p_iime_50y_1 p_iime_50y_2 p_iime_50y_3 p_iime_50y_4 p_iime_50y_5
 run;
 
 
+ods html;
 proc means data = b  n mean p5 p95;
   var               
 ddaly_50y_1 ddaly_50y_2  ddaly_50y_3 ddaly_50y_4  ddaly_50y_5   d_ddaly_50y_2_1   d_ddaly_50y_3_1   d_ddaly_50y_4_1   d_ddaly_50y_5_1  
@@ -2086,6 +2091,7 @@ netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 netdaly500_5
 d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_4_1 d_netdaly500_5_1 
 ;
 run;
+ods html close;
 
 proc freq; tables lowest_netdaly one_vs_five_ce lowest_ddaly  lowest_dcost; 
 run;
@@ -2096,7 +2102,7 @@ model one_vs_five_ce =  pr_switch_line;
 run;
 
 
-
+ods html;
 proc means  n mean p5 p95;
 var
 dart_cost_y_50y_1  dart_cost_y_50y_2   dart_cost_y_50y_3   dart_cost_y_50y_4   dart_cost_y_50y_5  
@@ -2120,7 +2126,7 @@ dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3  dcost_pr
 dcost_prep_50y_1 dcost_prep_50y_2  dcost_prep_50y_3  dcost_prep_50y_4  dcost_prep_50y_5 
 ;
 run;
-
+ods html close;
 
 
 proc univariate  data = b; 
