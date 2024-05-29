@@ -33,7 +33,7 @@ startyr = 1985 + 0.25;
 
 * test_targeting;			test_targeting = 1;***NP since last test has no impact on testing rates;
  
-* rate_anc_inc; 		%sample_uniform(rate_anc_inc,0.001 0.005 0.01 0.03);
+* rate_anc_inc; 		%sample_uniform(rate_anc_inc,0.001 0.05 0.01 0.03, 0.30 0.25 0.25 0.20);
 
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15);
 
