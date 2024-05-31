@@ -1804,7 +1804,7 @@ data b;
 set b.w_tld_switch_ab  ;
 
 if p_dol_2vg1000_dolr1_24 < 0.3;
-
+if p_onart_vl1000_24 < 0.98;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1872,6 +1872,12 @@ netdaly500_5 = ddaly_50y_5 + (dcost_50y_5 / 0.0005);
 
 min_netdaly500 = min(netdaly500_1, netdaly500_2, netdaly500_3, netdaly500_4, netdaly500_5);
 
+min_netdaly500_1_3_5 = min(netdaly500_1, netdaly500_3, netdaly500_5);
+
+min_netdaly500_1_3 = min(netdaly500_1, netdaly500_3);
+min_daly500_1_3 = min(ddaly_50y_1, ddaly_50y_3);
+
+
 d_netdaly500_2_1 = netdaly500_2 - netdaly500_1;
 d_netdaly500_3_1 = netdaly500_3 - netdaly500_1;
 d_netdaly500_4_1 = netdaly500_4 - netdaly500_1;
@@ -1884,6 +1890,16 @@ if netdaly500_4 = min_netdaly500 then lowest_netdaly=4;
 if netdaly500_5 = min_netdaly500 then lowest_netdaly=5;
 
 if netdaly500_1 < netdaly500_5 then one_vs_five_ce=1; else one_vs_five_ce =0;
+
+if netdaly500_1 = min_netdaly500_1_3_5 then lowest_netdaly_1_3_5=1;
+if netdaly500_3 = min_netdaly500_1_3_5 then lowest_netdaly_1_3_5=3;
+if netdaly500_5 = min_netdaly500_1_3_5 then lowest_netdaly_1_3_5=5;
+
+if netdaly500_1 = min_netdaly500_1_3 then lowest_netdaly_1_3=1;
+if netdaly500_3 = min_netdaly500_1_3 then lowest_netdaly_1_3=3;
+
+if ddaly_50y_1 = min_daly500_1_3 then lowest_ddaly_1_3 = 1;
+if ddaly_50y_3 = min_daly500_1_3 then lowest_ddaly_1_3 = 3;
 
 
 min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_2, ddaly_50y_3, ddaly_50y_4, ddaly_50y_5);
@@ -1923,6 +1939,12 @@ p_artexp_dol_pi_failed_24  s_o_dol_2nd_vlg1000_24  n_second_vlg1000_first_24 s_s
 ;
 run;
 ods html close;
+
+
+proc glm; 
+class adh_pattern;
+model s_o_dol_2nd_vlg1000_10y_5 = adh_pattern; run;
+
 
 
 proc glm  data = b; 
@@ -1974,7 +1996,7 @@ n_second_vlg1000_first_10y_1 n_second_vlg1000_first_10y_2 n_second_vlg1000_first
 
 p_dol_2vg1000_dolr1_10y_1 p_dol_2vg1000_dolr1_10y_2 p_dol_2vg1000_dolr1_10y_3 p_dol_2vg1000_dolr1_10y_4 p_dol_2vg1000_dolr1_10y_5 
 incidence1549_10y_1 incidence1549_10y_2 incidence1549_10y_3 incidence1549_10y_4 incidence1549_10y_5 
-
+s_o_dol_2nd_vlg1000_10y_1 s_o_dol_2nd_vlg1000_10y_2 s_o_dol_2nd_vlg1000_10y_3 s_o_dol_2nd_vlg1000_10y_4 s_o_dol_2nd_vlg1000_10y_5
 ;
 run;
 
@@ -2086,8 +2108,10 @@ run;
 
 
 ods html;
-proc means data = b  n mean p5 p95;
-  var               
+proc means data = b  n mean lclm uclm  p5 p95;
+  var       
+n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 n_death_hiv_50y_4 n_death_hiv_50y_5 
+d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 d_n_death_hiv_50y_4_1 d_n_death_hiv_50y_5_1 
 ddaly_50y_1 ddaly_50y_2  ddaly_50y_3 ddaly_50y_4  ddaly_50y_5   d_ddaly_50y_2_1   d_ddaly_50y_3_1   d_ddaly_50y_4_1   d_ddaly_50y_5_1  
 dcost_50y_1   dcost_50y_2   dcost_50y_3   dcost_50y_4   dcost_50y_5   d_dcost_50y_2_1  d_dcost_50y_3_1  d_dcost_50y_4_1  d_dcost_50y_5_1 
 netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 netdaly500_5 
@@ -2096,12 +2120,23 @@ d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_4_1 d_netdaly500_5_1
 run;
 ods html close;
 
-proc freq; tables lowest_netdaly one_vs_five_ce lowest_ddaly  lowest_dcost; 
+proc freq; tables lowest_netdaly one_vs_five_ce lowest_netdaly_1_3_5 lowest_netdaly_1_3 lowest_ddaly_1_3 lowest_ddaly  lowest_dcost;
+* where res_level_dol_cab_mut = 0.75;
+* where pr_switch_line = 1;
+* where red_adh_multi_pill_pop = 0;
+* where adh_pattern le 2;
+* where n_dead_hivrel_onart_24 > 8000;
+* p_onart_vl1000_24 < 0.93 ;
 run;
 
+proc logistic;
+model lowest_netdaly_1_3 = res_level_dol_cab_mut; run; 
 
-proc logistic ; 
-model one_vs_five_ce =  pr_switch_line;
+
+
+
+proc logistic ; class adh_pattern;
+model one_vs_five_ce =  pr_switch_line adh_pattern;
 run;
 
 
