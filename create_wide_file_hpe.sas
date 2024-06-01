@@ -1345,6 +1345,8 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
 p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab n_started_lencab_offart  p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart
+
+p_newp_ge1_age1549           ;
 ;
 
  
@@ -1366,6 +1368,8 @@ run;
 
 
 data    b.l_hpe_a; set y;  
+
+run;
 
 data y ; set b.l_hpe_a; 
 
