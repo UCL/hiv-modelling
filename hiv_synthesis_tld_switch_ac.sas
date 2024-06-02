@@ -13752,7 +13752,7 @@ end;
 
 
 uvl2_elig=0; o_dar_uvl2 =0; o_dol_uvl2=0;  onart_uvl2=0; vl1000_uvl2=0;  vl200_uvl2=0; dead_uvl2=0;dead_hiv_uvl2=0;c_tox_uvl2=0; r_dol_ge_p5_uvl2=0;
-adh_ge80_uvl2=0; onart_iicu_uvl2=0; adh_lt80_uvl2=0; vis_uvl2=0; cd4_lt200_uvl2=0;
+adh_ge80_uvl2=0; onart_iicu_uvl2=0; onart_iicu_vl1000_uvl2=0; adh_lt80_uvl2=0; vis_uvl2=0; cd4_lt200_uvl2=0;
 uvl21_elig=0; o_dar_uvl21 =0; o_dol_uvl21=0;  onart_uvl21=0; vl1000_uvl21=0;  vl200_uvl21=0; dead_uvl21=0;dead_hiv_uvl21=0;c_tox_uvl21=0; r_dol_ge_p5_uvl21=0;
 adh_ge80_uvl21=0; onart_iicu_uvl21=0; adh_lt80_uvl21=0; vis_uvl21=0;cd4_lt200_uvl21=0;
 uvl22_elig=0; o_dar_uvl22 =0; o_dol_uvl22=0;  onart_uvl22=0; vl1000_uvl22=0;  vl200_uvl22=0; dead_uvl22=0;dead_hiv_uvl22=0;c_tox_uvl22=0; r_dol_ge_p5_uvl22=0;
@@ -13764,6 +13764,7 @@ if naive=0 and date_last_second_vlg1000 ne . then do;
 	if o_dol=1 then o_dol_uvl2=1;
 	if onart=1 then onart_uvl2=1;
 	if onart=1 or int_clinic_not_aw = 1 then onart_iicu_uvl2=1;
+	if (onart=1 or int_clinic_not_aw = 1) and . < vl < 3.0 then onart_iicu_vl1000_uvl2=1;
 	if onart_iicu_uvl2 and (adh < 0.8 or int_clinic_not_aw = 1) then adh_lt80_uvl2=1;
 	if . < vl < 3.0 then vl1000_uvl2=1; 
 	if . < vl < 2.3 then vl200_uvl2=1; 
@@ -17712,7 +17713,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_uvl2_elig  +  uvl2_elig ; s_o_dar_uvl2  + o_dar_uvl2 ; s_o_dol_uvl2  + o_dol_uvl2 ;  s_onart_uvl2  +  onart_uvl2 ;  s_vl1000_uvl2 +  vl1000_uvl2 ;   
 	s_vl200_uvl2  + vl200_uvl2  ; s_dead_uvl2   + dead_uvl2   ;s_dead_hiv_uvl2 +   dead_hiv_uvl2 ;  s_c_tox_uvl2  + c_tox_uvl2  ; 
 	s_r_dol_ge_p5_uvl2  +  r_dol_ge_p5_uvl2 ;  s_adhl_ge80_uvl2 + adhl_ge80_uvl2;  s_onart_iicu_uvl2 + onart_iicu_uvl2;   s_adh_lt80_uvl2 + adh_lt80_uvl2;
-	s_vis_uvl2  + vis_uvl2 ; s_cd4_lt200_uvl2 + cd4_lt200_uvl2;
+	s_vis_uvl2  + vis_uvl2 ; s_cd4_lt200_uvl2 + cd4_lt200_uvl2; s_onart_iicu_vl1000_uvl2 + onart_iicu_vl1000_uvl2;
 
 	s_tldsw1_elig  +  tldsw1_elig ; s_o_dar_tldsw1  + o_dar_tldsw1 ; s_o_dol_tldsw1  + o_dol_tldsw1 ;  s_onart_tldsw1  +  onart_tldsw1 ;  s_vl1000_tldsw1 +  vl1000_tldsw1 ;   
 	s_vl200_tldsw1  + vl200_tldsw1  ; s_dead_tldsw1   + dead_tldsw1   ;s_dead_hiv_tldsw1 +   dead_hiv_tldsw1 ;  s_c_tox_tldsw1  + c_tox_tldsw1  ; 
@@ -19519,6 +19520,7 @@ s_dol_pi_fail_by_year_interv  s_any_vfail_by_year_interv
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
 s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt80_uvl2 s_vis_uvl2  s_vis_tldsw s_cd4_lt200_uvl2 s_r_ten_tldsw s_r_3tc_tldsw
+s_onart_iicu_vl1000_uvl2
 
 s_tldsw1_elig  s_o_dar_tldsw1   s_o_dol_tldsw1    s_onart_tldsw1    s_vl1000_tldsw1 	s_vl200_tldsw1  s_dead_tldsw1  s_dead_hiv_tldsw1  s_c_tox_tldsw1  s_r_dol_ge_p5_tldsw1 
 s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	s_vl200_uvl21  s_dead_uvl21  s_dead_hiv_uvl21  s_c_tox_uvl21  s_r_dol_ge_p5_uvl21 
@@ -20522,6 +20524,7 @@ s_dol_pi_fail_by_year_interv  s_any_vfail_by_year_interv
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
 s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt80_uvl2 s_vis_uvl2  s_vis_tldsw s_cd4_lt200_uvl2 s_r_ten_tldsw s_r_3tc_tldsw
+s_onart_iicu_vl1000_uvl2
 
 s_tldsw1_elig  s_o_dar_tldsw1   s_o_dol_tldsw1    s_onart_tldsw1    s_vl1000_tldsw1 	s_vl200_tldsw1  s_dead_tldsw1  s_dead_hiv_tldsw1  s_c_tox_tldsw1  s_r_dol_ge_p5_tldsw1 
 s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	s_vl200_uvl21  s_dead_uvl21  s_dead_hiv_uvl21  s_c_tox_uvl21  s_r_dol_ge_p5_uvl21 
@@ -24965,6 +24968,7 @@ s_dol_pi_fail_by_year_interv  s_any_vfail_by_year_interv
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
 s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt80_uvl2 s_vis_uvl2  s_vis_tldsw s_cd4_lt200_uvl2 s_r_ten_tldsw s_r_3tc_tldsw
+s_onart_iicu_vl1000_uvl2
 
 s_tldsw1_elig  s_o_dar_tldsw1   s_o_dol_tldsw1    s_onart_tldsw1    s_vl1000_tldsw1 	s_vl200_tldsw1  s_dead_tldsw1  s_dead_hiv_tldsw1  s_c_tox_tldsw1  s_r_dol_ge_p5_tldsw1 
 s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	s_vl200_uvl21  s_dead_uvl21  s_dead_hiv_uvl21  s_c_tox_uvl21  s_r_dol_ge_p5_uvl21 

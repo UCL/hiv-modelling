@@ -1805,8 +1805,8 @@ proc sort; by run;run;
 data b;
 set b.w_tld_switch_ab  ;
 
-if p_dol_2vg1000_dolr1_24 < 0.3;
-if p_onart_vl1000_24 < 0.98;
+if p_dol_2vg1000_dolr1_24 < 0.4;
+if p_onart_vl1000_24 < 0.98088;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1828,6 +1828,9 @@ d_n_iime_50y_3_1 = n_iime_50y_3 -   n_iime_50y_1 ;
 d_n_iime_50y_4_1 = n_iime_50y_4 -   n_iime_50y_1 ; 
 d_n_iime_50y_5_1 = n_iime_50y_5 -   n_iime_50y_1 ; 
 
+* sensitivity analysis with lower res test cost;
+* dres_cost_50y_3 = dres_cost_50y_3 * 5;
+* dres_cost_50y_4 = dres_cost_50y_4 * 5;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -2092,6 +2095,34 @@ dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3  dcost_child
 dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2  dcost_non_aids_pre_death_50y_3  dcost_non_aids_pre_death_50y_4  dcost_non_aids_pre_death_50y_5 
 dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3  dcost_prep_visit_50y_4 dcost_prep_visit_50y_5 
 dcost_prep_50y_1 dcost_prep_50y_2  dcost_prep_50y_3  dcost_prep_50y_4  dcost_prep_50y_5 
+;
+run;
+ods html close;
+
+
+
+ods html;
+proc means  n mean p5 p95;
+var
+dart_cost_y_10y_1  dart_cost_y_10y_2   dart_cost_y_10y_3   dart_cost_y_10y_4   dart_cost_y_10y_5  
+dadc_cost_10y_1  dadc_cost_10y_2   dadc_cost_10y_3   dadc_cost_10y_4   dadc_cost_10y_5  
+dcd4_cost_10y_1  dcd4_cost_10y_2  dcd4_cost_10y_3  dcd4_cost_10y_4  dcd4_cost_10y_5  
+dvl_cost_10y_1  dvl_cost_10y_2 dvl_cost_10y_3 dvl_cost_10y_4 dvl_cost_10y_5 
+dvis_cost_10y_1 dvis_cost_10y_2  dvis_cost_10y_3  dvis_cost_10y_4  dvis_cost_10y_5 
+dnon_tb_who3_cost_10y_1  dnon_tb_who3_cost_10y_2   dnon_tb_who3_cost_10y_3   dnon_tb_who3_cost_10y_4   dnon_tb_who3_cost_10y_5   		
+dcot_cost_10y_1  dcot_cost_10y_2   dcot_cost_10y_3   dcot_cost_10y_4   dcot_cost_10y_5   
+dtb_cost_10y_1  dtb_cost_10y_2  dtb_cost_10y_3  dtb_cost_10y_4  dtb_cost_10y_5  
+dres_cost_10y_1  dres_cost_10y_2  dres_cost_10y_3  dres_cost_10y_4  dres_cost_10y_5 
+dcost_drug_level_test_10y_1 dcost_drug_level_test_10y_2 dcost_drug_level_test_10y_3 dcost_drug_level_test_10y_4 dcost_drug_level_test_10y_5 
+dtest_cost_10y_1 dtest_cost_10y_2  dtest_cost_10y_3  dtest_cost_10y_4  dtest_cost_10y_5 
+d_t_adh_int_cost_10y_1  d_t_adh_int_cost_10y_2   d_t_adh_int_cost_10y_3   d_t_adh_int_cost_10y_4   d_t_adh_int_cost_10y_5   
+dswitchline_cost_10y_1  dswitchline_cost_10y_2  dswitchline_cost_10y_3  dswitchline_cost_10y_4  dswitchline_cost_10y_5   
+dcost_circ_10y_1  dcost_circ_10y_2  dcost_circ_10y_3  dcost_circ_10y_4  dcost_circ_10y_5 
+dcost_condom_dn_10y_1  dcost_condom_dn_10y_2  dcost_condom_dn_10y_3  dcost_condom_dn_10y_4  dcost_condom_dn_10y_5 
+dcost_child_hiv_10y_1  dcost_child_hiv_10y_2  dcost_child_hiv_10y_3  dcost_child_hiv_10y_4  dcost_child_hiv_10y_5
+dcost_non_aids_pre_death_10y_1 dcost_non_aids_pre_death_10y_2  dcost_non_aids_pre_death_10y_3  dcost_non_aids_pre_death_10y_4  dcost_non_aids_pre_death_10y_5 
+dcost_prep_visit_10y_1  dcost_prep_visit_10y_2  dcost_prep_visit_10y_3  dcost_prep_visit_10y_4 dcost_prep_visit_10y_5 
+dcost_prep_10y_1 dcost_prep_10y_2  dcost_prep_10y_3  dcost_prep_10y_4  dcost_prep_10y_5 
 ;
 run;
 ods html close;
