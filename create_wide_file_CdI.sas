@@ -12,9 +12,10 @@ data a1;
 set a;
 * prop_sw_hiv;					if s_sw_1564 gt 0 then prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
 
-proc print;var prop_sw_hiv;run;
+high=0;if prop_sw_hiv >=0.5 then high=1;
+proc freq;table prop_sw_hiv;run;
 
-proc glm;class sw_trans_matrix; model prop_sw_hiv= sw_trans_matrix/solution;run;
+proc logistic;class sw_trans_matrix; model high= sw_trans_matrix;run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
