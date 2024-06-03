@@ -944,6 +944,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 call symput('caldate1',caldate1);
 
+call symput('caldate1',caldate1);
+
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
@@ -2109,7 +2111,7 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-%macro update_r1(da1=,da2=,e=,f=,g=,h=,j=,y=,s=);		*Deleted a, b, i, k, l, x and added y - JAS Feb24;
+%macro update_r1(da1=,da2=,e=,f=,g=,h=,j=,y=,s=);		*Deleted a,b,i,k,l,x and added y - JAS Feb24;
 
 * options mprint;
 
@@ -2135,6 +2137,7 @@ do until (t=&f);
  
 
 if t ge 2 then caldate_never_dot = &year; 		*JAS Feb24;
+
 
 
  * note that age variable continues to increase after death so need to be aware of death status - dont try to change this without
@@ -20363,6 +20366,7 @@ end;
 
 *1) Run from caldate1 to current date;
 %run_update_r1(&caldate1,&year_interv+50,0);
+
 
 
 
