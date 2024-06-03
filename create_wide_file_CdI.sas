@@ -8,7 +8,13 @@ set a.cdi_29May24;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
+data a1;
+set a;
+* prop_sw_hiv;					if s_sw_1564 gt 0 then prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
 
+proc print;var prop_sw_hiv;run;
+
+proc glm;class sw_trans_matrix; model prop_sw_hiv= sw_trans_matrix/solution;run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;

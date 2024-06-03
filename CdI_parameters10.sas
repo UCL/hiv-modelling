@@ -51,7 +51,7 @@ startyr = 1985 + 0.25;
 
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.0 	0.0	    0.0	   0.00	    0.0		0.50	0.50);
+								0.0 	0.0	    0.0	   0.00	    0.0		0.40	0.60);
 ***there is change made in the gender specific adh code in the actual program to lower mens adh;
 *Search for LBM May2024;
 

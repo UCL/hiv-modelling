@@ -902,7 +902,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/CdI_parameters9.sas";
+%include "/home/rmjllob/CdI_parameters10.sas";
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
@@ -8956,10 +8956,10 @@ e=rand('uniform');
 ***LBM May2024 - Reducing mens adh to calibrate to Cote d Ivoire;
 
 * note no effect when using e < 0.0;
-if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.6 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.5 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.7 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.6 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.5 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.4 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;

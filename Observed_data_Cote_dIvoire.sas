@@ -1,15 +1,13 @@
 *COTE d'IVOIRE observed data;
 
-***LOOK AT WORLD POPULATION PROSPECTS;
-
 ***********************
 POPULATION
 ***********************;
 *Source:  https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=CI&view=chart
 		  Use exact figures for 15-64 population as given
 	    -->~41% of the population are under 15 in 2022. Multiply World Population numbers by given % for each year;
-		  *For 15+ population, use numbers from https://worldpopulationreview.com/countries/ivory-coast-population;
-		
+
+*https://population.un.org/dataportal/data/indicators/70/locations/384/start/1990/end/2023/line/linetimeplot?df=fedb2c36-7339-4cea-982e-6339bd045666;	
 if cald=1990 then do;o_pop1564=6.0;o_pop1564m=3.1;o_pop1564w=2.9;o_pop15plus=11.9*0.53;end;
 if cald=1995 then do;o_pop1564=7.4;o_pop1564m=3.8;o_pop1564w=3.6;o_pop15plus=14.3*0.55;end;
 if cald=2000 then do;o_pop1564=8.8;o_pop1564m=4.4;o_pop1564w=4.4;o_pop15plus=16.8*0.55;end;
@@ -19,7 +17,6 @@ if cald=2015 then do;o_pop1564=12.7;o_pop1564m=6.5;o_pop1564w=6.3;o_pop15plus=23
 if cald=2020 then do;o_pop1564=14.9;o_pop1564m=7.5;o_pop1564w=7.3;o_pop15plus=26.8*0.58;end;
 
 ***For future population projections, use https://worldpopulationreview.com/countries/ivory-coast-population;
-
 if cald=2024 then do;o_pop15plus=29.6*0.58;end;*58% comes from 2020 estimates above;
 if cald=2030 then do;o_pop15plus=34.2*0.58;end;
 if cald=2040 then do;o_pop15plus=42.6*0.58;end;
@@ -27,7 +24,9 @@ if cald=2050 then do;o_pop15plus=51.4*0.58;end;
 if cald=2060 then do;o_pop15plus=60.3*0.58;end;
 if cald=2070 then do;o_pop15plus=68.9*0.58;end;
 
-o_pop1564=o_pop1564*1000000;o_pop1564m=o_pop1564m*1000000;o_pop1564w=o_pop1564w*1000000;o_pop15plus=o_pop15plus*1000000;
+o_pop1564=o_pop1564*1000000;o_pop1564m=o_pop1564m*1000000;o_pop1564=o_pop1564w*1000000;o_pop15plus_=o_pop15plus_*1000000;
+
+*Calibrated to World Population prospectus;
 
 
 ***********************
