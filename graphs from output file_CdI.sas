@@ -11,6 +11,7 @@ s_sw_1549_ = s_sw_1549;
 proc sort; by cald run ;run;
 proc freq;table cald;run;
 
+ 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 %let nfit =  175    ;
@@ -192,7 +193,7 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000000 by  5
 label p50_n_alive_0 = "15+ ";
 label p50_n_alive1564__0 = "15-64";
 label o_pop15plus = "15+ worldpopulationreview.com";
-label o_pop1564 = "15-64 World Bank";
+label o_pop1564 = "15-64 World Population Prospectus";
 
 series  x=cald y=p50_n_alive_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";

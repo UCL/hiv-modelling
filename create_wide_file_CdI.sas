@@ -17,16 +17,22 @@ set a;
 if cald=2024; 
 s_alive = s_alive_m + s_alive_w ;
 
-
-sf_2024 = (29600000 * 0.58) / s_alive;  
 * https://worldpopulationreview.com/countries/ivory-coast-population
 * 58% of CdI population in 2022 >= age 15 (https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=CI&view=chart);
-keep run sf_2024;
+
+*sf_2024 = (29600000 * 0.58) / s_alive;  
+
+
+**Population accoding to World Population Prospectus;
+*https://population.un.org/dataportal/data/indicators/70/locations/384/start/1990/end/2023/line/linetimeplot?df=fedb2c36-7339-4cea-982e-6339bd045666;
+*Total population - 0-14 population;
+sf_2022 = (28160000 - 11680000)/s_alive;
+keep run sf_2022;
 
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
-%let sf=sf_2024;
+%let sf=sf_2022;
 
 data y; 
 merge a sf;
