@@ -1020,7 +1020,7 @@ run;
 * p_hivpos_new_dol_r;			p_hivpos_new_dol_r = s_incident_r_dol / s_hivge15 ;
 * n_uvl2_elig;					n_uvl2_elig = s_uvl2_elig * 4 * &sf ;
 * p_first_uvl2_dol_r; 			p_first_uvl2_dol_r = s_second_vlg1000_first_dol_r / s_second_vlg1000_first ;
-* deathr_dol_r_uvl2;			deathr_dol_r_uvl2 = (s_dead_dol_r_uvl2 * 4) / s_uvl2_elig ;
+* deathr_dol_r_uvl2;			deathr_dol_r_uvl2 = (s_dead_dol_r_uvl2 * 4) / s_r_dol_ge_p5_uvl2 ;
 
 * n_second_vlg1000_first;		n_second_vlg1000_first = s_second_vlg1000_first * &sf;
     
@@ -1802,6 +1802,8 @@ proc sort; by run;run;
 
 
 
+* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ab_out\";
+
 data b;
 set b.w_tld_switch_ab  ;
 
@@ -1827,6 +1829,8 @@ d_n_iime_50y_2_1 = n_iime_50y_2 -   n_iime_50y_1 ;
 d_n_iime_50y_3_1 = n_iime_50y_3 -   n_iime_50y_1 ; 
 d_n_iime_50y_4_1 = n_iime_50y_4 -   n_iime_50y_1 ; 
 d_n_iime_50y_5_1 = n_iime_50y_5 -   n_iime_50y_1 ; 
+
+d_deathr_dol_r_uvl2_10y_3_1 = deathr_dol_r_uvl2_10y_3 - deathr_dol_r_uvl2_10y_1; 
 
 * sensitivity analysis with lower res test cost;
 * dres_cost_50y_3 = dres_cost_50y_3 * 5;
@@ -1962,7 +1966,7 @@ ods html close;
 
 
 ods html;
-proc means   data = b  n p50 p5 p95 ;  
+proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
 var 
 prop_artexp_elig_tldsw_10y_1  prop_artexp_elig_tldsw_10y_2  prop_artexp_elig_tldsw_10y_3  prop_artexp_elig_tldsw_10y_4   prop_artexp_elig_tldsw_10y_5  
 prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 prop_tldsw_uvl2_10y_4  prop_tldsw_uvl2_10y_5
@@ -1992,7 +1996,8 @@ p_vl1000_10y_1 p_vl1000_10y_2 p_vl1000_10y_3 p_vl1000_10y_4 p_vl1000_10y_5
 p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 p_onart_vl1000_10y_3 p_onart_vl1000_10y_4 p_onart_vl1000_10y_5 
 p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 p_o_dar_uvl2_10y_3 p_o_dar_uvl2_10y_4 p_o_dar_uvl2_10y_5
 p_first_uvl2_dol_r_10y_1 p_first_uvl2_dol_r_10y_2 p_first_uvl2_dol_r_10y_3 p_first_uvl2_dol_r_10y_4 p_first_uvl2_dol_r_10y_5  
-deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 deathr_dol_r_uvl2_10y_4 deathr_dol_r_uvl2_10y_5  
+deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 deathr_dol_r_uvl2_10y_4 deathr_dol_r_uvl2_10y_5 
+d_deathr_dol_r_uvl2_10y_3_1 
 p_dlt_adh_high_r_dol_10y_1 p_dlt_adh_high_r_dol_10y_2 p_dlt_adh_high_r_dol_10y_3 p_dlt_adh_high_r_dol_10y_4 p_dlt_adh_high_r_dol_10y_5 
 p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 p_dlt_adh_low_r_dol_10y_4 p_dlt_adh_low_r_dol_10y_5 
 
