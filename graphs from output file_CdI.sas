@@ -36,15 +36,17 @@ incidence1549_		incidence1564_		incidence1549m		incidence1549w
 incidence1524m		incidence1524w		incidence2534m		incidence2534w		incidence3544m		incidence3544w	
 incidence4554m		incidence4554w		incidence5564m		incidence5564w	
 p_inf_vlsupp		p_inf_ep			p_inf_newp			p_inf_naive			p_inf_primary		p_inf_diag	
-p_diag_m			p_diag_w			p_artexp_diag		p_artexp_diag		p_onart_diag_m		p_onart_diag_w
+p_diag_m			p_diag_w			p_diag1549_			p_diag1549m			p_diag1549w			p_artexp_diag		p_artexp_diag		p_onart_diag_m		p_onart_diag_w
 n_diagnosed	 		n_onart				n_onart_w			n_onart_m			p_ai_no_arv_c_nnm	
 p_efa				p_taz				p_ten				p_zdv				p_dol		p_3tc	p_lpr		p_nev	
 p_onart_m			p_onart_w			p_onart				p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w	p_vg1000_	p_vl1000_
 prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w		n_death_hiv
 rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
-n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive_m			n_alive_w	n_alive1564_
-n_alive1564m		n_alive1564w		n_art_start_y 		n_prep				n_prep_ever			p_prep_ever	p_fsw_newp0_
-n_pregnant			n_newinf		n_prep_oral_ever_sw;
+n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive1549m		n_alive1549w	
+n_alive_m			n_alive_w			n_alive1564_		n_alive1564m		n_alive1564w		n_art_start_y 	
+n_prep				n_prep_ever			p_prep_ever	p_fsw_newp0_
+n_pregnant			n_newinf			n_newinf1549_		n_newinf1549m		n_newinf1549w		n_prep_oral_ever_sw
+prop_sw_hiv1549_;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -1563,3 +1565,98 @@ run;
 quit;
 
 */
+
+
+***CALIBRATION COMPARISON WITH OTHER MODELS;
+***For output into Excel file;
+
+data b;
+set a.l_base_CdI9;
+s_sw_1549_ = s_sw_1549;
+
+proc sort; by cald run ;run;
+proc freq;table cald;run;
+
+data y;
+set b;
+
+keep 
+cald 	run		n_alive1549_		n_alive1549m  	n_alive1549w	prevalence1549_  prevalence1549m  	  prevalence1549w
+n_newinf1549_	n_newinf1549m		n_newinf1549w	p_diag1549_		p_diag1549m		 p_diag1549w
+p_onart_diag 	p_onart_diag_m 		p_onart_diag_w  p_onart_vl1000_	p_onart_vl1000_m p_onart_vl1000_w	  prop_w_1549_sw
+prop_sw_hiv1549_  	p_mcirc			p_vmmc			p_trad_circ		n_death_hiv 	 n_death_hiv_m 		  n_death_hiv_w
+n_hiv1549_		n_hiv1549m			n_hiv1549w
+;
+
+run;
+proc sort data=e; by cald run ;run;
+data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
+proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
+%let nfit = 175  ;
+%let year_end = 2045 ;
+proc sort;by cald ;run;
+
+
+
+
+%macro var_d(v);
+data one;set y;keep &v count_csim cald;
+proc sort;by count_csim cald;
+%let count=2000;
+%do %while (&count le 2045);
+***line below calculates means over calendar period;
+proc means noprint data = one; var &v; output out = y_&count mean=&v._&count; by count_csim ; where &count <= cald < &count+1;
+%let count = %eval(&count + 1);
+%end;
+
+data &v ;merge 
+y_2000 y_2001 y_2002 y_2003 y_2004 y_2005 y_2006 y_2007 y_2008 y_2009 y_2010
+	   y_2011 y_2012 y_2013 y_2014 y_2015 y_2016 y_2017 y_2018 y_2019 y_2020
+	   y_2021 y_2022 y_2023 y_2024 y_2025 y_2026 y_2027 y_2028 y_2029 y_2030
+	   y_2031 y_2032 y_2033 y_2034 y_2035 y_2036 y_2037 y_2038 y_2039 y_2040
+   	   y_2041 y_2042 y_2043 y_2044 y_2045 /*y_2046 y_2047 y_2048 y_2049 y_2050*/;
+
+drop _NAME_ _TYPE_ _FREQ_;run;
+proc datasets nodetails nowarn nolist;
+
+delete y_2000 y_2001 y_2002 y_2003 y_2004 y_2005 y_2006 y_2007 y_2008 y_2009 y_2010
+	   		  y_2011 y_2012 y_2013 y_2014 y_2015 y_2016 y_2017 y_2018 y_2019 y_2020
+	   		  y_2021 y_2022 y_2023 y_2024 y_2025 y_2026 y_2027 y_2028 y_2029 y_2030
+	   		  y_2031 y_2032 y_2033 y_2034 y_2035 y_2036 y_2037 y_2038 y_2039 y_2040
+   	   		  y_2041 y_2042 y_2043 y_2044 y_2045 y_2046 y_2047 y_2048 y_2049 y_2050;quit;
+
+proc transpose data=&v out=l_&v prefix=&v;id  count_csim;run;
+data l_&v;set l_&v;
+cald= input(substr(_NAME_,length(_NAME_)-3,4),4.);drop _NAME_;run;
+
+data l_&v;set l_&v;
+
+*p95_&v = PCTL(95,of &v.1-&v.&nfit);
+mean_&v = mean(of &v.1-&v.&nfit);
+keep cald /*p5_&v p95_&v*/ mean_&v;
+
+run;
+proc datasets nodetails nowarn nolist;delete &v;run;
+%mend var_d;
+
+%var_d(n_alive1549_);		%var_d(n_alive1549m);  		%var_d(n_alive1549w);		%var_d(prevalence1549_);  
+%var_d(prevalence1549m);	%var_d(prevalence1549w);	%var_d(n_newinf1549_);		%var_d(n_newinf1549m);	
+%var_d(n_newinf1549w);		%var_d(p_diag1549_);		%var_d(p_diag1549m);		%var_d(p_diag1549w);	
+%var_d(p_onart_diag); 		%var_d(p_onart_diag_m); 	%var_d(p_onart_diag_w);  	%var_d(p_onart_vl1000_);
+%var_d(p_onart_vl1000_m);	%var_d(p_onart_vl1000_w);	%var_d(prop_w_1549_sw);		%var_d(prop_sw_hiv1549_);
+%var_d(p_mcirc);			%var_d(p_vmmc);				%var_d(p_trad_circ);		%var_d(n_death_hiv);
+%var_d(n_death_hiv_m);		%var_d(n_death_hiv_w);		%var_d(n_hiv1549_);			%var_d(n_hiv1549m);		%var_d(n_hiv1549w);
+
+data all;
+merge 
+l_n_alive1549m   	l_n_alive1549w 		l_n_alive1549_		l_prevalence1549m 	l_prevalence1549w 	l_prevalence1549_
+l_n_newinf1549m 	l_n_newinf1549w 	l_n_newinf1549_ 	l_p_diag1549m 		l_p_diag1549w		l_p_diag1549_ 
+l_p_onart_diag_m  	l_p_onart_diag_w 	l_p_onart_diag  	l_p_onart_vl1000_m 	l_p_onart_vl1000_w  l_p_onart_vl1000_ 
+l_prop_w_1549_sw 	l_prop_sw_hiv1549_ 	l_p_mcirc 			l_p_vmmc 			l_p_trad_circ 		
+l_n_death_hiv_m		l_n_death_hiv_w		l_n_death_hiv 		l_n_hiv1549m		l_n_hiv1549w	l_n_hiv1549_;run;
+
+ods results off;
+
+ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\WHO Ivory Coast\comparison.xlsx"
+options(sheet_name='base1' start_at='A2');
+proc print data=all noobs;run;

@@ -14115,6 +14115,21 @@ if gender=2 then do;
 end;
 
 *** As above, stratified by age;
+if 15 <= age < 49 then do;
+	vl1000_art_1549_ 		= vl1000_art;
+	if gender=1 then vl1000_art_1549m 		= vl1000_art;
+	if gender=2 then vl1000_art_1549w 		= vl1000_art;
+
+	onart_iicu_1549_ 		= onart_iicu;
+	if gender=1 then onart_iicu_1549m=onart_iicu;
+	if gender=2 then onart_iicu_1549w=onart_iicu;
+
+	vl1000_art_iicu_1549_ 	= vl1000_art_iicu;
+	if gender=1 then vl1000_art_iicu_1549m 	= vl1000_art_iicu;
+	if gender=2 then vl1000_art_iicu_1549w 	= vl1000_art_iicu;
+
+end;
+
 if 15 <= age < 25 then do;
 	vl1000_art_1524_ 		= vl1000_art;
 
@@ -17017,7 +17032,12 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_vl1000_art_gt6m_iicu_50pl_ + vl1000_art_gt6m_iicu_50pl_ ; s_vl1000_art_incintcun_sw + vl1000_art_incintcun_sw ;
 	s_vl1000_art_gt6m_iicu_sw + vl1000_art_gt6m_iicu_sw ; s_onart_gt6m_iicu_sw + onart_gt6m_iicu_sw ;
 	s_vl1000_artgt6miicu_w1524evpr + vl1000_artgt6miicu_w1524evpr; s_onartgt6miicu_w1524evpr + onartgt6miicu_w1524evpr;
-    s_u_vfail1_dol_this_period + u_vfail1_dol_this_period ; s_o_dol_at_risk_uvfail + o_dol_at_risk_uvfail ; s_elig_treat200 + elig_treat200 ;
+
+	s_vl1000_art_1549_ + vl1000_art_1549_; s_vl1000_art_1549m + vl1000_art_1549m; s_vl1000_art_1549w + vl1000_art_1549w;
+	s_onart_iicu_1549_ + onart_iicu_1549_ ;s_onart_iicu_1549m + onart_iicu_1549m ;s_onart_iicu_1549w + onart_iicu_1549w ; 
+	s_vl1000_art_iicu_1549_ + vl1000_art_iicu_1549_; s_vl1000_art_iicu_1549m + vl1000_art_iicu_1549m; s_vl1000_art_iicu_1549w + vl1000_art_iicu_1549w;
+
+	s_u_vfail1_dol_this_period + u_vfail1_dol_this_period ; s_o_dol_at_risk_uvfail + o_dol_at_risk_uvfail ; s_elig_treat200 + elig_treat200 ;
     s_elig_treat350 + elig_treat350 ; s_elig_treat500 + elig_treat500 ; s_cl100 + cl100 ; s_cl50 + cl50 ; s_cl200 + cl200 ; s_cl350 + cl350 ;
 	s_cd4art_started_this_period + cd4art_started_this_period ; s_cd4diag_diag_this_period + cd4diag_diag_this_period ;
 	s_year_1_infection + year_1_infection ; s_year_2_infection + year_2_infection ; s_year_3_infection + year_3_infection ; 
@@ -18776,6 +18796,11 @@ s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_25
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
 s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
 s_vl1000_artgt6miicu_w1524evpr s_onartgt6miicu_w1524evpr
+
+s_vl1000_art_1549_  s_vl1000_art_1549m  s_vl1000_art_1549w 
+s_onart_iicu_1549_  s_onart_iicu_1549m  s_onart_iicu_1549w 
+s_vl1000_art_iicu_1549_  s_vl1000_art_iicu_1549m  s_vl1000_art_iicu_1549w 
+
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
@@ -19749,6 +19774,11 @@ s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_25
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
 s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
 s_vl1000_artgt6miicu_w1524evpr s_onartgt6miicu_w1524evpr
+
+s_vl1000_art_1549_  s_vl1000_art_1549m  s_vl1000_art_1549w 
+s_onart_iicu_1549_  s_onart_iicu_1549m  s_onart_iicu_1549w 
+s_vl1000_art_iicu_1549_  s_vl1000_art_iicu_1549m  s_vl1000_art_iicu_1549w 
+
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
@@ -21554,6 +21584,11 @@ s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_25
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
 s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
 s_vl1000_artgt6miicu_w1524evpr s_onartgt6miicu_w1524evpr
+
+s_vl1000_art_1549_  s_vl1000_art_1549m  s_vl1000_art_1549w 
+s_onart_iicu_1549_  s_onart_iicu_1549m  s_onart_iicu_1549w 
+s_vl1000_art_iicu_1549_  s_vl1000_art_iicu_1549m  s_vl1000_art_iicu_1549w 
+
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
