@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data a;
-set a.cdi_24May24;
+set a.cdi_29May24;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
@@ -263,7 +263,6 @@ s_alive = s_alive_m + s_alive_w ;
 * p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
 
-proc glm; model prop_sw_hiv=sw_trans_matrix;run;
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -417,7 +416,7 @@ sw_trans_matrix		;
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI8a; 
+data a.l_base_CdI9; 
 set y;  
 run;
 
