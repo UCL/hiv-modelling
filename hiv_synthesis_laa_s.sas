@@ -2,31 +2,19 @@
 
 
 
-
-
-
-
 * adjust costs to avoid having to do this in create_wide_file
-
-* check on vis cost in people on len cab;
 
 * also add in effect of offering len-cab in bringing people back into care ?
 
-
-
-
 * note loading dose of len (oral) when start or restart (extra cost);
-
-* note gender_spec_prep_cab_eff and gender_spec_prep_len_eff ;
 
 * written notes in sideboard drawer;
 
 * modify tld drug costs;
 
-* present results as joint cost of len/cab - present analysis as one of what cost is needed to be cost-effective / cost-saving ;
 
 
-
+* fyi for future: note gender_spec_prep_cab_eff and gender_spec_prep_len_eff ;
 
 
 
