@@ -3,25 +3,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_a_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_b_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_a_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_b_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_hpe_a;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_hpe_b;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_hpe_a; 
+proc sort data=b.k_hpe_b; 
 by run cald option;
 run;
 
@@ -31,7 +31,7 @@ run;
 data sf;
 
 
-set b.k_hpe_a ;
+set b.k_hpe_b ;
 
 
 if cald=2024   ;
@@ -51,7 +51,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_hpe_a sf;
+merge b.k_hpe_b sf;
 by run ;
 
 
@@ -1367,11 +1367,11 @@ proc freq; tables cald option; where cald=2026.50;
 run;
 
 
-data    b.l_hpe_a; set y;  
+data    b.l_hpe_b; set y;  
 
 run;
 
-data y ; set b.l_hpe_a; 
+data y ; set b.l_hpe_b; 
 
   options nomprint;
   option nospool;
@@ -1820,7 +1820,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_hpe_a     ; 
+  data  b.w_hpe_b     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1828,7 +1828,7 @@ proc sort; by run;run;
 
  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\hpe_a_out\";
 
-data f; set b.w_hpe_a;
+data f; set b.w_hpe_b;
 
 
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
