@@ -3,34 +3,17 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v20_2024Feb05_out";
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v21_2024May23_end2022_out_out_";
 
 
-data a.base_05_02_2024;   set b.out:;run;
+data a.base_23_05_2024;   set b.out:;run;
 
-proc freq data=a.base_11_12_2023;table s_ageg014_
-/*s_new_birth_circ
-s_new_vmmc s_new_mcirc
-s_new_mcirc_1014m
-s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
-s_new_mcirc_4044m  s_new_mcirc_4549m*/;run;
-*Investigating why p_newp_ge1 is going down;
-/*
-proc freq data=a.base_09_08_2023; table ych2_risk_beh_newp;run;
-data a.base_09_08_2023; set a.base_09_08_2023; 
-where ych2_risk_beh_newp=1;run;*/
-
-/* show the contents of the input SAS file */
-/*
-proc contents data=a.base_10_08_2023;run;
-proc sort data=a.base_16_06_23; by run; run;
-proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
 ods html close;
 ods listing;
-proc freq data=a.base_05_02_2024; table run;run;
-proc freq data=a.base_05_02_2024; table cald option;run;
-*54 simulations
-4 options from 2023: 0,1,11,12;
+proc freq data=a.base_23_05_2024; table run;run;
+proc freq data=a.base_23_05_2024; table cald option;run;
+
+*20 simulations;
 
 /*
 proc freq data=a.base_25_05_23;
@@ -42,11 +25,10 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_05_02_2024;
+data g; set  a.base_23_05_2024;
 
 proc sort data=g; 
 by run cald option;run;
-*54 out of 500;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
@@ -1301,7 +1283,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_05_02_2024; set y;  run;
+data a.l_base_23_05_2024; set y;  run;
 
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
