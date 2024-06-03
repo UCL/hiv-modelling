@@ -20336,9 +20336,16 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-* Define macro run_update_r1 to run update_r1 multiple times;		*JAS Feb24;
-* Inputs are: start year (can be &caldate1 as defined in code above), end year, option number (s);
-* dependent_on_time_step_length;
+
+*JAS Feb24;
+/*
+Define macro run_update_r1 to run update_r1 multiple times		
+Inputs are: 
+	start year (can be &caldate1 as defined in code above)
+	end year (can be relative to &year_interv as defined in code above)
+	option number (s)
+*/
+*dependent_on_time_step_length;
 
 %macro run_update_r1(r1_start_year,r1_end_year,intervention_option);
 
@@ -20364,13 +20371,23 @@ end;
 
 *** RUN PROGRAM; 
 
-*1) Run from caldate1 to current date;
-%run_update_r1(&caldate1,&year_interv+50,0);
+*1) Run from caldate1 to intervention year;
+%run_update_r1(&caldate1,&year_interv-0.25,0);
 
+* 2) Save dataset at this point;
+data a ;  set r1 ;
+data r1 ; set a ;
 
+* 3) Repetition 1;
+%run_update_r1(&year_interv,&year_interv+50,0);
 
+* 4) Repetition 2;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,0);
 
-
+* 5) Repetition 3;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,0);
 
 
 
