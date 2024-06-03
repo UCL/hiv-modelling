@@ -6,52 +6,38 @@
 
 
 
+* lower visit costs ?
 
+* consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
 
-* we have so few with uvl2 at any one point in time ..................... ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-* consider a separate strategy in which this final strategy is altered if/when population level INSTI resistance exceeds a certain threshold ?
-
-* run as additional analysis with strategies only applying to those with previous virologic failure, or those with previous art experience before tld
+* run as additional analysis with strategies only applying to those with no previous virologic failure, or those with no previous art experience before tld
 
 * consider atazanavir as the PI ?
 
 * switching could include doubling the dose of dol if resistance testing indicates low or moderate dol resistance ?
 
-* consider also cost of national committees making decision on switch
+* consider also cost of national committees making decision on switch ?
 
-* make clear that cost of resistance test includes accounts for the chance of failure of amplification
+* make clear that cost of resistance test accounts for the chance of failure of amplification
 
-* modify tld drug costs
+* modify tld drug costs ?
 
 
 
-Special considerations in undertaking this work include the following:  (i) With tenofovir drug level testing, there may be some pill-taking just before a 
+Special considerations in undertaking this work include the following:  
+
+(i) With tenofovir drug level testing, there may be some pill-taking just before a 
 clinic appointment, resulting in the appearance of high adherence when, in fact, pill-taking is low.  We will consider the possibility of the existence of 
-such “false positive” tests. (ii) Data are only just starting to accrue on the profile of INSTI mutations acquired in people on TLD.  Data on the evolution 
-of INSTI drug resistance mutations in people on TLD with prolonged viral non-suppression are lacking.  We will have to consider alternative possibilities and 
-see whether they affect the answer to the question.  (iii) There is uncertainty over how likely a person being infected from a person with INSTI resistance 
-mutations will themselves have virus with these INSTI resistance mutations (ie. Transmission of INSTI mutations) – we will again make a range of assumptions 
-informed by the limited data available.     
+such “false positive” tests. 
 
+(ii) Data are only just starting to accrue on the profile of INSTI mutations acquired in people on TLD.  Data on the evolution of INSTI drug resistance mutations 
+in people on TLD with prolonged viral non-suppression are lacking.  We will have to consider alternative possibilities and see whether they affect the answer to 
+the question.  
+
+(iii) There is uncertainty over how likely a person being infected from a person with INSTI resistance mutations will themselves have virus with these INSTI 
+resistance mutations (ie. Transmission of INSTI mutations) – we will again make a range of assumptions informed by the limited data available.     
 
 ; 
-
-
-
 
 
 
