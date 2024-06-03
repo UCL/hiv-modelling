@@ -392,10 +392,10 @@ s_alive = s_alive_m + s_alive_w ;
 * n_hiv1549m;					n_hiv1549m = s_hiv1549m * &sf;
 * n_hiv1549w;					n_hiv1549w = s_hiv1549w * &sf;
 
-* n_newinf;						n_newinf = s_primary * &sf;
-* n_newinf1549_;				n_newinf1549_ = s_primary1549 * &sf;
-* n_newinf1549m;				n_newinf1549m = s_primary1549m * &sf;
-* n_newinf1549w;				n_newinf1549w = s_primary1549w * &sf;
+* n_newinf;						n_newinf = s_primary * 4 * &sf;
+* n_newinf1549_;				n_newinf1549_ = s_primary1549 * 4 * &sf;
+* n_newinf1549m;				n_newinf1549m = s_primary1549m * 4 * &sf;
+* n_newinf1549w;				n_newinf1549w = s_primary1549w * 4 * &sf;
 * n_alive;						n_alive = s_alive * &sf;
 * n_alive1549_;					n_alive1549_ = s_alive1549* &sf;
 * n_alive1549_m;				n_alive1549m = s_alive1549_m* &sf;
