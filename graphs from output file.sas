@@ -14,7 +14,7 @@ n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 
 data b;
-set a.l_base_05_02_2024;
+set a.l_base_23_05_2024;
 
 
 p_onart_vl1000_all = .;
@@ -78,14 +78,14 @@ n_everpregn_w1524_ = n_everpregn_w1524;
 n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 
 
-data b;set b;*where option=0;where cald ge 2023;run;
+/*data b;set b;*where option=0;where cald ge 2023;run;*/
 
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 102  ;*out of 1000;*out of 860;
-%let year_start = 2000;*2023;*&year_start;
-%let year_end = 2072.75;
+%let nfit = 20  ;*out of 1000;*out of 860;
+%let year_start = 1983;*2023;*&year_start;
+%let year_end = 2023;
 run;
 /*proc freq data=b;table cald count_csim count_csim*option;run;*/
 proc sort data=b;by cald option ;run;
@@ -182,7 +182,7 @@ run;quit;
 
 *I created one single macro;
 ***transpose given name; *starts with %macro and ends with %mend;
-proc freq data=b;table option;run;
+proc freq data=b;table option;run;*option=0;
 data b;set b;where cald ne .;run;
 %macro option_(s);
 data option_&s;set b;
@@ -217,9 +217,9 @@ run;
 
 
 %option_(0);
-%option_(1);
-%option_(11);
-%option_(12);
+*%option_(1);
+*%option_(11);
+*%option_(12);
 *%option_(15);
 run;
 
@@ -238,7 +238,7 @@ g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_
 g0_209 g0_210 g0_211 g0_212 g0_213 /*g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234
 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 g0_251 g0_252 
 */
-
+/*
 g1_1   g1_2   g1_3   g1_4   g1_5   g1_6   g1_7   g1_8   g1_9   g1_10  g1_11  g1_12  g1_13  g1_14  g1_15  g1_16  g1_17  g1_18  g1_19  g1_20  g1_21  g1_22  g1_23  g1_24  g1_25  g1_26 
 g1_27  g1_28  g1_29  g1_30  g1_31  g1_32  g1_33  g1_34  g1_35  g1_36  g1_37  g1_38  g1_39  g1_40  g1_41  g1_42  g1_43  g1_44  g1_45  g1_46  g1_47  g1_48   g1_49  g1_50 
 g1_51  g1_52 
@@ -252,6 +252,7 @@ g1_209 g1_210 g1_211 g1_212 g1_213 /*g1_214 g1_215 g1_216 g1_217 g1_218 g1_219 g
 g1_235 g1_236 g1_237 g1_238 g1_239 g1_240 g1_241 g1_242 g1_243 g1_244 g1_245 g1_246 g1_247 g1_248 g1_249 g1_250 g1_251 g1_252 
 */;
 by cald;run;
+/*
 data d_b; * this is number of variables in %let var = above ;
 merge 
 g11_1   g11_2   g11_3   g11_4   g11_5   g11_6   g11_7   g11_8   g11_9   g11_10  g11_11  g11_12  g11_13  g11_14  g11_15  g11_16  g11_17  g11_18  g11_19  g11_20  g11_21  g11_22  g11_23  g11_24  g11_25  g11_26 
@@ -263,9 +264,7 @@ g11_105 g11_106 g11_107 g11_108 g11_109 g11_110 g11_111 g11_112 g11_113 g11_114 
 g11_131 g11_132 g11_133 g11_134 g11_135 g11_136 g11_137 g11_138 g11_139 g11_140 g11_141 g11_142 g11_143 g11_144 g11_145 g11_146 g11_147 g11_148 g11_149 g11_150 g11_151 g11_152 g11_153 g11_154 g11_155 g11_156
 g11_157 g11_158 g11_159 g11_160 g11_161 g11_162 g11_163 g11_164 g11_165 g11_166 g11_167 g11_168 g11_169 g11_170 g11_171 g11_172 g11_173 g11_174 g11_175 g11_176 g11_177 g11_178 g11_179 g11_180 g11_181 g11_182
 g11_183 g11_184 g11_185 g11_186 g11_187 g11_188 g11_189 g11_190 g11_191 g11_192 g11_193 g11_194 g11_195 g11_196 g11_197 g11_198 g11_199 g11_200 g11_201 g11_202 g11_203 g11_204 g11_205 g11_206 g11_207 g11_208
-g11_209 g11_210 g11_211 g11_212 g11_213 /*g11_214 g11_215 g11_216 g11_217 g11_218 g11_219 g11_220 g11_221 g11_222 g11_223 g11_224 g11_225 g11_226 g11_227 g11_228 g11_229 g11_230 g11_231 g11_232 g11_233 g11_234
-g11_235 g11_236 g11_237 g11_238 g11_239 g11_240 g11_241 g11_242 g11_243 g11_244 g11_245 g11_246 g11_247 g11_248 g11_249 g11_250 g11_251 g11_252 
-*/
+g11_209 g11_210 g11_211 g11_212 g11_213 
 
 g12_1   g12_2   g12_3   g12_4   g12_5   g12_6   g12_7   g12_8   g12_9   g12_10  g12_11  g12_12  g12_13  g12_14  g12_15  g12_16  g12_17  g12_18  g12_19  g12_20  g12_21  g12_22  g12_23  g12_24  g12_25  g12_26 
 g12_27  g12_28  g12_29  g12_30  g12_31  g12_32  g12_33  g12_34  g12_35  g12_36  g12_37  g12_38  g12_39  g12_40  g12_41  g12_42  g12_43  g12_44  g12_45  g12_46  g12_47  g12_48   g12_49  g12_50 
@@ -276,31 +275,14 @@ g12_105 g12_106 g12_107 g12_108 g12_109 g12_110 g12_111 g12_112 g12_113 g12_114 
 g12_131 g12_132 g12_133 g12_134 g12_135 g12_136 g12_137 g12_138 g12_139 g12_140 g12_141 g12_142 g12_143 g12_144 g12_145 g12_146 g12_147 g12_148 g12_149 g12_150 g12_151 g12_152 g12_153 g12_154 g12_155 g12_156
 g12_157 g12_158 g12_159 g12_160 g12_161 g12_162 g12_163 g12_164 g12_165 g12_166 g12_167 g12_168 g12_169 g12_170 g12_171 g12_172 g12_173 g12_174 g12_175 g12_176 g12_177 g12_178 g12_179 g12_180 g12_181 g12_182
 g12_183 g12_184 g12_185 g12_186 g12_187 g12_188 g12_189 g12_190 g12_191 g12_192 g12_193 g12_194 g12_195 g12_196 g12_197 g12_198 g12_199 g12_200 g12_201 g12_202 g12_203 g12_204 g12_205 g12_206 g12_207 g12_208
-g12_209 g12_210 g12_211 g12_212 g12_213 /*g12_214 g12_215 g12_216 g12_217 g12_218 g12_219 g12_220 g12_221 g12_222 g12_223 g12_224 g12_225 g12_226 g12_227 g12_228 g12_229 g12_230 g12_231 g12_232 g12_233 g12_234
-g12_235 g12_236 g12_237 g12_238 g12_239 g12_240 g12_241 g12_242 g12_243 g12_244 g12_245 g12_246 g12_247 g12_248 g12_249 g12_250 g12_251 g12_252 
-*/
-
-/*
-g15_1   g15_2   g15_3   g15_4   g15_5   g15_6   g15_7   g15_8   g15_9   g15_10  g15_11  g15_12  g15_13  g15_14  g15_15  g15_16  g15_17  g15_18  g15_19  g15_20  g15_21  g15_22  g15_23  g15_24  g15_25  g15_26 
-g15_27  g15_28  g15_29  g15_30  g15_31  g15_32  g15_33  g15_34  g15_35  g15_36  g15_37  g15_38  g15_39  g15_40  g15_41  g15_42  g15_43  g15_44  g15_45  g15_46  g15_47  g15_48   g15_49  g15_50 
-g15_51  g15_52 
-g15_53  g15_54  g15_55  g15_56  g15_57  g15_58  g15_59  g15_60 g15_61  g15_62  g15_63  g15_64  g15_65  g15_66  g15_67  g15_68  g15_69  g15_70  g15_71 g15_72 g15_73 g15_74 g15_75  g15_76  g15_77 g15_78 
-g15_79  g15_80  g15_81  g15_82  g15_83  g15_84  g15_85  g15_86  g15_87  g15_88  g15_89  g15_90 g15_91  g15_92  g15_93  g15_94  g15_95  g15_96  g15_97  g15_98  g15_99  g15_100 g15_101 g15_102 g15_103 g15_104
-g15_105 g15_106 g15_107 g15_108 g15_109 g15_110 g15_111 g15_112 g15_113 g15_114 g15_115 g15_116 g15_117 g15_118 g15_119 g15_120 g15_121 g15_122 g15_123 g15_124 g15_125 g15_126 g15_127 g15_128 g15_129 g15_130 
-g15_131 g15_132 g15_133 g15_134 g15_135 g15_136 g15_137 g15_138 g15_139 g15_140 g15_141 g15_142 g15_143 g15_144 g15_145 g15_146 g15_147 g15_148 g15_149 g15_150 g15_151 g15_152 g15_153 g15_154 g15_155 g15_156
-g15_157 g15_158 g15_159 g15_160 g15_161 g15_162 g15_163 g15_164 g15_165 g15_166 g15_167 g15_168 g15_169 g15_170 g15_171 g15_172 g15_173 g15_174 g15_175 g15_176 g15_177 g15_178 g15_179 g15_180 g15_181 g15_182
-g15_183 g15_184 g15_185 g15_186 g15_187 g15_188 g15_189 g15_190 g15_191 g15_192 g15_193 g15_194 g15_195 g15_196 g15_197 g15_198 g15_199 g15_200 g15_201 g15_202 g15_203 g15_204 g15_205 g15_206 g15_207 g15_208
-g15_209 g15_210 g15_211 g15_212 g15_213 g15_214 g15_215 g15_216 g15_217 g15_218 g15_219 g15_220 g15_221 g15_222 g15_223 g15_224 g15_225 g15_226 g15_227 g15_228 g15_229 g15_230 g15_231 g15_232 g15_233 g15_234
-g15_235 g15_236 g15_237 g15_238 g15_239 g15_240 g15_241 g15_242 g15_243 g15_244 g15_245 g15_246 g15_247 g15_248 g15_249 g15_250 g15_251 g15_252 
-*/
-;
-by cald;run;
+g12_209 g12_210 g12_211 g12_212 g12_213 ;
+by cald;run;*/
 data d; * this is number of variables in %let var = above ;
-merge d_a d_b;
+set d_a;
+*merge d_a d_b;
 %include "C:\Users\Valentina\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas";
 run;
 
-*arrivata qua;
 
 /*data a.d;set d;run;
 data d;set a.d;run;*/
@@ -310,7 +292,7 @@ proc contents data=a.d;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20240205_102sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20240523_20sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
