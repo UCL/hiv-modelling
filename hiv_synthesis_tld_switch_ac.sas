@@ -1,11 +1,6 @@
 
 
 
-
-
-
-
-
 * lower visit costs ?
 
 * consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
