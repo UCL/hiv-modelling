@@ -211,9 +211,7 @@ newp_seed = 7;
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								  1.05  1.1 , 0.5 0.5 );
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  
-* prop_redattr_newp_cmmc;	%sample(prop_redattr_newp_cmmc,0.015 0.05 0.1, 0.25 0.5 0.25);
-* prop_redattr_ep_cmmc;		%sample(prop_redattr_ep_cmmc,0.09 0.33 0.6, 0.25 0.5 0.25);
-
+* prop_redattr_sbcc;		%sample_uniform(prop_redattr_sbcc,0.1 0.3 0.5);
 * eprate;					eprate = 0.1* exp(rand('normal')*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
