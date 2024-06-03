@@ -1136,13 +1136,13 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=p_m1549_msm  );
+%var(v=incidence1549w  );
 
 
 ods html;
 
 
-proc print data = p_m1549_msm      noobs;
+proc print data = incidence1549w      noobs;
 run;
 
 ods html close;
