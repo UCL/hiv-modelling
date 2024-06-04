@@ -3,6 +3,8 @@
 
 * reconsider relative potency of dar and dol
 
+* $200 for resistance test
+
 * have different effects of different insti mutations
 
 * lower visit costs ?
