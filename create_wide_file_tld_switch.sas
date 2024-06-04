@@ -1373,12 +1373,14 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 * note: it is critical that this starts at year_interv;
 
 proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2026.0 <= cald < 2036.00; 
+proc means noprint data=e; var &v; output out=y_a10y mean= &v._a10y; by run option ; where 2035.0 <= cald < 2036.00; 
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2026.0 <= cald < 2076.00;   
 																				   
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
+proc sort data=y_a10y    ; by run; proc transpose data=y_a10y  out=t_a10y  prefix=&v._a10y_  ; var &v._a10y    ; by run; 																																																						
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
 
-data &v ; merge y_24 t_10y t_50y ; 
+data &v ; merge y_24 t_10y  t_a10y t_50y ; 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1809,7 +1811,7 @@ proc sort; by run;run;
 
 
 
-* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ab_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ab_out\";
 
 data b;
 set b.w_tld_switch_ab  ;
@@ -2023,6 +2025,61 @@ p_o_dol_uvl2_10y_1 p_o_dol_uvl2_10y_2 p_o_dol_uvl2_10y_3 p_o_dol_uvl2_10y_4 p_o_
 run;
 
 ods html close;
+
+
+
+ods html;
+proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
+var 
+prop_artexp_elig_tldsw_a10y_1  prop_artexp_elig_tldsw_a10y_2  prop_artexp_elig_tldsw_a10y_3  prop_artexp_elig_tldsw_a10y_4   prop_artexp_elig_tldsw_a10y_5  
+prop_tldsw_uvl2_a10y_1 prop_tldsw_uvl2_a10y_2 prop_tldsw_uvl2_a10y_3 prop_tldsw_uvl2_a10y_4  prop_tldsw_uvl2_a10y_5
+prop_tldsw_elig_vl1000_a10y_1  prop_tldsw_elig_vl1000_a10y_2  prop_tldsw_elig_vl1000_a10y_3  prop_tldsw_elig_vl1000_a10y_4  prop_tldsw_elig_vl1000_a10y_5
+prop_uvl2_vl1000_a10y_1 prop_uvl2_vl1000_a10y_2 prop_uvl2_vl1000_a10y_3 prop_uvl2_vl1000_a10y_4 prop_uvl2_vl1000_a10y_5
+prop_tldsw_o_dar_a10y_1 prop_tldsw_o_dar_a10y_2 prop_tldsw_o_dar_a10y_3 prop_tldsw_o_dar_a10y_4  prop_tldsw_o_dar_a10y_5
+p_vis_tldsw_a10y_1 p_vis_tldsw_a10y_2 p_vis_tldsw_a10y_3 p_vis_tldsw_a10y_4 p_vis_tldsw_a10y_5 
+p_vis_uvl2_a10y_1 p_vis_uvl2_a10y_2 p_vis_uvl2_a10y_3 p_vis_uvl2_a10y_4 p_vis_uvl2_a10y_5 
+p_adh_lt80_iicu_tldsw_a10y_1  p_adh_lt80_iicu_tldsw_a10y_2  p_adh_lt80_iicu_tldsw_a10y_3  p_adh_lt80_iicu_tldsw_a10y_4  p_adh_lt80_iicu_tldsw_a10y_5   
+p_onart_iicu_tldsw_a10y_1  p_onart_iicu_tldsw_a10y_2  p_onart_iicu_tldsw_a10y_3  p_onart_iicu_tldsw_a10y_4  p_onart_iicu_tldsw_a10y_5    
+p_onart_iicu_uvl2_a10y_1   p_onart_iicu_uvl2_a10y_2   p_onart_iicu_uvl2_a10y_3   p_onart_iicu_uvl2_a10y_4   p_onart_iicu_uvl2_a10y_5   
+p_adh_lt80_iicu_uvl2_a10y_1 p_adh_lt80_iicu_uvl2_a10y_2 p_adh_lt80_iicu_uvl2_a10y_3 p_adh_lt80_iicu_uvl2_a10y_4 p_adh_lt80_iicu_uvl2_a10y_5 
+prop_r_dol_ge_p5_uvl2_a10y_1 prop_r_dol_ge_p5_uvl2_a10y_2 prop_r_dol_ge_p5_uvl2_a10y_3 prop_r_dol_ge_p5_uvl2_a10y_4 prop_r_dol_ge_p5_uvl2_a10y_5 
+n_death_hiv_a10y_1 n_death_hiv_a10y_2 n_death_hiv_a10y_3 n_death_hiv_a10y_4 n_death_hiv_a10y_5 
+p_iime_a10y_1 p_iime_a10y_2 p_iime_a10y_3 p_iime_a10y_4 p_iime_a10y_5 
+n_iime_a10y_1 n_iime_a10y_2 n_iime_a10y_3 n_iime_a10y_4 n_iime_a10y_5
+p_hivpos_new_dol_r_a10y_1 p_hivpos_new_dol_r_a10y_2 p_hivpos_new_dol_r_a10y_3 p_hivpos_new_dol_r_a10y_4 p_hivpos_new_dol_r_a10y_5 
+n_incident_r_dol_a10y_1 n_incident_r_dol_a10y_2 n_incident_r_dol_a10y_3 n_incident_r_dol_a10y_4 n_incident_r_dol_a10y_5 
+n_dead_hivrel_onart_a10y_1 n_dead_hivrel_onart_a10y_2 n_dead_hivrel_onart_a10y_3 n_dead_hivrel_onart_a10y_4 n_dead_hivrel_onart_a10y_5 
+p_onart_cd4_l200_a10y_1 p_onart_cd4_l200_a10y_2 p_onart_cd4_l200_a10y_3 p_onart_cd4_l200_a10y_4 p_onart_cd4_l200_a10y_5 
+p_cd4_lt200_uvl2_a10y_1 p_cd4_lt200_uvl2_a10y_2 p_cd4_lt200_uvl2_a10y_3 p_cd4_lt200_uvl2_a10y_4 p_cd4_lt200_uvl2_a10y_5 
+n_uvl2_elig_a10y_1 n_uvl2_elig_a10y_2 n_uvl2_elig_a10y_3 n_uvl2_elig_a10y_4 n_uvl2_elig_a10y_5 
+hiv_death_rate_uvl2_a10y_1 hiv_death_rate_uvl2_a10y_2 hiv_death_rate_uvl2_a10y_3 hiv_death_rate_uvl2_a10y_4 hiv_death_rate_uvl2_a10y_5 
+p_vl1000_a10y_1 p_vl1000_a10y_2 p_vl1000_a10y_3 p_vl1000_a10y_4 p_vl1000_a10y_5 
+p_onart_vl1000_a10y_1 p_onart_vl1000_a10y_2 p_onart_vl1000_a10y_3 p_onart_vl1000_a10y_4 p_onart_vl1000_a10y_5 
+p_o_dar_uvl2_a10y_1 p_o_dar_uvl2_a10y_2 p_o_dar_uvl2_a10y_3 p_o_dar_uvl2_a10y_4 p_o_dar_uvl2_a10y_5
+p_first_uvl2_dol_r_a10y_1 p_first_uvl2_dol_r_a10y_2 p_first_uvl2_dol_r_a10y_3 p_first_uvl2_dol_r_a10y_4 p_first_uvl2_dol_r_a10y_5  
+deathr_dol_r_uvl2_a10y_1 deathr_dol_r_uvl2_a10y_2 deathr_dol_r_uvl2_a10y_3 deathr_dol_r_uvl2_a10y_4 deathr_dol_r_uvl2_a10y_5 
+p_dlt_adh_high_r_dol_a10y_1 p_dlt_adh_high_r_dol_a10y_2 p_dlt_adh_high_r_dol_a10y_3 p_dlt_adh_high_r_dol_a10y_4 p_dlt_adh_high_r_dol_a10y_5 
+p_dlt_adh_low_r_dol_a10y_1 p_dlt_adh_low_r_dol_a10y_2 p_dlt_adh_low_r_dol_a10y_3 p_dlt_adh_low_r_dol_a10y_4 p_dlt_adh_low_r_dol_a10y_5 
+p_dlt_adh_high_r_dol_a10y_1 p_dlt_adh_high_r_dol_a10y_2 p_dlt_adh_high_r_dol_a10y_3 p_dlt_adh_high_r_dol_a10y_4 
+p_dlt_adh_low_r_dol_a10y_1 p_dlt_adh_low_r_dol_a10y_2 p_dlt_adh_low_r_dol_a10y_3 p_dlt_adh_low_r_dol_a10y_4 
+p_tldsw2_elig_tldsw_a10y_1 p_tldsw2_elig_tldsw_a10y_2 p_tldsw2_elig_tldsw_a10y_3 p_tldsw2_elig_tldsw_a10y_4 p_tldsw2_elig_tldsw_a10y_5 
+n_second_vlg1000_first_a10y_1 n_second_vlg1000_first_a10y_2 n_second_vlg1000_first_a10y_3 n_second_vlg1000_first_a10y_4 n_second_vlg1000_first_a10y_5 
+p_dol_2vg1000_dolr1_a10y_1 p_dol_2vg1000_dolr1_a10y_2 p_dol_2vg1000_dolr1_a10y_3 p_dol_2vg1000_dolr1_a10y_4 p_dol_2vg1000_dolr1_a10y_5 
+incidence1549_a10y_1 incidence1549_a10y_2 incidence1549_a10y_3 incidence1549_a10y_4 incidence1549_a10y_5 
+s_o_dol_2nd_vlg1000_a10y_1 s_o_dol_2nd_vlg1000_a10y_2 s_o_dol_2nd_vlg1000_a10y_3 s_o_dol_2nd_vlg1000_a10y_4 s_o_dol_2nd_vlg1000_a10y_5
+n_res_test_dol_py_a10y_3 n_res_test_dol_py_a10y_4
+p_o_dar_uvl2_onart_a10y_1 p_o_dar_uvl2_onart_a10y_2 p_o_dar_uvl2_onart_a10y_3 p_o_dar_uvl2_onart_a10y_4 p_o_dar_uvl2_onart_a10y_5 
+p_o_dol_uvl2_a10y_1 p_o_dol_uvl2_a10y_2 p_o_dol_uvl2_a10y_3 p_o_dol_uvl2_a10y_4 p_o_dol_uvl2_a10y_5 
+;
+run;
+
+ods html close;
+
+
+
+
+
+
 
 
 ods html;
