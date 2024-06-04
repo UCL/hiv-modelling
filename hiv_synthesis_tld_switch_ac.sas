@@ -1,6 +1,10 @@
 
 
 
+* reconsider relative potency of dar and dol
+
+* have different effects of different insti mutations
+
 * lower visit costs ?
 
 * consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
