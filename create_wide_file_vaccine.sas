@@ -4,25 +4,25 @@
 
  proc printto ; 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_n_c_keep_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_m_b_keep_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_vaccine_n_c_keep_prep; 
+proc sort data=b.k_vaccine_m_b_keep_prep; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_n_c_keep_prep ;
+set b.k_vaccine_m_b_keep_prep ;
 
 
 if cald=2024   ;
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_n_c_keep_prep sf;
+merge b.k_vaccine_m_b_keep_prep sf;
 by run ;
 
 * preparatory code ;
@@ -1131,9 +1131,9 @@ proc freq; tables cald option; where cald=2040.50;
 run;
 
 
-data    b.l_vaccine_n_c_keep_prep_may24; set y;  
+data    b.l_vaccine_m_b_keep_prep_may24; set y;  
 
-data y ; set b.l_vaccine_n_c_keep_prep_may24; 
+data y ; set b.l_vaccine_m_b_keep_prep_may24; 
 
 
   options nomprint;
@@ -1507,7 +1507,7 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 * To get one row per run;
 
-  data  b.w_vaccine_n_c_keep_prep_may24     ; 
+  data  b.w_vaccine_m_b_keep_prep_may24     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1517,9 +1517,9 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_keep_prep_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_m_b_keep_prep_out\";
 
-data zz; set b.w_vaccine_n_c_keep_prep_may24 ;
+data zz; set b.w_vaccine_m_b_keep_prep_may24 ;
 
 
 d_prop_elig_on_prep_30y_2_1 = prop_elig_on_prep_30y_2 - prop_elig_on_prep_30y_1; 
