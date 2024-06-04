@@ -2,7 +2,7 @@
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_b_out\";
 
 footnote;
 
@@ -11,7 +11,8 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_hpe_a;
+set a.l_hpe_b;
+
 
 * for this program, variable names cannot end on a number;
 n_k65m = p_k65m * n_hiv;
@@ -34,6 +35,13 @@ p_len_1524_ = p_len_1524;
 p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 
 
+if prob_prep_oral_b = 0.2 ;
+
+proc freq; tables prob_prep_oral_b ; run; 
+
+
+
+
 %let single_var =  prop_elig_on_prep                ;
 
 
@@ -45,7 +53,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 236    ;
+%let nfit = 550    ;
 
 %let year_end = 2076.00 ;
 run;
