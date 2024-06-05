@@ -5,6 +5,12 @@
 
 * $200 for resistance test
 
+* should be considering atazanavir ?
+
+* sensitivity analysis in which cost of drug (esp darunavir) is dependent on adherence
+
+* make sure can break down the % with dol res in 2024 according to prior failure / ever any prior regimen other than tld
+
 * have different effects of different insti mutations
 
 * lower visit costs ?
