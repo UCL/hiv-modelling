@@ -36,7 +36,7 @@ p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 
 
 
-%let single_var =  p_vl1000_                   ;
+%let single_var =  n_tested                           ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -303,6 +303,76 @@ ods html ;
 
 
 
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Number of HIV tests done per 3 months";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000    by 100000 ) valueattrs=(size=10);
+
+ series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+
+
+
+
+/*
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "p_diag";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to  1     by 0.1      ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_diag_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_diag_0 upper=p95_p_diag_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "p_onart_diag";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to  1     by 0.1      ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_onart_diag_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_onart_diag_0 upper=p95_p_onart_diag_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "p_onart_vl1000_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to  1     by 0.1      ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_onart_vl1000__0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_onart_vl1000__0 upper=p95_p_onart_vl1000__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "p_vl1000_";
@@ -317,11 +387,6 @@ run;quit;
 ods html close;
 
 
-
-
-
-
-/*
 
 ods html;
 proc sgplot data=d ; 
@@ -1205,26 +1270,6 @@ run;quit;
 
 ods html close;
 
-
-
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Number of HIV tests done per 3 months";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000   by 1000000 ) valueattrs=(size=10);
-
-label p50_n_tested_0 = "no vaccine";
-label p50_n_tested_1 = "vaccine";
-
- series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_tested_1/	lineattrs = (color=violet thickness = 4);
-  band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
-
-run;quit;
-
-ods html close;
 
 
 
