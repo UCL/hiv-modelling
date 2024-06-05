@@ -15282,6 +15282,7 @@ end;
 *Test new way of accumulating YLL;	*JASMay24;
 total_yllag_test=0;
 total_yllag_w=0;	total_yllag_m=0;
+dyllag_total=0;
 dyllag_w=0; 		dyllag_m=0;
 dyllag_hiv_w=0; 	dyllag_hiv_m=0;
 
@@ -15346,6 +15347,7 @@ if caldate&j = death and death ne . then do;
 				dyllag_hiv_m=ages_m_disc[agedeath - 14]; 	
 			end;
 		end;
+		dyllag_total=dyllag_w+dyllag_m;
 	end;
 
 end;
@@ -17617,6 +17619,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_ddaly_non_aids_pre_death + ddaly_non_aids_pre_death ;     
 	
 	s_dyll_Optima80 + dyll_Optima80; s_dyll_GBD + dyll_GBD;
+	s_dyllag_total + dyllag_total;
 	s_dyllag_w + dyllag_w; s_dyllag_m + dyllag_m;
 	s_dyllag_hiv_w + dyllag_hiv_w; s_dyllag_hiv_m + dyllag_hiv_m;
 
@@ -17685,7 +17688,7 @@ proc freq; tables country cald hiv ; where death=.; run;
 */
 
 proc print; var 
-caldate&j total_yllag total_yllag_test total_yllag_w total_yllag_m dyllag_w dyllag_m dyllag_hiv_w dyllag_hiv_m
+caldate&j total_yllag total_yllag_test total_yllag_w total_yllag_m dyllag_w dyllag_m dyllag_hiv_w dyllag_hiv_m dyll_GBD dyllag_total
 ;
 where total_yllag>0; 
 run;
