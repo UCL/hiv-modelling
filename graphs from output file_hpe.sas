@@ -2,7 +2,7 @@
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_b_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_c_out\";
 
 footnote;
 
@@ -11,7 +11,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_hpe_b;
+set a.l_hpe_c;
 
 
 * for this program, variable names cannot end on a number;
@@ -35,14 +35,8 @@ p_len_1524_ = p_len_1524;
 p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 
 
-if prob_prep_oral_b = 0.2 ;
 
-proc freq; tables prob_prep_oral_b ; run; 
-
-
-
-
-%let single_var =  prop_elig_on_prep                ;
+%let single_var =  p_vl1000_                   ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -53,7 +47,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 550    ;
+%let nfit = 631    ;
 
 %let year_end = 2076.00 ;
 run;
@@ -307,7 +301,42 @@ by cald;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "p_vl1000_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to  1     by 0.1      ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_vl1000__0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_vl1000__0 upper=p95_p_vl1000__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+
+
+
 /*
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "p_inf_naive";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to  1     by 0.1      ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_inf_naive_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_inf_naive_0 upper=p95_p_inf_naive_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
 
 ods html;
 proc sgplot data=d ; 
@@ -321,6 +350,7 @@ band    x=cald lower=p5_p_newp_ge1_age1549__0 upper=p95_p_newp_ge1_age1549__0 / 
 run;quit;
 
 ods html close;
+
 
 
 
@@ -338,7 +368,6 @@ band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparen
 run;quit;
 
 ods html close;
-
 
 
 
@@ -394,7 +423,7 @@ run;quit;
 ods html close;
 
 
-*/
+
 
 
 
@@ -414,6 +443,23 @@ run;quit;
 
 
 
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Prevalence vl ge 1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.16      by 0.01    ) valueattrs=(size=10);
+
+label p50_prevalence_vg1000__0 = "continuation of current programs";
+
+series  x=cald y=p50_prevalence_vg1000__0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_prevalence_vg1000__0 upper=p95_prevalence_vg1000__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+run;quit;
+
+
+
+/*
 
 
 
