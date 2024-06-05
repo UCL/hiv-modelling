@@ -8,9 +8,6 @@
 ******************     MALAWI SPECIFIC PARAMETERS    ******************
 /***************************************************************************/
 
-* country;					country='Malawi';
-* caldate1;					caldate1 = 1984;		*core: 1989;
-* caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
 
 * country;					country='Malawi';
 * caldate1;					caldate1 = 1984;		*core: 1989;
