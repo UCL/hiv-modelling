@@ -3,18 +3,18 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 *libname b "C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check";
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v20_2024Feb13_from2023_out";
-data a.base_from2023_20240213;   set b.out:;
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v21_2024May23_from2023__out_";
+data a.base_from2023_20240523;   set b.out:;
 if cald=. or run=. then delete;run;
 
 /* show the contents of the input SAS file */
 
-proc contents data=a.base_from2023_20240213;run;
+proc contents data=a.base_from2023_20240523;run;
 ods html close;
 ods listing;
 
 *The following ouputs were not available when preparing the graphs comparing with other models;
-proc freq data=a.base_from2023_20240213;
+proc freq data=a.base_from2023_20240523;
 table /*option cald run
 s_init_prep_oral_plw  	s_init_prep_inj_plw s_init_prep_vr_plw
 s_prep_oral_plw			s_prep_inj_plw		s_prep_vr_plw
@@ -50,10 +50,10 @@ run;
 so I do think it is OK to overwrite them;
 
 *The following output was not available when preparing the graphs comparing with other models;
-proc freq data=a.base_from2023_20240213;
+proc freq data=a.base_from2023_20240523;
 table s_prep_inj_sw;where option=24;run;
 
-data a.base_from2023_20240213;set a.base_from2023_20240213;
+data a.base_from2023_20240523;set a.base_from2023_20240523;
 if option=1 then do;*minimal;
 	if s_prep_oral_plw=. then s_prep_oral_plw=0;
 	if s_prep_oral_sdc=. then s_prep_oral_sdc=0;
@@ -70,10 +70,10 @@ if option=1 then do;*minimal;
 end;
 run;
 
-proc freq data=a.base_from2023_20240213; table run option;where cald=2023.75;run;
-proc freq data=a.base_from2023_20240213; table run*option/norow nocol nopercent; where cald=2023.75;run;
-proc freq data=a.base_from2023_20240213; table run cald option;run;
-proc freq data=a.base_from2023_20240213; table option*cald/norow nocol nopercent;run;
+proc freq data=a.base_from2023_20240523; table run option;where cald=2023.75;run;
+proc freq data=a.base_from2023_20240523; table run*option/norow nocol nopercent; where cald=2023.75;run;
+proc freq data=a.base_from2023_20240523; table run cald option;run;
+proc freq data=a.base_from2023_20240523; table option*cald/norow nocol nopercent;run;
 *run refers to the dataset they are starting from
  We have the following simulations starting from 2023 up to 2072.75:
 	300 simulations  (30 for each of the 10 dataset) for option 0 (note that SBCC is not final)
@@ -89,13 +89,13 @@ proc freq data=a.base_from2023_20240213; table option*cald/norow nocol nopercent
 
 ods html close;
 ods listing;
-
-data g; set  a.base_from2023_20240213;
+/*
+data g; set  a.base_from2023_20240523;
 *keeping the runs that I have for all the options;
 where run in (
 286121237 329468185 539212541 560074592 561229284
-791615574 796060145 811056701 874842792 946265352);run;
-proc freq data=g; table run*option/norow nocol nopercent; where cald=2023.75;run;
+791615574 796060145 811056701 874842792 946265352);run;*/
+proc freq data=a.base_from2023_20240523; table run*option/norow nocol nopercent; where cald=2023.75;run;
 *So now:
 	300 simulations  (30 for each of the 10 datasets) for option 0,1,11,12
 	150 simulations  (15 for each of the 10 datasets) for option 10
@@ -108,16 +108,16 @@ by run cald option;run;
 
 *Locations of file up to end 2022;
 libname c "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v20_2024Feb13_end2022_out";
-data a.base_to2022_20240213;   set c.out:;
-proc freq data=a.base_to2022_20240213; table run cald option;run;
+data a.base_to2022_20240523;   set c.out:;
+proc freq data=a.base_to2022_20240523; table run cald option;run;
 
-data a.base_to2022_20240213;set a.base_to2022_20240213;
+data a.base_to2022_20240523;set a.base_to2022_20240523;
 if cald=. then delete;
 run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
-set a.base_to2022_20240213 ;*This is the file up to end 2022;
+set a.base_to2022_20240523 ;*This is the file up to end 2022;
 *Zimbabwe;
 *Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
 *accessed 9/2/2023;
@@ -1383,7 +1383,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_from2023_20240213; set y;
+data a.l_base_from2023_20240523; set y;
 if cald=. then delete;run;
 *558057;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
