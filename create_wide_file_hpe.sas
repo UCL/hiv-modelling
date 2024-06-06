@@ -1969,7 +1969,7 @@ run;
 
 
 
-
+proc univariate; var incidence1549_a50y_3 ; run; 
 
 
 

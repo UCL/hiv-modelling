@@ -41,7 +41,7 @@ deathr_dol_r_first_uvl2_ = deathr_dol_r_first_uvl2;
 p_len_1524_ = p_len_1524;
 p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 
-%let single_var =  incidence1549_                   ;
+%let single_var =  p_vl1000_                   ;
 
 
 if option=2 then option=1;
@@ -55,7 +55,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 81     ;
+%let nfit = 114    ;
 
 %let year_end = 2076.00 ;
 run;
@@ -308,7 +308,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
-
+/*
 
 ods html;
 proc sgplot data=d ; 
@@ -327,7 +327,6 @@ run;quit;
 ods html close;
 
   
-/*
 
 ods html;
 proc sgplot data=d ; 
@@ -391,7 +390,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d ; 
@@ -408,7 +407,7 @@ run;quit;
 
 ods html close;
 
-
+/*
 
 ods html;
 proc sgplot data=d ; 
