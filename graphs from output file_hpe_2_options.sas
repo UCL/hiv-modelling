@@ -2,7 +2,7 @@
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_c_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_d_out\";
 
 footnote;
 
@@ -11,7 +11,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_hpe_c;
+set a.l_hpe_d;
 
 
 * for this program, variable names cannot end on a number;
@@ -33,96 +33,6 @@ hiv_death_rate_uvl2_ = hiv_death_rate_uvl2 * 100;
 deathr_dol_r_first_uvl2_ = deathr_dol_r_first_uvl2;
 p_len_1524_ = p_len_1524;
 p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
-
-if run in (
-281925848 
-332318663 
-190788922 
-379671216 
-598717364 
-553176059 
-481519663 
-317988875 
-283913324 
-760026996 
-417467239 
-325988733 
-576189870 
-412879308 
-111758493 
-73693535 
-425496697 
-860991548 
-975501749 
-208755190 
-12445495 
-680960733 
-216293349 
-821009904 
-241045836 
-891107348 
-958469237 
-607343120 
-765265589 
-26273833 
-547505946 
-254041110 
-807507395 
-862641298 
-477928552 
-872241816 
-443169742 
-968707436 
-4120183 
-125055342 
-94688720 
-234630700 
-700050737 
-498033104 
-795925158 
-765820737 
-53198691 
-491931848 
-146138969 
-462437977 
-197182015 
-110368942 
-255898662 
-471875352 
-201504918 
-184418032 
-503224829 
-423849785 
-894275380 
-549250944 
-168435394 
-892788051 
-981295762 
-59661901 
-783462544 
-516425927 
-175475227 
-944326570 
-324571223 
-298195661 
-631501644 
-211627390 
-162111199 
-922404007 
-837582733 
-38252880 
-828827955 
-415272061 
-174699833 
-695553532 
-200387849 
-94098696 
-364140285 
-733774501 
-246112625 
-96362779 
-)
-;
 
 %let single_var =  incidence1549_                        ;
 
@@ -184,7 +94,7 @@ run;
 %option_0;
 run;
 
-/*
+
 
 data option_1;
 set b;
@@ -231,7 +141,7 @@ run;
 run;
 
 
-
+/*
 
 data option_2;
 set b;
@@ -391,6 +301,26 @@ ods html ;
 
 
 
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "incidence1549";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0   to  2     by 0.25     ) valueattrs=(size=10);
+
+series  x=cald y=p50_incidence1549__0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_incidence1549__1 / lineattrs = (color=pink thickness = 4);
+band    x=cald lower=p5_incidence1549__1 upper=p95_incidence1549__1 / transparency=0.9 fillattrs = (color=pink) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
 /*
 
 
@@ -501,25 +431,9 @@ run;quit;
 
 ods html close;
 
-*/
 
 
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "incidence1549";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0   to  2     by 0.25     ) valueattrs=(size=10);
 
-label p50_incidence1549__0 = "continuation of current programs";
-
-series  x=cald y=p50_incidence1549__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-run;quit;
-
-ods html close;
-
-/*
 
 ods html;
 proc sgplot data=d ; 

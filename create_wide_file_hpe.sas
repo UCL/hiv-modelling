@@ -3,25 +3,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_c_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_d_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_c_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_d_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_hpe_c;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_hpe_d;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_hpe_c; 
+proc sort data=b.k_hpe_d; 
 by run cald option;
 run;
 
@@ -31,7 +31,7 @@ run;
 data sf;
 
 
-set b.k_hpe_c ;
+set b.k_hpe_d ;
 
 
 if cald=2024   ;
@@ -51,7 +51,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_hpe_c sf;
+merge b.k_hpe_d sf;
 by run ;
 
 
@@ -1367,11 +1367,11 @@ proc freq; tables cald option; where cald=2026.50;
 run;
 
 
-data    b.l_hpe_c; set y;  
+data    b.l_hpe_d; set y;  
 
 run;
 
-data y ; set b.l_hpe_c; 
+data y ; set b.l_hpe_d; 
 
   options nomprint;
   option nospool;
@@ -1823,7 +1823,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_hpe_c     ; 
+  data  b.w_hpe_d     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1831,7 +1831,7 @@ proc sort; by run;run;
 
 * libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\hpe_a_out\";
 
-data f; set b.w_hpe_c;
+data f; set b.w_hpe_d;
 
 
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
@@ -1928,9 +1928,29 @@ run;
 
 
 
-proc glm; model incidence1549_a50y = prevalence_vg1000_a50y ;
+ods html;
+
+proc glm data=f; model incidence1549_a50y_1 =  prevalence_vg1000_a50y_1 /* p_mcirc_a50y_1  prop_elig_on_prep_a50y_1 */;
+
+where prevalence_vg1000_a50y_1 < 0.05;
 
 run;
+
+ods html close;
+
+
+proc sort; by prevalence_vg1000_24;
+proc print; var prevalence_vg1000_24 run; run;  
+
+ods html;
+proc print noobs; var run;
+where prevalence_vg1000_24 < 0.01;
+run; 
+ods html close;
+
+
+
+
 
 
 
