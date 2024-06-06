@@ -2,7 +2,7 @@
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_d_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_e_out\";
 
 footnote;
 
@@ -11,7 +11,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_hpe_d;
+set a.l_hpe_e;
 
 /*
 proc sort ; by option;
@@ -42,9 +42,6 @@ p_len_1524_ = p_len_1524;
 p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 
 %let single_var =  incidence1549_                       ;
-
-
-if option=1 and cald ge 2026 and p_vl1000 < 0.99 then delete;
 
 
 
@@ -152,7 +149,7 @@ run;
 run;
 
 
-/*
+
 
 data option_2;
 set b;
@@ -199,7 +196,7 @@ run;
 run;
 
 
-
+/*
 
 
 data option_3;
@@ -299,7 +296,7 @@ run;
 
 
 data d; * this is number of variables in %let var = above ;
-merge g1 h1 ;
+merge g1 h1 i1 ;
 by cald;
 
 
@@ -311,7 +308,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
-
+/*
 
 
 ods html;
@@ -331,8 +328,6 @@ run;quit;
 ods html close;
 
   
-
-/*
 
 
 ods html;
@@ -398,6 +393,8 @@ run;quit;
 ods html close;
 
 
+*/
+
 
 ods html;
 proc sgplot data=d ; 
@@ -414,6 +411,8 @@ run;quit;
 
 ods html close;
 
+
+/*
 
 
 ods html;
