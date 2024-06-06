@@ -1394,11 +1394,13 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 
 proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2026.0 <= cald < 2036.00;   
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2026.0 <= cald < 2076.00;   
+proc means noprint data=e; var &v; output out=y_a50y mean= &v._a50y; by run option ; where 2071.0 <= cald < 2076.00;   
 																				   
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
+proc sort data=y_a50y    ; by run; proc transpose data=y_a50y  out=t_a50y  prefix=&v._a50y_  ; var &v._a50y    ; by run; 																																																						
 
-data &v ; merge y_24 t_10y t_50y ; 
+data &v ; merge y_24 t_10y t_50y t_a50y ; 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1923,6 +1925,15 @@ p_onart_vl1000_m_24 p_onart_vl1000_w_24 p_vl1000_w_24 p_vl1000_m_24 prevalence_v
 p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24 
 ;
 run;
+
+
+
+proc glm; model incidence1549_a50y = prevalence_vg1000_a50y ;
+
+run;
+
+
+
 
 
 
