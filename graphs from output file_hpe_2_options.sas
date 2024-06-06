@@ -13,6 +13,13 @@ proc printto ;
 data b;
 set a.l_hpe_d;
 
+/*
+proc sort ; by option;
+proc univariate; var p_vl1000;
+by option;
+where 2027 <= cald < 2030;
+run; 
+*/
 
 * for this program, variable names cannot end on a number;
 n_k65m = p_k65m * n_hiv;
@@ -34,7 +41,11 @@ deathr_dol_r_first_uvl2_ = deathr_dol_r_first_uvl2;
 p_len_1524_ = p_len_1524;
 p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 
-%let single_var =  incidence1549_                        ;
+%let single_var =  incidence1549_                       ;
+
+
+if option=1 and cald ge 2026 and p_vl1000 < 0.99 then delete;
+
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -45,7 +56,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 86     ;
+%let nfit = 22     ;
 
 %let year_end = 2076.00 ;
 run;
@@ -288,7 +299,7 @@ run;
 
 
 data d; * this is number of variables in %let var = above ;
-merge g1  ;
+merge g1 h1 ;
 by cald;
 
 
@@ -319,7 +330,7 @@ run;quit;
 
 ods html close;
 
-
+  
 
 /*
 
@@ -396,6 +407,8 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to  1     b
 
 series  x=cald y=p50_p_vl1000__0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_p_vl1000__0 upper=p95_p_vl1000__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_p_vl1000__1 / lineattrs = (color=pink thickness = 4);
+band    x=cald lower=p5_p_vl1000__1 upper=p95_p_vl1000__1 / transparency=0.9 fillattrs = (color=pink) legendlabel= "90% range";
 
 run;quit;
 

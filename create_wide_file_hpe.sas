@@ -3,25 +3,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_c_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_c_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_hpe_d;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_hpe_c;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_hpe_d; 
+proc sort data=b.k_hpe_c; 
 by run cald option;
 run;
 
@@ -31,7 +31,7 @@ run;
 data sf;
 
 
-set b.k_hpe_d ;
+set b.k_hpe_c ;
 
 
 if cald=2024   ;
@@ -51,7 +51,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_hpe_d sf;
+merge b.k_hpe_c sf;
 by run ;
 
 
@@ -1367,11 +1367,11 @@ proc freq; tables cald option; where cald=2026.50;
 run;
 
 
-data    b.l_hpe_d; set y;  
+data    b.l_hpe_c; set y;  
 
 run;
 
-data y ; set b.l_hpe_d; 
+data y ; set b.l_hpe_c; 
 
   options nomprint;
   option nospool;
@@ -1393,14 +1393,16 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 
 
 proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2026.0 <= cald < 2036.00;   
+proc means noprint data=e; var &v; output out=y_2028 mean= &v._2028; by run option ; where 2028.0 <= cald < 2029.00;   
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2026.0 <= cald < 2076.00;   
 proc means noprint data=e; var &v; output out=y_a50y mean= &v._a50y; by run option ; where 2071.0 <= cald < 2076.00;   
 																				   
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
+proc sort data=y_2028    ; by run; proc transpose data=y_2028  out=t_2028  prefix=&v._2028_  ; var &v._2028    ; by run; 																																																						
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
 proc sort data=y_a50y    ; by run; proc transpose data=y_a50y  out=t_a50y  prefix=&v._a50y_  ; var &v._a50y    ; by run; 																																																						
 
-data &v ; merge y_24 t_10y t_50y t_a50y ; 
+data &v ; merge y_24 t_10y t_50y t_a50y t_2028; 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1823,16 +1825,19 @@ proc sort; by run;run;
 
 
 
-  data  b.w_hpe_d     ; 
+  data  b.w_hpe_c     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
 
 
+
+
+
+
 * libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\hpe_a_out\";
 
-data f; set b.w_hpe_d;
-
+data f; set b.w_hpe_c;
 
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
 
@@ -1912,6 +1917,9 @@ if dcost_50y_1 = min_dcost_50y then lowest_dcost=1;
 if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
 
 
+d_incidence1549_24_a50y = incidence1549_24 - incidence1549_a50y_1 ;
+
+
 
 
 * table 1;
@@ -1950,7 +1958,31 @@ ods html close;
 
 
 
+proc univariate; var d_incidence1549_24_a50y ; run; 
 
+
+proc glm; 
+class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w sw_trans_matrix;
+model d_incidence1549_24_a50y = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w sw_trans_matrix / solution ; 
+
+run;
+
+
+
+
+
+
+
+
+
+
+/*
+
+proc print noobs; var run;
+where p_vl1000_2028_2 > 0.99;
+run;
+
+*/
 
 
 
