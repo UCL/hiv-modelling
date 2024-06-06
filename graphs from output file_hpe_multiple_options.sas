@@ -17,7 +17,7 @@ set a.l_hpe_e;
 proc sort ; by option;
 proc univariate; var p_vl1000;
 by option;
-where 2027 <= cald < 2030;
+where 2030 <= cald < 2040;
 run; 
 */
 
@@ -41,8 +41,10 @@ deathr_dol_r_first_uvl2_ = deathr_dol_r_first_uvl2;
 p_len_1524_ = p_len_1524;
 p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 
-%let single_var =  incidence1549_                       ;
+%let single_var =  incidence1549_                   ;
 
+
+if option=2 then option=1;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -53,7 +55,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 22     ;
+%let nfit = 81     ;
 
 %let year_end = 2076.00 ;
 run;
@@ -149,7 +151,7 @@ run;
 run;
 
 
-
+/*
 
 data option_2;
 set b;
@@ -195,8 +197,6 @@ run;
 %option_2;
 run;
 
-
-/*
 
 
 data option_3;
@@ -296,7 +296,7 @@ run;
 
 
 data d; * this is number of variables in %let var = above ;
-merge g1 h1 i1 ;
+merge g1 h1    ;
 by cald;
 
 
@@ -308,7 +308,6 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
-/*
 
 
 ods html;
@@ -328,7 +327,7 @@ run;quit;
 ods html close;
 
   
-
+/*
 
 ods html;
 proc sgplot data=d ; 
@@ -393,8 +392,6 @@ run;quit;
 ods html close;
 
 
-*/
-
 
 ods html;
 proc sgplot data=d ; 
@@ -411,8 +408,6 @@ run;quit;
 
 ods html close;
 
-
-/*
 
 
 ods html;
