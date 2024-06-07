@@ -12,6 +12,8 @@
 
 * modify tld drug costs;
 
+* update tld cost to $50;
+
 
 
 * fyi for future: note gender_spec_prep_cab_eff and gender_spec_prep_len_eff ;
