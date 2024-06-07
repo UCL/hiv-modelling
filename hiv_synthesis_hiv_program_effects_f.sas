@@ -2090,37 +2090,68 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
+
+* here here ;
+
+
+* art retention options *************************************************************************;
+
+	if option = 1 then do;
+
+		eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.50) ; 
+		eff_rate_lost = eff_rate_lost / 2     ; 
+		eff_prob_lost_art = eff_prob_lost_art / 2     ; 
+		eff_rate_int_choice = eff_rate_int_choice / 2     ; 
+ 		eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.50) ; 
+ 		eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.50) ; 
+
+	end;
+
+	if option = 2 then do;
+
+		eff_rate_restart = eff_rate_restart * 0.50  ; 
+		eff_rate_lost = eff_rate_lost * 2     ; 
+		eff_prob_lost_art = eff_prob_lost_art * 2     ; 
+		eff_rate_int_choice = eff_rate_int_choice * 2     ; 
+ 		eff_prob_return_adc = eff_prob_return_adc  * 0.50  ; 
+ 		eff_rate_return = eff_rate_return * 0.50  ; 
+
+	end;
+
+* ***********************************************************************************************;
+
+
+* vmmc          options *************************************************************************;
+
+	if option = 1 then option_change_vmmc = 1;
+
+	if option = 2 then option_change_vmmc = 2;
+
+* ***********************************************************************************************;
+
+
+
+* long acting art options ************************************************************************;
+
+
 if option=1 then do;
-		tested=1; 
-		eff_rate_int_choice = 0; 
-		eff_prob_loss_at_diag = 0; 
-		eff_prob_lossdiag_non_tb_who3e = 0; 
-		eff_prob_lossdiag_adctb = 0; 
-		eff_prob_lost_art = 0; 
-		eff_rate_lost = 0; 
-		eff_rate_restart = 1;
-		eff_rate_return = 1;
-		eff_pr_art_init =  1;  
-		eff_prob_return_adc = 1;
-		adhav=1; adherence_perfect=1; no_resistance=1; 
+	lencab_available=1; * this affects rate of return to care;
+	if p_len ne 1 then do; * dont include p_cab because could have been as prep - p_len implies p_cab automatically;  
+		s = rand('uniform');
+		if vm > 3 and caldate{t} - date_v_alert >= 0.25 and (caldate{t} - date_lencab_last_offered > 1 or date_lencab_last_offered =.) then do;
+			date_lencab_last_offered=caldate{t}; if s < lencab_uptake_vlg1000 then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
+		end;
+		if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
+	end;
 end;
 
-if option = 2 then do;
 
-		tested=1; 
-		eff_rate_int_choice = 0; 
-		eff_prob_loss_at_diag = 0; 
-		eff_prob_lossdiag_non_tb_who3e = 0; 
-		eff_prob_lossdiag_adctb = 0; 
-		eff_prob_lost_art = 0; 
-		eff_rate_lost = 0; 
-		eff_rate_restart = 1;
-		eff_rate_return = 1;
-		eff_pr_art_init =  1;  
-		eff_prob_return_adc = 1;
-		adhav=1; adherence_perfect=1; no_resistance=1; 
-		all_plhiv_vl1000=1;
-end;
+* ***********************************************************************************************;
+
+
+
+
+
 
 end;
 
@@ -2978,6 +3009,10 @@ if t ge 2 and age = 0.25 and gender=1 then do;
 			date_mcirc=caldate{t};
 		end;
 end;
+
+
+if option_change_vmmc = 1 then proc_circ = 0;
+if option_change_vmmc = 2 then proc_circ = prob_circ * 5;
 
 
 
