@@ -354,7 +354,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_sw_1549;					n_sw_1549 = s_sw_1549 * sf;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw = s_sw_newp / s_w_newp ;
 * prev_sti_sw;					prev_sti_sw = s_sti_sw / s_sw_1564; *VCFeb2023;
-* n_sw_inprog_ly;				*n_sw_inprog_ly = s_sw_inprog_ly * sf;
+* n_sw_inprog_ly;				n_sw_inprog_ly = s_sw_inprog_ly * sf;
 * n_sw_inprog_ever;				*n_sw_inprog_ever = s_sw_inprog_ever *sf;
 
 * rate_susc_np_1549_m;			*rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
@@ -400,14 +400,14 @@ so the one above is the annual number of tests conducted in ANC;
 * n_diag_anclabpd;				n_diag_anclabpd = s_diag_thisper_anclabpd * sf * 4;*VCMay2023;
 * n_diag_progsw; 				n_diag_progsw = s_diag_thisper_progsw * sf * 4;*VCMay2023;
 * n_diag_sw; 					n_diag_sw = s_diag_thisper_sw * sf * 4;*VCMay2023;
-* n_diag_thisper_sympt;			n_diag_sympt = (s_diag_this_period_m_sympt + s_diag_this_period_f_sympt) * sf * 4;*VCFeb2024;
+* n_diag_sympt;			n_diag_sympt = (s_diag_this_period_m_sympt + s_diag_this_period_f_sympt) * sf * 4;*VCFeb2024;
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 * test_proppos_m;			 	if s_tested_m gt 0 then test_proppos_m = s_diag_this_period_m / s_tested_m;*VCMay2023;
 * test_proppos_w;				if s_tested_f gt 0 then test_proppos_w = s_diag_this_period_f / s_tested_f;*VCMay2023;
 * test_proppos_sw;				if s_tested_sw gt 0 then test_proppos_sw = s_diag_thisper_sw / s_tested_sw;*VCMay2023;
 * test_proppos_1524w; 			if s_tested_1524w gt 0 then test_proppos_1524w = s_diag_thisper_1524f /s_tested_1524w;*VCMay2023;
-* test_proppos_sympt; 			if s_tested_m_symp gt 0 and s_tested_f_symp gt 0 then test_proppos_sympt = (s_diag_this_period_m_sympt + s_diag_this_period_f_sympt) /(s_tested_m_symp + s_tested_f_symp);*VCFeb2024;
+* test_proppos_sympt; 			if s_tested_m_sympt gt 0 and s_tested_f_sympt gt 0 then test_proppos_sympt = (s_diag_this_period_m_sympt + s_diag_this_period_f_sympt) /(s_tested_m_sympt + s_tested_f_sympt);*VCFeb2024;
 
 * of people alive and within 1 year of infection, proportion diagnosed ;
 * prop_diag_infection_1yr;		prop_diag_infection_1yr = s_year_1_infection_diag / s_year_1_infection ;
@@ -1169,7 +1169,7 @@ n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpart
 n_not_on_art_cd4050 n_not_on_art_cd450200 n_not_on_art_cd4200350 n_not_on_art_cd4350500 n_not_on_art_cd4ge500 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
 s_alive n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_everpregn_w1524 n_everpregn_hiv_w1524 p_newp_ge1 p_1524_newp_ge1 n_w1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
-p_newp_sw  n_tested_m  n_tested_w p_tested_past_year_1549m  p_tested_past_year_1549w n_pmtct
+p_newp_sw n_tested_m  n_tested_w p_tested_past_year_1549m  p_tested_past_year_1549w n_pmtct
 p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_vm p_vm_ly_onart n_pcp_p p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m  p_mcirc_1049m 
 p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m p_vmmc_1049m	
@@ -1207,7 +1207,7 @@ dcost_clin_care dcost_non_aids_pre_death  dcost_child_hiv  dzdv_cost   dten_cost
 defa_cost   ddol_cost
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r r_efa_hiv 
 p_dol_2vg1000_dolr1_adh0 p_dol_2vg1000_dolr1_adh1 p_dol_2vg1000_dolr0_adh0 p_dol_2vg1000_dolr0_adh1 p_onart_cd4_l500  p_startedline2  prop_art_or_prep
-n_sw_1564 n_sw_1549 prev_sti_sw /*n_sw_inprog_ly  n_sw_inprog_ever*/
+n_sw_1564 n_sw_1549 prev_sti_sw n_sw_inprog_ly  /*n_sw_inprog_ever*/
 p_vl1000_art_12m  p_vl1000_art_12m_onart
 p_o_zdv_tox p_o_3tc_tox p_o_ten_tox p_o_taz_tox p_o_lpr_tox p_o_efa_tox p_o_nev_tox p_o_dol_tox p_o_zdv_adh_hi p_o_3tc_adh_hi p_o_ten_adh_hi
 p_o_taz_adh_hi p_o_lpr_adh_hi p_o_efa_adh_hi p_o_nev_adh_hi p_o_dol_adh_hi

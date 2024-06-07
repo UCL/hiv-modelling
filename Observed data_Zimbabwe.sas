@@ -1627,6 +1627,11 @@ if cald=2025.5 then do;target_s_tested_1549_py_NSP =1814657;
 					   target_s_tested_1549m_py_NSP= 762156;
 					   target_pos_rate_15ov_NSP=0.05;end;
 
+*Source: PEPFAR testing 2024 Q1_SymptomaticTesting.xls sent by John in May-June2024; 
+if cald=2024.25 then do;
+	o_pos_rate_pepfar=0.046;
+	o_pos_rate_sympt_pepfar=0.064;*5.7% or 7.1 dependning on definition;
+end;
 
 *HIV tests performed in adults (15+) in the public health sector, including first antenatal tests but not second antenatal tests;
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
