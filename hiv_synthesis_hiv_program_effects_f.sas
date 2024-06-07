@@ -2090,11 +2090,7 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-
-* here here ;
-
-
-* art retention options *************************************************************************;
+* art retention options ********************************************************************************************************************************************;
 
 	if option = 1 then do;
 
@@ -2118,40 +2114,54 @@ who may be dead and hence have caldate{t} missing;
 
 	end;
 
-* ***********************************************************************************************;
+* ******************************************************************************************************************************************************************;
 
-
-* vmmc          options *************************************************************************;
+* vmmc          options ********************************************************************************************************************************************;
 
 	if option = 1 then option_change_vmmc = 1;
 
 	if option = 2 then option_change_vmmc = 2;
 
-* ***********************************************************************************************;
+* ******************************************************************************************************************************************************************;
 
+* long acting art options *******************************************************************************************************************************************;
 
-
-* long acting art options ************************************************************************;
-
-
-if option=1 then do;
-	lencab_available=1; * this affects rate of return to care;
-	if p_len ne 1 then do; * dont include p_cab because could have been as prep - p_len implies p_cab automatically;  
-		s = rand('uniform');
-		if vm > 3 and caldate{t} - date_v_alert >= 0.25 and (caldate{t} - date_lencab_last_offered > 1 or date_lencab_last_offered =.) then do;
-			date_lencab_last_offered=caldate{t}; if s < lencab_uptake_vlg1000 then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
+	if option=1 then do;
+		lencab_available=1; * this affects rate of return to care;
+		if p_len ne 1 then do; * dont include p_cab because could have been as prep - p_len implies p_cab automatically;  
+			s = rand('uniform');
+			if vm > 3 and caldate{t} - date_v_alert >= 0.25 and (caldate{t} - date_lencab_last_offered > 1 or date_lencab_last_offered =.) then do;
+				date_lencab_last_offered=caldate{t}; if s < lencab_uptake_vlg1000 then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
+			end;
+			if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
 		end;
-		if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
 	end;
-end;
 
+* ******************************************************************************************************************************************************************;
 
-* ***********************************************************************************************;
+* long acting prep options *******************************************************************************************************************************************;
 
+	if option = 1 then do; 
+		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral * 10; eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj * 10; 
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any / 10; 
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b / 10; eff_prob_prep_inj_b = eff_prob_prep_inj_b / 10;
+	end;
 
+	if option = 2 then do;
+		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral / 10; eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj / 10; 
+		eff_rate_test_startprep_any = eff_rate_test_startprep_any * 10; 
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 10; eff_prob_prep_inj_b = eff_prob_prep_inj_b * 10;
+	end;
 
+* ******************************************************************************************************************************************************************;
 
+* testing       options ********************************************************************************************************************************************;
 
+	if option = 1 then option_change_test_rate = 1;
+
+	if option = 2 then option_change_test_rate = 2;
+
+* ******************************************************************************************************************************************************************;
 
 end;
 
@@ -4584,6 +4594,11 @@ end;
 
 
 * HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65 (although note testing due to symptoms can occur at older ages);
+
+
+if option_change_test_rate = 1 then do; rate_1sttest = rate_1sttest * 3; rate_reptest = rate_reptest * 3;  end;
+if option_change_test_rate = 2 then do; rate_1sttest = rate_1sttest / 3; rate_reptest = rate_reptest / 3;  end;
+
 
 tested_as_sw=.;
 
