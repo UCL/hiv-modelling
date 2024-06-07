@@ -14,31 +14,33 @@ ods html close;
 ods listing;
 
 *The following ouputs were not available when preparing the graphs comparing with other models;
+/*
 proc freq data=a.base_from2023_20240523;
-table /*option cald run
+table option cald run
 s_init_prep_oral_plw  	s_init_prep_inj_plw s_init_prep_vr_plw
 s_prep_oral_plw			s_prep_inj_plw		s_prep_vr_plw
 s_prep_oral_ever_plw 	s_prep_inj_ever_plw s_prep_vr_ever_plw 
-s_init_prep_oral_sw  	s_init_prep_inj_sw s_init_prep_vr_sw*/
+s_init_prep_oral_sw  	s_init_prep_inj_sw s_init_prep_vr_sw
 s_prep_oral_sw			s_prep_inj_sw		s_prep_vr_sw
-/*s_init_prep_oral_sdc  	s_init_prep_inj_sdc s_init_prep_vr_sdc
-s_prep_oral_sdc			s_prep_inj_sdc		s_prep_vr_sdc*/
+s_init_prep_oral_sdc  	s_init_prep_inj_sdc s_init_prep_vr_sdc
+s_prep_oral_sdc			s_prep_inj_sdc		s_prep_vr_sdc
 s_init_prep_oral_1524w  	s_init_prep_inj_1524w s_init_prep_vr_1524w
 s_prep_oral_w_1524			s_prep_inj_w_1524		s_prep_vr_w_1524
-/*s_prep_oral_ever_plw	s_prep_vr_ever_plw	s_prep_inj_ever_plw*/
-/*
+s_prep_oral_ever_plw	s_prep_vr_ever_plw	s_prep_inj_ever_plw
+
 s_prep_oral_plw 		s_init_prep_oral_plw
 s_prep_oral_sdc 		s_init_prep_oral_sdc
 s_prep_vr_sdc 			s_init_prep_vr_sdc
 s_prep_vr_plw 			s_init_prep_vr_plw
 s_prep_inj_sw
 s_prep_inj_sdc 			s_init_prep_inj_sdc
-s_prep_inj_plw 			s_init_prep_inj_plw*/;
+s_prep_inj_plw 			s_init_prep_inj_plw;
 where option=1;*minimal;
-run;
+run;*/
 *All the s_prep for SW and w1524 are 0;
 *All the s_prep for PLW, SDC.... are missing
 s_init_prep have a value of 0 or a number, checking why this is the case;
+/*
 proc print;var run cald;
 proc freq; table cald;
 where option=1 and (
@@ -48,10 +50,11 @@ s_init_prep_inj_1524w   ne 0 or s_init_prep_inj_sw   ne 0 or s_init_prep_inj_plw
 run;
 *There were some  PrEP initiation in minimal but they were all in 2072.75,
 so I do think it is OK to overwrite them;
+*/
 
 *The following output was not available when preparing the graphs comparing with other models;
-proc freq data=a.base_from2023_20240523;
-table s_prep_inj_sw;where option=24;run;
+/*proc freq data=a.base_from2023_20240523;
+table s_prep_inj_sw;where option=24;run;*/
 
 data a.base_from2023_20240523;set a.base_from2023_20240523;
 if option=1 then do;*minimal;
@@ -76,38 +79,27 @@ proc freq data=a.base_from2023_20240523; table run cald option;run;
 proc freq data=a.base_from2023_20240523; table option*cald/norow nocol nopercent;run;
 *run refers to the dataset they are starting from
  We have the following simulations starting from 2023 up to 2072.75:
-	300 simulations  (30 for each of the 10 dataset) for option 0 (note that SBCC is not final)
-	300 simulations  (30 for each of the 10 dataset) for option 1
-	150 simulations  (15 for each of the 10 dataset) for option 10
-	300 simulations  (30 for each of the 10 dataset) for option 11
-	300 simulations  (30 for each of the 10 dataset) for option 12
-	190 simulations  (23 for each of the 5 dataset + 5 for other 15 datasets) for option 15
-	175  simulations (20 for each of the 5 dataset + 5 for other 15 datasets) for option 16-25
-	100  simulations (5 for each of the 20 datasets) for option 26;
+	50 simulations  (5 for each of the 10 dataset) for option 0 (note that SBCC is not final)
+	50 simulations  (5 for each of the 10 dataset) for option 1
+	50 simulations  (5 for each of the 10 dataset) for option 2
+	50 simulations  (5 for each of the 10 dataset) for option 4
+	50 simulations  (5 for each of the 10 dataset) for option 10
+	0  simulations  (0 for each of the 10 dataset) for option 11
+	50 simulations  (5 for each of the 10 dataset) for option 12
+	0  simulations  (0 for each of the 10 dataset) for option 15
+	0   simulations (0 for each of the 10 dataset) for option 16-25
+	0   simulations (0 for each of the 10 datasets) for option 26;
 
 
 
 ods html close;
 ods listing;
-/*
-data g; set  a.base_from2023_20240523;
-*keeping the runs that I have for all the options;
-where run in (
-286121237 329468185 539212541 560074592 561229284
-791615574 796060145 811056701 874842792 946265352);run;*/
-proc freq data=a.base_from2023_20240523; table run*option/norow nocol nopercent; where cald=2023.75;run;
-*So now:
-	300 simulations  (30 for each of the 10 datasets) for option 0,1,11,12
-	150 simulations  (15 for each of the 10 datasets) for option 10
-	140 simulations  (23 for each of the 5 dataset + 5 for other 5 datasets) for option 15
-	125  simulations (20 for each of the 5 dataset + 5 for other 5 datasets) for option 16-25
-	50  simulations  (5 for each of the 10 datasets) for option 26;
 
-proc sort data=g; 
+proc sort data=a.base_from2023_20240523; 
 by run cald option;run;
 
 *Locations of file up to end 2022;
-libname c "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v20_2024Feb13_end2022_out";
+libname c "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v21_2024May23_end2022_out_out_";
 data a.base_to2022_20240523;   set c.out:;
 proc freq data=a.base_to2022_20240523; table run cald option;run;
 
@@ -132,10 +124,10 @@ proc means data=sf;var sf;run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
 *We cannot use the following command as the multiplier is going to be different based on the dataset they start from;
-proc sort data=g; by run;run;
+proc sort data=a.base_from2023_20240523; by run;run;
 proc sort data=sf; by run;run;
 data y; 
-merge g sf;
+merge a.base_from2023_20240523 sf;
 by run ;
 
 * preparatory code ;
@@ -408,14 +400,14 @@ so the one above is the annual number of tests conducted in ANC;
 * n_diag_anclabpd;				n_diag_anclabpd = s_diag_thisper_anclabpd * sf * 4;*VCMay2023;
 * n_diag_progsw; 				n_diag_progsw = s_diag_thisper_progsw * sf * 4;*VCMay2023;
 * n_diag_sw; 					n_diag_sw = s_diag_thisper_sw * sf * 4;*VCMay2023;
-* n_diag_thisper_sympt;			*n_diag_thisper_sympt = s_diag_thisper_sympt * sf * 4;*VCFeb2024;
+* n_diag_thisper_sympt;			n_diag_sympt = (s_diag_this_period_m_sympt + s_diag_this_period_f_sympt) * sf * 4;*VCFeb2024;
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 * test_proppos_m;			 	if s_tested_m gt 0 then test_proppos_m = s_diag_this_period_m / s_tested_m;*VCMay2023;
 * test_proppos_w;				if s_tested_f gt 0 then test_proppos_w = s_diag_this_period_f / s_tested_f;*VCMay2023;
 * test_proppos_sw;				if s_tested_sw gt 0 then test_proppos_sw = s_diag_thisper_sw / s_tested_sw;*VCMay2023;
 * test_proppos_1524w; 			if s_tested_1524w gt 0 then test_proppos_1524w = s_diag_thisper_1524f /s_tested_1524w;*VCMay2023;
-* test_proppos_sympt; 			*if s_diag_thisper_sympt gt 0 then test_proppos_sympt = s_diag_thisper_sympt /s_tested;*VCFeb2024;
+* test_proppos_sympt; 			if s_tested_m_symp gt 0 and s_tested_f_symp gt 0 then test_proppos_sympt = (s_diag_this_period_m_sympt + s_diag_this_period_f_sympt) /(s_tested_m_symp + s_tested_f_symp);*VCFeb2024;
 
 * of people alive and within 1 year of infection, proportion diagnosed ;
 * prop_diag_infection_1yr;		prop_diag_infection_1yr = s_year_1_infection_diag / s_year_1_infection ;
@@ -1228,10 +1220,10 @@ death_rate_artexp  death_rate_hiv death_rate_hiv_w death_rate_hiv_m death_rate_h
 n_new_inf1549m n_new_inf1549w n_new_inf1549 n_new_inf1564m n_new_inf1564w n_infection  n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w
 p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
-n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_tested_swprog n_tested_anc n_tested_ancpd n_test_anclabpd
+n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_tested_swprog n_tested_anc n_tested_ancpd n_test_anclabpd n_tested_m_sympt n_tested_w_sympt
 n_tested_anc_prevdiag
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd n_tested1st_anc n_tested1st_labdel n_tested1st_pd
-p_anc n_diagnosed n_diag_m n_diag_w n_diag_anc n_diag_labdel  n_diag_pd  n_diag_anclabpd  n_diag_progsw  n_diag_sw 
+p_anc n_diagnosed n_diag_m n_diag_w n_diag_anc n_diag_labdel  n_diag_pd  n_diag_anclabpd  n_diag_progsw  n_diag_sw n_diag_sympt 
 p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_covid  n_death_covid n_death 
 n_death_m n_death_w n_death_hivrel n_death_hivrel_m n_death_hivrel_w /*p_death_hivrel_age_le64 */
@@ -1272,7 +1264,8 @@ n_prep_w_1524		n_prep_w_2534		n_prep_w_3544
 
 incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw incidence_sd1564_ incidence_sd1564w test_prop_positive 
-test_proppos_m  test_proppos_w  test_proppos_sw test_proppos_1524w p_newp_prep  
+test_proppos_m  test_proppos_w  test_proppos_sw test_proppos_1524w test_proppos_sympt
+p_newp_prep  
 p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v  
 
 p_hypert_1549  p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  p_diagnosed_hypert_1549 
@@ -1385,7 +1378,7 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_from2023_20240523; set y;
 if cald=. then delete;run;
-*558057;
+*60010;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w

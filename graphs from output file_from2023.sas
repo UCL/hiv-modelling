@@ -4,12 +4,12 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
-proc freq data=a.l_base_from2023_20240213;table cald sf;run;
+proc freq data=a.l_base_from2023_20240523;table cald sf;run;
 
 %let pth_export_mihpsa= C:\Users\Valentina\Dropbox (UCL)\MIHPSA Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis;run;
 
 data b;
-set a.l_base_from2023_20240213;
+set a.l_base_from2023_20240523;
 
 p_onart_vl1000_all = .;
 
@@ -72,29 +72,31 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 
 *In trying to figure out why the PrEP simualtions are not averting infections,
 I'm going to select only 5 simulations for each of the 10 datasets;
+/*
 proc sort data=b;by option run cald;run;
 data b;set b;count_provasim+1;by option run cald ;if first.run or first.cald then count_provasim=1;run;
 ***counts the NUMBER OF RUNS for each dataset to 2023;
 proc print data=b; var option run cald count_provasim;run;
 data b;set b;where count_provasim in (1 2 3 4 5);run;
-
+*/
 proc sort data=b; by option cald run ;run;
-proc freq; table cald;run;
-proc freq data=b;table option cald run;run;
+proc freq data=b; table cald;run;
 *run_forward_id has not been saved;
 
 proc print data=b; var option cald count_csim;run;
 *At the moment is the median across all runs by option;
-*Note that different options have a different number of runs;
+*Note that we need the same number of simulations/runs from each dataset;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
  ***number of runs - this is manually inputted in nfit in the macros below;
 *We are now keeping only 5 simualtions starting for each dataset;
-proc means max data=b;var count_csim cald;where option=0;run;*300;
-proc means max data=b;var count_csim cald;where option=1;run;*300;
-proc means max data=b;var count_csim cald;where option=10;run;*150;
-proc means max data=b;var count_csim cald;where option=11;run;*300;
-proc means max data=b;var count_csim cald;where option=12;run;*300;
-
+proc means max data=b;var count_csim cald;where option=0;run;*50;
+proc means max data=b;var count_csim cald;where option=1;run;*50;
+proc means max data=b;var count_csim cald;where option=2;run;*50;
+proc means max data=b;var count_csim cald;where option=4;run;*50;
+proc means max data=b;var count_csim cald;where option=10;run;*50;
+/*proc means max data=b;var count_csim cald;where option=11;run;*0;*/
+proc means max data=b;var count_csim cald;where option=12;run;*50;
+/*
 proc means max data=b;var count_csim cald;where option=15;run;*140;
 proc means max data=b;var count_csim cald;where option=16;run;*125;
 proc means max data=b;var count_csim cald;where option=17;run;*125;
@@ -107,7 +109,7 @@ proc means max data=b;var count_csim cald;where option=23;run;*125;
 proc means max data=b;var count_csim cald;where option=24;run;*125;
 proc means max data=b;var count_csim cald;where option=25;run;*125;
 proc means max data=b;var count_csim cald;where option=26;run;*50;
-
+*/
 
 %let year_start = 2023;
 %let year_end = 2072.75;
@@ -150,8 +152,8 @@ n_tested1st_anc n_tested1st_labdel n_tested1st_pd n_tested_anc_prevdiag
 n_sbcc_visit_1524m 	n_sbcc_visit_1524w n_sbcc_visit_1524_	n_sbcc_visit_2564_ n_sbcc_visit_1564_
 n_tested_sbcc_1524m n_tested_sbcc_1524w n_tested_sbcc_2564_ n_tested_sbcc
 p_tested_sbcc_1524m p_tested_sbcc_1524w p_tested_sbcc_2564_ p_pos_tested_sbcc
-p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd
-test_prop_positive
+p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd n_diag_sympt
+test_prop_positive test_proppos_sympt
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
 mtct_prop 	p_diag  p_diag_m   p_diag_w			p_diag_m1524_ 		p_diag_w1524_	p_diag_sw	
 n_cm n_vm p_vm_ly_onart n_pcp_p
@@ -228,23 +230,26 @@ run;
 
 *We are selecting only 50 simulations for each option: 5 for each of the 10 datasets;
 %let nfit=50;
-*%let nfit=300;%option_(0);
-*%let nfit=300;%option_(1);
-*%let nfit=150;%option_(10);
-*%let nfit=300;%option_(11);
-*%let nfit=300;%option_(12);
-*%let nfit=140;%option_(15);
-*%let nfit=125;%option_(16);
-*%let nfit=125;%option_(17);
-*%let nfit=125;%option_(18);
-*%let nfit=125;%option_(19);
-*%let nfit=125;%option_(20);
-*%let nfit=125;%option_(21);
-*%let nfit=125;%option_(22);
-*%let nfit=125;%option_(23);
-*%let nfit=125;%option_(24);
-*%let nfit=125;%option_(25);
-*%let nfit=50;%option_(26);
+%option_(0);
+%option_(1);
+%option_(2);
+%option_(4);
+%option_(10);
+*%option_(11);
+%option_(12);
+
+/*%option_(15);*/
+/*%option_(16);*/
+/*%option_(17);*/
+/*%option_(18);*/
+/*%option_(19);*/
+/*%option_(20);*/
+/*%option_(21);*/
+/*%option_(22);*/
+/*%option_(23);*/
+/*%option_(24);*/
+/*%option_(25);*/
+/*%option_(26);*/
 run;
 
 
@@ -259,7 +264,7 @@ g0_126 g0_127 g0_128 g0_129 g0_130 g0_131 g0_132 g0_133 g0_134 g0_135 g0_136 g0_
 g0_151 g0_152 g0_153 g0_154 g0_155 g0_156 g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 
 g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182 g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 
 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208 g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 
-g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 /*g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 
+g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 /*g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 
 g0_251 g0_252 */
 
 g1_1   g1_2   g1_3   g1_4   g1_5   g1_6   g1_7   g1_8   g1_9   g1_10  g1_11  g1_12  g1_13  g1_14  g1_15  g1_16  g1_17  g1_18  g1_19  g1_20  g1_21  g1_22  g1_23  g1_24  g1_25  g1_26 
@@ -272,11 +277,41 @@ g1_131 g1_132 g1_133 g1_134 g1_135 g1_136 g1_137 g1_138 g1_139 g1_140 g1_141 g1_
 g1_157 g1_158 g1_159 g1_160 g1_161 g1_162 g1_163 g1_164 g1_165 g1_166 g1_167 g1_168 g1_169 g1_170 g1_171 g1_172 g1_173 g1_174 g1_175 g1_176 g1_177 g1_178 g1_179 g1_180 g1_181 g1_182
 g1_183 g1_184 g1_185 g1_186 g1_187 g1_188 g1_189 g1_190 g1_191 g1_192 g1_193 g1_194 g1_195 g1_196 g1_197 g1_198 g1_199 g1_200 g1_201 g1_202 g1_203 g1_204 g1_205 g1_206 g1_207 g1_208
 g1_209 g1_210 g1_211 g1_212 g1_213 g1_214 g1_215 g1_216 g1_217 g1_218 g1_219 g1_220 g1_221 g1_222 g1_223 g1_224 g1_225 g1_226 g1_227 g1_228 g1_229 g1_230 g1_231 g1_232 g1_233 g1_234
-g1_235 g1_236 g1_237 g1_238 g1_239 g1_240 /*g1_241 g1_242 g1_243 g1_244 g1_245 g1_246 g1_247 g1_248 g1_249 g1_250 g1_251 g1_252 
+g1_235 g1_236 g1_237 g1_238 g1_239 g1_240 g1_241 g1_242 /*g1_243 g1_244 g1_245 g1_246 g1_247 g1_248 g1_249 g1_250 g1_251 g1_252 
 */;
 by cald;run;
 
+
 data d_b; * this is number of variables in %let var = above ;
+merge 
+g2_1   g2_2   g2_3   g2_4   g2_5   g2_6   g2_7   g2_8   g2_9   g2_10  g2_11  g2_12  g2_13  g2_14  g2_15  g2_16  g2_17  g2_18  g2_19  g2_20  g2_21  g2_22  g2_23  g2_24  g2_25  
+g2_26  g2_27  g2_28  g2_29  g2_30  g2_31  g2_32  g2_33  g2_34  g2_35  g2_36  g2_37  g2_38  g2_39  g2_40  g2_41  g2_42  g2_43  g2_44  g2_45  g2_46  g2_47  g2_48  g2_49  g2_50 
+g2_51  g2_52  g2_53  g2_54  g2_55  g2_56  g2_57  g2_58  g2_59  g2_60  g2_61  g2_62  g2_63  g2_64  g2_65  g2_66  g2_67  g2_68  g2_69  g2_70  g2_71  g2_72  g2_73  g2_74  g2_75  
+g2_76  g2_77  g2_78  g2_79  g2_80  g2_81  g2_82  g2_83  g2_84  g2_85  g2_86  g2_87  g2_88  g2_89  g2_90  g2_91  g2_92  g2_93  g2_94  g2_95  g2_96  g2_97  g2_98  g2_99  g2_100 
+g2_101 g2_102 g2_103 g2_104 g2_105 g2_106 g2_107 g2_108 g2_109 g2_110 g2_111 g2_112 g2_113 g2_114 g2_115 g2_116 g2_117 g2_118 g2_119 g2_120 g2_121 g2_122 g2_123 g2_124 g2_125 
+g2_126 g2_127 g2_128 g2_129 g2_130 g2_131 g2_132 g2_133 g2_134 g2_135 g2_136 g2_137 g2_138 g2_139 g2_140 g2_141 g2_142 g2_143 g2_144 g2_145 g2_146 g2_147 g2_148 g2_149 g2_150 
+g2_151 g2_152 g2_153 g2_154 g2_155 g2_156 g2_157 g2_158 g2_159 g2_160 g2_161 g2_162 g2_163 g2_164 g2_165 g2_166 g2_167 g2_168 g2_169 g2_170 g2_171 g2_172 g2_173 g2_174 g2_175 
+g2_176 g2_177 g2_178 g2_179 g2_180 g2_181 g2_182 g2_183 g2_184 g2_185 g2_186 g2_187 g2_188 g2_189 g2_190 g2_191 g2_192 g2_193 g2_194 g2_195 g2_196 g2_197 g2_198 g2_199 g2_200 
+g2_201 g2_202 g2_203 g2_204 g2_205 g2_206 g2_207 g2_208 g2_209 g2_210 g2_211 g2_212 g2_213 g2_214 g2_215 g2_216 g2_217 g2_218 g2_219 g2_220 g2_221 g2_222 g2_223 g2_224 g2_225 
+g2_226 g2_227 g2_228 g2_229 g2_230 g2_231 g2_232 g2_233 g2_234 g2_235 g2_236 g2_237 g2_238 g2_239 g2_240 g2_241 g2_242 /*g2_243 g2_244 g2_245 g2_246 g2_247 g2_248 g2_249 g2_250 
+g2_251 g2_252 */
+
+g4_1   g4_2   g4_3   g4_4   g4_5   g4_6   g4_7   g4_8   g4_9   g4_10  g4_11  g4_12  g4_13  g4_14  g4_15  g4_16  g4_17  g4_18  g4_19  g4_20  g4_21  g4_22  g4_23  g4_24  g4_25  g4_26 
+g4_27  g4_28  g4_29  g4_30  g4_31  g4_32  g4_33  g4_34  g4_35  g4_36  g4_37  g4_38  g4_39  g4_40  g4_41  g4_42  g4_43  g4_44  g4_45  g4_46  g4_47  g4_48   g4_49  g4_50 
+g4_51  g4_52 
+g4_53  g4_54  g4_55  g4_56  g4_57  g4_58  g4_59  g4_60 g4_61  g4_62  g4_63  g4_64  g4_65  g4_66  g4_67  g4_68  g4_69  g4_70  g4_71 g4_72 g4_73 g4_74 g4_75  g4_76  g4_77 g4_78 
+g4_79  g4_80  g4_81  g4_82  g4_83  g4_84  g4_85  g4_86  g4_87  g4_88  g4_89  g4_90 g4_91  g4_92  g4_93  g4_94  g4_95  g4_96  g4_97  g4_98  g4_99  g4_100 g4_101 g4_102 g4_103 g4_104
+g4_105 g4_106 g4_107 g4_108 g4_109 g4_110 g4_111 g4_112 g4_113 g4_114 g4_115 g4_116 g4_117 g4_118 g4_119 g4_120 g4_121 g4_122 g4_123 g4_124 g4_125 g4_126 g4_127 g4_128 g4_129 g4_130
+g4_131 g4_132 g4_133 g4_134 g4_135 g4_136 g4_137 g4_138 g4_139 g4_140 g4_141 g4_142 g4_143 g4_144 g4_145 g4_146 g4_147 g4_148 g4_149 g4_150 g4_151 g4_152 g4_153 g4_154 g4_155 g4_156
+g4_157 g4_158 g4_159 g4_160 g4_161 g4_162 g4_163 g4_164 g4_165 g4_166 g4_167 g4_168 g4_169 g4_170 g4_171 g4_172 g4_173 g4_174 g4_175 g4_176 g4_177 g4_178 g4_179 g4_180 g4_181 g4_182
+g4_183 g4_184 g4_185 g4_186 g4_187 g4_188 g4_189 g4_190 g4_191 g4_192 g4_193 g4_194 g4_195 g4_196 g4_197 g4_198 g4_199 g4_200 g4_201 g4_202 g4_203 g4_204 g4_205 g4_206 g4_207 g4_208
+g4_209 g4_210 g4_211 g4_212 g4_213 g4_214 g4_215 g4_216 g4_217 g4_218 g4_219 g4_220 g4_221 g4_222 g4_223 g4_224 g4_225 g4_226 g4_227 g4_228 g4_229 g4_230 g4_231 g4_232 g4_233 g4_234
+g4_235 g4_236 g4_237 g4_238 g4_239 g4_240 g4_241 g4_242 /*g4_243 g4_244 g4_245 g4_246 g4_247 g4_248 g4_249 g4_250 g4_251 g4_252 
+*/;
+by cald;run;
+
+
+data d_c; * this is number of variables in %let var = above ;
 merge 
 g10_1   g10_2   g10_3   g10_4   g10_5   g10_6   g10_7   g10_8   g10_9   g10_10  g10_11  g10_12  g10_13  g10_14  g10_15  g10_16  g10_17  g10_18  g10_19  g10_20  g10_21  g10_22  g10_23  g10_24  g10_25  g10_26 
 g10_27  g10_28  g10_29  g10_30  g10_31  g10_32  g10_33  g10_34  g10_35  g10_36  g10_37  g10_38  g10_39  g10_40  g10_41  g10_42  g10_43  g10_44  g10_45  g10_46  g10_47  g10_48   g10_49  g10_50 
@@ -287,8 +322,8 @@ g10_131 g10_132 g10_133 g10_134 g10_135 g10_136 g10_137 g10_138 g10_139 g10_140 
 g10_157 g10_158 g10_159 g10_160 g10_161 g10_162 g10_163 g10_164 g10_165 g10_166 g10_167 g10_168 g10_169 g10_170 g10_171 g10_172 g10_173 g10_174 g10_175 g10_176 g10_177 g10_178 g10_179 g10_180 g10_181 g10_182
 g10_183 g10_184 g10_185 g10_186 g10_187 g10_188 g10_189 g10_190 g10_191 g10_192 g10_193 g10_194 g10_195 g10_196 g10_197 g10_198 g10_199 g10_200 g10_201 g10_202 g10_203 g10_204 g10_205 g10_206 g10_207 g10_208
 g10_209 g10_210 g10_211 g10_212 g10_213 g10_214 g10_215 g10_216 g10_217 g10_218 g10_219 g10_220 g10_221 g10_222 g10_223 g10_224 g10_225 g10_226 g10_227 g10_228 g10_229 g10_230 g10_231 g10_232 g10_233 g10_234
-g10_235 g10_236 g10_237 g10_238 g10_239 g10_240 /*g10_241 g10_242 g10_243 g10_244 g10_245 g10_246 g10_247 g10_248 g10_249 g10_250 g10_251 g10_252 */
-
+g10_235 g10_236 g10_237 g10_238 g10_239 g10_240 g10_241 g10_242 /*g10_243 g10_244 g10_245 g10_246 g10_247 g10_248 g10_249 g10_250 g10_251 g10_252 */
+/*
 g11_1   g11_2   g11_3   g11_4   g11_5   g11_6   g11_7   g11_8   g11_9   g11_10  g11_11  g11_12  g11_13  g11_14  g11_15  g11_16  g11_17  g11_18  g11_19  g11_20  g11_21  g11_22  g11_23  g11_24  g11_25  g11_26 
 g11_27  g11_28  g11_29  g11_30  g11_31  g11_32  g11_33  g11_34  g11_35  g11_36  g11_37  g11_38  g11_39  g11_40  g11_41  g11_42  g11_43  g11_44  g11_45  g11_46  g11_47  g11_48   g11_49  g11_50 
 g11_51  g11_52  g11_53  g11_54  g11_55  g11_56  g11_57  g11_58  g11_59  g11_60 g11_61  g11_62  g11_63  g11_64  g11_65  g11_66  g11_67  g11_68  g11_69  g11_70  g11_71 g11_72 g11_73 g11_74 g11_75  g11_76  g11_77 g11_78 
@@ -298,11 +333,11 @@ g11_131 g11_132 g11_133 g11_134 g11_135 g11_136 g11_137 g11_138 g11_139 g11_140 
 g11_157 g11_158 g11_159 g11_160 g11_161 g11_162 g11_163 g11_164 g11_165 g11_166 g11_167 g11_168 g11_169 g11_170 g11_171 g11_172 g11_173 g11_174 g11_175 g11_176 g11_177 g11_178 g11_179 g11_180 g11_181 g11_182
 g11_183 g11_184 g11_185 g11_186 g11_187 g11_188 g11_189 g11_190 g11_191 g11_192 g11_193 g11_194 g11_195 g11_196 g11_197 g11_198 g11_199 g11_200 g11_201 g11_202 g11_203 g11_204 g11_205 g11_206 g11_207 g11_208
 g11_209 g11_210 g11_211 g11_212 g11_213 g11_214 g11_215 g11_216 g11_217 g11_218 g11_219 g11_220 g11_221 g11_222 g11_223 g11_224 g11_225 g11_226 g11_227 g11_228 g11_229 g11_230 g11_231 g11_232 g11_233 g11_234
-g11_235 g11_236 g11_237 g11_238 g11_239 g11_240 /*g11_241 g11_242 g11_243 g11_244 g11_245 g11_246 g11_247 g11_248 g11_249 g11_250 g11_251 g11_252 
+g11_235 g11_236 g11_237 g11_238 g11_239 g11_240 g11_241 g11_242 g11_243 g11_244 g11_245 g11_246 g11_247 g11_248 g11_249 g11_250 g11_251 g11_252 
 */;
 run;
 
-data d_c; * this is number of variables in %let var = above ;
+data d_d; * this is number of variables in %let var = above ;
 merge 
 g12_1   g12_2   g12_3   g12_4   g12_5   g12_6   g12_7   g12_8   g12_9   g12_10  g12_11  g12_12  g12_13  g12_14  g12_15  g12_16  g12_17  g12_18  g12_19  g12_20  g12_21  g12_22  g12_23  g12_24  g12_25  g12_26 
 g12_27  g12_28  g12_29  g12_30  g12_31  g12_32  g12_33  g12_34  g12_35  g12_36  g12_37  g12_38  g12_39  g12_40  g12_41  g12_42  g12_43  g12_44  g12_45  g12_46  g12_47  g12_48   g12_49  g12_50 
@@ -313,8 +348,8 @@ g12_131 g12_132 g12_133 g12_134 g12_135 g12_136 g12_137 g12_138 g12_139 g12_140 
 g12_157 g12_158 g12_159 g12_160 g12_161 g12_162 g12_163 g12_164 g12_165 g12_166 g12_167 g12_168 g12_169 g12_170 g12_171 g12_172 g12_173 g12_174 g12_175 g12_176 g12_177 g12_178 g12_179 g12_180 g12_181 g12_182
 g12_183 g12_184 g12_185 g12_186 g12_187 g12_188 g12_189 g12_190 g12_191 g12_192 g12_193 g12_194 g12_195 g12_196 g12_197 g12_198 g12_199 g12_200 g12_201 g12_202 g12_203 g12_204 g12_205 g12_206 g12_207 g12_208
 g12_209 g12_210 g12_211 g12_212 g12_213 g12_214 g12_215 g12_216 g12_217 g12_218 g12_219 g12_220 g12_221 g12_222 g12_223 g12_224 g12_225 g12_226 g12_227 g12_228 g12_229 g12_230 g12_231 g12_232 g12_233 g12_234
-g12_235 g12_236 g12_237 g12_238 g12_239 g12_240 /*g12_241 g12_242 g12_243 g12_244 g12_245 g12_246 g12_247 g12_248 g12_249 g12_250 g12_251 g12_252 */
-
+g12_235 g12_236 g12_237 g12_238 g12_239 g12_240 g12_241 g12_242 /*g12_243 g12_244 g12_245 g12_246 g12_247 g12_248 g12_249 g12_250 g12_251 g12_252 */
+/*
 g15_1   g15_2   g15_3   g15_4   g15_5   g15_6   g15_7   g15_8   g15_9   g15_10  g15_11  g15_12  g15_13  g15_14  g15_15  g15_16  g15_17  g15_18  g15_19  g15_20  g15_21  g15_22  g15_23  g15_24  g15_25  g15_26 
 g15_27  g15_28  g15_29  g15_30  g15_31  g15_32  g15_33  g15_34  g15_35  g15_36  g15_37  g15_38  g15_39  g15_40  g15_41  g15_42  g15_43  g15_44  g15_45  g15_46  g15_47  g15_48   g15_49  g15_50 
 g15_51  g15_52  g15_53  g15_54  g15_55  g15_56  g15_57  g15_58  g15_59  g15_60 g15_61  g15_62  g15_63  g15_64  g15_65  g15_66  g15_67  g15_68  g15_69  g15_70  g15_71 g15_72 g15_73 g15_74 g15_75  g15_76  g15_77 g15_78 
@@ -327,8 +362,8 @@ g15_209 g15_210 g15_211 g15_212 g15_213 g15_214 g15_215 g15_216 g15_217 g15_218 
 g15_235 g15_236 g15_237 g15_238 g15_239 g15_240 /*g15_241 g15_242 g15_243 g15_244 g15_245 g15_246 g15_247 g15_248 g15_249 g15_250 g15_251 g15_252 
 */;
 by cald;run;
-
-data d_d; * this is number of variables in %let var = above ;
+/*
+data d_e; * this is number of variables in %let var = above ;
 merge 
 g16_1   g16_2   g16_3   g16_4   g16_5   g16_6   g16_7   g16_8   g16_9   g16_10  g16_11  g16_12  g16_13  g16_14  g16_15  g16_16  g16_17  g16_18  g16_19  g16_20  g16_21  g16_22  g16_23  g16_24  g16_25  g16_26 
 g16_27  g16_28  g16_29  g16_30  g16_31  g16_32  g16_33  g16_34  g16_35  g16_36  g16_37  g16_38  g16_39  g16_40  g16_41  g16_42  g16_43  g16_44  g16_45  g16_46  g16_47  g16_48   g16_49  g16_50 
@@ -339,7 +374,7 @@ g16_131 g16_132 g16_133 g16_134 g16_135 g16_136 g16_137 g16_138 g16_139 g16_140 
 g16_157 g16_158 g16_159 g16_160 g16_161 g16_162 g16_163 g16_164 g16_165 g16_166 g16_167 g16_168 g16_169 g16_170 g16_171 g16_172 g16_173 g16_174 g16_175 g16_176 g16_177 g16_178 g16_179 g16_180 g16_181 g16_182
 g16_183 g16_184 g16_185 g16_186 g16_187 g16_188 g16_189 g16_190 g16_191 g16_192 g16_193 g16_194 g16_195 g16_196 g16_197 g16_198 g16_199 g16_200 g16_201 g16_202 g16_203 g16_204 g16_205 g16_206 g16_207 g16_208
 g16_209 g16_210 g16_211 g16_212 g16_213 g16_214 g16_215 g16_216 g16_217 g16_218 g16_219 g16_220 g16_221 g16_222 g16_223 g16_224 g16_225 g16_226 g16_227 g16_228 g16_229 g16_230 g16_231 g16_232 g16_233 g16_234
-g16_235 g16_236 g16_237 g16_238 g16_239 g16_240 /*g16_241 g16_242 g16_243 g16_244 g16_245 g16_246 g16_247 g16_248 g16_249 g16_250 g16_251 g16_252 */
+g16_235 g16_236 g16_237 g16_238 g16_239 g16_240 g16_241 g16_242 g16_243 g16_244 g16_245 g16_246 g16_247 g16_248 g16_249 g16_250 g16_251 g16_252 
 
 g17_1   g17_2   g17_3   g17_4   g17_5   g17_6   g17_7   g17_8   g17_9   g17_10  g17_11  g17_12  g17_13  g17_14  g17_15  g17_16  g17_17  g17_18  g17_19  g17_20  g17_21  g17_22  g17_23  g17_24  g17_25  g17_26 
 g17_27  g17_28  g17_29  g17_30  g17_31  g17_32  g17_33  g17_34  g17_35  g17_36  g17_37  g17_38  g17_39  g17_40  g17_41  g17_42  g17_43  g17_44  g17_45  g17_46  g17_47  g17_48   g17_49  g17_50 
@@ -350,10 +385,10 @@ g17_131 g17_132 g17_133 g17_134 g17_135 g17_136 g17_137 g17_138 g17_139 g17_140 
 g17_157 g17_158 g17_159 g17_160 g17_161 g17_162 g17_163 g17_164 g17_165 g17_166 g17_167 g17_168 g17_169 g17_170 g17_171 g17_172 g17_173 g17_174 g17_175 g17_176 g17_177 g17_178 g17_179 g17_180 g17_181 g17_182
 g17_183 g17_184 g17_185 g17_186 g17_187 g17_188 g17_189 g17_190 g17_191 g17_192 g17_193 g17_194 g17_195 g17_196 g17_197 g17_198 g17_199 g17_200 g17_201 g17_202 g17_203 g17_204 g17_205 g17_206 g17_207 g17_208
 g17_209 g17_210 g17_211 g17_212 g17_213 g17_214 g17_215 g17_216 g17_217 g17_218 g17_219 g17_220 g17_221 g17_222 g17_223 g17_224 g17_225 g17_226 g17_227 g17_228 g17_229 g17_230 g17_231 g17_232 g17_233 g17_234
-g17_235 g17_236 g17_237 g17_238 g17_239 g17_240 /*g17_241 g17_242 g17_243 g17_244 g17_245 g17_246 g17_247 g17_248 g17_249 g17_250 g17_251 g17_252 */;
+g17_235 g17_236 g17_237 g17_238 g17_239 g17_240 g17_241 g17_242 g17_243 g17_244 g17_245 g17_246 g17_247 g17_248 g17_249 g17_250 g17_251 g17_252;
 by cald;run;
 
-data d_e; * this is number of variables in %let var = above ;
+data d_f; * this is number of variables in %let var = above ;
 merge 
 g18_1   g18_2   g18_3   g18_4   g18_5   g18_6   g18_7   g18_8   g18_9   g18_10  g18_11  g18_12  g18_13  g18_14  g18_15  g18_16  g18_17  g18_18  g18_19  g18_20  g18_21  g18_22  g18_23  g18_24  g18_25  g18_26 
 g18_27  g18_28  g18_29  g18_30  g18_31  g18_32  g18_33  g18_34  g18_35  g18_36  g18_37  g18_38  g18_39  g18_40  g18_41  g18_42  g18_43  g18_44  g18_45  g18_46  g18_47  g18_48   g18_49  g18_50 
@@ -364,7 +399,7 @@ g18_131 g18_132 g18_133 g18_134 g18_135 g18_136 g18_137 g18_138 g18_139 g18_140 
 g18_157 g18_158 g18_159 g18_160 g18_161 g18_162 g18_163 g18_164 g18_165 g18_166 g18_167 g18_168 g18_169 g18_170 g18_171 g18_172 g18_173 g18_174 g18_175 g18_176 g18_177 g18_178 g18_179 g18_180 g18_181 g18_182
 g18_183 g18_184 g18_185 g18_186 g18_187 g18_188 g18_189 g18_190 g18_191 g18_192 g18_193 g18_194 g18_195 g18_196 g18_197 g18_198 g18_199 g18_200 g18_201 g18_202 g18_203 g18_204 g18_205 g18_206 g18_207 g18_208
 g18_209 g18_210 g18_211 g18_212 g18_213 g18_214 g18_215 g18_216 g18_217 g18_218 g18_219 g18_220 g18_221 g18_222 g18_223 g18_224 g18_225 g18_226 g18_227 g18_228 g18_229 g18_230 g18_231 g18_232 g18_233 g18_234
-g18_235 g18_236 g18_237 g18_238 g18_239 g18_240 /*g18_241 g18_242 g18_243 g18_244 g18_245 g18_246 g18_247 g18_248 g18_249 g18_250 g18_251 g18_252 */
+g18_235 g18_236 g18_237 g18_238 g18_239 g18_240 g18_241 g18_242 g18_243 g18_244 g18_245 g18_246 g18_247 g18_248 g18_249 g18_250 g18_251 g18_252 
 
 g19_1   g19_2   g19_3   g19_4   g19_5   g19_6   g19_7   g19_8   g19_9   g19_10  g19_11  g19_12  g19_13  g19_14  g19_15  g19_16  g19_17  g19_18  g19_19  g19_20  g19_21  g19_22  g19_23  g19_24  g19_25  g19_26 
 g19_27  g19_28  g19_29  g19_30  g19_31  g19_32  g19_33  g19_34  g19_35  g19_36  g19_37  g19_38  g19_39  g19_40  g19_41  g19_42  g19_43  g19_44  g19_45  g19_46  g19_47  g19_48   g19_49  g19_50 
@@ -375,10 +410,10 @@ g19_131 g19_132 g19_133 g19_134 g19_135 g19_136 g19_137 g19_138 g19_139 g19_140 
 g19_157 g19_158 g19_159 g19_160 g19_161 g19_162 g19_163 g19_164 g19_165 g19_166 g19_167 g19_168 g19_169 g19_170 g19_171 g19_172 g19_173 g19_174 g19_175 g19_176 g19_177 g19_178 g19_179 g19_180 g19_181 g19_182
 g19_183 g19_184 g19_185 g19_186 g19_187 g19_188 g19_189 g19_190 g19_191 g19_192 g19_193 g19_194 g19_195 g19_196 g19_197 g19_198 g19_199 g19_200 g19_201 g19_202 g19_203 g19_204 g19_205 g19_206 g19_207 g19_208
 g19_209 g19_210 g19_211 g19_212 g19_213 g19_214 g19_215 g19_216 g19_217 g19_218 g19_219 g19_220 g19_221 g19_222 g19_223 g19_224 g19_225 g19_226 g19_227 g19_228 g19_229 g19_230 g19_231 g19_232 g19_233 g19_234
-g19_235 g19_236 g19_237 g19_238 g19_239 g19_240 /*g19_241 g19_242 g19_243 g19_244 g19_245 g19_246 g19_247 g19_248 g19_249 g19_250 g19_251 g19_252 */;
+g19_235 g19_236 g19_237 g19_238 g19_239 g19_240 g19_241 g19_242 g19_243 g19_244 g19_245 g19_246 g19_247 g19_248 g19_249 g19_250 g19_251 g19_252;
 by cald;run;
 
-data d_f; * this is number of variables in %let var = above ;
+data d_g; * this is number of variables in %let var = above ;
 merge 
 g20_1   g20_2   g20_3   g20_4   g20_5   g20_6   g20_7   g20_8   g20_9   g20_10  g20_11  g20_12  g20_13  g20_14  g20_15  g20_16  g20_17  g20_18  g20_19  g20_20  g20_21  g20_22  g20_23  g20_24  g20_25  g20_26 
 g20_27  g20_28  g20_29  g20_30  g20_31  g20_32  g20_33  g20_34  g20_35  g20_36  g20_37  g20_38  g20_39  g20_40  g20_41  g20_42  g20_43  g20_44  g20_45  g20_46  g20_47  g20_48   g20_49  g20_50 
@@ -389,7 +424,7 @@ g20_131 g20_132 g20_133 g20_134 g20_135 g20_136 g20_137 g20_138 g20_139 g20_140 
 g20_157 g20_158 g20_159 g20_160 g20_161 g20_162 g20_163 g20_164 g20_165 g20_166 g20_167 g20_168 g20_169 g20_170 g20_171 g20_172 g20_173 g20_174 g20_175 g20_176 g20_177 g20_178 g20_179 g20_180 g20_181 g20_182
 g20_183 g20_184 g20_185 g20_186 g20_187 g20_188 g20_189 g20_190 g20_191 g20_192 g20_193 g20_194 g20_195 g20_196 g20_197 g20_198 g20_199 g20_200 g20_201 g20_202 g20_203 g20_204 g20_205 g20_206 g20_207 g20_208
 g20_209 g20_210 g20_211 g20_212 g20_213 g20_214 g20_215 g20_216 g20_217 g20_218 g20_219 g20_220 g20_221 g20_222 g20_223 g20_224 g20_225 g20_226 g20_227 g20_228 g20_229 g20_230 g20_231 g20_232 g20_233 g20_234
-g20_235 g20_236 g20_237 g20_238 g20_239 g20_240 /*g20_241 g20_242 g20_243 g20_244 g20_245 g20_246 g20_247 g20_248 g20_249 g20_250 g20_251 g20_252 */
+g20_235 g20_236 g20_237 g20_238 g20_239 g20_240 g20_241 g20_242 g20_243 g20_244 g20_245 g20_246 g20_247 g20_248 g20_249 g20_250 g20_251 g20_252 
 
 g21_1   g21_2   g21_3   g21_4   g21_5   g21_6   g21_7   g21_8   g21_9   g21_10  g21_11  g21_12  g21_13  g21_14  g21_15  g21_16  g21_17  g21_18  g21_19  g21_20  g21_21  g21_22  g21_23  g21_24  g21_25  g21_26 
 g21_27  g21_28  g21_29  g21_30  g21_31  g21_32  g21_33  g21_34  g21_35  g21_36  g21_37  g21_38  g21_39  g21_40  g21_41  g21_42  g21_43  g21_44  g21_45  g21_46  g21_47  g21_48   g21_49  g21_50 
@@ -400,10 +435,10 @@ g21_131 g21_132 g21_133 g21_134 g21_135 g21_136 g21_137 g21_138 g21_139 g21_140 
 g21_157 g21_158 g21_159 g21_160 g21_161 g21_162 g21_163 g21_164 g21_165 g21_166 g21_167 g21_168 g21_169 g21_170 g21_171 g21_172 g21_173 g21_174 g21_175 g21_176 g21_177 g21_178 g21_179 g21_180 g21_181 g21_182
 g21_183 g21_184 g21_185 g21_186 g21_187 g21_188 g21_189 g21_190 g21_191 g21_192 g21_193 g21_194 g21_195 g21_196 g21_197 g21_198 g21_199 g21_200 g21_201 g21_202 g21_203 g21_204 g21_205 g21_206 g21_207 g21_208
 g21_209 g21_210 g21_211 g21_212 g21_213 g21_214 g21_215 g21_216 g21_217 g21_218 g21_219 g21_220 g21_221 g21_222 g21_223 g21_224 g21_225 g21_226 g21_227 g21_228 g21_229 g21_230 g21_231 g21_232 g21_233 g21_234
-g21_235 g21_236 g21_237 g21_238 g21_239 g21_240 /*g21_241 g21_242 g21_243 g21_244 g21_245 g21_246 g21_247 g21_248 g21_249 g21_250 g21_251 g21_252 */;
+g21_235 g21_236 g21_237 g21_238 g21_239 g21_240 g21_241 g21_242 g21_243 g21_244 g21_245 g21_246 g21_247 g21_248 g21_249 g21_250 g21_251 g21_252;
 by cald;run;
 
-data d_g; * this is number of variables in %let var = above ;
+data d_h; * this is number of variables in %let var = above ;
 merge 
 g22_1   g22_2   g22_3   g22_4   g22_5   g22_6   g22_7   g22_8   g22_9   g22_10  g22_11  g22_12  g22_13  g22_14  g22_15  g22_16  g22_17  g22_18  g22_19  g22_20  g22_21  g22_22  g22_23  g22_24  g22_25  g22_26 
 g22_27  g22_28  g22_29  g22_30  g22_31  g22_32  g22_33  g22_34  g22_35  g22_36  g22_37  g22_38  g22_39  g22_40  g22_41  g22_42  g22_43  g22_44  g22_45  g22_46  g22_47  g22_48   g22_49  g22_50 
@@ -414,7 +449,7 @@ g22_131 g22_132 g22_133 g22_134 g22_135 g22_136 g22_137 g22_138 g22_139 g22_140 
 g22_157 g22_158 g22_159 g22_160 g22_161 g22_162 g22_163 g22_164 g22_165 g22_166 g22_167 g22_168 g22_169 g22_170 g22_171 g22_172 g22_173 g22_174 g22_175 g22_176 g22_177 g22_178 g22_179 g22_180 g22_181 g22_182
 g22_183 g22_184 g22_185 g22_186 g22_187 g22_188 g22_189 g22_190 g22_191 g22_192 g22_193 g22_194 g22_195 g22_196 g22_197 g22_198 g22_199 g22_200 g22_201 g22_202 g22_203 g22_204 g22_205 g22_206 g22_207 g22_208
 g22_209 g22_210 g22_211 g22_212 g22_213 g22_214 g22_215 g22_216 g22_217 g22_218 g22_219 g22_220 g22_221 g22_222 g22_223 g22_224 g22_225 g22_226 g22_227 g22_228 g22_229 g22_230 g22_231 g22_232 g22_233 g22_234
-g22_235 g22_236 g22_237 g22_238 g22_239 g22_240 /*g22_241 g22_242 g22_243 g22_244 g22_245 g22_246 g22_247 g22_248 g22_249 g22_250 g22_251 g22_252 */
+g22_235 g22_236 g22_237 g22_238 g22_239 g22_240 g22_241 g22_242 g22_243 g22_244 g22_245 g22_246 g22_247 g22_248 g22_249 g22_250 g22_251 g22_252 
 
 g23_1   g23_2   g23_3   g23_4   g23_5   g23_6   g23_7   g23_8   g23_9   g23_10  g23_11  g23_12  g23_13  g23_14  g23_15  g23_16  g23_17  g23_18  g23_19  g23_20  g23_21  g23_22  g23_23  g23_24  g23_25  g23_26 
 g23_27  g23_28  g23_29  g23_30  g23_31  g23_32  g23_33  g23_34  g23_35  g23_36  g23_37  g23_38  g23_39  g23_40  g23_41  g23_42  g23_43  g23_44  g23_45  g23_46  g23_47  g23_48   g23_49  g23_50 
@@ -425,10 +460,10 @@ g23_131 g23_132 g23_133 g23_134 g23_135 g23_136 g23_137 g23_138 g23_139 g23_140 
 g23_157 g23_158 g23_159 g23_160 g23_161 g23_162 g23_163 g23_164 g23_165 g23_166 g23_167 g23_168 g23_169 g23_170 g23_171 g23_172 g23_173 g23_174 g23_175 g23_176 g23_177 g23_178 g23_179 g23_180 g23_181 g23_182
 g23_183 g23_184 g23_185 g23_186 g23_187 g23_188 g23_189 g23_190 g23_191 g23_192 g23_193 g23_194 g23_195 g23_196 g23_197 g23_198 g23_199 g23_200 g23_201 g23_202 g23_203 g23_204 g23_205 g23_206 g23_207 g23_208
 g23_209 g23_210 g23_211 g23_212 g23_213 g23_214 g23_215 g23_216 g23_217 g23_218 g23_219 g23_220 g23_221 g23_222 g23_223 g23_224 g23_225 g23_226 g23_227 g23_228 g23_229 g23_230 g23_231 g23_232 g23_233 g23_234
-g23_235 g23_236 g23_237 g23_238 g23_239 g23_240 /*g23_241 g23_242 g23_243 g23_244 g23_245 g23_246 g23_247 g23_248 g23_249 g23_250 g23_251 g23_252 */;
+g23_235 g23_236 g23_237 g23_238 g23_239 g23_240 g23_241 g23_242 g23_243 g23_244 g23_245 g23_246 g23_247 g23_248 g23_249 g23_250 g23_251 g23_252;
 by cald;run;
 
-data d_h; * this is number of variables in %let var = above ;
+data d_i; * this is number of variables in %let var = above ;
 merge 
 g24_1   g24_2   g24_3   g24_4   g24_5   g24_6   g24_7   g24_8   g24_9   g24_10  g24_11  g24_12  g24_13  g24_14  g24_15  g24_16  g24_17  g24_18  g24_19  g24_20  g24_21  g24_22  g24_23  g24_24  g24_25  g24_26 
 g24_27  g24_28  g24_29  g24_30  g24_31  g24_32  g24_33  g24_34  g24_35  g24_36  g24_37  g24_38  g24_39  g24_40  g24_41  g24_42  g24_43  g24_44  g24_45  g24_46  g24_47  g24_48   g24_49  g24_50 
@@ -439,7 +474,7 @@ g24_131 g24_132 g24_133 g24_134 g24_135 g24_136 g24_137 g24_138 g24_139 g24_140 
 g24_157 g24_158 g24_159 g24_160 g24_161 g24_162 g24_163 g24_164 g24_165 g24_166 g24_167 g24_168 g24_169 g24_170 g24_171 g24_172 g24_173 g24_174 g24_175 g24_176 g24_177 g24_178 g24_179 g24_180 g24_181 g24_182
 g24_183 g24_184 g24_185 g24_186 g24_187 g24_188 g24_189 g24_190 g24_191 g24_192 g24_193 g24_194 g24_195 g24_196 g24_197 g24_198 g24_199 g24_200 g24_201 g24_202 g24_203 g24_204 g24_205 g24_206 g24_207 g24_208
 g24_209 g24_210 g24_211 g24_212 g24_213 g24_214 g24_215 g24_216 g24_217 g24_218 g24_219 g24_220 g24_221 g24_222 g24_223 g24_224 g24_225 g24_226 g24_227 g24_228 g24_229 g24_230 g24_231 g24_232 g24_233 g24_234
-g24_235 g24_236 g24_237 g24_238 g24_239 g24_240 /*g24_241 g24_242 g24_243 g24_244 g24_245 g24_246 g24_247 g24_248 g24_249 g24_250 g24_251 g24_252 */
+g24_235 g24_236 g24_237 g24_238 g24_239 g24_240 g24_241 g24_242 g24_243 g24_244 g24_245 g24_246 g24_247 g24_248 g24_249 g24_250 g24_251 g24_252 
 
 g25_1   g25_2   g25_3   g25_4   g25_5   g25_6   g25_7   g25_8   g25_9   g25_10  g25_11  g25_12  g25_13  g25_14  g25_15  g25_16  g25_17  g25_18  g25_19  g25_20  g25_21  g25_22  g25_23  g25_24  g25_25  g25_26 
 g25_27  g25_28  g25_29  g25_30  g25_31  g25_32  g25_33  g25_34  g25_35  g25_36  g25_37  g25_38  g25_39  g25_40  g25_41  g25_42  g25_43  g25_44  g25_45  g25_46  g25_47  g25_48   g25_49  g25_50 
@@ -450,10 +485,10 @@ g25_131 g25_132 g25_133 g25_134 g25_135 g25_136 g25_137 g25_138 g25_139 g25_140 
 g25_157 g25_158 g25_159 g25_160 g25_161 g25_162 g25_163 g25_164 g25_165 g25_166 g25_167 g25_168 g25_169 g25_170 g25_171 g25_172 g25_173 g25_174 g25_175 g25_176 g25_177 g25_178 g25_179 g25_180 g25_181 g25_182
 g25_183 g25_184 g25_185 g25_186 g25_187 g25_188 g25_189 g25_190 g25_191 g25_192 g25_193 g25_194 g25_195 g25_196 g25_197 g25_198 g25_199 g25_200 g25_201 g25_202 g25_203 g25_204 g25_205 g25_206 g25_207 g25_208
 g25_209 g25_210 g25_211 g25_212 g25_213 g25_214 g25_215 g25_216 g25_217 g25_218 g25_219 g25_220 g25_221 g25_222 g25_223 g25_224 g25_225 g25_226 g25_227 g25_228 g25_229 g25_230 g25_231 g25_232 g25_233 g25_234
-g25_235 g25_236 g25_237 g25_238 g25_239 g25_240 /*g25_241 g25_242 g25_243 g25_244 g25_245 g25_246 g25_247 g25_248 g25_249 g25_250 g25_251 g25_252 */
+g25_235 g25_236 g25_237 g25_238 g25_239 g25_240 g25_241 g25_242 g25_243 g25_244 g25_245 g25_246 g25_247 g25_248 g25_249 g25_250 g25_251 g25_252 
 ;
 by cald;run;
-data d_i; * this is number of variables in %let var = above ;
+data d_j; * this is number of variables in %let var = above ;
 merge 
 g26_1   g26_2   g26_3   g26_4   g26_5   g26_6   g26_7   g26_8   g26_9   g26_10  g26_11  g26_12  g26_13  g26_14  g26_15  g26_16  g26_17  g26_18  g26_19  g26_20  g26_21  g26_22  g26_23  g26_24  g26_25  g26_26 
 g26_27  g26_28  g26_29  g26_30  g26_31  g26_32  g26_33  g26_34  g26_35  g26_36  g26_37  g26_38  g26_39  g26_40  g26_41  g26_42  g26_43  g26_44  g26_45  g26_46  g26_47  g26_48   g26_49  g26_50 
@@ -464,13 +499,12 @@ g26_131 g26_132 g26_133 g26_134 g26_135 g26_136 g26_137 g26_138 g26_139 g26_140 
 g26_157 g26_158 g26_159 g26_160 g26_161 g26_162 g26_163 g26_164 g26_165 g26_166 g26_167 g26_168 g26_169 g26_170 g26_171 g26_172 g26_173 g26_174 g26_175 g26_176 g26_177 g26_178 g26_179 g26_180 g26_181 g26_182
 g26_183 g26_184 g26_185 g26_186 g26_187 g26_188 g26_189 g26_190 g26_191 g26_192 g26_193 g26_194 g26_195 g26_196 g26_197 g26_198 g26_199 g26_200 g26_201 g26_202 g26_203 g26_204 g26_205 g26_206 g26_207 g26_208
 g26_209 g26_210 g26_211 g26_212 g26_213 g26_214 g26_215 g26_216 g26_217 g26_218 g26_219 g26_220 g26_221 g26_222 g26_223 g26_224 g26_225 g26_226 g26_227 g26_228 g26_229 g26_230 g26_231 g26_232 g26_233 g26_234
-g26_235 g26_236 g26_237 g26_238 g26_239 g26_240 /*g26_241 g26_242 g26_243 g26_244 g26_245 g26_246 g26_247 g26_248 g26_249 g26_250 g26_251 g26_252 */
-;
+g26_235 g26_236 g26_237 g26_238 g26_239 g26_240 g26_241 g26_242 g26_243 g26_244 g26_245 g26_246 g26_247 g26_248 g26_249 g26_250 g26_251 g26_252;
 by cald;run;
-
+*/
 
 data d; * this is number of variables in %let var = above ;
-merge d_a d_b d_c d_d d_e d_f d_g d_h d_i;
+merge d_a d_b d_c d_d;* d_e d_f d_g d_h d_i d_j; 
 by cald;
 %include "C:\Users\Valentina\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas";
 run;
@@ -489,7 +523,7 @@ data a.d_from2023;set d;run;
 ***Graphs comparing observed data to outputs for option 0 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20240213_from2023_75_300sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V18_20240523_from2023_75_300sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
@@ -2379,7 +2413,7 @@ ods rtf close;run;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V20_CheckSBCC&CMMC_20240213_300sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V20_CheckSBCC&CMMC_20240523_300sim.doc' startpage=never; 
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_sbcc_visit_1524m";
@@ -3099,43 +3133,43 @@ run;
 
 
 
-PROC export data=s0 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s0 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="Base_STOCK";  RUN;
-PROC export data=s1 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s1 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="Min_STOCK";  RUN;
 
-PROC export data=s10 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s10 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="T_FSWTestprog_STOCK";  RUN;
-PROC export data=s11 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
-sheet="SBCC_STOCK";  RUN;
-PROC export data=s12 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+/*PROC export data=s11 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
+sheet="SBCC_STOCK";  RUN;*/
+PROC export data=s12 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CMMC_STOCK";  RUN;
 
-PROC export data=s15 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s15 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_F1524_STOCK";  RUN;
-PROC export data=s16 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s16 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_FSW1599_STOCK";  RUN;
-PROC export data=s17 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s17 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_SDCA1599_STOCK";  RUN;
-PROC export data=s18 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s18 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_pregnbfF1549_STOCK";  RUN;
 
-PROC export data=s19 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s19 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="DPVPrEP_F1524_STOCK";  RUN;
-PROC export data=s20 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s20 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="DPVPrEP_FSW1599_STOCK";  RUN;
-PROC export data=s21 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s21 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="DPVPrEP_SDCF1599_STOCK";  RUN;
-PROC export data=s22 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s22 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="DPVPrEP_pregnbfF1549_STOCK";  RUN;
 
-PROC export data=s23 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s23 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CABPrEP_F1524_STOCK";  RUN;
-PROC export data=s24 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s24 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CABPrEP_FSW1599_STOCK";  RUN;
-PROC export data=s25 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s25 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CABPrEP_SDCA1599_STOCK";  RUN;
-PROC export data=s26 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=s26 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CABPrEP_pregnbfF1549_STOCK";  RUN;
 
 options nomprint;
@@ -4828,45 +4862,45 @@ P50_n_pmtct_&o
 %flow(o=25);
 %flow(o=26);
 
-PROC export data=wide_allyears_out_0 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_0 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="Base_FLOW";  RUN;
-PROC export data=wide_allyears_out_1 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_1 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="Min_FLOW";  RUN;
-PROC export data=wide_allyears_out_10 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_10 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="T_FSWTestprog_FLOW";  RUN;
 
-PROC export data=wide_allyears_out_11 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_11 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="SBCC_FLOW";  RUN;
-PROC export data=wide_allyears_out_12 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_12 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CMMC_FLOW";  RUN;
 
 
-PROC export data=wide_allyears_out_15 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_15 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_F1524_FLOW";  RUN;
-PROC export data=wide_allyears_out_16 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_16 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_FSW1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_17 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_17 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_SDCA1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_18 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_18 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_pregnbfF1549_FLOW";  RUN;
 
 
-PROC export data=wide_allyears_out_19 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_19 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="DPVPrEP_F1524_FLOW";  RUN;
-PROC export data=wide_allyears_out_20 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_20 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="DPVPrEP_FSW1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_21 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_21 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="DPVPrEP_SDCF1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_22 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_22 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="DPVPrEP_pregnbfF1549_FLOW";  RUN;
 
-PROC export data=wide_allyears_out_23 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_23 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CABPrEP_F1524_FLOW";  RUN;
-PROC export data=wide_allyears_out_24 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_24 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CABPrEP_FSW1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_25 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_25 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CABPrEP_SDCA1599_FLOW";  RUN;
-PROC export data=wide_allyears_out_26 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240213" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_26 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CABPrEP_pregnbfF1549_FLOW";  RUN;
 
 
