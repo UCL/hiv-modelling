@@ -2142,15 +2142,13 @@ who may be dead and hence have caldate{t} missing;
 * long acting prep options *******************************************************************************************************************************************;
 
 	if option = 1 then do; 
-		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral * 10; eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj * 10; 
+		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral * 10; 
 		eff_rate_test_startprep_any = eff_rate_test_startprep_any / 10; 
-		eff_prob_prep_oral_b = eff_prob_prep_oral_b / 10; eff_prob_prep_inj_b = eff_prob_prep_inj_b / 10;
+		eff_prob_prep_oral_b = eff_prob_prep_oral_b / 10; 
 	end;
 
 	if option = 2 then do;
-		eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral / 10; eff_rate_choose_stop_prep_inj = eff_rate_choose_stop_prep_inj / 10; 
-		eff_rate_test_startprep_any = eff_rate_test_startprep_any * 10; 
-		eff_prob_prep_oral_b = eff_prob_prep_oral_b * 10; eff_prob_prep_inj_b = eff_prob_prep_inj_b * 10;
+		date_prep_cab_intro = &year_interv ;
 	end;
 
 * ******************************************************************************************************************************************************************;
