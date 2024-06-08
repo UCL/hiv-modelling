@@ -2167,7 +2167,7 @@ dcot_cost_50y_1  dcot_cost_50y_2  dcot_cost_50y_3  dcot_cost_50y_4
 dtest_cost_50y_1 dtest_cost_50y_2 dtest_cost_50y_3 dtest_cost_50y_4  
 dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3  dcost_circ_50y_4  
 dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3  dcost_child_hiv_50y_4  
-dcost_condom_dn_50y_1 
+dcost_condom_dn_50y_1 dcost_condom_dn_50y_2 dcost_condom_dn_50y_3 dcost_condom_dn_50y_4
 dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3  dcost_prep_visit_50y_4  
 dcost_prep_oral_50y_1 dcost_prep_oral_50y_2 dcost_prep_oral_50y_3 dcost_prep_oral_50y_4 
 dcost_prep_inj_50y_1 dcost_prep_inj_50y_2 dcost_prep_inj_50y_3 dcost_prep_inj_50y_4 

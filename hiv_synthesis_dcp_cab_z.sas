@@ -6,13 +6,13 @@
 
 * include choice between pep and prep ? (probably no need - just adjust prep cost according to proportion pep ?)  
 
-* some dcp cost fixed and some unit cost per 3 month =1
+* some dcp cost fixed and some unit cost per 3 month ?
 
 * make sure have all outputs needed for costing              
 
 * specify prop_tests_self or sample (as now) ?
 
-* modify tld drug costs
+* modify hiv care visit and tld drug costs ?
 
 * add cost of condom distribution ?
 
@@ -1005,8 +1005,8 @@ cost_dol_a=(0.011/4)*1.2;   * chai 2022 - $54 for tld;
 cost_dar_a=(0.210/4)*1.2;	
 tb_cost_a=(.050); * todo: this cost to be re-considered;
 cot_cost_a=(.005/4);
-vis_cost_a=(.020); 
-redn_in_vis_cost_vlm_supp = 0.010 ;
+vis_cost_a=(.010); * changed from $20 june 2024 due to costing data from boston university;
+redn_in_vis_cost_vlm_supp = 0.005 ; * changed from $20 june 2024 due to costing data from boston university;
 cost_child_hiv_a = 0.030; 
 cost_child_hiv_mo_art_a = 0.030; 
 prep_oral_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
