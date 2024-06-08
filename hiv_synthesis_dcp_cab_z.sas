@@ -1,6 +1,9 @@
 
 
 
+
+* enhance effect of cab la alone 
+
 * include choice between pep and prep ? (probably no need - just adjust prep cost according to proportion pep ?)  
 
 * some dcp cost fixed and some unit cost per 3 month =1
