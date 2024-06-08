@@ -2,19 +2,9 @@
 
 
 
-* enhance effect of cab la alone 
+* enhance effect of cab la alone - have increased pref_prep_inj_beta_s1 - may need to amend effect_dcp_pref_prep if cab-la uptake too high in dcp-cab-la option; 
 
-* include choice between pep and prep ? (probably no need - just adjust prep cost according to proportion pep ?)  
-
-* some dcp cost fixed and some unit cost per 3 month ?
-
-* make sure have all outputs needed for costing              
-
-* specify prop_tests_self or sample (as now) ?
-
-* modify hiv care visit and tld drug costs ?
-
-* add cost of condom distribution ?
+* modify tld drug costs ?
 
 
 ;
@@ -750,7 +740,8 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * new for pop_wide_tld ;
 
-* pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 1.0 ; * tends to be more preference for inj ;
+* pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 1.5 ; * tends to be more preference for inj - change to + 1.5 from + 1.0 june 2024
+																						as coverage of cab-la looked low; 
 
 * hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
 								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
