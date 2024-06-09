@@ -1,24 +1,16 @@
 
 
 
-* make sure can break down the % with dol res in 2024 according to prior failure / ever any prior regimen other than tld
-
-* consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
 
 * run as additional analysis with strategies only applying to those with no previous virologic failure, or those with no previous art experience before tld
 
-* make sure can do sensitivity analysis in which cost of drugs (esp darunavir) is dependent on adherence
-
-
-
+* consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
 
 * consider atazanavir as the PI ? - do sensitivity analysis around darunavir cost
 
 * $200 for resistance test (make clear that cost of resistance test accounts for the chance of failure of amplification) consider also cost of national committees making decision on switch ?
 
 * switching could include doubling the dose of dol if resistance testing indicates low or moderate dol resistance ? (discussion point only)
-
-
 
 
 
@@ -2102,10 +2094,11 @@ option = &s;
 mihpsa_params_set_in_options=0;				
 
 if caldate_never_dot = &year_interv then do;
-	dol_pi_fail_by_year_interv=0;
+	dol_pi_fail_by_year_interv=0; no_non_tld_by_year_interv=0;
 	if yrart ne . and naive=0 and (f_lpr=1 or f_taz=1 or f_dar=1 or f_dol=1) then dol_pi_fail_by_year_interv=1;
 	any_vfail_by_year_interv=0;
 	if yrart ne . and naive=0 and (f_3tc=1 or f_ten=1 or f_zdc=1) then any_vfail_by_year_interv=1;
+	if p_zdv=0 and p_dar=0 and p_lpr=0 and p_taz=0 and p_efa=0 and p_nev=0 then no_non_tld_by_year_interv=1;
 end;
 
 if caldate_never_dot >= &year_interv then do;
@@ -12340,6 +12333,17 @@ end;
 		cost_len=cost_len_a; 
 		if len_tm1 ne 1 then cost_len=cost_len*1.5; * loading dose;
 	end;
+
+
+cost_zdv_ac_adh=cost_zdv*adh;
+cost_3tc_ac_adh=cost_3tc*adh;
+cost_ten_ac_adh=cost_ten*adh;
+cost_lpr_ac_adh=cost_lpr*adh;
+cost_taz_ac_adh=cost_taz*adh;
+cost_dar_ac_adh=cost_dar*adh;
+cost_dol_ac_adh=cost_dol*adh;
+cost_efa_ac_adh=cost_efa*adh;
+cost_nev_ac_adh=cost_nev*adh;
  
 
 * ADC costs;
@@ -13684,6 +13688,8 @@ tldsw1_elig=0; o_dar_tldsw1 =0; o_dol_tldsw1=0;  onart_tldsw1=0; vl1000_tldsw1=0
 onart_iicu_tldsw1=0; adh_lt80_tldsw1=0; vis_tldsw1=0;
 tldsw2_elig=0; o_dar_tldsw2 =0; o_dol_tldsw2=0;  onart_tldsw2=0; vl1000_tldsw2=0;  vl200_tldsw2=0; dead_tldsw2=0;dead_hiv_tldsw2=0;c_tox_tldsw2=0; r_dol_ge_p5_tldsw2=0;
 onart_iicu_tldsw2=0; adh_lt80_tldsw2=0; vis_tldsw2=0;
+tldsw3_elig=0;  o_dol_tldsw3=0;  	o_dol_tldsw3=0; onart_tldsw3=0; onart_iicu_tldsw3=0;adh_lt80_tldsw3=0;	vl1000_tldsw3=0; 	vl200_tldsw3=0; dead_tldsw3=0;
+dead_hiv_tldsw3=0; 	c_tox_tldsw3=0;	r_dol_ge_p5_tldsw3=0; 	vis_tldsw3=0;
 
 if hiv=1 and naive=0 and dol_pi_fail_by_year_interv ne 1 then do;
 	tldsw_elig=1;
@@ -13717,6 +13723,23 @@ if hiv=1 and naive=0 and dol_pi_fail_by_year_interv ne 1 then do;
 		if r_dol >= 0.5 then r_dol_ge_p5_tldsw1=1;
 		if visit=1 then vis_tldsw1=1;
 	end;
+
+	if no_non_tld_by_year_interv=1 then do;
+		tldsw3_elig=1;
+		if o_dar=1 then o_dar_tldsw3=1;
+		if o_dol=1 then o_dol_tldsw3=1;
+		if onart=1 then onart_tldsw3=1;
+		if onart=1 or int_clinic_not_aw = 1 then onart_iicu_tldsw3=1;
+		if adh < 0.8 or int_clinic_not_aw = 1 then adh_lt80_tldsw3=1;
+		if . < vl < 3.0 then vl1000_tldsw3=1; 
+		if . < vl < 2.3 then vl200_tldsw3=1; 
+		if caldate&j = death then dead_tldsw3=1;
+		if caldate&j = death and dcause=1 then dead_hiv_tldsw3=1;
+		if c_tox=1 then c_tox_tldsw3=1;
+		if r_dol >= 0.5 then r_dol_ge_p5_tldsw3=1;
+		if visit=1 then vis_tldsw3=1;
+	end;
+
 	if any_vfail_by_year_interv = 1 then do;
 		tldsw2_elig=1;
 		if o_dar=1 then o_dar_tldsw2=1;
@@ -13735,13 +13758,14 @@ if hiv=1 and naive=0 and dol_pi_fail_by_year_interv ne 1 then do;
 
 end;
 
-
 uvl2_elig=0; o_dar_uvl2 =0; o_dol_uvl2=0;  onart_uvl2=0; vl1000_uvl2=0;  vl200_uvl2=0; dead_uvl2=0;dead_hiv_uvl2=0;c_tox_uvl2=0; r_dol_ge_p5_uvl2=0;
 adh_ge80_uvl2=0; onart_iicu_uvl2=0; onart_iicu_vl1000_uvl2=0; adh_lt80_uvl2=0; vis_uvl2=0; cd4_lt200_uvl2=0;onart_uvl2=0;
 uvl21_elig=0; o_dar_uvl21 =0; o_dol_uvl21=0;  onart_uvl21=0; vl1000_uvl21=0;  vl200_uvl21=0; dead_uvl21=0;dead_hiv_uvl21=0;c_tox_uvl21=0; r_dol_ge_p5_uvl21=0;
 adh_ge80_uvl21=0; onart_iicu_uvl21=0; adh_lt80_uvl21=0; vis_uvl21=0;cd4_lt200_uvl21=0;
 uvl22_elig=0; o_dar_uvl22 =0; o_dol_uvl22=0;  onart_uvl22=0; vl1000_uvl22=0;  vl200_uvl22=0; dead_uvl22=0;dead_hiv_uvl22=0;c_tox_uvl22=0; r_dol_ge_p5_uvl22=0;
 adh_ge80_uvl22=0; onart_iicu_uvl22=0; adh_lt80_uvl22=0; vis_uvl22=0; cd4_lt200_uvl22=0;
+uvl23_elig=0; o_dar_uvl23 =0; 	o_dol_uvl23=0;	onart_uvl23=0;	onart_iicu_uvl23=0;
+adh_lt80_uvl23=0;	vl1000_uvl23=0; vl200_uvl23=0; 	dead_uvl23=0;dead_hiv_uvl23=0;c_tox_uvl23=0;r_dol_ge_p5_uvl23=0; vis_uvl23=0; cd4_lt200_uvl23 = 0;
 
 if naive=0 and date_last_second_vlg1000 ne . then do;
 	uvl2_elig=1;
@@ -13778,6 +13802,25 @@ if naive=0 and date_last_second_vlg1000 ne . then do;
 		if visit=1 then vis_uvl21=1;
 		if cd4 < 200 then cd4_lt200_uvl21 = 1;
 	end;
+
+	if no_non_tld_by_year_interv=1 then do;
+		uvl23_elig=1;
+		if o_dar=1 then o_dar_uvl23=1;
+		if o_dol=1 then o_dol_uvl23=1;
+		if onart=1 then onart_uvl23=1;
+		if onart=1 or int_clinic_not_aw = 1 then onart_iicu_uvl23=1;
+		if onart_iicu_uvl22 and (adh < 0.8 or int_clinic_not_aw = 1) then adh_lt80_uvl23=1;
+		if . < vl < 3.0 then vl1000_uvl23=1; 
+		if . < vl < 2.3 then vl200_uvl23=1; 
+		if caldate&j = death then dead_uvl23=1;
+		if caldate&j = death and dcause=1 then dead_hiv_uvl23=1;
+		if c_tox=1 then c_tox_uvl23=1;
+		if r_dol >= 0.75 then r_dol_ge_p5_uvl23=1;
+		if visit=1 then vis_uvl23=1;
+		if cd4 < 200 then cd4_lt200_uvl23 = 1;
+
+	end;
+
 	if any_vfail_by_year_interv = 1 then do;
 		uvl22_elig=1;
 		if o_dar=1 then o_dar_uvl22=1;
@@ -15881,6 +15924,16 @@ _dcost_dol = cost_dol * discount;
 _dcost_cab = cost_cab * discount;
 _dcost_len = cost_len * discount;
 
+_dcost_zdv_ac_adh = cost_zdv_ac_adh * discount;
+_dcost_ten_ac_adh = cost_ten_ac_adh * discount;
+_dcost_3tc_ac_adh = cost_3tc_ac_adh * discount;
+_dcost_nev_ac_adh = cost_nev_ac_adh * discount;
+_dcost_lpr_ac_adh = cost_lpr_ac_adh * discount;
+_dcost_dar_ac_adh = cost_dar_ac_adh * discount;
+_dcost_taz_ac_adh = cost_taz_ac_adh * discount;
+_dcost_efa_ac_adh = cost_efa_ac_adh * discount;
+_dcost_dol_ac_adh = cost_dol_ac_adh * discount;
+
 
 _dcost_vl_not_done = cost_vl_not_done * discount; 
 
@@ -17719,6 +17772,16 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_r_dol_ge_p5_uvl22  +  r_dol_ge_p5_uvl22 ;  s_adhl_ge80_uvl22 + adhl_ge80_uvl22;  s_onart_iicu_uvl22 + onart_iicu_uvl22;   s_adh_lt80_uvl22 + adh_lt80_uvl22;
 	s_vis_uvl22  + vis_uvl22 ;  s_cd4_lt200_uvl22 + cd4_lt200_uvl22;
 
+	s_tldsw3_elig  +  tldsw3_elig ; s_o_dol_tldsw3  + o_dol_tldsw3 ;  s_onart_tldsw3  +  onart_tldsw3 ;  s_vl1000_tldsw3 +  vl1000_tldsw3 ;   
+	s_vl200_tldsw3  + vl200_tldsw3  ; s_dead_tldsw3   + dead_tldsw3   ;s_dead_hiv_tldsw3 +   dead_hiv_tldsw3 ;  s_c_tox_tldsw3  + c_tox_tldsw3  ; 
+	s_r_dol_ge_p5_tldsw3  +  r_dol_ge_p5_tldsw3 ;  s_onart_iicu_tldsw3 + onart_iicu_tldsw3;   s_adh_lt80_tldsw3 + adh_lt80_tldsw3;  s_vis_tldsw3 + vis_tldsw3;
+
+	s_uvl23_elig  +  uvl23_elig ;  s_o_dol_uvl23  + o_dol_uvl23 ;  s_onart_uvl23  +  onart_uvl23 ;  s_vl1000_uvl23 +  vl1000_uvl23 ;   
+	s_vl200_uvl23  + vl200_uvl23  ; s_dead_uvl23   + dead_uvl23   ;s_dead_hiv_uvl23 +   dead_hiv_uvl23 ;  s_c_tox_uvl23  + c_tox_uvl23  ; 
+	s_r_dol_ge_p5_uvl23  +  r_dol_ge_p5_uvl23 ;  s_adhl_ge80_uvl23 + adhl_ge80_uvl23;  s_onart_iicu_uvl23 + onart_iicu_uvl23;   s_adh_lt80_uvl23 + adh_lt80_uvl23;
+	s_vis_uvl23  + vis_uvl23 ;  s_cd4_lt200_uvl23 + cd4_lt200_uvl23;
+
+
 	s_dol_pi_failed + dol_pi_failed; 
 
 	s_dead_dol_r_uvl2 + dead_dol_r_uvl2;  s_second_vlg1000_first + second_vlg1000_first; s_second_vlg1000_first_dol_r + second_vlg1000_first_dol_r ;
@@ -18159,6 +18222,11 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_art_1_cost + art_1_cost; s_art_2_cost + art_2_cost;  s_art_3_cost + art_3_cost; s_cost_vl_not_done + cost_vl_not_done; 
 	s_cost_zdv + cost_zdv; s_cost_ten + cost_ten; s_cost_3tc + cost_3tc; s_cost_nev + cost_nev; s_cost_lpr + cost_lpr; 
 	s_cost_dar + cost_dar; s_cost_taz + cost_taz; s_cost_efa + cost_efa; s_cost_dol + cost_dol;  s_cost_cab + cost_cab;  s_cost_len + cost_len; 
+
+	s_cost_zdv_ac_adh + cost_zdv_ac_adh; s_cost_ten_ac_adh + cost_ten_ac_adh; s_cost_3tc_ac_adh + cost_3tc_ac_adh; s_cost_nev_ac_adh + cost_nev_ac_adh; 
+	s_cost_lpr_ac_adh + cost_lpr_ac_adh; 
+	s_cost_dar_ac_adh + cost_dar_ac_adh; s_cost_taz_ac_adh + cost_taz_ac_adh; s_cost_efa_ac_adh + cost_efa_ac_adh; s_cost_dol_ac_adh + cost_dol_ac_adh; 
+
 	s_cost_non_aids_pre_death + cost_non_aids_pre_death ; s_drug_level_test_cost + drug_level_test_cost;
 	s_cost_child_hiv + cost_child_hiv;  s_cost_child_hiv_mo_art + cost_child_hiv_mo_art;
 	s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;  
@@ -18177,6 +18245,11 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
    	s_dart_1_cost + _dart_1_cost ; s_dart_2_cost + _dart_2_cost ; s_dart_3_cost + _dart_3_cost ; s_dcost_vl_not_done + _dcost_vl_not_done ;	
 	s_dcost_zdv + _dcost_zdv; s_dcost_ten + _dcost_ten; s_dcost_3tc + _dcost_3tc; s_dcost_nev + _dcost_nev; s_dcost_lpr + _dcost_lpr; 
 	s_dcost_dar + _dcost_dar; s_dcost_taz + _dcost_taz; s_dcost_efa + _dcost_efa; s_dcost_dol + _dcost_dol; s_dcost_cab + _dcost_cab; s_dcost_len + _dcost_len; 
+
+	s_dcost_zdv_ac_adh + dcost_zdv_ac_adh; s_dcost_ten_ac_adh + dcost_ten_ac_adh; s_dcost_3tc_ac_adh + dcost_3tc_ac_adh; s_dcost_nev_ac_adh + dcost_nev_ac_adh; 
+	s_dcost_lpr_ac_adh + dcost_lpr_ac_adh; 
+	s_dcost_dar_ac_adh + dcost_dar_ac_adh; s_dcost_taz_ac_adh + dcost_taz_ac_adh; s_dcost_efa_ac_adh + dcost_efa_ac_adh; s_dcost_dol_ac_adh + dcost_dol_ac_adh; 
+
 	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
  	s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ;
 	s_dcost_hypert_vis + _dcost_hypert_vis; s_dcost_hypert_drug + _dcost_hypert_drug;  
@@ -19516,6 +19589,10 @@ s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tld
 s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p5_uvl22 
 s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2 s_cd4_lt200_uvl22
 
+s_tldsw3_elig  s_o_dol_tldsw3    s_onart_tldsw3    s_vl1000_tldsw3 	s_vl200_tldsw3  s_dead_tldsw3  s_dead_hiv_tldsw3  s_c_tox_tldsw3  s_r_dol_ge_p5_tldsw3 
+s_uvl23_elig   s_o_dol_uvl23    s_onart_uvl23    s_vl1000_uvl23 	s_vl200_uvl23  s_dead_uvl23  s_dead_hiv_uvl23  s_c_tox_uvl23  s_r_dol_ge_p5_uvl23 
+s_adhl_ge80_uvl23 s_onart_iicu_tldsw3 s_adh_lt80_tldsw3  s_onart_iicu_uvl23 s_adh_lt80_uvl23 s_vis_uvl23  s_vis_tldsw3 s_cd4_lt200_uvl23
+
 s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
@@ -19576,7 +19653,12 @@ s_cost_prep_visit_oral s_cost_prep_visit_cab  s_cost_prep_visit_len s_cost_prep_
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
-s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len 	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  
+
+ s_cost_zdv_ac_adh 	 s_cost_ten_ac_adh			s_cost_3tc_ac_adh  	   s_cost_nev_ac_adh   
+s_cost_lpr_ac_adh 	  s_cost_dar_ac_adh  	s_cost_taz_ac_adh 	  s_cost_efa_ac_adh  s_cost_dol_ac_adh 
+
+s_cost_cab  s_cost_len 	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
 s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
@@ -19586,7 +19668,12 @@ s_dcost_prep_vr  s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_c
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
-s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol s_dcost_cab s_dcost_len 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol s_dcost_cab s_dcost_len 	
+
+ s_dcost_zdv_ac_adh 	 s_dcost_ten_ac_adh			s_dcost_3tc_ac_adh  	   s_dcost_nev_ac_adh   
+s_dcost_lpr_ac_adh 	  s_dcost_dar_ac_adh  	s_dcost_taz_ac_adh 	  s_dcost_efa_ac_adh  s_dcost_dol_ac_adh 
+
+s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
@@ -20520,6 +20607,10 @@ s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tld
 s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p5_uvl22 
 s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2 s_cd4_lt200_uvl22
 
+s_tldsw3_elig  s_o_dol_tldsw3    s_onart_tldsw3    s_vl1000_tldsw3 	s_vl200_tldsw3  s_dead_tldsw3  s_dead_hiv_tldsw3  s_c_tox_tldsw3  s_r_dol_ge_p5_tldsw3 
+s_uvl23_elig   s_o_dol_uvl23    s_onart_uvl23    s_vl1000_uvl23 	s_vl200_uvl23  s_dead_uvl23  s_dead_hiv_uvl23  s_c_tox_uvl23  s_r_dol_ge_p5_uvl23 
+s_adhl_ge80_uvl23 s_onart_iicu_tldsw3 s_adh_lt80_tldsw3  s_onart_iicu_uvl23 s_adh_lt80_uvl23 s_vis_uvl23  s_vis_tldsw3 s_cd4_lt200_uvl23
+
 s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
@@ -20581,8 +20672,7 @@ s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
 s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
-
-				   
+		   
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
 s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_cab  s_dcost_prep_len  s_dcost_prep_vr 
@@ -20592,6 +20682,11 @@ s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_li
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol s_dcost_cab s_dcost_len	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
+
+ s_cost_zdv_ac_adh 	 s_cost_ten_ac_adh			s_cost_3tc_ac_adh  	   s_cost_nev_ac_adh   
+s_cost_lpr_ac_adh 	  s_cost_dar_ac_adh  	s_cost_taz_ac_adh 	  s_cost_efa_ac_adh  s_cost_dol_ac_adh 
+ s_dcost_zdv_ac_adh 	 s_dcost_ten_ac_adh			s_dcost_3tc_ac_adh  	   s_dcost_nev_ac_adh   
+s_dcost_lpr_ac_adh 	  s_dcost_dar_ac_adh  	s_dcost_taz_ac_adh 	  s_dcost_efa_ac_adh  s_dcost_dol_ac_adh 
 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
@@ -24964,6 +25059,10 @@ s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tld
 s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p5_uvl22 
 s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2  s_cd4_lt200_uvl22
 
+s_tldsw3_elig  s_o_dol_tldsw3    s_onart_tldsw3    s_vl1000_tldsw3 	s_vl200_tldsw3  s_dead_tldsw3  s_dead_hiv_tldsw3  s_c_tox_tldsw3  s_r_dol_ge_p5_tldsw3 
+s_uvl23_elig   s_o_dol_uvl23    s_onart_uvl23    s_vl1000_uvl23 	s_vl200_uvl23  s_dead_uvl23  s_dead_hiv_uvl23  s_c_tox_uvl23  s_r_dol_ge_p5_uvl23 
+s_adhl_ge80_uvl23 s_onart_iicu_tldsw3 s_adh_lt80_tldsw3  s_onart_iicu_uvl23 s_adh_lt80_uvl23 s_vis_uvl23  s_vis_tldsw3 s_cd4_lt200_uvl23
+
 s_dol_pi_failed
 
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
@@ -25027,6 +25126,11 @@ s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len 	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
 s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
+
+ s_cost_zdv_ac_adh 	 s_cost_ten_ac_adh			s_cost_3tc_ac_adh  	   s_cost_nev_ac_adh   
+s_cost_lpr_ac_adh 	  s_cost_dar_ac_adh  	s_cost_taz_ac_adh 	  s_cost_efa_ac_adh  s_cost_dol_ac_adh 
+ s_dcost_zdv_ac_adh 	 s_dcost_ten_ac_adh			s_dcost_3tc_ac_adh  	   s_dcost_nev_ac_adh   
+s_dcost_lpr_ac_adh 	  s_dcost_dar_ac_adh  	s_dcost_taz_ac_adh 	  s_dcost_efa_ac_adh  s_dcost_dol_ac_adh 
 
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 

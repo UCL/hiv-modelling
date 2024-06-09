@@ -158,6 +158,16 @@ ddol_cost = s_dcost_dol * &sf * 4 / 1000;
 dcab_cost = s_dcost_cab * &sf * 4 / 1000;
 dlen_cost = s_dcost_len * &sf * 4 / 1000;
 
+dzdv_cost_ac_adh = s_dcost_zdv_ac_adh * &sf * 4 / 1000;
+dten_cost_ac_adh = s_dcost_ten_ac_adh * &sf * 4 / 1000;
+d3tc_cost_ac_adh = s_dcost_3tc_ac_adh * &sf * 4 / 1000; 
+dnev_cost_ac_adh = s_dcost_nev_ac_adh * &sf * 4 / 1000;
+dlpr_cost_ac_adh = s_dcost_lpr_ac_adh * &sf * 4 / 1000;
+ddar_cost_ac_adh = s_dcost_dar_ac_adh * &sf * 4 / 1000;
+dtaz_cost_ac_adh = s_dcost_taz_ac_adh * &sf * 4 / 1000;
+defa_cost_ac_adh = s_dcost_efa_ac_adh * &sf * 4 / 1000;
+ddol_cost_ac_adh = s_dcost_dol_ac_adh * &sf * 4 / 1000;
+
 if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_prep_oral=. then s_dcost_prep_oral=0;
 
@@ -1018,6 +1028,23 @@ run;
 * p_vis_uvl22;					p_vis_uvl22 = s_vis_uvl21 / s_uvl22_elig;
 * p_tldsw2_elig_tldsw;			p_tldsw2_elig_tldsw = s_tldsw2_elig / s_tldsw_elig ;
 
+* prop_artexp_elig_tldsw3;		prop_artexp_elig_tldsw3 = s_tldsw3_elig / s_artexp;
+* prop_tldsw3_uvl23;			prop_tldsw3_uvl23 = s_uvl23_elig / s_tldsw3_elig;
+* prop_tldsw3_elig_vl1000;		prop_tldsw3_elig_vl1000 = s_vl1000_tldsw3 / s_tldsw3_elig;
+* prop_uvl23_vl1000;			prop_uvl23_vl1000 =  s_vl1000_uvl23 /  s_uvl23_elig ;
+* prop_tldsw3_o_dar;			prop_tldsw3_o_dar = s_o_dar_tldsw3 / s_tldsw3_elig;
+* prop_r_dol_ge_p5_uvl23;		prop_r_dol_ge_p5_uvl23 =  s_r_dol_ge_p5_uvl23 /  s_uvl23_elig ;
+* n_dead_hiv_uvl23;				n_dead_hiv_uvl23 = n_dead_hiv_uvl23 * &sf * 4;
+* p_adh_lt80_iicu_tldsw3;		p_adh_lt80_iicu_tldsw3 = s_adh_lt80_tldsw3 / s_onart_iicu_tldsw3 ;
+* p_onart_iicu_tldsw3; 			p_onart_iicu_tldsw3=  s_onart_iicu_tldsw3	/ s_tldsw3_elig;
+* p_onart_iicu_uvl23; 			p_onart_iicu_uvl23=  s_onart_iicu_uvl23	/ s_uvl23_elig;
+* p_adh_lt80_iicu_tldsw3;		p_adh_lt80_iicu_tldsw3 = s_adh_lt80_tldsw3 / s_onart_iicu_tldsw3 ;
+* p_adh_lt80_iicu_uvl23 ;		p_adh_lt80_iicu_uvl23  = s_adh_lt80_uvl23  / s_onart_iicu_uvl23  ;
+* p_vis_tldsw3;					p_vis_tldsw3 = s_vis_tldsw3 / s_tldsw3_elig;
+* p_vis_uvl23;					p_vis_uvl23 = s_vis_uvl21 / s_uvl23_elig;
+* p_tldsw3_elig_tldsw;			p_tldsw3_elig_tldsw = s_tldsw3_elig / s_tldsw_elig ;
+
+
 * n_incident_r_dol;				n_incident_r_dol = s_incident_r_dol * 4 *&sf ;
 * p_hivpos_new_dol_r;			p_hivpos_new_dol_r = s_incident_r_dol / s_hivge15 ;
 * n_uvl2_elig;					n_uvl2_elig = s_uvl2_elig * 4 * &sf ;
@@ -1268,6 +1295,10 @@ p_adh_lt80_iicu_tldsw1   p_onart_iicu_tldsw1   p_onart_iicu_uvl21   p_adh_lt80_i
 prop_artexp_elig_tldsw2  prop_tldsw2_uvl22 prop_tldsw2_elig_vl1000 prop_uvl22_vl1000 prop_tldsw2_o_dar prop_r_dol_ge_p5_uvl22
 p_adh_lt80_iicu_tldsw2   p_onart_iicu_tldsw2   p_onart_iicu_uvl22   p_adh_lt80_iicu_tldsw2   p_adh_lt80_iicu_uvl22 p_vis_tldsw2 p_vis_uvl22
 p_tldsw2_elig_tldsw
+
+prop_artexp_elig_tldsw3  prop_tldsw3_uvl23 prop_tldsw3_elig_vl1000 prop_uvl23_vl1000 prop_tldsw3_o_dar prop_r_dol_ge_p5_uvl23
+p_adh_lt80_iicu_tldsw3   p_onart_iicu_tldsw3   p_onart_iicu_uvl23   p_adh_lt80_iicu_tldsw3   p_adh_lt80_iicu_uvl23 p_vis_tldsw3 p_vis_uvl23
+p_tldsw3_elig_tldsw
 
 p_o_dar_uvl2_onart
 
@@ -1537,8 +1568,14 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prop_artexp_elig_tldsw2);  %var(v=prop_tldsw2_uvl22);  %var(v=prop_tldsw2_elig_vl1000); %var(v=prop_uvl22_vl1000); %var(v=prop_tldsw2_o_dar); 
 %var(v=p_adh_lt80_iicu_tldsw2);   %var(v=p_onart_iicu_tldsw2);   %var(v=p_onart_iicu_uvl22);   %var(v=p_adh_lt80_iicu_tldsw2);   %var(v=p_adh_lt80_iicu_uvl22); 
 %var(v=p_vis_tldsw2); %var(v=p_vis_uvl22); %var(v=prop_r_dol_ge_p5_uvl22);  %var(v=p_dol_2vg1000_dolr1);  %var(v=hiv_death_rate_uvl2);
-%var(v=p_hivpos_new_dol_r);  %var(v=n_incident_r_dol);  %var(v=n_dead_hivrel_onart); %var(v=p_cd4_lt200_uvl2); %var(v=n_uvl2_elig); %var(v=p_o_dar_uvl2);
-%var(v=p_o_dol_uvl2);
+%var(v=p_hivpos_new_dol_r);  %var(v=n_incident_r_dol);  %var(v=n_dead_hivrel_onart);%var(v=p_o_dol_uvl2);
+
+%var(v=prop_artexp_elig_tldsw3);  %var(v=prop_tldsw3_uvl23);  %var(v=prop_tldsw3_elig_vl1000); %var(v=prop_uvl23_vl1000); %var(v=prop_tldsw3_o_dar); 
+%var(v=p_adh_lt80_iicu_tldsw3);   %var(v=p_onart_iicu_tldsw3);   %var(v=p_onart_iicu_uvl23);   %var(v=p_adh_lt80_iicu_tldsw3);   %var(v=p_adh_lt80_iicu_uvl23); 
+%var(v=p_vis_tldsw3); %var(v=p_vis_uvl23); %var(v=prop_r_dol_ge_p5_uvl23);  
+
+%var(v=p_cd4_lt200_uvl2); %var(v=n_uvl2_elig); %var(v=p_o_dar_uvl2);
+
 %var(v=s_o_dol_2nd_vlg1000); %var(v=s_vl1000_art_gt6m_iicu);  %var(v=p_first_uvl2_dol_r);  %var(v= deathr_dol_r_uvl2);  %var(v=p_tldsw2_elig_tldsw);
 
 %var(v=p_len);  %var(v=p_cab);  %var(v=p_len_1524);  %var(v=p_cab_1524);  %var(v=p_onart_1524);   %var(v=incidence1524);  %var(v=p_onart_vl1000_w_1524);   
@@ -1590,6 +1627,9 @@ p_adh_lt80_iicu_tldsw   p_onart_iicu_tldsw   p_onart_iicu_uvl2   p_adh_lt80_iicu
 
 prop_artexp_elig_tldsw1  prop_tldsw1_uvl21 prop_tldsw1_elig_vl1000 prop_uvl21_vl1000 prop_tldsw1_o_dar prop_r_dol_ge_p5_uvl21
 p_adh_lt80_iicu_tldsw1   p_onart_iicu_tldsw1   p_onart_iicu_uvl21   p_adh_lt80_iicu_tldsw1   p_adh_lt80_iicu_uvl21 p_vis_tldsw1 p_vis_uvl21
+
+prop_artexp_elig_tldsw3  prop_tldsw3_uvl23 prop_tldsw3_elig_vl1000 prop_uvl23_vl1000 prop_tldsw3_o_dar prop_r_dol_ge_p5_uvl23
+p_adh_lt80_iicu_tldsw3   p_onart_iicu_tldsw3   p_onart_iicu_uvl23   p_adh_lt80_iicu_tldsw3   p_adh_lt80_iicu_uvl23 p_vis_tldsw3 p_vis_uvl23
 
 prop_artexp_elig_tldsw2  prop_tldsw2_uvl22 prop_tldsw2_elig_vl1000 prop_uvl22_vl1000 prop_tldsw2_o_dar prop_r_dol_ge_p5_uvl22
 p_adh_lt80_iicu_tldsw2   p_onart_iicu_tldsw2   p_onart_iicu_uvl22   p_adh_lt80_iicu_tldsw2   p_adh_lt80_iicu_uvl22 p_vis_tldsw2 p_vis_uvl22
