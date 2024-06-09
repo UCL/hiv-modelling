@@ -1039,16 +1039,17 @@ else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; en
 * drug costs are perhaps 10% higher due to supply chain but for monitoring comparison this will not differ by option;
 *cost of the following drugs updated in July 2014 based on MSF report, without including cost of supply chain;
 
+
 * all * dependent_on_time_step_length ;
 cost_zdv_a=(0.068/4)*1.2; * chai 2022  ;
-cost_3tc_a=(0.015/4)*1.2; * jul 19 - south africa tender ;
-cost_ten_a=(0.028/4)*1.2; * jul 19 - south africa tender ;
+cost_3tc_a=(0.012/4)*1.2; * jun 24 chai ;
+cost_ten_a=(0.021/4)*1.2; * jun 24 chai ;
 cost_taf = (0.018/4)*1.2;
 cost_nev_a=(0.027/4)*1.2; * chai 2017 market report - global fund price;   
 cost_efa_a=(0.019/4)*1.2; * chai 2022 - $62 for tle   ;
 cost_lpr_a=(0.152/4)*1.2;                     
 cost_taz_a=(0.133/4)*1.2;   * chai 2022 zl-taz 216 ;
-cost_dol_a=(0.011/4)*1.2;   * chai 2022 - $54 for tld;
+cost_dol_a=(0.009/4)*1.2;  * june 202 chai - $42 for tld;
 cost_dar_a=(0.210/4)*1.2;	
 prep_cab_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost; 
 prep_len_drug_cost = (0.030 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost; 
