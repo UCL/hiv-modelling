@@ -1,19 +1,11 @@
 
 
 
-* reconsider relative potency of dar and dol
-
-* $200 for resistance test
-
-* should be considering atazanavir ?
+* $200 for resistance test (make clear that cost of resistance test accounts for the chance of failure of amplification)
 
 * sensitivity analysis in which cost of drug (esp darunavir) is dependent on adherence
 
 * make sure can break down the % with dol res in 2024 according to prior failure / ever any prior regimen other than tld
-
-* have different effects of different insti mutations
-
-* lower visit costs ?
 
 * consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
 
@@ -21,11 +13,9 @@
 
 * consider atazanavir as the PI ?
 
-* switching could include doubling the dose of dol if resistance testing indicates low or moderate dol resistance ?
+* switching could include doubling the dose of dol if resistance testing indicates low or moderate dol resistance ? (discussion point only)
 
 * consider also cost of national committees making decision on switch ?
-
-* make clear that cost of resistance test accounts for the chance of failure of amplification
 
 * modify tld drug costs ?
 
@@ -463,7 +453,7 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0;
-* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.25 0.75);		
+* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0  1); * changed to 1 after discussion with jonathan schapiro;		
 																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
 * len_higher_potency;		%sample(len_higher_potency, 0.5 1 , 0.25 0.75);	
 * efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
@@ -623,7 +613,7 @@ newp_seed = 7;
 								0.20	0.40	0.20	0.20);
 * prop_bmi_ge23;			%sample_uniform(prop_bmi_ge23, 0.5 0.75);
 * nnrti_res_no_effect; 		%sample(nnrti_res_no_effect, 0 0.25 0.5, 0.75 0.2 0.05);
-* res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.5 0.75, 0.5 0.5 ); * tld_switch;
+* res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.5 0.75, 0.5 0.5 ); * tld_switch; * for dol this applies to 118 and 263, for 118 it applies with 0.25 added; 
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
 
@@ -1079,8 +1069,8 @@ cost_crypm_proph = 0.020 ; * placeholder ;
 cost_sbi_proph = 0.020 ; * azithro - placeholder ; 
 
 cot_cost_a=(.005/4);
-vis_cost_a=(.020); 
-redn_in_vis_cost_vlm_supp = 0.010 ;
+vis_cost_a=(.010);  * changed june 24 as a result of BU cost data;
+redn_in_vis_cost_vlm_supp = 0.005 ;
 extra_vis_cost_cab_len_a = 0.015 ; * the additional cost of clinic visits per 3 months if on la cab len treatment 
 -(cost is less than separate additional costs if on cab or len as prep as both done in same visit);
 cost_child_hiv_a = 0.030; 
@@ -7314,7 +7304,8 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 *INSTIs;
 
 * dol;
-	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_dol = res_level_dol_cab_mut;
+	if  e_in118m=1 then r_dol = max(1, 0.25 + res_level_dol_cab_mut) ; * note changed june 24 so that 140 and 155 no influence alone;
+	if (e_in118m=1 or e_in263m=1) then r_dol = res_level_dol_cab_mut; * note changed june 24 so that 140 and 155 no influence alone;
 	if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_dol = 1.00;
 
 
@@ -7741,7 +7732,10 @@ visit_tm1=visit;
 	if prep_cab=0 and prep_cab_tm1=1 then tss_cab=0;	
 	if prep_len=0 and prep_len_tm1=1 then tss_len=0;	
 
-	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;
+
+	* dol;
+	if  e_in118m=1 then r_dol = max(1, 0.25 + res_level_dol_cab_mut) ; * note changed june 24 so that 140 and 155 no influence alone;
+	if (e_in118m=1 or e_in263m=1) then r_dol = res_level_dol_cab_mut; * note changed june 24 so that 140 and 155 no influence alone;
 	if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_dol = 1.00;
 	if e_ca66m=1 then r_len=res_level_len_mut;
 
@@ -11458,8 +11452,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 
 * dol;
-      if (e_in118m=1 or e_in140m=1 or e_in148m=1  or e_in155m=1 or e_in263m=1) then r_dol=0.75;
-	  if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_dol = 1.00;
+	if  e_in118m=1 then r_dol = max(1, 0.25 + res_level_dol_cab_mut) ; * note changed june 24 so that 140 and 155 no influence alone;
+	if (e_in118m=1 or e_in263m=1) then r_dol = res_level_dol_cab_mut; * note changed june 24 so that 140 and 155 no influence alone;
+	if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_dol = 1.00;
 
 * cab;
       if (e_in118m=1 or e_in140m=1 or e_in148m=1   or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut; 
