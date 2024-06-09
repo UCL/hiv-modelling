@@ -7732,11 +7732,7 @@ visit_tm1=visit;
 	if prep_cab=0 and prep_cab_tm1=1 then tss_cab=0;	
 	if prep_len=0 and prep_len_tm1=1 then tss_len=0;	
 
-
-	* dol;
-	if  e_in118m=1 then r_dol = max(1, 0.25 + res_level_dol_cab_mut) ; * note changed june 24 so that 140 and 155 no influence alone;
-	if (e_in118m=1 or e_in263m=1) then r_dol = res_level_dol_cab_mut; * note changed june 24 so that 140 and 155 no influence alone;
-	if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_dol = 1.00;
+	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;
 	if e_ca66m=1 then r_len=res_level_len_mut;
 
 	o_cab_or_o_cab_tm1=0;  o_cab_or_o_cab_tm1_no_r=0;  o_cab_or_o_cab_tm1_no_r_prim=0; 
