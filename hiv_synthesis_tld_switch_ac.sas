@@ -1,23 +1,24 @@
 
 
 
-* $200 for resistance test (make clear that cost of resistance test accounts for the chance of failure of amplification)
-
-* sensitivity analysis in which cost of drug (esp darunavir) is dependent on adherence
-
 * make sure can break down the % with dol res in 2024 according to prior failure / ever any prior regimen other than tld
 
 * consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
 
 * run as additional analysis with strategies only applying to those with no previous virologic failure, or those with no previous art experience before tld
 
-* consider atazanavir as the PI ?
+* make sure can do sensitivity analysis in which cost of drugs (esp darunavir) is dependent on adherence
+
+
+
+
+* consider atazanavir as the PI ? - do sensitivity analysis around darunavir cost
+
+* $200 for resistance test (make clear that cost of resistance test accounts for the chance of failure of amplification) consider also cost of national committees making decision on switch ?
 
 * switching could include doubling the dose of dol if resistance testing indicates low or moderate dol resistance ? (discussion point only)
 
-* consider also cost of national committees making decision on switch ?
 
-* modify tld drug costs ?
 
 
 
@@ -1047,14 +1048,14 @@ else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; en
 
 * all * dependent_on_time_step_length ;
 cost_zdv_a=(0.068/4)*1.2; * chai 2022  ;
-cost_3tc_a=(0.015/4)*1.2; * jul 19 - south africa tender ;
-cost_ten_a=(0.028/4)*1.2; * jul 19 - south africa tender ;
+cost_3tc_a=(0.012/4)*1.2; * jun 24 chai ;
+cost_ten_a=(0.021/4)*1.2; * jun 24 chai ;
 cost_taf = (0.018/4)*1.2;
 cost_nev_a=(0.027/4)*1.2; * chai 2017 market report - global fund price;   
 cost_efa_a=(0.019/4)*1.2; * chai 2022 - $62 for tle   ;
 cost_lpr_a=(0.152/4)*1.2;                     
 cost_taz_a=(0.133/4)*1.2;   * chai 2022 zl-taz 216 ;
-cost_dol_a=(0.011/4)*1.2;   * chai 2022 - $54 for tld;
+cost_dol_a=(0.009/4)*1.2;  * june 202 chai - $42 for tld;
 cost_dar_a=(0.210/4)*1.2;	
 prep_cab_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost; 
 prep_len_drug_cost = (0.030 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost; 
