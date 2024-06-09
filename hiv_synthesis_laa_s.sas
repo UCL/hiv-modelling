@@ -1,20 +1,9 @@
 
 
 
-
-* adjust costs to avoid having to do this in create_wide_file
-
-* also add in effect of offering len-cab in bringing people back into care ?
-
 * note loading dose of len (oral) when start or restart (extra cost);
 
 * written notes in sideboard drawer;
-
-* modify tld drug costs;
-
-* update tld cost to $50;
-
-
 
 * fyi for future: note gender_spec_prep_cab_eff and gender_spec_prep_len_eff ;
 
@@ -1066,8 +1055,8 @@ cost_crypm_proph = 0.020 ; * placeholder ;
 cost_sbi_proph = 0.020 ; * azithro - placeholder ; 
 
 cot_cost_a=(.005/4);
-vis_cost_a=(.020); 
-redn_in_vis_cost_vlm_supp = 0.010 ;
+vis_cost_a=(.010); 
+redn_in_vis_cost_vlm_supp = 0.005 ;
 vis_cost_cab_len_a = 0.020 ; * the additional cost of clinic visits per 3 months if on la cab len treatment 
 -(cost is less than separate additional costs if on cab or len as prep as both done in same visit);
 cost_child_hiv_a = 0.030; 
