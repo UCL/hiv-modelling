@@ -433,7 +433,7 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0;
-* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.25 0.75);		
+* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0    1   ); * changed  june 24 after discussion with jonathan schapiro;
 																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
 * len_higher_potency;		%sample(len_higher_potency, 0.5 1 , 0.25 0.75);	
 * efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
@@ -597,7 +597,7 @@ newp_seed = 7;
 								0.20	0.40	0.20	0.20);
 * prop_bmi_ge23;			%sample_uniform(prop_bmi_ge23, 0.5 0.75);
 * nnrti_res_no_effect; 		%sample(nnrti_res_no_effect, 0 0.25 0.5, 0.75 0.2 0.05);
-* res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.5 0.75 1.00, 0.2 0.6 0.2 ); * tld_switch;
+* res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.5 0.75, 0.5 0.5 ); * tld_switch; * for dol this applies to 118 and 263, for 118 it applies with 0.25 added; 
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 
 * lencab_uptake_vlg1000;		%sample_uniform(lencab_uptake_vlg1000, 0.3 0.5 0.7 0.9); 
@@ -7265,7 +7265,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 *INSTIs;
 
 * dol;
-	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_dol = res_level_dol_cab_mut;
+	if  e_in118m=1 then r_dol = max(1, 0.25 + res_level_dol_cab_mut) ; * note changed june 24 so that 140 and 155 no influence alone;
+	if (e_in118m=1 or e_in263m=1) then r_dol = res_level_dol_cab_mut; * note changed june 24 so that 140 and 155 no influence alone;
+	if (e_in118m + e_in140m + e_in148m + e_in155m + e_in263m) >= 2 then r_dol = 1.00;
 
 * cab;
 	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;
