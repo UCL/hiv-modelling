@@ -7,7 +7,7 @@ libname b "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified 
 
 libname c "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\art_retention\art_ret_out\";
 
-libname d "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\art_retention\art_retention_20_10_21_a\";
+libname d "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\art_retention\art_retention_20_10_21_a_out\";
 
 
 * libname a '/home/rmjlaph/';
@@ -1703,7 +1703,7 @@ run;
 
 proc export data = a.art_re_20_10_21_a_xlsx
   dbms=xlsx 
-  outfile = "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\art_retention\output_20_10_21_a" replace;
+  outfile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\art_retention\output_20_10_21_a" replace;
 run;
 
 
