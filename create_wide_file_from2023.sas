@@ -12,8 +12,12 @@ if cald=. or run=. then delete;run;
 proc contents data=a.base_from2023_20240523;run;
 ods html close;
 ods listing;
+proc freq data=a.base_from2023_20240523;
+table s_sw_inprog_ly;where option=0;run;
 
-*The following ouputs were not available when preparing the graphs comparing with other models;
+proc freq data=a.base_from2023_20240523;
+table s_sw_inprog_ly;where option=1;run;
+*The following ouputs were not available when preparing the graphs comparing with other models in Feb;
 /*
 proc freq data=a.base_from2023_20240523;
 table option cald run
@@ -55,6 +59,7 @@ so I do think it is OK to overwrite them;
 *The following output was not available when preparing the graphs comparing with other models;
 /*proc freq data=a.base_from2023_20240523;
 table s_prep_inj_sw;where option=24;run;*/
+
 
 data a.base_from2023_20240523;set a.base_from2023_20240523;
 if option=1 then do;*minimal;
