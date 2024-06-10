@@ -4625,11 +4625,14 @@ run;
 %mend;
 %wide(0);
 %wide(1);
+%wide(2);
+%wide(4);
 %wide(10);
-%wide(11);
+*%wide(11);
 %wide(12);
 %wide(15);
 %wide(16);
+/*
 %wide(17);
 %wide(18);
 %wide(19);
@@ -4639,7 +4642,7 @@ run;
 %wide(23);
 %wide(24);
 %wide(25);
-%wide(26);
+%wide(26);*/
 /*
 proc freq data=wide_allyears_0;
 table p50_n_pmtct_0 p50_n_everpregn_w1524__0
@@ -5035,11 +5038,14 @@ P50_n_pmtct_&o
 %mend;
 %flow(o=0);
 %flow(o=1);
+%flow(o=2);
+%flow(o=4);
 %flow(o=10);
-%flow(o=11);
+*%flow(o=11);
 %flow(o=12);
 %flow(o=15);
 %flow(o=16);
+/*
 %flow(o=17);
 %flow(o=18);
 %flow(o=19);
@@ -5050,7 +5056,7 @@ P50_n_pmtct_&o
 %flow(o=24);
 %flow(o=25);
 %flow(o=26);
-
+*/
 PROC export data=wide_allyears_out_0 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="Base_FLOW";  RUN;
 PROC export data=wide_allyears_out_1 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
@@ -5067,11 +5073,12 @@ sheet="SBCC_FLOW";  RUN;*/
 PROC export data=wide_allyears_out_12 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="CMMC_FLOW";  RUN;
 
-/*
+
 PROC export data=wide_allyears_out_15 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_F1524_FLOW";  RUN;
 PROC export data=wide_allyears_out_16 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_FSW1599_FLOW";  RUN;
+/*
 PROC export data=wide_allyears_out_17 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;
 sheet="TDFPrEP_SDCA1599_FLOW";  RUN;
 PROC export data=wide_allyears_out_18 outFILE= "&pth_export_mihpsa\MIHPSAZimP2_SYNTHESIS_20240523" dbms=xlsx REPLACE;

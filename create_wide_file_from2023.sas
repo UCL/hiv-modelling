@@ -102,7 +102,7 @@ by run cald option;run;
 *Locations of file up to end 2022;
 libname c "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v21_2024May23_end2022_out_out_";
 data a.base_to2022_20240523;   set c.out:;
-proc freq data=a.base_to2022_20240523; table run cald option;run;
+/*proc freq data=a.base_to2022_20240523; table run cald option;run;*/
 
 data a.base_to2022_20240523;set a.base_to2022_20240523;
 if cald=. then delete;
@@ -1385,11 +1385,12 @@ dcost_80 ddaly_80
 
 
 proc sort data=y;by run option;run;
+*270000;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_from2023_20240523; set y;
 if cald=. then delete;run;
-*60010;
+*270000;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
