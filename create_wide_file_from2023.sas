@@ -79,14 +79,15 @@ proc freq data=a.base_from2023_20240523; table run cald option;run;
 proc freq data=a.base_from2023_20240523; table option*cald/norow nocol nopercent;run;
 *run refers to the dataset they are starting from
  We have the following simulations starting from 2023 up to 2072.75:
-	50 simulations  (5 for each of the 10 dataset) for option 0 (note that SBCC is not final)
-	50 simulations  (5 for each of the 10 dataset) for option 1
-	50 simulations  (5 for each of the 10 dataset) for option 2
-	50 simulations  (5 for each of the 10 dataset) for option 4
-	50 simulations  (5 for each of the 10 dataset) for option 10
-	0  simulations  (0 for each of the 10 dataset) for option 11
-	50 simulations  (5 for each of the 10 dataset) for option 12
-	0  simulations  (0 for each of the 10 dataset) for option 15
+	100 simulations  (5 for each of the 20 dataset) for option 0 (note that SBCC is not final)
+	100 simulations  (5 for each of the 20 dataset) for option 1
+	100 simulations  (5 for each of the 20 dataset) for option 2
+	100 simulations  (5 for each of the 20 dataset) for option 4
+	100 simulations  (5 for each of the 20 dataset) for option 10
+	100 simulations  (5 for each of the 20 dataset) for option 11
+	100 simulations  (5 for each of the 20 dataset) for option 12
+	100 simulations  (0 for each of the 20 dataset) for option 15
+
 	0   simulations (0 for each of the 10 dataset) for option 16-25
 	0   simulations (0 for each of the 10 datasets) for option 26;
 
@@ -391,6 +392,11 @@ so the one above is the annual number of tests conducted in ANC;
 * n_tested1st_pd;				n_tested1st_pd = s_tested1st_pd * sf * 4;*VCMar2023;
 * n_tested_sbcc;				n_tested_sbcc = s_tested_sbcc_program * sf * 4;*VCDec2023;
 
+* n_self_tested;				n_self_tested = s_self_tested * sf * 4; 
+* n_self_tested_m;				n_self_tested_m = s_self_tested_m * sf * 4;  
+* n_self_tested_w;				n_self_tested_w = s_self_tested_w * sf * 4;  
+* n_tested_due_to_st;			n_tested_due_to_st = s_tested_due_to_self_test * sf * 4; 
+
 * n_diagnosed;					n_diagnosed = s_diag_this_period * sf * 4;
 * n_diag_m;						n_diag_m = s_diag_this_period_m * sf * 4;*VCMay2023;
 * n_diag_w;						n_diag_w = s_diag_this_period_f * sf * 4;*VCMay2023;
@@ -400,7 +406,10 @@ so the one above is the annual number of tests conducted in ANC;
 * n_diag_anclabpd;				n_diag_anclabpd = s_diag_thisper_anclabpd * sf * 4;*VCMay2023;
 * n_diag_progsw; 				n_diag_progsw = s_diag_thisper_progsw * sf * 4;*VCMay2023;
 * n_diag_sw; 					n_diag_sw = s_diag_thisper_sw * sf * 4;*VCMay2023;
-* n_diag_sympt;			n_diag_sympt = (s_diag_this_period_m_sympt + s_diag_this_period_f_sympt) * sf * 4;*VCFeb2024;
+* n_diag_sympt;					n_diag_sympt = (s_diag_this_period_m_sympt + s_diag_this_period_f_sympt) * sf * 4;*VCFeb2024;
+* n_diag_self_test;				n_diag_self_test = s_diagnosed_self_test * sf * 4;
+
+
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 * test_proppos_m;			 	if s_tested_m gt 0 then test_proppos_m = s_diag_this_period_m / s_tested_m;*VCMay2023;
@@ -1223,7 +1232,9 @@ ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtc
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_tested_swprog n_tested_anc n_tested_ancpd n_test_anclabpd n_tested_m_sympt n_tested_w_sympt
 n_tested_anc_prevdiag
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd n_tested1st_anc n_tested1st_labdel n_tested1st_pd
+n_self_tested 	n_self_tested_m  n_self_tested_w n_tested_due_to_st			
 p_anc n_diagnosed n_diag_m n_diag_w n_diag_anc n_diag_labdel  n_diag_pd  n_diag_anclabpd  n_diag_progsw  n_diag_sw n_diag_sympt 
+n_diag_self_test
 p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_covid  n_death_covid n_death 
 n_death_m n_death_w n_death_hivrel n_death_hivrel_m n_death_hivrel_w /*p_death_hivrel_age_le64 */
