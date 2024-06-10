@@ -1391,13 +1391,12 @@ run;
   merge   wide_outputs  wide_par  ; 
   by run;
 
-if p_onart_artexp_20_0 < 0.9642;
+if p_onart_artexp_20_0 < 0.98  ;
 
 
 proc contents; run;
 
 proc freq; tables run; run;
-
 
 
 data r; set a.wide_art_re_20_10_21_a; 
