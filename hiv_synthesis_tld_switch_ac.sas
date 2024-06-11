@@ -2,6 +2,17 @@
 
 
 
+* assume resistance testing not 100% sensitive ;
+
+
+
+
+
+
+
+
+
+
 * run as additional analysis with strategies only applying to those with no previous virologic failure, or those with no previous art experience before tld
 
 * consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
