@@ -1,18 +1,6 @@
 
 
 
-
-* assume resistance testing not 100% sensitive ;
-
-
-
-
-
-
-
-
-
-
 * run as additional analysis with strategies only applying to those with no previous virologic failure, or those with no previous art experience before tld
 
 * consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
@@ -592,6 +580,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 * pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  );   * tld_switch ;      
 * pr_res_len;				%sample_uniform(pr_res_len, 0.005  0.01  0.02  0.05);   
+* sens_res_test;			%sample_uniform(sens_res_test, 0.9   0.95  0.99); 
 * incr_len_res_mono;		incr_len_res_mono = 10 ;
 * rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1 1.5 2  );
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
@@ -11016,9 +11005,11 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 				drug_level_test_adh_low=0; if measured_adh <= 0.8 then drug_level_test_adh_low = 1; 
 			end; * these new variable used for outputs only;
 
+			v=rand('uniform');	
+
 			if second_vlg1000=1 and (art_monitoring_strategy = 150 or (art_monitoring_strategy = 1500 and caldate{t} = date_drug_level_test and adh > 0.8) or 
-			(art_monitoring_strategy = 160 and date_res_test_tld = caldate{t} and r_dol > 0) or 
-			(art_monitoring_strategy = 1600 and adh > 0.8 and r_dol > 0  and date_res_test_tld = caldate{t} and caldate{t} = date_drug_level_test)) then do;
+			(art_monitoring_strategy = 160 and date_res_test_tld = caldate{t} and r_dol > 0 and v < sens_res_test) or 
+			(art_monitoring_strategy = 1600 and adh > 0.8 and r_dol > 0  and v < sens_res_test and date_res_test_tld = caldate{t} and caldate{t} = date_drug_level_test)) then do;
 				r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; date_f_dol=caldate{t}; if linefail_tm1 = 0 then linefail = 1;
 				if linefail_tm1 = 1 then linefail = 2;
 				if o_zdv=1 then f_zdv=1;
@@ -19855,7 +19846,7 @@ p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency  prop_bmi_ge23 pr_res_dol eff_pr_res_len incr_len_res_mono
-cab_time_to_lower_threshold_g len_time_to_lower_threshold_g
+cab_time_to_lower_threshold_g len_time_to_lower_threshold_g  sens_res_test
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program  sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
@@ -25322,7 +25313,7 @@ p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono
-cab_time_to_lower_threshold_g  len_time_to_lower_threshold_g
+cab_time_to_lower_threshold_g  len_time_to_lower_threshold_g  sens_res_test
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75  death_r_iris_pop_wide_tld
 sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
