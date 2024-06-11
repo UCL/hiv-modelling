@@ -1835,9 +1835,9 @@ proc sort; by run;run;
 
 
 
-* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\hpe_a_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_c_out\";
 
-data f; set b.w_hpe_e;
+data f; set b.w_hpe_c;
 
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
 
@@ -1945,6 +1945,12 @@ where prevalence_vg1000_a50y_1 < 0.05;
 run;
 
 ods html close;
+
+
+
+proc print data=f noobs; var run;
+where incidence1549_24 > 0.25 and prevalence_vg1000_a50y_1 < 0.003; run;
+
 
 
 proc sort; by prevalence_vg1000_24;
