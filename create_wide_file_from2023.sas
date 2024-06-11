@@ -89,12 +89,10 @@ proc freq data=a.base_from2023_20240523; table option*cald/norow nocol nopercent
 	100 simulations  (5 for each of the 20 dataset) for option 2
 	100 simulations  (5 for each of the 20 dataset) for option 4
 	100 simulations  (5 for each of the 20 dataset) for option 10
-	100 simulations  (5 for each of the 20 dataset) for option 11
+	0   simulations  (0 for each of the 20 dataset) for option 11
 	100 simulations  (5 for each of the 20 dataset) for option 12
 	100 simulations  (0 for each of the 20 dataset) for option 15
-
-	0   simulations (0 for each of the 10 dataset) for option 16-25
-	0   simulations (0 for each of the 10 datasets) for option 26;
+	100 simulations (0 for each of the 10 dataset) for option 16-26;
 
 
 
@@ -1390,12 +1388,12 @@ dcost_80 ddaly_80
 
 
 proc sort data=y;by run option;run;
-*270000;
+*360000;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_from2023_20240523; set y;
 if cald=. then delete;run;
-*270000;
+*360000;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w

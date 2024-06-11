@@ -99,7 +99,6 @@ proc means max data=b;var count_csim cald;where option=12;run;*100;
 
 proc means max data=b;var count_csim cald;where option=15;run;*100;
 proc means max data=b;var count_csim cald;where option=16;run;*100;
-
 proc means max data=b;var count_csim cald;where option=17;run;*100;
 proc means max data=b;var count_csim cald;where option=18;run;*100;
 proc means max data=b;var count_csim cald;where option=19;run;*100;
@@ -526,7 +525,7 @@ data a.d_from2023;set d;run;
 ***Graphs comparing observed data to outputs for Status quo 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V21_20240523_from2023_100sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\UCL Dropbox\Valentina Cambiano\MIHPSA Zimbabwe\Synthesis Findings\V21_20240523_from2023_100sim.doc' startpage=never; 
 
 *1 - Minimal;
 *15 - PrEP in AGYW;
@@ -2422,7 +2421,7 @@ ods rtf close;run;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V20_CheckSBCC&CMMC_20240523_300sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\UCL Dropbox\Valentina Cambiano\MIHPSA Zimbabwe\Synthesis Findings\V21_20240523_from2023_CheckSBCC&CMMC_100sim.doc' startpage=never; 
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_sbcc_visit_1524m";
@@ -2473,8 +2472,8 @@ series  x=cald y=p50_n_sbcc_visit_1524__0/	lineattrs = (color=black thickness = 
 band    x=cald lower=p5_n_sbcc_visit_1524__0 	upper=p95_n_sbcc_visit_1524__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_sbcc_visit_1524__1/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_sbcc_visit_1524__1 	upper=p95_n_sbcc_visit_1524__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_sbcc_visit_1524__11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_sbcc_visit_1524__11 	upper=p95_n_sbcc_visit_1524__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_sbcc_visit_1524__11/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_sbcc_visit_1524__11 	upper=p95_n_sbcc_visit_1524__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter  x=cald y=o_n_reached_sbcc_1024/	markerattrs = (color=red ) ;
 scatter  x=cald y=target_n_reached_sbcc_1524/	markerattrs = (color=darkred );
 run;quit;
@@ -2492,8 +2491,8 @@ series  x=cald y=p50_n_sbcc_visit_2564__0/	lineattrs = (color=black thickness = 
 band    x=cald lower=p5_n_sbcc_visit_2564__0 	upper=p95_n_sbcc_visit_2564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_sbcc_visit_2564__1/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_sbcc_visit_2564__1 	upper=p95_n_sbcc_visit_2564__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_sbcc_visit_2564__11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_sbcc_visit_2564__11 	upper=p95_n_sbcc_visit_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_sbcc_visit_2564__11/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_sbcc_visit_2564__11 	upper=p95_n_sbcc_visit_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter  x=cald y=o_n_reached_sbcc_2564/	markerattrs = (color=red) ;
 scatter  x=cald y=target_n_reached_sbcc_2564/	markerattrs = (color=darkred) ;
 run;quit;
@@ -2511,8 +2510,8 @@ series  x=cald y=p50_n_tested_sbcc_1524m_0/	lineattrs = (color=black thickness =
 band    x=cald lower=p5_n_tested_sbcc_1524m_0 	upper=p95_n_tested_sbcc_1524m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_tested_sbcc_1524m_1/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_tested_sbcc_1524m_1 	upper=p95_n_tested_sbcc_1524m_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_tested_sbcc_1524m_11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_1524m_11 	upper=p95_n_tested_sbcc_1524m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_tested_sbcc_1524m_11/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_tested_sbcc_1524m_11 	upper=p95_n_tested_sbcc_1524m_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter  x=cald y=o_n_tested_sbcc_1024m/	markerattrs = (color=red ) ;
 run;quit;
 
@@ -2528,8 +2527,8 @@ series  x=cald y=p50_n_tested_sbcc_1524w_0/	lineattrs = (color=black thickness =
 band    x=cald lower=p5_n_tested_sbcc_1524w_0 	upper=p95_n_tested_sbcc_1524w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_tested_sbcc_1524w_1/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_tested_sbcc_1524w_1 	upper=p95_n_tested_sbcc_1524w_1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_tested_sbcc_1524w_11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_1524w_11 	upper=p95_n_tested_sbcc_1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_tested_sbcc_1524w_11/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_tested_sbcc_1524w_11 	upper=p95_n_tested_sbcc_1524w_11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter  x=cald y=o_n_tested_sbcc_1024w/	markerattrs = (color=red ) ;
 run;quit;
 
@@ -2545,8 +2544,8 @@ series  x=cald y=p50_n_tested_sbcc_2564__0/	lineattrs = (color=black thickness =
 band    x=cald lower=p5_n_tested_sbcc_2564__0 	upper=p95_n_tested_sbcc_2564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_tested_sbcc_2564__1/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_tested_sbcc_2564__1 	upper=p95_n_tested_sbcc_2564__1  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_tested_sbcc_2564__11/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_tested_sbcc_2564__11 	upper=p95_n_tested_sbcc_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_tested_sbcc_2564__11/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_tested_sbcc_2564__11 	upper=p95_n_tested_sbcc_2564__11  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter  x=cald y=o_n_tested_sbcc_2564/	markerattrs = (color=red ) ;
 run;quit;
 /*
