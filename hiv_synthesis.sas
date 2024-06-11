@@ -985,15 +985,15 @@ else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; en
 
 * all * dependent_on_time_step_length ;
 cost_zdv_a=(0.068/4)*1.2; * chai 2022  ;
-cost_3tc_a=(0.015/4)*1.2; * jul 19 - south africa tender ;
-cost_ten_a=(0.028/4)*1.2; * jul 19 - south africa tender ;
+cost_3tc_a=(0.012/4)*1.2; * jun 24 chai ;
+cost_ten_a=(0.021/4)*1.2; * jun 24 chai ;
 cost_taf = (0.018/4)*1.2;
 cost_nev_a=(0.027/4)*1.2; * chai 2017 market report - global fund price;   
 cost_efa_a=(0.019/4)*1.2; * chai 2022 - $62 for tle   ;
 cost_lpr_a=(0.152/4)*1.2;                     
 cost_taz_a=(0.133/4)*1.2;   * chai 2022 zl-taz 216 ;
-cost_dol_a=(0.011/4)*1.2;   * chai 2022 - $54 for tld;
-cost_dar_a=(0.210/4)*1.2;	
+cost_dol_a=(0.009/4)*1.2;  * june 2024 chai - $42 for tld;
+cost_dar_a=(0.210/4)*1.2;		
 tb_cost_a=(.050); * todo: this cost to be re-considered;
 cot_cost_a=(.005/4);
 vis_cost_a=(.020); 
