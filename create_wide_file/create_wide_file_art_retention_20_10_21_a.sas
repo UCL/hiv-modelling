@@ -1391,7 +1391,7 @@ run;
   merge   wide_outputs  wide_par  ; 
   by run;
 
-if p_onart_artexp_20_0 < 0.98  ;
+if p_onart_artexp_20_0 < 0.9777 ; * to give n=250;
 
 
 proc contents; run;
