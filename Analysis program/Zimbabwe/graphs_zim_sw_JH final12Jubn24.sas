@@ -145,31 +145,48 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw =(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
-*The inprog and noprog are only caclauted for 18-39 in the main file;
+
+***Graph for CROI poster;
 * incidence_sw1839_;			if (s_sw_1839  - s_hiv_sw1839_  + s_primary_sw1839_) gt 0 then incidence_sw1839_ =(s_primary_sw1839_ * 4 * 100) / (s_sw_1839  - s_hiv_sw1839_  + s_primary_sw1839_);
-* incidence_sw_inprog;			if (s_sw_inprog  - s_sw_hiv_inprog  + s_primary_sw_inprog) gt 0 then incidence_sw_inprog =(s_primary_sw_inprog * 4 * 100) / (s_sw_inprog  - s_sw_hiv_inprog  + s_primary_sw_inprog);
-* incidence_sw_noprog;			if (s_sw_noprog  - s_sw_hiv_noprog  + s_primary_sw_noprog) gt 0 then incidence_sw_noprog =(s_primary_sw_noprog * 4 * 100) / (s_sw_noprog  - s_sw_hiv_noprog  + s_primary_sw_noprog);
+* incidence_sw_inprog1839_;		if (s_sw_inprog1839_  - s_sw_hiv_inprog1839_  + s_primary_sw_inprog1839_) gt 0 then incidence_sw_inprog1839_ =(s_primary_sw_inprog1839_ * 4 * 100) / (s_sw_inprog1839_  - s_sw_hiv_inprog1839_  + s_primary_sw_inprog1839_);
+* incidence_sw_noprog1839_;		if (s_sw_noprog1839_  - s_sw_hiv_noprog1839_  + s_primary_sw_noprog1839_) gt 0 then incidence_sw_noprog1839_ =(s_primary_sw_noprog1839_ * 4 * 100) / (s_sw_noprog1839_  - s_sw_hiv_noprog1839_  + s_primary_sw_noprog1839_);
 
 ***To smooth incidence lines, take averages across 4 periods;
 lag1_inc_sw=lag(incidence_sw1839_); lag2_inc_sw=lag2(incidence_sw1839_); lag3_inc_sw=lag3(incidence_sw1839_);
-lag1_inc_sw_inprog=lag(incidence_sw_inprog); lag2_inc_sw_inprog=lag2(incidence_sw_inprog); lag3_inc_sw_inprog=lag3(incidence_sw_inprog);
-lag1_inc_sw_noprog=lag(incidence_sw_noprog); lag2_inc_sw_noprog=lag2(incidence_sw_noprog); lag3_inc_sw_noprog=lag3(incidence_sw_noprog);
+lag1_inc_sw_inprog=lag(incidence_sw_inprog1839_); lag2_inc_sw_inprog=lag2(incidence_sw_inprog1839_); lag3_inc_sw_inprog=lag3(incidence_sw_inprog1839_);
+lag1_inc_sw_noprog=lag(incidence_sw_noprog1839_); lag2_inc_sw_noprog=lag2(incidence_sw_noprog1839_); lag3_inc_sw_noprog=lag3(incidence_sw_noprog1839_);
 
 if cald=int(cald) then cald_yr=cald;
 
 if cald_yr ne . then do;
-mean_sw_inc =(incidence_sw1839_ + lag1_inc_sw + lag2_inc_sw + lag3_inc_sw)/4;
-mean_sw_inc_inprog = (incidence_sw_inprog + lag1_inc_sw_inprog + lag2_inc_sw_inprog + lag3_inc_sw_inprog)/4;
-mean_sw_inc_noprog = (incidence_sw_noprog + lag1_inc_sw_noprog + lag2_inc_sw_noprog + lag3_inc_sw_noprog)/4;
+mean_sw_inc1839_ =(incidence_sw1839_ + lag1_inc_sw + lag2_inc_sw + lag3_inc_sw)/4;
+mean_sw_inc_inprog1839_ = (incidence_sw_inprog + lag1_inc_sw_inprog + lag2_inc_sw_inprog + lag3_inc_sw_inprog)/4;
+mean_sw_inc_noprog1839_ = (incidence_sw_noprog + lag1_inc_sw_noprog + lag2_inc_sw_noprog + lag3_inc_sw_noprog)/4;
 end;
 
+***Outputs for Harriet's paper;
+* incidence_sw1924_;			if (s_sw_1924  - s_hiv_sw1924_  + s_primary_sw1924_) gt 0 then incidence_sw1924_ =(s_primary_sw1924_ * 4 * 100) / (s_sw_1924  - s_hiv_sw1924_  + s_primary_sw1924_);
+* incidence_sw_inprog1924_;		if (s_sw_inprog1924_  - s_sw_hiv_inprog1924_  + s_primary_sw_inprog1924_) gt 0 then incidence_sw_inprog1924_ =(s_primary_sw_inprog1924_ * 4 * 100) / (s_sw_inprog1924_  - s_sw_hiv_inprog1924_  + s_primary_sw_inprog1924_);
+* incidence_sw_noprog1924_;		if (s_sw_noprog1924_  - s_sw_hiv_noprog1924_  + s_primary_sw_noprog1924_) gt 0 then incidence_sw_noprog1924_ =(s_primary_sw_noprog1924_ * 4 * 100) / (s_sw_noprog1924_  - s_sw_hiv_noprog1924_  + s_primary_sw_noprog1924_);
+
+* incidence_sw2539_;			if (s_sw_2539  - s_hiv_sw2539_  + s_primary_sw2539_) gt 0 then incidence_sw2539_ =(s_primary_sw2539_ * 4 * 100) / (s_sw_2539  - s_hiv_sw2539_  + s_primary_sw2539_);
+* incidence_sw_inprog2539_;		if (s_sw_inprog2539_  - s_sw_hiv_inprog2539_  + s_primary_sw_inprog2539_) gt 0 then incidence_sw_inprog2539_ =(s_primary_sw_inprog2539_ * 4 * 100) / (s_sw_inprog2539_  - s_sw_hiv_inprog2539_  + s_primary_sw_inprog2539_);
+* incidence_sw_noprog2539_;		if (s_sw_noprog2539_  - s_sw_hiv_noprog2539_  + s_primary_sw_noprog2539_) gt 0 then incidence_sw_noprog2539_ =(s_primary_sw_noprog2539_ * 4 * 100) / (s_sw_noprog1924_  - s_sw_hiv_noprog1924_  + s_primary_sw_noprog1924_);
+
+* prevalence_sw1824_;			prevalence_sw1824_ = s_hiv_sw1824_ / s_sw_1824; 
+* prevalence_sw_inprog_1824_;	prevalence_sw_inprog_1824_ = s_sw_hiv_inprog1824_/s_sw_inprog1824_;
+* prevalence_sw_noprog_1824_;	prevalence_sw_noprog_1824_ = s_sw_hiv_noprog1824_/s_sw_noprog1824_;
+
+* prevalence_sw2539_;			prevalence_sw2539_ = s_hiv_sw2539_ / s_sw_2539; 
+* prevalence_sw_inprog_2539_;	prevalence_sw_inprog_2539_ = s_sw_hiv_inprog2539_/s_sw_inprog2539_;
+* prevalence_sw_noprog_2539_;	prevalence_sw_noprog_2539_ = s_sw_hiv_noprog2539_/s_sw_noprog2539_;
 
 
 run;
 
+proc print;var s_sw_inprog s_sw_hiv_inprog  s_primary_sw_inprog;where cald=2012;run;
 
-
-proc means mean p50;var incidence_sw incidence_sw_inprog mean_sw_inc_inprog;where cald in (2012, 2012.25, 2012.5, 2012.75);run;
+proc means mean p50;var mean_sw_inc_inprog;where cald =2012;run;
 
 proc sort; by cald run ;run;
 
@@ -192,11 +209,18 @@ p_actdur_sw_0to3_  p_actdur_sw_3to5_  p_actdur_sw_6to9_  p_actdur_sw_10to19_
 p_totdur_sw_0to3_  p_totdur_sw_3to5_  p_totdur_sw_6to9_  p_totdur_sw_10to19_
 p_fsw_newp0_  av_sw_newp  p_newp_sw
 
-p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
-prevalence_sw  incidence_sw p_sti_sw incidence1549_
-prop_sw_onprep_prog prop_sw_onprep_noprog
-p_diag_sw_inprog	incidence_sw_inprog	incidence_sw_noprog mean_sw_inc mean_sw_inc_inprog mean_sw_inc_noprog
-p_diag_w p_diag_m p_diag prevalence1549_;
+p_sw_prog_vis  		n_tested_sw  prop_sw_onprep p_diag_sw  		p_onart_diag_sw 	 p_onart_vl1000_sw
+prevalence_sw  		incidence_sw p_sti_sw 		incidence1549_  prop_sw_onprep_prog  prop_sw_onprep_noprog
+mean_sw_inc1839_ 	mean_sw_inc_inprog1839_ 	mean_sw_inc_noprog1839_
+incidence_sw1839_	incidence_sw_inprog1839_	incidence_sw_noprog1839_ 
+incidence_sw1924_	incidence_sw_inprog1924_	incidence_sw_noprog1924_ 
+incidence_sw2539_	incidence_sw_inprog2539_	incidence_sw_noprog2539_ 
+prevalence_sw1824_	prevalence_sw_inprog_1824_	prevalence_sw_noprog_1824_
+prevalence_sw2539_	prevalence_sw_inprog_2539_	prevalence_sw_noprog_2539_
+p_diag_w p_diag_m p_diag prevalence1549_
+
+
+;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro transpose;
@@ -589,21 +613,21 @@ title    height=1.5 justify=center "HIV incidence amongst female sex workers (FS
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2012 to 2024 by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 30 by 5)    valueattrs=(size=10);
 
-label mean_mean_sw_inc  = "Incidence amongst all female sex workers";
-label mean_mean_sw_inc_inprog  = "Incidence amongst female sex workers attending a sex-worker program";
-label mean_mean_sw_inc_noprog  = "Incidence amongst female sex workers not attending a sex-worker program";
+label mean_mean_sw_inc1839_  = "Incidence amongst all female sex workers";
+label mean_mean_sw_inc_inprog1839_  = "Incidence amongst female sex workers attending a sex-worker program";
+label mean_mean_sw_inc_noprog1839_  = "Incidence amongst female sex workers not attending a sex-worker program";
 label o_HIVIncid_fsw = "JH JAIDS";
 label o_HIVIncid1824_fsw= "18-24 SAli";
 label o_HIVIncid2539_fsw= "25-39 SAli";
 label o_HIVIncid_fsw_dreams = "DREAMS";
 label o_HIVIncid1539_fsw_hj = "15-39 HJones";
 
-series  x=cald y=mean_mean_sw_inc /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_mean_sw_inc  upper=p95_mean_sw_inc / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for incidence amongst all sex workers ";
-series  x=cald y=mean_mean_sw_inc_inprog /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_mean_sw_inc_inprog  upper=p95_mean_sw_inc_inprog / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range for incidence amongst sex workers attendng a program";
-series  x=cald y=mean_mean_sw_inc_noprog /  lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_mean_sw_inc_noprog  upper=p95_mean_sw_inc_noprog / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range for incidence amongst sex workers not attending a program";
+series  x=cald y=mean_mean_sw_inc1839_ /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_mean_sw_inc1839_  upper=p95_mean_sw_inc1839_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for incidence amongst all sex workers ";
+series  x=cald y=mean_mean_sw_inc_inprog1839_ /  lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_mean_sw_inc_inprog1839_  upper=p95_mean_sw_inc_inprog1839_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range for incidence amongst sex workers attendng a program";
+series  x=cald y=mean_mean_sw_inc_noprog1839_ /  lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_mean_sw_inc_noprog1839_  upper=p95_mean_sw_inc_noprog1839_ / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range for incidence amongst sex workers not attending a program";
 /*
 scatter x=cald y=o_HIVIncid_fsw / markerattrs = (symbol=circle       color=blue size = 12);
 scatter x=cald y=o_HIVIncid1824_fsw / markerattrs = (symbol=circle       color=green size = 12);
@@ -613,9 +637,9 @@ scatter x=cald y=o_HIVIncid1539_fsw_hj / markerattrs = (symbol=circle       colo
 */
 run;quit;
 
-proc means  data=e;var mean_mean_sw_inc_inprog p50_mean_sw_inc_inprog;where cald=2012;run;
+proc means  data=e;var mean_mean_sw_inc_inprog1839_ ;where cald=2012;run;
 
-proc means data=e;var mean_mean_sw_inc_inprog;where cald=2022;run;
+proc means data=e;var mean_mean_sw_inc_inprog1839_;where cald=2022;run;
 
 proc sgplot data=e; 
 
