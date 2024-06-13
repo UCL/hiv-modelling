@@ -15,9 +15,9 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9: ;
 
-%let laprv =  dcp_cab_z  ;
+%let laprv =  dcp_cab_aa  ;
 
-data b.k_dcp_cab_z;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_dcp_cab_aa;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -25,7 +25,7 @@ run;
 */
 
 
-proc sort data=b.k_dcp_cab_z; 
+proc sort data=b.k_dcp_cab_aa; 
 by run cald option;
 run;
 
@@ -33,7 +33,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_dcp_cab_z ;
+set b.k_dcp_cab_aa ;
 
 if cald=2023   ;
 s_alive = s_alive_m + s_alive_w ;
@@ -53,7 +53,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_dcp_cab_z sf;
+merge b.k_dcp_cab_aa sf;
 by run ;
 
 
@@ -1580,7 +1580,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  b.w_dcp_cab_z     ; 
+  data  b.w_dcp_cab_aa     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1595,7 +1595,7 @@ proc sort; by run;run;
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_aa_out\";
 
-data g; set b.w_dcp_cab_z ;
+data g; set b.w_dcp_cab_aa ;
 
 if incidence1549_24 ge 0.1;
 
@@ -2215,6 +2215,14 @@ title 'Which policy is cost-effective for each model run';
 
 proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost; run; 
 
+
+ods html close;
+
+
+
+
+/*
+
 proc freq; tables incidence1549_24_g * ce_dcp_in_cab_context ; run; 
 
 proc freq; tables prop_elig_dcp_20y_4 prop_elig_dcp_20y_4_g * ce_dcp_in_cab_context ;
@@ -2232,15 +2240,12 @@ proc logistic desc;
 model ce_dcp_no_cab = incidence1549_24 ; 
 run;
 
-
-
-
-
-
-
-
-
 ods html close;
+
+
+*/
+
+
 
 
 
