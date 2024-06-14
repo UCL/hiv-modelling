@@ -1815,7 +1815,8 @@ p_tested_past_year_1549w_24
 p_tested_past_year_1549m_24 
 p_elig_prep_24 
 prop_elig_on_prep_24 
-prop_1564_onprep_24 
+prop_1564_onprep_24
+n_prep_any_24
 prevalence1549w_24 
 prevalence1549m_24 
 incidence1549w_24 
