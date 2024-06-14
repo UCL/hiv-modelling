@@ -590,7 +590,7 @@ newp_seed = 7;
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 
 * lencab_uptake_vlg1000;		%sample_uniform(lencab_uptake_vlg1000, 0.3 0.5 0.7 0.9); 
-* lencab_uptake;			%sample_uniform(lencab_uptake, 0.001 0.003 0.01 0.03); 
+* lencab_uptake;			%sample_uniform(lencab_uptake, 0.001 0.003 0.01 0.03 0.05 0.1); 
 
 * rate_return_for_lencab;  %sample_uniform(rate_return_for_lencab, 0.3 0.5 0.7 0.9); 
 * prob_strong_pref_lencab;	 %sample_uniform(prob_strong_pref_lencab, 0.05 0.1 0.2 0.5 );  
