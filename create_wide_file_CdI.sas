@@ -8,21 +8,12 @@ set a.cdi_03jun24;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
-data a1;
-set a;
-* prop_sw_hiv;					if s_sw_1564 gt 0 then prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
-
-high=0;if prop_sw_hiv >=0.5 then high=1;
-proc freq;table prop_sw_hiv;run;
-
-proc logistic;class sw_trans_matrix; model high= sw_trans_matrix;run;
-
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 set a;
 
-if cald=2024; 
-s_alive = s_alive_m + s_alive_w ;
+if cald=2022; 
+*s_alive = s_alive_m + s_alive_w ;
 
 * https://worldpopulationreview.com/countries/ivory-coast-population
 * 58% of CdI population in 2022 >= age 15 (https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=CI&view=chart);
@@ -33,7 +24,7 @@ s_alive = s_alive_m + s_alive_w ;
 **Population accoding to World Population Prospectus;
 *https://population.un.org/dataportal/data/indicators/70/locations/384/start/1990/end/2023/line/linetimeplot?df=fedb2c36-7339-4cea-982e-6339bd045666;
 *Total population - 0-14 population;
-sf_2022 = (28160000 - 11680000)/s_alive;
+sf_2022 = (13977488.5)/s_alive1549;
 keep run sf_2022;
 
 proc sort; by run;
@@ -309,6 +300,10 @@ s_alive = s_alive_m + s_alive_w ;
 * incidence1564;                incidence1564_ = (s_primary * 4 * 100) / (s_alive1564  - s_hiv1564  + s_primary);
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
+* incidence1549_per1000;		incidence1549_per1000_ = (s_primary1549 * 4 * 1000) / (s_alive1549  - s_hiv1549  + s_primary1549);
+* incidence1549w_per1000;		incidence1549w_per1000_ = (s_primary1549w * 4 * 1000) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
+* incidence1549m_per1000;		incidence1549m_per1000_ = (s_primary1549m * 4 * 1000) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
+
 * incidence1524w;				incidence1524w = ((s_primary1519w + s_primary2024w) * 4 * 100) / 
 									(s_ageg1519w + s_ageg2024w - s_hiv1519w - s_hiv2024w + s_primary1519w + s_primary2024w);
 * incidence1524m;				incidence1524m = ((s_primary1519m + s_primary2024m) * 4 * 100) / 
@@ -401,6 +396,9 @@ s_alive = s_alive_m + s_alive_w ;
 
 * n_cd4_lt200;					n_cd4_lt200_ = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_hiv;						n_hiv = s_hivge15_ * &sf;
+* n_hiv_m;						n_hiv_m = s_hivge15m * &sf;
+* n_hiv_w;						n_hiv_w = s_hivge15w * &sf;
+
 * n_hiv1549_;					n_hiv1549_ = s_hiv1549 * &sf;
 * n_hiv1549m;					n_hiv1549m = s_hiv1549m * &sf;
 * n_hiv1549w;					n_hiv1549w = s_hiv1549w * &sf;
@@ -442,6 +440,7 @@ prevalence1524w		prevalence1524m		prevalence2549w		prevalence2549m		prevalence_h
 incidence1549_		incidence1564_		incidence1549m		incidence1549w		
 incidence1524m		incidence1524w		incidence2534m		incidence2534w		incidence3544m		incidence3544w		
 incidence4554m		incidence4554w		incidence5564m		incidence5564w	
+incidence1549_per1000_	incidence1549m_per1000_  incidence1549w_per1000_
 p_inf_vlsupp		p_inf_ep			p_inf_newp			p_inf_naive			p_inf_primary		p_inf_diag	
 p_diag_m			p_diag_w			p_diag1549_			p_diag1549m			p_diag1549w			p_artexp_diag	
 p_onart_diag		p_artexp_diag		p_onart_diag_m		p_onart_diag_w
@@ -450,11 +449,12 @@ p_efa				p_taz				p_ten				p_zdv				p_dol		p_3tc	p_lpr		p_nev
 p_onart_m			p_onart_w			p_onart				p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w	
 p_vg1000_			p_vl1000_			prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m	
 n_death_hiv_w		n_death_hiv			rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
-n_cd4_lt200_		n_hiv				n_hiv1549_			n_hiv1549m			n_hiv1549w			n_alive			n_alive1549_	
+n_cd4_lt200_		n_hiv  				n_hiv_m				n_hiv_w				n_hiv1549_			n_hiv1549m			n_hiv1549w			n_alive			n_alive1549_	
 n_alive1549m		n_alive1549w		n_alive_m			n_alive_w			n_alive1564_		n_alive1564m	n_alive1564w
 n_art_start_y		n_newinf			n_newinf1549_		n_newinf1549m		n_newinf1549w		n_pregnant		n_prep 			
 n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_				n_prep_oral_ever_sw prop_sw_hiv1549_
-sw_trans_matrix		;
+sw_trans_matrix		
+;
 
 proc sort data=y;by run option;run;
 

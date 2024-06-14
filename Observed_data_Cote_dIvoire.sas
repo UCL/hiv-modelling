@@ -24,7 +24,7 @@ if cald=2050 then do;o_pop15plus=51.4*0.58;end;
 if cald=2060 then do;o_pop15plus=60.3*0.58;end;
 if cald=2070 then do;o_pop15plus=68.9*0.58;end;
 
-o_pop1564=o_pop1564*1000000;o_pop1564m=o_pop1564m*1000000;o_pop1564=o_pop1564w*1000000;o_pop15plus_=o_pop15plus_*1000000;
+o_pop1564=o_pop1564*1000000;o_pop1564m=o_pop1564m*1000000;o_pop1564w=o_pop1564w*1000000;o_pop15plus=o_pop15plus*1000000;
 
 *Calibrated to World Population prospectus;
 
