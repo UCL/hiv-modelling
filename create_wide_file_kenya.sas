@@ -1425,6 +1425,9 @@ proc contents data=a.w_base_kenya_w;
 run;
 
 
+proc freq data=a.w_base_kenya_w;  tables incidence1549m_17 incidence1549w_17 ; run; 
+
+
 
 
 
