@@ -1856,8 +1856,8 @@ proc sort; by run;run;
 data b;
 set b.w_tld_switch_ac  ;
 
-if p_dol_2vg1000_dolr1_24 < 0.4;
-if p_onart_vl1000_24 < 0.98088;
+* if p_dol_2vg1000_dolr1_24 < 0.4;
+* if p_onart_vl1000_24 < 0.98;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1881,9 +1881,17 @@ d_n_iime_50y_5_1 = n_iime_50y_5 -   n_iime_50y_1 ;
 
 d_deathr_dol_r_uvl2_10y_3_1 = deathr_dol_r_uvl2_10y_3 - deathr_dol_r_uvl2_10y_1; 
 
-* sensitivity analysis with lower res test cost;
-* dres_cost_50y_3 = dres_cost_50y_3 * 5;
-* dres_cost_50y_4 = dres_cost_50y_4 * 5;
+
+
+
+* change this below from version ad ;
+
+
+
+
+* program has res_test cost $100 and we want to assume $100 as baseline;
+  dres_cost_50y_3 = dres_cost_50y_3 * 2;
+  dres_cost_50y_4 = dres_cost_50y_4 * 2;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -2238,14 +2246,21 @@ ods html close;
 
 
 proc glm; 
-model d_netdaly500_3_1 = p_onart_vl1000_24 p_artexp_dol_pi_failed_24 ; 
+model d_netdaly500_3_1 = p_onart_vl1000_24 p_artexp_dol_pi_failed_24 p_dol_2vg1000_dolr1_24; 
 
 run; 
 
 proc logistic;
-model lowest_netdaly_1_3 = p_onart_vl1000_24 p_artexp_dol_pi_failed_24; 
+model lowest_netdaly_1_3 = p_onart_vl1000_24 p_artexp_dol_pi_failed_24 ; 
 
 run;
+
+
+proc glm;
+model d_n_death_hiv_50y_5_1 = /* pr_res_dol */ n_death_hiv_24  p_dol_2vg1000_dolr1_10y_5 ; run;
+
+
+
 
 * p_dol_2vg1000_dolr1_24 adh_pattern p_iime_24 prevalence_vg1000_24;
 
