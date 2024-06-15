@@ -4,25 +4,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ac_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ad_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ac_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ad_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_ac;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_ad;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_tld_switch_ac; 
+proc sort data=b.k_tld_switch_ad; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_tld_switch_ac ;
+set b.k_tld_switch_ad ;
 
 
 if cald=2024   ;
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_tld_switch_ac sf;
+merge b.k_tld_switch_ad sf;
 by run ;
 
 
@@ -1381,9 +1381,9 @@ run;
 
 
 
-data    b.l_tld_switch_ac; set y;  
+data    b.l_tld_switch_ad; set y;  
 
-data y ; set b.l_tld_switch_ac; 
+data y ; set b.l_tld_switch_ad; 
 
   options nomprint;
   option nospool;
@@ -1843,7 +1843,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_ac     ; 
+  data  b.w_tld_switch_ad     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1851,10 +1851,10 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ac_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ad_out\";
 
 data b;
-set b.w_tld_switch_ac  ;
+set b.w_tld_switch_ad  ;
 
 * if p_dol_2vg1000_dolr1_24 < 0.4;
 * if p_onart_vl1000_24 < 0.98;
@@ -2184,7 +2184,7 @@ ods html close;
 
 
 ods html;
-proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost  lowest_dcost_1_3 lowest_netdaly_1_3 lowest_ddaly_1_3 ;
+proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost  lowest_netdaly_1_3  lowest_netdaly_1_3_5  ;
 run;
 ods html close;
 
