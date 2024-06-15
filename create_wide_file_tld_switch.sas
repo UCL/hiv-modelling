@@ -1939,6 +1939,7 @@ netdaly500_5 = ddaly_50y_5 + (dcost_50y_5 / 0.0005);
 min_netdaly500 = min(netdaly500_1, netdaly500_2, netdaly500_3, netdaly500_4, netdaly500_5);
 
 min_netdaly500_1_3_5 = min(netdaly500_1, netdaly500_3, netdaly500_5);
+min_netdaly500_1_4_5 = min(netdaly500_1, netdaly500_4, netdaly500_5);
 
 min_netdaly500_1_3 = min(netdaly500_1, netdaly500_3);
 min_daly500_1_3 = min(ddaly_50y_1, ddaly_50y_3);
@@ -1960,6 +1961,10 @@ if netdaly500_1 < netdaly500_5 then one_vs_five_ce=1; else one_vs_five_ce =0;
 if netdaly500_1 = min_netdaly500_1_3_5 then lowest_netdaly_1_3_5=1;
 if netdaly500_3 = min_netdaly500_1_3_5 then lowest_netdaly_1_3_5=3;
 if netdaly500_5 = min_netdaly500_1_3_5 then lowest_netdaly_1_3_5=5;
+
+if netdaly500_1 = min_netdaly500_1_4_5 then lowest_netdaly_1_4_5=1;
+if netdaly500_4 = min_netdaly500_1_4_5 then lowest_netdaly_1_4_5=4;
+if netdaly500_5 = min_netdaly500_1_4_5 then lowest_netdaly_1_4_5=5;
 
 if netdaly500_1 = min_netdaly500_1_3 then lowest_netdaly_1_3=1;
 if netdaly500_3 = min_netdaly500_1_3 then lowest_netdaly_1_3=3;
@@ -2184,7 +2189,7 @@ ods html close;
 
 
 ods html;
-proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost  lowest_netdaly_1_3  lowest_netdaly_1_3_5  ;
+proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost  lowest_netdaly_1_3  lowest_netdaly_1_3_5 lowest_netdaly_1_4_5 ;
 run;
 ods html close;
 
