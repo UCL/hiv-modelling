@@ -1889,7 +1889,7 @@ d_deathr_dol_r_uvl2_10y_3_1 = deathr_dol_r_uvl2_10y_3 - deathr_dol_r_uvl2_10y_1;
 
 
 
-* program has res_test cost $100 and we want to assume $100 as baseline;
+* program has res_test cost $100 and we want to assume $200 as baseline;
   dres_cost_50y_3 = dres_cost_50y_3 * 2;
   dres_cost_50y_4 = dres_cost_50y_4 * 2;
 
