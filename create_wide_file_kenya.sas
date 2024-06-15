@@ -31,6 +31,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 data y; 
 merge a.kenya_x sf;
 by run ;
+ 
 
 
 * preparatory code ;
@@ -1056,10 +1057,23 @@ n_vm_per_year
 
 proc sort data=y;by run option;run;
 
+
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_kenya_x; set y;  
 
+proc freq; tables run;
+
+run; 
+
+
+
+
+
+
 data y; set a.l_base_kenya_x; 
+
+ 
+
 
 /*
 if cald = 2017;

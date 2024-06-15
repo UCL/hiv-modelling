@@ -7105,7 +7105,7 @@ end;
 * INTRODUCE HIV INTO POPULATION ;
 
 d=rand('uniform'); * kenya  ;
-if caldate{t}=1985    and ((newp >= newp_seed and d < 0.8) or (d < 0.01 and msm=1)) and infection=.  then do; 
+if caldate{t}=1985    and ((newp >= newp_seed and d < 0.8) or (d < 0.05 and msm=1)) and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
