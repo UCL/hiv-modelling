@@ -1234,7 +1234,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_alive_msm);	 %var(v=n_alive1564_msm); %var(v=incidence1549msm); %var(v=incidence1564msm);  %var(v=prevalence1549_msm);	%var(v=prevalence1564_msm);  
 %var(v=p_elig_prep_any_msm_1564); %var(v=p_onprep_msm);  %var(v=p_onart_msm);   %var(v=prevalence_vg1000_msm);	 %var(v=p_diag_msm);	 
 %var(v=p_onart_diag_msm);  %var(v=p_vl1000_art_gt6m_msm);	 %var(v=p_ever_tested_msm); 	%var(v=p_tested_this_period_msm);  %var(v=p_msm_infected_from_msm)
-%var(v=incidence1564);  %var(v=p_onprep_pwid);  %var(v=p_onart_pwid);  %var(v=p_onart_sw);  %var(v=p_ep p_ep_msm);   %var(v=p_msm_ge1newp);   %var(v=p_m_ge1newp); 
+%var(v=incidence1564);  %var(v=p_onprep_pwid);  %var(v=p_onart_pwid);  %var(v=p_onart_sw);  %var(v=p_ep_msm);   %var(v=p_msm_ge1newp);   %var(v=p_m_ge1newp); 
 %var(v=n_vm_per_year);
 
 
@@ -1425,12 +1425,12 @@ proc contents data=a.w_base_kenya_w;
 run;
 
 
-proc freq data=a.w_base_kenya_w;  tables incidence1549m_17 incidence1549w_17 ; run; 
+proc freq data=incidence1549w;  tables incidence1549w_17 ; run; 
 
 
+data f; merge incidence1549w incidence1549m;
 
-
-
+proc print data = f noobs; var run ; where incidence1549w_17 < 0.25 and incidence1549m_17 < 0.25; run;
 
 
 

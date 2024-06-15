@@ -1078,6 +1078,8 @@ p_diag = p_diag / 100;
 
 
 
+
+
 %macro var(v=);
 
 * &v ;
@@ -1136,13 +1138,14 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v= n_onart        );
+%var(v= n_infected     );
 
 
 ods html;
 
+title '';
 
-proc print data = n_onart             noobs;
+proc print data = n_infected          noobs;
 run;
 
 ods html close;

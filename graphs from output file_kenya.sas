@@ -44,6 +44,53 @@ logm55r = log(m55r+0.0001);
 incidence1564_ = incidence1564;
 
 
+if run in 
+(
+646861901
+                                             698262945
+                                             705632619
+                                             710518860
+                                             734553938
+                                             749051388
+                                             759383904
+                                             762181430
+                                             764592876
+                                             767948006
+                                             770759221
+                                             801955357
+                                             811973938
+                                             812489272
+                                             819675870
+                                             823631849
+                                             825243290
+                                             828674010
+                                             834810908
+                                             856464209
+                                             867144308
+                                             870435824
+                                             884985262
+                                             885949289
+                                             898217392
+                                             912969820
+                                             926320972
+                                             951438956
+                                             952927520
+                                             954092432
+                                             958734956
+                                             960699755
+                                             965868054
+                                             983800015
+                                             984435820
+                                             984704759
+                                             986582843
+                                             992603988
+                                             993712954
+                                             996148499
+                                             997959844
+);
+
+
+
 
 * n_onprep_m  n_onprep_w ;
 
@@ -52,7 +99,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =   204  ;
+%let nfit =   41 ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
