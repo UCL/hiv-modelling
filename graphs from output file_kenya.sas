@@ -44,53 +44,6 @@ logm55r = log(m55r+0.0001);
 incidence1564_ = incidence1564;
 
 
-if run in 
-(
-646861901
-                                             698262945
-                                             705632619
-                                             710518860
-                                             734553938
-                                             749051388
-                                             759383904
-                                             762181430
-                                             764592876
-                                             767948006
-                                             770759221
-                                             801955357
-                                             811973938
-                                             812489272
-                                             819675870
-                                             823631849
-                                             825243290
-                                             828674010
-                                             834810908
-                                             856464209
-                                             867144308
-                                             870435824
-                                             884985262
-                                             885949289
-                                             898217392
-                                             912969820
-                                             926320972
-                                             951438956
-                                             952927520
-                                             954092432
-                                             958734956
-                                             960699755
-                                             965868054
-                                             983800015
-                                             984435820
-                                             984704759
-                                             986582843
-                                             992603988
-                                             993712954
-                                             996148499
-                                             997959844
-);
-
-
-
 
 * n_onprep_m  n_onprep_w ;
 
@@ -99,7 +52,7 @@ if run in
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =   41 ;
+%let nfit =   1 ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -125,7 +78,7 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive n_diagnosed n_hiv  n_infected 
+n_alive n_diagnosed n_hiv  n_infected n_infected1549
  p_inf_msm p_inf_pwid
 
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564_ p_onprep_msm				
@@ -198,7 +151,7 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive n_diagnosed n_hiv n_infected
+n_alive n_diagnosed n_hiv n_infected n_infected1549
  p_inf_msm  p_inf_pwid
 
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564_ p_onprep_msm				
@@ -896,7 +849,6 @@ series  x=cald y=p50_incidence1549m__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1549m_0 	upper=p95_incidence1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_incidence1549m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence1549m_1 	upper=p95_incidence1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter x=cald y=incidence1549_m_obs_kya / 		markerattrs = (symbol=square color=green size = 10);
 run;
 quit;
 
@@ -913,7 +865,6 @@ series  x=cald y=p50_incidence1549w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1549w_0 	upper=p95_incidence1549w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_incidence1549w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence1549w_1 	upper=p95_incidence1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter x=cald y=incidence1549_w_obs_kya / 		markerattrs = (symbol=square color=green size = 10);
 run;
 quit;
 
@@ -957,9 +908,9 @@ quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence women (age 15-64)";
+Title    height=1.5 justify=center "n infected";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 5 by 0.5) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 300000 by 10000) valueattrs=(size=10);
 
 label p50_n_infected_0 = "Option 0 (median) ";
 label p50_n_infected_1 = "Option 1  (median) ";

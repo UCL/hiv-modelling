@@ -2,19 +2,19 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_w_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_x_out\";
 
-data a.kenya_w ; set b.out: ;
+data a.kenya_x ; set b.out: ;
 
 
-proc sort data=a.kenya_w; 
+proc sort data=a.kenya_x; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set a.kenya_w ;
+set a.kenya_x ;
 
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
@@ -29,7 +29,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 %let sf=sf_2022;
 
 data y; 
-merge a.kenya_w sf;
+merge a.kenya_x sf;
 by run ;
 
 
@@ -869,7 +869,13 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
 
-* n_hiv ;						n_hiv = s_hivge15 * &sf ;
+* n_hiv1549_m;					n_hiv1549_m = s_hiv1549m * &sf;
+* n_hiv1549_w;					n_hiv1549_w = s_hiv1549w * &sf;
+* n_hiv1549  ;					n_hiv1549   = (s_hiv1549m + s_hiv1549w) * &sf;
+
+* n_infected1549;					n_infected = (s_primary1549_m + s_primary1549_w) * 4 * &sf;
+* n_infected1549m;					n_infected_m = s_primary1549_m * 4 * &sf;
+* n_infected1549w;					n_infected_w = s_primary1549_w * 4 * &sf;
 
 * n_infected;					n_infected = (s_primary_m + s_primary_w) * 4 * &sf;
 
@@ -891,7 +897,7 @@ n_new_inf1549w = s_primary1549w * &sf * 4;
 n_new_inf1549 = s_primary1549 * &sf * 4;
 
 
-keep run option cald cost
+keep run option cald cost  n_infected1549 
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
@@ -1051,9 +1057,9 @@ n_vm_per_year
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_w; set y;  
+data a.l_base_kenya_x; set y;  
 
-data y; set a.l_base_kenya_w; 
+data y; set a.l_base_kenya_x; 
 
 /*
 if cald = 2017;
@@ -1120,7 +1126,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
-%var(v=n_tested_m);
+%var(v=n_tested_m); %var(v=n_infected1549);
 %var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;
 %var(v=p_mcirc) ;%var(v=p_mcirc_1519m); %var(v=p_mcirc_2024m);%var(v=p_mcirc_2529m);
 %var(v=p_mcirc_3034m);%var(v=p_mcirc_3539m);%var(v=p_mcirc_4044m);%var(v=p_mcirc_4549m); 
@@ -1241,7 +1247,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 data   wide_outputs; merge 
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
-p_newp_sw prop_sw_newp0  p_newp_prep  n_tested_m
+p_newp_sw prop_sw_newp0  p_newp_prep  n_tested_m  n_infected1549
 p_tested_past_year_1549m  p_tested_past_year_1549w  
 p_mcirc   p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m 
 p_mcirc_4044m p_mcirc_4549m  p_mcirc_5064m p_mcirc_1549m
@@ -1415,13 +1421,13 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_kenya_w; 
+  data a.w_base_kenya_x; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
   by run;
 
-proc contents data=a.w_base_kenya_w;
+proc contents data=a.w_base_kenya_x;
 run;
 
 
@@ -1441,7 +1447,7 @@ proc print data = f noobs; var run ; where incidence1549w_17 < 0.25 and incidenc
 
 ods html;
 
-proc means data=a.w_base_kenya_w n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_x n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_98	p_mcirc_98	prevalence1549m_98 prevalence1549w_98
 incidence1549w_98  incidence1549m_98   incidence_sw_98  	p_diag_98 	p_diag_m_98   p_diag_w_98	p_ai_no_arv_c_nnm_98   
 prop_w_1549_sw_98  mtct_prop_98  prop_1564_onprep_98
@@ -1468,7 +1474,7 @@ r_prev_6064m_4549w_98 r_prev_65plm_4549w_98  p_age1549_hivneg_98 p_age1549_hiv_9
 ;
 run;
 
-proc means data=a.w_base_kenya_w n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_x n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_05	p_mcirc_05		prevalence1549m_05 prevalence1549w_05
 incidence1549w_05  incidence1549m_05   incidence_sw_05  	p_diag_05 	p_diag_m_05   p_diag_w_05	p_ai_no_arv_c_nnm_05   
 prop_w_1549_sw_05  mtct_prop_05  prop_1564_onprep_05
@@ -1496,7 +1502,7 @@ n_death_2059_w_05 n_death_hivrel_05
 ;
 run;
 
-proc means data=a.w_base_kenya_w n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_x n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_15	p_mcirc_15	prevalence1549m_15 prevalence1549w_15
 incidence1549w_15  incidence1549m_15   incidence_sw_15  	p_diag_15 	p_diag_m_15   p_diag_w_15	p_ai_no_arv_c_nnm_15   
 prop_w_1549_sw_15  mtct_prop_15  prop_1564_onprep_15
@@ -1526,7 +1532,7 @@ run;
 
 
 
-proc means data=a.w_base_kenya_w n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_x n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549_21	prevalence1549m_21 prevalence1549w_21  prevalence_hiv_preg_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
@@ -1575,7 +1581,7 @@ run;
 
 
 
-proc means data=a.w_base_kenya_w n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_x n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1549m_40 	prevalence1549w_40
 incidence1549w_40  incidence1549m_40   incidence_sw_40  	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
 prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
@@ -1601,7 +1607,7 @@ r_prev_6064m_4549w_40 r_prev_65plm_4549w_40 p_age1549_hivneg_40 p_age1549_hiv_40
 ;
 run;
 
-proc means data=a.w_base_kenya_w n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_x n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_70	p_mcirc_70		prevalence1549m_70 prevalence1549w_70
 incidence1549w_70  incidence1549m_70   incidence_sw_70  	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
 prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
@@ -1631,7 +1637,7 @@ ods html close;
 
 
 
-data q1; set a.w_base_kenya_w;
+data q1; set a.w_base_kenya_x;
 
 
 if n_onart_15 < 700000 and r_prev_4044w_4549w_17 > 0.9  and 0.08 <= prevalence1549_17 < 0.12 and 0.06 <= prevalence1549_98 < 0.19
@@ -1675,7 +1681,7 @@ run;
 
 
 
-data a.l_base_keep_kenya_w; merge a.l_base_kenya_w q1 ; by run;
+data a.l_base_keep_kenya_x; merge a.l_base_kenya_x q1 ; by run;
 
 if run_keep ne .;
 
@@ -1686,7 +1692,7 @@ run;
 ods html close;
 
 
-proc freq data = a.l_base_keep_kenya_w; tables
+proc freq data = a.l_base_keep_kenya_x; tables
 sf_2022 dataset sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
