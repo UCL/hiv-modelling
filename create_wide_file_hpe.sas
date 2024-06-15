@@ -3,12 +3,12 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_e_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_f_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_e_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_program_effects\hiv_program_effects_f_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
@@ -1394,15 +1394,19 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 
 proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2026.0 <= cald < 2036.00;   
 proc means noprint data=e; var &v; output out=y_2028 mean= &v._2028; by run option ; where 2028.0 <= cald < 2029.00;   
+/* 
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2026.0 <= cald < 2076.00;   
 proc means noprint data=e; var &v; output out=y_a50y mean= &v._a50y; by run option ; where 2071.0 <= cald < 2076.00;   
-																				   
+*/
+ 
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
 proc sort data=y_2028    ; by run; proc transpose data=y_2028  out=t_2028  prefix=&v._2028_  ; var &v._2028    ; by run; 																																																						
+/*
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
 proc sort data=y_a50y    ; by run; proc transpose data=y_a50y  out=t_a50y  prefix=&v._a50y_  ; var &v._a50y    ; by run; 																																																						
+*/
 
-data &v ; merge y_24 t_10y t_50y t_a50y t_2028; 
+data &v ; merge y_24 t_10y /* t_50y t_a50y */ t_2028; 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
