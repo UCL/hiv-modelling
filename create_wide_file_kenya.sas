@@ -873,6 +873,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_hiv1549_m;					n_hiv1549_m = s_hiv1549m * &sf;
 * n_hiv1549_w;					n_hiv1549_w = s_hiv1549w * &sf;
 * n_hiv1549  ;					n_hiv1549   = (s_hiv1549m + s_hiv1549w) * &sf;
+* n_hiv;					n_hiv = s_hivge15 * &sf; 
 
 * n_infected1549;					n_infected = (s_primary1549_m + s_primary1549_w) * 4 * &sf;
 * n_infected1549m;					n_infected_m = s_primary1549_m * 4 * &sf;

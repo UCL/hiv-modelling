@@ -26,7 +26,7 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_newp_ge1_ = p_newp_ge1 ;
 p_newp_ge5_ = p_newp_ge5 ;  
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
-p_elig_prep_any_msm_1564_ = p_elig_prep_any_msm_1564;
+p_el_prep_any_msm_1564_ = p_elig_prep_any_msm_1564;
 n_onprep = n_onprep_w + n_onprep_m ;
 
 loggender_r_newp = log(gender_r_newp+0.0001);
@@ -79,10 +79,10 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive n_diagnosed n_hiv  n_infected n_infected1549
+n_alive n_diagnosed n_hiv  n_infected 
  p_inf_msm p_inf_pwid
 
-n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564_ p_onprep_msm				
+n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_el_prep_any_msm_1564_ p_onprep_msm				
  p_onart_msm   prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period_msm p_msm_infected_from_msm   n_alive1564_msm   prevalence_pwid  n_pwid  p_onprep_pwid  p_onart_pwid  p_onart_sw
  n_vm_per_year
@@ -152,10 +152,10 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive n_diagnosed n_hiv n_infected n_infected1549
+n_alive n_diagnosed n_hiv n_infected 
  p_inf_msm  p_inf_pwid
 
-n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564_ p_onprep_msm				
+n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_el_prep_any_msm_1564_ p_onprep_msm				
  p_onart_msm   prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period_msm p_msm_infected_from_msm   n_alive1564_msm  prevalence_pwid  n_pwid  p_onprep_pwid  p_onart_pwid  p_onart_sw
 n_vm_per_year
@@ -1835,10 +1835,10 @@ Title    height=1.5 justify=center "p_elig_prep_any_msm_1564_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
 
-label p50_p_elig_prep_any_msm_1564__0 = "Option 0 (median) ";
+label p50_p_el_prep_any_msm_1564__0 = "Option 0 (median) ";
 
-series  x=cald y=p50_p_elig_prep_any_msm_1564__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_elig_prep_any_msm_1564__0 	upper=p95_p_elig_prep_any_msm_1564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_el_prep_any_msm_1564__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_el_prep_any_msm_1564__0 	upper=p95_p_el_prep_any_msm_1564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 run;
 quit;
