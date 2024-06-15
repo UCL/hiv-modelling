@@ -14,14 +14,14 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_hpe_e;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_hpe_f;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_hpe_e; 
+proc sort data=b.k_hpe_f; 
 by run cald option;
 run;
 
@@ -31,7 +31,7 @@ run;
 data sf;
 
 
-set b.k_hpe_e ;
+set b.k_hpe_f ;
 
 
 if cald=2024   ;
@@ -51,7 +51,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_hpe_e sf;
+merge b.k_hpe_f sf;
 by run ;
 
 
@@ -1367,11 +1367,11 @@ proc freq; tables cald option; where cald=2026.50;
 run;
 
 
-data    b.l_hpe_e; set y;  
+data    b.l_hpe_f; set y;  
 
 run;
 
-data y ; set b.l_hpe_e; 
+data y ; set b.l_hpe_f; 
 
   options nomprint;
   option nospool;
@@ -1825,7 +1825,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_hpe_e     ; 
+  data  b.w_hpe_f     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
