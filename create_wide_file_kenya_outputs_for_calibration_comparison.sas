@@ -875,14 +875,16 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
 
 * n_hiv ;						n_hiv = s_hivge15 * &sf ;
+* n_hiv_m ;						n_hiv_m = s_hivge15m * &sf ;
+* n_hiv_w ;						n_hiv_w = s_hivge15w * &sf ;
 
 * n_hiv1549_m;					n_hiv1549_m = s_hiv1549m * &sf;
 * n_hiv1549_w;					n_hiv1549_w = s_hiv1549w * &sf;
 * n_hiv1549  ;					n_hiv1549   = (s_hiv1549m + s_hiv1549w) * &sf;
 
-* n_infected;					n_infected = (s_primary_m + s_primary_w) * 4 * &sf;
-* n_infected_m;					n_infected_m = s_primary_m * 4 * &sf;
-* n_infected_w;					n_infected_w = s_primary_w * 4 * &sf;
+* n_infected1549;					n_infected = (s_primary1549_m + s_primary1549_w) * 4 * &sf;
+* n_infected1549m;					n_infected_m = s_primary1549_m * 4 * &sf;
+* n_infected1549w;					n_infected_w = s_primary1549_w * 4 * &sf;
 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
@@ -1054,7 +1056,7 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
 
 p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1newp
 
-n_vm_per_year  n_infected_m n_infected_w n_hiv1549_m n_hiv1549_w n_hiv1549  p_m1549_msm
+n_vm_per_year  n_infected_m n_infected_w n_hiv1549_m n_hiv1549_w n_hiv1549  p_m1549_msm  n_hiv_m  n_hiv_w
 ;
 
 
@@ -1076,6 +1078,49 @@ p_diag_m = p_diag_m / 100;
 p_diag_w = p_diag_w / 100;
 p_diag = p_diag / 100;
 
+if run in (
+ 646861901
+                                             698262945
+                                             705632619
+                                             710518860
+                                             734553938
+                                             749051388
+                                             759383904
+                                             762181430
+                                             764592876
+                                             767948006
+                                             770759221
+                                             801955357
+                                             811973938
+                                             812489272
+                                             819675870
+                                             823631849
+                                             825243290
+                                             828674010
+                                             834810908
+                                             856464209
+                                             867144308
+                                             870435824
+                                             884985262
+                                             885949289
+                                             898217392
+                                             912969820
+                                             926320972
+                                             951438956
+                                             952927520
+                                             954092432
+                                             958734956
+                                             960699755
+                                             965868054
+                                             983800015
+                                             984435820
+                                             984704759
+                                             986582843
+                                             992603988
+                                             993712954
+                                             996148499
+                                             997959844
+);
 
 
 
@@ -1138,14 +1183,14 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v= n_infected     );
+%var(v= n_onart             );
 
 
 ods html;
 
 title '';
 
-proc print data = n_infected          noobs;
+proc print data = n_onart                        noobs;
 run;
 
 ods html close;
