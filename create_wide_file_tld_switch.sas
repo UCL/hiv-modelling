@@ -1856,7 +1856,7 @@ proc sort; by run;run;
 data b;
 set b.w_tld_switch_ad  ;
 
-* if p_dol_2vg1000_dolr1_24 < 0.4;
+  if p_dol_2vg1000_dolr1_24 < 0.4;
 * if p_onart_vl1000_24 < 0.98;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
@@ -1946,6 +1946,7 @@ min_netdaly500_1_34_5 = min(netdaly500_1, netdaly500_3, netdaly500_4, netdaly500
 min_netdaly500_1_3 = min(netdaly500_1, netdaly500_3);
 min_netdaly500_1_34 = min(netdaly500_1, netdaly500_3, netdaly500_4);
 min_daly500_1_3 = min(ddaly_50y_1, ddaly_50y_3);
+min_daly500_1_3_5 = min(ddaly_50y_1, ddaly_50y_3, ddaly_50y_5);
 
 
 d_netdaly500_2_1 = netdaly500_2 - netdaly500_1;
@@ -1987,6 +1988,10 @@ if netdaly500_4 = min_netdaly500_1_4 then lowest_netdaly_1_4=4;
 if ddaly_50y_1 = min_daly500_1_3 then lowest_ddaly_1_3 = 1;
 if ddaly_50y_3 = min_daly500_1_3 then lowest_ddaly_1_3 = 3;
 
+if ddaly_50y_1 = min_daly500_1_3_5 then lowest_ddaly_1_3_5 = 1;
+if ddaly_50y_3 = min_daly500_1_3_5 then lowest_ddaly_1_3_5 = 3;
+if ddaly_50y_5 = min_daly500_1_3_5 then lowest_ddaly_1_3_5 = 5;
+
 
 min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_2, ddaly_50y_3, ddaly_50y_4, ddaly_50y_5);
 
@@ -1999,9 +2004,16 @@ if ddaly_50y_5 = min_ddaly_50y then lowest_ddaly=5;
 
 min_dcost_50y = min(dcost_50y_1, dcost_50y_2, dcost_50y_3, dcost_50y_4, dcost_50y_5);
 min_dcost_50y_1_3 = min(dcost_50y_1, dcost_50y_3);
+min_dcost_50y_1_3_5 = min(dcost_50y_1, dcost_50y_3, dcost_50y_5);
 
 if dcost_50y_1 = min_dcost_50y_1_3 then lowest_dcost_1_3=1;
 if dcost_50y_3 = min_dcost_50y_1_3 then lowest_dcost_1_3=3;
+
+
+if dcost_50y_1 = min_dcost_50y_1_3_5 then lowest_dcost_1_3_5=1;
+if dcost_50y_3 = min_dcost_50y_1_3_5 then lowest_dcost_1_3_5=3;
+if dcost_50y_5 = min_dcost_50y_1_3_5 then lowest_dcost_1_3_5=5;
+
 
 if dcost_50y_1 = min_dcost_50y then lowest_dcost=1;
 if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
@@ -2204,8 +2216,7 @@ ods html close;
 
 
 ods html;
-proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost  lowest_netdaly_1_3  lowest_netdaly_1_3_5 lowest_netdaly_1_4_5
-lowest_netdaly_1_34_5 lowest_netdaly_1_34 lowest_netdaly_1_4;
+proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost   lowest_netdaly_1_3_5 lowest_ddaly_1_3_5  lowest_dcost_1_3_5 ;
 run;
 ods html close;
 
