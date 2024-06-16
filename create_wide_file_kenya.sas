@@ -1451,7 +1451,7 @@ proc freq data=incidence1549w;  tables incidence1549w_17 ; run;
 
 data f; merge incidence1549w incidence1549m;
 
-proc print data = f noobs; var run ; where incidence1549w_17 < 0.25 and incidence1549m_17 < 0.25; run;
+proc print data = f noobs; var run ; where incidence_msm_549w_17 < 0.25 and incidence1549m_17 < 0.25; run;
 
 
 
