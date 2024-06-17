@@ -4,25 +4,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ad_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ae_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ad_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ae_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_ad;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_ae;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_tld_switch_ad; 
+proc sort data=b.k_tld_switch_ae; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_tld_switch_ad ;
+set b.k_tld_switch_ae ;
 
 
 if cald=2024   ;
@@ -52,7 +52,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_tld_switch_ad sf;
+merge b.k_tld_switch_ae sf;
 by run ;
 
 
@@ -1381,9 +1381,9 @@ run;
 
 
 
-data    b.l_tld_switch_ad; set y;  
+data    b.l_tld_switch_ae; set y;  
 
-data y ; set b.l_tld_switch_ad; 
+data y ; set b.l_tld_switch_ae; 
 
   options nomprint;
   option nospool;
@@ -1843,7 +1843,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_ad     ; 
+  data  b.w_tld_switch_ae     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1851,10 +1851,11 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ad_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ae_out\";
+  libname c "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ad_out\";
 
 data b;
-set b.w_tld_switch_ad  ;
+set b.w_tld_switch_ae  c.w_tld_switch_ad  ;
 
   if p_dol_2vg1000_dolr1_24 < 0.4;
 * if p_onart_vl1000_24 < 0.98;
@@ -1881,17 +1882,6 @@ d_n_iime_50y_5_1 = n_iime_50y_5 -   n_iime_50y_1 ;
 
 d_deathr_dol_r_uvl2_10y_3_1 = deathr_dol_r_uvl2_10y_3 - deathr_dol_r_uvl2_10y_1; 
 
-
-
-
-* change this below from version ad ;
-
-
-
-
-* program has res_test cost $100 and we want to assume $200 as baseline;
-  dres_cost_50y_3 = dres_cost_50y_3 * 2;
-  dres_cost_50y_4 = dres_cost_50y_4 * 2;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -1945,8 +1935,10 @@ min_netdaly500_1_34_5 = min(netdaly500_1, netdaly500_3, netdaly500_4, netdaly500
 
 min_netdaly500_1_3 = min(netdaly500_1, netdaly500_3);
 min_netdaly500_1_34 = min(netdaly500_1, netdaly500_3, netdaly500_4);
+
 min_daly500_1_3 = min(ddaly_50y_1, ddaly_50y_3);
 min_daly500_1_3_5 = min(ddaly_50y_1, ddaly_50y_3, ddaly_50y_5);
+min_daly500_1_4_5 = min(ddaly_50y_1, ddaly_50y_4, ddaly_50y_5);
 
 
 d_netdaly500_2_1 = netdaly500_2 - netdaly500_1;
@@ -1992,6 +1984,10 @@ if ddaly_50y_1 = min_daly500_1_3_5 then lowest_ddaly_1_3_5 = 1;
 if ddaly_50y_3 = min_daly500_1_3_5 then lowest_ddaly_1_3_5 = 3;
 if ddaly_50y_5 = min_daly500_1_3_5 then lowest_ddaly_1_3_5 = 5;
 
+if ddaly_50y_1 = min_daly500_1_4_5 then lowest_ddaly_1_4_5 = 1;
+if ddaly_50y_4 = min_daly500_1_4_5 then lowest_ddaly_1_4_5 = 4;
+if ddaly_50y_5 = min_daly500_1_4_5 then lowest_ddaly_1_4_5 = 5;
+
 
 min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_2, ddaly_50y_3, ddaly_50y_4, ddaly_50y_5);
 
@@ -2005,6 +2001,7 @@ if ddaly_50y_5 = min_ddaly_50y then lowest_ddaly=5;
 min_dcost_50y = min(dcost_50y_1, dcost_50y_2, dcost_50y_3, dcost_50y_4, dcost_50y_5);
 min_dcost_50y_1_3 = min(dcost_50y_1, dcost_50y_3);
 min_dcost_50y_1_3_5 = min(dcost_50y_1, dcost_50y_3, dcost_50y_5);
+min_dcost_50y_1_4_5 = min(dcost_50y_1, dcost_50y_4, dcost_50y_5);
 
 if dcost_50y_1 = min_dcost_50y_1_3 then lowest_dcost_1_3=1;
 if dcost_50y_3 = min_dcost_50y_1_3 then lowest_dcost_1_3=3;
@@ -2013,6 +2010,10 @@ if dcost_50y_3 = min_dcost_50y_1_3 then lowest_dcost_1_3=3;
 if dcost_50y_1 = min_dcost_50y_1_3_5 then lowest_dcost_1_3_5=1;
 if dcost_50y_3 = min_dcost_50y_1_3_5 then lowest_dcost_1_3_5=3;
 if dcost_50y_5 = min_dcost_50y_1_3_5 then lowest_dcost_1_3_5=5;
+
+if dcost_50y_1 = min_dcost_50y_1_4_5 then lowest_dcost_1_4_5=1;
+if dcost_50y_4 = min_dcost_50y_1_4_5 then lowest_dcost_1_4_5=4;
+if dcost_50y_5 = min_dcost_50y_1_4_5 then lowest_dcost_1_4_5=5;
 
 
 if dcost_50y_1 = min_dcost_50y then lowest_dcost=1;
@@ -2216,7 +2217,8 @@ ods html close;
 
 
 ods html;
-proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost   lowest_netdaly_1_3_5 lowest_ddaly_1_3_5  lowest_dcost_1_3_5 ;
+proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost   lowest_netdaly_1_3_5 lowest_ddaly_1_3_5  lowest_dcost_1_3_5
+lowest_netdaly_1_4_5 lowest_ddaly_1_4_5  lowest_dcost_1_4_5;
 run;
 ods html close;
 
