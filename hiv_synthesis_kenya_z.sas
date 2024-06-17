@@ -260,11 +260,11 @@ newp_seed = 7;
 
 * MSM;
 
-* msm_rred;					%sample_uniform(msm_rred, 1.5 2 3 5); * extent to which p_rred_p is higher in msm than het men;
+* msm_rred;					%sample_uniform(msm_rred, 1.5 2 3  ); * extent to which p_rred_p is higher in msm than het men;
 * red_chance_ep_msm;		%sample_uniform(red_chance_ep_msm, 0.8 0.6 0.4);
-* prop_m_msm;				%sample_uniform(prop_m_msm,   0.005  0.010  0.015); 
-* msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.2 0.3 0.4); * risk of one or more cls partners in msm per period ;
-* msm_tr_factor;			%sample_uniform(msm_tr_factor,   5 10  ); * factor determining the transmission risk per period given 
+* prop_m_msm;				%sample_uniform(prop_m_msm,          0.010  0.015); 
+* msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.3 0.5 0.7); * risk of one or more cls partners in msm per period ;
+* msm_tr_factor;			msm_tr_factor = 5; * factor determining the transmission risk per period given 
 																		the represetative vl in the parter(s) in the period ;	
 * prob_prep_elig_msm;		prob_prep_elig_msm = 0.2;
 * msm_rr_loss_at_diag;		msm_rr_loss_at_diag = 3;
@@ -717,7 +717,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);  prep_any_strategy=17;
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);  
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -4629,11 +4629,17 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=17 then do;	* as 4 by includes msm;	
+	if prep_any_strategy=17 then do;	* as 4 but excludes heterosexual men and  includes msm;	
     	r = rand('Uniform');s = rand('Uniform');
-      	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) 
-		or (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s < prob_prep_elig_pwid ) ) then prep_any_elig=1; 
+      	if 
+		(newp ge 1 and gender=2) 
+		or 
+		(epdiag=1 and epart ne 1 and gender=2) 
+		or 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))
+ 		then prep_any_elig=1; 
+
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
 
 
