@@ -2,9 +2,19 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_w_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_z_out\";
 
-data g ; set a.kenya_w ;
+data g ; set a.kenya_z ;
+
+if run in (
+                               15415411
+                                             202848073
+                                             311978993
+                                             407457735
+                                             644529528
+                                             849800192
+);
+
 
 
 proc sort data=g; 
@@ -1064,9 +1074,9 @@ n_vm_per_year  n_infected_m n_infected_w n_hiv1549_m n_hiv1549_w n_hiv1549  p_m1
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_w; set y;  
+data a.l_base_kenya_z; set y;  
 
-data y; set a.l_base_kenya_w; 
+data y; set a.l_base_kenya_z; 
 
   options nomprint;
   option nospool;
@@ -1077,52 +1087,6 @@ data y; set a.l_base_kenya_w;
 p_diag_m = p_diag_m / 100;
 p_diag_w = p_diag_w / 100;
 p_diag = p_diag / 100;
-
-if run in (
- 646861901
-                                             698262945
-                                             705632619
-                                             710518860
-                                             734553938
-                                             749051388
-                                             759383904
-                                             762181430
-                                             764592876
-                                             767948006
-                                             770759221
-                                             801955357
-                                             811973938
-                                             812489272
-                                             819675870
-                                             823631849
-                                             825243290
-                                             828674010
-                                             834810908
-                                             856464209
-                                             867144308
-                                             870435824
-                                             884985262
-                                             885949289
-                                             898217392
-                                             912969820
-                                             926320972
-                                             951438956
-                                             952927520
-                                             954092432
-                                             958734956
-                                             960699755
-                                             965868054
-                                             983800015
-                                             984435820
-                                             984704759
-                                             986582843
-                                             992603988
-                                             993712954
-                                             996148499
-                                             997959844
-);
-
-
 
 
 %macro var(v=);
@@ -1183,14 +1147,14 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v= n_onart             );
+%var(v= n_onart              );
 
 
 ods html;
 
 title '';
 
-proc print data = n_onart                        noobs;
+proc print data = n_onart                               noobs;
 run;
 
 ods html close;

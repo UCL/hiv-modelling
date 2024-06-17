@@ -1439,19 +1439,17 @@ proc sort; by run;run;
   data a.w_base_kenya_z; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
-  merge   wide_outputs  wide_par ;  
+  merge   wide_outputs  wide_par incidence1564 prevalence1549_msm ;  
   by run;
 
 proc contents data=a.w_base_kenya_z;
 run;
 
+proc print; var run prevalence1549_msm_17 incidence1564_20 ; run;
 
-proc freq data=incidence1549w;  tables incidence1549w_17 ; run; 
 
 
-data f; merge incidence1549w incidence1549m;
-
-proc print data = f noobs; var run ; where incidence_msm_549w_17 < 0.25 and incidence1549m_17 < 0.25; run;
+proc print data = a.w_base_kenya_z noobs; var run ; where prevalence1549_msm_17 < 0.4  and incidence1564_20 < 0.20; run;
 
 
 
