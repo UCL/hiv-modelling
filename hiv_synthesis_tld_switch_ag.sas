@@ -1,31 +1,5 @@
 
 
-
-
-
-*
-
-Output what proportion of people on tld with first vl > 1000 have insti mutation
-
-of people who have VL < 1000 but have ever had VL > 1000 on tld what proportion have insti mutation
-
-;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * run as additional analysis with strategies only applying to those with no previous virologic failure, or those with no previous art experience before tld
 
 * consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
@@ -13891,12 +13865,13 @@ if drug_level_test = 1 and drug_level_test_adh_high = 1 and r_dol > 0 then drug_
 drug_level_test_adh_low_r_dol = 0;
 if drug_level_test = 1 and drug_level_test_adh_low = 1 and r_dol > 0 then drug_level_test_adh_low_r_dol = 1;
 
-
-
 incident_r_dol = 0;
 if r_dol ge 0.5 and r_dol_tm1 <= 0 then incident_r_dol=1;
 
 dol_pi_failed = 0; if naive=0 and (f_lpr=1 or f_taz=1 or f_dar=1 or f_dol=1) then dol_pi_failed = 1;
+
+if o_dol =1 and r_dol > 0 then o_dol_r =1;
+
 
 
 
@@ -17466,7 +17441,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_em_inm_res_o_cab_off_3m + em_inm_res_o_cab_off_3m; s_emerge_inm_res_cab_tail + emerge_inm_res_cab_tail ;  
 	s_em_inm_res_o_cab_off_3m_npr + em_inm_res_o_cab_off_3m_npr; 	s_em_inm_res_cab_tail_npr + em_inm_res_cab_tail_npr; 
 	s_em_inm_res_o_cab_off_3m_pr + em_inm_res_o_cab_off_3m_pr;  s_emerge_inm_res_cab_tail_pr + emerge_inm_res_cab_tail_pr;
-	s_em_inm_res_o_cab + em_inm_res_o_cab; s_cab_res_emerge_primary + cab_res_emerge_primary;  s_res_test_dol + res_test_dol;
+	s_em_inm_res_o_cab + em_inm_res_o_cab; s_cab_res_emerge_primary + cab_res_emerge_primary;  s_res_test_dol + res_test_dol; s_o_dol_r + o_dol_r;
 
 	s_em_cam_res_o_len_off_3m + em_cam_res_o_len_off_3m; s_emerge_cam_res_len_tail + emerge_cam_res_len_tail ;  
 	s_em_cam_res_o_len_off_3m_npr + em_cam_res_o_len_off_3m_npr; 	s_em_cam_res_len_tail_npr + em_cam_res_len_tail_npr; 
@@ -19383,7 +19358,7 @@ s_ontle  s_vlg1000_ontle  s_vlg1000_184m_ontle  s_vlg1000_65m_ontle  s_vlg1000_n
 s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld  
 s_cur_res_cab s_em_inm_res_o_cab_off_3m
 s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail_npr 
-s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  s_cab_res_emerge_primary s_res_test_dol 
+s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  s_cab_res_emerge_primary s_res_test_dol  s_o_dol_r 
 s_cur_res_len s_em_cam_res_o_len_off_3m
 s_emerge_cam_res_len_tail   s_em_cam_res_o_len_off_3m_npr 	s_em_cam_res_len_tail_npr 
 s_em_cam_res_o_len_off_3m_pr  s_emerge_cam_res_len_tail_pr  s_em_cam_res_o_len  s_len_res_emerge_primary
@@ -20401,7 +20376,7 @@ s_ontle  s_vlg1000_ontle  s_vlg1000_184m_ontle  s_vlg1000_65m_ontle  s_vlg1000_n
 s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld  s_cur_res_cab  s_cur_res_len s_em_inm_res_o_cab_off_3m
  s_em_cam_res_o_len_off_3m
 s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail_npr 
-s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  s_cab_res_emerge_primary  s_res_test_dol 
+s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  s_cab_res_emerge_primary  s_res_test_dol  s_o_dol_r 
 s_emerge_cam_res_len_tail   s_em_cam_res_o_len_off_3m_npr 	s_em_cam_res_len_tail_npr 
 s_em_cam_res_o_len_off_3m_pr  s_emerge_cam_res_len_tail_pr  s_em_cam_res_o_len  s_len_res_emerge_primary
 
@@ -26678,7 +26653,7 @@ s_em_cam_res_o_len_off_3m
 s_emerge_cam_res_len_tail   s_em_cam_res_o_len_off_3m_npr 	s_em_cam_res_len_tail_npr 
 s_em_cam_res_o_len_off_3m_pr  s_emerge_cam_res_len_tail_pr  s_em_cam_res_o_len  s_len_res_emerge_primary  
 
-s_res_test_dol  s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w 
+s_res_test_dol  s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w  s_o_dol_r 
 
 
 /*prep*/
