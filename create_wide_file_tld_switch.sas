@@ -1403,15 +1403,17 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 
 * note: it is critical that this starts at year_interv;
 
+proc means noprint data=e; var &v; output out=y_5y mean= &v._5y; by run option ; where 2026.0 <= cald < 2031.00; 
 proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2026.0 <= cald < 2036.00; 
 proc means noprint data=e; var &v; output out=y_a10y mean= &v._a10y; by run option ; where 2035.0 <= cald < 2036.00; 
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2026.0 <= cald < 2076.00;   
 																				   
+proc sort data=y_5y    ; by run; proc transpose data=y_5y  out=t_5y  prefix=&v._5y_  ; var &v._5y    ; by run; 																																																						
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
 proc sort data=y_a10y    ; by run; proc transpose data=y_a10y  out=t_a10y  prefix=&v._a10y_  ; var &v._a10y    ; by run; 																																																						
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
 
-data &v ; merge y_24 t_10y  t_a10y t_50y ; 
+data &v ; merge y_24 t_5y t_10y  t_a10y t_50y ; 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1857,8 +1859,9 @@ proc sort; by run;run;
 data b;
 set b.w_tld_switch_ae  c.w_tld_switch_ad  ;
 
-  if p_dol_2vg1000_dolr1_24 < 0.4;
-* if p_onart_vl1000_24 < 0.98;
+  if prevalence1549w_24 < 0.35;
+  if p_dol_2vg1000_dolr1_24 < 0.35;
+  if p_onart_vl1000_24 <= 0.9830771538;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -2047,7 +2050,11 @@ ods html;
 proc means   data = b  n p50  p5  p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  
-p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    p_vis_tldsw_24  p_dol_2vg1000_dolr1_24 p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24
+p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    p_vis_tldsw_24  p_dol_2vg1000_dolr1_24 
+
+prop_r_dol_ge_p5_uvl23_24 
+
+p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24
 p_artexp_dol_pi_failed_24  s_o_dol_2nd_vlg1000_24  n_second_vlg1000_first_24 s_second_vlg1000_first_24 
 ;
 run;
