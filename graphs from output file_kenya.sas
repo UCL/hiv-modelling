@@ -9,7 +9,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_z   ;
+  set a.l_base_kenya_aa   ;
 
 
 p_onart_vl1000_all = .;
@@ -44,17 +44,6 @@ logm55r = log(m55r+0.0001);
 
 incidence1564_ = incidence1564;
 
-if run in
-(
-  15415411
-                                             202848073
-                                             311978993
-                                             407457735
-                                             644529528
-                                             849800192
-
-)
-;
 
 * n_onprep_m  n_onprep_w ;
 
