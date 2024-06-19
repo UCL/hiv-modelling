@@ -1,5 +1,24 @@
 
 
+
+* 
+
+sens and spec of tdf test for adh ge 80%
+
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
 * run as additional analysis with strategies only applying to those with no previous virologic failure, or those with no previous art experience before tld
 
 * consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
@@ -10966,6 +10985,7 @@ end;
 * TLD_SWITCH comparison  ; 
 
 drug_level_test=0; drug_level_test_adh_high=.; drug_level_test_adh_low=.;  res_test_dol=0; second_vlg1000_first=0; second_vlg1000_first_dol_r=0;
+measured_adh=.; adh_meas_1_1=.; adh_meas_0_1=.; adh_meas_1_0=.; adh_meas_0_0=.;
 
 if caldate{t} ge 2026 and art_monitoring_strategy in (150, 160, 1500, 1600, 1700) and visit=1 and (o_dol=1 or (mr_dol_tm1 = 1 and int_clinic_not_aw=1)) and f_dol ne 1 and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1)
 and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
@@ -11008,6 +11028,15 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 				if art_monitoring_strategy = 160 and second_vlg1000=1 then do; date_res_test_tld = caldate{t}; res_test_dol=1; end;
 				if art_monitoring_strategy = 1600 and second_vlg1000=1 and measured_adh > 0.8 then do; date_res_test_tld = caldate{t}; res_test_dol=1; end;
 				if art_monitoring_strategy = 1700 then do; * nothing ; end;
+
+				* to understand sens and spec of measured_adh;
+				if measured_adh ne . then do;
+					if measured_adh ge 0.8 and adh ge 0.8 then adh_meas_1_1=1; 
+					if measured_adh ge 0.8 and 0 < adh <  0.8 then adh_meas_1_0=1; 
+					if 0 <= measured_adh < 0.8 and adh ge 0.8 then adh_meas_0_1=1; 
+					if 0 <= measured_adh < 0.8 and 0 < adh < 0.8 then adh_meas_0_0=1; 
+				end;
+
 			end;
 
 			v=rand('uniform');	
@@ -13779,12 +13808,16 @@ end;
 
 uvl2_elig=0; o_dar_uvl2 =0; o_dol_uvl2=0;  onart_uvl2=0; vl1000_uvl2=0;  vl200_uvl2=0; dead_uvl2=0;dead_hiv_uvl2=0;c_tox_uvl2=0; r_dol_ge_p5_uvl2=0;
 adh_ge80_uvl2=0; onart_iicu_uvl2=0; onart_iicu_vl1000_uvl2=0; adh_lt80_uvl2=0; vis_uvl2=0; cd4_lt200_uvl2=0;onart_uvl2=0;
+r_dol_uvl2=0; r_dol_vl1000_uvl2=0;
 uvl21_elig=0; o_dar_uvl21 =0; o_dol_uvl21=0;  onart_uvl21=0; vl1000_uvl21=0;  vl200_uvl21=0; dead_uvl21=0;dead_hiv_uvl21=0;c_tox_uvl21=0; r_dol_ge_p5_uvl21=0;
 adh_ge80_uvl21=0; onart_iicu_uvl21=0; adh_lt80_uvl21=0; vis_uvl21=0;cd4_lt200_uvl21=0;
+r_dol_uvl21=0; r_dol_vl1000_uvl21=0;
 uvl22_elig=0; o_dar_uvl22 =0; o_dol_uvl22=0;  onart_uvl22=0; vl1000_uvl22=0;  vl200_uvl22=0; dead_uvl22=0;dead_hiv_uvl22=0;c_tox_uvl22=0; r_dol_ge_p5_uvl22=0;
 adh_ge80_uvl22=0; onart_iicu_uvl22=0; adh_lt80_uvl22=0; vis_uvl22=0; cd4_lt200_uvl22=0;
+r_dol_uvl22=0; r_dol_vl1000_uvl22=0;
 uvl23_elig=0; o_dar_uvl23 =0; 	o_dol_uvl23=0;	onart_uvl23=0;	onart_iicu_uvl23=0;
 adh_lt80_uvl23=0;	vl1000_uvl23=0; vl200_uvl23=0; 	dead_uvl23=0;dead_hiv_uvl23=0;c_tox_uvl23=0;r_dol_ge_p5_uvl23=0; vis_uvl23=0; cd4_lt200_uvl23 = 0;
+r_dol_uvl23=0; r_dol_vl1000_uvl23=0;
 
 if naive=0 and date_last_second_vlg1000 ne . then do;
 	uvl2_elig=1;
@@ -13801,6 +13834,10 @@ if naive=0 and date_last_second_vlg1000 ne . then do;
 	if caldate&j = death and dcause=1 then dead_hiv_uvl2=1;
 	if c_tox=1 then c_tox_uvl2=1;
 	if r_dol >= 0.5 then r_dol_ge_p5_uvl2=1;
+
+	if r_dol > 0 then r_dol_uvl2=1;
+	if r_dol > 0 and . < vl < 3.0 then r_dol_vl1000_uvl2=1;
+
 	if adh >= 0.80 then adhl_ge80_uvl2=1;
 	if visit=1 then vis_uvl2=1;
 	if cd4 < 200 then cd4_lt200_uvl2 = 1;
@@ -13835,6 +13872,8 @@ if naive=0 and date_last_second_vlg1000 ne . then do;
 		if caldate&j = death and dcause=1 then dead_hiv_uvl23=1;
 		if c_tox=1 then c_tox_uvl23=1;
 		if r_dol >= 0.5 then r_dol_ge_p5_uvl23=1;
+		if r_dol > 0 then r_dol_uvl23=1;
+		if r_dol > 0 and . < vl < 3.0 then r_dol_vl1000_uvl23=1;
 		if visit=1 then vis_uvl23=1;
 		if cd4 < 200 then cd4_lt200_uvl23 = 1;
 
@@ -13853,6 +13892,8 @@ if naive=0 and date_last_second_vlg1000 ne . then do;
 		if caldate&j = death and dcause=1 then dead_hiv_uvl22=1;
 		if c_tox=1 then c_tox_uvl22=1;
 		if r_dol >= 0.5 then r_dol_ge_p5_uvl22=1;
+		if r_dol > 0 then r_dol_uvl22=1;
+		if r_dol > 0 and . < vl < 3.0 then r_dol_vl1000_uvl22=1;
 		if visit=1 then vis_uvl22=1;
 		if cd4 < 200 then cd4_lt200_uvl22 = 1;
 	end;
@@ -17721,6 +17762,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_outc_ten3tc_r_f_1_5 + outc_ten3tc_r_f_1_5 ; s_outc_ten3tc_r_f_1_6 + outc_ten3tc_r_f_1_6 ; s_outc_ten3tc_r_f_1_7 + outc_ten3tc_r_f_1_7 ;
  	s_drug_level_test + drug_level_test ; s_drug_level_test_adh_high + drug_level_test_adh_high;  s_drug_level_test_adh_low + drug_level_test_adh_low; 
 	s_drug_level_test_adh_high_r_dol + drug_level_test_adh_high_r_dol;s_drug_level_test_adh_low_r_dol + drug_level_test_adh_low_r_dol;
+	s_adh_meas_1_1 + adh_meas_1_1 ;s_adh_meas_1_0 + adh_meas_1_0 ;s_adh_meas_0_1 + adh_meas_0_1 ;s_adh_meas_0_0 + adh_meas_0_0 ;
 	s_tle + tle ; s_tld + tld ; s_zld + zld ; s_zla + zla ; s_otherreg + otherreg ;
     s_no_recent_vm_gt1000 + no_recent_vm_gt1000 ; s_no_recent_vm_gt1000_dol + no_recent_vm_gt1000_dol ; 
 	s_no_recent_vm_gt1000_efa + no_recent_vm_gt1000_efa ; s_recent_vm_gt1000 + recent_vm_gt1000 ; s_recent_vm_gt1000_dol + recent_vm_gt1000_dol ;        
@@ -17775,6 +17817,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl200_uvl2  + vl200_uvl2  ; s_dead_uvl2   + dead_uvl2   ;s_dead_hiv_uvl2 +   dead_hiv_uvl2 ;  s_c_tox_uvl2  + c_tox_uvl2  ; 
 	s_r_dol_ge_p5_uvl2  +  r_dol_ge_p5_uvl2 ;  s_adhl_ge80_uvl2 + adhl_ge80_uvl2;  s_onart_iicu_uvl2 + onart_iicu_uvl2;   s_adh_lt80_uvl2 + adh_lt80_uvl2;
 	s_vis_uvl2  + vis_uvl2 ; s_cd4_lt200_uvl2 + cd4_lt200_uvl2; s_onart_iicu_vl1000_uvl2 + onart_iicu_vl1000_uvl2; s_onart_uvl2 + onart_uvl2;
+	s_r_dol_uvl2 + r_dol_uvl2 ;  s_r_dol_vl1000_uvl2 + r_dol_vl1000_uvl2;
 
 	s_tldsw1_elig  +  tldsw1_elig ; s_o_dar_tldsw1  + o_dar_tldsw1 ; s_o_dol_tldsw1  + o_dol_tldsw1 ;  s_onart_tldsw1  +  onart_tldsw1 ;  s_vl1000_tldsw1 +  vl1000_tldsw1 ;   
 	s_vl200_tldsw1  + vl200_tldsw1  ; s_dead_tldsw1   + dead_tldsw1   ;s_dead_hiv_tldsw1 +   dead_hiv_tldsw1 ;  s_c_tox_tldsw1  + c_tox_tldsw1  ; 
@@ -17784,6 +17827,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl200_uvl21  + vl200_uvl21  ; s_dead_uvl21   + dead_uvl21   ;s_dead_hiv_uvl21 +   dead_hiv_uvl21 ;  s_c_tox_uvl21  + c_tox_uvl21  ; 
 	s_r_dol_ge_p5_uvl21  +  r_dol_ge_p5_uvl21 ;  s_adhl_ge80_uvl21 + adhl_ge80_uvl21;  s_onart_iicu_uvl21 + onart_iicu_uvl21;   s_adh_lt80_uvl21 + adh_lt80_uvl21;
 	s_vis_uvl21  + vis_uvl21 ;  s_cd4_lt200_uvl21 + cd4_lt200_uvl21;
+	s_r_dol_uvl21 + r_dol_uvl21 ;  s_r_dol_vl1000_uvl21 + r_dol_vl1000_uvl21;
 
 	s_tldsw2_elig  +  tldsw2_elig ; s_o_dar_tldsw2  + o_dar_tldsw2 ; s_o_dol_tldsw2  + o_dol_tldsw2 ;  s_onart_tldsw2  +  onart_tldsw2 ;  s_vl1000_tldsw2 +  vl1000_tldsw2 ;   
 	s_vl200_tldsw2  + vl200_tldsw2  ; s_dead_tldsw2   + dead_tldsw2   ;s_dead_hiv_tldsw2 +   dead_hiv_tldsw2 ;  s_c_tox_tldsw2  + c_tox_tldsw2  ; 
@@ -17793,6 +17837,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl200_uvl22  + vl200_uvl22  ; s_dead_uvl22   + dead_uvl22   ;s_dead_hiv_uvl22 +   dead_hiv_uvl22 ;  s_c_tox_uvl22  + c_tox_uvl22  ; 
 	s_r_dol_ge_p5_uvl22  +  r_dol_ge_p5_uvl22 ;  s_adhl_ge80_uvl22 + adhl_ge80_uvl22;  s_onart_iicu_uvl22 + onart_iicu_uvl22;   s_adh_lt80_uvl22 + adh_lt80_uvl22;
 	s_vis_uvl22  + vis_uvl22 ;  s_cd4_lt200_uvl22 + cd4_lt200_uvl22;
+	s_r_dol_uvl22 + r_dol_uvl22 ;  s_r_dol_vl1000_uvl22 + r_dol_vl1000_uvl22;
 
 	s_tldsw3_elig  +  tldsw3_elig ; s_o_dol_tldsw3  + o_dol_tldsw3 ;  s_onart_tldsw3  +  onart_tldsw3 ;  s_vl1000_tldsw3 +  vl1000_tldsw3 ;   
 	s_vl200_tldsw3  + vl200_tldsw3  ; s_dead_tldsw3   + dead_tldsw3   ;s_dead_hiv_tldsw3 +   dead_hiv_tldsw3 ;  s_c_tox_tldsw3  + c_tox_tldsw3  ; 
@@ -17802,7 +17847,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl200_uvl23  + vl200_uvl23  ; s_dead_uvl23   + dead_uvl23   ;s_dead_hiv_uvl23 +   dead_hiv_uvl23 ;  s_c_tox_uvl23  + c_tox_uvl23  ; 
 	s_r_dol_ge_p5_uvl23  +  r_dol_ge_p5_uvl23 ;  s_adhl_ge80_uvl23 + adhl_ge80_uvl23;  s_onart_iicu_uvl23 + onart_iicu_uvl23;   s_adh_lt80_uvl23 + adh_lt80_uvl23;
 	s_vis_uvl23  + vis_uvl23 ;  s_cd4_lt200_uvl23 + cd4_lt200_uvl23;
-
+	s_r_dol_uvl23 + r_dol_uvl23 ;  s_r_dol_vl1000_uvl23 + r_dol_vl1000_uvl23;
 
 	s_dol_pi_failed + dol_pi_failed; 
 
@@ -19573,6 +19618,7 @@ s_r_dol_ten3tc_r_f_1 s_outc_ten3tc_r_f_1_1 s_outc_ten3tc_r_f_1_2  s_outc_ten3tc_
 s_outc_ten3tc_r_f_1_6  s_outc_ten3tc_r_f_1_7
 
 s_drug_level_test  s_drug_level_test_adh_high s_drug_level_test_adh_high_r_dol  s_drug_level_test_adh_low_r_dol  s_drug_level_test_adh_low  s_tle s_tld s_zld s_zla s_otherreg
+s_adh_meas_1_1    s_adh_meas_1_0   s_adh_meas_0_1   s_adh_meas_0_0                  
 
 s_no_recent_vm_gt1000 s_no_recent_vm_gt1000_dol  s_no_recent_vm_gt1000_efa
 s_recent_vm_gt1000 s_recent_vm_gt1000_dol  s_recent_vm_gt1000_efa s_recent_vm_gt1000_zdv
@@ -19601,19 +19647,22 @@ s_dol_pi_fail_by_year_interv  s_any_vfail_by_year_interv  s_no_non_tld_by_year_i
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
 s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt80_uvl2 s_vis_uvl2  s_vis_tldsw s_cd4_lt200_uvl2 s_r_ten_tldsw s_r_3tc_tldsw
-s_onart_iicu_vl1000_uvl2  s_onart_uvl2
+s_onart_iicu_vl1000_uvl2  s_onart_uvl2 s_r_dol_uvl2  s_r_dol_vl1000_uvl2 
 
 s_tldsw1_elig  s_o_dar_tldsw1   s_o_dol_tldsw1    s_onart_tldsw1    s_vl1000_tldsw1 	s_vl200_tldsw1  s_dead_tldsw1  s_dead_hiv_tldsw1  s_c_tox_tldsw1  s_r_dol_ge_p5_tldsw1 
 s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	s_vl200_uvl21  s_dead_uvl21  s_dead_hiv_uvl21  s_c_tox_uvl21  s_r_dol_ge_p5_uvl21 
 s_adhl_ge80_uvl21 s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1 s_cd4_lt200_uvl21
+s_r_dol_uvl21  s_r_dol_vl1000_uvl21 
 
 s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tldsw2 	s_vl200_tldsw2  s_dead_tldsw2  s_dead_hiv_tldsw2  s_c_tox_tldsw2  s_r_dol_ge_p5_tldsw2 
 s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p5_uvl22 
 s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2 s_cd4_lt200_uvl22
+s_r_dol_uvl22  s_r_dol_vl1000_uvl22
 
 s_tldsw3_elig  s_o_dol_tldsw3    s_onart_tldsw3    s_vl1000_tldsw3 	s_vl200_tldsw3  s_dead_tldsw3  s_dead_hiv_tldsw3  s_c_tox_tldsw3  s_r_dol_ge_p5_tldsw3 
 s_uvl23_elig   s_o_dol_uvl23    s_onart_uvl23    s_vl1000_uvl23 	s_vl200_uvl23  s_dead_uvl23  s_dead_hiv_uvl23  s_c_tox_uvl23  s_r_dol_ge_p5_uvl23 
 s_adhl_ge80_uvl23 s_onart_iicu_tldsw3 s_adh_lt80_tldsw3  s_onart_iicu_uvl23 s_adh_lt80_uvl23 s_vis_uvl23  s_vis_tldsw3 s_cd4_lt200_uvl23
+s_r_dol_uvl23  s_r_dol_vl1000_uvl23 
 
 s_dol_pi_failed
 
@@ -20589,6 +20638,7 @@ s_r_dol_ten3tc_r_f_1 s_outc_ten3tc_r_f_1_1 s_outc_ten3tc_r_f_1_2  s_outc_ten3tc_
 s_outc_ten3tc_r_f_1_6  s_outc_ten3tc_r_f_1_7
 
 s_drug_level_test  s_drug_level_test_adh_high  s_drug_level_test_adh_low s_drug_level_test_adh_high_r_dol s_drug_level_test_adh_low_r_dol s_tle s_tld s_zld s_zla s_otherreg
+s_adh_meas_1_1    s_adh_meas_1_0   s_adh_meas_0_1   s_adh_meas_0_0 
 
 s_no_recent_vm_gt1000 s_no_recent_vm_gt1000_dol  s_no_recent_vm_gt1000_efa
 s_recent_vm_gt1000 s_recent_vm_gt1000_dol  s_recent_vm_gt1000_efa s_recent_vm_gt1000_zdv
@@ -20618,19 +20668,22 @@ s_dol_pi_fail_by_year_interv  s_any_vfail_by_year_interv  s_no_non_tld_by_year_i
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
 s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt80_uvl2 s_vis_uvl2  s_vis_tldsw s_cd4_lt200_uvl2 s_r_ten_tldsw s_r_3tc_tldsw
-s_onart_iicu_vl1000_uvl2  s_onart_uvl2
+s_onart_iicu_vl1000_uvl2  s_onart_uvl2 s_r_dol_uvl2  s_r_dol_vl1000_uvl2
 
 s_tldsw1_elig  s_o_dar_tldsw1   s_o_dol_tldsw1    s_onart_tldsw1    s_vl1000_tldsw1 	s_vl200_tldsw1  s_dead_tldsw1  s_dead_hiv_tldsw1  s_c_tox_tldsw1  s_r_dol_ge_p5_tldsw1 
 s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	s_vl200_uvl21  s_dead_uvl21  s_dead_hiv_uvl21  s_c_tox_uvl21  s_r_dol_ge_p5_uvl21 
 s_adhl_ge80_uvl21 s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1 s_cd4_lt200_uvl21
+s_r_dol_uvl21  s_r_dol_vl1000_uvl21 
 
 s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tldsw2 	s_vl200_tldsw2  s_dead_tldsw2  s_dead_hiv_tldsw2  s_c_tox_tldsw2  s_r_dol_ge_p5_tldsw2 
 s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p5_uvl22 
 s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2 s_cd4_lt200_uvl22
+s_r_dol_uvl22  s_r_dol_vl1000_uvl22
 
 s_tldsw3_elig  s_o_dol_tldsw3    s_onart_tldsw3    s_vl1000_tldsw3 	s_vl200_tldsw3  s_dead_tldsw3  s_dead_hiv_tldsw3  s_c_tox_tldsw3  s_r_dol_ge_p5_tldsw3 
 s_uvl23_elig   s_o_dol_uvl23    s_onart_uvl23    s_vl1000_uvl23 	s_vl200_uvl23  s_dead_uvl23  s_dead_hiv_uvl23  s_c_tox_uvl23  s_r_dol_ge_p5_uvl23 
 s_adhl_ge80_uvl23 s_onart_iicu_tldsw3 s_adh_lt80_tldsw3  s_onart_iicu_uvl23 s_adh_lt80_uvl23 s_vis_uvl23  s_vis_tldsw3 s_cd4_lt200_uvl23
+s_r_dol_uvl23  s_r_dol_vl1000_uvl23 
 
 s_dol_pi_failed
 
@@ -26862,6 +26915,7 @@ s_r_dol_ten3tc_r_f_1 s_outc_ten3tc_r_f_1_1 s_outc_ten3tc_r_f_1_2  s_outc_ten3tc_
 s_outc_ten3tc_r_f_1_6  s_outc_ten3tc_r_f_1_7
 
 s_drug_level_test  s_drug_level_test_adh_high   s_drug_level_test_adh_low s_drug_level_test_adh_high_r_dol s_drug_level_test_adh_low_r_dol s_tle s_tld s_zld s_zla s_otherreg
+s_adh_meas_1_1    s_adh_meas_1_0   s_adh_meas_0_1   s_adh_meas_0_0 
 
 s_no_recent_vm_gt1000 s_no_recent_vm_gt1000_dol  s_no_recent_vm_gt1000_efa
 s_recent_vm_gt1000 s_recent_vm_gt1000_dol  s_recent_vm_gt1000_efa s_recent_vm_gt1000_zdv
@@ -26890,19 +26944,22 @@ s_dol_pi_fail_by_year_interv  s_any_vfail_by_year_interv  s_no_non_tld_by_year_i
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
 s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt80_uvl2 s_vis_uvl2  s_vis_tldsw s_cd4_lt200_uvl2 s_r_ten_tldsw s_r_3tc_tldsw
-s_onart_iicu_vl1000_uvl2  s_onart_uvl2
+s_onart_iicu_vl1000_uvl2  s_onart_uvl2 s_r_dol_uvl2  s_r_dol_vl1000_uvl2
 
 s_tldsw1_elig  s_o_dar_tldsw1   s_o_dol_tldsw1    s_onart_tldsw1    s_vl1000_tldsw1 	s_vl200_tldsw1  s_dead_tldsw1  s_dead_hiv_tldsw1  s_c_tox_tldsw1  s_r_dol_ge_p5_tldsw1 
 s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	s_vl200_uvl21  s_dead_uvl21  s_dead_hiv_uvl21  s_c_tox_uvl21  s_r_dol_ge_p5_uvl21 
 s_adhl_ge80_uvl21 s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1  s_cd4_lt200_uvl21
+s_r_dol_uvl21  s_r_dol_vl1000_uvl21
 
 s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tldsw2 	s_vl200_tldsw2  s_dead_tldsw2  s_dead_hiv_tldsw2  s_c_tox_tldsw2  s_r_dol_ge_p5_tldsw2 
 s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p5_uvl22 
 s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2  s_cd4_lt200_uvl22
+s_r_dol_uvl22  s_r_dol_vl1000_uvl22
 
 s_tldsw3_elig  s_o_dol_tldsw3    s_onart_tldsw3    s_vl1000_tldsw3 	s_vl200_tldsw3  s_dead_tldsw3  s_dead_hiv_tldsw3  s_c_tox_tldsw3  s_r_dol_ge_p5_tldsw3 
 s_uvl23_elig   s_o_dol_uvl23    s_onart_uvl23    s_vl1000_uvl23 	s_vl200_uvl23  s_dead_uvl23  s_dead_hiv_uvl23  s_c_tox_uvl23  s_r_dol_ge_p5_uvl23 
 s_adhl_ge80_uvl23 s_onart_iicu_tldsw3 s_adh_lt80_tldsw3  s_onart_iicu_uvl23 s_adh_lt80_uvl23 s_vis_uvl23  s_vis_tldsw3 s_cd4_lt200_uvl23
+s_r_dol_uvl23  s_r_dol_vl1000_uvl23 
 
 s_dol_pi_failed
 
