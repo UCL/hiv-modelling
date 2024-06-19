@@ -4,17 +4,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_z_out\";
 
-data g ; set a.kenya_z ;
-
-if run in (
-                               15415411
-                                             202848073
-                                             311978993
-                                             407457735
-                                             644529528
-                                             849800192
-);
-
+data g ; set a.kenya_aa ;
 
 
 proc sort data=g; 
@@ -1147,14 +1137,14 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v= n_onart              );
+%var(v= n_new_inf1549           );
 
 
 ods html;
 
 title '';
 
-proc print data = n_onart                               noobs;
+proc print data = n_new_inf1549                              noobs;
 run;
 
 ods html close;
