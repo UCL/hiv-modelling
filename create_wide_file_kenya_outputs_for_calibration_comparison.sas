@@ -1,4 +1,4 @@
-* options user="/folders/myfolders/";
+ options user="/folders/myfolders/";
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
@@ -1078,6 +1078,11 @@ p_diag_m = p_diag_m / 100;
 p_diag_w = p_diag_w / 100;
 p_diag = p_diag / 100;
 
+incidence1549w1000 = incidence1549w * 10;
+incidence1549m1000 = incidence1549m * 10;
+incidence15491000 = incidence1549 * 10;
+
+
 
 %macro var(v=);
 
@@ -1137,14 +1142,14 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v= n_new_inf1549           );
 
+%var(v= incidence15491000     );
 
 ods html;
 
 title '';
 
-proc print data = n_new_inf1549                              noobs;
+proc print data = incidence15491000                       noobs;
 run;
 
 ods html close;
