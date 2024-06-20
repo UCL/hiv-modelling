@@ -15284,9 +15284,10 @@ end;
 
 
 *Test new way of accumulating YLL;	*JASMay24;
-total_yllag_test=0;
-total_yllag_w=0;	total_yllag_m=0;
-dyllag_total=0;
+yllag_total_test=0;		*undiscounted;
+yllag_w=0;			yllag_m=0;
+yllag_hiv_w=0;		yllag_hiv_m=0;
+dyllag_total=0;			*discounted;
 dyllag_w=0; 		dyllag_m=0;
 dyllag_hiv_w=0; 	dyllag_hiv_m=0;
 
@@ -15336,21 +15337,24 @@ if caldate&j = death and death ne . then do;
 
 	if 15 le agedeath < 92 then do;						*Assumes YLL=0 for deaths age 92+;
 		if gender = 2 then do;
-			total_yllag_test = ages_w[agedeath - 14]; 	*Offset array index by 15;
-			total_yllag_w = ages_w[agedeath - 14];
+/*			yllag_total_test = ages_w[agedeath - 14]; 	*Offset array index by 15;*/
+			yllag_w = ages_w[agedeath - 14]; 			*Offset array index by 15;
 			dyllag_w=ages_w_disc[agedeath - 14]; 
 			if death_hivrel>0 then do;					*Based on dcause=1 not rdcause=1;
+				yllag_hiv_w=ages_w[agedeath - 14];;
 				dyllag_hiv_w=ages_w_disc[agedeath - 14]; 	
 			end;
 		end;
 		if gender = 1 then do;
-			total_yllag_test = ages_m[agedeath - 14];
-			total_yllag_m = ages_m[agedeath - 14];
+/*			yllag_total_test = ages_m[agedeath - 14];*/
+			yllag_m = ages_m[agedeath - 14];
 			dyllag_m=ages_m_disc[agedeath - 14]; 
 			if death_hivrel>0 then do;
+				yllag_hiv_m=ages_m[agedeath - 14];;
 				dyllag_hiv_m=ages_m_disc[agedeath - 14]; 	
 			end;
 		end;
+		yllag_total_test=yllag_w+yllag_m;
 		dyllag_total=dyllag_w+dyllag_m;
 	end;
 
@@ -17611,9 +17615,11 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_daly_non_aids_pre_death + daly_non_aids_pre_death ;     
 	s_total_yll80le + total_yll80le;
 	s_total_yllag + total_yllag;						 
-	s_total_yllag_test + total_yllag_test;
-	s_total_yllag_w + total_yllag_w;
-	s_total_yllag_m + total_yllag_m;
+	s_yllag_total_test + yllag_total_test;
+	s_yllag_w + yllag_w;
+	s_yllag_m + yllag_m;
+	s_yllag_hiv_w + yllag_hiv_w;
+	s_yllag_hiv_m + yllag_hiv_m;
 
 	*discounted;
 	s_live_ddaly + live_ddaly ; 
@@ -17692,7 +17698,7 @@ proc freq; tables country cald hiv ; where death=.; run;
 */
 
 proc print; var 
-caldate&j total_yllag total_yllag_test total_yllag_w total_yllag_m dyllag_w dyllag_m dyllag_hiv_w dyllag_hiv_m dyll_GBD dyllag_total
+caldate&j total_yllag yllag_total_test yllag_w yllag_m yllag_hiv_w yllag_hiv_m dyllag_total dyll_GBD dyllag_w dyllag_m dyllag_hiv_w dyllag_hiv_m  
 ;
 where total_yllag>0; 
 run;
@@ -19015,7 +19021,8 @@ s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dco
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_total_yll80le  s_total_yllag							  
-s_total_yllag_test s_total_yllag_w s_total_yllag_m
+s_yllag_total_test s_yllag_w s_yllag_m
+s_yllag_hiv_w yllag_hiv_m
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
 s_dyll_Optima80 s_dyll_GBD       
 s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m
@@ -19993,7 +20000,8 @@ s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dco
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_total_yll80le  s_total_yllag						  
-s_total_yllag_test s_total_yllag_w s_total_yllag_m
+s_yllag_total_test s_yllag_w s_yllag_m
+s_yllag_hiv_w yllag_hiv_m
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
 s_dyll_Optima80 s_dyll_GBD  
 s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m
@@ -20845,7 +20853,8 @@ s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dco
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_total_yll80le  s_total_yllag																			   
-s_total_yllag_test s_total_yllag_w s_total_yllag_m
+s_yllag_total_test s_yllag_w s_yllag_m
+s_yllag_hiv_w yllag_hiv_m
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
 s_dyll_Optima80 s_dyll_GBD	 		 
 s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m
