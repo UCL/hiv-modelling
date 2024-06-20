@@ -5,10 +5,10 @@
 
 libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
-***USED FOR SUNGAI'S CROI 2024 poster;
+***USED FOR SUNGAI'S CROI 2024 poster AND Harriett's paper;
 
 data a;
-set a.fsw_zim_28feb24;  
+set a.fsw_zim_12jun24;  
 
 *if option=1 then delete; ***first look at overall incidence according to baseline SW program (option=1= amesthist);
 
@@ -142,15 +142,30 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_diag_sw_inprog;				if s_sw_hiv_inprog gt 0 then p_diag_sw_inprog	= s_diag_sw_inprog / s_sw_hiv_inprog; 
 
 * prevalence_sw;				prevalence_sw = s_hiv_sw1549_ / s_sw_1549; 
+* prevalence_1839sw;			prevalence_1839sw = s_hiv_sw1839_ / s_sw_1839;
+* prevalence_1824sw;			prevalence_1824sw = s_hiv_sw1824_ / s_sw_1824;
+* prevalence_2539sw;			prevalence_2539sw = s_hiv_sw2539_ / s_sw_2539;
+
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw =(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
 
-***Graph for CROI poster;
-* incidence_sw1839_;			if (s_sw_1839  - s_hiv_sw1839_  + s_primary_sw1839_) gt 0 then incidence_sw1839_ =(s_primary_sw1839_ * 4 * 100) / (s_sw_1839  - s_hiv_sw1839_  + s_primary_sw1839_);
+
+***Outputs for Harriet's paper;
+
+* incidence_1839sw;				if (s_sw_1839  - s_hiv_sw1839_  + s_primary_sw1839_) gt 0 then incidence_sw =(s_primary_sw1839_ * 4 * 100) / (s_sw_1839  - s_hiv_sw1839_  + s_primary_sw1839_);
 * incidence_sw_inprog1839_;		if (s_sw_inprog1839_  - s_sw_hiv_inprog1839_  + s_primary_sw_inprog1839_) gt 0 then incidence_sw_inprog1839_ =(s_primary_sw_inprog1839_ * 4 * 100) / (s_sw_inprog1839_  - s_sw_hiv_inprog1839_  + s_primary_sw_inprog1839_);
 * incidence_sw_noprog1839_;		if (s_sw_noprog1839_  - s_sw_hiv_noprog1839_  + s_primary_sw_noprog1839_) gt 0 then incidence_sw_noprog1839_ =(s_primary_sw_noprog1839_ * 4 * 100) / (s_sw_noprog1839_  - s_sw_hiv_noprog1839_  + s_primary_sw_noprog1839_);
 
+* incidence_1824sw;				if (s_sw_1824  - s_hiv_sw1824_  + s_primary_sw1824_) gt 0 then incidence_sw =(s_primary_sw1824_ * 4 * 100) / (s_sw_1824  - s_hiv_sw1824_  + s_primary_sw1824_);
+* incidence_sw_inprog1824_;		if (s_sw_inprog1824_  - s_sw_hiv_inprog1824_  + s_primary_sw_inprog1824_) gt 0 then incidence_sw_inprog1824_ =(s_primary_sw_inprog1824_ * 4 * 100) / (s_sw_inprog1824_  - s_sw_hiv_inprog1824_  + s_primary_sw_inprog1824_);
+* incidence_sw_noprog1824_;		if (s_sw_noprog1824_  - s_sw_hiv_noprog1824_  + s_primary_sw_noprog1824_) gt 0 then incidence_sw_noprog1824_ =(s_primary_sw_noprog1824_ * 4 * 100) / (s_sw_noprog1824_  - s_sw_hiv_noprog1824_  + s_primary_sw_noprog1824_);
+
+* incidence_2539sw;				if (s_sw_1839  - s_hiv_sw1839_  + s_primary_sw1839_) gt 0 then incidence_sw =(s_primary_sw1839_ * 4 * 100) / (s_sw_1839  - s_hiv_sw1839_  + s_primary_sw1839_);
+* incidence_sw_inprog2539_;		if (s_sw_inprog2539_  - s_sw_hiv_inprog2539_  + s_primary_sw_inprog2539_) gt 0 then incidence_sw_inprog2539_ =(s_primary_sw_inprog2539_ * 4 * 100) / (s_sw_inprog2539_  - s_sw_hiv_inprog2539_  + s_primary_sw_inprog2539_);
+* incidence_sw_noprog2539_;		if (s_sw_noprog2539_  - s_sw_hiv_noprog2539_  + s_primary_sw_noprog2539_) gt 0 then incidence_sw_noprog2539_ =(s_primary_sw_noprog2539_ * 4 * 100) / (s_sw_noprog1924_  - s_sw_hiv_noprog1924_  + s_primary_sw_noprog1924_);
+
+***Harriett wants to include incidence and prev graphs for 18-39;
 ***To smooth incidence lines, take averages across 4 periods;
 lag1_inc_sw=lag(incidence_sw1839_); lag2_inc_sw=lag2(incidence_sw1839_); lag3_inc_sw=lag3(incidence_sw1839_);
 lag1_inc_sw_inprog=lag(incidence_sw_inprog1839_); lag2_inc_sw_inprog=lag2(incidence_sw_inprog1839_); lag3_inc_sw_inprog=lag3(incidence_sw_inprog1839_);
@@ -163,23 +178,6 @@ mean_sw_inc1839_ =(incidence_sw1839_ + lag1_inc_sw + lag2_inc_sw + lag3_inc_sw)/
 mean_sw_inc_inprog1839_ = (incidence_sw_inprog + lag1_inc_sw_inprog + lag2_inc_sw_inprog + lag3_inc_sw_inprog)/4;
 mean_sw_inc_noprog1839_ = (incidence_sw_noprog + lag1_inc_sw_noprog + lag2_inc_sw_noprog + lag3_inc_sw_noprog)/4;
 end;
-
-***Outputs for Harriet's paper;
-* incidence_sw1924_;			if (s_sw_1924  - s_hiv_sw1924_  + s_primary_sw1924_) gt 0 then incidence_sw1924_ =(s_primary_sw1924_ * 4 * 100) / (s_sw_1924  - s_hiv_sw1924_  + s_primary_sw1924_);
-* incidence_sw_inprog1924_;		if (s_sw_inprog1924_  - s_sw_hiv_inprog1924_  + s_primary_sw_inprog1924_) gt 0 then incidence_sw_inprog1924_ =(s_primary_sw_inprog1924_ * 4 * 100) / (s_sw_inprog1924_  - s_sw_hiv_inprog1924_  + s_primary_sw_inprog1924_);
-* incidence_sw_noprog1924_;		if (s_sw_noprog1924_  - s_sw_hiv_noprog1924_  + s_primary_sw_noprog1924_) gt 0 then incidence_sw_noprog1924_ =(s_primary_sw_noprog1924_ * 4 * 100) / (s_sw_noprog1924_  - s_sw_hiv_noprog1924_  + s_primary_sw_noprog1924_);
-
-* incidence_sw2539_;			if (s_sw_2539  - s_hiv_sw2539_  + s_primary_sw2539_) gt 0 then incidence_sw2539_ =(s_primary_sw2539_ * 4 * 100) / (s_sw_2539  - s_hiv_sw2539_  + s_primary_sw2539_);
-* incidence_sw_inprog2539_;		if (s_sw_inprog2539_  - s_sw_hiv_inprog2539_  + s_primary_sw_inprog2539_) gt 0 then incidence_sw_inprog2539_ =(s_primary_sw_inprog2539_ * 4 * 100) / (s_sw_inprog2539_  - s_sw_hiv_inprog2539_  + s_primary_sw_inprog2539_);
-* incidence_sw_noprog2539_;		if (s_sw_noprog2539_  - s_sw_hiv_noprog2539_  + s_primary_sw_noprog2539_) gt 0 then incidence_sw_noprog2539_ =(s_primary_sw_noprog2539_ * 4 * 100) / (s_sw_noprog1924_  - s_sw_hiv_noprog1924_  + s_primary_sw_noprog1924_);
-
-* prevalence_sw1824_;			prevalence_sw1824_ = s_hiv_sw1824_ / s_sw_1824; 
-* prevalence_sw_inprog_1824_;	prevalence_sw_inprog_1824_ = s_sw_hiv_inprog1824_/s_sw_inprog1824_;
-* prevalence_sw_noprog_1824_;	prevalence_sw_noprog_1824_ = s_sw_hiv_noprog1824_/s_sw_noprog1824_;
-
-* prevalence_sw2539_;			prevalence_sw2539_ = s_hiv_sw2539_ / s_sw_2539; 
-* prevalence_sw_inprog_2539_;	prevalence_sw_inprog_2539_ = s_sw_hiv_inprog2539_/s_sw_inprog2539_;
-* prevalence_sw_noprog_2539_;	prevalence_sw_noprog_2539_ = s_sw_hiv_noprog2539_/s_sw_noprog2539_;
 
 
 run;
