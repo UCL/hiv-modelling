@@ -1,10 +1,7 @@
-*libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
+libname a  "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
 
-libname a 'C:\Users\lovel\Desktop';
-***USING THE FSW FILE AS BOTH PROJECTS HAVE BEEN CODED IN ONE OUTPUT FILE;
 data a;
-set a.malawi outputs;
+set a.malawi_12jun24;
 if run=. then delete;
 
 *if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
@@ -19,13 +16,12 @@ proc freq;table s_I_undiag4549m;run;
 data sf;
 set a;
  
-*Zimbabwe;
-*Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
-*accessed 9/2/2023;
-* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
+*Malawi;
+*Source for Zimbabwe population is https://wdi.worldbank.org/table/2.1 (58%>15);
+*accessed 20/6/2024;
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2022 = (16320000 * 0.581) / s_alive; 
+sf_2022 = (20400000 * 0.581) / s_alive; 
 
 keep run sf_2022;
 proc sort; by run;run;
