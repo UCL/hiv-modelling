@@ -1,6 +1,6 @@
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_y_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_af_out\";
 
 
 proc printto ;
@@ -8,7 +8,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_tld_switch_y;
+set a.l_tld_switch_af;
 
 
 * for this program, variable names cannot end on a number;
@@ -41,7 +41,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 560    ;
+%let nfit = 2400   ;
 
 %let year_end = 2070.00 ;
 run;
