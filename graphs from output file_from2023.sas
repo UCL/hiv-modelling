@@ -8,6 +8,7 @@ proc freq data=a.l_base_from2023_20240523;table cald sf;run;
 
 %let pth_export_mihpsa= C:\Users\Valentina\Dropbox (UCL)\MIHPSA Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis;run;
 
+
 data b;
 set a.l_base_from2023_20240523;
 
@@ -69,7 +70,7 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 n_new_inf1549_ = n_new_inf1549;
 n_everpregn_w1524_ = n_everpregn_w1524;
 n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
-
+run;
 *In trying to figure out why the PrEP simualtions are not averting infections,
 I'm going to select only 5 simulations for each of the 10 datasets;
 /*
@@ -79,6 +80,12 @@ data b;set b;count_provasim+1;by option run cald ;if first.run or first.cald the
 proc print data=b; var option run cald count_provasim;run;
 data b;set b;where count_provasim in (1 2 3 4 5);run;
 */
+proc freq data=a.l_base_from2023_20240523;
+table n_sw_inprog_ly*option/nopercent norow;where option in (1 10);run;
+proc freq data=b;
+table n_sw_inprog_ly*option/nopercent norow;where option in (1 10);run;
+
+
 proc sort data=b; by option cald run ;run;
 proc freq data=b; table cald;run;
 *run_forward_id has not been saved;
@@ -101,16 +108,18 @@ proc means max data=b;var count_csim cald;where option=15;run;*100;
 proc means max data=b;var count_csim cald;where option=16;run;*100;
 proc means max data=b;var count_csim cald;where option=17;run;*100;
 proc means max data=b;var count_csim cald;where option=18;run;*100;
+
 proc means max data=b;var count_csim cald;where option=19;run;*100;
 proc means max data=b;var count_csim cald;where option=20;run;*100;
 proc means max data=b;var count_csim cald;where option=21;run;*100;
 proc means max data=b;var count_csim cald;where option=22;run;*100;
+
 proc means max data=b;var count_csim cald;where option=23;run;*100;
 proc means max data=b;var count_csim cald;where option=24;run;*100;
 proc means max data=b;var count_csim cald;where option=25;run;*100;
 proc means max data=b;var count_csim cald;where option=26;run;*100;
 
-
+/*proc freq data=b;table n_sw_inprog_ly*option/nopercent norow;where option in (0 10);run;*/
 %let year_start = 2023;
 %let year_end = 2072.75;
 run;
@@ -121,7 +130,7 @@ proc sort;by cald option ;run;
 %let var =  
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive0_
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
-n_sw_1564_	prev_sti_sw n_sw_inprog_ly  /*n_sw_inprog_ever*/
+n_sw_1564_		prev_sti_sw  n_sw_inprog_ly  /*n_sw_inprog_ever*/
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
@@ -512,8 +521,31 @@ by cald;
 run;
 
 data a.d_from2023;set d;run;
-/*data d;set a.d;run;*/
-/*proc freq data=d;table cald;run;*/
+/*data d;set a.d_from2023;run;*/
+ods html close;
+ods listing;
+proc freq data=d;table 
+/*
+p50_p_w1524newpge1_onprep_0 
+p50_n_w1524_newp_ge1__0
+p50_n_sw_inprog_ly_0 
+p50_n_prep_inj_sw_0 
+p50_n_prep_inj_sdc_0
+
+p50_p_w1524newpge1_onprep_1 
+p50_n_w1524_newp_ge1__1
+p50_n_sw_inprog_ly_1 
+p50_n_prep_inj_sw_1
+p50_n_prep_inj_sdc_1*/
+
+
+p50_p_w1524newpge1_onprep_15 
+p50_n_w1524_newp_ge1__15
+p50_n_sw_inprog_ly_10 
+p50_n_prep_inj_sw_24
+p50_n_prep_inj_sdc_25
+p50_n_prep_inj_sdc_26
+;run;
 
 
 
@@ -2840,18 +2872,13 @@ ods rtf close;run;
 *Output about cotrimaxazole (s_pcp_p_adc s_pcp_p_crypm s_pcp_p_dead s_pcp_p_sbi s_pcp_p_tb s_pcp_p_who3 );
 *Output about VL measured (vl_cost_inc reset to 0);
 
-%option_(15);
-%option_(16);
-%option_(17);
-%option_(18);
-%option_(19);
-%option_(20);
-%option_(21);
-%option_(22);
-%option_(23);
-%option_(24);
-%option_(25);
-%option_(26);
+
+
+
+
+
+
+*Trying to understand which intervention removal is driving the HIV incidence to go up;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49) - ZOOM";
@@ -2956,10 +2983,7 @@ run;
 quit;
 
 
-	*option 23: Injectable PrEP for AGYW;	
-	*option 24: Injectable PrEP for FSW;	
-	*option 25: Injectable PrEP for Sero-discordant couples (SDC);	
-	*option 26: Injectable PrEP for pregnant and breastfeeding women (PLW);
+
 
 
 
@@ -2997,12 +3021,13 @@ rename p95_prevalence1549w_&o = HIVprev_F1549_95UL;
 rename p50_prevalence1549__&o  = HIVprev_A1549_M;
 rename p5_prevalence1549__&o   = HIVprev_A1549_95LL;
 rename p95_prevalence1549__&o  = HIVprev_A1549_95UL;
+
 rename p50_prevalence1549preg_&o = HIVprev_pregF1549_M;
 rename p5_prevalence1549preg_&o  = HIVprev_pregF1549_95LL;
 rename p95_prevalence1549preg_&o = HIVprev_pregF1549_95UL;
-rename p50_prevalence1524preg_&o = HIVprev_F1524_M;
-rename p5_prevalence1524preg_&o  = HIVprev_F1524_95LL;
-rename p95_prevalence1524preg_&o = HIVprev_F1524_95UL;
+rename p50_prevalence1524w_&o = HIVprev_F1524_M;
+rename p5_prevalence1524w_&o  = HIVprev_F1524_95LL;
+rename p95_prevalence1524w_&o = HIVprev_F1524_95UL;
 rename p50_prevalence_sw_&o = HIVprev_FSW1599_M;
 rename p5_prevalence_sw_&o  = HIVprev_FSW1599_95LL;
 rename p95_prevalence_sw_&o = HIVprev_FSW1599_95UL;
@@ -3063,12 +3088,24 @@ rename p95_p_diag_w_&o = P_DIAG_F1599_95UL;
 rename p50_p_diag_m1524__&o = P_DIAG_M1524_M;
 rename p50_p_diag_w1524__&o = P_DIAG_F1524_M;
 rename p50_p_diag_sw_&o = P_DIAG_FSW1599_M;
+
+*Some variables about sexual behaviour cannot be produce by the Synthesis model;
 rename p50_p_m_npge1__&o = P_CLS3m_M1599_M;
 rename p50_p_w_npge1__&o = P_CLS3m_F1599_M;
 rename p50_p_w1524_npge1__&o = P_CLS3m_F1524_M;
 rename p50_p_sw_npge1__&o = P_CLS3m_FSW_M;
 
 rename p50_prev_sti_sw_&o = P_STI_FSW1599_M;
+
+rename n_w1524_newp_ge1_ = NAlive_ElevRiskF1524_M;
+rename p_w1524newpge1_onprep = P_TDFPrEP_ElevRiskF1524_M;
+*VARIABLES TO BE ADDED HERE ONCE WE HAVE CREATED THEM IN CREATE_WIDE_FILE;
+/*NAlive_FPregBirthBF1599_M*/
+/*P_TDFPrEP_FPregBirthBF1599_M*/
+/*P_DPVPrEP_ElevRiskF1524_M*/
+/*P_DPVPrEP_FPregBirthBF1599_M*/
+/*P_CABPrEP_ElevRiskF1524_M*/
+/*P_CABPrEP_FPregBirthBF1599_M*/
 
 rename p50_p_mcirc_1549m_&o = CIRC_PREV_M1549_M;
 rename p5_p_mcirc_1549m_&o  = CIRC_PREV_M1549_95LL;
@@ -3138,6 +3175,7 @@ rename p5_p_onart_artexp_&o = P_onART_ExpA1599_95LL;
 rename p95_p_onart_artexp_&o = P_onART_ExpA1599_95UL;
 rename p50_p_onart_artexp_sw_&o = P_onART_ExpFSW1599_M;
 rename p50_p_on_artexp_w1524evpreg_&o = P_onART_ExpFpregEverBirth1524_M;
+
 rename p50_p_onart_vl1000__&o = P_VLS_onARTA1599_M;
 rename p5_p_onart_vl1000__&o = P_VLS_onARTA1599_95LL;
 rename p95_p_onart_vl1000__&o = P_VLS_onARTA1599_95UL;
@@ -3145,6 +3183,7 @@ rename p50_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_M;
 rename p5_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95LL;
 rename p95_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95UL;
 rename p50_p_onart_vl1000_w1524evpr_&o = P_VLS_onARTpregEverBirthF1524_M;
+
 *% of adults 15+ years living with HIV who are on ART and who have ever been viremic (measured VL>1000) who are virally suppressed (if possible, at a threshold of <1000)
 *rename _&o = P_VLS_onARTMVLgt1000EverA1599_M;
 year= floor(cald);
@@ -3203,6 +3242,17 @@ p50_p_sw_npge1__&o
 
 p50_prev_sti_sw_&o 
 
+p50_n_w1524_newp_ge1__&o 	p50_p_w1524newpge1_onprep_&o
+
+/*VARIABLES TO BE ADDED HERE ONCE WE HAVE CREATED THEM IN CREATE_WIDE_FILE*/
+/*NAlive_FPregBirthBF1599_M*/
+/*P_TDFPrEP_FPregBirthBF1599_M*/
+/*P_DPVPrEP_ElevRiskF1524_M*/
+/*P_DPVPrEP_FPregBirthBF1599_M*/
+/*P_CABPrEP_ElevRiskF1524_M*/
+/*P_CABPrEP_FPregBirthBF1599_M*/
+
+
 p50_p_mcirc_1549m_&o 	p5_p_mcirc_1549m_&o  	p95_p_mcirc_1549m_&o 
 
 p50_n_onart_m_&o 		p5_n_onart_m_&o  		p95_n_onart_m_&o 
@@ -3251,10 +3301,8 @@ run;
 %stock(o=10);
 *%stock(o=11);
 %stock(o=12);
-
 %stock(o=15);
 %stock(o=16);
-
 %stock(o=17);
 %stock(o=18);
 %stock(o=19);

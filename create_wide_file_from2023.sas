@@ -13,10 +13,9 @@ proc contents data=a.base_from2023_20240523;run;
 ods html close;
 ods listing;
 proc freq data=a.base_from2023_20240523;
-table s_sw_inprog_ly;where option=0;run;
-
+table s_sw_inprog_ly s_onprep_w1524_newpge1_ s_w1524_newp_ge1;run;
 proc freq data=a.base_from2023_20240523;
-table s_sw_inprog_ly;where option=1;run;
+table s_sw_inprog_ly*option;where option in (0 1 10);run;
 *The following ouputs were not available when preparing the graphs comparing with other models in Feb;
 /*
 proc freq data=a.base_from2023_20240523;
@@ -1410,4 +1409,8 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 487363680
 
 ;
-
+proc freq data=a.l_base_from2023_20240523; table p_w1524newpge1_onprep n_w1524_newp_ge1;run;
+proc freq data=a.l_base_from2023_20240523;
+table n_sw_inprog_ly*cald/nopercent norow;where option in (10);run;
+proc freq data=a.l_base_from2023_20240523;
+table (n_prep_inj_sw n_prep_inj_sdc)*option/nopercent norow;where option in (1 24 25 26);run;
