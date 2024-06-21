@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data b;
-set a.l_base_CdI10;
+set a.l_base_CdI11;
 s_sw_1549_ = s_sw_1549;
 
 proc sort; by cald run ;run;
@@ -14,7 +14,7 @@ proc freq;table cald;run;
  
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  180    ;
+%let nfit =  32    ;
 %let year_end = 2029.00 ;
 run;
 proc sort;by cald option ;run;
@@ -180,9 +180,9 @@ by cald;
 *Of adults on art, proportion on efavirenz, dolutegravir, boosted PI – men women;
 
 run;
-
+ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\lovel\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\03jun24.doc' startpage=never; 
+ods rtf file = 'C:\Users\lovel\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\12jun24.doc' startpage=never; 
 
 
 proc sgplot data=d; 
