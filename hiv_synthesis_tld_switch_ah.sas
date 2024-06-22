@@ -9026,8 +9026,8 @@ if reg_option in (105 106) then art_monitoring_strategy = 153; * this is so that
 wont switch anyway;
 
 
-if reg_option = 125 and o_dar=1 and t_ten ne 1 then do; o_zdv=0; o_ten=1;  end;
-if reg_option = 125 and caldate{t} ge 2026 and uvl2_elig=1 and onart=1 and t_dar ne 1 then do; o_dar=1; o_taz=0; o_lpr=0; end; 
+if reg_option = 125 and o_dar=1 and o_zdv=1 and t_ten ne 1 then do; o_zdv=0; o_ten=1;  end;
+if reg_option = 125 and caldate{t} ge 2026 and uvl2_elig=1 and onart=1 and (o_taz=1 or o_lpr=1) and t_dar ne 1 then do; o_dar=1; o_taz=0; o_lpr=0; end; 
 
 
 

@@ -34,7 +34,6 @@ data sf;
 set b.k_tld_switch_ah ;
 
 
-
 if cald=2024   ;
 s_alive = s_alive_m + s_alive_w ;
 sf_2024 = 10000000 / s_alive;
@@ -997,6 +996,7 @@ run;
 * p_o_dol_uvl2;					p_o_dol_uvl2 = s_o_dol_uvl2 / s_uvl2_elig ;
 * p_o_dar_uvl2_onart;			p_o_dar_uvl2_onart = s_o_dar_uvl2 / s_onart_uvl2;
 * p_onart_iicu_vl1000_uvl2;		p_onart_iicu_vl1000_uvl2 = s_onart_iicu_vl1000_uvl2 / s_onart_iicu_uvl2;
+* p_r_dol_vl1000_uvl2;			p_r_dol_vl1000_uvl2 = r_dol_vl1000_uvl2 / r_dol_uvl2 ;
 
 * prop_artexp_elig_tldsw1;		prop_artexp_elig_tldsw1 = s_tldsw1_elig / s_artexp;
 * prop_tldsw1_uvl21;			prop_tldsw1_uvl21 = s_uvl21_elig / s_tldsw1_elig;
@@ -1303,7 +1303,7 @@ prop_artexp_elig_tldsw3  prop_tldsw3_uvl23 prop_tldsw3_elig_vl1000 prop_uvl23_vl
 p_adh_lt80_iicu_tldsw3   p_onart_iicu_tldsw3   p_onart_iicu_uvl23   p_adh_lt80_iicu_tldsw3   p_adh_lt80_iicu_uvl23 p_vis_tldsw3 p_vis_uvl23
 p_tldsw3_elig_tldsw
 
-p_o_dar_uvl2_onart
+p_o_dar_uvl2_onart  p_r_dol_vl1000_uvl2
 
 p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
@@ -1355,7 +1355,8 @@ p_emerge_inm_res_cab_notpr
 
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 
-pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  p_dol_2vg1000_dolr1  p_o_dar_uvl2  p_o_dol_uvl2
+pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  p_dol_2vg1000_dolr1  p_o_dar_uvl2  p_o_dol_uvl2  p_r_dol_vl1000_uvl2
+
 
 s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  n_death
 
@@ -1567,6 +1568,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prop_artexp_elig_tldsw);  %var(v=prop_tldsw_uvl2);  %var(v=prop_tldsw_elig_vl1000); %var(v=prop_uvl2_vl1000); %var(v=prop_tldsw_o_dar); 
 %var(v=p_adh_lt80_iicu_tldsw);   %var(v=p_onart_iicu_tldsw);   %var(v=p_onart_iicu_uvl2);   %var(v=p_adh_lt80_iicu_tldsw);   %var(v=p_adh_lt80_iicu_uvl2); 
 %var(v=p_vis_tldsw); %var(v=p_vis_uvl2); %var(v=prop_r_dol_ge_p5_uvl2); %var(v=p_o_dar_uvl2_onart);  %var(v=p_onart_iicu_vl1000_uvl2);
+%var(v=p_r_dol_vl1000_uvl2);
 
 %var(v=prop_artexp_elig_tldsw1);  %var(v=prop_tldsw1_uvl21);  %var(v=prop_tldsw1_elig_vl1000); %var(v=prop_uvl21_vl1000); %var(v=prop_tldsw1_o_dar); 
 %var(v=p_adh_lt80_iicu_tldsw1);   %var(v=p_onart_iicu_tldsw1);   %var(v=p_onart_iicu_uvl21);   %var(v=p_adh_lt80_iicu_tldsw1);   %var(v=p_adh_lt80_iicu_uvl21); 
@@ -1643,7 +1645,7 @@ p_adh_lt80_iicu_tldsw2   p_onart_iicu_tldsw2   p_onart_iicu_uvl22   p_adh_lt80_i
 p_tldsw2_elig_tldsw
 p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_onart  p_cd4_lt200_uvl2 n_uvl2_elig hiv_death_rate_uvl2 p_o_dar_uvl2
 
-s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2
+s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2  p_r_dol_vl1000_uvl2
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
@@ -2031,6 +2033,7 @@ n_res_test_dol_py_10y_2
 p_o_dar_uvl2_onart_10y_1 p_o_dar_uvl2_onart_10y_2 p_o_dar_uvl2_onart_10y_3 
 p_o_dol_uvl2_10y_1 p_o_dol_uvl2_10y_2 p_o_dol_uvl2_10y_3 
 p_onart_iicu_vl1000_uvl2_10y_1 p_onart_iicu_vl1000_uvl2_10y_2 p_onart_iicu_vl1000_uvl2_10y_3 
+p_r_dol_vl1000_uvl2_10y_1 p_r_dol_vl1000_uvl2_10y_2 p_r_dol_vl1000_uvl2_10y_3 p_r_dol_vl1000_uvl2_10y_4 p_r_dol_vl1000_uvl2_10y_5 
 ;
 run;
 
