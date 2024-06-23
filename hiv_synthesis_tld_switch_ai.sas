@@ -20053,9 +20053,8 @@ if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
 if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 */
 
-if cald = &year_interv and prevalence1549w > 0.35 then do; abort abend; end;
-
-
+if cald = 2024 and prevalence1549w > 0.35 then do; abort abend; end;
+if cald = 2024 and prevalence1549 < 0.05 then do; abort abend; end;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
