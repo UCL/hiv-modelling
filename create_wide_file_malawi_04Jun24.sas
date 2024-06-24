@@ -17,7 +17,7 @@ data sf;
 set a;
  
 *Malawi;
-*Source for Zimbabwe population is https://wdi.worldbank.org/table/2.1 (58%>15);
+*Source for  population is https://wdi.worldbank.org/table/2.1 (58%>15);
 *accessed 20/6/2024;
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
