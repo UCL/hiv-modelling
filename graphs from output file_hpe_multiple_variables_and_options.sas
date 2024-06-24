@@ -59,8 +59,8 @@ ods html;
 
 * long acting treatment ;
 * title 'Effects of changes in long acting ART';
-  if option in (1 2 3 4 6 7 8 9) then delete;
-  if option = 5 then option = 1;
+* if option in (1 2 3 4 6 7 8 9) then delete;
+* if option = 5 then option = 1;
 
 * long acting prep options ;
 * title 'Effects of changes in PrEP ';
@@ -70,9 +70,9 @@ ods html;
 
 * testing  ;
 * title 'Effects of changes in testing programme';
-*  if option in (1 2 3 4 5 6 7) then delete;
-*  if option = 8 then option = 1;
-*  if option = 9 then option = 2;
+   if option in (1 2 3 4 5 6 7) then delete;
+   if option = 8 then option = 1;
+   if option = 9 then option = 2;
 
 
 
