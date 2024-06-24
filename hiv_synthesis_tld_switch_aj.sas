@@ -13894,6 +13894,7 @@ if r_dol ge 0.5 and r_dol_tm1 <= 0 then incident_r_dol=1;
 
 dol_pi_failed = 0; if naive=0 and (f_lpr=1 or f_taz=1 or f_dar=1 or f_dol=1) then dol_pi_failed = 1;
 
+o_dol_r=0;
 if o_dol =1 and r_dol > 0 then o_dol_r =1;
 
 
