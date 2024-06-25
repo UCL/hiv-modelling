@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data b;
-set a.l_base_CdI11;
+set a.l_base_CdI12_lowinc;
 s_sw_1549_ = s_sw_1549;
 
 proc sort; by cald run ;run;
@@ -14,8 +14,8 @@ proc freq;table cald;run;
  
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  32    ;
-%let year_end = 2029.00 ;
+%let nfit =  111    ;
+%let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
 
@@ -182,7 +182,7 @@ by cald;
 run;
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\lovel\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\12jun24.doc' startpage=never; 
+ods rtf file = 'C:\Users\lovel\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\21jun24_lowinc.doc' startpage=never; 
 
 
 proc sgplot data=d; 
@@ -1572,11 +1572,8 @@ quit;
 ***For output into Excel file;
 
 data b;
-set a.l_base_CdI10;
+set a.l_base_CdI12_lowinc;
 s_sw_1549_ = s_sw_1549;
-incidence1549_per1000_=incidence1549_/10;
-incidence1549m_per1000_=incidence1549m/10;
-incidence1549w_per1000_=incidence1549w/10;
 
 proc sort; by cald run ;run;
 proc freq;table cald;run;
@@ -1594,10 +1591,10 @@ n_onart			n_onart_m			n_onart_w
 ;
 
 run;
-proc sort data=e; by cald run ;run;
+proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 180  ;
+%let nfit = 111  ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -1665,6 +1662,6 @@ l_incidence1549m_per1000_  l_incidence1549w_per1000_  l_incidence1549_per1000_  
 
 ods results off;
 
-ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\WHO Ivory Coast\comparison03jun.xlsx"
+ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\WHO Ivory Coast\comparison21jun_lowinc.xlsx"
 options(sheet_name='base1' start_at='A2');
 proc print data=all noobs;run;

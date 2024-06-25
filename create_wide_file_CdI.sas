@@ -5,8 +5,10 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 data a;
 set a.cdi_21jun24;
+
 proc sort;by run cald option;run;
 proc freq;table cald;run;
+
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
@@ -458,9 +460,72 @@ sw_trans_matrix
 
 proc sort data=y;by run option;run;
 
+proc freq;table incidence1549_;where cald=2022;run;
+
+***Removing low incidence runs;
+data low_inc;
+set y;
+
+if cald=2022 and incidence1549_ < 0.0313221879 then a=1;
+
+if run in (
+12640469
+43828339
+50866404
+57329366
+77774978
+89830802
+105428016
+132493572
+140991587
+145806156
+157950647
+186138745
+237110477
+251639929
+282604521
+310968076
+316775328
+352605356
+360868344
+382346190
+412228710
+429294459
+472777540
+517553946
+520730599
+525446466
+531640470
+533776350
+568652842
+572267845
+614018756
+649387981
+665698564
+682788489
+719636881
+727478217
+754439426
+757144304
+764364687
+780733320
+845021162
+847483835
+854647521
+855293901
+863439187
+873348720
+895226351
+932580503
+939421228
+957812902) then delete;
+
+proc freq;table run;run;
+
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI12; 
-set y;  
+data a.l_base_CdI12_lowinc; 
+set low_inc;
+*set y;  
 run;
 
 
