@@ -12023,7 +12023,9 @@ cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_
 	end;
 	
 	vl_cost_inc=0;
-	vm_this_per=0;if vm ne . then vm_this_per =1;
+	vm_this_per=0;	if vm ne . then vm_this_per =1;
+	vm_this_per_w=0;if vm ne . and gender=2 then vm_this_per_w =1;
+	vm_this_per_m=0;if vm ne . and gender=1 then vm_this_per_m =1;
 	vm_ly=0;      if caldate{t}-1 lt date_latest_vm le caldate{t} and date_latest_vm ne . then vm_ly =1;
 
 	res_cost=0; if res_test=1 then res_cost=res_cost_a;
@@ -14671,8 +14673,9 @@ if prep_vr_ever=1 then do;
 	if pregnant=1 or breastfeeding=1 	then prep_vr_ever_plw=1;
 end;
 
-*To calculate number initiating oral PrEP for men / women and for the first time or including retarting;	*MIHPSA-SA JAS May24;
+*To calculate number initiating oral/inj PrEP for men / women and for the first time or including restarting;	*MIHPSA-SA JAS May24;
 init_prep_oral_first_w=0;init_prep_oral_first_m=0; init_prep_oral_curr_w=0;init_prep_oral_curr_m=0;
+init_prep_inj_first_w=0;init_prep_inj_first_m=0; init_prep_inj_curr_w=0;init_prep_inj_curr_m=0;
 if caldate&j = prep_oral_first_start_date then do;
 	if gender=2		then init_prep_oral_first_w=1;
 	if gender=1		then init_prep_oral_first_m=1;
@@ -14680,6 +14683,14 @@ end;
 if caldate&j = prep_oral_current_start_date then do;
 	if gender=2 	then init_prep_oral_curr_w=1;
 	if gender=1 	then init_prep_oral_curr_m=1;
+end;
+if caldate&j = prep_inj_first_start_date then do;
+	if gender=2		then init_prep_inj_first_w=1;
+	if gender=1		then init_prep_inj_first_m=1;
+end;
+if caldate&j = prep_inj_current_start_date then do;
+	if gender=2 	then init_prep_inj_curr_w=1;
+	if gender=1 	then init_prep_inj_curr_m=1;
 end;
 
 * whether fulfil all criteria for prep (although also need to test negative to actually start prep [except under pop_wide_tld]);
@@ -17443,7 +17454,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_adc_naive + adc_naive ; s_adc_line1_lf0 + adc_line1_lf0 ; s_adc_line1_lf1 + adc_line1_lf1 ; s_adc_line2_lf1 + adc_line2_lf1 ;
 	s_adc_line2_lf2 + adc_line2_lf2 ; s_adc_artexpoff + adc_artexpoff ;
 	s_crag_measured_this_per + crag_measured_this_per ; s_tblam_measured_this_per + tblam_measured_this_per;
-	s_cm_this_per + cm_this_per ; s_vm_this_per + vm_this_per; s_vm_ly + vm_ly; s_crypm_proph + crypm_proph ; s_tb_proph +  tb_proph ;  s_pcp_p + pcp_p ; s_sbi_proph + sbi_proph ;
+	s_cm_this_per + cm_this_per ; s_vm_this_per + vm_this_per; s_vm_this_per_w + vm_this_per_w; s_vm_this_per_m + vm_this_per_m; s_vm_ly + vm_ly; 
+	s_crypm_proph + crypm_proph ; s_tb_proph +  tb_proph ;  s_pcp_p + pcp_p ; s_sbi_proph + sbi_proph ;
 	s_crypm + crypm; s_sbi + sbi ;  s_crypm_diag_e + crypm_diag_e ; s_tb_diag_e + tb_diag_e ; s_sbi_diag_e + sbi_diag_e ;
 	s_cd4_g1 + cd4_g1 ; s_cd4_g2 + cd4_g2 ; s_cd4_g3 + cd4_g3 ; s_cd4_g4 + cd4_g4 ; s_cd4_g5 + cd4_g5 ; s_cd4_g6 + cd4_g6 ; 
  	s_vl_g1 + vl_g1 ;  s_vl_g2 + vl_g2 ;  s_vl_g3 + vl_g3 ;  s_vl_g4 + vl_g4 ;  s_vl_g5 + vl_g5 ;  
@@ -19093,7 +19105,8 @@ s_adc_line2_lf2  s_adc_artexpoff
 
 /* outputs for advanced hiv disease */ 
 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly  s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per  s_vm_this_per_w  s_vm_this_per_m  s_vm_ly  
+s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
@@ -20068,7 +20081,8 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per  s_vm_this_per_w  s_vm_this_per_m  s_vm_ly 
+s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
@@ -20922,7 +20936,8 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per  s_vm_this_per_w  s_vm_this_per_m  s_vm_ly 
+s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
