@@ -1903,9 +1903,9 @@ proc sort; by run;run;
 data b;
 set b.w_tld_switch_ah    ;
 
-  if 0.05 <= prevalence1549w_24 < 0.35;
-  if p_dol_2vg1000_dolr1_24 < 0.35;
-  if p_onart_vl1000_24 <= 0.9830771538;
+  if 0.044 <= prevalence1549w_24 < 0.35;
+  if p_dol_2vg1000_dolr1_24 < 0.36;
+  if p_onart_vl1000_24 <= 0.98;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1936,9 +1936,6 @@ d_n_dead_hivrel_onart_10y_3_1 = n_dead_hivrel_onart_10y_3 - n_dead_hivrel_onart_
 
 d_n_dead_hivrel_onart_1y_2_1 = n_dead_hivrel_onart_1y_2 - n_dead_hivrel_onart_1y_1;
 d_n_dead_hivrel_onart_1y_3_1 = n_dead_hivrel_onart_1y_3 - n_dead_hivrel_onart_1y_1;
-
-r_deathr_dol_r_uvl2_10y_2_1 = deathr_dol_r_uvl2_10y_2 / deathr_dol_r_uvl2_10y_1; 
-r_deathr_dol_r_uvl2_10y_3_1 = deathr_dol_r_uvl2_10y_3 / deathr_dol_r_uvl2_10y_1; 
 
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
@@ -2017,8 +2014,6 @@ prop_r_dol_ge_p5_uvl21_1y = (prop_r_dol_ge_p5_uvl21_1y_1 + prop_r_dol_ge_p5_uvl2
 prop_r_dol_ge_p5_uvl22_1y = (prop_r_dol_ge_p5_uvl22_1y_1 + prop_r_dol_ge_p5_uvl22_1y_2 + prop_r_dol_ge_p5_uvl22_1y_3 ) / 3;
 prop_r_dol_ge_p5_uvl23_1y = (prop_r_dol_ge_p5_uvl23_1y_1 + prop_r_dol_ge_p5_uvl23_1y_2 + prop_r_dol_ge_p5_uvl23_1y_3 ) / 3;
 
-
-
 p_uvl2_elig_uvl21_3y = (p_uvl2_elig_uvl21_3y_1 + p_uvl2_elig_uvl21_3y_2 + p_uvl2_elig_uvl21_3y_3) / 3;
 p_uvl2_elig_uvl22_3y = (p_uvl2_elig_uvl22_3y_1 + p_uvl2_elig_uvl22_3y_2 + p_uvl2_elig_uvl22_3y_3) / 3;
 p_uvl2_elig_uvl23_3y = (p_uvl2_elig_uvl23_3y_1 + p_uvl2_elig_uvl23_3y_2 + p_uvl2_elig_uvl23_3y_3) / 3;
@@ -2030,9 +2025,6 @@ prop_r_dol_ge_p5_uvl21_3y = (prop_r_dol_ge_p5_uvl21_3y_1 + prop_r_dol_ge_p5_uvl2
 prop_r_dol_ge_p5_uvl22_3y = (prop_r_dol_ge_p5_uvl22_3y_1 + prop_r_dol_ge_p5_uvl22_3y_2 + prop_r_dol_ge_p5_uvl22_3y_3 ) / 3;
 prop_r_dol_ge_p5_uvl23_3y = (prop_r_dol_ge_p5_uvl23_3y_1 + prop_r_dol_ge_p5_uvl23_3y_2 + prop_r_dol_ge_p5_uvl23_3y_3 ) / 3;
 
-
-
-
 p_uvl2_elig_uvl21_5y = (p_uvl2_elig_uvl21_5y_1 + p_uvl2_elig_uvl21_5y_2 + p_uvl2_elig_uvl21_5y_3) / 3;
 p_uvl2_elig_uvl22_5y = (p_uvl2_elig_uvl22_5y_1 + p_uvl2_elig_uvl22_5y_2 + p_uvl2_elig_uvl22_5y_3) / 3;
 p_uvl2_elig_uvl23_5y = (p_uvl2_elig_uvl23_5y_1 + p_uvl2_elig_uvl23_5y_2 + p_uvl2_elig_uvl23_5y_3) / 3;
@@ -2043,9 +2035,6 @@ prop_r_dol_ge_p5_uvl2_5y = ( prop_r_dol_ge_p5_uvl2_5y_1 + prop_r_dol_ge_p5_uvl2_
 prop_r_dol_ge_p5_uvl21_5y = (prop_r_dol_ge_p5_uvl21_5y_1 + prop_r_dol_ge_p5_uvl21_5y_2 + prop_r_dol_ge_p5_uvl21_5y_3 ) / 3;
 prop_r_dol_ge_p5_uvl22_5y = (prop_r_dol_ge_p5_uvl22_5y_1 + prop_r_dol_ge_p5_uvl22_5y_2 + prop_r_dol_ge_p5_uvl22_5y_3 ) / 3;
 prop_r_dol_ge_p5_uvl23_5y = (prop_r_dol_ge_p5_uvl23_5y_1 + prop_r_dol_ge_p5_uvl23_5y_2 + prop_r_dol_ge_p5_uvl23_5y_3 ) / 3;
-
-
-
 
 p_uvl2_elig_uvl21_10y = (p_uvl2_elig_uvl21_10y_1 + p_uvl2_elig_uvl21_10y_2 + p_uvl2_elig_uvl21_10y_3) / 3;
 p_uvl2_elig_uvl22_10y = (p_uvl2_elig_uvl22_10y_1 + p_uvl2_elig_uvl22_10y_2 + p_uvl2_elig_uvl22_10y_3) / 3;
@@ -2060,10 +2049,10 @@ prop_r_dol_ge_p5_uvl23_10y = (prop_r_dol_ge_p5_uvl23_10y_1 + prop_r_dol_ge_p5_uv
 
 
 prop_tldsw_uvl2_1y = (prop_tldsw_uvl2_1y_1 + prop_tldsw_uvl2_1y_2 + prop_tldsw_uvl2_1y_3) / 3; 
-p_first_uvl2_dol_r_1y = (p_first_uvl2_dol_r_1y_1 + p_first_uvl2_dol_r_1y_1 + p_first_uvl2_dol_r_1y_1 ); 
+p_first_uvl2_dol_r_1y = (p_first_uvl2_dol_r_1y_1 + p_first_uvl2_dol_r_1y_1 + p_first_uvl2_dol_r_1y_1 ) / 3; 
 
 prop_tldsw_uvl2_3y = (prop_tldsw_uvl2_3y_1 + prop_tldsw_uvl2_3y_2 + prop_tldsw_uvl2_3y_3) / 3; 
-p_first_uvl2_dol_r_3y = (p_first_uvl2_dol_r_3y_1 + p_first_uvl2_dol_r_3y_1 + p_first_uvl2_dol_r_3y_1 ); 
+p_first_uvl2_dol_r_3y = (p_first_uvl2_dol_r_3y_1 + p_first_uvl2_dol_r_3y_1 + p_first_uvl2_dol_r_3y_1 ) / 3; 
 
 
 * s_uvl2_elig_10y_1 = n_uvl2_elig_10y_1 / sf_2024 ;  
@@ -2172,6 +2161,88 @@ p_uvl2_elig_uvl23_10y
 run;
 
 ods html close;
+
+
+
+ods html;
+proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
+var 
+prop_artexp_elig_tldsw_1y_1  prop_artexp_elig_tldsw_1y_2  prop_artexp_elig_tldsw_1y_3   
+prop_tldsw_uvl2_1y_1 prop_tldsw_uvl2_1y_2 prop_tldsw_uvl2_1y_3 
+prop_tldsw_elig_vl1000_1y_1  prop_tldsw_elig_vl1000_1y_2  prop_tldsw_elig_vl1000_1y_3  
+prop_uvl2_vl1000_1y_1 prop_uvl2_vl1000_1y_2 prop_uvl2_vl1000_1y_3 
+prop_tldsw_o_dar_1y_1 prop_tldsw_o_dar_1y_2 prop_tldsw_o_dar_1y_3
+p_vis_tldsw_1y_1 p_vis_tldsw_1y_2 p_vis_tldsw_1y_3 
+p_vis_uvl2_1y_1 p_vis_uvl2_1y_2 p_vis_uvl2_1y_3 
+p_adh_lt80_iicu_tldsw_1y_1  p_adh_lt80_iicu_tldsw_1y_2  p_adh_lt80_iicu_tldsw_1y_3   
+p_onart_iicu_tldsw_1y_1  p_onart_iicu_tldsw_1y_2  p_onart_iicu_tldsw_1y_3  
+p_onart_iicu_uvl2_1y_1   p_onart_iicu_uvl2_1y_2   p_onart_iicu_uvl2_1y_3  
+p_adh_lt80_iicu_uvl2_1y_1 p_adh_lt80_iicu_uvl2_1y_2 p_adh_lt80_iicu_uvl2_1y_3 
+prop_r_dol_ge_p5_uvl2_1y_1 prop_r_dol_ge_p5_uvl2_1y_2 prop_r_dol_ge_p5_uvl2_1y_3 
+n_death_hiv_1y_1 n_death_hiv_1y_2 n_death_hiv_1y_3 
+p_iime_1y_1 p_iime_1y_2 p_iime_1y_3 
+n_iime_1y_1 n_iime_1y_2 n_iime_1y_3 
+p_hivpos_new_dol_r_1y_1 p_hivpos_new_dol_r_1y_2 p_hivpos_new_dol_r_1y_3 
+n_incident_r_dol_1y_1 n_incident_r_dol_1y_2 n_incident_r_dol_1y_3 
+n_dead_hivrel_onart_1y_1 n_dead_hivrel_onart_1y_2 n_dead_hivrel_onart_1y_3  
+p_onart_cd4_l200_1y_1 p_onart_cd4_l200_1y_2 p_onart_cd4_l200_1y_3 
+p_cd4_lt200_uvl2_1y_1 p_cd4_lt200_uvl2_1y_2 p_cd4_lt200_uvl2_1y_3 
+n_uvl2_elig_1y_1 n_uvl2_elig_1y_2 n_uvl2_elig_1y_3 
+hiv_death_rate_uvl2_1y_1 hiv_death_rate_uvl2_1y_2 hiv_death_rate_uvl2_1y_3 
+p_vl1000_1y_1 p_vl1000_1y_2 p_vl1000_1y_3 
+p_onart_vl1000_1y_1 p_onart_vl1000_1y_2 p_onart_vl1000_1y_3 
+p_o_dar_uvl2_1y_1 p_o_dar_uvl2_1y_2 p_o_dar_uvl2_1y_3 
+p_o_dol_uvl2_1y_1 p_o_dol_uvl2_1y_2 p_o_dol_uvl2_1y_3 
+p_first_uvl2_dol_r_1y_1 p_first_uvl2_dol_r_1y_2 p_first_uvl2_dol_r_1y_3 
+deathr_dol_r_uvl2_1y_1 deathr_dol_r_uvl2_1y_2 deathr_dol_r_uvl2_1y_3 
+p_dlt_adh_high_r_dol_1y_1 p_dlt_adh_high_r_dol_1y_2 p_dlt_adh_high_r_dol_1y_3 
+p_dlt_adh_low_r_dol_1y_1 p_dlt_adh_low_r_dol_1y_2 p_dlt_adh_low_r_dol_1y_3 
+p_dlt_adh_high_r_dol_1y_1 p_dlt_adh_high_r_dol_1y_2 p_dlt_adh_high_r_dol_1y_3 
+p_dlt_adh_low_r_dol_1y_1 p_dlt_adh_low_r_dol_1y_2 p_dlt_adh_low_r_dol_1y_3 
+p_tldsw2_elig_tldsw_1y_1 p_tldsw2_elig_tldsw_1y_2 p_tldsw2_elig_tldsw_1y_3 
+n_second_vlg1000_first_1y_1 n_second_vlg1000_first_1y_2 n_second_vlg1000_first_1y_3 
+p_dol_2vg1000_dolr1_1y_1 p_dol_2vg1000_dolr1_1y_2 p_dol_2vg1000_dolr1_1y_3 
+incidence1549_1y_1 incidence1549_1y_2 incidence1549_1y_3 
+s_o_dol_2nd_vlg1000_1y_1 s_o_dol_2nd_vlg1000_1y_2 s_o_dol_2nd_vlg1000_1y_3 
+n_res_test_dol_py_1y_2
+p_o_dar_uvl2_onart_1y_1 p_o_dar_uvl2_onart_1y_2 p_o_dar_uvl2_onart_1y_3 
+p_o_dol_uvl2_1y_1 p_o_dol_uvl2_1y_2 p_o_dol_uvl2_1y_3 
+p_onart_iicu_vl1000_uvl2_1y_1 p_onart_iicu_vl1000_uvl2_1y_2 p_onart_iicu_vl1000_uvl2_1y_3 
+p_r_dol_vl1000_uvl2_1y_1 p_r_dol_vl1000_uvl2_1y_2 p_r_dol_vl1000_uvl2_1y_3 
+n_dead_dol_r_uvl2_1y_1 n_dead_dol_r_uvl2_1y_2 n_dead_dol_r_uvl2_1y_3 
+
+n_ontld_1y_1 n_ontld_1y_2 n_ontld_1y_3 
+n_o_dol_r_1y_1 n_o_dol_r_1y_2 n_o_dol_r_1y_3
+
+prop_r_dol_ge_p5_uvl2_1y_1 prop_r_dol_ge_p5_uvl2_1y_2 prop_r_dol_ge_p5_uvl2_1y_3
+prop_r_dol_ge_p5_uvl21_1y_1 prop_r_dol_ge_p5_uvl21_1y_2 prop_r_dol_ge_p5_uvl21_1y_3 
+prop_r_dol_ge_p5_uvl22_1y_1 prop_r_dol_ge_p5_uvl22_1y_2 prop_r_dol_ge_p5_uvl22_1y_3 
+prop_r_dol_ge_p5_uvl23_1y_1 prop_r_dol_ge_p5_uvl23_1y_2 prop_r_dol_ge_p5_uvl23_1y_3 
+
+p_uvl2_elig_uvl21_1y_1 p_uvl2_elig_uvl21_1y_2 p_uvl2_elig_uvl21_1y_3 
+p_uvl2_elig_uvl22_1y_1 p_uvl2_elig_uvl22_1y_2 p_uvl2_elig_uvl22_1y_3 
+p_uvl2_elig_uvl23_1y_1 p_uvl2_elig_uvl23_1y_2 p_uvl2_elig_uvl23_1y_3 
+
+n_uvl2_only_tld_dolr_1y_1 n_uvl2_only_tld_dolr_1y_2 n_uvl2_only_tld_dolr_1y_3 
+n_uvl2_no_prev_fail_dolr_1y_1  n_uvl2_no_prev_fail_dolr_1y_2  n_uvl2_no_prev_fail_dolr_1y_3     
+n_uvl2_prev_fail_dolr_1y_1 n_uvl2_prev_fail_dolr_1y_2 n_uvl2_prev_fail_dolr_1y_3     
+
+n_uvl2_elig_1y_1  n_uvl2_elig_1y_2  n_uvl2_elig_1y_3  
+n_uvl21_elig_1y_1 n_uvl21_elig_1y_2 n_uvl21_elig_1y_3  
+n_uvl22_elig_1y_1 n_uvl22_elig_1y_2 n_uvl22_elig_1y_3  
+n_uvl23_elig_1y_1 n_uvl23_elig_1y_2 n_uvl23_elig_1y_3 
+
+n_onart_iicu_uvl2_1y_1   n_onart_iicu_uvl2_1y_2   n_onart_iicu_uvl2_1y_3            
+n_onart_iicu_uvl21_1y_1 n_onart_iicu_uvl21_1y_2 n_onart_iicu_uvl21_1y_3            
+n_onart_iicu_uvl22_1y_1  n_onart_iicu_uvl22_1y_2  n_onart_iicu_uvl22_1y_3             
+n_onart_iicu_uvl23_1y_1  n_onart_iicu_uvl23_1y_2  n_onart_iicu_uvl23_1y_3    
+
+;
+run;
+
+ods html close;
+
+
 
 
 
@@ -2289,7 +2360,6 @@ p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 p_o_dar_uvl2_10y_3
 p_o_dol_uvl2_10y_1 p_o_dol_uvl2_10y_2 p_o_dol_uvl2_10y_3 
 p_first_uvl2_dol_r_10y_1 p_first_uvl2_dol_r_10y_2 p_first_uvl2_dol_r_10y_3 
 deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 
-r_deathr_dol_r_uvl2_10y_2_1 r_deathr_dol_r_uvl2_10y_3_1
 p_dlt_adh_high_r_dol_10y_1 p_dlt_adh_high_r_dol_10y_2 p_dlt_adh_high_r_dol_10y_3 
 p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 
 p_dlt_adh_high_r_dol_10y_1 p_dlt_adh_high_r_dol_10y_2 p_dlt_adh_high_r_dol_10y_3 
