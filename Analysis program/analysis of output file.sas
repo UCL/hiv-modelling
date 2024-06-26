@@ -6,21 +6,19 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data a; 
 
 *if incidence_sw_22 <0.1 then delete;
-*set a.wide_fsw_17_08_23d; ***Used for the paper without the 'd' - the d file just added in 2 more parameters so should be the same as orignal file;
+set a.wide_fsw_17_08_23d; ***Used for the paper without the 'd' - the d file just added in 2 more parameters so should be the same as orignal file;
 *set a.wide_fsw_17_08_23c;***this is with various costs for a SW program to check if it's CE;
 
 *set a.wide_fsw_17_08_23_final ;
-set a.wide_fsw_17_08_23_final1 ;*should be the same as 'final' but with 150 cost per SW included;
+*set a.wide_fsw_17_08_23_final1 ;*should be the same as 'final' but with 150 cost per SW included;
 
 if incidence1549_22 =0 then delete;
 if n_sw_1549__22 <15000 then delete; ***low number of sw, greater stochastic effects;
  
 if p_diag_sw_22=. then p_diag_sw_22=1;
-if p_diag_sw_22 gt  0.9499370033
+if p_diag_sw_22 gt  0.9499370033 then delete;
 
-then delete;
-
-proc freq;table run;run;
+proc freq;table run p_res_sw_1;run;
 
 proc freq;table p_sw_prog_vis_30_1;run;
 
@@ -350,12 +348,12 @@ netdalys_swprog_high150perSW =  ddaly_22_72_3 + (dcost_withSWprog_22_72_3)/0.000
 diff_dcost_high_v_none150perSW = dcost_withSWprog_22_72_3 - dcost_withSWprog_22_72_1;
 
 cost_daly_averted_150perSW = (diff_dcost_high_v_none150perSW/diff_ddaly_high_v_none)*1000000;
-
+/*
 proc means n mean p50 p5 p95;var dcost_sw_prog150perSW_22_72_3  dcost_sw_prog150perSW_22_72_1
 dcost_withSWprog_22_72_3 dcost_withSWprog_22_72_1
 diff_dcost_high_v_none150perSW diff_ddaly_high_v_none cost_daly_averted_150perSW ;run;
 
-
+*/
 
 
 
@@ -1687,12 +1685,13 @@ var	ddaly_22_72_1 ddaly_22_72_2 ddaly_22_72_3
 	diff_ddaly_low_v_none diff_ddaly_high_v_none;
 run;
 
+***DID NOT USE THIS METHOD, INSTEAD USED THE GRAPH METHOD;
 ***Additional we can spend taking into account DALYs averted using $500 threshold;
 proc means n mean p50 p5 p95 lclm uclm;
 var dalys_avert_x_CET_low_v_none dalys_avert_x_CET_high_v_none ;
 run;
 
-***Max we can spend for a SW prog to be CE; ***DID NOT USE THIS METHOD, INSTEAD USED THE GRAPH METHOD;
+***Max we can spend for a SW prog to be CE; 
 proc means n mean p50 p5 p95 lclm uclm;
 var maxcost_low_v_none maxcost_high_v_none;run;
 
@@ -1761,7 +1760,7 @@ run;
 ***This gives the max cost of the SW program with uncertainty ranges;
 proc means mean p5 p95 lclm uclm ;var max_cost_sw_program_low max_cost_sw_program_high max_cost_sw_program_low_per_sw max_cost_sw_program_high_per_sw;run;
 
-proc means mean p5 p95 lclm uclm ;
+proc means n mean p5 p95 lclm uclm ;
 var max_cost_sw_program_low max_cost_sw_program_high max_cost_sw_program_low_per_sw max_cost_sw_program_high_per_sw;
 where incidence=1;run;
 proc means mean p5 p95 lclm uclm ;

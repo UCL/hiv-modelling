@@ -180,18 +180,37 @@ s_alive = s_alive_m + s_alive_w ;
 
 ***Harriett wants to include incidence and prev graphs for 18-39;
 ***To smooth incidence lines, take averages across 4 periods;
-lag1_inc_sw=lag(incidence_sw1839_); lag2_inc_sw=lag2(incidence_sw1839_); lag3_inc_sw=lag3(incidence_sw1839_);
-lag1_inc_sw_inprog=lag(incidence_sw_inprog1839_); lag2_inc_sw_inprog=lag2(incidence_sw_inprog1839_); lag3_inc_sw_inprog=lag3(incidence_sw_inprog1839_);
-lag1_inc_sw_noprog=lag(incidence_sw_noprog1839_); lag2_inc_sw_noprog=lag2(incidence_sw_noprog1839_); lag3_inc_sw_noprog=lag3(incidence_sw_noprog1839_);
+lag1_inc_sw1839_=lag(incidence_sw1839_); lag2_inc_sw1839_=lag2(incidence_sw1839_); lag3_inc_sw1839_=lag3(incidence_sw1839_);
+lag1_inc_sw_inprog1839_=lag(incidence_sw_inprog1839_); lag2_inc_sw_inprog1839_=lag2(incidence_sw_inprog1839_); lag3_inc_sw_inprog1839_=lag3(incidence_sw_inprog1839_);
+lag1_inc_sw_noprog1839_=lag(incidence_sw_noprog1839_); lag2_inc_sw_noprog1839_=lag2(incidence_sw_noprog1839_); lag3_inc_sw_noprog1839_=lag3(incidence_sw_noprog1839_);
+
+lag1_inc_sw1824_=lag(incidence_sw1824_); lag2_inc_sw1824_=lag2(incidence_sw1824_); lag3_inc_sw1824_=lag3(incidence_sw1824_);
+lag1_inc_sw_inprog1824_=lag(incidence_sw_inprog1824_); lag2_inc_sw_inprog1824_=lag2(incidence_sw_inprog1824_); lag3_inc_sw_inprog1824_=lag3(incidence_sw_inprog1824_);
+lag1_inc_sw_noprog1824_=lag(incidence_sw_noprog1824_); lag2_inc_sw_noprog1824_=lag2(incidence_sw_noprog1824_); lag3_inc_sw_noprog1824_=lag3(incidence_sw_noprog1824_);
+
+lag1_inc_sw2539_=lag(incidence_sw2539_); lag2_inc_sw2539_=lag2(incidence_sw2539_); lag3_inc_sw2539_=lag3(incidence_sw2539_);
+lag1_inc_sw_inprog2539_=lag(incidence_sw_inprog2539_); lag2_inc_sw_inprog2539_=lag2(incidence_sw_inprog2539_); lag3_inc_sw_inprog2539_=lag3(incidence_sw_inprog2539_);
+lag1_inc_sw_noprog2539_=lag(incidence_sw_noprog2539_); lag2_inc_sw_noprog2539_=lag2(incidence_sw_noprog2539_); lag3_inc_sw_noprog2539_=lag3(incidence_sw_noprog2539_);
 
 if cald=int(cald) then cald_yr=cald;
 
 if cald_yr ne . then do;
-mean_sw_inc1839_ =(incidence_sw1839_ + lag1_inc_sw + lag2_inc_sw + lag3_inc_sw)/4;
-mean_sw_inc_inprog1839_ = (incidence_sw_inprog1839_ + lag1_inc_sw_inprog + lag2_inc_sw_inprog + lag3_inc_sw_inprog)/4;
-mean_sw_inc_noprog1839_ = (incidence_sw_noprog1839_ + lag1_inc_sw_noprog + lag2_inc_sw_noprog + lag3_inc_sw_noprog)/4;
+mean_sw_inc1839_ =(incidence_sw1839_ + lag1_inc_sw1839_ + lag2_inc_sw1839_ + lag3_inc_sw1839_)/4;
+mean_sw_inc_inprog1839_ = (incidence_sw_inprog1839_ + lag1_inc_sw_inprog1839_ + lag2_inc_sw_inprog1839_ + lag3_inc_sw_inprog1839_)/4;
+mean_sw_inc_noprog1839_ = (incidence_sw_noprog1839_ + lag1_inc_sw_noprog1839_ + lag2_inc_sw_noprog1839_ + lag3_inc_sw_noprog1839_)/4;
+
+mean_sw_inc1824_ =(incidence_sw1824_ + lag1_inc_sw1824_ + lag2_inc_sw1824_ + lag3_inc_sw1824_)/4;
+mean_sw_inc_inprog1824_ = (incidence_sw_inprog1824_ + lag1_inc_sw_inprog1824_ + lag2_inc_sw_inprog1824_ + lag3_inc_sw_inprog1824_)/4;
+mean_sw_inc_noprog1824_ = (incidence_sw_noprog1824_ + lag1_inc_sw_noprog1824_ + lag2_inc_sw_noprog1824_ + lag3_inc_sw_noprog1824_)/4;
+
+mean_sw_inc2539_ =(incidence_sw2539_ + lag1_inc_sw2539_ + lag2_inc_sw2539_ + lag3_inc_sw2539_)/4;
+mean_sw_inc_inprog2539_ = (incidence_sw_inprog2539_ + lag1_inc_sw_inprog2539_ + lag2_inc_sw_inprog2539_ + lag3_inc_sw_inprog2539_)/4;
+mean_sw_inc_noprog2539_ = (incidence_sw_noprog2539_ + lag1_inc_sw_noprog2539_ + lag2_inc_sw_noprog2539_ + lag3_inc_sw_noprog2539_)/4;
+
+
 end;
 run;
+
 
 
 proc sort; by cald run ;run;
@@ -224,6 +243,8 @@ p_fsw_newp0_ 		av_sw_newp  		p_newp_sw
 p_sw_prog_vis  		n_tested_sw  	prop_sw_onprep 	p_diag_sw  		p_onart_diag_sw 	 p_onart_vl1000_sw
 prevalence_sw  		incidence_sw 	incidence1549_  prop_sw_onprep_prog  prop_sw_onprep_noprog
 mean_sw_inc1839_ 	mean_sw_inc_inprog1839_ 	mean_sw_inc_noprog1839_
+mean_sw_inc1824_ 	mean_sw_inc_inprog1824_ 	mean_sw_inc_noprog1824_
+mean_sw_inc2539_ 	mean_sw_inc_inprog2539_ 	mean_sw_inc_noprog2539_
 incidence_sw1839_	incidence_sw_inprog1839_	incidence_sw_noprog1839_ 
 incidence_sw1824_	incidence_sw_inprog1824_	incidence_sw_noprog1824_ 
 incidence_sw2539_	incidence_sw_inprog2539_	incidence_sw_noprog2539_ 
@@ -271,8 +292,8 @@ data d;
 merge b
 a1   a2   a3   a4   a5   a6   a7   a8   a9   a10  a11  a12  a13  a14  a15  a16  a17  a18  a19  a20  a21  a22  a23  a24  a25  a26 
 a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42  a43  a44  a45  a46  a47  a48  a49  a50  a51  a52 
-a53  a54  a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74    a76  a77  a78 
-a79 a80  a81  a82  a83/*   a84  a85  a86  a87  a88  a89  a90  a91  a92  a93  a94  a95  a96  a97  a98  a99  a100 a101 a102 a103 a104
+a53  a54  a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
+a79 a80  a81  a82  a83  a84  a85  a86  a87  a88  a89  /* a90  a91  a92  a93  a94  a95  a96  a97  a98  a99  a100 a101 a102 a103 a104
 a105 a106 a107 a108 a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130
 a131 a132 a133 a134 a135 a136 a137 a138 a139 a140 a141 a142 a143 a144 a145 a146 a147 a148 a149 a150 a151 a152 a153 a154 a155 a156
 a157 a158 a159 a160 a161 a162 a163 a164 a165 a166 a167 a168 a169 a170 a171 a172 a173 a174 a175 a176 a177 a178 a179 a180 a181 a182
@@ -295,7 +316,7 @@ set d1;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Zim\FSW\Zimbabwe\2jun2024.doc' startpage=never; 
+ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Zim\FSW\Zimbabwe\20jun2024_inc.doc' startpage=never; 
 
 ods listing close;
 proc sgplot data=e; 
@@ -763,7 +784,7 @@ run;quit;
 
 proc sgplot data=e; 
 
-title    height=1.5 justify=center "MEAN HIV incidence amongst sex workers";
+title    height=1.5 justify=center "MEAN HIV incidence amongst sex workers (All ages)";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 20 by 1)    valueattrs=(size=10);
 
@@ -820,12 +841,50 @@ scatter x=cald y=o_HIVIncid1539_fsw_hj / markerattrs = (symbol=circle       colo
 */
 run;quit;
 
+proc sgplot data=e; 
+
+title    height=1.5 justify=center "HIV incidence amongst female sex workers (FSW) aged 18-24";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 30 by 5)    valueattrs=(size=10);
+
+label mean_mean_sw_inc1824_  = "Incidence amongst all female sex workers";
+label mean_mean_sw_inc_inprog1824_  = "Incidence amongst female sex workers attending a sex-worker program";
+label mean_mean_sw_inc_noprog1824_  = "Incidence amongst female sex workers not attending a sex-worker program";
+
+series  x=cald y=mean_mean_sw_inc1824_ /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_mean_sw_inc1824_  upper=p95_mean_sw_inc1824_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for incidence amongst all sex workers ";
+series  x=cald y=mean_mean_sw_inc_inprog1824_ /  lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_mean_sw_inc_inprog1824_  upper=p95_mean_sw_inc_inprog1824_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range for incidence amongst sex workers attendng a program";
+series  x=cald y=mean_mean_sw_inc_noprog1824_ /  lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_mean_sw_inc_noprog1824_  upper=p95_mean_sw_inc_noprog1824_ / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range for incidence amongst sex workers not attending a program";
+
+run;quit;
 
 proc sgplot data=e; 
 
-title    height=1.5 justify=center "HIV prevalence in SW";
+title    height=1.5 justify=center "HIV incidence amongst female sex workers (FSW) aged 25-39";
+xaxis label      = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 30 by 5)    valueattrs=(size=10);
+
+label mean_mean_sw_inc2539_  = "Incidence amongst all female sex workers";
+label mean_mean_sw_inc_inprog2539_  = "Incidence amongst female sex workers attending a sex-worker program";
+label mean_mean_sw_inc_noprog2539_  = "Incidence amongst female sex workers not attending a sex-worker program";
+
+series  x=cald y=mean_mean_sw_inc2539_ /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_mean_sw_inc2539_  upper=p95_mean_sw_inc2539_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for incidence amongst all sex workers ";
+series  x=cald y=mean_mean_sw_inc_inprog2539_ /  lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_mean_sw_inc_inprog2539_  upper=p95_mean_sw_inc_inprog2539_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range for incidence amongst sex workers attendng a program";
+series  x=cald y=mean_mean_sw_inc_noprog2539_ /  lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_mean_sw_inc_noprog2539_  upper=p95_mean_sw_inc_noprog2539_ / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range for incidence amongst sex workers not attending a program";
+
+run;quit;
+
+
+proc sgplot data=e; 
+
+title    height=1.5 justify=center "HIV prevalence in SW (All ages)";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)       valueattrs=(size=10); 
-yaxis grid label = '%'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
+yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
 
 label p50_prevalence_sw = "Median ";
 label o_prev_fsw_rds_mut = "RDS Mutare";
@@ -849,13 +908,37 @@ proc sgplot data=e;
 
 title    height=1.5 justify=center "HIV prevalence in SW aged 18-39";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)       valueattrs=(size=10); 
-yaxis grid label = '%'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
+yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
 
 label p50_prevalence_1839sw = "Median ";
 
-
 series  x=cald y=p50_prevalence_1839sw /  lineattrs = (color=black thickness = 2);
 band   x=cald lower=p5_prevalence_1839sw  upper=p95_prevalence_1839sw / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=e; 
+
+title    height=1.5 justify=center "HIV prevalence in SW aged 18-24";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
+
+label p50_prevalence_1824sw = "Median ";
+
+series  x=cald y=p50_prevalence_1824sw /  lineattrs = (color=black thickness = 2);
+band   x=cald lower=p5_prevalence_1824sw  upper=p95_prevalence_1824sw / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+
+proc sgplot data=e; 
+
+title    height=1.5 justify=center "HIV prevalence in SW aged 25-39";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
+
+label p50_prevalence_2539sw = "Median ";
+
+series  x=cald y=p50_prevalence_2539sw /  lineattrs = (color=black thickness = 2);
+band   x=cald lower=p5_prevalence_2539sw  upper=p95_prevalence_2539sw / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
 
 ods rtf close;
