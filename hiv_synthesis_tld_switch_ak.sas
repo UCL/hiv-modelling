@@ -14712,7 +14712,7 @@ if prep_any   ne 1 then do;	* lapr - define which prep? ;
 	if onart = 1 then vl1000_art=vl1000;	if onart = 1 and 15 <= age < 65 then vl1000_art_age1564=vl1000;
 	* No time restriction on ART, including interruption clinic unaware;
 	onart_iicu = .; vl1000_art_iicu = .;
-	if (onart = 1 or int_clinic_not_aw) = 1 then onart_iicu=1;
+	if  onart = 1 or int_clinic_not_aw  = 1 then onart_iicu=1;
 	if onart_iicu=1 then vl1000_art_iicu = vl1000;
 	* On ART >6m;
 	onart_gt6m = .; vl1000_art_gt6m = .;
