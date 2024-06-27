@@ -49,7 +49,8 @@ diff_res_0_2=p_res_sw_2 - p_res_sw_0;
 
 proc means mean p50 p5 p95;var p_res_sw;where option=0 and cald=2023;run;
 proc means mean p50 p5 p95;var p_res_sw_0 p_res_sw_1 p_res_sw_2 diff_res_0_1 diff_res_0_2;where cald=2030;run;
-***Differences calculated by copying and pasting output into excel;
+***Differences calculated by copying and pasting output into excel, calculating medians and differences;
+proc print;var run option p_res_sw_0 p_res_sw_1 p_res_sw_2;where cald=2030;run;
 
 data a2;
 set a.fsw_17_08_23;

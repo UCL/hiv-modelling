@@ -6,11 +6,11 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data a; 
 
 *if incidence_sw_22 <0.1 then delete;
-set a.wide_fsw_17_08_23d; ***Used for the paper without the 'd' - the d file just added in 2 more parameters so should be the same as orignal file;
+*set a.wide_fsw_17_08_23d; ***Used for the paper without the 'd' - the d file just added in 2 more parameters so should be the same as orignal file;
 *set a.wide_fsw_17_08_23c;***this is with various costs for a SW program to check if it's CE;
 
 *set a.wide_fsw_17_08_23_final ;
-*set a.wide_fsw_17_08_23_final1 ;*should be the same as 'final' but with 150 cost per SW included;
+set a.wide_fsw_17_08_23_final1 ;*should be the same as 'final' but with 150 cost per SW included;
 
 if incidence1549_22 =0 then delete;
 if n_sw_1549__22 <15000 then delete; ***low number of sw, greater stochastic effects;
@@ -18,7 +18,6 @@ if n_sw_1549__22 <15000 then delete; ***low number of sw, greater stochastic eff
 if p_diag_sw_22=. then p_diag_sw_22=1;
 if p_diag_sw_22 gt  0.9499370033 then delete;
 
-proc freq;table run p_res_sw_1;run;
 
 proc freq;table p_sw_prog_vis_30_1;run;
 
