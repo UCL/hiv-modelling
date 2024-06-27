@@ -1071,6 +1071,12 @@ run;
 * p_first_uvl2_dol_r; 			if s_second_vlg1000_first >= 0 then p_first_uvl2_dol_r = s_second_vlg1000_first_dol_r / s_second_vlg1000_first ;
 * deathr_dol_r_uvl2;			deathr_dol_r_uvl2 = (s_dead_dol_r_uvl2 * 4) / s_r_dol_ge_p5_uvl2 ;
 
+* n_adh_meas_1_1;				n_adh_meas_1_1 = s_adh_meas_1_1 * &sf; 
+* n_adh_meas_1_0;				n_adh_meas_1_0 = s_adh_meas_1_0 * &sf; 
+* n_adh_meas_0_1;				n_adh_meas_0_1 = s_adh_meas_0_1 * &sf; 
+* n_adh_meas_0_0;				n_adh_meas_0_0 = s_adh_meas_0_0 * &sf; 
+
+
 * n_dead_dol_r_uvl2;			n_dead_dol_r_uvl2 = s_dead_dol_r_uvl2 * &sf * 4 ;
 
 * n_second_vlg1000_first;		n_second_vlg1000_first = s_second_vlg1000_first * &sf;
