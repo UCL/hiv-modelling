@@ -4,25 +4,27 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ah_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_aj_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ah_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_aj_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_ah;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_aj;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+
+if option in (0, 3, 4);
 
 run;
 
 */
 
 
-proc sort data=b.k_tld_switch_ah; 
+proc sort data=b.k_tld_switch_aj; 
 by run cald option;
 run;
 
@@ -31,7 +33,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_tld_switch_ah ;
+set b.k_tld_switch_aj ;
 
 
 if cald=2024   ;
@@ -51,7 +53,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_tld_switch_ah sf;
+merge b.k_tld_switch_aj sf;
 by run ;
 
 
@@ -1419,9 +1421,9 @@ run;
 
 
 
-data    b.l_tld_switch_ah; set y;  
+data    b.l_tld_switch_aj; set y;  
 
-data y ; set b.l_tld_switch_ah; 
+data y ; set b.l_tld_switch_aj; 
 
   options nomprint;
   option nospool;
@@ -1898,7 +1900,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_ah     ; 
+  data  b.w_tld_switch_aj     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1907,9 +1909,9 @@ proc sort; by run;run;
 
 
 data b;
-set b.w_tld_switch_ah    ;
+set b.w_tld_switch_aj    ;
 
-  if 0.044 <= prevalence1549w_24 < 0.35;
+  if 0.05  <= prevalence1549w_24 < 0.35;
   if p_dol_2vg1000_dolr1_24 < 0.36;
   if p_onart_vl1000_24 <= 0.98;
 
@@ -2020,6 +2022,8 @@ prop_r_dol_ge_p5_uvl21_1y = (prop_r_dol_ge_p5_uvl21_1y_1 + prop_r_dol_ge_p5_uvl2
 prop_r_dol_ge_p5_uvl22_1y = (prop_r_dol_ge_p5_uvl22_1y_1 + prop_r_dol_ge_p5_uvl22_1y_2 + prop_r_dol_ge_p5_uvl22_1y_3 ) / 3;
 prop_r_dol_ge_p5_uvl23_1y = (prop_r_dol_ge_p5_uvl23_1y_1 + prop_r_dol_ge_p5_uvl23_1y_2 + prop_r_dol_ge_p5_uvl23_1y_3 ) / 3;
 
+p_first_uvl2_dol_r_1y = (p_first_uvl2_dol_r_1y_1 + p_first_uvl2_dol_r_1y_2 + p_first_uvl2_dol_r_1y_3) / 3;
+
 p_uvl2_elig_uvl21_3y = (p_uvl2_elig_uvl21_3y_1 + p_uvl2_elig_uvl21_3y_2 + p_uvl2_elig_uvl21_3y_3) / 3;
 p_uvl2_elig_uvl22_3y = (p_uvl2_elig_uvl22_3y_1 + p_uvl2_elig_uvl22_3y_2 + p_uvl2_elig_uvl22_3y_3) / 3;
 p_uvl2_elig_uvl23_3y = (p_uvl2_elig_uvl23_3y_1 + p_uvl2_elig_uvl23_3y_2 + p_uvl2_elig_uvl23_3y_3) / 3;
@@ -2076,18 +2080,19 @@ proc means   data = b  n p50  p5  p95 ;
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    
 p_vis_tldsw_24  p_dol_2vg1000_dolr1_24  p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24  p_artexp_dol_pi_failed_24  s_o_dol_2nd_vlg1000_24  
+prop_r_dol_ge_p5_uvl2_24 p_first_uvl2_dol_r_24 prop_tldsw_uvl2_24 
 ;
 run;
 ods html close;
 
 
 
-* baseline / first year of intervention ;
-
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
 var 
 p_dol_2vg1000_dolr1_1y
+
+p_first_uvl2_dol_r_1y
 
 prop_r_dol_ge_p5_uvl2_1y
 prop_r_dol_ge_p5_uvl21_1y
