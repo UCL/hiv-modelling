@@ -444,7 +444,7 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0;
-* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0  1); * changed to 1 after discussion with jonathan schapiro;		
+* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.1  0.9); * changed to 1 after discussion with jonathan schapiro;		
 																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
 * len_higher_potency;		%sample(len_higher_potency, 0.5 1 , 0.25 0.75);	
 * efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
@@ -533,7 +533,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.15	0.30	0.25	0.15	0.10	0.03	0.02) ; * tld_switch;
+								0.10	0.25	0.25	0.20	0.15	0.03	0.02) ; * tld_switch;
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
@@ -577,7 +577,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;	
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							* dependent_on_time_step_length ;
-* pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  );   * tld_switch ;      
+* pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  0.01 );   * tld_switch ;      
 * pr_res_len;				%sample_uniform(pr_res_len, 0.005  0.01  0.02  0.05);   
 * sens_res_test;			%sample_uniform(sens_res_test, 0.9   0.95  0.99); 
 * incr_len_res_mono;		incr_len_res_mono = 10 ;
@@ -11018,7 +11018,7 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 					if measured_adh ge 0.8 and 0 < adh <  0.8 then adh_meas_1_0=1; 
 					if 0 <= measured_adh < 0.8 and adh ge 0.8 then adh_meas_0_1=1; 
 					if 0 <= measured_adh < 0.8 and 0 < adh < 0.8 then adh_meas_0_0=1; 
-					if measured_adh ge 0.8 and r_dol > 1 adh_meas_r_1_1=1; 
+					if measured_adh ge 0.8 and r_dol > 1 then adh_meas_r_1_1=1; 
 					if measured_adh ge 0.8 and r_dol = 0 then adh_meas_r_1_0=1; 
 					if 0 <= measured_adh < 0.8 and r_dol > 1 then adh_meas_r_0_1=1; 
 					if 0 <= measured_adh < 0.8 and r_dol = 1 then adh_meas_r_0_0=1; 
@@ -20098,7 +20098,7 @@ if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do;
 */
 
 if cald = 2024 and prevalence1549w > 0.35 then do; abort abend; end;
-if cald = 2024 and prevalence1549 < 0.05 then do; abort abend; end;
+if cald = 2024 and prevalence1549 < 0.03 then do; abort abend; end;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -22094,6 +22094,7 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=4);
 
 
+/*
 
 
 data r1; set a;
@@ -24095,7 +24096,7 @@ data r1; set b;
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=4);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=4);
 
-
+*/
 
 
 

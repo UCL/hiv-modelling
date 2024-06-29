@@ -41,7 +41,7 @@ resistance mutations (ie. Transmission of INSTI mutations) – we will again make 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000  ; 
+%let population =  50000 ; 
 %let year_interv = 2026;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -533,7 +533,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.15	0.30	0.25	0.15	0.10	0.03	0.02) ; * tld_switch;
+								0.15	0.30	0.25	0.15	0.10	0.03	0.02) ; * tld_switch; adh_pattern = 4;
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
@@ -551,7 +551,7 @@ newp_seed = 7;
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
 									0.3	   0.5  	0.7		1,
-									0.05   0.05 	0.05	0.85); * tld_switch;
+									0.00   0.00 	0.00	1   ); * tld_switch;
 
 * sd_measured_adh;			%sample_uniform(sd_measured_adh, 0 0.05 0.1 0.15);
 
@@ -9277,6 +9277,13 @@ end;
 
 
 if onart=0 and 0.25 <= tss_len <= 0.5 then do; tcur_tm1=0; nactive_tm1 = (1 + len_higher_potency) * (1 - r_len_tm1); adh_dl = 0.65; end;
+
+
+
+* here here;
+* adh_dl  = 0.65;
+
+
 
 
 
@@ -18362,12 +18369,17 @@ proc freq; tables cald hiv ; where death=.; run;
 */
 
 
-proc print; var caldate&j onart  o_dol o_dar o_taz f_dol vm r_dol uvl2_elig date_last_second_vlg1000
+proc print; var caldate&j onart  o_dol o_dar o_taz f_dol adh_dl vl vm r_dol uvl2_elig date_last_second_vlg1000        
 date_conf_vl_measure_done  date_v_alert  value_last_vm  date_vl_switch_eval
 o_dol_2nd_vlg1000_dolr1_adh0 o_dol_2nd_vlg1000_dolr1_adh1 o_dol_2nd_vlg1000 
 r_dol_ge_p5_uvl2  uvl2_elig second_vlg1000_first_dol_r second_vlg1000_first option art_monitoring_strategy;
-where naive=0 and 2022 <= caldate&j       ;
+where 2022 <= caldate&j and uvl2_elig = 1 and death = .;
 run;
+
+proc freq; tables r_dol;
+where 2022 <= caldate&j and uvl2_elig = 1 and death = .;
+run;
+
 
 
 
@@ -21266,7 +21278,7 @@ data a.ofofof; set r1;
 
 */
 
-data r1; set a.ofofof;
+data r1; set a.ofofof  a.ofofof  a.ofofof  a.ofofof  a.ofofof ; 
 
 * 2023;
 %update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
