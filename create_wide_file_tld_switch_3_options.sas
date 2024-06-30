@@ -4,18 +4,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ak_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ak_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_ak;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_al;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 if option in (0, 3, 4);
 
@@ -24,7 +24,7 @@ run;
 */
 
 
-proc sort data=b.k_tld_switch_ak; 
+proc sort data=b.k_tld_switch_al; 
 by run cald option;
 run;
 
@@ -33,7 +33,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_tld_switch_ak ;
+set b.k_tld_switch_al ;
 
 
 if cald=2024   ;
@@ -53,7 +53,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_tld_switch_ak sf;
+merge b.k_tld_switch_al sf;
 by run ;
 
 
@@ -1422,9 +1422,9 @@ run;
 
 
 
-data    b.l_tld_switch_ak; set y;  
+data    b.l_tld_switch_al; set y;  
 
-data y ; set b.l_tld_switch_ak; 
+data y ; set b.l_tld_switch_al; 
 
   options nomprint;
   option nospool;
@@ -1749,7 +1749,7 @@ effect_sw_prog_prep_any  prob_prep_any_restart_choice
 adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
 prob_prep_any_restart_choice  
-pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
+prob_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_cab_b  pr_prep_len_b  prep_cab_efficacy prep_len_efficacy
 rate_choose_stop_prep_cab   prep_cab_effect_inm_partner  
 rate_choose_stop_prep_len   prep_len_effect_cam_partner 
@@ -1815,7 +1815,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=effect_sw_prog_prep_any);  %par(p=prob_prep_any_restart_choice);  
 %par(p=prob_prep_any_visit_counsel);  %par(p=rate_test_onprep_any); %par(p=prep_willingness_threshold);  
 %par(p=prob_prep_any_restart_choice);  
-%par(p=pr_prep_oral_b);  %par(p=rel_prep_oral_adh_younger); %par(p=prep_oral_efficacy);    
+%par(p=prob_prep_oral_b);  %par(p=rel_prep_oral_adh_younger); %par(p=prep_oral_efficacy);    
 %par(p=rate_choose_stop_prep_oral);  %par(p=higher_future_prep_oral_cov);  %par(p=pr_prep_cab_b);  %par(p=prep_cab_efficacy);
  %par(p=pr_prep_len_b);  %par(p=prep_len_efficacy);
 %par(p=rate_choose_stop_prep_cab);   %par(p=prep_cab_effect_inm_partner);  
@@ -1870,7 +1870,7 @@ effect_sw_prog_prep_any  prob_prep_any_restart_choice
 adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
 prob_prep_any_restart_choice  
-pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
+prob_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_cab_b  prep_cab_efficacy pr_prep_len_b  prep_len_efficacy
   res_trans_factor_ii  rr_res_cab_dol  
 
@@ -1895,7 +1895,7 @@ incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
  prob_prep_pop_wide_tld
 
-p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  sens_res_test
+p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  sens_res_test 
 ;
 
 run;
@@ -1905,7 +1905,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_ak     ; 
+  data  b.w_tld_switch_al     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1913,10 +1913,10 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ak_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
 
 data b;
-set b.w_tld_switch_ak    ;
+set b.w_tld_switch_al    ;
 
   if 0.0   <= prevalence1549w_24 < 0.35;
   if p_onart_vl1000_24 <= 0.98;
@@ -2124,6 +2124,7 @@ ods html close;
 
 
 
+
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
 var 
@@ -2316,21 +2317,25 @@ ods html close;
 
 
 
-proc glm; 
-model d_netdaly500     = p_onart_vl1000_24 p_artexp_dol_pi_failed_24 p_dol_2vg1000_dolr1_24; 
+proc glm; model d_netdaly500_2_1 = pr_res_dol ; run; 
+proc glm; model d_ddaly_50y_2_1 = n_death_hiv_24 ; run; 
 
-run; 
+*----- baseline charateristics --------------- ;
+* prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
+p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 ;
 
-proc glm;
-model d_n_death_hiv_50y_3_1 = /* pr_res_dol */ n_death_hiv_24  p_dol_2vg1000_dolr1_10y_5 ; run;
+*----- parameters ---------------------------- ;
+* res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  tox_weightg_dol 
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab ;
+
+proc glm; model d_netdaly500_3_1 = p_iime_50y_3 ; run; 
+proc glm; model d_ddaly_50y_3_1 = p_iime_50y_3; run; 
 
 
-* p_dol_2vg1000_dolr1_24 adh_pattern p_iime_24 prevalence_vg1000_24;
 
 
-proc freq;  tables p_onart_vl1000_24_g * lowest_netdaly      p_artexp_dol_pi_failed_24_g * lowest_netdaly     ; 
 
-run;
 
 
 
