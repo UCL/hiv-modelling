@@ -1918,8 +1918,8 @@ proc sort; by run;run;
 data b;
 set b.w_tld_switch_al    ;
 
-  if 0.0   <= prevalence1549w_24 < 0.35;
-  if p_onart_vl1000_24 <= 0.98;
+* if 0.0   <= prevalence1549w_24 < 0.35;
+* if p_onart_vl1000_24 <= 0.98;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
