@@ -2012,6 +2012,7 @@ if p_artexp_dol_pi_failed_24 < 0.003 then p_artexp_dol_pi_failed_24_g = 1;
 if 0.003 <= p_artexp_dol_pi_failed_24 < 0.006 then p_artexp_dol_pi_failed_24_g = 2;
 if 0.006 <= p_artexp_dol_pi_failed_24       then p_artexp_dol_pi_failed_24_g = 3;
 
+r_incidence1549_50y_3_1 = incidence1549_50y_3 / incidence1549_50y_1;
 r_incidence1549_50y_3_2 = incidence1549_50y_3 / incidence1549_50y_2;
 
 
@@ -2265,7 +2266,7 @@ ods html close;
 ods html;
 proc means data = b  n mean lclm uclm p50 p5 p95;
   var       
-r_incidence1549_50y_3_2
+r_incidence1549_50y_3_1 r_incidence1549_50y_3_2
 n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 
 d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 
 d_ddaly_50y_2_1   d_ddaly_50y_3_1   
