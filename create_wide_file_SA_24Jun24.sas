@@ -4,12 +4,10 @@ data a;
 set a.sa_24jun24;
 if run=. then delete;
 
-*if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
-takes ages to run so cut down dataset;
-*if run ne  896923088 then delete;
+if option ne 0 then delete; *Error in main code where option=1=enhanced SW program;
 
 proc sort;by run;run;
-proc freq;table cald run;run;
+proc freq;table cald run option;run;
 
 proc freq;table s_I_undiag4549m;run;
 
@@ -1522,7 +1520,7 @@ n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 36  ;
+%let nfit = 72  ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -2079,7 +2077,7 @@ l_n_dead_Agt6_cd4gt200&age		l_n_dead_Agt6_cd4gt200&mage 		l_n_dead_Agt6_cd4gt200
 ods listing close;
 ods results off;
 
-ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths SA_HIVSynthesis20Jun24.xlsx"
+ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths SA_HIVSynthesis24Jun24.xlsx"
 options(sheet_name='base' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
@@ -2139,7 +2137,7 @@ l_n_I_offart_SIgt6m&age		l_n_I_offart_SIgt6m&mage	l_n_I_offart_SIgt6m&wage
 ods listing close;
 ods results off;
 
-ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans_SA_HIVSynthesis20Jun24.xlsx"
+ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans_SA_HIVSynthesis24Jun24.xlsx"
 options(sheet_name='base1' start_at='A2');
 proc print data=a.wide_base noobs;run;
 

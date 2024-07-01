@@ -4,10 +4,7 @@ data a;
 set a.malawi_24jun24;
 if run=. then delete;
 
-*if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
-takes ages to run so cut down dataset;
-*if run ne  896923088 then delete;
-
+if option ne 0 then delete; 
 proc sort;by run;run;
 proc freq;table cald run;run;
 
