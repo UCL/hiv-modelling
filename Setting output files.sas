@@ -6,7 +6,7 @@ set a.out:;
 run;
 
 
-data b.malawi_24jun24;
+data b.malawi_24jun24a;
 set a;
 run;
 
