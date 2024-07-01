@@ -1971,9 +1971,12 @@ dcost_50y_3 = dart_cost_y_50y_3 + dadc_cost_50y_3 + dcd4_cost_50y_3 + dvl_cost_5
 
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
 d_dcost_50y_3_1 = dcost_50y_3 - dcost_50y_1;
+d_dcost_50y_1_3 = dcost_50y_1 - dcost_50y_3;
+d_dcost_50y_2_3 = dcost_50y_2 - dcost_50y_3;
 
 d_ddaly_50y_2_1 = ddaly_50y_2 - ddaly_50y_1;
 d_ddaly_50y_3_1 = ddaly_50y_3 - ddaly_50y_1;
+d_ddaly_50y_1_3 = ddaly_50y_1 - ddaly_50y_3;
 d_ddaly_50y_2_3 = ddaly_50y_2 - ddaly_50y_3;
 
 netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
@@ -2199,6 +2202,18 @@ ods html close;
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
 var 
+prop_tldsw_uvl2_a10y_1 prop_tldsw_uvl2_a10y_2 prop_tldsw_uvl2_a10y_3 
+prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 
+;
+run;
+ods html close;
+
+
+
+
+ods html;
+proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
+var 
 prop_artexp_elig_tldsw_50y_1  prop_artexp_elig_tldsw_50y_2  prop_artexp_elig_tldsw_50y_3   
 prop_tldsw_uvl2_50y_1 prop_tldsw_uvl2_50y_2 prop_tldsw_uvl2_50y_3 
 prop_tldsw_elig_vl1000_50y_1  prop_tldsw_elig_vl1000_50y_2  prop_tldsw_elig_vl1000_50y_3  
@@ -2265,6 +2280,9 @@ dcost_50y_1   dcost_50y_2   dcost_50y_3
 d_dcost_50y_2_1  d_dcost_50y_3_1 
 netdaly500_1 netdaly500_2 netdaly500_3 
 d_netdaly500_2_1 d_netdaly500_3_1 
+d_dcost_50y_1_3 d_ddaly_50y_1_3
+d_dcost_50y_2_3 d_ddaly_50y_2_3
+
 ;
 run;
 ods html close;
@@ -2308,8 +2326,10 @@ ods html close;
 * d_netdaly500_2_1 d_ddaly_50y_2_1 ;
 
 ods html;
-proc glm; model d_ddaly_50y_2_1 = prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_adh_lt80_iicu_tldsw_24    
-p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24;  run; 
+proc glm; model d_netdaly500_2_1 = 
+prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_adh_lt80_iicu_tldsw_24    
+p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 
+;  run; 
 ods html close;
 
 
@@ -2319,7 +2339,7 @@ p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_2
 
 *----- parameters ---------------------------- ;
 * res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  tox_weightg_dol 
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  tox_weightg_dol red_adh_tox_pop
 incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab ;
 
  

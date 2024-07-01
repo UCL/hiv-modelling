@@ -3,8 +3,9 @@
 
 * get outputs for: of people that have experienced one viral load value > 1000 proportion with integrase inhibitor resistance ;
 
-* add outputs for ahd x r_dol (ie actual adherence not drug level test) ;
+* add outputs for adh x r_dol (ie actual adherence not drug level test) ;
 
+* remove the increased risk of art interruption on darunavir for some runs ? 
 
 
 
