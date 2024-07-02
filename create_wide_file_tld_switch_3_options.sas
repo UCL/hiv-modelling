@@ -17,7 +17,7 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 
 data b.k_tld_switch_al;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-if option in (0, 3, 4);
+if option in (0, 2, 4);
 
 run;
 
@@ -2050,6 +2050,10 @@ p_first_uvl2_dol_r_1y = (p_first_uvl2_dol_r_1y_1 + p_first_uvl2_dol_r_1y_1 + p_f
 prop_tldsw_uvl2_3y = (prop_tldsw_uvl2_3y_1 + prop_tldsw_uvl2_3y_2 + prop_tldsw_uvl2_3y_3) / 3; 
 p_first_uvl2_dol_r_3y = (p_first_uvl2_dol_r_3y_1 + p_first_uvl2_dol_r_3y_1 + p_first_uvl2_dol_r_3y_1 ) / 3; 
 
+d_p_onart_diag_50y_1_3 = p_onart_diag_50y_1 - p_onart_diag_50y_3;
+
+d_deathr_dol_r_uvl2_50y_3_1 = deathr_dol_r_uvl2_50y_3 - deathr_dol_r_uvl2_50y_1; 
+d_deathr_dol_r_uvl2_50y_3_1_b=0; if d_deathr_dol_r_uvl2_50y_3_1 > 0 then d_deathr_dol_r_uvl2_50y_3_1_b=1;
 
 * s_uvl2_elig_10y_1 = n_uvl2_elig_10y_1 / sf_2024 ;  
 * restrict to s onart iicu vlg1000 ;
@@ -2080,7 +2084,10 @@ var p_dol_start_nactive_p5_r_1y_3 p_dol_start_nactive_1p5_r_1y_3  p_dol_start_na
 run;
 ods html close;
 
-
+* note this result;
+ods html;
+proc freq; tables d_deathr_dol_r_uvl2_50y_3_1_b ; run; 
+ods html close;
 
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
@@ -2282,7 +2289,6 @@ netdaly500_1 netdaly500_2 netdaly500_3
 d_netdaly500_2_1 d_netdaly500_3_1 
 d_dcost_50y_1_3 d_ddaly_50y_1_3
 d_dcost_50y_2_3 d_ddaly_50y_2_3
-
 ;
 run;
 ods html close;
@@ -2323,14 +2329,14 @@ ods html close;
 
 
 
-* d_netdaly500_2_1 d_ddaly_50y_2_1 ;
+* d_netdaly500_2_1 d_ddaly_50y_2_1 d_n_death_hiv_50y_3_1;
 
 ods html;
-proc glm; model d_netdaly500_2_1 = 
-prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_adh_lt80_iicu_tldsw_24    
-p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 
-;  run; 
+
+proc glm; model d_ddaly_50y_1_3 = pr_res_dol ;  run; 
+
 ods html close;
+
 
 
 *----- baseline charateristics --------------- ;
