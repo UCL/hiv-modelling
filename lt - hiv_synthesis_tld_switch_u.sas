@@ -17666,8 +17666,8 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 proc freq; tables cald hiv ; where death=.; run;
 
-proc print; var cald option yrart art_monitoring_strategy o_dol vl vm f_dol dol_pi_fail_by_year_interv artline linefail  tldsw_elig;
-where naive =0;
+proc print; var cald hiv_monitoring_strategy reg_option art_initiation_strategy art_monitoring_strategy;
+where registd=1;
 run;
 
 
@@ -20278,7 +20278,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-/*
+
 
 * 1989;
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
@@ -20434,7 +20434,6 @@ end;
 
 data a.keep123; set r1;
 
-*/
 
 
 data r1; set a.keep123;

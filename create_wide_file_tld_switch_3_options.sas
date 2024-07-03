@@ -1905,7 +1905,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_al     ; 
+  data  b.w_tld_switch_al_024     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1916,7 +1916,7 @@ proc sort; by run;run;
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
 
 data b;
-set b.w_tld_switch_al    ;
+set b.w_tld_switch_al_024    ;
 
 * if 0.0   <= prevalence1549w_24 < 0.35;
 * if p_onart_vl1000_24 <= 0.98;
