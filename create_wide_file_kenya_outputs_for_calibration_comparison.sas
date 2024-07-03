@@ -1143,13 +1143,16 @@ drop _NAME_ _TYPE_ _FREQ_;
 %mend var;
 
 
-%var(v= incidence15491000     );
+%var(v= incidence1524w     );
 
 ods html;
 
 title '';
 
-proc print data = incidence15491000                       noobs;
+data s; set incidence1524w ;
+incidence1524w  = incidence1524w * 10 ;
+
+proc print data = s                      noobs;
 run;
 
 ods html close;
