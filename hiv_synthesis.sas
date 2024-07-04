@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000  ; 
+%let population = 1000  ; 
 %let year_interv = 2023;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -930,7 +930,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * OVERWRITES country specific parameters;
 
 %include "/home/rmjlja9/SA_parameters.sas";
-* %include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\SA_parameters.sas";
+/* %include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\SA_parameters.sas";*/
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
 * %include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
 
@@ -1790,6 +1790,11 @@ eff_prob_vl_meas_done = prob_vl_meas_done;
 * define effective pr_switch_line;
 eff_pr_switch_line = pr_switch_line;
 
+* define effective date_prep_xxx_intro variables;		*JAS Jul24;
+eff_date_prep_oral_intro = date_prep_oral_intro;
+eff_date_prep_inj_intro = date_prep_inj_intro;
+eff_date_prep_vr_intro = date_prep_vr_intro;
+
 * define effective rate_test_startprep_any;
 eff_rate_test_startprep_any = rate_test_startprep_any;
 
@@ -1805,6 +1810,11 @@ eff_rate_choose_stop_prep_vr = rate_choose_stop_prep_vr;
 
 * define effective prob_prep_any_restart_choice;
 eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice;	
+
+* define effective pref_prep_xxx_beta_s1 variables;		*JAS Jul24;
+eff_pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1;
+eff_pref_prep_inj_beta_s1 = pref_prep_vr_beta_s1;
+eff_pref_prep_vr_beta_s1 = pref_prep_vr_beta_s1;
 
 * define effective prob_lossdiag_non_tb_who3e;
 eff_prob_lossdiag_non_tb_who3e = prob_lossdiag_non_tb_who3e ;
@@ -2213,7 +2223,7 @@ who may be dead and hence have caldate{t} missing;
 	*Option 1 is SQ + 	Dapivirine ring for adolescent girls and young women 15 to 24 years (AGYW) [Zim O19];
 	*Option 2 is SQ + 	Oral PrEP for pregnant and breastfeeding women [Zim O18];
 	*Option 3 is SQ + 	Injectable PrEP for AGYW [Zim O23];
-	*Option 4 is SQ + 	Injectable PrEP switching 30% from oral PrEP to Injectible long acting PrEP [[Zim O0 + change date_prep_inj_intro];
+	*Option 4 is SQ + 	Injectable PrEP switching 30% from oral PrEP to Injectible long acting PrEP [[Zim O0 + change eff_date_prep_inj_intro];
 	*Option 5 is SQ + 	U = U messaging [new for SA];
 	*Option 6 is SQ + 	Self-test distribution in health facilities [Zim O2];
 	*Option 7 is SQ + 	Self-test distribution to partners of HIV-positive individuals [Zim O4];
@@ -2233,54 +2243,77 @@ who may be dead and hence have caldate{t} missing;
 	*Option 99 is Minimal;
 	if option = 99 then do;
 
-		* !!! CHECK WHICH INTERVENTIONS TO SCALE BACK FROM PHASE I CODE !!! - JAS Apr24;
+		* !!! CHECK WHICH INTERVENTIONS TO SCALE BACK FROM PHASE I CODE - if any !!! - JAS Apr24;
 		*Including: ANC HIV testing/PMTCT, HIV patient care, universal ART eligibility, including CD4 before ART start and VL monitoring;
+		*Dont need Minimal for MIHPSA SA Phase II;
 
 	end;
  
 	* Option 1 is SQ +	Dapivirine ring for adolescent girls and young women 15 to 24 years (AGYW) [Zim O19];
+	* Additive to SQ - ie add DPV for AGYW to existing PrEP modalities;	*JAS Jul24;
 	if option = 1 then do; 
-		prep_any_strategy=3;
-		date_prep_vr_intro=&year_interv;
-		if caldate{t}=&year_interv then do;
-			pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3;			* MIHPSA: can adjust this to match vr PrEP uptake to oral PrEP target JAS Jul23;
+		eff_date_prep_vr_intro=date_prep_vr_intro;						* Reset to original values when agyw ne 1; 
+		eff_prob_prep_vr_b = prob_prep_vr_b;
+		eff_rate_choose_stop_prep_vr = rate_choose_stop_prep_vr;
+		eff_pref_prep_vr_beta_s1 = pref_prep_vr_beta_s1;
+		if agyw = 1 then do;
+			prep_any_strategy=3;										*********** QUERY why does this revert to dafault when agyw ne 1? **********;
+			eff_date_prep_vr_intro=&year_interv;
+/*			if caldate{t}=&year_interv then do;*/
+				eff_pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3;		* MIHPSA SA matched to MIHPSA Zim values to increase preference;
+/*			end;*/
+/*			eff_rate_test_startprep_any=0.4;*/							* Dont change as also affects other prep types;
+			eff_prob_prep_vr_b=0.9;										* MIHPSA SA matched to MIHPSA Zim values to increase VR uptake;
+			eff_rate_choose_stop_prep_vr=0.01;							* MIHPSA SA matched to MIHPSA Zim values to reduce VR stoppage;
+/*			eff_prob_prep_any_restart_choice=0.5;	*/					* Dont change as also affects other prep types;
 		end;
-		eff_rate_test_startprep_any=0.4;
-		eff_prob_prep_vr_b=0.9;
-		eff_rate_choose_stop_prep_vr=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	*Option 2 is SQ + 	Oral PrEP for pregnant and breastfeeding women [Zim O18];
+	* Additive to SQ - ie add oral PrEP for PLW to existing PrEP modalities;	*JAS Jul24;
 	if option = 2 then do;
-		prep_any_strategy=16;
-		date_prep_oral_intro=&year_interv;
-		if caldate{t}=&year_interv then do;
-			pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;		* From Vales code, this is to match oral PrEP uptake to Zim target MIHPSA JAS Jul23;
+		eff_date_prep_oral_intro=date_prep_oral_intro;					* Reset to original values when plw ne 1; 
+		eff_prob_prep_oral_b = prob_prep_oral_b;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral;
+		eff_pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1;
+		if plw=1 then do;
+			prep_any_strategy=16;
+			eff_date_prep_oral_intro=&year_interv;
+/*			if caldate{t}=&year_interv then do;*/
+				eff_pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;
+/*			end;*/
+/*			eff_rate_test_startprep_any=0.2;*/
+			eff_prob_prep_oral_b=0.9;
+			eff_rate_choose_stop_prep_oral=0.01;
+/*			eff_prob_prep_any_restart_choice=0.5;	*/
 		end;
-		eff_rate_test_startprep_any=0.2;
-		eff_prob_prep_oral_b=0.9;
-		eff_rate_choose_stop_prep_oral=0.01;
-		eff_prob_prep_any_restart_choice=0.5;	
 	end;
 
 	*Option 3 is SQ + 	Injectable PrEP for AGYW [Zim O23];
+	* Additive to SQ - ie add inj PrEP for AGYW to existing PrEP modalities;	*JAS Jul24;
 	if option = 3 then do;
-		prep_any_strategy=3;
-		date_prep_inj_intro=&year_interv;
-		if caldate{t}=&year_interv then do;
-			pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match inj PrEP uptake to oral PrEP target JAS Jul23;
+		eff_date_prep_inj_intro=date_prep_inj_intro;					* Reset to original values when agyw ne 1; 
+		eff_prob_prep_inj_b = prob_prep_inj_b;
+		eff_rate_choose_stop_prep_inj = rate_choose_stop_prep_inj;
+		eff_pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1;
+		if agyw=1 then do;
+			prep_any_strategy=3;
+			eff_date_prep_inj_intro=&year_interv;
+/*			if caldate{t}=&year_interv then do;*/
+				eff_pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3;
+/*			end;*/
+/*			eff_rate_test_startprep_any=0.4;*/
+			eff_prob_prep_inj_b=0.9;
+			eff_rate_choose_stop_prep_inj=0.01;
+/*			eff_prob_prep_any_restart_choice=0.5;*/
 		end;
-		eff_rate_test_startprep_any=0.4;
-		eff_prob_prep_inj_b=0.9;
-		eff_rate_choose_stop_prep_inj=0.01;
-		eff_prob_prep_any_restart_choice=0.5;		
 	end;
 
-	*Option 4 is SQ + 	Injectable PrEP switching 30% from oral PrEP to Injectible long acting PrEP [[Zim O0 + change date_prep_inj_intro];
+	*Option 4 is SQ + 	Injectable PrEP switching 30% from oral PrEP to Injectible long acting PrEP [[Zim O0 + change eff_date_prep_inj_intro];
 	* !!! CHECK OUTCOMES FOR THIS OPTION !!!;
 	if option = 4 then do;
 		date_prep_inj_intro=&year_interv;
+		eff_pref_prep_inj_beta_s1=pref_prep_oral_beta_s1+0.5;			*********** QUERY check to see how many oral prep users swap *****;
 	end;
 
 	*Option 5 is SQ + 	U = U messaging [new for SA];
@@ -2311,13 +2344,13 @@ who may be dead and hence have caldate{t} missing;
 	*Option 9 is SQ + 	VMMC for males aged 10-14 [coded but not in Zim MIHPSA];
 	if option = 9 then do;
 		circ_inc_rate_year_i=0;
-		rel_prob_circ_mihpsa_10_14=5;
+		rel_prob_circ_mihpsa_10_14=2;
 	end;
 
 	*Option 10 is SQ + 	VMMC for males aged 15+ [Zim O14];
 	if option = 10 then do;
 		circ_inc_rate_year_i=0;
-		rel_prob_circ_mihpsa_15_49=5;
+		rel_prob_circ_mihpsa_15_49=2;
 	end;
 
 	*Option 11 is SQ + 	Community-based peer navigators to support ART linkage & retention [new for SA];
@@ -2354,48 +2387,48 @@ prep_inj_tm3=	prep_inj_tm2;  prep_inj_tm2=	prep_inj_tm1; 	prep_inj_tm1=	prep_inj
 prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 
 * Oral prep scale-up over 4 years;
-if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
-else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and mihpsa_params_set_in_options ne 1
-	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
-else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and mihpsa_params_set_in_options ne 1
+if caldate{t} < eff_date_prep_oral_intro then eff_prob_prep_oral_b = 0;
+else if eff_date_prep_oral_intro <= caldate{t} < (eff_date_prep_oral_intro + dur_prep_oral_scaleup) and mihpsa_params_set_in_options ne 1
+	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (eff_date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
+else if caldate{t} >= (eff_date_prep_oral_intro + dur_prep_oral_scaleup) and mihpsa_params_set_in_options ne 1
 	then eff_prob_prep_oral_b = prob_prep_oral_b;
 
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
 * Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
-if 		. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then eff_prob_prep_inj_b = 0;
-else if . < date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) and mihpsa_params_set_in_options ne 1
-	then eff_prob_prep_inj_b = 0.05 +  (  (prob_prep_inj_b-0.05) * ( 1 -    (date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
-else if caldate{t} >= (date_prep_inj_intro + dur_prep_inj_scaleup) and mihpsa_params_set_in_options ne 1
+if 		. < caldate{t} < eff_date_prep_inj_intro or eff_date_prep_inj_intro=. then eff_prob_prep_inj_b = 0;
+else if . < eff_date_prep_inj_intro <= caldate{t} < (eff_date_prep_inj_intro + dur_prep_inj_scaleup) and mihpsa_params_set_in_options ne 1
+	then eff_prob_prep_inj_b = 0.05 +  (  (prob_prep_inj_b-0.05) * ( 1 -    (eff_date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
+else if caldate{t} >= (eff_date_prep_inj_intro + dur_prep_inj_scaleup) and mihpsa_params_set_in_options ne 1
 	then eff_prob_prep_inj_b = prob_prep_inj_b;
 
 * DPV VR prep scale-up; * dpv-vr JAS Sep2021;
-if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then eff_prob_prep_vr_b = 0;
-else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_params_set_in_options ne 1
-	then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
-else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_params_set_in_options ne 1
+if 		. < caldate{t} < eff_date_prep_vr_intro or eff_date_prep_vr_intro =. then eff_prob_prep_vr_b = 0;
+else if . < eff_date_prep_vr_intro <= caldate{t} < (eff_date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_params_set_in_options ne 1
+	then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (eff_date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
+else if caldate{t} >= (eff_date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_params_set_in_options ne 1
 	then eff_prob_prep_vr_b = prob_prep_vr_b;
 
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
-if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
-	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
+if (caldate{t} = eff_date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= eff_date_prep_oral_intro > .) then do;
+	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',eff_pref_prep_oral_beta_s1,5);			
 end;	
 
-if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
-	if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
-	* pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);
+if (caldate{t} = eff_date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= eff_date_prep_inj_intro > .) then do;
+	if pop_wide_tld = 1 then eff_pref_prep_inj_beta_s1 = eff_pref_prep_inj_beta_s1 - 0.7 ; 
+	* pref_prep_inj;  	pref_prep_inj=rand('beta',eff_pref_prep_inj_beta_s1,5);
 end;
 
-if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) then do;
-	* pref_prep_vr;		pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	*women only;		
+if (caldate{t} = eff_date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= eff_date_prep_vr_intro > .) then do;
+	* pref_prep_vr;		pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',eff_pref_prep_vr_beta_s1,5); 	*women only;		
 end;
 
-if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
-if . < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then pref_prep_inj = 0;
-if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
+if . < caldate{t} < eff_date_prep_oral_intro or eff_date_prep_oral_intro=. then pref_prep_oral = 0;
+if . < caldate{t} < eff_date_prep_inj_intro or eff_date_prep_inj_intro=. then pref_prep_inj = 0;
+if . < caldate{t} < eff_date_prep_vr_intro or eff_date_prep_vr_intro=. then pref_prep_vr = 0;
 
 * highest_prep_pref;
 * does not show people who are not willing to take any PrEP type;
@@ -2407,17 +2440,17 @@ else if pref_prep_vr > pref_prep_oral and pref_prep_vr > pref_prep_inj then high
 
 * willingness to take prep if offered;
 
-if caldate{t} ge date_prep_oral_intro then do;
+if caldate{t} ge eff_date_prep_oral_intro then do;
 	if  pref_prep_oral > prep_willingness_threshold	then prep_oral_willing =1;
 	q=rand('uniform');
 	if pop_wide_tld=1 and prep_oral_willing =0 and q < 0.05 then prep_oral_willing =1; 
 end;
 
-if caldate{t} ge date_prep_inj_intro then do;
+if caldate{t} ge eff_date_prep_inj_intro then do;
 	if  pref_prep_inj  > prep_willingness_threshold	then prep_inj_willing =1;
 end;
 
-if caldate{t} ge date_prep_vr_intro then do;
+if caldate{t} ge eff_date_prep_vr_intro then do;
 	if  pref_prep_vr > prep_willingness_threshold	then prep_vr_willing =1;
 end;
 
@@ -4647,7 +4680,7 @@ prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and differ
 * lapr and dpv-vr - changed name from prep_strategy to prep_any_strategy - will apply to all types of PrEP and pref_prep_xx decides which is taken (if all are available) ;
 
 
-if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) > . then do;  
+if t ge 2 and (registd ne 1) and caldate{t} >= min(eff_date_prep_oral_intro, eff_date_prep_inj_intro, eff_date_prep_vr_intro) > . then do;  
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
 	if prep_any_strategy=1 then do;
@@ -4857,7 +4890,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 a=rand('uniform');
 
-	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and hard_reach=0 and 
+	if t ge 4 and caldate{t} ge min(eff_date_prep_oral_intro, eff_date_prep_inj_intro, eff_date_prep_vr_intro) and hard_reach=0 and 
 	((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (pop_wide_tld_prep ne 1 or (pop_wide_tld_prep=1 and a < prob_test_pop_wide_tld_prep))  
 	then do;
 
@@ -4876,7 +4909,7 @@ a=rand('uniform');
 				select;
 
 					* Only oral PrEP available;
-					when (caldate(t) ge date_prep_oral_intro and (. < caldate(t) < date_prep_inj_intro  or date_prep_inj_intro=.)) do;	
+					when (caldate(t) ge eff_date_prep_oral_intro and (. < caldate(t) < eff_date_prep_inj_intro  or eff_date_prep_inj_intro=.)) do;	
 						if prep_oral_willing=1 then do;		*Regardless of preference, person will test for oral PrEP if willing;
 							tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
 							if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
@@ -4885,7 +4918,7 @@ a=rand('uniform');
 					end;
 
 					* Oral and injectable PrEP available only;
-					when (caldate(t) ge date_prep_inj_intro > . and (. < caldate(t) < date_prep_vr_intro or date_prep_vr_intro=.)) do;	
+					when (caldate(t) ge eff_date_prep_inj_intro > . and (. < caldate(t) < eff_date_prep_vr_intro or eff_date_prep_vr_intro=.)) do;	
 
 						select;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
@@ -4918,7 +4951,7 @@ a=rand('uniform');
 					end;
 
 					* Oral and vr PrEP available only;
-					when (caldate(t) ge date_prep_vr_intro > . and (. < caldate(t) < date_prep_inj_intro or date_prep_inj_intro=.)) do;	
+					when (caldate(t) ge eff_date_prep_vr_intro > . and (. < caldate(t) < eff_date_prep_inj_intro or eff_date_prep_inj_intro=.)) do;	
 
 						select;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
@@ -4951,7 +4984,7 @@ a=rand('uniform');
 					end;
 
 					* All PrEP types available;
-					when (caldate{t} ge date_prep_vr_intro > .) do;											
+					when (caldate{t} ge eff_date_prep_vr_intro > .) do;											
 						tested=1; testfor_prep_any=1;
 						select;
 							when (highest_prep_pref = 1)	testfor_prep_oral=1; 
@@ -5071,7 +5104,7 @@ end;
 ********** STARTING PREP *********** ;
 
 *Jul2016 f_prep;
-if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and registd ne 1 and prep_any_elig=1 then do;
+if t ge 4 and caldate{t} ge min(eff_date_prep_oral_intro, eff_date_prep_inj_intro, eff_date_prep_vr_intro) and registd ne 1 and prep_any_elig=1 then do;
 
 	unisensprep=rand('uniform');
 
@@ -5113,20 +5146,20 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};		
 						end; 
 						when (highest_prep_pref = 2) 	
-							if caldate{t} ge date_prep_inj_intro > . and r < eff_prob_prep_inj_b then do; *Inj PrEP preferred and is available;
+							if caldate{t} ge eff_date_prep_inj_intro > . and r < eff_prob_prep_inj_b then do; *Inj PrEP preferred and is available;
 								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 								prep_inj=1;		prep_inj_ever=1; 	continuous_prep_inj_use=0.25;	prep_inj_first_start_date=caldate{t};	prep_inj_current_start_date=caldate{t};	
 							end; 
-							else if caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
+							else if caldate{t} < eff_date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
 								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
 							end;
 						when (highest_prep_pref = 3) 	 
-							if caldate{t} ge date_prep_vr_intro > . and r < eff_prob_prep_vr_b then do;	*VR PrEP preferred and is available;
+							if caldate{t} ge eff_date_prep_vr_intro > . and r < eff_prob_prep_vr_b then do;	*VR PrEP preferred and is available;
 								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 								prep_vr=1; 		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	prep_vr_first_start_date=caldate{t};	prep_vr_current_start_date=caldate{t};
 							end; 
-							else if caldate{t} ge date_prep_inj_intro > . and (. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=.) then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP if willing;
+							else if caldate{t} ge eff_date_prep_inj_intro > . and (. < caldate{t} < eff_date_prep_vr_intro or eff_date_prep_vr_intro=.) then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP if willing;
 								*(1) Prefer oral PrEP to inj and willing;
 								if pref_prep_oral > pref_prep_inj and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;
 									prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
@@ -5139,7 +5172,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 								end; 
 								*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
 							end;
-							else if . < caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; *VR PrEP preferred but not available - start oral PrEP if willing;
+							else if . < caldate{t} < eff_date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; *VR PrEP preferred but not available - start oral PrEP if willing;
 								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};		
 							end;
@@ -5430,7 +5463,7 @@ if hiv=1 and tested=1 and prep_any=1 then prep_falseneg=1;
 	* lapr and dpv-vr - I think for simplicity we will assume lapr operates with 3 monthly visits - I understand this
 	is right for women - for men I think they may need 2 monthly injections rather than 3; * dpv-vr is monthly but I 
 	understand it is self-administered (?) so 3-montly clinic visits or less may be fine;
-if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and registd ne 1 and prep_any_elig=1 and 
+if caldate{t} ge min(eff_date_prep_oral_intro, eff_date_prep_inj_intro, eff_date_prep_vr_intro) and registd ne 1 and prep_any_elig=1 and 
 (pop_wide_tld ne 1 or tested=1) then do;
 	if prep_any=0 then do;
 		if prep_any_ever ne 1 then do; visit_prep_any=.; visit_prep_oral=.; visit_prep_inj=.; visit_prep_vr=.; end;
@@ -7586,7 +7619,7 @@ visit_tm1=visit;
 	if (prep_oral=1 or prep_inj=1) then tcur =  tcur_tm1 +0.25;   * lapr and dpv-vr - using prep_oral or prep_inj here but not prep_vr; *JAS Nov2021; 
 * ts1m:  	if (prep_oral=1 or prep_inj=1) then tcur   =tcur_tm1  + (1/12) ;
 
-	if (prep_oral=0 and prep_inj=0) and caldate{t} ge date_prep_oral_intro and onart ne 1 then tcur=.;   	* lapr and dpv-vr - using prep_oral and prep_inj here but not prep_vr; *JAS Nov2021;
+	if (prep_oral=0 and prep_inj=0) and caldate{t} ge eff_date_prep_oral_intro and onart ne 1 then tcur=.;   	* lapr and dpv-vr - using prep_oral and prep_inj here but not prep_vr; *JAS Nov2021;
 	
 	p_zdv_tm1=p_zdv;	f_zdv_tm1=f_zdv;	t_zdv_tm1=t_zdv;	r_zdv_tm1=r_zdv;	o_zdv_tm1=o_zdv;	
 	p_3tc_tm1=p_3tc;	f_3tc_tm1=f_3tc;	t_3tc_tm1=t_3tc;	r_3tc_tm1=r_3tc;	o_3tc_tm1=o_3tc;	
@@ -17709,11 +17742,32 @@ proc freq; tables country cald hiv ; where death=.; run;
 
 */
 
+proc print; var
+caldate&j serial_no age agyw prep_any_strategy 
+date_prep_oral_intro eff_date_prep_oral_intro
+date_prep_vr_intro eff_date_prep_vr_intro
+prep_oral prep_vr prep_any 
+/*pref_prep_oral pref_prep_inj pref_prep_vr highest_prep_pref*/
+pref_prep_oral_beta_s1 eff_pref_prep_oral_beta_s1 pref_prep_vr_beta_s1 eff_pref_prep_vr_beta_s1
+prob_prep_oral_b eff_prob_prep_oral_b prob_prep_vr_b eff_prob_prep_vr_b 
+rate_choose_stop_prep_oral eff_rate_choose_stop_prep_oral rate_choose_stop_prep_vr eff_rate_choose_stop_prep_vr
+/*eff_rate_test_startprep_any eff_prob_prep_any_restart_choice */
+;
+where gender=2 and 15<=age<35 and serial_no<700; 
+run;
+
+/*proc freq; tables prep_any_strategy prep_any_elig prep_any ; where death=.; run;*/
+
+
+
+/*
 proc print; var 
 caldate&j total_yllag yllag_total_test yllag_w yllag_m yllag_hiv_w yllag_hiv_m dyllag_total dyll_GBD dyllag_w dyllag_m dyllag_hiv_w dyllag_hiv_m  
 ;
 where total_yllag>0; 
 run;
+*/
+
 
 /*
 
@@ -19214,7 +19268,7 @@ prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy  prop_pep  pep_efficacy 
-rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
+rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner eff_pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
 artvis0_lower_adh  pop_wide_prep_adh_effect 
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
@@ -21049,7 +21103,7 @@ prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy   prop_pep  pep_efficacy 
-rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
+rate_choose_stop_prep_inj rate_choose_stop_prep_vr prep_inj_effect_inm_partner eff_pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 artvis0_lower_adh  pop_wide_prep_adh_effect 
