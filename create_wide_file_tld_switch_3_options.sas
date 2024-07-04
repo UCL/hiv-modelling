@@ -17,7 +17,7 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 
 data b.k_tld_switch_al;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-if option in (0, 2, 4);
+if option in (0, 3, 4);
 
 run;
 
@@ -1400,6 +1400,8 @@ n_ontld  n_o_dol_r  n_onart_iicu_uvl2 n_onart_iicu_uvl21  n_onart_iicu_uvl22  n_
 n_uvl2_only_tld_dolr  n_uvl2_no_prev_fail_dolr  n_uvl2_prev_fail_dolr  n_uvl2_elig n_uvl21_elig n_uvl22_elig n_uvl23_elig
 
 p_dol_start_nactive_p5_r p_dol_start_nactive_1p5_r p_dol_start_nactive_2_r  prob_prep_oral_b n_adh_meas_1_1 n_adh_meas_1_0 n_adh_meas_0_1 n_adh_meas_0_0
+
+dten_cost d3tc_cost ddar_cost ddol_cost
 ;
 
 
@@ -1705,6 +1707,8 @@ n_onart_iicu_uvl2           n_onart_iicu_uvl21           n_onart_iicu_uvl22     
 
 p_dol_start_nactive_p5_r p_dol_start_nactive_1p5_r p_dol_start_nactive_2_r  n_adh_meas_1_1 n_adh_meas_1_0 n_adh_meas_0_1 n_adh_meas_0_0
 
+dten_cost d3tc_cost ddar_cost ddol_cost
+
 ;
 
 
@@ -1905,7 +1909,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_al_024     ; 
+  data  b.w_tld_switch_al_034     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1916,7 +1920,7 @@ proc sort; by run;run;
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
 
 data b;
-set b.w_tld_switch_al_024    ;
+set b.w_tld_switch_al_034    ;
 
 * if 0.0   <= prevalence1549w_24 < 0.35;
 * if p_onart_vl1000_24 <= 0.98;
@@ -2291,6 +2295,12 @@ ods html close;
 ods html;
 proc means  n mean p5 p95;
 var
+/*
+dten_cost_50y_1 dten_cost_50y_2 dten_cost_50y_3 
+d3tc_cost_50y_1 d3tc_cost_50y_2 d3tc_cost_50y_3 
+ddar_cost_50y_1 ddar_cost_50y_2 ddar_cost_50y_3 
+ddol_cost_50y_1 ddol_cost_50y_2 ddol_cost_50y_3
+*/
 dart_cost_y_50y_1  dart_cost_y_50y_2   dart_cost_y_50y_3  
 dadc_cost_50y_1  dadc_cost_50y_2   dadc_cost_50y_3 
 dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3 
@@ -2320,9 +2330,7 @@ ods html close;
 
 ods html;
 
-proc glm; model d_netdaly500_3_1 = res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab ;  run; 
+proc glm; model d_netdaly500_2_1 =  n_death_hiv_24  ;  run; 
 
 ods html close;
 
