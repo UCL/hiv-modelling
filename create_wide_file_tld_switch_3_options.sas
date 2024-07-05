@@ -228,7 +228,7 @@ dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000;
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
-
+* ddar_cost = ddar_cost / 2;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
@@ -1911,7 +1911,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_al_024     ; 
+  data  b.w_tld_switch_al_024    ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1922,7 +1922,7 @@ proc sort; by run;run;
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
 
 data b;
-set b.w_tld_switch_al_024    ;
+set b.w_tld_switch_al_024   ;
 
 * if 0.0   <= prevalence1549w_24 < 0.35;
 * if p_onart_vl1000_24 <= 0.98;
@@ -1957,6 +1957,8 @@ d_n_dead_hivrel_onart_10y_3_1 = n_dead_hivrel_onart_10y_3 - n_dead_hivrel_onart_
 d_n_dead_hivrel_onart_1y_2_1 = n_dead_hivrel_onart_1y_2 - n_dead_hivrel_onart_1y_1;
 d_n_dead_hivrel_onart_1y_3_1 = n_dead_hivrel_onart_1y_3 - n_dead_hivrel_onart_1y_1;
 
+* for sensitivity analysis;
+* dres_cost_50y_2 = dres_cost_50y_2 * 1.5 ;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -2283,6 +2285,7 @@ d_netdaly500_2_1 d_netdaly500_3_1
 d_dcost_50y_1_3 d_ddaly_50y_1_3
 d_dcost_50y_2_3 d_ddaly_50y_2_3
 ;
+where prop_r_dol_ge_p5_uvl2_24 < 0.05;
 run;
 ods html close;
 
