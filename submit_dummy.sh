@@ -1,12 +1,11 @@
 #!/bin/bash -l
 inputdir="${HOME}"
 tmpfiles="out"
-combinedsas="vaccine_n_c_r_eff_dur"
+combinedsas="vaccine_c"
 runs="300"
-jobname="vaccine_c"
+jobname="vaccine"
 model="hiv_synthesis_vaccine_n_c_r_eff_dur.sas"
 clock="h_rt=06:00:00"
-account="HIVSynthMod"
 
 while getopts a:i:o:r:j:m:c:t: flag
 do
@@ -38,6 +37,6 @@ echo "runs: $runs";
 echo "jobname for model runs: $jobname";
 echo "clock is set to: $clock";
 echo "using SAS HIV model file: $model";
-qsub -N $jobname -t 1-$runs -wd $finaloutdir -A HIVSynthMod -l $clock -v SASINPUT=$inputdir,SASOUTPUTDIR=$finaloutdir,SASMODEL=$model,SASTMPFILES=$tmpfiles $inputdir/testmodel.sh
+qsub -N $jobname -t 1-$runs -wd $finaloutdir -P AllUsers -l $clock -v SASINPUT=$inputdir,SASOUTPUTDIR=$finaloutdir,SASMODEL=$model,SASTMPFILES=$tmpfiles $inputdir/testmodel.sh
 
 
