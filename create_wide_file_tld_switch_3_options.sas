@@ -17,7 +17,7 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 
 data b.k_tld_switch_al;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-if option in (0, 3, 4);
+if option in (0, 2, 4);
 
 run;
 
@@ -970,6 +970,8 @@ run;
 * p_pime;						p_pime = s_pime_ / s_hivge15 ;
 * p_nnme;						p_nnme = s_nnme_ / s_hivge15 ;
 
+* p_r_dol;						p_r_dol = s_r_dol / s_hivge15 ;
+
 * n_iime ;						n_iime = s_iime_ * sf * 4;
 
 * TLD_SWITCH ;
@@ -1401,7 +1403,7 @@ n_uvl2_only_tld_dolr  n_uvl2_no_prev_fail_dolr  n_uvl2_prev_fail_dolr  n_uvl2_el
 
 p_dol_start_nactive_p5_r p_dol_start_nactive_1p5_r p_dol_start_nactive_2_r  prob_prep_oral_b n_adh_meas_1_1 n_adh_meas_1_0 n_adh_meas_0_1 n_adh_meas_0_0
 
-dten_cost d3tc_cost ddar_cost ddol_cost
+dten_cost d3tc_cost ddar_cost ddol_cost  p_r_dol
 ;
 
 
@@ -1638,7 +1640,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_onart_iicu_uvl2);  %var(v=n_onart_iicu_uvl21);   %var(v=n_onart_iicu_uvl22);   %var(v=n_onart_iicu_uvl23);
 
 %var(v=p_dol_start_nactive_p5_r); %var(v=p_dol_start_nactive_1p5_r); %var(v=p_dol_start_nactive_2_r); %var(v=n_adh_meas_1_1); %var(v=n_adh_meas_1_0);
-%var(v=n_adh_meas_0_1); %var(v=n_adh_meas_0_0);
+%var(v=n_adh_meas_0_1); %var(v=n_adh_meas_0_0);  %var(v=p_r_dol);
 
 
 data   b.wide_outputs; merge 
@@ -1707,7 +1709,7 @@ n_onart_iicu_uvl2           n_onart_iicu_uvl21           n_onart_iicu_uvl22     
 
 p_dol_start_nactive_p5_r p_dol_start_nactive_1p5_r p_dol_start_nactive_2_r  n_adh_meas_1_1 n_adh_meas_1_0 n_adh_meas_0_1 n_adh_meas_0_0
 
-dten_cost d3tc_cost ddar_cost ddol_cost
+dten_cost d3tc_cost ddar_cost ddol_cost  p_r_dol
 
 ;
 
@@ -1909,7 +1911,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_al_034     ; 
+  data  b.w_tld_switch_al_024     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1920,7 +1922,7 @@ proc sort; by run;run;
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
 
 data b;
-set b.w_tld_switch_al_034    ;
+set b.w_tld_switch_al_024    ;
 
 * if 0.0   <= prevalence1549w_24 < 0.35;
 * if p_onart_vl1000_24 <= 0.98;
@@ -2074,7 +2076,7 @@ ods html;
 proc means   data = b  n p50  p5  p95 ;  
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    
-p_vis_tldsw_24   p_dol_24 p_iime_24  n_iime_24 p_onart_cd4_l200_24  p_artexp_dol_pi_failed_24  s_o_dol_2nd_vlg1000_24  
+p_vis_tldsw_24   p_dol_24 p_iime_24 p_r_dol_24 n_iime_24 p_onart_cd4_l200_24  p_artexp_dol_pi_failed_24  s_o_dol_2nd_vlg1000_24  
 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24  p_ai_no_arv_e_inm_24
 ;
 run;
