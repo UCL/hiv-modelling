@@ -4,18 +4,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_am_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_am_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_am;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_al;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 if option in (0, 2, 4);
 
@@ -24,7 +24,7 @@ run;
 */
 
 
-proc sort data=b.k_tld_switch_am; 
+proc sort data=b.k_tld_switch_al; 
 by run cald option;
 run;
 
@@ -33,7 +33,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_tld_switch_am ;
+set b.k_tld_switch_al ;
 
 
 if cald=2024   ;
@@ -52,7 +52,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_tld_switch_am sf;
+merge b.k_tld_switch_al sf;
 by run ;
 
 
@@ -1425,9 +1425,9 @@ run;
 
 
 
-data    b.l_tld_switch_am; set y;  
+data    b.l_tld_switch_al; set y;  
 
-data y ; set b.l_tld_switch_am; 
+data y ; set b.l_tld_switch_al; 
 
   options nomprint;
   option nospool;
@@ -1911,7 +1911,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_am_024    ; 
+  data  b.w_tld_switch_al_024    ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1919,10 +1919,10 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_am_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
 
 data b;
-set b.w_tld_switch_am_024   ;
+set b.w_tld_switch_al_024   ;
 
 * if 0.0   <= prevalence1549w_24 < 0.35;
 * if p_onart_vl1000_24 <= 0.98;
@@ -2063,6 +2063,9 @@ d_p_onart_diag_50y_1_3 = p_onart_diag_50y_1 - p_onart_diag_50y_3;
 d_deathr_dol_r_uvl2_50y_3_1 = deathr_dol_r_uvl2_50y_3 - deathr_dol_r_uvl2_50y_1; 
 d_deathr_dol_r_uvl2_50y_3_1_b=0; if d_deathr_dol_r_uvl2_50y_3_1 > 0 then d_deathr_dol_r_uvl2_50y_3_1_b=1;
 
+prop_tldsw_uvl2_10y = (prop_tldsw_uvl2_10y_1 + prop_tldsw_uvl2_10y_2 + prop_tldsw_uvl2_10y_3) / 3; 
+p_iime_10y = (p_iime_10y_1 + p_iime_10y_2 + p_iime_10y_3) / 3;
+
 
 * s_uvl2_elig_10y_1 = n_uvl2_elig_10y_1 / sf_2024 ;  
 * restrict to s onart iicu vlg1000 ;
@@ -2097,6 +2100,17 @@ ods html close;
 ods html;
 proc freq; tables d_deathr_dol_r_uvl2_50y_3_1_b ; run; 
 ods html close;
+
+
+ods html;
+proc means  data = b  n p50 p5 p95 mean lclm uclm ;  
+var 
+prop_tldsw_uvl2_10y 
+p_iime_10y 
+;
+run;
+ods html close;
+
 
 
 
