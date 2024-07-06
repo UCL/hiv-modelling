@@ -2285,7 +2285,6 @@ d_netdaly500_2_1 d_netdaly500_3_1
 d_dcost_50y_1_3 d_ddaly_50y_1_3
 d_dcost_50y_2_3 d_ddaly_50y_2_3
 ;
-where prop_r_dol_ge_p5_uvl2_24 < 0.05;
 run;
 ods html close;
 
