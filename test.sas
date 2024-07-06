@@ -21086,7 +21086,6 @@ end;
 
 
 
-/*
 
 * 1989;
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
@@ -21260,11 +21259,6 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
 
-data a.ofofof; set r1;
-
-*/
-
-data r1; set a.ofofof   ; 
 
 * 2023;
 %update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=4);

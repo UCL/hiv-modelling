@@ -785,10 +785,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ; * lapr;
 
-
-* date_prep_cab_intro;			%sample(date_prep_cab_intro, 0.50 0.50, 2027 2090 ); 		* Introduction of injectable cab PrEP ;
-
-
+* date_prep_cab_intro;			date_prep_cab_intro=2027;		* Introduction of injectable cab PrEP ;
 * date_prep_len_intro;			date_prep_len_intro=3000;		* Introduction of injectable len PrEP ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;			* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;			* Assume 5 years to scale up injectable len prep;
@@ -13948,8 +13945,6 @@ o_dol_start_nactive_p5_r =0; if o_dol_start_nactive_p5=1 and r_dol > 0 then o_do
 
 o_dol_vg1000_r=0; if o_dol=1 and vl ge 3 and r_dol ge 0.5 then o_dol_vg1000_r=1;
 
-o_dol_vg1000_inm=0; if o_dol=1 and vl ge 3 and (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_inm155m=1 or e_inm263m=1) then o_dol_vg1000_inm=1;
-o_dol_vl1000_inm=0; if o_dol=1 and . < vl < 3 and (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_inm155m=1 or e_inm263m=1) then o_dol_vl1000_inm=1;
 
 
 *** Attrition;
@@ -17633,8 +17628,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_o_dol_start_nactive_2 + o_dol_start_nactive_2 ;  s_o_dol_start_nactive_1p5 + o_dol_start_nactive_1p5 ;s_o_dol_start_nactive_p5 + o_dol_start_nactive_p5 ;
 	s_o_dol_start_nactive_2_r + o_dol_start_nactive_2_r ;  s_o_dol_start_nactive_1p5_r + o_dol_start_nactive_1p5_r ;  
-	s_o_dol_start_nactive_p5_r + o_dol_start_nactive_p5_r ;  s_o_dol_vg1000_r + o_dol_vg1000_r;  s_o_dol_vl1000_inm + o_dol_vl1000_inm; 
-	s_o_dol_vl1000_inm + o_dol_vl1000_inm ;
+	s_o_dol_start_nactive_p5_r + o_dol_start_nactive_p5_r ;  s_o_dol_vg1000_r + o_dol_vg1000_r;
 
 	s_em_cam_res_o_len_off_3m + em_cam_res_o_len_off_3m; s_emerge_cam_res_len_tail + emerge_cam_res_len_tail ;  
 	s_em_cam_res_o_len_off_3m_npr + em_cam_res_o_len_off_3m_npr; 	s_em_cam_res_len_tail_npr + em_cam_res_len_tail_npr; 
@@ -19577,7 +19571,7 @@ s_uvl2_now_tld_only  s_uvl2_now_no_prev_vfail s_uvl2_now_prev_vfail s_uvl2_now_t
 s_o_dol_r_p5   s_o_dol_r_p75   s_o_dol_r_1  s_o_dol_r_lev0 s_dolr1_adh0  s_dolr1_adh1  s_dolr0_adh0  s_dolr0_adh1 
 
 s_o_dol_start_nactive_2   s_o_dol_start_nactive_1p5 s_o_dol_start_nactive_p5 s_o_dol_start_nactive_2_r  s_o_dol_start_nactive_1p5_r s_o_dol_start_nactive_p5_r 
-s_o_dol_vg1000_r s_o_dol_vl1000_inm s_o_dol_vg000_inm
+s_o_dol_vg1000_r
 s_cur_res_len s_em_cam_res_o_len_off_3m
 s_emerge_cam_res_len_tail   s_em_cam_res_o_len_off_3m_npr 	s_em_cam_res_len_tail_npr 
 s_em_cam_res_o_len_off_3m_pr  s_emerge_cam_res_len_tail_pr  s_em_cam_res_o_len  s_len_res_emerge_primary
@@ -20103,7 +20097,7 @@ effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_pro
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
-rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger date_prep_cab_intro
+rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b prob_prep_len_b prob_prep_vr_b prep_cab_efficacy prep_len_efficacy  prop_pep  pep_efficacy 
 rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr prep_cab_effect_inm_partner  prep_len_effect_cam_partner 
@@ -20609,7 +20603,7 @@ s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  
 s_uvl2_now_tld_only  s_uvl2_now_no_prev_vfail s_uvl2_now_prev_vfail s_uvl2_now_tld_only_dol_r  s_uvl2_now_no_prev_vfail_dol_r s_uvl2_now_prev_vfail_dol_r 
 s_o_dol_r_p5   s_o_dol_r_p75   s_o_dol_r_1  s_o_dol_r_lev0 s_dolr1_adh0  s_dolr1_adh1  s_dolr0_adh0  s_dolr0_adh1 
 s_o_dol_start_nactive_2   s_o_dol_start_nactive_1p5 s_o_dol_start_nactive_p5 s_o_dol_start_nactive_2_r  s_o_dol_start_nactive_1p5_r s_o_dol_start_nactive_p5_r 
-s_o_dol_vg1000_r  s_o_dol_vl1000_inm s_o_dol_vg000_inm
+s_o_dol_vg1000_r
 s_emerge_cam_res_len_tail   s_em_cam_res_o_len_off_3m_npr 	s_em_cam_res_len_tail_npr 
 s_em_cam_res_o_len_off_3m_pr  s_emerge_cam_res_len_tail_pr  s_em_cam_res_o_len  s_len_res_emerge_primary
 
@@ -24484,7 +24478,7 @@ s_res_test_dol  s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w  s
 s_uvl2_now_tld_only  s_uvl2_now_no_prev_vfail s_uvl2_now_prev_vfail s_uvl2_now_tld_only_dol_r  s_uvl2_now_no_prev_vfail_dol_r s_uvl2_now_prev_vfail_dol_r 
 s_o_dol_r_p5   s_o_dol_r_p75   s_o_dol_r_1  s_o_dol_r_lev0 s_dolr1_adh0  s_dolr1_adh1  s_dolr0_adh0  s_dolr0_adh1 
 s_o_dol_start_nactive_2   s_o_dol_start_nactive_1p5 s_o_dol_start_nactive_p5 s_o_dol_start_nactive_2_r  s_o_dol_start_nactive_1p5_r s_o_dol_start_nactive_p5_r 
-s_o_dol_vg1000_r  s_o_dol_vl1000_inm s_o_dol_vg000_inm
+s_o_dol_vg1000_r
 
 /*prep*/
 s_prep_any 		s_prep_oral 	s_prep_cab 	s_prep_len 		s_prep_vr  s_prep_oral_w  s_prep_cab_w  s_prep_len_w  s_prep_oral_m   s_prep_cab_m  s_prep_len_m  s_prep_vr_w   
@@ -25002,7 +24996,7 @@ rate_tb_proph_init rate_sbi_proph_init
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b  prob_prep_len_b prob_prep_vr_b prep_cab_efficacy  prep_len_efficacy   prop_pep  pep_efficacy 
-rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr date_prep_cab_intro
+rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr 
 
 prep_cab_effect_inm_partner pref_prep_cab_beta_s1 incr_res_risk_cab_inf_3m prep_len_effect_cam_partner pref_prep_len_beta_s1 incr_res_risk_len_inf_3m 
 
