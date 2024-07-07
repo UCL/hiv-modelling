@@ -2313,12 +2313,10 @@ ods html close;
 ods html;
 proc means  n mean p5 p95;
 var
-/*
 dten_cost_50y_1 dten_cost_50y_2 dten_cost_50y_3 
 d3tc_cost_50y_1 d3tc_cost_50y_2 d3tc_cost_50y_3 
 ddar_cost_50y_1 ddar_cost_50y_2 ddar_cost_50y_3 
 ddol_cost_50y_1 ddol_cost_50y_2 ddol_cost_50y_3
-*/
 dart_cost_y_50y_1  dart_cost_y_50y_2   dart_cost_y_50y_3  
 dadc_cost_50y_1  dadc_cost_50y_2   dadc_cost_50y_3 
 dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3 
