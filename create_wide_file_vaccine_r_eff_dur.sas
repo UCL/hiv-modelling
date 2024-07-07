@@ -1648,7 +1648,7 @@ run;
 
 
 
-proc freq; tables r_incidence1549_6570_2_1 ; run;  
+proc freq; tables r_incidence1549_6570_2_1 run ; run;  
 
 
 ods html;
