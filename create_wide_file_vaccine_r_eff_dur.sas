@@ -4,25 +4,25 @@
 
  proc printto ; 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_r_eff_dur_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_r_eff_dur_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_r_eff_dur_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_r_eff_dur_out\";
 
 
 data i1;set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_vaccine_n_b_r_eff_dur;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_vaccine_n_c_r_eff_dur;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_vaccine_n_b_r_eff_dur; 
+proc sort data=b.k_vaccine_n_c_r_eff_dur; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_vaccine_n_b_r_eff_dur ;
+set b.k_vaccine_n_c_r_eff_dur ;
 
 if option <= 1;
 
@@ -54,7 +54,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_vaccine_n_b_r_eff_dur sf;
+merge b.k_vaccine_n_c_r_eff_dur sf;
 by run ;
 
 if option <= 1;
@@ -1131,9 +1131,9 @@ proc freq; tables cald option; where cald=2040.50;
 run;
 
 
-data    b.l_vaccine_n_b_r_eff_dur_y; set y;  
+data    b.l_vaccine_n_c_r_eff_dur_y; set y;  
 
-data y ; set b.l_vaccine_n_b_r_eff_dur_y; 
+data y ; set b.l_vaccine_n_c_r_eff_dur_y; 
 
 
   options nomprint;
@@ -1505,7 +1505,7 @@ proc sort; by run;run;
 proc freq data=b.wide_par2; tables future_prep_condom ; run;  
 
 
-  data  b.w_vaccine_n_b_r_eff_dur     ; 
+  data  b.w_vaccine_n_c_r_eff_dur     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1515,9 +1515,9 @@ proc freq data=b.wide_par2; tables future_prep_condom ; run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_b_r_eff_dur_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vaccine\vaccine_n_c_r_eff_dur_out\";
 
-data r; set b.w_vaccine_n_b_r_eff_dur;
+data r; set b.w_vaccine_n_c_r_eff_dur;
 
 if incidence1549_24 > 0.1 and incidence1549_24 < 2.0;
 if vaccine_duration_effect <= 10 ;
