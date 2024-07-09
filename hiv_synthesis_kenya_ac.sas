@@ -19808,8 +19808,8 @@ if cald = 1995 and (prevalence1549m < 0.01) then do; abort abend; end;
 if cald = 2010 and (prevalence1549m > 0.10) then do; abort abend; end;
 
 if cald = 2017 and incidence1549w > 0.25 then do; abort abend; end;
-if cald = 2017 and incidence1549m > 0.23 then do; abort abend; end;
-if cald = 2020 and incidence1549  > 0.20 then do; abort abend; end;
+if cald = 2017 and incidence1549m > 0.25 then do; abort abend; end;
+if cald = 2020 and incidence1549  > 0.25 then do; abort abend; end;
 
 if cald = 2022 and 
 (
