@@ -1659,6 +1659,8 @@ run;
 ods html close;
 
 
+/*
+
 
 proc logistic  data = r;
 model x_incidence1549_2_lt1p1000 =  incidence1549_39  ;
@@ -1680,6 +1682,16 @@ proc sgplot data=pr ;
  heatmap x=vaccine_efficacy y=vaccine_duration_effect / colorresponse = pred;
 where 0.5  <= incidence1549_39 < 1;
 run;
+
+*/
+
+
+
+
+
+
+
+
 
 
 
