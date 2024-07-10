@@ -2,9 +2,9 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_z_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ac_out\";
 
-data g ; set a.kenya_aa ;
+data g ; set a.kenya_ac ;
 
 
 proc sort data=g; 
@@ -1065,9 +1065,9 @@ n_vm_per_year  n_infected_m n_infected_w n_hiv1549_m n_hiv1549_w n_hiv1549  p_m1
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_z; set y;  
+data a.l_base_kenya_ac; set y;  
 
-data y; set a.l_base_kenya_z; 
+data y; set a.l_base_kenya_ac; 
 
   options nomprint;
   option nospool;
@@ -1144,16 +1144,17 @@ drop _NAME_ _TYPE_ _FREQ_;
 %mend var;
 
 
-%var(v= incidence1524w     );
+%var(v= n_new_inf1549m       );
 
 ods html;
 
 title '';
 
-data s; set incidence1524w ;
-incidence1524w  = incidence1524w * 10 ;
+data s; set n_new_inf1549m  ;
+* prevalence1524w  = prevalence1524w * 10 ;
+* incidence1549w = incidence1549w * 10;
 
-proc print data = s                      noobs;
+proc print data = s                              noobs;
 run;
 
 ods html close;
