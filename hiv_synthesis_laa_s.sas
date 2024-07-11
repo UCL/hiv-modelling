@@ -586,7 +586,7 @@ newp_seed = 7;
 								0.20	0.40	0.20	0.20);
 * prop_bmi_ge23;			%sample_uniform(prop_bmi_ge23, 0.5 0.75);
 * nnrti_res_no_effect; 		%sample(nnrti_res_no_effect, 0 0.25 0.5, 0.75 0.2 0.05);
-* res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.5 0.75, 0.5 0.5 ); * tld_switch; * for dol this applies to 118 and 263, for 118 it applies with 0.25 added; 
+* res_level_dol_cab_mut;	%sample_uniform(res_level_dol_cab_mut, 0.5 0.75  1.00); * tld_switch; * for dol this applies to 118 and 263, for 118 it applies with 0.25 added; 
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 
 * lencab_uptake_vlg1000;		%sample_uniform(lencab_uptake_vlg1000, 0.3 0.5 0.7 0.9); 
