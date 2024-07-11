@@ -17253,7 +17253,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
 
 	s_onartvisit0 + onartvisit0; s_onartvisit0_vl1000 + onartvisit0_vl1000;
-	s_art_mens_clinic + art_mens_clinic;
+	s_attend_mens_clinic + attend_mens_clinic;	s_art_mens_clinic + art_mens_clinic;
 
 
 
@@ -19024,7 +19024,7 @@ s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_in
 s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
-s_art_mens_clinic
+s_attend_mens_clinic	s_art_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
@@ -20005,7 +20005,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m  s_infected_inm s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
-s_art_mens_clinic
+s_attend_mens_clinic	s_art_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
@@ -20861,7 +20861,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in155m s_infected_in263m  s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0  s_onartvisit0_vl1000
-s_art_mens_clinic
+s_attend_mens_clinic	s_art_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
