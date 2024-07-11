@@ -1653,7 +1653,7 @@ proc freq; tables r_incidence1549_6570_2_1 run future_prep_condom; run;
 
 ods html;
 proc glm data = r   PLOTS = CONTOURFIT(obs=NONE); 
-model r_incidence1549_6570_2_1 = vaccine_efficacy  vaccine_duration_effect /* vaccine_efficacy*vaccine_duration_effect */ / solution;
+model r_incidence1549_6570_2_1 = vaccine_efficacy  vaccine_duration_effect  vaccine_efficacy*vaccine_duration_effect  / solution;
 title 'Contour Plot of relative effect of vaccine in 2065-2070';
 run;
 ods html close;
