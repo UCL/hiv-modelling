@@ -16995,6 +16995,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_vr_ever_1524w + prep_vr_ever_1524w; s_prep_vr_ever_sw + prep_vr_ever_sw; s_prep_vr_ever_sdc + prep_vr_ever_sdc; s_prep_vr_ever_plw + prep_vr_ever_plw;
 	s_init_prep_oral_first_w + init_prep_oral_first_w; s_init_prep_oral_first_m + init_prep_oral_first_m; 
 	s_init_prep_oral_curr_w + init_prep_oral_curr_w; s_init_prep_oral_curr_m + init_prep_oral_curr_m;
+	s_init_prep_inj_first_w + init_prep_inj_first_w; s_init_prep_inj_first_m + init_prep_inj_first_m; 
+	s_init_prep_inj_curr_w + init_prep_inj_curr_w; s_init_prep_inj_curr_m + init_prep_inj_curr_m;
 	s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_sdc + elig_prep_any_sdc ; s_elig_prep_any_plw + elig_prep_any_plw ; 
 	s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
 	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
@@ -18828,6 +18830,8 @@ s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_init_prep_oral_first_w 	s_init_prep_oral_first_m
 s_init_prep_oral_curr_w 	s_init_prep_oral_curr_m
+s_init_prep_inj_first_w 	s_init_prep_inj_first_m
+s_init_prep_inj_curr_w 		s_init_prep_inj_curr_m
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
 s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
@@ -19809,6 +19813,8 @@ s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_init_prep_oral_first_w 	s_init_prep_oral_first_m
 s_init_prep_oral_curr_w 	s_init_prep_oral_curr_m
+s_init_prep_inj_first_w 	s_init_prep_inj_first_m
+s_init_prep_inj_curr_w 		s_init_prep_inj_curr_m
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
 
 s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
@@ -20666,6 +20672,8 @@ s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_init_prep_oral_first_w 	s_init_prep_oral_first_m
 s_init_prep_oral_curr_w 	s_init_prep_oral_curr_m
+s_init_prep_inj_first_w 	s_init_prep_inj_first_m
+s_init_prep_inj_curr_w 		s_init_prep_inj_curr_m
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
 
 s_onprep_inj_m s_onprep_inj_w  s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
