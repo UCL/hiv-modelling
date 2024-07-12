@@ -36,6 +36,7 @@ run;
 */
 
 
+
 proc sort data=b.k_laa_s; 
 by run cald option;
 run;
@@ -1820,7 +1821,7 @@ incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
  prob_prep_pop_wide_tld
 
-p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  lencab_uptake lencab_uptake_vlg1000  prob_strong_pref_lencab
+p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  lencab_uptake lencab_uptake_vlg1000  prob_strong_pref_lencab  rate_return_for_lencab
 ;
 
 run;
@@ -1837,13 +1838,13 @@ proc sort; by run;run;
 
 
 
- libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_s_out\";
+* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_s_out\";
 
 data f; set b.w_laa_s;
 
-  if incidence1549_24 >= 0.0999;
-  if p_onart_vl1000_m_24 <= 0.98;
-  if p_onart_vl1000_w_24 <= 0.98;
+* if incidence1549_24 >= 0.0999;
+* if p_onart_vl1000_m_24 <= 0.98;
+* if p_onart_vl1000_w_24 <= 0.98;
 
 
 
@@ -2059,7 +2060,7 @@ run;
 
 
 
-
+ods html ;
 title 'Effects over 10 years of the policy of cab/len for people aged 15-24 (median, 90% range)';
 ods noproctitle;
 proc means  n p50  p5  p95 ;  
@@ -2100,6 +2101,7 @@ d_p_r_cab_1524_10y_2_1
 d_mtct_prop_10y_2_1 
 ;
 run;
+ods html close;
 
 
 
@@ -2133,7 +2135,7 @@ run;
 
 
 
-
+ods html;
 title 'Effects over 50 years of the policy of cab/len for people aged 15-24 on discounted costs in $ million (mean, 90% range)';
 ods noproctitle;
 proc means  n mean p5 p95;
@@ -2169,6 +2171,7 @@ TLD is assumed to cost $65 per year including supply chain cost.  Being on cab-l
 Standard cost effectiveness analysis takes a lifetime time horizon to allow all effects of the policy to play out. 
 Discounting of costs and health effects is applied at 3% per year.';
 run;
+ods html close;
 
 
 title 'Effects of the policy of cab/len for people aged 15-24 on DALYs and costs';
@@ -2184,7 +2187,8 @@ lowest_netdaly
 ;
 run;
 
-proc freq; tables lowest_netdaly lowest_ddaly  lowest_dcost; run; 
+proc freq; tables lowest_netdaly lowest_ddaly  lowest_dcost;
+run; 
 
 
 footnote;
