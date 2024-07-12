@@ -197,6 +197,28 @@ dvis_cost = s_dvis_cost * &sf * 4 / 1000;
 dvis_cost_no_lencab = s_dvis_cost_no_lencab * &sf * 4 / 1000;
 dvis_cost_lencab = s_dvis_cost_lencab * &sf * 4 / 1000;
 
+
+
+
+
+
+
+
+* #############################################################################################################################;
+
+* take this line out from laa_t onwards;
+dvis_cost = dvis_cost - (dvis_cost_lencab / 2) ;
+
+* #############################################################################################################################;
+
+
+
+
+
+
+
+
+
 dart_1_cost = s_dart_1_cost * &sf * 4 / 1000;
 dart_2_cost = s_dart_2_cost * &sf * 4 / 1000;
 dart_3_cost = s_dart_3_cost * &sf * 4 / 1000;
@@ -1871,16 +1893,26 @@ d_mtct_prop_10y_2_1 =  mtct_prop_10y_2 - mtct_prop_10y_1;
 
 
 
-* ####################### 
 
-note to change this below if change in model program (this not changed in model program as of laa_s 
 
-* ######################;
 
+
+
+* #############################################################################################################################;
+* take these lines out from laa_t onwards;
 dcab_cost_50y_1 = dcab_cost_50y_1 * 0.80 / 0.96 ;
 dcab_cost_50y_2 = dcab_cost_50y_2 * 0.80 / 0.96;
 dlen_cost_50y_1 = dlen_cost_50y_1 * 0.80 / 0.96;
 dlen_cost_50y_2 = dlen_cost_50y_2 * 0.80 / 0.96;
+* #############################################################################################################################;
+
+
+
+
+
+
+
+
 
 dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
 + ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
