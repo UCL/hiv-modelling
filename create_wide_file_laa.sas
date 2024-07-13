@@ -18,18 +18,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_s_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_t_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_s_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_t_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_laa_s;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_laa_t;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -37,7 +37,7 @@ run;
 
 
 
-proc sort data=b.k_laa_s; 
+proc sort data=b.k_laa_t; 
 by run cald option;
 run;
 
@@ -47,7 +47,7 @@ run;
 data sf;
 
 
-set b.k_laa_s ;
+set b.k_laa_t ;
 
 
 if cald=2024   ;
@@ -67,8 +67,10 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_laa_s sf;
+merge b.k_laa_t sf;
 by run ;
+
+
 
 
 * preparatory code ;
@@ -196,28 +198,6 @@ dvis_cost = s_dvis_cost * &sf * 4 / 1000;
 
 dvis_cost_no_lencab = s_dvis_cost_no_lencab * &sf * 4 / 1000;
 dvis_cost_lencab = s_dvis_cost_lencab * &sf * 4 / 1000;
-
-
-
-
-
-
-
-
-* #############################################################################################################################;
-
-* take this line out from laa_t onwards;
-dvis_cost = dvis_cost - (dvis_cost_lencab / 2) ;
-
-* #############################################################################################################################;
-
-
-
-
-
-
-
-
 
 dart_1_cost = s_dart_1_cost * &sf * 4 / 1000;
 dart_2_cost = s_dart_2_cost * &sf * 4 / 1000;
@@ -880,6 +860,7 @@ run;
 
 * p_started_lencab_vmgt1000;	p_started_lencab_vmgt1000 = s_started_lencab_vmgt1000 / s_started_lencab ;
 * p_started_lencab_offart;		p_started_lencab_offart = s_started_lencab_offart / s_started_lencab ;
+* p_started_lencab_vls;			p_started_lencab_vls = 1 - p_started_lencab_vmgt1000 - p_started_lencab_offart ;
 
 * p_len_1524;					if (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) > 0 then p_len_1524 = (s_o_len_1524m + s_o_len_1524w) / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_);
 * p_cab_1524;					if (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) > 0 then p_cab_1524 = (s_o_cab_1524m + s_o_cab_1524w) / (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_);
@@ -1383,6 +1364,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
 p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab n_started_lencab_offart  p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart
+p_started_lencab_vls
 ;
 
  
@@ -1403,9 +1385,9 @@ proc freq; tables cald option; where cald=2026.50;
 run;
 
 
-data    b.l_laa_s_y; set y;  
+data    b.l_laa_t_y; set y;  
 
-data y ; set b.l_laa_s_y; 
+data y ; set b.l_laa_t_y; 
 
   options nomprint;
   option nospool;
@@ -1596,6 +1578,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524); %var(v=n_started_lencab_vmgt1000);  
 %var(v=n_started_lencab); %var(v=ddaly_birth_with_inf_child); %var_v=n_started_lencab_offart); %var(v=p_len_vl1000); %var(v=p_cab_vl1000);
 %var(v=n_started_lencab_offart); %var(v=p_started_lencab_vmgt1000)  %var(v=p_started_lencab_offart);  %var(v=dvis_cost_no_lencab) %var(v= dvis_cost_lencab);
+%var(v=p_started_lencab_vls);
 
 data   b.wide_outputs; merge 
 
@@ -1653,8 +1636,8 @@ p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_o
 s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
-p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000
-rate_return_for_lencab  p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
+p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
+p_started_lencab_vls
 ;
 
 
@@ -1854,15 +1837,15 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_s     ; 
+  data  b.w_laa_t     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
 
 
-* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_s_out\";
+* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_t_out\";
 
-data f; set b.w_laa_s;
+data f; set b.w_laa_t;
 
 * if incidence1549_24 >= 0.0999;
 * if p_onart_vl1000_m_24 <= 0.98;
@@ -1890,28 +1873,6 @@ d_prevalence1549_10y_2_1 = prevalence1549_10y_2 - prevalence1549_10y_1;
 d_p_r_len_1524_10y_2_1 = p_r_len_1524_10y_2 - p_r_len_1524_10y_1 ;
 d_p_r_cab_1524_10y_2_1 = p_r_cab_1524_10y_2 - p_r_cab_1524_10y_1 ;
 d_mtct_prop_10y_2_1 =  mtct_prop_10y_2 - mtct_prop_10y_1; 
-
-
-
-
-
-
-
-
-* #############################################################################################################################;
-* take these lines out from laa_t onwards;
-dcab_cost_50y_1 = dcab_cost_50y_1 * 0.80 / 0.96 ;
-dcab_cost_50y_2 = dcab_cost_50y_2 * 0.80 / 0.96;
-dlen_cost_50y_1 = dlen_cost_50y_1 * 0.80 / 0.96;
-dlen_cost_50y_2 = dlen_cost_50y_2 * 0.80 / 0.96;
-* #############################################################################################################################;
-
-
-
-
-
-
-
 
 
 dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
@@ -2079,6 +2040,7 @@ lowest_netdaly = "Proportion of setting scenarios in which cab/len to 15-24 year
 * table 1;
 
 
+ods html;
 title 'Characteristics of the setting scenarios in 2024 (median, 90% range)';
 ods noproctitle;
 proc means data=f   n p50  p5  p95 ;  
@@ -2087,7 +2049,7 @@ p_onart_vl1000_m_24 p_onart_vl1000_w_24 p_vl1000_w_24 p_vl1000_m_24 prevalence_v
 p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24 
 ;
 run;
-
+ods html close;
 
 
 
@@ -2095,7 +2057,7 @@ run;
 ods html ;
 title 'Effects over 10 years of the policy of cab/len for people aged 15-24 (median, 90% range)';
 ods noproctitle;
-proc means  n p50  p5  p95 ;  
+proc means data=f  n p50  p5  p95 ;  
 var 
 p_len_10y_1 p_len_10y_2 
 p_cab_10y_1 p_cab_10y_2 
@@ -2104,6 +2066,7 @@ n_started_lencab_10y_1  n_started_lencab_10y_2
 n_started_lencab_offart_10y_1  n_started_lencab_offart_10y_2
 p_started_lencab_vmgt1000_10y_1 p_started_lencab_vmgt1000_10y_2 
 p_started_lencab_offart_10y_1 p_started_lencab_offart_10y_2 
+p_started_lencab_vls_10y_1	p_started_lencab_vls_10y_2
 p_onart_diag_10y_1 p_onart_diag_10y_2
 p_vl1000_10y_1 p_vl1000_10y_2 
 p_len_1524_10y_1 p_len_1524_10y_2
@@ -2120,8 +2083,8 @@ incidence1549_10y_1 incidence1549_10y_2
 incidence1524_10y_1 incidence1524_10y_2
 n_death_hiv_10y_1 n_death_hiv_10y_2  
 n_death_hiv_age_1524_10y_1 n_death_hiv_age_1524_10y_2
-p_r_len_1524_10y_1 p_r_len_1524_10y_2
-p_r_cab_1524_10y_1 p_r_cab_1524_10y_2
+p_r_len_10y_1 p_r_len_10y_2
+p_r_cab_10y_1 p_r_cab_10y_2
 mtct_prop_10y_1 mtct_prop_10y_2 
 d_n_death_hiv_10y_2_1 
 d_p_onart_vl1000_10y_2_1 
@@ -2139,7 +2102,7 @@ ods html close;
 
 title 'Effects over 10 years of the policy of cab/len for people aged 15-24 (median, 90% range)';
 ods noproctitle;
-proc means  n p50  p5  p95 ;  
+proc means data=f  n p50  p5  p95 ;  
 var 
 p_len_50y_1 p_len_50y_2 
 p_cab_50y_1 p_cab_50y_2 
@@ -2208,7 +2171,7 @@ ods html close;
 
 title 'Effects of the policy of cab/len for people aged 15-24 on DALYs and costs';
 ods noproctitle;
-proc means mean  ;
+proc means data=f mean  ;
 var 
 ddaly_birth_with_inf_child_50y_1 ddaly_birth_with_inf_child_50y_2 
 d_n_death_hiv_50y_2_1 
@@ -2219,7 +2182,7 @@ lowest_netdaly
 ;
 run;
 
-proc freq; tables lowest_netdaly lowest_ddaly  lowest_dcost;
+proc freq data=f; tables lowest_netdaly lowest_ddaly  lowest_dcost;
 run; 
 
 
@@ -2244,11 +2207,18 @@ run;
 
 
 
+* ods html; 
+proc glm; 
+model p_len_10y_2 = rate_return_for_lencab prob_strong_pref_lencab lencab_uptake lencab_uptake_vlg1000 incidence1549_24 p_onart_vl1000_24/ solution; 
+run; 
+* ods html close;
+
+
 
 
 * ods html; 
 proc glm data=f; 
-model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24  / solution; 
+model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24 p_len_10y_2 / solution; 
 run; 
 * ods html close;
 
@@ -2260,14 +2230,16 @@ run;
 
 
 
+* ------------------------------------------------------------------------------------------------------------------------------------------------------- ;
 
 
-* BUILDING DATA SET WITH DIFFERENT LEN CAB PLOTS;
+
+* BUILDING DATA SET WITH DIFFERENT LEN CAB COSTS;
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_s_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_t_out\";
 
-data ds_120; set b.w_laa_s;
+data ds_120; set b.w_laa_t;
 
   if incidence1549_24 > 0.1;
   if p_onart_vl1000_m_24 < 0.98;
@@ -2322,7 +2294,7 @@ len_cab_total_cost=120;
 
 
 
-data ds_160    ; set b.w_laa_s;
+data ds_160    ; set b.w_laa_t;
 
   if incidence1549_24 > 0.1;
   if p_onart_vl1000_m_24 < 0.98;
@@ -2375,7 +2347,7 @@ if netdaly500_2 = min_netdaly500 then lowest_netdaly=1;
 len_cab_total_cost=200;
 
 
-data ds_80; set b.w_laa_s;
+data ds_80; set b.w_laa_t;
 
   if incidence1549_24 > 0.1;
   if p_onart_vl1000_m_24 < 0.98;
@@ -2447,7 +2419,7 @@ keep lowest_netdaly d_netdaly500_2_1 incidence1549_24 p_vl1000_24 vlg incg len_c
 proc freq; tables len_cab_total_cost*vlg*incg*lowest_netdaly; run;
 
 proc glm data=all; 
-model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24 len_cab_total_cost / solution; 
+model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24 len_cab_total_cost  / solution; 
 run; 
 
 
