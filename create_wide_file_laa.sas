@@ -1848,8 +1848,8 @@ proc sort; by run;run;
 data f; set b.w_laa_u;
 
 * if incidence1549_24 >= 0.0999;
-* if p_onart_vl1000_m_24 <= 0.98;
-* if p_onart_vl1000_w_24 <= 0.98;
+  if p_onart_vl1000_m_24 <= 0.98;
+  if p_onart_vl1000_w_24 <= 0.98;
 
 
 
