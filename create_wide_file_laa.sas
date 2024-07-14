@@ -1875,18 +1875,14 @@ d_p_r_cab_1524_10y_2_1 = p_r_cab_1524_10y_2 - p_r_cab_1524_10y_1 ;
 d_mtct_prop_10y_2_1 =  mtct_prop_10y_2 - mtct_prop_10y_1; 
 
 * sensitivity analysis around cost;
-dcab_cost_50y_2 = dcab_cost_50y_2 * 1.25;
-dlen_cost_50y_2 = dlen_cost_50y_2 * 1.25;
+* dcab_cost_50y_2 = dcab_cost_50y_2 * 1.25;
+* dlen_cost_50y_2 = dlen_cost_50y_2 * 1.25;
 
 dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
 + ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
 
 dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_cost_50y_2 + dlpr_cost_50y_2 + ddar_cost_50y_2 + dtaz_cost_50y_2 +  defa_cost_50y_2
 + ddol_cost_50y_2 + dcab_cost_50y_2 + dlen_cost_50y_2;
-
-
-dvl_cost_50y_2 = dvl_cost_50y_2 * 1.6;
-
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
  
@@ -2232,11 +2228,27 @@ run;
 
 * ods html; 
 proc glm data=f; 
-model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24 p_len_10y_2 / solution; 
+model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24   / solution; 
 run; 
 * ods html close;
 
+
+* ods html; 
+proc glm data=f; 
+model d_netdaly500_2_1 = p_len_10y_2 p_started_lencab_vmgt1000_10y_2 p_started_lencab_offart_10y_2 / solution; 
+run; 
+* ods html close;
+
+* ods html; 
+proc glm data=f; 
+model d_netdaly500_2_1 = p_len_10y_2 p_started_lencab_vls_10y_2 / solution; 
+run; 
+* ods html close;
+
+
+
 *
+p_len_10y_2
 p_started_lencab_vmgt1000_10y_2 
 p_started_lencab_offart_10y_2 
 p_started_lencab_vls_10y_2
