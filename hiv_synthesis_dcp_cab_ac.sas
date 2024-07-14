@@ -20448,6 +20448,10 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=0);
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=341,h=348,j=345,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=341,h=348,j=346,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=341,h=348,j=347,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=341,h=348,j=348,s=0);
 
 
 data r1; set a;
@@ -20662,6 +20666,10 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=1);
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=341,h=348,j=345,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=341,h=348,j=346,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=341,h=348,j=347,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=341,h=348,j=348,s=1);
 
 
 
@@ -20878,6 +20886,11 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=337,h=344,j=342,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=341,h=348,j=345,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=341,h=348,j=346,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=341,h=348,j=347,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=341,h=348,j=348,s=2);
 
 
 /*
