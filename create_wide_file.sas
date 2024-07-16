@@ -378,6 +378,8 @@ so the one above is the annual number of tests conducted in ANC;
 * n_diag_anclabpd;				n_diag_anclabpd = s_diag_thisper_anclabpd * &sf * 4;*VCMay2023;
 * n_diag_progsw; 				n_diag_progsw = s_diag_thisper_progsw * &sf * 4;*VCMay2023;
 * n_diag_sw; 					n_diag_sw = s_diag_thisper_sw * &sf * 4;*VCMay2023;
+* n_diag_sympt;					n_diag_sympt = (s_diag_this_period_m_sympt + s_diag_this_period_f_sympt) * &sf * 4;*VCFeb2024;
+* n_diag_self_test;				n_diag_self_test = s_diagnosed_self_test * &sf * 4;
 
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;

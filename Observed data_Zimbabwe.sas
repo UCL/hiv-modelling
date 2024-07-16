@@ -1757,6 +1757,13 @@ Q4 - What is the denominator?
 	 - Those tested at PSI sites are excluded since those sites never had ePMS at the time;
 
 
+** Estimate for number of tests in symptomatic people in Minimal scenario (MIHPSA) based on PEPFAR and MoH data (see spreadsheet PEPFAR testing 2024 Q1_SymptomaticTesting_updated);
+if cald=2022.5 then do;
+	o_n_tested_sympt = 109350; 
+	o_n_diag_sympt = 6351;
+end;
+
+
 ** Source for all of the followings: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
 
 *Self-test kits distributed (Primary distribution) [S1] ;
