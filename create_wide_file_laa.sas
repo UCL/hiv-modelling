@@ -2211,24 +2211,14 @@ footnote;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 = rate_return_for_lencab prob_strong_pref_lencab lencab_uptake lencab_uptake_vlg1000 incidence1549_24 p_onart_vl1000_24/ solution; 
+model p_len_10y_2 = rate_return_for_lencab prob_strong_pref_lencab lencab_uptake lencab_uptake_vlg1000 / solution; 
 run; 
 * ods html close;
-
-
-
-* ods html; 
-proc glm; 
-model p_len_10y_2 = rate_return_for_lencab prob_strong_pref_lencab lencab_uptake lencab_uptake_vlg1000 incidence1549_24 p_onart_vl1000_24/ solution; 
-run; 
-* ods html close;
-
-
 
 
 * ods html; 
 proc glm data=f; 
-model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24   / solution; 
+model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24 / solution; 
 run; 
 * ods html close;
 
@@ -2239,19 +2229,10 @@ model d_netdaly500_2_1 = p_len_10y_2 p_started_lencab_vmgt1000_10y_2 p_started_l
 run; 
 * ods html close;
 
+
 * ods html; 
-proc glm data=f; 
-model d_netdaly500_2_1 = p_len_10y_2 p_started_lencab_vls_10y_2 / solution; 
+proc glm; 
+model d_netdaly500_2_1 = rate_return_for_lencab prob_strong_pref_lencab lencab_uptake lencab_uptake_vlg1000 incidence1549_24 p_onart_vl1000_24/ solution; 
 run; 
 * ods html close;
-
-
-
-*
-p_len_10y_2
-p_started_lencab_vmgt1000_10y_2 
-p_started_lencab_offart_10y_2 
-p_started_lencab_vls_10y_2
-;
-
 
