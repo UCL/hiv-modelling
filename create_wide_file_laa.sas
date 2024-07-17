@@ -2225,6 +2225,13 @@ run;
 
 * ods html; 
 proc glm data=f; 
+model d_netdaly500_2_1 = p_len_10y_2 / solution; 
+run; 
+* ods html close;
+
+
+* ods html; 
+proc glm data=f; 
 model d_netdaly500_2_1 = p_len_10y_2 p_started_lencab_vmgt1000_10y_2 p_started_lencab_offart_10y_2 / solution; 
 run; 
 * ods html close;
