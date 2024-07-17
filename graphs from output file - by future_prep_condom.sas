@@ -16,8 +16,8 @@ proc print; run;
 ods html;
 proc sgplot data=a.plot ; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2070 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1         by 0.1     ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1         by 0.2     ) valueattrs=(size=10);
 
 label p50_incidence1549_fpc_a = "scenarioA_worse";
 label p50_incidence1549_fpc_b = "scenarioB_base";
