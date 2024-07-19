@@ -1848,8 +1848,9 @@ proc sort; by run;run;
 data f; set b.w_laa_u;
 
 * if incidence1549_24 >= 0.0999;
-  if p_onart_vl1000_m_24 <= 0.98;
-  if p_onart_vl1000_w_24 <= 0.98;
+
+* if p_onart_vl1000_m_24 <= 0.98;
+* if p_onart_vl1000_w_24 <= 0.98;
 
 
 
@@ -1932,6 +1933,9 @@ min_dcost_50y = min(dcost_50y_1, dcost_50y_2);
 
 if dcost_50y_1 = min_dcost_50y then lowest_dcost=1;
 if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
+
+
+p_diag_vl1000_24 = p_onart_diag_24 * p_onart_vl1000_24 ;
 
 
 * label 
@@ -2219,6 +2223,20 @@ run;
 * ods html; 
 proc glm data=f; 
 model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24 / solution; 
+run; 
+* ods html close;
+
+
+* ods html; 
+proc glm data=f; 
+model d_netdaly500_2_1 =  incidence1549_24 p_onart_vl1000_24 p_diag_24 p_onart_diag_24 / solution; 
+run; 
+* ods html close;
+
+
+* ods html; 
+proc glm data=f; 
+model d_netdaly500_2_1 =  incidence1549_24 p_diag_vl1000_24 / solution; 
 run; 
 * ods html close;
 
