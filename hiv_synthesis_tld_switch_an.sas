@@ -1914,6 +1914,16 @@ if cab_time_to_lower_threshold_g = 2 then do;
 end;
 
 
+if len_time_to_lower_threshold_g = 1 then do; * the tail is conceptualized as the time when levels are above 75% of therapeutic dose;
+	aa=rand('uniform'); 
+	if aa < 0.33 then len_time_to_lower_threshold = 0.25; if aa >= 0.33 then len_time_to_lower_threshold = 0.5;
+end;
+if len_time_to_lower_threshold_g = 2 then do;
+	aa=rand('uniform'); 
+	if aa < 0.5  then len_time_to_lower_threshold = 0.5; if 0.5  <= aa        then len_time_to_lower_threshold = 1  ; 
+end;
+
+
 
 hiv=0;
 nip=0;
