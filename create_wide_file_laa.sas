@@ -1847,11 +1847,12 @@ proc sort; by run;run;
 
 data f; set b.w_laa_u;
 
+if run ge 985928554 then delete;  * to give n=1000;
+
 * if incidence1549_24 >= 0.0999;
 
 * if p_onart_vl1000_m_24 <= 0.98;
 * if p_onart_vl1000_w_24 <= 0.98;
-
 
 
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
@@ -1920,6 +1921,14 @@ min_netdaly300 = min(netdaly300_1, netdaly300_2);
 
 d_netdaly300_2_1 = netdaly300_1 - netdaly300_2; * net dalys averted ;
 
+netdaly150_1 = ddaly_50y_1 + (dcost_50y_1 / 0.00015);
+netdaly150_2 = ddaly_50y_2 + (dcost_50y_2 / 0.00015);
+
+min_netdaly150 = min(netdaly150_1, netdaly150_2);
+
+d_netdaly150_2_1 = netdaly150_1 - netdaly150_2; * net dalys averted ;
+
+
 if netdaly500_1 = min_netdaly500 then lowest_netdaly=0;
 if netdaly500_2 = min_netdaly500 then lowest_netdaly=1;
 
@@ -1936,6 +1945,8 @@ if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
 
 
 p_diag_vl1000_24 = p_onart_diag_24 * p_onart_vl1000_24 ;
+
+p_started_unsupp_10y_2 = p_started_lencab_vmgt1000_10y_2 + p_started_lencab_offart_10y_2;
 
 
 * label 
@@ -2148,29 +2159,30 @@ title 'Effects over 50 years of the policy of cab/len for people aged 15-24 on d
 ods noproctitle;
 proc means  n mean p5 p95;
 var
-dart_cost_y_50y_1  dart_cost_y_50y_2  
+
 dlen_cost_50y_1  dlen_cost_50y_2
 dcab_cost_50y_1  dcab_cost_50y_2
 dvis_cost_no_lencab_50y_1 dvis_cost_no_lencab_50y_2 
 dvis_cost_lencab_50y_1 dvis_cost_lencab_50y_2 
-dadc_cost_50y_1  dadc_cost_50y_2 
-dcd4_cost_50y_1  dcd4_cost_50y_2 
-dvl_cost_50y_1  dvl_cost_50y_2 
+dart_cost_y_50y_1  dart_cost_y_50y_2  
+dart_cost_y_50y_1 dart_cost_y_50y_2
+dadc_cost_50y_1 dadc_cost_50y_2
+dcd4_cost_50y_1 dcd4_cost_50y_2
+dvl_cost_50y_1 dvl_cost_50y_2
+dres_cost_50y_1 dres_cost_50y_2
 dvis_cost_50y_1 dvis_cost_50y_2
-dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2  	
-dcot_cost_50y_1  dcot_cost_50y_2 
-dtb_cost_50y_1  dtb_cost_50y_2  
+dnon_tb_who3_cost_50y_1 dnon_tb_who3_cost_50y_2
+dcot_cost_50y_1 dcot_cost_50y_2
+dtb_cost_50y_1 dtb_cost_50y_2
 dtest_cost_50y_1 dtest_cost_50y_2 
-d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2  
-dswitchline_cost_50y_1  dswitchline_cost_50y_2 
-dcost_circ_50y_1  dcost_circ_50y_2  
-dcost_child_hiv_50y_1  dcost_child_hiv_50y_2   
-dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2 
-dcost_prep_visit_oral_50y_1  dcost_prep_visit_oral_50y_2  
-dcost_prep_oral_50y_1 dcost_prep_oral_50y_2 
-dcost_prep_visit_cab_50y_1  dcost_prep_visit_cab_50y_2  
-dcost_prep_cab_50y_1 dcost_prep_cab_50y_2 
-
+d_t_adh_int_cost_50y_1 d_t_adh_int_cost_50y_2
+dswitchline_cost_50y_1 dswitchline_cost_50y_2
+dcost_circ_50y_1 dcost_circ_50y_2
+dcost_condom_dn_50y_1 dcost_condom_dn_50y_2
+dcost_child_hiv_50y_1 dcost_child_hiv_50y_2
+dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2
+dcost_prep_visit_50y_1 dcost_prep_visit_50y_2 
+dcost_prep_50y_1 dcost_prep_50y_2
 dcost_50y_1 dcost_50y_2
 ;
 footnote;
@@ -2182,6 +2194,7 @@ run;
 ods html close;
 
 
+ods html;
 title 'Effects of the policy of cab/len for people aged 15-24 on DALYs and costs';
 ods noproctitle;
 proc means data=f mean  ;
@@ -2192,13 +2205,16 @@ d_ddaly_50y_2_1 d_ddaly_gbd_50y_2_1
 d_dcost_50y_2_1
 d_netdaly500_2_1 
 d_netdaly300_2_1 
+d_netdaly150_2_1 
 lowest_netdaly
 ;
 run;
+ods html close;
 
+ods html;
 proc freq data=f; tables lowest_netdaly lowest_ddaly  lowest_dcost;
 run; 
-
+ods html close;
 
 footnote;
 * footnote 'These preliminary results suggest overall that the policy of providing cab/len to 15-24 year-olds would lead to a reduction in DALYs and similar overall
@@ -2250,9 +2266,17 @@ run;
 
 * ods html; 
 proc glm data=f; 
-model d_netdaly500_2_1 = p_len_10y_2 p_started_lencab_vmgt1000_10y_2 p_started_lencab_offart_10y_2 / solution; 
+model d_netdaly500_2_1 = p_len_10y_2  p_started_lencab_vmgt1000_10y_2 p_started_lencab_offart_10y_2 / solution; 
 run; 
 * ods html close;
+
+
+* ods html; 
+proc glm data=f; 
+model d_netdaly500_2_1 = p_len_10y_2  p_started_unsupp_10y_2 / solution; 
+run; 
+* ods html close;
+
 
 
 * ods html; 
