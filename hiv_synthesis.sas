@@ -8244,7 +8244,7 @@ res_test=.;
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
 		if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then prointer = prointer * 1.5; * mar19;  
-		if mens_clinics=1 and attend_mens_clinic=1 then prointer = prointer * rel_attr_mens_clinic;		*JAS Mar24; 
+		if mens_clinics=1 and attend_mens_clinic=1 then prointer = prointer * rel_attr_mens_clinic;		*Impact of mens clinics on ART interruption JAS Mar24; 
 		r=rand('uniform');if r < prointer then do; 
 				interrupt_choice   =1; 
 				int_clinic_not_aw=0; f=rand('uniform'); if f < clinic_not_aw_int_frac then int_clinic_not_aw=1;
@@ -8306,7 +8306,7 @@ res_test=.;
 	* people leaving clinic as well as interrupting (if interruption due to choice);
 	if t ge 2 and interrupt=1 and (interrupt_choice   =1) then do;
 		f=rand('uniform');
-	
+		if mens_clinics=1 and attend_mens_clinic=1 then f = f / rel_attr_mens_clinic;		*Impact of mens clinics on LTFU JAS Jul24; 
 		if f < eff_prob_lost_art     and        adhav >= 0.8 then do;lost=1; visit=0; return=0;end;
 		if f < eff_prob_lost_art*1.5 and 0.5 <= adhav <  0.8 then do;lost=1; visit=0; return=0;end;
 		if f < eff_prob_lost_art*2   and        adhav <  0.5 then do;lost=1; visit=0; return=0;end;
@@ -16411,7 +16411,9 @@ outc_ten3tc_r_f_1_5=0; if outc_ten3tc_r_f_1 =5 then outc_ten3tc_r_f_1_5=1;outc_t
 outc_ten3tc_r_f_1_7=0; if outc_ten3tc_r_f_1 =7 then outc_ten3tc_r_f_1_7=1;
 
 * Number attending mens clinics;
-art_mens_clinic=0; if mens_clinics=1 and age ge 15 and attend_mens_clinic=1 and onart=1 then art_mens_clinic=1;
+hiv_mens_clinic=0; 		if age ge 15 and attend_mens_clinic=1 and hiv=1 	then hiv_mens_clinic=1;
+diag_mens_clinic=0; 	if age ge 15 and attend_mens_clinic=1 and registd=1 then diag_mens_clinic=1;
+onart_mens_clinic=0; 	if age ge 15 and attend_mens_clinic=1 and onart=1 	then onart_mens_clinic=1;
 
 
 ***Pregnancy outcomes;
@@ -17253,7 +17255,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
 
 	s_onartvisit0 + onartvisit0; s_onartvisit0_vl1000 + onartvisit0_vl1000;
-	s_attend_mens_clinic + attend_mens_clinic;	s_art_mens_clinic + art_mens_clinic;
+	s_attend_mens_clinic + attend_mens_clinic;	s_hiv_mens_clinic + hiv_mens_clinic;	s_diag_mens_clinic + diag_mens_clinic;	s_onart_mens_clinic + onart_mens_clinic;
 
 
 
@@ -19024,7 +19026,7 @@ s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_in
 s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
-s_attend_mens_clinic	s_art_mens_clinic
+s_attend_mens_clinic	s_hiv_mens_clinic	s_diag_mens_clinic	s_onart_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
@@ -20005,7 +20007,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m  s_infected_inm s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
-s_attend_mens_clinic	s_art_mens_clinic
+s_attend_mens_clinic	s_hiv_mens_clinic	s_diag_mens_clinic	s_onart_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
@@ -20861,7 +20863,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in155m s_infected_in263m  s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0  s_onartvisit0_vl1000
-s_attend_mens_clinic	s_art_mens_clinic
+s_attend_mens_clinic	s_hiv_mens_clinic	s_diag_mens_clinic	s_onart_mens_clinic
 
 /* note s_ variables below are for up to age 80 */
 
