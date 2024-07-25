@@ -1209,17 +1209,19 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 proc means  noprint data=e; var &v; output out=y_25 mean= &v._25; by run ; where 2025.0 <= cald <= 2025.25; 
 
 proc means noprint data=e; var &v; output out=y_1y mean= &v._1y; by run option ; where 2025   <= cald < 2026   ;   
+proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2025   <= cald < 2035   ;   
 proc means noprint data=e; var &v; output out=y_20y mean= &v._20y; by run option ; where 2025   <= cald < 2045   ;   
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2025   <= cald < 2075   ;
 proc means noprint data=e; var &v; output out=y_45 mean= &v._45; by run option ; where 2045   <= cald < 2046   ;
 																				   
 proc sort data=y_50y    ; by run; proc transpose data=y_50y     out=t_50y     prefix=&v._50y_  ; var &v._50y    ; by run; 																														
+proc sort data=y_10y    ; by run; proc transpose data=y_10y     out=t_10y     prefix=&v._10y_  ; var &v._10y    ; by run; 																														
 proc sort data=y_20y    ; by run; proc transpose data=y_20y     out=t_20y     prefix=&v._20y_  ; var &v._20y    ; by run; 																														
 proc sort data=y_1y    ; by run; proc transpose data=y_1y     out=t_1y     prefix=&v._1y_  ; var &v._1y    ; by run; 																														
 																													
 proc sort data=y_45; by run; proc transpose data=y_45 out=t_45 prefix=&v._45_; var &v._45; by run; 																														
 
-data &v ; merge y_24 y_25 t_20y t_45 t_1y t_50y ;  
+data &v ; merge y_24 y_25 t_10y t_20y t_45 t_1y t_50y ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1604,29 +1606,25 @@ if 0.3 <= incidence1549_24 < 0.5 then incidence1549_24_g = 2;
 if 0.5 <= incidence1549_24 < 0.8 then incidence1549_24_g = 3;
 if 0.8 <= incidence1549_24       then incidence1549_24_g = 4;
 
-d_prop_elig_on_prep_20y_2_1 = prop_elig_on_prep_20y_2 - prop_elig_on_prep_20y_1; 
-d_prop_elig_on_prep_20y_3_1 = prop_elig_on_prep_20y_3 - prop_elig_on_prep_20y_1; 
+d_prop_elig_on_prep_10y_2_1 = prop_elig_on_prep_10y_2 - prop_elig_on_prep_10y_1; 
+d_prop_elig_on_prep_10y_3_1 = prop_elig_on_prep_10y_3 - prop_elig_on_prep_10y_1; 
 
-d_prop_1564_onprep_20y_2_1 = prop_1564_onprep_20y_2 - prop_1564_onprep_20y_1;
-d_prop_1564_onprep_20y_3_1 = prop_1564_onprep_20y_3 - prop_1564_onprep_20y_1;
+d_prop_1564_onprep_10y_2_1 = prop_1564_onprep_10y_2 - prop_1564_onprep_10y_1;
+d_prop_1564_onprep_10y_3_1 = prop_1564_onprep_10y_3 - prop_1564_onprep_10y_1;
 
-d_prop_prep_inj_20y_2_1 = prop_prep_inj_20y_2 - prop_prep_inj_20y_1 ;
-d_prop_prep_inj_20y_3_1 = prop_prep_inj_20y_3 - prop_prep_inj_20y_1 ;
+d_prop_prep_inj_10y_2_1 = prop_prep_inj_10y_2 - prop_prep_inj_10y_1 ;
+d_prop_prep_inj_10y_3_1 = prop_prep_inj_10y_3 - prop_prep_inj_10y_1 ;
 
 d_p_prep_any_ever_44_2_1 = p_prep_any_ever_44_2 - p_prep_any_ever_44_1 ;
 d_p_prep_any_ever_44_3_1 = p_prep_any_ever_44_3 - p_prep_any_ever_44_1 ;
 
-if prop_elig_dcp_20y_2 < 0.19 then prop_elig_dcp_20y_2_g = 1; 
-if 0.19 <= prop_elig_dcp_20y_2 < 0.24 then prop_elig_dcp_20y_2_g = 2; 
-if 0.24 <= prop_elig_dcp_20y_2 then prop_elig_dcp_20y_2_g = 3; 
-
-if prop_elig_dcp_20y_4 < 0.33 then prop_elig_dcp_20y_4_g = 1; 
-if 0.33 <= prop_elig_dcp_20y_4 < 0.41 then prop_elig_dcp_20y_4_g = 2; 
-if 0.41 <= prop_elig_dcp_20y_4 then prop_elig_dcp_20y_4_g = 3; 
+if prop_elig_dcp_10y_3 < 0.33 then prop_elig_dcp_10y_3_g = 1; 
+if 0.33 <= prop_elig_dcp_10y_3 < 0.41 then prop_elig_dcp_10y_3_g = 2; 
+if 0.41 <= prop_elig_dcp_10y_3 then prop_elig_dcp_10y_3_g = 3; 
 
 
-r_incidence1549_20y_2_1 = incidence1549_20y_2 / incidence1549_20y_1 ;
-r_incidence1549_20y_3_1 = incidence1549_20y_3 / incidence1549_20y_1 ;
+r_incidence1549_10y_2_1 = incidence1549_10y_2 / incidence1549_10y_1 ;
+r_incidence1549_10y_3_1 = incidence1549_10y_3 / incidence1549_10y_1 ;
 
 r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1 ;
 r_incidence1549_50y_3_1 = incidence1549_50y_3 / incidence1549_50y_1 ;
@@ -1710,11 +1708,8 @@ if netdaly_ac_mtct_500_2 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=
 if netdaly_ac_mtct_500_3 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=3;
 
 
-ce_dcp_in_cab_context = 0; if netdaly_ac_mtct_500_4 < netdaly_ac_mtct_500_3 then ce_dcp_in_cab_context = 1;
-ce_dcp_no_cab = 0; if netdaly_ac_mtct_500_2 < netdaly_ac_mtct_500_1 then ce_dcp_no_cab = 1;
 
-
-label 
+* label 
 
 prop_ever_tested_1549w_24 = "Proportion of women aged 15-49 who have previously tested for HIV"
 prop_ever_tested_1549m_24 = "Proportion of men aged 15-49 who have previously tested for HIV"
@@ -1808,82 +1803,83 @@ prevalence_vg1000_24
 p_onart_vl1000_w_24 
 p_onart_vl1000_m_24 ;
 run;
-
+ods html close;
 
 ods html;
 proc means n p50 p5 p95;
 var 
-p_tested_past_year_1549w_20y_1 p_tested_past_year_1549w_20y_2 p_tested_past_year_1549w_20y_3 
-p_tested_past_year_1549m_20y_1 p_tested_past_year_1549m_20y_2 p_tested_past_year_1549m_20y_3 
-p_elig_prep_20y_1 p_elig_prep_20y_2 p_elig_prep_20y_3 
-p_prep_adhg80_20y_1 p_prep_adhg80_20y_2 p_prep_adhg80_20y_3 
-prop_prep_inj_20y_1 prop_prep_inj_20y_2 prop_prep_inj_20y_3 
-prop_elig_dcp_20y_1 prop_elig_dcp_20y_2 prop_elig_dcp_20y_3 
-prop_elig_on_prep_20y_1 prop_elig_on_prep_20y_2 prop_elig_on_prep_20y_3 
-prop_1564_onprep_20y_1 prop_1564_onprep_20y_2 prop_1564_onprep_20y_3 
-p_tested_tm1_elig_onprep_20y_1 p_tested_tm1_elig_onprep_20y_2 p_tested_tm1_elig_onprep_20y_3 
-p_prep_tm1_elig_onprep_20y_1 p_prep_tm1_elig_onprep_20y_2 p_prep_tm1_elig_onprep_20y_3 
-p_prep_past3yr_elig_onprep_20y_1 p_prep_past3yr_elig_onprep_20y_2 p_prep_past3yr_elig_onprep_20y_3 
-p_dcp_tm1_rem_elig_offdcp_20y_1 p_dcp_tm1_rem_elig_offdcp_20y_2 p_dcp_tm1_rem_elig_offdcp_20y_3 
-p_dcp_drop_off_this_period_20y_1 p_dcp_drop_off_this_period_20y_2 p_dcp_drop_off_this_period_20y_3 
-prop_dcp_prep_elig_20y_1 prop_dcp_prep_elig_20y_2 prop_dcp_prep_elig_20y_3 
-prevalence1549_20y_1 prevalence1549_20y_2 prevalence1549_20y_3 
-incidence1549_20y_1 incidence1549_20y_2 incidence1549_20y_3 
-p_vl1000_20y_1 p_vl1000_20y_2 p_vl1000_20y_3 
-p_diag_20y_1 p_diag_20y_2 p_diag_20y_3 
-prevalence_vg1000_20y_1 prevalence_vg1000_20y_2 prevalence_vg1000_20y_3 
+p_tested_past_year_1549w_10y_1 p_tested_past_year_1549w_10y_2 p_tested_past_year_1549w_10y_3 
+p_tested_past_year_1549m_10y_1 p_tested_past_year_1549m_10y_2 p_tested_past_year_1549m_10y_3 
+p_elig_prep_10y_1 p_elig_prep_10y_2 p_elig_prep_10y_3 
+p_prep_adhg80_10y_1 p_prep_adhg80_10y_2 p_prep_adhg80_10y_3 
+prop_prep_inj_10y_1 prop_prep_inj_10y_2 prop_prep_inj_10y_3 
+prop_elig_dcp_10y_1 prop_elig_dcp_10y_2 prop_elig_dcp_10y_3 
+prop_elig_on_prep_10y_1 prop_elig_on_prep_10y_2 prop_elig_on_prep_10y_3 
+prop_1564_onprep_10y_1 prop_1564_onprep_10y_2 prop_1564_onprep_10y_3 
+p_tested_tm1_elig_onprep_10y_1 p_tested_tm1_elig_onprep_10y_2 p_tested_tm1_elig_onprep_10y_3 
+p_prep_tm1_elig_onprep_10y_1 p_prep_tm1_elig_onprep_10y_2 p_prep_tm1_elig_onprep_10y_3 
+p_prep_past3yr_elig_onprep_10y_1 p_prep_past3yr_elig_onprep_10y_2 p_prep_past3yr_elig_onprep_10y_3 
+p_dcp_tm1_rem_elig_offdcp_10y_1 p_dcp_tm1_rem_elig_offdcp_10y_2 p_dcp_tm1_rem_elig_offdcp_10y_3 
+p_dcp_drop_off_this_period_10y_1 p_dcp_drop_off_this_period_10y_2 p_dcp_drop_off_this_period_10y_3 
+prop_dcp_prep_elig_10y_1 prop_dcp_prep_elig_10y_2 prop_dcp_prep_elig_10y_3 
+prevalence1549_10y_1 prevalence1549_10y_2 prevalence1549_10y_3 
+incidence1549_10y_1 incidence1549_10y_2 incidence1549_10y_3 
+r_incidence1549_10y_2_1 r_incidence1549_10y_3_1 
+p_vl1000_10y_1 p_vl1000_10y_2 p_vl1000_10y_3 
+p_diag_10y_1 p_diag_10y_2 p_diag_10y_3 
+prevalence_vg1000_10y_1 prevalence_vg1000_10y_2 prevalence_vg1000_10y_3 
 ;
 run;
-
+ods html close;
 
 
 data s; set g;
 %lab(l=prop_ever_tested_1549w); 
 title "Proportion of women aged 15-49 who have previously tested for HIV";
 proc means  n p50 p5 p95 ;  
-var prop_ever_tested_1549w_20y_1 prop_ever_tested_1549w_20y_2 prop_ever_tested_1549w_20y_3 ;
+var prop_ever_tested_1549w_10y_1 prop_ever_tested_1549w_10y_2 prop_ever_tested_1549w_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=prop_ever_tested_1549m); 
 title "Proportion of men aged 15-49 who have previously tested for HIV";
 proc means  n p50 p5 p95 ;  
-var prop_ever_tested_1549m_20y_1 prop_ever_tested_1549m_20y_2 prop_ever_tested_1549m_20y_3 ;
+var prop_ever_tested_1549m_10y_1 prop_ever_tested_1549m_10y_2 prop_ever_tested_1549m_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_tested_past_year_1549w); 
 title "Proportion of women aged 15-49 who have tested for HIV in the past 1 year";
 proc means    n p50 p5 p95 ;  
-var p_tested_past_year_1549w_20y_1 p_tested_past_year_1549w_20y_2 p_tested_past_year_1549w_20y_3 ;
+var p_tested_past_year_1549w_10y_1 p_tested_past_year_1549w_10y_2 p_tested_past_year_1549w_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_tested_past_year_1549m); 
 title "Proportion of men aged 15-49 who have tested for HIV in the past 1 year";
 proc means    n p50 p5 p95 ;  
-var p_tested_past_year_1549m_20y_1 p_tested_past_year_1549m_20y_2 p_tested_past_year_1549m_20y_3 ;
+var p_tested_past_year_1549m_10y_1 p_tested_past_year_1549m_10y_2 p_tested_past_year_1549m_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=prop_elig_dcp); 
 title "Proportion of people who are eligible for PrEP who are under DCP";
 proc means    n p50 p5 p95 ;  
-var prop_elig_dcp_20y_1 prop_elig_dcp_20y_2 prop_elig_dcp_20y_3 ;
+var prop_elig_dcp_10y_1 prop_elig_dcp_10y_2 prop_elig_dcp_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_elig_prep); 
 title "Proportion of adults age 15-64 with indication for DCP/PrEP";
 proc means    n p50 p5 p95 ;  
-var p_elig_prep_20y_1 p_elig_prep_20y_2 p_elig_prep_20y_3 ;
+var p_elig_prep_10y_1 p_elig_prep_10y_2 p_elig_prep_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=prop_elig_on_prep); 
 title "Proportion of people with a current PrEP indication who take PrEP";
 proc means    n p50 p5 p95 ;  
-var prop_elig_on_prep_20y_1 prop_elig_on_prep_20y_2 prop_elig_on_prep_20y_3 ;
+var prop_elig_on_prep_10y_1 prop_elig_on_prep_10y_2 prop_elig_on_prep_10y_3 ;
 run;
 
 
@@ -1891,98 +1887,98 @@ data s; set g;
 %lab(l=prop_1564_onprep); 
 title "Proportion of HIV negative adults aged 15-64 who are taking PrEP";
 proc means    n p50 p5 p95 ;  
-var prop_1564_onprep_20y_1 prop_1564_onprep_20y_2 prop_1564_onprep_20y_3 ;
+var prop_1564_onprep_10y_1 prop_1564_onprep_10y_2 prop_1564_onprep_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=prevalence1549w); 
 title "HIV prevalence in women age 15-49";
 proc means    n p50 p5 p95 ;  
-var prevalence1549w_20y_1 prevalence1549w_20y_2 prevalence1549w_20y_3 ;
+var prevalence1549w_10y_1 prevalence1549w_10y_2 prevalence1549w_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=prevalence1549m); 
 title "HIV prevalence in men age 15-49";
 proc means    n p50 p5 p95 ;  
-var prevalence1549m_20y_1 prevalence1549m_20y_2 prevalence1549m_20y_3 ;
+var prevalence1549m_10y_1 prevalence1549m_10y_2 prevalence1549m_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=incidence1549w); 
 title "HIV incidence in women age 15-49";
 proc means    n p50 p5 p95 ;  
-var incidence1549w_20y_1 incidence1549w_20y_2 incidence1549w_20y_3 ;
+var incidence1549w_10y_1 incidence1549w_10y_2 incidence1549w_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=incidence1549m); 
 title "HIV incidence in men age 15-49";
 proc means    n p50 p5 p95 ;  
-var incidence1549m_20y_1 incidence1549m_20y_2 incidence1549m_20y_3 ;
+var incidence1549m_10y_1 incidence1549m_10y_2 incidence1549m_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_diag_w); 
 title "Proportion of HIV positive women age 15+ who are diagnosed";
 proc means    n p50 p5 p95 ;  
-var p_diag_w_20y_1 p_diag_w_20y_2 p_diag_w_20y_3 ;
+var p_diag_w_10y_1 p_diag_w_10y_2 p_diag_w_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_diag_m); 
 title "Proportion of HIV positive men age 15+ who are diagnosed";
 proc means    n p50 p5 p95 ;  
-var p_diag_m_20y_1 p_diag_m_20y_2 p_diag_m_20y_3 ;
+var p_diag_m_10y_1 p_diag_m_10y_2 p_diag_m_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_onart_diag_w); 
 title "Proportion of diagnosed HIV+ women on ART";
 proc means    n p50 p5 p95 ;  
-var p_onart_diag_w_20y_1 p_onart_diag_w_20y_2 p_onart_diag_w_20y_3 ;
+var p_onart_diag_w_10y_1 p_onart_diag_w_10y_2 p_onart_diag_w_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_onart_diag_m); 
 title "Proportion of diagnosed HIV+ men on ART";
 proc means    n p50 p5 p95 ;  
-var p_onart_diag_m_20y_1 p_onart_diag_m_20y_2 p_onart_diag_m_20y_3 ;
+var p_onart_diag_m_10y_1 p_onart_diag_m_10y_2 p_onart_diag_m_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_vl1000); 
 title "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)";
 proc means    n p50 p5 p95 ;  
-var p_vl1000_20y_1 p_vl1000_20y_2 p_vl1000_20y_3 ;
+var p_vl1000_10y_1 p_vl1000_10y_2 p_vl1000_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=prevalence_vg1000); 
 title "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)";
 proc means    n p50 p5 p95 ;  
-var prevalence_vg1000_20y_1 prevalence_vg1000_20y_2 prevalence_vg1000_20y_3 ;
+var prevalence_vg1000_10y_1 prevalence_vg1000_10y_2 prevalence_vg1000_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_onart_vl1000_w); 
 title "Of women on ART, proportion with VL < 1000";
 proc means    n p50 p5 p95 ;  
-var p_onart_vl1000_w_20y_1 p_onart_vl1000_w_20y_2 p_onart_vl1000_w_20y_3 ;
+var p_onart_vl1000_w_10y_1 p_onart_vl1000_w_10y_2 p_onart_vl1000_w_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_onart_vl1000_m); 
 title "Of men on ART, proportion with VL < 1000";
 proc means    n p50 p5 p95 ;  
-var p_onart_vl1000_m_20y_1 p_onart_vl1000_m_20y_2 p_onart_vl1000_m_20y_3 ;
+var p_onart_vl1000_m_10y_1 p_onart_vl1000_m_10y_2 p_onart_vl1000_m_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_alive_1549); 
 title "Proportion of adults aged 15-49";
 proc means    n p50 p5 p95 ;  
-var p_alive_1549_20y_1 p_alive_1549_20y_2 p_alive_1549_20y_3 ;
+var p_alive_1549_10y_1 p_alive_1549_10y_2 p_alive_1549_10y_3 ;
 run;
 
 
@@ -1990,7 +1986,7 @@ data s; set g;
 %lab(l=p_tested_tm1_elig_onprep); 
 title "Of those with a test in the last period, prop of eligible on PrEP";
 proc means    n p50 p5 p95 ;  
-var p_tested_tm1_elig_onprep_20y_1 p_tested_tm1_elig_onprep_20y_2 p_tested_tm1_elig_onprep_20y_3 ;
+var p_tested_tm1_elig_onprep_10y_1 p_tested_tm1_elig_onprep_10y_2 p_tested_tm1_elig_onprep_10y_3 ;
 run;
 
 
@@ -1998,7 +1994,7 @@ data s; set g;
 %lab(l=p_prep_tm1_elig_onprep); 
 title "Proportion of PrEP/DCP eligible people who took prep in the last 3 months who remain on PrEP";
 proc means    n p50 p5 p95 ;  
-var p_prep_tm1_elig_onprep_20y_1 p_prep_tm1_elig_onprep_20y_2 p_prep_tm1_elig_onprep_20y_3 ;
+var p_prep_tm1_elig_onprep_10y_1 p_prep_tm1_elig_onprep_10y_2 p_prep_tm1_elig_onprep_10y_3 ;
 run;
 
 
@@ -2006,7 +2002,7 @@ data s; set g;
 %lab(l=p_prep_past3yr_elig_onprep); 
 title "Proportion of PrEP/DCP eligible people who have taken prep in the past 3 years who remain on PrEP";
 proc means    n p50 p5 p95 ;  
-var p_prep_past3yr_elig_onprep_20y_1 p_prep_past3yr_elig_onprep_20y_2 p_prep_past3yr_elig_onprep_20y_3 ;
+var p_prep_past3yr_elig_onprep_10y_1 p_prep_past3yr_elig_onprep_10y_2 p_prep_past3yr_elig_onprep_10y_3 ;
 run;
 
 
@@ -2014,7 +2010,7 @@ data s; set g;
 %lab(l=p_dcp_tm1_rem_elig_offdcp); 
 title "Proportion who are on DCP and remain eligible who drop off per 3 months";
 proc means    n p50 p5 p95 ;  
-var p_dcp_tm1_rem_elig_offdcp_20y_1 p_dcp_tm1_rem_elig_offdcp_20y_2 p_dcp_tm1_rem_elig_offdcp_20y_3;
+var p_dcp_tm1_rem_elig_offdcp_10y_1 p_dcp_tm1_rem_elig_offdcp_10y_2 p_dcp_tm1_rem_elig_offdcp_10y_3;
 run;
 
 
@@ -2022,7 +2018,7 @@ data s; set g;
 %lab(l=p_dcp_drop_off_this_period); 
 title "Proportion who were on DCP 3 months ago who drop off this period";
 proc means    n p50 p5 p95 ;  
-var p_dcp_drop_off_this_period_20y_1 p_dcp_drop_off_this_period_20y_2 p_dcp_drop_off_this_period_20y_3;
+var p_dcp_drop_off_this_period_10y_1 p_dcp_drop_off_this_period_10y_2 p_dcp_drop_off_this_period_10y_3;
 run;
 
 
@@ -2030,7 +2026,7 @@ data s; set g;
 %lab(l=prop_dcp_prep_elig); 
 title "Proportion of people on DCP who are currently PrEP eligible";
 proc means    n p50 p5 p95 ;  
-var prop_dcp_prep_elig_20y_1 prop_dcp_prep_elig_20y_2 prop_dcp_prep_elig_20y_3;
+var prop_dcp_prep_elig_10y_1 prop_dcp_prep_elig_10y_2 prop_dcp_prep_elig_10y_3;
 run;
 
 
@@ -2038,7 +2034,7 @@ data s; set g;
 %lab(l=prop_dcp_oral_prep); 
 title "Proportion of people on DCP who are on oral PrEP";
 proc means    n p50 p5 p95 ;  
-var prop_dcp_oral_prep_20y_1 prop_dcp_oral_prep_20y_2 prop_dcp_oral_prep_20y_3 ;
+var prop_dcp_oral_prep_10y_1 prop_dcp_oral_prep_10y_2 prop_dcp_oral_prep_10y_3 ;
 run;
 
 
@@ -2046,7 +2042,7 @@ data s; set g;
 %lab(l=prop_dcp_inj_prep); 
 title "Proportion of people on DCP who are on Cab-LA PrEP" ;
 proc means    n p50 p5 p95 ;  
-var prop_dcp_inj_prep_20y_1 prop_dcp_inj_prep_20y_2 prop_dcp_inj_prep_20y_3 ;
+var prop_dcp_inj_prep_10y_1 prop_dcp_inj_prep_10y_2 prop_dcp_inj_prep_10y_3 ;
 run;
 
 
@@ -2054,7 +2050,7 @@ data s; set g;
 %lab(l=prop_dcp_prep_any); 
 title "Proportion of people on DCP who are on any PrEP (or PEP)" ;
 proc means    n p50 p5 p95 ;  
-var prop_dcp_prep_any_20y_1 prop_dcp_prep_any_20y_2 prop_dcp_prep_any_20y_3;
+var prop_dcp_prep_any_10y_1 prop_dcp_prep_any_10y_2 prop_dcp_prep_any_10y_3;
 run;
 
 
@@ -2062,7 +2058,7 @@ data s; set g;
 %lab(l=prop_dcp_elig_prep_oral); 
 title "Proportion of people on DCP who have an indication for PrEP who are on oral PrEP";
 proc means    n p50 p5 p95 ;  
-var prop_dcp_elig_prep_oral_20y_1 prop_dcp_elig_prep_oral_20y_2 prop_dcp_elig_prep_oral_20y_3 ;
+var prop_dcp_elig_prep_oral_10y_1 prop_dcp_elig_prep_oral_10y_2 prop_dcp_elig_prep_oral_10y_3 ;
 run;
 
 
@@ -2070,7 +2066,7 @@ data s; set g;
 %lab(l=prop_dcp_elig_prep_inj); 
 title "Proportion of people on DCP who have an indication for PrEP who are on Cab-LA PrEP";
 proc means    n p50 p5 p95 ;  
-var prop_dcp_elig_prep_inj_20y_1 prop_dcp_elig_prep_inj_20y_2 prop_dcp_elig_prep_inj_20y_3 ;
+var prop_dcp_elig_prep_inj_10y_1 prop_dcp_elig_prep_inj_10y_2 prop_dcp_elig_prep_inj_10y_3 ;
 run;
 
 
@@ -2078,21 +2074,21 @@ data s; set g;
 %lab(l=p_dcp_v1_prep_elig_oralp); 
 title "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on oral PrEP"  ;
 proc means    n p50 p5 p95 ;  
-var p_dcp_v1_prep_elig_oralp_20y_1 p_dcp_v1_prep_elig_oralp_20y_2 p_dcp_v1_prep_elig_oralp_20y_3 ;
+var p_dcp_v1_prep_elig_oralp_10y_1 p_dcp_v1_prep_elig_oralp_10y_2 p_dcp_v1_prep_elig_oralp_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_dcp_v1_prep_elig_injp); 
 title "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on prep inj"  ;
 proc means    n p50 p5 p95 ;  
-var p_dcp_v1_prep_elig_injp_20y_1 p_dcp_v1_prep_elig_injp_20y_2 p_dcp_v1_prep_elig_injp_20y_3 ;
+var p_dcp_v1_prep_elig_injp_10y_1 p_dcp_v1_prep_elig_injp_10y_2 p_dcp_v1_prep_elig_injp_10y_3 ;
 run;
 
 data s; set g;
 %lab(l=p_dcp_v1_prep_elig_onprep); 
 title "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on PrEP"  ;
 proc means    n p50 p5 p95 ;  
-var p_dcp_v1_prep_elig_onprep_20y_1 p_dcp_v1_prep_elig_onprep_20y_2 p_dcp_v1_prep_elig_onprep_20y_3     ;
+var p_dcp_v1_prep_elig_onprep_10y_1 p_dcp_v1_prep_elig_onprep_10y_2 p_dcp_v1_prep_elig_onprep_10y_3     ;
 run;
 
 
@@ -2100,7 +2096,7 @@ data s; set g;
 %lab(l=prop_elig_on_prep_oral); 
 title "Of people with indication for PrEP proportion on oral PrEP" ;
 proc means    n p50 p5 p95 ;  
-var prop_elig_on_prep_oral_20y_1 prop_elig_on_prep_oral_20y_2 prop_elig_on_prep_oral_20y_3 ;
+var prop_elig_on_prep_oral_10y_1 prop_elig_on_prep_oral_10y_2 prop_elig_on_prep_oral_10y_3 ;
 run;
 
 
@@ -2108,7 +2104,7 @@ data s; set g;
 %lab(l=prop_elig_on_prep_inj); 
 title "Of people with indication for PrEP proportion on cab-LA PrEP";
 proc means    n p50 p5 p95 ;  
-var prop_elig_on_prep_inj_20y_1 prop_elig_on_prep_inj_20y_2 prop_elig_on_prep_inj_20y_3 ;
+var prop_elig_on_prep_inj_10y_1 prop_elig_on_prep_inj_10y_2 prop_elig_on_prep_inj_10y_3 ;
 run;
 
 
@@ -2116,7 +2112,7 @@ data s; set g;
 %lab(l=p_elig_offp_tm1_oralprep); 
 title "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on oral PrEP";
 proc means    n p50 p5 p95 ;  
-var p_elig_offp_tm1_oralprep_20y_1 p_elig_offp_tm1_oralprep_20y_2 p_elig_offp_tm1_oralprep_20y_3 ;
+var p_elig_offp_tm1_oralprep_10y_1 p_elig_offp_tm1_oralprep_10y_2 p_elig_offp_tm1_oralprep_10y_3 ;
 run;
 
 
@@ -2124,12 +2120,12 @@ data s; set g;
 %lab(l=p_elig_offp_tm1_injprep); 
 title "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on Cab-LA PrEP";
 proc means    n p50 p5 p95 ;  
-var p_elig_offp_tm1_injprep_20y_1 p_elig_offp_tm1_injprep_20y_2 p_elig_offp_tm1_injprep_20y_3 ;
+var p_elig_offp_tm1_injprep_10y_1 p_elig_offp_tm1_injprep_10y_2 p_elig_offp_tm1_injprep_10y_3 ;
 run;
 
 
 title 'Breakdown of costs (in $ millions) by policy option';
-
+ods html;
 proc means data = g  n mean p5 p95;
 var
 dcost_dcp_visit_50y_1 dcost_dcp_visit_50y_2 dcost_dcp_visit_50y_3 
@@ -2149,6 +2145,7 @@ dcost_prep_inj_50y_1 dcost_prep_inj_50y_2 dcost_prep_inj_50y_3
 dcost_50y_1   dcost_50y_2 dcost_50y_3   
 ;
 run;
+ods html close;
 
 *
 art - art drug
@@ -2174,8 +2171,8 @@ prep_inj - cab prep drug
 
 
 title 'Effects of policies on incidence, DALYs, cost and cost-effectiveness (net DALYs) over 50 years';
-
-proc means data = g n mean p50 p5 p95;
+ods html;
+proc means data = g n mean p50 p5 p95 lclm uclm;
   var 
 d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 
 r_incidence1549_50y_2_1 r_incidence1549_50y_3_1 
@@ -2184,6 +2181,7 @@ dcost_50y_1   dcost_50y_2 dcost_50y_3    d_dcost_50y_2_1 d_dcost_50y_3_1
 netdaly500_1 netdaly500_2 netdaly500_3  d_netdaly500_2_1 d_netdaly500_3_1 
 ;
 run;
+ods html close;
 
 
 title 'Which policy is cost-effective for each model run';
@@ -2196,29 +2194,15 @@ ods html close;
 
 
 
-/*
-
-proc freq; tables incidence1549_24_g * ce_dcp_in_cab_context ; run; 
-
-proc freq; tables prop_elig_dcp_20y_4 prop_elig_dcp_20y_4_g * ce_dcp_in_cab_context ;
 
 
-proc logistic desc; 
-model ce_dcp_in_cab_context = incidence1549_24 ; 
-run;
+proc freq; tables prop_elig_dcp_10y_3_g * lowest_netdaly  ;
 
-proc freq; tables incidence1549_24_g * ce_dcp_no_cab ; run; 
-
-proc freq; tables prop_elig_dcp_20y_2 prop_elig_dcp_20y_2_g * ce_dcp_no_cab ;
-
-proc logistic desc; 
-model ce_dcp_no_cab = incidence1549_24 ; 
-run;
-
-ods html close;
+proc freq; tables incidence1549_24_g * lowest_netdaly ; run; 
 
 
-*/
+
+
 
 
 
