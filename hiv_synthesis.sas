@@ -774,7 +774,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.3 ; * tends to be more preference for inj ;
 
-* hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
+* hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.95 0.05); * very unlikely that nucleic acid based testing will be used;
 								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
 * hivtest_type_1_prep_inj;		if hivtest_type_1_init_prep_inj=1 then do; %sample(hivtest_type_1_prep_inj, 0 1, 0.5 0.5);end;
 								%sample_uniform(testt1_prep_inj_eff_on_res_prim, 0.25 0.5 0.75); 
