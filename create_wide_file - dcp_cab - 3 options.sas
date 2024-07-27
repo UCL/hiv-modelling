@@ -1601,8 +1601,8 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 data g; set b.w_dcp_cab_ac_ad ;
 
-if incidence1549_24 ge 0.1;
-if hivtest_type_1_init_prep_inj = 0;
+  if incidence1549_24 ge 0.1;
+* if hivtest_type_1_init_prep_inj = 0;
 
 
 if 0.1 <= incidence1549_24 < 0.3 then incidence1549_24_g = 1;
