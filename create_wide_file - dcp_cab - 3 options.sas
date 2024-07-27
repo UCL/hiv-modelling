@@ -4,20 +4,20 @@
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ac_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ac_ad_out\";
 
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ac_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ac_ad_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9: ;
 
-%let laprv =  dcp_cab_ac  ;
+%let laprv =  dcp_cab_ac_ad  ;
 
-data b.k_dcp_cab_ac;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_dcp_cab_ac_ad;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -25,7 +25,7 @@ run;
 */
 
 
-proc sort data=b.k_dcp_cab_ac; 
+proc sort data=b.k_dcp_cab_ac_ad; 
 by run cald option;
 run;
 
@@ -33,7 +33,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_dcp_cab_ac ;
+set b.k_dcp_cab_ac_ad ;
 
 
 if cald=2023   ;
@@ -54,7 +54,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_dcp_cab_ac sf;
+merge b.k_dcp_cab_ac_ad sf;
 by run ;
 
 
@@ -123,9 +123,9 @@ ddaly_mtct = s_ddaly_mtct * &sf * 4;
 
 ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * &sf * 4; * napd;
 
-ddaly_ac_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
+ddaly_ac_ad_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
 
-ddaly_ac_ntd_mtct_odabe = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odabe ;
+ddaly_ac_ad_ntd_mtct_odabe = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odabe ;
 
 ddaly_ntd_mtct_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + ddaly_non_aids_pre_death;
 
@@ -133,7 +133,7 @@ ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odab
 
 ddaly_all = ddaly_ntd_mtct_odab_napd;
 
-ddaly_ac_mtct = ddaly + ddaly_mtct ;
+ddaly_ac_ad_mtct = ddaly + ddaly_mtct ;
 
 * ================================================================================= ;
 
@@ -161,7 +161,7 @@ if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_prep_oral=. then s_dcost_prep_oral=0;
 if s_dcost_prep_inj=. then s_dcost_prep_inj=0;
 if s_dcost_prep_visit=. then s_dcost_prep_visit=0;
-if s_dcost_prep_ac_adh=. then s_dcost_prep_ac_adh=0;
+if s_dcost_prep_ac_ad_adh=. then s_dcost_prep_ac_ad_adh=0;
 if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
@@ -189,7 +189,7 @@ dcost_prep_oral = s_dcost_prep_oral * &sf * 4 / 1000;
 dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 	
 dcost_prep_visit_inj  = max(0,s_dcost_prep_visit_inj * &sf * 4 / 1000); 	
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
-dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
+dcost_prep_ac_ad_adh = s_dcost_prep_ac_ad_adh * &sf * 4 / 1000; 
 dcost_dcp_visit = max(0, s_dcost_dcp_visit * &sf * 4 / 1000);
 
 
@@ -1095,10 +1095,10 @@ prop_prep_inj_at_inf_diag   of_all_o_cab_prop_dur_3m of_all_o_cab_prop_dur_6m   
 n_cur_res_cab  n_cur_res_dol  n_emerge_inm_res_cab  n_switch_prep_from_oral n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  
 n_prep_any_start n_prep_oral_start  n_prep_inj_start n_prep_vr_start n_prep_any prop_elig_on_prep p_elig_prep  p_hiv1_prep  prop_onprep_newpge1 
 p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_inj n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
-ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m  ddaly_ac_mtct
+ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m  ddaly_ac_ad_mtct
 s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
 p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
-p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
+p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ad_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m  n_alive
 
 p_dcp_v1_prep_elig_oralp  p_dcp_v1_prep_elig_injp  p_dcp_v1_prep_elig_onprep
@@ -1137,7 +1137,7 @@ circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+zero_tdf_ac_adtivity_k65r  zero_3tc_ac_adtivity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -1188,10 +1188,10 @@ run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_dcp_cab_ac_y; set y;  
+data    b.l_dcp_cab_ac_ad_y; set y;  
 
 
-data y ; set b.l_dcp_cab_ac_y; 
+data y ; set b.l_dcp_cab_ac_ad_y; 
 
 
   options nomprint;
@@ -1347,7 +1347,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_prep_any); %var(v=prop_elig_on_prep); %var(v=p_elig_prep);  %var(v=prop_onprep_newpge1); %var(v=p_prep_elig_past_year); 
 %var(v=p_prep_newp); %var(v=prop_sw_onprep);  %var(v=p_em_inm_res_ever_prep_inj);  %var(v=p_cabr_start_rest_prep_inj);
 %var(v=n_o_cab_at_3m);    %var(v=n_o_cab_at_6m);    %var(v=n_o_cab_at_9m);   %var(v=n_o_cab_at_ge12m); 
-%var(v=ddaly); %var(v=p_emerge_inm_res_cab);  %var(v=p_emerge_inm_res_cab_tail); %var(v=ddaly_ac_ntd_mtct); %var(v=ddaly_ac_mtct);
+%var(v=ddaly); %var(v=p_emerge_inm_res_cab);  %var(v=p_emerge_inm_res_cab_tail); %var(v=ddaly_ac_ad_ntd_mtct); %var(v=ddaly_ac_ad_mtct);
 %var(v=of_all_o_cab_prop_dur_9m); %var(v=of_all_o_cab_prop_dur_ge12m);
 %var(v=s_em_inm_res_o_cab_off_3m);  %var(v=s_o_cab_or_o_cab_tm1_no_r);   %var(v=s_emerge_inm_res_cab_tail);   %var(v=s_cur_in_prep_inj_tail_no_r);
 %var(v=p_emerge_inm_res_cab); %var(v=p_emerge_inm_res_cab_tail);
@@ -1393,10 +1393,10 @@ prop_prep_inj_at_inf_diag   of_all_o_cab_prop_dur_3m of_all_o_cab_prop_dur_6m   
 n_cur_res_cab  n_cur_res_dol  n_emerge_inm_res_cab  n_switch_prep_from_oral n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  
 n_prep_any_start n_prep_oral_start  n_prep_inj_start n_prep_vr_start n_prep_any prop_elig_on_prep p_elig_prep  prop_onprep_newpge1 
 p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_inj n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
-ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m  ddaly_ac_mtct
+ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m  ddaly_ac_ad_mtct
 s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
 p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
-p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
+p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ad_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
 n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
@@ -1441,7 +1441,7 @@ circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+zero_tdf_ac_adtivity_k65r  zero_3tc_ac_adtivity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -1506,7 +1506,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=tblam_cd4_l200);  %par(p=tblam_cd4_l100);    %par(p=effect_tb_proph);   %par(p=effect_crypm_proph);  %par(p=effect_sbi_proph);
 
 %par(p=sw_init_newp); %par(p=sw_trans_matrix);
-%par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
+%par(p=zero_tdf_ac_adtivity_k65r );  %par(p=zero_3tc_ac_adtivity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); 
 
 %par(p=effect_sw_prog_prep_any);  %par(p=prob_prep_any_restart_choice);  
@@ -1550,7 +1550,7 @@ circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+zero_tdf_ac_adtivity_k65r  zero_3tc_ac_adtivity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -1585,7 +1585,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_dcp_cab_ac     ; 
+  data  b.w_dcp_cab_ac_ad     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1597,11 +1597,13 @@ proc sort; by run;run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ac_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ac_ad_out\";
 
-data g; set b.w_dcp_cab_ac ;
+data g; set b.w_dcp_cab_ac_ad ;
 
 if incidence1549_24 ge 0.1;
+if hivtest_type_1_init_prep_inj = 0;
+
 
 if 0.1 <= incidence1549_24 < 0.3 then incidence1549_24_g = 1;
 if 0.3 <= incidence1549_24 < 0.5 then incidence1549_24_g = 2;
@@ -1637,8 +1639,8 @@ d_n_death_hiv_50y_3_1 = n_death_hiv_50y_3 - n_death_hiv_50y_1;
 d_ddaly_50y_2_1 = ddaly_50y_2 - ddaly_50y_1;
 d_ddaly_50y_3_1 = ddaly_50y_3 - ddaly_50y_1;
 
-d_ddaly_ac_mtct_50y_2_1 = ddaly_ac_mtct_50y_2 - ddaly_ac_mtct_50y_1;
-d_ddaly_ac_mtct_50y_3_1 = ddaly_ac_mtct_50y_3 - ddaly_ac_mtct_50y_1;
+d_ddaly_ac_ad_mtct_50y_2_1 = ddaly_ac_ad_mtct_50y_2 - ddaly_ac_ad_mtct_50y_1;
+d_ddaly_ac_ad_mtct_50y_3_1 = ddaly_ac_ad_mtct_50y_3 - ddaly_ac_ad_mtct_50y_1;
 
 p_diag_w_24 = p_diag_w_24 / 100;
 p_diag_m_24 = p_diag_m_24 / 100;
@@ -1699,15 +1701,15 @@ if dcost_50y_1 = min_dcost then lowest_dcost=1;
 if dcost_50y_2 = min_dcost then lowest_dcost=2;
 if dcost_50y_3 = min_dcost then lowest_dcost=3;
 
-netdaly_ac_mtct_500_1 = ddaly_ac_mtct_50y_1 + (dcost_50y_1 / 0.0005);
-netdaly_ac_mtct_500_2 = ddaly_ac_mtct_50y_2 + (dcost_50y_2 / 0.0005);
-netdaly_ac_mtct_500_3 = ddaly_ac_mtct_50y_3 + (dcost_50y_3 / 0.0005);
+netdaly_ac_ad_mtct_500_1 = ddaly_ac_ad_mtct_50y_1 + (dcost_50y_1 / 0.0005);
+netdaly_ac_ad_mtct_500_2 = ddaly_ac_ad_mtct_50y_2 + (dcost_50y_2 / 0.0005);
+netdaly_ac_ad_mtct_500_3 = ddaly_ac_ad_mtct_50y_3 + (dcost_50y_3 / 0.0005);
 
-min_netdaly_ac_mtct_500 = min(netdaly_ac_mtct_500_1, netdaly_ac_mtct_500_2, netdaly_ac_mtct_500_3);
+min_netdaly_ac_ad_mtct_500 = min(netdaly_ac_ad_mtct_500_1, netdaly_ac_ad_mtct_500_2, netdaly_ac_ad_mtct_500_3);
 
-if netdaly_ac_mtct_500_1 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=1;
-if netdaly_ac_mtct_500_2 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=2;
-if netdaly_ac_mtct_500_3 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=3;
+if netdaly_ac_ad_mtct_500_1 = min_netdaly_ac_ad_mtct_500 then lowest_netdaly_ac_ad_mtct_=1;
+if netdaly_ac_ad_mtct_500_2 = min_netdaly_ac_ad_mtct_500 then lowest_netdaly_ac_ad_mtct_=2;
+if netdaly_ac_ad_mtct_500_3 = min_netdaly_ac_ad_mtct_500 then lowest_netdaly_ac_ad_mtct_=3;
 
 
 
@@ -2223,7 +2225,7 @@ fold_tr fold_tr_newp switch_for_tox
 circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_activity_k65r    red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+zero_tdf_ac_adtivity_k65r    red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
@@ -2268,7 +2270,7 @@ circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_activity_k65r    red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+zero_tdf_ac_adtivity_k65r    red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
