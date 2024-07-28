@@ -1067,6 +1067,8 @@ n_new_inf1549w = s_primary1549w * &sf * 4;
 n_new_inf1549 = s_primary1549 * &sf * 4;
 n_infection  = s_primary     * &sf * 4;
 
+* prevalence15pl;				prevalence15pl = n_hiv / n_alive;
+
 
  
 
@@ -1080,7 +1082,7 @@ dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
-prevalence_vg1000_w prevalence_vg1000_m
+prevalence_vg1000_w prevalence_vg1000_m  prevalence15pl
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
 p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
@@ -1239,7 +1241,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=p_vmmc_5064m); *  %var(v=p_vmmc_1549m);
 %var(v=prop_w_1549_sw); %var(v=prop_w_1564_sw); %var(v=prop_w_ever_sw); %var(v=prop_sw_hiv); %var(v=prop_sw_program_visit); 
 %var(v=prop_w_1524_onprep); %var(v=prop_1564_onprep);
-%var(v=prop_sw_onprep); %var(v=prevalence1549m); %var(v=prevalence1549w); %var(v=prevalence1549); 
+%var(v=prop_sw_onprep); %var(v=prevalence1549m); %var(v=prevalence1549w); %var(v=prevalence1549); %var(v=prevalence15pl); 
 * %var(v=prevalence1519w); * %var(v=prevalence1519m); * %var(v=prevalence2024w); * %var(v=prevalence2024m); * %var(v=prevalence2529w);  	  
 * %var(v=prevalence2529m); * %var(v=prevalence3034w);*  %var(v=prevalence3034m);* %var(v=prevalence3539w); * %var(v=prevalence3539m);  	  
 * %var(v=prevalence4044w); *  %var(v=prevalence4044m); *  %var(v=prevalence4549w); *  %var(v=prevalence4549m);  
@@ -1377,7 +1379,7 @@ dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cos
 dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost  n_hiv n_alive
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
-prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
+prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 prevalence15pl
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
@@ -1602,7 +1604,9 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data g; set b.w_dcp_cab_ac_ad ;
 
   if incidence1549_24 ge 0.1;
-* if hivtest_type_1_init_prep_inj = 0;
+  if hivtest_type_1_init_prep_inj = 0;
+
+  if run ge 994216479 then delete;
 
 
 if 0.1 <= incidence1549_24 < 0.3 then incidence1549_24_g = 1;
@@ -1645,6 +1649,10 @@ d_ddaly_ac_ad_mtct_50y_3_1 = ddaly_ac_ad_mtct_50y_3 - ddaly_ac_ad_mtct_50y_1;
 p_diag_w_24 = p_diag_w_24 / 100;
 p_diag_m_24 = p_diag_m_24 / 100;
 
+* sens analysis;
+* dcost_dcp_visit_50y_2 = dcost_dcp_visit_50y_2 / 2;
+* dcost_dcp_visit_50y_3 = dcost_dcp_visit_50y_3 / 2;
+  dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * (5 / 6);
 
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
@@ -1693,6 +1701,8 @@ if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
 if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
 if netdaly500_3 = min_netdaly500 then lowest_netdaly=3;
 
+lowest_netdaly_23=0; if lowest_netdaly=2 or lowest_netdaly=3 then lowest_netdaly_23=1;
+
 if ddaly_50y_1 = min_ddaly then lowest_ddaly=1;
 if ddaly_50y_2 = min_ddaly then lowest_ddaly=2;
 if ddaly_50y_3 = min_ddaly then lowest_ddaly=3;
@@ -1701,15 +1711,50 @@ if dcost_50y_1 = min_dcost then lowest_dcost=1;
 if dcost_50y_2 = min_dcost then lowest_dcost=2;
 if dcost_50y_3 = min_dcost then lowest_dcost=3;
 
-netdaly_ac_ad_mtct_500_1 = ddaly_ac_ad_mtct_50y_1 + (dcost_50y_1 / 0.0005);
-netdaly_ac_ad_mtct_500_2 = ddaly_ac_ad_mtct_50y_2 + (dcost_50y_2 / 0.0005);
-netdaly_ac_ad_mtct_500_3 = ddaly_ac_ad_mtct_50y_3 + (dcost_50y_3 / 0.0005);
+netdaly_ac_mtct_500_1 = ddaly_ac_mtct_50y_1 + (dcost_50y_1 / 0.0005);
+netdaly_ac_mtct_500_2 = ddaly_ac_mtct_50y_2 + (dcost_50y_2 / 0.0005);
+netdaly_ac_mtct_500_3 = ddaly_ac_mtct_50y_3 + (dcost_50y_3 / 0.0005);
 
-min_netdaly_ac_ad_mtct_500 = min(netdaly_ac_ad_mtct_500_1, netdaly_ac_ad_mtct_500_2, netdaly_ac_ad_mtct_500_3);
+min_netdaly_ac_mtct_500 = min(netdaly_ac_mtct_500_1, netdaly_ac_mtct_500_2, netdaly_ac_mtct_500_3);
 
-if netdaly_ac_ad_mtct_500_1 = min_netdaly_ac_ad_mtct_500 then lowest_netdaly_ac_ad_mtct_=1;
-if netdaly_ac_ad_mtct_500_2 = min_netdaly_ac_ad_mtct_500 then lowest_netdaly_ac_ad_mtct_=2;
-if netdaly_ac_ad_mtct_500_3 = min_netdaly_ac_ad_mtct_500 then lowest_netdaly_ac_ad_mtct_=3;
+if netdaly_ac_mtct_500_1 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=1;
+if netdaly_ac_mtct_500_2 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=2;
+if netdaly_ac_mtct_500_3 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=3;
+
+if p_elig_prep_24 < 0.04 then p_elig_prep_24_g=1;
+if 0.04 <= p_elig_prep_24 < 0.07 then p_elig_prep_24_g=2;
+if 0.07 <= p_elig_prep_24 then p_elig_prep_24_g=3;
+
+if prevalence_vg1000_24 < 0.02 then prevalence_vg1000_24_g =1;
+if 0.02 <= prevalence_vg1000_24 < 0.04 then prevalence_vg1000_24_g =2;
+if 0.04 <= prevalence_vg1000_24 then prevalence_vg1000_24_g =3;
+
+netdaly100_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0001);
+netdaly100_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0001);
+netdaly100_3 = ddaly_50y_3 + (dcost_50y_3 / 0.0001);
+min_netdaly100 = min(netdaly100_1, netdaly100_2, netdaly100_3);
+if netdaly100_1 = min_netdaly100 then lowest_netdaly100=1;
+if netdaly100_2 = min_netdaly100 then lowest_netdaly100=2;
+if netdaly100_3 = min_netdaly100 then lowest_netdaly100=3;
+lowest_netdaly100_dcp=0; if lowest_netdaly100 in (2, 3) then lowest_netdaly100_dcp=1;
+
+netdaly300_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0003);
+netdaly300_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0003);
+netdaly300_3 = ddaly_50y_3 + (dcost_50y_3 / 0.0003);
+min_netdaly300 = min(netdaly300_1, netdaly300_2, netdaly300_3);
+if netdaly300_1 = min_netdaly300 then lowest_netdaly300=1;
+if netdaly300_2 = min_netdaly300 then lowest_netdaly300=2;
+if netdaly300_3 = min_netdaly300 then lowest_netdaly300=3;
+lowest_netdaly300_dcp=0; if lowest_netdaly300 in (2, 3) then lowest_netdaly300_dcp=1;
+
+netdaly1000_1 = ddaly_50y_1 + (dcost_50y_1 / 0.001);
+netdaly1000_2 = ddaly_50y_2 + (dcost_50y_2 / 0.001);
+netdaly1000_3 = ddaly_50y_3 + (dcost_50y_3 / 0.001);
+min_netdaly1000 = min(netdaly1000_1, netdaly1000_2, netdaly1000_3);
+if netdaly1000_1 = min_netdaly1000 then lowest_netdaly1000=1;
+if netdaly1000_2 = min_netdaly1000 then lowest_netdaly1000=2;
+if netdaly1000_3 = min_netdaly1000 then lowest_netdaly1000=3;
+lowest_netdaly1000_dcp=0; if lowest_netdaly1000 in (2, 3) then lowest_netdaly1000_dcp=1;
 
 
 
@@ -2184,7 +2229,6 @@ ddaly_50y_1 ddaly_50y_2 ddaly_50y_3   d_ddaly_50y_2_1  d_ddaly_50y_3_1
 dcost_50y_1   dcost_50y_2 dcost_50y_3    d_dcost_50y_2_1 d_dcost_50y_3_1 
 netdaly500_1 netdaly500_2 netdaly500_3  d_netdaly500_2_1 d_netdaly500_3_1 
 ;
-where hivtest_type_1_init_prep_inj = 0;
 run;
 ods html close;
 
@@ -2201,8 +2245,6 @@ ods html close;
 proc freq; tables prop_elig_dcp_10y_3_g * lowest_netdaly  ;
 
 proc freq; tables incidence1549_24_g * lowest_netdaly ; run; 
-
-proc freq; tables hivtest_type_1_init_prep_inj * lowest_netdaly; run; 
 
 
 proc glm data=g; 
@@ -2320,4 +2362,59 @@ prob_prep_oral_b rate_choose_stop_prep_oral pref_prep_oral_beta_s1 / solution;
 run;
 
 */
+
+proc glm data=g; 
+model d_netdaly500_3_1 = 
+p_elig_prep_24 
+prop_elig_on_prep_24 
+prevalence1549_24 
+incidence1549_24 
+p_diag_24 
+p_onart_diag_24 
+prevalence_vg1000_24 
+p_onart_vl1000_24 
+/ solution
+;
+run;
+ods html close;
+
+
+proc glm data=g; 
+model d_netdaly500_3_1 = 
+p_elig_prep_24
+prevalence_vg1000_24 
+/ solution
+;
+run;
+ods html close;
+
+proc logistic; 
+class prep_any_strategy;
+model lowest_netdaly_23 = prep_any_strategy; run; 
+proc glm; 
+class prep_any_strategy;
+model p_elig_prep_24 = prep_any_strategy / solution; run; 
+
+
+proc logistic;
+model lowest_netdaly_23 =
+p_elig_prep_24
+prevalence_vg1000_24 
+;
+run;
+
+proc freq; tables 
+p_elig_prep_24
+prevalence_vg1000_24 
+;
+run;
+
+proc freq;
+tables p_elig_prep_24_g * prevalence_vg1000_24_g * lowest_netdaly_23 ; run; 
+
+proc freq; tables lowest_netdaly100_dcp lowest_netdaly300_dcp lowest_netdaly1000_dcp;
+run;
+
+
+
 
