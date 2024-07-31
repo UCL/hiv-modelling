@@ -774,7 +774,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.3 ; * tends to be more preference for inj ;
 
-* hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
+* hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.95 0.05); * very unlikely that nucleic acid based testing will be used;
 								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
 * hivtest_type_1_prep_inj;		if hivtest_type_1_init_prep_inj=1 then do; %sample(hivtest_type_1_prep_inj, 0 1, 0.5 0.5);end;
 								%sample_uniform(testt1_prep_inj_eff_on_res_prim, 0.25 0.5 0.75); 
@@ -996,8 +996,8 @@ cost_dol_a=(0.009/4)*1.2;  * june 2024 chai - $42 for tld;
 cost_dar_a=(0.210/4)*1.2;		
 tb_cost_a=(.050); * todo: this cost to be re-considered;
 cot_cost_a=(.005/4);
-vis_cost_a=(.020); 
-redn_in_vis_cost_vlm_supp = 0.010 ;
+vis_cost_a=(.010); * changed july 24 due to data from sydney rosen showing very low clinic costs;
+redn_in_vis_cost_vlm_supp = 0.005 ; * changed july 24 due to data from sydney rosen showing very low clinic costs;
 cost_child_hiv_a = 0.030; 
 cost_child_hiv_mo_art_a = 0.030; 
 prep_oral_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
