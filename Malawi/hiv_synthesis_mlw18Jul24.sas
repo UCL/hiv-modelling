@@ -21194,7 +21194,8 @@ incidence1549  = (4 * 100 * (s_primary1549m + s_primary1549w ))
 / ((s_alive1549_m + s_alive1549_w) - (s_hiv1549m + s_hiv1549w) + (s_primary1549m + s_primary1549w ) );
 
 prev_vg1000_1549 = s_vg1000_1549 / s_alive1549;
-p_vl1000 = 
+if s_hiv1564  > 0 then p_vg1000 = s_vg1000 / s_hiv1564 ;  p_vl1000 = 1- p_vg1000 ;
+
 cum_ratio_newp_mw = s_s_m_newp / s_s_w_newp;
 
 drop serial_no ;
@@ -22302,6 +22303,7 @@ s_covid
 /* used in abort statements */
 
 prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549
+p_vg1000 p_vl1000
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
@@ -22369,7 +22371,10 @@ if country = 'Malawi' then do;
       if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
       if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
       if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+	  if cald = 2021.0 and (prevalence1549 < 0.07  or prevalence1549 > 0.11 ) then remove=run;
+
 end;
+
 
 
 ***South Africa specific;     *JAS Feb24;
@@ -25203,6 +25208,7 @@ s_covid
 /* used in abort statements */
 
 prevalence1549  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw  prev_vg1000_1549
+p_vg1000 p_vl1000
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
