@@ -1,6 +1,6 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run 100 all;
+* run 105 all;
 * Matt local machine input;
 libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\test';
 %let tmpfilename = out;
@@ -944,7 +944,7 @@ cost_htn_link_voucher = .;
 cost_htn_screen_comm = .;
 cost_htn_visit1 = 0.005;
 cost_htn_visit2 = 0.010;
-%sample_uniform(cost_htn_visitInt, 0.5 1);
+%sample_uniform(cost_htn_visitInt, 0 0.5);
 cost_htn_drug1 = 0.0015;
 cost_htn_drug2 = 0.0015;
 cost_htn_drug3 = 0.0030;

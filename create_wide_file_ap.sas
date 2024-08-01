@@ -1,6 +1,6 @@
 
 * Matt's local machine input;
-libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105";
+libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\test";
 data hiv_synthesis_base(compress=binary); set a.out:;
 /*
 * Myriad input;
@@ -16,10 +16,11 @@ data hiv_synthesis_base; set a.concatenated_data; option FULLSTIMER;
 * proc contents data=a.hiv_synthesis_base;
 *	title "Compressed SAS Input Data"
 *run;
-/*
-proc freq; tables run; run;
-proc print; var run cald option prevalence1549 incidence1549; where run = 94069056 ; run;  
-*/
+
+/* proc freq; tables run; run; */
+
+  
+
 if run=. then delete; 
 proc sort data=hiv_synthesis_base; 
 by run cald option;run;
@@ -150,14 +151,27 @@ dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 htn_cost_scr = s_htn_cost_scr * 4 / 1000 * &sf; 
 htn_cost_drug = s_htn_cost_drug * 4 / 1000 * &sf; 
 htn_cost_clin = s_htn_cost_clin * 4 / 1000 * &sf; 
-	if option = 2 or option = 3 then htn_cost_clin = htn_cost_clin + 0.96; *Implementation cost for clinic training;
+	* QUESTION FOR ANDREW; if option = 2 or option = 3 then do htn_cost_clin = htn_cost_clin + 0.96;
+
+* looks OK if 0.96 million is the annual cost for fixed implementation ;
+
 htn_cost_cvd = s_htn_cost_cvd * 4 / 1000 * &sf; 
 htn_cost_total = (htn_cost_scr + htn_cost_drug + htn_cost_clin + htn_cost_cvd) ; 
 
 dhtn_cost_scr = s_dhtn_cost_scr * 4 / 1000 * &sf; 
 dhtn_cost_drug = s_dhtn_cost_drug * 4 / 1000 * &sf; 
-*dhtn_cost_clin = s_dhtn_cost_clin * 4 / 1000 * &sf; 
-	dhtn_cost_clin = htn_cost_clin * discount; *discounted clinic cost, including implementation costs; * discount is created in main model program and is in the output file;
+
+* I think need to comment this line out:;
+* dhtn_cost_clin = s_dhtn_cost_clin * 4 / 1000 * &sf; 
+
+	* QUESTION FOR ANDREW: Here I want to include fixed implementation costs as part of clinic costs. how do I account for discounting?;
+
+* I think this will work ;
+dhtn_cost_clin = htn_cost_clin * discount; * discount is created in main model program and is in the output file;
+
+*checks;
+proc print; var run cald option discount htn_cost_clin dhtn_cost_clin; run;
+
 dhtn_cost_cvd = s_dhtn_cost_cvd * 4 / 1000 * &sf; 
 dhtn_cost_total = dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd ; 
 
@@ -1424,7 +1438,7 @@ proc sort; by run;run;
   merge   wide_outputs  wide_par ;  
   by run;run;
 proc contents;run;
-
+proc print; run;
 
 ods html;
 
