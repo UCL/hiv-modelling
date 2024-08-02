@@ -11,6 +11,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data g; set  a.sa_aug24 ;
 
 
+
 proc sort data=g; 
 by run cald option;run;
 
@@ -373,6 +374,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 
 * n_prep;						n_prep = s_prep * &sf;
+* n_prep_w ;					n_prep_w = s_onprep_w * &sf;
 * n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * &sf;
 * p_hiv1_prep;					if s_prep gt 0 then p_hiv1_prep = s_hiv1_prep / s_prep ;
 
@@ -840,7 +842,7 @@ p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m
 p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m																								 
 prop_w_1549_sw  prop_w_1564_sw	prop_w_ever_sw prop_sw_program_visit
-prop_sw_hiv prop_w_1524_onprep prop_1564_hivneg_onprep prop_sw_onprep p_prep_adhg80
+prop_sw_hiv prop_w_1524_onprep prop_1564_hivneg_onprep prop_sw_onprep p_prep_adhg80  n_prep_w
 prevalence1549m prevalence1549w prevalence1549 
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 		
