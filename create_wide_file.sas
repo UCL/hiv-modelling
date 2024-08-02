@@ -1,6 +1,6 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\south_africa\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\south_africa\sa_out\";
 
 * libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\";
 

@@ -2,13 +2,14 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\south_africa\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\south_africa\sa_out\";
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
   set a.l_base_sa_aug24;
 
+if option=2 then option=1;
 
 
 * if sex_beh_trans_matrix_m ne 15 and sex_beh_trans_matrix_w ne 2 and sex_beh_trans_matrix_w ne 3 and sex_beh_trans_matrix_w ne 11;
@@ -121,8 +122,8 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  1   ;
-%let year_end = 2041.00 ;
+%let nfit =  2   ;
+%let year_end = 2034.00 ;
 run;
 proc sort;by cald option ;run;
 
@@ -192,9 +193,9 @@ run;
 
 
 
-data option_2;
+data option_1;
 set b;
-if option = 2 ;
+if option = 1 ;
 
 %let var =  
 
@@ -219,32 +220,32 @@ n_alive n_hiv  p_ep  p_newp_ge1_m   p_newp_ge1_w av_newp prev_vg1000_newp_m  pre
 
 
 ***transpose given name; *starts with %macro and ends with %mend;
-%macro option_2;
-%let p25_var = p25_&var_2;
-%let p75_var = p75_&var_2;
-%let p5_var = p5_&var_2;
-%let p95_var = p95_&var_2;
-%let p2p5_var = p2p5_&var_2;
-%let p97p5_var = p97p5_&var_2;
-%let p50_var = median_&var_2;
+%macro option_1;
+%let p25_var = p25_&var_1;
+%let p75_var = p75_&var_1;
+%let p5_var = p5_&var_1;
+%let p95_var = p95_&var_1;
+%let p2p5_var = p2p5_&var_1;
+%let p97p5_var = p97p5_&var_1;
+%let p50_var = median_&var_1;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
       
-proc transpose data=option_2 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
+proc transpose data=option_1 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
 data h&count;set h&count;***creates one dataset per variable;
-p25_&varb._2  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._2 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._2  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._2 = PCTL(95,of &varb.1-&varb.&nfit);
-p2p5_&varb._2  = PCTL(2.5,of &varb.1-&varb.&nfit);
-p97p5_&varb._2 = PCTL(97.5,of &varb.1-&varb.&nfit);
-p50_&varb._2 = median(of &varb.1-&varb.&nfit);
+p25_&varb._1  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._1 = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
+p2p5_&varb._1  = PCTL(2.5,of &varb.1-&varb.&nfit);
+p97p5_&varb._1 = PCTL(97.5,of &varb.1-&varb.&nfit);
+p50_&varb._1 = median(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._2 p95_&varb._2 p50_&varb._2 p25_&varb._2 p75_&varb._2 p2p5_&varb._2 p97p5_&varb._2;
+keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 p2p5_&varb._1 p97p5_&varb._1;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -253,7 +254,7 @@ run;
 %mend;
 
 
-%option_2;
+%option_1;
 run;
 
 
@@ -338,7 +339,7 @@ if cald=2017 then do; n_death_2059_m_obs_sa = 136433  ; n_death_2059_w_obs_sa = 
 if cald=2018 then do; n_death_2059_m_obs_sa = 132870  ; n_death_2059_w_obs_sa = 88730  ; end; 	
 
 
-%let start = 1990;
+%let start = 2018;
 
 
 
@@ -700,6 +701,8 @@ run;
 quit;
 
 
+/*
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 1524w";
@@ -831,6 +834,7 @@ band    x=cald lower=p5_incidence5564m__1 	upper=p95_incidence5564m__1  / transp
 run;
 quit;
 
+*/
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_vlsupp";
@@ -1063,6 +1067,10 @@ series  x=cald y=n_onart_obs_sa;
 
 run;quit;
 
+
+/*
+
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion on EFV";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -1123,6 +1131,8 @@ band    x=cald lower=p5_p_zdv_1 	upper=p95_p_zdv_1  / transparency=0.9 fillattrs
 
 run;quit;
 
+*/
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion on DOL";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -1137,6 +1147,9 @@ series  x=cald y=p50_p_dol_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_dol_1 	upper=p95_p_dol_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
+
+
+/*
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion on 3TC";
@@ -1182,6 +1195,9 @@ series  x=cald y=p50_p_nev_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_nev_1 	upper=p95_p_nev_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
+
+*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -1434,6 +1450,8 @@ run;quit;
 
 
 
+/*
+
 
 ods html;
 
@@ -1618,3 +1636,4 @@ ods html close;
 
 
 	
+*/
