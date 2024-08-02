@@ -18883,6 +18883,7 @@ end;
 
 
 ***South Africa specific;	*JAS Feb24;
+/*
 if country = 'South Africa' then do;
 	if cald = 2017.5 and (prevalence1549 < 0.166 or prevalence1549 > 0.246) then do;
 	  abort abend;
@@ -18891,6 +18892,7 @@ if country = 'South Africa' then do;
 	  abort abend;
 	end;
 end;
+*/
 
 ***Zim specific;			*JAS Feb24;
 if country = 'Zimbabwe' then do;
