@@ -11,6 +11,20 @@
 
 * ? get outputs so can also calculate dalys and costs specifically for those with uvl2, for a sensitivity analysis
 
+* aim for a bit less than 96% suppressed at baseline
+
+* lower dol resistance risk ?  or extend effect of nactive to still lower risk of resistance if 3.25, 3.5, 3.75 or 4 active drugs (in the context of perhaps
+even higher basic dol resistance risk) ?  or best probably just to decrease the newmut risk when nactive = 3 (perhaps sample the value)
+
+* consider changes to effect of vl meas alert (smaller effect, greater effect, less durable effect) - think just extend to 0.2 0.35 0.5 0.8
+
+* make sure have outputs to calculate Of all people living with HIV, percentage on ART more than 6 months and having current VL > 1000 copies/mL 
+
+* ? modify policies based on this comment: SH: In Africa, most programs don’t do any of these three. Many guidelines say switch them. But in actuality 
+they keep doing enhanced adherence counseling again and again and in a minority of patients finally decide on switching them (if genotype not available). 
+I don’t know of any countries that do not switch at all. For countries that have some genotyping available, they either switch based on results, or switch 
+everyone and genotype at the same time and then switch back to first line based on results.  
+
 
 
 
