@@ -2,11 +2,13 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\south_africa\sa_prep40_out\";
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\south_africa\sa_out\";
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
+* set a.l_base_sa_prep40_aug24;
   set a.l_base_sa_aug24;
 
 if option=2 then option=1;

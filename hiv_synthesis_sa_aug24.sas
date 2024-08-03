@@ -2163,17 +2163,15 @@ who may be dead and hence have caldate{t} missing;
 		eff_prob_prep_oral_b = prob_prep_oral_b;
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral;
 		eff_pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1;
-		if plw=1 then do;
-			prep_any_strategy=40;  * note this is just for de-bugging; * should be 16;
-			eff_date_prep_oral_intro=&year_interv;
+		prep_any_strategy=40;  * note this is just for de-bugging; * should be 16;
+		eff_date_prep_oral_intro=&year_interv;
 /*			if caldate{t}=&year_interv then do;*/
-				eff_pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;
+		eff_pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;
 /*			end;*/
 /*			eff_rate_test_startprep_any=0.2;*/
-			eff_prob_prep_oral_b=0.9;
-			eff_rate_choose_stop_prep_oral=0.01;
+		eff_prob_prep_oral_b=0.9;
+		eff_rate_choose_stop_prep_oral=0.01;
 /*			eff_prob_prep_any_restart_choice=0.5;	*/
-		end;
 	end;
 
 	*Option 3 is SQ + 	Injectable PrEP for AGYW [Zim O23];
