@@ -2164,7 +2164,7 @@ who may be dead and hence have caldate{t} missing;
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral;
 		eff_pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1;
 		if plw=1 then do;
-			prep_any_strategy=16;
+			prep_any_strategy=40;  * note this is just for de-bugging; * should be 16;
 			eff_date_prep_oral_intro=&year_interv;
 /*			if caldate{t}=&year_interv then do;*/
 				eff_pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;
@@ -4592,10 +4592,10 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(eff_date_prep_oral_intro, eff
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
+	if prep_any_strategy=40 then do;	* used in oral prep ms and cab-la resistance ms;	
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.01 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=5 then do;   
