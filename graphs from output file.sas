@@ -2,14 +2,14 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\south_africa\sa_prep40_out\";
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\south_africa\sa_out\";
+  libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\south_africa\sa_prep40_out\";
+* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\south_africa\sa_out\";
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-* set a.l_base_sa_prep40_aug24;
-  set a.l_base_sa_aug24;
+  set a.l_base_sa_prep40_aug24;
+* set a.l_base_sa_aug24;
 
 if option=2 then option=1;
 
@@ -124,7 +124,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  76  ;
+%let nfit =  102 ;
 %let year_end = 2034.00 ;
 run;
 proc sort;by cald option ;run;
