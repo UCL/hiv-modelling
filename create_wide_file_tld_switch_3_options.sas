@@ -2088,7 +2088,6 @@ run;
 ods html close;
 
 
-
 * note this result;
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  

@@ -1,29 +1,27 @@
 
 
 
+* consider changes to effect of vl meas alert (smaller effect, greater effect, less durable effect) - think just extend to 0.2 0.35 0.5 0.8
+
 * consider lower adh pattern but higher effect of meas alert ;
+
+* lower dol resistance risk ?  or extend effect of nactive to still lower risk of resistance if 3.25, 3.5, 3.75 or 4 active drugs (in the context of perhaps
+even higher basic dol resistance risk) ?  or best probably just to decrease the newmut risk when nactive = 3 (perhaps sample the value)
+
+* ? remove the increased risk of art interruption on darunavir for some runs 
+
+* aim for a bit less than 96% suppressed at baseline
+
+
 
 * get outputs for: of people that have experienced one viral load value > 1000 proportion with integrase inhibitor resistance ;
 
 * add outputs for adh x r_dol (ie actual adherence not drug level test) ;
 
-* ? remove the increased risk of art interruption on darunavir for some runs 
-
 * ? get outputs so can also calculate dalys and costs specifically for those with uvl2, for a sensitivity analysis
-
-* aim for a bit less than 96% suppressed at baseline
-
-* lower dol resistance risk ?  or extend effect of nactive to still lower risk of resistance if 3.25, 3.5, 3.75 or 4 active drugs (in the context of perhaps
-even higher basic dol resistance risk) ?  or best probably just to decrease the newmut risk when nactive = 3 (perhaps sample the value)
-
-* consider changes to effect of vl meas alert (smaller effect, greater effect, less durable effect) - think just extend to 0.2 0.35 0.5 0.8
 
 * make sure have outputs to calculate Of all people living with HIV, percentage on ART more than 6 months and having current VL > 1000 copies/mL 
 
-* ? modify policies based on this comment: SH: In Africa, most programs don’t do any of these three. Many guidelines say switch them. But in actuality 
-they keep doing enhanced adherence counseling again and again and in a minority of patients finally decide on switching them (if genotype not available). 
-I don’t know of any countries that do not switch at all. For countries that have some genotyping available, they either switch based on results, or switch 
-everyone and genotype at the same time and then switch back to first line based on results.  
 
 
 
@@ -563,14 +561,14 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.10	0.25	0.25	0.20	0.15	0.03	0.02) ; * tld_switch;
+								0.10	0.25	0.25	0.20	0.15	0.03	0.02) ; * tld_switch_an;
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.00 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
 							* reduced adherence in those with toxicity;
 * add_eff_adh_nnrti; 		add_eff_adh_nnrti=round(0.10* exp(rand('normal')*0.30),.01);	
 							* additional "effective" adh of nnrti due to longer half life;
-* adh_effect_of_meas_alert; %sample(adh_effect_of_meas_alert, 0.35 0.50 , 0.5 0.5);  * tld_switch (in core this is/was 0.35 0.70 0.90, 0.15 0.7 0.15);
+* adh_effect_of_meas_alert; %sample_uniform(adh_effect_of_meas_alert, 0.20 0.35 0.50 0.80);  * tld_switch_an (in core this is/was 0.35 0.70 0.90, 0.15 0.7 0.15);
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
@@ -9326,11 +9324,68 @@ if onart=0 and 0.25 <= tss_len <= 0.5 then do; tcur_tm1=0; nactive_tm1 = (1 + le
 
 
 
-* EFFECT OF NACTIVE >= 3 ART - on viral load / CD4 / resistance changes between t-1 and t;
+* EFFECT OF NACTIVE >= 3.5 ART - on viral load / CD4 / resistance changes between t-1 and t;
 
 * risk of new mutation(s) depends on latest viral load and effective adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive ge 3 - first 3 months ;
-	if t ge 2 and nactive_tm1 ge 3 then do;
+
+
+
+* tld_switch_an;
+
+	if t ge 2 and nactive_tm1 ge 3.5 then do;
+		if 0 <= tcur_tm1 < 0.25 then do;
+			 if adh_dl >= 0.8 then do;vl=vmax_tm1 -3.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180); newmut_tm1= 0.0005*((vl+vl_tm1)/2); end; 
+			 if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1=0.05*((vl+vl_tm1)/2); end;
+			 if adh_dl < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
+		end;
+* nactive ge 3 - 3-6 months; * ( cd4 change and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
+
+			if        adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.0005*((vl+vl_tm1)/2); end;
+			if 0.5 <= adh_dl_tm1 <  0.8 and adh_dl >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.0005*((vl+vl_tm1)/2); end;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
+
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl= 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7.5 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
+
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
+	
+		end;
+* nactive ge 3 - GE 6 months;
+		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
+			if adh_dl >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;  
+			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1=  0.0005*((vl+vl_tm1)/2); end;
+			if 0.5 <= adh_dl < 0.8 then do;vl=1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1=0.05*((vl+vl_tm1)/2); end;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
+		end;
+	end;
+
+
+* EFFECT OF NACTIVE 3 - 3.25 ART - on viral load / CD4 / resistance changes between t-1 and t;
+
+* risk of new mutation(s) depends on latest viral load and effective adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
+* nactive ge 3 - first 3 months ;
+
+
+	if t ge 2 and nactive_tm1 ge 3 and nactive_tm1 < 3.5 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
 			 if adh_dl >= 0.8 then do;vl=vmax_tm1 -3.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180); newmut_tm1= 0.002*((vl+vl_tm1)/2); end;   * _i20_ ;
