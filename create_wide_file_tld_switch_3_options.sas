@@ -4,18 +4,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_an_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_an_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_al;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_an;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 if option in (0, 2, 4);
 
@@ -24,7 +24,7 @@ run;
 */
 
 
-proc sort data=b.k_tld_switch_al; 
+proc sort data=b.k_tld_switch_an; 
 by run cald option;
 run;
 
@@ -33,7 +33,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_tld_switch_al ;
+set b.k_tld_switch_an ;
 
 
 if cald=2024   ;
@@ -52,7 +52,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_tld_switch_al sf;
+merge b.k_tld_switch_an sf;
 by run ;
 
 
@@ -1425,9 +1425,9 @@ run;
 
 
 
-data    b.l_tld_switch_al; set y;  
+data    b.l_tld_switch_an; set y;  
 
-data y ; set b.l_tld_switch_al; 
+data y ; set b.l_tld_switch_an; 
 
   options nomprint;
   option nospool;
@@ -1911,7 +1911,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_al_024    ; 
+  data  b.w_tld_switch_an_024    ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1919,10 +1919,10 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_al_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_an_out\";
 
 data b;
-set b.w_tld_switch_al_024   ;
+set b.w_tld_switch_an_024   ;
 
 * if 0.0   <= prevalence1549w_24 < 0.35;
 * if p_onart_vl1000_24 <= 0.98;
