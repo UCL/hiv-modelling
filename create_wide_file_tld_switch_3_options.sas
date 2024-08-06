@@ -29,7 +29,6 @@ by run cald option;
 run;
 
 
-
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
@@ -1403,7 +1402,7 @@ n_uvl2_only_tld_dolr  n_uvl2_no_prev_fail_dolr  n_uvl2_prev_fail_dolr  n_uvl2_el
 
 p_dol_start_nactive_p5_r p_dol_start_nactive_1p5_r p_dol_start_nactive_2_r  prob_prep_oral_b n_adh_meas_1_1 n_adh_meas_1_0 n_adh_meas_0_1 n_adh_meas_0_0
 
-dten_cost d3tc_cost ddar_cost ddol_cost  p_r_dol
+dten_cost d3tc_cost ddar_cost ddol_cost  p_r_dol   sens_res_test  date_prep_cab_intro
 ;
 
 
@@ -1776,7 +1775,7 @@ incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol  sens_res_test  n_ontld pref_prep_oral_beta_s1
-
+date_prep_cab_intro
 ;
 
 %macro par(p=);
@@ -1842,7 +1841,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=p_emerge_inm_res_cab_notpr); %par(p=pref_prep_oral_beta_s1);
 %par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);  %par(p=sens_res_test);
-
+%par(p=date_prep_cab_intro);
 
 
 data b.wide_par2; merge 
@@ -1901,7 +1900,7 @@ incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
  prob_prep_pop_wide_tld
 
-p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  sens_res_test  pref_prep_oral_beta_s1 
+p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  sens_res_test  pref_prep_oral_beta_s1  date_prep_cab_intro
 ;
 
 run;
@@ -2007,6 +2006,8 @@ if netdaly500_3 = min_netdaly500 then lowest_netdaly=3;
 if netdaly500_1 = min_netdaly500_1_2 then lowest_netdaly_1_2=1;
 if netdaly500_2 = min_netdaly500_1_2 then lowest_netdaly_1_2=2;
 
+lowest_netdaly_2_23 = 0; if netdaly500_2 < netdaly500_3 then lowest_netdaly_2_23 = 1;
+
 if ddaly_50y_1 = min_daly500     then lowest_ddaly     = 1;
 if ddaly_50y_2 = min_daly500     then lowest_ddaly     = 2;
 if ddaly_50y_3 = min_daly500     then lowest_ddaly     = 3;
@@ -2082,7 +2083,7 @@ proc means   data = b  n p50  p5  p95 ;
 var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    
 p_vis_tldsw_24   p_dol_24 p_iime_24 p_r_dol_24 n_iime_24 p_onart_cd4_l200_24  p_artexp_dol_pi_failed_24  s_o_dol_2nd_vlg1000_24  
-prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24  p_ai_no_arv_e_inm_24
+prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24  p_ai_no_arv_e_inm_24 p_dol_start_nactive_p5_r_24 p_dol_start_nactive_1p5_r_24  p_dol_start_nactive_2_r_24 
 ;
 run;
 ods html close;
@@ -2303,7 +2304,7 @@ ods html close;
 
 
 ods html;
-proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost   lowest_netdaly_1_2 ;
+proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost   lowest_netdaly_1_2  ;
 run;
 ods html close;
 
@@ -2335,6 +2336,7 @@ dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3
 dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2  dcost_non_aids_pre_death_50y_3   
 dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3 
 dcost_prep_50y_1 dcost_prep_50y_2  dcost_prep_50y_3  
+dcost_50y_1   dcost_50y_2   dcost_50y_3   
 ;
 run;
 ods html close;
@@ -2348,6 +2350,25 @@ ods html;
 proc glm; model d_netdaly500_2_1 =  n_death_hiv_24  ;  run; 
 
 ods html close;
+
+
+ods html;
+
+proc logistic; 
+
+model lowest_netdaly_2_23
+
+= 
+
+res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab  sens_res_test date_prep_cab_intro
+
+;
+
+run;
+
+ods html close; 
 
 
 
