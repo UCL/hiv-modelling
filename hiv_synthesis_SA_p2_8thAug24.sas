@@ -20022,23 +20022,68 @@ Inputs are:
 
 *** RUN PROGRAM; 
 
-*1) Run from caldate1 to intervention year;
+*Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
-* 2) Save dataset at this point;
+*Save dataset;
 data a ;  set r1 ;
+
+*Run from intervention year with different options;
+*Option 0 (SQ);
 data r1 ; set a ;
-
-* 3) Repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
-* 4) Repetition 2;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,0);
+*Option 1;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,1);
 
-* 5) Repetition 3;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,0);
+*Option 2;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,2);
+
+*Option 3 (SQ);
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,3);
+
+*Option 4;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,4);
+
+*Option 5;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,5);
+
+*Option 6;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,6);
+
+*Option 7;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,7);
+
+*Option 8;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,8);
+
+*Option 9;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,9);
+
+*Option 10;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,10);
+
+*Option 11;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,11);
+
+*Option 12;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,12);
+
+*Option 13;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,13);
 
 
 
