@@ -227,7 +227,7 @@ dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000;
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
-* ddar_cost = ddar_cost / 2;
+* ddar_cost = ddar_cost * 0.8;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
@@ -1957,7 +1957,7 @@ d_n_dead_hivrel_onart_1y_2_1 = n_dead_hivrel_onart_1y_2 - n_dead_hivrel_onart_1y
 d_n_dead_hivrel_onart_1y_3_1 = n_dead_hivrel_onart_1y_3 - n_dead_hivrel_onart_1y_1;
 
 * for sensitivity analysis;
-* dres_cost_50y_2 = dres_cost_50y_2 * 1.5 ;
+* dres_cost_50y_2 = dres_cost_50y_2 * 0.5 ;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -2142,6 +2142,18 @@ n_dead_hivrel_onart_10y_1 n_dead_hivrel_onart_10y_2 n_dead_hivrel_onart_10y_3
 p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 
 p_ai_no_arv_e_inm_10y_1 p_ai_no_arv_e_inm_10y_2 p_ai_no_arv_e_inm_10y_3
 n_incident_r_dol_10y_1 n_incident_r_dol_10y_2 n_incident_r_dol_10y_3 
+;
+run;
+ods html close;
+
+
+ods html;
+proc means  data = b n p50 p5 p95 mean lclm uclm ;  
+var 
+prop_r_dol_ge_p5_uvl2_1y_1 prop_r_dol_ge_p5_uvl2_1y_2 prop_r_dol_ge_p5_uvl2_1y_3
+prop_r_dol_ge_p5_uvl21_1y_1 prop_r_dol_ge_p5_uvl21_1y_2 prop_r_dol_ge_p5_uvl21_1y_3 
+prop_r_dol_ge_p5_uvl22_1y_1 prop_r_dol_ge_p5_uvl22_1y_2 prop_r_dol_ge_p5_uvl22_1y_3 
+prop_r_dol_ge_p5_uvl23_1y_1 prop_r_dol_ge_p5_uvl23_1y_2 prop_r_dol_ge_p5_uvl23_1y_3 
 ;
 run;
 ods html close;
@@ -2354,9 +2366,8 @@ ods html close;
 
 ods html;
 
-proc logistic; 
-
-model lowest_netdaly_2_23
+/* proc logistic;  model lowest_netdaly_2_23 */
+   proc glm; model d_netdaly500_2_1 
 
 = 
 
@@ -2369,6 +2380,21 @@ incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral
 run;
 
 ods html close; 
+
+
+
+ods html;
+
+proc glm; model d_netdaly500_2_3 =
+
+prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
+p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 / solution ;
+
+run;
+
+ods html close;
+
+
 
 
 
