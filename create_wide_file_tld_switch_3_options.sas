@@ -2092,7 +2092,8 @@ ods html close;
 * note this result;
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var p_dol_start_nactive_p5_r_1y_3 p_dol_start_nactive_1p5_r_1y_3  p_dol_start_nactive_2_r_1y_3 ;
+var p_dol_start_nactive_p5_r_1y_3  p_dol_start_nactive_1p5_r_1y_3  p_dol_start_nactive_2_r_1y_3
+;
 run;
 ods html close;
 
@@ -2147,16 +2148,6 @@ run;
 ods html close;
 
 
-ods html;
-proc means  data = b n p50 p5 p95 mean lclm uclm ;  
-var 
-prop_r_dol_ge_p5_uvl2_1y_1 prop_r_dol_ge_p5_uvl2_1y_2 prop_r_dol_ge_p5_uvl2_1y_3
-prop_r_dol_ge_p5_uvl21_1y_1 prop_r_dol_ge_p5_uvl21_1y_2 prop_r_dol_ge_p5_uvl21_1y_3 
-prop_r_dol_ge_p5_uvl22_1y_1 prop_r_dol_ge_p5_uvl22_1y_2 prop_r_dol_ge_p5_uvl22_1y_3 
-prop_r_dol_ge_p5_uvl23_1y_1 prop_r_dol_ge_p5_uvl23_1y_2 prop_r_dol_ge_p5_uvl23_1y_3 
-;
-run;
-ods html close;
 
 
 ods html;
@@ -2224,6 +2215,7 @@ n_adh_meas_0_0_10y_1 n_adh_meas_0_0_10y_2 n_adh_meas_0_0_10y_3
 run;
 
 ods html close;
+
 
 
 
@@ -2316,7 +2308,7 @@ ods html close;
 
 
 ods html;
-proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost   lowest_netdaly_1_2  ;
+proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost   lowest_netdaly_1_2  lowest_netdaly_2_23 ;
 run;
 ods html close;
 
@@ -2367,9 +2359,10 @@ ods html close;
 ods html;
 
 /* proc logistic;  model lowest_netdaly_2_23 */
-   proc glm; model d_netdaly500_2_1 
+   proc glm; model d_netdaly500_2_3 
 
 = 
+
 
 res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
 rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
@@ -2388,13 +2381,11 @@ ods html;
 proc glm; model d_netdaly500_2_3 =
 
 prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
-p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 / solution ;
+p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 p_dol_start_nactive_2_r_1y_3 / solution ;
 
 run;
 
 ods html close;
-
-
 
 
 
