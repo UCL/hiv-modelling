@@ -227,7 +227,7 @@ dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000;
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
-* ddar_cost = ddar_cost * 0.8;
+  ddar_cost = ddar_cost * 0.71 ;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
@@ -1426,9 +1426,9 @@ run;
 
 
 
-data    b.l_tld_switch_an; set y;  
+data    b.l_tld_switch_an_darcost; set y;  
 
-data y ; set b.l_tld_switch_an; 
+data y ; set b.l_tld_switch_an_darcost; 
 
   options nomprint;
   option nospool;
