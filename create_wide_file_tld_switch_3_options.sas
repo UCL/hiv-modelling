@@ -1959,7 +1959,7 @@ d_n_dead_hivrel_onart_1y_2_1 = n_dead_hivrel_onart_1y_2 - n_dead_hivrel_onart_1y
 d_n_dead_hivrel_onart_1y_3_1 = n_dead_hivrel_onart_1y_3 - n_dead_hivrel_onart_1y_1;
 
 * for sensitivity analysis;
-  dres_cost_50y_2 = dres_cost_50y_2 * 0.5 ;
+* dres_cost_50y_2 = dres_cost_50y_2 * 0.5 ;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -2307,6 +2307,7 @@ d_dcost_50y_1_3 d_ddaly_50y_1_3
 d_dcost_50y_2_3 d_ddaly_50y_2_3
 ;
 * where prop_r_dol_ge_p5_uvl2_24 < 0.05;
+* where adh_effect_of_meas_alert = 0.8;
 run;
 ods html close;
 
@@ -2367,10 +2368,13 @@ ods html;
 
 = 
 
+adh_effect_of_meas_alert
 
+/*
 res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
 rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
 incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab  sens_res_test date_prep_cab_intro
+*/
 
 ;
 
