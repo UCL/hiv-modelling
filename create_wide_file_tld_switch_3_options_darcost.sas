@@ -1912,7 +1912,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_an_024    ; 
+  data  b.w_tld_switch_an_darcost_024    ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1923,7 +1923,7 @@ proc sort; by run;run;
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_an_out\";
 
 data b;
-set b.w_tld_switch_an_024   ;
+set b.w_tld_switch_an_darcost_024   ;
 
   if 0.0005 <= prop_r_dol_ge_p5_uvl2_24 < 0.35;
   if run le 980648583  ;
@@ -1959,7 +1959,7 @@ d_n_dead_hivrel_onart_1y_2_1 = n_dead_hivrel_onart_1y_2 - n_dead_hivrel_onart_1y
 d_n_dead_hivrel_onart_1y_3_1 = n_dead_hivrel_onart_1y_3 - n_dead_hivrel_onart_1y_1;
 
 * for sensitivity analysis;
-* dres_cost_50y_2 = dres_cost_50y_2 * 1.5 ;
+  dres_cost_50y_2 = dres_cost_50y_2 * 0.5  ;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
