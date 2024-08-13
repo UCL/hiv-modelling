@@ -9,7 +9,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_ac   ;
+  set a.l_base_kenya_af_options   ;
 
 
 p_onart_vl1000_all = .;
