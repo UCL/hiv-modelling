@@ -657,9 +657,19 @@ end;
 * MENS HEALTH CLINICS - modelled as a percentage of men who attend a men only health clinic. These men have reduced attrition on ART compared to 
 	men who initiated care at other clinics;	*JAS Mar2024;
 * mens_clinics;				mens_clinics = 0;
-* prop_attend_mens_clinic;	prop_attend_mens_clinic = 0.05;		* 5% of men aged 15+ access care via men only health clinics;
+* prop_attend_mens_clinic;	prop_attend_mens_clinic = 0.15;		* 15% of men aged 15+ access care via men only health clinics;
 * rel_attr_mens_clinic;		rel_attr_mens_clinic = 0.71;		* HR = 0.71 (Cassidy et al AIDS Behav 2022);
 
+* PEER NAVIGATORS - modelled as a percentage of adults who will receive the intervention and have improved ART retention if they become HIV-positive 
+	and start ART;	*JAS Aug24;
+* peer_navigators;			peer_navigators = 0;
+* prop_peer_navigator;		prop_peer_navigator = 0.15;			* 15% of adults aged 15+ will receive the peer navigator intervention;
+* rel_retention_peer_nav;	rel_retention_peer_nav = 1.78;		* OR = 1.78 (Steward et al JIAS 2021);
+
+* U=U MESSAGING - modelled as a percentage of adults men who will receive the intervention and have an increased HIV testing rate;	*JAS Aug24;
+* u_u_messaging;			u_u_messaging = 0;
+* prop_receive_u_u;			prop_receive_u_u = 0.15;			* 15% of adult males aged 15+ will receive the U=U messaging intervention;
+* rel_incr_testing_u_u;		rel_incr_testing_u_u = 1.89;		* OR = 1.89 (Smith et al AIDS and Behavior 2021);
 
 
 * CIRCUMCISION;
@@ -1790,6 +1800,9 @@ eff_prob_vl_meas_done = prob_vl_meas_done;
 * define effective pr_switch_line;
 eff_pr_switch_line = pr_switch_line;
 
+* define effective prep_any_strategy;			*JAS Aug24;
+eff_prep_any_strategy = prep_any_strategy;
+
 * define effective date_prep_xxx_intro variables;		*JAS Jul24;
 eff_date_prep_oral_intro = date_prep_oral_intro;
 eff_date_prep_inj_intro = date_prep_inj_intro;
@@ -1844,7 +1857,14 @@ eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
 eff_rate_persist_sti=rate_persist_sti;
 sw_program_visit=0;
 
+* eff VMMC variables;			*JAS Aug24;
+eff_circ_red_10_14 = circ_red_10_14;
+eff_circ_inc_15_19 = circ_inc_15_19;
+eff_circ_red_20_30 = circ_red_20_30;
+eff_circ_red_30_50 = circ_red_30_50;
+
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
+
 
 * ADHERENCE PATTERN;
 
@@ -2023,6 +2043,19 @@ if gender=1 then do;
 	attend_mens_clinic = 0;
 	if rand('uniform')<prop_attend_mens_clinic then attend_mens_clinic = 1;
 end;
+
+* ACCESS TO PEER NAVIGATORS;			*JAS Aug24;
+* Assigned regardless of age, adults may access peer navigators at 15+;
+access_peer_navigator = 0;
+if rand('uniform')<prop_peer_navigator then access_peer_navigator = 1;
+
+* U=U MESSAGING;						*JAS Aug24;
+if gender=1 then do; 
+	receive_u_u=0;
+	if rand('uniform')<prop_receive_u_u then receive_u_u = 1;
+end;
+
+
 
 hiv=0;
 nip=0;
@@ -2210,7 +2243,6 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 * INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
-mihpsa_params_set_in_options=0;				* JAS Oct23;
 
 if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
@@ -2235,89 +2267,72 @@ who may be dead and hence have caldate{t} missing;
 	*Option 13 is SQ + 	Condom distribution - condom scale up [use CMMC?];
 
 
-	if option in (99 1 2 3 4 5 6 7 8 9 10 11 12 13) then do;
-		mihpsa_params_set_in_options=1;		* Marker to prevent MIHPSA parameters from being overwritten JAS Oct23;
 
-	end;
-
-	*Option 99 is Minimal;
-	if option = 99 then do;
-
-		* !!! CHECK WHICH INTERVENTIONS TO SCALE BACK FROM PHASE I CODE - if any !!! - JAS Apr24;
-		*Including: ANC HIV testing/PMTCT, HIV patient care, universal ART eligibility, including CD4 before ART start and VL monitoring;
-		*Dont need Minimal for MIHPSA SA Phase II;
-
-	end;
- 
 	* Option 1 is SQ +	Dapivirine ring for adolescent girls and young women 15 to 24 years (AGYW) [Zim O19];
 	* Additive to SQ - ie add DPV for AGYW to existing PrEP modalities;	*JAS Jul24;
 	if option = 1 then do; 
-		eff_date_prep_vr_intro=date_prep_vr_intro;						* Reset to original values when agyw ne 1; 
+		* Reset to original values when agyw ne 1; 
+		eff_prep_any_strategy=prep_any_strategy;
+		eff_date_prep_vr_intro=date_prep_vr_intro;
 		eff_prob_prep_vr_b = prob_prep_vr_b;
 		eff_rate_choose_stop_prep_vr = rate_choose_stop_prep_vr;
 		eff_pref_prep_vr_beta_s1 = pref_prep_vr_beta_s1;
 		if agyw = 1 then do;
-			prep_any_strategy=3;										*********** QUERY why does this revert to dafault when agyw ne 1? **********;
+			eff_prep_any_strategy=3;
 			eff_date_prep_vr_intro=&year_interv;
-/*			if caldate{t}=&year_interv then do;*/
-				eff_pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3;		* MIHPSA SA matched to MIHPSA Zim values to increase preference;
-/*			end;*/
-/*			eff_rate_test_startprep_any=0.4;*/							* Dont change as also affects other prep types;
+			eff_pref_prep_vr_beta_s1=pref_prep_oral_beta_s1+0.5;		* 14thAug: DPV preference made additive to try to increase preference further;
 			eff_prob_prep_vr_b=0.9;										* MIHPSA SA matched to MIHPSA Zim values to increase VR uptake;
 			eff_rate_choose_stop_prep_vr=0.01;							* MIHPSA SA matched to MIHPSA Zim values to reduce VR stoppage;
-/*			eff_prob_prep_any_restart_choice=0.5;	*/					* Dont change as also affects other prep types;
 		end;
 	end;
 
 	*Option 2 is SQ + 	Oral PrEP for pregnant and breastfeeding women [Zim O18];
 	* Additive to SQ - ie add oral PrEP for PLW to existing PrEP modalities;	*JAS Jul24;
 	if option = 2 then do;
-		eff_date_prep_oral_intro=date_prep_oral_intro;					* Reset to original values when plw ne 1; 
+		* Reset to original values when plw ne 1; 
+		eff_prep_any_strategy=prep_any_strategy;
+		eff_date_prep_oral_intro=date_prep_oral_intro;
 		eff_prob_prep_oral_b = prob_prep_oral_b;
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral;
 		eff_pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1;
 		if plw=1 then do;
-			prep_any_strategy=16;
+			eff_prep_any_strategy=16;
 			eff_date_prep_oral_intro=&year_interv;
-/*			if caldate{t}=&year_interv then do;*/
-				eff_pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;
-/*			end;*/
-/*			eff_rate_test_startprep_any=0.2;*/
+				eff_pref_prep_oral_beta_s1=pref_prep_oral_beta_s1+0.5;	* 14thAug: Oral ring preference made additive to try to increase preference further;
 			eff_prob_prep_oral_b=0.9;
 			eff_rate_choose_stop_prep_oral=0.01;
-/*			eff_prob_prep_any_restart_choice=0.5;	*/
 		end;
 	end;
 
 	*Option 3 is SQ + 	Injectable PrEP for AGYW [Zim O23];
 	* Additive to SQ - ie add inj PrEP for AGYW to existing PrEP modalities;	*JAS Jul24;
 	if option = 3 then do;
-		eff_date_prep_inj_intro=date_prep_inj_intro;					* Reset to original values when agyw ne 1; 
+		* Reset to original values when agyw ne 1;
+		eff_prep_any_strategy=prep_any_strategy;
+		eff_date_prep_inj_intro=date_prep_inj_intro; 
 		eff_prob_prep_inj_b = prob_prep_inj_b;
 		eff_rate_choose_stop_prep_inj = rate_choose_stop_prep_inj;
 		eff_pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1;
 		if agyw=1 then do;
-			prep_any_strategy=3;
+			eff_prep_any_strategy=3;
 			eff_date_prep_inj_intro=&year_interv;
-/*			if caldate{t}=&year_interv then do;*/
-				eff_pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3;
-/*			end;*/
-/*			eff_rate_test_startprep_any=0.4;*/
+			eff_pref_prep_inj_beta_s1=pref_prep_oral_beta_s1+0.5;		* 14thAug: Oral ring preference made additive to try to increase preference further;
 			eff_prob_prep_inj_b=0.9;
 			eff_rate_choose_stop_prep_inj=0.01;
-/*			eff_prob_prep_any_restart_choice=0.5;*/
 		end;
 	end;
 
 	*Option 4 is SQ + 	Injectable PrEP switching 30% from oral PrEP to Injectible long acting PrEP [[Zim O0 + change eff_date_prep_inj_intro];
-	* !!! CHECK OUTCOMES FOR THIS OPTION !!!;
 	if option = 4 then do;
-		date_prep_inj_intro=&year_interv;
-		eff_pref_prep_inj_beta_s1=pref_prep_oral_beta_s1+0.5;			*********** QUERY check to see how many oral prep users swap *****;
+		eff_date_prep_inj_intro=&year_interv;							* Updated date_prep_inj_intro to eff_date_prep_inj_intro JAS 10th Aug;
+/*		eff_pref_prep_inj_beta_s1=pref_prep_oral_beta_s1+0.5;			* This method results in many more CAB-LA in intervention arm than were oral PrEP users in SQ;*/
+		*Default pref_prep_inj_beta_s1=pref_prep_oral_beta_s1+0.3;	
 	end;
 
 	*Option 5 is SQ + 	U = U messaging [new for SA];
-	if option = 5 then do;
+	if option = 5 then do;												*JAS Aug24;
+	* !!! CHECK OUTCOMES FOR THIS OPTION !!!;
+		u_u_messaging=1;
 	end;
 
 	*Option 6 is SQ + 	Self-test distribution in health facilities [Zim O2];
@@ -2343,25 +2358,30 @@ who may be dead and hence have caldate{t} missing;
 
 	*Option 9 is SQ + 	VMMC for males aged 10-14 [coded but not in Zim MIHPSA];
 	if option = 9 then do;
-		circ_inc_rate_year_i=0;
-		rel_prob_circ_mihpsa_10_14=2;
+		eff_circ_red_10_14 = circ_red_10_14*5;
 	end;
 
 	*Option 10 is SQ + 	VMMC for males aged 15+ [Zim O14];
 	if option = 10 then do;
-		circ_inc_rate_year_i=0;
-		rel_prob_circ_mihpsa_15_49=2;
+		eff_circ_inc_15_19 = circ_inc_15_19*5;
+		eff_circ_red_20_30 = circ_red_20_30*5;
+		eff_circ_red_30_50 = circ_red_30_50*5;
 	end;
 
 	*Option 11 is SQ + 	Community-based peer navigators to support ART linkage & retention [new for SA];
 	if option = 11 then do;
+	* !!! CHECK OUTCOMES FOR THIS OPTION !!!;
+		peer_navigators=1;
 	end;
 
 	*Option 12 is SQ + 	Point-of-care viral load testing [coded but not in Zim MIHPSA];
 	if option = 12 then do;
+	* !!! CHECK OUTCOMES FOR THIS OPTION !!!;
+		poc_vl_monitoring_i = 1;	*This switches on vm_format=4 which is wb poc. compare to vm_format=3;	*JAS Aug24;
 	end;
 
 	*Option 13 is SQ + 	Condom distribution - condom scale up [use CMMC?];
+	*Cannot code this?;
 	if option = 13 then do;
 	end;
 
@@ -2388,25 +2408,25 @@ prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 
 * Oral prep scale-up over 4 years;
 if caldate{t} < eff_date_prep_oral_intro then eff_prob_prep_oral_b = 0;
-else if eff_date_prep_oral_intro <= caldate{t} < (eff_date_prep_oral_intro + dur_prep_oral_scaleup) and mihpsa_params_set_in_options ne 1
+else if eff_date_prep_oral_intro <= caldate{t} < (eff_date_prep_oral_intro + dur_prep_oral_scaleup)
 	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (eff_date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
-else if caldate{t} >= (eff_date_prep_oral_intro + dur_prep_oral_scaleup) and mihpsa_params_set_in_options ne 1
+else if caldate{t} >= (eff_date_prep_oral_intro + dur_prep_oral_scaleup)
 	then eff_prob_prep_oral_b = prob_prep_oral_b;
 
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
 * Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
 if 		. < caldate{t} < eff_date_prep_inj_intro or eff_date_prep_inj_intro=. then eff_prob_prep_inj_b = 0;
-else if . < eff_date_prep_inj_intro <= caldate{t} < (eff_date_prep_inj_intro + dur_prep_inj_scaleup) and mihpsa_params_set_in_options ne 1
+else if . < eff_date_prep_inj_intro <= caldate{t} < (eff_date_prep_inj_intro + dur_prep_inj_scaleup)
 	then eff_prob_prep_inj_b = 0.05 +  (  (prob_prep_inj_b-0.05) * ( 1 -    (eff_date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
-else if caldate{t} >= (eff_date_prep_inj_intro + dur_prep_inj_scaleup) and mihpsa_params_set_in_options ne 1
+else if caldate{t} >= (eff_date_prep_inj_intro + dur_prep_inj_scaleup)
 	then eff_prob_prep_inj_b = prob_prep_inj_b;
 
 * DPV VR prep scale-up; * dpv-vr JAS Sep2021;
 if 		. < caldate{t} < eff_date_prep_vr_intro or eff_date_prep_vr_intro =. then eff_prob_prep_vr_b = 0;
-else if . < eff_date_prep_vr_intro <= caldate{t} < (eff_date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_params_set_in_options ne 1
+else if . < eff_date_prep_vr_intro <= caldate{t} < (eff_date_prep_vr_intro + dur_prep_vr_scaleup)
 	then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (eff_date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
-else if caldate{t} >= (eff_date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_params_set_in_options ne 1
+else if caldate{t} >= (eff_date_prep_vr_intro + dur_prep_vr_scaleup)
 	then eff_prob_prep_vr_b = prob_prep_vr_b;
 
 
@@ -2581,10 +2601,8 @@ if caldate{t} = &year_interv then do;
 	* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_any_yr_i = 1; 
-							if mihpsa_params_set_in_options ne 1 then do;
-								eff_rate_test_startprep_any = 0.9; 
-								eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
-							end;
+							eff_rate_test_startprep_any = 0.9; 
+							eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
 						end;		
 
 	* incr_r_test_restartprep_any_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
@@ -2597,24 +2615,20 @@ if caldate{t} = &year_interv then do;
 						decr_r_choose_stopprep_oral_yr_i = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stopprep_oral_yr_i = 1; 
-							if mihpsa_params_set_in_options ne 1 then do;
-								eff_rate_choose_stop_prep_oral = 0.03 ; 
-								eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
-							end;
+							eff_rate_choose_stop_prep_oral = 0.03 ; 
+							eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
 						end;		
 
 	* inc_p_prep_any_restart_choi_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_p_prep_any_restart_choi_yr_i = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_any_restart_choi_yr_i = 1; 
-							if mihpsa_params_set_in_options ne 1 then do;
-								eff_prob_prep_any_restart_choice = 0.8 ; 
-								eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
-							end;
+							eff_prob_prep_any_restart_choice = 0.8 ; 
+							eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
 						end;		
 
-	* prep_any_strategy;
-						if mihpsa_params_set_in_options ne 1 then prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
+	* eff_prep_any_strategy;
+						eff_prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
 
 	end;
 
@@ -2622,7 +2636,7 @@ if caldate{t} = &year_interv then do;
 	*(impact of changes are coded below the options code);
 
 	*increase in testing;
-	if mihpsa_params_set_in_options ne 1 then incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022, 4=no testing in the general population;
+	incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022, 4=no testing in the general population;
 
 	*decrease in the proportion of people hard to reach;
 	decr_hard_reach_year_i = 0;
@@ -2631,16 +2645,16 @@ if caldate{t} = &year_interv then do;
 	decr_prob_loss_at_diag_year_i = 0;
 
 	*absence CD4;
-	if mihpsa_params_set_in_options ne 1 then absence_cd4_year_i = 0;
+	absence_cd4_year_i = 0;
 
 	*absence VL;
-	if mihpsa_params_set_in_options ne 1 then absence_vl_year_i = 0;
+	absence_vl_year_i = 0;
 
 	* crag cd4 < 200;
-	if mihpsa_params_set_in_options ne 1 then crag_cd4_l200 = 0;
+	crag_cd4_l200 = 0;
 
 	* tblam cd4 < 200;
-	if mihpsa_params_set_in_options ne 1 then tblam_cd4_l200 = 0;
+	tblam_cd4_l200 = 0;
 
 	*decrease in the rate of being lost;
 	decr_rate_lost_year_i = 0;
@@ -2685,10 +2699,10 @@ if caldate{t} = &year_interv then do;
 	ten_is_taf_year_i = 0; *coded within core (not below options code);
 
 	*increase in rates of circumcision;
-	if mihpsa_params_set_in_options ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
+	circ_inc_rate_year_i = 0; *variations coded in circumcision section;
 
 	*increase in condom use;
-	if mihpsa_params_set_in_options ne 1 then condom_change_year_i = 0; *coded within core (not below options code);
+	condom_change_year_i = 0; *coded within core (not below options code);
 
 	*population wide tld;
 	pop_wide_tld = 0;
@@ -2820,13 +2834,11 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
-		if mihpsa_params_set_in_options ne 1 then do;
-			if prep_any_willing=1 then eff_rate_test_startprep_any=1;
-			eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
-			eff_rate_choose_stop_prep_inj=0.05;
-			eff_rate_choose_stop_prep_vr=0.05;
-			eff_prob_prep_any_restart_choice=0.7;
-		end;
+		if prep_any_willing=1 then eff_rate_test_startprep_any=1;
+		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
+		eff_rate_choose_stop_prep_inj=0.05;
+		eff_rate_choose_stop_prep_vr=0.05;
+		eff_prob_prep_any_restart_choice=0.7;
 		* lapr and dpv-vr - consider if any needs to change ;
 		end;
 	end;
@@ -2841,13 +2853,11 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		eff_sw_higher_int = sw_higher_int;
 		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-		if mihpsa_params_set_in_options ne 1 then do;
-			eff_rate_test_startprep_any=rate_test_startprep_any;
-			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
-			eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;	*due to availability of inj prep;	
-			eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
-			eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-		end;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
+		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;	*due to availability of inj prep;	
+		eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
 		* lapr and dpv-vr - consider if any needs to change ;
 end; 
 
@@ -2971,7 +2981,7 @@ end;
 
 * pop_wide_tld_year_i;	
 if pop_wide_tld_year_i = 1 then do;	* lapr and dpv-vr - this is using tld as prep so no change;
-	pop_wide_tld = 1; if mihpsa_params_set_in_options ne 1 then prep_any_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
+	pop_wide_tld = 1; eff_prep_any_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
 	higher_future_prep_oral_cov = 0;  * this is instead of current type of prep program;
 end;
 
@@ -3075,6 +3085,11 @@ if country = 'Zimbabwe' then do;
 	if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;
 end;
 
+* U=U messaging intervention;
+if u_u_messaging=1 and receive_u_u=1 then do;
+	rate_1sttest=rate_1sttest*rel_incr_testing_u_u;
+	rate_reptest=rate_reptest*rel_incr_testing_u_u;
+end;
 
 * ts1m;
 * rate_1sttest = 1 - (1 - rate_1sttest )**(1/3) ;
@@ -3108,12 +3123,12 @@ if mc_int < caldate{t} le 2013 then prob_circ = 0 + (caldate{t}-mc_int)*circ_inc
 end;
 
 if 20 le age lt 30 then do;
-if mc_int < caldate{t} le 2013 then prob_circ = 0 + (caldate{t}-mc_int)*circ_inc_rate *circ_red_20_30;
+if mc_int < caldate{t} le 2013 then prob_circ = 0 + (caldate{t}-mc_int)*circ_inc_rate *eff_circ_red_20_30;
 end;
 
 
 if 30 le age lt 50 then do;
-if mc_int < caldate{t} le 2013 then prob_circ = (0 + (caldate{t}-mc_int)*circ_inc_rate) * circ_red_30_50;
+if mc_int < caldate{t} le 2013 then prob_circ = (0 + (caldate{t}-mc_int)*circ_inc_rate) * eff_circ_red_30_50;
 end;
 
 
@@ -3122,11 +3137,11 @@ if 2013 < caldate{t} le 2019 then prob_circ =  ((2013-mc_int)*circ_inc_rate) + (
 end;
 
 if 20 le age lt 30 then do;
-if 2013 < caldate{t} le 2019 then prob_circ =  (((2013-mc_int)*circ_inc_rate)*circ_red_20_30) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013)*circ_red_20_30;
+if 2013 < caldate{t} le 2019 then prob_circ =  (((2013-mc_int)*circ_inc_rate)*eff_circ_red_20_30) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013)*eff_circ_red_20_30;
 end;
 
 if 30 le age lt 50 then do;
-if 2013 < caldate{t} le 2019 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+if 2013 < caldate{t} le 2019 then prob_circ = (((2013-mc_int)*circ_inc_rate) * eff_circ_red_30_50) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013) * eff_circ_red_30_50;
 end;
 
 end;
@@ -3135,31 +3150,31 @@ end;
 * this is the default if note circ_inc_rate_year_i = .  - no change in circ policy ;
 if t ge 2 and 2019 < caldate{t} <=2023 and circ_inc_rate_year_i=0         then do;
 if  10 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
-if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
-if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * eff_circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * eff_circ_red_20_30;
+if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * eff_circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * eff_circ_red_30_50;
 end;
 
 **change years to year_interv once happy with runs;
 if t ge 2 and 2023 < caldate{t} < 2030 and circ_inc_rate_year_i=0         then do;
-if  10 le age lt 14 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_10_14;
-if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_inc_15_19;
-if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_20_30;
-if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_30_50;
+if  10 le age lt 14 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * eff_circ_red_10_14;
+if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * eff_circ_inc_15_19;
+if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * eff_circ_red_20_30;
+if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * eff_circ_red_30_50;
 end;
 
 if t ge 2 and caldate{t} >= 2030 and circ_inc_rate_year_i=0         then do;
-if  10 le age lt 14 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_10_14;
-if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_inc_15_19;
-if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_20_30;
-if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_30_50;
+if  10 le age lt 14 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * eff_circ_red_10_14;
+if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * eff_circ_inc_15_19;
+if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * eff_circ_red_20_30;
+if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * eff_circ_red_30_50;
 end;
 
 * note circ_inc_rate_year_i = 1 means circ stops in 10-15 year olds;
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
 if  age lt 15 then prob_circ =0;
-if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013)*circ_inc_15_19;
-if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
-if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013)*eff_circ_inc_15_19;
+if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * eff_circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * eff_circ_red_20_30;
+if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * eff_circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * eff_circ_red_30_50;
 end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 2 then do; *option=2 - no further circ;
@@ -3169,27 +3184,21 @@ end;
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
 if age lt 15 then prob_circ =0;
 if 15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
-if 20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
-if 30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+if 20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * eff_circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * eff_circ_red_20_30;
+if 30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * eff_circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * eff_circ_red_30_50;
 end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*option=4 - no circ in under 15s, no increased rate in 15-19yo, stop VMMC after 5 years;
 	if caldate{t} <= 2026.5 then do;
       if age lt 15 then prob_circ =0;
       if 15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
-	  if 20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
-	  if 30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+	  if 20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * eff_circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * eff_circ_red_20_30;
+	  if 30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * eff_circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * eff_circ_red_30_50;
     end;
 
     if caldate{t} > 2026.5 then do;
       prob_circ = 0;test_link_circ_prob=0;
     end;
-end;
-
-* MIHPSA interventions; 	*JAS Apr24;
-if mihpsa_params_set_in_options=1 and t ge 2 and caldate{t} >= &year_interv and gender=1 then do;
-	if 10 <= age < 14 then prob_circ = prob_circ*rel_prob_circ_mihpsa_10_14;
-	if 15 <= age < 50 then prob_circ = prob_circ*rel_prob_circ_mihpsa_15_49;
 end;
 
 
@@ -4677,19 +4686,19 @@ prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and differ
 
 * note this code below changed from kzn_prep program as only need newp ge 1 for sw to be eligible;
 
-* lapr and dpv-vr - changed name from prep_strategy to prep_any_strategy - will apply to all types of PrEP and pref_prep_xx decides which is taken (if all are available) ;
+* lapr and dpv-vr - changed name from prep_strategy to eff_prep_any_strategy - will apply to all types of PrEP and pref_prep_xx decides which is taken (if all are available) ;
 
 
 if t ge 2 and (registd ne 1) and caldate{t} >= min(eff_date_prep_oral_intro, eff_date_prep_inj_intro, eff_date_prep_vr_intro) > . then do;  
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
-	if prep_any_strategy=1 then do;
+	if eff_prep_any_strategy=1 then do;
 		r = rand('Uniform');			*FSW and/or AGYW;
 		if gender=2 and (sw=1 or 15<=age<25) and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=2 then do;		*FSW;	* Continuous r_prep JAS 5thFeb2024;
+	if eff_prep_any_strategy=2 then do;		*FSW;	* Continuous r_prep JAS 5thFeb2024;
 		r_prep_tm1=r_prep;
 		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
 		else r_prep = rand('Uniform');
@@ -4697,7 +4706,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(eff_date_prep_oral_intro, eff
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=3 then do;		*AGYW;	* Continuous r_prep JAS 5thFeb2024;
+	if eff_prep_any_strategy=3 then do;		*AGYW;	* Continuous r_prep JAS 5thFeb2024;
 		r_prep_tm1=r_prep;
 		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
 		else r_prep = rand('Uniform');
@@ -4705,73 +4714,73 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(eff_date_prep_oral_intro, eff
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
+	if eff_prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
 
-    if prep_any_strategy=5 then do;   
+    if eff_prep_any_strategy=5 then do;   
      	r = rand('Uniform');
     	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
         and 15 <= age < 50 then prep_any_elig=1; 
     end;
 
-	if prep_any_strategy=6 then do;	* as 4 but women only;	
+	if eff_prep_any_strategy=6 then do;	* as 4 but women only;	
     	r = rand('Uniform');
       	if gender=2 and 
 		((newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) )) then prep_any_elig=1; 
 	end;
 
-    if prep_any_strategy=7 then do; * as 5 but women only ;        
+    if eff_prep_any_strategy=7 then do; * as 5 but women only ;        
      	r = rand('Uniform');
     	if gender=2 and 
 		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
         and 15 <= age < 50) then prep_any_elig=1; 
     end;
 
-	if prep_any_strategy=8 then do;	* as 4 but change in prop ep;
+	if eff_prep_any_strategy=8 then do;	* as 4 but change in prop ep;
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
 
-    if prep_any_strategy=9 then do; * as 5 but change in prop ep;     
+    if eff_prep_any_strategy=9 then do; * as 5 but change in prop ep;     
      	r = rand('Uniform');
     	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
         and 15 <= age < 50 then prep_any_elig=1; 
     end;
 
-	if prep_any_strategy=10 then do;* as 6 but change in prop ep;
+	if eff_prep_any_strategy=10 then do;* as 6 but change in prop ep;
     	r = rand('Uniform');
       	if gender=2 and 
 		((newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1))) )) then prep_any_elig=1; 
 	end;
 
-    if prep_any_strategy=11 then do; * as 7 but change in prop ep;     
+    if eff_prep_any_strategy=11 then do; * as 7 but change in prop ep;     
      	r = rand('Uniform');
     	if gender=2 and 
 		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
         and 15 <= age < 50) then prep_any_elig=1; 
     end;
 
-    if prep_any_strategy=12 then do; 	* Any condomless sex in past 9 months;
+    if eff_prep_any_strategy=12 then do; 	* Any condomless sex in past 9 months;
     	if newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 then prep_any_elig=1; 
     end;
 
-    if prep_any_strategy=13 then do; 	* Any condomless sex in past 9 months - women only; 
+    if eff_prep_any_strategy=13 then do; 	* Any condomless sex in past 9 months - women only; 
     	if gender=2 and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
     end;
 
-	if prep_any_strategy=14 then do;	* as 4 but with newp_tm1 ge 1 also;	
+	if eff_prep_any_strategy=14 then do;	* as 4 but with newp_tm1 ge 1 also;	
     	r = rand('Uniform');
       	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=15 then do;	* Serodiscordant couples - new for MIHPSA Zimbabwe; *JAS Apr2023;
+	if eff_prep_any_strategy=15 then do;	* Serodiscordant couples - new for MIHPSA Zimbabwe; *JAS Apr2023;
 		* Limited to a proportion based on age (not gender) and a random fraction;
 		* Note that there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;
 		r_prep_tm1=r_prep;
@@ -4782,7 +4791,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(eff_date_prep_oral_intro, eff
 		then prep_any_elig=1; 	* Note changed from 5pc to 1pc of eps who may not have HIV JAS Jul23;
 	end;
 
-	if prep_any_strategy=16 then do;	* Pregnant and breastfeeding women (PLW) - new for MIHPSA Zimbabwe; *JAS Apr2023;
+	if eff_prep_any_strategy=16 then do;	* Pregnant and breastfeeding women (PLW) - new for MIHPSA Zimbabwe; *JAS Apr2023;
 		* Note that there is a component of sexual behaviour in prep eligibility for pregnant and breastfeeding women;
 		r_prep_tm1=r_prep;
 		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
@@ -8245,6 +8254,7 @@ res_test=.;
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
 		if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then prointer = prointer * 1.5; * mar19;  
 		if mens_clinics=1 and attend_mens_clinic=1 then prointer = prointer * rel_attr_mens_clinic;		*Impact of mens clinics on ART interruption JAS Mar24; 
+		if peer_navigators=1 and access_peer_navigator=1 then prointer = prointer / rel_retention_peer_nav;	*Impact of peer navigators on ART interruption JAS Aug24; 
 		r=rand('uniform');if r < prointer then do; 
 				interrupt_choice   =1; 
 				int_clinic_not_aw=0; f=rand('uniform'); if f < clinic_not_aw_int_frac then int_clinic_not_aw=1;
@@ -8306,7 +8316,8 @@ res_test=.;
 	* people leaving clinic as well as interrupting (if interruption due to choice);
 	if t ge 2 and interrupt=1 and (interrupt_choice   =1) then do;
 		f=rand('uniform');
-		if mens_clinics=1 and attend_mens_clinic=1 then f = f / rel_attr_mens_clinic;		*Impact of mens clinics on LTFU JAS Jul24; 
+		if mens_clinics=1 and attend_mens_clinic=1 then f = f / rel_attr_mens_clinic;				*Impact of mens clinics on LTFU JAS Jul24; 
+		if peer_navigators=1 and access_peer_navigator=1 then f = f * rel_retention_peer_nav;		*Impact of peer navigators on LTFU JAS Aug24; 
 		if f < eff_prob_lost_art     and        adhav >= 0.8 then do;lost=1; visit=0; return=0;end;
 		if f < eff_prob_lost_art*1.5 and 0.5 <= adhav <  0.8 then do;lost=1; visit=0; return=0;end;
 		if f < eff_prob_lost_art*2   and        adhav <  0.5 then do;lost=1; visit=0; return=0;end;
@@ -16415,6 +16426,18 @@ hiv_mens_clinic=0; 		if age ge 15 and attend_mens_clinic=1 and hiv=1 	then hiv_m
 diag_mens_clinic=0; 	if age ge 15 and attend_mens_clinic=1 and registd=1 then diag_mens_clinic=1;
 onart_mens_clinic=0; 	if age ge 15 and attend_mens_clinic=1 and onart=1 	then onart_mens_clinic=1;
 
+* Number accessing peer navigators;
+hiv_peer_navigator=0; 	if age ge 15 and access_peer_navigator=1 and hiv=1 				then hiv_peer_navigator=1;
+hiv_peer_navigator_w=0;	if age ge 15 and gender=2 and hiv=1 and access_peer_navigator=1	then hiv_peer_navigator_w=1;
+hiv_peer_navigator_m=0;	if age ge 15 and gender=1 and hiv=1 and access_peer_navigator=1	then hiv_peer_navigator_m=1;
+diag_peer_navigator=0; 	if age ge 15 and access_peer_navigator=1 and registd=1			then diag_peer_navigator=1;
+onart_peer_navigator=0; if age ge 15 and access_peer_navigator=1 and onart=1 			then onart_peer_navigator=1;
+
+* Number receiving U=U messaging;
+hiv_receive_u_u=0;		if age ge 15 and receive_u_u=1 and hiv=1 		then hiv_receive_u_u=1;
+diag_receive_u_u=0; 	if age ge 15 and receive_u_u=1 and registd=1	then diag_receive_u_u=1;
+onart_receive_u_u=0;	if age ge 15 and receive_u_u=1 and onart=1 		then onart_receive_u_u=1;
+
 
 ***Pregnancy outcomes;
 pregnant_vlg1000 = 0;
@@ -17255,7 +17278,13 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
 
 	s_onartvisit0 + onartvisit0; s_onartvisit0_vl1000 + onartvisit0_vl1000;
-	s_attend_mens_clinic + attend_mens_clinic;	s_hiv_mens_clinic + hiv_mens_clinic;	s_diag_mens_clinic + diag_mens_clinic;	s_onart_mens_clinic + onart_mens_clinic;
+	s_attend_mens_clinic + attend_mens_clinic;			s_hiv_mens_clinic + hiv_mens_clinic;		
+	s_diag_mens_clinic + diag_mens_clinic;				s_onart_mens_clinic + onart_mens_clinic;
+	s_access_peer_navigator + access_peer_navigator;	s_hiv_peer_navigator + hiv_peer_navigator;	
+	s_hiv_peer_navigator_w + hiv_peer_navigator_w;		s_hiv_peer_navigator_m + hiv_peer_navigator_m;	
+	s_diag_peer_navigator + diag_peer_navigator;		s_onart_peer_navigator + onart_peer_navigator;
+	s_receive_u_u + receive_u_u;						s_hiv_receive_u_u + hiv_receive_u_u;	
+	s_diag_receive_u_u + diag_receive_u_u;				s_onart_receive_u_u + onart_receive_u_u;
 
 
 
@@ -17750,7 +17779,7 @@ proc freq; tables country cald hiv ; where death=.; run;
 
 /*
 proc print; var
-caldate&j serial_no age agyw prep_any_strategy 
+caldate&j serial_no age agyw eff_prep_any_strategy 
 date_prep_oral_intro eff_date_prep_oral_intro
 date_prep_vr_intro eff_date_prep_vr_intro
 prep_oral prep_vr prep_any 
@@ -17764,7 +17793,7 @@ where gender=2 and 15<=age<35 and serial_no<700;
 run;
 */
 
-/*proc freq; tables prep_any_strategy prep_any_elig prep_any ; where death=.; run;*/
+/*proc freq; tables eff_prep_any_strategy prep_any_elig prep_any ; where death=.; run;*/
 
 
 
@@ -18640,7 +18669,10 @@ s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_in
 s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
-s_attend_mens_clinic	s_hiv_mens_clinic	s_diag_mens_clinic	s_onart_mens_clinic
+s_attend_mens_clinic		s_hiv_mens_clinic		s_diag_mens_clinic		s_onart_mens_clinic
+s_access_peer_navigator		s_hiv_peer_navigator	s_hiv_peer_navigator_w	s_hiv_peer_navigator_m	s_diag_peer_navigator	s_onart_peer_navigator
+s_receive_u_u				s_hiv_receive_u_u		s_diag_receive_u_u		s_onart_receive_u_u
+
 
 /* note s_ variables below are for up to age 80 */
 
@@ -18885,7 +18917,7 @@ nnrti_res_no_effect  sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
-prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
+eff_prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
@@ -19621,7 +19653,10 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m  s_infected_inm s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
-s_attend_mens_clinic	s_hiv_mens_clinic	s_diag_mens_clinic	s_onart_mens_clinic
+s_attend_mens_clinic		s_hiv_mens_clinic		s_diag_mens_clinic		s_onart_mens_clinic
+s_access_peer_navigator		s_hiv_peer_navigator	s_hiv_peer_navigator_w	s_hiv_peer_navigator_m	s_diag_peer_navigator	s_onart_peer_navigator
+s_receive_u_u				s_hiv_receive_u_u		s_diag_receive_u_u		s_onart_receive_u_u
+
 
 /* note s_ variables below are for up to age 80 */
 
@@ -20023,7 +20058,7 @@ Inputs are:
 *** RUN PROGRAM; 
 
 *1) Run from caldate1 to intervention year;
-%run_update_r1(&caldate1,&year_interv-0.25,0);
+%run_update_r1(&caldate1,&year_interv,0);
 
 * 2) Save dataset at this point;
 data a ;  set r1 ;
@@ -20477,7 +20512,10 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in155m s_infected_in263m  s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0  s_onartvisit0_vl1000
-s_attend_mens_clinic	s_hiv_mens_clinic	s_diag_mens_clinic	s_onart_mens_clinic
+s_attend_mens_clinic		s_hiv_mens_clinic		s_diag_mens_clinic		s_onart_mens_clinic
+s_access_peer_navigator		s_hiv_peer_navigator	s_hiv_peer_navigator_w	s_hiv_peer_navigator_m	s_diag_peer_navigator	s_onart_peer_navigator
+s_receive_u_u				s_hiv_receive_u_u		s_diag_receive_u_u		s_onart_receive_u_u
+
 
 /* note s_ variables below are for up to age 80 */
 
@@ -20724,7 +20762,7 @@ effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_
 sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init 
-prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
+eff_prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
