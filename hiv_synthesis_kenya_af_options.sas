@@ -2216,6 +2216,8 @@ mihpsa_params_set_in_options=0;				* JAS Oct23;
 
 if caldate_never_dot >= &year_interv then do;
 
+if option=0 then 	rate_choose_stop_prep_oral=1;
+
 if option = 1 then do;
 	date_prep_inj_intro=2024;
 	rate_choose_stop_prep_inj=0;
