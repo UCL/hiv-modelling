@@ -2224,45 +2224,6 @@ if option = 1 then do;
 end;
 
 
-/*
-
-
-General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	Proportion of PLHIV aware of HIV status = 100%
-
-Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%
-
-General wide distribution of self tests in adults, not focussed only on those with recent sexual risk	Proportion of PLHIV aware of HIV status = 100%
-
-Recent sexual risk-informed self-testing (index testing) for adults	Proportion of PLHIV aware of HIV status = 100%
-
-General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%
-
-Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
-sexual encounter = 95%
-
-VMMC males aged 15+	Increase in male circumcision in priority counties = 80% **
-
-Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80%***
-
-Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP	Proportion of at risk populations initiated on (any) PrEP = 80%
-
-Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP and dapivirine ring	Proportion of at risk populations initiated on (any) PrEP = 80%
-
-Harm reduction services for PWID	Proportion of PWID using sterile needles and syringes in the last injecting episode = 100%
-Proportion of PWID using Medically Assisted Therapy = 80%
-
-Interventions to maximize linkage to care and retention in PLHIV 	Proportion of PLHIV with known HIV status on ART = 95%
-
-Interventions to enhance adherence in people on ART	Proportion of PLHIV on ART achieving viral suppression  = 95% 
-
-Interventions to maximize ART coverage in pregnant and breastfeeding women living with HIV 	Proportion of PLHIV aware of HIV status = 100%
-Proportion of PLHIV with known HIV status on ART = 95%
-
-Maximize access to the WHO AHD package of care (having the effect of a reduction in AIDS death rate)	WHO package of care fully implemented.****
-
-
-*/
-
 end;
 
 
