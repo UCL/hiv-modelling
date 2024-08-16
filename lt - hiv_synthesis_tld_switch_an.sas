@@ -472,6 +472,8 @@ newp_seed = 7;
 * ntd_risk_dol;				ntd_risk_dol = 0;
 * dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.1  0.9); * changed to 1 after discussion with jonathan schapiro;		
 																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
+dol_higher_potency=1;
+
 * len_higher_potency;		%sample(len_higher_potency, 0.5 1 , 0.25 0.75);	
 * efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
 																* updated to equal dol potency JAS Nov2021;
@@ -562,13 +564,17 @@ newp_seed = 7;
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
 								0   	0   	0.20	0.20	0.20	0.20	0.20) ; * tld_switch_an;  *note that this is moderated a lot with vl alert;
+
+				adh_pattern=5;
+
+
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.00 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
 							* reduced adherence in those with toxicity;
 * add_eff_adh_nnrti; 		add_eff_adh_nnrti=round(0.10* exp(rand('normal')*0.30),.01);	
 							* additional "effective" adh of nnrti due to longer half life;
-* adh_effect_of_meas_alert; %sample_uniform(adh_effect_of_meas_alert, 0.20 0.35 0.50 0.80);  * tld_switch_an (in core this is/was 0.35 0.70 0.90, 0.15 0.7 0.15);
+* adh_effect_of_meas_alert; %sample_uniform(adh_effect_of_meas_alert, 0.20 0.35 0.50 0.80);adh_effect_of_meas_alert=0.5;  * tld_switch_an (in core this is/was 0.35 0.70 0.90, 0.15 0.7 0.15);
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
@@ -18592,14 +18598,16 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 * procs;
 
 
-proc freq; tables cald hiv ; where death=.; run;
+proc freq; tables cald hiv  ; where death=.; run;
 
 
-proc print; var art_monitoring_strategy caldate&j date_last_second_vlg1000  any_vfail_by_year_interv
+proc print; var art_monitoring_strategy caldate&j dol_higher_potency o_dol vl date_last_second_vlg1000 second_vlg1000_first  o_dol_2nd_vlg1000
 
-r_dol_ge_p5_uvl21 uvl21_elig  r_dol_ge_p5_uvl22 uvl22_elig  r_dol_ge_p5_uvl23 uvl23_elig r_dol_ge_p5_uvl2 uvl2_elig   
+any_vfail_by_year_interv  uvl2_elig   s_uvl2_elig s_onart_uvl2  onart_uvl2 onart_iicu_uvl2
 
-nactive_start_dol
+r_dol_ge_p5_uvl21 uvl21_elig  r_dol_ge_p5_uvl22 uvl22_elig  r_dol_ge_p5_uvl23 uvl23_elig r_dol_ge_p5_uvl2 
+
+nactive_start_dol 
 
 adhav_increase_due_to_alert v_alert_perm_incr_adh
 
@@ -18611,10 +18619,21 @@ visit onart  yrart time_since_last_vm value_last_vm  second_vlg1000  eff_prob_vl
 
 date_v_alert date_conf_vl_measure_done adh adh_pattern r_dol date_res_test_tld  res_test_dol  reg_option 
 ;
-  where yrart ne .  and death=. and date_last_second_vlg1000 ne . ;
+
+  where uvl2_elig=1   and  death=.  ;
+
+* where ((yrart ne . and date_last_second_vlg1000 ne .) or uvl2_elig=1)  and  death=.  ;
 
 run;
 
+proc freq; tables s_uvl2_elig; run; 
+
+
+/*
+
+proc freq; tables adh_effect_of_meas_alert adh_pattern vl    ; where o_dol=1 and yrart ne . and death = . ;   
+
+*/
 
 
 
@@ -21345,7 +21364,6 @@ end;
 
 
 
-
 /*
 
 * 1989;
@@ -21510,6 +21528,13 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=117,h=124,j=122,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=117,h=124,j=123,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=117,h=124,j=124,s=0);
+
+data a.zxzx3; set r1;
+
+*/
+
+data r1; set a.zxzx3;
+
 * 2020;
 %update_r1(da1=1,da2=2,e=5,f=6,g=121,h=128,j=125,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
@@ -21536,11 +21561,6 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
 
-data a.zxzx; set r1;
-
-*/
-
-data r1; set a.zxzx;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=4);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=4);
