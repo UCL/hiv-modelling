@@ -1087,7 +1087,9 @@ run;
 * n_second_vlg1000_first;		n_second_vlg1000_first = s_second_vlg1000_first * sf;
     
 * p_artexp_dol_pi_failed;		p_artexp_dol_pi_failed = s_dol_pi_failed / s_artexp;
-    
+* p_artexp_uvl2;				p_artexp_uvl2 = s_uvl2_elig / s_artexp;   
+
+
 * p_dlt_adh_high_r_dol; 		p_dlt_adh_high_r_dol = s_drug_level_test_adh_high_r_dol / s_drug_level_test_adh_high ;
 * p_dlt_adh_low_r_dol; 			p_dlt_adh_low_r_dol = s_drug_level_test_adh_low_r_dol / s_drug_level_test_adh_low ;
 
@@ -1411,6 +1413,8 @@ n_uvl2_only_tld_dolr  n_uvl2_no_prev_fail_dolr  n_uvl2_prev_fail_dolr  n_uvl2_el
 p_dol_start_nactive_p5_r p_dol_start_nactive_1p5_r p_dol_start_nactive_2_r  prob_prep_oral_b n_adh_meas_1_1 n_adh_meas_1_0 n_adh_meas_0_1 n_adh_meas_0_0
 
 dten_cost d3tc_cost ddar_cost ddol_cost  p_r_dol   sens_res_test  date_prep_cab_intro  p_vlg1000_onart_allhiv s_uvl2_elig s_onart_iicu_uvl2
+
+p_artexp_uvl2 
 ;
 
 
@@ -1651,7 +1655,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_onart_iicu_uvl2);  %var(v=n_onart_iicu_uvl21);   %var(v=n_onart_iicu_uvl22);   %var(v=n_onart_iicu_uvl23);  %var(v=n_onart_uvl2);
 
 %var(v=p_dol_start_nactive_p5_r); %var(v=p_dol_start_nactive_1p5_r); %var(v=p_dol_start_nactive_2_r); %var(v=n_adh_meas_1_1); %var(v=n_adh_meas_1_0);
-%var(v=n_adh_meas_0_1); %var(v=n_adh_meas_0_0);  %var(v=p_r_dol);  %var(v=p_vlg1000_onart_allhiv);
+%var(v=n_adh_meas_0_1); %var(v=n_adh_meas_0_0);  %var(v=p_r_dol);  %var(v=p_vlg1000_onart_allhiv);  %var(v=p_artexp_uvl2);
 
 
 data   b.wide_outputs; merge 
@@ -1720,7 +1724,7 @@ n_onart_iicu_uvl2           n_onart_iicu_uvl21           n_onart_iicu_uvl22     
 
 p_dol_start_nactive_p5_r p_dol_start_nactive_1p5_r p_dol_start_nactive_2_r  n_adh_meas_1_1 n_adh_meas_1_0 n_adh_meas_0_1 n_adh_meas_0_0
 
-dten_cost d3tc_cost ddar_cost ddol_cost  p_r_dol  p_vlg1000_onart_allhiv
+dten_cost d3tc_cost ddar_cost ddol_cost  p_r_dol  p_vlg1000_onart_allhiv  p_artexp_uvl2
 
 ;
 
@@ -2079,6 +2083,7 @@ d_deathr_dol_r_uvl2_50y_3_1_b=0; if d_deathr_dol_r_uvl2_50y_3_1 > 0 then d_death
 prop_tldsw_uvl2_10y = (prop_tldsw_uvl2_10y_1 + prop_tldsw_uvl2_10y_2 + prop_tldsw_uvl2_10y_3) / 3; 
 p_iime_10y = (p_iime_10y_1 + p_iime_10y_2 + p_iime_10y_3) / 3;
 
+d_deathr_dol_r_uvl2_10y_2_1 = deathr_dol_r_uvl2_10y_2 - deathr_dol_r_uvl2_10y_1;
 
 * s_uvl2_elig_10y_1 = n_uvl2_elig_10y_1 / sf_2024 ;  
 * restrict to s onart iicu vlg1000 ;
@@ -2096,7 +2101,7 @@ var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_dia
 p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    
 p_vis_tldsw_24   p_dol_24 p_iime_24 p_r_dol_24 n_iime_24 p_onart_cd4_l200_24  p_artexp_dol_pi_failed_24  s_o_dol_2nd_vlg1000_24  
 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24  p_ai_no_arv_e_inm_24 p_dol_start_nactive_p5_r_24 p_dol_start_nactive_1p5_r_24  p_dol_start_nactive_2_r_24 
-p_vlg1000_onart_allhiv_24 ;
+p_vlg1000_onart_allhiv_24 n_uvl2_elig_24 p_artexp_uvl2_24 ;
 run;
 ods html close;
 
@@ -2156,6 +2161,11 @@ n_dead_hivrel_onart_10y_1 n_dead_hivrel_onart_10y_2 n_dead_hivrel_onart_10y_3
 p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 
 p_ai_no_arv_e_inm_10y_1 p_ai_no_arv_e_inm_10y_2 p_ai_no_arv_e_inm_10y_3
 n_incident_r_dol_10y_1 n_incident_r_dol_10y_2 n_incident_r_dol_10y_3 
+n_uvl2_elig_10y_1  n_uvl2_elig_10y_2  n_uvl2_elig_10y_3  
+n_uvl21_elig_10y_1 n_uvl21_elig_10y_2 n_uvl21_elig_10y_3  
+n_uvl22_elig_10y_1 n_uvl22_elig_10y_2 n_uvl22_elig_10y_3  
+n_uvl23_elig_10y_1 n_uvl23_elig_10y_2 n_uvl23_elig_10y_3 
+n_second_vlg1000_first_10y_1 n_second_vlg1000_first_10y_2 n_second_vlg1000_first_10y_3 
 ;
 run;
 ods html close;
@@ -2192,7 +2202,6 @@ p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3
 p_dlt_adh_high_r_dol_10y_1 p_dlt_adh_high_r_dol_10y_2 p_dlt_adh_high_r_dol_10y_3 
 p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 
 p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 
-n_second_vlg1000_first_10y_1 n_second_vlg1000_first_10y_2 n_second_vlg1000_first_10y_3 
 incidence1549_10y_1 incidence1549_10y_2 incidence1549_10y_3 
 s_o_dol_2nd_vlg1000_10y_1 s_o_dol_2nd_vlg1000_10y_2 s_o_dol_2nd_vlg1000_10y_3 
 p_o_dol_uvl2_10y_1 p_o_dol_uvl2_10y_2 p_o_dol_uvl2_10y_3 
@@ -2210,10 +2219,6 @@ p_uvl2_elig_uvl23_10y_1 p_uvl2_elig_uvl23_10y_2 p_uvl2_elig_uvl23_10y_3
 n_uvl2_only_tld_dolr_10y_1 n_uvl2_only_tld_dolr_10y_2 n_uvl2_only_tld_dolr_10y_3 
 n_uvl2_no_prev_fail_dolr_10y_1  n_uvl2_no_prev_fail_dolr_10y_2  n_uvl2_no_prev_fail_dolr_10y_3     
 n_uvl2_prev_fail_dolr_10y_1 n_uvl2_prev_fail_dolr_10y_2 n_uvl2_prev_fail_dolr_10y_3     
-n_uvl2_elig_10y_1  n_uvl2_elig_10y_2  n_uvl2_elig_10y_3  
-n_uvl21_elig_10y_1 n_uvl21_elig_10y_2 n_uvl21_elig_10y_3  
-n_uvl22_elig_10y_1 n_uvl22_elig_10y_2 n_uvl22_elig_10y_3  
-n_uvl23_elig_10y_1 n_uvl23_elig_10y_2 n_uvl23_elig_10y_3 
 n_onart_iicu_uvl2_10y_1   n_onart_iicu_uvl2_10y_2   n_onart_iicu_uvl2_10y_3            
 n_onart_iicu_uvl21_10y_1 n_onart_iicu_uvl21_10y_2 n_onart_iicu_uvl21_10y_3            
 n_onart_iicu_uvl22_10y_1  n_onart_iicu_uvl22_10y_2  n_onart_iicu_uvl22_10y_3             
@@ -2443,7 +2448,13 @@ p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_2
 rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
 incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab ;
 
- 
+
+proc glm data=b; model d_deathr_dol_r_uvl2_10y_2_1 = sens_res_test 
+res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab 
+
+/ solution ; run; 
 
 
 proc glm; model p_ai_no_arv_e_inm_10y_3 =  prob_prep_oral_b pref_prep_oral_beta_s1  rate_choose_stop_prep_cab res_trans_factor_ii; run;
