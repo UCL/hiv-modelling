@@ -1959,7 +1959,7 @@ d_n_dead_hivrel_onart_1y_2_1 = n_dead_hivrel_onart_1y_2 - n_dead_hivrel_onart_1y
 d_n_dead_hivrel_onart_1y_3_1 = n_dead_hivrel_onart_1y_3 - n_dead_hivrel_onart_1y_1;
 
 * for sensitivity analysis;
-  dres_cost_50y_2 = dres_cost_50y_2 * 0.5  ;
+* dres_cost_50y_2 = dres_cost_50y_2 * 0.5  ;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
