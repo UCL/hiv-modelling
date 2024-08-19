@@ -375,7 +375,7 @@ newp_seed = 7;
 * hivtest_type;				hivtest_type=3; 						* HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen); *Jul2016; 
 * date_pmtct;				date_pmtct=2004;
 * pmtct_inc_rate;			pmtct_inc_rate = 0.20; 					* rate_per_year ; 
-* incr_test_year_i;			incr_test_year_i = 3;
+* incr_test_year_i;			* incr_test_year_i = . ;  * defined in options section if anywhere;
 * sw_test_6mthly;			sw_test_6mthly=0;
 
 * sens_primary_testtype3;	%sample_uniform(sens_primary_testtype3,  0.5 0.75);
@@ -2203,6 +2203,7 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 * ==========================================================================================================================================;
 
+* options code ;
 
 * OPTIONS TO IMPLEMENT FROM year_i onwards;
 
@@ -2211,17 +2212,59 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 * INTERVENTIONS / CHANGES in year_interv ;
 
-option = &s;
-mihpsa_params_set_in_options=0;				* JAS Oct23;
+option = &s;				
 
 if caldate_never_dot >= &year_interv then do;
 
-if option=0 then 	eff_rate_choose_stop_prep_oral=1;
+	if option = 1 then do;
+		* 1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	
+		    Proportion of PLHIV aware of HIV status = 100%;
+		test_rate_set_in_options = 1; incr_test_year_i = 5;
+		decr_hard_r_set_in_options = 1; decr_hard_reach_year_i = 1;
+	end;
 
-if option = 1 then do;
-	date_prep_inj_intro=2024;
-	eff_rate_choose_stop_prep_inj=0;
-end;
+	if option = 2 then do;
+		* 2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
+		test_rate_set_in_options = 1; incr_test_year_i = 2;
+		test_targeting_set_in_options = 1; incr_test_targeting_year_i = 1;
+	end;
+
+	if option = 3 then do;
+		* 3 General wide distribution of self tests in adults, not focussed only on those with recent sexual risk	Proportion of PLHIV aware of HIV status = 100%;
+		prob_self_test_hard_reach = 0.5;
+		eff_self_test_targeting = 1; self_test_targeting = 1;
+		rate_self_test = 0.1;
+	end;
+
+	if option = 4 then do;
+		* 4 Recent sexual risk-informed self-testing (index testing) for adults	Proportion of PLHIV aware of HIV status = 100%;
+		prob_self_test_hard_reach = 0.5;
+		eff_self_test_targeting = 20; self_test_targeting = 20;
+		rate_self_test = 0.01;
+	end;
+
+	if option = 5 then do;
+		* 5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%;
+		test_rate_agyw_set_in_options = 1; incr_test_agyw_year_i = 5;
+		decr_hard_r_agyw_set_in_options = 1; decr_hard_reach_agyw_year_i = 1;
+	end;
+
+	if option = 6 then do;
+		* 6 Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
+		sexual encounter = 95%;		
+		condom_incr_set_in_options = 1; condom_incr_year_i = 3;
+	end;
+
+	if option = 7 then do;
+		* 7 VMMC males aged 15+	Increase in male circumcision in priority counties = 80% ;
+		* note this takes to above target;
+		circ_inc_rate_set_in_options = 1; circ_inc_rate_year_i = 5;
+	end;
+
+	
+
+
+
 
 
 /*
@@ -2229,7 +2272,7 @@ end;
 
 1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	Proportion of PLHIV aware of HIV status = 100%
 
-2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%
+2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
 
 3 General wide distribution of self tests in adults, not focussed only on those with recent sexual risk	Proportion of PLHIV aware of HIV status = 100%
 
@@ -2519,10 +2562,17 @@ if caldate{t} = &year_interv then do;
 	*(impact of changes are coded below the options code);
 
 	*increase in testing;
-	if mihpsa_params_set_in_options ne 1 then incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022, 4=no testing in the general population;
+	if test_rate_set_in_options ne 1 then incr_test_year_i = .; * by default we want no change in rate;
+	*  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022, 4=no testing in the general population;
+
+	*increase in testing in agyw;
+	if test_rate_agyw_set_in_options ne 1 then incr_test_agyw_year_i = 0; 
 
 	*decrease in the proportion of people hard to reach;
-	decr_hard_reach_year_i = 0;
+	if decr_hard_r_set_in_options ne 1 then decr_hard_reach_year_i = 0;
+
+	*decrease in the proportion of agyw hard to reach;
+	if decr_hard_r_agyw_set_in_options ne 1 then decr_hard_reach_agyw_year_i = 0;
 
 	*decrease in probability of being lost at diagnosis; 
 	decr_prob_loss_at_diag_year_i = 0;
@@ -2573,7 +2623,7 @@ if caldate{t} = &year_interv then do;
 	incr_pr_switch_line_year_i = 0 ;
 
 	*increase in test targeting;
-	incr_test_targeting_year_i = 0;
+	if test_targeting_set_in_options ne 1 then incr_test_targeting_year_i = 0;
 
 	*switching regimens;
 	reg_option_switch_year_i = 0;
@@ -2582,10 +2632,10 @@ if caldate{t} = &year_interv then do;
 	ten_is_taf_year_i = 0; *coded within core (not below options code);
 
 	*increase in rates of circumcision;
-	if mihpsa_params_set_in_options ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
+	if circ_inc_rate_set_in_options ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
 
 	*increase in condom use;
-	if mihpsa_params_set_in_options ne 1 then condom_incr_year_i = 0; *coded within core (not below options code);
+	if condom_incr_set_in_options ne 1 then condom_incr_year_i = 0; *coded within core (not below options code);
 
 	*population wide tld;
 	pop_wide_tld = 0;
@@ -2788,6 +2838,14 @@ if decr_hard_reach_year_i = 1 then do;
 	end; 
 end;
 
+* decr_hard_reach_agyw_year_i; 
+if decr_hard_reach_agyw_year_i = 1 and gender = 2 and 15 <= age < 25 then do;
+	if _u6 < 0.5 then e_decr_hard_reach_year_i = 0.50; if _u6 ge 0.5 then e_decr_hard_reach_year_i = 0.75; 
+	if hard_reach=1 then do;
+		e = rand('uniform'); if e < e_decr_hard_reach_year_i then hard_reach = 0; 
+	end; 
+end;
+
 * decr_prob_loss_at_diag_year_i; 
 if	decr_prob_loss_at_diag_year_i = 1 then do;
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/3; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
@@ -2857,7 +2915,7 @@ end;
 if incr_test_targeting_year_i = 1 then do;
 	if _u42 < 0.45 then eff_test_targeting = 2;
 	if 0.45 <= _u42 < 0.9 then eff_test_targeting = 5;
-end;						
+end;							
 
 * reg_option_switch_year_i;	
 if reg_option_switch_year_i = 1 then do;
@@ -2949,6 +3007,7 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 
 end;
 
+
 if caldate{t} >= &year_interv then do;
 	if incr_test_year_i = 1              then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
@@ -2961,7 +3020,11 @@ if caldate{t} >= &year_interv then do;
 		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
 	end;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
+	if incr_test_year_i = 5              then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+	if incr_test_agyw_year_i = 1 and gender = 2 and 15 <= age < 25 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 end;
+
+
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
@@ -3076,6 +3139,16 @@ if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*o
     end;
 end;
 
+
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 5 then do;
+	prob_circ = 0.3;
+end;
+
+
+
+
+* assume vmmc in 10-15 year olds stopped in 2020;
+if  caldate{t} ge 2020 and age lt 15 then prob_circ =0;
 
 if prob_circ ne . then prob_circ = min(prob_circ,1);
 
@@ -4149,6 +4222,12 @@ end;
 * Reducing newp by 50% if condom incr =1;
 if caldate{t} = &year_interv and condom_incr_year_i = 1 then do;
 	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
+end;
+
+
+* Reducing newp by 75% if condom incr =1;
+if caldate{t} >= &year_interv and agyw=1 and condom_incr_year_i = 3 then do;
+	u=rand('uniform'); if u < 0.50 then do;newp=newp/4;newp=round(newp,1);end;
 end;
 
 
