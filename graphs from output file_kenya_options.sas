@@ -98,7 +98,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  62  ;
+%let nfit =  54  ;
 %let year_end = 2040.00 ;
 run;
 proc sort;by cald option ;run;
@@ -616,6 +616,9 @@ Condom use at last high-risk sex among adults aged 15 to 49 (%)	67.9	 	 	Source:
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
+
+
+/*
 
 ods html ;
 proc sgplot data=d; 
@@ -2112,83 +2115,12 @@ run;
 quit;
 
 
+*/
 
 
 
 
-
-ods html;
-
-proc sgplot data=d; Title    height=1.5 justify=center "logm15r ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
-series  x=cald y=mean_logm15r_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_logm15r_0 	upper=p95_logm15r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-proc sgplot data=d; Title    height=1.5 justify=center "logm25r ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
-series  x=cald y=mean_logm25r_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_logm25r_0 	upper=p95_logm25r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-proc sgplot data=d; Title    height=1.5 justify=center "logm35r ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
-series  x=cald y=mean_logm35r_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_logm35r_0 	upper=p95_logm35r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-proc sgplot data=d; Title    height=1.5 justify=center "logm45r ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
-series  x=cald y=mean_logm45r_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_logm45r_0 	upper=p95_logm45r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-proc sgplot data=d; Title    height=1.5 justify=center "logm55r ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
-series  x=cald y=mean_logm55r_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_logm55r_0 	upper=p95_logm55r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-
-proc sgplot data=d; Title    height=1.5 justify=center "logw15r ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
-series  x=cald y=mean_logw15r_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_logw15r_0 	upper=p95_logw15r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-proc sgplot data=d; Title    height=1.5 justify=center "logw25r ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
-series  x=cald y=mean_logw25r_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_logw25r_0 	upper=p95_logw25r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-proc sgplot data=d; Title    height=1.5 justify=center "logw35r ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
-series  x=cald y=mean_logw35r_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_logw35r_0 	upper=p95_logw35r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-proc sgplot data=d; Title    height=1.5 justify=center "logw45r ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
-series  x=cald y=mean_logw45r_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_logw45r_0 	upper=p95_logw45r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-proc sgplot data=d; Title    height=1.5 justify=center "logw55r ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
-series  x=cald y=mean_logw55r_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_logw55r_0 	upper=p95_logw55r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-
-title;
-
-* ods rtf close;
-* ods listing;
-run;
-
-
-
+/*
 
 * graph of prevalence by age ;
 
@@ -2212,14 +2144,12 @@ p95_prevalence5559w_0 	p95_prevalence5559m_0 p95_prevalence6064w_0 	p95_prevalen
 ;
 
 
-/*
-
-Prevalence by age 
+* Prevalence by age 
 KENPHIA  2018 
 Men 15-19   0.5   20-24  0.6   25-29  2.2  30-34  3.2  35-39  4.3   40-44  6.3  45-49  8.3   50-54  6.6   55-59  5.9   60-64  5.6
-Women 15-19   1.2   20-24  3.4   25-29  6.0  30-34  9.5  35-39  8.7   40-44  11.9  45-49  10.6   50-54  11.7   55-59  9.0   60-64  6.2
+Women 15-19   1.2   20-24  3.4   25-29  6.0  30-34  9.5  35-39  8.7   40-44  11.9  45-49  10.6   50-54  11.7   55-59  9.0   60-64  6.2 ;
 
-*/
+
 
 if cald=2018;
 
@@ -2309,66 +2239,6 @@ where sex=1;
 run;
 
 quit;
-
-ods html close;
-
-
-
-
-
-
-	
-/*
-
-data z; set b;
-
-ods html;
- 
-proc sgplot data=z; Title    height=1.5 justify=center "loggender_r_newp";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'loggender_r_newp'		labelattrs=(size=12)  values = (-10 to 10 by 1) valueattrs=(size=10);
-series  x=cald y=loggender_r_newp/	lineattrs = (color=black thickness = 2); run;
-
-proc sgplot data=z; Title    height=1.5 justify=center "logw15r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logw15r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logw15r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logw25r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logw25r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logw25r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logw35r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logw35r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logw35r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logw45r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logw45r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logw45r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logw55r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logw55r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logw55r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logm15r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logm15r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logm15r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logm25r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logm25r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logm25r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logm35r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logm35r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logm35r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logm45r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logm45r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logm45r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logm55r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logm55r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logm55r/	lineattrs = (color=black thickness = 2); run;
 
 ods html close;
 
@@ -2796,7 +2666,142 @@ run;
 quit;
 
 
+
+
+
+ods html;
+
+proc sgplot data=d; Title    height=1.5 justify=center "logm15r ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
+series  x=cald y=mean_logm15r_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_logm15r_0 	upper=p95_logm15r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; Title    height=1.5 justify=center "logm25r ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
+series  x=cald y=mean_logm25r_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_logm25r_0 	upper=p95_logm25r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; Title    height=1.5 justify=center "logm35r ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
+series  x=cald y=mean_logm35r_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_logm35r_0 	upper=p95_logm35r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; Title    height=1.5 justify=center "logm45r ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
+series  x=cald y=mean_logm45r_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_logm45r_0 	upper=p95_logm45r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; Title    height=1.5 justify=center "logm55r ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
+series  x=cald y=mean_logm55r_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_logm55r_0 	upper=p95_logm55r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; Title    height=1.5 justify=center "logw15r ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
+series  x=cald y=mean_logw15r_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_logw15r_0 	upper=p95_logw15r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; Title    height=1.5 justify=center "logw25r ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
+series  x=cald y=mean_logw25r_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_logw25r_0 	upper=p95_logw25r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; Title    height=1.5 justify=center "logw35r ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
+series  x=cald y=mean_logw35r_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_logw35r_0 	upper=p95_logw35r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; Title    height=1.5 justify=center "logw45r ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
+series  x=cald y=mean_logw45r_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_logw45r_0 	upper=p95_logw45r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+proc sgplot data=d; Title    height=1.5 justify=center "logw55r ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (-5 to +5 by 1) valueattrs=(size=10);
+series  x=cald y=mean_logw55r_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_logw55r_0 	upper=p95_logw55r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+title;
+
+* ods rtf close;
+* ods listing;
+run;
+
+
 ods html close; 
 
 
+
+
+
+
+
+	
+/*
+
+data z; set b;
+
+ods html;
+ 
+proc sgplot data=z; Title    height=1.5 justify=center "loggender_r_newp";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'loggender_r_newp'		labelattrs=(size=12)  values = (-10 to 10 by 1) valueattrs=(size=10);
+series  x=cald y=loggender_r_newp/	lineattrs = (color=black thickness = 2); run;
+
+proc sgplot data=z; Title    height=1.5 justify=center "logw15r";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'logw15r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
+series  x=cald y=logw15r/	lineattrs = (color=black thickness = 2); run;
+proc sgplot data=z; Title    height=1.5 justify=center "logw25r";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'logw25r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
+series  x=cald y=logw25r/	lineattrs = (color=black thickness = 2); run;
+proc sgplot data=z; Title    height=1.5 justify=center "logw35r";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'logw35r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
+series  x=cald y=logw35r/	lineattrs = (color=black thickness = 2); run;
+proc sgplot data=z; Title    height=1.5 justify=center "logw45r";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'logw45r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
+series  x=cald y=logw45r/	lineattrs = (color=black thickness = 2); run;
+proc sgplot data=z; Title    height=1.5 justify=center "logw55r";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'logw55r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
+series  x=cald y=logw55r/	lineattrs = (color=black thickness = 2); run;
+proc sgplot data=z; Title    height=1.5 justify=center "logm15r";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'logm15r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
+series  x=cald y=logm15r/	lineattrs = (color=black thickness = 2); run;
+proc sgplot data=z; Title    height=1.5 justify=center "logm25r";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'logm25r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
+series  x=cald y=logm25r/	lineattrs = (color=black thickness = 2); run;
+proc sgplot data=z; Title    height=1.5 justify=center "logm35r";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'logm35r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
+series  x=cald y=logm35r/	lineattrs = (color=black thickness = 2); run;
+proc sgplot data=z; Title    height=1.5 justify=center "logm45r";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'logm45r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
+series  x=cald y=logm45r/	lineattrs = (color=black thickness = 2); run;
+proc sgplot data=z; Title    height=1.5 justify=center "logm55r";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'logm55r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
+series  x=cald y=logm55r/	lineattrs = (color=black thickness = 2); run;
+
+ods html close;
+
+*/
 

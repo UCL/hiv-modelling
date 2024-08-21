@@ -2,19 +2,19 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_af_options_5_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ag_options_a_out\";
 
-data a.kenya_af_options_5 ; set b.out: ;
+data a.kenya_ag_options_a ; set b.out: ;
 
 
-proc sort data=a.kenya_af_options_5; 
+proc sort data=a.kenya_ag_options_a; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set a.kenya_af_options_5 ;
+set a.kenya_ag_options_a ;
 
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
@@ -30,7 +30,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge a.kenya_af_options_5 sf;
+merge a.kenya_ag_options_a sf;
 by run ;
  
 
@@ -1063,7 +1063,7 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_af_options_5; set y;  
+data a.l_base_kenya_ag_options_a; set y;  
 
 proc freq; tables run;
 
@@ -1074,7 +1074,7 @@ run;
 
 
 
-data y; set a.l_base_kenya_af_options_5; 
+data y; set a.l_base_kenya_ag_options_a; 
 
  
 
@@ -1108,34 +1108,25 @@ proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where 2019.5 <= cald < 2020.5; 
 proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where 2020.5 <= cald < 2021.5; 
 proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run ; where 2021.5 <= cald < 2022.5; 
+
+proc means  noprint data=y; var &v; output out=y_23 mean= &v._23; by run ; where 2022.5 <= cald < 2023.5; 
+
 proc means  noprint data=y; var &v; output out=y_40 mean= &v._40; by run ; where 2039.5 <= cald < 2040.5; 
 proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where 2069.5 <= cald < 2070.5; 
 
-/* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
-/* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
-/* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
- proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option ; where 2021.5 <= cald < 2022.50;
- proc means noprint data=y; var &v; output out=y_21_26 mean= &v._21_26; by run option ; where 2021.5 <= cald < 2026.50;
-/* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
-/* proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
+ proc means noprint data=y; var &v; output out=y_24_25 mean= &v._24_25; by run option ; where 2024.0 <= cald < 2025.0 ;
+ proc means noprint data=y; var &v; output out=y_24_29 mean= &v._24_29; by run option ; where 2024.0 <= cald < 2029.0;
 
- proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option ; where 2021.5 <= cald < 2071.00; * deliberate to choose 2071
- - can change to 2071.5 once changes to program made;
-  
-/* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
-/* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
-/*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
+ proc means noprint data=y; var &v; output out=y_24_71 mean= &v._24_71; by run option ; where 2024.0 <= cald < 2071.00; 
+ * can change to 2075   once changes to program made;
+																										   
 																													   
-																													   
- proc sort data=y_21_22; by run; proc transpose data=y_21_22 out=t_21_22 prefix=&v._21_22_; var &v._21_22; by run; 
- proc sort data=y_21_26; by run; proc transpose data=y_21_26 out=t_21_26 prefix=&v._21_26_; var &v._21_26; by run; 
-/* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
-/* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
-																														
+ proc sort data=y_24_25; by run; proc transpose data=y_24_25 out=t_24_25 prefix=&v._24_25_; var &v._24_25; by run; 
+ proc sort data=y_24_29; by run; proc transpose data=y_24_29 out=t_24_29 prefix=&v._24_29_; var &v._24_29; by run; 
 
- proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&v._21_71_; var &v._21_71; by run;  
+ proc sort data=y_24_71; by run; proc transpose data=y_24_71 out=t_24_71 prefix=&v._24_71_; var &v._24_71; by run;  
 
-data &v ; merge y_95 y_98 y_99 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_22 y_40 y_70 t_21_26 t_21_22 t_21_71 ;  
+data &v ; merge y_95 y_98 y_99 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_22 y_23 y_40 y_70 t_24_25 t_24_29 t_24_71 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 
@@ -1439,20 +1430,20 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_kenya_af_options_5; 
+  data a.w_base_kenya_ag_options_a; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
-  merge   wide_outputs  wide_par incidence1564 prevalence1549_msm ;  
+  merge   wide_outputs  wide_par ;  
   by run;
 
-proc contents data=a.w_base_kenya_af_options_5;
+proc contents data=a.w_base_kenya_ag_options_a;
 run;
 
 proc print; var run prevalence1549_msm_17 incidence1564_20 ; run;
 
 
 
-proc print data = a.w_base_kenya_af_options_5 noobs; var run ; where prevalence1549_msm_17 < 0.4  and incidence1564_20 < 0.20; run;
+proc print data = a.w_base_kenya_ag_options_a noobs; var run ; where prevalence1549_msm_17 < 0.4  and incidence1564_20 < 0.20; run;
 
 
 
@@ -1463,7 +1454,7 @@ proc print data = a.w_base_kenya_af_options_5 noobs; var run ; where prevalence1
 
 ods html;
 
-proc means data=a.w_base_kenya_af_options_5 n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_ag_options_a n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_98	p_mcirc_98	prevalence1549m_98 prevalence1549w_98
 incidence1549w_98  incidence1549m_98   incidence_sw_98  	p_diag_98 	p_diag_m_98   p_diag_w_98	p_ai_no_arv_c_nnm_98   
 prop_w_1549_sw_98  mtct_prop_98  prop_1564_onprep_98
@@ -1490,7 +1481,7 @@ r_prev_6064m_4549w_98 r_prev_65plm_4549w_98  p_age1549_hivneg_98 p_age1549_hiv_9
 ;
 run;
 
-proc means data=a.w_base_kenya_af_options_5 n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_ag_options_a n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_05	p_mcirc_05		prevalence1549m_05 prevalence1549w_05
 incidence1549w_05  incidence1549m_05   incidence_sw_05  	p_diag_05 	p_diag_m_05   p_diag_w_05	p_ai_no_arv_c_nnm_05   
 prop_w_1549_sw_05  mtct_prop_05  prop_1564_onprep_05
@@ -1518,7 +1509,7 @@ n_death_2059_w_05 n_death_hivrel_05
 ;
 run;
 
-proc means data=a.w_base_kenya_af_options_5 n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_ag_options_a n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_15	p_mcirc_15	prevalence1549m_15 prevalence1549w_15
 incidence1549w_15  incidence1549m_15   incidence_sw_15  	p_diag_15 	p_diag_m_15   p_diag_w_15	p_ai_no_arv_c_nnm_15   
 prop_w_1549_sw_15  mtct_prop_15  prop_1564_onprep_15
@@ -1548,7 +1539,7 @@ run;
 
 
 
-proc means data=a.w_base_kenya_af_options_5 n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_ag_options_a n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549_21	prevalence1549m_21 prevalence1549w_21  prevalence_hiv_preg_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
@@ -1597,7 +1588,7 @@ run;
 
 
 
-proc means data=a.w_base_kenya_af_options_5 n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_ag_options_a n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1549m_40 	prevalence1549w_40
 incidence1549w_40  incidence1549m_40   incidence_sw_40  	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
 prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
@@ -1623,7 +1614,7 @@ r_prev_6064m_4549w_40 r_prev_65plm_4549w_40 p_age1549_hivneg_40 p_age1549_hiv_40
 ;
 run;
 
-proc means data=a.w_base_kenya_af_options_5 n p50 p5 p95 mean;
+proc means data=a.w_base_kenya_ag_options_a n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_70	p_mcirc_70		prevalence1549m_70 prevalence1549w_70
 incidence1549w_70  incidence1549m_70   incidence_sw_70  	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
 prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
@@ -1653,7 +1644,7 @@ ods html close;
 
 
 
-data q1; set a.w_base_kenya_af_options_5;
+data q1; set a.w_base_kenya_ag_options_a;
 
 
 if n_onart_15 < 700000 and r_prev_4044w_4549w_17 > 0.9  and 0.08 <= prevalence1549_17 < 0.12 and 0.06 <= prevalence1549_98 < 0.19
@@ -1697,7 +1688,7 @@ run;
 
 
 
-data a.l_base_keep_kenya_af_options_5; merge a.l_base_kenya_af_options_5 q1 ; by run;
+data a.l_base_keep_kenya_ag_options_a; merge a.l_base_kenya_ag_options_a q1 ; by run;
 
 if run_keep ne .;
 
@@ -1708,7 +1699,7 @@ run;
 ods html close;
 
 
-proc freq data = a.l_base_keep_kenya_af_options_5; tables
+proc freq data = a.l_base_keep_kenya_ag_options_a; tables
 sf_2022 dataset sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
