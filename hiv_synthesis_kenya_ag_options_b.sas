@@ -2220,7 +2220,7 @@ if caldate_never_dot >= &year_interv then do;
 		* 1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	
 		    Proportion of PLHIV aware of HIV status = 100%;
 		test_rate_set_in_opts = 1; incr_test_year_i = 5;
-		decr_hard_r_set_in_opts = 1; decr_hard_reach_year_i = 1;
+		high_rate_testing_set_in_opts = 1; 
 	end;
 
 	if option = 2 then do;
@@ -3001,8 +3001,7 @@ end;
 
 * incr_test_targeting_year_i;	
 if incr_test_targeting_year_i = 1 then do;
-	if _u42 < 0.45 then eff_test_targeting = 2;
-	if 0.45 <= _u42 < 0.9 then eff_test_targeting = 5;
+	eff_test_targeting = 10;
 end;							
 
 * reg_option_switch_year_i;	
@@ -4892,7 +4891,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	end;
 
 
-	if hard_reach=0 then do;
+	if hard_reach=0 or high_rate_testing_set_in_opts = 1 then do;
 												
 		unitest=rand('uniform');
 
@@ -23836,7 +23835,6 @@ data r1; set x;
 %update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=15);
 %update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=15);
 %update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=15);   
-
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=15);
 %update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=15);

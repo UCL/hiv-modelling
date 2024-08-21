@@ -307,6 +307,12 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
 
+* n_self_tested;				n_self_tested = s_self_tested * sf ;
+* n_self_tested_m;				n_self_tested_m = s_self_tested_m * sf ;
+* n_self_tested_w;				n_self_tested_w = s_self_tested_w * sf ;
+* n_tested_due_to_self_test;	n_tested_due_to_self_test =  s_tested_due_to_self_test * sf ;
+* n_diagnosed_self_test;		n_diagnosed_self_test = s_diagnosed_self_test * sf;
+
 * p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;
 * p_mcirc_1519m;				p_mcirc_1519m = s_mcirc_1519m / s_ageg1519m ;
 * p_mcirc_2024m;				p_mcirc_2024m = s_mcirc_2024m / s_ageg2024m ;
@@ -1054,7 +1060,8 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
 
 p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1newp
 
-n_vm_per_year
+n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test
+
 ;
 
 
@@ -1250,8 +1257,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_elig_prep_any_msm_1564); %var(v=p_onprep_msm);  %var(v=p_onart_msm);   %var(v=prevalence_vg1000_msm);	 %var(v=p_diag_msm);	 
 %var(v=p_onart_diag_msm);  %var(v=p_vl1000_art_gt6m_msm);	 %var(v=p_ever_tested_msm); 	%var(v=p_tested_this_period_msm);  %var(v=p_msm_infected_from_msm)
 %var(v=incidence1564);  %var(v=p_onprep_pwid);  %var(v=p_onart_pwid);  %var(v=p_onart_sw);  %var(v=p_ep_msm);   %var(v=p_msm_ge1newp);   %var(v=p_m_ge1newp); 
-%var(v=n_vm_per_year);
-
+%var(v=n_vm_per_year); %var(v=n_self_tested);   %var(v=n_self_tested_m);    %var(v=n_self_tested_w);    %var(v=n_tested_due_to_self_test);    
+%var(v=n_diagnosed_self_test);
 
 
 data   wide_outputs; merge 
@@ -1343,6 +1350,7 @@ n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_diagnosed  n_hi
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564 p_onprep_msm				
  p_onart_msm  prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period_msm p_msm_infected_from_msm p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1newp n_vm_per_year
+n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test
 ;
 
 proc sort; by run; run;
