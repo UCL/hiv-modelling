@@ -2177,7 +2177,7 @@ adhmin_tm1=adhmin;
 adh_tm1 = adh; adh = .;
 * changes ***;
 adh_dl_tm1 = adh_dl; adh_dl = .;
-primary_tm1 = primary; primary = .; 
+primary_tm1 = primary; primary = .; primary_msm=.; primary_pwid=.;
 sw_tm1=sw;
 hiv_tm1 = hiv; 
 age_tm1=age;
@@ -2266,7 +2266,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 8 then do;
 		* 8 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80% ;
-		prep_oral_pref_set_in_opts = 1; pref_prep_oral_beta_s1 = 5;
+		pref_prep_oral = 0.8;
 		rate_test_stprep_set_in_opts = 0.5;	
 		p_prep_oral_b_set_in_opts = 0.5;
 		rate_stop_prep_oral_set_in_opts = 0.001; 
@@ -2277,6 +2277,7 @@ if caldate_never_dot >= &year_interv then do;
 		* 9 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		* not sure need to change pref_prep parameters;
 		date_prep_inj_intro = 2025;
+		pref_prep_inj = 0.8;
 		p_prep_oral_b_set_in_opts = 0.5;
 		rate_stop_prep_oral_set_in_opts = 0.001;
 		rate_stop_prep_inj_set_in_opts = 0.001; 
@@ -2289,6 +2290,8 @@ if caldate_never_dot >= &year_interv then do;
 		* 10 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP and dapivirine ring	Proportion of at risk populations initiated on (any) PrEP = 80%;
 		date_prep_inj_intro = 2025;
 		date_prep_vr_intro = 2025;
+
+		pref_prep_inj = 0.8;
 
 		p_prep_oral_b_set_in_opts = 0.5;
 		p_prep_inj_b_set_in_opts = 0.5;
@@ -2446,7 +2449,7 @@ else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_para
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) 
-	or (caldate{t} = &year_interv and prep_oral_pref_set_in_opts = 1) then do;
+	then do;
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
 
@@ -7402,6 +7405,9 @@ if caldate{t}=infection > . then do;
 
 primary   =1;
 
+if msm=1 then primary_msm=1;
+if pwid=1 then primary_pwid=1;
+
 * birth with infected child;
 if gender=2 then do;
 birth_with_inf_child=0;
@@ -10568,7 +10574,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 
 * BIRTH WITH INFECTED CHILD;
 * amended jun18 ;
-	onart_birth_with_inf_child=0;onart_birth_with_inf_child_res=0;give_birth_with_hiv=0;birth_with_inf_child=0;	
+	onart_birth_with_inf_child=0;onart_birth_with_inf_child_res=0;give_birth_with_hiv=0;birth_with_inf_child=0;	vl_when_giving_birth_g1000 = .;
 
 	if dt_lastbirth=caldate{t} and hiv=1 and t ge 2 then do;
 		give_birth_with_hiv=1;
@@ -10587,6 +10593,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			or c_in118m_tm1=1   or c_in140m_tm1=1  or c_in148m_tm1=1  or c_in155m_tm1=1  or c_in263m_tm1=1 then child_with_resistant_hiv=1;
 			birth_with_inf_child_lt1yrfi=0; if . < caldate{t} - infection <= 1 then birth_with_inf_child_lt1yrfi = 1; 		
 		end;
+		vl_when_giving_birth_g1000 = 0; if vl >= 3 then vl_when_giving_birth_g1000 = 1;
 	end;
 
 	if onart =1 and birth_with_inf_child=1 then do; onart_birth_with_inf_child=1; ev_birth_with_inf_ch_onart = 1; end;
@@ -12237,7 +12244,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		* iris risk due to starting art with very low cd4 count and not under clinical care;
 		if time0=caldate{t} and onartvisit0=1 and . < cd4 < 100 then hiv_death_rate = hiv_death_rate + death_r_iris_pop_wide_tld ;
 
-		if hiv_death_rate_modif_in_opts = 1 then hiv_death_rate = hiv_death_rate * 0.75 ;
+		if hiv_death_rate_modif_in_opts = 1 then hiv_death_rate = hiv_death_rate * 0.5 ;
 
 		death_rix = 1 - exp(-0.25*hiv_death_rate); 
 * ts1m: *	death_rix = 1 - exp (-(1/12)*hiv_death_rate);
@@ -17280,7 +17287,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/*primary infection*/
 
 	s_primary + primary ; s_primary1549 + primary1549 ; s_primary1549m + primary1549m ; s_primary1549w + primary1549w ;
-	s_infected_primary + infected_primary; s_inf_primary + inf_primary ; 
+	s_infected_primary + infected_primary; s_inf_primary + inf_primary ; s_primary_msm + primary_msm;  s_primary_pwid + primary_pwid;
 
 	s_primary1519m + primary1519m ; s_primary2024m + primary2024m ; s_primary2529m + primary2529m ; s_primary3034m + primary3034m ; 
 	s_primary3539m + primary3539m ; s_primary4044m + primary4044m ; s_primary4549m + primary4549m ; s_primary5054m + primary5054m ;
@@ -18178,7 +18185,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_pregnant_onart_vl_vhigh + pregnant_onart_vl_vhigh ; s_pregnant_onart_vl_vvhigh + pregnant_onart_vl_vvhigh ; 
 	s_birth_with_inf_child + birth_with_inf_child ; s_child_with_resistant_hiv + child_with_resistant_hiv ; s_give_birth_with_hiv + give_birth_with_hiv ;
 	s_onart_birth_with_inf_child_res + onart_birth_with_inf_child_res ; s_onart_birth_with_inf_child + onart_birth_with_inf_child ;	 
-	s_breastfeeding + breastfeeding ;  s_plw + plw;
+	s_breastfeeding + breastfeeding ;  s_plw + plw;  s_vl_when_giving_birth_g1000 + vl_when_giving_birth_g1000;
 
 	/*circumcision*/
 
@@ -19263,7 +19270,7 @@ s_sg_1 			s_sg_2 			s_sg_3 			s_sg_4			s_sg_5 			s_sg_6 			s_sg_7 			s_sg_8 		s_
 s_infection_pre_year_interv  s_infection_post_year_interv 
 
 /*primary infection*/
-s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary
+s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary  s_primary_msm  s_primary_pwid
 s_primary1519m	s_primary2024m	s_primary2529m	s_primary3034m	s_primary3539m	s_primary4044m	s_primary4549m
 s_primary5054m	s_primary5559m	s_primary6064m
 s_primary1519w	s_primary2024w	s_primary2529w	s_primary3034w	s_primary3539w	s_primary4044w	s_primary4549w
@@ -19832,7 +19839,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child    
-s_breastfeeding  s_plw
+s_breastfeeding  s_plw  s_vl_when_giving_birth_g1000
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -20297,7 +20304,7 @@ s_infection_pre_year_interv  s_infection_post_year_interv
 
 
 /*primary infection*/
-s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary
+s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary  s_primary_msm  s_primary_pwid
 s_primary1519m	s_primary2024m	s_primary2529m	s_primary3034m	s_primary3539m	s_primary4044m	s_primary4549m
 s_primary5054m	s_primary5559m	s_primary6064m
 s_primary1519w	s_primary2024w	s_primary2529w	s_primary3034w	s_primary3539w	s_primary4044w	s_primary4549w
@@ -20859,7 +20866,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child    
-s_breastfeeding   s_plw
+s_breastfeeding   s_plw  s_vl_when_giving_birth_g1000
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -24066,7 +24073,7 @@ s_sg_1 			s_sg_2 			s_sg_3 			s_sg_4			s_sg_5 			s_sg_6 			s_sg_7 			s_sg_8 		s_
 s_infection_pre_year_interv  s_infection_post_year_interv 
 
 /*primary infection*/
-s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary
+s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary   s_primary_msm  s_primary_pwid
 s_primary1519m	s_primary2024m	s_primary2529m	s_primary3034m	s_primary3539m	s_primary4044m	s_primary4549m
 s_primary5054m	s_primary5559m	s_primary6064m
 s_primary1519w	s_primary2024w	s_primary2529w	s_primary3034w	s_primary3539w	s_primary4044w	s_primary4549w
@@ -24632,7 +24639,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child  
-s_breastfeeding
+s_breastfeeding s_vl_when_giving_birth_g1000
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
