@@ -1458,19 +1458,19 @@ data y ; set b.l_tld_switch_an;
 
 data e; set y; keep &v run cald option ;
 
-proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2023 <= cald <= 2025; 
+proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2023 <= cald <  2025; 
 
 * note: it is critical that this starts at year_interv;
 
-proc means noprint data=e; var &v; output out=y_26 mean= &v._26; by run option ; where cald = 2026; 
-proc means noprint data=e; var &v; output out=y_1y mean= &v._1y; by run option ; where 2026.0 <= cald < 2027.00; 
-proc means noprint data=e; var &v; output out=y_3y mean= &v._3y; by run option ; where 2026.0 <= cald < 2029.00; 
-proc means noprint data=e; var &v; output out=y_5y mean= &v._5y; by run option ; where 2026.0 <= cald < 2031.00; 
-proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2026.0 <= cald < 2036.00; 
-proc means noprint data=e; var &v; output out=y_a10y mean= &v._a10y; by run option ; where 2035.0 <= cald < 2036.00; 
-proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2026.0 <= cald < 2076.00;   
+proc means noprint data=e; var &v; output out=y_26 mean= &v._25; by run option ; where cald = 2025; 
+proc means noprint data=e; var &v; output out=y_1y mean= &v._1y; by run option ; where 2025.0 <= cald < 2026.00; 
+proc means noprint data=e; var &v; output out=y_3y mean= &v._3y; by run option ; where 2025.0 <= cald < 2028.00; 
+proc means noprint data=e; var &v; output out=y_5y mean= &v._5y; by run option ; where 2025.0 <= cald < 2030.00; 
+proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2025.0 <= cald < 2035.00; 
+proc means noprint data=e; var &v; output out=y_a10y mean= &v._a10y; by run option ; where 2034.0 <= cald < 2035.00; 
+proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2025.0 <= cald < 2075.00;   
 																				   
-proc sort data=y_26    ; by run; proc transpose data=y_26  out=t_26  prefix=&v._26_  ; var &v._26    ; by run; 																																																						
+proc sort data=y_26    ; by run; proc transpose data=y_25  out=t_25  prefix=&v._25_  ; var &v._25    ; by run; 																																																						
 proc sort data=y_1y    ; by run; proc transpose data=y_1y  out=t_1y  prefix=&v._1y_  ; var &v._1y    ; by run; 																																																						
 proc sort data=y_3y    ; by run; proc transpose data=y_3y  out=t_3y  prefix=&v._3y_  ; var &v._3y    ; by run; 																																																						
 proc sort data=y_5y    ; by run; proc transpose data=y_5y  out=t_5y  prefix=&v._5y_  ; var &v._5y    ; by run; 																																																						
@@ -1478,7 +1478,7 @@ proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&
 proc sort data=y_a10y    ; by run; proc transpose data=y_a10y  out=t_a10y  prefix=&v._a10y_  ; var &v._a10y    ; by run; 																																																						
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
 
-data &v ; merge y_24 t_26 t_1y t_3y t_5y t_10y  t_a10y t_50y ; 
+data &v ; merge y_24 t_25 t_1y t_3y t_5y t_10y  t_a10y t_50y ; 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
