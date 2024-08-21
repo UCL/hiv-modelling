@@ -4,17 +4,20 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ag_options_a_out\";
 
-data a.kenya_ag_options_a ; set b.out: ;
 
 
-proc sort data=a.kenya_ag_options_a; 
+data   kenya_ag_options_a ; set b.out: ;
+
+
+
+proc sort data=  kenya_ag_options_a; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set a.kenya_ag_options_a ;
+set   kenya_ag_options_a ;
 
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
@@ -30,7 +33,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge a.kenya_ag_options_a sf;
+merge   kenya_ag_options_a sf;
 by run ;
  
 
@@ -279,6 +282,9 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * p_1524_newp_ge1;				p_1524_newp_ge1 = ( s_m1524_newp_ge1 + s_w1524_newp_ge1 ) 
 									/ (s_ageg1517m + s_ageg1819m + s_ageg1519m + s_ageg2024m + s_ageg1517w + s_ageg1819w + s_ageg1519w + s_ageg2024w ) ;
+
+* p_newp_ge1_agyw;				p_newp_ge1_agyw = ( s_w1524_newp_ge1 ) 
+									/ ( s_ageg1517w + s_ageg1819w + s_ageg1519w + s_ageg2024w ) ;
 
 * p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
 
@@ -909,7 +915,7 @@ n_new_inf1549 = s_primary1549 * sf * 4;
 
 
 keep run option cald cost  n_infected1549 
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
+s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge1_agyw p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m
@@ -1258,7 +1264,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_diag_msm);  %var(v=p_vl1000_art_gt6m_msm);	 %var(v=p_ever_tested_msm); 	%var(v=p_tested_this_period_msm);  %var(v=p_msm_infected_from_msm)
 %var(v=incidence1564);  %var(v=p_onprep_pwid);  %var(v=p_onart_pwid);  %var(v=p_onart_sw);  %var(v=p_ep_msm);   %var(v=p_msm_ge1newp);   %var(v=p_m_ge1newp); 
 %var(v=n_vm_per_year); %var(v=n_self_tested);   %var(v=n_self_tested_m);    %var(v=n_self_tested_w);    %var(v=n_tested_due_to_self_test);    
-%var(v=n_diagnosed_self_test);
+%var(v=n_diagnosed_self_test);  %var(v=p_newp_ge1_agyw);
 
 
 data   wide_outputs; merge 
@@ -1350,7 +1356,7 @@ n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_diagnosed  n_hi
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564 p_onprep_msm				
  p_onart_msm  prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period_msm p_msm_infected_from_msm p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1newp n_vm_per_year
-n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test
+n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test  p_newp_ge1_agyw
 ;
 
 proc sort; by run; run;

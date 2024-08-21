@@ -2245,14 +2245,17 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 5 then do;
 		* 5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_agyw_set_in_opts = 1; incr_test_agyw_year_i = 5;
+		test_rate_agyw_set_in_opts = 1; incr_test_agyw_year_i = 1;
 		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_year_i = 1;
 	end;
 
 	if option = 6 then do;
 		* 6 Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
-		sexual encounter = 95%;		
-		condom_incr_set_in_opts = 1; condom_incr_year_i = 3;
+		sexual encounter = 95%;
+		condom_incr_set_in_opts = 0;
+		if gender = 2 and 15 <= age < 25 then do;	
+			condom_incr_set_in_opts = 1; condom_incr_year_i = 3;
+		end;
 	end;
 
 	if option = 7 then do;
@@ -2263,10 +2266,10 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 8 then do;
 		* 8 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80% ;
-		prep_oral_pref_set_in_opts = 1; pref_prep_oral_beta_s1 = 2;
+		prep_oral_pref_set_in_opts = 1; pref_prep_oral_beta_s1 = 5;
 		rate_test_stprep_set_in_opts = 0.5;	
 		p_prep_oral_b_set_in_opts = 0.5;
-		prob_rate_stop_prep_set_in_opts = 0.001; 
+		rate_stop_prep_oral_set_in_opts = 0.001; 
 		prob_prep_restart_set_in_opts = 0.5; 
 	end;
 
@@ -2443,7 +2446,7 @@ else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_para
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) 
-	or prep_oral_pref_set_in_opts = 1 then do;
+	or (caldate{t} = &year_interv and prep_oral_pref_set_in_opts = 1) then do;
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
 
@@ -3108,7 +3111,7 @@ if caldate{t} >= &year_interv then do;
 	end;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
 	if incr_test_year_i = 5              then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-	if incr_test_agyw_year_i = 1 and gender = 2 and 15 <= age < 25 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+	if incr_test_agyw_year_i = 1 and gender = 2 and 15 <= age < 25 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
 end;
 
 
