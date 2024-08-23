@@ -35,7 +35,7 @@ deathr_dol_r_uvl2_ = deathr_dol_r_uvl2;
 s_o_dol_2nd_vlg1000_ = s_o_dol_2nd_vlg1000;
 n_onart_iicu_uvl2_ = n_onart_iicu_uvl2;
 
-%let single_var = n_second_vlg1000_first  ;
+%let single_var = p_o_dar_uvl2_  ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -436,10 +436,13 @@ run;quit;
 * ods html close;
 
 
+*/
+
+
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "p_o_dar_uvl2_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2070 by 5)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2030 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1       by  0.05     ) valueattrs=(size=10);
 
 label p50_p_o_dar_uvl2__0 = "option 0";
@@ -459,6 +462,8 @@ run;quit;
 
 * ods html close;
 
+
+/*
 
 
 ods html;
@@ -483,7 +488,6 @@ band    x=cald lower=p5_n_uvl2_elig_4 upper=p95_n_uvl2_elig_4 / transparency=0.9
 run;quit;
 
 
-*/
 
 ods html;
 proc sgplot data=d ; 
@@ -507,7 +511,6 @@ band    x=cald lower=p5_n_second_vlg1000_first_4 upper=p95_n_second_vlg1000_firs
 run;quit;
 
 
-/*
 
 ods html;
 proc sgplot data=d ; 
@@ -532,11 +535,10 @@ run;quit;
 
 
 
-
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "n_res_test_dol_py";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5   )	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023 to 2030 by 1   )	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  20000      by  1000) valueattrs=(size=10);
 
 label p50_n_res_test_dol_py_0 = "option 0";
@@ -555,7 +557,7 @@ band    x=cald lower=p5_n_res_test_dol_py_4 upper=p95_n_res_test_dol_py_4 / tran
 run;quit;
 
 
-*
+
 
 ods html;
 proc sgplot data=d ; 

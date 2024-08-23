@@ -1,25 +1,13 @@
 
 
+* 
 
-
-* post submission - added s_r_dar 
-
-* besides those below also add outputs:  of those with dol resistance % on dar (trying to understand why death rate higher for resistance test than switch)
-
-also some output to ascertain rate of new mutations appearing after initial uvl2 
+output to ascertain rate of new mutations appearing after initial uvl2 
 
 also number of resistance tests per person with a test done
 
-time to switch switch (after initial uvl2) to dar in resistance test group
-
 (note: people who have not virologically failed before tld have not had their adh alert yet and so generally will start tld with lower adherence than those 
 who started after their adherence alert)
-
-
-
-
-
-
 
 
 * consider changes to effect of vl meas alert (smaller effect, greater effect, less durable effect) - think just extend to 0.2 0.35 0.5 0.8
@@ -11042,6 +11030,7 @@ end;
 
 * added condition below : onartvisit0 ne 1;
 
+/*
 
 if caldate{t} le 2026 and art_monitoring_strategy=150  and visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
 and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
@@ -11082,12 +11071,15 @@ and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_fro
 	end; 
 end;
 
+*/
+
 
 * TLD_SWITCH comparison  ; 
 
 drug_level_test=0; drug_level_test_adh_high=.; drug_level_test_adh_low=.;  res_test_dol=0; second_vlg1000_first=0; second_vlg1000_first_dol_r=0;
 measured_adh=.; adh_meas_1_1=.; adh_meas_0_1=.; adh_meas_1_0=.; adh_meas_0_0=.;  uvl2_now_tld_only=0; uvl2_now_no_prev_vfail=0; 
 uvl2_now_prev_vfail=0;uvl2_now_tld_only_dol_r=0; uvl2_now_no_prev_vfail_dol_r=0; uvl2_now_prev_vfail_dol_r=0;
+vm_in_tld_switch = 0;
 
 if caldate{t} ge 2022 and art_monitoring_strategy in (150, 160, 1500, 1600, 1700) and visit=1 and (o_dol=1 or (mr_dol_tm1 = 1 and int_clinic_not_aw=1)) and f_dol ne 1 and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1)
 and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
@@ -11104,7 +11096,7 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 			if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
 			if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
 			if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
-			value_last_vm = vm ;
+			value_last_vm = vm ;  vm_in_tld_switch = 1;
 			vl_cost_inc = 1;
 
 			* if viral load > 1000.....;
@@ -11117,40 +11109,44 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 			if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; 
 				date_conf_vl_measure_done = caldate{t} ; 
 				if value_last_vm gt log10(vl_threshold) then do; 
-					second_vlg1000=1; if date_last_second_vlg1000 = . then second_vlg1000_first=1; date_last_second_vlg1000 = caldate{t}; 
+					second_vlg1000=1; if date_last_second_vlg1000 = . then second_vlg1000_first=1; date_last_second_vlg1000 = caldate{t}; o_dol_2nd_vlg1000 = 1;
 				end;
-				if second_vlg1000_first = 1 and r_dol > 0 then second_vlg1000_first_dol_r=1;
-				if second_vlg1000_first = 1 and no_non_tld_by_year_interv=1 then do;uvl2_now_tld_only=1; if r_dol > 0 then uvl2_now_tld_only_dol_r=1;end;
-				if second_vlg1000_first = 1 and any_vfail_by_year_interv=0 then do; uvl2_now_no_prev_vfail = 1; if r_dol > 0 then uvl2_now_no_prev_vfail_dol_r=1;end;
-				if second_vlg1000_first = 1 and any_vfail_by_year_interv=1 then do; uvl2_now_prev_vfail = 1; if r_dol > 0 then uvl2_now_prev_vfail_dol_r=1;	end;
+			end;
 
-				* creating a variable measured_adh for use if adherence is measured;
-				measured_adh = adh + rand('normal')*sd_measured_adh; measured_adh = min(measured_adh, 1); measured_adh = max(measured_adh, 0); 
-				drug_level_test_adh_high=0; if measured_adh > 0.8 then drug_level_test_adh_high = 1; 
-				drug_level_test_adh_low=0; if measured_adh <= 0.8 then drug_level_test_adh_low = 1; 
 
-				if art_monitoring_strategy in (1500, 1600) and second_vlg1000=1 then do; date_drug_level_test = caldate{t}; drug_level_test=1; end;
-				if art_monitoring_strategy = 160 and second_vlg1000=1 then do; date_res_test_tld = caldate{t}; res_test_dol=1; end;
-				if art_monitoring_strategy = 1600 and second_vlg1000=1 and measured_adh > 0.8 then do; date_res_test_tld = caldate{t}; res_test_dol=1; end;
-				if art_monitoring_strategy = 1700 then do; * nothing ; end;
+			if second_vlg1000_first = 1 and r_dol > 0 then second_vlg1000_first_dol_r=1;
+			if second_vlg1000_first = 1 and no_non_tld_by_year_interv=1 then do;uvl2_now_tld_only=1; if r_dol > 0 then uvl2_now_tld_only_dol_r=1;end;
+			if second_vlg1000_first = 1 and any_vfail_by_year_interv=0 then do; uvl2_now_no_prev_vfail = 1; if r_dol > 0 then uvl2_now_no_prev_vfail_dol_r=1;end;
+			if second_vlg1000_first = 1 and any_vfail_by_year_interv=1 then do; uvl2_now_prev_vfail = 1; if r_dol > 0 then uvl2_now_prev_vfail_dol_r=1;	end;
 
-				* to understand sens and spec of measured_adh;
-				if measured_adh ne . then do;
-					if measured_adh ge 0.8 and adh ge 0.8 then adh_meas_1_1=1; 
-					if measured_adh ge 0.8 and 0 < adh <  0.8 then adh_meas_1_0=1; 
-					if 0 <= measured_adh < 0.8 and adh ge 0.8 then adh_meas_0_1=1; 
-					if 0 <= measured_adh < 0.8 and 0 < adh < 0.8 then adh_meas_0_0=1; 
-					if measured_adh ge 0.8 and r_dol > 1 then adh_meas_r_1_1=1; 
-					if measured_adh ge 0.8 and r_dol = 0 then adh_meas_r_1_0=1; 
-					if 0 <= measured_adh < 0.8 and r_dol > 1 then adh_meas_r_0_1=1; 
-					if 0 <= measured_adh < 0.8 and r_dol = 1 then adh_meas_r_0_0=1; 
-				end;
+			* creating a variable measured_adh for use if adherence is measured;
+			measured_adh = adh + rand('normal')*sd_measured_adh; measured_adh = min(measured_adh, 1); measured_adh = max(measured_adh, 0); 
+			drug_level_test_adh_high=0; if measured_adh > 0.8 then drug_level_test_adh_high = 1; 
+			drug_level_test_adh_low=0; if measured_adh <= 0.8 then drug_level_test_adh_low = 1; 
 
+			if art_monitoring_strategy in (1500, 1600) and second_vlg1000=1  and vm > 3 then do; date_drug_level_test = caldate{t}; drug_level_test=1; end;
+			if art_monitoring_strategy = 160 and second_vlg1000=1 and vm > 3 then do; 
+				date_res_test_tld = caldate{t}; res_test_dol=1; 
+				if num_r_test > . then num_r_test=num_r_test+1; if num_r_test=. then num_r_test=1; 
+			end;
+			if art_monitoring_strategy = 1600 and second_vlg1000=1 and measured_adh > 0.8 and vm > 3 then do; date_res_test_tld = caldate{t}; res_test_dol=1; end;
+			if art_monitoring_strategy = 1700 then do; * nothing ; end;
+
+			* to understand sens and spec of measured_adh;
+			if measured_adh ne . then do;
+				if measured_adh ge 0.8 and adh ge 0.8 then adh_meas_1_1=1; 
+				if measured_adh ge 0.8 and 0 < adh <  0.8 then adh_meas_1_0=1; 
+				if 0 <= measured_adh < 0.8 and adh ge 0.8 then adh_meas_0_1=1; 
+				if 0 <= measured_adh < 0.8 and 0 < adh < 0.8 then adh_meas_0_0=1; 
+				if measured_adh ge 0.8 and r_dol > 1 then adh_meas_r_1_1=1; 
+				if measured_adh ge 0.8 and r_dol = 0 then adh_meas_r_1_0=1; 
+				if 0 <= measured_adh < 0.8 and r_dol > 1 then adh_meas_r_0_1=1; 
+				if 0 <= measured_adh < 0.8 and r_dol = 1 then adh_meas_r_0_0=1; 
 			end;
 
 			v=rand('uniform');	
 
-			if second_vlg1000=1 and (art_monitoring_strategy = 150 or (art_monitoring_strategy = 1500 and caldate{t} = date_drug_level_test and measured_adh > 0.8) or 
+			if second_vlg1000=1 and vm > 3 and (art_monitoring_strategy = 150 or (art_monitoring_strategy = 1500 and caldate{t} = date_drug_level_test and measured_adh > 0.8) or 
 			(art_monitoring_strategy = 160 and date_res_test_tld = caldate{t} and r_dol > 0 and v < sens_res_test) or 
 			(art_monitoring_strategy = 1600 and measured_adh > 0.8 and r_dol > 0  and v < sens_res_test and date_res_test_tld = caldate{t} and caldate{t} = date_drug_level_test)) then do;
 				r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; date_f_dol=caldate{t}; if linefail_tm1 = 0 then linefail = 1;
@@ -14023,6 +14019,8 @@ if drug_level_test = 1 and drug_level_test_adh_high = 1 and r_dol > 0 then drug_
 drug_level_test_adh_low_r_dol = 0;
 if drug_level_test = 1 and drug_level_test_adh_low = 1 and r_dol > 0 then drug_level_test_adh_low_r_dol = 1;
 
+r_dol_but_not_on_dar = 0; if r_dol > 0 and o_dar ne 1 then r_dol_but_not_on_dar = 1; 
+
 incident_r_dol = 0;
 if r_dol ge 0.5 and r_dol_tm1 <= 0 then incident_r_dol=1;
 
@@ -14052,6 +14050,17 @@ o_dol_vg1000_r=0; if o_dol=1 and vl ge 3 and r_dol ge 0.5 then o_dol_vg1000_r=1;
 
 o_dol_vg1000_inm=0; if o_dol=1 and vl ge 3 and (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_inm155m=1 or e_inm263m=1) then o_dol_vg1000_inm=1;
 o_dol_vl1000_inm=0; if o_dol=1 and . < vl < 3 and (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_inm155m=1 or e_inm263m=1) then o_dol_vl1000_inm=1;
+
+new_in118m=0; if e_in118m_tm1=0 and e_in118m=1 then new_in118m=1;
+new_in140m=0; if e_in140m_tm1=0 and e_in140m=1 then new_in140m=1;
+new_in148m=0; if e_in148m_tm1=0 and e_in148m=1 then new_in148m=1;
+new_in155m=0; if e_in155m_tm1=0 and e_in155m=1 then new_in155m=1;
+new_in263m=0; if e_in263m_tm1=0 and e_in263m=1 then new_in263m=1;
+
+dol_mut = 0; if (e_in118m_tm1=1 or e_in140m_tm1=1 or e_in148m_tm1=1 or e_inm155m_tm1=1 or e_inm263m_tm1=1) then dol_mut=1;
+addtl_dol_mut = 0;
+if (e_in118m_tm1=1 or e_in140m_tm1=1 or e_in148m_tm1=1 or e_inm155m_tm1=1 or e_inm263m_tm1=1) and 
+(new_in118m=1 or new_in140m=1 or new_in148m=1 or new_in155m=1 or new_in263m=1) then addtl_dol_mut = 1;
 
 
 *** Attrition;
@@ -17705,7 +17714,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_rm_ + rm_ ; s_i_nnm + i_nnm ; s_i_rm + i_rm ; s_i_pim + i_pim ; s_i_tam + i_tam ; s_i_im + i_im ;
     s_inm_ + inm_ ; s_i_184m + i_184m ; s_im_art + im_art ; s_pim_art + pim_art ; s_tam_art + tam_art ; s_m184_art + m184_art ; s_r_ + r_ ;
     s_r_3tc + r_3tc ; s_r_nev + r_nev ; s_r_lpr + r_lpr ; s_r_taz + r_taz ; s_r_efa + r_efa ; s_r_ten + r_ten ; s_r_zdv + r_zdv ; s_r_dol + r_dol ;
-	s_r_cab + r_cab ; s_r_len + r_len ; s_r_dar + r_dar;
+	s_r_cab + r_cab ; s_r_len + r_len ; s_r_dar + r_dar;  s_f_dol + f_dol;  s_r_dol_but_not_on_dar + r_dol_but_not_on_dar;
+	s_addtl_dol_mut + addtl_dol_mut; s_dol_mut + dol_mut;
  	s_rme_ + rme_ ; s_iime_ + iime_ ; s_nnme_ + nnme_ ; s_pime_ + pime_ ; s_nrtime_ + nrtime_ ; s_res_1stline_startline2 + res_1stline_startline2 ;
 	s_nnm_art + nnm_art ; s_nnm_art_m + nnm_art_m ; s_nnm_art_w + nnm_art_w ; s_r_art + r_art ; s_acq_rt65m + acq_rt65m ; s_acq_rt184m + acq_rt184m ;
 	s_acq_rtm + acq_rtm ; s_onart_iicu_res + onart_iicu_res ; s_nactive_art_start_lt2 + nactive_art_start_lt2 ; s_nactive_art_start_lt3 + nactive_art_start_lt3 ;
@@ -19657,8 +19667,8 @@ s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
 s_in118m_  s_in140m_  s_in148m_  s_in155m_ s_in263m_ s_ca66m_ s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art 
-s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr s_r_dar s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  s_r_cab  s_r_len
-s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
+s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr s_r_dar s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  s_r_cab  s_r_len s_f_dol
+s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_  s_r_dol_but_not_on_dar s_addtl_dol_mut s_dol_mut 
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
 s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
 s_nactive_line2_lt4 	 s_nactive_line2_lt3 	  s_nactive_line2_lt2 		s_nactive_line2_lt1p5  s_pim_line2
@@ -20692,8 +20702,8 @@ s_i_m_1549_np  s_i_w_1549_np   s_i_w_newp  s_i_m_newp
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
 s_in118m_  s_in140m_ s_in148m_  s_in155m_ s_in263m_  s_ca66m_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art 
-s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr  s_r_dar s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  s_r_cab  s_r_len
-s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
+s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr  s_r_dar s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  s_r_cab  s_r_len s_f_dol
+s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_  s_r_dol_but_not_on_dar  s_addtl_dol_mut s_dol_mut 
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
 s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
 s_nactive_line2_lt4 	 s_nactive_line2_lt3 	  s_nactive_line2_lt2 		s_nactive_line2_lt1p5  s_pim_line2
@@ -24560,8 +24570,8 @@ s_i_m_1549_np  s_i_w_1549_np    s_i_w_newp  s_i_m_newp
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
 s_in118m_  s_in140m_ s_in148m_  s_in155m_ s_in263m_  s_ca66m_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
-s_r_  	 s_r_3tc  s_r_nev  s_r_lpr  s_r_dar s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  s_r_cab  s_r_len
-s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
+s_r_  	 s_r_3tc  s_r_nev  s_r_lpr  s_r_dar s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  s_r_cab  s_r_len  s_f_dol
+s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_  s_r_dol_but_not_on_dar  s_addtl_dol_mut s_dol_mut 
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
 s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
 s_nactive_line2_lt4 	 s_nactive_line2_lt3 	  s_nactive_line2_lt2 		s_nactive_line2_lt1p5  s_pim_line2
