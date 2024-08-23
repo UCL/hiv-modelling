@@ -11125,7 +11125,7 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 			drug_level_test_adh_low=0; if measured_adh <= 0.8 then drug_level_test_adh_low = 1; 
 
 			if art_monitoring_strategy in (1500, 1600) and second_vlg1000=1  and vm > 3 then do; date_drug_level_test = caldate{t}; drug_level_test=1; end;
-			if art_monitoring_strategy = 160 and second_vlg1000=1 and vm > 3 then do; 
+			if art_monitoring_strategy = 160 and second_vlg1000=1 and vm > 3 and num_r_test <= 0 then do; 
 				date_res_test_tld = caldate{t}; res_test_dol=1; 
 				if num_r_test > . then num_r_test=num_r_test+1; if num_r_test=. then num_r_test=1; 
 			end;
