@@ -35,6 +35,7 @@ data sf;
 set b.k_len_prep_a ;
 
 
+
 if cald=2024   ;
 s_alive = s_alive_m + s_alive_w ;
 sf_2024 = 10000000 / s_alive;
@@ -1949,3 +1950,5 @@ d_n_death_hiv_10y_2_1
 ;
 run;
 ods html close;
+
+
