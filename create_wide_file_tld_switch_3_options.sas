@@ -15,7 +15,7 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_an;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_ao;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 if option in (0, 2, 4);
 
@@ -26,7 +26,7 @@ run;
 
 
 
-proc sort data=b.k_tld_switch_an; 
+proc sort data=b.k_tld_switch_ao; 
 by run cald option;
 run;
 
@@ -34,7 +34,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_tld_switch_an ;
+set b.k_tld_switch_ao ;
 
 
 if cald=2024   ;
@@ -53,7 +53,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_tld_switch_an sf;
+merge b.k_tld_switch_ao sf;
 by run ;
 
 
@@ -1084,7 +1084,7 @@ run;
 
 * n_dead_dol_r_uvl2;			n_dead_dol_r_uvl2 = s_dead_dol_r_uvl2 * sf * 4 ;
 
-* n_second_vlg1000_first;		n_second_vlg1000_first = s_second_vlg1000_first * sf;
+* n_second_vlg1000_first;		n_second_vlg1000_first = s_second_vlg1000_first * sf * 4;
     
 * p_artexp_dol_pi_failed;		p_artexp_dol_pi_failed = s_dol_pi_failed / s_artexp;
 * p_artexp_uvl2;				p_artexp_uvl2 = s_uvl2_elig / s_artexp;   
@@ -1436,13 +1436,13 @@ run;
 
 
 
-data    b.l_tld_switch_an; set y;  
+data    b.l_tld_switch_ao; set y;  
 
 
 
 
 
-data y ; set b.l_tld_switch_an; 
+data y ; set b.l_tld_switch_ao; 
 
   options nomprint;
   option nospool;
@@ -1940,7 +1940,9 @@ data b;
 set b.w_tld_switch_ao_024   ;
 
   if 0.0005 <= prop_r_dol_ge_p5_uvl2_24 < 0.35;
-  if run le 980648583  ;
+
+
+* if run le 980648583  ; * for tld_switch_ao - results in ms sent out 18th aug 24;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1973,7 +1975,7 @@ d_n_dead_hivrel_onart_1y_2_1 = n_dead_hivrel_onart_1y_2 - n_dead_hivrel_onart_1y
 d_n_dead_hivrel_onart_1y_3_1 = n_dead_hivrel_onart_1y_3 - n_dead_hivrel_onart_1y_1;
 
 * for sensitivity analysis;
-* dres_cost_50y_2 = dres_cost_50y_2 * 0.5 ;
+* dres_cost_50y_2 = dres_cost_50y_2 * 1.5 ;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -2346,8 +2348,6 @@ d_dcost_50y_1_3 d_ddaly_50y_1_3
 d_dcost_50y_2_3 d_ddaly_50y_2_3
 ;
 * where prop_r_dol_ge_p5_uvl2_24 < 0.05;
-* where adh_effect_of_meas_alert = 0.8;
-
 run;
 ods html close;
 
