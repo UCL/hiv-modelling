@@ -1414,7 +1414,7 @@ p_dol_start_nactive_p5_r p_dol_start_nactive_1p5_r p_dol_start_nactive_2_r  prob
 
 dten_cost d3tc_cost ddar_cost ddol_cost  p_r_dol   sens_res_test  date_prep_cab_intro  p_vlg1000_onart_allhiv s_uvl2_elig s_onart_iicu_uvl2
 
-p_artexp_uvl2 
+p_artexp_uvl2   rel_dol_tox
 ;
 
 
@@ -1791,7 +1791,7 @@ incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol  sens_res_test  n_ontld pref_prep_oral_beta_s1
-date_prep_cab_intro
+date_prep_cab_intro  rel_dol_tox
 ;
 
 %macro par(p=);
@@ -1857,7 +1857,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=p_emerge_inm_res_cab_notpr); %par(p=pref_prep_oral_beta_s1);
 %par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);  %par(p=sens_res_test);
-%par(p=date_prep_cab_intro);
+%par(p=date_prep_cab_intro); %par(p=rr_int_tox); 
 
 
 data b.wide_par2; merge 
@@ -1916,7 +1916,7 @@ incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
  prob_prep_pop_wide_tld
 
-p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  sens_res_test  pref_prep_oral_beta_s1  date_prep_cab_intro
+p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  sens_res_test  pref_prep_oral_beta_s1  date_prep_cab_intro rel_dol_tox
 ;
 
 run;
@@ -2348,14 +2348,10 @@ d_dcost_50y_1_3 d_ddaly_50y_1_3
 d_dcost_50y_2_3 d_ddaly_50y_2_3
 ;
 * where prop_r_dol_ge_p5_uvl2_24 < 0.05;
+* where incr_mort_risk_dol_weightg < 3;  
 run;
 ods html close;
 
-
-ods html;
-proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost   lowest_netdaly_1_2  lowest_netdaly_2_23 ;
-run;
-ods html close;
 
 
 
@@ -2445,7 +2441,9 @@ proc glm; model d_netdaly500_2_3 =
 
 res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
 rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
+rr_int_tox /* rel_dol_tox */  /* check for any other parameters */
+/ solution ;
 
 run;
 
