@@ -11130,7 +11130,7 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 				if num_r_test > . then num_r_test=num_r_test+1; if num_r_test=. then num_r_test=1; 
 			end;
 			if art_monitoring_strategy = 1600 and second_vlg1000=1 and measured_adh > 0.8 and vm > 3 then do; date_res_test_tld = caldate{t}; res_test_dol=1; end;
-			if art_monitoring_strategy = 1700 then do; * nothing ; end;
+			if art_monitoring_strategy = 1700 then do; * nothing ; end;  * note we dont set f_dol to 1 ;
 
 			* to understand sens and spec of measured_adh;
 			if measured_adh ne . then do;

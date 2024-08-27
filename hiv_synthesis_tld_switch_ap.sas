@@ -11040,9 +11040,9 @@ end;
 
 * added condition below : onartvisit0 ne 1;
 
-/*
 
-if caldate{t} le 2026 and art_monitoring_strategy=150  and visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
+
+if art_monitoring_strategy=150 and ((o_dol ne 1 and p_dol ne 1) or caldate{t} < 2019.5) and visit=1 and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
 and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and 
 	(caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; * jan15;
@@ -11063,8 +11063,11 @@ and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_fro
 	* eee;	
 	if o_dol=1 and (caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold)) then o_dol_2nd_vlg1000 = 1;
 
-	if (caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
-	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold))
+* note: dont call virologic failure of dolutegravir regimen pre 2026; 
+
+	if o_dol ne 1 and 
+	((caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
+	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold)))
 	then do;  
 			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
 			if o_zdv=1 then f_zdv=1;
@@ -11081,7 +11084,7 @@ and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_fro
 	end; 
 end;
 
-*/
+
 
 
 * TLD_SWITCH comparison  ; 
@@ -11091,7 +11094,7 @@ measured_adh=.; adh_meas_1_1=.; adh_meas_0_1=.; adh_meas_1_0=.; adh_meas_0_0=.; 
 uvl2_now_prev_vfail=0;uvl2_now_tld_only_dol_r=0; uvl2_now_no_prev_vfail_dol_r=0; uvl2_now_prev_vfail_dol_r=0;
 vm_in_tld_switch = 0;
 
-if caldate{t} ge 2022 and art_monitoring_strategy in (150, 160, 1500, 1600, 1700) and visit=1 and (o_dol=1 or (mr_dol_tm1 = 1 and int_clinic_not_aw=1)) and f_dol ne 1 and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1)
+if caldate{t} ge 2019.5 and art_monitoring_strategy in (150, 160, 1500, 1600, 1700) and visit=1 and (o_dol=1 or (mr_dol_tm1 = 1 and int_clinic_not_aw=1)) and f_dol ne 1 and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1)
 and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	
 	* evaluate if a viral load test is indicated;
@@ -11120,6 +11123,7 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 				date_conf_vl_measure_done = caldate{t} ; 
 				if value_last_vm gt log10(vl_threshold) then do; 
 					second_vlg1000=1; if date_last_second_vlg1000 = . then second_vlg1000_first=1; date_last_second_vlg1000 = caldate{t}; o_dol_2nd_vlg1000 = 1;
+					if second_vlg1000_first=1 then date_second_vlg1000_first = caldate{t};
 				end;
 			end;
 
@@ -14071,7 +14075,6 @@ dol_mut = 0; if (e_in118m_tm1=1 or e_in140m_tm1=1 or e_in148m_tm1=1 or e_inm155m
 addtl_dol_mut = 0;
 if (e_in118m_tm1=1 or e_in140m_tm1=1 or e_in148m_tm1=1 or e_inm155m_tm1=1 or e_inm263m_tm1=1) and 
 (new_in118m=1 or new_in140m=1 or new_in148m=1 or new_in155m=1 or new_in263m=1) then addtl_dol_mut = 1;
-
 
 *** Attrition;
 art_attrit_1yr = 0; art_attrit_1yr_on = 0;  if caldate_never_dot - yrart = 1 then do; art_attrit_1yr = 1; if onart=1 or int_clinic_not_aw=1 then art_attrit_1yr_on = 1;  end;
@@ -19501,6 +19504,7 @@ if s_alive1549 gt 0 then prevalence1549 = (s_hiv1549w + s_hiv1549m) / (s_alive15
 if s_alive1549_m gt 0 then prevalence1549m =  s_hiv1549m / s_alive1549_m;
 if s_alive1549_w gt 0 then prevalence1549w =  s_hiv1549w / s_alive1549_w;
 if prevalence1524m gt 0 then prev_ratio_1524 = prevalence1524w / prevalence1524m ;
+if s_uvl2_elig > 0 then prop_r_dol_ge_p5_uvl2 =  s_r_dol_ge_p5_uvl2 /  s_uvl2_elig ;
 
 prevalence2024w = s_hiv2024w  / s_ageg2024w ;
 prevalence2024m = s_hiv2024m  / s_ageg2024m ;
@@ -20305,7 +20309,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549
+prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549 prop_r_dol_ge_p5_uvl2
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
@@ -20374,7 +20378,8 @@ if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do;
 
 if cald = 2024 and prevalence1549w > 0.35 then do; abort abend; end;
 if cald = 2024 and prevalence1549 < 0.03 then do; abort abend; end;
-
+if cald = 2024 and prop_r_dol_ge_p5_uvl2 < 0.001 then do; abort abend; end;
+if cald = 2024 and prop_r_dol_ge_p5_uvl2 > 0.35 then do; abort abend; end;
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;

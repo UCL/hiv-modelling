@@ -229,7 +229,7 @@ dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000;
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
-  ddar_cost = ddar_cost * 0.71 ;
+  ddar_cost = ddar_cost * 0.48 ;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
@@ -1436,13 +1436,13 @@ run;
 
 
 
-data    b.l_tld_switch_ao_darcost; set y;  
+data    b.l_tld_switch_ao_darcost100; set y;  
 
 
 
 
 
-data y ; set b.l_tld_switch_ao_darcost; 
+data y ; set b.l_tld_switch_ao_darcost100; 
 
   options nomprint;
   option nospool;
@@ -1926,7 +1926,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_ao_darcost    ; 
+  data  b.w_tld_switch_ao_darcost100    ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1937,13 +1937,12 @@ proc sort; by run;run;
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ao_out\";
 
 data b;
-set b.w_tld_switch_ao_darcost   ;
+set b.w_tld_switch_ao_darcost100   ;
 
  if 0.0001 <= prop_r_dol_ge_p5_uvl2_24 < 0.35;
 
 
   if run le 984208102 ; * for tld_switch_ao results on first 1000 for sending out new draft after 26 aug 24;
-
 
 * if run le 980648583  ; * for tld_switch_ao - results in ms sent out 18th aug 24;
 
@@ -1978,7 +1977,7 @@ d_n_dead_hivrel_onart_1y_2_1 = n_dead_hivrel_onart_1y_2 - n_dead_hivrel_onart_1y
 d_n_dead_hivrel_onart_1y_3_1 = n_dead_hivrel_onart_1y_3 - n_dead_hivrel_onart_1y_1;
 
 * for sensitivity analysis;
-  dres_cost_50y_2 = dres_cost_50y_2 * 0.5;
+  dres_cost_50y_2 = dres_cost_50y_2 * 0.33;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
