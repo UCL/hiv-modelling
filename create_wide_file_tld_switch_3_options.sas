@@ -4,18 +4,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ao_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ap_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ao_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ap_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_ao;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_ap;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 if option in (0, 2, 4);
 
@@ -26,7 +26,7 @@ run;
 
 
 
-proc sort data=b.k_tld_switch_ao; 
+proc sort data=b.k_tld_switch_ap; 
 by run cald option;
 run;
 
@@ -34,7 +34,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_tld_switch_ao ;
+set b.k_tld_switch_ap ;
 
 
 if cald=2024   ;
@@ -53,7 +53,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_tld_switch_ao sf;
+merge b.k_tld_switch_ap sf;
 by run ;
 
 
@@ -1444,13 +1444,13 @@ run;
 
 
 
-data    b.l_tld_switch_ao; set y;  
+data    b.l_tld_switch_ap; set y;  
 
 
 
 
 
-data y ; set b.l_tld_switch_ao; 
+data y ; set b.l_tld_switch_ap; 
 
   options nomprint;
   option nospool;
@@ -1934,7 +1934,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_ao    ; 
+  data  b.w_tld_switch_ap    ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1942,15 +1942,15 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ao_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ap_out\";
 
 data b;
-set b.w_tld_switch_ao   ;
+set b.w_tld_switch_ap   ;
 
   if 0.0001 <= prop_r_dol_ge_p5_uvl2_24 < 0.35;
 
 
-  if run le 984208102 ; * for tld_switch_ao results on first 1000 for sending out new draft after 26 aug 24;
+* if run le 984208102 ; * for tld_switch_ap results on first 1000 for sending out new draft after 26 aug 24;
 
 * if run le 980648583  ; * for tld_switch_an - results in ms sent out 18th aug 24;
 
@@ -2386,7 +2386,7 @@ d_dcost_50y_2_1  d_dcost_50y_3_1  d_dcost_50y_2_3
 netdaly500_1 netdaly500_2 netdaly500_3 
 d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_2_3
 ;
-  where prop_r_dol_ge_p5_uvl2_24 < 0.05;
+* where prop_r_dol_ge_p5_uvl2_24 < 0.05;
 run;
 ods html close;
 
