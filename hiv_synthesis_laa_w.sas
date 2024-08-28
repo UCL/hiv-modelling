@@ -1,7 +1,11 @@
 
 
 
-* start in 2027 rather than 2026 ?
+* start in 2027 rather than 2026 
+
+* make sure have included mtct in breastfeeding period
+
+
 
 
 * note loading dose of len (oral) when start or restart (extra cost);
