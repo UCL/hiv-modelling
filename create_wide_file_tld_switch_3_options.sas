@@ -17,6 +17,8 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 
 data b.k_tld_switch_ap;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
+* this contains out.. files up to 15.03 28-aug-24 ;
+
 if option in (0, 2, 4);
 
 run;
@@ -1949,6 +1951,7 @@ set b.w_tld_switch_ap   ;
 
   if 0.0001 <= prop_r_dol_ge_p5_uvl2_24 < 0.35;
 
+  if run le  973893787; * for tld_switch_ap final results for ms - 29 aug 24 ;
 
 * if run le 984208102 ; * for tld_switch_ap results on first 1000 for sending out new draft after 26 aug 24;
 
@@ -2138,6 +2141,212 @@ ods html close;
 
 
 
+ods html;
+proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
+var 
+prop_r_dol_ge_p5_uvl2_10y_1 prop_r_dol_ge_p5_uvl2_10y_2 prop_r_dol_ge_p5_uvl2_10y_3 
+n_res_test_dol_py_10y_2
+p_onart_iicu_uvl2_10y_1   p_onart_iicu_uvl2_10y_2   p_onart_iicu_uvl2_10y_3  
+p_cd4_lt200_uvl2_10y_1 p_cd4_lt200_uvl2_10y_2 p_cd4_lt200_uvl2_10y_3 
+p_o_dar_uvl2_onart_10y_1 p_o_dar_uvl2_onart_10y_2 p_o_dar_uvl2_onart_10y_3 
+p_adh_lt80_iicu_uvl2_10y_1 p_adh_lt80_iicu_uvl2_10y_2 p_adh_lt80_iicu_uvl2_10y_3 
+p_onart_iicu_vl1000_uvl2_10y_1 p_onart_iicu_vl1000_uvl2_10y_2 p_onart_iicu_vl1000_uvl2_10y_3 
+hiv_death_rate_uvl2_10y_1 hiv_death_rate_uvl2_10y_2 hiv_death_rate_uvl2_10y_3 
+deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 
+incidence1549_10y_1   incidence1549_10y_2 incidence1549_10y_3
+r_incidence1549_10y_3_1 r_incidence1549_10y_2_1
+;
+run;
+
+ods html close;
+
+
+
+ods html;
+proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
+var
+prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 
+p_onart_diag_10y_1 p_onart_diag_10y_2 p_onart_diag_10y_3 
+p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 p_onart_vl1000_10y_3 
+n_dead_hivrel_onart_10y_1 n_dead_hivrel_onart_10y_2 n_dead_hivrel_onart_10y_3 
+p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 
+p_ai_no_arv_e_inm_10y_1 p_ai_no_arv_e_inm_10y_2 p_ai_no_arv_e_inm_10y_3
+n_incident_r_dol_10y_1 n_incident_r_dol_10y_2 n_incident_r_dol_10y_3 
+n_uvl2_elig_10y_1  n_uvl2_elig_10y_2  n_uvl2_elig_10y_3  
+n_uvl21_elig_10y_1 n_uvl21_elig_10y_2 n_uvl21_elig_10y_3  
+n_uvl22_elig_10y_1 n_uvl22_elig_10y_2 n_uvl22_elig_10y_3  
+n_uvl23_elig_10y_1 n_uvl23_elig_10y_2 n_uvl23_elig_10y_3 
+n_second_vlg1000_first_10y_1 n_second_vlg1000_first_10y_2 n_second_vlg1000_first_10y_3 
+;
+run;
+ods html close;
+
+
+
+
+ods html;
+proc means data = b  n mean lclm uclm p50 p5 p95;
+  var       
+n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 
+d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 d_n_death_hiv_50y_2_3
+d_ddaly_50y_2_1   d_ddaly_50y_3_1   d_ddaly_50y_2_3   
+dcost_50y_1   dcost_50y_2   dcost_50y_3     
+d_dcost_50y_2_1  d_dcost_50y_3_1  d_dcost_50y_2_3 
+netdaly500_1 netdaly500_2 netdaly500_3 
+d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_2_3
+;
+* where prop_r_dol_ge_p5_uvl2_24 < 0.05;
+run;
+ods html close;
+
+
+ods html;
+proc freq; tables lowest_ddaly lowest_dcost lowest_netdaly; 
+run;
+ods html close;
+
+
+
+
+ods html;
+proc means  n mean p5 p95;
+var
+dten_cost_50y_1 dten_cost_50y_2 dten_cost_50y_3 
+d3tc_cost_50y_1 d3tc_cost_50y_2 d3tc_cost_50y_3 
+ddar_cost_50y_1 ddar_cost_50y_2 ddar_cost_50y_3 
+ddol_cost_50y_1 ddol_cost_50y_2 ddol_cost_50y_3
+dart_cost_y_50y_1  dart_cost_y_50y_2   dart_cost_y_50y_3  
+dadc_cost_50y_1  dadc_cost_50y_2   dadc_cost_50y_3 
+dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3 
+dvl_cost_50y_1  dvl_cost_50y_2 dvl_cost_50y_3 
+dvis_cost_50y_1 dvis_cost_50y_2  dvis_cost_50y_3  
+dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2   dnon_tb_who3_cost_50y_3   		
+dcot_cost_50y_1  dcot_cost_50y_2   dcot_cost_50y_3  
+dtb_cost_50y_1  dtb_cost_50y_2  dtb_cost_50y_3 
+dres_cost_50y_1  dres_cost_50y_2  dres_cost_50y_3 
+dcost_drug_level_test_50y_1 dcost_drug_level_test_50y_2 dcost_drug_level_test_50y_3 
+dtest_cost_50y_1 dtest_cost_50y_2  dtest_cost_50y_3 
+d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2   d_t_adh_int_cost_50y_3  
+dswitchline_cost_50y_1  dswitchline_cost_50y_2  dswitchline_cost_50y_3 
+dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3 
+dcost_condom_dn_50y_1  dcost_condom_dn_50y_2  dcost_condom_dn_50y_3 
+dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3 
+dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2  dcost_non_aids_pre_death_50y_3   
+dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3 
+dcost_prep_50y_1 dcost_prep_50y_2  dcost_prep_50y_3  
+dcost_50y_1   dcost_50y_2   dcost_50y_3   
+
+dcost_treatment_hiv_dis_50y_1 dcost_treatment_hiv_dis_50y_2 dcost_treatment_hiv_dis_50y_3 
+dcost_visplus_50y_1 dcost_visplus_50y_2 dcost_visplus_50y_3 
+dcost_primary_prev_50y_1 dcost_primary_prev_50y_2 dcost_primary_prev_50y_3 
+
+;
+run;
+ods html close;
+
+
+
+
+ods html;
+
+proc glm; model d_netdaly500_2_3 =
+
+res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
+rr_int_tox   rel_dol_tox   /* check for any other parameters */
+/ solution ;
+
+run;
+
+ods html close;
+
+
+
+ods html;
+
+proc glm; model d_netdaly500_2_3 =
+
+prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
+p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 p_dol_start_nactive_2_r_1y_3 / solution ;
+
+run;
+
+ods html close;
+
+
+
+
+*----- baseline charateristics --------------- ;
+* prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
+p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 ;
+
+*----- parameters ---------------------------- ;
+* res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab ;
+
+
+
+
+
+
+
+
+
+
+/*  
+
+
+
+
+
+proc freq;
+tables res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
+rr_int_tox ;
+run;
+
+
+
+proc glm data=b; model d_deathr_dol_r_uvl2_10y_2_1 = sens_res_test 
+res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab 
+
+/ solution ; run; 
+
+
+proc glm; model p_ai_no_arv_e_inm_10y_3 =  prob_prep_oral_b pref_prep_oral_beta_s1  rate_choose_stop_prep_cab res_trans_factor_ii; run;
+
+
+proc glm data=b; model n_uvl2_elig_10y_1 = 
+res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
+run; 
+
+
+
+proc glm data=b; model n_second_vlg1000_first_10y_1 = 
+res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
+run; 
+
+
+
+
+
+* d_netdaly500_2_1 d_ddaly_50y_2_1 d_n_death_hiv_50y_3_1;
+
+ods html;
+
+proc glm; model d_netdaly500_2_1 =  n_death_hiv_24  ;  run; 
+
+
+
 * note this result;
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
@@ -2162,28 +2371,6 @@ run;
 ods html close;
 
 
-
-
-ods html;
-proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var 
-prop_r_dol_ge_p5_uvl2_10y_1 prop_r_dol_ge_p5_uvl2_10y_2 prop_r_dol_ge_p5_uvl2_10y_3 
-n_res_test_dol_py_10y_2
-p_onart_iicu_uvl2_10y_1   p_onart_iicu_uvl2_10y_2   p_onart_iicu_uvl2_10y_3  
-p_cd4_lt200_uvl2_10y_1 p_cd4_lt200_uvl2_10y_2 p_cd4_lt200_uvl2_10y_3 
-p_o_dar_uvl2_onart_10y_1 p_o_dar_uvl2_onart_10y_2 p_o_dar_uvl2_onart_10y_3 
-p_adh_lt80_iicu_uvl2_10y_1 p_adh_lt80_iicu_uvl2_10y_2 p_adh_lt80_iicu_uvl2_10y_3 
-p_onart_iicu_vl1000_uvl2_10y_1 p_onart_iicu_vl1000_uvl2_10y_2 p_onart_iicu_vl1000_uvl2_10y_3 
-hiv_death_rate_uvl2_10y_1 hiv_death_rate_uvl2_10y_2 hiv_death_rate_uvl2_10y_3 
-deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 
-incidence1549_10y_1   incidence1549_10y_2 incidence1549_10y_3
-r_incidence1549_10y_3_1 r_incidence1549_10y_2_1
-;
-run;
-
-ods html close;
-
-
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
 var 
@@ -2192,26 +2379,6 @@ r_incidence1549_10y_3_1 r_incidence1549_10y_2_1
 ;
 run;
 
-ods html close;
-
-
-ods html;
-proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var
-prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 
-p_onart_diag_10y_1 p_onart_diag_10y_2 p_onart_diag_10y_3 
-p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 p_onart_vl1000_10y_3 
-n_dead_hivrel_onart_10y_1 n_dead_hivrel_onart_10y_2 n_dead_hivrel_onart_10y_3 
-p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 
-p_ai_no_arv_e_inm_10y_1 p_ai_no_arv_e_inm_10y_2 p_ai_no_arv_e_inm_10y_3
-n_incident_r_dol_10y_1 n_incident_r_dol_10y_2 n_incident_r_dol_10y_3 
-n_uvl2_elig_10y_1  n_uvl2_elig_10y_2  n_uvl2_elig_10y_3  
-n_uvl21_elig_10y_1 n_uvl21_elig_10y_2 n_uvl21_elig_10y_3  
-n_uvl22_elig_10y_1 n_uvl22_elig_10y_2 n_uvl22_elig_10y_3  
-n_uvl23_elig_10y_1 n_uvl23_elig_10y_2 n_uvl23_elig_10y_3 
-n_second_vlg1000_first_10y_1 n_second_vlg1000_first_10y_2 n_second_vlg1000_first_10y_3 
-;
-run;
 ods html close;
 
 
@@ -2280,8 +2447,6 @@ ods html close;
 
 
 
-
-
 ods html;
 
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
@@ -2300,11 +2465,6 @@ ods html close;
 
 
 
-
-
-
-
-
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
 var 
@@ -2313,7 +2473,6 @@ prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3
 ;
 run;
 ods html close;
-
 
 
 
@@ -2373,180 +2532,4 @@ run;
 ods html close;
 
 
-
-
-ods html;
-proc means data = b  n mean lclm uclm p50 p5 p95;
-  var       
-n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 
-d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 d_n_death_hiv_50y_2_3
-d_ddaly_50y_2_1   d_ddaly_50y_3_1   d_ddaly_50y_2_3   
-dcost_50y_1   dcost_50y_2   dcost_50y_3     
-d_dcost_50y_2_1  d_dcost_50y_3_1  d_dcost_50y_2_3 
-netdaly500_1 netdaly500_2 netdaly500_3 
-d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_2_3
-;
-* where prop_r_dol_ge_p5_uvl2_24 < 0.05;
-run;
-ods html close;
-
-
-ods html;
-proc freq; tables lowest_ddaly lowest_dcost lowest_netdaly; 
-run;
-ods html close;
-
-
-
-
-
-
-
-ods html;
-proc means  n mean p5 p95;
-var
-dten_cost_50y_1 dten_cost_50y_2 dten_cost_50y_3 
-d3tc_cost_50y_1 d3tc_cost_50y_2 d3tc_cost_50y_3 
-ddar_cost_50y_1 ddar_cost_50y_2 ddar_cost_50y_3 
-ddol_cost_50y_1 ddol_cost_50y_2 ddol_cost_50y_3
-dart_cost_y_50y_1  dart_cost_y_50y_2   dart_cost_y_50y_3  
-dadc_cost_50y_1  dadc_cost_50y_2   dadc_cost_50y_3 
-dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3 
-dvl_cost_50y_1  dvl_cost_50y_2 dvl_cost_50y_3 
-dvis_cost_50y_1 dvis_cost_50y_2  dvis_cost_50y_3  
-dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2   dnon_tb_who3_cost_50y_3   		
-dcot_cost_50y_1  dcot_cost_50y_2   dcot_cost_50y_3  
-dtb_cost_50y_1  dtb_cost_50y_2  dtb_cost_50y_3 
-dres_cost_50y_1  dres_cost_50y_2  dres_cost_50y_3 
-dcost_drug_level_test_50y_1 dcost_drug_level_test_50y_2 dcost_drug_level_test_50y_3 
-dtest_cost_50y_1 dtest_cost_50y_2  dtest_cost_50y_3 
-d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2   d_t_adh_int_cost_50y_3  
-dswitchline_cost_50y_1  dswitchline_cost_50y_2  dswitchline_cost_50y_3 
-dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3 
-dcost_condom_dn_50y_1  dcost_condom_dn_50y_2  dcost_condom_dn_50y_3 
-dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3 
-dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2  dcost_non_aids_pre_death_50y_3   
-dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3 
-dcost_prep_50y_1 dcost_prep_50y_2  dcost_prep_50y_3  
-dcost_50y_1   dcost_50y_2   dcost_50y_3   
-
-dcost_treatment_hiv_dis_50y_1 dcost_treatment_hiv_dis_50y_2 dcost_treatment_hiv_dis_50y_3 
-dcost_visplus_50y_1 dcost_visplus_50y_2 dcost_visplus_50y_3 
-dcost_primary_prev_50y_1 dcost_primary_prev_50y_2 dcost_primary_prev_50y_3 
-
-;
-run;
-ods html close;
-
-
-
-
-* d_netdaly500_2_1 d_ddaly_50y_2_1 d_n_death_hiv_50y_3_1;
-
-ods html;
-
-proc glm; model d_netdaly500_2_1 =  n_death_hiv_24  ;  run; 
-
-ods html close;
-
-
-ods html;
-
-/* proc logistic;  model lowest_netdaly_2_23 */
-   proc glm; model d_netdaly500_2_3 
-
-= 
-
-n_uvl2_elig_10y_1
-
-/*
-
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab  sens_res_test date_prep_cab_intro
-
 */
-
-;
-
-run;
-
-ods html close; 
-
-
-
-ods html;
-
-proc glm; model d_netdaly500_2_3 =
-
-prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
-p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 p_dol_start_nactive_2_r_1y_3 / solution ;
-
-run;
-
-ods html close;
-
-
-
-ods html;
-
-proc glm; model d_netdaly500_2_3 =
-
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
-rr_int_tox  /* rel_dol_tox */  /* check for any other parameters */
-/ solution ;
-
-run;
-
-ods html close;
-
-
-proc freq;
-tables res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
-rr_int_tox ;
-run;
-
-
-
-
-*----- baseline charateristics --------------- ;
-* prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
-p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 ;
-
-*----- parameters ---------------------------- ;
-* res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab ;
-
-
-proc glm data=b; model d_deathr_dol_r_uvl2_10y_2_1 = sens_res_test 
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab 
-
-/ solution ; run; 
-
-
-proc glm; model p_ai_no_arv_e_inm_10y_3 =  prob_prep_oral_b pref_prep_oral_beta_s1  rate_choose_stop_prep_cab res_trans_factor_ii; run;
-
-
-proc glm data=b; model n_uvl2_elig_10y_1 = 
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
-run; 
-
-
-
-proc glm data=b; model n_second_vlg1000_first_10y_1 = 
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
-run; 
-
-
-
