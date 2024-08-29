@@ -7,6 +7,10 @@
 
 * lower proportion of people on art with viral suppression
 
+* extract the proportions taking len-cab by age and sex
+
+* extract results on the proportion of pregnant and breastfeeding women using len-cab.
+
 
 
 
