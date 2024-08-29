@@ -2135,7 +2135,7 @@ var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_dia
 p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    
 p_vis_tldsw_24   p_dol_24 p_iime_24 p_r_dol_24 n_iime_24 p_onart_cd4_l200_24  p_artexp_dol_pi_failed_24  s_o_dol_2nd_vlg1000_24  
 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24  p_ai_no_arv_e_inm_24 p_dol_start_nactive_p5_r_24 p_dol_start_nactive_1p5_r_24  p_dol_start_nactive_2_r_24 
-p_vlg1000_onart_allhiv_24 n_uvl2_elig_24 p_artexp_uvl2_24 ;
+p_vlg1000_onart_allhiv_24 n_uvl2_elig_24 p_artexp_uvl2_24 n_onart_24;
 run;
 ods html close;
 
@@ -2286,7 +2286,7 @@ incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral
 
 
 
-proc glm; model n_res_test_dol_py_10y_2 = n_onart; run;
+proc glm; model n_res_test_dol_py_10y_2 = n_onart_24 ; run;
 
 
 
