@@ -4,18 +4,20 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ao_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ap_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ao_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ap_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_tld_switch_ao_034;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_tld_switch_ap_034;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+
+* this contains out.. files up to 15.03 28-aug-24 ;
 
 if option in (0, 3, 4);
 
@@ -24,9 +26,11 @@ run;
 */
 
 
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ap_out\";
 
 
-proc sort data=b.k_tld_switch_ao_034; 
+
+proc sort data=b.k_tld_switch_ap_034; 
 by run cald option;
 run;
 
@@ -34,7 +38,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_tld_switch_ao_034 ;
+set b.k_tld_switch_ap_034 ;
 
 
 if cald=2024   ;
@@ -53,7 +57,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_tld_switch_ao_034 sf;
+merge b.k_tld_switch_ap_034 sf;
 by run ;
 
 
@@ -1444,13 +1448,13 @@ run;
 
 
 
-data    b.l_tld_switch_ao_034; set y;  
+data    b.l_tld_switch_ap_034; set y;  
 
 
 
 
 
-data y ; set b.l_tld_switch_ao_034; 
+data y ; set b.l_tld_switch_ap_034; 
 
   options nomprint;
   option nospool;
@@ -1598,7 +1602,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=rate_dead_cvd_ge80m); * %var(v=rate_dead_cvd_3039w); 
 * %var(v=rate_dead_cvd_4049w); * %var(v=rate_dead_cvd_5059w); * %var(v=rate_dead_cvd_6069w); * %var(v=rate_dead_cvd_7079w); * %var(v=rate_dead_cvd_ge80w); 
 * %var(v=n_death_hivpos_anycause); * %var(v= n_death_2059_m);  * %var(v=n_death_2059_w);
-* %var(v=p_age1549_hivneg );  * %var(v=p_age1549_hiv ); * %var(v=p_onart_m_age50pl ); * %var(v=p_onart_w_age50pl ); * %var(v=n_onart);
+* %var(v=p_age1549_hivneg );  * %var(v=p_age1549_hiv ); * %var(v=p_onart_m_age50pl ); * %var(v=p_onart_w_age50pl );   %var(v=n_onart);
 * %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); * %var(v=n_onart_w); * %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
 %var(v=p_onart_vl1000);  * %var(v=n_new_inf1549m); * %var(v=n_new_inf1549w); 
 %var(v=n_tested_w); %var(v=test_prop_positive);
@@ -1732,7 +1736,7 @@ n_onart_iicu_uvl2           n_onart_iicu_uvl21           n_onart_iicu_uvl22     
 
 p_dol_start_nactive_p5_r p_dol_start_nactive_1p5_r p_dol_start_nactive_2_r  n_adh_meas_1_1 n_adh_meas_1_0 n_adh_meas_0_1 n_adh_meas_0_0
 
-dten_cost d3tc_cost ddar_cost ddol_cost  p_r_dol  p_vlg1000_onart_allhiv  p_artexp_uvl2
+dten_cost d3tc_cost ddar_cost ddol_cost  p_r_dol  p_vlg1000_onart_allhiv  p_artexp_uvl2  n_onart
 
 ;
 
@@ -1934,7 +1938,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_tld_switch_ao_034    ; 
+  data  b.w_tld_switch_ap_034    ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1942,15 +1946,1021 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ao_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ap_out\";
 
 data b;
-set b.w_tld_switch_ao_034   ;
+set b.w_tld_switch_ap_034   ;
+
+if run in (
+598317 
+1475085 
+2466767 
+2493926 
+3108312 
+3798561 
+5785305 
+6616969 
+7055761 
+7508172 
+7549195 
+7757728 
+8318050 
+8521252 
+8796435 
+9440817 
+10049466 
+12418837 
+12912025 
+13274444 
+13931251 
+14713467 
+14914296 
+15574637 
+15742229 
+16386133 
+16591240 
+17326339 
+18567984 
+19234353 
+21728776 
+24481028 
+24747418 
+26069188 
+26550918 
+27252803 
+29236644 
+29308025 
+30241715 
+31218647 
+31450955 
+32152163 
+32320611 
+33036730 
+33470564 
+34591287 
+34818609 
+35635562 
+35991879 
+36064752 
+36759687 
+37630747 
+37696487 
+37971310 
+37971423 
+38339543 
+39517071 
+40729743 
+42761315 
+43019947 
+45544953 
+47104478 
+47555526 
+49025134 
+50381927 
+50509528 
+51015876 
+53641612 
+54601440 
+55293036 
+56799497 
+57167130 
+57414978 
+60756542 
+61249164 
+62719916 
+62788743 
+63779839 
+66979598 
+68931220 
+69269064 
+69692382 
+69796139 
+70237729 
+71496173 
+72453171 
+72760612 
+74136461 
+74338607 
+74916290 
+75799385 
+76571020 
+77644806 
+78335850 
+78724915 
+80246950 
+81392450 
+81468425 
+82374737 
+83173989 
+83860501 
+88541376 
+89605405 
+90402315 
+90949241 
+91900981 
+94463841 
+95733979 
+96180052 
+96300555 
+98684609 
+98694215 
+98813647 
+98822511 
+99791051 
+99895662 
+101504799 
+101971919 
+103581220 
+104188047 
+106586899 
+107068940 
+108166298 
+109127584 
+109191438 
+110355482 
+110652650 
+110780711 
+111773083 
+111795252 
+112178087 
+114404029 
+114571262 
+114965723 
+116932874 
+117918206 
+118179446 
+119231977 
+119418485 
+120174626 
+120956217 
+121491157 
+121678887 
+125397257 
+126095064 
+126354094 
+126447045 
+128834759 
+129174994 
+129348726 
+131024610 
+133013212 
+133507859 
+134065495 
+134305542 
+135438309 
+137662874 
+139402909 
+141243979 
+143068862 
+143087494 
+143142649 
+143647717 
+143769076 
+146762645 
+147546861 
+147619361 
+148570897 
+149382274 
+151294717 
+151690012 
+152617090 
+153187674 
+155424168 
+155562076 
+155780877 
+156339679 
+156402156 
+156470869 
+158851247 
+158992229 
+159073283 
+159427195 
+162368962 
+162519016 
+163050153 
+164064845 
+166708649 
+167581196 
+168650020 
+168858064 
+169177734 
+170254129 
+170415880 
+172077007 
+172776164 
+173401340 
+173919705 
+175629817 
+177059990 
+178203398 
+178588069 
+180439114 
+181455747 
+181471718 
+182432332 
+182470149 
+184390954 
+186412178 
+186837863 
+188466477 
+189138825 
+190790672 
+191530455 
+193151253 
+193671487 
+196343239 
+196762990 
+196768816 
+198924423 
+199837045 
+202649143 
+203172760 
+204777702 
+205333310 
+206180285 
+208271225 
+208302882 
+209140540 
+210634889 
+212518294 
+212879276 
+214306312 
+215308356 
+215637855 
+216059351 
+216667189 
+219883207 
+219996408 
+220479320 
+220521634 
+221806287 
+222029004 
+223209864 
+223942935 
+225417322 
+227184321 
+228308193 
+229502717 
+232018115 
+232302589 
+233056492 
+233348473 
+235358870 
+235611336 
+236049464 
+239053396 
+240009287 
+241561774 
+242089788 
+244164952 
+244672245 
+244702175 
+245118602 
+245616899 
+246179800 
+247063172 
+247185321 
+250634832 
+251304691 
+251409965 
+251584274 
+252352285 
+252524701 
+253632282 
+254683414 
+255600127 
+256752004 
+257054712 
+257141814 
+257266627 
+257578105 
+257722809 
+258006940 
+259166121 
+259579018 
+259865313 
+260838644 
+262185018 
+262995844 
+263536852 
+265084159 
+265932197 
+269320768 
+270002713 
+271619126 
+272781139 
+275989053 
+276237230 
+276298951 
+276938808 
+278267673 
+279174908 
+279870132 
+280353844 
+280649150 
+281133492 
+281785642 
+282603463 
+284139755 
+285021120 
+287024470 
+287551190 
+288121498 
+289298111 
+289853283 
+290563652 
+293279153 
+293744710 
+293962483 
+294216560 
+295965767 
+296575112 
+297688101 
+298449499 
+298501956 
+298719950 
+298740841 
+298980297 
+299315907 
+299766453 
+300835483 
+302925534 
+303301925 
+304347689 
+305440264 
+308241459 
+308569746 
+310871890 
+310934026 
+313219196 
+314285424 
+316063305 
+316879318 
+316955256 
+318293931 
+318664511 
+319114548 
+319593669 
+319682763 
+319708756 
+321228108 
+321651843 
+321876263 
+322443812 
+322723951 
+323381202 
+324571080 
+325841220 
+326414793 
+327841247 
+327931288 
+328559211 
+329675906 
+329892847 
+330313999 
+331588525 
+332758342 
+332913086 
+333785095 
+334118611 
+334308330 
+334772662 
+334965584 
+335150606 
+335854499 
+335862207 
+339914223 
+340563880 
+340575701 
+341259666 
+341463308 
+341799286 
+343106602 
+343894063 
+344782426 
+350321485 
+350833572 
+353109348 
+354369970 
+354701402 
+355515808 
+356916950 
+357210779 
+357550394 
+357649503 
+357720103 
+357992723 
+358100929 
+359077185 
+360470451 
+362376772 
+362400969 
+362479939 
+365651424 
+368806507 
+369092493 
+370677327 
+371775599 
+373017367 
+373898124 
+374479886 
+374528483 
+377034001 
+378545043 
+378778434 
+379755727 
+380038326 
+381222003 
+383008752 
+384604168 
+386413159 
+386844015 
+386870804 
+387381996 
+388045914 
+391411239 
+391539734 
+394420396 
+394612690 
+395987913 
+396168510 
+396740125 
+397505841 
+398293822 
+398782451 
+401479017 
+402438261 
+402675111 
+405030181 
+405277231 
+408608155 
+411698273 
+412153964 
+412174643 
+412361464 
+412810655 
+413899959 
+414258749 
+414560152 
+414971040 
+415845137 
+417708047 
+417863785 
+418801286 
+419893961 
+426266981 
+427275756 
+427747718 
+427919224 
+428669802 
+432176680 
+433602812 
+434869105 
+435711720 
+437034309 
+439723554 
+440120361 
+440548693 
+441547855 
+442104032 
+443802767 
+444015769 
+445814561 
+445887136 
+450154893 
+450954385 
+450985004 
+453358093 
+453968927 
+454839292 
+456186048 
+456435894 
+456741154 
+458126743 
+459288975 
+459695695 
+460746464 
+460915900 
+463010357 
+463545002 
+463779927 
+465621389 
+466790268 
+468376360 
+468574934 
+469335779 
+472236485 
+473148416 
+474166732 
+474226695 
+474236801 
+474301824 
+474718498 
+475194802 
+475369298 
+476267298 
+476923318 
+477017840 
+477659391 
+478856407 
+479607237 
+481443037 
+483076212 
+483277405 
+483370032 
+484088078 
+484738910 
+484871584 
+488885849 
+489250281 
+489558683 
+489604154 
+491843380 
+494724501 
+495148279 
+496231514 
+496286082 
+498936543 
+499061960 
+499224490 
+499725371 
+500537634 
+500660771 
+502052552 
+502265489 
+503573591 
+504120525 
+505018874 
+505675820 
+506568008 
+506960173 
+507479512 
+508749018 
+512182210 
+512805175 
+513232143 
+514831328 
+515818697 
+516208199 
+517225420 
+517619571 
+517972878 
+518087388 
+519938608 
+520379408 
+520843299 
+521573534 
+521602871 
+521926466 
+522931354 
+523283526 
+524619267 
+525955212 
+527064102 
+528116959 
+529322216 
+529634914 
+530014833 
+533559939 
+535325624 
+535567516 
+536558680 
+538101261 
+540058028 
+540716335 
+540753629 
+541794294 
+541809984 
+542351553 
+544661734 
+546668097 
+547099793 
+547766942 
+547821528 
+549500252 
+549700380 
+549978330 
+553451888 
+555428975 
+555806267 
+556485584 
+557352603 
+559851517 
+560588602 
+561991361 
+564694996 
+564988956 
+565389776 
+566425837 
+567918556 
+569195063 
+569900124 
+570251743 
+571557489 
+571937051 
+573619543 
+574515142 
+574779642 
+574816731 
+575397802 
+575951588 
+576883024 
+578335486 
+578899566 
+579027534 
+581621604 
+583680857 
+584130345 
+585448863 
+587209659 
+587470778 
+587597766 
+589691003 
+593564373 
+594260918 
+595009116 
+595293024 
+595644718 
+597632415 
+602885349 
+603755440 
+603873149 
+605381144 
+606263103 
+607686013 
+609361184 
+609934673 
+610318580 
+611342140 
+612057695 
+613075670 
+613969598 
+614470098 
+617506147 
+618652416 
+619279304 
+619386883 
+619589381 
+621490852 
+621813914 
+622132336 
+622332647 
+622675610 
+624502318 
+624793159 
+625044149 
+629062659 
+630851957 
+631211677 
+631322840 
+631816659 
+632278133 
+633733056 
+634010341 
+634281887 
+635035804 
+637084818 
+637122422 
+637346795 
+637972648 
+640661996 
+641385232 
+643736009 
+644655123 
+645455500 
+647652814 
+649513534 
+650630493 
+651706470 
+653350885 
+654131861 
+655609228 
+656874532 
+657307888 
+659340031 
+661339768 
+661994660 
+663197184 
+663715321 
+664419503 
+665622188 
+667242726 
+667349282 
+668070931 
+668672803 
+669403568 
+670879747 
+672112756 
+673460889 
+673806288 
+675500093 
+676089360 
+676160721 
+678281212 
+679262875 
+679382800 
+679658035 
+679920408 
+680536505 
+684077453 
+685283042 
+690118640 
+690138166 
+691747074 
+692063472 
+693456289 
+694241904 
+695327097 
+695402077 
+700341112 
+705727190 
+706053414 
+706180270 
+706569259 
+707024519 
+707330256 
+709232949 
+709383038 
+710064609 
+710270862 
+711808234 
+712947194 
+712991413 
+713008758 
+715815800 
+716388060 
+717268298 
+717935259 
+720906361 
+721495213 
+721733049 
+722208650 
+722294790 
+722421826 
+722947648 
+723263480 
+723459226 
+723741528 
+724917874 
+725485378 
+726083118 
+728317317 
+728979277 
+729479916 
+732833077 
+733883940 
+734957443 
+736768947 
+737514501 
+737976354 
+738276643 
+738355186 
+738669214 
+739087341 
+740336598 
+742611328 
+742811460 
+743215614 
+743276837 
+743901014 
+744031734 
+744722793 
+746429513 
+746727936 
+746928819 
+747433673 
+747905352 
+749391825 
+750074221 
+751405410 
+751631760 
+752532406 
+752696813 
+753005096 
+753335030 
+754877720 
+755059828 
+755570746 
+756678920 
+758093351 
+759723425 
+762455514 
+762717259 
+764615726 
+764944299 
+765626004 
+767637183 
+769264221 
+769603250 
+769693369 
+769763964 
+769835404 
+770866039 
+771120234 
+775131646 
+775467739 
+775747700 
+775857340 
+775879534 
+776230733 
+776543270 
+777122939 
+777260804 
+778105642 
+778782573 
+780357173 
+780402157 
+780587061 
+780742232 
+781294584 
+784923332 
+786226915 
+788362654 
+788863687 
+789012323 
+789673998 
+790310396 
+792217958 
+792368622 
+793414924 
+795010466 
+795718007 
+797697198 
+797819936 
+798659612 
+799102729 
+799184117 
+799252144 
+802224242 
+803073411 
+803821186 
+804327893 
+806132581 
+808676327 
+810729149 
+814277600 
+814595691 
+816093086 
+816269412 
+819793065 
+820428784 
+820831280 
+821393634 
+821466551 
+822901124 
+823108089 
+823295317 
+825873172 
+827564290 
+828655779 
+829278349 
+829623195 
+830424084 
+831832759 
+838055095 
+838813523 
+838852917 
+838959048 
+839012529 
+839276569 
+840747575 
+841097028 
+841576512 
+841960093 
+842074334 
+843315540 
+844662376 
+844920056 
+845686462 
+846137300 
+846656031 
+847554536 
+848273890 
+849709905 
+850962179 
+851250314 
+851783606 
+852393810 
+852604029 
+857224541 
+857981487 
+858424931 
+859095207 
+859876218 
+860099455 
+861343051 
+863778140 
+863887418 
+866669654 
+866826008 
+867743413 
+868068520 
+871588127 
+872002213 
+872317230 
+872869704 
+874360409 
+874838289 
+875571002 
+878814032 
+879971755 
+880130087 
+880156336 
+880537592 
+882657244 
+883128895 
+884008592 
+886266872 
+886476414 
+886914972 
+887864647 
+887926608 
+890276741 
+893214336 
+893434858 
+894012353 
+894727683 
+896153381 
+896443505 
+898032558 
+898164632 
+899083728 
+899200278 
+900466313 
+901167813 
+902544989 
+905035661 
+905327767 
+905757051 
+906296928 
+906664326 
+908755173 
+909045301 
+909680399 
+909945073 
+910479390 
+910773655 
+911242406 
+912489922 
+916137146 
+916197699 
+917887115 
+918120843 
+920416844 
+922595004 
+922634248 
+922745417 
+923321977 
+924142864 
+925228219 
+925520357 
+925643320 
+926609935 
+926728935 
+927615403 
+927633668 
+929888903 
+930218378 
+931595321 
+936308518 
+937365340 
+938829330 
+939015825 
+939162684 
+940748406 
+941014607 
+945768522 
+946017170 
+946233012 
+948360126 
+948733984 
+949641791 
+952020659 
+952846843 
+953544973 
+954175491 
+954385950 
+954479496 
+961139915 
+961702707 
+963199646 
+963514568 
+966054951 
+966105919 
+966577358 
+971314895 
+972554693 
+972859802 
+973893787 
+);
+
+
 
   if 0.0001 <= prop_r_dol_ge_p5_uvl2_24 < 0.35;
 
+  if run le  973893787; * for tld_switch_ap final results for ms - 29 aug 24 ;
 
-  if run le 984208102 ; * for tld_switch_ao results on first 1000 for sending out new draft after 26 aug 24;
+* if run le 984208102 ; * for tld_switch_ap results on first 1000 for sending out new draft after 26 aug 24;
 
 * if run le 980648583  ; * for tld_switch_an - results in ms sent out 18th aug 24;
 
@@ -1986,7 +2996,7 @@ d_n_dead_hivrel_onart_1y_2_1 = n_dead_hivrel_onart_1y_2 - n_dead_hivrel_onart_1y
 d_n_dead_hivrel_onart_1y_3_1 = n_dead_hivrel_onart_1y_3 - n_dead_hivrel_onart_1y_1;
 
 * for sensitivity analysis;
-* dres_cost_50y_2 = dres_cost_50y_2 * 0.75;
+* dres_cost_50y_2 = dres_cost_50y_2 * 0.5;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -2132,9 +3142,217 @@ var prevalence1549w_24 prevalence1549m_24 incidence1549_24 p_diag_24 p_onart_dia
 p_vl1000_24 prevalence_vg1000_24   prop_artexp_elig_tldsw_24  prop_tldsw_elig_vl1000_24  prop_tldsw_o_dar_24  p_adh_lt80_iicu_tldsw_24   p_onart_iicu_tldsw_24    
 p_vis_tldsw_24   p_dol_24 p_iime_24 p_r_dol_24 n_iime_24 p_onart_cd4_l200_24  p_artexp_dol_pi_failed_24  s_o_dol_2nd_vlg1000_24  
 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24  p_ai_no_arv_e_inm_24 p_dol_start_nactive_p5_r_24 p_dol_start_nactive_1p5_r_24  p_dol_start_nactive_2_r_24 
-p_vlg1000_onart_allhiv_24 n_uvl2_elig_24 p_artexp_uvl2_24 ;
+p_vlg1000_onart_allhiv_24 n_uvl2_elig_24 p_artexp_uvl2_24 n_onart_24;
 run;
 ods html close;
+
+
+
+ods html;
+proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
+var 
+prop_r_dol_ge_p5_uvl2_10y_1 prop_r_dol_ge_p5_uvl2_10y_2 prop_r_dol_ge_p5_uvl2_10y_3 
+n_res_test_dol_py_10y_2
+p_onart_iicu_uvl2_10y_1   p_onart_iicu_uvl2_10y_2   p_onart_iicu_uvl2_10y_3  
+p_cd4_lt200_uvl2_10y_1 p_cd4_lt200_uvl2_10y_2 p_cd4_lt200_uvl2_10y_3 
+p_o_dar_uvl2_onart_10y_1 p_o_dar_uvl2_onart_10y_2 p_o_dar_uvl2_onart_10y_3 
+p_adh_lt80_iicu_uvl2_10y_1 p_adh_lt80_iicu_uvl2_10y_2 p_adh_lt80_iicu_uvl2_10y_3 
+p_onart_iicu_vl1000_uvl2_10y_1 p_onart_iicu_vl1000_uvl2_10y_2 p_onart_iicu_vl1000_uvl2_10y_3 
+hiv_death_rate_uvl2_10y_1 hiv_death_rate_uvl2_10y_2 hiv_death_rate_uvl2_10y_3 
+deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 
+incidence1549_10y_1   incidence1549_10y_2 incidence1549_10y_3
+r_incidence1549_10y_3_1 r_incidence1549_10y_2_1
+;
+run;
+
+ods html close;
+
+
+
+ods html;
+proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
+var
+prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 
+p_onart_diag_10y_1 p_onart_diag_10y_2 p_onart_diag_10y_3 
+p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 p_onart_vl1000_10y_3 
+n_dead_hivrel_onart_10y_1 n_dead_hivrel_onart_10y_2 n_dead_hivrel_onart_10y_3 
+p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 
+p_ai_no_arv_e_inm_10y_1 p_ai_no_arv_e_inm_10y_2 p_ai_no_arv_e_inm_10y_3
+n_incident_r_dol_10y_1 n_incident_r_dol_10y_2 n_incident_r_dol_10y_3 
+n_uvl2_elig_10y_1  n_uvl2_elig_10y_2  n_uvl2_elig_10y_3  
+n_uvl21_elig_10y_1 n_uvl21_elig_10y_2 n_uvl21_elig_10y_3  
+n_uvl22_elig_10y_1 n_uvl22_elig_10y_2 n_uvl22_elig_10y_3  
+n_uvl23_elig_10y_1 n_uvl23_elig_10y_2 n_uvl23_elig_10y_3 
+n_second_vlg1000_first_10y_1 n_second_vlg1000_first_10y_2 n_second_vlg1000_first_10y_3 
+;
+run;
+ods html close;
+
+
+
+
+ods html;
+proc means data = b  n mean lclm uclm p50 p5 p95;
+  var       
+n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 
+d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 d_n_death_hiv_50y_2_3
+ddaly_50y_1 ddaly_50y_2 ddaly_50y_3 
+d_ddaly_50y_2_1   d_ddaly_50y_3_1   d_ddaly_50y_2_3   
+dcost_50y_1   dcost_50y_2   dcost_50y_3     
+d_dcost_50y_2_1  d_dcost_50y_3_1  d_dcost_50y_2_3 
+netdaly500_1 netdaly500_2 netdaly500_3 
+d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_2_3
+;
+* where prop_r_dol_ge_p5_uvl2_24 < 0.05;
+run;
+ods html close;
+
+
+ods html;
+proc freq; tables lowest_ddaly lowest_dcost lowest_netdaly; 
+run;
+ods html close;
+
+
+
+
+ods html;
+proc means  n mean p5 p95;
+var
+dten_cost_50y_1 dten_cost_50y_2 dten_cost_50y_3 
+d3tc_cost_50y_1 d3tc_cost_50y_2 d3tc_cost_50y_3 
+ddar_cost_50y_1 ddar_cost_50y_2 ddar_cost_50y_3 
+ddol_cost_50y_1 ddol_cost_50y_2 ddol_cost_50y_3
+dart_cost_y_50y_1  dart_cost_y_50y_2   dart_cost_y_50y_3  
+dadc_cost_50y_1  dadc_cost_50y_2   dadc_cost_50y_3 
+dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3 
+dvl_cost_50y_1  dvl_cost_50y_2 dvl_cost_50y_3 
+dvis_cost_50y_1 dvis_cost_50y_2  dvis_cost_50y_3  
+dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2   dnon_tb_who3_cost_50y_3   		
+dcot_cost_50y_1  dcot_cost_50y_2   dcot_cost_50y_3  
+dtb_cost_50y_1  dtb_cost_50y_2  dtb_cost_50y_3 
+dres_cost_50y_1  dres_cost_50y_2  dres_cost_50y_3 
+dcost_drug_level_test_50y_1 dcost_drug_level_test_50y_2 dcost_drug_level_test_50y_3 
+dtest_cost_50y_1 dtest_cost_50y_2  dtest_cost_50y_3 
+d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2   d_t_adh_int_cost_50y_3  
+dswitchline_cost_50y_1  dswitchline_cost_50y_2  dswitchline_cost_50y_3 
+dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3 
+dcost_condom_dn_50y_1  dcost_condom_dn_50y_2  dcost_condom_dn_50y_3 
+dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3 
+dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2  dcost_non_aids_pre_death_50y_3   
+dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3 
+dcost_prep_50y_1 dcost_prep_50y_2  dcost_prep_50y_3  
+dcost_50y_1   dcost_50y_2   dcost_50y_3   
+
+dcost_treatment_hiv_dis_50y_1 dcost_treatment_hiv_dis_50y_2 dcost_treatment_hiv_dis_50y_3 
+dcost_visplus_50y_1 dcost_visplus_50y_2 dcost_visplus_50y_3 
+dcost_primary_prev_50y_1 dcost_primary_prev_50y_2 dcost_primary_prev_50y_3 
+
+;
+run;
+ods html close;
+
+
+
+
+ods html;
+
+proc glm; model d_netdaly500_2_3 =
+
+res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
+rr_int_tox   rel_dol_tox   /* check for any other parameters */
+/ solution ;
+
+run;
+
+ods html close;
+
+
+
+ods html;
+
+proc glm; model d_netdaly500_2_3 =
+
+prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
+p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 p_dol_start_nactive_2_r_1y_3 / solution ;
+
+run;
+
+ods html close;
+
+
+*----- baseline charateristics --------------- ;
+* prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
+p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 ;
+
+*----- parameters ---------------------------- ;
+* res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab ;
+
+
+
+proc glm; model n_res_test_dol_py_10y_2 = n_onart_24 ; run;
+
+
+
+
+
+
+
+
+
+/*  
+
+
+
+
+
+proc freq;
+tables res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
+rr_int_tox ;
+run;
+
+
+
+proc glm data=b; model d_deathr_dol_r_uvl2_10y_2_1 = sens_res_test 
+res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab 
+
+/ solution ; run; 
+
+
+proc glm; model p_ai_no_arv_e_inm_10y_3 =  prob_prep_oral_b pref_prep_oral_beta_s1  rate_choose_stop_prep_cab res_trans_factor_ii; run;
+
+
+proc glm data=b; model n_uvl2_elig_10y_1 = 
+res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
+run; 
+
+
+
+proc glm data=b; model n_second_vlg1000_first_10y_1 = 
+res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
+rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
+incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
+run; 
+
+
+
+
+
+* d_netdaly500_2_1 d_ddaly_50y_2_1 d_n_death_hiv_50y_3_1;
+
+ods html;
+
+proc glm; model d_netdaly500_2_1 =  n_death_hiv_24  ;  run; 
 
 
 
@@ -2162,28 +3380,6 @@ run;
 ods html close;
 
 
-
-
-ods html;
-proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var 
-prop_r_dol_ge_p5_uvl2_10y_1 prop_r_dol_ge_p5_uvl2_10y_2 prop_r_dol_ge_p5_uvl2_10y_3 
-n_res_test_dol_py_10y_2
-p_onart_iicu_uvl2_10y_1   p_onart_iicu_uvl2_10y_2   p_onart_iicu_uvl2_10y_3  
-p_cd4_lt200_uvl2_10y_1 p_cd4_lt200_uvl2_10y_2 p_cd4_lt200_uvl2_10y_3 
-p_o_dar_uvl2_onart_10y_1 p_o_dar_uvl2_onart_10y_2 p_o_dar_uvl2_onart_10y_3 
-p_adh_lt80_iicu_uvl2_10y_1 p_adh_lt80_iicu_uvl2_10y_2 p_adh_lt80_iicu_uvl2_10y_3 
-p_onart_iicu_vl1000_uvl2_10y_1 p_onart_iicu_vl1000_uvl2_10y_2 p_onart_iicu_vl1000_uvl2_10y_3 
-hiv_death_rate_uvl2_10y_1 hiv_death_rate_uvl2_10y_2 hiv_death_rate_uvl2_10y_3 
-deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 
-incidence1549_10y_1   incidence1549_10y_2 incidence1549_10y_3
-r_incidence1549_10y_3_1 r_incidence1549_10y_2_1
-;
-run;
-
-ods html close;
-
-
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
 var 
@@ -2192,26 +3388,6 @@ r_incidence1549_10y_3_1 r_incidence1549_10y_2_1
 ;
 run;
 
-ods html close;
-
-
-ods html;
-proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var
-prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 
-p_onart_diag_10y_1 p_onart_diag_10y_2 p_onart_diag_10y_3 
-p_onart_vl1000_10y_1 p_onart_vl1000_10y_2 p_onart_vl1000_10y_3 
-n_dead_hivrel_onart_10y_1 n_dead_hivrel_onart_10y_2 n_dead_hivrel_onart_10y_3 
-p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 
-p_ai_no_arv_e_inm_10y_1 p_ai_no_arv_e_inm_10y_2 p_ai_no_arv_e_inm_10y_3
-n_incident_r_dol_10y_1 n_incident_r_dol_10y_2 n_incident_r_dol_10y_3 
-n_uvl2_elig_10y_1  n_uvl2_elig_10y_2  n_uvl2_elig_10y_3  
-n_uvl21_elig_10y_1 n_uvl21_elig_10y_2 n_uvl21_elig_10y_3  
-n_uvl22_elig_10y_1 n_uvl22_elig_10y_2 n_uvl22_elig_10y_3  
-n_uvl23_elig_10y_1 n_uvl23_elig_10y_2 n_uvl23_elig_10y_3 
-n_second_vlg1000_first_10y_1 n_second_vlg1000_first_10y_2 n_second_vlg1000_first_10y_3 
-;
-run;
 ods html close;
 
 
@@ -2280,8 +3456,6 @@ ods html close;
 
 
 
-
-
 ods html;
 
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
@@ -2300,11 +3474,6 @@ ods html close;
 
 
 
-
-
-
-
-
 ods html;
 proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
 var 
@@ -2313,7 +3482,6 @@ prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3
 ;
 run;
 ods html close;
-
 
 
 
@@ -2373,180 +3541,4 @@ run;
 ods html close;
 
 
-
-
-ods html;
-proc means data = b  n mean lclm uclm p50 p5 p95;
-  var       
-n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 
-d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 d_n_death_hiv_50y_2_3
-d_ddaly_50y_2_1   d_ddaly_50y_3_1   d_ddaly_50y_2_3   
-dcost_50y_1   dcost_50y_2   dcost_50y_3     
-d_dcost_50y_2_1  d_dcost_50y_3_1  d_dcost_50y_2_3 
-netdaly500_1 netdaly500_2 netdaly500_3 
-d_netdaly500_2_1 d_netdaly500_3_1 d_netdaly500_2_3
-;
-* where prop_r_dol_ge_p5_uvl2_24 < 0.05;
-run;
-ods html close;
-
-
-ods html;
-proc freq; tables lowest_ddaly lowest_dcost lowest_netdaly; 
-run;
-ods html close;
-
-
-
-
-
-
-
-ods html;
-proc means  n mean p5 p95;
-var
-dten_cost_50y_1 dten_cost_50y_2 dten_cost_50y_3 
-d3tc_cost_50y_1 d3tc_cost_50y_2 d3tc_cost_50y_3 
-ddar_cost_50y_1 ddar_cost_50y_2 ddar_cost_50y_3 
-ddol_cost_50y_1 ddol_cost_50y_2 ddol_cost_50y_3
-dart_cost_y_50y_1  dart_cost_y_50y_2   dart_cost_y_50y_3  
-dadc_cost_50y_1  dadc_cost_50y_2   dadc_cost_50y_3 
-dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3 
-dvl_cost_50y_1  dvl_cost_50y_2 dvl_cost_50y_3 
-dvis_cost_50y_1 dvis_cost_50y_2  dvis_cost_50y_3  
-dnon_tb_who3_cost_50y_1  dnon_tb_who3_cost_50y_2   dnon_tb_who3_cost_50y_3   		
-dcot_cost_50y_1  dcot_cost_50y_2   dcot_cost_50y_3  
-dtb_cost_50y_1  dtb_cost_50y_2  dtb_cost_50y_3 
-dres_cost_50y_1  dres_cost_50y_2  dres_cost_50y_3 
-dcost_drug_level_test_50y_1 dcost_drug_level_test_50y_2 dcost_drug_level_test_50y_3 
-dtest_cost_50y_1 dtest_cost_50y_2  dtest_cost_50y_3 
-d_t_adh_int_cost_50y_1  d_t_adh_int_cost_50y_2   d_t_adh_int_cost_50y_3  
-dswitchline_cost_50y_1  dswitchline_cost_50y_2  dswitchline_cost_50y_3 
-dcost_circ_50y_1  dcost_circ_50y_2  dcost_circ_50y_3 
-dcost_condom_dn_50y_1  dcost_condom_dn_50y_2  dcost_condom_dn_50y_3 
-dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  dcost_child_hiv_50y_3 
-dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2  dcost_non_aids_pre_death_50y_3   
-dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  dcost_prep_visit_50y_3 
-dcost_prep_50y_1 dcost_prep_50y_2  dcost_prep_50y_3  
-dcost_50y_1   dcost_50y_2   dcost_50y_3   
-
-dcost_treatment_hiv_dis_50y_1 dcost_treatment_hiv_dis_50y_2 dcost_treatment_hiv_dis_50y_3 
-dcost_visplus_50y_1 dcost_visplus_50y_2 dcost_visplus_50y_3 
-dcost_primary_prev_50y_1 dcost_primary_prev_50y_2 dcost_primary_prev_50y_3 
-
-;
-run;
-ods html close;
-
-
-
-
-* d_netdaly500_2_1 d_ddaly_50y_2_1 d_n_death_hiv_50y_3_1;
-
-ods html;
-
-proc glm; model d_netdaly500_2_1 =  n_death_hiv_24  ;  run; 
-
-ods html close;
-
-
-ods html;
-
-/* proc logistic;  model lowest_netdaly_2_23 */
-   proc glm; model d_netdaly500_2_3 
-
-= 
-
-n_uvl2_elig_10y_1
-
-/*
-
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab  sens_res_test date_prep_cab_intro
-
 */
-
-;
-
-run;
-
-ods html close; 
-
-
-
-ods html;
-
-proc glm; model d_netdaly500_2_3 =
-
-prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
-p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 p_dol_start_nactive_2_r_1y_3 / solution ;
-
-run;
-
-ods html close;
-
-
-
-ods html;
-
-proc glm; model d_netdaly500_2_3 =
-
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
-rr_int_tox  /* rel_dol_tox */  /* check for any other parameters */
-/ solution ;
-
-run;
-
-ods html close;
-
-
-proc freq;
-tables res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
-rr_int_tox ;
-run;
-
-
-
-
-*----- baseline charateristics --------------- ;
-* prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
-p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 ;
-
-*----- parameters ---------------------------- ;
-* res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab ;
-
-
-proc glm data=b; model d_deathr_dol_r_uvl2_10y_2_1 = sens_res_test 
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab 
-
-/ solution ; run; 
-
-
-proc glm; model p_ai_no_arv_e_inm_10y_3 =  prob_prep_oral_b pref_prep_oral_beta_s1  rate_choose_stop_prep_cab res_trans_factor_ii; run;
-
-
-proc glm data=b; model n_uvl2_elig_10y_1 = 
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
-run; 
-
-
-
-proc glm data=b; model n_second_vlg1000_first_10y_1 = 
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
-run; 
-
-
-
