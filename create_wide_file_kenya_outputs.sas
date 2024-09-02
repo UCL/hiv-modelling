@@ -940,6 +940,8 @@ yll=1;
 yll_w=1;
 yll_m=1;
 
+incidence1524m = incidence1524m / 10; 
+incidence1524w = incidence1524w / 10;  
 incidence1564m = incidence1564m / 10; 
 incidence1564w = incidence1564w / 10;  
 incidence1564 = incidence1564 / 10;  
@@ -953,9 +955,9 @@ dummy4=.;
 
 keep run cald option 
 n_alive_m n_alive_w  n_alive  prevalence_m prevalence_w  prevalence  n_infected_m  n_infected_w  n_infected p_diag_m  p_diag_w  p_diag  
-p_onart_diag_m p_onart_diag_w  p_onart_diag_m p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
-n_death_hivrel_m n_death_hivrel_w n_death_hivrel n_hiv_m n_hiv_w n_hiv prop_m_msm  prevalence_msm  incidence1564m incidence1564w  incidence1564  incidence_fsw 
-incidence_msm  dummy3 dummy4 n_onart  n_onprep_m  n_onprep_w  n_onprep  yll_w  yll_m  yll
+p_onart_diag_m p_onart_diag_w  p_onart_diag p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
+n_death_hivrel_m n_death_hivrel_w n_death_hivrel n_hiv_m n_hiv_w n_hiv prop_m_msm  prevalence_msm  incidence1524m incidence1564m incidence1524w incidence1564w
+incidence_sw incidence_msm  dummy3 dummy4 incidence1564  n_onart  n_onprep_m  n_onprep_w  n_onprep  yll_w  yll_m  yll
 
 ;
 
@@ -1056,7 +1058,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_diag  ); 
 %var(v=p_onart_diag_m ); 
 %var(v=p_onart_diag_w ); 
-%var(v=p_onart_diag_m ); 
+%var(v=p_onart_diag  ); 
 %var(v=p_onart_vl1000_m);  
 %var(v=p_onart_vl1000_w);  
 %var(v=p_onart_vl1000  ); 
@@ -1073,6 +1075,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_hiv);
 %var(v=prop_m_msm);   
 %var(v=prevalence_msm  ); 
+%var(v=incidence1524m ); 
+%var(v=incidence1524w  ); 
 %var(v=incidence1564m ); 
 %var(v=incidence1564w  ); 
 %var(v=incidence1564  ); 
@@ -1088,6 +1092,57 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=yll_w); 
 %var(v=yll); 
 
+
+/*
+
+* for status quo - option = 0;
+
+data year;
+input year;
+cards;
+2000
+2001
+2002
+2003
+2004
+2005
+2006
+2007
+2008
+2009
+2010
+2011
+2012 
+2013
+2014
+2015
+2016
+2017
+2018
+2019
+2010
+2021
+2022
+2023
+2024
+2025
+2026
+2027
+2028
+2029
+2030
+2031
+2032
+2033
+2034
+2035
+2036
+2037
+2038
+2039
+2040
+
+*/
 
 data year;
 input year;
@@ -1113,9 +1168,9 @@ cards;
 
 data   wide_outputs; merge year 
 n_alive_m n_alive_w  n_alive  prevalence_m prevalence_w  prevalence  n_infected_m  n_infected_w  n_infected p_diag_m  p_diag_w  p_diag  
-p_onart_diag_m p_onart_diag_w  p_onart_diag_m p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
-n_death_hivrel_m n_death_hivrel_w n_death_hivrel n_hiv_m n_hiv_w n_hiv prop_m_msm  prevalence_msm  incidence1564m incidence1564w  incidence1564  incidence_sw 
-incidence_msm  dummy3 dummy4 n_onart  n_onprep_m  n_onprep_w  n_onprep  yll_w  yll_m  yll
+p_onart_diag_m p_onart_diag_w  p_onart_diag p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
+n_death_hivrel_m n_death_hivrel_w n_death_hivrel n_hiv_m n_hiv_w n_hiv prop_m_msm  prevalence_msm  incidence1524m incidence1564m incidence1524w incidence1564w
+incidence_sw incidence_msm  dummy3 dummy4 incidence1564  n_onart  n_onprep_m  n_onprep_w  n_onprep  yll_w  yll_m  yll
 
 ;
 

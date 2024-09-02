@@ -2216,40 +2216,48 @@ option = &s;
 
 if caldate_never_dot >= &year_interv then do;
 
-	if option = 1 then do;
+* option 0 is status quo
+* options 1 to 15 full targets ;
+* options 101 to 115 half targets ;
+* option 20 is all interventions to full target;
+* option 200 is all interventions to half target ;
+
+	* full targets;
+
+	if option in (1 20) then do;
 		* 1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	
 		    Proportion of PLHIV aware of HIV status = 100%;
 		test_rate_set_in_opts = 1; incr_test_year_i = 5;
 		high_rate_testing_set_in_opts = 1; 
 	end;
 
-	if option = 2 then do;
+	if option in (2 20) then do;
 		* 2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
 		test_rate_set_in_opts = 1; incr_test_year_i = 2;
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 	end;
 
-	if option = 3 then do;
+	if option in (3 20)then do;
 		* 3 General wide distribution of self tests in adults, not focussed only on those with recent sexual risk	Proportion of PLHIV aware of HIV status = 100%;
 		prob_self_test_hard_reach = 0.5;
 		eff_self_test_targeting = 1; self_test_targeting = 1;
 		rate_self_test = 0.1;
 	end;
 
-	if option = 4 then do;
+	if option  in (4 20) then do;
 		* 4 Recent sexual risk-informed self-testing (index testing) for adults	Proportion of PLHIV aware of HIV status = 100%;
 		prob_self_test_hard_reach = 0.5;
 		eff_self_test_targeting = 20; self_test_targeting = 20;
 		rate_self_test = 0.01;
 	end;
 
-	if option = 5 then do;
+	if option in (5 20) then do;
 		* 5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%;
 		test_rate_agyw_set_in_opts = 1; incr_test_agyw_year_i = 1;
 		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_year_i = 1;
 	end;
 
-	if option = 6 then do;
+	if option  in (6 20) then do;
 		* 6 Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
 		sexual encounter = 95%;
 		condom_incr_set_in_opts = 0;
@@ -2258,13 +2266,13 @@ if caldate_never_dot >= &year_interv then do;
 		end;
 	end;
 
-	if option = 7 then do;
+	if option in (7 20) then do;
 		* 7 VMMC males aged 15+	Increase in male circumcision in priority counties = 80% ;
 		* note this takes to above target;
 		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 5;
 	end;
 
-	if option = 8 then do;
+	if option in (8 20) then do;
 		* 8 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		pref_prep_oral = 0.8;
 		rate_test_stprep_set_in_opts = 0.5;	
@@ -2273,7 +2281,7 @@ if caldate_never_dot >= &year_interv then do;
 		prob_prep_restart_set_in_opts = 0.5; 
 	end;
 
-	if option = 9 then do;
+	if option in (9 20) then do;
 		* 9 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		* not sure need to change pref_prep parameters;
 		date_prep_inj_intro = 2025;
@@ -2286,7 +2294,7 @@ if caldate_never_dot >= &year_interv then do;
 		prob_prep_restart_set_in_opts = 0.5; 
 	end;
 
-	if option = 10 then do;
+	if option in (10 20) then do;
 		* 10 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP and dapivirine ring	Proportion of at risk populations initiated on (any) PrEP = 80%;
 		date_prep_inj_intro = 2025;
 		date_prep_vr_intro = 2025;
@@ -2305,13 +2313,13 @@ if caldate_never_dot >= &year_interv then do;
 		prob_prep_restart_set_in_opts = 0.5; 
 	end;
 	
-	if option = 11 then do;
+	if option  in (11 20)= 11 then do;
 		* 11 Harm reduction services for PWID	Proportion of PWID using sterile needles and syringes in the last injecting episode = 100%
 		     Proportion of PWID using Medically Assisted Therapy = 80%;
 		fold_tr_pwid = 0;
 	end;
 
-	if option = 12 then do;
+	if option  in (12 20) then do;
 		* 12 Interventions to maximize linkage to care and retention in PLHIV 	Proportion of PLHIV with known HIV status on ART = 95%;
 		decr_rate_lost_set_in_opts = 1; decr_rate_lost_year_i = 1;
 		decr_rate_lost_art_set_in_opts = 1; decr_rate_lost_art_year_i = 1; 
@@ -2322,12 +2330,12 @@ if caldate_never_dot >= &year_interv then do;
 		decr_p_loss_at_diag_set_in_opts = 1; decr_prob_loss_at_diag_year_i = 1;
 	end;
 	
-	if option = 13 then do;
+	if option  in (13 20) then do;
 		* 13 Interventions to enhance adherence in people on ART	Proportion of PLHIV on ART achieving viral suppression  = 95% ;
 		incr_adh_set_in_options = 1; incr_adh_year_i = 1;
 	end;
 		
-	if option = 14 then do;
+	if option  in (14 20) then do;
 		* 14 Interventions to maximize ART coverage in pregnant and breastfeeding women living with HIV 	Proportion of PLHIV aware of HIV status = 100%
 			 Proportion of PLHIV with known HIV status on ART = 95%;
 		if pregnant = 1 then do;
@@ -2351,9 +2359,154 @@ if caldate_never_dot >= &year_interv then do;
 		* but note we already have re-engagement when pregnant by default;
 	end;
 	
-	if option = 15 then do;
+	if option  in (1 20) then do;
 		* 15 Maximize access to the WHO AHD package of care (having the effect of a reduction in AIDS death rate)	WHO package of care fully implemented;
 		hiv_death_rate_modif_in_opts=1;
+		* note this is implemented solely as a decrease in death rate and not via effects on tb, sbi, crypm early diagnosis and treatment
+		  a much more detailed evalation of the effect of the ahd package of care could be considered as an hiv synthesis single project;
+	end;
+
+
+	* half targets;
+
+	if option in (101 200) then do;
+		* 1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	
+		    Proportion of PLHIV aware of HIV status = 100%;
+		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
+		high_rate_testing_set_in_opts = 1; 
+	end;
+
+	if option in (102 200) then do;
+		* 2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
+		test_rate_set_in_opts = 1; incr_test_year_i = 1.5;
+		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
+	end;
+
+	if option in (103 20)then do;
+		* 3 General wide distribution of self tests in adults, not focussed only on those with recent sexual risk	Proportion of PLHIV aware of HIV status = 100%;
+		prob_self_test_hard_reach = 0.25;
+		eff_self_test_targeting = 1; self_test_targeting = 1;
+		rate_self_test = 0.05;
+	end;
+
+	if option  in (104 200) then do;
+		* 4 Recent sexual risk-informed self-testing (index testing) for adults	Proportion of PLHIV aware of HIV status = 100%;
+		prob_self_test_hard_reach = 0.25;
+		eff_self_test_targeting = 10; self_test_targeting = 10;
+		rate_self_test = 0.005;
+	end;
+
+	if option in (105 200) then do;
+		* 5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%;
+		test_rate_agyw_set_in_opts = 1; incr_test_agyw_h_year_i = 1;
+		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_h_year_i = 1;
+	end;
+
+	if option  in (106 200) then do;
+		* 6 Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
+		sexual encounter = 95%;
+		condom_incr_set_in_opts = 0;
+		if gender = 2 and 15 <= age < 25 then do;	
+			condom_incr_set_in_opts = 1; condom_incr_year_i = 1.5;
+		end;
+	end;
+
+	if option in (107 200) then do;
+		* 7 VMMC males aged 15+	Increase in male circumcision in priority counties = 80% ;
+		* note this takes to above target;
+		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 2.5;
+	end;
+
+	if option in (108 200) then do;
+		* 8 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80% ;
+		pref_prep_oral = 0.4;
+		rate_test_stprep_set_in_opts = 0.25;	
+		p_prep_oral_b_set_in_opts = 0.25;
+		rate_stop_prep_oral_set_in_opts = 0.002; 
+		prob_prep_restart_set_in_opts = 0.25; 
+	end;
+
+	if option in (109 200) then do;
+		* 9 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP	Proportion of at risk populations initiated on (any) PrEP = 80% ;
+		* not sure need to change pref_prep parameters;
+		date_prep_inj_intro = 2025;
+		pref_prep_inj = 0.4;
+		p_prep_oral_b_set_in_opts = 0.25;
+		rate_stop_prep_oral_set_in_opts = 0.002;
+		rate_stop_prep_inj_set_in_opts = 0.002; 
+		p_prep_inj_b_set_in_opts = 0.25;
+		rate_test_stprep_set_in_opts = 0.25;	
+		prob_prep_restart_set_in_opts = 0.25; 
+	end;
+
+	if option in (1010 200) then do;
+		* 10 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP and dapivirine ring	Proportion of at risk populations initiated on (any) PrEP = 80%;
+		date_prep_inj_intro = 2025;
+		date_prep_vr_intro = 2025;
+
+		pref_prep_inj = 0.4;
+
+		p_prep_oral_b_set_in_opts = 0.25;
+		p_prep_inj_b_set_in_opts = 0.25;
+		p_prep_vr_b_set_in_opts = 0.25;
+
+		rate_stop_prep_oral_set_in_opts = 0.002;
+		rate_stop_prep_inj_set_in_opts = 0.002; 
+		rate_stop_prep_vr_set_in_opts = 0.002; 
+
+		rate_test_stprep_set_in_opts = 0.25;	
+		prob_prep_restart_set_in_opts = 0.25; 
+	end;
+	
+	if option  in (1011 20)= 11 then do;
+		* 11 Harm reduction services for PWID	Proportion of PWID using sterile needles and syringes in the last injecting episode = 100%
+		     Proportion of PWID using Medically Assisted Therapy = 80%;
+		fold_tr_pwid = 0.1;
+	end;
+
+	if option  in (1012 200) then do;
+		* 12 Interventions to maximize linkage to care and retention in PLHIV 	Proportion of PLHIV with known HIV status on ART = 95%;
+		decr_rate_lost_set_in_opts = 1; decr_rate_lost_h_year_i = 1;
+		decr_rate_lost_art_set_in_opts = 1; decr_rate_lost_art_h_year_i = 1; 
+		incr_rate_return_set_in_opts  = 1; incr_rate_return_h_year_i = 1 ;
+		incr_rate_restart_set_in_opts  = 1; incr_rate_restart_h_year_i = 1;
+		incr_rate_init_set_in_opts = 1; incr_rate_init_h_year_i = 1 ;
+		decr_rate_int_choice_set_in_opts = 1; decr_rate_int_choice_h_year_i = 1 ;
+		decr_p_loss_at_diag_set_in_opts = 1; decr_prob_loss_at_diag_h_year_i = 1;
+	end;
+
+	if option  in (1013 200) then do;
+		* 13 Interventions to enhance adherence in people on ART	Proportion of PLHIV on ART achieving viral suppression  = 95% ;
+		incr_adh_set_in_options = 1; incr_adh_h_year_i = 1;
+	end;
+		
+	if option  in (1014 200) then do;
+		* 14 Interventions to maximize ART coverage in pregnant and breastfeeding women living with HIV 	Proportion of PLHIV aware of HIV status = 100%
+			 Proportion of PLHIV with known HIV status on ART = 95%;
+		if pregnant = 1 then do;
+		decr_rate_lost_set_in_opts = 1; decr_rate_lost_h_year_i = 1;
+		decr_rate_lost_art_set_in_opts = 1; decr_rate_lost_art_h_year_i = 1; 
+		incr_rate_return_set_in_opts  = 1; incr_rate_return_h_year_i = 1 ;
+		incr_rate_restart_set_in_opts  = 1; incr_rate_restart_h_year_i = 1;
+		incr_rate_init_set_in_opts = 1; incr_rate_init_h_year_i = 1 ;
+		decr_rate_int_choice_set_in_opts = 1; decr_rate_int_choice_h_year_i = 1 ;
+		decr_p_loss_at_diag_set_in_opts = 1; decr_prob_loss_at_diag_h_year_i = 1;
+		end;
+		if pregnant ne 1 then do;
+			decr_rate_lost_set_in_opts = 0;                              
+			decr_rate_lost_art_set_in_opts = 0;                                  
+			incr_rate_return_set_in_opts  = 0;                              
+			incr_rate_restart_set_in_opts  = 0;                               
+			incr_rate_init_set_in_opts = 0;                            
+			decr_rate_int_choice_set_in_opts = 0;                                   
+			decr_p_loss_at_diag_set_in_opts = 0;                                      
+		end;
+		* but note we already have re-engagement when pregnant by default;
+	end;
+	
+	if option  in (101 200) then do;
+		* 15 Maximize access to the WHO AHD package of care (having the effect of a reduction in AIDS death rate)	WHO package of care fully implemented;
+		hiv_death_rate_modif_in_opts=0.5;
 		* note this is implemented solely as a decrease in death rate and not via effects on tb, sbi, crypm early diagnosis and treatment
 		  a much more detailed evalation of the effect of the ahd package of care could be considered as an hiv synthesis single project;
 	end;
@@ -2663,15 +2816,18 @@ if caldate{t} = &year_interv then do;
 
 	*increase in testing in agyw;
 	if test_rate_agyw_set_in_opts ne 1 then incr_test_agyw_year_i = 0; 
+	if test_rate_agyw_set_in_opts ne 1 then incr_test_agyw_h_year_i = 0; 
 
 	*decrease in the proportion of people hard to reach;
 	if decr_hard_r_set_in_opts ne 1 then decr_hard_reach_year_i = 0;
 
 	*decrease in the proportion of agyw hard to reach;
 	if decr_hard_r_agyw_set_in_opts ne 1 then decr_hard_reach_agyw_year_i = 0;
+	if decr_hard_r_agyw_set_in_opts ne 1 then decr_hard_reach_agyw_h_year_i = 0;
 
 	*decrease in probability of being lost at diagnosis; 
 	if decr_p_loss_at_diag_set_in_opts ne 1 then decr_prob_loss_at_diag_year_i = 0;
+	if decr_p_loss_at_diag_set_in_opts ne 1 then decr_prob_loss_at_diag_h_year_i = 0;
 
 	*absence CD4;
 	if mihpsa_params_set_in_opts ne 1 then absence_cd4_year_i = 0;
@@ -2687,24 +2843,31 @@ if caldate{t} = &year_interv then do;
 
 	*decrease in the rate of being lost;
 	if decr_rate_lost_set_in_opts ne 1 then decr_rate_lost_year_i = 0;
+	if decr_rate_lost_set_in_opts ne 1 then decr_rate_lost_h_year_i = 0;
 
 	*decrease in the rate of being lost whilst on ART;
 	if decr_rate_lost_art_set_in_opts ne 1 then decr_rate_lost_art_year_i = 0; 
+	if decr_rate_lost_art_set_in_opts ne 1 then decr_rate_lost_art_h_year_i = 0; 
 
 	*increase in the rate of return;
 	if incr_rate_return_set_in_opts ne 1 then incr_rate_return_year_i = 0 ;
+	if incr_rate_return_set_in_opts ne 1 then incr_rate_return_h_year_i = 0 ;
 
 	*increase in the rate of restarting ART;
 	if incr_rate_restart_set_in_opts ne 1 then incr_rate_restart_year_i = 0;
+	if incr_rate_restart_set_in_opts ne 1 then incr_rate_restart_h_year_i = 0;
 
 	*increase in the rate of ART initiation;
 	if incr_rate_init_set_in_opts ne 1 then incr_rate_init_year_i = 0 ;
+	if incr_rate_init_set_in_opts ne 1 then incr_rate_init_h_year_i = 0 ;
 
 	*increase in adherence;
 	if incr_adh_set_in_options ne 1 then incr_adh_year_i = 0;
+	if incr_adh_set_in_options ne 1 then incr_adh_h_year_i = 0;
 
 	*decrease in the rate of interruption by choice;
 	if decr_rate_int_choice_set_in_opts ne 1 then decr_rate_int_choice_year_i = 0 ;
+	if decr_rate_int_choice_set_in_opts ne 1 then decr_rate_int_choice_h_year_i = 0 ;
 
 	*increase in the the probability of a VL measure being done;
 	incr_prob_vl_meas_done_year_i = 0;  
@@ -2942,9 +3105,20 @@ if decr_hard_reach_agyw_year_i = 1 and gender = 2 and 15 <= age < 25 then do;
 	end; 
 end;
 
+if decr_hard_reach_agyw_h_year_i = 1 and gender = 2 and 15 <= age < 25 then do;
+	if _u6 < 0.5 then e_decr_hard_reach_year_i = 0.25; if _u6 ge 0.5 then e_decr_hard_reach_year_i = 0.375;
+	if hard_reach=1 then do;
+		e = rand('uniform'); if e < e_decr_hard_reach_year_i then hard_reach = 0; 
+	end; 
+end;
+
 * decr_prob_loss_at_diag_year_i; 
 if	decr_prob_loss_at_diag_year_i = 1 then do;
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/3; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
+end;
+
+if	decr_prob_loss_at_diag_h_year_i = 1 then do;
+	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/1.5; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
 end;
 
 
@@ -2953,9 +3127,17 @@ if decr_rate_lost_year_i = 1 then do;
 	eff_rate_lost = eff_rate_lost * _u10 / 3; eff_rate_lost=round(eff_rate_lost,0.01); 
 end;
 
+if decr_rate_lost_h_year_i = 1 then do;
+	eff_rate_lost = eff_rate_lost * _u10 / 1.5; eff_rate_lost=round(eff_rate_lost,0.01); 
+end;
+
 * decr_rate_lost_art_year_i; 
 if decr_rate_lost_art_year_i = 1 then do;
 	eff_prob_lost_art = eff_prob_lost_art + ((0.5 + 0.5*_u12) * (1 - eff_prob_lost_art) ) ; eff_prob_lost_art = round(eff_prob_lost_art, 0.01); 
+end;
+
+if decr_rate_lost_art_h_year_i = 1 then do;
+	eff_prob_lost_art = eff_prob_lost_art + ((0.25 + 0.25*_u12) * (1 - eff_prob_lost_art) ) ; eff_prob_lost_art = round(eff_prob_lost_art, 0.01); 
 end;
 
 * incr_rate_return_year_i; 
@@ -2963,14 +3145,26 @@ if incr_rate_return_year_i = 1 then do;
 	eff_rate_return = eff_rate_return * (2 + 3*_u14);  eff_rate_return = round(eff_rate_return,0.01);  
 end;
 
+if incr_rate_return_h_year_i = 1 then do;
+	eff_rate_return = eff_rate_return * (2 + 1.5*_u14);  eff_rate_return = round(eff_rate_return,0.01);  
+end;
+
 * incr_rate_restart_year_i; 
 if incr_rate_restart_year_i = 1 then do;
 	eff_rate_restart = eff_rate_restart * (2 + 3*_u18);  eff_rate_restart = round(eff_rate_restart,0.01);  
 end;
 
+if incr_rate_restart_h_year_i = 1 then do;
+	eff_rate_restart = eff_rate_restart * (2 + 1.5*_u18);  eff_rate_restart = round(eff_rate_restart,0.01);  
+end;
+
 * incr_rate_init_year_i; 	
 if incr_rate_init_year_i = 1 then do;
 	eff_pr_art_init = eff_pr_art_init + ( (0.5 + 0.5*_u20) * (1 - eff_pr_art_init) ); eff_pr_art_init=round(eff_pr_art_init,0.01); 
+end;
+
+if incr_rate_init_h_year_i = 1 then do;
+	eff_pr_art_init = eff_pr_art_init + ( (0.25 + 0.25*_u20) * (1 - eff_pr_art_init) ); eff_pr_art_init=round(eff_pr_art_init,0.01); 
 end;
 
 * incr_adh_year_i;  		
@@ -2981,9 +3175,20 @@ if incr_adh_year_i = 1 then do;
 	end;
 end;
 
+if incr_adh_h_year_i = 1 then do;
+	if adhav < 0.8 then do; 
+		if _u4 < 0.5 then e_incr_adh_year_i = 0.25; if _u4 ge 0.5 then e_incr_adh_year_i = 0.375; 
+		e = rand('uniform'); if e < e_incr_adh_year_i then adhav = 0.9; 
+	end;
+end;
+
 * decr_rate_int_choice_year_i; 
 if	decr_rate_int_choice_year_i = 1 then do;
 	eff_rate_int_choice = eff_rate_int_choice * _u22/3; eff_rate_int_choice = round(eff_rate_int_choice,0.001); 
+end;
+
+if	decr_rate_int_choice_h_year_i = 1 then do;
+	eff_rate_int_choice = eff_rate_int_choice * _u22/1.5; eff_rate_int_choice = round(eff_rate_int_choice,0.001); 
 end;
 
 * incr_prob_vl_meas_done_year_i; 
@@ -3115,6 +3320,7 @@ if caldate{t} >= &year_interv then do;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
 	if incr_test_year_i = 5              then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
 	if incr_test_agyw_year_i = 1 and gender = 2 and 15 <= age < 25 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+	if incr_test_agyw_h_year_i = 1 and gender = 2 and 15 <= age < 25 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
 end;
 
 
@@ -12245,6 +12451,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		if time0=caldate{t} and onartvisit0=1 and . < cd4 < 100 then hiv_death_rate = hiv_death_rate + death_r_iris_pop_wide_tld ;
 
 		if hiv_death_rate_modif_in_opts = 1 then hiv_death_rate = hiv_death_rate * 0.5 ;
+		if hiv_death_rate_modif_in_opts = 0.5 then hiv_death_rate = hiv_death_rate * 0.75 ;
 
 		death_rix = 1 - exp(-0.25*hiv_death_rate); 
 * ts1m: *	death_rix = 1 - exp (-(1/12)*hiv_death_rate);
