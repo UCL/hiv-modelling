@@ -10,9 +10,9 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_ag_options_a ;
+  set a.l_base_kenya_ag_options_b ;
 
-  s = 15 ;
+  s = 1 ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
 
