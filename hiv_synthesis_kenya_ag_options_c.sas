@@ -2272,26 +2272,28 @@ if caldate_never_dot >= &year_interv then do;
 		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 5;
 	end;
 
-	if option in (8 20) then do;
+	if option in (8   ) then do; * note not included when including all interventions;
 		* 8 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		pref_prep_oral = 0.8;
-		rate_test_stprep_set_in_opts = 0.5;	
-		p_prep_oral_b_set_in_opts = 0.5;
+		rate_test_stprep_set_in_opts = 0.8;	
+		p_prep_oral_b_set_in_opts = 0.8;
 		rate_stop_prep_oral_set_in_opts = 0.001; 
-		prob_prep_restart_set_in_opts = 0.5; 
+		prob_prep_restart_set_in_opts = 0.8; 
+		hard_reach=0;
 	end;
 
-	if option in (9 20) then do;
+	if option in (9   ) then do;* note not included when including all interventions;
 		* 9 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		* not sure need to change pref_prep parameters;
 		date_prep_inj_intro = 2025;
 		pref_prep_inj = 0.8;
-		p_prep_oral_b_set_in_opts = 0.5;
+		p_prep_oral_b_set_in_opts = 0.8;
 		rate_stop_prep_oral_set_in_opts = 0.001;
 		rate_stop_prep_inj_set_in_opts = 0.001; 
-		p_prep_inj_b_set_in_opts = 0.5;
-		rate_test_stprep_set_in_opts = 0.5;	
-		prob_prep_restart_set_in_opts = 0.5; 
+		p_prep_inj_b_set_in_opts = 0.8;
+		rate_test_stprep_set_in_opts = 0.8;	
+		prob_prep_restart_set_in_opts = 0.8; 
+		hard_reach=0;
 	end;
 
 	if option in (10 20) then do;
@@ -2301,16 +2303,18 @@ if caldate_never_dot >= &year_interv then do;
 
 		pref_prep_inj = 0.8;
 
-		p_prep_oral_b_set_in_opts = 0.5;
-		p_prep_inj_b_set_in_opts = 0.5;
-		p_prep_vr_b_set_in_opts = 0.5;
+		p_prep_oral_b_set_in_opts = 0.8;
+		p_prep_inj_b_set_in_opts = 0.8;
+		p_prep_vr_b_set_in_opts = 0.8;
 
 		rate_stop_prep_oral_set_in_opts = 0.001;
 		rate_stop_prep_inj_set_in_opts = 0.001; 
 		rate_stop_prep_vr_set_in_opts = 0.001; 
 
-		rate_test_stprep_set_in_opts = 0.5;	
-		prob_prep_restart_set_in_opts = 0.5; 
+		rate_test_stprep_set_in_opts = 0.8;	
+		prob_prep_restart_set_in_opts = 0.8; 
+
+		hard_reach=0;
 	end;
 	
 	if option  in (11 20)= 11 then do;
@@ -2335,7 +2339,7 @@ if caldate_never_dot >= &year_interv then do;
 		incr_adh_set_in_options = 1; incr_adh_year_i = 1;
 	end;
 		
-	if option  in (14 20) then do;
+	if option  in (14   ) then do; * note not included when including all interventions;
 		* 14 Interventions to maximize ART coverage in pregnant and breastfeeding women living with HIV 	Proportion of PLHIV aware of HIV status = 100%
 			 Proportion of PLHIV with known HIV status on ART = 95%;
 		if pregnant = 1 then do;
@@ -2359,7 +2363,7 @@ if caldate_never_dot >= &year_interv then do;
 		* but note we already have re-engagement when pregnant by default;
 	end;
 	
-	if option  in (1 20) then do;
+	if option  in (15 20) then do;
 		* 15 Maximize access to the WHO AHD package of care (having the effect of a reduction in AIDS death rate)	WHO package of care fully implemented;
 		hiv_death_rate_modif_in_opts=1;
 		* note this is implemented solely as a decrease in death rate and not via effects on tb, sbi, crypm early diagnosis and treatment
@@ -2407,17 +2411,17 @@ if caldate_never_dot >= &year_interv then do;
 		sexual encounter = 95%;
 		condom_incr_set_in_opts = 0;
 		if gender = 2 and 15 <= age < 25 then do;	
-			condom_incr_set_in_opts = 1; condom_incr_year_i = 1.5;
+			condom_incr_set_in_opts = 1; condom_incr_h_year_i = 1.5;
 		end;
 	end;
 
 	if option in (107 200) then do;
 		* 7 VMMC males aged 15+	Increase in male circumcision in priority counties = 80% ;
 		* note this takes to above target;
-		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 2.5;
+		circ_inc_rate_set_in_opts = 1; circ_inc_rate_h_year_i = 2.5;
 	end;
 
-	if option in (108 200) then do;
+	if option in (108    ) then do; * note not included when including all interventions;
 		* 8 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		pref_prep_oral = 0.4;
 		rate_test_stprep_set_in_opts = 0.25;	
@@ -2426,7 +2430,7 @@ if caldate_never_dot >= &year_interv then do;
 		prob_prep_restart_set_in_opts = 0.25; 
 	end;
 
-	if option in (109 200) then do;
+	if option in (109    ) then do; * note not included when including all interventions;
 		* 9 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		* not sure need to change pref_prep parameters;
 		date_prep_inj_intro = 2025;
@@ -2439,7 +2443,7 @@ if caldate_never_dot >= &year_interv then do;
 		prob_prep_restart_set_in_opts = 0.25; 
 	end;
 
-	if option in (1010 200) then do;
+	if option in (110 200) then do;
 		* 10 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP and dapivirine ring	Proportion of at risk populations initiated on (any) PrEP = 80%;
 		date_prep_inj_intro = 2025;
 		date_prep_vr_intro = 2025;
@@ -2458,13 +2462,13 @@ if caldate_never_dot >= &year_interv then do;
 		prob_prep_restart_set_in_opts = 0.25; 
 	end;
 	
-	if option  in (1011 20)= 11 then do;
+	if option  in (111 20)= 11 then do;
 		* 11 Harm reduction services for PWID	Proportion of PWID using sterile needles and syringes in the last injecting episode = 100%
 		     Proportion of PWID using Medically Assisted Therapy = 80%;
 		fold_tr_pwid = 0.1;
 	end;
 
-	if option  in (1012 200) then do;
+	if option  in (112 200) then do;
 		* 12 Interventions to maximize linkage to care and retention in PLHIV 	Proportion of PLHIV with known HIV status on ART = 95%;
 		decr_rate_lost_set_in_opts = 1; decr_rate_lost_h_year_i = 1;
 		decr_rate_lost_art_set_in_opts = 1; decr_rate_lost_art_h_year_i = 1; 
@@ -2475,12 +2479,12 @@ if caldate_never_dot >= &year_interv then do;
 		decr_p_loss_at_diag_set_in_opts = 1; decr_prob_loss_at_diag_h_year_i = 1;
 	end;
 
-	if option  in (1013 200) then do;
+	if option  in (113 200) then do;
 		* 13 Interventions to enhance adherence in people on ART	Proportion of PLHIV on ART achieving viral suppression  = 95% ;
 		incr_adh_set_in_options = 1; incr_adh_h_year_i = 1;
 	end;
 		
-	if option  in (1014 200) then do;
+	if option  in (114    ) then do;  * note not included when including all interventions;
 		* 14 Interventions to maximize ART coverage in pregnant and breastfeeding women living with HIV 	Proportion of PLHIV aware of HIV status = 100%
 			 Proportion of PLHIV with known HIV status on ART = 95%;
 		if pregnant = 1 then do;
@@ -2504,7 +2508,7 @@ if caldate_never_dot >= &year_interv then do;
 		* but note we already have re-engagement when pregnant by default;
 	end;
 	
-	if option  in (101 200) then do;
+	if option  in (115 200) then do;
 		* 15 Maximize access to the WHO AHD package of care (having the effect of a reduction in AIDS death rate)	WHO package of care fully implemented;
 		hiv_death_rate_modif_in_opts=0.5;
 		* note this is implemented solely as a decrease in death rate and not via effects on tb, sbi, crypm early diagnosis and treatment
@@ -2892,9 +2896,11 @@ if caldate{t} = &year_interv then do;
 
 	*increase in rates of circumcision;
 	if circ_inc_rate_set_in_opts ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
+	if circ_inc_rate_set_in_opts ne 1 then circ_inc_rate_h_year_i = 0; *variations coded in circumcision section;
 
 	*increase in condom use;
 	if condom_incr_set_in_opts ne 1 then condom_incr_year_i = 0; *coded within core (not below options code);
+	if condom_incr_set_in_opts ne 1 then condom_incr_h_year_i = 0; *coded within core (not below options code);
 
 	*population wide tld;
 	pop_wide_tld = 0;
@@ -3170,14 +3176,14 @@ end;
 * incr_adh_year_i;  		
 if incr_adh_year_i = 1 then do;
 	if adhav < 0.8 then do; 
-		if _u4 < 0.5 then e_incr_adh_year_i = 0.5; if _u4 ge 0.5 then e_incr_adh_year_i = 0.75; 
+		if _u4 < 0.5 then e_incr_adh_year_i = 0.75; if _u4 ge 0.5 then e_incr_adh_year_i = 0.90; 
 		e = rand('uniform'); if e < e_incr_adh_year_i then adhav = 0.9; 
 	end;
 end;
 
 if incr_adh_h_year_i = 1 then do;
 	if adhav < 0.8 then do; 
-		if _u4 < 0.5 then e_incr_adh_year_i = 0.25; if _u4 ge 0.5 then e_incr_adh_year_i = 0.375; 
+		if _u4 < 0.5 then e_incr_adh_year_i = 0.375; if _u4 ge 0.5 then e_incr_adh_year_i = 0.45; 
 		e = rand('uniform'); if e < e_incr_adh_year_i then adhav = 0.9; 
 	end;
 end;
@@ -3440,6 +3446,10 @@ end;
 
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 5 then do;
+	prob_circ = 0.9;
+end;
+
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_h_year_i = 5 then do;
 	prob_circ = 0.3;
 end;
 
@@ -4519,8 +4529,13 @@ end;
 
 
 * Reducing newp by 50% if condom incr =1;
-if caldate{t} = &year_interv and condom_incr_year_i = 1 then do;
+if caldate{t} >= &year_interv and condom_incr_year_i = 1 then do;
 	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
+end;
+
+* Reducing newp by 25% if condom incr =1;
+if caldate{t} >= &year_interv and condom_incr_h_year_i = 1.5 then do;
+	u=rand('uniform'); if u < 0.50 then do;newp=newp/1.5;newp=round(newp,1);end;
 end;
 
 
@@ -4528,7 +4543,6 @@ end;
 if caldate{t} >= &year_interv and agyw=1 and condom_incr_year_i = 3 then do;
 	u=rand('uniform'); if u < 0.50 then do;newp=newp/4;newp=round(newp,1);end;
 end;
-
 
 
 
@@ -14199,6 +14213,8 @@ if gender=2 then do;
 	if newp_ever ge 5 then w_ge5newpever=1; 
 end;
 
+newp_agyw = 0; if gender=2 and 15 <= age < 25 then newp_agyw=newp;
+
 
 * People with hiv aged 15-65;
 hiv1564=hiv; if age >= 65 then hiv1564=.;
@@ -17548,7 +17564,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/*Number ep and newp*/
 
 	s_np + np ; s_newp + newp ; s_newp_ge1 + newp_ge1 ; s_newp_ge5 + newp_ge5 ; s_newp_ge10 + newp_ge10 ; s_newp_ge50 +  newp_ge50 ;
-	s_ep + ep ; s_ep_m + ep_m ; s_ep_w + ep_w ;
+	s_ep + ep ; s_ep_m + ep_m ; s_ep_w + ep_w ; s_newp_agyw + newp_agyw;
 	s_m_npge1 + m_npge1; s_w_npge1 + w_npge1; s_w1524_npge1 + w1524_npge1; s_sw_npge1 + sw_npge1;
 	s_npge10 + npge10 ; s_npge2 + npge2 ; s_npge2_l4p_1549m + npge2_l4p_1549m;
 	s_npge2_l4p_1549w + npge2_l4p_1549w ;
@@ -19506,7 +19522,7 @@ s_diagprim s_diagprim_prep_oral s_diagprim_prep_inj s_diagprim_prep_vr
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
-s_m_npge1 		s_w_npge1 		s_w1524_npge1 		s_sw_npge1 
+s_m_npge1 		s_w_npge1 		s_w1524_npge1 		s_sw_npge1 s_newp_agyw
 s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
 s_w_1524_ep		 s_w_2534_ep 	  s_w_3544_ep	   s_w_4554_ep 		s_w_5564_ep 
@@ -20540,7 +20556,7 @@ s_diagprim s_diagprim_prep_oral s_diagprim_prep_inj s_diagprim_prep_vr
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
-s_m_npge1 		s_w_npge1 		s_w1524_npge1 		s_sw_npge1 
+s_m_npge1 		s_w_npge1 		s_w1524_npge1 		s_sw_npge1 s_newp_agyw
 s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
 s_w_1524_ep		 s_w_2534_ep 	  s_w_3544_ep	   s_w_4554_ep 		s_w_5564_ep 
@@ -24167,6 +24183,175 @@ data r1; set x;
 
 
 
+data r1; set x;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=20);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=20);   
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=20);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=20);
+
+/*
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=20);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=20);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=20);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=20);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=20);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=20);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=20);
+
+*/
+
+
+
 
 /*
 
@@ -24278,7 +24463,7 @@ s_diagprim s_diagprim_prep_oral s_diagprim_prep_inj s_diagprim_prep_vr
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
-s_m_npge1 		s_w_npge1 		s_w1524_npge1 		s_sw_npge1 
+s_m_npge1 		s_w_npge1 		s_w1524_npge1 		s_sw_npge1 s_newp_agyw
 s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
 s_w_1524_ep		 s_w_2534_ep 	  s_w_3544_ep	   s_w_4554_ep 		s_w_5564_ep 

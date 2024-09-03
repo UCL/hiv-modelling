@@ -19,6 +19,8 @@ data sf;
 
 set   kenya_ag_options_b ;
 
+
+
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
 
@@ -276,6 +278,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
 
 * av_newp_ge1;					av_newp_ge1 = s_newp / s_newp_ge1 ;
+
+* n_newp ;						n_newp = s_newp * sf ;
 
 * av number of newp amongst people with newp ge 1, exlcuding sw;
 * av_newp_ge1_non_sw;			av_newp_ge1_non_sw = (s_newp - s_newp_sw) / (s_newp_ge1 - (s_sw_newp_cat2 + s_sw_newp_cat3 +s_sw_newp_cat4 +s_sw_newp_cat5));
@@ -1069,7 +1073,7 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
 
 p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1newp
 
-n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test
+n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test  n_newp
 
 ;
 
@@ -1267,7 +1271,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_diag_msm);  %var(v=p_vl1000_art_gt6m_msm);	 %var(v=p_ever_tested_msm); 	%var(v=p_tested_this_period_msm);  %var(v=p_msm_infected_from_msm)
 %var(v=incidence1564);  %var(v=p_onprep_pwid);  %var(v=p_onart_pwid);  %var(v=p_onart_sw);  %var(v=p_ep_msm);   %var(v=p_msm_ge1newp);   %var(v=p_m_ge1newp); 
 %var(v=n_vm_per_year); %var(v=n_self_tested);   %var(v=n_self_tested_m);    %var(v=n_self_tested_w);    %var(v=n_tested_due_to_self_test);    
-%var(v=n_diagnosed_self_test);  %var(v=p_newp_ge1_agyw);
+%var(v=n_diagnosed_self_test);  %var(v=p_newp_ge1_agyw); %var(v=n_newp);
 
 
 data   wide_outputs; merge 
@@ -1360,7 +1364,7 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
  p_onart_msm  prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period_msm p_msm_infected_from_msm p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1newp n_vm_per_year
 n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test  p_newp_ge1_agyw
-p_births_hiv_vlg1000
+p_births_hiv_vlg1000  n_newp
 ;
 
 proc sort; by run; run;
