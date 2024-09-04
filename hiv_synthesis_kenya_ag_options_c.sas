@@ -2386,7 +2386,7 @@ if caldate_never_dot >= &year_interv then do;
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 	end;
 
-	if option in (103 20)then do;
+	if option in (103 200)then do;
 		* 3 General wide distribution of self tests in adults, not focussed only on those with recent sexual risk	Proportion of PLHIV aware of HIV status = 100%;
 		prob_self_test_hard_reach = 0.25;
 		eff_self_test_targeting = 1; self_test_targeting = 1;
