@@ -100,6 +100,8 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 * placeholder until self testing retrospectively added;
 n_tested_self_test = 0;
 
+%let single_var = incidence1549_          ;
+
 
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
@@ -117,7 +119,7 @@ data option_0;
 set c;
 if option ne 0 then delete;
 
-%let var =  
+%let var =  &single_var
 
 
 
@@ -233,7 +235,7 @@ data option_1;
 set c;
 if option ne 1 then delete;
 
-%let var =  
+%let var =  &single_var
 
 
 
@@ -711,51 +713,19 @@ proc contents data=d; run;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_tested";
+Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by 1000000) valueattrs=(size=10);
-label mean_n_tested_0 = "Option 0 (median) ";
-/*label mean_n_tested_1 = "Option 1 (median) ";*/
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 
-series  x=cald y=mean_n_tested_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+label mean_incidence1549__0 = "Option 0 (median) ";
+label mean_incidence1549__1 = "Option 1  (median) ";
 
-series  x=cald y=mean_n_tested_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-series  x=cald y=n_tests_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
-
-label n_tests_obs_mlw = "Observed data";
+series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_incidence1549__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -773,6 +743,27 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
+Title    height=1.5 justify=center "n_tested";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by 1000000) valueattrs=(size=10);
+label mean_n_tested_0 = "Option 0 (median) ";
+label mean_n_tested_1 = "Option 1 (median) ";
+
+series  x=cald y=mean_n_tested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_n_tested_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=n_tests_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
+
+label n_tests_obs_mlw = "Observed data";
+
+run;quit;
+
+
+ods html;
+proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge1_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
@@ -786,16 +777,6 @@ series  x=cald y=mean_p_newp_ge1__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_newp_ge1__1 	upper=p95_p_newp_ge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
-
-
-
-
-
-
-
-
-
-
 
 
 ods html ;
@@ -840,13 +821,13 @@ Title    height=1.5 justify=center "Proportion of women giving birth this period
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
 label mean_p_w_giv_birth_this_per_0 = "Option 0 (median) ";
-/*label mean_p_w_giv_birth_this_per_1 = "Option 1 (median) ";*/
+label mean_p_w_giv_birth_this_per_1 = "Option 1 (median) ";
 
 series  x=cald y=mean_p_w_giv_birth_this_per_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p2p5_p_w_giv_birth_this_per_0 	upper=p97p5_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
 
-/*series  x=cald y=mean_p_w_giv_birth_this_per_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p2p5_p_w_giv_birth_this_per_1 	upper=p97p5_p_w_giv_birth_this_per_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";*/
+series  x=cald y=mean_p_w_giv_birth_this_per_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p2p5_p_w_giv_birth_this_per_1 	upper=p97p5_p_w_giv_birth_this_per_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
 
 run;quit;
 
@@ -856,13 +837,13 @@ Title    height=1.5 justify=center "p_ep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1.0 by 0.1 ) valueattrs=(size=10);
 label mean_p_ep_0 = "Option 0 (median) ";
-/*label mean_p_ep_1 = "Option 1 (median) ";*/
+label mean_p_ep_1 = "Option 1 (median) ";
 
 series  x=cald y=mean_p_ep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_ep_0 	upper=p95_p_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-/*series  x=cald y=mean_p_ep_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_ep_1 	upper=p95_p_ep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_ep_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_ep_1 	upper=p95_p_ep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -876,13 +857,13 @@ Title    height=1.5 justify=center "p_newp_ge5_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) valueattrs=(size=10);
 label mean_p_newp_ge5__0 = "Option 0 (median) ";
-/*label mean_p_newp_ge5__1 = "Option 1 (median) ";*/
+label mean_p_newp_ge5__1 = "Option 1 (median) ";
 
 series  x=cald y=mean_p_newp_ge5__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_newp_ge5__0 	upper=p95_p_newp_ge5__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-/*series  x=cald y=mean_p_newp_ge5__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_newp_ge5__1 	upper=p95_p_newp_ge5__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_newp_ge5__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_newp_ge5__1 	upper=p95_p_newp_ge5__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -893,13 +874,13 @@ Title    height=1.5 justify=center "log_gender_r_newp";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'log_gender_r_newp'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
 label mean_log_gender_r_newp_0 = "Option 0 (median) ";
-/*label mean_log_gender_r_newp_1 = "Option 1 (median) ";*/
+label mean_log_gender_r_newp_1 = "Option 1 (median) ";
 
 series  x=cald y=mean_log_gender_r_newp_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_log_gender_r_newp_0 	upper=p95_log_gender_r_newp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-/*series  x=cald y=mean_log_gender_r_newp_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_log_gender_r_newp_1 	upper=p95_log_gender_r_newp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_log_gender_r_newp_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_log_gender_r_newp_1 	upper=p95_log_gender_r_newp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -912,13 +893,13 @@ Title    height=1.5 justify=center "p_tested_past_year_1549m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label mean_p_tested_past_year_1549m_0 = "Option 0 (median) ";
-/*label mean_p_tested_past_year_1549m_1 = "Option 1 (median) ";*/
+label mean_p_tested_past_year_1549m_1 = "Option 1 (median) ";
 
 series  x=cald y=mean_p_tested_past_year_1549m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_tested_past_year_1549m_0 	upper=p95_p_tested_past_year_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-/*series  x=cald y=mean_p_tested_past_year_1549m_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_tested_past_year_1549m_1 	upper=p95_p_tested_past_year_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_tested_past_year_1549m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_tested_past_year_1549m_1 	upper=p95_p_tested_past_year_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -929,7 +910,7 @@ Title    height=1.5 justify=center "overall_test_yield";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.01) valueattrs=(size=10);
 label mean_overall_test_yield_0 = "Option 0 (median) ";
-/*label mean_overall_test_yield_1 = "Option 1 (median) ";*/
+label mean_overall_test_yield_1 = "Option 1 (median) ";
 
 series  x=cald y=mean_overall_test_yield_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_overall_test_yield_0 	upper=p95_overall_test_yield_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
@@ -944,13 +925,13 @@ Title    height=1.5 justify=center "p_tested_past_year_1549w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label mean_p_tested_past_year_1549w_0 = "Option 0 (median) ";
-/*label mean_p_tested_past_year_1549w_1 = "Option 1 (median) ";*/
+label mean_p_tested_past_year_1549w_1 = "Option 1 (median) ";
 
 series  x=cald y=mean_p_tested_past_year_1549w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_tested_past_year_1549w_0 	upper=p95_p_tested_past_year_1549w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-/*series  x=cald y=mean_p_tested_past_year_1549w_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_tested_past_year_1549w_1 	upper=p95_p_tested_past_year_1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_tested_past_year_1549w_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_tested_past_year_1549w_1 	upper=p95_p_tested_past_year_1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -962,13 +943,13 @@ Title    height=1.5 justify=center "Proportion of men age 15-49 circumcised";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label mean_p_mcirc_1549m_0 = "Option 0 (median) ";
-/*label mean_p_mcirc_1549m_1 = "Option 1 (median) ";*/
+label mean_p_mcirc_1549m_1 = "Option 1 (median) ";
 
 series  x=cald y=mean_p_mcirc_1549m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-/*series  x=cald y=mean_p_mcirc_1549m_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1549m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -980,20 +961,20 @@ Title    height=1.5 justify=center "Proportion of female sex workers (FSW)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.02) valueattrs=(size=10);
 label mean_prop_w_1549_sw_0 = "Current FSW 15-49 op 0 (median) ";
-/*label mean_prop_w_1549_sw_1 = "Current FSW 15-49 op 1 (median) ";*/
+label mean_prop_w_1549_sw_1 = "Current FSW 15-49 op 1 (median) ";
 
 label mean_prop_w_ever_sw_0 = "Ever FSW 15-64 op 0 (median) ";
-/*label mean_prop_w_ever_sw_1 = "Ever FSW 15-64 op 0 (median) ";*/
+label mean_prop_w_ever_sw_1 = "Ever FSW 15-64 op 0 (median) ";
 
 
 series  x=cald y=mean_prop_w_1549_sw_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_w_1549_sw_0 	upper=p95_prop_w_1549_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_prop_w_1549_sw_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_prop_w_1549_sw_1 	upper=p95_prop_w_1549_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_prop_w_1549_sw_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_w_1549_sw_1 	upper=p95_prop_w_1549_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 series  x=cald y=mean_prop_w_ever_sw_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prop_w_ever_sw_0 	upper=p95_prop_w_ever_sw_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_prop_w_ever_sw_1/	lineattrs = (color=lightgreen thickness = 2);*/
-/*band    x=cald lower=p5_prop_w_ever_sw_1 	upper=p95_prop_w_ever_sw_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_prop_w_ever_sw_1/	lineattrs = (color=lightgreen thickness = 2);
+band    x=cald lower=p5_prop_w_ever_sw_1 	upper=p95_prop_w_ever_sw_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1004,12 +985,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 
 label mean_prop_sw_hiv_0 = "FSW with HIV 15-64 op 0 (median) ";
-/*label mean_prop_sw_hiv_1 = "FSW with HIV 15-64 op 1 (median) ";*/
+label mean_prop_sw_hiv_1 = "FSW with HIV 15-64 op 1 (median) ";
 
 series  x=cald y=mean_prop_sw_hiv_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_sw_hiv_0 	upper=p95_prop_sw_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_prop_sw_hiv_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_prop_sw_hiv_1 	upper=p95_prop_sw_hiv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_prop_sw_hiv_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_sw_hiv_1 	upper=p95_prop_sw_hiv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1020,12 +1001,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 10000 ) valueattrs=(size=10);
 
 label mean_n_init_prep_oral_1524w_0 = "Option 0 (median) ";
-/*label mean_n_init_prep_oral_1524w_1 = "Option 1  (median) ";*/
+label mean_n_init_prep_oral_1524w_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_n_init_prep_oral_1524w_0 /	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_init_prep_oral_1524w_0 	upper=p95_n_init_prep_oral_1524w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_n_init_prep_oral_1524w_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_n_init_prep_oral_1524w_1 	upper=p95_n_init_prep_oral_1524w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_init_prep_oral_1524w_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_init_prep_oral_1524w_1 	upper=p95_n_init_prep_oral_1524w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1035,12 +1016,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 5000 ) valueattrs=(size=10);
 
 label mean_n_init_prep_oral_sw_0 = "Option 0 (median) ";
-/*label mean_n_init_prep_oral_sw_1 = "Option 1  (median) ";*/
+label mean_n_init_prep_oral_sw_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_n_init_prep_oral_sw_0 /	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_init_prep_oral_sw_0 	upper=p95_n_init_prep_oral_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_n_init_prep_oral_sw_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_n_init_prep_oral_sw_1 	upper=p95_n_init_prep_oral_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_init_prep_oral_sw_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_init_prep_oral_sw_1 	upper=p95_n_init_prep_oral_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1050,12 +1031,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
 
 label mean_prop_1564_onprep_0 = "Option 0 (median) ";
-/*label mean_prop_1564_onprep_1 = "Option 1  (median) ";*/
+label mean_prop_1564_onprep_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_prop_1564_onprep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_1564_onprep_0 	upper=p95_prop_1564_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_prop_1564_onprep_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_prop_1564_onprep_1 	upper=p95_prop_1564_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_prop_1564_onprep_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_1564_onprep_1 	upper=p95_prop_1564_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1066,12 +1047,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
 
 label mean_prop_w_1524_onprep_0 = "Option 0 (median) ";
-/*label mean_prop_w_1524_onprep_1 = "Option 1  (median) ";*/
+label mean_prop_w_1524_onprep_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_prop_w_1524_onprep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_w_1524_onprep_0 	upper=p95_prop_w_1524_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_prop_w_1524_onprep_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_prop_w_1524_onprep_1 	upper=p95_prop_w_1524_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_prop_w_1524_onprep_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_w_1524_onprep_1 	upper=p95_prop_w_1524_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1081,12 +1062,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2   by 0.02 ) valueattrs=(size=10);
 
 label mean_prop_sw_onprep_0 = "Option 0 (median) ";
-/*label mean_prop_sw_onprep_1 = "Option 1  (median) ";*/
+label mean_prop_sw_onprep_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_prop_sw_onprep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_sw_onprep_0 	upper=p95_prop_sw_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_prop_1564_onprep_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_prop_1564_onprep_1 	upper=p95_prop_1564_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_prop_1564_onprep_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_1564_onprep_1 	upper=p95_prop_1564_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1098,26 +1079,26 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
 
 label mean_prevalence1549__0 = "All Option 0 (median) ";
-/*label mean_prevalence1549__1 = "All Option 1  (median) ";*/
+label mean_prevalence1549__1 = "All Option 1  (median) ";
 label mean_prevalence1549m_0 = "Men Option 0 (median) ";
-/*label mean_prevalence1549m_1 = "Men Option 1 (median) ";*/
+label mean_prevalence1549m_1 = "Men Option 1 (median) ";
 label mean_prevalence1549w_0 = "Women Option 0 (median) ";
-/*label mean_prevalence1549w_1 = "Women Option 1 (median) ";*/
+label mean_prevalence1549w_1 = "Women Option 1 (median) ";
 
 series  x=cald y=mean_prevalence1549__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_prevalence1549__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_prevalence1549__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 series  x=cald y=mean_prevalence1549m_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prevalence1549m_0 	upper=p95_prevalence1549m_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_prevalence1549m_1/	lineattrs = (color=lightgreen thickness = 2);*/
-/*band    x=cald lower=p5_prevalence1549m_1 	upper=p95_prevalence1549m_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_prevalence1549m_1/	lineattrs = (color=lightgreen thickness = 2);
+band    x=cald lower=p5_prevalence1549m_1 	upper=p95_prevalence1549m_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
 series  x=cald y=mean_prevalence1549w_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_prevalence1549w_1/	lineattrs = (color=lightblue thickness = 2);*/
-/*band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_prevalence1549w_1/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
 
 series  x=cald y=prevalence1549_obs_mlw /	lineattrs = (color=black thickness = 3) ;
 series  x=cald y=prevalence1549w_obs_mlw /	lineattrs = (color=blue  thickness = 3) ;
@@ -1131,21 +1112,7 @@ scatter x=cald y=prevalence1549_threshold_higher / markerattrs = (symbol=circle 
 
 run;quit;
 
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 
-label mean_incidence1549__0 = "Option 0 (median) ";
-/*label mean_incidence1549__1 = "Option 1  (median) ";*/
-
-series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence1549__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
-
-run;quit;
 
 
 ods html;
@@ -1155,12 +1122,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 
 label mean_incidence1564__0 = "Option 0 (median) ";
-/*label mean_incidence1564__1 = "Option 1  (median) ";*/
+label mean_incidence1564__1 = "Option 1  (median) ";
 
 series  x=cald y=mean_incidence1564__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1564__0 	upper=p95_incidence1564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence1564__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence1564__1 	upper=p95_incidence1564__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1564__1 	upper=p95_incidence1564__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run; quit;
 
@@ -1172,12 +1139,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 100000 by 2000) valueattrs=(size=10);
 
 label mean_n_new_inf1549__0 = "Option 0 (median) ";
-/*label mean_n_new_inf1549__1 = "Option 1  (median) ";*/
+label mean_n_new_inf1549__1 = "Option 1  (median) ";
 
 series  x=cald y=mean_n_new_inf1549__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_new_inf1549__0 	upper=p95_n_new_inf1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_n_new_inf1549__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_n_new_inf1549__1 	upper=p95_n_new_inf1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_new_inf1549__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__1 	upper=p95_n_new_inf1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run; quit;
 
@@ -1191,12 +1158,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 20 by 5) valueattrs=(size=10);
 
 label mean_incidence_sw_0 = "Option 0 (median) ";
-/*label mean_incidence_sw_1 = "Option 1  (median) ";*/
+label mean_incidence_sw_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_incidence_sw_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence_sw_0 	upper=p95_incidence_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence_sw_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence_sw_1 	upper=p95_incidence_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence_sw_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence_sw_1 	upper=p95_incidence_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1211,12 +1178,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 
 label mean_incidence1524__0 = "Option 0 (median) ";
-/*label mean_incidence1524__1 = "Option 1  (median) ";*/
+label mean_incidence1524__1 = "Option 1  (median) ";
 
 series  x=cald y=mean_incidence1524w__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1524w__0 	upper=p95_incidence1524w__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence1524w__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence1524w__1 	upper=p95_incidence1524w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1524w__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1524w__1 	upper=p95_incidence1524w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run; quit;
 
@@ -1227,12 +1194,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 
 label mean_incidence1524__0 = "Option 0 (median) ";
-/*label mean_incidence1524__1 = "Option 1  (median) ";*/
+label mean_incidence1524__1 = "Option 1  (median) ";
 
 series  x=cald y=mean_incidence1524m__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1524m__0 	upper=p95_incidence1524m__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence1524m__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence1524m__1 	upper=p95_incidence1524m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1524m__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1524m__1 	upper=p95_incidence1524m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run; quit;
 
@@ -1242,11 +1209,11 @@ Title    height=1.5 justify=center "Incidence age 2534w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 label mean_incidence2534__0 = "Option 0 (median) ";
-/*label mean_incidence2534__1 = "Option 1  (median) ";*/
+label mean_incidence2534__1 = "Option 1  (median) ";
 series  x=cald y=mean_incidence2534w__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence2534w__0 	upper=p95_incidence2534w__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence2534w__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence2534w__1 	upper=p95_incidence2534w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence2534w__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence2534w__1 	upper=p95_incidence2534w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 ods html;
@@ -1255,11 +1222,11 @@ Title    height=1.5 justify=center "Incidence age 2534m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 label mean_incidence2534__0 = "Option 0 (median) ";
-/*label mean_incidence2534__1 = "Option 1  (median) ";*/
+label mean_incidence2534__1 = "Option 1  (median) ";
 series  x=cald y=mean_incidence2534m__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence2534m__0 	upper=p95_incidence2534m__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence2534m__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence2534m__1 	upper=p95_incidence2534m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence2534m__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence2534m__1 	upper=p95_incidence2534m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 ods html;
@@ -1268,11 +1235,11 @@ Title    height=1.5 justify=center "Incidence age 3544w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 label mean_incidence3544__0 = "Option 0 (median) ";
-/*label mean_incidence3544__1 = "Option 1  (median) ";*/
+label mean_incidence3544__1 = "Option 1  (median) ";
 series  x=cald y=mean_incidence3544w__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence3544w__0 	upper=p95_incidence3544w__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence3544w__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence3544w__1 	upper=p95_incidence3544w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence3544w__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence3544w__1 	upper=p95_incidence3544w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 ods html;
@@ -1281,11 +1248,11 @@ Title    height=1.5 justify=center "Incidence age 3544m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 label mean_incidence3544__0 = "Option 0 (median) ";
-/*label mean_incidence3544__1 = "Option 1  (median) ";*/
+label mean_incidence3544__1 = "Option 1  (median) ";
 series  x=cald y=mean_incidence3544m__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence3544m__0 	upper=p95_incidence3544m__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence3544m__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence3544m__1 	upper=p95_incidence3544m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence3544m__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence3544m__1 	upper=p95_incidence3544m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 ods html;
@@ -1294,11 +1261,11 @@ Title    height=1.5 justify=center "Incidence age 4554w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 label mean_incidence4554__0 = "Option 0 (median) ";
-/*label mean_incidence4554__1 = "Option 1  (median) ";*/
+label mean_incidence4554__1 = "Option 1  (median) ";
 series  x=cald y=mean_incidence4554w__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence4554w__0 	upper=p95_incidence4554w__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence4554w__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence4554w__1 	upper=p95_incidence4554w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence4554w__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence4554w__1 	upper=p95_incidence4554w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 ods html;
@@ -1307,11 +1274,11 @@ Title    height=1.5 justify=center "Incidence age 4554m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 label mean_incidence4554__0 = "Option 0 (median) ";
-/*label mean_incidence4554__1 = "Option 1  (median) ";*/
+label mean_incidence4554__1 = "Option 1  (median) ";
 series  x=cald y=mean_incidence4554m__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence4554m__0 	upper=p95_incidence4554m__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence4554m__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence4554m__1 	upper=p95_incidence4554m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence4554m__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence4554m__1 	upper=p95_incidence4554m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 ods html;
@@ -1320,11 +1287,11 @@ Title    height=1.5 justify=center "Incidence age 5564w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 label mean_incidence5564__0 = "Option 0 (median) ";
-/*label mean_incidence5564__1 = "Option 1  (median) ";*/
+label mean_incidence5564__1 = "Option 1  (median) ";
 series  x=cald y=mean_incidence5564w__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence5564w__0 	upper=p95_incidence5564w__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence5564w__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence5564w__1 	upper=p95_incidence5564w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence5564w__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence5564w__1 	upper=p95_incidence5564w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 ods html;
@@ -1333,11 +1300,11 @@ Title    height=1.5 justify=center "Incidence age 5564m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
 label mean_incidence5564__0 = "Option 0 (median) ";
-/*label mean_incidence5564__1 = "Option 1  (median) ";*/
+label mean_incidence5564__1 = "Option 1  (median) ";
 series  x=cald y=mean_incidence5564m__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence5564m__0 	upper=p95_incidence5564m__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_incidence5564m__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_incidence5564m__1 	upper=p95_incidence5564m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence5564m__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence5564m__1 	upper=p95_incidence5564m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 
@@ -1348,12 +1315,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_inf_vlsupp_0 = "Option 0 (median) ";
-/*label mean_p_inf_vlsupp_1 = "Option 1  (median) ";*/
+label mean_p_inf_vlsupp_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_inf_vlsupp_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_vlsupp_0 	upper=p95_p_inf_vlsupp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_inf_vlsupp_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_inf_vlsupp_1 	upper=p95_p_inf_vlsupp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_inf_vlsupp_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_inf_vlsupp_1 	upper=p95_p_inf_vlsupp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1366,12 +1333,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_inf_ep_0 = "Option 0 (median) ";
-/*label mean_p_inf_ep_1 = "Option 1  (median) ";*/
+label mean_p_inf_ep_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_inf_ep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_ep_0 	upper=p95_p_inf_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_inf_ep_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_inf_ep_1 	upper=p95_p_inf_ep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_inf_ep_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_inf_ep_1 	upper=p95_p_inf_ep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1384,12 +1351,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_inf_newp_0 = "Option 0 (median) ";
-/*label mean_p_inf_newp_1 = "Option 1  (median) ";*/
+label mean_p_inf_newp_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_inf_newp_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_newp_0 	upper=p95_p_inf_newp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_inf_newp_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_inf_newp_1 	upper=p95_p_inf_newp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_inf_newp_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_inf_newp_1 	upper=p95_p_inf_newp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1402,12 +1369,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_inf_primary_0 = "Option 0 (median) ";
-/*label mean_p_inf_primary_1 = "Option 1  (median) ";*/
+label mean_p_inf_primary_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_inf_primary_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_primary_0 	upper=p95_p_inf_primary_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_inf_primary_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_inf_primary_1 	upper=p95_p_inf_primary_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_inf_primary_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_inf_primary_1 	upper=p95_p_inf_primary_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1420,12 +1387,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_inf_naive_0 = "Option 0 (median) ";
-/*label mean_p_inf_naive_1 = "Option 1  (median) ";*/
+label mean_p_inf_naive_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_inf_naive_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_naive_0 	upper=p95_p_inf_naive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_inf_naive_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_inf_naive_1 	upper=p95_p_inf_naive_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_inf_naive_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_inf_naive_1 	upper=p95_p_inf_naive_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1438,12 +1405,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_inf_diag_0 = "Option 0 (median) ";
-/*label mean_p_inf_diag_1 = "Option 1  (median) ";*/
+label mean_p_inf_diag_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_inf_diag_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_diag_0 	upper=p95_p_inf_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_inf_diag_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_inf_diag_1 	upper=p95_p_inf_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_inf_diag_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_inf_diag_1 	upper=p95_p_inf_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1455,12 +1422,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 
 label mean_mtct_prop_0 = "Option 0 (median) ";
-/*label mean_mtct_prop_1 = "Option 1  (median) ";*/
+label mean_mtct_prop_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_mtct_prop_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_mtct_prop_0 	upper=p95_mtct_prop_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_mtct_prop_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_mtct_prop_1 	upper=p95_mtct_prop_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_mtct_prop_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_mtct_prop_1 	upper=p95_mtct_prop_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1471,12 +1438,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_diag_m_0 = "Option 0 (median) ";
-/*label mean_p_diag_m_1 = "Option 1  (median) ";*/
+label mean_p_diag_m_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_diag_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_diag_m_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_diag_m_1 	upper=p95_p_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_diag_m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diag_m_1 	upper=p95_p_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1486,12 +1453,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_diag_0 = "Option 0 (median) ";
-/*label mean_p_diag_1 = "Option 1  (median) ";*/
+label mean_p_diag_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_diag_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_0 	upper=p95_p_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_diag_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_diag_1 	upper=p95_p_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_diag_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diag_1 	upper=p95_p_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1502,12 +1469,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_diag_w_0 = "Option 0 (median) ";
-/*label mean_p_diag_w_1 = "Option 1  (median) ";*/
+label mean_p_diag_w_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_diag_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_diag_w_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_diag_w_1 	upper=p95_p_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_diag_w_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diag_w_1 	upper=p95_p_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1517,12 +1484,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.01) valueattrs=(size=10);
 
 label mean_p_ai_no_arv_c_nnm_0 = "Option 0 (median) ";
-/*label mean_p_ai_no_arv_c_nnm_1 = "Option 1  (median) ";*/
+label mean_p_ai_no_arv_c_nnm_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_ai_no_arv_c_nnm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_ai_no_arv_c_nnm_0 	upper=p95_p_ai_no_arv_c_nnm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_ai_no_arv_c_nnm_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_ai_no_arv_c_nnm_1 	upper=p95_p_ai_no_arv_c_nnm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_ai_no_arv_c_nnm_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_ai_no_arv_c_nnm_1 	upper=p95_p_ai_no_arv_c_nnm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1532,12 +1499,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 
 label mean_p_artexp_diag_0 = "Option 0 (median) ";
-/*label mean_p_artexp_diag_1 = "Option 1  (median) ";*/
+label mean_p_artexp_diag_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_artexp_diag_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_artexp_diag_0 	upper=p95_p_artexp_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_artexp_diag_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_artexp_diag_1 	upper=p95_p_artexp_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_artexp_diag_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_artexp_diag_1 	upper=p95_p_artexp_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1548,12 +1515,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_onart_diag_m_0 = "Option 0 (median) ";
-/*label mean_p_onart_diag_m_1 = "Option 1  (median) ";*/
+label mean_p_onart_diag_m_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_onart_diag_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_diag_m_0 	upper=p95_p_onart_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_onart_diag_m_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_onart_diag_m_1 	upper=p95_p_onart_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_onart_diag_m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_diag_m_1 	upper=p95_p_onart_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1563,12 +1530,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_onart_diag_w_0 = "Option 0 (median) ";
-/*label mean_p_onart_diag_w_1 = "Option 1  (median) ";*/
+label mean_p_onart_diag_w_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_onart_diag_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_diag_w_0 	upper=p95_p_onart_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_onart_diag_w_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_onart_diag_w_1 	upper=p95_p_onart_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_onart_diag_w_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_diag_w_1 	upper=p95_p_onart_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1590,12 +1557,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by  50000) valueattrs=(size=10);
 
 label mean_n_diagnosed_0 = "Option 0 (median) ";
-/*label mean_n_diagnosed_1 = "Option 1  (median) ";*/
+label mean_n_diagnosed_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_n_diagnosed_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_diagnosed_0 	upper=p95_n_diagnosed_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_n_diagnosed_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_n_diagnosed_1 	upper=p95_n_diagnosed_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_diagnosed_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_diagnosed_1 	upper=p95_n_diagnosed_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 series  x=cald y=n_diag_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
 label n_diag_obs_mlw = "Observed data";
@@ -1610,12 +1577,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1500000 by 100000) valueattrs=(size=10);
 
 label mean_n_onart_0 = "Option 0 (median) ";
-/*label mean_n_onart_1 = "Option 1  (median) ";*/
+label mean_n_onart_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_n_onart_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_onart_0 	upper=p95_n_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_n_onart_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_n_onart_1 	upper=p95_n_onart_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_onart_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_onart_1 	upper=p95_n_onart_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 series  x=cald y=n_onart_obs_mlw/	lineattrs = (color=orange thickness = 2);
 label n_onart_obs_mlw = "Observed data";
@@ -1628,12 +1595,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_efa_0 = "Option 0 (median) ";
-/*label mean_p_efa_1 = "Option 1  (median) ";*/
+label mean_p_efa_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_efa_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_efa_0 	upper=p95_p_efa_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_efa_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_efa_1 	upper=p95_p_efa_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_efa_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_efa_1 	upper=p95_p_efa_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1643,12 +1610,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_taz_0 = "Option 0 (median) ";
-/*label mean_p_taz_1 = "Option 1  (median) ";*/
+label mean_p_taz_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_taz_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_taz_0 	upper=p95_p_taz_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_taz_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_taz_1 	upper=p95_p_taz_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_taz_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_taz_1 	upper=p95_p_taz_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1658,12 +1625,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_ten_0 = "Option 0 (median) ";
-/*label mean_p_ten_1 = "Option 1  (median) ";*/
+label mean_p_ten_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_ten_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_ten_0 	upper=p95_p_ten_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_ten_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_ten_1 	upper=p95_p_ten_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_ten_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_ten_1 	upper=p95_p_ten_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1673,12 +1640,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_zdv_0 = "Option 0 (median) ";
-/*label mean_p_zdv_1 = "Option 1  (median) ";*/
+label mean_p_zdv_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_zdv_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_zdv_0 	upper=p95_p_zdv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_zdv_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_zdv_1 	upper=p95_p_zdv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_zdv_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_zdv_1 	upper=p95_p_zdv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1688,12 +1655,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_dol_0 = "Option 0 (median) ";
-/*label mean_p_dol_1 = "Option 1  (median) ";*/
+label mean_p_dol_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_dol_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_dol_0 	upper=p95_p_dol_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_dol_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_dol_1 	upper=p95_p_dol_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_dol_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_dol_1 	upper=p95_p_dol_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1703,12 +1670,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_3TC_0 = "Option 0 (median) ";
-/*label mean_p_3TC_1 = "Option 1  (median) ";*/
+label mean_p_3TC_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_3TC_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_3TC_0 	upper=p95_p_3TC_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_3TC_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_3TC_1 	upper=p95_p_3TC_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_3TC_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_3TC_1 	upper=p95_p_3TC_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1718,12 +1685,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_lpr_0 = "Option 0 (median) ";
-/*label mean_p_lpr_1 = "Option 1  (median) ";*/
+label mean_p_lpr_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_lpr_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_lpr_0 	upper=p95_p_lpr_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_lpr_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_lpr_1 	upper=p95_p_lpr_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_lpr_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_lpr_1 	upper=p95_p_lpr_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1733,12 +1700,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_nev_0 = "Option 0 (median) ";
-/*label mean_p_nev_1 = "Option 1  (median) ";*/
+label mean_p_nev_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_nev_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_nev_0 	upper=p95_p_nev_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_nev_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_nev_1 	upper=p95_p_nev_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_nev_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_nev_1 	upper=p95_p_nev_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1749,12 +1716,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_onart_vl1000__0 = "Option 0 (median) ";
-/*label mean_p_onart_vl1000__1 = "Option 1  (median) ";*/
+label mean_p_onart_vl1000__1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_onart_vl1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_onart_vl1000__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_onart_vl1000__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 scatter x=cald y=p_onart_vl1000_obs_mlw / markerattrs = (symbol=circle color=orange size = 10) ;
 label p_onart_vl1000_obs_mlw = "Observed data";
@@ -1767,12 +1734,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_vl1000__0 = "Option 0 (median) ";
-/*label mean_p_vl1000__1 = "Option 1  (median) ";*/
+label mean_p_vl1000__1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_vl1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_vl1000__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_vl1000__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1782,12 +1749,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_vg1000__0 = "Option 0 (median) ";
-/*label mean_p_vg1000__1 = "Option 1  (median) ";*/
+label mean_p_vg1000__1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_vg1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_vg1000__0 	upper=p95_p_vg1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_vg1000__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_vg1000__1 	upper=p95_p_vg1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_vg1000__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_vg1000__1 	upper=p95_p_vg1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1797,12 +1764,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_onart_m_0 = "Option 0 (median) ";
-/*label mean_p_onart_m_1 = "Option 1  (median) ";*/
+label mean_p_onart_m_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_onart_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_m_0 	upper=p95_p_onart_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_onart_m_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_onart_m_1 	upper=p95_p_onart_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_onart_m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_m_1 	upper=p95_p_onart_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1812,12 +1779,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_onart_w_0 = "Option 0 (median) ";
-/*label mean_p_onart_w_1 = "Option 1  (median) ";*/
+label mean_p_onart_w_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_onart_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_w_0 	upper=p95_p_onart_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_onart_w_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_onart_w_1 	upper=p95_p_onart_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_onart_w_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_w_1 	upper=p95_p_onart_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1828,12 +1795,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_onart_vl1000_m_0 = "Option 0 (median) ";
-/*label mean_p_onart_vl1000_m_1 = "Option 1  (median) ";*/
+label mean_p_onart_vl1000_m_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_onart_vl1000_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000_m_0 	upper=p95_p_onart_vl1000_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_onart_vl1000_m_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_onart_vl1000_m_1 	upper=p95_p_onart_vl1000_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_onart_vl1000_m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_m_1 	upper=p95_p_onart_vl1000_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1843,12 +1810,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_onart_vl1000_w_0 = "Option 0 (median) ";
-/*label mean_p_onart_vl1000_w_1 = "Option 1  (median) ";*/
+label mean_p_onart_vl1000_w_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_onart_vl1000_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000_w_0 	upper=p95_p_onart_vl1000_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_p_onart_vl1000_w_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_p_onart_vl1000_w_1 	upper=p95_p_onart_vl1000_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_onart_vl1000_w_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_w_1 	upper=p95_p_onart_vl1000_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1859,12 +1826,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
 
 label mean_prevalence_vg1000__0 = "Option 0 (median) ";
-/*label mean_prevalence_vg1000__1 = "Option 1  (median) ";*/
+label mean_prevalence_vg1000__1 = "Option 1  (median) ";
 
 series  x=cald y=mean_prevalence_vg1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prevalence_vg1000__0 	upper=p95_prevalence_vg1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_prevalence_vg1000__1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_prevalence_vg1000__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1876,12 +1843,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 
 label mean_n_death_2059_w_0 = "Option 0 (median) ";
-/*label mean_n_death_2059_w_1 = "Option 1  (median) ";*/
+label mean_n_death_2059_w_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_n_death_2059_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_death_2059_w_0 	upper=p95_n_death_2059_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_n_death_2059_w_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_n_death_2059_w_1 	upper=p95_n_death_2059_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_death_2059_w_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_death_2059_w_1 	upper=p95_n_death_2059_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1893,12 +1860,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 
 label mean_n_death_2059_m_0 = "Option 0 (median) ";
-/*label mean_n_death_2059_m_1 = "Option 1  (median) ";*/
+label mean_n_death_2059_m_1 = "Option 1  (median) ";
 
 series  x=cald y=mean_n_death_2059_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_death_2059_m_0 	upper=p95_n_death_2059_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-/*series  x=cald y=mean_n_death_2059_m_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_n_death_2059_m_1 	upper=p95_n_death_2059_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_death_2059_m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_death_2059_m_1 	upper=p95_n_death_2059_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -2044,11 +2011,11 @@ series  x=cald y=mean_logw55r_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_logw55r_0 	upper=p95_logw55r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
 
-/*title;*/
+title;
 
-/*ods rtf close;*/
-/** ods listing;*/
-/*run;*/
+ods rtf close;
+* ods listing;
+run;
 
 
 
@@ -2122,8 +2089,8 @@ p95_prevalence = p95_prevalence6064m_0 ;prev_obs_mlw = 0.106 ;
 data all; set age15w age20w age25w age30w age35w age40w age45w age50w age55w age60w
  age15m age20m age25m age30m age35m age40m age45m age50m age55m age60m
 ; 
-/*prev_95lo_obs_sa = prev_obs_sa - 1.96*prev_se_obs_sa;*/
-/*prev_95hi_obs_sa = prev_obs_sa + 1.96*prev_se_obs_sa;*/
+prev_95lo_obs_sa = prev_obs_sa - 1.96*prev_se_obs_sa;
+prev_95hi_obs_sa = prev_obs_sa + 1.96*prev_se_obs_sa;
 
 drop
 p5_prevalence1519w_0 	p5_prevalence1519m_0 p5_prevalence2024w_0 	p5_prevalence2024m_0 p5_prevalence2529w_0 	p5_prevalence2529m_0
@@ -2146,9 +2113,9 @@ xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 55 by 5)	 	 v
 yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 series  x=ageg y=mean_prevalence/	lineattrs = (color=blue thickness = 2);
 band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-/*series x=ageg y=prev_obs_mlw / lineattrs = (color=black thickness = 2);*/
+series x=ageg y=prev_obs_mlw / lineattrs = (color=black thickness = 2);
 scatter x=ageg y=prev_obs_mlw / markerattrs = (symbol=circle color=orange size = 10) ;
-/*	yerrorlower=prev_95lo_obs_sa yerrorupper=prev_95hi_obs_sa ERRORBARATTRS = (color = orange);*/
+	yerrorlower=prev_95lo_obs_sa yerrorupper=prev_95hi_obs_sa ERRORBARATTRS = (color = orange);
 where sex=2;
 label prev_obs_mlw = "Observed data";
 
@@ -2160,9 +2127,9 @@ xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 55 by 5)	 	 v
 yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 series  x=ageg y=mean_prevalence/	lineattrs = (color=blue thickness = 2);
 band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-/*series x=ageg y=prev_obs_mlw / lineattrs = (color=black thickness = 2);*/
+series x=ageg y=prev_obs_mlw / lineattrs = (color=black thickness = 2);
 scatter x=ageg y=prev_obs_mlw / markerattrs = (symbol=circle color=orange size = 10) ;
-/*	yerrorlower=prev_95lo_obs_sa yerrorupper=prev_95hi_obs_sa ERRORBARATTRS = (color = orange);*/
+	yerrorlower=prev_95lo_obs_sa yerrorupper=prev_95hi_obs_sa ERRORBARATTRS = (color = orange);
 where sex=1;
 label prev_obs_mlw = "Observed data";
 
@@ -2170,7 +2137,7 @@ run;
 
 quit;
 
-/*ods html close;*/
+ods html close;
 
 title;
 
