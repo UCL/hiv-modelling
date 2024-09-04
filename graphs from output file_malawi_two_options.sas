@@ -1,4 +1,6 @@
 
+
+
 ***Program to produce graphs using averages across runs
 * Based on MIHPSA South Africa version (JAS Oct/Nov23with MW observational data copied from "graphs from output file_mlw7" in malawi branch;
 
@@ -14,12 +16,14 @@ proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome mode
 data c;
   set a.long_mlw_a;
 
-if option in (1 2 3 4 5 6 7 8 9 10 11 12) then delete;
 
-if option 
+
+if option in (1 2 3 4 5 6 7 8 9 10 11 12) then delete;
 
   if option = 99 then option = 1;
 * if option = 0 then option = 99;
+
+ 
 
 p_onart_vl1000_all = .;
 
@@ -91,17 +95,21 @@ n_new_inf1549_ = n_new_inf1549;
 n_everpregn_w1524_ = n_everpregn_w1524;
 n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 
-
-
 * placeholder until self testing retrospectively added;
 n_tested_self_test = 0;
+
+
+keep cald run option p_newp_ge1_ ; 
+
+proc print; run;
+
 
 
 
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 53  ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 120  ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2072.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
@@ -114,16 +122,18 @@ data option_0;
 set c;
 if option ne 0 then delete;
 
-
 %let var =  
 
+p_newp_ge1_
+
+/*
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive_55plm n_alive_55plw n_alive0_
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
-n_sw_1564_	prev_sti_sw /*n_sw_inprog_ly  n_sw_inprog_ever*/ n_sw_program_visit
+n_sw_1564_	prev_sti_sw  n_sw_program_visit
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd40200_ n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
-n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_ p_newp_ge1_ p_newp_ge5_ p_1524_newp_ge1_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
+n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_  p_newp_ge5_ p_1524_newp_ge1_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
 p_mcirc_1549m	p_mcirc_1049m	n_new_vmmc	n_new_vmmc1549m 	n_new_vmmc1049m  n_new_vmmc1014m	n_new_birth_circ n_new_mcirc n_new_mcirc_1549m 	n_new_mcirc_1049m
 p_vmmc_1549m	p_vmmc_1049m
@@ -170,7 +180,13 @@ p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onar
 p_onart_vl1000_w				p_onart_vl1000_m  n_onart_vl1000_m n_onart_vl1000_w p_onart_vl1000_w1524evpr logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart 		n_onart_m	n_onart_w n_onart_1524_ n_art_start_y
 n_total_yllag 	n_dyll_GBD  
+
+*/
+
 ;
+
+
+
 run;
 
 
@@ -228,16 +244,18 @@ data option_1;
 set c;
 if option ne 1 then delete;
 
-
 %let var =  
 
+p_newp_ge1_
+
+/*
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive_55plm n_alive_55plw n_alive0_
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
-n_sw_1564_	prev_sti_sw /*n_sw_inprog_ly  n_sw_inprog_ever*/ n_sw_program_visit
+n_sw_1564_	prev_sti_sw  n_sw_program_visit
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd40200_ n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
-n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_ p_newp_ge1_ p_newp_ge5_ p_1524_newp_ge1_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
+n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_  p_newp_ge5_ p_1524_newp_ge1_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
 p_mcirc_1549m	p_mcirc_1049m	n_new_vmmc	n_new_vmmc1549m 	n_new_vmmc1049m  n_new_vmmc1014m	n_new_birth_circ n_new_mcirc n_new_mcirc_1549m 	n_new_mcirc_1049m
 p_vmmc_1549m	p_vmmc_1049m
@@ -284,9 +302,12 @@ p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onar
 p_onart_vl1000_w				p_onart_vl1000_m  n_onart_vl1000_m n_onart_vl1000_w p_onart_vl1000_w1524evpr logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart 		n_onart_m	n_onart_w n_onart_1524_ n_art_start_y
 n_total_yllag 	n_dyll_GBD  
-;
-run;
 
+*/
+
+;
+
+run;
 
 
 /*%let var = s_alive n_alive_m;*/
@@ -328,7 +349,7 @@ run;
 %mend;
 
 
-%option_(0);
+%option_(1);
 run;
 
 
@@ -369,7 +390,11 @@ run;
 
 data d_a; * this is number of variables in %let var = above ;
 merge 
-g0_1   g0_2   g0_3   g0_4   g0_5   g0_6   g0_7   g0_8   g0_9   g0_10  g0_11  g0_12  g0_13  g0_14  g0_15  g0_16  g0_17  g0_18  g0_19  g0_20  
+g0_1  
+
+/*
+
+g0_2   g0_3   g0_4   g0_5   g0_6   g0_7   g0_8   g0_9   g0_10  g0_11  g0_12  g0_13  g0_14  g0_15  g0_16  g0_17  g0_18  g0_19  g0_20  
 g0_21  g0_22  g0_23  g0_24  g0_25  g0_26  g0_27  g0_28  g0_29  g0_30  g0_31  g0_32  g0_33  g0_34  g0_35  g0_36  g0_37  g0_38  g0_39  g0_40  
 g0_41  g0_42  g0_43  g0_44  g0_45  g0_46  g0_47  g0_48  g0_49  g0_50  g0_51  g0_52  g0_53  g0_54  g0_55  g0_56  g0_57  g0_58  g0_59  g0_60 
 g0_61  g0_62  g0_63  g0_64  g0_65  g0_66  g0_67  g0_68  g0_69  g0_70  g0_71  g0_72  g0_73  g0_74  g0_75  g0_76  g0_77  g0_78  g0_79  g0_80  
@@ -384,7 +409,14 @@ g0_221 g0_222 g0_223 g0_224 g0_225 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_
 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 g0_251 g0_252 g0_253 g0_254 g0_255 g0_256 g0_257	g0_258	g0_259	g0_260
 g0_261 g0_262 g0_263 g0_264 g0_265 g0_266
 
-h0_1   h0_2   h0_3   h0_4   h0_5   h0_6   h0_7   h0_8   h0_9   h0_10  h0_11  h0_12  h0_13  h0_14  h0_15  h0_16  h0_17  h0_18  h0_19  h0_20  
+*/
+
+h0_1   
+
+/*
+
+
+h0_2   h0_3   h0_4   h0_5   h0_6   h0_7   h0_8   h0_9   h0_10  h0_11  h0_12  h0_13  h0_14  h0_15  h0_16  h0_17  h0_18  h0_19  h0_20  
 h0_21  h0_22  h0_23  h0_24  h0_25  h0_26  h0_27  h0_28  h0_29  h0_30  h0_31  h0_32  h0_33  h0_34  h0_35  h0_36  h0_37  h0_38  h0_39  h0_40  
 h0_41  h0_42  h0_43  h0_44  h0_45  h0_46  h0_47  h0_48  h0_49  h0_50  h0_51  h0_52  h0_53  h0_54  h0_55  h0_56  h0_57  h0_58  h0_59  h0_60 
 h0_61  h0_62  h0_63  h0_64  h0_65  h0_66  h0_67  h0_68  h0_69  h0_70  h0_71  h0_72  h0_73  h0_74  h0_75  h0_76  h0_77  h0_78  h0_79  h0_80  
@@ -398,6 +430,9 @@ h0_201 h0_202 h0_203 h0_204 h0_205 h0_206 h0_207 h0_208 h0_209 h0_210 h0_211 h0_
 h0_221 h0_222 h0_223 h0_224 h0_225 h0_226 h0_227 h0_228 h0_229 h0_230 h0_231 h0_232 h0_233 h0_234 h0_235 h0_236 h0_237 h0_238 h0_239 h0_240 
 h0_241 h0_242 h0_243 h0_244 h0_245 h0_246 h0_247 h0_248 h0_249 h0_250 h0_251 h0_252 h0_253 h0_254 h0_255 h0_256 h0_257	h0_258	h0_259	h0_260
 h0_261 h0_262 h0_263 h0_264 h0_265 h0_266
+
+*/
+
 ;
 by cald;run;
 
@@ -703,6 +738,14 @@ series  x=cald y=mean_p_newp_ge1__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_newp_ge1__1 	upper=p95_p_newp_ge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
+
+
+
+
+
+
+
+
 
 
 

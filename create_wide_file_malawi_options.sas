@@ -6,11 +6,14 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_a_out\";
 
+/*
 
 data g ; set a.out: ;
 
-
 data a.g;   set a.out:;run;
+
+*/
+
 
 /* show the contents of the input SAS file */
 proc contents data=a.g;run;
