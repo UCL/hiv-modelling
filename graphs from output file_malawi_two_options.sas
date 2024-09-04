@@ -6,6 +6,8 @@
 
 * libname a "C:\Users\rmjlja9\OneDrive - University College London\MIHPSA Malawi\HIV Synthesis outputs\MIHPSA Phase II\mw_mihpsa_O99_29thApr24";
 
+ods html close;
+
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_a_out\";
 
 
@@ -99,13 +101,6 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 n_tested_self_test = 0;
 
 
-keep cald run option p_newp_ge1_ ; 
-
-proc print; run;
-
-
-
-
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
@@ -114,7 +109,7 @@ proc means max data=c;var count_csim     ;run; ***number of runs - this is manua
 run;
 proc sort;by cald option ;run;
 
-
+proc print; run;
 
 
 ***One macro for option 99. Gives medians ranges etc by option;
@@ -124,9 +119,11 @@ if option ne 0 then delete;
 
 %let var =  
 
-p_newp_ge1_
+n_tested
+
 
 /*
+p_newp_ge1_
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive_55plm n_alive_55plw n_alive0_
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
 n_sw_1564_	prev_sti_sw  n_sw_program_visit
@@ -158,7 +155,7 @@ incidence1549_ incidence1549m incidence1549w incidence1564_
 incidence1524w incidence1524m incidence2534w incidence2534m incidence3544w incidence3544m incidence4554w incidence4554m 
 incidence5564w incidence5564m incidence_sw 
 n_new_inf1549_ n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w n_new_inf55plm n_new_inf55plw
-n_tested n_tested_m n_tested_w n_tested_sw n_tested_anc 
+ n_tested_m n_tested_w n_tested_sw n_tested_anc 
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_tested1st_anc n_tested1st_labdel n_tested1st_pd n_tested_anc_prevdiag
 n_sbcc_visit_1524m 	n_sbcc_visit_1524w n_sbcc_visit_1524_	n_sbcc_visit_2564_ n_sbcc_visit_1564_
@@ -184,10 +181,6 @@ n_total_yllag 	n_dyll_GBD
 */
 
 ;
-
-
-
-run;
 
 
 /*%let var = s_alive n_alive_m;*/
@@ -234,11 +227,6 @@ run;
 
 
 
-
-
-
-
-
 ***One macro for option 1 . Gives medians ranges etc by option;
 data option_1;
 set c;
@@ -246,9 +234,11 @@ if option ne 1 then delete;
 
 %let var =  
 
-p_newp_ge1_
+n_tested
 
 /*
+
+p_newp_ge1_
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive_55plm n_alive_55plw n_alive0_
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
 n_sw_1564_	prev_sti_sw  n_sw_program_visit
@@ -280,7 +270,7 @@ incidence1549_ incidence1549m incidence1549w incidence1564_
 incidence1524w incidence1524m incidence2534w incidence2534m incidence3544w incidence3544m incidence4554w incidence4554m 
 incidence5564w incidence5564m incidence_sw 
 n_new_inf1549_ n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w n_new_inf55plm n_new_inf55plw
-n_tested n_tested_m n_tested_w n_tested_sw n_tested_anc 
+ n_tested_m n_tested_w n_tested_sw n_tested_anc 
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_tested1st_anc n_tested1st_labdel n_tested1st_pd n_tested_anc_prevdiag
 n_sbcc_visit_1524m 	n_sbcc_visit_1524w n_sbcc_visit_1524_	n_sbcc_visit_2564_ n_sbcc_visit_1564_
@@ -355,9 +345,6 @@ run;
 
 
 
-
-
-
 /*
 
 * Import MW population size projection from spreadsheet;
@@ -411,25 +398,25 @@ g0_261 g0_262 g0_263 g0_264 g0_265 g0_266
 
 */
 
-h0_1   
+h1_1   
 
 /*
 
 
-h0_2   h0_3   h0_4   h0_5   h0_6   h0_7   h0_8   h0_9   h0_10  h0_11  h0_12  h0_13  h0_14  h0_15  h0_16  h0_17  h0_18  h0_19  h0_20  
-h0_21  h0_22  h0_23  h0_24  h0_25  h0_26  h0_27  h0_28  h0_29  h0_30  h0_31  h0_32  h0_33  h0_34  h0_35  h0_36  h0_37  h0_38  h0_39  h0_40  
-h0_41  h0_42  h0_43  h0_44  h0_45  h0_46  h0_47  h0_48  h0_49  h0_50  h0_51  h0_52  h0_53  h0_54  h0_55  h0_56  h0_57  h0_58  h0_59  h0_60 
-h0_61  h0_62  h0_63  h0_64  h0_65  h0_66  h0_67  h0_68  h0_69  h0_70  h0_71  h0_72  h0_73  h0_74  h0_75  h0_76  h0_77  h0_78  h0_79  h0_80  
-h0_81  h0_82  h0_83  h0_84  h0_85  h0_86  h0_87  h0_88  h0_89  h0_90  h0_91  h0_92  h0_93  h0_94  h0_95  h0_96  h0_97  h0_98  h0_99 h0_100 
-h0_101 h0_102 h0_103 h0_104 h0_105 h0_106 h0_107 h0_108 h0_109 h0_110 h0_111 h0_112 h0_113 h0_114 h0_115 h0_116 h0_117 h0_118 h0_119 h0_120 
-h0_121 h0_122 h0_123 h0_124 h0_125 h0_126 h0_127 h0_128 h0_129 h0_130 h0_131 h0_132 h0_133 h0_134 h0_135 h0_136 h0_137 h0_138 h0_139 h0_140 
-h0_141 h0_142 h0_143 h0_144 h0_145 h0_146 h0_147 h0_148 h0_149 h0_150 h0_151 h0_152 h0_153 h0_154 h0_155 h0_156 h0_157 h0_158 h0_159 h0_160 
-h0_161 h0_162 h0_163 h0_164 h0_165 h0_166 h0_167 h0_168 h0_169 h0_170 h0_171 h0_172 h0_173 h0_174 h0_175 h0_176 h0_177 h0_178 h0_179 h0_180 
-h0_181 h0_182 h0_183 h0_184 h0_185 h0_186 h0_187 h0_188 h0_189 h0_190 h0_191 h0_192 h0_193 h0_194 h0_195 h0_196 h0_197 h0_198 h0_10 h0_200 
-h0_201 h0_202 h0_203 h0_204 h0_205 h0_206 h0_207 h0_208 h0_209 h0_210 h0_211 h0_212 h0_213 h0_214 h0_215 h0_216 h0_217 h0_218 h0_219 h0_220 
-h0_221 h0_222 h0_223 h0_224 h0_225 h0_226 h0_227 h0_228 h0_229 h0_230 h0_231 h0_232 h0_233 h0_234 h0_235 h0_236 h0_237 h0_238 h0_239 h0_240 
-h0_241 h0_242 h0_243 h0_244 h0_245 h0_246 h0_247 h0_248 h0_249 h0_250 h0_251 h0_252 h0_253 h0_254 h0_255 h0_256 h0_257	h0_258	h0_259	h0_260
-h0_261 h0_262 h0_263 h0_264 h0_265 h0_266
+h1_2   h1_3   h1_4   h1_5   h1_6   h1_7   h1_8   h1_9   h1_10  h1_11  h1_12  h1_13  h1_14  h1_15  h1_16  h1_17  h1_18  h1_19  h1_20  
+h1_21  h1_22  h1_23  h1_24  h1_25  h1_26  h1_27  h1_28  h1_29  h1_30  h1_31  h1_32  h1_33  h1_34  h1_35  h1_36  h1_37  h1_38  h1_39  h1_40  
+h1_41  h1_42  h1_43  h1_44  h1_45  h1_46  h1_47  h1_48  h1_49  h1_50  h1_51  h1_52  h1_53  h1_54  h1_55  h1_56  h1_57  h1_58  h1_59  h1_60 
+h1_61  h1_62  h1_63  h1_64  h1_65  h1_66  h1_67  h1_68  h1_69  h1_70  h1_71  h1_72  h1_73  h1_74  h1_75  h1_76  h1_77  h1_78  h1_79  h1_80  
+h1_81  h1_82  h1_83  h1_84  h1_85  h1_86  h1_87  h1_88  h1_89  h1_90  h1_91  h1_92  h1_93  h1_94  h1_95  h1_96  h1_97  h1_98  h1_99 h1_100 
+h1_101 h1_102 h1_103 h1_104 h1_105 h1_106 h1_107 h1_108 h1_109 h1_110 h1_111 h1_112 h1_113 h1_114 h1_115 h1_116 h1_117 h1_118 h1_119 h1_120 
+h1_121 h1_122 h1_123 h1_124 h1_125 h1_126 h1_127 h1_128 h1_129 h1_130 h1_131 h1_132 h1_133 h1_134 h1_135 h1_136 h1_137 h1_138 h1_139 h1_140 
+h1_141 h1_142 h1_143 h1_144 h1_145 h1_146 h1_147 h1_148 h1_149 h1_150 h1_151 h1_152 h1_153 h1_154 h1_155 h1_156 h1_157 h1_158 h1_159 h1_160 
+h1_161 h1_162 h1_163 h1_164 h1_165 h1_166 h1_167 h1_168 h1_169 h1_170 h1_171 h1_172 h1_173 h1_174 h1_175 h1_176 h1_177 h1_178 h1_179 h1_180 
+h1_181 h1_182 h1_183 h1_184 h1_185 h1_186 h1_187 h1_188 h1_189 h1_190 h1_191 h1_192 h1_193 h1_194 h1_195 h1_196 h1_197 h1_198 h1_10 h1_200 
+h1_201 h1_202 h1_203 h1_204 h1_205 h1_206 h1_207 h1_208 h1_209 h1_210 h1_211 h1_212 h1_213 h1_214 h1_215 h1_216 h1_217 h1_218 h1_219 h1_220 
+h1_221 h1_222 h1_223 h1_224 h1_225 h1_226 h1_227 h1_228 h1_229 h1_230 h1_231 h1_232 h1_233 h1_234 h1_235 h1_236 h1_237 h1_238 h1_239 h1_240 
+h1_241 h1_242 h1_243 h1_244 h1_245 h1_246 h1_247 h1_248 h1_249 h1_250 h1_251 h1_252 h1_253 h1_254 h1_255 h1_256 h1_257	h1_258	h1_259	h1_260
+h1_261 h1_262 h1_263 h1_264 h1_265 h1_266
 
 */
 
@@ -721,6 +708,66 @@ proc print data=d; run;
 proc contents data=d; run;
 
 
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_tested";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by 1000000) valueattrs=(size=10);
+label mean_n_tested_0 = "Option 0 (median) ";
+/*label mean_n_tested_1 = "Option 1 (median) ";*/
+
+series  x=cald y=mean_n_tested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_n_tested_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=n_tests_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
+
+label n_tests_obs_mlw = "Observed data";
+
+run;quit;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ods html;
@@ -856,24 +903,7 @@ band    x=cald lower=p5_log_gender_r_newp_0 	upper=p95_log_gender_r_newp_0  / tr
 run;quit;
 
 
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "n_tested";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by 1000000) valueattrs=(size=10);
-label mean_n_tested_0 = "Option 0 (median) ";
-/*label mean_n_tested_1 = "Option 1 (median) ";*/
 
-series  x=cald y=mean_n_tested_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-/*series  x=cald y=mean_n_tested_1/	lineattrs = (color=red thickness = 2);*/
-/*band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
-
-series  x=cald y=n_tests_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
-label n_tests_obs_mlw = "Observed data";
-
-run;quit;
 
 
 proc sgplot data=d; 
