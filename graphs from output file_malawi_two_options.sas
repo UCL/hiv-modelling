@@ -119,10 +119,11 @@ if option ne 0 then delete;
 
 %let var =  
 
-n_tested
+
 
 
 /*
+n_tested
 p_newp_ge1_
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive_55plm n_alive_55plw n_alive0_
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
@@ -234,10 +235,10 @@ if option ne 1 then delete;
 
 %let var =  
 
-n_tested
+
 
 /*
-
+n_tested
 p_newp_ge1_
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive_55plm n_alive_55plw n_alive0_
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
