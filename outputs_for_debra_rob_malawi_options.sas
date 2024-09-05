@@ -168,7 +168,7 @@ p_onart_vl1000_w				p_onart_vl1000_m  n_onart_vl1000_m n_onart_vl1000_w p_onart_
 n_onart 		n_onart_m	n_onart_w n_onart_1524_ n_art_start_y
 n_total_yllag 	n_dyll_GBD  
 	n_yllag_hiv_m
-	n_yllag_hiv_w
+	n_yllag_hiv_w  
 ;
 run;
 
@@ -418,7 +418,7 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 %let var_list = 
 	n_birth
 	n_give_birth_w_hiv
-	n_give_birth_on_art					/*Not yet run*/
+	n_give_birth_on_art					
 /*N_NewHIV_00_14_C*/					/*Cannot model*/
 	n_new_inf1524m
     n_new_inf1524w
@@ -433,8 +433,8 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 	n_death_m
 	n_death_w
 /*N_YLL_00_14_C*/						/*Cannot model*/
-	n_yllag_hiv_m							/*Not yet run*/
-	n_yllag_hiv_w							/*Not yet run*/
+	n_yllag_hiv_m						
+	n_yllag_hiv_w						
 /*N_HIVTest_Facility_NEG_15_UP*/		/*Cannot explicitly model*/
 /*N_HIVTest_Facility_POS_15_UP*/		/*Cannot explicitly model*/
 /*N_HIVTest_Index_NEG_15_UP*/			/*Cannot explicitly model*/
@@ -496,7 +496,7 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 data   wide_allyears_&s; merge 
 l_n_birth_&s
 l_n_give_birth_w_hiv_&s
-/*l_give_birth_on_art_&s*/
+l_give_birth_on_art_&s
 /*N_NewHIV_00_14_C*/					/*Cannot model*/
 l_n_new_inf1524m_&s
 l_n_new_inf1524w_&s

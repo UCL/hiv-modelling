@@ -1,5 +1,23 @@
 
 
+
+
+* 
+
+take out fsw program
+
+add prep numbers in graphs program
+
+;
+
+
+
+
+
+
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
