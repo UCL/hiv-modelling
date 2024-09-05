@@ -79,7 +79,3 @@ rate_int_choice = 0.003;
 
 
 * prep_any_strategy;			%sample_uniform(prep_any_strategy, 1 3);
-
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.1  0.2 ); 	
-
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.10 0.30);

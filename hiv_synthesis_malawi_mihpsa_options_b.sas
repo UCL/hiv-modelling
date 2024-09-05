@@ -4,7 +4,7 @@
 
 * 
 
-take out fsw program
+keep in fsw program
 
 add prep numbers in graphs program
 
@@ -942,7 +942,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
 * %include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
 * %include "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\MW_parameters_MW_calibration_20thNov23.sas";
-%include "/home/rmjlaph/MW_parameters_MW_calibration_20thNov23.sas";
+%include "/home/rmjlaph/malawi_parameters.sas";
 
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
@@ -2237,7 +2237,7 @@ who may be dead and hence have caldate{t} missing;
 
 
 	* start by going to minimal, unless option = 0 (status quo) ;
-	if option in (99 1 2 3 4 5 6 7 8 9 10 11 12) then do;
+	if option in (99 1 2 3 4 5 6 7 8 9 10 11 12 13) then do;
 
 		*Including; 
 		*Testing (PITC, ANC, VCT, out-patient testing for symptomatic patients, routine in-patient testing, testing at malnutrition wards 
@@ -2363,6 +2363,41 @@ who may be dead and hence have caldate{t} missing;
 	*Option 12 is SQ + 	Comprehensive sexuality education [new for MW];
 	if option = 12 then do;
 	end;
+
+
+
+	if option = 13 then do;  * minimal but including fsw program - note this is an option we are just running for purposes of understanding effects of 
+								fsw program removed for minimal ;
+
+		*Prevention;
+		*Condom promotion and provision: keep at SQ level;
+		*SBCC: not explicitly modelled, but the switch off is;
+		*condom_incr_year_i=2;    		*Switches off SBCC;
+		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 2;		*No VMMC;
+
+		*PrEP;
+		*Turn off all PrEP;
+		prep_any_strategy=0;
+		date_prep_oral_intro=2100;
+		date_prep_inj_intro=2100;
+		date_prep_vr_intro=2100;
+		rate_test_startprep_set_in_opts = 1; eff_rate_test_startprep_any=0;
+		prob_prep_oral_b_set_in_opts = 1; eff_prob_prep_oral_b=0;
+		prob_prep_inj_b_set_in_opts = 1; eff_prob_prep_inj_b=0; 
+		prob_prep_vr_b_set_in_opts = 1; eff_prob_prep_vr_b=0;
+		r_ch_stop_prep_oral_set_in_opts = 1; eff_rate_choose_stop_prep_oral=1;
+		r_ch_stop_prep_inj_set_in_opts = 1;eff_rate_choose_stop_prep_inj=1;
+		r_ch_stop_prep_vr_set_in_opts = 1; eff_rate_choose_stop_prep_vr=1;
+		p_prep_restart_set_in_opts = 1; eff_prob_prep_any_restart_choice=0;	
+
+		*Linkage, management, ART Interv;
+		*PCP is part of the essential scenario;
+		absence_cd4_set_in_options = 1; absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
+		p_vl_meas_done_set_in_opts = 1; eff_prob_vl_meas_done = 0; cd4_monitoring = 1;	*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
+
+	end;
+
+
 
 end;
 
