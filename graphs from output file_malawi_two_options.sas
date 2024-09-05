@@ -20,7 +20,7 @@ data c;
 
 
 
-if option in (1 2 3 4 5 6 7 8 9 10 11 12) then delete;
+if option in (1 2 3 4 5 6 7 8 9 10 11 12   ) then delete;
 
   if option = 99 then option = 1;
 * if option = 0 then option = 99;
@@ -100,7 +100,7 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 * placeholder until self testing retrospectively added;
 n_tested_self_test = 0;
 
-%let single_var = incidence1549_          ;
+%let single_var = n_tested                ;
 
 
 proc sort; by cald run ;run;
@@ -711,33 +711,6 @@ proc print data=d; run;
 proc contents data=d; run;
 
 
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
-
-label mean_incidence1549__0 = "Option 0 (median) ";
-label mean_incidence1549__1 = "Option 1  (median) ";
-
-series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=mean_incidence1549__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -758,6 +731,44 @@ band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fil
 series  x=cald y=n_tests_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
 
 label n_tests_obs_mlw = "Observed data";
+
+run;quit;
+
+
+
+/*
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n prep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 100000 by 2000) valueattrs=(size=10);
+
+label mean_n_prep_0 = "Option 0 (median) ";
+label mean_n_prep_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_n_prep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_0 	upper=p95_n_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_prep_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_prep_1 	upper=p95_n_prep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run; quit;
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
+
+label mean_incidence1549__0 = "Option 0 (median) ";
+label mean_incidence1549__1 = "Option 1  (median) ";
+
+series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_incidence1549__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
