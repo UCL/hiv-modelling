@@ -1,6 +1,5 @@
 
-
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep\len_prep_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep\len_prep_b_out\";
 
 
 proc printto ;
@@ -8,7 +7,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_len_prep_a      ;
+set a.l_len_prep_b      ;
 
 
 * for this program, variable names cannot end on a number;
@@ -16,6 +15,7 @@ n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
 incidence1549_ = incidence1549;
 prevalence1549_ = prevalence1549 * 100;
+prevalence1524w_ = prevalence1524w * 100;
 p_onart_vl1000_ = p_onart_vl1000;
 prevalence_vg1000_ = prevalence_vg1000;
 p_vl1000_ = p_vl1000;
@@ -25,7 +25,7 @@ p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
 
 
-%let single_var = prevalence1549_      ;
+%let single_var = prevalence1549_          ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -36,7 +36,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 452    ;
+%let nfit = 436    ;
 
 %let year_end = 2070.00 ;
 run;
@@ -57,30 +57,30 @@ if option =  0 ;
 %let p95_var = p95_&var_0;
 %let p50_var = median_&var_0;
 %let mean_var = mean_&var_0;
+%let lclm_var = lclm_&var_0;
+%let uclm_var = uclm_&var_0;
+
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
 
-      
-proc transpose data=option_0 out=g&count prefix=&varb;var &varb; by cald; id count_csim;run;
+
+proc transpose data=option_0 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
-data g&count;set g&count;***creates one dataset per variable;
+data h&count;set h&count;***creates one dataset per variable;
 p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
 mean_&varb._0 = mean(of &varb.1-&varb.&nfit);
+lclm_&varb._0 = lclm(of &varb.1-&varb.&nfit);
+uclm_&varb._0 = uclm(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 mean_&varb._0;
+keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 mean_&varb._0  lclm_&varb._0 uclm_&varb._0;
 run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  gg&count;quit;run;
-%end;
-%mend;
 
 %option_0;
 run;
@@ -103,6 +103,9 @@ if option =  1 ;
 %let p95_var = p95_&var_1;
 %let p50_var = median_&var_1;
 %let mean_var = mean_&var_1;
+%let lclm_var = lclm_&var_1;
+%let uclm_var = uclm_&var_1;
+
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -119,8 +122,10 @@ p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._1 = median(of &varb.1-&varb.&nfit);
 mean_&varb._1 = mean(of &varb.1-&varb.&nfit);
+lclm_&varb._1 = lclm(of &varb.1-&varb.&nfit);
+uclm_&varb._1 = uclm(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 mean_&varb._1;
+keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 mean_&varb._1  lclm_&varb._1 uclm_&varb._1;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -147,6 +152,8 @@ by cald;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
+
+
 
 
 /*
@@ -717,7 +724,7 @@ ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.5       by 0.1     ) valueattrs=(size=10);
 
 series  x=cald y=mean_incidence1549__0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
@@ -730,15 +737,13 @@ run;quit;
 * ods html close;
 
 
-*/
-
 
 
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Prevalence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Percentage'		labelattrs=(size=12)  values = (0 to 15        by    5    ) valueattrs=(size=10);
+yaxis grid label	= 'Percentage'		labelattrs=(size=12)  values = (0 to 2         by    0.5  ) valueattrs=(size=10);
 
 series  x=cald y=p50_prevalence1549__0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_prevalence1549__0 upper=p95_prevalence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
@@ -751,7 +756,24 @@ run;quit;
 * ods html close;
 
 
-/*
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Prevalence (age 15-24) agyw";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percentage'		labelattrs=(size=12)  values = (0 to 2        by    0.5    ) valueattrs=(size=10);
+
+series  x=cald y=p50_prevalence1524w__0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_prevalence1524w__0 upper=p95_prevalence1524w__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_prevalence1524w__1 / lineattrs = (color=navy thickness = 4);
+band    x=cald lower=p5_prevalence1524w__1 upper=p95_prevalence1524w__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+
+run;quit;
+
+* ods html close;
+
 
 
 ods html;
@@ -813,42 +835,16 @@ run;quit;
 
 ods html;
 proc sgplot data=d ; 
-Title    height=1.5 justify=center "Number of HIV-related deaths";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  100000   by 5000    ) valueattrs=(size=10);
-
-series  x=cald y=p50_n_death_hiv_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_n_death_hiv_0 upper=p95_n_death_hiv_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_n_death_hiv_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
-
-run;quit;
-
-
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Discounted DALYs";
+Title    height=1.5 justify=center "discounted DALYs";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000   by 1000000    ) valueattrs=(size=10);
 
-label p50_ddaly_0 = "no vaccine";
-label p50_ddaly_1 = "vaccine 1";
-label p50_ddaly_2 = "vaccine 2";
-label p50_ddaly_3 = "vaccine 3";
 
 series  x=cald y=p50_ddaly_0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_ddaly_0 upper=p95_ddaly_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
 series  x=cald y=p50_ddaly_1 / lineattrs = (color=navy thickness = 4);
 band    x=cald lower=p5_ddaly_1 upper=p95_ddaly_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
-
-series  x=cald y=p50_ddaly_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_ddaly_2 upper=p95_ddaly_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-
-series  x=cald y=p50_ddaly_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_ddaly_3 upper=p95_ddaly_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
 
 run;quit;
 
@@ -872,6 +868,52 @@ run;quit;
 
 
 
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Number of HIV-related deaths";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  100000   by 5000    ) valueattrs=(size=10);
+
+series  x=cald y=p50_n_death_hiv_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_death_hiv_0 upper=p95_n_death_hiv_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_death_hiv_1 / lineattrs = (color=navy thickness = 4);
+band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+
+run;quit;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "Number of deaths";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000   by 100000    ) valueattrs=(size=10);
+
+series  x=cald y=p50_n_death_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_death_0 upper=p95_n_death_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_death_1 / lineattrs = (color=navy thickness = 4);
+band    x=cald lower=p5_n_death_1 upper=p95_n_death_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+
+run;quit;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "p_prep_elig_onprep_len";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_prep_elig_onprep_len_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_prep_elig_onprep_len_0 upper=p95_p_prep_elig_onprep_len_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_p_prep_elig_onprep_len_1 / lineattrs = (color=navy thickness = 4);
+band    x=cald lower=p5_p_prep_elig_onprep_len_1 upper=p95_p_prep_elig_onprep_len_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+
+run;quit;
 
 
 ods html;
@@ -1055,26 +1097,29 @@ run;quit;
 * ods html close;
 
 
+*/
+
 
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Prevalence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (0 to  20       by 1     ) valueattrs=(size=10);
+yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (0 to  2       by 1     ) valueattrs=(size=10);
 
-label p50_prevalence1549__0 = "no vaccine";
-label p50_prevalence1549__1 = "vaccine";
+label mean_prevalence1549__0 = "no vaccine";
+label mean_prevalence1549__1 = "vaccine";
 
- series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=violet thickness = 4);
-  band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
+ series  x=cald y=mean_prevalence1549__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=lclm_prevalence1549__0 	upper=uclm_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=mean_prevalence1549__1/	lineattrs = (color=violet thickness = 4);
+  band    x=cald lower=lclm_prevalence1549__1 	upper=uclm_prevalence1549__1  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
 
+/*
 
 
 
