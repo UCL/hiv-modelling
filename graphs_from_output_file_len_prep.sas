@@ -57,9 +57,10 @@ if option =  0 ;
 %let p95_var = p95_&var_0;
 %let p50_var = median_&var_0;
 %let mean_var = mean_&var_0;
+/*
 %let lclm_var = lclm_&var_0;
 %let uclm_var = uclm_&var_0;
-
+*/
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -67,25 +68,30 @@ if option =  0 ;
 %let varb = %scan(&var, &count, %str( ));
 
 
-proc transpose data=option_0 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
+proc transpose data=option_0 out=g&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
-data h&count;set h&count;***creates one dataset per variable;
+data g&count;set g&count;***creates one dataset per variable;
 p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
 mean_&varb._0 = mean(of &varb.1-&varb.&nfit);
+/*
 lclm_&varb._0 = lclm(of &varb.1-&varb.&nfit);
 uclm_&varb._0 = uclm(of &varb.1-&varb.&nfit);
+*/
 
-keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 mean_&varb._0  lclm_&varb._0 uclm_&varb._0;
+keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 mean_&varb._0 /* lclm_&varb._0 uclm_&varb._0 */;
 run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  gg&count;quit;run;
+%end;
+%mend;
 
 %option_0;
 run;
-
-
 
 
 data option_1;
@@ -103,9 +109,10 @@ if option =  1 ;
 %let p95_var = p95_&var_1;
 %let p50_var = median_&var_1;
 %let mean_var = mean_&var_1;
+/*
 %let lclm_var = lclm_&var_1;
 %let uclm_var = uclm_&var_1;
-
+*/
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -122,10 +129,12 @@ p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._1 = median(of &varb.1-&varb.&nfit);
 mean_&varb._1 = mean(of &varb.1-&varb.&nfit);
+/*
 lclm_&varb._1 = lclm(of &varb.1-&varb.&nfit);
 uclm_&varb._1 = uclm(of &varb.1-&varb.&nfit);
+*/
 
-keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 mean_&varb._1  lclm_&varb._1 uclm_&varb._1;
+keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 mean_&varb._1 /* lclm_&varb._1 uclm_&varb._1 &/;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -586,9 +595,6 @@ run;quit;
 
 * ods html close;
 
-*/
-
-/*
 
 ods html;
 proc sgplot data=d ; 
@@ -621,9 +627,7 @@ run;quit;
 
 * ods html close;
 
-*/
 
-/*
 
 ods html;
 proc sgplot data=d ; 
@@ -655,8 +659,6 @@ band    x=cald lower=p5_prop_uvl2_vl1000__4 upper=p95_prop_uvl2_vl1000__4 / tran
 run;quit;
 
 * ods html close;
-
-/*
 
 
 ods html;
@@ -971,25 +973,6 @@ run;quit;
 
 
 
-  
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Number of living adults age 15+";
@@ -1106,13 +1089,11 @@ Title    height=1.5 justify=center "Prevalence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Percent'		labelattrs=(size=12)  values = (0 to  2       by 1     ) valueattrs=(size=10);
 
-label mean_prevalence1549__0 = "no vaccine";
-label mean_prevalence1549__1 = "vaccine";
 
  series  x=cald y=mean_prevalence1549__0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=lclm_prevalence1549__0 	upper=uclm_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+* band    x=cald lower=lclm_prevalence1549__0 	upper=uclm_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=mean_prevalence1549__1/	lineattrs = (color=violet thickness = 4);
-  band    x=cald lower=lclm_prevalence1549__1 	upper=uclm_prevalence1549__1  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
+* band    x=cald lower=lclm_prevalence1549__1 	upper=uclm_prevalence1549__1  / transparency=0.9 fillattrs = (color=violet) legendlabel= "90% range";
 
 run;quit;
 
