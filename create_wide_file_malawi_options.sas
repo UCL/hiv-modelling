@@ -401,9 +401,11 @@ so the one above is the annual number of tests conducted in ANC;
 * n_tested1st_pd;				n_tested1st_pd = s_tested1st_pd * &sf * 4;*VCMar2023;
 * n_tested_sbcc;				n_tested_sbcc = s_tested_sbcc_program * &sf * 4;*VCDec2023;
 
-* n_self_tests;					n_self_tests = s_self_tested * &sf ;	*JASJUN2024; * I think we need this to be number per 3 months as people can use more than once in year; 
-			
-* n_tested_self_test;			n_tested_self_test = s_tested_due_to_self_test * &sf * 4;	*JASJUN2024;	* COMPARE THIS WITH n_self_tests and n_diag_self_test;*/
+* n_self_tested;				n_self_tested = s_self_tested * sf ;
+* n_self_tested_m;				n_self_tested_m = s_self_tested_m * sf ;
+* n_self_tested_w;				n_self_tested_w = s_self_tested_w * sf ;
+* n_tested_due_to_self_test;	n_tested_due_to_self_test =  s_tested_due_to_self_test * sf ;
+* n_diagnosed_self_test;		n_diagnosed_self_test = s_diagnosed_self_test * sf;
 
 * n_diagnosed;					n_diagnosed = s_diag_this_period * &sf * 4;
 * n_diag_m;						n_diag_m = s_diag_this_period_m * &sf * 4;*VCMay2023;
@@ -762,8 +764,8 @@ end;
 
 * p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw = s_diag_sw / s_sw_1564; *VCFeb2023;
 
-* n_cm;							n_cm = s_cm_this_per * 4 * &sf;
-* n_vm;							n_vm = s_vm_this_per * 4 * &sf;*VCFeb2023;
+* n_cm;							n_cm = s_cm_this_per * &sf;  * made these number per 3 months rather than per year as can have more than one in a year;
+* n_vm;							n_vm = s_vm_this_per  * &sf; 
 * p_vm_ly_onart;				p_vm_ly_onart = s_vm_ly /s_onart;*VCMar2023;
 * n_pcp_p_80;					n_pcp_p = s_pcp_p *&sf;
 
