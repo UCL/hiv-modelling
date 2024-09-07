@@ -8,7 +8,7 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_b_out\";
 
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
@@ -16,13 +16,13 @@ proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome mode
 %let pth_export_mihpsa_mw= C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_a_out\export_files;run;
 
 data c;
-  set a.long_mlw_a;
+  set a.long_mlw_b;
 
 
 
-if option in (1 2 3 4 5 6 7 8 9 10 11 12   ) then delete;
+if option in (1 2 3 4 5 6 7 8 9 10 11 12 99 ) then delete;
 
-  if option = 99 then option = 1;
+  if option = 13 then option = 1;
 * if option = 0 then option = 99;
 
  
@@ -102,13 +102,13 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 * placeholder until self testing retrospectively added;
 n_tested_self_test = 0;
 
-%let single_var = n_tested                ;
+%let single_var = incidence1549_               ;
 
 
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 120  ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 10  ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2072.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
@@ -727,11 +727,6 @@ if cald = 2022.5 then n_vm_obs_mlw = 351000; * this is annual number;
 if cald = 2023.5 then n_vm_obs_mlw = 458000; * this is annual number;  
 
 
-if cald = 2019.5 then n_vmmc = 
-
-
-
-
 data a.d;set d;run;
 /*proc contents data=d; run;*/
 
@@ -755,7 +750,7 @@ proc print data=d; run;
 proc contents data=d; run;
 
 
-
+/*
 
 
 ods html;
@@ -778,9 +773,6 @@ label n_tests_obs_mlw = "Observed data";
 
 run;quit;
 
-
-
-/*
 
 
 ods html;
@@ -863,6 +855,7 @@ series  x=cald y=n_vmmc_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
 
 run; quit;
 
+*/
 
 
 ods html;
@@ -881,6 +874,8 @@ band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transpar
 
 run;quit;
 
+
+/*
 
 ods html;
 proc sgplot data=d; 
