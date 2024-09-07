@@ -1,22 +1,6 @@
 
 
 
-
-
-
-* add obs prep numbers ;
-
-
-
-
-
-
-
-
-
-
-
-
 ***Program to produce graphs using averages across runs
 * Based on MIHPSA South Africa version (JAS Oct/Nov23with MW observational data copied from "graphs from output file_mlw7" in malawi branch;
 
@@ -67,6 +51,8 @@ n_not_on_art_cd450200_ = n_not_on_art_cd450200;*VCFeb2023;
 n_not_on_art_cd4200350_ = n_not_on_art_cd4200350;*VCFeb2023;
 n_not_on_art_cd4350500_ = n_not_on_art_cd4350500;*VCFeb2023;
 n_not_on_art_cd4ge500_  = n_not_on_art_cd4ge500;*VCFeb2023;
+
+p_births_hiv_vlg1000_ = p_births_hiv_vlg1000;
 
 log_gender_r_newp  = log(gender_r_newp);
 prevalence1549_ = prevalence1549;
@@ -179,7 +165,6 @@ n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_
 n_tested1st_anc n_tested1st_labdel n_tested1st_pd n_tested_anc_prevdiag
 n_sbcc_visit_1524m 	n_sbcc_visit_1524w n_sbcc_visit_1524_	n_sbcc_visit_2564_ n_sbcc_visit_1564_
 n_tested_sbcc_1524m n_tested_sbcc_1524w n_tested_sbcc_2564_ n_tested_sbcc
-n_self_tests n_tested_self_test n_diag_self_test
 n_hivpos_tests n_hivneg_tests n_hivpos_tests_sympt n_hivneg_tests_sympt
 p_tested_sbcc_1524m p_tested_sbcc_1524w p_tested_sbcc_2564_ p_pos_tested_sbcc
 p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd
@@ -196,8 +181,11 @@ p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onar
 p_onart_vl1000_w				p_onart_vl1000_m  n_onart_vl1000_m n_onart_vl1000_w p_onart_vl1000_w1524evpr logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart 		n_onart_m	n_onart_w n_onart_1524_ n_art_start_y
 n_total_yllag 	n_dyll_GBD  
+n_self_tested n_self_tested_m n_self_tested_w n_tested_due_to_self_test n_diagnosed_self_test
+p_births_hiv_vlg1000_
 
 */
+
 
 ;
 
@@ -294,7 +282,6 @@ n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_
 n_tested1st_anc n_tested1st_labdel n_tested1st_pd n_tested_anc_prevdiag
 n_sbcc_visit_1524m 	n_sbcc_visit_1524w n_sbcc_visit_1524_	n_sbcc_visit_2564_ n_sbcc_visit_1564_
 n_tested_sbcc_1524m n_tested_sbcc_1524w n_tested_sbcc_2564_ n_tested_sbcc
-n_self_tests n_tested_self_test n_diag_self_test
 n_hivpos_tests n_hivneg_tests n_hivpos_tests_sympt n_hivneg_tests_sympt
 p_tested_sbcc_1524m p_tested_sbcc_1524w p_tested_sbcc_2564_ p_pos_tested_sbcc
 p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd
@@ -311,6 +298,9 @@ p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onar
 p_onart_vl1000_w				p_onart_vl1000_m  n_onart_vl1000_m n_onart_vl1000_w p_onart_vl1000_w1524evpr logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart 		n_onart_m	n_onart_w n_onart_1524_ n_art_start_y
 n_total_yllag 	n_dyll_GBD  
+n_self_tested n_self_tested_m n_self_tested_w n_tested_due_to_self_test n_diagnosed_self_test
+p_births_hiv_vlg1000_
+
 
 */
 
@@ -482,7 +472,6 @@ if cald=2016.5 then n_tests_m_obs_mlw= 993028 ;
 if cald=2016.5 then n_tests_f_non_anc_obs_mlw= 1291520 ;
 if cald=2016.5 then n_tests_f_anc_obs_mlw= 636122 ;
 
-* these below are multiplied by 4 so expressed as annual number at each time point;
 if cald=2016.0 then n_tests_obs_mlw = 832000 * 4;
 if cald=2016.25 then n_tests_obs_mlw = 838000 * 4 ;
 if cald=2016.5 then n_tests_obs_mlw = 832000  * 4;
@@ -514,6 +503,11 @@ if cald=2021.00 then n_tests_f_obs_mlw= 670567 * 0.67 * 4;
 
 if cald=2021.0 then n_tests_f_anc_obs_mlw= 155575 * 4; * of which 10724 ( * 4) positive;
 
+
+if cald=2022.50 then n_tests_obs_mlw= 3000000    ;  * this is the number of tests in the whole year ;
+if cald=2022.50 then n_tests_obs_mlw= 3400000    ;  * this is the number of tests in the whole year ;
+
+
 if cald=2016.00 then n_tests_f_anc_obs_mlw = 147765  * 4;
 if cald=2016.25 then n_tests_f_anc_obs_mlw = 140475  * 4;
 if cald=2016.50 then n_tests_f_anc_obs_mlw = 146596  * 4      ;
@@ -535,6 +529,11 @@ if cald=2020.25 then n_tests_f_anc_obs_mlw = 162127  * 4      ;
 if cald=2020.50 then n_tests_f_anc_obs_mlw = 155128  * 4      ;
 if cald=2020.75 then n_tests_f_anc_obs_mlw = 150492  * 4      ;
 if cald=2021.00 then n_tests_f_anc_obs_mlw = 155575  * 4      ;
+
+if cald=2022.50 then n_tests_f_anc_obs_mlw = 630000           ; * this is the annual number of tests;
+if cald=2023.50 then n_tests_f_anc_obs_mlw = 690000           ; * this is the annual number of tests;
+
+
 
 if cald=2004 then ever_tested_w_1549_obs_mlw= 0.17;
 if cald=2004 then ever_tested_m_1549_obs_mlw= 0.17;
@@ -708,45 +707,28 @@ if cald = 2021.5 then n_prep_obs_mlw = 3200 ;  * from data in template - from im
 if cald = 2022.5 then n_prep_obs_mlw = 9600 ;  * from data in template - from implementing partners;
 if cald = 2023.5 then n_prep_obs_mlw = 36000 ;  * from data in template - from implementing partners;
 
-/*
 
-From mihpsa_malawi_output_template 
+if cald = 2019.5 then n_self_tested_obs_mlw = 101000; * this is annual number;  
+if cald = 2020.5 then n_self_tested_obs_mlw = 561000; * this is annual number;  
+if cald = 2021.5 then n_self_tested_obs_mlw = 827000; * this is annual number;  
+if cald = 2022.5 then n_self_tested_obs_mlw = 750000; * this is annual number;  
+if cald = 2023.5 then n_self_tested_obs_mlw = 802000; * this is annual number;  
 
+if cald = 2019.5 then n_vmmc_obs_mlw = 141000; * this is annual number;  
+if cald = 2020.5 then n_vmmc_obs_mlw = 69000; * this is annual number;  
+if cald = 2021.5 then n_vmmc_obs_mlw = 142000; * this is annual number;  
+if cald = 2022.5 then n_vmmc_obs_mlw = 135000; * this is annual number;  
+if cald = 2023.5 then n_vmmc_obs_mlw = 95000; * this is annual number;  
 
-Minimal Scenario								
-Interventions	HIV prevention efficacy assumption	Baseline Coverage					Source	Notes
-		2019	2020	2021	2022	2023		
-Testing (PITC, ANC, VCT, out-patient testing for symptomatic patients, routine in-patient testing, testing at malnutrition wards and testing as a part of VMMC program)							See Ref1 on references tab for testing breakdown by access point	
-- Number of people tested for HIV overall	N/A	4,060,211	2,737,333	2,653,001	3,006,284	3,404,438	AIM 2023 file - data provided by national HIV estimates team	I've entered what's in AIM for minimal scenario testing. See new "References" tab for breakdown.
-- Number of people who tested HIV-positive overall	N/A	115,618	83,849	77,606	78,432	67,129	AIM 2023 file - data provided by national HIV estimates team	Positivity counts most likely include some PLHIV who already knew their status
-- Number of women tested for HIV at ANC	N/A	578,497	575,150	587,323	633,819	693,486	AIM 2023 file - data provided by national HIV estimates team	
-- Number of women tested HIV-positive at ANC	N/A	12,516	9,994	8,395	8,483	7,660	AIM 2023 file - data provided by national HIV estimates team	ANC testing should exclude known-HIV+ clients
-ART care for adults (including treatment of opportunistic infections)	99% with undetectable viral loads							
-- # of PLHIV	N/A	782,138	815,938	855,135	891,950	957,331	AIM 2023 file - data provided by national HIV estimates team	
-- % of PLHIV	N/A	83.1%	86.1%	90.0%	93.9%	98.0%	AIM 2023 file - denominators are Spectrum estimates	
-ART for children	N/A							
-- # of PLHIV	N/A	47,960	46,274	42,484	39,966	37,499	AIM 2023 file - data provided by national HIV estimates team	
-- % of PLHIV	N/A	63.8%	67.5%	68.1%	70.5%	92.0%	AIM 2023 file - denominators are Spectrum estimates	
-Condom program	80%	 154,442,236 	 81,219,283 	 86,071,470 	 120,240,675 	 120,822,240 	AIDSinfo	Noting these are higher than program data, but we have incomplete program data
-								
-Candidate interventions								
-	Efficacy assumptions	Baseline coverage					Source	Future coverage assumptions 
-		2019	2020	2021	2022	2023		2024
-Oral PrEP for 15-24 year-old girls and women	60%			3,254	9,572	22,658	Implementing Partners	22,658
-Oral PrEP for female sex workers	60%					13,658	Implementing Partners	13,658
-Oral PrEP for men who have sex with men	85%					5,563	Implementing Partners	5,563
-CAB-LA injectable PrEP for 15-24 year-old girls and women	95%					N/A		1%
-CAB-LA injectable PrEP for female sex workers	95%					N/A		5%
-CAB-LA injectable PrEP for men who have sex with men	95%					N/A		5%
-HIV self testing	RR 2.09 increase in testing uptake	101,428	560,947	826,613	749,664	802,360	AIM 2023 file - data provided by national HIV estimates team	802,360
-Voluntary medical male circumcision	60% reduction of HIV acquisition 	141,193	69,322	142,186	135,103	94,743	DMPPT2, accessed 2024-02-06 (http://www.vmmcipt.org/).	94,743
-ART adherence support	OR 1.56 improvement of adherence	39,895	26,047	30,559	32,418	28,776		28,776
-Viral load monitoring	OR 1.39 increase in viral suppression	410,029	403,087	455,232	350,873	457,550	AIM 2023 file - data provided by national HIV estimates team	457,550
-Economic empowerment	OR 0.36 reduction in HIV prevalence at 18 months	1	441	9,949	48,264	13,570	Dreams data(AGWY in Village and Loan Savings Associations (VLSAs)	13,570
-Comprehensive sexuality education	OR 1.34 increase in condom use & OR 0.75 fewer sexual partners	TBC	TBC	TBC	TBC	TBC	TBC	TBC
+if cald = 2019.5 then n_vm_obs_mlw = 410000; * this is annual number;  
+if cald = 2020.5 then n_vm_obs_mlw = 403000; * this is annual number;  
+if cald = 2021.5 then n_vm_obs_mlw = 455000; * this is annual number;  
+if cald = 2022.5 then n_vm_obs_mlw = 351000; * this is annual number;  
+if cald = 2023.5 then n_vm_obs_mlw = 458000; * this is annual number;  
 
 
-*/
+if cald = 2019.5 then n_vmmc = 
+
 
 
 
@@ -803,6 +785,28 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
+Title    height=1.5 justify=center "n_self_tested";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by 1000000) valueattrs=(size=10);
+label mean_n_self_tested_0 = "Option 0 (median) ";
+label mean_n_self_tested_1 = "Option 1 (median) ";
+
+series  x=cald y=mean_n_self_tested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_self_tested_0 	upper=p95_n_self_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_n_self_tested_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_self_tested_1 	upper=p95_n_self_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=n_self_tested_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
+
+
+run;quit;
+
+
+
+
+ods html;
+proc sgplot data=d; 
 Title    height=1.5 justify=center "n prep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 100000 by 2000) valueattrs=(size=10);
@@ -818,6 +822,47 @@ band    x=cald lower=p5_n_prep_1 	upper=p95_n_prep_1  / transparency=0.9 fillatt
 series  x=cald y=n_prep_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
 
 run; quit;
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n vm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 100000 by 2000) valueattrs=(size=10);
+
+label mean_n_vm_0 = "Option 0 (median) ";
+label mean_n_vm_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_n_vm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_vm_0 	upper=p95_n_vm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_vm_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_vm_1 	upper=p95_n_vm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=n_vm_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
+
+run; quit;
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n new_vmmc";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 500000 by 50000) valueattrs=(size=10);
+
+label mean_n_new_vmmc_0 = "Option 0 (median) ";
+label mean_n_new_vmmc_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_n_new_vmmc_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_new_vmmc_0 	upper=p95_n_new_vmmc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_new_vmmc_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_new_vmmc_1 	upper=p95_n_new_vmmc_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=n_vmmc_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
+
+run; quit;
+
 
 
 ods html;
@@ -1007,6 +1052,58 @@ band    x=cald lower=p5_p_tested_past_year_1549w_0 	upper=p95_p_tested_past_year
 
 series  x=cald y=mean_p_tested_past_year_1549w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_past_year_1549w_1 	upper=p95_p_tested_past_year_1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
+
+proc sgplot data=d nolegend; 
+Title    height=1.5 justify=center "Number of people tested per 3 months";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  15000000 by  1000000) valueattrs=(size=10);
+
+* label mean_n_tested_0 = "Option 0 (median) ";
+* label mean_n_tested_1 = "Option 1 (median) ";
+
+series  x=cald y=mean_n_tested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_n_tested_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+scatter  x=cald y=n_tests_obs_kya/	markerattrs = (symbol=square color=green size = 10);
+
+run;quit;
+
+
+
+proc sgplot data=d nolegend; 
+Title    height=1.5 justify=center "Number of people self-testing per 3 months";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  15000000 by  1000000) valueattrs=(size=10);
+
+series  x=cald y=mean_n_self_tested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_self_tested_0 	upper=p95_n_self_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_n_self_tested_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_self_tested_1 	upper=p95_n_self_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
+
+proc sgplot data=d nolegend; 
+Title    height=1.5 justify=center "Number of people diagnosed as a results of self-testing";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by  20000) valueattrs=(size=10);
+
+series  x=cald y=mean_n_diagnosed_self_test_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_diagnosed_self_test_0 	upper=p95_n_diagnosed_self_test_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_n_diagnosed_self_test_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_diagnosed_self_test_1 	upper=p95_n_diagnosed_self_test_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
