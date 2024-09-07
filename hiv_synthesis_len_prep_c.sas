@@ -21415,14 +21415,14 @@ data r1; set a;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
 
 data b; set r1;
 
 
 data r1; set b;
 
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
@@ -21627,6 +21627,8 @@ data r1; set b;
 
 data r1; set b;
 
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);

@@ -25,7 +25,7 @@ p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
 
 
-%let single_var = n_hiv          ;
+%let single_var = incidence1549_        ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -209,7 +209,7 @@ band    x=cald lower=p5_p_onart_vl1000__4 upper=p95_p_onart_vl1000__4 / transpar
 
 run;quit;
 
-
+*/
 
 ods html;
 proc sgplot data=d ; 
@@ -220,14 +220,14 @@ yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  value
 series  x=cald y=mean_incidence1549__0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_incidence1549__1 / lineattrs = (color=navy thickness = 4);
+series  x=cald y=mean_incidence1549__1 / lineattrs = (color=navy thickness = 4);
 band    x=cald lower=p5_incidence1549__1 upper=p95_incidence1549__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
 
 run;quit;
 
 * ods html close;
 
-
+/*
 
 
 ods html;
@@ -334,7 +334,7 @@ band    x=cald lower=p5_n_death_1 upper=p95_n_death_1 / transparency=0.9 fillatt
 
 run;quit;
 
-*/
+
 
 ods html;
 proc sgplot data=d ; 
@@ -351,7 +351,6 @@ band    x=cald lower=p5_n_hiv_1 upper=p95_n_hiv_1 / transparency=0.9 fillattrs =
 run;quit;
 
 
-/*
 
 ods html;
 proc sgplot data=d ; 
