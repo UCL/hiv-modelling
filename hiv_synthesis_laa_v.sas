@@ -42,7 +42,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2026;	* Using 2023 for MIHPSA only JAS Oct23;
+%let year_interv = 2027;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -217,6 +217,7 @@ newp_seed = 7;
 * prob_pregnancy_base;  	r=rand('uniform'); prob_pregnancy_base=0.06 + r*0.05;  
 * rate_birth_with_infected_child; 
 							%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);
+* rate_trans_breastfeeding; %sample_uniform(rate_trans_breastfeeding, 0.05 0.1); * Nduati et al. 2000; * this is rate per 3 months with vl between 4 and 5;
 
 * prob_stop_breastfeeding_yr1;		*JAS Apr2023;
 							prob_stop_breastfeeding_yr1 = 0.02;*73;	* 3-monthly probability of stopping breastfeeding in first year after birth;
@@ -10312,6 +10313,24 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 	if onart_birth_with_inf_child=1 and child_with_resistant_hiv=1 then onart_birth_with_inf_child_res=1;
 
 
+* TRANSNISSION TO CHILD DURING BREASTFEEDING ; * andrew sep 24;
+
+	onart_breastfeeding=0;	child_infected_breastfeeding=0;
+
+	if breastfeeding=1 and hiv=1 and t ge 2 then do;
+		if onart=1 then onart_breastfeeding=1;
+		u=rand('uniform');
+		if . < vl <= 3 then u=u*1000; 
+		if 3 < vl <= 4 then u=u*2;
+		if 4 < vl <= 5 then u=u*1;
+		if 5 < vl then u=u/2;
+		if u < rate_trans_breastfeeding then do; 
+			child_infected_breastfeeding=1;	ever_child_inf_breastfeeding=1;	
+		end;
+	end;
+
+
+
 * NEW RESISTANCE MUTATIONS ARISING (and dominating)
 - if resistance appears between t-1 and t it doesnt affect the viral load until t+1;
 
@@ -12673,7 +12692,7 @@ end;
 * low cost partially is to take account of possibility of child dying ;
 
  * dependent_on_time_step_length ;
-cost_child_hiv = 0; if ever_birth_with_inf_child=1 then cost_child_hiv = cost_child_hiv_a;  
+cost_child_hiv = 0; if ever_birth_with_inf_child=1 or ever_child_inf_breastfeeding=1 then cost_child_hiv = cost_child_hiv_a;  
 cost_child_hiv_mo_art = 0; if ev_birth_with_inf_ch_onart=1 then cost_child_hiv_mo_art = cost_child_hiv_mo_art_a;  
 
 
@@ -17005,7 +17024,7 @@ end;
 
 *live dalys for the mother due to having given birth to a child with hiv;
 daly_mtct=0; ddaly_mtct=0;
-if ever_birth_with_inf_child=1 then do;
+if ever_birth_with_inf_child=1 or ever_child_inf_breastfeeding=1 then do;
 	daly_mtct=0.025;
 	ddaly_mtct = daly_mtct*discount;
 end;
@@ -18157,7 +18176,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_pregnant_onart_vl_vhigh + pregnant_onart_vl_vhigh ; s_pregnant_onart_vl_vvhigh + pregnant_onart_vl_vvhigh ; 
 	s_birth_with_inf_child + birth_with_inf_child ; s_child_with_resistant_hiv + child_with_resistant_hiv ; s_give_birth_with_hiv + give_birth_with_hiv ;
 	s_onart_birth_with_inf_child_res + onart_birth_with_inf_child_res ; s_onart_birth_with_inf_child + onart_birth_with_inf_child ;	 
-	s_breastfeeding + breastfeeding ; 
+	s_breastfeeding + breastfeeding ; s_onart_breastfeeding	+ onart_breastfeeding; s_child_infected_breastfeeding + child_infected_breastfeeding;
 
 	/*circumcision*/
 
@@ -19836,7 +19855,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child    
-s_breastfeeding
+s_breastfeeding s_onart_breastfeeding	s_child_infected_breastfeeding 
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -19891,7 +19910,7 @@ prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fo
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
-rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
+rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency  isl_higher_potency  isl_ole_adh_improve
 prop_bmi_ge23 pr_res_dol eff_pr_res_len incr_len_res_mono
 cab_time_to_lower_threshold_g len_time_to_lower_threshold_g
@@ -20839,7 +20858,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child    
-s_breastfeeding
+s_breastfeeding  s_onart_breastfeeding	s_child_infected_breastfeeding 
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -21215,17 +21234,18 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
-
-data a; set r1;
-
-
-
-data r1; set a;
 * 2026;
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
+
+
+data a; set r1;
+
+
+data r1; set a;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
@@ -21432,10 +21452,6 @@ data r1; set a;
 
 data r1; set a;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
@@ -22290,7 +22306,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child  
-s_breastfeeding
+s_breastfeeding  s_onart_breastfeeding	s_child_infected_breastfeeding 
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -22347,7 +22363,7 @@ prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fo
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14  circ_inc_15_19  circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
-rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
+rr_int_tox   rate_birth_with_infected_child rate_trans_breastfeeding nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency isl_higher_potency isl_ole_adh_improve
 prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono
 cab_time_to_lower_threshold_g  len_time_to_lower_threshold_g
