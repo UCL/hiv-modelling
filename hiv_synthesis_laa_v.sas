@@ -1,11 +1,33 @@
 
 
 
+* start in 2027 rather than 2026 
+
+* make sure have included mtct in breastfeeding period
+
+* lower proportion of people on art with viral suppression (modify assumptions on adherence and effect of meas alert so that range is a bit lower)
+
+* extract the proportions taking len-cab by age and sex
+
+* extract results on the proportion of pregnant and breastfeeding women using len-cab.
+
+* consider also higher uptake in those with vl suppression 
+
+* include a specific one off cost for bringing people back into care and on len-cab, and reflects the fact that some poeple visited will not be interested or not found
+
+* also give: of those who have taken len-cab, proportion currently on it
+
+* make sure can calculate proportion of people who have ever taken len_cab with a capsid inhibitor / integrase inhibitor drug resistance mutation
+
+
+
+
 * note loading dose of len (oral) when start or restart (extra cost);
+
+* note gender_spec_prep_cab_eff and gender_spec_prep_len_eff ;
 
 * written notes in sideboard drawer;
 
-* fyi for future: note gender_spec_prep_cab_eff and gender_spec_prep_len_eff ;
 
 
 
