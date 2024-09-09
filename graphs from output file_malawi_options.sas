@@ -20,9 +20,9 @@ data c;
 
 
 
-if option in (1 2 3 4 5 6 7 8 9 10 11 12 99 ) then delete;
+if option in (1 2 3 4 5 6 7 8 9    11 12 13 99 ) then delete;
 
-  if option = 13 then option = 1;
+  if option = 10 then option = 1;
 * if option = 0 then option = 99;
 
  
@@ -108,7 +108,7 @@ n_tested_self_test = 0;
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 10  ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 36  ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2072.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
