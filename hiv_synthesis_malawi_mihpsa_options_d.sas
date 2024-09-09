@@ -932,6 +932,7 @@ if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 if inc_cat = 4 then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
 prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 
+call symput('caldate1',caldate1);
 
 * ===================== ;
 * END OF PARAMETER LIST ;
@@ -976,7 +977,6 @@ if hivtest_type=1 then do; sens_primary=0.86; sens_vct=0.98; spec_vct=1;     end
 else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; sens_vct=0.98; spec_vct=0.992; end;
 else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; end;
 
-
 * COSTS;
 
 * todo:  ALL COSTS BELOW TO BE REVIEWED ;
@@ -986,19 +986,19 @@ else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; en
 
 * all * dependent_on_time_step_length ;
 cost_zdv_a=(0.068/4)*1.2; * chai 2022  ;
-cost_3tc_a=(0.015/4)*1.2; * jul 19 - south africa tender ;
-cost_ten_a=(0.028/4)*1.2; * jul 19 - south africa tender ;
+cost_3tc_a=(0.012/4)*1.2; * jun 24 chai ;
+cost_ten_a=(0.021/4)*1.2; * jun 24 chai ;
 cost_taf = (0.018/4)*1.2;
 cost_nev_a=(0.027/4)*1.2; * chai 2017 market report - global fund price;   
 cost_efa_a=(0.019/4)*1.2; * chai 2022 - $62 for tle   ;
 cost_lpr_a=(0.152/4)*1.2;                     
 cost_taz_a=(0.133/4)*1.2;   * chai 2022 zl-taz 216 ;
-cost_dol_a=(0.011/4)*1.2;   * chai 2022 - $54 for tld;
-cost_dar_a=(0.210/4)*1.2;	
+cost_dol_a=(0.009/4)*1.2;  * june 2024 chai - $42 for tld;
+cost_dar_a=(0.210/4)*1.2;		
 tb_cost_a=(.050); * todo: this cost to be re-considered;
 cot_cost_a=(.005/4);
-vis_cost_a=(.020); 
-redn_in_vis_cost_vlm_supp = 0.010 ;
+vis_cost_a=(.010); * changed july 24 due to data from sydney rosen showing very low clinic costs;
+redn_in_vis_cost_vlm_supp = 0.005 ; * changed july 24 due to data from sydney rosen showing very low clinic costs;
 cost_child_hiv_a = 0.030; 
 cost_child_hiv_mo_art_a = 0.030; 
 prep_oral_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
@@ -1048,7 +1048,6 @@ util_non_tb_who3 = rand('beta',8,2);  util_non_tb_who3 = 0.78;
 util_tb = rand('beta',7,7);  util_tb = 0.60;
 util_adc = rand('beta',2,6); util_adc = 0.46;
 * util_rec_ntd = 0.8; * removed aug18 - since dont have this for mtct;
-
 
 
 /*
@@ -1464,11 +1463,19 @@ end;
 
 
 
+
 r=rand('uniform');
-if gender=2 then life_sex_risk=2; 
-rred_p=1;
-if r < p_rred_p then do; life_sex_risk = 1;  rred_p=0.00001; end;
-if gender=2 and 1-p_hsb_p < r < 1 then life_sex_risk = 3; 
+rred_p=1; if r < p_rred_p then rred_p=0.00001;
+
+* life_sex_risk used for determining sw=1; 
+if gender=2 then do;
+	life_sex_risk=2;
+	if r < p_rred_p then life_sex_risk = 1; 
+	if 1-p_hsb_p < r then life_sex_risk = 3; 
+end;
+
+
+
 
 ever_newp=0;
 
@@ -8994,7 +9001,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 		r=rand('uniform'); if c_tox_tm1=1 and r < 0.5 then adh=adh-red_adh_tox;
 
 * reduced adherence if regimen is not 1 pill once a day - red_adh_multi_pill;
-		if o_zdv = 1 or o_taz = 1 or o_lpr = 1 then adh = adh - red_adh_multi_pill ;
+		if o_zdv = 1 or o_taz = 1 or o_lpr = 1 or o_dar = 1 then adh = adh - red_adh_multi_pill ;
 
 
 * poorer "adherence" (lower drug levels) if have "current" tb or adc;  
