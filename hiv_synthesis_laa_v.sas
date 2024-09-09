@@ -542,6 +542,10 @@ newp_seed = 7;
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
 								0   	0   	0.20	0.20	0.20	0.20	0.20) ; * tld_switch_an;  *note that this is moderated a lot with vl alert;
+
+* prop_v_alert_perm;		%sample_uniform(prop_v_alert_perm, 0.3 0.5 0.7 0.9);
+
+
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
@@ -1873,9 +1877,9 @@ h=rand('uniform');
 a=rand('uniform');
 v_alert_perm_incr_adh=0;  v_alert_6m_incr_adh=0;
 if h <  adh_effect_of_meas_alert then do;
-	if a < 0.9 then v_alert_perm_incr_adh = 1; * this value of 0.9 changed from 0.4 for tld_switch and laa - also with change in dist of adh_effect_of_meas_alert
+	if a < prop_v_alert_perm then v_alert_perm_incr_adh = 1; * this value of 0.9 changed from 0.4 for tld_switch and laa - also with change in dist of adh_effect_of_meas_alert
 	seems more plausible that a smaller proportion of people have an an effect but the effect is more likely to be permanent than for 6 months;
-	if 0.9 <= a  then v_alert_6m_incr_adh = 1; 
+	if prop_v_alert_perm <= a  then v_alert_6m_incr_adh = 1; 
 end;
 
 
@@ -19927,7 +19931,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
-lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab
+lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
@@ -19947,7 +19951,7 @@ effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_pro
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
-rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger
+rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger 
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b prob_prep_len_b prob_prep_vr_b prep_cab_efficacy prep_len_efficacy  prop_pep  pep_efficacy 
 rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr prep_cab_effect_inm_partner  prep_len_effect_cam_partner 
@@ -22380,7 +22384,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
-lencab_uptake_vlg1000 lencab_uptake  rate_return_for_lencab prob_strong_pref_lencab
+lencab_uptake_vlg1000 lencab_uptake  rate_return_for_lencab prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac   ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
