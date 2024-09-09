@@ -1,4 +1,6 @@
 
+***THIS FILE HAS BEEN USED FOR HARRIETT'S PAPER;
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   

@@ -8,9 +8,9 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 ***USED FOR SUNGAI'S CROI 2024 poster AND Harriett's paper;
 
 data a;
-set a.fsw_zim_20jun24;  
+set a.fsw_zim_25jun24;  
 
-*if option=1 then delete; ***first look at overall incidence according to baseline SW program (option=1= amesthist);
+if option=1 then delete; ***Looking only at Sisters (option=1= amethist);
 
 *if rate_engage_sw_program ge 0.15 then delete;
 
@@ -217,7 +217,7 @@ proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 106;
+%let nfit = 183;
 %let year_end = 2050.00 ;
 run;
 proc sort;by cald option ;run;
@@ -316,7 +316,7 @@ set d1;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Zim\FSW\Zimbabwe\20jun2024_inc.doc' startpage=never; 
+ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Zim\FSW\Zimbabwe\25jun2024_inc.doc' startpage=never; 
 
 ods listing close;
 proc sgplot data=e; 
@@ -529,7 +529,6 @@ scatter x=cald y=o_pop_fsw_1549w_Fearon / markerattrs = (symbol=circle color=bla
 										   yerrorlower=o_pop_fsw_ll_1549w_Fearon yerrorupper=o_pop_fsw_ul_1549w_Fearon errorbarattrs= (color=black thickness = 2);
 run;quit;
  
-
 proc sgplot data=e; 
 title    height=1.5 justify=center "Proportion of women who are sex workers (age 15-49)";
 footnote1 height=0.9  "";
@@ -545,6 +544,7 @@ band    x=cald lower=p5_prop_w_1549_sw 	 upper=p95_prop_w_1549_sw / transparency
 scatter x=cald y=o_p_fsw_1549w_Fearon / markerattrs = (symbol=circle       color=green size = 12)
 										 yerrorlower=o_p_fsw_ll_1549w_Fearon yerrorupper=o_p_fsw_ul_1549w_Fearon errorbarattrs= (color=green thickness = 2);
 run;quit;
+
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Current age of sex workers";
@@ -593,6 +593,7 @@ scatter x=cald y=o_p_3039_fsw_AMT / markerattrs = (symbol=circle     color=orang
 scatter x=cald y=o_p_ab40_fsw_AMT / markerattrs = (symbol=circle     color=yellow size = 12);
 
 run;quit;
+
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Age debut of sex workers";
@@ -748,6 +749,8 @@ series  x=cald y=p50_av_sw_newp  / 	 lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_av_sw_newp	 upper=p95_av_sw_newp / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 run;quit;
 
+
+
 proc sgplot data=e; 
 title    height=1.5 justify=center "Proportion of sex workers with 0 condomless partners";
 footnote1 height=0.9  "";
@@ -778,7 +781,6 @@ series  x=cald y=p50_prop_sw_onprep_noprog/	lineattrs = (color=blue thickness = 
 band    x=cald lower=p5_prop_sw_onprep_noprog 	upper=p95_prop_sw_onprep_noprog  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 */
 run;quit;
-
 
 
 
@@ -840,6 +842,11 @@ scatter x=cald y=o_HIVIncid_fsw_dreams / markerattrs = (symbol=circle       colo
 scatter x=cald y=o_HIVIncid1539_fsw_hj / markerattrs = (symbol=circle       color=black size = 12);
 */
 run;quit;
+
+proc means n mean  p5 p95;var  mean_mean_sw_inc1839_ p5_mean_sw_inc1839_ p95_mean_sw_inc1839_;where cald=2023;run;
+proc means n mean  p5 p95;var  mean_mean_sw_inc_inprog1839_ p5_mean_sw_inc_inprog1839_ p95_mean_sw_inc_inprog1839_;
+where cald=2021;run;
+ 
 
 proc sgplot data=e; 
 
@@ -904,6 +911,7 @@ scatter x=cald y=o_prev_fsw_AMT / markerattrs = (symbol=circle       color=black
 run;quit;
 
 
+
 proc sgplot data=e; 
 
 title    height=1.5 justify=center "HIV prevalence in SW aged 18-39";
@@ -915,6 +923,9 @@ label p50_prevalence_1839sw = "Median ";
 series  x=cald y=p50_prevalence_1839sw /  lineattrs = (color=black thickness = 2);
 band   x=cald lower=p5_prevalence_1839sw  upper=p95_prevalence_1839sw / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
+
+ods html;
+proc means n mean  p5 p95;var  p50_prevalence_1839sw p5_prevalence_1839sw p95_prevalence_1839sw ;where cald=2016;run;
 
 proc sgplot data=e; 
 
@@ -944,3 +955,35 @@ run;quit;
 ods rtf close;
 ods listing;
 run;
+
+
+
+***FOR THE TABLE WHERE MODELLED DATA IS COMPARED TO OBSERVED DATA;
+
+proc means n mean;var p50_n_sw_1549_ p5_n_sw_1549_ p95_n_sw_1549_;where cald=2023;run;
+proc means n mean;var p50_prop_w_1549_sw p5_prop_w_1549_sw p95_prop_w_1549_sw;where cald=2023;run;
+proc means n mean;var p50_p_sw_age1519_ p5_p_sw_age1519_ p95_p_sw_age1519_ ;where cald=2023;run;
+proc means n mean;var p50_p_sw_age2024_ p5_p_sw_age2024_ p95_p_sw_age2024_ ;where cald=2023;run;
+proc means n mean;var p50_p_sw_age2529_ p5_p_sw_age2529_ p95_p_sw_age2529_ ;where cald=2023;run;
+proc means n mean;var p50_p_sw_age3039_ p5_p_sw_age3039_ p95_p_sw_age3039_ ;where cald=2023;run;
+proc means n mean;var p50_p_sw_ageab40_ p5_p_sw_ageab40_ p95_p_sw_ageab40_ ;where cald=2023;run;
+
+proc means n mean;var p50_p_age_deb_sw1519_ p5_p_age_deb_sw1519_ p95_p_age_deb_sw1519_ ;where cald=2023;run;
+proc means n mean;var p50_p_age_deb_sw2024_ p5_p_age_deb_sw2024_ p95_p_age_deb_sw2024_ ;where cald=2023;run;
+proc means n mean;var p50_p_age_deb_sw2529_ p5_p_age_deb_sw2529_ p95_p_age_deb_sw2529_ ;where cald=2023;run;
+proc means n mean;var p50_p_age_deb_sw3039_ p5_p_age_deb_sw3039_ p95_p_age_deb_sw3039_ ;where cald=2023;run;
+proc means n mean;var p50_p_age_deb_swab40_ p5_p_age_deb_swab40_ p95_p_age_deb_swab40_ ;where cald=2023;run;
+
+proc means n mean;var p50_p_totdur_sw_0to3_ p5_p_totdur_sw_0to3_ p95_p_totdur_sw_0to3_;where cald=2023;run;
+proc means n mean;var p50_p_totdur_sw_3to5_ p5_p_totdur_sw_3to5_ p95_p_totdur_sw_3to5_;where cald=2023;run;
+proc means n mean;var p50_p_totdur_sw_6to9_ p5_p_totdur_sw_6to9_ p95_p_totdur_sw_6to9_;where cald=2023;run;
+proc means n mean;var p50_p_totdur_sw_10to19_ p5_p_totdur_sw_10to19_ p95_p_totdur_sw_10to19_;where cald=2023;run;
+
+proc means n mean;var p50_p_fsw_newp0_ p5_p_fsw_newp0_ p95_p_fsw_newp0_;where cald=2023;run;
+proc means n mean;var mean_incidence_sw p5_incidence_sw p95_incidence_sw;where cald=2023;run;
+proc means n mean;var p50_prop_sw_onprep p5_prop_sw_onprep p95_prop_sw_onprep;where cald=2023;run;
+proc means n mean;var p50_prevalence_sw p5_prevalence_sw p95_prevalence_sw;where cald=2023;run;
+
+proc means n mean;var p50_p_diag_sw p5_p_diag_sw p95_p_diag_sw;where cald=2023;run;
+proc means n mean;var p50_p_onart_diag_sw p5_p_onart_diag_sw p95_p_onart_diag_sw;where cald=2023;run;
+proc means n mean;var p50_p_onart_vl1000_sw p5_p_onart_vl1000_sw p95_p_onart_vl1000_sw;where cald=2023;run;
