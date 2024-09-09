@@ -3,10 +3,51 @@
 libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a; 
-set a.wide_fsw_28_02_24;
+set a.wide_fsw_zim_17_04_24AMT;
 if incidence1549_23 <0.02 then delete;
 run;
 
+***table 1;
+proc means n p50 p5 p95 min max;var
+prevalence1549_23 	 prevalence1549w_23 	prevalence1549m_23 	 incidence1549_23 	incidence1549w_23 	incidence1549m_23
+p_diag_23			 p_diag_w_23			p_diag_m_23 		 p_onart_diag_23	p_onart_diag_w_23	p_onart_diag_m_23
+p_onart_vl1000_23	 p_onart_vl1000_w_23	p_onart_vl1000_m_23	 p_vl1000_23 		
+p_vg1000_23 		 prevalence_vg1000_23
+
+incidence_sw_23		p_fsw_newp0__23
+
+;run;
+
+
+
+***table 2 - characteristics of FSW in 2024 (these are suffixed 23 but are actually 24);
+proc means n p50 p5 p95 mean;var
+n_sw_1549__23		prop_w_1549_sw_23 		prop_w_ever_sw_23		act_dur_sw_23 
+p_sw_age1519__23	p_sw_age2024__23		p_sw_age2529__23 		p_sw_age3039__23 p_sw_age40pl__23  
+p_age_deb_sw1519__23 p_age_deb_sw2024__23	p_age_deb_sw2529__23	p_age_deb_sw3039__23	p_age_deb_sw40pl__23
+p_actdur_0to3__23  p_actdur_3to5__23     p_actdur_6to9__23  	p_actdur_10to19__23 
+p_totdur_0to3__23  p_totdur_3to5__23     p_totdur_6to9__23  	p_totdur_10to19__23 
+p_fsw_newp0__23 prop_sw_onprep_23
+p_sti_sw_23
+incidence_sw_23		prevalence_sw_23
+p_diag_sw_23		p_onart_diag_sw_23		p_onart_vl1000_sw_23 p_sw_prog_vis_23;
+run;
+
+
+proc means n p50 p5 p95;var
+/*Current SW program*/
+p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1
+p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
+p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
+incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1 p_vl1000_30_1
+
+/*AMETHIST*/
+p_sw_prog_vis_30_2  p_tested_past_year_sw_30_2
+p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2		p_fsw_newp0__30_2	prop_sw_onprep_30_2
+p_sti_sw_30_2		incidence_sw_30_2	prevalence_sw_30_2
+incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2
+;
+run;
 
 data b;
 set a;
@@ -45,42 +86,6 @@ d_p_onart_vl1000_hi_none = (p_onart_vl1000_30_3 - p_onart_vl1000_30_1)*100;
 d_p_vl1000_hi_none = (p_vl1000_30_3 - p_vl1000_30_1) *100;
 
 
-run;
-
-***table 1;
-proc means n p50 p5 p95 min max;var
-prevalence1549_23 	 prevalence1549w_23 	prevalence1549m_23 	 incidence1549_23 	incidence1549w_23 	incidence1549m_23
-p_diag_23			 p_diag_w_23			p_diag_m_23 		 p_onart_diag_23	p_onart_diag_w_23	p_onart_diag_m_23
-p_onart_vl1000_23	 p_onart_vl1000_w_23	p_onart_vl1000_m_23	 p_vl1000_23 		
-p_vg1000_23 		 prevalence_vg1000_23
-
-incidence_sw_23		p_fsw_newp0__23
-
-;run;
-
-/*
-p_diag_m_22	 		p_diag_w_22
-p_onart_diag_m_22   	p_onart_diag_w_22
-p_onart_vl1000_m_22   p_onart_vl1000_w_22
-*/
-
-
-***table 2 - characteristics of FSW in 2022;
-proc means n p50 p5 p95 mean;var
-n_sw_1549__22		prop_w_1549_sw_22 		prop_w_ever_sw_22		act_dur_sw_22 
-p_sw_age1519__22	p_sw_age2024__22		p_sw_age2529__22 		p_sw_age3039__22 p_sw_age40pl__22  
-p_age_deb_sw1519__22 p_age_deb_sw2024__22	p_age_deb_sw2529__22	p_age_deb_sw3039__22	p_age_deb_sw40pl__22
-p_actdur_0to3__22  p_actdur_3to5__22     p_actdur_6to9__22  	p_actdur_10to19__22 
-p_totdur_0to3__22  p_totdur_3to5__22     p_totdur_6to9__22  	p_totdur_10to19__22 
-p_fsw_newp0__22 prop_sw_onprep_22
-p_sti_sw_22
-incidence_sw_22		prevalence_sw_22
-p_diag_sw_22		p_onart_diag_sw_22		p_onart_vl1000_sw_22 p_sw_prog_vis_22;
-run;
-
-
-proc means n p50 p5 p95;var
-p_diag_w_22		p_onart_diag_w_22		p_onart_vl1000_w_22 ;
 run;
 
 proc freq;table p_sw_prog_vis_1 p_sw_prog_vis_2 p_sw_prog_vis_3;run;
