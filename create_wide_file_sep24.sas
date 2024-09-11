@@ -3,9 +3,11 @@
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vl_monitoring\dalys_averted_per_vl_out\";
 
 
+/*
+
 data a.vl_23_gbd; set a.out:;  
 
-
+*/
 
 data a;
 set a.vl_23_gbd; ***INSERT OUTPUT FILENAME; 
@@ -227,7 +229,7 @@ option nospool;
 %macro var(v=);
 
 ***OUTPUTS IN SPECIFIC YEARS - AMEND TO E.G. PROJECT SPECIFIC BASELINE (NOTE THESE ARE NOT BY OPTION);
-proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 2021.0 <= cald < 2022.0; 
+proc means  noprint data=y; var &v; output out=y_23 mean= &v._23; by run; where 2023.0 <= cald < 2024.0; 
 
 ***OUTPUTS IN SPECIFIC YEARS BY OPTION - THIS MAY NOT BE NEEDED IN ALL ANALYSES;
 proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
@@ -235,19 +237,19 @@ proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; 
 ***OUTPUTS FOR CE ANALYSES OVER 5, 20 AND 50 years BY OPTION;
 proc means noprint data=y; var &v; output out=y_24_27 mean= &v._24_27; by run option ; where 2024.0 <= cald < 2027.00;
 proc means noprint data=y; var &v; output out=y_24_29 mean= &v._24_29; by run option ; where 2024.0 <= cald < 2029.00;
-proc means noprint data=y; var &v; output out=y_24_44 mean= &v._24_44; by run option ; where 2024.0 <= cald < 2044.00;
+proc means noprint data=y; var &v; output out=y_24_34 mean= &v._24_34; by run option ; where 2024.0 <= cald < 2034.00;
 proc means noprint data=y; var &v; output out=y_24_74 mean= &v._24_74; by run option ; where 2024.0 <= cald < 2074.00;
 
 ***SORT OUTPUT DATASETS BY RUN BEFORE MERGING;
-proc sort data=y_22; by run; proc transpose data=y_22 out=t_22 prefix=&v._22_; var &v._22; by run;
+proc sort data=y_23; by run; proc transpose data=y_23 out=t_23 prefix=&v._23_; var &v._23; by run;
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
 proc sort data=y_24_27; by run; proc transpose data=y_24_27 out=t_24_27 prefix=&v._24_27_; var &v._24_27; by run;
 proc sort data=y_24_29; by run; proc transpose data=y_24_29 out=t_24_29 prefix=&v._24_29_; var &v._24_29; by run;
-proc sort data=y_24_44; by run; proc transpose data=y_24_44 out=t_24_44 prefix=&v._24_44_; var &v._24_44; by run;
+proc sort data=y_24_34; by run; proc transpose data=y_24_34 out=t_24_34 prefix=&v._24_34_; var &v._24_34; by run;
 proc sort data=y_24_74; by run; proc transpose data=y_24_74 out=t_24_74 prefix=&v._24_74_; var &v._24_74; by run;
 
 ***MERGE TOGETHER SO THE DATASET NOW CONTAINS MEANS OVER SPECIFIED PERIODS;
-data &v ; merge  y_22 t_30 t_24_27 t_24_29 t_24_44 t_24_74;  
+data &v ; merge  y_23 t_30 t_24_27 t_24_29 t_24_34 t_24_74;  
 
 
 ***THIS MACRO CALCULATES THE MEANS OVER PERIOD AT EACH OF THE SPECIFIED TIME PERIODS ABOVE ANS STORES THESE IN INDIVIDUAL DATASETS;
@@ -314,17 +316,34 @@ data f; set a.wide_vl_23_gbd;
 d_n_vl_24_27_2_1 = n_vl_24_27_2 - n_vl_24_27_1 ;
 d_n_death_hiv_24_27_2_1 = n_death_hiv_24_27_2 - n_death_hiv_24_27_1 ;
 d_n_death_hiv_24_29_2_1 = n_death_hiv_24_29_2 - n_death_hiv_24_29_1 ;
-d_n_death_hiv_24_44_2_1 = n_death_hiv_24_44_2 - n_death_hiv_24_44_1 ;
+d_n_death_hiv_24_34_2_1 = n_death_hiv_24_34_2 - n_death_hiv_24_34_1 ;
 d_ddaly_24_27_2_1 = ddaly_24_27_2 - ddaly_24_27_1 ;
 d_ddaly_24_29_2_1 = ddaly_24_29_2 - ddaly_24_29_1 ;
-d_ddaly_24_44_2_1 = ddaly_24_44_2 - ddaly_24_44_1 ;
+d_ddaly_24_34_2_1 = ddaly_24_34_2 - ddaly_24_34_1 ;
 
 d_ddaly_gbd_24_27_2_1 = ddaly_gbd_24_27_2 - ddaly_gbd_24_27_1 ;
+d_ddaly_gbd_24_34_2_1 = ddaly_gbd_24_34_2 - ddaly_gbd_24_34_1 ;
 
 
-proc means mean stderr ; var n_vl_24_27_1  n_vl_24_27_2  n_vl_24_44_1  n_vl_24_44_2  ddaly_24_27_1  
-ddaly_24_27_2  ddaly_24_44_1  ddaly_24_44_2  d_ddaly_24_27_2_1  d_ddaly_gbd_24_27_2_1  d_ddaly_24_29_2_1     d_ddaly_24_44_2_1    
-d_n_death_hiv_24_27_2_1  d_n_death_hiv_24_29_2_1  d_n_death_hiv_24_44_2_1 ; 
+proc means mean n p50 p5 p95;
+var p_diag_23 		p_diag_m_23 	 		p_diag_w_23    			p_onart_diag_23   	p_onart_diag_w_23 
+p_onart_diag_m_23  	p_onart_vl1000_23 		p_onart_vl1000_w_23    	p_onart_vl1000_m_23 
+p_vg1000_23  		p_vl1000_23 			prevalence_vg1000_23   n_vl_23 
+prevalence1549m_23 	prevalence1549w_23  	prevalence1549_23  		incidence1549_23  	incidence1549w_23  	incidence1549m_23 
+n_death_hiv_23 ;
+run;
+
+
+proc means mean stderr ; 
+
+var n_vl_24_27_1  n_vl_24_27_2  n_vl_24_34_1  n_vl_24_34_2  
+
+ddaly_24_27_1  ddaly_24_27_2  ddaly_24_34_1  ddaly_24_34_2  
+
+d_ddaly_24_27_2_1  d_ddaly_gbd_24_27_2_1  d_ddaly_24_29_2_1     d_ddaly_24_34_2_1   d_ddaly_gbd_24_34_2_1  
+
+d_n_death_hiv_24_27_2_1  d_n_death_hiv_24_29_2_1  d_n_death_hiv_24_34_2_1 ; 
+
 run; 
 
 
