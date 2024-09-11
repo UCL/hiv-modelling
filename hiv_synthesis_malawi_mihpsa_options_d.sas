@@ -1,4 +1,22 @@
 
+
+
+
+* add self testing to start before 2024 in line with the data ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
