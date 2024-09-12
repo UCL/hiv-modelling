@@ -334,7 +334,7 @@ n_death_hiv_23 ;
 run;
 
 
-proc means mean stderr ; 
+proc means mean stderr n p50 p5 p95; 
 
 var n_vl_24_27_1  n_vl_24_27_2  n_vl_24_34_1  n_vl_24_34_2  
 
