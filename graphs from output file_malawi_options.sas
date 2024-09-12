@@ -20,9 +20,9 @@ data c;
 
 
 
-if option in (1 2 3 4 5 6 7 8 9 10 11 12 13 14    ) then delete;
+if option in (1 2 3 4 5 6 7 8 9 10 11 12 13    99 ) then delete;
 
-  if option = 99 then option = 1;
+  if option = 14 then option = 1;
 * if option = 0 then option = 99;
 
  
@@ -102,7 +102,7 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 * placeholder until self testing retrospectively added;
 n_tested_self_test = 0;
 
-%let single_var = /* incidence1549_  */  n_new_inf1549_           ;
+%let single_var =    incidence1549_   /* n_new_inf1549_ */        ;
 
 
 proc sort; by cald run ;run;
@@ -750,7 +750,7 @@ proc print data=d; run;
 proc contents data=d; run;
 
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
@@ -768,8 +768,7 @@ band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transpar
 
 run;quit;
 
-*/
-
+/*
 
 
 ods html;
@@ -790,9 +789,6 @@ run; quit;
 
 
 
-
-
-/*
 
 ods html;
 proc sgplot data=d; 
