@@ -159,14 +159,29 @@ cost = dcost / discount;
 
 * ================================================================================= ;
 
+
 p_newp_ge1_ = s_newp_ge1 / s_alive1564;
 
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
 s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
-
+s_alive = s_alive_m + s_alive_w ;
+s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
+s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
+s_hivge15 = s_hivge15m + s_hivge15w ;
 
 ***general population;
+
+* n_alive;						n_alive = s_alive * &sf;
+* n_alive1549_;					n_alive1549_ = s_alive1549* &sf;
+
+* n_onart  ;					n_onart   = s_onart   * &sf;
+* n_onart_w;					n_onart_w = s_onart_w * &sf;
+* n_onart_m;					n_onart_m = s_onart_m * &sf;
+* n_hiv;						n_hiv = s_hivge15 * &sf;
+* n_prep_ever;					n_prep_ever = s_prep_any_ever * &sf;
+* p_prep_ever;					p_prep_ever = s_prep_any_ever / (s_alive1564_w + s_alive1564_m) ;
+
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
 * p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m1564_ / s_hiv1564m ;  
 * p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
@@ -175,32 +190,21 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
 
-* p_onart_vl1000;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000 = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu; 
+* p_onart_vl1000;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000_ = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu; 
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
-* p_vg1000, p_vl1000;			if s_hiv1564  > 0 then p_vg1000 = s_vg1000 / s_hiv1564 ;  p_vl1000 = 1- p_vg1000 ;
-* prevalence_vg1000;			if (s_alive1549_w + s_alive1549_m) > 0 then prevalence_vg1000 = s_vg1000 / (s_alive1549_w + s_alive1549_m);
-
+* p_vg1000, p_vl1000;			if s_hiv1564  > 0 then p_vg1000_ = s_vg1000 / s_hiv1564 ;  p_vl1000_ = 1- p_vg1000_ ;
+* prevalence_vg1000;			if (s_alive1549_w + s_alive1549_m) > 0 then prevalence_vg1000_ = s_vg1000 / (s_alive1549_w + s_alive1549_m);
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
-* prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
+* prevalence1549;				prevalence1549_ = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
 
-* incidence1549;				incidence1549 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
+* incidence1549;				incidence1549_ = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
 * n_tested;						n_tested = s_tested * sf_2024 * 4;
-
-n_tested_m = s_tested_m * sf_2024 * 4;
-n_tested_m_sympt = s_tested_m_sympt * sf_2024 * 4;
-n_tested_m_circ = s_tested_m_circ * sf_2024 * 4;
-n_tested_f = s_tested_f * sf_2024 * 4;
-n_tested_f_anc = s_tested_f_anc * sf_2024 * 4;
-n_tested_f_sympt = s_tested_f_sympt * sf_2024 * 4;
-n_tested_f_non_anc = s_tested_f_non_anc * sf_2024 * 4;
-n_tested_at_return = s_tested_at_return * sf_2024 * 4;
-n_pregnant = s_pregnant * sf_2024 * 4;
 
 ***FSW;
 * n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2024;
@@ -279,19 +283,13 @@ n_pregnant = s_pregnant * sf_2024 * 4;
 * linked_diag_sw;				*if s_diag_thisper_sw>0 then p_linked_diag_sw = s_linked_diag_sw/s_diag_thisper_sw;
 
 
-keep run option cald p_newp_ge1_
-prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m
+keep run option cald 
+n_alive				 n_alive1549_		n_onart				n_onart_w			n_onart_m			
+n_prep_ever			 p_prep_ever
+prevalence1549m 	 prevalence1549w 	prevalence1549_		incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
-p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
+p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
 n_tested
-n_tested_m
-n_tested_m_sympt
-n_tested_m_circ
-n_tested_f
-n_tested_f_anc
-n_tested_f_sympt
-n_tested_f_non_anc
-n_tested_at_return
 
 n_sw_1564_  	 	 n_sw_1549_ 	 	prop_w_1564_sw		prop_w_1549_sw 	 	prop_w_ever_sw  
 p_fsw1519_	  		 p_fsw2024_		  	p_fsw2529_			p_fsw3039_	
@@ -324,11 +322,11 @@ s_tested s_tested_m s_tested_f n_pregnant
 
 proc sort data=y;by run option;run;
 
-/*
-data a.fsw_17_08_23_short; set y;run;
 
-data y; set a.fsw_17_08_23_short;run;
-*/
+data a.fsw_17_04_24_short; set y;run;
+
+data y; set a.fsw_17_04_24_short;run;
+
 
 
 proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2011<= cald <2014 and option=0 ;run;
@@ -495,47 +493,53 @@ by run;run;
 
 
 
-
-
-
+***GRAPHS;
 
 ***Use this to identify runs with implausible incidence and delete below;
-data a1;
-set a.wide_fsw_15_09_23;
-proc freq;table run;where incidence1549_22 <0.02;run;
+data b;
+set a.fsw_17_04_24_short;
+if cald ge 2024 then delete;
+proc sort; by cald run ;run;
 
-
-***Graphs for AMETHIST presentation;
-data b;set y;
-*if run in (19551048, 91209492, 138513405, 226496828, 249057554, 276068418, 408547376, 460121915, 533026231, 597223150, 657900229, 691910826, 789096000, 
-821745699, 828958562, 834955556, 953409076, 985359749) then delete;
-
-
-proc sort;by cald;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 440  ;
+%let nfit = 291;
+%let year_end = 2024.00 ;
+run;
 proc sort;by cald option ;run;
 
+
+***Just need one macro for calibration graphs, ignore the 2nd;
 
 ***Two macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
 if option =1 then delete;
 
-%let var =  p_newp_ge1_   prop_w_1549_sw incidence_sw incidence1549w;
+%let var =  
 
-/*
-n_sw_1564_  n_sw_1549_  prop_w_1564_sw   prop_w_ever_sw  p_fsw1519_  p_fsw2024_  p_fsw2529_  p_fsw3039_
-p_sw_age1519_  p_sw_age2024_  p_sw_age2529_  p_sw_age3039_ p_age_deb_sw1519_  p_age_deb_sw2024_  p_age_deb_sw2529_  p_age_deb_sw3039_
-sw_episodes  p_sw_gt1ep  tot_dur_sw  act_dur_sw
-p_actdur_0to3_  p_actdur_3to5_  p_actdur_6to9_  p_actdur_10to19_
-p_totdur_0to3_  p_totdur_3to5_  p_totdur_6to9_  p_totdur_10to19_
-p_fsw_newp0_  av_sw_newp   p_newp_sw
+n_alive				 n_alive1549_		n_onart				n_onart_w			n_onart_m			
+n_prep_ever			 p_prep_ever
+prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
+p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
+p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
+n_tested
 
-p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
-prevalence_sw   p_sti_sw;
-*/
+n_sw_1564_  	 	 n_sw_1549_ 	 	prop_w_1564_sw		prop_w_1549_sw 	 	prop_w_ever_sw  
+p_fsw1519_	  		 p_fsw2024_		  	p_fsw2529_			p_fsw3039_	
+p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_sw_age3039_ 		p_sw_age40pl_
+p_age_deb_sw1519_  	 p_age_deb_sw2024_  p_age_deb_sw2529_   p_age_deb_sw3039_   p_age_deb_sw40pl_
+sw_episodes 	  	 p_sw_gt1ep
+p_fsw_newp0_   	 	 p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_  p_fsw_newpov130_
+av_sw_newp	 		 p_newp_sw
+tot_dur_sw  		 act_dur_sw  	 
+p_actdur_0to3_  	 p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_ 
+p_totdur_0to3_  	 p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
+p_sw_prog_vis		 n_tested_sw	    prop_sw_onprep		prevalence_sw	  	incidence_sw
+p_diag_sw			 p_onart_diag_sw	p_onart_vl1000_sw
+p_sti_sw			 p_tested_past_year_sw
+
+;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -678,9 +682,9 @@ run;
 
 data d; * this is number of variables in %let var = above ;
 merge 
-g1   g2   g3   g4 /*  g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
+g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
-g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 g73 g74 g75  g76  g77  g78 
+g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 g73 g74 /*g75  g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
@@ -700,20 +704,42 @@ by cald;
 run;
 
 
-data e;
+data d1;
 set d;
-%include '"C:\Loveleen\Synthesis model\Zim\Calibration\Observed data_Zimbabwe_LBMMay2017.sas"'; by cald;
+%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Observed data_FSW_Zimbabwe.sas"; by cald;
 run;
 
-
-
-data a.fsw_18_09_23_graphs; set e;run;
-
-data e; set a.fsw_18_09_23_graphs;run;
+data e;
+set d1;
+%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe_Sep2021.sas";by cald;
+run;
 
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
 ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\25Apr2023.doc' startpage=never; 
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "n_alive 15+";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000000 by  5000000) valueattrs=(size=10);
+label p50_n_alive_0 = "Option 0 (median) - 15+ ";
+label p50_n_alive1549__0 = "Option 0 (median) - 15-49 ";
+label o_pop_all_Zi_cens = "Census - All ages";
+label o_pop_1549_Zi_cens = "Census - 15-49";
+label o_pop_all_Zi_CIA = "CIA - All ages";
+label o_pop_1565_Zi_CIA = "CIA - All 15-64";
+series  x=cald y=p50_n_alive_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_alive1549__0/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_alive1549__0 	upper=p95_n_alive1549__0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_pop_all_Zi_cens / markerattrs = (symbol=square color=grey size = 10);
+scatter x=cald y=o_pop_1549_Zi_cens / markerattrs = (symbol=square color=green size = 10);
+scatter x=cald y=o_pop_all_Zi_CIA / markerattrs = (symbol=triangle color=grey size = 10);
+scatter x=cald y=o_pop_1565_Zi_CIA / markerattrs = (symbol=triangle color=brown size = 10);
+run;quit;
+
 
 
 proc sgplot data=e; 

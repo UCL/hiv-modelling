@@ -10,9 +10,8 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data a;
 set a.fsw_zim_25jun24;  
 
-if option=1 then delete; ***Looking only at Sisters (option=1= amethist);
-
-*if rate_engage_sw_program ge 0.15 then delete;
+*if option=1 then delete; 
+***For Harrietts paper, delete option=1; 
 
 proc sort;by run;
 proc freq;table cald option;run;
