@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data b;
-set a.l_base_CdI12_lowinc;
+set a.l_base_CdI_12aug24;
 s_sw_1549_ = s_sw_1549;
 
 proc sort; by cald run ;run;
@@ -14,7 +14,7 @@ proc freq;table cald;run;
  
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  111    ;
+%let nfit =  348    ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -47,7 +47,18 @@ n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive1549m		n_alive1549w
 n_alive_m			n_alive_w			n_alive1564_		n_alive1564m		n_alive1564w		n_art_start_y 	
 n_prep				n_prep_ever			p_prep_ever	p_fsw_newp0_
 n_pregnant			n_newinf			n_newinf1549_		n_newinf1549m		n_newinf1549w		n_prep_oral_ever_sw
-prop_sw_hiv1549_;
+prop_sw_hiv1549_
+
+n_alive_msm		n_alive1564_msm		incidence1549msm	incidence1564msm	prevalence1549_msm	prevalence1564_msm
+p_elig_prep_any_msm_1564			p_onprep_msm		p_onart_msm			prevalence_vg1000_msm
+p_diag_msm		p_onart_diag_msm	p_vl1000_art_gt6m_msm 					p_ever_tested_msm	p_tested_this_period_msm
+p_msm_infected_from_msm				prop_m_msm			p_ep				p_ep_msm			p_msm_ge1newp
+p_m_ge1newp		n_pwid				p_onprep_pwid		p_onart_pwid
+
+
+
+
+;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;

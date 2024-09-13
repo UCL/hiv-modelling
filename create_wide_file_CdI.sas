@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data a;
-set a.cdi_21jun24;
+set a.cdi_12Aug24;
 
 proc sort;by run cald option;run;
 proc freq;table cald;run;
@@ -426,6 +426,38 @@ s_alive = s_alive_m + s_alive_w ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
 * n_prep_oral_ever_sw;  		n_prep_oral_ever_sw    = s_prep_oral_ever_sw * &sf;   
 
+* MSM;
+
+* n_alive_msm;					n_alive_msm = s_alive_msm * &sf ;
+* n_alive1564_msm;				n_alive1564_msm = s_alive1564_msm * &sf ;
+* incidence1549msm;             incidence1549msm = (s_primary1549msm * 4 * 100) / (s_alive1549_msm  - s_hiv1549msm  + s_primary1549msm);
+* incidence1564msm;             incidence1564msm = (s_primary1564msm * 4 * 100) / (s_alive1564_msm  - s_hiv1564msm  + s_primary1564msm);
+* prevalence1549_msm;			prevalence1549_msm = s_hiv1549msm / s_alive1549_msm; 
+* prevalence1564_msm;			prevalence1564_msm = s_hiv1564msm / s_alive1564_msm; 
+* prevalence_msm;				prevalence_msm = s_hiv_msm / s_alive_m;
+* p_elig_prep_any_msm_1564_;	p_elig_prep_any_msm_1564_ = s_elig_prep_any_msm_1564 / (s_alive1564_msm - s_hiv1564msm);
+* p_onprep_msm;					p_onprep_msm = s_onprep_msm / (s_alive1564_msm - s_hiv1564msm);
+* p_onart_msm;					if s_hiv_msm  > 0 then p_onart_msm = s_onart_msm / s_hiv_msm  ;
+* prevalence_vg1000_msm;		prevalence_vg1000_msm = s_vg1000_msm / s_alive_msm;
+* p_diag_msm;					if s_hiv_msm gt 0 then p_diag_msm = s_diag_msm / s_hiv_msm  ;
+* p_onart_diag_msm;				if s_diag_msm gt 0 then p_onart_diag_msm = s_onart_msm / s_diag_msm ;
+* p_vl1000_art_gt6m_msm;		if s_onart_gt6m_msm gt 0 then p_vl1000_art_gt6m_msm = s_vl1000_art_gt6m_msm / s_onart_gt6m_msm ;
+* p_ever_tested_msm; 			p_ever_tested_msm = s_ever_tested_msm / s_msm;
+* p_tested_this_period_msm;		p_tested_this_period_msm = s_tested_msm / (s_msm - s_diag_msm) ;
+* p_msm_infected_from_msm;		if s_hiv_msm gt 0 then p_msm_infected_from_msm = s_infected_from_msm / s_hiv_msm ;
+* prop_m_msm;					prop_m_msm = s_alive_msm / s_alive_m;
+
+* p_ep;							p_ep = s_ep / s_alive1564;				
+* p_ep_msm;						p_ep_msm = s_msm_ep / s_alive1564_msm;
+* p_msm_ge1newp;				p_msm_ge1newp = s_msm_ge1newp / s_alive1564_msm;
+* p_m_ge1newp;					p_m_ge1newp = s_m_ge1newp / s_alive1564_m;
+
+* PWID;
+
+* n_pwid;						n_pwid = s_pwid * &sf ;
+* p_onprep_pwid;				if (s_alive1564_pwid - s_hiv1564pwid) gt 0 then p_onprep_pwid = s_onprep_pwid / (s_alive1564_pwid - s_hiv1564pwid);
+* p_onart_pwid;					if s_hiv_pwid  > 0 then p_onart_pwid = s_onart_pwid / s_pwid  ;
+
 
 
 keep  cald	run		option	inc_cat		ych2_risk_beh_newp	p_w_giv_birth_this_per			mtct_prop		p_anc	
@@ -456,6 +488,13 @@ n_alive1549m		n_alive1549w		n_alive_m			n_alive_w			n_alive1564_		n_alive1564m	n
 n_art_start_y		n_newinf			n_newinf1549_		n_newinf1549m		n_newinf1549w		n_pregnant		n_prep 			
 n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_				n_prep_oral_ever_sw prop_sw_hiv1549_
 sw_trans_matrix		
+
+	
+n_alive_msm		n_alive1564_msm		incidence1549msm	incidence1564msm	prevalence1549_msm	prevalence1564_msm
+p_elig_prep_any_msm_1564_			p_onprep_msm		p_onart_msm			prevalence_vg1000_msm
+p_diag_msm		p_onart_diag_msm	p_vl1000_art_gt6m_msm 					p_ever_tested_msm	p_tested_this_period_msm
+p_msm_infected_from_msm				prop_m_msm			p_ep				p_ep_msm			p_msm_ge1newp
+p_m_ge1newp		n_pwid				p_onprep_pwid		p_onart_pwid
 ;
 
 proc sort data=y;by run option;run;
@@ -466,64 +505,11 @@ proc freq;table incidence1549_;where cald=2022;run;
 data low_inc;
 set y;
 
-if cald=2022 and incidence1549_ < 0.0313221879 then a=1;
-
-if run in (
-12640469
-43828339
-50866404
-57329366
-77774978
-89830802
-105428016
-132493572
-140991587
-145806156
-157950647
-186138745
-237110477
-251639929
-282604521
-310968076
-316775328
-352605356
-360868344
-382346190
-412228710
-429294459
-472777540
-517553946
-520730599
-525446466
-531640470
-533776350
-568652842
-572267845
-614018756
-649387981
-665698564
-682788489
-719636881
-727478217
-754439426
-757144304
-764364687
-780733320
-845021162
-847483835
-854647521
-855293901
-863439187
-873348720
-895226351
-932580503
-939421228
-957812902) then delete;
-
+if cald=2022 and incidence1549_ < 0.03 then delete;
 proc freq;table run;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI12_lowinc; 
+data a.l_base_CdI_12aug24; 
 set low_inc;
 *set y;  
 run;
