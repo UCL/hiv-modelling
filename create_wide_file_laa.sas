@@ -1847,7 +1847,7 @@ proc sort; by run;run;
 
 data f; set b.w_laa_v;
 
-if run ge 985928554 then delete;  * to give n=1000;
+* if run ge 985928554 then delete;  * to give n=1000;
 
 * if incidence1549_24 >= 0.0999;
 
