@@ -18,18 +18,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_u_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_v_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_u_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_v_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_laa_u;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_laa_v;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -37,7 +37,7 @@ run;
 
 
 
-proc sort data=b.k_laa_u; 
+proc sort data=b.k_laa_v; 
 by run cald option;
 run;
 
@@ -47,7 +47,7 @@ run;
 data sf;
 
 
-set b.k_laa_u ;
+set b.k_laa_v ;
 
 
 if cald=2024   ;
@@ -67,7 +67,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 data y; 
 
-merge b.k_laa_u sf;
+merge b.k_laa_v sf;
 by run ;
 
 
@@ -1385,9 +1385,9 @@ proc freq; tables cald option; where cald=2026.50;
 run;
 
 
-data    b.l_laa_u_y; set y;  
+data    b.l_laa_v_y; set y;  
 
-data y ; set b.l_laa_u_y; 
+data y ; set b.l_laa_v_y; 
 
   options nomprint;
   option nospool;
@@ -1837,15 +1837,15 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_u     ; 
+  data  b.w_laa_v     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_u_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_v_out\";
 
-data f; set b.w_laa_u;
+data f; set b.w_laa_v;
 
 if run ge 985928554 then delete;  * to give n=1000;
 
