@@ -7,7 +7,7 @@ set a.wide_fsw_zim_17_04_24AMT;
 if incidence1549_23 <0.02 then delete;
 run;
 
-***table 1;
+***Potential table for the Appendix but currently using the graphs from the create wide file instead;
 proc means n p50 p5 p95 min max;var
 prevalence1549_23 	 prevalence1549w_23 	prevalence1549m_23 	 incidence1549_23 	incidence1549w_23 	incidence1549m_23
 p_diag_23			 p_diag_w_23			p_diag_m_23 		 p_onart_diag_23	p_onart_diag_w_23	p_onart_diag_m_23
@@ -20,17 +20,18 @@ incidence_sw_23		p_fsw_newp0__23
 
 
 
-***table 2 - characteristics of FSW in 2024 (these are suffixed 23 but are actually 24);
+***table 1 - characteristics of FSW in 2024 (these are suffixed 23 but are actually 24);
 proc means n p50 p5 p95 mean;var
-n_sw_1549__23		prop_w_1549_sw_23 		prop_w_ever_sw_23		act_dur_sw_23 
+n_sw_1549__23		prop_w_1549_sw_23 		prop_w_ever_sw_23		
 p_sw_age1519__23	p_sw_age2024__23		p_sw_age2529__23 		p_sw_age3039__23 p_sw_age40pl__23  
 p_age_deb_sw1519__23 p_age_deb_sw2024__23	p_age_deb_sw2529__23	p_age_deb_sw3039__23	p_age_deb_sw40pl__23
-p_actdur_0to3__23  p_actdur_3to5__23     p_actdur_6to9__23  	p_actdur_10to19__23 
 p_totdur_0to3__23  p_totdur_3to5__23     p_totdur_6to9__23  	p_totdur_10to19__23 
 p_fsw_newp0__23 prop_sw_onprep_23
 p_sti_sw_23
 incidence_sw_23		prevalence_sw_23
-p_diag_sw_23		p_onart_diag_sw_23		p_onart_vl1000_sw_23 p_sw_prog_vis_23;
+p_diag_sw_23		p_onart_diag_sw_23		p_onart_vl1000_sw_23 p_sw_prog_vis_23
+p_actdur_0to3__23  p_actdur_3to5__23     p_actdur_6to9__23  	p_actdur_10to19__23 
+act_dur_sw_23 ;
 run;
 
 
