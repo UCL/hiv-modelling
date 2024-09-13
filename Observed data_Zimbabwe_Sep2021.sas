@@ -1734,11 +1734,12 @@ if cald=2016.25 then do;
 	o_p_diag_1564w_zimphia=0.801;o_p_diag_1564w_ll_zimphia=0.781;o_p_diag_1564w_ul_zimphia=0.820;
 
 end;
-* Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
+* Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment (these are 15+, not 15-64 but
+  labelling as 15-64 for easier readability on graphs and will use correct labels on graphs);
 if cald=2020 then do;
-	o_p_diag_15pl_zimphia=0.868;
-	o_p_diag_15plm_zimphia=0.843;	
-	o_p_diag_15plw_zimphia=0.883;
+	o_p_diag_1564_zimphia=0.868;
+	o_p_diag_1564m_zimphia=0.843;	
+	o_p_diag_1564w_zimphia=0.883;
 end;
 
 
@@ -2255,9 +2256,9 @@ if cald=2016.25  then do;
 end;	
 * Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
 if cald=2020  then do;
-	o_p_onart_15pl_diag_zimphia=0.97;
-	o_p_onart_15plm_diag_zimphia=0.959;
-	o_p_onart_15plf_diag_zimphia=0.976;
+	o_p_onart_1564_diag_zimphia=0.97;
+	o_p_onart_1564m_diag_zimphia=0.959;
+	o_p_onart_1564f_diag_zimphia=0.976;
 end;
 
 
@@ -2398,9 +2399,9 @@ if cald=2016.25 then do;
 end;
 * Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
 if cald=2020 then do;
-	o_p_vlsupp_15pl_Zimphia=0.903;
-	o_p_vlsupp_15plm_Zimphia=0.89;
-	o_p_vlsupp_15plw_Zimphia=0.910;
+	o_p_vlsupp_1564_Zimphia=0.903;
+	o_p_vlsupp_1564_Zimphia=0.89;
+	o_p_vlsupp_1564_Zimphia=0.910;
 end;
 
 

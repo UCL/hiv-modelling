@@ -253,7 +253,7 @@ end;
 
 
 ****GENERAL POPULATION ZIMPHIA RESULTS;
-if cald=2020.25 then do;
+if cald=2020 then do;
 	o_prev_1549w_zimphia=0.148;o_prev_1549m_zimphia=0.086;o_prev_1549_zimphia=0.118;
 	o_inc_1549w_zimphia=0.57;o_inc_1549m_zimphia=0.23;o_inc_1549_zimphia=0.45;
 end;

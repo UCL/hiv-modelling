@@ -21,12 +21,12 @@ proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cos
 data sf;
 set a;
 
-if cald=2024.5;
-s_alive = s_alive_m + s_alive_w ;
-sf_2024 = (16665409 * 0.581) / s_alive; 
-*Source for Zimbabwe population is https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
-*accessed 22/1/2024;
-* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
+if cald=2023;
+*s_alive = s_alive_m + s_alive_w ;
+sf_2024 = 9403613 / s_alive1564; 
+*Source for Zimbabwe population is 
+https://data.worldbank.org/indicator/SP.POP.1564.TO?locations=ZW - accessed 12Sep2024;
+
 keep run sf_2024;
 
 proc sort; by run;run;
@@ -172,8 +172,10 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 
 ***general population;
 
-* n_alive;						n_alive = s_alive * &sf;
+* n_alive (15+);				n_alive = s_alive * &sf;
 * n_alive1549_;					n_alive1549_ = s_alive1549* &sf;
+* n_alive1564_;					n_alive1564_ = s_alive1564* &sf;
+
 
 * n_onart  ;					n_onart   = s_onart   * &sf;
 * n_onart_w;					n_onart_w = s_onart_w * &sf;
@@ -284,7 +286,7 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 
 
 keep run option cald 
-n_alive				 n_alive1549_		n_onart				n_onart_w			n_onart_m			
+n_alive				 n_alive1549_		n_alive1564_		n_onart				n_onart_w			n_onart_m			
 n_prep_ever			 p_prep_ever
 prevalence1549m 	 prevalence1549w 	prevalence1549_		incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
@@ -317,7 +319,7 @@ dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_cir
 dcost_prep_visit_oral  				dcost_prep_oral   dcost_prep_visit_inj  dcost_prep_inj 		dtest_cost_sw
 effect_sw_prog_newp
 
-s_tested s_tested_m s_tested_f n_pregnant
+s_tested s_tested_m s_tested_f
 ;
 
 proc sort data=y;by run option;run;
@@ -518,7 +520,7 @@ if option =1 then delete;
 
 %let var =  
 
-n_alive				 n_alive1549_		n_onart				n_onart_w			n_onart_m			
+n_alive				 n_alive1549_		n_alive1564_		n_onart				n_onart_w			n_onart_m			
 n_prep_ever			 p_prep_ever
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
@@ -712,207 +714,207 @@ run;
 data e;
 set d1;
 %include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe_Sep2021.sas";by cald;
+
+
+if cald=2000 then o_pop_wb = 6500000;
+if cald=2001 then o_pop_wb = 6570000;
+if cald=2002 then o_pop_wb = 6630000;
+if cald=2003 then o_pop_wb = 6680000;
+if cald=2004 then o_pop_wb = 6710000;
+if cald=2005 then o_pop_wb = 6720000;
+if cald=2006 then o_pop_wb = 6750000;
+if cald=2007 then o_pop_wb = 6800000;
+if cald=2008 then o_pop_wb = 6830000;
+if cald=2009 then o_pop_wb = 6870000;
+if cald=2010 then o_pop_wb = 6920000;
+if cald=2011 then o_pop_wb = 6990000;
+if cald=2012 then o_pop_wb = 7100000;
+if cald=2013 then o_pop_wb = 7270000;
+if cald=2014 then o_pop_wb = 7450000;
+if cald=2015 then o_pop_wb = 7650000;
+if cald=2016 then o_pop_wb = 7850000;
+if cald=2017 then o_pop_wb = 8060000;
+if cald=2018 then o_pop_wb = 8260000;
+if cald=2019 then o_pop_wb = 8470000;
+if cald=2020 then o_pop_wb = 8690000;
+if cald=2021 then o_pop_wb = 8910000;
+if cald=2022 then o_pop_wb = 9150000;
+if cald=2023 then o_pop_wb = 9400000;
+
+
+
 run;
 
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\25Apr2023.doc' startpage=never; 
-
+ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Zim\FSW\Zimbabwe_AMETHIST paper.doc' startpage=never; 
+ods listing close;
 
 proc sgplot data=e; 
-Title    height=1.5 justify=center "n_alive 15+";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+Title    height=1.5 justify=center "Population size";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000000 by  5000000) valueattrs=(size=10);
-label p50_n_alive_0 = "Option 0 (median) - 15+ ";
-label p50_n_alive1549__0 = "Option 0 (median) - 15-49 ";
-label o_pop_all_Zi_cens = "Census - All ages";
-label o_pop_1549_Zi_cens = "Census - 15-49";
-label o_pop_all_Zi_CIA = "CIA - All ages";
-label o_pop_1565_Zi_CIA = "CIA - All 15-64";
+label p50_n_alive_0 = "Model (median) - Age 15+ ";
+label p50_n_alive1564__0 = "Model (median) - Age 15-64 ";
+label o_pop_wb = "World Bank Age 15-64";
 series  x=cald y=p50_n_alive_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_alive1549__0/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_n_alive1549__0 	upper=p95_n_alive1549__0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_alive1564__0/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_alive1564__0 	upper=p95_n_alive1564__0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
-scatter x=cald y=o_pop_all_Zi_cens / markerattrs = (symbol=square color=grey size = 10);
-scatter x=cald y=o_pop_1549_Zi_cens / markerattrs = (symbol=square color=green size = 10);
-scatter x=cald y=o_pop_all_Zi_CIA / markerattrs = (symbol=triangle color=grey size = 10);
-scatter x=cald y=o_pop_1565_Zi_CIA / markerattrs = (symbol=triangle color=brown size = 10);
-run;quit;
-
-
-
-proc sgplot data=e; 
-Title    height=1.5 justify=center "newp_ge1";
-
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2050 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 0.1 by 0.02)  valueattrs=(size=10);
-label p50_p_newp_ge1__0	               = "Median";
-
-series  x=cald y=p50_p_newp_ge1__0  /           lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_newp_ge1__0     upper=p95_p_newp_ge1__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-run;quit;
-
-
-
-proc sgplot data=e; 
-Title    height=1.5 justify=center "FSW Incidence";
-
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2022 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 60 by 0.2)  valueattrs=(size=10);
-label pmean_incidence_sw_0	               = "Mean";
-label p50_incidence_sw_0	               = "Median";
-
-
-series  x=cald y=pmean_incidence_sw_0  /           lineattrs = (color=blue thickness = 2);
-band    x=cald lower=pmean_incidence_sw_0     upper=pmean_incidence_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_incidence_sw_0  /           lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_incidence_sw_0     upper=p95_incidence_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-
-
-run;quit;
-
-
-
-proc sgplot data=e; 
-Title    height=1.5 justify=center "Incidence";
-
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2050 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
-label p50_incidence1549w_0	               = "Median";
-
-series  x=cald y=p50_incidence1549w_0  /           lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_incidence1549w_0     upper=p95_incidence1549w_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+scatter x=cald y=o_pop_wb / markerattrs = (symbol=triangle color=green size = 10);
 run;quit;
 
 
 proc sgplot data=e; 
-Title    height=1.5 justify=center "FSW Population (age 15-49)";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000)  valueattrs=(size=10);
-label p50_n_sw_1549__0	                  = "model age 15-49 (median)";
+title    height=1.5 justify=center "HIV prevalence in the general population";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2000 to &year_end by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Proportion'          labelattrs=(size=12)    values = (0 to 0.5 by 0.1)    valueattrs=(size=10);
 
-label o_pop_fsw_1549w_Fearnon			  = "All FSW age 15-49 - Fearon";
-series  x=cald y=p50_n_sw_1549__0  /           lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_sw_1549__0     upper=p95_n_sw_1549__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+label p50_prevalence1549__0 = "Model Median ";
+label o_prev_1549_zimphia = "ZIMPHIA";
+label o_prev1549_Z_DHS = "DHS";
 
-scatter x=cald y=o_pop_fsw_1549w_Fearnon / markerattrs = (symbol=circle color=black size = 12)
-										   yerrorlower=o_pop_fsw_ll_1549w_Fearnon yerrorupper=o_pop_fsw_ul_1549w_Fearnon errorbarattrs= (color=black thickness = 2);
+series  x=cald y=p50_prevalence1549__0 /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549__0 upper=p95_prevalence1549__0 / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_prev_1549_zimphia / markerattrs = (symbol=triangle       color=black size = 12);
+scatter x=cald y=o_prev1549_Z_DHS  / markerattrs = (symbol=triangle       color=blue size = 12);
+
 run;quit;
 
 
 proc sgplot data=e; 
-title    height=1.5 justify=center "Proportion of women who are sex workers (age 15-49)";
-footnote1 height=0.9  "";
-xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2050) 		valueattrs=(size=10); 
-yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) 		valueattrs=(size=10);
-label p50_prop_w_1549_sw_0   = "model - median ";
 
-label o_p_fsw_ab1ts6m_1849w_nbcs = "NBCP: >  1 TSP (age 18-49)";
-label o_p_fsw_1549w_Fearnon		 = "Fearon 15-49";
-label o_p_fsw_ll_1549w_SA		 = "South Africa";
-label o_p_fsw_1549w_Cam			 = "Cameroon";
-label o_p_fsw_1549w_Ken			 ="Kenya (urban)";
+title    height=1.5 justify=center "HIV incidence in general population";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2000 to &year_end by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 3 by 0.5)    valueattrs=(size=10);
 
-series  x=cald y=p50_prop_w_1549_sw_0  / 	 lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_prop_w_1549_sw_0 	 upper=p95_prop_w_1549_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+label p50_incidence1549__0 = "Model Median ";
+label o_inc_1549_zimphia = "ZIMPHIA";
+series  x=cald y=p50_incidence1549__0 /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1549__0  upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-scatter x=cald y=o_p_fsw_ab1ts6m_1849w_nbcs / markerattrs = (symbol=circle       color=blue size = 12);
-scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle       color=green size = 12)
-										 yerrorlower=o_p_fsw_ll_1549w_Fearnon yerrorupper=o_p_fsw_ul_1549w_Fearnon errorbarattrs= (color=green thickness = 2);
-scatter x=cald y=o_p_fsw_ll_1549w_SA / markerattrs = (symbol=circle       color=orange size =1)
-										 yerrorlower=o_p_fsw_ll_1549w_SA yerrorupper=o_p_fsw_ul_1549w_SA errorbarattrs= (color=orange thickness = 2);
-scatter x=cald y=o_p_fsw_1549w_Cam / markerattrs = (symbol=circle       color=red size =12)
-										 yerrorlower=o_p_fsw_ll_1549w_Cam yerrorupper=o_p_fsw_ul_1549w_Cam errorbarattrs= (color=red thickness = 2);
-scatter x=cald y=o_p_fsw_1549w_Ken / markerattrs = (symbol=circle       color=purple size =12)
-										 yerrorlower=o_p_fsw_ll_1549w_Ken yerrorupper=o_p_fsw_ul_1549w_Ken errorbarattrs= (color=purple thickness = 2);
-run;quit;
+scatter x=cald y=o_inc_1549_zimphia / markerattrs = (symbol=triangle       color=black size = 12);
 
-proc sgplot data=e; 
-Title    height=1.5 justify=center "Age of sex workers";
-
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'Proportion'          labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
-label p50_p_sw_age1519__0	              = "15-19 years (median)";
-label p50_p_sw_age2024__0	              = "20-24 years (median)";
-label p50_p_sw_age2529__0	              = "25-29 years (median)";
-label p50_p_sw_age3039__0	              = "30-39 years (median)";
-
-label o_p_1824_fsw_rds				  = "18-24 years Sapphire";
-label o_p_2529_fsw_rds				  = "25-29 years Sapphire";
-label o_p_3039_fsw_rds				  = "30-39 years Sapphire";
- 
-label o_p_1824_fsw_AMT				  = "18-24 years Amethist";
-label o_p_2529_fsw_AMT				  = "25-29 years Amethist";
-label o_p_3039_fsw_AMT				  = "39-39 years Amethist";
-
-series  x=cald y=p50_p_sw_age1519__0  /           lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_sw_age1519__0      upper=p95_p_sw_age1519__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "15-19y 90% range";
-series  x=cald y=p50_p_sw_age2024__0  /           lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_sw_age2024__0      upper=p95_p_sw_age2024__0 / transparency=0.9 fillattrs = (color=green) legendlabel= "20-24yy 90% range";
-series  x=cald y=p50_p_sw_age2529__0  /           lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_sw_age2529__0      upper=p95_p_sw_age2529__0 / transparency=0.9 fillattrs = (color=red) legendlabel= "25-29y 90% range";
-series  x=cald y=p50_p_sw_age3039__0  /           lineattrs = (color=orange thickness = 2);
-band    x=cald lower=p5_p_sw_age3039__0      upper=p95_p_sw_age3039__0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "30-39y 90% range";
-
-scatter x=cald y=o_p_1824_fsw_rds / markerattrs = (symbol=circle       color=green size = 12);
-scatter x=cald y=o_p_2529_fsw_rds / markerattrs = (symbol=circle       color=red size = 12);
-scatter x=cald y=o_p_3039_fsw_rds / markerattrs = (symbol=circle       color=orange size = 12);
-
-scatter x=cald y=o_p_1824_fsw_AMT / markerattrs = (symbol=circle       color=green size = 12);
-scatter x=cald y=o_p_2529_fsw_AMT / markerattrs = (symbol=circle       color=red size = 12);
-scatter x=cald y=o_p_3039_fsw_AMT / markerattrs = (symbol=circle       color=orange size = 12);
-run;quit;
-
-proc sgplot data=e; 
-title    height=1.5 justify=center "Proportion of sex workers with 0 condomless partners (including periods of inactive sex work)";
-footnote1 height=0.9  "";
-xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
-yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
-
-label p50_p_fsw_newp0__0 = "Model (median) ";
-
-series  x=cald y=p50_p_fsw_newp0__0  / 	 lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_fsw_newp0__0	 upper=p95_p_fsw_newp0__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-run;quit;
-
-proc sgplot data=e; 
-title    height=1.5 justify=center "Proportion of sex workers who visited a sex worker programme";
-xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2023 by 2) 		valueattrs=(size=10); 
-yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
-
-label p50_p_sw_prog_vis_0 = "Model (median) ";
-
-series  x=cald y=p50_p_sw_prog_vis_0  / 	 lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_sw_prog_vis_0	 upper=p95_p_sw_prog_vis_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
 run;quit;
 
 
 proc sgplot data=e; 
-title    height=1.5 justify=center "Number of tests";
-xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2040 by 2) 		valueattrs=(size=10); 
-yaxis grid label 	= 'Number' 		labelattrs=(size=12)   		values = (0 to 150000 by 50000) valueattrs=(size=10);
-
-label p50_n_tested_sw_0 = "No SW program ";
-label p50_n_tested_sw_1 = "Low impact SW program ";
-label p50_n_tested_sw_2 = "High impact SW program ";
-
-series  x=cald y=p50_n_tested_sw_0  / 	 lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_tested_sw_0	 upper=p95_n_tested_sw_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-
-series  x=cald y=p50_n_tested_sw_1  / 	 lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_n_tested_sw_1	 upper=p95_n_tested_sw_1 / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-
-series  x=cald y=p50_n_tested_sw_2  / 	 lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_tested_sw_2	 upper=p95_n_tested_sw_2 / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+Title    height=1.5 justify=center "Number of people tested";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2) 	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000 by 500000) valueattrs=(size=10);
+label p50_n_tested_0 = "Model (median) ";
+label o_s_test_15ov_py_z = "National AIDS Council";
+series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter  x=cald y=o_s_test_15ov_py_z/	markerattrs = (symbol=triangle       color=black size = 12);
 
 run;quit;
 
-proc print;var p50_n_tested_sw_0 p50_n_tested_sw_1 p50_n_tested_sw_2;run;
-proc contents;run;
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of men aged 15-64 with HIV, % diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)  	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label p50_p_diag_m_0 = "Model (median) - 15+";
+label o_p_diag_m1549_dhs = "DHS - 15-49";
+label o_p_diag_1564m_zimphia = "ZIMPHIA - 15-64";
+
+series  x=cald y=p50_p_diag_m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter x=cald y=o_p_diag_m1549_dhs / markerattrs = (symbol=triange color=black size = 10);
+scatter x=cald y=o_p_diag_1564m_zimphia / markerattrs = (symbol=triange color=blue size = 10);
+run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of women aged 15-64 with HIV, % diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2) 	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label p50_p_diag_w_0 = "Median (median) _ 15+";
+label o_p_diag_w1549_dhs = "DHS - 15-49";
+label o_p_diag_1564w_zimphia = "ZIMPHIA - 15-64 in 2016, 15+ in 2020";
+
+series  x=cald y=p50_p_diag_w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter x=cald y=o_p_diag_w1549_dhs / markerattrs = (symbol=triange color=black size = 10);
+scatter x=cald y=o_p_diag_1564w_zimphia / markerattrs = (symbol=triange color=blue size = 10);
+run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Proportion of diagnosed men aged 15-64 on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2004 to &year_end by 2) 	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_onart_diag_m_0 = "Model (median) ";
+label o_p_onart_1564m_diag_zimphia = "ZIMPHIA";
+
+series  x=cald y=p50_p_onart_diag_m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_diag_m_0 	upper=p95_p_onart_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter x=cald y=o_p_onart_1564m_diag_zimphia / markerattrs = (symbol=triange color=blue size = 10);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Proportion of diagnosed women aged 15-64 on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2004 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_onart_diag_w_0 = "Model (median) ";
+label o_p_onart_1564f_diag_zimphia = "ZIMPHIA";
+
+series  x=cald y=p50_p_onart_diag_w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_diag_w_0 	upper=p95_p_onart_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter x=cald y=o_p_onart_1564f_diag_zimphia / markerattrs = (symbol=triange color=blue size = 10);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Number on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2004 to &year_end by 2) 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 250000) valueattrs=(size=10);
+label p50_n_onart_0 = "Model (median) - All";
+*label p50_n_onart_m_0 = "Model (median) - Men";
+*label p50_n_onart_w_0 = "Model (median) - Women";
+label o_s_all_onart_NAC = "National AIDS Council";
+series  x=cald y=p50_n_onart_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_onart_0 	upper=p95_n_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_onart_m_0/	lineattrs = (color=blue thickness = 2);
+*band    x=cald lower=p5_n_onart_m_0 	upper=p95_n_onart_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_onart_w_0/	lineattrs = (color=orange thickness = 2);
+*band    x=cald lower=p5_n_onart_w_0 	upper=p95_n_onart_w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_s_all_onart_NAC / markerattrs = (symbol=triangle color=black size = 10);
+run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Proportion of men on ART >6 months with viral load <1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2006 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_onart_vl1000_m_0 = "Model (median) ";
+label o_p_vlsupp_1564m_Zimphia = "ZIMPHIA";
+
+series  x=cald y=p50_p_onart_vl1000_m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_m_0 	upper=p95_p_onart_vl1000_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_p_vlsupp_1564m_Zimphia / markerattrs = (symbol=triange color=black size = 10);
+
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Proportion of women on ART >6 months with viral load <1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2006 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_onart_vl1000_w_0 = "Model (median) ";
+label o_p_vlsupp_1564w_Zimphia = "ZIMPHIA";
+series  x=cald y=p50_p_onart_vl1000_w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_w_0 	upper=p95_p_onart_vl1000_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_p_vlsupp_1564w_Zimphia / markerattrs = (symbol=triange color=black size = 10);
+
+run;quit;
+
+ods rtf close;
+ods listing;
 run;
-
-
-
