@@ -1652,7 +1652,7 @@ p_diag_m_24 = p_diag_m_24 / 100;
 * sens analysis;
 * dcost_dcp_visit_50y_2 = dcost_dcp_visit_50y_2 / 2;
 * dcost_dcp_visit_50y_3 = dcost_dcp_visit_50y_3 / 2;
-  dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * (5 / 6);
+* dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * (5 / 6);
 
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
