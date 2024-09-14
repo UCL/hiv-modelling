@@ -190,7 +190,7 @@ dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000;
 dcost_prep_visit_inj  = max(0,s_dcost_prep_visit_inj * &sf * 4 / 1000); 	
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
 dcost_prep_ac_ad_adh = s_dcost_prep_ac_ad_adh * &sf * 4 / 1000; 
-dcost_dcp_visit = max(0, s_dcost_dcp_visit * &sf * 4 / 1000);
+dcost_dcp_visit = max(0, s_dcost_dcp_visit * &sf * 4 / 1000); dcost_dcp_visit = dcost_dcp_visit * 1.2; * $12 instead of $10;
 
 
 * note this below can be used if outputs are from program beyond 1-1-20;
