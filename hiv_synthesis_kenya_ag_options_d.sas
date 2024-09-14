@@ -2267,12 +2267,13 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 7 then do;
 		* 7 VMMC males aged 15+	Increase in male circumcision in priority counties = 80% ;
-		* note this takes to above target;
+		* note this takes to above target;  * this having small effect - think to have larger effect need to increase testing and decrease hard reach;
 		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 5;
 	end;
 
 	if option = 8 then do; * note not included when including all interventions;
 		* 8 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80% ;
+		* this increases proportion circumcised due to reducing hard_reach to 0;
 		pref_prep_oral = 0.95;
 		rate_test_stprep_set_in_opts = 0.95;	
 		p_prep_oral_b_set_in_opts = 0.95;
