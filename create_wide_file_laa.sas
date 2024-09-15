@@ -792,7 +792,10 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_m25ov_newinf;				p_m25ov_newinf = sum(s_primary2529m,s_primary3034m,s_primary3539m,s_primary4044m,s_primary4549m,s_primary5054m,s_primary5559m,s_primary6064m) / s_primary;		
 								end;
 
-* mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
+* mtct_birth_prop;				if s_give_birth_with_hiv > 0 then mtct_birth_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
+* mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = (s_birth_with_inf_child + s_child_infected_breastfeeding) / s_give_birth_with_hiv  ;
+
+
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag / s_hiv     ;  
 * p_diag_m;						if s_hivge15m  > 0 then p_diag_m = s_diag_m / s_hivge15m ;  p_diag_m = p_diag_m * 100;
 * p_diag_w;						if s_hivge15w  > 0 then p_diag_w = s_diag_w / s_hivge15w ;  p_diag_w = p_diag_w * 100;
@@ -850,6 +853,8 @@ run;
 
 * p_len;						if s_onart > 0 then p_len = s_len / s_onart ;
 * p_cab;						if s_onart > 0 then p_cab = s_cab / s_onart ;
+
+* p_ever_len_o_len;				p_ever_len_o_len = s_len / s_ever_len_art ;
 
 * p_len_vl1000;					p_len_vl1000 = s_o_len_vl1000 / s_len;
 * p_cab_vl1000;					p_cab_vl1000 = s_o_cab_vl1000 / s_cab;
@@ -1260,7 +1265,7 @@ dcot_cost       dtb_cost    n_hiv  ddcp_cost dcost_drug_level_test p_drug_level_
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
-p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw
+p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw  mtct_birth_prop
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
 p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
 p_ten p_zdv p_dol p_3tc p_lpr p_nev p_dar p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  p_onart_cd4_l200
@@ -1364,7 +1369,8 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
 p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab n_started_lencab_offart  p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart
-p_started_lencab_vls
+p_started_lencab_vls  p_ever_len_o_len
+
 ;
 
  
@@ -1445,7 +1451,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=r_prev_5559m_4549w );  * %var(v=r_prev_6064m_4549w );  * %var(v=r_prev_65plm_4549w );
 %var(v=incidence1549w);  %var(v=incidence1549m);  %var(v=incidence_sw); 
 %var(v=p_inf_vlsupp);  %var(v=p_inf_newp);  %var(v=p_inf_ep);  %var(v=p_inf_diag);  %var(v=p_inf_naive);   %var(v=p_inf_primary); 
-%var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);
+%var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);  %var(v=mtct_birth_prop);
 * %var(v=p_diag_m1524); * %var(v=p_diag_w1524);
 %var(v=p_ai_no_arv_c_nnm); %var(v=p_ai_no_arv_c_pim); %var(v=p_ai_no_arv_c_rt184m); %var(v=p_ai_no_arv_c_rt65m); %var(v=p_ai_no_arv_c_rttams); 
 %var(v=p_ai_no_arv_e_inm); 
@@ -1578,7 +1584,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524); %var(v=n_started_lencab_vmgt1000);  
 %var(v=n_started_lencab); %var(v=ddaly_birth_with_inf_child); %var_v=n_started_lencab_offart); %var(v=p_len_vl1000); %var(v=p_cab_vl1000);
 %var(v=n_started_lencab_offart); %var(v=p_started_lencab_vmgt1000)  %var(v=p_started_lencab_offart);  %var(v=dvis_cost_no_lencab) %var(v= dvis_cost_lencab);
-%var(v=p_started_lencab_vls);
+%var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);
 
 data   b.wide_outputs; merge 
 
@@ -1593,7 +1599,7 @@ dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
-p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw
+p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw  mtct_birth_prop
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
 p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
 p_ten p_zdv p_dol p_3tc p_lpr p_nev p_dar p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  p_onart_cd4_l200
@@ -1637,7 +1643,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
-p_started_lencab_vls
+p_started_lencab_vls  p_ever_len_o_len
 ;
 
 
@@ -1847,10 +1853,10 @@ proc sort; by run;run;
 
 data f; set b.w_laa_v;
 
-* if run ge 985928554 then delete;  * to give n=1000;
+if run le 992041608 ;
 
+* laa_u  - if run ge 985928554 then delete;  * to give n=1000;
 * if incidence1549_24 >= 0.0999;
-
 * if p_onart_vl1000_m_24 <= 0.98;
 * if p_onart_vl1000_w_24 <= 0.98;
 
@@ -1947,6 +1953,12 @@ if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
 p_diag_vl1000_24 = p_onart_diag_24 * p_onart_vl1000_24 ;
 
 p_started_unsupp_10y_2 = p_started_lencab_vmgt1000_10y_2 + p_started_lencab_offart_10y_2;
+
+dcost_clinical_care_hiv_50y_1 = dadc_cost_50y_1 + dnon_tb_who3_cost_50y_1 + dtb_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1;
+dcost_clinical_care_hiv_50y_2 = dadc_cost_50y_2 + dnon_tb_who3_cost_50y_2 + dtb_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2;
+
+
+
 
 
 * label 
@@ -2085,6 +2097,7 @@ proc means data=f  n p50  p5  p95 mean lclm uclm;
 var 
 p_len_10y_1 p_len_10y_2 
 p_cab_10y_1 p_cab_10y_2 
+p_ever_len_o_len_10y_1  p_ever_len_o_len_10y_2
 n_started_lencab_vmgt1000_10y_1 n_started_lencab_vmgt1000_10y_2   
 n_started_lencab_10y_1  n_started_lencab_10y_2
 n_started_lencab_offart_10y_1  n_started_lencab_offart_10y_2
@@ -2110,6 +2123,7 @@ n_death_hiv_age_1524_10y_1 n_death_hiv_age_1524_10y_2
 p_r_len_10y_1 p_r_len_10y_2
 p_r_cab_10y_1 p_r_cab_10y_2
 mtct_prop_10y_1 mtct_prop_10y_2 
+mtct_birth_prop_10y_1 mtct_birth_prop_10y_2 
 d_n_death_hiv_10y_2_1 
 d_p_onart_vl1000_10y_2_1 
 d_p_vl1000_10y_2_1 
@@ -2183,9 +2197,11 @@ dcost_child_hiv_50y_1 dcost_child_hiv_50y_2
 dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2
 dcost_prep_visit_50y_1 dcost_prep_visit_50y_2 
 dcost_prep_50y_1 dcost_prep_50y_2
+dcost_clinical_care_hiv_50y_1 dcost_clinical_care_hiv_50y_2
 dcost_50y_1 dcost_50y_2
 ;
 footnote;
+
 * footnote 'Cab is assumed to cost $60 per year including supply chain cost, Len is assumed to cost $36 per year including supply chain cost.  
 TLD is assumed to cost $65 per year including supply chain cost.  Being on cab-len is assumed to increase clinic visit costs by $15 per 3 months.
 Standard cost effectiveness analysis takes a lifetime time horizon to allow all effects of the policy to play out. 

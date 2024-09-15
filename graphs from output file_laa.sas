@@ -24,17 +24,11 @@ p_vl1000_ = p_vl1000;
 n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 prop_prep_any = (n_prep_any / n_alive) * 100;
-p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564; 
-p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
-prop_tldsw_elig_vl1000_ = prop_tldsw_elig_vl1000;
-prop_uvl2_vl1000_ = prop_uvl2_vl1000 ;
-hiv_death_rate_uvl2_ = hiv_death_rate_uvl2 * 100;
-deathr_dol_r_first_uvl2_ = deathr_dol_r_first_uvl2;
 p_len_1524_ = p_len_1524;
 p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 
 
-%let single_var =  p_diag           ;
+%let single_var =  n_death_hiv          ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -425,9 +419,6 @@ run;quit;
 
 
 
-*/
-
-
 
 ods html;
 proc sgplot data=d ; 
@@ -447,7 +438,6 @@ band    x=cald lower=p5_p_vl1000__1 upper=p95_p_vl1000__1 / transparency=0.9 fil
 run;quit;
 
 
-/*
 
 
 
@@ -477,202 +467,6 @@ run;quit;
 
 ods html;
 proc sgplot data=d ; 
-Title    height=1.5 justify=center "Of those TLD switch eligible, proportion on darunavir";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.3       by 0.05    ) valueattrs=(size=10);
-
-label p50_prop_tldsw_o_dar_0 = "option 0";
-label p50_prop_tldsw_o_dar_1 = "option 1";
-label p50_prop_tldsw_o_dar_2 = "option 2";
-label p50_prop_tldsw_o_dar_3 = "option 3";
-label p50_prop_tldsw_o_dar_4 = "option 4";
-
-series  x=cald y=p50_prop_tldsw_o_dar_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prop_tldsw_o_dar_0 upper=p95_prop_tldsw_o_dar_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_tldsw_o_dar_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_prop_tldsw_o_dar_1 upper=p95_prop_tldsw_o_dar_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_tldsw_o_dar_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_prop_tldsw_o_dar_2 upper=p95_prop_tldsw_o_dar_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_tldsw_o_dar_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_prop_tldsw_o_dar_3 upper=p95_prop_tldsw_o_dar_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_tldsw_o_dar_4 / lineattrs = (color=black     thickness = 4);
-band    x=cald lower=p5_prop_tldsw_o_dar_4 upper=p95_prop_tldsw_o_dar_4 / transparency=0.9 fillattrs = (color=black    ) legendlabel= "90% range";
-
-run;quit;
-
-* ods html close;
-
-
-
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Of those TLD switch eligible, proportion with vl < 1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to  0.5     by  0.1      ) valueattrs=(size=10);
-
-label p50_p_first_uvl2_dol_r_0 = "option 0";
-label p50_p_first_uvl2_dol_r_1 = "option 1";
-label p50_p_first_uvl2_dol_r_2 = "option 2";
-label p50_p_first_uvl2_dol_r_3 = "option 3";
-label p50_p_first_uvl2_dol_r_4 = "option 4";
-
-series  x=cald y=p50_p_first_uvl2_dol_r_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_p_first_uvl2_dol_r_0 upper=p95_p_first_uvl2_dol_r_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_p_first_uvl2_dol_r_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_p_first_uvl2_dol_r_1 upper=p95_p_first_uvl2_dol_r_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
-
-series  x=cald y=p50_p_first_uvl2_dol_r_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_p_first_uvl2_dol_r_2 upper=p95_p_first_uvl2_dol_r_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-
-series  x=cald y=p50_p_first_uvl2_dol_r_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_p_first_uvl2_dol_r_3 upper=p95_p_first_uvl2_dol_r_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
-
-series  x=cald y=p50_p_first_uvl2_dol_r_4 / lineattrs = (color=black     thickness = 4);
-band    x=cald lower=p5_p_first_uvl2_dol_r_4 upper=p95_p_first_uvl2_dol_r_4 / transparency=0.9 fillattrs = (color=black    ) legendlabel= "90% range";
-
-run;quit;
-
-* ods html close;
-
-
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Of those TLD switch eligible, proportion with vl < 1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.8 to  1       by  0.05     ) valueattrs=(size=10);
-
-label p50_prop_tldsw_elig_vl1000__0 = "option 0";
-label p50_prop_tldsw_elig_vl1000__1 = "option 1";
-label p50_prop_tldsw_elig_vl1000__2 = "option 2";
-label p50_prop_tldsw_elig_vl1000__3 = "option 3";
-label p50_prop_tldsw_elig_vl1000__4 = "option 4";
-
-series  x=cald y=p50_prop_tldsw_elig_vl1000__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prop_tldsw_elig_vl1000__0 upper=p95_prop_tldsw_elig_vl1000__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_tldsw_elig_vl1000__1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_prop_tldsw_elig_vl1000__1 upper=p95_prop_tldsw_elig_vl1000__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_tldsw_elig_vl1000__2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_prop_tldsw_elig_vl1000__2 upper=p95_prop_tldsw_elig_vl1000__2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_tldsw_elig_vl1000__3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_prop_tldsw_elig_vl1000__3 upper=p95_prop_tldsw_elig_vl1000__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_tldsw_elig_vl1000__4 / lineattrs = (color=black     thickness = 4);
-band    x=cald lower=p5_prop_tldsw_elig_vl1000__4 upper=p95_prop_tldsw_elig_vl1000__4 / transparency=0.9 fillattrs = (color=black    ) legendlabel= "90% range";
-
-run;quit;
-
-* ods html close;
-
-
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Of those TLD switch eligible with 2 unsuppressed VL, percent with vl < 1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1       by 0.1     ) valueattrs=(size=10);
-
-label p50_prop_uvl2_vl1000__0 = "option 0";
-label p50_prop_uvl2_vl1000__1 = "option 1";
-label p50_prop_uvl2_vl1000__2 = "option 2";
-label p50_prop_uvl2_vl1000__3 = "option 3";
-label p50_prop_uvl2_vl1000__4 = "option 4";
-
-series  x=cald y=p50_prop_uvl2_vl1000__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prop_uvl2_vl1000__0 upper=p95_prop_uvl2_vl1000__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_uvl2_vl1000__1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_prop_uvl2_vl1000__1 upper=p95_prop_uvl2_vl1000__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_uvl2_vl1000__2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_prop_uvl2_vl1000__2 upper=p95_prop_uvl2_vl1000__2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_uvl2_vl1000__3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_prop_uvl2_vl1000__3 upper=p95_prop_uvl2_vl1000__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_uvl2_vl1000__4 / lineattrs = (color=black     thickness = 4);
-band    x=cald lower=p5_prop_uvl2_vl1000__4 upper=p95_prop_uvl2_vl1000__4 / transparency=0.9 fillattrs = (color=black    ) legendlabel= "90% range";
-
-run;quit;
-
-* ods html close;
-
-
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "Of those who have experienced sustained unsuppressed VL on TLD since 2025, rate of HIV-related death";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Rate per 100 person years'		labelattrs=(size=12)  values = (0 to  10      by   1     ) valueattrs=(size=10);
-
-label mean_hiv_death_rate_uvl2__0 = "option 1";
-label mean_hiv_death_rate_uvl2__1 = "option 2";
-label mean_hiv_death_rate_uvl2__2 = "option 3";
-label mean_hiv_death_rate_uvl2__3 = "option 4";
-label mean_hiv_death_rate_uvl2__4 = "option 5";
-
-series  x=cald y=mean_hiv_death_rate_uvl2__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_hiv_death_rate_uvl2__0 upper=p95_hiv_death_rate_uvl2__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=mean_hiv_death_rate_uvl2__1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_hiv_death_rate_uvl2__1 upper=p95_hiv_death_rate_uvl2__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
-
-series  x=cald y=mean_hiv_death_rate_uvl2__2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_hiv_death_rate_uvl2__2 upper=p95_hiv_death_rate_uvl2__2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-
-series  x=cald y=mean_hiv_death_rate_uvl2__3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_hiv_death_rate_uvl2__3 upper=p95_hiv_death_rate_uvl2__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
-
-series  x=cald y=mean_hiv_death_rate_uvl2__4 / lineattrs = (color=black     thickness = 4);
-band    x=cald lower=p5_hiv_death_rate_uvl2__4 upper=p95_hiv_death_rate_uvl2__4 / transparency=0.9 fillattrs = (color=black    ) legendlabel= "90% range";
-
-run;quit;
-
-
-
-
-ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "deathr_dol_r_first_uvl2_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Rate per 100 person years'		labelattrs=(size=12)  values = (0 to 0.3      by   0.05  ) valueattrs=(size=10);
-
-label mean_deathr_dol_r_first_uvl2__0 = "option 1";
-label mean_deathr_dol_r_first_uvl2__1 = "option 2";
-label mean_deathr_dol_r_first_uvl2__2 = "option 3";
-label mean_deathr_dol_r_first_uvl2__3 = "option 4";
-label mean_deathr_dol_r_first_uvl2__4 = "option 5";
-
-series  x=cald y=mean_deathr_dol_r_first_uvl2__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_deathr_dol_r_first_uvl2__0 upper=p95_deathr_dol_r_first_uvl2__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=mean_deathr_dol_r_first_uvl2__1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_deathr_dol_r_first_uvl2__1 upper=p95_deathr_dol_r_first_uvl2__1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
-
-series  x=cald y=mean_deathr_dol_r_first_uvl2__2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_deathr_dol_r_first_uvl2__2 upper=p95_deathr_dol_r_first_uvl2__2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-
-series  x=cald y=mean_deathr_dol_r_first_uvl2__3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_deathr_dol_r_first_uvl2__3 upper=p95_deathr_dol_r_first_uvl2__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
-
-series  x=cald y=mean_deathr_dol_r_first_uvl2__4 / lineattrs = (color=black     thickness = 4);
-band    x=cald lower=p5_deathr_dol_r_first_uvl2__4 upper=p95_deathr_dol_r_first_uvl2__4 / transparency=0.9 fillattrs = (color=black    ) legendlabel= "90% range";
-
-run;quit;
-
-
-
-ods html;
-proc sgplot data=d ; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2070 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.5       by 0.1     ) valueattrs=(size=10);
@@ -683,12 +477,13 @@ label p50_incidence1549__3 = "option 3";
 series  x=cald y=p50_incidence1549__0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_incidence1549__3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_incidence1549__3 upper=p95_incidence1549__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_incidence1549__1 / lineattrs = (color=lightblue thickness = 4);
+band    x=cald lower=p5_incidence1549__1 upper=p95_incidence1549__1 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
 
 run;quit;
 
 * ods html close;
+
 
 
 
@@ -706,6 +501,27 @@ band    x=cald lower=p5_prevalence1549__0 upper=p95_prevalence1549__0 / transpar
 
 series  x=cald y=p50_prevalence1549__3 / lineattrs = (color=lightblue thickness = 4);
 band    x=cald lower=p5_prevalence1549__3 upper=p95_prevalence1549__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+
+run;quit;
+
+* ods html close;
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "prevalence vlg1000)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'prevalence'		labelattrs=(size=12)  values = (0 to 0.05       by 0.01    ) valueattrs=(size=10);
+
+label p50_prevalence_vg1000__0 = "option 0";
+label p50_prevalence_vg1000__1 = "option 1";
+
+series  x=cald y=p50_prevalence_vg1000__0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_prevalence_vg1000__0 upper=p95_prevalence_vg1000__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_prevalence_vg1000__1 / lineattrs = (color=lightblue thickness = 4);
+band    x=cald lower=p5_prevalence_vg1000__1 upper=p95_prevalence_vg1000__1 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
 
 run;quit;
 
@@ -836,6 +652,7 @@ band    x=cald lower=p5_p_cur_any_vac_e_1564__3 upper=p95_p_cur_any_vac_e_1564__
 run;quit;
 
 
+*/
 
 
 ods html;
@@ -844,10 +661,9 @@ Title    height=1.5 justify=center "Number of HIV-related deaths";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  20000   by 1000    ) valueattrs=(size=10);
 
-label p50_n_death_hiv_0 = "no vaccine";
-label p50_n_death_hiv_1 = "vaccine 1";
-label p50_n_death_hiv_2 = "vaccine 2";
-label p50_n_death_hiv_3 = "vaccine 3";
+label p50_n_death_hiv_0 = "status quo";
+label p50_n_death_hiv_1 = "len-cab";
+
 
 series  x=cald y=p50_n_death_hiv_0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_n_death_hiv_0 upper=p95_n_death_hiv_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
@@ -855,16 +671,10 @@ band    x=cald lower=p5_n_death_hiv_0 upper=p95_n_death_hiv_0 / transparency=0.9
 series  x=cald y=p50_n_death_hiv_1 / lineattrs = (color=navy thickness = 4);
 band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
 
-series  x=cald y=p50_n_death_hiv_2 / lineattrs = (color=blue thickness = 4);
-band    x=cald lower=p5_n_death_hiv_2 upper=p95_n_death_hiv_2 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-
-series  x=cald y=p50_n_death_hiv_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_n_death_hiv_3 upper=p95_n_death_hiv_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
-
 run;quit;
 
 
-
+/*
 
 
 ods html;
@@ -920,8 +730,6 @@ band    x=cald lower=p5_prop_elig_on_prep_3 upper=p95_prop_elig_on_prep_3 / tran
 run;quit;
 
 
-*/
-
 
 ods html;
 proc sgplot data=d ; 
@@ -940,8 +748,6 @@ band    x=cald lower=p5_p_diag_1 upper=p95_p_diag_1 / transparency=0.9 fillattrs
 
 run;quit;
 
-
-/*
 
 
 ods html;

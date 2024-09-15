@@ -2115,6 +2115,7 @@ sw_tm1=sw;
 hiv_tm1 = hiv; 
 age_tm1=age;
 
+
 art_initiation=0;  * started art this period - intentional that this appears in code for all adults, not just those with hiv;
 
 
@@ -10321,7 +10322,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 		if 5 < vl then u=u/2;
 		if . < caldate{t}-yrart <= 0.25 and onart=1 and adh >= 0.8 then u = u * 10 ; * despite pregnancy now lasting 9 months it was felt we might not fully capture fully the VL benefit of people who starting ART 3 months before birth ; 
 		if u < rate_birth_with_infected_child then do; * apr 2019;
-			birth_with_inf_child=1; if caldate{t} ge 2018.75 then ever_birth_with_inf_child = 1;
+			birth_with_inf_child=1; date_last_birth_with_inf_child=caldate{t}; if caldate{t} ge 2018.75 then ever_birth_with_inf_child = 1;
 			if c_rt184m_tm1=1 or c_rttams_tm1=1  or c_rt65m_tm1=1 or c_rt103m_tm1=1 or c_rt181m_tm1=1 or c_rt190m_tm1=1
 			or c_rt151m_tm1=1  or c_pr32m_tm1=1  or c_pr33m_tm1=1 or c_pr46m_tm1=1  or c_pr47m_tm1=1
 			or c_pr50vm_tm1=1  or c_pr50lm_tm1=1 or c_pr54m_tm1=1
@@ -10335,11 +10336,12 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 	if onart_birth_with_inf_child=1 and child_with_resistant_hiv=1 then onart_birth_with_inf_child_res=1;
 
 
-* TRANSNISSION TO CHILD DURING BREASTFEEDING ; * andrew sep 24;
+* TRANSMISSION TO CHILD DURING BREASTFEEDING ; * andrew sep 24;
 
-	onart_breastfeeding=0;	child_infected_breastfeeding=0;
+	onart_breastfeeding=0;	child_infected_breastfeeding=0; 
 
-	if breastfeeding=1 and hiv=1 and t ge 2 then do;
+	if breastfeeding=1 and hiv=1 and (date_last_birth_with_inf_child =. or caldate{t} - date_last_birth_with_inf_child > 1.5)  
+	and (date_last_child_inf_bf = . or caldate{t} - date_last_child_inf_bf > 1.5)  then do; * checking that if mtct ever occurred that this is a new child;
 		if onart=1 then onart_breastfeeding=1;
 		u=rand('uniform');
 		if . < vl <= 3 then u=u*1000; 
@@ -10347,7 +10349,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 		if 4 < vl <= 5 then u=u*1;
 		if 5 < vl then u=u/2;
 		if u < rate_trans_breastfeeding then do; 
-			child_infected_breastfeeding=1;	ever_child_inf_breastfeeding=1;	
+			child_infected_breastfeeding=1;	ever_child_inf_breastfeeding=1;	date_last_child_inf_bf = caldate{t};
 		end;
 	end;
 
