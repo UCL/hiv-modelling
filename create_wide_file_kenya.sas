@@ -19,8 +19,6 @@ data sf;
 
 set   kenya_ag_options_d ;
 
-
-
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
 
@@ -97,12 +95,18 @@ dly = s_dly * sf;
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
+s_ddaly_gbd = s_dyll_GBD + s_live_ddaly;
+
+
 dead_ddaly_ntd = s_dead_ddaly_ntd * sf * 4 * (0.0022 / 0.0058); 
 *  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
 *  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
 
 ddaly = s_ddaly * sf * 4;
 
+ddaly_gbd = s_ddaly_gbd * sf * 4;
+
+yll_gbd = s_dyll_GBD * sf * 4;
 
 * sensitivity analysis;
 * dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
@@ -267,6 +271,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_age1549_hivneg ;			p_age1549_hivneg = ((s_alive1549_w + s_alive1549_m) - (s_hiv1549m + s_hiv1549w)) / ((s_alive_m + s_alive_w) - s_hivge15);
 
 * s_alive;						s_alive = s_alive_m + s_alive_w ;
+
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
 
 * p_births_hiv_vlg1000;			p_births_hiv_vlg1000 = s_vl_when_giving_birth_g1000 / s_give_birth_with_hiv ; 
@@ -278,8 +283,6 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
 
 * av_newp_ge1;					av_newp_ge1 = s_newp / s_newp_ge1 ;
-
-* n_newp ;						n_newp = s_newp * sf ;
 
 * av number of newp amongst people with newp ge 1, exlcuding sw;
 * av_newp_ge1_non_sw;			av_newp_ge1_non_sw = (s_newp - s_newp_sw) / (s_newp_ge1 - (s_sw_newp_cat2 + s_sw_newp_cat3 +s_sw_newp_cat4 +s_sw_newp_cat5));
@@ -366,6 +369,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_onprep_w;					n_onprep_w = max(s_onprep_w, 0) * sf;
 * n_onprep_m;					n_onprep_m = max(s_onprep_m, 0) * sf;
 
+* n_onprep;						n_onprep = n_onprep_w + n_onprep_m ;
+
 * n_newp_ge1_w; 				n_newp_ge1_w = (s_w1524_newp_ge1 + s_w2534_newp_ge1 + s_w3544_newp_ge1 + s_w4554_newp_ge1 + s_w5564_newp_ge1) * sf; 
 
 * p_prep_elig_past_year;		p_prep_elig_past_year = s_prep_elig_past_year / ((s_alive1564_w + s_alive1564_m) - s_hiv1564);
@@ -419,6 +424,9 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
 * prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
 * prevalence_hiv_preg;			prevalence_hiv_preg = s_hiv_pregnant / s_pregnant ;
+* prevalence_w;					prevalence_w = s_hivge15w / s_alive_w;
+* prevalence_m;					prevalence_m = s_hivge15m / s_alive_m;
+* prevalence;					prevalence = s_hivge15 / s_alive;
 
 * ts1m - below change 4 to 12;
 
@@ -710,6 +718,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * incidence1564msm;             incidence1564msm = (s_primary1564msm * 4 * 100) / (s_alive1564_msm  - s_hiv1564msm  + s_primary1564msm);
 * prevalence1549_msm;			prevalence1549_msm = s_hiv1549msm / s_alive1549_msm; 
 * prevalence1564_msm;			prevalence1564_msm = s_hiv1564msm / s_alive1564_msm; 
+* prevalence_msm;				prevalence_msm = s_hiv_msm / s_alive_m;
 * p_elig_prep_any_msm_1564;		p_elig_prep_any_msm_1564 = s_elig_prep_any_msm_1564 / (s_alive1564_msm - s_hiv1564msm);
 * p_onprep_msm;					p_onprep_msm = s_onprep_msm / (s_alive1564_msm - s_hiv1564msm);
 * p_onart_msm;					if s_hiv_msm  > 0 then p_onart_msm = s_onart_msm / s_hiv_msm  ;
@@ -720,6 +729,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_ever_tested_msm; 			p_ever_tested_msm = s_ever_tested_msm / s_msm;
 * p_tested_this_period_msm;		p_tested_this_period_msm = s_tested_msm / (s_msm - s_diag_msm) ;
 * p_msm_infected_from_msm;		p_msm_infected_from_msm = s_infected_from_msm / s_hiv_msm ;
+* prop_m_msm;					prop_m_msm = s_alive_msm / s_alive_m;
 
 * p_ep;							p_ep = s_ep / s_alive1564;				
 * p_ep_msm;						p_msm_ep = s_msm_ep / s_alive1564_msm;
@@ -872,8 +882,14 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 			rate_dead_cvd_ge80w = (s_dead_cvd_ge80w * 4 * 100) / (s_ageg8084w + s_ageg85plw) ;
 
 * n_alive;						n_alive = s_alive * sf;
+* n_alive_m;					n_alive_m = s_alive_m * sf;
+* n_alive_w;					n_alive_w = s_alive_w * sf;
 
-* n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage  * 4* sf;
+* n_death_hivrel;				n_death_hivrel = s_death_hivrel  * 4* sf;
+* n_death_hivrel_m;				n_death_hivrel_m = s_death_hivrel_m  * 4* sf;
+* n_death_hivrel_w;				n_death_hivrel_w = s_death_hivrel_w  * 4* sf;
+
+
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* sf;
 * n_death;						n_death = s_dead_allage  * 4 * sf;
 * n_covid;						n_covid = s_covid  * 4 * sf;
@@ -895,13 +911,19 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_hiv1549_m;					n_hiv1549_m = s_hiv1549m * sf;
 * n_hiv1549_w;					n_hiv1549_w = s_hiv1549w * sf;
 * n_hiv1549  ;					n_hiv1549   = (s_hiv1549m + s_hiv1549w) * sf;
-* n_hiv;					n_hiv = s_hivge15 * sf; 
+* n_hiv;						n_hiv = s_hivge15 * sf; 
+* n_hiv_m ;						n_hiv_m = s_hivge15m * sf; 
+* n_hiv_w ;						n_hiv_w = s_hivge15w * sf; 
 
 * n_infected1549;					n_infected = (s_primary1549_m + s_primary1549_w) * 4 * sf;
-* n_infected1549m;					n_infected_m = s_primary1549_m * 4 * sf;
-* n_infected1549w;					n_infected_w = s_primary1549_w * 4 * sf;
+* n_infected1549m;					n_infected1549_m = s_primary1549_m * 4 * sf;
+* n_infected1549w;					n_infected1549_w = s_primary1549_w * 4 * sf;
 
 * n_infected;					n_infected = (s_primary_m + s_primary_w) * 4 * sf;
+* n_infected_w;					n_infected_w = s_primary_w * 4 * sf;
+* n_infected_m;					n_infected_m = s_primary_m * 4 * sf;
+
+
 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
@@ -919,6 +941,23 @@ n_vmmc1549_3m = s_vmmc1549m * sf;
 n_new_inf1549m = s_primary1549m * sf * 4;
 n_new_inf1549w = s_primary1549w * sf * 4;
 n_new_inf1549 = s_primary1549 * sf * 4;
+
+yll=yll_gbd;
+yll_w=0;
+yll_m=0;
+
+incidence1524m = incidence1524m / 10; 
+incidence1524w = incidence1524w / 10;  
+incidence1564m = incidence1564m / 10; 
+incidence1564w = incidence1564w / 10;  
+incidence1564 = incidence1564 / 10;  
+incidence_sw = incidence_sw / 10; 
+incidence_msm = incidence1564msm / 10;
+
+dummy1=.;
+dummy2=.;
+dummy3=.;
+dummy4=.;
 
 
 keep run option cald cost  n_infected1549 

@@ -37,9 +37,6 @@ merge   kenya_ag_options_d sf;
 by run ;
  
 
-
-
-
 * preparatory code ;
 
 * ================================================================================= ;
@@ -95,12 +92,18 @@ dly = s_dly * sf;
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
+s_ddaly_gbd = s_dyll_GBD + s_live_ddaly;
+
+
 dead_ddaly_ntd = s_dead_ddaly_ntd * sf * 4 * (0.0022 / 0.0058); 
 *  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
 *  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
 
 ddaly = s_ddaly * sf * 4;
 
+ddaly_gbd = s_ddaly_gbd * sf * 4;
+
+yll_gbd = s_dyll_GBD * sf * 4;
 
 * sensitivity analysis;
 * dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
@@ -936,9 +939,9 @@ n_new_inf1549m = s_primary1549m * sf * 4;
 n_new_inf1549w = s_primary1549w * sf * 4;
 n_new_inf1549 = s_primary1549 * sf * 4;
 
-yll=1;
-yll_w=1;
-yll_m=1;
+yll=yll_gbd;
+yll_w=0;
+yll_m=0;
 
 incidence1524m = incidence1524m / 10; 
 incidence1524w = incidence1524w / 10;  

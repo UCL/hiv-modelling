@@ -95,12 +95,18 @@ dly = s_dly * sf;
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
+s_ddaly_gbd = s_dyll_GBD + s_live_ddaly;
+
+
 dead_ddaly_ntd = s_dead_ddaly_ntd * sf * 4 * (0.0022 / 0.0058); 
 *  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
 *  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
 
 ddaly = s_ddaly * sf * 4;
 
+ddaly_gbd = s_ddaly_gbd * sf * 4;
+
+yll_gbd = s_dyll_GBD * sf * 4;
 
 * sensitivity analysis;
 * dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
@@ -936,9 +942,9 @@ n_new_inf1549m = s_primary1549m * sf * 4;
 n_new_inf1549w = s_primary1549w * sf * 4;
 n_new_inf1549 = s_primary1549 * sf * 4;
 
-yll=1;
-yll_w=1;
-yll_m=1;
+yll=yll_gbd;
+yll_w=0;
+yll_m=0;
 
 incidence1524m = incidence1524m / 10; 
 incidence1524w = incidence1524w / 10;  
@@ -957,9 +963,10 @@ keep run cald option
 n_alive_m n_alive_w  n_alive  prevalence_m prevalence_w  prevalence  n_infected_m  n_infected_w  n_infected p_diag_m  p_diag_w  p_diag  
 p_onart_diag_m p_onart_diag_w  p_onart_diag p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
 n_death_hivrel_m n_death_hivrel_w n_death_hivrel n_hiv_m n_hiv_w n_hiv prop_m_msm  prevalence_msm  incidence1524m incidence1564m incidence1524w incidence1564w
-incidence_sw incidence_msm  dummy3 dummy4 incidence1564  n_onart  n_onprep_m  n_onprep_w  n_onprep  yll_w  yll_m  yll
+incidence_sw incidence_msm  dummy3 dummy4 incidence1564  n_onart  n_onprep_m  n_onprep_w  n_onprep  yll_w  yll_m  yll_w
 
 ;
+
 
 
 
