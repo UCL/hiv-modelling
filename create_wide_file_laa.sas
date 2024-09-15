@@ -4,7 +4,7 @@
 
 
 
-
+* note: temporarily excluding costs for child until mtct effects fully captured;
 
 * add daly benefit from mtct effect ;
 
@@ -253,6 +253,7 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who
 		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
 		dcost_child_hiv + dcost_non_aids_pre_death + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost 
 ;
+
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost ; 
@@ -1381,13 +1382,14 @@ proc sort data=y;by run option;run;
 
 
 * check on when branching to options occurs;
-proc freq; tables cald option; where cald=2025.00;
-proc freq; tables cald option; where cald=2025.25;
-proc freq; tables cald option; where cald=2025.50;
-proc freq; tables cald option; where cald=2025.75;
+
 proc freq; tables cald option; where cald=2026.00;
 proc freq; tables cald option; where cald=2026.25;
 proc freq; tables cald option; where cald=2026.50;
+proc freq; tables cald option; where cald=2026.75;
+proc freq; tables cald option; where cald=2027.00;
+proc freq; tables cald option; where cald=2027.25;
+proc freq; tables cald option; where cald=2027.50;
 run;
 
 
@@ -1414,8 +1416,8 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 * note: it is critical that this starts at year_interv;
 
 
-proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2026.0 <= cald < 2036.00;   
-proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2026.0 <= cald < 2076.00;   
+proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2027.0 <= cald < 2037.00;   
+proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2027.0 <= cald < 2077.00;   
 																				   
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
@@ -1883,8 +1885,8 @@ d_p_r_cab_1524_10y_2_1 = p_r_cab_1524_10y_2 - p_r_cab_1524_10y_1 ;
 d_mtct_prop_10y_2_1 =  mtct_prop_10y_2 - mtct_prop_10y_1; 
 
 * sensitivity analysis around cost;
-* dcab_cost_50y_2 = dcab_cost_50y_2 * 1.25;
-* dlen_cost_50y_2 = dlen_cost_50y_2 * 1.25;
+* dcab_cost_50y_2 = dcab_cost_50y_2 * 2.5 ;
+* dlen_cost_50y_2 = dlen_cost_50y_2 * 2.5 ;
 
 dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
 + ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
@@ -1894,6 +1896,24 @@ dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_c
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
  
+
+
+
+
+
+* ###################################################################################################################### ;
+
+* note: temporarily excluding costs for child until mtct effects fully captured;
+
+dcost_child_hiv_50y_1 = 0; dcost_child_hiv_50y_2=0;
+
+* ###################################################################################################################### ;
+
+
+
+
+
+
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
 					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 + dcost_drug_level_test_50y_1
@@ -1920,6 +1940,14 @@ min_netdaly500 = min(netdaly500_1, netdaly500_2);
 
 d_netdaly500_2_1 = netdaly500_1 - netdaly500_2; * net dalys averted ;
 
+netdaly_gbd500_1 = ddaly_gbd_50y_1 + (dcost_50y_1 / 0.0005);
+netdaly_gbd500_2 = ddaly_gbd_50y_2 + (dcost_50y_2 / 0.0005);
+
+min_netdaly_gbd500 = min(netdaly_gbd500_1, netdaly_gbd500_2);
+
+d_netdaly_gbd500_2_1 = netdaly_gbd500_1 - netdaly_gbd500_2; * net daly_gbds averted ;
+
+
 netdaly300_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0003);
 netdaly300_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0003);
 
@@ -1937,6 +1965,9 @@ d_netdaly150_2_1 = netdaly150_1 - netdaly150_2; * net dalys averted ;
 
 if netdaly500_1 = min_netdaly500 then lowest_netdaly=0;
 if netdaly500_2 = min_netdaly500 then lowest_netdaly=1;
+
+if netdaly_gbd500_1 = min_netdaly_gbd500 then lowest_netdaly_gbd=0;
+if netdaly_gbd500_2 = min_netdaly_gbd500 then lowest_netdaly_gbd=1;
 
 min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_2);
 
@@ -2217,18 +2248,21 @@ proc means data=f mean  ;
 var 
 ddaly_birth_with_inf_child_50y_1 ddaly_birth_with_inf_child_50y_2 
 d_n_death_hiv_50y_2_1 
+ddaly_50y_1 ddaly_50y_2
+ddaly_gbd_50y_1 ddaly_gbd_50y_2
 d_ddaly_50y_2_1 d_ddaly_gbd_50y_2_1 
 d_dcost_50y_2_1
 d_netdaly500_2_1 
 d_netdaly300_2_1 
 d_netdaly150_2_1 
 lowest_netdaly
+d_netdaly_gbd500_2_1
 ;
 run;
 ods html close;
 
 ods html;
-proc freq data=f; tables lowest_netdaly lowest_ddaly  lowest_dcost;
+proc freq data=f; tables lowest_netdaly lowest_netdaly_gbd lowest_ddaly  lowest_dcost;
 run; 
 ods html close;
 
@@ -2297,7 +2331,31 @@ run;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 = rate_return_for_lencab prob_strong_pref_lencab lencab_uptake lencab_uptake_vlg1000 incidence1549_24 p_onart_vl1000_24/ solution; 
+model d_netdaly500_2_1 = rate_return_for_lencab prob_strong_pref_lencab lencab_uptake lencab_uptake_vlg1000 incidence1549_24 p_onart_vl1000_24
+n_death_hiv_24 prevalence_vg1000_24 / solution; 
 run; 
 * ods html close;
+
+
+* ods html; 
+proc glm; 
+model d_netdaly500_2_1 = incidence1549_24 p_onart_vl1000_24 p_vl1000_24 n_death_hiv_24 prevalence_vg1000_24 / solution; 
+run; 
+* ods html close;
+
+* ods html; 
+proc glm; 
+model d_netdaly500_2_1 = p_onart_vl1000_24  n_death_hiv_24 prevalence_vg1000_24 / solution; 
+run; 
+* ods html close;
+
+
+* ods html; 
+proc glm; 
+model d_netdaly500_2_1 = prevalence_vg1000_24   n_death_hiv_24 / solution; 
+run; 
+* ods html close;
+
+
+
 

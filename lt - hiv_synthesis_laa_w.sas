@@ -46,17 +46,17 @@
 
 
 
-*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
+ libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   * here ! ;
+* libname a "&outputdir/";   * here ! ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population =  10000  ; 
 %let year_interv = 2027;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -1319,7 +1319,7 @@ cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; cum13=cum12+inc13; 
 
 e=rand('uniform');
-if 0.0 <= e < inc1    then age=-73+rand('uniform')*18;   
+if 0.0 <= e < inc1    then age=-72+rand('uniform')*17;   
 if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
 if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
 if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
@@ -1353,7 +1353,7 @@ end;
 
 age =round(age ,.25);
 
-lowest_age_at_start=-73;
+lowest_age_at_start=-72;
 if caldate1=1984 then lowest_age_at_start=-74;									 
 
 if age  >= lowest_age_at_start;
@@ -18407,6 +18407,14 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 * procs;
 
+
+proc freq; tables cald hiv ; where death=.; run;
+
+proc print; var dead death dcause rdcause agedeath age_would_be_now dead_ddaly dead_daly dyll_GBD ;
+where death >= 2027 ;
+run;
+
+
 /*
 
 proc freq; tables cald hiv ; where death=.; run;
@@ -20121,9 +20129,6 @@ if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do;
 */
 /*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
-if cald = 2024 and prevalence1549 < 0.03 then do; abort abend; end;
-
-
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -21098,18 +21103,20 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-
+/*
 
 * 1989;
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=0);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=0);
+
 * 1990;
 %update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=1,h=8,j=6,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=1,h=8,j=7,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=1,h=8,j=8,s=0);
+
 * 1991;
 %update_r1(da1=1,da2=2,e=5,f=6,g=5,h=12,j=9,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=5,h=12,j=10,s=0);
@@ -21293,10 +21300,11 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
 
 
-data a; set r1;
+data a.jhjh; set r1;
 
+*/
 
-data r1; set a;
+data r1; set a.jhjh;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
