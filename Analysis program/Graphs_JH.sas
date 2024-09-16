@@ -13,6 +13,10 @@ proc freq;table option cald;run;
 proc sort data=a;by run;run;
 
 
+
+****NEED TO CHANGE TO ZIM SPECIFIC POP****;
+
+
 data sf;
 set a;
 
@@ -169,7 +173,7 @@ set d;
 %include '"C:\Loveleen\Synthesis model\Zim\Calibration\Observed data_Zimbabwe_LBMMay2017.sas"'; by cald;
 run;
 
-ods graphics / reset imagefmt=jpeg height=5in width=6in; run;
+ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
 ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\13Dec2023.doc' startpage=never; 
 
 
