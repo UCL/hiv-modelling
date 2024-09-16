@@ -44,6 +44,13 @@
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
                           
 
+* HIV SELF_TESTING;
+
+* prob_self_test_hard_reach;prob_self_test_hard_reach = 0.05;
+* self_test_targeting;		self_test_targeting = 1.5;
+* rate_self_test;			rate_self_test = 0.015;
+* date_self_testing_intro;	date_self_testing_intro = 2018;
+
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 

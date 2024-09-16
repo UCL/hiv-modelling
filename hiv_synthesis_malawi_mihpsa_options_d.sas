@@ -1,22 +1,5 @@
 
 
-
-
-* add self testing to start before 2024 in line with the data ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -404,6 +387,7 @@ newp_seed = 7;
 
 * secondary_self_test_targeting; secondary_self_test_targeting = 1;
 
+* date_self_testing_intro;  date_self_testing_intro = 2018;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
@@ -2256,6 +2240,10 @@ who may be dead and hence have caldate{t} missing;
 		*Keep all testing at SQ level;
 		sw_program_set_in_opts = 1 ; eff_sw_program = 0;		 			*No SW program;
 		rate_diseng_sw_prog_set_in_opts = 1; rate_disengage_sw_program=1;
+
+		* self_testing;
+		prob_self_test_hard_reach = 0;
+		rate_self_test = 0;
 
 		*Prevention;
 		*Condom promotion and provision: keep at SQ level;
@@ -4936,7 +4924,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	eff_self_test_targeting = self_test_targeting;
 
 	w = rand('uniform');	
-	if hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach) then do;
+	if caldate{t} ge date_self_testing_intro > . and hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach) then do;
 
 		u_self_test=rand('uniform');
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
