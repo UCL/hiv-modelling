@@ -2307,8 +2307,9 @@ who may be dead and hence have caldate{t} missing;
 			pref_prep_inj_set_in_opts = 1; pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match inj PrEP uptake to oral PrEP target JAS Jul23;
 		end;
 		r_test_startprep_set_in_opts = 1; eff_rate_test_startprep_any=0.4; 
-		* if 0 <= caldate{t} - &year_interv < 5 then eff_rate_test_startprep_any = 0.1 + (0.3 * (caldate{t} - &year_interv) / 5) ; * gradual scale up;
+			if 0 <= caldate{t} - &year_interv < 5 then eff_rate_test_startprep_any = 0.1 + (0.3 * (caldate{t} - &year_interv) / 5) ; * gradual scale up;
 		prob_prep_inj_b_set_in_opts = 1; eff_prob_prep_inj_b=0.9;  
+			if 0 <= caldate{t} - &year_interv < 5 then eff_prob_prep_inj_b = 0.1 + (0.9 * (caldate{t} - &year_interv) / 5) ; * gradual scale up;
 		r_ch_stop_prep_inj_set_in_opts = 1; eff_rate_choose_stop_prep_inj=0.01;
 		p_prep_restart_set_in_opts = 1; eff_prob_prep_any_restart_choice=0.5;		
 	end;
@@ -2321,8 +2322,10 @@ who may be dead and hence have caldate{t} missing;
 		if caldate{t}=&year_interv then do;
 			pref_prep_inj_set_in_opts = 1; pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match inj PrEP uptake to oral PrEP target JAS Jul23;
 		end;
-		r_test_startprep_set_in_opts = 1; eff_rate_test_startprep_any=0.4;
-		prob_prep_inj_b_set_in_opts = 1; eff_prob_prep_inj_b=0.4;
+		r_test_startprep_set_in_opts = 1; eff_rate_test_startprep_any=0.4; 
+			if 0 <= caldate{t} - &year_interv < 5 then eff_rate_test_startprep_any = 0.1 + (0.3 * (caldate{t} - &year_interv) / 5) ; * gradual scale up;
+		prob_prep_inj_b_set_in_opts = 1; eff_prob_prep_inj_b=0.9;  
+			if 0 <= caldate{t} - &year_interv < 5 then eff_prob_prep_inj_b = 0.1 + (0.9 * (caldate{t} - &year_interv) / 5) ; * gradual scale up;
 		r_ch_stop_prep_inj_set_in_opts = 1; eff_rate_choose_stop_prep_inj=0.01;
 		p_prep_restart_set_in_opts = 1; eff_prob_prep_any_restart_choice=0.5;		
 	end;
@@ -2351,12 +2354,24 @@ who may be dead and hence have caldate{t} missing;
 
 	end;
 
-	*Option 11 is SQ + 	Economic empowerment [new for MW];
+	*Option 11 is SQ + 	Economic empowerment [new for MW];  * currently modelling similar effect as option 12 - needs refinement as look at outputs;
 	if option = 11 then do;
+
+		condom_incr_set_in_opts = 0;
+		if gender = 2 and 15 <= age < 25 then do;	
+			condom_incr_set_in_opts = 1; condom_incr_year_i = 1;
+		end;
+
 	end;
 
-	*Option 12 is SQ + 	Comprehensive sexuality education [new for MW];
+	*Option 12 is SQ + 	Comprehensive sexuality education [new for MW]; * currently modelling similar effect as option 11 - needs refinement as look at outputs;
 	if option = 12 then do;
+
+		condom_incr_set_in_opts = 0;
+		if gender = 2 and 15 <= age < 25 then do;	
+			condom_incr_set_in_opts = 1; condom_incr_year_i = 1;
+		end;
+
 	end;
 
 
@@ -2755,7 +2770,7 @@ if caldate{t} = &year_interv then do;
 	if circ_inc_rate_set_in_opts ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
 
 	*increase in condom use;
-	condom_incr_year_i = 0; *coded within core (not below options code);
+	if condom_incr_set_in_opts ne 1 then condom_incr_year_i = 0; *coded within core (not below options code);
 
 	*population wide tld;
 	pop_wide_tld = 0;
@@ -4324,8 +4339,13 @@ end;
 
 
 * Reducing newp by 50% if condom incr =1;
-if caldate{t} = &year_interv and condom_incr_year_i = 1 then do;
+if caldate{t} >= &year_interv and condom_incr_year_i = 1 then do;
 	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
+end;
+
+* Reducing newp by 75% if condom incr =1;
+if caldate{t} >= &year_interv and agyw=1 and condom_incr_year_i = 3 then do;
+	u=rand('uniform'); if u < 0.50 then do;newp=newp/4;newp=round(newp,1);end;
 end;
 
 
