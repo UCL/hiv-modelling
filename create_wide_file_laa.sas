@@ -1,21 +1,6 @@
 
 
 
-
-
-
-* note: temporarily excluding costs for child until mtct effects fully captured;
-
-* add daly benefit from mtct effect ;
-
-
-
-
-
-
-
-
-
 * options user="/folders/myfolders/";
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_y_out\";
@@ -135,12 +120,13 @@ ddaly_gbd = s_ddaly_gbd * sf * 4;
 * sensitivity analysis;
 * dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
 
+s_mtct = s_birth_with_inf_child + s_child_infected_breastfeeding ;
 
-ddaly_birth_with_inf_child = s_birth_with_inf_child * sf * 4 * 3  * discount ; * 3 dalys per infected child ;  
+ddaly_yll_mtct = s_mtct * sf * 4 * 10  * discount ; * 10 dalys per infected child ;  
+
+ddaly_mtct = ddaly_yll_mtct + (s_ddaly_mtct * sf * 4); * adding the yll to the live dalys;
 
 dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf * 4; * odabe ;
-
-ddaly_mtct = s_ddaly_mtct * sf * 4;
 
 ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf * 4; * napd;
 
@@ -154,7 +140,11 @@ ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odab
 
 ddaly_all = ddaly_ntd_mtct_odab_napd;
 
-ddaly_ac_mtct = ddaly + ddaly_mtct ;
+ddaly_ac_mtct = ddaly + ddaly_mtct;
+
+* NOTE !: ;
+
+ddaly = ddaly_ac_mtct ;
 
 * ================================================================================= ;
 
@@ -1265,7 +1255,7 @@ dcot_cost       dtb_cost    n_hiv  ddcp_cost dcost_drug_level_test p_drug_level_
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
-p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw  mtct_birth_prop
+p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw  mtct_birth_prop  ddaly_mtct
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
 p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
 p_ten p_zdv p_dol p_3tc p_lpr p_nev p_dar p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  p_onart_cd4_l200
@@ -1396,6 +1386,7 @@ data    b.l_laa_y_y; set y;
 
 data y ; set b.l_laa_y_y; 
 
+
   options nomprint;
   option nospool;
 
@@ -1411,9 +1402,11 @@ data e; set y; keep &v run cald option ;
 proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2023.5 <= cald <= 2024.75; 
 
 
-
 * note: it is critical that this starts at year_interv;
-
+* note: it is critical that this starts at year_interv;
+* note: it is critical that this starts at year_interv;
+* note: it is critical that this starts at year_interv;
+* note: it is critical that this starts at year_interv;
 
 proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2027.0 <= cald < 2037.00;   
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2027.0 <= cald < 2077.00;   
@@ -1551,7 +1544,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_prep_newp); %var(v=prop_sw_onprep);  %var(v=p_em_inm_res_ever_prep_cab);  %var(v=p_em_cam_res_ever_prep_len);  %var(v=p_cabr_start_rest_prep_cab);
  %var(v=p_lenr_start_rest_prep_len);
 %var(v=n_o_cab_at_3m);    %var(v=n_o_cab_at_6m);    %var(v=n_o_cab_at_9m);   %var(v=n_o_cab_at_ge12m); 
-%var(v=ddaly); %var(v=p_emerge_inm_res_cab);  %var(v=p_emerge_inm_res_cab_tail); %var(v=ddaly_ac_ntd_mtct);  %var(v=ddaly_ac_mtct);
+%var(v=ddaly); %var(v=p_emerge_inm_res_cab);  %var(v=p_emerge_inm_res_cab_tail); %var(v=ddaly_ac_ntd_mtct);  %var(v=ddaly_ac_mtct); %var(v=ddaly_mtct);
 %var(v=of_all_o_cab_prop_dur_9m); %var(v=of_all_o_cab_prop_dur_ge12m); %var(v=ddaly_gbd);
 %var(v=s_em_inm_res_o_cab_off_3m);  %var(v=s_o_cab_or_o_cab_tm1_no_r);   %var(v=s_emerge_inm_res_cab_tail);   %var(v=s_cur_in_prep_cab_tail_no_r);  
 %var(v=s_cur_in_prep_len_tail_no_r);
@@ -1591,7 +1584,7 @@ data   b.wide_outputs; merge
 
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost  dcab_cost  dlen_cost   dclin_cost  dcost_circ dcost_condom_dn 
-
+ddaly_mtct
 dzdv_cost dten_cost  d3tc_cost  dnev_cost  dlpr_cost  ddar_cost  defa_cost
  ddol_cost  dcab_cost  dlen_cost
 
@@ -1854,14 +1847,6 @@ proc sort; by run;run;
 
 data f; set b.w_laa_y;
 
-if run le 992041608 ;
-
-* laa_u  - if run ge 985928554 then delete;  * to give n=1000;
-* if incidence1549_24 >= 0.0999;
-* if p_onart_vl1000_m_24 <= 0.98;
-* if p_onart_vl1000_w_24 <= 0.98;
-
-
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
 
 d_n_iime_10y_2_1 = n_iime_10y_2 -   n_iime_10y_1 ; 
@@ -1895,22 +1880,6 @@ dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_c
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
  
-
-
-
-
-
-* ###################################################################################################################### ;
-
-* note: temporarily excluding costs for child until mtct effects fully captured;
-
-dcost_child_hiv_50y_1 = 0; dcost_child_hiv_50y_2=0;
-
-* ###################################################################################################################### ;
-
-
-
-
 
 
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
@@ -2245,17 +2214,13 @@ title 'Effects of the policy of cab/len for people aged 15-24 on DALYs and costs
 ods noproctitle;
 proc means data=f mean  ;
 var 
-ddaly_birth_with_inf_child_50y_1 ddaly_birth_with_inf_child_50y_2 
 d_n_death_hiv_50y_2_1 
+ddaly_mtct_50y_1 ddaly_mtct_50y_2
 ddaly_50y_1 ddaly_50y_2
-ddaly_gbd_50y_1 ddaly_gbd_50y_2
-d_ddaly_50y_2_1 d_ddaly_gbd_50y_2_1 
+d_ddaly_50y_2_1  
 d_dcost_50y_2_1
 d_netdaly500_2_1 
-d_netdaly300_2_1 
-d_netdaly150_2_1 
 lowest_netdaly
-d_netdaly_gbd500_2_1
 ;
 run;
 ods html close;
