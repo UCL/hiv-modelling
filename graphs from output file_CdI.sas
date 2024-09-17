@@ -1629,13 +1629,13 @@ run;
 
 ***CALIBRATION COMPARISON WITH OTHER MODELS;
 ***For output into Excel file;
-
+libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
 data b;
-set a.l_base_CdI12_lowinc;
+set a.l_base_CdI_12aug24;
 s_sw_1549_ = s_sw_1549;
 
 proc sort; by cald run ;run;
-proc freq;table cald;run;
+proc freq;table run;where cald=2022;run;
 
 data y;
 set b;
@@ -1645,15 +1645,17 @@ cald 	run		n_alive1549_		n_alive1549m  	n_alive1549w	prevalence1549_  prevalence
 n_newinf1549_	n_newinf1549m		n_newinf1549w	p_diag1549_		p_diag1549m		 p_diag1549w
 p_onart_diag 	p_onart_diag_m 		p_onart_diag_w  p_onart_vl1000_	p_onart_vl1000_m p_onart_vl1000_w	  prop_w_1549_sw
 prop_sw_hiv1549_  	p_mcirc			p_vmmc			p_trad_circ		n_death_hiv 	 n_death_hiv_m 		  n_death_hiv_w
-n_hiv				n_hiv_m			n_hiv_w		incidence1549_per1000_	incidence1549m_per1000_	incidence1549w_per1000_
-n_onart			n_onart_m			n_onart_w		
+n_hiv				n_hiv_m			n_hiv_w			prevalence1549_msm 	prop_m_msm	 incidence1549_per1000_	
+incidence1549m_per1000_				incidence1549w_per1000_			n_onart			 n_onart_m			  n_onart_w		
 ;
 
 run;
+
+proc freq;table prevalence1549_msm;run;
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 111  ;
+%let nfit = 348 ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -1707,8 +1709,9 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 %var_d(p_onart_vl1000_m);	%var_d(p_onart_vl1000_w);	%var_d(prop_w_1549_sw);		%var_d(prop_sw_hiv1549_);
 %var_d(p_mcirc);			%var_d(p_vmmc);				%var_d(p_trad_circ);		%var_d(n_death_hiv);
 %var_d(n_death_hiv_m);		%var_d(n_death_hiv_w);		%var_d(n_hiv);				%var_d(n_hiv_m);		
-%var_d(n_hiv_w);			%var_d(n_onart);			%var_d(n_onart_m);			%var_d(n_onart_w);
-%var_d(incidence1549_per1000_);  %var_d(incidence1549m_per1000_);  %var_d(incidence1549w_per1000_); 
+%var_d(n_hiv_w);			%var_d(prevalence1549_msm); %var_d(prop_m_msm);			%var_d(n_onart);		
+%var_d(n_onart_m);			%var_d(n_onart_w);			%var_d(incidence1549_per1000_);  %var_d(incidence1549m_per1000_);
+%var_d(incidence1549w_per1000_); 
 
 data all;
 merge 
@@ -1716,11 +1719,12 @@ l_n_alive1549m   	l_n_alive1549w 		l_n_alive1549_		l_prevalence1549m 	l_prevalen
 l_n_newinf1549m 	l_n_newinf1549w 	l_n_newinf1549_ 	l_p_diag1549m 		l_p_diag1549w		l_p_diag1549_ 
 l_p_onart_diag_m  	l_p_onart_diag_w 	l_p_onart_diag  	l_p_onart_vl1000_m 	l_p_onart_vl1000_w  l_p_onart_vl1000_ 
 l_prop_w_1549_sw 	l_prop_sw_hiv1549_ 	l_p_mcirc 			l_p_vmmc 			l_p_trad_circ 		
-l_n_death_hiv_m		l_n_death_hiv_w		l_n_death_hiv 		l_n_hiv_m		l_n_hiv_w	l_n_hiv
-l_incidence1549m_per1000_  l_incidence1549w_per1000_  l_incidence1549_per1000_    l_n_onart_m  l_n_onart_w  l_n_onart ;run;
+l_n_death_hiv_m		l_n_death_hiv_w		l_n_death_hiv 		l_n_hiv_m			l_n_hiv_w			l_n_hiv l_prevalence1549_msm 
+l_prop_m_msm		l_incidence1549m_per1000_ 				l_incidence1549w_per1000_  				l_incidence1549_per1000_ 
+l_n_onart_m  		l_n_onart_w  		l_n_onart ;run;
 
-ods results off;
+*ods results off;
 
-ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\WHO Ivory Coast\comparison21jun_lowinc.xlsx"
+ods excel file="C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\WHO Ivory Coast\comparison12aug.xlsx"
 options(sheet_name='base1' start_at='A2');
 proc print data=all noobs;run;

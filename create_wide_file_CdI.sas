@@ -1,6 +1,6 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
+libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
 
 
 data a;
@@ -499,14 +499,13 @@ p_m_ge1newp		n_pwid				p_onprep_pwid		p_onart_pwid
 
 proc sort data=y;by run option;run;
 
-proc freq;table incidence1549_;where cald=2022;run;
+proc freq;table incidence1549_per1000_;where cald=2022;run;
+proc freq;table run;where incidence1549_per1000_ > 1 and cald=2022;run;
 
 ***Removing low incidence runs;
 data low_inc;
 set y;
 
-if cald=2022 and incidence1549_ < 0.03 then delete;
-proc freq;table run;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_CdI_12aug24; 
