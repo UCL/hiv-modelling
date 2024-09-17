@@ -940,7 +940,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/CdI_parameters14.sas";
+%include "/home/rmjllob/CdI_parameters15.sas";
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
@@ -2213,6 +2213,152 @@ option = &s;
 mihpsa_params_set_in_options=0;				* JAS Oct23;
 
 if caldate_never_dot >= &year_interv then do;
+	
+	if option=0 then do;
+	end;
+
+	***max targets;
+
+	***FSW: Increased engagement/PrEP in SW program;
+	if option=1 then do;
+		rate_engage_sw_program=0.20;
+		effect_sw_prog_prep_any = 0.50;
+	end;
+
+	***MSM: Strengthening demand, increased accessibility of condoms,peer education;
+	if option=2 then do;
+		msm_tr_factor=1.2;
+	end;
+
+	***MSM: Increase oral PrEP ;
+	if option=3 then do;
+		prob_prep_elig_msm = 0.5;
+	end;
+
+	***PWID: Integrating harm reduction care package. Increase OST, needle exchange program;
+	if option=4 then do;
+		fold_tr_pwid = 0.5;
+	end;
+
+	***Condom promotion;
+	if option=5 then do;
+		condom_incr_year_i = 3;
+	end;
+
+	***Increased testing in MSM;
+	if option=6 then do;
+		if msm=1 then do;
+			incr_test_msm_year_i=5;
+		end;
+	end;
+
+	***Increased testing in FSW (this is community based so independent of FSW program);
+	if option=7 then do;
+		if fsw=1 then do;
+			incr_test_fsw_year_i=7;
+		end;
+	end;
+
+	***Increased testing in PWID;
+	if option=8 then do;
+		if pwid=1 then do;
+			incr_test_fsw_year_i=9;
+		end;
+	end;
+
+	***Increased testing in high risk agyw - defined as 15-24 fsw;
+	if option=9 then do;
+		if agyw=1 and fsw=1 then do;
+			incr_test_fswagyw_year_i=11;
+		end;
+	end;
+
+	***Increased testing in men aged 25+ (facility based);
+	if option=10 then do;
+		if gender=1 and age>25 then do;
+			incr_test_men_year_i=13;
+		end;
+	end;
+
+	***Increased testing in women aged 25+ (facility based);
+	if option=11 then do;
+		if gender=2 and age>25 then do;
+			incr_test_women_year_i=15;
+		end;
+	end;
+
+
+
+
+
+
+	***halfway targets;
+
+	***Increased engagement in SW program;
+	if option=51 then do;
+		rate_engage_sw_program=0.13;
+		effect_sw_prog_prep_any = 0.50;
+	end;
+
+	if option=52 then do;
+		msm_tr_factor=2;
+	end;
+
+	***MSM: Increase oral PrEP;
+	if option=53 then do;
+		prob_prep_elig_msm = 0.35;
+	end;
+
+	***PWID: Integrating harm reduction care package. Increase OST, needle exchange program;
+	if option=54 then do;
+		fold_tr_pwid = 2;
+	end;
+
+	***Condom promotion;
+	if option=55 then do;
+		condom_incr_year_i = 1;
+	end;
+
+	if option=56 then do;
+		if msm=1 then do;
+			incr_test_msm_year_i=6;
+		end;
+	end;
+
+	if option=57 then do;
+		if fsw=1 then do;
+			incr_test_fsw_year_i=8;
+		end;
+	end;
+
+	***Increased testing in PWID;
+	if option=58 then do;
+		if pwid=1 then do;
+			incr_test_pwid_year_i=10;
+		end;
+	end;
+
+	***Increased testing in high risk agyw - defined as 15-24 fsw;
+	if option=59 then do;
+		if agyw=1 and fsw=1 then do;
+			incr_test_fswagyw_year_i=12;
+		end;
+	end;
+
+	***Increased testing in men aged 25+ (facility based);
+	if option=60 then do;
+		if gender=1 and age>25 then do;
+			incr_test_men_year_i=14;
+		end;
+	end;
+
+	***Increased testing in women aged 25+ (facility based);
+	if option=61 then do;
+		if gender=2 and age>25 then do;
+			incr_test_women_year_i=16;
+		end;
+	end;
+
 
 end;
 
@@ -2912,6 +3058,11 @@ if caldate{t} >= &year_interv then do;
 	end;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
 end;
+
+***CdI options;
+if incr_test_msm_year_i = 5 and msm=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+if incr_test_msm_year_i = 6 and msm=1 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
+
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 ***Zim specific;	* JAS Feb24;
@@ -4105,6 +4256,11 @@ end;
 * Reducing newp by 50% if condom incr =1;
 if caldate{t} = &year_interv and condom_incr_year_i = 1 then do;
 	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
+end;
+
+* Reducing newp by 75% if condom incr =3;
+if caldate{t} = &year_interv and condom_incr_year_i = 3 then do;
+	u=rand('uniform'); if u < 0.50 then do;newp=newp/4;newp=round(newp,1);end;
 end;
 
 
@@ -19814,7 +19970,7 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 /*if cald = 1990 and (prevalence1549w > 0.06) then do; abort abend; end;*/
 if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
-/*if cald = 2022 and (incidence1549 > 0.12) then do; abort abend; end;*/
+if cald = 2022 and (incidence1549 > 0.12) then do; abort abend; end;
 
 
 ***Malawi specific;			*JAS Feb24;

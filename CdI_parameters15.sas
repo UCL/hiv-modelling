@@ -11,7 +11,7 @@ caldate1=1980;
 caldate_never_dot=1980;
 startyr = 1985 + 0.25;
 
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8, 0.25 0.25 0.25 0.25); * change sep22 for pop_wide_tld;
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7, 0.33 0.33 0.33); * change sep22 for pop_wide_tld;
 
 * inc_cat; 					inc_cat = 1 ;  
 
@@ -23,6 +23,13 @@ startyr = 1985 + 0.25;
 * base_rate_sw;				%sample(base_rate_sw, 0.0005 0.0010 0.0015, 0.15 0.35 0.50);
 
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3 4, 0.0 0.30 0.0 0.70);
+
+* rate_engage_sw_program;	%sample(rate_engage_sw_program, 0.05 0.10, 0.30 0.70); *previously 0.10;
+* effect_sw_prog_prep_any;  effect_sw_prog_prep_any = 0.05;
+
+* msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.1 0.3 0.5); * risk of one or more cls partners in msm per period ;
+
+* prep_any_strategy;		prep_any_strategy=17;
 
 * HIV TESTING;
 

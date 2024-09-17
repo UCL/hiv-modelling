@@ -419,6 +419,7 @@ s_alive = s_alive_m + s_alive_w ;
 * n_alive_m;					n_alive_m = s_alive_m * &sf;
 * n_alive_w;					n_alive_w = s_alive_w * &sf;
 * n_prep;						n_prep = s_prep_any * &sf;
+* n_prep_sw;					n_prep_sw = s_onprep_sw * &sf;
 * n_prep_ever;					n_prep_ever = s_prep_any_ever * &sf;
 * n_pregnant;					n_pregnant= s_pregnant * &sf;
 * p_prep_ever;					p_prep_ever = s_prep_any_ever / (s_alive1564_w + s_alive1564_m) ;
@@ -487,17 +488,20 @@ n_cd4_lt200_		n_hiv  				n_hiv_m				n_hiv_w				n_hiv1549_			n_hiv1549m			n_hiv15
 n_alive1549m		n_alive1549w		n_alive_m			n_alive_w			n_alive1564_		n_alive1564m	n_alive1564w
 n_art_start_y		n_newinf			n_newinf1549_		n_newinf1549m		n_newinf1549w		n_pregnant		n_prep 			
 n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_				n_prep_oral_ever_sw prop_sw_hiv1549_
-sw_trans_matrix		
+sw_trans_matrix		n_prep_sw
 
 	
 n_alive_msm		n_alive1564_msm		incidence1549msm	incidence1564msm	prevalence1549_msm	prevalence1564_msm
 p_elig_prep_any_msm_1564_			p_onprep_msm		p_onart_msm			prevalence_vg1000_msm
 p_diag_msm		p_onart_diag_msm	p_vl1000_art_gt6m_msm 					p_ever_tested_msm	p_tested_this_period_msm
 p_msm_infected_from_msm				prop_m_msm			p_ep				p_ep_msm			p_msm_ge1newp
-p_m_ge1newp		n_pwid				p_onprep_pwid		p_onart_pwid
+p_m_ge1newp		n_pwid				p_onprep_pwid		p_onart_pwid		sw_trans_matrix
 ;
 
 proc sort data=y;by run option;run;
+
+proc freq;table sw_trans_matrix;run;
+proc means mean;var p_diag_msm;where cald=2022;run;
 
 proc freq;table incidence1549_per1000_;where cald=2022;run;
 proc freq;table run;where incidence1549_per1000_ > 1 and cald=2022;run;
