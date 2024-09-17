@@ -1847,6 +1847,8 @@ proc sort; by run;run;
 
 data f; set b.w_laa_y;
 
+if . < run le 989997912;  * laa_y to give 1000 ;
+
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
 
 d_n_iime_10y_2_1 = n_iime_10y_2 -   n_iime_10y_1 ; 
