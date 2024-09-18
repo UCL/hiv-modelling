@@ -122,7 +122,7 @@ ddaly_gbd = s_ddaly_gbd * sf * 4;
 
 s_mtct = s_birth_with_inf_child + s_child_infected_breastfeeding ;
 
-ddaly_yll_mtct = s_mtct * sf * 4 * 10  * discount ; * 10 dalys per infected child ;  
+ddaly_yll_mtct = s_mtct * sf * 4 * 5   * discount ; * 5  yll dalys per infected child ;  
 
 ddaly_mtct = ddaly_yll_mtct + (s_ddaly_mtct * sf * 4); * adding the yll to the live dalys;
 
@@ -144,7 +144,7 @@ ddaly_ac_mtct = ddaly + ddaly_mtct;
 
 * NOTE !: ;
 
-ddaly = ddaly_ac_mtct ;
+  ddaly = ddaly_ac_mtct ;
 
 * ================================================================================= ;
 
