@@ -1870,9 +1870,11 @@ d_p_r_len_1524_10y_2_1 = p_r_len_1524_10y_2 - p_r_len_1524_10y_1 ;
 d_p_r_cab_1524_10y_2_1 = p_r_cab_1524_10y_2 - p_r_cab_1524_10y_1 ;
 d_mtct_prop_10y_2_1 =  mtct_prop_10y_2 - mtct_prop_10y_1; 
 
+r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1;
+
 * sensitivity analysis around cost;
-* dcab_cost_50y_2 = dcab_cost_50y_2 * 2.5 ;
-* dlen_cost_50y_2 = dlen_cost_50y_2 * 2.5 ;
+* dcab_cost_50y_2 = dcab_cost_50y_2 * 2.0 ;
+* dlen_cost_50y_2 = dlen_cost_50y_2 * 2.0 ;
 
 dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
 + ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
@@ -1957,6 +1959,12 @@ p_started_unsupp_10y_2 = p_started_lencab_vmgt1000_10y_2 + p_started_lencab_offa
 
 dcost_clinical_care_hiv_50y_1 = dadc_cost_50y_1 + dnon_tb_who3_cost_50y_1 + dtb_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1;
 dcost_clinical_care_hiv_50y_2 = dadc_cost_50y_2 + dnon_tb_who3_cost_50y_2 + dtb_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2;
+
+if p_diag_vl1000_24 < 0.75 then p_diag_vl1000_24_g=1;
+if 0.75 <= p_diag_vl1000_24 < 0.80 then p_diag_vl1000_24_g=2;
+if 0.80 <= p_diag_vl1000_24 < 0.85 then p_diag_vl1000_24_g=3;
+if 0.85 <= p_diag_vl1000_24 < 0.90 then p_diag_vl1000_24_g=4;
+if 0.90 <= p_diag_vl1000_24        then p_diag_vl1000_24_g=5;
 
 
 
@@ -2083,7 +2091,7 @@ ods noproctitle;
 proc means data=f   n p50  p5  p95 ;  
 var prevalence1549w_24 prevalence1549m_24 prevalence1549_24 incidence1549m_24 incidence1549w_24 p_diag_w_24 p_diag_m_24 p_onart_diag_w_24  p_onart_diag_m_24  
 p_onart_vl1000_m_24 p_onart_vl1000_w_24 p_vl1000_w_24 p_vl1000_m_24 prevalence_vg1000_24   p_onart_cd4_l200_24
-p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24 
+p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24  p_diag_vl1000_24
 ;
 run;
 ods html close;
@@ -2232,6 +2240,10 @@ proc freq data=f; tables lowest_netdaly lowest_netdaly_gbd lowest_ddaly  lowest_
 run; 
 ods html close;
 
+
+proc freq; tables p_diag_vl1000_24_g * lowest_netdaly ; run; 
+
+
 footnote;
 * footnote 'These preliminary results suggest overall that the policy of providing cab/len to 15-24 year-olds would lead to a reduction in DALYs and similar overall
 costs. The policy was cost-effective in 58% of setting scenarios';
@@ -2268,7 +2280,7 @@ run;
 
 * ods html; 
 proc glm data=f; 
-model d_netdaly500_2_1 =  incidence1549_24 p_diag_vl1000_24 / solution; 
+model d_netdaly500_2_1 =  incidence1549_24 prevalence1549_24 p_diag_vl1000_24 / solution; 
 run; 
 * ods html close;
 
@@ -2297,8 +2309,7 @@ run;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 = rate_return_for_lencab prob_strong_pref_lencab lencab_uptake lencab_uptake_vlg1000 incidence1549_24 p_onart_vl1000_24
-n_death_hiv_24 prevalence_vg1000_24 / solution; 
+model d_netdaly500_2_1 = rate_return_for_lencab prob_strong_pref_lencab lencab_uptake lencab_uptake_vlg1000 / solution; 
 run; 
 * ods html close;
 
@@ -2311,16 +2322,20 @@ run;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 = p_onart_vl1000_24  n_death_hiv_24 prevalence_vg1000_24 / solution; 
+model d_netdaly500_2_1 = p_onart_vl1000_24 / solution; 
 run; 
 * ods html close;
 
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 = prevalence_vg1000_24   n_death_hiv_24 / solution; 
+model d_netdaly500_2_1 = incidence1549_24   n_death_hiv_24  p_onart_vl1000_24 / solution; 
 run; 
 * ods html close;
+
+proc glm; 
+model d_netdaly500_2_1 = r_incidence1549_50y_2_1  d_n_death_hiv_50y_2_1 / solution;
+run;
 
 
 
