@@ -20992,8 +20992,6 @@ data r1; set dsf;
 %update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=356,s=0);		
 
 
-/*
-
 data r1; set dsf;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=1);
@@ -23617,8 +23615,6 @@ data r1; set dsf;
 %update_r1(da1=2,da2=1,e=6,f=7,g=349,h=356,j=354,s=13);
 %update_r1(da1=1,da2=2,e=7,f=8,g=349,h=356,j=355,s=13);
 %update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=356,s=13);		
-
-*/
 
 
 data r1; set dsf;
