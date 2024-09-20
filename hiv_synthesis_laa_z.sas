@@ -9,6 +9,7 @@
 
 * try to count number of hiv infected children and cost accordingly ;
 
+* consider an option with offer to women aged 15-39 only ;
 
 
 
