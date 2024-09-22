@@ -18,10 +18,12 @@ proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome mode
 data c;
   set a.long_mlw_e;
 
-if option in (0   2 3 4 5 6 7 8 9 10 11 12 13 14   ) then delete;
+if option in (  1 2 3 4 5 6 7 8 9 10 11 12 13 14   ) then delete;
 
-if option = 99 then option = 0;
-  if option = 1  then option = 1;
+
+  if option = 99 then option = 0;
+    if option = 0  then option = 1;
+
 * if option = 0 then option = 99;
 
  
@@ -102,7 +104,7 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 n_tested_self_test = 0;
 
 
-%let single_var =   p_mcirc_1549m        /* n_new_inf1549_ */        ;
+%let single_var =   n_self_tested                  /* n_new_inf1549_ */        ;
 
 
 proc sort; by cald run ;run;
@@ -112,8 +114,6 @@ proc means max data=c;var count_csim     ;run; ***number of runs - this is manua
 %let year_end = 2072.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
-
-proc print; run;
 
 
 ***One macro for option 99. Gives medians ranges etc by option;
@@ -748,8 +748,44 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html close;
 
 
-
 /*
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_sw_program_visit";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000   by 1000) valueattrs=(size=10);
+label mean_n_sw_program_visit_0 = "Option 0 (median) ";
+label mean_n_sw_program_visit_1 = "Option 1 (median) ";
+
+series  x=cald y=mean_n_sw_program_visit_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_sw_program_visit_0 	upper=p95_n_sw_program_visit_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_n_sw_program_visit_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_sw_program_visit_1 	upper=p95_n_sw_program_visit_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p mcirc ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_p_mcirc_1549m_0 = "Option 0 (median) ";
+label mean_p_mcirc_1549m_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_p_mcirc_1549m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_p_mcirc_1549m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
 
 ods html;
 proc sgplot data=d; 
@@ -766,6 +802,7 @@ series  x=cald y=mean_incidence1549__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
+
 
 
 
@@ -827,13 +864,14 @@ band    x=cald lower=p5_n_vm_this_per_1 	upper=p95_n_vm_this_per_1  / transparen
 
 run;quit;
 
+*/
 
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_self_tested";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by 1000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000  by 100000 ) valueattrs=(size=10);
 label mean_n_self_tested_0 = "Option 0 (median) ";
 label mean_n_self_tested_1 = "Option 1 (median) ";
 
@@ -848,6 +886,8 @@ series  x=cald y=n_self_tested_obs_mlw/	lineattrs = (color=orange thickness = 2)
 
 run;quit;
 
+
+/*
 
 
 ods html;
@@ -1134,7 +1174,7 @@ band    x=cald lower=p5_n_diagnosed_self_test_1 	upper=p95_n_diagnosed_self_test
 
 run;quit;
 
-*/
+
 
 
 proc sgplot data=d; 
@@ -1152,8 +1192,6 @@ band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparen
 
 run;quit;
 
-
-/*
 
 
 
@@ -1894,11 +1932,13 @@ band    x=cald lower=p5_p_nev_1 	upper=p95_p_nev_1  / transparency=0.9 fillattrs
 
 run;quit;
 
+
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people on ART for >6 months with VL<1000";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.8 to 1 by 0.05) valueattrs=(size=10);
 
 label mean_p_onart_vl1000__0 = "Option 0 (median) ";
 label mean_p_onart_vl1000__1 = "Option 1  (median) ";
@@ -1912,6 +1952,9 @@ scatter x=cald y=p_onart_vl1000_obs_mlw / markerattrs = (symbol=circle color=ora
 label p_onart_vl1000_obs_mlw = "Observed data";
 
 run;quit;
+
+
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV positive people with VL<1000";
