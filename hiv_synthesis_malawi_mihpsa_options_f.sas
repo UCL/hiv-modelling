@@ -934,7 +934,6 @@ if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 if inc_cat = 4 then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
 prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 
-call symput('caldate1',caldate1);
 
 * ===================== ;
 * END OF PARAMETER LIST ;
