@@ -1153,6 +1153,7 @@ end;
 *n_sympt_notaids;				n_sympt_notaids 	= s_sympt_notaids * &sf; *VCFeb2023; 
 *n_sympt_aids;					n_sympt_aids 		= s_sympt_aids * &sf; *VCFeb2023; 
 
+* n_vm_this_per;				n_vm_this_per = s_vm_this_per * &sf;
 
 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
@@ -1382,7 +1383,7 @@ prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_
 eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
 p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 s_cost_prep s_cost_prep_visit
-dcost_80 ddaly_80  overall_test_yield
+dcost_80 ddaly_80  overall_test_yield  n_vm_this_per
 ;
 
 

@@ -7,23 +7,21 @@
 
 
 
-ods html close;
 
 
 
 
-  libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc\';   
 
-
+* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";   
+  libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000  ; 
+%let population = 100000  ; 
 %let year_interv = 2023;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -386,11 +384,11 @@ newp_seed = 7;
 
 * rr_testing_female;		rr_testing_female=1.5;
 
-* prob_self_test_hard_reach;prob_self_test_hard_reach = 0;
+* prob_self_test_hard_reach;prob_self_test_hard_reach = 0.05;  * ap 22 sep 24 - some self testing in place before year interv ;
 
 * self_test_targeting;		self_test_targeting = test_targeting;
 
-* rate_self_test;			rate_self_test = 0;
+* rate_self_test;			rate_self_test = 0.01;
 
 * self_test_sens;			self_test_sens = 0.93;          
 
@@ -3088,8 +3086,8 @@ if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 11
 eff_pr_switch_line=initial_pr_switch_line; 
 if p_vl_meas_done_set_in_opts ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
 
-if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
+if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
 * art_monitoring_strategy
 150. Viral load monitoring (6m, 12m, annual) - WHO
@@ -18076,17 +18074,11 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-
+/*
 
 proc freq; tables country cald hiv ; where death=.; run;
 
-
-proc print; var caldate&j option reg_option vm onart eff_prob_vl_meas_done ;
-where visit=1;
-run;
-
-
-
+*/
 
 /*
 
@@ -20644,6 +20636,7 @@ end;
 
 
 * WHETHER TO KEEP GOING BEYOND 2020 ;
+
 if &j=122 then do;
 incidence1549 = (s_primary1549 * 100 * 4) / (s_alive1549 - s_hiv1549 + s_primary1549);
 * ts1m - replace above with; 
@@ -20702,11 +20695,8 @@ end;
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim, SA and Malawi start in 1984 JAS Sep23;
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
-
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=0);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=0);
-
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=1,h=8,j=6,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=1,h=8,j=7,s=0);
@@ -20860,17 +20850,14 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
-
-data a.dsf2; set r1;
-
-data r1; set a.dsf2;
-
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);		* end of 2023 ;
 
+data dsf; set r1;
+
+data r1; set dsf;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=99);
 %update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=99);

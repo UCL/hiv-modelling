@@ -18,10 +18,10 @@ proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome mode
 data c;
   set a.long_mlw_e;
 
-if option in (0 1 2 3 4 5 6 7 8 9    11 12 13 14   ) then delete;
+if option in (0   2 3 4 5 6 7 8 9 10 11 12 13 14   ) then delete;
 
 if option = 99 then option = 0;
-  if option = 10 then option = 1;
+  if option = 1  then option = 1;
 * if option = 0 then option = 99;
 
  
@@ -101,7 +101,8 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 * placeholder until self testing retrospectively added;
 n_tested_self_test = 0;
 
-%let single_var =   n_vm_this_per         /* n_new_inf1549_ */        ;
+
+%let single_var =   p_mcirc_1549m        /* n_new_inf1549_ */        ;
 
 
 proc sort; by cald run ;run;
@@ -745,11 +746,10 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 
 
 ods html close;
-proc print data=d; run;
-proc contents data=d; run;
 
 
 
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -768,7 +768,6 @@ band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transpar
 run;quit;
 
 
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -808,14 +807,14 @@ label n_tests_obs_mlw = "Observed data";
 
 run;quit;
 
-*/
+
 
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_vm_this_per";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by 1000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000  by 100000 ) valueattrs=(size=10);
 label mean_n_vm_this_per_0 = "Option 0 (median) ";
 label mean_n_vm_this_per_1 = "Option 1 (median) ";
 
@@ -829,7 +828,6 @@ band    x=cald lower=p5_n_vm_this_per_1 	upper=p95_n_vm_this_per_1  / transparen
 run;quit;
 
 
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -852,12 +850,11 @@ run;quit;
 
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n prep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 100000 by 2000) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 200000 by 1000) valueattrs=(size=10);
 
 label mean_n_prep_0 = "Option 0 (median) ";
 label mean_n_prep_1 = "Option 1  (median) ";
@@ -1137,7 +1134,7 @@ band    x=cald lower=p5_n_diagnosed_self_test_1 	upper=p95_n_diagnosed_self_test
 
 run;quit;
 
-
+*/
 
 
 proc sgplot data=d; 
@@ -1154,6 +1151,9 @@ series  x=cald y=mean_p_mcirc_1549m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
+
+
+/*
 
 
 
