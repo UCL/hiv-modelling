@@ -61,6 +61,6 @@ startyr = 1985 + 0.25;
 ***there is change made in the gender specific adh code in the actual program to lower mens adh;
 *Search for LBM May2024;
 
-* reg_option_104;			%sample(reg_option_104, 0 1 , 0.05 0.95);
+* reg_option_104;			%sample(reg_option_104, 0 1 , 0.25 0.75);
 
 * date_prep_inj_intro;			date_prep_inj_intro=2100;		* Introduction of injectable PrEP ;
