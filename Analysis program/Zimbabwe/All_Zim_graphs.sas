@@ -10,22 +10,20 @@ takes ages to run so cut down dataset;
 proc sort;by run;run;
 proc freq;table cald;run;
 
-
 data sf;
 set a;
- 
+
 if cald=2023.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2022 = (16320000 * 0.581) / s_alive; 
-*Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
-*accessed 9/2/2023;
+sf_2023 = (16665409 * 0.581) / s_alive; 
+*Source for Zimbabwe population is https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
+*accessed 22/1/2024;
 * 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
-keep run sf_2022;
-
+keep run sf_2023;
 
 proc sort; by run;run;
 
-%let sf=sf_2022;
+%let sf=sf_2023;
 
 
 data b; 
