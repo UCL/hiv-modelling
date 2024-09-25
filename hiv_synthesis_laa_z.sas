@@ -11,6 +11,16 @@
 
 * consider an option with offer to women aged 15-39 only ;
 
+* consider:  Yes I am now taking into account the DALY benefit of MTCT, and also considering transmission through breastfeeding (although probably still 
+being a bit conservative by having 5 DALYs incurred for an infected child).  I feel though that the base clinic cost for delivery of care is likely too low 
+at $40 per year so I may push that up for the final manuscript as well as explicitly costing the process of finding and bringing people back into care, so 
+the final results might be somewhat less positive.  On the other hand though I am assuming substantial  
+Cab-LA PrEP introduction in 2027 and this seems optimistic.  I will look at the effect of considering that such a large scale program does not happen
+
+* check on chat during presentation
+
+;
+
 
 
 
