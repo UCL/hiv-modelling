@@ -104,7 +104,7 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 n_tested_self_test = 0;
 
 
-%let single_var =   incidence1549_                 /* n_new_inf1549_ */        ;
+%let single_var =   n_hiv_death                    /* n_new_inf1549_ */        ;
 
 
 proc sort; by cald run ;run;
@@ -748,6 +748,24 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html close;
 
 
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_death_hiv";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
+
+label mean_n_death_hiv_0 = "Option 0 (median) ";
+label mean_n_death_hiv_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_n_death_hiv_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_death_hiv_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
 /*
 
 ods html;
@@ -844,7 +862,6 @@ label n_tests_obs_mlw = "Observed data";
 
 run;quit;
 
-*/
 
 
 ods html;
@@ -865,8 +882,6 @@ band    x=cald lower=p5_n_vm_this_per_1 	upper=p95_n_vm_this_per_1  / transparen
 run;quit;
 
 
-
-/*
 
 ods html;
 proc sgplot data=d; 
