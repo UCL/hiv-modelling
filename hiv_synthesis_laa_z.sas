@@ -19,6 +19,8 @@ Cab-LA PrEP introduction in 2027 and this seems optimistic.  I will look at the 
 
 * check on chat during presentation
 
+* does this include the option of starting CAB+LEN at the time of diagnosis, or are people only eligible to switch once they’re on or have tried TLD?
+
 ;
 
 
