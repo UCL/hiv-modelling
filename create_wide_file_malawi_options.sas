@@ -1024,6 +1024,7 @@ end;
 * death_rate_hiv_all;			if s_alive > 0 then death_rate_hiv_all = (4 * 100 * s_death_hiv) / s_alive ;
 				 				if s_alive_m > 0 then death_rate_hiv_all_m = (4 * 100 * s_death_hiv_m) / s_alive_m;
 								if s_alive_w > 0 then death_rate_hiv_all_w = (4 * 100 * s_death_hiv_w) / s_alive_w;
+* n_death_hiv;					n_death_hiv = s_death_hiv  * 4* &sf;
 
 * n deaths and death rate by cause and hiv status - age 15+ ;
 
@@ -1383,11 +1384,11 @@ prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_
 eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
 p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 s_cost_prep s_cost_prep_visit
-dcost_80 ddaly_80  overall_test_yield  n_vm_this_per
+dcost_80 ddaly_80  overall_test_yield  n_vm_this_per  n_death_hiv
 ;
 
 
-
+proc freq data=y; tables n_death_hiv; run;
 
 
 proc sort data=y;by run option;run;
@@ -1399,3 +1400,4 @@ data a.long_mlw_f; set y;
 if cald=. then delete;run;
 /*proc freq data=a.long_20240429; table s_alive;run;*/
 /*proc freq data=a.long_20240429; table p_ep;run;*/
+proc contents data = a.long_mlw_f;; run;
