@@ -8,21 +8,21 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_e_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_f_out\";
 
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
-%let pth_export_mihpsa_mw= C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_a_out\export_files;run;
+%let pth_export_mihpsa_mw= C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_f_out\export_files;run;
 
 data c;
-  set a.long_mlw_e;
+  set a.long_mlw_f;
 
-if option in (  1 2 3 4 5 6 7 8 9 10 11 12 13 14   ) then delete;
+if option in (0 1 2 3 4 5 6 7 8 9    11 12 13 14 15) then delete;
 
+if option = 10 then option = 1;
+if option = 99 then option = 0;
 
-  if option = 99 then option = 0;
-    if option = 0  then option = 1;
 
 * if option = 0 then option = 99;
 
@@ -104,14 +104,14 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 n_tested_self_test = 0;
 
 
-%let single_var =   n_self_tested                  /* n_new_inf1549_ */        ;
+%let single_var =   incidence1549_                 /* n_new_inf1549_ */        ;
 
 
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 54  ;			* 94 fits out of 1000 JAS Nov23;
-%let year_end = 2072.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
+%let nfit = 104 ;			* 94 fits out of 1000 JAS Nov23;
+%let year_end = 2052.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
 
@@ -732,7 +732,7 @@ data a.d;set d;run;
 
 /*/data d;set b.d;run;*/
 
-%let start = 1990;
+%let start = 2000;
 
 
 
@@ -791,7 +791,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 4 by 0.5) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2.0 by 0.5) valueattrs=(size=10);
 
 label mean_incidence1549__0 = "Option 0 (median) ";
 label mean_incidence1549__1 = "Option 1  (median) ";
@@ -844,7 +844,7 @@ label n_tests_obs_mlw = "Observed data";
 
 run;quit;
 
-
+*/
 
 
 ods html;
@@ -864,8 +864,9 @@ band    x=cald lower=p5_n_vm_this_per_1 	upper=p95_n_vm_this_per_1  / transparen
 
 run;quit;
 
-*/
 
+
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -886,8 +887,6 @@ series  x=cald y=n_self_tested_obs_mlw/	lineattrs = (color=orange thickness = 2)
 
 run;quit;
 
-
-/*
 
 
 ods html;
