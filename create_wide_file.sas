@@ -64,7 +64,16 @@ ddaly = s_ddaly * &sf * 4;
 
 ***These are additional potential DALYs to include which have not so far been included;
 
-ddaly_mtct = s_ddaly_mtct * &sf * 4;  ***Crude estimate of number of DALYs incurred in a child born with HIV;
+s_mtct = s_birth_with_inf_child + s_child_infected_breastfeeding ;
+
+ddaly_yll_mtct = s_mtct * &sf * 4 * 5   * discount ; * 5  yll dalys per infected child ;  
+
+ddaly_mtct = ddaly_yll_mtct + (s_ddaly_mtct * &sf * 4); * adding the yll to the live dalys;
+
+* ddalys accounting for mtct;
+
+ddaly_ac_mtct = ddaly + ddaly_mtct;
+
 
 
 * ================================================================================= ;
