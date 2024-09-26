@@ -44,6 +44,7 @@ if cald=. then delete;
 run;
 data g; set  a.g;
 
+
 *keeping the runs that I have for all the options;
 /*where run in (*/
 /*359925		15933803	43826521	57300682	74364458*/
@@ -1124,7 +1125,7 @@ end;
 * n_hiv55plw;					n_hiv55plw = (s_hivge15w - s_hiv1549w) * sf; *JASJun2024;
 * n_hiv_sw;						n_hiv_sw = s_hiv_sw * sf;*VCFeb2023;
 
-* n_alive;						n_alive = s_alive * &sf;
+* n_alive;						n_alive = s_alive * sf;
 * n_alive_m;					n_alive_m = s_alive_m * sf; *VCFeb2023;
 * n_alive_w;					n_alive_w = s_alive_w * sf; *VCFeb2023;
 * n_alive_1524m;				n_alive_1524m = s_ageg1m * sf; *VCFeb2023;
@@ -1425,7 +1426,6 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 data y; set a.long_mlw_f; 
 
-
 keep
 
 cald
@@ -1501,29 +1501,30 @@ n_hivpos_tests
 
 /*
 
-proc means  noprint data=y; var &v; output out=y_00 mean= &v;  ; where cald = 2001.5  ; 
-proc means  noprint data=y; var &v; output out=y_01 mean= &v;  ; where cald = 2002.5  ; 
-proc means  noprint data=y; var &v; output out=y_02 mean= &v;  ; where cald = 2003.5  ; 
-proc means  noprint data=y; var &v; output out=y_03 mean= &v;  ; where cald = 2004.5  ; 
-proc means  noprint data=y; var &v; output out=y_04 mean= &v;  ; where cald = 2005.5  ; 
-proc means  noprint data=y; var &v; output out=y_05 mean= &v;  ; where cald = 2006.5  ; 
-proc means  noprint data=y; var &v; output out=y_06 mean= &v;  ; where cald = 2007.5  ; 
-proc means  noprint data=y; var &v; output out=y_07 mean= &v;  ; where cald = 2008.5  ; 
-proc means  noprint data=y; var &v; output out=y_08 mean= &v;  ; where cald = 2009.5  ; 
-proc means  noprint data=y; var &v; output out=y_09 mean= &v;  ; where cald = 2010.5  ; 
-proc means  noprint data=y; var &v; output out=y_10 mean= &v;  ; where cald = 2011.5  ; 
-proc means  noprint data=y; var &v; output out=y_11 mean= &v;  ; where cald = 2012.5  ; 
-proc means  noprint data=y; var &v; output out=y_12 mean= &v;  ; where cald = 2013.5  ; 
-proc means  noprint data=y; var &v; output out=y_13 mean= &v;  ; where cald = 2014.5  ; 
-proc means  noprint data=y; var &v; output out=y_14 mean= &v;  ; where cald = 2015.5  ; 
-proc means  noprint data=y; var &v; output out=y_15 mean= &v;  ; where cald = 2016.5  ; 
-proc means  noprint data=y; var &v; output out=y_16 mean= &v;  ; where cald = 2017.5  ; 
-proc means  noprint data=y; var &v; output out=y_17 mean= &v;  ; where cald = 2018.5  ; 
-proc means  noprint data=y; var &v; output out=y_18 mean= &v;  ; where cald = 2019.5  ; 
-proc means  noprint data=y; var &v; output out=y_19 mean= &v;  ; where cald = 2020.5  ; 
-proc means  noprint data=y; var &v; output out=y_20 mean= &v;  ; where cald = 2021.5  ; 
-proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where cald = 2022.5  ; 
-proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where cald = 2023.5  ; 
+proc means  noprint data=y; var &v; output out=y_00 mean= &v;  ; where cald = 2000.5  ; 
+proc means  noprint data=y; var &v; output out=y_01 mean= &v;  ; where cald = 2001.5  ; 
+proc means  noprint data=y; var &v; output out=y_02 mean= &v;  ; where cald = 2002.5  ; 
+proc means  noprint data=y; var &v; output out=y_03 mean= &v;  ; where cald = 2003.5  ; 
+proc means  noprint data=y; var &v; output out=y_04 mean= &v;  ; where cald = 2004.5  ; 
+proc means  noprint data=y; var &v; output out=y_05 mean= &v;  ; where cald = 2005.5  ; 
+proc means  noprint data=y; var &v; output out=y_06 mean= &v;  ; where cald = 2006.5  ; 
+proc means  noprint data=y; var &v; output out=y_07 mean= &v;  ; where cald = 2007.5  ; 
+proc means  noprint data=y; var &v; output out=y_08 mean= &v;  ; where cald = 2008.5  ; 
+proc means  noprint data=y; var &v; output out=y_09 mean= &v;  ; where cald = 2009.5  ; 
+proc means  noprint data=y; var &v; output out=y_10 mean= &v;  ; where cald = 2010.5  ; 
+proc means  noprint data=y; var &v; output out=y_11 mean= &v;  ; where cald = 2011.5  ; 
+proc means  noprint data=y; var &v; output out=y_12 mean= &v;  ; where cald = 2012.5  ; 
+proc means  noprint data=y; var &v; output out=y_13 mean= &v;  ; where cald = 2013.5  ; 
+proc means  noprint data=y; var &v; output out=y_14 mean= &v;  ; where cald = 2014.5  ; 
+proc means  noprint data=y; var &v; output out=y_15 mean= &v;  ; where cald = 2015.5  ; 
+proc means  noprint data=y; var &v; output out=y_16 mean= &v;  ; where cald = 2016.5  ; 
+proc means  noprint data=y; var &v; output out=y_17 mean= &v;  ; where cald = 2017.5  ; 
+proc means  noprint data=y; var &v; output out=y_18 mean= &v;  ; where cald = 2018.5  ; 
+proc means  noprint data=y; var &v; output out=y_19 mean= &v;  ; where cald = 2019.5  ; 
+proc means  noprint data=y; var &v; output out=y_20 mean= &v;  ; where cald = 2020.5  ; 
+proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where cald = 2021.5  ; 
+proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where cald = 2022.5  ; 
+proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where cald = 2023.5  ; 
 
 */
 
@@ -1556,7 +1557,7 @@ proc means noprint data=y; var &v; output out=y_49  mean= &v   ; where cald = 20
 proc means noprint data=y; var &v; output out=y_50  mean= &v   ; where cald = 2050.5 and option=99 ;
 
 																										
-data &v ; set    y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23   
+data &v ; set  /*  y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23 */
 y_24 y_25 y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40  y_41 y_42 y_43 y_44 y_45 y_46 y_47 y_48 y_49 y_50  ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -1592,10 +1593,10 @@ proc means  noprint data=y; var &v; output out=z_19 mean= &v;  ; where 2018.5   
 proc means  noprint data=y; var &v; output out=z_20 mean= &v;  ; where 2019.5   < cald <= 2020.5  ; 
 proc means  noprint data=y; var &v; output out=z_21 mean= &v;  ; where 2020.5   < cald <= 2021.5  ; 
 proc means  noprint data=y; var &v; output out=z_22 mean= &v;  ; where 2021.5   < cald <= 2022.5  ; 
+proc means  noprint data=y; var &v; output out=z_23 mean= &v;  ; where 2022.5   < cald <= 2023.5  ; 
 
 */
 
-proc means noprint data=y; var &v; output out=z_23  mean= &v   ; where 2022.5 < cald <= 2023.5 and option=99 ;
 proc means noprint data=y; var &v; output out=z_24  mean= &v   ; where 2023.5 < cald <= 2024.5 and option=99 ;
 proc means noprint data=y; var &v; output out=z_25  mean= &v   ; where 2024.5 < cald <= 2025.5 and option=99 ;
 proc means noprint data=y; var &v; output out=z_26  mean= &v   ; where 2025.5 < cald <= 2026.5 and option=99 ;
@@ -1624,13 +1625,15 @@ proc means noprint data=y; var &v; output out=z_48  mean= &v   ; where 2047.5 < 
 proc means noprint data=y; var &v; output out=z_49  mean= &v   ; where 2048.5 < cald <= 2049.5 and option=99 ;
 proc means noprint data=y; var &v; output out=z_50  mean= &v   ; where 2049.5 < cald <= 2050.5 and option=99 ;
  
-data &v ; set    z_00 z_01 z_02 z_03 z_04 z_05 z_06 z_07 z_08 z_09 z_10 z_11 z_12 z_13 z_14 z_15 z_16 z_17 z_18 z_19 z_20 z_21 z_22 z_23   
+data &v ; set  /*  z_00 z_01 z_02 z_03 z_04 z_05 z_06 z_07 z_08 z_09 z_10 z_11 z_12 z_13 z_14 z_15 z_16 z_17 z_18 z_19 z_20 z_21 z_22 z23 */ 
 z_24 z_25 z_26 z_27 z_28 z_29 z_30 z_31 z_32 z_33 z_34 z_35 z_36 z_37 z_38 z_39 z_40  z_41 z_42 z_43 z_44 z_45 z_46 z_47 z_48 z_49 z_50  ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var_flow;
 
-/*
+
+
+
 
 %var_stock(v=n_hiv1524m);
 %var_stock(v=n_hiv1524w);
@@ -1656,7 +1659,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var_stock(v=n_not_on_art_cd450200); 
 %var_stock(v=n_not_on_art_cd4050); 
 
-*/
+/*
 
 %var_flow(v=n_birth);
 %var_flow(v=n_give_birth_w_hiv);
@@ -1685,12 +1688,13 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var_flow(v=n_hivneg_tests);
 %var_flow(v=n_hivpos_tests);
 
+*/
+
 
 * for status quo - option = 0;
 
-data year;
-input year;
-cards;
+/*
+
 2000
 2001
 2002
@@ -1714,7 +1718,12 @@ cards;
 2010
 2021
 2022
-2023
+
+*/
+
+data year;
+input year;
+cards;
 2024
 2025
 2026
@@ -1749,7 +1758,7 @@ data  wide_outputs ; merge
 
 year
 
-/*
+
 
 n_hiv1524m
 n_hiv1524w
@@ -1775,7 +1784,7 @@ n_not_on_art_cd4200350
 n_not_on_art_cd450200 
 n_not_on_art_cd4050 
 
-*/
+/*
 
 n_birth
 n_give_birth_w_hiv
@@ -1804,15 +1813,143 @@ n_sw_program_visit
 n_hivneg_tests
 n_hivpos_tests
 
+*/
+
 ;
 
-proc print; run;
 
-proc transpose data=wide_outputs out=data3 ; run;
+dummy1=.;dummy2=.;dummy3=.;dummy4=.;dummy5=.;dummy6=.;dummy7=.;dummy8=.;dummy9=.;dummy10=.;
+dummy11=.;dummy12=.;dummy13=.;dummy14=.;dummy15=.;dummy16=.;dummy17=.;dummy18=.;
+
+
+data flows; 
+retain 
+year 
+n_birth
+n_give_birth_w_hiv
+n_give_birth_on_art
+dummy1
+n_new_inf1524m
+n_new_inf1524w
+n_new_inf2549m
+n_new_inf2549w
+n_new_inf55plm
+n_new_inf55plw
+dummy2
+n_death_hivrel_m
+n_death_hivrel_w
+dummy3
+n_death_m
+n_death_w
+dummy4
+n_yllag_hiv_m
+n_yllag_hiv_w  
+n_hivneg_tests
+n_hivpos_tests
+dummy5
+dummy6
+dummy7
+dummy8 
+n_diag_self_test
+n_self_tests
+dummy9 
+n_new_vmmc
+py_prep_oral_1524w
+py_prep_oral_sw
+dummy10
+py_prep_inj_1524w
+py_prep_inj_sw
+dummy11
+dummy12
+dummy13
+n_vm
+dummy14
+n_sw_program_visit
+dummy15
+dummy16
+dummy17
+dummy18
+;
+set wide_outputs;
+run;
+
+proc transpose data=flows out=data3 ; run;
+
+data a; set data3;
+drop _name_;
 
 ods html;
-proc print noobs data=data3; run; 
+proc print noobs data=a; run; 
 ods html close;
+
+
+
+
+
+data stocks; 
+retain 
+year 
+
+n_hiv1524m
+n_hiv1524w
+n_hiv2549m
+n_hiv2549w
+n_hiv55plm
+n_hiv55plw
+n_alive_1524m
+n_alive_1524w
+n_alive_2549m
+n_alive_2549w
+n_alive_55plm
+n_alive_55plw
+n_diag_ever_m
+n_diag_ever_w
+n_onart_m
+n_onart_w
+n_onart_vl1000_m
+n_onart_vl1000_w
+n_not_on_art_cd4ge500 
+n_not_on_art_cd4350500 
+n_not_on_art_cd4200350 
+n_not_on_art_cd450200 
+n_not_on_art_cd4050 
+
+
+N_PLHIV_00_14_C
+N_PLHIV_15_24_M
+N_PLHIV_15_24_F
+N_PLHIV_25_49_M
+N_PLHIV_25_49_F
+N_PLHIV_50_UP_M
+N_PLHIV_50_UP_F
+N_Total_00_14_C
+N_Total_15_24_M
+N_Total_15_24_F
+N_Total_25_49_M
+N_Total_25_49_F
+N_Total_50_UP_M
+N_Total_50_UP_F
+N_Diag_00_14_C
+N_Diag_15_UP_M
+N_Diag_15_UP_F
+N_ART_00_14_C
+N_ART_15_UP_M
+N_ART_15_UP_F
+N_VLS_15_UP_M
+N_VLS_15_UP_F
+N_PLHIV_15_UP_CD4_500_INF
+N_PLHIV_15_UP_CD4_350_500
+N_PLHIV_15_UP_CD4_200_350
+N_PLHIV_15_UP_CD4_050_200
+N_PLHIV_15_UP_CD4_000_050
+N_PLHIV_15_UP_AIDS
+N_PLHIV_15_UP_NO_AIDS
+
+
+
+;
+set wide_outputs;
+run;
 
 
 
