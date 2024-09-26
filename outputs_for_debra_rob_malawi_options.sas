@@ -9,14 +9,14 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
-%let pth_export_mihpsa_mw= C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw14_out\export;run;
+%let pth_export_mihpsa_mw= C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_f_out\export;run;
 
 data c;
-  set a.long_mlw14;
+  set a.long_mlw_f;
 
 
 * if option = 99 then option = 0;
-  if option = 0 then option = 99;
+* if option = 0 then option = 99;
 
 p_onart_vl1000_all = .;
 
@@ -90,15 +90,12 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 
 
 
-* placeholder until self testing retrospectively added;
-n_tested_self_test = 0;
-
 
 
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 53  ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 105 ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2072.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
@@ -366,7 +363,7 @@ run;
 
 proc print data=s99_transposed; run; 
 
-PROC export data=s99_transposed outFILE= "&pth_export_mihpsa_mw\mihpsa_mw_p2_synthesis_19aug24" dbms=xlsx REPLACE;
+PROC export data=s99_transposed outFILE= "&pth_export_mihpsa_mw\mihpsa_mw_p2_synthesis_26sep24" dbms=xlsx REPLACE;
 sheet="stocks_minimal";  RUN;
 
 
@@ -661,7 +658,7 @@ proc transpose data = wide_allyears_out_99 out= wide_allyears_out_99_transposed;
 ods html;
 proc print data=wide_allyears_out_99_transposed; run; 
 
-PROC export data=wide_allyears_out_99_transposed outFILE= "&pth_export_mihpsa_mw\mihpsa_mw_p2_synthesis_19aug24" dbms=xlsx REPLACE;
+PROC export data=wide_allyears_out_99_transposed outFILE= "&pth_export_mihpsa_mw\mihpsa_mw_p2_synthesis_26sep24" dbms=xlsx REPLACE;
 sheet="flows_minimal";  RUN;
 
 ods html close;

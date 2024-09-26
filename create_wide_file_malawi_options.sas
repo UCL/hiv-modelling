@@ -17,6 +17,7 @@ data a.g;   set a.out:;run;
 */
 
 
+
 /* show the contents of the input SAS file */
 proc contents data=a.g;run;
 
@@ -403,7 +404,7 @@ so the one above is the annual number of tests conducted in ANC;
 * n_tested1st_pd;				n_tested1st_pd = s_tested1st_pd * &sf * 4;*VCMar2023;
 * n_tested_sbcc;				n_tested_sbcc = s_tested_sbcc_program * &sf * 4;*VCDec2023;
 
-* n_self_tested;				n_self_tested = s_self_tested * sf ;
+* n_self_tests ;				n_self_tests  = s_self_tested * sf ;
 * n_self_tested_m;				n_self_tested_m = s_self_tested_m * sf ;
 * n_self_tested_w;				n_self_tested_w = s_self_tested_w * sf ;
 * n_tested_due_to_self_test;	n_tested_due_to_self_test =  s_tested_due_to_self_test * sf ;
@@ -1218,7 +1219,7 @@ p_sw_newinf p_w1524_newinf p_w25ov_newinf p_m1524_newinf p_m25ov_newinf mtct_pro
 p_diag p_diag_m p_diag_w prop_diag_infection_1yr p_ai_no_arv_c_nnm prop_sw_newp0  t_sw_newp
 n_sbcc_visit_1524m n_sbcc_visit_1524w n_sbcc_visit_1524_ n_sbcc_visit_2564_ n_sbcc_visit_1564_
 n_tested_sbcc_1524m n_tested_sbcc_1524w n_tested_sbcc_2564_ n_tested_sbcc
-n_self_tests n_tested_self_test
+n_self_tests  n_tested_self_test
 p_tested_sbcc_1524m p_tested_sbcc_1524w p_tested_sbcc_2564_
 p_pos_tested_sbcc
 p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
@@ -1388,7 +1389,6 @@ dcost_80 ddaly_80  overall_test_yield  n_vm_this_per  n_death_hiv
 ;
 
 
-proc freq data=y; tables n_death_hiv; run;
 
 
 proc sort data=y;by run option;run;

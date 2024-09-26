@@ -19,9 +19,9 @@ data c;
   set a.long_mlw_f;
 
 
-if option in (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14   ) then delete;
+if option in (0 1 2 3 4 5 6 7   9 10 11 12 13 14 15) then delete;
 
-if option = 15 then option = 1;
+if option =  8 then option = 1;
 if option = 99 then option = 0;
 
 
@@ -105,7 +105,7 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 n_tested_self_test = 0;
 
 
-%let single_var =   n_self_tested                  /* n_new_inf1549_ */        ;
+%let single_var =   incidence1549_                       /* n_new_inf1549_ */        ;
 
 
 proc sort; by cald run ;run;
@@ -821,6 +821,8 @@ band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparen
 run;quit;
 
 
+*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -839,6 +841,7 @@ band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transpar
 run;quit;
 
 
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -897,7 +900,7 @@ band    x=cald lower=p5_n_vm_this_per_1 	upper=p95_n_vm_this_per_1  / transparen
 
 run;quit;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -918,7 +921,6 @@ series  x=cald y=n_self_tested_obs_mlw/	lineattrs = (color=orange thickness = 2)
 
 run;quit;
 
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -1189,7 +1191,7 @@ band    x=cald lower=p5_n_self_tested_1 	upper=p95_n_self_tested_1  / transparen
 run;quit;
 
 
-
+*/
 
 proc sgplot data=d nolegend; 
 Title    height=1.5 justify=center "Number of people diagnosed as a results of self-testing";
@@ -1205,7 +1207,7 @@ band    x=cald lower=p5_n_diagnosed_self_test_1 	upper=p95_n_diagnosed_self_test
 run;quit;
 
 
-
+/*
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of men age 15-49 circumcised";
