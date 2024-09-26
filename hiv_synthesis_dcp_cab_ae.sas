@@ -4,9 +4,9 @@
 
 * consider matt comments on ms;
 
+* add in dalys for transmission through mtct 
 
-
-
+;
 
 
 
