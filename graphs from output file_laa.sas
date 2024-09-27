@@ -29,7 +29,7 @@ p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 p_diag_vl1000_ = p_onart_diag * p_onart_vl1000 ;
 
 
-%let single_var =  mtct_prop           ;
+%let single_var =  n_prep_any          ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -295,6 +295,28 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
+
+
+
+ods html;
+proc sgplot data=d ; 
+Title    height=1.5 justify=center "n_prep_any";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  300000  by  50000  ) valueattrs=(size=10);
+
+label p50_n_prep_any_0 = "status quo";
+label p50_n_prep_any_1 = "len-cab";
+
+
+series  x=cald y=p50_n_prep_any_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_prep_any_0 upper=p95_n_prep_any_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_prep_any_1 / lineattrs = (color=lightblue thickness = 4);
+band    x=cald lower=p5_n_prep_any_1 upper=p95_n_prep_any_1 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+
+run;quit;
+
+
 /*
 
 
@@ -457,9 +479,6 @@ band    x=cald lower=p5_p_onart_1 upper=p95_p_onart_1 / transparency=0.9 fillatt
 run;quit;
 
 
-*/
-
-
 
 ods html;
 proc sgplot data=d ; 
@@ -479,7 +498,7 @@ band    x=cald lower=p5_mtct_prop_1 upper=p95_mtct_prop_1 / transparency=0.9 fil
 run;quit;
 
 
-/*
+
 
 ods html;
 proc sgplot data=d ; 
