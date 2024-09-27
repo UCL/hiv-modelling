@@ -1,10 +1,9 @@
 
 
-* add in pre-2024 self testing ?
 
 * resolve inj vs cab len 
 
-* consider that in msm risk of hiv from other msm may be higher if newp with women is lower (need a personal attribute for exlusively msm or has sex with women ?)
+* consider that in msm risk of hiv from other msm may be higher if newp with women is lower - need a personal attribute for exlusively msm or has sex with women ?
 
 
 ;  
@@ -1020,6 +1019,7 @@ else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; en
 *cost of the following drugs updated in July 2014 based on MSF report, without including cost of supply chain;
 
 
+
 * all * dependent_on_time_step_length ;
 cost_zdv_a=(0.068/4)*1.2; * chai 2022  ;
 cost_3tc_a=(0.012/4)*1.2; * jun 24 chai ;
@@ -1029,39 +1029,26 @@ cost_nev_a=(0.027/4)*1.2; * chai 2017 market report - global fund price;
 cost_efa_a=(0.019/4)*1.2; * chai 2022 - $62 for tle   ;
 cost_lpr_a=(0.152/4)*1.2;                     
 cost_taz_a=(0.133/4)*1.2;   * chai 2022 zl-taz 216 ;
-cost_dol_a=(0.009/4)*1.2;  * june 202 chai - $42 for tld;
-cost_dar_a=(0.210/4)*1.2;	
-prep_cab_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost; 
-prep_len_drug_cost = (0.030 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost; 
-cost_cab_a = prep_cab_drug_cost ; * note that when cab used as treatment we use cost_cab_a rather than prep_cab_drug_cost;
-cost_len_a = prep_len_drug_cost ; * placeholder ;
+cost_dol_a=(0.009/4)*1.2;  * june 2024 chai - $42 for tld;
+cost_dar_a=(0.210/4)*1.2;		
 tb_cost_a=(.050); * todo: this cost to be re-considered;
-
-cost_tb_lam = 0.015 ; * placeholder ;
-cost_tb_proph = 0.005 ; * placeholder ;
-cost_crag = 0.005 ; 
-cost_crypm_proph = 0.020 ; * placeholder ;
-cost_sbi_proph = 0.020 ; * azithro - placeholder ; 
-
 cot_cost_a=(.005/4);
-vis_cost_a=(.010);  * changed june 24 as a result of BU cost data;
-redn_in_vis_cost_vlm_supp = 0.005 ;
-extra_vis_cost_cab_len_a = 0.015 ; * the additional cost of clinic visits per 3 months if on la cab len treatment 
--(cost is less than separate additional costs if on cab or len as prep as both done in same visit);
+vis_cost_a=(.010); * changed july 24 due to data from sydney rosen showing very low clinic costs;
+redn_in_vis_cost_vlm_supp = 0.005 ; * changed july 24 due to data from sydney rosen showing very low clinic costs;
 cost_child_hiv_a = 0.030; 
 cost_child_hiv_mo_art_a = 0.030; 
 prep_oral_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
+prep_inj_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 prep_vr_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 	* lapr and dpv-vr - may need to update for cab and dpv in future;
 prep_tld_drug_cost = (0.054 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 cost_prep_oral_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals;
-cost_prep_cab_clinic = 0.015; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - lapr is 1.5 times oral prep due to 6 visits per year;
-cost_prep_len_clinic = 0.007; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - len is < oral prep    due to 2 visits per year;
+cost_prep_inj_clinic = 0.015; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - lapr is 1.5 times oral prep due to 6 visits per year;
 cost_prep_vr_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - same as oral PrEP for now, may need to update in future;
 cost_prep_any_clinic_couns = 0.010; *Further clinic costs relating to adherence counselling;
 av_cost_self_test_avail = 0.001; * this is under pop wide tld with self test kits available - we dont know how frequently they will be used - we 
 									dont explicitly model self tests use, it only helps status informed tld use - cost ;
-
+ 
 * not * dependent_on_time_step_length ;
 * todo: add in crag and tb lam test costs, add in cost of treating tb crypm sbi (may be higher if diagnosed early, + costs of tb crypm prophylaxis;
 adc_cost_a=(.200); 
