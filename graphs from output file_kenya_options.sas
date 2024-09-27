@@ -12,7 +12,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data b;
   set a.l_base_kenya_ag_options_d ;
 
-  s = 20 ;
+  s = 1  ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
 
