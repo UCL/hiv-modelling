@@ -9,7 +9,6 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data   kenya_ag_options_d ; set b.out: ;
 
 
-
 proc sort data=  kenya_ag_options_d; 
 by run cald option;run;
 

@@ -2,6 +2,10 @@
 
 * add in pre-2024 self testing ?
 
+* resolve inj vs cab len 
+
+* consider future rate test 
+
 * consider that in msm risk of hiv from other msm may be higher if newp with women is lower (need a personal attribute for exlusively msm or has sex with women ?)
 
 
