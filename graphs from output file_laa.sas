@@ -2,7 +2,7 @@
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_y_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_z_out\";
 
 footnote;
 
@@ -11,7 +11,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_laa_y_y;
+set a.l_laa_z_y;
 
 * for this program, variable names cannot end on a number;
 n_k65m = p_k65m * n_hiv;
@@ -29,7 +29,12 @@ p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 p_diag_vl1000_ = p_onart_diag * p_onart_vl1000 ;
 
 
-%let single_var =  n_prep_any          ;
+  if option ne 1;
+  if option = 2 then option = 1;
+* if option < 2;
+
+
+%let single_var =  mtct_prop              ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -40,7 +45,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 2028   ;
+%let nfit = 1608   ;
 
 %let year_end = 2076.00 ;
 run;
@@ -296,6 +301,7 @@ ods html ;
 
 
 
+/*
 
 
 ods html;
@@ -316,8 +322,6 @@ band    x=cald lower=p5_n_prep_any_1 upper=p95_n_prep_any_1 / transparency=0.9 f
 
 run;quit;
 
-
-/*
 
 
 ods html;
@@ -359,7 +363,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d ; 
-Title    height=1.5 justify=center "Of all 15-24 year olds on ART, mean proportion on lenacapavir over 10 years under cab/len for aged 15-24";
+Title    height=1.5 justify=center "Of all 15-24 year olds on ART, mean proportion on lenacapavir for aged 15-24";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.5 to  1     by 0.05    ) valueattrs=(size=10);
 
@@ -418,7 +422,6 @@ run;quit;
 
 
 
-
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "p_len";
@@ -435,8 +438,6 @@ series  x=cald y=p50_p_len_1 / lineattrs = (color=navy thickness = 4);
 band    x=cald lower=p5_p_len_1 upper=p95_p_len_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
 
 run;quit;
-
-
 
 
 
@@ -479,6 +480,8 @@ band    x=cald lower=p5_p_onart_1 upper=p95_p_onart_1 / transparency=0.9 fillatt
 run;quit;
 
 
+*/
+
 
 ods html;
 proc sgplot data=d ; 
@@ -498,7 +501,7 @@ band    x=cald lower=p5_mtct_prop_1 upper=p95_mtct_prop_1 / transparency=0.9 fil
 run;quit;
 
 
-
+/*
 
 ods html;
 proc sgplot data=d ; 
