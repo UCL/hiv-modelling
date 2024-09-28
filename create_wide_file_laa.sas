@@ -3,18 +3,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_y_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_z_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_y_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_z_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_laa_y;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_laa_z;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -22,7 +22,7 @@ run;
 
 
 
-proc sort data=b.k_laa_y; 
+proc sort data=b.k_laa_z; 
 by run cald option;
 run;
 
@@ -32,7 +32,7 @@ run;
 data sf;
 
 
-set b.k_laa_y ;
+set b.k_laa_z ;
 
 
 if cald=2024   ;
@@ -51,7 +51,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_laa_y sf;
+merge b.k_laa_z sf;
 by run ;
 
 
@@ -1384,9 +1384,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_laa_y_y; set y;  
+data    b.l_laa_z_y; set y;  
 
-data y ; set b.l_laa_y_y; 
+data y ; set b.l_laa_z_y; 
 
 
   options nomprint;
@@ -1839,17 +1839,17 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_y     ; 
+  data  b.w_laa_z     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_y_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_z_out\";
 
-data f; set b.w_laa_y;
+data f; set b.w_laa_z;
 
-if . < run le 989997912;  * laa_y to give 1000 ;
+* if . < run le 989997912;  * laa_y to give 1000 ;
 
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
 
@@ -1886,7 +1886,6 @@ dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_c
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
  
-
 
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
