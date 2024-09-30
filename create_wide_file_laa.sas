@@ -218,7 +218,9 @@ dcrag_cost =  s_dcrag_cost  * sf * 4 / 1000;
 dcrypm_proph_cost = s_dcrypm_proph_cost * sf * 4 / 1000;  
 dsbi_proph_cost = s_dsbi_proph_cost  * sf * 4 / 1000; 
 
-dcost_lencab_return = s_dcost_lencab_return * sf / 1000;
+* dcost_lencab_return = s_cost_lencab_return * discount * sf * 0.2 / 1000;  * $10 for offer of return;
+dcost_lencab_return = 0; * since assume $60 per year for clinic costs for lencab which seems on high side especially given possibility of injections in community, 
+dont think we need to have an extra cost here.
 
 
 * note this below can be used if outputs are from program beyond 1-1-20;
@@ -242,7 +244,7 @@ dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
-		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep + dcost_lencab_return +
+		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep + 
 		dcost_child_hiv + dcost_non_aids_pre_death + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost 
 ;
 
@@ -855,6 +857,7 @@ run;
 * n_started_lencab_vmgt1000;	n_started_lencab_vmgt1000 = s_started_lencab_vmgt1000 * sf;
 * n_started_lencab_offart;		n_started_lencab_offart = s_started_lencab_offart * sf;
 * n_started_lencab;				n_started_lencab = s_started_lencab * sf;	
+* n_offered_return_lencab; n_offered_return_lencab = s_offered_return_lencab_this_per * sf;
 
 * p_started_lencab_vmgt1000;	p_started_lencab_vmgt1000 = s_started_lencab_vmgt1000 / s_started_lencab ;
 * p_started_lencab_offart;		p_started_lencab_offart = s_started_lencab_offart / s_started_lencab ;
@@ -1253,7 +1256,7 @@ run cald option
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn dlen_cost dcab_cost
 dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
-dadc_cost       dcd4_cost       dvl_cost       dvis_cost dvis_cost_no_lencab dvis_cost_lencab  dcost_lencab_return
+dadc_cost       dcd4_cost       dvl_cost       dvis_cost dvis_cost_no_lencab dvis_cost_lencab  
 dcot_cost       dtb_cost    n_hiv  ddcp_cost dcost_drug_level_test p_drug_level_test
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
@@ -1362,7 +1365,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
 p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab n_started_lencab_offart  p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart
-p_started_lencab_vls  p_ever_len_o_len
+p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab
 
 ;
 
@@ -1460,7 +1463,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524); * %var(v=p_onart_vl1000_sw);
 * %var(v=prev_vg1000_newp_m); * %var(v=prev_vg1000_newp_w);  %var(v= p_startedline2) ;  %var(v=n_alive);
 * %var(v=p_tle);  * %var(v=p_tld);  * %var(v=p_zld);  * %var(v=p_zla);  * %var(v=p_otherreg);   %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
-* %var(v=aids_death_rate);    %var(v=death_rate_onart);     %var(v=dcost);    %var(v= dart_cost_y);  %var(v=dcost_lencab_return);
+* %var(v=aids_death_rate);    %var(v=death_rate_onart);     %var(v=dcost);    %var(v= dart_cost_y);  
   %var(v=dadc_cost);     %var(v=dcd4_cost);     %var(v=dvl_cost);     %var(v=dvis_cost);      %var(v=dcot_cost);     %var(v=dtb_cost);   
   %var(v=dres_cost);    %var(v=dtest_cost);     %var(v=d_t_adh_int_cost);     %var(v=dswitchline_cost);    %var(v=dtaz_cost);   %var(v=dcab_cost);   %var(v=dlen_cost); 
 %var(v=dcost_drug_level_test);  
@@ -1580,8 +1583,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_len);  %var(v=p_cab);  %var(v=p_len_1524);  %var(v=p_cab_1524);  %var(v=p_onart_1524);   %var(v=incidence1524);  %var(v=p_onart_vl1000_w_1524);   
 %var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524); %var(v=n_started_lencab_vmgt1000);  
 %var(v=n_started_lencab); %var(v=ddaly_birth_with_inf_child); %var_v=n_started_lencab_offart); %var(v=p_len_vl1000); %var(v=p_cab_vl1000);
-%var(v=n_started_lencab_offart); %var(v=p_started_lencab_vmgt1000)  %var(v=p_started_lencab_offart);  %var(v=dvis_cost_no_lencab) %var(v= dvis_cost_lencab);
-%var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);
+%var(v=n_started_lencab_offart); %var(v=p_started_lencab_vmgt1000)  %var(v=p_started_lencab_offart);  %var(v=dvis_cost_no_lencab) ;
+%var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);
 
 data   b.wide_outputs; merge 
 
@@ -1589,7 +1592,7 @@ s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw p
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost  dcab_cost  dlen_cost   dclin_cost  dcost_circ dcost_condom_dn 
 ddaly_mtct
 dzdv_cost dten_cost  d3tc_cost  dnev_cost  dlpr_cost  ddar_cost  defa_cost
- ddol_cost  dcab_cost  dlen_cost  dcost_lencab_return
+ ddol_cost  dcab_cost  dlen_cost  
 
 dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost dcost_drug_level_test n_hiv n_alive  p_drug_level_test
@@ -1640,7 +1643,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
-p_started_lencab_vls  p_ever_len_o_len
+p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab
 ;
 
 
@@ -1891,14 +1894,14 @@ dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_c
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
 					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 + dcost_drug_level_test_50y_1
-					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1 + dcost_lencab_return_50y_1
+					+ dcost_prep_visit_50y_1 + dcost_prep_50y_1
 					/*  + dtb_lam_cost_50y_1 + dtb_proph_cost_50y_1 + dcrag_cost_50y_1 + dcrypm_proph_cost_50y_1 
 					+ dsbi_proph_cost_50y_1 */ ;			
 
 dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
 					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
 					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2 + dcost_drug_level_test_50y_2
-					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2 + dcost_lencab_return_50y_2
+					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2 
 					/* + dtb_lam_cost_50y_2 + dtb_proph_cost_50y_2 + dcrag_cost_50y_2 + dcrypm_proph_cost_50y_2 
 					+ dsbi_proph_cost_50y_2 */ ;
 
@@ -2111,6 +2114,7 @@ var
 p_len_10y_1 p_len_10y_2 
 p_cab_10y_1 p_cab_10y_2 
 p_ever_len_o_len_10y_1  p_ever_len_o_len_10y_2
+n_offered_return_lencab_10y_1 n_offered_return_lencab_10y_2
 n_started_lencab_vmgt1000_10y_1 n_started_lencab_vmgt1000_10y_2   
 n_started_lencab_10y_1  n_started_lencab_10y_2
 n_started_lencab_offart_10y_1  n_started_lencab_offart_10y_2
@@ -2211,7 +2215,6 @@ dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2
 dcost_prep_visit_50y_1 dcost_prep_visit_50y_2 
 dcost_prep_50y_1 dcost_prep_50y_2
 dcost_clinical_care_hiv_50y_1 dcost_clinical_care_hiv_50y_2
-dcost_lencab_return_50y_1 dcost_lencab_return_50y_2
 dcost_50y_1 dcost_50y_2
 ;
 footnote;
