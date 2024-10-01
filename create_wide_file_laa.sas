@@ -55,7 +55,7 @@ merge b.k_laa_aa sf;
 by run ;
 
 
-  if option in (0, 1);
+  if option in (0, 2);
 * if option=2 then option=1;
 
 * preparatory code ;
@@ -1584,7 +1584,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524); %var(v=n_started_lencab_vmgt1000);  
 %var(v=n_started_lencab); %var(v=ddaly_birth_with_inf_child); %var_v=n_started_lencab_offart); %var(v=p_len_vl1000); %var(v=p_cab_vl1000);
 %var(v=n_started_lencab_offart); %var(v=p_started_lencab_vmgt1000)  %var(v=p_started_lencab_offart);  %var(v=dvis_cost_no_lencab) ;
-%var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);
+%var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);   %var(v=dvis_cost_lencab) ;
 
 data   b.wide_outputs; merge 
 
@@ -1843,7 +1843,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_aa     ; 
+  data  b.w_laa_aa        ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1851,8 +1851,9 @@ proc sort; by run;run;
 
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_aa_out\";
 
-data f; set b.w_laa_aa;
+data f; set b.w_laa_aa_01;
 
+  if . < run <= 973658615 ; * laa_aa ;
 * if . < run le 989997912;  * laa_y to give 1000 ;
 
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
