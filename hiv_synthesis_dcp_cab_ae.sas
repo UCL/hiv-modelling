@@ -8,6 +8,8 @@
 
 * transmission through breastfeeding
 
+* model 10 years of dcp and then stop
+
 ;
 
 
