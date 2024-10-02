@@ -187,10 +187,11 @@ newp_seed = 7;
 							%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);
 * rate_trans_breastfeeding; %sample_uniform(rate_trans_breastfeeding, 0.05 0.1); * Nduati et al. 2000; * this is rate per 3 months with vl between 4 and 5;
 * prob_stop_breastfeeding_yr1;		*JAS Apr2023;
-							prob_stop_breastfeeding_yr1 = 0.02;*73;	* 3-monthly probability of stopping breastfeeding in first year after birth;
+							%sample_uniform(prob_stop_breastfeeding_yr1, 0.01 0.02 0.05);*73;	* 3-monthly probability of stopping breastfeeding in first year after birth;
 							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
 * prob_stop_breastfeeding_yr2;		*JAS Apr2023;
-							prob_stop_breastfeeding_yr2 = 0.132;*5;	* 3-monthly probability of stopping breastfeeding in second year after birth;
+							%sample_uniform(prob_stop_breastfeeding_yr1, 0.07 0.13 0.20);
+							*5;	* 3-monthly probability of stopping breastfeeding in second year after birth;
 							* see Excel worksheet Breastfeeding probabilities for calculations of probabilities (based on Neves et al 2021 and Zong et al 2021);
 							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
 
