@@ -2342,8 +2342,16 @@ if caldate_never_dot >= &year_interv then do;
 		eff_rate_restart=min(eff_rate_restart*3,1);
 	end;
 
+	***Increased adherence;
+	if option=19 then do;
+		if adhav < 0.8 then do; 
+			e = rand('uniform'); if e < 0.8 then adhav = 0.9; 
+		end;
+	end;
 
-
+	***Increase in ANC testing;
+	if option=20 then do;
+		
 
 	***halfway targets;
 
@@ -2463,6 +2471,13 @@ if caldate_never_dot >= &year_interv then do;
 		eff_rate_return=min(eff_rate_return*2, 1);
 		eff_prob_lost_art=eff_prob_lost_art/2;
 		eff_rate_restart=min(eff_rate_restart*2,1);
+	end;
+
+		***Increased adherence;
+	if option=19 then do;
+		if adhav < 0.8 then do; 
+			e = rand('uniform'); if e < 0.5 then adhav = 0.9; 
+		end;
 	end;
 
 
