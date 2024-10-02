@@ -55,7 +55,7 @@ merge b.k_laa_aa sf;
 by run ;
 
 
-  if option in (0, 2);
+  if option in (0, 3);
 * if option=2 then option=1;
 
 * preparatory code ;
@@ -1843,7 +1843,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_aa        ; 
+  data  b.w_laa_aa_03     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1851,7 +1851,7 @@ proc sort; by run;run;
 
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_aa_out\";
 
-data f; set b.w_laa_aa_01;
+data f; set b.w_laa_aa_03;
 
   if . < run <= 973658615 ; * laa_aa ;
 * if . < run le 989997912;  * laa_y to give 1000 ;
