@@ -179,10 +179,10 @@ g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 
 g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
 g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252 
 */
-"C:\Users\Loveleen\Documentos"
+
 ;
 by cald;
-%include "C:\Users\loveleen\Documents\GitHub\hiv-modelling\Observed_data_Cote_dIvoire.sas";
+%include "C:\Users\loveleen\Documentos\GitHub\hiv-modelling\Observed_data_Cote_dIvoire.sas";
 ***LOok at Spectrum AIM file;
 ***Number of HIV tests done;
 ***Ever tested;
@@ -195,7 +195,7 @@ run;
 
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\loveleen\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\18sep24.doc' startpage=never; 
+ods rtf file = 'C:\Users\loveleen\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\18sep24b.doc' startpage=never; 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Population 15+";
