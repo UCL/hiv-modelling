@@ -2,22 +2,22 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ah_options_a_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ah_options_b_out\";
 
 
 
-data   kenya_ah_options_a ; set b.out: ;
+data   kenya_ah_options_b ; set b.out: ;
 
 
 
-proc sort data=  kenya_ah_options_a; 
+proc sort data=  kenya_ah_options_b; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_ah_options_a ;
+set   kenya_ah_options_b ;
 
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
@@ -33,7 +33,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_ah_options_a sf;
+merge   kenya_ah_options_b sf;
 by run ;
  
 
@@ -1122,7 +1122,7 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_ah_options_a; set y;  
+data a.l_base_kenya_ah_options_b; set y;  
 
 
 
@@ -1130,7 +1130,7 @@ data a.l_base_kenya_ah_options_a; set y;
 
 
 
-data y; set a.l_base_kenya_ah_options_a; 
+data y; set a.l_base_kenya_ah_options_b; 
 
 
  
@@ -1489,13 +1489,13 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_kenya_ah_options_a; 
+  data a.w_base_kenya_ah_options_b; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
   by run;
 
-proc contents data=a.w_base_kenya_ah_options_a;
+proc contents data=a.w_base_kenya_ah_options_b;
 run;
 
 
