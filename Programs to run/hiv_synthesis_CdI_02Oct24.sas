@@ -172,7 +172,7 @@ newp_seed = 7;
 
 
 * PREGNANCY AND BREASTFEEDING;
-
+* inc_rate_anc_op;			inc_rate_anc_op=0;
 * can_be_pregnant;			can_be_pregnant=0.95;
 * fold_preg1524;			fold_preg1524=2;
 * fold_preg2534;			fold_preg2534=1.9; 
@@ -2351,6 +2351,8 @@ if caldate_never_dot >= &year_interv then do;
 
 	***Increase in ANC testing;
 	if option=20 then do;
+		inc_rate_anc_op=0.5;
+	end;
 		
 
 	***halfway targets;
@@ -2474,10 +2476,15 @@ if caldate_never_dot >= &year_interv then do;
 	end;
 
 		***Increased adherence;
-	if option=19 then do;
+	if option=69 then do;
 		if adhav < 0.8 then do; 
 			e = rand('uniform'); if e < 0.5 then adhav = 0.9; 
 		end;
+	end;
+
+		***Increase in ANC testing;
+	if option=70 then do;
+		inc_rate_anc_op=0.25;
 	end;
 
 
@@ -3225,7 +3232,8 @@ end;
 if gender=2 then do;
 	if      date_start_testing le caldate{t} lt 2015    then prob_anc      = max(prob_anc, 0.1)+rate_anc_inc; * dependent_on_time_step_length ;
 	if                            caldate{t} =  2014.75 then prob_anc_2015 = prob_anc;
-	if                      	  caldate{t} ge 2015    then prob_anc      = prob_anc_2015;
+	if                      	  caldate{t} ge 2015    then prob_anc      = prob_anc_2015 + (inc_rate_anc_op);
+	
 	if prob_anc gt 0.975   then prob_anc=0.975;  
 
 
