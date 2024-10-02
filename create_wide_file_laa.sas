@@ -55,7 +55,7 @@ merge b.k_laa_aa sf;
 by run ;
 
 
-  if option in (0, 3);
+  if option in (0, 1);
 * if option=2 then option=1;
 
 * preparatory code ;
@@ -234,7 +234,8 @@ dswitchline_cost = s_dcost_switch_line * sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; 
+
+dcost_child_hiv = s_dcost_child_hiv_at_child_inf * sf * 4 / 1000; 
 
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
