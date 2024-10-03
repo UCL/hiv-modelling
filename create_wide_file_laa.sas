@@ -58,6 +58,8 @@ by run ;
   if option in (0, 1);
 * if option=2 then option=1;
 
+
+
 * preparatory code ;
 
 * ================================================================================= ;
@@ -235,7 +237,7 @@ if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
 
-dcost_child_hiv = s_dcost_child_hiv_at_child_inf * sf * 4 / 1000; 
+dcost_child_hiv = (s_birth_with_inf_child + s_child_infected_breastfeeding) * 1 * discount * sf * 4 / 1000; * unit cost of 1000 applied (hence the 1);
 
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
@@ -790,7 +792,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * mtct_birth_prop;				if s_give_birth_with_hiv > 0 then mtct_birth_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
 * mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = (s_birth_with_inf_child + s_child_infected_breastfeeding) / s_give_birth_with_hiv  ;
-
+* n_mtct;						n_mtct = (s_birth_with_inf_child + s_child_infected_breastfeeding) * sf;
 
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag / s_hiv     ;  
 * p_diag_m;						if s_hivge15m  > 0 then p_diag_m = s_diag_m / s_hivge15m ;  p_diag_m = p_diag_m * 100;
@@ -1366,7 +1368,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
 p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab n_started_lencab_offart  p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart
-p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab
+p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct
 
 ;
 
@@ -1585,7 +1587,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524); %var(v=n_started_lencab_vmgt1000);  
 %var(v=n_started_lencab); %var(v=ddaly_birth_with_inf_child); %var_v=n_started_lencab_offart); %var(v=p_len_vl1000); %var(v=p_cab_vl1000);
 %var(v=n_started_lencab_offart); %var(v=p_started_lencab_vmgt1000)  %var(v=p_started_lencab_offart);  %var(v=dvis_cost_no_lencab) ;
-%var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);   %var(v=dvis_cost_lencab) ;
+%var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);   %var(v=dvis_cost_lencab) ; %var(v=n_mtct);
 
 data   b.wide_outputs; merge 
 
@@ -1644,7 +1646,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
-p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab
+p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct
 ;
 
 
@@ -1844,7 +1846,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_aa     ; 
+  data  b.w_laa_aa_01  ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -2150,6 +2152,7 @@ p_r_len_10y_1 p_r_len_10y_2
 p_r_cab_10y_1 p_r_cab_10y_2
 mtct_prop_10y_1 mtct_prop_10y_2 
 mtct_birth_prop_10y_1 mtct_birth_prop_10y_2 
+n_mtct_10y_1 n_mtct_10y_2 
 d_n_death_hiv_10y_2_1 
 d_p_onart_vl1000_10y_2_1 
 d_p_vl1000_10y_2_1 
@@ -2189,6 +2192,7 @@ n_death_hiv_age_1524_50y_1 n_death_hiv_age_1524_50y_2
 p_r_len_1524_50y_1 p_r_len_1524_50y_2
 p_r_cab_1524_50y_1 p_r_cab_1524_50y_2
 mtct_prop_50y_1 mtct_prop_50y_2 
+n_mtct_50y_1 n_mtct_50y_2 
 ;
 run;
 
