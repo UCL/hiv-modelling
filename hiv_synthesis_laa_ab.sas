@@ -684,7 +684,7 @@ newp_seed = 7;
 * rate_return_for_lencab;  %sample_uniform(rate_return_for_lencab, 0.3 0.5 0.7 0.9); 
 * prob_strong_pref_lencab;	 %sample_uniform(prob_strong_pref_lencab, 0.05 0.1 0.2 0.5 0.9);  
 
-* rate_lencab_to_tld;   %sample_uniform(rate_lencab_to_tld, 0.0003 0.001 0.003 0.01);
+* rate_lencab_to_tld;   %sample_uniform(rate_lencab_to_tld, 0.0003 0.001 0.003 0.01  0.03  0.1);
 
 * rel_rate_interrupt_lencab;  %sample_uniform(rel_rate_interrupt_lencab, 0.5  0.8  1  1/0.8  1/0.5);
 
