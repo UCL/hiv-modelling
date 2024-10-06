@@ -26,7 +26,6 @@ by run cald option;
 run;
 
 
-
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
