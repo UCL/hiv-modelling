@@ -21,7 +21,6 @@ run;
 */
 
 
-
 proc sort data=b.k_laa_ab; 
 by run cald option;
 run;
@@ -854,6 +853,8 @@ run;
 
 * p_ever_len_o_len;				p_ever_len_o_len = s_len / s_ever_len_art ;
 
+* p_ever_len_v_failed;			p_ever_len_v_failed = s_failed_lencab / s_ever_len_art ;
+
 * p_len_vl1000;					p_len_vl1000 = s_o_len_vl1000 / s_len;
 * p_cab_vl1000;					p_cab_vl1000 = s_o_cab_vl1000 / s_cab;
 
@@ -1368,7 +1369,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
 p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab n_started_lencab_offart  p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart
-p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct
+p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct  p_ever_len_v_failed
 
 ;
 
@@ -1588,6 +1589,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_started_lencab); %var(v=ddaly_birth_with_inf_child); %var_v=n_started_lencab_offart); %var(v=p_len_vl1000); %var(v=p_cab_vl1000);
 %var(v=n_started_lencab_offart); %var(v=p_started_lencab_vmgt1000)  %var(v=p_started_lencab_offart);  %var(v=dvis_cost_no_lencab) ;
 %var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);   %var(v=dvis_cost_lencab) ; %var(v=n_mtct);
+%var(v=p_ever_len_v_failed);
 
 data   b.wide_outputs; merge 
 
@@ -1646,7 +1648,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
-p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct
+p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct p_ever_len_v_failed
 ;
 
 
@@ -2125,6 +2127,7 @@ var
 p_len_10y_1 p_len_10y_2 
 p_cab_10y_1 p_cab_10y_2 
 p_ever_len_o_len_10y_1  p_ever_len_o_len_10y_2
+p_ever_len_v_failed_10y_1 p_ever_len_v_failed_10y_2
 n_offered_return_lencab_10y_1 n_offered_return_lencab_10y_2
 n_started_lencab_vmgt1000_10y_1 n_started_lencab_vmgt1000_10y_2   
 n_started_lencab_10y_1  n_started_lencab_10y_2
