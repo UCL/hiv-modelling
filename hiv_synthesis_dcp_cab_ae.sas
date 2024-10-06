@@ -10,6 +10,8 @@
 
 * model 10 years of dcp and then stop
 
+* ionclude a len prep option ?
+
 ;
 
 
