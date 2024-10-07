@@ -27,6 +27,8 @@ startyr = 1985 + 0.25;
 * rate_engage_sw_program;	%sample(rate_engage_sw_program, 0.05 0.10, 0.30 0.70); *previously 0.10;
 * effect_sw_prog_prep_any;  effect_sw_prog_prep_any = 0.05;
 
+* prop_m_msm;				%sample_uniform(prop_m_msm,   0.005   0.010); 
+
 * msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.1 0.3 0.5); * risk of one or more cls partners in msm per period ;
 
 * prep_any_strategy;		prep_any_strategy=17;

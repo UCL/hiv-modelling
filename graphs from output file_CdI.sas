@@ -1355,6 +1355,23 @@ band    x=cald lower=p5_n_alive1564_msm_0 	upper=p95_n_alive1564_msm_0  / transp
 run;quit;
 
 
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "prop_m_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percentage'		labelattrs=(size=12)  values = (0 to 0.02 by 0.005) valueattrs=(size=10);
+label p50_prop_m_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_prop_m_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_m_msm_0 	upper=p95_prop_m_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y = o_prop_msm/ 		markerattrs = (symbol=square color=green size = 10);
+run;quit;
+
+
+
+
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence msm (age 15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -1376,7 +1393,7 @@ label p50_prevalence1549_msm_0 = "Option 0 (median) ";
 series  x=cald y=p50_prevalence1549_msm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prevalence1549_msm_0 	upper=p95_prevalence1549_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-*scatter x=cald y = prevalence_msm_obs_kya/ 		markerattrs = (symbol=square color=green size = 10);
+scatter x=cald y = o_prev_msm/ 		markerattrs = (symbol=square color=green size = 10);
 
 run;quit;
 

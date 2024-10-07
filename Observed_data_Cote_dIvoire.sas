@@ -381,3 +381,20 @@ if cald=2024 then o_sw_in_prog_nsp=0.729;
 if cald=2023 then o_fsw_start_prep_PEPFAR=1701;
 
 
+***********************
+*MSM
+***********************;
+
+***All MSM observed data taken from Anna Bowring Model Comparison sheet;
+*https://worldhealthorg.sharepoint.com/:x:/r/sites/HIVModeling/_layouts/15/Doc.aspx?sourcedoc=%7B20200680-A390-4D27-8D93-692306FEDD3F%7D&file=CdI_WHO%20Model%20comparison.xlsx&action=default&mobileredirect=true;
+
+* MSM Prevalence;
+if cald=2012 then o_prev_msm=0.18;
+if cald=2017 then o_prev_msm=0.123;
+if cald=2020 then o_prev_msm=0.064;
+if cald=2023 then o_prev_msm=0.11;
+
+* % of men aged 15-49 who are MSM;
+if cald=2020 then o_prop_msm=0.0084;
+if cald=2023 then o_prop_msm= 0.0036;
+

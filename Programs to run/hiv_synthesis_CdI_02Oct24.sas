@@ -2202,7 +2202,7 @@ age=age + (1/12);
 ;
 
 agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
-
+agywfsw=0; if agyw=1 and sw=1 then agywfsw=1;
 
 * ==========================================================================================================================================;
 
@@ -2260,7 +2260,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	***Increased testing in FSW (this is community based so independent of FSW program);
 	if option=7 then do;
-		if fsw=1 then do;
+		if sw=1 then do;
 			hard_reach_testing=0;
 			incr_test_fsw_year_i=7;
 		end;
@@ -2268,7 +2268,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	***Increased testing in high risk agyw - defined as 15-24 fsw;
 	if option=9 then do;
-		if agyw=1 and fsw=1 then do;
+		if agyw=1 and sw=1 then do;
 			incr_test_agywfsw_year_i=11;
 		end;
 	end;
@@ -2291,7 +2291,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	***Increased testing in all of the above groups - used only when combining all the options;
 	if option=12 then do;
-		if (msm=1 or fsw=1 or pwid=1 or agywfsw=1 or age>25) then do;
+		if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
 			hard_reach_testing=0;
 			incr_test_kp_year_i=17;
 		end;
@@ -2361,7 +2361,7 @@ if option=21 then do;
 
 	condom_incr_year_i = 3;
 
-	if (msm=1 or fsw=1 or pwid=1 or agywfsw=1 or age>25) then do;
+	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
 		hard_reach_testing=0;
 		incr_test_kp_year_i=17;
 	end;
@@ -2428,7 +2428,7 @@ end;
 
 	***Increased testing in FSW;
 	if option=57 then do;
-		if fsw=1 then do;
+		if sw=1 then do;
 			hard_reach_testing=0;
 			incr_test_fsw_year_i=8;
 		end;
@@ -2444,7 +2444,7 @@ end;
 
 	***Increased testing in high risk agyw - defined as 15-24 fsw;
 	if option=59 then do;
-		if agyw=1 and fsw=1 then do;
+		if agyw=1 and sw=1 then do;
 			hard_reach_testing=0;
 			incr_test_agywfsw_year_i=12;
 		end;
@@ -2469,7 +2469,7 @@ end;
 	
 	***Increased testing in all of the above groups - used only when combining all the options;
 	if option=62 then do;
-		if (msm=1 or fsw=1 or pwid=1 or agywfsw=1 or age>25) then do;
+		if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
 			hard_reach_testing=0;
 			incr_test_kp_year_i=18;
 		end;
@@ -2537,7 +2537,7 @@ if option=71 then do;
 
 	condom_incr_year_i = 1;
 
-	if (msm=1 or fsw=1 or pwid=1 or agywfsw=1 or age>25) then do;
+	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
 		hard_reach_testing=0;
 		incr_test_kp_year_i=17;
 	end;
@@ -3287,8 +3287,8 @@ if incr_test_women_year_i = 15 and gender=2 and age>25 then do; rate_1sttest = r
 if incr_test_women_year_i = 16 and gender=2 and age>25 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
 
 ***incorporating all KPs (MSM, FSW, PWID, AGYWFSW) and over 25s;
-if incr_test_kp_year_i = 17 and (msm=1 or fsw=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-if incr_test_kp_year_i = 18 and (msm=1 or fsw=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
+if incr_test_kp_year_i = 17 and (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+if incr_test_kp_year_i = 18 and (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
 
 
 
