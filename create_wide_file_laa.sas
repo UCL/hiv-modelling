@@ -54,7 +54,7 @@ by run ;
 
 
   if option in (0, 1);
-* if option=2 then option=1;
+* if option=3 then option=1;
 
 
 
@@ -1391,9 +1391,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_laa_ab_y; set y;  
+data    b.l_laa_ab_01; set y;  
 
-data y ; set b.l_laa_ab_y; 
+data y ; set b.l_laa_ab_01; 
 
 
   options nomprint;
@@ -1860,7 +1860,7 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ab_out\";
+* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ab_out\";
 
 data f; set b.w_laa_ab_01;
 
@@ -1891,8 +1891,8 @@ d_mtct_prop_10y_2_1 =  mtct_prop_10y_2 - mtct_prop_10y_1;
 r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1;
 
 * sensitivity analysis around cost;
-* dcab_cost_50y_2 = dcab_cost_50y_2 * 2.0 ;
-* dlen_cost_50y_2 = dlen_cost_50y_2 * 2.0 ;
+* dcab_cost_50y_2 = dcab_cost_50y_2 * 2.00;
+* dlen_cost_50y_2 = dlen_cost_50y_2 * 2.00;
 
 dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
 + ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
@@ -2257,6 +2257,7 @@ lowest_netdaly
 ;
 run;
 ods html close;
+
 
 ods html;
 proc freq data=f; tables lowest_netdaly lowest_netdaly_gbd lowest_ddaly  lowest_dcost;
