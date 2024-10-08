@@ -4,20 +4,20 @@
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ac_ad_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ae_out\";
 
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ac_ad_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ae_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9: ;
 
-%let laprv =  dcp_cab_ac_ad  ;
+%let laprv =  dcp_cab_ae  ;
 
-data b.k_dcp_cab_ac_ad;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_dcp_cab_ae;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -25,7 +25,7 @@ run;
 */
 
 
-proc sort data=b.k_dcp_cab_ac_ad; 
+proc sort data=b.k_dcp_cab_ae; 
 by run cald option;
 run;
 
@@ -33,7 +33,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set b.k_dcp_cab_ac_ad ;
+set b.k_dcp_cab_ae ;
 
 
 if cald=2023   ;
@@ -51,7 +51,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_dcp_cab_ac_ad sf;
+merge b.k_dcp_cab_ae sf;
 by run ;
 
 
@@ -1200,10 +1200,10 @@ run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-data    b.l_dcp_cab_ac_ad_y; set y;  
+data    b.l_dcp_cab_ae_y; set y;  
 
 
-data y ; set b.l_dcp_cab_ac_ad_y; 
+data y ; set b.l_dcp_cab_ae_y; 
 
 
   options nomprint;
@@ -1597,7 +1597,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data  b.w_dcp_cab_ac_ad     ; 
+  data  b.w_dcp_cab_ae     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1609,14 +1609,12 @@ proc sort; by run;run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ac_ad_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ae_out\";
 
-data g; set b.w_dcp_cab_ac_ad ;
+data g; set b.w_dcp_cab_ae ;
 
   if incidence1549_24 ge 0.1;
   if hivtest_type_1_init_prep_inj = 0;
-
-  if run ge 994216479 then delete;
 
 
 if 0.1 <= incidence1549_24 < 0.3 then incidence1549_24_g = 1;
