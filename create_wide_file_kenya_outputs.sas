@@ -18,6 +18,7 @@ data sf;
 
 set   kenya_ah_options_c ;
 
+
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
 
@@ -965,12 +966,10 @@ dummy6=.;
 dummy7=.;
 dummy8=.;
 
-/*
 p_diag_m  = p_diag_m / 100;
 p_diag_w = p_diag_w / 100; 
 p_diag = p_diag / 100;
-*/
-
+  
 keep run cald option 
 n_alive_m n_alive_w  n_alive  prevalence_m prevalence_w  prevalence  n_infected_m  n_infected_w  n_infected p_diag_m  p_diag_w  p_diag  
 p_onart_diag_m p_onart_diag_w  p_onart_diag p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
