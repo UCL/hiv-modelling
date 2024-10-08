@@ -2,15 +2,11 @@
 
 
 
-* consider matt comments on ms;
+* transmission through breastfeeding and added in dalys and cost for child for transmission through mtct 
 
-* add in dalys for transmission through mtct 
+* include a len prep option ?
 
-* transmission through breastfeeding
-
-* model 10 years of dcp and then stop
-
-* ionclude a len prep option ?
+* lower efficacy oral prep in women ?
 
 ;
 
