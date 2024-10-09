@@ -1,7 +1,7 @@
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   
+  *libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
@@ -21404,6 +21404,8 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
+
+/*
 %update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=0);
@@ -21464,7 +21466,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=0);*2040;
 
 
-/*
+
 data r1 ; set a;
 *option 1;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
@@ -24351,19 +24353,15 @@ file "/home/rmjllob/Scratch/_output_02_10_24_&dataset_id";
 
 
 put   
-libname b '/home/rmjllob/Scratch/';
- 
-/*
-  libname b '/home/rmjlaph/Scratch/';
-* libname b '/home/rmjlvca/Scratch/';
-* libname b '/home/rmjljes/Scratch/';
-
-*/
 
 /*
+
 data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
-*/
+
+
 keep
+*/
+
 
 /*general*/
 run   cald   option 
