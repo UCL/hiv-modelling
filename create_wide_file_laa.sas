@@ -1417,13 +1417,16 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 * note: it is critical that this starts at year_interv;
 * note: it is critical that this starts at year_interv;
 
+
+proc means noprint data=e; var &v; output out=y_3y mean= &v._3y; by run option ; where 2027.0 <= cald < 2030.00;   
 proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2027.0 <= cald < 2037.00;   
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2027.0 <= cald < 2077.00;   
 																				   
+proc sort data=y_3y    ; by run; proc transpose data=y_3y  out=t_3y  prefix=&v._3y_  ; var &v._3y    ; by run; 																																																						
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
 
-data &v ; merge y_24 t_10y t_50y ; 
+data &v ; merge y_24 t_3y t_10y t_50y ; 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1590,13 +1593,15 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);   %var(v=dvis_cost_lencab) ; %var(v=n_mtct);
 %var(v=p_ever_len_v_failed);
 
+%var(v=cost);
+
 data   b.wide_outputs; merge 
 
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost  dcab_cost  dlen_cost   dclin_cost  dcost_circ dcost_condom_dn 
 ddaly_mtct
 dzdv_cost dten_cost  d3tc_cost  dnev_cost  dlpr_cost  ddar_cost  defa_cost
- ddol_cost  dcab_cost  dlen_cost  
+ ddol_cost  dcab_cost  dlen_cost  cost
 
 dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost dcost_drug_level_test n_hiv n_alive  p_drug_level_test
@@ -1974,6 +1979,9 @@ if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
 
 p_diag_vl1000_24 = p_onart_diag_24 * p_onart_vl1000_24 ;
 
+p_diag_vl1000_10y_1 = p_onart_diag_10y_1 * p_onart_vl1000_10y_1 ;
+p_diag_vl1000_10y_2 = p_onart_diag_10y_2 * p_onart_vl1000_10y_2 ;
+
 p_started_unsupp_10y_2 = p_started_lencab_vmgt1000_10y_2 + p_started_lencab_offart_10y_2;
 
 dcost_clinical_care_hiv_50y_1 = dadc_cost_50y_1 + dnon_tb_who3_cost_50y_1 + dtb_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1;
@@ -1984,6 +1992,11 @@ if 0.75 <= p_diag_vl1000_24 < 0.80 then p_diag_vl1000_24_g=2;
 if 0.80 <= p_diag_vl1000_24 < 0.85 then p_diag_vl1000_24_g=3;
 if 0.85 <= p_diag_vl1000_24 < 0.90 then p_diag_vl1000_24_g=4;
 if 0.90 <= p_diag_vl1000_24        then p_diag_vl1000_24_g=5;
+
+if p_started_lencab_vls_10y_2 < 0.2 then p_started_lencab_vls_10y_2_g=1;
+if 0.2 <= p_started_lencab_vls_10y_2 < 0.4 then p_started_lencab_vls_10y_2_g=2;
+if 0.4 <= p_started_lencab_vls_10y_2 < 0.6 then p_started_lencab_vls_10y_2_g=3;
+if 0.6 <= p_started_lencab_vls_10y_2       then p_started_lencab_vls_10y_2_g=4;
 
 
 
@@ -2117,7 +2130,6 @@ ods html close;
 
 
 
-
 ods html ;
 title 'Effects over 10 years of the policy of cab/len for people aged 15-24 (median, 90% range)';
 ods noproctitle;
@@ -2146,6 +2158,7 @@ p_vl1000_m_1524_10y_1 p_vl1000_m_1524_10y_2
 p_vl1000_w_1524_10y_1  p_vl1000_w_1524_10y_2  
 p_onart_vl1000_w_1524_10y_1 p_onart_vl1000_w_1524_10y_2 
 p_onart_vl1000_m_1524_10y_1 p_onart_vl1000_m_1524_10y_2
+p_diag_vl1000_10y_1 p_diag_vl1000_10y_2 
 incidence1549_10y_1 incidence1549_10y_2 
 incidence1524_10y_1 incidence1524_10y_2
 n_death_hiv_10y_1 n_death_hiv_10y_2  
@@ -2242,6 +2255,18 @@ run;
 ods html close;
 
 
+
+
+ods html;
+proc means  n mean p5 p95;
+var
+cost_3y_1 cost_3y_2;
+run;
+ods html close;
+
+
+
+
 ods html;
 title 'Effects of the policy of cab/len for people aged 15-24 on DALYs and costs';
 ods noproctitle;
@@ -2266,6 +2291,9 @@ ods html close;
 
 
 proc freq; tables p_diag_vl1000_24_g * lowest_netdaly ; run; 
+
+proc freq; tables p_started_lencab_vls_10y_2_g * lowest_netdaly ; run; 
+
 
 
 footnote;
@@ -2346,7 +2374,13 @@ run;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 = p_onart_vl1000_24  / solution; 
+model d_netdaly500_2_1 = p_onart_vl1000_24 / solution; 
+run; 
+* ods html close;
+
+* ods html; 
+proc glm; 
+model d_netdaly500_2_1 = p_started_lencab_vls_10y_2 / solution; 
 run; 
 * ods html close;
 
