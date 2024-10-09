@@ -1998,8 +1998,7 @@ if 0.2 <= p_started_lencab_vls_10y_2 < 0.4 then p_started_lencab_vls_10y_2_g=2;
 if 0.4 <= p_started_lencab_vls_10y_2 < 0.6 then p_started_lencab_vls_10y_2_g=3;
 if 0.6 <= p_started_lencab_vls_10y_2       then p_started_lencab_vls_10y_2_g=4;
 
-
-
+relative_mtct_prop_10y = mtct_prop_10y_2 / mtct_prop_10y_1 ;
 
 
 * label 
@@ -2166,6 +2165,7 @@ n_death_hiv_age_1524_10y_1 n_death_hiv_age_1524_10y_2
 p_r_len_10y_1 p_r_len_10y_2
 p_r_cab_10y_1 p_r_cab_10y_2
 mtct_prop_10y_1 mtct_prop_10y_2 
+relative_mtct_prop_10y
 mtct_birth_prop_10y_1 mtct_birth_prop_10y_2 
 n_mtct_10y_1 n_mtct_10y_2 
 d_n_death_hiv_10y_2_1 
