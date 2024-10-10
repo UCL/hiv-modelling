@@ -1,6 +1,6 @@
 
 
-
+* check that testing interventions work with optima new targets of 50% increase in test rate ;
 
 * 95% effectiveness long acting prep (accounting for missed doses) ;
 
@@ -812,7 +812,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * annual_testing_prep_inj;		annual_testing_prep_inj=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 																* REF HIV MC joint project - this takes into account delayed or skipped injections ;
 
-* prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
+* prep_inj_efficacy;			prep_inj_efficacy = 0.95 ; * agreed for who project to account for late injections / so this is actually more effectiveness;  
 * rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_prep_inj/vr or one indicating the relative rate compared with oral prep;
@@ -2283,8 +2283,14 @@ if caldate_never_dot >= &year_interv then do;
 		* 8 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		* this increases proportion circumcised due to reducing hard_reach to 0;
 		pref_prep_oral = 0.95;
-		rate_test_stprep_set_in_opts = 0.95;	
-		p_prep_oral_b_set_in_opts = 0.95;
+		if 2024 <= caldate{j} < 2025 then rate_test_stprep_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then rate_test_stprep_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then rate_test_stprep_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then rate_test_stprep_set_in_opts = 0.95; 
+		if 2024 <= caldate{j} < 2025 then p_prep_oral_b_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then p_prep_oral_b_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then p_prep_oral_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_oral_b_set_in_opts = 0.95; 
 		rate_stop_prep_oral_set_in_opts = 0.001; 
 		prob_prep_restart_set_in_opts = 0.95; 
 		hard_reach=0;
@@ -2293,12 +2299,21 @@ if caldate_never_dot >= &year_interv then do;
 	if option = 9 then do;* note not included when including all interventions;
 		* 9 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		* not sure need to change pref_prep parameters;
-		date_prep_inj_intro = 2025;
-		pref_prep_inj = 0.95;
-		p_prep_oral_b_set_in_opts = 0.95;
+		date_prep_inj_intro = 2024;
+		if 2024 <= caldate{j} < 2025 then rate_test_stprep_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then rate_test_stprep_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then rate_test_stprep_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then rate_test_stprep_set_in_opts = 0.95; 
+		if 2024 <= caldate{j} < 2025 then p_prep_oral_b_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then p_prep_oral_b_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then p_prep_oral_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_oral_b_set_in_opts = 0.95; 
+		if 2024 <= caldate{j} < 2025 then p_prep_inj_b_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then p_prep_inj_b_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then p_prep_inj_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_inj_b_set_in_opts = 0.95; 
 		rate_stop_prep_oral_set_in_opts = 0.001;
 		rate_stop_prep_inj_set_in_opts = 0.001; 
-		p_prep_inj_b_set_in_opts = 0.95;
 		rate_test_stprep_set_in_opts = 0.95;	
 		prob_prep_restart_set_in_opts = 0.95; 
 		hard_reach=0;
@@ -2306,15 +2321,29 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 10 then do;
 		* 10 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP and dapivirine ring	Proportion of at risk populations initiated on (any) PrEP = 80%;
-		date_prep_inj_intro = 2025;
-		date_prep_vr_intro = 2025;
+		date_prep_inj_intro = 2024;
+		date_prep_vr_intro = 2024;
 
 		pref_prep_inj = 0.95;
 		prep_prep_vr = 0.95;
 
-		p_prep_oral_b_set_in_opts = 0.95;
-		p_prep_inj_b_set_in_opts = 0.95;
-		p_prep_vr_b_set_in_opts = 0.95;
+		date_prep_inj_intro = 2024;
+		if 2024 <= caldate{j} < 2025 then rate_test_stprep_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then rate_test_stprep_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then rate_test_stprep_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then rate_test_stprep_set_in_opts = 0.95; 
+		if 2024 <= caldate{j} < 2025 then p_prep_oral_b_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then p_prep_oral_b_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then p_prep_oral_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_oral_b_set_in_opts = 0.95; 
+		if 2024 <= caldate{j} < 2025 then p_prep_inj_b_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then p_prep_inj_b_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then p_prep_inj_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_inj_b_set_in_opts = 0.95; 
+		if 2024 <= caldate{j} < 2025 then p_prep_vr_b_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then p_prep_vr_b_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then p_prep_vr_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_vr_b_set_in_opts = 0.95; 
 
 		rate_stop_prep_oral_set_in_opts = 0.001;
 		rate_stop_prep_inj_set_in_opts = 0.001; 
@@ -2379,6 +2408,21 @@ if caldate_never_dot >= &year_interv then do;
 		  a much more detailed evalation of the effect of the ahd package of care could be considered as an hiv synthesis single project;
 	end;
 
+
+	if option = 16 then do;
+		* 5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%;
+		test_rate_agyw_set_in_opts = 1; incr_test_agyw_year_i = 1;
+		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_year_i = 1;
+		* 6 Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
+		sexual encounter = 95%;
+		condom_incr_set_in_opts = 0;
+		if gender = 2 and 15 <= age < 25 then do;	
+			condom_incr_set_in_opts = 1; condom_incr_year_i = 3;
+		end;
+	end;
+
+
+
 	if option  = 20  then do;
 		test_rate_set_in_opts = 1; incr_test_year_i = 5;
 		high_rate_testing_set_in_opts = 1; 
@@ -2394,22 +2438,34 @@ if caldate_never_dot >= &year_interv then do;
 		end;
 		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 5;
 
-		date_prep_inj_intro = 2025;
-		date_prep_vr_intro = 2025;
+		date_prep_inj_intro = 2024;
+		date_prep_vr_intro = 2024;
 
 		pref_prep_oral= 0.95;
 		pref_prep_inj = 0.95;
 		pref_prep_vr  = 0.95;
 
-		p_prep_oral_b_set_in_opts = 0.95;
-		p_prep_inj_b_set_in_opts = 0.95;
-		p_prep_vr_b_set_in_opts = 0.95;
+		if 2024 <= caldate{j} < 2025 then rate_test_stprep_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then rate_test_stprep_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then rate_test_stprep_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then rate_test_stprep_set_in_opts = 0.95; 
+		if 2024 <= caldate{j} < 2025 then p_prep_oral_b_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then p_prep_oral_b_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then p_prep_oral_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_oral_b_set_in_opts = 0.95; 
+		if 2024 <= caldate{j} < 2025 then p_prep_inj_b_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then p_prep_inj_b_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then p_prep_inj_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_inj_b_set_in_opts = 0.95; 
+		if 2024 <= caldate{j} < 2025 then p_prep_vr_b_set_in_opts = 0.3;
+		if 2025 <= caldate{j} < 2026 then p_prep_vr_b_set_in_opts = 0.5;
+		if 2026 <= caldate{j} < 2027 then p_prep_vr_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_vr_b_set_in_opts = 0.95; 
 
 		rate_stop_prep_oral_set_in_opts = 0.001;
 		rate_stop_prep_inj_set_in_opts = 0.001; 
 		rate_stop_prep_vr_set_in_opts = 0.001; 
 
-		rate_test_stprep_set_in_opts = 0.8;	
 		prob_prep_restart_set_in_opts = 0.8; 
 
 		hard_reach=0;
@@ -2482,8 +2538,16 @@ if caldate_never_dot >= &year_interv then do;
 	if option = 108 then do; * note not included when including all interventions;
 		* 8 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		pref_prep_oral = 0.7;
-		rate_test_stprep_set_in_opts = 0.25;	
-		p_prep_oral_b_set_in_opts = 0.50;
+
+		if 2024 <= caldate{j} < 2025 then rate_test_stprep_set_in_opts = 0.1;
+		if 2025 <= caldate{j} < 2026 then rate_test_stprep_set_in_opts = 0.15;
+		if 2026 <= caldate{j} < 2027 then rate_test_stprep_set_in_opts = 0.20;
+		if 2027 <= caldate{t} then rate_test_stprep_set_in_opts = 0.25; 
+		if 2024 <= caldate{j} < 2025 then p_prep_oral_b_set_in_opts = 0.2;
+		if 2025 <= caldate{j} < 2026 then p_prep_oral_b_set_in_opts = 0.3;
+		if 2026 <= caldate{j} < 2027 then p_prep_oral_b_set_in_opts = 0.4;
+		if 2027 <= caldate{t} then p_prep_oral_b_set_in_opts = 0.50; 
+
 		rate_stop_prep_oral_set_in_opts = 0.002; 
 		prob_prep_restart_set_in_opts = 0.25; 
 	end;
@@ -2491,32 +2555,55 @@ if caldate_never_dot >= &year_interv then do;
 	if option = 109 then do; * note not included when including all interventions;
 		* 9 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP	Proportion of at risk populations initiated on (any) PrEP = 80% ;
 		* not sure need to change pref_prep parameters;
-		date_prep_inj_intro = 2025;
+		date_prep_inj_intro = 2024;
 		pref_prep_inj = 0.7;
-		p_prep_oral_b_set_in_opts = 0.50;
+
+		if 2024 <= caldate{j} < 2025 then rate_test_stprep_set_in_opts = 0.1;
+		if 2025 <= caldate{j} < 2026 then rate_test_stprep_set_in_opts = 0.15;
+		if 2026 <= caldate{j} < 2027 then rate_test_stprep_set_in_opts = 0.20;
+		if 2027 <= caldate{t} then rate_test_stprep_set_in_opts = 0.25; 
+		if 2024 <= caldate{j} < 2025 then p_prep_oral_b_set_in_opts = 0.2;
+		if 2025 <= caldate{j} < 2026 then p_prep_oral_b_set_in_opts = 0.3;
+		if 2026 <= caldate{j} < 2027 then p_prep_oral_b_set_in_opts = 0.4;
+		if 2027 <= caldate{t} then p_prep_oral_b_set_in_opts = 0.50;
+		if 2024 <= caldate{j} < 2025 then p_prep_inj_b_set_in_opts = 0.2;
+		if 2025 <= caldate{j} < 2026 then p_prep_inj_b_set_in_opts = 0.3;
+		if 2026 <= caldate{j} < 2027 then p_prep_inj_b_set_in_opts = 0.4;
+		if 2027 <= caldate{t} then p_prep_inj_b_set_in_opts = 0.50; 
+
 		rate_stop_prep_oral_set_in_opts = 0.002;
 		rate_stop_prep_inj_set_in_opts = 0.002; 
-		p_prep_inj_b_set_in_opts = 0.50;
-		rate_test_stprep_set_in_opts = 0.25;	
 		prob_prep_restart_set_in_opts = 0.25; 
 	end;
 
 	if option = 110 then do;
 		* 10 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP and dapivirine ring	Proportion of at risk populations initiated on (any) PrEP = 80%;
-		date_prep_inj_intro = 2025;
-		date_prep_vr_intro = 2025;
+		date_prep_inj_intro = 2024;
+		date_prep_vr_intro = 2024;
 
 		pref_prep_inj = 0.7;
 
-		p_prep_oral_b_set_in_opts = 0.50;
-		p_prep_inj_b_set_in_opts = 0.50;
-		p_prep_vr_b_set_in_opts = 0.50;
+		if 2024 <= caldate{j} < 2025 then rate_test_stprep_set_in_opts = 0.1;
+		if 2025 <= caldate{j} < 2026 then rate_test_stprep_set_in_opts = 0.15;
+		if 2026 <= caldate{j} < 2027 then rate_test_stprep_set_in_opts = 0.20;
+		if 2027 <= caldate{t} then rate_test_stprep_set_in_opts = 0.25; 
+		if 2024 <= caldate{j} < 2025 then p_prep_oral_b_set_in_opts = 0.2;
+		if 2025 <= caldate{j} < 2026 then p_prep_oral_b_set_in_opts = 0.3;
+		if 2026 <= caldate{j} < 2027 then p_prep_oral_b_set_in_opts = 0.4;
+		if 2027 <= caldate{t} then p_prep_oral_b_set_in_opts = 0.50;
+		if 2024 <= caldate{j} < 2025 then p_prep_inj_b_set_in_opts = 0.2;
+		if 2025 <= caldate{j} < 2026 then p_prep_inj_b_set_in_opts = 0.3;
+		if 2026 <= caldate{j} < 2027 then p_prep_inj_b_set_in_opts = 0.4;
+		if 2027 <= caldate{t} then p_prep_inj_b_set_in_opts = 0.50; 
+		if 2024 <= caldate{j} < 2025 then p_prep_vr_b_set_in_opts = 0.2;
+		if 2025 <= caldate{j} < 2026 then p_prep_vr_b_set_in_opts = 0.3;
+		if 2026 <= caldate{j} < 2027 then p_prep_vr_b_set_in_opts = 0.4;
+		if 2027 <= caldate{t} then p_prep_vr_b_set_in_opts = 0.50; 
 
 		rate_stop_prep_oral_set_in_opts = 0.002;
 		rate_stop_prep_inj_set_in_opts = 0.002; 
 		rate_stop_prep_vr_set_in_opts = 0.002; 
 
-		rate_test_stprep_set_in_opts = 0.25;	
 		prob_prep_restart_set_in_opts = 0.25; 
 	end;
 	
@@ -2573,6 +2660,17 @@ if caldate_never_dot >= &year_interv then do;
 		  a much more detailed evalation of the effect of the ahd package of care could be considered as an hiv synthesis single project;
 	end;
 
+	if option  = 116 then do;
+		* 5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%;
+		test_rate_agyw_set_in_opts = 1; incr_test_agyw_h_year_i = 1;
+		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_h_year_i = 1;
+		* 6 Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
+		sexual encounter = 95%;
+		condom_incr_set_in_opts = 0;
+		if gender = 2 and 15 <= age < 25 then do;	
+			condom_incr_set_in_opts = 1; condom_incr_year_i = 1.5;
+		end;
+	end;
 
 
 	if option = 200 then do;
@@ -2593,20 +2691,32 @@ if caldate_never_dot >= &year_interv then do;
 			condom_incr_set_in_opts = 1; condom_incr_h_year_i = 1.5;
 		end;
 		circ_inc_rate_set_in_opts = 1; circ_inc_rate_h_year_i = 2.5;
-		date_prep_inj_intro = 2025;
-		date_prep_vr_intro = 2025;
+		date_prep_inj_intro = 2024;
+		date_prep_vr_intro = 2024;
 	
 		pref_prep_inj = 0.7;
 
-		p_prep_oral_b_set_in_opts = 0.50;
-		p_prep_inj_b_set_in_opts = 0.50;
-		p_prep_vr_b_set_in_opts = 0.50;
+		if 2024 <= caldate{j} < 2025 then rate_test_stprep_set_in_opts = 0.1;
+		if 2025 <= caldate{j} < 2026 then rate_test_stprep_set_in_opts = 0.15;
+		if 2026 <= caldate{j} < 2027 then rate_test_stprep_set_in_opts = 0.20;
+		if 2027 <= caldate{t} then rate_test_stprep_set_in_opts = 0.25; 
+		if 2024 <= caldate{j} < 2025 then p_prep_oral_b_set_in_opts = 0.2;
+		if 2025 <= caldate{j} < 2026 then p_prep_oral_b_set_in_opts = 0.3;
+		if 2026 <= caldate{j} < 2027 then p_prep_oral_b_set_in_opts = 0.4;
+		if 2027 <= caldate{t} then p_prep_oral_b_set_in_opts = 0.50;
+		if 2024 <= caldate{j} < 2025 then p_prep_inj_b_set_in_opts = 0.2;
+		if 2025 <= caldate{j} < 2026 then p_prep_inj_b_set_in_opts = 0.3;
+		if 2026 <= caldate{j} < 2027 then p_prep_inj_b_set_in_opts = 0.4;
+		if 2027 <= caldate{t} then p_prep_inj_b_set_in_opts = 0.50; 
+		if 2024 <= caldate{j} < 2025 then p_prep_vr_b_set_in_opts = 0.2;
+		if 2025 <= caldate{j} < 2026 then p_prep_vr_b_set_in_opts = 0.3;
+		if 2026 <= caldate{j} < 2027 then p_prep_vr_b_set_in_opts = 0.4;
+		if 2027 <= caldate{t} then p_prep_vr_b_set_in_opts = 0.50; 
 
 		rate_stop_prep_oral_set_in_opts = 0.002;
 		rate_stop_prep_inj_set_in_opts = 0.002; 
 		rate_stop_prep_vr_set_in_opts = 0.002; 
 
-		rate_test_stprep_set_in_opts = 0.25;	
 		prob_prep_restart_set_in_opts = 0.25; 
 		fold_tr_pwid = 0.1;
 		decr_rate_lost_set_in_opts = 1; decr_rate_lost_h_year_i = 1;
@@ -24323,6 +24433,179 @@ data r1; set x;
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=115);
 
 */
+
+
+
+
+
+data r1; set x;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=116);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=116);   
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=116);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=116);
+
+/*
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=116);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=116);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=116);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=116);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=116);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=116);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=116);
+
+*/
+
+
 
 
 
