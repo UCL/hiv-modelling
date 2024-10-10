@@ -1,6 +1,20 @@
 
 
 
+
+* 95% effectiveness long acting prep (accounting for missed doses) ;
+
+* another agyw intervention - testing + reduced cls together ;
+
+* time to full scale of cab prep from 2024 to 2027 ;
+
+
+
+
+
+
+
+
 * yll_gbd for hiv deaths only;
 
 * resolve inj vs cab len 
