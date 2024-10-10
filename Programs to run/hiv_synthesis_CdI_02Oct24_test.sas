@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 100 ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -21401,6 +21401,8 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
+
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
@@ -21463,7 +21465,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=0);*2040;
 
-
+*/
 
 data r1 ; set a;
 *option 1;
@@ -21472,6 +21474,8 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=1);
+
+/*
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=1);
@@ -21532,13 +21536,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=1);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=2);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=2);
@@ -21600,7 +21605,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=2);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=3);
@@ -21608,6 +21613,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=3);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=3);
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=3);
+/*
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=3);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=3);
 %update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=3);
@@ -21668,13 +21674,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=3);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=3);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=3);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=4);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=4);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=4);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=4);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=4);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=4);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=4);
@@ -21736,13 +21743,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=4);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=4);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=4);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=5);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=5);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=5);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=5);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=5);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=5);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=5);
@@ -21804,13 +21812,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=5);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=5);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=5);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=6);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=6);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=6);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=6);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=6);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=6);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=6);
@@ -21872,13 +21881,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=6);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=6);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=6);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=7);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=7);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=7);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=7);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=7);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=7);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=7);
@@ -21940,13 +21950,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=7);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=7);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=7);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=8);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=8);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=8);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=8);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=8);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=8);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=8);
@@ -22008,7 +22019,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=8);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=8);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=8);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=9);
@@ -22016,6 +22027,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=9);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=9);
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=9);
+/*
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=9);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=9);
 %update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=9);
@@ -22076,13 +22088,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=9);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=9);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=9);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=10);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=10);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=10);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=10);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=10);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=10);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=10);
@@ -22144,7 +22157,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=10);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=10);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=10);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=11);
@@ -22152,6 +22165,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=11);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=11);
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=11);
+/*
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=11);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=11);
 %update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=11);
@@ -22212,13 +22226,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=11);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=11);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=11);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=12);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=12);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=12);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=12);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=12);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=12);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=12);
@@ -22280,13 +22295,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=12);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=12);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=12);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=13);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=13);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=13);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=13);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=13);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=13);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=13);
@@ -22348,13 +22364,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=13);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=13);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=13);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=14);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=14);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=14);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=14);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=14);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=14);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=14);
@@ -22416,13 +22433,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=14);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=14);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=14);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=15);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=15);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=15);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=15);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=15);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=15);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=15);
@@ -22484,13 +22502,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=15);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=15);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=15);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=16);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=16);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=16);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=16);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=16);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=16);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=16);
@@ -22552,13 +22571,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=16);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=16);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=16);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=17);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=17);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=17);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=17);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=17);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=17);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=17);
@@ -22620,13 +22640,14 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=17);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=17);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=17);*2040;
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=18);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=18);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=18);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=18);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=18);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=18);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=18);
@@ -22688,7 +22709,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=18);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=18);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=18);*2040;
-
+*/
 
 data r1 ; set a;
 *option 0;
@@ -22696,6 +22717,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=19);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=19);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=19);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=19);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=19);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=19);
@@ -22757,7 +22779,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=19);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=19);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=19);*2040;
-
+*/
 
 data r1 ; set a;
 *option 0;
@@ -22765,6 +22787,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=20);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=20);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=20);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=20);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=20);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=20);
@@ -22827,13 +22850,14 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=20);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=20);*2040;
 
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=21);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=21);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=21);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=21);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=21);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=21);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=21);
@@ -22895,7 +22919,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=21);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=21);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=21);*2040;
-
+*/
 /*
 data r1 ; set a;
 *option 1;
@@ -24347,8 +24371,8 @@ data r1 ; set a;
 
 data x; set cum_l1;
 
-file "/home/rmjllob/Scratch/_output_02_10_24_&dataset_id";  
-
+*file "/home/rmjllob/Scratch/_output_02_10_24_&dataset_id"; 
+file "C:\Users\Loveleen\Documentos\_output_02_10_24_&dataset_id";
 
 put   
 

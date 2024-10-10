@@ -2266,6 +2266,14 @@ if caldate_never_dot >= &year_interv then do;
 		end;
 	end;
 
+	***Increased testing in PWID;
+	if option=58 then do;
+		if pwid=1 then do;
+			hard_reach_testing=0;
+			incr_test_pwid_year_i=9;
+		end;
+	end;
+
 	***Increased testing in high risk agyw - defined as 15-24 fsw;
 	if option=9 then do;
 		if agyw=1 and sw=1 then do;
@@ -22892,7 +22900,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=21);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=21);*2040;
 
-
+/*
 data r1 ; set a;
 *option 1;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=51);
@@ -23641,7 +23649,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=61);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=61);*2040;
 
-/*
+
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=62);
@@ -23709,7 +23717,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=62);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=62);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=62);*2040;
-*/
+
 
 data r1 ; set a;
 *option 0;
@@ -24325,7 +24333,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=71);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=71);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=71);*2040;
-
+*/
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
