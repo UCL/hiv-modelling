@@ -229,7 +229,7 @@ dont think we need to have an extra cost here.
 
 dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
 dcost_circ = s_dcost_circ * sf * 4 / 1000; 
-dcost_condom_dn = s_dcost_condom_dn * sf * 4 / 1000; 
+dcost_condom_dn = s_dcost_condom_dn * sf * 4 * 0.25 / 1000; * 0.25 because cost was overestimated in model program;
 dswitchline_cost = s_dcost_switch_line * sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
