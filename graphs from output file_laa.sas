@@ -34,7 +34,7 @@ p_diag_vl1000_ = p_onart_diag * p_onart_vl1000 ;
   if option < 2;
 
 
-%let single_var =  n_death_hiv                   ;
+%let single_var =  n_mtct                  ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -322,7 +322,7 @@ band    x=cald lower=p5_n_prep_any_1 upper=p95_n_prep_any_1 / transparency=0.9 f
 
 run;quit;
 
-*/
+
 
 ods html;
 proc sgplot data=d nolegend ; 
@@ -342,7 +342,7 @@ band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9
 run;quit;
 
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -486,25 +486,28 @@ band    x=cald lower=p5_p_onart_1 upper=p95_p_onart_1 / transparency=0.9 fillatt
 run;quit;
 
 
+*/
+
 
 ods html;
-proc sgplot data=d ; 
-Title    height=1.5 justify=center "mtct_prop";
+proc sgplot data=d nolegend; 
+Title ''; *   height=1.5 justify=center "Number of children newly infected with HIV per year";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to 0.5    by 0.05    ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to 5000   by 100     ) valueattrs=(size=10);
 
-label p50_mtct_prop_0 = "no len/cab";
-label p50_mtct_prop_1 = "len/cab";
+* label p50_n_mtct_0 = "no len/cab";
+* label p50_n_mtct_1 = "len/cab";
 
-series  x=cald y=p50_mtct_prop_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_mtct_prop_0 upper=p95_mtct_prop_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_n_mtct_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_mtct_0 upper=p95_n_mtct_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_mtct_prop_1 / lineattrs = (color=navy thickness = 4);
-band    x=cald lower=p5_mtct_prop_1 upper=p95_mtct_prop_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
+series  x=cald y=p50_n_mtct_1 / lineattrs = (color=navy thickness = 4);
+band    x=cald lower=p5_n_mtct_1 upper=p95_n_mtct_1 / transparency=0.9 fillattrs = (color=navy) legendlabel= "90% range";
 
 run;quit;
 
 
+/*
 
 
 ods html;
