@@ -1659,8 +1659,8 @@ p_diag_w_24 = p_diag_w_24 / 100;
 p_diag_m_24 = p_diag_m_24 / 100;
 
 * sens analysis;
-* dcost_dcp_visit_50y_2 = dcost_dcp_visit_50y_2 / 2;
-* dcost_dcp_visit_50y_3 = dcost_dcp_visit_50y_3 / 2;
+  dcost_dcp_visit_50y_2 = dcost_dcp_visit_50y_2 * (10 / 12);
+  dcost_dcp_visit_50y_3 = dcost_dcp_visit_50y_3 * (10 / 12);
 * dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * (5 / 6);
 
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
@@ -2235,7 +2235,7 @@ proc means data = g n mean p50 p5 p95 lclm uclm;
 d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 
 r_incidence1549_50y_2_1 r_incidence1549_50y_3_1 
 ddaly_50y_1 ddaly_50y_2 ddaly_50y_3   d_ddaly_50y_2_1  d_ddaly_50y_3_1  
-dcost_50y_1   dcost_50y_2 dcost_50y_3    d_dcos_50y_2_1 d_dcost_50y_3_1 
+dcost_50y_1   dcost_50y_2 dcost_50y_3    d_dcost_50y_2_1 d_dcost_50y_3_1 
 netdaly500_1 netdaly500_2 netdaly500_3  d_netdaly500_2_1 d_netdaly500_3_1
 ;
 run;
@@ -2255,7 +2255,7 @@ ods html;
 
 proc means data = g mean;
 var d_dcost_50y_3_1 d_ddaly_50y_3_1 ;
-  where p_elig_prep_24_g = 3 and prevalence_vg1000_24_g = 2;
+  where p_elig_prep_24_g = 1 and prevalence_vg1000_24_g = 3;
 run;
 
 ods html close;
