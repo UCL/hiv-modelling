@@ -2,6 +2,8 @@
 
 * if and when run laa_c
 
+maybe have lai introduction in 2027.25
+
 included outputs for p_diag_vl1000
 
 include prop on len cab by age and gender and pregnancy/breastfeeding status
