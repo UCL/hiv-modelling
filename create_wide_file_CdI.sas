@@ -501,6 +501,8 @@ p_m_ge1newp		n_pwid				p_onprep_pwid		p_onart_pwid		sw_trans_matrix
 proc sort data=y;by run option;run;
 
 proc freq;table sw_trans_matrix;run;
+
+proc means;var prop_sw_hiv;where sw_trans_matrix=4 and cald=2000;run;
 proc means mean;var p_diag_msm;where cald=2022;run;
 
 proc freq;table incidence1549_per1000_;where cald=2022;run;
