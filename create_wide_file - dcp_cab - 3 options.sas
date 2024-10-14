@@ -42,7 +42,7 @@ sf_2023 = 10000000 / s_alive;
 sf=sf_2023;
 incidence1549_2023 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 prevalence1549_2023 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
-keep run sf_2023 incidence1549_2023 prevalence1549_2023;
+keep run sf sf_2023 incidence1549_2023 prevalence1549_2023;
 
 
 proc sort; by run;
@@ -1356,7 +1356,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=of_all_o_cab_prop_dur_6m);   %var(v=p_prep_inj_hiv);  %var(v=prop_cab_dol_res_attr_cab);   %var(v=n_cur_res_cab);  %var(v=n_cur_res_dol);  
 %var(v=n_emerge_inm_res_cab);  %var(v=n_switch_prep_from_oral); %var(v=n_switch_prep_from_inj);  %var(v=n_switch_prep_to_oral);  
 %var(v=n_switch_prep_to_inj);  %var(v=n_prep_any_start); %var(v=n_prep_oral_start);  %var(v=n_prep_inj_start); %var(v=n_prep_vr_start);
-%var(v=n_prep_any); %var(v=prop_elig_on_prep); %var(v=p_elig_prep);  %var(v=prop_onprep_newpge1); %var(v=p_prep_elig_past_year); 
+%var(v=prop_elig_on_prep); %var(v=p_elig_prep);  %var(v=prop_onprep_newpge1); %var(v=p_prep_elig_past_year); 
 %var(v=p_prep_newp); %var(v=prop_sw_onprep);  %var(v=p_em_inm_res_ever_prep_inj);  %var(v=p_cabr_start_rest_prep_inj);
 %var(v=n_o_cab_at_3m);    %var(v=n_o_cab_at_6m);    %var(v=n_o_cab_at_9m);   %var(v=n_o_cab_at_ge12m); 
 %var(v=ddaly); %var(v=p_emerge_inm_res_cab);  %var(v=p_emerge_inm_res_cab_tail); %var(v=ddaly_ac_ad_ntd_mtct); %var(v=ddaly_ac_ad_mtct);
@@ -1411,7 +1411,7 @@ p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_ona
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ad_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
-n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
+n_started_prep_inj_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj 
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_ai_naive_no_pmtct_e_inm
 prop_ever_tested_1549 p_tested_past_year_1549 prop_onprep_1549 prop_ever_tested_1549m prop_ever_tested_1549w
 p_tested_past_year_1549m p_tested_past_year_1549w
@@ -1616,6 +1616,7 @@ data g; set b.w_dcp_cab_ae ;
   if incidence1549_24 ge 0.1;
   if hivtest_type_1_init_prep_inj = 0;
 
+if run le  867937948;
 
 if 0.1 <= incidence1549_24 < 0.3 then incidence1549_24_g = 1;
 if 0.3 <= incidence1549_24 < 0.5 then incidence1549_24_g = 2;
@@ -2234,19 +2235,31 @@ proc means data = g n mean p50 p5 p95 lclm uclm;
 d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 
 r_incidence1549_50y_2_1 r_incidence1549_50y_3_1 
 ddaly_50y_1 ddaly_50y_2 ddaly_50y_3   d_ddaly_50y_2_1  d_ddaly_50y_3_1  
-dcost_50y_1   dcost_50y_2 dcost_50y_3    d_dcost_50y_2_1 d_dcost_50y_3_1 
-netdaly500_1 netdaly500_2 netdaly500_3  d_netdaly500_2_1 d_netdaly500_3_1 
+dcost_50y_1   dcost_50y_2 dcost_50y_3    d_dcos_50y_2_1 d_dcost_50y_3_1 
+netdaly500_1 netdaly500_2 netdaly500_3  d_netdaly500_2_1 d_netdaly500_3_1
 ;
 run;
 ods html close;
 
 
+ods html;
+
 title 'Which policy is cost-effective for each model run';
 
 proc freq; tables lowest_netdaly  lowest_ddaly  lowest_dcost; run; 
 
+ods html close;
+
+
+ods html;
+
+proc means data = g mean;
+var d_dcost_50y_3_1 d_ddaly_50y_3_1 ;
+  where p_elig_prep_24_g = 3 and prevalence_vg1000_24_g = 2;
+run;
 
 ods html close;
+
 
 
 
