@@ -27,12 +27,11 @@ if cald=2022;
 *https://population.un.org/dataportal/data/indicators/70/locations/384/start/1990/end/2023/line/linetimeplot?df=fedb2c36-7339-4cea-982e-6339bd045666;
 *Total population - 0-14 population;
 sf_2022 = (13977488.5)/s_alive1549;
-keep run sf_2022;
+sf = sf_2022;
+keep run sf sf_2022;
 
 proc sort; by run;
-*With the following command we can change only here instead of in all the lines below,
-in the keep statement, macro par and merge we are still using the variable sf_2019;
-%let sf=sf_2022;
+
 
 data y; 
 merge a sf;
@@ -92,22 +91,22 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
-dead_ddaly_ntd = s_dead_ddaly_ntd * &sf * 4 * (0.0022 / 0.0058); 
+dead_ddaly_ntd = s_dead_ddaly_ntd * sf * 4 * (0.0022 / 0.0058); 
 *  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
 *  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
 
-ddaly = s_ddaly * &sf * 4;
+ddaly = s_ddaly * sf * 4;
 
 
 * sensitivity analysis;
 * dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
 
 
-dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * &sf * 4; * odabe ;
+dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf * 4; * odabe ;
 
-ddaly_mtct = s_ddaly_mtct * &sf * 4;
+ddaly_mtct = s_ddaly_mtct * sf * 4;
 
-ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * &sf * 4; * napd;
+ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf * 4; * napd;
 
 ddaly_ac_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
 
@@ -140,15 +139,15 @@ run;
 
 * ts1m - 12 instead of 4; 
 
-dzdv_cost = s_cost_zdv * &discount * &sf * 4 / 1000;
-dten_cost = s_cost_ten * &discount * &sf * 4 / 1000;
-d3tc_cost = s_cost_3tc * &discount * &sf * 4 / 1000; 
-dnev_cost = s_cost_nev * &discount * &sf * 4 / 1000;
-dlpr_cost = s_cost_lpr * &discount * &sf * 4 / 1000;
-ddar_cost = s_cost_dar * &discount * &sf * 4 / 1000;
-dtaz_cost = s_cost_taz * &discount * &sf * 4 / 1000;
-defa_cost = s_cost_efa * &discount * &sf * 4 / 1000;
-ddol_cost = s_cost_dol * &discount * &sf * 4 / 1000;
+dzdv_cost = s_cost_zdv * &discount * sf * 4 / 1000;
+dten_cost = s_cost_ten * &discount * sf * 4 / 1000;
+d3tc_cost = s_cost_3tc * &discount * sf * 4 / 1000; 
+dnev_cost = s_cost_nev * &discount * sf * 4 / 1000;
+dlpr_cost = s_cost_lpr * &discount * sf * 4 / 1000;
+ddar_cost = s_cost_dar * &discount * sf * 4 / 1000;
+dtaz_cost = s_cost_taz * &discount * sf * 4 / 1000;
+defa_cost = s_cost_efa * &discount * sf * 4 / 1000;
+ddol_cost = s_cost_dol * &discount * sf * 4 / 1000;
 
 
 if s_dart_cost=. then s_dart_cost=0;
@@ -160,37 +159,37 @@ if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
 * ts1m - 12 instead of 4; 
-dvis_cost = s_dvis_cost * &sf * 4 / 1000;
-dart_1_cost = s_dart_1_cost * &sf * 4 / 1000;
-dart_2_cost = s_dart_2_cost * &sf * 4 / 1000;
-dart_3_cost = s_dart_3_cost * &sf * 4 / 1000;
-dart_cost = s_dart_cost * &sf * 4 / 1000;
-dvl_cost = s_dvl_cost * &sf * 4 / 1000;
-dcd4_cost = s_dcd4_cost * &sf * 4 / 1000;
-dadc_cost = s_dadc_cost * &sf * 4 / 1000;
-dnon_tb_who3_cost = s_dnon_tb_who3_cost * &sf * 4 / 1000;
-dtb_cost = s_dtb_cost * &sf * 4 / 1000;
-dtest_cost = s_dtest_cost * &sf * 4 / 1000;
-dcot_cost = s_dcot_cost * &sf * 4 / 1000;
-dres_cost = s_dres_cost * &sf * 4 / 1000;
-d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
-dcost_cascade_interventions = s_dcost_cascade_interventions * &sf * 4 / 1000;  
-dcost_prep = s_dcost_prep * &sf * 4 / 1000; 
-dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 			   
-dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
+dvis_cost = s_dvis_cost * sf * 4 / 1000;
+dart_1_cost = s_dart_1_cost * sf * 4 / 1000;
+dart_2_cost = s_dart_2_cost * sf * 4 / 1000;
+dart_3_cost = s_dart_3_cost * sf * 4 / 1000;
+dart_cost = s_dart_cost * sf * 4 / 1000;
+dvl_cost = s_dvl_cost * sf * 4 / 1000;
+dcd4_cost = s_dcd4_cost * sf * 4 / 1000;
+dadc_cost = s_dadc_cost * sf * 4 / 1000;
+dnon_tb_who3_cost = s_dnon_tb_who3_cost * sf * 4 / 1000;
+dtb_cost = s_dtb_cost * sf * 4 / 1000;
+dtest_cost = s_dtest_cost * sf * 4 / 1000;
+dcot_cost = s_dcot_cost * sf * 4 / 1000;
+dres_cost = s_dres_cost * sf * 4 / 1000;
+d_t_adh_int_cost = s_d_t_adh_int_cost * sf * 4 / 1000;  
+dcost_cascade_interventions = s_dcost_cascade_interventions * sf * 4 / 1000;  
+dcost_prep = s_dcost_prep * sf * 4 / 1000; 
+dcost_prep_visit  = s_dcost_prep_visit * sf * 4 / 1000; 			   
+dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf * 4 / 1000; 
 
 * note this below can be used if outputs are from program beyond 1-1-20;
-* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
+* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf * 4 / 1000;
   dcost_non_aids_pre_death = ddaly_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
-dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
-dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
-dcost_condom_dn = s_dcost_condom_dn * &sf * 4 / 1000; 
-dswitchline_cost = s_dcost_switch_line * &sf * 4 / 1000;
+dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
+dcost_circ = s_dcost_circ * sf * 4 / 1000; 
+dcost_condom_dn = s_dcost_condom_dn * sf * 4 / 1000; 
+dswitchline_cost = s_dcost_switch_line * sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
-dcost_drug_level_test = s_dcost_drug_level_test * &sf * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
+dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
+dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
  
 
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
@@ -250,7 +249,7 @@ s_alive = s_alive_m + s_alive_w ;
 
 * p_newp_ge5;					p_newp_ge5_ = s_newp_ge5 / s_alive1564 ;
 * gender_r_newp;				if s_w_newp gt 0 then gender_r_newp = s_m_newp / s_w_newp; *log_gender_r_newp  = log(gender_r_newp);
-* n_tested;						n_tested = s_tested * &sf * 4;
+* n_tested;						n_tested = s_tested * sf * 4;
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
@@ -259,14 +258,14 @@ s_alive = s_alive_m + s_alive_w ;
 * p_mcirc_1549m;				p_mcirc_1549m = s_mcirc_1549m / s_ageg1549m ;
 * p_trad_circ;					p_trad_circ = s_birth_circ /s_alive_m;
 * p_vmmc;						p_vmmc = s_vmmc /s_alive_m ;
-* n_new_vmmc1549m;				n_new_vmmc1549m = s_new_vmmc1549m * &sf * 4;
+* n_new_vmmc1549m;				n_new_vmmc1549m = s_new_vmmc1549m * sf * 4;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw = s_sw_1564 / s_alive1564_w ;
 * prop_w_ever_sw;				if s_alive1564_w gt 0 then prop_w_ever_sw = s_ever_sw / s_alive_w ;
 * prop_sw_hiv;					if s_sw_1564 gt 0 then prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
 * prop_sw_hiv1549_;				if s_sw_1549 gt 0 then prop_sw_hiv1549_ = s_hiv_sw1549_ / s_sw_1549 ;
-* n_sw_1549_;					n_sw_1549_ = s_sw_1549 * &sf;
+* n_sw_1549_;					n_sw_1549_ = s_sw_1549 * sf;
 * p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
 
@@ -353,10 +352,10 @@ s_alive = s_alive_m + s_alive_w ;
 * p_onart_diag1549w;			if s_diag1549w > 0 then p_onart_diag = s_onart_iicu1549w / s_diag1549w;
 */
 
-* n_diagnosed (per yr);			n_diagnosed = s_diag_this_period * 4 * &sf;
-* n_onart  ;					n_onart   = s_onart   * &sf;
-* n_onart_w;					n_onart_w = s_onart_w * &sf;
-* n_onart_m;					n_onart_m = s_onart_m * &sf;
+* n_diagnosed (per yr);			n_diagnosed = s_diag_this_period * 4 * sf;
+* n_onart  ;					n_onart   = s_onart   * sf;
+* n_onart_w;					n_onart_w = s_onart_w * sf;
+* n_onart_m;					n_onart_m = s_onart_m * sf;
 
 * p_efa;						if s_onart > 0 then p_efa = s_efa / s_onart ;
 * p_taz;						if s_onart > 0 then p_taz = s_taz / s_onart ;
@@ -371,7 +370,7 @@ s_alive = s_alive_m + s_alive_w ;
 * p_onart_w;					if s_hivge15w gt 0 then p_onart_w = s_onart_w / s_hivge15w;
 * p_onart_m;					if s_hivge15m gt 0 then p_onart_m = s_onart_m / s_hivge15m;
 
-* n_art_start_y;				n_art_start_y = s_art_start * 4 * &sf;
+* n_art_start_y;				n_art_start_y = s_art_start * 4 * sf;
 
 * p_onart_vl1000;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000_ = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu ;
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
@@ -385,52 +384,52 @@ s_alive = s_alive_m + s_alive_w ;
 * p_vg1000, p_vl1000;			if s_hivge15_  > 0 then p_vg1000_ = s_vg1000 / s_hivge15_ ;  p_vl1000_ = 1- p_vg1000_ ;
 * prevalence_vg1000;			if s_alive > 0 then prevalence_vg1000_ = s_vg1000 / s_alive;
 * n_death_2059_m;				n_death_2059_m = 	(s_dead2024m_all+ s_dead2529m_all+ s_dead3034m_all+ s_dead3539m_all+
-													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all)  * 4 * &sf ;
+													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all)  * 4 * sf ;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
-													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * &sf ;
-* n_death_hiv_m;				n_death_hiv_m = s_death_hiv_m * 4 * &sf;
-* n_death_hiv_w;				n_death_hiv_w = s_death_hiv_w * 4 * &sf;		
+													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * sf ;
+* n_death_hiv_m;				n_death_hiv_m = s_death_hiv_m * 4 * sf;
+* n_death_hiv_w;				n_death_hiv_w = s_death_hiv_w * 4 * sf;		
 * n_death_hiv;					n_death_hiv = n_death_hiv_m + n_death_hiv_w;
 
 * rate_dead_allage;				rate_dead_allage = ((s_deadm_all + s_deadw_all) * 4 * 100) / s_alive ;
 * rate_dead_allage_m;			rate_dead_allage_m = (s_deadm_all * 4 * 100) / s_alive_m ; 
 * rate_dead_allage_w;			rate_dead_allage_w = (s_deadw_all * 4 * 100) / s_alive_w ; 
 
-* n_cd4_lt200;					n_cd4_lt200_ = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
-* n_hiv;						n_hiv = s_hivge15_ * &sf;
-* n_hiv_m;						n_hiv_m = s_hivge15m * &sf;
-* n_hiv_w;						n_hiv_w = s_hivge15w * &sf;
+* n_cd4_lt200;					n_cd4_lt200_ = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * sf; 
+* n_hiv;						n_hiv = s_hivge15_ * sf;
+* n_hiv_m;						n_hiv_m = s_hivge15m * sf;
+* n_hiv_w;						n_hiv_w = s_hivge15w * sf;
 
-* n_hiv1549_;					n_hiv1549_ = s_hiv1549 * &sf;
-* n_hiv1549m;					n_hiv1549m = s_hiv1549m * &sf;
-* n_hiv1549w;					n_hiv1549w = s_hiv1549w * &sf;
+* n_hiv1549_;					n_hiv1549_ = s_hiv1549 * sf;
+* n_hiv1549m;					n_hiv1549m = s_hiv1549m * sf;
+* n_hiv1549w;					n_hiv1549w = s_hiv1549w * sf;
 
-* n_newinf;						n_newinf = s_primary * 4 * &sf;
-* n_newinf1549_;				n_newinf1549_ = s_primary1549 * 4 * &sf;
-* n_newinf1549m;				n_newinf1549m = s_primary1549m * 4 * &sf;
-* n_newinf1549w;				n_newinf1549w = s_primary1549w * 4 * &sf;
-* n_alive;						n_alive = s_alive * &sf;
-* n_alive1549_;					n_alive1549_ = s_alive1549* &sf;
-* n_alive1549_m;				n_alive1549m = s_alive1549_m* &sf;
-* n_alive1549_w;				n_alive1549w = s_alive1549_w* &sf;
-* n_alive1564_;					n_alive1564_ = s_alive1564* &sf;
-* n_alive1564m;					n_alive1564m = s_alive1564_m* &sf;
-* n_alive1564w;					n_alive1564w = s_alive1564_w* &sf;
-* n_alive_m;					n_alive_m = s_alive_m * &sf;
-* n_alive_w;					n_alive_w = s_alive_w * &sf;
-* n_prep;						n_prep = s_prep_any * &sf;
-* n_prep_sw;					n_prep_sw = s_onprep_sw * &sf;
-* n_prep_ever;					n_prep_ever = s_prep_any_ever * &sf;
-* n_pregnant;					n_pregnant= s_pregnant * &sf;
+* n_newinf;						n_newinf = s_primary * 4 * sf;
+* n_newinf1549_;				n_newinf1549_ = s_primary1549 * 4 * sf;
+* n_newinf1549m;				n_newinf1549m = s_primary1549m * 4 * sf;
+* n_newinf1549w;				n_newinf1549w = s_primary1549w * 4 * sf;
+* n_alive;						n_alive = s_alive * sf;
+* n_alive1549_;					n_alive1549_ = s_alive1549* sf;
+* n_alive1549_m;				n_alive1549m = s_alive1549_m* sf;
+* n_alive1549_w;				n_alive1549w = s_alive1549_w* sf;
+* n_alive1564_;					n_alive1564_ = s_alive1564* sf;
+* n_alive1564m;					n_alive1564m = s_alive1564_m* sf;
+* n_alive1564w;					n_alive1564w = s_alive1564_w* sf;
+* n_alive_m;					n_alive_m = s_alive_m * sf;
+* n_alive_w;					n_alive_w = s_alive_w * sf;
+* n_prep;						n_prep = s_prep_any * sf;
+* n_prep_sw;					n_prep_sw = s_onprep_sw * sf;
+* n_prep_ever;					n_prep_ever = s_prep_any_ever * sf;
+* n_pregnant;					n_pregnant= s_pregnant * sf;
 * p_prep_ever;					p_prep_ever = s_prep_any_ever / (s_alive1564_w + s_alive1564_m) ;
 * prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / ((s_ageg1519w + s_ageg2024w) - s_hiv1524w) ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
-* n_prep_oral_ever_sw;  		n_prep_oral_ever_sw    = s_prep_oral_ever_sw * &sf;   
+* n_prep_oral_ever_sw;  		n_prep_oral_ever_sw    = s_prep_oral_ever_sw * sf;   
 
 * MSM;
 
-* n_alive_msm;					n_alive_msm = s_alive_msm * &sf ;
-* n_alive1564_msm;				n_alive1564_msm = s_alive1564_msm * &sf ;
+* n_alive_msm;					n_alive_msm = s_alive_msm * sf ;
+* n_alive1564_msm;				n_alive1564_msm = s_alive1564_msm * sf ;
 * incidence1549msm;             incidence1549msm = (s_primary1549msm * 4 * 100) / (s_alive1549_msm  - s_hiv1549msm  + s_primary1549msm);
 * incidence1564msm;             incidence1564msm = (s_primary1564msm * 4 * 100) / (s_alive1564_msm  - s_hiv1564msm  + s_primary1564msm);
 * prevalence1549_msm;			prevalence1549_msm = s_hiv1549msm / s_alive1549_msm; 
@@ -455,7 +454,7 @@ s_alive = s_alive_m + s_alive_w ;
 
 * PWID;
 
-* n_pwid;						n_pwid = s_pwid * &sf ;
+* n_pwid;						n_pwid = s_pwid * sf ;
 * p_onprep_pwid;				if (s_alive1564_pwid - s_hiv1564pwid) gt 0 then p_onprep_pwid = s_onprep_pwid / (s_alive1564_pwid - s_hiv1564pwid);
 * p_onart_pwid;					if s_hiv_pwid  > 0 then p_onart_pwid = s_onart_pwid / s_pwid  ;
 
@@ -508,92 +507,122 @@ proc means mean;var p_diag_msm;where cald=2022;run;
 proc freq;table incidence1549_per1000_;where cald=2022;run;
 proc freq;table run;where incidence1549_per1000_ < 0.2 and cald=2022;run;
 
-***Removing low incidence runs;
+***Removing low prevalence in women runs;
+
 data low_inc;
 set y;
 
+***Removing 100 runs with the lowest prevalence;
+/*proc freq;table prevalence1549w;where cald=2012;run;*/
+if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
+/*proc freq;table run;where a=1;run;*/
+
+
+
 if run in (
-14548096
-21858567
-40711262
-52815087
-73493151
-88494098
-97132631
-108090232
-116524946
-138460640
-154434865
-159807479
-177325208
-210439090
-228192408
-284049936
-297134995
-300299981
-310730826
-327579055
-343491219
-353293466
-353512679
-361111732
-391419575
-394815979
-397257092
-406519235
-413373991
-417184870
-430390234
-442553729
-451434868
-452865502
-469097783
-476042780
-477056573
-479751957
-484434081
-489857279
-562120674
-574540507
-577723985
-581792675
-591275432
-604418524
-614216430
-619710437
-620778148
-625107613
-668337171
-686376407
-700206046
-711752968
-717549601
-729150690
-731687577
-735523230
-768822757
-778095768
-780015895
-780611513
-808678252
-815553798
-825595011
-832083754
-849771668
-853505938
-863877525
-873443850
-881930414
-895302492
-895629184
-926710449
-945452582
-956146105
-965249095
-977256713
-979445760
-988516802
-) then delete;
+
+8860192
+11368089
+11436939
+24106327
+36593731
+37450464
+43787648
+49685214
+58563782
+61524233
+61770681
+67762022
+68557116
+70823836
+72646602
+78759599
+96000696
+96426479
+99757699
+116913265
+122596376
+142394432
+165945028
+181615040
+205790955
+225044691
+233448545
+268083726
+275257195
+297470944
+312520563
+335816303
+377745246
+379996513
+392980265
+394926741
+404707419
+415697566
+430667038
+445919723
+451278901
+467125706
+479898979
+490519645
+501398405
+502267757
+502841256
+503279963
+506190767
+519645581
+521899508
+528009422
+534734822
+538411756
+549411197
+557168185
+570685256
+577259855
+584435904
+590385936
+601171662
+612099987
+612140111
+625553174
+634761863
+639703358
+643203954
+666577330
+673187189
+675234315
+675547698
+688224630
+693691342
+698277657
+706409112
+718739915
+724594738
+729243257
+770227933
+781806752
+804368712
+809120267
+818326717
+820739116
+826712917
+830083022
+839381322
+845381342
+871635070
+890784328
+893141120
+906838836
+907050303
+911877022
+920867331
+922654956
+934262051
+944710463
+953010248
+989298162)
+ then delete;
+run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_CdI_02Oct24; 
@@ -605,29 +634,10 @@ run;
 
 
 ***CODE BELOW IS TO GET THE FILE READY FOR ANALYSIS. NOT USED UNTIL CALIBRATION USING THE GRAPH FILE IS COMPLETE;
-data y; set a.l_base_cDI1; 
+data y; set a.l_base_CdI_02Oct24; 
 
-proc means;var p_onart_vl1000_m;where cald=2018 and adh_pattern=1;run;
-proc means;var p_onart_vl1000_m;where cald=2018 and adh_pattern=2;run;
-proc means;var p_onart_vl1000_m;where cald=2018 and adh_pattern=3;run;
-proc means;var p_onart_vl1000_m;where cald=2018 and adh_pattern=4;run;
-proc means;var p_onart_vl1000_m;where cald=2018 and adh_pattern=5;run;
-proc means;var p_onart_vl1000_m;where cald=2018 and adh_pattern=6;run;
-proc means;var p_onart_vl1000_m;where cald=2018 and adh_pattern=7;run;
-
-proc freq;table adh_pattern;where cald=2018;run;
-
-proc freq;table cald;run;
-
-/*
-if cald = 2017;
-out=0;
-if prevalence1549 > 0.2 then out=1;
-proc logistic....
-*/
-
-  options nomprint;
-  option nospool;
+options nomprint;
+option nospool;
 
 ***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;
 * user to decide what years and year ranges to include ;
@@ -636,45 +646,23 @@ proc logistic....
 
 * &v ;
 
-/* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
-proc means  noprint data=y; var &v; output out=y_95 mean= &v._95; by run ; where 1994.5 <= cald < 1995.5; 
-proc means  noprint data=y; var &v; output out=y_98 mean= &v._98; by run ; where 1997.5 <= cald < 1998.5; 
-proc means  noprint data=y; var &v; output out=y_99 mean= &v._99; by run ; where 1998.5 <= cald < 1999.5; 
-proc means  noprint data=y; var &v; output out=y_00 mean= &v._00; by run ; where 1999.5 <= cald < 2000.5; 
-proc means  noprint data=y; var &v; output out=y_05 mean= &v._05; by run ; where 2004.5 <= cald < 2005.5; 
-proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run ; where 2009.5 <= cald < 2010.5; 
-proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run ; where 2014.5 <= cald < 2015.5; 
-proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where 2016.5 <= cald < 2017.5; 
-proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where 2019.5 <= cald < 2020.5; 
-proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where 2020.5 <= cald < 2021.5; 
-proc means  noprint data=y; var &v; output out=y_40 mean= &v._40; by run ; where 2039.5 <= cald < 2040.5; 
-proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where 2069.5 <= cald < 2070.5; 
+proc means  noprint data=y; var &v; output out=y_23 mean= &v._23; by run ; where 2023 <= cald < 2024; 
 
-/* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
-/* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
-/* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
- proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option ; where 2021.5 <= cald < 2022.50;
- proc means noprint data=y; var &v; output out=y_21_26 mean= &v._21_26; by run option ; where 2021.5 <= cald < 2026.50;
-/* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
-/* proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
+proc means noprint data=y; var &v; output out=y_24_40 mean= &v._24_40; by run option ; where 2024 <= cald < 2040;
+proc means noprint data=y; var &v; output out=y_39_40 mean= &v._39_40; by run option ; where 2039 <= cald < 2040;
 
- proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option ; where 2021.5 <= cald < 2071.00; * deliberate to choose 2071
- - can change to 2071.5 once changes to program made;
-  
-/* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
-/* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
-/*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
+***Use the code below after rerunning;
+/*proc means noprint data=y; var &v; output out=y_24_40 mean= &v._24_40; by run option ; where 2024 <= cald < 2041;
+proc means noprint data=y; var &v; output out=y_39_40 mean= &v._39_40; by run option ; where 2040 <= cald < 2041;
+ proc means noprint data=y; var &v; output out=y_24_74 mean= &v._24_74; by run option ; where 2024.0 <= cald < 2075.00; 
+*/
+
+proc sort data=y_24_40; by run; proc transpose data=y_24_40 out=t_24_40 prefix=&v._24_40_; var &v._24_40; by run;
+proc sort data=y_39_40; by run; proc transpose data=y_39_40 out=t_39_40 prefix=&v._39_40_; var &v._39_40; by run;
 																													   
-																													   
- proc sort data=y_21_22; by run; proc transpose data=y_21_22 out=t_21_22 prefix=&v._21_22_; var &v._21_22; by run; 
- proc sort data=y_21_26; by run; proc transpose data=y_21_26 out=t_21_26 prefix=&v._21_26_; var &v._21_26; by run; 
-/* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
-/* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
-																														
+																								
 
- proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&v._21_71_; var &v._21_71; by run;  
-
-data &v ; merge y_95 y_98 y_99 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 ;  
+data &v ; merge y_23 t_24_40 t_39_40;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 

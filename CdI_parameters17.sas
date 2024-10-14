@@ -30,9 +30,11 @@ startyr = 1985 + 0.25;
 
 * prop_m_msm;				%sample_uniform(prop_m_msm,   0.005   0.010); 
 
-* msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.1 0.3 0.5); * risk of one or more cls partners in msm per period ;
+* msm_risk_cls;				%sample(msm_risk_cls, 0.1 0.3 0.5, 0.40 0.40 0.20); * risk of one or more cls partners in msm per period ;
 
-* prep_any_strategy;		prep_any_strategy=17;
+
+
+* prep_any_strategy;		prep_any_strategy=18;
 
 * HIV TESTING;
 

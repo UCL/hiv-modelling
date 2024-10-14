@@ -5059,6 +5059,14 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 
 end;
 
+	if prep_any_strategy=18 then do;	* Only key populations (excluding FSW as they get PrEP through the SW programme);
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or 
+		   (pwid = 1 and s < prob_prep_elig_pwid ) then prep_any_elig=1; 
+	end;
+
+	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
+
+end;
 
 * HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65 (although note testing due to symptoms can occur at older ages);
 
