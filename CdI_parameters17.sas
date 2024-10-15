@@ -51,6 +51,8 @@ startyr = 1985 + 0.25;
  
 * rate_anc_inc; 			%sample(rate_anc_inc,0.001 0.005 0.01 0.03, 0.30 0.25 0.25 0.20);
 
+* rate_self_test;			rate_self_test = 0.05;
+
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15);
 
 * rr_testing_female;		rr_testing_female=1.0;

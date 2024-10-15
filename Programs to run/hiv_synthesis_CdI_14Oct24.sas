@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100  ; 
+%let population = 100000  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -940,7 +940,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-*%include "/home/rmjllob/CdI_parameters17.sas";
+%include "/home/rmjllob/CdI_parameters17.sas";
 *%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters16.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
@@ -2045,8 +2045,9 @@ end;
 p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 
+r=rand('uniform');
+if r<0.80 and (msm=1 or pwid=1) then hard_reach=1;
 
-if msm=1 or pwid=1 then hard_reach=1;
 *CdI;
 ***Introduce a new variable for people who are hard_reach for testing only because when this is set to 0 in the 
 options code, we don't want it to impact other things which might be restricted to hard_reach=0;
@@ -2318,31 +2319,38 @@ if caldate_never_dot >= &year_interv then do;
 
 	***Lower rates of being lost at diagnosis;
 	if option=14 then do;
-		eff_prob_loss_at_diag=1;
+		eff_prob_loss_at_diag=0;
 	end;
 
 	***95% of people are on ART according to national guidelines - interpreted as on DTG;
 	if option=15 then do;
-		reg_option_104=0.95;
+		u=rand('uniform');
+		if u<0.95 then reg_option_104=1;
 	end;
 
 	***Increased vl testing;
 	if option=16 then do;
-		eff_prob_vl_meas_done=0.8;
+		eff_prob_vl_meas_done=0.95;
 	end;
-
+/*
 	***Increase in TB testing;
 	if option=17 then do;
-		test_rate_tb=1;
+		
 	end;
-
+*/
 	***95% of those on ART for 12m have undetectable VL;
-	if option=18 and caldate{t}=&year_interv and caldate{t}-yrart>1 then do;
-		eff_prob_loss_at_diag=eff_prob_loss_at_diag/3;
-		eff_rate_lost=eff_rate_lost/3;
-		eff_rate_return=min(eff_rate_return*3, 1);
-		eff_prob_lost_art=eff_prob_lost_art/3;
-		eff_rate_restart=min(eff_rate_restart*3,1);
+	if option=18 and caldate{t}-yrart>1 then do;
+		eff_prob_loss_at_diag = prob_loss_at_diag;
+		eff_rate_lost = rate_lost;
+		eff_rate_return = rate_return;
+		eff_prob_lost_art = prob_lost_art; 
+		eff_rate_restart = rate_restart;
+
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag/3.5;
+		eff_rate_lost=eff_rate_lost/3.5;
+		eff_rate_return=min(eff_rate_return*3.5, 1);
+		eff_prob_lost_art=eff_prob_lost_art/3.5;
+		eff_rate_restart=min(eff_rate_restart*3.5,1);
 	end;
 
 	***Increased adherence;
@@ -2381,17 +2389,25 @@ if option=21 then do;
 	eff_self_test_targeting = 1; self_test_targeting = 1;
 	rate_self_test = 0.15;
 	
-	reg_option_104=0.95;
+	u=rand('uniform');
+	if u<0.95 then reg_option_104=1;
 
-	eff_prob_vl_meas_done=0.8;
 
-	test_rate_tb=1;
+	eff_prob_vl_meas_done=0.95;
 
-	eff_prob_loss_at_diag=1;
-	eff_rate_lost=eff_rate_lost/3;
-	eff_rate_return=min(eff_rate_return*3, 1);
-	eff_prob_lost_art=eff_prob_lost_art/3;
-	eff_rate_restart=min(eff_rate_restart*3,1);
+	if caldate{t}-yrart>1 then do;
+		eff_prob_loss_at_diag = prob_loss_at_diag;
+		eff_rate_lost = rate_lost;
+		eff_rate_return = rate_return;
+		eff_prob_lost_art = prob_lost_art; 
+		eff_rate_restart = rate_restart;
+
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag/3.5;
+		eff_rate_lost=eff_rate_lost/3.5;
+		eff_rate_return=min(eff_rate_return*3.5, 1);
+		eff_prob_lost_art=eff_prob_lost_art/3.5;
+		eff_rate_restart=min(eff_rate_restart*3.5,1);
+	end;
 
 	if adhav < 0.8 then do; 
 			e_ = rand('uniform'); if e_ < 0.8 then adhav = 0.9; 
@@ -2497,26 +2513,32 @@ end;
 
 	***Lower rates of being lost at diagnosis;
 	if option=64 then do;
-		eff_prob_loss_at_diag=0.8;
+		eff_prob_loss_at_diag=0.1;
 	end;
 
 	***95% of people are on ART according to national guidelines - interpreted as on DTG;
 	if option=65 then do;
-		reg_option_104=0.80;
+		u=rand('uniform');
+		if u<0.80 then reg_option_104=1;	
 	end;
 
 	***Increased vl testing;
 	if option=66 then do;
-		eff_prob_vl_meas_done=0.6;
+		eff_prob_vl_meas_done=0.8;
 	end;
-
+/*
 	***Increase in TB testing;
 	if option=67 then do;
-		test_rate_tb=0.8;
 	end;
-
+*/
 	***95% of those on ART for 12m have undetectable VL;
-	if option=68 and caldate{t}=&year_interv and caldate{t}-yrart>1 then do;
+	if option=68 and caldate{t}-yrart>1 then do;
+		eff_prob_loss_at_diag = prob_loss_at_diag;
+		eff_rate_lost = rate_lost;
+		eff_rate_return = rate_return;
+		eff_prob_lost_art = prob_lost_art; 
+		eff_rate_restart = rate_restart;
+
 		eff_prob_loss_at_diag=eff_prob_loss_at_diag/2;
 		eff_rate_lost=eff_rate_lost/2;
 		eff_rate_return=min(eff_rate_return*2, 1);
@@ -2560,17 +2582,24 @@ if option=71 then do;
 	eff_self_test_targeting = 1; self_test_targeting = 1;
 	rate_self_test = 0.10;
 	
-	reg_option_104=0.80;
+	u=rand('uniform');
+	if u<0.80 then reg_option_104=1;
 
-	eff_prob_vl_meas_done=0.6;
+	eff_prob_vl_meas_done=0.8;
 
-	test_rate_tb=0.8;
+	if option=18 and caldate{t}-yrart>1 then do;
+		eff_prob_loss_at_diag = prob_loss_at_diag;
+		eff_rate_lost = rate_lost;
+		eff_rate_return = rate_return;
+		eff_prob_lost_art = prob_lost_art; 
+		eff_rate_restart = rate_restart;
 
-	eff_prob_loss_at_diag=0.8;
-	eff_rate_lost=eff_rate_lost/2;
-	eff_rate_return=min(eff_rate_return*2, 1);
-	eff_prob_lost_art=eff_prob_lost_art/2;
-	eff_rate_restart=min(eff_rate_restart*2,1);
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag/2;
+		eff_rate_lost=eff_rate_lost/2;
+		eff_rate_return=min(eff_rate_return*2, 1);
+		eff_prob_lost_art=eff_prob_lost_art/2;
+		eff_rate_restart=min(eff_rate_restart*2,1);
+	end;
 
 	if adhav < 0.8 then do; 
 			e_ = rand('uniform'); if e_ < 0.5 then adhav = 0.9; 
@@ -18533,7 +18562,6 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-proc print;var cald option hard_reach w prob_self_test_hard_reach u_self_test eff_self_test_targeting rate_self_test self_tested;run;
 	
 /*
 proc print;var cald birth_circ vmmc mcirc date_mcirc age_circ s_birth_circ s_vmmc s_mcirc;where gender=1;run; 
@@ -20223,11 +20251,11 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ***CdI;
 /*if cald = 1990 and (prevalence1549w > 0.06) then do; abort abend; end;*/
 
-/*
+
 if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
 if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
-*/
+
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
@@ -21416,21 +21444,6 @@ data a ;  set r1 ;
 
 data r1 ; set a;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
-
-data r1 ; set a;
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=6);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=6);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=6);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=6);
-
-
-
-/*
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
@@ -22296,7 +22309,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=11);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=11);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=11);
-*/
+
 
 /*
 data r1 ; set a;
@@ -22367,7 +22380,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=12);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=12);*2040;
 */
-/*
+
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=13);
@@ -22656,6 +22669,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=16);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=16);
 
+/*
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=17);
@@ -22727,6 +22741,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=17);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=17);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=17);
+*/
 
 data r1 ; set a;
 *option 0;
@@ -23018,7 +23033,9 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=21);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=21);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=21);
-*/
+
+***COMMENT OUT OPTION 62 AND 67 (TB);
+
 /*
 data r1 ; set a;
 *option 1;
@@ -24173,6 +24190,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=66);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=66);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=66);
+
 
 data r1 ; set a;
 *option 0;
