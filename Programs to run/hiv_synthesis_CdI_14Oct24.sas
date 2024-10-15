@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 500  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -940,7 +940,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/CdI_parameters16.sas";
+%include "/home/rmjllob/CdI_parameters17.sas";
 *%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters16.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
@@ -2218,6 +2218,7 @@ option = &s;
 mihpsa_params_set_in_options=0;				* JAS Oct23;
 
 if caldate_never_dot >= &year_interv then do;
+
 	
 	if option=0 then do;
 	end;
@@ -2267,7 +2268,7 @@ if caldate_never_dot >= &year_interv then do;
 	end;
 
 	***Increased testing in PWID;
-	if option=58 then do;
+	if option=8 then do;
 		if pwid=1 then do;
 			hard_reach_testing=0;
 			incr_test_pwid_year_i=9;
@@ -5055,9 +5056,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
 
-	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 
-end;
 
 	if prep_any_strategy=18 then do;	* Only key populations (excluding FSW as they get PrEP through the SW programme);
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or 
@@ -18529,7 +18528,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-	
+proc print;var cald option msm incr_test_msm_year_i hard_reach_testing msm rate_1sttest;where msm=1;run;
 
 /*
 proc print;var cald birth_circ vmmc mcirc date_mcirc age_circ s_birth_circ s_vmmc s_mcirc;where gender=1;run; 
@@ -21409,6 +21408,13 @@ end;
 data a ;  set r1 ;
 
 data r1 ; set a;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=6);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=6);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=6);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=6);
+
+/*
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
@@ -22274,6 +22280,8 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=11);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=11);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=11);
+*/
+
 /*
 data r1 ; set a;
 *option 0;
@@ -22343,7 +22351,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=12);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=12);*2040;
 */
-
+/*
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=13);
@@ -22994,7 +23002,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=21);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=21);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=21);
-
+*/
 /*
 data r1 ; set a;
 *option 1;
