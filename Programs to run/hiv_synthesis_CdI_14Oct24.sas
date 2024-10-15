@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 500  ; 
+%let population = 100  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -940,7 +940,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/CdI_parameters17.sas";
+*%include "/home/rmjllob/CdI_parameters17.sas";
 *%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters16.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
@@ -2233,7 +2233,8 @@ if caldate_never_dot >= &year_interv then do;
 
 	***MSM: Strengthening demand, increased accessibility of condoms,peer education;
 	if option=2 then do;
-		msm_tr_factor=1.2;
+	%sample_uniform(msm_risk_cls, 0.05 0.1); * risk of one or more cls partners in msm per period ;
+
 	end;
 
 	***MSM: Increase oral PrEP ;
@@ -2248,6 +2249,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	***Condom promotion;
 	if option=5 then do;
+		set_in_options=1;
 		condom_incr_year_i = 3;
 	end;
 
@@ -2310,9 +2312,8 @@ if caldate_never_dot >= &year_interv then do;
 	if option=13 then do;
 		prob_self_test_hard_reach = 0.75;
 		eff_self_test_targeting = 1; self_test_targeting = 1;
-		rate_self_test = 0.2;
+		rate_self_test = 0.15;
 	end;
-
 
 
 	***Lower rates of being lost at diagnosis;
@@ -2362,12 +2363,13 @@ if option=21 then do;
 	rate_engage_sw_program=0.20;
 	effect_sw_prog_prep_any = 0.50;
 
-	msm_tr_factor=1.2;
+	%sample_uniform(msm_risk_cls, 0.05 0.1); * risk of one or more cls partners in msm per period ;
+
 
 	prob_prep_elig_msm = 0.5;
 
 	fold_tr_pwid = 0.5;
-
+	set_in_options=1;
 	condom_incr_year_i = 3;
 
 	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
@@ -2377,7 +2379,7 @@ if option=21 then do;
 
 	prob_self_test_hard_reach = 0.75;
 	eff_self_test_targeting = 1; self_test_targeting = 1;
-	rate_self_test = 0.2;
+	rate_self_test = 0.15;
 	
 	reg_option_104=0.95;
 
@@ -2409,7 +2411,8 @@ end;
 	end;
 
 	if option=52 then do;
-		msm_tr_factor=2;
+	%sample_uniform(msm_risk_cls, 0.1 0.20); * risk of one or more cls partners in msm per period ;
+
 	end;
 
 	***MSM: Increase oral PrEP;
@@ -2424,6 +2427,7 @@ end;
 
 	***Condom promotion;
 	if option=55 then do;
+		set_in_options=1;
 		condom_incr_year_i = 1;
 	end;
 
@@ -2488,7 +2492,7 @@ end;
 	if option=63 then do;
 		prob_self_test_hard_reach = 0.50;
 		eff_self_test_targeting = 1; self_test_targeting = 1;
-		rate_self_test = 0.05;
+		rate_self_test = 0.10;
 	end;
 
 	***Lower rates of being lost at diagnosis;
@@ -2538,12 +2542,13 @@ if option=71 then do;
 	rate_engage_sw_program=0.13;
 	effect_sw_prog_prep_any = 0.25;
 
-	msm_tr_factor=2;
+	%sample_uniform(msm_risk_cls, 0.1 0.20); * risk of one or more cls partners in msm per period ;
 
 	prob_prep_elig_msm = 0.35;
 
 	fold_tr_pwid = 2;
 
+	set_in_options=1;
 	condom_incr_year_i = 1;
 
 	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
@@ -2553,7 +2558,7 @@ if option=71 then do;
 
 	prob_self_test_hard_reach = 0.50;
 	eff_self_test_targeting = 1; self_test_targeting = 1;
-	rate_self_test = 0.05;
+	rate_self_test = 0.10;
 	
 	reg_option_104=0.80;
 
@@ -2898,7 +2903,7 @@ if caldate{t} = &year_interv then do;
 	if mihpsa_params_set_in_options ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
 
 	*increase in condom use;
-	if mihpsa_params_set_in_options ne 1 then condom_incr_year_i = 0; *coded within core (not below options code);
+	if set_in_options ne 1 then condom_incr_year_i = 0; *coded within core (not below options code);
 
 	*population wide tld;
 	pop_wide_tld = 0;
@@ -3275,7 +3280,7 @@ if caldate{t} >= &year_interv then do;
 		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
 	end;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
-end;
+
 
 ***CdI options;
 if incr_test_msm_year_i = 5 and msm=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
@@ -3300,7 +3305,7 @@ if incr_test_women_year_i = 16 and gender=2 and age>25 then do; rate_1sttest = r
 if incr_test_kp_year_i = 17 and (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
 if incr_test_kp_year_i = 18 and (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
 
-
+end;
 
 
 
@@ -18528,8 +18533,8 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-proc print;var cald option msm incr_test_msm_year_i hard_reach_testing msm rate_1sttest;where msm=1;run;
-
+proc print;var cald option hard_reach w prob_self_test_hard_reach u_self_test eff_self_test_targeting rate_self_test self_tested;run;
+	
 /*
 proc print;var cald birth_circ vmmc mcirc date_mcirc age_circ s_birth_circ s_vmmc s_mcirc;where gender=1;run; 
 
@@ -20217,10 +20222,12 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ***CdI;
 /*if cald = 1990 and (prevalence1549w > 0.06) then do; abort abend; end;*/
+
+/*
 if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
 if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
-
+*/
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
@@ -21409,10 +21416,19 @@ data a ;  set r1 ;
 
 data r1 ; set a;
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
+
+data r1 ; set a;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=6);
 %update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=6);
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=6);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=6);
+
+
 
 /*
 *option 0;
