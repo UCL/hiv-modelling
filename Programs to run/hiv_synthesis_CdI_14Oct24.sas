@@ -3258,6 +3258,7 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 		rate_1sttest_2011 = initial_rate_1sttest + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;																					
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
+		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
 
 end;
 
@@ -5041,7 +5042,6 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		*( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 	* replaced with code to match AGYW above Jan24;
 	end;
 
-	***LBM Aug24 - check cdi;
 
 	if prep_any_strategy=17 then do;	* as 4 but excludes heterosexual men and  includes msm;	
     	r = rand('Uniform');s = rand('Uniform');

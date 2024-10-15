@@ -26,7 +26,12 @@ startyr = 1985 + 0.25;
 
 * rate_engage_sw_program;	%sample(rate_engage_sw_program, 0.05 0.10, 0.20 0.80); *previously 0.10;
 
-* effect_sw_prog_prep_any;  effect_sw_prog_prep_any = 0.03;
+* effect_sw_prog_6mtest;    %sample(effect_sw_prog_6mtest, 0.20 0.35 0.50, 0.40 0.40 0.20);
+
+* effect_sw_prog_prep_any;  effect_sw_prog_prep_any = 0.02;
+
+* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.20 0.30);
+
 
 * prop_m_msm;				%sample_uniform(prop_m_msm,   0.005   0.010); 
 
@@ -49,6 +54,7 @@ startyr = 1985 + 0.25;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15);
 
 * rr_testing_female;		rr_testing_female=1.0;
+* rr_testing_male;			rr_testing_male=1.2;
 
 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
