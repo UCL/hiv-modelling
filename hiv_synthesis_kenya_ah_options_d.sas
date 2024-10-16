@@ -12,6 +12,7 @@
 
 * msm testing code ok ? ;
 
+* msm_ge1newp=0 if msm=1 and newp ge 1 then msm_ge1newp;
 
 
 
@@ -13597,7 +13598,7 @@ m_5564_newp=0;if  gender=1 and 55 <= age < 65 then m_5564_newp=newp;
 msm_newp=0; if msm=1 then msm_newp=newp;
 msm_ep=0; if msm=1 then msm_ep=ep;
 m_ge1newp=0;if gender=1 and newp ge 1 then m_ge1newp=1;
-msm_ge1newp=0; if msm=1 and newp ge 1 then msm_ge1newp=0;
+msm_ge1newp=0; if msm=1 and newp ge 1 then msm_ge1newp=1;
 
 i_w_1524_newp=0; if hiv=1 and gender=2 and 15 <= age < 25 then i_w_1524_newp=newp;
 i_w_2534_newp=0; if hiv=1 and gender=2 and 25 <= age < 35 then i_w_2534_newp=newp;
