@@ -2046,7 +2046,7 @@ p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 
 r=rand('uniform');
-if r<0.80 and (msm=1 or pwid=1) then hard_reach=1;
+if r<0.50 and (msm=1 or pwid=1) then hard_reach=1;
 
 *CdI;
 ***Introduce a new variable for people who are hard_reach for testing only because when this is set to 0 in the 
@@ -13332,7 +13332,7 @@ m_5564_newp=0;if  gender=1 and 55 <= age < 65 then m_5564_newp=newp;
 msm_newp=0; if msm=1 then msm_newp=newp;
 msm_ep=0; if msm=1 then msm_ep=ep;
 m_ge1newp=0;if gender=1 and newp ge 1 then m_ge1newp=1;
-msm_ge1newp=0; if msm=1 and newp ge 1 then msm_ge1newp=0;
+msm_ge1newp=0; if msm=1 and newp ge 1 then msm_ge1newp=1;
 
 i_w_1524_newp=0; if hiv=1 and gender=2 and 15 <= age < 25 then i_w_1524_newp=newp;
 i_w_2534_newp=0; if hiv=1 and gender=2 and 25 <= age < 35 then i_w_2534_newp=newp;
@@ -18569,7 +18569,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 	
-proc print;var cald option sw effect_sw_prog_newp;run;
+proc print;var cald option set_in_options condom_incr_year_i newp;where msm=1;run;
 
 
 
@@ -21069,13 +21069,13 @@ data r1 ; set a;
 
 data r1 ; set a;
 *option 1;
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=5);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=5);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=5);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=5);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=5);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=5);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=5);
 
 /*
 data r1 ; set a;

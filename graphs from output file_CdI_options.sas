@@ -16,7 +16,7 @@ run;
 data b;set b1;
 *change this for every option;
 if new_option=0 then option=0;
-if new_option=2 then option=1;
+if new_option=5 then option=1;
 
 if option in (0,1) then a=1;
 if a ne 1 then delete;
@@ -1483,6 +1483,22 @@ band    x=cald lower=p5_p_vl1000_art_gt6m_msm_0 	upper=p95_p_vl1000_art_gt6m_msm
 
 series  x=cald y=p50_p_vl1000_art_gt6m_msm_1/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_p_vl1000_art_gt6m_msm_1 	upper=p95_p_vl1000_art_gt6m_msm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_msm_ge1newp";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1  by 0.01) valueattrs=(size=10);
+
+label p50_p_msm_ge1newp_0 = "Option 0 (median) ";
+label p50_p_msm_ge1newp_1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_msm_ge1newp_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_msm_ge1newp_0 	upper=p95_p_msm_ge1newp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=p50_p_msm_ge1newp_1/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_msm_ge1newp_1 	upper=p95_p_msm_ge1newp_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 
