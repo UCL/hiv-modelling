@@ -2289,6 +2289,7 @@ run;
 ods html close;
 
 
+
 ods html;
 proc freq data=f; tables lowest_netdaly lowest_netdaly_gbd lowest_ddaly  lowest_dcost;
 run; 
