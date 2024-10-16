@@ -4,10 +4,10 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data a;
-set a.cdi_02oct24;
+set a.cdi_14oct24;
 
 proc sort;by run cald option;run;
-proc freq;table cald;run;
+proc freq;table cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
@@ -470,10 +470,9 @@ s_alive = s_alive_m + s_alive_w ;
 * prevalence_pwid;				if s_alive1564_pwid>0 then prevalence_pwid = s_hiv1564pwid / s_alive1564_pwid;
 * p_diag_pwid;					if s_hiv1564pwid gt 0 then p_diag_pwid = s_diag_pwid_age1564 / s_hiv1564pwid  ;
 
-* p_tb;							if s_alive1564 gt 0 then p_tb = s_tb / s_alive1564;
+* p_tb;							*if s_alive1564 gt 0 then p_tb = s_tb / s_alive1564;
 
 
-proc print;var s_tb s_alive1564 p_tb;run;
 keep  cald	run		option	inc_cat		ych2_risk_beh_newp	p_w_giv_birth_this_per			mtct_prop		p_anc	
 prevalence_hiv_preg	p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_	p_newp_ge1w_	av_newp_ge1_non_sw 	
 n_tested			p_tested_past_year_1549m				p_tested_past_year_1549w		test_prop_positive	
@@ -503,7 +502,7 @@ n_cd4_lt200_		n_hiv  				n_hiv_m				n_hiv_w				n_hiv1549_			n_hiv1549m			n_hiv15
 n_alive1549m		n_alive1549w		n_alive_m			n_alive_w			n_alive1564_		n_alive1564m	n_alive1564w
 n_art_start_y		n_newinf			n_newinf1549_		n_newinf1549m		n_newinf1549w		n_pregnant		n_prep 			
 n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_				n_prep_oral_ever_sw prop_sw_hiv1549_
-sw_trans_matrix		n_prep_sw			p_tested_sw			p_tb
+sw_trans_matrix		n_prep_sw			p_tested_sw			/*p_tb*/
 
 	
 n_alive_msm		n_alive1564_msm		incidence1549msm	incidence1564msm	prevalence1549_msm	prevalence1564_msm
@@ -521,8 +520,6 @@ proc freq;table p_diag_pwid;run;
 proc means;var prop_sw_hiv;where sw_trans_matrix=4 and cald=2000;run;
 proc means mean;var p_diag_msm;where cald=2022;run;
 
-proc freq;table incidence1549_per1000_;where cald=2022;run;
-proc freq;table run;where incidence1549_per1000_ < 0.2 and cald=2022;run;
 
 ***Removing low prevalence in women runs;
 
@@ -537,112 +534,20 @@ if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
 
 
 if run in (
-
-8860192
-11368089
-11436939
-24106327
-36593731
-37450464
-43787648
-49685214
-58563782
-61524233
-61770681
-67762022
-68557116
-70823836
-72646602
-78759599
-96000696
-96426479
-99757699
-116913265
-122596376
-142394432
-165945028
-181615040
-205790955
-225044691
-233448545
-268083726
-275257195
-297470944
-312520563
-335816303
-377745246
-379996513
-392980265
-394926741
-404707419
-415697566
-430667038
-445919723
-451278901
-467125706
-479898979
-490519645
-501398405
-502267757
-502841256
-503279963
-506190767
-519645581
-521899508
-528009422
-534734822
-538411756
-549411197
-557168185
-570685256
-577259855
-584435904
-590385936
-601171662
-612099987
-612140111
-625553174
-634761863
-639703358
-643203954
-666577330
-673187189
-675234315
-675547698
-688224630
-693691342
-698277657
-706409112
-718739915
-724594738
-729243257
-770227933
-781806752
-804368712
-809120267
-818326717
-820739116
-826712917
-830083022
-839381322
-845381342
-871635070
-890784328
-893141120
-906838836
-907050303
-911877022
-920867331
-922654956
-934262051
-944710463
-953010248
-989298162)
- then delete;
+138211740
+180101166
+243879514
+315648493
+348772948
+418290599
+544824406
+951146686
+955449240
+) then delete;
 run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI_02Oct24; 
+data a.l_base_CdI_14Oct24; 
 set low_inc;
 *set y;  
 run;
