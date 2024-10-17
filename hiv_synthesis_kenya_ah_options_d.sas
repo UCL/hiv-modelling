@@ -8,11 +8,9 @@
 
 * time to full scale of cab prep from 2024 to 2027 ;
 
-* code individual contacts with agyw behavioural intervention;
+* code individual contacts with agyw behavioural intervention ? ;
 
-* msm testing code ok ? ;
 
-* msm_ge1newp=0 if msm=1 and newp ge 1 then msm_ge1newp;
 
 
 
@@ -293,6 +291,7 @@ newp_seed = 7;
 																		the represetative vl in the parter(s) in the period ;	
 * prob_prep_elig_msm;		prob_prep_elig_msm = 0.2;
 * msm_rr_loss_at_diag;		msm_rr_loss_at_diag = 3;
+* extra_prop_msm_hard_reach; extra_prop_msm_hard_reach = 0.3;
 
 
 * PWID;
@@ -303,6 +302,7 @@ newp_seed = 7;
 * fold_tr_pwid;				%sample_uniform(fold_tr_pwid, 3 5  );
 * prob_prep_elig_pwid;		prob_prep_elig_pwid = 0.3;
 * pwid_rr_loss_at_diag;		pwid_rr_loss_at_diag = 10;
+* extra_prop_pwid_hard_reach; extra_prop_pwid_hard_reach = 0.8;
 
 
 * TRANSMISSION;
@@ -2060,8 +2060,11 @@ end;
 p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 
+x = rand('uniform');
+if gender=1 and msm=1 and hard_reach ne 1 and x < extra_prop_msm_hard_reach then hard_reach=1;
 
-if msm=1 or pwid=1 then hard_reach=1;
+y = rand('uniform');
+if pwid=1 and hard_reach ne 1 and y < extra_prop_pwid_hard_reach then hard_reach=1;
 
 																	  
 * if disruption due to covid, but in less than 100%, who does it affect ?;
@@ -2239,13 +2242,13 @@ if caldate_never_dot >= &year_interv then do;
 	if option  = 1  then do;
 		* 1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	
 		    Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_year_i = 5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
 		high_rate_testing_set_in_opts = 1; 
 	end;
 
 	if option = 2  then do;
 		* 2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_year_i = 2;
+		test_rate_set_in_opts = 1; incr_test_year_i = 1.5;
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 	end;
 
@@ -2429,9 +2432,8 @@ if caldate_never_dot >= &year_interv then do;
 
 
 	if option  = 20  then do;
-		test_rate_set_in_opts = 1; incr_test_year_i = 5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
 		high_rate_testing_set_in_opts = 1; 
-		test_rate_set_in_opts = 1; incr_test_year_i = 2;
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 		prob_self_test_hard_reach = 0.5;
 		rate_self_test = 0.1;
@@ -2495,13 +2497,13 @@ if caldate_never_dot >= &year_interv then do;
 	if option = 101 then do;
 		* 1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	
 		    Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 1.5;
 		high_rate_testing_set_in_opts = 1; 
 	end;
 
 	if option = 102 then do;
 		* 2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_year_i = 1.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 1.2;
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 	end;
 
@@ -2680,7 +2682,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 200 then do;
 
-		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 1.5;
 		high_rate_testing_set_in_opts = 1; 
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 		prob_self_test_hard_reach = 0.25;
@@ -3542,6 +3544,7 @@ end;
 
 if caldate{t} >= &year_interv and test_rate_set_in_opts = 1 then do;
 	if incr_test_year_i = 1              then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+	if incr_test_year_i = 1.2              then do; rate_1sttest = rate_1sttest * 2.5; rate_reptest = rate_reptest * 2.5; end;
 	if incr_test_year_i = 1.5              then do; rate_1sttest = rate_1sttest * 3.0; rate_reptest = rate_reptest * 3.0; end;
 	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
