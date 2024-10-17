@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 500  ; 
+%let population = 100000  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -353,8 +353,7 @@ newp_seed = 7;
 
 * HIV TESTING;
 
-* date_start_testing;		*date_start_testing = 2003.5; 
-* date_start_testing;		date_start_testing = 1980.5; 
+* date_start_testing;		date_start_testing = 2003.5; 
 
 * initial_rate_1sttest;		initial_rate_1sttest = 0; 				* dependent_on_time_step_length ;
 * test_rate_who4;			test_rate_who4=0.10;  					* dependent_on_time_step_length ;
@@ -393,7 +392,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * rr_testing_female;		rr_testing_female=1.5;
-* rr_testing_female;		rr_testing_male=1;
+* rr_testing_male;			rr_testing_male=1;
 
 
 * prob_self_test_hard_reach;prob_self_test_hard_reach = 0;
@@ -1263,8 +1262,7 @@ data r1; set r1;
 %sample_uniform(gender, 1 2);
 
 * msm ;
-/*o = rand('uniform'); if gender=1 and o < prop_m_msm then msm=1;*/
-o = rand('uniform'); if gender=1 and o < 0.5 then msm=1;
+o = rand('uniform'); if gender=1 and o < prop_m_msm then msm=1;
 
 
 if gender ne . then do; obs+1; end;
@@ -2333,6 +2331,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	***Lower rates of being lost at diagnosis;
 	if option=14 then do;
+		prob_loss_at_diag=0;
 		eff_prob_loss_at_diag=0;
 		e_eff_prob_loss_at_diag=0;
 	end;
@@ -2345,6 +2344,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	***Increased vl testing;
 	if option=16 then do;
+		prob_vl_meas_done=0.95;
 		eff_prob_vl_meas_done=0.95;
 	end;
 
@@ -2544,6 +2544,7 @@ end;
 
 	***Lower rates of being lost at diagnosis;
 	if option=64 then do;
+		prob_loss_at_diag=0.1;
 		eff_prob_loss_at_diag=0.1;
 		e_eff_prob_loss_at_diag=0.1;
 	end;
@@ -2556,6 +2557,7 @@ end;
 
 	***Increased vl testing;
 	if option=66 then do;
+		prob_vl_meas_done=0.8;
 		eff_prob_vl_meas_done=0.8;
 	end;
 
@@ -18616,10 +18618,10 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-	
+/*
 proc print;var caldate&j option age death hiv prob_vl_meas_done eff_prob_vl_meas_done initial_prob_vl_meas_done reg_option;
 where hiv=1 and age ge 15;run;
-
+*/
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -18644,7 +18646,7 @@ data sums; set r&da1; if serial_no = &population;
 ***Variables created below are used to update the program ;
 
 
-*Code below used to determine if ep infected in main update_r1program;
+*Code below used to determine if ep infected in main program;
 if s_ageg1m gt 0 then prevalence1524m = (s_hiv1519m + s_hiv2024m) /s_ageg1m;
 if s_ageg2m gt 0 then prevalence2534m = (s_hiv2529m + s_hiv3034m) /s_ageg2m; 
 if s_ageg3m gt 0 then prevalence3544m = (s_hiv3539m + s_hiv4044m) /s_ageg3m;
@@ -19911,11 +19913,11 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ***CdI;
 /*if cald = 1990 and (prevalence1549w > 0.06) then do; abort abend; end;*/
 
-/*
+
 if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
 if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
-*/
+
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
@@ -21102,28 +21104,6 @@ end;
 
 data a ;  set r1 ;
 
-
-data r1 ; set a;
-*option 1;
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
-
-data r1 ; set a;
-*option 1;
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=16);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=16);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=16);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=16);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=16);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=16);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=16);
-
-/*
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
@@ -21196,10 +21176,8 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
-*/
 
 
-/*
 data r1 ; set a;
 *option 1;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
@@ -21990,7 +21968,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=11);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=11);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=11);
-*/
+
 
 /*
 data r1 ; set a;
@@ -22061,7 +22039,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=12);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=12);*2040;
 */
-/*
+
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=13);
@@ -22349,7 +22327,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=16);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=16);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=16);
-*/
+
 /*
 data r1 ; set a;
 *option 0;
@@ -22423,7 +22401,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=17);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=17);
 */
-/*
+
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=18);
@@ -22714,7 +22692,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=21);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=21);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=21);
-*/
+
 ***COMMENT OUT OPTION 62 AND 67 (TB);
 
 /*

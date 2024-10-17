@@ -5,7 +5,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data b1;
-set a.l_base_CdI_14Oct24;
+set a.l_base_CdI_17Oct24;
 
 s_sw_1549_ = s_sw_1549;
 
@@ -16,7 +16,7 @@ run;
 data b;set b1;
 *change this for every option;
 if new_option=0 then option=0;
-if new_option=5 then option=1;
+if new_option=6 then option=1;
 
 if option in (0,1) then a=1;
 if a ne 1 then delete;
@@ -29,7 +29,7 @@ proc freq;table cald;run;
  
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  42;
+%let nfit =  24;
 %let year_end = 2040 ;
 run;
 proc sort;by cald option ;run;
@@ -1339,7 +1339,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_msm";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 10000  by 1000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000  by 1000) valueattrs=(size=10);
 
 label p50_n_tested_msm_0 = "Option 0 (median) ";
 label p50_n_tested_msm_1 = "Option 1 (median) ";

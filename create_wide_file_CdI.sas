@@ -4,7 +4,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data a;
-set a.cdi_14oct24;
+set a.cdi_17oct24;
 
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
@@ -515,7 +515,7 @@ n_tested_msm	n_tested_pwid		n_vm_per_year
 
 proc sort data=y;by run option;run;
 
-proc freq;table p_diag_pwid;run;
+proc freq;table s_msm_ge1newp ;run;
 
 proc means;var prop_sw_hiv;where sw_trans_matrix=4 and cald=2000;run;
 proc means mean;var p_diag_msm;where cald=2022;run;
@@ -527,27 +527,22 @@ data low_inc;
 set y;
 
 ***Removing 100 runs with the lowest prevalence;
-/*proc freq;table prevalence1549w;where cald=2012;run;*/
 if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
 /*proc freq;table run;where a=1;run;*/
 
-
-
 if run in (
-138211740
-180101166
-243879514
-315648493
-348772948
-418290599
-544824406
-951146686
-955449240
+275334524
+316667578
+473646411
+640202761
+724453846
+821807913  
+898472256
 ) then delete;
 run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI_14Oct24; 
+data a.l_base_CdI_17Oct24; 
 set low_inc;
 *set y;  
 run;

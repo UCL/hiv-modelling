@@ -20,7 +20,7 @@ startyr = 1985 + 0.25;
 
 * prob_birth_circ; 			prob_birth_circ=0.96;
 
-* base_rate_sw;				%sample(base_rate_sw, 0.0010 0.0015 0.0020, 0.20 0.50 0.30);
+* base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020, 0.50 0.50);
 
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3 4, 0.0 0.30 0.0 0.70);
 
@@ -55,8 +55,8 @@ startyr = 1985 + 0.25;
 
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15);
 
-* rr_testing_female;		rr_testing_female=0.9;
-* rr_testing_male;			rr_testing_male=1.2;
+* rr_testing_female;		rr_testing_female=0.8;
+* rr_testing_male;			rr_testing_male=1.3;
 
 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
