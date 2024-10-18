@@ -2268,7 +2268,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 5 then do;
 		* 5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_agyw_year_i = 1;
+		test_rate_set_in_opts = 1; test_rate_agyw_set_in_opts = 1;  incr_test_agyw_year_i = 1;
 		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_year_i = 1;
 	end;
 
@@ -2419,7 +2419,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 16 then do;
 		* 5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_agyw_set_in_opts = 1; incr_test_agyw_year_i = 1;
+		test_rate_agyw_set_in_opts = 1; test_rate_set_in_opts = 1; incr_test_agyw_year_i = 1;
 		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_year_i = 1;
 		* 6 Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
 		sexual encounter = 95%;
@@ -2523,7 +2523,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 105 then do;
 		* 5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_agyw_set_in_opts = 1; incr_test_agyw_h_year_i = 1;
+		test_rate_agyw_set_in_opts = 1; test_rate_set_in_opts = 1; incr_test_agyw_h_year_i = 1;
 		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_h_year_i = 1;
 	end;
 
@@ -2669,7 +2669,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option  = 116 then do;
 		* 5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_agyw_set_in_opts = 1; incr_test_agyw_h_year_i = 1;
+		test_rate_agyw_set_in_opts = 1; test_rate_set_in_opts = 1;  incr_test_agyw_h_year_i = 1;
 		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_h_year_i = 1;
 		* 6 Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
 		sexual encounter = 95%;
@@ -2691,7 +2691,7 @@ if caldate_never_dot >= &year_interv then do;
 		prob_self_test_hard_reach = 0.25;
 		eff_self_test_targeting = 10; self_test_targeting = 10;
 		rate_self_test = 0.005;
-		test_rate_agyw_set_in_opts = 1; incr_test_agyw_h_year_i = 1;
+		test_rate_agyw_set_in_opts = 1; test_rate_set_in_opts = 1;  incr_test_agyw_h_year_i = 1;
 		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_h_year_i = 1;
 		condom_incr_set_in_opts = 0;
 		if gender = 2 and 15 <= age < 25 then do;	
