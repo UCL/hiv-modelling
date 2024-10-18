@@ -4,27 +4,21 @@
 libname a "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\mihpsa_sa\Phase II\sa_p2_14thAug24";
 libname b "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\mihpsa_sa\Phase II\sa_p2_14thAug24\sa_p2_14thAug24_out";
 
+
+
+/*
+
 data a.base_p2_20240814;   
 	set b.out:;
 	if cald=. then delete;
 run;
 
+*/
+
 proc sort data=a.base_p2_20240814; 
 	by run;
 run;
 
-/* show the contents of the input SAS file */
-proc contents data=a.base_p2_20240814;run;
-
-
-proc freq data=a.base_p2_20240814; table run option;where cald=2023.75;run;
-proc freq data=a.base_p2_20240814; table run*option/norow nocol nopercent; where cald=2023.75;run;
-proc freq data=a.base_p2_20240814; table run cald option;run;
-proc freq data=a.base_p2_20240814; table option*cald/norow nocol nopercent;run;
-*run refers to the dataset they are starting from;
-
-* Jennys notes for SA 10th Aug 24:
-	Options 0-10: 124 runs each from 1989;
 
 ods html close;
 ods listing;
@@ -38,8 +32,7 @@ data sf;
 	sf = (58500000 * 0.706) / s_alive;  * statistica 70.6% of sa population in 2019 >= age 15 (https://www.statista.com/statistics/1116077/total-population-of-south-africa-by-age-group/);
 	keep run sf;
 
-proc sort; by run;run;
-proc means data=sf;var sf;run;
+proc sort data=sf; by run ; run;
 
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
@@ -291,6 +284,10 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; log_gender_r_newp  = log(gender_r_newp);
 
 * p_newp_ge1;					p_newp_ge1 = s_newp_ge1 / s_alive1564 ;
+
+* p_newp_ge1_m ;				p_newp_ge1_m = (s_m1524_newp_ge1 + s_m2534_newp_ge1 + s_m3544_newp_ge1 + s_m4554_newp_ge1 + s_m5564_newp_ge1) / s_alive1564_m ;
+* p_newp_ge1_w ;				p_newp_ge1_w = (s_w1524_newp_ge1 + s_w2534_newp_ge1 + s_w3544_newp_ge1 + s_w4554_newp_ge1 + s_w5564_newp_ge1) / s_alive1564_w ;
+
 
 * p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
 
@@ -1061,8 +1058,10 @@ end;
 
 
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel  * 4* sf;
-* n_death_hivrel_m;				n_death_hivrel_m = s_death_hivrel_m  * 4* sf;
-* n_death_hivrel_w;				n_death_hivrel_w = (s_death_hivrel - s_death_hivrel_m) * 4* sf;
+
+* n_death_hiv_m;				n_death_hiv_m = s_death_hivrel_m  * 4* sf;
+* n_death_hiv_w;				n_death_hiv_w = (s_death_hivrel - s_death_hivrel_m) * 4* sf;
+
 
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* sf;
 * n_death;						n_death = s_dead_allage  * 4 * sf;
@@ -1318,7 +1317,9 @@ n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hiv
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 /*rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause*/ n_death_2059_m n_death_2059_w
 n_total_yllag 	n_dyll_GBD
 n_dyllag_hiv_w	n_dyllag_hiv_m
-/*n_death_hiv_m n_death_hiv_w*/ n_cd4_lt50 n_cd4_lt200
+
+n_death_hiv_m n_death_hiv_w n_cd4_lt50 n_cd4_lt200
+
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
@@ -1387,7 +1388,9 @@ prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep
 
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_onart_1524_ n_art_start_y p_diag_w p_diag_m p_onart_vl1000 
-/*n_death_hiv_m n_death_hiv_w*/ n_tested_m n_tested_w
+
+n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
+
 eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
 p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 s_cost_prep s_cost_prep_visit
@@ -1400,6 +1403,9 @@ p_onart_mens_clinic		p_onart_no_mens_clinic	p_onart_diag_mens_clinic
 
 n_hiv_peer_navigator_w	n_hiv_peer_navigator_m	n_hiv_peer_navigator
 n_onart_peer_navigator	p_onart_peer_navigator	p_onart_no_peer_navigator	p_onart_diag_peer_navigator
+
+n_prep_w_1524  p_newp_ge1_m  p_newp_ge1_w
+
 ;
 
 
