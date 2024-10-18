@@ -2398,8 +2398,8 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	*Option 13 is SQ + 	Condom distribution - condom scale up [use CMMC?];
-	*Cannot code this?;
 	if option = 13 then do;
+				condom_change_set_in_opts = 1; condom_change_year_i = 1;
 	end;
 
 end;
@@ -2715,7 +2715,7 @@ if caldate{t} = &year_interv then do;
 	circ_inc_rate_year_i = 0; *variations coded in circumcision section;
 
 	*increase in condom use;
-	condom_change_year_i = 0; *coded within core (not below options code);
+	if condom_change_set_in_opts ne 1 then condom_change_year_i = 0; *coded within core (not below options code);
 
 	*population wide tld;
 	pop_wide_tld = 0;
