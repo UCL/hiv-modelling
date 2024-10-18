@@ -11,7 +11,10 @@ libname a "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified 
 data b;
 set a.l_base_sa_p2_20240814;
 
-if option=2 then option=1;
+
+s=4;
+if option=0 or option=s ;
+if option=s then option=1;
 
 
 * if sex_beh_trans_matrix_m ne 15 and sex_beh_trans_matrix_w ne 2 and sex_beh_trans_matrix_w ne 3 and sex_beh_trans_matrix_w ne 11;
@@ -66,11 +69,20 @@ logm45r = log(m45r+0.0001);
 logm55r = log(m55r+0.0001);
 
 
+* variables to be added in create wide file;
+n_death_hiv_m=.;
+n_death_hiv_w=.;
+p_newp_ge1_m=.;
+p_newp_ge1_w=.;
+av_newp=.;
+prev_vg1000_newp=.;
+
+
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  102 ;
-%let year_end = 2034.00 ;
+%let nfit =  520 ;
+%let year_end = 2064.00 ;
 run;
 proc sort;by cald option ;run;
 
