@@ -15270,13 +15270,13 @@ if age ge 80 then do; live_daly_80=0;  live_ddaly_80=0;  end;
 end;
 */
 
-
 *Discounted years lost at age 80 using Optima approach (all YLL counted at time of death);
 total_yll80le=0;total_yllag=0;
-dyll_Optima80=0;dyll_GBD=0;
+dyll_Optima80=0;dyll_GBD=0;dyll_gbd_m=0;dyll_gbd_w=0;
 
-if caldate&j = death and death ne . then do;
+if caldate&j = death and death ne . and dcause = 1 then do;  * note this is for hiv deaths only;
 	total_yll80le=80-agedeath;
+
 
 
 	*Life expectancies are WestLevel26, as in Global burden of disease;
@@ -15371,7 +15371,13 @@ if caldate&j = death and death ne . then do;
 		i=i+0.25;
 		end;
 	end;
+
+	if gender=1 then dyll_gbd_m = max(0, dyll_GBD);
+	if gender=2 then dyll_gbd_w = max(0, dyll_GBD);
+
 end;
+
+
 
 
 *Test new way of accumulating YLL;	*JASMay24;

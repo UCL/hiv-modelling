@@ -360,7 +360,7 @@ so the one above is the annual number of tests conducted in ANC;
 * n_tested1st_pd;				n_tested1st_pd = s_tested1st_pd * sf * 4;*VCMar2023;
 * n_tested_sbcc;				n_tested_sbcc = s_tested_sbcc_program * sf * 4;*VCDec2023;
 
-* n_self_tests;					n_self_tests = s_self_tested * sf * 4;	*JASJUN2024;
+* n_self_tests;					n_self_tests = s_self_tested * sf ;	*JASJUN2024;
 /** n_tested_self_test;			n_tested_self_test = s_tested_due_to_self_test * sf * 4;	*JASJUN2024;	* COMPARE THIS WITH n_self_tests and n_diag_self_test;*/
 
 * n_diagnosed;					n_diagnosed = s_diag_this_period * sf * 4;
