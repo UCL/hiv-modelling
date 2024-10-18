@@ -686,7 +686,7 @@ end;
 
 * U=U MESSAGING - modelled as a percentage of adults men who will receive the intervention and have an increased HIV testing rate;	*JAS Aug24;
 * u_u_messaging;			u_u_messaging = 0;
-* prop_receive_u_u;			prop_receive_u_u = 0.15;			* 15% of adult males aged 15+ will receive the U=U messaging intervention;
+* prop_receive_u_u;			prop_receive_u_u = 0.80;			* 80% of adult males aged 15+ will receive the U=U messaging intervention;
 * rel_incr_testing_u_u;		rel_incr_testing_u_u = 1.89;		* OR = 1.89 (Smith et al AIDS and Behavior 2021);
 
 
@@ -2055,24 +2055,6 @@ if cab_time_to_lower_threshold_g = 2 then do;
 	if aa >= 0.90 then cab_time_to_lower_threshold = 1;
 end;
 
-* ATTENDANCE AT MENS HEALTH CLINICS;	*JAS Mar24;
-* Assigned to all men regardless of age, men may attend clinics at 15+;
-if gender=1 then do; 
-	attend_mens_clinic = 0;
-	if rand('uniform')<prop_attend_mens_clinic then attend_mens_clinic = 1;
-end;
-
-* ACCESS TO PEER NAVIGATORS;			*JAS Aug24;
-* Assigned regardless of age, adults may access peer navigators at 15+;
-access_peer_navigator = 0;
-if rand('uniform')<prop_peer_navigator then access_peer_navigator = 1;
-
-* U=U MESSAGING;						*JAS Aug24;
-if gender=1 then do; 
-	receive_u_u=0;
-	if rand('uniform')<prop_receive_u_u then receive_u_u = 1;
-end;
-
 
 
 hiv=0;
@@ -2348,8 +2330,14 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	*Option 5 is SQ + 	U = U messaging [new for SA];
-	if option = 5 then do;												*JAS Aug24;
-	* !!! CHECK OUTCOMES FOR THIS OPTION !!!;
+	if option = 5 then do;		
+		if caldate_never_dot = &year_interv then do; *JAS Aug24;
+		* U=U MESSAGING;						*JAS Aug24;
+		if gender=1 then do; 
+			receive_u_u=0;
+			if rand('uniform')<prop_receive_u_u then receive_u_u = 1;
+		end;
+		end;
 		u_u_messaging=1;
 	end;
 
@@ -2371,6 +2359,14 @@ who may be dead and hence have caldate{t} missing;
 
 	*Option 8 is SQ + 	Establishment of mens health clinics [Zim O13];
 	if option = 8 then do;
+		* ATTENDANCE AT MENS HEALTH CLINICS;	*JAS Mar24;
+		* Assigned to all men regardless of age, men may attend clinics at 15+;
+		if caldate_never_dot = &year_interv then do;
+		if gender=1 then do; 
+			attend_mens_clinic = 0;
+			if rand('uniform')<prop_attend_mens_clinic then attend_mens_clinic = 1;
+		end;
+		end;
 		mens_clinics = 1;				*Mens health clinics switched on;	*JAS Mar24;
 	end;
 
@@ -2388,13 +2384,16 @@ who may be dead and hence have caldate{t} missing;
 
 	*Option 11 is SQ + 	Community-based peer navigators to support ART linkage & retention [new for SA];
 	if option = 11 then do;
-	* !!! CHECK OUTCOMES FOR THIS OPTION !!!;
+		if caldate_never_dot = &year_interv then do; 
+		* ACCESS TO PEER NAVIGATORS;			*JAS Aug24;
+		access_peer_navigator = 0;
+		if rand('uniform')<prop_peer_navigator then access_peer_navigator = 1;
+		end;
 		peer_navigators=1;
-	end;
+		end;
 
 	*Option 12 is SQ + 	Point-of-care viral load testing [coded but not in Zim MIHPSA];
 	if option = 12 then do;
-	* !!! CHECK OUTCOMES FOR THIS OPTION !!!;
 		poc_vl_monitoring_i = 1;	*This switches on vm_format=4 which is wb poc. compare to vm_format=3;	*JAS Aug24;
 	end;
 
@@ -2408,10 +2407,6 @@ end;
 
 
 *  ======================================================================================================================================== ;
-
-
-
-
 
 
 * Oral PREP introduction in fsw/agyw 2018; 

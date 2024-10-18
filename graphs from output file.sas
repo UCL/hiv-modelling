@@ -12,7 +12,7 @@ data b;
 set a.l_base_sa_p2_20240814;
 
 
-s=7;
+s=12;
 if option=0 or option=s ;
 if option=s then option=1;
 
