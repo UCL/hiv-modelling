@@ -1,22 +1,22 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ah_options_d_out\";
-
-
-
-data   kenya_ah_options_d ; set b.out: ;
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\south_africa_options_a_out\";
 
 
-proc sort data=  kenya_ah_options_d; 
+
+data   south_africa_options_a ; set b.out: ;
+
+
+proc sort data=  south_africa_options_a; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_ah_options_d ;
+set   south_africa_options_a ;
 
 
 if cald=2022.25;
@@ -33,7 +33,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_ah_options_d sf;
+merge   south_africa_options_a sf;
 by run ;
  
 
@@ -945,6 +945,41 @@ n_new_inf1549m = s_primary1549m * sf * 4;
 n_new_inf1549w = s_primary1549w * sf * 4;
 n_new_inf1549 = s_primary1549 * sf * 4;
 
+* n_infection;					n_infection  = s_primary     * sf * 4;
+* n_new_inf1564m;				n_new_inf1564m = (s_primary1549m + s_primary5054m + s_primary5559m + s_primary6064m)* sf * 4;	*Corrected equation JASApr2024;
+* n_new_inf1564w;				n_new_inf1564w = (s_primary1549w + s_primary5054w + s_primary5559w + s_primary6064w)* sf * 4;	*Corrected equation JASApr2024;
+* n_new_inf1524m;				n_new_inf1524m = (s_primary1519m + s_primary2024m) * sf * 4;
+* n_new_inf1524w;				n_new_inf1524w = (s_primary1519w + s_primary2024w) * sf * 4;
+* n_new_inf2549m;				n_new_inf2549m = (s_primary1549m - s_primary1519m - s_primary2024m) * sf * 4;
+* n_new_inf2549w;				n_new_inf2549w = (s_primary1549w - s_primary1519w - s_primary2024w) * sf * 4;
+
+* PLW;				*JASAug2024;
+* n_breastfeeding;				n_breastfeeding = s_breastfeeding * sf;
+* n_plw;						n_plw = s_plw * sf;
+
+* U=U messaging;	*JASAug2024;
+* n_receive_u_u;				n_receive_u_u = s_receive_u_u * sf;	* *4? ;
+* n_diag_receive_u_u;			n_diag_receive_u_u = s_diag_receive_u_u * sf;	* *4? ;
+
+* Mens clinics;		*JASAug2024;
+* n_attend_mens_clinic;			n_attend_mens_clinic = s_attend_mens_clinic * sf;	* *4? ;
+* n_hiv_mens_clinic;			n_hiv_mens_clinic = s_hiv_mens_clinic * sf;			* *4? ;
+* n_onart_mens_clinic;			n_onart_mens_clinic = s_onart_mens_clinic * sf;
+* p_onart_mens_clinic;			if s_hiv_mens_clinic gt 0 then p_onart_mens_clinic = s_onart_mens_clinic / s_hiv_mens_clinic;
+* p_onart_no_mens_clinic;		p_onart_no_mens_clinic = (s_onart_m - s_onart_mens_clinic) / (s_hivge15m - s_hiv_mens_clinic);
+* p_onart_diag_mens_clinic;		if s_hiv_mens_clinic gt 0 then p_onart_diag_mens_clinic = s_onart_mens_clinic / s_diag_mens_clinic;
+
+* Peer navigators;	*JASAug2024;
+* n_hiv_peer_navigator_w;		n_hiv_peer_navigator_w = s_hiv_peer_navigator_w * sf;	* *4? ;
+* n_hiv_peer_navigator_m;		n_hiv_peer_navigator_m = s_hiv_peer_navigator_m * sf;	* *4? ;
+* n_hiv_peer_navigator;			n_hiv_peer_navigator = s_hiv_peer_navigator * sf;	* *4? ;
+* n_onart_peer_navigator;		n_onart_peer_navigator = s_onart_peer_navigator * sf;
+* p_onart_peer_navigator;		if s_hiv_peer_navigator gt 0 then p_onart_peer_navigator = s_onart_peer_navigator / s_hiv_peer_navigator;
+* p_onart_no_peer_navigator;	p_onart_no_peer_navigator = (s_onart_m - s_onart_peer_navigator) / (s_hivge15m - s_hiv_peer_navigator);
+* p_onart_diag_peer_navigator;	if s_hiv_peer_navigator gt 0 then p_onart_diag_peer_navigator = s_onart_peer_navigator / s_diag_peer_navigator;
+
+
+
 yll=yll_gbd;
 yll_w=yll_gbd_w;
 yll_m=yll_gbd_m;
@@ -969,12 +1004,139 @@ dummy8=.;
 p_diag_m  = p_diag_m / 100;
 p_diag_w = p_diag_w / 100; 
 p_diag = p_diag / 100;
-  
+
+* flow missing ;
+
+N_HIVInf_C014=.;						
+N_AIDSDeaths_C014=.;					
+N_Deaths_C014=.;						
+N_YLL_C014=.;							
+N_HIVTestPos_C014=.;					
+N_HIVTestNeg_C014=.;					
+TOT_CD_PSexActs_15+=.;					
+N_HIVST_HF_B15+=.;									
+N_HIVST_BPARTNER15+=.;								
+N_HIVST_Other15+=.;
+
+* stock missing; 
+
+HIVprev_C014=.;
+N_Alive_C014=.;
+P_DIAG_C014=.;									
+P_onART_HIVC014=.;								
+N_onART_HIVC014=.;								
+N_onART_HIVC014=.;								
+N_NotOnART_HIVC014=.;
+
+/*
+
+flow
+
+	n_new_inf1564m						
+	n_new_inf1564w						
+N_HIVInf_C014						
+	n_death_hivrel_m
+	n_death_hivrel_w
+N_AIDSDeaths_C014					
+	n_death_m
+	n_death_w
+N_Deaths_C014						
+	n_dyllag_hiv_m
+	n_dyllag_hiv_w
+N_YLL_C014							
+	n_give_birth_w_hiv
+	n_give_birth_on_art
+	n_init_prep_oral_curr_m
+	n_init_prep_oral_curr_w
+	n_hivpos_tests						
+	n_hivneg_tests						
+	n_diag_anc
+	n_hivneg_tests_anc
+	n_hivpos_tests_sympt				
+	n_hivneg_tests_sympt				
+N_HIVTestPos_C014					
+N_HIVTestNeg_C014					
+	n_new_vmmc1549m
+	n_new_vmmc1014m
+TOT_CD_PSexActs_15+					
+	n_vm_w
+	n_vm_m
+N_HIVST_HF_B15+									
+N_HIVST_BPARTNER15+								
+N_HIVST_Other15+								
+	n_init_prep_vr_1524w
+	n_init_prep_oral_plw
+	n_init_prep_inj_1524w
+	n_init_prep_inj_curr_m
+	n_init_prep_inj_curr_w
+	n_art_mens_clinic
+	n_receive_u_u
+	n_hiv_peer_navigator_w
+	n_hiv_peer_navigator_m
+	n_self_tests						
+	n_diag_anclabpd						
+	n_hivneg_tests_anclabpd				
+	n_init_prep_oral_first_m			
+	n_init_prep_oral_first_w			
+	n_init_prep_inj_first_w				
+	n_init_prep_inj_first_m				
+	n_prep_oral_w						
+	n_prep_oral_m						
+	n_prep_inj_w						
+	n_prep_inj_m						
+;
+
+*/
+	
+
+/*
+
+stock
+
+year
+prevalence_ge15m_&o
+prevalence_ge15w_&o
+HIVprev_C014
+n_alive_m_&o
+n_alive_w_&o
+N_Alive_C014
+pc_diag_m_&o
+pc_diag_w_&o
+P_DIAG_C014									
+pc_onart_diag_m_&o
+pc_onart_diag_w_&o
+P_onART_HIVC014								
+n_onart_m_&o
+n_onart_w_&o
+N_onART_HIVC014								
+pc_onart_vl1000_m_&o
+pc_onart_vl1000_w_&o
+n_not_on_art_cd4ge500__&o
+n_not_on_art_cd4350500__&o
+n_not_on_art_cd4200350__&o
+n_not_on_art_cd40200__&o
+N_onART_HIVC014								
+N_NotOnART_HIVC014							
+;
+
+*/
+
+
 keep run cald option 
 n_alive_m n_alive_w  n_alive  prevalence_m prevalence_w  prevalence  n_infected_m  n_infected_w  n_infected p_diag_m  p_diag_w  p_diag  
 p_onart_diag_m p_onart_diag_w  p_onart_diag p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
 n_death_hivrel_m n_death_hivrel_w n_death_hivrel n_hiv_m n_hiv_w n_hiv prevalence_msm  prop_m_msm  incidence1524m incidence1564m incidence1524w incidence1564w
 incidence_sw incidence_msm  dummy3 dummy4 incidence1564  n_onart  n_onprep_m  n_onprep_w  n_onprep yll_m  yll_w  yll  dummy5 dummy6 dummy7 n_tested dummy8
+
+n_breastfeeding			n_plw
+n_receive_u_u			n_diag_receive_u_u
+n_attend_mens_clinic	n_hiv_mens_clinic		n_onart_mens_clinic
+p_onart_mens_clinic		p_onart_no_mens_clinic	p_onart_diag_mens_clinic
+
+n_hiv_peer_navigator_w	n_hiv_peer_navigator_m	n_hiv_peer_navigator
+n_onart_peer_navigator	p_onart_peer_navigator	p_onart_no_peer_navigator	p_onart_diag_peer_navigator
+
+n_prep_w_1524  p_newp_ge1_m  p_newp_ge1_w
 
 ;
 
@@ -986,190 +1148,276 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_ah_options_d; set y;  
+data a.l_base_south_africa_options_a; set y;  
 
 
 
 
-data y; set a.l_base_kenya_ah_options_d; 
+
+
+
+* producing the output files for debra and rob;
+
+
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\";
+
+
+data y; set a.l_base_south_africa_options_a; 
+
+keep
+
+cald
+option
+n_hiv1524m
+n_hiv1524w
+n_hiv2549m
+n_hiv2549w
+n_hiv55plm
+n_hiv55plw
+n_alive_1524m
+n_alive_1524w
+n_alive_2549m
+n_alive_2549w
+n_alive_55plm
+n_alive_55plw
+n_diag_ever_m
+n_diag_ever_w
+n_onart_m
+n_onart_w
+n_onart_vl1000_m
+n_onart_vl1000_w
+n_not_on_art_cd4ge500 
+n_not_on_art_cd4350500 
+n_not_on_art_cd4200350 
+n_not_on_art_cd450200 
+n_not_on_art_cd4050 
+
+n_birth
+n_give_birth_w_hiv
+n_give_birth_on_art
+n_new_inf1524m
+n_new_inf1524w
+n_new_inf2549m
+n_new_inf2549w
+n_new_inf55plm
+n_new_inf55plw
+n_death_hivrel_m
+n_death_hivrel_w
+n_death_m
+n_death_w
+n_yllag_hiv_m  
+n_yllag_hiv_w  
+n_diag_self_test
+n_self_tests
+n_new_vmmc
+py_prep_oral_1524w
+py_prep_oral_sw
+py_prep_inj_1524w
+py_prep_inj_sw
+n_vm
+n_sw_program_visit
+n_hivneg_tests
+n_hivpos_tests
+
+;
+
+
+
 
  
+  options nomprint;
   option nospool;
 
 
-%macro var(v=);
+%macro var_stock(v=);
 
 * &v ;
 
-  options nomprint;
-/*
-
 * only for option = 0;
 
-proc means  noprint data=y; var &v; output out=y_00 mean= &v;  ; where 2000   <= cald < 2001  ; 
-proc means  noprint data=y; var &v; output out=y_01 mean= &v;  ; where 2001   <= cald < 2002  ; 
-proc means  noprint data=y; var &v; output out=y_02 mean= &v;  ; where 2002   <= cald < 2003  ; 
-proc means  noprint data=y; var &v; output out=y_03 mean= &v;  ; where 2003   <= cald < 2004  ; 
-proc means  noprint data=y; var &v; output out=y_04 mean= &v;  ; where 2004   <= cald < 2005  ; 
-proc means  noprint data=y; var &v; output out=y_05 mean= &v;  ; where 2005   <= cald < 2006  ; 
-proc means  noprint data=y; var &v; output out=y_06 mean= &v;  ; where 2006   <= cald < 2007  ; 
-proc means  noprint data=y; var &v; output out=y_07 mean= &v;  ; where 2007   <= cald < 2008  ; 
-proc means  noprint data=y; var &v; output out=y_08 mean= &v;  ; where 2008   <= cald < 2009  ; 
-proc means  noprint data=y; var &v; output out=y_09 mean= &v;  ; where 2009   <= cald < 2010  ; 
-proc means  noprint data=y; var &v; output out=y_10 mean= &v;  ; where 2010   <= cald < 2011  ; 
-proc means  noprint data=y; var &v; output out=y_11 mean= &v;  ; where 2011   <= cald < 2012  ; 
-proc means  noprint data=y; var &v; output out=y_12 mean= &v;  ; where 2012   <= cald < 2013  ; 
-proc means  noprint data=y; var &v; output out=y_13 mean= &v;  ; where 2013   <= cald < 2014  ; 
-proc means  noprint data=y; var &v; output out=y_14 mean= &v;  ; where 2014   <= cald < 2015  ; 
-proc means  noprint data=y; var &v; output out=y_15 mean= &v;  ; where 2015   <= cald < 2016  ; 
-proc means  noprint data=y; var &v; output out=y_16 mean= &v;  ; where 2016   <= cald < 2017  ; 
-proc means  noprint data=y; var &v; output out=y_17 mean= &v;  ; where 2017   <= cald < 2018  ; 
-proc means  noprint data=y; var &v; output out=y_18 mean= &v;  ; where 2018   <= cald < 2019  ; 
-proc means  noprint data=y; var &v; output out=y_19 mean= &v;  ; where 2019   <= cald < 2020  ; 
-proc means  noprint data=y; var &v; output out=y_20 mean= &v;  ; where 2020   <= cald < 2021  ; 
-proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where 2021   <= cald < 2022  ; 
-proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where 2022   <= cald < 2023  ; 
-proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <= cald < 2024  ; 
+* stock ;
+
+/*
+
+proc means  noprint data=y; var &v; output out=y_00 mean= &v;  ; where cald = 2000.5  ; 
+proc means  noprint data=y; var &v; output out=y_01 mean= &v;  ; where cald = 2001.5  ; 
+proc means  noprint data=y; var &v; output out=y_02 mean= &v;  ; where cald = 2002.5  ; 
+proc means  noprint data=y; var &v; output out=y_03 mean= &v;  ; where cald = 2003.5  ; 
+proc means  noprint data=y; var &v; output out=y_04 mean= &v;  ; where cald = 2004.5  ; 
+proc means  noprint data=y; var &v; output out=y_05 mean= &v;  ; where cald = 2005.5  ; 
+proc means  noprint data=y; var &v; output out=y_06 mean= &v;  ; where cald = 2006.5  ; 
+proc means  noprint data=y; var &v; output out=y_07 mean= &v;  ; where cald = 2007.5  ; 
+proc means  noprint data=y; var &v; output out=y_08 mean= &v;  ; where cald = 2008.5  ; 
+proc means  noprint data=y; var &v; output out=y_09 mean= &v;  ; where cald = 2009.5  ; 
+proc means  noprint data=y; var &v; output out=y_10 mean= &v;  ; where cald = 2010.5  ; 
+proc means  noprint data=y; var &v; output out=y_11 mean= &v;  ; where cald = 2011.5  ; 
+proc means  noprint data=y; var &v; output out=y_12 mean= &v;  ; where cald = 2012.5  ; 
+proc means  noprint data=y; var &v; output out=y_13 mean= &v;  ; where cald = 2013.5  ; 
+proc means  noprint data=y; var &v; output out=y_14 mean= &v;  ; where cald = 2014.5  ; 
+proc means  noprint data=y; var &v; output out=y_15 mean= &v;  ; where cald = 2015.5  ; 
+proc means  noprint data=y; var &v; output out=y_16 mean= &v;  ; where cald = 2016.5  ; 
+proc means  noprint data=y; var &v; output out=y_17 mean= &v;  ; where cald = 2017.5  ; 
+proc means  noprint data=y; var &v; output out=y_18 mean= &v;  ; where cald = 2018.5  ; 
+proc means  noprint data=y; var &v; output out=y_19 mean= &v;  ; where cald = 2019.5  ; 
+proc means  noprint data=y; var &v; output out=y_20 mean= &v;  ; where cald = 2020.5  ; 
+proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where cald = 2021.5  ; 
+proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where cald = 2022.5  ; 
+proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where cald = 2023.5  ; 
 
 */
 
-proc means noprint data=y; var &v; output out=y_24  mean= &v   ;         ; where 2024.0 <= cald < 2025.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_25  mean= &v   ;         ; where 2025.0 <= cald < 2026.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_26  mean= &v   ;         ; where 2026.0 <= cald < 2027.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_27  mean= &v   ;         ; where 2027.0 <= cald < 2028.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_28  mean= &v   ;         ; where 2028.0 <= cald < 2029.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_29  mean= &v   ;         ; where 2029.0 <= cald < 2030.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_30  mean= &v   ;         ; where 2030.0 <= cald < 2031.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_31  mean= &v   ;         ; where 2031.0 <= cald < 2032.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_32  mean= &v   ;         ; where 2032.0 <= cald < 2033.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_33  mean= &v   ;         ; where 2033.0 <= cald < 2034.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_34  mean= &v   ;         ; where 2034.0 <= cald < 2035.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_35  mean= &v   ;         ; where 2035.0 <= cald < 2036.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_36  mean= &v   ;         ; where 2036.0 <= cald < 2037.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_37  mean= &v   ;         ; where 2037.0 <= cald < 2038.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_38  mean= &v   ;         ; where 2038.0 <= cald < 2039.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_39  mean= &v   ;         ; where 2039.0 <= cald < 2040.0 and option=107 ;
-proc means noprint data=y; var &v; output out=y_40  mean= &v   ;         ; where 2040.0 <= cald < 2041.0 and option=107 ;
- 																										   
+proc means noprint data=y; var &v; output out=y_24  mean= &v   ; where cald = 2024.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_25  mean= &v   ; where cald = 2025.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_26  mean= &v   ; where cald = 2026.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_27  mean= &v   ; where cald = 2027.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_28  mean= &v   ; where cald = 2028.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_29  mean= &v   ; where cald = 2029.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_30  mean= &v   ; where cald = 2030.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_31  mean= &v   ; where cald = 2031.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_32  mean= &v   ; where cald = 2032.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_33  mean= &v   ; where cald = 2033.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_34  mean= &v   ; where cald = 2034.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_35  mean= &v   ; where cald = 2035.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_36  mean= &v   ; where cald = 2036.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_37  mean= &v   ; where cald = 2037.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_38  mean= &v   ; where cald = 2038.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_39  mean= &v   ; where cald = 2039.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_40  mean= &v   ; where cald = 2040.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_41  mean= &v   ; where cald = 2041.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_42  mean= &v   ; where cald = 2042.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_43  mean= &v   ; where cald = 2043.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_44  mean= &v   ; where cald = 2044.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_45  mean= &v   ; where cald = 2045.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_46  mean= &v   ; where cald = 2046.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_47  mean= &v   ; where cald = 2047.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_48  mean= &v   ; where cald = 2048.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_49  mean= &v   ; where cald = 2049.5 and option=11 ;
+proc means noprint data=y; var &v; output out=y_50  mean= &v   ; where cald = 2050.5 and option=11 ;
+
 																										
-data &v ; set 
-
-/* only for option=115 */
-/* y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23   */
-
-y_24 y_25 y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40  ;  
+data &v ; set  /*  y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23 */
+y_24 y_25 y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40  y_41 y_42 y_43 y_44 y_45 y_46 y_47 y_48 y_49 y_50  ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
+%mend var_stock;
 
 
-%mend var;
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+* flow;
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-%var(v=n_alive_m); 
-%var(v=n_alive_w);   
-%var(v=n_alive ); 
-%var(v=prevalence_m);  
-%var(v=prevalence_w);   
-%var(v=prevalence  ); 
-%var(v=n_infected_m);   
-%var(v=n_infected_w);   
-%var(v=n_infected ); 
-%var(v=p_diag_m  ); 
-%var(v=p_diag_w  ); 
-%var(v=p_diag  ); 
-%var(v=p_onart_diag_m ); 
-%var(v=p_onart_diag_w ); 
-%var(v=p_onart_diag  ); 
-%var(v=p_onart_vl1000_m);  
-%var(v=p_onart_vl1000_w);  
-%var(v=p_onart_vl1000  ); 
-%var(v=prop_w_1549_sw  ); 
-%var(v=prevalence_sw   ); 
-%var(v=p_mcirc  ); 
-%var(v=dummy1);
-%var(v=dummy2);
-%var(v=n_death_hivrel_m ); 
-%var(v=n_death_hivrel_w ); 
-%var(v=n_death_hivrel ); 
-%var(v=n_hiv_m);
-%var(v=n_hiv_w);
-%var(v=n_hiv);
-%var(v=prevalence_msm  );
-%var(v=prop_m_msm);    
-%var(v=incidence1524m ); 
-%var(v=incidence1524w  ); 
-%var(v=incidence1564m ); 
-%var(v=incidence1564w  ); 
-%var(v=incidence1564  ); 
-%var(v=incidence_msm  ); 
-%var(v=incidence_sw   ); 
-%var(v=dummy3         ); 
-%var(v=dummy4        ); 
-%var(v=n_onart  ); 
-%var(v=n_onprep_m  ); 
-%var(v=n_onprep_w  ); 
-%var(v=n_onprep  ); 
-%var(v=yll_m); 
-%var(v=yll_w); 
-%var(v=yll); 
-%var(v=dummy5 ); 
-%var(v=dummy6 ); 
-%var(v=dummy7 );
-%var(v=n_tested ); 
-%var(v=dummy8 ); 
-
+%macro var_flow(v=);
 
 /*
+
+proc means  noprint data=y; var &v; output out=z_00 mean= &v;  ; where 1999.5   < cald <= 2000.5; 
+proc means  noprint data=y; var &v; output out=z_01 mean= &v;  ; where 2000.5   < cald <= 2001.5  ; 
+proc means  noprint data=y; var &v; output out=z_02 mean= &v;  ; where 2001.5   < cald <= 2002.5  ; 
+proc means  noprint data=y; var &v; output out=z_03 mean= &v;  ; where 2002.5   < cald <= 2003.5  ; 
+proc means  noprint data=y; var &v; output out=z_04 mean= &v;  ; where 2003.5   < cald <= 2004.5  ; 
+proc means  noprint data=y; var &v; output out=z_05 mean= &v;  ; where 2004.5   < cald <= 2005.5  ; 
+proc means  noprint data=y; var &v; output out=z_06 mean= &v;  ; where 2005.5   < cald <= 2006.5  ; 
+proc means  noprint data=y; var &v; output out=z_07 mean= &v;  ; where 2006.5   < cald <= 2007.5  ; 
+proc means  noprint data=y; var &v; output out=z_08 mean= &v;  ; where 2007.5   < cald <= 2008.5  ; 
+proc means  noprint data=y; var &v; output out=z_09 mean= &v;  ; where 2008.5   < cald <= 2009.5  ; 
+proc means  noprint data=y; var &v; output out=z_10 mean= &v;  ; where 2009.5   < cald <= 2010.5  ; 
+proc means  noprint data=y; var &v; output out=z_11 mean= &v;  ; where 2010.5   < cald <= 2011.5  ; 
+proc means  noprint data=y; var &v; output out=z_12 mean= &v;  ; where 2011.5   < cald <= 2012.5  ; 
+proc means  noprint data=y; var &v; output out=z_13 mean= &v;  ; where 2012.5   < cald <= 2013.5  ; 
+proc means  noprint data=y; var &v; output out=z_14 mean= &v;  ; where 2013.5   < cald <= 2014.5  ; 
+proc means  noprint data=y; var &v; output out=z_15 mean= &v;  ; where 2014.5   < cald <= 2015.5  ; 
+proc means  noprint data=y; var &v; output out=z_16 mean= &v;  ; where 2015.5   < cald <= 2016.5  ; 
+proc means  noprint data=y; var &v; output out=z_17 mean= &v;  ; where 2016.5   < cald <= 2017.5  ; 
+proc means  noprint data=y; var &v; output out=z_18 mean= &v;  ; where 2017.5   < cald <= 2018.5  ; 
+proc means  noprint data=y; var &v; output out=z_19 mean= &v;  ; where 2018.5   < cald <= 2019.5  ; 
+proc means  noprint data=y; var &v; output out=z_20 mean= &v;  ; where 2019.5   < cald <= 2020.5  ; 
+proc means  noprint data=y; var &v; output out=z_21 mean= &v;  ; where 2020.5   < cald <= 2021.5  ; 
+proc means  noprint data=y; var &v; output out=z_22 mean= &v;  ; where 2021.5   < cald <= 2022.5  ; 
+proc means  noprint data=y; var &v; output out=z_23 mean= &v;  ; where 2022.5   < cald <= 2023.5  ; 
+
+*/
+
+proc means noprint data=y; var &v; output out=z_24  mean= &v   ; where 2023.5 < cald <= 2024.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_25  mean= &v   ; where 2024.5 < cald <= 2025.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_26  mean= &v   ; where 2025.5 < cald <= 2026.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_27  mean= &v   ; where 2026.5 < cald <= 2027.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_28  mean= &v   ; where 2027.5 < cald <= 2028.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_29  mean= &v   ; where 2028.5 < cald <= 2029.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_30  mean= &v   ; where 2029.5 < cald <= 2030.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_31  mean= &v   ; where 2030.5 < cald <= 2031.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_32  mean= &v   ; where 2031.5 < cald <= 2032.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_33  mean= &v   ; where 2032.5 < cald <= 2033.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_34  mean= &v   ; where 2033.5 < cald <= 2034.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_35  mean= &v   ; where 2034.5 < cald <= 2035.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_36  mean= &v   ; where 2035.5 < cald <= 2036.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_37  mean= &v   ; where 2036.5 < cald <= 2037.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_38  mean= &v   ; where 2037.5 < cald <= 2038.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_39  mean= &v   ; where 2038.5 < cald <= 2039.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_40  mean= &v   ; where 2039.5 < cald <= 2040.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_41  mean= &v   ; where 2040.5 < cald <= 2041.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_42  mean= &v   ; where 2041.5 < cald <= 2042.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_43  mean= &v   ; where 2042.5 < cald <= 2043.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_44  mean= &v   ; where 2043.5 < cald <= 2044.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_45  mean= &v   ; where 2044.5 < cald <= 2045.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_46  mean= &v   ; where 2045.5 < cald <= 2046.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_47  mean= &v   ; where 2046.5 < cald <= 2047.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_48  mean= &v   ; where 2047.5 < cald <= 2048.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_49  mean= &v   ; where 2048.5 < cald <= 2049.5 and option=11 ;
+proc means noprint data=y; var &v; output out=z_50  mean= &v   ; where 2049.5 < cald <= 2050.5 and option=11 ;
+ 
+data &v ; set  /*  z_00 z_01 z_02 z_03 z_04 z_05 z_06 z_07 z_08 z_09 z_10 z_11 z_12 z_13 z_14 z_15 z_16 z_17 z_18 z_19 z_20 z_21 z_22 z23 */ 
+z_24 z_25 z_26 z_27 z_28 z_29 z_30 z_31 z_32 z_33 z_34 z_35 z_36 z_37 z_38 z_39 z_40  z_41 z_42 z_43 z_44 z_45 z_46 z_47 z_48 z_49 z_50  ;  
+drop _NAME_ _TYPE_ _FREQ_;
+
+%mend var_flow;
+
+
+
+
+
+
+
+
+
+
+
+
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+* flows;
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+
+%var_flow(v=n_birth);
+%var_flow(v=n_give_birth_w_hiv);
+%var_flow(v=n_give_birth_on_art);
+%var_flow(v=n_new_inf1524m);
+%var_flow(v=n_new_inf1524w);
+%var_flow(v=n_new_inf2549m);
+%var_flow(v=n_new_inf2549w);
+%var_flow(v=n_new_inf55plm);
+%var_flow(v=n_new_inf55plw);
+%var_flow(v=n_death_hivrel_m);
+%var_flow(v=n_death_hivrel_w);
+%var_flow(v=n_death_m);
+%var_flow(v=n_death_w);
+%var_flow(v=n_yllag_hiv_m);  
+%var_flow(v=n_yllag_hiv_w);  
+%var_flow(v=n_diag_self_test);
+%var_flow(v=n_self_tests);
+%var_flow(v=n_new_vmmc);
+%var_flow(v=py_prep_oral_1524w);
+%var_flow(v=py_prep_oral_sw);
+%var_flow(v=py_prep_inj_1524w);
+%var_flow(v=py_prep_inj_sw);
+%var_flow(v=n_vm);
+%var_flow(v=n_sw_program_visit);
+%var_flow(v=n_hivneg_tests);
+%var_flow(v=n_hivpos_tests);
+
+
 
 * for status quo - option = 0;
 
-data year;
-input year;
-cards;
-2000
-2001
-2002
-2003
-2004
-2005
-2006
-2007
-2008
-2009
-2010
-2011
-2012 
-2013
-2014
-2015
-2016
-2017
-2018
-2019
-2010
-2021
-2022
-2023
-2024
-2025
-2026
-2027
-2028
-2029
-2030
-2031
-2032
-2033
-2034
-2035
-2036
-2037
-2038
-2039
-2040
-;
-
-*/
-
+* 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 2010 2021 2022 ;
 
 data year;
 input year;
@@ -1191,19 +1439,266 @@ cards;
 2038
 2039
 2040
+2041
+2042
+2043
+2044
+2045
+2046
+2047
+2048
+2049
+2050
 
 
 
-data   wide_outputs; merge year 
-n_alive_m n_alive_w  n_alive  prevalence_m prevalence_w  prevalence  n_infected_m  n_infected_w  n_infected p_diag_m  p_diag_w  p_diag  
-p_onart_diag_m p_onart_diag_w  p_onart_diag p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
-n_death_hivrel_m n_death_hivrel_w n_death_hivrel n_hiv_m n_hiv_w n_hiv prevalence_msm  prop_m_msm  incidence1524m incidence1564m incidence1524w incidence1564w
-incidence_sw incidence_msm  dummy3 dummy4 incidence1564  n_onart  n_onprep_m  n_onprep_w  n_onprep  yll_m yll_w yll dummy5 dummy6 dummy7 n_tested dummy8
+data  wide_outputs ; merge 
+
+year
+
+n_birth
+n_give_birth_w_hiv
+n_give_birth_on_art
+n_new_inf1524m
+n_new_inf1524w
+n_new_inf2549m
+n_new_inf2549w
+n_new_inf55plm
+n_new_inf55plw
+n_death_hivrel_m
+n_death_hivrel_w
+n_death_m
+n_death_w
+n_yllag_hiv_m
+n_yllag_hiv_w  
+n_diag_self_test
+n_self_tests
+n_new_vmmc
+py_prep_oral_1524w
+py_prep_oral_sw
+py_prep_inj_1524w
+py_prep_inj_sw
+n_vm
+n_sw_program_visit
+n_hivneg_tests
+n_hivpos_tests
 
 ;
+
+
+dummy1=.;dummy2=.;dummy3=.;dummy4=.;dummy5=.;dummy6=.;dummy7=.;dummy8=.;dummy9=.;dummy10=.;
+dummy11=.;dummy12=.;dummy13=.;dummy14=.;dummy15=.;dummy16=.;dummy17=.;dummy18=.;
+
+
+data flows; 
+retain 
+year 
+n_birth
+n_give_birth_w_hiv
+n_give_birth_on_art
+dummy1
+n_new_inf1524m
+n_new_inf1524w
+n_new_inf2549m
+n_new_inf2549w
+n_new_inf55plm
+n_new_inf55plw
+dummy2
+n_death_hivrel_m
+n_death_hivrel_w
+dummy3
+n_death_m
+n_death_w
+dummy4
+n_yllag_hiv_m
+n_yllag_hiv_w  
+n_hivneg_tests
+n_hivpos_tests
+dummy5
+dummy6
+dummy7
+dummy8 
+n_diag_self_test
+n_self_tests
+dummy9 
+n_new_vmmc
+py_prep_oral_1524w
+py_prep_oral_sw
+dummy10
+py_prep_inj_1524w
+py_prep_inj_sw
+dummy11
+dummy12
+dummy13
+n_vm
+dummy14
+n_sw_program_visit
+dummy15
+dummy16
+dummy17
+dummy18
+;
+set wide_outputs;
+run;
+
+proc transpose data=flows out=data3 ; run;
+
+data a; set data3;
+drop _name_;
 
 ods html;
-proc print noobs ; run; 
+proc print noobs data=a; run; 
+
+
+
+
+
+
+
+
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+* stocks ;
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+
+
+%var_stock(v=n_hiv1524m);
+%var_stock(v=n_hiv1524w);
+%var_stock(v=n_hiv2549m);
+%var_stock(v=n_hiv2549w);
+%var_stock(v=n_hiv55plm);
+%var_stock(v=n_hiv55plw);
+%var_stock(v=n_alive_1524m);
+%var_stock(v=n_alive_1524w);
+%var_stock(v=n_alive_2549m);
+%var_stock(v=n_alive_2549w);
+%var_stock(v=n_alive_55plm);
+%var_stock(v=n_alive_55plw);
+%var_stock(v=n_diag_ever_m);
+%var_stock(v=n_diag_ever_w);
+%var_stock(v=n_onart_m);
+%var_stock(v=n_onart_w);
+%var_stock(v=n_onart_vl1000_m);
+%var_stock(v=n_onart_vl1000_w);
+%var_stock(v=n_not_on_art_cd4ge500); 
+%var_stock(v=n_not_on_art_cd4350500); 
+%var_stock(v=n_not_on_art_cd4200350); 
+%var_stock(v=n_not_on_art_cd450200); 
+%var_stock(v=n_not_on_art_cd4050); 
+
+
+* for status quo - option = 0;
+
+* 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 2010 2021 2022 ;
+
+
+data year;
+input year;
+cards;
+2024
+2025
+2026
+2027
+2028
+2029
+2030
+2031
+2032
+2033
+2034
+2035
+2036
+2037
+2038
+2039
+2040
+2041
+2042
+2043
+2044
+2045
+2046
+2047
+2048
+2049
+2050
+
+data  wide_outputs ; merge 
+
+year
+
+n_hiv1524m
+n_hiv1524w
+n_hiv2549m
+n_hiv2549w
+n_hiv55plm
+n_hiv55plw
+n_alive_1524m
+n_alive_1524w
+n_alive_2549m
+n_alive_2549w
+n_alive_55plm
+n_alive_55plw
+n_diag_ever_m
+n_diag_ever_w
+n_onart_m
+n_onart_w
+n_onart_vl1000_m
+n_onart_vl1000_w
+n_not_on_art_cd4ge500 
+n_not_on_art_cd4350500 
+n_not_on_art_cd4200350 
+n_not_on_art_cd450200 
+n_not_on_art_cd4050 
+;
+
+
+dummy1=.;dummy2=.;dummy3=.;dummy4=.;dummy5=.;dummy6=.;
+
+
+data stocks; 
+retain 
+year 
+
+dummy1
+n_hiv1524m
+n_hiv1524w
+n_hiv2549m
+n_hiv2549w
+n_hiv55plm
+n_hiv55plw
+dummy2
+n_alive_1524m
+n_alive_1524w
+n_alive_2549m
+n_alive_2549w
+n_alive_55plm
+n_alive_55plw
+dummy3
+n_diag_ever_m
+n_diag_ever_w
+dummy4
+n_onart_m
+n_onart_w
+n_onart_vl1000_m
+n_onart_vl1000_w
+n_not_on_art_cd4ge500 
+n_not_on_art_cd4350500 
+n_not_on_art_cd4200350 
+n_not_on_art_cd450200 
+n_not_on_art_cd4050 
+dummy5
+dummy6
+;
+set wide_outputs;
+run;
+
+proc transpose data=stocks out=data3 ; run;
+
+data a; set data3;
+  drop _name_;
+
+
+proc print noobs data=a; run; 
 ods html close;
 
 
