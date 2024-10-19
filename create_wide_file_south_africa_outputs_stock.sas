@@ -1133,6 +1133,7 @@ data y; set y_stock;
 
 %macro var_stock(v=);
 
+proc means noprint data=y; var &v; output out=y_23  mean= &v   ; where cald = 2023.5 and option=11 ;
 proc means noprint data=y; var &v; output out=y_24  mean= &v   ; where cald = 2024.5 and option=11 ;
 proc means noprint data=y; var &v; output out=y_25  mean= &v   ; where cald = 2025.5 and option=11 ;
 proc means noprint data=y; var &v; output out=y_26  mean= &v   ; where cald = 2026.5 and option=11 ;
@@ -1175,7 +1176,7 @@ proc means noprint data=y; var &v; output out=y_62  mean= &v   ; where cald = 20
 proc means noprint data=y; var &v; output out=y_63  mean= &v   ; where cald = 2063.5 and option=11 ;
 proc means noprint data=y; var &v; output out=y_64  mean= &v   ; where cald = 2064.5 and option=11 ;
  
-data &v ; set  
+data &v ; set  y_23
 y_24 y_25 y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40  y_41 y_42 y_43 y_44 y_45 y_46 y_47 y_48 y_49 y_50
 y_51 y_52 y_53 y_54 y_55 y_56 y_57 y_58 y_59 y_60 y_61 y_62 y_63 y_64
 ;  
@@ -1216,6 +1217,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 data year;
 input year;
 cards;
+2023
 2024
 2025
 2026
