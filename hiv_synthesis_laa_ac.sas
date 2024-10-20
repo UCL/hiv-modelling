@@ -11,6 +11,10 @@ include prop on len cab by age and gender and pregnancy/breastfeeding status
 get out number of women (i) giving birth (ii) breastfeeding who are hiv positive as this is the denominator for the occurrences of children with hiv
 due to transmission before or at birth or breastfeeding
 
+consider interruption of cab / late injections and delays in injections exposing len ?
+
+re-consider len potency and resistance risk ?
+
 ;
 
 
