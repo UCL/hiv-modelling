@@ -4,12 +4,12 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data a;
-set a.cdi_18oct24b;
+set a.cdi_18oct24a;
 
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
 
-proc means;var p_tested_msm n_tested_msm;where cald ge 2024 and option=0;run;
+proc means;var s_tested_msm;where cald ge 2024 and option=6;run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
@@ -510,7 +510,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 
 * p_tb;							*if s_alive1564 gt 0 then p_tb = s_tb / s_alive1564;
 
-run;
+
 incidence1524m = incidence1524m * 10; 
 incidence1524w = incidence1524w * 10;  
 incidence1564m = incidence1564m * 10; 
@@ -519,7 +519,7 @@ incidence1564 = incidence1564 * 10;
 incidence_sw = incidence_sw * 10; 
 incidence_msm = incidence1564msm * 10;
 
-keep  n_tested_symp cald	run		option	inc_cat		ych2_risk_beh_newp	p_w_giv_birth_this_per			mtct_prop		p_anc	
+keep   cald	run		option	inc_cat		ych2_risk_beh_newp	p_w_giv_birth_this_per			mtct_prop		p_anc	
 prevalence_hiv_preg	p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_	p_newp_ge1w_	av_newp_ge1_non_sw 	
 n_tested			p_tested_past_year_1549m				p_tested_past_year_1549w		test_prop_positive	
 n_self_tested		n_tested_anc							p_tested_past_year_ov25m		p_tested_past_year_ov25w
@@ -574,16 +574,29 @@ set y;
 if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
 /*proc freq;table run;where a=1;run;*/
 
+
+
 if run in (
-227899632 
-348565056
-409248146  
-927069599
+23374054
+81414969
+187005467
+215645459
+273791383
+371398554
+371690996
+510048527
+554780880
+664794222
+715676813
+817044379
+899274309
+920476501
+970346065
 ) then delete;
 run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI_18Oct24b; 
+data a.l_base_CdI_18Oct24a; 
 set low_inc;
 *set y;  
 run;
@@ -593,7 +606,7 @@ run;
 
 
 data y;
-set a.l_base_CdI_17Oct24; 
+set a.l_base_CdI_18Oct24a; 
 
 
 dummy1=.;
@@ -701,7 +714,7 @@ data   wide_outputs; merge year
 n_alive_m n_alive_w  n_alive  prevalence1549m prevalence1549w  prevalence  n_infected_m  n_infected_w  n_infected p_diag_m  p_diag_w  p_diag  
 p_onart_diag_m p_onart_diag_w  p_onart_diag p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000_  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
 n_death_hivrel_m n_death_hivrel_w n_death_hivrel n_hiv_m n_hiv_w n_hiv prevalence_msm  prop_m_msm  incidence1524m incidence1564m incidence1524w incidence1564w
-incidence_sw incidence_msm  dummy3 dummy4 incidence1564  n_onart  n_onprep_m  n_onprep_w  n_onprep  yll_m yll_w yll dummy5 dummy6 dummy7 n_tested dummy8
+incidence_sw incidence_msm  dummy3 dummy4 incidence1564  n_onart  n_onprep_m  n_onprep_w  n_onprep  /*yll_m yll_w yll*/ dummy5 dummy6 dummy7 n_tested dummy8
 
 ;
 
