@@ -2674,7 +2674,7 @@ if caldate_never_dot >= &year_interv then do;
 		sexual encounter = 95%;
 		condom_incr_set_in_opts = 0;
 		if gender = 2 and 15 <= age < 25 then do;	
-			condom_incr_set_in_opts = 1; condom_incr_year_i = 1.5;
+			condom_incr_set_in_opts = 1; condom_incr_h_year_i = 1.5;
 		end;
 	end;
 

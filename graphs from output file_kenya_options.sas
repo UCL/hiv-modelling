@@ -13,7 +13,7 @@ data b;
   set a.l_base_kenya_ah_options_e ;
 
 
-  s = 114 ;
+  s = 200 ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
 
@@ -1017,7 +1017,7 @@ run;quit;
 
 
 proc sgplot data=d nolegend; 
-Title    height=1.5 justify=center "Of women giving birth with HIV, proportion of children infected";
+Title    height=1.5 justify=center "Of women giving birth with HIV or with HIV during breastfeeding, proportion of children infected";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 
