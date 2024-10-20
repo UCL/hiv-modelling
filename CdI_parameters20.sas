@@ -20,7 +20,7 @@ startyr = 1985 + 0.25;
 
 * prob_birth_circ; 			prob_birth_circ=0.96;
 
-* base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020, 0.25 0.75);
+* base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020, 0.10 0.95);
 
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3 4, 0.0 0.30 0.0 0.70);
 
@@ -43,7 +43,7 @@ startyr = 1985 + 0.25;
 
 * HIV TESTING;
 
-* an_lin_incr_test;         an_lin_incr_test = 0.00001;
+* an_lin_incr_test;         *an_lin_incr_test = 0.00001;
 
 * date_test_rate_plateau;   date_test_rate_plateau = 2013 ;
 

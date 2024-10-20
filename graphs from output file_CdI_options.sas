@@ -5,7 +5,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data b1;
-set a.l_base_CdI_18Oct24a;
+set a.l_base_CdI_18Oct24b;
 
 s_sw_1549_ = s_sw_1549;
 
@@ -16,7 +16,7 @@ run;
 data b;set b1;
 *change this for every option;
 if new_option=0 then option=0;
-if new_option=10 then option=1;
+if new_option=6 then option=1;
 
 if option in (0,1) then a=1;
 if a ne 1 then delete;
@@ -39,10 +39,11 @@ data option_0;
 set b;
 if option =1 then delete;
 %let var = 
-p_w_giv_birth_this_per	mtct_prop		prevalence_hiv_preg		p_anc		p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_		p_newp_ge1w_	
-n_tested				test_prop_positive						av_newp_ge1_non_sw				n_self_tested		n_tested_anc	
-p_tested_past_year_ov25m p_tested_past_year_ov25w
-p_mcirc		n_new_vmmc1549m 			p_trad_circ			p_vmmc				s_sw_1549_	p_sw_prog_vis
+p_w_giv_birth_this_per		mtct_prop			prevalence_hiv_preg			p_anc				p_newp_ge1_		p_newp_ge5_
+p_newp_ge1m_				p_newp_ge1w_		n_tested					test_prop_positive	av_newp_ge1_non_sw		
+n_self_tested				n_tested_anc		p_tested_past_year_ov25m 	p_tested_past_year_ov25w
+
+p_mcirc				n_new_vmmc1549m 	p_trad_circ			p_vmmc				s_sw_1549_	p_sw_prog_vis
 prop_w_1549_sw		prop_w_1564_sw		prop_w_ever_sw		prop_sw_hiv			n_sw_1549_	prop_w_1524_onprep	prop_1564_onprep	
 prevalence1549_		prevalence1549m		prevalence1549w	
 prevalence1524w		prevalence1524m		prevalence2549w		prevalence2549m		prevalence_hiv_preg
@@ -62,7 +63,7 @@ prop_sw_hiv1549_	p_tested_sw			p_diag_sw
 n_alive_msm		n_alive1564_msm		incidence1549msm	incidence1564msm	prevalence1549_msm	prevalence1564_msm
 p_onprep_msm	p_elig_prep_any_msm_1564_				p_onart_msm			prevalence_vg1000_msm
 p_diag_msm		p_onart_diag_msm	p_vl1000_art_gt6m_msm 					p_ever_tested_msm	p_tested_this_period_msm
-p_msm_infected_from_msm				prop_m_msm			p_ep_msm			p_msm_ge1newp
+p_msm_infected_from_msm				prop_m_msm			p_ep_msm			p_msm_ge1newp		p_tested_msm
 p_m_ge1newp		n_pwid				p_onprep_pwid		p_onart_pwid		p_diag_pwid			prevalence_pwid
 n_tested_msm	n_tested_pwid		n_vm_per_year		/*p_tb*/
 ;
@@ -104,9 +105,11 @@ data option_1;
 set b;
 if option =0 then delete;
 %let var = n_tested_symp
-p_w_giv_birth_this_per	mtct_prop		prevalence_hiv_preg		p_anc		p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_		p_newp_ge1w_	
-n_tested				test_prop_positive						av_newp_ge1_non_sw				n_self_tested		n_tested_anc	
-p_tested_past_year_ov25m p_tested_past_year_ov25w p_mcirc		n_new_vmmc1549m 			p_trad_circ			p_vmmc				s_sw_1549_	p_sw_prog_vis
+p_w_giv_birth_this_per		mtct_prop			prevalence_hiv_preg			p_anc				p_newp_ge1_		p_newp_ge5_
+p_newp_ge1m_				p_newp_ge1w_		n_tested					test_prop_positive	av_newp_ge1_non_sw		
+n_self_tested				n_tested_anc		p_tested_past_year_ov25m 	p_tested_past_year_ov25w
+
+p_mcirc				n_new_vmmc1549m 	p_trad_circ			p_vmmc				s_sw_1549_	p_sw_prog_vis
 prop_w_1549_sw		prop_w_1564_sw		prop_w_ever_sw		prop_sw_hiv			n_sw_1549_	prop_w_1524_onprep	prop_1564_onprep	
 prevalence1549_		prevalence1549m		prevalence1549w	
 prevalence1524w		prevalence1524m		prevalence2549w		prevalence2549m		prevalence_hiv_preg
@@ -126,10 +129,10 @@ prop_sw_hiv1549_	p_tested_sw			p_diag_sw
 n_alive_msm		n_alive1564_msm		incidence1549msm	incidence1564msm	prevalence1549_msm	prevalence1564_msm
 p_onprep_msm	p_elig_prep_any_msm_1564_				p_onart_msm			prevalence_vg1000_msm
 p_diag_msm		p_onart_diag_msm	p_vl1000_art_gt6m_msm 					p_ever_tested_msm	p_tested_this_period_msm
-p_msm_infected_from_msm				prop_m_msm			p_ep_msm			p_msm_ge1newp
+p_msm_infected_from_msm				prop_m_msm			p_ep_msm			p_msm_ge1newp		p_tested_msm
 p_m_ge1newp		n_pwid				p_onprep_pwid		p_onart_pwid		p_diag_pwid			prevalence_pwid
 n_tested_msm	n_tested_pwid		n_vm_per_year		/*p_tb*/
-;	
+;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_1;
@@ -169,14 +172,14 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  
 g26  g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48  g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71  g72  g73  g74  g75
 g76  g77  g78  g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 
-g101  g102 g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114/* g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
+g101  g102 g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115/* g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 */
 
 h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25
 h26  h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52  h53  h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72  h73  h74  h75
 h76  h77  h78  h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h93  h94  h95  h96  h97  h98  h99  h100
-h101 h102 h103 h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 h114/* h115 h116 h117 h118 h119 h120 h121 h122 h123 h124 h125 h126 h127 h128 h129 h130
+h101 h102 h103 h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 h114 h115/* h116 h117 h118 h119 h120 h121 h122 h123 h124 h125 h126 h127 h128 h129 h130
 h131 h132 h133 h134 h135 h136 h137 h138 h139 h140 h141 h142 h143 h144 h145 h146 h147 h148 h149 h150 h151 h152 h153 */
 
 
@@ -204,7 +207,7 @@ run;
 
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\loveleen\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\18Oct24_op1.doc' startpage=never; 
+ods rtf file = 'C:\Users\loveleen\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\18Oct24_opb.doc' startpage=never; 
 
 
 
@@ -1395,6 +1398,22 @@ band    x=cald lower=p5_p_ever_tested_msm_0 	upper=p95_p_ever_tested_msm_0  / tr
 
 series  x=cald y=mean_p_ever_tested_msm_1/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_p_ever_tested_msm_1 	upper=p95_p_ever_tested_msm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_tested_msm";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.1  by 0.02) valueattrs=(size=10);
+
+label mean_p_tested_msm_0 = "Option 0 (mean) ";
+label mean_p_tested_msm_1 = "Option 1 (mean) ";
+
+series  x=cald y=mean_p_tested_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_tested_msm_0 	upper=p95_p_tested_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_p_tested_msm_1/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_tested_msm_1 	upper=p95_p_tested_msm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 

@@ -4,11 +4,12 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data a;
-set a.cdi_18oct24a;
+set a.cdi_18oct24b;
 
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
 
+proc means;var p_tested_msm n_tested_msm;where cald ge 2024 and option=0;run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
@@ -491,6 +492,8 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_tested_this_period_msm;		p_tested_this_period_msm = s_tested_msm / (s_msm - s_diag_msm) ;
 * p_msm_infected_from_msm;		if s_hiv_msm gt 0 then p_msm_infected_from_msm = s_infected_from_msm / s_hiv_msm ;
 * prop_m_msm;					prop_m_msm = s_alive_msm / s_alive_m;
+* p_tested_msm;					if (s_alive1564_msm - s_diag_msm_age1564) > 0 then p_tested_msm = s_tested_msm /(s_alive1564_msm - s_diag_msm_age1564) ;
+
 
 * p_ep;							p_ep = s_ep / s_alive1564;				
 * p_ep_msm;						p_ep_msm = s_msm_ep / s_alive1564_msm;
@@ -546,7 +549,7 @@ n_cd4_lt200_		n_hiv  				n_hiv_m				n_hiv_w				n_hiv1549_			n_hiv1549m			n_hiv15
 n_alive1549m		n_alive1549w		n_alive_m			n_alive_w			n_alive1564_		n_alive1564m	n_alive1564w
 n_art_start_y		n_newinf			n_newinf1549_		n_newinf1549m		n_newinf1549w		n_pregnant		n_prep 			
 n_prep_ever			p_prep_ever			adh_pattern	p_fsw_newp0_				n_prep_oral_ever_sw prop_sw_hiv1549_
-sw_trans_matrix		n_prep_sw			p_tested_sw			/*p_tb*/
+sw_trans_matrix		n_prep_sw			p_tested_sw			/*p_tb*/			p_tested_msm
 
 	
 n_alive_msm		n_alive1564_msm		incidence1549msm	incidence1564msm	prevalence1549_msm	prevalence1564_msm
@@ -572,27 +575,15 @@ if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
 /*proc freq;table run;where a=1;run;*/
 
 if run in (
-23374054
-81414969
-187005467
-215645459
-273791383
-371398554
-371690996
-510048527
-554780880
-664794222
-715676813
-817044379
-899274309
-920476501
-970346065
-
+227899632 
+348565056
+409248146  
+927069599
 ) then delete;
 run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI_18Oct24a; 
+data a.l_base_CdI_18Oct24b; 
 set low_inc;
 *set y;  
 run;
