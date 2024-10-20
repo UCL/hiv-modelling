@@ -2,22 +2,22 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ah_options_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ah_options_e_out\";
 
 
 
-data   kenya_ah_options_d ; set b.out: ;
+data   kenya_ah_options_e ; set b.out: ;
 
 
 
-proc sort data=  kenya_ah_options_d; 
+proc sort data=  kenya_ah_options_e; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_ah_options_d ;
+set   kenya_ah_options_e ;
 
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
@@ -33,7 +33,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_ah_options_d sf;
+merge   kenya_ah_options_e sf;
 by run ;
  
 
@@ -370,6 +370,10 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_onprep_m;					n_onprep_m = max(s_onprep_m, 0) * sf;
 
 * n_onprep;						n_onprep = n_onprep_w + n_onprep_m ;
+
+* n_prep_inj;					n_prep_inj = s_prep_inj * sf;
+* n_prep_oral;					n_prep_oral = s_prep_oral * sf;
+* n_prep_vr  ;					n_prep_vr   = s_prep_vr   * sf;
 
 * n_newp_ge1_w; 				n_newp_ge1_w = (s_w1524_newp_ge1 + s_w2534_newp_ge1 + s_w3544_newp_ge1 + s_w4554_newp_ge1 + s_w5564_newp_ge1) * sf; 
 
@@ -946,13 +950,13 @@ yll=yll_gbd;
 yll_w=0;
 yll_m=0;
 
-incidence1524m = incidence1524m / 10; 
-incidence1524w = incidence1524w / 10;  
-incidence1564m = incidence1564m / 10; 
-incidence1564w = incidence1564w / 10;  
-incidence1564 = incidence1564 / 10;  
-incidence_sw = incidence_sw / 10; 
-incidence_msm = incidence1564msm / 10;
+incidence1524m = incidence1524m * 10; 
+incidence1524w = incidence1524w * 10;  
+incidence1564m = incidence1564m * 10; 
+incidence1564w = incidence1564w * 10;  
+incidence1564 = incidence1564 * 10;  
+incidence_sw = incidence_sw * 10; 
+incidence_msm = incidence1564msm * 10;
 
 dummy1=.;
 dummy2=.;
@@ -1114,6 +1118,8 @@ p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1ne
 
 n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test  n_newp
 
+n_prep_inj n_prep_oral n_prep_vr
+
 ;
 
 
@@ -1122,15 +1128,14 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_ah_options_d; set y;  
+data a.l_base_kenya_ah_options_e; set y;  
 
 
 
 
 
 
-
-data y; set a.l_base_kenya_ah_options_d; 
+data y; set a.l_base_kenya_ah_options_e; 
 
 
  
@@ -1401,7 +1406,7 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
  p_onart_msm  prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period_msm p_msm_infected_from_msm p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1newp n_vm_per_year
 n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test  p_newp_ge1_agyw
-p_births_hiv_vlg1000  n_newp
+p_births_hiv_vlg1000  n_newp 
 ;
 
 proc sort; by run; run;
@@ -1448,7 +1453,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %par(p=msm_rred);  %par(p=prop_m_msm);  %par(p=prob_start_pwid);  %par(p=prob_stop_pwid);  %par(p=rr_pwid_female);   %par(p=fold_tr_pwid) %par(p=msm_tr_factor); 
 
-%par(p=msm_risk_cls);
+%par(p=msm_risk_cls);  
 
 run;
 
@@ -1489,13 +1494,13 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_kenya_ah_options_d; 
+  data a.w_base_kenya_ah_options_e; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
   by run;
 
-proc contents data=a.w_base_kenya_ah_options_d;
+proc contents data=a.w_base_kenya_ah_options_e;
 run;
 
 

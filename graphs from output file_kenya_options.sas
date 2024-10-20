@@ -10,10 +10,10 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_ah_options_b ;
+  set a.l_base_kenya_ah_options_e ;
 
 
-  s = 101 ;
+  s = 112 ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
 
@@ -103,7 +103,7 @@ n_tested_due_to_self_test = n_tested_due_to_self_t ;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  54   ;
+%let nfit =  30   ;
 %let year_end = 2040.00 ;
 run;
 proc sort;by cald option ;run;
@@ -138,7 +138,7 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
  p_onart_msm   prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period_msm p_msm_infected_from_msm   n_alive1564_msm   prevalence_pwid  n_pwid  p_onprep_pwid  p_onart_pwid  p_onart_sw
  n_vm_per_year   n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_t  n_diagnosed_self_test  p_newp_ge1_agyw
-p_births_hiv_vlg1000_  p_diag_w1524_  p_diag_m1524_  p_newp_ge5_  
+p_births_hiv_vlg1000_  p_diag_w1524_  p_diag_m1524_  p_newp_ge5_  n_prep_inj n_prep_vr
 
 ;
 
@@ -213,7 +213,7 @@ n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_m
  p_onart_msm   prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
  p_tested_this_period_msm p_msm_infected_from_msm   n_alive1564_msm   prevalence_pwid  n_pwid  p_onprep_pwid  p_onart_pwid  p_onart_sw
  n_vm_per_year   n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_t n_diagnosed_self_test  p_newp_ge1_agyw
-p_births_hiv_vlg1000_ p_diag_w1524_  p_diag_m1524_  p_newp_ge5_ 
+p_births_hiv_vlg1000_ p_diag_w1524_  p_diag_m1524_  p_newp_ge5_   n_prep_inj  n_prep_vr 
 
 ;
 
@@ -270,7 +270,7 @@ g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93 g94  g95 g96 g97  g98  g99  g100  g101  g102 
  g103  g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124
-g125 g126 g127 g128 g129 g130 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 
+g125 g126 g127 g128 g129 g130 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142
 
 
 /*
@@ -287,7 +287,7 @@ h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72  h73  h74  h75
 h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92   h93  h94  h95  h96 h97  h98  h99  h100   h101
 h102  h103  h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 h114 h115 h116 h117 h118 h119 h120 h121 h122 h123 h124 h125 h126 h127 h128 h129
-h130 h131 h132 h133 h134 h135 h136 h137 h138 h139 h140  
+h130 h131 h132 h133 h134 h135 h136 h137 h138 h139 h140 h141 h142
 
 ;
 by cald;
@@ -494,12 +494,12 @@ if cald=2010 then prevalence_pwid_obs_kya = 0.187;
 
 if cald=2019 then prevalence_sw_obs_kya = 0.28;
 
-if cald=2007.5 then incidence1564_m_obs_kya= 0.90;
-if cald=2007.5 then incidence1564_w_obs_kya= 1.10;
-if cald=2012.5 then incidence1564_m_obs_kya= 0.70;
-if cald=2012.5 then incidence1564_w_obs_kya= 0.90;
-if cald=2018.5 then incidence1564_m_obs_kya= 0.15;
-if cald=2018.5 then incidence1564_w_obs_kya= 0.15;
+if cald=2007.5 then incidence1564_m_obs_kya= 0.90*10;
+if cald=2007.5 then incidence1564_w_obs_kya= 1.10*10;
+if cald=2012.5 then incidence1564_m_obs_kya= 0.70*10;
+if cald=2012.5 then incidence1564_w_obs_kya= 0.90*10;
+if cald=2018.5 then incidence1564_m_obs_kya= 0.15*10;
+if cald=2018.5 then incidence1564_w_obs_kya= 0.15*10;
 
 if cald=2012.5 then p_diag_obs_kya = 0.47*100;
 if cald=2018.5 then p_diag_m_obs_kya = 0.73*100;
@@ -789,7 +789,7 @@ run;quit;
 proc sgplot data=d nolegend; 
 Title    height=1.5 justify=center "Number of people on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000 by 50000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000 by 100000) valueattrs=(size=10);
 
 * label mean_n_onprep_0 = "Option 0 (median) ";
 * label mean_n_onprep_1 = "Option 1  (median) ";
@@ -800,6 +800,40 @@ series  x=cald y=mean_n_onprep_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_onprep_1 	upper=p95_n_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 scatter  x=cald y=n_onprep_obs_kya/	markerattrs = (symbol=square color=green size = 10);
+
+run;quit;
+
+
+
+
+proc sgplot data=d nolegend; 
+Title    height=1.5 justify=center "Number of people on Cab PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000 by 100000) valueattrs=(size=10);
+
+* label mean_n_prep_inj_0 = "Option 0 (median) ";
+* label mean_n_prep_inj_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_n_prep_inj_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_inj_0 	upper=p95_n_prep_inj_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_prep_inj_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_prep_inj_1 	upper=p95_n_prep_inj_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+proc sgplot data=d nolegend; 
+Title    height=1.5 justify=center "Number of people on vr PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000   by 1000  ) valueattrs=(size=10);
+
+* label mean_n_prep_vr_0 = "Option 0 (median) ";
+* label mean_n_prep_vr_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_n_prep_vr_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_vr_0 	upper=p95_n_prep_vr_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_prep_vr_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_prep_vr_1 	upper=p95_n_prep_vr_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -911,7 +945,7 @@ run;quit;
 proc sgplot data=d nolegend; 
 Title    height=1.5 justify=center "Incidence in men (age 15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 15 by   1) valueattrs=(size=10);
 
 * label mean_incidence1564m_0 = "Option 0 (median) ";
 * label mean_incidence1564m_1 = "Option 1  (median) ";
@@ -928,7 +962,7 @@ quit;
 proc sgplot data=d nolegend; 
 Title    height=1.5 justify=center "Incidence women in (age 15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 15 by   1) valueattrs=(size=10);
 
 * label mean_incidence1564w_0 = "Option 0 (median) ";
 * label mean_incidence1564w_1 = "Option 1  (median) ";
