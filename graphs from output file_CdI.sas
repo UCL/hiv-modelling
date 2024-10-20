@@ -5,7 +5,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data b;
-set a.l_base_CdI_02Oct24;
+set a.l_base_CdI_18Oct24a; 
 if option ne 0 then delete;
 s_sw_1549_ = s_sw_1549;
 
@@ -15,8 +15,8 @@ proc freq;table cald;run;
  
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  216;
-%let year_end = 2039.75 ;
+%let nfit =  48;
+%let year_end = 2040 ;
 run;
 proc sort;by cald option ;run;
 
@@ -1647,7 +1647,7 @@ run;
 ***For output into Excel file;
 libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
 data b;
-set a.l_base_CdI_12aug24;
+set a.l_base_CdI_18Oct24a; 
 s_sw_1549_ = s_sw_1549;
 
 proc sort; by cald run ;run;
@@ -1671,8 +1671,8 @@ proc freq;table prevalence1549_msm;run;
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 348 ;
-%let year_end = 2045 ;
+%let nfit = 1008 ;
+%let year_end = 2040 ;
 proc sort;by cald ;run;
 
 
@@ -1682,7 +1682,7 @@ proc sort;by cald ;run;
 data one;set y;keep &v count_csim cald;
 proc sort;by count_csim cald;
 %let count=2000;
-%do %while (&count le 2045);
+%do %while (&count le 2040);
 ***line below calculates means over calendar period;
 proc means noprint data = one; var &v; output out = y_&count mean=&v._&count; by count_csim ; where &count <= cald < &count+1;
 %let count = %eval(&count + 1);
@@ -1693,7 +1693,7 @@ y_2000 y_2001 y_2002 y_2003 y_2004 y_2005 y_2006 y_2007 y_2008 y_2009 y_2010
 	   y_2011 y_2012 y_2013 y_2014 y_2015 y_2016 y_2017 y_2018 y_2019 y_2020
 	   y_2021 y_2022 y_2023 y_2024 y_2025 y_2026 y_2027 y_2028 y_2029 y_2030
 	   y_2031 y_2032 y_2033 y_2034 y_2035 y_2036 y_2037 y_2038 y_2039 y_2040
-   	   y_2041 y_2042 y_2043 y_2044 y_2045 /*y_2046 y_2047 y_2048 y_2049 y_2050*/;
+   	 	;
 
 drop _NAME_ _TYPE_ _FREQ_;run;
 proc datasets nodetails nowarn nolist;
@@ -1702,7 +1702,7 @@ delete y_2000 y_2001 y_2002 y_2003 y_2004 y_2005 y_2006 y_2007 y_2008 y_2009 y_2
 	   		  y_2011 y_2012 y_2013 y_2014 y_2015 y_2016 y_2017 y_2018 y_2019 y_2020
 	   		  y_2021 y_2022 y_2023 y_2024 y_2025 y_2026 y_2027 y_2028 y_2029 y_2030
 	   		  y_2031 y_2032 y_2033 y_2034 y_2035 y_2036 y_2037 y_2038 y_2039 y_2040
-   	   		  y_2041 y_2042 y_2043 y_2044 y_2045 y_2046 y_2047 y_2048 y_2049 y_2050;quit;
+   	   		  ;quit;
 
 proc transpose data=&v out=l_&v prefix=&v;id  count_csim;run;
 data l_&v;set l_&v;
@@ -1737,10 +1737,10 @@ l_p_onart_diag_m  	l_p_onart_diag_w 	l_p_onart_diag  	l_p_onart_vl1000_m 	l_p_on
 l_prop_w_1549_sw 	l_prop_sw_hiv1549_ 	l_p_mcirc 			l_p_vmmc 			l_p_trad_circ 		
 l_n_death_hiv_m		l_n_death_hiv_w		l_n_death_hiv 		l_n_hiv_m			l_n_hiv_w			l_n_hiv l_prevalence1549_msm 
 l_prop_m_msm		l_incidence1549m_per1000_ 				l_incidence1549w_per1000_  				l_incidence1549_per1000_ 
-l_n_onart_m  		l_n_onart_w  		l_n_onart ;run;
+l_n_onart ;run;
 
 *ods results off;
 
-ods excel file="C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\WHO Ivory Coast\comparison12aug.xlsx"
+ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\WHO Ivory Coast\comparison18oct.xlsx";
 options(sheet_name='base1' start_at='A2');
 proc print data=all noobs;run;

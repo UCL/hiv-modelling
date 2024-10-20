@@ -5,7 +5,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data b1;
-set a.l_base_CdI_18Oct24b;
+set a.l_base_CdI_18Oct24a;
 
 s_sw_1549_ = s_sw_1549;
 
@@ -16,7 +16,7 @@ run;
 data b;set b1;
 *change this for every option;
 if new_option=0 then option=0;
-if new_option=6 then option=1;
+if new_option=8 then option=1;
 
 if option in (0,1) then a=1;
 if a ne 1 then delete;
@@ -104,7 +104,7 @@ run;
 data option_1;
 set b;
 if option =0 then delete;
-%let var = n_tested_symp
+%let var =
 p_w_giv_birth_this_per		mtct_prop			prevalence_hiv_preg			p_anc				p_newp_ge1_		p_newp_ge5_
 p_newp_ge1m_				p_newp_ge1w_		n_tested					test_prop_positive	av_newp_ge1_non_sw		
 n_self_tested				n_tested_anc		p_tested_past_year_ov25m 	p_tested_past_year_ov25w
@@ -1468,6 +1468,21 @@ run;quit;
 
 
 proc sgplot data=d; 
+Title    height=1.5 justify=center "p_msm_ge1newp";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1  by 0.01) valueattrs=(size=10);
+
+label mean_p_msm_ge1newp_0 = "Option 0 (mean) ";
+label mean_p_msm_ge1newp_1 = "Option 1 (mean) ";
+
+series  x=cald y=mean_p_msm_ge1newp_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_msm_ge1newp_0 	upper=p95_p_msm_ge1newp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_p_msm_ge1newp_1/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_msm_ge1newp_1 	upper=p95_p_msm_ge1newp_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+
+run;quit;
+proc sgplot data=d; 
 Title    height=1.5 justify=center "p_onart_sw";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1  by 0.1) valueattrs=(size=10);
@@ -1567,21 +1582,6 @@ band    x=cald lower=p5_p_vl1000_art_gt6m_msm_1 	upper=p95_p_vl1000_art_gt6m_msm
 
 run;quit;
 
-proc sgplot data=d; 
-Title    height=1.5 justify=center "p_msm_ge1newp";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1  by 0.01) valueattrs=(size=10);
-
-label mean_p_msm_ge1newp_0 = "Option 0 (mean) ";
-label mean_p_msm_ge1newp_1 = "Option 1 (mean) ";
-
-series  x=cald y=mean_p_msm_ge1newp_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_msm_ge1newp_0 	upper=p95_p_msm_ge1newp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=mean_p_msm_ge1newp_1/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_msm_ge1newp_1 	upper=p95_p_msm_ge1newp_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-
-run;quit;
 
 ***CHeck this option 4;
 
@@ -1723,4 +1723,4 @@ l_n_onart_m  		l_n_onart_w  		l_n_onart ;run;
 
 ods excel file="C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\WHO Ivory Coast\comparison12aug.xlsx"
 options(sheet_name='base1' start_at='A2');
-proc print data=all noobs;run;
+run;
