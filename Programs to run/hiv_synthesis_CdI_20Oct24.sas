@@ -16250,7 +16250,6 @@ if caldate&j = death and death ne .  and dcause = 1 then do;
 		i=i+0.25;
 		end;
 	end;
-end;
 
 	if gender=1 then dyll_gbd_m = max(0, dyll_GBD);
 	if gender=2 then dyll_gbd_w = max(0, dyll_GBD);
