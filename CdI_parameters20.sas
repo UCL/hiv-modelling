@@ -20,11 +20,11 @@ startyr = 1985 + 0.25;
 
 * prob_birth_circ; 			prob_birth_circ=0.96;
 
-* base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020, 0.10 0.95);
+* base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020, 0.10 0.90);
 
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3 4, 0.0 0.30 0.0 0.70);
 
-* rate_engage_sw_program;	%sample(rate_engage_sw_program, 0.05 0.10, 0.15 0.85); *previously 0.10;
+* rate_engage_sw_program;	%sample(rate_engage_sw_program, 0.05 0.10, 0.10 0.90); *previously 0.10;
 
 * effect_sw_prog_6mtest;    %sample(effect_sw_prog_6mtest, 0.20 0.35 0.50, 0.40 0.40 0.20);
 

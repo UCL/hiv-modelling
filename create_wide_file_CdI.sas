@@ -606,24 +606,22 @@ run;
 
 ****OUTPUTS FOR WHO SPREADSHEET;
 
+***NEED TO CHANGE p_onart_diag AND p_onart_vl1000_ TO 15-49;
+
 libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
 data y;
 set a.l_base_CdI_18Oct24a; 
 
-
-p_diag_m  = p_diag_m / 100;
-p_diag_w = p_diag_w / 100; 
-p_diag = p_diag1549_ / 100;
   
 keep run cald option 
-n_alive1549_m 	n_alive1549_w		n_alive_			prevalence1549m		prevalence1549w		prevalence		n_infected_m
-n_newinf1549_		n_newinf1549m	n_newinf1549w		p_diag1549_			p_diag1549m			p_diag1549w	
+n_alive1549m 		n_alive1549w		n_alive1549_			prevalence1549m		prevalence1549w		prevalence		
+n_newinf1549_		n_newinf1549m		n_newinf1549w			p_diag1549_			p_diag1549m			p_diag1549w	
 
-p_onart_diag_m 	p_onart_diag_w
-p_onart_diag 	p_onart_vl1000_m 	p_onart_vl1000_w 	p_onart_vl1000_		prop_w_1549_sw  	prevalence_sw   p_mcirc  
-p_vmmc			p_trad_circ			n_death_hivrel_m	n_death_hivrel_w 	n_death_hivrel 		n_hiv_m 		n_hiv_w 
-n_hiv			prevalence_msm  	prop_m_msm 			incidence1549m_per1000_  				incidence1549w_per1000_ 
-incidence1549_per1000_   			n_onart  ;
+p_onart_diag_m 		p_onart_diag_w		p_onart_diag 		p_onart_vl1000_m 	p_onart_vl1000_w 	p_onart_vl1000_		
+prop_w_1549_sw  	prop_sw_hiv1549_   	p_mcirc  			p_vmmc				p_trad_circ			
+n_death_hivrel_m	n_death_hivrel_w 	n_death_hivrel 		n_hiv_m 			n_hiv_w 			n_hiv			
+prevalence_msm  	prop_m_msm 			incidence1549m_per1000_  				incidence1549w_per1000_ 
+incidence1549_per1000_   				n_onart  ;
 run;
 
 
@@ -694,10 +692,10 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=n_alive_m);			%var(v=n_alive_w);    		%var(v=n_alive );		%var(v=prevalence1549m);%var(v=prevalence1549w);  
-%var(v=prevalence); 		%var(v=n_infected_m); 		%var(v=n_infected_w); 	%var(v=n_infected );	%var(v=p_diag_m  );    	
-%var(v=p_diag_w);     		%var(v=p_diag); 			%var(v=p_onart_diag_m);	%var(v=p_onart_diag_w);	%var(v=p_onart_diag); 
-%var(v=p_onart_vl1000_m);  	%var(v=p_onart_vl1000_w);  	%var(v=p_onart_vl1000_); %var(v=prop_w_1549_sw);%var(v=prevalence_sw); 
+%var(v=n_alive1549m);		%var(v=n_alive1549w);    	%var(v=n_alive1549_);	%var(v=prevalence1549m);	%var(v=prevalence1549w);  
+%var(v=prevalence); 		%var(v=n_newinf1549m); 		%var(v=n_newinf1549w); 	%var(v=n_newinf1549_);		%var(v=p_diag1549m);    	
+%var(v=p_diag1549w);     	%var(v=p_diag1549_); 		%var(v=p_onart_diag_m);	%var(v=p_onart_diag_w);		%var(v=p_onart_diag); 
+%var(v=p_onart_vl1000_m);  	%var(v=p_onart_vl1000_w);  	%var(v=p_onart_vl1000_); %var(v=prop_w_1549_sw);	%var(v=prop_sw_hiv1549_); 
 %var(v=p_mcirc);			%var(v=p_vmmc);				%var(v=p_trad_circ);	%var(v=n_death_hivrel_m ); %var(v=n_death_hivrel_w ); 
 %var(v=n_death_hivrel ); 	%var(v=n_hiv_m);			%var(v=n_hiv_w);		%var(v=n_hiv);			%var(v=prevalence_msm);
 %var(v=prop_m_msm);    		%var(v=incidence1549m_per1000_);	%var(v=incidence1549w_per1000_);  		%var(v=incidence1549_per1000_); 		
@@ -753,19 +751,20 @@ cards;
 
 
 data   wide_outputs; merge year 
-n_alive_m			n_alive_w    		n_alive 			prevalence1549m		prevalence1549w  	prevalence
-n_infected_m 		n_infected_w 		n_infected 			p_diag_m      		p_diag_w     		p_diag 			
-p_onart_diag_m		p_onart_diag_w		p_onart_diag 		p_onart_vl1000_m  	p_onart_vl1000_w  	p_onart_vl1000_ 
-prop_w_1549_sw		prevalence_sw 		p_mcirc				p_vmmc				p_trad_circ			
-n_death_hivrel_m  	n_death_hivrel_w 	n_death_hivrel  	n_hiv_m				n_hiv_w				n_hiv
-prevalence_msm		prop_m_msm    		incidence1549m_per1000_	incidence1549w_per1000_  	incidence1549_per1000_ 		
-n_onart 			/*yll_m 			yll_w 				yll 	*/		;
+n_alive1549m		n_alive1549w    	n_alive1549_	prevalence1549m		prevalence1549w 	 prevalence 	
+n_newinf1549m 		n_newinf1549w 		n_newinf1549_	p_diag1549m   		p_diag1549w     	 p_diag1549_ 
+p_onart_diag_m		p_onart_diag_w		p_onart_diag 	p_onart_vl1000_m  	p_onart_vl1000_w     p_onart_vl1000_ 
+prop_w_1549_sw		prop_sw_hiv1549_ 	p_mcirc			p_vmmc				p_trad_circ
+n_death_hivrel_m 	n_death_hivrel_w  	n_death_hivrel  n_hiv_m				n_hiv_w				 n_hiv	
+prevalence_msm		prop_m_msm    		incidence1549m_per1000_				incidence1549w_per1000_  		incidence1549_per1000_ 		
+n_onart 			/*yll_m 			yll_w 				yll 	*/;		
 run;
 
+/*
 ods html;
 proc print noobs ; run; 
 ods html close;
-
+*/
 
 ***or can print to excel;
 
