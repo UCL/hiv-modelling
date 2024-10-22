@@ -5,8 +5,9 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data b1;
-set a.l_base_CdI_18Oct24a;
+set a.l_base_CdI_20Oct24;
 
+if an_lin_incr_test=0.03 then delete;
 s_sw_1549_ = s_sw_1549;
 
 new_option=option;
@@ -16,7 +17,7 @@ run;
 data b;set b1;
 *change this for every option;
 if new_option=0 then option=0;
-if new_option=8 then option=1;
+if new_option=21 then option=1;
 
 if option in (0,1) then a=1;
 if a ne 1 then delete;
@@ -29,7 +30,7 @@ proc freq;table cald;run;
  
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  96;
+%let nfit =  38;
 %let year_end = 2040 ;
 run;
 proc sort;by cald option ;run;
@@ -207,7 +208,7 @@ run;
 
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\loveleen\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\18Oct24_opb.doc' startpage=never; 
+ods rtf file = 'C:\Users\loveleen\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\20Oct24all.doc' startpage=never; 
 
 
 
