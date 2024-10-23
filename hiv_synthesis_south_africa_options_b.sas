@@ -7,6 +7,10 @@
 
 * other models have increase in cls in people starting prep ;
 
+* save outputs for various ways of defining it ;
+
+* outputs for mean prep use ;
+
 
 
 
