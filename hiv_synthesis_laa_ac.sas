@@ -15,6 +15,8 @@ consider interruption of cab / late injections and delays in injections exposing
 
 re-consider len potency and resistance risk ?
 
+possibility of lower cab potency
+
 ;
 
 
