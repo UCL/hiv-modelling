@@ -1,5 +1,5 @@
 
-year = input(A, 8.); 
+year = max(0, A);  
 pop_size_m_15pl = input( B, 8.); pop_size_w_15pl = input( C, 8.); pop_size_15pl = input( D, 8.); prevalence_m_15pl = input( E, 8.); 
 prevalence_w_15pl = input( F, 8.); prevalence_15pl = input( G, 8.); new_infection_m_15pl = input( H, 8.);
 new_infection_w_15pl = input( I, 8.); new_infection_15pl = input( J, 8.); p_diagnosed_m_15pl = input( K, 8.); p_diagnosed_w_15pl = input( L, 8.); 
@@ -15,5 +15,5 @@ incidence_15pl = input( AO, 8.); n_onart_15pl = input( AP, 8.); n_prep_w = input
 n_prep_m = input( AR, 8.); n_prep = input( AS, 8.); yll_m = input( AT, 8.); yll_w = input( AU, 8.); yll = input( AV, 8.); n_hiv_014 = input( AW, 8.); 
 new_infection_014 = input( AX, 8.); n_hiv_deaths_014 = input( AY, 8.); n_tests = input( AZ, 8.); n_condoms = input( BA, 8.); 
 
-drop A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB AC AD AE AF AG AH AI AJ AK AL AM AN AO AP AQ AR AS AT AU AV AW AX AY AZ BA;
+drop  A  B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB AC AD AE AF AG AH AI AJ AK AL AM AN AO AP AQ AR AS AT AU AV AW AX AY AZ BA;
 

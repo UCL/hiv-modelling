@@ -14,128 +14,127 @@ proc import
 out=goals_sq_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_SQ"; getnames=n; range="A3:BA43";run;
-data goals_sq; set goals_sq_;  model = 'goals'; scenario = 'sq';
+data goals_sq; set goals_sq_;  model = 1; scenario = 0;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_target_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_target"; getnames=n; range="A3:BA43";run;
-data goals_target; set goals_target_;  model = 'goals'; scenario = 'target';
+data goals_target; set goals_target_;  model = 1; scenario = 20;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_midway_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_midway"; getnames=n; range="A3:BA43";run;
-data goals_midway; set goals_midway_;  model = 'goals'; scenario = 'midway';
+data goals_midway; set goals_midway_;  model = 1; scenario = 200;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int1_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int1"; getnames=n; range="A3:BA43";run;
-data goals_int1; set goals_int1_;  model = 'goals'; scenario = 'int1';
+data goals_int1; set goals_int1_;  model = 1; scenario = 1;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int2_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int2"; getnames=n; range="A3:BA43";run;
-data goals_int2; set goals_int2_;  model = 'goals'; scenario = 'int2';
+data goals_int2; set goals_int2_;  model = 1; scenario = 2;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int3_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int3"; getnames=n; range="A3:BA43";run;
-data goals_int3; set goals_int3_;  model = 'goals'; scenario = 'int3';
+data goals_int3; set goals_int3_;  model = 1; scenario = 3;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int4_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int4"; getnames=n; range="A3:BA43";run;
-data goals_int4; set goals_int4_;  model = 'goals'; scenario = 'int4';
+data goals_int4; set goals_int4_;  model = 1; scenario = 4;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int5_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int5"; getnames=n; range="A3:BA43";run;
-data goals_int5; set goals_int5_;  model = 'goals'; scenario = 'int5';
+data goals_int5; set goals_int5_;  model = 1; scenario = 5;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int6_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int6"; getnames=n; range="A3:BA43";run;
-data goals_int6; set goals_int6_;  model = 'goals'; scenario = 'int6';
+data goals_int6; set goals_int6_;  model = 1; scenario = 6;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int7_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int7"; getnames=n; range="A3:BA43";run;
-data goals_int7; set goals_int7_;  model = 'goals'; scenario = 'int7';
+data goals_int7; set goals_int7_;  model = 1; scenario = 7;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int8_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int8"; getnames=n; range="A3:BA43";run;
-data goals_int8; set goals_int8_;  model = 'goals'; scenario = 'int8';
+data goals_int8; set goals_int8_;  model = 1; scenario = 8;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int9_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int9"; getnames=n; range="A3:BA43";run;
-data goals_int9; set goals_int9_;  model = 'goals'; scenario = 'int9';
+data goals_int9; set goals_int9_;  model = 1; scenario = 9;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int10_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int10"; getnames=n; range="A3:BA43";run;
-data goals_int10; set goals_int10_;  model = 'goals'; scenario = 'int10';
+data goals_int10; set goals_int10_;  model = 1; scenario = 10;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int11_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int11"; getnames=n; range="A3:BA43";run;
-data goals_int11; set goals_int11_;  model = 'goals'; scenario = 'int11';
+data goals_int11; set goals_int11_;  model = 1; scenario = 11;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int12_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int12"; getnames=n; range="A3:BA43";run;
-data goals_int12; set goals_int12_;  model = 'goals'; scenario = 'int12';
+data goals_int12; set goals_int12_;  model = 1; scenario = 12;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int13_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int13"; getnames=n; range="A3:BA43";run;
-data goals_int13; set goals_int13_;  model = 'goals'; scenario = 'int13';
+data goals_int13; set goals_int13_;  model = 1; scenario = 13;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int14_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int14"; getnames=n; range="A3:BA43";run;
-data goals_int14; set goals_int14_;  model = 'goals'; scenario = 'int14';
+data goals_int14; set goals_int14_;  model = 1; scenario = 14;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int15_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Goals_int15"; getnames=n; range="A3:BA43";run;
-data goals_int15; set goals_int15_;  model = 'goals'; scenario = 'int15';
+data goals_int15; set goals_int15_;  model = 1; scenario = 15;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
-
 
 
 
@@ -146,126 +145,126 @@ proc import
 out=optima_sq_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_SQ"; getnames=n; range="A3:BA43";run;
-data optima_sq; set optima_sq_;  model = 'optima'; scenario = 'sq';
+data optima_sq; set optima_sq_;  model = 2; scenario = 0;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_target_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_target"; getnames=n; range="A3:BA43";run;
-data optima_target; set optima_target_;  model = 'optima'; scenario = 'target';
+data optima_target; set optima_target_;  model = 2; scenario = 20;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_midway_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_midway"; getnames=n; range="A3:BA43";run;
-data optima_midway; set optima_midway_;  model = 'optima'; scenario = 'midway';
+data optima_midway; set optima_midway_;  model = 2; scenario = 200;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int1_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int1"; getnames=n; range="A3:BA43";run;
-data optima_int1; set optima_int1_;  model = 'optima'; scenario = 'int1';
+data optima_int1; set optima_int1_;  model = 2; scenario = 1;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int2_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int2"; getnames=n; range="A3:BA43";run;
-data optima_int2; set optima_int2_;  model = 'optima'; scenario = 'int2';
+data optima_int2; set optima_int2_;  model = 2; scenario = 2;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int3_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int3"; getnames=n; range="A3:BA43";run;
-data optima_int3; set optima_int3_;  model = 'optima'; scenario = 'int3';
+data optima_int3; set optima_int3_;  model = 2; scenario = 3;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int4_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int4"; getnames=n; range="A3:BA43";run;
-data optima_int4; set optima_int4_;  model = 'optima'; scenario = 'int4';
+data optima_int4; set optima_int4_;  model = 2; scenario = 4;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int5_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int5"; getnames=n; range="A3:BA43";run;
-data optima_int5; set optima_int5_;  model = 'optima'; scenario = 'int5';
+data optima_int5; set optima_int5_;  model = 2; scenario = 5;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int6_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int6"; getnames=n; range="A3:BA43";run;
-data optima_int6; set optima_int6_;  model = 'optima'; scenario = 'int6';
+data optima_int6; set optima_int6_;  model = 2; scenario = 6;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int7_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int7"; getnames=n; range="A3:BA43";run;
-data optima_int7; set optima_int7_;  model = 'optima'; scenario = 'int7';
+data optima_int7; set optima_int7_;  model = 2; scenario = 7;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int8_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int8"; getnames=n; range="A3:BA43";run;
-data optima_int8; set optima_int8_;  model = 'optima'; scenario = 'int8';
+data optima_int8; set optima_int8_;  model = 2; scenario = 8;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int9_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int9"; getnames=n; range="A3:BA43";run;
-data optima_int9; set optima_int9_;  model = 'optima'; scenario = 'int9';
+data optima_int9; set optima_int9_;  model = 2; scenario = 9;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int10_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int10"; getnames=n; range="A3:BA43";run;
-data optima_int10; set optima_int10_;  model = 'optima'; scenario = 'int10';
+data optima_int10; set optima_int10_;  model = 2; scenario = 10;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int11_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int11"; getnames=n; range="A3:BA43";run;
-data optima_int11; set optima_int11_;  model = 'optima'; scenario = 'int11';
+data optima_int11; set optima_int11_;  model = 2; scenario = 11;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int12_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int12"; getnames=n; range="A3:BA43";run;
-data optima_int12; set optima_int12_;  model = 'optima'; scenario = 'int12';
+data optima_int12; set optima_int12_;  model = 2; scenario = 12;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int13_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int13"; getnames=n; range="A3:BA43";run;
-data optima_int13; set optima_int13_;  model = 'optima'; scenario = 'int13';
+data optima_int13; set optima_int13_;  model = 2; scenario = 13;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int14_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int14"; getnames=n; range="A3:BA43";run;
-data optima_int14; set optima_int14_;  model = 'optima'; scenario = 'int14';
+data optima_int14; set optima_int14_;  model = 2; scenario = 14;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int15_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="Optima_int15"; getnames=n; range="A3:BA43";run;
-data optima_int15; set optima_int15_;  model = 'optima'; scenario = 'int15';
+data optima_int15; set optima_int15_;  model = 2; scenario = 15;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 
@@ -276,126 +275,126 @@ proc import
 out=hiv_synthesis_sq_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_SQ"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_sq; set hiv_synthesis_sq_;  model = 'hiv_synthesis'; scenario = 'sq';
+data hiv_synthesis_sq; set hiv_synthesis_sq_;  model = 3; scenario = 0;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_target_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_target"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_target; set hiv_synthesis_target_;  model = 'hiv_synthesis'; scenario = 'target';
+data hiv_synthesis_target; set hiv_synthesis_target_;  model = 3; scenario = 20;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_midway_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_midway"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_midway; set hiv_synthesis_midway_;  model = 'hiv_synthesis'; scenario = 'midway';
+data hiv_synthesis_midway; set hiv_synthesis_midway_;  model = 3; scenario = 200;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int1_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int1"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int1; set hiv_synthesis_int1_;  model = 'hiv_synthesis'; scenario = 'int1';
+data hiv_synthesis_int1; set hiv_synthesis_int1_;  model = 3; scenario = 1;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int2_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int2"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int2; set hiv_synthesis_int2_;  model = 'hiv_synthesis'; scenario = 'int2';
+data hiv_synthesis_int2; set hiv_synthesis_int2_;  model = 3; scenario = 2;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int3_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int3"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int3; set hiv_synthesis_int3_;  model = 'hiv_synthesis'; scenario = 'int3';
+data hiv_synthesis_int3; set hiv_synthesis_int3_;  model = 3; scenario = 3;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int4_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int4"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int4; set hiv_synthesis_int4_;  model = 'hiv_synthesis'; scenario = 'int4';
+data hiv_synthesis_int4; set hiv_synthesis_int4_;  model = 3; scenario = 4;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int5_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int5"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int5; set hiv_synthesis_int5_;  model = 'hiv_synthesis'; scenario = 'int5';
+data hiv_synthesis_int5; set hiv_synthesis_int5_;  model = 3; scenario = 5;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int6_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int6"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int6; set hiv_synthesis_int6_;  model = 'hiv_synthesis'; scenario = 'int6';
+data hiv_synthesis_int6; set hiv_synthesis_int6_;  model = 3; scenario = 6;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int7_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int7"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int7; set hiv_synthesis_int7_;  model = 'hiv_synthesis'; scenario = 'int7';
+data hiv_synthesis_int7; set hiv_synthesis_int7_;  model = 3; scenario = 7;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int8_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int8"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int8; set hiv_synthesis_int8_;  model = 'hiv_synthesis'; scenario = 'int8';
+data hiv_synthesis_int8; set hiv_synthesis_int8_;  model = 3; scenario = 8;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int9_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int9"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int9; set hiv_synthesis_int9_;  model = 'hiv_synthesis'; scenario = 'int9';
+data hiv_synthesis_int9; set hiv_synthesis_int9_;  model = 3; scenario = 9;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int10_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int10"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int10; set hiv_synthesis_int10_;  model = 'hiv_synthesis'; scenario = 'int10';
+data hiv_synthesis_int10; set hiv_synthesis_int10_;  model = 3; scenario = 10;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int11_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int11"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int11; set hiv_synthesis_int11_;  model = 'hiv_synthesis'; scenario = 'int11';
+data hiv_synthesis_int11; set hiv_synthesis_int11_;  model = 3; scenario = 11;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int12_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int12"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int12; set hiv_synthesis_int12_;  model = 'hiv_synthesis'; scenario = 'int12';
+data hiv_synthesis_int12; set hiv_synthesis_int12_;  model = 3; scenario = 12;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int13_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int13"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int13; set hiv_synthesis_int13_;  model = 'hiv_synthesis'; scenario = 'int13';
+data hiv_synthesis_int13; set hiv_synthesis_int13_;  model = 3; scenario = 13;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int14_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int14"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int14; set hiv_synthesis_int14_;  model = 'hiv_synthesis'; scenario = 'int14';
+data hiv_synthesis_int14; set hiv_synthesis_int14_;  model = 3; scenario = 14;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int15_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel.xlsx"
 dbms=xlsx replace; sheet="HIV Synthesis_int15"; getnames=n; range="A3:BA43";run;
-data hiv_synthesis_int15; set hiv_synthesis_int15_;  model = 'hiv_synthesis'; scenario = 'int15';
+data hiv_synthesis_int15; set hiv_synthesis_int15_;  model = 3; scenario = 15;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 
@@ -419,8 +418,6 @@ hiv_synthesis_int14 hiv_synthesis_int15
 
  
 proc print; var model scenario year ;
-
-proc contents; run;
 
 run;
 
