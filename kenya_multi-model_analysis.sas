@@ -398,7 +398,6 @@ data hiv_synthesis_int15; set hiv_synthesis_int15_;  model = 3; scenario = 15;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 
-
 data all;
 set 
 
@@ -415,13 +414,54 @@ hiv_synthesis_int14 hiv_synthesis_int15
 ;
 
 
+data goals_a ; set all; if model=1;
+if scenario = 0 ;
+new_infection_15pl_1 = new_infection_15pl;
+keep year new_infection_15pl_1 ;
 
+data optima_a ; set all; if model=2;
+if scenario = 0 ;
+new_infection_15pl_2 = new_infection_15pl;
+keep year new_infection_15pl_2 ;
+
+data hiv_synthesis_a ; set all; if model=3;
+if scenario = 0 ;
+new_infection_15pl_3 = new_infection_15pl;
+keep year new_infection_15pl_3 ;
+
+
+
+
+
+
+
+
+
+
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\";
+
+
+data a.new_infection_15pl ; 
+merge goals_a optima_a hiv_synthesis_a ;
+
+proc print; run;
  
-proc print; var model scenario year ;
+ods html;
+proc sgplot data=new_infection_15pl; 
+Title    height=1.5 justify=center "Number of new infections in adults";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000   by 1000) valueattrs=(size=10);
 
+label new_infection_15pl_1 = "Model 1 ";
+label new_infection_15pl_2 = "Model 2 ";
+label new_infection_15pl_3 = "Model 3 ";
+
+series  x=year y=new_infection_15pl_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=new_infection_15pl_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=new_infection_15pl_3/	lineattrs = (color=red thickness = 2);
 run;
 
- 
+quit;
 
 
 
