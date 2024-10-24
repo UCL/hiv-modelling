@@ -10,10 +10,10 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_ag_options_a ;
+  set a.l_base_kenya_ai ;
 
 
-if option ne 0 and option ne 1 then delete;
+* if option ne 0 then delete;
 
 * if option ne 0 and option ne 2 then delete;
 * if option = 2 then option = 1;
@@ -98,7 +98,7 @@ incidence1564_ = incidence1564;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  62  ;
+%let nfit =  44  ;
 %let year_end = 2040.00 ;
 run;
 proc sort;by cald option ;run;

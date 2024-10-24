@@ -2,22 +2,22 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ah_options_e_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ai_out\";
 
 
 
-data   kenya_ah_options_e ; set b.out: ;
+data   kenya_ai ; set b.out: ;
 
 
 
-proc sort data=  kenya_ah_options_e; 
+proc sort data=  kenya_ai; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_ah_options_e ;
+set   kenya_ai ;
 
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
@@ -33,7 +33,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_ah_options_e sf;
+merge   kenya_ai sf;
 by run ;
  
 
@@ -953,6 +953,8 @@ yll=yll_gbd;
 yll_w=0;
 yll_m=0;
 
+/*
+
 incidence1524m = incidence1524m * 10; 
 incidence1524w = incidence1524w * 10;  
 incidence1564m = incidence1564m * 10; 
@@ -960,6 +962,8 @@ incidence1564w = incidence1564w * 10;
 incidence1564 = incidence1564 * 10;  
 incidence_sw = incidence_sw * 10; 
 incidence_msm = incidence1564msm * 10;
+
+*/
 
 dummy1=.;
 dummy2=.;
@@ -1131,14 +1135,14 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_ah_options_e; set y;  
+data a.l_base_kenya_ai; set y;  
 
 
 
 
 
 
-data y; set a.l_base_kenya_ah_options_e; 
+data y; set a.l_base_kenya_ai; 
 
 
  
@@ -1497,13 +1501,13 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_kenya_ah_options_e; 
+  data a.w_base_kenya_ai; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
   by run;
 
-proc contents data=a.w_base_kenya_ah_options_e;
+proc contents data=a.w_base_kenya_ai;
 run;
 
 
