@@ -17,6 +17,8 @@ re-consider len potency and resistance risk ?
 
 possibility of lower cab potency
 
+higher resistance risk with len ?
+
 ;
 
 
