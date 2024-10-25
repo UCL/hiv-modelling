@@ -432,25 +432,18 @@ keep year new_infection_15pl_3 ;
 
 
 
-
-
-
-
-
-
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\";
-
-
 data a.new_infection_15pl ; 
 merge goals_a optima_a hiv_synthesis_a ;
+
+
 
 proc print; run;
  
 ods html;
-proc sgplot data=new_infection_15pl; 
+proc sgplot data = a.new_infection_15pl; 
 Title    height=1.5 justify=center "Number of new infections in adults";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000   by 1000) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 10000) valueattrs=(size=10);
 
 label new_infection_15pl_1 = "Model 1 ";
 label new_infection_15pl_2 = "Model 2 ";
@@ -458,11 +451,11 @@ label new_infection_15pl_3 = "Model 3 ";
 
 series  x=year y=new_infection_15pl_1/	lineattrs = (color=black thickness = 2);
 series  x=year y=new_infection_15pl_2/	lineattrs = (color=red thickness = 2);
-series  x=year y=new_infection_15pl_3/	lineattrs = (color=red thickness = 2);
+series  x=year y=new_infection_15pl_3/	lineattrs = (color=green thickness = 2);
 run;
 
 quit;
-
+ods html close;
 
 
 
