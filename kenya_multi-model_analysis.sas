@@ -441,9 +441,9 @@ proc print; run;
  
 ods html;
 proc sgplot data = a.new_infection_15pl; 
-Title    height=1.5 justify=center "Number of new infections in adults";
+Title    height=1.5 justify=center "Number of new infections in adults age 15+";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2040 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 10000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000   by 10000) valueattrs=(size=10);
 
 label new_infection_15pl_1 = "Model 1 ";
 label new_infection_15pl_2 = "Model 2 ";
