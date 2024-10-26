@@ -1,8 +1,21 @@
 
 
-* if and when run laa_c
+* laa_c
 
-maybe have lai introduction in 2027.25
+lai introduction in 2027.25
+
+added specific parameters on persistence with lencab 
+
+lower upper limit for rate_return_for_lencab 
+
+higher cab resistance risk ?
+
+lower upper limit for lencab_uptake
+
+include tox to len and cab - inj site reactions
+
+consider interruption of cab / late injections and delays in injections exposing len - consider this dealt with by upper limit of pr_res_len
+(0.05) which is 10x upper limit for dol res risk
 
 included outputs for p_diag_vl1000
 
@@ -11,13 +24,8 @@ include prop on len cab by age and gender and pregnancy/breastfeeding status
 get out number of women (i) giving birth (ii) breastfeeding who are hiv positive as this is the denominator for the occurrences of children with hiv
 due to transmission before or at birth or breastfeeding
 
-consider interruption of cab / late injections and delays in injections exposing len ?
-
-re-consider len potency and resistance risk ?
-
-possibility of lower cab potency
-
-higher resistance risk with len ?
+make sure have outputs to address this point:  What is the relative importance of bringing people back into care vs helping with those unsuppressed in care ?
+explore if there are settings where lencab does not avert dalys and what predictors of this are
 
 ;
 
@@ -132,7 +140,7 @@ added altrnative approach of one-off cost of infected child
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2027;	* Using 2023 for MIHPSA only JAS Oct23;
+%let year_interv = 2027.25;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -680,7 +688,7 @@ newp_seed = 7;
 * pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  );   * tld_switch ;      
 * pr_res_len;				%sample_uniform(pr_res_len, 0.005  0.01  0.02  0.05);   
 * incr_len_res_mono;		incr_len_res_mono = 10 ;
-* rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1 1.5 2  );
+* rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1.5 2 3 ); * laa_c ;
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
 * greater_disability_tox;  	%sample_uniform(greater_disability_tox, 0 1);
@@ -707,11 +715,11 @@ newp_seed = 7;
 * res_level_dol_cab_mut;	%sample_uniform(res_level_dol_cab_mut, 0.5 0.75  1.00); * tld_switch; * for dol this applies to 118 and 263, for 118 it applies with 0.25 added; 
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 
-* lencab_uptake_vlg1000;		%sample_uniform(lencab_uptake_vlg1000, 0.3 0.5 0.7 0.9); 
-* lencab_uptake;			%sample_uniform(lencab_uptake, 0.001 0.003 0.01 0.03 0.05 0.1 0.3 0.5); 
+* lencab_uptake_vlg1000;		%sample_uniform(lencab_uptake_vlg1000, 0.3 0.5 0.7); * laa_ac ; 
+* lencab_uptake;			%sample_uniform(lencab_uptake, 0.001 0.003 0.01 0.03 0.05 0.1 0.3); * len_ac ;
 
-* rate_return_for_lencab;  %sample_uniform(rate_return_for_lencab, 0.3 0.5 0.7 0.9); 
-* prob_strong_pref_lencab;	 %sample_uniform(prob_strong_pref_lencab, 0.05 0.1 0.2 0.5 0.9);  
+* rate_return_for_lencab;  %sample_uniform(rate_return_for_lencab, 0.3 0.5 0.7); * laa_ac; 
+* prob_strong_pref_lencab;	 %sample_uniform(prob_strong_pref_lencab,  0.1 0.2 0.3 0.5);  * laa_ac; 
 
 * rate_lencab_to_tld;   %sample_uniform(rate_lencab_to_tld, 0.0003 0.001 0.003 0.01  0.03  0.1);
 
@@ -721,6 +729,9 @@ newp_seed = 7;
 
 * effect_pcp_p_death_rate;	 	effect_pcp_p_death_rate = 0.8;
 * ind_effect_art_hiv_disease_death; 	ind_effect_art_hiv_disease_death = 0.6;
+
+* r_isr_cablen;				r_isr_cablen = 0.3;
+* r_isr_resolve;			r_isr_resolve = 0.5; 
 
 
 
@@ -2240,7 +2251,7 @@ if option=1 and registd = 1 then do;
 		end;
 		if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
 	end;
-	h = rand('uniform');
+	h = rand('uniform');  if c_isr=1 then h = h * 0.9;
 	if o_len=1 and h < rate_lencab_to_tld then do; reg_option=125; reg_option_set_in_options = .; end; 
 end;
 
@@ -2253,7 +2264,7 @@ if option=2 and gender=2 and 15 <= age < 40 and registd = 1 then do;
 		end;
 		if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
 	end;
-	h = rand('uniform');
+	h = rand('uniform'); if c_isr=1 then h = h * 0.9;
 	if o_len=1 and h < rate_lencab_to_tld then do; reg_option=125; reg_option_set_in_options = .; end; 
 end;
 
@@ -2266,7 +2277,7 @@ if option=3 and 15 <= age < 25 and registd = 1 then do;
 		end;
 		if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
 	end;
-	h = rand('uniform');
+	h = rand('uniform'); if c_isr=1 then h = h * 0.9;
 	if o_len=1 and h < rate_lencab_to_tld then do; reg_option=125; reg_option_set_in_options = .; end;  
 end;
 
@@ -7901,7 +7912,7 @@ visit_tm1=visit;
 	c_lip_tm1=c_lip ;  	c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
 	c_cns_tm1=c_cns ;   c_hep_tm1=c_hep ;   c_nau_tm1=c_nau ;   c_otx_tm1=c_otx ;   
 	c_head_tm1=c_head ; c_lac_tm1=c_lac ;   c_ane_tm1=c_ane ;   c_dia_tm1=c_dia ;   
-	c_neph_tm1=c_neph ;   
+	c_neph_tm1=c_neph ;   c_isr_tm1=c_isr;
 
 	c_lip = 0;
 	c_pen = 0;
@@ -7915,6 +7926,7 @@ visit_tm1=visit;
 	c_ane =0;
 	c_dia =0;
 	c_neph = 0;
+	c_isr=0;
 	
 	if toffart_tm1 ge 0 and onart_tm1 ne 1 and naive ne 1 then do;
 		toffart=toffart_tm1+0.25;   
@@ -8466,23 +8478,25 @@ res_test=.;
 	if stop_tox    ne 1 then do; 
 
 		if t ge 2 and onart_tm1 =1 then do;
-			if  adh_tm1 >= 0.8  then do;
+			if  adh_tm1 >= 0.8   and o_len_tm1 ne 1 then do;
 			    if c_tox_tm1=0 then prointer=eff_rate_int_choice ;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*eff_rate_int_choice; 
 			end;
-			if 0.5 <= adh_tm1 < 0.8 then do;
+			if 0.5 <= adh_tm1 < 0.8  and o_len_tm1 ne 1 then do;
 			    if c_tox_tm1=0 then prointer=1.5*incr_rate_int_low_adh*eff_rate_int_choice;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*1.5*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
-			if adh_tm1 < 0.5 then do;
+			if adh_tm1 < 0.5  and o_len_tm1 ne 1 then do;
 			    if c_tox_tm1=0 then prointer=2*incr_rate_int_low_adh*eff_rate_int_choice;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*2*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
 
+		if o_len = 1 then prointer=prointer * rel_rate_interrupt_lencab; * for lencab prob interrupt not dependent on adherence;
+		if o_len = 1 and c_isr=1 then prointer=prointer * 1.1;
+
 		if pregnant=1 then prointer = prointer/100; * jul18;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
-		if o_len = 1 then prointer=prointer * rel_rate_interrupt_lencab;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
 	* new for pop_wide_tld;
 		if pop_wide_tld = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
@@ -8975,9 +8989,10 @@ if onart = 1 and switch_for_tox = 1 then do;
 		if t_taz_tm1=0  and o_taz ne 1  then do; t_dol=1;tss_dol   =0; o_taz=1;o_dol=0; goto x9; end;
 	x9: end;
  
-* cab ; * placeholder ;
+* cab ; * see code above for switching from lancab back to oral ;
 
-* len ; * placeholder ;
+* len ; * see code above for switching from lancab back to oral ;
+
 
 	end;
 
@@ -9255,14 +9270,14 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 
 * current tox can affect adherence;  
-		r=rand('uniform'); if c_tox_tm1=1 and r < 0.5 then adh=adh-red_adh_tox;
+		r=rand('uniform'); if c_tox_tm1=1 and r < 0.5 and (o_cab=1 or o_len = 1) then adh=adh-red_adh_tox;
 
 * reduced adherence if regimen is not 1 pill once a day - red_adh_multi_pill;
 		if o_zdv = 1 or o_taz = 1 or o_lpr = 1 or o_dar = 1 then adh = adh - red_adh_multi_pill ;
 
 
 * poorer "adherence" (lower drug levels) if have "current" tb or adc;  
-		if t ge 3 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5 or adc_tm1=1) then adh=adh- red_adh_tb_adc ;
+		if t ge 3 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5 or adc_tm1=1)  and (o_cab=1 or o_len = 1) then adh=adh- red_adh_tb_adc ;
 
 * occasional severe drop in adherence / absorption (more likely when on PI) (only way I can think to explain v fail with no mutations on PI);
 	f=rand('uniform');
@@ -9397,7 +9412,7 @@ adh_dl=adh;
 
 * len ;
 
-if o_cab = 1 or o_len = 1 then adh_dl = 1;
+if o_cab = 1 and o_len = 1 then adh_dl = 1;
 
 
 
@@ -10454,7 +10469,9 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 
 * TRANSMISSION TO CHILD DURING BREASTFEEDING ; * andrew sep 24;
 
-	onart_breastfeeding=0;	child_infected_breastfeeding=0; 
+	onart_breastfeeding=0;	child_infected_breastfeeding=0;  hiv_breastfeeding = 0;
+
+	if breastfeeding=1 and hiv=1 then hiv_breastfeeding = 1;
 
 	if breastfeeding=1 and hiv=1 and (date_last_birth_with_inf_child =. or caldate{t} - date_last_birth_with_inf_child > 1.5)  
 	and (date_last_child_inf_bf = . or caldate{t} - date_last_child_inf_bf > 1.5)  then do; * checking that if mtct ever occurred that this is a new child;
@@ -11906,9 +11923,14 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 	if o_ten=1 and c_neph_tm1=1 then c_neph=1; if c_neph_tm1=1 and r < p_neph_stops_ten then c_neph=0;
 	if t ge 2 and o_ten=0 and c_neph_tm1=1 and e < (1 - p_neph_stops_after_ten) then c_neph=1;
 
+	f=rand('uniform'); g=rand('uniform'); 
+	c_isr=0;
+	if t ge 2 and (o_cab=1 or o_Len=1) and c_isr=0 and isr_resolved ne 1 and f < r_isr_cablen then c_isr=1; 
+	if c_isr_tm1 = 1 and g < r_isr_resolve then do; c_isr=0; isr_resolved=1; end; 
+
 	c_tox=0;
 	if c_nau=1 or c_lip = 1 or c_pen = 1 or c_ras = 1 or c_cns = 1 or c_lac=1 or c_ane=1
-	or c_hep = 1 or c_dia = 1 or c_otx = 1 or c_neph = 1 or c_weightg=1	then c_tox=1;
+	or c_hep = 1 or c_dia = 1 or c_otx = 1 or c_neph = 1 or c_weightg=1	or c_isr = 1 then c_tox=1;
 
 * len placeholder - add in len and cab tox ;
 
@@ -14335,6 +14357,8 @@ vl1000_onart_1524m=0; vl1000_onart_1524w=0;  vl1000_1524m=0; vl1000_1524w=0; r_l
 o_len_1524m = 0; o_len_1524w = 0; o_cab_1524m = 0; o_cab_1524w = 0; o_len_vl1000=0; o_cab_vl1000=0; r_len_o_len=0; r_cab_o_cab=0;
 o_len_2534m=0; o_len_3549m=0;o_len_50plm=0;o_len_2534w=0; o_len_3549w=0;o_len_50plw=0; o_len_plw=0;
 
+diag_vl1000=.;
+
 if hiv =1 then do;
 
 	newp_hiv=newp;
@@ -14358,6 +14382,8 @@ if hiv =1 then do;
 	vg200=1-vl200;
 	if . < vl < 3.0 then vl1000=1; else vl1000=0;
 	vg1000=1-vl1000;
+
+	diag_vl1000=0;  if registd=1 and vl1000=1 then diag_vl1000=1;
 
 	if o_len=1 and vl1000=1 then o_len_vl1000=1; 
 	if o_cab=1 and vl1000=1 then o_cab_vl1000=1; 
@@ -17879,7 +17905,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_sw_vg1000 + sw_vg1000 ; s_vg1000 + vg1000 ; s_vg1000_1549 + vg1000_1549 ;s_vg1000_m + vg1000_m ; s_vg1000_w + vg1000_w ; s_vg1000_m_1524 + vg1000_m_1524;
 	s_vg1000_w_1524 + vg1000_w_1524;  s_r_vg50 + r_vg50 ; s_r_vg200 + r_vg200 ;
 	s_r_vg1000 + r_vg1000 ; s_vl1000 + vl1000 ; s_vl1000_art + vl1000_art ; s_onart_iicu + onart_iicu ; s_vl1000_art_iicu + vl1000_art_iicu ;
-    s_onart_gt6m + onart_gt6m ; s_vl1000_art_gt6m + vl1000_art_gt6m ; s_onart_gt6m_iicu + onart_gt6m_iicu ; 
+    s_onart_gt6m + onart_gt6m ; s_vl1000_art_gt6m + vl1000_art_gt6m ; s_onart_gt6m_iicu + onart_gt6m_iicu ; s_diag_vl1000 + diag_vl1000;
 	s_vl1000_art_gt6m_iicu + vl1000_art_gt6m_iicu; s_vl1000_m + vl1000_m ; s_vl1000_art_m + vl1000_art_m ; s_onart_iicu_m + onart_iicu_m ;
     s_vl1000_art_iicu_m + vl1000_art_iicu_m ; s_onart_gt6m_m + onart_gt6m_m ; s_vl1000_art_gt6m_m + vl1000_art_gt6m_m ;       
 	s_onart_gt6m_iicu_m + onart_gt6m_iicu_m ; s_vl1000_art_gt6m_iicu_m + vl1000_art_gt6m_iicu_m ; s_vl1000_w + vl1000_w ; s_vl1000_art_w + vl1000_art_w ;	  	        
@@ -18042,6 +18068,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_started_lencab_vmgt1000 + started_lencab_vmgt1000 ; s_started_lencab + started_lencab ; s_started_lencab_offart + started_lencab_offart;
 	s_offered_return_lencab_this_per + offered_return_lencab_this_per;
+
+	s_o_len_plw + o_len_plw ;  s_hiv_breastfeeding + hiv_breastfeeding;
 
 
 	/* blood pressure */
@@ -19741,7 +19769,7 @@ s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_ret
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
 s_line1_vlg1000 s_line2_vlg1000  s_res_vfail1
 s_u_vfail1_this_period  s_u_vfail1  s_vl_vfail1_g1 s_vl_vfail1_g2 s_vl_vfail1_g3 s_vl_vfail1_g4 s_vl_vfail1_g5 s_vl_vfail1_g6 
-s_vlg1000_onart  s_vlg1000_184m  s_vlg1000_65m  s_vlg1000_onart_184m  s_vlg1000_onart_65m  s_sw_vg1000
+s_vlg1000_onart  s_vlg1000_184m  s_vlg1000_65m  s_vlg1000_onart_184m  s_vlg1000_onart_65m  s_sw_vg1000  s_diag_vl1000
 s_vg1000 s_vg1000_1549 s_vg1000_m  s_vg1000_w s_vg1000_w_1524  s_vg1000_m_1524 s_r_vg50  s_r_vg200  s_r_vg1000 
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
@@ -19845,7 +19873,7 @@ s_dol_pi_failed
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
 s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w 	 s_started_lencab_vmgt1000  s_started_lencab s_started_lencab_offart
-s_offered_return_lencab_this_per
+s_offered_return_lencab_this_per   s_o_len_plw   s_hiv_breastfeeding 
 
 
 /* note s_ variables below are for up to age 80 */
@@ -20749,7 +20777,7 @@ s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
 s_line1_vlg1000 s_line2_vlg1000  s_res_vfail1
 s_u_vfail1_this_period  s_u_vfail1  s_vl_vfail1_g1 s_vl_vfail1_g2 s_vl_vfail1_g3 s_vl_vfail1_g4 s_vl_vfail1_g5 s_vl_vfail1_g6 
 s_vlg1000_onart  s_vlg1000_184m  s_vlg1000_65m  s_vlg1000_onart_184m  s_vlg1000_onart_65m  s_sw_vg1000
-s_vg1000  s_vg1000_1549  s_vg1000_m  s_vg1000_w  s_vg1000_w_1524  s_vg1000_m_1524  s_r_vg50  s_r_vg200  s_r_vg1000 
+s_vg1000  s_vg1000_1549  s_vg1000_m  s_vg1000_w  s_vg1000_w_1524  s_vg1000_m_1524  s_r_vg50  s_r_vg200  s_r_vg1000  s_diag_vl1000
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
@@ -20853,7 +20881,7 @@ s_dol_pi_failed
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
 s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w  s_started_lencab_vmgt1000  s_started_lencab s_started_lencab_offart
-s_offered_return_lencab_this_per
+s_offered_return_lencab_this_per  s_o_len_plw  s_hiv_breastfeeding 
 
 /* note s_ variables below are for up to age 80 */
 
@@ -22603,7 +22631,7 @@ s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
 s_line1_vlg1000 s_line2_vlg1000  s_res_vfail1
 s_u_vfail1_this_period  s_u_vfail1  s_vl_vfail1_g1 s_vl_vfail1_g2 s_vl_vfail1_g3 s_vl_vfail1_g4 s_vl_vfail1_g5 s_vl_vfail1_g6 
 s_vlg1000_onart  s_vlg1000_184m  s_vlg1000_65m  s_vlg1000_onart_184m  s_vlg1000_onart_65m  s_sw_vg1000
-s_vg1000  s_vg1000_1549  s_vg1000_m  s_vg1000_w  s_vg1000_w_1524  s_vg1000_m_1524  s_r_vg50  s_r_vg200  s_r_vg1000 
+s_vg1000  s_vg1000_1549  s_vg1000_m  s_vg1000_w  s_vg1000_w_1524  s_vg1000_m_1524  s_r_vg50  s_r_vg200  s_r_vg1000   s_diag_vl1000
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
@@ -22706,9 +22734,7 @@ s_dol_pi_failed
 s_dead_dol_r_uvl2  s_second_vlg1000_first  s_second_vlg1000_first_dol_r 
 
 s_vl1000_onart_1524m  s_vl1000_onart_1524w  s_vl1000_1524m  s_vl1000_1524w   s_started_lencab_vmgt1000  s_started_lencab s_started_lencab_offart
-s_offered_return_lencab_this_per
-
-
+s_offered_return_lencab_this_per s_o_len_plw  s_hiv_breastfeeding 
 
 /* note s_ variables below are for up to age 80 */
 
