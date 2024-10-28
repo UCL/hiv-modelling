@@ -1873,7 +1873,7 @@ proc sort; by run;run;
 
 data f; set b.w_laa_ac_01;
 
-  if . < run <= 997295534 ; * laa_ac ;
+* if . < run <= 997295534 ; * laa_ac ;
 * if . < run le 989997912;  * laa_y to give 1000 ;
 
 
