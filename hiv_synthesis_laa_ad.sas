@@ -2,7 +2,7 @@
 
 higher sd for people with high adhav in adh_pattern
 
-possible below 100% adherence to injectables due to late dosing
+some injections given late - perhaps model as single 3 month period interruptions of one drug or other ?
 
 ;
 
