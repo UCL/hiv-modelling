@@ -825,6 +825,8 @@ run;
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
 
+* p_diag_vl1000;				p_diag_vl1000 = s_diag_vl1000 / s_diag;
+
 * p_onart_w;					if s_hivge15w gt 0 then p_onart_w = s_onart_w / s_hivge15w;
 * p_onart_m;					if s_hivge15m gt 0 then p_onart_m = s_onart_m / s_hivge15m;
 * p_onart;						if s_hivge15 gt 0 then p_onart = s_onart / s_hivge15; 
@@ -850,12 +852,17 @@ run;
 * p_len;						if s_onart > 0 then p_len = s_len / s_onart ;
 * p_cab;						if s_onart > 0 then p_cab = s_cab / s_onart ;
 
+* p_len_w;						p_len_w = (s_o_len_1524w + s_o_len_2534w + s_o_len_3549w + s_o_len_50plw) / s_onart_w; ;
+* p_len_m;						p_len_m = (s_o_len_1524m + s_o_len_2534m + s_o_len_3549m + s_o_len_50plm) / s_onart_m; ;
+
 * p_ever_len_o_len;				p_ever_len_o_len = s_len / s_ever_len_art ;
 
 * p_ever_len_v_failed;			p_ever_len_v_failed = s_failed_lencab / s_ever_len_art ;
 
 * p_len_vl1000;					p_len_vl1000 = s_o_len_vl1000 / s_len;
 * p_cab_vl1000;					p_cab_vl1000 = s_o_cab_vl1000 / s_cab;
+
+* p_len_plw;					p_len_plw = s_o_len_plw / (s_pregnant + s_breastfeeding) ;
 
 * n_started_lencab_vmgt1000;	n_started_lencab_vmgt1000 = s_started_lencab_vmgt1000 * sf;
 * n_started_lencab_offart;		n_started_lencab_offart = s_started_lencab_offart * sf;
@@ -1370,6 +1377,8 @@ p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1
 p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab n_started_lencab_offart  p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart
 p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct  p_ever_len_v_failed
 
+p_len_w p_len_m  p_diag_vl1000  p_len_plw
+
 ;
 
  
@@ -1593,7 +1602,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_started_lencab); %var(v=ddaly_birth_with_inf_child); %var_v=n_started_lencab_offart); %var(v=p_len_vl1000); %var(v=p_cab_vl1000);
 %var(v=n_started_lencab_offart); %var(v=p_started_lencab_vmgt1000)  %var(v=p_started_lencab_offart);  %var(v=dvis_cost_no_lencab) ;
 %var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);   %var(v=dvis_cost_lencab) ; %var(v=n_mtct);
-%var(v=p_ever_len_v_failed);
+%var(v=p_ever_len_v_failed);  %var(v=p_diag_vl1000);  %var(v=p_len_plw); %var(v=p_len_w); %var(v=p_len_m);
 
 %var(v=cost);
 
@@ -1656,7 +1665,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
-p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct p_ever_len_v_failed
+p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct p_ever_len_v_failed  p_diag_vl1000  p_len_plw  p_len_w  p_len_m
 ;
 
 
@@ -1873,9 +1882,7 @@ proc sort; by run;run;
 
 data f; set b.w_laa_ac_01;
 
-* if . < run <= 997295534 ; * laa_ac ;
-* if . < run le 989997912;  * laa_y to give 1000 ;
-
+  if . < run <=  826903121 ; * laa_ac ;
 
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
 
@@ -1901,8 +1908,8 @@ d_mtct_prop_10y_2_1 =  mtct_prop_10y_2 - mtct_prop_10y_1;
 r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1;
 
 * sensitivity analysis around cost;
-* dcab_cost_50y_2 = dcab_cost_50y_2 * 2.00;
-* dlen_cost_50y_2 = dlen_cost_50y_2 * 2.00;
+* dcab_cost_50y_2 = dcab_cost_50y_2 * 0.50;
+* dlen_cost_50y_2 = dlen_cost_50y_2 * 0.50;
 
 dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
 + ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
@@ -1982,21 +1989,34 @@ if dcost_50y_1 = min_dcost_50y then lowest_dcost=1;
 if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
 
 
-p_diag_vl1000_24 = p_onart_diag_24 * p_onart_vl1000_24 ;
-
-p_diag_vl1000_10y_1 = p_onart_diag_10y_1 * p_onart_vl1000_10y_1 ;
-p_diag_vl1000_10y_2 = p_onart_diag_10y_2 * p_onart_vl1000_10y_2 ;
-
 p_started_unsupp_10y_2 = p_started_lencab_vmgt1000_10y_2 + p_started_lencab_offart_10y_2;
 
 dcost_clinical_care_hiv_50y_1 = dadc_cost_50y_1 + dnon_tb_who3_cost_50y_1 + dtb_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1;
 dcost_clinical_care_hiv_50y_2 = dadc_cost_50y_2 + dnon_tb_who3_cost_50y_2 + dtb_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2;
 
-if p_diag_vl1000_24 < 0.75 then p_diag_vl1000_24_g=1;
-if 0.75 <= p_diag_vl1000_24 < 0.80 then p_diag_vl1000_24_g=2;
-if 0.80 <= p_diag_vl1000_24 < 0.85 then p_diag_vl1000_24_g=3;
-if 0.85 <= p_diag_vl1000_24 < 0.90 then p_diag_vl1000_24_g=4;
-if 0.90 <= p_diag_vl1000_24        then p_diag_vl1000_24_g=5;
+p_diag_vlg1000_24    = 1 - p_diag_vl1000_24   ;
+
+if p_diag_vlg1000_24 < 0.1 then p_diag_vlg1000_24_g=1;
+if 0.1 <= p_diag_vlg1000_24 < 0.15 then p_diag_vlg1000_24_g=2;
+if 0.15 <= p_diag_vlg1000_24 < 0.20 then p_diag_vlg1000_24_g=3;
+if 0.2 <= p_diag_vlg1000_24 < 0.25 then p_diag_vlg1000_24_g=4;
+if 0.25 <= p_diag_vlg1000_24        then p_diag_vlg1000_24_g=5;
+
+if p_started_lencab_vmgt1000_10y_2 < 0.15 then p_started_lencab_vmgt1000_10y_g = 1;
+if 0.15 <= p_started_lencab_vmgt1000_10y_2 < 0.25 then p_started_lencab_vmgt1000_10y_g = 2;
+if 0.25 <= p_started_lencab_vmgt1000_10y_2 < 0.45 then p_started_lencab_vmgt1000_10y_g = 3;
+if 0.45 <= p_started_lencab_vmgt1000_10y_2        then p_started_lencab_vmgt1000_10y_g = 4;
+
+if p_started_lencab_offart_10y_2 < 0.3 then p_started_lencab_offart_10y_g = 1;
+if 0.3 <= p_started_lencab_offart_10y_2 < 0.45 then p_started_lencab_offart_10y_g = 2;
+if 0.45 <= p_started_lencab_offart_10y_2 < 0.60 then p_started_lencab_offart_10y_g = 3;
+if 0.60 <= p_started_lencab_offart_10y_2 then p_started_lencab_offart_10y_g = 4;
+
+if p_len_10y_2 < 0.1 then p_len_10y_g = 1;
+if 0.1 <= p_len_10y_2 < 0.15 then p_len_10y_g = 2;
+if 0.15 <= p_len_10y_2 < 0.2 then p_len_10y_g = 3;
+if 0.2 <= p_len_10y_2 < 0.25 then p_len_10y_g = 4;
+if 0.25 <= p_len_10y_2 then p_len_10y_g = 5;
 
 if p_started_lencab_vls_10y_2 < 0.2 then p_started_lencab_vls_10y_2_g=1;
 if 0.2 <= p_started_lencab_vls_10y_2 < 0.4 then p_started_lencab_vls_10y_2_g=2;
@@ -2005,6 +2025,10 @@ if 0.6 <= p_started_lencab_vls_10y_2       then p_started_lencab_vls_10y_2_g=4;
 
 relative_mtct_prop_10y = mtct_prop_10y_2 / mtct_prop_10y_1 ;
 
+p_diag_vlg1000_10y_1 = 1 - p_diag_vl1000_10y_1;
+p_diag_vlg1000_10y_2 = 1 - p_diag_vl1000_10y_2;
+
+relative_prev_diag_vlg1000_2_1 = p_diag_vlg1000_10y_2 / p_diag_vlg1000_10y_1;
 
 * label 
 prevalence1549w_24 = "HIV prevalence in women age 15-49 in 2024"
@@ -2141,6 +2165,9 @@ proc means data=f  n p50  p5  p95 mean lclm uclm;
 var 
 p_len_10y_1 p_len_10y_2 
 p_cab_10y_1 p_cab_10y_2 
+p_len_w_10y_1 p_len_w_10y_2
+p_len_m_10y_1 p_len_m_10y_2
+p_len_plw_10y_1 p_len_plw_10y_2
 p_ever_len_o_len_10y_1  p_ever_len_o_len_10y_2
 p_ever_len_v_failed_10y_1 p_ever_len_v_failed_10y_2
 n_offered_return_lencab_10y_1 n_offered_return_lencab_10y_2
@@ -2162,13 +2189,14 @@ p_vl1000_m_1524_10y_1 p_vl1000_m_1524_10y_2
 p_vl1000_w_1524_10y_1  p_vl1000_w_1524_10y_2  
 p_onart_vl1000_w_1524_10y_1 p_onart_vl1000_w_1524_10y_2 
 p_onart_vl1000_m_1524_10y_1 p_onart_vl1000_m_1524_10y_2
-p_diag_vl1000_10y_1 p_diag_vl1000_10y_2 
+p_diag_vlg1000_10y_1 p_diag_vlg1000_10y_2 
 incidence1549_10y_1 incidence1549_10y_2 
 incidence1524_10y_1 incidence1524_10y_2
 n_death_hiv_10y_1 n_death_hiv_10y_2  
 n_death_hiv_age_1524_10y_1 n_death_hiv_age_1524_10y_2
 p_r_len_10y_1 p_r_len_10y_2
 p_r_cab_10y_1 p_r_cab_10y_2
+relative_prev_diag_vlg1000_2_1
 mtct_prop_10y_1 mtct_prop_10y_2 
 relative_mtct_prop_10y
 mtct_birth_prop_10y_1 mtct_birth_prop_10y_2 
@@ -2285,6 +2313,11 @@ d_dcost_50y_2_1
 d_netdaly500_2_1 
 lowest_netdaly
 ;
+* where p_diag_vlg1000_24_g = 5;
+* where p_started_lencab_vls_10y_2_g = 1;
+* where p_started_lencab_vmgt1000_10y_g = 4;
+* where p_started_lencab_offart_10y_g = 4;
+* where p_len_10y_g = 5;
 run;
 ods html close;
 
@@ -2295,10 +2328,6 @@ proc freq data=f; tables lowest_netdaly lowest_netdaly_gbd lowest_ddaly  lowest_
 run; 
 ods html close;
 
-
-proc freq; tables p_diag_vl1000_24_g * lowest_netdaly ; run; 
-
-proc freq; tables p_started_lencab_vls_10y_2_g * lowest_netdaly ; run; 
 
 
 

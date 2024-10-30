@@ -14436,7 +14436,7 @@ if hiv =1 then do;
 	if gender=2 and registd=1 and 35 <= age < 49 and o_len=1 then o_len_3549w=1;
 	if gender=2 and registd=1 and 50 <= age      and o_len=1 then o_len_50plw=1;
 	
-	if breastfeeding=1 or pregnant=1 and o_len=1 then o_len_plw=1;
+	if (breastfeeding=1 or pregnant=1) and o_len=1 then o_len_plw=1;
 
 	if o_len=1 and registd=1 then ever_len_art=1;
 
