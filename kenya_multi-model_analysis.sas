@@ -416,42 +416,40 @@ hiv_synthesis_int14 hiv_synthesis_int15
 
 
 
-* template for running graphs comparing with status quo - replace 9 with int number and n_prep with n_prep name
-  remember to change y axis scale and label
-;
 
-data goals_0 ; set all; if model=1; if scenario = 0 ; n_prep_0_1 = n_prep; keep year n_prep_0_1 ;
-data optima_0 ; set all; if model=2;if scenario = 0 ; n_prep_0_2 = n_prep;keep year n_prep_0_2 ;
-data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;n_prep_0_3 = n_prep;keep year n_prep_0_3 ;
 
-data goals_9 ; set all; if model=1;if scenario = 9 ;n_prep_9_1 = n_prep;keep year n_prep_9_1 ;
-data optima_9 ; set all; if model=2;if scenario = 9 ;n_prep_9_2 = n_prep;keep year n_prep_9_2 ;
-data hiv_synthesis_9 ; set all; if model=3;if scenario = 9 ;n_prep_9_3 = n_prep;keep year n_prep_9_3 ;
+data goals_0 ; set all; if model=1; if scenario = 0 ; n_hiv_deaths_15pl_0_1 = n_hiv_deaths_15pl; keep year n_hiv_deaths_15pl_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; n_hiv_deaths_15pl_0_2 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;n_hiv_deaths_15pl_0_3 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_0_3 ;
 
-data a.n_prep ; 
-merge goals_0 optima_0 hiv_synthesis_0 goals_9 optima_9 hiv_synthesis_9 ;
+data goals_15 ; set all; if model=1;if scenario = 15 ;n_hiv_deaths_15pl_15_1 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_15_1 ;
+data optima_15 ; set all; if model=2;if scenario = 15 ;n_hiv_deaths_15pl_15_2 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_15_2 ;
+data hiv_synthesis_15 ; set all; if model=3;if scenario = 15 ;n_hiv_deaths_15pl_15_3 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_15_3 ;
+
+data a.n_hiv_deaths_15pl ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_15 optima_15 hiv_synthesis_15 ;
 
 ods html;
 
-proc sgplot data = a.n_prep ; 
-Title    height=1.5 justify=center "n_prep";
+proc sgplot data = a.n_hiv_deaths_15pl ; 
+Title    height=1.5 justify=center "Number of deaths age 15+";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023   to 2040 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 10000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000) valueattrs=(size=10);
 
-label n_prep_0_1 = "Goals - SQ ";
-label n_prep_0_2 = "Optima - SQ ";
-label n_prep_0_3 = "Synthesis - SQ ";
-label n_prep_9_1 = "Goals - all interventions ";
-label n_prep_9_2 = "Optima - all interventions ";
-label n_prep_9_3 = "Synthesis - all interventions ";
+label n_hiv_deaths_15pl_0_1 = "Goals - SQ ";
+label n_hiv_deaths_15pl_0_2 = "Optima - SQ ";
+label n_hiv_deaths_15pl_0_3 = "Synthesis - SQ ";
+label n_hiv_deaths_15pl_15_1 = "Goals - int 15 ";
+label n_hiv_deaths_15pl_15_2 = "Optima - int 15 ";
+label n_hiv_deaths_15pl_15_3 = "Synthesis - int 15 ";
 
-series  x=year y=n_prep_0_1/	lineattrs = (color=black thickness = 2);
-series  x=year y=n_prep_0_2/	lineattrs = (color=red thickness = 2);
-series  x=year y=n_prep_0_3/	lineattrs = (color=green thickness = 2);
+series  x=year y=n_hiv_deaths_15pl_0_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=n_hiv_deaths_15pl_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=n_hiv_deaths_15pl_0_3/	lineattrs = (color=green thickness = 2);
 
-series  x=year y=n_prep_9_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
-series  x=year y=n_prep_9_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
-series  x=year y=n_prep_9_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+series  x=year y=n_hiv_deaths_15pl_15_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+series  x=year y=n_hiv_deaths_15pl_15_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=n_hiv_deaths_15pl_15_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
 
 run;
 
@@ -462,12 +460,12 @@ quit;
 
 
 
-/*
-
-* template for running graphs comparing with status quo - replace 9 with int number and n_prep with n_prep name
+* template for running graphs comparing with status quo - replace intno with int number and variable with variable name
   remember to change y axis scale and label
 ;
 
+
+/*
 
 data goals_0 ; set all; if model=1; if scenario = 0 ; variable_0_1 = variable; keep year variable_0_1 ;
 data optima_0 ; set all; if model=2;if scenario = 0 ; variable_0_2 = variable;keep year variable_0_2 ;
@@ -490,9 +488,9 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 10
 label variable_0_1 = "Goals - SQ ";
 label variable_0_2 = "Optima - SQ ";
 label variable_0_3 = "Synthesis - SQ ";
-label variable_intx_1 = "Goals - all interventions ";
-label variable_intx_2 = "Optima - all interventions ";
-label variable_intx_3 = "Synthesis - all interventions ";
+label variable_intx_1 = "Goals - int intx ";
+label variable_intx_2 = "Optima - int intx ";
+label variable_intx_3 = "Synthesis - int intx ";
 
 series  x=year y=variable_0_1/	lineattrs = (color=black thickness = 2);
 series  x=year y=variable_0_2/	lineattrs = (color=red thickness = 2);
@@ -542,4 +540,138 @@ quit;
 ods html close;
 
 */
+
+
+/*
+
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; n_prep_0_1 = n_prep; keep year n_prep_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; n_prep_0_2 = n_prep;keep year n_prep_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;n_prep_0_3 = n_prep;keep year n_prep_0_3 ;
+
+data goals_9 ; set all; if model=1;if scenario = 9 ;n_prep_9_1 = n_prep;keep year n_prep_9_1 ;
+data optima_9 ; set all; if model=2;if scenario = 9 ;n_prep_9_2 = n_prep;keep year n_prep_9_2 ;
+data hiv_synthesis_9 ; set all; if model=3;if scenario = 9 ;n_prep_9_3 = n_prep;keep year n_prep_9_3 ;
+
+data a.n_prep ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_9 optima_9 hiv_synthesis_9 ;
+
+ods html;
+
+proc sgplot data = a.n_prep ; 
+Title    height=1.5 justify=center "number on prep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000   by 100000) valueattrs=(size=10);
+
+label n_prep_0_1 = "Goals - SQ ";
+label n_prep_0_2 = "Optima - SQ ";
+label n_prep_0_3 = "Synthesis - SQ ";
+label n_prep_9_1 = "Goals - int 9 ";
+label n_prep_9_2 = "Optima - int 9 ";
+label n_prep_9_3 = "Synthesis - int 9 ";
+
+series  x=year y=n_prep_0_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=n_prep_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=n_prep_0_3/	lineattrs = (color=green thickness = 2);
+
+series  x=year y=n_prep_9_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+series  x=year y=n_prep_9_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=n_prep_9_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+
+run;
+
+quit;
+
+
+*/
+
+
+
+
+/*
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; p_onart_diag_15pl_0_1 = p_onart_diag_15pl; keep year p_onart_diag_15pl_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; p_onart_diag_15pl_0_2 = p_onart_diag_15pl;keep year p_onart_diag_15pl_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;p_onart_diag_15pl_0_3 = p_onart_diag_15pl;keep year p_onart_diag_15pl_0_3 ;
+
+data goals_12 ; set all; if model=1;if scenario = 12 ;p_onart_diag_15pl_12_1 = p_onart_diag_15pl;keep year p_onart_diag_15pl_12_1 ;
+data optima_12 ; set all; if model=2;if scenario = 12 ;p_onart_diag_15pl_12_2 = p_onart_diag_15pl;keep year p_onart_diag_15pl_12_2 ;
+data hiv_synthesis_12 ; set all; if model=3;if scenario = 12 ;p_onart_diag_15pl_12_3 = p_onart_diag_15pl;keep year p_onart_diag_15pl_12_3 ;
+
+data a.p_onart_diag_15pl ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_12 optima_12 hiv_synthesis_12 ;
+
+ods html;
+
+proc sgplot data = a.p_onart_diag_15pl ; 
+Title    height=1.5 justify=center "Proportion on ART of those diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05) valueattrs=(size=10);
+
+label p_onart_diag_15pl_0_1 = "Goals - SQ ";
+label p_onart_diag_15pl_0_2 = "Optima - SQ ";
+label p_onart_diag_15pl_0_3 = "Synthesis - SQ ";
+label p_onart_diag_15pl_12_1 = "Goals - int 12 ";
+label p_onart_diag_15pl_12_2 = "Optima - int 12 ";
+label p_onart_diag_15pl_12_3 = "Synthesis - int 12 ";
+
+series  x=year y=p_onart_diag_15pl_0_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=p_onart_diag_15pl_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=p_onart_diag_15pl_0_3/	lineattrs = (color=green thickness = 2);
+
+series  x=year y=p_onart_diag_15pl_12_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+series  x=year y=p_onart_diag_15pl_12_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=p_onart_diag_15pl_12_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+
+run;
+
+quit;
+
+
+*/
+
+
+
+
+/*
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; p_vl1000_onart_15pl_0_1 = p_vl1000_onart_15pl; keep year p_vl1000_onart_15pl_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; p_vl1000_onart_15pl_0_2 = p_vl1000_onart_15pl;keep year p_vl1000_onart_15pl_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;p_vl1000_onart_15pl_0_3 = p_vl1000_onart_15pl;keep year p_vl1000_onart_15pl_0_3 ;
+
+data goals_13 ; set all; if model=1;if scenario = 13 ;p_vl1000_onart_15pl_13_1 = p_vl1000_onart_15pl;keep year p_vl1000_onart_15pl_13_1 ;
+data optima_13 ; set all; if model=2;if scenario = 13 ;p_vl1000_onart_15pl_13_2 = p_vl1000_onart_15pl;keep year p_vl1000_onart_15pl_13_2 ;
+data hiv_synthesis_13 ; set all; if model=3;if scenario = 13 ;p_vl1000_onart_15pl_13_3 = p_vl1000_onart_15pl;keep year p_vl1000_onart_15pl_13_3 ;
+
+data a.p_vl1000_onart_15pl ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_13 optima_13 hiv_synthesis_13 ;
+
+ods html;
+
+proc sgplot data = a.p_vl1000_onart_15pl ; 
+Title    height=1.5 justify=center "Proportion of people on ART with VL suppression";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.8 to 1   by 0.05) valueattrs=(size=10);
+
+label p_vl1000_onart_15pl_0_1 = "Goals - SQ ";
+label p_vl1000_onart_15pl_0_2 = "Optima - SQ ";
+label p_vl1000_onart_15pl_0_3 = "Synthesis - SQ ";
+label p_vl1000_onart_15pl_13_1 = "Goals - int 13 ";
+label p_vl1000_onart_15pl_13_2 = "Optima - int 13 ";
+label p_vl1000_onart_15pl_13_3 = "Synthesis - int 13 ";
+
+series  x=year y=p_vl1000_onart_15pl_0_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=p_vl1000_onart_15pl_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=p_vl1000_onart_15pl_0_3/	lineattrs = (color=green thickness = 2);
+
+series  x=year y=p_vl1000_onart_15pl_13_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+series  x=year y=p_vl1000_onart_15pl_13_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=p_vl1000_onart_15pl_13_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+
+run;
+
+quit;
+
+*/
+
 
