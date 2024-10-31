@@ -418,42 +418,34 @@ hiv_synthesis_int14 hiv_synthesis_int15
 
 
 
-data goals_0 ; set all; if model=1; if scenario = 0 ; n_hiv_deaths_15pl_0_1 = n_hiv_deaths_15pl; keep year n_hiv_deaths_15pl_0_1 ;
-data optima_0 ; set all; if model=2;if scenario = 0 ; n_hiv_deaths_15pl_0_2 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_0_2 ;
-data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;n_hiv_deaths_15pl_0_3 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_0_3 ;
+data hiv_synthesis_20 ; set all; if model=3;if scenario = 20 ;p_vl1000_onart_15pl_20_3 = p_vl1000_onart_15pl;keep year p_vl1000_onart_15pl_20_3 ;
+data hiv_synthesis_200 ; set all; if model=3;if scenario = 200 ;p_vl1000_onart_15pl_200_3 = p_vl1000_onart_15pl;keep year p_vl1000_onart_15pl_200_3 ;
 
-data goals_15 ; set all; if model=1;if scenario = 15 ;n_hiv_deaths_15pl_15_1 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_15_1 ;
-data optima_15 ; set all; if model=2;if scenario = 15 ;n_hiv_deaths_15pl_15_2 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_15_2 ;
-data hiv_synthesis_15 ; set all; if model=3;if scenario = 15 ;n_hiv_deaths_15pl_15_3 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_15_3 ;
-
-data a.n_hiv_deaths_15pl ; 
-merge goals_0 optima_0 hiv_synthesis_0 goals_15 optima_15 hiv_synthesis_15 ;
+data a.p_vl1000_onart_15pl ; 
+merge  hiv_synthesis_20 hiv_synthesis_200 ;
 
 ods html;
 
-proc sgplot data = a.n_hiv_deaths_15pl ; 
-Title    height=1.5 justify=center "Number of deaths age 15+";
+proc sgplot data = a.p_vl1000_onart_15pl ; 
+Title    height=1.5 justify=center "p_vl1000_onart_15pl";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023   to 2040 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.9 to 1  by 0.01) valueattrs=(size=10);
 
-label n_hiv_deaths_15pl_0_1 = "Goals - SQ ";
-label n_hiv_deaths_15pl_0_2 = "Optima - SQ ";
-label n_hiv_deaths_15pl_0_3 = "Synthesis - SQ ";
-label n_hiv_deaths_15pl_15_1 = "Goals - int 15 ";
-label n_hiv_deaths_15pl_15_2 = "Optima - int 15 ";
-label n_hiv_deaths_15pl_15_3 = "Synthesis - int 15 ";
+label p_vl1000_onart_15pl_20_3 = "Synthesis - int 20";
+label p_vl1000_onart_15pl_200_3 = "Synthesis - int 200 ";
 
-series  x=year y=n_hiv_deaths_15pl_0_1/	lineattrs = (color=black thickness = 2);
-series  x=year y=n_hiv_deaths_15pl_0_2/	lineattrs = (color=red thickness = 2);
-series  x=year y=n_hiv_deaths_15pl_0_3/	lineattrs = (color=green thickness = 2);
+series  x=year y=p_vl1000_onart_15pl_20_3/	lineattrs = (color=green thickness = 2);
 
-series  x=year y=n_hiv_deaths_15pl_15_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
-series  x=year y=n_hiv_deaths_15pl_15_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
-series  x=year y=n_hiv_deaths_15pl_15_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+series  x=year y=p_vl1000_onart_15pl_200_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
 
 run;
 
 quit;
+
+
+
+
+
 
 
 
@@ -667,6 +659,50 @@ series  x=year y=p_vl1000_onart_15pl_0_3/	lineattrs = (color=green thickness = 2
 series  x=year y=p_vl1000_onart_15pl_13_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
 series  x=year y=p_vl1000_onart_15pl_13_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
 series  x=year y=p_vl1000_onart_15pl_13_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+
+run;
+
+quit;
+
+*/
+
+
+
+
+/*
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; n_hiv_deaths_15pl_0_1 = n_hiv_deaths_15pl; keep year n_hiv_deaths_15pl_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; n_hiv_deaths_15pl_0_2 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;n_hiv_deaths_15pl_0_3 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_0_3 ;
+
+data goals_15 ; set all; if model=1;if scenario = 15 ;n_hiv_deaths_15pl_15_1 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_15_1 ;
+data optima_15 ; set all; if model=2;if scenario = 15 ;n_hiv_deaths_15pl_15_2 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_15_2 ;
+data hiv_synthesis_15 ; set all; if model=3;if scenario = 15 ;n_hiv_deaths_15pl_15_3 = n_hiv_deaths_15pl;keep year n_hiv_deaths_15pl_15_3 ;
+
+data a.n_hiv_deaths_15pl ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_15 optima_15 hiv_synthesis_15 ;
+
+ods html;
+
+proc sgplot data = a.n_hiv_deaths_15pl ; 
+Title    height=1.5 justify=center "Number of deaths age 15+";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000) valueattrs=(size=10);
+
+label n_hiv_deaths_15pl_0_1 = "Goals - SQ ";
+label n_hiv_deaths_15pl_0_2 = "Optima - SQ ";
+label n_hiv_deaths_15pl_0_3 = "Synthesis - SQ ";
+label n_hiv_deaths_15pl_15_1 = "Goals - int 15 ";
+label n_hiv_deaths_15pl_15_2 = "Optima - int 15 ";
+label n_hiv_deaths_15pl_15_3 = "Synthesis - int 15 ";
+
+series  x=year y=n_hiv_deaths_15pl_0_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=n_hiv_deaths_15pl_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=n_hiv_deaths_15pl_0_3/	lineattrs = (color=green thickness = 2);
+
+series  x=year y=n_hiv_deaths_15pl_15_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+series  x=year y=n_hiv_deaths_15pl_15_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=n_hiv_deaths_15pl_15_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
 
 run;
 

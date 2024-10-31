@@ -12,16 +12,21 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data b;
   set a.l_base_kenya_ai_options_f ;
 
-
-if option = 0 and cald le 2024;
-
 /*
+
+  if option = 0 and cald le 2024;
 
   s = 0 ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
 
 */
+
+
+if option in (20, 200);
+
+if option = 20 then option=0;
+if option = 200 then option=1;
 
 
 
@@ -109,7 +114,7 @@ n_tested_due_to_self_test = n_tested_due_to_self_t ;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  37   ;
+%let nfit =  74   ;
 %let year_end = 2024.00 ;
 run;
 proc sort;by cald option ;run;
