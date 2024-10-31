@@ -1377,7 +1377,7 @@ p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1
 p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab n_started_lencab_offart  p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart
 p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct  p_ever_len_v_failed
 
-p_len_w p_len_m  p_diag_vl1000  p_len_plw
+p_len_w p_len_m  p_diag_vl1000  p_len_plw  pr_res_len
 
 ;
 
@@ -1729,7 +1729,7 @@ incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
-lencab_uptake lencab_uptake_vlg1000  rate_return_for_lencab  date_prep_cab_intro 
+lencab_uptake lencab_uptake_vlg1000  rate_return_for_lencab  date_prep_cab_intro pr_res_len
 ;
 
 %macro par(p=);
@@ -1795,7 +1795,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=p_emerge_inm_res_cab_notpr);  %par(p=date_prep_cab_intro);
 %par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
-%par(p=lencab_uptake); %par(p=lencab_uptake_vlg1000);  %par(p=rate_return_for_lencab);  %par(p=prob_strong_pref_lencab);
+%par(p=lencab_uptake); %par(p=lencab_uptake_vlg1000);  %par(p=rate_return_for_lencab);  %par(p=prob_strong_pref_lencab); %par(p=pr_res_len)
 
 
 data b.wide_par2; merge 
@@ -1938,6 +1938,8 @@ dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_5
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
 
 d_ddaly_50y_2_1 = ddaly_50y_1 - ddaly_50y_2; * dalys averted;
+
+dalys_averted=0; if d_ddaly_50y_2_1 > 0 then dalys_averted=1;
 
 d_ddaly_gbd_50y_2_1 = ddaly_gbd_50y_1 - ddaly_gbd_50y_2; * dalys averted;
 
@@ -2313,7 +2315,7 @@ d_dcost_50y_2_1
 d_netdaly500_2_1 
 lowest_netdaly
 ;
-* where p_diag_vlg1000_24_g = 5;
+* where p_diag_vlg1000_24_g = 1;
 * where p_started_lencab_vls_10y_2_g = 1;
 * where p_started_lencab_vmgt1000_10y_g = 4;
 * where p_started_lencab_offart_10y_g = 4;
@@ -2340,6 +2342,27 @@ title;
 footnote;
 
 * * ods html close;
+
+
+
+
+proc logistic; 
+model dalys_averted = 
+
+p_diag_vlg1000_24
+n_death_hiv_10y_1
+pr_res_len
+rr_res_cab_dol
+;
+run;
+
+
+
+proc freq; tables p_diag_vlg1000_24 ; where dalys_averted=0; 
+run;
+
+
+
 
 
 
