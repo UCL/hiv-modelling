@@ -1855,6 +1855,8 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
  prob_prep_pop_wide_tld  date_prep_cab_intro 
 
 p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  lencab_uptake lencab_uptake_vlg1000  prob_strong_pref_lencab  rate_return_for_lencab
+
+pr_res_len
 ;
 
 run;
