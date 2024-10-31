@@ -414,31 +414,115 @@ hiv_synthesis_int14 hiv_synthesis_int15
 ;
 
 
-data goals_a ; set all; if model=1;
-if scenario = 0 ;
-new_infection_15pl_1 = new_infection_15pl;
-keep year new_infection_15pl_1 ;
-
-data optima_a ; set all; if model=2;
-if scenario = 0 ;
-new_infection_15pl_2 = new_infection_15pl;
-keep year new_infection_15pl_2 ;
-
-data hiv_synthesis_a ; set all; if model=3;
-if scenario = 0 ;
-new_infection_15pl_3 = new_infection_15pl;
-keep year new_infection_15pl_3 ;
 
 
+* template for running graphs comparing with status quo - replace 9 with int number and n_prep with n_prep name
+  remember to change y axis scale and label
+;
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; n_prep_0_1 = n_prep; keep year n_prep_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; n_prep_0_2 = n_prep;keep year n_prep_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;n_prep_0_3 = n_prep;keep year n_prep_0_3 ;
+
+data goals_9 ; set all; if model=1;if scenario = 9 ;n_prep_9_1 = n_prep;keep year n_prep_9_1 ;
+data optima_9 ; set all; if model=2;if scenario = 9 ;n_prep_9_2 = n_prep;keep year n_prep_9_2 ;
+data hiv_synthesis_9 ; set all; if model=3;if scenario = 9 ;n_prep_9_3 = n_prep;keep year n_prep_9_3 ;
+
+data a.n_prep ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_9 optima_9 hiv_synthesis_9 ;
+
+ods html;
+
+proc sgplot data = a.n_prep ; 
+Title    height=1.5 justify=center "n_prep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 10000) valueattrs=(size=10);
+
+label n_prep_0_1 = "Goals - SQ ";
+label n_prep_0_2 = "Optima - SQ ";
+label n_prep_0_3 = "Synthesis - SQ ";
+label n_prep_9_1 = "Goals - all interventions ";
+label n_prep_9_2 = "Optima - all interventions ";
+label n_prep_9_3 = "Synthesis - all interventions ";
+
+series  x=year y=n_prep_0_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=n_prep_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=n_prep_0_3/	lineattrs = (color=green thickness = 2);
+
+series  x=year y=n_prep_9_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+series  x=year y=n_prep_9_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=n_prep_9_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+
+run;
+
+quit;
 
 
-data a.new_infection_15pl ; 
-merge goals_a optima_a hiv_synthesis_a ;
 
 
 
-proc print; run;
- 
+
+/*
+
+* template for running graphs comparing with status quo - replace 9 with int number and n_prep with n_prep name
+  remember to change y axis scale and label
+;
+
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; variable_0_1 = variable; keep year variable_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; variable_0_2 = variable;keep year variable_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;variable_0_3 = variable;keep year variable_0_3 ;
+
+data goals_intx ; set all; if model=1;if scenario = intx ;variable_intx_1 = variable;keep year variable_intx_1 ;
+data optima_intx ; set all; if model=2;if scenario = intx ;variable_intx_2 = variable;keep year variable_intx_2 ;
+data hiv_synthesis_intx ; set all; if model=3;if scenario = intx ;variable_intx_3 = variable;keep year variable_intx_3 ;
+
+data a.variable ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_intx optima_intx hiv_synthesis_intx ;
+
+ods html;
+
+proc sgplot data = a.variable ; 
+Title    height=1.5 justify=center "variable";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 10000) valueattrs=(size=10);
+
+label variable_0_1 = "Goals - SQ ";
+label variable_0_2 = "Optima - SQ ";
+label variable_0_3 = "Synthesis - SQ ";
+label variable_intx_1 = "Goals - all interventions ";
+label variable_intx_2 = "Optima - all interventions ";
+label variable_intx_3 = "Synthesis - all interventions ";
+
+series  x=year y=variable_0_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=variable_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=variable_0_3/	lineattrs = (color=green thickness = 2);
+
+series  x=year y=variable_intx_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+series  x=year y=variable_intx_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=variable_intx_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+
+run;
+
+quit;
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
 ods html;
 proc sgplot data = a.new_infection_15pl; 
 Title    height=1.5 justify=center "Number of new infections in adults age 15+";
@@ -457,50 +541,5 @@ run;
 quit;
 ods html close;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-proc sgplot data=totdeaths_large;
-Title    height=1.5 justify=center "Deaths (all causes) averted in 15+ years old (50 years) - EMOD";
-yaxis grid label	= 'Number'	labelattrs=(size=12) values = (0 to 10000 by 1000);
-vbarparm category=strat response=Deaths_A1599_averted/  fillattrs=(color=purple);
-where model="EMOD";run;
-
-
-
-proc sgplot data=a.large; 
-Title    height=1.5 justify=center "Proportion of adults 15+ years old living with HIV diagnosed - Different strategies in SYNTHESIS - ZOOM";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0.8 to 1 by 0.05);*20000000 is stoping in 2023;
-label P_DIAG_A1599_M500  = "StatusQuo";
-label P_DIAG_A1599_M501  = "Min";
-label P_DIAG_A1599_M508  = "Min+TFSWprog";
-label P_DIAG_A1599_M511  = "Min+CMMC";
-label P_DIAG_A1599_M514  = "Min+OPrEPF1524";
-label P_DIAG_A1599_M515  = "Min+OPrEPFSW";
-label P_DIAG_A1599_M516  = "Min+OPrEPSDC";
-label P_DIAG_A1599_M518  = "Min+OPrEPPLW";
-series  x=year y=P_DIAG_A1599_M500/lineattrs = (color=green thickness = 2 pattern=solid);
-series  x=year y=P_DIAG_A1599_M501/lineattrs = (color=green thickness = 2 pattern=MediumDash);
-series  x=year y=P_DIAG_A1599_M508/lineattrs = (color=yellow thickness = 2 pattern=solid);
-series  x=year y=P_DIAG_A1599_M511/lineattrs = (color=purple thickness = 2 pattern=solid);
-series  x=year y=P_DIAG_A1599_M514/lineattrs = (color=violet thickness = 2 pattern=solid);
-series  x=year y=P_DIAG_A1599_M515/lineattrs = (color=violet thickness = 2 pattern=shortDash);
-series  x=year y=P_DIAG_A1599_M516/lineattrs = (color=violet thickness = 2 pattern=LongDash);
-series  x=year y=P_DIAG_A1599_M518/lineattrs = (color=violet thickness = 2 pattern=dot);
-run;quit;
-
 */
+
