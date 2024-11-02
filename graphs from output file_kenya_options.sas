@@ -10,18 +10,68 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_ai_options_f ;
+  set a.l_base_kenya_ai_options_g ;
+
+
+  if run in (
+
+52451012
+                                                                                                          99396390
+                                                                                                         148854888
+                                                                                                         156319202
+                                                                                                         182128659
+                                                                                                         208697858
+                                                                                                         216059282
+                                                                                                         241429337
+                                                                                                         260409927
+                                                                                                         269350071
+                                                                                                         282649172
+                                                                                                         294702234
+                                                                                                         370152337
+                                                                                                         381940832
+                                                                                                         388538967
+                                                                                                         401238264
+                                                                                                         506244959
+                                                                                                         513301848
+                                                                                                         540472546
+                                                                                                         618827995
+                                                                                                         662102840
+                                                                                                         682258854
+                                                                                                         703999685
+                                                                                                         726269864
+                                                                                                         735442654
+                                                                                                         761139356
+                                                                                                         770640285
+                                                                                                         789741397
+                                                                                                         806433259
+                                                                                                         814622004
+                                                                                                         815459829
+                                                                                                         871617034
+                                                                                                         881580150
+                                                                                                         913523786
+                                                                                                         923026952
+                                                                                                         952902829
+
+
+);
+
+
+
+
+
+
+  if option = 0 and cald le 2024;
+
 
 
 /*
 
-  if option = 0 and cald le 2024;
-*/
-
-
   s = 105 ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
+
+*/
+
 
 
 
@@ -109,8 +159,8 @@ n_tested_due_to_self_test = n_tested_due_to_self_t ;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  74   ;
-%let year_end = 2040.00 ;
+%let nfit =  36   ;
+%let year_end = 2024.00 ;
 run;
 proc sort;by cald option ;run;
 

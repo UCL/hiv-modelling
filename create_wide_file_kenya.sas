@@ -922,7 +922,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_hiv_m ;						n_hiv_m = s_hivge15m * sf; 
 * n_hiv_w ;						n_hiv_w = s_hivge15w * sf; 
 
-* n_infected1549;					n_infected = (s_primary1549_m + s_primary1549_w) * 4 * sf;
+* n_infected1549;					n_infected1549 = (s_primary1549_m + s_primary1549_w) * 4 * sf;
 * n_infected1549m;					n_infected1549_m = s_primary1549_m * 4 * sf;
 * n_infected1549w;					n_infected1549_w = s_primary1549_w * 4 * sf;
 
@@ -1200,13 +1200,24 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=incidence1549); %var(v=n_infected1549); %var(v=n_infected);
 
-data wide.outputs;
+%var(v=incidence1549); %var(v=n_infected1549);  %var(v=n_infected1564); %var(v=n_infected);
+
+
+
+data wide_outputs;
 merge 
-incidence1549 n_infected1549 n_infected ;
+incidence1549 n_infected1549 n_infected incidence1564;
 proc sort; by run;
 
+%macro par(p=);
+proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2020; run;
+data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
+%mend par; 
+
+%par(p=ych2_risk_beh_newp ); 
+
+proc sort; by run;run;
 
 /*
 
@@ -1524,6 +1535,12 @@ proc sort; by run;run;
 proc contents data=a.w_base_kenya_ai_options_g;
 run;
 
+proc univariate; var incidence1564_17 incidence1564_20 n_infected_23 ;
+
+proc print noobs;
+var run;
+where n_infected_23 < 50000;
+run;
 
 *
 
