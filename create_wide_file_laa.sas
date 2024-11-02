@@ -1000,6 +1000,7 @@ run;
 * p_onart_w_age50pl;			p_onart_w_age50pl = s_onart_w50pl / (s_onart_w1549_ + s_onart_w50pl);
 
 * prevalence_vg1000;			if s_alive > 0 then prevalence_vg1000 = s_vg1000 / s_alive;
+* prevalence_vg1000_1549;		prevalence_vg1000_1549 = s_vg1000_1549 / (s_alive1549_w + s_alive1549_m);
 * prev_vg1000_newp_m;			prev_vg1000_newp_m = (s_i_m_newp - s_i_vl1000_m_newp) /  s_m_newp;
 * prev_vg1000_newp_w;			prev_vg1000_newp_w = (s_i_w_newp - s_i_vl1000_w_newp) /  s_w_newp;
 * r_efa_hiv;					if s_hivge15 > 0 then r_efa_hiv = s_r_efa / s_hivge15 ;
@@ -1271,7 +1272,7 @@ dadc_cost       dcd4_cost       dvl_cost       dvis_cost dvis_cost_no_lencab dvi
 dcot_cost       dtb_cost    n_hiv  ddcp_cost dcost_drug_level_test p_drug_level_test
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
-prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
+prevalence_vg1000 prevalence_vg1000_1549 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw  mtct_birth_prop  ddaly_mtct
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
 p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
@@ -1457,7 +1458,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=prevalence2529m); * %var(v=prevalence3034w);*  %var(v=prevalence3034m);* %var(v=prevalence3539w); * %var(v=prevalence3539m);  	  
 * %var(v=prevalence4044w); *  %var(v=prevalence4044m); *  %var(v=prevalence4549w); *  %var(v=prevalence4549m);  
 %var(v=prevalence_vg1000); %var(v=incidence1549);  %var(v=incidence1564);  %var(v=n_infection);  %var(v=incidence_onprep);
-%var(v=prevalence1524w); *  %var(v=prevalence1524m); %var(v=prevalence_sw);
+%var(v=prevalence1524w); *  %var(v=prevalence1524m); %var(v=prevalence_sw); %var(v=prevalence_vg1000_1549);
 * %var(v=prevalence5054w); * %var(v=prevalence5054m); * %var(v=prevalence5559w); * %var(v=prevalence5559m); * %var(v=prevalence6064w); * %var(v=prevalence6064m); 
 * %var(v=prevalence65plw); * %var(v=prevalence65plm); * %var(v=r_prev_sex_1549); * %var(v=prevalence_hiv_preg);
 * %var(v=r_prev_1519w_4549w );  * %var(v=r_prev_2024w_4549w  );  * %var(v=r_prev_2529w_4549w );  * %var(v=r_prev_3034w_4549w  ); 
@@ -1619,7 +1620,7 @@ dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dc
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost dcost_drug_level_test n_hiv n_alive  p_drug_level_test
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
-prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
+prevalence_vg1000 prevalence_vg1000_1549 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw  mtct_birth_prop
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
 p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
@@ -2035,6 +2036,11 @@ p_diag_vlg1000_10y_2 = 1 - p_diag_vl1000_10y_2;
 
 relative_prev_diag_vlg1000_2_1 = p_diag_vlg1000_10y_2 / p_diag_vlg1000_10y_1;
 
+r_prevalence_vg1000_10y_2_1 = prevalence_vg1000_10y_2 / prevalence_vg1000_10y_1 ;
+
+r_prev_vg1000_1549_10y_2_1 = prevalence_vg1000_1549_10y_2 / prevalence_vg1000_1549_10y_1 ;
+
+
 * label 
 prevalence1549w_24 = "HIV prevalence in women age 15-49 in 2024"
 prevalence1549m_24 = "HIV prevalence in men age 15-49 in 2024"
@@ -2205,7 +2211,11 @@ relative_prev_diag_vlg1000_2_1
 mtct_prop_10y_1 mtct_prop_10y_2 
 relative_mtct_prop_10y
 mtct_birth_prop_10y_1 mtct_birth_prop_10y_2 
+prevalence_vg1000_10y_1 prevalence_vg1000_10y_2
+prevalence_vg1000_1549_10y_1 prevalence_vg1000_1549_10y_2
 n_mtct_10y_1 n_mtct_10y_2 
+r_prevalence_vg1000_10y_2_1 
+r_prev_vg1000_1549_10y_2_1
 d_n_death_hiv_10y_2_1 
 d_p_onart_vl1000_10y_2_1 
 d_p_vl1000_10y_2_1 
