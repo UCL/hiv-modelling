@@ -19701,6 +19701,7 @@ if prevalence1524m gt 0 then prev_ratio_1524 = prevalence1524w / prevalence1524m
 scale_factor_2022 = (54000000 * 0.62) / (s_alive_m + s_alive_w); 
 n_onart_2022_for_abort = scale_factor_2022 * s_onart ; 
 n_onart_w_2022_for_abort = scale_factor_2022 * s_onart_w ; 
+n_infected = (s_primary_m + s_primary_w) * 4 * scale_factor_2022;
 
 prevalence2024w = s_hiv2024w  / s_ageg2024w ;
 prevalence2024m = s_hiv2024m  / s_ageg2024m ;
@@ -20548,6 +20549,7 @@ then do;
 abort abend; 
 end;
 
+if cald=2022 and n_infected > 40000 then do; abort abend; end;
 
 
 

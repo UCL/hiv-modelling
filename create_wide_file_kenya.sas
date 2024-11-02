@@ -1537,10 +1537,12 @@ run;
 
 proc univariate; var incidence1564_17 incidence1564_20 n_infected_23 ;
 
+ods html;
 proc print noobs;
 var run;
-where n_infected_23 < 50000;
+where n_infected_23 < 40000;
 run;
+ods html close;
 
 *
 
