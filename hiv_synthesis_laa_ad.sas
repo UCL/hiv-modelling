@@ -6,6 +6,8 @@ some injections given late - perhaps model as single 3 month period interruption
 
 pr_res_len saved
 
+any change to dealing with resistance risk in tail ?
+
 ;
 
 
