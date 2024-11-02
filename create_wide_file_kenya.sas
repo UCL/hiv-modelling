@@ -2,22 +2,22 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ai_options_f_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ai_options_g_out\";
 
 
 
-data   kenya_ai_options_f ; set b.out: ;
+data   kenya_ai_options_g ; set b.out: ;
 
 
 
-proc sort data=  kenya_ai_options_f; 
+proc sort data=  kenya_ai_options_g; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_ai_options_f ;
+set   kenya_ai_options_g ;
 
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
@@ -33,7 +33,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_ai_options_f sf;
+merge   kenya_ai_options_g sf;
 by run ;
  
 
@@ -1135,14 +1135,14 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_ai_options_f; set y;  
+data a.l_base_kenya_ai_options_g; set y;  
 
 
 
 
 
 
-data y; set a.l_base_kenya_ai_options_f; 
+data y; set a.l_base_kenya_ai_options_g; 
 
 
  
@@ -1198,9 +1198,17 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 data &v ; merge y_95 y_98 y_99 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_22 y_23 y_40 y_70 t_24_25 t_24_29 t_24_71 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
-
-
 %mend var;
+
+%var(v=incidence1549); %var(v=n_infected1549); %var(v=n_infected);
+
+data wide.outputs;
+merge 
+incidence1549 n_infected1549 n_infected ;
+proc sort; by run;
+
+
+/*
 
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);  %var(v=p_births_hiv_vlg1000);
@@ -1411,7 +1419,7 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
 n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_diagnosed  n_hiv
 n_alive_msm	 n_alive1564_msm incidence1549msm incidence1564msm  prevalence1549_msm	prevalence1564_msm  p_elig_prep_any_msm_1564 p_onprep_msm				
  p_onart_msm  prevalence_vg1000_msm	 p_diag_msm	 p_onart_diag_msm p_vl1000_art_gt6m_msm	 p_ever_tested_msm 		
- p_tested_this_period_msm p_msm_infected_from_msm p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1newp n_vm_per_year
+ p_tested_this_period_msm p_msm_infected_from_msm p_onprep_pwid  p_onart_pwid  p_onart_sw   p_ep_msm  p_msm_ge1newp  p_m_ge1newp n_vm_per_year
 n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test  p_newp_ge1_agyw
 p_births_hiv_vlg1000  n_newp 
 ;
@@ -1428,7 +1436,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-%par(p=sf_2022); /*%par(p=dataset)*/;
+%par(p=sf_2022);
 %par(p=sex_beh_trans_matrix_m ); %par(p=sex_beh_trans_matrix_w ); %par(p=sex_age_mixing_matrix_m ); %par(p=sex_age_mixing_matrix_w ); %par(p=p_rred_p );
 %par(p=p_hsb_p ); %par(p=newp_factor ); %par(p=eprate ) %par(p=conc_ep ); %par(p=ch_risk_diag ); %par(p=ch_risk_diag_newp );
 %par(p=ych_risk_beh_newp ); %par(p=ych2_risk_beh_newp ); %par(p=ych_risk_beh_ep ); %par(p=exp_setting_lower_p_vl1000 );
@@ -1465,7 +1473,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 run;
 
 data wide_par; merge 
-sf_2022 /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2022 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1499,15 +1507,21 @@ run;
 proc sort; by run;run;
 
 
+*/
+
+
+
+
+
 * To get one row per run;
 
-  data a.w_base_kenya_ai_options_f; 
+  data a.w_base_kenya_ai_options_g; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
   by run;
 
-proc contents data=a.w_base_kenya_ai_options_f;
+proc contents data=a.w_base_kenya_ai_options_g;
 run;
 
 
