@@ -19701,7 +19701,7 @@ if prevalence1524m gt 0 then prev_ratio_1524 = prevalence1524w / prevalence1524m
 scale_factor_2022 = (54000000 * 0.62) / (s_alive_m + s_alive_w); 
 n_onart_2022_for_abort = scale_factor_2022 * s_onart ; 
 n_onart_w_2022_for_abort = scale_factor_2022 * s_onart_w ; 
-n_infected = (s_primary_m + s_primary_w) * 4 * scale_factor_2022;
+n_infected_for_abort = (s_primary_m + s_primary_w) * 4 * scale_factor_2022;
 
 prevalence2024w = s_hiv2024w  / s_ageg2024w ;
 prevalence2024m = s_hiv2024m  / s_ageg2024m ;
@@ -20539,7 +20539,7 @@ if cald = 2010 and (prevalence1549m > 0.10) then do; abort abend; end;
 
 if cald = 2017 and incidence1549w > 0.25 then do; abort abend; end;
 if cald = 2017 and incidence1549m > 0.25 then do; abort abend; end;
-if cald = 2020 and incidence1549  > 0.25 then do; abort abend; end;
+if cald = 2020 and incidence1549  > 0.20 then do; abort abend; end;
 
 if cald = 2022 and 
 (
@@ -20549,7 +20549,7 @@ then do;
 abort abend; 
 end;
 
-if cald=2022 and n_infected > 40000 then do; abort abend; end;
+if cald=2022 and n_infected_for_abort > 40000 then do; abort abend; end;
 
 
 
