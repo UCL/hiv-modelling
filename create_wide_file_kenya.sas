@@ -24,6 +24,7 @@ s_alive = s_alive_m + s_alive_w ;
 
 
 sf_2022 = (54000000 * 0.62) / s_alive;  * 62% of kenya population in 2022 >= age 15 https://www.statista.com/statistics/451141/age-structure-in-kenya/;
+* sf_2022 = (54000000 * 0.5) / s_alive; * modified to be consistent with other models;
 sf = sf_2022;
 
 keep run sf sf_2022;
@@ -1201,13 +1202,13 @@ drop _NAME_ _TYPE_ _FREQ_;
 %mend var;
 
 
-%var(v=incidence1549); %var(v=n_infected1549);  %var(v=n_infected1564); %var(v=n_infected);
+%var(v=incidence1549); %var(v=n_infected1549);   %var(v=n_infected);
 
 
 
 data wide_outputs;
 merge 
-incidence1549 n_infected1549 n_infected incidence1564;
+incidence1549 n_infected1549 n_infected ;
 proc sort; by run;
 
 %macro par(p=);
@@ -1216,6 +1217,10 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %mend par; 
 
 %par(p=ych2_risk_beh_newp ); 
+
+data wide_par;
+
+merge ych2_risk_beh_newp;
 
 proc sort; by run;run;
 
@@ -1537,10 +1542,12 @@ run;
 
 proc univariate; var incidence1564_17 incidence1564_20 n_infected_23 ;
 
+proc freq; tables n_infected_23 ; run; 
+
 ods html;
 proc print noobs;
 var run;
-where n_infected_23 < 40000;
+where n_infected_23 < 30000;
 run;
 ods html close;
 

@@ -2,21 +2,94 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ai_options_f_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ai_options_g_out\";
 
 
 
-data   kenya_ai_options_f ; set b.out: ;
+data   kenya_ai_options_g ; set b.out: ;
 
 
-proc sort data=  kenya_ai_options_f; 
+
+  if run in (
+
+1271976 
+8930518 
+12535988 
+85165619 
+99396390 
+113761094 
+117028954 
+118695823 
+127494500 
+141412720 
+145850647 
+148854888 
+156319202 
+182128659 
+208666433 
+243542209 
+246832274 
+260409927 
+269350071 
+282649172 
+284882379 
+294631514 
+294702234 
+370152337 
+388538967 
+401238264 
+428517440 
+430987585 
+437922755 
+491342228 
+506244959 
+513301848 
+540472546 
+574390764 
+576262521 
+586388944 
+592561317 
+611165004 
+611296297 
+618827995 
+631297066 
+662102840 
+673887400 
+703999685 
+707740122 
+739340689 
+757077422 
+761139356 
+770640285 
+789741397 
+814622004 
+815459829 
+826143870 
+838788058 
+847390670 
+885163832 
+913523786 
+923026952 
+930646759 
+938856002 
+940695197 
+960859171 
+963594528 
+991779478 
+
+);
+
+
+
+
+proc sort data=  kenya_ai_options_g; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_ai_options_f ;
+set   kenya_ai_options_g ;
 
 
 if cald=2022.25;
@@ -24,6 +97,7 @@ s_alive = s_alive_m + s_alive_w ;
 
 
 sf_2022 = (54000000 * 0.62) / s_alive;  * 62% of kenya population in 2022 >= age 15 https://www.statista.com/statistics/451141/age-structure-in-kenya/;
+* sf_2022 = (54000000 * 0.5) / s_alive; * modified to be consistent with other models;
 sf = sf_2022;
 
 keep run sf sf_2022;
@@ -33,7 +107,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_ai_options_f sf;
+merge   kenya_ai_options_g sf;
 by run ;
  
 
@@ -986,12 +1060,12 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_ai_options_f; set y;  
+data a.l_base_kenya_ai_options_g; set y;  
 
 
 
 
-data y; set a.l_base_kenya_ai_options_f; 
+data y; set a.l_base_kenya_ai_options_g; 
 
  
   option nospool;
@@ -1003,7 +1077,7 @@ data y; set a.l_base_kenya_ai_options_f;
 
   options nomprint;
 
-/*
+
 
 * only for option = 0;
 
@@ -1032,31 +1106,31 @@ proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where 2021   <=
 proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where 2022   <= cald < 2023  ; 
 proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <= cald < 2024  ; 
 
-*/
 
-proc means noprint data=y; var &v; output out=y_24  mean= &v   ;         ; where 2024.0 <= cald < 2025.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_25  mean= &v   ;         ; where 2025.0 <= cald < 2026.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_26  mean= &v   ;         ; where 2026.0 <= cald < 2027.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_27  mean= &v   ;         ; where 2027.0 <= cald < 2028.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_28  mean= &v   ;         ; where 2028.0 <= cald < 2029.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_29  mean= &v   ;         ; where 2029.0 <= cald < 2030.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_30  mean= &v   ;         ; where 2030.0 <= cald < 2031.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_31  mean= &v   ;         ; where 2031.0 <= cald < 2032.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_32  mean= &v   ;         ; where 2032.0 <= cald < 2033.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_33  mean= &v   ;         ; where 2033.0 <= cald < 2034.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_34  mean= &v   ;         ; where 2034.0 <= cald < 2035.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_35  mean= &v   ;         ; where 2035.0 <= cald < 2036.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_36  mean= &v   ;         ; where 2036.0 <= cald < 2037.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_37  mean= &v   ;         ; where 2037.0 <= cald < 2038.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_38  mean= &v   ;         ; where 2038.0 <= cald < 2039.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_39  mean= &v   ;         ; where 2039.0 <= cald < 2040.0 and option=20 ;
-proc means noprint data=y; var &v; output out=y_40  mean= &v   ;         ; where 2040.0 <= cald < 2041.0 and option=20 ;
+
+proc means noprint data=y; var &v; output out=y_24  mean= &v   ;         ; where 2024.0 <= cald < 2025.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_25  mean= &v   ;         ; where 2025.0 <= cald < 2026.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_26  mean= &v   ;         ; where 2026.0 <= cald < 2027.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_27  mean= &v   ;         ; where 2027.0 <= cald < 2028.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_28  mean= &v   ;         ; where 2028.0 <= cald < 2029.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_29  mean= &v   ;         ; where 2029.0 <= cald < 2030.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_30  mean= &v   ;         ; where 2030.0 <= cald < 2031.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_31  mean= &v   ;         ; where 2031.0 <= cald < 2032.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_32  mean= &v   ;         ; where 2032.0 <= cald < 2033.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_33  mean= &v   ;         ; where 2033.0 <= cald < 2034.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_34  mean= &v   ;         ; where 2034.0 <= cald < 2035.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_35  mean= &v   ;         ; where 2035.0 <= cald < 2036.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_36  mean= &v   ;         ; where 2036.0 <= cald < 2037.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_37  mean= &v   ;         ; where 2037.0 <= cald < 2038.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_38  mean= &v   ;         ; where 2038.0 <= cald < 2039.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_39  mean= &v   ;         ; where 2039.0 <= cald < 2040.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_40  mean= &v   ;         ; where 2040.0 <= cald < 2041.0 and option=0 ;
  																										   
 																										
 data &v ; set 
 
 /* only for option=0   */
-/* y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23 */  
+   y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23     
 
 y_24 y_25 y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40  ;  
 drop _NAME_ _TYPE_ _FREQ_;
@@ -1120,7 +1194,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 
-/*
+
 
 * for status quo - option = 0;
 
@@ -1170,9 +1244,9 @@ cards;
 2040
 ;
 
-*/
-  
 
+  
+/*
 
 data year;
 input year;
@@ -1195,7 +1269,7 @@ cards;
 2039
 2040
 
-
+*/
 
 
 data   wide_outputs; merge year 
