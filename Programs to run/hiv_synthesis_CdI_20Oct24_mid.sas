@@ -22785,7 +22785,7 @@ data r1 ; set a;
 */
 ***COMMENT OUT OPTION 62 AND 67 (TB);
 
-/*
+
 data r1 ; set a;
 *option 1;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=51);
@@ -24012,7 +24012,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=66);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=66);
 
-
+/*
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=67);
@@ -24084,7 +24084,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=67);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=67);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=67);
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=68);

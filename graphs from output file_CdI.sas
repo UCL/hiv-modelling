@@ -5,7 +5,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data b;
-set a.l_base_CdI_18Oct24a; 
+set a.l_base_CdI_20Oct24; 
 if option ne 0 then delete;
 s_sw_1549_ = s_sw_1549;
 
@@ -15,7 +15,7 @@ proc freq;table cald;run;
  
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  48;
+%let nfit =  71
 %let year_end = 2040 ;
 run;
 proc sort;by cald option ;run;
@@ -46,7 +46,7 @@ prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w	
 rate_dead_allage 	rate_dead_allage_m 	rate_dead_allage_w
 n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive1549m		n_alive1549w	
 n_alive_m			n_alive_w			n_alive1564_		n_alive1564m		n_alive1564w		n_art_start_y 	
-n_prep				n_prep_ever			p_prep_ever	p_fsw_newp0_
+n_onprep			n_prep_ever			p_prep_ever	p_fsw_newp0_
 n_pregnant			n_newinf			n_newinf1549_		n_newinf1549m		n_newinf1549w		n_prep_oral_ever_sw
 prop_sw_hiv1549_
 
@@ -67,8 +67,6 @@ p_m_ge1newp		n_pwid				p_onprep_pwid		p_onart_pwid
 %let p75_var = p75_&var_0;
 %let p5_var = p5_&var_0;
 %let p95_var = p95_&var_0;
-%let p2p5_var = p2p5_&var_0;
-%let p97p5_var = p97p5_&var_0;
 %let p50_var = median_&var_0;
 
 %let count = 0;
@@ -83,11 +81,10 @@ p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
-*p2p5_&varb._0  = PCTL(2.5,of &varb.1-&varb.&nfit);
-*p97p5_&varb._0 = PCTL(97.5,of &varb.1-&varb.&nfit);
+
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
 
-keep cald p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 /*p2p5_&varb._0 p97p5_&varb._0*/;
+keep cald p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -195,7 +192,7 @@ run;
 
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\loveleen\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\02Oct24a.doc' startpage=never; 
+ods rtf file = 'C:\Users\loveleen\Dropbox (UCL)\Loveleen\Synthesis model\WHO Ivory Coast\20oct24.doc' startpage=never; 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Population 15+";
