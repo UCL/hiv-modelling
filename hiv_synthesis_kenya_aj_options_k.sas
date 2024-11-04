@@ -2242,13 +2242,13 @@ if caldate_never_dot >= &year_interv then do;
 	if option  = 1  then do;
 		* 1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	
 		    Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 5;
 		high_rate_testing_set_in_opts = 1; 
 	end;
 
 	if option = 2  then do;
 		* 2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_year_i = 1.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 	end;
 
@@ -2277,7 +2277,7 @@ if caldate_never_dot >= &year_interv then do;
 		sexual encounter = 95%;
 		condom_incr_set_in_opts = 0;
 		if gender = 2 and 15 <= age < 25 then do;	
-			condom_incr_set_in_opts = 1; condom_incr_year_i = 2;
+			condom_incr_set_in_opts = 1; condom_incr_year_i = 3;
 		end;
 	end;
 
@@ -2301,7 +2301,6 @@ if caldate_never_dot >= &year_interv then do;
 		if 2027 <= caldate{t} then p_prep_oral_b_set_in_opts = 0.95; 
 		rate_stop_prep_oral_set_in_opts = 0.001; 
 		prob_prep_restart_set_in_opts = 0.95; 
-		hard_reach=0;
 	end;
 
 	if option = 9 then do;* note not included when including all interventions;
@@ -2324,7 +2323,6 @@ if caldate_never_dot >= &year_interv then do;
 		rate_stop_prep_inj_set_in_opts = 0.001; 
 		rate_test_stprep_set_in_opts = 0.95;	
 		prob_prep_restart_set_in_opts = 0.95; 
-		hard_reach=0;
 	end;
 
 	if option = 10 then do;
@@ -2358,8 +2356,6 @@ if caldate_never_dot >= &year_interv then do;
 
 		rate_test_stprep_set_in_opts = 0.95;	
 		prob_prep_restart_set_in_opts = 0.95; 
-
-		hard_reach=0;
 	end;
 	
 	if option  = 11 then do;
@@ -2428,10 +2424,8 @@ if caldate_never_dot >= &year_interv then do;
 		end;
 	end;
 
-
-
 	if option  = 20  then do;
-		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 5;
 		high_rate_testing_set_in_opts = 1; 
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 		prob_self_test_hard_reach = 0.7;
@@ -2440,7 +2434,7 @@ if caldate_never_dot >= &year_interv then do;
 		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_year_i = 1;
 		condom_incr_set_in_opts = 0;
 		if gender = 2 and 15 <= age < 25 then do;	
-			condom_incr_set_in_opts = 1; condom_incr_year_i = 2;
+			condom_incr_set_in_opts = 1; condom_incr_year_i = 3;
 		end;
 		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 5;
 
@@ -2474,7 +2468,6 @@ if caldate_never_dot >= &year_interv then do;
 
 		prob_prep_restart_set_in_opts = 0.8; 
 
-		hard_reach=0;
 		fold_tr_pwid = 0;
 
 		decr_rate_lost_set_in_opts = 1; decr_rate_lost_year_i = 1;
@@ -2489,31 +2482,34 @@ if caldate_never_dot >= &year_interv then do;
 		hiv_death_rate_modif_in_opts=1;
 	end;
 
+
+
+
 	* half targets;
 
 	if option = 101 then do;
 		* 1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	
 		    Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_year_i = 1.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
 		high_rate_testing_set_in_opts = 1; 
 	end;
 
 	if option = 102 then do;
 		* 2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_year_i = 1.2;
+		test_rate_set_in_opts = 1; incr_test_year_i = 1.5;
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 	end;
 
 	if option = 103 then do;
 		* 3 General wide distribution of self tests in adults, not focussed only on those with recent sexual risk	Proportion of PLHIV aware of HIV status = 100%;
-		prob_self_test_hard_reach = 0.25;
+		prob_self_test_hard_reach = 0.4 ;
 		eff_self_test_targeting = 1; self_test_targeting = 1;
 		rate_self_test = 0.05;
 	end;
 
 	if option  = 104 then do;
 		* 4 Recent sexual risk-informed self-testing (index testing) for adults	Proportion of PLHIV aware of HIV status = 100%;
-		prob_self_test_hard_reach = 0.5;
+		prob_self_test_hard_reach = 0.6;
 		eff_self_test_targeting = 15; self_test_targeting = 15;
 		rate_self_test = 0.05 ;
 	end;
@@ -2529,7 +2525,7 @@ if caldate_never_dot >= &year_interv then do;
 		sexual encounter = 95%;
 		condom_incr_set_in_opts = 0;
 		if gender = 2 and 15 <= age < 25 then do;	
-			condom_incr_set_in_opts = 1; condom_incr_h_year_i = 1.25;
+			condom_incr_set_in_opts = 1; condom_incr_h_year_i = 1.5;
 		end;
 	end;
 
@@ -2553,7 +2549,7 @@ if caldate_never_dot >= &year_interv then do;
 		if 2027 <= caldate{t} then p_prep_oral_b_set_in_opts = 0.50; 
 
 		rate_stop_prep_oral_set_in_opts = 0.002; 
-		prob_prep_restart_set_in_opts = 0.25; 
+		prob_prep_restart_set_in_opts = 0.25;
 	end;
 
 	if option = 109 then do; * note not included when including all interventions;
@@ -2679,7 +2675,7 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 200 then do;
 
-		test_rate_set_in_opts = 1; incr_test_year_i = 1.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
 		high_rate_testing_set_in_opts = 1; 
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 		prob_self_test_hard_reach = 0.5;
@@ -2689,7 +2685,7 @@ if caldate_never_dot >= &year_interv then do;
 		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_h_year_i = 1;
 		condom_incr_set_in_opts = 0;
 		if gender = 2 and 15 <= age < 25 then do;	
-			condom_incr_set_in_opts = 1; condom_incr_h_year_i = 1.25;
+			condom_incr_set_in_opts = 1; condom_incr_h_year_i = 1.5;
 		end;
 		circ_inc_rate_set_in_opts = 1; circ_inc_rate_h_year_i = 2.5;
 		date_prep_inj_intro = 2024;
@@ -3711,7 +3707,7 @@ end;
 u_circ=rand('uniform');
 tested_circ=0;
 
-if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1
+if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and (hard_reach ne 1 or circ_inc_rate_set_in_opts = 1)
 and age < 50 then do; 
 
 	if u_circ lt prob_circ then do;
@@ -5423,7 +5419,7 @@ if rate_test_stprep_set_in_opts ne . then eff_rate_test_startprep_any = rate_tes
 
 	a=rand('uniform');
 
-	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and hard_reach=0 and 
+	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and hard_reach=0  and 
 	((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (pop_wide_tld_prep ne 1 or (pop_wide_tld_prep=1 and a < prob_test_pop_wide_tld_prep))  
 	then do;
 
@@ -5436,7 +5432,7 @@ if rate_test_stprep_set_in_opts ne . then eff_rate_test_startprep_any = rate_tes
 		available with roll-out and interest of PrEP
 		 do not differentiate the probabilty of testing whether they have a short-term or long-term partner;
 
-		if  prep_any_ever ne 1 and tested ne 1 and prep_any_elig=1 and prep_any_willing=1 and hard_reach ne 1 then do;
+		if  prep_any_ever ne 1 and tested ne 1 and prep_any_elig=1 and prep_any_willing=1 and  hard_reach ne 1 then do;
 			a=rand('uniform'); if a < eff_rate_test_startprep_any then do;	
 				*lapr - assumes order of introduction is oral -> inj -> vr;
 				select;
@@ -5655,7 +5651,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
 	* starting PrEP for the first time ever;
 	 
-			if prep_any_willing=1 and hard_reach ne 1 then do; 
+			if prep_any_willing=1 and  hard_reach ne 1  then do; 
 				* person has testesd explicitly to start PrEP;
 				if testfor_prep_oral = 1  		then do;	
 					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
@@ -20547,7 +20543,7 @@ then do;
 abort abend; 
 end;
 
-if cald=2022 and n_infected_for_abort > 40000 then do; abort abend; end;
+if cald=2022 and n_infected_for_abort > 35000 then do; abort abend; end;
 
 
 
