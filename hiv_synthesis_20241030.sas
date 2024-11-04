@@ -187,6 +187,10 @@ newp_seed = 7;
 * rate_birth_with_infected_child; 
 							%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);
 
+
+* rate_trans_breastfeeding; %sample_uniform(rate_trans_breastfeeding, 0.05 0.1); * Nduati et al. 2000; * this is rate per 3 months with vl between 4 and 5;
+
+
 * prob_stop_breastfeeding_yr1;		*JAS Apr2023;
 							prob_stop_breastfeeding_yr1 = 0.02;*73;	* 3-monthly probability of stopping breastfeeding in first year after birth;
 							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
