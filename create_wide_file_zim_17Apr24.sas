@@ -1,7 +1,9 @@
-libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
+*libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
 
+***USING THE FSW FILE AS BOTH PROJECTS HAVE BEEN CODED IN ONE OUTPUT FILE;
 data a;
-set a.zim_06jun23a;
+set a.fsw_zim_17apr24;
 if run=. then delete;
 
 *if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
@@ -11,7 +13,7 @@ takes ages to run so cut down dataset;
 proc sort;by run;run;
 proc freq;table cald run;run;
 
-proc freq;table s_I_undiag6569m;run;
+proc freq;table s_I_undiag4549m;run;
 
 data sf;
 set a;
@@ -1100,7 +1102,7 @@ s_primary8084_ s_primary8084m s_primary8084w
 
 
 n_hiv_death1519_  n_hiv_death2024_  n_hiv_death2529_  n_hiv_death3034_  n_hiv_death3539_  n_hiv_death4044_ n_hiv_death4549_ 
-n_hiv_death5054_  n_hiv_death5559_  n_hiv_death6064_ n_hiv_death6569_  n_hiv_death7074_  n_hiv_death7579_  n_hiv_death8084_ */ 
+n_hiv_death5054_  n_hiv_death5559_  n_hiv_death6064_ n_hiv_death6569_  n_hiv_death7074_  n_hiv_death7579_  n_hiv_death8084_  
 
 
 n_hiv_death1519m  n_hiv_death2024m  n_hiv_death2529m  n_hiv_death3034m  n_hiv_death3539m  n_hiv_death4044m  n_hiv_death4549m  n_hiv_death5054m  n_hiv_death5559m  n_hiv_death6064m n_hiv_death6569m  n_hiv_death7074m  n_hiv_death7579m  n_hiv_death8084m  
@@ -1615,6 +1617,7 @@ s_I_offart_SIlt6m2529m s_I_offart_SIgt6m2529m
 ********
 ;
 
+/*
 if cald lt 2010 then delete;
 if cald ge 2017 then delete;
 run;
@@ -1624,7 +1627,7 @@ data=y1      dbms=xlsx
 outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\009_7579.xlsx"
 replace;
 run;
-
+*/
 /*
 proc freq;table  n_dead_undiag  n_dead_diag_not_linked  
 n_dead_Alt6_Acd4lt200_  n_dead_Alt6_Acd4gt200_  
