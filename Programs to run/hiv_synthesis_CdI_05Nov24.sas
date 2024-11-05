@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 300  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -252,7 +252,7 @@ newp_seed = 7;
 * msm_risk_cls;				%sample_uniform(msm_risk_cls, 0.3 0.5 0.7); * risk of one or more cls partners in msm per period ;
 * msm_tr_factor;			msm_tr_factor = 3; * factor determining the transmission risk per period given 
 																		the represetative vl in the parter(s) in the period ;	
-* prob_prep_elig_msm;		prob_prep_elig_msm = 0.2;
+* prob_prep_elig_msm;		prob_prep_elig_msm = 0.3;
 * msm_rr_loss_at_diag;		msm_rr_loss_at_diag = 3;
 
 
@@ -774,7 +774,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * INJECTABLE CABOTEGRAVIR PREP ; * lapr;
 
-* date_prep_inj_intro;			date_prep_inj_intro=2027;		* Introduction of injectable PrEP ;
+* date_prep_inj_intro;			date_prep_inj_intro=2127;		* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep;
 * prob_prep_inj_b;				prob_prep_inj_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
@@ -2234,7 +2234,7 @@ if caldate_never_dot >= &year_interv then do;
 		rate_engage_sw_program=0.25;
 		effect_sw_prog_prep_any = 0.50;
 		effect_sw_prog_newp=0.60;
-		sw_test_6mthly=0;
+		*sw_test_6mthly=0;*if this is set to 0, there are a lower number of tests in option 0 than this option;
 	end;
 
 	***MSM: Strengthening demand, increased accessibility of condoms,peer education;
@@ -2246,6 +2246,8 @@ if caldate_never_dot >= &year_interv then do;
 	***MSM: Increase oral PrEP ;
 	if option=3 then do;
 		prob_prep_elig_msm = 0.5;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		if msm=1 then eff_prob_prep_oral_b=0.8;
 	end;
 
 	***MSM: Combining the above two;
@@ -2395,6 +2397,8 @@ if option=21 then do;
 
 
 	prob_prep_elig_msm = 0.5;
+	eff_prob_prep_oral_b=prob_prep_oral_b;
+	if (msm=1 or sw=1 or pwid=1) then eff_prob_prep_oral_b=0.8;
 
 	fold_tr_pwid = 0.5;
 	set_in_options=1;
@@ -2447,7 +2451,7 @@ end;
 		rate_engage_sw_program=0.13;
 		effect_sw_prog_prep_any = 0.25;
 		effect_sw_prog_newp=0.30;
-		sw_test_6mthly=0;
+		*sw_test_6mthly=0;
 	end;
 
 	if option=52 then do;
@@ -2458,6 +2462,8 @@ end;
 	***MSM: Increase oral PrEP;
 	if option=53 then do;
 		prob_prep_elig_msm = 0.35;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		if msm=1 then eff_prob_prep_oral_b=0.5;
 	end;
 
 	
@@ -2606,6 +2612,9 @@ if option=71 then do;
 	%sample_uniform(msm_risk_cls, 0.1 0.20); * risk of one or more cls partners in msm per period ;
 
 	prob_prep_elig_msm = 0.35;
+	eff_prob_prep_oral_b=prob_prep_oral_b;
+	if (msm=1 or sw=1 or pwid=1) then eff_prob_prep_oral_b=0.8;
+
 
 	fold_tr_pwid = 2;
 
@@ -2626,7 +2635,7 @@ if option=71 then do;
 
 	eff_prob_vl_meas_done=0.8;
 
-	if option=18 and caldate{t}-yrart>1 then do;
+	if caldate{t}-yrart>1 then do;
 		eff_prob_loss_at_diag = prob_loss_at_diag;
 		eff_rate_lost = rate_lost;
 		eff_rate_return = rate_return;
@@ -3344,7 +3353,7 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;																					
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
-
+		if msm=1 then do;rate_1sttest = rate_1sttest * 10  ; rate_reptest = rate_reptest * 10  ;   end;
 end;
 
 if caldate{t} >= &year_interv and high_test_set_in_options=1 then do;
@@ -3362,17 +3371,17 @@ if caldate{t} >= &year_interv and high_test_set_in_options=1 then do;
 
 
 ***CdI options (1=max targets, 2=halfway);
-if incr_test_msm_year_i = 1 and msm=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-if incr_test_msm_year_i = 2 and msm=1 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
+if incr_test_msm_year_i = 1 and msm=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
+if incr_test_msm_year_i = 2 and msm=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
 
-if incr_test_fsw_year_i = 1 and sw=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-if incr_test_fsw_year_i = 2 and sw=1 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
+if incr_test_fsw_year_i = 1 and sw=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
+if incr_test_fsw_year_i = 2 and sw=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
 
-if incr_test_pwid_year_i = 1 and pwid=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-if incr_test_pwid_year_i = 2 and pwid=1 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
+if incr_test_pwid_year_i = 1 and pwid=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
+if incr_test_pwid_year_i = 2 and pwid=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
 
-if incr_test_agywfsw_year_i = 1 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-if incr_test_agywfsw_year_i = 2 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
+if incr_test_agywfsw_year_i = 1 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
+if incr_test_agywfsw_year_i = 2 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
 
 if incr_test_men_year_i = 1 and gender=1 and age>25 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
 if incr_test_men_year_i = 2 and gender=1 and age>25 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
@@ -18633,11 +18642,11 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
+proc print;var caldate&j 	prob_loss_at_diag	eff_prob_loss_at_diag		e_eff_prob_loss_at_diag visit lost;
+where age ge 15;run;
 
 * procs;
 /*
-proc print;var caldate&j msm gender option eff_test_targeting hiv np_lasttest tested date1test unitest rate_1sttest ;
-where age ge 15 and death=.;run;
 */
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -21132,6 +21141,19 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
+
+data r1 ; set a;
+*option 0;
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=14);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=14);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=14);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=14);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=14);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=14);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=14);
+
+
+/*
 %update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=0);
@@ -21195,7 +21217,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
-/*
+
 
 data r1 ; set a;
 *option 1;
@@ -22059,9 +22081,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=11);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=11);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=11);
-*/
 
-/*
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=12);
@@ -22129,8 +22149,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=12);
 %update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=12);
 %update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=12);*2040;
-*/
-/*
+
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=13);
@@ -22418,8 +22437,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=16);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=16);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=16);
-*/
-/*
+
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=17);
@@ -22491,9 +22509,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=17);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=17);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=17);
-*/
 
-/*
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=18);
@@ -22784,7 +22800,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=21);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=21);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=21);
-*/
+
 ***COMMENT OUT OPTION 62 AND 67 (TB);
 
 
@@ -24014,7 +24030,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=66);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=66);
 
-/*
+
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=67);
@@ -24086,7 +24102,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=67);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=67);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=67);
-*/
+
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=68);
@@ -24304,7 +24320,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=70);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=70);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=70);
-*/
+
 
 data r1 ; set a;
 *option 0;
@@ -24377,7 +24393,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=71);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=71);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=71);
-
+*/
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;

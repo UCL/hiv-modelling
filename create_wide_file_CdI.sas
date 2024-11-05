@@ -301,7 +301,8 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_sw_1549_;					n_sw_1549_ = s_sw_1549 * sf;
 * p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
-* p_sw_tested;					if s_sw_1564 - s_diag_sw > 0 then p_tested_sw = s_tested_sw /(s_sw_1564 - s_diag_sw) ;
+* p_tested_sw;					if s_sw_1564 - s_diag_sw > 0 then p_tested_sw = s_tested_sw /(s_sw_1564 - s_diag_sw) ;
+
 * p_diag_sw;					if s_hiv_sw  > 0 then p_diag_sw = s_diag_sw /s_hiv_sw ;
 * incidence_sw;		            incidence_sw = (s_primary_sw * 4 * 100) / (s_sw_1549  - s_hiv_sw1549_  + s_primary_sw);
 * p_onart_sw;					if s_hiv_sw  > 0 then p_onart_sw = s_onart_sw / s_hiv_sw  ;
@@ -773,48 +774,48 @@ proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where 2022   <=
 proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <= cald < 2024  ; 
 
 
-**OST		 	= Option 4;
-**Condom		= Option 5;
-**FSW prev		= Option 1 (this is PrEP and condom use but not testing);
-**MSM prev		= Option 2 (ONLY reduction in cls);
-**PWID prev		= Option 4; **This sheet has been left blank as included in OST;
-**MSM PrEP		= Option 3;
-**Self testing	= Option 13;
-**AGYW testing	= Option 9;
-**FSW testing	= Option 7;
-**MSM testing 	= Option 6;
-**PWID testing 	= Option 8;
-**ANC testing 	= Option 20;
-**VL testing	= Option 16;
-**ART 			= Option 14;
-** TARGET		= Option=21;
-**Inc rates of viral suppression = Option 18;
-**DTG uptake	= Option 15;
-**Inc in adherance	= Option 19;
-**Tesing in 25+w	= Option 11;
-**Tesing in 25+m	= Option 10;
+**OST		 	= Option 4 /54;
+**Condom		= Option 5 /54;
+**FSW prev		= Option 1 /51 (this is PrEP and condom use but not testing);
+**MSM prev		= Option 2 /52 (ONLY reduction in cls);
+**PWID prev		= Option 4 /54; **SAME as OST;
+**MSM PrEP		= Option 3 /53;
+**Self testing	= Option 13 /63;
+**AGYW testing	= Option 9 /59;
+**FSW testing	= Option 7 /57;
+**MSM testing 	= Option 6 /56;
+**PWID testing 	= Option 8 /58;
+**ANC testing 	= Option 20 /70;
+**VL testing	= Option 16 /66;
+**ART 			= Option 14 /64;
+** TARGET		= Option=21 /71;
+**Viral supp	= Option 18 /68;
+**DTG uptake	= Option 15 /65;
+**Adherence		= Option 19 /69;
+**Testing in 25+w	= Option 11 /61;
+**Testing in 25+m	= Option 10 /60;
 
 ***CURRENTLY NOT PUT INTO SPREADSHEETS:
 
 **TB testing		= Option 17;
 
-proc means noprint data=z; var &v; output out=y_24  mean= &v   ; where 2024 <= cald < 2025 and option=55 ;
-proc means noprint data=z; var &v; output out=y_25  mean= &v   ; where 2025 <= cald < 2026 and option=55 ;
-proc means noprint data=z; var &v; output out=y_26  mean= &v   ; where 2026 <= cald < 2027 and option=55 ;
-proc means noprint data=z; var &v; output out=y_27  mean= &v   ; where 2027 <= cald < 2028 and option=55 ;
-proc means noprint data=z; var &v; output out=y_28  mean= &v   ; where 2028 <= cald < 2029 and option=55 ;
-proc means noprint data=z; var &v; output out=y_29  mean= &v   ; where 2029 <= cald < 2030 and option=55 ;
-proc means noprint data=z; var &v; output out=y_30  mean= &v   ; where 2030 <= cald < 2031 and option=55 ;
-proc means noprint data=z; var &v; output out=y_31  mean= &v   ; where 2031 <= cald < 2032 and option=55 ;
-proc means noprint data=z; var &v; output out=y_32  mean= &v   ; where 2032 <= cald < 2033 and option=55 ;
-proc means noprint data=z; var &v; output out=y_33  mean= &v   ; where 2033 <= cald < 2034 and option=55 ;
-proc means noprint data=z; var &v; output out=y_34  mean= &v   ; where 2034 <= cald < 2035 and option=55 ;
-proc means noprint data=z; var &v; output out=y_35  mean= &v   ; where 2035 <= cald < 2036 and option=55 ;
-proc means noprint data=z; var &v; output out=y_36  mean= &v   ; where 2036 <= cald < 2037 and option=55 ;
-proc means noprint data=z; var &v; output out=y_37  mean= &v   ; where 2037 <= cald < 2038 and option=55 ;
-proc means noprint data=z; var &v; output out=y_38  mean= &v   ; where 2038 <= cald < 2039 and option=55 ;
-proc means noprint data=z; var &v; output out=y_39  mean= &v   ; where 2039 <= cald < 2040 and option=55 ;
-proc means noprint data=z; var &v; output out=y_40  mean= &v   ; where 2040 <= cald < 2041 and option=55 ;
+proc means noprint data=z; var &v; output out=y_24  mean= &v   ; where 2024 <= cald < 2025 and option=60 ;
+proc means noprint data=z; var &v; output out=y_25  mean= &v   ; where 2025 <= cald < 2026 and option=60 ;
+proc means noprint data=z; var &v; output out=y_26  mean= &v   ; where 2026 <= cald < 2027 and option=60 ;
+proc means noprint data=z; var &v; output out=y_27  mean= &v   ; where 2027 <= cald < 2028 and option=60 ;
+proc means noprint data=z; var &v; output out=y_28  mean= &v   ; where 2028 <= cald < 2029 and option=60 ;
+proc means noprint data=z; var &v; output out=y_29  mean= &v   ; where 2029 <= cald < 2030 and option=60 ;
+proc means noprint data=z; var &v; output out=y_30  mean= &v   ; where 2030 <= cald < 2031 and option=60 ;
+proc means noprint data=z; var &v; output out=y_31  mean= &v   ; where 2031 <= cald < 2032 and option=60 ;
+proc means noprint data=z; var &v; output out=y_32  mean= &v   ; where 2032 <= cald < 2033 and option=60 ;
+proc means noprint data=z; var &v; output out=y_33  mean= &v   ; where 2033 <= cald < 2034 and option=60 ;
+proc means noprint data=z; var &v; output out=y_34  mean= &v   ; where 2034 <= cald < 2035 and option=60 ;
+proc means noprint data=z; var &v; output out=y_35  mean= &v   ; where 2035 <= cald < 2036 and option=60 ;
+proc means noprint data=z; var &v; output out=y_36  mean= &v   ; where 2036 <= cald < 2037 and option=60 ;
+proc means noprint data=z; var &v; output out=y_37  mean= &v   ; where 2037 <= cald < 2038 and option=60 ;
+proc means noprint data=z; var &v; output out=y_38  mean= &v   ; where 2038 <= cald < 2039 and option=60 ;
+proc means noprint data=z; var &v; output out=y_39  mean= &v   ; where 2039 <= cald < 2040 and option=60 ;
+proc means noprint data=z; var &v; output out=y_40  mean= &v   ; where 2040 <= cald < 2041 and option=60 ;
  																										   
 																										
 data &v ; set 
