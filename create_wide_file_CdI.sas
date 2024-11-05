@@ -6,8 +6,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data a;
-*set a.cdi_18oct24a;
-set a.cdi_20oct24;
+set a.cdi_20oct24_mid;
 
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
@@ -39,7 +38,6 @@ proc sort; by run;
 data y; 
 merge a sf;
 by run ;
-
 
 * preparatory code ;
 
@@ -306,6 +304,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_sw_tested;					if s_sw_1564 - s_diag_sw > 0 then p_tested_sw = s_tested_sw /(s_sw_1564 - s_diag_sw) ;
 * p_diag_sw;					if s_hiv_sw  > 0 then p_diag_sw = s_diag_sw /s_hiv_sw ;
 * incidence_sw;		            incidence_sw = (s_primary_sw * 4 * 100) / (s_sw_1549  - s_hiv_sw1549_  + s_primary_sw);
+* p_onart_sw;					if s_hiv_sw  > 0 then p_onart_sw = s_onart_sw / s_hiv_sw  ;
 
 
 * prevalence_sw;				if s_sw_1564>0 then prevalence_sw = s_hiv_sw / s_sw_1564; 
@@ -556,7 +555,7 @@ n_tested			p_tested_past_year_1549m				p_tested_past_year_1549w		test_prop_posit
 n_self_tested		n_tested_anc							p_tested_past_year_ov25m		p_tested_past_year_ov25w
 p_mcirc				p_mcirc_1549m		n_new_vmmc1549m 	p_trad_circ			p_vmmc		s_sw_1549		p_sw_prog_vis
 prop_w_1549_sw		prop_w_1564_sw		prop_w_ever_sw		prop_sw_hiv			n_sw_1549_	prop_w_1524_onprep
-prop_1564_onprep	p_diag_sw
+prop_1564_onprep	p_diag_sw			p_onart_sw
 prevalence1549_		prevalence1549m		prevalence1549w		prevalence	
 prevalence1519w		prevalence1519m		prevalence2024w		prevalence2024m		prevalence2529w		prevalence2529m
 prevalence3034w		prevalence3034m		prevalence3539w		prevalence3539m		prevalence4044w		prevalence4044m
@@ -597,46 +596,118 @@ an_lin_incr_test					yll_m 			yll_w 				yll
 
 proc sort data=y;by run option;run;
 
-***Removing low prevalence in women runs;
+
 
 data low_inc;
 set y;
 
-***Removing 100 runs with the lowest prevalence;
+***Remove runs with low an_lin_inc;
+if an_lin_incr_test=0.03 then delete;
+
+***Removing runs with the low prevalence;
 if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
 /*proc freq;table run;where a=1;run;*/
 
 if run in (
-13527459
-37157007
-55200060
-75587400
-96651610
-217551043
-292500030
-298257220
-398477117
-427327303
-434764368
-437382950
-440056663
-551959622
-555213591
-570185227
-616970596
-666819304
-686282927
-687668354
-753970395
-786941286
-820103334
-882551352
+25870604
+27366339
+27827317
+36758085
+43515382
+64607882
+66461311
+77576799
+84658827
+86763071
+90227512
+91002329
+96185672
+96815866
+100836200
+109323071
+117617051
+144044750
+153825733
+165794511
+167972262
+171833755
+189841453
+204517290
+207525137
+243916500
+247524867
+252853944
+260425040
+298744307
+306690411
+336250366
+359153982
+363750534
+369929074
+379139048
+389967378
+390609800
+401343006
+403537243
+405099170
+411184708
+421075918
+421423568
+436435623
+457624541
+463992960
+492007206
+497664185
+503174559
+505347910
+514209915
+515091073
+520285830
+548502616
+553625750
+559755917
+575419301
+609741481
+613526494
+617093331
+633028752
+655099427
+667390435
+684368088
+689602989
+704150754
+708637756
+730480555
+752530663
+753492099
+759584298
+766933367
+773006261
+793907644
+796666424
+808035439
+812035568
+813293177
+823315186
+826859121
+851937948
+861790309
+910934057
+927604300
+953666207
+954683602
+961111176
+967962695
+971685849
+973621684
+993556761
+
 )
 then delete;
 run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI_20oct24; 
+data a.l_base_CdI_20oct24_mid; 
 set low_inc;
 run;
 
@@ -647,7 +718,7 @@ run;
 
 libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
 data y;
-set a.l_base_CdI_20Oct24; 
+set a.l_base_CdI_20Oct24_mid; 
 
   
 keep run cald option 
@@ -717,32 +788,33 @@ proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <=
 **VL testing	= Option 16;
 **ART 			= Option 14;
 ** TARGET		= Option=21;
+**Inc rates of viral suppression = Option 18;
+**DTG uptake	= Option 15;
+**Inc in adherance	= Option 19;
+**Tesing in 25+w	= Option 11;
+**Tesing in 25+m	= Option 10;
 
 ***CURRENTLY NOT PUT INTO SPREADSHEETS:
-**Tesing in 25+m	= Option 10;
-**Tesing in 25+w	= Option 11;
-**DTG uptake		= Option 15;
-**TB testing		= Option 17;
-**Inc rates of viral suppression = Option 18;
-**Inc in adherance	= Option 20;
 
-proc means noprint data=z; var &v; output out=y_24  mean= &v   ; where 2024 <= cald < 2025 and option=0 ;
-proc means noprint data=z; var &v; output out=y_25  mean= &v   ; where 2025 <= cald < 2026 and option=0 ;
-proc means noprint data=z; var &v; output out=y_26  mean= &v   ; where 2026 <= cald < 2027 and option=0 ;
-proc means noprint data=z; var &v; output out=y_27  mean= &v   ; where 2027 <= cald < 2028 and option=0 ;
-proc means noprint data=z; var &v; output out=y_28  mean= &v   ; where 2028 <= cald < 2029 and option=0 ;
-proc means noprint data=z; var &v; output out=y_29  mean= &v   ; where 2029 <= cald < 2030 and option=0 ;
-proc means noprint data=z; var &v; output out=y_30  mean= &v   ; where 2030 <= cald < 2031 and option=0 ;
-proc means noprint data=z; var &v; output out=y_31  mean= &v   ; where 2031 <= cald < 2032 and option=0 ;
-proc means noprint data=z; var &v; output out=y_32  mean= &v   ; where 2032 <= cald < 2033 and option=0 ;
-proc means noprint data=z; var &v; output out=y_33  mean= &v   ; where 2033 <= cald < 2034 and option=0 ;
-proc means noprint data=z; var &v; output out=y_34  mean= &v   ; where 2034 <= cald < 2035 and option=0 ;
-proc means noprint data=z; var &v; output out=y_35  mean= &v   ; where 2035 <= cald < 2036 and option=0 ;
-proc means noprint data=z; var &v; output out=y_36  mean= &v   ; where 2036 <= cald < 2037 and option=0 ;
-proc means noprint data=z; var &v; output out=y_37  mean= &v   ; where 2037 <= cald < 2038 and option=0 ;
-proc means noprint data=z; var &v; output out=y_38  mean= &v   ; where 2038 <= cald < 2039 and option=0 ;
-proc means noprint data=z; var &v; output out=y_39  mean= &v   ; where 2039 <= cald < 2040 and option=0 ;
-proc means noprint data=z; var &v; output out=y_40  mean= &v   ; where 2040 <= cald < 2041 and option=0 ;
+**TB testing		= Option 17;
+
+proc means noprint data=z; var &v; output out=y_24  mean= &v   ; where 2024 <= cald < 2025 and option=55 ;
+proc means noprint data=z; var &v; output out=y_25  mean= &v   ; where 2025 <= cald < 2026 and option=55 ;
+proc means noprint data=z; var &v; output out=y_26  mean= &v   ; where 2026 <= cald < 2027 and option=55 ;
+proc means noprint data=z; var &v; output out=y_27  mean= &v   ; where 2027 <= cald < 2028 and option=55 ;
+proc means noprint data=z; var &v; output out=y_28  mean= &v   ; where 2028 <= cald < 2029 and option=55 ;
+proc means noprint data=z; var &v; output out=y_29  mean= &v   ; where 2029 <= cald < 2030 and option=55 ;
+proc means noprint data=z; var &v; output out=y_30  mean= &v   ; where 2030 <= cald < 2031 and option=55 ;
+proc means noprint data=z; var &v; output out=y_31  mean= &v   ; where 2031 <= cald < 2032 and option=55 ;
+proc means noprint data=z; var &v; output out=y_32  mean= &v   ; where 2032 <= cald < 2033 and option=55 ;
+proc means noprint data=z; var &v; output out=y_33  mean= &v   ; where 2033 <= cald < 2034 and option=55 ;
+proc means noprint data=z; var &v; output out=y_34  mean= &v   ; where 2034 <= cald < 2035 and option=55 ;
+proc means noprint data=z; var &v; output out=y_35  mean= &v   ; where 2035 <= cald < 2036 and option=55 ;
+proc means noprint data=z; var &v; output out=y_36  mean= &v   ; where 2036 <= cald < 2037 and option=55 ;
+proc means noprint data=z; var &v; output out=y_37  mean= &v   ; where 2037 <= cald < 2038 and option=55 ;
+proc means noprint data=z; var &v; output out=y_38  mean= &v   ; where 2038 <= cald < 2039 and option=55 ;
+proc means noprint data=z; var &v; output out=y_39  mean= &v   ; where 2039 <= cald < 2040 and option=55 ;
+proc means noprint data=z; var &v; output out=y_40  mean= &v   ; where 2040 <= cald < 2041 and option=55 ;
  																										   
 																										
 data &v ; set 
@@ -791,7 +863,7 @@ cards;
 2017
 2018
 2019
-2010
+2020
 2021
 2022
 2023
@@ -815,7 +887,8 @@ cards;
 
 
 
-/*     *SQ OUTPUTS;data   wide_outputs_base; merge year 
+/*     *SQ OUTPUTS;
+data   wide_outputs_base; merge year 
 n_alive_m			n_alive_w    		n_alive				prevalence_m		prevalence_w  
 prevalence 			n_infected_m 		n_infected_w 		n_infected			p_diag1549m    	
 p_diag1549w     	p_diag1549_ 		p_onart_diag_m		p_onart_diag_w		p_onart_diag 
