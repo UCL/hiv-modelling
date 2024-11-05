@@ -419,40 +419,146 @@ hiv_synthesis_int14 hiv_synthesis_int15
 
 
 
-data goals_0 ; set all; if model=1; if scenario = 0 ; variable_0_1 = variable; keep year variable_0_1 ;
-data optima_0 ; set all; if model=2;if scenario = 0 ; variable_0_2 = variable;keep year variable_0_2 ;
-data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;variable_0_3 = variable;keep year variable_0_3 ;
 
-ods html;
 
-proc sgplot data = a.n_hiv_deaths_15pl nolegend; 
-Title    height=1.5 justify=center "Number of deaths in age 15 plus";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000   to 2040 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  80000   by 10000) valueattrs=(size=10);
 
- label n_hiv_deaths_15pl_0_1 = "Goals - SQ ";
- label n_hiv_deaths_15pl_0_2 = "Optima - SQ ";
- label n_hiv_deaths_15pl_0_3 = "Synthesis - SQ ";
 
-series  x=year y=n_hiv_deaths_15pl_0_1/	lineattrs = (color=black thickness = 2);
-series  x=year y=n_hiv_deaths_15pl_0_2/	lineattrs = (color=red thickness = 2);
-series  x=year y=n_hiv_deaths_15pl_0_3/	lineattrs = (color=green thickness = 2);
+* outputs for graph showing effects of all interventions ;
 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=0 and 2024 <= year <= 2040; run;
+data out_1_0; set xx; scenario=0; model=1; drop _TYPE_ _FREQ_;
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=1 and 2024 <= year <= 2040; run;
+data out_1_1; set xx; scenario=1; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=2 and 2024 <= year <= 2040; run;
+data out_1_2; set xx; scenario=2; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=3 and 2024 <= year <= 2040; run;
+data out_1_3; set xx; scenario=3; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=4 and 2024 <= year <= 2040; run;
+data out_1_4; set xx; scenario=4; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=5 and 2024 <= year <= 2040; run;
+data out_1_5; set xx; scenario=5; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=6 and 2024 <= year <= 2040; run;
+data out_1_6; set xx; scenario=6; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=7 and 2024 <= year <= 2040; run;
+data out_1_7; set xx; scenario=7; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=8 and 2024 <= year <= 2040; run;
+data out_1_8; set xx; scenario=8; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=9 and 2024 <= year <= 2040; run;
+data out_1_9; set xx; scenario=9; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=10 and 2024 <= year <= 2040; run;
+data out_1_10; set xx; scenario=10; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=11 and 2024 <= year <= 2040; run;
+data out_1_11; set xx; scenario=11; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=12 and 2024 <= year <= 2040; run;
+data out_1_12; set xx; scenario=12; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=13 and 2024 <= year <= 2040; run;
+data out_1_13; set xx; scenario=13; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=14 and 2024 <= year <= 2040; run;
+data out_1_14; set xx; scenario=14; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=15 and 2024 <= year <= 2040; run;
+data out_1_15; set xx; scenario=15; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=200 and 2024 <= year <= 2040; run;
+data out_1_200; set xx; scenario=200; model=1;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=1 and scenario=20 and 2024 <= year <= 2040; run;
+data out_1_20; set xx; scenario=20; model=1;  drop _TYPE_ _FREQ_; 
+
+
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=0 and 2024 <= year <= 2040; run;
+data out_2_0; set xx; scenario=0; model=2; drop _TYPE_ _FREQ_;
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=1 and 2024 <= year <= 2040; run;
+data out_2_1; set xx; scenario=1; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=2 and 2024 <= year <= 2040; run;
+data out_2_2; set xx; scenario=2; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=3 and 2024 <= year <= 2040; run;
+data out_2_3; set xx; scenario=3; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=4 and 2024 <= year <= 2040; run;
+data out_2_4; set xx; scenario=4; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=5 and 2024 <= year <= 2040; run;
+data out_2_5; set xx; scenario=5; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=6 and 2024 <= year <= 2040; run;
+data out_2_6; set xx; scenario=6; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=7 and 2024 <= year <= 2040; run;
+data out_2_7; set xx; scenario=7; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=8 and 2024 <= year <= 2040; run;
+data out_2_8; set xx; scenario=8; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=9 and 2024 <= year <= 2040; run;
+data out_2_9; set xx; scenario=9; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=10 and 2024 <= year <= 2040; run;
+data out_2_10; set xx; scenario=10; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=11 and 2024 <= year <= 2040; run;
+data out_2_11; set xx; scenario=11; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=12 and 2024 <= year <= 2040; run;
+data out_2_12; set xx; scenario=12; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=13 and 2024 <= year <= 2040; run;
+data out_2_13; set xx; scenario=13; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=14 and 2024 <= year <= 2040; run;
+data out_2_14; set xx; scenario=14; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=15 and 2024 <= year <= 2040; run;
+data out_2_15; set xx; scenario=15; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=200 and 2024 <= year <= 2040; run;
+data out_2_200; set xx; scenario=200; model=2;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=2 and scenario=20 and 2024 <= year <= 2040; run;
+data out_2_20; set xx; scenario=20; model=2;  drop _TYPE_ _FREQ_; 
+
+
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=0 and 2024 <= year <= 2040; run;
+data out_3_0; set xx; scenario=0; model=3; drop _TYPE_ _FREQ_;
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=1 and 2024 <= year <= 2040; run;
+data out_3_1; set xx; scenario=1; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=2 and 2024 <= year <= 2040; run;
+data out_3_2; set xx; scenario=2; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=3 and 2024 <= year <= 2040; run;
+data out_3_3; set xx; scenario=3; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=4 and 2024 <= year <= 2040; run;
+data out_3_4; set xx; scenario=4; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=5 and 2024 <= year <= 2040; run;
+data out_3_5; set xx; scenario=5; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=6 and 2024 <= year <= 2040; run;
+data out_3_6; set xx; scenario=6; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=7 and 2024 <= year <= 2040; run;
+data out_3_7; set xx; scenario=7; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=8 and 2024 <= year <= 2040; run;
+data out_3_8; set xx; scenario=8; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=9 and 2024 <= year <= 2040; run;
+data out_3_9; set xx; scenario=9; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=10 and 2024 <= year <= 2040; run;
+data out_3_10; set xx; scenario=10; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=11 and 2024 <= year <= 2040; run;
+data out_3_11; set xx; scenario=11; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=12 and 2024 <= year <= 2040; run;
+data out_3_12; set xx; scenario=12; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=13 and 2024 <= year <= 2040; run;
+data out_3_13; set xx; scenario=13; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=14 and 2024 <= year <= 2040; run;
+data out_3_14; set xx; scenario=14; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=15 and 2024 <= year <= 2040; run;
+data out_3_15; set xx; scenario=15; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=200 and 2024 <= year <= 2040; run;
+data out_3_200; set xx; scenario=200; model=3;  drop _TYPE_ _FREQ_; 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=3 and scenario=20 and 2024 <= year <= 2040; run;
+data out_3_20; set xx; scenario=20; model=3;  drop _TYPE_ _FREQ_; 
+
+data all_out; set 
+out_1_0 out_1_1 out_1_2 out_1_3 out_1_4 out_1_5 out_1_6 out_1_7 out_1_8 out_1_9 out_1_10 out_1_11 out_1_12 out_1_13 out_1_14 out_1_15 out_1_200 out_1_20
+out_2_0 out_2_1 out_2_2 out_2_3 out_2_4 out_2_5 out_2_6 out_2_7 out_2_8 out_2_9 out_2_10 out_2_11 out_2_12 out_2_13 out_2_14 out_2_15 out_2_200 out_2_20
+out_3_0 out_3_1 out_3_2 out_3_3 out_3_4 out_3_5 out_3_6 out_3_7 out_3_8 out_3_9 out_3_10 out_3_11 out_3_12 out_3_13 out_3_14 out_3_15 out_3_200 out_3_20
+;
 run;
 
-quit;
+proc print; run;
 
 
 
 
 
+* replace mno by model number, intx by scenario ;
 
+/*
 
+proc means noprint data=all; var new_infection_15pl ; output out=xx mean=new_infection_15pl; where model=mno and scenario=intx and 2024 <= year <= 2040; run;
+data out_mno_0; set xx;  drop _TYPE_ _FREQ_; proc print; run;
 
-
-
-
-
+*/
 
 
 * template for running graphs comparing with status quo - replace intx with int number and variable with variable name
@@ -511,6 +617,10 @@ quit;
 
 
 
+
+
+
+* ===================================================================================================================================================================;
 
 
 
@@ -768,6 +878,36 @@ label new_infection_15pl_0_3 = "Synthesis - SQ ";
 series  x=year y=new_infection_15pl_0_1/	lineattrs = (color=black thickness = 2);
 series  x=year y=new_infection_15pl_0_2/	lineattrs = (color=red thickness = 2);
 series  x=year y=new_infection_15pl_0_3/	lineattrs = (color=green thickness = 2);
+
+run;
+
+quit;
+
+*/
+
+
+
+/*
+
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; variable_0_1 = variable; keep year variable_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; variable_0_2 = variable;keep year variable_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;variable_0_3 = variable;keep year variable_0_3 ;
+
+ods html;
+
+proc sgplot data = a.n_hiv_deaths_15pl nolegend; 
+Title    height=1.5 justify=center "Number of deaths in age 15 plus";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  80000   by 10000) valueattrs=(size=10);
+
+ label n_hiv_deaths_15pl_0_1 = "Goals - SQ ";
+ label n_hiv_deaths_15pl_0_2 = "Optima - SQ ";
+ label n_hiv_deaths_15pl_0_3 = "Synthesis - SQ ";
+
+series  x=year y=n_hiv_deaths_15pl_0_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=n_hiv_deaths_15pl_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=n_hiv_deaths_15pl_0_3/	lineattrs = (color=green thickness = 2);
 
 run;
 
