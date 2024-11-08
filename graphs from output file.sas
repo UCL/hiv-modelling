@@ -138,6 +138,7 @@ p2p5_&varb._0  = PCTL(2.5,of &varb.1-&varb.&nfit);
 p97p5_&varb._0 = PCTL(97.5,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
 
+
 keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 p2p5_&varb._0 p97p5_&varb._0;
 run;
 
@@ -1046,7 +1047,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of men with hiv, % diagnosed";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 100 by 10) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1) valueattrs=(size=10);
 
 label p50_p_diag_m_0 = "Option 0 (median) ";
 label p50_p_diag_m_1 = "Option 1  (median) ";
@@ -1061,7 +1062,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of women with hiv, % diagnosed";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 100 by 10) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label p50_p_diag_w_0 = "Option 0 (median) ";
 label p50_p_diag_w_1 = "Option 1  (median) ";
