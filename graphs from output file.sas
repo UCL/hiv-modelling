@@ -3,7 +3,9 @@
 ***Use 'include' statment in analysis program to read the code below in;
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\";
+ods html close;
+
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\south_africa_options_b_out\";
 
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
@@ -12,7 +14,8 @@ data b;
 set a.l_base_sa_options_b;
 
 
-s=12;
+
+s=5 ;
 if option=0 or option=s ;
 if option=s then option=1;
 
@@ -76,7 +79,7 @@ n_prep_w_1524_ = n_prep_w_1524;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  520 ;
+%let nfit =  700 ;
 %let year_end = 2064.00 ;
 run;
 proc sort;by cald option ;run;
@@ -302,7 +305,7 @@ if cald=2017 then do; n_death_2059_m_obs_sa = 136433  ; n_death_2059_w_obs_sa = 
 if cald=2018 then do; n_death_2059_m_obs_sa = 132870  ; n_death_2059_w_obs_sa = 88730  ; end; 	
 
 
-%let start = 2018;
+%let start = 2000;
 
 
 
