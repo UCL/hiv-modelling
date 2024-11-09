@@ -513,9 +513,9 @@ so the one above is the annual number of tests conducted in ANC;
 
 *Currently on PrEP: Number of clients actively taking PrEP during the last month of the date range displayed;
 *Note we can't do the last month so we will do the last 3 months;
-* n_prep_w_1524  ;				n_prep_w_1524   = s_prep_w_1524 * sf;
-* n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * sf;
-* n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * sf;
+* n_prep_any_w_1524  ;				n_prep_any_w_1524   = s_prep_any_w_1524 * sf;
+* n_prep_any_w_2534  ;				n_prep_any_w_2534   =  s_prep_any_w_2534       * sf;
+* n_prep_any_w_3544  ;				n_prep_any_w_3544   = s_prep_any_w_3544  * sf;
 
 *Number initiated for the first time on PrEP;
 * n_init_prep_oral_1524w;  		n_init_prep_oral_1524w = s_init_prep_oral_1524w * 4 * sf; 
@@ -609,6 +609,7 @@ so the one above is the annual number of tests conducted in ANC;
 * n_init_prep_inj_curr_w;		n_init_prep_inj_curr_w =	s_init_prep_inj_curr_w * sf;    *JASJun2024;
 * n_init_prep_inj_curr_m;		n_init_prep_inj_curr_m =	s_init_prep_inj_curr_m * sf;    *JASJun2024;
 
+* n_prep_any_plw;				n_prep_any_plw = s_prep_any_plw * sf;
 
 * av_prep_eff_non_res_v;  		if s_prep_any > 0 then av_prep_eff_non_res_v = s_prep_effectiveness_non_res_v / s_prep_any;								  
 																			 
@@ -1406,6 +1407,8 @@ n_hiv_peer_navigator_w	n_hiv_peer_navigator_m	n_hiv_peer_navigator
 n_onart_peer_navigator	p_onart_peer_navigator	p_onart_no_peer_navigator	p_onart_diag_peer_navigator
 
 n_prep_w_1524  p_newp_ge1_m  p_newp_ge1_w
+
+n_prep_any_w_1524   n_prep_any_w_2534  n_prep_any_w_3544  n_prep_any_plw
 
 ;
 
