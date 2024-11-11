@@ -5,13 +5,26 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\south_africa_options_b_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\south_africa_options_c_out\";
 
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-set a.l_base_sa_options_b;
+set a.l_base_sa_options_c;
+
+
+
+
+
+
+* investigate discontinuity in 2024 ;
+
+
+
+
+
+
 
 
 
