@@ -202,7 +202,13 @@ if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
 dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
- 
+
+* cost of intervention implementation (in addition to any consequences in terms of extra tests, extra people on art etc) ;
+if option ne 0 then do;
+	cost_int_per_year = 20; * placeholder ; 
+	dcost_int = cost_int_per_year * &discount;
+	cost_int = cost_int_per_year;
+end;
 
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
@@ -222,7 +228,7 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + dcost_self_test 
 		+ d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + 
-		dcost_prep + dcost_child_hiv + dcost_non_aids_pre_death ;
+		dcost_prep + dcost_child_hiv + dcost_non_aids_pre_death + dcost_int;
 
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
@@ -1127,7 +1133,7 @@ p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1ne
 
 n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test  n_newp
 
-n_prep_inj n_prep_oral n_prep_vr  mtct_birth_prop mtct_prop n_mtct
+n_prep_inj n_prep_oral n_prep_vr  mtct_birth_prop mtct_prop n_mtct  dcost_int  cost_int
 
 ;
 
