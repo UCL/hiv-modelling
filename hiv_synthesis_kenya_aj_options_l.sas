@@ -5417,7 +5417,7 @@ if rate_test_stprep_set_in_opts ne . then eff_rate_test_startprep_any = rate_tes
 				select;
 
 					* Only oral PrEP available;
-					when (caldate(t) ge date_prep_oral_intro and (. < caldate(t) < date_prep_inj_intro  or date_prep_inj_intro=.)) do;	
+					when (caldate{t} ge date_prep_oral_intro and (. < caldate{t} < date_prep_inj_intro  or date_prep_inj_intro=.)) do;	
 						if prep_oral_willing=1 then do;		*Regardless of preference, person will test for oral PrEP if willing;
 							tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
 							if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
@@ -5426,7 +5426,7 @@ if rate_test_stprep_set_in_opts ne . then eff_rate_test_startprep_any = rate_tes
 					end;
 
 					* Oral and injectable PrEP available only;
-					when (caldate(t) ge date_prep_inj_intro > . and (. < caldate(t) < date_prep_vr_intro or date_prep_vr_intro=.)) do;	
+					when (caldate{t} ge date_prep_inj_intro > . and (. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=.)) do;	
 
 						select;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
@@ -5459,7 +5459,7 @@ if rate_test_stprep_set_in_opts ne . then eff_rate_test_startprep_any = rate_tes
 					end;
 
 					* Oral and vr PrEP available only;
-					when (caldate(t) ge date_prep_vr_intro > . and (. < caldate(t) < date_prep_inj_intro or date_prep_inj_intro=.)) do;	
+					when (caldate{t} ge date_prep_vr_intro > . and (. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=.)) do;	
 
 						select;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
