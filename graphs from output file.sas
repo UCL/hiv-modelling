@@ -13,20 +13,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data b;
 set a.l_base_sa_options_c;
 
-
-
-
-* investigate discontinuity in 2024 ;
-
-
-
-
-
-
-
-
-
-s=1  ;
+s = 1  ;
 if option=0 or option=s ;
 if option=s then option=1;
 
@@ -83,14 +70,14 @@ logm45r = log(m45r+0.0001);
 logm55r = log(m55r+0.0001);
 
 
-n_prep_w_1524_ = n_prep_w_1524;
+n_prep_any_w_1524_ = n_prep_any_w_1524;
 
 
 
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  700 ;
+%let nfit =  286 ;
 %let year_end = 2064.00 ;
 run;
 proc sort;by cald option ;run;
@@ -119,8 +106,8 @@ prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
 n_alive n_hiv  p_ep  p_newp_ge1_m   p_newp_ge1_w  prev_vg1000_newp_m  prev_vg1000_newp_w  n_prep_w n_prep_inj n_prep_oral
-n_prep_w_1524_ incidence1524w_  n_prep_vr_w  n_self_tests prop_elig_on_prep n_prep_any_plw
-
+n_prep_any_w_1524_ incidence1524w_  n_prep_vr_w  n_self_tests prop_elig_on_prep n_prep_any_plw
+p_prep_elig   p_prep_plw  n_mcirc_15m
 ;
 
 
@@ -190,8 +177,8 @@ prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
 
 n_alive n_hiv  p_ep  p_newp_ge1_m   p_newp_ge1_w prev_vg1000_newp_m  prev_vg1000_newp_w   n_prep_w  n_prep_inj n_prep_oral
-n_prep_w_1524_   incidence1524w_   n_prep_vr_w n_self_tests prop_elig_on_prep n_prep_any_plw
-
+n_prep_any_w_1524_   incidence1524w_   n_prep_vr_w n_self_tests prop_elig_on_prep n_prep_any_plw
+p_prep_elig   p_prep_plw  n_mcirc_15m
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -243,7 +230,7 @@ g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100    g101 g102 g103 g104
 
-g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117
+g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120
 
 
 /*
@@ -259,7 +246,7 @@ h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72  h73  h74  h75
 h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h93  h94  h95  h96  h97  h98 h99  h100 h101 h102
 
-h103 h104 h105 h106 h107 h108 h109 h110  h111 h112 h113  h114 h115 h116 h117
+h103 h104 h105 h106 h107 h108 h109 h110  h111 h112 h113  h114 h115 h116 h117 h118 h119 h120
 
 
 ;
@@ -448,6 +435,63 @@ run;quit;
 
 
 
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_prep_elig";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1    by 0.1 ) valueattrs=(size=10);
+label mean_p_prep_elig_0 = "Option 0 (median) ";
+label mean_p_prep_elig_1 = "Option 1 (median) ";
+
+series  x=cald y=mean_p_prep_elig_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_prep_elig_0 	upper=p95_p_prep_elig_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_p_prep_elig_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_prep_elig_1 	upper=p95_p_prep_elig_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_prep_plw";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1    by 0.1 ) valueattrs=(size=10);
+label mean_p_prep_plw_0 = "Option 0 (median) ";
+label mean_p_prep_plw_1 = "Option 1 (median) ";
+
+series  x=cald y=mean_p_prep_plw_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_prep_plw_0 	upper=p95_p_prep_plw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_p_prep_plw_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_prep_plw_1 	upper=p95_p_prep_plw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_mcirc_15m";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1000000    by 100000 ) valueattrs=(size=10);
+label mean_n_mcirc_15m_0 = "Option 0 (median) ";
+label mean_n_mcirc_15m_1 = "Option 1 (median) ";
+
+series  x=cald y=mean_n_mcirc_15m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_mcirc_15m_0 	upper=p95_n_mcirc_15m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_n_mcirc_15m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_mcirc_15m_1 	upper=p95_n_mcirc_15m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
+
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "log_gender_r_newp";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -517,17 +561,17 @@ run;quit;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_prep_w_1524";
+Title    height=1.5 justify=center "n_prep_any_w_1524";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 100000) valueattrs=(size=10);
-label mean_n_prep_w_1524__0 = "Option 0 (median) ";
-label mean_n_prep_w_1524__1 = "Option 1 (median) ";
+label mean_n_prep_any_w_1524__0 = "Option 0 (median) ";
+label mean_n_prep_any_w_1524__1 = "Option 1 (median) ";
 
-series  x=cald y=mean_n_prep_w_1524__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_prep_w_1524__0 	upper=p95_n_prep_w_1524__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_prep_any_w_1524__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_any_w_1524__0 	upper=p95_n_prep_any_w_1524__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=mean_n_prep_w_1524__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_prep_w_1524__1 	upper=p95_n_prep_w_1524__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_prep_any_w_1524__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_prep_any_w_1524__1 	upper=p95_n_prep_any_w_1524__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -583,24 +627,6 @@ band    x=cald lower=p5_n_prep_inj_1 	upper=p95_n_prep_inj_1  / transparency=0.9
 
 run;quit;
 
-
-
-
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "prop_elig_on_prep";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1    by 0.1) valueattrs=(size=10);
-label mean_prop_elig_on_prep_0 = "Option 0 (median) ";
-label mean_prop_elig_on_prep_1 = "Option 1 (median) ";
-
-series  x=cald y=mean_prop_elig_on_prep_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_0 	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=mean_prop_elig_on_prep_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
 
 
 

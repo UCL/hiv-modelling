@@ -429,6 +429,8 @@ so the one above is the annual number of tests conducted in ANC;
 * p_vmmc_1549m;					p_vmmc_1549m = s_vmmc1549m / s_ageg1549m ;
 * p_vmmc_1049m;					p_vmmc_1049m = (s_vmmc1014m + s_vmmc1549m) / (s_ageg1014m + s_ageg1549m) ;
 
+* n_mcirc_15m ;					n_mcirc_15m = s_mcirc_15m * sf * 4;			
+
 * n_new_vmmc;					n_new_vmmc = s_new_vmmc * sf * 4;	*JASJun2024;
 * n_new_vmmc1014m;				n_new_vmmc1014m = s_new_vmmc1014m * sf * 4;
 * n_new_vmmc1049m;				n_new_vmmc1049m = (s_new_vmmc1014m+s_new_vmmc1519m+s_new_vmmc2024m+s_new_vmmc2529m+s_new_vmmc3034m+s_new_vmmc3539m+s_new_vmmc4044m+s_new_vmmc4549m) * sf * 4;
@@ -492,6 +494,9 @@ so the one above is the annual number of tests conducted in ANC;
 * prop_1564_hivneg_onprep;		prop_1564_hivneg_onprep =   max((s_prep_any-s_hiv1_prep), 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
 
 * p_elig_prep;   				p_elig_prep = s_elig_prep / (s_alive1564 - s_hiv1564);
+
+* p_prep_elig;					p_prep_elig = s_prep_any / s_prep_elig_hivneg;
+
 * prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / ((s_ageg1519w + s_ageg2024w) - s_hiv1524w) ;
 * p_w1524newpge1_onprep; 		p_w1524newpge1_onprep = s_onprep_w1524_newpge1_ / s_w1524_newp_ge1;*Apr2023;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
@@ -612,6 +617,8 @@ so the one above is the annual number of tests conducted in ANC;
 * n_init_prep_inj_curr_m;		n_init_prep_inj_curr_m =	s_init_prep_inj_curr_m * sf;    *JASJun2024;
 
 * n_prep_any_plw;				n_prep_any_plw = s_prep_any_plw * sf;
+
+* p_prep_plw ;   				p_prep_plw = s_prep_any_plw / s_plw;
 
 * av_prep_eff_non_res_v;  		if s_prep_any > 0 then av_prep_eff_non_res_v = s_prep_effectiveness_non_res_v / s_prep_any;								  
 																			 
@@ -1410,7 +1417,7 @@ n_onart_peer_navigator	p_onart_peer_navigator	p_onart_no_peer_navigator	p_onart_
 
 n_prep_w_1524  p_newp_ge1_m  p_newp_ge1_w
 
-n_prep_any_w_1524   n_prep_any_w_2534  n_prep_any_w_3544  n_prep_any_plw
+n_prep_any_w_1524   n_prep_any_w_2534  n_prep_any_w_3544  n_prep_any_plw  p_prep_elig  p_prep_plw  n_mcirc_15m
 
 ;
 
