@@ -215,6 +215,7 @@ dadc_cost = s_dadc_cost * sf * 4 / 1000;
 dnon_tb_who3_cost = s_dnon_tb_who3_cost * sf * 4 / 1000;
 dtb_cost = s_dtb_cost * sf * 4 / 1000;
 dtest_cost = s_dtest_cost * sf * 4 / 1000;
+dcost_self_test = s_dcost_self_test * sf * 4 / 1000;
 dcot_cost = s_dcot_cost * sf * 4 / 1000;
 dres_cost = s_dres_cost * sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * sf * 4 / 1000;  
@@ -253,9 +254,9 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 		+dcost_circ + dcost_condom_dn  + dcost_child_hiv  + dcost_non_aids_pre_death ;
 
 
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
-		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv + dcost_non_aids_pre_death ;
+dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + dcost_self_test 
+		+ d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + 
+		dcost_prep + dcost_child_hiv + dcost_non_aids_pre_death ;
 
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
