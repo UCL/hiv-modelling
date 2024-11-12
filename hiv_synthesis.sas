@@ -16082,10 +16082,10 @@ if newp_this_per=1 then do;
 	if hiv ne 1 then newp_this_per_hivneg=1;
 	if hiv ne 1 and 15 <= age < 50 then newp_this_per_hivneg_1549=1;
 	if 15 <= age < 50 then newp_this_per_1549=1;
-	if gender=1 then newp_this_per_hivneg_m = 1;	if msm=1 then newp_this_per_hivneg_msm = 1;
-	if gender=2 then newp_this_per_hivneg_w = 1;
-	if gender=2 and 15 <= age < 25 then newp_this_per_hivneg_age1524w = 1;
-	if sw=1 then newp_this_per_hivneg_sw = 1;
+	if gender=1 and  hiv ne 1 then newp_this_per_hivneg_m = 1;	if msm=1 then newp_this_per_hivneg_msm = 1;
+	if gender=2 and  hiv ne 1 then newp_this_per_hivneg_w = 1;
+	if gender=2 and  hiv ne 1 and 15 <= age < 25 then newp_this_per_hivneg_age1524w = 1;
+	if sw=1 and  hiv ne 1 then newp_this_per_hivneg_sw = 1;
 
 end;
 
