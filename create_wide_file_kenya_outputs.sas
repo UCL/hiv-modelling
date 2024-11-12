@@ -2,52 +2,21 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_aj_options_k_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_aj_options_l_out\";
 
 
 
-data   kenya_aj_options_k ; set b.out: ;
-
-if run in (
-
-75220873 
-88058722 
-119929401 
-207771801 
-223813736 
-263438227 
-269258834 
-311632422 
-318695827 
-318887806 
-360571364 
-360947968 
-370452676 
-486877518 
-486984672 
-500183301 
-562835911 
-586514315 
-614810723 
-654134587 
-664891974 
-671808991 
-748204816 
-847183472 
-922514420 
-
-)
-;
+data   kenya_aj_options_l ; set b.out: ;
 
 
-proc sort data=  kenya_aj_options_k; 
+proc sort data=  kenya_aj_options_l; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_aj_options_k ;
+set   kenya_aj_options_l ;
 
 
 if cald=2022.25;
@@ -65,7 +34,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_aj_options_k sf;
+merge   kenya_aj_options_l sf;
 by run ;
  
 
@@ -238,6 +207,7 @@ dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
 dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
 
 * cost of intervention implementation (in addition to any consequences in terms of extra tests, extra people on art etc) ;
+dcost_int=0;
 if option ne 0 then do;
 	cost_int_per_year = 20; * placeholder ; 
 	dcost_int = cost_int_per_year * &discount;
@@ -1016,7 +986,7 @@ n_alive_m n_alive_w  n_alive  prevalence_m prevalence_w  prevalence  n_infected_
 p_onart_diag_m p_onart_diag_w  p_onart_diag p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
 n_death_hivrel_m n_death_hivrel_w n_death_hivrel n_hiv_m n_hiv_w n_hiv prevalence_msm  prop_m_msm  incidence1524m incidence1564m incidence1524w incidence1564w
 incidence_sw incidence_msm  dummy3 dummy4 incidence1564  n_onart  n_onprep_m  n_onprep_w  n_onprep yll_m  yll_w  yll  dummy5 dummy6 dummy7 n_tested dummy8
-cost_int
+cost
 ;
 
 
@@ -1027,12 +997,12 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_aj_options_k; set y;  
+data a.l_base_kenya_aj_options_l; set y;  
 
 
 
 
-data y; set a.l_base_kenya_aj_options_k; 
+data y; set a.l_base_kenya_aj_options_l; 
 
  
   option nospool;
@@ -1076,23 +1046,23 @@ proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <=
 */
 
 
-proc means noprint data=y; var &v; output out=y_24  mean= &v   ;         ; where 2024.0 <= cald < 2025.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_25  mean= &v   ;         ; where 2025.0 <= cald < 2026.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_26  mean= &v   ;         ; where 2026.0 <= cald < 2027.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_27  mean= &v   ;         ; where 2027.0 <= cald < 2028.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_28  mean= &v   ;         ; where 2028.0 <= cald < 2029.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_29  mean= &v   ;         ; where 2029.0 <= cald < 2030.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_30  mean= &v   ;         ; where 2030.0 <= cald < 2031.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_31  mean= &v   ;         ; where 2031.0 <= cald < 2032.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_32  mean= &v   ;         ; where 2032.0 <= cald < 2033.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_33  mean= &v   ;         ; where 2033.0 <= cald < 2034.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_34  mean= &v   ;         ; where 2034.0 <= cald < 2035.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_35  mean= &v   ;         ; where 2035.0 <= cald < 2036.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_36  mean= &v   ;         ; where 2036.0 <= cald < 2037.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_37  mean= &v   ;         ; where 2037.0 <= cald < 2038.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_38  mean= &v   ;         ; where 2038.0 <= cald < 2039.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_39  mean= &v   ;         ; where 2039.0 <= cald < 2040.0 and option=115 ;
-proc means noprint data=y; var &v; output out=y_40  mean= &v   ;         ; where 2040.0 <= cald < 2041.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_24  mean= &v   ;         ; where 2024.0 <= cald < 2025.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_25  mean= &v   ;         ; where 2025.0 <= cald < 2026.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_26  mean= &v   ;         ; where 2026.0 <= cald < 2027.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_27  mean= &v   ;         ; where 2027.0 <= cald < 2028.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_28  mean= &v   ;         ; where 2028.0 <= cald < 2029.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_29  mean= &v   ;         ; where 2029.0 <= cald < 2030.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_30  mean= &v   ;         ; where 2030.0 <= cald < 2031.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_31  mean= &v   ;         ; where 2031.0 <= cald < 2032.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_32  mean= &v   ;         ; where 2032.0 <= cald < 2033.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_33  mean= &v   ;         ; where 2033.0 <= cald < 2034.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_34  mean= &v   ;         ; where 2034.0 <= cald < 2035.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_35  mean= &v   ;         ; where 2035.0 <= cald < 2036.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_36  mean= &v   ;         ; where 2036.0 <= cald < 2037.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_37  mean= &v   ;         ; where 2037.0 <= cald < 2038.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_38  mean= &v   ;         ; where 2038.0 <= cald < 2039.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_39  mean= &v   ;         ; where 2039.0 <= cald < 2040.0 and option=0 ;
+proc means noprint data=y; var &v; output out=y_40  mean= &v   ;         ; where 2040.0 <= cald < 2041.0 and option=0 ;
  																										   
 																										
 data &v ; set 
@@ -1159,7 +1129,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=dummy7 );
 %var(v=n_tested ); 
 %var(v=dummy8 ); 
-
+%var(v=cost);
 
 
 /*
@@ -1245,7 +1215,7 @@ n_alive_m n_alive_w  n_alive  prevalence_m prevalence_w  prevalence  n_infected_
 p_onart_diag_m p_onart_diag_w  p_onart_diag p_onart_vl1000_m p_onart_vl1000_w p_onart_vl1000  prop_w_1549_sw  prevalence_sw   p_mcirc  dummy1  dummy2
 n_death_hivrel_m n_death_hivrel_w n_death_hivrel n_hiv_m n_hiv_w n_hiv prevalence_msm  prop_m_msm  incidence1524m incidence1564m incidence1524w incidence1564w
 incidence_sw incidence_msm  dummy3 dummy4 incidence1564  n_onart  n_onprep_m  n_onprep_w  n_onprep  yll_m yll_w yll dummy5 dummy6 dummy7 n_tested dummy8
-
+cost
 ;
 
 ods html;

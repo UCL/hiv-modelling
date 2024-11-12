@@ -2,22 +2,22 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_aj_options_k_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_aj_options_l_out\";
 
 
 
-data   kenya_aj_options_k ; set b.out: ;
+data   kenya_aj_options_l ; set b.out: ;
 
 
 
-proc sort data=  kenya_aj_options_k; 
+proc sort data=  kenya_aj_options_l; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_aj_options_k ;
+set   kenya_aj_options_l ;
 
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
@@ -34,7 +34,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_aj_options_k sf;
+merge   kenya_aj_options_l sf;
 by run ;
  
 
@@ -1133,7 +1133,7 @@ p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1ne
 
 n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test  n_newp
 
-n_prep_inj n_prep_oral n_prep_vr  mtct_birth_prop mtct_prop n_mtct  dcost_int  cost_int
+n_prep_inj n_prep_oral n_prep_vr  mtct_birth_prop mtct_prop n_mtct  cost_int  cost
 
 ;
 
@@ -1143,18 +1143,11 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_aj_options_k; set y;  
+data a.l_base_kenya_aj_options_l; set y;  
 
 
 
-
-
-
-data y; set a.l_base_kenya_aj_options_k; 
-
-
- 
-
+data y; set a.l_base_kenya_aj_options_l; 
 
 /*
 if cald = 2017;
@@ -1209,14 +1202,15 @@ drop _NAME_ _TYPE_ _FREQ_;
 %mend var;
 
 
-%var(v=incidence1549); %var(v=n_infected1549);   %var(v=n_infected);
+%var(v=incidence1549); %var(v=n_infected1549); %var(v=n_infected);  %var(v=cost); %var(v=cost_int);
 
 
 
 data wide_outputs;
 merge 
-incidence1549 n_infected1549 n_infected ;
+incidence1549 n_infected1549 n_infected cost  cost_int;
 proc sort; by run;
+
 
 %macro par(p=);
 proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2020; run;
@@ -1230,6 +1224,8 @@ data wide_par;
 merge ych2_risk_beh_newp;
 
 proc sort; by run;run;
+
+
 
 /*
 
@@ -1538,28 +1534,29 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_kenya_aj_options_k; 
+  data a.w_base_kenya_aj_options_l; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
   by run;
 
-proc contents data=a.w_base_kenya_aj_options_k;
+
+proc univariate; var cost_24_25 ;
+
 run;
 
-proc univariate; var n_infected_23 ;
 
-proc sort; by run;
-proc print; var run n_infected_23 ; run; 
 
-proc freq; tables n_infected_23 ; run; 
 
+/*
 ods html;
 proc print noobs;
 var run;
 where n_infected_23 < 30000;
 run;
 ods html close;
+*/
+
 
 *
 

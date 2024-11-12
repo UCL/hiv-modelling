@@ -660,7 +660,6 @@ if scenario = 13 then int_name = 'ART_adherence';
 if scenario = 14 then int_name = 'ART_coverage_PLW';
 if scenario = 15 then int_name = 'AHD_package';
 
-proc print; run;
 
 * todo: replace n_condoms with extent_of_sexual_risk ;
 * todo: add p_plhiv_onart as an output so can include goals ;
@@ -728,7 +727,7 @@ if scenario = 13;
 title 'Difference in percent of age15+ on ART with VL suppression in 2027';
 proc sgplot data=x noborder nolegend;
 styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_p_onart_diag_15pl
+  vbar int_name / response=effect_p_vl1000_onart_15pl
           group=model groupdisplay=cluster
      /* baselineattrs=(thickness=0) */;
   xaxis display=(nolabel noline noticks);
@@ -742,7 +741,7 @@ if scenario = 7;
 title 'Difference in percent of men age15+ circumcised in 2027';
 proc sgplot data=x noborder nolegend;
 styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_p_onart_diag_15pl
+  vbar int_name / response=effect_p_men_15pl_circ
           group=model groupdisplay=cluster
      /* baselineattrs=(thickness=0) */;
   xaxis display=(nolabel noline noticks);
@@ -754,6 +753,9 @@ run;
 
 ods html close;
 
+
+
+ 
 
 
 
