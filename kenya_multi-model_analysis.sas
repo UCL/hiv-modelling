@@ -644,6 +644,22 @@ keep model scenario effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effec
 data year_3_effect; set year_3_effect_int1 year_3_effect_int2 year_3_effect_int3 year_3_effect_int4 year_3_effect_int5 year_3_effect_int6 year_3_effect_int7
  year_3_effect_int8 year_3_effect_int9 year_3_effect_int10 year_3_effect_int11 year_3_effect_int12 year_3_effect_int13 year_3_effect_int14 year_3_effect_int15; 
 
+if scenario = 1 then int_name = 'Testing_community';
+if scenario = 2 then int_name = 'Testing_risk_informed';
+if scenario = 3 then int_name = 'Self_testing_general';
+if scenario = 4 then int_name = 'Self_testing_risk_informed';
+if scenario = 5 then int_name = 'AGYW_testing';
+if scenario = 6 then int_name = 'AGYW_behaviour_change';
+if scenario = 7 then int_name = 'VMMC';
+if scenario = 8 then int_name = 'Oral_PrEP';
+if scenario = 9 then int_name = 'Oral/Cab PrEP';
+if scenario = 10 then int_name = 'Oral/Cab/VR_PrEP';
+if scenario = 11 then int_name = 'Harm_reduction_PWID';
+if scenario = 12 then int_name = 'ART_linkage_retention';
+if scenario = 13 then int_name = 'ART_adherence';
+if scenario = 14 then int_name = 'ART_coverage_PLW';
+if scenario = 15 then int_name = 'AHD_package';
+
 proc print; run;
 
 * todo: replace n_condoms with extent_of_sexual_risk ;
@@ -651,10 +667,12 @@ proc print; run;
 
 ods html;
 
+data x; set year_3_effect; 
+if scenario in (8 9 10);
 title 'Effect on number on PrEP in 2027';
-proc sgplot data=year_3_effect noborder nolegend;
+proc sgplot data=x noborder nolegend;
 styleattrs datacolors=(black red green);
-  vbar scenario / response=effect_n_prep
+  vbar int_name / response=effect_n_prep
           group=model groupdisplay=cluster
      /* baselineattrs=(thickness=0) */;
   xaxis display=(nolabel noline noticks);
@@ -663,11 +681,12 @@ styleattrs datacolors=(black red green);
   yaxis label="Effect on number on PrEP" display=(noline) grid;
 run;
 
-
+data x; set year_3_effect; 
+if scenario = 6;
 title '(to be) Relative rate of sexual risk in 2027';
-proc sgplot data=year_3_effect noborder nolegend;
+proc sgplot data=x noborder nolegend;
 styleattrs datacolors=(black red green);
-  vbar scenario / response=effect_n_condoms
+  vbar int_name / response=effect_n_condoms
           group=model groupdisplay=cluster
      /* baselineattrs=(thickness=0) */;
   xaxis display=(nolabel noline noticks);
@@ -676,10 +695,12 @@ styleattrs datacolors=(black red green);
   yaxis label="Relative rate of sexual risk" display=(noline) grid;
 run;
 
+data x; set year_3_effect; 
+if scenario in (1 2 3 4 5);
 title 'Difference in percent of age15+ diagnosed in 2027';
-proc sgplot data=year_3_effect noborder nolegend;
+proc sgplot data=x noborder nolegend;
 styleattrs datacolors=(black red green);
-  vbar scenario / response=effect_p_diagnosed_15pl
+  vbar int_name / response=effect_p_diagnosed_15pl
           group=model groupdisplay=cluster
      /* baselineattrs=(thickness=0) */;
   xaxis display=(nolabel noline noticks);
@@ -688,11 +709,12 @@ styleattrs datacolors=(black red green);
   yaxis label="Difference in percent of age15+ diagnosed" display=(noline) grid;
 run;
 
-
+data x; set year_3_effect; 
+if scenario in (12 14);
 title 'Difference in percent of diagnosed age15+ on ART in 2027';
-proc sgplot data=year_3_effect noborder nolegend;
+proc sgplot data=x noborder nolegend;
 styleattrs datacolors=(black red green);
-  vbar scenario / response=effect_p_onart_diag_15pl
+  vbar int_name / response=effect_p_onart_diag_15pl
           group=model groupdisplay=cluster
      /* baselineattrs=(thickness=0) */;
   xaxis display=(nolabel noline noticks);
@@ -701,11 +723,12 @@ styleattrs datacolors=(black red green);
   yaxis label="Difference in percent of diagnosed age15+ on ART" display=(noline) grid;
 run;
 
-
+data x; set year_3_effect; 
+if scenario = 13;
 title 'Difference in percent of age15+ on ART with VL suppression in 2027';
-proc sgplot data=year_3_effect noborder nolegend;
+proc sgplot data=x noborder nolegend;
 styleattrs datacolors=(black red green);
-  vbar scenario / response=effect_p_onart_diag_15pl
+  vbar int_name / response=effect_p_onart_diag_15pl
           group=model groupdisplay=cluster
      /* baselineattrs=(thickness=0) */;
   xaxis display=(nolabel noline noticks);
@@ -714,11 +737,12 @@ styleattrs datacolors=(black red green);
   yaxis label="Difference in percent of age15+ on ART with VL suppression" display=(noline) grid;
 run;
 
-
+data x; set year_3_effect; 
+if scenario = 7;
 title 'Difference in percent of men age15+ circumcised in 2027';
-proc sgplot data=year_3_effect noborder nolegend;
+proc sgplot data=x noborder nolegend;
 styleattrs datacolors=(black red green);
-  vbar scenario / response=effect_p_onart_diag_15pl
+  vbar int_name / response=effect_p_onart_diag_15pl
           group=model groupdisplay=cluster
      /* baselineattrs=(thickness=0) */;
   xaxis display=(nolabel noline noticks);
