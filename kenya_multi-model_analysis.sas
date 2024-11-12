@@ -415,43 +415,91 @@ hiv_synthesis_int14 hiv_synthesis_int15
 
 
 
+data year_3; set all; if year = 2027 ;
+keep model scenario year n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
 
-data goals_0 ; set all; if model=1; if scenario = 0 ; new_infection_15pl_0_1 = new_infection_15pl; keep year new_infection_15pl_0_1 ;
-data optima_0 ; set all; if model=2;if scenario = 0 ; new_infection_15pl_0_2 = new_infection_15pl;keep year new_infection_15pl_0_2 ;
-data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;new_infection_15pl_0_3 = new_infection_15pl;keep year new_infection_15pl_0_3 ;
 
-data goals_20 ; set all; if model=1;if scenario = 20 ;new_infection_15pl_20_1 = new_infection_15pl;keep year new_infection_15pl_20_1 ;
-data optima_20 ; set all; if model=2;if scenario = 20 ;new_infection_15pl_20_2 = new_infection_15pl;keep year new_infection_15pl_20_2 ;
-data hiv_synthesis_20 ; set all; if model=3;if scenario = 20 ;new_infection_15pl_20_3 = new_infection_15pl;keep year new_infection_15pl_20_3 ;
+data year_3_0; set year_3; if scenario=0;
+n_prep_sq = n_prep; n_condoms_sq = n_condoms; p_diagnosed_15pl_sq = p_diagnosed_15pl; p_onart_diag_15pl_sq = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_sq = p_vl1000_onart_15pl ; p_men_15pl_circ_sq = p_men_15pl_circ ;
 
-data a.new_infection_15pl ; 
-merge goals_0 optima_0 hiv_synthesis_0 goals_20 optima_20 hiv_synthesis_20 ;
+data year_3_int1; set year_3; if scenario=1;
+n_prep_int1 = n_prep; n_condoms_int1 = n_condoms; p_diagnosed_15pl_int1 = p_diagnosed_15pl; p_onart_diag_15pl_int1 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int1 = p_vl1000_onart_15pl ; p_men_15pl_circ_int1 = p_men_15pl_circ ;
+
+data year_3_int2; set year_3; if scenario=2;
+n_prep_int2 = n_prep; n_condoms_int2 = n_condoms; p_diagnosed_15pl_int2 = p_diagnosed_15pl; p_onart_diag_15pl_int2 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int2 = p_vl1000_onart_15pl ; p_men_15pl_circ_int2 = p_men_15pl_circ ;
+
+
+
+data year_3_effect_int1; merge year_3_0 year_3_int1 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int1 - n_prep_sq;
+effect_n_condoms = n_condoms_int1 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int1 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int1 - p_onart_diag_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int1 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int1 - p_men_15pl_circ_sq;
+scenario=1;
+keep model scenario effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int2; merge year_3_0 year_3_int2 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int2 - n_prep_sq;
+effect_n_condoms = n_condoms_int2 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int2 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int2 - p_onart_diag_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int2 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int2 - p_men_15pl_circ_sq;
+scenario=2;
+keep model scenario effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+
+data year_3_effect; set year_3_effect_int1 year_3_effect_int2; 
+
+proc print; run;
+
+* todo: replace n_condoms with extent_of_sexual_risk ;
+* todo: add p_plhiv_onart as an output so can include goals ;
 
 ods html;
 
-proc sgplot data = a.new_infection_15pl nolegend ; 
-Title    height=1.5 justify=center "Number of new infections age 15+";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000   to 2040 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 10000) valueattrs=(size=10);
-
-label new_infection_15pl_0_1 = "Goals - SQ ";
-label new_infection_15pl_0_2 = "Optima - SQ ";
-label new_infection_15pl_0_3 = "Synthesis - SQ ";
-label new_infection_15pl_20_1 = "Goals - int 20 ";
-label new_infection_15pl_20_2 = "Optima - int 20 ";
-label new_infection_15pl_20_3 = "Synthesis - int 20 ";
-
-series  x=year y=new_infection_15pl_0_1/	lineattrs = (color=black thickness = 2);
-series  x=year y=new_infection_15pl_0_2/	lineattrs = (color=red thickness = 2);
-series  x=year y=new_infection_15pl_0_3/	lineattrs = (color=green thickness = 2);
-
-series  x=year y=new_infection_15pl_20_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
-series  x=year y=new_infection_15pl_20_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
-series  x=year y=new_infection_15pl_20_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
-
+title '-------';
+proc sgplot data=year_3_effect noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar scenario / response=effect_n_prep
+          group=model groupdisplay=cluster
+     /* baselineattrs=(thickness=0) */;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  xaxis label="Intervention" display=(noline noticks); 
+  yaxis label="Effect on number on PrEP" display=(noline) grid;
 run;
 
-quit;
+ods html close;
+
+*
+effect_int1_n_prep 
+effect_int1_n_condoms 
+effect_int1_p_diagnosed_15pl 
+effect_int1_p_onart_diag_15pl 
+effect_int1_p_vl1000_onart_15pl 
+effect_int1_p_men_15pl_circ 
+;
+
+proc print; run;
+
+
+
+
+
+
+
+
+
+
+
+
+* ===================================================================================================================================================================;
 
 
 * replace mno by model number, intx by scenario ;
@@ -510,18 +558,6 @@ quit;
 
 
 */
-
-
-
-
-
-
-
-
-
-
-
-
 
 * ===================================================================================================================================================================;
 
@@ -859,6 +895,51 @@ run;
 quit;
 
 */
+
+
+
+/*
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; new_infection_15pl_0_1 = new_infection_15pl; keep year new_infection_15pl_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; new_infection_15pl_0_2 = new_infection_15pl;keep year new_infection_15pl_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;new_infection_15pl_0_3 = new_infection_15pl;keep year new_infection_15pl_0_3 ;
+
+data goals_20 ; set all; if model=1;if scenario = 20 ;new_infection_15pl_20_1 = new_infection_15pl;keep year new_infection_15pl_20_1 ;
+data optima_20 ; set all; if model=2;if scenario = 20 ;new_infection_15pl_20_2 = new_infection_15pl;keep year new_infection_15pl_20_2 ;
+data hiv_synthesis_20 ; set all; if model=3;if scenario = 20 ;new_infection_15pl_20_3 = new_infection_15pl;keep year new_infection_15pl_20_3 ;
+
+data a.new_infection_15pl ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_20 optima_20 hiv_synthesis_20 ;
+
+ods html;
+
+proc sgplot data = a.new_infection_15pl nolegend ; 
+Title    height=1.5 justify=center "Number of new infections age 15+";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 10000) valueattrs=(size=10);
+
+label new_infection_15pl_0_1 = "Goals - SQ ";
+label new_infection_15pl_0_2 = "Optima - SQ ";
+label new_infection_15pl_0_3 = "Synthesis - SQ ";
+label new_infection_15pl_20_1 = "Goals - int 20 ";
+label new_infection_15pl_20_2 = "Optima - int 20 ";
+label new_infection_15pl_20_3 = "Synthesis - int 20 ";
+
+series  x=year y=new_infection_15pl_0_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=new_infection_15pl_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=new_infection_15pl_0_3/	lineattrs = (color=green thickness = 2);
+
+series  x=year y=new_infection_15pl_20_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+series  x=year y=new_infection_15pl_20_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=new_infection_15pl_20_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+
+run;
+
+quit;
+
+*/
+
+
 
 
 
