@@ -1,0 +1,217 @@
+---
+title: "SEARCH Hypertension Modelling with HIV Synthesis"
+author: "Matt Hickey"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    reference_docx: mynew_template.docx
+    toc: true
+    toc_depth: 2
+always_allow_html: true
+---
+
+
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(readxl)
+library(knitr)
+library(kableExtra)
+
+options(tinytex.verbose = TRUE)
+options(scipen = 999)
+
+
+knitr::opts_chunk$set(echo = FALSE, fig.height=10, fig.width=15)
+knitr::opts_knit$set(root.dir = '~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration')
+
+pct <- function(x) {
+  y <- paste0(round((x*100),0),"%")
+  return(y)
+}
+
+
+load("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration/run105_long.RData")
+
+```
+
+# Hypertension diagnosis, treatment, control over time among age 45-64
+### 0.25 year increments
+```{r}
+# List of variables and their y-axis labels
+variables <- list(
+  p_htn_4564 = "Prevalence of hypertension among adults aged 45-64 years",
+  p_diag_htn_4564 = "Proportion of adults aged 45-64 years with hypertension who are diagnosed",
+  p_on_tx_htn_4564 = "Proportion of adults aged 45-64 years with hypertension who are treated",
+  p_htn_ctrl_4564 = "Proportion of adults aged 45-64 years with hypertension with SBP <140"
+)
+
+# Loop over variables to create summary data and plots
+plots <- list()
+
+for (var in names(variables)) {
+  # Summarize data
+  summary_df <- df %>%
+    group_by(cald, policy) %>%
+    summarize(
+      median = median(.data[[var]]),
+      lower_90 = quantile(.data[[var]], 0.05),
+      upper_90 = quantile(.data[[var]], 0.95),
+      .groups = "drop"
+    )
+  
+  # Generate plot
+  p <- ggplot(summary_df, aes(x = cald, color = policy, fill = policy)) +
+    geom_line(aes(y = median), size = 1.2) +  # Median line
+    geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
+    labs(
+      title = paste("Median and 90% Range of", var, "Over Time by Policy"),
+      x = "Time (cald)",
+      y = variables[[var]],  # Custom y-axis label
+      color = "Policy",
+      fill = "Policy"
+    ) +
+    theme_minimal()  # Clean theme
+  
+  # Add to list of plots
+  plots[[var]] <- p
+}
+
+# Display plots
+print(plots[["p_htn_4564"]])
+print(plots[["p_diag_htn_4564"]])
+print(plots[["p_on_tx_htn_4564"]])
+print(plots[["p_htn_ctrl_4564"]])
+
+```
+
+
+### 1 year increments
+```{r}
+plots2 <- list()
+# create plots for data frame compressed one row per year
+for (var in names(variables)) {
+  # Summarize data
+  summary_df_yr <- df_yr %>%
+    group_by(year, policy) %>%
+    summarize(
+      median = median(.data[[var]]),
+      lower_90 = quantile(.data[[var]], 0.05),
+      upper_90 = quantile(.data[[var]], 0.95),
+      .groups = "drop"
+    )
+  
+  # Generate plot
+  p2 <- ggplot(summary_df_yr, aes(x = year, color = policy, fill = policy)) +
+    geom_line(aes(y = median), size = 1.2) +  # Median line
+    geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
+    labs(
+      title = paste("Median and 90% Range of", var, "Over Time by Policy"),
+      x = "Year",
+      y = variables[[var]],  # Custom y-axis label
+      color = "Policy",
+      fill = "Policy"
+    ) +
+    theme_minimal()  # Clean theme
+  
+  # Add to list of plots
+  plots2[[var]] <- p2
+}
+
+# Display plots
+print(plots2[["p_htn_4564"]])
+print(plots2[["p_diag_htn_4564"]])
+print(plots2[["p_on_tx_htn_4564"]])
+print(plots2[["p_htn_ctrl_4564"]])
+```
+
+# Hypertension Diagnosis, Treatment, Control Over Time Among Age 18+
+### 0.25-Year Increments
+```{r}
+# List of variables and their y-axis labels
+variables_ge18 <- list(
+  p_htn_ge18 = "Prevalence of hypertension among adults aged 18+ years",
+  p_diag_htn_ge18 = "Proportion of adults aged 18+ years with hypertension who are diagnosed",
+  p_on_tx_htn_ge18 = "Proportion of adults aged 18+ years with hypertension who are treated",
+  p_htn_ctrl_ge18 = "Proportion of adults aged 18+ years with hypertension with SBP <140"
+)
+
+# Loop over variables to create summary data and plots
+plots_ge18 <- list()
+
+for (var in names(variables_ge18)) {
+  # Summarize data
+  summary_df <- df %>%
+    group_by(cald, policy) %>%
+    summarize(
+      median = median(.data[[var]]),
+      lower_90 = quantile(.data[[var]], 0.05),
+      upper_90 = quantile(.data[[var]], 0.95),
+      .groups = "drop"
+    )
+  
+  # Generate plot
+  p <- ggplot(summary_df, aes(x = cald, color = policy, fill = policy)) +
+    geom_line(aes(y = median), size = 1.2) +  # Median line
+    geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
+    labs(
+      title = paste("Median and 90% Range of", var, "Over Time by Policy"),
+      x = "Time (cald)",
+      y = variables_ge18[[var]],  # Custom y-axis label
+      color = "Policy",
+      fill = "Policy"
+    ) +
+    theme_minimal()  # Clean theme
+  
+  # Add to list of plots
+  plots_ge18[[var]] <- p
+}
+
+# Display plots
+print(plots_ge18[["p_htn_ge18"]])
+print(plots_ge18[["p_diag_htn_ge18"]])
+print(plots_ge18[["p_on_tx_htn_ge18"]])
+print(plots_ge18[["p_htn_ctrl_ge18"]])
+```
+
+### 1 year increments
+```{r}
+plots_ge18_yr <- list()
+
+# Create plots for data frame compressed one row per year
+for (var in names(variables_ge18)) {
+  # Summarize data
+  summary_df_yr <- df_yr %>%
+    group_by(year, policy) %>%
+    summarize(
+      median = median(.data[[var]]),
+      lower_90 = quantile(.data[[var]], 0.05),
+      upper_90 = quantile(.data[[var]], 0.95),
+      .groups = "drop"
+    )
+  
+  # Generate plot
+  p2 <- ggplot(summary_df_yr, aes(x = year, color = policy, fill = policy)) +
+    geom_line(aes(y = median), size = 1.2) +  # Median line
+    geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
+    labs(
+      title = paste("Median and 90% Range of", var, "Over Time by Policy"),
+      x = "Year",
+      y = variables_ge18[[var]],  # Custom y-axis label
+      color = "Policy",
+      fill = "Policy"
+    ) +
+    theme_minimal()  # Clean theme
+  
+  # Add to list of plots
+  plots_ge18_yr[[var]] <- p2
+}
+
+# Display plots
+print(plots_ge18_yr[["p_htn_ge18"]])
+print(plots_ge18_yr[["p_diag_htn_ge18"]])
+print(plots_ge18_yr[["p_on_tx_htn_ge18"]])
+print(plots_ge18_yr[["p_htn_ctrl_ge18"]])
+```
+
