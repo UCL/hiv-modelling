@@ -1,6 +1,6 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run 105 all;
+* run 105;
 * Matt local machine input;
 libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\test';
 %let tmpfilename = out;

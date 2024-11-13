@@ -1,6 +1,6 @@
 
 * Matt's local machine input;
-libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run106";
+libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105";
 data hiv_synthesis_base(compress=binary); set a.out:;
 /*
 * Myriad input;
@@ -31,7 +31,7 @@ set hiv_synthesis_base ;
 
 if cald=2023.5; ***Update as required;
 s_alive = s_alive_m + s_alive_w ;
-sf_2023 = 10000000 / s_alive; ***If calibrating to a specific setting, change 10000000 to desired 15+ population size;
+sf_2023 = 26029383 / s_alive; ***If calibrating to a specific setting, change 10000000 to desired 15+ population size;
 * Uganda population aged 15+ in 2022 (estimated by World Bank);
 keep run sf_2023;
 proc sort; by run;run;
@@ -1135,19 +1135,17 @@ data y; set a.l_base;
 proc means noprint data=y; var &v; output out=y_15 mean= &v._15; by run option ; where 2013 <= cald < 2017; 
 proc means noprint data=y; var &v; output out=y_23 mean= &v._23; by run option ; where 2023 <= cald < 2024; 
 
-/*proc means noprint data=y; var &v; output out=y_43 mean= &v._43; by run option ; where 2043 <= cald < 2044;
 proc means noprint data=y; var &v; output out=y_73 mean= &v._73; by run option ; where 2073 <= cald < 2074; 
-proc means noprint data=y; var &v; output out=y_2343 mean= &v._2343; by run option ; where 2024 <= cald < 2044; */
-proc means noprint data=y; var &v; output out=y_2429 mean= &v._2429; by run option ; where 2024 <= cald < 2029;
+/*proc means noprint data=y; var &v; output out=y_2343 mean= &v._2343; by run option ; where 2024 <= cald < 2044; 
+proc means noprint data=y; var &v; output out=y_2429 mean= &v._2429; by run option ; where 2024 <= cald < 2029; */
 proc means noprint data=y; var &v; output out=y_2474 mean= &v._2474; by run option ; where 2024 <= cald < 2074; 
 																												
-/*proc sort data=y_43; by run option ; proc transpose data=y_43 out=t_43 prefix=&v._43_; var &v._43; by run option ; 
 proc sort data=y_73; by run option; proc transpose data=y_73 out=t_73 prefix=&v._73_; var &v._73; by run option ; 
-proc sort data=y_2343; by run option; proc transpose data=y_2343 out=t_2343 prefix=&v._2343_; var &v._2343; by run option ;  */
-proc sort data=y_2429; by run option; proc transpose data=y_2429 out=t_2429 prefix=&v._2429_; var &v._2429; by run option ;
+/*proc sort data=y_2343; by run option; proc transpose data=y_2343 out=t_2343 prefix=&v._2343_; var &v._2343; by run option ;  
+proc sort data=y_2429; by run option; proc transpose data=y_2429 out=t_2429 prefix=&v._2429_; var &v._2429; by run option ; */
 proc sort data=y_2474; by run option; proc transpose data=y_2474 out=t_2474 prefix=&v._2474_; var &v._2474; by run option ;  
 
-data &v ; merge   y_15 y_23 y_2429 y_2474 ; by run option; * REMOVED y_43 y_73 y_2343 to shorten output;
+data &v ; merge   y_15 y_23 y_73 y_2474 ; by run option;
 drop _NAME_ _TYPE_ _FREQ_;
 
 
