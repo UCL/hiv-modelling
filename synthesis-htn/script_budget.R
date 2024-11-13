@@ -5,19 +5,16 @@ library(stringr)
 library(knitr)
 library(kableExtra)
 
-#### Setup ####
-
-setwd("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration")
+setwd("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/synthesis")
 ihme_file <- "IHME-GBD_2019_DATA-ae7f35c6-1.csv"
 pop_factor <- 1
-
 pct <- function(x) {
   y <- paste0(round((x*100),0),"%")
   return(y)
 }
 
-#### Import Synthesis output ####
-df_sas_wide <- read_sas("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/synthesis/w_base_105_ug.sas7bdat")
+# Import Synthesis output
+df_sas_wide <- read_sas("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/synthesis/w_base_105.sas7bdat")
 df_sas_wide <- df_sas_wide %>% mutate(source = ifelse(option ==1, "SOC",
                                      ifelse(option ==2, "CCC",
                                      ifelse(option ==3, "CHW",
@@ -26,29 +23,23 @@ df_sas_wide <- df_sas_wide %>% mutate(source = ifelse(option ==1, "SOC",
   filter(source == "SOC" | source == "CCC" | source == "CHW")
 
 df_sas_wide <- rename(df_sas_wide, country = run) 
-sourcenames <- c("SOC", "CCC", "CHW", "CHW_link", "perfect", "GBD 2015", "central Africa", "eastern Africa", "southern Africa", "western Africa",  "Geldsetzer", "SEARCH (Kenya/Uganda)", "NIDS (South Africa)")
+sourcenames <- c("GBD 2015", "Geldsetzer", "SEARCH (Kenya/Uganda)", "NIDS (South Africa)", "SOC", "CCC", "CHW", "CHW_link", "perfect")
 df_sas_wide$source <- as.factor(df_sas_wide$source)
 df_sas_wide$source <- factor(df_sas_wide$source, levels = sourcenames)
 df_sas_wide <- df_sas_wide %>% 
-  select(country, source, ends_with("_15"), ends_with("_23"), ends_with("_73"), ends_with("_2429"), ends_with("_2474")) %>% 
+  select(country, source, ends_with("_15"), ends_with("_23"), ends_with("_2429")) %>% 
   select(-c(starts_with("p_diag_"), starts_with("p_onart_"), starts_with("p_vg1000"), starts_with("p_vl1000"), starts_with("prevalence_vg1000"), starts_with("prevalence1549m"), starts_with("prevalence1549w"), starts_with("incidence1549"))) %>% 
-  rename(setting_sbp_inc = prob_sbp_increase_2474,
-         setting_sbp_cal = sbp_cal_eff_2474,
-         setting_cvd_tx = rr_cvd_tx_2474,
-         setting_cvd_tx_eff = rr_cvd_tx_effective_2474,
-         setting_cost_lowqual_cvd = cost_lowqual_cvdcare_2474,
-         setting_prob_htn_link = prob_htn_link_2474) %>% 
-  select(-c(starts_with("prob_sbp_increase_"), starts_with("sbp_cal_eff_"), starts_with("rr_cvd_tx_"), starts_with("rr_cvd_tx_effective_"), starts_with("prob_htn_link_")))
+  rename(setting_sbp_inc = prob_sbp_increase_2429,
+         setting_sbp_cal = sbp_cal_eff_2429,
+         setting_cvd_tx = rr_cvd_tx_2429,
+         setting_cvd_tx_eff = rr_cvd_tx_effective_2429) %>% 
+  select(-c(starts_with("prob_sbp_increase_"), starts_with("sbp_cal_eff_"), starts_with("rr_cvd_tx_"), starts_with("rr_cvd_tx_effective_")))
 
 # select setting level variables at baseline
 df_scenario_chars <- df_sas_wide %>% 
-  select(country, source, m_sbp_4564_23, p_htn_true_4564_23, p_diagnosed_hypert_4564_23, p_on_tx_htn_4564_23, p_hypert_control_4564_23, rate_dead_cvd_4564_23, starts_with("setting"), prevalence1549_23) %>% 
-  group_by(country) %>% 
-  fill(m_sbp_4564_23, p_htn_true_4564_23, p_diagnosed_hypert_4564_23, p_on_tx_htn_4564_23, p_hypert_control_4564_23, rate_dead_cvd_4564_23, prevalence1549_23) %>% 
-  filter(source == "CHW") %>% 
-  select(-c("source"))
+  filter(source == "SOC") %>%
+  select(country, m_sbp_4564_23, p_htn_true_4564_23, p_diagnosed_hypert_4564_23, p_on_tx_htn_4564_23, p_hypert_control_4564_23, rate_dead_cvd_4059_23, starts_with("setting"), prevalence1549_23)
 
-              
 # replace _year with .year to facilitate pivot long
     names <- colnames(df_sas_wide)
   
@@ -67,14 +58,14 @@ df_scenario_chars <- df_sas_wide %>%
     colnames(df_sas_wide) <- names2
     
 #####===subset data for country profiles===#####
-uganda  <- df_sas_wide %>% filter(p_hypert_ge18.23 < 0.32,
-                                  p_diagnosed_hypert_ge18.23 < 0.26,
-                                  prevalence1549.23 < 0.19) %>% select(country)
-ug <- left_join(uganda, df_sas_wide, by = "country")
-df_sas_wide <- ug
+# uganda  <- df_sas_wide %>% filter(p_hypert_ge18.15 < 0.32,
+#                                   p_diagnosed_hypert_ge18.15 < 0.26,
+#                                   prevalence1549.15 < 0.19) %>% select(country)
+# ug <- left_join(uganda, df_sas_wide, by = "country")
+# df_sas_wide <- ug
 #####======================================#####
 
-#### pivot to long dataset ####
+# pivot to long dataset
 df_sas <- pivot_longer(df_sas_wide, 
                    cols = matches("\\.[0-9]{2}$|\\.[0-9]{4}$"),
                    names_to = c("var", "year"), 
@@ -86,10 +77,6 @@ df_sas <- pivot_longer(df_sas_wide,
 # Scale population size based on country profile
 df_sas <- df_sas %>% 
   mutate(value = ifelse(grepl("^n_", var) | grepl("^ddaly", var) | grepl("^dhtn_cost", var) | grepl("^htn_cost", var), value * pop_factor, value))
-
-df_sas <- df_sas %>% 
-  mutate(var = ifelse(var == "dhtn_cost_cvdquarter", "dhtn_cost_totcvdquart", var),
-         var = ifelse(var == "dhtn_cost_cvd4x", "dhtn_cost_totcvd4x", var))
 
 df_ncdrisc <- read.csv("ncd_risc.csv", header=TRUE)
 p_source <- c("country", "source")
@@ -140,7 +127,7 @@ vars <- df_sas %>% select(var) %>% distinct
 #   select(country, source, year, sex, age, all_of(vars_cascade)) %>% 
 #   filter(!rowSums(is.na(.[, vars_cascade])) == length(vars_cascade))
 
-#### EXTERNAL DATA ####
+### EXTERNAL DATA ###
 # Import Geldsetzer Lancet 2019 country data on treatemnt/control (not age-stratified)
 df_ssa_txctrl <- read.delim(file = "geldsetzer_tx_data.txt", sep = "", header = TRUE)
 df_ssa_txctrl <- df_ssa_txctrl %>% 
@@ -213,10 +200,10 @@ ssa_western <- c("Benin", "Burkina Faso", "Cabo Verde", "Cameroon", "Chad", "Cô
 ssa_all <- c(ssa_western, ssa_eastern, ssa_southern, ssa_central)
 ihme_country <- ihme %>% 
   filter(location %in% ssa_all) %>% 
-  mutate(region = ifelse(location %in% ssa_central, "central Africa",
-                         ifelse(location %in% ssa_eastern, "eastern Africa",
-                                ifelse(location %in% ssa_southern, "southern Africa",
-                                       ifelse(location %in% ssa_western, "western Africa", NA)))),
+  mutate(region = ifelse(location %in% ssa_central, "Central SSA",
+                         ifelse(location %in% ssa_eastern, "Eastern SSA",
+                                ifelse(location %in% ssa_southern, "Southern SSA",
+                                       ifelse(location %in% ssa_western, "Western SSA", NA)))),
          age = paste0("yr", age),
          age = str_remove(age, " years"),
          age = str_remove(age, "-"))
@@ -414,7 +401,7 @@ df_sas <- df_sas %>%
 # CVD event and mortality risk reduction
 df_cvdmort_rr <- df_sas %>% 
   filter(grepl("^rate_", var),
-         year == "2429" | year == "2474",
+         year == "2328" | year == "2373",
          sex == "All") %>% 
   pivot_wider(id_cols = c(country, age, sex, year, var),
               names_from = c(source),
@@ -433,7 +420,7 @@ df_cvdmort_rr <- df_sas %>%
 
 df_cvdevent_n <- df_sas %>% 
     filter(var %in% c("n_ihd", "n_cva", "n_cvd"),
-           year == "2429" | year == "2474") %>% 
+           year == "2328" | year == "2373") %>% 
     pivot_wider(id_cols = c(country, age, sex, year, var),
                 names_from = c(source),
                 values_from = value) %>% 
@@ -449,7 +436,7 @@ df_cvdevent_n <- df_sas %>%
 
 df_cvdmort_n <- df_sas %>% 
   filter(var == "n_dead_cvd",
-         year == "2429" | year == "2474") %>%
+         year == "2328" | year == "2373") %>%
   pivot_wider(id_cols = c(country, age, sex, year, var),
               names_from = c(source),
               values_from = value) %>% 
@@ -468,7 +455,7 @@ df_sas <- rbind(df_sas, df_cvdevent_n, df_cvdmort_n)
 # DALYs averted
 df_ddaly_avert <- df_sas %>% 
   filter(var == "ddaly",
-         year == "2429" | year == "2474") %>% 
+         year == "2328" | year == "2373") %>% 
   mutate(value = value / 1000) %>% 
   pivot_wider(        id_cols = c(country, year, var, age, sex),
                       names_from = c(source),
@@ -489,10 +476,10 @@ df_ddaly_avert <- df_sas %>%
     select(-c(var, age, sex))
   
 # Cost
-df_dcost_inc <- df_sas %>%  # discounted costs
+df_dcost_inc <- df_sas %>% 
   filter(grepl("^dhtn_cost_tot", var)) %>%
   filter(var != "dhtn_cost_total_imp") %>% 
-  filter(year == 2429 | year == 2474) %>% 
+  filter(year == 2328 | year == 2373) %>% 
   pivot_wider(id_cols = c(country, year, var, age, sex),
               names_from = c(source),
               values_from = value) %>% 
@@ -507,9 +494,11 @@ df_dcost_inc <- df_sas %>%  # discounted costs
   # bind to df_sas
   df_sas <- rbind(df_sas, df_dcost_inc)
   
-  df_cost_inc <- df_sas %>% # undiscounted costs
+  # undiscounted costs
+  df_cost_inc <- df_sas %>% 
     filter(grepl("^htn_cost_tot", var)) %>%
-    filter(year == 2429 | year == 2474) %>% 
+    filter(var != "htn_cost_total_imp") %>% 
+    filter(year == 2328 | year == 2373) %>% 
     pivot_wider(id_cols = c(country, year, var, age, sex),
                 names_from = c(source),
                 values_from = value) %>% 
@@ -526,7 +515,7 @@ df_dcost_inc <- df_sas %>%  # discounted costs
 
 df_netdaly <- df_sas %>% 
   filter(grepl("^dhtn_cost_tot", var) & grepl("_inc$", var),
-         year %in% c("2429", "2474")) %>% 
+         year %in% c("2328", "2373")) %>% 
   rename(cost_inc = value,
          cost_cat = var) %>% 
   select(-c(age, sex)) %>% 
@@ -545,40 +534,22 @@ df_netdaly <- df_sas %>%
          netdaly_450 = ddaly_averted - ((cost_inc*1000)/450),
          netdaly_500 = ddaly_averted - ((cost_inc*1000)/500),
          netdaly_600 = ddaly_averted - ((cost_inc*1000)/600),
-         netdaly_700 = ddaly_averted - ((cost_inc*1000)/700),
          netdaly_800 = ddaly_averted - ((cost_inc*1000)/800),
-         netdaly_900 = ddaly_averted - ((cost_inc*1000)/900),
          netdaly_1000 = ddaly_averted - ((cost_inc*1000)/1000),
          cf_netdaly_any = ifelse(netdaly_averted >0 & ddaly_averted >0, 1, 0),
          cf_netdaly_any = ifelse(source == "SOC", NA, cf_netdaly_any),
          cost_cat = factor(cost_cat, 
                            levels = c("dhtn_cost_tothalf_inc", 
-                                      "dhtn_cost_totcvdquart_inc",
-                                      "dhtn_cost_totcvdhalf_inc", 
-                                      "dhtn_cost_totdrughalf_inc", 
-                                      "dhtn_cost_totclinhalf_inc", 
-                                      "dhtn_cost_totscrnhalf_inc", 
+                                      "dhtn_cost_totdrughalf_inc", "dhtn_cost_totclinhalf_inc", "dhtn_cost_totscrnhalf_inc", 
                                       "dhtn_cost_total_inc", 
-                                      "dhtn_cost_totscrndoub_inc", 
-                                      "dhtn_cost_totclindoub_inc", 
-                                      "dhtn_cost_totdrugdoub_inc",
-                                      "dhtn_cost_totcvddoub_inc",
-                                      "dhtn_cost_totcvd4x_inc",
+                                      "dhtn_cost_totscrndoub_inc", "dhtn_cost_totclindoub_inc", "dhtn_cost_totdrugdoub_inc", 
                                       "dhtn_cost_totdoub_inc"),
                            ordered = TRUE,
-                           labels= c("Total costs 50% of base", 
-                                     "Acute CVD costs 25% of base",
-                                     "Acute CVD costs 50% of base",
-                                     "Drug costs 50% of base", 
-                                     "Clinic costs 50% of base", 
-                                     "Screening costs 50% of base", 
-                                     "Base case cost assumptions",
-                                     "Screening costs 200% of base", 
-                                     "Clinic costs 200% of base", 
-                                     "Drug costs 200% of base", 
-                                     "Acute CVD costs 200% of base",
-                                     "Acute CVD costs 400% of base",
-                                     "Total costs 200% of base")))
+                           labels= c("total htn (50%)", 
+                                     "total (50% drug cost)", "total (50% clinic cost)", "total (50% screening cost)", 
+                                     "total htn", 
+                                     "total (200% screening cost)", "total (200% clinic cost)", "total (200% drug cost)", 
+                                     "total htn (200%)")))
 
 df_netdaly_all<- df_netdaly %>% 
   pivot_wider(id_cols = c(country, year, cost_cat),
@@ -621,7 +592,7 @@ df_netdaly_graph<- df_netdaly %>%
   mutate(source = factor(source, levels = sourcenames))
 
 df_netdaly_graph_summ <- df_netdaly_graph %>% 
-  filter(year == "2474", cost_cat == "Base case cost assumptions") %>% 
+  filter(year == "2373", cost_cat == "total htn") %>% 
   group_by(source, ce_threshold) %>% 
   summarize(prop = mean(cf_netdaly_all),
             pct = pct(prop)) 
@@ -630,12 +601,11 @@ df_netdaly <- left_join(df_netdaly, df_netdaly_all, by = c("country", "source", 
 rm(df_netdaly_all, df_ddaly_avert, df_dcost_inc)
 
 # Setting scenario characteristics
-df_netdaly <- left_join(df_netdaly, df_scenario_chars, by="country") %>% 
-  mutate(setting_prob_htn_link = round(setting_prob_htn_link, 2))
+df_netdaly <- left_join(df_netdaly, df_scenario_chars, by="country")
 vars <- df_sas %>% select(var) %>% distinct
 
 # cost-effectiveness frontier
-plot_icer <- df_netdaly %>% filter(year == "2474") %>% 
+plot_icer <- df_netdaly %>% filter(year == "2328") %>% 
   group_by(source, cost_cat) %>% 
   summarize(mean_ddaly = mean(ddaly_averted),
             mean_cost = mean(cost_inc)) %>% 
@@ -658,15 +628,14 @@ plot_icer_ddaly <- plot_icer %>%
                names_to = "source")
 plot_icer <- left_join(plot_icer, plot_icer_cost, by = c("cost_cat", "source")) %>% 
   left_join(plot_icer_ddaly, by = c("cost_cat", "source")) %>% 
-  mutate(icer2 = round((inc_cost * 1000) / inc_ddaly)) %>% 
-  select(-c("icer"))
+  mutate(icer2 = round((inc_cost * 1000) / inc_ddaly))
 
 plot_icer %>% filter(source !="SOC")
 
 
-#### Save ####
 
-save.image("SynthesisHTN_105_ug.RData")
+
+save.image("SynthesisHTN_105_5yr-budget.RData")
 
 
 

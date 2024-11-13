@@ -454,6 +454,56 @@ x <- df_cvd_death %>% filter(sex !="Both") %>% group_by(source, sex, age) %>% su
 write_csv(x, "mortality_comparison.csv")
 x %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
   
+df_sas %>% filter(var == "rate_dead_cvd", year == "2373", sex == "All") %>%
+  ggplot(aes(age, value, color=source)) +
+    geom_boxplot() +
+    theme_minimal(base_size = 14) +
+    labs(title = "Average CVD mortality rate (2023 to 2073)",
+         y = "CVD mortality per 100 person-years") +
+    coord_cartesian(ylim = c(0,NA)) +
+    theme(
+      plot.title = element_text(size = 18, face = "bold"),
+      axis.title.y = element_text(size = 16),
+      axis.title.x = element_text(size = 16),
+      legend.position = "bottom"
+    )
+
+df_sas %>% filter(var == "rate_dead_cvd", year == "2373", sex == "All") %>% group_by(source) %>% summarize("Mean annual CVD mortality rate"= round(mean(value),2), min = round(min(value),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), max = round(max(value),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+
+df_sas %>% filter(var == "rate_dead_hivneg_cvd", year == "15", sex == "All", age == "All") %>%
+  ggplot(aes(y = value, color=source)) +
+    geom_boxplot() +
+    theme_minimal(base_size = 14) +
+    coord_cartesian(ylim = c(0,NA)) +
+    labs(title = "Average CVD mortality rate among HIV negative persons (2015)",
+         y = "CVD mortality rate per 100 person-years") +
+    theme(
+      plot.title = element_text(size = 18, face = "bold"),
+      axis.title.y = element_text(size = 16),
+      axis.title.x = element_text(size = 16),
+      legend.position = "bottom"
+    )
+
+df_sas %>% filter(var == "rate_dead_hivneg_cvd", year == "15", sex == "All") %>% group_by(source) %>% summarize("Mean CVD mortality rate among HIV-neg"= round(mean(value),2), min = round(min(value),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), max = round(max(value),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+df_sas %>% filter(var == "rate_dead_hivpos_cvd", year == "15", sex == "All", age == "All") %>%
+  ggplot(aes(y = value, color=source)) +
+    geom_boxplot() +
+    theme_minimal(base_size = 14) +
+    coord_cartesian(ylim = c(0,NA)) +
+    labs(title = "Average CVD mortality rate among HIV positive persons (2015)",
+         y = "CVD mortality rate per 100 person-years") +
+    theme(
+      plot.title = element_text(size = 18, face = "bold"),
+      axis.title.y = element_text(size = 16),
+      axis.title.x = element_text(size = 16),
+      legend.position = "bottom"
+    )
+
+df_sas %>% filter(var == "rate_dead_hivpos_cvd", year == "15", sex == "All") %>% group_by(source) %>% summarize("Mean CVD mortality rate among HIV-pos"= round(mean(value),2), min = round(min(value),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), max = round(max(value),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+
 ```
 
 

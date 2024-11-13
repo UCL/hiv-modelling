@@ -4,6 +4,7 @@ author: "Matt Hickey"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   word_document:
+    reference_docx: template.docx
 always_allow_html: true
 
 ---
@@ -14,12 +15,13 @@ library(tidyverse)
 library(readxl)
 library(knitr)
 library(kableExtra)
+library(ggrepel)
 
 options(tinytex.verbose = TRUE)
 options(scipen = 999)
 
 
-knitr::opts_chunk$set(echo = FALSE, fig.height=10, fig.width=15)
+knitr::opts_chunk$set(echo = FALSE, fig.height=7, fig.width=10, dpi=300)
 knitr::opts_knit$set(root.dir = '~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration')
 
 pct <- function(x) {
@@ -27,7 +29,7 @@ pct <- function(x) {
   return(y)
 }
 
-load("SynthesisHTN.RData")
+load("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration/SynthesisHTN_105.RData")
 
 ```
 
@@ -96,14 +98,14 @@ df_htn %>% filter(age %in% c("25-34", "35-44", "45-54", "55-64", "65+"), source 
     theme(plot.title = element_text(size = 18, face = "bold"),
       legend.position = "bottom")
 
-df_sevhtn %>% filter(age != "18+", source %in% c("SEARCH (Kenya/Uganda)", "NIDS (South Africa)", "SOC"), year == "15") %>% 
-  ggplot(aes(age, sevhtn, color=source)) +
-    geom_boxplot() +
-    theme_minimal(base_size = 14) +
-    labs(x = "Age", y = "Proportion with severe hypertension (SBP ≥160)", title = "Severe hypertension prevalence", subtitle = "In 2015") +
-    coord_cartesian(ylim = c(0,NA)) +
-    theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+# df_sevhtn %>% filter(age != "18+", source %in% c("SEARCH (Kenya/Uganda)", "NIDS (South Africa)", "SOC"), year == "15") %>% 
+#   ggplot(aes(age, sevhtn, color=source)) +
+#     geom_boxplot() +
+#     theme_minimal(base_size = 14) +
+#     labs(x = "Age", y = "Proportion with severe hypertension (SBP ≥160)", title = "Severe hypertension prevalence (SBP≥160 mmHg)", subtitle = "In 2015") +
+#     coord_cartesian(ylim = c(0,NA)) +
+#     theme(plot.title = element_text(size = 18, face = "bold"),
+#       legend.position = "bottom")
 
   #ggsave(paste0("01htn_", Sys.Date(),".pdf"), path = "plots/", width = 10.65, height = 7.68, units = "in")
 ```
@@ -133,14 +135,15 @@ df_dx %>% filter(age %in% c("25-34", "35-44", "45-54", "55-64", "65+"), source %
 
 ## Hypertension Treatment
 
-Defined as currently taking antihypertensive medications.
+
 ```{r graph_tx_curr}
 df_tx_current %>% filter(age %in% c("25-34", "35-44", "45-54", "55-64", "65+", "18+", "All"), source %in% c("Geldsetzer", "SOC"), year == "15") %>% 
   ggplot(aes(age,tx, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
-    coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion currently on treatment", title = "Current hypertension treatment", subtitle = "in 2015") +
+    coord_cartesian(ylim = c(0,0.5)) +
+    labs(x = "Age", y = "Proportion currently on treatment", title = "Current hypertension treatment", subtitle = "in 2015",
+         caption = "Defined as currently taking antihypertensive medications") +
     theme(plot.title = element_text(size = 18, face = "bold"),
       legend.position = "bottom")
 
@@ -149,24 +152,21 @@ df_tx_current %>% filter(age %in% c("25-34", "35-44", "45-54", "55-64", "65+", "
 
 <span style="color: blue;"> **Note:** The model considers treatment to be on medications and adherent to those medications. Real-world data is based on self-report of treatment and may include some who report taking medications but are non-adherent. </span>
 
-Geldsetzer Lancet 2019 includes country-specific data on `r df_ssa_txctrl %>% nrow()` countries in SSA with data on medication treatment and reports an overall prevalence of pharmacologic hypertension treatment of 13.0% (95% CI 12.0-14.2%) when weighting countries by population size.
+Geldsetzer Lancet 2019 includes country-specific data on `r df_ssa_txctrl %>% nrow()` countries in Africa with data on medication treatment and reports an overall prevalence of pharmacologic hypertension treatment of 13.0% (95% CI 12.0-14.2%) when weighting countries by population size.
 
 ```{r htn_tx_data}
-df_ssa_txctrl %>% select(country, tx, tx_95ci) %>% arrange(tx) %>% mutate(tx = pct(tx)) %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+# df_ssa_txctrl %>% select(country, tx, tx_95ci) %>% arrange(tx) %>% mutate(tx = pct(tx)) %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
 ```
 
-Proportion on treatment in SSA from other literature:  
 
-* 18% (2005; Ataklte Hypertens 2015)
-* 8% (2015; Kenya STEPS)
-
-Defined as ever taking antihypertensive medications.
 ```{r graph_tx_ever}
  df_tx_ever %>% filter(source %in% c("Geldsetzer", "SOC"), year == "15") %>% ggplot(aes(age,tx, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
-    coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion ever on treatment", title = "Ever on hypertension treatment", subtitle = "in 2015") +
+    coord_cartesian(ylim = c(0,0.5)) +
+    labs(x = "Age", y = "Proportion ever on treatment", title = "Ever on hypertension treatment", 
+         subtitle = "in 2015",
+         caption = "Defined as ever taking antihypertensive medications") +
     theme(plot.title = element_text(size = 18, face = "bold"),
       legend.position = "bottom")
 
@@ -191,16 +191,12 @@ Defined as ever taking antihypertensive medications.
   #ggsave(paste0("04ctrl_", Sys.Date(),".pdf"), path = "plots/", width = 10.65, height = 7.68, units = "in")
 ```
 
-Geldsetzer Lancet 2019 includes country-specific data on `r df_ssa_txctrl %>% nrow()` countries in SSA with data on hypertension control and reports an overall prevalence of hypertension control (<140/90 mmHg) of 4.3% (95% CI 3.6- 4.9%). 
+Geldsetzer Lancet 2019 includes country-specific data on `r df_ssa_txctrl %>% nrow()` countries in Africa with data on hypertension control and reports an overall prevalence of hypertension control (<140/90 mmHg) of 4.3% (95% CI 3.6- 4.9%). 
 
 ```{r htn_ctrl_data}
-df_ssa_txctrl %>% select(country, control, control_95ci) %>% arrange(control) %>% mutate(control = pct(control)) %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+# df_ssa_txctrl %>% select(country, control, control_95ci) %>% arrange(control) %>% mutate(control = pct(control)) %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
 ```
 
-Proportion with controlled hypertension in SSA from other literature:
-
-* 7% (Ataklte Hypertens 2015)
-* 3% (Kenya STEPS)
 
 ## CVD Events
 
@@ -210,17 +206,17 @@ Global Burden of Disease Study 2019 (GBD 2019) Results.
 Seattle, United States: Institute for Health Metrics and Evaluation (IHME), 2020.
 Available from https://vizhub.healthdata.org/gbd-results/.
 
-### Incidence of Ischemic Heart Disease (moderate/severe events only)
+### Incidence of Ischemic Heart Disease
 
-Incidence of ischemic heart disease (angina and myocardial infarction(MI)) based on Global Burden of Disease data, assuming that angina/silent MI are under-ascertained, thus we compare incidence only of moderate/severe MI to available incidence data.
+Incidence of ischemic heart disease (angina and myocardial infarction(MI)). We assume that angina/silent MI are under-ascertained, thus we compare incidence only of moderate/severe MI to available incidence data.
 
 ```{r}
 df_cvd_inc %>% filter(cause == "Ischemic heart disease", sex == "Male") %>% 
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Incidence of Ischemic Heart Disease per 100 person-years in 2019 (GBD) 2015 (Synthesis)",
-         subtitle = "Men",
+    labs(title = "Incidence of Ischemic Heart Disease",
+         subtitle = "in 2015; Men",
          y = "Incident ischemic heart disease per 100 person-years", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
@@ -233,8 +229,8 @@ df_cvd_inc %>% filter(cause == "Ischemic heart disease", sex == "Female") %>%
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Incidence of Ischemic Heart Disease per 100 person-years in 2019 (GBD) 2015 (Synthesis)",
-         subtitle = "Women",
+    labs(title = "Incidence of Ischemic Heart Disease",
+         subtitle = "in 2015; Women",
          y = "Incident ischemic heart disease per 100 person-years", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
@@ -243,21 +239,21 @@ df_cvd_inc %>% filter(cause == "Ischemic heart disease", sex == "Female") %>%
       legend.position = "bottom"
     )
 
-df_cvd_inc %>% filter(cause == "Ischemic heart disease", sex !="Both") %>% group_by(source, sex, age) %>% summarize("Incidence"= round(mean(value),2), min = round(min(value),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), max = round(max(value),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
   
 ```
 
 
 ### Prevalence of Ischemic Heart Disease
+Defined as any prior history of ischemic heart disease among living adults.
 ```{r}
 
 df_cvd_prev %>% filter(sex == "Male", cause == "Ischemic heart disease") %>%
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Prevalence of Ischemic Heart Disease per 100 person-years in 2015 (Synthesis)",
-         subtitle = "Men",
-         y = "Prevalent ischemic heart disease per 100 person-years", x = "Age") +
+    labs(title = "Prevalence of Ischemic Heart Disease",
+         subtitle = "in 2015; Men",
+         y = "Prevalence of ischemic heart disease per 100 persons", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
@@ -269,9 +265,9 @@ df_cvd_prev %>% filter(sex == "Female", cause == "Ischemic heart disease") %>%
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Prevalence of Ischemic Heart Disease per 100 person-years in 2015 (Synthesis)",
-         subtitle = "Women",
-         y = "Prevalent ischemic heart disease per 100 person-years", x = "Age") +
+    labs(title = "Prevalence of Ischemic Heart Disease",
+         subtitle = "in 2015; Women",
+         y = "Prevalence of ischemic heart disease per 100 persons", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
@@ -283,16 +279,15 @@ df_cvd_prev %>% filter(sex == "Female", cause == "Ischemic heart disease") %>%
 
 ### Incidence of Stroke
 
-Incidence of stroke based on Global Burden of Disease data, assuming that mild strokes under-ascertained, thus we compare incidence only of moderate/severe stroke to available incidence data.
+We assume that mild strokes under-ascertained and thus compare incidence only of moderate/severe stroke to available incidence data.
 
-#### Any Stroke (moderate/severe only)
 ```{r}
 df_cvd_inc %>% filter(sex == "Male", cause == "Stroke") %>% 
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Incidence of Stroke per 100 person-years in 2019 (GBD) 2015 (Synthesis)",
-         subtitle = "Men",
+    labs(title = "Incidence of Stroke ",
+         subtitle = "in 2015; Men",
          y = "Incident stroke per 100 person-years", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
@@ -305,8 +300,8 @@ df_cvd_inc %>% filter(sex == "Female", cause == "Stroke") %>%
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Incidence of Stroke per 100 person-years in 2019 (GBD) 2015 (Synthesis)",
-         subtitle = "Women",
+    labs(title = "Incidence of Stroke",
+         subtitle = "in 2015; Women",
          y = "Incident stroke per 100 person-years", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
@@ -315,7 +310,6 @@ df_cvd_inc %>% filter(sex == "Female", cause == "Stroke") %>%
       legend.position = "bottom"
     )
 
-df_cvd_inc %>% filter(cause == "Stroke", sex !="Both") %>% group_by(source, sex, age) %>% summarize("Incidence"= round(mean(value),2), min = round(min(value),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), max = round(max(value),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
   
 ```
 
@@ -328,9 +322,9 @@ df_cvd_prev %>% filter(sex == "Male", cause == "Stroke") %>%
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Prevalence of Stroke per 100 person-years in 2019 (GBD) 2015 (Synthesis)",
-         subtitle = "Men",
-         y = "Prevalent stroke per 100 person-years", x = "Age") +
+    labs(title = "Prevalence of Stroke",
+         subtitle = "in 2015; Men",
+         y = "Prevalence of stroke per 100 persons", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
@@ -342,9 +336,9 @@ df_cvd_prev %>% filter(sex == "Female") %>%
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Prevalence of Stroke per 100 person-years in 2019 (GBD) 2015 (Synthesis)",
-         subtitle = "Women",
-         y = "Prevalent stroke per 100 person-years", x = "Age") +
+    labs(title = "Prevalence of Stroke",
+         subtitle = "in 2015; Women",
+         y = "Prevalence of stroke per 100 persons", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
@@ -352,7 +346,7 @@ df_cvd_prev %>% filter(sex == "Female") %>%
       legend.position = "bottom"
     )
 
-# df_ihme_sas_cvd_prev %>% filter(cause == "Stroke", sex !="Both") %>% group_by(source, sex, age) %>% summarize("Prevalence"= round(mean(value),3), min = round(min(value),3), Q1 = round(quantile(value,0.25),3), median = round(median(value),3), Q3 = round(quantile(value, 0.75),3), max = round(max(value),3)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
   
 ```
 
@@ -361,12 +355,17 @@ df_cvd_prev %>% filter(sex == "Female") %>%
 Mortality resulting from ischemic heart disease or stroke.
 
 ```{r}
+df_cvd_death <- df_cvd_death %>% 
+    mutate(source = ifelse(source == "SSA", "GBD 2015", 
+                         ifelse(source == "SOC", "SOC", source)),
+           source = factor(source, levels = c("SOC", "GBD 2015"))) 
+
 df_cvd_death %>% filter(sex == "Male") %>% 
   ggplot(aes(x = age, y = cvd_death_rate, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "CVD Mortality Rate per 100 person-years in 2019 (GBD) and 2015 (Synthesis)",
-         subtitle = "Men",
+    labs(title = "CVD Mortality",
+         subtitle = "in 2015; Men",
          y = "CVD mortality per 100 person-years", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
@@ -379,8 +378,8 @@ df_cvd_death %>% filter(sex == "Female") %>%
   ggplot(aes(x = age, y = cvd_death_rate, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "CVD Mortality Rate per 100 person-years in 2019 (GBD) and 2015 (Synthesis)",
-         subtitle = "Women",
+    labs(title = "CVD Mortality",
+         subtitle = "in 2015; Women",
          y = "CVD mortality per 100 person-years", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
@@ -389,351 +388,359 @@ df_cvd_death %>% filter(sex == "Female") %>%
       legend.position = "bottom"
     )
 
-df_cvd_death %>% filter(age %in% c("18+", "20+")) %>% 
-  ggplot(aes(x = age, y = cvd_death_rate, color = source)) +
-  geom_boxplot() +
-  theme_minimal(base_size = 14) +
-    labs(title = "CVD Mortality Rate per 100 person-years in 2019 (GBD) and 2015 (Synthesis)",
-         subtitle = "Men and Women",
-         y = "CVD mortality per 100 person-years", x = "Age") +
-    theme(
-      plot.title = element_text(size = 18, face = "bold"),
-      axis.title.y = element_text(size = 16),
-      axis.title.x = element_text(size = 16),
-      legend.position = "bottom"
-    )
-
-x <- df_cvd_death %>% filter(sex !="Both") %>% group_by(source, sex, age) %>% summarize("Mortality rate"= round(mean(cvd_death_rate),3), min = round(min(cvd_death_rate),3), Q1 = round(quantile(cvd_death_rate,0.25),3), median = round(median(cvd_death_rate),3), Q3 = round(quantile(cvd_death_rate, 0.75),3), max = round(max(cvd_death_rate),3))
-write_csv(x, "mortality_comparison.csv")
-x %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
-  
 ```
 
 
-# Intervention Scenarios (2023 - 2073)
-**Hypertension care cascade for intervention packages compared to standard of care**  
+# Section 5: Supplemental Results
 
+Hypertension care cascade for CCC and CHW policy scenarios compared to standard of care. Model estimates averaged over 2024-2074.
 
 ## Prevalence
 ```{r graph_htn_int}
 
-df_sas %>% filter(var == "p_htn_true", age %in% c("18+", "25-34", "35-44", "45-54", "55-64", "65+"), year == "2373", sex == "All") %>% 
+df_sas %>% filter(var == "p_htn_true", age %in% c("18+", "25-34", "35-44", "45-54", "55-64", "65+"), year == "2474", sex == "All") %>% 
   ggplot(aes(age, value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
-    labs(x = "Age", y = "Proportion with hypertension", title = "Hypertension prevalence", subtitle = "Average from 2023 - 2073") +
+    labs(x = "Age", y = "Proportion with hypertension", title = "Hypertension prevalence", subtitle = "Average from 2024-2074") +
     coord_cartesian(ylim = c(0,NA)) +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "p_htn_true160", year == "2373", sex == "All") %>% 
+df_sas %>% filter(var == "p_htn_true160", year == "2474", sex == "All") %>% 
   ggplot(aes(age, value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
-    labs(x = "Age", y = "Proportion with severe hypertension (SBP ≥160)", title = "Severe hypertension prevalence", subtitle = "Average from 2023 - 2073, max SBP (regardless of current BP control)") +
+    labs(x = "Age", y = "Proportion with severe hypertension (SBP ≥160)", title = "Severe hypertension prevalence (SBP ≥160 mmHg)", subtitle = "Average from 2024-2074, max SBP (regardless of current BP control)") +
     coord_cartesian(ylim = c(0,NA)) +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 
   #ggsave(paste0("01htn_", Sys.Date(),".pdf"), path = "plots/", width = 10.65, height = 7.68, units = "in")
 ```
 
 ## Diagnosis
 ```{r graph_dx_int}
-df_sas %>% filter(var == "p_diagnosed_hypert", age %in% c("25-34", "35-44", "45-54", "55-64", "65+"), year == "2373", sex == "All") %>% 
+df_sas %>% filter(var == "p_diagnosed_hypert", age %in% c("25-34", "35-44", "45-54", "55-64", "65+"), year == "2474", sex == "All") %>% 
   ggplot(aes(age,value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion diagnosed", title = "Hypertension diagnosis", subtitle = "Average from 2023 - 2073") +
+    labs(x = "Age", y = "Proportion diagnosed", title = "Hypertension diagnosis", subtitle = "Average from 2024-2074") +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "p_dx_htn_true160", year == "2373", sex == "All") %>% 
+df_sas %>% filter(var == "p_dx_htn_true160", year == "2474", sex == "All") %>% 
   ggplot(aes(age,value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion diagnosed", title = "Hypertension diagnosis among those with severe hypertension", subtitle = "Average from 2023 - 2073") +
+    labs(x = "Age", y = "Proportion diagnosed", title = "Hypertension diagnosis among those with severe hypertension", 
+         subtitle = "Average from 2024-2074") +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 
   #ggsave(paste0("02dx_", Sys.Date(),".pdf"), path = "plots/", width = 10.65, height = 7.68, units = "in")
 ```
 
 **Note:** Diagnosis can be >100% because the denominator is the proportion with true hypertension (SBP >=140) and the numerator is all with diagnosed hypertension including those who were overdiagnosed (measured BP >=140 but true BP <140). See additional graphs for overdiagnosis below.
 
-## Overdiagnosis
 
 ```{r graph_dx_over}
-df_sas %>% filter(var == "p_dx_htn_over", year == "2373", sex == "All") %>%
+df_sas %>% filter(var == "p_dx_htn_over", year == "2474", sex == "All") %>%
   ggplot(aes(age, value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion overdiagnosed", title = "Overdiagnosis", subtitle = "Proportion of normotensive individuals (true SBP <140) who received a hypertension diagnosis") +
+    labs(x = "Age", y = "Proportion overdiagnosed", 
+         title = "Overdiagnosis", 
+         subtitle = str_wrap("Proportion of normotensive individuals (true SBP <140) who received a hypertension diagnosis (Average from 2024-2074)", 100)) +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 
 ```
 
 ```{r graph_dx_true}
-df_sas %>% filter(var == "p_dx_htn_true", year == "2373", sex == "All") %>%
+df_sas %>% filter(var == "p_dx_htn_true", year == "2474", sex == "All") %>%
   ggplot(aes(age, value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion with true SBP >=140 who were diagnosed", title = "True diagnosis (Average from 2023 - 2073)", subtitle = "Proportion with of those with true SBP >=140 who were diagnosed with hypertension") +
+    labs(x = "Age", y = "Proportion with true SBP >=140 who were diagnosed", title = "True hypertension diagnosis", 
+         subtitle = str_wrap("Proportion with of those with true SBP >=140 who were diagnosed with hypertension (Average from 2024-2074)",100)) +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 
 ```
 
 
 ## Treatment
 ```{r graph_tx_curr_int}
-df_sas %>% filter(var == "p_on_tx_htn", age %in% c("25-34", "35-44", "45-54", "55-64", "65+"), year == "2373", sex == "All") %>%
+df_sas %>% filter(var == "p_on_tx_htn", age %in% c("25-34", "35-44", "45-54", "55-64", "65+"), year == "2474", sex == "All") %>%
   ggplot(aes(age,value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion currently on treatment", title = "Hypertension treatment (current) among those with true hypertension", subtitle = "Average from 2023 - 2073") +
+    labs(x = "Age", y = "Proportion currently on treatment", title = "Hypertension treatment (current) among those with true hypertension", subtitle = "Average from 2024-2074") +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "p_on_tx_htn160", year == "2373", sex == "All") %>%
-  ggplot(aes(age,value, color=source)) +
-    geom_boxplot() +
-    theme_minimal(base_size = 14) +
-    coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion currently on treatment", title = "Hypertension treatment (current) among those with severe hypertension", subtitle = "Average from 2023 - 2073") +
-    theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+# df_sas %>% filter(var == "p_on_tx_htn160", year == "2474", sex == "All") %>%
+#   ggplot(aes(age,value, color=source)) +
+#     geom_boxplot() +
+#     theme_minimal(base_size = 14) +
+#     coord_cartesian(ylim = c(0,NA)) +
+#     labs(x = "Age", y = "Proportion currently on treatment", title = "Hypertension treatment (current) among those with severe hypertension", 
+#          subtitle = "Average from 2024-2074") +
+#     theme(plot.title = element_text(size = 18, face = "bold"),
+#       legend.position = "bottom") +
+#     scale_color_brewer(palette = "Dark2")
 
 ```
 
 ```{r graph_tx_ever_int}
-df_sas %>% filter(var == "p_ever_tx_htn", age %in% c("18+", "25-44", "45-64", "65+"), year == "2373", sex == "All") %>%
+df_sas %>% filter(var == "p_ever_tx_htn", age %in% c("18+", "25-44", "45-64", "65+"), year == "2474", sex == "All") %>%
   ggplot(aes(age,value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion ever on treatment", title = "Hypertension treatment (ever) among those with a true hypertension diagnosis", subtitle = "Average from 2023 - 2073") +
+    labs(x = "Age", y = "Proportion ever on treatment", title = "Hypertension treatment (ever) among those with true hypertension", 
+         subtitle = "Average from 2024-2074") +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 
 ```
 
 ### Overtreatment
 ```{r}
-df_sas %>% filter(var == "p_on_tx_htn_over", year == "2373", sex == "All") %>%
+df_sas %>% filter(var == "p_on_tx_htn_over", year == "2474", sex == "All") %>%
   ggplot(aes(age,value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion currently on treatment", title = "Hypertension treatment (current) among those who do not have hypertension (max SBP <140)", subtitle = "Average from 2023 - 2073") +
+    labs(x = "Age", y = "Proportion currently on treatment", title = "Hypertension treatment (current) among those who do not have hypertension", subtitle = "Average from 2024-2074") +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 ```
 
 
 ## HTN control
 ```{r graph_ctrl_int}
-df_sas %>% filter(var == "p_hypert_control", age %in% c("25-34", "35-44", "45-54", "55-64", "65+"), year == "2373", sex == "All") %>%
+df_sas %>% filter(var == "p_hypert_control", age %in% c("25-34", "35-44", "45-54", "55-64", "65+"), year == "2474", sex == "All") %>%
   ggplot(aes(age,value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion with controlled BP", title = "Hypertension control", subtitle = "Average from 2023 - 2073") +
+    labs(x = "Age", y = "Proportion with controlled BP", title = "Hypertension control", subtitle = "Average from 2024-2074") +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "p_hypert_control160", year == "2373", sex == "All") %>%
+df_sas %>% filter(var == "p_hypert_control160", year == "2474", sex == "All") %>%
   ggplot(aes(age,value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion with controlled BP", title = "Hypertension control among those with severe hypertension (SBP ≥160)", subtitle = "Average from 2023 - 2073") +
+    labs(x = "Age", y = "Proportion with controlled BP", title = "Hypertension control among those with severe hypertension", subtitle = "Average from 2024-2074") +
     theme(plot.title = element_text(size = 18, face = "bold"),
-      legend.position = "bottom")
+      legend.position = "bottom") +
+    scale_color_brewer(palette = "Dark2")
 
 ```
 
 ## SBP Increase with Age
 ```{r graph_sbp_int}
-df_sas %>% filter(var == "m_sbp", year == "2373", sex == "Female") %>%
+df_sas %>% filter(var == "m_sbp", year == "2474", sex == "Female") %>%
   ggplot(aes(age,value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(110,160)) +
-    labs(x = "Age", y = "Mean SBP", title = "Mean SBP by age (Women)", subtitle = "Average from 2023 - 2073") +
+    labs(x = "Age", y = "Mean SBP", title = "Mean SBP by age (Women)", subtitle = "Average from 2024-2074") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-      )
+      ) +
+    scale_color_brewer(palette = "Dark2")
 ```
 
 ```{r graph_sbp_m_int}
-df_sas %>% filter(var == "m_sbp", year == "2373", sex == "Male") %>%
+df_sas %>% filter(var == "m_sbp", year == "2474", sex == "Male") %>%
   ggplot(aes(age,value, color=source)) +
       geom_boxplot() +
       theme_minimal(base_size = 14) +
       coord_cartesian(ylim = c(110,160)) +
-      labs(x = "Age", y = "Mean SBP", title = "Mean SBP by age (Men)", subtitle = "Average from 2023 - 2073") +
+      labs(x = "Age", y = "Mean SBP", title = "Mean SBP by age (Men)", subtitle = "Average from 2024-2074") +
       theme(
         plot.title = element_text(size = 18, face = "bold"),
         axis.title.y = element_text(size = 16),
         axis.title.x = element_text(size = 16),
         legend.position = "bottom"
-    )
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
 ```
 
 ## CVD Event incidence
 
-#### Incident Ischemic Heart Disease Events (moderate/severe events only)
+#### Incident Ischemic Heart Disease Events
 ```{r}
-df_sas %>% filter(var == "rate_ihd_modsev", year == "2373", sex == "Male", age != "All") %>% 
+df_sas %>% filter(var == "rate_ihd_modsev", year == "2474", sex == "Male", age != "All") %>% 
   ggplot(aes(x = age, y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Average Annual Incidence of Ischemic Heart Disease per 100 person-years from 2023-2073",
-         subtitle = "Men",
-         y = "Incident ischemic heart disease per 100 person-years", x = "Age") +
+    labs(title = "Incidence of Ischemic Heart Disease",
+         subtitle = "Men; Average from 2024-2074",
+         y = "Incident ischemic heart disease per 100 person-years", x = "Age",
+         caption = "moderate/severe events only") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "rate_ihd_modsev", year == "2373", sex == "Female", age != "All") %>% 
+df_sas %>% filter(var == "rate_ihd_modsev", year == "2474", sex == "Female", age != "All") %>% 
   ggplot(aes(x = age, y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Average Annual Incidence of Ischemic Heart Disease per 100 person-years from 2023-2073",
-         subtitle = "Women",
-         y = "Incident ischemic heart disease per 100 person-years", x = "Age") +
+    labs(title = "Incidence of Ischemic Heart Disease",
+         subtitle = "Women; Average from 2024-2074",
+         y = "Incident ischemic heart disease per 100 person-years", x = "Age",
+         caption = "moderate/severe events only") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "n_ihd_diff", year == "2373") %>% 
+df_sas %>% filter(var == "n_ihd_diff", year == "2474") %>% 
   ggplot(aes(y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Average Annual Ischemic Heart Disease events averted from 2023-2073",
-         subtitle = "scaled to population size 10 million aged 15+ in 2023",
-         y = "Annual heart attacks averted among all adults aged 18+ (moderate/severe)") +
+    labs(title = "Annual Ischemic Heart Disease events averted",
+         subtitle = "Average from 2024-2074; Standardized to population size of 10 million adults in 2023",
+         y = "Annual heart attacks averted among adults ≥18 years",
+         caption = "moderate/severe events only") +
   scale_x_continuous(breaks = NULL) +
   theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
-      
       legend.position = "bottom"
-    )
-
-df_sas %>% filter(var == "n_ihd_diff", year == "2373", sex == "All") %>% group_by(source) %>% summarize("Mean annual number of moderate/severe heart attacks deaths averted (standardized to population of 10 million adults)"= round(mean(value),2), "5%" = round(quantile(value,0.05),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), "95%" = round(quantile(value, 0.95),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+    ) +
+    scale_color_manual(values = c("#D95F02", "#7570B3"))
 
 ```
 
-#### Incident Stroke (moderate/severe events only)
+#### Incident Stroke
 ```{r}
-df_sas %>% filter(var == "rate_cva_modsev", year == "2373", sex == "Male", age != "All") %>% 
+df_sas %>% filter(var == "rate_cva_modsev", year == "2474", sex == "Male", age != "All") %>% 
   ggplot(aes(x = age, y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Average Annual Incidence of Stroke per 100 person-years from 2023-2073",
-         subtitle = "Men",
-         y = "Incident stroke per 100 person-years", x = "Age") +
+    labs(title = "Incidence of Stroke",
+         subtitle = "Men; Average from 2024-2074",
+         y = "Incident stroke per 100 person-years", x = "Age",
+         caption = "moderate/severe events only") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "rate_cva_modsev", year == "2373", sex == "Female", age != "All") %>% 
+df_sas %>% filter(var == "rate_cva_modsev", year == "2474", sex == "Female", age != "All") %>% 
   ggplot(aes(x = age, y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Average Annual Incidence of Stroke per 100 person-years from 2023-2073",
-         subtitle = "Women",
-         y = "Incident stroke per 100 person-years", x = "Age") +
+    labs(title = "Incidence of Stroke",
+         subtitle = "Women; Average from 2024-2074",
+         y = "Incident stroke per 100 person-years", x = "Age",
+         caption = "moderate/severe events only") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "n_cva_diff", year == "2373") %>% 
+df_sas %>% filter(var == "n_cvd_diff", year == "2474") %>% 
   ggplot(aes(y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Average annual stroke events averted from 2023-2073",
-         subtitle = "scaled to population size 10 million aged 15+ in 2023",
-         y = "Annual strokes averted among all adults aged 18+ (moderate/severe)") +
+    labs(title = "Annual stroke events averted",
+         subtitle = "Average from 2024-2074; Standardized to population size of 10 million adults in 2023",
+         y = "Annual strokes averted among all adults ≥18 years",
+         caption = "moderate/severe events only") +
   scale_x_continuous(breaks = NULL) +
   theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
-      
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_manual(values = c("#D95F02", "#7570B3"))
 
-df_sas %>% filter(var == "n_cva_diff", year == "2373", sex == "All") %>% group_by(source) %>% summarize("Mean annual number of moderate/severe strokes averted (standardized to population of 10 million adults)"= round(mean(value),2), "5%" = round(quantile(value,0.05),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), "95%" = round(quantile(value, 0.95),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
 ```
 
 ## CVD Mortality
 
 ```{r graph_mortality}
 
-df_sas %>% filter(var == "n_dead_cvd", year == "2373", sex == "All", age == "All") %>%
+df_sas %>% filter(var == "n_dead_cvd", year == "2474", sex == "All", age == "All") %>%
   ggplot(aes(y = value, color = source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs( y = "Number of CVD deaths", title = "Average number of CVD deaths per year from 2023 to 2073", subtitle = "Standardized to population size = 10,000,000") +
+    labs( y = "Number of CVD deaths", title = "Number of CVD deaths per year", 
+          subtitle = "Average from 2024-2074; Standardized to population size of 10 million adults in 2023") +
+  scale_x_continuous(breaks = NULL) +
     theme(
       plot.title = element_text(size = 20, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "n_dead_cvd_diff", year == "2373") %>% 
+df_sas %>% filter(var == "n_dead_cvd_diff", year == "2474") %>% 
   ggplot(aes(y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Average annual CVD deaths averted from 2023-2073",
-         subtitle = "scaled to population size 10 million aged 15+ in 2023",
-         y = "Annual CVD deaths averted among all adults aged 18+") +
+    labs(title = "Average annual CVD deaths averted from 2024-2074",
+         subtitle = "Average from 2024-2074; Standardized to population size of 10 million adults in 2023",
+         y = "Annual CVD deaths averted among adults ≥18 years") +
   scale_x_continuous(breaks = NULL) +
   theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
-      
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_manual(values = c("#D95F02", "#7570B3"))
 
-df_sas %>% filter(var == "n_dead_cvd", year == "2373", sex == "All") %>% group_by(source) %>% summarize("Mean annual number of CVD deaths (standardized to population of 10 million adults)"= round(mean(value),2), "5%" = round(quantile(value,0.05),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), "95%" = round(quantile(value, 0.95),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
-
-df_sas %>% filter(var == "n_dead_cvd_diff", year == "2373", sex == "All") %>% group_by(source) %>% summarize("Mean annual number of CVD deaths averted (standardized to population of 10 million adults)"= round(mean(value),2), "5%" = round(quantile(value,0.05),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), "95%" = round(quantile(value, 0.95),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
-
-df_sas %>% filter(var == "rate_dead_cvd", year == "2373", sex == "All") %>%
+df_sas %>% filter(var == "rate_dead_cvd", year == "2474", sex == "All", age !="All") %>%
   ggplot(aes(age, value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
-    labs(title = "Average CVD mortality rate (2023 to 2073)",
+    labs(title = "CVD mortality rate",
+         subtitle = "Average from 2024-2074",
          y = "CVD mortality per 100 person-years") +
     coord_cartesian(ylim = c(0,NA)) +
     theme(
@@ -741,79 +748,79 @@ df_sas %>% filter(var == "rate_dead_cvd", year == "2373", sex == "All") %>%
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "rate_dead_cvd", year == "2373", sex == "All") %>% group_by(source) %>% summarize("Mean annual CVD mortality rate"= round(mean(value),2), min = round(min(value),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), max = round(max(value),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
-
-
-df_sas %>% filter(var == "rate_dead_hivneg_cvd", year == "2373", sex == "All", age == "All") %>%
+df_sas %>% filter(var == "rate_dead_hivneg_cvd", year == "2474", sex == "All", age == "18+") %>%
   ggplot(aes(y = value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(title = "Average CVD mortality rate among HIV negative persons (2023 to 2073)",
+    labs(title = "CVD mortality rate among people without HIV",
+         subtitle = "Average from 2024-2074",
          y = "CVD mortality rate per 100 person-years") +
+  scale_x_continuous(breaks = NULL) +
     theme(
+      panel.grid.major.x = element_blank(),
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "rate_dead_hivneg_cvd", year == "2373", sex == "All") %>% group_by(source) %>% summarize("Mean CVD mortality rate among HIV-neg"= round(mean(value),2), min = round(min(value),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), max = round(max(value),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
-
-df_sas %>% filter(var == "rate_dead_hivpos_cvd", year == "2373", sex == "All", age == "All") %>%
+df_sas %>% filter(var == "rate_dead_hivpos_cvd", year == "2474", sex == "All", age == "18+") %>%
   ggplot(aes(y = value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(title = "Average CVD mortality rate among HIV positive persons (2023 to 2073)",
+    labs(title = "CVD mortality rate among people with HIV",
+         subtitle = "Average from 2024-2074",
          y = "CVD mortality rate per 100 person-years") +
+  scale_x_continuous(breaks = NULL) +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "rate_dead_hivneg_anycause", year == "2373", sex == "All") %>% group_by(source) %>% summarize("Mean CVD mortality rate among HIV+"= round(mean(value),2), min = round(min(value),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), max = round(max(value),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
-
-df_sas %>% filter(var == "rate_dead_hivneg_anycause", year == "2373", sex == "All", age == "All") %>%
+df_sas %>% filter(var == "rate_dead_hivneg_ac", year == "2474", sex == "All", age == "18+") %>%
   ggplot(aes(y = value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(title = "Average all-cause mortality rate among HIV negative persons (2023 to 2073)",
+    labs(title = "All-cause mortality rate among people without HIV",
+         subtitle = "Average from 2024-2074",
          y = "All-cause mortality rate per 100 person-years") +
+  scale_x_continuous(breaks = NULL) +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
-df_sas %>% filter(var == "rate_dead_hivneg_anycause", year == "2373", sex == "All") %>% group_by(source) %>% summarize("Mean all-cause mortality rate among HIV-neg"= round(mean(value),2), min = round(min(value),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), max = round(max(value),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
-
-df_sas %>% filter(var == "rate_dead_hivpos_anycause", year == "2373", sex == "All", age == "All") %>%
+df_sas %>% filter(var == "rate_dead_hivpos_ac", year == "2474", sex == "All", age == "18+") %>%
   ggplot(aes(y = value, color=source)) +
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(title = "Average all-cause mortality rate among HIV positive persons (2023 to 2073)",
+    labs(title = "All-cause mortality rate among people with HIV",
+         subtitle = "Average from 2024-2074",
          y = "All-cause mortality rate per 100 person-years") +
+  scale_x_continuous(breaks = NULL) +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
-
-df_sas %>% filter(var == "rate_dead_hivpos_anycause", year == "2373", sex == "All") %>% group_by(source) %>% summarize("Mean all-cause mortality rate among HIV+"= round(mean(value),2), min = round(min(value),2), Q1 = round(quantile(value,0.25),2), median = round(median(value),2), Q3 = round(quantile(value, 0.75),2), max = round(max(value),2)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
 ```
-
-
-
 
 ## Cost
 
@@ -822,6 +829,7 @@ Cost assumptions (in USD):
 * Community health worker screening: $3/person screened (estimates from SEARCH)
 * Transportation voucher: $5/person linked (Hickey 2022)
 * Clinic visits: $20/visit if uncontrolled and $10/visit if controlled (Shade 2021, Shiri 2021)
+*	Fixed clinic training costs for CCC and CHW policies: $0.96 million USD per 10 million adult population
 * HTN medications (90-day supply) (Resolve to Save Lives 2022)
   * Med 1 & 2: $1.5
   * Med 3: $3
@@ -829,12 +837,13 @@ Cost assumptions (in USD):
   * MI: $2270
   * CVA: $2420
   * cost of acute care that is not effective (poor-quality):
-    * MI: $1135
-    * CVA: $1210
-    * we assume that some poor quality care may be due in part to limited staffing, diagnositic equipment, and medications - and therefore may also cost less. In other cases, similar interventions/diagnostic tests may be undertaken, though the effectiveness will be lower due to delays in care. We assume that such care for acute MI/CVA costs 50% of the cost of effective acute care
+    *	MI: $567.5 / $1135 / $2270
+    *	CVA: $605 / $1210 / $2420
+    *	we assume that some poor quality care may be due in part to limited staffing, diagnostic equipment, and medications - and therefore may also cost less. In other cases, similar interventions/diagnostic tests may be undertaken, though the effectiveness will be lower due to delays in care. We assume that such care for acute MI/CVA may cost lower than the cost of effective acute care (sampled from 25%, 50%, and 100% of the cost of effective care)
+
 
 ```{r cost}
-df_sas %>% filter(year == "2373", var %in% c("dhtn_cost_scr", "dhtn_cost_clin", "dhtn_cost_drug", "dhtn_cost_cvd", "dhtn_cost_total")) %>%
+df_sas %>% filter(year == "2474", var %in% c("dhtn_cost_scr", "dhtn_cost_clin", "dhtn_cost_drug", "dhtn_cost_cvd", "dhtn_cost_total")) %>%
     mutate(var = factor(var, 
                         levels = c("dhtn_cost_scr", "dhtn_cost_clin", "dhtn_cost_drug", "dhtn_cost_cvd", "dhtn_cost_total"),
                         labels= c("scr", "clin", "drug", "cvd", "total htn"))) %>% 
@@ -842,41 +851,55 @@ df_sas %>% filter(year == "2373", var %in% c("dhtn_cost_scr", "dhtn_cost_clin", 
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs( y = "Cost in millions of USD (discounted)", title = "Average annual discounted HTN costs (in millions USD) from 2023 to 2073", subtitle = "Standardized to population size = 10,000,000", x = "Cost category") +
+    labs( y = "Cost in millions of USD (discounted)", title = "Average annual hypertension costs", 
+          subtitle = "Average from 2024-2074; Standardized to population size of 10 million adults in 2023", x = "Cost category") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
       axis.title.x = element_text(size = 16),
       legend.position = "bottom"
-    )
-
-  df_sas %>% filter(year == "2373", var == "dhtn_cost_total") %>% group_by(source) %>% summarize("Mean annual discounted hypertension cost from 2023-2073 (millions USD)"= round(mean(value),1), min = round(min(value),1), Q1 = round(quantile(value,0.25),1), median = round(median(value),1), Q3 = round(quantile(value, 0.75),1), max = round(max(value),1)) %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+    ) +
+    scale_color_brewer(palette = "Dark2")
 
 ```
 
+Note that CVD costs vary widely because we sample from a range of CVD care utilization and cost in the main model, in addition to sensitivity analyses with different cost scenarios (Table 5 in the main text).
 
 ## Cost-effectiveness
 
 ### Cost-effectiveness frontier
 ```{r icer}
 
-plot_icer %>% 
-  filter(cost_cat %in% c("total (50% clinic cost)", "total htn", "total (200% clinic cost)")) %>% 
+plot_icer <- plot_icer %>% 
+  mutate(icer_text = ifelse(is.na(icer2), NA, paste0("$", icer2, "/DALY")),
+         nudge_y = ifelse(source == "CCC", 6, 
+                          ifelse(source == "CHW", 0, NA)))
+
+plot_icer_clinic <- plot_icer %>% 
+  filter(cost_cat %in% c("Clinic costs 50% of base", "Base case cost assumptions", "Clinic costs 200% of base"))
+plot_icer_drug <- plot_icer %>% 
+  filter(cost_cat %in% c("Drug costs 50% of base", "Base case cost assumptions", "Drug costs 200% of base"))
+plot_icer_screen <- plot_icer %>% 
+  filter(cost_cat %in% c("Screening costs 50% of base", "Base case cost assumptions", "Screening costs 200% of base")) %>% mutate(icer_text = ifelse(source != "CHW" & cost_cat != "Base case cost assumptions", NA, icer_text))
+
+plot_icer_clinic %>% 
   ggplot(aes(x = mean_ddaly, y = mean_cost, color = cost_cat)) +
   geom_line() +
   geom_point() +
-  annotate("text", x=0, y=1, label= "SOC") +
-  annotate("text", x=18, y=5, label= "Chronic Care Clinic") +
-  annotate("text", x=18, y=4, label= "$39/DALY", color = "#7570B3") +
-  annotate("text", x=18, y=3, label= "$20/DALY", color = "#D95F02") +
-  annotate("text", x=18, y=2, label= "$10/DALY", color = "#1B9E77") +
-  annotate("text", x=78, y=21, label= "CHW Screening") +
-  annotate("text", x=78, y=20, label= "$552/DALY", color = "#7570B3") +
-  annotate("text", x=78, y=19, label= "$351/DALY", color = "#D95F02") +
-  annotate("text", x=78, y=18, label= "$250/DALY", color = "#1B9E77") +
+  annotate("text", x=13, y=12.5, label= "Chronic Care Clinic") +
+  annotate("text", x=62, y=21, label= "CHW Screening") +
+  geom_label_repel(aes(label = ifelse(is.na(icer_text), NA, icer_text)), 
+                   nudge_y = plot_icer_clinic$nudge_y,
+                   nudge_x = -10,
+                   direction = "y",  # Keep labels in a vertical column
+                   hjust = 0,  # Left-align the text
+                   segment.size = 0.2,
+                   force = 1,
+                   min.segment.length = 0,
+                   show.legend = FALSE) +
   theme_minimal(base_size = 14) +
-  coord_cartesian(ylim = c(0,30), xlim = c(0,80)) +
-  labs(title = "Cost-effectiveness of hypertension treatment policies (2023 - 2073)",
+  coord_cartesian(ylim = c(0,30), xlim = c(0,70)) +
+  labs(title = "Cost-effectiveness of hypertension treatment policies (2024-2074)",
        subtitle = "Alternative assumptions about clinic costs",
        y = "Annual incremental cost (millions $USD)",
        x = "Annual DALYs averted (thousands)") +
@@ -886,24 +909,26 @@ plot_icer %>%
     axis.title.x = element_text(size = 14),
     legend.position = "bottom"
   ) +
-  scale_color_brewer(palette = "Dark2")
+  scale_color_manual(values = c("#6BAED6", "#2171B5", "#08306B"))
 
-plot_icer %>% 
-  filter(cost_cat %in% c("total (50% drug cost)", "total htn", "total (200% drug cost)")) %>% 
+plot_icer_drug %>% 
   ggplot(aes(x = mean_ddaly, y = mean_cost, color = cost_cat)) +
   geom_line() +
   geom_point() +
-  annotate("text", x=0, y=1, label= "SOC") +
-  annotate("text", x=18, y=7, label= "Chronic Care Clinic") +
-  annotate("text", x=18, y=6, label= "$163/DALY", color = "#7570B3") +
-  annotate("text", x=18, y=5, label= "$20/DALY", color = "#D95F02") +
-  annotate("text", x=18, y=4, label= "$-52/DALY (cost-saving)", color = "#1B9E77") +
-  annotate("text", x=78, y=21, label= "CHW Screening") +
-  annotate("text", x=78, y=20, label= "$495/DALY", color = "#7570B3") +
-  annotate("text", x=78, y=19, label= "$351/DALY", color = "#D95F02") +
-  annotate("text", x=78, y=18, label= "$279/DALY", color = "#1B9E77") +
+  annotate("text", x=13, y=12.5, label= "Chronic Care Clinic") +
+  annotate("text", x=62, y=21, label= "CHW Screening") +
+  geom_label_repel(aes(label = ifelse(is.na(icer_text), NA, icer_text)), 
+                   nudge_y = plot_icer_drug$nudge_y,
+                   nudge_x = -10,
+                   direction = "y",  # Keep labels in a vertical column
+                   hjust = 0,  # Left-align the text
+                   segment.size = 0.2,
+                   force = 1,
+                   min.segment.length = 0,
+                   show.legend = FALSE) +
   theme_minimal(base_size = 14) +
-  labs(title = "Cost-effectiveness of hypertension treatment policies (2023 - 2073)",
+  coord_cartesian(ylim = c(0,30), xlim = c(0,70)) +
+  labs(title = "Cost-effectiveness of hypertension treatment policies (2024-2074)",
        subtitle = "Alternative assumptions about drug costs",
        y = "Annual incremental cost (millions $USD)",
        x = "Annual DALYs averted (thousands)") +
@@ -913,22 +938,26 @@ plot_icer %>%
     axis.title.x = element_text(size = 14),
     legend.position = "bottom"
   ) +
-  scale_color_brewer(palette = "Dark2")
+  scale_color_manual(values = c("#6BAED6", "#2171B5", "#08306B"))
 
-plot_icer %>% 
-  filter(cost_cat %in% c("total (50% screening cost)", "total htn", "total (200% screening cost)")) %>% 
+plot_icer_screen %>% 
   ggplot(aes(x = mean_ddaly, y = mean_cost, color = cost_cat)) +
   geom_line() +
   geom_point() +
-  annotate("text", x=0, y=1, label= "SOC") +
-  annotate("text", x=20, y=3, label= "Chronic Care Clinic") +
-  annotate("text", x=20, y=2, label= "$20/DALY", color = "#D95F02") +
-  annotate("text", x=78, y=21, label= "CHW Screening") +
-  annotate("text", x=78, y=20, label= "$480/DALY", color = "#7570B3") +
-  annotate("text", x=78, y=19, label= "$351/DALY", color = "#D95F02") +
-  annotate("text", x=78, y=18, label= "$287/DALY", color = "#1B9E77") +
+  annotate("text", x=13, y=12.5, label= "Chronic Care Clinic") +
+  annotate("text", x=62, y=21, label= "CHW Screening") +
+  geom_label_repel(aes(label = ifelse(is.na(icer_text), NA, icer_text)), 
+                   nudge_y = plot_icer_screen$nudge_y,
+                   nudge_x = -10,
+                   direction = "y",  # Keep labels in a vertical column
+                   hjust = 0,  # Left-align the text
+                   segment.size = 0.2,
+                   force = 1,
+                   min.segment.length = 0,
+                   show.legend = FALSE) +
   theme_minimal(base_size = 14) +
-  labs(title = "Cost-effectiveness of hypertension treatment policies (2023 - 2073)",
+  coord_cartesian(ylim = c(0,30), xlim = c(0,70)) +
+  labs(title = "Cost-effectiveness of hypertension treatment policies (2024-2074)",
        subtitle = "Alternative assumptions about screening costs",
        y = "Annual incremental cost (millions $USD)",
        x = "Annual DALYs averted (thousands)") +
@@ -938,10 +967,96 @@ plot_icer %>%
     axis.title.x = element_text(size = 14),
     legend.position = "bottom"
   ) +
-  scale_color_brewer(palette = "Dark2")
+  scale_color_manual(values = c("#6BAED6", "#2171B5", "#08306B"))
 
 
 
+```
+
+
+```{r}
+# old cost-effectiveness frontier text
+# plot_icer %>% 
+#   filter(cost_cat %in% c("Clinic costs 50% of base", "Base case cost assumptions", "Clinic costs 200% of base")) %>% 
+#   ggplot(aes(x = mean_ddaly, y = mean_cost, color = cost_cat)) +
+#   geom_line() +
+#   geom_point() +
+#   annotate("text", x=0, y=1, label= "SOC") +
+#   annotate("text", x=15, y=5, label= "Chronic Care Clinic") +
+#   annotate("text", x=15, y=4, label= "$28/DALY", color = "#08306B") +
+#   annotate("text", x=15, y=3, label= "$13/DALY", color = "#2171B5") +
+#   annotate("text", x=15, y=2, label= "$6/DALY", color = "#6BAED6") +
+#   annotate("text", x=65, y=21, label= "CHW Screening") +
+#   annotate("text", x=65, y=20, label= "$587/DALY", color = "#08306B") +
+#   annotate("text", x=65, y=19, label= "$381/DALY", color = "#2171B5") +
+#   annotate("text", x=65, y=18, label= "$278/DALY", color = "#6BAED6") +
+#   theme_minimal(base_size = 14) +
+#   coord_cartesian(ylim = c(0,30), xlim = c(0,70)) +
+#   labs(title = "Cost-effectiveness of hypertension treatment policies (2024-2074)",
+#        subtitle = "Alternative assumptions about clinic costs",
+#        y = "Annual incremental cost (millions $USD)",
+#        x = "Annual DALYs averted (thousands)") +
+#   theme(
+#     plot.title = element_text(size = 16, face = "bold"),
+#     axis.title.y = element_text(size = 14),
+#     axis.title.x = element_text(size = 14),
+#     legend.position = "bottom"
+#   ) +
+#   scale_color_manual(values = c("#6BAED6", "#2171B5", "#08306B"))
+# 
+# plot_icer %>% 
+#   filter(cost_cat %in% c("Drug costs 50% of base", "Base case cost assumptions", "Drug costs 200% of base")) %>% 
+#   ggplot(aes(x = mean_ddaly, y = mean_cost, color = cost_cat)) +
+#   geom_line() +
+#   geom_point() +
+#   annotate("text", x=0, y=1, label= "SOC") +
+#   annotate("text", x=15, y=7, label= "Chronic Care Clinic") +
+#   annotate("text", x=15, y=6, label= "$160/DALY", color = "#08306B") +
+#   annotate("text", x=15, y=5, label= "$13/DALY", color = "#2171B5") +
+#   annotate("text", x=15, y=4, label= "$-60/DALY (cost-saving)", color = "#6BAED6") +
+#   annotate("text", x=65, y=21, label= "CHW Screening") +
+#   annotate("text", x=65, y=20, label= "$532/DALY", color = "#08306B") +
+#   annotate("text", x=65, y=19, label= "$381/DALY", color = "#2171B5") +
+#   annotate("text", x=65, y=18, label= "$306/DALY", color = "#6BAED6") +
+#     coord_cartesian(ylim = c(0,30), xlim = c(0,70)) +
+#   theme_minimal(base_size = 14) +
+#   labs(title = "Cost-effectiveness of hypertension treatment policies (2024-2074)",
+#        subtitle = "Alternative assumptions about drug costs",
+#        y = "Annual incremental cost (millions $USD)",
+#        x = "Annual DALYs averted (thousands)") +
+#   theme(
+#     plot.title = element_text(size = 16, face = "bold"),
+#     axis.title.y = element_text(size = 14),
+#     axis.title.x = element_text(size = 14),
+#     legend.position = "bottom"
+#   ) +
+#    scale_color_manual(values = c("#6BAED6", "#2171B5", "#08306B"))
+# 
+# plot_icer %>% 
+#   filter(cost_cat %in% c("Screening costs 50% of base", "Base case cost assumptions", "Screening costs 200% of base")) %>% 
+#   ggplot(aes(x = mean_ddaly, y = mean_cost, color = cost_cat)) +
+#   geom_line() +
+#   geom_point() +
+#   annotate("text", x=0, y=1, label= "SOC") +
+#   annotate("text", x=15, y=3, label= "Chronic Care Clinic") +
+#   annotate("text", x=15, y=2, label= "$13/DALY", color = "#2171B5") +
+#   annotate("text", x=65, y=21, label= "CHW Screening") +
+#   annotate("text", x=65, y=20, label= "$354/DALY", color = "#08306B") +
+#   annotate("text", x=65, y=19, label= "$381/DALY", color = "#2171B5") +
+#   annotate("text", x=65, y=18, label= "$305/DALY", color = "#6BAED6") +
+#     coord_cartesian(ylim = c(0,30), xlim = c(0,70)) +
+#   theme_minimal(base_size = 14) +
+#   labs(title = "Cost-effectiveness of hypertension treatment policies (2024-2074)",
+#        subtitle = "Alternative assumptions about screening costs",
+#        y = "Annual incremental cost (millions $USD)",
+#        x = "Annual DALYs averted (thousands)") +
+#   theme(
+#     plot.title = element_text(size = 16, face = "bold"),
+#     axis.title.y = element_text(size = 14),
+#     axis.title.x = element_text(size = 14),
+#     legend.position = "bottom"
+#   ) +
+#   scale_color_manual(values = c("#6BAED6", "#2171B5", "#08306B"))
 ```
 
 
