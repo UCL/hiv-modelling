@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10  ; 
+%let population = 100000 ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -774,7 +774,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * INJECTABLE CABOTEGRAVIR PREP ; * lapr;
 
-* date_prep_inj_intro;			date_prep_inj_intro=2127;		* Introduction of injectable PrEP ;
+* date_prep_inj_intro;			date_prep_inj_intro=2027;		* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep;
 * prob_prep_inj_b;				prob_prep_inj_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
@@ -945,7 +945,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 %include "/home/rmjllob/CdI_parameters21.sas";
-*%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters18.sas";
+*%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters21.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
@@ -2234,7 +2234,7 @@ if caldate_never_dot >= &year_interv then do;
 		rate_engage_sw_program=0.25;
 		effect_sw_prog_prep_any = 0.50;
 		effect_sw_prog_newp=0.60;
-		*sw_test_6mthly=0;*if this is set to 0, there are a lower number of tests in option 0 than this option;
+		*sw_test_6mthly=0;
 	end;
 
 	***MSM: Strengthening demand, increased accessibility of condoms,peer education;
@@ -2353,22 +2353,22 @@ if caldate_never_dot >= &year_interv then do;
 	end;
 
 
-	***Increase in linkage in preg/bf women;;
+	***Increase in PMTCT;
 	if option=17 then do;
-		if pregnant = 1  or breastfeeding=1 then do;
-		eff_prob_loss_at_diag = prob_loss_at_diag;
-		eff_rate_lost = rate_lost;
-		eff_rate_return = rate_return;
-		eff_prob_lost_art = prob_lost_art; 
-		eff_rate_restart = rate_restart;
-		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+		if pregnant = 1  or breastfeeding = 1 then do;
+			eff_prob_loss_at_diag = prob_loss_at_diag;
+			eff_rate_lost = rate_lost;
+			eff_rate_return = rate_return;
+			eff_prob_lost_art = prob_lost_art; 
+			eff_rate_restart = rate_restart;
+			e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
 
-		eff_prob_loss_at_diag=eff_prob_loss_at_diag/3.5;
-		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/3.5;
-		eff_rate_lost=eff_rate_lost/3.5;
-		eff_rate_return=min(eff_rate_return*3.5, 1);
-		eff_prob_lost_art=eff_prob_lost_art/3.5;
-		eff_rate_restart=min(eff_rate_restart*3.5,1);
+			eff_prob_loss_at_diag=eff_prob_loss_at_diag/3.5;
+			e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/3.5;
+			eff_rate_lost=eff_rate_lost/3.5;
+			eff_rate_return=min(eff_rate_return*3.5, 1);
+			eff_prob_lost_art=eff_prob_lost_art/3.5;
+			eff_rate_restart=min(eff_rate_restart*3.5,1);
 		end;
 	end;
 
@@ -2414,7 +2414,7 @@ if option=21 then do;
 
 	prob_prep_elig_msm = 0.5;
 	eff_prob_prep_oral_b = prob_prep_oral_b;
-	if (msm=1 or sw=1 or pwid=1) then eff_prob_prep_oral_b=0.8;
+	if (msm=1 or sw=1 or pwid=1) then eff_prob_prep_oral_b = 0.8;
 
 	fold_tr_pwid = 0.5;
 	set_in_options=1;
@@ -2478,8 +2478,8 @@ end;
 	***MSM: Increase oral PrEP;
 	if option=53 then do;
 		prob_prep_elig_msm = 0.35;
-		eff_prob_prep_oral_b=prob_prep_oral_b;
-		if msm=1 then eff_prob_prep_oral_b=0.5;
+		eff_prob_prep_oral_b = prob_prep_oral_b;
+		if msm=1 then eff_prob_prep_oral_b = 0.5;
 	end;
 
 	
@@ -2586,22 +2586,22 @@ end;
 	end;
 
 
-	***Increase in linkage in preg/bf women;**NOT INCLUDED IN COMBINED INTERVENTIONS AS ALREADY INCLUDE RETENTION FOR ALL;
+	***PMTCT;
 	if option=67 then do;
 		if pregnant=1 or breastfeeding=1 then do;
-		eff_prob_loss_at_diag = prob_loss_at_diag;
-		eff_rate_lost = rate_lost;
-		eff_rate_return = rate_return;
-		eff_prob_lost_art = prob_lost_art; 
-		eff_rate_restart = rate_restart;
-		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+			eff_prob_loss_at_diag = prob_loss_at_diag;
+			eff_rate_lost = rate_lost;
+			eff_rate_return = rate_return;
+			eff_prob_lost_art = prob_lost_art; 
+			eff_rate_restart = rate_restart;
+			e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
 
-		eff_prob_loss_at_diag=eff_prob_loss_at_diag/2;
-		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/2;
-		eff_rate_lost=eff_rate_lost/2;
-		eff_rate_return=min(eff_rate_return*2, 1);
-		eff_prob_lost_art=eff_prob_lost_art/2;
-		eff_rate_restart=min(eff_rate_restart*2,1);
+			eff_prob_loss_at_diag=eff_prob_loss_at_diag/2;
+			e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/2;
+			eff_rate_lost=eff_rate_lost/2;
+			eff_rate_return=min(eff_rate_return*2, 1);
+			eff_prob_lost_art=eff_prob_lost_art/2;
+			eff_rate_restart=min(eff_rate_restart*2,1);
 		end;
 	end;
 
@@ -2646,8 +2646,7 @@ if option=71 then do;
 
 	prob_prep_elig_msm = 0.35;
 	eff_prob_prep_oral_b = prob_prep_oral_b;
-	if (msm=1 or sw=1 or pwid=1) then eff_prob_prep_oral_b=0.8;
-
+	if (msm=1 or sw=1 or pwid=1) then eff_prob_prep_oral_b = 0.8;
 
 	fold_tr_pwid = 2;
 
@@ -3387,6 +3386,7 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
 		if msm=1 then do;rate_1sttest = rate_1sttest * 10  ; rate_reptest = rate_reptest * 10  ;   end;
+
 end;
 
 if caldate{t} >= &year_interv and high_test_set_in_options=1 then do;
@@ -5185,11 +5185,11 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 
 
 
-	if prep_any_strategy=18 then do;* Only key populations;
-		s = rand('Uniform');t = rand('Uniform');
+	if prep_any_strategy=18 then do;	* Only key populations;
+		r = rand('Uniform');	s = rand('Uniform');
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or 
-		   (pwid = 1 and s < prob_prep_elig_pwid ) or 
-		   (sw=1 and t < prob_prep_elig_sw) and (newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
+		   (pwid = 1 and r < prob_prep_elig_pwid ) or 
+		   (sw=1 and s < prob_prep_elig_sw) and (newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
  
 	end;
 
@@ -18676,8 +18676,11 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
-proc print;var caldate&j;run;
 /*
+proc print;var caldate&j cald option age;run;
+
+proc print;var caldate&j msm gender option eff_test_targeting hiv np_lasttest tested date1test unitest rate_1sttest ;
+where age ge 15 and death=.;run;
 */
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -19970,11 +19973,11 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ***CdI;
 /*if cald = 1990 and (prevalence1549w > 0.06) then do; abort abend; end;*/
 
-/*
+
 if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
 if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
-*/
+
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
@@ -21136,7 +21139,9 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
+
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);		
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
@@ -21161,6 +21166,7 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=0);*2024;
 
 data a ;  set r1 ;
+
 
 data r1 ; set a;
 *option 0;
@@ -21234,8 +21240,8 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
-
 /*
+
 data r1 ; set a;
 *option 1;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
@@ -22818,7 +22824,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=21);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=21);
 
-***COMMENT OUT OPTION 67 (TB);
+***COMMENT OUT OPTION 62 AND 67 (TB);
 
 
 data r1 ; set a;
@@ -24120,7 +24126,6 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=67);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=67);
 
-
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=68);
@@ -25041,7 +25046,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child  
-s_breastfeeding
+s_breastfeeding		s_plw
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 

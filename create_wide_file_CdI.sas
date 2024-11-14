@@ -6,7 +6,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data a;
-set a.cdi_20oct24_mid;
+set a.cdi_06nov24;
 
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
@@ -261,7 +261,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
 * p_anc;						if (s_pregnant+s_birth) gt 0 then p_anc = s_anc /(s_pregnant+s_birth);*pregnant=1 at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5
 * prevalence_hiv_preg;			if s_pregnant gt 0 then prevalence_hiv_preg = s_hiv_pregnant / s_pregnant ;
-
+* p_pmtct;						if s_plw gt 0 then p_pmtct=s_pmtct/s_plw;
 
 * p_ai_no_arv_c_nnm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_nnm = s_ai_naive_no_pmtct_c_nnm_ / s_ai_naive_no_pmtct_;
 
@@ -279,6 +279,9 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_tested_msm;					n_tested_msm = s_tested_msm * sf * 4;
 * n_tested_pwid;				n_tested_pwid = s_tested_pwid * sf * 4;
 * n_tested_anc;					n_tested_anc = s_tested_anc * sf * 4;
+
+* p_tested_anc;					*if (s_anc-s_diag_anc)>0 then p_tested_anc=s_tested_anc/(s_anc-s_diag_anc);
+
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
@@ -302,6 +305,10 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
 * p_tested_sw;					if s_sw_1564 - s_diag_sw > 0 then p_tested_sw = s_tested_sw /(s_sw_1564 - s_diag_sw) ;
+* p_tested_agywfsw;				*if s_agywfsw_1564 - s_diag_agywfsw > 0 then p_tested_agywfsw = s_tested_agywfsw /(s_agywfsw_1564 - s_diag_agywfsw) ;
+* p_ever_tested_sw; 			p_ever_tested_sw = s_ever_tested_sw / s_sw_1564;
+* p_tested_py_sw; 				p_tested_py_sw = s_tested_4p_sw / s_sw_1564;
+
 
 * p_diag_sw;					if s_hiv_sw  > 0 then p_diag_sw = s_diag_sw /s_hiv_sw ;
 * incidence_sw;		            incidence_sw = (s_primary_sw * 4 * 100) / (s_sw_1549  - s_hiv_sw1549_  + s_primary_sw);
@@ -507,7 +514,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * incidence1564msm;             incidence1564msm = (s_primary1564msm * 4 * 100) / (s_alive1564_msm  - s_hiv1564msm  + s_primary1564msm);
 * prevalence1549_msm;			prevalence1549_msm = s_hiv1549msm / s_alive1549_msm; 
 * prevalence1564_msm;			prevalence1564_msm = s_hiv1564msm / s_alive1564_msm; 
-* prevalence_msm;				prevalence_msm = s_hiv_msm / s_alive_m;
+* prevalence_msm;				prevalence_msm = s_hiv_msm / s_alive_msm;
 * p_elig_prep_any_msm_1564_;	p_elig_prep_any_msm_1564_ = s_elig_prep_any_msm_1564 / (s_alive1564_msm - s_hiv1564msm);
 * p_onprep_msm;					p_onprep_msm = s_onprep_msm / (s_alive1564_msm - s_hiv1564msm);
 * p_onart_msm;					if s_hiv_msm  > 0 then p_onart_msm = s_onart_msm / s_hiv_msm  ;
@@ -520,7 +527,10 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_msm_infected_from_msm;		if s_hiv_msm gt 0 then p_msm_infected_from_msm = s_infected_from_msm / s_hiv_msm ;
 * prop_m_msm;					prop_m_msm = s_alive_msm / s_alive_m;
 * p_tested_msm;					if (s_alive1564_msm - s_diag_msm_age1564) > 0 then p_tested_msm = s_tested_msm /(s_alive1564_msm - s_diag_msm_age1564) ;
+* p_tested_py_msm;				*if (s_alive1564_msm - s_diag_msm_age1564) > 0 then p_tested_py_msm = s_tested_py_msm /(s_alive1564_msm - s_diag_msm_age1564) ;
 
+* p_av_newp_msm;				*if s_alive_msm ge 0 then p_av_newp_msm=s_msm_newp/ s_alive_msm;
+* p_msm_newp0;					*if s_alive_msm ge 0 then p_msm_newp0= s_msm_newp0/ s_alive_msm;
 
 * p_ep;							p_ep = s_ep / s_alive1564;				
 * p_ep_msm;						p_ep_msm = s_msm_ep / s_alive1564_msm;
@@ -540,17 +550,20 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 yll=yll_gbd;
 yll_w=yll_gbd_w;
 yll_m=yll_gbd_m;
-  
+ 
+***incidence is per 1000 in spreadsheets; 
 incidence1564m = incidence1564m * 10; 
 incidence1564w = incidence1564w * 10;  
 incidence1564_ = incidence1564_ * 10;  
+incidence1524w = incidence1524w * 10;
+incidence1524m = incidence1524m * 10;
 incidence_sw = incidence_sw * 10; 
 incidence_agyw = incidence_agyw * 10;
 incidence_msm = incidence1564msm * 10;
 p_1564_onprep = prop_1564_onprep *100;
 p_onprep_sw = prop_sw_onprep * 100;
 
-keep   cald	run		option	inc_cat		ych2_risk_beh_newp	p_w_giv_birth_this_per			mtct_prop		p_anc	
+keep   cald	run		option	inc_cat		ych2_risk_beh_newp	p_w_giv_birth_this_per			mtct_prop		p_anc	p_pmtct
 prevalence_hiv_preg	p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_	p_newp_ge1w_	av_newp_ge1_non_sw 	
 n_tested			p_tested_past_year_1549m				p_tested_past_year_1549w		test_prop_positive	
 n_self_tested		n_tested_anc							p_tested_past_year_ov25m		p_tested_past_year_ov25w
@@ -582,7 +595,7 @@ n_alive_w			n_alive1564_		n_alive1564m		n_alive1564w		n_art_start_y		n_newinf
 n_newinf1549_		n_newinf1549m		n_newinf1549w		n_pregnant			adh_pattern			p_fsw_newp0_
 n_onprep 			n_prep_ever			p_prep_ever			p_1564_onprep		n_prep_oral_ever_sw p_onprep_sw
 
-prop_sw_hiv1549_	sw_trans_matrix		n_onprep_sw			p_tested_sw			/*p_tb*/			p_tested_msm
+prop_sw_hiv1549_	sw_trans_matrix		n_onprep_sw			p_tested_sw			p_ever_tested_sw	p_tested_py_sw		p_tested_msm
 
 	
 n_alive_msm		n_alive1564_msm		incidence1549msm	incidence1564msm	prevalence1549_msm	prevalence1564_msm
@@ -610,105 +623,42 @@ if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
 /*proc freq;table run;where a=1;run;*/
 
 if run in (
-25870604
-27366339
-27827317
-36758085
-43515382
-64607882
-66461311
-77576799
-84658827
-86763071
-90227512
-91002329
-96185672
-96815866
-100836200
-109323071
-117617051
-144044750
-153825733
-165794511
-167972262
-171833755
-189841453
-204517290
-207525137
-243916500
-247524867
-252853944
-260425040
-298744307
-306690411
-336250366
-359153982
-363750534
-369929074
-379139048
-389967378
-390609800
-401343006
-403537243
-405099170
-411184708
-421075918
-421423568
-436435623
-457624541
-463992960
-492007206
-497664185
-503174559
-505347910
-514209915
-515091073
-520285830
-548502616
-553625750
-559755917
-575419301
-609741481
-613526494
-617093331
-633028752
-655099427
-667390435
-684368088
-689602989
-704150754
-708637756
-730480555
-752530663
-753492099
-759584298
-766933367
-773006261
-793907644
-796666424
-808035439
-812035568
-813293177
-823315186
-826859121
-851937948
-861790309
-910934057
-927604300
-953666207
-954683602
-961111176
-967962695
-971685849
-973621684
-993556761
+48955388
+87287305
+191652085
+211575527
+259107729
+269768892
+277912581
+302361300
+330845460
+379900077
+422625541
+445821147
+454705025
+489764380
+490360550
+505656189
+556918386
+658228175
+703094278
+726316522
+781806172
+789883559
+810696424
+813085491
+919755454
+922304892
+923284725
+960558682
 
 )
 then delete;
 run;
+proc freq;table cald;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI_20oct24_mid; 
+data a.l_base_CdI_06nov24; 
 set low_inc;
 run;
 
@@ -719,7 +669,7 @@ run;
 
 libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
 data y;
-set a.l_base_CdI_20Oct24_mid; 
+set a.l_base_CdI_06nov24; 
 
   
 keep run cald option 
@@ -728,8 +678,8 @@ n_infected			n_infected_m		n_infected_w		p_diag1549_			p_diag1549m			p_diag1549w
 p_onart_diag_m 		p_onart_diag_w		p_onart_diag 		p_onart_vl1000_m 	p_onart_vl1000_w 	p_onart_vl1000_		
 prop_w_1564_sw  	prop_sw_hiv1549_   	p_mcirc  			p_vmmc				p_trad_circ			
 n_death_hivrel_m	n_death_hivrel_w 	n_death_hivrel 		n_hiv_m 			n_hiv_w 			n_hiv			
-prevalence_msm  	prop_m_msm 			incidence1564m		incidence1564w		incidence1564_		n_onart 
-n_infected_agyw		incidence_agyw		incidence_sw		incidence_msm		n_onprep_m			n_onprep_w
+prevalence_msm  	prop_m_msm 			incidence1524m		incidence1524w		incidence1564m		incidence1564w		
+incidence1564_		n_onart 			n_infected_agyw		incidence_agyw		incidence_sw		incidence_msm		n_onprep_m			n_onprep_w
 n_onprep			p_1564_onprep		n_onprep_sw			p_onprep_sw			n_onprep_msm		p_onprep_msm
 yll_m 				yll_w 				yll
 ;
@@ -773,12 +723,13 @@ proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where 2021   <=
 proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where 2022   <= cald < 2023  ; 
 proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <= cald < 2024  ; 
 
-
+***in same order as excel sheet;
 **OST		 	= Option 4 /54;
-**Condom		= Option 5 /54;
+**Condom		= Option 5 /55;
 **FSW prev		= Option 1 /51 (this is PrEP and condom use but not testing);
 **MSM prev		= Option 2 /52 (ONLY reduction in cls);
 **PWID prev		= Option 4 /54; **SAME as OST;
+**FSW PrEP		= Option 1/51; **SAME as FSW prevention;
 **MSM PrEP		= Option 3 /53;
 **Self testing	= Option 13 /63;
 **AGYW testing	= Option 9 /59;
@@ -787,9 +738,11 @@ proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <=
 **PWID testing 	= Option 8 /58;
 **ANC testing 	= Option 20 /70;
 **VL testing	= Option 16 /66;
-**ART 			= Option 14 /64;
-** TARGET		= Option=21 /71;
-**Viral supp	= Option 18 /68;
+**Mid target 	= Option 71;
+** TARGET		= Option=21;
+**ART 			= Option 18 /68; ***there is also 14/64 which is no loss at diagnosis;
+**PMTCT			= Option 17/67;
+**Viral supp	= Option 18 /68; **his is consequential of other targets so leave for now;
 **DTG uptake	= Option 15 /65;
 **Adherence		= Option 19 /69;
 **Testing in 25+w	= Option 11 /61;
@@ -799,23 +752,23 @@ proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <=
 
 **TB testing		= Option 17;
 
-proc means noprint data=z; var &v; output out=y_24  mean= &v   ; where 2024 <= cald < 2025 and option=60 ;
-proc means noprint data=z; var &v; output out=y_25  mean= &v   ; where 2025 <= cald < 2026 and option=60 ;
-proc means noprint data=z; var &v; output out=y_26  mean= &v   ; where 2026 <= cald < 2027 and option=60 ;
-proc means noprint data=z; var &v; output out=y_27  mean= &v   ; where 2027 <= cald < 2028 and option=60 ;
-proc means noprint data=z; var &v; output out=y_28  mean= &v   ; where 2028 <= cald < 2029 and option=60 ;
-proc means noprint data=z; var &v; output out=y_29  mean= &v   ; where 2029 <= cald < 2030 and option=60 ;
-proc means noprint data=z; var &v; output out=y_30  mean= &v   ; where 2030 <= cald < 2031 and option=60 ;
-proc means noprint data=z; var &v; output out=y_31  mean= &v   ; where 2031 <= cald < 2032 and option=60 ;
-proc means noprint data=z; var &v; output out=y_32  mean= &v   ; where 2032 <= cald < 2033 and option=60 ;
-proc means noprint data=z; var &v; output out=y_33  mean= &v   ; where 2033 <= cald < 2034 and option=60 ;
-proc means noprint data=z; var &v; output out=y_34  mean= &v   ; where 2034 <= cald < 2035 and option=60 ;
-proc means noprint data=z; var &v; output out=y_35  mean= &v   ; where 2035 <= cald < 2036 and option=60 ;
-proc means noprint data=z; var &v; output out=y_36  mean= &v   ; where 2036 <= cald < 2037 and option=60 ;
-proc means noprint data=z; var &v; output out=y_37  mean= &v   ; where 2037 <= cald < 2038 and option=60 ;
-proc means noprint data=z; var &v; output out=y_38  mean= &v   ; where 2038 <= cald < 2039 and option=60 ;
-proc means noprint data=z; var &v; output out=y_39  mean= &v   ; where 2039 <= cald < 2040 and option=60 ;
-proc means noprint data=z; var &v; output out=y_40  mean= &v   ; where 2040 <= cald < 2041 and option=60 ;
+proc means noprint data=z; var &v; output out=y_24  mean= &v   ; where 2024 <= cald < 2025 and option=53 ;
+proc means noprint data=z; var &v; output out=y_25  mean= &v   ; where 2025 <= cald < 2026 and option=53 ;
+proc means noprint data=z; var &v; output out=y_26  mean= &v   ; where 2026 <= cald < 2027 and option=53 ;
+proc means noprint data=z; var &v; output out=y_27  mean= &v   ; where 2027 <= cald < 2028 and option=53 ;
+proc means noprint data=z; var &v; output out=y_28  mean= &v   ; where 2028 <= cald < 2029 and option=53 ;
+proc means noprint data=z; var &v; output out=y_29  mean= &v   ; where 2029 <= cald < 2030 and option=53 ;
+proc means noprint data=z; var &v; output out=y_30  mean= &v   ; where 2030 <= cald < 2031 and option=53 ;
+proc means noprint data=z; var &v; output out=y_31  mean= &v   ; where 2031 <= cald < 2032 and option=53 ;
+proc means noprint data=z; var &v; output out=y_32  mean= &v   ; where 2032 <= cald < 2033 and option=53 ;
+proc means noprint data=z; var &v; output out=y_33  mean= &v   ; where 2033 <= cald < 2034 and option=53 ;
+proc means noprint data=z; var &v; output out=y_34  mean= &v   ; where 2034 <= cald < 2035 and option=53 ;
+proc means noprint data=z; var &v; output out=y_35  mean= &v   ; where 2035 <= cald < 2036 and option=53 ;
+proc means noprint data=z; var &v; output out=y_36  mean= &v   ; where 2036 <= cald < 2037 and option=53 ;
+proc means noprint data=z; var &v; output out=y_37  mean= &v   ; where 2037 <= cald < 2038 and option=53 ;
+proc means noprint data=z; var &v; output out=y_38  mean= &v   ; where 2038 <= cald < 2039 and option=53 ;
+proc means noprint data=z; var &v; output out=y_39  mean= &v   ; where 2039 <= cald < 2040 and option=53 ;
+proc means noprint data=z; var &v; output out=y_40  mean= &v   ; where 2040 <= cald < 2041 and option=53 ;
  																										   
 																										
 data &v ; set 
@@ -834,8 +787,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000_m);  	%var(v=p_onart_vl1000_w);  	%var(v=p_onart_vl1000_);%var(v=prop_w_1564_sw);		%var(v=prop_sw_hiv1549_); 
 %var(v=p_mcirc);			%var(v=p_vmmc);				%var(v=p_trad_circ);	%var(v=n_death_hivrel_m );  %var(v=n_death_hivrel_w ); 
 %var(v=n_death_hivrel ); 	%var(v=n_hiv_m);			%var(v=n_hiv_w);		%var(v=n_hiv);				%var(v=prevalence_msm);
-%var(v=prop_m_msm);    		%var(v=incidence1564m);		%var(v=incidence1564w); %var(v=incidence1564_);		%var(v=n_onart); 		
-%var(v=n_infected_agyw);	%var(v=incidence_agyw);		%var(v=incidence_sw);	%var(v=incidence_msm);		%var(v=n_onprep_m);			
+%var(v=prop_m_msm);    		%var(v=incidence1524m);		%var(v=incidence1524w);	%var(v=incidence1564m);		%var(v=incidence1564w);
+%var(v=incidence1564_);		%var(v=n_onart); 			%var(v=n_infected_agyw);%var(v=incidence_agyw);		%var(v=incidence_sw);	%var(v=incidence_msm);		%var(v=n_onprep_m);			
 %var(v=n_onprep_w);			%var(v=n_onprep);			%var(v=p_1564_onprep);	%var(v=n_onprep_sw);		%var(v=p_onprep_sw);	
 %var(v=n_onprep_msm);		%var(v=p_onprep_msm);		%var(v=yll_m); 			%var(v=yll_w); 				%var(v=yll);
 	
@@ -897,9 +850,9 @@ p_onart_vl1000_m  	p_onart_vl1000_w  	p_onart_vl1000_		prop_w_1564_sw		prop_sw_h
 
 p_mcirc				p_vmmc				p_trad_circ			n_death_hivrel_m   	n_death_hivrel_w  
 n_death_hivrel  	n_hiv_m				n_hiv_w				n_hiv				prevalence_msm
-prop_m_msm    		incidence1564m		incidence1564w 		incidence1564_		n_onart 	
-	
-n_infected_agyw		incidence_agyw		incidence_sw		incidence_msm;
+prop_m_msm    		incidence1524m		incidence1564m		incidence1524w		incidence1564w 		
+incidence_sw		incidence_msm		n_infected_agyw		incidence_agyw		incidence1564_		n_onart
+;
 run;
 ods html;
 proc print noobs ; run; 
@@ -913,12 +866,13 @@ n_alive_m			n_alive_w    		n_alive				prevalence_m		prevalence_w
 prevalence 			n_infected_m 		n_infected_w 		n_infected			p_diag1549m    	
 p_diag1549w     	p_diag1549_ 		p_onart_diag_m		p_onart_diag_w		p_onart_diag 
 p_onart_vl1000_m  	p_onart_vl1000_w  	p_onart_vl1000_		prop_w_1564_sw		prop_sw_hiv1549_ 
+
 p_mcirc				p_vmmc				p_trad_circ			n_death_hivrel_m   	n_death_hivrel_w  
 n_death_hivrel  	n_hiv_m				n_hiv_w				n_hiv				prevalence_msm
-prop_m_msm    		incidence1564m		incidence1564w 		incidence1564_		n_onart 		
-n_infected_agyw		incidence_agyw		incidence_sw		incidence_msm		n_onprep_m			
-n_onprep_w			n_onprep			p_1564_onprep		n_onprep_sw			p_onprep_sw	
-n_onprep_msm		p_onprep_msm		yll_m 				yll_w 				yll;
+prop_m_msm    		incidence1524m		incidence1564m		incidence1524w		incidence1564w 		
+incidence_sw		incidence_msm		n_infected_agyw		incidence_agyw		incidence1564_		n_onart
+n_onprep_m			n_onprep_w			n_onprep			yll_m 				yll_w 				yll
+/*p_1564_onprep		n_onprep_sw			p_onprep_sw			n_onprep_msm		p_onprep_msm*/	;
 run;
 
 

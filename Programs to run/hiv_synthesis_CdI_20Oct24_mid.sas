@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 10  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -943,8 +943,8 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/CdI_parameters20.sas";
-*%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters18.sas";
+*%include "/home/rmjllob/CdI_parameters20.sas";
+%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters21.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
@@ -18631,7 +18631,7 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
-
+proc print;var caldate&j cald age;run;
 * procs;
 /*
 proc print;var caldate&j msm gender option eff_test_targeting hiv np_lasttest tested date1test unitest rate_1sttest ;

@@ -11,6 +11,7 @@ caldate1=1980;
 caldate_never_dot=1980;
 startyr = 1985 + 0.25;
 
+
 * ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7, 0.33 0.33 0.33); * change sep22 for pop_wide_tld;
 
 * inc_cat; 					inc_cat = 1 ;  
@@ -26,9 +27,14 @@ startyr = 1985 + 0.25;
 
 * rate_engage_sw_program;	%sample(rate_engage_sw_program, 0.05 0.10, 0.10 0.90); *previously 0.10;
 
-* effect_sw_prog_6mtest;    %sample(effect_sw_prog_6mtest, 0.20 0.35 0.50, 0.40 0.40 0.20);
+
+***Remove PrEP and testing from SW programs;
+* effect_sw_prog_6mtest;    effect_sw_prog_6mtest=0;
+* fold_hi_sw_prog_6mtest;	fold_hi_sw_prog_6mtest=1;
 
 * effect_sw_prog_prep_any;  effect_sw_prog_prep_any = 0.01;
+* fold_hi_sw_prog_prep;		fold_hi_sw_prog_prep = 1;
+
 
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.20 0.30);
 
@@ -43,7 +49,7 @@ startyr = 1985 + 0.25;
 
 * HIV TESTING;
 
-* an_lin_incr_test;         *an_lin_incr_test = 0.00001;
+* an_lin_incr_test;         an_lin_incr_test = 0.93;
 
 * date_test_rate_plateau;   date_test_rate_plateau = 2013 ;
 
@@ -76,4 +82,5 @@ startyr = 1985 + 0.25;
 
 * reg_option_104;			%sample(reg_option_104, 0 1 , 0.25 0.75);
 
-* date_prep_inj_intro;			date_prep_inj_intro=2100;		* Introduction of injectable PrEP ;
+* date_prep_inj_intro;		*date_prep_inj_intro=2100;		* Introduction of injectable PrEP ;
+

@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10  ; 
+%let population = 100000 ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -615,7 +615,7 @@ newp_seed = 7;
 * ind_effect_art_hiv_disease_death; 	ind_effect_art_hiv_disease_death = 0.6;
 
 * SEX WORKERS;
-* prob_prep_elig_sw;		prob_prep_elig_sw=0.4;
+* prob_prep_elig_sw;		prob_prep_elig_sw=0.10;
 * age_effect_stop_sexwork;	age_effect_stop_sexwork=3;
 
 * base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
@@ -774,7 +774,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * INJECTABLE CABOTEGRAVIR PREP ; * lapr;
 
-* date_prep_inj_intro;			date_prep_inj_intro=2127;		* Introduction of injectable PrEP ;
+* date_prep_inj_intro;			date_prep_inj_intro=2027;		* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep;
 * prob_prep_inj_b;				prob_prep_inj_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
@@ -945,7 +945,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 %include "/home/rmjllob/CdI_parameters21.sas";
-*%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters18.sas";
+*%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters21.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
@@ -2221,7 +2221,9 @@ agywfsw=0; if agyw=1 and sw=1 then agywfsw=1;
 option = &s;
 mihpsa_params_set_in_options=0;				* JAS Oct23;
 
-if caldate_never_dot >= &year_interv then do;
+*if caldate_never_dot >= &year_interv then do;
+if caldate_never_dot >= 1981 then do;
+
 
 	
 	if option=0 then do;
@@ -2229,48 +2231,45 @@ if caldate_never_dot >= &year_interv then do;
 
 	***max targets;
 
-	***FSW: Increased engagement/PrEP in SW program - take out testing here and have it as a separate option (7);
+	***FSW prevention: Increased engagement in SW program leading to less cls- take out prep and testing here and have as a separate options (7);
 	if option=1 then do;
 		rate_engage_sw_program=0.25;
-		effect_sw_prog_prep_any = 0.50;
-		effect_sw_prog_newp=0.60;
-		*sw_test_6mthly=0;*if this is set to 0, there are a lower number of tests in option 0 than this option;
+		effect_sw_prog_newp=0.90;
 	end;
 
-	***MSM: Strengthening demand, increased accessibility of condoms,peer education;
+	***FSW PrEP: Modelled independently of the program using prep_any_strategy;
 	if option=2 then do;
-	%sample_uniform(msm_risk_cls, 0.05 0.1); * risk of one or more cls partners in msm per period ;
-
+		prob_prep_elig_sw = 0.5;
+		eff_prob_prep_oral_b = prob_prep_oral_b;
+		if sw=1 then eff_prob_prep_oral_b = 0.8;
 	end;
 
-	***MSM: Increase oral PrEP ;
+	***MSM prevention: Strengthening demand, increased accessibility of condoms,peer education;
 	if option=3 then do;
-		prob_prep_elig_msm = 0.5;
+		%sample_uniform(msm_risk_cls, 0.05 0.1); * risk of one or more cls partners in msm per period ;
+	end;
+
+	***MSM PrEP;
+	if option=4 then do;
+		prob_prep_elig_msm = 0.8;
 		eff_prob_prep_oral_b = prob_prep_oral_b;
 		if msm=1 then eff_prob_prep_oral_b = 0.8;
 	end;
 
-	***MSM: Combining the above two;
-	if option=23 then do;
-			%sample_uniform(msm_risk_cls, 0.05 0.1); * risk of one or more cls partners in msm per period ;
-			prob_prep_elig_msm = 0.5;
-			eff_prob_prep_oral_b = prob_prep_oral_b;
-			if msm=1 then eff_prob_prep_oral_b = 0.8;
-	end;
-
-	***PWID: Integrating harm reduction care package. Increase OST, needle exchange program;
-	if option=4 then do;
+	***PWID prevention: Integrating harm reduction care package. Increase OST, needle exchange program;
+	***Note separate OST programme not modelled;
+	if option=5 then do;
 		fold_tr_pwid = 0.5;
 	end;
 
 	***Condom promotion;
-	if option=5 then do;
+	if option=6 then do;
 		set_in_options=1;
 		condom_incr_year_i = 3;
 	end;
 
 	***Increased testing in MSM;
-	if option=6 then do;
+	if option=7 then do;
 		if msm=1 then do;
 			high_test_set_in_options=1;
 			incr_test_msm_year_i=1;
@@ -2278,7 +2277,7 @@ if caldate_never_dot >= &year_interv then do;
 	end;
 
 	***Increased testing in FSW (this is community based so independent of FSW program);
-	if option=7 then do;
+	if option=8 then do;
 		if sw=1 then do;
 			high_test_set_in_options=1;
 			incr_test_fsw_year_i=1;
@@ -2286,7 +2285,7 @@ if caldate_never_dot >= &year_interv then do;
 	end;
 
 	***Increased testing in PWID;
-	if option=8 then do;
+	if option=9 then do;
 		if pwid=1 then do;
 			high_test_set_in_options=1;
 			incr_test_pwid_year_i=1;
@@ -2294,87 +2293,64 @@ if caldate_never_dot >= &year_interv then do;
 	end;
 
 	***Increased testing in high risk agyw - defined as 15-24 fsw;
-	if option=9 then do;
+	if option=10 then do;
 		if agyw=1 and sw=1 then do;
 			high_test_set_in_options=1;
 			incr_test_agywfsw_year_i=1;
 		end;
 	end;
 
-	***Increased testing in men aged 25+ (facility based);
-	if option=10 then do;
-		if gender=1 and age>25 then do;
-			high_test_set_in_options=1;
-			incr_test_men_year_i=1;
-		end;
-	end;
-
-	***Increased testing in women aged 25+ (facility based);
+	***Increased facility based testing in men and women aged 25+ (Community based testing);
 	if option=11 then do;
-		if gender=2 and age>25 then do;
+		if  age>25 then do;
 			high_test_set_in_options=1;
-			incr_test_women_year_i=1;
-		end;
-	end;
-
-	***Increased testing in all of the above groups - used only when combining all the options;
-	if option=12 then do;
-		if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
-			high_test_set_in_options=1;
-			incr_test_kp_year_i=1;
+			incr_test_fb25_year_i=1;
 		end;
 	end;
 
 	***Increased self-testing in 15+;
-	if option=13 then do;
+	if option=12 then do;
 		prob_self_test_hard_reach = 0.75;
 		eff_self_test_targeting = 1; self_test_targeting = 1;
 		rate_self_test = 0.015;
 	end;
 
 
-	***Lower rates of being lost at diagnosis;
-	if option=14 then do;
-		prob_loss_at_diag=0;
-		eff_prob_loss_at_diag=0;
-		e_eff_prob_loss_at_diag=0;
-	end;
-
 	***95% of people are on ART according to national guidelines - interpreted as on DTG;
-	if option=15 then do;
+	if option=13 then do;
 		u=rand('uniform');
-		if u<0.95 then reg_option_104=1;
+		if u<0.90 then reg_option_104=1;
 	end;
 
 	***Increased vl testing;
-	if option=16 then do;
+	if option=14 then do;
+		eff_prob_vl_meas_done=prob_vl_meas_done;
 		prob_vl_meas_done=0.95;
-		eff_prob_vl_meas_done=0.95;
 	end;
 
 
-	***Increase in linkage in preg/bf women;;
-	if option=17 then do;
-		if pregnant = 1  or breastfeeding=1 then do;
-		eff_prob_loss_at_diag = prob_loss_at_diag;
-		eff_rate_lost = rate_lost;
-		eff_rate_return = rate_return;
-		eff_prob_lost_art = prob_lost_art; 
-		eff_rate_restart = rate_restart;
-		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+	***Increase in PMTCT;
+	if option=15 then do;
+		if pregnant = 1  or breastfeeding = 1 then do;
+			eff_prob_loss_at_diag = prob_loss_at_diag;
+			eff_rate_lost = rate_lost;
+			eff_rate_return = rate_return;
+			eff_prob_lost_art = prob_lost_art; 
+			eff_rate_restart = rate_restart;
+			e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
 
-		eff_prob_loss_at_diag=eff_prob_loss_at_diag/3.5;
-		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/3.5;
-		eff_rate_lost=eff_rate_lost/3.5;
-		eff_rate_return=min(eff_rate_return*3.5, 1);
-		eff_prob_lost_art=eff_prob_lost_art/3.5;
-		eff_rate_restart=min(eff_rate_restart*3.5,1);
+			eff_prob_loss_at_diag=eff_prob_loss_at_diag/3.5;
+			e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/3.5;
+			eff_rate_lost=eff_rate_lost/3.5;
+			eff_rate_return=min(eff_rate_return*3.5, 1);
+			eff_prob_lost_art=eff_prob_lost_art/3.5;
+			eff_rate_restart=min(eff_rate_restart*3.5,1);
 		end;
 	end;
 
 
-	***95% of those on ART for 12m have undetectable VL;
-	if option=18 and caldate{t}-yrart>1 then do;
+	***Increase in ART retention/coverage;
+	if option=16 then do;
 		eff_prob_loss_at_diag = prob_loss_at_diag;
 		eff_rate_lost = rate_lost;
 		eff_rate_return = rate_return;
@@ -2391,51 +2367,57 @@ if caldate_never_dot >= &year_interv then do;
 	end;
 
 	***Increased adherence;
-	if option=19 then do;
+	if option=17 then do;
 		if adhav < 0.8 then do; 
 			e_ = rand('uniform'); if e_ < 0.8 then adhav = 0.9; 
 		end;
 	end;
 
 	***Increase in ANC testing;
-	if option=20 then do;
+	if option=18 then do;
 		inc_rate_anc_op=0.5;
 	end;
 		
+	***AGYW prevention;
+	if option=19 then do;
+		if agywfsw=1 then do;
+		rate_engage_sw_program=0.25;
+		effect_sw_prog_newp=0.90;
+		end;
+	end;
 
 ***Combination of interventions;
-if option=21 then do;
-	rate_engage_sw_program=0.25;
-	effect_sw_prog_prep_any = 0.50;
-	effect_sw_prog_newp=0.60;
+if option=20 then do;
+	rate_engage_sw_program=0.25;***Prevention in FSW;
+	effect_sw_prog_newp=0.90;
 
-	%sample_uniform(msm_risk_cls, 0.05 0.1); * risk of one or more cls partners in msm per period ;
+	%sample_uniform(msm_risk_cls, 0.05 0.1); * Prevention in MSM;
 
+	fold_tr_pwid = 0.5;*Prevention in PWID;
 
-	prob_prep_elig_msm = 0.5;
+	prob_prep_elig_msm = 0.8;*PrEP in FSW and MSM;
+	prob_prep_elig_sw = 0.5; 
 	eff_prob_prep_oral_b = prob_prep_oral_b;
-	if (msm=1 or sw=1 or pwid=1) then eff_prob_prep_oral_b=0.8;
+	if (msm=1 or sw=1) then eff_prob_prep_oral_b = 0.8;
 
-	fold_tr_pwid = 0.5;
-	set_in_options=1;
+	set_in_options=1; *Increase condom use all populations;
 	condom_incr_year_i = 3;
 
-	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
+	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; *Increase testing in KP;
 		high_test_set_in_options=1;
 		incr_test_kp_year_i=1;
 	end;
 
-	prob_self_test_hard_reach = 0.75;
+	prob_self_test_hard_reach = 0.75; *Self testing;
 	eff_self_test_targeting = 1; self_test_targeting = 1;
 	rate_self_test = 0.015;
 	
-	u=rand('uniform');
-	if u<0.95 then reg_option_104=1;
+	u=rand('uniform'); *DTG;
+	if u<0.90 then reg_option_104=1;
 
+	eff_prob_vl_meas_done=0.95; *VL tests;
 
-	eff_prob_vl_meas_done=0.95;
-
-	if caldate{t}-yrart>1 then do;
+	*retention;
 		eff_prob_loss_at_diag = prob_loss_at_diag;
 		eff_rate_lost = rate_lost;
 		eff_rate_return = rate_return;
@@ -2449,61 +2431,110 @@ if option=21 then do;
 		eff_rate_return=min(eff_rate_return*3.5, 1);
 		eff_prob_lost_art=eff_prob_lost_art/3.5;
 		eff_rate_restart=min(eff_rate_restart*3.5,1);
-	end;
 
-	if adhav < 0.8 then do; 
+
+	if adhav < 0.8 then do; *Adherence;
 			e_ = rand('uniform'); if e_ < 0.8 then adhav = 0.9; 
 	end;
 
-	inc_rate_anc_op=0.5;
+	inc_rate_anc_op=0.5; *ANC testing;
+
+end;
+
+***Combination of interventions WITHOUT CONDOM PROMOTION;
+if option=21 then do;
+	rate_engage_sw_program=0.25;***Prevention in FSW;
+	effect_sw_prog_newp=0.90;
+
+	%sample_uniform(msm_risk_cls, 0.05 0.1); * Prevention in MSM;
+
+	fold_tr_pwid = 0.5;*Prevention in PWID;
+
+	prob_prep_elig_msm = 0.8;*PrEP in FSW and MSM;
+	prob_prep_elig_sw = 0.5; 
+	eff_prob_prep_oral_b = prob_prep_oral_b;
+	if (msm=1 or sw=1) then eff_prob_prep_oral_b = 0.8;
+
+	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; *Increase testing in KP;
+		high_test_set_in_options=1;
+		incr_test_kp_year_i=1;
+	end;
+
+	prob_self_test_hard_reach = 0.75; *Self testing;
+	eff_self_test_targeting = 1; self_test_targeting = 1;
+	rate_self_test = 0.015;
+	
+	u=rand('uniform'); *DTG;
+	if u<0.90 then reg_option_104=1;
+
+	eff_prob_vl_meas_done=0.95; *VL tests;
+
+	*retention;
+		eff_prob_loss_at_diag = prob_loss_at_diag;
+		eff_rate_lost = rate_lost;
+		eff_rate_return = rate_return;
+		eff_prob_lost_art = prob_lost_art; 
+		eff_rate_restart = rate_restart;
+		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag/3.5;
+		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/3.5;
+		eff_rate_lost=eff_rate_lost/3.5;
+		eff_rate_return=min(eff_rate_return*3.5, 1);
+		eff_prob_lost_art=eff_prob_lost_art/3.5;
+		eff_rate_restart=min(eff_rate_restart*3.5,1);
+
+
+	if adhav < 0.8 then do; *Adherence;
+			e_ = rand('uniform'); if e_ < 0.8 then adhav = 0.9; 
+	end;
+
+	inc_rate_anc_op=0.5; *ANC testing;
 
 end;
 
 
+
 ***halfway targets;
 
-	***Increased engagement in SW program;
+	***FSW prevention: Increased engagement in SW program leading to less cls- take out prep and testing here and have as a separate options (7);
 	if option=51 then do;
 		rate_engage_sw_program=0.13;
-		effect_sw_prog_prep_any = 0.25;
-		effect_sw_prog_newp=0.30;
-		*sw_test_6mthly=0;
+		effect_sw_prog_newp=0.60;
 	end;
 
+	***FSW PrEP: Modelled independently of the program using prep_any_strategy;
 	if option=52 then do;
-	%sample_uniform(msm_risk_cls, 0.1 0.20); * risk of one or more cls partners in msm per period ;
+		prob_prep_elig_sw = 0.35;
+		eff_prob_prep_oral_b = prob_prep_oral_b;
+		if sw=1 then eff_prob_prep_oral_b = 0.6;
+	end;
 
+	***MSM prevention: Strengthening demand, increased accessibility of condoms,peer education;
+	if option=53 then do;
+	%sample_uniform(msm_risk_cls, 0.1 0.20); * risk of one or more cls partners in msm per period ;
 	end;
 
 	***MSM: Increase oral PrEP;
-	if option=53 then do;
-		prob_prep_elig_msm = 0.35;
-		eff_prob_prep_oral_b=prob_prep_oral_b;
-		if msm=1 then eff_prob_prep_oral_b=0.5;
-	end;
-
-	
-	***MSM: Combining the above two;
-	if option=5253 then do;
-			%sample_uniform(msm_risk_cls, 0.1 0.20); * risk of one or more cls partners in msm per period ;
-			prob_prep_elig_msm = 0.35;
-			eff_prob_prep_oral_b = prob_prep_oral_b;
-			if msm=1 then eff_prob_prep_oral_b = 0.5;
+	if option=54 then do;
+		prob_prep_elig_msm = 0.50;
+		eff_prob_prep_oral_b = prob_prep_oral_b;
+		if msm=1 then eff_prob_prep_oral_b = 0.6;
 	end;
 
 	***PWID: Integrating harm reduction care package. Increase OST, needle exchange program;
-	if option=54 then do;
+	if option=55 then do;
 		fold_tr_pwid = 2;
 	end;
 
 	***Condom promotion;
-	if option=55 then do;
+	if option=56 then do;
 		set_in_options=1;
 		condom_incr_year_i = 1;
 	end;
 
 	***Increased testing in MSM;
-	if option=56 then do;
+	if option=57 then do;
 		if msm=1 then do;
 			high_test_set_in_options=1;
 			incr_test_msm_year_i=2;
@@ -2511,7 +2542,7 @@ end;
 	end;
 
 	***Increased testing in FSW;
-	if option=57 then do;
+	if option=58 then do;
 		if sw=1 then do;
 			high_test_set_in_options=1;;
 			incr_test_fsw_year_i=2;
@@ -2519,7 +2550,7 @@ end;
 	end;
 
 	***Increased testing in PWID;
-	if option=58 then do;
+	if option=59 then do;
 		if pwid=1 then do;
 			high_test_set_in_options=1;
 			incr_test_pwid_year_i=2;
@@ -2527,87 +2558,65 @@ end;
 	end;
 
 	***Increased testing in high risk agyw - defined as 15-24 fsw;
-	if option=59 then do;
+	if option=60 then do;
 		if agyw=1 and sw=1 then do;
 			high_test_set_in_options=1;
 			incr_test_agywfsw_year_i=2;
 		end;
 	end;
 
-	***Increased testing in men aged 25+ (facility based);
-	if option=60 then do;
-		if gender=1 and age>25 then do;
-			high_test_set_in_options=1;
-			incr_test_men_year_i=2;
-		end;
-	end;
-
-	***Increased testing in women aged 25+ (facility based);
+	***Increased testing in those aged 25+ (facility based);
 	if option=61 then do;
-		if gender=2 and age>25 then do;
+		if age>25 then do;
 			high_test_set_in_options=1;
-			incr_test_women_year_i=2;
+			incr_test_fb25_year_i=2;
 		end;
 	end;
-
 	
-	***Increased testing in all of the above groups - used only when combining all the options;
-	if option=62 then do;
-		if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
-			high_test_set_in_options=1;
-			incr_test_kp_year_i=2;
-		end;
-	end;
 
 	***Increased self-testing in 15+;
-	if option=63 then do;
+	if option=62 then do;
 		prob_self_test_hard_reach = 0.50;
 		eff_self_test_targeting = 1; self_test_targeting = 1;
 		rate_self_test = 0.01;
 	end;
 
-	***Lower rates of being lost at diagnosis;
-	if option=64 then do;
-		prob_loss_at_diag=0.1;
-		eff_prob_loss_at_diag=0.1;
-		e_eff_prob_loss_at_diag=0.1;
-	end;
 
 	***95% of people are on ART according to national guidelines - interpreted as on DTG;
-	if option=65 then do;
+	if option=63 then do;
 		u=rand('uniform');
-		if u<0.80 then reg_option_104=1;	
+		if u<0.75 then reg_option_104=1;	
 	end;
 
 	***Increased vl testing;
-	if option=66 then do;
+	if option=64 then do;
+		eff_prob_vl_meas_done=prob_vl_meas_done;
 		prob_vl_meas_done=0.8;
-		eff_prob_vl_meas_done=0.8;
 	end;
 
 
-	***Increase in linkage in preg/bf women;**NOT INCLUDED IN COMBINED INTERVENTIONS AS ALREADY INCLUDE RETENTION FOR ALL;
-	if option=67 then do;
+	***PMTCT;
+	if option=65 then do;
 		if pregnant=1 or breastfeeding=1 then do;
-		eff_prob_loss_at_diag = prob_loss_at_diag;
-		eff_rate_lost = rate_lost;
-		eff_rate_return = rate_return;
-		eff_prob_lost_art = prob_lost_art; 
-		eff_rate_restart = rate_restart;
-		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+			eff_prob_loss_at_diag = prob_loss_at_diag;
+			eff_rate_lost = rate_lost;
+			eff_rate_return = rate_return;
+			eff_prob_lost_art = prob_lost_art; 
+			eff_rate_restart = rate_restart;
+			e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
 
-		eff_prob_loss_at_diag=eff_prob_loss_at_diag/2;
-		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/2;
-		eff_rate_lost=eff_rate_lost/2;
-		eff_rate_return=min(eff_rate_return*2, 1);
-		eff_prob_lost_art=eff_prob_lost_art/2;
-		eff_rate_restart=min(eff_rate_restart*2,1);
+			eff_prob_loss_at_diag=eff_prob_loss_at_diag/2;
+			e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/2;
+			eff_rate_lost=eff_rate_lost/2;
+			eff_rate_return=min(eff_rate_return*2, 1);
+			eff_prob_lost_art=eff_prob_lost_art/2;
+			eff_rate_restart=min(eff_rate_restart*2,1);
 		end;
 	end;
 
 
-	***95% of those on ART for 12m have undetectable VL;
-	if option=68 and caldate{t}-yrart>1 then do;
+	***ART retention;
+	if option=66 then do;
 		eff_prob_loss_at_diag = prob_loss_at_diag;
 		eff_rate_lost = rate_lost;
 		eff_rate_return = rate_return;
@@ -2624,32 +2633,39 @@ end;
 	end;
 
 	***Increased adherence;
-	if option=69 then do;
+	if option=67 then do;
 		if adhav < 0.8 then do; 
 			e = rand('uniform'); if e < 0.5 then adhav = 0.9; 
 		end;
 	end;
 
 	***Increase in ANC testing;
-	if option=70 then do;
+	if option=68 then do;
 		inc_rate_anc_op=0.25;
 	end;
 
+	***AGYW prevention;
+	if option=69 then do;
+		if agywfsw=1 then do;
+		rate_engage_sw_program=0.13;
+		effect_sw_prog_newp=0.60;
+		end;
+	end;
+
+
 
 	***Combination of interventions - halfway targets;
-if option=71 then do;
+if option=70 then do;
 	rate_engage_sw_program=0.13;
-	effect_sw_prog_prep_any = 0.25;
-	effect_sw_prog_newp=0.30;
+	effect_sw_prog_newp=0.60;
 
 	%sample_uniform(msm_risk_cls, 0.1 0.20); * risk of one or more cls partners in msm per period ;
-
-	prob_prep_elig_msm = 0.35;
-	eff_prob_prep_oral_b = prob_prep_oral_b;
-	if (msm=1 or sw=1 or pwid=1) then eff_prob_prep_oral_b=0.8;
-
-
 	fold_tr_pwid = 2;
+
+	prob_prep_elig_msm = 0.50;
+	prob_prep_elig_sw = 0.35;
+	eff_prob_prep_oral_b = prob_prep_oral_b;
+	if (msm=1 or sw=1) then eff_prob_prep_oral_b = 0.6;
 
 	set_in_options=1;
 	condom_incr_year_i = 1;
@@ -2664,11 +2680,11 @@ if option=71 then do;
 	rate_self_test = 0.01;
 	
 	u=rand('uniform');
-	if u<0.80 then reg_option_104=1;
+	if u<0.75 then reg_option_104=1;
 
 	eff_prob_vl_meas_done=0.8;
 
-	if caldate{t}-yrart>1 then do;
+	
 		eff_prob_loss_at_diag = prob_loss_at_diag;
 		eff_rate_lost = rate_lost;
 		eff_rate_return = rate_return;
@@ -2682,7 +2698,7 @@ if option=71 then do;
 		eff_rate_return=min(eff_rate_return*2, 1);
 		eff_prob_lost_art=eff_prob_lost_art/2;
 		eff_rate_restart=min(eff_rate_restart*2,1);
-	end;
+
 
 	if adhav < 0.8 then do; 
 			e_ = rand('uniform'); if e_ < 0.5 then adhav = 0.9; 
@@ -2692,6 +2708,57 @@ if option=71 then do;
 
 end;
 
+	***Combination of interventions - halfway targets WITHOUT CONDOM PROMOTION;
+
+if option=71 then do;
+	rate_engage_sw_program=0.13;
+	effect_sw_prog_newp=0.60;
+
+	%sample_uniform(msm_risk_cls, 0.1 0.20); * risk of one or more cls partners in msm per period ;
+	fold_tr_pwid = 2;
+
+	prob_prep_elig_msm = 0.50;
+	prob_prep_elig_sw = 0.35;
+	eff_prob_prep_oral_b = prob_prep_oral_b;
+	if (msm=1 or sw=1) then eff_prob_prep_oral_b = 0.6;
+
+	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
+		high_test_set_in_options=1;
+		incr_test_kp_year_i=17;
+	end;
+
+	prob_self_test_hard_reach = 0.50;
+	eff_self_test_targeting = 1; self_test_targeting = 1;
+	rate_self_test = 0.01;
+	
+	u=rand('uniform');
+	if u<0.75 then reg_option_104=1;
+
+	eff_prob_vl_meas_done=0.8;
+
+	
+		eff_prob_loss_at_diag = prob_loss_at_diag;
+		eff_rate_lost = rate_lost;
+		eff_rate_return = rate_return;
+		eff_prob_lost_art = prob_lost_art; 
+		eff_rate_restart = rate_restart;
+		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag/2;
+		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/2;
+		eff_rate_lost=eff_rate_lost/2;
+		eff_rate_return=min(eff_rate_return*2, 1);
+		eff_prob_lost_art=eff_prob_lost_art/2;
+		eff_rate_restart=min(eff_rate_restart*2,1);
+
+
+	if adhav < 0.8 then do; 
+			e_ = rand('uniform'); if e_ < 0.5 then adhav = 0.9; 
+	end;
+
+	inc_rate_anc_op=0.25;
+
+end;
 
 
 end;
@@ -2955,8 +3022,7 @@ if caldate{t} = &year_interv then do;
 		incr_test_fsw_year_i = 0; 
 		incr_test_agywfsw_year_i =0;
 		incr_test_pwid_year_i = 0; 
-		incr_test_men_year_i = 0; 
-		incr_test_women_year_i = 0;
+		incr_test_fb25_year_i = 0; 
 		incr_test_kp_year_i = 0;
 	end; 
 
@@ -3387,6 +3453,7 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
 		if msm=1 then do;rate_1sttest = rate_1sttest * 10  ; rate_reptest = rate_reptest * 10  ;   end;
+		if sw=1 then do;rate_1sttest =rate_1sttest * 3  ; rate_reptest = rate_reptest * 3  ;   end;
 end;
 
 if caldate{t} >= &year_interv and high_test_set_in_options=1 then do;
@@ -3416,11 +3483,8 @@ if incr_test_pwid_year_i = 2 and pwid=1 then do; rate_1sttest = rate_1sttest * 3
 if incr_test_agywfsw_year_i = 1 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
 if incr_test_agywfsw_year_i = 2 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
 
-if incr_test_men_year_i = 1 and gender=1 and age>25 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-if incr_test_men_year_i = 2 and gender=1 and age>25 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
-
-if incr_test_women_year_i = 1 and gender=2 and age>25 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-if incr_test_women_year_i = 2 and gender=2 and age>25 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
+if incr_test_fb25_year_i = 1 and age>25 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+if incr_test_fb25_year_i = 2 and age>25 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
 
 ***incorporating all KPs (MSM, FSW, PWID, AGYWFSW) and over 25s;
 if incr_test_kp_year_i = 1 and (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
@@ -5185,11 +5249,11 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 
 
 
-	if prep_any_strategy=18 then do;* Only key populations;
-		s = rand('Uniform');t = rand('Uniform');
+	if prep_any_strategy=18 then do;	* Only key populations;
+		r = rand('Uniform');	s = rand('Uniform');
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or 
-		   (pwid = 1 and s < prob_prep_elig_pwid ) or 
-		   (sw=1 and t < prob_prep_elig_sw) and (newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
+		   (pwid = 1 and r < prob_prep_elig_pwid ) or 
+		   (sw=1 and s < prob_prep_elig_sw) and (newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
  
 	end;
 
@@ -5309,7 +5373,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 				select;
 
 					* Only oral PrEP available;
-					when (caldate(t) ge date_prep_oral_intro and (. < caldate(t) < date_prep_inj_intro  or date_prep_inj_intro=.)) do;	
+					when (caldate{t} ge date_prep_oral_intro and (. < caldate{t} < date_prep_inj_intro  or date_prep_inj_intro=.)) do;	
 						if prep_oral_willing=1 then do;		*Regardless of preference, person will test for oral PrEP if willing;
 							tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
 							if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
@@ -5318,7 +5382,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 					end;
 
 					* Oral and injectable PrEP available only;
-					when (caldate(t) ge date_prep_inj_intro > . and (. < caldate(t) < date_prep_vr_intro or date_prep_vr_intro=.)) do;	
+					when (caldate{t} ge date_prep_inj_intro > . and (. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=.)) do;	
 
 						select;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
@@ -5351,7 +5415,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 					end;
 
 					* Oral and vr PrEP available only;
-					when (caldate(t) ge date_prep_vr_intro > . and (. < caldate(t) < date_prep_inj_intro or date_prep_inj_intro=.)) do;	
+					when (caldate{t} ge date_prep_vr_intro > . and (. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=.)) do;	
 
 						select;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
@@ -13421,11 +13485,13 @@ m_3544_newp=0;if  gender=1 and 35 <= age < 45 then m_3544_newp=newp;
 m_4554_newp=0;if  gender=1 and 45 <= age < 55 then m_4554_newp=newp;
 m_5564_newp=0;if  gender=1 and 55 <= age < 65 then m_5564_newp=newp;
 
-* msm ; 
+* msm ;
 msm_newp=0; if msm=1 then msm_newp=newp;
+msm_newp0=0;if msm=1 and newp=0 then msm_newp0=1;
 msm_ep=0; if msm=1 then msm_ep=ep;
 m_ge1newp=0;if gender=1 and newp ge 1 then m_ge1newp=1;
 msm_ge1newp=0; if msm=1 and newp ge 1 then msm_ge1newp=1;
+
 
 i_w_1524_newp=0; if hiv=1 and gender=2 and 15 <= age < 25 then i_w_1524_newp=newp;
 i_w_2534_newp=0; if hiv=1 and gender=2 and 25 <= age < 35 then i_w_2534_newp=newp;
@@ -13612,7 +13678,7 @@ npge2_l4p_1549w=0;if gender=2 and 18 <= age < 50 and (nnewp_l4p ge 2 or (nnewp_l
 newpge1_l4p_1529m=0;if gender=1 and 15 <= age < 30 and (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or newp_tm3 ge 1) then newpge1_l4p_1529m=1;
 newpge1_l4p_1529w=0;if gender=2 and 15 <= age < 30 and (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or newp_tm3 ge 1) then newpge1_l4p_1529w=1;
 
-sw_1564=0;sw_1549=0;sw_1849=0;sw_1519=0;sw_2024=0;sw_2529=0;sw_3039=0;sw_ov40=0;sw_newp=0;sw1524_newp=0;
+sw_1564=0;sw_1549=0;sw_1849=0;sw_1519=0;sw_2024=0;sw_2529=0;sw_3039=0;sw_ov40=0;sw_newp=0;sw1524_newp=0;agywfsw_1564=0;
 
 if gender=2 and sw=1 then do;
 	if 15 le age lt 65 then sw_1564=1;
@@ -13623,6 +13689,7 @@ if gender=2 and sw=1 then do;
 	if 25 le age lt 30 then sw_2529=1;
 	if 30 le age lt 40 then sw_3039=1;
 	if 		 age ge 40 then sw_ov40=1;
+	if 15 le age lt 25 then agywfsw_1564=1;
 	sw_newp=newp;
 	if 15 le age lt 25 then sw1524_newp=newp;
 end;
@@ -15747,7 +15814,7 @@ if gender=1 and 15 le age lt 50 then tested1549m=tested;
 if pwid=1 and 15 le age lt 50 then tested1549pwid=tested;
 if gender=2 and 15 le age lt 50 then tested1549w=tested;
 tested_sw=.; if sw=1 then tested_sw=tested;
-
+tested_agywfsw=.;if agywfsw=1 then tested_agywfsw=tested;
 
 ***Access to being  tested given some are hard to reach;
 acc_test=0;acc_test_1524_=0;acc_test_2549_=0;acc_test_5064_=0;acc_test_sw=0;
@@ -15762,9 +15829,10 @@ end;
 * ts1m:  this is last 4 periods so 4 months if time step 1 month;
 tested_4p_m1549_=0; tested_4p_m1519_=0; tested_4p_m2024_=0; tested_4p_m2529_=0;tested_4p_m3039_=0; tested_4p_m4049_=0; tested_4p_m5064_=0;
 tested_4p_w1549_=0; tested_4p_w1519_=0; tested_4p_w2024_=0; tested_4p_w2529_=0;tested_4p_w3039_=0; tested_4p_w4049_=0; tested_4p_w5064_=0; 
-tested_4p_sw=0;
+tested_4p_sw=0;tested_4p_msm=0;tested_4p_pwid=0;tested_4p_anc=0;
 
 if t ge 4 and (tested=1 or tested_tm1=1 or tested_tm2=1 or tested_tm3=1) then do;
+	if pwid=1 then tested_4p_pwid=1;
 	if gender=1 then do;
 		if 15 le age lt 50 then tested_4p_m1549_=1; 
 		if 15 le age lt 20 then tested_4p_m1519_=1; 
@@ -15773,6 +15841,7 @@ if t ge 4 and (tested=1 or tested_tm1=1 or tested_tm2=1 or tested_tm3=1) then do
 		if 30 le age lt 40 then tested_4p_m3039_=1;
 		if 40 le age lt 50 then tested_4p_m4049_=1;
 		if 50 le age lt 65 then tested_4p_m5064_=1;
+		if msm=1 		   then tested_4p_msm=1;
 	end;
 	else if gender=2 then do;
 		if 15 le age lt 50 then tested_4p_w1549_=1;
@@ -15783,6 +15852,7 @@ if t ge 4 and (tested=1 or tested_tm1=1 or tested_tm2=1 or tested_tm3=1) then do
 		if 40 le age lt 50 then tested_4p_w4049_=1;
 		if 50 le age lt 65 then tested_4p_w5064_=1;
 		if sw=1       		 then tested_4p_sw=1;
+		if anc=1       		 then tested_4p_anc=1;
 
 	end;
 end;
@@ -15811,7 +15881,7 @@ diag_m1519_=0;diag_m2024_=0;diag_m2529_=0;diag_m3034_=0;diag_m3539_=0;diag_m4044
 * msm ; diag_msm1549_=0;diag_msm1564_=0;diag_pwid1549_=0;diag_pwid1564_=0;
 diag_w1549_=0;diag_w1564_=0;
 diag_w1519_=0;diag_w2024_=0;diag_w2529_=0;diag_w3034_=0;diag_w3539_=0;diag_w4044_=0;diag_w4549_=0;diag_w5054_=0;diag_w5559_=0;diag_w6064_=0;  
-diag_sw=0; 	
+diag_sw=0; 	diag_agywfsw=0;diag_anc=0; 	
 
 
 onart_m1549_=0;onart_m1564_=0;
@@ -15871,7 +15941,9 @@ if gender=2 then do;
 	else if 80 le age lt 85 then do; diag_w8084_=registd;  onart_w8084_=onart; end;
 	else if 85 le age       then do; diag_w85pl_=registd;  onart_w85pl_=onart; end;
 	if sw = 1 		   then do;  ever_tested_sw   =ever_tested; diag_sw   =registd; onart_sw   =onart;vs_sw=vl1000; end;
-	if sw ne 1           then      ever_tested_sw=0;
+	if agywfsw=1 	   then do;  diag_agywfsw=registd;	onart_agywfsw = onart;	vs_agywfsw=vl1000;end;
+	if anc=1 then diag_anc=1;
+	if sw ne 1           then      ever_tested_sw=0;	
 end;
 
 year_1_infection=0;year_2_infection=0;year_3_infection=0;year_4_infection=0;year_5_infection=0;
@@ -17670,7 +17742,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_m_1524_newp + m_1524_newp ; s_m_2534_newp + m_2534_newp ; s_m_3544_newp + m_3544_newp ; s_m_4554_newp + m_4554_newp ; s_m_5564_newp + m_5564_newp ;
 	s_w_1524_newp + w_1524_newp ; s_w_2534_newp + w_2534_newp ; s_w_3544_newp + w_3544_newp ; s_w_4554_newp + w_4554_newp ; s_w_5564_newp + w_5564_newp ;
 
-	s_msm + msm;  s_msm_ep + msm_ep; s_m_ge1newp + m_ge1newp;  s_msm_ge1newp + msm_ge1newp;
+	s_msm + msm;  s_msm_ep + msm_ep; s_m_ge1newp + m_ge1newp;  s_msm_ge1newp + msm_ge1newp; s_msm_newp + msm_newp;
+	s_msm_newp0 + msm_newp0;
+
 
 	s_m_1524_epnewp + m_1524_epnewp ; s_m_2534_epnewp + m_2534_epnewp ; s_m_3544_epnewp + m_3544_epnewp ; s_m_4554_epnewp + m_4554_epnewp ; s_m_5564_epnewp + m_5564_epnewp ;
 	s_w_1524_epnewp + w_1524_epnewp ; s_w_2534_epnewp + w_2534_epnewp ; s_w_3544_epnewp + w_3544_epnewp ; s_w_4554_epnewp + w_4554_epnewp ; s_w_5564_epnewp + w_5564_epnewp ;
@@ -18004,7 +18078,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tested_4p_m4049_ + tested_4p_m4049_ ; s_tested_4p_m5064_ + tested_4p_m5064_ ; s_tested_4p_w1549_ + tested_4p_w1549_ ; 
 	s_tested_4p_w1519_ + tested_4p_w1519_ ; s_tested_4p_w2024_ + tested_4p_w2024_ ; s_tested_4p_w2529_ + tested_4p_w2529_ ;
 	s_tested_4p_w3039_ + tested_4p_w3039_ ; s_tested_4p_w4049_ + tested_4p_w4049_ ; s_tested_4p_w5064_ + tested_4p_w5064_ ;
- 	s_tested_4p_sw + tested_4p_sw ; s_tested_sw + tested_sw;
+ 	s_tested_4p_sw + tested_4p_sw ;	s_tested_4p_msm + tested_4p_msm ; s_tested_4p_pwid + tested_4p_pwid ;s_tested_4p_anc + tested_4p_anc ;
+	s_tested_sw + tested_sw; s_tested_agywfsw + tested_agywfsw;
 	s_ever_tested_m1549_ + ever_tested_m1549_ ; s_ever_tested_m1519_ + ever_tested_m1519_ ;
     s_ever_tested_m2024_ + ever_tested_m2024_ ; s_ever_tested_m2529_ + ever_tested_m2529_ ; s_ever_tested_m3034_ + ever_tested_m3034_ ;
    	s_ever_tested_m3539_ + ever_tested_m3539_ ; s_ever_tested_m4044_ + ever_tested_m4044_ ; s_ever_tested_m4549_ + ever_tested_m4549_ ;
@@ -18025,7 +18100,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_diag_m4044_ + diag_m4044_ ; s_diag_m4549_ + diag_m4549_ ; s_diag_m5054_ + diag_m5054_ ; s_diag_m5559_ + diag_m5559_ ; s_diag_m6064_ + diag_m6064_ ; 
     s_diag_w1519_ + diag_w1519_ ; s_diag_w2024_ + diag_w2024_ ; s_diag_w2529_ + diag_w2529_ ; s_diag_w3034_ + diag_w3034_ ; s_diag_w3539_ + diag_w3539_ ;      
     s_diag_w4044_ + diag_w4044_ ; s_diag_w4549_ + diag_w4549_ ; s_diag_w5054_ + diag_w5054_ ; s_diag_w5559_ + diag_w5559_ ; s_diag_w6064_ + diag_w6064_ ; 
-	s_diag_sw + diag_sw ; s_nn_tdr_diag + nn_tdr_diag ; s_diag_this_period + diag_this_period ; s_diag_this_period_m + diag_this_period_m ;
+	s_diag_sw + diag_sw ;	s_nn_tdr_diag + nn_tdr_diag ; s_diag_anc + diag_anc; s_diag_this_period + diag_this_period ; s_diag_this_period_m + diag_this_period_m ;
 	s_diag_this_period_f + diag_this_period_f ; s_diag_this_period_f_non_anc + diag_this_period_f_non_anc ; 
 	s_diag_this_period_f_anc + diag_this_period_f_anc ; s_diag_this_period_f_labdel + diag_this_period_f_labdel ;s_diag_this_period_f_pd + diag_this_period_f_pd ;s_diag_this_period_m_sympt + diag_this_period_m_sympt ; 
 	s_diag_this_period_f_sympt + diag_this_period_f_sympt ; s_diag_thisper_anclabpd + diag_thisper_anclabpd; s_diag_thisper_progsw + diag_thisper_progsw;
@@ -18399,6 +18474,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_sti_sw + sti_sw;
 
+	s_agywfsw_1564 + agywfsw_1564;	s_diag_agywfsw + diag_agywfsw;	s_onart_agywfsw + onart_agywfsw;	s_vs_agywfsw + vs_agywfsw;
+
 	
 	/* MSM */
 
@@ -18676,8 +18753,11 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
-proc print;var caldate&j;run;
+
+proc print;var caldate&j cald option age reg_option prob_vl_meas_done eff_prob_vl_meas_done;run;
 /*
+proc print;var caldate&j msm gender option eff_test_targeting hiv np_lasttest tested date1test unitest rate_1sttest ;
+where age ge 15 and death=.;run;
 */
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -19435,7 +19515,7 @@ s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc s_tested_ancpd s_test_ancla
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
-s_tested_4p_sw	s_tested_sw
+s_tested_4p_sw	s_tested_4p_msm		s_tested_4p_pwid  s_tested_4p_anc	s_tested_sw s_tested_agywfsw
 
 s_ever_tested_m1549_  s_ever_tested_m1519_  s_ever_tested_m2024_  s_ever_tested_m2529_  s_ever_tested_m3034_  s_ever_tested_m3539_
 s_ever_tested_m4044_  s_ever_tested_m4549_  s_ever_tested_m5054_  s_ever_tested_m5559_  s_ever_tested_m6064_ 
@@ -19454,7 +19534,7 @@ s_diag_m1549_  s_diag_m1519_  s_diag_m2024_  s_diag_m2529_  s_diag_m3034_  s_dia
 s_diag_m5054_  s_diag_m5559_  s_diag_m6064_ 
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
-s_nn_tdr_diag
+s_nn_tdr_diag	s_diag_anc
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc s_diag_this_period_f_labdel s_diag_this_period_f_pd
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f
@@ -19684,7 +19764,8 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1 s_sti_sw
+s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1 s_sti_sw  
+s_agywfsw_1564	s_diag_agywfsw s_onart_agywfsw s_vs_agywfsw
 
 
 /* MSM */
@@ -19697,7 +19778,7 @@ s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1
 s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
 s_i_msm s_i_v1_msm s_i_v2_msm s_i_v3_msm s_i_v4_msm s_i_v5_msm s_i_v6_msm s_msm  s_prop_i_msm  s_prep_any_msm  s_prep_any_m  s_prep_any_pwid
-s_msm_ep s_m_ge1newp s_msm_ge1newp 
+s_msm_ep s_m_ge1newp s_msm_ge1newp  s_msm_newp s_msm_newp0
 
 /* PWID */ 
 
@@ -19970,11 +20051,10 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ***CdI;
 /*if cald = 1990 and (prevalence1549w > 0.06) then do; abort abend; end;*/
 
-/*
+
 if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
 if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
-*/
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
@@ -20470,7 +20550,7 @@ s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_ancl
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
-s_tested_4p_sw		s_tested_sw
+s_tested_4p_sw	s_tested_4p_msm		s_tested_4p_pwid	s_tested_4p_anc	s_tested_sw	s_tested_agywfsw
 
 s_ever_tested_m1549_  s_ever_tested_m1519_  s_ever_tested_m2024_  s_ever_tested_m2529_  s_ever_tested_m3034_  s_ever_tested_m3539_
 s_ever_tested_m4044_  s_ever_tested_m4549_  s_ever_tested_m5054_  s_ever_tested_m5559_  s_ever_tested_m6064_ 
@@ -20489,7 +20569,7 @@ s_diag_m1549_  s_diag_m1519_  s_diag_m2024_  s_diag_m2529_  s_diag_m3034_  s_dia
 s_diag_m5054_  s_diag_m5559_  s_diag_m6064_ 
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
-s_nn_tdr_diag
+s_nn_tdr_diag	s_diag_anc
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc  s_diag_this_period_f_labdel s_diag_this_period_f_pd
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f 
@@ -20716,7 +20796,8 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1	s_sti_sw
+s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1	s_sti_sw	
+s_agywfsw_1564	s_diag_agywfsw s_onart_agywfsw s_vs_agywfsw
 
 
 /* MSM */
@@ -20729,7 +20810,7 @@ s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_   s_diag_msm15
 s_ever_tested_msm1549_   s_diag_msm1549_     s_ever_tested_msm1564_   s_onart_msm1564_
 s_diag_this_period_msm  s_tested_msm  s_naive_msm
 s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm  s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
-s_msm_ep s_m_ge1newp s_msm_ge1newp 
+s_msm_ep s_m_ge1newp s_msm_ge1newp s_msm_newp s_msm_newp0
 
 /* PWID */ 
 
@@ -21162,6 +21243,7 @@ end;
 
 data a ;  set r1 ;
 
+
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
@@ -21235,7 +21317,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
 
-/*
+
 data r1 ; set a;
 *option 1;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
@@ -21450,78 +21532,6 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=3);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=3);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=3);
-
-data r1 ; set a;
-*option 23 is 2 and 3 combined;
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=23);   
-%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=23);
-%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=23);*2040;
-%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=23);
-%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=23);
-%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=23);
-%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=23);
 
 data r1 ; set a;
 *option 0;
@@ -22744,7 +22754,6 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=20);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=20);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=20);
-*/
 
 data r1 ; set a;
 *option 0;
@@ -22818,7 +22827,6 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=21);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=21);
 
-***COMMENT OUT OPTION 67 (TB);
 
 
 data r1 ; set a;
@@ -22964,78 +22972,6 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=52);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=52);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=52);
-
-data r1 ; set a;
-*option 0;
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=5253);   
-%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=5253);
-%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=5253);*2040;
-%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=5253);
-%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=5253);
-%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=5253);
-%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=5253);
 
 data r1 ; set a;
 *option 0;
@@ -23685,7 +23621,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=61);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=61);
 
-/*
+
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=62);
@@ -23757,7 +23693,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=62);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=62);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=62);
-*/
+
 
 data r1 ; set a;
 *option 0;
@@ -24120,7 +24056,6 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=67);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=67);
 
-
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=68);
@@ -24338,7 +24273,6 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=70);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=70);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=70);
-
 
 data r1 ; set a;
 *option 0;
@@ -24720,7 +24654,7 @@ s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_ancl
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		 s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
-s_tested_4p_sw		s_tested_sw
+s_tested_4p_sw	s_tested_4p_msm	 s_tested_4p_pwid	s_tested_4p_anc	s_tested_sw		s_tested_agywfsw
 
 s_ever_tested_m1549_  s_ever_tested_m1519_  s_ever_tested_m2024_  s_ever_tested_m2529_  s_ever_tested_m3034_  s_ever_tested_m3539_
 s_ever_tested_m4044_  s_ever_tested_m4549_  s_ever_tested_m5054_  s_ever_tested_m5559_  s_ever_tested_m6064_ 
@@ -24739,7 +24673,7 @@ s_diag_m1549_  s_diag_m1519_  s_diag_m2024_  s_diag_m2529_  s_diag_m3034_  s_dia
 s_diag_m5054_  s_diag_m5559_  s_diag_m6064_ 
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  
-s_nn_tdr_diag
+s_nn_tdr_diag	s_diag_anc
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc  s_diag_this_period_f_labdel s_diag_this_period_f_pd
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f 
@@ -24967,7 +24901,7 @@ s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
 s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1  s_sti_sw
-
+s_agywfsw_1564	s_diag_agywfsw s_onart_agywfsw s_vs_agywfsw
 
 /* MSM */
 
@@ -24979,7 +24913,7 @@ s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1
 s_ever_tested_msm1549_   s_diag_msm1549_    s_ever_tested_msm1564_   s_onart_msm1564_
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
 s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
-s_msm_ep s_m_ge1newp s_msm_ge1newp 
+s_msm_ep s_m_ge1newp s_msm_ge1newp s_msm_newp s_msm_newp0
 
 /* PWID */ 
 
@@ -25041,7 +24975,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child  
-s_breastfeeding
+s_breastfeeding	s_plw
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
