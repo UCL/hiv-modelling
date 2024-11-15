@@ -1,13 +1,29 @@
 
 
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim\";
-
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
 data a; 
-set a.wide_fsw_zim_17_04_24AMT;
-if incidence1549_23 <0.02 then delete;
+set a.wide_fsw_zim_17_04_24AMTa; *The 'a' suffix should include different sw costs for amethist, everything else the same;
+if incidence1549__23 <0.02 then delete;
+
+***Within run differences;
+d_sw_prog_vis = (p_sw_prog_vis_30_2 - p_sw_prog_vis_30_1)*100;
+d_p_tested_past_year_sw = (p_tested_past_year_sw_30_2 - p_tested_past_year_sw_30_1)*100;
+d_p_diag_sw = (p_diag_sw_30_2 - p_diag_sw_30_1)*100;
+d_p_onart_diag_sw = (p_onart_diag_sw_30_2 - p_onart_diag_sw_30_1)*100;
+d_p_onart_vl1000_sw = (p_onart_vl1000_sw_30_2 - p_onart_vl1000_sw_30_1)*100;
+d_p_fsw_newp0 = (p_fsw_newp0__30_2 - p_fsw_newp0__30_1)*100;
+d_prop_sw_onprep = (prop_sw_onprep_30_2 - prop_sw_onprep_30_1)*100;
+d_p_sti_sw = (p_sti_sw_30_2 - p_sti_sw_30_1)*100;
+d_incidence_sw = incidence_sw_30_2 - incidence_sw_30_1;
+d_prevalence_sw = (prevalence_sw_30_2 - prevalence_sw_30_1)*100;
+d_incidence1549 = incidence1549__30_2 - incidence1549__30_1;
+d_prevalence1549 = (prevalence1549__30_2 - prevalence1549__30_1)*100;
+d_p_diag = (p_diag_30_2 - p_diag_30_1)*100;
+d_p_onart_diag = (p_onart_diag_30_2 - p_onart_diag_30_1)*100;
+d_p_onart_vl1000 = (p_onart_vl1000__30_2 - p_onart_vl1000__30_1)*100;
 run;
 
-***table 1;
+***table 1 - Currently not included in the paper;
 proc means n p50 p5 p95 min max;var
 prevalence1549_23 	 prevalence1549w_23 	prevalence1549m_23 	 incidence1549_23 	incidence1549w_23 	incidence1549m_23
 p_diag_23			 p_diag_w_23			p_diag_m_23 		 p_onart_diag_23	p_onart_diag_w_23	p_onart_diag_m_23
@@ -34,360 +50,109 @@ p_diag_sw_23		p_onart_diag_sw_23		p_onart_vl1000_sw_23 p_sw_prog_vis_23;
 run;
 
 
-proc means n p50 p5 p95;var
+***table 3 - outputs in 2030 for Sisters and Sisters + Amethist;
+proc means n mean p5 p95;var
 /*Current SW program*/
 p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1
 p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
 p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
-incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1 p_vl1000_30_1
+incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1 
 
 /*AMETHIST*/
 p_sw_prog_vis_30_2  p_tested_past_year_sw_30_2
 p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2		p_fsw_newp0__30_2	prop_sw_onprep_30_2
 p_sti_sw_30_2		incidence_sw_30_2	prevalence_sw_30_2
 incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2
+
 ;
 run;
 
-data b;
-set a;
 
-***Within run differences for table 4;
-d_p_tested_past_year_sw_lo_none = (p_tested_past_year_sw_30_2-p_tested_past_year_sw_30_1)*100;
-d_p_fsw_newp0_lo_none = (p_fsw_newp0__30_2 - p_fsw_newp0__30_1)*100;
-d_prop_sw_onprep_lo_none = (prop_sw_onprep_30_2 - prop_sw_onprep_30_1)*100;
-d_p_sti_sw_lo_none = (p_sti_sw_30_2 - p_sti_sw_30_1)*100;
-d_incidence_sw_lo_none = incidence_sw_30_2 - incidence_sw_30_1;
-d_prevalence_sw_lo_none = (prevalence_sw_30_2 - prevalence_sw_30_1)*100;
-d_p_diag_sw_lo_none = (p_diag_sw_30_2 - p_diag_sw_30_1)*100;
-d_p_onart_diag_sw_lo_none = (p_onart_diag_sw_30_2 - p_onart_diag_sw_30_1)*100;
-d_p_onart_vl1000_sw_lo_none = (p_onart_vl1000_sw_30_2 - p_onart_vl1000_sw_30_1)*100;
-d_incidence1549_lo_none = incidence1549_30_2 - incidence1549_30_1;
-d_prevalence1549_lo_none = (prevalence1549_30_2 - prevalence1549_30_1)*100;
-d_p_diag_lo_none = (p_diag_30_2 - p_diag_30_1)*100;
-d_p_onart_diag_lo_none = (p_onart_diag_30_2 - p_onart_diag_30_1)*100;
-d_p_onart_vl1000_lo_none = (p_onart_vl1000_30_2 - p_onart_vl1000_30_1)*100;
-d_p_vl1000_lo_none = (p_vl1000_30_2 - p_vl1000_30_1) *100;
-
-d_p_tested_past_year_sw_hi_none = (p_tested_past_year_sw_30_3-p_tested_past_year_sw_30_1)*100;
-d_p_fsw_newp0_hi_none = (p_fsw_newp0__30_3 - p_fsw_newp0__30_1)*100;
-d_prop_sw_onprep_hi_none = (prop_sw_onprep_30_3 - prop_sw_onprep_30_1)*100;
-d_p_sti_sw_hi_none = (p_sti_sw_30_3 - p_sti_sw_30_1)*100;
-d_incidence_sw_hi_none = incidence_sw_30_3 - incidence_sw_30_1;
-d_prevalence_sw_hi_none = (prevalence_sw_30_3 - prevalence_sw_30_1)*100;
-d_p_diag_sw_hi_none = (p_diag_sw_30_3 - p_diag_sw_30_1)*100;
-d_p_onart_diag_sw_hi_none = (p_onart_diag_sw_30_3 - p_onart_diag_sw_30_1)*100;
-d_p_onart_vl1000_sw_hi_none = (p_onart_vl1000_sw_30_3 - p_onart_vl1000_sw_30_1)*100;
-d_incidence1549_hi_none = incidence1549_30_3 - incidence1549_30_1;
-d_prevalence1549_hi_none = (prevalence1549_30_3 - prevalence1549_30_1)*100;
-d_p_diag_hi_none = (p_diag_30_3 - p_diag_30_1)*100;
-d_p_onart_diag_hi_none = (p_onart_diag_30_3 - p_onart_diag_30_1)*100;
-d_p_onart_vl1000_hi_none = (p_onart_vl1000_30_3 - p_onart_vl1000_30_1)*100;
-d_p_vl1000_hi_none = (p_vl1000_30_3 - p_vl1000_30_1) *100;
-
-
-run;
-
-proc freq;table p_sw_prog_vis_1 p_sw_prog_vis_2 p_sw_prog_vis_3;run;
-
-***table 3 - characteristics in 2030 by option;
-
-proc means n p50 p5 p95;var
-/*discontinuted*/
-p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1
-p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
-p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
-incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1 p_vl1000_30_1
-
-/*current level*/
-p_sw_prog_vis_30_2  p_tested_past_year_sw_30_2
-p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2		p_fsw_newp0__30_2	prop_sw_onprep_30_2
-p_sti_sw_30_2		incidence_sw_30_2	prevalence_sw_30_2
-incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2
-
-/*high impact*/
-p_sw_prog_vis_30_3	p_tested_past_year_sw_30_3
-p_diag_sw_30_3		p_onart_diag_sw_30_3	p_onart_vl1000_sw_30_3		p_fsw_newp0__30_3	prop_sw_onprep_30_3
-p_sti_sw_30_3		incidence_sw_30_3	prevalence_sw_30_3
-incidence1549_30_3	prevalence1549_30_3		p_diag_30_3	  p_onart_diag_30_3   p_onart_vl1000_30_3;
-run;
-
-proc means n p50 p5 p95;var
-p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1
-p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2
-p_diag_sw_30_3		p_onart_diag_sw_30_3	p_onart_vl1000_sw_30_3;run;
-
-
-
-***Within run differences;
+***Within run differences means and CIs;
 proc means n mean lclm uclm;var 
-d_p_tested_past_year_sw_lo_none 
-d_p_diag_sw_lo_none		d_p_onart_diag_sw_lo_none	d_p_onart_vl1000_sw_lo_none
-d_p_fsw_newp0_lo_none	d_prop_sw_onprep_lo_none		d_p_sti_sw_lo_none	d_incidence_sw_lo_none	d_prevalence_sw_lo_none
-d_incidence1549_lo_none	d_prevalence1549_lo_none		d_p_diag_lo_none	  	d_p_onart_diag_lo_none   d_p_onart_vl1000_lo_none
+d_sw_prog_vis	d_p_tested_past_year_sw 
+d_p_diag_sw		d_p_onart_diag_sw	d_p_onart_vl1000_sw
+d_p_fsw_newp0	d_prop_sw_onprep	d_p_sti_sw	d_incidence_sw		d_prevalence_sw
+d_incidence1549	d_prevalence1549	d_p_diag	d_p_onart_diag   	d_p_onart_vl1000
+;run;
 
-d_p_tested_past_year_sw_hi_none 
-d_p_diag_sw_hi_none		d_p_onart_diag_sw_hi_none	d_p_onart_vl1000_sw_hi_none
-d_p_fsw_newp0_hi_none	d_prop_sw_onprep_hi_none		d_p_sti_sw_hi_none	d_incidence_sw_hi_none	d_prevalence_sw_hi_none
-d_incidence1549_hi_none	d_prevalence1549_hi_none		d_p_diag_hi_none	  	d_p_onart_diag_hi_none   d_p_onart_vl1000_hi_none;
-run;
-
+***Within run differences medians and 90% ranges;
 proc means n p50 p5 p95;var 
-d_p_tested_past_year_sw_lo_none 
-d_p_diag_sw_lo_none		d_p_onart_diag_sw_lo_none	d_p_onart_vl1000_sw_lo_none
-d_p_fsw_newp0_lo_none	d_prop_sw_onprep_lo_none		d_p_sti_sw_lo_none	d_incidence_sw_lo_none	d_prevalence_sw_lo_none
-d_incidence1549_lo_none	d_prevalence1549_lo_none		d_p_diag_lo_none	  	d_p_onart_diag_lo_none   d_p_onart_vl1000_lo_none
+d_sw_prog_vis	d_p_tested_past_year_sw 
+d_p_diag_sw		d_p_onart_diag_sw	d_p_onart_vl1000_sw
+d_p_fsw_newp0	d_prop_sw_onprep	d_p_sti_sw	d_incidence_sw		d_prevalence_sw
+d_incidence1549	d_prevalence1549	d_p_diag	d_p_onart_diag   	d_p_onart_vl1000
+;run;
 
-d_p_tested_past_year_sw_hi_none 
-d_p_diag_sw_hi_none		d_p_onart_diag_sw_hi_none	d_p_onart_vl1000_sw_hi_none
-d_p_fsw_newp0_hi_none	d_prop_sw_onprep_hi_none		d_p_sti_sw_hi_none	d_incidence_sw_hi_none	d_prevalence_sw_hi_none
-d_incidence1549_hi_none	d_prevalence1549_hi_none		d_p_diag_hi_none	  	d_p_onart_diag_hi_none   d_p_onart_vl1000_hi_none;
-run;
-
-
-**Impact of specific aspects of a SW program;
-
-**Assuming SW only improves PrEP;
-data prep;
-set a.wide_fsw_16_08_22_prep;
-if incidence1549_22 <0.1 then delete;
-run;
-
-data prep1;
-set prep;
-
-***Within run differences for table 4;
-d_p_fsw_newp0__30 = (p_fsw_newp0__30_2 - p_fsw_newp0__30_1)*100;
-d_prop_sw_onprep_30 = (prop_sw_onprep_30_2 - prop_sw_onprep_30_1)*100;
-d_p_sti_sw_30 = (p_sti_sw_30_2 - p_sti_sw_30_1)*100;
-d_incidence_sw_30 = incidence_sw_30_2 - incidence_sw_30_1;
-d_prevalence_sw_30 = (prevalence_sw_30_2 - prevalence_sw_30_1)*100;
-d_p_diag_sw_30 = (p_diag_sw_30_2 - p_diag_sw_30_1)*100;
-d_p_onart_diag_sw_30 = (p_onart_diag_sw_30_2 - p_onart_diag_sw_30_1)*100;
-d_p_onart_vl1000_sw_30 = (p_onart_vl1000_sw_30_2 - p_onart_vl1000_sw_30_1)*100;
-d_incidence1549_30 = incidence1549_30_2 - incidence1549_30_1;
-d_prevalence1549_30 = (prevalence1549_30_2 - prevalence1549_30_1)*100;
-d_p_diag_30 = (p_diag_30_2 - p_diag_30_1)*100;
-d_p_onart_diag_30 = (p_onart_diag_30_2 - p_onart_diag_30_1)*100;
-d_p_onart_vl1000_30 = (p_onart_vl1000_30_2 - p_onart_vl1000_30_1)*100;
-
-proc means n p50 p5 p95;var
-p_fsw_newp0__30_2	prop_sw_onprep_30_2		p_sti_sw_30_2	incidence_sw_30_2	prevalence_sw_30_2
-p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2
-incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2;
-run;
-***Within run differences;
-proc means n mean lclm uclm;var 
-d_p_fsw_newp0__30	d_prop_sw_onprep_30		d_p_sti_sw_30	d_incidence_sw_30	d_prevalence_sw_30
-d_p_diag_sw_30		d_p_onart_diag_sw_30	d_p_onart_vl1000_sw_30
-d_incidence1549_30	d_prevalence1549_30		d_p_diag_30	  	d_p_onart_diag_30   d_p_onart_vl1000_30;
-run;
-
-
-**Assuming SW only improves condomless sex;
-data newp;
-set a.wide_fsw_16_08_22_newp;
-if incidence1549_22 <0.1 then delete;
-run;
-
-data newp1;
-set newp;
-
-***Within run differences for table 4;
-d_p_fsw_newp0__30 = (p_fsw_newp0__30_2 - p_fsw_newp0__30_1)*100;
-d_prop_sw_onprep_30 = (prop_sw_onprep_30_2 - prop_sw_onprep_30_1)*100;
-d_p_sti_sw_30 = (p_sti_sw_30_2 - p_sti_sw_30_1)*100;
-d_incidence_sw_30 = incidence_sw_30_2 - incidence_sw_30_1;
-d_prevalence_sw_30 = (prevalence_sw_30_2 - prevalence_sw_30_1)*100;
-d_p_diag_sw_30 = (p_diag_sw_30_2 - p_diag_sw_30_1)*100;
-d_p_onart_diag_sw_30 = (p_onart_diag_sw_30_2 - p_onart_diag_sw_30_1)*100;
-d_p_onart_vl1000_sw_30 = (p_onart_vl1000_sw_30_2 - p_onart_vl1000_sw_30_1)*100;
-d_incidence1549_30 = incidence1549_30_2 - incidence1549_30_1;
-d_prevalence1549_30 = (prevalence1549_30_2 - prevalence1549_30_1)*100;
-d_p_diag_30 = (p_diag_30_2 - p_diag_30_1)*100;
-d_p_onart_diag_30 = (p_onart_diag_30_2 - p_onart_diag_30_1)*100;
-d_p_onart_vl1000_30 = (p_onart_vl1000_30_2 - p_onart_vl1000_30_1)*100;
-
-proc means n p50 p5 p95;var
-p_fsw_newp0__30_2	prop_sw_onprep_30_2		p_sti_sw_30_2	incidence_sw_30_2	prevalence_sw_30_2
-p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2
-incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2;
-run;
-***Within run differences;
-proc means n mean lclm uclm;var 
-d_p_fsw_newp0__30	d_prop_sw_onprep_30		d_p_sti_sw_30	d_incidence_sw_30	d_prevalence_sw_30
-d_p_diag_sw_30		d_p_onart_diag_sw_30	d_p_onart_vl1000_sw_30
-d_incidence1549_30	d_prevalence1549_30		d_p_diag_30	  	d_p_onart_diag_30   d_p_onart_vl1000_30;
-run;
-
-**Assuming SW only improves ART retention;
-data art;
-set a.wide_fsw_16_08_22_art;
-if incidence1549_22 <0.1 then delete;
-run;
-
-data art1;
-set art;
-
-***Within run differences for table 4;
-d_p_fsw_newp0__30 = (p_fsw_newp0__30_2 - p_fsw_newp0__30_1)*100;
-d_prop_sw_onprep_30 = (prop_sw_onprep_30_2 - prop_sw_onprep_30_1)*100;
-d_p_sti_sw_30 = (p_sti_sw_30_2 - p_sti_sw_30_1)*100;
-d_incidence_sw_30 = incidence_sw_30_2 - incidence_sw_30_1;
-d_prevalence_sw_30 = (prevalence_sw_30_2 - prevalence_sw_30_1)*100;
-d_p_diag_sw_30 = (p_diag_sw_30_2 - p_diag_sw_30_1)*100;
-d_p_onart_diag_sw_30 = (p_onart_diag_sw_30_2 - p_onart_diag_sw_30_1)*100;
-d_p_onart_vl1000_sw_30 = (p_onart_vl1000_sw_30_2 - p_onart_vl1000_sw_30_1)*100;
-d_incidence1549_30 = incidence1549_30_2 - incidence1549_30_1;
-d_prevalence1549_30 = (prevalence1549_30_2 - prevalence1549_30_1)*100;
-d_p_diag_30 = (p_diag_30_2 - p_diag_30_1)*100;
-d_p_onart_diag_30 = (p_onart_diag_30_2 - p_onart_diag_30_1)*100;
-d_p_onart_vl1000_30 = (p_onart_vl1000_30_2 - p_onart_vl1000_30_1)*100;
-
-proc means n p50 p5 p95;var
-p_fsw_newp0__30_2	prop_sw_onprep_30_2		p_sti_sw_30_2	incidence_sw_30_2	prevalence_sw_30_2
-p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2
-incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2;
-run;
-***Within run differences;
-proc means n mean lclm uclm;var 
-d_p_fsw_newp0__30	d_prop_sw_onprep_30		d_p_sti_sw_30	d_incidence_sw_30	d_prevalence_sw_30
-d_p_diag_sw_30		d_p_onart_diag_sw_30	d_p_onart_vl1000_sw_30
-d_incidence1549_30	d_prevalence1549_30		d_p_diag_30	  	d_p_onart_diag_30   d_p_onart_vl1000_30;
-run;
 
 
 data costs;
 set a;
 
-if 0< incidence1549_22 <= 0.1 then incidence=1;
-if 0.1< incidence1549_22 <=0.3 then incidence=2;
-if 0.3< incidence1549_22 <= 0.5 then incidence=3;
-if 0.5< incidence1549_22 <= 1 then incidence=4;
-if 1< incidence1549_22 then incidence =5;
+if 0< incidence1549_23 <= 0.1 then incidence=1;
+if 0.1< incidence1549_23 <=0.3 then incidence=2;
+if 0.3< incidence1549_23 <= 0.5 then incidence=3;
+if 0.5< incidence1549_23 <= 1 then incidence=4;
+if 1< incidence1549_23 then incidence =5;
 
 
 ****Cost effectiveness;
 /*
-_1=no program
-_2=low impact sw program
-_3=high impact sw program
+_1=Sisters
+_2=Amethist
 */
 
-
 *difference in costs;
-*high vs. none;
-diff_dcost_high_v_none = dcost_22_72_3 - dcost_22_72_1;
-diff_artcost_high_v_none= dart_cost_y_22_72_3 - dart_cost_y_22_72_1;
-diff_testcost_high_v_none = dtest_cost_22_72_3 - dtest_cost_22_72_1;
-diff_testcost_sw_high_v_none = dtest_cost_sw_22_72_3 - dtest_cost_sw_22_72_1;
-
-*low vs. none;
-diff_dcost_low_v_none = dcost_22_72_2 - dcost_22_72_1;
-diff_artcost_low_v_none = dart_cost_y_22_72_2 - dart_cost_y_22_72_1;
-diff_testcost_low_v_none = dtest_cost_22_72_2 - dtest_cost_22_72_1;
-diff_testcost_sw_low_v_none = dtest_cost_sw_22_72_2 - dtest_cost_sw_22_72_1;
+diff_dcost = dcost_24_74_2 - dcost_24_74_1;
+diff_artcost= dart_cost_y_24_74_2 - dart_cost_y_24_74_1;
+diff_testcost = dtest_cost_24_74_2 - dtest_cost_24_74_1;
+diff_testcost_sw = dtest_cost_sw_24_74_2 - dtest_cost_sw_24_74_1;
 
 *difference in dalys (dalys averted);
-diff_ddaly_high_v_none = ddaly_22_72_3 - ddaly_22_72_1;
-diff_ddaly_low_v_none = ddaly_22_72_2 - ddaly_22_72_1;
+diff_ddaly = ddaly_24_74_2 - ddaly_24_74_1;
 
 ***DALYs averted * CET - this gives max cost for SW prog to be CE
    (multiplied by -1 since we want to cost the DALYs averted rather than the difference which is negative);
-dalys_avert_x_CET_high_v_none = (diff_ddaly_high_v_none * 0.0005)*-1;
-dalys_avert_x_CET_low_v_none = (diff_ddaly_low_v_none * 0.0005)*-1;
+dalys_avert_x_CET = (diff_ddaly * 0.0005)*-1;
 
 ***Max cost of a SW program - additional $m paid for averting DALYs + initial cost savings;
-maxcost_low_v_none= (diff_dcost_low_v_none)*-1 +  dalys_avert_x_CET_low_v_none;
-maxcost_high_v_none= (diff_dcost_high_v_none)*-1 +  dalys_avert_x_CET_high_v_none;
-
+maxcost= (diff_dcost)*-1 +  dalys_avert_x_CET;
 
 *net dalys using $500;
-netdalys_no_swprog =  ddaly_22_72_1 + (dcost_22_72_1)/0.0005;
-netdalys_swprog_low =  ddaly_22_72_2 + (dcost_22_72_2)/0.0005;*expect dalys to be lower here;
-netdalys_swprog_high =  ddaly_22_72_3 + (dcost_22_72_3)/0.0005;*expect dalys to be lower here;
+netdalys_sis =  ddaly_24_74_1 + (dcost_24_74_1)/0.0005;
+netdalys_amt =  ddaly_24_74_2 + (dcost_24_74_2)/0.0005;*expect dalys to be lower here;
 
 *net dalys averted;
-diff_netdalys_swprog_high_v_none = netdalys_swprog_high - netdalys_no_swprog; *take absolute number;
+diff_netdalys = netdalys_amt - netdalys_sis; *take absolute number;
 
 *net monetary benefit (Dalys * cost-effectivenss threshold) + costs;
-nmb_none = (ddaly_22_72_1*0.0005) + dcost_22_72_1;
-nmb_swprog_low= (ddaly_22_72_2*0.0005) + dcost_22_72_2;
-nmb_swprog_high = (ddaly_22_72_3*0.0005) + dcost_22_72_3;
-
-diff_nmb_swprog_high_v_none=nmb_swprog_high - nmb_none;
-diff_nmb_swprog_low_v_none=nmb_swprog_low - nmb_none;
+nmb_sis = (ddaly_24_74_1*0.0005) + dcost_24_74_1;
+nmb_amt= (ddaly_24_74_2*0.0005) + dcost_24_74_2;
+diff_nmb = nmb_amt - nmb_sis;
 
 ***max cost of SW prog;
-maxcost_swprog_high_v_none= diff_netdalys_swprog_high_v_none * 500;
+maxcost_amt= diff_netdalys * 500;
 
+run;
 
-***No program vs. low impact;
-*dalys averted;
-diff_ddaly_swprog_low_v_none = ddaly_22_72_2 - ddaly_22_72_1;
-
-*difference in total costs;
-diff_dcost_swprog_low_v_none = dcost_22_72_2 - dcost_22_72_1;
-
-***look at individual costs;
-diff_artcost_swprog_low_v_none = dart_cost_y_22_72_2 - dart_cost_y_22_72_1;
-diff_testcost_swprog_low_v_none = dtest_cost_22_72_2 - dtest_cost_22_72_1;
-
-
-*net dalys averted;
-diff_netdalys_swprog_low_v_none = netdalys_swprog_low - netdalys_no_swprog; *take absolute number;
-
-***cost of SW prog;
-maxcost_swprog_low_v_none= diff_netdalys_swprog_low_v_none * 500;
-
-
-***(DALYs averted *500) - difference in costs;
-
-
-
-***Low program vs. high impact;
-*dalys averted;
-diff_ddaly_swprog_high_v_low = ddaly_22_72_3 - ddaly_22_72_2;
-
-*difference in total costs;
-diff_dcost_swprog_high_v_low = dcost_22_72_3 - dcost_22_72_2;
-
-***look at individual costs;
-diff_artcost_swprog_high_v_low = dart_cost_y_22_72_3 - dart_cost_y_22_72_2;
-diff_testcost_swprog_high_v_low = dtest_cost_22_72_3 - dtest_cost_22_72_2;
-
-*net dalys averted;
-diff_netdalys_swprog_high_v_low = netdalys_swprog_high - netdalys_swprog_low; *take absolute number;
-
-***cost of SW prog;
-maxcost_swprog_high_v_low= diff_netdalys_swprog_high_v_low*500;
-
-proc means n mean p50 p5 p95 lclm uclm;var dcost_23_24_1 dcost_23_24_2 dcost_23_24_3;run;
-
-
-***Absolute costs;
-proc means n mean p50 p5 p95 lclm uclm;
-var dcost_22_72_1 dcost_22_72_2 dcost_22_72_3
-	dart_cost_y_22_72_1 dart_cost_y_22_72_2 dart_cost_y_22_72_3
-	dtest_cost_22_72_1 dtest_cost_22_72_2 dtest_cost_22_72_3
-	dtest_cost_sw_22_72_1 dtest_cost_sw_22_72_2 dtest_cost_sw_22_72_3
+***Absolute costs and differences;
+proc means n mean lclm uclm;
+var dcost_24_74_1 dcost_24_74_2 diff_dcost
+	dart_cost_y_24_74_1 dart_cost_y_24_74_2  diff_artcost
+	dtest_cost_24_74_1 dtest_cost_24_74_2 diff_testcost 
+	dtest_cost_sw_24_74_1 dtest_cost_sw_24_74_2 diff_testcost_sw;
 ;run;
 
-***Difference in costs - high vs. none;
-proc means n mean p50 p5 p95 lclm uclm;
-var diff_dcost_low_v_none diff_artcost_low_v_none diff_testcost_low_v_none diff_testcost_sw_low_v_none
-	diff_dcost_high_v_none diff_artcost_high_v_none diff_testcost_high_v_none diff_testcost_sw_high_v_none;
+***DALYs;
+proc means n mean lclm uclm;
+var	ddaly_24_74_1 ddaly_24_74_2 diff_ddaly;
 run;
 
-***DALYs;
-proc means n mean p50 p5 p95 lclm uclm;
-var	ddaly_22_72_1 ddaly_22_72_2 ddaly_22_72_3
-	diff_ddaly_low_v_none diff_ddaly_high_v_none;
-run;
+/****DID NOT USE THIS METHOD, INSTEAD USED THE GRAPH METHOD;
 
 ***Additional we can spend taking into account DALYs averted using $500 threshold;
-proc means n mean p50 p5 p95 lclm uclm;
-var dalys_avert_x_CET_low_v_none dalys_avert_x_CET_high_v_none ;
+proc means n 5 p95 lclm uclm;
+var dalys_avert_x_CET ;
 run;
 
 ***Max we can spend for a SW prog to be CE;
@@ -406,12 +171,6 @@ proc means n mean p50 p5 p95 lclm uclm;
 var maxcost_low_v_none maxcost_high_v_none;where incidence=5;run;
 
 
-
-
-
-
-
-
 ***Cost per DALY using CET;
 
 ***Net DALYs;
@@ -427,52 +186,258 @@ var	nmb_none nmb_swprog_high nmb_swprog_low
 ;run;
 
 
-***max cost to spend on a SW program;
-proc means n mean p50 p5 p95 lclm uclm;
-var	maxcost_swprog_low_v_none maxcost_swprog_high_v_none;
-run;
-
-
-
-
-
-
-
+*/
 
 
 
 proc means n p50;VAR
-dart_cost_y_22_72_1
-dadc_cost_22_72_1 dcd4_cost_22_72_1 dvl_cost_22_72_1 dvis_cost_22_72_1 dnon_tb_who3_cost_22_72_1 dcot_cost_22_72_1
-dtb_cost_22_72_1 dres_cost_22_72_1 dtest_cost_22_72_1 d_t_adh_int_cost_22_72_1 
-dswitchline_cost_22_72_1 
-dcost_prep_visit_oral_22_72_1 dcost_prep_oral_22_72_1 
-dcost_prep_visit_inj_22_72_1 dcost_prep_inj_22_72_1
-prop_sw_onprep_22_72_1
-dart_cost_y_22_72_3
-dadc_cost_22_72_3 dcd4_cost_22_72_3 dvl_cost_22_72_3 dvis_cost_22_72_3 dnon_tb_who3_cost_22_72_3 dcot_cost_22_72_3
-dtb_cost_22_72_3 dres_cost_22_72_3 dtest_cost_22_72_3 d_t_adh_int_cost_22_72_3 
-dswitchline_cost_22_72_3 
-dcost_prep_visit_oral_22_72_3 dcost_prep_oral_22_72_3 
-dcost_prep_visit_inj_22_72_3 dcost_prep_inj_22_72_3
-prop_sw_onprep_22_72_3
+dart_cost_y_24_74_1
+dadc_cost_24_74_1 dcd4_cost_24_74_1 dvl_cost_24_74_1 dvis_cost_24_74_1 dnon_tb_who3_cost_24_74_1 dcot_cost_24_74_1
+dtb_cost_24_74_1 dres_cost_24_74_1 dtest_cost_24_74_1 d_t_adh_int_cost_24_74_1 
+dswitchline_cost_24_74_1 
+dcost_prep_visit_oral_24_74_1 dcost_prep_oral_24_74_1 
+dcost_prep_visit_inj_24_74_1 dcost_prep_inj_24_74_1
+prop_sw_onprep_24_74_1
+
+dart_cost_y_24_74_2
+dadc_cost_24_74_2 dcd4_cost_24_74_2 dvl_cost_24_74_2 dvis_cost_24_74_2 dnon_tb_who3_cost_24_74_2 dcot_cost_24_74_2
+dtb_cost_24_74_2 dres_cost_24_74_2 dtest_cost_24_74_2 d_t_adh_int_cost_24_74_2 
+dswitchline_cost_24_74_2 
+dcost_prep_visit_oral_24_74_2 dcost_prep_oral_24_74_2 
+dcost_prep_visit_inj_24_74_2 dcost_prep_inj_24_74_2
+prop_sw_onprep_24_74_2
 ;run;
 
-
-proc means n mean p50 p5 p95 lclm uclm;var netdalys_no_swprog netdalys_swprog_high diff_netdalys_swprog_high maxcost_swprog_high ;run;
-
-proc univariate;var maxcost_swprog_high;run;
-
-diff_netdalys_swprog_high cost_swprog_high;run;
-
-*sw prog cost-effective?;
-ce_swprog_high=0;if diff_netdalys_swprog_high gt 0 then ce_swprog_high=1;
-
-*cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
-/*proc freq;table diff_dcost_swprog_high;run;*/
-
-cost_daly_avert_swprog_high=*1000000;
-if diff_ddaly_swprog_high gt 0 then cost_daly_avert_swprog_high = (diff_dcost_swprog_high / diff_ddaly_swprog_high)*1000000;
+data maxcosts;
+set a;
 
 
-proc means n mean p50 p5 p95 lclm uclm;var cost_daly_avert_swprog_high;run;
+*500 CET, Sisters;
+netdalys500_sis=  ddaly_24_74_1 + (dcost_sis_24_74_1)/0.0005;
+
+/*
+netdalys500_sis10 =  ddaly_24_74_1 + (dcost_sis10__24_74_1)/0.0005;
+netdalys500_sis15 =  ddaly_24_74_1 + (dcost_sis15__24_74_1)/0.0005;
+netdalys500_sis20 =  ddaly_24_74_1 + (dcost_sis20__24_74_1)/0.0005;
+netdalys500_sis25 =  ddaly_24_74_1 + (dcost_sis25__24_74_1)/0.0005;
+netdalys500_sis30 =  ddaly_24_74_1 + (dcost_sis30__24_74_1)/0.0005;
+netdalys500_sis35 =  ddaly_24_74_1 + (dcost_sis35__24_74_1)/0.0005;
+netdalys500_sis40 =  ddaly_24_74_1 + (dcost_sis40__24_74_1)/0.0005;
+netdalys500_sis45 =  ddaly_24_74_1 + (dcost_sis45__24_74_1)/0.0005;
+netdalys500_sis50 =  ddaly_24_74_1 + (dcost_sis50__24_74_1)/0.0005;
+netdalys500_sis55 =  ddaly_24_74_1 + (dcost_sis55__24_74_1)/0.0005;
+netdalys500_sis60 =  ddaly_24_74_1 + (dcost_sis60__24_74_1)/0.0005;
+netdalys500_sis65 =  ddaly_24_74_1 + (dcost_sis65__24_74_1)/0.0005;
+netdalys500_sis70 =  ddaly_24_74_1 + (dcost_sis70__24_74_1)/0.0005;
+netdalys500_sis75 =  ddaly_24_74_1 + (dcost_sis75__24_74_1)/0.0005;
+netdalys500_sis80 =  ddaly_24_74_1 + (dcost_sis80__24_74_1)/0.0005;
+netdalys500_sis85 =  ddaly_24_74_1 + (dcost_sis85__24_74_1)/0.0005;
+netdalys500_sis90 =  ddaly_24_74_1 + (dcost_sis90__24_74_1)/0.0005;
+netdalys500_sis95 =  ddaly_24_74_1 + (dcost_sis95__24_74_1)/0.0005;
+netdalys500_sis100 =  ddaly_24_74_1 + (dcost_sis100__24_74_1)/0.0005;
+netdalys500_sis105 =  ddaly_24_74_1 + (dcost_sis105__24_74_1)/0.0005;
+netdalys500_sis110 =  ddaly_24_74_1 + (dcost_sis110__24_74_1)/0.0005;
+netdalys500_sis115 =  ddaly_24_74_1 + (dcost_sis115__24_74_1)/0.0005;
+netdalys500_sis120 =  ddaly_24_74_1 + (dcost_sis120__24_74_1)/0.0005;
+netdalys500_sis125 =  ddaly_24_74_1 + (dcost_sis125__24_74_1)/0.0005;
+netdalys500_sis130 =  ddaly_24_74_1 + (dcost_sis130__24_74_1)/0.0005;
+netdalys500_sis135 =  ddaly_24_74_1 + (dcost_sis135__24_74_1)/0.0005;
+netdalys500_sis140 =  ddaly_24_74_1 + (dcost_sis140__24_74_1)/0.0005;
+netdalys500_sis145 =  ddaly_24_74_1 + (dcost_sis145__24_74_1)/0.0005;
+netdalys500_sis150 =  ddaly_24_74_1 + (dcost_sis150__24_74_1)/0.0005;
+netdalys500_sis155 =  ddaly_24_74_1 + (dcost_sis155__24_74_1)/0.0005;
+netdalys500_sis160 =  ddaly_24_74_1 + (dcost_sis160__24_74_1)/0.0005;
+netdalys500_sis165 =  ddaly_24_74_1 + (dcost_sis165__24_74_1)/0.0005;
+netdalys500_sis170 =  ddaly_24_74_1 + (dcost_sis170__24_74_1)/0.0005;
+netdalys500_sis175 =  ddaly_24_74_1 + (dcost_sis175__24_74_1)/0.0005;
+netdalys500_sis180 =  ddaly_24_74_1 + (dcost_sis180__24_74_1)/0.0005;
+netdalys500_sis185 =  ddaly_24_74_1 + (dcost_sis185__24_74_1)/0.0005;
+netdalys500_sis190 =  ddaly_24_74_1 + (dcost_sis190__24_74_1)/0.0005;
+netdalys500_sis195 =  ddaly_24_74_1 + (dcost_sis195__24_74_1)/0.0005;
+netdalys500_sis200 =  ddaly_24_74_1 + (dcost_sis200__24_74_1)/0.0005;
+netdalys500_sis205 =  ddaly_24_74_1 + (dcost_sis205__24_74_1)/0.0005;
+netdalys500_sis210 =  ddaly_24_74_1 + (dcost_sis210__24_74_1)/0.0005;
+netdalys500_sis215 =  ddaly_24_74_1 + (dcost_sis215__24_74_1)/0.0005;
+netdalys500_sis220 =  ddaly_24_74_1 + (dcost_sis220__24_74_1)/0.0005;
+netdalys500_sis225 =  ddaly_24_74_1 + (dcost_sis225__24_74_1)/0.0005;
+netdalys500_sis230 =  ddaly_24_74_1 + (dcost_sis230__24_74_1)/0.0005;
+netdalys500_sis235 =  ddaly_24_74_1 + (dcost_sis235__24_74_1)/0.0005;
+netdalys500_sis240 =  ddaly_24_74_1 + (dcost_sis240__24_74_1)/0.0005;
+netdalys500_sis245 =  ddaly_24_74_1 + (dcost_sis245__24_74_1)/0.0005;
+netdalys500_sis250 =  ddaly_24_74_1 + (dcost_sis250__24_74_1)/0.0005;
+*/
+
+*500 CET, AMETHIST;
+netdalys500_amt10 =  ddaly_24_74_2 + (dcost_amt10__24_74_2)/0.0005;
+netdalys500_amt15 =  ddaly_24_74_2 + (dcost_amt15__24_74_2)/0.0005;
+netdalys500_amt20 =  ddaly_24_74_2 + (dcost_amt20__24_74_2)/0.0005;
+netdalys500_amt25 =  ddaly_24_74_2 + (dcost_amt25__24_74_2)/0.0005;
+netdalys500_amt30 =  ddaly_24_74_2 + (dcost_amt30__24_74_2)/0.0005;
+netdalys500_amt35 =  ddaly_24_74_2 + (dcost_amt35__24_74_2)/0.0005;
+netdalys500_amt40 =  ddaly_24_74_2 + (dcost_amt40__24_74_2)/0.0005;
+netdalys500_amt45 =  ddaly_24_74_2 + (dcost_amt45__24_74_2)/0.0005;
+netdalys500_amt50 =  ddaly_24_74_2 + (dcost_amt50__24_74_2)/0.0005;
+netdalys500_amt55 =  ddaly_24_74_2 + (dcost_amt55__24_74_2)/0.0005;
+netdalys500_amt60 =  ddaly_24_74_2 + (dcost_amt60__24_74_2)/0.0005;
+netdalys500_amt65 =  ddaly_24_74_2 + (dcost_amt65__24_74_2)/0.0005;
+netdalys500_amt70 =  ddaly_24_74_2 + (dcost_amt70__24_74_2)/0.0005;
+netdalys500_amt75 =  ddaly_24_74_2 + (dcost_amt75__24_74_2)/0.0005;
+netdalys500_amt80 =  ddaly_24_74_2 + (dcost_amt80__24_74_2)/0.0005;
+netdalys500_amt85 =  ddaly_24_74_2 + (dcost_amt85__24_74_2)/0.0005;
+netdalys500_amt90 =  ddaly_24_74_2 + (dcost_amt90__24_74_2)/0.0005;
+netdalys500_amt95 =  ddaly_24_74_2 + (dcost_amt95__24_74_2)/0.0005;
+netdalys500_amt100 =  ddaly_24_74_2 + (dcost_amt100__24_74_2)/0.0005;
+netdalys500_amt105 =  ddaly_24_74_2 + (dcost_amt105__24_74_2)/0.0005;
+netdalys500_amt110 =  ddaly_24_74_2 + (dcost_amt110__24_74_2)/0.0005;
+netdalys500_amt115 =  ddaly_24_74_2 + (dcost_amt115__24_74_2)/0.0005;
+netdalys500_amt120 =  ddaly_24_74_2 + (dcost_amt120__24_74_2)/0.0005;
+netdalys500_amt125 =  ddaly_24_74_2 + (dcost_amt125__24_74_2)/0.0005;
+netdalys500_amt130 =  ddaly_24_74_2 + (dcost_amt130__24_74_2)/0.0005;
+netdalys500_amt135 =  ddaly_24_74_2 + (dcost_amt135__24_74_2)/0.0005;
+netdalys500_amt140 =  ddaly_24_74_2 + (dcost_amt140__24_74_2)/0.0005;
+netdalys500_amt145 =  ddaly_24_74_2 + (dcost_amt145__24_74_2)/0.0005;
+netdalys500_amt150 =  ddaly_24_74_2 + (dcost_amt150__24_74_2)/0.0005;
+netdalys500_amt155 =  ddaly_24_74_2 + (dcost_amt155__24_74_2)/0.0005;
+netdalys500_amt160 =  ddaly_24_74_2 + (dcost_amt160__24_74_2)/0.0005;
+netdalys500_amt165 =  ddaly_24_74_2 + (dcost_amt165__24_74_2)/0.0005;
+netdalys500_amt170 =  ddaly_24_74_2 + (dcost_amt170__24_74_2)/0.0005;
+netdalys500_amt175 =  ddaly_24_74_2 + (dcost_amt175__24_74_2)/0.0005;
+netdalys500_amt180 =  ddaly_24_74_2 + (dcost_amt180__24_74_2)/0.0005;
+netdalys500_amt185 =  ddaly_24_74_2 + (dcost_amt185__24_74_2)/0.0005;
+netdalys500_amt190 =  ddaly_24_74_2 + (dcost_amt190__24_74_2)/0.0005;
+netdalys500_amt195 =  ddaly_24_74_2 + (dcost_amt195__24_74_2)/0.0005;
+netdalys500_amt200 =  ddaly_24_74_2 + (dcost_amt200__24_74_2)/0.0005;
+netdalys500_amt205 =  ddaly_24_74_2 + (dcost_amt205__24_74_2)/0.0005;
+netdalys500_amt210 =  ddaly_24_74_2 + (dcost_amt210__24_74_2)/0.0005;
+netdalys500_amt215 =  ddaly_24_74_2 + (dcost_amt215__24_74_2)/0.0005;
+netdalys500_amt220 =  ddaly_24_74_2 + (dcost_amt220__24_74_2)/0.0005;
+netdalys500_amt225 =  ddaly_24_74_2 + (dcost_amt225__24_74_2)/0.0005;
+netdalys500_amt230 =  ddaly_24_74_2 + (dcost_amt230__24_74_2)/0.0005;
+netdalys500_amt235 =  ddaly_24_74_2 + (dcost_amt235__24_74_2)/0.0005;
+netdalys500_amt240 =  ddaly_24_74_2 + (dcost_amt240__24_74_2)/0.0005;
+netdalys500_amt245 =  ddaly_24_74_2 + (dcost_amt245__24_74_2)/0.0005;
+netdalys500_amt250 =  ddaly_24_74_2 + (dcost_amt250__24_74_2)/0.0005;
+
+
+***Difference in netdalys;
+d_netdalys500_amt10 = netdalys500_amt10 - netdalys500_sis;
+d_netdalys500_amt15 = netdalys500_amt15 - netdalys500_sis;
+d_netdalys500_amt20 = netdalys500_amt20 - netdalys500_sis;
+d_netdalys500_amt25 = netdalys500_amt25 - netdalys500_sis;
+d_netdalys500_amt30 = netdalys500_amt30 - netdalys500_sis;
+d_netdalys500_amt35 = netdalys500_amt35 - netdalys500_sis;
+d_netdalys500_amt40 = netdalys500_amt40 - netdalys500_sis;
+d_netdalys500_amt45 = netdalys500_amt45 - netdalys500_sis;
+d_netdalys500_amt50 = netdalys500_amt50 - netdalys500_sis;
+d_netdalys500_amt55 = netdalys500_amt55 - netdalys500_sis;
+d_netdalys500_amt60 = netdalys500_amt60 - netdalys500_sis;
+d_netdalys500_amt65 = netdalys500_amt65 - netdalys500_sis;
+d_netdalys500_amt70 = netdalys500_amt70 - netdalys500_sis;
+d_netdalys500_amt75 = netdalys500_amt75 - netdalys500_sis;
+d_netdalys500_amt80 = netdalys500_amt80 - netdalys500_sis;
+d_netdalys500_amt85 = netdalys500_amt85 - netdalys500_sis;
+d_netdalys500_amt90 = netdalys500_amt90 - netdalys500_sis;
+d_netdalys500_amt95 = netdalys500_amt95 - netdalys500_sis;
+d_netdalys500_amt100 = netdalys500_amt100 - netdalys500_sis;
+d_netdalys500_amt105 = netdalys500_amt105 - netdalys500_sis;
+d_netdalys500_amt110 = netdalys500_amt110 - netdalys500_sis;
+d_netdalys500_amt115 = netdalys500_amt115 - netdalys500_sis;
+d_netdalys500_amt120 = netdalys500_amt120 - netdalys500_sis;
+d_netdalys500_amt125 = netdalys500_amt125 - netdalys500_sis;
+d_netdalys500_amt130 = netdalys500_amt130 - netdalys500_sis;
+d_netdalys500_amt135 = netdalys500_amt135 - netdalys500_sis;
+d_netdalys500_amt140 = netdalys500_amt140 - netdalys500_sis;
+d_netdalys500_amt145 = netdalys500_amt145 - netdalys500_sis;
+d_netdalys500_amt150 = netdalys500_amt150 - netdalys500_sis;
+d_netdalys500_amt155 = netdalys500_amt155 - netdalys500_sis;
+d_netdalys500_amt160 = netdalys500_amt160 - netdalys500_sis;
+d_netdalys500_amt165 = netdalys500_amt165 - netdalys500_sis;
+d_netdalys500_amt170 = netdalys500_amt170 - netdalys500_sis;
+d_netdalys500_amt175 = netdalys500_amt175 - netdalys500_sis;
+d_netdalys500_amt180 = netdalys500_amt180 - netdalys500_sis;
+d_netdalys500_amt185 = netdalys500_amt185 - netdalys500_sis;
+d_netdalys500_amt190 = netdalys500_amt190 - netdalys500_sis;
+d_netdalys500_amt195 = netdalys500_amt195 - netdalys500_sis;
+d_netdalys500_amt200 = netdalys500_amt200 - netdalys500_sis;
+d_netdalys500_amt205 = netdalys500_amt205 - netdalys500_sis;
+d_netdalys500_amt210 = netdalys500_amt210 - netdalys500_sis;
+d_netdalys500_amt215 = netdalys500_amt215 - netdalys500_sis;
+d_netdalys500_amt220 = netdalys500_amt220 - netdalys500_sis;
+d_netdalys500_amt225 = netdalys500_amt225 - netdalys500_sis;
+d_netdalys500_amt230 = netdalys500_amt230 - netdalys500_sis;
+d_netdalys500_amt235 = netdalys500_amt235 - netdalys500_sis;
+d_netdalys500_amt240 = netdalys500_amt240 - netdalys500_sis;
+d_netdalys500_amt245 = netdalys500_amt245 - netdalys500_sis;
+d_netdalys500_amt250 = netdalys500_amt250 - netdalys500_sis;
+
+if  d_netdalys500_amt10 > 0 then do;max_cost_amt_program = 0;  goto xx;end;
+if  d_netdalys500_amt15 > 0 then do;max_cost_amt_program = 10;  goto xx;end; 
+if  d_netdalys500_amt20 > 0 then do;max_cost_amt_program = 15;  goto xx;end; 
+if  d_netdalys500_amt25 > 0 then do;max_cost_amt_program = 20;  goto xx;end; 
+if  d_netdalys500_amt30 > 0 then do;max_cost_amt_program = 25;  goto xx;end; 
+if  d_netdalys500_amt35 > 0 then do;max_cost_amt_program = 30;  goto xx;end; 
+if  d_netdalys500_amt40 > 0 then do;max_cost_amt_program = 35;  goto xx;end;
+if  d_netdalys500_amt45 > 0 then do;max_cost_amt_program = 40;  goto xx;end; 
+if  d_netdalys500_amt50 > 0 then do;max_cost_amt_program = 45;  goto xx;end; 
+if  d_netdalys500_amt55 > 0 then do;max_cost_amt_program = 50;  goto xx;end; 
+if  d_netdalys500_amt60 > 0 then do;max_cost_amt_program = 55;  goto xx;end; 
+if  d_netdalys500_amt65 > 0 then do;max_cost_amt_program = 60;  goto xx;end; 
+if  d_netdalys500_amt70 > 0 then do;max_cost_amt_program = 65;  goto xx;end;
+if  d_netdalys500_amt75 > 0 then do;max_cost_amt_program = 70;  goto xx;end; 
+if  d_netdalys500_amt80 > 0 then do;max_cost_amt_program = 75;  goto xx;end; 
+if  d_netdalys500_amt85 > 0 then do;max_cost_amt_program = 80;  goto xx;end;
+if  d_netdalys500_amt90 > 0 then do;max_cost_amt_program = 85;  goto xx;end; 
+if  d_netdalys500_amt95 > 0 then do;max_cost_amt_program = 90;  goto xx;end; 
+if  d_netdalys500_amt100 > 0 then do;max_cost_amt_program = 95;  goto xx;end; 
+if  d_netdalys500_amt105 > 0 then do;max_cost_amt_program = 100;  goto xx;end; 
+if  d_netdalys500_amt110 > 0 then do;max_cost_amt_program = 105;  goto xx;end; 
+if  d_netdalys500_amt115 > 0 then do;max_cost_amt_program = 110;  goto xx;end;
+if  d_netdalys500_amt120 > 0 then do;max_cost_amt_program = 115;  goto xx;end; 
+if  d_netdalys500_amt125 > 0 then do;max_cost_amt_program = 120;  goto xx;end; 
+if  d_netdalys500_amt130 > 0 then do;max_cost_amt_program = 125;  goto xx;end; 
+if  d_netdalys500_amt135 > 0 then do;max_cost_amt_program = 130;  goto xx;end; 
+if  d_netdalys500_amt140 > 0 then do;max_cost_amt_program = 135;  goto xx;end; 
+if  d_netdalys500_amt145 > 0 then do;max_cost_amt_program = 140;  goto xx;end;
+if  d_netdalys500_amt150 > 0 then do;max_cost_amt_program = 145;  goto xx;end; 
+if  d_netdalys500_amt155 > 0 then do;max_cost_amt_program = 150;  goto xx;end; 
+if  d_netdalys500_amt160 > 0 then do;max_cost_amt_program = 155;  goto xx;end;
+if  d_netdalys500_amt165 > 0 then do;max_cost_amt_program = 160;  goto xx;end; 
+if  d_netdalys500_amt170 > 0 then do;max_cost_amt_program = 165;  goto xx;end; 
+if  d_netdalys500_amt175 > 0 then do;max_cost_amt_program = 170;  goto xx;end; 
+if  d_netdalys500_amt180 > 0 then do;max_cost_amt_program = 175;  goto xx;end; 
+if  d_netdalys500_amt185 > 0 then do;max_cost_amt_program = 180;  goto xx;end; 
+if  d_netdalys500_amt190 > 0 then do;max_cost_amt_program = 185;  goto xx;end;
+if  d_netdalys500_amt195 > 0 then do;max_cost_amt_program = 190;  goto xx;end; 
+if  d_netdalys500_amt200 > 0 then do;max_cost_amt_program = 195;  goto xx;end; 
+if  d_netdalys500_amt205 > 0 then do;max_cost_amt_program = 200;  goto xx;end; 
+if  d_netdalys500_amt210 > 0 then do;max_cost_amt_program = 205;  goto xx;end; 
+if  d_netdalys500_amt215 > 0 then do;max_cost_amt_program = 210;  goto xx;end;
+if  d_netdalys500_amt220 > 0 then do;max_cost_amt_program = 215;  goto xx;end; 
+if  d_netdalys500_amt225 > 0 then do;max_cost_amt_program = 220;  goto xx;end; 
+if  d_netdalys500_amt230 > 0 then do;max_cost_amt_program = 225;  goto xx;end; 
+if  d_netdalys500_amt235 > 0 then do;max_cost_amt_program = 230;  goto xx;end; 
+if  d_netdalys500_amt240 > 0 then do;max_cost_amt_program = 235;  goto xx;end; 
+if  d_netdalys500_amt245 > 0 then do;max_cost_amt_program = 240;  goto xx;end;
+if  d_netdalys500_amt250 > 0 then do;max_cost_amt_program = 245;  goto xx;end; 
+xx:
+
+if max_cost_amt_program=. then max_cost_sw_program=350;
+
+max_cost_amt_program_per_sw=max_cost_amt_program /n_sw_1549__23;
+
+***Figure 1;*max cost is when the diff in netdalys crosses 0;
+**For the graphs, multiply by -1 to get DALYs averted rather than difference;
+
+proc means n mean p5 p95;var
+d_netdalys500_amt10  d_netdalys500_amt15  d_netdalys500_amt20  d_netdalys500_amt25  d_netdalys500_amt30  d_netdalys500_amt35
+d_netdalys500_amt40  d_netdalys500_amt45  d_netdalys500_amt50  d_netdalys500_amt55  d_netdalys500_amt60  d_netdalys500_amt65 
+d_netdalys500_amt70	 d_netdalys500_amt75  d_netdalys500_amt80  d_netdalys500_amt85	d_netdalys500_amt90  d_netdalys500_amt95
+d_netdalys500_amt100  d_netdalys500_amt105  d_netdalys500_amt110  d_netdalys500_amt115  d_netdalys500_amt120  d_netdalys500_amt125
+d_netdalys500_amt130  d_netdalys500_amt135  d_netdalys500_amt140  d_netdalys500_amt145  d_netdalys500_amt150  d_netdalys500_amt155
+d_netdalys500_amt160  d_netdalys500_amt165  d_netdalys500_amt170  d_netdalys500_amt175  d_netdalys500_amt180  d_netdalys500_amt185
+d_netdalys500_amt190  d_netdalys500_amt195  d_netdalys500_amt200  d_netdalys500_amt205  d_netdalys500_amt210  d_netdalys500_amt215
+d_netdalys500_amt225  d_netdalys500_amt230  d_netdalys500_amt235  d_netdalys500_amt240  d_netdalys500_amt245  d_netdalys500_amt250
+
+;
+run;
+proc means mean p5 p95 lclm uclm ;var max_cost_amt_program;run;
