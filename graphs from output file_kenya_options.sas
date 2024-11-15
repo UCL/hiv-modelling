@@ -13,43 +13,6 @@ data b;
   set a.l_base_kenya_aj_options_k ;
 
 
-
-  if run in (
-
-  
-75220873 
-88058722 
-119929401 
-207771801 
-223813736 
-263438227 
-269258834 
-311632422 
-318695827 
-318887806 
-360571364 
-360947968 
-370452676 
-486877518 
-486984672 
-500183301 
-562835911 
-586514315 
-614810723 
-654134587 
-664891974 
-671808991 
-748204816 
-847183472 
-922514420 
-
-
-)
-;
-
-
-
-
 /*
 
   if option = 0 and cald le 2023;
@@ -58,7 +21,7 @@ data b;
 
 
 
-  s =  107 ;
+  s =  105 ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
 
@@ -151,7 +114,7 @@ n_tested_due_to_self_test = n_tested_due_to_self_t ;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =   50  ;
+%let nfit =  108  ;
 %let year_end = 2040.00 ;
 run;
 proc sort;by cald option ;run;

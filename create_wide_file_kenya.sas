@@ -1541,8 +1541,6 @@ proc sort; by run;run;
   by run;
 
 
-proc univariate; var cost_24_25 ;
-
 run;
 
 
