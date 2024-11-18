@@ -6,7 +6,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data a;
-set a.cdi_06nov24;
+set a.cdi_13nov24;
 
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
@@ -529,8 +529,8 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_tested_msm;					if (s_alive1564_msm - s_diag_msm_age1564) > 0 then p_tested_msm = s_tested_msm /(s_alive1564_msm - s_diag_msm_age1564) ;
 * p_tested_py_msm;				*if (s_alive1564_msm - s_diag_msm_age1564) > 0 then p_tested_py_msm = s_tested_py_msm /(s_alive1564_msm - s_diag_msm_age1564) ;
 
-* p_av_newp_msm;				*if s_alive_msm ge 0 then p_av_newp_msm=s_msm_newp/ s_alive_msm;
-* p_msm_newp0;					*if s_alive_msm ge 0 then p_msm_newp0= s_msm_newp0/ s_alive_msm;
+* p_av_newp_msm;				if s_alive_msm ge 0 then p_av_newp_msm=s_msm_newp/ s_alive_msm;
+* p_msm_newp0;					if s_alive_msm ge 0 then p_msm_newp0= s_msm_newp0/ s_alive_msm;
 
 * p_ep;							p_ep = s_ep / s_alive1564;				
 * p_ep_msm;						p_ep_msm = s_msm_ep / s_alive1564_msm;
@@ -602,14 +602,14 @@ n_alive_msm		n_alive1564_msm		incidence1549msm	incidence1564msm	prevalence1549_m
 p_elig_prep_any_msm_1564_			p_onprep_msm		p_onart_msm			prevalence_msm		prevalence_vg1000_msm
 p_diag_msm		p_onart_diag_msm	p_vl1000_art_gt6m_msm 					p_ever_tested_msm	p_tested_this_period_msm
 p_msm_infected_from_msm				prop_m_msm			p_ep				p_ep_msm			p_msm_ge1newp
-p_m_ge1newp		n_pwid				p_onprep_pwid		p_onart_pwid		p_diag_pwid			prevalence_pwid sw_trans_matrix		
+p_m_ge1newp		p_av_newp_msm		p_msm_newp0			n_pwid				p_onprep_pwid		p_onart_pwid		p_diag_pwid			prevalence_pwid sw_trans_matrix		
 n_tested_msm	n_tested_pwid		n_vm_per_year		n_infected_m		n_infected_w		n_infected	n_infected_agyw
 s_primary_w		s_primary_m			sf					n_onprep_m			n_onprep_w			n_onprep	n_onprep_msm
 an_lin_incr_test					yll_m 			yll_w 				yll
 ;
 
+proc freq;table p_av_newp_msm		p_msm_newp0;run;
 proc sort data=y;by run option;run;
-
 
 
 data low_inc;
@@ -623,34 +623,48 @@ if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
 /*proc freq;table run;where a=1;run;*/
 
 if run in (
-48955388
-87287305
-191652085
-211575527
-259107729
-269768892
-277912581
-302361300
-330845460
-379900077
-422625541
-445821147
-454705025
-489764380
-490360550
-505656189
-556918386
-658228175
-703094278
-726316522
-781806172
-789883559
-810696424
-813085491
-919755454
-922304892
-923284725
-960558682
+18762462
+26906902
+62775526
+119873832
+122158985
+154106580
+170714896
+200707839
+212124232
+248787601
+251327286
+256316702
+271739199
+356652468
+410606986
+412589368
+427893794
+429046539
+459732697
+462065100
+486412331
+545658246
+553443147
+580011412
+586272892
+590431392
+628553437
+637413416
+637433306
+658565802
+672569065
+676649292
+689300042
+770040815
+805648313
+812498979
+815278735
+856225176
+868502253
+905734889
+976855943
+981992803
 
 )
 then delete;
@@ -669,7 +683,7 @@ run;
 
 libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
 data y;
-set a.l_base_CdI_06nov24; 
+set a.l_base_CdI_13nov24; 
 
   
 keep run cald option 
