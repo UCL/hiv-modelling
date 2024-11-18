@@ -1,4 +1,22 @@
 
+**MM;
+*add reduction in risk of becoming mm if men have a ADC;
+*add prep disadv for mm;
+
+
+/*
+if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
+    	r = rand('Uniform');
+      	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
+	end;
+*/
+
+**Core;
+*run with prep_any_strategy=4 without the gender=2 line;
+*reduce rate_test_startprep_any for men;
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -677,11 +695,12 @@ end;
 
 *MOBILE MEN;
 
-* prob_stop_mobile;			%sample_uniform(prob_stop_mobile, 0.05, 0.10);
+
 * prob_mobile1519_;			%sample_uniform(prob_mobile1519_, 0.01 0.03);
-* prob_mobile2060_;			%sample_uniform(prob_mobile2060_, 0.05, 0.10);
-* prob_mobile60pl;			%sample_uniform(prob_mobile60pl, 0.01 0.03);
-* inc_risk_mobile;			inc_risk_mobile=2;
+* prob_mobile2060_;			%sample_uniform(prob_mobile2060_, 0.05 0.10);
+* prob_mobile60pl;			%sample_uniform(prob_mobile60pl,  0.01 0.03);
+* prob_stop_mobile;			%sample_uniform(prob_stop_mobile, 0.05 0.10);
+* inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 2 5 10);
 
 * CIRCUMCISION;
 
@@ -3437,7 +3456,7 @@ if hiv_tm1=1 then do;
 end;
 
 * change in sexual beh for mobile men;
-rred_mm=1.0; if curr_mobile=1 then rred_mm=inc_risk_mobile
+rred_mm=1.0; if curr_mobile=1 then rred_mm=inc_risk_mobile;
 
 rred_balance= 1 ;
 
