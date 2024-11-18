@@ -280,8 +280,8 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_tested_pwid;				n_tested_pwid = s_tested_pwid * sf * 4;
 * n_tested_anc;					n_tested_anc = s_tested_anc * sf * 4;
 
-* p_tested_anc;					*if (s_anc-s_diag_anc)>0 then p_tested_anc=s_tested_anc/(s_anc-s_diag_anc);
-
+* p_tested_anc;					if (s_anc-s_diag_anc)>0 then p_tested_anc=s_tested_anc/(s_anc-s_diag_anc);
+proc print;var s_tested_anc s_anc s_diag_anc p_tested_anc;run;
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
@@ -305,7 +305,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
 * p_tested_sw;					if s_sw_1564 - s_diag_sw > 0 then p_tested_sw = s_tested_sw /(s_sw_1564 - s_diag_sw) ;
-* p_tested_agywfsw;				*if s_agywfsw_1564 - s_diag_agywfsw > 0 then p_tested_agywfsw = s_tested_agywfsw /(s_agywfsw_1564 - s_diag_agywfsw) ;
+* p_tested_agywfsw;				if s_agywfsw_1564 - s_diag_agywfsw > 0 then p_tested_agywfsw = s_tested_agywfsw /(s_agywfsw_1564 - s_diag_agywfsw) ;
 * p_ever_tested_sw; 			p_ever_tested_sw = s_ever_tested_sw / s_sw_1564;
 * p_tested_py_sw; 				p_tested_py_sw = s_tested_4p_sw / s_sw_1564;
 
@@ -527,10 +527,10 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_msm_infected_from_msm;		if s_hiv_msm gt 0 then p_msm_infected_from_msm = s_infected_from_msm / s_hiv_msm ;
 * prop_m_msm;					prop_m_msm = s_alive_msm / s_alive_m;
 * p_tested_msm;					if (s_alive1564_msm - s_diag_msm_age1564) > 0 then p_tested_msm = s_tested_msm /(s_alive1564_msm - s_diag_msm_age1564) ;
-* p_tested_py_msm;				*if (s_alive1564_msm - s_diag_msm_age1564) > 0 then p_tested_py_msm = s_tested_py_msm /(s_alive1564_msm - s_diag_msm_age1564) ;
+* p_tested_py_msm;				if (s_alive1564_msm - s_diag_msm_age1564) > 0 then p_tested_py_msm = s_tested_4p_msm /(s_alive1564_msm - s_diag_msm_age1564) ;
 
 * p_av_newp_msm;				if s_alive_msm ge 0 then p_av_newp_msm=s_msm_newp/ s_alive_msm;
-* p_msm_newp0;					if s_alive_msm ge 0 then p_msm_newp0= s_msm_newp0/ s_alive_msm;
+* p_msm_newp0_;					if s_alive_msm ge 0 then p_msm_newp0_= s_msm_newp0/ s_alive_msm;
 
 * p_ep;							p_ep = s_ep / s_alive1564;				
 * p_ep_msm;						p_ep_msm = s_msm_ep / s_alive1564_msm;
@@ -544,8 +544,8 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_onart_pwid;					if s_hiv_pwid  > 0 then p_onart_pwid = s_onart_pwid / s_pwid  ;
 * prevalence_pwid;				if s_alive1564_pwid>0 then prevalence_pwid = s_hiv1564pwid / s_alive1564_pwid;
 * p_diag_pwid;					if s_hiv1564pwid gt 0 then p_diag_pwid = s_diag_pwid_age1564 / s_hiv1564pwid  ;
+* p_tested_py_msm;				if (s_alive1564_pwid - s_diag_pwid_age1564) > 0 then p_tested_py_pwid = s_tested_4p_pwid /(s_alive1564_pwid - s_diag_pwid_age1564) ;
 
-* p_tb;							*if s_alive1564 gt 0 then p_tb = s_tb / s_alive1564;
 
 yll=yll_gbd;
 yll_w=yll_gbd_w;
@@ -563,13 +563,15 @@ incidence_msm = incidence1564msm * 10;
 p_1564_onprep = prop_1564_onprep *100;
 p_onprep_sw = prop_sw_onprep * 100;
 
-keep   cald	run		option	inc_cat		ych2_risk_beh_newp	p_w_giv_birth_this_per			mtct_prop		p_anc	p_pmtct
-prevalence_hiv_preg	p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_	p_newp_ge1w_	av_newp_ge1_non_sw 	
+keep   
+cald		run		option				inc_cat				ych2_risk_beh_newp		p_w_giv_birth_this_per	mtct_prop	
+p_anc				p_tested_anc		p_pmtct		
+prevalence_hiv_preg	p_newp_ge1_	 		p_newp_ge5_			p_newp_ge1m_		p_newp_ge1w_	av_newp_ge1_non_sw 	
 n_tested			p_tested_past_year_1549m				p_tested_past_year_1549w		test_prop_positive	
 n_self_tested		n_tested_anc							p_tested_past_year_ov25m		p_tested_past_year_ov25w
 p_mcirc				p_mcirc_1549m		n_new_vmmc1549m 	p_trad_circ			p_vmmc		s_sw_1549		p_sw_prog_vis
 prop_w_1549_sw		prop_w_1564_sw		prop_w_ever_sw		prop_sw_hiv			n_sw_1549_	prop_w_1524_onprep
-prop_1564_onprep	p_diag_sw			p_onart_sw
+prop_1564_onprep	p_diag_sw			p_onart_sw			p_tested_agywfsw
 prevalence1549_		prevalence1549m		prevalence1549w		prevalence	
 prevalence1519w		prevalence1519m		prevalence2024w		prevalence2024m		prevalence2529w		prevalence2529m
 prevalence3034w		prevalence3034m		prevalence3539w		prevalence3539m		prevalence4044w		prevalence4044m
@@ -600,15 +602,14 @@ prop_sw_hiv1549_	sw_trans_matrix		n_onprep_sw			p_tested_sw			p_ever_tested_sw	p
 	
 n_alive_msm		n_alive1564_msm		incidence1549msm	incidence1564msm	prevalence1549_msm	prevalence1564_msm
 p_elig_prep_any_msm_1564_			p_onprep_msm		p_onart_msm			prevalence_msm		prevalence_vg1000_msm
-p_diag_msm		p_onart_diag_msm	p_vl1000_art_gt6m_msm 					p_ever_tested_msm	p_tested_this_period_msm
+p_diag_msm		p_onart_diag_msm	p_vl1000_art_gt6m_msm 	p_tested_py_msm	p_ever_tested_msm	p_tested_this_period_msm
 p_msm_infected_from_msm				prop_m_msm			p_ep				p_ep_msm			p_msm_ge1newp
-p_m_ge1newp		p_av_newp_msm		p_msm_newp0			n_pwid				p_onprep_pwid		p_onart_pwid		p_diag_pwid			prevalence_pwid sw_trans_matrix		
-n_tested_msm	n_tested_pwid		n_vm_per_year		n_infected_m		n_infected_w		n_infected	n_infected_agyw
+p_m_ge1newp		p_av_newp_msm		p_msm_newp0_		n_pwid				p_onprep_pwid		p_onart_pwid		p_diag_pwid			prevalence_pwid sw_trans_matrix		
+n_tested_msm	n_tested_pwid		p_tested_py_pwid	n_vm_per_year		n_infected_m		n_infected_w		n_infected	n_infected_agyw
 s_primary_w		s_primary_m			sf					n_onprep_m			n_onprep_w			n_onprep	n_onprep_msm
-an_lin_incr_test					yll_m 			yll_w 				yll
+an_lin_incr_test					yll_m 				yll_w 				yll
 ;
 
-proc freq;table p_av_newp_msm		p_msm_newp0;run;
 proc sort data=y;by run option;run;
 
 
@@ -630,20 +631,30 @@ if run in (
 122158985
 154106580
 170714896
+171135156
 200707839
+208889877
 212124232
+229526930
+242862016
 248787601
 251327286
+253493777
 256316702
 271739199
+274205090
+291194348
 356652468
+404789855
 410606986
 412589368
 427893794
 429046539
+455018678
 459732697
 462065100
 486412331
+514363141
 545658246
 553443147
 580011412
@@ -656,11 +667,14 @@ if run in (
 672569065
 676649292
 689300042
+765984233
 770040815
+777210133
 805648313
 812498979
 815278735
 856225176
+867979859
 868502253
 905734889
 976855943
@@ -672,7 +686,7 @@ run;
 proc freq;table cald;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI_06nov24; 
+data a.l_base_CdI_13nov24; 
 set low_inc;
 run;
 
@@ -738,29 +752,32 @@ proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where 2022   <=
 proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <= cald < 2024  ; 
 
 ***in same order as excel sheet;
-**OST		 	= Option 4 /54;
-**Condom		= Option 5 /55;
-**FSW prev		= Option 1 /51 (this is PrEP and condom use but not testing);
-**MSM prev		= Option 2 /52 (ONLY reduction in cls);
-**PWID prev		= Option 4 /54; **SAME as OST;
-**FSW PrEP		= Option 1/51; **SAME as FSW prevention;
-**MSM PrEP		= Option 3 /53;
-**Self testing	= Option 13 /63;
-**AGYW testing	= Option 9 /59;
-**FSW testing	= Option 7 /57;
-**MSM testing 	= Option 6 /56;
-**PWID testing 	= Option 8 /58;
-**ANC testing 	= Option 20 /70;
-**VL testing	= Option 16 /66;
-**Mid target 	= Option 71;
-** TARGET		= Option=21;
-**ART 			= Option 18 /68; ***there is also 14/64 which is no loss at diagnosis;
-**PMTCT			= Option 17/67;
-**Viral supp	= Option 18 /68; **his is consequential of other targets so leave for now;
-**DTG uptake	= Option 15 /65;
-**Adherence		= Option 19 /69;
-**Testing in 25+w	= Option 11 /61;
-**Testing in 25+m	= Option 10 /60;
+**OST		 				= Not modelled;
+**Condom					= Option 5 /56;
+**FSW PrEP					= Option 2 /52; 
+**MSM PrEP					= Option 4 /54;
+**AGYW PrEP					= Not modelled;
+**Self testing				= Option 12 /62;
+**Facility based testing	= Option 11 /61;
+**AGYW testing				= Option 10 /60;
+**FSW testing				= Option 8 /58;
+**MSM testing 				= Option 7 /57;
+**PWID testing 				= Option 9 /59;
+**ANC testing 				= Option 18 /68;
+**FSW prev					= Option 1 /51 (increased condom use only);
+**MSM prev					= Option 3 /53 (ONLY reduction in cls);
+**AGYW prev					= Option 19 /69;
+**PWID prev					= Option 5 /55; 
+**VL testing				= Option 14 /65;
+**ART 						= Option 16 /66; ***Retention and coverage;
+**PMTCT						= Option 15/65;
+**Adherence					= Option 17 /67;
+**DTG uptake				= Option 13 /63;
+	
+**Mid target 	= Option 70 WITH condom promotion;
+**Mid target 	= Option 71 WITHOUT condom promotion;
+** TARGET		= Option=20 WITH condom promotion;
+** TARGET		= Option=20 WITHOUT condom promotion;
 
 ***CURRENTLY NOT PUT INTO SPREADSHEETS:
 

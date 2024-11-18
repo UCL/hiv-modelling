@@ -2221,8 +2221,8 @@ agywfsw=0; if agyw=1 and sw=1 then agywfsw=1;
 option = &s;
 mihpsa_params_set_in_options=0;				* JAS Oct23;
 
-*if caldate_never_dot >= &year_interv then do;
-if caldate_never_dot >= 1981 then do;
+if caldate_never_dot >= &year_interv then do;
+*if caldate_never_dot >= 1981 then do;
 
 
 	
@@ -3451,8 +3451,8 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 		rate_1sttest_2011 = initial_rate_1sttest + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;																					
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
-		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male rate_reptest ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
-		if msm=1 then do;			rate_1sttest = rate_1sttest * 11;	 = rate_reptest * 11;end;
+		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male;     rate_reptest = rate_reptest * rr_testing_male  ;   end;
+		if msm=1 then do;			rate_1sttest = rate_1sttest * 11;	rate_reptest = rate_reptest * 11;end;
 		if sw=1 then do;			rate_1sttest = rate_1sttest * 2;	rate_reptest = rate_reptest * 2;end;
 		if sw=1 and agyw=1 then do; rate_1sttest = rate_1sttest * 0.4;	rate_reptest = rate_reptest * 0.4;end;
 		if pwid=1 then do;			rate_1sttest = rate_1sttest * 0.4;	rate_reptest = rate_reptest * 0.4;end;
@@ -16085,6 +16085,17 @@ if adc=1 then util=util_adc;
 end;
 
 
+if 15 <= age  then do;
+util_gbd=1;
+      if hiv = 1 and onart = 1 then util_gbd = (1 - 0.078);
+      if hiv = 1 and onart ne 1 and 0 < cd4 < 200 then util_gbd = (1 - 0.582);
+      if hiv = 1 and onart ne 1 and 200 <= cd4 then util_gbd = (1 - 0.274);
+end;
+
+* kenya and cote d ivoire only;
+util = util_gbd;
+
+
 *** VF according to line of ART;
 if line2=1 and line3 ne 1 then startedline2=1;
 
@@ -18757,7 +18768,6 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-proc print;var caldate&j cald option age reg_option prob_vl_meas_done eff_prob_vl_meas_done;run;
 /*
 proc print;var caldate&j msm gender option eff_test_targeting hiv np_lasttest tested date1test unitest rate_1sttest ;
 where age ge 15 and death=.;run;
@@ -20058,6 +20068,7 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
 if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
+
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
