@@ -52,10 +52,6 @@ dbms=xlsx replace; sheet="Goals_int3"; getnames=n; range="A3:BC43";run;
 data goals_int3; set goals_int3_;  model = 1; scenario = 3;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 ods html;
-proc print;
-run;
-ods html close;
-
 
 proc import
 out=goals_int4_ 
@@ -419,48 +415,252 @@ hiv_synthesis_int14 hiv_synthesis_int15
 ;
 
 p_onart_15pl = (n_onart_15pl / n_hiv_15pl) * 100 ;
+cost = cost / 1000000 ;
 
-proc print data=all; var model scenario dalys;
-where year ge 2024;
-run;
+dcost = cost / (1.03**(year-2024));
+ddalys = daly / (1.03**(year-2024));
 
 
-data goals_0 ; set all; if model=1; if scenario = 0 ; dalys_0_1 = dalys; keep year dalys_0_1 ;
-data optima_0 ; set all; if model=2;if scenario = 0 ; dalys_0_2 = dalys;keep year dalys_0_2 ;
-data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;dalys_0_3 = dalys;keep year dalys_0_3 ;
 
-data goals_target ; set all; if model=1;if scenario = 20 ;dalys_target_1 = dalys;keep year dalys_target_1 ;
-data optima_target ; set all; if model=2;if scenario = 20 ;dalys_target_2 = dalys;keep year dalys_target_2 ;
-data hiv_synthesis_target ; set all; if model=3;if scenario = 20 ;dalys_target_3 = dalys;keep year dalys_target_3 ;
 
-data a.dalys ; 
-merge goals_0 optima_0 hiv_synthesis_0 goals_target optima_target hiv_synthesis_target ;
+
+
+* effects of interventions on costs ;
+
+
+data z; set all; 
+keep model scenario year cost  ;
+
+proc transpose data = z  out= s_1_0; where model = 1 and scenario = 0 and year ge 2024; data d_1_0; set s_1_0; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_sq;
+proc transpose data = z  out= s_1_1; where model = 1 and scenario = 1 and year ge 2024; data d_1_1; set s_1_1; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int1;
+proc transpose data = z  out= s_1_2; where model = 1 and scenario = 2 and year ge 2024; data d_1_2; set s_1_2; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int2;
+proc transpose data = z  out= s_1_3; where model = 1 and scenario = 3 and year ge 2024; data d_1_3; set s_1_3; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int3;
+proc transpose data = z  out= s_1_4; where model = 1 and scenario = 4 and year ge 2024; data d_1_4; set s_1_4; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int4;
+proc transpose data = z  out= s_1_5; where model = 1 and scenario = 5 and year ge 2024; data d_1_5; set s_1_5; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int5;
+proc transpose data = z  out= s_1_6; where model = 1 and scenario = 6 and year ge 2024; data d_1_6; set s_1_6; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int6;
+proc transpose data = z  out= s_1_7; where model = 1 and scenario = 7 and year ge 2024; data d_1_7; set s_1_7; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int7;
+proc transpose data = z  out= s_1_8; where model = 1 and scenario = 8 and year ge 2024; data d_1_8; set s_1_6; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int8;
+proc transpose data = z  out= s_1_9; where model = 1 and scenario = 9 and year ge 2024; data d_1_9; set s_1_9; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int9;
+proc transpose data = z  out= s_1_10; where model = 1 and scenario = 10 and year ge 2024; data d_1_10; set s_1_10; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int10;
+proc transpose data = z  out= s_1_11; where model = 1 and scenario = 11 and year ge 2024; data d_1_11; set s_1_11; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int11;
+proc transpose data = z  out= s_1_12; where model = 1 and scenario = 12 and year ge 2024; data d_1_12; set s_1_12; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int12;
+proc transpose data = z  out= s_1_13; where model = 1 and scenario = 13 and year ge 2024; data d_1_13; set s_1_13; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int13;
+proc transpose data = z  out= s_1_14; where model = 1 and scenario = 14 and year ge 2024; data d_1_14; set s_1_14; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int14;
+proc transpose data = z  out= s_1_15; where model = 1 and scenario = 15 and year ge 2024; data d_1_15; set s_1_15; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int15;
+
+proc transpose data = z  out= s_2_0; where model = 2 and scenario = 0 and year ge 2024; data d_2_0; set s_2_0; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_sq;
+proc transpose data = z  out= s_2_1; where model = 2 and scenario = 1 and year ge 2024; data d_2_1; set s_2_1; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int1;
+proc transpose data = z  out= s_2_2; where model = 2 and scenario = 2 and year ge 2024; data d_2_2; set s_2_2; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int2;
+proc transpose data = z  out= s_2_3; where model = 2 and scenario = 3 and year ge 2024; data d_2_3; set s_2_3; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int3;
+proc transpose data = z  out= s_2_4; where model = 2 and scenario = 4 and year ge 2024; data d_2_4; set s_2_4; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int4;
+proc transpose data = z  out= s_2_5; where model = 2 and scenario = 5 and year ge 2024; data d_2_5; set s_2_5; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int5;
+proc transpose data = z  out= s_2_6; where model = 2 and scenario = 6 and year ge 2024; data d_2_6; set s_2_6; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int6;
+proc transpose data = z  out= s_2_7; where model = 2 and scenario = 7 and year ge 2024; data d_2_7; set s_2_7; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int7;
+proc transpose data = z  out= s_2_8; where model = 2 and scenario = 8 and year ge 2024; data d_2_8; set s_2_6; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int8;
+proc transpose data = z  out= s_2_9; where model = 2 and scenario = 9 and year ge 2024; data d_2_9; set s_2_9; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int9;
+proc transpose data = z  out= s_2_10; where model = 2 and scenario = 10 and year ge 2024; data d_2_10; set s_2_10; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int10;
+proc transpose data = z  out= s_2_11; where model = 2 and scenario = 11 and year ge 2024; data d_2_11; set s_2_11; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int11;
+proc transpose data = z  out= s_2_12; where model = 2 and scenario = 12 and year ge 2024; data d_2_12; set s_2_12; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int12;
+proc transpose data = z  out= s_2_13; where model = 2 and scenario = 13 and year ge 2024; data d_2_13; set s_2_13; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int13;
+proc transpose data = z  out= s_2_14; where model = 2 and scenario = 14 and year ge 2024; data d_2_14; set s_2_14; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int14;
+proc transpose data = z  out= s_2_15; where model = 2 and scenario = 15 and year ge 2024; data d_2_15; set s_2_15; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int15;
+
+
+proc transpose data = z  out= s_3_0; where model = 3 and scenario = 0 and year ge 2024; data d_3_0; set s_3_0; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_sq;
+proc transpose data = z  out= s_3_1; where model = 3 and scenario = 1 and year ge 2024; data d_3_1; set s_3_1; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int1;
+proc transpose data = z  out= s_3_2; where model = 3 and scenario = 2 and year ge 2024; data d_3_2; set s_3_2; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int2;
+proc transpose data = z  out= s_3_3; where model = 3 and scenario = 3 and year ge 2024; data d_3_3; set s_3_3; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int3;
+proc transpose data = z  out= s_3_4; where model = 3 and scenario = 4 and year ge 2024; data d_3_4; set s_3_4; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int4;
+proc transpose data = z  out= s_3_5; where model = 3 and scenario = 5 and year ge 2024; data d_3_5; set s_3_5; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int5;
+proc transpose data = z  out= s_3_6; where model = 3 and scenario = 6 and year ge 2024; data d_3_6; set s_3_6; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int6;
+proc transpose data = z  out= s_3_7; where model = 3 and scenario = 7 and year ge 2024; data d_3_7; set s_3_7; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int7;
+proc transpose data = z  out= s_3_8; where model = 3 and scenario = 8 and year ge 2024; data d_3_8; set s_3_6; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int8;
+proc transpose data = z  out= s_3_9; where model = 3 and scenario = 9 and year ge 2024; data d_3_9; set s_3_9; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int9;
+proc transpose data = z  out= s_3_10; where model = 3 and scenario = 10 and year ge 2024; data d_3_10; set s_3_10; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int10;
+proc transpose data = z  out= s_3_11; where model = 3 and scenario = 11 and year ge 2024; data d_3_11; set s_3_11; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int11;
+proc transpose data = z  out= s_3_12; where model = 3 and scenario = 12 and year ge 2024; data d_3_12; set s_3_12; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int12;
+proc transpose data = z  out= s_3_13; where model = 3 and scenario = 13 and year ge 2024; data d_3_13; set s_3_13; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int13;
+proc transpose data = z  out= s_3_14; where model = 3 and scenario = 14 and year ge 2024; data d_3_14; set s_3_14; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int14;
+proc transpose data = z  out= s_3_15; where model = 3 and scenario = 15 and year ge 2024; data d_3_15; set s_3_15; if _NAME_ = 'cost' ; drop _NAME_; 
+mean_cost_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_cost_int15;
+
+
+data z_effect_int1_1; merge d_1_0 d_1_1 ; effect_int1 = mean_cost_int1 - mean_cost_sq; model=1; 
+data z_effect_int1_2; merge d_2_0 d_2_1 ; effect_int1 = mean_cost_int1 - mean_cost_sq; model=2; 
+data z_effect_int1_3; merge d_3_0 d_3_1 ; effect_int1 = mean_cost_int1 - mean_cost_sq; model=3; 
+data z_effect_int1; set z_effect_int1_1 z_effect_int1_2 z_effect_int1_3;  keep model effect_int1;
+
+data z_effect_int2_1; merge d_1_0 d_1_1 ; effect_int2 = mean_cost_int2 - mean_cost_sq; model=1; 
+data z_effect_int2_2; merge d_2_0 d_2_1 ; effect_int2 = mean_cost_int2 - mean_cost_sq; model=2; 
+data z_effect_int2_3; merge d_3_0 d_3_1 ; effect_int2 = mean_cost_int2 - mean_cost_sq; model=3; 
+data z_effect_int2; set z_effect_int2_1 z_effect_int2_2 z_effect_int2_3;  keep model effect_int2;
+
+data z_effect_int3_1; merge d_1_0 d_1_1 ; effect_int3 = mean_cost_int3 - mean_cost_sq; model=1; 
+data z_effect_int3_2; merge d_2_0 d_2_1 ; effect_int3 = mean_cost_int3 - mean_cost_sq; model=2; 
+data z_effect_int3_3; merge d_3_0 d_3_1 ; effect_int3 = mean_cost_int3 - mean_cost_sq; model=3; 
+data z_effect_int3; set z_effect_int3_1 z_effect_int3_2 z_effect_int3_3;  keep model effect_int3;
+
+data z_effect_int4_1; merge d_1_0 d_1_1 ; effect_int4 = mean_cost_int4 - mean_cost_sq; model=1; 
+data z_effect_int4_2; merge d_2_0 d_2_1 ; effect_int4 = mean_cost_int4 - mean_cost_sq; model=2; 
+data z_effect_int4_3; merge d_3_0 d_3_1 ; effect_int4 = mean_cost_int4 - mean_cost_sq; model=3; 
+data z_effect_int4; set z_effect_int4_1 z_effect_int4_2 z_effect_int4_3;  keep model effect_int4;
+
+data z_effect_int5_1; merge d_1_0 d_1_1 ; effect_int5 = mean_cost_int5 - mean_cost_sq; model=1; 
+data z_effect_int5_2; merge d_2_0 d_2_1 ; effect_int5 = mean_cost_int5 - mean_cost_sq; model=2; 
+data z_effect_int5_3; merge d_3_0 d_3_1 ; effect_int5 = mean_cost_int5 - mean_cost_sq; model=3; 
+data z_effect_int5; set z_effect_int5_1 z_effect_int5_2 z_effect_int5_3;  keep model effect_int5;
+
+data z_effect_int6_1; merge d_1_0 d_1_1 ; effect_int6 = mean_cost_int6 - mean_cost_sq; model=1; 
+data z_effect_int6_2; merge d_2_0 d_2_1 ; effect_int6 = mean_cost_int6 - mean_cost_sq; model=2; 
+data z_effect_int6_3; merge d_3_0 d_3_1 ; effect_int6 = mean_cost_int6 - mean_cost_sq; model=3; 
+data z_effect_int6; set z_effect_int6_1 z_effect_int6_2 z_effect_int6_3;  keep model effect_int6;
+
+data z_effect_int7_1; merge d_1_0 d_1_1 ; effect_int7 = mean_cost_int7 - mean_cost_sq; model=1; 
+data z_effect_int7_2; merge d_2_0 d_2_1 ; effect_int7 = mean_cost_int7 - mean_cost_sq; model=2; 
+data z_effect_int7_3; merge d_3_0 d_3_1 ; effect_int7 = mean_cost_int7 - mean_cost_sq; model=3; 
+data z_effect_int7; set z_effect_int7_1 z_effect_int7_2 z_effect_int7_3;  keep model effect_int7;
+
+data z_effect_int8_1; merge d_1_0 d_1_1 ; effect_int8 = mean_cost_int8 - mean_cost_sq; model=1; 
+data z_effect_int8_2; merge d_2_0 d_2_1 ; effect_int8 = mean_cost_int8 - mean_cost_sq; model=2; 
+data z_effect_int8_3; merge d_3_0 d_3_1 ; effect_int8 = mean_cost_int8 - mean_cost_sq; model=3; 
+data z_effect_int8; set z_effect_int8_1 z_effect_int8_2 z_effect_int8_3;  keep model effect_int8;
+
+data z_effect_int9_1; merge d_1_0 d_1_1 ; effect_int9 = mean_cost_int9 - mean_cost_sq; model=1; 
+data z_effect_int9_2; merge d_2_0 d_2_1 ; effect_int9 = mean_cost_int9 - mean_cost_sq; model=2; 
+data z_effect_int9_3; merge d_3_0 d_3_1 ; effect_int9 = mean_cost_int9 - mean_cost_sq; model=3; 
+data z_effect_int9; set z_effect_int9_1 z_effect_int9_2 z_effect_int9_3;  keep model effect_int9;
+
+data z_effect_int10_1; merge d_1_0 d_1_1 ; effect_int10 = mean_cost_int10 - mean_cost_sq; model=1; 
+data z_effect_int10_2; merge d_2_0 d_2_1 ; effect_int10 = mean_cost_int10 - mean_cost_sq; model=2; 
+data z_effect_int10_3; merge d_3_0 d_3_1 ; effect_int10 = mean_cost_int10 - mean_cost_sq; model=3; 
+data z_effect_int10; set z_effect_int10_1 z_effect_int10_2 z_effect_int10_3;  keep model effect_int10;
+
+data z_effect_int11_1; merge d_1_0 d_1_1 ; effect_int11 = mean_cost_int11 - mean_cost_sq; model=1; 
+data z_effect_int11_2; merge d_2_0 d_2_1 ; effect_int11 = mean_cost_int11 - mean_cost_sq; model=2; 
+data z_effect_int11_3; merge d_3_0 d_3_1 ; effect_int11 = mean_cost_int11 - mean_cost_sq; model=3; 
+data z_effect_int11; set z_effect_int11_1 z_effect_int11_2 z_effect_int11_3;  keep model effect_int11;
+
+data z_effect_int12_1; merge d_1_0 d_1_1 ; effect_int12 = mean_cost_int12 - mean_cost_sq; model=1; 
+data z_effect_int12_2; merge d_2_0 d_2_1 ; effect_int12 = mean_cost_int12 - mean_cost_sq; model=2; 
+data z_effect_int12_3; merge d_3_0 d_3_1 ; effect_int12 = mean_cost_int12 - mean_cost_sq; model=3; 
+data z_effect_int12; set z_effect_int12_1 z_effect_int12_2 z_effect_int12_3;  keep model effect_int12;
+
+data z_effect_int13_1; merge d_1_0 d_1_1 ; effect_int13 = mean_cost_int13 - mean_cost_sq; model=1; 
+data z_effect_int13_2; merge d_2_0 d_2_1 ; effect_int13 = mean_cost_int13 - mean_cost_sq; model=2; 
+data z_effect_int13_3; merge d_3_0 d_3_1 ; effect_int13 = mean_cost_int13 - mean_cost_sq; model=3; 
+data z_effect_int13; set z_effect_int13_1 z_effect_int13_2 z_effect_int13_3;  keep model effect_int13;
+
+data z_effect_int14_1; merge d_1_0 d_1_1 ; effect_int14 = mean_cost_int14 - mean_cost_sq; model=1; 
+data z_effect_int14_2; merge d_2_0 d_2_1 ; effect_int14 = mean_cost_int14 - mean_cost_sq; model=2; 
+data z_effect_int14_3; merge d_3_0 d_3_1 ; effect_int14 = mean_cost_int14 - mean_cost_sq; model=3; 
+data z_effect_int14; set z_effect_int14_1 z_effect_int14_2 z_effect_int14_3;  keep model effect_int14;
+
+data z_effect_int15_1; merge d_1_0 d_1_1 ; effect_int15 = mean_cost_int15 - mean_cost_sq; model=1; 
+data z_effect_int15_2; merge d_2_0 d_2_1 ; effect_int15 = mean_cost_int15 - mean_cost_sq; model=2; 
+data z_effect_int15_3; merge d_3_0 d_3_1 ; effect_int15 = mean_cost_int15 - mean_cost_sq; model=3; 
+data z_effect_int15; set z_effect_int15_1 z_effect_int15_2 z_effect_int15_3;  keep model effect_int15;
+
+data z_effect; set z_effect_int1 z_effect_int2 z_effect_int3 z_effect_int4 z_effect_int5 z_effect_int6 z_effect_int7
+ z_effect_int8 z_effect_int9 z_effect_int10 z_effect_int11 z_effect_int12 z_effect_int13 z_effect_int14 z_effect_int15; 
+
+if scenario = 1 then int_name = 'Testing_community';
+if scenario = 2 then int_name = 'Testing_risk_informed';
+if scenario = 3 then int_name = 'Self_testing_general';
+if scenario = 4 then int_name = 'Self_testing_risk_informed';
+if scenario = 5 then int_name = 'AGYW_testing';
+if scenario = 6 then int_name = 'AGYW_behaviour_change';
+if scenario = 7 then int_name = 'VMMC';
+if scenario = 8 then int_name = 'Oral_PrEP';
+if scenario = 9 then int_name = 'Oral/Cab PrEP';
+if scenario = 10 then int_name = 'Oral/Cab/VR_PrEP';
+if scenario = 11 then int_name = 'Harm_reduction_PWID';
+if scenario = 12 then int_name = 'ART_linkage_retention';
+if scenario = 13 then int_name = 'ART_adherence';
+if scenario = 14 then int_name = 'ART_coverage_PLW';
+if scenario = 15 then int_name = 'AHD_package';
+
 
 ods html;
 
-proc sgplot data = a.dalys ; 
-Title    height=1.5 justify=center "dalys";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024   to 2040 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000   by 100000) valueattrs=(size=10);
-
-label dalys_0_1 = "Goals - SQ ";
-* label dalys_0_2 = "Optima - SQ ";
-label dalys_0_3 = "Synthesis - SQ ";
-label dalys_target_1 = "Goals - int target ";
-* label dalys_target_2 = "Optima - int target ";
-label dalys_target_3 = "Synthesis - int target ";
-
-series  x=year y=dalys_0_1/	lineattrs = (color=black thickness = 2);
-* series  x=year y=dalys_0_2/	lineattrs = (color=red thickness = 2);
-series  x=year y=dalys_0_3/	lineattrs = (color=green thickness = 2);
-
-series  x=year y=dalys_target_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
-* series  x=year y=dalys_target_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
-series  x=year y=dalys_target_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
-
+data x; set z_effect; 
+title 'Effect on Cost ($m)';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_cost
+          group=model groupdisplay=cluster
+     ;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  xaxis label="Intervention" display=(noline noticks); 
+  yaxis label="Effect on Cost ($m)" display=(noline) grid;
 run;
 
-quit;
+
+ods html close;
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1318,9 +1518,6 @@ if scenario = 14 then int_name = 'ART_coverage_PLW';
 if scenario = 15 then int_name = 'AHD_package';
 
 
-* todo: replace n_condoms with extent_of_sexual_risk ;
-* todo: add p_plhiv_onart as an output so can include goals ;
-
 ods html;
 
 data x; set year_3_effect; 
@@ -1337,19 +1534,6 @@ styleattrs datacolors=(black red green);
   yaxis label="Effect on number on PrEP" display=(noline) grid;
 run;
 
-data x; set year_3_effect; 
-if scenario = 6;
-title '(to be) Relative rate of sexual risk in 2027';
-proc sgplot data=x noborder nolegend;
-styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_n_condoms
-          group=model groupdisplay=cluster
-     ;
-  xaxis display=(nolabel noline noticks);
-  yaxis display=(noline) grid;
-  xaxis label="Intervention" display=(noline noticks); 
-  yaxis label="Relative rate of sexual risk" display=(noline) grid;
-run;
 
 data x; set year_3_effect; 
 if scenario in (1 2 3 4 5);
@@ -1428,4 +1612,108 @@ ods html close;
 
 */
  
+
+
+/*
+
+* dalys over time for targets and sq;
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; dalys_0_1 = dalys; keep year dalys_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; dalys_0_2 = dalys;keep year dalys_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;dalys_0_3 = dalys;keep year dalys_0_3 ;
+
+data goals_target ; set all; if model=1;if scenario = 20 ;dalys_target_1 = dalys;keep year dalys_target_1 ;
+data optima_target ; set all; if model=2;if scenario = 20 ;dalys_target_2 = dalys;keep year dalys_target_2 ;
+data hiv_synthesis_target ; set all; if model=3;if scenario = 20 ;dalys_target_3 = dalys;keep year dalys_target_3 ;
+
+data a.dalys ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_target optima_target hiv_synthesis_target ;
+
+ods html;
+
+proc sgplot data = a.dalys ; 
+Title    height=1.5 justify=center "DALYs (undiscounted)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000   by 100000) valueattrs=(size=10);
+
+label dalys_0_1 = "Goals - SQ ";
+* label dalys_0_2 = "Optima - SQ ";
+label dalys_0_3 = "Synthesis - SQ ";
+label dalys_target_1 = "Goals - int target ";
+* label dalys_target_2 = "Optima - int target ";
+label dalys_target_3 = "Synthesis - int target ";
+
+series  x=year y=dalys_0_1/	lineattrs = (color=black thickness = 2);
+* series  x=year y=dalys_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=dalys_0_3/	lineattrs = (color=green thickness = 2);
+
+series  x=year y=dalys_target_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+* series  x=year y=dalys_target_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=dalys_target_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+
+run;
+
+*/
+
+
+
+/*
+
+* costs over time for targets and sq;
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; cost_0_1 = cost; keep year cost_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; cost_0_2 = cost;keep year cost_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;cost_0_3 = cost;keep year cost_0_3 ;
+
+data goals_target ; set all; if model=1;if scenario = 20 ;cost_target_1 = cost;keep year cost_target_1 ;
+data optima_target ; set all; if model=2;if scenario = 20 ;cost_target_2 = cost;keep year cost_target_2 ;
+data hiv_synthesis_target ; set all; if model=3;if scenario = 20 ;cost_target_3 = cost;keep year cost_target_3 ;
+
+data a.cost ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_target optima_target hiv_synthesis_target ;
+
+ods html;
+
+proc sgplot data = a.cost ; 
+Title    height=1.5 justify=center "Cost (undiscounted)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000   by 100) valueattrs=(size=10);
+
+label cost_0_1 = "Goals - SQ ";
+* label cost_0_2 = "Optima - SQ ";
+label cost_0_3 = "Synthesis - SQ ";
+label cost_target_1 = "Goals - int target ";
+* label cost_target_2 = "Optima - int target ";
+label cost_target_3 = "Synthesis - int target ";
+
+series  x=year y=cost_0_1/	lineattrs = (color=black thickness = 2);
+* series  x=year y=cost_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=cost_0_3/	lineattrs = (color=green thickness = 2);
+
+series  x=year y=cost_target_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+* series  x=year y=cost_target_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=cost_target_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+
+run;
+
+quit;
+
+*/
+
+
+/*
+
+* ICER - still to be done;
+
+data goals_0 ; set all; if model=1;if scenario = 20 ;dcost_0_1 = dcost;  ddaly_0_1 = ddaly; keep year cost_0_1  ddalys_0_1;
+data optima_0 ; set all; if model=2;if scenario = 20 ;dcost_0_2 = dcost;  ddaly_0_2 = ddaly; keep year cost_0_2  ddalys_0_2;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 20 ;dcost_0_3 = dcost; ddaly_0_3 = ddaly; keep year cost_0_3  ddalys_0_3;
+
+data goals_target ; set all; if model=1;if scenario = 20 ;dcost_target_1 = dcost;  ddaly_target_1 = ddaly; keep year cost_target_1  ddalys_target_1;
+data optima_target ; set all; if model=2;if scenario = 20 ;dcost_target_2 = dcost;  ddaly_target_2 = ddaly; keep year cost_target_2  ddalys_target_2;
+data hiv_synthesis_target ; set all; if model=3;if scenario = 20 ;dcost_target_3 = dcost; ddaly_target_3 = ddaly; keep year cost_target_3  ddalys_target_3;
+
+merge goals_0 optima_0 hiv_synthesis_0 goals_target optima_target hiv_synthesis_target ;
+
+*/
 
