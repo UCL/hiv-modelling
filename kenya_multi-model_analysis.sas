@@ -420,42 +420,42 @@ hiv_synthesis_int14 hiv_synthesis_int15
 
 p_onart_15pl = (n_onart_15pl / n_hiv_15pl) * 100 ;
 
-proc 
+proc print data=all; var model scenario dalys;
+where year ge 2024;
+run;
 
 
 data goals_0 ; set all; if model=1; if scenario = 0 ; dalys_0_1 = dalys; keep year dalys_0_1 ;
 data optima_0 ; set all; if model=2;if scenario = 0 ; dalys_0_2 = dalys;keep year dalys_0_2 ;
 data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;dalys_0_3 = dalys;keep year dalys_0_3 ;
 
-data goals_target ; set all; if model=1;if scenario = target ;dalys_target_1 = dalys;keep year dalys_target_1 ;
-data optima_target ; set all; if model=2;if scenario = target ;dalys_target_2 = dalys;keep year dalys_target_2 ;
-data hiv_synthesis_target ; set all; if model=3;if scenario = target ;dalys_target_3 = dalys;keep year dalys_target_3 ;
+data goals_target ; set all; if model=1;if scenario = 20 ;dalys_target_1 = dalys;keep year dalys_target_1 ;
+data optima_target ; set all; if model=2;if scenario = 20 ;dalys_target_2 = dalys;keep year dalys_target_2 ;
+data hiv_synthesis_target ; set all; if model=3;if scenario = 20 ;dalys_target_3 = dalys;keep year dalys_target_3 ;
 
 data a.dalys ; 
 merge goals_0 optima_0 hiv_synthesis_0 goals_target optima_target hiv_synthesis_target ;
-
-proc print; run;
 
 ods html;
 
 proc sgplot data = a.dalys ; 
 Title    height=1.5 justify=center "dalys";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023   to 2040 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000   by 1000000) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000   by 100000) valueattrs=(size=10);
 
 label dalys_0_1 = "Goals - SQ ";
-label dalys_0_2 = "Optima - SQ ";
+* label dalys_0_2 = "Optima - SQ ";
 label dalys_0_3 = "Synthesis - SQ ";
 label dalys_target_1 = "Goals - int target ";
-label dalys_target_2 = "Optima - int target ";
+* label dalys_target_2 = "Optima - int target ";
 label dalys_target_3 = "Synthesis - int target ";
 
 series  x=year y=dalys_0_1/	lineattrs = (color=black thickness = 2);
-series  x=year y=dalys_0_2/	lineattrs = (color=red thickness = 2);
+* series  x=year y=dalys_0_2/	lineattrs = (color=red thickness = 2);
 series  x=year y=dalys_0_3/	lineattrs = (color=green thickness = 2);
 
 series  x=year y=dalys_target_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
-series  x=year y=dalys_target_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+* series  x=year y=dalys_target_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
 series  x=year y=dalys_target_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
 
 run;
