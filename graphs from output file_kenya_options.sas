@@ -22,10 +22,9 @@ data b;
 
 
 
-  s =  1 ;
+  s =  101 ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
-
 
 
 
@@ -115,7 +114,7 @@ n_tested_due_to_self_test = n_tested_due_to_self_t ;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  54   ;
+%let nfit =   4   ;
 %let year_end = 2040.00 ;
 run;
 proc sort;by cald option ;run;

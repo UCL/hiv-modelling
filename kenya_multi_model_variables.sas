@@ -13,7 +13,10 @@ incidence_m_1524 = input( AG, best12.); incidence_m_15pl = input( AH, best12.); 
 incidence_w_15pl = input( AJ, best12.); incidence_fsw = input( AK, best12.); incidence_msm = input( AL, best12.); incidence_kp1 = input( AM, best12.); incidence_kp2 = input( AN, best12.); 
 incidence_15pl = input( AO, best12.); n_onart_15pl = input( AP, best12.); n_prep_w = input( AQ, best12.);
 n_prep_m = input( AR, best12.); n_prep = input( AS, best12.); yll_m = input( AT, best12.); yll_w = input( AU, best12.); yll = input( AV, best12.); n_hiv_014 = input( AW, best12.); 
-new_infection_014 = input( AX, best12.); n_hiv_deaths_014 = input( AY, best12.); n_tests = input( AZ, best12.); n_condoms = input( BA, best12.); 
+new_infection_014 = input( AX, best12.); n_hiv_deaths_014 = input( AY, best12.); n_tests = input( AZ, best12.); n_condoms = input( BA, best12.); cost = input( BB, best12.);
+dalys = input(BC , best12.);
 
-drop  A  B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB AC AD AE AF AG AH AI AJ AK AL AM AN AO AP AQ AR AS AT AU AV AW AX AY AZ BA;
+drop  A  B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB AC AD AE AF AG AH AI AJ AK AL AM AN AO AP AQ AR AS AT AU AV AW AX AY AZ BA BB BC;
+
+
 
