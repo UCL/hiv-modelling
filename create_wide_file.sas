@@ -1,6 +1,6 @@
 
 * Matt's local machine input;
-libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run106";
+libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105";
 data hiv_synthesis_base(compress=binary); set a.out:;
 /*
 * Myriad input;
@@ -20,6 +20,9 @@ data hiv_synthesis_base; set a.concatenated_data; option FULLSTIMER;
 proc freq; tables run; run;
 proc print; var run cald option prevalence1549 incidence1549; where run = 94069056 ; run;  
 */
+proc printto log="C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105\log_file.log";
+run;
+
 if run=. then delete; 
 proc sort data=hiv_synthesis_base; 
 by run cald option;run;
@@ -60,7 +63,7 @@ by run ;
 discount_5py = 1/(1.05**(cald-&year_start_disc));
 discount_10py = 1/(1.10**(cald-&year_start_disc));
 *The following can be changed if we want instead 10% discount rate;
-%let discount=discount_3py;
+%let discount=discount_5py;
 
 * ================================================================================= ;
 
@@ -1440,3 +1443,5 @@ run;
 
 ods html close;
 
+proc printo;
+run;
