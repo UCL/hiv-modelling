@@ -410,8 +410,10 @@ optima_int6 optima_int7 optima_int8 optima_int9 optima_int10 optima_int11 optima
 hiv_synthesis_sq hiv_synthesis_target hiv_synthesis_midway hiv_synthesis_int1 hiv_synthesis_int2 hiv_synthesis_int3 hiv_synthesis_int4 hiv_synthesis_int5  
 hiv_synthesis_int6 hiv_synthesis_int7 hiv_synthesis_int8 hiv_synthesis_int9 hiv_synthesis_int10 hiv_synthesis_int11 hiv_synthesis_int12 hiv_synthesis_int13 
 hiv_synthesis_int14 hiv_synthesis_int15  
-
 ;
+
+p_onart_15pl = (n_onart_15pl / n_hiv_15pl) * 100 ;
+
 
 
 
@@ -426,67 +428,67 @@ p_men_15pl_circ = p_men_15pl_circ* 100;
 
 data year_3_0; set year_3; if scenario=0;
 n_prep_sq = n_prep; n_condoms_sq = n_condoms; p_diagnosed_15pl_sq = p_diagnosed_15pl; p_onart_diag_15pl_sq = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_sq = p_vl1000_onart_15pl ; p_men_15pl_circ_sq = p_men_15pl_circ ;
+p_vl1000_onart_15pl_sq = p_vl1000_onart_15pl ; p_men_15pl_circ_sq = p_men_15pl_circ ; p_onart_15pl_sq = p_onart_15pl; 
 
 data year_3_int1; set year_3; if scenario=1;
 n_prep_int1 = n_prep; n_condoms_int1 = n_condoms; p_diagnosed_15pl_int1 = p_diagnosed_15pl; p_onart_diag_15pl_int1 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int1 = p_vl1000_onart_15pl ; p_men_15pl_circ_int1 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int1 = p_vl1000_onart_15pl ; p_men_15pl_circ_int1 = p_men_15pl_circ ;  p_onart_15pl_int1 = p_onart_15pl; 
 
 data year_3_int2; set year_3; if scenario=2;
 n_prep_int2 = n_prep; n_condoms_int2 = n_condoms; p_diagnosed_15pl_int2 = p_diagnosed_15pl; p_onart_diag_15pl_int2 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int2 = p_vl1000_onart_15pl ; p_men_15pl_circ_int2 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int2 = p_vl1000_onart_15pl ; p_men_15pl_circ_int2 = p_men_15pl_circ ; p_onart_15pl_int2 = p_onart_15pl;
 
 data year_3_int3; set year_3; if scenario=3;
 n_prep_int3 = n_prep; n_condoms_int3 = n_condoms; p_diagnosed_15pl_int3 = p_diagnosed_15pl; p_onart_diag_15pl_int3 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int3 = p_vl1000_onart_15pl ; p_men_15pl_circ_int3 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int3 = p_vl1000_onart_15pl ; p_men_15pl_circ_int3 = p_men_15pl_circ ; p_onart_15pl_int3 = p_onart_15pl; 
 
 data year_3_int4; set year_3; if scenario=4;
 n_prep_int4 = n_prep; n_condoms_int4 = n_condoms; p_diagnosed_15pl_int4 = p_diagnosed_15pl; p_onart_diag_15pl_int4 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int4 = p_vl1000_onart_15pl ; p_men_15pl_circ_int4 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int4 = p_vl1000_onart_15pl ; p_men_15pl_circ_int4 = p_men_15pl_circ ; p_onart_15pl_int4 = p_onart_15pl; 
 
 data year_3_int5; set year_3; if scenario=5;
 n_prep_int5 = n_prep; n_condoms_int5 = n_condoms; p_diagnosed_15pl_int5 = p_diagnosed_15pl; p_onart_diag_15pl_int5 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int5 = p_vl1000_onart_15pl ; p_men_15pl_circ_int5 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int5 = p_vl1000_onart_15pl ; p_men_15pl_circ_int5 = p_men_15pl_circ ; p_onart_15pl_int5 = p_onart_15pl; 
 
 data year_3_int6; set year_3; if scenario=6;
 n_prep_int6 = n_prep; n_condoms_int6 = n_condoms; p_diagnosed_15pl_int6 = p_diagnosed_15pl; p_onart_diag_15pl_int6 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int6 = p_vl1000_onart_15pl ; p_men_15pl_circ_int6 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int6 = p_vl1000_onart_15pl ; p_men_15pl_circ_int6 = p_men_15pl_circ ; p_onart_15pl_int6 = p_onart_15pl; 
 
 data year_3_int7; set year_3; if scenario=7;
 n_prep_int7 = n_prep; n_condoms_int7 = n_condoms; p_diagnosed_15pl_int7 = p_diagnosed_15pl; p_onart_diag_15pl_int7 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int7 = p_vl1000_onart_15pl ; p_men_15pl_circ_int7 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int7 = p_vl1000_onart_15pl ; p_men_15pl_circ_int7 = p_men_15pl_circ ; p_onart_15pl_int7 = p_onart_15pl; 
 
 data year_3_int8; set year_3; if scenario=8;
 n_prep_int8 = n_prep; n_condoms_int8 = n_condoms; p_diagnosed_15pl_int8 = p_diagnosed_15pl; p_onart_diag_15pl_int8 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int8 = p_vl1000_onart_15pl ; p_men_15pl_circ_int8 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int8 = p_vl1000_onart_15pl ; p_men_15pl_circ_int8 = p_men_15pl_circ ; p_onart_15pl_int8 = p_onart_15pl; 
 
 data year_3_int9; set year_3; if scenario=9;
 n_prep_int9 = n_prep; n_condoms_int9 = n_condoms; p_diagnosed_15pl_int9 = p_diagnosed_15pl; p_onart_diag_15pl_int9 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int9 = p_vl1000_onart_15pl ; p_men_15pl_circ_int9 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int9 = p_vl1000_onart_15pl ; p_men_15pl_circ_int9 = p_men_15pl_circ ; p_onart_15pl_int9 = p_onart_15pl; 
 
 data year_3_int10; set year_3; if scenario=10;
 n_prep_int10 = n_prep; n_condoms_int10 = n_condoms; p_diagnosed_15pl_int10 = p_diagnosed_15pl; p_onart_diag_15pl_int10 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int10 = p_vl1000_onart_15pl ; p_men_15pl_circ_int10 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int10 = p_vl1000_onart_15pl ; p_men_15pl_circ_int10 = p_men_15pl_circ ; p_onart_15pl_int10 = p_onart_15pl; 
 
 data year_3_int11; set year_3; if scenario=11;
 n_prep_int11 = n_prep; n_condoms_int11 = n_condoms; p_diagnosed_15pl_int11 = p_diagnosed_15pl; p_onart_diag_15pl_int11 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int11 = p_vl1000_onart_15pl ; p_men_15pl_circ_int11 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int11 = p_vl1000_onart_15pl ; p_men_15pl_circ_int11 = p_men_15pl_circ ; p_onart_15pl_int11 = p_onart_15pl; 
 
 data year_3_int12; set year_3; if scenario=12;
 n_prep_int12 = n_prep; n_condoms_int12 = n_condoms; p_diagnosed_15pl_int12 = p_diagnosed_15pl; p_onart_diag_15pl_int12 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int12 = p_vl1000_onart_15pl ; p_men_15pl_circ_int12 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int12 = p_vl1000_onart_15pl ; p_men_15pl_circ_int12 = p_men_15pl_circ ;  p_onart_15pl_int12 = p_onart_15pl; 
 
 data year_3_int13; set year_3; if scenario=13;
 n_prep_int13 = n_prep; n_condoms_int13 = n_condoms; p_diagnosed_15pl_int13 = p_diagnosed_15pl; p_onart_diag_15pl_int13 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int13 = p_vl1000_onart_15pl ; p_men_15pl_circ_int13 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int13 = p_vl1000_onart_15pl ; p_men_15pl_circ_int13 = p_men_15pl_circ ; p_onart_15pl_int13 = p_onart_15pl; 
 
 data year_3_int14; set year_3; if scenario=14;
 n_prep_int14 = n_prep; n_condoms_int14 = n_condoms; p_diagnosed_15pl_int14 = p_diagnosed_15pl; p_onart_diag_15pl_int14 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int14 = p_vl1000_onart_15pl ; p_men_15pl_circ_int14 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int14 = p_vl1000_onart_15pl ; p_men_15pl_circ_int14 = p_men_15pl_circ ; p_onart_15pl_int14 = p_onart_15pl; 
 
 data year_3_int15; set year_3; if scenario=15;
 n_prep_int15 = n_prep; n_condoms_int15 = n_condoms; p_diagnosed_15pl_int15 = p_diagnosed_15pl; p_onart_diag_15pl_int15 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int15 = p_vl1000_onart_15pl ; p_men_15pl_circ_int15 = p_men_15pl_circ ;
+p_vl1000_onart_15pl_int15 = p_vl1000_onart_15pl ; p_men_15pl_circ_int15 = p_men_15pl_circ ; p_onart_15pl_int15 = p_onart_15pl; 
 
 
 
@@ -495,6 +497,7 @@ effect_n_prep = n_prep_int1 - n_prep_sq;
 effect_n_condoms = n_condoms_int1 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int1 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int1 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int1 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int1 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int1 - p_men_15pl_circ_sq;
 scenario=1;
@@ -505,6 +508,7 @@ effect_n_prep = n_prep_int2 - n_prep_sq;
 effect_n_condoms = n_condoms_int2 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int2 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int2 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int2 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int2 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int2 - p_men_15pl_circ_sq;
 scenario=2;
@@ -515,6 +519,7 @@ effect_n_prep = n_prep_int3 - n_prep_sq;
 effect_n_condoms = n_condoms_int3 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int3 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int3 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int3 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int3 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int3 - p_men_15pl_circ_sq;
 scenario=3;
@@ -525,6 +530,7 @@ effect_n_prep = n_prep_int4 - n_prep_sq;
 effect_n_condoms = n_condoms_int4 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int4 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int4 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int4 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int4 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int4 - p_men_15pl_circ_sq;
 scenario=4;
@@ -535,6 +541,7 @@ effect_n_prep = n_prep_int5 - n_prep_sq;
 effect_n_condoms = n_condoms_int5 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int5 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int5 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int5 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int5 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int5 - p_men_15pl_circ_sq;
 scenario=5;
@@ -545,6 +552,7 @@ effect_n_prep = n_prep_int6 - n_prep_sq;
 effect_n_condoms = n_condoms_int6 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int6 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int6 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int6 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int6 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int6 - p_men_15pl_circ_sq;
 scenario=6;
@@ -555,6 +563,7 @@ effect_n_prep = n_prep_int7 - n_prep_sq;
 effect_n_condoms = n_condoms_int7 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int7 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int7 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int7 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int7 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int7 - p_men_15pl_circ_sq;
 scenario=7;
@@ -565,6 +574,7 @@ effect_n_prep = n_prep_int8 - n_prep_sq;
 effect_n_condoms = n_condoms_int8 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int8 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int8 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int8 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int8 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int8 - p_men_15pl_circ_sq;
 scenario=8;
@@ -575,6 +585,7 @@ effect_n_prep = n_prep_int9 - n_prep_sq;
 effect_n_condoms = n_condoms_int9 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int9 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int9 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int9 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int9 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int9 - p_men_15pl_circ_sq;
 scenario=9;
@@ -585,6 +596,7 @@ effect_n_prep = n_prep_int10 - n_prep_sq;
 effect_n_condoms = n_condoms_int10 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int10 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int10 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int10 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int10 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int10 - p_men_15pl_circ_sq;
 scenario=10;
@@ -595,6 +607,7 @@ effect_n_prep = n_prep_int11 - n_prep_sq;
 effect_n_condoms = n_condoms_int11 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int11 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int11 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int11 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int11 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int11 - p_men_15pl_circ_sq;
 scenario=11;
@@ -605,6 +618,7 @@ effect_n_prep = n_prep_int12 - n_prep_sq;
 effect_n_condoms = n_condoms_int12 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int12 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int12 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int12 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int12 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int12 - p_men_15pl_circ_sq;
 scenario=12;
@@ -615,6 +629,7 @@ effect_n_prep = n_prep_int13 - n_prep_sq;
 effect_n_condoms = n_condoms_int13 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int13 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int13 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int13 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int13 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int13 - p_men_15pl_circ_sq;
 scenario=13;
@@ -625,6 +640,7 @@ effect_n_prep = n_prep_int14 - n_prep_sq;
 effect_n_condoms = n_condoms_int14 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int14 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int14 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int14 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int14 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int14 - p_men_15pl_circ_sq;
 scenario=14;
@@ -635,6 +651,7 @@ effect_n_prep = n_prep_int15 - n_prep_sq;
 effect_n_condoms = n_condoms_int15 - n_condoms_sq;
 effect_p_diagnosed_15pl = p_diagnosed_15pl_int15 - p_diagnosed_15pl_sq;
 effect_p_onart_diag_15pl = p_onart_diag_15pl_int15 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int15 - p_onart_15pl_sq;
 effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int15 - p_vl1000_onart_15pl_sq;
 effect_p_men_15pl_circ = p_men_15pl_circ_int15 - p_men_15pl_circ_sq;
 scenario=15;
@@ -720,6 +737,20 @@ styleattrs datacolors=(black red green);
   yaxis display=(noline) grid;
   xaxis label="Intervention" display=(noline noticks); 
   yaxis label="Difference in percent of diagnosed age15+ on ART" display=(noline) grid;
+run;
+
+data x; set year_3_effect; 
+if scenario in (1 2 3 4 5 12 14);
+title 'Difference in percent of on ART in 2027';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_p_onart_15pl
+          group=model groupdisplay=cluster
+     /* baselineattrs=(thickness=0) */;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  xaxis label="Intervention" display=(noline noticks); 
+  yaxis label="Difference in percent of age15+ on ART" display=(noline) grid;
 run;
 
 data x; set year_3_effect; 

@@ -2783,12 +2783,8 @@ if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldat
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
 
-* increase in oral prep preference in 2023 (informed by kenya pharmacy data);
-if (caldate{t} = 2022 > . and age ge 15) or (age = 15 and caldate{t} >= 2022) 
-	then do;
-	    pref_prep_oral = min(1, pref_prep_oral + 0.1);	
-		eff_prob_prep_oral_b = eff_prob_prep_oral_b + 0.1;
-end;
+* increase in oral prep preference in 2022 (informed by kenya pharmacy data);
+if caldate{t} >= 2022 then eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
 
 
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
