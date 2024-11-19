@@ -13,126 +13,131 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 proc import
 out=goals_sq_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_SQ"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_SQ"; getnames=n; range="A3:BC43";run;
 data goals_sq; set goals_sq_;  model = 1; scenario = 0;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_target_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_target"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_target"; getnames=n; range="A3:BC43";run;
 data goals_target; set goals_target_;  model = 1; scenario = 20;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_midway_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_midway"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_midway"; getnames=n; range="A3:BC43";run;
 data goals_midway; set goals_midway_;  model = 1; scenario = 200;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int1_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int1"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int1"; getnames=n; range="A3:BC43";run;
 data goals_int1; set goals_int1_;  model = 1; scenario = 1;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int2_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int2"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int2"; getnames=n; range="A3:BC43";run;
 data goals_int2; set goals_int2_;  model = 1; scenario = 2;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int3_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int3"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int3"; getnames=n; range="A3:BC43";run;
 data goals_int3; set goals_int3_;  model = 1; scenario = 3;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
+ods html;
+proc print;
+run;
+ods html close;
+
 
 proc import
 out=goals_int4_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int4"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int4"; getnames=n; range="A3:BC43";run;
 data goals_int4; set goals_int4_;  model = 1; scenario = 4;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int5_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int5"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int5"; getnames=n; range="A3:BC43";run;
 data goals_int5; set goals_int5_;  model = 1; scenario = 5;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int6_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int6"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int6"; getnames=n; range="A3:BC43";run;
 data goals_int6; set goals_int6_;  model = 1; scenario = 6;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int7_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int7"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int7"; getnames=n; range="A3:BC43";run;
 data goals_int7; set goals_int7_;  model = 1; scenario = 7;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int8_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int8"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int8"; getnames=n; range="A3:BC43";run;
 data goals_int8; set goals_int8_;  model = 1; scenario = 8;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int9_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int9"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int9"; getnames=n; range="A3:BC43";run;
 data goals_int9; set goals_int9_;  model = 1; scenario = 9;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int10_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int10"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int10"; getnames=n; range="A3:BC43";run;
 data goals_int10; set goals_int10_;  model = 1; scenario = 10;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int11_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int11"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int11"; getnames=n; range="A3:BC43";run;
 data goals_int11; set goals_int11_;  model = 1; scenario = 11;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int12_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int12"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int12"; getnames=n; range="A3:BC43";run;
 data goals_int12; set goals_int12_;  model = 1; scenario = 12;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int13_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int13"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int13"; getnames=n; range="A3:BC43";run;
 data goals_int13; set goals_int13_;  model = 1; scenario = 13;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int14_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int14"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int14"; getnames=n; range="A3:BC43";run;
 data goals_int14; set goals_int14_;  model = 1; scenario = 14;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=goals_int15_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Goals_int15"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Goals_int15"; getnames=n; range="A3:BC43";run;
 data goals_int15; set goals_int15_;  model = 1; scenario = 15;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
@@ -144,126 +149,126 @@ data goals_int15; set goals_int15_;  model = 1; scenario = 15;
 proc import
 out=optima_sq_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_SQ"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_SQ"; getnames=n; range="A3:BC43";run;
 data optima_sq; set optima_sq_;  model = 2; scenario = 0;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_target_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_target"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_target"; getnames=n; range="A3:BC43";run;
 data optima_target; set optima_target_;  model = 2; scenario = 20;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_midway_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_midway"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_midway"; getnames=n; range="A3:BC43";run;
 data optima_midway; set optima_midway_;  model = 2; scenario = 200;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int1_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int1"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int1"; getnames=n; range="A3:BC43";run;
 data optima_int1; set optima_int1_;  model = 2; scenario = 1;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int2_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int2"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int2"; getnames=n; range="A3:BC43";run;
 data optima_int2; set optima_int2_;  model = 2; scenario = 2;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int3_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int3"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int3"; getnames=n; range="A3:BC43";run;
 data optima_int3; set optima_int3_;  model = 2; scenario = 3;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int4_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int4"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int4"; getnames=n; range="A3:BC43";run;
 data optima_int4; set optima_int4_;  model = 2; scenario = 4;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int5_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int5"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int5"; getnames=n; range="A3:BC43";run;
 data optima_int5; set optima_int5_;  model = 2; scenario = 5;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int6_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int6"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int6"; getnames=n; range="A3:BC43";run;
 data optima_int6; set optima_int6_;  model = 2; scenario = 6;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int7_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int7"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int7"; getnames=n; range="A3:BC43";run;
 data optima_int7; set optima_int7_;  model = 2; scenario = 7;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int8_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int8"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int8"; getnames=n; range="A3:BC43";run;
 data optima_int8; set optima_int8_;  model = 2; scenario = 8;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int9_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int9"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int9"; getnames=n; range="A3:BC43";run;
 data optima_int9; set optima_int9_;  model = 2; scenario = 9;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int10_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int10"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int10"; getnames=n; range="A3:BC43";run;
 data optima_int10; set optima_int10_;  model = 2; scenario = 10;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int11_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int11"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int11"; getnames=n; range="A3:BC43";run;
 data optima_int11; set optima_int11_;  model = 2; scenario = 11;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int12_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int12"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int12"; getnames=n; range="A3:BC43";run;
 data optima_int12; set optima_int12_;  model = 2; scenario = 12;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int13_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int13"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int13"; getnames=n; range="A3:BC43";run;
 data optima_int13; set optima_int13_;  model = 2; scenario = 13;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int14_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int14"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int14"; getnames=n; range="A3:BC43";run;
 data optima_int14; set optima_int14_;  model = 2; scenario = 14;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=optima_int15_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="Optima_int15"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="Optima_int15"; getnames=n; range="A3:BC43";run;
 data optima_int15; set optima_int15_;  model = 2; scenario = 15;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
@@ -274,128 +279,129 @@ data optima_int15; set optima_int15_;  model = 2; scenario = 15;
 proc import
 out=hiv_synthesis_sq_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_SQ"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_SQ"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_sq; set hiv_synthesis_sq_;  model = 3; scenario = 0;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_target_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_target"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_target"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_target; set hiv_synthesis_target_;  model = 3; scenario = 20;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_midway_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_midway"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_midway"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_midway; set hiv_synthesis_midway_;  model = 3; scenario = 200;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int1_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int1"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int1"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int1; set hiv_synthesis_int1_;  model = 3; scenario = 1;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int2_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int2"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int2"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int2; set hiv_synthesis_int2_;  model = 3; scenario = 2;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int3_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int3"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int3"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int3; set hiv_synthesis_int3_;  model = 3; scenario = 3;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int4_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int4"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int4"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int4; set hiv_synthesis_int4_;  model = 3; scenario = 4;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int5_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int5"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int5"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int5; set hiv_synthesis_int5_;  model = 3; scenario = 5;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int6_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int6"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int6"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int6; set hiv_synthesis_int6_;  model = 3; scenario = 6;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int7_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int7"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int7"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int7; set hiv_synthesis_int7_;  model = 3; scenario = 7;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int8_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int8"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int8"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int8; set hiv_synthesis_int8_;  model = 3; scenario = 8;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int9_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int9"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int9"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int9; set hiv_synthesis_int9_;  model = 3; scenario = 9;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int10_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int10"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int10"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int10; set hiv_synthesis_int10_;  model = 3; scenario = 10;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int11_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int11"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int11"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int11; set hiv_synthesis_int11_;  model = 3; scenario = 11;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int12_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int12"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int12"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int12; set hiv_synthesis_int12_;  model = 3; scenario = 12;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int13_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int13"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int13"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int13; set hiv_synthesis_int13_;  model = 3; scenario = 13;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int14_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int14"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int14"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int14; set hiv_synthesis_int14_;  model = 3; scenario = 14;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
 
 proc import
 out=hiv_synthesis_int15_ 
 datafile = "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\multi_model_outputs\kenya_multi_model_excel_nov24.xlsx"
-dbms=xlsx replace; sheet="HIV Synthesis_int15"; getnames=n; range="A3:BA43";run;
+dbms=xlsx replace; sheet="HIV Synthesis_int15"; getnames=n; range="A3:BC43";run;
 data hiv_synthesis_int15; set hiv_synthesis_int15_;  model = 3; scenario = 15;
 %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\GitHub\hiv-modelling\kenya_multi_model_variables.sas";
+
 
 
 data all;
@@ -414,381 +420,49 @@ hiv_synthesis_int14 hiv_synthesis_int15
 
 p_onart_15pl = (n_onart_15pl / n_hiv_15pl) * 100 ;
 
+proc 
+
+
+data goals_0 ; set all; if model=1; if scenario = 0 ; dalys_0_1 = dalys; keep year dalys_0_1 ;
+data optima_0 ; set all; if model=2;if scenario = 0 ; dalys_0_2 = dalys;keep year dalys_0_2 ;
+data hiv_synthesis_0 ; set all; if model=3;if scenario = 0 ;dalys_0_3 = dalys;keep year dalys_0_3 ;
+
+data goals_target ; set all; if model=1;if scenario = target ;dalys_target_1 = dalys;keep year dalys_target_1 ;
+data optima_target ; set all; if model=2;if scenario = target ;dalys_target_2 = dalys;keep year dalys_target_2 ;
+data hiv_synthesis_target ; set all; if model=3;if scenario = target ;dalys_target_3 = dalys;keep year dalys_target_3 ;
+
+data a.dalys ; 
+merge goals_0 optima_0 hiv_synthesis_0 goals_target optima_target hiv_synthesis_target ;
+
 proc print; run;
-
-
-data year_3; set all; if year = 2027 ;
-keep model scenario year n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-
-p_diagnosed_15pl = p_diagnosed_15pl * 100;
-p_onart_diag_15pl = p_onart_diag_15pl * 100;
-p_onart_15pl = p_onart_15pl * 100;
-p_vl1000_onart_15pl = p_vl1000_onart_15pl * 100;
-p_men_15pl_circ = p_men_15pl_circ* 100;
-
-
-data year_3_0; set year_3; if scenario=0;
-n_prep_sq = n_prep; n_condoms_sq = n_condoms; p_diagnosed_15pl_sq = p_diagnosed_15pl; p_onart_diag_15pl_sq = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_sq = p_vl1000_onart_15pl ; p_men_15pl_circ_sq = p_men_15pl_circ ; p_onart_15pl_sq = p_onart_15pl; 
-
-data year_3_int1; set year_3; if scenario=1;
-n_prep_int1 = n_prep; n_condoms_int1 = n_condoms; p_diagnosed_15pl_int1 = p_diagnosed_15pl; p_onart_diag_15pl_int1 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int1 = p_vl1000_onart_15pl ; p_men_15pl_circ_int1 = p_men_15pl_circ ;  p_onart_15pl_int1 = p_onart_15pl; 
-
-data year_3_int2; set year_3; if scenario=2;
-n_prep_int2 = n_prep; n_condoms_int2 = n_condoms; p_diagnosed_15pl_int2 = p_diagnosed_15pl; p_onart_diag_15pl_int2 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int2 = p_vl1000_onart_15pl ; p_men_15pl_circ_int2 = p_men_15pl_circ ; p_onart_15pl_int2 = p_onart_15pl;
-
-data year_3_int3; set year_3; if scenario=3;
-n_prep_int3 = n_prep; n_condoms_int3 = n_condoms; p_diagnosed_15pl_int3 = p_diagnosed_15pl; p_onart_diag_15pl_int3 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int3 = p_vl1000_onart_15pl ; p_men_15pl_circ_int3 = p_men_15pl_circ ; p_onart_15pl_int3 = p_onart_15pl; 
-
-data year_3_int4; set year_3; if scenario=4;
-n_prep_int4 = n_prep; n_condoms_int4 = n_condoms; p_diagnosed_15pl_int4 = p_diagnosed_15pl; p_onart_diag_15pl_int4 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int4 = p_vl1000_onart_15pl ; p_men_15pl_circ_int4 = p_men_15pl_circ ; p_onart_15pl_int4 = p_onart_15pl; 
-
-data year_3_int5; set year_3; if scenario=5;
-n_prep_int5 = n_prep; n_condoms_int5 = n_condoms; p_diagnosed_15pl_int5 = p_diagnosed_15pl; p_onart_diag_15pl_int5 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int5 = p_vl1000_onart_15pl ; p_men_15pl_circ_int5 = p_men_15pl_circ ; p_onart_15pl_int5 = p_onart_15pl; 
-
-data year_3_int6; set year_3; if scenario=6;
-n_prep_int6 = n_prep; n_condoms_int6 = n_condoms; p_diagnosed_15pl_int6 = p_diagnosed_15pl; p_onart_diag_15pl_int6 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int6 = p_vl1000_onart_15pl ; p_men_15pl_circ_int6 = p_men_15pl_circ ; p_onart_15pl_int6 = p_onart_15pl; 
-
-data year_3_int7; set year_3; if scenario=7;
-n_prep_int7 = n_prep; n_condoms_int7 = n_condoms; p_diagnosed_15pl_int7 = p_diagnosed_15pl; p_onart_diag_15pl_int7 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int7 = p_vl1000_onart_15pl ; p_men_15pl_circ_int7 = p_men_15pl_circ ; p_onart_15pl_int7 = p_onart_15pl; 
-
-data year_3_int8; set year_3; if scenario=8;
-n_prep_int8 = n_prep; n_condoms_int8 = n_condoms; p_diagnosed_15pl_int8 = p_diagnosed_15pl; p_onart_diag_15pl_int8 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int8 = p_vl1000_onart_15pl ; p_men_15pl_circ_int8 = p_men_15pl_circ ; p_onart_15pl_int8 = p_onart_15pl; 
-
-data year_3_int9; set year_3; if scenario=9;
-n_prep_int9 = n_prep; n_condoms_int9 = n_condoms; p_diagnosed_15pl_int9 = p_diagnosed_15pl; p_onart_diag_15pl_int9 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int9 = p_vl1000_onart_15pl ; p_men_15pl_circ_int9 = p_men_15pl_circ ; p_onart_15pl_int9 = p_onart_15pl; 
-
-data year_3_int10; set year_3; if scenario=10;
-n_prep_int10 = n_prep; n_condoms_int10 = n_condoms; p_diagnosed_15pl_int10 = p_diagnosed_15pl; p_onart_diag_15pl_int10 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int10 = p_vl1000_onart_15pl ; p_men_15pl_circ_int10 = p_men_15pl_circ ; p_onart_15pl_int10 = p_onart_15pl; 
-
-data year_3_int11; set year_3; if scenario=11;
-n_prep_int11 = n_prep; n_condoms_int11 = n_condoms; p_diagnosed_15pl_int11 = p_diagnosed_15pl; p_onart_diag_15pl_int11 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int11 = p_vl1000_onart_15pl ; p_men_15pl_circ_int11 = p_men_15pl_circ ; p_onart_15pl_int11 = p_onart_15pl; 
-
-data year_3_int12; set year_3; if scenario=12;
-n_prep_int12 = n_prep; n_condoms_int12 = n_condoms; p_diagnosed_15pl_int12 = p_diagnosed_15pl; p_onart_diag_15pl_int12 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int12 = p_vl1000_onart_15pl ; p_men_15pl_circ_int12 = p_men_15pl_circ ;  p_onart_15pl_int12 = p_onart_15pl; 
-
-data year_3_int13; set year_3; if scenario=13;
-n_prep_int13 = n_prep; n_condoms_int13 = n_condoms; p_diagnosed_15pl_int13 = p_diagnosed_15pl; p_onart_diag_15pl_int13 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int13 = p_vl1000_onart_15pl ; p_men_15pl_circ_int13 = p_men_15pl_circ ; p_onart_15pl_int13 = p_onart_15pl; 
-
-data year_3_int14; set year_3; if scenario=14;
-n_prep_int14 = n_prep; n_condoms_int14 = n_condoms; p_diagnosed_15pl_int14 = p_diagnosed_15pl; p_onart_diag_15pl_int14 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int14 = p_vl1000_onart_15pl ; p_men_15pl_circ_int14 = p_men_15pl_circ ; p_onart_15pl_int14 = p_onart_15pl; 
-
-data year_3_int15; set year_3; if scenario=15;
-n_prep_int15 = n_prep; n_condoms_int15 = n_condoms; p_diagnosed_15pl_int15 = p_diagnosed_15pl; p_onart_diag_15pl_int15 = p_onart_diag_15pl; 
-p_vl1000_onart_15pl_int15 = p_vl1000_onart_15pl ; p_men_15pl_circ_int15 = p_men_15pl_circ ; p_onart_15pl_int15 = p_onart_15pl; 
-
-
-
-data year_3_effect_int1; merge year_3_0 year_3_int1 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int1 - n_prep_sq;
-effect_n_condoms = n_condoms_int1 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int1 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int1 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int1 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int1 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int1 - p_men_15pl_circ_sq;
-scenario=1;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int2; merge year_3_0 year_3_int2 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int2 - n_prep_sq;
-effect_n_condoms = n_condoms_int2 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int2 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int2 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int2 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int2 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int2 - p_men_15pl_circ_sq;
-scenario=2;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int3; merge year_3_0 year_3_int3 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int3 - n_prep_sq;
-effect_n_condoms = n_condoms_int3 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int3 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int3 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int3 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int3 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int3 - p_men_15pl_circ_sq;
-scenario=3;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int4; merge year_3_0 year_3_int4 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int4 - n_prep_sq;
-effect_n_condoms = n_condoms_int4 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int4 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int4 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int4 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int4 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int4 - p_men_15pl_circ_sq;
-scenario=4;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int5; merge year_3_0 year_3_int5 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int5 - n_prep_sq;
-effect_n_condoms = n_condoms_int5 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int5 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int5 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int5 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int5 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int5 - p_men_15pl_circ_sq;
-scenario=5;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int6; merge year_3_0 year_3_int6 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int6 - n_prep_sq;
-effect_n_condoms = n_condoms_int6 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int6 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int6 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int6 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int6 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int6 - p_men_15pl_circ_sq;
-scenario=6;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int7; merge year_3_0 year_3_int7 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int7 - n_prep_sq;
-effect_n_condoms = n_condoms_int7 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int7 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int7 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int7 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int7 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int7 - p_men_15pl_circ_sq;
-scenario=7;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int8; merge year_3_0 year_3_int8 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int8 - n_prep_sq;
-effect_n_condoms = n_condoms_int8 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int8 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int8 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int8 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int8 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int8 - p_men_15pl_circ_sq;
-scenario=8;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int9; merge year_3_0 year_3_int9 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int9 - n_prep_sq;
-effect_n_condoms = n_condoms_int9 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int9 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int9 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int9 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int9 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int9 - p_men_15pl_circ_sq;
-scenario=9;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int10; merge year_3_0 year_3_int10 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int10 - n_prep_sq;
-effect_n_condoms = n_condoms_int10 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int10 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int10 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int10 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int10 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int10 - p_men_15pl_circ_sq;
-scenario=10;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int11; merge year_3_0 year_3_int11 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int11 - n_prep_sq;
-effect_n_condoms = n_condoms_int11 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int11 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int11 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int11 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int11 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int11 - p_men_15pl_circ_sq;
-scenario=11;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int12; merge year_3_0 year_3_int12 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int12 - n_prep_sq;
-effect_n_condoms = n_condoms_int12 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int12 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int12 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int12 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int12 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int12 - p_men_15pl_circ_sq;
-scenario=12;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int13; merge year_3_0 year_3_int13 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int13 - n_prep_sq;
-effect_n_condoms = n_condoms_int13 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int13 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int13 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int13 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int13 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int13 - p_men_15pl_circ_sq;
-scenario=13;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int14; merge year_3_0 year_3_int14 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int14 - n_prep_sq;
-effect_n_condoms = n_condoms_int14 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int14 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int14 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int14 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int14 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int14 - p_men_15pl_circ_sq;
-scenario=14;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-data year_3_effect_int15; merge year_3_0 year_3_int15 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
-effect_n_prep = n_prep_int15 - n_prep_sq;
-effect_n_condoms = n_condoms_int15 - n_condoms_sq;
-effect_p_diagnosed_15pl = p_diagnosed_15pl_int15 - p_diagnosed_15pl_sq;
-effect_p_onart_diag_15pl = p_onart_diag_15pl_int15 - p_onart_diag_15pl_sq;
-effect_p_onart_15pl = p_onart_15pl_int15 - p_onart_15pl_sq;
-effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int15 - p_vl1000_onart_15pl_sq;
-effect_p_men_15pl_circ = p_men_15pl_circ_int15 - p_men_15pl_circ_sq;
-scenario=15;
-keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
-
-
-data year_3_effect; set year_3_effect_int1 year_3_effect_int2 year_3_effect_int3 year_3_effect_int4 year_3_effect_int5 year_3_effect_int6 year_3_effect_int7
- year_3_effect_int8 year_3_effect_int9 year_3_effect_int10 year_3_effect_int11 year_3_effect_int12 year_3_effect_int13 year_3_effect_int14 year_3_effect_int15; 
-
-if scenario = 1 then int_name = 'Testing_community';
-if scenario = 2 then int_name = 'Testing_risk_informed';
-if scenario = 3 then int_name = 'Self_testing_general';
-if scenario = 4 then int_name = 'Self_testing_risk_informed';
-if scenario = 5 then int_name = 'AGYW_testing';
-if scenario = 6 then int_name = 'AGYW_behaviour_change';
-if scenario = 7 then int_name = 'VMMC';
-if scenario = 8 then int_name = 'Oral_PrEP';
-if scenario = 9 then int_name = 'Oral/Cab PrEP';
-if scenario = 10 then int_name = 'Oral/Cab/VR_PrEP';
-if scenario = 11 then int_name = 'Harm_reduction_PWID';
-if scenario = 12 then int_name = 'ART_linkage_retention';
-if scenario = 13 then int_name = 'ART_adherence';
-if scenario = 14 then int_name = 'ART_coverage_PLW';
-if scenario = 15 then int_name = 'AHD_package';
-
-
-* todo: replace n_condoms with extent_of_sexual_risk ;
-* todo: add p_plhiv_onart as an output so can include goals ;
 
 ods html;
 
-data x; set year_3_effect; 
-if scenario in (8 9 10);
-title 'Effect on number on PrEP in 2027';
-proc sgplot data=x noborder nolegend;
-styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_n_prep
-          group=model groupdisplay=cluster
-     /* baselineattrs=(thickness=0) */;
-  xaxis display=(nolabel noline noticks);
-  yaxis display=(noline) grid;
-  xaxis label="Intervention" display=(noline noticks); 
-  yaxis label="Effect on number on PrEP" display=(noline) grid;
+proc sgplot data = a.dalys ; 
+Title    height=1.5 justify=center "dalys";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2023   to 2040 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000   by 1000000) valueattrs=(size=10);
+
+label dalys_0_1 = "Goals - SQ ";
+label dalys_0_2 = "Optima - SQ ";
+label dalys_0_3 = "Synthesis - SQ ";
+label dalys_target_1 = "Goals - int target ";
+label dalys_target_2 = "Optima - int target ";
+label dalys_target_3 = "Synthesis - int target ";
+
+series  x=year y=dalys_0_1/	lineattrs = (color=black thickness = 2);
+series  x=year y=dalys_0_2/	lineattrs = (color=red thickness = 2);
+series  x=year y=dalys_0_3/	lineattrs = (color=green thickness = 2);
+
+series  x=year y=dalys_target_1/	lineattrs = (color=black thickness = 2 pattern=shortdash) ;
+series  x=year y=dalys_target_2/	lineattrs = (color=red thickness = 2 pattern=shortdash)  ;
+series  x=year y=dalys_target_3/	lineattrs = (color=green thickness = 2 pattern=shortdash) ;
+
 run;
 
-data x; set year_3_effect; 
-if scenario = 6;
-title '(to be) Relative rate of sexual risk in 2027';
-proc sgplot data=x noborder nolegend;
-styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_n_condoms
-          group=model groupdisplay=cluster
-     /* baselineattrs=(thickness=0) */;
-  xaxis display=(nolabel noline noticks);
-  yaxis display=(noline) grid;
-  xaxis label="Intervention" display=(noline noticks); 
-  yaxis label="Relative rate of sexual risk" display=(noline) grid;
-run;
-
-data x; set year_3_effect; 
-if scenario in (1 2 3 4 5);
-title 'Difference in percent of age15+ diagnosed in 2027';
-proc sgplot data=x noborder nolegend;
-styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_p_diagnosed_15pl
-          group=model groupdisplay=cluster
-     /* baselineattrs=(thickness=0) */;
-  xaxis display=(nolabel noline noticks);
-  yaxis display=(noline) grid;
-  xaxis label="Intervention" display=(noline noticks); 
-  yaxis label="Difference in percent of age15+ diagnosed" display=(noline) grid;
-run;
-
-data x; set year_3_effect; 
-if scenario in (12 14);
-title 'Difference in percent of diagnosed age15+ on ART in 2027';
-proc sgplot data=x noborder nolegend;
-styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_p_onart_diag_15pl
-          group=model groupdisplay=cluster
-     /* baselineattrs=(thickness=0) */;
-  xaxis display=(nolabel noline noticks);
-  yaxis display=(noline) grid;
-  xaxis label="Intervention" display=(noline noticks); 
-  yaxis label="Difference in percent of diagnosed age15+ on ART" display=(noline) grid;
-run;
-
-data x; set year_3_effect; 
-if scenario in (1 2 3 4 5 12 14);
-if effect_p_onart_15pl > 500000 then effect_p_onart_15pl = 0;
-title 'Difference in percent of PLHIV age 15+ on ART in 2027';
-proc sgplot data=x noborder nolegend;
-styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_p_onart_15pl
-          group=model groupdisplay=cluster
-     /* baselineattrs=(thickness=0) */;
-  xaxis display=(nolabel noline noticks);
-  yaxis display=(noline) grid;
-  xaxis label="Intervention" display=(noline noticks); 
-  yaxis label="Difference in percent of PLHIV age15+ on ART" display=(noline) grid;
-run;
-
-data x; set year_3_effect; 
-if scenario = 13;
-title 'Difference in percent of age15+ on ART with VL suppression in 2027';
-proc sgplot data=x noborder nolegend;
-styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_p_vl1000_onart_15pl
-          group=model groupdisplay=cluster
-     /* baselineattrs=(thickness=0) */;
-  xaxis display=(nolabel noline noticks);
-  yaxis display=(noline) grid;
-  xaxis label="Intervention" display=(noline noticks); 
-  yaxis label="Difference in percent of age15+ on ART with VL suppression" display=(noline) grid;
-run;
-
-data x; set year_3_effect; 
-if scenario = 7;
-title 'Difference in percent of men age15+ circumcised in 2027';
-proc sgplot data=x noborder nolegend;
-styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_p_men_15pl_circ
-          group=model groupdisplay=cluster
-     /* baselineattrs=(thickness=0) */;
-  xaxis display=(nolabel noline noticks);
-  yaxis display=(noline) grid;
-  xaxis label="Intervention" display=(noline noticks); 
-  yaxis label="Difference in percent of men age15+ circumcised" display=(noline) grid;
-run;
+quit;
 
 
-ods html close;
-
-
-
- 
 
 
 
@@ -1369,4 +1043,389 @@ run;
 proc print; run;
 
 */
+
+
+
+
+
+
+
+
+
+/*
+
+* effects of interventions at year 3;
+
+
+data year_3; set all; if year = 2027 ;
+keep model scenario year n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+
+p_diagnosed_15pl = p_diagnosed_15pl * 100;
+p_onart_diag_15pl = p_onart_diag_15pl * 100;
+p_vl1000_onart_15pl = p_vl1000_onart_15pl * 100;
+p_men_15pl_circ = p_men_15pl_circ* 100;
+
+
+data year_3_0; set year_3; if scenario=0;
+n_prep_sq = n_prep; n_condoms_sq = n_condoms; p_diagnosed_15pl_sq = p_diagnosed_15pl; p_onart_diag_15pl_sq = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_sq = p_vl1000_onart_15pl ; p_men_15pl_circ_sq = p_men_15pl_circ ; p_onart_15pl_sq = p_onart_15pl; 
+
+data year_3_int1; set year_3; if scenario=1;
+n_prep_int1 = n_prep; n_condoms_int1 = n_condoms; p_diagnosed_15pl_int1 = p_diagnosed_15pl; p_onart_diag_15pl_int1 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int1 = p_vl1000_onart_15pl ; p_men_15pl_circ_int1 = p_men_15pl_circ ;  p_onart_15pl_int1 = p_onart_15pl; 
+
+data year_3_int2; set year_3; if scenario=2;
+n_prep_int2 = n_prep; n_condoms_int2 = n_condoms; p_diagnosed_15pl_int2 = p_diagnosed_15pl; p_onart_diag_15pl_int2 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int2 = p_vl1000_onart_15pl ; p_men_15pl_circ_int2 = p_men_15pl_circ ; p_onart_15pl_int2 = p_onart_15pl;
+
+data year_3_int3; set year_3; if scenario=3;
+n_prep_int3 = n_prep; n_condoms_int3 = n_condoms; p_diagnosed_15pl_int3 = p_diagnosed_15pl; p_onart_diag_15pl_int3 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int3 = p_vl1000_onart_15pl ; p_men_15pl_circ_int3 = p_men_15pl_circ ; p_onart_15pl_int3 = p_onart_15pl; 
+
+data year_3_int4; set year_3; if scenario=4;
+n_prep_int4 = n_prep; n_condoms_int4 = n_condoms; p_diagnosed_15pl_int4 = p_diagnosed_15pl; p_onart_diag_15pl_int4 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int4 = p_vl1000_onart_15pl ; p_men_15pl_circ_int4 = p_men_15pl_circ ; p_onart_15pl_int4 = p_onart_15pl; 
+
+data year_3_int5; set year_3; if scenario=5;
+n_prep_int5 = n_prep; n_condoms_int5 = n_condoms; p_diagnosed_15pl_int5 = p_diagnosed_15pl; p_onart_diag_15pl_int5 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int5 = p_vl1000_onart_15pl ; p_men_15pl_circ_int5 = p_men_15pl_circ ; p_onart_15pl_int5 = p_onart_15pl; 
+
+data year_3_int6; set year_3; if scenario=6;
+n_prep_int6 = n_prep; n_condoms_int6 = n_condoms; p_diagnosed_15pl_int6 = p_diagnosed_15pl; p_onart_diag_15pl_int6 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int6 = p_vl1000_onart_15pl ; p_men_15pl_circ_int6 = p_men_15pl_circ ; p_onart_15pl_int6 = p_onart_15pl; 
+
+data year_3_int7; set year_3; if scenario=7;
+n_prep_int7 = n_prep; n_condoms_int7 = n_condoms; p_diagnosed_15pl_int7 = p_diagnosed_15pl; p_onart_diag_15pl_int7 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int7 = p_vl1000_onart_15pl ; p_men_15pl_circ_int7 = p_men_15pl_circ ; p_onart_15pl_int7 = p_onart_15pl; 
+
+data year_3_int8; set year_3; if scenario=8;
+n_prep_int8 = n_prep; n_condoms_int8 = n_condoms; p_diagnosed_15pl_int8 = p_diagnosed_15pl; p_onart_diag_15pl_int8 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int8 = p_vl1000_onart_15pl ; p_men_15pl_circ_int8 = p_men_15pl_circ ; p_onart_15pl_int8 = p_onart_15pl; 
+
+data year_3_int9; set year_3; if scenario=9;
+n_prep_int9 = n_prep; n_condoms_int9 = n_condoms; p_diagnosed_15pl_int9 = p_diagnosed_15pl; p_onart_diag_15pl_int9 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int9 = p_vl1000_onart_15pl ; p_men_15pl_circ_int9 = p_men_15pl_circ ; p_onart_15pl_int9 = p_onart_15pl; 
+
+data year_3_int10; set year_3; if scenario=10;
+n_prep_int10 = n_prep; n_condoms_int10 = n_condoms; p_diagnosed_15pl_int10 = p_diagnosed_15pl; p_onart_diag_15pl_int10 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int10 = p_vl1000_onart_15pl ; p_men_15pl_circ_int10 = p_men_15pl_circ ; p_onart_15pl_int10 = p_onart_15pl; 
+
+data year_3_int11; set year_3; if scenario=11;
+n_prep_int11 = n_prep; n_condoms_int11 = n_condoms; p_diagnosed_15pl_int11 = p_diagnosed_15pl; p_onart_diag_15pl_int11 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int11 = p_vl1000_onart_15pl ; p_men_15pl_circ_int11 = p_men_15pl_circ ; p_onart_15pl_int11 = p_onart_15pl; 
+
+data year_3_int12; set year_3; if scenario=12;
+n_prep_int12 = n_prep; n_condoms_int12 = n_condoms; p_diagnosed_15pl_int12 = p_diagnosed_15pl; p_onart_diag_15pl_int12 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int12 = p_vl1000_onart_15pl ; p_men_15pl_circ_int12 = p_men_15pl_circ ;  p_onart_15pl_int12 = p_onart_15pl; 
+
+data year_3_int13; set year_3; if scenario=13;
+n_prep_int13 = n_prep; n_condoms_int13 = n_condoms; p_diagnosed_15pl_int13 = p_diagnosed_15pl; p_onart_diag_15pl_int13 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int13 = p_vl1000_onart_15pl ; p_men_15pl_circ_int13 = p_men_15pl_circ ; p_onart_15pl_int13 = p_onart_15pl; 
+
+data year_3_int14; set year_3; if scenario=14;
+n_prep_int14 = n_prep; n_condoms_int14 = n_condoms; p_diagnosed_15pl_int14 = p_diagnosed_15pl; p_onart_diag_15pl_int14 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int14 = p_vl1000_onart_15pl ; p_men_15pl_circ_int14 = p_men_15pl_circ ; p_onart_15pl_int14 = p_onart_15pl; 
+
+data year_3_int15; set year_3; if scenario=15;
+n_prep_int15 = n_prep; n_condoms_int15 = n_condoms; p_diagnosed_15pl_int15 = p_diagnosed_15pl; p_onart_diag_15pl_int15 = p_onart_diag_15pl; 
+p_vl1000_onart_15pl_int15 = p_vl1000_onart_15pl ; p_men_15pl_circ_int15 = p_men_15pl_circ ; p_onart_15pl_int15 = p_onart_15pl; 
+
+
+
+data year_3_effect_int1; merge year_3_0 year_3_int1 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int1 - n_prep_sq;
+effect_n_condoms = n_condoms_int1 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int1 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int1 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int1 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int1 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int1 - p_men_15pl_circ_sq;
+scenario=1;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int2; merge year_3_0 year_3_int2 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int2 - n_prep_sq;
+effect_n_condoms = n_condoms_int2 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int2 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int2 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int2 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int2 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int2 - p_men_15pl_circ_sq;
+scenario=2;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int3; merge year_3_0 year_3_int3 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int3 - n_prep_sq;
+effect_n_condoms = n_condoms_int3 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int3 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int3 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int3 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int3 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int3 - p_men_15pl_circ_sq;
+scenario=3;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int4; merge year_3_0 year_3_int4 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int4 - n_prep_sq;
+effect_n_condoms = n_condoms_int4 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int4 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int4 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int4 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int4 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int4 - p_men_15pl_circ_sq;
+scenario=4;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int5; merge year_3_0 year_3_int5 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int5 - n_prep_sq;
+effect_n_condoms = n_condoms_int5 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int5 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int5 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int5 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int5 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int5 - p_men_15pl_circ_sq;
+scenario=5;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int6; merge year_3_0 year_3_int6 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int6 - n_prep_sq;
+effect_n_condoms = n_condoms_int6 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int6 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int6 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int6 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int6 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int6 - p_men_15pl_circ_sq;
+scenario=6;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int7; merge year_3_0 year_3_int7 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int7 - n_prep_sq;
+effect_n_condoms = n_condoms_int7 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int7 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int7 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int7 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int7 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int7 - p_men_15pl_circ_sq;
+scenario=7;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int8; merge year_3_0 year_3_int8 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int8 - n_prep_sq;
+effect_n_condoms = n_condoms_int8 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int8 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int8 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int8 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int8 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int8 - p_men_15pl_circ_sq;
+scenario=8;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int9; merge year_3_0 year_3_int9 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int9 - n_prep_sq;
+effect_n_condoms = n_condoms_int9 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int9 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int9 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int9 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int9 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int9 - p_men_15pl_circ_sq;
+scenario=9;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int10; merge year_3_0 year_3_int10 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int10 - n_prep_sq;
+effect_n_condoms = n_condoms_int10 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int10 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int10 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int10 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int10 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int10 - p_men_15pl_circ_sq;
+scenario=10;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int11; merge year_3_0 year_3_int11 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int11 - n_prep_sq;
+effect_n_condoms = n_condoms_int11 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int11 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int11 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int11 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int11 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int11 - p_men_15pl_circ_sq;
+scenario=11;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int12; merge year_3_0 year_3_int12 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int12 - n_prep_sq;
+effect_n_condoms = n_condoms_int12 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int12 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int12 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int12 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int12 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int12 - p_men_15pl_circ_sq;
+scenario=12;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int13; merge year_3_0 year_3_int13 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int13 - n_prep_sq;
+effect_n_condoms = n_condoms_int13 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int13 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int13 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int13 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int13 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int13 - p_men_15pl_circ_sq;
+scenario=13;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int14; merge year_3_0 year_3_int14 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int14 - n_prep_sq;
+effect_n_condoms = n_condoms_int14 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int14 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int14 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int14 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int14 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int14 - p_men_15pl_circ_sq;
+scenario=14;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+data year_3_effect_int15; merge year_3_0 year_3_int15 ; drop n_prep n_condoms p_diagnosed_15pl p_onart_diag_15pl p_onart_diag_15pl p_vl1000_onart_15pl p_men_15pl_circ ;
+effect_n_prep = n_prep_int15 - n_prep_sq;
+effect_n_condoms = n_condoms_int15 - n_condoms_sq;
+effect_p_diagnosed_15pl = p_diagnosed_15pl_int15 - p_diagnosed_15pl_sq;
+effect_p_onart_diag_15pl = p_onart_diag_15pl_int15 - p_onart_diag_15pl_sq;
+effect_p_onart_15pl = p_onart_15pl_int15 - p_onart_15pl_sq;
+effect_p_vl1000_onart_15pl = p_vl1000_onart_15pl_int15 - p_vl1000_onart_15pl_sq;
+effect_p_men_15pl_circ = p_men_15pl_circ_int15 - p_men_15pl_circ_sq;
+scenario=15;
+keep model scenario effect_p_onart_15pl effect_n_prep effect_n_condoms effect_p_diagnosed_15pl effect_p_onart_diag_15pl effect_p_vl1000_onart_15pl effect_p_men_15pl_circ ;
+
+
+data year_3_effect; set year_3_effect_int1 year_3_effect_int2 year_3_effect_int3 year_3_effect_int4 year_3_effect_int5 year_3_effect_int6 year_3_effect_int7
+ year_3_effect_int8 year_3_effect_int9 year_3_effect_int10 year_3_effect_int11 year_3_effect_int12 year_3_effect_int13 year_3_effect_int14 year_3_effect_int15; 
+
+if scenario = 1 then int_name = 'Testing_community';
+if scenario = 2 then int_name = 'Testing_risk_informed';
+if scenario = 3 then int_name = 'Self_testing_general';
+if scenario = 4 then int_name = 'Self_testing_risk_informed';
+if scenario = 5 then int_name = 'AGYW_testing';
+if scenario = 6 then int_name = 'AGYW_behaviour_change';
+if scenario = 7 then int_name = 'VMMC';
+if scenario = 8 then int_name = 'Oral_PrEP';
+if scenario = 9 then int_name = 'Oral/Cab PrEP';
+if scenario = 10 then int_name = 'Oral/Cab/VR_PrEP';
+if scenario = 11 then int_name = 'Harm_reduction_PWID';
+if scenario = 12 then int_name = 'ART_linkage_retention';
+if scenario = 13 then int_name = 'ART_adherence';
+if scenario = 14 then int_name = 'ART_coverage_PLW';
+if scenario = 15 then int_name = 'AHD_package';
+
+
+* todo: replace n_condoms with extent_of_sexual_risk ;
+* todo: add p_plhiv_onart as an output so can include goals ;
+
+ods html;
+
+data x; set year_3_effect; 
+if scenario in (8 9 10);
+title 'Effect on number on PrEP in 2027';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_n_prep
+          group=model groupdisplay=cluster
+     ;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  xaxis label="Intervention" display=(noline noticks); 
+  yaxis label="Effect on number on PrEP" display=(noline) grid;
+run;
+
+data x; set year_3_effect; 
+if scenario = 6;
+title '(to be) Relative rate of sexual risk in 2027';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_n_condoms
+          group=model groupdisplay=cluster
+     ;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  xaxis label="Intervention" display=(noline noticks); 
+  yaxis label="Relative rate of sexual risk" display=(noline) grid;
+run;
+
+data x; set year_3_effect; 
+if scenario in (1 2 3 4 5);
+title 'Difference in percent of age15+ diagnosed in 2027';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_p_diagnosed_15pl
+          group=model groupdisplay=cluster
+     ;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  xaxis label="Intervention" display=(noline noticks); 
+  yaxis label="Difference in percent of age15+ diagnosed" display=(noline) grid;
+run;
+
+data x; set year_3_effect; 
+if scenario in (12 14);
+title 'Difference in percent of diagnosed age15+ on ART in 2027';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_p_onart_diag_15pl
+          group=model groupdisplay=cluster
+     ;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  xaxis label="Intervention" display=(noline noticks); 
+  yaxis label="Difference in percent of diagnosed age15+ on ART" display=(noline) grid;
+run;
+
+data x; set year_3_effect; 
+if scenario in (1 2 3 4 5 12 14);
+if effect_p_onart_15pl > 500000 then effect_p_onart_15pl = 0;
+title 'Difference in percent of PLHIV age 15+ on ART in 2027';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_p_onart_15pl
+          group=model groupdisplay=cluster
+     ;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  xaxis label="Intervention" display=(noline noticks); 
+  yaxis label="Difference in percent of PLHIV age15+ on ART" display=(noline) grid;
+run;
+
+data x; set year_3_effect; 
+if scenario = 13;
+title 'Difference in percent of age15+ on ART with VL suppression in 2027';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_p_vl1000_onart_15pl
+          group=model groupdisplay=cluster
+     ;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  xaxis label="Intervention" display=(noline noticks); 
+  yaxis label="Difference in percent of age15+ on ART with VL suppression" display=(noline) grid;
+run;
+
+data x; set year_3_effect; 
+if scenario = 7;
+title 'Difference in percent of men age15+ circumcised in 2027';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_p_men_15pl_circ
+          group=model groupdisplay=cluster
+     ;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  xaxis label="Intervention" display=(noline noticks); 
+  yaxis label="Difference in percent of men age15+ circumcised" display=(noline) grid;
+run;
+
+
+ods html close;
+
+
+*/
+ 
 
