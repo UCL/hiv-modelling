@@ -735,10 +735,11 @@ dcost_amt55_  dcost_amt60_  dcost_amt65_  dcost_amt70_  dcost_amt75_  dcost_amt8
 dcost_amt100_ dcost_amt105_ dcost_amt110_ dcost_amt115_ dcost_amt120_ dcost_amt125_ dcost_amt130_ dcost_amt135_ 
 dcost_amt140_ dcost_amt145_ dcost_amt150_ dcost_amt155_ dcost_amt160_ dcost_amt165_ dcost_amt170_ dcost_amt175_ dcost_amt180_
 dcost_amt185_ dcost_amt190_ dcost_amt195_ dcost_amt200_ dcost_amt205_ dcost_amt210_ dcost_amt215_ dcost_amt220_
-dcost_amt225_ dcost_amt230_ dcost_amt235_ dcost_amt240_ dcost_amt245_ dcost_amt250_	dcost_sis
+dcost_amt225_ dcost_amt230_ dcost_amt235_ dcost_amt240_ dcost_amt245_ dcost_amt250_	dcost_swprog150_
 
 effect_sw_prog_newp
-s_tested s_tested_m s_tested_f n_pregnant
+s_tested s_tested_m s_tested_f 
+
 ;
 
 proc sort data=y;by run option;run;
@@ -864,7 +865,7 @@ data &v ; merge y_23 t_30 t_24_25 t_24_29 t_24_44 t_24_74;
 %var(v=dcost_amt185_); %var(v=dcost_amt190_); %var(v=dcost_amt195_); %var(v=dcost_amt200_); %var(v=dcost_amt205_);
 %var(v=dcost_amt210_); %var(v=dcost_amt215_); %var(v=dcost_amt220_); %var(v=dcost_amt225_); %var(v=dcost_amt230_);
 %var(v=dcost_amt235_); %var(v=dcost_amt240_); %var(v=dcost_amt245_); %var(v=dcost_amt250_);
-%var(v=dcost_sis);
+
 run;
 
 data wide_outputs;merge
@@ -904,7 +905,7 @@ dcost_amt115_ dcost_amt120_ dcost_amt125_ dcost_amt130_ dcost_amt135_ dcost_amt1
 dcost_amt150_ dcost_amt155_ dcost_amt160_ dcost_amt165_ dcost_amt170_ dcost_amt175_ dcost_amt180_
 dcost_amt185_ dcost_amt190_ dcost_amt195_ dcost_amt200_ dcost_amt205_ dcost_amt210_ dcost_amt215_
 dcost_amt220_ dcost_amt225_ dcost_amt230_ dcost_amt235_ dcost_amt240_ dcost_amt245_ dcost_amt250_
-dcost_sis
+
 ;
 
 proc sort; by run;run;
