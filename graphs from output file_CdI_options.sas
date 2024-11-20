@@ -5,10 +5,8 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data b1;
-set a.l_base_CdI_13nov24;
-*set a.l_base_CdI_20oct24;
+set a.l_base_CdI_18nov24;
 
-*if an_lin_incr_test=0.03 then delete;
 s_sw_1549_ = s_sw_1549;
 
 new_option=option;
@@ -18,7 +16,7 @@ run;
 data b;set b1;
 *change this for every option;
 if new_option=0 then option=0;
-if new_option=11 then option=1;
+if new_option=57 then option=1;
 
 if option in (0,1) then a=1;
 if a ne 1 then delete;
@@ -28,7 +26,7 @@ proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  244;
+%let nfit =  24;
 %let year_end = 2040 ;
 run;
 proc sort;by cald option ;run;

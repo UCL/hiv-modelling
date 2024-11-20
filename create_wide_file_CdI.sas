@@ -6,7 +6,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data a;
-set a.cdi_13nov24;
+set a.cdi_18nov24;
 
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
@@ -281,7 +281,6 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_tested_anc;					n_tested_anc = s_tested_anc * sf * 4;
 
 * p_tested_anc;					if (s_anc-s_diag_anc)>0 then p_tested_anc=s_tested_anc/(s_anc-s_diag_anc);
-proc print;var s_tested_anc s_anc s_diag_anc p_tested_anc;run;
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
@@ -624,69 +623,18 @@ if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
 /*proc freq;table run;where a=1;run;*/
 
 if run in (
-18762462
-26906902
-62775526
-119873832
-122158985
-154106580
-170714896
-171135156
-200707839
-208889877
-212124232
-229526930
-242862016
-248787601
-251327286
-253493777
-256316702
-271739199
-274205090
-291194348
-356652468
-404789855
-410606986
-412589368
-427893794
-429046539
-455018678
-459732697
-462065100
-486412331
-514363141
-545658246
-553443147
-580011412
-586272892
-590431392
-628553437
-637413416
-637433306
-658565802
-672569065
-676649292
-689300042
-765984233
-770040815
-777210133
-805648313
-812498979
-815278735
-856225176
-867979859
-868502253
-905734889
-976855943
-981992803
 
+  61027535         
+  566095096          
+  566207484           
+  945262264       
 )
 then delete;
 run;
 proc freq;table cald;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI_13nov24; 
+data a.l_base_CdI_18nov24; 
 set low_inc;
 run;
 
@@ -783,23 +731,23 @@ proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <=
 
 **TB testing		= Option 17;
 
-proc means noprint data=z; var &v; output out=y_24  mean= &v   ; where 2024 <= cald < 2025 and option=53 ;
-proc means noprint data=z; var &v; output out=y_25  mean= &v   ; where 2025 <= cald < 2026 and option=53 ;
-proc means noprint data=z; var &v; output out=y_26  mean= &v   ; where 2026 <= cald < 2027 and option=53 ;
-proc means noprint data=z; var &v; output out=y_27  mean= &v   ; where 2027 <= cald < 2028 and option=53 ;
-proc means noprint data=z; var &v; output out=y_28  mean= &v   ; where 2028 <= cald < 2029 and option=53 ;
-proc means noprint data=z; var &v; output out=y_29  mean= &v   ; where 2029 <= cald < 2030 and option=53 ;
-proc means noprint data=z; var &v; output out=y_30  mean= &v   ; where 2030 <= cald < 2031 and option=53 ;
-proc means noprint data=z; var &v; output out=y_31  mean= &v   ; where 2031 <= cald < 2032 and option=53 ;
-proc means noprint data=z; var &v; output out=y_32  mean= &v   ; where 2032 <= cald < 2033 and option=53 ;
-proc means noprint data=z; var &v; output out=y_33  mean= &v   ; where 2033 <= cald < 2034 and option=53 ;
-proc means noprint data=z; var &v; output out=y_34  mean= &v   ; where 2034 <= cald < 2035 and option=53 ;
-proc means noprint data=z; var &v; output out=y_35  mean= &v   ; where 2035 <= cald < 2036 and option=53 ;
-proc means noprint data=z; var &v; output out=y_36  mean= &v   ; where 2036 <= cald < 2037 and option=53 ;
-proc means noprint data=z; var &v; output out=y_37  mean= &v   ; where 2037 <= cald < 2038 and option=53 ;
-proc means noprint data=z; var &v; output out=y_38  mean= &v   ; where 2038 <= cald < 2039 and option=53 ;
-proc means noprint data=z; var &v; output out=y_39  mean= &v   ; where 2039 <= cald < 2040 and option=53 ;
-proc means noprint data=z; var &v; output out=y_40  mean= &v   ; where 2040 <= cald < 2041 and option=53 ;
+proc means noprint data=z; var &v; output out=y_24  mean= &v   ; where 2024 <= cald < 2025 and option=57 ;
+proc means noprint data=z; var &v; output out=y_25  mean= &v   ; where 2025 <= cald < 2026 and option=57 ;
+proc means noprint data=z; var &v; output out=y_26  mean= &v   ; where 2026 <= cald < 2027 and option=57 ;
+proc means noprint data=z; var &v; output out=y_27  mean= &v   ; where 2027 <= cald < 2028 and option=57 ;
+proc means noprint data=z; var &v; output out=y_28  mean= &v   ; where 2028 <= cald < 2029 and option=57 ;
+proc means noprint data=z; var &v; output out=y_29  mean= &v   ; where 2029 <= cald < 2030 and option=57 ;
+proc means noprint data=z; var &v; output out=y_30  mean= &v   ; where 2030 <= cald < 2031 and option=57 ;
+proc means noprint data=z; var &v; output out=y_31  mean= &v   ; where 2031 <= cald < 2032 and option=57 ;
+proc means noprint data=z; var &v; output out=y_32  mean= &v   ; where 2032 <= cald < 2033 and option=57 ;
+proc means noprint data=z; var &v; output out=y_33  mean= &v   ; where 2033 <= cald < 2034 and option=57 ;
+proc means noprint data=z; var &v; output out=y_34  mean= &v   ; where 2034 <= cald < 2035 and option=57 ;
+proc means noprint data=z; var &v; output out=y_35  mean= &v   ; where 2035 <= cald < 2036 and option=57 ;
+proc means noprint data=z; var &v; output out=y_36  mean= &v   ; where 2036 <= cald < 2037 and option=57 ;
+proc means noprint data=z; var &v; output out=y_37  mean= &v   ; where 2037 <= cald < 2038 and option=57 ;
+proc means noprint data=z; var &v; output out=y_38  mean= &v   ; where 2038 <= cald < 2039 and option=57 ;
+proc means noprint data=z; var &v; output out=y_39  mean= &v   ; where 2039 <= cald < 2040 and option=57 ;
+proc means noprint data=z; var &v; output out=y_40  mean= &v   ; where 2040 <= cald < 2041 and option=57 ;
  																										   
 																										
 data &v ; set 
