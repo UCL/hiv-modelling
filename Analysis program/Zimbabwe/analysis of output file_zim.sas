@@ -190,82 +190,14 @@ var	nmb_none nmb_swprog_high nmb_swprog_low
 
 
 
-proc means n p50;VAR
-dart_cost_y_24_74_1
-dadc_cost_24_74_1 dcd4_cost_24_74_1 dvl_cost_24_74_1 dvis_cost_24_74_1 dnon_tb_who3_cost_24_74_1 dcot_cost_24_74_1
-dtb_cost_24_74_1 dres_cost_24_74_1 dtest_cost_24_74_1 d_t_adh_int_cost_24_74_1 
-dswitchline_cost_24_74_1 
-dcost_prep_visit_oral_24_74_1 dcost_prep_oral_24_74_1 
-dcost_prep_visit_inj_24_74_1 dcost_prep_inj_24_74_1
-prop_sw_onprep_24_74_1
-
-dart_cost_y_24_74_2
-dadc_cost_24_74_2 dcd4_cost_24_74_2 dvl_cost_24_74_2 dvis_cost_24_74_2 dnon_tb_who3_cost_24_74_2 dcot_cost_24_74_2
-dtb_cost_24_74_2 dres_cost_24_74_2 dtest_cost_24_74_2 d_t_adh_int_cost_24_74_2 
-dswitchline_cost_24_74_2 
-dcost_prep_visit_oral_24_74_2 dcost_prep_oral_24_74_2 
-dcost_prep_visit_inj_24_74_2 dcost_prep_inj_24_74_2
-prop_sw_onprep_24_74_2
-;run;
 
 data maxcosts;
 set a;
 
 
 *500 CET, Sisters;
-netdalys500_sis=  ddaly_24_74_1 + (dcost_sis_24_74_1)/0.0005;
+netdalys500_sis=  ddaly_24_74_1 + (dcost_24_74_1)/0.0005;
 
-/*
-netdalys500_sis10 =  ddaly_24_74_1 + (dcost_sis10__24_74_1)/0.0005;
-netdalys500_sis15 =  ddaly_24_74_1 + (dcost_sis15__24_74_1)/0.0005;
-netdalys500_sis20 =  ddaly_24_74_1 + (dcost_sis20__24_74_1)/0.0005;
-netdalys500_sis25 =  ddaly_24_74_1 + (dcost_sis25__24_74_1)/0.0005;
-netdalys500_sis30 =  ddaly_24_74_1 + (dcost_sis30__24_74_1)/0.0005;
-netdalys500_sis35 =  ddaly_24_74_1 + (dcost_sis35__24_74_1)/0.0005;
-netdalys500_sis40 =  ddaly_24_74_1 + (dcost_sis40__24_74_1)/0.0005;
-netdalys500_sis45 =  ddaly_24_74_1 + (dcost_sis45__24_74_1)/0.0005;
-netdalys500_sis50 =  ddaly_24_74_1 + (dcost_sis50__24_74_1)/0.0005;
-netdalys500_sis55 =  ddaly_24_74_1 + (dcost_sis55__24_74_1)/0.0005;
-netdalys500_sis60 =  ddaly_24_74_1 + (dcost_sis60__24_74_1)/0.0005;
-netdalys500_sis65 =  ddaly_24_74_1 + (dcost_sis65__24_74_1)/0.0005;
-netdalys500_sis70 =  ddaly_24_74_1 + (dcost_sis70__24_74_1)/0.0005;
-netdalys500_sis75 =  ddaly_24_74_1 + (dcost_sis75__24_74_1)/0.0005;
-netdalys500_sis80 =  ddaly_24_74_1 + (dcost_sis80__24_74_1)/0.0005;
-netdalys500_sis85 =  ddaly_24_74_1 + (dcost_sis85__24_74_1)/0.0005;
-netdalys500_sis90 =  ddaly_24_74_1 + (dcost_sis90__24_74_1)/0.0005;
-netdalys500_sis95 =  ddaly_24_74_1 + (dcost_sis95__24_74_1)/0.0005;
-netdalys500_sis100 =  ddaly_24_74_1 + (dcost_sis100__24_74_1)/0.0005;
-netdalys500_sis105 =  ddaly_24_74_1 + (dcost_sis105__24_74_1)/0.0005;
-netdalys500_sis110 =  ddaly_24_74_1 + (dcost_sis110__24_74_1)/0.0005;
-netdalys500_sis115 =  ddaly_24_74_1 + (dcost_sis115__24_74_1)/0.0005;
-netdalys500_sis120 =  ddaly_24_74_1 + (dcost_sis120__24_74_1)/0.0005;
-netdalys500_sis125 =  ddaly_24_74_1 + (dcost_sis125__24_74_1)/0.0005;
-netdalys500_sis130 =  ddaly_24_74_1 + (dcost_sis130__24_74_1)/0.0005;
-netdalys500_sis135 =  ddaly_24_74_1 + (dcost_sis135__24_74_1)/0.0005;
-netdalys500_sis140 =  ddaly_24_74_1 + (dcost_sis140__24_74_1)/0.0005;
-netdalys500_sis145 =  ddaly_24_74_1 + (dcost_sis145__24_74_1)/0.0005;
-netdalys500_sis150 =  ddaly_24_74_1 + (dcost_sis150__24_74_1)/0.0005;
-netdalys500_sis155 =  ddaly_24_74_1 + (dcost_sis155__24_74_1)/0.0005;
-netdalys500_sis160 =  ddaly_24_74_1 + (dcost_sis160__24_74_1)/0.0005;
-netdalys500_sis165 =  ddaly_24_74_1 + (dcost_sis165__24_74_1)/0.0005;
-netdalys500_sis170 =  ddaly_24_74_1 + (dcost_sis170__24_74_1)/0.0005;
-netdalys500_sis175 =  ddaly_24_74_1 + (dcost_sis175__24_74_1)/0.0005;
-netdalys500_sis180 =  ddaly_24_74_1 + (dcost_sis180__24_74_1)/0.0005;
-netdalys500_sis185 =  ddaly_24_74_1 + (dcost_sis185__24_74_1)/0.0005;
-netdalys500_sis190 =  ddaly_24_74_1 + (dcost_sis190__24_74_1)/0.0005;
-netdalys500_sis195 =  ddaly_24_74_1 + (dcost_sis195__24_74_1)/0.0005;
-netdalys500_sis200 =  ddaly_24_74_1 + (dcost_sis200__24_74_1)/0.0005;
-netdalys500_sis205 =  ddaly_24_74_1 + (dcost_sis205__24_74_1)/0.0005;
-netdalys500_sis210 =  ddaly_24_74_1 + (dcost_sis210__24_74_1)/0.0005;
-netdalys500_sis215 =  ddaly_24_74_1 + (dcost_sis215__24_74_1)/0.0005;
-netdalys500_sis220 =  ddaly_24_74_1 + (dcost_sis220__24_74_1)/0.0005;
-netdalys500_sis225 =  ddaly_24_74_1 + (dcost_sis225__24_74_1)/0.0005;
-netdalys500_sis230 =  ddaly_24_74_1 + (dcost_sis230__24_74_1)/0.0005;
-netdalys500_sis235 =  ddaly_24_74_1 + (dcost_sis235__24_74_1)/0.0005;
-netdalys500_sis240 =  ddaly_24_74_1 + (dcost_sis240__24_74_1)/0.0005;
-netdalys500_sis245 =  ddaly_24_74_1 + (dcost_sis245__24_74_1)/0.0005;
-netdalys500_sis250 =  ddaly_24_74_1 + (dcost_sis250__24_74_1)/0.0005;
-*/
 
 *500 CET, AMETHIST;
 netdalys500_amt10 =  ddaly_24_74_2 + (dcost_amt10__24_74_2)/0.0005;
