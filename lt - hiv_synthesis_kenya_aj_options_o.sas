@@ -10,16 +10,16 @@
 
 
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
+  libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc';   
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   
+* libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 10000   ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -960,7 +960,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
-  %include "/home/rmjlaph/kenya_parameters_aj.sas";
+  %include "C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\kenya_parameters_aj.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
@@ -2784,7 +2784,7 @@ if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldat
 end;	
 
 * increase in oral prep preference in 2022 (informed by kenya pharmacy data);
-if caldate{t} >= 2022 then eff_prob_prep_oral_b = prob_prep_oral_b + 0.4;
+if caldate{t} >= 2022 then eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
 
 
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
@@ -18812,11 +18812,24 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
-*/
+
+proc print; var caldate&j  prep_oral prob_prep_oral_b eff_prob_prep_oral_b; 
+
+where caldate&j ge 2020; 
+
+run;
+
+
+proc freq; tables prep_oral; 
+
+where caldate&j ge 2020; 
+
+run;
+
+
 
 /*
 
@@ -20506,28 +20519,6 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ** kenya;
 
-if cald = 1990 and (prevalence1549w > 0.15) then do; abort abend; end;
-if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
-if cald = 2010 and (prevalence1549w > 0.15) then do; abort abend; end;
-
-if cald = 1990 and (prevalence1549m > 0.13) then do; abort abend; end;
-if cald = 1995 and (prevalence1549m < 0.01) then do; abort abend; end;
-if cald = 2010 and (prevalence1549m > 0.10) then do; abort abend; end;
-
-if cald = 2017 and incidence1549w > 0.25 then do; abort abend; end;
-if cald = 2017 and incidence1549m > 0.25 then do; abort abend; end;
-if cald = 2020 and incidence1549  > 0.25 then do; abort abend; end;
-
-if cald = 2022 and 
-(
-(n_onart_2022_for_abort < 1050000 or n_onart_2022_for_abort > 1600000) 
-)
-then do; 
-abort abend; 
-end;
-
-if cald=2022 and n_infected_for_abort > 35000 then do; abort abend; end;
-
 
 
 ***Zim specific;
@@ -21517,7 +21508,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim starts in 1984 JAS Sep23;
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -21684,6 +21675,16 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=0);
+
+
+data a.vcx; set r1;
+
+*/
+
+
+data r1; set a.vcx;
+
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
@@ -21702,9 +21703,6 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
 
-data x; set r1;
-
-data r1; set x;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
@@ -21752,6 +21750,7 @@ data r1; set x;
 %update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=0);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=0);
