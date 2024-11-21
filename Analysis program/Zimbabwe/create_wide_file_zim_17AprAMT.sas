@@ -166,6 +166,7 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who
 
 
 if option =1 then do;
+s_cost_amt_program=0.3;
 s_cost_amt_program10=10;
 s_cost_amt_program15=15;
 s_cost_amt_program20=20;
@@ -216,6 +217,7 @@ s_cost_amt_program240=240;
 s_cost_amt_program245=245;
 s_cost_amt_program250=250;
 
+dcost_amt_program = s_cost_amt_program * &discount;
 dcost_amt_program10_= s_cost_amt_program10 * &discount;
 dcost_amt_program15_= s_cost_amt_program15 * &discount;
 dcost_amt_program20_= s_cost_amt_program20 * &discount;
@@ -265,8 +267,10 @@ dcost_amt_program235_= s_cost_amt_program235 * &discount;
 dcost_amt_program240_= s_cost_amt_program240 * &discount;
 dcost_amt_program245_= s_cost_amt_program245 * &discount;
 dcost_amt_program250_= s_cost_amt_program250 * &discount;
+end;
 
 if option=0 then do;
+dcost_amt_program = 0;
 dcost_amt_program10_= 0;
 dcost_amt_program15_= 0; 
 dcost_amt_program20_= 0; 
@@ -319,6 +323,11 @@ dcost_amt_program250_= 0;
 end; 
 
 ***including additional fixed cost of the program;
+dcost_amt = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
+		dcost_swprog150_ + dcost_amt_program;
+
 dcost_amt10_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
@@ -730,6 +739,7 @@ dart_cost_y		dadc_cost  			dcd4_cost		  dvl_cost  dvis_cost	dnon_tb_who3_cost	dc
 dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_circ  		dcost_condom_dn  dcost_avail_self_test 		
 dcost_prep_visit_oral  				dcost_prep_oral   dcost_prep_visit_inj  dcost_prep_inj 		dtest_cost_sw
 
+dcost_amt
 dcost_amt10_  dcost_amt15_  dcost_amt20_  dcost_amt25_  dcost_amt30_  dcost_amt35_  dcost_amt40_  dcost_amt45_  dcost_amt50_  
 dcost_amt55_  dcost_amt60_  dcost_amt65_  dcost_amt70_  dcost_amt75_  dcost_amt80_  dcost_amt85_  dcost_amt90_  dcost_amt95_  
 dcost_amt100_ dcost_amt105_ dcost_amt110_ dcost_amt115_ dcost_amt120_ dcost_amt125_ dcost_amt130_ dcost_amt135_ 
@@ -742,6 +752,9 @@ s_tested s_tested_m s_tested_f
 
 ;
 
+
+
+
 proc sort data=y;by run option;run;
 
 
@@ -749,7 +762,7 @@ data a.fsw_17_04_24_short_a; set y;run;
 
 data y; set a.fsw_17_04_24_short_a;run;
 
-
+proc contents;run;
 
 proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2011<= cald <2014 and option=0 ;run;
 proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2014<= cald <2017 and option=0 ;run;
@@ -855,6 +868,7 @@ data &v ; merge y_23 t_30 t_24_25 t_24_29 t_24_44 t_24_74;
 %var(v=dcost_circ); 	  %var(v=dcost_condom_dn);  %var(v=dcost_avail_self_test); 	%var(v=dcost_prep_visit_oral);  	
 %var(v=dcost_prep_oral);  %var(v=dcost_prep_visit_inj);  %var(v=dcost_prep_inj); 
 
+%var(v=dcost_amt);
 %var(v=dcost_amt10_);  %var(v=dcost_amt15_);  %var(v=dcost_amt20_);  %var(v=dcost_amt25_);  %var(v=dcost_amt30_); 
 %var(v=dcost_amt35_);  %var(v=dcost_amt40_);  %var(v=dcost_amt45_);  %var(v=dcost_amt50_);  %var(v=dcost_amt55_); 
 %var(v=dcost_amt60_);  %var(v=dcost_amt65_);  %var(v=dcost_amt70_);  %var(v=dcost_amt75_);  %var(v=dcost_amt80_);
@@ -898,6 +912,7 @@ dcot_cost		dtb_cost  		dres_cost 		dtest_cost		dtest_cost_sw	d_t_adh_int_cost  	
 dcost_drug_level_test			dcost_circ 		dcost_condom_dn	dcost_avail_self_test 	
 dcost_prep_visit_oral  			dcost_prep_oral dcost_prep_visit_inj  	dcost_prep_inj
 
+dcost_amt
 dcost_amt10_  dcost_amt15_  dcost_amt20_  dcost_amt25_  dcost_amt30_  dcost_amt35_  dcost_amt40_ 
 dcost_amt45_  dcost_amt50_  dcost_amt55_  dcost_amt60_  dcost_amt65_  dcost_amt70_  dcost_amt75_ 
 dcost_amt80_  dcost_amt85_  dcost_amt90_  dcost_amt95_  dcost_amt100_ dcost_amt105_ dcost_amt110_ 

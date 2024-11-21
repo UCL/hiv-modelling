@@ -89,11 +89,11 @@ d_incidence1549	d_prevalence1549	d_p_diag	d_p_onart_diag   	d_p_onart_vl1000
 data costs;
 set a;
 
-if 0< incidence1549_23 <= 0.1 then incidence=1;
-if 0.1< incidence1549_23 <=0.3 then incidence=2;
-if 0.3< incidence1549_23 <= 0.5 then incidence=3;
-if 0.5< incidence1549_23 <= 1 then incidence=4;
-if 1< incidence1549_23 then incidence =5;
+if 0< incidence1549__23 <= 0.1 then incidence=1;
+if 0.1< incidence1549__23 <=0.3 then incidence=2;
+if 0.3< incidence1549__23 <= 0.5 then incidence=3;
+if 0.5< incidence1549__23 <= 1 then incidence=4;
+if 1< incidence1549__23 then incidence =5;
 
 
 ****Cost effectiveness;
@@ -133,7 +133,13 @@ diff_nmb = nmb_amt - nmb_sis;
 ***max cost of SW prog;
 maxcost_amt= diff_netdalys * 500;
 
-run;
+*ICER - based on a cost of $300000 additional US $;
+diff_cost_amt = dcost_amt_24_74_2 - dcost_amt_24_74_1;
+ICER = (diff_cost_amt/diff_ddaly)*1000000;
+
+proc contents;run;
+proc means n mean lclm uclm;
+var ICER;RUN;
 
 ***Absolute costs and differences;
 proc means n mean lclm uclm;
