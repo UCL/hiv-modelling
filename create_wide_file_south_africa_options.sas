@@ -2,26 +2,26 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\south_africa_options_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\south_africa_options_e_out\";
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\south_africa_options_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\south_africa_options_e_out\";
 
-data b.south_africa_options_d ; set b.out: ;
+data b.south_africa_options_e ; set b.out: ;
 
 run;
 
 */
 
-proc sort data= b.south_africa_options_d; 
+proc sort data= b.south_africa_options_e; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   b.south_africa_options_d ;
+set   b.south_africa_options_e ;
 
 
 if cald=2022.25;
@@ -38,7 +38,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   b.south_africa_options_d sf;
+merge   b.south_africa_options_e sf;
 by run ;
  
 
@@ -1428,10 +1428,10 @@ n_prep_any_w_1524   n_prep_any_w_2534  n_prep_any_w_3544  n_prep_any_plw  p_prep
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data b.l_base_sa_options_d  ; 
+data b.l_base_sa_options_e  ; 
 	set y;
 	if cald=. then delete;
 run;
 
-proc contents data=b.l_base_sa_options_d; run;
+proc contents data=b.l_base_sa_options_e; run;
 

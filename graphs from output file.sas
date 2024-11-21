@@ -11,7 +11,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-set a.l_base_sa_options_d;
+set a.l_base_sa_options_e;
 
 s = 13 ;
 if option=0 or option=s ;
