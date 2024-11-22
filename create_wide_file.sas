@@ -1,3 +1,5 @@
+proc printto log="C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105\log_file.log";
+run;
 
 * Matt's local machine input;
 libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105";
@@ -18,10 +20,9 @@ data hiv_synthesis_base; set a.concatenated_data; option FULLSTIMER;
 *run;
 /*
 proc freq; tables run; run;
-proc print; var run cald option prevalence1549 incidence1549; where run = 94069056 ; run;  
+proc print; var run cald option s_htn_cost_clin s_dhtn_cost_clin; where run = 254925010 ; run; 
 */
-proc printto log="C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105\log_file.log";
-run;
+
 
 if run=. then delete; 
 proc sort data=hiv_synthesis_base; 
@@ -55,15 +56,19 @@ by run ;
 
 * ================================================================================= ;
 
-* discount rate is 3%; 
+* discount rate is 3% in main program. this creates discount rates for hypertension costs; 
 * note discounting is from start of intervention - no adjustment needed;
 
-%let year_start_disc=2024;
-*discount_3py = 1/(1.03**(cald-&year_start_disc)); ***This is already calculated in HIV Synthesis;
-discount_5py = 1/(1.05**(cald-&year_start_disc));
-discount_10py = 1/(1.10**(cald-&year_start_disc));
-*The following can be changed if we want instead 10% discount rate;
-%let discount=discount_5py;
+year_start_disc=2025;
+discount = 1;
+discount_corr = 1;
+if cald >=2025 then do;
+	discount_3py = 1/(1.03**(cald-year_start_disc));
+	discount_5py = 1/(1.05**(cald-year_start_disc));
+	discount_10py = 1/(1.10**(cald-year_start_disc));
+	discount =discount_3py; 
+	*discount_corr = discount_5py / discount_3py; *factor to correct discount if different from 3%;
+end;
 
 * ================================================================================= ;
 
@@ -77,8 +82,7 @@ dly = s_dly * &sf; *discounted life years;
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
 ***Scaling up to annual discounted DALYs in the whole population;
-ddaly = s_ddaly * &sf * 4;
-
+ddaly = s_ddaly * &sf * 4 * discount_corr;
 
 ***These are additional potential DALYs to include which have not so far been included;
 
@@ -157,12 +161,15 @@ htn_cost_clin = s_htn_cost_clin * 4 / 1000 * &sf;
 htn_cost_cvd = s_htn_cost_cvd * 4 / 1000 * &sf; 
 htn_cost_total = (htn_cost_scr + htn_cost_drug + htn_cost_clin + htn_cost_cvd) ; 
 
-dhtn_cost_scr = s_dhtn_cost_scr * 4 / 1000 * &sf; 
-dhtn_cost_drug = s_dhtn_cost_drug * 4 / 1000 * &sf; 
-*dhtn_cost_clin = s_dhtn_cost_clin * 4 / 1000 * &sf; 
-	dhtn_cost_clin = htn_cost_clin * discount; *discounted clinic cost, including implementation costs; * discount is created in main model program and is in the output file;
-dhtn_cost_cvd = s_dhtn_cost_cvd * 4 / 1000 * &sf; 
+dhtn_cost_scr = htn_cost_scr * discount; 
+dhtn_cost_drug = htn_cost_drug * discount; 
+dhtn_cost_clin = htn_cost_clin * discount; *discounted clinic cost, including implementation costs;
+dhtn_cost_cvd = htn_cost_cvd * discount; 
 dhtn_cost_total = dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd ; 
+
+/*
+proc print; var run cald option htn_cost_scr dhtn_cost_scr htn_cost_drug dhtn_cost_drug htn_cost_clin dhtn_cost_clin htn_cost_cvd dhtn_cost_cvd htn_cost_total dhtn_cost_total; run;
+*/
 
 dhtn_cost_tothalf = dhtn_cost_total / 2 ;
 dhtn_cost_totdrughalf = dhtn_cost_scr + (dhtn_cost_drug / 2) + dhtn_cost_clin + dhtn_cost_cvd ; 
@@ -197,6 +204,7 @@ dhtn_cost_totcvd4x = dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + (dhtn_cos
 *cost_clin_care = dcost_clin_care / discount;
 
 *cost = dcost / discount;
+
 
 * ================================================================================= ;
 * ================================================================================= ;
@@ -1123,8 +1131,6 @@ proc sort data=y;by run option;run;
 data a.l_base; set y;  
 
 
-
-
 data y; set a.l_base; 
 
   options nomprint;
@@ -1432,7 +1438,7 @@ proc contents;run;
 ods html;
 
 proc means data=a.w_base n p50 p5 p95 mean;
-var 
+var
 
 ;
 run;
@@ -1443,5 +1449,4 @@ run;
 
 ods html close;
 
-proc printo;
 run;
