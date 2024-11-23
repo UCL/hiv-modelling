@@ -6,7 +6,7 @@ libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\out
 
 
 data a;
-set a.cdi_18nov24;
+set a.cdi_20nov24;
 
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
@@ -261,7 +261,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
 * p_anc;						if (s_pregnant+s_birth) gt 0 then p_anc = s_anc /(s_pregnant+s_birth);*pregnant=1 at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5
 * prevalence_hiv_preg;			if s_pregnant gt 0 then prevalence_hiv_preg = s_hiv_pregnant / s_pregnant ;
-* p_pmtct;						if s_plw gt 0 then p_pmtct=s_pmtct/s_plw;
+* p_pmtct;						if s_plw gt 0 then p_pmtct=s_pmtct/s_pregnant;
 
 * p_ai_no_arv_c_nnm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_nnm = s_ai_naive_no_pmtct_c_nnm_ / s_ai_naive_no_pmtct_;
 
@@ -307,7 +307,7 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * p_tested_agywfsw;				if s_agywfsw_1564 - s_diag_agywfsw > 0 then p_tested_agywfsw = s_tested_agywfsw /(s_agywfsw_1564 - s_diag_agywfsw) ;
 * p_ever_tested_sw; 			p_ever_tested_sw = s_ever_tested_sw / s_sw_1564;
 * p_tested_py_sw; 				p_tested_py_sw = s_tested_4p_sw / s_sw_1564;
-
+* p_tested_py_agyw; 			p_tested_py_agyw = s_tested_4p_agywfsw / s_agywfsw_1564;
 
 * p_diag_sw;					if s_hiv_sw  > 0 then p_diag_sw = s_diag_sw /s_hiv_sw ;
 * incidence_sw;		            incidence_sw = (s_primary_sw * 4 * 100) / (s_sw_1549  - s_hiv_sw1549_  + s_primary_sw);
@@ -570,7 +570,7 @@ n_tested			p_tested_past_year_1549m				p_tested_past_year_1549w		test_prop_posit
 n_self_tested		n_tested_anc							p_tested_past_year_ov25m		p_tested_past_year_ov25w
 p_mcirc				p_mcirc_1549m		n_new_vmmc1549m 	p_trad_circ			p_vmmc		s_sw_1549		p_sw_prog_vis
 prop_w_1549_sw		prop_w_1564_sw		prop_w_ever_sw		prop_sw_hiv			n_sw_1549_	prop_w_1524_onprep
-prop_1564_onprep	p_diag_sw			p_onart_sw			p_tested_agywfsw
+prop_1564_onprep	p_diag_sw			p_onart_sw			p_tested_agywfsw	p_tested_py_agyw
 prevalence1549_		prevalence1549m		prevalence1549w		prevalence	
 prevalence1519w		prevalence1519m		prevalence2024w		prevalence2024m		prevalence2529w		prevalence2529m
 prevalence3034w		prevalence3034m		prevalence3539w		prevalence3539m		prevalence4044w		prevalence4044m
@@ -624,17 +624,28 @@ if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
 
 if run in (
 
-  61027535         
-  566095096          
-  566207484           
-  945262264       
+22541979
+52847994
+107700132
+147988437
+159785456
+208291898
+359157257
+556947241
+684101251
+757595643
+857362937
+881587193
+
 )
+
+
 then delete;
 run;
 proc freq;table cald;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI_18nov24; 
+data a.l_base_CdI_20nov24; 
 set low_inc;
 run;
 
