@@ -2,21 +2,21 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_aj_options_m_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_aj_options_o_out\";
 
 
 
-data   kenya_aj_options_m ; set b.out: ;
+data   kenya_aj_options_o ; set b.out: ;
 
 
-proc sort data=  kenya_aj_options_m; 
+proc sort data=  kenya_aj_options_o; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_aj_options_m ;
+set   kenya_aj_options_o ;
 
 
 if cald=2022.25;
@@ -34,7 +34,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_aj_options_m sf;
+merge   kenya_aj_options_o sf;
 by run ;
  
 
@@ -208,16 +208,36 @@ if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
 dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
 
+
+
+s_hiv1524m = s_hiv1519m + s_hiv2024m ;
+s_hiv1524w = s_hiv1519w + s_hiv2024w ;
+
+s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
+s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
+s_hivge15 = s_hivge15m + s_hivge15w ;
+
+s_hiv65plm = s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
+s_hiv65plw = s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
+
+
 * cost of intervention implementation (in addition to any consequences in terms of extra tests, extra people on art etc) ;
-dcost_int=0;
-if option ne 0 then do;
-	cost_int_per_year = 20; * placeholder ; 
-	dcost_int = cost_int_per_year * &discount;
-	cost_int = cost_int_per_year;
-end;
+cost_int=0;
+if option = 106 then cost_int = 100000 ; * assumed very high cost to somehow produce such high condom use; 
+if option = 111 then cost_int = 0.277 * s_alive_pwid * sf;
+if option = 112 then cost_int = 0.022 * s_hivge15 * sf;
+if option = 113 then cost_int = 0.031 * s_onart * sf;
+if option = 114 then cost_int = 0.022 * s_give_birth_with_hiv * sf;
+if option = 115 then cost_int = 0.010 * s_hivge15 * sf;
+if option = 20 then cost_int = 100000 + (0.277 * s_alive_pwid * sf) + (0.022 * s_hivge15 * sf) + (0.031 * s_onart * sf) + (0.022 * s_plw * sf) 
++ (0.010 * s_hivge15 * sf);
+if option = 200 then cost_int = 100000 + (0.277 * s_alive_pwid * sf) + (0.022 * s_hivge15 * sf) + (0.031 * s_onart * sf) + (0.022 * s_plw * sf) 
++ (0.010 * s_hivge15 * sf);
 
-dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
+* convert to millions;
+cost_int = cost_int / 1000;
 
+dcost_int = cost_int * &discount;
 * sens analysis;
 
 * dtaz_cost = dtaz_cost * (100 / 180);
@@ -236,17 +256,18 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who
 		+ d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + 
 		dcost_prep + dcost_child_hiv + dcost_non_aids_pre_death + dcost_int;
 
-if &discount gt 0 then cost = dcost / &discount ;
 
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost; 
 
-if cald >= 2024 then cost_clin_care = dcost_clin_care / &discount;
+if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
 
-if cald >= 2024 then cost = dcost / &discount;
+if &discount gt 0 then cost = dcost / &discount;
 
+* convert back from millions;
+dcost = dcost*1000000 ;
 * ================================================================================= ;
 
 
@@ -267,15 +288,7 @@ s_vmmc1549m = s_vmmc1519m + s_vmmc2024m + s_vmmc2529m + s_vmmc3034m + s_vmmc3539
 s_vmmc3039m = s_vmmc3034m + s_vmmc3539m;
 s_vmmc4049m = s_vmmc4044m + s_vmmc4549m;
 
-s_hiv1524m = s_hiv1519m + s_hiv2024m ;
-s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
-s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
-s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
-s_hivge15 = s_hivge15m + s_hivge15w ;
-
-s_hiv65plm = s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
-s_hiv65plw = s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
 
 s_ageg65plm = s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg8084m + s_ageg85plm ;
 s_ageg65plw = s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85plw ;
@@ -985,7 +998,6 @@ p_diag_m  = p_diag_m / 100;
 p_diag_w = p_diag_w / 100; 
 p_diag = p_diag / 100;
 
-cost = cost*1000000;
  
 keep run cald option 
 n_alive_m n_alive_w  n_alive  prevalence_m prevalence_w  prevalence  n_infected_m  n_infected_w  n_infected p_diag_m  p_diag_w  p_diag  
@@ -1003,12 +1015,12 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_aj_options_m; set y;  
+data a.l_base_kenya_aj_options_o; set y;  
 
 
 
 
-data y; set a.l_base_kenya_aj_options_m; 
+data y; set a.l_base_kenya_aj_options_o; 
 
  
   option nospool;
@@ -1020,7 +1032,7 @@ data y; set a.l_base_kenya_aj_options_m;
 
   options nomprint;
 
-
+/*
 
 * only for option = 0;
 
@@ -1049,31 +1061,31 @@ proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where 2021   <=
 proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where 2022   <= cald < 2023  ; 
 proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <= cald < 2024  ; 
 
+*/
 
-
-proc means noprint data=y; var &v; output out=y_24  mean= &v   ;         ; where 2024.0 <= cald < 2025.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_25  mean= &v   ;         ; where 2025.0 <= cald < 2026.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_26  mean= &v   ;         ; where 2026.0 <= cald < 2027.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_27  mean= &v   ;         ; where 2027.0 <= cald < 2028.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_28  mean= &v   ;         ; where 2028.0 <= cald < 2029.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_29  mean= &v   ;         ; where 2029.0 <= cald < 2030.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_30  mean= &v   ;         ; where 2030.0 <= cald < 2031.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_31  mean= &v   ;         ; where 2031.0 <= cald < 2032.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_32  mean= &v   ;         ; where 2032.0 <= cald < 2033.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_33  mean= &v   ;         ; where 2033.0 <= cald < 2034.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_34  mean= &v   ;         ; where 2034.0 <= cald < 2035.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_35  mean= &v   ;         ; where 2035.0 <= cald < 2036.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_36  mean= &v   ;         ; where 2036.0 <= cald < 2037.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_37  mean= &v   ;         ; where 2037.0 <= cald < 2038.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_38  mean= &v   ;         ; where 2038.0 <= cald < 2039.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_39  mean= &v   ;         ; where 2039.0 <= cald < 2040.0 and option=111 ;
-proc means noprint data=y; var &v; output out=y_40  mean= &v   ;         ; where 2040.0 <= cald < 2041.0 and option=111 ;
+proc means noprint data=y; var &v; output out=y_24  mean= &v   ;         ; where 2024.0 <= cald < 2025.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_25  mean= &v   ;         ; where 2025.0 <= cald < 2026.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_26  mean= &v   ;         ; where 2026.0 <= cald < 2027.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_27  mean= &v   ;         ; where 2027.0 <= cald < 2028.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_28  mean= &v   ;         ; where 2028.0 <= cald < 2029.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_29  mean= &v   ;         ; where 2029.0 <= cald < 2030.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_30  mean= &v   ;         ; where 2030.0 <= cald < 2031.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_31  mean= &v   ;         ; where 2031.0 <= cald < 2032.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_32  mean= &v   ;         ; where 2032.0 <= cald < 2033.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_33  mean= &v   ;         ; where 2033.0 <= cald < 2034.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_34  mean= &v   ;         ; where 2034.0 <= cald < 2035.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_35  mean= &v   ;         ; where 2035.0 <= cald < 2036.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_36  mean= &v   ;         ; where 2036.0 <= cald < 2037.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_37  mean= &v   ;         ; where 2037.0 <= cald < 2038.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_38  mean= &v   ;         ; where 2038.0 <= cald < 2039.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_39  mean= &v   ;         ; where 2039.0 <= cald < 2040.0 and option=115 ;
+proc means noprint data=y; var &v; output out=y_40  mean= &v   ;         ; where 2040.0 <= cald < 2041.0 and option=115 ;
  																										   
 																										
 data &v ; set 
 
-/* only for option=111   */
-   y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23    
+/* only for option=115   */
+/* y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23  */
 
 y_24 y_25 y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40  ;  
 drop _NAME_ _TYPE_ _FREQ_;
@@ -1140,7 +1152,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=dummy10 );
 
 
-
+/*
 
 * for status quo - option = 0;
 
@@ -1190,9 +1202,9 @@ cards;
 2040
 ;
 
+*/
 
 
-/*
 
 data year;
 input year;
@@ -1215,7 +1227,7 @@ cards;
 2039
 2040
 
-*/
+
 
 data   wide_outputs; merge year 
 n_alive_m n_alive_w  n_alive  prevalence_m prevalence_w  prevalence  n_infected_m  n_infected_w  n_infected p_diag_m  p_diag_w  p_diag  

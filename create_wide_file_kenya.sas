@@ -203,15 +203,36 @@ if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
 dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
 
+
+s_hiv1524m = s_hiv1519m + s_hiv2024m ;
+s_hiv1524w = s_hiv1519w + s_hiv2024w ;
+
+s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
+s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
+s_hivge15 = s_hivge15m + s_hivge15w ;
+
+s_hiv65plm = s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
+s_hiv65plw = s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
+
+
+
 * cost of intervention implementation (in addition to any consequences in terms of extra tests, extra people on art etc) ;
-if option ne 0 then do;
-	cost_int_per_year = 20; * placeholder ; 
-	dcost_int = cost_int_per_year * &discount;
-	cost_int = cost_int_per_year;
-end;
+cost_int=0;
+if option = 106 then cost_int = 100000 ; * assumed very high cost to somehow produce such high condom use; 
+if option = 111 then cost_int = 0.277 * s_alive_pwid * sf;
+if option = 112 then cost_int = 0.022 * s_hivge15 * sf;
+if option = 113 then cost_int = 0.031 * s_onart * sf;
+if option = 114 then cost_int = 0.022 * s_give_birth_with_hiv * sf;
+if option = 115 then cost_int = 0.010 * s_hivge15 * sf;
+if option = 20 then cost_int = 100000 + (0.277 * s_alive_pwid * sf) + (0.022 * s_hivge15 * sf) + (0.031 * s_onart * sf) + (0.022 * s_plw * sf) 
++ (0.010 * s_hivge15 * sf);
+if option = 200 then cost_int = 100000 + (0.277 * s_alive_pwid * sf) + (0.022 * s_hivge15 * sf) + (0.031 * s_onart * sf) + (0.022 * s_plw * sf) 
++ (0.010 * s_hivge15 * sf);
 
-dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
+* convert to millions;
+cost_int = cost_int / 1000;
 
+dcost_int = cost_int * &discount;
 * sens analysis;
 
 * dtaz_cost = dtaz_cost * (100 / 180);
@@ -230,6 +251,7 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who
 		+ d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + 
 		dcost_prep + dcost_child_hiv + dcost_non_aids_pre_death + dcost_int;
 
+
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
@@ -238,6 +260,10 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
 
 if &discount gt 0 then cost = dcost / &discount;
+
+* convert back from millions;
+dcost = dcost*1000000 ;
+
 
 * ================================================================================= ;
 
@@ -258,16 +284,6 @@ s_mcirc_4049m = s_mcirc_4044m + s_mcirc_4549m;
 s_vmmc1549m = s_vmmc1519m + s_vmmc2024m + s_vmmc2529m + s_vmmc3034m + s_vmmc3539m + s_vmmc4044m + s_vmmc4549m ;
 s_vmmc3039m = s_vmmc3034m + s_vmmc3539m;
 s_vmmc4049m = s_vmmc4044m + s_vmmc4549m;
-
-s_hiv1524m = s_hiv1519m + s_hiv2024m ;
-s_hiv1524w = s_hiv1519w + s_hiv2024w ;
-
-s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
-s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
-s_hivge15 = s_hivge15m + s_hivge15w ;
-
-s_hiv65plm = s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
-s_hiv65plw = s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
 
 s_ageg65plm = s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg8084m + s_ageg85plm ;
 s_ageg65plw = s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85plw ;
@@ -930,9 +946,9 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_hiv_m ;						n_hiv_m = s_hivge15m * sf; 
 * n_hiv_w ;						n_hiv_w = s_hivge15w * sf; 
 
-* n_infected1549;					n_infected1549 = (s_primary1549_m + s_primary1549_w) * 4 * sf;
-* n_infected1549m;					n_infected1549_m = s_primary1549_m * 4 * sf;
-* n_infected1549w;					n_infected1549_w = s_primary1549_w * 4 * sf;
+* n_infected1549;					n_infected1549 = (s_primary1549m + s_primary1549w) * 4 * sf;
+* n_infected1549m;					n_infected1549_m = s_primary1549m * 4 * sf;
+* n_infected1549w;					n_infected1549_w = s_primary1549w * 4 * sf;
 
 * n_infected;					n_infected = (s_primary_m + s_primary_w) * 4 * sf;
 * n_infected_w;					n_infected_w = s_primary_w * 4 * sf;
@@ -1133,7 +1149,7 @@ p_onprep_pwid  p_onart_pwid  p_onart_sw  p_ep p_ep_msm  p_msm_ge1newp  p_m_ge1ne
 
 n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_due_to_self_test    n_diagnosed_self_test  n_newp
 
-n_prep_inj n_prep_oral n_prep_vr  mtct_birth_prop mtct_prop n_mtct  cost_int  cost
+n_prep_inj n_prep_oral n_prep_vr  mtct_birth_prop mtct_prop n_mtct  cost_int  cost  ddaly_gbd  dcost_int
 
 ;
 
@@ -1165,7 +1181,6 @@ proc logistic....
 %macro var(v=);
 
 * &v ;
-
 /* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
 proc means  noprint data=y; var &v; output out=y_95 mean= &v._95; by run ; where 1994.5 <= cald < 1995.5; 
 proc means  noprint data=y; var &v; output out=y_98 mean= &v._98; by run ; where 1997.5 <= cald < 1998.5; 
@@ -1187,28 +1202,27 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
  proc means noprint data=y; var &v; output out=y_24_25 mean= &v._24_25; by run option ; where 2024.0 <= cald < 2025.0 ;
  proc means noprint data=y; var &v; output out=y_24_29 mean= &v._24_29; by run option ; where 2024.0 <= cald < 2029.0;
 
- proc means noprint data=y; var &v; output out=y_24_71 mean= &v._24_71; by run option ; where 2024.0 <= cald < 2071.00; 
+ proc means noprint data=y; var &v; output out=y_24_40 mean= &v._24_40; by run option ; where 2024.0 <= cald < 2040.00; 
  * can change to 2075   once changes to program made;
 																										   
 																													   
  proc sort data=y_24_25; by run; proc transpose data=y_24_25 out=t_24_25 prefix=&v._24_25_; var &v._24_25; by run; 
  proc sort data=y_24_29; by run; proc transpose data=y_24_29 out=t_24_29 prefix=&v._24_29_; var &v._24_29; by run; 
 
- proc sort data=y_24_71; by run; proc transpose data=y_24_71 out=t_24_71 prefix=&v._24_71_; var &v._24_71; by run;  
+ proc sort data=y_24_40; by run; proc transpose data=y_24_40 out=t_24_40 prefix=&v._24_40_; var &v._24_40; by run;  
 
-data &v ; merge y_95 y_98 y_99 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_22 y_23 y_40 y_70 t_24_25 t_24_29 t_24_71 ;  
+data &v ; merge y_95 y_98 y_99 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_22 y_23 y_40 y_70 t_24_25 t_24_29 t_24_40 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-
-%var(v=incidence1549); %var(v=n_infected1549); %var(v=n_infected);  %var(v=cost); %var(v=cost_int);
+%var(v=dcost); %var(v=ddaly_gbd);  &var(v=dcost_int);
 
 
 
 data wide_outputs;
 merge 
-incidence1549 n_infected1549 n_infected cost  cost_int;
+dcost ddaly_gbd dcost_int;
 proc sort; by run;
 
 
@@ -1540,10 +1554,104 @@ proc sort; by run;run;
   merge   wide_outputs  wide_par ;  
   by run;
 
+* yes this is correct - see below;
 
+d_dcost_24_40_101 = dcost_24_40_3 - dcost_24_40_1;
+d_dcost_24_40_102 = dcost_24_40_4 - dcost_24_40_1;
+d_dcost_24_40_103 = dcost_24_40_5 - dcost_24_40_1;
+d_dcost_24_40_104 = dcost_24_40_6 - dcost_24_40_1;
+d_dcost_24_40_105 = dcost_24_40_7 - dcost_24_40_1;
+d_dcost_24_40_106 = dcost_24_40_8 - dcost_24_40_1;
+d_dcost_24_40_107 = dcost_24_40_9 - dcost_24_40_1;
+d_dcost_24_40_108 = dcost_24_40_10 - dcost_24_40_1;
+d_dcost_24_40_109 = dcost_24_40_11 - dcost_24_40_1;
+d_dcost_24_40_110 = dcost_24_40_12 - dcost_24_40_1;
+d_dcost_24_40_111 = dcost_24_40_13 - dcost_24_40_1;
+d_dcost_24_40_112 = dcost_24_40_14 - dcost_24_40_1;
+d_dcost_24_40_113 = dcost_24_40_15 - dcost_24_40_1;
+d_dcost_24_40_114 = dcost_24_40_16 - dcost_24_40_1;
+d_dcost_24_40_115 = dcost_24_40_17 - dcost_24_40_1;
+d_dcost_24_40_20  = dcost_24_40_2  - dcost_24_40_1;
+d_dcost_24_40_200 = dcost_24_40_18 - dcost_24_40_1;
+
+d_ddaly_gbd_24_40_101 = ddaly_gbd_24_40_3 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_102 = ddaly_gbd_24_40_4 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_103 = ddaly_gbd_24_40_5 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_104 = ddaly_gbd_24_40_6 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_105 = ddaly_gbd_24_40_7 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_106 = ddaly_gbd_24_40_8 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_107 = ddaly_gbd_24_40_9 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_108 = ddaly_gbd_24_40_10 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_109 = ddaly_gbd_24_40_11 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_110 = ddaly_gbd_24_40_12 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_111 = ddaly_gbd_24_40_13 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_112 = ddaly_gbd_24_40_14 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_113 = ddaly_gbd_24_40_15 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_114 = ddaly_gbd_24_40_16 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_115 = ddaly_gbd_24_40_17 - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_20  = ddaly_gbd_24_40_2  - ddaly_gbd_24_40_1;
+d_ddaly_gbd_24_40_200 = ddaly_gbd_24_40_18 - ddaly_gbd_24_40_1;
+
+
+*
+
+_1 = option 0
+_2 = option 20 
+_3 = option 101
+_4 = option 102
+_5 = option 103
+_6 = option 104
+_7 = option 105
+_8 = option 106
+_9 = option 107
+_10 = option 108
+_11 = option 109
+_12 = option 110
+_13 = option 111
+_14 = option 112
+_15 = option 113
+_16 = option 114
+_17 = option 115
+_18 = option 200
+
+;
+
+proc print; run;
+
+proc means mean;  var 
+
+d_dcost_24_40_101 d_dcost_24_40_102 d_dcost_24_40_103 d_dcost_24_40_104 d_dcost_24_40_105 d_dcost_24_40_106 d_dcost_24_40_107 d_dcost_24_40_108 d_dcost_24_40_109 
+d_dcost_24_40_110 d_dcost_24_40_111 d_dcost_24_40_112  d_dcost_24_40_113  d_dcost_24_40_114  d_dcost_24_40_115  d_dcost_24_40_20 d_dcost_24_40_200
+d_ddaly_gbd_24_40_101 d_ddaly_gbd_24_40_102 d_ddaly_gbd_24_40_103 d_ddaly_gbd_24_40_104 d_ddaly_gbd_24_40_105 d_ddaly_gbd_24_40_106 d_ddaly_gbd_24_40_107 
+d_ddaly_gbd_24_40_108 d_ddaly_gbd_24_40_109 d_ddaly_gbd_24_40_110 d_ddaly_gbd_24_40_111 d_ddaly_gbd_24_40_112  d_ddaly_gbd_24_40_113  d_ddaly_gbd_24_40_114  
+d_ddaly_gbd_24_40_115  d_ddaly_gbd_24_40_20 d_ddaly_gbd_24_40_200
+; 
+output out = fg;
 run;
 
 
+data s; set fg;
+if _STAT_ = 'MEAN';
+
+icer_101=.; if d_dcost_24_40_101 > 0 and d_ddaly_gbd_24_40_101 < 0 then icer_101 = d_dcost_24_40_101 / (-d_ddaly_gbd_24_40_101);
+icer_102=.; if d_dcost_24_40_102 > 0 and d_ddaly_gbd_24_40_102 < 0 then icer_102 = d_dcost_24_40_102 / (-d_ddaly_gbd_24_40_102);
+icer_103=.; if d_dcost_24_40_103 > 0 and d_ddaly_gbd_24_40_103 < 0 then icer_103 = d_dcost_24_40_103 / (-d_ddaly_gbd_24_40_103);
+icer_104=.; if d_dcost_24_40_104 > 0 and d_ddaly_gbd_24_40_104 < 0 then icer_104 = d_dcost_24_40_104 / (-d_ddaly_gbd_24_40_104);
+icer_105=.; if d_dcost_24_40_105 > 0 and d_ddaly_gbd_24_40_105 < 0 then icer_105 = d_dcost_24_40_105 / (-d_ddaly_gbd_24_40_105);
+icer_106=.; if d_dcost_24_40_106 > 0 and d_ddaly_gbd_24_40_106 < 0 then icer_106 = d_dcost_24_40_106 / (-d_ddaly_gbd_24_40_106);
+icer_107=.; if d_dcost_24_40_107 > 0 and d_ddaly_gbd_24_40_107 < 0 then icer_107 = d_dcost_24_40_107 / (-d_ddaly_gbd_24_40_107);
+icer_108=.; if d_dcost_24_40_108 > 0 and d_ddaly_gbd_24_40_108 < 0 then icer_108 = d_dcost_24_40_108 / (-d_ddaly_gbd_24_40_108);
+icer_109=.; if d_dcost_24_40_109 > 0 and d_ddaly_gbd_24_40_109 < 0 then icer_109 = d_dcost_24_40_109 / (-d_ddaly_gbd_24_40_109);
+icer_110=.; if d_dcost_24_40_110 > 0 and d_ddaly_gbd_24_40_110 < 0 then icer_110 = d_dcost_24_40_110 / (-d_ddaly_gbd_24_40_110);
+icer_111=.; if d_dcost_24_40_111 > 0 and d_ddaly_gbd_24_40_111 < 0 then icer_111 = d_dcost_24_40_111 / (-d_ddaly_gbd_24_40_111);
+icer_112=.; if d_dcost_24_40_112 > 0 and d_ddaly_gbd_24_40_112 < 0 then icer_112 = d_dcost_24_40_112 / (-d_ddaly_gbd_24_40_112);
+icer_113=.; if d_dcost_24_40_113 > 0 and d_ddaly_gbd_24_40_113 < 0 then icer_113 = d_dcost_24_40_113 / (-d_ddaly_gbd_24_40_113);
+icer_114=.; if d_dcost_24_40_114 > 0 and d_ddaly_gbd_24_40_114 < 0 then icer_114 = d_dcost_24_40_114 / (-d_ddaly_gbd_24_40_114);
+icer_115=.; if d_dcost_24_40_115 > 0 and d_ddaly_gbd_24_40_115 < 0 then icer_115 = d_dcost_24_40_115 / (-d_ddaly_gbd_24_40_115);
+icer_20 =.; if d_dcost_24_40_20 > 0 and d_ddaly_gbd_24_40_20 < 0 then icer_20 = d_dcost_24_40_20 / (-d_ddaly_gbd_24_40_20);
+icer_200=.; if d_dcost_24_40_200 > 0 and d_ddaly_gbd_24_40_200 < 0 then icer_200 = d_dcost_24_40_200 / (-d_ddaly_gbd_24_40_200);
+
+proc print; run;
 
 
 /*

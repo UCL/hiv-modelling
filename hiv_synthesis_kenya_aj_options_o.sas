@@ -20526,7 +20526,7 @@ then do;
 abort abend; 
 end;
 
-if cald=2022 and n_infected_for_abort > 35000 then do; abort abend; end;
+if cald=2022 and n_infected_for_abort > 38000 then do; abort abend; end;
 
 
 
