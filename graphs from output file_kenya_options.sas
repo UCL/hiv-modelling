@@ -21,7 +21,7 @@ data b;
 
 
 
-  s =  112 ;
+  s =  113 ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
 

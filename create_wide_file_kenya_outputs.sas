@@ -1034,7 +1034,7 @@ data y; set a.l_base_kenya_ak_options_p;
 
   options nomprint;
 
-/*
+
 
 * only for option = 0;
 
@@ -1063,7 +1063,7 @@ proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where 2021   <=
 proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where 2022   <= cald < 2023  ; 
 proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <= cald < 2024  ; 
 
-*/
+
 
 proc means noprint data=y; var &v; output out=y_24  mean= &v   ;         ; where 2024.0 <= cald < 2025.0 and option=115 ;
 proc means noprint data=y; var &v; output out=y_25  mean= &v   ;         ; where 2025.0 <= cald < 2026.0 and option=115 ;
@@ -1087,7 +1087,7 @@ proc means noprint data=y; var &v; output out=y_40  mean= &v   ;         ; where
 data &v ; set 
 
 /* only for option=115   */
-/* y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23  */
+   y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23    
 
 y_24 y_25 y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40  ;  
 drop _NAME_ _TYPE_ _FREQ_;
@@ -1154,7 +1154,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=dummy10 );
 
 
-/*
+
 
 * for status quo - option = 0;
 
@@ -1204,9 +1204,9 @@ cards;
 2040
 ;
 
-*/
 
 
+/*
 
 data year;
 input year;
@@ -1229,6 +1229,7 @@ cards;
 2039
 2040
 
+*/
 
 
 data   wide_outputs; merge year 
