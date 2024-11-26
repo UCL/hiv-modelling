@@ -6,6 +6,10 @@
 
 * added transmission through breastfeeding;
 
+* change to yll_gbd ?
+
+* to add: dalys due to mtct ?
+
 
 ;
 
