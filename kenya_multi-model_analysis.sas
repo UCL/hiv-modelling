@@ -985,11 +985,15 @@ data dnew_infection; set w_int1 w_int2 w_int3 w_int4 w_int5 w_int6 w_int7
  w_int8 w_int9 w_int10 w_int11 w_int12 w_int13 w_int14 w_int15; 
 
 
-data cost_plus_ddaly; merge ddalys_averted dcost_incurred dnew_infection;
+data cost_ddaly_dnew_infection; merge ddalys_averted dcost_incurred dnew_infection;
 
 icer=.; if effect_dcost > 0 and effect_ddalys < 0 then icer = effect_dcost / (-effect_ddalys);
-cpia=.; if effect_dcost > 0 and effect_dnew_infection < 0 then cpia = effect_dcost / (-effect_dnew_infection);
+if . < effect_dcost <= 0 and effect_ddalys < 0 then icer = 0; if effect_ddalys >= 0 then icer=1000000;
 
+cpia=.; if effect_dcost > 0 and effect_dnew_infection < 0 then cpia = effect_dcost / (-effect_dnew_infection);
+if . < effect_dcost <= 0 and effect_new_infection < 0 then cpia = 0; if effect_dnew_infection >= 0 then cpia = 1000000; 
+
+ods html;
 proc print; where scenario = 1;
 proc print; where scenario = 2;
 proc print; where scenario = 3;
@@ -1005,16 +1009,44 @@ proc print; where scenario = 12;
 proc print; where scenario = 13;
 proc print; where scenario = 14;
 proc print; where scenario = 15;
+run;
+ods html close;
 
+data g;  set cost_ddaly_dnew_infection;
+if scenario = 1;
+keep icer;
+proc print; run;
+
+
+data d;
+
+input int lower_upper_icer ;
+
+if int=1 then intervention='a';
+if int=2 then intervention='b';
+if int=3 then intervention='c';
+
+cards;
+1  3 
+1  4
+2  1 
+2  6
+3  0 
+3  1
+
+
+ods html;
+
+PROC SGPLOT DATA = d; VBAR intervention / GROUP = lower_upper_icer ; Title    height=1.5 justify=center "ICER (range over models) by Intervention"; RUN; 
+
+proc sgplot data=d;
+   vbar Category / response=Response group=Group groupdisplay=stack;
+   xaxis label="Categories";
+   yaxis label="Values";
 run;
 
 
-
-
-
-
-
-
+ods html close;
 
 
 
