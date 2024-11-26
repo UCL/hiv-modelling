@@ -2784,7 +2784,7 @@ if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldat
 end;	
 
 * increase in oral prep preference in 2022 (informed by kenya pharmacy data);
-if caldate{t} >= 2022 then eff_prob_prep_oral_b = prob_prep_oral_b + 0.4;
+if caldate{t} >= 2022 then eff_prob_prep_oral_b = prob_prep_oral_b + 0.6;
 
 
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
@@ -20526,7 +20526,7 @@ then do;
 abort abend; 
 end;
 
-if cald=2022 and n_infected_for_abort > 38000 then do; abort abend; end;
+if cald=2022 and n_infected_for_abort > 42000 then do; abort abend; end;
 
 
 

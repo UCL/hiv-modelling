@@ -2,21 +2,21 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_aj_options_o_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ak_options_p_out\";
 
 
 
-data   kenya_aj_options_o ; set b.out: ;
+data   kenya_ak_options_p ; set b.out: ;
 
 
-proc sort data=  kenya_aj_options_o; 
+proc sort data=  kenya_ak_options_p; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_aj_options_o ;
+set   kenya_ak_options_p ;
 
 
 if cald=2022.25;
@@ -34,7 +34,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_aj_options_o sf;
+merge   kenya_ak_options_p sf;
 by run ;
  
 
@@ -268,6 +268,8 @@ if &discount gt 0 then cost = dcost / &discount;
 
 * convert back from millions;
 dcost = dcost*1000000 ;
+cost = cost*1000000;
+dcost_int = dcost_int*1000000;
 * ================================================================================= ;
 
 
@@ -1015,12 +1017,12 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_aj_options_o; set y;  
+data a.l_base_kenya_ak_options_p; set y;  
 
 
 
 
-data y; set a.l_base_kenya_aj_options_o; 
+data y; set a.l_base_kenya_ak_options_p; 
 
  
   option nospool;

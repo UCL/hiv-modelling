@@ -1,23 +1,52 @@
+
+
+
+
+
+
+
+* add cost per infection averted ;
+
+* give caveats of limitations for modelling ahd - better to be guided by cepac modelling 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 * options user="/folders/myfolders/";
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_aj_options_o_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ak_options_p_out\";
 
 
 
-data   kenya_aj_options_o ; set b.out: ;
+data   kenya_ak_options_p ; set b.out: ;
 
 
 
-proc sort data=  kenya_aj_options_o; 
+proc sort data=  kenya_ak_options_p; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_aj_options_o ;
+set   kenya_ak_options_p ;
 
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
@@ -34,7 +63,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_aj_options_o sf;
+merge   kenya_ak_options_p sf;
 by run ;
  
 
@@ -263,7 +292,7 @@ if &discount gt 0 then cost = dcost / &discount;
 
 * convert back from millions;
 dcost = dcost*1000000 ;
-
+dcost_int = dcost_int*1000000;
 
 * ================================================================================= ;
 
@@ -382,6 +411,9 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 								prop_sw_newp0 = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp = s_sw_newp/s_sw_1564;
 
+* prop_age65pl;					prop_age65pl = (s_ageg6569w+s_ageg7074w+s_ageg7579w+s_ageg8084w+s_ageg85plw+s_ageg6569m+s_ageg7074m+s_ageg7579m+s_ageg8084m+s_ageg85plm)/
+								(s_ageg1564w+s_ageg6569w+s_ageg7074w+s_ageg7579w+s_ageg8084w+s_ageg85plw+s_ageg1564m+s_ageg6569m+s_ageg7074m+s_ageg7579m
+								+s_ageg8084m+s_ageg85plm);
 
 * prep;
 
@@ -954,6 +986,8 @@ s_primary_m = s_primary1519m + s_primary2024m + s_primary2529m + s_primary3034m	
 * n_infected_w;					n_infected_w = s_primary_w * 4 * sf;
 * n_infected_m;					n_infected_m = s_primary_m * 4 * sf;
 
+dn_infected = n_infected * &discount;
+
 
 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
@@ -1060,7 +1094,7 @@ p_on1drug_antihyp_1549 p_on2drug_antihyp_1549 p_on3drug_antihyp_1549  p_on1drug_
 p_on3drug_antihyp_5059  p_on1drug_antihyp_6069  p_on2drug_antihyp_6069  p_on3drug_antihyp_6069  p_on1drug_antihyp_7079  p_on2drug_antihyp_7079 
 p_on3drug_antihyp_7079  p_on1drug_antihyp_ge80  p_on2drug_antihyp_ge80  p_on3drug_antihyp_ge80 
 
-p_ahd_re_enter_care_100 p_ahd_re_enter_care_200  n_infected
+p_ahd_re_enter_care_100 p_ahd_re_enter_care_200  n_infected  dn_infected
 
 n_dead_hivpos_cause1  rate_dead_hivpos_cause1 n_dead_hivpos_tb  rate_dead_hivpos_tb n_dead_hivpos_cause4  rate_dead_hivpos_cause4 
 n_dead_hivpos_crypm  rate_dead_hivpos_crypm n_dead_hivpos_sbi  rate_dead_hivpos_sbi n_dead_hivpos_oth_adc  rate_dead_hivpos_oth_adc 
@@ -1159,11 +1193,11 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_aj_options_o; set y;  
+data a.l_base_kenya_ak_options_p; set y;  
 
 
 
-data y; set a.l_base_kenya_aj_options_o; 
+data y; set a.l_base_kenya_ak_options_p; 
 
 /*
 if cald = 2017;
@@ -1181,48 +1215,23 @@ proc logistic....
 %macro var(v=);
 
 * &v ;
-/* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
-proc means  noprint data=y; var &v; output out=y_95 mean= &v._95; by run ; where 1994.5 <= cald < 1995.5; 
-proc means  noprint data=y; var &v; output out=y_98 mean= &v._98; by run ; where 1997.5 <= cald < 1998.5; 
-proc means  noprint data=y; var &v; output out=y_99 mean= &v._99; by run ; where 1998.5 <= cald < 1999.5; 
-proc means  noprint data=y; var &v; output out=y_00 mean= &v._00; by run ; where 1999.5 <= cald < 2000.5; 
-proc means  noprint data=y; var &v; output out=y_05 mean= &v._05; by run ; where 2004.5 <= cald < 2005.5; 
-proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run ; where 2009.5 <= cald < 2010.5; 
-proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run ; where 2014.5 <= cald < 2015.5; 
-proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where 2016.5 <= cald < 2017.5; 
-proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where 2019.5 <= cald < 2020.5; 
-proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where 2020.5 <= cald < 2021.5; 
-proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run ; where 2021.5 <= cald < 2022.5; 
-
-proc means  noprint data=y; var &v; output out=y_23 mean= &v._23; by run ; where 2022.5 <= cald < 2023.5; 
-
-proc means  noprint data=y; var &v; output out=y_40 mean= &v._40; by run ; where 2039.5 <= cald < 2040.5; 
-proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where 2069.5 <= cald < 2070.5; 
-
- proc means noprint data=y; var &v; output out=y_24_25 mean= &v._24_25; by run option ; where 2024.0 <= cald < 2025.0 ;
- proc means noprint data=y; var &v; output out=y_24_29 mean= &v._24_29; by run option ; where 2024.0 <= cald < 2029.0;
 
  proc means noprint data=y; var &v; output out=y_24_40 mean= &v._24_40; by run option ; where 2024.0 <= cald < 2040.00; 
- * can change to 2075   once changes to program made;
-																										   
-																													   
- proc sort data=y_24_25; by run; proc transpose data=y_24_25 out=t_24_25 prefix=&v._24_25_; var &v._24_25; by run; 
- proc sort data=y_24_29; by run; proc transpose data=y_24_29 out=t_24_29 prefix=&v._24_29_; var &v._24_29; by run; 
-
+														
  proc sort data=y_24_40; by run; proc transpose data=y_24_40 out=t_24_40 prefix=&v._24_40_; var &v._24_40; by run;  
 
-data &v ; merge y_95 y_98 y_99 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_22 y_23 y_40 y_70 t_24_25 t_24_29 t_24_40 ;  
+data &v ; set t_24_40 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=dcost); %var(v=ddaly_gbd);  &var(v=dcost_int);
+%var(v=dcost); %var(v=ddaly_gbd); %var(v=dcost_int); %var(v=dn_infected);
 
 
 
 data wide_outputs;
 merge 
-dcost ddaly_gbd dcost_int;
+dcost ddaly_gbd dcost_int dn_infected ;
 proc sort; by run;
 
 
@@ -1548,7 +1557,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_kenya_aj_options_o; 
+  data a.w_base_kenya_ak_options_p; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
@@ -1592,6 +1601,24 @@ d_ddaly_gbd_24_40_115 = ddaly_gbd_24_40_17 - ddaly_gbd_24_40_1;
 d_ddaly_gbd_24_40_20  = ddaly_gbd_24_40_2  - ddaly_gbd_24_40_1;
 d_ddaly_gbd_24_40_200 = ddaly_gbd_24_40_18 - ddaly_gbd_24_40_1;
 
+d_dn_infected_24_40_101 = dn_infected_24_40_3 - dn_infected_24_40_1;
+d_dn_infected_24_40_102 = dn_infected_24_40_4 - dn_infected_24_40_1;
+d_dn_infected_24_40_103 = dn_infected_24_40_5 - dn_infected_24_40_1;
+d_dn_infected_24_40_104 = dn_infected_24_40_6 - dn_infected_24_40_1;
+d_dn_infected_24_40_105 = dn_infected_24_40_7 - dn_infected_24_40_1;
+d_dn_infected_24_40_106 = dn_infected_24_40_8 - dn_infected_24_40_1;
+d_dn_infected_24_40_107 = dn_infected_24_40_9 - dn_infected_24_40_1;
+d_dn_infected_24_40_108 = dn_infected_24_40_10 - dn_infected_24_40_1;
+d_dn_infected_24_40_109 = dn_infected_24_40_11 - dn_infected_24_40_1;
+d_dn_infected_24_40_110 = dn_infected_24_40_12 - dn_infected_24_40_1;
+d_dn_infected_24_40_111 = dn_infected_24_40_13 - dn_infected_24_40_1;
+d_dn_infected_24_40_112 = dn_infected_24_40_14 - dn_infected_24_40_1;
+d_dn_infected_24_40_113 = dn_infected_24_40_15 - dn_infected_24_40_1;
+d_dn_infected_24_40_114 = dn_infected_24_40_16 - dn_infected_24_40_1;
+d_dn_infected_24_40_115 = dn_infected_24_40_17 - dn_infected_24_40_1;
+d_dn_infected_24_40_20  = dn_infected_24_40_2  - dn_infected_24_40_1;
+d_dn_infected_24_40_200 = dn_infected_24_40_18 - dn_infected_24_40_1;
+
 
 *
 
@@ -1625,6 +1652,9 @@ d_dcost_24_40_110 d_dcost_24_40_111 d_dcost_24_40_112  d_dcost_24_40_113  d_dcos
 d_ddaly_gbd_24_40_101 d_ddaly_gbd_24_40_102 d_ddaly_gbd_24_40_103 d_ddaly_gbd_24_40_104 d_ddaly_gbd_24_40_105 d_ddaly_gbd_24_40_106 d_ddaly_gbd_24_40_107 
 d_ddaly_gbd_24_40_108 d_ddaly_gbd_24_40_109 d_ddaly_gbd_24_40_110 d_ddaly_gbd_24_40_111 d_ddaly_gbd_24_40_112  d_ddaly_gbd_24_40_113  d_ddaly_gbd_24_40_114  
 d_ddaly_gbd_24_40_115  d_ddaly_gbd_24_40_20 d_ddaly_gbd_24_40_200
+d_dn_infected_24_40_101 d_dn_infected_24_40_102 d_dn_infected_24_40_103 d_dn_infected_24_40_104 d_dn_infected_24_40_105 d_dn_infected_24_40_106 d_dn_infected_24_40_107 
+d_dn_infected_24_40_108 d_dn_infected_24_40_109 d_dn_infected_24_40_110 d_dn_infected_24_40_111 d_dn_infected_24_40_112  d_dn_infected_24_40_113  d_dn_infected_24_40_114  
+d_dn_infected_24_40_115  d_dn_infected_24_40_20 d_dn_infected_24_40_200
 ; 
 output out = fg;
 run;
@@ -1650,6 +1680,24 @@ icer_114=.; if d_dcost_24_40_114 > 0 and d_ddaly_gbd_24_40_114 < 0 then icer_114
 icer_115=.; if d_dcost_24_40_115 > 0 and d_ddaly_gbd_24_40_115 < 0 then icer_115 = d_dcost_24_40_115 / (-d_ddaly_gbd_24_40_115);
 icer_20 =.; if d_dcost_24_40_20 > 0 and d_ddaly_gbd_24_40_20 < 0 then icer_20 = d_dcost_24_40_20 / (-d_ddaly_gbd_24_40_20);
 icer_200=.; if d_dcost_24_40_200 > 0 and d_ddaly_gbd_24_40_200 < 0 then icer_200 = d_dcost_24_40_200 / (-d_ddaly_gbd_24_40_200);
+
+cpia_101=.; if d_dcost_24_40_101 > 0 and d_dn_infected_24_40_101 < 0 then cpia_101 = d_dcost_24_40_101 / (-d_dn_infected_24_40_101);
+cpia_102=.; if d_dcost_24_40_102 > 0 and d_dn_infected_24_40_102 < 0 then cpia_102 = d_dcost_24_40_102 / (-d_dn_infected_24_40_102);
+cpia_103=.; if d_dcost_24_40_103 > 0 and d_dn_infected_24_40_103 < 0 then cpia_103 = d_dcost_24_40_103 / (-d_dn_infected_24_40_103);
+cpia_104=.; if d_dcost_24_40_104 > 0 and d_dn_infected_24_40_104 < 0 then cpia_104 = d_dcost_24_40_104 / (-d_dn_infected_24_40_104);
+cpia_105=.; if d_dcost_24_40_105 > 0 and d_dn_infected_24_40_105 < 0 then cpia_105 = d_dcost_24_40_105 / (-d_dn_infected_24_40_105);
+cpia_106=.; if d_dcost_24_40_106 > 0 and d_dn_infected_24_40_106 < 0 then cpia_106 = d_dcost_24_40_106 / (-d_dn_infected_24_40_106);
+cpia_107=.; if d_dcost_24_40_107 > 0 and d_dn_infected_24_40_107 < 0 then cpia_107 = d_dcost_24_40_107 / (-d_dn_infected_24_40_107);
+cpia_108=.; if d_dcost_24_40_108 > 0 and d_dn_infected_24_40_108 < 0 then cpia_108 = d_dcost_24_40_108 / (-d_dn_infected_24_40_108);
+cpia_109=.; if d_dcost_24_40_109 > 0 and d_dn_infected_24_40_109 < 0 then cpia_109 = d_dcost_24_40_109 / (-d_dn_infected_24_40_109);
+cpia_110=.; if d_dcost_24_40_110 > 0 and d_dn_infected_24_40_110 < 0 then cpia_110 = d_dcost_24_40_110 / (-d_dn_infected_24_40_110);
+cpia_111=.; if d_dcost_24_40_111 > 0 and d_dn_infected_24_40_111 < 0 then cpia_111 = d_dcost_24_40_111 / (-d_dn_infected_24_40_111);
+cpia_112=.; if d_dcost_24_40_112 > 0 and d_dn_infected_24_40_112 < 0 then cpia_112 = d_dcost_24_40_112 / (-d_dn_infected_24_40_112);
+cpia_113=.; if d_dcost_24_40_113 > 0 and d_dn_infected_24_40_113 < 0 then cpia_113 = d_dcost_24_40_113 / (-d_dn_infected_24_40_113);
+cpia_114=.; if d_dcost_24_40_114 > 0 and d_dn_infected_24_40_114 < 0 then cpia_114 = d_dcost_24_40_114 / (-d_dn_infected_24_40_114);
+cpia_115=.; if d_dcost_24_40_115 > 0 and d_dn_infected_24_40_115 < 0 then cpia_115 = d_dcost_24_40_115 / (-d_dn_infected_24_40_115);
+cpia_20 =.; if d_dcost_24_40_20 > 0 and d_dn_infected_24_40_20 < 0 then cpia_20 = d_dcost_24_40_20 / (-d_dn_infected_24_40_20);
+cpia_200=.; if d_dcost_24_40_200 > 0 and d_dn_infected_24_40_200 < 0 then cpia_200 = d_dcost_24_40_200 / (-d_dn_infected_24_40_200);
 
 proc print; run;
 
