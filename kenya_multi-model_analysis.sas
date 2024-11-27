@@ -998,7 +998,7 @@ icer = log10(icer+1);
 cpia=.; if effect_dcost > 0 and effect_dnew_infection < 0 then cpia = effect_dcost / (-effect_dnew_infection);
 if . < effect_dcost <= 0 and effect_new_infection < 0 then cpia = 0; if effect_dnew_infection >= 0 then cpia = 1000000; 
 
-
+cpia = log10(cpia+1);
 
 ods html;
 proc print; where scenario = 1;
@@ -1018,6 +1018,8 @@ proc print; where scenario = 14;
 proc print; where scenario = 15;
 run;
 ods html close;
+
+
 
 * plots of ranges of icers across models by intervention ;
 
@@ -1054,49 +1056,49 @@ lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=15; 
 
 
 data icer_scen_1_lower; set v_1; lower_or_upper = 1; lower_upper_icer = lower; intervention = 1  ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_1_upper; set v_1; lower_or_upper = 2; lower_upper_icer = upper; intervention = 1  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_1_upper; set v_1; lower_or_upper = 2; lower_upper_icer = upper - lower-lower; intervention = 1  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_2_lower; set v_2; lower_or_upper = 1; lower_upper_icer = lower; intervention = 2  ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_2_upper; set v_2; lower_or_upper = 2; lower_upper_icer = upper; intervention = 2  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_2_upper; set v_2; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 2  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_3_lower; set v_3; lower_or_upper = 1; lower_upper_icer = lower; intervention = 3  ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_3_upper; set v_3; lower_or_upper = 2; lower_upper_icer = upper; intervention = 3  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_3_upper; set v_3; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 3  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_4_lower; set v_4; lower_or_upper = 1; lower_upper_icer = lower; intervention = 4  ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_4_upper; set v_4; lower_or_upper = 2; lower_upper_icer = upper; intervention = 4  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_4_upper; set v_4; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 4  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_5_lower; set v_5; lower_or_upper = 1; lower_upper_icer = lower; intervention = 5  ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_5_upper; set v_5; lower_or_upper = 2; lower_upper_icer = upper; intervention = 5  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_5_upper; set v_5; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 5  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_6_lower; set v_6; lower_or_upper = 1; lower_upper_icer = lower; intervention = 6  ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_6_upper; set v_6; lower_or_upper = 2; lower_upper_icer = upper; intervention = 6  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_6_upper; set v_6; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 6  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_7_lower; set v_7; lower_or_upper = 1; lower_upper_icer = lower; intervention = 7  ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_7_upper; set v_7; lower_or_upper = 2; lower_upper_icer = upper; intervention = 7  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_7_upper; set v_7; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 7  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_8_lower; set v_8; lower_or_upper = 1; lower_upper_icer = lower; intervention = 8  ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_8_upper; set v_8; lower_or_upper = 2; lower_upper_icer = upper; intervention = 8  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_8_upper; set v_8; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 8  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_9_lower; set v_9; lower_or_upper = 1; lower_upper_icer = lower; intervention = 9  ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_9_upper; set v_9; lower_or_upper = 2; lower_upper_icer = upper; intervention = 9  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_9_upper; set v_9; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 9  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_10_lower; set v_10; lower_or_upper = 1; lower_upper_icer = lower; intervention = 10 ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_10_upper; set v_10; lower_or_upper = 2; lower_upper_icer = upper; intervention = 10 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_10_upper; set v_10; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 10 ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_11_lower; set v_11; lower_or_upper = 1; lower_upper_icer = lower; intervention = 11 ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_11_upper; set v_11; lower_or_upper = 2; lower_upper_icer = upper; intervention = 11 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_11_upper; set v_11; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 11 ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_12_lower; set v_12; lower_or_upper = 1; lower_upper_icer = lower; intervention = 12 ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_12_upper; set v_13; lower_or_upper = 2; lower_upper_icer = upper; intervention = 12 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_12_upper; set v_12; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 12 ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_13_lower; set v_13; lower_or_upper = 1; lower_upper_icer = lower; intervention = 13 ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_13_upper; set v_13; lower_or_upper = 2; lower_upper_icer = upper; intervention = 13 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_13_upper; set v_13; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 13 ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_14_lower; set v_14; lower_or_upper = 1; lower_upper_icer = lower; intervention = 14 ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_14_upper; set v_14; lower_or_upper = 2; lower_upper_icer = upper; intervention = 14 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_14_upper; set v_14; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 14 ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 data icer_scen_15_lower; set v_15; lower_or_upper = 1; lower_upper_icer = lower; intervention = 15 ;  keep lower_or_upper lower_upper_icer intervention  ;
-data icer_scen_15_upper; set v_15; lower_or_upper = 2; lower_upper_icer = upper; intervention = 15 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_15_upper; set v_15; lower_or_upper = 2; lower_upper_icer = upper - lower; intervention = 15 ;  keep lower_or_upper lower_upper_icer intervention  ;
 
 
 
@@ -1120,21 +1122,21 @@ icer_scen_15_lower icer_scen_15_upper
 ;
 
 
-if intervention = 1 then int_name = '1 Testing_community';
-if intervention = 2 then int_name = '2 Testing_risk_informed';
-if intervention = 3 then int_name = '3 Self_testing_general';
-if intervention = 4 then int_name = '4 Self_testing_risk_informed';
-if intervention = 5 then int_name = '5 AGYW_testing';
-if intervention = 6 then int_name = '6 AGYW_behaviour_change';
-if intervention = 7 then int_name = '7 VMMC';
-if intervention = 8 then int_name = '8 Oral_PrEP';
-if intervention = 9 then int_name = '9 Oral/Cab PrEP';
-if intervention = 10 then int_name = '10 Oral/Cab/VR_PrEP';
-if intervention = 11 then int_name = '11 Harm_reduction_PWID';
-if intervention = 12 then int_name = '12 ART_linkage_retention';
-if intervention = 13 then int_name = '13 ART_adherence';
-if intervention = 14 then int_name = '14 ART_coverage_PLW';
-if intervention = 15 then int_name = '15 AHD_package';
+if intervention = 1 then int_name = 'a Testing_community';
+if intervention = 2 then int_name = 'b Testing_risk_informed';
+if intervention = 3 then int_name = 'c Self_testing_general';
+if intervention = 4 then int_name = 'd Self_testing_risk_informed';
+if intervention = 5 then int_name = 'e AGYW_testing';
+if intervention = 6 then int_name = 'f AGYW_behaviour_change';
+if intervention = 7 then int_name = 'g VMMC';
+if intervention = 8 then int_name = 'h Oral_PrEP';
+if intervention = 9 then int_name = 'i Oral/Cab PrEP';
+if intervention = 10 then int_name = 'j Oral/Cab/VR_PrEP';
+if intervention = 11 then int_name = 'k Harm_reduction_PWID';
+if intervention = 12 then int_name = 'l ART_linkage_retention';
+if intervention = 13 then int_name = 'm ART_adherence';
+if intervention = 14 then int_name = 'n ART_coverage_PLW';
+if intervention = 15 then int_name = 'o AHD_package';
 
 ods html;
 
@@ -1162,6 +1164,148 @@ ods html close;
 
 
 
+
+* plots of ranges of cpias across models by intervention ;
+
+data cpia_s_1;  set cost_ddaly_dnew_infection; if scenario=1; proc transpose out=s_1; data v_1; set s_1; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=1; keep lower upper intervention;
+data cpia_s_2;  set cost_ddaly_dnew_infection; if scenario=2; proc transpose out=s_2; data v_2; set s_2; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=2; keep lower upper intervention;
+data cpia_s_3;  set cost_ddaly_dnew_infection; if scenario=3; proc transpose out=s_3; data v_3; set s_3; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=3; keep lower upper intervention;
+data cpia_s_4;  set cost_ddaly_dnew_infection; if scenario=4; proc transpose out=s_4; data v_4; set s_4; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=4; keep lower upper intervention;
+data cpia_s_5;  set cost_ddaly_dnew_infection; if scenario=5; proc transpose out=s_5; data v_5; set s_5; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=5; keep lower upper intervention;
+data cpia_s_6;  set cost_ddaly_dnew_infection; if scenario=6; proc transpose out=s_6; data v_6; set s_6; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=6; keep lower upper intervention;
+data cpia_s_7;  set cost_ddaly_dnew_infection; if scenario=7; proc transpose out=s_7; data v_7; set s_7; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=7; keep lower upper intervention;
+data cpia_s_8;  set cost_ddaly_dnew_infection; if scenario=8; proc transpose out=s_8; data v_8; set s_8; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=8; keep lower upper intervention;
+data cpia_s_9;  set cost_ddaly_dnew_infection; if scenario=9; proc transpose out=s_9; data v_9; set s_9; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=9; keep lower upper intervention;
+data cpia_s_10;  set cost_ddaly_dnew_infection; if scenario=10; proc transpose out=s_10; data v_10; set s_10; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=10; keep lower upper intervention;
+data cpia_s_11;  set cost_ddaly_dnew_infection; if scenario=11; proc transpose out=s_11; data v_11; set s_11; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=11; keep lower upper intervention;
+data cpia_s_12;  set cost_ddaly_dnew_infection; if scenario=12; proc transpose out=s_12; data v_12; set s_12; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=12; keep lower upper intervention;
+data cpia_s_13;  set cost_ddaly_dnew_infection; if scenario=13; proc transpose out=s_13; data v_13; set s_13; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=13; keep lower upper intervention;
+data cpia_s_14;  set cost_ddaly_dnew_infection; if scenario=14; proc transpose out=s_14; data v_14; set s_14; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=14; keep lower upper intervention;
+data cpia_s_15;  set cost_ddaly_dnew_infection; if scenario=15; proc transpose out=s_15; data v_15; set s_15; if _NAME_ = 'cpia'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=15; keep lower upper intervention;
+
+
+data cpia_scen_1_lower; set v_1; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 1  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_1_upper; set v_1; lower_or_upper = 2; lower_upper_cpia = upper - lower-lower; intervention = 1  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_2_lower; set v_2; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 2  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_2_upper; set v_2; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 2  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_3_lower; set v_3; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 3  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_3_upper; set v_3; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 3  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_4_lower; set v_4; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 4  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_4_upper; set v_4; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 4  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_5_lower; set v_5; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 5  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_5_upper; set v_5; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 5  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_6_lower; set v_6; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 6  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_6_upper; set v_6; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 6  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_7_lower; set v_7; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 7  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_7_upper; set v_7; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 7  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_8_lower; set v_8; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 8  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_8_upper; set v_8; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 8  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_9_lower; set v_9; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 9  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_9_upper; set v_9; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 9  ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_10_lower; set v_10; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 10 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_10_upper; set v_10; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 10 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_11_lower; set v_11; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 11 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_11_upper; set v_11; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 11 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_12_lower; set v_12; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 12 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_12_upper; set v_12; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 12 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_13_lower; set v_13; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 13 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_13_upper; set v_13; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 13 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_14_lower; set v_14; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 14 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_14_upper; set v_14; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 14 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+data cpia_scen_15_lower; set v_15; lower_or_upper = 1; lower_upper_cpia = lower; intervention = 15 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+data cpia_scen_15_upper; set v_15; lower_or_upper = 2; lower_upper_cpia = upper - lower; intervention = 15 ;  keep lower_or_upper lower_upper_cpia intervention  ;
+
+
+
+data all_cpia; 
+set 
+cpia_scen_1_lower cpia_scen_1_upper
+cpia_scen_2_lower cpia_scen_2_upper
+cpia_scen_3_lower cpia_scen_3_upper
+cpia_scen_4_lower cpia_scen_4_upper
+cpia_scen_5_lower cpia_scen_5_upper
+cpia_scen_6_lower cpia_scen_6_upper
+cpia_scen_7_lower cpia_scen_7_upper
+cpia_scen_8_lower cpia_scen_8_upper
+cpia_scen_9_lower cpia_scen_9_upper
+cpia_scen_10_lower cpia_scen_10_upper
+cpia_scen_11_lower cpia_scen_11_upper
+cpia_scen_12_lower cpia_scen_12_upper
+cpia_scen_13_lower cpia_scen_13_upper
+cpia_scen_14_lower cpia_scen_14_upper
+cpia_scen_15_lower cpia_scen_15_upper
+;
+
+
+if intervention = 1 then int_name = 'a Testing_community';
+if intervention = 2 then int_name = 'b Testing_risk_informed';
+if intervention = 3 then int_name = 'c Self_testing_general';
+if intervention = 4 then int_name = 'd Self_testing_risk_informed';
+if intervention = 5 then int_name = 'e AGYW_testing';
+if intervention = 6 then int_name = 'f AGYW_behaviour_change';
+if intervention = 7 then int_name = 'g VMMC';
+if intervention = 8 then int_name = 'h Oral_PrEP';
+if intervention = 9 then int_name = 'i Oral/Cab PrEP';
+if intervention = 10 then int_name = 'j Oral/Cab/VR_PrEP';
+if intervention = 11 then int_name = 'k Harm_reduction_PWID';
+if intervention = 12 then int_name = 'l ART_linkage_retention';
+if intervention = 13 then int_name = 'm ART_adherence';
+if intervention = 14 then int_name = 'n ART_coverage_PLW';
+if intervention = 15 then int_name = 'o AHD_package';
+
+ods html;
+
+proc sgplot data=all_cpia nolegend;
+	styleattrs datacolors=(white lightblue);
+   	vbar int_name / response=lower_upper_cpia group=lower_or_upper groupdisplay=stack outlineattrs=(color=white thickness=3);;
+   	xaxis label="Intervention" type=discrete values=('1 Testing_community' '2 Testing_risk_informed' '3 Self_testing_general' '4 Self_testing_risk_informed'
+ '5 AGYW_testing' '6 AGYW_behaviour_change' '7 VMMC' '8 Oral_PrEP' '9 Oral/Cab PrEP' '10 Oral/Cab/VR_PrEP' '11 Harm_reduction_PWID' '12 ART_linkage_retention'
+ '13 ART_adherence' '14 ART_coverage_PLW' '15 AHD_package');   	yaxis label="Range of cpiaS (log10)";
+run;
+
+ods html close;
+
+ods html;
+
+proc sgplot data=all_cpia nolegend;
+	styleattrs datacolors=(white lightblue);
+   	vbar int_name / response=lower_upper_cpia group=lower_or_upper groupdisplay=stack outlineattrs=(color=white thickness=3);;
+   	xaxis label="Intervention" type=discrete ;   	yaxis label="Range of cpiaS (log10)";
+run;
+
+ods html close;
+
+
+proc print; run;
 
 
 
