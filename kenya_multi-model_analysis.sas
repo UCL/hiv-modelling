@@ -429,110 +429,113 @@ dnew_infection = new_infection_15pl / (1.03**(year-2024));
 
 
 
+
+
+
 * mean ddalys averted, d_infections averted and cost incurred for 2024-204 - and icer and cpia - by model and intervention ;
 
 data z; set all; 
 keep model scenario year ddalys  ;
 
 proc transpose data = z  out= s_1_0; where model = 1 and scenario = 0 and year ge 2024; data d_1_0; set s_1_0; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_sq;
+mean_ddalys_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_sq;
 proc transpose data = z  out= s_1_1; where model = 1 and scenario = 1 and year ge 2024; data d_1_1; set s_1_1; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int1;
+mean_ddalys_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int1;
 proc transpose data = z  out= s_1_2; where model = 1 and scenario = 2 and year ge 2024; data d_1_2; set s_1_2; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int2;
+mean_ddalys_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int2;
 proc transpose data = z  out= s_1_3; where model = 1 and scenario = 3 and year ge 2024; data d_1_3; set s_1_3; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int3;
+mean_ddalys_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int3;
 proc transpose data = z  out= s_1_4; where model = 1 and scenario = 4 and year ge 2024; data d_1_4; set s_1_4; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int4;
+mean_ddalys_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int4;
 proc transpose data = z  out= s_1_5; where model = 1 and scenario = 5 and year ge 2024; data d_1_5; set s_1_5; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int5;
+mean_ddalys_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int5;
 proc transpose data = z  out= s_1_6; where model = 1 and scenario = 6 and year ge 2024; data d_1_6; set s_1_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int6;
+mean_ddalys_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int6;
 proc transpose data = z  out= s_1_7; where model = 1 and scenario = 7 and year ge 2024; data d_1_7; set s_1_7; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int7;
+mean_ddalys_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int7;
 proc transpose data = z  out= s_1_8; where model = 1 and scenario = 8 and year ge 2024; data d_1_8; set s_1_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int8;
+mean_ddalys_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int8;
 proc transpose data = z  out= s_1_9; where model = 1 and scenario = 9 and year ge 2024; data d_1_9; set s_1_9; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int9;
+mean_ddalys_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int9;
 proc transpose data = z  out= s_1_10; where model = 1 and scenario = 10 and year ge 2024; data d_1_10; set s_1_10; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int10;
+mean_ddalys_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int10;
 proc transpose data = z  out= s_1_11; where model = 1 and scenario = 11 and year ge 2024; data d_1_11; set s_1_11; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int11;
+mean_ddalys_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int11;
 proc transpose data = z  out= s_1_12; where model = 1 and scenario = 12 and year ge 2024; data d_1_12; set s_1_12; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int12;
+mean_ddalys_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int12;
 proc transpose data = z  out= s_1_13; where model = 1 and scenario = 13 and year ge 2024; data d_1_13; set s_1_13; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int13;
+mean_ddalys_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int13;
 proc transpose data = z  out= s_1_14; where model = 1 and scenario = 14 and year ge 2024; data d_1_14; set s_1_14; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int14;
+mean_ddalys_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int14;
 proc transpose data = z  out= s_1_15; where model = 1 and scenario = 15 and year ge 2024; data d_1_15; set s_1_15; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int15;
+mean_ddalys_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int15;
 
 proc transpose data = z  out= s_2_0; where model = 2 and scenario = 0 and year ge 2024; data d_2_0; set s_2_0; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_sq;
+mean_ddalys_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_sq;
 proc transpose data = z  out= s_2_1; where model = 2 and scenario = 1 and year ge 2024; data d_2_1; set s_2_1; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int1;
+mean_ddalys_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int1;
 proc transpose data = z  out= s_2_2; where model = 2 and scenario = 2 and year ge 2024; data d_2_2; set s_2_2; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int2;
+mean_ddalys_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int2;
 proc transpose data = z  out= s_2_3; where model = 2 and scenario = 3 and year ge 2024; data d_2_3; set s_2_3; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int3;
+mean_ddalys_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int3;
 proc transpose data = z  out= s_2_4; where model = 2 and scenario = 4 and year ge 2024; data d_2_4; set s_2_4; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int4;
+mean_ddalys_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int4;
 proc transpose data = z  out= s_2_5; where model = 2 and scenario = 5 and year ge 2024; data d_2_5; set s_2_5; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int5;
+mean_ddalys_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int5;
 proc transpose data = z  out= s_2_6; where model = 2 and scenario = 6 and year ge 2024; data d_2_6; set s_2_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int6;
+mean_ddalys_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int6;
 proc transpose data = z  out= s_2_7; where model = 2 and scenario = 7 and year ge 2024; data d_2_7; set s_2_7; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int7;
+mean_ddalys_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int7;
 proc transpose data = z  out= s_2_8; where model = 2 and scenario = 8 and year ge 2024; data d_2_8; set s_2_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int8;
+mean_ddalys_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int8;
 proc transpose data = z  out= s_2_9; where model = 2 and scenario = 9 and year ge 2024; data d_2_9; set s_2_9; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int9;
+mean_ddalys_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int9;
 proc transpose data = z  out= s_2_10; where model = 2 and scenario = 10 and year ge 2024; data d_2_10; set s_2_10; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int10;
+mean_ddalys_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int10;
 proc transpose data = z  out= s_2_11; where model = 2 and scenario = 11 and year ge 2024; data d_2_11; set s_2_11; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int11;
+mean_ddalys_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int11;
 proc transpose data = z  out= s_2_12; where model = 2 and scenario = 12 and year ge 2024; data d_2_12; set s_2_12; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int12;
+mean_ddalys_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int12;
 proc transpose data = z  out= s_2_13; where model = 2 and scenario = 13 and year ge 2024; data d_2_13; set s_2_13; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int13;
+mean_ddalys_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int13;
 proc transpose data = z  out= s_2_14; where model = 2 and scenario = 14 and year ge 2024; data d_2_14; set s_2_14; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int14;
+mean_ddalys_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int14;
 proc transpose data = z  out= s_2_15; where model = 2 and scenario = 15 and year ge 2024; data d_2_15; set s_2_15; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int15;
+mean_ddalys_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int15;
 
 
 proc transpose data = z  out= s_3_0; where model = 3 and scenario = 0 and year ge 2024; data d_3_0; set s_3_0; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_sq;
+mean_ddalys_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_sq;
 proc transpose data = z  out= s_3_1; where model = 3 and scenario = 1 and year ge 2024; data d_3_1; set s_3_1; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int1;
+mean_ddalys_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int1;
 proc transpose data = z  out= s_3_2; where model = 3 and scenario = 2 and year ge 2024; data d_3_2; set s_3_2; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int2;
+mean_ddalys_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int2;
 proc transpose data = z  out= s_3_3; where model = 3 and scenario = 3 and year ge 2024; data d_3_3; set s_3_3; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int3;
+mean_ddalys_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int3;
 proc transpose data = z  out= s_3_4; where model = 3 and scenario = 4 and year ge 2024; data d_3_4; set s_3_4; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int4;
+mean_ddalys_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int4;
 proc transpose data = z  out= s_3_5; where model = 3 and scenario = 5 and year ge 2024; data d_3_5; set s_3_5; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int5;
+mean_ddalys_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int5;
 proc transpose data = z  out= s_3_6; where model = 3 and scenario = 6 and year ge 2024; data d_3_6; set s_3_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int6;
+mean_ddalys_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int6;
 proc transpose data = z  out= s_3_7; where model = 3 and scenario = 7 and year ge 2024; data d_3_7; set s_3_7; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int7;
+mean_ddalys_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int7;
 proc transpose data = z  out= s_3_8; where model = 3 and scenario = 8 and year ge 2024; data d_3_8; set s_3_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int8;
+mean_ddalys_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int8;
 proc transpose data = z  out= s_3_9; where model = 3 and scenario = 9 and year ge 2024; data d_3_9; set s_3_9; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int9;
+mean_ddalys_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int9;
 proc transpose data = z  out= s_3_10; where model = 3 and scenario = 10 and year ge 2024; data d_3_10; set s_3_10; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int10;
+mean_ddalys_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int10;
 proc transpose data = z  out= s_3_11; where model = 3 and scenario = 11 and year ge 2024; data d_3_11; set s_3_11; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int11;
+mean_ddalys_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int11;
 proc transpose data = z  out= s_3_12; where model = 3 and scenario = 12 and year ge 2024; data d_3_12; set s_3_12; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int12;
+mean_ddalys_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int12;
 proc transpose data = z  out= s_3_13; where model = 3 and scenario = 13 and year ge 2024; data d_3_13; set s_3_13; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int13;
+mean_ddalys_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int13;
 proc transpose data = z  out= s_3_14; where model = 3 and scenario = 14 and year ge 2024; data d_3_14; set s_3_14; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int14;
+mean_ddalys_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int14;
 proc transpose data = z  out= s_3_15; where model = 3 and scenario = 15 and year ge 2024; data d_3_15; set s_3_15; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_ddalys_int15;
+mean_ddalys_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int15;
 
 
 data z_int1_1; merge d_1_0 d_1_1 ; effect_ddalys = mean_ddalys_int1 - mean_ddalys_sq; model=1; scenario=1; 
@@ -990,8 +993,12 @@ data cost_ddaly_dnew_infection; merge ddalys_averted dcost_incurred dnew_infecti
 icer=.; if effect_dcost > 0 and effect_ddalys < 0 then icer = effect_dcost / (-effect_ddalys);
 if . < effect_dcost <= 0 and effect_ddalys < 0 then icer = 0; if effect_ddalys >= 0 then icer=1000000;
 
+icer = log10(icer+1);
+
 cpia=.; if effect_dcost > 0 and effect_dnew_infection < 0 then cpia = effect_dcost / (-effect_dnew_infection);
 if . < effect_dcost <= 0 and effect_new_infection < 0 then cpia = 0; if effect_dnew_infection >= 0 then cpia = 1000000; 
+
+
 
 ods html;
 proc print; where scenario = 1;
@@ -1012,42 +1019,144 @@ proc print; where scenario = 15;
 run;
 ods html close;
 
-data g;  set cost_ddaly_dnew_infection;
-if scenario = 1;
-keep icer;
-proc print; run;
+* plots of ranges of icers across models by intervention ;
+
+data icer_s_1;  set cost_ddaly_dnew_infection; if scenario=1; proc transpose out=s_1; data v_1; set s_1; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=1; keep lower upper intervention;
+data icer_s_2;  set cost_ddaly_dnew_infection; if scenario=2; proc transpose out=s_2; data v_2; set s_2; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=2; keep lower upper intervention;
+data icer_s_3;  set cost_ddaly_dnew_infection; if scenario=3; proc transpose out=s_3; data v_3; set s_3; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=3; keep lower upper intervention;
+data icer_s_4;  set cost_ddaly_dnew_infection; if scenario=4; proc transpose out=s_4; data v_4; set s_4; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=4; keep lower upper intervention;
+data icer_s_5;  set cost_ddaly_dnew_infection; if scenario=5; proc transpose out=s_5; data v_5; set s_5; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=5; keep lower upper intervention;
+data icer_s_6;  set cost_ddaly_dnew_infection; if scenario=6; proc transpose out=s_6; data v_6; set s_6; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=6; keep lower upper intervention;
+data icer_s_7;  set cost_ddaly_dnew_infection; if scenario=7; proc transpose out=s_7; data v_7; set s_7; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=7; keep lower upper intervention;
+data icer_s_8;  set cost_ddaly_dnew_infection; if scenario=8; proc transpose out=s_8; data v_8; set s_8; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=8; keep lower upper intervention;
+data icer_s_9;  set cost_ddaly_dnew_infection; if scenario=9; proc transpose out=s_9; data v_9; set s_9; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=9; keep lower upper intervention;
+data icer_s_10;  set cost_ddaly_dnew_infection; if scenario=10; proc transpose out=s_10; data v_10; set s_10; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=10; keep lower upper intervention;
+data icer_s_11;  set cost_ddaly_dnew_infection; if scenario=11; proc transpose out=s_11; data v_11; set s_11; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=11; keep lower upper intervention;
+data icer_s_12;  set cost_ddaly_dnew_infection; if scenario=12; proc transpose out=s_12; data v_12; set s_12; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=12; keep lower upper intervention;
+data icer_s_13;  set cost_ddaly_dnew_infection; if scenario=13; proc transpose out=s_13; data v_13; set s_13; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=13; keep lower upper intervention;
+data icer_s_14;  set cost_ddaly_dnew_infection; if scenario=14; proc transpose out=s_14; data v_14; set s_14; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=14; keep lower upper intervention;
+data icer_s_15;  set cost_ddaly_dnew_infection; if scenario=15; proc transpose out=s_15; data v_15; set s_15; if _NAME_ = 'icer'; 
+lower = min(col1, col2, col3);  upper = max(col1, col2, col3); intervention=15; keep lower upper intervention;
 
 
-data d;
+data icer_scen_1_lower; set v_1; lower_or_upper = 1; lower_upper_icer = lower; intervention = 1  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_1_upper; set v_1; lower_or_upper = 2; lower_upper_icer = upper; intervention = 1  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
-input int lower_upper_icer ;
+data icer_scen_2_lower; set v_2; lower_or_upper = 1; lower_upper_icer = lower; intervention = 2  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_2_upper; set v_2; lower_or_upper = 2; lower_upper_icer = upper; intervention = 2  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
-if int=1 then intervention='a';
-if int=2 then intervention='b';
-if int=3 then intervention='c';
+data icer_scen_3_lower; set v_3; lower_or_upper = 1; lower_upper_icer = lower; intervention = 3  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_3_upper; set v_3; lower_or_upper = 2; lower_upper_icer = upper; intervention = 3  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
-cards;
-1  3 
-1  4
-2  1 
-2  6
-3  0 
-3  1
+data icer_scen_4_lower; set v_4; lower_or_upper = 1; lower_upper_icer = lower; intervention = 4  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_4_upper; set v_4; lower_or_upper = 2; lower_upper_icer = upper; intervention = 4  ;  keep lower_or_upper lower_upper_icer intervention  ;
 
+data icer_scen_5_lower; set v_5; lower_or_upper = 1; lower_upper_icer = lower; intervention = 5  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_5_upper; set v_5; lower_or_upper = 2; lower_upper_icer = upper; intervention = 5  ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+data icer_scen_6_lower; set v_6; lower_or_upper = 1; lower_upper_icer = lower; intervention = 6  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_6_upper; set v_6; lower_or_upper = 2; lower_upper_icer = upper; intervention = 6  ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+data icer_scen_7_lower; set v_7; lower_or_upper = 1; lower_upper_icer = lower; intervention = 7  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_7_upper; set v_7; lower_or_upper = 2; lower_upper_icer = upper; intervention = 7  ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+data icer_scen_8_lower; set v_8; lower_or_upper = 1; lower_upper_icer = lower; intervention = 8  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_8_upper; set v_8; lower_or_upper = 2; lower_upper_icer = upper; intervention = 8  ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+data icer_scen_9_lower; set v_9; lower_or_upper = 1; lower_upper_icer = lower; intervention = 9  ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_9_upper; set v_9; lower_or_upper = 2; lower_upper_icer = upper; intervention = 9  ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+data icer_scen_10_lower; set v_10; lower_or_upper = 1; lower_upper_icer = lower; intervention = 10 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_10_upper; set v_10; lower_or_upper = 2; lower_upper_icer = upper; intervention = 10 ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+data icer_scen_11_lower; set v_11; lower_or_upper = 1; lower_upper_icer = lower; intervention = 11 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_11_upper; set v_11; lower_or_upper = 2; lower_upper_icer = upper; intervention = 11 ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+data icer_scen_12_lower; set v_12; lower_or_upper = 1; lower_upper_icer = lower; intervention = 12 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_12_upper; set v_13; lower_or_upper = 2; lower_upper_icer = upper; intervention = 12 ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+data icer_scen_13_lower; set v_13; lower_or_upper = 1; lower_upper_icer = lower; intervention = 13 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_13_upper; set v_13; lower_or_upper = 2; lower_upper_icer = upper; intervention = 13 ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+data icer_scen_14_lower; set v_14; lower_or_upper = 1; lower_upper_icer = lower; intervention = 14 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_14_upper; set v_14; lower_or_upper = 2; lower_upper_icer = upper; intervention = 14 ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+data icer_scen_15_lower; set v_15; lower_or_upper = 1; lower_upper_icer = lower; intervention = 15 ;  keep lower_or_upper lower_upper_icer intervention  ;
+data icer_scen_15_upper; set v_15; lower_or_upper = 2; lower_upper_icer = upper; intervention = 15 ;  keep lower_or_upper lower_upper_icer intervention  ;
+
+
+
+data all_icer; 
+set 
+icer_scen_1_lower icer_scen_1_upper
+icer_scen_2_lower icer_scen_2_upper
+icer_scen_3_lower icer_scen_3_upper
+icer_scen_4_lower icer_scen_4_upper
+icer_scen_5_lower icer_scen_5_upper
+icer_scen_6_lower icer_scen_6_upper
+icer_scen_7_lower icer_scen_7_upper
+icer_scen_8_lower icer_scen_8_upper
+icer_scen_9_lower icer_scen_9_upper
+icer_scen_10_lower icer_scen_10_upper
+icer_scen_11_lower icer_scen_11_upper
+icer_scen_12_lower icer_scen_12_upper
+icer_scen_13_lower icer_scen_13_upper
+icer_scen_14_lower icer_scen_14_upper
+icer_scen_15_lower icer_scen_15_upper
+;
+
+
+if intervention = 1 then int_name = '1 Testing_community';
+if intervention = 2 then int_name = '2 Testing_risk_informed';
+if intervention = 3 then int_name = '3 Self_testing_general';
+if intervention = 4 then int_name = '4 Self_testing_risk_informed';
+if intervention = 5 then int_name = '5 AGYW_testing';
+if intervention = 6 then int_name = '6 AGYW_behaviour_change';
+if intervention = 7 then int_name = '7 VMMC';
+if intervention = 8 then int_name = '8 Oral_PrEP';
+if intervention = 9 then int_name = '9 Oral/Cab PrEP';
+if intervention = 10 then int_name = '10 Oral/Cab/VR_PrEP';
+if intervention = 11 then int_name = '11 Harm_reduction_PWID';
+if intervention = 12 then int_name = '12 ART_linkage_retention';
+if intervention = 13 then int_name = '13 ART_adherence';
+if intervention = 14 then int_name = '14 ART_coverage_PLW';
+if intervention = 15 then int_name = '15 AHD_package';
 
 ods html;
 
-PROC SGPLOT DATA = d; VBAR intervention / GROUP = lower_upper_icer ; Title    height=1.5 justify=center "ICER (range over models) by Intervention"; RUN; 
-
-proc sgplot data=d;
-   vbar Category / response=Response group=Group groupdisplay=stack;
-   xaxis label="Categories";
-   yaxis label="Values";
+proc sgplot data=all_icer nolegend;
+	styleattrs datacolors=(white lightblue);
+   	vbar int_name / response=lower_upper_icer group=lower_or_upper groupdisplay=stack outlineattrs=(color=white thickness=3);;
+   	xaxis label="Intervention" type=discrete values=('1 Testing_community' '2 Testing_risk_informed' '3 Self_testing_general' '4 Self_testing_risk_informed'
+ '5 AGYW_testing' '6 AGYW_behaviour_change' '7 VMMC' '8 Oral_PrEP' '9 Oral/Cab PrEP' '10 Oral/Cab/VR_PrEP' '11 Harm_reduction_PWID' '12 ART_linkage_retention'
+ '13 ART_adherence' '14 ART_coverage_PLW' '15 AHD_package');   	yaxis label="Range of ICERS (log10)";
 run;
-
 
 ods html close;
 
+ods html;
+
+proc sgplot data=all_icer nolegend;
+	styleattrs datacolors=(white lightblue);
+   	vbar int_name / response=lower_upper_icer group=lower_or_upper groupdisplay=stack outlineattrs=(color=white thickness=3);;
+   	xaxis label="Intervention" type=discrete ;   	yaxis label="Range of ICERS (log10)";
+run;
+
+ods html close;
 
 
 
