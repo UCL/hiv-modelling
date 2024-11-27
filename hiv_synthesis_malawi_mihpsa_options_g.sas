@@ -6,10 +6,15 @@
 
 * added transmission through breastfeeding;
 
-* change to yll_gbd ?
+* change to yll_gbd and gbd for years of life lived with disability ?
 
 * to add: dalys due to mtct ?
 
+* use modified costs
+
+* amend the modelling of art adherence intervention - explicitly take out retention intervention (middle 90) for minimal 
+
+* amend modelling of viral load monitoring ?
 
 ;
 
