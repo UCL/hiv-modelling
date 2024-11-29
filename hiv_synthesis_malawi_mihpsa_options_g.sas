@@ -10,7 +10,7 @@
 
 * to add: dalys due to mtct - decide in create wide file ;
 
-* keeping costs as is but can update in create wide file - need to update creat_wide_file so includes all relevant costs
+* keeping costs as is but can update in create wide file - need to update create_wide_file so includes all relevant costs
 
 * amended the modelling of art adherence intervention - explicitly taken out return to care intervention for minimal 
 
