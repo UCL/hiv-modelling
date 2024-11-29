@@ -1,3 +1,30 @@
+
+
+
+
+
+
+
+
+* need to add some costs here - including prep_inj costs for example ; 
+
+* to add: dalys due to mtct ? ;
+
+* include s_dcost_self_test ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 * options user="/folders/myfolders/";
 
 

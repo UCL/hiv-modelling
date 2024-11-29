@@ -6,15 +6,13 @@
 
 * added transmission through breastfeeding;
 
-* change to yll_gbd and gbd for years of life lived with disability ?
+* added gbd for years of life lived with disability ;
 
-* to add: dalys due to mtct ?
+* to add: dalys due to mtct - decide in create wide file ;
 
-* use modified costs
+* keeping costs as is but can update in create wide file - need to update creat_wide_file so includes all relevant costs
 
-* amend the modelling of art adherence intervention - explicitly take out retention intervention (middle 90) for minimal 
-
-* amend modelling of viral load monitoring ?
+* amended the modelling of art adherence intervention - explicitly taken out return to care intervention for minimal 
 
 ;
 
@@ -531,6 +529,8 @@ newp_seed = 7;
 * rate_return;  			%sample(rate_return, 
 								0.05  0.10 	0.30   0.60, 
 							  	0.25  0.25	0.25   0.25); * change sep22 for pop_wide_tld;
+
+* effect_return_interv;		effect_return_interv = 5; * effect of implicit return to care interventions on prob of return;  * added for malawi mihpsa nov 24;
 
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
@@ -2296,6 +2296,8 @@ who may be dead and hence have caldate{t} missing;
 		absence_cd4_set_in_options = 1; absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
 		p_vl_meas_done_set_in_opts = 1; eff_prob_vl_meas_done = 0; cd4_monitoring = 1;	*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
 
+		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
+
 	end;
 
 	*Option 1 is min + 	Oral PrEP for 15-24 year-old girls and women (AGYW) [Zim O15 / not in SA MIHPSA];
@@ -2367,9 +2369,11 @@ who may be dead and hence have caldate{t} missing;
 		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 5;							******************************ADD VMMC PARAMS ************;
 	end;
 
-	*Option 9 is SQ + 	ART adherence support [not in Zim MIHPSA / SA O11];
+	*Option 9 is SQ + 	ART adherence support [not in Zim MIHPSA / SA O11]; 
+	* this is interpreted as support to bring people back into care - pill taking adherence intervebtion is largely modelled through vl monitoring;   
 	if option = 9 then do;
-		incr_adh_set_in_options = 1; incr_adh_year_i = 1 ;
+		incr_adh_set_in_options = 1; incr_adh_year_i = 1 ; 	return_interventions_off = 0 ; 
+
 	end;
 
 	*Option 10 is SQ + 	Viral load monitoring [not in Zim MIHPSA / SA O12];
@@ -2435,6 +2439,8 @@ who may be dead and hence have caldate{t} missing;
 		absence_cd4_set_in_options = 1; absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
 		p_vl_meas_done_set_in_opts = 1; eff_prob_vl_meas_done = 0; cd4_monitoring = 1;	*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
 
+		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
+
 	end;
 
 
@@ -2467,6 +2473,8 @@ who may be dead and hence have caldate{t} missing;
 		*PCP is part of the essential scenario;
 		absence_cd4_set_in_options = 1; absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
 		p_vl_meas_done_set_in_opts = 1; eff_prob_vl_meas_done = 0; cd4_monitoring = 1;	*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
+
+		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
 
 	end;
 
@@ -2509,6 +2517,8 @@ who may be dead and hence have caldate{t} missing;
 		*PCP is part of the essential scenario;
 		absence_cd4_set_in_options = 1; absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
 		p_vl_meas_done_set_in_opts = 1; eff_prob_vl_meas_done = 0; cd4_monitoring = 1;	*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
+
+		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
 
 	end;
 
@@ -8091,6 +8101,10 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 	e_rate_return = eff_rate_return; 
 	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = e_rate_return / 1.5;
 
+	* for malawi mihpsa nov 2024 - for minimal scenario we need to be able to switch off the implicit effect of ongoing interventions to bring people back to care;
+	if return_interventions_off = 1 then e_rate_return = e_rate_return / effect_return_interv;
+
+
 * new for pop_wide_tld;
 	if pop_wide_tld      = 1 then e_rate_return = e_rate_return * rr_return_pop_wide_tld;
 
@@ -12466,6 +12480,8 @@ cost_test_f_sw=0; if gender=2 and tested_as_sw=1 and tested_anc ne 1 and
 
 cost_test_f_non_anc=0; if gender=2 and tested_anc ne 1 then cost_test_f_non_anc=cost_test;
 
+cost_self_test=0; if self_tested=1 then cost_self_test=self_test_cost;
+
 if dead   =. then do; cost=0; cost_onart=0; art_cost=0;adc_cost=0;cd4_cost=0;vl_cost=0;vis_cost=0;non_tb_who3_cost=0;cot_cost=0;tb_cost=0;
 res_cost=0;t_adh_int_cost =0; cost_test=0; cost_prep_oral=0; cost_prep_inj =0; cost_prep_vr = 0;
  cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0;
@@ -15458,6 +15474,16 @@ if adc=1 then util=util_adc;
 * ts1m:  note that disability due to adc, who3 etc will only last 1 month when time step is 1 month ;
 end;
 
+if 15 <= age  then do;
+util_gbd=1; 
+	if hiv = 1 and onart = 1 then util_gbd = (1 - 0.078);
+	if hiv = 1 and onart ne 1 and 0 < cd4 < 200 then util_gbd = (1 - 0.582);
+	if hiv = 1 and onart ne 1 and 200 <= cd4 then util_gbd = (1 - 0.274);
+end;
+
+* for malawi mihpsa;
+util = util_gbd;
+
 
 *** VF according to line of ART;
 if line2=1 and line3 ne 1 then startedline2=1;
@@ -15850,6 +15876,7 @@ _dcost_test_f_non_anc = cost_test_f_non_anc*discount ;
 _dres_cost = res_cost*discount ; 
 _dcost_hypert_vis  = cost_hypert_vis*discount ; 
 _dcost_hypert_drug = cost_hypert_drug*discount ; 
+_dcost_self_test = cost_self_test*discount ;
 
 _d_t_adh_int_cost = t_adh_int_cost *discount;
 _dpi_cost=pi_cost*discount;
@@ -18118,7 +18145,9 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_avail_self_test + _dcost_avail_self_test;
 	s_dcost_prep_visit_inj + _dcost_prep_visit_inj; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
 	s_dcost_test_m_sympt + _dcost_test_m_sympt ; s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ;
-																																		  
+
+	s_dcost_self_test + _dcost_self_test;
+ 
 	s_dcost_test_f_anc + _dcost_test_f_anc ;  s_dcost_test_f_sw + _dcost_test_f_sw ; s_dcost_test_f_non_anc + _dcost_test_f_non_anc ; 
 	s_dpi_cost + _dpi_cost ; s_dcost_switch_line + _dcost_switch_line ; s_dcost_art_init + _dcost_art_init ;               
    	s_dart_1_cost + _dart_1_cost ; s_dart_2_cost + _dart_2_cost ; s_dart_3_cost + _dart_3_cost ; s_dcost_vl_not_done + _dcost_vl_not_done ;	
@@ -19466,7 +19495,7 @@ s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
 s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj  
 s_dcost_prep_vr  s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr s_dcost_avail_self_test
-s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc s_dcost_self_test
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
@@ -20463,7 +20492,7 @@ s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
 s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj  s_dcost_prep_vr 
 s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr s_dcost_avail_self_test
-s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc s_dcost_self_test
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
@@ -23392,7 +23421,7 @@ s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   	
 s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj   
  s_dcost_prep_vr    
 s_dcost_prep_visit  s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr  s_dcost_avail_self_test
-s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc s_dcost_self_test
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
