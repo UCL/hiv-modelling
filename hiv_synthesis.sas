@@ -4662,7 +4662,7 @@ end;
 	eff_self_test_targeting = self_test_targeting;
 
 	w = rand('uniform');	
-	if hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach) then do;
+	if caldate{t} ge 2018 and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
 
 		u_self_test=rand('uniform');
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
