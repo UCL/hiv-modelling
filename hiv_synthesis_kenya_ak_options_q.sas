@@ -3,6 +3,7 @@
 
 * 2018 start date of self testing;
 
+* give caveats of limitations for modelling ahd - better to be guided by cepac modelling ;
 
 
 

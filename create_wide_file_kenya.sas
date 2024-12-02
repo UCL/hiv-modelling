@@ -1,32 +1,5 @@
 
 
-
-
-
-
-
-* add cost per infection averted ;
-
-* give caveats of limitations for modelling ahd - better to be guided by cepac modelling 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * options user="/folders/myfolders/";
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
