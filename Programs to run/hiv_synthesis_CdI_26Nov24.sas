@@ -944,7 +944,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/CdI_parameters22.sas";
+%include "/home/rmjllob/CdI_parameters23.sas";
 *%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters21.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
@@ -3454,10 +3454,10 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;																					
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male;     rate_reptest = rate_reptest * rr_testing_male  ;   end;
-		if msm=1 then do;			rate_1sttest = rate_1sttest * 18;	rate_reptest = rate_reptest * 18;end;
-		if sw=1 and agyw ne 1 then do; rate_1sttest = rate_1sttest * 2;	rate_reptest = rate_reptest * 2;end;
+		if msm=1 then do;			rate_1sttest = rate_1sttest * 100;	rate_reptest = rate_reptest * 100;end;
+		if sw=1 and agyw ne 1 then do; rate_1sttest = rate_1sttest * 3;	rate_reptest = rate_reptest * 3;end;
 		if sw=1 and agyw=1 then do; rate_1sttest = rate_1sttest * 0.3;	rate_reptest = rate_reptest * 0.3;end;
-		if pwid=1 then do;			rate_1sttest = rate_1sttest * 0.7;	rate_reptest = rate_reptest * 0.7;end;
+		if pwid=1 then do;			rate_1sttest = rate_1sttest * 2;	rate_reptest = rate_reptest * 2;end;
 end;
 
 if caldate{t} >= &year_interv and high_test_set_in_options=1 then do;
@@ -3475,8 +3475,8 @@ if caldate{t} >= &year_interv and high_test_set_in_options=1 then do;
 
 
 ***CdI options (1=max targets, 2=halfway);
-if incr_test_msm_year_i = 1 and msm=1 then do; rate_1sttest = rate_1sttest * 20.0; rate_reptest = rate_reptest * 20.0; end;
-if incr_test_msm_year_i = 2 and msm=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+if incr_test_msm_year_i = 1 and msm=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+if incr_test_msm_year_i = 2 and msm=1 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
 
 if incr_test_fsw_year_i = 1 and sw=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
 if incr_test_fsw_year_i = 2 and sw=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;

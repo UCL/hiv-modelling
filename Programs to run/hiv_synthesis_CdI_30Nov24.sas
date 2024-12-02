@@ -944,7 +944,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/CdI_parameters22.sas";
+%include "/home/rmjllob/CdI_parameters24.sas";
 *%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling/CdI_parameters21.sas";
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
@@ -2278,12 +2278,10 @@ if caldate_never_dot >= &year_interv then do;
 		end;
 	end;
 
-	***Increased testing in FSW (this is community based so independent of FSW program);
+	***Increased testing in FSW (in FSW program);
 	if option=8 then do;
-		if sw=1 then do;
-			high_test_set_in_options=1;
-			incr_test_fsw_year_i=1;
-		end;
+		rate_engage_sw_program=0.25;
+		effect_sw_prog_6mtest = 0.50;
 	end;
 
 	***Increased testing in PWID;
@@ -2392,6 +2390,7 @@ if caldate_never_dot >= &year_interv then do;
 if option=20 then do;
 	rate_engage_sw_program=0.25;***Prevention in FSW;
 	effect_sw_prog_newp=0.90;
+	effect_sw_prog_6mtest = 0.50;
 
 	msm_risk_cls=0.01; * Prevention in MSM;
 
@@ -2405,7 +2404,7 @@ if option=20 then do;
 	set_in_options=1; *Increase condom use all populations;
 	condom_incr_year_i = 3;
 
-	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; *Increase testing in KP;
+	if (msm=1 or pwid=1 or agywfsw=1 or age>25) then do; *Increase testing in KP;
 		high_test_set_in_options=1;
 		incr_test_kp_year_i=1;
 	end;
@@ -2447,6 +2446,7 @@ end;
 if option=21 then do;
 	rate_engage_sw_program=0.25;***Prevention in FSW;
 	effect_sw_prog_newp=0.90;
+	effect_sw_prog_6mtest = 0.50;
 
 	msm_risk_cls= 0.01; * Prevention in MSM;
 
@@ -2457,7 +2457,7 @@ if option=21 then do;
 	eff_prob_prep_oral_b = prob_prep_oral_b;
 	if (msm=1 or sw=1) then eff_prob_prep_oral_b = 0.8;
 
-	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; *Increase testing in KP;
+	if (msm=1 or pwid=1 or agywfsw=1 or age>25) then do; *Increase testing in KP;
 		high_test_set_in_options=1;
 		incr_test_kp_year_i=1;
 	end;
@@ -2546,8 +2546,8 @@ end;
 	***Increased testing in FSW;
 	if option=58 then do;
 		if sw=1 then do;
-			high_test_set_in_options=1;;
-			incr_test_fsw_year_i=2;
+			rate_engage_sw_program=0.13;
+			effect_sw_prog_6mtest = 0.35;
 		end;
 	end;
 
@@ -2660,6 +2660,8 @@ end;
 if option=70 then do;
 	rate_engage_sw_program=0.13;
 	effect_sw_prog_newp=0.60;
+	effect_sw_prog_6mtest = 0.35;
+
 
 	msm_risk_cls=0.05; * risk of one or more cls partners in msm per period ;
 	fold_tr_pwid = 2;
@@ -2672,7 +2674,7 @@ if option=70 then do;
 	set_in_options=1;
 	condom_incr_year_i = 1;
 
-	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
+	if (msm=1 or pwid=1 or agywfsw=1 or age>25) then do;
 		high_test_set_in_options=1;
 		incr_test_kp_year_i=17;
 	end;
@@ -2715,6 +2717,7 @@ end;
 if option=71 then do;
 	rate_engage_sw_program=0.13;
 	effect_sw_prog_newp=0.60;
+	effect_sw_prog_6mtest = 0.35;
 
 	msm_risk_cls=0.05; * risk of one or more cls partners in msm per period ;
 	fold_tr_pwid = 2;
@@ -2724,7 +2727,7 @@ if option=71 then do;
 	eff_prob_prep_oral_b = prob_prep_oral_b;
 	if (msm=1 or sw=1) then eff_prob_prep_oral_b = 0.6;
 
-	if (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do;
+	if (msm=1 or pwid=1 or agywfsw=1 or age>25) then do;
 		high_test_set_in_options=1;
 		incr_test_kp_year_i=17;
 	end;
@@ -3454,10 +3457,10 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;																					
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male;     rate_reptest = rate_reptest * rr_testing_male  ;   end;
-		if msm=1 then do;			rate_1sttest = rate_1sttest * 18;	rate_reptest = rate_reptest * 18;end;
-		if sw=1 and agyw ne 1 then do; rate_1sttest = rate_1sttest * 2;	rate_reptest = rate_reptest * 2;end;
+		if msm=1 then do;			rate_1sttest = rate_1sttest * 100;	rate_reptest = rate_reptest * 100;end;
+		/*if sw=1 and agyw ne 1 then do; rate_1sttest = rate_1sttest * 3;	rate_reptest = rate_reptest * 3;end;*/
 		if sw=1 and agyw=1 then do; rate_1sttest = rate_1sttest * 0.3;	rate_reptest = rate_reptest * 0.3;end;
-		if pwid=1 then do;			rate_1sttest = rate_1sttest * 0.7;	rate_reptest = rate_reptest * 0.7;end;
+		if pwid=1 then do;			rate_1sttest = rate_1sttest * 75;	rate_reptest = rate_reptest * 75;end;
 end;
 
 if caldate{t} >= &year_interv and high_test_set_in_options=1 then do;
@@ -3475,12 +3478,12 @@ if caldate{t} >= &year_interv and high_test_set_in_options=1 then do;
 
 
 ***CdI options (1=max targets, 2=halfway);
-if incr_test_msm_year_i = 1 and msm=1 then do; rate_1sttest = rate_1sttest * 20.0; rate_reptest = rate_reptest * 20.0; end;
-if incr_test_msm_year_i = 2 and msm=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-
+if incr_test_msm_year_i = 1 and msm=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+if incr_test_msm_year_i = 2 and msm=1 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
+/*
 if incr_test_fsw_year_i = 1 and sw=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
 if incr_test_fsw_year_i = 2 and sw=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
-
+*/
 if incr_test_pwid_year_i = 1 and pwid=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
 if incr_test_pwid_year_i = 2 and pwid=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
 
@@ -3491,8 +3494,8 @@ if incr_test_fb25_year_i = 1 and age>25 then do; rate_1sttest = rate_1sttest * 3
 if incr_test_fb25_year_i = 2 and age>25 then do; rate_1sttest = rate_1sttest * 1.5; rate_reptest = rate_reptest * 1.5; end;
 
 ***incorporating all KPs (MSM, FSW, PWID, AGYWFSW) and over 25s;
-if incr_test_kp_year_i = 1 and (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-if incr_test_kp_year_i = 2 and (msm=1 or sw=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
+if incr_test_kp_year_i = 1 and (msm=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+if incr_test_kp_year_i = 2 and (msm=1 or pwid=1 or agywfsw=1 or age>25) then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
 
 
 end;
@@ -21336,7 +21339,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
 
-
+/*
 data r1 ; set a;
 *option 1;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
@@ -21767,7 +21770,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=6);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=6);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=6);
-
+*/
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=7);
@@ -22127,7 +22130,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=11);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=11);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=11);
-
+/*
 data r1 ; set a;
 *option 0;
 %update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=12);
@@ -24364,7 +24367,7 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=71);
 %update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=71);
 %update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=71);
-
+*/
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
