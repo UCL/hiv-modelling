@@ -1,6 +1,9 @@
 
 
 
+
+* Could get out what proportion of people who start DCP have previously had a period of DCP ;
+
 * extract incidence rate for those with a prep indication to compare with trial
 
 * include a len prep option at least just so can see results ?
