@@ -1,4 +1,21 @@
 
+**MM;
+*add prep disadv for mm?;
+
+
+/*
+if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
+    	r = rand('Uniform');
+      	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
+	end;
+*/
+
+**Core;
+*run with prep_any_strategy=4 without the gender=2 line;
+*reduce rate_test_startprep_any for men after checking outputs;
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -613,6 +630,7 @@ newp_seed = 7;
 * effect_pcp_p_death_rate;	 	effect_pcp_p_death_rate = 0.8;
 * ind_effect_art_hiv_disease_death; 	ind_effect_art_hiv_disease_death = 0.6;
 
+
 * SEX WORKERS;
 * age_effect_stop_sexwork;	age_effect_stop_sexwork=3;
 
@@ -674,7 +692,15 @@ end;
 
 end;
 
+*MOBILE MEN;
 
+
+* prob_mobile1519_;			%sample_uniform(prob_mobile1519_, 0.01 0.03);
+* prob_mobile2060_;			%sample_uniform(prob_mobile2060_, 0.05 0.10);
+* prob_mobile60pl;			%sample_uniform(prob_mobile60pl,  0.01 0.03);
+* prob_stop_mobile;			%sample_uniform(prob_stop_mobile, 0.05 0.10);
+* inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 2 5 10);
+* mm_hardreach;				mm_hardreach=0.70;
 
 * CIRCUMCISION;
 
@@ -1467,6 +1493,8 @@ end;
 
 
 
+
+
 ever_newp=0;
 
 if rred_a_p=1 then do;
@@ -1699,6 +1727,10 @@ d_diag_m = . ;  p_diag_m = . ;  d_onart = . ;  p_diag_onart = . ;  d_vls = . ;  
 prevalence2534w = . ;  prevalence3544w = . ;  prevalence4554w = . ;  prevalence5564w = . ;  prevalence1524m = . ;  prevalence2534m = . ; 
 prevalence3544m = . ;  prevalence4554m = . ;  prevalence5564m = . ;   prevalence1524w = . ; 
 
+*Mobile men before start of simulation;
+r=rand('uniform');
+curr_mobile=0;
+if gender=1 and r<0.01 then curr_mobile=1;
 
 
 * co-infection with hep B and C - currently assume no change over calendar time in proportion co-infected
@@ -2145,6 +2177,7 @@ registd_tm2 = registd_tm1;
 onart_tm2=onart_tm1;
 sw_tm2=sw_tm1; 
 pwid_tm1 = pwid;
+curr_mobile_tm1 = curr_mobile;
 
 tested_tm1=tested; tested=0;
 self_tested_tm1=self_tested; self_tested=0;
@@ -2206,13 +2239,24 @@ who may be dead and hence have caldate{t} missing;
 
  	*Option 0 is continuation at current rates - status quo;
 
- 	*Option 1;
+ 	*Option 1 - Increase PrEP uptake in men;
 	if option = 1 then do;
-		*Specify option 1;
+		if curr_mobile=1 then do;u=rand('uniform');
+			if prep_oral_willing = 0 and u < 0.50 then prep_oral_willing=1;
+			if prep_inj_willing = 0 and u < 0.50 then prep_inj_willing=1;
+		end;
+	end;
+
+	if option = 2 then do;
+		if curr_mobile=1 then do;
+			if hard_reach_due_to_mobile=1 then do;
+				hard_reach_due_to_mobile=0;
+				hard_reach=0;
+			end; 
+		end;
 	end;
 
 end;
-
 
 
 *  ======================================================================================================================================== ;
@@ -2715,6 +2759,32 @@ if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_
 	*eff_prob_sw_lower_adh = prob_sw_lower_adh ; 
 	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
 end;
+
+***MOBILE MEN;
+* risk for mobile men;
+
+if gender=1 and curr_mobile_tm1 ne 1 and adc ne 1 then do; u=rand('uniform');
+	if 15 <= age < 20 and u < prob_mobile1519_ then curr_mobile=1; 
+	if 20 <= age < 60 and u < prob_mobile2060_ then curr_mobile=1;
+	if age >=60 and u < prob_mobile60pl then curr_mobile=1;
+
+	if curr_mobile=1 and u < mm_hardreach then do;
+		if hard_reach ne 1 then hard_reach_due_to_mobile=1;
+		hard_reach=1;
+	end;
+end;
+
+
+r=rand('Uniform');
+if (curr_mobile=1 or adc=1) and r < prob_stop_mobile then do; 
+	curr_mobile=0;
+	if hard_reach_due_to_mobile=1 then do;
+		hard_reach=0;
+		hard_reach_due_to_mobile=0;
+	end;
+end;
+
+
 
 
 ***Impact of potential changes in policy after year_i;
@@ -3410,6 +3480,8 @@ if hiv_tm1=1 then do;
 		if date1pos ne . and caldate{t} >  date1pos+0.5 then rred_d = sqrt(ch_risk_diag_newp);
 end;
 
+* change in sexual beh for mobile men;
+rred_mm=1.0; if curr_mobile=1 then rred_mm=inc_risk_mobile;
 
 rred_balance= 1 ;
 
@@ -3448,7 +3520,7 @@ end;
 
 rred_ep = 1 ; if ep_tm1  = 1 and conc_ep ne . then rred_ep = conc_ep ;  * mar16 ;
 
-rred= newp_factor*(rred_a * rred_p * rred_adc * rred_d * rred_rc * rred_balance * rred_ep * rred_adhav); 
+rred= newp_factor*(rred_a * rred_p * rred_adc * rred_d * rred_rc * rred_balance * rred_ep * rred_adhav * rred_mm); 
 * rred_ep lower or greater concurrence with ep - to introduce a potential dependence of newp on ep - which could influence
 the magnitude of an epidemic generated for a given mean level of condomless sex;
 
@@ -4552,12 +4624,18 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		if gender=2 and 15<=age<25 and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
-
+/*
 	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
+*/
+	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
+    	r = rand('Uniform');
+      	if (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_any_elig=1; 
+	end;
+
 
     if prep_any_strategy=5 then do;   
      	r = rand('Uniform');
@@ -16083,7 +16161,7 @@ if newp_this_per=1 then do;
 	if hiv ne 1 then newp_this_per_hivneg=1;
 	if hiv ne 1 and 15 <= age < 50 then newp_this_per_hivneg_1549=1;
 	if 15 <= age < 50 then newp_this_per_1549=1;
-	if gender=1 and  hiv ne 1 then newp_this_per_hivneg_m = 1;	if msm= and hiv ne 1 then newp_this_per_hivneg_msm = 1;
+	if gender=1 and  hiv ne 1 then newp_this_per_hivneg_m = 1;	if msm=1 and hiv ne 1 then newp_this_per_hivneg_msm = 1;
 	if gender=2 and  hiv ne 1 then newp_this_per_hivneg_w = 1;
 	if gender=2 and  hiv ne 1 and 15 <= age < 25 then newp_this_per_hivneg_age1524w = 1;
 	if sw=1 and  hiv ne 1 then newp_this_per_hivneg_sw = 1;
@@ -20839,17 +20917,19 @@ Inputs are:
 data a ;  set r1 ;
 data r1 ; set a ;
 
-* 3) Option 0 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+50,0);
+* 3) Option 0 ;
+%run_update_r1(&year_interv,&year_interv+20,0);
 
-* 4) Option 0 - repetition 2;
+
+* 4) Option 1;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,0);
+%run_update_r1(&year_interv,&year_interv+20,1);
 
-* 5) Option 0 - repetition 3;
+* 5) Option 2;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,0);
+%run_update_r1(&year_interv,&year_interv+20,2);
 
+/*
 * 3) Option 1 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
@@ -20861,7 +20941,7 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
-
+*/
 
 
 
