@@ -3,6 +3,12 @@
 
 * 2018 start date of self testing;
 
+* run for 50 years ;
+
+* update non-aids deaths ;
+
+* scale down agyw sexual risk intervention ;
+
 * give caveats of limitations for modelling ahd - better to be guided by cepac modelling ;
 
 
