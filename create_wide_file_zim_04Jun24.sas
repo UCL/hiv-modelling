@@ -1,5 +1,6 @@
 *libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
+
 
 ***USING THE FSW FILE AS BOTH PROJECTS HAVE BEEN CODED IN ONE OUTPUT FILE;
 data a;
@@ -35,8 +36,6 @@ proc sort; by run;run;
 data y; 
 merge a sf;
 by run ;
-
-*if run ne  989218009 then delete;
 
 ***these are used for checking the raw data so not scaled up;
 s_primary1564m = s_primary1549m + s_primary5054m + s_primary5559m + s_primary6064m;
@@ -870,7 +869,7 @@ n_hiv1519_  n_hiv2024_  n_hiv2529_  n_hiv3034_  n_hiv3539_  n_hiv4044_  n_hiv454
 n_hiv1519m  n_hiv2024m  n_hiv2529m  n_hiv3034m  n_hiv3539m  n_hiv4044m  n_hiv4549m  n_hiv5054m  n_hiv5559m  n_hiv6064m n_hiv6569m  n_hiv7074m  n_hiv7579m  n_hiv8084m  
 n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w  n_hiv4549w  n_hiv5054w  n_hiv5559w  n_hiv6064w  n_hiv6569w  n_hiv7074w  n_hiv7579w  n_hiv8084w 
 
-s_primary
+s_primary	s_primary1564m s_primary1564w
 
 n_primary1564_ n_primary1564m n_primary1564w
 
@@ -1344,7 +1343,8 @@ run;
 data y1;
 set y;
 
-*if run ne 972898928 then delete;
+if run ne 972898928 then delete;
+proc print;var n_primary1564_;run;
 *if run ne  975089766 then delete;
 *if run ne 989218009 then delete;
 
@@ -2033,13 +2033,20 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 
 run;
 
+***THESE WERE MISSING FROM BASELINE SHEET SO MANUALLY ADDING THEM INTO EXCEL;
+data new_inf;
+merge l_n_primary1564m	l_n_primary1564W	l_n_primary1564_;
+run;
+
+proc print;var cald mean_n_primary1564m	mean_n_primary1564W	mean_n_primary1564_;run;
 
 ***DEATHS OUTPUTS;
 ***Create datasets that resemble the Excel template. Order these in the same order as the Excel template;
 data a.wide_base;
 merge 
 l_n_alive1564_m		l_n_alive1564_w		l_n_alive1564_  	 l_prevalence1564m 		l_prevalence1564w	l_prevalence1564_   
-l_incidence1564_m	l_incidence1564_w	l_incidence1564_	 l_p_diag_m		  		l_p_diag_w		    l_p_diag
+l_n_primary1564m	l_n_primary1564W	l_n_primary1564_
+/*l_incidence1564_m	l_incidence1564_w	l_incidence1564_*/	 l_p_diag_m		  		l_p_diag_w		    l_p_diag
 l_p_onart_diag_m	l_p_onart_diag_w  	l_p_onart_diag  	 l_p_onart_vl1000_m 	l_p_onart_vl1000_w  l_p_onart_vl1000_ 	 
 ;run;
 
