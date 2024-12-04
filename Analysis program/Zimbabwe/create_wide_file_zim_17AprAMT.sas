@@ -39,7 +39,6 @@ data y;
 merge a sf;
 by run ;
 
-
 * preparatory code ;
 
 
@@ -573,7 +572,6 @@ dcost_amt250_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dno
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
 		dcost_swprog150_ + dcost_amt_program250_;
 
-end;
 
 ***This reverses the discount (if needed);
 cost_clin_care = dcost_clin_care / discount;
@@ -754,6 +752,7 @@ s_tested s_tested_m s_tested_f
 
 
 
+proc print;var cald option dcost_amt;run ;
 
 proc sort data=y;by run option;run;
 
@@ -762,7 +761,6 @@ data a.fsw_17_04_24_short_a; set y;run;
 
 data y; set a.fsw_17_04_24_short_a;run;
 
-proc contents;run;
 
 proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2011<= cald <2014 and option=0 ;run;
 proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2014<= cald <2017 and option=0 ;run;

@@ -1,9 +1,9 @@
 
 
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
+
 data a; 
 set a.wide_fsw_zim_17_04_24AMTa; *The 'a' suffix should include different sw costs for amethist, everything else the same;
-if incidence1549__23 <0.02 then delete;
 
 ***Within run differences;
 d_sw_prog_vis = (p_sw_prog_vis_30_2 - p_sw_prog_vis_30_1)*100;
@@ -137,9 +137,11 @@ maxcost_amt= diff_netdalys * 500;
 diff_cost_amt = dcost_amt_24_74_2 - dcost_amt_24_74_1;
 ICER = (diff_cost_amt/diff_ddaly)*1000000;
 
-proc contents;run;
+
 proc means n mean lclm uclm;
 var ICER;RUN;
+proc means n mean lclm uclm;
+var ICER;where diff_ddaly<0;RUN;
 
 ***Absolute costs and differences;
 proc means n mean lclm uclm;
