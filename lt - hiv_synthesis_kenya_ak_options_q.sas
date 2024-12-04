@@ -16,9 +16,9 @@
 
 
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
+  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   
+* libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
@@ -180,7 +180,7 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					%sample_uniform(inc_cat, 1:3);
+* inc_cat; 					inc_cat = 5; 
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
@@ -1326,115 +1326,58 @@ Age Group	Total (%)   % of 15-65 (47.2% are 15-65)
 ;
 
 
-* Running for 82 years - 1989 - 2071;  * AP 20-7-19 ;
-* Using a moderate rate of population growth;
-
-***LBM Jul19;
-if inc_cat=1 then do;
-inc1=0.1800;
-inc2=0.1650;
-inc3=0.1440;
-inc4=0.1140;
-inc5=0.0900;
-inc6=0.0800;
-inc7=0.0680;
-inc8=0.0470;
-inc9 =0.036;
-inc10=0.027;
-inc11=0.021;
-inc12=0.016;
-inc13=0.012;
+if inc_cat=5 and caldate1=1979 then do;
+inc1=0.138;
+inc2=0.130;
+inc3=0.120;
+inc4=0.110;
+inc5=0.100;
+inc6=0.090;
+inc7=0.080;
+inc8=0.070;
+inc9=0.060;
+inc10=0.045;  
+inc11=0.030;
+inc12=0.018;
+inc13=0.012; 
+inc14=0.009;
+inc15=0.006; 
 end;
 
-if inc_cat=2 then do;
-inc1=0.1500; *-65 to -55;
-inc2=0.1300; *-55 to -45;
-inc3=0.1200; *-45 to -35;
-inc4=0.1100; *-35 to -25;
-inc5=0.1000; *-25 to -15;
-inc6=0.0900; *-15 to -5;
-inc7=0.0800; *-5 to 5;
-inc8=0.0650; * 5 to 15;
-inc9 =0.048; * 15 to 25; 
-inc10=0.040; * 25 to 35;
-inc11=0.030; * 35 to 45;
-inc12=0.021; * 45 to 55;
-inc13=0.016; * 55 to 65;
-end;
 
-if inc_cat=3 then do;
-inc1=0.1280;
-inc2=0.1190;
-inc3=0.1130;
-inc4=0.1040;
-inc5=0.0970;
-inc6=0.0900;
-inc7=0.0810;
-inc8=0.074;
-inc9 =0.060;
-inc10=0.050;
-inc11=0.038;
-inc12=0.026;
-inc13=0.020;
-end;
-
-*2nd October 2023;
-if inc_cat=4 and caldate1=1984  then do;
-inc1 =0.15004;*-75 to -65, 9 years ;
-inc2 =0.15071;*-65 to -55, 10 years ;
-inc3 =0.13471;*-55 to -45;
-inc4 =0.11871;*-45 to -35;
-inc5 =0.10271;*-35 to -25;
-inc6 =0.08671;*-25 to -15;
-inc7 =0.07071;*-15 to -5;
-inc8 =0.05471;*-5 to 5;
-inc9 =0.03871;*5 to 15;
-inc10=0.02965;*15 to 25; 
-inc11=0.02224;*25 to 35;
-inc12=0.01730;*35 to 45;
-inc13=0.01318;*45 to 55;
-inc14=0.00988;*55 to 65;
-end;
 cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7=cum6+inc7;cum8=cum7+inc8;
-cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; cum13=cum12+inc13; 
+cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; cum13=cum12+inc13; cum14=cum13+inc14; 
 
 e=rand('uniform');
-if 0.0 <= e < inc1    then age=-69+rand('uniform')*14;   
-if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
-if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
-if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
-if cum4 <= e < cum5   then age=-25+rand('uniform')*10;  
-if cum5 <= e < cum6   then age=-15+rand('uniform')*10;  
-if cum6 <= e < cum7   then age=-5+rand('uniform')*10;  
-if cum7 <= e < cum8   then age=  5+rand('uniform')*10;  
-if cum8 <= e < cum9   then age= 15+rand('uniform')*10;  
-if cum9 <= e < cum10  then age= 25+rand('uniform')*10;  
-if cum10 <= e < cum11  then age= 35+rand('uniform')*10;  
-if cum11 <= e < cum12  then age= 45+rand('uniform')*10;  
-if cum12 <= e          then age= 55+rand('uniform')*10;  
 
-if caldate1=1984 and inc_cat=4 then do;
-e=rand('uniform');
-if 0.0 <= e < inc1    then age=-74+rand('uniform')*9;																				   
-if inc1 <= e < cum2   then age=-65+rand('uniform')*10;  
-if cum2 <= e < cum3   then age=-55+rand('uniform')*10;  
-if cum3 <= e < cum4   then age=-45+rand('uniform')*10;  
-if cum4 <= e < cum5   then age=-35+rand('uniform')*10;  
-if cum5 <= e < cum6   then age=-25+rand('uniform')*10;  
-if cum6 <= e < cum7   then age=-15+rand('uniform')*10;  
-if cum7 <= e < cum8   then age=-5+rand('uniform')*10;  
-if cum8 <= e < cum9   then age=  5+rand('uniform')*10;  
-if cum9 <= e < cum10  then age= 15+rand('uniform')*10;  
-if cum10<= e < cum11  then age= 25+rand('uniform')*10;  
-if cum11 <= e < cum12  then age= 35+rand('uniform')*10;  
-if cum12 <= e < cum13  then age= 45+rand('uniform')*10;  
-if cum13 <= e          then age= 55+rand('uniform')*10;  
-end;
+if         e < inc1   then age=-85+rand('uniform')*10;  
+if inc1 <= e < cum2   then age=-75+rand('uniform')*10;  
+if cum2 <= e < cum3   then age=-65+rand('uniform')*10;  
+if cum3 <= e < cum4   then age=-55+rand('uniform')*10;  
+if cum4 <= e < cum5   then age=-45+rand('uniform')*10;  
+if cum5 <= e < cum6   then age=-35+rand('uniform')*10;  
+if cum6 <= e < cum7   then age=-25+rand('uniform')*10;  
+if cum7 <= e < cum8   then age=-15+rand('uniform')*10;  
+if cum8 <= e < cum9   then age=-5+rand('uniform')*10;  
+if cum9 <= e < cum10  then age=  5+rand('uniform')*10;  
+if cum10<= e < cum11  then age= 15+rand('uniform')*10;  
+if cum11<= e < cum12  then age= 25+rand('uniform')*10;  
+if cum12 <= e < cum13  then age= 35+rand('uniform')*10;  
+if cum13 <= e < cum14  then age= 45+rand('uniform')*10;  
+if cum14 <= e          then age= 55+rand('uniform')*10;  
 
 age =round(age ,.25);
 
-lowest_age_at_start=-69;
-if caldate1=1984 then lowest_age_at_start=-74;									 
+lowest_age_at_start=-85;									 
+
+
+proc freq; tables age; run;
+
+
+
+
+
+
 
 if age  >= lowest_age_at_start;
 
