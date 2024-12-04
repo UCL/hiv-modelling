@@ -18278,7 +18278,7 @@ if newp_this_per=1 then do;
 	if hiv ne 1 then newp_this_per_hivneg=1;
 	if hiv ne 1 and 15 <= age < 50 then newp_this_per_hivneg_1549=1;
 	if 15 <= age < 50 then newp_this_per_1549=1;
-	if gender=1 and  hiv ne 1 then newp_this_per_hivneg_m = 1;	if msm= and hiv ne 1 then newp_this_per_hivneg_msm = 1;
+	if gender=1 and  hiv ne 1 then newp_this_per_hivneg_m = 1;	if msm=1 and hiv ne 1 then newp_this_per_hivneg_msm = 1;
 	if gender=2 and  hiv ne 1 then newp_this_per_hivneg_w = 1;
 	if gender=2 and  hiv ne 1 and 15 <= age < 25 then newp_this_per_hivneg_age1524w = 1;
 	if sw=1 and  hiv ne 1 then newp_this_per_hivneg_sw = 1;
@@ -19265,7 +19265,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_primary3539w + primary3539w ; s_primary4044w + primary4044w ; s_primary4549w + primary4549w ; s_primary5054w + primary5054w ;
 	s_primary5559w + primary5559w ; s_primary6064w + primary6064w ;			
 			
-	s_primary_ep_m + primary_ep_m ; s_primary_ep_w + primary_ep_w ;  
+	s_primary_ep_m + primary_ep_m ; s_primary_ep_w + primary_ep_w ; 
 
 	s_primary1524m_ep + primary1524m_ep ; s_primary2534m_ep + primary2534m_ep ; s_primary3544m_ep + primary3544m_ep ; s_primary4554m_ep + primary4554m_ep;
 	s_primary5564m_ep + primary5564m_ep ; s_primary1524w_ep + primary1524w_ep ; s_primary2534w_ep + primary2534w_ep ; s_primary3544w_ep + primary3544w_ep;
