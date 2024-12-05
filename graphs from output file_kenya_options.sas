@@ -9,7 +9,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_ak_options_p ;
+  set a.l_base_kenya_al_options_q ;
 
 
 /*
@@ -113,8 +113,8 @@ n_tested_due_to_self_test = n_tested_due_to_self_t ;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =   184 ;
-%let year_end = 2040.00 ;
+%let nfit =     6 ;
+%let year_end = 2074.00 ;
 run;
 proc sort;by cald option ;run;
 
@@ -2518,6 +2518,8 @@ band    x=cald lower=p5_n_prep_elig_w_1 	upper=p95_n_prep_elig_w_1  / transparen
 run;quit;
 
 
+*/
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive";
@@ -2532,6 +2534,7 @@ band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 filla
 run;quit;
 
 
+/*
 
 ods html;
 proc sgplot data=d; 
