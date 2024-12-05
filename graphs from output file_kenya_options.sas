@@ -2524,7 +2524,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 60000000 by  1000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 120000000 by  10000000) valueattrs=(size=10);
 
 label mean_n_alive_0 = "Option 0 (median) ";
 
