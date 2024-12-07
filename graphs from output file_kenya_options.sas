@@ -9,7 +9,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_al_options_q ;
+  set a.l_base_kenya_ak_options_p ;
 
 
 /*
@@ -21,7 +21,7 @@ data b;
 
 
 
-  s =  115 ;
+  s =  20  ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
 
@@ -113,8 +113,8 @@ n_tested_due_to_self_test = n_tested_due_to_self_t ;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =     6 ;
-%let year_end = 2074.00 ;
+%let nfit =   286 ;
+%let year_end = 2040.00 ;
 run;
 proc sort;by cald option ;run;
 
@@ -649,6 +649,20 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 
 
 ods html;
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_alive";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 120000000 by  10000000) valueattrs=(size=10);
+
+label mean_n_alive_0 = "Option 0 (median) ";
+
+series  x=cald y=mean_n_alive_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;quit;
 
 
 
@@ -2520,18 +2534,6 @@ run;quit;
 
 */
 
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "n_alive";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1980 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 120000000 by  10000000) valueattrs=(size=10);
-
-label mean_n_alive_0 = "Option 0 (median) ";
-
-series  x=cald y=mean_n_alive_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-run;quit;
 
 
 /*

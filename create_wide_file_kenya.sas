@@ -4,22 +4,22 @@
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_al_options_q_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_ak_options_p_out\";
 
 
 
-data   kenya_al_options_q ; set b.out: ;
+data   kenya_ak_options_p ; set b.out: ;
 
 
 
-proc sort data=  kenya_al_options_q; 
+proc sort data=  kenya_ak_options_p; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2022 ;
 data sf;
 
-set   kenya_al_options_q ;
+set   kenya_ak_options_p ;
 
 if cald=2022.25;
 s_alive = s_alive_m + s_alive_w ;
@@ -36,7 +36,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge   kenya_al_options_q sf;
+merge   kenya_ak_options_p sf;
 by run ;
  
 
@@ -73,10 +73,9 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 * ================================================================================= ;
 
 * discount rate is 3%; 
-* note discounting is from 2022 - no adjustment needed;
 * ts1m - this code needs to change for ts1m;
 
-%let year_start_disc=2022;
+%let year_start_disc=2024;
 discount_3py = 1/(1.03**(cald-&year_start_disc));
 discount_10py = 1/(1.10**(cald-&year_start_disc));
 *The following can be changed if we want instead 10% discount rate;
@@ -216,8 +215,6 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 s_hiv65plm = s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
 s_hiv65plw = s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
 
-
-
 * cost of intervention implementation (in addition to any consequences in terms of extra tests, extra people on art etc) ;
 cost_int=0;
 if option = 106 then cost_int = 100000 ; * assumed very high cost to somehow produce such high condom use; 
@@ -226,13 +223,22 @@ if option = 112 then cost_int = 0.022 * s_hivge15 * sf;
 if option = 113 then cost_int = 0.031 * s_onart * sf;
 if option = 114 then cost_int = 0.022 * s_give_birth_with_hiv * sf;
 if option = 115 then cost_int = 0.010 * s_hivge15 * sf;
-if option = 20 then cost_int = 100000 + (0.277 * s_alive_pwid * sf) + (0.022 * s_hivge15 * sf) + (0.031 * s_onart * sf) + (0.022 * s_plw * sf) 
-+ (0.010 * s_hivge15 * sf);
+if option = 20 then do;
+	cost_int = 100000 + (0.277 * s_alive_pwid * sf) + (0.022 * s_hivge15 * sf) + (0.031 * s_onart * sf) + (0.022 * s_plw * sf) + (0.010 * s_hivge15 * sf); 
+	cost_int6=100000;  cost_int11=(0.277 * s_alive_pwid * sf); cost_int12=(0.022 * s_hivge15 * sf); cost_int13=(0.031 * s_onart * sf); 
+	cost_int14=(0.022 * s_give_birth_with_hiv * sf); cost_int15=(0.010* s_hivge15 * sf);
+end;
 if option = 200 then cost_int = 100000 + (0.277 * s_alive_pwid * sf) + (0.022 * s_hivge15 * sf) + (0.031 * s_onart * sf) + (0.022 * s_plw * sf) 
 + (0.010 * s_hivge15 * sf);
 
 * convert to millions;
 cost_int = cost_int / 1000;
+cost_int6 = cost_int6 / 1000;
+cost_int11 = cost_int11 / 1000;
+cost_int12 = cost_int12 / 1000;
+cost_int13 = cost_int13 / 1000;
+cost_int14 = cost_int14 / 1000;
+cost_int15 = cost_int15 / 1000;
 
 dcost_int = cost_int * &discount;
 * sens analysis;
@@ -253,19 +259,23 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who
 		+ d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + 
 		dcost_prep + dcost_child_hiv + dcost_non_aids_pre_death + dcost_int;
 
-
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
-				dswitchline_cost; 
+				dswitchline_cost + dcost_non_aids_pre_death + dcost_drug_level_test + dcost_cascade_interventions ; 
 
-if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
+if &discount gt 0 then do;
+	cost_clin_care = dcost_clin_care / &discount;
+	test_cost = (dtest_cost + dcost_self_test) / &discount; 
+	circ_cost = dcost_circ / &discount;
+	prep_cost = (dcost_prep_visit + dcost_prep) / &discount;
+	cost_child_hiv = dcost_child_hiv / &discount;
+end;
+
 
 if &discount gt 0 then cost = dcost / &discount;
 
-* convert back from millions;
-dcost = dcost*1000000 ;
-dcost_int = dcost_int*1000000;
+
 
 * ================================================================================= ;
 
@@ -1158,6 +1168,8 @@ n_vm_per_year    n_self_tested   n_self_tested_m    n_self_tested_w    n_tested_
 
 n_prep_inj n_prep_oral n_prep_vr  mtct_birth_prop mtct_prop n_mtct  cost_int  cost  ddaly_gbd  dcost_int
 
+cost_clin_care 	test_cost 	circ_cost 	prep_cost 	cost_child_hiv cost_int6  cost_int11 cost_int12 cost_int13 cost_int14 cost_int15
+
 ;
 
 
@@ -1166,11 +1178,11 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_kenya_al_options_q; set y;  
+data a.l_base_kenya_ak_options_p; set y;  
 
 
 
-data y; set a.l_base_kenya_al_options_q; 
+data y; set a.l_base_kenya_ak_options_p; 
 
 /*
 if cald = 2017;
@@ -1199,12 +1211,17 @@ drop _NAME_ _TYPE_ _FREQ_;
 %mend var;
 
 %var(v=dcost); %var(v=ddaly_gbd); %var(v=dcost_int); %var(v=dn_infected);
-
+%var(v=cost_clin_care); %var(v=test_cost); 	%var(v=circ_cost); %var(v=prep_cost); %var(v=cost_child_hiv); 
+%var(v=cost_int6);  %var(v=cost_int11); %var(v=cost_int12); %var(v=cost_int13); %var(v=cost_int14); 
+%var(v=cost_int15);  %var(v=cost_int); %var(v=cost);  %var(v=n_tested);
 
 
 data wide_outputs;
 merge 
-dcost ddaly_gbd dcost_int dn_infected ;
+dcost ddaly_gbd dcost_int dn_infected 
+cost_clin_care 	test_cost 	circ_cost 	prep_cost 	cost_child_hiv cost_int6  cost_int11 cost_int12 cost_int13 cost_int14 cost_int15
+cost_int cost n_tested
+;
 proc sort; by run;
 
 
@@ -1530,7 +1547,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_kenya_al_options_q; 
+  data a.w_base_kenya_ak_options_p; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
@@ -1592,6 +1609,43 @@ d_dn_infected_24_40_115 = dn_infected_24_40_17 - dn_infected_24_40_1;
 d_dn_infected_24_40_20  = dn_infected_24_40_2  - dn_infected_24_40_1;
 d_dn_infected_24_40_200 = dn_infected_24_40_18 - dn_infected_24_40_1;
 
+cost_int6_24_40_1=0;
+cost_int11_24_40_1=0;
+cost_int12_24_40_1=0;
+cost_int13_24_40_1=0;
+cost_int14_24_40_1=0;
+cost_int15_24_40_1=0;
+
+* costs over 17 years 2024 - 2040 inclusive;
+d_cost_clin_care_24_40_20 = (cost_clin_care_24_40_2 -	cost_clin_care_24_40_1) * 17   ;	
+d_test_cost_24_40_20 = (test_cost_24_40_2 -	test_cost_24_40_1) * 17   ;	
+d_circ_cost_24_40_20 = (circ_cost_24_40_2 -	circ_cost_24_40_1) * 17   ;	
+d_prep_cost_24_40_20 = (prep_cost_24_40_2 -	prep_cost_24_40_1) * 17   ;	
+d_cost_child_hiv_24_40_20 = (cost_child_hiv_24_40_2 - cost_child_hiv_24_40_1) * 17 ;
+d_cost_int6_24_40_20 = (cost_int6_24_40_2 - cost_int6_24_40_1) * 17   ;
+d_cost_int11_24_40_20 = (cost_int11_24_40_2 - cost_int11_24_40_1) * 17  ; 
+d_cost_int12_24_40_20 = (cost_int12_24_40_2 - cost_int12_24_40_1) * 17  ;
+d_cost_int13_24_40_20 = (cost_int13_24_40_2 - cost_int13_24_40_1) * 17  ;
+d_cost_int14_24_40_20 = (cost_int14_24_40_2 - cost_int14_24_40_1) * 17  ;
+d_cost_int15_24_40_20 = (cost_int15_24_40_2 - cost_int15_24_40_1) * 17  ;
+d_cost_int_24_40_20 = (cost_int_24_40_2 - cost_int_24_40_1) * 17 ; 
+d_cost_24_40_20 = (cost_24_40_2 - cost_24_40_1) * 17      ;
+
+d_cost_clin_care_24_40_20  = round(d_cost_clin_care_24_40_20, 0.1);
+d_test_cost_24_40_20  = round(d_test_cost_24_40_20, 0.1);
+d_circ_cost_24_40_20  =  round(d_circ_cost_24_40_20, 0.1);   			
+d_prep_cost_24_40_20  =  round( d_prep_cost_24_40_20, 0.1);   			
+d_cost_child_hiv_24_40_20  =   round(d_cost_child_hiv_24_40_20, 0.1);   
+d_cost_int6_24_40_20   = round(d_cost_int6_24_40_20, 0.1);   		
+d_cost_int11_24_40_20  = round( d_cost_int11_24_40_20, 0.1);   	
+d_cost_int12_24_40_20  =   round(d_cost_int12_24_40_20, 0.1);   	
+d_cost_int13_24_40_20  =  round(d_cost_int13_24_40_20 , 0.1);  	 
+d_cost_int14_24_40_20  =  round(d_cost_int14_24_40_20 , 0.1);  	
+d_cost_int15_24_40_20  =  round(d_cost_int15_24_40_20 , 0.1);  	
+d_cost_int_24_40_20  =  round(d_cost_int_24_40_20, 0.1);   		
+d_cost_24_40_20  = round(d_cost_24_40_20, 0.1); 
+
+
 
 *
 
@@ -1615,6 +1669,61 @@ _17 = option 115
 _18 = option 200
 
 ;
+
+
+proc means; 
+var 
+d_cost_clin_care_24_40_20
+d_test_cost_24_40_20   		
+d_circ_cost_24_40_20   			
+d_prep_cost_24_40_20   			
+d_cost_child_hiv_24_40_20   
+d_cost_int6_24_40_20   		
+d_cost_int11_24_40_20   	
+d_cost_int12_24_40_20   	
+d_cost_int13_24_40_20   	 
+d_cost_int14_24_40_20   	
+d_cost_int15_24_40_20   	
+d_cost_int_24_40_20   		
+d_cost_24_40_20   			
+
+n_tested_24_40_1
+n_tested_24_40_2
+n_tested_24_40_3
+n_tested_24_40_4
+n_tested_24_40_5
+n_tested_24_40_6
+
+
+;
+run;
+
+
+/*
+
+test_cost_24_40_2  		test_cost_24_40_1 	
+circ_cost_24_40_2  		circ_cost_24_40_1 
+prep_cost_24_40_2  		prep_cost_24_40_1 
+cost_child_hiv_24_40_2  cost_child_hiv_24_40_1 
+cost_int6_24_40_2   	cost_int6_24_40_1  
+cost_int11_24_40_2   	cost_int11_24_40_1 
+cost_int12_24_40_2   	cost_int12_24_40_1 
+cost_int13_24_40_2   	cost_int13_24_40_1
+cost_int14_24_40_2   	cost_int14_24_40_1 
+cost_int15_24_40_2   	cost_int15_24_40_1 
+cost_int_24_40_2   		cost_int_24_40_1 
+cost_24_40_2   			cost_24_40_1 
+
+*/
+
+
+
+
+
+/* 
+
+* working out icers and cpia for our model (but note we dont use this in results - we use the version calculated from spreadsheet ;
+
 
 proc print; run;
 
@@ -1672,7 +1781,8 @@ cpia_115=.; if d_dcost_24_40_115 > 0 and d_dn_infected_24_40_115 < 0 then cpia_1
 cpia_20 =.; if d_dcost_24_40_20 > 0 and d_dn_infected_24_40_20 < 0 then cpia_20 = d_dcost_24_40_20 / (-d_dn_infected_24_40_20);
 cpia_200=.; if d_dcost_24_40_200 > 0 and d_dn_infected_24_40_200 < 0 then cpia_200 = d_dcost_24_40_200 / (-d_dn_infected_24_40_200);
 
-proc print; run;
+*/
+
 
 
 /*
