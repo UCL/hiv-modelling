@@ -4662,7 +4662,7 @@ end;
 	eff_self_test_targeting = self_test_targeting;
 
 	w = rand('uniform');	
-	if hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach) then do;
+	if caldate{t} ge 2018 and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
 
 		u_self_test=rand('uniform');
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
@@ -16083,7 +16083,7 @@ if newp_this_per=1 then do;
 	if hiv ne 1 then newp_this_per_hivneg=1;
 	if hiv ne 1 and 15 <= age < 50 then newp_this_per_hivneg_1549=1;
 	if 15 <= age < 50 then newp_this_per_1549=1;
-	if gender=1 and  hiv ne 1 then newp_this_per_hivneg_m = 1;	if msm= and hiv ne 1 then newp_this_per_hivneg_msm = 1;
+	if gender=1 and  hiv ne 1 then newp_this_per_hivneg_m = 1;	if msm=1 and hiv ne 1 then newp_this_per_hivneg_msm = 1;
 	if gender=2 and  hiv ne 1 then newp_this_per_hivneg_w = 1;
 	if gender=2 and  hiv ne 1 and 15 <= age < 25 then newp_this_per_hivneg_age1524w = 1;
 	if sw=1 and  hiv ne 1 then newp_this_per_hivneg_sw = 1;
