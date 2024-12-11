@@ -429,488 +429,230 @@ dnew_infection = new_infection_15pl / (1.03**(year-2024));
 
 
 
+* graph of effects of interventions on HIV deaths age 15+ over 2024-2040 ;
 
-
-
-
-* mean ddalys averted and cost incurred for 2024-2040 - and icer by model and intervention - including mean and range;
 
 data z; set all; 
-keep model scenario year ddalys  ;
+keep model scenario year n_hiv_deaths_15pl  ;
 
-proc transpose data = z  out= s_1_0; where model = 1 and scenario = 0 and year ge 2024; data d_1_0; set s_1_0; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_sq;
-proc transpose data = z  out= s_1_1; where model = 1 and scenario = 1 and year ge 2024; data d_1_1; set s_1_1; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int1;
-proc transpose data = z  out= s_1_2; where model = 1 and scenario = 2 and year ge 2024; data d_1_2; set s_1_2; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int2;
-proc transpose data = z  out= s_1_3; where model = 1 and scenario = 3 and year ge 2024; data d_1_3; set s_1_3; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int3;
-proc transpose data = z  out= s_1_4; where model = 1 and scenario = 4 and year ge 2024; data d_1_4; set s_1_4; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int4;
-proc transpose data = z  out= s_1_5; where model = 1 and scenario = 5 and year ge 2024; data d_1_5; set s_1_5; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int5;
-proc transpose data = z  out= s_1_6; where model = 1 and scenario = 6 and year ge 2024; data d_1_6; set s_1_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int6;
-proc transpose data = z  out= s_1_7; where model = 1 and scenario = 7 and year ge 2024; data d_1_7; set s_1_7; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int7;
-proc transpose data = z  out= s_1_8; where model = 1 and scenario = 8 and year ge 2024; data d_1_8; set s_1_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int8;
-proc transpose data = z  out= s_1_9; where model = 1 and scenario = 9 and year ge 2024; data d_1_9; set s_1_9; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int9;
-proc transpose data = z  out= s_1_10; where model = 1 and scenario = 10 and year ge 2024; data d_1_10; set s_1_10; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int10;
-proc transpose data = z  out= s_1_11; where model = 1 and scenario = 11 and year ge 2024; data d_1_11; set s_1_11; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int11;
-proc transpose data = z  out= s_1_12; where model = 1 and scenario = 12 and year ge 2024; data d_1_12; set s_1_12; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int12;
-proc transpose data = z  out= s_1_13; where model = 1 and scenario = 13 and year ge 2024; data d_1_13; set s_1_13; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int13;
-proc transpose data = z  out= s_1_14; where model = 1 and scenario = 14 and year ge 2024; data d_1_14; set s_1_14; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int14;
-proc transpose data = z  out= s_1_15; where model = 1 and scenario = 15 and year ge 2024; data d_1_15; set s_1_15; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int15;
+proc transpose data = z  out= s_1_0; where model = 1 and scenario = 0 and year ge 2024; data d_1_0; set s_1_0; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_sq;
+proc transpose data = z  out= s_1_1; where model = 1 and scenario = 1 and year ge 2024; data d_1_1; set s_1_1; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int1;
+proc transpose data = z  out= s_1_2; where model = 1 and scenario = 2 and year ge 2024; data d_1_2; set s_1_2; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int2;
+proc transpose data = z  out= s_1_3; where model = 1 and scenario = 3 and year ge 2024; data d_1_3; set s_1_3; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int3;
+proc transpose data = z  out= s_1_4; where model = 1 and scenario = 4 and year ge 2024; data d_1_4; set s_1_4; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int4;
+proc transpose data = z  out= s_1_5; where model = 1 and scenario = 5 and year ge 2024; data d_1_5; set s_1_5; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int5;
+proc transpose data = z  out= s_1_6; where model = 1 and scenario = 6 and year ge 2024; data d_1_6; set s_1_6; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int6;
+proc transpose data = z  out= s_1_7; where model = 1 and scenario = 7 and year ge 2024; data d_1_7; set s_1_7; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int7;
+proc transpose data = z  out= s_1_8; where model = 1 and scenario = 8 and year ge 2024; data d_1_8; set s_1_6; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int8;
+proc transpose data = z  out= s_1_9; where model = 1 and scenario = 9 and year ge 2024; data d_1_9; set s_1_9; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int9;
+proc transpose data = z  out= s_1_10; where model = 1 and scenario = 10 and year ge 2024; data d_1_10; set s_1_10; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int10;
+proc transpose data = z  out= s_1_11; where model = 1 and scenario = 11 and year ge 2024; data d_1_11; set s_1_11; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int11;
+proc transpose data = z  out= s_1_12; where model = 1 and scenario = 12 and year ge 2024; data d_1_12; set s_1_12; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int12;
+proc transpose data = z  out= s_1_13; where model = 1 and scenario = 13 and year ge 2024; data d_1_13; set s_1_13; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int13;
+proc transpose data = z  out= s_1_14; where model = 1 and scenario = 14 and year ge 2024; data d_1_14; set s_1_14; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int14;
+proc transpose data = z  out= s_1_15; where model = 1 and scenario = 15 and year ge 2024; data d_1_15; set s_1_15; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int15;
 
-proc transpose data = z  out= s_2_0; where model = 2 and scenario = 0 and year ge 2024; data d_2_0; set s_2_0; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_sq;
-proc transpose data = z  out= s_2_1; where model = 2 and scenario = 1 and year ge 2024; data d_2_1; set s_2_1; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int1;
-proc transpose data = z  out= s_2_2; where model = 2 and scenario = 2 and year ge 2024; data d_2_2; set s_2_2; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int2;
-proc transpose data = z  out= s_2_3; where model = 2 and scenario = 3 and year ge 2024; data d_2_3; set s_2_3; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int3;
-proc transpose data = z  out= s_2_4; where model = 2 and scenario = 4 and year ge 2024; data d_2_4; set s_2_4; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int4;
-proc transpose data = z  out= s_2_5; where model = 2 and scenario = 5 and year ge 2024; data d_2_5; set s_2_5; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int5;
-proc transpose data = z  out= s_2_6; where model = 2 and scenario = 6 and year ge 2024; data d_2_6; set s_2_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int6;
-proc transpose data = z  out= s_2_7; where model = 2 and scenario = 7 and year ge 2024; data d_2_7; set s_2_7; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int7;
-proc transpose data = z  out= s_2_8; where model = 2 and scenario = 8 and year ge 2024; data d_2_8; set s_2_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int8;
-proc transpose data = z  out= s_2_9; where model = 2 and scenario = 9 and year ge 2024; data d_2_9; set s_2_9; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int9;
-proc transpose data = z  out= s_2_10; where model = 2 and scenario = 10 and year ge 2024; data d_2_10; set s_2_10; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int10;
-proc transpose data = z  out= s_2_11; where model = 2 and scenario = 11 and year ge 2024; data d_2_11; set s_2_11; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int11;
-proc transpose data = z  out= s_2_12; where model = 2 and scenario = 12 and year ge 2024; data d_2_12; set s_2_12; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int12;
-proc transpose data = z  out= s_2_13; where model = 2 and scenario = 13 and year ge 2024; data d_2_13; set s_2_13; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int13;
-proc transpose data = z  out= s_2_14; where model = 2 and scenario = 14 and year ge 2024; data d_2_14; set s_2_14; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int14;
-proc transpose data = z  out= s_2_15; where model = 2 and scenario = 15 and year ge 2024; data d_2_15; set s_2_15; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int15;
-
-
-proc transpose data = z  out= s_3_0; where model = 3 and scenario = 0 and year ge 2024; data d_3_0; set s_3_0; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_sq;
-proc transpose data = z  out= s_3_1; where model = 3 and scenario = 1 and year ge 2024; data d_3_1; set s_3_1; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int1;
-proc transpose data = z  out= s_3_2; where model = 3 and scenario = 2 and year ge 2024; data d_3_2; set s_3_2; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int2;
-proc transpose data = z  out= s_3_3; where model = 3 and scenario = 3 and year ge 2024; data d_3_3; set s_3_3; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int3;
-proc transpose data = z  out= s_3_4; where model = 3 and scenario = 4 and year ge 2024; data d_3_4; set s_3_4; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int4;
-proc transpose data = z  out= s_3_5; where model = 3 and scenario = 5 and year ge 2024; data d_3_5; set s_3_5; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int5;
-proc transpose data = z  out= s_3_6; where model = 3 and scenario = 6 and year ge 2024; data d_3_6; set s_3_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int6;
-proc transpose data = z  out= s_3_7; where model = 3 and scenario = 7 and year ge 2024; data d_3_7; set s_3_7; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int7;
-proc transpose data = z  out= s_3_8; where model = 3 and scenario = 8 and year ge 2024; data d_3_8; set s_3_6; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int8;
-proc transpose data = z  out= s_3_9; where model = 3 and scenario = 9 and year ge 2024; data d_3_9; set s_3_9; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int9;
-proc transpose data = z  out= s_3_10; where model = 3 and scenario = 10 and year ge 2024; data d_3_10; set s_3_10; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int10;
-proc transpose data = z  out= s_3_11; where model = 3 and scenario = 11 and year ge 2024; data d_3_11; set s_3_11; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int11;
-proc transpose data = z  out= s_3_12; where model = 3 and scenario = 12 and year ge 2024; data d_3_12; set s_3_12; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int12;
-proc transpose data = z  out= s_3_13; where model = 3 and scenario = 13 and year ge 2024; data d_3_13; set s_3_13; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int13;
-proc transpose data = z  out= s_3_14; where model = 3 and scenario = 14 and year ge 2024; data d_3_14; set s_3_14; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int14;
-proc transpose data = z  out= s_3_15; where model = 3 and scenario = 15 and year ge 2024; data d_3_15; set s_3_15; if _NAME_ = 'ddalys' ; drop _NAME_; 
-mean_ddalys_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep  mean_ddalys_int15;
+proc transpose data = z  out= s_2_0; where model = 2 and scenario = 0 and year ge 2024; data d_2_0; set s_2_0; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_sq;
+proc transpose data = z  out= s_2_1; where model = 2 and scenario = 1 and year ge 2024; data d_2_1; set s_2_1; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int1;
+proc transpose data = z  out= s_2_2; where model = 2 and scenario = 2 and year ge 2024; data d_2_2; set s_2_2; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int2;
+proc transpose data = z  out= s_2_3; where model = 2 and scenario = 3 and year ge 2024; data d_2_3; set s_2_3; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int3;
+proc transpose data = z  out= s_2_4; where model = 2 and scenario = 4 and year ge 2024; data d_2_4; set s_2_4; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int4;
+proc transpose data = z  out= s_2_5; where model = 2 and scenario = 5 and year ge 2024; data d_2_5; set s_2_5; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int5;
+proc transpose data = z  out= s_2_6; where model = 2 and scenario = 6 and year ge 2024; data d_2_6; set s_2_6; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int6;
+proc transpose data = z  out= s_2_7; where model = 2 and scenario = 7 and year ge 2024; data d_2_7; set s_2_7; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int7;
+proc transpose data = z  out= s_2_8; where model = 2 and scenario = 8 and year ge 2024; data d_2_8; set s_2_6; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int8;
+proc transpose data = z  out= s_2_9; where model = 2 and scenario = 9 and year ge 2024; data d_2_9; set s_2_9; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int9;
+proc transpose data = z  out= s_2_10; where model = 2 and scenario = 10 and year ge 2024; data d_2_10; set s_2_10; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int10;
+proc transpose data = z  out= s_2_11; where model = 2 and scenario = 11 and year ge 2024; data d_2_11; set s_2_11; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int11;
+proc transpose data = z  out= s_2_12; where model = 2 and scenario = 12 and year ge 2024; data d_2_12; set s_2_12; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int12;
+proc transpose data = z  out= s_2_13; where model = 2 and scenario = 13 and year ge 2024; data d_2_13; set s_2_13; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int13;
+proc transpose data = z  out= s_2_14; where model = 2 and scenario = 14 and year ge 2024; data d_2_14; set s_2_14; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int14;
+proc transpose data = z  out= s_2_15; where model = 2 and scenario = 15 and year ge 2024; data d_2_15; set s_2_15; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int15;
 
 
-data z_int1_1; merge d_1_0 d_1_1 ; effect_ddalys = mean_ddalys_int1 - mean_ddalys_sq; model=1; scenario=1; 
-data z_int1_2; merge d_2_0 d_2_1 ; effect_ddalys = mean_ddalys_int1 - mean_ddalys_sq; model=2; scenario=1; 
-data z_int1_3; merge d_3_0 d_3_1 ; effect_ddalys = mean_ddalys_int1 - mean_ddalys_sq; model=3; scenario=1; 
-data z_int1; set z_int1_1 z_int1_2 z_int1_3;  keep scenario model effect_ddalys;
-
-data z_int2_1; merge d_1_0 d_1_2 ; effect_ddalys = mean_ddalys_int2 - mean_ddalys_sq; model=1; scenario=2; 
-data z_int2_2; merge d_2_0 d_2_2 ; effect_ddalys = mean_ddalys_int2 - mean_ddalys_sq; model=2; scenario=2; 
-data z_int2_3; merge d_3_0 d_3_2 ; effect_ddalys = mean_ddalys_int2 - mean_ddalys_sq; model=3; scenario=2; 
-data z_int2; set z_int2_1 z_int2_2 z_int2_3;  keep scenario model effect_ddalys;
-
-data z_int3_1; merge d_1_0 d_1_3 ; effect_ddalys = mean_ddalys_int3 - mean_ddalys_sq; model=1; scenario=3; 
-data z_int3_2; merge d_2_0 d_2_3 ; effect_ddalys = mean_ddalys_int3 - mean_ddalys_sq; model=2; scenario=3; 
-data z_int3_3; merge d_3_0 d_3_3 ; effect_ddalys = mean_ddalys_int3 - mean_ddalys_sq; model=3; scenario=3; 
-data z_int3; set z_int3_1 z_int3_2 z_int3_3;  keep scenario model effect_ddalys;
-
-data z_int4_1; merge d_1_0 d_1_4 ; effect_ddalys = mean_ddalys_int4 - mean_ddalys_sq; model=1; scenario=4; 
-data z_int4_2; merge d_2_0 d_2_4 ; effect_ddalys = mean_ddalys_int4 - mean_ddalys_sq; model=2; scenario=4; 
-data z_int4_3; merge d_3_0 d_3_4 ; effect_ddalys = mean_ddalys_int4 - mean_ddalys_sq; model=3; scenario=4; 
-data z_int4; set z_int4_1 z_int4_2 z_int4_3;  keep scenario model effect_ddalys;
-
-data z_int5_1; merge d_1_0 d_1_5 ; effect_ddalys = mean_ddalys_int5 - mean_ddalys_sq; model=1; scenario=5; 
-data z_int5_2; merge d_2_0 d_2_5 ; effect_ddalys = mean_ddalys_int5 - mean_ddalys_sq; model=2; scenario=5; 
-data z_int5_3; merge d_3_0 d_3_5 ; effect_ddalys = mean_ddalys_int5 - mean_ddalys_sq; model=3; scenario=5; 
-data z_int5; set z_int5_1 z_int5_2 z_int5_3;  keep scenario model effect_ddalys;
-
-data z_int6_1; merge d_1_0 d_1_6 ; effect_ddalys = mean_ddalys_int6 - mean_ddalys_sq; model=1; scenario=6; 
-data z_int6_2; merge d_2_0 d_2_6 ; effect_ddalys = mean_ddalys_int6 - mean_ddalys_sq; model=2; scenario=6; 
-data z_int6_3; merge d_3_0 d_3_6 ; effect_ddalys = mean_ddalys_int6 - mean_ddalys_sq; model=3; scenario=6; 
-data z_int6; set z_int6_1 z_int6_2 z_int6_3;  keep scenario model effect_ddalys;
-
-data z_int7_1; merge d_1_0 d_1_7 ; effect_ddalys = mean_ddalys_int7 - mean_ddalys_sq; model=1; scenario=7; 
-data z_int7_2; merge d_2_0 d_2_7 ; effect_ddalys = mean_ddalys_int7 - mean_ddalys_sq; model=2; scenario=7; 
-data z_int7_3; merge d_3_0 d_3_7 ; effect_ddalys = mean_ddalys_int7 - mean_ddalys_sq; model=3; scenario=7; 
-data z_int7; set z_int7_1 z_int7_2 z_int7_3;  keep scenario model effect_ddalys;
-
-data z_int8_1; merge d_1_0 d_1_8 ; effect_ddalys = mean_ddalys_int8 - mean_ddalys_sq; model=1; scenario=8; 
-data z_int8_2; merge d_2_0 d_2_8 ; effect_ddalys = mean_ddalys_int8 - mean_ddalys_sq; model=2; scenario=8; 
-data z_int8_3; merge d_3_0 d_3_8 ; effect_ddalys = mean_ddalys_int8 - mean_ddalys_sq; model=3; scenario=8; 
-data z_int8; set z_int8_1 z_int8_2 z_int8_3;  keep scenario model effect_ddalys;
-
-data z_int9_1; merge d_1_0 d_1_9 ; effect_ddalys = mean_ddalys_int9 - mean_ddalys_sq; model=1; scenario=9; 
-data z_int9_2; merge d_2_0 d_2_9 ; effect_ddalys = mean_ddalys_int9 - mean_ddalys_sq; model=2; scenario=9; 
-data z_int9_3; merge d_3_0 d_3_9 ; effect_ddalys = mean_ddalys_int9 - mean_ddalys_sq; model=3; scenario=9; 
-data z_int9; set z_int9_1 z_int9_2 z_int9_3;  keep scenario model effect_ddalys;
-
-data z_int10_1; merge d_1_0 d_1_10 ; effect_ddalys = mean_ddalys_int10 - mean_ddalys_sq; model=1; scenario=10; 
-data z_int10_2; merge d_2_0 d_2_10 ; effect_ddalys = mean_ddalys_int10 - mean_ddalys_sq; model=2; scenario=10; 
-data z_int10_3; merge d_3_0 d_3_10 ; effect_ddalys = mean_ddalys_int10 - mean_ddalys_sq; model=3; scenario=10; 
-data z_int10; set z_int10_1 z_int10_2 z_int10_3;  keep scenario model effect_ddalys;
-
-data z_int11_1; merge d_1_0 d_1_11 ; effect_ddalys = mean_ddalys_int11 - mean_ddalys_sq; model=1; scenario=11; 
-data z_int11_2; merge d_2_0 d_2_11 ; effect_ddalys = mean_ddalys_int11 - mean_ddalys_sq; model=2; scenario=11; 
-data z_int11_3; merge d_3_0 d_3_11 ; effect_ddalys = mean_ddalys_int11 - mean_ddalys_sq; model=3; scenario=11; 
-data z_int11; set z_int11_1 z_int11_2 z_int11_3;  keep scenario model effect_ddalys;
-
-data z_int12_1; merge d_1_0 d_1_12 ; effect_ddalys = mean_ddalys_int12 - mean_ddalys_sq; model=1; scenario=12; 
-data z_int12_2; merge d_2_0 d_2_12 ; effect_ddalys = mean_ddalys_int12 - mean_ddalys_sq; model=2; scenario=12; 
-data z_int12_3; merge d_3_0 d_3_12 ; effect_ddalys = mean_ddalys_int12 - mean_ddalys_sq; model=3; scenario=12; 
-data z_int12; set z_int12_1 z_int12_2 z_int12_3;  keep scenario model effect_ddalys;
-
-data z_int13_1; merge d_1_0 d_1_13 ; effect_ddalys = mean_ddalys_int13 - mean_ddalys_sq; model=1; scenario=13; 
-data z_int13_2; merge d_2_0 d_2_13 ; effect_ddalys = mean_ddalys_int13 - mean_ddalys_sq; model=2; scenario=13; 
-data z_int13_3; merge d_3_0 d_3_13 ; effect_ddalys = mean_ddalys_int13 - mean_ddalys_sq; model=3; scenario=13; 
-data z_int13; set z_int13_1 z_int13_2 z_int13_3;  keep scenario model effect_ddalys;
-
-data z_int14_1; merge d_1_0 d_1_14 ; effect_ddalys = mean_ddalys_int14 - mean_ddalys_sq; model=1; scenario=14; 
-data z_int14_2; merge d_2_0 d_2_14 ; effect_ddalys = mean_ddalys_int14 - mean_ddalys_sq; model=2; scenario=14; 
-data z_int14_3; merge d_3_0 d_3_14 ; effect_ddalys = mean_ddalys_int14 - mean_ddalys_sq; model=3; scenario=14; 
-data z_int14; set z_int14_1 z_int14_2 z_int14_3;  keep scenario model effect_ddalys;
-
-data z_int15_1; merge d_1_0 d_1_15 ; effect_ddalys = mean_ddalys_int15 - mean_ddalys_sq; model=1; scenario=15; 
-data z_int15_2; merge d_2_0 d_2_15 ; effect_ddalys = mean_ddalys_int15 - mean_ddalys_sq; model=2; scenario=15; 
-data z_int15_3; merge d_3_0 d_3_15 ; effect_ddalys = mean_ddalys_int15 - mean_ddalys_sq; model=3; scenario=15; 
-data z_int15; set z_int15_1 z_int15_2 z_int15_3;  keep scenario model effect_ddalys;
+proc transpose data = z  out= s_3_0; where model = 3 and scenario = 0 and year ge 2024; data d_3_0; set s_3_0; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_sq;
+proc transpose data = z  out= s_3_1; where model = 3 and scenario = 1 and year ge 2024; data d_3_1; set s_3_1; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int1;
+proc transpose data = z  out= s_3_2; where model = 3 and scenario = 2 and year ge 2024; data d_3_2; set s_3_2; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int2;
+proc transpose data = z  out= s_3_3; where model = 3 and scenario = 3 and year ge 2024; data d_3_3; set s_3_3; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int3;
+proc transpose data = z  out= s_3_4; where model = 3 and scenario = 4 and year ge 2024; data d_3_4; set s_3_4; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int4;
+proc transpose data = z  out= s_3_5; where model = 3 and scenario = 5 and year ge 2024; data d_3_5; set s_3_5; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int5;
+proc transpose data = z  out= s_3_6; where model = 3 and scenario = 6 and year ge 2024; data d_3_6; set s_3_6; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int6;
+proc transpose data = z  out= s_3_7; where model = 3 and scenario = 7 and year ge 2024; data d_3_7; set s_3_7; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int7;
+proc transpose data = z  out= s_3_8; where model = 3 and scenario = 8 and year ge 2024; data d_3_8; set s_3_6; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int8;
+proc transpose data = z  out= s_3_9; where model = 3 and scenario = 9 and year ge 2024; data d_3_9; set s_3_9; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int9;
+proc transpose data = z  out= s_3_10; where model = 3 and scenario = 10 and year ge 2024; data d_3_10; set s_3_10; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int10;
+proc transpose data = z  out= s_3_11; where model = 3 and scenario = 11 and year ge 2024; data d_3_11; set s_3_11; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int11;
+proc transpose data = z  out= s_3_12; where model = 3 and scenario = 12 and year ge 2024; data d_3_12; set s_3_12; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int12;
+proc transpose data = z  out= s_3_13; where model = 3 and scenario = 13 and year ge 2024; data d_3_13; set s_3_13; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int13;
+proc transpose data = z  out= s_3_14; where model = 3 and scenario = 14 and year ge 2024; data d_3_14; set s_3_14; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int14;
+proc transpose data = z  out= s_3_15; where model = 3 and scenario = 15 and year ge 2024; data d_3_15; set s_3_15; if _NAME_ = 'n_hiv_deaths_15pl' ; drop _NAME_; 
+mean_n_hiv_deaths_15pl_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_n_hiv_deaths_15pl_int15;
 
 
-data ddalys_averted; set z_int1 z_int2 z_int3 z_int4 z_int5 z_int6 z_int7
- z_int8 z_int9 z_int10 z_int11 z_int12 z_int13 z_int14 z_int15; 
+data z_effect_int1_1; merge d_1_0 d_1_1 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int1 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=1; 
+data z_effect_int1_2; merge d_2_0 d_2_1 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int1 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=1; 
+data z_effect_int1_3; merge d_3_0 d_3_1 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int1 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=1; 
+data z_effect_int1; set z_effect_int1_1 z_effect_int1_2 z_effect_int1_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int2_1; merge d_1_0 d_1_2 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int2 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=2; 
+data z_effect_int2_2; merge d_2_0 d_2_2 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int2 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=2; 
+data z_effect_int2_3; merge d_3_0 d_3_2 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int2 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=2; 
+data z_effect_int2; set z_effect_int2_1 z_effect_int2_2 z_effect_int2_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int3_1; merge d_1_0 d_1_3 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int3 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=3; 
+data z_effect_int3_2; merge d_2_0 d_2_3 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int3 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=3; 
+data z_effect_int3_3; merge d_3_0 d_3_3 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int3 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=3; 
+data z_effect_int3; set z_effect_int3_1 z_effect_int3_2 z_effect_int3_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int4_1; merge d_1_0 d_1_4 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int4 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=4; 
+data z_effect_int4_2; merge d_2_0 d_2_4 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int4 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=4; 
+data z_effect_int4_3; merge d_3_0 d_3_4 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int4 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=4; 
+data z_effect_int4; set z_effect_int4_1 z_effect_int4_2 z_effect_int4_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int5_1; merge d_1_0 d_1_5 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int5 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=5; 
+data z_effect_int5_2; merge d_2_0 d_2_5 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int5 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=5; 
+data z_effect_int5_3; merge d_3_0 d_3_5 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int5 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=5; 
+data z_effect_int5; set z_effect_int5_1 z_effect_int5_2 z_effect_int5_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int6_1; merge d_1_0 d_1_6 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int6 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=6; 
+data z_effect_int6_2; merge d_2_0 d_2_6 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int6 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=6; 
+data z_effect_int6_3; merge d_3_0 d_3_6 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int6 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=6; 
+data z_effect_int6; set z_effect_int6_1 z_effect_int6_2 z_effect_int6_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int7_1; merge d_1_0 d_1_7 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int7 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=7; 
+data z_effect_int7_2; merge d_2_0 d_2_7 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int7 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=7; 
+data z_effect_int7_3; merge d_3_0 d_3_7 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int7 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=7; 
+data z_effect_int7; set z_effect_int7_1 z_effect_int7_2 z_effect_int7_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int8_1; merge d_1_0 d_1_8 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int8 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=8; 
+data z_effect_int8_2; merge d_2_0 d_2_8 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int8 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=8; 
+data z_effect_int8_3; merge d_3_0 d_3_8 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int8 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=8; 
+data z_effect_int8; set z_effect_int8_1 z_effect_int8_2 z_effect_int8_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int9_1; merge d_1_0 d_1_9 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int9 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=9; 
+data z_effect_int9_2; merge d_2_0 d_2_9 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int9 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=9; 
+data z_effect_int9_3; merge d_3_0 d_3_9 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int9 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=9; 
+data z_effect_int9; set z_effect_int9_1 z_effect_int9_2 z_effect_int9_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int10_1; merge d_1_0 d_1_10 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int10 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=10; 
+data z_effect_int10_2; merge d_2_0 d_2_10 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int10 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=10; 
+data z_effect_int10_3; merge d_3_0 d_3_10 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int10 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=10; 
+data z_effect_int10; set z_effect_int10_1 z_effect_int10_2 z_effect_int10_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int11_1; merge d_1_0 d_1_11 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int11 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=11; 
+data z_effect_int11_2; merge d_2_0 d_2_11 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int11 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=11; 
+data z_effect_int11_3; merge d_3_0 d_3_11 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int11 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=11; 
+data z_effect_int11; set z_effect_int11_1 z_effect_int11_2 z_effect_int11_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int12_1; merge d_1_0 d_1_12 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int12 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=12; 
+data z_effect_int12_2; merge d_2_0 d_2_12 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int12 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=12; 
+data z_effect_int12_3; merge d_3_0 d_3_12 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int12 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=12; 
+data z_effect_int12; set z_effect_int12_1 z_effect_int12_2 z_effect_int12_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int13_1; merge d_1_0 d_1_13 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int13 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=13; 
+data z_effect_int13_2; merge d_2_0 d_2_13 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int13 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=13; 
+data z_effect_int13_3; merge d_3_0 d_3_13 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int13 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=13; 
+data z_effect_int13; set z_effect_int13_1 z_effect_int13_2 z_effect_int13_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int14_1; merge d_1_0 d_1_14 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int14 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=14; 
+data z_effect_int14_2; merge d_2_0 d_2_14 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int14 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=14; 
+data z_effect_int14_3; merge d_3_0 d_3_14 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int14 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=14; 
+data z_effect_int14; set z_effect_int14_1 z_effect_int14_2 z_effect_int14_3;  keep scenario model effect_n_hiv_deaths_15pl;
+
+data z_effect_int15_1; merge d_1_0 d_1_15 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int15 - mean_n_hiv_deaths_15pl_sq; model=1; scenario=15; 
+data z_effect_int15_2; merge d_2_0 d_2_15 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int15 - mean_n_hiv_deaths_15pl_sq; model=2; scenario=15; 
+data z_effect_int15_3; merge d_3_0 d_3_15 ; effect_n_hiv_deaths_15pl = mean_n_hiv_deaths_15pl_int15 - mean_n_hiv_deaths_15pl_sq; model=3; scenario=15; 
+data z_effect_int15; set z_effect_int15_1 z_effect_int15_2 z_effect_int15_3;  keep scenario model effect_n_hiv_deaths_15pl;
 
 
-data u; set all; 
-keep model scenario year dcost  ;
-
-proc transpose data = u  out= s_1_0; where model = 1 and scenario = 0 and year ge 2024; data d_1_0; set s_1_0; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_sq;
-proc transpose data = u  out= s_1_1; where model = 1 and scenario = 1 and year ge 2024; data d_1_1; set s_1_1; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int1;
-proc transpose data = u  out= s_1_2; where model = 1 and scenario = 2 and year ge 2024; data d_1_2; set s_1_2; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int2;
-proc transpose data = u  out= s_1_3; where model = 1 and scenario = 3 and year ge 2024; data d_1_3; set s_1_3; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int3;
-proc transpose data = u  out= s_1_4; where model = 1 and scenario = 4 and year ge 2024; data d_1_4; set s_1_4; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int4;
-proc transpose data = u  out= s_1_5; where model = 1 and scenario = 5 and year ge 2024; data d_1_5; set s_1_5; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int5;
-proc transpose data = u  out= s_1_6; where model = 1 and scenario = 6 and year ge 2024; data d_1_6; set s_1_6; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int6;
-proc transpose data = u  out= s_1_7; where model = 1 and scenario = 7 and year ge 2024; data d_1_7; set s_1_7; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int7;
-proc transpose data = u  out= s_1_8; where model = 1 and scenario = 8 and year ge 2024; data d_1_8; set s_1_6; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int8;
-proc transpose data = u  out= s_1_9; where model = 1 and scenario = 9 and year ge 2024; data d_1_9; set s_1_9; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int9;
-proc transpose data = u  out= s_1_10; where model = 1 and scenario = 10 and year ge 2024; data d_1_10; set s_1_10; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int10;
-proc transpose data = u  out= s_1_11; where model = 1 and scenario = 11 and year ge 2024; data d_1_11; set s_1_11; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int11;
-proc transpose data = u  out= s_1_12; where model = 1 and scenario = 12 and year ge 2024; data d_1_12; set s_1_12; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int12;
-proc transpose data = u  out= s_1_13; where model = 1 and scenario = 13 and year ge 2024; data d_1_13; set s_1_13; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int13;
-proc transpose data = u  out= s_1_14; where model = 1 and scenario = 14 and year ge 2024; data d_1_14; set s_1_14; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int14;
-proc transpose data = u  out= s_1_15; where model = 1 and scenario = 15 and year ge 2024; data d_1_15; set s_1_15; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int15;
-
-proc transpose data = u  out= s_2_0; where model = 2 and scenario = 0 and year ge 2024; data d_2_0; set s_2_0; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_sq;
-proc transpose data = u  out= s_2_1; where model = 2 and scenario = 1 and year ge 2024; data d_2_1; set s_2_1; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int1;
-proc transpose data = u  out= s_2_2; where model = 2 and scenario = 2 and year ge 2024; data d_2_2; set s_2_2; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int2;
-proc transpose data = u  out= s_2_3; where model = 2 and scenario = 3 and year ge 2024; data d_2_3; set s_2_3; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int3;
-proc transpose data = u  out= s_2_4; where model = 2 and scenario = 4 and year ge 2024; data d_2_4; set s_2_4; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int4;
-proc transpose data = u  out= s_2_5; where model = 2 and scenario = 5 and year ge 2024; data d_2_5; set s_2_5; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int5;
-proc transpose data = u  out= s_2_6; where model = 2 and scenario = 6 and year ge 2024; data d_2_6; set s_2_6; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int6;
-proc transpose data = u  out= s_2_7; where model = 2 and scenario = 7 and year ge 2024; data d_2_7; set s_2_7; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int7;
-proc transpose data = u  out= s_2_8; where model = 2 and scenario = 8 and year ge 2024; data d_2_8; set s_2_6; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int8;
-proc transpose data = u  out= s_2_9; where model = 2 and scenario = 9 and year ge 2024; data d_2_9; set s_2_9; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int9;
-proc transpose data = u  out= s_2_10; where model = 2 and scenario = 10 and year ge 2024; data d_2_10; set s_2_10; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int10;
-proc transpose data = u  out= s_2_11; where model = 2 and scenario = 11 and year ge 2024; data d_2_11; set s_2_11; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int11;
-proc transpose data = u  out= s_2_12; where model = 2 and scenario = 12 and year ge 2024; data d_2_12; set s_2_12; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int12;
-proc transpose data = u  out= s_2_13; where model = 2 and scenario = 13 and year ge 2024; data d_2_13; set s_2_13; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int13;
-proc transpose data = u  out= s_2_14; where model = 2 and scenario = 14 and year ge 2024; data d_2_14; set s_2_14; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int14;
-proc transpose data = u  out= s_2_15; where model = 2 and scenario = 15 and year ge 2024; data d_2_15; set s_2_15; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int15;
+data z_effect; set z_effect_int1 z_effect_int2 z_effect_int3 z_effect_int4 z_effect_int5 z_effect_int6 z_effect_int7
+ z_effect_int8 z_effect_int9 z_effect_int10 z_effect_int11 z_effect_int12 z_effect_int13 z_effect_int14 z_effect_int15; 
 
 
-proc transpose data = u  out= s_3_0; where model = 3 and scenario = 0 and year ge 2024; data d_3_0; set s_3_0; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_sq;
-proc transpose data = u  out= s_3_1; where model = 3 and scenario = 1 and year ge 2024; data d_3_1; set s_3_1; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int1;
-proc transpose data = u  out= s_3_2; where model = 3 and scenario = 2 and year ge 2024; data d_3_2; set s_3_2; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int2;
-proc transpose data = u  out= s_3_3; where model = 3 and scenario = 3 and year ge 2024; data d_3_3; set s_3_3; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int3;
-proc transpose data = u  out= s_3_4; where model = 3 and scenario = 4 and year ge 2024; data d_3_4; set s_3_4; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int4;
-proc transpose data = u  out= s_3_5; where model = 3 and scenario = 5 and year ge 2024; data d_3_5; set s_3_5; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int5;
-proc transpose data = u  out= s_3_6; where model = 3 and scenario = 6 and year ge 2024; data d_3_6; set s_3_6; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int6;
-proc transpose data = u  out= s_3_7; where model = 3 and scenario = 7 and year ge 2024; data d_3_7; set s_3_7; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int7;
-proc transpose data = u  out= s_3_8; where model = 3 and scenario = 8 and year ge 2024; data d_3_8; set s_3_6; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int8;
-proc transpose data = u  out= s_3_9; where model = 3 and scenario = 9 and year ge 2024; data d_3_9; set s_3_9; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int9;
-proc transpose data = u  out= s_3_10; where model = 3 and scenario = 10 and year ge 2024; data d_3_10; set s_3_10; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int10;
-proc transpose data = u  out= s_3_11; where model = 3 and scenario = 11 and year ge 2024; data d_3_11; set s_3_11; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int11;
-proc transpose data = u  out= s_3_12; where model = 3 and scenario = 12 and year ge 2024; data d_3_12; set s_3_12; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int12;
-proc transpose data = u  out= s_3_13; where model = 3 and scenario = 13 and year ge 2024; data d_3_13; set s_3_13; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int13;
-proc transpose data = u  out= s_3_14; where model = 3 and scenario = 14 and year ge 2024; data d_3_14; set s_3_14; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int14;
-proc transpose data = u  out= s_3_15; where model = 3 and scenario = 15 and year ge 2024; data d_3_15; set s_3_15; if _NAME_ = 'dcost' ; drop _NAME_; 
-mean_dcost_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_dcost_int15;
+if scenario = 1 then int_name = 'a Testing_community';
+if scenario = 2 then int_name = 'b Testing_risk_informed';
+if scenario = 3 then int_name = 'c Self_testing_general';
+if scenario = 4 then int_name = 'd Self_testing_risk_informed';
+if scenario = 5 then int_name = 'e AGYW_testing';
+if scenario = 6 then int_name = 'f AGYW_behaviour_change';
+if scenario = 7 then int_name = 'g VMMC';
+if scenario = 8 then int_name = 'h Oral_PrEP';
+if scenario = 9 then int_name = 'i Oral/Cab PrEP';
+if scenario = 10 then int_name = 'j Oral/Cab/VR_PrEP';
+if scenario = 11 then int_name = 'k Harm_reduction_PWID';
+if scenario = 12 then int_name = 'l ART_linkage_retention';
+if scenario = 13 then int_name = 'm ART_adherence';
+if scenario = 14 then int_name = 'n ART_coverage_PLW';
+if scenario = 15 then int_name = 'o AHD_package';
 
-
-
-data u_int1_1; merge d_1_0 d_1_1 ; effect_dcost = mean_dcost_int1 - mean_dcost_sq; model=1; scenario=1; 
-data u_int1_2; merge d_2_0 d_2_1 ; effect_dcost = mean_dcost_int1 - mean_dcost_sq; model=2; scenario=1; 
-data u_int1_3; merge d_3_0 d_3_1 ; effect_dcost = mean_dcost_int1 - mean_dcost_sq; model=3; scenario=1; 
-data u_int1; set u_int1_1 u_int1_2 u_int1_3;  keep scenario model effect_dcost;
-
-data u_int2_1; merge d_1_0 d_1_2 ; effect_dcost = mean_dcost_int2 - mean_dcost_sq; model=1; scenario=2; 
-data u_int2_2; merge d_2_0 d_2_2 ; effect_dcost = mean_dcost_int2 - mean_dcost_sq; model=2; scenario=2; 
-data u_int2_3; merge d_3_0 d_3_2 ; effect_dcost = mean_dcost_int2 - mean_dcost_sq; model=3; scenario=2; 
-data u_int2; set u_int2_1 u_int2_2 u_int2_3;  keep scenario model effect_dcost;
-
-data u_int3_1; merge d_1_0 d_1_3 ; effect_dcost = mean_dcost_int3 - mean_dcost_sq; model=1; scenario=3; 
-data u_int3_2; merge d_2_0 d_2_3 ; effect_dcost = mean_dcost_int3 - mean_dcost_sq; model=2; scenario=3; 
-data u_int3_3; merge d_3_0 d_3_3 ; effect_dcost = mean_dcost_int3 - mean_dcost_sq; model=3; scenario=3; 
-data u_int3; set u_int3_1 u_int3_2 u_int3_3;  keep scenario model effect_dcost;
-
-data u_int4_1; merge d_1_0 d_1_4 ; effect_dcost = mean_dcost_int4 - mean_dcost_sq; model=1; scenario=4; 
-data u_int4_2; merge d_2_0 d_2_4 ; effect_dcost = mean_dcost_int4 - mean_dcost_sq; model=2; scenario=4; 
-data u_int4_3; merge d_3_0 d_3_4 ; effect_dcost = mean_dcost_int4 - mean_dcost_sq; model=3; scenario=4; 
-data u_int4; set u_int4_1 u_int4_2 u_int4_3;  keep scenario model effect_dcost;
-
-data u_int5_1; merge d_1_0 d_1_5 ; effect_dcost = mean_dcost_int5 - mean_dcost_sq; model=1; scenario=5; 
-data u_int5_2; merge d_2_0 d_2_5 ; effect_dcost = mean_dcost_int5 - mean_dcost_sq; model=2; scenario=5; 
-data u_int5_3; merge d_3_0 d_3_5 ; effect_dcost = mean_dcost_int5 - mean_dcost_sq; model=3; scenario=5; 
-data u_int5; set u_int5_1 u_int5_2 u_int5_3;  keep scenario model effect_dcost;
-
-data u_int6_1; merge d_1_0 d_1_6 ; effect_dcost = mean_dcost_int6 - mean_dcost_sq; model=1; scenario=6; 
-data u_int6_2; merge d_2_0 d_2_6 ; effect_dcost = mean_dcost_int6 - mean_dcost_sq; model=2; scenario=6; 
-data u_int6_3; merge d_3_0 d_3_6 ; effect_dcost = mean_dcost_int6 - mean_dcost_sq; model=3; scenario=6; 
-data u_int6; set u_int6_1 u_int6_2 u_int6_3;  keep scenario model effect_dcost;
-
-data u_int7_1; merge d_1_0 d_1_7 ; effect_dcost = mean_dcost_int7 - mean_dcost_sq; model=1; scenario=7; 
-data u_int7_2; merge d_2_0 d_2_7 ; effect_dcost = mean_dcost_int7 - mean_dcost_sq; model=2; scenario=7; 
-data u_int7_3; merge d_3_0 d_3_7 ; effect_dcost = mean_dcost_int7 - mean_dcost_sq; model=3; scenario=7; 
-data u_int7; set u_int7_1 u_int7_2 u_int7_3;  keep scenario model effect_dcost;
-
-data u_int8_1; merge d_1_0 d_1_8 ; effect_dcost = mean_dcost_int8 - mean_dcost_sq; model=1; scenario=8; 
-data u_int8_2; merge d_2_0 d_2_8 ; effect_dcost = mean_dcost_int8 - mean_dcost_sq; model=2; scenario=8; 
-data u_int8_3; merge d_3_0 d_3_8 ; effect_dcost = mean_dcost_int8 - mean_dcost_sq; model=3; scenario=8; 
-data u_int8; set u_int8_1 u_int8_2 u_int8_3;  keep scenario model effect_dcost;
-
-data u_int9_1; merge d_1_0 d_1_9 ; effect_dcost = mean_dcost_int9 - mean_dcost_sq; model=1; scenario=9; 
-data u_int9_2; merge d_2_0 d_2_9 ; effect_dcost = mean_dcost_int9 - mean_dcost_sq; model=2; scenario=9; 
-data u_int9_3; merge d_3_0 d_3_9 ; effect_dcost = mean_dcost_int9 - mean_dcost_sq; model=3; scenario=9; 
-data u_int9; set u_int9_1 u_int9_2 u_int9_3;  keep scenario model effect_dcost;
-
-data u_int10_1; merge d_1_0 d_1_10 ; effect_dcost = mean_dcost_int10 - mean_dcost_sq; model=1; scenario=10; 
-data u_int10_2; merge d_2_0 d_2_10 ; effect_dcost = mean_dcost_int10 - mean_dcost_sq; model=2; scenario=10; 
-data u_int10_3; merge d_3_0 d_3_10 ; effect_dcost = mean_dcost_int10 - mean_dcost_sq; model=3; scenario=10; 
-data u_int10; set u_int10_1 u_int10_2 u_int10_3;  keep scenario model effect_dcost;
-
-data u_int11_1; merge d_1_0 d_1_11 ; effect_dcost = mean_dcost_int11 - mean_dcost_sq; model=1; scenario=11; 
-data u_int11_2; merge d_2_0 d_2_11 ; effect_dcost = mean_dcost_int11 - mean_dcost_sq; model=2; scenario=11; 
-data u_int11_3; merge d_3_0 d_3_11 ; effect_dcost = mean_dcost_int11 - mean_dcost_sq; model=3; scenario=11; 
-data u_int11; set u_int11_1 u_int11_2 u_int11_3;  keep scenario model effect_dcost;
-
-data u_int12_1; merge d_1_0 d_1_12 ; effect_dcost = mean_dcost_int12 - mean_dcost_sq; model=1; scenario=12; 
-data u_int12_2; merge d_2_0 d_2_12 ; effect_dcost = mean_dcost_int12 - mean_dcost_sq; model=2; scenario=12; 
-data u_int12_3; merge d_3_0 d_3_12 ; effect_dcost = mean_dcost_int12 - mean_dcost_sq; model=3; scenario=12; 
-data u_int12; set u_int12_1 u_int12_2 u_int12_3;  keep scenario model effect_dcost;
-
-data u_int13_1; merge d_1_0 d_1_13 ; effect_dcost = mean_dcost_int13 - mean_dcost_sq; model=1; scenario=13; 
-data u_int13_2; merge d_2_0 d_2_13 ; effect_dcost = mean_dcost_int13 - mean_dcost_sq; model=2; scenario=13; 
-data u_int13_3; merge d_3_0 d_3_13 ; effect_dcost = mean_dcost_int13 - mean_dcost_sq; model=3; scenario=13; 
-data u_int13; set u_int13_1 u_int13_2 u_int13_3;  keep scenario model effect_dcost;
-
-data u_int14_1; merge d_1_0 d_1_14 ; effect_dcost = mean_dcost_int14 - mean_dcost_sq; model=1; scenario=14; 
-data u_int14_2; merge d_2_0 d_2_14 ; effect_dcost = mean_dcost_int14 - mean_dcost_sq; model=2; scenario=14; 
-data u_int14_3; merge d_3_0 d_3_14 ; effect_dcost = mean_dcost_int14 - mean_dcost_sq; model=3; scenario=14; 
-data u_int14; set u_int14_1 u_int14_2 u_int14_3;  keep scenario model effect_dcost;
-
-data u_int15_1; merge d_1_0 d_1_15 ; effect_dcost = mean_dcost_int15 - mean_dcost_sq; model=1; scenario=15; 
-data u_int15_2; merge d_2_0 d_2_15 ; effect_dcost = mean_dcost_int15 - mean_dcost_sq; model=2; scenario=15; 
-data u_int15_3; merge d_3_0 d_3_15 ; effect_dcost = mean_dcost_int15 - mean_dcost_sq; model=3; scenario=15; 
-data u_int15; set u_int15_1 u_int15_2 u_int15_3;  keep scenario model effect_dcost;
-
-
-data dcost_incurred; set u_int1 u_int2 u_int3 u_int4 u_int5 u_int6 u_int7
- u_int8 u_int9 u_int10 u_int11 u_int12 u_int13 u_int14 u_int15; 
-
-
-
-data cost_ddaly; merge ddalys_averted dcost_incurred ;
-
-icer=.; if effect_dcost > 0 and effect_ddalys < 0 then icer = effect_dcost / (-effect_ddalys);
-if . < effect_dcost <= 0 and effect_ddalys < 0 then icer = 0; if effect_ddalys >= 0 then icer=1000000;
-
-icer = log10(icer+1);
-
-
-* plots of mean and range of icers across models by intervention ;
-
-data icer_s_1;  set cost_ddaly; if scenario=1; proc transpose out=s_1; data v_1; set s_1; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); 
-if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;
-intervention=1; keep lower upper mean intervention;
-data icer_s_2;  set cost_ddaly; if scenario=2; proc transpose out=s_2; data v_2; set s_2; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=2; keep mean lower upper intervention;
-data icer_s_3;  set cost_ddaly; if scenario=3; proc transpose out=s_3; data v_3; set s_3; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=3; keep mean lower upper intervention;
-data icer_s_4;  set cost_ddaly; if scenario=4; proc transpose out=s_4; data v_4; set s_4; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=4; keep mean lower upper intervention;
-data icer_s_5;  set cost_ddaly; if scenario=5; proc transpose out=s_5; data v_5; set s_5; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=5; keep mean lower upper intervention;
-data icer_s_6;  set cost_ddaly; if scenario=6; proc transpose out=s_6; data v_6; set s_6; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=6; keep mean lower upper intervention;
-data icer_s_7;  set cost_ddaly; if scenario=7; proc transpose out=s_7; data v_7; set s_7; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=7; keep mean lower upper intervention;
-data icer_s_8;  set cost_ddaly; if scenario=8; proc transpose out=s_8; data v_8; set s_8; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=8; keep mean lower upper intervention;
-data icer_s_9;  set cost_ddaly; if scenario=9; proc transpose out=s_9; data v_9; set s_9; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=9; keep mean lower upper intervention;
-data icer_s_10;  set cost_ddaly; if scenario=10; proc transpose out=s_10; data v_10; set s_10; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=10; keep mean lower upper intervention;
-data icer_s_11;  set cost_ddaly; if scenario=11; proc transpose out=s_11; data v_11; set s_11; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=11; keep mean lower upper intervention;
-data icer_s_12;  set cost_ddaly; if scenario=12; proc transpose out=s_12; data v_12; set s_12; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=12; keep mean lower upper intervention;
-data icer_s_13;  set cost_ddaly; if scenario=13; proc transpose out=s_13; data v_13; set s_13; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=13; keep mean lower upper intervention;
-data icer_s_14;  set cost_ddaly; if scenario=14; proc transpose out=s_14; data v_14; set s_14; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=14; keep mean lower upper intervention;
-data icer_s_15;  set cost_ddaly; if scenario=15; proc transpose out=s_15; data v_15; set s_15; if _NAME_ = 'icer'; 
-lower = min(col1, col2, col3);  upper = max(col1, col2, col3); if col1 ne . and col2 ne . and col3 ne . then mean = (col1+col2+col3)/3; if col1 = . and col2 ne . and col3 ne . then mean = (col2+col3)/2; 
-if col1 ne . and col2 = . and col3 ne . then mean = (col1+col3)/2; if col2 ne . and col2 ne . and col3 = . then mean = (col1+col2)/2;
-if col1 =. and col2=. then mean = col3; if col1 =. and col3=. then mean = col2; if col2 =. and col3=. then mean = col1;intervention=15; keep mean lower upper intervention;
-
-
-data all_icer;
-set v_1 v_2 v_3 v_4 v_5 v_6 v_7 v_8 v_9 v_10 v_11 v_12 v_13 v_14 v_15
-;
-
-if intervention = 1 then int_name = 'a Testing_community';
-if intervention = 2 then int_name = 'b Testing_risk_informed';
-if intervention = 3 then int_name = 'c Self_testing_general';
-if intervention = 4 then int_name = 'd Self_testing_risk_informed';
-if intervention = 5 then int_name = 'e AGYW_testing';
-if intervention = 6 then int_name = 'f AGYW_behaviour_change';
-if intervention = 7 then int_name = 'g VMMC';
-if intervention = 8 then int_name = 'h Oral_PrEP';
-if intervention = 9 then int_name = 'i Oral/Cab PrEP';
-if intervention = 10 then int_name = 'j Oral/Cab/VR_PrEP';
-if intervention = 11 then int_name = 'k Harm_reduction_PWID';
-if intervention = 12 then int_name = 'l ART_linkage_retention';
-if intervention = 13 then int_name = 'm ART_adherence';
-if intervention = 14 then int_name = 'n ART_coverage_PLW';
-if intervention = 15 then int_name = 'o AHD_package';
 
 ods html;
-proc sgplot data=all_icer nolegend;
-   title "ICER by Intervention (mean and range over models)";
-   highlow x=int_name low=lower high=upper / type=bar lineattrs=(color=black thickness=2);
-   scatter x=int_name y=mean / markerattrs=(symbol=circlefilled size=8 color=red);
-   xaxis label="Intervention" type=discrete ;   	
-   yaxis label="ICER (log10)" grid;
+
+data x; set z_effect; 
+title 'Reduction in annual number of HIV deaths in adults age 15+ by intervention';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_n_hiv_deaths_15pl
+          group=model groupdisplay=cluster
+     ;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  * xaxis label="Intervention" display=(noline noticks); 
+ * xaxis label="Intervention" type=discrete values=('1 Testing_community' '2 Testing_risk_informed' '3 Self_testing_general' '4 Self_testing_risk_informed'
+ '5 AGYW_testing' '6 AGYW_behaviour_change' '7 VMMC' '8 Oral_PrEP' '9 Oral/Cab PrEP' '10 Oral/Cab/VR_PrEP' '11 Harm_reduction_PWID' '12 ART_linkage_retention'
+ '13 ART_adherence' '14 ART_coverage_PLW' '15 AHD_package');   	yaxis label="Range of cpiaS (log10)";
+  yaxis label="Number" display=(noline) grid;
 run;
+
+
 ods html close;
-
-
-
 
 
 
@@ -3384,6 +3126,242 @@ proc print; run;
 
 
 
+
+
+/*
+
+* graph of effects of interventions on new infections age 15+ over 2024-2040 ;
+
+
+data z; set all; 
+keep model scenario year new_infection_15pl  ;
+
+proc transpose data = z  out= s_1_0; where model = 1 and scenario = 0 and year ge 2024; data d_1_0; set s_1_0; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_sq;
+proc transpose data = z  out= s_1_1; where model = 1 and scenario = 1 and year ge 2024; data d_1_1; set s_1_1; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int1;
+proc transpose data = z  out= s_1_2; where model = 1 and scenario = 2 and year ge 2024; data d_1_2; set s_1_2; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int2;
+proc transpose data = z  out= s_1_3; where model = 1 and scenario = 3 and year ge 2024; data d_1_3; set s_1_3; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int3;
+proc transpose data = z  out= s_1_4; where model = 1 and scenario = 4 and year ge 2024; data d_1_4; set s_1_4; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int4;
+proc transpose data = z  out= s_1_5; where model = 1 and scenario = 5 and year ge 2024; data d_1_5; set s_1_5; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int5;
+proc transpose data = z  out= s_1_6; where model = 1 and scenario = 6 and year ge 2024; data d_1_6; set s_1_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int6;
+proc transpose data = z  out= s_1_7; where model = 1 and scenario = 7 and year ge 2024; data d_1_7; set s_1_7; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int7;
+proc transpose data = z  out= s_1_8; where model = 1 and scenario = 8 and year ge 2024; data d_1_8; set s_1_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int8;
+proc transpose data = z  out= s_1_9; where model = 1 and scenario = 9 and year ge 2024; data d_1_9; set s_1_9; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int9;
+proc transpose data = z  out= s_1_10; where model = 1 and scenario = 10 and year ge 2024; data d_1_10; set s_1_10; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int10;
+proc transpose data = z  out= s_1_11; where model = 1 and scenario = 11 and year ge 2024; data d_1_11; set s_1_11; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int11;
+proc transpose data = z  out= s_1_12; where model = 1 and scenario = 12 and year ge 2024; data d_1_12; set s_1_12; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int12;
+proc transpose data = z  out= s_1_13; where model = 1 and scenario = 13 and year ge 2024; data d_1_13; set s_1_13; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int13;
+proc transpose data = z  out= s_1_14; where model = 1 and scenario = 14 and year ge 2024; data d_1_14; set s_1_14; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int14;
+proc transpose data = z  out= s_1_15; where model = 1 and scenario = 15 and year ge 2024; data d_1_15; set s_1_15; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int15;
+
+proc transpose data = z  out= s_2_0; where model = 2 and scenario = 0 and year ge 2024; data d_2_0; set s_2_0; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_sq;
+proc transpose data = z  out= s_2_1; where model = 2 and scenario = 1 and year ge 2024; data d_2_1; set s_2_1; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int1;
+proc transpose data = z  out= s_2_2; where model = 2 and scenario = 2 and year ge 2024; data d_2_2; set s_2_2; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int2;
+proc transpose data = z  out= s_2_3; where model = 2 and scenario = 3 and year ge 2024; data d_2_3; set s_2_3; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int3;
+proc transpose data = z  out= s_2_4; where model = 2 and scenario = 4 and year ge 2024; data d_2_4; set s_2_4; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int4;
+proc transpose data = z  out= s_2_5; where model = 2 and scenario = 5 and year ge 2024; data d_2_5; set s_2_5; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int5;
+proc transpose data = z  out= s_2_6; where model = 2 and scenario = 6 and year ge 2024; data d_2_6; set s_2_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int6;
+proc transpose data = z  out= s_2_7; where model = 2 and scenario = 7 and year ge 2024; data d_2_7; set s_2_7; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int7;
+proc transpose data = z  out= s_2_8; where model = 2 and scenario = 8 and year ge 2024; data d_2_8; set s_2_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int8;
+proc transpose data = z  out= s_2_9; where model = 2 and scenario = 9 and year ge 2024; data d_2_9; set s_2_9; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int9;
+proc transpose data = z  out= s_2_10; where model = 2 and scenario = 10 and year ge 2024; data d_2_10; set s_2_10; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int10;
+proc transpose data = z  out= s_2_11; where model = 2 and scenario = 11 and year ge 2024; data d_2_11; set s_2_11; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int11;
+proc transpose data = z  out= s_2_12; where model = 2 and scenario = 12 and year ge 2024; data d_2_12; set s_2_12; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int12;
+proc transpose data = z  out= s_2_13; where model = 2 and scenario = 13 and year ge 2024; data d_2_13; set s_2_13; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int13;
+proc transpose data = z  out= s_2_14; where model = 2 and scenario = 14 and year ge 2024; data d_2_14; set s_2_14; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int14;
+proc transpose data = z  out= s_2_15; where model = 2 and scenario = 15 and year ge 2024; data d_2_15; set s_2_15; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int15;
+
+
+proc transpose data = z  out= s_3_0; where model = 3 and scenario = 0 and year ge 2024; data d_3_0; set s_3_0; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_sq;
+proc transpose data = z  out= s_3_1; where model = 3 and scenario = 1 and year ge 2024; data d_3_1; set s_3_1; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int1;
+proc transpose data = z  out= s_3_2; where model = 3 and scenario = 2 and year ge 2024; data d_3_2; set s_3_2; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int2;
+proc transpose data = z  out= s_3_3; where model = 3 and scenario = 3 and year ge 2024; data d_3_3; set s_3_3; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int3;
+proc transpose data = z  out= s_3_4; where model = 3 and scenario = 4 and year ge 2024; data d_3_4; set s_3_4; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int4;
+proc transpose data = z  out= s_3_5; where model = 3 and scenario = 5 and year ge 2024; data d_3_5; set s_3_5; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int5;
+proc transpose data = z  out= s_3_6; where model = 3 and scenario = 6 and year ge 2024; data d_3_6; set s_3_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int6;
+proc transpose data = z  out= s_3_7; where model = 3 and scenario = 7 and year ge 2024; data d_3_7; set s_3_7; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int7;
+proc transpose data = z  out= s_3_8; where model = 3 and scenario = 8 and year ge 2024; data d_3_8; set s_3_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int8;
+proc transpose data = z  out= s_3_9; where model = 3 and scenario = 9 and year ge 2024; data d_3_9; set s_3_9; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int9;
+proc transpose data = z  out= s_3_10; where model = 3 and scenario = 10 and year ge 2024; data d_3_10; set s_3_10; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int10;
+proc transpose data = z  out= s_3_11; where model = 3 and scenario = 11 and year ge 2024; data d_3_11; set s_3_11; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int11;
+proc transpose data = z  out= s_3_12; where model = 3 and scenario = 12 and year ge 2024; data d_3_12; set s_3_12; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int12;
+proc transpose data = z  out= s_3_13; where model = 3 and scenario = 13 and year ge 2024; data d_3_13; set s_3_13; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int13;
+proc transpose data = z  out= s_3_14; where model = 3 and scenario = 14 and year ge 2024; data d_3_14; set s_3_14; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int14;
+proc transpose data = z  out= s_3_15; where model = 3 and scenario = 15 and year ge 2024; data d_3_15; set s_3_15; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
+mean_new_infection_15pl_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int15;
+
+
+data z_effect_int1_1; merge d_1_0 d_1_1 ; effect_new_infection_15pl = mean_new_infection_15pl_int1 - mean_new_infection_15pl_sq; model=1; scenario=1; 
+data z_effect_int1_2; merge d_2_0 d_2_1 ; effect_new_infection_15pl = mean_new_infection_15pl_int1 - mean_new_infection_15pl_sq; model=2; scenario=1; 
+data z_effect_int1_3; merge d_3_0 d_3_1 ; effect_new_infection_15pl = mean_new_infection_15pl_int1 - mean_new_infection_15pl_sq; model=3; scenario=1; 
+data z_effect_int1; set z_effect_int1_1 z_effect_int1_2 z_effect_int1_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int2_1; merge d_1_0 d_1_2 ; effect_new_infection_15pl = mean_new_infection_15pl_int2 - mean_new_infection_15pl_sq; model=1; scenario=2; 
+data z_effect_int2_2; merge d_2_0 d_2_2 ; effect_new_infection_15pl = mean_new_infection_15pl_int2 - mean_new_infection_15pl_sq; model=2; scenario=2; 
+data z_effect_int2_3; merge d_3_0 d_3_2 ; effect_new_infection_15pl = mean_new_infection_15pl_int2 - mean_new_infection_15pl_sq; model=3; scenario=2; 
+data z_effect_int2; set z_effect_int2_1 z_effect_int2_2 z_effect_int2_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int3_1; merge d_1_0 d_1_3 ; effect_new_infection_15pl = mean_new_infection_15pl_int3 - mean_new_infection_15pl_sq; model=1; scenario=3; 
+data z_effect_int3_2; merge d_2_0 d_2_3 ; effect_new_infection_15pl = mean_new_infection_15pl_int3 - mean_new_infection_15pl_sq; model=2; scenario=3; 
+data z_effect_int3_3; merge d_3_0 d_3_3 ; effect_new_infection_15pl = mean_new_infection_15pl_int3 - mean_new_infection_15pl_sq; model=3; scenario=3; 
+data z_effect_int3; set z_effect_int3_1 z_effect_int3_2 z_effect_int3_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int4_1; merge d_1_0 d_1_4 ; effect_new_infection_15pl = mean_new_infection_15pl_int4 - mean_new_infection_15pl_sq; model=1; scenario=4; 
+data z_effect_int4_2; merge d_2_0 d_2_4 ; effect_new_infection_15pl = mean_new_infection_15pl_int4 - mean_new_infection_15pl_sq; model=2; scenario=4; 
+data z_effect_int4_3; merge d_3_0 d_3_4 ; effect_new_infection_15pl = mean_new_infection_15pl_int4 - mean_new_infection_15pl_sq; model=3; scenario=4; 
+data z_effect_int4; set z_effect_int4_1 z_effect_int4_2 z_effect_int4_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int5_1; merge d_1_0 d_1_5 ; effect_new_infection_15pl = mean_new_infection_15pl_int5 - mean_new_infection_15pl_sq; model=1; scenario=5; 
+data z_effect_int5_2; merge d_2_0 d_2_5 ; effect_new_infection_15pl = mean_new_infection_15pl_int5 - mean_new_infection_15pl_sq; model=2; scenario=5; 
+data z_effect_int5_3; merge d_3_0 d_3_5 ; effect_new_infection_15pl = mean_new_infection_15pl_int5 - mean_new_infection_15pl_sq; model=3; scenario=5; 
+data z_effect_int5; set z_effect_int5_1 z_effect_int5_2 z_effect_int5_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int6_1; merge d_1_0 d_1_6 ; effect_new_infection_15pl = mean_new_infection_15pl_int6 - mean_new_infection_15pl_sq; model=1; scenario=6; 
+data z_effect_int6_2; merge d_2_0 d_2_6 ; effect_new_infection_15pl = mean_new_infection_15pl_int6 - mean_new_infection_15pl_sq; model=2; scenario=6; 
+data z_effect_int6_3; merge d_3_0 d_3_6 ; effect_new_infection_15pl = mean_new_infection_15pl_int6 - mean_new_infection_15pl_sq; model=3; scenario=6; 
+data z_effect_int6; set z_effect_int6_1 z_effect_int6_2 z_effect_int6_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int7_1; merge d_1_0 d_1_7 ; effect_new_infection_15pl = mean_new_infection_15pl_int7 - mean_new_infection_15pl_sq; model=1; scenario=7; 
+data z_effect_int7_2; merge d_2_0 d_2_7 ; effect_new_infection_15pl = mean_new_infection_15pl_int7 - mean_new_infection_15pl_sq; model=2; scenario=7; 
+data z_effect_int7_3; merge d_3_0 d_3_7 ; effect_new_infection_15pl = mean_new_infection_15pl_int7 - mean_new_infection_15pl_sq; model=3; scenario=7; 
+data z_effect_int7; set z_effect_int7_1 z_effect_int7_2 z_effect_int7_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int8_1; merge d_1_0 d_1_8 ; effect_new_infection_15pl = mean_new_infection_15pl_int8 - mean_new_infection_15pl_sq; model=1; scenario=8; 
+data z_effect_int8_2; merge d_2_0 d_2_8 ; effect_new_infection_15pl = mean_new_infection_15pl_int8 - mean_new_infection_15pl_sq; model=2; scenario=8; 
+data z_effect_int8_3; merge d_3_0 d_3_8 ; effect_new_infection_15pl = mean_new_infection_15pl_int8 - mean_new_infection_15pl_sq; model=3; scenario=8; 
+data z_effect_int8; set z_effect_int8_1 z_effect_int8_2 z_effect_int8_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int9_1; merge d_1_0 d_1_9 ; effect_new_infection_15pl = mean_new_infection_15pl_int9 - mean_new_infection_15pl_sq; model=1; scenario=9; 
+data z_effect_int9_2; merge d_2_0 d_2_9 ; effect_new_infection_15pl = mean_new_infection_15pl_int9 - mean_new_infection_15pl_sq; model=2; scenario=9; 
+data z_effect_int9_3; merge d_3_0 d_3_9 ; effect_new_infection_15pl = mean_new_infection_15pl_int9 - mean_new_infection_15pl_sq; model=3; scenario=9; 
+data z_effect_int9; set z_effect_int9_1 z_effect_int9_2 z_effect_int9_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int10_1; merge d_1_0 d_1_10 ; effect_new_infection_15pl = mean_new_infection_15pl_int10 - mean_new_infection_15pl_sq; model=1; scenario=10; 
+data z_effect_int10_2; merge d_2_0 d_2_10 ; effect_new_infection_15pl = mean_new_infection_15pl_int10 - mean_new_infection_15pl_sq; model=2; scenario=10; 
+data z_effect_int10_3; merge d_3_0 d_3_10 ; effect_new_infection_15pl = mean_new_infection_15pl_int10 - mean_new_infection_15pl_sq; model=3; scenario=10; 
+data z_effect_int10; set z_effect_int10_1 z_effect_int10_2 z_effect_int10_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int11_1; merge d_1_0 d_1_11 ; effect_new_infection_15pl = mean_new_infection_15pl_int11 - mean_new_infection_15pl_sq; model=1; scenario=11; 
+data z_effect_int11_2; merge d_2_0 d_2_11 ; effect_new_infection_15pl = mean_new_infection_15pl_int11 - mean_new_infection_15pl_sq; model=2; scenario=11; 
+data z_effect_int11_3; merge d_3_0 d_3_11 ; effect_new_infection_15pl = mean_new_infection_15pl_int11 - mean_new_infection_15pl_sq; model=3; scenario=11; 
+data z_effect_int11; set z_effect_int11_1 z_effect_int11_2 z_effect_int11_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int12_1; merge d_1_0 d_1_12 ; effect_new_infection_15pl = mean_new_infection_15pl_int12 - mean_new_infection_15pl_sq; model=1; scenario=12; 
+data z_effect_int12_2; merge d_2_0 d_2_12 ; effect_new_infection_15pl = mean_new_infection_15pl_int12 - mean_new_infection_15pl_sq; model=2; scenario=12; 
+data z_effect_int12_3; merge d_3_0 d_3_12 ; effect_new_infection_15pl = mean_new_infection_15pl_int12 - mean_new_infection_15pl_sq; model=3; scenario=12; 
+data z_effect_int12; set z_effect_int12_1 z_effect_int12_2 z_effect_int12_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int13_1; merge d_1_0 d_1_13 ; effect_new_infection_15pl = mean_new_infection_15pl_int13 - mean_new_infection_15pl_sq; model=1; scenario=13; 
+data z_effect_int13_2; merge d_2_0 d_2_13 ; effect_new_infection_15pl = mean_new_infection_15pl_int13 - mean_new_infection_15pl_sq; model=2; scenario=13; 
+data z_effect_int13_3; merge d_3_0 d_3_13 ; effect_new_infection_15pl = mean_new_infection_15pl_int13 - mean_new_infection_15pl_sq; model=3; scenario=13; 
+data z_effect_int13; set z_effect_int13_1 z_effect_int13_2 z_effect_int13_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int14_1; merge d_1_0 d_1_14 ; effect_new_infection_15pl = mean_new_infection_15pl_int14 - mean_new_infection_15pl_sq; model=1; scenario=14; 
+data z_effect_int14_2; merge d_2_0 d_2_14 ; effect_new_infection_15pl = mean_new_infection_15pl_int14 - mean_new_infection_15pl_sq; model=2; scenario=14; 
+data z_effect_int14_3; merge d_3_0 d_3_14 ; effect_new_infection_15pl = mean_new_infection_15pl_int14 - mean_new_infection_15pl_sq; model=3; scenario=14; 
+data z_effect_int14; set z_effect_int14_1 z_effect_int14_2 z_effect_int14_3;  keep scenario model effect_new_infection_15pl;
+
+data z_effect_int15_1; merge d_1_0 d_1_15 ; effect_new_infection_15pl = mean_new_infection_15pl_int15 - mean_new_infection_15pl_sq; model=1; scenario=15; 
+data z_effect_int15_2; merge d_2_0 d_2_15 ; effect_new_infection_15pl = mean_new_infection_15pl_int15 - mean_new_infection_15pl_sq; model=2; scenario=15; 
+data z_effect_int15_3; merge d_3_0 d_3_15 ; effect_new_infection_15pl = mean_new_infection_15pl_int15 - mean_new_infection_15pl_sq; model=3; scenario=15; 
+data z_effect_int15; set z_effect_int15_1 z_effect_int15_2 z_effect_int15_3;  keep scenario model effect_new_infection_15pl;
+
+
+data z_effect; set z_effect_int1 z_effect_int2 z_effect_int3 z_effect_int4 z_effect_int5 z_effect_int6 z_effect_int7
+ z_effect_int8 z_effect_int9 z_effect_int10 z_effect_int11 z_effect_int12 z_effect_int13 z_effect_int14 z_effect_int15; 
+
+
+if scenario = 1 then int_name = 'a Testing_community';
+if scenario = 2 then int_name = 'b Testing_risk_informed';
+if scenario = 3 then int_name = 'c Self_testing_general';
+if scenario = 4 then int_name = 'd Self_testing_risk_informed';
+if scenario = 5 then int_name = 'e AGYW_testing';
+if scenario = 6 then int_name = 'f AGYW_behaviour_change';
+if scenario = 7 then int_name = 'g VMMC';
+if scenario = 8 then int_name = 'h Oral_PrEP';
+if scenario = 9 then int_name = 'i Oral/Cab PrEP';
+if scenario = 10 then int_name = 'j Oral/Cab/VR_PrEP';
+if scenario = 11 then int_name = 'k Harm_reduction_PWID';
+if scenario = 12 then int_name = 'l ART_linkage_retention';
+if scenario = 13 then int_name = 'm ART_adherence';
+if scenario = 14 then int_name = 'n ART_coverage_PLW';
+if scenario = 15 then int_name = 'o AHD_package';
+
+
+ods html;
+
+data x; set z_effect; 
+title 'Reduction in annual number of new infections in adults age 15+ by intervention';
+proc sgplot data=x noborder nolegend;
+styleattrs datacolors=(black red green);
+  vbar int_name / response=effect_new_infection_15pl
+          group=model groupdisplay=cluster
+     ;
+  xaxis display=(nolabel noline noticks);
+  yaxis display=(noline) grid;
+  * xaxis label="Intervention" display=(noline noticks); 
+ * xaxis label="Intervention" type=discrete values=('1 Testing_community' '2 Testing_risk_informed' '3 Self_testing_general' '4 Self_testing_risk_informed'
+ '5 AGYW_testing' '6 AGYW_behaviour_change' '7 VMMC' '8 Oral_PrEP' '9 Oral/Cab PrEP' '10 Oral/Cab/VR_PrEP' '11 Harm_reduction_PWID' '12 ART_linkage_retention'
+ '13 ART_adherence' '14 ART_coverage_PLW' '15 AHD_package');   	yaxis label="Range of cpiaS (log10)";
+  yaxis label="Number" display=(noline) grid;
+run;
+
+
+ods html close;
+
+
+*/
+
+
+
+
+
 /*
 
 * mean ddalys averted and cost incurred for 2024-2040 - and icer by model and intervention - including mean and range;
@@ -3854,7 +3832,7 @@ if intervention = 15 then int_name = 'o AHD_package';
 
 ods html;
 proc sgplot data=all_icer nolegend;
-   title "ICER Ranges for Interventions";
+   title "ICER by Intervention (mean and range over models)";
    highlow x=int_name low=lower high=upper / type=bar lineattrs=(color=black thickness=2);
    scatter x=int_name y=mean / markerattrs=(symbol=circlefilled size=8 color=red);
    xaxis label="Intervention" type=discrete ;   	
@@ -3865,236 +3843,4 @@ ods html close;
 */
 
 
-
-
-
-/*
-
-* graph of effects of interventions on new infections age 15+ over 2024-2040 ;
-
-
-data z; set all; 
-keep model scenario year new_infection_15pl  ;
-
-proc transpose data = z  out= s_1_0; where model = 1 and scenario = 0 and year ge 2024; data d_1_0; set s_1_0; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_sq;
-proc transpose data = z  out= s_1_1; where model = 1 and scenario = 1 and year ge 2024; data d_1_1; set s_1_1; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int1;
-proc transpose data = z  out= s_1_2; where model = 1 and scenario = 2 and year ge 2024; data d_1_2; set s_1_2; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int2;
-proc transpose data = z  out= s_1_3; where model = 1 and scenario = 3 and year ge 2024; data d_1_3; set s_1_3; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int3;
-proc transpose data = z  out= s_1_4; where model = 1 and scenario = 4 and year ge 2024; data d_1_4; set s_1_4; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int4;
-proc transpose data = z  out= s_1_5; where model = 1 and scenario = 5 and year ge 2024; data d_1_5; set s_1_5; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int5;
-proc transpose data = z  out= s_1_6; where model = 1 and scenario = 6 and year ge 2024; data d_1_6; set s_1_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int6;
-proc transpose data = z  out= s_1_7; where model = 1 and scenario = 7 and year ge 2024; data d_1_7; set s_1_7; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int7;
-proc transpose data = z  out= s_1_8; where model = 1 and scenario = 8 and year ge 2024; data d_1_8; set s_1_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int8;
-proc transpose data = z  out= s_1_9; where model = 1 and scenario = 9 and year ge 2024; data d_1_9; set s_1_9; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int9;
-proc transpose data = z  out= s_1_10; where model = 1 and scenario = 10 and year ge 2024; data d_1_10; set s_1_10; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int10;
-proc transpose data = z  out= s_1_11; where model = 1 and scenario = 11 and year ge 2024; data d_1_11; set s_1_11; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int11;
-proc transpose data = z  out= s_1_12; where model = 1 and scenario = 12 and year ge 2024; data d_1_12; set s_1_12; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int12;
-proc transpose data = z  out= s_1_13; where model = 1 and scenario = 13 and year ge 2024; data d_1_13; set s_1_13; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int13;
-proc transpose data = z  out= s_1_14; where model = 1 and scenario = 14 and year ge 2024; data d_1_14; set s_1_14; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int14;
-proc transpose data = z  out= s_1_15; where model = 1 and scenario = 15 and year ge 2024; data d_1_15; set s_1_15; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int15;
-
-proc transpose data = z  out= s_2_0; where model = 2 and scenario = 0 and year ge 2024; data d_2_0; set s_2_0; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_sq;
-proc transpose data = z  out= s_2_1; where model = 2 and scenario = 1 and year ge 2024; data d_2_1; set s_2_1; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int1;
-proc transpose data = z  out= s_2_2; where model = 2 and scenario = 2 and year ge 2024; data d_2_2; set s_2_2; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int2;
-proc transpose data = z  out= s_2_3; where model = 2 and scenario = 3 and year ge 2024; data d_2_3; set s_2_3; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int3;
-proc transpose data = z  out= s_2_4; where model = 2 and scenario = 4 and year ge 2024; data d_2_4; set s_2_4; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int4;
-proc transpose data = z  out= s_2_5; where model = 2 and scenario = 5 and year ge 2024; data d_2_5; set s_2_5; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int5;
-proc transpose data = z  out= s_2_6; where model = 2 and scenario = 6 and year ge 2024; data d_2_6; set s_2_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int6;
-proc transpose data = z  out= s_2_7; where model = 2 and scenario = 7 and year ge 2024; data d_2_7; set s_2_7; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int7;
-proc transpose data = z  out= s_2_8; where model = 2 and scenario = 8 and year ge 2024; data d_2_8; set s_2_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int8;
-proc transpose data = z  out= s_2_9; where model = 2 and scenario = 9 and year ge 2024; data d_2_9; set s_2_9; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int9;
-proc transpose data = z  out= s_2_10; where model = 2 and scenario = 10 and year ge 2024; data d_2_10; set s_2_10; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int10;
-proc transpose data = z  out= s_2_11; where model = 2 and scenario = 11 and year ge 2024; data d_2_11; set s_2_11; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int11;
-proc transpose data = z  out= s_2_12; where model = 2 and scenario = 12 and year ge 2024; data d_2_12; set s_2_12; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int12;
-proc transpose data = z  out= s_2_13; where model = 2 and scenario = 13 and year ge 2024; data d_2_13; set s_2_13; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int13;
-proc transpose data = z  out= s_2_14; where model = 2 and scenario = 14 and year ge 2024; data d_2_14; set s_2_14; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int14;
-proc transpose data = z  out= s_2_15; where model = 2 and scenario = 15 and year ge 2024; data d_2_15; set s_2_15; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int15;
-
-
-proc transpose data = z  out= s_3_0; where model = 3 and scenario = 0 and year ge 2024; data d_3_0; set s_3_0; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_sq = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_sq;
-proc transpose data = z  out= s_3_1; where model = 3 and scenario = 1 and year ge 2024; data d_3_1; set s_3_1; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int1 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int1;
-proc transpose data = z  out= s_3_2; where model = 3 and scenario = 2 and year ge 2024; data d_3_2; set s_3_2; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int2 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int2;
-proc transpose data = z  out= s_3_3; where model = 3 and scenario = 3 and year ge 2024; data d_3_3; set s_3_3; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int3 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int3;
-proc transpose data = z  out= s_3_4; where model = 3 and scenario = 4 and year ge 2024; data d_3_4; set s_3_4; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int4 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int4;
-proc transpose data = z  out= s_3_5; where model = 3 and scenario = 5 and year ge 2024; data d_3_5; set s_3_5; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int5 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int5;
-proc transpose data = z  out= s_3_6; where model = 3 and scenario = 6 and year ge 2024; data d_3_6; set s_3_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int6 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int6;
-proc transpose data = z  out= s_3_7; where model = 3 and scenario = 7 and year ge 2024; data d_3_7; set s_3_7; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int7 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int7;
-proc transpose data = z  out= s_3_8; where model = 3 and scenario = 8 and year ge 2024; data d_3_8; set s_3_6; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int8 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int8;
-proc transpose data = z  out= s_3_9; where model = 3 and scenario = 9 and year ge 2024; data d_3_9; set s_3_9; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int9 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int9;
-proc transpose data = z  out= s_3_10; where model = 3 and scenario = 10 and year ge 2024; data d_3_10; set s_3_10; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int10 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int10;
-proc transpose data = z  out= s_3_11; where model = 3 and scenario = 11 and year ge 2024; data d_3_11; set s_3_11; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int11 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int11;
-proc transpose data = z  out= s_3_12; where model = 3 and scenario = 12 and year ge 2024; data d_3_12; set s_3_12; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int12 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int12;
-proc transpose data = z  out= s_3_13; where model = 3 and scenario = 13 and year ge 2024; data d_3_13; set s_3_13; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int13 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int13;
-proc transpose data = z  out= s_3_14; where model = 3 and scenario = 14 and year ge 2024; data d_3_14; set s_3_14; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int14 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int14;
-proc transpose data = z  out= s_3_15; where model = 3 and scenario = 15 and year ge 2024; data d_3_15; set s_3_15; if _NAME_ = 'new_infection_15pl' ; drop _NAME_; 
-mean_new_infection_15pl_int15 = (col1+col2+col3+col4+col5+col6+col7+col8+col9+col10+col11+col12+col13+col14+col15+col16+col17) / 17; keep model scenario mean_new_infection_15pl_int15;
-
-
-data z_effect_int1_1; merge d_1_0 d_1_1 ; effect_new_infection_15pl = mean_new_infection_15pl_int1 - mean_new_infection_15pl_sq; model=1; scenario=1; 
-data z_effect_int1_2; merge d_2_0 d_2_1 ; effect_new_infection_15pl = mean_new_infection_15pl_int1 - mean_new_infection_15pl_sq; model=2; scenario=1; 
-data z_effect_int1_3; merge d_3_0 d_3_1 ; effect_new_infection_15pl = mean_new_infection_15pl_int1 - mean_new_infection_15pl_sq; model=3; scenario=1; 
-data z_effect_int1; set z_effect_int1_1 z_effect_int1_2 z_effect_int1_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int2_1; merge d_1_0 d_1_2 ; effect_new_infection_15pl = mean_new_infection_15pl_int2 - mean_new_infection_15pl_sq; model=1; scenario=2; 
-data z_effect_int2_2; merge d_2_0 d_2_2 ; effect_new_infection_15pl = mean_new_infection_15pl_int2 - mean_new_infection_15pl_sq; model=2; scenario=2; 
-data z_effect_int2_3; merge d_3_0 d_3_2 ; effect_new_infection_15pl = mean_new_infection_15pl_int2 - mean_new_infection_15pl_sq; model=3; scenario=2; 
-data z_effect_int2; set z_effect_int2_1 z_effect_int2_2 z_effect_int2_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int3_1; merge d_1_0 d_1_3 ; effect_new_infection_15pl = mean_new_infection_15pl_int3 - mean_new_infection_15pl_sq; model=1; scenario=3; 
-data z_effect_int3_2; merge d_2_0 d_2_3 ; effect_new_infection_15pl = mean_new_infection_15pl_int3 - mean_new_infection_15pl_sq; model=2; scenario=3; 
-data z_effect_int3_3; merge d_3_0 d_3_3 ; effect_new_infection_15pl = mean_new_infection_15pl_int3 - mean_new_infection_15pl_sq; model=3; scenario=3; 
-data z_effect_int3; set z_effect_int3_1 z_effect_int3_2 z_effect_int3_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int4_1; merge d_1_0 d_1_4 ; effect_new_infection_15pl = mean_new_infection_15pl_int4 - mean_new_infection_15pl_sq; model=1; scenario=4; 
-data z_effect_int4_2; merge d_2_0 d_2_4 ; effect_new_infection_15pl = mean_new_infection_15pl_int4 - mean_new_infection_15pl_sq; model=2; scenario=4; 
-data z_effect_int4_3; merge d_3_0 d_3_4 ; effect_new_infection_15pl = mean_new_infection_15pl_int4 - mean_new_infection_15pl_sq; model=3; scenario=4; 
-data z_effect_int4; set z_effect_int4_1 z_effect_int4_2 z_effect_int4_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int5_1; merge d_1_0 d_1_5 ; effect_new_infection_15pl = mean_new_infection_15pl_int5 - mean_new_infection_15pl_sq; model=1; scenario=5; 
-data z_effect_int5_2; merge d_2_0 d_2_5 ; effect_new_infection_15pl = mean_new_infection_15pl_int5 - mean_new_infection_15pl_sq; model=2; scenario=5; 
-data z_effect_int5_3; merge d_3_0 d_3_5 ; effect_new_infection_15pl = mean_new_infection_15pl_int5 - mean_new_infection_15pl_sq; model=3; scenario=5; 
-data z_effect_int5; set z_effect_int5_1 z_effect_int5_2 z_effect_int5_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int6_1; merge d_1_0 d_1_6 ; effect_new_infection_15pl = mean_new_infection_15pl_int6 - mean_new_infection_15pl_sq; model=1; scenario=6; 
-data z_effect_int6_2; merge d_2_0 d_2_6 ; effect_new_infection_15pl = mean_new_infection_15pl_int6 - mean_new_infection_15pl_sq; model=2; scenario=6; 
-data z_effect_int6_3; merge d_3_0 d_3_6 ; effect_new_infection_15pl = mean_new_infection_15pl_int6 - mean_new_infection_15pl_sq; model=3; scenario=6; 
-data z_effect_int6; set z_effect_int6_1 z_effect_int6_2 z_effect_int6_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int7_1; merge d_1_0 d_1_7 ; effect_new_infection_15pl = mean_new_infection_15pl_int7 - mean_new_infection_15pl_sq; model=1; scenario=7; 
-data z_effect_int7_2; merge d_2_0 d_2_7 ; effect_new_infection_15pl = mean_new_infection_15pl_int7 - mean_new_infection_15pl_sq; model=2; scenario=7; 
-data z_effect_int7_3; merge d_3_0 d_3_7 ; effect_new_infection_15pl = mean_new_infection_15pl_int7 - mean_new_infection_15pl_sq; model=3; scenario=7; 
-data z_effect_int7; set z_effect_int7_1 z_effect_int7_2 z_effect_int7_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int8_1; merge d_1_0 d_1_8 ; effect_new_infection_15pl = mean_new_infection_15pl_int8 - mean_new_infection_15pl_sq; model=1; scenario=8; 
-data z_effect_int8_2; merge d_2_0 d_2_8 ; effect_new_infection_15pl = mean_new_infection_15pl_int8 - mean_new_infection_15pl_sq; model=2; scenario=8; 
-data z_effect_int8_3; merge d_3_0 d_3_8 ; effect_new_infection_15pl = mean_new_infection_15pl_int8 - mean_new_infection_15pl_sq; model=3; scenario=8; 
-data z_effect_int8; set z_effect_int8_1 z_effect_int8_2 z_effect_int8_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int9_1; merge d_1_0 d_1_9 ; effect_new_infection_15pl = mean_new_infection_15pl_int9 - mean_new_infection_15pl_sq; model=1; scenario=9; 
-data z_effect_int9_2; merge d_2_0 d_2_9 ; effect_new_infection_15pl = mean_new_infection_15pl_int9 - mean_new_infection_15pl_sq; model=2; scenario=9; 
-data z_effect_int9_3; merge d_3_0 d_3_9 ; effect_new_infection_15pl = mean_new_infection_15pl_int9 - mean_new_infection_15pl_sq; model=3; scenario=9; 
-data z_effect_int9; set z_effect_int9_1 z_effect_int9_2 z_effect_int9_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int10_1; merge d_1_0 d_1_10 ; effect_new_infection_15pl = mean_new_infection_15pl_int10 - mean_new_infection_15pl_sq; model=1; scenario=10; 
-data z_effect_int10_2; merge d_2_0 d_2_10 ; effect_new_infection_15pl = mean_new_infection_15pl_int10 - mean_new_infection_15pl_sq; model=2; scenario=10; 
-data z_effect_int10_3; merge d_3_0 d_3_10 ; effect_new_infection_15pl = mean_new_infection_15pl_int10 - mean_new_infection_15pl_sq; model=3; scenario=10; 
-data z_effect_int10; set z_effect_int10_1 z_effect_int10_2 z_effect_int10_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int11_1; merge d_1_0 d_1_11 ; effect_new_infection_15pl = mean_new_infection_15pl_int11 - mean_new_infection_15pl_sq; model=1; scenario=11; 
-data z_effect_int11_2; merge d_2_0 d_2_11 ; effect_new_infection_15pl = mean_new_infection_15pl_int11 - mean_new_infection_15pl_sq; model=2; scenario=11; 
-data z_effect_int11_3; merge d_3_0 d_3_11 ; effect_new_infection_15pl = mean_new_infection_15pl_int11 - mean_new_infection_15pl_sq; model=3; scenario=11; 
-data z_effect_int11; set z_effect_int11_1 z_effect_int11_2 z_effect_int11_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int12_1; merge d_1_0 d_1_12 ; effect_new_infection_15pl = mean_new_infection_15pl_int12 - mean_new_infection_15pl_sq; model=1; scenario=12; 
-data z_effect_int12_2; merge d_2_0 d_2_12 ; effect_new_infection_15pl = mean_new_infection_15pl_int12 - mean_new_infection_15pl_sq; model=2; scenario=12; 
-data z_effect_int12_3; merge d_3_0 d_3_12 ; effect_new_infection_15pl = mean_new_infection_15pl_int12 - mean_new_infection_15pl_sq; model=3; scenario=12; 
-data z_effect_int12; set z_effect_int12_1 z_effect_int12_2 z_effect_int12_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int13_1; merge d_1_0 d_1_13 ; effect_new_infection_15pl = mean_new_infection_15pl_int13 - mean_new_infection_15pl_sq; model=1; scenario=13; 
-data z_effect_int13_2; merge d_2_0 d_2_13 ; effect_new_infection_15pl = mean_new_infection_15pl_int13 - mean_new_infection_15pl_sq; model=2; scenario=13; 
-data z_effect_int13_3; merge d_3_0 d_3_13 ; effect_new_infection_15pl = mean_new_infection_15pl_int13 - mean_new_infection_15pl_sq; model=3; scenario=13; 
-data z_effect_int13; set z_effect_int13_1 z_effect_int13_2 z_effect_int13_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int14_1; merge d_1_0 d_1_14 ; effect_new_infection_15pl = mean_new_infection_15pl_int14 - mean_new_infection_15pl_sq; model=1; scenario=14; 
-data z_effect_int14_2; merge d_2_0 d_2_14 ; effect_new_infection_15pl = mean_new_infection_15pl_int14 - mean_new_infection_15pl_sq; model=2; scenario=14; 
-data z_effect_int14_3; merge d_3_0 d_3_14 ; effect_new_infection_15pl = mean_new_infection_15pl_int14 - mean_new_infection_15pl_sq; model=3; scenario=14; 
-data z_effect_int14; set z_effect_int14_1 z_effect_int14_2 z_effect_int14_3;  keep scenario model effect_new_infection_15pl;
-
-data z_effect_int15_1; merge d_1_0 d_1_15 ; effect_new_infection_15pl = mean_new_infection_15pl_int15 - mean_new_infection_15pl_sq; model=1; scenario=15; 
-data z_effect_int15_2; merge d_2_0 d_2_15 ; effect_new_infection_15pl = mean_new_infection_15pl_int15 - mean_new_infection_15pl_sq; model=2; scenario=15; 
-data z_effect_int15_3; merge d_3_0 d_3_15 ; effect_new_infection_15pl = mean_new_infection_15pl_int15 - mean_new_infection_15pl_sq; model=3; scenario=15; 
-data z_effect_int15; set z_effect_int15_1 z_effect_int15_2 z_effect_int15_3;  keep scenario model effect_new_infection_15pl;
-
-
-data z_effect; set z_effect_int1 z_effect_int2 z_effect_int3 z_effect_int4 z_effect_int5 z_effect_int6 z_effect_int7
- z_effect_int8 z_effect_int9 z_effect_int10 z_effect_int11 z_effect_int12 z_effect_int13 z_effect_int14 z_effect_int15; 
-
-
-if scenario = 1 then int_name = 'a Testing_community';
-if scenario = 2 then int_name = 'b Testing_risk_informed';
-if scenario = 3 then int_name = 'c Self_testing_general';
-if scenario = 4 then int_name = 'd Self_testing_risk_informed';
-if scenario = 5 then int_name = 'e AGYW_testing';
-if scenario = 6 then int_name = 'f AGYW_behaviour_change';
-if scenario = 7 then int_name = 'g VMMC';
-if scenario = 8 then int_name = 'h Oral_PrEP';
-if scenario = 9 then int_name = 'i Oral/Cab PrEP';
-if scenario = 10 then int_name = 'j Oral/Cab/VR_PrEP';
-if scenario = 11 then int_name = 'k Harm_reduction_PWID';
-if scenario = 12 then int_name = 'l ART_linkage_retention';
-if scenario = 13 then int_name = 'm ART_adherence';
-if scenario = 14 then int_name = 'n ART_coverage_PLW';
-if scenario = 15 then int_name = 'o AHD_package';
-
-
-ods html;
-
-data x; set z_effect; 
-title 'Reduction in annual number of new infections in adults age 15+ by intervention';
-proc sgplot data=x noborder nolegend;
-styleattrs datacolors=(black red green);
-  vbar int_name / response=effect_new_infection_15pl
-          group=model groupdisplay=cluster
-     ;
-  xaxis display=(nolabel noline noticks);
-  yaxis display=(noline) grid;
-  * xaxis label="Intervention" display=(noline noticks); 
- * xaxis label="Intervention" type=discrete values=('1 Testing_community' '2 Testing_risk_informed' '3 Self_testing_general' '4 Self_testing_risk_informed'
- '5 AGYW_testing' '6 AGYW_behaviour_change' '7 VMMC' '8 Oral_PrEP' '9 Oral/Cab PrEP' '10 Oral/Cab/VR_PrEP' '11 Harm_reduction_PWID' '12 ART_linkage_retention'
- '13 ART_adherence' '14 ART_coverage_PLW' '15 AHD_package');   	yaxis label="Range of cpiaS (log10)";
-  yaxis label="Number" display=(noline) grid;
-run;
-
-
-ods html close;
-
-
-*/
 
