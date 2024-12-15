@@ -3,18 +3,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ac_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ad_sa_1_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ac_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ad_sa_1_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_laa_ac;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_laa_ad_sa_1;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -22,7 +22,7 @@ run;
 
 
 
-proc sort data=b.k_laa_ac; 
+proc sort data=b.k_laa_ad_sa_1; 
 by run cald option;
 run;
 
@@ -31,7 +31,7 @@ run;
 data sf;
 
 
-set b.k_laa_ac ;
+set b.k_laa_ad_sa_1 ;
 
 
 if cald=2024   ;
@@ -50,7 +50,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_laa_ac sf;
+merge b.k_laa_ad_sa_1 sf;
 by run ;
 
 
@@ -1404,9 +1404,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_laa_ac_r_01; set y;  
+data    b.l_laa_ad_sa_1_r_01; set y;  
 
-data y ; set b.l_laa_ac_r_01; 
+data y ; set b.l_laa_ad_sa_1_r_01; 
 
 
   options nomprint;
@@ -1871,7 +1871,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_ac_r_01  ; 
+  data  b.w_laa_ad_sa_1_r_01  ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1884,11 +1884,11 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ac_out\";
+* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ad_sa_1_out\";
 
-data f; set b.w_laa_ac_r_01;
+data f; set b.w_laa_ad_sa_1_r_01;
 
-* if . < run <=  826903121 ; * laa_ac ;
+* if . < run <=  826903121 ; * laa_ad_sa_1 ;
 
 
 if prevalence1549w_24 < 0.35;
