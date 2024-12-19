@@ -660,7 +660,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0   	0   	0.20	0.20	0.20	0.20	0.20) ; * tld_switch_an;  *note that this is moderated a lot with vl alert;
+								0   	0.20	0.20	0.20	0.20	0.20	0   ) ; * tld_switch_an;  *note that this is moderated a lot with vl alert;
 
 * prop_v_alert_perm;		%sample_uniform(prop_v_alert_perm, 0.3 0.5 0.7 0.9);
 
@@ -675,8 +675,8 @@ newp_seed = 7;
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
-* rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.02 0.05, 
-														0.10 0.30 0.30 0.25 0.05);  * tld_switch;
+* rate_int_choice;  		%sample(rate_int_choice, 	0.0010 0.0040 0.0080 0.012 , 
+														0.30 0.30 0.30 0.10 );  * tld_switch;
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac,  0.7 0.9);  * tld_switch;
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);

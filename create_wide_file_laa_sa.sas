@@ -1888,20 +1888,6 @@ proc sort; by run;run;
 
 data f; set b.w_laa_ad_sa_1_r_01;
 
-* if . < run <=  826903121 ; * laa_ad_sa_1 ;
-
-
-if prevalence1549w_24 < 0.35;
-if prevalence1549m_24 < 0.25;
-if incidence1549m_24 < 1.5;
-if incidence1549w_24 < 2.5;
-if p_diag_m_24 > 0.7;
-if p_diag_w_24 > 0.75;
-if p_onart_diag_m_24 > 0.73;
-if p_onart_diag_w_24 > 0.8;
-if p_onart_vl1000_m_24 > 0.7;
-if p_onart_vl1000_w_24 > 0.7;
-
 
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
 
@@ -2487,7 +2473,7 @@ lowest_netdaly
 * where p_started_lencab_offart_10y_g = 4;
 * where p_len_10y_g = 5;
 
-  where p_diag_vl1000_24_g = 4;
+  where p_diag_vl1000_24_g = 3;
 * where p_diag_24_g = 4;
 * where p_onart_vl1000_24_g = 5; 
 * where p_onart_diag_24_g = 4;
