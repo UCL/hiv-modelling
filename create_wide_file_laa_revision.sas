@@ -2492,7 +2492,7 @@ lowest_netdaly
 * where p_started_lencab_offart_10y_g = 4;
 * where p_len_10y_g = 5;
 
-* where p_diag_vl1000_24_g = 4;
+  where p_diag_vl1000_24_g = 5;
 * where p_diag_24_g = 4;
 * where p_onart_vl1000_24_g = 5; 
 * where p_onart_diag_24_g = 4;
