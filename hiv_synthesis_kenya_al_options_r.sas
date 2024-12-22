@@ -2398,13 +2398,13 @@ if caldate_never_dot >= &year_interv then do;
 	if option = 101 then do;
 		* 1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	
 		    Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 1  ;
 		high_rate_testing_set_in_opts = 1; 
 	end;
 
 	if option = 102 then do;
 		* 2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
-		test_rate_set_in_opts = 1; incr_test_year_i = 1.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 1  ;
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 	end;
 
@@ -2417,9 +2417,9 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option  = 104 then do;
 		* 4 Recent sexual risk-informed self-testing (index testing) for adults	Proportion of PLHIV aware of HIV status = 100%;
-		prob_self_test_hard_reach = 0.6;
-		eff_self_test_targeting = 15; self_test_targeting = 15;
-		rate_self_test = 0.05 ;
+		prob_self_test_hard_reach = 0.5;
+		eff_self_test_targeting = 10; self_test_targeting = 10;
+		rate_self_test = 0.03 ;
 	end;
 
 	if option = 105 then do;
@@ -2570,12 +2570,12 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 200 then do;
 
-		test_rate_set_in_opts = 1; incr_test_year_i = 2.5;
+		test_rate_set_in_opts = 1; incr_test_year_i = 1  ;
 		high_rate_testing_set_in_opts = 1; 
 		test_targeting_set_in_opts = 1; incr_test_targeting_year_i = 1;
 		prob_self_test_hard_reach = 0.5;
-		eff_self_test_targeting = 15; self_test_targeting = 15;
-		rate_self_test = 0.05;
+		eff_self_test_targeting = 10; self_test_targeting = 10;
+		rate_self_test = 0.03 ;
 		test_rate_agyw_set_in_opts = 1; test_rate_set_in_opts = 1;  incr_test_agyw_h_year_i = 1;
 		decr_hard_r_agyw_set_in_opts = 1; decr_hard_reach_agyw_h_year_i = 1;
 		condom_incr_set_in_opts = 0;
@@ -3575,7 +3575,7 @@ if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 5 then do;
 end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_h_year_i = 2.5 then do;
-	prob_circ = 0.05;
+	prob_circ = 0.02;
 end;
 
 
@@ -4662,7 +4662,7 @@ end;
 * Reducing newp by 25% if condom incr =1;
 if caldate{t} >= &year_interv and condom_incr_h_year_i = 1.5 then do;
 	u=rand('uniform'); if u < 0.50 then do;newp=newp/1.2;newp=round(newp,1);end;
-	y=rand('uniform'); if newp=1 and y < 0.1 then newp=0;
+	y=rand('uniform'); if newp=1 and y < 0.05 then newp=0;
 end;
 
 
