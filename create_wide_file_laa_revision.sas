@@ -2028,6 +2028,8 @@ p_diag_vlg1000_24    = 1 - p_diag_vl1000_24   ;
 p_diag_vl1000_m_24 = p_onart_diag_m_24 * p_onart_vl1000_m_24;
 p_diag_vl1000_w_24 = p_onart_diag_w_24 * p_onart_vl1000_w_24;
 
+d_p_diag_vl1000_10y_2_1 = p_diag_vl1000_10y_2 - p_diag_vl1000_10y_1; 
+
 if p_diag_vlg1000_24 < 0.1 then p_diag_vlg1000_24_g=1;
 if 0.1 <= p_diag_vlg1000_24 < 0.15 then p_diag_vlg1000_24_g=2;
 if 0.15 <= p_diag_vlg1000_24 < 0.20 then p_diag_vlg1000_24_g=3;
@@ -2061,6 +2063,7 @@ p_diag_vlg1000_10y_1 = 1 - p_diag_vl1000_10y_1;
 p_diag_vlg1000_10y_2 = 1 - p_diag_vl1000_10y_2;
 
 relative_prev_diag_vl1000_2_1 = p_diag_vl1000_10y_2 / p_diag_vl1000_10y_1;
+relative_prev_diag_vlg1000_2_1 = p_diag_vlg1000_10y_2 / p_diag_vlg1000_10y_1;
 
 r_prevalence_vg1000_10y_2_1 = prevalence_vg1000_10y_2 / prevalence_vg1000_10y_1 ;
 
@@ -2349,6 +2352,7 @@ p_started_lencab_vmgt1000_10y_1 p_started_lencab_vmgt1000_10y_2
 p_started_lencab_offart_10y_1 p_started_lencab_offart_10y_2 
 p_started_lencab_vls_10y_1	p_started_lencab_vls_10y_2
 p_onart_diag_10y_1 p_onart_diag_10y_2
+relative_prev_diag_vlg1000_2_1
 p_vl1000_10y_1 p_vl1000_10y_2 
 p_len_1524_10y_1 p_len_1524_10y_2
 p_cab_1524_10y_1 p_cab_1524_10y_2
@@ -2360,7 +2364,7 @@ p_vl1000_m_1524_10y_1 p_vl1000_m_1524_10y_2
 p_vl1000_w_1524_10y_1  p_vl1000_w_1524_10y_2  
 p_onart_vl1000_w_1524_10y_1 p_onart_vl1000_w_1524_10y_2 
 p_onart_vl1000_m_1524_10y_1 p_onart_vl1000_m_1524_10y_2
-p_diag_vl1000_10y_1 p_diag_vl1000_10y_2 
+d_p_diag_vl1000_10y_2_1 p_diag_vlg1000_10y_1 p_diag_vlg1000_10y_2 
 incidence1549_10y_1 incidence1549_10y_2 
 incidence1549w_10y_1 incidence1549w_10y_2 
 incidence1549m_10y_1 incidence1549m_10y_2 
@@ -2388,6 +2392,7 @@ d_p_r_len_1524_10y_2_1
 d_p_r_cab_1524_10y_2_1
 d_mtct_prop_10y_2_1 
 ;
+* where p_diag_vl1000_24 < 0.9;
 run;
 ods html close;
 
