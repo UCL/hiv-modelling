@@ -804,7 +804,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ; * lapr;
 
-* date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 2027 2030 2100); * Introduction of injectable cab PrEP ;
+* date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 3000          ); * Introduction of injectable cab PrEP ; * consider len as the only la prep option;
 * date_prep_len_intro;			date_prep_len_intro=3000;		* Introduction of injectable len PrEP ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;			* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;			* Assume 5 years to scale up injectable len prep;
@@ -955,6 +955,11 @@ end;
 									* how much does the appeal (preference) of oral prep increase with pop_wide_tld, due to the easy access ? 
 										(this is indicated by inc_oral_prep_pref_pop_wide_tld)
 									   this could diminish the use of prep_inj which is a negative as prep_inj has higher effectiveness ; 
+
+* inc_oral_prep_pref_pop_wide_tld;		%sample(inc_oral_prep_pref_pop_wide_tld, 0.2 0.5 0.8, 0.33 0.34 0.33);	
+																												   
+inc_oral_prep_pref_pop_wide_tld = 0; * x3;
+																											   
 
 
 * COVID-19 ;
@@ -2180,23 +2185,46 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-if option=1 and registd = 1 then do;
-	lencab_available=1; * this affects rate of return to care;
-	if p_len ne 1 and p_cab ne 1 then do; * so len cab never taken as treatment;  
-		s = rand('uniform');
-		if vm > 3 and caldate{t} - date_v_alert >= 0.25 and (caldate{t} - date_lencab_last_offered > 1 or date_lencab_last_offered =.) then do;
-			date_lencab_last_offered=caldate{t}; if s < lencab_uptake_vlg1000 then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
-		end;
-		if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
+	if option=1 then do;
+		date_prep_len_intro=2026.25;
 	end;
-	h = rand('uniform');  if c_isr=1 then h = h * 0.9;
-	if o_len=1 and o_cab=1 and h < rate_lencab_to_tld then do; reg_option=125; reg_option_set_in_options = .; end; 
+
+	if option=2 and registd = 1 then do;
+		lencab_available=1; * this affects rate of return to care;
+		if p_len ne 1 and p_cab ne 1 then do; * so len cab never taken as treatment;  
+			s = rand('uniform');
+			if vm > 3 and caldate{t} - date_v_alert >= 0.25 and (caldate{t} - date_lencab_last_offered > 1 or date_lencab_last_offered =.) then do;
+				date_lencab_last_offered=caldate{t}; if s < lencab_uptake_vlg1000 then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
+			end;
+			if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
+		end;
+		h = rand('uniform');  if c_isr=1 then h = h * 0.9;
+		if o_len=1 and o_cab=1 and h < rate_lencab_to_tld then do; reg_option=125; reg_option_set_in_options = .; end; 
+	end;
+
+	if option=3 then do;
+		pop_wide_tld=1;
+	end;
+
+	if option=4 then do;
+		date_prep_len_intro=2026.25;
+	
+		if registd = 1 then do;
+			lencab_available=1; 
+			if p_len ne 1 and p_cab ne 1 then do; 
+				s = rand('uniform');
+				if vm > 3 and caldate{t} - date_v_alert >= 0.25 and (caldate{t} - date_lencab_last_offered > 1 or date_lencab_last_offered =.) then do;
+				date_lencab_last_offered=caldate{t}; if s < lencab_uptake_vlg1000 then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
+				end;
+				if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
+			end;
+			h = rand('uniform');  if c_isr=1 then h = h * 0.9;
+			if o_len=1 and o_cab=1 and h < rate_lencab_to_tld then do; reg_option=125; reg_option_set_in_options = .; end; 
+		end;
+
+		pop_wide_tld=1;
+
 end;
-
-
-
-
-
 
 
 end;
@@ -12425,7 +12453,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 		if tb=1 then do;
 			date_most_recent_tb = caldate{t};
 			tb_prob_diag_l = tb_base_prob_diag_l; 
-			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_l = tb_prob_diag_l * effect_visit_prob_diag_l ;
+			if visit=1 and onartvisit0 ne 1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_l = tb_prob_diag_l * effect_visit_prob_diag_l ;
 			if tblam_measured_this_per = 1 then tb_prob_diag_l = tb_prob_diag_l * tblam_eff_prob_diag_l ;
 			tb_prob_diag_e = 1 - tb_prob_diag_l ;
 			ii=rand('uniform'); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  
