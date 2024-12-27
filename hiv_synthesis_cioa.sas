@@ -22014,6 +22014,8 @@ data r1 ; set a ;
 * 3) Option 0 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
+/*
+
 * 4) Option 0 - repetition 2;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,0);
@@ -22023,8 +22025,12 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
+*/
+
 * 3) Option 1 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,1);			  
+
+/*
 
 * 4) Option 1 - repetition 2;
 													  
@@ -22036,6 +22042,17 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
+*/
+
+
+*  Option 2;
+%run_update_r1(&year_interv,&year_interv+50,2);			  
+
+*  Option 3;
+%run_update_r1(&year_interv,&year_interv+50,3);			  
+
+*  Option 4;
+%run_update_r1(&year_interv,&year_interv+50,4);			  
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;

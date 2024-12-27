@@ -1,6 +1,25 @@
 
 
 
+
+* add cost fsw program ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 * options user="/folders/myfolders/";
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ad_out\";
