@@ -1434,9 +1434,9 @@ proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where
 * note: it is critical that this starts at year_interv;
 
 
-proc means noprint data=e; var &v; output out=y_3y mean= &v._3y; by run option ; where 2027.0 <= cald < 2030.00;   
-proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2027.0 <= cald < 2037.00;   
-proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2027.0 <= cald < 2077.00;   
+proc means noprint data=e; var &v; output out=y_3y mean= &v._3y; by run option ; where 2026.0 <= cald < 2029.00;   
+proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2026.0 <= cald < 2036.00;   
+proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2026.0 <= cald < 2076.00;   
 																				   
 proc sort data=y_3y    ; by run; proc transpose data=y_3y  out=t_3y  prefix=&v._3y_  ; var &v._3y    ; by run; 																																																						
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
