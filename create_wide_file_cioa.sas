@@ -2009,6 +2009,13 @@ dcost_50y_4 = dart_cost_y_50y_4 + dadc_cost_50y_4 + dcd4_cost_50y_4 + dvl_cost_5
 					/* + dtb_lam_cost_50y_4 + dtb_proph_cost_50y_4 + dcrag_cost_50y_4 + dcrypm_proph_cost_50y_4 
 					+ dsbi_proph_cost_50y_4 */ ;
 
+dcost_50y_5 = dart_cost_y_50y_5 + dadc_cost_50y_5 + dcd4_cost_50y_5 + dvl_cost_50y_5 + dvis_cost_50y_5 + dnon_tb_who3_cost_50y_5 + 
+					dcot_cost_50y_5 + dtb_cost_50y_5 + dres_cost_50y_5 + dtest_cost_50y_5 + d_t_adh_int_cost_50y_5 + dswitchline_cost_50y_5 + 
+					dcost_circ_50y_5 + dcost_condom_dn_50y_5 + dcost_child_hiv_50y_5 + dcost_non_aids_pre_death_50y_5 + dcost_drug_level_test_50y_5
+					+ dcost_prep_visit_50y_5 + dcost_prep_50y_5 
+					/* + dtb_lam_cost_50y_5 + dtb_proph_cost_50y_5 + dcrag_cost_50y_5 + dcrypm_proph_cost_50y_5 
+					+ dsbi_proph_cost_50y_5 */ ;
+
 
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
 
