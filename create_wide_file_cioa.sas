@@ -22,18 +22,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ad_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ad_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_laa_ad;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_cioa;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -41,7 +41,7 @@ run;
 
 
 
-proc sort data=b.k_laa_ad; 
+proc sort data=b.k_cioa; 
 by run cald option;
 run;
 
@@ -50,7 +50,7 @@ run;
 data sf;
 
 
-set b.k_laa_ad ;
+set b.k_cioa ;
 
 
 if cald=2024   ;
@@ -69,12 +69,8 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_laa_ad sf;
+merge b.k_cioa sf;
 by run ;
-
-
-  if option in (0, 1);
-* if option=3 then option=1;
 
 
 
@@ -496,8 +492,14 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * p_prep_adhg80 ;				if s_prep_oral gt 0 then p_prep_adhg80 = s_prep_adhg80 / s_prep_oral ;
 
+* n_pop_wide_tld_as_art;		n_pop_wide_tld_as_art = s_pop_wide_tld_as_art *  sf;
+
 * prop_prep_cab ; 				if s_prep_any > 0 then prop_prep_cab = s_prep_cab / s_prep_any ;
 * prop_prep_len ; 				if s_prep_any > 0 then prop_prep_len = s_prep_len / s_prep_any ;
+
+* p_oral_pep_not_prep;			p_oral_pep_not_prep = s_pep_not_prep / s_prep_oral;
+
+* n_pop_wide_tld_prep;			n_pop_wide_tld_prep = s_pop_wide_tld_prep *  sf;
 
 * ratio_cab_prep_on_tail;		if s_prep_cab > 0 then ratio_cab_prep_on_tail = s_currently_in_prep_cab_tail / s_prep_cab ;
 * ratio_len_prep_on_tail;		if s_prep_len > 0 then ratio_len_prep_on_tail = s_currently_in_prep_len_tail / s_prep_len ;
@@ -1020,6 +1022,10 @@ run;
 * p_onart_m_age50pl;			p_onart_m_age50pl = s_onart_m50pl / (s_onart_m1549_ + s_onart_m50pl);
 * p_onart_w_age50pl;			p_onart_w_age50pl = s_onart_w50pl / (s_onart_w1549_ + s_onart_w50pl);
 
+* p_onartvisit0;				if s_onart gt 0 then p_onartvisit0 = s_onartvisit0 / s_onart ;
+
+* p_onartvisit0_vl1000;			p_onartvisit0_vl1000 = s_onartvisit0_vl1000 / s_onartvisit0;
+
 * prevalence_vg1000;			if s_alive > 0 then prevalence_vg1000 = s_vg1000 / s_alive;
 * prevalence_vg1000_1549;		prevalence_vg1000_1549 = s_vg1000_1549 / (s_alive1549_w + s_alive1549_m);
 * prev_vg1000_newp_m;			prev_vg1000_newp_m = (s_i_m_newp - s_i_vl1000_m_newp) /  s_m_newp;
@@ -1403,7 +1409,8 @@ p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1
 p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab n_started_lencab_offart  p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart
 p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct  p_ever_len_v_failed
 
-p_len_w p_len_m  p_diag_vl1000  p_len_plw  pr_res_len prevalence15pl  n_death_hiv_m  n_death_hiv_w
+p_len_w p_len_m  p_diag_vl1000  p_len_plw  pr_res_len prevalence15pl  n_death_hiv_m  n_death_hiv_w 
+n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0
 
 ;
 
@@ -1426,9 +1433,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_laa_ad; set y;  
+data    b.l_cioa; set y;  
 
-data y ; set b.l_laa_ad; 
+data y ; set b.l_cioa; 
 
 
   options nomprint;
@@ -1628,9 +1635,12 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_started_lencab); %var(v=ddaly_birth_with_inf_child); %var_v=n_started_lencab_offart); %var(v=p_len_vl1000); %var(v=p_cab_vl1000);
 %var(v=n_started_lencab_offart); %var(v=p_started_lencab_vmgt1000)  %var(v=p_started_lencab_offart);  %var(v=dvis_cost_no_lencab) ;
 %var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);   %var(v=dvis_cost_lencab) ; %var(v=n_mtct);
-%var(v=p_ever_len_v_failed);  %var(v=p_diag_vl1000);  %var(v=p_len_plw); %var(v=p_len_w); %var(v=p_len_m);
+%var(v=p_ever_len_v_failed);  %var(v=p_diag_vl1000);  %var(v=p_len_plw); %var(v=p_len_w); %var(v=p_len_m);  %var(v=p_onartvisit0_vl1000);
+%var(v=p_onartvisit0);
 
 %var(v=cost);  %var(v=prevalence15pl);
+
+%var(v=n_pop_wide_tld_as_art) %var(v=n_pop_wide_tld_prep) %var(v=p_oral_pep_not_prep);
 
 data   b.wide_outputs; merge 
 
@@ -1692,6 +1702,8 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
 p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct p_ever_len_v_failed  p_diag_vl1000  p_len_plw  p_len_w  p_len_m prevalence15pl
+
+n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0
 ;
 
 
@@ -1893,7 +1905,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_ad     ; 
+  data  b.w_cioa     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1906,12 +1918,9 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ad_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\cioa_out\";
 
-data f; set b.w_laa_ad;
-
-* if . < run <=  826903121 ; * laa_ac ;
-  if . < run <= 899802288 ;  * laa_ad ; * to give n = 1000;
+data f; set b.w_cioa;
 
 if prevalence1549w_24 < 0.35;
 if prevalence1549m_24 < 0.25;
@@ -1963,6 +1972,12 @@ dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_c
 dart_cost_y_50y_2 = dzdv_cost_50y_2 + dten_cost_50y_2 + d3tc_cost_50y_2 + dnev_cost_50y_2 + dlpr_cost_50y_2 + ddar_cost_50y_2 + dtaz_cost_50y_2 +  defa_cost_50y_2
 + ddol_cost_50y_2 + dcab_cost_50y_2 + dlen_cost_50y_2;
 
+dart_cost_y_50y_3 = dzdv_cost_50y_3 + dten_cost_50y_3 + d3tc_cost_50y_3 + dnev_cost_50y_3 + dlpr_cost_50y_3 + ddar_cost_50y_3 + dtaz_cost_50y_3 +  defa_cost_50y_3
++ ddol_cost_50y_3 + dcab_cost_50y_3 + dlen_cost_50y_3;
+
+dart_cost_y_50y_4 = dzdv_cost_50y_4 + dten_cost_50y_4 + d3tc_cost_50y_4 + dnev_cost_50y_4 + dlpr_cost_50y_4 + ddar_cost_50y_4 + dtaz_cost_50y_4 +  defa_cost_50y_4
++ ddol_cost_50y_4 + dcab_cost_50y_4 + dlen_cost_50y_4;
+
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
  
 
@@ -1979,6 +1994,20 @@ dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_5
 					+ dcost_prep_visit_50y_2 + dcost_prep_50y_2 
 					/* + dtb_lam_cost_50y_2 + dtb_proph_cost_50y_2 + dcrag_cost_50y_2 + dcrypm_proph_cost_50y_2 
 					+ dsbi_proph_cost_50y_2 */ ;
+
+dcost_50y_3 = dart_cost_y_50y_3 + dadc_cost_50y_3 + dcd4_cost_50y_3 + dvl_cost_50y_3 + dvis_cost_50y_3 + dnon_tb_who3_cost_50y_3 + 
+					dcot_cost_50y_3 + dtb_cost_50y_3 + dres_cost_50y_3 + dtest_cost_50y_3 + d_t_adh_int_cost_50y_3 + dswitchline_cost_50y_3 + 
+					dcost_circ_50y_3 + dcost_condom_dn_50y_3 + dcost_child_hiv_50y_3 + dcost_non_aids_pre_death_50y_3 + dcost_drug_level_test_50y_3
+					+ dcost_prep_visit_50y_3 + dcost_prep_50y_3 
+					/* + dtb_lam_cost_50y_3 + dtb_proph_cost_50y_3 + dcrag_cost_50y_3 + dcrypm_proph_cost_50y_3 
+					+ dsbi_proph_cost_50y_3 */ ;
+
+dcost_50y_4 = dart_cost_y_50y_4 + dadc_cost_50y_4 + dcd4_cost_50y_4 + dvl_cost_50y_4 + dvis_cost_50y_4 + dnon_tb_who3_cost_50y_4 + 
+					dcot_cost_50y_4 + dtb_cost_50y_4 + dres_cost_50y_4 + dtest_cost_50y_4 + d_t_adh_int_cost_50y_4 + dswitchline_cost_50y_4 + 
+					dcost_circ_50y_4 + dcost_condom_dn_50y_4 + dcost_child_hiv_50y_4 + dcost_non_aids_pre_death_50y_4 + dcost_drug_level_test_50y_4
+					+ dcost_prep_visit_50y_4 + dcost_prep_50y_4 
+					/* + dtb_lam_cost_50y_4 + dtb_proph_cost_50y_4 + dcrag_cost_50y_4 + dcrypm_proph_cost_50y_4 
+					+ dsbi_proph_cost_50y_4 */ ;
 
 
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
@@ -2217,120 +2246,6 @@ if 0.90 <= p_vl1000_24 < 0.95 then p_vl1000_24_g=4;
 if 0.95 <= p_vl1000_24        then p_vl1000_24_g=5;
 
 
-
-* label 
-prevalence1549w_24 = "HIV prevalence in women age 15-49 in 2024"
-prevalence1549m_24 = "HIV prevalence in men age 15-49 in 2024"
-incidence1549_24 = "HIV incidence in people age 15-49 (/100 person years) in 2024"  
-p_diag_24 = "Proportion of HIV positive people age 15+ who are diagnosed in 2024"  
-p_onart_diag_24 = "Proportion of diagnosed HIV+ people on ART in 2024"
-p_vl1000_24 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+) in 2024"
-prevalence_vg1000_24 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+) in 2024"
-p_onart_vl1000_w_24 = "Of women on ART, proportion with VL < 1000 in 2024"
-p_onart_vl1000_m_24 = "Of men on ART, proportion with VL < 1000 in 2024"
-p_onart_vl1000_w_1524_24 = "Of women aged 15-24 on ART, proportion with VL < 1000 in 2024"
-p_onart_vl1000_m_1524_24 = "Of men aged 15-24 on ART, proportion with VL < 1000 in 2024"
-p_onart_cd4_l200_24 = "Of people on ART, proportion with CD4 count < 200 in 2024"
-
-p_len_10y_1 = "Of all people on ART, mean proportion on lenacapavir over 10 years under status quo"
-p_len_10y_2 = "Of all people on ART, mean proportion on lenacapavir over 10 years under cab/len for aged 15-24"
-p_cab_10y_1 = "Of all people on ART, mean proportion on cabotegravir over 10 years under status quo"
-p_cab_10y_2 = "Of all people on ART, mean proportion on cabotegravir over 10 years under cab/len for aged 15-24"
-p_len_1524_10y_1 = "Of all 15-24 year olds on ART, mean proportion on lenacapavir over 10 years under status quo"
-p_len_1524_10y_2 = "Of all 15-24 year olds on ART, mean proportion on lenacapavir over 10 years under cab/len for aged 15-24"
-p_cab_1524_10y_1 = "Of all 15-24 year olds on ART, mean proportion on cabotegravir over 10 years under status quo"
-p_cab_1524_10y_2 = "Of all 15-24 year olds on ART, mean proportion on cabotegravir over 10 years under cab/len for aged 15-24"
-p_onart_1524_10y_1 = "Of all 15-24 year olds on ART, mean proportion on ART over 10 years under status quo"
-p_onart_1524_10y_2 = "Of all 15-24 year olds on ART, mean proportion on ART over 10 years under onart/len for aged 15-24"
-p_onart_vl1000_10y_1  = "Of all people on ART, mean proportion with viral load < 1000 over 10 years under status quo" 
-p_onart_vl1000_10y_2  = "Of all people on ART, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24" 
-p_onart_vl1000_m_1524_10y_1  = "Of all 15-24 year old males on ART, mean proportion with viral load < 1000 over 10 years under status quo" 
-p_onart_vl1000_m_1524_10y_2  = "Of all 15-24 year old males on ART, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
-p_onart_vl1000_w_1524_10y_1  = "Of all 15-24 year old females on ART, mean proportion with viral load < 1000 over 10 years under status quo" 
-p_onart_vl1000_w_1524_10y_2  = "Of all 15-24 year old females on ART, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
-p_vl1000_m_1524_10y_1  = "Of all 15-24 year old males, mean proportion with viral load < 1000 over 10 years under status quo" 
-p_vl1000_m_1524_10y_2  = "Of all 15-24 year old males, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
-p_vl1000_w_1524_10y_1  = "Of all 15-24 year old females, mean proportion with viral load < 1000 over 10 years under status quo" 
-p_vl1000_w_1524_10y_2  = "Of all 15-24 year old females, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
-incidence1549_10y_1 = "Mean incidence of HIV in people aged 15-49 over 10 years under status quo"
-incidence1549_10y_2 = "Mean incidence of HIV in people aged 15-49 over 10 years under under onart/len for aged 15-24"  
-incidence1524_10y_1 = "Mean incidence of HIV in people aged 15-24 over 10 years under status quo"  
-incidence1524_10y_2 = "Mean incidence of HIV in people aged 15-24 over 10 years under under onart/len for aged 15-24"  
-n_death_hiv_10y_1 = "Mean mumber of deaths from HIV per year over 10 years under status quo"  
-n_death_hiv_10y_2 = "Mean mumber of deaths from HIV per year over 10 years under onart/len for aged 15-24"  
-n_death_hiv_age_1524_10y_1 = "Mean mumber of deaths from HIV per year in 15-24 year olds over 10 years under status quo"  
-n_death_hiv_age_1524_10y_2 = "Mean mumber of deaths from HIV per year in 15-24 year olds over 10 years under onart/len for aged 15-24"  
-p_r_len_1524_10y_1 = "Mean proportion of 15-24 year olds with capsid codon 66/67 resistance mutation over 10 years under status quo" 
-p_r_len_1524_10y_2 = "Mean proportion of 15-24 year olds with capsid codon 66/67 resistance mutation over 10 years under onart/len for aged 15-24" 
-p_r_cab_1524_10y_1 = "Mean proportion of 15-24 year olds with insti resistance mutation over 10 years under status quo" 
-p_r_cab_1524_10y_2 = "Mean proportion of 15-24 year olds with insti resistance mutation over 10 years under onart/len for aged 15-24" 
-mtct_prop_10y_1 = "Mean proportion of births in women with HIV in which the child is infected over 10 years under status quo"  
-mtct_prop_10y_2 = "Mean proportion of births in women with HIV in which the child is infected over 10 years under onart/len for aged 15-24"  
-
-dart_cost_y_50y_1  = "Mean cost of ART drug over 50 years under status quo"
-dart_cost_y_50y_2  = "Mean cost of ART drug over 50 years under onart/len for aged 15-24"
-dlen_cost_50y_1  = "Mean cost of len drug over 50 years under status quo"
-dlen_cost_50y_2  = "Mean cost of len drug over 50 years under onart/len for aged 15-24"
-dcab_cost_50y_1  = "Mean cost of cab drug over 50 years under status quo"
-dcab_cost_50y_2  = "Mean cost of cab drug over 50 years under onart/len for aged 15-24"
-dadc_cost_50y_1  = "Mean cost of treating people with who stage 4 conditions  over 50 years under status quo"
-dadc_cost_50y_2  = "Mean cost of treating people with who stage 4 conditions over 50 years under onart/len for aged 15-24"
-dcd4_cost_50y_1   = "Mean cost of cd4 count tests over 50 years under status quo"
-dcd4_cost_50y_2  = "Mean cost of cd4 counts tests over 50 years under onart/len for aged 15-24"
-dvl_cost_50y_1   = "Mean cost of viral load tests over 50 years under status quo"
-dvl_cost_50y_2  = "Mean cost of viral load tests over 50 years under onart/len for aged 15-24"
-dvis_cost_50y_1  = "Mean cost of clinic visits for people with hiv over 50 years under status quo"
-dvis_cost_50y_2 = "Mean cost of clinic visits for people with hiv over 50 years under onart/len for aged 15-24"
-dnon_tb_who3_cost_50y_1   = "Mean cost of treatment for people with who stage 3 conditions apart from tb over 50 years under status quo"
-dnon_tb_who3_cost_50y_2  	 = "Mean cost of treatment for people with who stage 3 conditions apart from tb over 50 years under onart/len for aged 15-24"
-dcot_cost_50y_1   = "Mean cost of cotrimoxazole over 50 years under status quo"
-dcot_cost_50y_2  = "Mean cost of cotrimoxazole over 50 years under onart/len for aged 15-24"
-dtb_cost_50y_1   = "Mean cost of tb treatment over 50 years under status quo"
-dtb_cost_50y_2   = "Mean cost of tb treatment over 50 years under onart/len for aged 15-24"
-dtest_cost_50y_1  = "Mean cost of hiv tests over 50 years under status quo"
-dtest_cost_50y_2  = "Mean cost of hiv tests over 50 years under onart/len for aged 15-24"
-d_t_adh_int_cost_50y_1   = "Mean cost of adherence intervention over 50 years under status quo"
-d_t_adh_int_cost_50y_2   = "Mean cost of adherence intervention over 50 years under onart/len for aged 15-24"
-dswitchline_cost_50y_1   = "Mean cost of switching line of treatment (non-drug costs) over 50 years under status quo"
-dswitchline_cost_50y_2  = "Mean cost of switching line of treatment (non-drug costs) over 50 years under onart/len for aged 15-24"
-dcost_circ_50y_1   = "Mean cost of vmmc over 50 years under status quo"
-dcost_circ_50y_2   = "Mean cost of vmmc over 50 years under onart/len for aged 15-24"
-dcost_child_hiv_50y_1   = "Mean cost of a notional cost of treating a child with hiv (children not explicitly modelled) over 50 years under status quo"
-dcost_child_hiv_50y_2    = "Mean cost of a notional cost of treating a child with hiv (children not explicitly modelled) over 50 years under onart/len for aged 15-24"
-dcost_non_aids_pre_death_50y_1  = "Mean cost of costs of treating people for non aids conditions for which risk is raised with hiv over 50 years under status quo"
-dcost_non_aids_pre_death_50y_2  = "Mean cost of costs of treating people for non aids conditions for which risk is raised with hiv over 50 years under onart/len for aged 15-24"
-dcost_prep_visit_oral_50y_1   = "Mean cost of clinic visits for oral prep over 50 years under status quo"
-dcost_prep_visit_oral_50y_2   = "Mean cost of clinic visits for oral prep over 50 years under onart/len for aged 15-24"
-dcost_prep_oral_50y_1  = "Mean cost of oral prep drug over 50 years under status quo"
-dcost_prep_oral_50y_2  = "Mean cost of oral prep drug over 50 years under onart/len for aged 15-24"
-dcost_prep_visit_cab_50y_1   = "Mean cost of clinic visits for cab prep over 50 years under status quo"
-dcost_prep_visit_cab_50y_2   = "Mean cost of clinic visits for cab prep over 50 years under onart/len for aged 15-24"
-dcost_prep_cab_50y_1  = "Mean cost of cab prep drug over 50 years under status quo"
-dcost_prep_cab_50y_2  = "Mean cost of cab prep drug over 50 years under onart/len for aged 15-24"
-dtb_lam_cost_50y_1  = "Mean cost of tb-lam testing over 50 years under status quo"
-dtb_lam_cost_50y_2 = "Mean cost of tb-lam testing over 50 years under onart/len for aged 15-24"
-dtb_proph_cost_50y_1  = "Mean cost of tb prophylaxis over 50 years under status quo"
-dtb_proph_cost_50y_2  = "Mean cost of tb prophylaxis over 50 years under onart/len for aged 15-24"
-dcrag_cost_50y_1  = "Mean cost of crag testing over 50 years under status quo"
-dcrag_cost_50y_2   = "Mean cost of crag testing over 50 years under onart/len for aged 15-24"
-dcrypm_proph_cost_50y_1 = "Mean cost of cm prophylaxis over 50 years under status quo"
-dcrypm_proph_cost_50y_2 = "Mean cost of cm prophylaxis over 50 years under onart/len for aged 15-24"
-dsbi_proph_cost_50y_1  = "Mean cost of sbi prophylaxis over 50 years under status quo"
-dsbi_proph_cost_50y_2 = "Mean cost of sbi prophylaxis over 50 years under onart/len for aged 15-24"
-d_ddaly_50y_2_1 = "Mean DALYs averted across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
-dcost_50y_1  = "Mean total cost over 50 years under status quo"
-dcost_50y_2  = "Mean total cost over 50 years under onart/len for aged 15-24"
-d_dcost_50y_2_1 = "Mean difference in costs across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
-d_netdaly500_2_1 = "Mean net DALYs averted across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
-lowest_netdaly = "Proportion of setting scenarios in which cab/len to 15-24 year-olds is cost-effective"
-;
-
-
-
-* * ods html;
-
-
-* table 1;
 
 
 ods html;
