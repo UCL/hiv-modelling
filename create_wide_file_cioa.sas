@@ -22,18 +22,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_a_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_a_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_cioa;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_cioa_a;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -41,7 +41,7 @@ run;
 
 
 
-proc sort data=b.k_cioa; 
+proc sort data=b.k_cioa_a; 
 by run cald option;
 run;
 
@@ -50,7 +50,7 @@ run;
 data sf;
 
 
-set b.k_cioa ;
+set b.k_cioa_a ;
 
 
 if cald=2024   ;
@@ -69,7 +69,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_cioa sf;
+merge b.k_cioa_a sf;
 by run ;
 
 
@@ -1433,9 +1433,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_cioa; set y;  
+data    b.l_cioa_a; set y;  
 
-data y ; set b.l_cioa; 
+data y ; set b.l_cioa_a; 
 
 
   options nomprint;
@@ -1905,7 +1905,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_cioa     ; 
+  data  b.w_cioa_a     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1918,9 +1918,9 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\cioa_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_a_out\";
 
-data f; set b.w_cioa;
+data f; set b.w_cioa_a;
 
 if prevalence1549w_24 < 0.35;
 if prevalence1549m_24 < 0.25;

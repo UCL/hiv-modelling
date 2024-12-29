@@ -3,7 +3,7 @@ ods html close;
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_a_out\";
 
 footnote;
 
@@ -12,7 +12,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_cioa;
+set a.l_cioa_a;
 
 
 * for this program, variable names cannot end on a number;
