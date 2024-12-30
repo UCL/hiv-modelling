@@ -767,7 +767,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 18);
+* prep_any_strategy;			prep_any_strategy = 18;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -2243,6 +2243,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option=4 then do;
 		date_prep_len_intro=2026.25;
+		if prep_len=1 then prep_any_strategy=17; 
 	
 		if registd = 1 then do;
 			lencab_available=1; 
@@ -4998,7 +4999,7 @@ if prep_any_tm1=1 then do;		* lapr - relies on prep types being mutually exclusi
 	end;
 end;
 
-prep_any=0; prep_oral=0; prep_cab=0; prep_len=1; prep_vr=0;
+prep_any=0; prep_oral=0; prep_cab=0; prep_len=0; prep_vr=0;
 pop_wide_tld_prep=0; prep_falseneg=0; 
 switch_prep_from_oral=0; switch_prep_to_oral=0; switch_prep_from_cab=0; switch_prep_to_cab=0;switch_prep_from_len=0; switch_prep_to_len=0;
 switch_prep_from_vr =0; switch_prep_to_vr=0;
