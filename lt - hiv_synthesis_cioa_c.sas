@@ -22,8 +22,6 @@
 
 * branched from laa_ad and added in msm and pwid
 
-* prep_any_strategy changed to 17 and 18 - 17 for len_prep because 6 month injection ;
-
 ;
 
 
@@ -31,17 +29,17 @@
 
 
 
-*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
+ libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   * here ! ;
+* libname a "&outputdir/";   * here ! ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 10000  ; 
 %let year_interv = 2026.0 ;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -767,7 +765,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 18);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -2220,8 +2218,6 @@ who may be dead and hence have caldate{t} missing;
 
 	if option=1 then do;
 		date_prep_len_intro=2026.25;
-		if prep_len=1 then prep_any_strategy=17; * instead of 18, due to 6 monthly injection meaning cant target use so much - note this is before updating
-		prep_len so effectively this means the person was on prep_len in the last period;
 	end;
 
 	if option=2 and registd = 1 then do;
@@ -4705,20 +4701,6 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;
       	if gender=2 and (pregnant=1 or breastfeeding=1) and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
 	end;
 
-
-	if prep_any_strategy=17 then do;	* as 4 but with newp_tm1 ge 1 also and change for women with ep=1;
-    	r = rand('Uniform');
-      	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.01 or (r < 0.2 and epi=1)))) then prep_any_elig=1; 
-	end;
-
-	if prep_any_strategy=18 then do;	* as 4 with change for women with ep=1;
-    	r = rand('Uniform');
-      	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.01 or (r < 0.2 and epi=1)))) then prep_any_elig=1; 
-	end;
-
-
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 
 end;
@@ -4998,7 +4980,7 @@ if prep_any_tm1=1 then do;		* lapr - relies on prep types being mutually exclusi
 	end;
 end;
 
-prep_any=0; prep_oral=0; prep_cab=0; prep_len=1; prep_vr=0;
+prep_any=0; prep_oral=0; prep_cab=0; prep_len=0; cab_len=0; prep_vr=0;
 pop_wide_tld_prep=0; prep_falseneg=0; 
 switch_prep_from_oral=0; switch_prep_to_oral=0; switch_prep_from_cab=0; switch_prep_to_cab=0;switch_prep_from_len=0; switch_prep_to_len=0;
 switch_prep_from_vr =0; switch_prep_to_vr=0;
@@ -19180,16 +19162,16 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 * procs;
 
-/*
+
 
 proc freq; tables cald hiv ; where death=.; run;
 
 
-proc print; var reg_option onart art_monitoring_strategy adh adh_dl o_dol o_3tc o_ten o_cab o_len nactive  r_cab r_len f_cab f_len ;
-where naive=0 and caldate&j ge 2025;
+proc print; var cald option hiv tested newp ep prep_any_elig prep_oral prep_any prep_len;  
+where caldate&j ge 2026 and age ge 15 and death=. and hiv=0 and serial_no < 2000;
 run;
 
-*/
+
 
 
 
@@ -20986,7 +20968,7 @@ if country = 'Zimbabwe' then do;
 	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 end;
 
-if cald = 2024 and prevalence1549 < 0.03 then do; abort abend; end;
+
 
 
 
@@ -22107,7 +22089,7 @@ data r1; set a;
 
 
 
-
+/*
 
 
 * 1989;
@@ -22297,10 +22279,10 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
 
-data b; set r1;
+data a.jkjk; set r1;
 
 
-data r1; set b;
+data r1; set a.jkjk;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
@@ -22504,8 +22486,9 @@ data r1; set b;
 %update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=0);
 
+*/
 
-data r1; set b;
+data r1; set a.jkjk;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
