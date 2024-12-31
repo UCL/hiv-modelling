@@ -6,15 +6,11 @@
 * main question is around setting up of community arv availability by chw and pharmacies - so it is the whole package, so long 
   as each is cost-effective in what it adds - the package should include self-testing  
 
-
-
-todo
-
-* add len-cab pep
+* consider in future adding len-cab pep ?
 
 * note pop_wide_tld parameters are modified as this is conceived of as community care - by pharmacists and chw ; 
 
-* both len prep and community tld have increased self-testing as another component 
+* community tld / pop_wide_tld has increased self-testing as another component 
 
 * (might have to assume greater rates of starting and stopping by choice for len-prep as it may be hard to attend on time for injection)
 
@@ -1799,6 +1795,9 @@ eff_prob_return_adc = prob_return_adc ;
 
 eff_test_targeting = test_targeting;
 
+* define effective self_test_targeting;
+eff_self_test_targeting = self_test_targeting;
+
 * define eff_prob_birth_circ;
 eff_prob_birth_circ=prob_birth_circ;
 
@@ -2234,6 +2233,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option=3 then do;
 		pop_wide_tld=1;
+		rate_self_test=0.1;
 	end;
 
 	if option=4 then do;
@@ -2254,6 +2254,7 @@ who may be dead and hence have caldate{t} missing;
 		end;
 
 		pop_wide_tld=1;
+		rate_self_test = 0.1;
 
 	end;
 
@@ -4720,13 +4721,41 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;
 end;
 
 
+
+
+	* SELF-TESTING;
+
+	eff_self_test_targeting = self_test_targeting;
+
+	w = rand('uniform');	
+	if caldate{t} ge 2018 and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
+
+		u_self_test=rand('uniform');
+ 		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
+		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
+		if secondary_self_test=1 and epart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  
+		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
+			self_tested=1; 
+			dt_last_self_test=caldate{t}; 
+		end;
+	end;
+
+	v = rand('uniform'); z = rand('uniform');
+	if self_tested = 1 and hiv = 1 and z < prob_pos_self_test_conf and v < self_test_sens then do; 
+	tested=1; tested_due_to_self_test=1;
+	dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+	end;
+	* note this depends on primary infection lasting 3 months - ts1m ;
+
+
+
 * HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65 (although note testing due to symptoms can occur at older ages);
 
 tested_as_sw=.;
 
 testfor_prep_oral=0; testfor_prep_cab=0;  testfor_prep_len=0; testfor_prep_vr=0;
  
-if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1 
+if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1  and self_tested ne 1 
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if t ge 2 and sw_test_6mthly=1 and sw=1 and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
