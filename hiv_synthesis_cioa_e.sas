@@ -1,4 +1,12 @@
 
+* raise len prep use ;
+
+* consider reason for excess hiv deaths in later years with community tld ; 
+
+
+
+
+
 * cioa - community_io_arvs
 
 * impact of len prep + lencab + tld available locally in communities 
@@ -878,7 +886,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * incr_res_risk_len_inf_3m;		incr_res_risk_len_inf_3m = incr_res_risk_cab_inf_3m;
 
 * new for pop_wide_tld ;
-								%sample_uniform(cab_extra_pref, 0.1 0.2 0.3) ;
+								%sample_uniform(cab_extra_pref,  0.3 0.5 0.7 1) ; *cioa_e;
 * pref_prep_cab_beta_s1;		pref_prep_cab_beta_s1 = pref_prep_oral_beta_s1 + cab_extra_pref ; * tends to be more preference for inj ;
 * pref_prep_len_beta_s1;		pref_prep_len_beta_s1 = pref_prep_cab_beta_s1;  
 
@@ -968,15 +976,15 @@ end;
 
 * prob_tld_hiv_concern;			%sample_uniform(prob_tld_hiv_concern, 0.0   0.0001  0.001 );   prob_tld_hiv_concern = 0.0001;  * for coia - testing will be encouraged but not an absolute requirement;
 
-* prob_onartvis0_0_to_1;		%sample_uniform(prob_onartvis0_0_to_1, 0.02 0.05 0.1 );    prob_onartvis0_0_to_1=0.01; * for coia much less likely as under community care;;
-* prob_onartvis0_1_to_0;		%sample_uniform(prob_onartvis0_1_to_0, 0.05 0.2 0.5);  * for coia - as under community care;
+* prob_onartvis0_0_to_1;		%sample_uniform(prob_onartvis0_0_to_1, 0.02 0.05 0.1 );    prob_onartvis0_0_to_1=0.0 ; * for coia much less likely as under community care;;
+* prob_onartvis0_1_to_0;		%sample_uniform(prob_onartvis0_1_to_0, 0.05 0.2 0.5); prob_onartvis0_1_to_0 = 1;  * for coia - as under community care;
 
 * prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5  1    ); * for coia;
 
 * pop_wide_tld_selective_hiv;	%sample_uniform(pop_wide_tld_selective_hiv,  10  30  100);  pop_wide_tld_selective_hiv = 100; * for coia;
 																														 																												   																
 * death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk due to not in care;
-								death_r_iris_pop_wide_tld = 0.01; * for cioa as considered under community care;
+								death_r_iris_pop_wide_tld = 0.001; * for cioa as considered under community care;
 																		
 
 * prop_pep;						%sample_uniform(prop_pep, 0.5 0.7 0.9); 
@@ -20823,7 +20831,7 @@ pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choic
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
-poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
+poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  cab_extra_pref
 
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti   prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid prob_prep_elig_pwid msm_risk_cls  prob_prep_elig_msm
@@ -24083,7 +24091,7 @@ p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child rate_trans_breastfeeding nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency isl_higher_potency isl_ole_adh_improve
-prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro
+prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro  cab_extra_pref
 cab_time_to_lower_threshold_g  len_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75  death_r_iris_pop_wide_tld
 sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
