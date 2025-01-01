@@ -1257,6 +1257,8 @@ run;
 
 * n_need_cd4m;					n_need_cd4m = n_art_initiation + n_restart + n_line1_fail_this_period;
  
+* n_pcp_p;						n_pcp_p = s_pcp_p * sf;
+
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
 * number of women with hiv giving birth per year;
@@ -1390,16 +1392,17 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
 
 pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  p_dol_2vg1000_dolr1  p_o_dar_uvl2
 
-s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_onartvisit0_vl1000 p_onartvisit0
+s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_onartvisit0_vl1000 p_onartvisit0   n_pcp_p
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 
 p_onart_vl1000_1524  n_started_lencab_vmgt1000  n_started_lencab n_started_lencab_offart  p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart
 p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct  p_ever_len_v_failed
 
-p_len_w p_len_m  p_diag_vl1000  p_len_plw  pr_res_len prevalence15pl  n_death_hiv_m  n_death_hiv_w 
-n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0  dcost_sw_program n_self_tested  by rr_mort_tdf_prep n_adc;
+p_len_w p_len_m  p_diag_vl1000  p_len_plw  pr_res_len prevalence15pl  n_death_hiv_m  n_death_hiv_w n_death
+n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0  dcost_sw_program n_self_tested  by rr_mort_tdf_prep n_adc
 
+artvis0_lower_adh
 ;
 
  
@@ -1533,7 +1536,7 @@ drop _NAME_ _TYPE_ _FREQ_;
   %var(v=n_birth_with_inf_child);  %var(v=n_tested); %var(v=n_tested_sw); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   * %var(v= n_hiv1_prep);
 * %var(v= n_hiv1_prep_inj); * %var(v= n_hiv1_prep_oral);
-  %var(v= n_prep_any); * %var(v=n_covid); * %var(v=n_death_covid);  * %var(v=n_death);   %var(v=n_death_hiv); %var(v=n_death_hiv_age_1524);  %var(v= n_hiv);
+  %var(v= n_prep_any); * %var(v=n_covid); * %var(v=n_death_covid);  %var(v=n_death);   %var(v=n_death_hiv); %var(v=n_death_hiv_age_1524);  %var(v= n_hiv);
 %var(v=p_prep_any_ever); %var(v=p_hiv1_prep);  %var(v=p_hiv1_prep_cab);  %var(v=p_hiv1_prep_len); %var(v=p_hiv1_prep_oral); %var(v=incidence1524w);   * %var(v=incidence1524m) ;
 * %var(v=incidence2534w);   * %var(v=incidence2534m) ; * %var(v=incidence3544w);   * %var(v=incidence3544m) ;* %var(v=incidence4554w);   * %var(v=incidence4554m) ;
 * %var(v=incidence5564w);   * %var(v=incidence5564m) ;  %var(v=incidence_sw);  * %var (v=n_mcirc1549_3m) ;* %var (v=n_vmmc1549_3m); 
