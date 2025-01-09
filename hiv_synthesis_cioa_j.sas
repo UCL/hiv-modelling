@@ -1,5 +1,15 @@
 
 
+* cioa_i ;
+
+* hard_reach=0; ;
+
+
+
+
+
+
+
 * cioa_h 
 
 * possibility of much higher self test uptake ;
@@ -825,7 +835,7 @@ end;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is willing to take a particular type of PrEP;
 
-* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
+* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.80 0.20); * does prep use depend on the prevalence of vl > 1000 in population; * cioa_j ;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
@@ -994,7 +1004,18 @@ end;
 * pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = pref_prep_oral_beta_s1 - 0.1 ; * this will change depending on assumed uptake;
 
 
-* new for pop_wide_tld ;
+
+* COMM TLD ;
+
+* r_choose_stop_prep_oral_comm_tld;  %sample_uniform(r_choose_stop_prep_oral_comm_tld, 0.00  0.01 0.03 ); 
+
+* r_test_startprep_any_comm_tld;  %sample_uniform(r_test_startprep_any_comm_tld, 0.5  0.7  0.9); 
+
+* prob_prep_oral_b_comm_tld;	%sample_uniform(prob_prep_oral_b_comm_tld, 0.5  0.7  0.9);
+
+* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.3 0.5 0.7 0.9);    
+
+
 
 * POP WIDE TLD * ;
 
@@ -1002,19 +1023,17 @@ end;
 
 * rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
 
-* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.3 0.5 0.7 0.9);
+* prob_tld_hiv_concern;			%sample_uniform(prob_tld_hiv_concern, 0.0   0.0001  0.001 );   prob_tld_hiv_concern = 0.0001;  
 
-* prob_tld_hiv_concern;			%sample_uniform(prob_tld_hiv_concern, 0.0   0.0001  0.001 );   prob_tld_hiv_concern = 0.0001;  * for coia - testing will be encouraged but not an absolute requirement;
+* prob_onartvis0_0_to_1;		%sample_uniform(prob_onartvis0_0_to_1, 0.02 0.05 0.1 );    prob_onartvis0_0_to_1=0.0 ; 
+* prob_onartvis0_1_to_0;		%sample_uniform(prob_onartvis0_1_to_0, 0.05 0.2 0.5); prob_onartvis0_1_to_0 = 1;  
 
-* prob_onartvis0_0_to_1;		%sample_uniform(prob_onartvis0_0_to_1, 0.02 0.05 0.1 );    prob_onartvis0_0_to_1=0.0 ; * for coia much less likely as under community care;;
-* prob_onartvis0_1_to_0;		%sample_uniform(prob_onartvis0_1_to_0, 0.05 0.2 0.5); prob_onartvis0_1_to_0 = 1;  * for coia - as under community care;
+* prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5  1    ); 
 
-* prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5  1    ); * for coia;
-
-* pop_wide_tld_selective_hiv;	%sample_uniform(pop_wide_tld_selective_hiv,  10  30  100);  pop_wide_tld_selective_hiv = 100; * for coia;
+* pop_wide_tld_selective_hiv;	%sample_uniform(pop_wide_tld_selective_hiv,  10  30  100);  pop_wide_tld_selective_hiv = 100; 
 																														 																												   																
 * death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk due to not in care;
-								death_r_iris_pop_wide_tld = 0.001; * for cioa as considered under community care;
+								death_r_iris_pop_wide_tld = 0.001; 
 																		
 
 * prop_pep;						%sample_uniform(prop_pep, 0.5 0.7 0.9); 
@@ -1027,6 +1046,8 @@ end;
 								pop_wide_prep_adh_effect = 1; * for cioa ;
 
 * prob_prep_pop_wide_tld;		%sample(prob_prep_pop_wide_tld,  0.05  0.1     , 0.5 0.5 );
+
+																			   
 
 																			   
 
@@ -2279,15 +2300,25 @@ who may be dead and hence have caldate{t} missing;
 		if o_len=1 and o_cab=1 and h < rate_lencab_to_tld then do; reg_option=125; reg_option_set_in_options = .; end; 
 	end;
 
+
 	if option=3 then do;
 		if comm_tld_set_in_options ne 1 then do;
 			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
 			eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
 			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
 			rate_self_test=rate_self_test_if_introduced;
+		 	start_pep_prep_without_test = 1;
+			rate_test_startprep_any = r_test_startprep_any_comm_tld;
+			rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+			prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 			comm_tld_set_in_options = 1;
 		end;
+		eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+  		hard_reach=0;		
+		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
+  		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 	end;
+
 
 	if option=4 then do;
 		date_prep_len_intro=2026.25;
@@ -2311,12 +2342,21 @@ who may be dead and hence have caldate{t} missing;
 			eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
 			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
 			rate_self_test=rate_self_test_if_introduced;
+		 	start_pep_prep_without_test = 1;
+			rate_test_startprep_any = r_test_startprep_any_comm_tld;
+			rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+			prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 			comm_tld_set_in_options = 1;
 		end;
+		eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+  		hard_reach=0;		
+		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
+  		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 
 	end;
 
 end;
+
 
 
 *  ======================================================================================================================================== ;
@@ -5118,7 +5158,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 	we want people who are false negative to also start PrEP, this is the reason why hiv=0 is now commented out;
 	* eff_sens_vct changed from sens_vct for lapr37;
 
-	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
+	if prep_any_ever ne 1 and (tested=1 or start_pep_prep_without_test=1) and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
 	* starting PrEP for the first time ever;
 	 
 			if prep_any_willing=1 and hard_reach ne 1 then do; 
@@ -20880,7 +20920,7 @@ msm_rred red_chance_ep_msm prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_fem
 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 prob_self_test_hard_reach self_test_targeting rate_self_test rate_self_test_if_introduced self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
-incr_pref_prep_oral_comm_tld
+incr_pref_prep_oral_comm_tld r_choose_stop_prep_oral_comm_tld   r_test_startprep_any_comm_tld   prob_prep_oral_b_comm_tld
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
@@ -24144,7 +24184,7 @@ rate_tb_proph_init rate_sbi_proph_init
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prob_self_test_hard_reach self_test_targeting rate_self_test rate_self_test_if_introduced self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
-incr_pref_prep_oral_comm_tld
+incr_pref_prep_oral_comm_tld r_choose_stop_prep_oral_comm_tld   r_test_startprep_any_comm_tld   prob_prep_oral_b_comm_tld
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b  prob_prep_len_b prob_prep_vr_b prep_cab_efficacy  prep_len_efficacy   prop_pep  pep_efficacy 
 rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr 
 

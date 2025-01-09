@@ -2,25 +2,25 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_g_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_k_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_g_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_k_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_cioa_g;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_cioa_k;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc sort data=b.k_cioa_g; 
+proc sort data=b.k_cioa_k; 
 by run cald option;
 run;
 
@@ -29,7 +29,7 @@ run;
 data sf;
 
 
-set b.k_cioa_g ;
+set b.k_cioa_k ;
 
 
 if cald=2024   ;
@@ -48,7 +48,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_cioa_g sf;
+merge b.k_cioa_k sf;
 by run ;
 
 
@@ -1404,7 +1404,7 @@ p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct  p_ever_
 p_len_w p_len_m  p_diag_vl1000  p_len_plw  pr_res_len prevalence15pl  n_death_hiv_m  n_death_hiv_w n_death
 n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0  dcost_sw_program n_self_tested  by rr_mort_tdf_prep n_adc
 
-artvis0_lower_adh  rate_dead_hivpos_cause1  dcost_self_test
+artvis0_lower_adh  rate_dead_hivpos_cause1  dcost_self_test  n_prep_oral  prep_dependent_prev_vg1000
 ;
 
  
@@ -1430,9 +1430,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_cioa_g; set y;  
+data    b.l_cioa_k; set y;  
 
-data y ; set b.l_cioa_g; 
+data y ; set b.l_cioa_k; 
 
 
   options nomprint;
@@ -1636,7 +1636,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onartvisit0);  
 
 %var(v=cost);  %var(v=prevalence15pl);  %var(v=n_self_tested); %var(v=dcost_self_test);
-
+%var(v=n_prep_oral);
 %var(v=n_pop_wide_tld_as_art) %var(v=n_pop_wide_tld_prep) %var(v=p_oral_pep_not_prep);  %var(v=dcost_sw_program);  %var(v=n_adc);
 
 data   b.wide_outputs; merge 
@@ -1699,7 +1699,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
 p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct p_ever_len_v_failed  p_diag_vl1000  p_len_plw  p_len_w  p_len_m prevalence15pl
-
+n_prep_oral
 n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0 dcost_sw_program  n_self_tested n_adc dcost_self_test
 ;
 
@@ -1764,7 +1764,7 @@ incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
-lencab_uptake lencab_uptake_vlg1000  rate_return_for_lencab  date_prep_cab_intro pr_res_len  by rr_mort_tdf_prep;
+lencab_uptake lencab_uptake_vlg1000  rate_return_for_lencab  date_prep_cab_intro pr_res_len  by rr_mort_tdf_prep prep_dependent_prev_vg1000
 ;
 
 %macro par(p=);
@@ -1831,7 +1831,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
 %par(p=lencab_uptake); %par(p=lencab_uptake_vlg1000);  %par(p=rate_return_for_lencab);  %par(p=prob_strong_pref_lencab); %par(p=pr_res_len)
-%par(p=by rr_mort_tdf_prep);
+%par(p=rr_mort_tdf_prep); %par(p=prep_dependent_prev_vg1000);
 
 data b.wide_par2; merge 
 
@@ -1891,7 +1891,7 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
 
 p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  lencab_uptake lencab_uptake_vlg1000  prob_strong_pref_lencab  rate_return_for_lencab
 
-pr_res_len
+pr_res_len prep_dependent_prev_vg1000
 ;
 
 run;
@@ -1902,7 +1902,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_cioa_g     ; 
+  data  b.w_cioa_k     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1915,9 +1915,9 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_g_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_k_out\";
 
-data f; set b.w_cioa_g;
+data f; set b.w_cioa_k;
 
 if prevalence1549w_24 < 0.35;
 if prevalence1549m_24 < 0.25;
@@ -2285,7 +2285,7 @@ ods html close;
 
 
 ods html;
-proc means;
+proc means data=f ;
 var 
 ddaly_50y_1 ddaly_50y_2 ddaly_50y_3 ddaly_50y_4 ddaly_50y_5 
 dcost_50y_1 dcost_50y_2 dcost_50y_3 dcost_50y_4 dcost_50y_5 
@@ -2296,7 +2296,7 @@ ods html close;
 
 
 ods html;
-proc means  n mean p5 p95;
+proc means data=f  n mean p5 p95;
 var
 dtest_cost_50y_1  dtest_cost_50y_2  dtest_cost_50y_3  dtest_cost_50y_4  dtest_cost_50y_5  
 dcost_self_test_50y_1 dcost_self_test_50y_2 dcost_self_test_50y_3 dcost_self_test_50y_4 dcost_self_test_50y_5 
