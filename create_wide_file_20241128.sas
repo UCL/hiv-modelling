@@ -380,6 +380,8 @@ so the one above is the annual number of tests conducted in ANC;
 																	 anc=1      at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5, dt_start_pregn+0.75;
 * n_tested_m_sympt;				n_tested_m_sympt = s_tested_m_sympt * sf * 4;*VCFeb2023;
 * n_tested_w_sympt;				n_tested_w_sympt = s_tested_f_sympt * sf * 4;*VCFeb2023;
+* n_tested_m_sympt_test;		n_tested_m_sympt_test = s_tested_m_sympt_test * sf * 4;*JASNov2024;
+* n_tested_w_sympt_test;		n_tested_w_sympt_test = s_tested_f_sympt_test * sf * 4;*JASNov2024;
 * n_tested_m_circ; 				n_tested_m_circ = s_tested_m_circ  * sf * 4;*VCFeb2023;
 * n_tested_w_non_anc; 			n_tested_w_non_anc = s_tested_f_non_anc * sf * 4; *VCFeb2023;
 * n_tested_labdel;				n_tested_w_labdel = s_tested_labdel * sf * 4; *VCFeb2023;
@@ -387,6 +389,12 @@ so the one above is the annual number of tests conducted in ANC;
 * n_tested_ancpd;				n_tested_ancpd = (s_tested_ancpd + s_tested_anc_prevdiag) * sf * 4;*VCMay2023;
 * n_test_anclabpd;				n_test_anclabpd = (s_test_anclabpd + s_tested_anc_prevdiag)* sf * 4;*VCMay2023;
 * n_tested_anc_prevdiag;		n_tested_anc_prevdiag = s_tested_anc_prevdiag * sf * 4;*VCJune2023;
+* n_tested_tb;					n_tested_tb = s_tested_tb * sf * 4;*JASNov2024;
+* n_tested_general;				n_tested_general = s_tested_general * sf * 4;*JASNov2024;
+* n_tested_startprep;			n_tested_startprep = (s_testfor_prep_oral + s_testfor_prep_inj + s_testfor_prep_vr) * sf * 4;*JASNov2024;
+* n_tested_onprep;				n_tested_onprep = s_tested_onprep_any * sf * 4;*JASNov2024;
+* n_tested_rsprep;				n_tested_rsprep = s_tested_rsprep_any * sf * 4;*JASNov2024;
+* n_tested_prep;				n_tested_prep = n_tested_startprep + n_tested_onprep + n_tested_rsprep;*JASNov2024;
 
 * n_tested1st_anc;				n_tested1st_anc = s_tested1st_anc * sf * 4;*VCMar2023;
 * n_tested1st_labdel;			n_tested1st_labdel = s_tested1st_labdel * sf * 4;*VCMar2023;
@@ -856,7 +864,6 @@ end;
 * p_o_zld_adh_hi;				if s_zld gt 0 then p_o_zld_adh_hi = s_o_zld_adh_hi / s_zld ;
 * p_o_zla_adh_hi;				if s_zla gt 0 then p_o_zla_adh_hi = s_o_zla_adh_hi / s_zla ;
 
-* p_adh_lo;						if s_onart gt 0 then p_adh_lo = s_adh_low / s_onart;
 * p_adh_hi;						if s_onart gt 0 then p_adh_hi = s_adh_hi / s_onart;
 
 * p_k65m;						if s_hivge15 gt 0 then p_k65m = s_k65m_ / s_hivge15 ;
@@ -1250,7 +1257,7 @@ n_sw_1564 n_sw_1549 prev_sti_sw n_sw_inprog_ly  /*n_sw_inprog_ever*/
 p_vl1000_art_12m  p_vl1000_art_12m_onart
 p_o_zdv_tox p_o_3tc_tox p_o_ten_tox p_o_taz_tox p_o_lpr_tox p_o_efa_tox p_o_nev_tox p_o_dol_tox p_o_zdv_adh_hi p_o_3tc_adh_hi p_o_ten_adh_hi
 p_o_taz_adh_hi p_o_lpr_adh_hi p_o_efa_adh_hi p_o_nev_adh_hi p_o_dol_adh_hi
- p_o_tle_tox  p_o_tld_tox  p_o_zla_tox  p_o_zld_tox   p_o_tle_adh_hi  p_o_tld_adh_hi  p_o_zla_adh_hi  p_o_zld_adh_hi  p_adh_lo  p_adh_hi  
+ p_o_tle_tox  p_o_tld_tox  p_o_zla_tox  p_o_zld_tox   p_o_tle_adh_hi  p_o_tld_adh_hi  p_o_zla_adh_hi  p_o_zld_adh_hi  p_adh_hi  
 s_a_zld_if_reg_op_116  p_nactive_ge2p75_xyz p_adh_hi_xyz_ot1  p_adh_hi_xyz_ot2  p_adh_hi_xyz_itt  p_e_rt65m_xyz  
 p_nactive_ge2p00_xyz  p_nactive_ge1p50_xyz  p_k65m  p_m184m  p_artexp_vl1000 p_k65m_all p_m184m_all
 p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vlg1000   p_65m_ontld_vlg1000  
@@ -1260,9 +1267,10 @@ n_new_inf1549m n_new_inf1549w n_new_inf1549 n_new_inf1564m n_new_inf1564w n_infe
 p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_tested_as_sw n_tested_swprog n_tested_anc n_tested_ancpd n_test_anclabpd 
-n_tested_m_sympt n_tested_w_sympt
+n_tested_m_sympt n_tested_w_sympt n_tested_m_sympt_test n_tested_w_sympt_test
 n_tested_anc_prevdiag
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd n_tested1st_anc n_tested1st_labdel n_tested1st_pd
+n_tested_tb n_tested_general n_tested_startprep n_tested_onprep n_tested_rsprep n_tested_prep
 n_self_tested 	n_self_tested_m  n_self_tested_w n_tested_due_to_st			
 p_anc n_diagnosed n_diag_m n_diag_w n_diag_anc n_diag_labdel  n_diag_pd  n_diag_anclabpd  n_diag_progsw  n_diag_sw n_diag_sympt 
 n_diag_self_test
