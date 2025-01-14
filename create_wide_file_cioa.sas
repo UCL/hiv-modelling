@@ -3146,6 +3146,46 @@ r_prevalence_vg1000_10y_2_1 = prevalence_vg1000_10y_2 / prevalence_vg1000_10y_1 
 
 r_prev_vg1000_1549_10y_2_1 = prevalence_vg1000_1549_10y_2 / prevalence_vg1000_1549_10y_1 ;
 
+d_n_self_tested_10y_4_1 = n_self_tested_10y_4 - n_self_tested_10y_1 ;
+d_n_self_tested_10y_5_1 = n_self_tested_10y_5 - n_self_tested_10y_1 ;
+
+d_n_tested_10y_4_1 = n_tested_10y_4 - n_tested_10y_1 ;
+d_n_tested_10y_5_1 = n_tested_10y_5 - n_tested_10y_1 ;
+
+d_p_diag_10y_4_1 = p_diag_10y_4 - p_diag_10y_1;
+d_p_diag_10y_5_1 = p_diag_10y_5 - p_diag_10y_1;
+
+d_p_onart_diag_10y_4_1 = p_onart_diag_10y_4 - p_onart_diag_10y_1;
+d_p_onart_diag_10y_5_1 = p_onart_diag_10y_5 - p_onart_diag_10y_1;
+
+d_p_onart_vl1000_10y_4_1 = p_onart_vl1000_10y_4 - p_onart_vl1000_10y_1;
+d_p_onart_vl1000_10y_5_1 = p_onart_vl1000_10y_5 - p_onart_vl1000_10y_1;
+
+d_p_vl1000_10y_4_1 = p_vl1000_10y_4 - p_vl1000_10y_1;
+d_p_vl1000_10y_5_1 = p_vl1000_10y_5 - p_vl1000_10y_1;
+
+d_prevalence_vg1000_10y_4_1 = prevalence_vg1000_10y_4 - prevalence_vg1000_10y_1;
+d_prevalence_vg1000_10y_5_1 = prevalence_vg1000_10y_5 - prevalence_vg1000_10y_1;
+
+r_prevalence_vg1000_10y_4_1 = prevalence_vg1000_10y_4 / prevalence_vg1000_10y_1;
+r_prevalence_vg1000_10y_5_1 = prevalence_vg1000_10y_5 / prevalence_vg1000_10y_1;
+
+d_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 - n_death_hiv_10y_1 ;
+d_n_death_hiv_10y_5_1 = n_death_hiv_10y_5 - n_death_hiv_10y_1 ;
+
+r_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 / n_death_hiv_10y_1 ;
+r_n_death_hiv_10y_5_1 = n_death_hiv_10y_5 / n_death_hiv_10y_1 ;
+
+r_incidence1549_10y_4_1 = incidence1549_10y_4 / incidence1549_10y_1 ;
+r_incidence1549_10y_5_1 = incidence1549_10y_5 / incidence1549_10y_1 ;
+
+r_mtct_prop_10y_4_1 = mtct_prop_10y_4 / mtct_prop_10y_1 ;
+r_mtct_prop_10y_5_1 = mtct_prop_10y_5 / mtct_prop_10y_1 ;
+
+r_n_mtct_10y_4_1 = n_mtct_10y_4 / n_mtct_10y_1 ;
+r_n_mtct_10y_5_1 = n_mtct_10y_5 / n_mtct_10y_1 ;
+
+
 p_diag_w_24 = p_diag_w_24 / 100;
 p_diag_m_24 = p_diag_m_24 / 100;
 
@@ -3296,6 +3336,54 @@ p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24
 ;
 run;
 ods html close;
+
+
+ods html;
+proc means median p5 p95 mean lclm uclm;
+var
+d_n_self_tested_10y_4_1  n_self_tested_10y_4  n_self_tested_10y_1 
+d_n_self_tested_10y_5_1  n_self_tested_10y_5  n_self_tested_10y_1 
+
+d_n_tested_10y_4_1  n_tested_10y_4  n_tested_10y_1 
+d_n_tested_10y_5_1  n_tested_10y_5  n_tested_10y_1 
+
+d_p_diag_10y_4_1  p_diag_10y_4  p_diag_10y_1
+d_p_diag_10y_5_1  p_diag_10y_5  p_diag_10y_1
+
+d_p_onart_diag_10y_4_1  p_onart_diag_10y_4  p_onart_diag_10y_1
+d_p_onart_diag_10y_5_1  p_onart_diag_10y_5  p_onart_diag_10y_1
+
+d_p_onart_vl1000_10y_4_1  p_onart_vl1000_10y_4  p_onart_vl1000_10y_1
+d_p_onart_vl1000_10y_5_1  p_onart_vl1000_10y_5  p_onart_vl1000_10y_1
+
+d_p_vl1000_10y_4_1  p_vl1000_10y_4  p_vl1000_10y_1
+d_p_vl1000_10y_5_1  p_vl1000_10y_5  p_vl1000_10y_1
+
+d_prevalence_vg1000_10y_4_1  prevalence_vg1000_10y_4  prevalence_vg1000_10y_1
+d_prevalence_vg1000_10y_5_1  prevalence_vg1000_10y_5  prevalence_vg1000_10y_1
+
+r_prevalence_vg1000_10y_4_1  prevalence_vg1000_10y_4  prevalence_vg1000_10y_1
+r_prevalence_vg1000_10y_5_1  prevalence_vg1000_10y_5  prevalence_vg1000_10y_1
+
+d_n_death_hiv_10y_4_1  n_death_hiv_10y_4  n_death_hiv_10y_1 
+d_n_death_hiv_10y_5_1  n_death_hiv_10y_5  n_death_hiv_10y_1 
+
+r_n_death_hiv_10y_4_1  n_death_hiv_10y_4  n_death_hiv_10y_1 
+r_n_death_hiv_10y_5_1  n_death_hiv_10y_5  n_death_hiv_10y_1 
+
+r_incidence1549_10y_4_1  incidence1549_10y_4  incidence1549_10y_1 
+r_incidence1549_10y_5_1  incidence1549_10y_5  incidence1549_10y_1 
+
+r_n_mtct_10y_4_1  n_mtct_10y_4  n_mtct_10y_1 
+r_n_mtct_10y_5_1  n_mtct_10y_5  n_mtct_10y_1 
+
+n_prep_any_10y_1 n_prep_any_10y_4 n_prep_any_10y_5 
+
+;
+run;
+ods html close;
+
+
 
 
 ods html;

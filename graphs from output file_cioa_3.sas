@@ -42,7 +42,7 @@ p_newp_ge1_ = p_newp_ge1;
 if option ne 1 and option ne 2;
  
 
-%let single_var = prevalence_vg1000_                            ;
+%let single_var = n_mtct                           ;
 
 
 
@@ -712,7 +712,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -723,12 +723,6 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to  8000   by 1
 series  x=cald y=p50_n_mtct_0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_n_mtct_0 upper=p95_n_mtct_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_n_mtct_1 / lineattrs = (color=blue      thickness = 4);
-band    x=cald lower=p5_n_mtct_1 upper=p95_n_mtct_1 / transparency=0.9 fillattrs = (color=blue     ) legendlabel= "90% range";
-
-series  x=cald y=p50_n_mtct_2 / lineattrs = (color=green     thickness = 4);
-band    x=cald lower=p5_n_mtct_2 upper=p95_n_mtct_2 / transparency=0.9 fillattrs = (color=green    ) legendlabel= "90% range";
-
 series  x=cald y=p50_n_mtct_3 / lineattrs = (color=darkblue    thickness = 4);
 band    x=cald lower=p5_n_mtct_3 upper=p95_n_mtct_3 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
 
@@ -737,7 +731,7 @@ band    x=cald lower=p5_n_mtct_4 upper=p95_n_mtct_4 / transparency=0.9 fillattrs
 
 run;quit;
 
-*/
+
 
 /*
 
