@@ -41,7 +41,7 @@ p_newp_ge1_ = p_newp_ge1;
 
  
 
-%let single_var =  n_prep_any                            ;
+%let single_var =  n_death_hiv                          ;
 
 
 
@@ -319,7 +319,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -338,7 +338,7 @@ band    x=cald lower=p5_p_vl1000__2 upper=p95_p_vl1000__2 / transparency=0.9 fil
 
 run;quit;
 
-*/
+
 
 /*
 
@@ -619,7 +619,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -638,7 +638,7 @@ band    x=cald lower=p5_n_death_hiv_2 upper=p95_n_death_hiv_2 / transparency=0.9
 
 run;quit;
 
-*/
+
 
 /*
 
@@ -946,7 +946,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -965,7 +965,7 @@ band    x=cald lower=p5_n_prep_any_2 upper=p95_n_prep_any_2 / transparency=0.9 f
 
 run;quit;
 
-
+*/
 
 /*
 
