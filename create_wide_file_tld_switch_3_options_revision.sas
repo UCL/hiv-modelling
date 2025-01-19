@@ -2272,7 +2272,7 @@ proc glm; model d_netdaly500_2_3 =
 res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
 rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
 incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
-rr_int_tox   rel_dol_tox   /* check for any other parameters */
+rr_int_tox   rel_dol_tox  inc_cat  /* check for any other parameters */
 / solution ;
 
 run;
