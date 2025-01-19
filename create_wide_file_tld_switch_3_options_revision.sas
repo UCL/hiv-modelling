@@ -2293,6 +2293,75 @@ run;
 ods html close;
 
 
+proc glm data=b; model lowest_netdaly_2_23 = prevalence1549_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = incidence1549_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = p_diag_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = p_onart_diag_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = p_onart_vl1000_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = p_vl1000_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = prevalence_vg1000_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = p_adh_lt80_iicu_tldsw_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = p_vis_tldsw_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = p_dol_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = p_iime_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = p_onart_cd4_l200_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = prop_r_dol_ge_p5_uvl2_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = prop_tldsw_uvl2_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = n_death_hiv_24 / solution;  
+proc glm data=b; model lowest_netdaly_2_23 = p_dol_start_nactive_2_r_1y_3 / solution;          
+run;     
+
+
+proc logistic data=b; model lowest_netdaly_2_23 = 
+
+prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
+p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 p_dol_start_nactive_2_r_1y_3  ;
+
+run;
+
+
+
+data c; set b;
+
+prevalence1549_24 = prevalence1549_24 * 100;
+incidence1549_24 = incidence1549_24 * 10;
+p_diag_24 = p_diag_24 * 100;
+p_onart_diag_24 = p_onart_diag_24 * 100;
+p_onart_vl1000_24 = p_onart_vl1000_24 * 100;
+p_vl1000_24 = p_vl1000_24 * 100;
+prevalence_vg1000_24 = prevalence_vg1000_24 * 1000;
+prop_r_dol_ge_p5_uvl2_24 = prop_r_dol_ge_p5_uvl2_24 * 100;
+prop_tldsw_uvl2_24 = prop_tldsw_uvl2_24 * 100;
+
+x = 1 - lowest_netdaly_2_23;
+
+proc means; var prevalence1549_24 incidence1549_24 prevalence_vg1000_24 prop_r_dol_ge_p5_uvl2_24; run; 
+
+
+proc logistic data=c; model x = prevalence1549_24 ; run; 
+proc logistic data=c; model x = incidence1549_24 ; run; 
+proc logistic data=c; model x = p_diag_24 ; run; 
+proc logistic data=c; model x = p_onart_diag_24 ; run; 
+proc logistic data=c; model x = p_onart_vl1000_24 ; run; 
+proc logistic data=c; model x = p_vl1000_24 ; run; 
+proc logistic data=c; model x = prevalence_vg1000_24 ; run; 
+proc logistic data=c; model x = prop_r_dol_ge_p5_uvl2_24 ; run; 
+proc logistic data=c; model x = prop_tldsw_uvl2_24 ; run; 
+
+proc logistic data=c; model x = p_adh_lt80_iicu_tldsw_24 ; run; 
+proc logistic data=c; model x = p_vis_tldsw_24 ; run; 
+proc logistic data=c; model x = p_dol_24 ; run; 
+proc logistic data=c; model x = p_iime_24 ; run; 
+proc logistic data=c; model x = p_onart_cd4_l200_24 ; run; 
+proc logistic data=c; model x = n_death_hiv_24 ; run; 
+proc logistic data=c; model x = p_dol_start_nactive_2_r_1y_3 ; run;         
+           
+run;
+
+
+
+
+
 *----- baseline charateristics --------------- ;
 * prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
 p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 ;
