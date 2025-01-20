@@ -25,10 +25,10 @@ run;
 
 ***table 1 - Currently not included in the paper;
 proc means n p50 p5 p95 min max;var
-prevalence1549_23 	 prevalence1549w_23 	prevalence1549m_23 	 incidence1549_23 	incidence1549w_23 	incidence1549m_23
+prevalence1549__23 	 prevalence1549w_23 	prevalence1549m_23 	 incidence1549__23 	incidence1549w_23 	incidence1549m_23
 p_diag_23			 p_diag_w_23			p_diag_m_23 		 p_onart_diag_23	p_onart_diag_w_23	p_onart_diag_m_23
-p_onart_vl1000_23	 p_onart_vl1000_w_23	p_onart_vl1000_m_23	 p_vl1000_23 		
-p_vg1000_23 		 prevalence_vg1000_23
+p_onart_vl1000__23	 p_onart_vl1000_w_23	p_onart_vl1000_m_23	 p_vl1000__23 		
+p_vg1000__23 		 prevalence_vg1000__23
 
 incidence_sw_23		p_fsw_newp0__23
 
