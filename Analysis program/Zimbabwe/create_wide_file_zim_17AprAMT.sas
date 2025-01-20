@@ -747,7 +747,7 @@ dcost_amt225_ dcost_amt230_ dcost_amt235_ dcost_amt240_ dcost_amt245_ dcost_amt2
 
 effect_sw_prog_newp
 s_tested s_tested_m s_tested_f 
-
+n_hiv n_onart
 ;
 
 
@@ -757,9 +757,9 @@ proc print;var cald option dcost_amt;run ;
 proc sort data=y;by run option;run;
 
 
-data a.fsw_17_04_24_short_a; set y;run;
+data a.fsw_17_04_24_short_b; set y;run;
 
-data y; set a.fsw_17_04_24_short_a;run;
+data y; set a.fsw_17_04_24_short_b;run;
 
 
 proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2011<= cald <2014 and option=0 ;run;
@@ -877,6 +877,7 @@ data &v ; merge y_23 t_30 t_24_25 t_24_29 t_24_44 t_24_74;
 %var(v=dcost_amt185_); %var(v=dcost_amt190_); %var(v=dcost_amt195_); %var(v=dcost_amt200_); %var(v=dcost_amt205_);
 %var(v=dcost_amt210_); %var(v=dcost_amt215_); %var(v=dcost_amt220_); %var(v=dcost_amt225_); %var(v=dcost_amt230_);
 %var(v=dcost_amt235_); %var(v=dcost_amt240_); %var(v=dcost_amt245_); %var(v=dcost_amt250_);
+%var(v=n_hiv);			%var(v=n_onart);
 
 run;
 
@@ -918,7 +919,7 @@ dcost_amt115_ dcost_amt120_ dcost_amt125_ dcost_amt130_ dcost_amt135_ dcost_amt1
 dcost_amt150_ dcost_amt155_ dcost_amt160_ dcost_amt165_ dcost_amt170_ dcost_amt175_ dcost_amt180_
 dcost_amt185_ dcost_amt190_ dcost_amt195_ dcost_amt200_ dcost_amt205_ dcost_amt210_ dcost_amt215_
 dcost_amt220_ dcost_amt225_ dcost_amt230_ dcost_amt235_ dcost_amt240_ dcost_amt245_ dcost_amt250_
-
+n_hiv	n_onart
 ;
 
 proc sort; by run;run;
@@ -942,7 +943,8 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_zim_17_04_24AMTa;
+*Suffix b just includes 2 more variables, n_onart and n_hiv;
+data a.wide_fsw_zim_17_04_24AMTb;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
