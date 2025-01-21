@@ -3,7 +3,8 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a; 
-set a.wide_fsw_zim_17_04_24AMTa; *The 'a' suffix should include different sw costs for amethist, everything else the same;
+set a.wide_fsw_zim_17_04_24AMTb; 
+
 
 ***Within run differences;
 d_sw_prog_vis = (p_sw_prog_vis_30_2 - p_sw_prog_vis_30_1)*100;
@@ -23,14 +24,21 @@ d_p_onart_diag = (p_onart_diag_30_2 - p_onart_diag_30_1)*100;
 d_p_onart_vl1000 = (p_onart_vl1000__30_2 - p_onart_vl1000__30_1)*100;
 run;
 
-***table 1 - Currently not included in the paper;
-proc means n p50 p5 p95 min max;var
+***table Ao - use either 2020 or 2023 estimates - whichever is closest to observed data;
+proc means n p50 p5 p95;var n_hiv_23  n_onart_23
 prevalence1549__23 	 prevalence1549w_23 	prevalence1549m_23 	 incidence1549__23 	incidence1549w_23 	incidence1549m_23
 p_diag_23			 p_diag_w_23			p_diag_m_23 		 p_onart_diag_23	p_onart_diag_w_23	p_onart_diag_m_23
 p_onart_vl1000__23	 p_onart_vl1000_w_23	p_onart_vl1000_m_23	 p_vl1000__23 		
 p_vg1000__23 		 prevalence_vg1000__23
 
 incidence_sw_23		p_fsw_newp0__23
+
+prevalence1549__20 	 prevalence1549w_20 	prevalence1549m_20 	 incidence1549__20 	incidence1549w_20 	incidence1549m_20
+p_diag_20			 p_diag_w_20			p_diag_m_20 		 p_onart_diag_20	p_onart_diag_w_20	p_onart_diag_m_20
+p_onart_vl1000__20	 p_onart_vl1000_w_20	p_onart_vl1000_m_20	 p_vl1000__20 		
+p_vg1000__20 		 prevalence_vg1000__20
+
+incidence_sw_20		p_fsw_newp0__20
 
 ;run;
 
@@ -40,8 +48,7 @@ incidence_sw_23		p_fsw_newp0__23
 proc means n p50 p5 p95 mean;var
 n_sw_1549__23		prop_w_1549_sw_23 		prop_w_ever_sw_23		act_dur_sw_23 
 p_sw_age1519__23	p_sw_age2024__23		p_sw_age2529__23 		p_sw_age3039__23 p_sw_age40pl__23  
-p_age_deb_sw1519__23 p_age_deb_sw2024__23	p_age_deb_sw2529__23	p_age_deb_sw3039__23	p_age_deb_sw40pl__23
-p_actdur_0to3__23  p_actdur_3to5__23     p_actdur_6to9__23  	p_actdur_10to19__23 
+p_age_deb_sw1519__23 p_age_deb_sw2029__23	p_age_deb_sw3039__23	p_age_deb_sw40pl__23
 p_totdur_0to3__23  p_totdur_3to5__23     p_totdur_6to9__23  	p_totdur_10to19__23 
 p_fsw_newp0__23 prop_sw_onprep_23
 p_sti_sw_23

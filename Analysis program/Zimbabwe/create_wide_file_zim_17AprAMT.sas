@@ -653,6 +653,8 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * p_age_deb_sw1519_;			p_age_deb_sw1519_ = s_age_deb_sw1519_ /s_sw_1564;
 * p_age_deb_sw2024_;			p_age_deb_sw2024_ = s_age_deb_sw2024_ /s_sw_1564;
 * p_age_deb_sw2529_;			p_age_deb_sw2529_ = s_age_deb_sw2529_ /s_sw_1564;
+* p_age_deb_sw2029_;			p_age_deb_sw2029_ = (s_age_deb_sw2024_ + s_age_deb_sw2529_) /s_sw_1564;
+
 * p_age_deb_sw3039_;			p_age_deb_sw3039_ = s_age_deb_sw3039_ /s_sw_1564;
 * p_age_deb_sw40pl_;		    p_age_deb_sw40pl_ =	s_age_deb_swov40_ /s_sw_1564;
 
@@ -714,7 +716,7 @@ n_tested
 
 n_sw_1564_  	 	 n_sw_1549_ 	 	prop_w_1564_sw		prop_w_1549_sw 	 	prop_w_ever_sw  
 p_fsw1519_	  		 p_fsw2024_		  	p_fsw2529_			p_fsw3039_	
-p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_sw_age3039_ 		p_sw_age40pl_
+p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_age_deb_sw2029_	p_sw_age3039_ 		p_sw_age40pl_
 p_age_deb_sw1519_  	 p_age_deb_sw2024_  p_age_deb_sw2529_   p_age_deb_sw3039_   p_age_deb_sw40pl_
 sw_episodes 	  	 p_sw_gt1ep
 p_fsw_newp0_   	 	 p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_  p_fsw_newpov130_
@@ -751,13 +753,221 @@ n_hiv n_onart
 ;
 
 
-
-proc print;var cald option dcost_amt;run ;
-
 proc sort data=y;by run option;run;
 
+data sw_diag;
+set y;
 
-data a.fsw_17_04_24_short_b; set y;run;
+/*proc freq;table p_diag_sw;where cald=2023.75 and option=0;run;*/
+if cald=2023.75 and p_diag_sw>=   0.9193548387 then high_diag_sw=1;
+
+
+/*proc freq;table run;where high_diag_sw=1;run;*/
+
+if run in 
+
+(
+11562229
+12889012
+14571392
+20239101
+21265720
+37615938
+47355514
+51504038
+56544085
+65590063
+69019180
+71035187
+84207345
+101829858
+104031408
+106558738
+116414168
+116790148
+118546145
+121435130
+125975535
+126568357
+137235573
+145900688
+147109873
+157208663
+168595992
+168796533
+174935994
+177108627
+178447219
+203613164
+206070305
+212102981
+231652064
+234756274
+252258795
+261546633
+263245141
+267440134
+273255508
+284993843
+285004470
+286548493
+312853947
+322359851
+325068374
+325768316
+329268796
+330579111
+332070334
+334840282
+336591821
+336773970
+337978427
+338447775
+340503531
+349275135
+354078333
+354153856
+363202093
+370798767
+375476270
+384135560
+384281442
+385713605
+388691875
+391737358
+392503618
+400674687
+403598296
+404050636
+408202869
+413449821
+422746474
+435854068
+446638656
+453401926
+462389491
+462913559
+473056802
+488194036
+492056858
+496452735
+496633105
+497970358
+526345883
+533753676
+534907434
+535983159
+537078945
+537855311
+543624985
+544296808
+545399293
+546808382
+549183936
+566844722
+568700077
+574428649
+576498125
+580527453
+584296480
+588848596
+595562956
+602987891
+608388424
+610054023
+618488210
+620372307
+627828110
+634954760
+635748491
+642076385
+646480925
+651118210
+652818478
+657931876
+664543644
+672170177
+678110079
+683728739
+684898465
+694651562
+695057373
+699568704
+701472347
+701940160
+702108512
+705454944
+718796512
+719217327
+732298255
+734896150
+738276260
+745689335
+748649670
+755409844
+757049141
+774127301
+781582688
+781835801
+782142976
+782350359
+783219568
+794063549
+795046430
+800738398
+811049947
+818889721
+821433476
+823065979
+823259445
+830824015
+832740883
+839375875
+842109868
+844253713
+844962778
+847107397
+853271698
+861992896
+871111021
+875433698
+876002428
+880380282
+885529081
+886833028
+889183577
+890748674
+893746304
+894081429
+899929312
+907009291
+909035068
+914037420
+921053538
+936349690
+940405486
+941871805
+942016870
+948252378
+953188799
+956555299
+957408643
+962638414
+962761568
+966643233
+968551573
+973246577
+993539900
+)
+
+then delete;
+
+
+proc means n mean p50;var p_diag_sw;where cald=2023;run;
+
+
+
+data a.fsw_17_04_24_short_b; set sw_diag;run;
 
 data y; set a.fsw_17_04_24_short_b;run;
 
@@ -809,6 +1019,8 @@ options nomprint;
 
 %macro var(v=);
 
+***outputs for PHIA comparison in 2020;
+proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run; where 2020 <= cald < 2021; 
 
 ***baseline outputs in 2023;
 proc means  noprint data=y; var &v; output out=y_23 mean= &v._23; by run; where 2024 <= cald < 2025; 
@@ -830,7 +1042,7 @@ proc sort data=y_24_29; by run; proc transpose data=y_24_29 out=t_24_29 prefix=&
 proc sort data=y_24_44; by run; proc transpose data=y_24_44 out=t_24_44 prefix=&v._24_44_; var &v._24_44; by run;
 proc sort data=y_24_74; by run; proc transpose data=y_24_74 out=t_24_74 prefix=&v._24_74_; var &v._24_74; by run;
 
-data &v ; merge y_23 t_30 t_24_25 t_24_29 t_24_44 t_24_74;  
+data &v ; merge y_20 y_23 t_30 t_24_25 t_24_29 t_24_44 t_24_74;  
 
 %mend var;
 
@@ -845,7 +1057,7 @@ data &v ; merge y_23 t_30 t_24_25 t_24_29 t_24_44 t_24_74;
 %var(v=p_fsw1519_);	  	%var(v=p_fsw2024_);		    %var(v=p_fsw2529_);			%var(v=p_fsw3039_);	
 
 %var(v=p_sw_age1519_);	  %var(v=p_sw_age2024_);	%var(v=p_sw_age2529_) 		%var(v=p_sw_age3039_);	%var(v=p_sw_age40pl_);
-%var(v=p_age_deb_sw1519_);%var(v=p_age_deb_sw2024_);%var(v=p_age_deb_sw2529_)  	%var(v=p_age_deb_sw3039_); %var(v=p_age_deb_sw40pl_);
+%var(v=p_age_deb_sw1519_);%var(v=p_age_deb_sw2024_);%var(v=p_age_deb_sw2529_)  	%var(v=p_age_deb_sw2029_) %var(v=p_age_deb_sw3039_); %var(v=p_age_deb_sw40pl_);
 
 %var(v=sw_episodes); 	%var(v=p_sw_gt1ep);
 %var(v=p_fsw_newp0_);   %var(v=p_fsw_newp1to5_);    %var(v=p_fsw_newp6to40_);  	%var(v=p_fsw_newp41to130_);%var(v=p_fsw_newpov130_);
@@ -889,10 +1101,10 @@ p_onart_diag_m 	p_onart_vl1000_		p_onart_vl1000_w   	p_onart_vl1000_m  n_tested
 p_vg1000_ 		p_vl1000_			prevalence_vg1000_
 
 n_sw_1564_      n_sw_1549_		    prop_w_1564_sw		prop_w_1549_sw 	prop_w_ever_sw  
-p_fsw1519_	  	p_fsw2024_		    p_fsw2529_			p_fsw3039_	
+p_fsw1519_	  	p_fsw2024_		    p_fsw2529_					p_fsw3039_	
 
 p_sw_age1519_	  p_sw_age2024_		p_sw_age2529_ 		p_sw_age3039_ 	p_sw_age40pl_
-p_age_deb_sw1519_ p_age_deb_sw2024_ p_age_deb_sw2529_  	p_age_deb_sw3039_ p_age_deb_sw40pl_
+p_age_deb_sw1519_ p_age_deb_sw2024_ p_age_deb_sw2529_  	p_age_deb_sw2029_	p_age_deb_sw3039_ p_age_deb_sw40pl_
 
 sw_episodes 	p_sw_gt1ep
 p_fsw_newp0_   	p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_	p_fsw_newpov130_
@@ -943,7 +1155,8 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-*Suffix b just includes 2 more variables, n_onart and n_hiv;
+*Suffix b includes 2 more variables, n_onart and n_hiv and restricts runs to those with lower % SW diag to match usual
+care AMETHIST;
 data a.wide_fsw_zim_17_04_24AMTb;
 merge   wide_outputs  wide_par ;  
 by run;run;
