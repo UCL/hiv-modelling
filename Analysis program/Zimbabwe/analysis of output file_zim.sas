@@ -63,13 +63,13 @@ proc means n mean p5 p95;var
 p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1
 p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
 p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
-incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1 
+incidence1549__30_1	prevalence1549__30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000__30_1 
 
 /*AMETHIST*/
 p_sw_prog_vis_30_2  p_tested_past_year_sw_30_2
 p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2		p_fsw_newp0__30_2	prop_sw_onprep_30_2
 p_sti_sw_30_2		incidence_sw_30_2	prevalence_sw_30_2
-incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2
+incidence1549__30_2	prevalence1549__30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000__30_2
 
 ;
 run;
