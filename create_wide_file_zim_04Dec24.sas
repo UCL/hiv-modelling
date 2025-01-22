@@ -1,38 +1,32 @@
-libname a  "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
 
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Zim\";
+
+***The filename says fsw_zim but it's just Zim, this was a mistake in the run file;
 data a;
-set a.mlw_04dec24;
+set a.fsw_zim_04dec24;
 if run=. then delete;
-
-*if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
-takes ages to run so cut down dataset;
-*if run ne  896923088 then delete;
 
 proc sort;by run;run;
 proc freq;table cald run;run;
 
-
 data sf;
 set a;
  
-*Malawi;
-*Source for Zimbabwe population is https://wdi.worldbank.org/table/2.1 (58%>15);
-*accessed 20/6/2024;
+*Zimbabwe;
+*Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
+*accessed 9/2/2023;
+* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2022 = (20400000 * 0.581) / s_alive; 
+sf_2022 = (16320000 * 0.581) / s_alive; 
 sf=sf_2022;
 keep run sf_2022 sf;
 proc sort; by run;run;
 
 
-
-
 data y; 
 merge a sf;
 by run ;
-
-*if run ne  989218009 then delete;
 
 ***these are used for checking the raw data so not scaled up;
 s_primary1564m = s_primary1549m + s_primary5054m + s_primary5559m + s_primary6064m;
@@ -866,7 +860,7 @@ n_hiv1519_  n_hiv2024_  n_hiv2529_  n_hiv3034_  n_hiv3539_  n_hiv4044_  n_hiv454
 n_hiv1519m  n_hiv2024m  n_hiv2529m  n_hiv3034m  n_hiv3539m  n_hiv4044m  n_hiv4549m  n_hiv5054m  n_hiv5559m  n_hiv6064m n_hiv6569m  n_hiv7074m  n_hiv7579m  n_hiv8084m  
 n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w  n_hiv4549w  n_hiv5054w  n_hiv5559w  n_hiv6064w  n_hiv6569w  n_hiv7074w  n_hiv7579w  n_hiv8084w 
 
-s_primary
+s_primary	s_primary1564m s_primary1564w
 
 n_primary1564_ n_primary1564m n_primary1564w
 
@@ -1340,7 +1334,8 @@ run;
 data y1;
 set y;
 
-*if run ne 972898928 then delete;
+if run ne 972898928 then delete;
+proc print;var n_primary1564_;run;
 *if run ne  975089766 then delete;
 *if run ne 989218009 then delete;
 
@@ -1524,7 +1519,7 @@ n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 437 ;
+%let nfit = 123  ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -2031,7 +2026,6 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 
 run;
 
-
 ***THESE WERE MISSING FROM BASELINE SHEET SO MANUALLY ADDING THEM INTO EXCEL;
 data new_inf;
 merge l_n_primary1564m	l_n_primary1564W	l_n_primary1564_;
@@ -2039,14 +2033,13 @@ run;
 
 proc print;var cald mean_n_primary1564m	mean_n_primary1564W	mean_n_primary1564_;run;
 
-
 ***DEATHS OUTPUTS;
 ***Create datasets that resemble the Excel template. Order these in the same order as the Excel template;
 data a.wide_base;
 merge 
 l_n_alive1564_m		l_n_alive1564_w		l_n_alive1564_  	 l_prevalence1564m 		l_prevalence1564w	l_prevalence1564_   
-/*l_incidence1564_m	l_incidence1564_w	l_incidence1564_*/	
-l_n_primary1564m	l_n_primary1564W	l_n_primary1564_	 l_p_diag_m		  		l_p_diag_w		    l_p_diag
+l_n_primary1564m	l_n_primary1564W	l_n_primary1564_
+/*l_incidence1564_m	l_incidence1564_w	l_incidence1564_*/	 l_p_diag_m		  		l_p_diag_w		    l_p_diag
 l_p_onart_diag_m	l_p_onart_diag_w  	l_p_onart_diag  	 l_p_onart_vl1000_m 	l_p_onart_vl1000_w  l_p_onart_vl1000_ 	 
 ;run;
 
@@ -2093,7 +2086,7 @@ l_n_dead_Agt6_cd4gt200&age		l_n_dead_Agt6_cd4gt200&mage 		l_n_dead_Agt6_cd4gt200
 ods listing close;
 ods results off;
 
-ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis04Dec25.xlsx"
+ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_ZIM04Dec24.xlsx"
 options(sheet_name='base' start_at='A2');
 proc print data=a.wide_base noobs;run;
 

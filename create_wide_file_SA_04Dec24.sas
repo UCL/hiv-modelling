@@ -1,30 +1,21 @@
-libname a  "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
+libname a  "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths SA\";
 
 data a;
-set a.mlw_04dec24;
+set a.sa_04dec24;
 if run=. then delete;
 
-*if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
-takes ages to run so cut down dataset;
-*if run ne  896923088 then delete;
-
 proc sort;by run;run;
-proc freq;table cald run;run;
-
+proc freq;table cald run option;run;
 
 data sf;
-set a;
- 
-*Malawi;
-*Source for Zimbabwe population is https://wdi.worldbank.org/table/2.1 (58%>15);
-*accessed 20/6/2024;
-if cald=2022.5;
+set a ;
+
+if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2022 = (20400000 * 0.581) / s_alive; 
+sf_2022 = (58500000 * 0.706) / s_alive;  * statistica 70.6% of sa population in 2019 >= age 15 (https://www.statista.com/statistics/1116077/total-population-of-south-africa-by-age-group/);
 sf=sf_2022;
 keep run sf_2022 sf;
-proc sort; by run;run;
-
+proc sort; by run;
 
 
 
@@ -1524,7 +1515,7 @@ n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 437 ;
+%let nfit = 66  ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -2032,21 +2023,12 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 run;
 
 
-***THESE WERE MISSING FROM BASELINE SHEET SO MANUALLY ADDING THEM INTO EXCEL;
-data new_inf;
-merge l_n_primary1564m	l_n_primary1564W	l_n_primary1564_;
-run;
-
-proc print;var cald mean_n_primary1564m	mean_n_primary1564W	mean_n_primary1564_;run;
-
-
 ***DEATHS OUTPUTS;
 ***Create datasets that resemble the Excel template. Order these in the same order as the Excel template;
 data a.wide_base;
 merge 
 l_n_alive1564_m		l_n_alive1564_w		l_n_alive1564_  	 l_prevalence1564m 		l_prevalence1564w	l_prevalence1564_   
-/*l_incidence1564_m	l_incidence1564_w	l_incidence1564_*/	
-l_n_primary1564m	l_n_primary1564W	l_n_primary1564_	 l_p_diag_m		  		l_p_diag_w		    l_p_diag
+l_incidence1564_m	l_incidence1564_w	l_incidence1564_	 l_p_diag_m		  		l_p_diag_w		    l_p_diag
 l_p_onart_diag_m	l_p_onart_diag_w  	l_p_onart_diag  	 l_p_onart_vl1000_m 	l_p_onart_vl1000_w  l_p_onart_vl1000_ 	 
 ;run;
 
@@ -2093,7 +2075,7 @@ l_n_dead_Agt6_cd4gt200&age		l_n_dead_Agt6_cd4gt200&mage 		l_n_dead_Agt6_cd4gt200
 ods listing close;
 ods results off;
 
-ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis04Dec25.xlsx"
+ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths SA_HIVSynthesis04Dec24.xlsx"
 options(sheet_name='base' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
@@ -2153,7 +2135,7 @@ l_n_I_offart_SIgt6m&age		l_n_I_offart_SIgt6m&mage	l_n_I_offart_SIgt6m&wage
 ods listing close;
 ods results off;
 
-ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans_HIVSynthesis04Jun24.xlsx"
+ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans_SA_HIVSynthesis24Jun24.xlsx"
 options(sheet_name='base1' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
