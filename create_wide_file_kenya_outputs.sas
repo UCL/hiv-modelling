@@ -165,6 +165,23 @@ dtaz_cost = s_cost_taz * &discount * sf * 4 / 1000;
 defa_cost = s_cost_efa * &discount * sf * 4 / 1000;
 ddol_cost = s_cost_dol * &discount * sf * 4 / 1000;
 
+* adjusting costing for kenya 
+
+- total costs including clinic costs and testing oral 85  la 240  vr 220
+
+- in model code have used 
+
+oral $60 + $40 clinic + $28 testing = $128 - so drug cost becomes $17 to give total $85 - so multiply s_dcost_prep_oral by 17/60 
+la $240 + $60 clinic + $28 testing = $328 - so drug cost becomes $152 to give total $240 - so multiply s_dcost_prep_inj by 152/240
+vr $180 + $40 clinic + $28 testing = $248 - so drug cost becomes $152 to give total $220 - so multiply s_dcost_prep_vr by 152/180
+
+;
+
+s_dcost_prep_oral = s_dcost_prep_oral * 17 / 60; 
+s_dcost_prep_inj = s_dcost_prep_inj * 152 / 240; 
+s_dcost_prep_vr = s_dcost_prep_vr * 152 / 180; 
+
+s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_inj + s_dcost_prep_vr;
 
 if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_cascade_interventions=. then s_dcost_cascade_interventions=0;
