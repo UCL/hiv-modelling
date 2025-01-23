@@ -9285,7 +9285,7 @@ end;
 		if pregnant=1 then e_rate_restart = e_rate_restart*3; * jul18;
 		if return   =1 then e_rate_restart = 1;
 
-		if d < e_rate_restart  then do;restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; end;
+		if d < e_rate_restart  then do;restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0;date_last_restart=caldate{t}; end;
 		if return    =1 and restart=1 then do; 
 			if date_first_art_exp_initiation=. then date_first_art_exp_initiation=caldate{t};  
 			date_last_return_restart=caldate{t}; * oct16;

@@ -14,7 +14,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 5000  ; 
+%let population = 100000  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -20966,13 +20966,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
-
-
-proc print;var caldate&j death yrart cd4_dead dead_Agt6_cd4gt200 dead_Agt6_cd4lt200;
-
-where dead_undiag ne 1 and dead_diag_not_linked ne 1 and onart=1 and death ne .;run;
-
-
 
 
 * procs;
