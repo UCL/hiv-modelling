@@ -1,5 +1,9 @@
 
+***THIS PROGRAM HAS NOT BEEN RUN, BUT PREVIOUS ERRORS HAVE BEEN CORRECTED. 
 *dead_int_lost_w had a typo, it was counting gender=1 instead of 2. Typo corrected, data manipulated in Excel file;
+*date_last_return_restart changed to date_last_restart;
+*inc cat age for malawi was missing (line 1452);
+*dead_Agt6_cd4gt200 gender categorisation had a typo in it. It previously saif if dead_Agt6_cd4gt200_m=1 instead of dead_Agt6_cd4gt200=1;;
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
@@ -10,7 +14,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 5000  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -1431,6 +1435,24 @@ if cum12 <= e          then age= 55+rand('uniform')*10;
 if caldate1=1984 and inc_cat=4 then do;
 e=rand('uniform');
 if 0.0 <= e < inc1    then age=-74+rand('uniform')*9;																				   
+if inc1 <= e < cum2   then age=-65+rand('uniform')*10;  
+if cum2 <= e < cum3   then age=-55+rand('uniform')*10;  
+if cum3 <= e < cum4   then age=-45+rand('uniform')*10;  
+if cum4 <= e < cum5   then age=-35+rand('uniform')*10;  
+if cum5 <= e < cum6   then age=-25+rand('uniform')*10;  
+if cum6 <= e < cum7   then age=-15+rand('uniform')*10;  
+if cum7 <= e < cum8   then age=-5+rand('uniform')*10;  
+if cum8 <= e < cum9   then age=  5+rand('uniform')*10;  
+if cum9 <= e < cum10  then age= 15+rand('uniform')*10;  
+if cum10<= e < cum11  then age= 25+rand('uniform')*10;  
+if cum11 <= e < cum12  then age= 35+rand('uniform')*10;  
+if cum12 <= e < cum13  then age= 45+rand('uniform')*10;  
+if cum13 <= e          then age= 55+rand('uniform')*10;  
+end;
+
+if country = 'Malawi' then do;
+e=rand('uniform');
+if 0.0 <= e < inc1    then age=-75+rand('uniform')*10;																				   
 if inc1 <= e < cum2   then age=-65+rand('uniform')*10;  
 if cum2 <= e < cum3   then age=-55+rand('uniform')*10;  
 if cum3 <= e < cum4   then age=-45+rand('uniform')*10;  
@@ -9282,7 +9304,7 @@ end;
 		if pregnant=1 then e_rate_restart = e_rate_restart*3; * jul18;
 		if return   =1 then e_rate_restart = 1;
 
-		if d < e_rate_restart  then do;restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; end;
+		if d < e_rate_restart  then do;restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0;date_last_restart=caldate{t}; end;
 		if return    =1 and restart=1 then do; 
 			if date_first_art_exp_initiation=. then date_first_art_exp_initiation=caldate{t};  
 			date_last_return_restart=caldate{t}; * oct16;
@@ -17308,10 +17330,10 @@ if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and onart=1 and (caldate&j
 if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and onart=1 and (caldate&j - yrart <= 0.5) and date_last_interrupt = . and  . < cd4art >=200 then dead_Alt6_artcd4gt200=1;
 
 * 5	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 <200  ;
-if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and . < cd4_tcur0 <200 then dead_I_Alt6_Rcd4lt200=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and date_last_interrupt ne . and date_last_restart ne . and (caldate&j - date_last_restart <= 0.5) and . < cd4_tcur0 <200 then dead_I_Alt6_Rcd4lt200=1;
 
 * 6	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 >=200 ;
-if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and cd4_tcur0 >=200 then dead_I_Alt6_Rcd4gt200=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and date_last_interrupt ne . and date_last_restart ne . and (caldate&j - date_last_restart <= 0.5) and cd4_tcur0 >=200 then dead_I_Alt6_Rcd4gt200=1;
 
 * 7	On ART (irrespective of time on ART), current VL <1000;
 if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and vl1000=1 then dead_A_vl1000=1;
@@ -17338,10 +17360,10 @@ if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart 
 if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1  and date_last_interrupt=date_1st_int then dead_1stint_lost=1; 
 
 * 15	ART interrupted, subsequent interruption, < 6 months from last interruption ;
-if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then dead_subintlt6_lost=1; 
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 and date_last_restart ne . and (date_last_interrupt - date_last_restart <=0.5) then dead_subintlt6_lost=1; 
 
 * 16	ART interrupted, subsequent interruption, > 6 months from last interruption ;
-if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart >0.5) then dead_subintgt6_lost=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 and date_last_restart ne . and (date_last_interrupt - date_last_restart >0.5) then dead_subintgt6_lost=1;
 
 * 17	On ART, no time restrictions, CD4<200 at time of death;
 if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and . < cd4_dead lt 200 then dead_A_cd4lt200=1; 
@@ -18141,7 +18163,7 @@ if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and (caldate&
 		end;
 	end;
 
-	if dead_Agt6_cd4gt200_m=1 then do;
+	if dead_Agt6_cd4gt200=1 then do;
 		if gender=1 then do;
 			dead_Agt6_cd4gt200_m=1;
 			if 15 <= age < 20 then dead_Agt6_cd4gt2001519m=1;
@@ -20944,6 +20966,11 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
+
+
+proc print;var caldate&j death yrart cd4_dead dead_Agt6_cd4gt200 dead_Agt6_cd4lt200;
+
+where dead_undiag ne 1 and dead_diag_not_linked ne 1 and onart=1 and death ne .;run;
 
 
 

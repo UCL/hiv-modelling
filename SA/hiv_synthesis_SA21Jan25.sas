@@ -1,6 +1,8 @@
 
+***THIS PROGRAM HAS NOT BEEN RUN, BUT PREVIOUS ERRORS HAVE BEEN CORRECTED. 
 *dead_int_lost_w had a typo, it was counting gender=1 instead of 2. Typo corrected, data manipulated in Excel file;
-
+*date_last_return_restart changed to date_last_restart;
+*dead_Agt6_cd4gt200 gender categorisation had a typo in it. It previously saif if dead_Agt6_cd4gt200_m=1 instead of dead_Agt6_cd4gt200=1;;
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
@@ -17309,10 +17311,10 @@ if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and onart=1 and (caldate&j
 if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and onart=1 and (caldate&j - yrart <= 0.5) and date_last_interrupt = . and  . < cd4art >=200 then dead_Alt6_artcd4gt200=1;
 
 * 5	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 <200  ;
-if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and . < cd4_tcur0 <200 then dead_I_Alt6_Rcd4lt200=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and date_last_interrupt ne . and date_last_restart ne . and (caldate&j - date_last_restart <= 0.5) and . < cd4_tcur0 <200 then dead_I_Alt6_Rcd4lt200=1;
 
 * 6	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 >=200 ;
-if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and cd4_tcur0 >=200 then dead_I_Alt6_Rcd4gt200=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and date_last_interrupt ne . and date_last_restart ne . and (caldate&j - date_last_restart <= 0.5) and cd4_tcur0 >=200 then dead_I_Alt6_Rcd4gt200=1;
 
 * 7	On ART (irrespective of time on ART), current VL <1000;
 if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and vl1000=1 then dead_A_vl1000=1;
@@ -17339,10 +17341,10 @@ if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart 
 if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1  and date_last_interrupt=date_1st_int then dead_1stint_lost=1; 
 
 * 15	ART interrupted, subsequent interruption, < 6 months from last interruption ;
-if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then dead_subintlt6_lost=1; 
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 and date_last_restart ne . and (date_last_interrupt - date_last_restart <=0.5) then dead_subintlt6_lost=1; 
 
 * 16	ART interrupted, subsequent interruption, > 6 months from last interruption ;
-if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart >0.5) then dead_subintgt6_lost=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 and date_last_restart ne . and (date_last_interrupt - date_last_restart >0.5) then dead_subintgt6_lost=1;
 
 * 17	On ART, no time restrictions, CD4<200 at time of death;
 if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and . < cd4_dead lt 200 then dead_A_cd4lt200=1; 
@@ -18142,7 +18144,7 @@ if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and (caldate&
 		end;
 	end;
 
-	if dead_Agt6_cd4gt200_m=1 then do;
+	if dead_Agt6_cd4gt200=1 then do;
 		if gender=1 then do;
 			dead_Agt6_cd4gt200_m=1;
 			if 15 <= age < 20 then dead_Agt6_cd4gt2001519m=1;
