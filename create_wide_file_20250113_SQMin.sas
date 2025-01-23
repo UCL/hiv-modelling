@@ -2,13 +2,13 @@
 
 
 /*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
-libname a "C:\Users\rmjlja9\OneDrive - University College London\MIHPSA Zimbabwe\Phase 2\2024NOV17";								* dont save on Dropbox;
+libname a "C:\Users\rmjlja9\OneDrive - University College London\MIHPSA Zimbabwe\Phase 2\2025JAN13";								* dont save on Dropbox;
 	*This is using last full run, there is also a Min-SQ run set available from Nov 28th;
-libname b "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_all_20241117_out";		* all options in one output;
+libname b "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_SQMin_20250113_out";		* all options in one output;
 /*libname b "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_1_20241117_out";*/	* options split into two scripts;
 /*libname c "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_2_20241117_out";*/
 
-data a.base_17_11_2024; set b.out: ;
+data a.base_13_01_2025_SQMin; set b.out: ;
 	if cald=. or run=. then delete;
 run;
 
@@ -16,8 +16,8 @@ run;
 ods html close;
 ods listing;
 
-proc contents data=a.base_17_11_2024;run;							/* show the contents of the input SAS file */
-proc freq data=a.base_17_11_2024; table run cald option;run;
+proc contents data=a.base_13_01_2025_SQMin;run;							/* show the contents of the input SAS file */
+proc freq data=a.base_13_01_2025_SQMin; table run cald option;run;
 		
 /*table s_sw_inprog_ly s_onprep_w1524_newpge1_ s_w1524_newp_ge1;run;*/
 /*proc freq data=a.base_17_11_2024;*/
@@ -66,7 +66,7 @@ so I do think it is OK to overwrite them;
 table s_prep_inj_sw;where option=24;run;*/
 
 
-data a.base_17_11_2024;set a.base_17_11_2024;
+data a.base_13_01_2025_SQMin;set a.base_13_01_2025_SQMin;
 if option=1 then do;*minimal;
 	if s_prep_oral_plw=. then s_prep_oral_plw=0;
 	if s_prep_oral_sdc=. then s_prep_oral_sdc=0;
@@ -83,10 +83,10 @@ if option=1 then do;*minimal;
 end;
 run;
 
-proc freq data=a.base_17_11_2024; table run option;where cald=2023.75;run;
-proc freq data=a.base_17_11_2024; table run*option/norow nocol nopercent; where cald=2023.75;run;
-proc freq data=a.base_17_11_2024; table run cald option;run;
-proc freq data=a.base_17_11_2024; table option*cald/norow nocol nopercent;run;
+proc freq data=a.base_13_01_2025_SQMin; table run option;where cald=2023.75;run;
+proc freq data=a.base_13_01_2025_SQMin; table run*option/norow nocol nopercent; where cald=2023.75;run;
+proc freq data=a.base_13_01_2025_SQMin; table run cald option;run;
+proc freq data=a.base_13_01_2025_SQMin; table option*cald/norow nocol nopercent;run;
 *run refers to the dataset they are starting from
  We have the following simulations starting from 2023 up to 2072.75:
 	100 simulations  (5 for each of the 20 dataset) for option 0 (note that SBCC is not final)
@@ -101,13 +101,13 @@ proc freq data=a.base_17_11_2024; table option*cald/norow nocol nopercent;run;
 
 
 
-proc sort data=a.base_17_11_2024; 
+proc sort data=a.base_13_01_2025_SQMin; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
-set a.base_17_11_2024 ;
+set a.base_13_01_2025_SQMin ;
 *Zimbabwe;
 *Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
 *accessed 9/2/2023;
@@ -123,11 +123,11 @@ proc means data=sf;var sf;run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
 *We cannot use the following command as the multiplier is going to be different based on the dataset they start from;
-proc sort data=a.base_17_11_2024; by run;run;
+proc sort data=a.base_13_01_2025_SQMin; by run;run;
 proc sort data=sf; by run;run;
 
 data y; 
-merge a.base_17_11_2024 sf;
+merge a.base_13_01_2025_SQMin sf;
 by run ; run;
 
 * preparatory code ;
@@ -1468,9 +1468,9 @@ proc sort data=y;by run option;run;
 *360000;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_17_11_2024; set y;
+data a.l_base_13_01_2025_SQMin; set y;
 if cald=. then delete;run;
-proc freq data=a.l_base_17_11_2024; table option;run;
+proc freq data=a.l_base_13_01_2025_SQMin; table option;run;
 
 *360000;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
@@ -1491,13 +1491,13 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 ;
 
 
-proc freq data=a.l_base_17_11_2024; table p_w1524newpge1_onprep n_w1524_newp_ge1;run;
-proc freq data=a.l_base_17_11_2024;
+proc freq data=a.l_base_13_01_2025_SQMin; table p_w1524newpge1_onprep n_w1524_newp_ge1;run;
+proc freq data=a.l_base_13_01_2025_SQMin;
 table n_sw_inprog_ly*cald/nopercent norow;where option in (10);run;
-proc freq data=a.l_base_17_11_2024;
+proc freq data=a.l_base_13_01_2025_SQMin;
 table (n_prep_inj_sw n_prep_inj_sdc)*option/nopercent norow;where option in (1 24 25 26);run;
-proc freq data=a.l_base_17_11_2024; table incidence1549; where option=1;run;
-proc freq data=a.l_base_17_11_2024; table n_diag_progsw; where option=0;run;
-proc freq data=a.l_base_17_11_2024; table n_sw_inprog_ly; where option=0;run;
-proc freq data=a.l_base_17_11_2024; table n_attend_mens_clinic; where option=0;run;
-proc freq data=a.l_base_17_11_2024; table n_access_adult_ret_supp; where option=30;run;
+proc freq data=a.l_base_13_01_2025_SQMin; table incidence1549; where option=1;run;
+proc freq data=a.l_base_13_01_2025_SQMin; table n_diag_progsw; where option=0;run;
+proc freq data=a.l_base_13_01_2025_SQMin; table n_sw_inprog_ly; where option=0;run;
+proc freq data=a.l_base_13_01_2025_SQMin; table n_attend_mens_clinic; where option=0;run;
+proc freq data=a.l_base_13_01_2025_SQMin; table n_access_adult_ret_supp; where option=30;run;

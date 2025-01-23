@@ -2,16 +2,16 @@
 ***Program to produce graphs using averages across runs
 ***Use include statement in analysis program to read the code below in;
 
-libname a "C:\Users\rmjlja9\OneDrive - University College London\MIHPSA Zimbabwe\Phase 2\2024NOV28";								* dont save on Dropbox;
+libname a "C:\Users\rmjlja9\OneDrive - University College London\MIHPSA Zimbabwe\Phase 2\2025JAN13";								* dont save on Dropbox;
 /*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
-proc freq data=a.l_base_17_11_2024;table option;run;
+proc freq data=a.l_base_13_01_2025_SQMin;table option;run;
 
 %let pth_export_mihpsa= C:\Users\rmjlja9\Dropbox (UCL)\MIHPSA Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis;run;
 
 
 data b;
-set a.l_base_17_11_2024;
+set a.l_base_13_01_2025_SQMin;
 
 p_onart_vl1000_all = .;
 
@@ -81,7 +81,7 @@ data b;set b;count_provasim+1;by option run cald ;if first.run or first.cald the
 proc print data=b; var option run cald count_provasim;run;
 data b;set b;where count_provasim in (1 2 3 4 5);run;
 */
-proc freq data=a.l_base_17_11_2024;
+proc freq data=a.l_base_13_01_2025_SQMin;
 table n_sw_inprog_ly*option/nopercent norow;where option in (1 10);run;
 proc freq data=b;
 table n_sw_inprog_ly*option/nopercent norow;where option in (1 10);run;
@@ -102,7 +102,7 @@ proc means max data=b;var count_csim cald;where option=1;run;*93;
 
 
 /*proc freq data=b;table n_sw_inprog_ly*option/nopercent norow;where option in (0 10);run;*/
-%let year_start = 2023;
+%let year_start = 2000;
 %let year_end = 2072.75;
 run;
 /*proc freq data=b;table cald;run;*/
@@ -273,7 +273,8 @@ g0_151 g0_152 g0_153 g0_154 g0_155 g0_156 g0_157 g0_158 g0_159 g0_160 g0_161 g0_
 g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182 g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 
 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208 g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 
 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 
-g0_251 g0_252 g0_253 g0_254 g0_255 g0_256 g0_257 g0_258 g0_259 g0_260 g0_261 g0_262 g0_263 g0_264 g0_265 g0_266 g0_267 g0_268 g0_269 g0_270 g0_271 g0_272
+g0_251 g0_252 g0_253 g0_254 g0_255 g0_256 g0_257 g0_258 g0_259 g0_260 g0_261 g0_262 g0_263 g0_264 g0_265 g0_266 g0_267 g0_268 g0_269 g0_270 g0_271 g0_272 g0_273 g0_274 g0_275 
+g0_276 g0_277 g0_278 g0_279 g0_280 g0_281
 
 g1_1   g1_2   g1_3   g1_4   g1_5   g1_6   g1_7   g1_8   g1_9   g1_10  g1_11  g1_12  g1_13  g1_14  g1_15  g1_16  g1_17  g1_18  g1_19  g1_20  g1_21  g1_22  g1_23  g1_24  g1_25  
 g1_26  g1_27  g1_28  g1_29  g1_30  g1_31  g1_32  g1_33  g1_34  g1_35  g1_36  g1_37  g1_38  g1_39  g1_40  g1_41  g1_42  g1_43  g1_44  g1_45  g1_46  g1_47  g1_48  g1_49  g1_50 
@@ -285,7 +286,8 @@ g1_151 g1_152 g1_153 g1_154 g1_155 g1_156 g1_157 g1_158 g1_159 g1_160 g1_161 g1_
 g1_176 g1_177 g1_178 g1_179 g1_180 g1_181 g1_182 g1_183 g1_184 g1_185 g1_186 g1_187 g1_188 g1_189 g1_190 g1_191 g1_192 g1_193 g1_194 g1_195 g1_196 g1_197 g1_198 g1_199 g1_200 
 g1_201 g1_202 g1_203 g1_204 g1_205 g1_206 g1_207 g1_208 g1_209 g1_210 g1_211 g1_212 g1_213 g1_214 g1_215 g1_216 g1_217 g1_218 g1_219 g1_220 g1_221 g1_222 g1_223 g1_224 g1_225 
 g1_226 g1_227 g1_228 g1_229 g1_230 g1_231 g1_232 g1_233 g1_234 g1_235 g1_236 g1_237 g1_238 g1_239 g1_240 g1_241 g1_242 g1_243 g1_244 g1_245 g1_246 g1_247 g1_248 g1_249 g1_250 
-g1_251 g1_252 g1_253 g1_254 g1_255 g1_256 g1_257 g1_258 g1_259 g1_260 g1_261 g1_262 g1_263 g1_264 g1_265 g1_266 g1_267 g1_268 g1_269 g1_270 g1_271 g1_272
+g1_251 g1_252 g1_253 g1_254 g1_255 g1_256 g1_257 g1_258 g1_259 g1_260 g1_261 g1_262 g1_263 g1_264 g1_265 g1_266 g1_267 g1_268 g1_269 g1_270 g1_271 g1_272 g1_273 g1_274 g1_275 
+g1_276 g1_277 g1_278 g1_279 g1_280 g1_281
 ;
 by cald;run;
 
@@ -1454,9 +1456,10 @@ scatter  x=cald y=o_p_fsw_1849_Bulaw_garpr /	markerattrs = (color=red);
 scatter  x=cald y=o_p_fsw_1849_Harare_garpr /	markerattrs = (color=pink);
 run;quit;
 /*proc print data=d;var p50_prop_w_1549_sw_0 p5_prop_w_1549_sw_0 p95_prop_w_1549_sw_0;where cald=2020;run;*/
+/*proc print data=d;var o_p_fsw_1849_Zim_garpr o_p_fsw_1849_Bulaw_garpr o_p_fsw_1849_Harare_garpr;run;*/
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of female sex workers (FSW)";
+Title    height=1.5 justify=center "Proportion of ever female sex workers (FSW)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15 by 0.025) valueattrs=(size=10);
 label p50_prop_w_ever_sw_0 = "Ever FSW 15-64 op 0 (median) ";
@@ -1498,6 +1501,21 @@ scatter x=cald y=o_prev_fsw_rds /  yerrorlower=o_prev_fsw_ll_rds yerrorupper=o_p
 run;quit;
 /*proc print data=d;var p50_prop_sw_hiv_0 p5_prop_sw_hiv_0 p95_prop_sw_hiv_0;where cald=2020;run;
 proc freq data=d;table p95_n_prep_0;run;*/
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of FSW diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_p_diag_sw_0  = "Prop of HIV+ FSW diagnosed op 0 (median) ";
+label p50_p_diag_sw_1  = "Prop of HIV+ FSW diagnosed op 1 (median) ";
+series  x=cald y=p50_p_diag_sw_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_sw_0 	upper=p95_p_diag_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_sw_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diag_sw_1 	upper=p95_p_diag_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence sw";
