@@ -59,7 +59,6 @@ by run ;
 
 
 
-
 * preparatory code ;
 
 * ================================================================================= ;
@@ -360,16 +359,19 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_diag_labdel;				n_diag_labdel = s_diag_this_period_labdel * sf * 4;*VCMar2023;
 * n_diag_pd;					n_diag_pd = s_diag_this_period_f_pd * sf * 4;*VCMar2023;
 * n_diag_anclabpd;				n_diag_anclabpd = s_diag_thisper_anclabpd * sf * 4;*VCMay2023;
+* n_tested_anc_prevdiag;		n_tested_anc_prevdiag = s_tested_anc_prevdiag * sf * 4;
 * n_diag_progsw; 				n_diag_progsw = s_diag_thisper_progsw * sf * 4;*VCMay2023;
 * n_diag_sw; 					n_diag_sw = s_diag_thisper_sw * sf * 4;*VCMay2023;
 
 * n_diag_self_test;				n_diag_self_test = s_diagnosed_self_test * sf * 4;	*JASJUN2024;
 
+* n_tested_anc;					n_tested_anc = s_tested_anc * sf * 4;
 * n_hivpos_tests;				n_hivpos_tests = n_diagnosed + n_tested_anc_prevdiag;				* Number of HIV positive tests JASJun24;
 * n_hivneg_tests;				n_hivneg_tests = n_tested - n_hivpos_tests;							* Number of HIV negative tests JASJun24;
 * n_hivpos_tests_sympt;			n_hivpos_tests_sympt = (s_diag_this_period_m_sympt + s_diag_this_period_f_sympt) * sf * 4;		* Number of HIV positive tests in symptomatic adults JASJun24;
-* n_hivneg_tests_sympt;			n_hivneg_tests_sympt = (n_tested_m_sympt + n_tested_w_sympt) * sf * 4 - n_hivpos_tests_sympt;	* Number of HIV negative tests in symptomatic adults JASJun24;
-* n_hivneg_tests_anc;			n_hivneg_tests_anc = n_tested_anc - n_diag_anc;						* Number of HIV negative ANC tests JASJun2024;
+* n_hivneg_tests_sympt;			n_hivneg_tests_sympt = ((s_tested_m_sympt + s_tested_f_sympt) * sf * 4) - n_hivpos_tests_sympt;	* Number of HIV negative tests in symptomatic adults JASJun24;
+* n_test_anclabpd;				n_test_anclabpd = s_test_anclabpd * sf * 4;
+* n_hivneg_tests_anc;			n_hivneg_tests_anc = n_tested_anc - n_diag_anc;	* Number of HIV negative ANC tests JASJun2024;
 * n_hivneg_tests_anclabpd;		n_hivneg_tests_anclabpd = n_test_anclabpd - n_diag_anclabpd;		* Number of HIV negative ANC/lab/PD tests JASJun2024;
 
 
@@ -1106,6 +1108,13 @@ p_diag_m  = p_diag_m / 100;
 p_diag_w = p_diag_w / 100; 
 p_diag = p_diag / 100;
 
+n_self_tests_other = 0;
+n_self_tests_partners = 0;
+n_self_tests_hf = 0;
+
+if option = 6 then n_self_tests_hf = n_self_tests;
+if option = 7 then n_self_tests_partners = n_self_tests;
+
 	
 keep run cald option 
 
@@ -1141,6 +1150,9 @@ keep run cald option
 	n_hiv_peer_navigator_w
 	n_hiv_peer_navigator_m
 	n_self_tests						
+	n_self_tests_other 
+	n_self_tests_partners 
+	n_self_tests_hf 
 	n_diag_anclabpd						
 	n_hivneg_tests_anclabpd				
 	n_init_prep_oral_first_m			
@@ -1153,8 +1165,13 @@ keep run cald option
 	n_prep_inj_m						
 ;
 
-
 proc sort data=y_flow;by run option;run;
+
+
+
+
+
+
 
 
 data y; set y_flow; 
@@ -1293,6 +1310,9 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var_flow(v=	n_hiv_peer_navigator_w);
 %var_flow(v=	n_hiv_peer_navigator_m);
 %var_flow(v=	n_self_tests		);				
+%var_flow(v=	n_self_tests_other		);				
+%var_flow(v=	n_self_tests_partners		);				
+%var_flow(v=	n_self_tests_hf		);				
 %var_flow(v=	n_diag_anclabpd		);				
 %var_flow(v=	n_hivneg_tests_anclabpd);				
 %var_flow(v=	n_init_prep_oral_first_m);			
@@ -1391,6 +1411,9 @@ year
 	n_hiv_peer_navigator_w
 	n_hiv_peer_navigator_m
 	n_self_tests						
+	n_self_tests_other 
+	n_self_tests_partners 
+	n_self_tests_hf 
 	n_diag_anclabpd						
 	n_hivneg_tests_anclabpd				
 	n_init_prep_oral_first_m			
@@ -1409,7 +1432,7 @@ dummy1=.;dummy2=.;dummy3=.;dummy4=.;dummy5=.;dummy6=.;dummy7=.;dummy8=.;dummy9=.
 dummy10=.;dummy11=.;dummy12=.;dummy13=.;dummy14=.;dummy15=.;dummy16=.;dummy17=.;dummy18=.;dummy19=.;
 dummy20=.;dummy21=.;dummy22=.;dummy23=.;dummy24=.;dummy25=.;dummy26=.;dummy27=.;dummy28=.;dummy29=.;
 dummy30=.;dummy31=.;dummy32=.;dummy33=.;dummy34=.;dummy35=.;dummy36=.;dummy37=.;dummy38=.;dummy39=.;
-dummy40=.;dummy41=.;dummy42=.;dummy43=.;dummy44=.;dummy45=.;dummy46=.;dummy47=.;dummy48=.;dummy49=.;dummy50=.;dummy51=.;dummy52=.;
+dummy40=.;dummy41=.;dummy42=.;dummy43=.;dummy44=.;dummy45=.;dummy46=.;dummy47=.;
 
 
 data flow ; 
@@ -1472,21 +1495,21 @@ n_vm_w
 n_vm_m
 dummy34
 dummy35
+n_self_tests_other 
 dummy36
 dummy37
+n_self_tests_partners 
 dummy38
 dummy39
-dummy40
-dummy41
+n_self_tests_hf 
+dummy40 
+dummy41 
 dummy42
-dummy43 
-dummy44 
+dummy43
+dummy44
 dummy45
 dummy46
 dummy47
-dummy48
-dummy49
-dummy50
 n_init_prep_vr_1524w
 n_init_prep_oral_plw
 n_init_prep_inj_1524w
@@ -1511,10 +1534,11 @@ n_prep_inj_m
 set wide_outputs;
 run;
 
+
 proc transpose data=flow  out=data3 ; run;
 
 data a; set data3;
-drop _name_;
+ drop _name_;
 
 ods html;
 proc print noobs data=a; run; 

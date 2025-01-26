@@ -13,10 +13,17 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data b;
 set a.l_base_sa_options_e;
 
-s = 9 ;
+s = 10;
 if option=0 or option=s ;
 if option=s then option=1;
 
+/*
+
+proc means; var incidence1549; where option=0 and cald ge 2023;
+proc means; var incidence1549; where option=1 and cald ge 2023;
+run;
+
+*/
 
 * if sex_beh_trans_matrix_m ne 15 and sex_beh_trans_matrix_w ne 2 and sex_beh_trans_matrix_w ne 3 and sex_beh_trans_matrix_w ne 11;
 
@@ -77,7 +84,7 @@ n_prep_any_w_1524_ = n_prep_any_w_1524;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  38  ;
+%let nfit =  398 ;
 %let year_end = 2064.00 ;
 run;
 proc sort;by cald option ;run;
