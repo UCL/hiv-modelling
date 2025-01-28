@@ -2086,7 +2086,11 @@ l_n_dead_Agt6_cd4gt200&age		l_n_dead_Agt6_cd4gt200&mage 		l_n_dead_Agt6_cd4gt200
 ods listing close;
 ods results off;
 
+<<<<<<< Updated upstream
 ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_ZIM04Dec24.xlsx"
+=======
+ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_ZIM21Jan25.xlsx"
+>>>>>>> Stashed changes
 options(sheet_name='base' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
