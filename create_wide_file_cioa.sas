@@ -2025,6 +2025,7 @@ netdaly500_4 = ddaly_50y_4 + (dcost_50y_4 / 0.0005);
 netdaly500_5 = ddaly_50y_5 + (dcost_50y_5 / 0.0005);
 
 min_netdaly500 = min(netdaly500_1, netdaly500_4, netdaly500_5);
+min_netdaly500_1_4 = min(netdaly500_1, netdaly500_4);
 
 d_netdaly500_4_1 = netdaly500_1 - netdaly500_4; * net dalys averted ;
 d_netdaly500_5_1 = netdaly500_1 - netdaly500_5; * net dalys averted ;
@@ -2060,21 +2061,32 @@ if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
 if netdaly500_4 = min_netdaly500 then lowest_netdaly=4;
 if netdaly500_5 = min_netdaly500 then lowest_netdaly=5;
 
+if netdaly500_1 = min_netdaly500_1_4 then lowest_netdaly_1_4=1;
+if netdaly500_4 = min_netdaly500_1_4 then lowest_netdaly_1_4=4;
+
 if netdaly_gbd500_1 = min_netdaly_gbd500 then lowest_netdaly_gbd=1;
 if netdaly_gbd500_4 = min_netdaly_gbd500 then lowest_netdaly_gbd=4;
 if netdaly_gbd500_5 = min_netdaly_gbd500 then lowest_netdaly_gbd=5;
 
 min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_4, ddaly_50y_5);
+min_ddaly_50y_1_4 = min(ddaly_50y_1, ddaly_50y_4);
 
 if ddaly_50y_1 = min_ddaly_50y then lowest_ddaly=1;
 if ddaly_50y_4 = min_ddaly_50y then lowest_ddaly=4;
 if ddaly_50y_5 = min_ddaly_50y then lowest_ddaly=5;
 
+if ddaly_50y_1 = min_ddaly_50y_1_4 then lowest_ddaly_1_4=1;
+if ddaly_50y_4 = min_ddaly_50y_1_4 then lowest_ddaly_1_4=4;
+
 min_dcost_50y = min(dcost_50y_1, dcost_50y_4, dcost_50y_5);
+min_dcost_50y_1_4 = min(dcost_50y_1, dcost_50y_4);
 
 if dcost_50y_1 = min_dcost_50y then lowest_dcost=1;
 if dcost_50y_4 = min_dcost_50y then lowest_dcost=4;
 if dcost_50y_5 = min_dcost_50y then lowest_dcost=5;
+
+if dcost_50y_1 = min_dcost_50y_1_4 then lowest_dcost_1_4=1;
+if dcost_50y_4 = min_dcost_50y_1_4 then lowest_dcost_1_4=4;
 
 dcost_clinical_care_hiv_50y_1 = dadc_cost_50y_1 + dnon_tb_who3_cost_50y_1 + dtb_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + dcot_cost_50y_1
 + dcost_non_aids_pre_death_50y_1 + dres_cost_50y_1;
@@ -2337,14 +2349,12 @@ d_n_death_hiv_50y_4_1 d_n_death_hiv_50y_5_1
 r_n_death_hiv_50y_4_1 r_n_death_hiv_50y_5_1
 
 dcost_50y_1  dcost_50y_4 dcost_50y_5 
-lowest_dcost
 d_dcost_50y_4_1 d_dcost_50y_5_1 
 
 ddaly_50y_1  ddaly_50y_4 ddaly_50y_5  
 d_ddaly_50y_4_1  d_ddaly_50y_5_1 
 dalys_averted_4_1 dalys_averted_5_1
 d_ddaly_gbd_50y_4_1 d_ddaly_gbd_50y_5_1 
-lowest_ddaly
 
 netdaly500_1  netdaly500_4 netdaly500_5 
 d_netdaly500_4_1 d_netdaly500_5_1 
@@ -2354,13 +2364,18 @@ netdaly300_1 netdaly300_4 netdaly300_5
 d_netdaly300_4_1 d_netdaly300_5_1 
 netdaly150_1 netdaly150_4 netdaly150_5 
 d_netdaly150_4_1 d_netdaly150_5_1 
-lowest_netdaly
-lowest_netdaly_gbd
 
 ;
 run;
 ods html close;
 
+
+ods html;
+title '';
+proc freq; tables lowest_dcost lowest_ddaly lowest_netdaly  lowest_dcost_1_4 lowest_ddaly_1_4 lowest_netdaly_1_4  ; 
+;
+run;
+ods html close;
 
 ods html;
 title '';
