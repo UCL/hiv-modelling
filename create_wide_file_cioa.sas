@@ -2,18 +2,18 @@
 
 * options user="/folders/myfolders/";
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_m_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_n_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_m_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_n_out\";
 
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_cioa_m;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_cioa_n;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -22,7 +22,7 @@ run;
 
 
 
-proc sort data=b.k_cioa_m; 
+proc sort data=b.k_cioa_n; 
 by run cald option;
 run;
 
@@ -31,7 +31,7 @@ run;
 data sf;
 
 
-set b.k_cioa_m ;
+set b.k_cioa_n ;
 
 
 if cald=2024   ;
@@ -50,7 +50,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_cioa_m sf;
+merge b.k_cioa_n sf;
 by run ;
 
 
@@ -1432,1015 +1432,16 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_cioa_m; set y;  
+data    b.l_cioa_n; set y;  
 
-* to give n = 1000 cioa_m;
-if run in (
-4608455 
-4836046 
-6970342 
-8900950 
-10123942 
-10246601 
-10267709 
-10399337 
-11875358 
-13577549 
-15313583 
-15950834 
-16256430 
-16948101 
-17530113 
-17901835 
-19314223 
-23647653 
-24982087 
-25088847 
-25329807 
-25611707 
-26357404 
-27426078 
-28385559 
-29193343 
-29704764 
-29873092 
-30370382 
-30461938 
-31245457 
-32118733 
-33037678 
-33628665 
-34850058 
-34976452 
-35980721 
-37088757 
-38155486 
-38421232 
-41133471 
-41911602 
-45665827 
-46383117 
-47330525 
-47379005 
-47589796 
-48504747 
-48775377 
-50048502 
-51358839 
-51807180 
-51880255 
-52840256 
-53219773 
-54526384 
-54661221 
-54988778 
-56043378 
-56321165 
-56997069 
-57018123 
-57350004 
-60042212 
-60534498 
-62679392 
-63572703 
-64336215 
-65144849 
-66823495 
-67365807 
-68173965 
-69078975 
-70188482 
-70479804 
-70950152 
-75004326 
-75101390 
-76309629 
-77632078 
-78303844 
-83089695 
-83256176 
-83600280 
-85734548 
-86127962 
-86267884 
-88757793 
-89546897 
-89701660 
-90544519 
-90731513 
-91277498 
-91563767 
-92370656 
-92651521 
-95156126 
-95240379 
-96443368 
-96872166 
-98583708 
-100059542 
-100288327 
-100407634 
-101130282 
-101315903 
-101591332 
-101821155 
-101836620 
-102291817 
-103026281 
-105032254 
-105544245 
-106783928 
-108515000 
-109452357 
-110713993 
-111442639 
-113258208 
-114394452 
-114430249 
-115328728 
-115535965 
-115615431 
-116145170 
-117375422 
-117689607 
-117756630 
-117977394 
-118415672 
-118596780 
-119270712 
-120581162 
-121563969 
-121824845 
-123327885 
-123647174 
-124273938 
-126195426 
-126336474 
-126580426 
-127610444 
-128181399 
-128988873 
-129262596 
-129561958 
-130089339 
-132442664 
-133352021 
-135181920 
-136627509 
-137704414 
-139762852 
-140708444 
-141518082 
-141637621 
-142743044 
-143068901 
-143493854 
-145524985 
-146401045 
-146689082 
-147007940 
-149747482 
-151256477 
-152873469 
-152874187 
-152879712 
-153555717 
-153569110 
-154413341 
-155407508 
-155550296 
-155849583 
-156002116 
-156305138 
-156970294 
-156989482 
-158860399 
-159107811 
-159567798 
-162347867 
-164268711 
-164482966 
-164486404 
-164604966 
-165918520 
-166889871 
-168248499 
-168397269 
-172648188 
-175757429 
-176910248 
-177201064 
-178347592 
-179667050 
-181006400 
-181114723 
-181577990 
-183618632 
-184651896 
-186838405 
-194986612 
-195347168 
-195581320 
-195627158 
-196448603 
-196649118 
-197245910 
-197859942 
-199232090 
-199490767 
-200625258 
-200870430 
-201801050 
-202460356 
-202460648 
-204461638 
-205057619 
-206902675 
-208603872 
-208708251 
-210806095 
-211061249 
-211453028 
-213913017 
-215452414 
-216117996 
-219148412 
-223128464 
-223161056 
-224758346 
-227513226 
-228578412 
-228919028 
-229268279 
-230412092 
-231296725 
-232402625 
-234628168 
-234934326 
-236033330 
-236777038 
-237551993 
-238184182 
-238361952 
-240088917 
-242635309 
-244751582 
-246650093 
-247478961 
-247538798 
-248514590 
-248696896 
-250178317 
-250334102 
-251645858 
-251651519 
-251776103 
-253236380 
-253745115 
-253994647 
-255226949 
-255359696 
-257119204 
-257756803 
-258808701 
-258892998 
-259207570 
-259929924 
-260922100 
-263456749 
-264076316 
-266199706 
-266699682 
-267135303 
-267898667 
-267970412 
-270400257 
-270660839 
-270680960 
-271397221 
-271860915 
-272366526 
-272439275 
-273732644 
-275935872 
-277083360 
-277452633 
-277869641 
-277897929 
-279121834 
-279320144 
-279498390 
-280566260 
-284131159 
-284699323 
-285831456 
-286788632 
-287208504 
-287892523 
-288823449 
-290999975 
-291239259 
-292948932 
-296057735 
-296385231 
-297588870 
-299584716 
-299977643 
-300261182 
-301162290 
-303503749 
-303851572 
-304111881 
-304249277 
-304816668 
-306167022 
-307703295 
-308021832 
-308441865 
-310216515 
-312448768 
-313443383 
-314067192 
-314138388 
-315383666 
-316510055 
-316909809 
-317579725 
-318058868 
-318119505 
-318543106 
-320669297 
-322285308 
-324088141 
-324436362 
-324443848 
-325617956 
-326212798 
-328051605 
-328926732 
-329821766 
-330835669 
-331205444 
-332006539 
-334381965 
-335897787 
-335921446 
-336256881 
-338095994 
-338296284 
-339297856 
-339328332 
-339355142 
-340763801 
-340796676 
-341053503 
-341193835 
-341194842 
-342352638 
-342674299 
-343932019 
-344973993 
-346979031 
-347214540 
-347353441 
-352261490 
-352591607 
-353041979 
-354171028 
-354513513 
-356486461 
-356622689 
-357080264 
-358385091 
-358829469 
-359485606 
-359656618 
-360063945 
-360143437 
-360761776 
-361356625 
-362050609 
-362096854 
-362700402 
-363485727 
-365172694 
-365303789 
-366382382 
-366579740 
-367120906 
-367360890 
-368984513 
-370526658 
-370734722 
-376580275 
-378075824 
-378570394 
-378750184 
-379188002 
-380360622 
-382021719 
-382190130 
-382723907 
-384000880 
-384620850 
-385039675 
-385438361 
-386228493 
-387226696 
-388772452 
-390056496 
-390759435 
-391723522 
-393506632 
-393754653 
-394325293 
-395602146 
-396972637 
-397543749 
-400992834 
-403662002 
-404060439 
-404281043 
-405189501 
-405897021 
-406782304 
-407821718 
-408473773 
-408599524 
-408856741 
-409189720 
-409679656 
-409795024 
-410167253 
-411714421 
-411746278 
-411848380 
-412907276 
-414236141 
-414577032 
-415591206 
-416051173 
-416644376 
-416733394 
-417976626 
-418784742 
-419500836 
-420426875 
-421823047 
-425414704 
-426237955 
-427972373 
-428431438 
-428441198 
-429150881 
-429306522 
-430844482 
-433967606 
-435480030 
-437112549 
-438723207 
-440524946 
-440903262 
-443881852 
-445177151 
-445942527 
-446454193 
-447013422 
-448381117 
-448525413 
-450860920 
-451613186 
-453931876 
-454567327 
-457163366 
-457753642 
-458628559 
-459300003 
-459712080 
-460346598 
-461221109 
-461373232 
-462492312 
-463405894 
-463798278 
-463803476 
-465818284 
-467849672 
-468357350 
-468405724 
-469974305 
-470789838 
-470831513 
-471010817 
-471205923 
-475142479 
-475966098 
-477534988 
-478916521 
-478983848 
-480091275 
-481388834 
-482386179 
-483012091 
-483234177 
-484566912 
-484942223 
-487167724 
-487802348 
-487996122 
-490547324 
-490947271 
-491084577 
-491870433 
-492995833 
-493172870 
-493327628 
-495231924 
-497918966 
-498220204 
-500324063 
-502125216 
-504107951 
-504556673 
-505120723 
-506504099 
-506897747 
-507635108 
-508090382 
-508715575 
-510212228 
-512971416 
-514579166 
-515368941 
-515999476 
-517492010 
-518747621 
-520987509 
-521242142 
-522434119 
-523072827 
-523562054 
-523935815 
-525392812 
-526909634 
-527340576 
-527422150 
-528047073 
-528696279 
-531088887 
-532092769 
-532183077 
-532966336 
-533147145 
-534611017 
-534714764 
-534827713 
-536092521 
-536132851 
-536278694 
-536627715 
-537566546 
-537768296 
-537989584 
-539149306 
-539421940 
-541966269 
-543110340 
-543632353 
-544076543 
-545269973 
-545335865 
-545651672 
-548916434 
-549362423 
-549841373 
-550068311 
-552088802 
-552673515 
-552825817 
-555349910 
-557255008 
-559474036 
-561212176 
-561354034 
-561402699 
-562469817 
-563054454 
-567134906 
-567437446 
-567449469 
-567695593 
-567766756 
-569681270 
-570353584 
-570494807 
-571275594 
-571934971 
-572265391 
-572507053 
-572563405 
-572708358 
-572761667 
-573223059 
-574196910 
-574770201 
-574810603 
-575313848 
-575651306 
-576098815 
-576574934 
-577344017 
-580326391 
-580582006 
-580616682 
-581587529 
-581687334 
-581828873 
-584302796 
-588601697 
-589320848 
-589323889 
-591339712 
-591850383 
-593322795 
-594139631 
-595380017 
-596181781 
-598199578 
-602868312 
-604922927 
-605372123 
-605815264 
-607139589 
-607401090 
-608552333 
-608978029 
-609458365 
-612700499 
-613312031 
-614618448 
-614711492 
-616691342 
-617304263 
-617859498 
-618014722 
-619117640 
-619343782 
-622055973 
-624085817 
-624822617 
-625690443 
-627595668 
-628523629 
-631667580 
-631825038 
-634104004 
-635547429 
-636252625 
-636745257 
-636828898 
-637409969 
-638528364 
-641851411 
-642616326 
-645620000 
-645942149 
-646430532 
-647432958 
-648286078 
-649218052 
-650838252 
-651643112 
-652089468 
-652304255 
-652983621 
-654957058 
-656241597 
-656443050 
-656609966 
-660103109 
-660945183 
-661568345 
-662117643 
-662591626 
-663133830 
-663534074 
-664098566 
-666942502 
-668005157 
-668585051 
-668674412 
-668915854 
-669757131 
-670334678 
-670579490 
-671131742 
-672033177 
-672237696 
-672413761 
-673035025 
-674922838 
-675172224 
-676688876 
-677047178 
-678045459 
-678950073 
-681621187 
-683143162 
-684799517 
-686278773 
-686782443 
-687209462 
-688463169 
-688510686 
-688972010 
-689573969 
-690069123 
-690827105 
-692992374 
-694511903 
-694627702 
-695667278 
-696177273 
-696687916 
-696785789 
-697014712 
-697823598 
-697852408 
-698466812 
-698870314 
-699509476 
-699975969 
-700076758 
-700651968 
-701392820 
-703129097 
-703340295 
-704298121 
-707269504 
-707592815 
-708052768 
-708571124 
-708581222 
-709329438 
-711794504 
-714017479 
-714235786 
-714509725 
-716324375 
-716775638 
-718662236 
-719704290 
-719747698 
-720195003 
-720688369 
-721875735 
-724550696 
-729056326 
-729058322 
-729393995 
-729796756 
-729909322 
-730128672 
-730151443 
-730272579 
-730582138 
-731182837 
-731383720 
-732539166 
-734020924 
-735309520 
-738458055 
-738955493 
-742586767 
-742638912 
-742639875 
-742707578 
-742758488 
-743180603 
-743566860 
-744036156 
-744184686 
-744261295 
-744271585 
-747375836 
-747793587 
-748559487 
-749195337 
-749213568 
-751162353 
-752990682 
-754178319 
-755289991 
-756623927 
-757289366 
-758903790 
-759149675 
-761884362 
-762571590 
-764114028 
-766425153 
-767921640 
-770351418 
-771713690 
-772131821 
-772758286 
-774765637 
-776113130 
-776718910 
-778105321 
-779296932 
-779351764 
-779440704 
-779899956 
-780906421 
-781707626 
-781711313 
-781911605 
-781938533 
-782430400 
-782678880 
-782685886 
-784836115 
-786411583 
-786880955 
-787038605 
-787779932 
-787978282 
-789277558 
-789493681 
-789759484 
-790474150 
-798595107 
-798716603 
-799626223 
-800375805 
-803444593 
-804313475 
-804714355 
-804889938 
-805727090 
-806328097 
-807825350 
-807903991 
-808862414 
-812322443 
-812749760 
-813092650 
-813878269 
-814552409 
-815710206 
-816151559 
-816604787 
-816951314 
-817753597 
-818500086 
-818606606 
-818899324 
-819773645 
-820893078 
-824573963 
-825238798 
-826986636 
-828200536 
-829085049 
-829503286 
-829598434 
-829871757 
-830179564 
-831485793 
-832769383 
-832805781 
-833576515 
-833733551 
-835464166 
-836991938 
-837764441 
-838573066 
-839999481 
-840258704 
-841359127 
-841389642 
-842117522 
-843145026 
-844900061 
-846606998 
-851177513 
-852729779 
-854067156 
-854143926 
-855014656 
-855796765 
-855873825 
-855935114 
-858595490 
-859276454 
-859321288 
-859873479 
-859931242 
-859989171 
-861803668 
-862760304 
-864156419 
-864979992 
-865315657 
-865589022 
-868119030 
-868728946 
-868870585 
-870205637 
-871673748 
-873079983 
-874629987 
-879433466 
-879826584 
-881097051 
-881373024 
-881587887 
-881768460 
-881917558 
-882512519 
-882991160 
-883165218 
-887405310 
-887829943 
-888768498 
-889585681 
-889628737 
-890546065 
-890746660 
-892135295 
-893963689 
-894381165 
-894618012 
-895684974 
-898919098 
-899363204 
-900059108 
-900816920 
-901353530 
-902110453 
-903475014 
-903906909 
-905269382 
-905874231 
-908923830 
-909177204 
-911371461 
-913213955 
-913733552 
-914249939 
-914262106 
-914835838 
-917079813 
-919035184 
-919105510 
-920271086 
-920422650 
-921055030 
-921261070 
-921317286 
-921647188 
-922582979 
-922967035 
-926612586 
-927226611 
-928025238 
-928140874 
-929040889 
-931585252 
-932717580 
-933093648 
-934742639 
-935449007 
-936079964 
-937162220 
-940581236 
-941139721 
-941730332 
-942550258 
-945526422 
-945879607 
-945959621 
-946180732 
-946737593 
-947307430 
-947631506 
-947794591 
-948106683 
-948505837 
-948583394 
-948896852 
-949635948 
-949661341 
-950283011 
-950558447 
-951803609 
+* to give n = 1000 ;
+* if run in (
+
 );
 
 proc freq; tables run; where cald = 2018; run;
 
-data y ; set b.l_cioa_m; 
+data y ; set b.l_cioa_n; 
 
 
   options nomprint;
@@ -2910,7 +1911,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_cioa_m     ; 
+  data  b.w_cioa_n     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -2923,52 +1924,31 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_m_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_n_out\";
 
-data f; set b.w_cioa_m;
+data f; set b.w_cioa_n;
 
 if prevalence1549w_24 < 0.35;
 if prevalence1549m_24 < 0.25;
 if incidence1549m_24 < 1.5;
-if incidence1549w_24 < 2.5;
+if incidence1549w_24 < 2.25;
 if p_diag_m_24 > 0.75;
 if p_diag_w_24 > 0.75;
-if p_onart_diag_m_24 > 0.75;
-if p_onart_diag_w_24 > 0.8;
-if p_onart_vl1000_m_24 > 0.7;
-if p_onart_vl1000_w_24 > 0.7;
+if p_onart_diag_m_24 > 0.80;
+if p_onart_diag_w_24 > 0.85;
+if p_onart_vl1000_m_24 > 0.80;
+if p_onart_vl1000_w_24 > 0.80;
 
-if run <= 951803609 ; * cioa_m - to give n = 1000 ;
-
-
-d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
-
-d_n_iime_10y_2_1 = n_iime_10y_2 -   n_iime_10y_1 ; 
-
-d_n_death_hiv_50y_2_1 = n_death_hiv_50y_2 - n_death_hiv_50y_1;
-r_n_death_hiv_50y_2_1 = n_death_hiv_50y_2 / n_death_hiv_50y_1;
-
-d_n_iime_50y_2_1 = n_iime_50y_2 -   n_iime_50y_1 ; 
-
-d_mtct_prop_10y_2_1 = mtct_prop_10y_2 - mtct_prop_10y_1 ;
-
-r_n_mtct_10y_2_1 = n_mtct_10y_2 / n_mtct_10y_1; 
-
-p_started_lencab_vmgt1000_10y_2 = n_started_lencab_vmgt1000_10y_2 / n_started_lencab_10y_2; 
-
-d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
-r_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 / n_death_hiv_10y_1;
-d_p_onart_vl1000_10y_2_1 = p_onart_vl1000_10y_2 - p_onart_vl1000_10y_1;
-d_p_vl1000_10y_2_1 = p_vl1000_10y_2 - p_vl1000_10y_1;
-r_incidence1549_10y_2_1 = incidence1549_10y_2 / incidence1549_10y_1;
-r_incidence1549w_10y_2_1 = incidence1549w_10y_2 / incidence1549w_10y_1;
-r_incidence1549m_10y_2_1 = incidence1549m_10y_2 / incidence1549m_10y_1;
-d_prevalence1549_10y_2_1 = prevalence1549_10y_2 - prevalence1549_10y_1;
-d_p_r_len_1524_10y_2_1 = p_r_len_1524_10y_2 - p_r_len_1524_10y_1 ;
-d_p_r_cab_1524_10y_2_1 = p_r_cab_1524_10y_2 - p_r_cab_1524_10y_1 ;
-d_mtct_prop_10y_2_1 =  mtct_prop_10y_2 - mtct_prop_10y_1; 
-
-r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1;
+  if run <= 948862337 ; * cioa_n - to give n = 1000 ;
+ 
+d_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 - n_death_hiv_10y_1;
+r_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 / n_death_hiv_10y_1;
+d_n_death_hiv_10y_5_1 = n_death_hiv_10y_5 - n_death_hiv_10y_1;
+r_n_death_hiv_10y_5_1 = n_death_hiv_10y_5 / n_death_hiv_10y_1;
+d_n_death_hiv_50y_4_1 = n_death_hiv_50y_4 - n_death_hiv_50y_1;
+r_n_death_hiv_50y_4_1 = n_death_hiv_50y_4 / n_death_hiv_50y_1;
+d_n_death_hiv_50y_5_1 = n_death_hiv_50y_5 - n_death_hiv_50y_1;
+r_n_death_hiv_50y_5_1 = n_death_hiv_50y_5 / n_death_hiv_50y_1;
 
 * sensitivity analysis around cost;
 * dcab_cost_50y_2 = dcab_cost_50y_2 * 0.50;
@@ -3028,66 +2008,73 @@ dcost_50y_5 = dart_cost_y_50y_5 + dadc_cost_50y_5 + dcd4_cost_50y_5 + dvl_cost_5
 					+ dsbi_proph_cost_50y_5 */ ;
 
 
-d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
+d_dcost_50y_4_1 = dcost_50y_4 - dcost_50y_1;
+d_dcost_50y_5_1 = dcost_50y_5 - dcost_50y_1;
 
-d_ddaly_50y_2_1 = ddaly_50y_1 - ddaly_50y_2; * dalys averted;
+d_ddaly_50y_4_1 = ddaly_50y_1 - ddaly_50y_4; * dalys averted;
+d_ddaly_50y_5_1 = ddaly_50y_1 - ddaly_50y_5; * dalys averted;
 
-dalys_averted=0; if d_ddaly_50y_2_1 > 0 then dalys_averted=1;
+dalys_averted_4_1=0; if d_ddaly_50y_4_1 > 0 then dalys_averted_4_1=1;
+dalys_averted_5_1=0; if d_ddaly_50y_5_1 > 0 then dalys_averted_5_1=1;
 
-d_ddaly_gbd_50y_2_1 = ddaly_gbd_50y_1 - ddaly_gbd_50y_2; * dalys averted;
+d_ddaly_gbd_50y_4_1 = ddaly_gbd_50y_1 - ddaly_gbd_50y_4; * dalys averted;
+d_ddaly_gbd_50y_5_1 = ddaly_gbd_50y_1 - ddaly_gbd_50y_5; * dalys averted;
 
 netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
-netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
-netdaly500_3 = ddaly_50y_3 + (dcost_50y_3 / 0.0005);
 netdaly500_4 = ddaly_50y_4 + (dcost_50y_4 / 0.0005);
 netdaly500_5 = ddaly_50y_5 + (dcost_50y_5 / 0.0005);
 
-min_netdaly500 = min(netdaly500_1, netdaly500_2);
+min_netdaly500 = min(netdaly500_1, netdaly500_4, netdaly500_5);
 
-d_netdaly500_2_1 = netdaly500_1 - netdaly500_2; * net dalys averted ;
+d_netdaly500_4_1 = netdaly500_1 - netdaly500_4; * net dalys averted ;
+d_netdaly500_5_1 = netdaly500_1 - netdaly500_5; * net dalys averted ;
 
 netdaly_gbd500_1 = ddaly_gbd_50y_1 + (dcost_50y_1 / 0.0005);
-netdaly_gbd500_2 = ddaly_gbd_50y_2 + (dcost_50y_2 / 0.0005);
+netdaly_gbd500_4 = ddaly_gbd_50y_4 + (dcost_50y_4 / 0.0005);
+netdaly_gbd500_5 = ddaly_gbd_50y_5 + (dcost_50y_5 / 0.0005);
 
-min_netdaly_gbd500 = min(netdaly_gbd500_1, netdaly_gbd500_2);
+min_netdaly_gbd500 = min(netdaly_gbd500_1, netdaly_gbd500_4, netdaly_gbd500_5);
 
-d_netdaly_gbd500_2_1 = netdaly_gbd500_1 - netdaly_gbd500_2; * net daly_gbds averted ;
-
+d_netdaly_gbd500_4_1 = netdaly_gbd500_1 - netdaly_gbd500_4; * net daly_gbds averted ;
+d_netdaly_gbd500_5_1 = netdaly_gbd500_1 - netdaly_gbd500_5; * net daly_gbds averted ;
 
 netdaly300_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0003);
-netdaly300_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0003);
+netdaly300_4 = ddaly_50y_4 + (dcost_50y_4 / 0.0003);
+netdaly300_5 = ddaly_50y_5 + (dcost_50y_5 / 0.0003);
 
-min_netdaly300 = min(netdaly300_1, netdaly300_2);
+min_netdaly300 = min(netdaly300_1, netdaly300_4, netdaly300_5);
 
-d_netdaly300_2_1 = netdaly300_1 - netdaly300_2; * net dalys averted ;
+d_netdaly300_4_1 = netdaly300_1 - netdaly300_4; * net dalys averted ;
+d_netdaly300_5_1 = netdaly300_1 - netdaly300_5; * net dalys averted ;
 
 netdaly150_1 = ddaly_50y_1 + (dcost_50y_1 / 0.00015);
-netdaly150_2 = ddaly_50y_2 + (dcost_50y_2 / 0.00015);
+netdaly150_4 = ddaly_50y_4 + (dcost_50y_4 / 0.00015);
+netdaly150_5 = ddaly_50y_5 + (dcost_50y_5 / 0.00015);
 
-min_netdaly150 = min(netdaly150_1, netdaly150_2);
+min_netdaly150 = min(netdaly150_1, netdaly150_4, netdaly150_5);
 
-d_netdaly150_2_1 = netdaly150_1 - netdaly150_2; * net dalys averted ;
+d_netdaly150_4_1 = netdaly150_1 - netdaly150_4; * net dalys averted ;
+d_netdaly150_5_1 = netdaly150_1 - netdaly150_5; * net dalys averted ;
 
+if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
+if netdaly500_4 = min_netdaly500 then lowest_netdaly=4;
+if netdaly500_5 = min_netdaly500 then lowest_netdaly=5;
 
-if netdaly500_1 = min_netdaly500 then lowest_netdaly=0;
-if netdaly500_2 = min_netdaly500 then lowest_netdaly=1;
+if netdaly_gbd500_1 = min_netdaly_gbd500 then lowest_netdaly_gbd=1;
+if netdaly_gbd500_4 = min_netdaly_gbd500 then lowest_netdaly_gbd=4;
+if netdaly_gbd500_5 = min_netdaly_gbd500 then lowest_netdaly_gbd=5;
 
-if netdaly_gbd500_1 = min_netdaly_gbd500 then lowest_netdaly_gbd=0;
-if netdaly_gbd500_2 = min_netdaly_gbd500 then lowest_netdaly_gbd=1;
-
-min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_2);
+min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_4, ddaly_50y_5);
 
 if ddaly_50y_1 = min_ddaly_50y then lowest_ddaly=1;
-if ddaly_50y_2 = min_ddaly_50y then lowest_ddaly=2;
+if ddaly_50y_4 = min_ddaly_50y then lowest_ddaly=4;
+if ddaly_50y_5 = min_ddaly_50y then lowest_ddaly=5;
 
-
-min_dcost_50y = min(dcost_50y_1, dcost_50y_2);
+min_dcost_50y = min(dcost_50y_1, dcost_50y_4, dcost_50y_5);
 
 if dcost_50y_1 = min_dcost_50y then lowest_dcost=1;
-if dcost_50y_2 = min_dcost_50y then lowest_dcost=2;
-
-
-p_started_unsupp_10y_2 = p_started_lencab_vmgt1000_10y_2 + p_started_lencab_offart_10y_2;
+if dcost_50y_4 = min_dcost_50y then lowest_dcost=4;
+if dcost_50y_5 = min_dcost_50y then lowest_dcost=5;
 
 dcost_clinical_care_hiv_50y_1 = dadc_cost_50y_1 + dnon_tb_who3_cost_50y_1 + dtb_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + dcot_cost_50y_1
 + dcost_non_aids_pre_death_50y_1 + dres_cost_50y_1;
@@ -3099,52 +2086,6 @@ dcost_clinical_care_hiv_50y_4 = dadc_cost_50y_4 + dnon_tb_who3_cost_50y_4 + dtb_
 + dcost_non_aids_pre_death_50y_4 + dres_cost_50y_4;
 dcost_clinical_care_hiv_50y_5 = dadc_cost_50y_5 + dnon_tb_who3_cost_50y_5 + dtb_cost_50y_5 + d_t_adh_int_cost_50y_5 + dswitchline_cost_50y_5 + dcot_cost_50y_5
 + dcost_non_aids_pre_death_50y_5 + dres_cost_50y_5;
-
-p_diag_vlg1000_24    = 1 - p_diag_vl1000_24   ;
-
-p_diag_vl1000_m_24 = p_onart_diag_m_24 * p_onart_vl1000_m_24;
-p_diag_vl1000_w_24 = p_onart_diag_w_24 * p_onart_vl1000_w_24;
-
-d_p_diag_vl1000_10y_2_1 = p_diag_vl1000_10y_2 - p_diag_vl1000_10y_1; 
-
-if p_diag_vlg1000_24 < 0.1 then p_diag_vlg1000_24_g=1;
-if 0.1 <= p_diag_vlg1000_24 < 0.15 then p_diag_vlg1000_24_g=2;
-if 0.15 <= p_diag_vlg1000_24 < 0.20 then p_diag_vlg1000_24_g=3;
-if 0.2 <= p_diag_vlg1000_24 < 0.25 then p_diag_vlg1000_24_g=4;
-if 0.25 <= p_diag_vlg1000_24        then p_diag_vlg1000_24_g=5;
-
-if p_started_lencab_vmgt1000_10y_2 < 0.15 then p_started_lencab_vmgt1000_10y_g = 1;
-if 0.15 <= p_started_lencab_vmgt1000_10y_2 < 0.25 then p_started_lencab_vmgt1000_10y_g = 2;
-if 0.25 <= p_started_lencab_vmgt1000_10y_2 < 0.45 then p_started_lencab_vmgt1000_10y_g = 3;
-if 0.45 <= p_started_lencab_vmgt1000_10y_2        then p_started_lencab_vmgt1000_10y_g = 4;
-
-if p_started_lencab_offart_10y_2 < 0.3 then p_started_lencab_offart_10y_g = 1;
-if 0.3 <= p_started_lencab_offart_10y_2 < 0.45 then p_started_lencab_offart_10y_g = 2;
-if 0.45 <= p_started_lencab_offart_10y_2 < 0.60 then p_started_lencab_offart_10y_g = 3;
-if 0.60 <= p_started_lencab_offart_10y_2 then p_started_lencab_offart_10y_g = 4;
-
-if p_len_10y_2 < 0.1 then p_len_10y_g = 1;
-if 0.1 <= p_len_10y_2 < 0.15 then p_len_10y_g = 2;
-if 0.15 <= p_len_10y_2 < 0.2 then p_len_10y_g = 3;
-if 0.2 <= p_len_10y_2 < 0.25 then p_len_10y_g = 4;
-if 0.25 <= p_len_10y_2 then p_len_10y_g = 5;
-
-if p_started_lencab_vls_10y_2 < 0.2 then p_started_lencab_vls_10y_2_g=1;
-if 0.2 <= p_started_lencab_vls_10y_2 < 0.4 then p_started_lencab_vls_10y_2_g=2;
-if 0.4 <= p_started_lencab_vls_10y_2 < 0.6 then p_started_lencab_vls_10y_2_g=3;
-if 0.6 <= p_started_lencab_vls_10y_2       then p_started_lencab_vls_10y_2_g=4;
-
-relative_mtct_prop_10y = mtct_prop_10y_2 / mtct_prop_10y_1 ;
-
-p_diag_vlg1000_10y_1 = 1 - p_diag_vl1000_10y_1;
-p_diag_vlg1000_10y_2 = 1 - p_diag_vl1000_10y_2;
-
-relative_prev_diag_vl1000_2_1 = p_diag_vl1000_10y_2 / p_diag_vl1000_10y_1;
-relative_prev_diag_vlg1000_2_1 = p_diag_vlg1000_10y_2 / p_diag_vlg1000_10y_1;
-
-r_prevalence_vg1000_10y_2_1 = prevalence_vg1000_10y_2 / prevalence_vg1000_10y_1 ;
-
-r_prev_vg1000_1549_10y_2_1 = prevalence_vg1000_1549_10y_2 / prevalence_vg1000_1549_10y_1 ;
 
 d_n_self_tested_10y_4_1 = n_self_tested_10y_4 - n_self_tested_10y_1 ;
 d_n_self_tested_10y_5_1 = n_self_tested_10y_5 - n_self_tested_10y_1 ;
@@ -3388,11 +2329,34 @@ ods html close;
 
 ods html;
 title '';
-proc means data=f ;
+proc means data=f mean lclm uclm;
 var 
-ddaly_50y_1 ddaly_50y_2 ddaly_50y_3 ddaly_50y_4 ddaly_50y_5 
-dcost_50y_1 dcost_50y_2 dcost_50y_3 dcost_50y_4 dcost_50y_5 
-netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 netdaly500_5 
+
+n_death_hiv_50y_1 n_death_hiv_50y_4 n_death_hiv_50y_5 
+d_n_death_hiv_50y_4_1 d_n_death_hiv_50y_5_1
+r_n_death_hiv_50y_4_1 r_n_death_hiv_50y_5_1
+
+dcost_50y_1  dcost_50y_4 dcost_50y_5 
+lowest_dcost
+d_dcost_50y_4_1 d_dcost_50y_5_1 
+
+ddaly_50y_1  ddaly_50y_4 ddaly_50y_5  
+d_ddaly_50y_4_1  d_ddaly_50y_5_1 
+dalys_averted_4_1 dalys_averted_5_1
+d_ddaly_gbd_50y_4_1 d_ddaly_gbd_50y_5_1 
+lowest_ddaly
+
+netdaly500_1  netdaly500_4 netdaly500_5 
+d_netdaly500_4_1 d_netdaly500_5_1 
+netdaly_gbd500_1 netdaly_gbd500_4 netdaly_gbd500_5 
+d_netdaly_gbd500_4_1 d_netdaly_gbd500_5_1 
+netdaly300_1 netdaly300_4 netdaly300_5 
+d_netdaly300_4_1 d_netdaly300_5_1 
+netdaly150_1 netdaly150_4 netdaly150_5 
+d_netdaly150_4_1 d_netdaly150_5_1 
+lowest_netdaly
+lowest_netdaly_gbd
+
 ;
 run;
 ods html close;
