@@ -13,7 +13,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data b;
 set a.l_base_sa_options_e;
 
-s = 10;
+s = 7 ;
 if option=0 or option=s ;
 if option=s then option=1;
 
