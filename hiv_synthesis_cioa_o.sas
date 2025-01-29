@@ -6948,6 +6948,8 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 					infected_prep_vr=1;		inf_prep_vr_source_prep_r=0; if (k103m_p + y181m_p + g190m_p) >= 1 then inf_prep_vr_source_prep_r=1;		
 					infected_prep_any=1;	if inf_prep_vr_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
+				if prep_cab_ever = 1 and currently_in_prep_cab_tail=1 then infected_prep_cab_tail=1;
+				if prep_len_ever = 1 and currently_in_prep_len_tail=1 then infected_prep_len_tail=1;
 			end;
 		end;
 		if hiv=1 then do;
@@ -7133,7 +7135,11 @@ if t ge 2 and msm=1 and msm_random_this_period < risk_hiv_msm then do; * msm_ran
 		end;
 		if prep_cab   =1 then do; 	
 			risk_msm = risk_msm * (1-prep_cab_efficacy); 
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_msm = risk_ * (1 - (prep_inj_effect_inm_partner * gender_spec_prep_cab_eff));
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_msm = risk_ * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+		end;
+		if prep_len   =1 then do; 	
+			risk_msm = risk_msm * (1-prep_len_efficacy); 
+			if ca66m_p  = 1 then risk_msm = risk_msm * (1 - (prep_len_effect_cam_partner));
 		end;
 
 		a=rand('uniform'); if a < risk_msm  then do;
@@ -7153,11 +7159,16 @@ if t ge 2 and msm=1 and msm_random_this_period < risk_hiv_msm then do; * msm_ran
 					infected_prep_any=1;	if inf_prep_oral_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 					if pop_wide_tld_prep=1 and in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then do; inf_prep_oral_source_prep_r=1; inf_prep_any_source_prep_r=1; end;
 				end;
-				if prep_inj=1 then do; 
-					infected_prep_inj=1;	inf_prep_inj_source_prep_r=0; if (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p) ge 1 then inf_prep_inj_source_prep_r=1;				
-					infected_prep_any=1;	if inf_prep_inj_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				if prep_cab=1 then do; 
+					infected_prep_cab=1;	inf_prep_cab_source_prep_r=0; if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then inf_prep_cab_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_cab_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
-				if prep_inj_ever = 1 and currently_in_prep_inj_tail=1 then infected_prep_inj_tail=1;
+				if prep_len=1 then do; 
+					infected_prep_len=1;	inf_prep_len_source_prep_r=0; if ca66m_p = 1 then inf_prep_len_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_len_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				end;
+				if prep_cab_ever = 1 and currently_in_prep_cab_tail=1 then infected_prep_cab_tail=1;
+				if prep_len_ever = 1 and currently_in_prep_len_tail=1 then infected_prep_len_tail=1;
 			end;
 			goto xx77;
 		end;
@@ -7313,26 +7324,31 @@ if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
 	end;
 
 		if prep_oral   =1 then do; 	* lapr and dpv-vr - this will be different for lapr and dpv-vr ;
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_pwid = risk_pwid * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
 			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
 			if pop_wide_tld_prep=1 then do;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
 				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
 				alrady positive from previous exposures;
 				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;
-				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_nip = risk_nip * (1-(adh * prev_efficacy));
-				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_pwid = risk_pwid * (1-(adh * prev_efficacy));
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_pwid = risk_pwid * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
 		end;
-		if prep_inj   =1 then do; 	
-			risk_nip = risk_nip * (1-prep_inj_efficacy); 
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * gender_spec_prep_inj_eff));
+		if prep_cab   =1 then do; 	
+			risk_pwid = risk_pwid * (1-prep_cab_efficacy); 
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_pwid = risk_pwid * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+		end;
+		if prep_len   =1 then do; 	* lapr and dpv-vr;
+			if gender =2 then gender_spec_prep_len_eff = prep_len_efficacy; if gender =1 then gender_spec_prep_len_eff = prep_len_efficacy**2;
+			risk_eip = risk_eip * (1-gender_spec_prep_len_eff); 
+			if ca66m_p = 1 then risk_pwid = risk_pwid * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));
 		end;
 
 		a=rand('uniform'); if a < risk_pwid then do;
@@ -7345,18 +7361,23 @@ if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
 			    hiv=1; infected_newp=0; infected_ep=0; infection=caldate{t};
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
-				infected_prep_any=0; infected_prep_oral=0; infected_prep_inj=0; infected_prep_vr=0;
+				infected_prep_any=0; infected_prep_oral=0; infected_prep_cab=0; infected_prep_len=0; infected_prep_vr=0;
 				inf_prep_any_source_prep_r=0; 
 				if prep_oral=1 then do; 
 					infected_prep_oral=1;	inf_prep_oral_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then inf_prep_oral_source_prep_r=1; 
 					infected_prep_any=1;	if inf_prep_oral_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 					if pop_wide_tld_prep=1 and in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then do; inf_prep_oral_source_prep_r=1; inf_prep_any_source_prep_r=1; end;
 				end;
-				if prep_inj=1 then do; 
-					infected_prep_inj=1;	inf_prep_inj_source_prep_r=0; if (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p) ge 1 then inf_prep_inj_source_prep_r=1;				
-					infected_prep_any=1;	if inf_prep_inj_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				if prep_cab=1 then do; 
+					infected_prep_cab=1;	inf_prep_cab_source_prep_r=0; if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then inf_prep_cab_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_cab_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
-				if prep_inj_ever = 1 and currently_in_prep_inj_tail=1 then infected_prep_inj_tail=1;
+				if prep_len=1 then do; 
+					infected_prep_len=1;	inf_prep_len_source_prep_r=0; if ca66m_p = 1 then inf_prep_len_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_len_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				end;
+				if prep_cab_ever = 1 and currently_in_prep_cab_tail=1 then infected_prep_cab_tail=1;
+				if prep_len_ever = 1 and currently_in_prep_len_tail=1 then infected_prep_len_tail=1;
 			end;
 			goto xx77;
 		end;
@@ -16185,7 +16206,12 @@ if prep_any=1 then do;
 	if gender=2 and prep_cab=1 then onprep_cab_w=1;
 	if gender=2 and prep_len=1 then onprep_len_w=1;
 	if gender=2 and prep_vr =1 then onprep_vr_w=1;
-	if msm=1 and prep_oral=1 then onprep_oral_msm=1;if pwid=1 and prep_oral=1 then onprep_oral_pwid=1;
+	if msm=1 and prep_oral=1 then onprep_oral_msm=1;
+	if msm=1 and prep_cab =1 then onprep_cab_msm=1;
+	if msm=1 and prep_len=1 then onprep_len_msm=1;
+	if pwid=1 and prep_oral=1 then onprep_oral_pwid=1;
+	if pwid=1 and prep_cab =1 then onprep_cab_pwid=1;
+	if pwid=1 and prep_len=1 then onprep_len_pwid=1;
 	if gender=1 and prep_oral=1 then onprep_oral_m=1;
 	if gender=2 and prep_oral=1 then onprep_oral_w=1;
 	if sw=1 then onprep_sw=1;
@@ -18525,6 +18551,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_len_sw + prep_len_sw ;  s_prep_vr_sw + prep_vr_sw ; 
 	s_prep_any_w_1524 + prep_any_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_cab_w_1524 + prep_cab_w_1524 ;  s_prep_len_w_1524 + prep_len_w_1524 ; 
 
+	s_onprep_cab_msm + onprep_cab_msm; s_onprep_len_msm + onprep_len_msm; s_onprep_cab_pwid + onprep_cab_pwid; s_onprep_len_pwid + onprep_len_pwid; 
+
 	s_prep_any_sdc + prep_any_sdc; s_prep_oral_sdc + prep_oral_sdc; s_prep_cab_sdc + prep_cab_sdc;  s_prep_len_sdc + prep_len_sdc; s_prep_vr_sdc + prep_vr_sdc;
 	s_prep_any_plw + prep_any_plw; s_prep_oral_plw + prep_oral_plw; s_prep_cab_plw + prep_cab_plw;  s_prep_len_plw + prep_len_plw; s_prep_vr_plw + prep_vr_plw;
 
@@ -20861,7 +20889,7 @@ s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1
 s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_len_msm s_onprep_cab_msm  s_tested1549msm
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_   s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
 s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ 
-s_diag_this_period_msm  s_tested_msm  s_naive_msm  
+s_diag_this_period_msm  s_tested_msm  s_naive_msm  s_onprep_cab_pwid s_onprep_len_pwid 
 s_i_msm s_i_v1_msm s_i_v2_msm s_i_v3_msm s_i_v4_msm s_i_v5_msm s_i_v6_msm s_msm  s_prop_i_msm  s_prep_any_msm  s_prep_any_m  s_prep_any_pwid
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
 
@@ -21952,7 +21980,7 @@ s_art_start_msm   s_diag_msm_age1564   s_vg1000_msm
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
 s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_cab_msm s_onprep_len_msm  s_tested1549msm
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
-s_ever_tested_msm1549_   s_diag_msm1549_     s_ever_tested_msm1564_   s_onart_msm1564_
+s_ever_tested_msm1549_   s_diag_msm1549_     s_ever_tested_msm1564_   s_onart_msm1564_   s_onprep_cab_pwid s_onprep_len_pwid 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm
 s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm  s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
@@ -24118,7 +24146,7 @@ s_art_start_msm   s_diag_msm_age1564   s_vg1000_msm
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
 s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_cab_msm s_onprep_len_msm  s_tested1549msm
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
-s_ever_tested_msm1549_   s_diag_msm1549_    s_ever_tested_msm1564_   s_onart_msm1564_
+s_ever_tested_msm1549_   s_diag_msm1549_    s_ever_tested_msm1564_   s_onart_msm1564_  s_onprep_cab_pwid s_onprep_len_pwid 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
 s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
