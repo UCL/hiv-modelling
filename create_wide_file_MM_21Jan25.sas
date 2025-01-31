@@ -1,4 +1,18 @@
 
+******UPDATE TO SOUTH AFRICA CALIBRATION IN DATA SF***
+
+
+
+
+
+
+
+
+
+
+
+
+
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
@@ -50,9 +64,6 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 * dalys and life years;
 
 * ================================================================================= ;
-
-ly = s_ly * sf;  *life years;
-dly = s_dly * sf; *discounted life years;
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
@@ -155,9 +166,6 @@ cost = dcost / discount;
 
 * ================================================================================= ;
 * ================================================================================= ;
-
-
-***ADD PROJECT SPECIFIC VARIABLES HERE;
 
 
 ***Preparing code;
