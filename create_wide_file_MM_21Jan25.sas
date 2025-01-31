@@ -1,19 +1,4 @@
 
-******UPDATE TO SOUTH AFRICA CALIBRATION IN DATA SF***
-
-
-
-
-
-
-
-
-
-
-
-
-
-***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
@@ -24,12 +9,15 @@ proc sort;
 by run cald option;run;
 
 proc freq;table option;run;
+
+
 data sf;
 set a;
 
 if cald=2025.25; ***Update as required;
 s_alive = s_alive_m + s_alive_w ;
-sf_2025 = 10000000 / s_alive; ***If calibrating to a specific setting, change 10000000 to desired 15+ population size;
+
+sf_2025 = (40912109) / s_alive;  * Mihpsa_SA calibration folder in output files using World Bank;
 sf=sf_2025;
 keep run sf sf_2025;
 proc sort; by run;run;
