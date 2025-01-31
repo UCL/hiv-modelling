@@ -15,6 +15,8 @@ if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;
 *run with prep_any_strategy=4 without the gender=2 line;
 *reduce rate_test_startprep_any for men after checking outputs;
 
+***SOUTH AFRICA***;
+
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
@@ -968,9 +970,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-* %include "/home/rmjlaph/SA_parameters.sas";
-* %include "/home/rmjlvca/Zim_parameters_08_f.sas";
- *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
+%include "/home/rmjllob/SA_parameters.sas";
 
 call symput('caldate1',caldate1);
 
@@ -18131,7 +18131,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_covid + covid ; 
 
-	/* mobile */ 
+	/* mobile men*/ 
 	s_mm + mm;		 			s_alive1549mm + alive1549mm;  	s_alive1564mm + alive1564mm;	  s_hiv_mm + hiv_mm;	
 	s_hiv1564mm + hiv1564mm;	s_hiv1549mm + hiv1549mm;		s_vl1000_art_mm + vl1000_art_mm;  s_onart_iicu_mm + onart_iicu_mm;
 	s_vl1000_art_iicu_mm +	vl1000_art_iicu_mm;					s_onart_gt6m_mm + onart_gt6m_mm;  s_vl1000_art_gt6m_mm + vl1000_art_gt6m_mm; 
@@ -19881,12 +19881,15 @@ s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_np
 
 s_covid
 
-mm		alive1549mm   alive1564mm	   		hiv_mm			hiv1564mm		hiv1549mm	vl1000_art_mm  	onart_iicu_mm
-vl1000_art_iicu_mm	  onart_gt6m_mm  		vl1000_art_gt6m_mm 		onart_gt6m_iicu_mm  vl1000_art_gt6m_iicu_mm 
-ever_tested_mm		  ever_tested_mm1549_	diag_mm1549_  	onart_mm1549_   ever_tested_mm1564_			diag_mm1564_
-onart_mm1564_   	  prep_oral_mm			prep_inj_mm   	prep_any_ever_mm			elig_prep_any_mm_1564_
-elig_prep_any_mm_1549_			 			prep_any_mm	    hard_reach_due_to_mobile	primary1549mm	 primary1564mm 
-vl1000_mm			  vg1000_mm				tested_mm		onprep_mm 		onprep_oral_mm	onprep_inj_mm
+/*MOBILE MEN*/
+
+s_mm			s_alive1549mm   	s_alive1564mm	   		s_hiv_mm			s_hiv1564mm				s_hiv1549mm		
+s_vl1000_art_mm	s_onart_iicu_mm		s_vl1000_art_iicu_mm	s_onart_gt6m_mm  	s_vl1000_art_gt6m_mm  	s_onart_gt6m_iicu_mm
+s_vl1000_art_gt6m_iicu_mm 			s_ever_tested_mm		s_ever_tested_mm1549_	s_diag_mm1549_  	s_onart_mm1549_  
+s_ever_tested_mm1564_				s_diag_mm1564_			s_onart_mm1564_   	 s_prep_oral_mm			s_prep_inj_mm 
+s_prep_any_ever_mm					s_elig_prep_any_mm_1564_	s_elig_prep_any_mm_1549_			 	s_prep_any_mm	  
+s_hard_reach_due_to_mobile			s_primary1549mm	 		s_primary1564mm 	s_vl1000_mm			 	s_vg1000_mm	
+s_tested_mm		s_onprep_mm 		s_onprep_oral_mm		s_onprep_inj_mm
 
 /* used in abort statements */
 
@@ -20811,12 +20814,15 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 
 s_covid
 
-mm		alive1549mm   alive1564mm	   		hiv_mm			hiv1564mm		hiv1549mm	vl1000_art_mm  	onart_iicu_mm
-vl1000_art_iicu_mm	  onart_gt6m_mm  		vl1000_art_gt6m_mm 		onart_gt6m_iicu_mm  vl1000_art_gt6m_iicu_mm 
-ever_tested_mm		  ever_tested_mm1549_	diag_mm1549_  	onart_mm1549_   ever_tested_mm1564_			diag_mm1564_
-onart_mm1564_   	  prep_oral_mm			prep_inj_mm   	prep_any_ever_mm			elig_prep_any_mm_1564_
-elig_prep_any_mm_1549_			 			prep_any_mm	    hard_reach_due_to_mobile	primary1549mm	 primary1564mm 
-vl1000_mm			  vg1000_mm				tested_mm		onprep_mm 		onprep_oral_mm	onprep_inj_mm
+/*MOBILE MEN*/
+
+s_mm			s_alive1549mm   	s_alive1564mm	   		s_hiv_mm			s_hiv1564mm				s_hiv1549mm		
+s_vl1000_art_mm	s_onart_iicu_mm		s_vl1000_art_iicu_mm	s_onart_gt6m_mm  	s_vl1000_art_gt6m_mm  	s_onart_gt6m_iicu_mm
+s_vl1000_art_gt6m_iicu_mm 			s_ever_tested_mm		s_ever_tested_mm1549_	s_diag_mm1549_  	s_onart_mm1549_  
+s_ever_tested_mm1564_				s_diag_mm1564_			s_onart_mm1564_   	 s_prep_oral_mm			s_prep_inj_mm 
+s_prep_any_ever_mm					s_elig_prep_any_mm_1564_	s_elig_prep_any_mm_1549_			 	s_prep_any_mm	  
+s_hard_reach_due_to_mobile			s_primary1549mm	 		s_primary1564mm 	s_vl1000_mm			 	s_vg1000_mm	
+s_tested_mm		s_onprep_mm 		s_onprep_oral_mm		s_onprep_inj_mm
 
 /*supp material*/
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
@@ -21809,12 +21815,15 @@ s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_np
 
 s_covid
 
-mm		alive1549mm   alive1564mm	   		hiv_mm			hiv1564mm		hiv1549mm	vl1000_art_mm  	onart_iicu_mm
-vl1000_art_iicu_mm	  onart_gt6m_mm  		vl1000_art_gt6m_mm 		onart_gt6m_iicu_mm  vl1000_art_gt6m_iicu_mm 
-ever_tested_mm		  ever_tested_mm1549_	diag_mm1549_  	onart_mm1549_   ever_tested_mm1564_			diag_mm1564_
-onart_mm1564_   	  prep_oral_mm			prep_inj_mm   	prep_any_ever_mm			elig_prep_any_mm_1564_
-elig_prep_any_mm_1549_			 			prep_any_mm	    hard_reach_due_to_mobile	primary1549mm	 primary1564mm 
-vl1000_mm			  vg1000_mm				tested_mm		onprep_mm 		onprep_oral_mm	onprep_inj_mm
+/*MOBILE MEN*/
+
+s_mm			s_alive1549mm   	s_alive1564mm	   		s_hiv_mm			s_hiv1564mm				s_hiv1549mm		
+s_vl1000_art_mm	s_onart_iicu_mm		s_vl1000_art_iicu_mm	s_onart_gt6m_mm  	s_vl1000_art_gt6m_mm  	s_onart_gt6m_iicu_mm
+s_vl1000_art_gt6m_iicu_mm 			s_ever_tested_mm		s_ever_tested_mm1549_	s_diag_mm1549_  	s_onart_mm1549_  
+s_ever_tested_mm1564_				s_diag_mm1564_			s_onart_mm1564_   	 s_prep_oral_mm			s_prep_inj_mm 
+s_prep_any_ever_mm					s_elig_prep_any_mm_1564_	s_elig_prep_any_mm_1549_			 	s_prep_any_mm	  
+s_hard_reach_due_to_mobile			s_primary1549mm	 		s_primary1564mm 	s_vl1000_mm			 	s_vg1000_mm	
+s_tested_mm		s_onprep_mm 		s_onprep_oral_mm		s_onprep_inj_mm
 
 /* used in abort statements */
 
