@@ -1932,6 +1932,7 @@ if prevalence1549w_24 < 0.35;
 if prevalence1549m_24 < 0.25;
 if incidence1549m_24 < 1.5;
 if incidence1549w_24 < 2.25;
+if max(incidence1549m_24, incidence1549w_24) > 0.10;
 if p_diag_m_24 > 0.75;
 if p_diag_w_24 > 0.75;
 if p_onart_diag_m_24 > 0.80;
@@ -1939,7 +1940,8 @@ if p_onart_diag_w_24 > 0.85;
 if p_onart_vl1000_m_24 > 0.80;
 if p_onart_vl1000_w_24 > 0.80;
 
-  if run <= 948862337 ; * cioa_n - to give n = 1000 ;
+
+  if run <= 994190572 ; * cioa_n - to give n = 1000 ;
  
 d_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 - n_death_hiv_10y_1;
 r_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 / n_death_hiv_10y_1;
@@ -2029,6 +2031,7 @@ netdaly500_5 = ddaly_50y_5 + (dcost_50y_5 / 0.0005);
 
 min_netdaly500 = min(netdaly500_1, netdaly500_4, netdaly500_5);
 min_netdaly500_1_4 = min(netdaly500_1, netdaly500_4);
+min_netdaly500_1_5 = min(netdaly500_1, netdaly500_5);
 
 d_netdaly500_4_1 = netdaly500_1 - netdaly500_4; * net dalys averted ;
 d_netdaly500_5_1 = netdaly500_1 - netdaly500_5; * net dalys averted ;
@@ -2067,6 +2070,9 @@ if netdaly500_5 = min_netdaly500 then lowest_netdaly=5;
 
 if netdaly500_1 = min_netdaly500_1_4 then lowest_netdaly_1_4=1;
 if netdaly500_4 = min_netdaly500_1_4 then lowest_netdaly_1_4=4;
+
+if netdaly500_1 = min_netdaly500_1_5 then lowest_netdaly_1_5=1;
+if netdaly500_5 = min_netdaly500_1_5 then lowest_netdaly_1_5=5;
 
 if netdaly_gbd500_1 = min_netdaly_gbd500 then lowest_netdaly_gbd=1;
 if netdaly_gbd500_4 = min_netdaly_gbd500 then lowest_netdaly_gbd=4;
@@ -2288,7 +2294,6 @@ var prevalence1549w_24 prevalence1549m_24 prevalence1549_24 incidence1549m_24 in
 p_diag_24 p_diag_w_24 p_diag_m_24 
 p_onart_diag_24 p_onart_diag_w_24  p_onart_diag_m_24  
 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
-p_diag_vl1000_24 p_diag_vl1000_m_24 p_diag_vl1000_w_24 
 p_vl1000_24 p_vl1000_w_24 p_vl1000_m_24 
 prevalence_vg1000_24   
 p_onart_cd4_l200_24
@@ -2379,10 +2384,34 @@ ods html close;
 
 ods html;
 title '';
-proc freq; tables lowest_dcost lowest_ddaly lowest_netdaly  lowest_dcost_1_4 lowest_ddaly_1_4 lowest_netdaly_1_4  lowest_netdaly_gbd ; 
+proc freq; tables lowest_dcost lowest_ddaly lowest_netdaly  lowest_dcost_1_4 lowest_ddaly_1_4 lowest_netdaly_1_4  lowest_netdaly_gbd 
+lowest_netdaly_1_5  
 ;
 run;
 ods html close;
+
+
+
+
+proc logistic; model lowest_netdaly_1_4 = 
+
+prevalence1549_24  
+incidence1549_24 
+p_diag_24 
+p_onart_diag_24 
+p_onart_vl1000_24 
+
+;
+run;
+
+
+
+ods html;
+proc freq; tables (incidence1549_24_g prevalence1549_24_g  p_diag_24_g  p_onart_diag_24_g  p_onart_vl1000_24_g) * lowest_netdaly_1_4 ; run;
+ods html close;
+
+
+
 
 ods html;
 title '';
