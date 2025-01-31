@@ -1954,6 +1954,9 @@ r_n_death_hiv_50y_5_1 = n_death_hiv_50y_5 / n_death_hiv_50y_1;
 * dcab_cost_50y_2 = dcab_cost_50y_2 * 0.50;
 * dlen_cost_50y_2 = dlen_cost_50y_2 * 0.50;
 
+* dcost_self_test_50y_4 = dcost_self_test_50y_4 * 1.5 / 2;
+* dcost_self_test_50y_5 = dcost_self_test_50y_5 * 1.5 / 2;
+
 dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
 + ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
 
@@ -2035,6 +2038,7 @@ netdaly_gbd500_4 = ddaly_gbd_50y_4 + (dcost_50y_4 / 0.0005);
 netdaly_gbd500_5 = ddaly_gbd_50y_5 + (dcost_50y_5 / 0.0005);
 
 min_netdaly_gbd500 = min(netdaly_gbd500_1, netdaly_gbd500_4, netdaly_gbd500_5);
+min_netdaly_gbd500_1_4 = min(netdaly_gbd500_1, netdaly_gbd500_4);
 
 d_netdaly_gbd500_4_1 = netdaly_gbd500_1 - netdaly_gbd500_4; * net daly_gbds averted ;
 d_netdaly_gbd500_5_1 = netdaly_gbd500_1 - netdaly_gbd500_5; * net daly_gbds averted ;
@@ -2067,6 +2071,9 @@ if netdaly500_4 = min_netdaly500_1_4 then lowest_netdaly_1_4=4;
 if netdaly_gbd500_1 = min_netdaly_gbd500 then lowest_netdaly_gbd=1;
 if netdaly_gbd500_4 = min_netdaly_gbd500 then lowest_netdaly_gbd=4;
 if netdaly_gbd500_5 = min_netdaly_gbd500 then lowest_netdaly_gbd=5;
+
+if netdaly_gbd500_1 = min_netdaly_gbd500_1_4 then lowest_netdaly_gbd=1;
+if netdaly_gbd500_4 = min_netdaly_gbd500_1_4 then lowest_netdaly_gbd=4;
 
 min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_4, ddaly_50y_5);
 min_ddaly_50y_1_4 = min(ddaly_50y_1, ddaly_50y_4);
@@ -2372,7 +2379,7 @@ ods html close;
 
 ods html;
 title '';
-proc freq; tables lowest_dcost lowest_ddaly lowest_netdaly  lowest_dcost_1_4 lowest_ddaly_1_4 lowest_netdaly_1_4  ; 
+proc freq; tables lowest_dcost lowest_ddaly lowest_netdaly  lowest_dcost_1_4 lowest_ddaly_1_4 lowest_netdaly_1_4  lowest_netdaly_gbd ; 
 ;
 run;
 ods html close;

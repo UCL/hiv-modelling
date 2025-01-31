@@ -2,6 +2,8 @@
 
 correct prep_inj_msm output
 
+(might have to assume greater rates of starting and stopping by choice for len-prep as it may be hard to attend on time for injection)
+
 ;
 
 
@@ -550,11 +552,12 @@ newp_seed = 7;
 * rate_self_test;			rate_self_test = 0;
 * rate_self_test_if_introduced;  %sample_uniform(rate_self_test_if_introduced, 0.05 0.1 0.3 0.5 );* cioa_l;
 
-* self_test_sens;			self_test_sens = 0.93;          
+* self_test_sens;			self_test_sens = 0.93;    * wonfo test has 95.8% sensitivity but oral tests will be lower
+							https://supply.unicef.org/s0004269.html#:~:text=Technical%20specifications:,Medsun%20Medical%20Co.%2C%20Ltd.;      
 
 * prob_pos_self_test_conf;	prob_pos_self_test_conf = 0.8;
 
-* secondary_dist_self_test;		secondary_dist_self_test = 0; 
+* secondary_dist_self_test;	secondary_dist_self_test = 0; 
 * intervention in place to give to sexual partners ;
 
 * secondary_self_test_targeting; secondary_self_test_targeting = self_test_targeting ;
@@ -1291,7 +1294,7 @@ cost_test_c=0.0037; *HCW-testing general pop, hiv negative - changed 30dec2016 -
 cost_test_d=0.02521; *HCW-testing positive (community based);
 cost_test_e=0.0245; *HCW-testing negative (community based);
 cost_test_g=0.022; *vl test to diagnose;
-self_test_cost = 0.002; * may need to review this cost - I know they can cost $1 and so $1 more for distribution per test ;
+self_test_cost = 0.0015; * $1 for wondfo test + supply chain / pharmacist costs ;
 cost_t_adh_int = 0.010;  
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
