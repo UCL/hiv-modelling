@@ -2377,7 +2377,7 @@ who may be dead and hence have caldate{t} missing;
 			comm_tld_set_in_options = 1;
 		end;
 		eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
-  		hard_reach=0;		
+  		if hard_reach=1 and gener=1 then hard_reach_vmmc=1; hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
 		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
   		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 	end;
@@ -2412,7 +2412,7 @@ who may be dead and hence have caldate{t} missing;
 			comm_tld_set_in_options = 1;
 		end;
 		eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
-  		hard_reach=0;		
+  		if hard_reach=1 and gener=1 then hard_reach_vmmc=1; hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
 		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
   		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 
@@ -3291,7 +3291,7 @@ end;
 u_circ=rand('uniform');
 tested_circ=0;
 
-if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1
+if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach_vmmc ne 1
 and age < 50 then do; 
 
 	if u_circ lt prob_circ then do;
