@@ -172,8 +172,6 @@ s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
 s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 
-<<<<<<< Updated upstream
-=======
 s_alive = s_alive_m + s_alive_w ;
 
 ***general population;
@@ -181,7 +179,6 @@ s_alive = s_alive_m + s_alive_w ;
 * n_alive;						n_alive = s_alive * sf;
 * n_alive_m;					n_alive_m = s_alive_m * sf;
 * n_alive_w;					n_alive_w = s_alive_w * sf;
->>>>>>> Stashed changes
 
 ***general population- key outputs;
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
@@ -192,17 +189,6 @@ s_alive = s_alive_m + s_alive_w ;
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
 
-<<<<<<< Updated upstream
-* p_onart_vl1000;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000 = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu; 
-* p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
-* p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
-* p_vg1000, p_vl1000;			if s_hiv1564  > 0 then p_vg1000 = s_vg1000 / s_hiv1564 ;  p_vl1000 = 1- p_vg1000 ;
-* prevalence_vg1000;			if (s_alive1549_w + s_alive1549_m) > 0 then prevalence_vg1000 = s_vg1000 / (s_alive1549_w + s_alive1549_m);
-
-* prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
-* prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
-* prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
-=======
 * p_onart_vl1000_;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000_ = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu; 
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
@@ -212,7 +198,6 @@ s_alive = s_alive_m + s_alive_w ;
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
 * prevalence1549_;				prevalence1549_ = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
->>>>>>> Stashed changes
 
 * incidence1549_;				incidence1549_ = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
@@ -253,17 +238,10 @@ s_alive = s_alive_m + s_alive_w ;
 * n_prep_ever_mm;				n_prep_ever_mm = s_prep_any_ever_mm * sf;
 * p_prep_any_ever_mm;			p_prep_any_ever_mm = s_prep_any_ever_mm / s_mm;
 
-<<<<<<< Updated upstream
-keep run option cald 
-prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549_ 		incidence1549w 		incidence1549m
-p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
-p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
-=======
 keep run option cald n_alive_m			n_alive_w			n_alive
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
->>>>>>> Stashed changes
 n_onprep_w			 n_onprep_m			n_onprep			prop_1564m_onprep   prop_1564w_onprep	n_prep_any_start
 
 dcost ddaly
@@ -279,15 +257,11 @@ proc sort data=y;by run option;run;
 options nomprint;
 option nospool;
 
-<<<<<<< Updated upstream
-****Baseline data for calibration;
-=======
 
 ***This section of code is used to create calibration graphs in Excel;
 
 ****Baseline data for calibration is from
 C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\mihpsa_sa\Calibration data;
->>>>>>> Stashed changes
 
 data z; 
 set y; 
@@ -324,32 +298,13 @@ proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where 2021   <=
 proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where 2022   <= cald < 2023  ; 
 proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <= cald < 2024  ; 
 proc means  noprint data=y; var &v; output out=y_24 mean= &v;  ; where 2024   <= cald < 2025  ; 
-<<<<<<< Updated upstream
-=======
 proc means  noprint data=y; var &v; output out=y_25 mean= &v;  ; where 2025   <= cald < 2026  ; 
 
->>>>>>> Stashed changes
  																										   
 																										
 data &v ; set 
 
 y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21
-<<<<<<< Updated upstream
-y_22 y_23 y_24
-;
-drop _NAME_ _TYPE_ _FREQ_;
-
-***Align these vars with baseline calibration sheet; include incidence; 
-
-%mend var;
-
-%var(v=n_alive_m);			%var(v=n_alive_w);    		%var(v=n_alive);		%var(v=prevalence_m);		%var(v=prevalence_w);  
-%var(v=prevalence); 		%var(v=incidence1549m);		%var(v=incidence1549w);	%var(v=incidence1549_);		%var(v=p_diag1549m);    	
-%var(v=p_diag1549w);     	%var(v=p_diag1549_); 		%var(v=p_onart_diag_m);	%var(v=p_onart_diag_w);		%var(v=p_onart_diag); 
-%var(v=p_onart_vl1000_m);  	%var(v=p_onart_vl1000_w);  	%var(v=p_onart_vl1000_);%var(v=n_onprep_m);			%var(v=n_onprep_m);
-%var(v=prop_1564m_onprep);	%var(v=prop_1564w_onprep);
-
-=======
 y_22 y_23 y_24 y_25
 ;
 drop _NAME_ _TYPE_ _FREQ_;
@@ -365,7 +320,6 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prop_1564m_onprep);	%var(v=prop_1564w_onprep);
 
 
->>>>>>> Stashed changes
 /*
 %var(v=n_infected_m); 		%var(v=n_infected_w); 		%var(v=n_infected);		%var(v=prop_w_1564_sw);		%var(v=prop_sw_hiv1549_); 
 %var(v=p_mcirc);			%var(v=p_vmmc);				%var(v=p_trad_circ);	%var(v=n_death_hivrel_m );  %var(v=n_death_hivrel_w ); 
@@ -408,38 +362,6 @@ cards;
 2023
 2024
 2025
-<<<<<<< Updated upstream
-2026
-2027
-2028
-2029
-2030
-2031
-2032
-2033
-2034
-2035
-2036
-2037
-2038
-2039
-2040
-
-
-
-data   wide_outputs; merge year 
-
-
-n_alive_m			n_alive_w    		n_alive			prevalence_m		prevalence_w  
-prevalence 			incidence1549m		incidence1549w	incidence1549_		p_diag1549m    	
-p_diag1549w     	p_diag1549_ 		p_onart_diag_m	p_onart_diag_w		p_onart_diag 
-p_onart_vl1000_m  	p_onart_vl1000_w  	p_onart_vl1000_	n_onprep_m			n_onprep_m
-prop_1564m_onprep	prop_1564w_onprep;
-
-run;
-
-
-=======
 
 data   wide_outputs; merge year 
 n_alive_m			n_alive_w    		n_alive			prevalence1549m		prevalence1549w  	prevalence1549_		
@@ -448,22 +370,11 @@ p_onart_diag_m		p_onart_diag_w		p_onart_diag	p_onart_vl1000_m  	p_onart_vl1000_w
 n_onprep_m			n_onprep_w			prop_1564m_onprep	prop_1564w_onprep;
 run;
 
->>>>>>> Stashed changes
 ods html;
 proc print noobs ; run; 
 ods html close;
 
 
-<<<<<<< Updated upstream
-***or can print to excel;
-/*
-ods excel file="C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\WHO Ivory Coast\Op1.xlsx"
-options(sheet_name='intervention' start_at='A2');
-proc print data=wide_outputs noobs;run;
-*/
-
-=======
->>>>>>> Stashed changes
 
 
 
