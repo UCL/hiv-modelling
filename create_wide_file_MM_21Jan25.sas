@@ -8,7 +8,7 @@ if run=. then delete;
 proc sort;
 by run cald option;run;
 
-proc freq;table option;run;
+proc freq;table option cald;run;
 
 
 data sf;
@@ -124,6 +124,8 @@ dcost_prep_visit_inj  = s_dcost_prep_visit_inj * sf * 4 / 1000;
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
 dcost_sw_program = s_dcost_sw_program  * sf * 4 / 1000; 
+dcost_avail_self_test = dcost_avail_self_test * sf * 4/1000;
+
 
 dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
 dcost_circ = s_dcost_circ * sf * 4 / 1000; 
@@ -190,13 +192,14 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
 * prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
 
-* incidence1549;				incidence1549 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
+* incidence1549_;				incidence1549_ = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
+
 ***Mobile men;
 * p_diag_mm;					if s_hiv1564mm  > 0 then p_diag_mm = s_diag_mm1564_ / s_hiv1564mm ; 
-* p_onart_mm;					if s_diag > 0 then p_onart_diag_mm = s_onart_iicu / s_diag_mm1564_;
+* p_onart_diag_mm;				if s_diag > 0 then p_onart_diag_mm = s_onart_iicu / s_diag_mm1564_;
 * p_onart_vl1000_mm;			if s_onart_gt6m_iicu_mm   > 0 then p_onart_vl1000_mm = s_vl1000_art_iicu_mm / s_onart_gt6m_iicu_mm; 
 
 * p_vg1000_mm, p_vl1000_mm;		if s_hiv1564mm  > 0 then p_vg1000_mm = s_vg1000_mm / s_hiv1564mm ;  p_vl1000_mm = 1- p_vg1000_mm ;
@@ -209,11 +212,11 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 
 * n_tested_mm;					n_tested_mm = s_tested_mm * sf ;
 
-* prop_1564mm_onprep_mm;		prop_1564mm_onprep_mm =   max(s_onprep_mm, 0) / (s_alive1564_mm - s_hiv1564mm) ;
-* prop_1564mm_onprep_inj_mm;	prop_1564mm_onprep_inj_mm =   max(s_onprep_inj_mm, 0) / (s_alive1564_mm - s_hiv1564mm) ;
-* prop_1564mm_onprep_oral_mm;	prop_1564mm_onprep_oral_mm =   max(s_onprep_oral_mm, 0) / (s_alive1564_mm - s_hiv1564mm) ;
+* prop_1564mm_onprep_mm;		prop_1564mm_onprep_mm =   max(s_onprep_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* prop_1564mm_onprep_inj_mm;	prop_1564mm_onprep_inj_mm =   max(s_onprep_inj_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* prop_1564mm_onprep_oral_mm;	prop_1564mm_onprep_oral_mm =   max(s_onprep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
 
-* prop_elig_on_prep_mm;			if elig_prep_any_mm_1564_ > 0 then prop_elig_on_prep_mm = s_onprep_mm / elig_prep_any_mm_1564_ ;
+* prop_elig_on_prep_mm;			if s_elig_prep_any_mm_1564_ > 0 then prop_elig_on_prep_mm = s_onprep_mm / s_elig_prep_any_mm_1564_ ;
 
 * n_prep_any_mm;				n_prep_any_mm = s_onprep_mm * sf;
 * n_prep_oral_mm;				n_prep_oral_mm = s_onprep_oral_mm * sf;
@@ -223,12 +226,12 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_prep_any_ever_mm;			p_prep_any_ever_mm = s_prep_any_ever_mm / s_mm;
 
 keep run option cald 
-prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m
+prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
 dcost ddaly
 
-p_diag_mm			p_onart_mm			p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
+p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		prop_1564mm_onprep_mm
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm				prop_elig_on_prep_mm
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm
@@ -238,6 +241,153 @@ proc sort data=y;by run option;run;
 
 options nomprint;
 option nospool;
+
+****Baseline data for calibration;
+
+data z; 
+set y; 
+  option nospool;
+
+%macro var(v=);
+
+* &v ;
+
+  options nomprint;
+
+proc means  noprint data=y; var &v; output out=y_00 mean= &v;  ; where 2000   <= cald < 2001  ; 
+proc means  noprint data=y; var &v; output out=y_01 mean= &v;  ; where 2001   <= cald < 2002  ; 
+proc means  noprint data=y; var &v; output out=y_02 mean= &v;  ; where 2002   <= cald < 2003  ; 
+proc means  noprint data=y; var &v; output out=y_03 mean= &v;  ; where 2003   <= cald < 2004  ; 
+proc means  noprint data=y; var &v; output out=y_04 mean= &v;  ; where 2004   <= cald < 2005  ; 
+proc means  noprint data=y; var &v; output out=y_05 mean= &v;  ; where 2005   <= cald < 2006  ; 
+proc means  noprint data=y; var &v; output out=y_06 mean= &v;  ; where 2006   <= cald < 2007  ; 
+proc means  noprint data=y; var &v; output out=y_07 mean= &v;  ; where 2007   <= cald < 2008  ; 
+proc means  noprint data=y; var &v; output out=y_08 mean= &v;  ; where 2008   <= cald < 2009  ; 
+proc means  noprint data=y; var &v; output out=y_09 mean= &v;  ; where 2009   <= cald < 2010  ; 
+proc means  noprint data=y; var &v; output out=y_10 mean= &v;  ; where 2010   <= cald < 2011  ; 
+proc means  noprint data=y; var &v; output out=y_11 mean= &v;  ; where 2011   <= cald < 2012  ; 
+proc means  noprint data=y; var &v; output out=y_12 mean= &v;  ; where 2012   <= cald < 2013  ; 
+proc means  noprint data=y; var &v; output out=y_13 mean= &v;  ; where 2013   <= cald < 2014  ; 
+proc means  noprint data=y; var &v; output out=y_14 mean= &v;  ; where 2014   <= cald < 2015  ; 
+proc means  noprint data=y; var &v; output out=y_15 mean= &v;  ; where 2015   <= cald < 2016  ; 
+proc means  noprint data=y; var &v; output out=y_16 mean= &v;  ; where 2016   <= cald < 2017  ; 
+proc means  noprint data=y; var &v; output out=y_17 mean= &v;  ; where 2017   <= cald < 2018  ; 
+proc means  noprint data=y; var &v; output out=y_18 mean= &v;  ; where 2018   <= cald < 2019  ; 
+proc means  noprint data=y; var &v; output out=y_19 mean= &v;  ; where 2019   <= cald < 2020  ; 
+proc means  noprint data=y; var &v; output out=y_20 mean= &v;  ; where 2020   <= cald < 2021  ; 
+proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where 2021   <= cald < 2022  ; 
+proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where 2022   <= cald < 2023  ; 
+proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <= cald < 2024  ; 
+proc means  noprint data=y; var &v; output out=y_24 mean= &v;  ; where 2024   <= cald < 2025  ; 
+ 																										   
+																										
+data &v ; set 
+
+y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21
+y_22 y_23 y_24
+;
+drop _NAME_ _TYPE_ _FREQ_;
+
+***Align these vars with baseline calibration sheet; include incidence; 
+
+%mend var;
+
+%var(v=n_alive_m);			%var(v=n_alive_w);    		%var(v=n_alive);		%var(v=prevalence_m);		%var(v=prevalence_w);  
+%var(v=prevalence); 		%var(v=incidence1549m);		%var(v=incidence1549w);	%var(v=incidence1549_);		%var(v=p_diag1549m);    	
+%var(v=p_diag1549w);     	%var(v=p_diag1549_); 		%var(v=p_onart_diag_m);	%var(v=p_onart_diag_w);		%var(v=p_onart_diag); 
+%var(v=p_onart_vl1000_m);  	%var(v=p_onart_vl1000_w);  	%var(v=p_onart_vl1000_);
+
+
+%var(v=n_infected_m); 		%var(v=n_infected_w); 		%var(v=n_infected);		%var(v=prop_w_1564_sw);		%var(v=prop_sw_hiv1549_); 
+%var(v=p_mcirc);			%var(v=p_vmmc);				%var(v=p_trad_circ);	%var(v=n_death_hivrel_m );  %var(v=n_death_hivrel_w ); 
+%var(v=n_death_hivrel ); 	%var(v=n_hiv_m);			%var(v=n_hiv_w);		%var(v=n_hiv);				%var(v=prevalence_msm);
+%var(v=prop_m_msm);    		%var(v=incidence1524m);		%var(v=incidence1524w);	%var(v=incidence1564m);		%var(v=incidence1564w);
+%var(v=incidence1564_);		%var(v=n_onart); 			%var(v=n_infected_agyw);%var(v=incidence_agyw);		%var(v=incidence_sw);	
+%var(v=incidence_msm);		%var(v=n_onprep_m);			%var(v=n_onprep_w);		%var(v=n_onprep);			%var(v=p_1564_onprep);	
+%var(v=n_onprep_sw);		%var(v=p_onprep_sw);		%var(v=n_onprep_msm);	%var(v=p_onprep_msm);		%var(v=yll_m); 	
+*/%var(v=cost);			%var(v=daly_gbd);
+	
+
+data year;
+
+input year;
+cards;
+2000
+2001
+2002
+2003
+2004
+2005
+2006
+2007
+2008
+2009
+2010
+2011
+2012 
+2013
+2014
+2015
+2016
+2017
+2018
+2019
+2020
+2021
+2022
+2023
+2024
+2025
+2026
+2027
+2028
+2029
+2030
+2031
+2032
+2033
+2034
+2035
+2036
+2037
+2038
+2039
+2040
+
+
+
+data   wide_outputs; merge year 
+/*n_alive_m			n_alive_w    		n_alive				prevalence_m		prevalence_w  
+prevalence 			n_infected_m 		n_infected_w 		n_infected			p_diag1549m    	
+p_diag1549w     	p_diag1549_ 		p_onart_diag_m		p_onart_diag_w		p_onart_diag 
+p_onart_vl1000_m  	p_onart_vl1000_w  	p_onart_vl1000_		prop_w_1564_sw		prop_sw_hiv1549_ 
+
+p_mcirc				p_vmmc				p_trad_circ			n_death_hivrel_m   	n_death_hivrel_w  
+n_death_hivrel  	n_hiv_m				n_hiv_w				n_hiv				prevalence_msm
+prop_m_msm    		incidence1524m		incidence1564m		incidence1524w		incidence1564w 		
+incidence_sw		incidence_msm		n_infected_agyw		incidence_agyw		incidence1564_		n_onart
+n_onprep_m			n_onprep_w			n_onprep			yll_m 				yll_w 				yll
+dummy1				dummy2				dummy3				dummy4				dummy5
+*/cost				daly_gbd;
+run;
+
+
+ods html;
+proc print noobs ; run; 
+ods html close;
+
+
+***or can print to excel;
+/*
+ods excel file="C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\WHO Ivory Coast\Op1.xlsx"
+options(sheet_name='intervention' start_at='A2');
+proc print data=wide_outputs noobs;run;
+*/
+
+
+
+
+
 
 
 ***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;
