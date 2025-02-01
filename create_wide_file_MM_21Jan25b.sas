@@ -211,7 +211,9 @@ s_alive = s_alive_m + s_alive_w ;
 * n_prep_any_start;				n_prep_any_start = max(s_prep_any_start, 0) * sf;
 
 ***Mobile men;
-* p_diag_mm;					if s_hiv1564mm  > 0 then p_diag_mm = s_diag_mm1564_ / s_hiv1564mm ; 
+* p_diag_mm;					if s_hiv1564mm  > 0 then p_diag_mm = s_diag_mm1564_ / s_hiv1564mm ;
+proc print;var s_diag_mm1564_ s_hiv1564mm p_diag_mm;run;
+ 
 * p_onart_diag_mm;				if s_diag > 0 then p_onart_diag_mm = s_onart_iicu / s_diag_mm1564_;
 * p_onart_vl1000_mm;			if s_onart_gt6m_iicu_mm   > 0 then p_onart_vl1000_mm = s_vl1000_art_iicu_mm / s_onart_gt6m_iicu_mm; 
 
@@ -542,6 +544,22 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 
 ods html ;
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Of mobile men with hiv, % diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label p50_p_diag_mm_0 = "Option 0";
+label p50_p_diag_mm_1 = "Option 1";
+label p50_p_diag_mm_1 = "Option 2";
+
+
+series  x=cald y=p50_p_diag_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_mm_0 	upper=p95_p_diag_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_mm_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diag_mm_1 	upper=p95_p_diag_mm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
 
 
 
