@@ -929,13 +929,13 @@ end;
 
 * incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.3 0.5 0.7 0.9);    
 
-
+* adh_effect_comm_tld;			%sample_uniform(adh_effect_comm_tld, 0 0.05 0.1 0.2);
 
 * POP WIDE TLD * ;
 
-* rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1.5 2 3 5);
+* rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 2 3 5);
 
-* rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
+* rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/2 1/3  1/5  1/10);
 
 * prob_tld_hiv_concern;			%sample_uniform(prob_tld_hiv_concern, 0.0   0.0001  0.001 );   prob_tld_hiv_concern = 0.0001;  
 
@@ -1145,7 +1145,7 @@ cost_test_c=0.0037; *HCW-testing general pop, hiv negative - changed 30dec2016 -
 cost_test_d=0.02521; *HCW-testing positive (community based);
 cost_test_e=0.0245; *HCW-testing negative (community based);
 cost_test_g=0.022; *vl test to diagnose;
-self_test_cost = 0.002; * may need to review this cost - I know they can cost $1 and so $1 more for distribution per test ;
+self_test_cost = 0.0015; * $1 for wondfo test + supply chain / pharmacist costs ;
 cost_t_adh_int = 0.010;  
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
@@ -3078,7 +3078,7 @@ end;
 u_circ=rand('uniform');
 tested_circ=0;
 
-if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1
+if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach_vmmc ne 1
 and age < 50 then do; 
 
 	if u_circ lt prob_circ then do;
@@ -20805,7 +20805,7 @@ msm_rred red_chance_ep_msm prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_fem
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 prob_self_test_hard_reach self_test_targeting rate_self_test rate_self_test_if_introduced self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 incr_pref_prep_oral_comm_tld r_choose_stop_prep_oral_comm_tld   r_test_startprep_any_comm_tld   prob_prep_oral_b_comm_tld
-p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
+p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw adh_effect_comm_tld
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency  isl_higher_potency  isl_ole_adh_improve
@@ -22875,7 +22875,7 @@ prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prob_self_test_hard_reach self_test_targeting rate_self_test rate_self_test_if_introduced self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 incr_pref_prep_oral_comm_tld r_choose_stop_prep_oral_comm_tld   r_test_startprep_any_comm_tld   prob_prep_oral_b_comm_tld
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b  prob_prep_len_b prob_prep_vr_b prep_cab_efficacy  prep_len_efficacy   prop_pep  pep_efficacy 
-rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr 
+rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr adh_effect_comm_tld
 
 prep_cab_effect_inm_partner pref_prep_cab_beta_s1 incr_res_risk_cab_inf_3m prep_len_effect_cam_partner pref_prep_len_beta_s1 incr_res_risk_len_inf_3m 
 
