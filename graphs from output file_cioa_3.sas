@@ -42,7 +42,7 @@ p_newp_ge1_ = p_newp_ge1;
 if option ne 1 and option ne 2;
  
 
-%let single_var = n_prep_any                           ;
+%let single_var = p_mcirc                           ;
 
 
 
@@ -459,6 +459,25 @@ band    x=cald lower=p5_p_tested_past_year_1549w_4 upper=p95_p_tested_past_year_
 run;quit;
 
 */
+
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';  * Title    height=1.5 justify=center "p_mcirc";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'percentage'		labelattrs=(size=12)  values = (0.3 to  1       by 0.1  ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_mcirc_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_mcirc_0 upper=p95_p_mcirc_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_p_mcirc_3 / lineattrs = (color=darkblue    thickness = 4);
+band    x=cald lower=p5_p_mcirc_3 upper=p95_p_mcirc_3 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
+
+series  x=cald y=p50_p_mcirc_4 / lineattrs = (color=darkred       thickness = 4);
+band    x=cald lower=p5_p_mcirc_4 upper=p95_p_mcirc_4 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
+
+run;quit;
+
 
 /*
 
@@ -889,7 +908,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -908,7 +927,7 @@ band    x=cald lower=p5_n_prep_any_4 upper=p95_n_prep_any_4 / transparency=0.9 f
 
 run;quit;
 
-
+*/
 
 /*
 
