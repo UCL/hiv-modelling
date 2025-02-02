@@ -15425,6 +15425,7 @@ onart_w1519_=0;onart_w2024_=0;onart_w2529_=0;onart_w3034_=0;onart_w3539_=0;onart
 onart_w6569_=0;onart_w7074_=0;onart_w7579_=0;onart_w8084_=0;onart_w85pl_=0; 
 onart_sw=0; 		
 
+ever_tested_mm1549_=0; diag_mm1549_=0;  onart_mm1549_=0;ever_tested_mm1564_=0; diag_mm1564_=0;  onart_mm1564_=0;
 
 
 if gender=1 then do;
