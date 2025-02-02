@@ -212,7 +212,6 @@ s_alive = s_alive_m + s_alive_w ;
 
 ***Mobile men;
 * p_diag_mm;					if s_hiv1564mm  > 0 then p_diag_mm = s_diag_mm1564_ / s_hiv1564mm ;
-proc print;var s_diag_mm1564_ s_hiv1564mm p_diag_mm;run;
  
 * p_onart_diag_mm;				if s_diag > 0 then p_onart_diag_mm = s_onart_iicu / s_diag_mm1564_;
 * p_onart_vl1000_mm;			if s_onart_gt6m_iicu_mm   > 0 then p_onart_vl1000_mm = s_vl1000_art_iicu_mm / s_onart_gt6m_iicu_mm; 
