@@ -244,36 +244,23 @@ s_alive = s_alive_m + s_alive_w ;
 * n_prep_ever_mm;				n_prep_ever_mm = s_prep_any_ever_mm * sf;
 * p_prep_any_ever_mm;			p_prep_any_ever_mm = s_prep_any_ever_mm / s_mm;
 
-<<<<<<< Updated upstream
-=======
 * p_newp_ge1;					*p_newp_ge1_mm = s_newp_ge1_mm / s_alive1564mm ;
 * p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive1564mm;
 
->>>>>>> Stashed changes
 keep run option cald n_alive_m			n_alive_w			n_alive				p_mm				p_hiv_mm	p_hiv_m
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
 n_onprep_w			 n_onprep_m			n_onprep			prop_1564m_onprep   prop_1564w_onprep	n_prep_any_start
-<<<<<<< Updated upstream
-p_hiv_mm
-=======
 
->>>>>>> Stashed changes
 
 dcost ddaly
 
 p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
-<<<<<<< Updated upstream
-prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		prop_1564mm_onprep_mm
-prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm				prop_elig_on_prep_mm
-n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm
-=======
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		prop_1564mm_onprep_mm	p_hiv_mm
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm				prop_elig_on_prep_mm
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm
 /*p_newp_ge1_mm*/	p_prep_any_willing
->>>>>>> Stashed changes
 ;
 
 proc sort data=y;by run option;run;
@@ -391,11 +378,7 @@ data   wide_outputs; merge year
 n_alive_m			n_alive_w    		n_alive			prevalence1549m		prevalence1549w  	prevalence1549_		
 incidence1549m		incidence1549w		incidence1549_	p_diag_m 			p_diag_w     		p_diag 				
 p_onart_diag_m		p_onart_diag_w		p_onart_diag	p_onart_vl1000_m  	p_onart_vl1000_w  	p_onart_vl1000_
-<<<<<<< Updated upstream
-n_onprep_m			n_onprep_w			prop_1564m_onprep	prop_1564w_onprep;
-=======
 n_onprep_m			n_onprep_w			prop_1564m_onprep	prop_1564w_onprep	;
->>>>>>> Stashed changes
 run;
 
 ods html;
@@ -426,14 +409,10 @@ p_mm				p_hiv_mm			p_hiv_m
 p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		prop_1564mm_onprep_mm
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm				prop_elig_on_prep_mm
-<<<<<<< Updated upstream
-n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm;
-=======
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm
 /*p_newp_ge1_mm*/	p_prep_any_willing	prop_1564m_onprep
 ;
 
->>>>>>> Stashed changes
 
 *starts with %macro and ends with %mend;
 %macro option_0;
@@ -476,12 +455,8 @@ p_mm				p_hiv_mm			p_hiv_m
 p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		prop_1564mm_onprep_mm
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm				prop_elig_on_prep_mm
-<<<<<<< Updated upstream
-n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm;
-=======
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm
 /*p_newp_ge1_mm*/	p_prep_any_willing	prop_1564m_onprep
->>>>>>> Stashed changes
 ;
 
 
@@ -524,12 +499,8 @@ p_mm				p_hiv_mm			p_hiv_m
 p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		prop_1564mm_onprep_mm
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm				prop_elig_on_prep_mm
-<<<<<<< Updated upstream
-n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm;
-=======
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm
 /*p_newp_ge1_mm*/	p_prep_any_willing	prop_1564m_onprep
->>>>>>> Stashed changes
 ;
 
 
@@ -567,11 +538,7 @@ run;
 
 data d; * this is number of variables in %let var = above ;
 merge 
-<<<<<<< Updated upstream
-g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22/*  g23  g24  g25  g26 
-=======
 g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24 /* g25  g26 
->>>>>>> Stashed changes
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 /* g73 g74 g75  g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
@@ -582,24 +549,15 @@ g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 
 g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
 g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252*/ 
 
-<<<<<<< Updated upstream
-h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20	h21  h22
-i1   i2   i3   i4   i5   i6   i7   i8   i9   i10  i11  i12  i13  i14  i15  i16  i17  i18  i19  i20	i21  i22
-=======
 h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20	h21  h22  h23  h24
 i1   i2   i3   i4   i5   i6   i7   i8   i9   i10  i11  i12  i13  i14  i15  i16  i17  i18  i19  i20	i21  i22  i23  i24
->>>>>>> Stashed changes
 ;
 by cald;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-<<<<<<< Updated upstream
-* ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
-=======
 ods rtf file = 'C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
 graphs_03_02_25.doc'; 
->>>>>>> Stashed changes
 
 ods html ;
 
@@ -624,11 +582,7 @@ run;quit;
 
 
 proc sgplot data=d; 
-<<<<<<< Updated upstream
-Title    height=1.5 justify=center "Of mobile men with hiv, % diagnosed";
-=======
 Title    height=1.5 justify=center "% of men with HIV";
->>>>>>> Stashed changes
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
@@ -642,8 +596,6 @@ band    x=cald lower=p5_p_hiv_m_0 	upper=p95_p_hiv_m_0  / transparency=0.9 filla
 run;quit;
 
 proc sgplot data=d; 
-<<<<<<< Updated upstream
-=======
 Title    height=1.5 justify=center "Of mobile men % ever on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.7 by 0.1) valueattrs=(size=10);
@@ -737,7 +689,6 @@ run;quit;
 
 
 proc sgplot data=d; 
->>>>>>> Stashed changes
 Title    height=1.5 justify=center "Of mobile men with hiv, % diagnosed";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
@@ -750,21 +701,12 @@ series  x=cald y=p50_p_diag_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_mm_0 	upper=p95_p_diag_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_diag_mm_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_diag_mm_1 	upper=p95_p_diag_mm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-<<<<<<< Updated upstream
-series  x=cald y=p50_p_diag_mm_2/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_diag_mm_2 	upper=p95_p_diag_mm_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
-
-
-=======
 series  x=cald y=p50_p_diag_mm_2/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_p_diag_mm_2 	upper=p95_p_diag_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 
 ods html close;
->>>>>>> Stashed changes
 p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		prop_1564mm_onprep_mm
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm				prop_elig_on_prep_mm
