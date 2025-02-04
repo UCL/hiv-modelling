@@ -1,6 +1,6 @@
 
 
-* options user="/folders/myfolders/";
+* options user="/folders/myfolders/"  ;
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_o_out\";
 
