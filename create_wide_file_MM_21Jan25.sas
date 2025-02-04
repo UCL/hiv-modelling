@@ -217,6 +217,8 @@ s_alive = s_alive_m + s_alive_w ;
 *nmm=non mobile men;
 * prop_1564m_onprep_nmm;  		prop_1564m_onprep_nmm = (s_onprep_m - s_onprep_mm)/ ((s_alive1564_m - s_hiv1564m) - (s_alive1564mm - s_hiv1564mm));
 * p_hiv_nmm;					p_hiv_nmm = (s_hiv1564m - s_hiv1564mm) /(s_ageg1564m -s_alive1564mm) ;
+* p_prep_any_ever_nmm;			*p_prep_any_ever_nmm = (s_prep_any_ever_m - s_prep_any_ever_mm)/ (s_alive_m - s_mm);
+
 
 
 ***Mobile men;
@@ -570,12 +572,11 @@ i25  i26  i27  i28  i29
 ;
 by cald;
 
-
-ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
+ods listing close;
+ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = 'C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
-graphs_03_02_25.doc'; 
+graphs_04_02_25.doc' startpage=never; 
 
-ods html ;
 
 ***Diagnostic;
 
@@ -594,6 +595,7 @@ band    x=cald lower=p5_prop_1564w_onprep_0 	upper=p95_prop_1564w_onprep_0  / tr
 
 run;quit;
 
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of eligible people on any PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -608,6 +610,7 @@ series  x=cald y=p50_prop_elig_on_prep_w_0/	lineattrs = (color=red thickness = 2
 band    x=cald lower=p5_prop_elig_on_prep_w_0 	upper=p95_prop_elig_on_prep_w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "wodel 90% range";
 
 run;quit;
+
 
 ***First lot of graphs up until 2025;
 
@@ -625,7 +628,7 @@ run;quit;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Percentage of men with HIV";
+Title    height=1.5 justify=center "Proportion of men with HIV";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
@@ -645,19 +648,50 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.7 by 0.1) valueattrs=(size=10);
 
 label p50_p_prep_any_ever_mm_0 = "Mobile men";
-label p50_prop_1564m_onprep_0 = "All men";
+label p50_p_prep_any_ever_nmm_0 = "Non-mobile men";
 
 series  x=cald y=p50_p_prep_any_ever_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_prep_any_ever_mm_0 	upper=p95_p_prep_any_ever_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_prep_any_ever_mm_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_prep_any_ever_mm_1 	upper=p95_p_prep_any_ever_mm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_prep_any_ever_mm_2/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_prep_any_ever_mm_2 	upper=p95_p_prep_any_ever_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+/*
+series  x=cald y=p50_p_prep_any_ever_nmm_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_prep_any_ever_nmm_0 	upper=p95_p_prep_any_ever_nmm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*/
+run;quit;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of men currently on any PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.0005) valueattrs=(size=10);
+
+label p50_prop_1564mm_onprep_mm_0 = "Mobile men";
+label p50_prop_1564m_onprep_nmm_0 = "Non-mobile men";
+
+series  x=cald y=p50_prop_1564mm_onprep_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_1564mm_onprep_mm_0 	upper=p95_prop_1564mm_onprep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=p50_prop_1564m_onprep_nmm_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_1564m_onprep_nmm_0 	upper=p95_prop_1564m_onprep_nmm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
+
+
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Of mobile men number ever on oral PrEP";
+Title    height=1.5 justify=center "Number of mobile men currently on any PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000) valueattrs=(size=10);
+
+label p50_n_prep_oral_mm_0 = "Mobile men";
+
+series  x=cald y=p50_n_prep_oral_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_oral_mm_0 	upper=p95_n_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of men currently on oral PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000) valueattrs=(size=10);
 
@@ -667,16 +701,12 @@ label p50_n_prep_oral_mm_2 = "Option 2";
 
 series  x=cald y=p50_n_prep_oral_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_prep_oral_mm_0 	upper=p95_n_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_prep_oral_mm_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_prep_oral_mm_1 	upper=p95_n_prep_oral_mm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_prep_oral_mm_2/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_n_prep_oral_mm_2 	upper=p95_n_prep_oral_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Of mobile men number ever on injectable PrEP";
+Title    height=1.5 justify=center "Number of men currently on injectable PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000) valueattrs=(size=10);
 
@@ -686,11 +716,6 @@ label p50_n_prep_inj_mm_2 = "Option 2";
 
 series  x=cald y=p50_n_prep_inj_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_prep_inj_mm_0 	upper=p95_n_prep_inj_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_prep_inj_mm_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_prep_inj_mm_1 	upper=p95_n_prep_inj_mm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_prep_inj_mm_2/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_n_prep_inj_mm_2 	upper=p95_n_prep_inj_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-
 run;quit;
 
 proc sgplot data=d; 
@@ -731,23 +756,9 @@ run;quit;
 
 
 
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Of mobile men with hiv, % diagnosed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
-
-label p50_p_diag_mm_0 = "Option 0";
-label p50_p_diag_mm_1 = "Option 1";
-label p50_p_diag_mm_2 = "Option 2";
-
-series  x=cald y=p50_p_diag_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_diag_mm_0 	upper=p95_p_diag_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_diag_mm_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_diag_mm_1 	upper=p95_p_diag_mm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_diag_mm_2/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_diag_mm_2 	upper=p95_p_diag_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-
-run;quit;
+ods rtf close;
+ods listing;
+run;
 
 ods html close;
 p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
