@@ -1,4 +1,4 @@
-* cioa_p
+* cioa_p -
 
 registd ne 1 as condition for self testing 
 
