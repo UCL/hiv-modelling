@@ -10,6 +10,8 @@
 
 * lower efficacy oral prep in women ?
 
+* updated inc_cat
+
 ;
 
 
@@ -1300,10 +1302,11 @@ Age Group	Total (%)   % of 15-65 (47.2% are 15-65)
 * Using a moderate rate of population growth;
 
 ***LBM Jul19;
+
 if inc_cat=1 then do;
-inc1=0.1800;
-inc2=0.1650;
-inc3=0.1440;
+inc1=0.2000;
+inc2=0.1550;
+inc3=0.1340;
 inc4=0.1140;
 inc5=0.0900;
 inc6=0.0800;
@@ -1337,12 +1340,13 @@ inc12=0.016/1.0643;
 inc13=0.012/1.0643;
 end;							 	
 
+
 if inc_cat=2 then do;
-inc1=0.1500; *-65 to -55;
-inc2=0.1300; *-55 to -45;
-inc3=0.1200; *-45 to -35;
-inc4=0.1100; *-35 to -25;
-inc5=0.1000; *-25 to -15;
+inc1=0.1700; *-65 to -55;
+inc2=0.1250; *-55 to -45;
+inc3=0.1150; *-45 to -35;
+inc4=0.1050; *-35 to -25;
+inc5=0.0950; *-25 to -15;
 inc6=0.0900; *-15 to -5;
 inc7=0.0800; *-5 to 5;
 inc8=0.0650; * 5 to 15;
@@ -1354,11 +1358,11 @@ inc13=0.016; * 55 to 65;
 end;
 
 if inc_cat=3 then do;
-inc1=0.1280;
-inc2=0.1190;
-inc3=0.1130;
-inc4=0.1040;
-inc5=0.0970;
+inc1=0.1480;
+inc2=0.1140;
+inc3=0.1080;
+inc4=0.0990;
+inc5=0.0920;
 inc6=0.0900;
 inc7=0.0810;
 inc8=0.074;
@@ -1370,12 +1374,12 @@ inc13=0.020;
 end;
 
 
+
 cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7=cum6+inc7;cum8=cum7+inc8;
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; 
 
 e=rand('uniform');
-if 0.0 <= e < inc1    then age=-71+rand('uniform')*16;   
-if caldate1=1984 then do;if 0.0 <= e < inc1    then age=-74+rand('uniform')*19;end;																				   
+if 0.0 <= e < inc1    then age=-73+rand('uniform')*18;   
 if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
 if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
 if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
@@ -1387,8 +1391,7 @@ if cum8 <= e < cum9   then age= 15+rand('uniform')*10;
 if cum9 <= e < cum10  then age= 25+rand('uniform')*10;  
 if cum10 <= e < cum11  then age= 35+rand('uniform')*10;  
 if cum11 <= e < cum12  then age= 45+rand('uniform')*10;  
-if cum12 <= e          then age= 55+rand('uniform')*10;  
-
+if cum12 <= e          then age= 55+rand('uniform')*10; 
 
 age =round(age ,.25);
 
