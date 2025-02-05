@@ -1,6 +1,5 @@
 * cioa_q
 
-hard reach gender code
 
 ;
 
@@ -2372,80 +2371,85 @@ if caldate_never_dot >= &year_interv then do;
 who may be dead and hence have caldate{t} missing;
 
 	if option=1 then do;
-		date_prep_len_intro=2026.25;
-		if prep_len=1 then prep_any_strategy=17; * instead of 18, due to 6 monthly injection meaning cant target use so much - note this is before updating
-		prep_len so effectively this means the person was on prep_len in the last period;
+		if comm_tld_set_in_options ne 1 then do;
+			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
+			* eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; 
+			* eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
+			* rate_self_test=rate_self_test_if_introduced;
+		 	start_pep_prep_without_test = 1;
+			rate_test_startprep_any = r_test_startprep_any_comm_tld;
+			rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+			prob_prep_oral_b = prob_prep_oral_b_comm_tld;
+			comm_tld_set_in_options = 1;
+			* adhav = min(1, adhav + adh_effect_comm_tld);
+		end;
+		eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+  		if hard_reach=1 and gender=1 then hard_reach_vmmc=1; hard_reach=0; 	
+		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
+  		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 	end;
 
-	if option=2 and registd = 1 then do; 
-		lencab_available=1; * this affects rate of return to care;
-		if p_len ne 1 and p_cab ne 1 then do; * so len cab never taken as treatment;  
-			s = rand('uniform');
-			if vm > 3 and caldate{t} - date_v_alert >= 0.25 and (caldate{t} - date_lencab_last_offered > 1 or date_lencab_last_offered =.) then do;
-				date_lencab_last_offered=caldate{t}; if s < lencab_uptake_vlg1000 then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
-			end;
-			if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
+
+	if option=2 then do;
+		if comm_tld_set_in_options ne 1 then do;
+			* pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
+			  eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; 
+			  eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
+			* rate_self_test=rate_self_test_if_introduced;
+		 	* start_pep_prep_without_test = 1;
+			* rate_test_startprep_any = r_test_startprep_any_comm_tld;
+			* rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+			* prob_prep_oral_b = prob_prep_oral_b_comm_tld;
+			comm_tld_set_in_options = 1;
+			  adhav = min(1, adhav + adh_effect_comm_tld);
 		end;
-		h = rand('uniform');  if c_isr=1 then h = h * 0.9;
-		if o_len=1 and o_cab=1 and h < rate_lencab_to_tld then do; reg_option=125; reg_option_set_in_options = .; end; 
+		* eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+  		* if hard_reach=1 and gender=1 then hard_reach_vmmc=1; * hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
+		* eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
+  		* eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 	end;
 
 
 	if option=3 then do;
 		if comm_tld_set_in_options ne 1 then do;
-			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
-			eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
-			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
-			rate_self_test=rate_self_test_if_introduced;
-		 	start_pep_prep_without_test = 1;
-			rate_test_startprep_any = r_test_startprep_any_comm_tld;
-			rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
-			prob_prep_oral_b = prob_prep_oral_b_comm_tld;
+			* pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
+			* eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; 
+			* eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
+			  rate_self_test=rate_self_test_if_introduced;
+		 	* start_pep_prep_without_test = 1;
+			* rate_test_startprep_any = r_test_startprep_any_comm_tld;
+			* rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+			* prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 			comm_tld_set_in_options = 1;
-			adhav = min(1, adhav + adh_effect_comm_tld);
+			* adhav = min(1, adhav + adh_effect_comm_tld);
 		end;
-		eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
-  		if hard_reach=1 and gender=1 then hard_reach_vmmc=1; hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
-		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
-  		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
+		* eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+  		* if hard_reach=1 and gender=1 then hard_reach_vmmc=1; hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
+		* eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
+  		* eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 	end;
 
 
 	if option=4 then do;
-		date_prep_len_intro=2026.25;
-		if prep_len=1 then prep_any_strategy=17; 
-	
-		if registd = 1 then do;
-			lencab_available=1; 
-			if p_len ne 1 and p_cab ne 1 then do; 
-				s = rand('uniform');
-				if vm > 3 and caldate{t} - date_v_alert >= 0.25 and (caldate{t} - date_lencab_last_offered > 1 or date_lencab_last_offered =.) then do;
-				date_lencab_last_offered=caldate{t}; if s < lencab_uptake_vlg1000 then do; reg_option_set_in_options = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
-				end;
-				if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option_set_in_options = 130; started_lencab=1; end;
-			end;
-			h = rand('uniform');  if c_isr=1 then h = h * 0.9;
-			if o_len=1 and o_cab=1 and h < rate_lencab_to_tld then do; reg_option=125; reg_option_set_in_options = .; end; 
-		end;
-
 		if comm_tld_set_in_options ne 1 then do;
-			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
-			eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
-			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
-			rate_self_test=rate_self_test_if_introduced;
-		 	start_pep_prep_without_test = 1;
-			rate_test_startprep_any = r_test_startprep_any_comm_tld;
-			rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
-			prob_prep_oral_b = prob_prep_oral_b_comm_tld;
+			  pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
+			  eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; 
+			  eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
+			  rate_self_test=rate_self_test_if_introduced;
+		 	  start_pep_prep_without_test = 1;
+			  rate_test_startprep_any = r_test_startprep_any_comm_tld;
+			  rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+			  prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 			comm_tld_set_in_options = 1;
-			adhav = min(1, adhav + adh_effect_comm_tld);
+			  adhav = min(1, adhav + adh_effect_comm_tld);
 		end;
-		eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
-  		if hard_reach=1 and gender=1 then hard_reach_vmmc=1; hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
-		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
-  		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
-
+		  eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+  		  if hard_reach=1 and gender=1 then hard_reach_vmmc=1; hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
+		  eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
+  		  eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 	end;
+
+
 
 end;
 
