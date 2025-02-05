@@ -1,84 +1,4 @@
 
-
-* cioa_h 
-
-* possibility of much higher self test uptake ;
-
-
-
-
-
-* cioa_g
-
-* why prep costs so high for community tld ? and also check costs are ok for len prep ;  * yes tld costs 50*1.2 while len 25*1.2 ;
-  
-* increased chance of coming back into care due to community provision of injections ; 
-
-
-
-
-
-* corrected self test cost
-
-* increased return to care for lencab since community based
-
-;
-
-
-
-
-* raise len prep use ;
-
-* consider reason for excess hiv deaths in later years with community tld ; 
-
-
-
-
-
-* cioa - community_io_arvs
-
-* impact of len prep + lencab + tld available locally in communities 
-
-	- len prep includes availability of oral prep (len prep visit is $7 per 3 months due to 6-monthly, oral prep is $10) including testing (? add self test provision)
-
-	- community tld / pop_wide_tld is self-tests, pep, ability to pick up drug in community without trip to clinic, with advice given but no withholding of arvs - 
-	  due to arvs being handed over by a person makes it less likely that a person would be outside care as they are getting advice, including for viral load testing 
-	  especially if not previously known to be virally suppressed, whether they wish to take it or not (consider a policy that need vl testing until vl suppressed
-	  and then 5 yearly unless go through a period of poor adherence (to define)	
-	  overall cost of $5 per 3 months for a person with measured vl suppression seems reasonable as total cost.
-
-	- lencab treatment
-
-	- but its mainly about the whole package together - main question is around setting up of community arv availability by chw and pharmacies 
-	  so it is the whole package, so long as each is cost-effective in what it adds 
-
-* consider in future adding len-cab pep ?
-
-* note pop_wide_tld parameters are modified as this is conceived of as community care - by pharmacists and chw ; 
-
-* community tld / pop_wide_tld has increased self-testing as another component 
-
-* (might have to assume greater rates of starting and stopping by choice for len-prep as it may be hard to attend on time for injection)
-
-
-
-
-
-* at some point can add anti-hypertensives 
-
-* may be that first paper focussed only on cost-effectiveness of len-prep
-
-* added in cost of fsw program
-
-* branched from laa_ad and added in msm and pwid
-
-* prep_any_strategy changed to 17 and 18 - 17 for len_prep because 6 month injection 
-
-;
-
-
-
-
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -459,7 +379,7 @@ newp_seed = 7;
 * rate_anc_inc; 		%sample_uniform(rate_anc_inc, 0.005 0.01 0.03 0.05 0.10);
 * prob_test_2ndtrim;	%sample_uniform(prob_test_2ndtrim, 0.7 0.8 0.9 1.00);
 * prob_test_postdel;	prob_test_postdel=0.95;
-* test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
+* test_targeting;   		%sample_uniform(test_targeting, 1 1.5 2); * cioa_k ;
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
 								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0300 , 
@@ -478,19 +398,21 @@ newp_seed = 7;
 
 * prob_self_test_hard_reach;prob_self_test_hard_reach = 0;
 
-* self_test_targeting;		self_test_targeting = test_targeting;
+* self_test_targeting;		%sample_uniform(self_test_targeting, 1.5 2 3 5);* cioa_k;
+
 
 * rate_self_test;			rate_self_test = 0;
-* rate_self_test_if_introduced;  %sample_uniform(rate_self_test_if_introduced, 0.1 0.3 0.5 0.7 0.9);* cioa_h;
+* rate_self_test_if_introduced;  %sample_uniform(rate_self_test_if_introduced, 0.05 0.1 0.3 0.5 );* cioa_l;
 
-* self_test_sens;			self_test_sens = 0.93;          
+* self_test_sens;			self_test_sens = 0.93;    * wonfo test has 95.8% sensitivity but oral tests will be lower
+							https://supply.unicef.org/s0004269.html#:~:text=Technical%20specifications:,Medsun%20Medical%20Co.%2C%20Ltd.;      
 
-* prob_pos_self_test_conf;	prob_pos_self_test_conf = 0.8;
+* prob_pos_self_test_conf;	%sample_uniform(prob_pos_self_test_conf, 0.7 0.8 0.9);
 
-* secondary_dist_self_test;		secondary_dist_self_test = 0; 
+* secondary_dist_self_test;	secondary_dist_self_test = 0; 
 * intervention in place to give to sexual partners ;
 
-* secondary_self_test_targeting; secondary_self_test_targeting = 1;
+* secondary_self_test_targeting; secondary_self_test_targeting = self_test_targeting ;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
@@ -825,7 +747,7 @@ end;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is willing to take a particular type of PrEP;
 
-* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
+* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.80 0.20); * does prep use depend on the prevalence of vl > 1000 in population; * cioa_j ;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
@@ -887,8 +809,9 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * date_prep_len_intro;			date_prep_len_intro=3000;		* Introduction of injectable len PrEP ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;			* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;			* Assume 5 years to scale up injectable len prep;
-* prob_prep_cab_b;				prob_prep_cab_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
-* prob_prep_len_b;				prob_prep_len_b = prob_prep_oral_b;	* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
+* add_prob_prep_b_cab;			%sample_uniform(add_prob_prep_b_cab, 0.2 0.4 0.6);
+* prob_prep_cab_b;				prob_prep_cab_b = prob_prep_oral_b + add_prob_prep_b_cab; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
+* prob_prep_len_b;				prob_prep_len_b = prob_prep_oral_b + add_prob_prep_b_cab; * since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
 
 * annual_testing_prep_cab;		annual_testing_prep_cab=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 * annual_testing_prep_len;		annual_testing_prep_len=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -896,7 +819,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
 * prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
-* rate_choose_stop_prep_cab; 	%sample_uniform(rate_choose_stop_prep_cab, 0.05 0.15 0.30); 
+* rate_choose_stop_prep_cab; 	%sample_uniform(rate_choose_stop_prep_cab, 0.01  0.03  0.05  0.1 0.15);  * len_prep ;
 * rate_choose_stop_prep_len; 	rate_choose_stop_prep_len = rate_choose_stop_prep_cab ;
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_prep_inj/vr or one indicating the relative rate compared with oral prep;
@@ -915,11 +838,11 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * incr_res_risk_len_inf_3m;		incr_res_risk_len_inf_3m = incr_res_risk_cab_inf_3m;
 
 * new for pop_wide_tld ;
-								%sample_uniform(cab_extra_pref,  0.3 0.5 0.7 1) ; *cioa_e;
+								%sample_uniform(cab_extra_pref,      0.5 0.7 1) ; 
 * pref_prep_cab_beta_s1;		pref_prep_cab_beta_s1 = pref_prep_oral_beta_s1 + cab_extra_pref ; * tends to be more preference for inj ;
 * pref_prep_len_beta_s1;		pref_prep_len_beta_s1 = pref_prep_cab_beta_s1;  
 
-* hivtest_type_1_init_prep_cab; %sample(hivtest_type_1_init_prep_cab, 0 1, 0.5 0.5);
+* hivtest_type_1_init_prep_cab; %sample(hivtest_type_1_init_prep_cab, 0 1, 0.5 0.5); hivtest_type_1_init_prep_cab=0;
 								if hivtest_type_1_init_prep_cab=0 then hivtest_type_1_prep_cab=0;
 * hivtest_type_1_init_prep_len; hivtest_type_1_init_prep_len = hivtest_type_1_init_prep_cab;
 
@@ -928,6 +851,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 								if hivtest_type_1_prep_cab=1 then do; 
 									pr_inm_cab_prep_primary = pr_inm_cab_prep_primary * testt1_prep_cab_eff_on_res_prim;   
 								end;
+								
 * hivtest_type_1_prep_len;		hivtest_type_1_prep_len = hivtest_type_1_prep_cab;
 								testt1_prep_len_eff_on_res_prim = testt1_prep_cab_eff_on_res_prim;
 								pr_inm_len_prep_primary = pr_inm_cab_prep_primary;
@@ -936,10 +860,12 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * sens_tests_prep_len;			sens_tests_prep_len =  sens_tests_prep_cab;	
 
 * note that these below also apply to pop_wide_tld;
-%sample_uniform(sens_ttype3_prep_cab_primary, 0 0.1); %sample_uniform(sens_ttype3_prep_cab_inf3m, 0 0.2); 
+%sample_uniform(sens_ttype3_prep_cab_primary, 0 0.1); 
+%sample_uniform(sens_ttype3_prep_cab_inf3m, 0 0.2); 
 %sample_uniform(sens_ttype3_prep_cab_infge6m, 0.1 0.25 0.5); 
-%sample_uniform(sens_ttype3_prep_len_primary, 0 0.1); %sample_uniform(sens_ttype3_prep_len_inf3m, 0 0.2); 
-%sample_uniform(sens_ttype3_prep_len_infge6m, 0.1 0.25 0.5); 
+sens_ttype3_prep_len_primary = sens_ttype3_prep_cab_primary;
+sens_ttype3_prep_len_inf3m = sens_ttype3_prep_cab_inf3m;
+sens_ttype3_prep_len_infge6m = sens_ttype3_prep_cab_infge6m;
 
 if sens_tests_prep_cab =1 then do;
 sens_ttype1_prep_cab_primary=0.7; sens_ttype1_prep_cab_inf3m=0.85; sens_ttype1_prep_cab_infge6m=0.95;
@@ -967,11 +893,10 @@ sens_ttype1_prep_len_primary=0.2; sens_ttype1_prep_len_inf3m=0.3; sens_ttype1_pr
 end;
 
 
-
 * sens_vct_testtype3_cab_tail;	%sample_uniform(sens_vct_testtype3_cab_tail, 0.50 0.8 0.98);
 * sens_vct_testtype3_len_tail;	%sample_uniform(sens_vct_testtype3_len_tail, 0.50 0.8 0.98);
 
-* reg_option_107_after_cab;		%sample(reg_option_107_after_cab, 0 1, 0.8 0.2);
+* reg_option_107_after_cab;		%sample(reg_option_107_after_cab, 0 1, 0.8 0.2); reg_option_107_after_cab=0;
 
 
 * DAPIVIRINE VAGINAL RING PREP ; * dpv-vr;
@@ -994,27 +919,36 @@ end;
 * pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = pref_prep_oral_beta_s1 - 0.1 ; * this will change depending on assumed uptake;
 
 
-* new for pop_wide_tld ;
+
+* COMM TLD ;
+
+* r_choose_stop_prep_oral_comm_tld;  %sample_uniform(r_choose_stop_prep_oral_comm_tld, 0.00  0.01 0.03 ); 
+
+* r_test_startprep_any_comm_tld;  %sample_uniform(r_test_startprep_any_comm_tld, 0.5  0.7  0.9); 
+
+* prob_prep_oral_b_comm_tld;	%sample_uniform(prob_prep_oral_b_comm_tld, 0.5  0.7  0.9);
+
+* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.3 0.5 0.7 0.9);    
+
+* adh_effect_comm_tld;			%sample_uniform(adh_effect_comm_tld, 0 0.05 0.1 0.2);
 
 * POP WIDE TLD * ;
 
-* rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1.5 2 3 5);
+* rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 2 3 5);
 
-* rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
+* rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/2 1/3  1/5  1/10);
 
-* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.3 0.5 0.7 0.9);
+* prob_tld_hiv_concern;			%sample_uniform(prob_tld_hiv_concern, 0.0   0.0001  0.001 );   prob_tld_hiv_concern = 0.0001;  
 
-* prob_tld_hiv_concern;			%sample_uniform(prob_tld_hiv_concern, 0.0   0.0001  0.001 );   prob_tld_hiv_concern = 0.0001;  * for coia - testing will be encouraged but not an absolute requirement;
+* prob_onartvis0_0_to_1;		%sample_uniform(prob_onartvis0_0_to_1, 0.02 0.05 0.1 );    prob_onartvis0_0_to_1=0.0 ; 
+* prob_onartvis0_1_to_0;		%sample_uniform(prob_onartvis0_1_to_0, 0.05 0.2 0.5); prob_onartvis0_1_to_0 = 1;  
 
-* prob_onartvis0_0_to_1;		%sample_uniform(prob_onartvis0_0_to_1, 0.02 0.05 0.1 );    prob_onartvis0_0_to_1=0.0 ; * for coia much less likely as under community care;;
-* prob_onartvis0_1_to_0;		%sample_uniform(prob_onartvis0_1_to_0, 0.05 0.2 0.5); prob_onartvis0_1_to_0 = 1;  * for coia - as under community care;
+* prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5  1    ); 
 
-* prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5  1    ); * for coia;
-
-* pop_wide_tld_selective_hiv;	%sample_uniform(pop_wide_tld_selective_hiv,  10  30  100);  pop_wide_tld_selective_hiv = 100; * for coia;
+* pop_wide_tld_selective_hiv;	%sample_uniform(pop_wide_tld_selective_hiv,  10  30  100);  pop_wide_tld_selective_hiv = 100; 
 																														 																												   																
 * death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk due to not in care;
-								death_r_iris_pop_wide_tld = 0.001; * for cioa as considered under community care;
+								death_r_iris_pop_wide_tld = 0.001; 
 																		
 
 * prop_pep;						%sample_uniform(prop_pep, 0.5 0.7 0.9); 
@@ -1027,6 +961,8 @@ end;
 								pop_wide_prep_adh_effect = 1; * for cioa ;
 
 * prob_prep_pop_wide_tld;		%sample(prob_prep_pop_wide_tld,  0.05  0.1     , 0.5 0.5 );
+
+																			   
 
 																			   
 
@@ -1210,7 +1146,7 @@ cost_test_c=0.0037; *HCW-testing general pop, hiv negative - changed 30dec2016 -
 cost_test_d=0.02521; *HCW-testing positive (community based);
 cost_test_e=0.0245; *HCW-testing negative (community based);
 cost_test_g=0.022; *vl test to diagnose;
-self_test_cost = 0.002; * may need to review this cost - I know they can cost $1 and so $1 more for distribution per test ;
+self_test_cost = 0.0015; * $1 for wondfo test + supply chain / pharmacist costs ;
 cost_t_adh_int = 0.010;  
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
@@ -2279,15 +2215,26 @@ who may be dead and hence have caldate{t} missing;
 		if o_len=1 and o_cab=1 and h < rate_lencab_to_tld then do; reg_option=125; reg_option_set_in_options = .; end; 
 	end;
 
+
 	if option=3 then do;
 		if comm_tld_set_in_options ne 1 then do;
 			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
 			eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
 			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
 			rate_self_test=rate_self_test_if_introduced;
+		 	start_pep_prep_without_test = 1;
+			rate_test_startprep_any = r_test_startprep_any_comm_tld;
+			rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+			prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 			comm_tld_set_in_options = 1;
+			adhav = min(1, adhav + adh_effect_comm_tld);
 		end;
+		eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+  		if hard_reach=1 and gener=1 then hard_reach_vmmc=1; hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
+		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
+  		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 	end;
+
 
 	if option=4 then do;
 		date_prep_len_intro=2026.25;
@@ -2311,12 +2258,22 @@ who may be dead and hence have caldate{t} missing;
 			eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
 			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
 			rate_self_test=rate_self_test_if_introduced;
+		 	start_pep_prep_without_test = 1;
+			rate_test_startprep_any = r_test_startprep_any_comm_tld;
+			rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+			prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 			comm_tld_set_in_options = 1;
+			adhav = min(1, adhav + adh_effect_comm_tld);
 		end;
+		eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+  		if hard_reach=1 and gener=1 then hard_reach_vmmc=1; hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
+		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
+  		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 
 	end;
 
 end;
+
 
 
 *  ======================================================================================================================================== ;
@@ -2380,7 +2337,7 @@ if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldat
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
 
-if (cab_prep_available = 1 and age ge 15) or (age = 15 and cab_prep_available = 1) then do;
+if (caldate{t} = date_prep_cab_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_cab_intro > .) then do;  * len_prep_b ;
 	if pop_wide_tld = 1 then pref_prep_cab_beta_s1 = pref_prep_cab_beta_s1 - 0.0 ; * for cioa no difference;
 	* pref_prep_cab;  	pref_prep_cab=yy ; * this is the preference for cab or len, whichever is available (see above);
 end;
@@ -2394,7 +2351,7 @@ if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{
 end;
 
 if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
-if cab_prep_available ne 1 then pref_prep_cab = 0;
+if . < caldate{t} < date_prep_cab_intro or date_prep_cab_intro=. then pref_prep_cab = 0;
 if . < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then pref_prep_len = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
 
@@ -2416,7 +2373,7 @@ if caldate{t} ge date_prep_oral_intro then do;
 	if pop_wide_tld=1 and prep_oral_willing =0 and q < 0.05 then prep_oral_willing =1; 
 end;
 
-if cab_prep_available = 1 then do;
+if caldate{t} ge date_prep_cab_intro then do;
 	if  pref_prep_cab  > prep_willingness_threshold	then prep_cab_willing =1;
 end;
 * note that assume cab and len never both available concurrently;
@@ -3188,7 +3145,7 @@ end;
 u_circ=rand('uniform');
 tested_circ=0;
 
-if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1
+if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach_vmmc ne 1
 and age < 50 then do; 
 
 	if u_circ lt prob_circ then do;
@@ -4786,7 +4743,7 @@ end;
 	eff_self_test_targeting = self_test_targeting;
 
 	w = rand('uniform');	
-	if caldate{t} ge 2018 and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
+	if caldate{t} ge 2018 and registd ne 1 and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
 
 		u_self_test=rand('uniform');
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
@@ -5118,7 +5075,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 	we want people who are false negative to also start PrEP, this is the reason why hiv=0 is now commented out;
 	* eff_sens_vct changed from sens_vct for lapr37;
 
-	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
+	if prep_any_ever ne 1 and (tested=1 or start_pep_prep_without_test=1) and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
 	* starting PrEP for the first time ever;
 	 
 			if prep_any_willing=1 and hard_reach ne 1 then do; 
@@ -5236,7 +5193,8 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 		end;
 	end;
 
- 	if prep_any_ever=1 and max(prep_oral_current_start_date, prep_cab_current_start_date, prep_len_current_start_date, prep_vr_current_start_date) ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
+ 	if prep_any_ever=1 and max(prep_oral_current_start_date, prep_cab_current_start_date, prep_len_current_start_date, prep_vr_current_start_date) ne caldate{t} 
+	and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
 	* person has used PrEP before but has not started use this period, and is uninfected or tested but undetected;
 
 		r=rand('uniform'); 
@@ -6847,6 +6805,8 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 					infected_prep_vr=1;		inf_prep_vr_source_prep_r=0; if (k103m_p + y181m_p + g190m_p) >= 1 then inf_prep_vr_source_prep_r=1;		
 					infected_prep_any=1;	if inf_prep_vr_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
+				if prep_cab_ever = 1 and currently_in_prep_cab_tail=1 then infected_prep_cab_tail=1;
+				if prep_len_ever = 1 and currently_in_prep_len_tail=1 then infected_prep_len_tail=1;
 			end;
 		end;
 		if hiv=1 then do;
@@ -7030,9 +6990,13 @@ if t ge 2 and msm=1 and msm_random_this_period < risk_hiv_msm then do; * msm_ran
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_msm = risk_msm * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
 		end;
-		if prep_inj   =1 then do; 	
-			risk_msm = risk_msm * (1-prep_inj_efficacy); 
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_msm = risk_ * (1 - (prep_inj_effect_inm_partner * gender_spec_prep_inj_eff));
+		if prep_cab   =1 then do; 	
+			risk_msm = risk_msm * (1-prep_cab_efficacy); 
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_msm = risk_ * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+		end;
+		if prep_len   =1 then do; 	
+			risk_msm = risk_msm * (1-prep_len_efficacy); 
+			if ca66m_p  = 1 then risk_msm = risk_msm * (1 - (prep_len_effect_cam_partner));
 		end;
 
 		a=rand('uniform'); if a < risk_msm  then do;
@@ -7045,18 +7009,23 @@ if t ge 2 and msm=1 and msm_random_this_period < risk_hiv_msm then do; * msm_ran
 			    hiv=1; infected_newp=0; infected_ep=0; infection=caldate{t};
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
-				infected_prep_any=0; infected_prep_oral=0; infected_prep_inj=0; infected_prep_vr=0;
+				infected_prep_any=0; infected_prep_oral=0; infected_prep_cab=0; infected_prep_vr=0;
 				inf_prep_any_source_prep_r=0; 
 				if prep_oral=1 then do; 
 					infected_prep_oral=1;	inf_prep_oral_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then inf_prep_oral_source_prep_r=1; 
 					infected_prep_any=1;	if inf_prep_oral_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 					if pop_wide_tld_prep=1 and in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then do; inf_prep_oral_source_prep_r=1; inf_prep_any_source_prep_r=1; end;
 				end;
-				if prep_inj=1 then do; 
-					infected_prep_inj=1;	inf_prep_inj_source_prep_r=0; if (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p) ge 1 then inf_prep_inj_source_prep_r=1;				
-					infected_prep_any=1;	if inf_prep_inj_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				if prep_cab=1 then do; 
+					infected_prep_cab=1;	inf_prep_cab_source_prep_r=0; if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then inf_prep_cab_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_cab_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
-				if prep_inj_ever = 1 and currently_in_prep_inj_tail=1 then infected_prep_inj_tail=1;
+				if prep_len=1 then do; 
+					infected_prep_len=1;	inf_prep_len_source_prep_r=0; if ca66m_p = 1 then inf_prep_len_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_len_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				end;
+				if prep_cab_ever = 1 and currently_in_prep_cab_tail=1 then infected_prep_cab_tail=1;
+				if prep_len_ever = 1 and currently_in_prep_len_tail=1 then infected_prep_len_tail=1;
 			end;
 			goto xx77;
 		end;
@@ -7212,26 +7181,31 @@ if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
 	end;
 
 		if prep_oral   =1 then do; 	* lapr and dpv-vr - this will be different for lapr and dpv-vr ;
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_pwid = risk_pwid * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
 			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
 			if pop_wide_tld_prep=1 then do;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
 				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
 				alrady positive from previous exposures;
 				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;
-				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_nip = risk_nip * (1-(adh * prev_efficacy));
-				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_pwid = risk_pwid * (1-(adh * prev_efficacy));
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_pwid = risk_pwid * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
 		end;
-		if prep_inj   =1 then do; 	
-			risk_nip = risk_nip * (1-prep_inj_efficacy); 
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * gender_spec_prep_inj_eff));
+		if prep_cab   =1 then do; 	
+			risk_pwid = risk_pwid * (1-prep_cab_efficacy); 
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_pwid = risk_pwid * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+		end;
+		if prep_len   =1 then do; 	* lapr and dpv-vr;
+			if gender =2 then gender_spec_prep_len_eff = prep_len_efficacy; if gender =1 then gender_spec_prep_len_eff = prep_len_efficacy**2;
+			risk_eip = risk_eip * (1-gender_spec_prep_len_eff); 
+			if ca66m_p = 1 then risk_pwid = risk_pwid * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));
 		end;
 
 		a=rand('uniform'); if a < risk_pwid then do;
@@ -7244,18 +7218,23 @@ if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
 			    hiv=1; infected_newp=0; infected_ep=0; infection=caldate{t};
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
-				infected_prep_any=0; infected_prep_oral=0; infected_prep_inj=0; infected_prep_vr=0;
+				infected_prep_any=0; infected_prep_oral=0; infected_prep_cab=0; infected_prep_len=0; infected_prep_vr=0;
 				inf_prep_any_source_prep_r=0; 
 				if prep_oral=1 then do; 
 					infected_prep_oral=1;	inf_prep_oral_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then inf_prep_oral_source_prep_r=1; 
 					infected_prep_any=1;	if inf_prep_oral_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 					if pop_wide_tld_prep=1 and in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then do; inf_prep_oral_source_prep_r=1; inf_prep_any_source_prep_r=1; end;
 				end;
-				if prep_inj=1 then do; 
-					infected_prep_inj=1;	inf_prep_inj_source_prep_r=0; if (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p) ge 1 then inf_prep_inj_source_prep_r=1;				
-					infected_prep_any=1;	if inf_prep_inj_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				if prep_cab=1 then do; 
+					infected_prep_cab=1;	inf_prep_cab_source_prep_r=0; if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then inf_prep_cab_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_cab_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
-				if prep_inj_ever = 1 and currently_in_prep_inj_tail=1 then infected_prep_inj_tail=1;
+				if prep_len=1 then do; 
+					infected_prep_len=1;	inf_prep_len_source_prep_r=0; if ca66m_p = 1 then inf_prep_len_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_len_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				end;
+				if prep_cab_ever = 1 and currently_in_prep_cab_tail=1 then infected_prep_cab_tail=1;
+				if prep_len_ever = 1 and currently_in_prep_len_tail=1 then infected_prep_len_tail=1;
 			end;
 			goto xx77;
 		end;
@@ -15791,7 +15770,8 @@ prep_vr_w=0; 	if gender=2 and prep_vr =1 	then prep_vr_w=1;
 prep_oral_m=0; 	if gender=1 and prep_oral=1 then prep_oral_m=1;
 prep_cab_m=0; 	if gender=1 and prep_cab=1 	then prep_cab_m=1;
 prep_len_m=0; 	if gender=1 and prep_len=1 	then prep_len_m=1;
-prep_inj_msm=0; 	if msm=1  and prep_inj=1 	then prep_inj_msm=1;
+prep_cab_msm=0; 	if msm=1  and prep_cab=1 	then prep_cab_msm=1;
+prep_len_msm=0; 	if msm=1  and prep_len=1 	then prep_len_msm=1;
 prep_oral_pwid=0; 	if pwid=1 and prep_oral=1 then prep_oral_pwid=1;
 prep_cab_pwid=0; 	if pwid=1 and prep_cab=1 	then prep_cab_pwid=1;
 prep_len_pwid=0; 	if pwid=1 and prep_len=1 	then prep_len_pwid=1;
@@ -16068,7 +16048,9 @@ prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
 
 *To calculate proportion of people on PrEP;
 * msm ;
-onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;onprep_w1524_newpge1_=0;onprep_inj_m=0; onprep_inj_w=0; onprep_oral_m=0; onprep_oral_w=0; 
+onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;onprep_w1524_newpge1_=0;onprep_cab_m=0; onprep_cab_w=0; 
+onprep_len_m=0; onprep_len_w=0; 
+onprep_oral_m=0; onprep_oral_w=0; 
 onprep_vr_w=0;  onprep_msm=0; onprep_oral_msm=0; onprep_cab_msm=0;onprep_len_msm=0;
 onprep_pwid=0; onprep_oral_pwid=0; onprep_cab_pwid=0;onprep_len_pwid=0;
 if prep_any=1 then do;
@@ -16081,7 +16063,12 @@ if prep_any=1 then do;
 	if gender=2 and prep_cab=1 then onprep_cab_w=1;
 	if gender=2 and prep_len=1 then onprep_len_w=1;
 	if gender=2 and prep_vr =1 then onprep_vr_w=1;
-	if msm=1 and prep_oral=1 then onprep_oral_msm=1;if pwid=1 and prep_oral=1 then onprep_oral_pwid=1;
+	if msm=1 and prep_oral=1 then onprep_oral_msm=1;
+	if msm=1 and prep_cab =1 then onprep_cab_msm=1;
+	if msm=1 and prep_len=1 then onprep_len_msm=1;
+	if pwid=1 and prep_oral=1 then onprep_oral_pwid=1;
+	if pwid=1 and prep_cab =1 then onprep_cab_pwid=1;
+	if pwid=1 and prep_len=1 then onprep_len_pwid=1;
 	if gender=1 and prep_oral=1 then onprep_oral_m=1;
 	if gender=2 and prep_oral=1 then onprep_oral_w=1;
 	if sw=1 then onprep_sw=1;
@@ -18421,8 +18408,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_len_sw + prep_len_sw ;  s_prep_vr_sw + prep_vr_sw ; 
 	s_prep_any_w_1524 + prep_any_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_cab_w_1524 + prep_cab_w_1524 ;  s_prep_len_w_1524 + prep_len_w_1524 ; 
 
-	s_prep_any_sdc + prep_any_sdc; s_prep_oral_sdc + prep_oral_sdc; s_prep_inj_sdc + prep_inj_sdc; s_prep_vr_sdc + prep_vr_sdc;
-	s_prep_any_plw + prep_any_plw; s_prep_oral_plw + prep_oral_plw; s_prep_inj_plw + prep_inj_plw; s_prep_vr_plw + prep_vr_plw;
+	s_onprep_cab_msm + onprep_cab_msm; s_onprep_len_msm + onprep_len_msm; s_onprep_cab_pwid + onprep_cab_pwid; s_onprep_len_pwid + onprep_len_pwid; 
+
+	s_prep_any_sdc + prep_any_sdc; s_prep_oral_sdc + prep_oral_sdc; s_prep_cab_sdc + prep_cab_sdc;  s_prep_len_sdc + prep_len_sdc; s_prep_vr_sdc + prep_vr_sdc;
+	s_prep_any_plw + prep_any_plw; s_prep_oral_plw + prep_oral_plw; s_prep_cab_plw + prep_cab_plw;  s_prep_len_plw + prep_len_plw; s_prep_vr_plw + prep_vr_plw;
 
 	s_prep_vr_w_1524 + prep_vr_w_1524 ; 
 	s_elig_prep_any_m_1564 + elig_prep_any_m_1564 ;s_elig_prep_any_w_1564 + elig_prep_any_w_1564 ;
@@ -20395,8 +20384,8 @@ s_onprep_cab_m s_onprep_cab_w s_onprep_len_m s_onprep_len_w s_onprep_vr_w s_onpr
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
 s_prep_oral_w_1524 		s_prep_cab_w_1524 s_prep_len_w_1524 		s_prep_vr_w_1524 
-s_prep_any_sdc			s_prep_oral_sdc			s_prep_inj_sdc			s_prep_vr_sdc
-s_prep_any_plw			s_prep_oral_plw			s_prep_inj_plw			s_prep_vr_plw
+s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc	s_prep_len_sdc			s_prep_vr_sdc
+s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw	s_prep_len_plw			s_prep_vr_plw
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_cab_in_primary	s_started_prep_len_in_primary		s_started_prep_vr_in_primary
@@ -20754,10 +20743,10 @@ s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1 s_sti_sw
 s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_primary1564msm s_hiv1564msm  s_hiv_msm s_hiv1549msm  s_vl1000_msm  
 s_art_start_msm   s_diag_msm_age1564   s_vg1000_msm
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
-s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_inj_msm  s_tested1549msm
+s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_len_msm s_onprep_cab_msm  s_tested1549msm
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_   s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
 s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ 
-s_diag_this_period_msm  s_tested_msm  s_naive_msm  
+s_diag_this_period_msm  s_tested_msm  s_naive_msm  s_onprep_cab_pwid s_onprep_len_pwid 
 s_i_msm s_i_v1_msm s_i_v2_msm s_i_v3_msm s_i_v4_msm s_i_v5_msm s_i_v6_msm s_msm  s_prop_i_msm  s_prep_any_msm  s_prep_any_m  s_prep_any_pwid
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
 
@@ -20765,7 +20754,9 @@ s_msm_ep s_m_ge1newp s_msm_ge1newp
 
 s_alive_pwid  s_alive1549_pwid  s_alive1564_pwid  s_primary1549pwid  s_hiv1564pwid   s_hiv1549pwid  s_vl1000_pwid  s_art_start_pwid   s_diag_pwid_age1564  
 s_vl1000_art_pwid s_onart_iicu_pwid  s_vl1000_art_iicu_pwid  s_onart_gt6m_pwid s_vl1000_art_gt6m_pwid s_onart_gt6m_iicu_pwid s_vl1000_art_gt6m_iicu_pwid  s_artexp_pwid  
-s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_inj_pwid  s_elig_prep_any_pwid_1564  s_onprep_pwid  s_onprep_oral_pwid s_onprep_inj_pwid  s_tested1549pwid
+s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_cab_pwid s_prep_len_pwid  s_elig_prep_any_pwid_1564  s_onprep_pwid  s_onprep_oral_pwid s_onprep_cab_pwid 
+s_onprep_len_pwid 
+s_tested1549pwid
 s_ever_tested_pwid  s_ever_tested_pwid1549_  s_ever_tested_pwid1564_  s_diag_pwid1549_   s_diag_pwid1564_  s_onart_pwid1549_  s_onart_pwid1564_  
 s_ever_tested_pwid1549_   s_diag_pwid1549_  s_onart_pwid1549_    s_ever_tested_pwid1564_  s_diag_pwid1564_ s_onart_pwid1564_
 s_diag_this_period_pwid  s_tested_pwid  s_naive_pwid  s_newp_this_per_hivneg_pwid 
@@ -20871,7 +20862,7 @@ pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choic
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
-poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  cab_extra_pref
+poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  cab_extra_pref  add_prob_prep_b_cab
 
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti   prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid prob_prep_elig_pwid msm_risk_cls  prob_prep_elig_msm
@@ -20880,8 +20871,8 @@ msm_rred red_chance_ep_msm prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_fem
 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 prob_self_test_hard_reach self_test_targeting rate_self_test rate_self_test_if_introduced self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
-incr_pref_prep_oral_comm_tld
-p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
+incr_pref_prep_oral_comm_tld r_choose_stop_prep_oral_comm_tld   r_test_startprep_any_comm_tld   prob_prep_oral_b_comm_tld
+p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw adh_effect_comm_tld
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency  isl_higher_potency  isl_ole_adh_improve
@@ -21485,8 +21476,8 @@ s_onprep_cab_m s_onprep_cab_w s_onprep_len_m s_onprep_len_w s_onprep_vr_w s_onpr
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
 s_prep_oral_w_1524 		s_prep_cab_w_1524 s_prep_len_w_1524 		s_prep_vr_w_1524 
-s_prep_any_sdc			s_prep_oral_sdc			s_prep_inj_sdc			s_prep_vr_sdc
-s_prep_any_plw			s_prep_oral_plw			s_prep_inj_plw			s_prep_vr_plw
+s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc	s_prep_len_sdc			s_prep_vr_sdc
+s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw	s_prep_len_plw			s_prep_vr_plw
 
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
@@ -21844,9 +21835,9 @@ s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1	s_sti_sw
 s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm s_primary1564msm s_hiv1564msm  s_hiv_msm s_hiv1549msm  s_vl1000_msm  
 s_art_start_msm   s_diag_msm_age1564   s_vg1000_msm
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
-s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_inj_msm  s_tested1549msm
+s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_cab_msm s_onprep_len_msm  s_tested1549msm
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
-s_ever_tested_msm1549_   s_diag_msm1549_     s_ever_tested_msm1564_   s_onart_msm1564_
+s_ever_tested_msm1549_   s_diag_msm1549_     s_ever_tested_msm1564_   s_onart_msm1564_   s_onprep_cab_pwid s_onprep_len_pwid 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm
 s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm  s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
@@ -21855,7 +21846,9 @@ s_msm_ep s_m_ge1newp s_msm_ge1newp
 
 s_alive_pwid  s_alive1549_pwid  s_alive1564_pwid  s_primary1549pwid  s_hiv1564pwid   s_hiv1549pwid  s_vl1000_pwid  s_art_start_pwid   s_diag_pwid_age1564  
 s_vl1000_art_pwid s_onart_iicu_pwid  s_vl1000_art_iicu_pwid  s_onart_gt6m_pwid s_vl1000_art_gt6m_pwid s_onart_gt6m_iicu_pwid s_vl1000_art_gt6m_iicu_pwid  s_artexp_pwid  
-s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_inj_pwid  s_elig_prep_any_pwid_1564  s_onprep_pwid  s_onprep_oral_pwid s_onprep_inj_pwid  s_tested1549pwid
+s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_cab_pwid  s_prep_len_pwid  s_elig_prep_any_pwid_1564  s_onprep_pwid  s_onprep_oral_pwid s_onprep_cab_pwid 
+s_onprep_len_pwid 
+s_tested1549pwid
 s_ever_tested_pwid  s_ever_tested_pwid1549_  s_ever_tested_pwid1564_  s_diag_pwid1549_   s_diag_pwid1564_  s_onart_pwid1549_  s_onart_pwid1564_  
 s_ever_tested_pwid1549_   s_diag_pwid1549_  s_onart_pwid1549_    s_ever_tested_pwid1564_  s_diag_pwid1564_ s_onart_pwid1564_
 s_diag_this_period_pwid  s_tested_pwid  s_naive_pwid  s_newp_this_per_hivneg_pwid 
@@ -23652,8 +23645,8 @@ s_onprep_cab_m s_onprep_cab_w s_onprep_len_m s_onprep_len_w s_onprep_vr_w s_onpr
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
 s_prep_oral_w_1524 		s_prep_cab_w_1524 s_prep_len_w_1524 		s_prep_vr_w_1524 
-s_prep_any_sdc			s_prep_oral_sdc			s_prep_inj_sdc			s_prep_vr_sdc
-s_prep_any_plw			s_prep_oral_plw			s_prep_inj_plw			s_prep_vr_plw
+s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc	s_prep_len_sdc			s_prep_vr_sdc
+s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw		s_prep_len_plw			s_prep_vr_plw
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_cab_in_primary	s_started_prep_len_in_primary		s_started_prep_vr_in_primary
@@ -24008,9 +24001,9 @@ s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1  s_sti_sw
 s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_primary1564msm s_hiv1564msm s_hiv_msm  s_hiv1549msm  s_vl1000_msm  
 s_art_start_msm   s_diag_msm_age1564   s_vg1000_msm
 s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
-s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_inj_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_inj_msm  s_tested1549msm
+s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_cab_msm s_onprep_len_msm  s_tested1549msm
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
-s_ever_tested_msm1549_   s_diag_msm1549_    s_ever_tested_msm1564_   s_onart_msm1564_
+s_ever_tested_msm1549_   s_diag_msm1549_    s_ever_tested_msm1564_   s_onart_msm1564_  s_onprep_cab_pwid s_onprep_len_pwid 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
 s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
@@ -24019,7 +24012,9 @@ s_msm_ep s_m_ge1newp s_msm_ge1newp
 
 s_alive_pwid  s_alive1549_pwid  s_alive1564_pwid  s_primary1549pwid  s_hiv1564pwid   s_hiv1549pwid  s_vl1000_pwid  s_art_start_pwid   s_diag_pwid_age1564  
 s_vl1000_art_pwid s_onart_iicu_pwid  s_vl1000_art_iicu_pwid  s_onart_gt6m_pwid s_vl1000_art_gt6m_pwid s_onart_gt6m_iicu_pwid s_vl1000_art_gt6m_iicu_pwid  s_artexp_pwid  
-s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_inj_pwid  s_elig_prep_any_pwid_1564  s_onprep_pwid  s_onprep_oral_pwid s_onprep_inj_pwid  s_tested1549pwid
+s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_cab_pwid  s_prep_len_pwid  s_elig_prep_any_pwid_1564  s_onprep_pwid  s_onprep_oral_pwid s_onprep_cab_pwid  
+s_onprep_len_pwid 
+s_tested1549pwid
 s_ever_tested_pwid  s_ever_tested_pwid1549_  s_ever_tested_pwid1564_  s_diag_pwid1549_   s_diag_pwid1564_  s_onart_pwid1549_  s_onart_pwid1564_  
 s_ever_tested_pwid1549_   s_diag_pwid1549_  s_onart_pwid1549_    s_ever_tested_pwid1564_  s_diag_pwid1564_ s_onart_pwid1564_
 s_diag_this_period_pwid  s_tested_pwid  s_naive_pwid  s_newp_this_per_hivneg_pwid 
@@ -24131,7 +24126,7 @@ p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child rate_trans_breastfeeding nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency isl_higher_potency isl_ole_adh_improve
-prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro  cab_extra_pref
+prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro  cab_extra_pref  add_prob_prep_b_cab
 cab_time_to_lower_threshold_g  len_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75  death_r_iris_pop_wide_tld
 sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
@@ -24144,9 +24139,9 @@ rate_tb_proph_init rate_sbi_proph_init
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prob_self_test_hard_reach self_test_targeting rate_self_test rate_self_test_if_introduced self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
-incr_pref_prep_oral_comm_tld
+incr_pref_prep_oral_comm_tld r_choose_stop_prep_oral_comm_tld   r_test_startprep_any_comm_tld   prob_prep_oral_b_comm_tld
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b  prob_prep_len_b prob_prep_vr_b prep_cab_efficacy  prep_len_efficacy   prop_pep  pep_efficacy 
-rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr 
+rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr adh_effect_comm_tld
 
 prep_cab_effect_inm_partner pref_prep_cab_beta_s1 incr_res_risk_cab_inf_3m prep_len_effect_cam_partner pref_prep_len_beta_s1 incr_res_risk_len_inf_3m 
 
