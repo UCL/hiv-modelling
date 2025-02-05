@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_21jan25; 
+set a.mm_03feb25; 
 if run=. then delete; 
 
 proc sort;
@@ -17,7 +17,8 @@ set a;
 if cald=2025.25; ***Update as required;
 s_alive = s_alive_m + s_alive_w ;
 
-sf_2025 = (40912109) / s_alive;  * Mihpsa_SA calibration folder in output files using World Bank;
+*sf_2025 = (40912109) / s_alive;  * Mihpsa_SA calibration folder in output files using World Bank;
+sf_2025=100000/s_alive;
 sf=sf_2025;
 keep run sf sf_2025;
 proc sort; by run;run;
