@@ -220,8 +220,6 @@ s_alive = s_alive_m + s_alive_w ;
 * p_hiv_nmm;					p_hiv_nmm = (s_hiv1564m - s_hiv1564mm) /(s_ageg1564m -s_alive1564mm) ;
 * p_prep_any_ever_nmm;			p_prep_any_ever_nmm = (s_prep_any_ever_m - s_prep_any_ever_mm)/ (s_alive_m - s_mm);
 
-proc print;var s_prep_any_ever_m s_prep_any_ever_mm s_alive_m s_mm;where option=1;run;
-
 
 ***Mobile men;
 * p_mm;							p_mm = s_alive1564mm/s_ageg1564m;
@@ -257,7 +255,7 @@ proc print;var s_prep_any_ever_m s_prep_any_ever_mm s_alive_m s_mm;where option=
 * p_prep_any_ever_mm;			p_prep_any_ever_mm = s_prep_any_ever_mm / s_mm;
 
 * p_newp_ge1;					p_newp_ge1_mm = s_newp_ge1_mm / s_alive1564mm ;
-* p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive1564mm;
+* p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive;
 
 keep run option cald n_alive_m			n_alive_w			n_alive				p_mm				p_hiv_mm	p_hiv_m
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
@@ -762,29 +760,39 @@ run;quit;
 ***Longer time horizon;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of mobile men currently on any PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label p50_prop_1564mm_onprep_mm_0 = "With intervention";
-label p50_prop_1564mm_onprep_mm_1 = "Without intervention";
+label p50_prop_1564mm_onprep_mm_0 = "Without intervention";
+label p50_prop_1564mm_onprep_mm_1 = "With intervention";
 
 series  x=cald y=p50_prop_1564mm_onprep_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_1564mm_onprep_mm_0 	upper=p95_prop_1564mm_onprep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_prop_1564mm_onprep_mm_1/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prop_1564mm_onprep_mm_1 	upper=p95_prop_1564mm_onprep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_1564mm_onprep_mm_2/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_1564mm_onprep_mm_2 	upper=p95_prop_1564mm_onprep_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Prep willing";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
+
+label p50_p_prep_any_willing_0 = "Without intervention";
+label p50_p_prep_any_willing_1 = "With intervention";
+
+series  x=cald y=p50_p_prep_any_willing_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_prep_any_willing_0 	upper=p95_p_prep_any_willing_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_prep_any_willing_1/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_prep_any_willing_1 	upper=p95_p_prep_any_willing_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+
+run;quit;
+
 ods rtf close;
 ods listing;
 run;
-
-ods html close;
-p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
-prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		prop_1564mm_onprep_mm
-prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm				prop_elig_on_prep_mm
-n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm
-
-
 
 
 ***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;

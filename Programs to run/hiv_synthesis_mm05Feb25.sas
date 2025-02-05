@@ -697,12 +697,12 @@ end;
 
 *MOBILE MEN;
 
-
-* prob_mobile1519_;			%sample_uniform(prob_mobile1519_, 0.01 0.03);
-* prob_mobile2060_;			%sample_uniform(prob_mobile2060_, 0.05 0.10);
-* prob_mobile60pl;			%sample_uniform(prob_mobile60pl,  0.01 0.03);
+***decrese***
+* prob_mobile1519_;			%sample_uniform(prob_mobile1519_, 0.01 0.02);
+* prob_mobile2060_;			%sample_uniform(prob_mobile2060_, 0.025 0.05);
+* prob_mobile60pl;			%sample_uniform(prob_mobile60pl,  0.01 0.02);
 * prob_stop_mobile;			%sample_uniform(prob_stop_mobile, 0.05 0.10);
-* inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 2 5 10);
+* inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 5 10 20 50);***increase***
 * mm_hardreach;				mm_hardreach=0.70;
 
 * CIRCUMCISION;
@@ -14869,10 +14869,13 @@ end;
 
 elig_prep_any_mm_1549_=0;elig_prep_any_mm_1564_=0;
 elig_prep_any_w_1524 = 0; elig_prep_any_w_2534 = 0; elig_prep_any_w_3544 = 0; elig_prep_any_w_1549 = 0;  elig_prep_any_w_1564 = 0; 
+elig_prep_any_m_1549 = 0; 
 if gender = 2 and 15 <= age < 25 then do; if prep_any_elig=1 then elig_prep_any_w_1524 = 1;  end;
 if gender = 2 and 25 <= age < 35 then do; if prep_any_elig=1 then elig_prep_any_w_2534 = 1;  end;
 if gender = 2 and 35 <= age < 45 then do; if prep_any_elig=1 then elig_prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 50 then do; if prep_any_elig=1 then elig_prep_any_w_1549 = 1;  end;
+if gender = 1 and 15 <= age < 50 then do; if prep_any_elig=1 then elig_prep_any_m_1549 = 1;  end;
+
 if gender = 2 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_w_1564 = 1;  end;
 if sw=1 then do; elig_prep_any_sw = 0; if prep_any_elig = 1 then elig_prep_any_sw = 1;   end;
 if sdc=1 then do; elig_prep_any_sdc = 0; if prep_any_elig = 1 then elig_prep_any_sdc = 1;   end;
@@ -14880,11 +14883,12 @@ if plw=1 then do; elig_prep_any_plw = 0; if prep_any_elig = 1 then elig_prep_any
 if curr_mobile=1 and 15 <= age < 65 and prep_any_elig=1 then elig_prep_any_mm_1564_=1;
 if curr_mobile=1 and 15 <= age < 50 and prep_any_elig=1 then elig_prep_any_mm_1549_=1;
 
-prep_any_w_1524 = 0; prep_any_w_2534 = 0; prep_any_w_3544 = 0; prep_any_w_1549 = 0;
+prep_any_w_1524 = 0; prep_any_w_2534 = 0; prep_any_w_3544 = 0; prep_any_w_1549 = 0; prep_any_m_1549 = 0;
 if gender = 2 and 15 <= age < 25 then do;  if prep_any=1 then prep_any_w_1524 = 1;  end;
 if gender = 2 and 25 <= age < 35 then do;  if prep_any=1 then prep_any_w_2534 = 1;  end;
 if gender = 2 and 35 <= age < 45 then do;  if prep_any=1 then prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_w_1549 = 1;  end;
+if gender = 1 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_m_1549 = 1;  end;
 
 prep_any_m = 0; if gender = 1 and prep_any=1 then prep_any_m = 1;
 * msm; prep_any_msm = 0; if msm=1 and prep_any=1 then prep_any_msm = 1; 
@@ -15270,6 +15274,7 @@ if prep_vr_ever=1 then do;
 	if pregnant=1 or breastfeeding=1 	then prep_vr_ever_plw=1;
 end;
 
+prep_any_willing_mm=0; if curr_mobile=1 then prep_any_willing_mm=prep_any_willing;
 
 * whether fulfil all criteria for prep (although also need to test negative to actually start prep [except under pop_wide_tld]);
 all_prep_criteria = 0; 
@@ -17525,7 +17530,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_inj_ever_1524w + prep_inj_ever_1524w; s_prep_inj_ever_sw + prep_inj_ever_sw; s_prep_inj_ever_sdc + prep_inj_ever_sdc; s_prep_inj_ever_plw + prep_inj_ever_plw;
 	s_prep_vr_ever_1524w + prep_vr_ever_1524w; s_prep_vr_ever_sw + prep_vr_ever_sw; s_prep_vr_ever_sdc + prep_vr_ever_sdc; s_prep_vr_ever_plw + prep_vr_ever_plw;
 	s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_sdc + elig_prep_any_sdc ; s_elig_prep_any_plw + elig_prep_any_plw ; 
-	s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
+	s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_elig_prep_any_m_1549 + elig_prep_any_m_1549;  s_prep_any_w_1549 + prep_any_w_1549;
+	s_prep_any_m_1549 + prep_any_m_1549;
 	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
     s_prep_any_w_2534 + prep_any_w_2534 ; s_prep_any_w_3544 + prep_any_w_3544 ; s_inf_prep_any_source_prep_r + inf_prep_any_source_prep_r ;
     s_prepinfect_prep_r + prepinfect_prep_r ; s_prepinfect_prep_r_p + prepinfect_prep_r_p ; s_infected_prep_no_r + infected_prep_no_r ;
@@ -18157,7 +18163,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_elig_prep_any_mm_1549_ + elig_prep_any_mm_1549_;			s_prep_any_mm + prep_any_mm;	   s_hard_reach_due_to_mobile + hard_reach_due_to_mobile;
 	s_primary1549mm + primary1549mm;							s_primary1564mm + primary1564mm;   s_vl1000_mm + vl1000_mm;
 	s_vg1000_mm + vg1000_mm;	 s_tested_mm + tested_mm;		s_onprep_mm + onprep_mm; 		   s_onprep_oral_mm + onprep_oral_mm;
-	s_onprep_inj_mm + onprep_inj_mm;
+	s_onprep_inj_mm + onprep_inj_mm;							s_prep_any_willing + prep_any_willing;
 	s_newp_ge1_mm + newp_ge1_mm;
 end;
 
@@ -19364,7 +19370,8 @@ s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_eve
 s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever_plw 
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
-s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
+s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549  s_elig_prep_any_m_1549 
+s_prep_any_w_1549  s_prep_any_m_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
@@ -19905,7 +19912,7 @@ s_vl1000_art_gt6m_iicu_mm 			s_ever_tested_mm		s_ever_tested_mm1549_	s_diag_mm15
 s_ever_tested_mm1564_				s_diag_mm1564_			s_onart_mm1564_   	 s_prep_oral_mm			s_prep_inj_mm 
 s_prep_any_ever_mm					s_elig_prep_any_mm_1564_	s_elig_prep_any_mm_1549_			 	s_prep_any_mm	  
 s_hard_reach_due_to_mobile			s_primary1549mm	 		s_primary1564mm 	s_vl1000_mm			 	s_vg1000_mm	
-s_tested_mm		s_onprep_mm 		s_onprep_oral_mm		s_onprep_inj_mm		s_newp_ge1_mm
+s_tested_mm		s_onprep_mm 		s_onprep_oral_mm		s_onprep_inj_mm		s_newp_ge1_mm	s_prep_any_willing
 
 /* used in abort statements */
 
@@ -20401,7 +20408,8 @@ s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
 
-s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
+s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549  s_elig_prep_any_m_1549  
+s_prep_any_w_1549  s_prep_any_m_1549
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
@@ -20838,7 +20846,7 @@ s_vl1000_art_gt6m_iicu_mm 			s_ever_tested_mm		s_ever_tested_mm1549_	s_diag_mm15
 s_ever_tested_mm1564_				s_diag_mm1564_			s_onart_mm1564_   	 s_prep_oral_mm			s_prep_inj_mm 
 s_prep_any_ever_mm					s_elig_prep_any_mm_1564_	s_elig_prep_any_mm_1549_			 	s_prep_any_mm	  
 s_hard_reach_due_to_mobile			s_primary1549mm	 		s_primary1564mm 	s_vl1000_mm			 	s_vg1000_mm	
-s_tested_mm		s_onprep_mm 		s_onprep_oral_mm		s_onprep_inj_mm		s_newp_ge1_mm
+s_tested_mm		s_onprep_mm 		s_onprep_oral_mm		s_onprep_inj_mm		s_newp_ge1_mm	s_prep_any_willing
 
 /*supp material*/
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
@@ -21305,7 +21313,8 @@ s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
 
-s_onprep_inj_m s_onprep_inj_w  s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
+s_onprep_inj_m s_onprep_inj_w  s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549  s_elig_prep_any_m_1549	
+s_prep_any_w_1549  s_prep_any_m_1549
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
@@ -21839,7 +21848,7 @@ s_vl1000_art_gt6m_iicu_mm 			s_ever_tested_mm		s_ever_tested_mm1549_	s_diag_mm15
 s_ever_tested_mm1564_				s_diag_mm1564_			s_onart_mm1564_   	 s_prep_oral_mm			s_prep_inj_mm 
 s_prep_any_ever_mm					s_elig_prep_any_mm_1564_	s_elig_prep_any_mm_1549_			 	s_prep_any_mm	  
 s_hard_reach_due_to_mobile			s_primary1549mm	 		s_primary1564mm 	s_vl1000_mm			 	s_vg1000_mm	
-s_tested_mm		s_onprep_mm 		s_onprep_oral_mm		s_onprep_inj_mm		s_newp_ge1_mm
+s_tested_mm		s_onprep_mm 		s_onprep_oral_mm		s_onprep_inj_mm		s_newp_ge1_mm	s_prep_any_willing
 
 /* used in abort statements */
 
