@@ -220,9 +220,6 @@ s_alive = s_alive_m + s_alive_w ;
 * p_hiv_nmm;					p_hiv_nmm = (s_hiv1564m - s_hiv1564mm) /(s_ageg1564m -s_alive1564mm) ;
 * p_prep_any_ever_nmm;			p_prep_any_ever_nmm = (s_prep_any_ever_m - s_prep_any_ever_mm)/ (s_alive_m - s_mm);
 
-proc print;var s_prep_any_ever_m s_prep_any_ever_mm s_alive_m s_mm;where option=1;run;
-
-
 ***Mobile men;
 * p_mm;							p_mm = s_alive1564mm/s_ageg1564m;
 
@@ -779,11 +776,6 @@ ods listing;
 run;
 
 ods html close;
-p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
-prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		prop_1564mm_onprep_mm
-prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm				prop_elig_on_prep_mm
-n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm
-
 
 
 
