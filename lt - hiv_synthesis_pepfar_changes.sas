@@ -4741,7 +4741,7 @@ tested_as_sw=.;
 testfor_prep_oral=0; testfor_prep_cab=0;  testfor_prep_len=0; testfor_prep_vr=0;
  
 if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1  and self_tested ne 1 
-and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
+and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) and (caldate{t} ne 2025 or pepfar_art_int ne 1 ) then do;
 
 	if t ge 2 and sw_test_6mthly=1 and sw=1 and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
 		tested=1; tested_as_sw=1; 
