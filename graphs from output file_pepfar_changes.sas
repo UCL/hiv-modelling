@@ -3,7 +3,7 @@ ods html close;
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_n_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pepfar_changes\pepfar_changes_a_out";
 
 footnote;
 
@@ -12,7 +12,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_cioa_n;
+set a.l_pepfar_changes_a;
 
 
 * for this program, variable names cannot end on a number;
@@ -39,10 +39,8 @@ cost_per_adult = (cost / n_alive) * 1000000;
 p_newp_ge1_ = p_newp_ge1;
 
 
-if option ne 1 and option ne 2;
- 
 
-%let single_var = p_mcirc                           ;
+%let single_var = n_death_hiv               ;
 
 
 
@@ -55,7 +53,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 3000   ;
+%let nfit = 188    ;
 
 %let year_end = 2076.00 ;
 run;
@@ -103,6 +101,108 @@ run;
 
 %option_0;
 run;
+
+
+
+
+
+
+
+data option_1;
+set b;
+if option =  1 ;
+
+%let var = &single_var    ; 
+
+***transpose given name; *starts with %macro and ends with %mend;
+%macro option_1;
+%let p25_var = p25_&var_1;
+%let p75_var = p75_&var_1;
+%let p5_var = p5_&var_1;
+%let p95_var = p95_&var_1;
+%let p50_var = median_&var_1;
+%let mean_var = mean_&var_1;
+
+%let count = 0;
+%do %while (%qscan(&var, &count+1, %str( )) ne %str());
+%let count = %eval(&count + 1);
+%let varb = %scan(&var, &count, %str( ));
+
+
+proc transpose data=option_1 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data h&count;set h&count;***creates one dataset per variable;
+p25_&varb._1  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._1 = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._1 = median(of &varb.1-&varb.&nfit);
+mean_&varb._1 = mean(of &varb.1-&varb.&nfit);
+
+keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 mean_&varb._1;
+run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  hh&count;quit;run;
+%end;
+%mend;
+
+
+%option_1;
+run;
+
+
+
+
+
+
+
+data option_2;
+set b;
+if option =  2 ;
+
+%let var = &single_var    ; 
+
+***transpose given name; *starts with %macro and ends with %mend;
+%macro option_2;
+%let p25_var = p25_&var_2;
+%let p75_var = p75_&var_2;
+%let p5_var = p5_&var_2;
+%let p95_var = p95_&var_2;
+%let p50_var = median_&var_2;
+%let mean_var = mean_&var_2;
+
+%let count = 0;
+%do %while (%qscan(&var, &count+1, %str( )) ne %str());
+%let count = %eval(&count + 1);
+%let varb = %scan(&var, &count, %str( ));
+
+
+proc transpose data=option_2 out=i&count prefix=&varb;var &varb; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data i&count;set i&count;***creates one dataset per variable;
+p25_&varb._2  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._2 = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._2  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._2 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._2 = median(of &varb.1-&varb.&nfit);
+mean_&varb._2 = mean(of &varb.1-&varb.&nfit);
+
+keep cald option_ p5_&varb._2 p95_&varb._2 p50_&varb._2 p25_&varb._2 p75_&varb._2 mean_&varb._2;
+run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  ii&count;quit;run;
+%end;
+%mend;
+
+
+%option_2;
+run;
+
+
+
+
 
 
 
@@ -156,54 +256,8 @@ run;
 
 
 
-data option_4;
-set b;
-if option =  4 ;
-
-%let var = &single_var    ; 
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_4;
-%let p25_var = p25_&var_4;
-%let p75_var = p75_&var_4;
-%let p5_var = p5_&var_4;
-%let p95_var = p95_&var_4;
-%let p50_var = median_&var_4;
-%let mean_var = mean_&var_4;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-
-
-proc transpose data=option_4 out=k&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data k&count;set k&count;***creates one dataset per variable;
-p25_&varb._4  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._4 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._4  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._4 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._4 = median(of &varb.1-&varb.&nfit);
-mean_&varb._4 = mean(of &varb.1-&varb.&nfit);
-
-keep cald option_ p5_&varb._4 p95_&varb._4 p50_&varb._4 p25_&varb._4 p75_&varb._4 mean_&varb._4;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  kk&count;quit;run;
-%end;
-%mend;
-
-
-%option_4;
-run;
-
-
-
-
 data d; * this is number of variables in %let var = above ;
-merge g1       j1 k1   ;
+merge g1 h1 i1 j1   ;
 by cald;
 
 
@@ -213,6 +267,188 @@ by cald;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
+
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';    Title    height=1.5 justify=center "p_mcirc";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'percentage'		labelattrs=(size=12)  values = (0.3 to  1       by 0.1  ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_mcirc_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_mcirc_0 upper=p95_p_mcirc_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_p_mcirc_1 / lineattrs = (color=blue    thickness = 4);
+band    x=cald lower=p5_p_mcirc_1 upper=p95_p_mcirc_1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
+
+series  x=cald y=p50_p_mcirc_2 / lineattrs = (color=    red       thickness = 4);
+band    x=cald lower=p5_p_mcirc_2 upper=p95_p_mcirc_2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
+
+series  x=cald y=p50_p_mcirc_3 / lineattrs = (color=yellow        thickness = 4);
+band    x=cald lower=p5_p_mcirc_3 upper=p95_p_mcirc_3 / transparency=0.9 fillattrs = (color=yellow       ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';    Title    height=1.5 justify=center "p_onart_diag";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'percentage'		labelattrs=(size=12)  values = (0 to  1           by 0.1) valueattrs=(size=10);
+
+series  x=cald y=p50_p_onart_diag_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_onart_diag_0 upper=p95_p_onart_diag_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_p_onart_diag_1 / lineattrs = (color=blue    thickness = 4);
+band    x=cald lower=p5_p_onart_diag_1 upper=p95_p_onart_diag_1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
+
+series  x=cald y=p50_p_onart_diag_2 / lineattrs = (color=    red       thickness = 4);
+band    x=cald lower=p5_p_onart_diag_2 upper=p95_p_onart_diag_2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
+
+series  x=cald y=p50_p_onart_diag_3 / lineattrs = (color=yellow        thickness = 4);
+band    x=cald lower=p5_p_onart_diag_3 upper=p95_p_onart_diag_3 / transparency=0.9 fillattrs = (color=yellow       ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';    Title    height=1.5 justify=center "prop_elig_on_prep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'percentage'		labelattrs=(size=12)  values = (0 to  1           by 0.1) valueattrs=(size=10);
+
+series  x=cald y=p50_prop_elig_on_prep_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_prop_elig_on_prep_0 upper=p95_prop_elig_on_prep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_prop_elig_on_prep_1 / lineattrs = (color=blue    thickness = 4);
+band    x=cald lower=p5_prop_elig_on_prep_1 upper=p95_prop_elig_on_prep_1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
+
+series  x=cald y=p50_prop_elig_on_prep_2 / lineattrs = (color=    red       thickness = 4);
+band    x=cald lower=p5_prop_elig_on_prep_2 upper=p95_prop_elig_on_prep_2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
+
+series  x=cald y=p50_prop_elig_on_prep_3 / lineattrs = (color=yellow        thickness = 4);
+band    x=cald lower=p5_prop_elig_on_prep_3 upper=p95_prop_elig_on_prep_3 / transparency=0.9 fillattrs = (color=yellow       ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';    Title    height=1.5 justify=center "prop_1564m_onprep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'percentage'		labelattrs=(size=12)  values = (0 to 0.05         by 0.01) valueattrs=(size=10);
+
+series  x=cald y=p50_prop_1564m_onprep_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_prop_1564m_onprep_0 upper=p95_prop_1564m_onprep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_prop_1564m_onprep_1 / lineattrs = (color=blue    thickness = 4);
+band    x=cald lower=p5_prop_1564m_onprep_1 upper=p95_prop_1564m_onprep_1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
+
+series  x=cald y=p50_prop_1564m_onprep_2 / lineattrs = (color=    red       thickness = 4);
+band    x=cald lower=p5_prop_1564m_onprep_2 upper=p95_prop_1564m_onprep_2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
+
+series  x=cald y=p50_prop_1564m_onprep_3 / lineattrs = (color=yellow        thickness = 4);
+band    x=cald lower=p5_prop_1564m_onprep_3 upper=p95_prop_1564m_onprep_3 / transparency=0.9 fillattrs = (color=yellow       ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';    Title    height=1.5 justify=center "incidence1549_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'percentage'		labelattrs=(size=12)  values = (0 to 1.5         by 0.1 ) valueattrs=(size=10);
+
+series  x=cald y=p50_incidence1549__0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_incidence1549__1 / lineattrs = (color=blue    thickness = 4);
+band    x=cald lower=p5_incidence1549__1 upper=p95_incidence1549__1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
+
+series  x=cald y=p50_incidence1549__2 / lineattrs = (color=    red       thickness = 4);
+band    x=cald lower=p5_incidence1549__2 upper=p95_incidence1549__2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
+
+series  x=cald y=p50_incidence1549__3 / lineattrs = (color=yellow        thickness = 4);
+band    x=cald lower=p5_incidence1549__3 upper=p95_incidence1549__3 / transparency=0.9 fillattrs = (color=yellow       ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';    Title    height=1.5 justify=center "p_newp_ge1_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'percentage'		labelattrs=(size=12)  values = (0 to 0.1         by 0.01 ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_newp_ge1__0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_newp_ge1__0 upper=p95_p_newp_ge1__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_p_newp_ge1__1 / lineattrs = (color=blue    thickness = 4);
+band    x=cald lower=p5_p_newp_ge1__1 upper=p95_p_newp_ge1__1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
+
+series  x=cald y=p50_p_newp_ge1__2 / lineattrs = (color=    red       thickness = 4);
+band    x=cald lower=p5_p_newp_ge1__2 upper=p95_p_newp_ge1__2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
+
+series  x=cald y=p50_p_newp_ge1__3 / lineattrs = (color=yellow        thickness = 4);
+band    x=cald lower=p5_p_newp_ge1__3 upper=p95_p_newp_ge1__3 / transparency=0.9 fillattrs = (color=yellow       ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';    Title    height=1.5 justify=center "n_death_hiv";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'percentage'		labelattrs=(size=12)  values = (0 to 20000       by 1000 ) valueattrs=(size=10);
+
+series  x=cald y=p50_n_death_hiv_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_death_hiv_0 upper=p95_n_death_hiv_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_death_hiv_1 / lineattrs = (color=blue    thickness = 4);
+band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
+
+/*
+
+series  x=cald y=p50_n_death_hiv_2 / lineattrs = (color=    red       thickness = 4);
+band    x=cald lower=p5_n_death_hiv_2 upper=p95_n_death_hiv_2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
+
+series  x=cald y=p50_n_death_hiv_3 / lineattrs = (color=yellow        thickness = 4);
+band    x=cald lower=p5_n_death_hiv_3 upper=p95_n_death_hiv_3 / transparency=0.9 fillattrs = (color=yellow       ) legendlabel= "90% range";
+
+*/
+
+run;quit;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -289,32 +525,7 @@ run;quit;
 
 */
 
-/*
 
-ods html;
-proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "n onart";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'n_onart'		labelattrs=(size=12)  values = (0 to  2000000     by 200000 ) valueattrs=(size=10);
-
-series  x=cald y=mean_n_onart_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_n_onart_0 upper=p95_n_onart_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=mean_n_onart_1 / lineattrs = (color=blue      thickness = 4);
-band    x=cald lower=p5_n_onart_1 upper=p95_n_onart_1 / transparency=0.9 fillattrs = (color=blue     ) legendlabel= "90% range";
-
-series  x=cald y=mean_n_onart_2 / lineattrs = (color=green     thickness = 4);
-band    x=cald lower=p5_n_onart_2 upper=p95_n_onart_2 / transparency=0.9 fillattrs = (color=green    ) legendlabel= "90% range";
-
-series  x=cald y=mean_n_onart_3 / lineattrs = (color=darkblue    thickness = 4);
-band    x=cald lower=p5_n_onart_3 upper=p95_n_onart_3 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
-
-series  x=cald y=mean_n_onart_4 / lineattrs = (color=darkred       thickness = 4);
-band    x=cald lower=p5_n_onart_4 upper=p95_n_onart_4 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
-
-run;quit;
-
-*/
 
 /*
 
@@ -461,22 +672,6 @@ run;quit;
 */
 
 
-ods html;
-proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "p_mcirc";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'percentage'		labelattrs=(size=12)  values = (0.3 to  1       by 0.1  ) valueattrs=(size=10);
-
-series  x=cald y=p50_p_mcirc_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_p_mcirc_0 upper=p95_p_mcirc_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_p_mcirc_3 / lineattrs = (color=darkblue    thickness = 4);
-band    x=cald lower=p5_p_mcirc_3 upper=p95_p_mcirc_3 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
-
-series  x=cald y=p50_p_mcirc_4 / lineattrs = (color=darkred       thickness = 4);
-band    x=cald lower=p5_p_mcirc_4 upper=p95_p_mcirc_4 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
-
-run;quit;
 
 
 /*
