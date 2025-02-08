@@ -1,6 +1,6 @@
 * cioa_t
 
-change prep testing to self testing ?
+change prep testing to self testing and switch to 6 monthly ?
 
 ;
 
