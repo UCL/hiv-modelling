@@ -1407,9 +1407,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_laa_ad; set y;  
+data    b.l_laa_ad_revision; set y;  
 
-data y ; set b.l_laa_ad; 
+data y ; set b.l_laa_ad_revision; 
 
 
   options nomprint;
@@ -1425,6 +1425,8 @@ data y ; set b.l_laa_ad;
 data e; set y; keep &v run cald option ;
 
 proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2023.5 <= cald <= 2024.75; 
+
+proc means  noprint data=e; var &v; output out=y_22_24 mean= &v._22_24; by run ; where 2022.5 <= cald <= 2024.75; 
 
 
 * note: it is critical that this starts at year_interv;
@@ -1442,7 +1444,7 @@ proc sort data=y_3y    ; by run; proc transpose data=y_3y  out=t_3y  prefix=&v._
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
 
-data &v ; merge y_24 t_3y t_10y t_50y ; 
+data &v ; merge y_24 y_22_24 t_3y t_10y t_50y ; 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1613,7 +1615,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=cost);  %var(v=prevalence15pl);
 
-data   b.wide_outputs; merge 
+data   b.wide_outputs_revision; merge 
 
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost  dcab_cost  dlen_cost   dclin_cost  dcost_circ dcost_condom_dn 
@@ -1805,7 +1807,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=lencab_uptake); %par(p=lencab_uptake_vlg1000);  %par(p=rate_return_for_lencab);  %par(p=prob_strong_pref_lencab); %par(p=pr_res_len)
 
 
-data b.wide_par2; merge 
+data b.wide_par2_revision; merge 
 
 sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1874,8 +1876,8 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_ad     ; 
-  merge b.wide_outputs   b.wide_par2    ;
+  data  b.w_laa_ad_revision     ; 
+  merge b.wide_outputs_revision   b.wide_par2_revision    ;
   by run;
 
 
@@ -1889,10 +1891,17 @@ proc sort; by run;run;
 
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ad_out\";
 
-data f; set b.w_laa_ad;
+data f; set b.w_laa_ad_revision;
+
+d_p_onart_diag_mw_24 = p_onart_diag_w_24 - p_onart_diag_m_24 ;
+d_prevalence1549mw_24 = prevalence1549w_24 - prevalence1549m_24 ; 
+d_incidence1549mw_24 = incidence1549w_24 - incidence1549m_24 ; 
+d_incidence1549mw_22_24 = incidence1549w_22_24 - incidence1549m_22_24 ; 
+d_p_onart_mw_24 = p_onart_w_24 - p_onart_m_24;
 
 * if . < run <=  826903121 ; * laa_ac ;
-  if . < run <= 899802288 ;  * laa_ad ; * to give n = 1000;
+* if . < run <= 899802288 ;  * laa_ad ; * to give n = 1000;
+  if . < run <=  942416734 ;
 
 if prevalence1549w_24 < 0.35;
 if prevalence1549m_24 < 0.25;
@@ -1904,6 +1913,11 @@ if p_onart_diag_m_24 > 0.73;
 if p_onart_diag_w_24 > 0.8;
 if p_onart_vl1000_m_24 > 0.7;
 if p_onart_vl1000_w_24 > 0.7;
+
+if d_incidence1549mw_22_24 > 0;
+if d_prevalence1549mw_24 > 0;
+if d_p_onart_mw_24 > 0;
+* if d_p_onart_diag_mw_24 >= -0.004261063;
 
 d_n_death_hiv_age_1524_10y_2_1 = n_death_hiv_age_1524_10y_2 - n_death_hiv_age_1524_10y_1 ; 
 
@@ -2318,15 +2332,18 @@ ods html;
 title 'Characteristics of the setting scenarios in 2024 (median, 90% range)';
 ods noproctitle;
 proc means data=f   n p50  p5  p95 min max ;  
-var prevalence1549w_24 prevalence1549m_24 prevalence1549_24 incidence1549m_24 incidence1549w_24 incidence1549_24 
+var 
+prevalence1549w_24 prevalence1549m_24 prevalence1549_24  d_prevalence1549mw_24 
+incidence1549m_24 incidence1549w_24 incidence1549_24  d_incidence1549mw_24 
 p_diag_24 p_diag_w_24 p_diag_m_24 
-p_onart_diag_24 p_onart_diag_w_24  p_onart_diag_m_24  
+p_onart_diag_24 p_onart_diag_w_24  p_onart_diag_m_24  d_p_onart_diag_mw_24
 p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
 p_diag_vl1000_24 p_diag_vl1000_m_24 p_diag_vl1000_w_24 
 p_vl1000_24 p_vl1000_w_24 p_vl1000_m_24 
 prevalence_vg1000_24   
 p_onart_cd4_l200_24
 p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24  
+d_p_onart_mw_24
 ;
 run;
 ods html close;
