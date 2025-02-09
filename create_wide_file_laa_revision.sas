@@ -2173,6 +2173,12 @@ if 0.85 <= p_diag_vl1000_24 < 0.90 then p_diag_vl1000_24_g=3;
 if 0.90 <= p_diag_vl1000_24 < 0.93 then p_diag_vl1000_24_g=4;
 if 0.93 <= p_diag_vl1000_24        then p_diag_vl1000_24_g=5;
 
+if p_diag_vl1000_24 < 0.85 then p_diag_vl1000_24_grp=1;
+if 0.85 <= p_diag_vl1000_24 < 0.90 then p_diag_vl1000_24_grp=2;
+if 0.90 <= p_diag_vl1000_24 < 0.93 then p_diag_vl1000_24_grp=3;
+if 0.93 <= p_diag_vl1000_24        then p_diag_vl1000_24_grp=4;
+
+
 if p_diag_24 < 0.80 then p_diag_24_g=1;
 if 0.80 <= p_diag_24 < 0.85 then p_diag_24_g=2;
 if 0.85 <= p_diag_24 < 0.90 then p_diag_24_g=3;
@@ -2197,6 +2203,13 @@ if 0.45 <= incidence1549_24 < 0.60 then incidence1549_24_g=4;
 if 0.60 <= incidence1549_24 < 0.75 then incidence1549_24_g=5;
 if 0.75 <= incidence1549_24        then incidence1549_24_g=6;
 
+
+if incidence1549_24 < 0.25 then incidence1549_24_grp=1;
+if 0.25 <= incidence1549_24 < 0.50 then incidence1549_24_grp=2;
+if 0.50 <= incidence1549_24 < 0.75 then incidence1549_24_grp=3;
+if 0.75 <= incidence1549_24        then incidence1549_24_grp=4;
+
+
 if prevalence1549_24 < 0.05 then prevalence1549_24_g=1;
 if 0.05 <= prevalence1549_24 < 0.10 then prevalence1549_24_g=2;
 if 0.10 <= prevalence1549_24 < 0.15 then prevalence1549_24_g=3;
@@ -2212,117 +2225,27 @@ if 0.90 <= p_vl1000_24 < 0.95 then p_vl1000_24_g=4;
 if 0.95 <= p_vl1000_24        then p_vl1000_24_g=5;
 
 
+incidence1549_24_g_2=0; if incidence1549_24_g = 2 then incidence1549_24_g_2=1;
+incidence1549_24_g_3=0; if incidence1549_24_g = 3 then incidence1549_24_g_3=1;
+incidence1549_24_g_4=0; if incidence1549_24_g = 4 then incidence1549_24_g_4=1;
+incidence1549_24_g_5=0; if incidence1549_24_g = 5 then incidence1549_24_g_5=1;
+incidence1549_24_g_6=0; if incidence1549_24_g = 6 then incidence1549_24_g_6=1;
 
-* label 
-prevalence1549w_24 = "HIV prevalence in women age 15-49 in 2024"
-prevalence1549m_24 = "HIV prevalence in men age 15-49 in 2024"
-incidence1549_24 = "HIV incidence in people age 15-49 (/100 person years) in 2024"  
-p_diag_24 = "Proportion of HIV positive people age 15+ who are diagnosed in 2024"  
-p_onart_diag_24 = "Proportion of diagnosed HIV+ people on ART in 2024"
-p_vl1000_24 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+) in 2024"
-prevalence_vg1000_24 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+) in 2024"
-p_onart_vl1000_w_24 = "Of women on ART, proportion with VL < 1000 in 2024"
-p_onart_vl1000_m_24 = "Of men on ART, proportion with VL < 1000 in 2024"
-p_onart_vl1000_w_1524_24 = "Of women aged 15-24 on ART, proportion with VL < 1000 in 2024"
-p_onart_vl1000_m_1524_24 = "Of men aged 15-24 on ART, proportion with VL < 1000 in 2024"
-p_onart_cd4_l200_24 = "Of people on ART, proportion with CD4 count < 200 in 2024"
+p_diag_vl1000_24_g_2=0; if p_diag_vl1000_24_g = 2 then p_diag_vl1000_24_g_2 = 1;
+p_diag_vl1000_24_g_3=0; if p_diag_vl1000_24_g = 3 then p_diag_vl1000_24_g_3 = 1;
+p_diag_vl1000_24_g_4=0; if p_diag_vl1000_24_g = 4 then p_diag_vl1000_24_g_4 = 1;
+p_diag_vl1000_24_g_5=0; if p_diag_vl1000_24_g = 5 then p_diag_vl1000_24_g_5 = 1;
 
-p_len_10y_1 = "Of all people on ART, mean proportion on lenacapavir over 10 years under status quo"
-p_len_10y_2 = "Of all people on ART, mean proportion on lenacapavir over 10 years under cab/len for aged 15-24"
-p_cab_10y_1 = "Of all people on ART, mean proportion on cabotegravir over 10 years under status quo"
-p_cab_10y_2 = "Of all people on ART, mean proportion on cabotegravir over 10 years under cab/len for aged 15-24"
-p_len_1524_10y_1 = "Of all 15-24 year olds on ART, mean proportion on lenacapavir over 10 years under status quo"
-p_len_1524_10y_2 = "Of all 15-24 year olds on ART, mean proportion on lenacapavir over 10 years under cab/len for aged 15-24"
-p_cab_1524_10y_1 = "Of all 15-24 year olds on ART, mean proportion on cabotegravir over 10 years under status quo"
-p_cab_1524_10y_2 = "Of all 15-24 year olds on ART, mean proportion on cabotegravir over 10 years under cab/len for aged 15-24"
-p_onart_1524_10y_1 = "Of all 15-24 year olds on ART, mean proportion on ART over 10 years under status quo"
-p_onart_1524_10y_2 = "Of all 15-24 year olds on ART, mean proportion on ART over 10 years under onart/len for aged 15-24"
-p_onart_vl1000_10y_1  = "Of all people on ART, mean proportion with viral load < 1000 over 10 years under status quo" 
-p_onart_vl1000_10y_2  = "Of all people on ART, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24" 
-p_onart_vl1000_m_1524_10y_1  = "Of all 15-24 year old males on ART, mean proportion with viral load < 1000 over 10 years under status quo" 
-p_onart_vl1000_m_1524_10y_2  = "Of all 15-24 year old males on ART, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
-p_onart_vl1000_w_1524_10y_1  = "Of all 15-24 year old females on ART, mean proportion with viral load < 1000 over 10 years under status quo" 
-p_onart_vl1000_w_1524_10y_2  = "Of all 15-24 year old females on ART, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
-p_vl1000_m_1524_10y_1  = "Of all 15-24 year old males, mean proportion with viral load < 1000 over 10 years under status quo" 
-p_vl1000_m_1524_10y_2  = "Of all 15-24 year old males, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
-p_vl1000_w_1524_10y_1  = "Of all 15-24 year old females, mean proportion with viral load < 1000 over 10 years under status quo" 
-p_vl1000_w_1524_10y_2  = "Of all 15-24 year old females, mean proportion with viral load < 1000 over 10 years under onart/len for aged 15-24"
-incidence1549_10y_1 = "Mean incidence of HIV in people aged 15-49 over 10 years under status quo"
-incidence1549_10y_2 = "Mean incidence of HIV in people aged 15-49 over 10 years under under onart/len for aged 15-24"  
-incidence1524_10y_1 = "Mean incidence of HIV in people aged 15-24 over 10 years under status quo"  
-incidence1524_10y_2 = "Mean incidence of HIV in people aged 15-24 over 10 years under under onart/len for aged 15-24"  
-n_death_hiv_10y_1 = "Mean mumber of deaths from HIV per year over 10 years under status quo"  
-n_death_hiv_10y_2 = "Mean mumber of deaths from HIV per year over 10 years under onart/len for aged 15-24"  
-n_death_hiv_age_1524_10y_1 = "Mean mumber of deaths from HIV per year in 15-24 year olds over 10 years under status quo"  
-n_death_hiv_age_1524_10y_2 = "Mean mumber of deaths from HIV per year in 15-24 year olds over 10 years under onart/len for aged 15-24"  
-p_r_len_1524_10y_1 = "Mean proportion of 15-24 year olds with capsid codon 66/67 resistance mutation over 10 years under status quo" 
-p_r_len_1524_10y_2 = "Mean proportion of 15-24 year olds with capsid codon 66/67 resistance mutation over 10 years under onart/len for aged 15-24" 
-p_r_cab_1524_10y_1 = "Mean proportion of 15-24 year olds with insti resistance mutation over 10 years under status quo" 
-p_r_cab_1524_10y_2 = "Mean proportion of 15-24 year olds with insti resistance mutation over 10 years under onart/len for aged 15-24" 
-mtct_prop_10y_1 = "Mean proportion of births in women with HIV in which the child is infected over 10 years under status quo"  
-mtct_prop_10y_2 = "Mean proportion of births in women with HIV in which the child is infected over 10 years under onart/len for aged 15-24"  
 
-dart_cost_y_50y_1  = "Mean cost of ART drug over 50 years under status quo"
-dart_cost_y_50y_2  = "Mean cost of ART drug over 50 years under onart/len for aged 15-24"
-dlen_cost_50y_1  = "Mean cost of len drug over 50 years under status quo"
-dlen_cost_50y_2  = "Mean cost of len drug over 50 years under onart/len for aged 15-24"
-dcab_cost_50y_1  = "Mean cost of cab drug over 50 years under status quo"
-dcab_cost_50y_2  = "Mean cost of cab drug over 50 years under onart/len for aged 15-24"
-dadc_cost_50y_1  = "Mean cost of treating people with who stage 4 conditions  over 50 years under status quo"
-dadc_cost_50y_2  = "Mean cost of treating people with who stage 4 conditions over 50 years under onart/len for aged 15-24"
-dcd4_cost_50y_1   = "Mean cost of cd4 count tests over 50 years under status quo"
-dcd4_cost_50y_2  = "Mean cost of cd4 counts tests over 50 years under onart/len for aged 15-24"
-dvl_cost_50y_1   = "Mean cost of viral load tests over 50 years under status quo"
-dvl_cost_50y_2  = "Mean cost of viral load tests over 50 years under onart/len for aged 15-24"
-dvis_cost_50y_1  = "Mean cost of clinic visits for people with hiv over 50 years under status quo"
-dvis_cost_50y_2 = "Mean cost of clinic visits for people with hiv over 50 years under onart/len for aged 15-24"
-dnon_tb_who3_cost_50y_1   = "Mean cost of treatment for people with who stage 3 conditions apart from tb over 50 years under status quo"
-dnon_tb_who3_cost_50y_2  	 = "Mean cost of treatment for people with who stage 3 conditions apart from tb over 50 years under onart/len for aged 15-24"
-dcot_cost_50y_1   = "Mean cost of cotrimoxazole over 50 years under status quo"
-dcot_cost_50y_2  = "Mean cost of cotrimoxazole over 50 years under onart/len for aged 15-24"
-dtb_cost_50y_1   = "Mean cost of tb treatment over 50 years under status quo"
-dtb_cost_50y_2   = "Mean cost of tb treatment over 50 years under onart/len for aged 15-24"
-dtest_cost_50y_1  = "Mean cost of hiv tests over 50 years under status quo"
-dtest_cost_50y_2  = "Mean cost of hiv tests over 50 years under onart/len for aged 15-24"
-d_t_adh_int_cost_50y_1   = "Mean cost of adherence intervention over 50 years under status quo"
-d_t_adh_int_cost_50y_2   = "Mean cost of adherence intervention over 50 years under onart/len for aged 15-24"
-dswitchline_cost_50y_1   = "Mean cost of switching line of treatment (non-drug costs) over 50 years under status quo"
-dswitchline_cost_50y_2  = "Mean cost of switching line of treatment (non-drug costs) over 50 years under onart/len for aged 15-24"
-dcost_circ_50y_1   = "Mean cost of vmmc over 50 years under status quo"
-dcost_circ_50y_2   = "Mean cost of vmmc over 50 years under onart/len for aged 15-24"
-dcost_child_hiv_50y_1   = "Mean cost of a notional cost of treating a child with hiv (children not explicitly modelled) over 50 years under status quo"
-dcost_child_hiv_50y_2    = "Mean cost of a notional cost of treating a child with hiv (children not explicitly modelled) over 50 years under onart/len for aged 15-24"
-dcost_non_aids_pre_death_50y_1  = "Mean cost of costs of treating people for non aids conditions for which risk is raised with hiv over 50 years under status quo"
-dcost_non_aids_pre_death_50y_2  = "Mean cost of costs of treating people for non aids conditions for which risk is raised with hiv over 50 years under onart/len for aged 15-24"
-dcost_prep_visit_oral_50y_1   = "Mean cost of clinic visits for oral prep over 50 years under status quo"
-dcost_prep_visit_oral_50y_2   = "Mean cost of clinic visits for oral prep over 50 years under onart/len for aged 15-24"
-dcost_prep_oral_50y_1  = "Mean cost of oral prep drug over 50 years under status quo"
-dcost_prep_oral_50y_2  = "Mean cost of oral prep drug over 50 years under onart/len for aged 15-24"
-dcost_prep_visit_cab_50y_1   = "Mean cost of clinic visits for cab prep over 50 years under status quo"
-dcost_prep_visit_cab_50y_2   = "Mean cost of clinic visits for cab prep over 50 years under onart/len for aged 15-24"
-dcost_prep_cab_50y_1  = "Mean cost of cab prep drug over 50 years under status quo"
-dcost_prep_cab_50y_2  = "Mean cost of cab prep drug over 50 years under onart/len for aged 15-24"
-dtb_lam_cost_50y_1  = "Mean cost of tb-lam testing over 50 years under status quo"
-dtb_lam_cost_50y_2 = "Mean cost of tb-lam testing over 50 years under onart/len for aged 15-24"
-dtb_proph_cost_50y_1  = "Mean cost of tb prophylaxis over 50 years under status quo"
-dtb_proph_cost_50y_2  = "Mean cost of tb prophylaxis over 50 years under onart/len for aged 15-24"
-dcrag_cost_50y_1  = "Mean cost of crag testing over 50 years under status quo"
-dcrag_cost_50y_2   = "Mean cost of crag testing over 50 years under onart/len for aged 15-24"
-dcrypm_proph_cost_50y_1 = "Mean cost of cm prophylaxis over 50 years under status quo"
-dcrypm_proph_cost_50y_2 = "Mean cost of cm prophylaxis over 50 years under onart/len for aged 15-24"
-dsbi_proph_cost_50y_1  = "Mean cost of sbi prophylaxis over 50 years under status quo"
-dsbi_proph_cost_50y_2 = "Mean cost of sbi prophylaxis over 50 years under onart/len for aged 15-24"
-d_ddaly_50y_2_1 = "Mean DALYs averted across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
-dcost_50y_1  = "Mean total cost over 50 years under status quo"
-dcost_50y_2  = "Mean total cost over 50 years under onart/len for aged 15-24"
-d_dcost_50y_2_1 = "Mean difference in costs across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
-d_netdaly500_2_1 = "Mean net DALYs averted across setting scenarios over 50 years under onart/len for aged 15-24 compared with status quo"
-lowest_netdaly = "Proportion of setting scenarios in which cab/len to 15-24 year-olds is cost-effective"
-;
 
 
 
 * * ods html;
+
+
+ods html;
+proc print noobs  data=f; var  run; run; 
+ods html close;
 
 
 * table 1;
@@ -2412,6 +2335,17 @@ d_mtct_prop_10y_2_1
 * where p_diag_vl1000_24 < 0.9;
 run;
 ods html close;
+
+
+
+proc freq data=f; tables incidence1549_24_grp * p_diag_vl1000_24_grp ; run;
+
+proc means data=f; var d_ddaly_50y_2_1 d_dcost_50y_2_1 ;
+where incidence1549_24_grp = 1 and p_diag_vl1000_24_grp = 4; 
+run;
+
+
+
 
 
 /*
@@ -2860,7 +2794,6 @@ prevalence1549_24_g * lowest_netdaly
 ;
 run;
 ods html close;
-
 
 
 
