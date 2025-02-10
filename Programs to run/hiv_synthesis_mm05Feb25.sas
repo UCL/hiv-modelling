@@ -1,22 +1,6 @@
 ***To discuss:
 
-**/MM;
-*Add prep disadv for mm?
-	Men are already substantially less likely to take prep, do we need a further adjustment for mm?
-*Which PrEP strategy;
-
-
-
-/*
-if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
-    	r = rand('Uniform');
-      	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
-	end;
-*/
-
-**Core;
-*run with prep_any_strategy=4 without the gender=2 line;
+Run with SA and Uganda parameter files using one third approaches;
 
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
@@ -734,7 +718,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 14);
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -2245,8 +2229,7 @@ who may be dead and hence have caldate{t} missing;
  	*Option 1 - Increase PrEP uptake in men;
 	if option = 1 then do;
 		if curr_mobile=1 then do;
-			if prep_oral_willing = 0 then prep_oral_willing=1;
-			if prep_inj_willing = 0  then prep_inj_willing=1;
+			prob_prep_oral_b = 0.5;	eff_prob_prep_oral_b = 0.5;*sample;
 		end;
 	end;
 
@@ -4627,16 +4610,12 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		if gender=2 and 15<=age<25 and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
-/*
+
 	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
-    	r = rand('Uniform');
+    	r = rand('Uniform');s = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
-	end;
-*/
-	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
-    	r = rand('Uniform');
-      	if (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_any_elig=1; 
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
 
 
@@ -4695,9 +4674,10 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
     end;
 
 	if prep_any_strategy=14 then do;	* as 4 but with newp_tm1 ge 1 also;	
-    	r = rand('Uniform');
+    	r = rand('Uniform');s = rand('Uniform');
       	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=15 then do;	* Serodiscordant couples - new for MIHPSA Zimbabwe; *JAS Apr2023;
