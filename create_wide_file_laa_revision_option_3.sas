@@ -54,8 +54,8 @@ merge b.k_laa_ad sf;
 by run ;
 
 
-  if option in (0, 1);
-* if option=3 then option=1;
+  if option in (0, 3);
+  if option=3 then option=1;
 
 
 
@@ -1407,9 +1407,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_laa_ad_revision; set y;  
+data    b.l_laa_ad_revision_o3; set y;  
 
-data y ; set b.l_laa_ad_revision; 
+data y ; set b.l_laa_ad_revision_o3; 
 
 
   options nomprint;
@@ -1615,7 +1615,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=cost);  %var(v=prevalence15pl);
 
-data   b.wide_outputs_revision; merge 
+data   b.wide_outputs_revision_o3; merge 
 
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost  dcab_cost  dlen_cost   dclin_cost  dcost_circ dcost_condom_dn 
@@ -1807,7 +1807,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=lencab_uptake); %par(p=lencab_uptake_vlg1000);  %par(p=rate_return_for_lencab);  %par(p=prob_strong_pref_lencab); %par(p=pr_res_len)
 
 
-data b.wide_par2_revision; merge 
+data b.wide_par2_revision_o3; merge 
 
 sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1876,8 +1876,8 @@ proc sort; by run;run;
 
 
 
-  data  b.w_laa_ad_revision     ; 
-  merge b.wide_outputs_revision   b.wide_par2_revision    ;
+  data  b.w_laa_ad_revision_o3     ; 
+  merge b.wide_outputs_revision_o3   b.wide_par2_revision_o3    ;
   by run;
 
 
@@ -1891,7 +1891,7 @@ proc sort; by run;run;
 
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\laa\laa_ad_out\";
 
-data f; set b.w_laa_ad_revision;
+data f; set b.w_laa_ad_revision_o3;
 
 d_p_onart_diag_mw_24 = p_onart_diag_w_24 - p_onart_diag_m_24 ;
 d_prevalence1549mw_24 = prevalence1549w_24 - prevalence1549m_24 ; 
@@ -1949,8 +1949,8 @@ d_mtct_prop_10y_2_1 =  mtct_prop_10y_2 - mtct_prop_10y_1;
 r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1;
 
 * sensitivity analysis around cost;
-* dcab_cost_50y_2 = dcab_cost_50y_2 * 2.00;
-* dlen_cost_50y_2 = dlen_cost_50y_2 * 2.00;
+* dcab_cost_50y_2 = dcab_cost_50y_2 * 1.50;
+* dlen_cost_50y_2 = dlen_cost_50y_2 * 1.50;
 
 dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
 + ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
