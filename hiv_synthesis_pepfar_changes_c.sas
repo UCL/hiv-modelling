@@ -2,6 +2,8 @@
 
 add prep use in msm 
 
+add option with all art stopped in a proportion of the population
+
 ;
 
 
