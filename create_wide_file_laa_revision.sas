@@ -1949,8 +1949,8 @@ d_mtct_prop_10y_2_1 =  mtct_prop_10y_2 - mtct_prop_10y_1;
 r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1;
 
 * sensitivity analysis around cost;
-* dcab_cost_50y_2 = dcab_cost_50y_2 * 2.00;
-* dlen_cost_50y_2 = dlen_cost_50y_2 * 2.00;
+* dcab_cost_50y_2 = dcab_cost_50y_2 * 0.50;
+* dlen_cost_50y_2 = dlen_cost_50y_2 * 0.50;
 
 dart_cost_y_50y_1 = dzdv_cost_50y_1 + dten_cost_50y_1 + d3tc_cost_50y_1 + dnev_cost_50y_1 + dlpr_cost_50y_1 + ddar_cost_50y_1 + dtaz_cost_50y_1 +  defa_cost_50y_1
 + ddol_cost_50y_1 + dcab_cost_50y_1 + dlen_cost_50y_1;
@@ -2356,7 +2356,7 @@ proc freq data=f; tables incidence1549_24_grp * p_diag_vl1000_24_grp ; run;
 * figure 2;
 
 proc means data=f; var d_ddaly_50y_2_1 d_dcost_50y_2_1 ;
-where incidence1549_24_grp = 4 and p_diag_vl1000_24_grp = 1; 
+where incidence1549_24_grp = 3 and p_diag_vl1000_24_grp = 4; 
 run;
 
 
