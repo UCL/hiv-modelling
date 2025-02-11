@@ -3,7 +3,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 data a; 
-set a.wide_fsw_zim_17_04_24AMTb; 
+set a.wide_fsw_zim_17_04_24AMTc; 
 
 
 ***Within run differences;
@@ -140,10 +140,12 @@ diff_nmb = nmb_amt - nmb_sis;
 ***max cost of SW prog;
 maxcost_amt= diff_netdalys * 500;
 
-*ICER - based on a cost of $300000 additional US $;
-diff_cost_amt = dcost_amt_24_74_2 - dcost_amt_24_74_1;
-ICER = (diff_cost_amt/diff_ddaly)*1000000;
 
+***ICER based on actual costs of AMETHIST and Sisters;
+diff_cost = dcost_24_74_2 - dcost_24_74_1;
+ICER = (diff_cost/diff_ddaly)*1000000;
+
+proc freq;table diff_cost;run;
 
 proc means n mean lclm uclm;
 var ICER;RUN;
