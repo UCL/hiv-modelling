@@ -31,6 +31,10 @@ p_diag_vl1000_ = p_diag_vl1000 ;
 p_diag_vlg1000_ = (1 - p_diag_vl1000) * 100;
 p_diag_vl1000_  = p_diag_vl1000;
 
+n_death_hiv_w = n_death_hiv_w / 10;
+n_death_hiv_m = n_death_hiv_m / 10;
+n_mtct = n_mtct / 10;
+
 * if option ne 1;
 * if option = 2 then option = 1;
   if option <= 1;
@@ -1041,7 +1045,7 @@ if run in (
 ;
 
 
-%let single_var = n_death_hiv_w                          ;
+%let single_var = n_mtct                                 ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -1350,26 +1354,26 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend ; 
 * Title    height=1.5 justify=center "Number of HIV-related deaths";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  18000   by 2000    ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1600    by 200     ) valueattrs=(size=10);
 
 * label p50_n_death_hiv_0 = "status quo";
 * label p50_n_death_hiv_1 = "len-cab";
 
-series  x=cald y=p50_n_death_hiv_w_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_n_death_hiv_w_0 upper=p95_n_death_hiv_w_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+series  x=cald y=p50_n_death_hiv_m_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_death_hiv_m_0 upper=p95_n_death_hiv_m_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_n_death_hiv_w_1 / lineattrs = (color=green thickness = 4);
-band    x=cald lower=p5_n_death_hiv_w_1 upper=p95_n_death_hiv_w_1 / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+series  x=cald y=p50_n_death_hiv_m_1 / lineattrs = (color=green thickness = 4);
+band    x=cald lower=p5_n_death_hiv_m_1 upper=p95_n_death_hiv_m_1 / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
 
 run;quit;
 
-
+*/
 
 /*
 
@@ -1551,13 +1555,13 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
 Title ''; *   height=1.5 justify=center "Number of children newly infected with HIV per year";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to 20000   by 5000     ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to 2000    by 500      ) valueattrs=(size=10);
 
 series  x=cald y=p50_n_mtct_0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_n_mtct_0 upper=p95_n_mtct_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
@@ -1567,7 +1571,7 @@ band    x=cald lower=p5_n_mtct_1 upper=p95_n_mtct_1 / transparency=0.9 fillattrs
 
 run;quit;
 
-*/
+
 
 /*
 
