@@ -145,7 +145,7 @@ maxcost_amt= diff_netdalys * 500;
 diff_cost = dcost_24_74_2 - dcost_24_74_1;
 ICER = (diff_cost/diff_ddaly)*1000000;
 
-proc freq;table diff_cost;run;
+proc freq;table diff_cost diff_ddaly;run;
 
 proc means n mean lclm uclm;
 var ICER;RUN;
