@@ -23218,8 +23218,6 @@ if country = 'Malawi' then do;
 	if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
 	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
 	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
-	if cald = 2021.0 and (prevalence1549 < 0.07  or prevalence1549 > 0.11 ) then remove=run;
-
 end;
 
 ***South Africa specific;	*JAS Feb24;

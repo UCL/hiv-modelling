@@ -5,7 +5,8 @@
 *inc cat age for malawi was missing (line 1452);
 *dead_Agt6_cd4gt200 gender categorisation had a typo in it. It previously saif if dead_Agt6_cd4gt200_m=1 instead of dead_Agt6_cd4gt200=1;;
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
+* libname a 'C:\Users\Loveleen\Documentos\';   
+ 
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
