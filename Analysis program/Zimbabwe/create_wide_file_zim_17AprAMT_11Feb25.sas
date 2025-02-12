@@ -149,26 +149,54 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 
 ***Assuming a cost of $132 per SW (Email from Collin 11Feb2025 in Sisters and 155 in AMETHIST;
 
-cost_sis132perSW=0.000132;
-s_cost_sis132_ = 0.000132 * s_sw_program_visit;
-dcost_swprog132_ = s_cost_sis132_ * &discount *&sf;
 
-cost_AMT155perSW=0.000155;
-s_cost_AMT155_ = 0.000155 * s_sw_program_visit;
-dcost_swprog155_ = s_cost_AMT155_ * &discount *&sf;
+
+
+
+
+
+
+
+
+**Check units for costs;
+***Probably need to divide costs by 4 - check with Collin;
+***Check &discount and change &sf;
+
+
+
+
+
+
+
+
+
+
+
+
 
 ***total cost with Sisters;
-if option=0 then 
+if option=0 then do;
+	cost_sis132perSW=0.000132;
+	s_cost_sis132_ = 0.000132 * s_sw_program_visit;
+	dcost_swprog132_ = s_cost_sis132_ * &discount *&sf;
+
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
 		dcost_swprog132_;
+end;
 
-if option=1 then 
+
+if option=1 then do;
+	s_cost_AMT155_ = 0.000155 * s_sw_program_visit;
+	dcost_swprog155_ = s_cost_AMT155_ * &discount *&sf;
+	cost_AMT155perSW=0.000155;
+
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
 		dcost_swprog155_;
+end;
 
 if option =1 then do;
 s_cost_amt_program=0.3;
