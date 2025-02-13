@@ -174,6 +174,9 @@ s_dcost_prep = s_dcost_prep_inj + s_dcost_prep_oral + s_dcost_prep_vr;
 
 dcost_self_test = s_self_tested * sf * 0.00314 * &discount * 4 / 1000;
 
+* todo: add an intervebtion cost of $11.32 per year per person lost ; 
+
+dcost_adh_intervention=0; if option=9 then do; dcost_adh_intervention=(s_lost) * sf * 0.01132 * &discount / 1000 ; end;
 dcost_comp_sex_educ=0; if option = 11 then do; dcost_comp_sex_educ = (s_ageg1519w + s_ageg2024w) * sf * 0.01124 * &discount / 1000; end;
 dcost_econ_empow=0; if option = 12 then do; dcost_econ_empow = (s_ageg1519w + s_ageg2024w) * sf * 0.061   * &discount / 1000; end;
 
@@ -249,7 +252,7 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv + dcost_non_aids_pre_death + dcost_self_test + dcost_econ_empow + dcost_comp_sex_educ;
+		dcost_child_hiv + dcost_non_aids_pre_death + dcost_self_test + dcost_econ_empow + dcost_comp_sex_educ + dcost_adh_intervention;
 
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
