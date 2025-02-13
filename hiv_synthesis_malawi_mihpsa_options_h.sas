@@ -2,6 +2,22 @@
 
 reduced prob circ for vmmc
 
+consider:
+
+extra runs of interventions for andreas requests
+
+review all costs and docs sent by rob 
+
+find kenya costs for retention interventions, 
+
+update our code as necessary 
+
+add 3rd 95 interventions for adh support
+
+viral load monitoring 
+
+retention interventions
+
 ;
 
 
