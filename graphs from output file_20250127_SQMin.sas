@@ -2,16 +2,16 @@
 ***Program to produce graphs using averages across runs
 ***Use include statement in analysis program to read the code below in;
 
-libname a "C:\Users\rmjlja9\OneDrive - University College London\MIHPSA Zimbabwe\Phase 2\2025JAN13";								* dont save on Dropbox;
+libname a "C:\Users\rmjlja9\OneDrive - University College London\MIHPSA Zimbabwe\Phase 2\2025JAN27";								* dont save on Dropbox;
 /*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
-proc freq data=a.l_base_13_01_2025_SQMin;table option;run;
+proc freq data=a.l_base_27_01_2025_SQMin;table option;run;
 
 %let pth_export_mihpsa= C:\Users\rmjlja9\Dropbox (UCL)\MIHPSA Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis;run;
 
 
 data b;
-set a.l_base_13_01_2025_SQMin;
+set a.l_base_27_01_2025_SQMin;
 
 p_onart_vl1000_all = .;
 
@@ -81,7 +81,7 @@ data b;set b;count_provasim+1;by option run cald ;if first.run or first.cald the
 proc print data=b; var option run cald count_provasim;run;
 data b;set b;where count_provasim in (1 2 3 4 5);run;
 */
-proc freq data=a.l_base_13_01_2025_SQMin;
+proc freq data=a.l_base_27_01_2025_SQMin;
 table n_sw_inprog_ly*option/nopercent norow;where option in (1 10);run;
 proc freq data=b;
 table n_sw_inprog_ly*option/nopercent norow;where option in (1 10);run;
@@ -112,7 +112,7 @@ proc sort;by cald option ;run;
 %let var =  
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive0_
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
-n_sw_1564_		prev_sti_sw  n_sw_inprog_ly  /*n_sw_inprog_ever*/
+n_sw_1564_		prev_sti_sw  n_sw_inprog_ly  /*n_sw_inprog_ever*/ n_diag_sw_inprog
 prop_sw_program_visit n_diag_progsw n_diag_sw
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
@@ -150,12 +150,13 @@ p_tested_sbcc_1524m p_tested_sbcc_1524w p_tested_sbcc_2564_ p_pos_tested_sbcc
 p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd n_diag_sympt n_diag_self_test
 test_prop_positive test_proppos_sympt
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
-mtct_prop 	p_diag  p_diag_m   p_diag_w			p_diag_m1524_ 		p_diag_w1524_	p_diag_sw	
+mtct_prop 	p_diag  p_diag_m   p_diag_w			p_diag_m1524_ 		p_diag_w1524_	p_diag_all_sw	p_diag_sw	
 n_cm n_vm p_vm_ly_onart n_pcp_p
 p_ai_no_arv_c_nnm 				p_artexp_diag  
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m p_onart_diag_sw	p_onart_diag_w1524_ p_onart_diag_1524_  
 p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
-p_onart_vl1000_   p_onart_vl1000_1524_ p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart p_onart_m 	p_onart_w  p_onart_w1524_ p_onart_1524_ p_onart_sw
+p_onart_vl1000_   p_onart_vl1000_1524_ p_vl1000_ 	p_vg1000_ 	p_vg1000_all	
+p_onart_vl1000_all	p_onart p_onart_m 	p_onart_w  p_onart_w1524_ p_onart_1524_ p_onart_sw
 p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onart_artexp_sw 	p_on_artexp_w1524evpreg
 p_onart_vl1000_w				p_onart_vl1000_m  p_onart_vl1000_w1524evpr logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart 		n_onart_m	n_onart_w n_onart_1524_ n_art_start_y
@@ -230,7 +231,7 @@ run;
 %mend;
 
 *We need the same number of simulations for each option;
-%let nfit=93;
+%let nfit=30;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -274,7 +275,7 @@ g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182 g0_183 g0_184 g0_185 g0_186 g0_
 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208 g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 
 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 
 g0_251 g0_252 g0_253 g0_254 g0_255 g0_256 g0_257 g0_258 g0_259 g0_260 g0_261 g0_262 g0_263 g0_264 g0_265 g0_266 g0_267 g0_268 g0_269 g0_270 g0_271 g0_272 g0_273 g0_274 g0_275 
-g0_276 g0_277 g0_278 g0_279 g0_280 g0_281 g0_282
+g0_276 g0_277 g0_278 g0_279 g0_280 g0_281 g0_282 g0_283 g0_284 g0_285
 
 g1_1   g1_2   g1_3   g1_4   g1_5   g1_6   g1_7   g1_8   g1_9   g1_10  g1_11  g1_12  g1_13  g1_14  g1_15  g1_16  g1_17  g1_18  g1_19  g1_20  g1_21  g1_22  g1_23  g1_24  g1_25  
 g1_26  g1_27  g1_28  g1_29  g1_30  g1_31  g1_32  g1_33  g1_34  g1_35  g1_36  g1_37  g1_38  g1_39  g1_40  g1_41  g1_42  g1_43  g1_44  g1_45  g1_46  g1_47  g1_48  g1_49  g1_50 
@@ -287,7 +288,7 @@ g1_176 g1_177 g1_178 g1_179 g1_180 g1_181 g1_182 g1_183 g1_184 g1_185 g1_186 g1_
 g1_201 g1_202 g1_203 g1_204 g1_205 g1_206 g1_207 g1_208 g1_209 g1_210 g1_211 g1_212 g1_213 g1_214 g1_215 g1_216 g1_217 g1_218 g1_219 g1_220 g1_221 g1_222 g1_223 g1_224 g1_225 
 g1_226 g1_227 g1_228 g1_229 g1_230 g1_231 g1_232 g1_233 g1_234 g1_235 g1_236 g1_237 g1_238 g1_239 g1_240 g1_241 g1_242 g1_243 g1_244 g1_245 g1_246 g1_247 g1_248 g1_249 g1_250 
 g1_251 g1_252 g1_253 g1_254 g1_255 g1_256 g1_257 g1_258 g1_259 g1_260 g1_261 g1_262 g1_263 g1_264 g1_265 g1_266 g1_267 g1_268 g1_269 g1_270 g1_271 g1_272 g1_273 g1_274 g1_275 
-g1_276 g1_277 g1_278 g1_279 g1_280 g1_281 g1_282
+g1_276 g1_277 g1_278 g1_279 g1_280 g1_281 g1_282 g1_283 g0_284 g1_285
 ;
 by cald;run;
 
@@ -687,7 +688,8 @@ var p50_prop_sw_program_visit_0
 	p50_n_tested_sw_0
 	p50_n_tested_as_sw_0		/* N_TESTED_AS_SW SAME OUTPUT AS N_TESTED_SWPROG */
 	p50_n_tested_swprog_0		/* this output not in model script - mistake? Changed s_tested_f_sw to s_tested_as_sw in create_wide_file */
-	p50_n_diag_progsw_0
+	p50_n_diag_progsw_0			/* diagnosed this period */
+	p50_n_diag_sw_inprog_0		/* total diagnosed */
 	p50_n_attend_mens_clinic_0
 	p50_n_access_adolescent_supp_0
 	p50_n_access_adult_adh_supp_0
@@ -701,11 +703,12 @@ where cald in (2030);run;
 
 
 
-
 ***Graphs comparing observed data to outputs for Status quo 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\UCL Dropbox\Valentina Cambiano\MIHPSA Zimbabwe\Synthesis Findings\V21_20240523_from2023_100sim.doc' startpage=never; 
+/*ods rtf file = 'C:\Users\Valentina\UCL Dropbox\Valentina Cambiano\MIHPSA Zimbabwe\Synthesis Findings\V21_20240523_from2023_100sim.doc' startpage=never; */
+ods rtf file = 'C:\Users\rmjlja9\OneDrive - University College London\MIHPSA Zimbabwe\Phase 2\2025JAN27\SQMin_graphs_20250127.doc' startpage=never;
+
 
 *1 - Minimal;
 *15 - PrEP in AGYW;
@@ -1199,7 +1202,7 @@ band    x=cald lower=p5_n_tested_w_sympt_1 	upper=p95_n_tested_w_sympt_1  / tran
 run;quit;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_tested_w";
+Title    height=1.5 justify=center "Number of HIV tests performed in women (age 15+, excluding self tests)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  4000000 by 500000) valueattrs=(size=10);*2500000 if stopping in 2023;
 label p50_n_tested_w_0  = "Status quo (median) - 15+";
@@ -1232,7 +1235,7 @@ run;quit;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_tested";
+Title    height=1.5 justify=center "Number of HIV tests performed (age 15+, excluding self tests)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  8000000 by 1000000) valueattrs=(size=10);*5000000 if stopping in 2023;
 label p50_n_tested_0  = "Status quo (median) - 15+";
@@ -1249,7 +1252,7 @@ scatter  x=cald y=o_s_test_15ov_py_z/	markerattrs = (color=black ) ;
 run;quit;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_tested_m";
+Title    height=1.5 justify=center "Number of HIV tests performed in men (age 15+, excluding self tests)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1800000 by 200000) valueattrs=(size=10);*5000000 if stopping in 2023;
 label p50_n_tested_m_0  = "Status quo (median) - 15+";
@@ -1605,10 +1608,13 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence sw";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 20 by 1) valueattrs=(size=10);
 label p50_incidence_sw_0 = "Status quo (median) ";
+label p50_incidence_sw_1 = "Minimal (median) ";
 series  x=cald y=p50_incidence_sw_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence_sw_0 	upper=p95_incidence_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence_sw_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence_sw_1 	upper=p95_incidence_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 
@@ -2286,7 +2292,7 @@ band    x=cald lower=p5_n_hiv2549w_0 	upper=p95_n_hiv2549w_0  / transparency=0.9
 run;quit;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "of men with hiv 15+, proportion diagnosed";
+Title    height=1.5 justify=center "Proportion of HIV+ men who are diagnosed (age 15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_diag_m_0 = "Status quo (median)";
@@ -2308,7 +2314,7 @@ run;quit;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "of women with hiv, proportion diagnosed";
+Title    height=1.5 justify=center "Proportion of HIV+ women who are diagnosed (age 15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_diag_w_0 = "Status quo (median) _ 15+";
@@ -2327,6 +2333,29 @@ scatter x=cald y=o_p_diag_w1549_dhs / markerattrs = (symbol=square color=orange 
 scatter x=cald y=o_p_diag_1564w_zimphia / markerattrs = (symbol=square color=red size = 10);
 scatter x=cald y=o_p_diag_15plw_zimphia / markerattrs = (symbol=square color=purple size = 10);
 run;quit;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of HIV+ adults who are diagnosed (age 15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_diag_0 = "Status quo (median)";
+label p50_p_diag_1 = "Minimal  (median)";
+*label p50_p_diag_15 = "Minimal5  (median)";
+label o_p_diag_1549_dhs = "DHS - 15-49";
+label o_p_diag_1564_zimphia = "ZIMPHIA - 15-64";
+label o_p_diag_15pl_zimphia = "ZIMPHIA - 15+";
+series  x=cald y=p50_p_diag_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_0 	upper=p95_p_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diag_1 	upper=p95_p_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_diag_15/	lineattrs = (color=green thickness = 2);
+*band    x=cald lower=p5_p_diag_15 	upper=p95_p_diag_15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+scatter x=cald y=o_p_diag_1549_dhs / markerattrs = (symbol=square color=orange size = 10);
+scatter x=cald y=o_p_diag_1564_zimphia / markerattrs = (symbol=square color=blue size = 10);
+scatter x=cald y=o_p_diag_15pl_zimphia /  markerattrs = (symbol=square color=black size = 10);
+run;quit;
+
 
 /*
 proc sgplot data=d; 
@@ -2543,6 +2572,18 @@ series  x=cald y=p50_p_vg1000__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_vg1000__1 	upper=p95_p_vg1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 *series  x=cald y=p50_p_vg1000__15/	lineattrs = (color=green thickness = 2);
 *band    x=cald lower=p5_p_vg1000__15 	upper=p95_p_vg1000__15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of all adults with VL > 1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_vg1000_all_0 = "Status quo (median)";
+label p50_p_vg1000_all_1 = "Minimal  (median)";
+series  x=cald y=p50_p_vg1000_all_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_vg1000_all_0 	upper=p95_p_vg1000_all_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_vg1000_all_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_vg1000_all_1 	upper=p95_p_vg1000_all_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -3021,7 +3062,6 @@ series  x=cald y=p50_p_ep_12/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_p_ep_12 	upper=p95_p_ep_12  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 run;quit;
 proc means data=d;var p50_p_ep_1 p50_p_ep_12;run;
-
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested";

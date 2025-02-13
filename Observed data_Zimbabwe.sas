@@ -3139,15 +3139,15 @@ if cald=2023.75 then do;
 	target_prep_lq_fsw   = 16638;	target_prep_lq_pbf   = 16144; 
 end;
 if cald=2024.75 then do;
-	target_prep_1524w_lq = 22544;	target_prep_lq_sdc   = 15641;
+	target_prep_lq_1524w = 22544;	target_prep_lq_sdc   = 15641;
 	target_prep_lq_fsw   = 14127;	target_prep_lq_pbf   = 18252; 
 end;
 if cald=2025.75 then do;
-	target_prep_1524w_lq = 33436;	target_prep_lq_sdc   = 18520;
+	target_prep_lq_1524w = 33436;	target_prep_lq_sdc   = 18520;
 	target_prep_lq_fsw   = 15592;	target_prep_lq_pbf   = 26981; 
 end;
 if cald=2026.75 then do;
-	target_prep_1524w_lq = 42431;	target_prep_lq_sdc   = 20718;
+	target_prep_lq_1524w = 42431;	target_prep_lq_sdc   = 20718;
 	target_prep_lq_fsw   = 16939;	target_prep_lq_pbf   = 32070;
 end;
 
