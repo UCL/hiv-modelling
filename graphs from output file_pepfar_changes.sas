@@ -3,7 +3,7 @@ ods html close;
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pepfar_changes\pepfar_changes_c_out";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pepfar_changes\pepfar_changes_d_out";
 
 footnote;
 
@@ -12,7 +12,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_pepfar_changes_c;
+set a.l_pepfar_changes_d;
 
 
 * for this program, variable names cannot end on a number;
@@ -40,7 +40,7 @@ p_newp_ge1_ = p_newp_ge1;
 p_vg1000_ = p_vg1000;
 
 
-%let single_var = n_mtct              ;
+%let single_var = prop_1564_onprep                  ;
 
 
 
@@ -53,7 +53,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 2640   ;
+%let nfit = 198    ;
 
 %let year_end = 2030.00 ;
 run;
@@ -369,7 +369,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -397,7 +397,7 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  70000        
 
 run;quit;
 
-
+*/
 
 
 
@@ -507,35 +507,34 @@ run;quit;
 
 
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title '';    Title    height=1.5 justify=center "Proportion of age 15-64 on PrEP";
+* Title '';    Title    height=1.5 justify=center "Proportion of adults age 15-64 on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2036 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'proportion'		labelattrs=(size=12)  values = (0.0 to  0.05       by 0.01  ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to  0.1        by 0.01  ) valueattrs=(size=10);
 
-  series  x=cald y=p50_prop_1564m_onprep_0 / lineattrs = (color=grey thickness = 2);
-* band    x=cald lower=p5_prop_1564m_onprep_0 upper=p95_prop_1564m_onprep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_onprep_0 / lineattrs = (color=grey thickness = 2);
+  band    x=cald lower=p5_prop_1564_onprep_0 upper=p95_prop_1564_onprep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-  series  x=cald y=p50_prop_1564m_onprep_1 / lineattrs = (color=blue    thickness = 2);
-* band    x=cald lower=p5_prop_1564m_onprep_1 upper=p95_prop_1564m_onprep_1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_onprep_1 / lineattrs = (color=blue    thickness = 2);
+* band    x=cald lower=p5_prop_1564_onprep_1 upper=p95_prop_1564_onprep_1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
 
-  series  x=cald y=p50_prop_1564m_onprep_2 / lineattrs = (color=    red       thickness = 2);
-* band    x=cald lower=p5_prop_1564m_onprep_2 upper=p95_prop_1564m_onprep_2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_onprep_2 / lineattrs = (color=    red       thickness = 2);
+* band    x=cald lower=p5_prop_1564_onprep_2 upper=p95_prop_1564_onprep_2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
 
-  series  x=cald y=p50_prop_1564m_onprep_3 / lineattrs = (color=green         thickness = 2);
-* band    x=cald lower=p5_prop_1564m_onprep_3 upper=p95_prop_1564m_onprep_3 / transparency=0.9 fillattrs = (color=green        ) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_onprep_3 / lineattrs = (color=green         thickness = 2);
+* band    x=cald lower=p5_prop_1564_onprep_3 upper=p95_prop_1564_onprep_3 / transparency=0.9 fillattrs = (color=green        ) legendlabel= "90% range";
 
-  series  x=cald y=p50_prop_1564m_onprep_4 / lineattrs = (color=darkblue thickness = 2);
-* band    x=cald lower=p5_prop_1564m_onprep_4 upper=p95_prop_1564m_onprep_4 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_onprep_4 / lineattrs = (color=darkblue thickness = 2);
+* band    x=cald lower=p5_prop_1564_onprep_4 upper=p95_prop_1564_onprep_4 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
 
-  series  x=cald y=p50_prop_1564m_onprep_5 / lineattrs = (color=black         thickness = 2);
-* band    x=cald lower=p5_prop_1564m_onprep_5 upper=p95_prop_1564m_onprep_3 / transparency=0.9 fillattrs = (color=black        ) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_onprep_5 / lineattrs = (color=black         thickness = 2);
+* band    x=cald lower=p5_prop_1564_onprep_5 upper=p95_prop_1564_onprep_3 / transparency=0.9 fillattrs = (color=black        ) legendlabel= "90% range";
 
 run;quit;
 
-*/
 
 
 

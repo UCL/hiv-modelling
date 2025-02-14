@@ -2,17 +2,17 @@
 
 * options user="/folders/myfolders/"  ;
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pepfar_changes\pepfar_changes_c_out";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pepfar_changes\pepfar_changes_d_out";
 
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pepfar_changes\pepfar_changes_c_out";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pepfar_changes\pepfar_changes_d_out";
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_pepfar_changes_c;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_pepfar_changes_d;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -20,7 +20,7 @@ run;
 
 
 
-proc sort data=b.k_pepfar_changes_c; 
+proc sort data=b.k_pepfar_changes_d; 
 by run cald option;
 run;
 
@@ -29,7 +29,7 @@ run;
 data sf;
 
 
-set b.k_pepfar_changes_c ;
+set b.k_pepfar_changes_d ;
 
 
 if cald=2024   ;
@@ -48,7 +48,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_pepfar_changes_c sf;
+merge b.k_pepfar_changes_d sf;
 by run ;
 
 
@@ -1432,7 +1432,7 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_pepfar_changes_c; set y;  
+data    b.l_pepfar_changes_d; set y;  
 
 * to give n = 1000 ;
 * if run in (
@@ -1441,7 +1441,7 @@ data    b.l_pepfar_changes_c; set y;
 
 proc freq; tables run; where cald = 2018; run;
 
-data y ; set b.l_pepfar_changes_c; 
+data y ; set b.l_pepfar_changes_d; 
 
 
   options nomprint;
@@ -1911,7 +1911,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_pepfar_changes_c     ; 
+  data  b.w_pepfar_changes_d     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1924,9 +1924,9 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\pepfar_changes_c_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\pepfar_changes_d_out\";
 
-data f; set b.w_pepfar_changes_c;
+data f; set b.w_pepfar_changes_d;
 
 
 ods html;
