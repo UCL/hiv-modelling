@@ -8,20 +8,24 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_f_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_g_out\";
 
+/*
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 %let pth_export_mihpsa_mw= C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_f_out\export_files;run;
 
+*/
+
 data c;
-  set a.long_mlw_f;
+  set a.long_mlw_g;
 
 
-if option in (0 1 2 3 4 5 6 7   9 10 11 12 13 14 15) then delete;
+if option in (  1 2 3 4 5 6 7 8   10 11 12 13 14 15) then delete;
 
-if option =  8 then option = 1;
+if option=0 and cald le 2023 then option=1;
+if option =  9 then option = 1;
 if option = 99 then option = 0;
 
 
@@ -105,13 +109,13 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 n_tested_self_test = 0;
 
 
-%let single_var =   incidence1549_                       /* n_new_inf1549_ */        ;
+%let single_var =   p_vl1000_                            /* n_new_inf1549_ */        ;
 
 
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 104 ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 216 ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2052.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
@@ -733,7 +737,7 @@ data a.d;set d;run;
 
 /*/data d;set b.d;run;*/
 
-%let start = 2000;
+%let start = 2015;
 
 
 
@@ -747,6 +751,25 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 
 
 ods html close;
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Of people with HIV, proportion with VL < 1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.5 to 1 by 0.05) valueattrs=(size=10);
+
+label mean_p_vl1000__0 = "Option 0 (median) ";
+label mean_p_vl1000__1 = "Option 1  (median) ";
+
+series  x=cald y=mean_p_vl1000__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_p_vl1000__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+ods html close;
+
 
 
 /*
@@ -823,6 +846,7 @@ run;quit;
 
 */
 
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -840,6 +864,7 @@ band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transpar
 
 run;quit;
 
+*/
 
 /*
 
@@ -1018,6 +1043,9 @@ label prevalence1549_threshold = "Calibration thresholds";
 
 run;quit;
 
+
+
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_vl1000_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -1032,6 +1060,7 @@ scatter x=cald y=p_vl1000_threshold / markerattrs = (symbol=circle color=red siz
 label p_vl1000_threshold = "Calibration threshold";
 
 run;quit;
+
 
 
 ods html ;

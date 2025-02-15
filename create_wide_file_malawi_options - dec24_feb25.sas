@@ -1080,12 +1080,12 @@ end;
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * sf ;
 													
 *future YLL (assuming age and gender specific life expectancy), all incurred at the calendar year of death (for adults aged 15+ years old); 
-* n_total_yllag;				n_total_yllag = s_total_yllag * sf;
-* n_dyll_GBD;					n_dyll_GBD = s_dyll_GBD * sf;
-* n_dyllag_hiv_w;				n_dyllag_hiv_w = s_dyllag_hiv_w * sf;	*JASJul2024;
-* n_dyllag_hiv_m;				n_dyllag_hiv_m = s_dyllag_hiv_m * sf;	*JASJul2024;
-* n_yllag_hiv_w;				n_yllag_hiv_w = s_yllag_hiv_w * sf;	*JASJul2024;
-* n_yllag_hiv_m;				n_yllag_hiv_m = s_yllag_hiv_m * sf;	*JASJul2024;
+* n_total_yllag;				n_total_yllag = s_total_yllag  * 4 * sf;
+* n_dyll_GBD;					n_dyll_GBD = s_dyll_GBD  * 4 * sf;
+* n_dyllag_hiv_w;				n_dyllag_hiv_w = s_dyllag_hiv_w  * 4 * sf;	*JASJul2024;
+* n_dyllag_hiv_m;				n_dyllag_hiv_m = s_dyllag_hiv_m  * 4 * sf;	*JASJul2024;
+* n_yllag_hiv_w;				n_yllag_hiv_w = s_yllag_hiv_w  * 4 * sf;	*JASJul2024;
+* n_yllag_hiv_m;				n_yllag_hiv_m = s_yllag_hiv_m  * 4 * sf;	*JASJul2024;
 * malawi miphsa;
 * n_daly;						n_daly = (s_yllag_hiv_m + s_yllag_hiv_w + s_live_daly ) * 4 * sf;
 
