@@ -172,11 +172,9 @@ s_dcost_prep_visit_vr = s_dcost_prep_visit_vr * (21 / 40) ;
 s_dcost_prep_visit = s_dcost_prep_visit_inj + s_dcost_prep_visit_oral + s_dcost_prep_visit_vr; 
 s_dcost_prep = s_dcost_prep_inj + s_dcost_prep_oral + s_dcost_prep_vr;
 
-dcost_self_test = s_self_tested * sf * 0.00314 * &discount * 4 / 1000;
+dcost_self_test = s_self_tested * sf * 0.00314 * &discount * 4 / 1000; 
 
-* todo: add an intervebtion cost of $11.32 per year per person lost ; 
-
-dcost_adh_intervention=0; if option=9 then do; dcost_adh_intervention=(s_lost) * sf * 0.01132 * &discount / 1000 ; end;
+dcost_adh_intervention=0; if option=9 then do; dcost_adh_intervention=(s_diag) * sf * 0.01132 * &discount / 1000 ; end;
 dcost_comp_sex_educ=0; if option = 11 then do; dcost_comp_sex_educ = (s_ageg1519w + s_ageg2024w) * sf * 0.01124 * &discount / 1000; end;
 dcost_econ_empow=0; if option = 12 then do; dcost_econ_empow = (s_ageg1519w + s_ageg2024w) * sf * 0.061   * &discount / 1000; end;
 
