@@ -174,7 +174,10 @@ s_dcost_prep = s_dcost_prep_inj + s_dcost_prep_oral + s_dcost_prep_vr;
 
 dcost_self_test = s_self_tested * sf * 0.00314 * &discount * 4 / 1000; 
 
-dcost_adh_intervention=0; if option=9 then do; dcost_adh_intervention=(s_diag) * sf * 0.01132 * &discount / 1000 ; end;
+dcost_adh_intervention=0; if option=9 then do; dcost_adh_intervention=(s_diag) * sf * (0.022 / 4) * &discount / 1000 ; end;
+* Informed by Weldemariam H, Thawani A, Kiruthu-Kamamia C, Huwa J, Chipanda M, Tweya H, Feldacker C. How much does it cost to retain antiretroviral therapy (ART) 
+clients in their first year? Routine financial costs of retention interventions at Lighthouse Trustin Lilongwe, Malawi. Res Sq [Preprint]. 2024 Oct 
+15:rs.3.rs-4939155. doi: 10.21203/rs.3.rs-4939155/v1. PMID: 39483880 PMCID: PMC11527224.;
 dcost_comp_sex_educ=0; if option = 11 then do; dcost_comp_sex_educ = (s_ageg1519w + s_ageg2024w) * sf * 0.01124 * &discount / 1000; end;
 dcost_econ_empow=0; if option = 12 then do; dcost_econ_empow = (s_ageg1519w + s_ageg2024w) * sf * 0.061   * &discount / 1000; end;
 

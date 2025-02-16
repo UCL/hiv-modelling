@@ -1079,8 +1079,9 @@ cost_test_c=0.0037; *HCW-testing general pop, hiv negative - changed 30dec2016 -
 cost_test_d=0.02521; *HCW-testing positive (community based);
 cost_test_e=0.0245; *HCW-testing negative (community based);
 cost_test_g=0.022; *vl test to diagnose;
-cost_t_adh_int = 0.010;  
-art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
+cost_t_adh_int = 0.016; * 	
+Enhanced adherence counselling in the context of South Africa.    Costs and cost-effectiveness of interventions to improve HIV treatment adherence in Cape Town, South Africa.  
+West RL.  PhD.  https://hdl.handle.net/2144/49192 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
 cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
