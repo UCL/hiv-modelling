@@ -2,23 +2,13 @@
 
 reduced prob circ for vmmc
 
-consider:
-
-extra runs of interventions for andreas requests
-
-review all costs and docs sent by rob 
-
-find kenya costs for retention interventions, 
-
-update our code as necessary 
-
-add 3rd 95 interventions for adh support
-
-viral load monitoring 
-
-retention interventions
+several unit costs updated 
 
 ;
+
+
+
+
 
 
 
@@ -1037,7 +1027,7 @@ else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; en
 * all * dependent_on_time_step_length ;
 cost_zdv_a=(0.068/4)*1.2; * chai 2022  ;
 cost_3tc_a=(0.011/4)   ; * jun 24 chai ; * mlw feb 25 - given cost from rob;
-cost_ten_a=(0.016/4)   2; * jun 24 chai ; * mlw feb 25 - given cost from rob ;
+cost_ten_a=(0.016/4)    ; * jun 24 chai ; * mlw feb 25 - given cost from rob ;
 cost_taf = (0.018/4)*1.2;
 cost_nev_a=(0.027/4)*1.2; * chai 2017 market report - global fund price;   
 cost_efa_a=(0.019/4)*1.2; * chai 2022 - $62 for tle   ;
@@ -2367,7 +2357,7 @@ who may be dead and hence have caldate{t} missing;
 
 	*Option 5 is SQ + 	CAB-LA injectable PrEP for FSW [Zim O24 / not in SA MIHPSA];
 	if option = 5 then do;
-		mtct;
+		
 		date_prep_inj_intro=&year_interv;
 		* here here ;
 		if caldate{t}=&year_interv then do;
@@ -2424,125 +2414,6 @@ who may be dead and hence have caldate{t} missing;
 		if gender = 2 and 15 <= age < 25 then do;	
 			condom_incr_set_in_opts = 1; condom_incr_year_i = 1;
 		end;
-
-	end;
-
-
-	if option = 13 then do;  * minimal but including fsw program - note this is an option we are just running for purposes of understanding effects of 
-								fsw program removed for minimal ;
-
-
-		
-		* self_testing;
-		prob_self_test_hard_reach = 0;
-		rate_self_test = 0;
-
-		*Prevention;
-		*Condom promotion and provision: keep at SQ level;
-		*SBCC: not explicitly modelled, but the switch off is;
-		*condom_incr_year_i=2;    		*Switches off SBCC;
-		circ_inc_rate_set_in_opts = 1; mtct = 2;		*No VMMC;
-
-		*PrEP;
-		*Turn off all PrEP;
-		prep_any_strategy=0;
-		date_prep_oral_intro=2100;
-		date_prep_inj_intro=2100;
-		date_prep_vr_intro=2100;
-		rate_test_startprep_set_in_opts = 1; eff_rate_test_startprep_any=0;
-		prob_prep_oral_b_set_in_opts = 1; eff_prob_prep_oral_b=0;
-		prob_prep_inj_b_set_in_opts = 1; eff_prob_prep_inj_b=0; 
-		prob_prep_vr_b_set_in_opts = 1; eff_prob_prep_vr_b=0;
-		r_ch_stop_prep_oral_set_in_opts = 1; eff_rate_choose_stop_prep_oral=1;
-		r_ch_stop_prep_inj_set_in_opts = 1;eff_rate_choose_stop_prep_inj=1;
-		r_ch_stop_prep_vr_set_in_opts = 1; eff_rate_choose_stop_prep_vr=1;
-		p_prep_restart_set_in_opts = 1; eff_prob_prep_any_restart_choice=0;	
-
-		*Linkage, management, ART Interv;
-		*PCP is part of the essential scenario;
-		absence_cd4_set_in_options = 1; absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
-		p_vl_meas_done_set_in_opts = 1; eff_prob_vl_meas_done = 0; cd4_monitoring = 1;	*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
-
-		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
-
-	end;
-
-
-	if option = 14 then do; * minimal plus prep continuing;
-
-		*Including; 
-		*Testing (PITC, ANC, VCT, out-patient testing for symptomatic patients, routine in-patient testing, testing at malnutrition wards 
-		and testing as a part of VMMC program)
-		*ART care for adults (including treatment of opportunistic infections);
-		*ART for children;
-		*Condom program;
-
-		*Testing; 
-
-		* self_testing;
-		prob_self_test_hard_reach = 0;
-		rate_self_test = 0;
-
-		*Keep all testing at SQ level;
-		sw_program_set_in_opts = 1 ; eff_sw_program = 0;		 			*No SW program;
-		rate_diseng_sw_prog_set_in_opts = 1; rate_disengage_sw_program=1;
-
-		*Prevention;
-		*Condom promotion and provision: keep at SQ level;
-		*SBCC: not explicitly modelled, but the switch off is;
-		*condom_incr_year_i=2;    		*Switches off SBCC;
-		circ_inc_rate_set_in_opts = 1; mtct = 2;		*No VMMC;
-
-		*Linkage, management, ART Interv;
-		*PCP is part of the essential scenario;
-		absence_cd4_set_in_options = 1; absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
-		p_vl_meas_done_set_in_opts = 1; eff_prob_vl_meas_done = 0; cd4_monitoring = 1;	*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
-
-		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
-
-	end;
-
-	if option = 15  then do; * minimal without turning off self testing;
-
-		*Including; 
-		*Testing (PITC, ANC, VCT, out-patient testing for symptomatic patients, routine in-patient testing, testing at malnutrition wards 
-		and testing as a part of VMMC program)
-		*ART care for adults (including treatment of opportunistic infections);
-		*ART for children;
-		*Condom program;
-
-		*Testing; 
-		*Keep all testing at SQ level;
-		sw_program_set_in_opts = 1 ; eff_sw_program = 0;		 			*No SW program;
-		rate_diseng_sw_prog_set_in_opts = 1; rate_disengage_sw_program=1;
-
-		*Prevention;
-		*Condom promotion and provision: keep at SQ level;
-		*SBCC: not explicitly modelled, but the switch off is;
-		*condom_incr_year_i=2;    		*Switches off SBCC;
-		circ_inc_rate_set_in_opts = 1; mtct = 2;		*No VMMC;
-
-		*PrEP;
-		*Turn off all PrEP;
-		prep_any_strategy=0;
-		date_prep_oral_intro=2100;
-		date_prep_inj_intro=2100;
-		date_prep_vr_intro=2100;
-		rate_test_startprep_set_in_opts = 1; eff_rate_test_startprep_any=0;
-		prob_prep_oral_b_set_in_opts = 1; eff_prob_prep_oral_b=0;
-		prob_prep_inj_b_set_in_opts = 1; eff_prob_prep_inj_b=0; 
-		prob_prep_vr_b_set_in_opts = 1; eff_prob_prep_vr_b=0;
-		r_ch_stop_prep_oral_set_in_opts = 1; eff_rate_choose_stop_prep_oral=1;
-		r_ch_stop_prep_inj_set_in_opts = 1;eff_rate_choose_stop_prep_inj=1;
-		r_ch_stop_prep_vr_set_in_opts = 1; eff_rate_choose_stop_prep_vr=1;
-		p_prep_restart_set_in_opts = 1; eff_prob_prep_any_restart_choice=0;	
-
-		*Linkage, management, ART Interv;
-		*PCP is part of the essential scenario;
-		absence_cd4_set_in_options = 1; absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
-		p_vl_meas_done_set_in_opts = 1; eff_prob_vl_meas_done = 0; cd4_monitoring = 1;	*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
-
-		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
 
 	end;
 

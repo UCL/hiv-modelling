@@ -20,6 +20,7 @@ data a.g;   set a.out:;run;
 
 
 
+
 /* show the contents of the input SAS file */
 /*
 proc contents data=a.g;run;
@@ -518,7 +519,7 @@ so the one above is the annual number of tests conducted in ANC;
 * p_w1524newpge1_onprep; 		p_w1524newpge1_onprep = s_onprep_w1524_newpge1_ / s_w1524_newp_ge1;*Apr2023;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
 
-* prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
+* prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = max(s_prep_any_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
 
 * n_prep;						n_prep = s_prep_any * sf;
