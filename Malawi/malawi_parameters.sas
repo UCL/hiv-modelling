@@ -13,7 +13,7 @@
 * caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
-* Not using a different inc_cat, insttead using if country=malawi;
+* inc_cat;					inc_cat=5;
 
 * SEXUAL BEHAVIOUR;
 * No changes;
