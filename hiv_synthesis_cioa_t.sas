@@ -4967,6 +4967,10 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.01 or (r < 0.2 and epi=1)))) then prep_any_elig=1; 
+
+		s = rand('Uniform');
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s < prob_prep_elig_pwid ) then prep_any_elig=1; 
+
 	end;
 
 
