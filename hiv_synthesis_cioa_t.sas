@@ -470,6 +470,8 @@ newp_seed = 7;
 																		the represetative vl in the parter(s) in the period ;	
 * prob_prep_elig_msm;		prob_prep_elig_msm = 0.2;
 * msm_rr_loss_at_diag;		msm_rr_loss_at_diag = 3;
+* extra_prop_msm_hard_reach; extra_prop_msm_hard_reach = 0.3;
+
 
 
 * PWID;
@@ -480,6 +482,7 @@ newp_seed = 7;
 * fold_tr_pwid;				%sample_uniform(fold_tr_pwid, 3 5  );
 * prob_prep_elig_pwid;		prob_prep_elig_pwid = 0.3;
 * pwid_rr_loss_at_diag;		pwid_rr_loss_at_diag = 10;
+* extra_prop_pwid_hard_reach; extra_prop_pwid_hard_reach = 0.8;
 
 
 * TRANSMISSION;
@@ -2236,8 +2239,11 @@ end;
 p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 
+x = rand('uniform');
+if gender=1 and msm=1 and hard_reach ne 1 and x < extra_prop_msm_hard_reach then hard_reach=1;
 
-if msm=1 or pwid=1 then hard_reach=1;
+y = rand('uniform');
+if pwid=1 and hard_reach ne 1 and y < extra_prop_pwid_hard_reach then hard_reach=1;
 
 
 
@@ -4852,6 +4858,7 @@ prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and differ
 
 * lapr and dpv-vr - changed name from prep_strategy to prep_any_strategy - will apply to all types of PrEP and pref_prep_xx decides which is taken (if all are available) ;
 
+if msm=1 then msm_random_this_period=rand('uniform');
 
 if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;  
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
