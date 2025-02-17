@@ -1,6 +1,6 @@
 * cioa_t
 
-change prep testing to self testing and switch to 6 monthly ?
+change prep testing to self testing and switch to 6 monthly ? (could look at roughly by just reducing testing cost for women on prep ?) 
 
 add prep use in msm 
 
