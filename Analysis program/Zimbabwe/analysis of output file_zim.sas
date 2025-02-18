@@ -147,8 +147,8 @@ ICER = (diff_cost/diff_ddaly)*1000000;
 
 proc freq;table diff_cost diff_ddaly;run;
 
-proc means n mean lclm uclm;
-var ICER;RUN;
+proc means n mean p50 lclm uclm;
+var diff_cost diff_ddaly ICER;RUN;
 proc means n mean lclm uclm;
 var ICER;where diff_ddaly<0;RUN;
 
