@@ -948,7 +948,8 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/malawi_parameters.sas";
+*%include "/home/rmjllob/malawi_parameters.sas";
+%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling\Malawi\malawi_parameters.sas";
 
 call symput('caldate1',caldate1);
 
