@@ -1,6 +1,10 @@
 * cioa_u
 
-consider removing option 2 and instead try option 1 without prep ;
+add another option - option 1 without prep 
+
+perhaps change all testing to self testing, except higher cost of confirmatory tests before treatment started
+
+;
 
 
 

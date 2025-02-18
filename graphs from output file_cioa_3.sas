@@ -3,7 +3,7 @@ ods html close;
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_n_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_t_out\";
 
 footnote;
 
@@ -12,7 +12,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_cioa_n;
+set a.l_cioa_t;
 
 
 * for this program, variable names cannot end on a number;
@@ -39,10 +39,8 @@ cost_per_adult = (cost / n_alive) * 1000000;
 p_newp_ge1_ = p_newp_ge1;
 
 
-if option ne 1 and option ne 2;
- 
 
-%let single_var = p_mcirc                           ;
+%let single_var = cost                              ;
 
 
 
@@ -55,7 +53,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 3000   ;
+%let nfit = 162    ;
 
 %let year_end = 2076.00 ;
 run;
@@ -106,21 +104,21 @@ run;
 
 
 
-data option_3;
+data option_1;
 set b;
-if option =  3 ;
+if option =  1 ;
 
 %let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
 
 ***transpose given name; *starts with %macro and ends with %mend;
-%macro option_3;
-%let p25_var = p25_&var_3;
-%let p75_var = p75_&var_3;
-%let p5_var = p5_&var_3;
-%let p95_var = p95_&var_3;
-%let p50_var = median_&var_3;
-%let mean_var = mean_&var_3;
+%macro option_1;
+%let p25_var = p25_&var_1;
+%let p75_var = p75_&var_1;
+%let p5_var = p5_&var_1;
+%let p95_var = p95_&var_1;
+%let p50_var = median_&var_1;
+%let mean_var = mean_&var_1;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -128,48 +126,46 @@ if option =  3 ;
 %let varb = %scan(&var, &count, %str( ));
 
 
-proc transpose data=option_3 out=j&count prefix=&varb;var &varb; by cald; id count_csim;run;
+proc transpose data=option_1 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
-data j&count;set j&count;***creates one dataset per variable;
-p25_&varb._3  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._3 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._3  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._3 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._3 = median(of &varb.1-&varb.&nfit);
-mean_&varb._3 = mean(of &varb.1-&varb.&nfit);
+data h&count;set h&count;***creates one dataset per variable;
+p25_&varb._1  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._1 = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._1 = median(of &varb.1-&varb.&nfit);
+mean_&varb._1 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._3 p95_&varb._3 p50_&varb._3 p25_&varb._3 p75_&varb._3 mean_&varb._3;
+keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 mean_&varb._1;
 run;
 
       proc datasets nodetails nowarn nolist; 
-      delete  jj&count;quit;run;
+      delete  hh&count;quit;run;
 %end;
 %mend;
 
 
-%option_3;
+%option_1;
 run;
 
 
 
 
-
-
-
-data option_4;
+data option_2;
 set b;
-if option =  4 ;
+if option =  2 ;
 
-%let var = &single_var    ; 
+%let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+
 
 ***transpose given name; *starts with %macro and ends with %mend;
-%macro option_4;
-%let p25_var = p25_&var_4;
-%let p75_var = p75_&var_4;
-%let p5_var = p5_&var_4;
-%let p95_var = p95_&var_4;
-%let p50_var = median_&var_4;
-%let mean_var = mean_&var_4;
+%macro option_2;
+%let p25_var = p25_&var_2;
+%let p75_var = p75_&var_2;
+%let p5_var = p5_&var_2;
+%let p95_var = p95_&var_2;
+%let p50_var = median_&var_2;
+%let mean_var = mean_&var_2;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -177,33 +173,32 @@ if option =  4 ;
 %let varb = %scan(&var, &count, %str( ));
 
 
-proc transpose data=option_4 out=k&count prefix=&varb;var &varb; by cald; id count_csim;run;
+proc transpose data=option_2 out=i&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
-data k&count;set k&count;***creates one dataset per variable;
-p25_&varb._4  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._4 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._4  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._4 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._4 = median(of &varb.1-&varb.&nfit);
-mean_&varb._4 = mean(of &varb.1-&varb.&nfit);
+data i&count;set i&count;***creates one dataset per variable;
+p25_&varb._2  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._2 = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._2  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._2 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._2 = median(of &varb.1-&varb.&nfit);
+mean_&varb._2 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._4 p95_&varb._4 p50_&varb._4 p25_&varb._4 p75_&varb._4 mean_&varb._4;
+keep cald option_ p5_&varb._2 p95_&varb._2 p50_&varb._2 p25_&varb._2 p75_&varb._2 mean_&varb._2;
 run;
 
       proc datasets nodetails nowarn nolist; 
-      delete  kk&count;quit;run;
+      delete  ii&count;quit;run;
 %end;
 %mend;
 
 
-%option_4;
+%option_2;
 run;
-
 
 
 
 data d; * this is number of variables in %let var = above ;
-merge g1       j1 k1   ;
+merge g1 h1 i1   ;
 by cald;
 
 
@@ -213,6 +208,28 @@ by cald;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
+
+
+
+
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';  * Title    height=1.5 justify=center "undiscounted cost (p50 90% range)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'cost'		labelattrs=(size=12)  values = (0 to  300         by 50    ) valueattrs=(size=10);
+
+series  x=cald y=p50_cost_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_cost_0 upper=p95_cost_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_cost_1 / lineattrs = (color=darkblue    thickness = 4);
+band    x=cald lower=p5_cost_1 upper=p95_cost_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
+
+series  x=cald y=p50_cost_2 / lineattrs = (color=darkred       thickness = 4);
+band    x=cald lower=p5_cost_2 upper=p95_cost_2 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
+
+run;quit;
+
 
 
 
@@ -227,11 +244,11 @@ yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  value
 series  x=cald y=p50_incidence1549__0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_incidence1549__3 / lineattrs = (color=darkblue    thickness = 4);
-band    x=cald lower=p5_incidence1549__3 upper=p95_incidence1549__3 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
+series  x=cald y=p50_incidence1549__1 / lineattrs = (color=darkblue    thickness = 4);
+band    x=cald lower=p5_incidence1549__1 upper=p95_incidence1549__1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
 
-series  x=cald y=p50_incidence1549__4 / lineattrs = (color=darkred       thickness = 4);
-band    x=cald lower=p5_incidence1549__4 upper=p95_incidence1549__4 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
+series  x=cald y=p50_incidence1549__2 / lineattrs = (color=darkred       thickness = 4);
+band    x=cald lower=p5_incidence1549__2 upper=p95_incidence1549__2 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
 
 run;quit;
 
@@ -364,32 +381,6 @@ run;quit;
 
 */
 
-/*
-
-ods html;
-proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "undiscounted cost (mean 90% range)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'cost'		labelattrs=(size=12)  values = (0 to  300         by 50    ) valueattrs=(size=10);
-
-series  x=cald y=mean_cost_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_cost_0 upper=p95_cost_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=mean_cost_1 / lineattrs = (color=blue      thickness = 4);
-band    x=cald lower=p5_cost_1 upper=p95_cost_1 / transparency=0.9 fillattrs = (color=blue     ) legendlabel= "90% range";
-
-series  x=cald y=mean_cost_2 / lineattrs = (color=green     thickness = 4);
-band    x=cald lower=p5_cost_2 upper=p95_cost_2 / transparency=0.9 fillattrs = (color=green    ) legendlabel= "90% range";
-
-series  x=cald y=mean_cost_3 / lineattrs = (color=darkblue    thickness = 4);
-band    x=cald lower=p5_cost_3 upper=p95_cost_3 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
-
-series  x=cald y=mean_cost_4 / lineattrs = (color=darkred       thickness = 4);
-band    x=cald lower=p5_cost_4 upper=p95_cost_4 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
-
-run;quit;
-
-*/
 
 /*
 
