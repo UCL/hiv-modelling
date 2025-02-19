@@ -40,7 +40,7 @@ p_newp_ge1_ = p_newp_ge1;
 p_vg1000_ = p_vg1000;
 
 
-%let single_var = n_death_hiv              ;
+%let single_var = n_mtct                   ;
 
 
 
@@ -369,7 +369,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -377,31 +377,31 @@ proc sgplot data=d nolegend;
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2036 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  60000          by 10000   ) valueattrs=(size=10);
 
-  loess x=cald y=p50_n_mtct_0 / lineattrs = (color=grey thickness = 2) nomarkers;
+  loess x=cald y=p50_n_mtct_0 / lineattrs = (color=grey thickness = 4) nomarkers;
 * band    x=cald lower=p5_n_mtct_0 upper=p95_n_mtct_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-  loess x=cald y=p50_n_mtct_1 / lineattrs = (color=blue    thickness = 2) nomarkers;
+* loess x=cald y=p50_n_mtct_1 / lineattrs = (color=blue    thickness = 2) nomarkers;
 * band    x=cald lower=p5_n_mtct_1 upper=p95_n_mtct_1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
 
-  loess x=cald y=p50_n_mtct_2 / lineattrs = (color=    red       thickness = 2) nomarkers;
+* loess x=cald y=p50_n_mtct_2 / lineattrs = (color=    red       thickness = 2) nomarkers;
 * band    x=cald lower=p5_n_mtct_2 upper=p95_n_mtct_2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
 
-  loess x=cald y=p50_n_mtct_3 / lineattrs = (color=green         thickness = 2) nomarkers;
+  loess x=cald y=p50_n_mtct_3 / lineattrs = (color=green         thickness = 4) nomarkers;
 * band    x=cald lower=p5_n_mtct_3 upper=p95_n_mtct_3 / transparency=0.9 fillattrs = (color=green        ) legendlabel= "90% range";
 
-  loess x=cald y=p50_n_mtct_4 / lineattrs = (color=orange thickness = 2) nomarkers;
+* loess x=cald y=p50_n_mtct_4 / lineattrs = (color=orange thickness = 2) nomarkers;
 * band    x=cald lower=p5_n_mtct_4 upper=p95_n_mtct_4 / transparency=0.9 fillattrs = (color=orange     ) legendlabel= "90% range";
 
-  loess x=cald y=p50_n_mtct_5 / lineattrs = (color=black         thickness = 2) nomarkers;
+* loess x=cald y=p50_n_mtct_5 / lineattrs = (color=black         thickness = 2) nomarkers;
 * band    x=cald lower=p5_n_mtct_5 upper=p95_n_mtct_3 / transparency=0.9 fillattrs = (color=black        ) legendlabel= "90% range";
 
 run;quit;
 
-*/
 
 
 
 
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -409,27 +409,27 @@ proc sgplot data=d nolegend;
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2036 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  150000          by 25000   ) valueattrs=(size=10);
 
-  loess  x=cald y=p50_n_death_hiv_0 / lineattrs = (color=grey thickness = 2) nomarkers;
+  loess  x=cald y=p50_n_death_hiv_0 / lineattrs = (color=grey thickness = 4)nomarkers;
 * band    x=cald lower=p5_n_death_hiv_0 upper=p95_n_death_hiv_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-  loess  x=cald y=p50_n_death_hiv_1 / lineattrs = (color=blue    thickness = 2) nomarkers;
+* loess  x=cald y=p50_n_death_hiv_1 / lineattrs = (color=blue    thickness = 2) nomarkers;
 * band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
 
-  loess  x=cald y=p50_n_death_hiv_2 / lineattrs = (color=    red       thickness = 2) nomarkers;
+* loess  x=cald y=p50_n_death_hiv_2 / lineattrs = (color=    red       thickness = 2) nomarkers;
 * band    x=cald lower=p5_n_death_hiv_2 upper=p95_n_death_hiv_2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
 
-  loess  x=cald y=p50_n_death_hiv_3 / lineattrs = (color=green         thickness = 2) nomarkers;
+  loess  x=cald y=p50_n_death_hiv_3 / lineattrs = (color=green         thickness = 4) nomarkers;
 * band    x=cald lower=p5_n_death_hiv_3 upper=p95_n_death_hiv_3 / transparency=0.9 fillattrs = (color=green        ) legendlabel= "90% range";
 
-  loess  x=cald y=p50_n_death_hiv_4 / lineattrs = (color=orange thickness = 2) nomarkers;
+* loess  x=cald y=p50_n_death_hiv_4 / lineattrs = (color=orange thickness = 2) nomarkers;
 * band    x=cald lower=p5_n_death_hiv_4 upper=p95_n_death_hiv_4 / transparency=0.9 fillattrs = (color=orange     ) legendlabel= "90% range";
 
-  loess  x=cald y=p50_n_death_hiv_5 / lineattrs = (color=black         thickness = 2) nomarkers;
+* loess  x=cald y=p50_n_death_hiv_5 / lineattrs = (color=black         thickness = 2) nomarkers;
 * band    x=cald lower=p5_n_death_hiv_5 upper=p95_n_death_hiv_3 / transparency=0.9 fillattrs = (color=black        ) legendlabel= "90% range";
 
 run;quit;
 
-
+*/
 
 
 
@@ -444,22 +444,22 @@ proc sgplot data=d nolegend;
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2036 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0.0 to  4          by 0.5   ) valueattrs=(size=10);
 
-  loess  x=cald y=p50_incidence1549__0 / lineattrs = (color=grey thickness = 2) nomarkers nomarkers;
+  loess  x=cald y=p50_incidence1549__0 / lineattrs = (color=grey thickness = 4) nomarkers nomarkers;
 * band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-  loess  x=cald y=p50_incidence1549__1 / lineattrs = (color=blue    thickness = 2) nomarkers nomarkers;
+* loess  x=cald y=p50_incidence1549__1 / lineattrs = (color=blue    thickness = 2) nomarkers nomarkers;
 * band    x=cald lower=p5_incidence1549__1 upper=p95_incidence1549__1 / transparency=0.9 fillattrs = (color=blue   ) legendlabel= "90% range";
 
-  loess  x=cald y=p50_incidence1549__2 / lineattrs = (color=    red       thickness = 2) nomarkers nomarkers;
+* loess  x=cald y=p50_incidence1549__2 / lineattrs = (color=    red       thickness = 2) nomarkers nomarkers;
 * band    x=cald lower=p5_incidence1549__2 upper=p95_incidence1549__2 / transparency=0.9 fillattrs = (color=    red      ) legendlabel= "90% range";
 
-  loess  x=cald y=p50_incidence1549__3 / lineattrs = (color=green         thickness = 2) nomarkers nomarkers;
+  loess  x=cald y=p50_incidence1549__3 / lineattrs = (color=green         thickness = 4) nomarkers nomarkers;
 * band    x=cald lower=p5_incidence1549__3 upper=p95_incidence1549__3 / transparency=0.9 fillattrs = (color=green        ) legendlabel= "90% range";
 
-  loess  x=cald y=p50_incidence1549__4 / lineattrs = (color=orange thickness = 2) nomarkers nomarkers;
+* loess  x=cald y=p50_incidence1549__4 / lineattrs = (color=orange thickness = 2) nomarkers nomarkers;
 * band    x=cald lower=p5_incidence1549__4 upper=p95_incidence1549__4 / transparency=0.9 fillattrs = (color=orange     ) legendlabel= "90% range";
 
-  loess  x=cald y=p50_incidence1549__5 / lineattrs = (color=black         thickness = 2) nomarkers nomarkers;
+* loess  x=cald y=p50_incidence1549__5 / lineattrs = (color=black         thickness = 2) nomarkers nomarkers;
 * band    x=cald lower=p5_incidence1549__5 upper=p95_incidence1549__3 / transparency=0.9 fillattrs = (color=black        ) legendlabel= "90% range";
 
 run;quit;
