@@ -1,3 +1,4 @@
+
 * cioa_u
 
 add another option - option 1 without prep 
@@ -2465,9 +2466,43 @@ who may be dead and hence have caldate{t} missing;
   		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 		regular_testing_stops = 1;
 		vl_monitoring_to_vm_lt3 = 1; only_one_vm_for_sv = 1; * so reduced clinic costs thereafter; 
+		eff_sens_vct = 0.93; sens_vct = 0.93; sens_primary_testtype3 = 0; sens_ttype3_prep_cab_primary=0;sens_ttype3_prep_len_primary=0;
+		sens_ttype3_prep_cab_inf3m=0; sens_ttype3_prep_len_inf3m=0; sens_ttype3_prep_len_infge6m = 0.93;sens_ttype3_prep_cab_infge6m = 0.93;
+		sens_vct_testtype3_cab_tail=0; sens_vct_testtype3_len_tail=0;
+		cost_test_c = 0.0015;
+		* switch to only self testing except before starting art in positive person;
+		* wonfo test has sensitivity 0.958 so being conservative as some use of oral tests;
 	end;
 
 	if option=2 then do;
+		if comm_tld_set_in_options ne 1 then do;
+			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
+			eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
+			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
+			rate_self_test=rate_self_test_if_introduced;
+		 	start_pep_prep_without_test = 1;continue_pep_prep_without_test=1;
+			rate_test_startprep_any = r_test_startprep_any_comm_tld;
+			rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+			prob_prep_oral_b = prob_prep_oral_b_comm_tld;
+			comm_tld_set_in_options = 1;
+			adhav = min(1, adhav + adh_effect_comm_tld);
+			cost_prep_oral_clinic = 0.005; * now that prep pep is from local pharmacy or village health worker and no testing required ;
+		end;
+		eff_rate_choose_stop_prep_oral = r_choose_stop_prep_oral_comm_tld;
+  		if hard_reach=1 and gender=1 then hard_reach_vmmc=1; hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
+		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
+  		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
+		regular_testing_stops = 1;
+		vl_monitoring_to_vm_lt3 = 1; only_one_vm_for_sv = 1; * so reduced clinic costs thereafter; 
+		eff_sens_vct = 0.93; sens_vct = 0.93; sens_primary_testtype3 = 0; sens_ttype3_prep_cab_primary=0;sens_ttype3_prep_len_primary=0;
+		sens_ttype3_prep_cab_inf3m=0; sens_ttype3_prep_len_inf3m=0; sens_ttype3_prep_len_infge6m = 0.93;sens_ttype3_prep_cab_infge6m = 0.93;
+		sens_vct_testtype3_cab_tail=0; sens_vct_testtype3_len_tail=0;
+		cost_test_c = 0.0015;
+		* switch to only self testing except before starting art in positive person;
+		* wonfo test has sensitivity 0.958 so being conservative as some use of oral tests;
+	end;
+
+	if option=3 then do;
 		date_prep_len_intro=2026.25;
 		if prep_len=1 then prep_any_strategy=17; 
 	
@@ -2503,6 +2538,12 @@ who may be dead and hence have caldate{t} missing;
   		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 		regular_testing_stops = 1;
 		vl_monitoring_to_vm_lt3 = 1; only_one_vm_for_sv = 1; * so reduced clinic costs thereafter; 
+		eff_sens_vct = 0.93; sens_vct = 0.93; sens_primary_testtype3 = 0; sens_ttype3_prep_cab_primary=0;sens_ttype3_prep_len_primary=0;
+		sens_ttype3_prep_cab_inf3m=0; sens_ttype3_prep_len_inf3m=0; sens_ttype3_prep_len_infge6m = 0.93;sens_ttype3_prep_cab_infge6m = 0.93;
+		sens_vct_testtype3_cab_tail=0; sens_vct_testtype3_len_tail=0;
+		cost_test_c = 0.0015;
+		* switch to only self testing except before starting art in positive person;
+		* wonfo test has sensitivity 0.958 so being conservative as some use of oral tests;
 	end;
 
 end;
