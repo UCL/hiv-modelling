@@ -1639,8 +1639,10 @@ series  x=cald y=p50_n_sw_inprog_ly_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_sw_inprog_ly_1 	upper=p95_n_sw_inprog_ly_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_sw_inprog_ly_8/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_n_sw_inprog_ly_8 	upper=p95_n_sw_inprog_ly_8  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sw_inprog_ly_33/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_sw_inprog_ly_33 	upper=p95_n_sw_inprog_ly_33  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 run;quit;
-**THIS OUTPUT NOT WORKING;
+**THIS OUTPUT NOW WORKING;
 
 
 proc sgplot data=d; 
@@ -2198,6 +2200,97 @@ band    x=cald lower=p5_prop_1564_onprep_22 		upper=p95_prop_1564_onprep_22  / t
 series  x=cald y=p50_prop_1564_onprep_27/	lineattrs = (color=purple thickness = 2);
 band    x=cald lower=p5_prop_1564_onprep_27 	upper=p95_prop_1564_onprep_27  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
 run;quit;
+
+
+
+* Checking SDC PrEP (option 31 - strictly SDC only);
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Annual number of SDC initiating PrEP for the first time ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 5e4   by 5e3 ) valueattrs=(size=10);
+label p50_n_init_prep_oral_sdc_0 = 	"Status quo (median) ";
+label p50_n_init_prep_oral_sdc_1 =	"Minimal  (median) ";
+label p50_n_init_prep_oral_sdc_16 = 	"OPrEPSDC  (median) ";
+label p50_n_init_prep_oral_sdc_31 = 	"OPrEPSDC - test  (median) ";
+label target_prepinit_sdc = "Target (PrEP_New)";
+series  x=cald y=p50_n_init_prep_oral_sdc_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_init_prep_oral_sdc_0 	upper=p95_n_init_prep_oral_sdc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_init_prep_oral_sdc_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_init_prep_oral_sdc_1 	upper=p95_n_init_prep_oral_sdc_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+/*series  x=cald y=p50_n_init_prep_oral_sdc_16/	lineattrs = (color=green thickness = 2);*/
+/*band    x=cald lower=p5_n_init_prep_oral_sdc_16 	upper=p95_n_init_prep_oral_sdc_16  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=p50_n_init_prep_oral_sdc_31/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_init_prep_oral_sdc_31 	upper=p95_n_init_prep_oral_sdc_31  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+scatter x=cald y=target_prepinit_sdc  / markerattrs = (color=orange);
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of SDC actively taking PrEP (excluding newly enrolled) during the last quarter";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 8e4   by 1e4 ) valueattrs=(size=10);
+label p50_n_contprep_oral_sdc_0 = 	"Status quo (median) ";
+label p50_n_contprep_oral_sdc_1 = 	"Minimal  (median) ";
+label p50_n_contprep_oral_sdc_16 = 	"OPrEPSDC  (median) ";
+label p50_n_contprep_oral_sdc_31 = 	"OPrEPSDC - test (median) ";
+label target_prep_lq_sdc = "Target (PrEP_CT)";
+series  x=cald y=p50_n_contprep_oral_sdc_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_contprep_oral_sdc_0 	upper=p95_n_contprep_oral_sdc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_contprep_oral_sdc_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_contprep_oral_sdc_1 	upper=p95_n_contprep_oral_sdc_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+/*series  x=cald y=p50_n_contprep_oral_sdc_16/	lineattrs = (color=green thickness = 2);*/
+/*band    x=cald lower=p5_n_contprep_oral_sdc_16 	upper=p95_n_contprep_oral_sdc_16  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=p50_n_contprep_oral_sdc_31/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_contprep_oral_sdc_31 	upper=p95_n_contprep_oral_sdc_31  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+scatter x=cald y=target_prep_lq_sdc  / markerattrs = (color=orange);
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of SDC actively taking PrEP in the last 3 months";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 8e4   by 1e4 ) valueattrs=(size=10);
+/*label p50_n_prep_sdc_0 = "Status quo (median) ";*/
+/*label p50_n_prep_sdc_1 = "Minimal  (median) ";*/
+/*label p50_n_prep_sdc_16 = "Minimal5  (median) ";*/
+label p50_n_prep_oral_sdc_0 = 	"Status quo (median) ";
+label p50_n_prep_oral_sdc_1 = 	"Minimal  (median) ";
+label p50_n_prep_oral_sdc_16 = 	"OPrEPSDC  (median) ";
+label p50_n_prep_oral_sdc_31 = 	"OPrEPSDC - test (median) ";
+label target_curr_prep_sdc = "Target (Currently on PrEP) - last month";
+/*series  x=cald y=p50_n_prep_sdc_0/	lineattrs = (color=black thickness = 2);*/
+/*band    x=cald lower=p5_n_prep_sdc_0 	upper=p95_n_prep_sdc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+/*series  x=cald y=p50_n_prep_sdc_1/	lineattrs = (color=red thickness = 2);*/
+/*band    x=cald lower=p5_n_prep_sdc_1 	upper=p95_n_prep_sdc_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+/*series  x=cald y=p50_n_prep_sdc_16/	lineattrs = (color=green thickness = 2);*/
+/*band    x=cald lower=p5_n_prep_sdc_16 	upper=p95_n_prep_sdc_16  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=p50_n_prep_oral_sdc_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_oral_sdc_0 	upper=p95_n_prep_oral_sdc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_prep_oral_sdc_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_prep_oral_sdc_1 	upper=p95_n_prep_oral_sdc_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+/*series  x=cald y=p50_n_prep_oral_sdc_16/	lineattrs = (color=green thickness = 2);*/
+/*band    x=cald lower=p5_n_prep_oral_sdc_16 	upper=p95_n_prep_oral_sdc_16  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=p50_n_prep_oral_sdc_31/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_prep_oral_sdc_31 	upper=p95_n_prep_oral_sdc_31  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+scatter x=cald y=target_curr_prep_sdc  / markerattrs = (color=orange);
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of 15-64 year olds on PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.05   by 0.005 ) valueattrs=(size=10);
+label p50_prop_1564_onprep_0 = 	"Status quo (median) ";
+label p50_prop_1564_onprep_1 = 	"Minimal  (median) ";
+label p50_prop_1564_onprep_16 = 	"OPrEPFSW  (median) ";
+label p50_prop_1564_onprep_31 = 	"OPrEPFSW - test (median) ";
+series  x=cald y=p50_prop_1564_onprep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_1564_onprep_0 	upper=p95_prop_1564_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_1564_onprep_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_1564_onprep_1 	upper=p95_prop_1564_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+/*series  x=cald y=p50_prop_1564_onprep_16/	lineattrs = (color=green thickness = 2);*/
+/*band    x=cald lower=p5_prop_1564_onprep_16 	upper=p95_prop_1564_onprep_16  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=p50_prop_1564_onprep_31/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_prop_1564_onprep_31 	upper=p95_prop_1564_onprep_31  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+run;quit;
+
 
 
 
@@ -2817,6 +2910,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 label p50_p_diag_m_0 = "Status quo (median)";
 label p50_p_diag_m_1 = "Minimal  (median)";
 *label p50_p_diag_m_15 = "Minimal5  (median)";
+label p50_p_diag_m_32 = "increase test_targeting  (median)";
 label o_p_diag_m1549_dhs = "DHS - 15-49";
 label o_p_diag_1564m_zimphia = "ZIMPHIA - 15-64";
 label o_p_diag_15pl_zimphia = "ZIMPHIA - 15+";
@@ -2826,6 +2920,8 @@ series  x=cald y=p50_p_diag_m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_diag_m_1 	upper=p95_p_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 *series  x=cald y=p50_p_diag_m_15/	lineattrs = (color=green thickness = 2);
 *band    x=cald lower=p5_p_diag_m_15 	upper=p95_p_diag_m_15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_m_32/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_diag_m_32 	upper=p95_p_diag_m_32  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 scatter x=cald y=o_p_diag_m1549_dhs / markerattrs = (symbol=square color=orange size = 10);
 scatter x=cald y=o_p_diag_1564m_zimphia / markerattrs = (symbol=square color=blue size = 10);
 scatter x=cald y=o_p_diag_15pl_zimphia /  markerattrs = (symbol=square color=black size = 10);
@@ -2839,6 +2935,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 label p50_p_diag_w_0 = "Status quo (median) _ 15+";
 label p50_p_diag_w_1 = "Minimal  (median) ";
 *label p50_p_diag_w_15 = "Minimal5  (median) ";
+label p50_p_diag_w_32 = "increase test_targeting  (median)";
 label o_p_diag_w1549_dhs = "DHS - 15-49";
 label o_p_diag_1564w_zimphia = "ZIMPHIA - 15-64";
 label o_p_diag_15plw_zimphia = "ZIMPHIA - 15+";
@@ -2848,6 +2945,8 @@ series  x=cald y=p50_p_diag_w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_diag_w_1 	upper=p95_p_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 *series  x=cald y=p50_p_diag_w_15/	lineattrs = (color=green thickness = 2);
 *band    x=cald lower=p5_p_diag_w_15 	upper=p95_p_diag_w_15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_w_32/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_diag_w_32 	upper=p95_p_diag_w_32  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 scatter x=cald y=o_p_diag_w1549_dhs / markerattrs = (symbol=square color=orange size = 10);
 scatter x=cald y=o_p_diag_1564w_zimphia / markerattrs = (symbol=square color=red size = 10);
 scatter x=cald y=o_p_diag_15plw_zimphia / markerattrs = (symbol=square color=purple size = 10);
