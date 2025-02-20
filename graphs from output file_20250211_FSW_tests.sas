@@ -1668,7 +1668,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  /*values = (0 to 2e5 by 2
 label p50_n_prep_oral_sw_0  = "Number of FSW on PrEP op 0 (median) ";
 label p50_n_prep_oral_sw_1  = "Number of FSW on PrEP op 1 (median) ";
 label p50_n_prep_oral_sw_8  = "Number of FSW on PrEP op 8 (median) ";
-label p50_n_prep_oral_sw_15  = "Number of FSW on PrEP op 15 (median) ";
+label p50_n_prep_oral_sw_33  = "Number of FSW on PrEP op 33 (median) ";
 label p50_n_prep_0  = "Total on PrEP op 0 (median) ";
 label p50_n_prep_1  = "Total on PrEP op 1 (median) ";
 label p50_n_prep_8  = "Total on PrEP op 8 (median) ";
@@ -1678,8 +1678,8 @@ series  x=cald y=p50_n_prep_oral_sw_1/	lineattrs = (color=red thickness = 2 patt
 band    x=cald lower=p5_n_prep_oral_sw_1 	upper=p95_n_prep_oral_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_prep_oral_sw_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 band    x=cald lower=p5_n_prep_oral_sw_8 	upper=p95_n_prep_oral_sw_8  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_prep_oral_sw_15/	lineattrs = (color=blue thickness = 2 pattern=solid);
-band    x=cald lower=p5_n_prep_oral_sw_15 	upper=p95_n_prep_oral_sw_15  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_prep_oral_sw_33/	lineattrs = (color=blue thickness = 2 pattern=solid);
+band    x=cald lower=p5_n_prep_oral_sw_33 	upper=p95_n_prep_oral_sw_33  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 /*series  x=cald y=p50_n_prep_0/			lineattrs = (color=black thickness = 2 pattern=MediumDash);*/
 /*band    x=cald lower=p5_n_prep_0 	upper=p95_n_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 /*series  x=cald y=p50_n_prep_1/			lineattrs = (color=red thickness = 2 pattern=MediumDash);*/
