@@ -2435,6 +2435,9 @@ proc logistic data=c; model x = incidence1549_24 p_diag_24 p_onart_diag_24  p_on
 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 ; 
 run; 
 
+proc logistic data=c; model x = prevalence1549_24  p_diag_24 p_onart_diag_24  p_onart_vl1000_24  prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 ; 
+run; 
+
 
 proc logistic data=c; model x =
 
