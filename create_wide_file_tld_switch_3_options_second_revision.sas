@@ -2073,6 +2073,7 @@ if netdaly500_1 = min_netdaly500_1_2 then lowest_netdaly_1_2=1;
 if netdaly500_2 = min_netdaly500_1_2 then lowest_netdaly_1_2=2;
 
 lowest_netdaly_2_23 = 0; if netdaly500_2 < netdaly500_3 then lowest_netdaly_2_23 = 1;
+lowest_netdaly_2_12 = 0; if netdaly500_2 < netdaly500_1 then lowest_netdaly_2_12 = 1;
 
 if ddaly_50y_1 = min_daly500     then lowest_ddaly     = 1;
 if ddaly_50y_2 = min_daly500     then lowest_ddaly     = 2;
@@ -2300,22 +2301,6 @@ ods html;
 
 proc glm; model d_netdaly500_2_3 =
 
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
-rr_int_tox   rel_dol_tox  inc_cat  /* check for any other parameters */
-/ solution ;
-
-run;
-
-ods html close;
-
-
-
-ods html;
-
-proc glm; model d_netdaly500_2_3 =
-
 prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
 p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 p_dol_start_nactive_2_r_1y_3 / solution ;
 
@@ -2365,6 +2350,15 @@ prop_r_dol_ge_p5_uvl2_24 = prop_r_dol_ge_p5_uvl2_24 * 100;
 prop_tldsw_uvl2_24 = prop_tldsw_uvl2_24 * 100;
 
 x = 1 - lowest_netdaly_2_23;
+z = 1 - lowest_netdaly_2_12;
+
+ce_sw = 0; if lowest_netdaly = 1 then ce_sw = 1;
+ce_rt = 0; if lowest_netdaly = 2 then ce_rt = 1;
+ce_nsw = 0; if lowest_netdaly = 3 then ce_nsw = 1;
+
+x_ce_sw = 1 - ce_sw ;
+x_ce_rt = 1 - ce_rt ;
+x_ce_nsw = 1 - ce_nsw ;
 
 prevalence1549_24_g1 = 0; if 0 <= prevalence1549_24 < 5  then prevalence1549_24_g1 = 1;
 prevalence1549_24_g2 = 0; if 5 <= prevalence1549_24 < 10 then prevalence1549_24_g2 = 1;
@@ -2403,14 +2397,134 @@ prop_tldsw_uvl2_24_g1 = 0; if 0  <= prop_tldsw_uvl2_24 < 1   then prop_tldsw_uvl
 prop_tldsw_uvl2_24_g2 = 0; if 1  <= prop_tldsw_uvl2_24 < 3  then prop_tldsw_uvl2_24_g2 = 1;
 prop_tldsw_uvl2_24_g3 = 0; if 3   <= prop_tldsw_uvl2_24      then prop_tldsw_uvl2_24_g3 = 1;
 
+int1= prevalence1549_24 * p_diag_24 ; 
+int2= prevalence1549_24 * p_onart_diag_24 ;
+int3= prevalence1549_24 * p_onart_vl1000_24 ;
+int4= prevalence1549_24 * prop_r_dol_ge_p5_uvl2_24 ; 
+int5= prevalence1549_24 * prop_tldsw_uvl2_24 ;
+int6= p_diag_24 * p_onart_diag_24 ;
+int7= p_diag_24 * p_onart_vl1000_24 ;
+int8= p_diag_24 * prop_r_dol_ge_p5_uvl2_24 ;
+int9= p_diag_24 * prop_tldsw_uvl2_24 ; 
+int10= p_onart_diag_24 * p_onart_vl1000_24 ;
+int11= p_onart_diag_24 * prop_r_dol_ge_p5_uvl2_24 ;
+int12= p_onart_diag_24 * prop_tldsw_uvl2_24 ; 
+int13= p_onart_vl1000_24 * prop_r_dol_ge_p5_uvl2_24;
+int14= p_onart_vl1000_24 * prop_tldsw_uvl2_24;
+int15= prop_r_dol_ge_p5_uvl2_24 * prop_tldsw_uvl2_24 ; 
+
+
+
+proc logistic data=c; model x = 
+
+prevalence1549_24_g2 
+prevalence1549_24_g3 
+prevalence1549_24_g4 
+
+incidence1549_24_g2 
+incidence1549_24_g3 
+
+p_diag_24_g2 
+p_diag_24_g3 
+
+p_onart_diag_24_g2 
+p_onart_diag_24_g3 
+
+p_onart_vl1000_24_g2 
+p_onart_vl1000_24_g3 
+
+prop_r_dol_ge_p5_uvl2_24_g2 
+prop_r_dol_ge_p5_uvl2_24_g3 
+
+prop_tldsw_uvl2_24_g2 
+prop_tldsw_uvl2_24_g3 
+
+;
+run;
+
+
+
+proc logistic data=c; model z = 
+
+prevalence1549_24_g2 
+prevalence1549_24_g3 
+prevalence1549_24_g4 
+
+incidence1549_24_g2 
+incidence1549_24_g3 
+
+p_diag_24_g2 
+p_diag_24_g3 
+
+p_onart_diag_24_g2 
+p_onart_diag_24_g3 
+
+p_onart_vl1000_24_g2 
+p_onart_vl1000_24_g3 
+
+prop_r_dol_ge_p5_uvl2_24_g2 
+prop_r_dol_ge_p5_uvl2_24_g3 
+
+prop_tldsw_uvl2_24_g2 
+prop_tldsw_uvl2_24_g3 
+
+;
+run;
+
+
+
+
+ods html;
+
+proc logistic; 
+class inc_cat
+res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk  dol_higher_potency  pr_switch_line 
+adh_pattern adh_effect_of_meas_alert rate_int_choice  prob_vl_meas_done  rate_res_ten   red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop  
+incr_mort_risk_dol_weightg rr_int_tox   rel_dol_tox;
+
+model x =
+inc_cat
+res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk  dol_higher_potency  pr_switch_line 
+adh_pattern adh_effect_of_meas_alert rate_int_choice  prob_vl_meas_done  rate_res_ten   red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop  
+incr_mort_risk_dol_weightg rr_int_tox   rel_dol_tox 
+;
+
+run;
+
+ods html close;
+
+
+
+ods html;
+
+proc logistic; 
+class inc_cat
+res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk  dol_higher_potency  pr_switch_line 
+adh_pattern adh_effect_of_meas_alert rate_int_choice  prob_vl_meas_done  rate_res_ten   red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop  
+incr_mort_risk_dol_weightg rr_int_tox   rel_dol_tox;
+
+model z =
+inc_cat
+res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk  dol_higher_potency  pr_switch_line 
+adh_pattern adh_effect_of_meas_alert rate_int_choice  prob_vl_meas_done  rate_res_ten   red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop  
+incr_mort_risk_dol_weightg rr_int_tox   rel_dol_tox 
+;
+
+run;
+
+ods html close;
+
+
+
+/*
 
 
 proc means; var prevalence1549_24 incidence1549_24 prevalence_vg1000_24 prop_r_dol_ge_p5_uvl2_24; run; 
 
-
 proc freq data=c; tables prevalence_vg1000_24 ; run;
 
 proc corr; var prevalence1549_24 incidence1549_24 ; run;
+
 
 proc logistic data=c; model x = prevalence1549_24 ; run; 
 proc logistic data=c; model x = incidence1549_24 ; run; 
@@ -2436,6 +2550,11 @@ prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 ;
 run; 
 
 proc logistic data=c; model x = prevalence1549_24  p_diag_24 p_onart_diag_24  p_onart_vl1000_24  prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 ; 
+run; 
+
+proc logistic data=c; model x = prevalence1549_24  p_diag_24 p_onart_diag_24  p_onart_vl1000_24  prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24
+int1 int2 int3 int4 int5 int6 int7 int8 int9 int10 int11 int12 int13 int14 int15
+; 
 run; 
 
 
@@ -2538,7 +2657,6 @@ prop_tldsw_uvl2_24_g3
 run;
 
 
-
 proc logistic data=c; model x = p_adh_lt80_iicu_tldsw_24 ; run; 
 proc logistic data=c; model x = p_vis_tldsw_24 ; run; 
 proc logistic data=c; model x = p_dol_24 ; run; 
@@ -2551,264 +2669,46 @@ run;
 
 
 
-
-
-*----- baseline charateristics --------------- ;
-* prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24 p_onart_vl1000_24 p_vl1000_24 prevalence_vg1000_24   p_adh_lt80_iicu_tldsw_24    
-p_vis_tldsw_24   p_dol_24 p_iime_24  p_onart_cd4_l200_24 prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 n_death_hiv_24 ;
-
-*----- parameters ---------------------------- ;
-* res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab ;
-
-
-
-proc glm; model n_res_test_dol_py_10y_2 = n_onart_24 ; run;
-
-
-
-
-
-
-
-
-
-/*  
-
-
-
-
-
-proc freq;
-tables res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab
-rr_int_tox ;
-run;
-
-
-
-proc glm data=b; model d_deathr_dol_r_uvl2_10y_2_1 = sens_res_test 
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab 
-
-/ solution ; run; 
-
-
-proc glm; model p_ai_no_arv_e_inm_10y_3 =  prob_prep_oral_b pref_prep_oral_beta_s1  rate_choose_stop_prep_cab res_trans_factor_ii; run;
-
-
-proc glm data=b; model n_uvl2_elig_10y_1 = 
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
-run; 
-
-
-
-proc glm data=b; model n_second_vlg1000_first_10y_1 = 
-res_trans_factor_ii  super_inf_res  rate_loss_persistence  dol_higher_potency  fold_change_mut_risk  pr_switch_line adh_pattern adh_effect_of_meas_alert
-rate_int_choice  prob_vl_meas_done  rate_res_ten  pr_res_dol  rr_res_cab_dol  red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop
-incr_mort_risk_dol_weightg res_level_dol_cab_mut prob_prep_oral_b pref_prep_oral_beta_s1 rate_choose_stop_prep_cab / solution ;
-run; 
-
-
-
-
-
-* d_netdaly500_2_1 d_ddaly_50y_2_1 d_n_death_hiv_50y_3_1;
-
 ods html;
 
-proc glm; model d_netdaly500_2_1 =  n_death_hiv_24  ;  run; 
-
-
-
-* note this result;
-ods html;
-proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var p_dol_start_nactive_p5_r_1y_3  p_dol_start_nactive_1p5_r_1y_3  p_dol_start_nactive_2_r_1y_3
-;
-run;
-ods html close;
-
-* note this result;
-ods html;
-proc freq; tables d_deathr_dol_r_uvl2_50y_3_1_b ; run; 
-ods html close;
-
-
-ods html;
-proc means  data = b  n p50 p5 p95 mean lclm uclm ;  
-var 
-prop_tldsw_uvl2_10y 
-p_iime_10y 
-;
-run;
-ods html close;
-
-
-ods html;
-proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var 
-incidence1549_10y_1   incidence1549_10y_2 incidence1549_10y_3
-r_incidence1549_10y_3_1 r_incidence1549_10y_2_1
-;
-run;
+proc logistic data=c; model x_ce_sw = prevalence1549_24 ; run; 
+proc logistic data=c; model x_ce_sw = incidence1549_24 ; run; 
+proc logistic data=c; model x_ce_sw = p_diag_24 ; run; 
+proc logistic data=c; model x_ce_sw = p_onart_diag_24 ; run; 
+proc logistic data=c; model x_ce_sw = p_onart_vl1000_24 ; run; 
+proc logistic data=c; model x_ce_sw = p_vl1000_24 ; run; 
+proc logistic data=c; model x_ce_sw = prop_tldsw_uvl2_24 ; run;
+proc logistic data=c; model x_ce_sw = prevalence_vg1000_24 ; run;  
+proc logistic data=c; model x_ce_sw = prop_r_dol_ge_p5_uvl2_24 ; run; 
 
 ods html close;
 
-
-
-
 ods html;
-proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var
-prop_artexp_elig_tldsw_10y_1  prop_artexp_elig_tldsw_10y_2  prop_artexp_elig_tldsw_10y_3   
-prop_tldsw_elig_vl1000_10y_1  prop_tldsw_elig_vl1000_10y_2  prop_tldsw_elig_vl1000_10y_3  
-prop_uvl2_vl1000_10y_1 prop_uvl2_vl1000_10y_2 prop_uvl2_vl1000_10y_3 
-prop_tldsw_o_dar_10y_1 prop_tldsw_o_dar_10y_2 prop_tldsw_o_dar_10y_3
-p_vis_tldsw_10y_1 p_vis_tldsw_10y_2 p_vis_tldsw_10y_3 
-p_vis_uvl2_10y_1 p_vis_uvl2_10y_2 p_vis_uvl2_10y_3 
-p_adh_lt80_iicu_tldsw_10y_1  p_adh_lt80_iicu_tldsw_10y_2  p_adh_lt80_iicu_tldsw_10y_3   
-p_onart_iicu_tldsw_10y_1  p_onart_iicu_tldsw_10y_2  p_onart_iicu_tldsw_10y_3  
-n_death_hiv_10y_1 n_death_hiv_10y_2 n_death_hiv_10y_3 
-d_n_death_hiv_10y_2_1 d_n_death_hiv_10y_3_1 
-n_iime_10y_1 n_iime_10y_2 n_iime_10y_3 
-d_n_iime_10y_2_1 d_n_iime_10y_3_1 
-p_hivpos_new_dol_r_10y_1 p_hivpos_new_dol_r_10y_2 p_hivpos_new_dol_r_10y_3 
-n_dead_hivrel_onart_10y_1 n_dead_hivrel_onart_10y_2 n_dead_hivrel_onart_10y_3 
-d_n_dead_hivrel_onart_10y_2_1 d_n_dead_hivrel_onart_10y_3_1 
-p_onart_cd4_l200_10y_1 p_onart_cd4_l200_10y_2 p_onart_cd4_l200_10y_3 
-n_uvl2_elig_10y_1 n_uvl2_elig_10y_2 n_uvl2_elig_10y_3 
-p_vl1000_10y_1 p_vl1000_10y_2 p_vl1000_10y_3 
-p_o_dar_uvl2_10y_1 p_o_dar_uvl2_10y_2 p_o_dar_uvl2_10y_3 
-p_o_dol_uvl2_10y_1 p_o_dol_uvl2_10y_2 p_o_dol_uvl2_10y_3 
-p_first_uvl2_dol_r_10y_1 p_first_uvl2_dol_r_10y_2 p_first_uvl2_dol_r_10y_3 
-p_dlt_adh_high_r_dol_10y_1 p_dlt_adh_high_r_dol_10y_2 p_dlt_adh_high_r_dol_10y_3 
-p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 
-p_dlt_adh_high_r_dol_10y_1 p_dlt_adh_high_r_dol_10y_2 p_dlt_adh_high_r_dol_10y_3 
-p_dlt_adh_low_r_dol_10y_1 p_dlt_adh_low_r_dol_10y_2 p_dlt_adh_low_r_dol_10y_3 
-p_tldsw2_elig_tldsw_10y_1 p_tldsw2_elig_tldsw_10y_2 p_tldsw2_elig_tldsw_10y_3 
-incidence1549_10y_1 incidence1549_10y_2 incidence1549_10y_3 
-s_o_dol_2nd_vlg1000_10y_1 s_o_dol_2nd_vlg1000_10y_2 s_o_dol_2nd_vlg1000_10y_3 
-p_o_dol_uvl2_10y_1 p_o_dol_uvl2_10y_2 p_o_dol_uvl2_10y_3 
-p_r_dol_vl1000_uvl2_10y_1 p_r_dol_vl1000_uvl2_10y_2 p_r_dol_vl1000_uvl2_10y_3 
-n_dead_dol_r_uvl2_10y_1 n_dead_dol_r_uvl2_10y_2 n_dead_dol_r_uvl2_10y_3 
-n_ontld_10y_1 n_ontld_10y_2 n_ontld_10y_3 
-n_o_dol_r_10y_1 n_o_dol_r_10y_2 n_o_dol_r_10y_3
-prop_r_dol_ge_p5_uvl2_10y_1 prop_r_dol_ge_p5_uvl2_10y_2 prop_r_dol_ge_p5_uvl2_10y_3
-prop_r_dol_ge_p5_uvl21_10y_1 prop_r_dol_ge_p5_uvl21_10y_2 prop_r_dol_ge_p5_uvl21_10y_3 
-prop_r_dol_ge_p5_uvl22_10y_1 prop_r_dol_ge_p5_uvl22_10y_2 prop_r_dol_ge_p5_uvl22_10y_3 
-prop_r_dol_ge_p5_uvl23_10y_1 prop_r_dol_ge_p5_uvl23_10y_2 prop_r_dol_ge_p5_uvl23_10y_3 
-p_uvl2_elig_uvl21_10y_1 p_uvl2_elig_uvl21_10y_2 p_uvl2_elig_uvl21_10y_3 
-p_uvl2_elig_uvl22_10y_1 p_uvl2_elig_uvl22_10y_2 p_uvl2_elig_uvl22_10y_3 
-p_uvl2_elig_uvl23_10y_1 p_uvl2_elig_uvl23_10y_2 p_uvl2_elig_uvl23_10y_3 
-n_uvl2_only_tld_dolr_10y_1 n_uvl2_only_tld_dolr_10y_2 n_uvl2_only_tld_dolr_10y_3 
-n_uvl2_no_prev_fail_dolr_10y_1  n_uvl2_no_prev_fail_dolr_10y_2  n_uvl2_no_prev_fail_dolr_10y_3     
-n_uvl2_prev_fail_dolr_10y_1 n_uvl2_prev_fail_dolr_10y_2 n_uvl2_prev_fail_dolr_10y_3     
-n_onart_iicu_uvl2_10y_1   n_onart_iicu_uvl2_10y_2   n_onart_iicu_uvl2_10y_3            
-n_onart_iicu_uvl21_10y_1 n_onart_iicu_uvl21_10y_2 n_onart_iicu_uvl21_10y_3            
-n_onart_iicu_uvl22_10y_1  n_onart_iicu_uvl22_10y_2  n_onart_iicu_uvl22_10y_3             
-n_onart_iicu_uvl23_10y_1  n_onart_iicu_uvl23_10y_2  n_onart_iicu_uvl23_10y_3    
-p_ai_no_arv_e_inm_10y_1 p_ai_no_arv_e_inm_10y_2 p_ai_no_arv_e_inm_10y_3
-n_adh_meas_1_1_10y_1 n_adh_meas_1_1_10y_2 n_adh_meas_1_1_10y_3 
-n_adh_meas_1_0_10y_1 n_adh_meas_1_0_10y_2 n_adh_meas_1_0_10y_3 
-n_adh_meas_0_1_10y_1 n_adh_meas_0_1_10y_2 n_adh_meas_0_1_10y_3 
-n_adh_meas_0_0_10y_1 n_adh_meas_0_0_10y_2 n_adh_meas_0_0_10y_3
 
-;
-run;
+proc logistic data=c; model x_ce_rt = prevalence1549_24 ; run; 
+proc logistic data=c; model x_ce_rt = incidence1549_24 ; run; 
+proc logistic data=c; model x_ce_rt = p_diag_24 ; run; 
+proc logistic data=c; model x_ce_rt = p_onart_diag_24 ; run; 
+proc logistic data=c; model x_ce_rt = p_onart_vl1000_24 ; run; 
+proc logistic data=c; model x_ce_rt = p_vl1000_24 ; run; 
+proc logistic data=c; model x_ce_rt = prop_tldsw_uvl2_24 ; run;
+proc logistic data=c; model x_ce_rt = prevalence_vg1000_24 ; run;  
+proc logistic data=c; model x_ce_rt = prop_r_dol_ge_p5_uvl2_24 ; run; 
 
 ods html close;
 
-
-
 ods html;
 
-proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var
-n_uvl2_elig_24 n_onart_uvl2_24  n_onart_uvl2_24
-n_uvl2_elig_1y_1 n_uvl2_elig_1y_2 n_uvl2_elig_1y_3 
-n_uvl2_elig_10y_1 n_uvl2_elig_10y_2 n_uvl2_elig_10y_3 
-n_uvl2_elig_50y_1 n_uvl2_elig_50y_2 n_uvl2_elig_50y_3 
-
-prop_uvl2_vl1000_24   prop_uvl2_vl1000_24   prop_uvl2_vl1000_24   
-
-;
-run;
+proc logistic data=c; model x_ce_nsw = prevalence1549_24 ; run; 
+proc logistic data=c; model x_ce_nsw = incidence1549_24 ; run; 
+proc logistic data=c; model x_ce_nsw = p_diag_24 ; run; 
+proc logistic data=c; model x_ce_nsw = p_onart_diag_24 ; run; 
+proc logistic data=c; model x_ce_nsw = p_onart_vl1000_24 ; run; 
+proc logistic data=c; model x_ce_nsw = p_vl1000_24 ; run; 
+proc logistic data=c; model x_ce_nsw = prop_tldsw_uvl2_24 ; run;
+proc logistic data=c; model x_ce_nsw = prevalence_vg1000_24 ; run;  
+proc logistic data=c; model x_ce_nsw = prop_r_dol_ge_p5_uvl2_24 ; run; 
 
 ods html close;
-
-
-
-ods html;
-proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var 
-prop_tldsw_uvl2_a10y_1 prop_tldsw_uvl2_a10y_2 prop_tldsw_uvl2_a10y_3 
-prop_tldsw_uvl2_10y_1 prop_tldsw_uvl2_10y_2 prop_tldsw_uvl2_10y_3 
-;
-run;
-ods html close;
-
-
-
-ods html;
-proc means   data = b  n p50 p5 p95 mean lclm uclm ;  
-var 
-prop_artexp_elig_tldsw_50y_1  prop_artexp_elig_tldsw_50y_2  prop_artexp_elig_tldsw_50y_3   
-prop_tldsw_uvl2_50y_1 prop_tldsw_uvl2_50y_2 prop_tldsw_uvl2_50y_3 
-prop_tldsw_elig_vl1000_50y_1  prop_tldsw_elig_vl1000_50y_2  prop_tldsw_elig_vl1000_50y_3  
-prop_uvl2_vl1000_50y_1 prop_uvl2_vl1000_50y_2 prop_uvl2_vl1000_50y_3 
-prop_tldsw_o_dar_50y_1 prop_tldsw_o_dar_50y_2 prop_tldsw_o_dar_50y_3
-p_vis_tldsw_50y_1 p_vis_tldsw_50y_2 p_vis_tldsw_50y_3 
-p_vis_uvl2_50y_1 p_vis_uvl2_50y_2 p_vis_uvl2_50y_3 
-p_adh_lt80_iicu_tldsw_50y_1  p_adh_lt80_iicu_tldsw_50y_2  p_adh_lt80_iicu_tldsw_50y_3   
-p_onart_iicu_tldsw_50y_1  p_onart_iicu_tldsw_50y_2  p_onart_iicu_tldsw_50y_3  
-p_onart_iicu_uvl2_50y_1   p_onart_iicu_uvl2_50y_2   p_onart_iicu_uvl2_50y_3  
-p_adh_lt80_iicu_uvl2_50y_1 p_adh_lt80_iicu_uvl2_50y_2 p_adh_lt80_iicu_uvl2_50y_3 
-prop_r_dol_ge_p5_uvl2_50y_1 prop_r_dol_ge_p5_uvl2_50y_2 prop_r_dol_ge_p5_uvl2_50y_3 
-n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 
-d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 
-p_iime_50y_1 p_iime_50y_2 p_iime_50y_3 
-n_iime_50y_1 n_iime_50y_2 n_iime_50y_3 
-d_n_iime_50y_2_1 d_n_iime_50y_3_1 
-p_hivpos_new_dol_r_50y_1 p_hivpos_new_dol_r_50y_2 p_hivpos_new_dol_r_50y_3 
-n_incident_r_dol_50y_1 n_incident_r_dol_50y_2 n_incident_r_dol_50y_3 
-n_dead_hivrel_onart_50y_1 n_dead_hivrel_onart_50y_2 n_dead_hivrel_onart_50y_3 
-d_n_dead_hivrel_onart_50y_2_1 d_n_dead_hivrel_onart_50y_3_1 
-p_onart_cd4_l200_50y_1 p_onart_cd4_l200_50y_2 p_onart_cd4_l200_50y_3 
-p_cd4_lt200_uvl2_50y_1 p_cd4_lt200_uvl2_50y_2 p_cd4_lt200_uvl2_50y_3 
-n_uvl2_elig_50y_1 n_uvl2_elig_50y_2 n_uvl2_elig_50y_3 
-hiv_death_rate_uvl2_50y_1 hiv_death_rate_uvl2_50y_2 hiv_death_rate_uvl2_50y_3 
-p_vl1000_50y_1 p_vl1000_50y_2 p_vl1000_50y_3 
-p_onart_vl1000_50y_1 p_onart_vl1000_50y_2 p_onart_vl1000_50y_3 
-p_o_dar_uvl2_50y_1 p_o_dar_uvl2_50y_2 p_o_dar_uvl2_50y_3 
-p_o_dol_uvl2_50y_1 p_o_dol_uvl2_50y_2 p_o_dol_uvl2_50y_3 
-p_first_uvl2_dol_r_50y_1 p_first_uvl2_dol_r_50y_2 p_first_uvl2_dol_r_50y_3 
-deathr_dol_r_uvl2_50y_1 deathr_dol_r_uvl2_50y_2 deathr_dol_r_uvl2_50y_3 
-p_dlt_adh_high_r_dol_50y_1 p_dlt_adh_high_r_dol_50y_2 p_dlt_adh_high_r_dol_50y_3 
-p_dlt_adh_low_r_dol_50y_1 p_dlt_adh_low_r_dol_50y_2 p_dlt_adh_low_r_dol_50y_3 
-p_dlt_adh_high_r_dol_50y_1 p_dlt_adh_high_r_dol_50y_2 p_dlt_adh_high_r_dol_50y_3 
-p_dlt_adh_low_r_dol_50y_1 p_dlt_adh_low_r_dol_50y_2 p_dlt_adh_low_r_dol_50y_3 
-p_tldsw2_elig_tldsw_50y_1 p_tldsw2_elig_tldsw_50y_2 p_tldsw2_elig_tldsw_50y_3 
-n_second_vlg1000_first_50y_1 n_second_vlg1000_first_50y_2 n_second_vlg1000_first_50y_3 
-incidence1549_50y_1 incidence1549_50y_2 incidence1549_50y_3 
-s_o_dol_2nd_vlg1000_50y_1 s_o_dol_2nd_vlg1000_50y_2 s_o_dol_2nd_vlg1000_50y_3 
-n_res_test_dol_py_50y_2
-p_o_dar_uvl2_onart_50y_1 p_o_dar_uvl2_onart_50y_2 p_o_dar_uvl2_onart_50y_3 
-p_o_dol_uvl2_50y_1 p_o_dol_uvl2_50y_2 p_o_dol_uvl2_50y_3 
-p_onart_iicu_vl1000_uvl2_50y_1 p_onart_iicu_vl1000_uvl2_50y_2 p_onart_iicu_vl1000_uvl2_50y_3 
-p_r_dol_vl1000_uvl2_50y_1 p_r_dol_vl1000_uvl2_50y_2 p_r_dol_vl1000_uvl2_50y_3 
-n_dead_dol_r_uvl2_50y_1 n_dead_dol_r_uvl2_50y_2 n_dead_dol_r_uvl2_50y_3 
-
-p_ai_no_arv_e_inm_50y_1 p_ai_no_arv_e_inm_50y_2 p_ai_no_arv_e_inm_50y_3
-;
-run;
-
-ods html close;
-
 
 */
