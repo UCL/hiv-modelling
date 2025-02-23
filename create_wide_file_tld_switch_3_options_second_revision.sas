@@ -2140,6 +2140,11 @@ p_iime_10y = (p_iime_10y_1 + p_iime_10y_2 + p_iime_10y_3) / 3;
 
 d_deathr_dol_r_uvl2_10y_2_1 = deathr_dol_r_uvl2_10y_2 - deathr_dol_r_uvl2_10y_1;
 
+r_deathr_dol_r_uvl2_10y_1_3 = deathr_dol_r_uvl2_10y_1 / deathr_dol_r_uvl2_10y_3;
+r_deathr_dol_r_uvl2_10y_2_3 = deathr_dol_r_uvl2_10y_2 / deathr_dol_r_uvl2_10y_3;
+d_deathr_dol_r_uvl2_10y_1_3 = deathr_dol_r_uvl2_10y_3 - deathr_dol_r_uvl2_10y_1;
+d_deathr_dol_r_uvl2_10y_2_3 = deathr_dol_r_uvl2_10y_3 - deathr_dol_r_uvl2_10y_2;
+
 n_res_test_p100k_dol_py_10y_2 = n_res_test_dol_py_10y_2 / n_onart_10y_2;
 
 
@@ -2178,7 +2183,9 @@ p_o_dar_uvl2_onart_10y_1 p_o_dar_uvl2_onart_10y_2 p_o_dar_uvl2_onart_10y_3
 p_adh_lt80_iicu_uvl2_10y_1 p_adh_lt80_iicu_uvl2_10y_2 p_adh_lt80_iicu_uvl2_10y_3 
 p_onart_iicu_vl1000_uvl2_10y_1 p_onart_iicu_vl1000_uvl2_10y_2 p_onart_iicu_vl1000_uvl2_10y_3 
 hiv_death_rate_uvl2_10y_1 hiv_death_rate_uvl2_10y_2 hiv_death_rate_uvl2_10y_3 
-deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3 
+deathr_dol_r_uvl2_10y_1 deathr_dol_r_uvl2_10y_2 deathr_dol_r_uvl2_10y_3  
+r_deathr_dol_r_uvl2_10y_1_3  r_deathr_dol_r_uvl2_10y_2_3
+d_deathr_dol_r_uvl2_10y_1_3  d_deathr_dol_r_uvl2_10y_2_3
 incidence1549_10y_1   incidence1549_10y_2 incidence1549_10y_3
 r_incidence1549_10y_3_1 r_incidence1549_10y_2_1
 ;
