@@ -2413,78 +2413,67 @@ int13= p_onart_vl1000_24 * prop_r_dol_ge_p5_uvl2_24;
 int14= p_onart_vl1000_24 * prop_tldsw_uvl2_24;
 int15= prop_r_dol_ge_p5_uvl2_24 * prop_tldsw_uvl2_24 ; 
 
+if 0 <= prevalence1549_24 < 5  then prevalence1549_24_g = 1;
+if 5 <= prevalence1549_24 < 10 then prevalence1549_24_g = 2;
+if 10  <= prevalence1549_24 < 15 then prevalence1549_24_g = 3;
+if 15  <= prevalence1549_24      then prevalence1549_24_g = 4;
+
+if 0  <= p_diag_24 < 89  then p_diag_24_g  = 1;
+if 89 <= p_diag_24 < 93  then p_diag_24_g  = 2;
+if 93   <= p_diag_24      then p_diag_24_g  = 3;
+
+if 0  <= p_onart_diag_24 < 92  then p_onart_diag_24_g  = 1;
+if 92 <= p_onart_diag_24 < 96  then p_onart_diag_24_g  = 2;
+if 96   <= p_onart_diag_24      then p_onart_diag_24_g  = 3;
+
+if 0  <= p_onart_vl1000_24 < 92  then p_onart_vl1000_24_g  = 1;
+if 92 <= p_onart_vl1000_24 < 96  then p_onart_vl1000_24_g  = 2;
+if 96   <= p_onart_vl1000_24      then p_onart_vl1000_24_g  = 3;
+
+if 0  <= prop_r_dol_ge_p5_uvl2_24 < 4  then prop_r_dol_ge_p5_uvl2_24_g  = 1;
+if 4 <= prop_r_dol_ge_p5_uvl2_24 < 13  then prop_r_dol_ge_p5_uvl2_24_g  = 2;
+if 13   <= prop_r_dol_ge_p5_uvl2_24      then prop_r_dol_ge_p5_uvl2_24_g  = 3;
+
+if 0  <= prop_tldsw_uvl2_24 < 1   then prop_tldsw_uvl2_24_g  = 1;
+if 1  <= prop_tldsw_uvl2_24 < 3  then prop_tldsw_uvl2_24_g  = 2;
+if 3   <= prop_tldsw_uvl2_24      then prop_tldsw_uvl2_24_g  = 3;
+
+red_adh_multi_pill_pop = red_adh_multi_pill_pop * 10;
 
 
-proc logistic data=c; model x = 
+ods html;
 
-prevalence1549_24_g2 
-prevalence1549_24_g3 
-prevalence1549_24_g4 
-
-incidence1549_24_g2 
-incidence1549_24_g3 
-
-p_diag_24_g2 
-p_diag_24_g3 
-
-p_onart_diag_24_g2 
-p_onart_diag_24_g3 
-
-p_onart_vl1000_24_g2 
-p_onart_vl1000_24_g3 
-
-prop_r_dol_ge_p5_uvl2_24_g2 
-prop_r_dol_ge_p5_uvl2_24_g3 
-
-prop_tldsw_uvl2_24_g2 
-prop_tldsw_uvl2_24_g3 
-
+proc logistic data=c; 
+class prevalence1549_24_g   p_diag_24_g  p_onart_diag_24_g  p_onart_vl1000_24_g  prop_tldsw_uvl2_24_g   prop_r_dol_ge_p5_uvl2_24_g ;
+model x = prevalence1549_24_g   p_diag_24_g  p_onart_diag_24_g  p_onart_vl1000_24_g  prop_tldsw_uvl2_24_g   prop_r_dol_ge_p5_uvl2_24_g 
 ;
 run;
 
+ods html close;
 
 
-proc logistic data=c; model z = 
+ods html;
 
-prevalence1549_24_g2 
-prevalence1549_24_g3 
-prevalence1549_24_g4 
-
-incidence1549_24_g2 
-incidence1549_24_g3 
-
-p_diag_24_g2 
-p_diag_24_g3 
-
-p_onart_diag_24_g2 
-p_onart_diag_24_g3 
-
-p_onart_vl1000_24_g2 
-p_onart_vl1000_24_g3 
-
-prop_r_dol_ge_p5_uvl2_24_g2 
-prop_r_dol_ge_p5_uvl2_24_g3 
-
-prop_tldsw_uvl2_24_g2 
-prop_tldsw_uvl2_24_g3 
-
+proc logistic data=c; 
+class prevalence1549_24_g   p_diag_24_g  p_onart_diag_24_g  p_onart_vl1000_24_g  prop_tldsw_uvl2_24_g   prop_r_dol_ge_p5_uvl2_24_g ;
+model z = prevalence1549_24_g   p_diag_24_g  p_onart_diag_24_g  p_onart_vl1000_24_g  prop_tldsw_uvl2_24_g   prop_r_dol_ge_p5_uvl2_24_g 
 ;
 run;
 
-
+ods html close;
 
 
 ods html;
 
 proc logistic; 
 class inc_cat
-res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk  dol_higher_potency  pr_switch_line 
-adh_pattern adh_effect_of_meas_alert rate_int_choice  prob_vl_meas_done  rate_res_ten   red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop  
+res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk res_level_dol_cab_mut dol_higher_potency  pr_switch_line 
+adh_pattern adh_effect_of_meas_alert rate_int_choice  prob_vl_meas_done  rate_res_ten   greater_disability_tox  
 incr_mort_risk_dol_weightg rr_int_tox   rel_dol_tox;
 
 model x =
 inc_cat
-res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk  dol_higher_potency  pr_switch_line 
+res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk res_level_dol_cab_mut dol_higher_potency  pr_switch_line 
 adh_pattern adh_effect_of_meas_alert rate_int_choice  prob_vl_meas_done  rate_res_ten   red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop  
 incr_mort_risk_dol_weightg rr_int_tox   rel_dol_tox 
 ;
@@ -2499,13 +2488,13 @@ ods html;
 
 proc logistic; 
 class inc_cat
-res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk  dol_higher_potency  pr_switch_line 
-adh_pattern adh_effect_of_meas_alert rate_int_choice  prob_vl_meas_done  rate_res_ten   red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop  
+res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk res_level_dol_cab_mut dol_higher_potency  pr_switch_line 
+adh_pattern adh_effect_of_meas_alert rate_int_choice  prob_vl_meas_done  rate_res_ten   greater_disability_tox  
 incr_mort_risk_dol_weightg rr_int_tox   rel_dol_tox;
 
 model z =
 inc_cat
-res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk  dol_higher_potency  pr_switch_line 
+res_trans_factor_ii  super_inf_res  rate_loss_persistence   pr_res_dol  fold_change_mut_risk res_level_dol_cab_mut dol_higher_potency  pr_switch_line 
 adh_pattern adh_effect_of_meas_alert rate_int_choice  prob_vl_meas_done  rate_res_ten   red_adh_multi_pill_pop greater_disability_tox  red_adh_tox_pop  
 incr_mort_risk_dol_weightg rr_int_tox   rel_dol_tox 
 ;
