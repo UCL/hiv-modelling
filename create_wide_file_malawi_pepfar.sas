@@ -692,7 +692,9 @@ so the one above is the annual number of tests conducted in ANC;
 * p_m25ov_newinf;				p_m25ov_newinf = sum(s_primary2529m,s_primary3034m,s_primary3539m,s_primary4044m,s_primary4549m,s_primary5054m,s_primary5559m,s_primary6064m) / s_primary;		
 end;
 
-* mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
+* mtct_birth_prop;				if s_give_birth_with_hiv > 0 then mtct_birth_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
+* mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = (s_birth_with_inf_child + s_child_infected_breastfeeding) / s_give_birth_with_hiv  ;
+* n_mtct;						n_mtct = (s_birth_with_inf_child + s_child_infected_breastfeeding) * sf * 4;
 
 * p_births_hiv_vlg1000;			p_births_hiv_vlg1000 = s_vl_when_giving_birth_g1000 / s_give_birth_with_hiv ; 
 
@@ -1327,6 +1329,9 @@ eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
 p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 s_cost_prep s_cost_prep_visit
 dcost_80 ddaly_80  overall_test_yield  n_vm_this_per  n_death_hiv   n_daly cost
+
+mtct_birth_prop		mtct_prop  n_mtct
+
 ;
 
 
