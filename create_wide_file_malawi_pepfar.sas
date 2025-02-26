@@ -4,11 +4,11 @@
 ods html close;
 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\malawi_pepfar\malawi_pepfar_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\malawi_pepfar\malawi_pepfar_b_out\";
 
 /*
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\malawi_pepfar\malawi_pepfar_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\malawi_pepfar\malawi_pepfar_b_out\";
 
 data g ; set a.out: ;
 
@@ -1344,11 +1344,11 @@ proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_malawi_pepfar_a; set y;
+data a.long_malawi_pepfar_b; set y;
 
 if cald=. then delete;run;
 
-proc contents data = a.long_malawi_pepfar_a; run;
+proc contents data = a.long_malawi_pepfar_b; run;
 
 
 
@@ -1358,10 +1358,10 @@ proc contents data = a.long_malawi_pepfar_a; run;
 
 * producing the output files for debra and rob;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\malawi_pepfar_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\malawi_pepfar_b_out\";
 
 
-data y; set a.long_malawi_pepfar_a; 
+data y; set a.long_malawi_pepfar_b; 
 
 keep
 

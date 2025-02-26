@@ -8,7 +8,7 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\malawi_pepfar\malawi_pepfar_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\malawi_pepfar\malawi_pepfar_b_out\";
 
 /*
 
