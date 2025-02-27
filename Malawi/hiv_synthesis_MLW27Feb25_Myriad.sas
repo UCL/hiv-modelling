@@ -5,23 +5,19 @@
 *inc cat age for malawi was missing (line 1452);
 *dead_Agt6_cd4gt200 gender categorisation had a typo in it. It previously saif if dead_Agt6_cd4gt200_m=1 instead of dead_Agt6_cd4gt200=1;;
 
-
-***TO RUN ON LAPTOP, ADD THIS SECTION AND COMMENT OUT THE SECTION BELOW IT;
-/*
 libname a "C:\Users\Loveleen\Documentos";   
-%let tmpfilename = out;
- */
-
+%let tmpfilename = out1;
+/*
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
-
+*/
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
-%let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
+%let population = 1000  ; 
+%let year_interv = 1987;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -955,6 +951,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 %include "/home/rmjllob/malawi_parameters.sas";
+%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling\Malawi/malawi_parameters.sas";
 
 call symput('caldate1',caldate1);
 
@@ -24813,7 +24810,7 @@ data a ;  set r1 ;
 data r1 ; set a ;
 
 * 3) Option 0 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+25,0);
+%run_update_r1(&year_interv,&year_interv+2,0);
 
 /*
 * 4) Option 0 - repetition 2;
