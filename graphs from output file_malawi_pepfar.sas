@@ -19,7 +19,7 @@ proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome mode
 */
 
 data c;
-  set a.long_malawi_pepfar_a;
+  set a.long_malawi_pepfar_b;
 
  
 
@@ -86,13 +86,13 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 n_tested_self_test = 0;
 
 
-%let single_var =  p_onart              ;       
+%let single_var = n_death_hiv                ;       
 
 
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 48  ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 87  ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2040    ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
@@ -573,13 +573,60 @@ ods html close;
 
 
 
+
 /*
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_mtct";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  50000 by 10000) valueattrs=(size=10);
+
+label mean_n_mtct_0 = "Option 0 (mean) ";
+label mean_n_mtct_1 = "Option 1  (mean) ";
+label mean_n_mtct_2 = "Option 2  (mean) ";
+
+series  x=cald y=mean_n_mtct_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_mtct_0 	upper=p95_n_mtct_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_mtct_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_mtct_1 	upper=p95_n_mtct_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_mtct_2/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_mtct_2 	upper=p95_n_mtct_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p onart";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1       by 0.1) valueattrs=(size=10);
+
+label mean_p_onart_0 = "Option 0 (mean) ";
+label mean_p_onart_1 = "Option 1  (mean) ";
+label mean_p_onart_2 = "Option 2  (mean) ";
+
+series  x=cald y=mean_p_onart_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_0 	upper=p95_p_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_p_onart_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_1 	upper=p95_p_onart_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=mean_p_onart_2/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_onart_2 	upper=p95_p_onart_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+run; quit;
+
+*/
+
+
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_hiv";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  20000 by 5000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000 by 10000) valueattrs=(size=10);
 
 label mean_n_death_hiv_0 = "Option 0 (mean) ";
 label mean_n_death_hiv_1 = "Option 1  (mean) ";
@@ -594,7 +641,7 @@ band    x=cald lower=p5_n_death_hiv_2 	upper=p95_n_death_hiv_2  / transparency=0
 
 run;quit;
 
-*/
+
 
 /*
 
@@ -623,7 +670,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "p mcirc ";
+Title    height=1.5 justify=center "p_mcirc_1549m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
