@@ -2,6 +2,7 @@
 ***THIS PROGRAM HAS NOT BEEN RUN, BUT PREVIOUS ERRORS HAVE BEEN CORRECTED. 
 *dead_int_lost_w had a typo, it was counting gender=1 instead of 2. Typo corrected, data manipulated in Excel file;
 *date_last_return_restart changed to date_last_restart;
+*inc cat age for malawi was missing (line 1452);
 *dead_Agt6_cd4gt200 gender categorisation had a typo in it. It previously saif if dead_Agt6_cd4gt200_m=1 instead of dead_Agt6_cd4gt200=1;;
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
@@ -13,7 +14,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 1000  ; 
+%let population = 100000  ; 
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -947,7 +948,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/Zim_parameters.sas";
+%include "/home/rmjllob/malawi_parameters.sas";
 
 call symput('caldate1',caldate1);
 
@@ -1432,6 +1433,24 @@ if cum11 <= e < cum12  then age= 45+rand('uniform')*10;
 if cum12 <= e          then age= 55+rand('uniform')*10;  
 
 if caldate1=1984 and inc_cat=4 then do;
+e=rand('uniform');
+if 0.0 <= e < inc1    then age=-74+rand('uniform')*9;																				   
+if inc1 <= e < cum2   then age=-65+rand('uniform')*10;  
+if cum2 <= e < cum3   then age=-55+rand('uniform')*10;  
+if cum3 <= e < cum4   then age=-45+rand('uniform')*10;  
+if cum4 <= e < cum5   then age=-35+rand('uniform')*10;  
+if cum5 <= e < cum6   then age=-25+rand('uniform')*10;  
+if cum6 <= e < cum7   then age=-15+rand('uniform')*10;  
+if cum7 <= e < cum8   then age=-5+rand('uniform')*10;  
+if cum8 <= e < cum9   then age=  5+rand('uniform')*10;  
+if cum9 <= e < cum10  then age= 15+rand('uniform')*10;  
+if cum10<= e < cum11  then age= 25+rand('uniform')*10;  
+if cum11 <= e < cum12  then age= 35+rand('uniform')*10;  
+if cum12 <= e < cum13  then age= 45+rand('uniform')*10;  
+if cum13 <= e          then age= 55+rand('uniform')*10;  
+end;
+
+if country = 'Malawi' then do;
 e=rand('uniform');
 if 0.0 <= e < inc1    then age=-74+rand('uniform')*9;																				   
 if inc1 <= e < cum2   then age=-65+rand('uniform')*10;  
@@ -19270,7 +19289,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_primary3539w + primary3539w ; s_primary4044w + primary4044w ; s_primary4549w + primary4549w ; s_primary5054w + primary5054w ;
 	s_primary5559w + primary5559w ; s_primary6064w + primary6064w ;			
 			
-	s_primary_ep_m + primary_ep_m ; s_primary_ep_w + primary_ep_w ; 
+	s_primary_ep_m + primary_ep_m ; s_primary_ep_w + primary_ep_w ;  
 
 	s_primary1524m_ep + primary1524m_ep ; s_primary2534m_ep + primary2534m_ep ; s_primary3544m_ep + primary3544m_ep ; s_primary4554m_ep + primary4554m_ep;
 	s_primary5564m_ep + primary5564m_ep ; s_primary1524w_ep + primary1524w_ep ; s_primary2534w_ep + primary2534w_ep ; s_primary3544w_ep + primary3544w_ep;
@@ -20947,11 +20966,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
-
-
-proc print;var cald tcur yrart date_last_interrupt date_1st_int restart date_last_restart dead_int_lost dead_1stint_lost dead_subintlt6_lost dead_subintgt6_lost;
-where age ge 15 and yrart ne . ;run;
-
 
 
 * procs;
@@ -23204,8 +23218,6 @@ if country = 'Malawi' then do;
 	if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
 	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
 	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
-	if cald = 2021.0 and (prevalence1549 < 0.07  or prevalence1549 > 0.11 ) then remove=run;
-
 end;
 
 ***South Africa specific;	*JAS Feb24;
