@@ -2210,14 +2210,14 @@ if caldate_never_dot >= &year_interv then do;
 			q=rand('uniform'); if hard_reach ne 1 and q < 0.7 then hard_reach = 1 ; * aims to halve prep and testing and vmmc ;
 		end;
 		eff_rate_int_choice = rate_int_choice * 30; eff_rate_return = rate_return / 100 ; * aims to reduce onart by 50%;
-		reduce_condoms_by_half = 1;		
+		reduce_condoms_by_one_quarter = 1;		
 
 	end;
 
 	if option = 2 then do; *stop vmmc condoms prep - keep testing and art;
 
 		prep_any_strategy=0;
-		reduce_condoms_to_zero = 1;		
+		reduce_condoms_by_half = 1;		
 		pepfar_stop_circ = 1;
 
 	end;
@@ -4128,6 +4128,11 @@ end;
 * Reducing newp by 75% if condom incr =1;
 if caldate{t} >= &year_interv and agyw=1 and condom_incr_year_i = 3 then do;
 	u=rand('uniform'); if u < 0.50 then do;newp=newp/4;newp=round(newp,1);end;
+end;
+
+* Increasing newp in pepfar prevention stops; 
+if reduce_condoms_by_one_quarter = 1 then do;
+	u=rand('uniform'); if u < 0.015 then do;newp=newp*5;end;
 end;
 
 * Increasing newp in pepfar prevention stops; 

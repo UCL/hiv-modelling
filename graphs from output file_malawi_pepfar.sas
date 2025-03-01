@@ -86,7 +86,7 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 n_tested_self_test = 0;
 
 
-%let single_var = n_death_hiv                ;       
+%let single_var = p_newp_ge1_               ;       
 
 
 proc sort; by cald run ;run;
@@ -620,7 +620,7 @@ run; quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -641,7 +641,7 @@ band    x=cald lower=p5_n_death_hiv_2 	upper=p95_n_death_hiv_2  / transparency=0
 
 run;quit;
 
-
+*/
 
 /*
 
@@ -689,12 +689,12 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge1_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1995   to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
 label mean_p_newp_ge1__0 = "Option 0 ";
 label mean_p_newp_ge1__1 = "Option 1 ";
@@ -712,7 +712,7 @@ band    x=cald lower=p5_p_newp_ge1__2 upper=p95_p_newp_ge1__2 / transparency=0.9
 
 run;quit;
 
-*/
+
 
 /*
 
