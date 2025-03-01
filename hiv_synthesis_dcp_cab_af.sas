@@ -1,37 +1,30 @@
 
 
+* decrease oral prep adherence ?
 
+* happy with variability in baseline use of prep representing settings ?
 
-* Could get out what proportion of people who start DCP have previously had a period of DCP ;
-
-* extract incidence rate for those with a prep indication to compare with trial
-
-* include a len prep option at least just so can see results ?
-
-* lower efficacy oral prep in women ?
-
-* updated inc_cat
-
-* add in prep in msm
-
-* set hivtest_type_1_init_prep_inj = 0 for all runs 
-
-* increase testing cost for people on cab la prep to reflect more frequent 2 monthly testing ?
-
-;
-
-
-
-
-
-* transmission through breastfeeding and added in dalys and cost for child for transmission through mtct 
-
-* enhance effect of cab la alone - have increased pref_prep_inj_beta_s1 - may need to amend effect_dcp_pref_prep if cab-la uptake too high in dcp-cab-la option; 
+* increase the cost of tests on Cab PrEP by 1.5-fold
 
 * modify tld drug costs ?
 
+* restrict setting scenarios similarly to laa ms
+
+* increase testing cost for people on cab la prep to reflect more frequent 2 monthly testing ?
+
+
+
+
+
+* get out what proportion of people who start dcp have previously had a period of dcp ;
+
+* extract incidence rate for those with a prep indication to compare with trial
 
 ;
+
+
+
+
 
 
 
