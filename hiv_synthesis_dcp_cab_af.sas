@@ -18378,6 +18378,14 @@ prev_vg1000_1549 = s_vg1000_1549 / s_alive1549;
 
 cum_ratio_newp_mw = s_s_m_newp / s_s_w_newp;
 
+p_diag_m = s_diag_m / s_hivge15m ; 
+p_diag_w = s_diag_w / s_hivge15w ;  
+p_onart_diag_w = s_onart_w / s_diag_w;
+p_onart_diag_m = s_onart_m / s_diag_m;  
+p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
+p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
+
+
 drop serial_no ;
 
 
@@ -19164,7 +19172,23 @@ if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do;
 */
 /*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
-if cald = 2022 and incidence1549 < 0.1 then do; abort abend; end;
+
+if cald = 2024 then do;
+
+	if prevalence1549w    > 0.35  then do; abort abend; end;
+	if prevalence1549m    > 0.25 then do; abort abend; end;
+	if incidence1549m    > 1.5 then do; abort abend; end;
+	if incidence1549w    > 2.5 then do; abort abend; end;
+	if p_diag_m    < 0.7 then do; abort abend; end;
+	if p_diag_w    < 0.75 then do; abort abend; end;
+	if p_onart_diag_m    < 0.73 then do; abort abend; end;
+	if p_onart_diag_w    < 0.8 then do; abort abend; end;
+	if p_onart_vl1000_m    < 0.7 then do; abort abend; end;
+	if p_onart_vl1000_w    < 0.7 then do; abort abend; end;
+
+end;
+
+
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
