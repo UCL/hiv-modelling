@@ -1,24 +1,17 @@
 
 
-* decrease oral prep adherence ?
+
 
 * happy with variability in baseline use of prep representing settings ?
 
-* increase the cost of tests on Cab PrEP by 1.5-fold
-
-* modify tld drug costs ?
-
-* restrict setting scenarios similarly to laa ms
-
-* increase testing cost for people on cab la prep to reflect more frequent 2 monthly testing ?
-
-
-
-
-
-* get out what proportion of people who start dcp have previously had a period of dcp ;
+* consider whether need to make changes as result of comment: of those who took PrEP in the last 3 years, the proportion 
+  who remain on PrEP is 64%, 87% and 89% ;
 
 * extract incidence rate for those with a prep indication to compare with trial
+
+* restricted setting scenarios similarly to laa ms
+
+* decreased oral prep adherence 
 
 ;
 
@@ -680,7 +673,7 @@ newp_seed = 7;
 * prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
-* adh_pattern_prep_oral;  		%sample(adh_pattern_prep_oral, 1 2 3 4, 0.3 0.3 0.3 0.1);  * this added back in as a result of oral prep adherence looking too high;
+* adh_pattern_prep_oral;  		%sample(adh_pattern_prep_oral, 3 4 5 , 0.3 0.4 0.3    );  * for revised version after reviewer comment ; 
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.02  0.05  0.10 ); * dcp_cab;
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
@@ -1942,6 +1935,7 @@ if adh_pattern_prep_oral=1 then adhav_prep_oral = adhav*1.00;
 if adh_pattern_prep_oral=2 then adhav_prep_oral = adhav*0.90;
 if adh_pattern_prep_oral=3 then adhav_prep_oral = adhav*0.70;
 if adh_pattern_prep_oral=4 then adhav_prep_oral = adhav*0.50;
+if adh_pattern_prep_oral=5 then adhav_prep_oral = adhav*0.30;
 
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	* lapr JAS Sept2021 ;
@@ -6741,6 +6735,8 @@ if caldate{t}=infection > . then do;
 
 
 primary   =1;
+
+primary_prep_any_elig = 0 ; if prep_any_elg =1 then primary_prep_any_elig = 1 ;
 
 * birth with infected child;
 if gender=2 then do;
@@ -16753,7 +16749,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_elig_prep_any_m_1564 + elig_prep_any_m_1564 ;s_elig_prep_any_w_1564 + elig_prep_any_w_1564 ;
 	s_infected_prep_any + infected_prep_any ; s_infected_prep_oral + infected_prep_oral ; s_infected_prep_inj + infected_prep_inj ; s_infected_prep_vr + infected_prep_vr ;
 	s_prep_any_ever + prep_any_ever ; s_primary_prep + primary_prep ; s_hiv1_prep_oral + hiv1_prep_oral ; s_prim_r_prep + prim_r_prep ; 
-	s_ever_prim_nor_prep + ever_prim_nor_prep ;   s_primary_prep_inj  + primary_prep_inj ;  s_primary_prep_vr  + primary_prep_vr ;  
+	s_ever_prim_nor_prep + ever_prim_nor_prep ;   s_primary_prep_inj  + primary_prep_inj ;  s_primary_prep_vr  + primary_prep_vr ; s_primary_prep_any_elig + primary_prep_any_elig;
 	s_prep_any_elig + prep_any_elig ;  s_primary_prep_oral + primary_prep_oral; s_prim_r_prep + prim_r_prep; s_ever_prim_tdr_prep + ever_prim_tdr_prep;
 	s_rt65m_3_prep + rt65m_3_prep ; s_rt184m_3_prep + rt184m_3_prep ; s_rtm_3_prep + rtm_3_prep ; s_rt65m_6_prep + rt65m_6_prep ; 
 	s_rt184m_6_prep + rt184m_6_prep ; s_rtm_6_prep + rtm_6_prep ; s_rt65m_9_prep + rt65m_9_prep ; s_rt184m_9_prep + rt184m_9_prep ;               
@@ -18570,7 +18566,7 @@ s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw
 s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
-s_prep_any_elig s_prim_r_prep  s_ever_prim_tdr_prep
+s_prep_any_elig s_prim_r_prep  s_ever_prim_tdr_prep s_primary_prep_any_elig
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
@@ -19547,7 +19543,7 @@ s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep    s_ever_prim_nor_prep  
-s_prep_any_elig  	s_prim_r_prep  s_ever_prim_tdr_prep s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
+s_prep_any_elig  s_primary_prep_any_elig	s_prim_r_prep  s_ever_prim_tdr_prep s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  s_onprep_3  s_onprep_6  s_onprep_9  s_onprep_12  s_onprep_18  
 
@@ -22508,7 +22504,7 @@ s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep    s_ever_prim_nor_prep  
-s_prep_any_elig  	s_prim_r_prep  s_ever_prim_tdr_prep s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
+s_prep_any_elig  s_primary_prep_any_elig	s_prim_r_prep  s_ever_prim_tdr_prep s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  s_onprep_3  s_onprep_6  s_onprep_9  s_onprep_12  s_onprep_18  
 
