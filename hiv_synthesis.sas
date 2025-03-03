@@ -2,7 +2,7 @@
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   * here ! ;
+  libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
@@ -10,7 +10,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2026.0 ;	* Using 2023 for MIHPSA only JAS Oct23;
+%let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -145,7 +145,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 
 
 * start of epidemic;
-startyr = 1989 + 0.25;
+startyr = 1989 + 0.25;  	* overwritten in country-specific include statements (SA, Zim, Malawi, Cote d'Ivoire, Kenya) JAS Feb24;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
@@ -286,7 +286,7 @@ newp_seed = 7;
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
 * res_trans_factor_ii;		%sample(res_trans_factor_ii, 0.2 0.4 0.6 0.8, 0.25 0.25 0.25 0.25);
 
-* res_trans_factor_ca;		%sample(res_trans_factor_ca, 0.2 0.5 0.8, 0.33 0.33 0.33); 
+* res_trans_factor_ca;		%sample(res_trans_factor_ca, 0.2 0.5 0.8, 0.33 0.33 0.33);  * capsid inhibitor (len) hence the _ca ;
 
 * super_inf_res;			%sample(super_inf_res, 0.2 0.8, 0.9 0.1);
 
@@ -334,7 +334,7 @@ newp_seed = 7;
 * effect_crypm_proph;		effect_crypm_proph = 0.5; 				* as above for crypm;
 * effect_sbi_proph;			effect_sbi_proph = 0.5;
 * tblam_eff_prob_diag_l;	tblam_eff_prob_diag_l = 0.5; 			* effect of tb lam test on tb being diagnosed late;
-* crag_eff_prob_diag_l;		crag_eff_prob_diag_l = 0.5; 			* effect of    test on crypm being diagnosed late;  
+* crag_eff_prob_diag_l;		crag_eff_prob_diag_l = 0.5; 			* effect of crag test on crypm being diagnosed late;  
 
 * tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.25 0.50 0.75); 			* base probability that tb is diagnosed late ;
 * crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.25 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
@@ -359,6 +359,7 @@ newp_seed = 7;
 
 * date_start_testing;		date_start_testing = 2003.5; 
 * initial_rate_1sttest;		initial_rate_1sttest = 0; 				* dependent_on_time_step_length ;
+* initial_rate_reptest;		initial_rate_reptest = 0;
 * test_rate_who4;			test_rate_who4=0.10;  					* dependent_on_time_step_length ;
 * test_rate_tb;				test_rate_tb  =0.10;  					* dependent_on_time_step_length ;
 * test_rate_non_tb_who3;	test_rate_non_tb_who3=0.05; 			* dependent_on_time_step_length ;
@@ -379,7 +380,7 @@ newp_seed = 7;
 * rate_anc_inc; 		%sample_uniform(rate_anc_inc, 0.005 0.01 0.03 0.05 0.10);
 * prob_test_2ndtrim;	%sample_uniform(prob_test_2ndtrim, 0.7 0.8 0.9 1.00);
 * prob_test_postdel;	prob_test_postdel=0.95;
-* test_targeting;   		%sample_uniform(test_targeting, 1 1.5 2); * cioa_k ;
+* test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
 								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0300 , 
