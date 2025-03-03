@@ -13,52 +13,33 @@
 * caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
-
-/** inc_cat; 					 inc_cat = 4 ;  	* Changed to new inc_cat 4 (specified for Zim) from inc_cat 1 JAS Nov23;*/
-* inc_cat; 					 inc_cat = 5 ;  	* Try new inc_cat 5 specified for Malawi JAS Nov23;
+* inc_cat;					inc_cat=5;
 
 * SEXUAL BEHAVIOUR;
-
-/** ych_risk_beh_newp;        %sample(ych_risk_beh_newp, 0.5 0.6 0.7 , 0.4 0.3 0.3); */
-/** ych_risk_beh_ep;          %sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95);*/
-/** p_rred_p;                 %sample_uniform(p_rred_p, 0.4 0.5 0.6);*/
-/** p_hsb_p;                  %sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.25 0.25 0.25  0.25);*/
-/** newp_factor;              %sample_uniform(newp_factor, 1 2 3 5 ); */
-/**/
-/** ych2_risk_beh_newp;       %sample(ych2_risk_beh_newp,*/
-/*                                0.95    0.99    1   ,*/
-/*                                0.3     0.3     0.4   );*/
+* No changes;
 
 * HIV TESTING;
 
-* date_start_testing;       date_start_testing = 2005  ;
-
+* date_start_testing;       date_start_testing = 2005;
 
 * test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.5 0.3 0.2); 
 
 * an_lin_incr_test;         %sample(an_lin_incr_test,
                                   0.002    0.003   0.005  0.01,
-                                  0.10      0.25   0.35   0.30	);
+                                  0.10      0.25   0.35   0.30);
 
-
-* date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
+* date_test_rate_plateau;   date_test_rate_plateau = 2019;
                           
-
-* HIV SELF_TESTING;
-
-* prob_self_test_hard_reach;prob_self_test_hard_reach = 0.05;
-* self_test_targeting;		self_test_targeting = 1.5;
-* rate_self_test;			rate_self_test = 0.015;
-* date_self_testing_intro;	date_self_testing_intro = 2018;
 
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
 * fold_change_in_risk_base_rate;
-							* fold_change_in_risk_base_rate = 0.85; * it is 0.85 rather than 1 in south africa parameter sets but not evidence
-							that this lower rate holds in malawi ;
 
-* fold_decr_hivdeath;		fold_decr_hivdeath = 0.15 ; * this value was used in south africa in order to have model reflect observed death rates;  	
+* fold_change_in_risk_base_rate = 0.85; * it is 0.85 rather than 1 in south africa parameter sets but not evidence
+										  that this lower rate holds in malawi ;
+
+* fold_decr_hivdeath;		fold_decr_hivdeath = 0.15; * this value was used in south africa in order to have model reflect observed death rates;  	
 
 * fx;						fx = 0.85;  * this value was used in south africa in order to have model reflect observed death rates; 
 
@@ -70,7 +51,7 @@ prob_loss_at_diag = 0.05;
 
 reg_option_104 = 1;
 
-rate_ch_art_init_str_9 = 0.1 ;
+rate_ch_art_init_str_9 = 0.1;
 
 rate_int_choice = 0.003;  
 
@@ -80,13 +61,6 @@ rate_int_choice = 0.003;
 
 * circ_inc_rate;            circ_inc_rate = 0.001; 
 
-* prob_birth_circ;          prob_birth_circ = 0.2 ; 
+* prob_birth_circ;          prob_birth_circ = 0.2; 
 
-
-
-
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 1 3);
-
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.1  0.2 ); 	
-
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.10 0.30);
+* prep_any_strategy;		%sample_uniform(prep_any_strategy, 1 3);
