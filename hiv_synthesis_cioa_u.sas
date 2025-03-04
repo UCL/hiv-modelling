@@ -5,6 +5,8 @@ add another option - option 1 without prep
 
 perhaps change all testing to self testing, except higher cost of confirmatory tests before treatment started
 
+check I am fully funding ahd explicitly modelling ahd interventions
+
 ;
 
 
