@@ -402,9 +402,8 @@ newp_seed = 7;
 * self_test_targeting;		%sample_uniform(stt, 1 2 3 5);
 							self_test_targeting = stt * test_targeting; 
 
-
-* rate_self_test;			rate_self_test = 0;
-* rate_self_test_if_introduced;  %sample_uniform(rate_self_test_if_introduced, 0.05 0.1 0.3 0.5 );* cioa_l;
+* date_self_test_intro;		date_self_test_intro = 2018;
+* rate_self_test;			%sample_uniform(rate_self_test, 0.05 0.1 0.3 0.5 );
 
 * self_test_sens;			self_test_sens = 0.93;          
 
@@ -456,8 +455,10 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0;
-* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0    1   ); * changed  june 24 after discussion with jonathan schapiro;
-																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
+* dol_higher_potency;   	dol_higher_potency = 1 ; * changed  june 24 after discussion with jonathan schapiro;
+
+* cab_higher_potency;   	%sample(cab_higher_potency, 0.5 1 , 0.25 0.75);	
+	
 * len_higher_potency;		%sample(len_higher_potency, 0.5 1 , 0.25 0.75);	
 * efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
 																* updated to equal dol potency JAS Nov2021;
@@ -465,6 +466,7 @@ newp_seed = 7;
 
 * isl_higher_potency;		%sample(isl_higher_potency, 0.5 1 , 0.25 0.75);	
 
+* ole - oral lenacapavir ;
 * isl_ole_adh_improve;		%sample_uniform(isl_ole_adh_improve, 0.25 0.5 0.75);
 
 
@@ -4678,7 +4680,7 @@ end;
 	eff_self_test_targeting = self_test_targeting;
 
 	w = rand('uniform');	
-	if caldate{t} ge 2018 and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
+	if caldate{t} ge date_self_test_intro and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
 
 		u_self_test=rand('uniform');
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
@@ -7879,7 +7881,7 @@ cur_in_prep_len_tail_prim=0; if currently_in_prep_len_tail = 1 then cur_in_prep_
 * prep;  * these lines below needed for first period with hiv - keep them in;
 if prep_oral   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
 if prep_oral   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 	if o_dol=1 then nactive=nactive + dol_higher_potency * (1 - r_dol);
-cab_higher_potency = dol_higher_potency ;
+
 if prep_cab =1 or currently_in_prep_cab_tail=1 then nactive = (1 + cab_higher_potency) * (1 - r_cab);
 if prep_len =1 or currently_in_prep_len_tail=1 then nactive = (1 + len_higher_potency) * (1 - r_len);
 nactive = round(nactive,0.25);
@@ -9842,7 +9844,7 @@ if o_cab = 1 and o_len = 1 then adh_dl = 1;
 
 newmut_tm1 = .; * note that we only have newmut_tm1, newmut is not defined;
 
-cab_higher_potency = dol_higher_potency ;
+
 if prep_cab = 1 or prep_cab_tm1 = 1 or currently_in_prep_cab_tail = 1 then do;
 	adh_dl = 1; adh_dl_tm1=1; 
 	if currently_in_prep_cab_tail = 1 and prep_oral ne 1 then do; * this condition about prep_oral added mar24; 
@@ -12186,9 +12188,9 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 
 
 
-	* dol_higher_potency (assumed to apply the same to dol and cab);
+	* dol_higher_potency;
 	if o_dol=1 then nactive=nactive + dol_higher_potency * (1 - r_dol);    
-	cab_higher_potency = dol_higher_potency ;
+
 	if registd = 1 and (o_cab=1 or (p_cab = 1 and 0 <= tss_cab <= cab_time_to_lower_threshold)) then nactive=nactive + cab_higher_potency * (1 - r_cab);    
 	if registd ne 1 and (prep_cab =1 or 0 <= tss_cab <= cab_time_to_lower_threshold) then nactive = (1 + cab_higher_potency) * (1 - r_cab); 
 
@@ -20805,12 +20807,12 @@ msm_tr_factor switch_for_tox
 msm_rred red_chance_ep_msm prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_female msm_rr_loss_at_diag pwid_rr_loss_at_diag
 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
-prob_self_test_hard_reach self_test_targeting rate_self_test rate_self_test_if_introduced self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 incr_pref_prep_oral_comm_tld r_choose_stop_prep_oral_comm_tld   r_test_startprep_any_comm_tld   prob_prep_oral_b_comm_tld
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw adh_effect_comm_tld
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency  isl_higher_potency  isl_ole_adh_improve
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency  isl_higher_potency  isl_ole_adh_improve
 prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro
 cab_time_to_lower_threshold_g len_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
@@ -22861,7 +22863,7 @@ msm_tr_factor switch_for_tox rate_test_startprep_any   rate_choose_stop_prep_ora
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child rate_trans_breastfeeding nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency len_higher_potency isl_higher_potency isl_ole_adh_improve
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency isl_higher_potency isl_ole_adh_improve
 prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro  cab_extra_pref  add_prob_prep_b_cab
 cab_time_to_lower_threshold_g  len_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75  death_r_iris_pop_wide_tld
@@ -22874,7 +22876,7 @@ zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_futu
 rate_tb_proph_init rate_sbi_proph_init 
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
-prob_self_test_hard_reach self_test_targeting rate_self_test rate_self_test_if_introduced self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
+prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 incr_pref_prep_oral_comm_tld r_choose_stop_prep_oral_comm_tld   r_test_startprep_any_comm_tld   prob_prep_oral_b_comm_tld
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b  prob_prep_len_b prob_prep_vr_b prep_cab_efficacy  prep_len_efficacy   prop_pep  pep_efficacy 
 rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr adh_effect_comm_tld
