@@ -19146,6 +19146,8 @@ p_onart_vls  p_onart_epvls  d_vls
 p_diag  p_diag_onart  p_diag_eponart  p_diag_m  p_diag_w  p_epdiag_m  p_epdiag_w  d_diag_m  d_diag_w
 d_onart
 
+p_onart_diag_m  p_onart_diag_w  p_onart_vl1000_m  p_onart_vl1000_w
+
 d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw
 
 r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55 
