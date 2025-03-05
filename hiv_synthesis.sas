@@ -399,7 +399,8 @@ newp_seed = 7;
 
 * prob_self_test_hard_reach;prob_self_test_hard_reach = 0;
 
-* self_test_targeting;		%sample_uniform(self_test_targeting, 1.5 2 3 5);* cioa_k;
+* self_test_targeting;		%sample_uniform(stt, 1 2 3 5);
+							self_test_targeting = stt * test_targeting; 
 
 
 * rate_self_test;			rate_self_test = 0;
