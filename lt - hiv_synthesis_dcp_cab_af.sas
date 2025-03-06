@@ -21,9 +21,10 @@
 
 
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
+  libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc';   
+  
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   
+* libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
@@ -17514,10 +17515,24 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
+
+
+proc freq; tables cald hiv 
+
+	 prevalence1549w   
+	 prevalence1549m   
+	 incidence1549m  
+	 incidence1549w   
+	 p_diag_m   
+	 p_diag_w   
+	 p_onart_diag_m   
+	 p_onart_diag_w   
+	 p_onart_vl1000_m   
+	 p_onart_vl1000_w  
+
+; where death=.; run;
+
 /*
-
-proc freq; tables cald hiv ; where death=.; run;
-
 
 proc print;
 var caldate&j dcp_program  dcp  prep_any_elig prep_oral prep_inj  tested  
@@ -19176,16 +19191,18 @@ if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do;
 
 if cald = 2024 then do;
 
-	if prevalence1549w    > 0.35  then do; abort abend; end;
-	if prevalence1549m    > 0.25 then do; abort abend; end;
-	if incidence1549m    > 1.5 then do; abort abend; end;
-	if incidence1549w    > 2.5 then do; abort abend; end;
-	if p_diag_m    < 0.7 then do; abort abend; end;
-	if p_diag_w    < 0.75 then do; abort abend; end;
-	if p_onart_diag_m    < 0.73 then do; abort abend; end;
-	if p_onart_diag_w    < 0.8 then do; abort abend; end;
-	if p_onart_vl1000_m    < 0.7 then do; abort abend; end;
-	if p_onart_vl1000_w    < 0.7 then do; abort abend; end;
+proc print; var 
+
+	 prevalence1549w   
+	 prevalence1549m   
+	 incidence1549m  
+	 incidence1549w   
+	 p_diag_m   
+	 p_diag_w   
+	 p_onart_diag_m   
+	 p_onart_diag_w   
+	 p_onart_vl1000_m   
+	 p_onart_vl1000_w  
 
 end;
 
