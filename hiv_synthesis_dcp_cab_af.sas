@@ -18374,6 +18374,9 @@ prev_vg1000_1549 = s_vg1000_1549 / s_alive1549;
 
 cum_ratio_newp_mw = s_s_m_newp / s_s_w_newp;
 
+s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv8084m + s_hiv85plm ; 
+s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv8084w + s_hiv85plw ; 
+
 p_diag_m = s_diag_m / s_hivge15m ; 
 p_diag_w = s_diag_w / s_hivge15w ;  
 p_onart_diag_w = s_onart_w / s_diag_w;
