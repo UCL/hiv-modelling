@@ -8,7 +8,7 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\malawi_pepfar\malawi_pepfar_b_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\malawi_pepfar\malawi_pepfar_d_out\";
 
 /*
 
@@ -19,7 +19,7 @@ proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome mode
 */
 
 data c;
-  set a.long_malawi_pepfar_b;
+  set a.long_malawi_pepfar_d;
 
  
 
@@ -92,7 +92,7 @@ n_tested_self_test = 0;
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 87  ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 129  ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2040    ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
