@@ -17515,7 +17515,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-
+/*
 
 proc freq; tables cald hiv 
 
@@ -17531,6 +17531,8 @@ proc freq; tables cald hiv
 	 p_onart_vl1000_w  
 
 ; where death=.; run;
+
+*/
 
 /*
 
@@ -19189,9 +19191,7 @@ if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do;
 /*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
 
-if cald = 2024 then do;
-
-proc print; var 
+*
 
 	 prevalence1549w   
 	 prevalence1549m   
@@ -19206,6 +19206,22 @@ proc print; var
 
 end;
 
+proc freq; tables 
+ 
+	 p_diag_m   
+	 p_diag_w   
+	 p_onart_diag_m   
+	 p_onart_diag_w   
+	 p_onart_vl1000_m   
+	 p_onart_vl1000_w  
+	 prevalence1549w   
+	 prevalence1549m   
+	 incidence1549m  
+	 incidence1549w  
+
+	 cald
+
+;  run;
 
 
 
