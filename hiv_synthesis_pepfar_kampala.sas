@@ -10,7 +10,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2026.0 ;	
+%let year_interv = 2025.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -2209,8 +2209,19 @@ who may be dead and hence have caldate{t} missing;
  	*Option 1;
 																														  
 	if option = 1 then do;
-		*Specify option 1;
-												 
+		
+		if cald = 2025 then eff_rate_int_choice = rate_int_choice * 2 ;
+		if cald ge 2025.25 then eff_rate_int_choice = rate_int_choice  ;
+
+		adh_reduction_pepfar = 0;
+		if cald = 2025 then do;
+			vv=rand('uniform');
+			if 0.5 <= vv < 0.6 then adh_reduction_pepfar = 0.05 ;
+			if 0.6 <= vv < 0.7 then adh_reduction_pepfar = 0.1 ;
+			if 0.7 <= vv < 0.8 then adh_reduction_pepfar = 0.15 ;
+			if 0.8 <= vv < 0.9 then adh_reduction_pepfar = 0.2 ;
+			if 0.9 <= vv       then adh_reduction_pepfar = 0.25 ;
+		end;				 
 	end;
 													  
 end;
@@ -9766,6 +9777,8 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.8 then adh=0.90;
 	if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 
+
+if adh_reduction_pepfar ne 0 then adh = ahd - adh_reduction_pepfar;
 	
 
 if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have disadvantages;
@@ -22086,41 +22099,17 @@ data a ;  set r1 ;
 data r1 ; set a ;
 
 * 3) Option 0 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+50,0);
-
-
-
-* 4) Option 0 - repetition 2;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,0);
-
-* 5) Option 0 - repetition 3;
-
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,0);
-
+%run_update_r1(&year_interv,&year_interv+5 ,0);
 
 
 * 3) Option 1 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+50,1);
+%run_update_r1(&year_interv,&year_interv+5 ,1);
 
-
-
-* 4) Option 1 - repetition 2;
-			   
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,1);
-
-* 5) Option 1 - repetition 3;
- 
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,1);
 
 			
 														 
 
-			
-														 
+					 
 
 			
 
