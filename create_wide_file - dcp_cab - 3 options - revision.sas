@@ -2120,30 +2120,37 @@ model lowest_netdaly_3 = p_diag_24 prevalence1549_24 p_elig_prep_24 ;
 run;
 
 * how to justify this as the model to end up using ? - just as before and just present this model  ; 
+ods html;
 proc logistic data = g;
 model lowest_netdaly_3 = prevalence_vg1000_24_g p_elig_prep_24 ; 
 run;
+ods html close;
 
 proc logistic data = g;
 model lowest_netdaly_3 = incidence1549_24_g p_elig_prep_24 ; 
 run;
+
 
 proc logistic data = g;
 model lowest_netdaly_3 = prevalence1549_24_g p_elig_prep_24 ; 
 run;
 
 
+
 proc logistic data = g;
 model lowest_netdaly_3 = p_diag_24 p_onart_diag_24 p_onart_vl1000_24 prevalence1549_24 p_elig_prep_24 ; 
 run;
 
+
+ods html;
 proc logistic data = g;
 model lowest_daly_3 = prevalence_vg1000_24_g  ; 
 run;
+ods html close;
 
 
 
-
+ods html;
 proc logistic data = g;
 class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor conc_ep ch_risk_diag ch_risk_diag_newp
@@ -2155,8 +2162,9 @@ ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000 
 external_exp_factor rate_exp_set_lower_p_vl1000 higher_newp_less_engagement  fold_tr fold_tr_newp
 ;
 run;
+ods html close;
 
-
+ods html;
 proc logistic data = g;
 class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor conc_ep ch_risk_diag ch_risk_diag_newp
@@ -2169,8 +2177,9 @@ ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000 
 external_exp_factor rate_exp_set_lower_p_vl1000 higher_newp_less_engagement  fold_tr fold_tr_newp
 ;
 run;
+ods html close;
 
-
+ods html;
 proc logistic data = g;
 class prob_prep_any_restart_choice adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy    prob_prep_any_restart_choice     prob_prep_oral_b  prep_oral_efficacy     prep_inj_efficacy
@@ -2183,8 +2192,9 @@ rate_choose_stop_prep_inj  effect_dcp_pref_prep rate_start_dcp_not_prep  rate_st
 prob_prep_b_dcp    rate_choose_stop_prep_dcp    rate_test_startprep_any_dcp  prep_willingness_th_dcp  prob_prep_oral_b  
 ;
 run;
+ods html close;
 
-
+ods html;
 proc logistic data = g;
 class prob_prep_any_restart_choice adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy    prob_prep_any_restart_choice     prob_prep_oral_b  prep_oral_efficacy     prep_inj_efficacy
@@ -2197,7 +2207,7 @@ rate_choose_stop_prep_inj  effect_dcp_pref_prep rate_start_dcp_not_prep  rate_st
 prob_prep_b_dcp    rate_choose_stop_prep_dcp    rate_test_startprep_any_dcp  prep_willingness_th_dcp  prob_prep_oral_b  
 ;
 run;
-
+ods html close;
 
 
 /*
