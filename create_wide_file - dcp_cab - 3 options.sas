@@ -1778,6 +1778,8 @@ if netdaly_ac_mtct_500_1 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=
 if netdaly_ac_mtct_500_2 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=2;
 if netdaly_ac_mtct_500_3 = min_netdaly_ac_mtct_500 then lowest_netdaly_ac_mtct_=3;
 
+lowest_netdaly_ac_mtct_3=0; if lowest_netdaly_ac_mtct_=3 then lowest_netdaly_ac_mtct_3=1;
+
 if p_elig_prep_24 < 0.04 then p_elig_prep_24_g=1;
 if 0.04 <= p_elig_prep_24 < 0.07 then p_elig_prep_24_g=2;
 if 0.07 <= p_elig_prep_24 then p_elig_prep_24_g=3;
@@ -2199,6 +2201,12 @@ prevalence_vg1000_24
 run;
 ods html close;
 
+
+proc logistic;
+model lowest_netdaly_ac_mtct_3 = 
+
+
+
 proc logistic; 
 class prep_any_strategy;
 model lowest_netdaly_23 = prep_any_strategy; run; 
@@ -2229,6 +2237,9 @@ run;
 
 
 
+
+
+/*
 
 data s; set g;
 %lab(l=prop_ever_tested_1549w); 
@@ -2520,3 +2531,4 @@ proc means    n p50 p5 p95 ;
 var p_elig_offp_tm1_injprep_10y_1 p_elig_offp_tm1_injprep_10y_2 p_elig_offp_tm1_injprep_10y_3 ;
 run;
 
+*/
