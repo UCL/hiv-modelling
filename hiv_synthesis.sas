@@ -493,7 +493,7 @@ newp_seed = 7;
 * r_swi_dol_cns;			r_swi_dol_cns = 	0.02;
 * rate_loss_acq_pim_offart;	rate_loss_acq_pim_offart = 0.2;
 * rate_loss_acq_iim_offart;	rate_loss_acq_iim_offart = 0.2;
-* rate_loss_acq_cam_offart;	rate_loss_acq_cam_offart = 0.2; * len placeholder;
+* rate_loss_acq_cam_offart;	rate_loss_acq_cam_offart = 0.2; * len placeholder - ca capsid inhibitor mutation ;
 
 * all * dependent_on_time_step_length ;
 * r_otx_start;				r_otx_start = 			0.03;
@@ -549,13 +549,16 @@ newp_seed = 7;
 * pr_art_init; 				%sample_uniform(pr_art_init, 0.5 0.7 0.9 0.95 1); 
 							* dependent_on_time_step_length ;
 * fold_change_mut_risk; 	%sample(fold_change_mut_risk, 0.5 1 2, 0.1 0.8 0.1);		* jan18;
-* pr_switch_line;  			%sample(pr_switch_line, 0.5 0.75 0.9 1, 0.1 0.2 0.35 0.35); * tld_switch;
+
+* pr_switch_line;  			%sample(pr_switch_line, 0.1 0.2 0.5 0.75, 0.25 0.25 0.25 0.25);
+				  			* %sample(pr_switch_line, 0.5 0.75 0.9 1, 0.1 0.2 0.35 0.35); * for tld_switch project;
+
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0   	0.20	0.20	0.20	0.20	0.20	0   ) ; * tld_switch_an;  *note that this is moderated a lot with vl alert;
+								0   	0.35	0.25	0.20	0.15	0.05	0   ) ;  * mar 2025;      *note that this is moderated a lot with vl alert;
 
-* prop_v_alert_perm;		%sample_uniform(prop_v_alert_perm, 0.3 0.5 0.7 0.9);
+* prop_v_alert_perm;		%sample_uniform(prop_v_alert_perm, 0.3 0.5 0.7    ); * mar 2025 ;
 
 
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
@@ -564,18 +567,19 @@ newp_seed = 7;
 							* reduced adherence in those with toxicity;
 * add_eff_adh_nnrti; 		add_eff_adh_nnrti=round(0.10* exp(rand('normal')*0.30),.01);	
 							* additional "effective" adh of nnrti due to longer half life;
-* adh_effect_of_meas_alert; %sample_uniform(adh_effect_of_meas_alert, 0.20 0.35 0.50 0.80);  * tld_switch_an (in core this is/was 0.35 0.70 0.90, 0.15 0.7 0.15);
+* adh_effect_of_meas_alert; %sample_uniform(adh_effect_of_meas_alert, 0.20 0.40 0.60 0.80); * mar 2025;
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
 * rate_int_choice;  		%sample(rate_int_choice, 	0.0010 0.0040 0.0080 0.012 , 
-														0.30 0.30 0.30 0.10 );  * tld_switch;
+														0.30 0.30 0.30 0.10 );  * mar 2025;
 
-* clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac,  0.7 0.9);  * tld_switch;
+* clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
+
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
-									0.3	   0.5  	0.7		1,
-									0.05   0.05 	0.05	0.85); * tld_switch;
+								0.0		0.1		0.7		1,
+								0.05	0.30	0.50	0.15);
 
 * red_int_risk_poc_vl;		%sample_uniform(red_int_risk_poc_vl, 0.7  0.8   0.9);  * relative reduction in risk of interrupting ART with poc vl monitoring;
 
@@ -599,10 +603,10 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;	
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							* dependent_on_time_step_length ;
-* pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  );   * tld_switch ;      
+* pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  );   * tld_switch mar 2025;      
 * pr_res_len;				%sample_uniform(pr_res_len, 0.005  0.01  0.02  0.05);   
 * incr_len_res_mono;		incr_len_res_mono = 10 ;
-* rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1.5 2 3 ); * laa_c ;
+* rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1.5 2 3 ); * laa_c - mar 2025 ;
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
 * greater_disability_tox;  	%sample_uniform(greater_disability_tox, 0 1);
@@ -644,7 +648,7 @@ newp_seed = 7;
 * effect_pcp_p_death_rate;	 	effect_pcp_p_death_rate = 0.8;
 * ind_effect_art_hiv_disease_death; 	ind_effect_art_hiv_disease_death = 0.6;
 
-* r_isr_cablen;				r_isr_cablen = 0.3;
+* r_isr_cablen;				r_isr_cablen = 0.3; * isr = injection site reaction ;
 * r_isr_resolve;			r_isr_resolve = 0.5; 
 
 
@@ -741,7 +745,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			prep_any_strategy = 18;
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -9003,7 +9007,6 @@ res_test=.;
 	end;
 
 	
-if int_clinic_not_aw=1 and lost = 1 then int_clinic_not_aw=0;
 if int_clinic_not_aw=1 and (lost = 1 or death ne .) then int_clinic_not_aw=0;
 
 if interrupt=1 then do; 
