@@ -1218,7 +1218,7 @@ ods html;
 proc sgplot data=d nolegend;
 Title    height=1.5 justify=center "Annual costs ($m discounted)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2074 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= '$m'		labelattrs=(size=12)  values = (  0      to 500       by 100      ) valueattrs=(size=10);
+yaxis grid label	= '$m'		labelattrs=(size=12)  values = (  0      to 300       by  50      ) valueattrs=(size=10);
 
   series  x=cald y=mean_dcost_0/	lineattrs = (color=black thickness = 2);
   series  x=cald y=mean_dcost_1/	lineattrs = (color=darkblue thickness = 2);
