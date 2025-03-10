@@ -2015,7 +2015,6 @@ p_vl1000_10y_1 p_vl1000_10y_2 p_vl1000_10y_3
 p_diag_10y_1 p_diag_10y_2 p_diag_10y_3 
 prevalence_vg1000_10y_1 prevalence_vg1000_10y_2 prevalence_vg1000_10y_3
 p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 
-p_oral_prep_pep_10y_1 p_oral_prep_pep_10y_2 p_oral_prep_pep_10y_3
 ;
 run;
 ods html close;
