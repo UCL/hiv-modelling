@@ -1041,7 +1041,7 @@ if run in (
 
 
 
-%let single_var = ddaly             ;
+%let single_var = dcost             ;
 
 
 proc sort data=b; by cald run ;run;
@@ -1213,7 +1213,23 @@ ods html ;
 
 
 
+ods html;
 
+proc sgplot data=d nolegend;
+Title    height=1.5 justify=center "Annual costs ($m discounted)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2074 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= '$m'		labelattrs=(size=12)  values = (  0      to 500       by 100      ) valueattrs=(size=10);
+
+  series  x=cald y=mean_dcost_0/	lineattrs = (color=black thickness = 2);
+  series  x=cald y=mean_dcost_1/	lineattrs = (color=darkblue thickness = 2);
+  series  x=cald y=mean_dcost_2/	lineattrs = (color=darkred   thickness = 2);
+
+run;quit;
+
+ods html close;
+
+
+/*
 
 ods html;
 
@@ -1230,7 +1246,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 /*
 
