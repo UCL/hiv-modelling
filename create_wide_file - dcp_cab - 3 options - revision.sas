@@ -427,6 +427,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_elig_offp_tm1_oralprep;  p_elig_offp_tm1_oralprep = s_elig_offprep_tm1_oralprep / s_elig_offprep_tm1 ;
 * p_elig_offp_tm1_injprep;   p_elig_offp_tm1_injprep = s_elig_offprep_tm1_injprep / s_elig_offprep_tm1 ;
 
+* p_oral_prep_pep;				p_oral_prep_pep = s_pep_not_prep / s_prep_oral;
 
 * prop_elig_dcp;				prop_elig_dcp = s_on_dcp_prep_elig / s_prep_any_elig;
 
@@ -1201,7 +1202,7 @@ prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_will
 
 art_cost_y adc_cost cd4_cost vl_cost vis_cost non_tb_who3_cost cot_cost tb_cost res_cost test_cost t_adh_int_cost switchline_cost cost_circ cost_condom_dn 
 cost_child_hiv cost_non_aids_pre_death cost_prep_visit cost_prep_oral cost_prep_inj cost_dcp_visit
-
+p_oral_prep_pep
 ;
 
 
@@ -1411,7 +1412,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=art_cost_y); %var(v=adc_cost); %var(v=cd4_cost); %var(v=vl_cost); %var(v=vis_cost); %var(v=non_tb_who3_cost); %var(v=cot_cost); %var(v=tb_cost); 
 %var(v=res_cost); %var(v=test_cost); %var(v=t_adh_int_cost); %var(v=switchline_cost); %var(v=cost_circ); %var(v=cost_condom_dn); 
 %var(v=cost_child_hiv); %var(v=cost_non_aids_pre_death); %var(v=cost_prep_visit); %var(v=cost_prep_oral); %var(v=cost_prep_inj); %var(v=cost_dcp_visit);
-
+%var(v=p_oral_prep_pep);
 
 
 
@@ -1456,7 +1457,7 @@ p_elig_offp_tm1_oralprep  p_elig_offp_tm1_injprep  prop_dcp_prep_any p_dcp_v1_pr
 prevalence_vg1000_w prevalence_vg1000_m
 art_cost_y adc_cost cd4_cost vl_cost vis_cost non_tb_who3_cost cot_cost tb_cost res_cost test_cost t_adh_int_cost switchline_cost cost_circ cost_condom_dn 
 cost_child_hiv cost_non_aids_pre_death cost_prep_visit cost_prep_oral cost_prep_inj cost_dcp_visit
-
+p_oral_prep_pep
 ;
 
 
@@ -1646,9 +1647,11 @@ proc sort; by run;run;
 
 
 
-* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ae_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ae_out\";
 
-data g; set b.w_dcp_cab_ae ;
+data g;
+  set b.w_dcp_cab_ae     ; 
+* set b.w_dcp_cab_ae_rev ;
 
   if incidence1549_24 ge 0.1;
   if hivtest_type_1_init_prep_inj = 0;
@@ -1688,6 +1691,7 @@ d_n_death_hiv_50y_3_1 = n_death_hiv_50y_3 - n_death_hiv_50y_1;
 
 d_ddaly_50y_2_1 = ddaly_50y_2 - ddaly_50y_1;
 d_ddaly_50y_3_1 = ddaly_50y_3 - ddaly_50y_1;
+d_ddaly_50y_3_2 = ddaly_50y_3 - ddaly_50y_2;
 
 d_ddaly_ac_ad_mtct_50y_2_1 = ddaly_ac_ad_mtct_50y_2 - ddaly_ac_ad_mtct_50y_1;
 d_ddaly_ac_ad_mtct_50y_3_1 = ddaly_ac_ad_mtct_50y_3 - ddaly_ac_ad_mtct_50y_1;
@@ -1698,7 +1702,8 @@ p_diag_m_24 = p_diag_m_24 / 100;
 * sens analysis;
 * dcost_dcp_visit_50y_2 = dcost_dcp_visit_50y_2 * ( 5 / 12);
 * dcost_dcp_visit_50y_3 = dcost_dcp_visit_50y_3 * ( 5 / 12);
-* dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * (2 / 6);
+* dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * 200 / 60;
+* dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * 0   / 60; * to give cost of cab la drug + visit of $60;
 
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
@@ -1744,6 +1749,7 @@ dclinical_care_costs_50y_3 = dadc_cost_50y_3 + dnon_tb_who3_cost_50y_3 + dtb_cos
 
 d_dcost_50y_2_1 = dcost_50y_2 - dcost_50y_1;
 d_dcost_50y_3_1 = dcost_50y_3 - dcost_50y_1;
+d_dcost_50y_3_2 = dcost_50y_3 - dcost_50y_2;
 
 netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
 netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
@@ -1757,6 +1763,7 @@ min_ddaly = min(ddaly_50y_1, ddaly_50y_2, ddaly_50y_3);
 min_dcost = min(dcost_50y_1, dcost_50y_2, dcost_50y_3);
 
 lowest_daly_3 = 0; if min_ddaly = ddaly_50y_3 then lowest_daly_3 = 1;
+x_lowest_daly_3 = 1 - lowest_daly_3;
 
 d_netdaly_3_1 = netdaly500_1 - netdaly500_3 ;
 
@@ -1764,8 +1771,11 @@ if netdaly500_1 = min_netdaly500 then lowest_netdaly=1;
 if netdaly500_2 = min_netdaly500 then lowest_netdaly=2;
 if netdaly500_3 = min_netdaly500 then lowest_netdaly=3;
 
+lowest_netdaly500_13_3 = 0; if netdaly500_3 < netdaly500_1 then lowest_netdaly500_13_3 = 1;
+
 lowest_netdaly_23=0; if lowest_netdaly=2 or lowest_netdaly=3 then lowest_netdaly_23=1;
 lowest_netdaly_3=0; if lowest_netdaly=3 then lowest_netdaly_3=1;
+x_lowest_netdaly_3 = 1 - lowest_netdaly_3;
 
 if ddaly_50y_1 = min_ddaly then lowest_ddaly=1;
 if ddaly_50y_2 = min_ddaly then lowest_ddaly=2;
@@ -1869,6 +1879,9 @@ min_netdaly1000 = min(netdaly1000_1, netdaly1000_2, netdaly1000_3);
 if netdaly1000_1 = min_netdaly1000 then lowest_netdaly1000=1;
 if netdaly1000_2 = min_netdaly1000 then lowest_netdaly1000=2;
 if netdaly1000_3 = min_netdaly1000 then lowest_netdaly1000=3;
+
+lowest_netdaly300_13_3 = 0; if netdaly300_3 < netdaly300_1 then lowest_netdaly300_13_3 = 1;
+lowest_netdaly1000_13_3 = 0; if netdaly1000_3 < netdaly1000_1 then lowest_netdaly1000_13_3 = 1;
 
 vis_plus_cost_5y_1 = vis_cost_5y_1 + t_adh_int_cost_5y_1 + switchline_cost_5y_1 ;
 vis_plus_cost_5y_2 = vis_cost_5y_2 + t_adh_int_cost_5y_2 + switchline_cost_5y_2 ;
@@ -1996,10 +2009,13 @@ prop_dcp_prep_elig_10y_1 prop_dcp_prep_elig_10y_2 prop_dcp_prep_elig_10y_3
 prevalence1549_10y_1 prevalence1549_10y_2 prevalence1549_10y_3 
 incidence1549_10y_1 incidence1549_10y_2 incidence1549_10y_3 
 r_incidence1549_10y_2_1 r_incidence1549_10y_3_1 
+n_infection_10y_1 n_infection_10y_2 n_infection_10y_3 
 mtct_prop_10y_1 mtct_prop_10y_2 mtct_prop_10y_3
 p_vl1000_10y_1 p_vl1000_10y_2 p_vl1000_10y_3 
 p_diag_10y_1 p_diag_10y_2 p_diag_10y_3 
-prevalence_vg1000_10y_1 prevalence_vg1000_10y_2 prevalence_vg1000_10y_3 
+prevalence_vg1000_10y_1 prevalence_vg1000_10y_2 prevalence_vg1000_10y_3
+p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 
+p_oral_prep_pep_10y_1 p_oral_prep_pep_10y_2 p_oral_prep_pep_10y_3
 ;
 run;
 ods html close;
@@ -2082,8 +2098,8 @@ proc means data = g n mean p50 p5 p95 lclm uclm;
   var 
 d_n_death_hiv_50y_2_1 d_n_death_hiv_50y_3_1 
 r_incidence1549_50y_2_1 r_incidence1549_50y_3_1 
-ddaly_50y_1 ddaly_50y_2 ddaly_50y_3   d_ddaly_50y_2_1  d_ddaly_50y_3_1  
-dcost_50y_1   dcost_50y_2 dcost_50y_3    d_dcost_50y_2_1 d_dcost_50y_3_1 
+ddaly_50y_1 ddaly_50y_2 ddaly_50y_3   d_ddaly_50y_2_1  d_ddaly_50y_3_1   d_ddaly_50y_3_2  
+dcost_50y_1   dcost_50y_2 dcost_50y_3    d_dcost_50y_2_1 d_dcost_50y_3_1  d_dcost_50y_3_2 
 netdaly500_1 netdaly500_2 netdaly500_3  d_netdaly500_2_1 d_netdaly500_3_1
 ;
 run;
@@ -2099,16 +2115,88 @@ proc freq data=g; tables lowest_netdaly  lowest_ddaly  lowest_dcost lowest_netda
 ods html close;
 
 
-ods html;
+
 
 proc means data = g mean;
 var d_dcost_50y_3_1 d_ddaly_50y_3_1 ;
-  where p_elig_prep_24_g = 1 and prevalence_vg1000_24_g = 3;
+  where p_elig_prep_24_g = 2 and prevalence_vg1000_24_g = 3;
 run;
 
+
+proc freq; tables lowest_netdaly300_13_3  lowest_netdaly500_13_3  lowest_netdaly1000_13_3 ; 
+  where p_elig_prep_24_g = 2 and prevalence_vg1000_24_g = 3;
+run;
+
+
+
+data gg; set g;
+   
+x_d_ddaly_50y_3_1 = - d_ddaly_50y_3_1;
+x_d_ddaly_50y_2_1 = - d_ddaly_50y_2_1;
+
+
+title;
+ods graphics on;
+ods html;
+proc sgplot nolegend;
+    xaxis label="DALYs averted" labelattrs=(size=12)  values=(-100000 to 600000 by 50000) valueattrs=(size=10); 
+    yaxis label="Increment in cost ($m)" values=(-50 to +200 by 50);
+    scatter x=x_d_ddaly_50y_3_1 y=d_dcost_50y_3_1 / markerattrs=(color=darkred symbol=circlefilled size=4);                      
+    scatter x=x_d_ddaly_50y_2_1 y=d_dcost_50y_2_1 / markerattrs=(color=darkblue symbol=circlefilled  size=4);
+	refline 0 / axis=x lineattrs=(color=black thickness=1);
+	refline 0 / axis=y lineattrs=(color=black thickness=1);
+run;
+
+title;
+ods graphics on;
+ods html;
+proc sgplot nolegend;
+    xaxis label="DALYs averted" labelattrs=(size=12)  values=(-100000 to 600000 by 50000) valueattrs=(size=10); 
+    yaxis label="Increment in cost ($m)" values=(-50 to +200 by 50);              
+    scatter x=x_d_ddaly_50y_2_1 y=d_dcost_50y_2_1 / markerattrs=(color=darkblue  symbol=circlefilled  size=4);
+	refline 0 / axis=x lineattrs=(color=black thickness=1);
+	refline 0 / axis=y lineattrs=(color=black thickness=1);
+run;
+
+title;
+ods graphics on;
+ods html;
+proc sgplot nolegend;
+    xaxis label="DALYs averted" labelattrs=(size=12)  values=(-100000 to 600000 by 50000) valueattrs=(size=10); 
+    yaxis label="Increment in cost ($m)" values=(-50 to +200 by 50);
+    scatter x=x_d_ddaly_50y_3_1 y=d_dcost_50y_3_1 / markerattrs=(color=darkred symbol=circlefilled size=4);       
+	refline 0 / axis=x lineattrs=(color=black thickness=1);
+	refline 0 / axis=y lineattrs=(color=black thickness=1); 
+run;
 ods html close;
 
 
+
+
+
+* concise parsimoneous model that captures the key influences ; 
+ods html;
+proc logistic data = g;
+class prevalence_vg1000_24_g p_elig_prep_24_g;
+model x_lowest_netdaly_3 = prevalence_vg1000_24_g p_elig_prep_24_g ; 
+run;
+ods html close;
+
+ods html;
+proc logistic data = g;
+class prevalence_vg1000_24_g p_elig_prep_24_g;
+model x_lowest_daly_3 = prevalence_vg1000_24_g  ; 
+run;
+ods html close;
+
+
+
+
+
+
+proc logistic data = g;
+model lowest_netdaly_3 = incidence1549_24_g p_elig_prep_24 ; 
+run;
 
 
 proc logistic data = g;
@@ -2119,22 +2207,9 @@ proc logistic data = g;
 model lowest_netdaly_3 = p_diag_24 prevalence1549_24 p_elig_prep_24 ; 
 run;
 
-* how to justify this as the model to end up using ? - just as before and just present this model  ; 
-ods html;
-proc logistic data = g;
-model lowest_netdaly_3 = prevalence_vg1000_24_g p_elig_prep_24 ; 
-run;
-ods html close;
-
-proc logistic data = g;
-model lowest_netdaly_3 = incidence1549_24_g p_elig_prep_24 ; 
-run;
-
-
 proc logistic data = g;
 model lowest_netdaly_3 = prevalence1549_24_g p_elig_prep_24 ; 
 run;
-
 
 
 proc logistic data = g;
@@ -2142,11 +2217,10 @@ model lowest_netdaly_3 = p_diag_24 p_onart_diag_24 p_onart_vl1000_24 prevalence1
 run;
 
 
-ods html;
 proc logistic data = g;
 model lowest_daly_3 = prevalence_vg1000_24_g  ; 
 run;
-ods html close;
+
 
 
 
