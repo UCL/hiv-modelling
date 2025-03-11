@@ -21993,6 +21993,12 @@ if s_alive1549_m gt 0 then prevalence1549m =  s_hiv1549m / s_alive1549_m;
 if s_alive1549_w gt 0 then prevalence1549w =  s_hiv1549w / s_alive1549_w;
 if prevalence1524m gt 0 then prev_ratio_1524 = prevalence1524w / prevalence1524m ;
 
+s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
+s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
+s_hivge15 = s_hivge15m + s_hivge15w ;
+if s_hivge15  > 0 then p_vg1000 = s_vg1000 / s_hivge15 ;  p_vl1000 = 1- p_vg1000 ;
+
+
 prevalence2024w = s_hiv2024w  / s_ageg2024w ;
 prevalence2024m = s_hiv2024m  / s_ageg2024m ;
 prevalence2529w = s_hiv2529w  / s_ageg2529w ;
@@ -23150,7 +23156,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549
+prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549 p_vl1000
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
@@ -26008,7 +26014,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw  prev_vg1000_1549
+prevalence1549  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw  prev_vg1000_1549 p_vl1000
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
