@@ -903,9 +903,11 @@ end;
 
 
 * sens_vct_testtype3_cab_tail;	%sample_uniform(sens_vct_testtype3_cab_tail, 0.50 0.8 0.98);
-* sens_vct_testtype3_len_tail;	%sample_uniform(sens_vct_testtype3_len_tail, 0.50 0.8 0.98);
+* sens_vct_testtype3_len_tail;	sens_vct_testtype3_len_tail = sens_vct_testtype3_cab_tail;
 
-* reg_option_107_after_cab;		%sample(reg_option_107_after_cab, 0 1, 0.8 0.2); reg_option_107_after_cab=0;
+* reg_option_107_after_cab;		%sample(reg_option_107_after_cab, 0 1, 0.8 0.2); reg_option_107_after_cab=0; 
+								* this means starting atazanavir as a first line regimen in people who had previous cab prep - if this policy is to be considered 
+								we may want to change atazanavir to darunavir at a certain calendar year;
 
 
 * DAPIVIRINE VAGINAL RING PREP ; * dpv-vr;
@@ -941,7 +943,7 @@ end;
 
 * adh_effect_comm_tld;			%sample_uniform(adh_effect_comm_tld, 0 0.05 0.1 0.2);
 
-* POP WIDE TLD * ;
+* POP WIDE TLD * ;  * intention is probably to take this out from Core when cioa / community tld is added to Core; 
 
 * rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 2 3 5);
 
