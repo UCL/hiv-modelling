@@ -2761,7 +2761,7 @@ if caldate{t} = &year_interv then do;
 	ten_is_taf_year_i = 0; *coded within core (not below options code);
 
 	*increase in rates of circumcision;
-	if circ_inc_rate_set_in_opts ne 1 then circ_inc_rate_year_i; *variations coded in circumcision section;
+	if circ_inc_rate_set_in_opts ne 1 then circ_inc_rate_year_i = 1; *variations coded in circumcision section;
 
 	*increase in condom use;
 	if condom_incr_set_in_opts ne 1 then condom_incr_year_i = 0; *coded within core (not below options code);
