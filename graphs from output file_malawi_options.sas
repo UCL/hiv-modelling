@@ -22,11 +22,11 @@ data c;
   set a.long_mlw_h;
 
 
-if option in (0 1   3 4 5 6 7 8 9 10 11 12         ) then delete;
+if option in (0 1 2 3 4 5 6 7 8 9 10 11 12         ) then delete;
 
 * if option=0 and cald gt 2023 then delete;
 
-  if option = 2 then option = 1;
+* if option = 2 then option = 1;
   if option = 99 then option = 0;
 
 
@@ -1040,7 +1040,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_diag_self_test";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000    by 1000   ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000  by 10000  ) valueattrs=(size=10);
 label mean_n_diag_self_test_0 = "Option 0 (median) ";
 label mean_n_diag_self_test_1 = "Option 1 (median) ";
 
