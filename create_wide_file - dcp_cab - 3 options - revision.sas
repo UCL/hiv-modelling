@@ -25,6 +25,7 @@ run;
 */
 
 
+
 proc sort data=b.k_dcp_cab_ae; 
 by run cald option;
 run;
@@ -442,7 +443,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_prep_tm1_elig_onprep;		p_prep_tm1_elig_onprep = s_prep_tm1_remain_elig_onprep / s_prep_tm1_remain_elig ;
 
 * proportion of prep/dcp eligible people who have taken prep in the past 3 years who remain on prep  ; 
-* p_prep_past3yr_elig_onprep; p_prep_past3yr_elig_onprep = s_prep_past3yr_cur_elig_onprep / s_prep_past3yr_cur_elig ;
+* p_prep_past3yr_elig_onprep; p_prep_past3yr_elig_onprep = (s_prep_past3yr_cur_elig_onprep - s_prep_any_start) / (s_prep_past3yr_cur_elig - s_prep_any_start); * dont want to count those who started prep for the first time this period;
 
 * to calculate: proportion who are on dcp and remain eligible who drop off per 3 months ;
 * p_dcp_tm1_rem_elig_offdcp;	p_dcp_tm1_rem_elig_offdcp = s_dcp_tm1_remain_elig_off_dcp / s_dcp_tm1_remain_elig ; 	   
@@ -1650,8 +1651,8 @@ proc sort; by run;run;
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ae_out\";
 
 data g;
-  set b.w_dcp_cab_ae     ; 
-* set b.w_dcp_cab_ae_rev ;
+* set b.w_dcp_cab_ae     ; 
+  set b.w_dcp_cab_ae_rev ;
 
   if incidence1549_24 ge 0.1;
   if hivtest_type_1_init_prep_inj = 0;
