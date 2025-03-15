@@ -6,11 +6,11 @@ ods html close;
 * libname a "C:\Users\rmjlja9\OneDrive - University College London\MIHPSA Malawi\HIV Synthesis outputs\MIHPSA Phase II\mw_mihpsa_O99_29thApr24";
 * libname b "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mw_mihpsa_O99_out_29thApr24";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_h_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_i_out\";
 
 /*
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_h_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_i_out\";
 
 data g ; set a.out: ;
 
@@ -1385,11 +1385,11 @@ proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_mlw_h; set y;
+data a.long_mlw_i; set y;
 if cald=. then delete;run;
 /*proc freq data=a.long_20240429; table s_alive;run;*/
 /*proc freq data=a.long_20240429; table p_ep;run;*/
-proc contents data = a.long_mlw_h; run;
+proc contents data = a.long_mlw_i; run;
 
 
 
@@ -1399,10 +1399,10 @@ proc contents data = a.long_mlw_h; run;
 
 * producing the output files for debra and rob;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_h_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_i_out\";
 
 
-data y; set a.long_mlw_h; 
+data y; set a.long_mlw_i; 
 
 keep
 
