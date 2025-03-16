@@ -1704,7 +1704,7 @@ p_diag_m_24 = p_diag_m_24 / 100;
 * dcost_dcp_visit_50y_2 = dcost_dcp_visit_50y_2 * ( 5 / 12);
 * dcost_dcp_visit_50y_3 = dcost_dcp_visit_50y_3 * ( 5 / 12);
 * dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * 200 / 60;
-* dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * 0   / 60; * to give cost of cab la drug + visit of $60;
+  dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * 0   / 60; * to give cost of cab la drug + visit of $60;
 
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
@@ -2015,7 +2015,8 @@ mtct_prop_10y_1 mtct_prop_10y_2 mtct_prop_10y_3
 p_vl1000_10y_1 p_vl1000_10y_2 p_vl1000_10y_3 
 p_diag_10y_1 p_diag_10y_2 p_diag_10y_3 
 prevalence_vg1000_10y_1 prevalence_vg1000_10y_2 prevalence_vg1000_10y_3
-p_iime_10y_1 p_iime_10y_2 p_iime_10y_3 
+p_iime_10y_1 p_iime_10y_2 p_iime_10y_3
+p_oral_prep_pep_10y_1 p_oral_prep_pep_10y_2 p_oral_prep_pep_10y_3 
 ;
 run;
 ods html close;
