@@ -931,17 +931,6 @@ end;
 
 
 
-* COMM TLD ;
-
-* r_choose_stop_prep_oral_comm_tld;  %sample_uniform(r_choose_stop_prep_oral_comm_tld, 0.00  0.01 0.03 ); 
-
-* r_test_startprep_any_comm_tld;  %sample_uniform(r_test_startprep_any_comm_tld, 0.5  0.7  0.9); 
-
-* prob_prep_oral_b_comm_tld;	%sample_uniform(prob_prep_oral_b_comm_tld, 0.5  0.7  0.9);
-
-* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.3 0.5 0.7 0.9);    
-
-* adh_effect_comm_tld;			%sample_uniform(adh_effect_comm_tld, 0 0.05 0.1 0.2);
 
 * POP WIDE TLD * ;  * intention is probably to take this out from Core when cioa / community tld is added to Core; 
 
@@ -20815,8 +20804,7 @@ msm_rred red_chance_ep_msm prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_fem
 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
-incr_pref_prep_oral_comm_tld r_choose_stop_prep_oral_comm_tld   r_test_startprep_any_comm_tld   prob_prep_oral_b_comm_tld
-p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw adh_effect_comm_tld
+p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency  isl_higher_potency  isl_ole_adh_improve
@@ -22884,9 +22872,8 @@ rate_tb_proph_init rate_sbi_proph_init
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
-incr_pref_prep_oral_comm_tld r_choose_stop_prep_oral_comm_tld   r_test_startprep_any_comm_tld   prob_prep_oral_b_comm_tld
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b  prob_prep_len_b prob_prep_vr_b prep_cab_efficacy  prep_len_efficacy   prop_pep  pep_efficacy 
-rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr adh_effect_comm_tld
+rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr 
 
 prep_cab_effect_inm_partner pref_prep_cab_beta_s1 incr_res_risk_cab_inf_3m prep_len_effect_cam_partner pref_prep_len_beta_s1 incr_res_risk_len_inf_3m 
 
