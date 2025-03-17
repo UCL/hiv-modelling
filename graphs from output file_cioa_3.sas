@@ -257,7 +257,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title ''; * * Title    height=1.5 justify=center "Incidence (age 15-49)";
+* Title '';     Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.5       by 0.1     ) valueattrs=(size=10);
 
