@@ -2009,8 +2009,8 @@ ods html close;
 
 
 
-
 /*
+
 
 * mean ddalys averted, d_infections averted and cost incurred for 2024-204 - and icer and cpia - by model and intervention - including range;
 
@@ -2744,7 +2744,10 @@ run;
 
 ods html close;
 
+*/
 
+
+/*
 
 * plots of ranges of cpias across models by intervention ;
 
@@ -3130,7 +3133,7 @@ ods html close;
 
 
 
-/*
+
 
 * mean ddalys averted and cost incurred for 2024-2040 - and icer by model and intervention - including mean and range;
 
@@ -3509,8 +3512,7 @@ data cost_ddaly; merge ddalys_averted dcost_incurred ;
 icer=.; if effect_dcost > 0 and effect_ddalys < 0 then icer = effect_dcost / (-effect_ddalys);
 if . < effect_dcost <= 0 and effect_ddalys < 0 then icer = 0; if effect_ddalys >= 0 then icer=1000000;
 
-icer = log10(icer+1);
-
+* icer = log10(icer+1);
 
 * plots of mean and range of icers across models by intervention ;
 
@@ -3599,6 +3601,11 @@ if intervention = 14 then int_name = 'n ART_coverage_PLW';
 if intervention = 15 then int_name = 'o AHD_package';
 
 ods html;
+proc print;
+run;
+ods html close;
+
+ods html;
 proc sgplot data=all_icer nolegend;
    title "ICER by Intervention (mean and range over models)";
    highlow x=int_name low=lower high=upper / type=bar lineattrs=(color=black thickness=2);
@@ -3608,7 +3615,7 @@ proc sgplot data=all_icer nolegend;
 run;
 ods html close;
 
-*/
+
 
 
 
