@@ -1164,11 +1164,11 @@ end;
 
 * r_choose_stop_prep_oral_comm_tld;  %sample_uniform(r_choose_stop_prep_oral_comm_tld, 0.01 0.03 0.05 0.10 ); 
 
-* r_test_startprep_any_comm_tld;  %sample_uniform(r_test_startprep_any_comm_tld, 0.5  0.7  0.9); 
+* r_test_startprep_any_comm_tld;  %sample_uniform(r_test_startprep_any_comm_tld, 0.5  0.7  ); 
 
-* prob_prep_oral_b_comm_tld;	%sample_uniform(prob_prep_oral_b_comm_tld, 0.1 0.2 0.3  0.5  0.7  0.9);
+* prob_prep_oral_b_comm_tld;	%sample_uniform(prob_prep_oral_b_comm_tld, 0.1 0.2 0.3  0.5  0.7  );
 
-* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.0 0.1 0.3 0.5 0.7 0.9);    
+* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.0 0.1 0.3 0.5 0.7 );    
 
 * adh_effect_comm_tld;			%sample_uniform(adh_effect_comm_tld, 0 0.05 0.1 0.2);
 
