@@ -1281,6 +1281,8 @@ n_new_inf1549w = s_primary1549w * sf * 4;
 n_new_inf1549 = s_primary1549 * sf * 4;
 n_infection  = s_primary     * sf * 4;
 
+n_infection_incl_mtct = (s_primary + s_mtct)   * sf * 4;
+
 * p_onartvisit0;				if s_onart gt 0 then p_onartvisit0 = s_onartvisit0 / s_onart ;
 
 * p_onartvisit0_vl1000;			p_onartvisit0_vl1000 = s_onartvisit0_vl1000 / s_onartvisit0;
@@ -1407,6 +1409,8 @@ p_len_w p_len_m  p_diag_vl1000  p_len_plw  pr_res_len prevalence15pl  n_death_hi
 n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0  dcost_sw_program n_self_tested  by rr_mort_tdf_prep n_adc
 
 artvis0_lower_adh  rate_dead_hivpos_cause1  dcost_self_test  n_prep_oral  prep_dependent_prev_vg1000 rate_self_test_if_introduced self_test_targeting
+
+n_infection_incl_mtct
 ;
 
  
@@ -1643,7 +1647,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);   %var(v=dvis_cost_lencab) ; %var(v=n_mtct);
 %var(v=p_ever_len_v_failed);  %var(v=p_diag_vl1000);  %var(v=p_len_plw); %var(v=p_len_w); %var(v=p_len_m);  %var(v=p_onartvisit0_vl1000);
 %var(v=p_onartvisit0);  
-
+%var(v=n_infection_incl_mtct);
 %var(v=cost);  %var(v=prevalence15pl);  %var(v=n_self_tested); %var(v=dcost_self_test);
 %var(v=n_prep_oral);
 %var(v=n_pop_wide_tld_as_art) %var(v=n_pop_wide_tld_prep) %var(v=p_oral_pep_not_prep);  %var(v=dcost_sw_program);  %var(v=n_adc);
@@ -1708,7 +1712,7 @@ s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uv
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
 p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
 p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct p_ever_len_v_failed  p_diag_vl1000  p_len_plw  p_len_w  p_len_m prevalence15pl
-n_prep_oral
+n_prep_oral  n_infection_incl_mtct
 n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0 dcost_sw_program  n_self_tested n_adc dcost_self_test
 ;
 
