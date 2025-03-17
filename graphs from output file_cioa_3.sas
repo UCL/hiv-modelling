@@ -40,7 +40,7 @@ p_newp_ge1_ = p_newp_ge1;
 
 
 
-%let single_var = p_diag                        ;
+%let single_var = incidence1549_                ;
 
 
 
@@ -253,7 +253,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -274,7 +274,7 @@ run;quit;
 
 * ods html close;
 
-*/
+
 
 /*
 
@@ -507,7 +507,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -526,7 +526,7 @@ band    x=cald lower=p5_p_diag_2 upper=p95_p_diag_2 / transparency=0.9 fillattrs
 
 run;quit;
 
-
+*/
 
 /*
 
