@@ -5,11 +5,14 @@ add another option - option 1 without prep
 
 perhaps change all testing to self testing, except higher cost of confirmatory tests before treatment started
 
-check I am fully funding ahd explicitly modelling ahd interventions
-
 changed prep parameter distributions for comm tld
 
 clinical monitoring with vl confirmation from year interv for all options
+
+
+check I am fully funding ahd explicitly modelling ahd interventions
+
+consider whether need to differentiate adc cost by adc and whether $200 is ok as average cost
 
 ;
 
@@ -569,14 +572,14 @@ newp_seed = 7;
 * prop_adc_sbi;				prop_adc_sbi = 0.15;
 
 * following values are placeholders - should result in similar aids and death rate to previous coding;
-* rate_crypm_proph_init;	rate_crypm_proph_init = 0.01; * placeholder ;
-* rate_tb_proph_init; 		rate_tb_proph_init = 0.01;  * placeholder;
+* rate_crypm_proph_init;	rate_crypm_proph_init = 0.03; * placeholder ;
+* rate_tb_proph_init; 		rate_tb_proph_init = 0.03;  * placeholder;
 * rate_sbi_proph_init;		rate_sbi_proph_init = 0;
 * effect_tb_proph;			effect_tb_proph = 0.5; 					* effect of tb prophylaxis on risk of tb;
 * effect_crypm_proph;		effect_crypm_proph = 0.5; 				* as above for crypm;
 * effect_sbi_proph;			effect_sbi_proph = 0.5;
 * tblam_eff_prob_diag_l;	tblam_eff_prob_diag_l = 0.5; 			* effect of tb lam test on tb being diagnosed late;
-* crag_eff_prob_diag_l;		crag_eff_prob_diag_l = 0.5; 			* effect of    test on crypm being diagnosed late;  
+* crag_eff_prob_diag_l;		crag_eff_prob_diag_l = 0.5; 			* effect of crag test on crypm being diagnosed late;  
 
 * tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.25 0.50 0.75); 			* base probability that tb is diagnosed late ;
 * crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.25 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
