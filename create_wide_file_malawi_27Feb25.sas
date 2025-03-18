@@ -1,7 +1,7 @@
 libname a  "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
 
 data a;
-set a.mlw_27Feb25;
+set a.malawi_27Feb25;
 if run=. then delete;
 
 *if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
@@ -10,6 +10,26 @@ takes ages to run so cut down dataset;
 
 proc sort;by run;run;
 proc freq;table cald run;run;
+
+data b;
+set a;
+
+if (cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19)) or
+   (cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19)) or  
+   (cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20)) or
+   (cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13)) then a=1;
+
+
+	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+end;
+
+data b;
+set a;
+
+***Abort statements did not work so doing the aborts here;
+
+
+
 
 
 data sf;
