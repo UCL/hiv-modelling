@@ -9,6 +9,8 @@ check I am fully funding ahd explicitly modelling ahd interventions
 
 changed prep parameter distributions for comm tld
 
+clinical monitoring with vl confirmation from year interv for all options
+
 ;
 
 
@@ -2443,7 +2445,8 @@ if caldate_never_dot >= &year_interv then do;
 who may be dead and hence have caldate{t} missing;
 
 * this is a change from &year_interv that we assume will occur regardless of option;
-	vl_monitoring_to_vm_lt3 = 1; only_one_vm_for_sv = 1; * so reduced clinic costs thereafter; 
+*	vl_monitoring_to_vm_lt3 = 1; only_one_vm_for_sv = 1; * so reduced clinic costs thereafter; 
+    art_mon_strategy_set_in_options=1; art_monitoring_strategy_options = 3; art_monitoring_strategy=3;  * clinical monitoring with 2 x vl confirmation;
 	vis_cost_a=(.005); * lowered from $10 - see below ;
 	redn_in_vis_cost_vlm_supp = 0.000 ; * cioa - removed this and assume that no special attention paid to adherence (except if vm > 1000);
 	* drug costs have come down further; 
@@ -2463,7 +2466,6 @@ who may be dead and hence have caldate{t} missing;
 		end;
   		if hard_reach=1 and gender=1 then hard_reach_vmmc=1; hard_reach=0; 	* reduce hard reach for testing and self testing and prep pep but not vmmc;
 		regular_testing_stops = 1;
-		vl_monitoring_to_vm_lt3 = 1; only_one_vm_for_sv = 1; * so reduced clinic costs thereafter; 
 		eff_sens_vct = 0.93; sens_vct = 0.93; sens_primary_testtype3 = 0; 
 		sens_vct_testtype3_cab_tail=0; sens_vct_testtype3_len_tail=0;
 		cost_test_c = 0.0015;
@@ -2490,7 +2492,6 @@ who may be dead and hence have caldate{t} missing;
 		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
   		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 		regular_testing_stops = 1;
-		vl_monitoring_to_vm_lt3 = 1; only_one_vm_for_sv = 1; * so reduced clinic costs thereafter; 
 		eff_sens_vct = 0.93; sens_vct = 0.93; sens_primary_testtype3 = 0; sens_ttype3_prep_cab_primary=0;sens_ttype3_prep_len_primary=0;
 		sens_ttype3_prep_cab_inf3m=0; sens_ttype3_prep_len_inf3m=0; sens_ttype3_prep_len_infge6m = 0.93;sens_ttype3_prep_cab_infge6m = 0.93;
 		sens_vct_testtype3_cab_tail=0; sens_vct_testtype3_len_tail=0;
@@ -2534,7 +2535,6 @@ who may be dead and hence have caldate{t} missing;
 		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
   		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 		regular_testing_stops = 1;
-		vl_monitoring_to_vm_lt3 = 1; only_one_vm_for_sv = 1; * so reduced clinic costs thereafter; 
 		eff_sens_vct = 0.93; sens_vct = 0.93; sens_primary_testtype3 = 0; sens_ttype3_prep_cab_primary=0;sens_ttype3_prep_len_primary=0;
 		sens_ttype3_prep_cab_inf3m=0; sens_ttype3_prep_len_inf3m=0; sens_ttype3_prep_len_infge6m = 0.93;sens_ttype3_prep_cab_infge6m = 0.93;
 		sens_vct_testtype3_cab_tail=0; sens_vct_testtype3_len_tail=0;
@@ -3215,6 +3215,9 @@ if absence_vl_year_i ne 1 and art_mon_strategy_in_options ne 1 then do;
 	if reg_option in (112 114) and caldate{t}-yrart ge 1 then art_monitoring_strategy=150;
 	if caldate{t} ge 2026 and o_cab=1 and o_len=1 then art_monitoring_strategy = 1700; 
 end;
+
+
+if art_mon_strategy_set_in_options=1 then art_monitoring_strategy = art_monitoring_strategy_options ;
 
 
 
