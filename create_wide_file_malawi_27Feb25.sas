@@ -555,17 +555,13 @@ if run in (
 ) then delete;
 
 proc freq;table cald;run;
-data b;
-set a;
-
-***Abort statements did not work so doing the aborts here;
-
 
 
 
 
 data sf;
-set a;
+*set a;
+set c;
  
 *Malawi;
 *Source for Zimbabwe population is https://wdi.worldbank.org/table/2.1 (58%>15);
@@ -581,7 +577,8 @@ proc sort; by run;run;
 
 
 data y; 
-merge a sf;
+*merge a sf;
+merge c sf;
 by run ;
 
 *if run ne  989218009 then delete;
@@ -2076,7 +2073,7 @@ n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 437 ;
+%let nfit = 22 ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -2645,9 +2642,9 @@ l_n_dead_Agt6_cd4gt200&age		l_n_dead_Agt6_cd4gt200&mage 		l_n_dead_Agt6_cd4gt200
 ods listing close;
 ods results off;
 
-ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_MLW04Dec24.xlsx"
+ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_MLW27Feb25.xlsx"
 options(sheet_name='base' start_at='A2');
-proc print data=a.wide_base noobs;run;
+proc print data=wide_base ;run;
 
 **This macro avoids having to write out these lines for each age band;
 %macro out(age);
