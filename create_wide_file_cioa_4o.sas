@@ -1944,9 +1944,12 @@ if p_onart_diag_w_24 > 0.85;
 if p_onart_vl1000_m_24 > 0.80;
 if p_onart_vl1000_w_24 > 0.80;
 
-ods html;
-proc print noobs; var run; run; 
-ods html close;
+
+* ods html;
+* proc print noobs; 
+* var run; 
+* run; 
+* ods html close;
 
  
 d_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 - n_death_hiv_10y_1;
@@ -2425,26 +2428,26 @@ title '';
 proc means data=f mean lclm uclm;
 var 
 
-n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 
-d_n_death_hiv_50y_3_1 d_n_death_hiv_50y_2_1 
-r_n_death_hiv_50y_3_1 r_n_death_hiv_50y_2_1 
+n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3  n_death_hiv_50y_4 
+d_n_death_hiv_50y_4_1 d_n_death_hiv_50y_3_1 d_n_death_hiv_50y_2_1 
+r_n_death_hiv_50y_4_1 r_n_death_hiv_50y_3_1 r_n_death_hiv_50y_2_1 
 
-dcost_50y_1  dcost_50y_2   dcost_50y_3   
-d_dcost_50y_2_1 d_dcost_50y_3_1 
+dcost_50y_1  dcost_50y_2   dcost_50y_3    dcost_50y_4   
+d_dcost_50y_2_1 d_dcost_50y_3_1  d_dcost_50y_4_1 
 
-ddaly_50y_1  ddaly_50y_2  ddaly_50y_3  
-d_ddaly_50y_2_1  d_ddaly_50y_3_1  
-dalys_averted_2_1 dalys_averted_3_1 
-d_ddaly_gbd_50y_2_1 d_ddaly_gbd_50y_3_1 
+ddaly_50y_1  ddaly_50y_2  ddaly_50y_3   ddaly_50y_4
+d_ddaly_50y_2_1  d_ddaly_50y_3_1   d_ddaly_50y_4_1  
+dalys_averted_2_1 dalys_averted_3_1 dalys_averted_4_1 
+d_ddaly_gbd_50y_2_1 d_ddaly_gbd_50y_3_1  d_ddaly_gbd_50y_4_1 
 
-netdaly500_1  netdaly500_2 netdaly500_3 
-d_netdaly500_2_1 d_netdaly500_3_1 
-netdaly_gbd500_1 netdaly_gbd500_2  netdaly_gbd500_3  
-d_netdaly_gbd500_2_1 d_netdaly_gbd500_3_1 
-netdaly300_1 netdaly300_2  netdaly300_3 
-d_netdaly300_2_1 d_netdaly300_3_1  
-netdaly150_1 netdaly150_2  netdaly150_3   
-d_netdaly150_2_1 d_netdaly150_3_1  
+netdaly500_1  netdaly500_2 netdaly500_3  netdaly500_4 
+d_netdaly500_2_1 d_netdaly500_3_1  d_netdaly500_4_1 
+netdaly_gbd500_1 netdaly_gbd500_2  netdaly_gbd500_3    netdaly_gbd500_4  
+d_netdaly_gbd500_2_1 d_netdaly_gbd500_3_1  d_netdaly_gbd500_4_1 
+netdaly300_1 netdaly300_2  netdaly300_3  netdaly300_4 
+d_netdaly300_2_1 d_netdaly300_3_1   d_netdaly300_4_1  
+netdaly150_1 netdaly150_2  netdaly150_3   netdaly150_4   
+d_netdaly150_2_1 d_netdaly150_3_1   d_netdaly150_4_1  
 
 ;
 run;
