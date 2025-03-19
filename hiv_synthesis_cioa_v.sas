@@ -1,3 +1,20 @@
+* cioa_v
+
+introduced names for rr_return_comm_tld rr_interrupt_comm_tld rather than use pop_wide_tld names
+
+aborting some setting scenarios as in laa ms
+
+check I am fully funding ahd explicitly modelling ahd interventions
+
+consider whether need to differentiate adc cost by adc and whether $200 is ok as average cost
+
+;
+
+
+
+
+
+
 
 * cioa_u
 
@@ -1176,6 +1193,13 @@ end;
 * incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.0 0.1 0.3 0.5 0.7 );    
 
 * adh_effect_comm_tld;			%sample_uniform(adh_effect_comm_tld, 0 0.05 0.1 0.2);
+
+
+* COMM TLD;
+
+* rr_return_comm_tld;			%sample_uniform(rr_return_comm_tld, 2 3 5);
+
+* rr_interrupt_comm_tld;		%sample_uniform(rr_interrupt_comm_tld, 1/2 1/3  1/5  1/10);
 
 
 
@@ -2460,8 +2484,8 @@ who may be dead and hence have caldate{t} missing;
 
 	if option=1 then do;
 		if comm_tld_set_in_options ne 1 then do;
-			eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
-			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
+			eff_rate_return = eff_rate_return * rr_return_comm_tld ; 
+			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_comm_tld ;
 			rate_self_test=rate_self_test_if_introduced;
 			comm_tld_set_in_options = 1;
 			adhav = min(1, adhav + adh_effect_comm_tld);
@@ -2479,8 +2503,8 @@ who may be dead and hence have caldate{t} missing;
 	if option=2 then do;
 		if comm_tld_set_in_options ne 1 then do;
 			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
-			eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
-			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
+			eff_rate_return = eff_rate_return * rr_return_comm_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
+			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_comm_tld ;
 			rate_self_test=rate_self_test_if_introduced;
 		 	start_pep_prep_without_test = 1;continue_pep_prep_without_test=1;
 			rate_test_startprep_any = r_test_startprep_any_comm_tld;
@@ -2522,8 +2546,8 @@ who may be dead and hence have caldate{t} missing;
 
 		if comm_tld_set_in_options ne 1 then do;
 			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
-			eff_rate_return = eff_rate_return * rr_return_pop_wide_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
-			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_pop_wide_tld ;
+			eff_rate_return = eff_rate_return * rr_return_comm_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
+			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_comm_tld ;
 			rate_self_test=rate_self_test_if_introduced;
 		 	start_pep_prep_without_test = 1; continue_pep_prep_without_test=1;
 			rate_test_startprep_any = r_test_startprep_any_comm_tld;
@@ -21215,6 +21239,7 @@ sens_ttype3_prep_len_primary sens_ttype3_prep_len_inf3m sens_ttype3_prep_len_inf
 sens_ttype1_prep_len_primary sens_ttype1_prep_len_inf3m sens_ttype1_prep_len_infge6m  sens_tests_prep_len
 sens_vct_testtype3_len_tail sens_primary_testtype3   testt1_prep_len_eff_on_res_prim  
 
+rr_return_comm_tld rr_interrupt_comm_tld  
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_hiv_concern  prob_onartvis0_1_to_0 prob_onartvis0_0_to_1
 pref_prep_oral_beta_s1 prob_prep_pop_wide_tld  pop_wide_tld  prob_test_pop_wide_tld_prep  pop_wide_tld_selective_hiv res_level_dol_cab_mut res_level_len_mut
 super_inf_res  oral_prep_eff_3tc_ten_res  rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
@@ -24296,6 +24321,7 @@ sens_ttype3_prep_len_primary sens_ttype3_prep_len_inf3m sens_ttype3_prep_len_inf
 sens_ttype1_prep_len_primary sens_ttype1_prep_len_inf3m sens_ttype1_prep_len_infge6m  sens_tests_prep_len
 sens_vct_testtype3_len_tail sens_primary_testtype3  testt1_prep_len_eff_on_res_prim  
 
+rr_return_comm_tld rr_interrupt_comm_tld  
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_hiv_concern  prob_onartvis0_1_to_0 prob_onartvis0_0_to_1
 pref_prep_oral_beta_s1
 
