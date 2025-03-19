@@ -1115,7 +1115,6 @@ vis_cost_a=(.010); * changed july 24 due to data from sydney rosen showing very 
 redn_in_vis_cost_vlm_supp = 0.005 ;* changed july 24 due to data from sydney rosen showing very low clinic costs;
 vis_cost_cab_len_a = 0.015 ; * the cost of clinic visits per 3 months if on la cab len treatment ;
 cost_offered_return_for_lencab = 0.000; * set to zero as have $15 per 3 months for lencab clinic costs which seems on high side ;
-cost_child_hiv_a = 0.030; 
 cost_child_hiv_at_child_inf_a = 1.000; * this is the total cost for the infected child for their lifetime all applied at infection;
 cost_child_hiv_mo_art_a = 0.030; 
 prep_oral_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
@@ -1285,7 +1284,7 @@ inc13=0.012;
 end;
 
 if inc_cat=2 then do;
-inc1=0.1700; *-65 to -55;
+inc1=0.1700; *-69 to -55;
 inc2=0.1250; *-55 to -45;
 inc3=0.1150; *-45 to -35;
 inc4=0.1050; *-35 to -25;
@@ -2112,7 +2111,8 @@ do until (t=&f);
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
  
 
-if t ge 2 then caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time_step_length ;
+if t ge 2 then caldate_never_dot = &year; 		*JAS Feb24;
+* if t ge 2 then caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
 caldate_never_dot = caldate_never_dot + (1/12);
 
@@ -2137,6 +2137,7 @@ newp_tm2=newp_tm1;
 np_tm2=np_tm1;
 registd_tm2 = registd_tm1;
 onart_tm2=onart_tm1;
+sw_tm2 = sw_tm1;
 pwid_tm1 = pwid;
 
 tested_tm1=tested; tested=0;
@@ -2197,6 +2198,9 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
+* note that we can use the set_in_options variable when we want to overwrite parameter values in option;
+
+
  	*Option 0 is continuation at current rates - status quo;
 							  
  	*Option 1;
@@ -2234,31 +2238,31 @@ prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 
 * Oral prep scale-up over 4 years;
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
-else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and mihpsa_params_set_in_options ne 1
+else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
 	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
-else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and mihpsa_params_set_in_options ne 1
+else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
 	then eff_prob_prep_oral_b = prob_prep_oral_b;
 
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
 * Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
 if 		cab_prep_available ne 1 then eff_prob_prep_cab_b = 0;
-else if . < date_prep_cab_intro <= caldate{t} < (date_prep_cab_intro + dur_prep_cab_scaleup) and mihpsa_params_set_in_options ne 1
+else if . < date_prep_cab_intro <= caldate{t} < (date_prep_cab_intro + dur_prep_cab_scaleup) and set_in_options ne 1
 	then eff_prob_prep_cab_b = 0.05 +  (  (prob_prep_cab_b-0.05) * ( 1 -    (date_prep_cab_intro + dur_prep_cab_scaleup - caldate{t}) / dur_prep_cab_scaleup  )   );
-else if caldate{t} >= (date_prep_cab_intro + dur_prep_cab_scaleup) and mihpsa_params_set_in_options ne 1
+else if caldate{t} >= (date_prep_cab_intro + dur_prep_cab_scaleup) and set_in_options ne 1
 	then eff_prob_prep_cab_b = prob_prep_cab_b;
 
 if 		. < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then eff_prob_prep_len_b = 0;
-else if . < date_prep_len_intro <= caldate{t} < (date_prep_len_intro + dur_prep_len_scaleup) and mihpsa_params_set_in_options ne 1
+else if . < date_prep_len_intro <= caldate{t} < (date_prep_len_intro + dur_prep_len_scaleup) and set_in_options ne 1
 	then eff_prob_prep_len_b = 0.05 +  (  (prob_prep_len_b-0.05) * ( 1 -    (date_prep_len_intro + dur_prep_len_scaleup - caldate{t}) / dur_prep_len_scaleup  )   );
-else if caldate{t} >= (date_prep_len_intro + dur_prep_len_scaleup) and mihpsa_params_set_in_options ne 1
+else if caldate{t} >= (date_prep_len_intro + dur_prep_len_scaleup) and set_in_options ne 1
 	then eff_prob_prep_len_b = prob_prep_len_b;
 
 * DPV VR prep scale-up; * dpv-vr JAS Sep2021;
 if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then eff_prob_prep_vr_b = 0;
-else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_params_set_in_options ne 1
+else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) and set_in_options ne 1
 	then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
-else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_params_set_in_options ne 1
+else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and set_in_options ne 1
 	then eff_prob_prep_vr_b = prob_prep_vr_b;
 
 
@@ -2468,7 +2472,7 @@ if caldate{t} = &year_interv then do;
 	* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_any_yr_i = 1; 
-							if mihpsa_params_set_in_options ne 1 then do;
+							if set_in_options ne 1 then do;
 								eff_rate_test_startprep_any = 0.9; 
 								eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
 							end;
@@ -2484,7 +2488,7 @@ if caldate{t} = &year_interv then do;
 						decr_r_choose_stopprep_oral_yr_i = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stopprep_oral_yr_i = 1; 
-							if mihpsa_params_set_in_options ne 1 then do;
+							if set_in_options ne 1 then do;
 								eff_rate_choose_stop_prep_oral = 0.03 ; 
 								eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
 							end;
@@ -2494,14 +2498,14 @@ if caldate{t} = &year_interv then do;
 						inc_p_prep_any_restart_choi_yr_i = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_any_restart_choi_yr_i = 1; 
-							if mihpsa_params_set_in_options ne 1 then do;
+							if set_in_options ne 1 then do;
 								eff_prob_prep_any_restart_choice = 0.8 ; 
 								eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
 							end;
 						end;		
 
 	* prep_any_strategy;
-						if mihpsa_params_set_in_options ne 1 then prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
+						if set_in_options ne 1 then prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
 
 	end;
 
@@ -2509,7 +2513,7 @@ if caldate{t} = &year_interv then do;
 	*(impact of changes are coded below the options code);
 
 	*increase in testing;
-	if mihpsa_params_set_in_options ne 1 then incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022, 4=no testing in the general population;
+	if set_in_options ne 1 then incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022, 4=no testing in the general population;
 
 	*decrease in the proportion of people hard to reach;
 	decr_hard_reach_year_i = 0;
@@ -2518,16 +2522,16 @@ if caldate{t} = &year_interv then do;
 	decr_prob_loss_at_diag_year_i = 0;
 
 	*absence CD4;
-	if mihpsa_params_set_in_options ne 1 then absence_cd4_year_i = 0;
+	if set_in_options ne 1 then absence_cd4_year_i = 0;
 
 	*absence VL;
-	if mihpsa_params_set_in_options ne 1 then absence_vl_year_i = 0;
+	if set_in_options ne 1 then absence_vl_year_i = 0;
 
 	* crag cd4 < 200;
-	if mihpsa_params_set_in_options ne 1 then crag_cd4_l200 = 0;
+	if set_in_options ne 1 then crag_cd4_l200 = 0;
 
 	* tblam cd4 < 200;
-	if mihpsa_params_set_in_options ne 1 then tblam_cd4_l200 = 0;
+	if set_in_options ne 1 then tblam_cd4_l200 = 0;
 
 	*decrease in the rate of being lost;
 	decr_rate_lost_year_i = 0;
@@ -2572,10 +2576,10 @@ if caldate{t} = &year_interv then do;
 	ten_is_taf_year_i = 0; *coded within core (not below options code);
 
 	*increase in rates of circumcision;
-	if mihpsa_params_set_in_options ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
+	if set_in_options ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
 
 	*increase in condom use;
-	if mihpsa_params_set_in_options ne 1 then condom_change_year_i = 0; *coded within core (not below options code);
+	if set_in_options ne 1 then condom_change_year_i = 0; *coded within core (not below options code);
 
 	*population wide tld;
 	pop_wide_tld = 0;
@@ -2676,7 +2680,7 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
-		if mihpsa_params_set_in_options ne 1 then do;
+		if set_in_options ne 1 then do;
 			if prep_any_willing=1 then eff_rate_test_startprep_any=1;
 			eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
 			eff_rate_choose_stop_prep_cab=0.05;
@@ -2698,7 +2702,7 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		eff_sw_higher_int = sw_higher_int;
 		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-		if mihpsa_params_set_in_options ne 1 then do;
+		if set_in_options ne 1 then do;
 			eff_rate_test_startprep_any=rate_test_startprep_any;
 			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 			eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
@@ -2829,7 +2833,7 @@ end;
 
 * pop_wide_tld_year_i;	
 if pop_wide_tld_year_i = 1 then do;	* lapr and dpv-vr - this is using tld as prep so no change;
-	pop_wide_tld = 1; if mihpsa_params_set_in_options ne 1 then prep_any_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
+	pop_wide_tld = 1; if set_in_options ne 1 then prep_any_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
 	higher_future_prep_oral_cov = 0;  * this is instead of current type of prep program;
 end;
 
@@ -13279,9 +13283,6 @@ end;
 * this below is cost of care of hiv infected child and should hold even after mothers death - estimate $30 per 3 months for total care incl art;
 * low cost partially is to take account of possibility of child dying ;
 
- * dependent_on_time_step_length ;
-cost_child_hiv = 0; if ever_birth_with_inf_child=1 or ever_child_inf_breastfeeding=1 then cost_child_hiv = cost_child_hiv_a;  
-
 * this below is a different way to cost each child with hiv - apply as a one off cost at time of child infection - only apply one approach or the other;
 cost_child_hiv_at_child_inf=0; if birth_with_inf_child = 1 or child_infected_breastfeeding = 1 then cost_child_hiv_at_child_inf= cost_child_hiv_at_child_inf_a;
 
@@ -16774,7 +16775,6 @@ _dcost_circ = cost_circ*discount;
 _dcost_condom_dn = cost_condom_dn*discount;
 _dcost_sw_program = cost_sw_program*discount;
 _dcost_switch_line = cost_switch_line*discount;
-_dcost_child_hiv = cost_child_hiv*discount;
 _dcost_child_hiv_at_child_inf = cost_child_hiv_at_child_inf*discount;
 _dcost_child_hiv_mo_art = cost_child_hiv_mo_art*discount;
 _dcost_prep_oral = cost_prep_oral*discount;
@@ -19142,7 +19142,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_cost_dar + cost_dar; s_cost_taz + cost_taz; s_cost_efa + cost_efa; s_cost_dol + cost_dol;  s_cost_cab + cost_cab;  s_cost_len + cost_len; 
 	s_cost_ole + cost_ole;  s_cost_isl + cost_isl; 
 	s_cost_non_aids_pre_death + cost_non_aids_pre_death ; s_drug_level_test_cost + drug_level_test_cost;
-	s_cost_child_hiv + cost_child_hiv;  s_cost_child_hiv_mo_art + cost_child_hiv_mo_art; 
+    s_cost_child_hiv_mo_art + cost_child_hiv_mo_art;  s_cost_child_hiv_at_child_inf + cost_child_hiv_at_child_inf;
 	s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;  
 	*discounted; 
 	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
@@ -19161,7 +19161,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_dar + _dcost_dar; s_dcost_taz + _dcost_taz; s_dcost_efa + _dcost_efa; s_dcost_dol + _dcost_dol; s_dcost_cab + _dcost_cab; s_dcost_len + _dcost_len; 
 	s_dcost_ole + _dcost_ole;  s_dcost_isl + _dcost_isl; s_dcost_lencab_return + _dcost_lencab_return;
 	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
- 	s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ; s_dcost_child_hiv_at_child_inf + _dcost_child_hiv_at_child_inf;
+ 	s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ; s_dcost_child_hiv_at_child_inf + _dcost_child_hiv_at_child_inf;
 	s_dcost_hypert_vis + _dcost_hypert_vis; s_dcost_hypert_drug + _dcost_hypert_drug;  
 
 end;
@@ -20592,7 +20592,7 @@ s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len  s_cost_ole  s_cost_isl 	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
-s_cost_child_hiv  			s_cost_child_hiv_mo_art   
+s_cost_child_hiv_mo_art   s_cost_child_hiv_at_child_inf
 s_cost_hypert_vis   			    s_cost_hypert_drug  s_cost_lencab_return s_dcost_lencab_return
 
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost   s_dvis_cost_no_lencab s_dvis_cost_lencab
@@ -20603,7 +20603,7 @@ s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_d
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol s_dcost_cab s_dcost_len  s_dcost_ole  s_dcost_isl 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
-s_dcost_child_hiv       	s_dcost_child_hiv_mo_art  s_dcost_child_hiv_at_child_inf 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
+s_dcost_child_hiv_mo_art  s_dcost_child_hiv_at_child_inf 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_total_yll80le  s_total_yllag							  
@@ -21685,7 +21685,7 @@ s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len  s_cost_ole  s_cost_isl s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
-s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug   s_cost_lencab_return s_dcost_lencab_return
+s_cost_child_hiv_mo_art  s_cost_child_hiv_at_child_inf  s_cost_hypert_vis   			    s_cost_hypert_drug   s_cost_lencab_return s_dcost_lencab_return
 
 				   
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost   s_dvis_cost_no_lencab s_dvis_cost_lencab
@@ -21696,7 +21696,7 @@ s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_d
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol s_dcost_cab s_dcost_len	 s_dcost_ole	 s_dcost_isl	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
-s_dcost_child_hiv       	s_dcost_child_hiv_mo_art   s_dcost_child_hiv_at_child_inf 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
+s_dcost_child_hiv_mo_art   s_dcost_child_hiv_at_child_inf 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
@@ -22652,7 +22652,7 @@ s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len   s_cost_ole   s_cost_isl 	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
-s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug   s_cost_lencab_return s_dcost_lencab_return
+s_cost_child_hiv_mo_art s_cost_child_hiv_at_child_inf s_cost_hypert_vis   			    s_cost_hypert_drug   s_cost_lencab_return s_dcost_lencab_return
 
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost     s_dvis_cost_no_lencab s_dvis_cost_lencab
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
@@ -22663,7 +22663,7 @@ s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_d
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol s_dcost_cab s_dcost_len	 s_dcost_ole	 s_dcost_isl	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
-s_dcost_child_hiv       	s_dcost_child_hiv_mo_art   s_dcost_child_hiv_at_child_inf 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
+s_dcost_child_hiv_mo_art   s_dcost_child_hiv_at_child_inf 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
