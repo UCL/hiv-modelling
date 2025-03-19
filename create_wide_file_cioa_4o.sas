@@ -2487,19 +2487,19 @@ ods html;
 title '';
 proc means data=f  n mean p5 p95;
 var
-dtest_cost_50y_1  dtest_cost_50y_2  dtest_cost_50y_3  
-dcost_self_test_50y_1 dcost_self_test_50y_2 dcost_self_test_50y_3  
-dcost_condom_dn_50y_1 dcost_condom_dn_50y_2 dcost_condom_dn_50y_3  
-dcost_circ_50y_1 dcost_circ_50y_2 dcost_circ_50y_3  
-dcost_prep_visit_50y_1 dcost_prep_visit_50y_2 dcost_prep_visit_50y_3    
-dcost_prep_50y_1 dcost_prep_50y_2 dcost_prep_50y_3    
-dcost_sw_program_50y_1 dcost_sw_program_50y_2 dcost_sw_program_50y_3  
-dart_cost_y_50y_1 dart_cost_y_50y_2 dart_cost_y_50y_3    
-dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3    
-dvl_cost_50y_1  dvl_cost_50y_2  dvl_cost_50y_3    
-dvis_cost_50y_1 dvis_cost_50y_2 dvis_cost_50y_3      
-dcost_child_hiv_50y_1 dcost_child_hiv_50y_2 dcost_child_hiv_50y_3  
-dcost_clinical_care_hiv_50y_1 dcost_clinical_care_hiv_50y_2 dcost_clinical_care_hiv_50y_3  ;
+dtest_cost_50y_1  dtest_cost_50y_2  dtest_cost_50y_3  dtest_cost_50y_4 
+dcost_self_test_50y_1 dcost_self_test_50y_2 dcost_self_test_50y_3  dcost_self_test_50y_4 
+dcost_condom_dn_50y_1 dcost_condom_dn_50y_2 dcost_condom_dn_50y_3  dcost_condom_dn_50y_4 
+dcost_circ_50y_1 dcost_circ_50y_2 dcost_circ_50y_3  dcost_circ_50y_4 
+dcost_prep_visit_50y_1 dcost_prep_visit_50y_2 dcost_prep_visit_50y_3  dcost_prep_visit_50y_4   
+dcost_prep_50y_1 dcost_prep_50y_2 dcost_prep_50y_3  dcost_prep_50y_4   
+dcost_sw_program_50y_1 dcost_sw_program_50y_2 dcost_sw_program_50y_3 dcost_sw_program_50y_4  
+dart_cost_y_50y_1 dart_cost_y_50y_2 dart_cost_y_50y_3   dart_cost_y_50y_4  
+dcd4_cost_50y_1  dcd4_cost_50y_2  dcd4_cost_50y_3  dcd4_cost_50y_4   
+dvl_cost_50y_1  dvl_cost_50y_2  dvl_cost_50y_3  dvl_cost_50y_4   
+dvis_cost_50y_1 dvis_cost_50y_2 dvis_cost_50y_3  dvis_cost_50y_4     
+dcost_child_hiv_50y_1 dcost_child_hiv_50y_2 dcost_child_hiv_50y_3   dcost_child_hiv_50y_4
+dcost_clinical_care_hiv_50y_1 dcost_clinical_care_hiv_50y_2 dcost_clinical_care_hiv_50y_3 dcost_clinical_care_hiv_50y_4  ;
 run;
 ods html close;
 

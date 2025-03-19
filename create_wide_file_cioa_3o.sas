@@ -1944,9 +1944,11 @@ if p_onart_diag_w_24 > 0.85;
 if p_onart_vl1000_m_24 > 0.80;
 if p_onart_vl1000_w_24 > 0.80;
 
-ods html;
-proc print noobs; var run; run; 
-ods html close;
+* ods html;
+* proc print noobs; 
+* var run; 
+* run; 
+* ods html close;
 
  
 d_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 - n_death_hiv_10y_1;
