@@ -846,10 +846,8 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 * incr_res_risk_len_inf_3m;		incr_res_risk_len_inf_3m = incr_res_risk_cab_inf_3m;
 
-* new for pop_wide_tld ;
-								%sample_uniform(cab_extra_pref,      0.5 0.7 1) ; 
-* pref_prep_cab_beta_s1;		pref_prep_cab_beta_s1 = pref_prep_oral_beta_s1 + cab_extra_pref ; * tends to be more preference for inj ;
-* pref_prep_len_beta_s1;		pref_prep_len_beta_s1 = pref_prep_cab_beta_s1;  
+* cablen_extra_pref;			%sample_uniform(cablen_extra_pref,      0.5 0.7 1) ; 
+* pref_prep_cablen_beta_s1;		pref_prep_cablen_beta_s1 = pref_prep_oral_beta_s1 + cablen_extra_pref ; * tends to be more preference for inj ;
 
 * hivtest_type_1_init_prep_cab; %sample(hivtest_type_1_init_prep_cab, 0 1, 0.5 0.5); hivtest_type_1_init_prep_cab=0;
 								if hivtest_type_1_init_prep_cab=0 then hivtest_type_1_prep_cab=0;
@@ -2269,14 +2267,13 @@ else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and set_in_opti
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
-yy = rand('beta',pref_prep_cab_beta_s1,5); * this is the preference for cab or len, whichever is available;
+yy = rand('beta',pref_prep_cablen_beta_s1,5); * this is the preference for cab or len, whichever is available;
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
 
 if (caldate{t} = date_prep_cab_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_cab_intro > .) then do;  * len_prep_b ;
-	if pop_wide_tld = 1 then pref_prep_cab_beta_s1 = pref_prep_cab_beta_s1 - 0.0 ; * for cioa no difference;
 	* pref_prep_cab;  	pref_prep_cab=yy ; * this is the preference for cab or len, whichever is available (see above);
 end;
 
@@ -2426,7 +2423,7 @@ vm_format=2  whb     lab
 vm_format=3  plasma  poc 
 vm_format=4  whb     poc 
 ; 
-		if art_mon_strategy_in_options ne 1 then art_monitoring_strategy = 150; 
+		if set_in_options ne 1 then art_monitoring_strategy = 150; 
 		vm_format=2; ***measuring vl using whole blood dbs;   
 		vl_threshold=1000;
 		time_of_first_vm = 0.5;
@@ -2645,8 +2642,6 @@ all art stopped (no_art_disrup_covid)
 if caldate{t} ge 2019.5 then reg_option = 120;
 
 if caldate{t} ge 2021 then reg_option = 125;
-
-if reg_option_set_in_options ne . then reg_option = reg_option_set_in_options;
 
 * if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
 * reg_option 107 is used for people who seroconverted on prep_inj / cab ;
@@ -2867,7 +2862,7 @@ end;
 if absence_cd4_year_i ne 1 and absence_vl_year_i =  1 then do;
 	art_monitoring_strategy=1; *Clinical monitoring alone;
 end;
-if absence_vl_year_i ne 1 and art_mon_strategy_in_options ne 1 then do;
+if absence_vl_year_i ne 1 and set_in_options ne 1 then do;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121 125 130) then art_monitoring_strategy=150;  
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
@@ -8637,7 +8632,7 @@ offered_return_lencab_this_per=0;
 if t ge 2 and onart_tm1 ne 1 and registd_tm1=1 and lencab_available=1 and offered_return_for_lencab ne 1 then do;
 	offered_return_for_lencab=1;offered_return_lencab_this_per=1;
 	if s < rate_return_for_lencab then do;
-		return=1;lost=0;visit=1; reg_option_set_in_options = 130; started_lencab_offart=1; started_lencab=1;
+		return=1;lost=0;visit=1; set_in_options = 130; started_lencab_offart=1; started_lencab=1;
 	end;
 end;
 
@@ -20795,7 +20790,7 @@ pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choic
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
-poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  cab_extra_pref  add_prob_prep_b_cab add_prob_prep_b_len
+poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  cablen_extra_pref  add_prob_prep_b_cab add_prob_prep_b_len
 
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti   prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid prob_prep_elig_pwid msm_risk_cls  prob_prep_elig_msm
@@ -20821,7 +20816,7 @@ rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b prob_prep_len_b prob_prep_vr_b prep_cab_efficacy prep_len_efficacy  prop_pep  pep_efficacy 
 rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr prep_cab_effect_inm_partner  prep_len_effect_cam_partner 
-pref_prep_cab_beta_s1 pref_prep_len_beta_s1 incr_res_risk_cab_inf_3m  incr_res_risk_len_inf_3m rr_testing_female
+pref_prep_cablen_beta_s1 incr_res_risk_cab_inf_3m  incr_res_risk_len_inf_3m rr_testing_female
 artvis0_lower_adh  pop_wide_prep_adh_effect rate_lencab_to_tld  rel_rate_interrupt_lencab
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary 
@@ -22859,7 +22854,7 @@ p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child rate_trans_breastfeeding nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency isl_higher_potency isl_ole_adh_improve
-prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro  cab_extra_pref  add_prob_prep_b_cab add_prob_prep_b_len
+prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro  cablen_extra_pref  add_prob_prep_b_cab add_prob_prep_b_len
 cab_time_to_lower_threshold_g  len_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75  death_r_iris_pop_wide_tld
 sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
@@ -22875,7 +22870,7 @@ prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b  prob_prep_len_b prob_prep_vr_b prep_cab_efficacy  prep_len_efficacy   prop_pep  pep_efficacy 
 rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr 
 
-prep_cab_effect_inm_partner pref_prep_cab_beta_s1 incr_res_risk_cab_inf_3m prep_len_effect_cam_partner pref_prep_len_beta_s1 incr_res_risk_len_inf_3m 
+prep_cab_effect_inm_partner pref_prep_cablen_beta_s1 incr_res_risk_cab_inf_3m prep_len_effect_cam_partner  incr_res_risk_len_inf_3m 
 
 rr_testing_female prob_prep_pop_wide_tld
 pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut res_level_len_mut super_inf_res  
