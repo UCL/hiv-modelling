@@ -1,5 +1,10 @@
 libname a  "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
 
+***This program uses two files, the first was run without abort statements as there was an error (p_vl1000 not defined).
+   Hence the aborts have been manually performed below. 
+   The second was run with the error fixed and is set on top of the first. ;
+
+
 data a;
 set a.malawi_27Feb25;
 if run=. then delete;
@@ -556,12 +561,21 @@ if run in (
 
 proc freq;table cald;run;
 
+***This is the 2nd file that was run with the error fixed;
+data d;
+set a.mlw_27feb25;run;
+run;
 
+data e;
+set c d;
+run;
+proc sort; by run;run;
+proc freq;table cald;run;
 
 
 data sf;
 *set a;
-set c;
+set e;
  
 *Malawi;
 *Source for Zimbabwe population is https://wdi.worldbank.org/table/2.1 (58%>15);
@@ -578,7 +592,7 @@ proc sort; by run;run;
 
 data y; 
 *merge a sf;
-merge c sf;
+merge e sf;
 by run ;
 
 *if run ne  989218009 then delete;
@@ -1884,6 +1898,8 @@ s_I_offart_SIlt6m7579m s_I_offart_SIgt6m7579m s_I_diag_naive7579_ s_I_diag_start
 ;
 
 run;
+
+proc freq;table cald;run;
 /*
 ***Use this datastep to output just one run to check that the totals etc. add up;
 data y1;
@@ -2073,7 +2089,7 @@ n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 22 ;
+%let nfit = 78;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -2644,7 +2660,7 @@ ods results off;
 
 ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_MLW27Feb25.xlsx"
 options(sheet_name='base' start_at='A2');
-proc print data=wide_base ;run;
+proc print data=a.wide_base ;run;
 
 **This macro avoids having to write out these lines for each age band;
 %macro out(age);
