@@ -4,6 +4,12 @@ consider whether some of these should be cut and or treated differently
 dcost_clinical_care_hiv = dadc_cost + dnon_tb_who3_cost + dtb_cost + d_t_adh_int_cost + dswitchline_cost + dcot_cost
 + dcost_non_aids_pre_death + dres_cost
 
+check if tld cost can be even lower 
+
+do we need the prep clinic cost ? 
+
+reduce prep_oral_drug_cost to tld cost of max $42 from $50 - assume can procure for this or tld used as prep
+
 check I am fully funding ahd explicitly modelling ahd interventions
 
 consider whether need to differentiate adc cost by adc and whether $200 is ok as average cost
