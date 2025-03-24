@@ -5,8 +5,6 @@ get outputs so can accurately show number of self tests and number of clinic tes
 
 think why prep coverage declines over time 
 
-think if / how we are accounting for some people starting prep without having tested
-
 check I am fully funding ahd explicitly modelling ahd interventions
 
 

@@ -1983,13 +1983,16 @@ if p_onart_diag_w_24 > 0.85;
 if p_onart_vl1000_m_24 > 0.80;
 if p_onart_vl1000_w_24 > 0.80;
 
-
-
 if r_choose_stop_prep_oral_comm_tld >= 0.03 ;  
 if prob_prep_oral_b_comm_tld <= 0.5;
 if incr_pref_prep_oral_comm_tld <= 0.5;	    
 if adh_effect_comm_tld <= 0.1;		
 if rate_self_test_if_introduced <= 0.5; 
+
+ods html;
+proc print noobs; var run ; run;
+ods html close;
+
 
 
 
