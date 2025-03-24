@@ -40,10 +40,10 @@ p_newp_ge1_ = p_newp_ge1;
 
 n_tested_incl_self = n_self_tested + n_tested; 
 
-%let single_var = p_tested_incl_self                  ;
+%let single_var = prop_elig_on_prep                ;
 
 
-if run in (
+* if run in (
 
 3656808 
 4473169 
@@ -376,7 +376,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 954    ;
+%let nfit = 2815   ;
 
 %let year_end = 2076.00 ;
 run;
@@ -1215,7 +1215,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -1234,9 +1234,9 @@ band    x=cald lower=p5_p_tested_incl_self_2 upper=p95_p_tested_incl_self_2 / tr
 
 run;quit;
 
+*/
 
 
-/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -1255,7 +1255,7 @@ band    x=cald lower=p5_prop_elig_on_prep_2 upper=p95_prop_elig_on_prep_2 / tran
 
 run;quit;
 
-*/
+
 
 /*
 

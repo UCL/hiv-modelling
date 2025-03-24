@@ -8,6 +8,7 @@ think why prep coverage declines over time
 check I am fully funding ahd explicitly modelling ahd interventions
 
 
+max(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1)
 
 drop vmmc in all options ?
 
@@ -1225,7 +1226,7 @@ end;
 
 * prob_prep_oral_b_comm_tld;	%sample_uniform(prob_prep_oral_b_comm_tld, 0.1 0.2 0.3 0.5 );
 
-* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.0 0.1 0.3 0.5 );    
+* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.0 0.05 0.1 );    
 
 * adh_effect_comm_tld;			%sample(adh_effect_comm_tld, 0  0.1  0.2 , 0.5 0.25 0.25);
 
@@ -2517,7 +2518,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option=1 then do;
 		if comm_tld_set_in_options ne 1 then do;
-			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
+			pref_prep_oral = max(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
 			eff_rate_return = eff_rate_return * rr_return_comm_tld ; 
 			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_comm_tld ;
 			rate_self_test=rate_self_test_if_introduced;
@@ -2559,7 +2560,7 @@ who may be dead and hence have caldate{t} missing;
 		end;
 
 		if comm_tld_set_in_options ne 1 then do;
-			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
+			pref_prep_oral = max(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
 			eff_rate_return = eff_rate_return * rr_return_comm_tld ; 
 			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_comm_tld ;
 			rate_self_test=rate_self_test_if_introduced;
