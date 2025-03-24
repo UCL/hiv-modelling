@@ -1989,12 +1989,6 @@ if incr_pref_prep_oral_comm_tld <= 0.5;
 if adh_effect_comm_tld <= 0.1;		
 if rate_self_test_if_introduced <= 0.5; 
 
-ods html;
-proc print noobs; var run ; run;
-ods html close;
-
-
-
 
 * ods html;
 * proc print noobs; 
@@ -2426,6 +2420,9 @@ if 0.90 <= p_vl1000_24 < 0.95 then p_vl1000_24_g=4;
 if 0.95 <= p_vl1000_24        then p_vl1000_24_g=5;
 
 
+d_prop_elig_on_prep_50y_1_2 = prop_elig_on_prep_50y_2 - prop_elig_on_prep_50y_1;
+
+
 ods html;
 proc print noobs; var run; run;
 ods html close;
@@ -2631,6 +2628,33 @@ rr_interrupt_comm_tld
 
 run;
 ods html close;
+
+
+ods html;
+proc glm data=f; 
+class
+r_choose_stop_prep_oral_comm_tld 
+r_test_startprep_any_comm_tld
+prob_prep_oral_b_comm_tld
+incr_pref_prep_oral_comm_tld
+adh_effect_comm_tld
+rr_return_comm_tld
+rr_interrupt_comm_tld ;
+
+model d_prop_elig_on_prep_50y_1_2 =
+
+r_choose_stop_prep_oral_comm_tld 
+r_test_startprep_any_comm_tld
+prob_prep_oral_b_comm_tld
+incr_pref_prep_oral_comm_tld
+adh_effect_comm_tld
+rr_return_comm_tld
+rr_interrupt_comm_tld 
+/ solution;
+
+run;
+ods html close;
+
 
 
 
