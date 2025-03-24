@@ -2204,7 +2204,7 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
- 	*Option 0 is continuation at current rates - status quo;
+ 	*Option 0 is continuation at current rates  -  status quo;
 							  
  	*Option 1;
 																														  
