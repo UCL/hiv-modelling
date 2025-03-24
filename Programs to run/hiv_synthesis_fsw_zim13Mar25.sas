@@ -2206,7 +2206,7 @@ if caldate_never_dot >= &year_interv then do;
 		if sw_art_disadv=1  then do;
     	 r = rand('uniform'); if r < 0.5 then sw_higher_int =5; if r >= 0.5 then sw_higher_int =10;
 		 s = rand('uniform'); if s < 0.5 then rel_sw_lower_adh = 0.5; if s >= 0.5 then rel_sw_lower_adh = 0.7;
-		 t = rand('uniform'); if t < 0.5 then sw_higher_prob_loss_at_diag = 5; if t >= 0.5 then sw_higher_prob_loss_at_diag = 10;
+		 u = rand('uniform'); if u < 0.5 then sw_higher_prob_loss_at_diag = 5; if u >= 0.5 then sw_higher_prob_loss_at_diag = 10;
 		end;
 
 	end;

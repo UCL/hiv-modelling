@@ -1,17 +1,22 @@
 
 ***THIS FILE HAS BEEN USED FOR HARRIETT'S PAPER;
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
+
+***TO RUN ON LAPTOP, ADD THIS SECTION AND COMMENT OUT THE SECTION BELOW IT;
+
+libname a "C:\Users\Loveleen\Documentos";   
+%let tmpfilename = out;
+ 
+/*
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
-
-
+*/
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 50  ; 
-%let year_interv = 2025;	* Using 2023 for MIHPSA only JAS Oct23;
+%let year_interv = 1987.5;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -2206,7 +2211,7 @@ if caldate_never_dot >= &year_interv then do;
 		if sw_art_disadv=1  then do;
     	 r = rand('uniform'); if r < 0.5 then sw_higher_int =5; if r >= 0.5 then sw_higher_int =10;
 		 s = rand('uniform'); if s < 0.5 then rel_sw_lower_adh = 0.5; if s >= 0.5 then rel_sw_lower_adh = 0.7;
-		 t = rand('uniform'); if t < 0.5 then sw_higher_prob_loss_at_diag = 5; if t >= 0.5 then sw_higher_prob_loss_at_diag = 10;
+		 u = rand('uniform'); if u < 0.5 then sw_higher_prob_loss_at_diag = 5; if u >= 0.5 then sw_higher_prob_loss_at_diag = 10;
 		end;
 
 	end;
@@ -19091,11 +19096,11 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 ***Zim specific;
-
+/*
 if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
 if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
 if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
-
+*/
 /*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -20034,12 +20039,29 @@ end;
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=0);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=0);*1985;
 %update_r1(da1=2,da2=1,e=6,f=7,g=1,h=8,j=6,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=1,h=8,j=7,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=1,h=8,j=8,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=5,h=12,j=9,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=5,h=12,j=9,s=0);*1986;
 %update_r1(da1=2,da2=1,e=6,f=7,g=5,h=12,j=10,s=0);
+
+%update_r1(da1=2,da2=1,e=6,f=7,g=1,h=8,j=11,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=1,h=8,j=12,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=1,h=8,j=13,s=0);*1987;
+%update_r1(da1=1,da2=2,e=5,f=6,g=5,h=12,j=14,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=5,h=12,j=15,s=0);
+
+
+data r1; 
+set a;
+%update_r1(da1=2,da2=1,e=6,f=7,g=1,h=8,j=11,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=1,h=8,j=12,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=1,h=8,j=13,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=5,h=12,j=14,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=5,h=12,j=15,s=2);
+
+/*
 %update_r1(da1=1,da2=2,e=7,f=8,g=5,h=12,j=11,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=5,h=12,j=12,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=9,h=16,j=13,s=0);
@@ -20801,7 +20823,7 @@ set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=353,h=360,j=359,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=353,h=360,j=360,s=2);	
 
-
+*/
 * ts1m:  need more update statements ;
 
 
