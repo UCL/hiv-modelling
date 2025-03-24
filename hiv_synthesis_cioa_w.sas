@@ -1,26 +1,28 @@
 
 * cioa_w
 
-? remove 0.2 from adh_effect_comm_tld distribution ?
+get outputs so can accurately show number of self tests and number of clinic tests 
 
-drop vmmc in all options ?
-
-not such high prep use with comm tld ? - and think why coverage declines over time 
+think why prep coverage declines over time 
 
 think if / how we are accounting for some people starting prep without having tested
 
-get outputs so can accurately show number of self tests and number of clinic tests 
+check I am fully funding ahd explicitly modelling ahd interventions
+
+
+
+drop vmmc in all options ?
 
 some of the $5 cost to go to the pharmacist for giving advice and providing drugs and test kits will go for support of community education initiatives 
-more broadly - this is all included in the $5 prep cost which is still called a called a clinic cost ?
+more broadly - this is all included in the $5 prep cost which is still called a called a clinic cost 
 
-reduce prep_oral_drug_cost to tld cost of max $42 from $50 - assume can procure for this or tld used as prep
-
-check I am fully funding ahd explicitly modelling ahd interventions
+reduced prep_oral_drug_cost to tld cost of max $42 from $50 - assume can procure for this or tld used as prep
 
 adjusted adc and tb costs
 
 removed unnecessary hiv test sensitivity in context of cablen from option = 1 code
+
+changed distributions of parameters relating to comm_tld
 
 ;
 
