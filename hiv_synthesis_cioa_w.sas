@@ -1,18 +1,26 @@
+
 * cioa_w
 
-consider whether some of these should be cut and or treated differently 
-dcost_clinical_care_hiv = dadc_cost + dnon_tb_who3_cost + dtb_cost + d_t_adh_int_cost + dswitchline_cost + dcot_cost
-+ dcost_non_aids_pre_death + dres_cost
+? remove 0.2 from adh_effect_comm_tld distribution ?
 
-check if tld cost can be even lower 
+drop vmmc in all options ?
 
-do we need the prep clinic cost ? 
+not such high prep use with comm tld ? - and think why coverage declines over time 
+
+think if / how we are accounting for some people starting prep without having tested
+
+get outputs so can accurately show number of self tests and number of clinic tests 
+
+some of the $5 cost to go to the pharmacist for giving advice and providing drugs and test kits will go for support of community education initiatives 
+more broadly - this is all included in the $5 prep cost which is still called a called a clinic cost ?
 
 reduce prep_oral_drug_cost to tld cost of max $42 from $50 - assume can procure for this or tld used as prep
 
 check I am fully funding ahd explicitly modelling ahd interventions
 
-consider whether need to differentiate adc cost by adc and whether $200 is ok as average cost
+adjusted adc and tb costs
+
+removed unnecessary hiv test sensitivity in context of cablen from option = 1 code
 
 ;
 
@@ -1211,15 +1219,15 @@ end;
 
 * COMM TLD ;
 
-* r_choose_stop_prep_oral_comm_tld;  %sample_uniform(r_choose_stop_prep_oral_comm_tld, 0.01 0.03 0.05 0.10 ); 
+* r_choose_stop_prep_oral_comm_tld;  %sample_uniform(r_choose_stop_prep_oral_comm_tld, 0.03 0.05 0.10 ); 
 
-* r_test_startprep_any_comm_tld;  %sample_uniform(r_test_startprep_any_comm_tld, 0.5  0.7  ); 
+* r_test_startprep_any_comm_tld;  %sample_uniform(r_test_startprep_any_comm_tld, 0.5  0.75  ); 
 
-* prob_prep_oral_b_comm_tld;	%sample_uniform(prob_prep_oral_b_comm_tld, 0.1 0.2 0.3  0.5  0.7  );
+* prob_prep_oral_b_comm_tld;	%sample_uniform(prob_prep_oral_b_comm_tld, 0.1 0.2 0.3 0.5 );
 
-* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.0 0.1 0.3 0.5 0.7 );    
+* incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.0 0.1 0.3 0.5 );    
 
-* adh_effect_comm_tld;			%sample_uniform(adh_effect_comm_tld, 0 0.05 0.1 0.2);
+* adh_effect_comm_tld;			%sample(adh_effect_comm_tld, 0  0.1  0.2 , 0.5 0.25 0.25);
 
 * rr_return_comm_tld;			%sample_uniform(rr_return_comm_tld, 2 3 5);
 
@@ -1397,7 +1405,7 @@ cost_cab_a = prep_cab_drug_cost ; * note that when cab used as treatment we use 
 cost_len_a = prep_len_drug_cost ; * placeholder ;
 cost_isl_a = (0.030/4)*1.2; * placeholder;  * isl = weekly islatravir;
 cost_ole_a = (0.030/4)*1.2; * placeholder; * ole = oral weekly lenacapavir;
-tb_cost_a=(.050); * todo: this cost to be re-considered;
+tb_cost_a=(.100); * mar 2025 - https://www.who.int/publications/i/item/9789240013131 page 141; 
 
 cost_tb_lam = 0.015 ; * placeholder ;
 cost_tb_proph = 0.005 ; * placeholder ;
@@ -1428,7 +1436,8 @@ av_cost_self_test_avail = 0.001; * this is under pop wide tld with self test kit
 
 * not * dependent_on_time_step_length ;
 * todo: add in crag and tb lam test costs, add in cost of treating tb crypm sbi (may be higher if diagnosed early, + costs of tb crypm prophylaxis;
-adc_cost_a=(.200); 
+adc_cost_a=(.400); * increased mar 25 - informed by date from malawi ; * songane et al 2024 DOI10.4269/ajtmh.23-0880 Cost of Providing Advanced HIV Disease 
+							Treatment Services through Malawi's Hub-and-Spoke Model;
 non_tb_who3_cost_a=(.020);
 cd4_cost_a=(.010);
 vl_cost_a=(.022);
@@ -2504,12 +2513,12 @@ who may be dead and hence have caldate{t} missing;
 	cost_3tc_a=(0.012/4)*1.2 * 0.8; 
 	cost_ten_a=(0.021/4)*1.2 * 0.8; 
 	cost_dol_a=(0.009/4)*1.2 * 0.8; 
-	prep_oral_drug_cost = (0.050 / 4 ) * 1.2 * 0.8 ;
+	prep_oral_drug_cost = (0.042 / 4 ) * 1.2 * 0.8 ; * reduced prep_oral_drug_cost to tld cost of max $42 from $50 - assume can procure for this or tld used as prep ;
 
 	if option=1 then do;
 		if comm_tld_set_in_options ne 1 then do;
 			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
-			eff_rate_return = eff_rate_return * rr_return_comm_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
+			eff_rate_return = eff_rate_return * rr_return_comm_tld ; 
 			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_comm_tld ;
 			rate_self_test=rate_self_test_if_introduced;
 		 	start_pep_prep_without_test = 1;continue_pep_prep_without_test=1;
@@ -2525,8 +2534,7 @@ who may be dead and hence have caldate{t} missing;
 		eff_rate_test_startprep_any = r_test_startprep_any_comm_tld;
   		eff_prob_prep_oral_b = prob_prep_oral_b_comm_tld;
 		regular_testing_stops = 1;
-		eff_sens_vct = 0.93; sens_vct = 0.93; sens_primary_testtype3 = 0; sens_ttype3_prep_cab_primary=0;sens_ttype3_prep_len_primary=0;
-		sens_ttype3_prep_cab_inf3m=0; sens_ttype3_prep_len_inf3m=0; sens_ttype3_prep_len_infge6m = 0.93;sens_ttype3_prep_cab_infge6m = 0.93;
+		eff_sens_vct = 0.93; sens_vct = 0.93; sens_primary_testtype3 = 0; 
 		sens_vct_testtype3_cab_tail=0; sens_vct_testtype3_len_tail=0;
 		cost_test_c = 0.0015;
 		* switch to only self testing except before starting art in positive person;
@@ -2552,7 +2560,7 @@ who may be dead and hence have caldate{t} missing;
 
 		if comm_tld_set_in_options ne 1 then do;
 			pref_prep_oral = min(pref_prep_oral + incr_pref_prep_oral_comm_tld, 1);
-			eff_rate_return = eff_rate_return * rr_return_comm_tld ; * note that while we are still using this pop_wide_tld parameters, pop_wide_tld is not switched on;
+			eff_rate_return = eff_rate_return * rr_return_comm_tld ; 
 			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_comm_tld ;
 			rate_self_test=rate_self_test_if_introduced;
 		 	start_pep_prep_without_test = 1; continue_pep_prep_without_test=1;
