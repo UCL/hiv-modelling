@@ -2210,9 +2210,6 @@ who may be dead and hence have caldate{t} missing;
 																														  
 	if option = 1 then do;
 		
-		if cald = 2025 then eff_rate_int_choice = rate_int_choice * 2 ;
-		if cald ge 2025.25 then eff_rate_int_choice = rate_int_choice  ;
-
 		adh_reduction_pepfar = 0;
 		if cald = 2025 then do;
 			vv=rand('uniform');
