@@ -366,7 +366,6 @@ newp_seed = 7;
 * hivtest_type;				hivtest_type=3; 						* HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen); *Jul2016; 
 * date_pmtct;				date_pmtct=2004;
 * pmtct_inc_rate;			pmtct_inc_rate = 0.20; 					* rate_per_year ; 
-* incr_test_year_i;			incr_test_year_i = 3;
 * sw_test_6mthly;			sw_test_6mthly=0;
 
 * sens_primary_testtype3;	%sample_uniform(sens_primary_testtype3,  0.5 0.75);
@@ -2510,7 +2509,11 @@ if caldate{t} = &year_interv then do;
 	*(impact of changes are coded below the options code);
 
 	*increase in testing;
-	if set_in_options ne 1 then incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022, 4=no testing in the general population;
+	if set_in_options ne 1 then incr_test_year_i = 0; 
+	* 0= decrease in testing after 2022 (default), 
+	1= 2-fold increase in testing for everyone, 
+	2= 2-fold increase in testing for men only,  
+	4=no testing in the general population;
 
 	*decrease in the proportion of people hard to reach;
 	decr_hard_reach_year_i = 0;
@@ -2842,6 +2845,12 @@ if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121 125) then 
 if reg_option in (107) then flr=1;
 if reg_option = 130 then flr=3;
 
+*
+    if flr=1 ten + 3tc + taz
+    if flr=2 ten + 3tc + dol                                                           
+ 	if flr=3 len + cab        
+;
+
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
 
@@ -2901,33 +2910,30 @@ end;
 
 tested_anc=.;
 
-if t ge 2 and date_start_testing <= caldate{t} then do; 
+if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_testing is never changed from 2003.5;
 
-		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-		rate_1sttest_2011 = initial_rate_1sttest + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;																					
+		rate_1sttest = initial_rate_1sttest; rate_reptest = initial_rate_reptest;
+		if caldate{t} >= date_start_testing+5.5 then do;
+			rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+			rate_reptest = initial_rate_reptest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+																				
+		end;	
+
+		if caldate{t} >= 2022  then do; * note this is equivalent to incr_test_year_i = 0;
+			rate_1sttest = rate_1sttest * 0.8; rate_reptest = rate_reptest * 0.8; 	eff_test_targeting = test_targeting * 1.5 ; 
+		end;
+
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
-
 end;
 
-if caldate{t} >= 2022         then do;
-	rate_1sttest = rate_1sttest * 0.8; rate_reptest = rate_reptest * 0.8; 	eff_test_targeting = test_targeting * 1.5 ; 
+
 /*
 	if incr_test_year_i = 1              then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-	***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
-	if incr_test_year_i = 3 then do; 
-		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-2022)*an_lin_incr_test*fold_rate_decr_test_future);
-		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-2022 )*an_lin_incr_test*fold_rate_decr_test_future);
-		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
-		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
-		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
-		eff_test_targeting = test_targeting * 1.5 ; 
-	end;
+	* previously incr_test_year_i set to 3 as default ;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
 */
-end;
+
 
 
 
@@ -2993,22 +2999,21 @@ end;
 end;
 
 
-* this is the default if note circ_inc_rate_year_i = .  - no change in circ policy ;
-if t ge 2 and 2019 < caldate{t} <=2023 and circ_inc_rate_year_i=0         then do;
+* this is the default if  circ_inc_rate_year_i = . or 0 - no change in circ policy ;
+if t ge 2 and 2019 < caldate{t} <=2023    then do;
 if  10 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
-**change years to year_interv once happy with runs;
-if t ge 2 and 2023 < caldate{t} < 2030 and circ_inc_rate_year_i=0         then do;
+if t ge 2 and 2023 < caldate{t} < 2030      then do;
 if  10 le age lt 14 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_10_14;
 if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_inc_15_19;
 if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_20_30;
 if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_30_50;
 end;
 
-if t ge 2 and caldate{t} >= 2030 and circ_inc_rate_year_i=0         then do;
+if t ge 2 and caldate{t} >= 2030     then do;
 if  10 le age lt 14 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_10_14;
 if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_inc_15_19;
 if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((2030-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_20_30;
@@ -3016,25 +3021,25 @@ if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-201
 end;
 
 * note circ_inc_rate_year_i = 1 means circ stops in 10-15 year olds;
-if t ge 2 and 2022         <= caldate{t} and circ_inc_rate_year_i = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
+if t ge 2 and &year_interv        <= caldate{t} and circ_inc_rate_year_i = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
 if  age lt 15 then prob_circ =0;
 if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013)*circ_inc_15_19;
 if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
-if t ge 2 and 2022         <= caldate{t} and circ_inc_rate_year_i = 2 then do; *option=2 - no further circ;
+if t ge 2 and &year_interv          <= caldate{t} and circ_inc_rate_year_i = 2 then do; *option=2 - no further circ;
 prob_circ = 0;test_link_circ_prob=0;
 end;
 
-if t ge 2 and 2022         <= caldate{t} and circ_inc_rate_year_i = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
+if t ge 2 and &year_interv         <= caldate{t} and circ_inc_rate_year_i = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
 if age lt 15 then prob_circ =0;
 if 15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if 20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if 30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
-if t ge 2 and 2022         <= caldate{t} and circ_inc_rate_year_i = 4 then do;*option=4 - no circ in under 15s, no increased rate in 15-19yo, stop VMMC after 5 years;
+if t ge 2 and &year_interv         <= caldate{t} and circ_inc_rate_year_i = 4 then do;*option=4 - no circ in under 15s, no increased rate in 15-19yo, stop VMMC after 5 years;
 	if caldate{t} <= 2026.5 then do;
       if age lt 15 then prob_circ =0;
       if 15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
@@ -3078,7 +3083,7 @@ end;
 u_circ=rand('uniform');
 tested_circ=0;
 
-if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach_vmmc ne 1
+if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1
 and age < 50 then do; 
 
 	if u_circ lt prob_circ then do;
