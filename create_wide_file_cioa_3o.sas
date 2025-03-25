@@ -2,21 +2,17 @@
 
 * options user="/folders/myfolders/"  ;
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_v_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_w_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_v_out\";
-
-======
-*note* remove the 2 from tb abd adc costs from cioa_w onwards ;
-======
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_w_out\";
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_cioa_v1;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_cioa_w;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -25,7 +21,7 @@ run;
 
 
 
-proc sort data=b.k_cioa_v1; 
+proc sort data=b.k_cioa_w; 
 by run cald option;
 run;
 
@@ -34,7 +30,7 @@ run;
 data sf;
 
 
-set b.k_cioa_v1 ;
+set b.k_cioa_w ;
 
 
 if cald=2024   ;
@@ -53,7 +49,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_cioa_v1 sf;
+merge b.k_cioa_w sf;
 by run ;
 
 
@@ -195,9 +191,9 @@ dart_3_cost = s_dart_3_cost * sf * 4 / 1000;
 dart_cost = s_dart_cost * sf * 4 / 1000;
 dvl_cost = s_dvl_cost * sf * 4 / 1000;
 dcd4_cost = s_dcd4_cost * sf * 4 / 1000;
-dadc_cost = s_dadc_cost * sf * 2 * 4 / 1000; * *note* remove the 2 wfrom cioa_w onwards ;
+dadc_cost = s_dadc_cost * sf * 4 / 1000; 
 dnon_tb_who3_cost = s_dnon_tb_who3_cost * sf * 4 / 1000;
-dtb_cost = s_dtb_cost * sf * 2 * 4 / 1000; * *note* remove the 2 wfrom cioa_w onwards ;
+dtb_cost = s_dtb_cost * sf * 4 / 1000; * 
 dtest_cost = s_dtest_cost * sf * 4 / 1000;
 dcost_self_test = s_dcost_self_test * sf * 4 / 1000;
 dcot_cost = s_dcot_cost * sf * 4 / 1000;
@@ -1451,7 +1447,7 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_cioa_v1; set y;  
+data    b.l_cioa_w; set y;  
 
 * to give n = 1000 ;
 * if run in (
@@ -1460,7 +1456,7 @@ data    b.l_cioa_v1; set y;
 
 proc freq; tables run; where cald = 2018; run;
 
-data y ; set b.l_cioa_v1; 
+data y ; set b.l_cioa_w; 
 
 
   options nomprint;
@@ -1954,7 +1950,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_cioa_v1     ; 
+  data  b.w_cioa_w     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1967,9 +1963,9 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_v_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_w_out\";
 
-data f; set b.w_cioa_v1;
+data f; set b.w_cioa_w;
 
 if prevalence1549w_24 < 0.35;
 if prevalence1549m_24 < 0.25;
