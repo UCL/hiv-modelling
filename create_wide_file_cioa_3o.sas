@@ -2,17 +2,17 @@
 
 * options user="/folders/myfolders/"  ;
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_w_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_x_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_w_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_x_out\";
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_cioa_w;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_cioa_x;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -21,7 +21,7 @@ run;
 
 
 
-proc sort data=b.k_cioa_w; 
+proc sort data=b.k_cioa_x; 
 by run cald option;
 run;
 
@@ -30,7 +30,7 @@ run;
 data sf;
 
 
-set b.k_cioa_w ;
+set b.k_cioa_x ;
 
 
 if cald=2024   ;
@@ -49,7 +49,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_cioa_w sf;
+merge b.k_cioa_x sf;
 by run ;
 
 
@@ -193,7 +193,7 @@ dvl_cost = s_dvl_cost * sf * 4 / 1000;
 dcd4_cost = s_dcd4_cost * sf * 4 / 1000;
 dadc_cost = s_dadc_cost * sf * 4 / 1000; 
 dnon_tb_who3_cost = s_dnon_tb_who3_cost * sf * 4 / 1000;
-dtb_cost = s_dtb_cost * sf * 4 / 1000; * 
+dtb_cost = s_dtb_cost * sf * 4 / 1000;   
 dtest_cost = s_dtest_cost * sf * 4 / 1000;
 dcost_self_test = s_dcost_self_test * sf * 4 / 1000;
 dcot_cost = s_dcot_cost * sf * 4 / 1000;
@@ -1447,7 +1447,7 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_cioa_w; set y;  
+data    b.l_cioa_x; set y;  
 
 * to give n = 1000 ;
 * if run in (
@@ -1456,7 +1456,7 @@ data    b.l_cioa_w; set y;
 
 proc freq; tables run; where cald = 2018; run;
 
-data y ; set b.l_cioa_w; 
+data y ; set b.l_cioa_x; 
 
 
   options nomprint;
@@ -1950,7 +1950,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_cioa_w     ; 
+  data  b.w_cioa_x     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1963,9 +1963,9 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_w_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_x_out\";
 
-data f; set b.w_cioa_w;
+data f; set b.w_cioa_x;
 
 if prevalence1549w_24 < 0.35;
 if prevalence1549m_24 < 0.25;
@@ -2503,8 +2503,7 @@ dcost_50y_1  dcost_50y_2   dcost_50y_3
 d_dcost_50y_2_1 d_dcost_50y_3_1 
 
 ddaly_50y_1  ddaly_50y_2  ddaly_50y_3  
-d_ddaly_50y_2_1  d_ddaly_50y_3_1  
-dalys_averted_2_1 dalys_averted_3_1 
+d_ddaly_50y_2_1  d_ddaly_50y_3_1   
 d_ddaly_gbd_50y_2_1 d_ddaly_gbd_50y_3_1 
 
 netdaly500_1  netdaly500_2 netdaly500_3 
@@ -2523,8 +2522,8 @@ ods html close;
 
 ods html;
 title '';
-proc freq data=f; tables lowest_dcost lowest_ddaly lowest_ddaly_1_2 lowest_netdaly lowest_netdaly_gbd lowest_netdaly_1_2
-lowest_ddaly_1_2 lowest_dcost_1_2  d_netdaly300_2_1
+proc freq data=f; tables lowest_dcost lowest_ddaly lowest_ddaly_1_2 lowest_netdaly lowest_netdaly_gbd lowest_netdaly500_1_2  lowest_netdaly300_1_2
+lowest_ddaly_1_2 lowest_dcost_1_2  d_netdaly300_2_1  dalys_averted_2_1 dalys_averted_3_1
 
 ;
 run;
@@ -3188,3 +3187,4 @@ ods html close;
 
 
 
+*/

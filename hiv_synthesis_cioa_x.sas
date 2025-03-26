@@ -1,3 +1,22 @@
+* cioa_w
+
+get outputs so can accurately show number of self tests and number of clinic tests 
+
+check I am fully funding ahd explicitly modelling ahd interventions
+
+changes to comm_tld prep parameters 
+
+drop vmmc in all options ?
+
+;
+
+
+
+
+
+
+
+
 
 * cioa_w
 

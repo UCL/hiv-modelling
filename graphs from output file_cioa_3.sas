@@ -3,7 +3,7 @@ ods html close;
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_w_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_x_out\";
 
 footnote;
 
@@ -12,7 +12,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_cioa_w ;
+set a.l_cioa_x ;
 
 
 * for this program, variable names cannot end on a number;
@@ -40,7 +40,7 @@ p_newp_ge1_ = p_newp_ge1;
 
 n_tested_incl_self = n_self_tested + n_tested; 
 
-%let single_var = prop_elig_on_prep                ;
+%let single_var = incidence1549_                ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -51,7 +51,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 2815   ;
+%let nfit = 42   ;
 
 %let year_end = 2076.00 ;
 run;
@@ -252,7 +252,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -273,7 +273,7 @@ run;quit;
 
 * ods html close;
 
-*/
+
 
 /*
 
@@ -911,7 +911,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -930,7 +930,7 @@ band    x=cald lower=p5_prop_elig_on_prep_2 upper=p95_prop_elig_on_prep_2 / tran
 
 run;quit;
 
-
+*/
 
 /*
 
