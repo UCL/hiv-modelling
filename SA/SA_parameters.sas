@@ -64,7 +64,7 @@
 * fold_change_in_risk_base_rate;
 							*  fold_change_in_risk_base_rate = 0.85;
 
-* fold_decr_hivdeath;		  fold_decr_hivdeath = 0.30 ; ***Changed from 0.15 to get closer to Thembisa; 	
+* fold_decr_hivdeath;		  fold_decr_hivdeath = 0.07 ; ***Changed from 0.15 to get closer to Thembisa; 	
 
 * fx;						  fx = 0.85;
 
