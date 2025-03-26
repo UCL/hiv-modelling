@@ -216,7 +216,7 @@ ods html;
 proc sgplot data=d nolegend; 
 * Title '';  * Title    height=1.5 justify=center "p_onart";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.85 to  1       by 0.05  ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0    to  1       by 0.1   ) valueattrs=(size=10);
 
 series  x=cald y=p50_p_onart_0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_p_onart_0 upper=p95_p_onart_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
