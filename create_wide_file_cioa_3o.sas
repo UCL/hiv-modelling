@@ -5,7 +5,7 @@
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_w_out\";
 
 
-
+/*
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_w_out\";
 
@@ -16,7 +16,7 @@ data b.k_cioa_w;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
-
+*/
 
 
 
