@@ -1,4 +1,4 @@
-* cioa_w
+* cioa_x
 
 get outputs so can accurately show number of self tests and number of clinic tests 
 
@@ -7,6 +7,8 @@ check I am fully funding ahd explicitly modelling ahd interventions
 changes to comm_tld prep parameters 
 
 drop vmmc in all options ?
+
+caldate(t) replaced with {t}
 
 ;
 
@@ -5176,7 +5178,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 				select;
 
 					* Only oral PrEP available;
-					when (caldate(t) ge date_prep_oral_intro and (. < caldate(t) < min(date_prep_cab_intro,date_prep_len_intro) or min(date_prep_cab_intro,date_prep_len_intro)=.)) do;	
+					when (caldate{t} ge date_prep_oral_intro and (. < caldate{t} < min(date_prep_cab_intro,date_prep_len_intro) or min(date_prep_cab_intro,date_prep_len_intro)=.)) do;	
 						if prep_oral_willing=1 then do;		*Regardless of preference, person will test for oral PrEP if willing;
 							tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
 							if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
@@ -5185,7 +5187,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 					end;
 
 					* Oral and injectable PrEP available only;
-					when (caldate(t) ge min(date_prep_cab_intro,date_prep_len_intro) > . and (. < caldate(t) < date_prep_vr_intro or date_prep_vr_intro=.)) do;	
+					when (caldate{t} ge min(date_prep_cab_intro,date_prep_len_intro) > . and (. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=.)) do;	
 
 						select;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
@@ -5224,8 +5226,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 					end;
 
 					* Oral and vr PrEP available only;
-					when ( caldate(t) ge date_prep_vr_intro > . and (
-					. < caldate(t) < min(date_prep_cab_intro,date_prep_len_intro) or 
+					when ( caldate{t} ge date_prep_vr_intro > . and (
+					. < caldate{t} < min(date_prep_cab_intro,date_prep_len_intro) or 
 						min(date_prep_cab_intro,date_prep_len_intro) =. 
 					))  do;	
 
