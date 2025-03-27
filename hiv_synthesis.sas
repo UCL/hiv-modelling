@@ -632,6 +632,7 @@ newp_seed = 7;
 * res_level_dol_cab_mut;	%sample_uniform(res_level_dol_cab_mut, 0.5 0.75  1.00); * tld_switch; * for dol this applies to 118 and 263, for 118 it applies with 0.25 added; 
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 
+* lencab_available;			lencab_available=0;
 * lencab_uptake_vlg1000;		%sample_uniform(lencab_uptake_vlg1000, 0.3 0.5 0.7); * laa_ac ; 
 * lencab_uptake;			%sample_uniform(lencab_uptake, 0.001 0.003 0.01 0.03 0.05 0.1 0.3); * len_ac ;
 
@@ -8666,10 +8667,10 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 * return for lencab;
 
 offered_return_lencab_this_per=0;
-if t ge 2 and onart_tm1 ne 1 and registd_tm1=1 and lencab_available=1 and offered_return_for_lencab ne 1 then do;
-	offered_return_for_lencab=1;offered_return_lencab_this_per=1;
+if t ge 2 and onart_tm1 ne 1 and registd_tm1=1 and lencab_available=1 and ever_offered_return_for_lencab ne 1 then do;
+	ever_offered_return_for_lencab=1;offered_return_lencab_this_per=1;
 	if s < rate_return_for_lencab then do;
-		return=1;lost=0;visit=1; set_in_options = 130; started_lencab_offart=1; started_lencab=1;
+		return=1;lost=0;visit=1; reg_option = 130; started_lencab_offart=1; started_lencab=1;
 	end;
 end;
 
