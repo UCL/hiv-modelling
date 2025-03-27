@@ -2218,7 +2218,8 @@ end;
 /* PrEP */
 
 * by default currently introduction of len prep leads to moving all inj prep to len;
-cab_prep_available=0; if caldate{t} >= date_prep_cab_intro and (caldate{t} < date_prep_len_intro or date_prep_len_intro=.) then cab_prep_available=1;
+cab_prep_available=0; 
+if caldate{t} >= date_prep_cab_intro and (caldate{t} < date_prep_len_intro or date_prep_len_intro=.) then cab_prep_available=1;
 
 
 
@@ -2285,7 +2286,7 @@ if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{
 end;
 
 if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
-if . < caldate{t} < date_prep_cab_intro or date_prep_cab_intro=. then pref_prep_cab = 0;
+if . < caldate{t} < date_prep_cab_intro or date_prep_cab_intro=. or caldate{t} >= date_prep_len_intro > . then pref_prep_cab = 0; * once len available we want len to be preferred;
 if . < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then pref_prep_len = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
 
@@ -5246,7 +5247,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 					end;
 				end; 
 
-				if highest_prep_pref = 2 then do; 					* switch to cab  PrEP; * this unlikely to be possible as len will replace cab;
+				if highest_prep_pref = 2 then do; 					* switch to cab  PrEP; * this not possible as len will replace cab;
 					switch_prep_from_len=1;	 	switch_prep_to_cab =1;	continuous_prep_len_use=0;
 					prep_cab =1;	continuous_prep_cab_use =  0.25;	prep_cab_current_start_date=caldate{t};	prep_cab_switch_date=caldate{t};
 					if prep_cab_ever ne 1 then do;
@@ -5322,10 +5323,12 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 							when (highest_prep_pref=1)	do; 
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_oral=1;	continuous_prep_oral_use=0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_choice=caldate{t};	stop_prep_oral_choice=0;	
+								if prep_oral_ever ne 1 then prep_oral_first_start_date=caldate{t};
 							end; 					
 							when (highest_prep_pref=2)	do; 
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_cab=1; 	continuous_prep_cab_use=0.25; 	prep_cab_current_start_date=caldate{t};		prep_cab_restart_date=caldate{t};	prep_cab_restart_date_choice=caldate{t};	stop_prep_cab_choice=0; 	
+								if prep_cab_ever ne 1 then prep_cab_first_start_date=caldate{t};
 							end; 					
 
 							when (highest_prep_pref=3)	do; 
@@ -5337,6 +5340,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 							when (highest_prep_pref=4)	do; 
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_vr=1; 		continuous_prep_vr_use=0.25;	prep_vr_current_start_date=caldate{t};		prep_vr_restart_date=caldate{t};	prep_vr_restart_date_choice=caldate{t}; 	stop_prep_vr_choice=0; 		
+								if prep_vr_ever ne 1 then prep_vr_first_start_date=caldate{t};
 							end; 	
 							otherwise xxx=1;	
 						end;
@@ -5351,10 +5355,12 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 							when (highest_prep_pref=1) do;
 								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
 								prep_oral=1;	continuous_prep_oral_use = 0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_eligible=caldate{t};
+								if prep_oral_ever ne 1 then prep_oral_first_start_date=caldate{t};
 							end;
 							when (highest_prep_pref=2) do; 
 								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
 								prep_cab=1;		continuous_prep_cab_use = 0.25;		prep_cab_current_start_date=caldate{t};		prep_cab_restart_date=caldate{t};	prep_cab_restart_date_eligible=caldate{t};
+								if prep_cab_ever ne 1 then prep_cab_first_start_date=caldate{t};
 							end;
 							when (highest_prep_pref=3) do; 
 								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
@@ -5364,6 +5370,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 							when (highest_prep_pref=4)	do; 
 								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
 								prep_vr=1;		continuous_prep_vr_use = 0.25;		prep_vr_current_start_date=caldate{t};		prep_vr_restart_date=caldate{t};	prep_vr_restart_date_eligible=caldate{t};
+								if prep_vr_ever ne 1 then prep_vr_first_start_date=caldate{t};
 							end;
 							otherwise xxx=1;	
 						end;
@@ -5506,7 +5513,7 @@ if hiv=1 and tested=1 and prep_any=1 then prep_falseneg=1;
 if caldate{t} ge     date_prep_oral_intro                                           and registd ne 1 and prep_any_elig=1 and 
 (pop_wide_tld ne 1 or tested=1) then do;
 	if prep_any=0 then do;
-		if prep_any_ever ne 1 then do; visit_prep_any=.; visit_prep_oral=.; visit_prep_cab=.;visit_prep_cab=.; visit_prep_len=.; visit_prep_vr=.; end;
+		if prep_any_ever ne 1 then do; visit_prep_any=.; visit_prep_oral=.; visit_prep_cab=.; visit_prep_len=.; visit_prep_vr=.; end;
 		else if prep_any_ever=1 then do;
 			if prep_any_tm1=1 then visit_prep_any=0;		
 			if prep_oral_tm1=1 then visit_prep_oral=0;		
@@ -6518,7 +6525,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			if hiv=0 then do;
 				vl_source_inf = vl_source;
 			    infected_primary=0;infected_vlsupp=0;
-			    hiv=1; infected_newp=1; infected_ep=0; infection=caldate{t};* prob infected by person in primary;
+			    hiv=1; infected_newp=1; infected_ep=0; infected_from_pwid=0; infected_from_msm=0;  infection=caldate{t};* prob infected by person in primary;
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
 				age_source_inf=age_newp;
@@ -6747,7 +6754,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 
 		if hiv=0 then do;
 			vl_source_inf = vl_source ;
-			hiv=1; infected_ep=1;infected_newp=0; infection=caldate{t};
+			hiv=1; infected_ep=1;infected_newp=0; infected_from_pwid=0; infected_from_msm=0; infection=caldate{t}; 
 			infected_primary=0;	if ep_primary=1 then infected_primary=1;
 			infected_vlsupp=0;  if vl_source=1 then infected_vlsupp=1;
 			age_source_inf=ageg_ep;
@@ -6972,7 +6979,7 @@ if t ge 2 and msm=1 and msm_random_this_period < risk_hiv_msm then do; * msm_ran
 			    hiv=1; infected_newp=0; infected_ep=0; infection=caldate{t};
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
-				infected_prep_any=0; infected_prep_oral=0; infected_prep_cab=0; infected_prep_vr=0;
+				infected_prep_any=0; infected_prep_oral=0; infected_prep_cab=0; infected_prep_len=0; infected_prep_vr=0;
 				inf_prep_any_source_prep_r=0; 
 				if prep_oral=1 then do; 
 					infected_prep_oral=1;	inf_prep_oral_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then inf_prep_oral_source_prep_r=1; 
@@ -7177,7 +7184,7 @@ if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
 			end;
 			if hiv=0 then do;
 				vl_source_inf = vl_source;
-			    infected_primary=0;infected_vlsupp=0; infected_from_pwid=1; infected_from_msm=0;
+			    infected_primary=0;infected_vlsupp=0; infected_from_pwid=1; infected_from_msm=0; 
 			    hiv=1; infected_newp=0; infected_ep=0; infection=caldate{t};
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
