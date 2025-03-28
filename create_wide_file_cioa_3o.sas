@@ -2450,6 +2450,8 @@ d_n_self_tested_10y_3_1  n_self_tested_10y_3  n_self_tested_10y_1
 d_n_tested_10y_2_1  n_tested_10y_2  n_tested_10y_1 
 d_n_tested_10y_3_1  n_tested_10y_3  n_tested_10y_1 
 
+p_tested_incl_self_10y_1 p_tested_incl_self_10y_2 p_tested_incl_self_10y_3 
+
 d_p_diag_10y_2_1  p_diag_10y_2  p_diag_10y_1
 d_p_diag_10y_3_1  p_diag_10y_3  p_diag_10y_1
 
