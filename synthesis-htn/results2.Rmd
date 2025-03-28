@@ -17,11 +17,13 @@ library(knitr)
 library(kableExtra)
 library(scales)
 library(RColorBrewer)
+library(patchwork)
+library(ggrepel)
 
 options(tinytex.verbose = TRUE)
 options(scipen = 999)
 
-knitr::opts_chunk$set(echo = FALSE, message = F, fig.height=8, fig.width=12)
+knitr::opts_chunk$set(echo = FALSE, message = F, fig.height=10, fig.width=15)
 require("knitr")
 opts_knit$set(root.dir = "/Users/sf124046/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration")
 
@@ -378,10 +380,10 @@ z1  %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options 
 
 # Figures
 
-## Figure 1. Hypertension Cascade among adults aged ≥18 years
+## Figure 2. Hypertension Cascade among adults aged ≥18 years
 
 ```{r}
-f1 <- df_sas %>% 
+fig2 <- df_sas %>% 
   filter(year == y, age %in% c("18+", "45-64"), var %in% c("p_dx_htn_true", "p_on_tx_htn", "p_hypert_control")) %>% 
   mutate(var = factor(var, 
                       levels = c("p_dx_htn_true", "p_on_tx_htn", "p_hypert_control"),
@@ -391,9 +393,9 @@ f1 <- df_sas %>%
   mutate(lower = mean - q05,
          upper = q95 - mean)
 
-f1 %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+fig2 %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
 
-f1 %>% 
+fig2 %>% 
   ggplot(aes(y = mean, x = source, fill = source)) +
     geom_bar(stat="identity") + 
     geom_errorbar(aes(ymin=q05, ymax=q95, x = source), width = 0.4, color = "#636363") +
@@ -402,79 +404,160 @@ f1 %>%
     scale_color_brewer(palette = "Dark2") +
     scale_fill_brewer(palette = "Dark2")
 
-write_csv(f1, paste0("./results/","figure1_", y, ".csv"))
+write_csv(fig2, paste0("./results/","figure1_", y, ".csv"))
 
 ```
 
 
-## Figure 2. Cost-effectiveness of hypertension treatment policies
+## Figure 3. Cost-effectiveness of hypertension treatment policies
 ```{r icer}
+plot_icer_base <- plot_icer %>% 
+  rename(policy = source) %>% 
+  filter(cost_cat == "Base case cost assumptions") %>% 
+  mutate(icer_text = ifelse(is.na(icer2), "SOC", paste0(policy, "\n", "$", icer2, "/DALY")),
+         nudge_y = ifelse(policy == "CCC", 6, 
+                          ifelse(policy == "CHW", 2, NA)))
 
-plot_icer
+ccc_icer <- plot_icer_base %>% filter(policy == "CCC") %>% ungroup() %>% select(icer2)
+chw_icer <- plot_icer_base %>% filter(policy == "CHW") %>% ungroup() %>% select(icer2)
 
-ccc_icer <- plot_icer %>% filter(source == "CCC", cost_cat == "Base case cost assumptions") %>% ungroup() %>%  select(icer2)
-chw_icer <- plot_icer %>% filter(source == "CHW", cost_cat == "Base case cost assumptions") %>% ungroup() %>%  select(icer2)
-
-plot_icer %>% 
-  filter(cost_cat %in% c("Base case cost assumptions")) %>% 
-  ggplot(aes(x = mean_ddaly, y = mean_cost)) +
-  geom_line() +
-  geom_point() +
-  annotate("text", x=0, y=1, label= "SOC", size = 5) +
-  annotate("text", x=15, y=3, label= "Chronic Care Clinic", size = 5) +
-  annotate("text", x=15, y=2, label= paste0("$",ccc_icer, "/DALY"), size = 5) +
-  annotate("text", x=53, y=18, label= "CHW Screening", size = 5) +
-  annotate("text", x=53, y=17, label= paste0("$",chw_icer, "/DALY"), size = 5) +
-  theme_classic(base_size = 16) +
-  coord_cartesian(ylim = c(0,20), xlim = c(0,70)) +
-  labs(subtitle = "2024 - 2074",
+# Create the overlayed plot
+fig3 <- ggplot() +
+  # First plot: Points from df_netdaly
+  geom_point(data = df_netdaly %>% 
+               rename(policy = source) %>% 
+               filter(year == "2474", cost_cat == "Base case cost assumptions"),
+             aes(x = ddaly_averted, y = cost_inc, color = policy), alpha = 0.4, size = 0.1) +
+  # Axis lines at x=0 and y=0
+  geom_hline(yintercept = 0, color = "#636363", linetype = "dashed") +
+  geom_vline(xintercept = 0, color = "#636363", linetype = "dashed") +
+  # Second plot: Lines and points from plot_icer_base
+  geom_point(data = plot_icer_base,
+             aes(x = mean_ddaly, y = mean_cost), size = 2.5, alpha = 1, color = "black") +
+  geom_line(data = plot_icer_base,
+            aes(x = mean_ddaly, y = mean_cost),
+            linewidth = 0.8) +
+  geom_point(data = plot_icer_base,
+             aes(x = mean_ddaly, y = mean_cost, color = policy), size = 1.5) +
+  # ggrepel annotations
+  geom_label_repel(data = plot_icer_base, 
+                   aes(x = mean_ddaly, y = mean_cost, color = policy, label = icer_text), 
+                   nudge_y = c(8, 5, 5),
+                   nudge_x = c(-40, 170, 130),
+                   fill = alpha("white", 0.5),
+                   direction = "y",  # Keep labels in a vertical column
+                   hjust = 0.5,  # Left-align the text
+                   segment.size = 0.2,
+                   force = 1,
+                   min.segment.length = 0,
+                   show.legend = FALSE) +
+  # Shared labels, theme, and scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  labs(title = "Cost-effectiveness frontier",
+       subtitle = "Per 10 million adults over 50-year time horizon (2024 - 2074), n=3000 setting-scenarios",
        y = "Annual incremental cost (millions $USD)",
        x = "Annual DALYs averted (thousands)") +
+  labs(color = "Policy") +
+  theme_classic() +
   theme(
-    plot.title = element_text(size = 20, face = "bold", color = "#636363"),
+    plot.title = element_text(size = 16, face = "bold", color = "#636363"),
+    plot.subtitle = element_text(size = 12),
     legend.position = "bottom",
     text = element_text(color = "#636363"),
     axis.line = element_line(color = "#636363"),
     axis.ticks = element_line(color = "#636363"),
     axis.text = element_text(color = "#636363")
   ) +
-  scale_color_brewer(palette = "Dark2")
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2")
+
+# Display the combined plot
+print(fig3)
+
+ggsave("results/fig3.pdf", plot = fig3, device = "pdf", width = 7.5, height = 5, units = "in", dpi = 600)
+
+ggsave("results/fig3.eps", plot = fig3, device = "eps", width = 7.5, height = 5, units = "in", dpi = 600)
+
 ```
 
-## Figure 3. Cost-effectiveness of hypertension policies at varying cost-effectiveness thresholds
+## Figure 4. Cost-effectiveness of hypertension policies at varying cost-effectiveness thresholds
 ```{r cf_all_graph}
-df_netdaly_graph %>% filter(year == "2474", cost_cat == "Base case cost assumptions") %>% 
+knitr::opts_chunk$set(echo = FALSE, message = F, fig.height=20, fig.width=15)
+fig4a <- df_netdaly_graph %>% filter(year == "2474", cost_cat == "Base case cost assumptions", ce_threshold >10) %>% 
   group_by(source, ce_threshold) %>% 
   summarize(prop = mean(cf_netdaly_all)) %>% 
   ggplot(aes(x = ce_threshold, y = prop, color=source)) +
   geom_line() +
   coord_cartesian(ylim = c(0,1), xlim = c(0,1000)) +
-  theme_classic(base_size = 16) +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 5)) + 
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 5), labels = dollar, limits = c(0,1000)) + 
-  labs(subtitle = "2024-2074",
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10), labels = dollar, limits = c(0,1000)) + 
+  labs(title = "A. Proportion of setting-scenarios where policy is cost-effective, \nby cost-effectiveness threshold",
+       subtitle = "Over 50 year time horizon from 2024-2074",
        y = "Proportion of settings where policy leads to greatest net DALYs averted",
        x = "Cost-effectiveness threshold (USD/DALY averted)") +
+  theme_classic() +
   theme(
-    plot.title = element_text(size = 20, face = "bold", color = "#636363"),
+    plot.title = element_text(size = 12, face = "bold", color = "#636363"),
+    plot.subtitle = element_text(size = 9),
     legend.position = "none",
     text = element_text(color = "#636363"),
     axis.line = element_line(color = "#636363"),
     axis.ticks = element_line(color = "#636363"),
-    axis.text = element_text(color = "#636363")
+    axis.text = element_text(color = "#636363"),
+    axis.title = element_text(color = "#636363", size = 8)
   ) +
   scale_color_brewer(palette = "Dark2") +
-  annotate("text", x=980, y=0.87, label= "CHW", size = 5, color = "#7570B3") +
-  annotate("text", x=980, y=0.12, label= "CCC", size = 5, color = "#D95F02") +
-  annotate("text", x=980, y=0.03, label= "SOC", size = 5, color = "#1B9E77") +
-  annotate("text", x=100, y=1, label = "Domestic threshold, \nMalawi (approximate)", size = 5, color = "#636363") +
-  annotate("text", x=300, y=1, label = "HIV threshold \n(lower)", size = 5, color = "#636363") +
-  annotate("text", x=500, y=1, label = "HIV threshold \n(upper)", size = 5, color = "#636363") + 
+  annotate("text", x=980, y=0.85, label= "CHW", color = "#7570B3", size = 4) +
+  annotate("text", x=980, y=0.14, label= "CCC", color = "#D95F02", size = 4) +
+  annotate("text", x=980, y=0.05, label= "SOC", color = "#1B9E77", size = 4) +
+  annotate("text", x=100, y=0.94, 
+           label = "Approximate lower income threshold, \ndomestic funding (e.g. Malawi)", color = "#636363", size = 2.5) +
+  annotate("text", x=500, y=0.94, 
+           label = "Approximate lower-middle income threshold, \ndomestic funding (e.g. Kenya)", color = "#636363", size = 2.5) +
+  annotate("text", x = 500, y = 1, label = expression(bold("Primary analysis")), color = "#636363", size = 2.5) + 
   geom_segment(aes(x=500, y=0, xend=500, yend=0.9), linewidth = 0.2, linetype = "dashed", color = "#636363") +
-  geom_segment(aes(x=100, y=0, xend=100, yend=0.9), linewidth = 0.2, linetype = "dashed", color = "#636363") + 
-  geom_segment(aes(x=300, y=0, xend=300, yend=0.9), linewidth = 0.2, linetype = "dashed", color = "#636363")
+  geom_segment(aes(x=100, y=0, xend=100, yend=0.9), linewidth = 0.2, linetype = "dashed", color = "#636363")
   
+fig4b <- df_netdaly_distribution %>% 
+  rename(policy = source) %>% 
+  mutate(ce_threshold = as.numeric(ce_threshold)) %>% 
+  filter(year == "2474", cost_cat == "Base case cost assumptions", ce_threshold >50) %>% 
+  group_by(policy, ce_threshold) %>% 
+  summarize(netdaly = median(netdaly_averted),
+            quantile_05 = quantile(netdaly_averted, 0.05),
+            quantile_95 = quantile(netdaly_averted, 0.95)) %>% 
+  ggplot(aes(x = ce_threshold, fill = policy, color=policy)) +
+  geom_line(aes(y = netdaly)) +
+  geom_ribbon(aes(ymin = quantile_05, ymax = quantile_95), color = NA, show.legend = FALSE, alpha = 0.1) + 
+  coord_cartesian(xlim = c(0,1000)) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10), labels = dollar, limits = c(0,1000)) + 
+  labs(title = "B. Net DALYs averted, by cost-effectiveness threshold",
+       subtitle = "Median (90% range), estimated for population of 10 million adults over 50-year time horizon from 2024-2074",
+       y = "Net DALYs averted (thousands)",
+       x = "Cost-effectiveness threshold (USD/DALY averted)") +
+  theme_classic() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold", color = "#636363"),
+    plot.subtitle = element_text(size = 9),
+    legend.position = "bottom",
+    text = element_text(color = "#636363"),
+    axis.line = element_line(color = "#636363"),
+    axis.ticks = element_line(color = "#636363"),
+    axis.text = element_text(color = "#636363"),
+    axis.title = element_text(color = "#636363", size = 8)
+  ) +
+  scale_color_brewer(palette = "Dark2") + 
+  scale_fill_brewer(palette = "Dark2")
 
+# Combine the two figures vertically
+fig4_combined <- fig4a / fig4b
+
+# Display the combined plot
+print(fig4_combined)
+
+ggsave("results/fig4_combined.pdf", plot = fig4_combined, device = "pdf", width = 7.5, height = 10, units = "in", dpi = 600)
 ```
 
 # Manuscript text
@@ -488,9 +571,9 @@ We evaluated `r df_sas_wide %>% filter(source == "SOC") %>% nrow()` setting-scen
 
 ## Results
 
-Over the next 50 years (2024-2074), the proportion of adults with hypertension aged 45-64 who have received a hypertension diagnosis is expected to remain at `r x %>% filter(var == "p_dx_htn_true", age == "45-64") %>% select(SOC)` under current conditions (Table 3). Improving clinic-based care without added screening (CCC policy) would only improve the proportion diagnosed to `r x %>% filter(var == "p_dx_htn_true", age == "45-64") %>% select(CCC)`, whereas additional CHW screening (CHW policy) would increase diagnosis to `r x %>% filter(var == "p_dx_htn_true", age == "45-64") %>% select(CHW)`.
+Over the next 50 years (2024-2074), the proportion of adults with hypertension aged 45-64 years who have received a hypertension diagnosis is expected to remain at `r x %>% filter(var == "p_dx_htn_true", age == "45-64") %>% select(SOC)` under current conditions (Table 3, Figure 1), with slight increases in prevalence over time due to improved survival among persons with hypertension (Appendix, Section 5). Improving clinic-based care without added screening (CCC policy) would only improve the proportion diagnosed to `r x %>% filter(var == "p_dx_htn_true", age == "45-64") %>% select(CCC)`, whereas additional CHW screening (CHW policy) would increase diagnosis to `r x %>% filter(var == "p_dx_htn_true", age == "45-64") %>% select(CHW)`.
 
-The proportion currently on antihypertensive treatment among adults aged 45-64 with hypertension would remain low at `r x %>% filter(var == "p_on_tx_htn", age == "45-64") %>% select(SOC)` under standard of care, whereas the proportion treated would increase to `r x %>% filter(var == "p_on_tx_htn", age == "45-64") %>% select(CCC)` with CCC implementation and `r x %>% filter(var == "p_on_tx_htn", age == "45-64") %>% select(CHW)` with CHW screening. 
+The proportion currently on antihypertensive treatment among adults aged 45-64 with hypertension would remain low at `r x %>% filter(var == "p_on_tx_htn", age == "45-64") %>% select(SOC)` under standard of care, whereas the proportion currently on treatment  would increase to `r x %>% filter(var == "p_on_tx_htn", age == "45-64") %>% select(CCC)` with CCC implementation and `r x %>% filter(var == "p_on_tx_htn", age == "45-64") %>% select(CHW)` with CHW screening. 
 
 With expanded screening, there is risk of overdiagnosis and overtreatment. In the CHW policy, we estimate that `r x %>% filter(var == "p_dx_htn_over", age == "18+") %>% select(CHW)` of normotensive adults would receive a hypertension diagnosis and `r x %>% filter(var == "p_on_tx_htn_over", age == "18+") %>% select(CHW)` would be on treatment, with prevalence increasing with age (`r x %>% filter(var == "p_dx_htn_over", age == "45-64") %>% select(CHW)` overdiagnosed and `r x %>% filter(var == "p_on_tx_htn_over", age == "45-64") %>% select(CHW)` overtreated among age ≥65). Estimated mean pre-treatment SBP among overdiagnosed individuals is `r x_over %>% filter(var == "m_sbp_max_over", age == "18+") %>% select(CHW)`, indicating that this phenomenon is expected to occur mostly among those near the treatment threshold (SBP ≥140 mmHg) and likely to benefit from treatment.
 
@@ -500,14 +583,14 @@ We project that hypertension control among those with true hypertension (SBP ≥
 
 Incident IHD events are projected to be `r x %>% filter(var == "rate_ihd_modsev", age == "45-64") %>% select(SOC)` per 100 person-years in all adults aged 45-64 under standard of care conditions with expected relative risk of `r x %>% filter(var == "rate_ihd_modsev_rr", age == "45-64") %>% select(CCC)` with CCC implementation and `r x %>% filter(var == "rate_ihd_modsev_rr", age == "45-64") %>% select(CHW)` with CHW screening. Stroke incidence is projected to be `r x %>% filter(var == "rate_cva_modsev", age == "45-64") %>% select(SOC)` per 100 person-years in adults aged 45-64 under standard of care conditions with expected relative risk of `r x %>% filter(var == "rate_cva_modsev_rr", age == "45-64") %>% select(CCC)` with CCC implementation and `r x %>% filter(var == "rate_cva_modsev_rr", age == "45-64") %>% select(CHW)` with CHW screening.  Projected relative risk for CVD mortality among all adults aged 18 and above is `r x %>% filter(var == "rate_dead_cvd_rr", age == "18+") %>% select(CCC)` with CCC and `r x %>% filter(var == "rate_dead_cvd_rr", age == "18+") %>% select(CHW)` with CHW policies. CCC implementation alone is expected to avert a mean of `r x %>% filter(var == "ddaly_averted") %>% select(CCC)` thousand DALYs per year for a population of 10 million persons aged 15 and older, whereas the projected health benefits of CHW screening are more than 3-fold greater (`r x %>% filter(var == "ddaly_averted") %>% select(CHW)` thousand DALYs averted annually). 
 
-### Cost-effectiveness
+### Costs and cost-effectiveness
 
-Anticipated mean incremental costs compared to standard care are $`r x %>% filter(var == "inc_cost") %>% select(CCC)` million USD for chronic care clinic implementation and $`r x %>% filter(var == "inc_cost") %>% select(CHW)` million USD for additional CHW screening, scaled to a total population size of 10 million adults. The incremental cost-effectiveness ratio (ICER) was $`r plot_icer %>% ungroup() %>% filter(cost_cat == "Base case cost assumptions", source =="CCC") %>% select(icer2)`/DALY averted for CCC and $`r plot_icer %>% ungroup() %>% filter(cost_cat == "Base case cost assumptions", source =="CHW") %>% select(icer2)`/DALY averted for CHW policies (Figure 1). Using a cost-effectiveness threshold of $500 USD/DALY averted, the CHW policy was cost-effective in `r x %>% filter(var == "cf_all") %>% select(CHW)` of scenarios, the CCC policy in `r x %>% filter(var == "cf_all") %>% select(CCC)`, and neither policy was cost-effective in `r x %>% filter(var == "cf_all") %>% select(SOC)` of scenarios (Table 4). 
+Mean incremental costs compared to standard care, discounted over the 50 year time horizon, are $`r x %>% filter(var == "inc_cost") %>% select(CCC)` million USD for chronic care clinic implementation and $`r x %>% filter(var == "inc_cost") %>% select(CHW)` million USD for additional CHW screening, scaled to a total population size of 10 million adults. The incremental cost-effectiveness ratio (ICER) was $`r plot_icer %>% ungroup() %>% filter(cost_cat == "Base case cost assumptions", source =="CCC") %>% select(icer2)`/DALY averted for CCC and $`r plot_icer %>% ungroup() %>% filter(cost_cat == "Base case cost assumptions", source =="CHW") %>% select(icer2)`/DALY averted for CHW policies (Figure 2). Using a cost-effectiveness threshold of $500 USD/DALY averted, the CHW policy was cost-effective in `r x %>% filter(var == "cf_all") %>% select(CHW)` of scenarios, the CCC policy in `r x %>% filter(var == "cf_all") %>% select(CCC)`, and neither policy was cost-effective in `r x %>% filter(var == "cf_all") %>% select(SOC)` of scenarios (Table 4). 
 
 Stratifying on baseline setting-scenario characteristics (Table 5), community-wide CHW screening was more cost-effective in settings with a greater baseline burden of hypertension and CVD mortality. Cost-effectiveness of the clinic-based CCC policy increased with greater HIV prevalence, though CHW screening remained the cost-effective strategy even in settings with the highest HIV prevalence. Cost-effectiveness of CHW screening increased with greater acute care utilization for CVD events (and thus higher acute care costs), though remained cost-effective in the majority of setting-scenarios (`r z1 %>% filter(parameter == "Proportion of acute CVD events receiving emergency care" & prop == "0.5") %>% select(CHW)`) where only 20% of people sought emergency care following an acute CVD event. 
 
 We also evaluated several alternative cost scenarios (Table 5). CHW screening (with CCC) was most sensitive to higher cost scenarios. CHW screening was cost-effective in `r z1 %>% filter(parameter == "Cost scenarios" & prop == "Drug costs 200% of base") %>% select(CHW)` of setting-scenarios where drug costs were doubled, indicating settings where high-quality drugs could not be obtained at generic prices. CHW screening was be cost-effective in only `r z1 %>% filter(parameter == "Cost scenarios" & prop == "Clinic costs 200% of base") %>% select(CHW)` of setting-scenarios where clinical costs were doubled, indicating settings with higher opportunity costs of additional clinic visits. ICERs for alternative cost scenarios can be found in the Appendix (Section 5).
 
-In sensitivity analyses, we evaluate relative cost-effectiveness of each policy under varying cost-effectiveness thresholds (Figure 2). When the presumed cost-effectiveness threshold is decreased to $300 USD per DALY averted, the CCC policy without community screening was cost-effective in `r df_netdaly_graph_summ %>% ungroup() %>% filter(source == "CCC", ce_threshold == 300) %>% select(pct)` of modeled scenarios. When the cost-effectiveness threshold is further decreased to $100 USD per DALY averted, a threshold that is likely affordable with domestic funding in most countries in sub-Saharan Africa, CCC implementation was the cost-effective policy in `r df_netdaly_graph_summ %>% ungroup() %>% filter(source == "CCC", ce_threshold == 100) %>% select(pct)` of settings.
+In sensitivity analyses, we evaluate cost-effectiveness of each policy under varying cost-effectiveness thresholds, reporting the proportion of setting-scenarios where each policy is cost-effective as defined by incurring the fewest net DALYs at a given cost-effectiveness threshold (Figure 4A). When the presumed cost-effectiveness threshold is decreased to $300 USD per DALY averted, the CCC policy without community screening was cost-effective in `r df_netdaly_graph_summ %>% ungroup() %>% filter(source == "CCC", ce_threshold == 300) %>% select(pct)` of modeled scenarios. When the cost-effectiveness threshold is further decreased to $100 USD per DALY averted, a threshold that is likely affordable with domestic funding in most countries in sub-Saharan Africa, CCC implementation was the cost-effective policy in `r df_netdaly_graph_summ %>% ungroup() %>% filter(source == "CCC", ce_threshold == 100) %>% select(pct)` of settings. Figure 4B demonstrates the median and 90% range of net DALYs averted across cost-effectiveness thresholds. It is apparent from this figure that for very low cost-effectiveness thresholds approaching $100 USD/DALY averted, the CHW policy is associated with a large negative number of net DALYs averted – suggesting large opportunity costs for implementing the CHW policy in settings with a very low cost-effectiveness threshold.
 
 
