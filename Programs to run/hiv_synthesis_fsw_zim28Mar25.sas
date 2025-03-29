@@ -1554,7 +1554,7 @@ sw = 0;
 
 if gender = 2 and life_sex_risk >= 2 then do;
 	select;
-		when (15 <= age < 20) prob_sw_init = 0.030;
+		when (15 <= age < 20) prob_sw_init = 0.040;
 		when (20 <= age < 25) prob_sw_init = 0.020;
 		when (25 <= age < 40) prob_sw_init = 0.010;
 		when (40 <= age < 50) prob_sw_init = 0.002;

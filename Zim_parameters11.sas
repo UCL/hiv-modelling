@@ -48,7 +48,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * SEX WORKERS;	
 
-* base_rate_sw;				%sample_uniform(base_rate_sw, 0.0010 0.0015);*20231002;
+* base_rate_sw;				%sample_uniform(base_rate_sw, 0.0010 0.0015);*Mar25;
 * base_rate_stop_sexwork ;	%sample(base_rate_stop_sexwork, 0.005 0.010 0.015, 0.40 0.40 0.20);
 
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.60;
@@ -82,7 +82,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 */
 
 ***Change these parameters as are assuming higher attendance than in core and Zim has Sisters program in place;
-* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.05 0.08);*consider changing in core as this is now lower than core and Zim should have one of the better programs;
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest,0.03 0.05 0.07);*consider changing in core as this is now lower than core and Zim should have one of the better programs;
 * effect_sw_prog_prep_any;  *%sample_uniform(effect_sw_prog_prep_any, 0.10 0.20 0.30);
 * effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.15 0.25 0.35);
 
