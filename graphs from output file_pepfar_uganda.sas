@@ -40,7 +40,7 @@ p_newp_ge1_ = p_newp_ge1;
 
 n_tested_incl_self = n_self_tested + n_tested; 
 
-%let single_var = p_onart             ;
+%let single_var = n_hiv              ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -51,13 +51,13 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 2815   ;
+%let nfit = 32   ;
 
 %let year_end = 2076.00 ;
 run;
 proc sort;by cald option ;run;
 
-***Two macros, one for each option. Gives medians ranges etc by option;
+***Two macros, oe for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
 if option =  0 ;
@@ -210,7 +210,7 @@ ods html ;
 
 
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -226,14 +226,15 @@ band    x=cald lower=p5_p_onart_1 upper=p95_p_onart_1 / transparency=0.9 fillatt
 
 run;quit;
 
+*/
 
 /*
 
 ods html;
 proc sgplot data=d nolegend; 
 * Title '';  * Title    height=1.5 justify=center "p_onart_vl1000_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.85 to  1       by 0.05  ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.8  to  1       by 0.05  ) valueattrs=(size=10);
 
 series  x=cald y=p50_p_onart_vl1000__0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_p_onart_vl1000__0 upper=p95_p_onart_vl1000__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
@@ -244,7 +245,6 @@ band    x=cald lower=p5_p_onart_vl1000__1 upper=p95_p_onart_vl1000__1 / transpar
 run;quit;
 
 */
-
 
 
 
@@ -337,12 +337,12 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
 * Title '';  * Title    height=1.5 justify=center "n hiv";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2000000     by 200000 ) valueattrs=(size=10);
 
 series  x=cald y=mean_n_hiv_0 / lineattrs = (color=grey thickness = 4);
@@ -351,12 +351,9 @@ band    x=cald lower=p5_n_hiv_0 upper=p95_n_hiv_0 / transparency=0.9 fillattrs =
 series  x=cald y=mean_n_hiv_1 / lineattrs = (color=darkblue    thickness = 4);
 band    x=cald lower=p5_n_hiv_1 upper=p95_n_hiv_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
 
-series  x=cald y=mean_n_hiv_2 / lineattrs = (color=darkred       thickness = 4);
-band    x=cald lower=p5_n_hiv_2 upper=p95_n_hiv_2 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
-
 run;quit;
 
-*/
+
 
 /*
 

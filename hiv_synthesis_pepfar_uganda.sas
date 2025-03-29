@@ -9775,7 +9775,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 
 
-if adh_reduction_pepfar ne 0 then adh = ahd - adh_reduction_pepfar;
+if adh_reduction_pepfar > 0 then adh = ahd - adh_reduction_pepfar;
 	
 
 if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have disadvantages;
