@@ -684,7 +684,7 @@ newp_seed = 7;
 * rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
 * rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
-* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest,0.03 0.05 0.07);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
 * effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.10 0.15 0.25);
 * effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
