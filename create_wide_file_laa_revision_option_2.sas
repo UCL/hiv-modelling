@@ -2280,6 +2280,7 @@ prevalence_vg1000_24
 p_onart_cd4_l200_24
 p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24  
 d_p_onart_mw_24
+s_alive_24
 ;
 run;
 ods html close;
