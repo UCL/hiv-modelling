@@ -1979,13 +1979,6 @@ if p_onart_diag_w_24 > 0.85;
 if p_onart_vl1000_m_24 > 0.80;
 if p_onart_vl1000_w_24 > 0.80;
 
-if r_choose_stop_prep_oral_comm_tld >= 0.03 ;  
-if prob_prep_oral_b_comm_tld <= 0.5;
-if incr_pref_prep_oral_comm_tld <= 0.5;	    
-if adh_effect_comm_tld <= 0.1;		
-if rate_self_test_if_introduced <= 0.5; 
-
-
 * ods html;
 * proc print noobs; 
 * var run; 
@@ -2603,28 +2596,47 @@ run;
 
 ods html;
 proc glm data=f; 
-class
-r_choose_stop_prep_oral_comm_tld 
-r_test_startprep_any_comm_tld
-prob_prep_oral_b_comm_tld
-incr_pref_prep_oral_comm_tld
-adh_effect_comm_tld
-rr_return_comm_tld
-rr_interrupt_comm_tld ;
-
-model r_incidence1549_10y_2_1 =
-
-r_choose_stop_prep_oral_comm_tld 
-r_test_startprep_any_comm_tld
-prob_prep_oral_b_comm_tld
-incr_pref_prep_oral_comm_tld
+* class
 adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld 
+rate_self_test_if_introduced
+;
+
+model d_netdaly300_2_1 =
+
+adh_effect_comm_tld
+rr_return_comm_tld
+rr_interrupt_comm_tld 
+rate_self_test_if_introduced
 / solution;
 
 run;
 ods html close;
+
+
+ods html;
+proc glm data=f; 
+model d_dcost_50y_2_1 =
+adh_effect_comm_tld
+rr_return_comm_tld
+rr_interrupt_comm_tld 
+rate_self_test_if_introduced
+/ solution;
+run;
+ods html close;
+
+ods html;
+proc glm data=f; 
+model d_ddaly_50y_2_1 =
+adh_effect_comm_tld
+rr_return_comm_tld
+rr_interrupt_comm_tld 
+rate_self_test_if_introduced
+/ solution;
+run;
+ods html close;
+
 
 
 ods html;
