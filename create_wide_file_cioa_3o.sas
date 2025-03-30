@@ -2296,11 +2296,11 @@ if 0.45 <= incidence1549m_24 < 0.60 then incidence1549m_24_g=4;
 if 0.60 <= incidence1549m_24 < 0.75 then incidence1549m_24_g=5;
 if 0.75 <= incidence1549m_24        then incidence1549m_24_g=6;
 
-if prevalence1549m_24 < 0.05 then prevalence1549m_24_g=1;
-if 0.05 <= prevalence1549m_24 < 0.10 then prevalence1549m_24_g=2;
-if 0.10 <= prevalence1549m_24 < 0.15 then prevalence1549m_24_g=3;
-if 0.15 <= prevalence1549m_24 < 0.20 then prevalence1549m_24_g=4;
-if 0.20 <= prevalence1549m_24        then prevalence1549m_24_g=5;
+if prevalence1549_24 < 0.05 then prevalence1549_24_g=1;
+if 0.05 <= prevalence1549_24 < 0.10 then prevalence1549_24_g=2;
+if 0.10 <= prevalence1549_24 < 0.15 then prevalence1549_24_g=3;
+if 0.15 <= prevalence1549_24 < 0.20 then prevalence1549_24_g=4;
+if 0.20 <= prevalence1549_24        then prevalence1549_24_g=5;
 
 if p_diag_m_24 < 0.70 then p_diag_m_24_g=1;
 if 0.70 <= p_diag_m_24 < 0.75 then p_diag_m_24_g=2;
@@ -2331,34 +2331,23 @@ if 0.45 <= incidence1549w_24 < 0.60 then incidence1549w_24_g=4;
 if 0.60 <= incidence1549w_24 < 0.75 then incidence1549w_24_g=5;
 if 0.75 <= incidence1549w_24        then incidence1549w_24_g=6;
 
-if prevalence1549w_24 < 0.05 then prevalence1549w_24_g=1;
-if 0.05 <= prevalence1549w_24 < 0.10 then prevalence1549w_24_g=2;
-if 0.10 <= prevalence1549w_24 < 0.15 then prevalence1549w_24_g=3;
-if 0.15 <= prevalence1549w_24 < 0.20 then prevalence1549w_24_g=4;
-if 0.20 <= prevalence1549w_24 < 0.25 then prevalence1549w_24_g=5;
-if 0.25 <= prevalence1549w_24        then prevalence1549w_24_g=6;
+if p_diag_24 < 0.75 then p_diag_24_g=1;
+if 0.75 <= p_diag_24 < 0.80 then p_diag_24_g=2;
+if 0.80 <= p_diag_24 < 0.85 then p_diag_24_g=3;
+if 0.85 <= p_diag_24 < 0.90 then p_diag_24_g=4;
+if 0.90 <= p_diag_24        then p_diag_24_g=5;
 
-if p_diag_w_24 < 0.70 then p_diag_w_24_g=1;
-if 0.70 <= p_diag_w_24 < 0.75 then p_diag_w_24_g=2;
-if 0.75 <= p_diag_w_24 < 0.80 then p_diag_w_24_g=3;
-if 0.80 <= p_diag_w_24 < 0.85 then p_diag_w_24_g=4;
-if 0.85 <= p_diag_w_24 < 0.90 then p_diag_w_24_g=5;
-if 0.90 <= p_diag_w_24        then p_diag_w_24_g=6;
+if p_onart_diag_24 < 0.80 then p_onart_diag_24_g=1;
+if 0.80 <= p_onart_diag_24 < 0.85 then p_onart_diag_24_g=2;
+if 0.85 <= p_onart_diag_24 < 0.90 then p_onart_diag_24_g=3;
+if 0.90 <= p_onart_diag_24 < 0.95 then p_onart_diag_24_g=4;
+if 0.95 <= p_onart_diag_24        then p_onart_diag_24_g=5;
 
-if p_onart_diag_w_24 < 0.70 then p_onart_diag_w_24_g=1;
-if 0.70 <= p_onart_diag_w_24 < 0.75 then p_onart_diag_w_24_g=2;
-if 0.75 <= p_onart_diag_w_24 < 0.80 then p_onart_diag_w_24_g=3;
-if 0.80 <= p_onart_diag_w_24 < 0.85 then p_onart_diag_w_24_g=4;
-if 0.85 <= p_onart_diag_w_24 < 0.90 then p_onart_diag_w_24_g=5;
-if 0.90 <= p_onart_diag_w_24 < 0.95 then p_onart_diag_w_24_g=6;
-if 0.95 <= p_onart_diag_w_24        then p_onart_diag_w_24_g=7;
-
-if p_onart_vl1000_w_24 < 0.80 then p_onart_vl1000_w_24_g=1;
-if 0.80 <= p_onart_vl1000_w_24 < 0.85 then p_onart_vl1000_w_24_g=2;
-if 0.85 <= p_onart_vl1000_w_24 < 0.90 then p_onart_vl1000_w_24_g=3;
-if 0.90 <= p_onart_vl1000_w_24 < 0.95 then p_onart_vl1000_w_24_g=4;
-if 0.95 <= p_onart_vl1000_w_24        then p_onart_vl1000_w_24_g=5;
-
+if p_onart_vl1000_24 < 0.80 then p_onart_vl1000_24_g=1;
+if 0.80 <= p_onart_vl1000_24 < 0.85 then p_onart_vl1000_24_g=2;
+if 0.85 <= p_onart_vl1000_24 < 0.90 then p_onart_vl1000_24_g=3;
+if 0.90 <= p_onart_vl1000_24 < 0.95 then p_onart_vl1000_24_g=4;
+if 0.95 <= p_onart_vl1000_24        then p_onart_vl1000_24_g=5;
 
 if prevalence_vg1000_24 < 0.005 then prevalence_vg1000_24_g=1;
 if 0.005 <= prevalence_vg1000_24 < 0.010 then prevalence_vg1000_24_g=2;
@@ -2400,14 +2389,6 @@ if 0.45 <= incidence1549_24 < 0.60 then incidence1549_24_g=4;
 if 0.60 <= incidence1549_24 < 0.75 then incidence1549_24_g=5;
 if 0.75 <= incidence1549_24        then incidence1549_24_g=6;
 
-if prevalence1549_24 < 0.05 then prevalence1549_24_g=1;
-if 0.05 <= prevalence1549_24 < 0.10 then prevalence1549_24_g=2;
-if 0.10 <= prevalence1549_24 < 0.15 then prevalence1549_24_g=3;
-if 0.15 <= prevalence1549_24 < 0.20 then prevalence1549_24_g=4;
-if 0.20 <= prevalence1549_24 < 0.25 then prevalence1549_24_g=5;
-if 0.25 <= prevalence1549_24        then prevalence1549_24_g=6;
-
-
 if p_vl1000_24 < 0.80 then p_vl1000_24_g=1;
 if 0.80 <= p_vl1000_24 < 0.85 then p_vl1000_24_g=2;
 if 0.85 <= p_vl1000_24 < 0.90 then p_vl1000_24_g=3;
@@ -2418,6 +2399,10 @@ if 0.95 <= p_vl1000_24        then p_vl1000_24_g=5;
 d_prop_elig_on_prep_50y_1_2 = prop_elig_on_prep_50y_2 - prop_elig_on_prep_50y_1;
 
 prevalence1549_percent_24 = prevalence1549_24 * 100;
+
+p_diag_percent_24 = p_diag_24 * 100;  
+p_onart_diag_percent_24 = p_onart_diag_24 * 100; 
+p_onart_vl1000_percent_24 = p_onart_vl1000_24 * 100;
 
 ods html;
 proc print noobs; var run; run;
@@ -2576,12 +2561,14 @@ ods html close;
 
 ods html;
 proc logistic data=f; 
-model x_ce_500_1_2 = prevalence1549_percent_24  p_diag_24  p_onart_diag_24 p_onart_vl1000_24 ;  run;
+model x_ce_500_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 ;  run;
 proc logistic data=f; 
-model x_ce_300_1_2 = prevalence1549_percent_24  p_diag_24  p_onart_diag_24 p_onart_vl1000_24 ;  run;
+model x_ce_300_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 ;  run;
 proc logistic data=f; 
-model x_ce_150_1_2 = prevalence1549_percent_24  p_diag_24  p_onart_diag_24 p_onart_vl1000_24 ;  run;
+model x_ce_150_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 ;  run;
 ods html close;
+
+
 
 
 
@@ -3273,6 +3260,13 @@ prevalence1549_24_g * lowest_netdaly
 run;
 ods html close;
 
+
+
+ods html;
+proc logistic data=f;
+class prevalence1549_24_g p_diag_24_g  p_onart_diag_24_g p_onart_vl1000_24_g ; 
+model x_ce_150_1_2 = prevalence1549_24_g p_diag_24_g  p_onart_diag_24_g p_onart_vl1000_24_g ;  run;
+ods html close;
 
 
 
