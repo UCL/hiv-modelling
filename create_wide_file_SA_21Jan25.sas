@@ -1,42 +1,21 @@
-<<<<<<<< HEAD:create_wide_file_malawi_18Jul24.sas
-libname a  "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
+libname a  "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths SA\";
 
 data a;
-set a.malawi_18jul24;
-========
-libname a  "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
-
-data a;
-set a.mlw_04dec24;
->>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:create_wide_file_malawi_04Dec24a.sas
+set a.sa_21jan25;
 if run=. then delete;
 
-if option ne 0 then delete; 
 proc sort;by run;run;
-proc freq;table cald run;run;
-
-<<<<<<<< HEAD:create_wide_file_malawi_18Jul24.sas
-proc freq;table s_I_undiag4549m;run;
-========
->>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:create_wide_file_malawi_04Dec24a.sas
+proc freq;table cald run option;run;
 
 data sf;
-set a;
- 
-*Malawi;
-<<<<<<<< HEAD:create_wide_file_malawi_18Jul24.sas
-*Source for  population is https://wdi.worldbank.org/table/2.1 (58%>15);
-========
-*Source for Zimbabwe population is https://wdi.worldbank.org/table/2.1 (58%>15);
->>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:create_wide_file_malawi_04Dec24a.sas
-*accessed 20/6/2024;
-if cald=2022.5;
-s_alive = s_alive_m + s_alive_w ;
-sf_2022 = (20400000 * 0.581) / s_alive; 
+set a ;
 
-keep run sf_2022 ;
-proc sort; by run;run;
-%let sf=sf_2022;
+if cald=2021.5;
+s_alive = s_alive_m + s_alive_w ;
+sf_2022 = (58500000 * 0.706) / s_alive;  * statistica 70.6% of sa population in 2019 >= age 15 (https://www.statista.com/statistics/1116077/total-population-of-south-africa-by-age-group/);
+sf=sf_2022;
+keep run sf_2022 sf;
+proc sort; by run;
 
 
 
@@ -44,6 +23,7 @@ data y;
 merge a sf;
 by run ;
 
+*if run ne  989218009 then delete;
 
 ***these are used for checking the raw data so not scaled up;
 s_primary1564m = s_primary1549m + s_primary5054m + s_primary5559m + s_primary6064m;
@@ -70,107 +50,107 @@ s_primary8084_ =  s_primary8084m + s_primary8084w;
 
 
 ***This is for the actual spreadsheet;
-* n_alive1564_;					n_alive1564_  = s_alive1564 * &sf;
-* n_alive1564_m;				n_alive1564_m = s_alive1564_m * &sf;
-* n_alive1564_w;				n_alive1564_w = s_alive1564_w * &sf;
+* n_alive1564_;					n_alive1564_  = s_alive1564 * sf;
+* n_alive1564_m;				n_alive1564_m = s_alive1564_m * sf;
+* n_alive1564_w;				n_alive1564_w = s_alive1564_w * sf;
 
-* n_hiv1519_;					n_hiv1519_= (s_hiv1519m + s_hiv1519w) * &sf;
-* n_hiv2024_;					n_hiv2024_= (s_hiv2024m + s_hiv2024w) * &sf;
-* n_hiv2529_;					n_hiv2529_= (s_hiv2529m + s_hiv2529w) * &sf;
-* n_hiv3034_;					n_hiv3034_= (s_hiv3034m + s_hiv3034w) * &sf;
-* n_hiv3539_;					n_hiv3539_= (s_hiv3539m + s_hiv3539w) * &sf;
-* n_hiv4044_;					n_hiv4044_= (s_hiv4044m + s_hiv4044w) * &sf;
-* n_hiv4549_;					n_hiv4549_= (s_hiv4549m + s_hiv4549w) * &sf;
-* n_hiv5054_;					n_hiv5054_= (s_hiv5054m + s_hiv5054w) * &sf;
-* n_hiv5559_;					n_hiv5559_= (s_hiv5559m + s_hiv5559w) * &sf;
-* n_hiv6064_;					n_hiv6064_= (s_hiv6064m + s_hiv6064w) * &sf;
-* n_hiv6569_;					n_hiv6569_= (s_hiv6569m + s_hiv6569w) * &sf;
-* n_hiv7074_;					n_hiv7074_= (s_hiv7074m + s_hiv7074w) * &sf;
-* n_hiv7579_;					n_hiv7579_= (s_hiv7579m + s_hiv7579w) * &sf;
-* n_hiv8084_;					n_hiv8084_= (s_hiv8084m + s_hiv8084w) * &sf;
+* n_hiv1519_;					n_hiv1519_= (s_hiv1519m + s_hiv1519w) * sf;
+* n_hiv2024_;					n_hiv2024_= (s_hiv2024m + s_hiv2024w) * sf;
+* n_hiv2529_;					n_hiv2529_= (s_hiv2529m + s_hiv2529w) * sf;
+* n_hiv3034_;					n_hiv3034_= (s_hiv3034m + s_hiv3034w) * sf;
+* n_hiv3539_;					n_hiv3539_= (s_hiv3539m + s_hiv3539w) * sf;
+* n_hiv4044_;					n_hiv4044_= (s_hiv4044m + s_hiv4044w) * sf;
+* n_hiv4549_;					n_hiv4549_= (s_hiv4549m + s_hiv4549w) * sf;
+* n_hiv5054_;					n_hiv5054_= (s_hiv5054m + s_hiv5054w) * sf;
+* n_hiv5559_;					n_hiv5559_= (s_hiv5559m + s_hiv5559w) * sf;
+* n_hiv6064_;					n_hiv6064_= (s_hiv6064m + s_hiv6064w) * sf;
+* n_hiv6569_;					n_hiv6569_= (s_hiv6569m + s_hiv6569w) * sf;
+* n_hiv7074_;					n_hiv7074_= (s_hiv7074m + s_hiv7074w) * sf;
+* n_hiv7579_;					n_hiv7579_= (s_hiv7579m + s_hiv7579w) * sf;
+* n_hiv8084_;					n_hiv8084_= (s_hiv8084m + s_hiv8084w) * sf;
 
 
-* n_hiv1519m;					n_hiv1519m = s_hiv1519m * &sf;
-* n_hiv1519w;					n_hiv1519w = s_hiv1519w * &sf;
-* n_hiv2024m;					n_hiv2024m = s_hiv2024m * &sf;
-* n_hiv2024w;					n_hiv2024w = s_hiv2024w * &sf;
-* n_hiv2529m;					n_hiv2529m = s_hiv2529m * &sf;
-* n_hiv2529w;					n_hiv2529w = s_hiv2529w * &sf;
-* n_hiv3034m;					n_hiv3034m = s_hiv3034m * &sf;
-* n_hiv3034w;					n_hiv3034w = s_hiv3034w * &sf;
-* n_hiv3539m;					n_hiv3539m = s_hiv3539m * &sf;
-* n_hiv3539w;					n_hiv3539w = s_hiv3539w * &sf;
-* n_hiv4044m;					n_hiv4044m = s_hiv4044m * &sf;
-* n_hiv4044w;					n_hiv4044w = s_hiv4044w * &sf;
-* n_hiv4549m;					n_hiv4549m = s_hiv4549m * &sf;
-* n_hiv4549w;					n_hiv4549w = s_hiv4549w * &sf;
-* n_hiv5054m;					n_hiv5054m = s_hiv5054m * &sf;
-* n_hiv5054w;					n_hiv5054w = s_hiv5054w * &sf;
-* n_hiv5559m;					n_hiv5559m = s_hiv5559m * &sf;
-* n_hiv5559w;					n_hiv5559w = s_hiv5559w * &sf;
-* n_hiv6064m;					n_hiv6064m = s_hiv6064m * &sf;
-* n_hiv6064w;					n_hiv6064w = s_hiv6064w * &sf;
-* n_hiv6569m;					n_hiv6569m = s_hiv6569m * &sf;
-* n_hiv6569w;					n_hiv6569w = s_hiv6569w * &sf;
-* n_hiv7074m;					n_hiv7074m = s_hiv7074m * &sf;
-* n_hiv7074w;					n_hiv7074w = s_hiv7074w * &sf;
-* n_hiv7579m;					n_hiv7579m = s_hiv7579m * &sf;
-* n_hiv7579w;					n_hiv7579w = s_hiv7579w * &sf;
-* n_hiv8084m;					n_hiv8084m = s_hiv8084m * &sf;
-* n_hiv8084w;					n_hiv8084w = s_hiv8084w * &sf;
+* n_hiv1519m;					n_hiv1519m = s_hiv1519m * sf;
+* n_hiv1519w;					n_hiv1519w = s_hiv1519w * sf;
+* n_hiv2024m;					n_hiv2024m = s_hiv2024m * sf;
+* n_hiv2024w;					n_hiv2024w = s_hiv2024w * sf;
+* n_hiv2529m;					n_hiv2529m = s_hiv2529m * sf;
+* n_hiv2529w;					n_hiv2529w = s_hiv2529w * sf;
+* n_hiv3034m;					n_hiv3034m = s_hiv3034m * sf;
+* n_hiv3034w;					n_hiv3034w = s_hiv3034w * sf;
+* n_hiv3539m;					n_hiv3539m = s_hiv3539m * sf;
+* n_hiv3539w;					n_hiv3539w = s_hiv3539w * sf;
+* n_hiv4044m;					n_hiv4044m = s_hiv4044m * sf;
+* n_hiv4044w;					n_hiv4044w = s_hiv4044w * sf;
+* n_hiv4549m;					n_hiv4549m = s_hiv4549m * sf;
+* n_hiv4549w;					n_hiv4549w = s_hiv4549w * sf;
+* n_hiv5054m;					n_hiv5054m = s_hiv5054m * sf;
+* n_hiv5054w;					n_hiv5054w = s_hiv5054w * sf;
+* n_hiv5559m;					n_hiv5559m = s_hiv5559m * sf;
+* n_hiv5559w;					n_hiv5559w = s_hiv5559w * sf;
+* n_hiv6064m;					n_hiv6064m = s_hiv6064m * sf;
+* n_hiv6064w;					n_hiv6064w = s_hiv6064w * sf;
+* n_hiv6569m;					n_hiv6569m = s_hiv6569m * sf;
+* n_hiv6569w;					n_hiv6569w = s_hiv6569w * sf;
+* n_hiv7074m;					n_hiv7074m = s_hiv7074m * sf;
+* n_hiv7074w;					n_hiv7074w = s_hiv7074w * sf;
+* n_hiv7579m;					n_hiv7579m = s_hiv7579m * sf;
+* n_hiv7579w;					n_hiv7579w = s_hiv7579w * sf;
+* n_hiv8084m;					n_hiv8084m = s_hiv8084m * sf;
+* n_hiv8084w;					n_hiv8084w = s_hiv8084w * sf;
 
-n_primary1564m = s_primary1564m * &sf * 4;
-n_primary1564w = s_primary1564w * &sf * 4;
+n_primary1564m = s_primary1564m * sf * 4;
+n_primary1564w = s_primary1564w * sf * 4;
 n_primary1564_ = n_primary1564m + n_primary1564w;
 
-* n_alive1564_;					n_alive1564_  = s_alive1564 * &sf ;
-* n_alive1564_m;				n_alive1564_m = s_alive1564_m * &sf ;
-* n_alive1564_w;				n_alive1564_w = s_alive1564_w * &sf ;
+* n_alive1564_;					n_alive1564_  = s_alive1564 * sf ;
+* n_alive1564_m;				n_alive1564_m = s_alive1564_m * sf ;
+* n_alive1564_w;				n_alive1564_w = s_alive1564_w * sf ;
 
-* n_hiv1519_;					n_hiv1519_= (s_hiv1519m + s_hiv1519w) * &sf ;
-* n_hiv2024_;					n_hiv2024_= (s_hiv2024m + s_hiv2024w) * &sf ;
-* n_hiv2529_;					n_hiv2529_= (s_hiv2529m + s_hiv2529w) * &sf ;
-* n_hiv3034_;					n_hiv3034_= (s_hiv3034m + s_hiv3034w) * &sf ;
-* n_hiv3539_;					n_hiv3539_= (s_hiv3539m + s_hiv3539w) * &sf ;
-* n_hiv4044_;					n_hiv4044_= (s_hiv4044m + s_hiv4044w) * &sf ;
-* n_hiv4549_;					n_hiv4549_= (s_hiv4549m + s_hiv4549w) * &sf ;
-* n_hiv5054_;					n_hiv5054_= (s_hiv5054m + s_hiv5054w) * &sf ;
-* n_hiv5559_;					n_hiv5559_= (s_hiv5559m + s_hiv5559w) * &sf ;
-* n_hiv6064_;					n_hiv6064_= (s_hiv6064m + s_hiv6064w) * &sf ;
-* n_hiv6569_;					n_hiv6569_= (s_hiv6569m + s_hiv6569w) * &sf ;
-* n_hiv7074_;					n_hiv7074_= (s_hiv7074m + s_hiv7074w) * &sf ;
-* n_hiv7579_;					n_hiv7579_= (s_hiv7579m + s_hiv7579w) * &sf ;
-* n_hiv8084_;					n_hiv8084_= (s_hiv8084m + s_hiv8084w) * &sf ;
+* n_hiv1519_;					n_hiv1519_= (s_hiv1519m + s_hiv1519w) * sf ;
+* n_hiv2024_;					n_hiv2024_= (s_hiv2024m + s_hiv2024w) * sf ;
+* n_hiv2529_;					n_hiv2529_= (s_hiv2529m + s_hiv2529w) * sf ;
+* n_hiv3034_;					n_hiv3034_= (s_hiv3034m + s_hiv3034w) * sf ;
+* n_hiv3539_;					n_hiv3539_= (s_hiv3539m + s_hiv3539w) * sf ;
+* n_hiv4044_;					n_hiv4044_= (s_hiv4044m + s_hiv4044w) * sf ;
+* n_hiv4549_;					n_hiv4549_= (s_hiv4549m + s_hiv4549w) * sf ;
+* n_hiv5054_;					n_hiv5054_= (s_hiv5054m + s_hiv5054w) * sf ;
+* n_hiv5559_;					n_hiv5559_= (s_hiv5559m + s_hiv5559w) * sf ;
+* n_hiv6064_;					n_hiv6064_= (s_hiv6064m + s_hiv6064w) * sf ;
+* n_hiv6569_;					n_hiv6569_= (s_hiv6569m + s_hiv6569w) * sf ;
+* n_hiv7074_;					n_hiv7074_= (s_hiv7074m + s_hiv7074w) * sf ;
+* n_hiv7579_;					n_hiv7579_= (s_hiv7579m + s_hiv7579w) * sf ;
+* n_hiv8084_;					n_hiv8084_= (s_hiv8084m + s_hiv8084w) * sf ;
 
 
-* n_hiv1519m;					n_hiv1519m = s_hiv1519m * &sf ;
-* n_hiv1519w;					n_hiv1519w = s_hiv1519w * &sf ;
-* n_hiv2024m;					n_hiv2024m = s_hiv2024m * &sf ;
-* n_hiv2024w;					n_hiv2024w = s_hiv2024w * &sf ;
-* n_hiv2529m;					n_hiv2529m = s_hiv2529m * &sf ;
-* n_hiv2529w;					n_hiv2529w = s_hiv2529w * &sf ;
-* n_hiv3034m;					n_hiv3034m = s_hiv3034m * &sf ;
-* n_hiv3034w;					n_hiv3034w = s_hiv3034w * &sf ;
-* n_hiv3539m;					n_hiv3539m = s_hiv3539m * &sf ;
-* n_hiv3539w;					n_hiv3539w = s_hiv3539w * &sf ;
-* n_hiv4044m;					n_hiv4044m = s_hiv4044m * &sf ;
-* n_hiv4044w;					n_hiv4044w = s_hiv4044w * &sf ;
-* n_hiv4549m;					n_hiv4549m = s_hiv4549m * &sf ;
-* n_hiv4549w;					n_hiv4549w = s_hiv4549w * &sf ;
-* n_hiv5054m;					n_hiv5054m = s_hiv5054m * &sf ;
-* n_hiv5054w;					n_hiv5054w = s_hiv5054w * &sf ;
-* n_hiv5559m;					n_hiv5559m = s_hiv5559m * &sf ;
-* n_hiv5559w;					n_hiv5559w = s_hiv5559w * &sf ;
-* n_hiv6064m;					n_hiv6064m = s_hiv6064m * &sf ;
-* n_hiv6064w;					n_hiv6064w = s_hiv6064w * &sf ;
-* n_hiv6569m;					n_hiv6569m = s_hiv6569m * &sf ;
-* n_hiv6569w;					n_hiv6569w = s_hiv6569w * &sf ;
-* n_hiv7074m;					n_hiv7074m = s_hiv7074m * &sf ;
-* n_hiv7074w;					n_hiv7074w = s_hiv7074w * &sf ;
-* n_hiv7579m;					n_hiv7579m = s_hiv7579m * &sf ;
-* n_hiv7579w;					n_hiv7579w = s_hiv7579w * &sf ;
-* n_hiv8084m;					n_hiv8084m = s_hiv8084m * &sf ;
-* n_hiv8084w;					n_hiv8084w = s_hiv8084w * &sf ;
+* n_hiv1519m;					n_hiv1519m = s_hiv1519m * sf ;
+* n_hiv1519w;					n_hiv1519w = s_hiv1519w * sf ;
+* n_hiv2024m;					n_hiv2024m = s_hiv2024m * sf ;
+* n_hiv2024w;					n_hiv2024w = s_hiv2024w * sf ;
+* n_hiv2529m;					n_hiv2529m = s_hiv2529m * sf ;
+* n_hiv2529w;					n_hiv2529w = s_hiv2529w * sf ;
+* n_hiv3034m;					n_hiv3034m = s_hiv3034m * sf ;
+* n_hiv3034w;					n_hiv3034w = s_hiv3034w * sf ;
+* n_hiv3539m;					n_hiv3539m = s_hiv3539m * sf ;
+* n_hiv3539w;					n_hiv3539w = s_hiv3539w * sf ;
+* n_hiv4044m;					n_hiv4044m = s_hiv4044m * sf ;
+* n_hiv4044w;					n_hiv4044w = s_hiv4044w * sf ;
+* n_hiv4549m;					n_hiv4549m = s_hiv4549m * sf ;
+* n_hiv4549w;					n_hiv4549w = s_hiv4549w * sf ;
+* n_hiv5054m;					n_hiv5054m = s_hiv5054m * sf ;
+* n_hiv5054w;					n_hiv5054w = s_hiv5054w * sf ;
+* n_hiv5559m;					n_hiv5559m = s_hiv5559m * sf ;
+* n_hiv5559w;					n_hiv5559w = s_hiv5559w * sf ;
+* n_hiv6064m;					n_hiv6064m = s_hiv6064m * sf ;
+* n_hiv6064w;					n_hiv6064w = s_hiv6064w * sf ;
+* n_hiv6569m;					n_hiv6569m = s_hiv6569m * sf ;
+* n_hiv6569w;					n_hiv6569w = s_hiv6569w * sf ;
+* n_hiv7074m;					n_hiv7074m = s_hiv7074m * sf ;
+* n_hiv7074w;					n_hiv7074w = s_hiv7074w * sf ;
+* n_hiv7579m;					n_hiv7579m = s_hiv7579m * sf ;
+* n_hiv7579w;					n_hiv7579w = s_hiv7579w * sf ;
+* n_hiv8084m;					n_hiv8084m = s_hiv8084m * sf ;
+* n_hiv8084w;					n_hiv8084w = s_hiv8084w * sf ;
 
 * prevalence1564;				prevalence1564_ = (s_hiv1564w  + s_hiv1564m ) / (s_alive1564_w + s_alive1564_m);
 * prevalence1564m;				prevalence1564m = s_hiv1564m  / s_alive1564_m ;
@@ -193,38 +173,38 @@ n_primary1564_ = n_primary1564m + n_primary1564w;
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 
 ***This is currently all 15+;
-* n_hiv_death;					n_hiv_death = s_hiv_death * 4 * &sf;
-* n_hiv_death_m;				n_hiv_death_m = s_hiv_death_m * 4 * &sf;
-* n_hiv_death_w;				n_hiv_death_w = s_hiv_death_w * 4 * &sf;
+* n_hiv_death;					n_hiv_death = s_hiv_death * 4 * sf;
+* n_hiv_death_m;				n_hiv_death_m = s_hiv_death_m * 4 * sf;
+* n_hiv_death_w;				n_hiv_death_w = s_hiv_death_w * 4 * sf;
 
-* n_hiv_death1519m;				n_hiv_death1519m = s_hiv_death1519m * &sf * 4;
-* n_hiv_death1519w;				n_hiv_death1519w = s_hiv_death1519w * &sf * 4;
-* n_hiv_death2024m;				n_hiv_death2024m = s_hiv_death2024m * &sf * 4;
-* n_hiv_death2024w;				n_hiv_death2024w = s_hiv_death2024w * &sf * 4;
-* n_hiv_death2529m;				n_hiv_death2529m = s_hiv_death2529m * &sf * 4;
-* n_hiv_death2529w;				n_hiv_death2529w = s_hiv_death2529w * &sf * 4;
-* n_hiv_death3034m;				n_hiv_death3034m = s_hiv_death3034m * &sf * 4;
-* n_hiv_death3034w;				n_hiv_death3034w = s_hiv_death3034w * &sf * 4;
-* n_hiv_death3539m;				n_hiv_death3539m = s_hiv_death3539m * &sf * 4;
-* n_hiv_death3539w;				n_hiv_death3539w = s_hiv_death3539w * &sf * 4;
-* n_hiv_death4044m;				n_hiv_death4044m = s_hiv_death4044m * &sf * 4;
-* n_hiv_death4044w;				n_hiv_death4044w = s_hiv_death4044w * &sf * 4;
-* n_hiv_death4549m;				n_hiv_death4549m = s_hiv_death4549m * &sf * 4;
-* n_hiv_death4549w;				n_hiv_death4549w = s_hiv_death4549w * &sf * 4;
-* n_hiv_death5054m;				n_hiv_death5054m = s_hiv_death5054m * &sf * 4;
-* n_hiv_death5054w;				n_hiv_death5054w = s_hiv_death5054w * &sf * 4;
-* n_hiv_death5559m;				n_hiv_death5559m = s_hiv_death5559m * &sf * 4;
-* n_hiv_death5559w;				n_hiv_death5559w = s_hiv_death5559w * &sf * 4;
-* n_hiv_death6064m;				n_hiv_death6064m = s_hiv_death6064m * &sf * 4;
-* n_hiv_death6064w;				n_hiv_death6064w = s_hiv_death6064w * &sf * 4;
-* n_hiv_death6569m;				n_hiv_death6569m = s_hiv_death6569m * &sf * 4;
-* n_hiv_death6569w;				n_hiv_death6569w = s_hiv_death6569w * &sf * 4;
-* n_hiv_death7074m;				n_hiv_death7074m = s_hiv_death7074m * &sf * 4;
-* n_hiv_death7074w;				n_hiv_death7074w = s_hiv_death7074w * &sf * 4;
-* n_hiv_death7579m;				n_hiv_death7579m = s_hiv_death7579m * &sf * 4;
-* n_hiv_death7579w;				n_hiv_death7579w = s_hiv_death7579w * &sf * 4;
-* n_hiv_death8084m;				n_hiv_death8084m = s_hiv_death8084m * &sf * 4;
-* n_hiv_death8084w;				n_hiv_death8084w = s_hiv_death8084w * &sf * 4;
+* n_hiv_death1519m;				n_hiv_death1519m = s_hiv_death1519m * sf * 4;
+* n_hiv_death1519w;				n_hiv_death1519w = s_hiv_death1519w * sf * 4;
+* n_hiv_death2024m;				n_hiv_death2024m = s_hiv_death2024m * sf * 4;
+* n_hiv_death2024w;				n_hiv_death2024w = s_hiv_death2024w * sf * 4;
+* n_hiv_death2529m;				n_hiv_death2529m = s_hiv_death2529m * sf * 4;
+* n_hiv_death2529w;				n_hiv_death2529w = s_hiv_death2529w * sf * 4;
+* n_hiv_death3034m;				n_hiv_death3034m = s_hiv_death3034m * sf * 4;
+* n_hiv_death3034w;				n_hiv_death3034w = s_hiv_death3034w * sf * 4;
+* n_hiv_death3539m;				n_hiv_death3539m = s_hiv_death3539m * sf * 4;
+* n_hiv_death3539w;				n_hiv_death3539w = s_hiv_death3539w * sf * 4;
+* n_hiv_death4044m;				n_hiv_death4044m = s_hiv_death4044m * sf * 4;
+* n_hiv_death4044w;				n_hiv_death4044w = s_hiv_death4044w * sf * 4;
+* n_hiv_death4549m;				n_hiv_death4549m = s_hiv_death4549m * sf * 4;
+* n_hiv_death4549w;				n_hiv_death4549w = s_hiv_death4549w * sf * 4;
+* n_hiv_death5054m;				n_hiv_death5054m = s_hiv_death5054m * sf * 4;
+* n_hiv_death5054w;				n_hiv_death5054w = s_hiv_death5054w * sf * 4;
+* n_hiv_death5559m;				n_hiv_death5559m = s_hiv_death5559m * sf * 4;
+* n_hiv_death5559w;				n_hiv_death5559w = s_hiv_death5559w * sf * 4;
+* n_hiv_death6064m;				n_hiv_death6064m = s_hiv_death6064m * sf * 4;
+* n_hiv_death6064w;				n_hiv_death6064w = s_hiv_death6064w * sf * 4;
+* n_hiv_death6569m;				n_hiv_death6569m = s_hiv_death6569m * sf * 4;
+* n_hiv_death6569w;				n_hiv_death6569w = s_hiv_death6569w * sf * 4;
+* n_hiv_death7074m;				n_hiv_death7074m = s_hiv_death7074m * sf * 4;
+* n_hiv_death7074w;				n_hiv_death7074w = s_hiv_death7074w * sf * 4;
+* n_hiv_death7579m;				n_hiv_death7579m = s_hiv_death7579m * sf * 4;
+* n_hiv_death7579w;				n_hiv_death7579w = s_hiv_death7579w * sf * 4;
+* n_hiv_death8084m;				n_hiv_death8084m = s_hiv_death8084m * sf * 4;
+* n_hiv_death8084w;				n_hiv_death8084w = s_hiv_death8084w * sf * 4;
 
 * n_hiv_death1519_;				n_hiv_death1519_ = n_hiv_death1519m + n_hiv_death1519w;
 * n_hiv_death2024_;				n_hiv_death2024_ = n_hiv_death2024m + n_hiv_death2024w;
@@ -242,50 +222,50 @@ n_primary1564_ = n_primary1564m + n_primary1564w;
 * n_hiv_death8084_;				n_hiv_death8084_ = n_hiv_death8084m + n_hiv_death8084w;
 
 
-* n_inf1519_;					n_inf1519_ = s_primary1519_ * &sf * 4;
-* n_inf2024_;					n_inf2024_ = s_primary2024_ * &sf * 4;
-* n_inf2529_;					n_inf2529_ = s_primary2529_ * &sf * 4;
-* n_inf3034_;					n_inf3034_ = s_primary3034_ * &sf * 4;
-* n_inf3539_;					n_inf3539_ = s_primary3539_ * &sf * 4;
-* n_inf4044_;					n_inf4044_ = s_primary4044_ * &sf * 4;
-* n_inf4549_;					n_inf4549_ = s_primary4549_ * &sf * 4;
-* n_inf5054_;					n_inf5054_ = s_primary5054_ * &sf * 4;
-* n_inf5559_;					n_inf5559_ = s_primary5559_ * &sf * 4;
-* n_inf6064_;					n_inf6064_ = s_primary6064_ * &sf * 4;
-* n_inf6569_;					n_inf6569_ = s_primary6569_ * &sf * 4;
-* n_inf7074_;					n_inf7074_ = s_primary7074_ * &sf * 4;
-* n_inf7579_;					n_inf7579_ = s_primary7579_ * &sf * 4;
-* n_inf8084_;					n_inf8084_ = s_primary8084_ * &sf * 4;
+* n_inf1519_;					n_inf1519_ = s_primary1519_ * sf * 4;
+* n_inf2024_;					n_inf2024_ = s_primary2024_ * sf * 4;
+* n_inf2529_;					n_inf2529_ = s_primary2529_ * sf * 4;
+* n_inf3034_;					n_inf3034_ = s_primary3034_ * sf * 4;
+* n_inf3539_;					n_inf3539_ = s_primary3539_ * sf * 4;
+* n_inf4044_;					n_inf4044_ = s_primary4044_ * sf * 4;
+* n_inf4549_;					n_inf4549_ = s_primary4549_ * sf * 4;
+* n_inf5054_;					n_inf5054_ = s_primary5054_ * sf * 4;
+* n_inf5559_;					n_inf5559_ = s_primary5559_ * sf * 4;
+* n_inf6064_;					n_inf6064_ = s_primary6064_ * sf * 4;
+* n_inf6569_;					n_inf6569_ = s_primary6569_ * sf * 4;
+* n_inf7074_;					n_inf7074_ = s_primary7074_ * sf * 4;
+* n_inf7579_;					n_inf7579_ = s_primary7579_ * sf * 4;
+* n_inf8084_;					n_inf8084_ = s_primary8084_ * sf * 4;
 
-* n_inf1519m;					n_inf1519m = s_primary1519m * &sf * 4;
-* n_inf2024m;					n_inf2024m = s_primary2024m * &sf * 4;
-* n_inf2529m;					n_inf2529m = s_primary2529m * &sf * 4;
-* n_inf3034m;					n_inf3034m = s_primary3034m * &sf * 4;
-* n_inf3539m;					n_inf3539m = s_primary3539m * &sf * 4;
-* n_inf4044m;					n_inf4044m = s_primary4044m * &sf * 4;
-* n_inf4549m;					n_inf4549m = s_primary4549m * &sf * 4;
-* n_inf5054m;					n_inf5054m = s_primary5054m * &sf * 4;
-* n_inf5559m;					n_inf5559m = s_primary5559m * &sf * 4;
-* n_inf6064m;					n_inf6064m = s_primary6064m * &sf * 4;
-* n_inf6569m;					n_inf6569m = s_primary6569m * &sf * 4;
-* n_inf7074m;					n_inf7074m = s_primary7074m * &sf * 4;
-* n_inf7579m;					n_inf7579m = s_primary7579m * &sf * 4;
-* n_inf8084m;					n_inf8084m = s_primary8084m * &sf * 4;
+* n_inf1519m;					n_inf1519m = s_primary1519m * sf * 4;
+* n_inf2024m;					n_inf2024m = s_primary2024m * sf * 4;
+* n_inf2529m;					n_inf2529m = s_primary2529m * sf * 4;
+* n_inf3034m;					n_inf3034m = s_primary3034m * sf * 4;
+* n_inf3539m;					n_inf3539m = s_primary3539m * sf * 4;
+* n_inf4044m;					n_inf4044m = s_primary4044m * sf * 4;
+* n_inf4549m;					n_inf4549m = s_primary4549m * sf * 4;
+* n_inf5054m;					n_inf5054m = s_primary5054m * sf * 4;
+* n_inf5559m;					n_inf5559m = s_primary5559m * sf * 4;
+* n_inf6064m;					n_inf6064m = s_primary6064m * sf * 4;
+* n_inf6569m;					n_inf6569m = s_primary6569m * sf * 4;
+* n_inf7074m;					n_inf7074m = s_primary7074m * sf * 4;
+* n_inf7579m;					n_inf7579m = s_primary7579m * sf * 4;
+* n_inf8084m;					n_inf8084m = s_primary8084m * sf * 4;
 
-* n_inf1519w;					n_inf1519w = s_primary1519w * &sf * 4;
-* n_inf2024w;					n_inf2024w = s_primary2024w * &sf * 4;
-* n_inf2529w;					n_inf2529w = s_primary2529w * &sf * 4;
-* n_inf3034w;					n_inf3034w = s_primary3034w * &sf * 4;
-* n_inf3539w;					n_inf3539w = s_primary3539w * &sf * 4;
-* n_inf4044w;					n_inf4044w = s_primary4044w * &sf * 4;
-* n_inf4549w;					n_inf4549w = s_primary4549w * &sf * 4;
-* n_inf5054w;					n_inf5054w = s_primary5054w * &sf * 4;
-* n_inf5559w;					n_inf5559w = s_primary5559w * &sf * 4;
-* n_inf6064w;					n_inf6064w = s_primary6064w * &sf * 4;
-* n_inf6569w;					n_inf6569w = s_primary6569w * &sf * 4;
-* n_inf7074w;					n_inf7074w = s_primary7074w * &sf * 4;
-* n_inf7579w;					n_inf7579w = s_primary7579w * &sf * 4;
-* n_inf8084w;					n_inf8084w = s_primary8084w * &sf * 4;
+* n_inf1519w;					n_inf1519w = s_primary1519w * sf * 4;
+* n_inf2024w;					n_inf2024w = s_primary2024w * sf * 4;
+* n_inf2529w;					n_inf2529w = s_primary2529w * sf * 4;
+* n_inf3034w;					n_inf3034w = s_primary3034w * sf * 4;
+* n_inf3539w;					n_inf3539w = s_primary3539w * sf * 4;
+* n_inf4044w;					n_inf4044w = s_primary4044w * sf * 4;
+* n_inf4549w;					n_inf4549w = s_primary4549w * sf * 4;
+* n_inf5054w;					n_inf5054w = s_primary5054w * sf * 4;
+* n_inf5559w;					n_inf5559w = s_primary5559w * sf * 4;
+* n_inf6064w;					n_inf6064w = s_primary6064w * sf * 4;
+* n_inf6569w;					n_inf6569w = s_primary6569w * sf * 4;
+* n_inf7074w;					n_inf7074w = s_primary7074w * sf * 4;
+* n_inf7579w;					n_inf7579w = s_primary7579w * sf * 4;
+* n_inf8084w;					n_inf8084w = s_primary8084w * sf * 4;
 
 
 ***Rename so variables are less than <32 char as the macro will add on characters;
@@ -633,232 +613,232 @@ s_I_offart_SIgt6m5559_ = s_I_offart_SIgt6m5559m + s_I_offart_SIgt6m5559w; s_I_of
 s_I_offart_SIgt6m6569_ = s_I_offart_SIgt6m6569m + s_I_offart_SIgt6m6569w; s_I_offart_SIgt6m7074_ = s_I_offart_SIgt6m7074m + s_I_offart_SIgt6m7074w;
 s_I_offart_SIgt6m7579_ = s_I_offart_SIgt6m7579m + s_I_offart_SIgt6m7579w; s_I_offart_SIgt6m8084_ = s_I_offart_SIgt6m8084m + s_I_offart_SIgt6m8084w;
 
-n_dead_undiag				= s_dead_undiag * &sf * 4;
-n_dead_diag_not_linked 		= s_dead_diag_not_linked * &sf * 4;
-n_dead_Alt6_Acd4lt200_ 		= s_dead_Alt6_artcd4lt200 * &sf * 4;
-n_dead_Alt6_Acd4gt200_ 		= s_dead_Alt6_artcd4gt200 * &sf * 4;
-n_d_I_Alt6_Rcd4lt200_ 		= s_dead_I_Alt6_Rcd4lt200 * &sf * 4;
-n_d_I_Alt6_Rcd4gt200_ 		= s_dead_I_Alt6_Rcd4gt200 * &sf * 4;
-n_dead_A_vl1000_ 			= s_dead_A_vl1000 * &sf * 4;
-n_dead_A_vg1000_ 			= s_dead_A_vg1000 * &sf * 4;
-n_dead_Alt6_vl1000_ 		= s_dead_Alt6_vl1000 * &sf * 4;
-n_dead_Alt6_vg1000_ 		= s_dead_Alt6_vg1000 * &sf * 4;
-n_dead_Agt6_vl1000_ 		= s_dead_Agt6_vl1000 * &sf * 4;
-n_dead_Agt6_vg1000_ 		= s_dead_Agt6_vg1000 * &sf * 4;
-n_dead_int_lost 			= s_dead_int_lost * &sf * 4;
-n_dead_1stint_lost	 		= s_dead_1stint_lost * &sf * 4;
-n_dead_subintlt6_lost 		= s_dead_subintlt6_lost * &sf * 4;
-n_dead_subintgt6_lost 		= s_dead_subintgt6_lost * &sf * 4;
-n_dead_A_cd4lt200_ 			= s_dead_A_cd4lt200 * &sf * 4;
-n_dead_A_cd4gt200_ 			= s_dead_A_cd4gt200 * &sf * 4;
-n_dead_Alt6_cd4lt200_ 		= s_dead_Alt6_cd4lt200 * &sf * 4;
-n_dead_Alt6_cd4gt200_ 		= s_dead_Alt6_cd4gt200 * &sf * 4;
-n_dead_Agt6_cd4lt200_ 		= s_dead_Agt6_cd4lt200 * &sf * 4;
-n_dead_Agt6_cd4gt200_ 		= s_dead_Agt6_cd4gt200 * &sf * 4;
+n_dead_undiag				= s_dead_undiag * sf * 4;
+n_dead_diag_not_linked 		= s_dead_diag_not_linked * sf * 4;
+n_dead_Alt6_Acd4lt200_ 		= s_dead_Alt6_artcd4lt200 * sf * 4;
+n_dead_Alt6_Acd4gt200_ 		= s_dead_Alt6_artcd4gt200 * sf * 4;
+n_d_I_Alt6_Rcd4lt200_ 		= s_dead_I_Alt6_Rcd4lt200 * sf * 4;
+n_d_I_Alt6_Rcd4gt200_ 		= s_dead_I_Alt6_Rcd4gt200 * sf * 4;
+n_dead_A_vl1000_ 			= s_dead_A_vl1000 * sf * 4;
+n_dead_A_vg1000_ 			= s_dead_A_vg1000 * sf * 4;
+n_dead_Alt6_vl1000_ 		= s_dead_Alt6_vl1000 * sf * 4;
+n_dead_Alt6_vg1000_ 		= s_dead_Alt6_vg1000 * sf * 4;
+n_dead_Agt6_vl1000_ 		= s_dead_Agt6_vl1000 * sf * 4;
+n_dead_Agt6_vg1000_ 		= s_dead_Agt6_vg1000 * sf * 4;
+n_dead_int_lost 			= s_dead_int_lost * sf * 4;
+n_dead_1stint_lost	 		= s_dead_1stint_lost * sf * 4;
+n_dead_subintlt6_lost 		= s_dead_subintlt6_lost * sf * 4;
+n_dead_subintgt6_lost 		= s_dead_subintgt6_lost * sf * 4;
+n_dead_A_cd4lt200_ 			= s_dead_A_cd4lt200 * sf * 4;
+n_dead_A_cd4gt200_ 			= s_dead_A_cd4gt200 * sf * 4;
+n_dead_Alt6_cd4lt200_ 		= s_dead_Alt6_cd4lt200 * sf * 4;
+n_dead_Alt6_cd4gt200_ 		= s_dead_Alt6_cd4gt200 * sf * 4;
+n_dead_Agt6_cd4lt200_ 		= s_dead_Agt6_cd4lt200 * sf * 4;
+n_dead_Agt6_cd4gt200_ 		= s_dead_Agt6_cd4gt200 * sf * 4;
 
-n_dead_undiag_m				= s_dead_undiag_m * &sf * 4;
-n_dead_diag_not_linked_m 	= s_dead_diag_not_linked_m * &sf * 4;
-n_dead_Alt6_Acd4lt200_m 	= s_dead_Alt6_artcd4lt200_m * &sf * 4;
-n_dead_Alt6_Acd4gt200_m 	= s_dead_Alt6_artcd4gt200_m * &sf * 4;
-n_d_I_Alt6_Rcd4lt200_m 		= s_dead_I_Alt6_Rcd4lt200_m * &sf * 4;
-n_d_I_Alt6_Rcd4gt200_m 		= s_dead_I_Alt6_Rcd4gt200_m * &sf * 4;
-n_dead_A_vl1000_m 			= s_dead_A_vl1000_m * &sf * 4;
-n_dead_A_vg1000_m 			= s_dead_A_vg1000_m * &sf * 4;
-n_dead_Alt6_vl1000_m 		= s_dead_Alt6_vl1000_m * &sf * 4;
-n_dead_Alt6_vg1000_m 		= s_dead_Alt6_vg1000_m * &sf * 4;
-n_dead_Agt6_vl1000_m 		= s_dead_Agt6_vl1000_m * &sf * 4;
-n_dead_Agt6_vg1000_m 		= s_dead_Agt6_vg1000_m * &sf * 4;
-n_dead_int_lost_m 			= s_dead_int_lost_m * &sf * 4;
-n_dead_1stint_lost_m 		= s_dead_1stint_lost_m * &sf * 4;
-n_dead_subintlt6_lost_m 	= s_dead_subintlt6_lost_m * &sf * 4;
-n_dead_subintgt6_lost_m 	= s_dead_subintgt6_lost_m * &sf * 4;
-n_dead_A_cd4lt200_m 		= s_dead_A_cd4lt200_m * &sf * 4;
-n_dead_A_cd4gt200_m 		= s_dead_A_cd4gt200_m * &sf * 4;
-n_dead_Alt6_cd4lt200_m 		= s_dead_Alt6_cd4lt200_m * &sf * 4;
-n_dead_Alt6_cd4gt200_m 		= s_dead_Alt6_cd4gt200_m * &sf * 4;
-n_dead_Agt6_cd4lt200_m 		= s_dead_Agt6_cd4lt200_m * &sf * 4;
-n_dead_Agt6_cd4gt200_m 		= s_dead_Agt6_cd4gt200_m * &sf * 4;
+n_dead_undiag_m				= s_dead_undiag_m * sf * 4;
+n_dead_diag_not_linked_m 	= s_dead_diag_not_linked_m * sf * 4;
+n_dead_Alt6_Acd4lt200_m 	= s_dead_Alt6_artcd4lt200_m * sf * 4;
+n_dead_Alt6_Acd4gt200_m 	= s_dead_Alt6_artcd4gt200_m * sf * 4;
+n_d_I_Alt6_Rcd4lt200_m 		= s_dead_I_Alt6_Rcd4lt200_m * sf * 4;
+n_d_I_Alt6_Rcd4gt200_m 		= s_dead_I_Alt6_Rcd4gt200_m * sf * 4;
+n_dead_A_vl1000_m 			= s_dead_A_vl1000_m * sf * 4;
+n_dead_A_vg1000_m 			= s_dead_A_vg1000_m * sf * 4;
+n_dead_Alt6_vl1000_m 		= s_dead_Alt6_vl1000_m * sf * 4;
+n_dead_Alt6_vg1000_m 		= s_dead_Alt6_vg1000_m * sf * 4;
+n_dead_Agt6_vl1000_m 		= s_dead_Agt6_vl1000_m * sf * 4;
+n_dead_Agt6_vg1000_m 		= s_dead_Agt6_vg1000_m * sf * 4;
+n_dead_int_lost_m 			= s_dead_int_lost_m * sf * 4;
+n_dead_1stint_lost_m 		= s_dead_1stint_lost_m * sf * 4;
+n_dead_subintlt6_lost_m 	= s_dead_subintlt6_lost_m * sf * 4;
+n_dead_subintgt6_lost_m 	= s_dead_subintgt6_lost_m * sf * 4;
+n_dead_A_cd4lt200_m 		= s_dead_A_cd4lt200_m * sf * 4;
+n_dead_A_cd4gt200_m 		= s_dead_A_cd4gt200_m * sf * 4;
+n_dead_Alt6_cd4lt200_m 		= s_dead_Alt6_cd4lt200_m * sf * 4;
+n_dead_Alt6_cd4gt200_m 		= s_dead_Alt6_cd4gt200_m * sf * 4;
+n_dead_Agt6_cd4lt200_m 		= s_dead_Agt6_cd4lt200_m * sf * 4;
+n_dead_Agt6_cd4gt200_m 		= s_dead_Agt6_cd4gt200_m * sf * 4;
 
-n_dead_undiag_w				= s_dead_undiag_w * &sf * 4;
-n_dead_diag_not_linked_w 	= s_dead_diag_not_linked_w * &sf * 4;
-n_dead_Alt6_Acd4lt200_w 	= s_dead_Alt6_artcd4lt200_w * &sf * 4;
-n_dead_Alt6_Acd4gt200_w		= s_dead_Alt6_artcd4gt200_w * &sf * 4;
-n_d_I_Alt6_Rcd4lt200_w 		= s_dead_I_Alt6_Rcd4lt200_w * &sf * 4;
-n_d_I_Alt6_Rcd4gt200_w 		= s_dead_I_Alt6_Rcd4gt200_w * &sf * 4;
-n_dead_A_vl1000_w 			= s_dead_A_vl1000_w * &sf * 4;
-n_dead_A_vg1000_w 			= s_dead_A_vg1000_w * &sf * 4;
-n_dead_Alt6_vl1000_w 		= s_dead_Alt6_vl1000_w * &sf * 4;
-n_dead_Alt6_vg1000_w 		= s_dead_Alt6_vg1000_w * &sf * 4;
-n_dead_Agt6_vl1000_w 		= s_dead_Agt6_vl1000_w * &sf * 4;
-n_dead_Agt6_vg1000_w 		= s_dead_Agt6_vg1000_w * &sf * 4;
-n_dead_int_lost_w 			= s_dead_int_lost_w * &sf * 4;
-n_dead_1stint_lost_w 		= s_dead_1stint_lost_w * &sf * 4;
-n_dead_subintlt6_lost_w 	= s_dead_subintlt6_lost_w * &sf * 4;
-n_dead_subintgt6_lost_w 	= s_dead_subintgt6_lost_w * &sf * 4;
-n_dead_A_cd4lt200_w 		= s_dead_A_cd4lt200_w * &sf * 4;
-n_dead_A_cd4gt200_w 		= s_dead_A_cd4gt200_w * &sf * 4;
-n_dead_Alt6_cd4lt200_w 		= s_dead_Alt6_cd4lt200_w * &sf * 4;
-n_dead_Alt6_cd4gt200_w 		= s_dead_Alt6_cd4gt200_w * &sf * 4;
-n_dead_Agt6_cd4lt200_w 		= s_dead_Agt6_cd4lt200_w * &sf * 4;
-n_dead_Agt6_cd4gt200_w 		= s_dead_Agt6_cd4gt200_w * &sf * 4;
+n_dead_undiag_w				= s_dead_undiag_w * sf * 4;
+n_dead_diag_not_linked_w 	= s_dead_diag_not_linked_w * sf * 4;
+n_dead_Alt6_Acd4lt200_w 	= s_dead_Alt6_artcd4lt200_w * sf * 4;
+n_dead_Alt6_Acd4gt200_w		= s_dead_Alt6_artcd4gt200_w * sf * 4;
+n_d_I_Alt6_Rcd4lt200_w 		= s_dead_I_Alt6_Rcd4lt200_w * sf * 4;
+n_d_I_Alt6_Rcd4gt200_w 		= s_dead_I_Alt6_Rcd4gt200_w * sf * 4;
+n_dead_A_vl1000_w 			= s_dead_A_vl1000_w * sf * 4;
+n_dead_A_vg1000_w 			= s_dead_A_vg1000_w * sf * 4;
+n_dead_Alt6_vl1000_w 		= s_dead_Alt6_vl1000_w * sf * 4;
+n_dead_Alt6_vg1000_w 		= s_dead_Alt6_vg1000_w * sf * 4;
+n_dead_Agt6_vl1000_w 		= s_dead_Agt6_vl1000_w * sf * 4;
+n_dead_Agt6_vg1000_w 		= s_dead_Agt6_vg1000_w * sf * 4;
+n_dead_int_lost_w 			= s_dead_int_lost_w * sf * 4;
+n_dead_1stint_lost_w 		= s_dead_1stint_lost_w * sf * 4;
+n_dead_subintlt6_lost_w 	= s_dead_subintlt6_lost_w * sf * 4;
+n_dead_subintgt6_lost_w 	= s_dead_subintgt6_lost_w * sf * 4;
+n_dead_A_cd4lt200_w 		= s_dead_A_cd4lt200_w * sf * 4;
+n_dead_A_cd4gt200_w 		= s_dead_A_cd4gt200_w * sf * 4;
+n_dead_Alt6_cd4lt200_w 		= s_dead_Alt6_cd4lt200_w * sf * 4;
+n_dead_Alt6_cd4gt200_w 		= s_dead_Alt6_cd4gt200_w * sf * 4;
+n_dead_Agt6_cd4lt200_w 		= s_dead_Agt6_cd4lt200_w * sf * 4;
+n_dead_Agt6_cd4gt200_w 		= s_dead_Agt6_cd4gt200_w * sf * 4;
 
-n_I_undiag 			= s_I_undiag * &sf * 4;
-n_I_diag_naive 		= s_I_diag_naive  * &sf * 4;
-n_I_diag_startart 	= s_I_diag_startart * &sf * 4;
-n_I_onart 			= s_I_onart * &sf * 4;
-n_I_offart			= s_I_offart * &sf * 4;
-n_I_onart_lt6m		= s_I_onart_lt6m * &sf * 4;
-n_I_onart_lt6m_nvs	= s_I_onart_lt6m_nvs * &sf * 4;
-n_I_onart_gt6m_nvs	= s_I_onart_gt6m_nvs * &sf * 4;
-n_I_onart_gt6m_vs	= s_I_onart_gt6m_vs * &sf * 4;
-n_I_offart_1stI		= s_I_offart_1stI * &sf * 4;
-n_I_offart_SI		= s_I_offart_SI * &sf * 4;     
-n_I_offart_SIlt6m	= s_I_offart_SIlt6m * &sf * 4;
-n_I_offart_SIgt6m	= s_I_offart_SIgt6m * &sf * 4;
+n_I_undiag 			= s_I_undiag * sf * 4;
+n_I_diag_naive 		= s_I_diag_naive  * sf * 4;
+n_I_diag_startart 	= s_I_diag_startart * sf * 4;
+n_I_onart 			= s_I_onart * sf * 4;
+n_I_offart			= s_I_offart * sf * 4;
+n_I_onart_lt6m		= s_I_onart_lt6m * sf * 4;
+n_I_onart_lt6m_nvs	= s_I_onart_lt6m_nvs * sf * 4;
+n_I_onart_gt6m_nvs	= s_I_onart_gt6m_nvs * sf * 4;
+n_I_onart_gt6m_vs	= s_I_onart_gt6m_vs * sf * 4;
+n_I_offart_1stI		= s_I_offart_1stI * sf * 4;
+n_I_offart_SI		= s_I_offart_SI * sf * 4;     
+n_I_offart_SIlt6m	= s_I_offart_SIlt6m * sf * 4;
+n_I_offart_SIgt6m	= s_I_offart_SIgt6m * sf * 4;
 
-n_I_undiag_m 			= s_I_undiag_m * &sf * 4;
-n_I_diag_naive_m 		= s_I_diag_naive_m  * &sf * 4;
-n_I_diag_startart_m 	= s_I_diag_startart_m * &sf * 4;
-n_I_onart_m 			= s_I_onart_m * &sf * 4;
-n_I_offart_m			= s_I_offart_m * &sf * 4;
-n_I_onart_lt6m_m		= s_I_onart_lt6m_m * &sf * 4;
-n_I_onart_lt6m_nvs_m	= s_I_onart_lt6m_nvs_m * &sf * 4;
-n_I_onart_gt6m_nvs_m	= s_I_onart_gt6m_nvs_m * &sf * 4;
-n_I_onart_gt6m_vs_m		= s_I_onart_gt6m_vs_m * &sf * 4;
-n_I_offart_1stI_m		= s_I_offart_1stI_m * &sf * 4;
-n_I_offart_SI_m			= s_I_offart_SI_m * &sf * 4;     
-n_I_offart_SIlt6m_m		= s_I_offart_SIlt6m_m * &sf * 4;
-n_I_offart_SIgt6m_m		= s_I_offart_SIgt6m_m * &sf * 4;
+n_I_undiag_m 			= s_I_undiag_m * sf * 4;
+n_I_diag_naive_m 		= s_I_diag_naive_m  * sf * 4;
+n_I_diag_startart_m 	= s_I_diag_startart_m * sf * 4;
+n_I_onart_m 			= s_I_onart_m * sf * 4;
+n_I_offart_m			= s_I_offart_m * sf * 4;
+n_I_onart_lt6m_m		= s_I_onart_lt6m_m * sf * 4;
+n_I_onart_lt6m_nvs_m	= s_I_onart_lt6m_nvs_m * sf * 4;
+n_I_onart_gt6m_nvs_m	= s_I_onart_gt6m_nvs_m * sf * 4;
+n_I_onart_gt6m_vs_m		= s_I_onart_gt6m_vs_m * sf * 4;
+n_I_offart_1stI_m		= s_I_offart_1stI_m * sf * 4;
+n_I_offart_SI_m			= s_I_offart_SI_m * sf * 4;     
+n_I_offart_SIlt6m_m		= s_I_offart_SIlt6m_m * sf * 4;
+n_I_offart_SIgt6m_m		= s_I_offart_SIgt6m_m * sf * 4;
 
 
-n_I_undiag_w 			= s_I_undiag_w * &sf * 4;
-n_I_diag_naive_w 		= s_I_diag_naive_w  * &sf * 4;
-n_I_diag_startart_w 	= s_I_diag_startart_w * &sf * 4;
-n_I_onart_w 			= s_I_onart_w * &sf * 4;
-n_I_offart_w			= s_I_offart_w * &sf * 4;
-n_I_onart_lt6m_w		= s_I_onart_lt6m_w * &sf * 4;
-n_I_onart_lt6m_nvs_w	= s_I_onart_lt6m_nvs_w * &sf * 4;
-n_I_onart_gt6m_nvs_w	= s_I_onart_gt6m_nvs_w * &sf * 4;
-n_I_onart_gt6m_vs_w		= s_I_onart_gt6m_vs_w * &sf * 4;
-n_I_offart_1stI_w		= s_I_offart_1stI_w * &sf * 4;
-n_I_offart_SI_w			= s_I_offart_SI_w * &sf * 4;     
-n_I_offart_SIlt6m_w		= s_I_offart_SIlt6m_w * &sf * 4;
-n_I_offart_SIgt6m_w		= s_I_offart_SIgt6m_w * &sf * 4;
+n_I_undiag_w 			= s_I_undiag_w * sf * 4;
+n_I_diag_naive_w 		= s_I_diag_naive_w  * sf * 4;
+n_I_diag_startart_w 	= s_I_diag_startart_w * sf * 4;
+n_I_onart_w 			= s_I_onart_w * sf * 4;
+n_I_offart_w			= s_I_offart_w * sf * 4;
+n_I_onart_lt6m_w		= s_I_onart_lt6m_w * sf * 4;
+n_I_onart_lt6m_nvs_w	= s_I_onart_lt6m_nvs_w * sf * 4;
+n_I_onart_gt6m_nvs_w	= s_I_onart_gt6m_nvs_w * sf * 4;
+n_I_onart_gt6m_vs_w		= s_I_onart_gt6m_vs_w * sf * 4;
+n_I_offart_1stI_w		= s_I_offart_1stI_w * sf * 4;
+n_I_offart_SI_w			= s_I_offart_SI_w * sf * 4;     
+n_I_offart_SIlt6m_w		= s_I_offart_SIlt6m_w * sf * 4;
+n_I_offart_SIgt6m_w		= s_I_offart_SIgt6m_w * sf * 4;
 
 %macro scaleup (age, mage, wage);
 
-n_I_undiag&age 			= s_I_undiag&age * &sf * 4;
-n_I_diag_naive&age 		= s_I_diag_naive&age  * &sf * 4;
-n_I_diag_startart&age 	= s_I_diag_startart&age * &sf * 4;
-n_I_onart&age 			= s_I_onart&age * &sf * 4;
-n_I_offart&age			= s_I_offart&age * &sf * 4;
-n_I_onart_lt6m&age		= s_I_onart_lt6m&age * &sf * 4;
-n_I_onart_lt6m_nvs&age	= s_I_onart_lt6m_nvs&age * &sf * 4;
-n_I_onart_gt6m_nvs&age	= s_I_onart_gt6m_nvs&age * &sf * 4;
-n_I_onart_gt6m_vs&age	= s_I_onart_gt6m_vs&age * &sf * 4;
-n_I_offart_1stI&age		= s_I_offart_1stI&age * &sf * 4;
-n_I_offart_SI&age		= s_I_offart_SI&age * &sf * 4;     
-n_I_offart_SIlt6m&age	= s_I_offart_SIlt6m&age * &sf * 4;
-n_I_offart_SIgt6m&age	= s_I_offart_SIgt6m&age * &sf * 4;
+n_I_undiag&age 			= s_I_undiag&age * sf * 4;
+n_I_diag_naive&age 		= s_I_diag_naive&age  * sf * 4;
+n_I_diag_startart&age 	= s_I_diag_startart&age * sf * 4;
+n_I_onart&age 			= s_I_onart&age * sf * 4;
+n_I_offart&age			= s_I_offart&age * sf * 4;
+n_I_onart_lt6m&age		= s_I_onart_lt6m&age * sf * 4;
+n_I_onart_lt6m_nvs&age	= s_I_onart_lt6m_nvs&age * sf * 4;
+n_I_onart_gt6m_nvs&age	= s_I_onart_gt6m_nvs&age * sf * 4;
+n_I_onart_gt6m_vs&age	= s_I_onart_gt6m_vs&age * sf * 4;
+n_I_offart_1stI&age		= s_I_offart_1stI&age * sf * 4;
+n_I_offart_SI&age		= s_I_offart_SI&age * sf * 4;     
+n_I_offart_SIlt6m&age	= s_I_offart_SIlt6m&age * sf * 4;
+n_I_offart_SIgt6m&age	= s_I_offart_SIgt6m&age * sf * 4;
 
 
-n_I_undiag&mage 		= s_I_undiag&mage * &sf * 4;
-n_I_diag_naive&mage 	= s_I_diag_naive&mage  * &sf * 4;
-n_I_diag_startart&mage 	= s_I_diag_startart&mage * &sf * 4;
-n_I_onart&mage 			= s_I_onart&mage * &sf * 4;
-n_I_offart&mage			= s_I_offart&mage * &sf * 4;
-n_I_onart_lt6m&mage		= s_I_onart_lt6m&mage * &sf * 4;
-n_I_onart_lt6m_nvs&mage	= s_I_onart_lt6m_nvs&mage * &sf * 4;
-n_I_onart_gt6m_nvs&mage	= s_I_onart_gt6m_nvs&mage * &sf * 4;
-n_I_onart_gt6m_vs&mage	= s_I_onart_gt6m_vs&mage * &sf * 4;
-n_I_offart_1stI&mage	= s_I_offart_1stI&mage * &sf * 4;
-n_I_offart_SI&mage		= s_I_offart_SI&mage * &sf * 4;     
-n_I_offart_SIlt6m&mage	= s_I_offart_SIlt6m&mage * &sf * 4;
-n_I_offart_SIgt6m&mage	= s_I_offart_SIgt6m&mage * &sf * 4;
+n_I_undiag&mage 		= s_I_undiag&mage * sf * 4;
+n_I_diag_naive&mage 	= s_I_diag_naive&mage  * sf * 4;
+n_I_diag_startart&mage 	= s_I_diag_startart&mage * sf * 4;
+n_I_onart&mage 			= s_I_onart&mage * sf * 4;
+n_I_offart&mage			= s_I_offart&mage * sf * 4;
+n_I_onart_lt6m&mage		= s_I_onart_lt6m&mage * sf * 4;
+n_I_onart_lt6m_nvs&mage	= s_I_onart_lt6m_nvs&mage * sf * 4;
+n_I_onart_gt6m_nvs&mage	= s_I_onart_gt6m_nvs&mage * sf * 4;
+n_I_onart_gt6m_vs&mage	= s_I_onart_gt6m_vs&mage * sf * 4;
+n_I_offart_1stI&mage	= s_I_offart_1stI&mage * sf * 4;
+n_I_offart_SI&mage		= s_I_offart_SI&mage * sf * 4;     
+n_I_offart_SIlt6m&mage	= s_I_offart_SIlt6m&mage * sf * 4;
+n_I_offart_SIgt6m&mage	= s_I_offart_SIgt6m&mage * sf * 4;
 
 
-n_I_undiag&wage 		= s_I_undiag&wage * &sf * 4;
-n_I_diag_naive&wage 	= s_I_diag_naive&wage  * &sf * 4;
-n_I_diag_startart&wage 	= s_I_diag_startart&wage * &sf * 4;
-n_I_onart&wage 			= s_I_onart&wage * &sf * 4;
-n_I_offart&wage			= s_I_offart&wage * &sf * 4;
-n_I_onart_lt6m&wage		= s_I_onart_lt6m&wage * &sf * 4;
-n_I_onart_lt6m_nvs&wage	= s_I_onart_lt6m_nvs&wage * &sf * 4;
-n_I_onart_gt6m_nvs&wage	= s_I_onart_gt6m_nvs&wage * &sf * 4;
-n_I_onart_gt6m_vs&wage	= s_I_onart_gt6m_vs&wage * &sf * 4;
-n_I_offart_1stI&wage	= s_I_offart_1stI&wage * &sf * 4;
-n_I_offart_SI&wage		= s_I_offart_SI&wage * &sf * 4;     
-n_I_offart_SIlt6m&wage	= s_I_offart_SIlt6m&wage * &sf * 4;
-n_I_offart_SIgt6m&wage	= s_I_offart_SIgt6m&wage * &sf * 4;
+n_I_undiag&wage 		= s_I_undiag&wage * sf * 4;
+n_I_diag_naive&wage 	= s_I_diag_naive&wage  * sf * 4;
+n_I_diag_startart&wage 	= s_I_diag_startart&wage * sf * 4;
+n_I_onart&wage 			= s_I_onart&wage * sf * 4;
+n_I_offart&wage			= s_I_offart&wage * sf * 4;
+n_I_onart_lt6m&wage		= s_I_onart_lt6m&wage * sf * 4;
+n_I_onart_lt6m_nvs&wage	= s_I_onart_lt6m_nvs&wage * sf * 4;
+n_I_onart_gt6m_nvs&wage	= s_I_onart_gt6m_nvs&wage * sf * 4;
+n_I_onart_gt6m_vs&wage	= s_I_onart_gt6m_vs&wage * sf * 4;
+n_I_offart_1stI&wage	= s_I_offart_1stI&wage * sf * 4;
+n_I_offart_SI&wage		= s_I_offart_SI&wage * sf * 4;     
+n_I_offart_SIlt6m&wage	= s_I_offart_SIlt6m&wage * sf * 4;
+n_I_offart_SIgt6m&wage	= s_I_offart_SIgt6m&wage * sf * 4;
 
-n_dead_undiag&age				= s_dead_undiag&age * &sf * 4;
-n_dead_diag_not_linked&age 		= s_dead_diag_not_linked&age * &sf * 4;
-n_dead_Alt6_Acd4lt200&age 		= s_dead_Alt6_Acd4lt200&age * &sf * 4;
-n_dead_Alt6_Acd4gt200&age 		= s_dead_Alt6_Acd4gt200&age * &sf * 4;
-n_d_I_Alt6_Rcd4lt200&age 		= s_d_I_Alt6_Rcd4lt200&age * &sf * 4;
-n_d_I_Alt6_Rcd4gt200&age 		= s_d_I_Alt6_Rcd4gt200&age * &sf * 4;
-n_dead_A_vl1000&age 			= s_dead_A_vl1000&age * &sf * 4;
-n_dead_A_vg1000&age 			= s_dead_A_vg1000&age * &sf * 4;
-n_dead_Alt6_vl1000&age 			= s_dead_Alt6_vl1000&age * &sf * 4;
-n_dead_Alt6_vg1000&age 			= s_dead_Alt6_vg1000&age * &sf * 4;
-n_dead_Agt6_vl1000&age 			= s_dead_Agt6_vl1000&age * &sf * 4;
-n_dead_Agt6_vg1000&age 			= s_dead_Agt6_vg1000&age * &sf * 4;
-n_dead_int_lost&age 			= s_dead_int_lost&age * &sf * 4;
-n_dead_1stint_lost&age 			= s_dead_1stint_lost&age * &sf * 4;
-n_dead_subintlt6_lost&age 		= s_dead_subintlt6_lost&age * &sf * 4;
-n_dead_subintgt6_lost&age 		= s_dead_subintgt6_lost&age * &sf * 4;
-n_dead_A_cd4lt200&age 			= s_dead_A_cd4lt200&age * &sf * 4;
-n_dead_A_cd4gt200&age 			= s_dead_A_cd4gt200&age * &sf * 4;
-n_dead_Alt6_cd4lt200&age 		= s_dead_Alt6_cd4lt200&age * &sf * 4;
-n_dead_Alt6_cd4gt200&age 		= s_dead_Alt6_cd4gt200&age * &sf * 4;
-n_dead_Agt6_cd4lt200&age 		= s_dead_Agt6_cd4lt200&age * &sf * 4;
-n_dead_Agt6_cd4gt200&age 		= s_dead_Agt6_cd4gt200&age * &sf * 4;
+n_dead_undiag&age				= s_dead_undiag&age * sf * 4;
+n_dead_diag_not_linked&age 		= s_dead_diag_not_linked&age * sf * 4;
+n_dead_Alt6_Acd4lt200&age 		= s_dead_Alt6_Acd4lt200&age * sf * 4;
+n_dead_Alt6_Acd4gt200&age 		= s_dead_Alt6_Acd4gt200&age * sf * 4;
+n_d_I_Alt6_Rcd4lt200&age 		= s_d_I_Alt6_Rcd4lt200&age * sf * 4;
+n_d_I_Alt6_Rcd4gt200&age 		= s_d_I_Alt6_Rcd4gt200&age * sf * 4;
+n_dead_A_vl1000&age 			= s_dead_A_vl1000&age * sf * 4;
+n_dead_A_vg1000&age 			= s_dead_A_vg1000&age * sf * 4;
+n_dead_Alt6_vl1000&age 			= s_dead_Alt6_vl1000&age * sf * 4;
+n_dead_Alt6_vg1000&age 			= s_dead_Alt6_vg1000&age * sf * 4;
+n_dead_Agt6_vl1000&age 			= s_dead_Agt6_vl1000&age * sf * 4;
+n_dead_Agt6_vg1000&age 			= s_dead_Agt6_vg1000&age * sf * 4;
+n_dead_int_lost&age 			= s_dead_int_lost&age * sf * 4;
+n_dead_1stint_lost&age 			= s_dead_1stint_lost&age * sf * 4;
+n_dead_subintlt6_lost&age 		= s_dead_subintlt6_lost&age * sf * 4;
+n_dead_subintgt6_lost&age 		= s_dead_subintgt6_lost&age * sf * 4;
+n_dead_A_cd4lt200&age 			= s_dead_A_cd4lt200&age * sf * 4;
+n_dead_A_cd4gt200&age 			= s_dead_A_cd4gt200&age * sf * 4;
+n_dead_Alt6_cd4lt200&age 		= s_dead_Alt6_cd4lt200&age * sf * 4;
+n_dead_Alt6_cd4gt200&age 		= s_dead_Alt6_cd4gt200&age * sf * 4;
+n_dead_Agt6_cd4lt200&age 		= s_dead_Agt6_cd4lt200&age * sf * 4;
+n_dead_Agt6_cd4gt200&age 		= s_dead_Agt6_cd4gt200&age * sf * 4;
 
-n_dead_undiag&mage				= s_dead_undiag&mage * &sf * 4;
-n_dead_diag_not_linked&mage 	= s_dead_diag_not_linked&mage * &sf * 4;
-n_dead_Alt6_Acd4lt200&mage 		= s_dead_Alt6_Acd4lt200&mage * &sf * 4;
-n_dead_Alt6_Acd4gt200&mage 		= s_dead_Alt6_Acd4gt200&mage * &sf * 4;
-n_d_I_Alt6_Rcd4lt200&mage 		= s_d_I_Alt6_Rcd4lt200&mage * &sf * 4;
-n_d_I_Alt6_Rcd4gt200&mage 		= s_d_I_Alt6_Rcd4gt200&mage * &sf * 4;
-n_dead_A_vl1000&mage 			= s_dead_A_vl1000&mage * &sf * 4;
-n_dead_A_vg1000&mage 			= s_dead_A_vg1000&mage * &sf * 4;
-n_dead_Alt6_vl1000&mage 		= s_dead_Alt6_vl1000&mage * &sf * 4;
-n_dead_Alt6_vg1000&mage 		= s_dead_Alt6_vg1000&mage * &sf * 4;
-n_dead_Agt6_vl1000&mage 		= s_dead_Agt6_vl1000&mage * &sf * 4;
-n_dead_Agt6_vg1000&mage 		= s_dead_Agt6_vg1000&mage * &sf * 4;
-n_dead_int_lost&mage 			= s_dead_int_lost&mage * &sf * 4;
-n_dead_1stint_lost&mage 		= s_dead_1stint_lost&mage * &sf * 4;
-n_dead_subintlt6_lost&mage 		= s_dead_subintlt6_lost&mage * &sf * 4;
-n_dead_subintgt6_lost&mage 		= s_dead_subintgt6_lost&mage * &sf * 4;
-n_dead_A_cd4lt200&mage 			= s_dead_A_cd4lt200&mage * &sf * 4;
-n_dead_A_cd4gt200&mage 			= s_dead_A_cd4gt200&mage * &sf * 4;
-n_dead_Alt6_cd4lt200&mage 		= s_dead_Alt6_cd4lt200&mage * &sf * 4;
-n_dead_Alt6_cd4gt200&mage 		= s_dead_Alt6_cd4gt200&mage * &sf * 4;
-n_dead_Agt6_cd4lt200&mage 		= s_dead_Agt6_cd4lt200&mage * &sf * 4;
-n_dead_Agt6_cd4gt200&mage 		= s_dead_Agt6_cd4gt200&mage * &sf * 4;
+n_dead_undiag&mage				= s_dead_undiag&mage * sf * 4;
+n_dead_diag_not_linked&mage 	= s_dead_diag_not_linked&mage * sf * 4;
+n_dead_Alt6_Acd4lt200&mage 		= s_dead_Alt6_Acd4lt200&mage * sf * 4;
+n_dead_Alt6_Acd4gt200&mage 		= s_dead_Alt6_Acd4gt200&mage * sf * 4;
+n_d_I_Alt6_Rcd4lt200&mage 		= s_d_I_Alt6_Rcd4lt200&mage * sf * 4;
+n_d_I_Alt6_Rcd4gt200&mage 		= s_d_I_Alt6_Rcd4gt200&mage * sf * 4;
+n_dead_A_vl1000&mage 			= s_dead_A_vl1000&mage * sf * 4;
+n_dead_A_vg1000&mage 			= s_dead_A_vg1000&mage * sf * 4;
+n_dead_Alt6_vl1000&mage 		= s_dead_Alt6_vl1000&mage * sf * 4;
+n_dead_Alt6_vg1000&mage 		= s_dead_Alt6_vg1000&mage * sf * 4;
+n_dead_Agt6_vl1000&mage 		= s_dead_Agt6_vl1000&mage * sf * 4;
+n_dead_Agt6_vg1000&mage 		= s_dead_Agt6_vg1000&mage * sf * 4;
+n_dead_int_lost&mage 			= s_dead_int_lost&mage * sf * 4;
+n_dead_1stint_lost&mage 		= s_dead_1stint_lost&mage * sf * 4;
+n_dead_subintlt6_lost&mage 		= s_dead_subintlt6_lost&mage * sf * 4;
+n_dead_subintgt6_lost&mage 		= s_dead_subintgt6_lost&mage * sf * 4;
+n_dead_A_cd4lt200&mage 			= s_dead_A_cd4lt200&mage * sf * 4;
+n_dead_A_cd4gt200&mage 			= s_dead_A_cd4gt200&mage * sf * 4;
+n_dead_Alt6_cd4lt200&mage 		= s_dead_Alt6_cd4lt200&mage * sf * 4;
+n_dead_Alt6_cd4gt200&mage 		= s_dead_Alt6_cd4gt200&mage * sf * 4;
+n_dead_Agt6_cd4lt200&mage 		= s_dead_Agt6_cd4lt200&mage * sf * 4;
+n_dead_Agt6_cd4gt200&mage 		= s_dead_Agt6_cd4gt200&mage * sf * 4;
 
-n_dead_undiag&wage				= s_dead_undiag&wage * &sf * 4;
-n_dead_diag_not_linked&wage 	= s_dead_diag_not_linked&wage * &sf * 4;
-n_dead_Alt6_Acd4lt200&wage 		= s_dead_Alt6_Acd4lt200&wage * &sf * 4;
-n_dead_Alt6_Acd4gt200&wage 		= s_dead_Alt6_Acd4gt200&wage * &sf * 4;
-n_d_I_Alt6_Rcd4lt200&wage 		= s_d_I_Alt6_Rcd4lt200&wage * &sf * 4;
-n_d_I_Alt6_Rcd4gt200&wage 		= s_d_I_Alt6_Rcd4gt200&wage * &sf * 4;
-n_dead_A_vl1000&wage 			= s_dead_A_vl1000&wage * &sf * 4;
-n_dead_A_vg1000&wage 			= s_dead_A_vg1000&wage * &sf * 4;
-n_dead_Alt6_vl1000&wage 		= s_dead_Alt6_vl1000&wage * &sf * 4;
-n_dead_Alt6_vg1000&wage 		= s_dead_Alt6_vg1000&wage * &sf * 4;
-n_dead_Agt6_vl1000&wage 		= s_dead_Agt6_vl1000&wage * &sf * 4;
-n_dead_Agt6_vg1000&wage 		= s_dead_Agt6_vg1000&wage * &sf * 4;
-n_dead_int_lost&wage 			= s_dead_int_lost&wage * &sf * 4;
-n_dead_1stint_lost&wage 		= s_dead_1stint_lost&wage * &sf * 4;
-n_dead_subintlt6_lost&wage 		= s_dead_subintlt6_lost&wage * &sf * 4;
-n_dead_subintgt6_lost&wage 		= s_dead_subintgt6_lost&wage * &sf * 4;
-n_dead_A_cd4lt200&wage 			= s_dead_A_cd4lt200&wage * &sf * 4;
-n_dead_A_cd4gt200&wage 			= s_dead_A_cd4gt200&wage * &sf * 4;
-n_dead_Alt6_cd4lt200&wage 		= s_dead_Alt6_cd4lt200&wage * &sf * 4;
-n_dead_Alt6_cd4gt200&wage 		= s_dead_Alt6_cd4gt200&wage * &sf * 4;
-n_dead_Agt6_cd4lt200&wage 		= s_dead_Agt6_cd4lt200&wage * &sf * 4;
-n_dead_Agt6_cd4gt200&wage 		= s_dead_Agt6_cd4gt200&wage * &sf * 4;
+n_dead_undiag&wage				= s_dead_undiag&wage * sf * 4;
+n_dead_diag_not_linked&wage 	= s_dead_diag_not_linked&wage * sf * 4;
+n_dead_Alt6_Acd4lt200&wage 		= s_dead_Alt6_Acd4lt200&wage * sf * 4;
+n_dead_Alt6_Acd4gt200&wage 		= s_dead_Alt6_Acd4gt200&wage * sf * 4;
+n_d_I_Alt6_Rcd4lt200&wage 		= s_d_I_Alt6_Rcd4lt200&wage * sf * 4;
+n_d_I_Alt6_Rcd4gt200&wage 		= s_d_I_Alt6_Rcd4gt200&wage * sf * 4;
+n_dead_A_vl1000&wage 			= s_dead_A_vl1000&wage * sf * 4;
+n_dead_A_vg1000&wage 			= s_dead_A_vg1000&wage * sf * 4;
+n_dead_Alt6_vl1000&wage 		= s_dead_Alt6_vl1000&wage * sf * 4;
+n_dead_Alt6_vg1000&wage 		= s_dead_Alt6_vg1000&wage * sf * 4;
+n_dead_Agt6_vl1000&wage 		= s_dead_Agt6_vl1000&wage * sf * 4;
+n_dead_Agt6_vg1000&wage 		= s_dead_Agt6_vg1000&wage * sf * 4;
+n_dead_int_lost&wage 			= s_dead_int_lost&wage * sf * 4;
+n_dead_1stint_lost&wage 		= s_dead_1stint_lost&wage * sf * 4;
+n_dead_subintlt6_lost&wage 		= s_dead_subintlt6_lost&wage * sf * 4;
+n_dead_subintgt6_lost&wage 		= s_dead_subintgt6_lost&wage * sf * 4;
+n_dead_A_cd4lt200&wage 			= s_dead_A_cd4lt200&wage * sf * 4;
+n_dead_A_cd4gt200&wage 			= s_dead_A_cd4gt200&wage * sf * 4;
+n_dead_Alt6_cd4lt200&wage 		= s_dead_Alt6_cd4lt200&wage * sf * 4;
+n_dead_Alt6_cd4gt200&wage 		= s_dead_Alt6_cd4gt200&wage * sf * 4;
+n_dead_Agt6_cd4lt200&wage 		= s_dead_Agt6_cd4lt200&wage * sf * 4;
+n_dead_Agt6_cd4gt200&wage 		= s_dead_Agt6_cd4gt200&wage * sf * 4;
 
 
 %mend;
@@ -1535,16 +1515,9 @@ n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-<<<<<<<< HEAD:create_wide_file_malawi_18Jul24.sas
-%let nfit = 79 ;
-========
-%let nfit = 437 ;
->>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:create_wide_file_malawi_04Dec24a.sas
+%let nfit = 81  ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
-
-proc freq;table run;run;
-
 
 
   ***Macro var used to calculate means across each year and transpose to one line per run;
@@ -1602,11 +1575,8 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 %var_d(n_hiv5559w);  %var_d(n_hiv6064w);  %var_d(n_hiv6569w);  %var_d(n_hiv7074w);  %var_d(n_hiv7579w);  %var_d(n_hiv8084w); 
 
 %var_d(n_hiv_death_m); %var_d(n_hiv_death_w); %var_d(n_hiv_death);
-<<<<<<<< HEAD:create_wide_file_malawi_18Jul24.sas
-========
 %var_d(n_hiv_death1519_);  %var_d(n_hiv_death2024_);  %var_d(n_hiv_death2529_);  %var_d(n_hiv_death3034_);  %var_d(n_hiv_death3539_);  %var_d(n_hiv_death4044_);  %var_d(n_hiv_death4549_); 
 %var_d(n_hiv_death5054_);  %var_d(n_hiv_death5559_);  %var_d(n_hiv_death6064_);  %var_d(n_hiv_death6569_);  %var_d(n_hiv_death7074_);  %var_d(n_hiv_death7579_);  %var_d(n_hiv_death8084_);  
->>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:create_wide_file_malawi_04Dec24a.sas
 %var_d(n_hiv_death1519m);  %var_d(n_hiv_death2024m);  %var_d(n_hiv_death2529m);  %var_d(n_hiv_death3034m);  %var_d(n_hiv_death3539m);  %var_d(n_hiv_death4044m);  %var_d(n_hiv_death4549m); 
 %var_d(n_hiv_death5054m);  %var_d(n_hiv_death5559m);  %var_d(n_hiv_death6064m);  %var_d(n_hiv_death6569m);  %var_d(n_hiv_death7074m);  %var_d(n_hiv_death7579m);  %var_d(n_hiv_death8084m);  
 %var_d(n_hiv_death1519w);  %var_d(n_hiv_death2024w);  %var_d(n_hiv_death2529w);  %var_d(n_hiv_death3034w);  %var_d(n_hiv_death3539w);  %var_d(n_hiv_death4044w);  %var_d(n_hiv_death4549w); 
@@ -2053,20 +2023,11 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 run;
 
 
-***THESE WERE MISSING FROM BASELINE SHEET SO MANUALLY ADDING THEM INTO EXCEL;
-data new_inf;
-merge l_n_primary1564m	l_n_primary1564W	l_n_primary1564_;
-run;
-
-proc print;var cald mean_n_primary1564m	mean_n_primary1564W	mean_n_primary1564_;run;
-
-
 ***DEATHS OUTPUTS;
 ***Create datasets that resemble the Excel template. Order these in the same order as the Excel template;
 data a.wide_base;
 merge 
 l_n_alive1564_m		l_n_alive1564_w		l_n_alive1564_  	 l_prevalence1564m 		l_prevalence1564w	l_prevalence1564_   
-/*l_incidence1564_m	l_incidence1564_w	l_incidence1564_*/	
 l_n_primary1564m	l_n_primary1564W	l_n_primary1564_	 l_p_diag_m		  		l_p_diag_w		    l_p_diag
 l_p_onart_diag_m	l_p_onart_diag_w  	l_p_onart_diag  	 l_p_onart_vl1000_m 	l_p_onart_vl1000_w  l_p_onart_vl1000_ 	 
 ;run;
@@ -2114,11 +2075,7 @@ l_n_dead_Agt6_cd4gt200&age		l_n_dead_Agt6_cd4gt200&mage 		l_n_dead_Agt6_cd4gt200
 ods listing close;
 ods results off;
 
-<<<<<<<< HEAD:create_wide_file_malawi_18Jul24.sas
-ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths Malawi_HIVSynthesis18Jul24.xlsx"
-========
-ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_MLW04Dec24a.xlsx"
->>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:create_wide_file_malawi_04Dec24a.sas
+ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_SA21Jan25.xlsx"
 options(sheet_name='base' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
@@ -2178,11 +2135,7 @@ l_n_I_offart_SIgt6m&age		l_n_I_offart_SIgt6m&mage	l_n_I_offart_SIgt6m&wage
 ods listing close;
 ods results off;
 
-<<<<<<<< HEAD:create_wide_file_malawi_18Jul24.sas
-ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans_Malawi_HIVSynthesis18Jul24.xlsx"
-========
-ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans_HIVSynthesis04Jun24.xlsx"
->>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:create_wide_file_malawi_04Dec24a.sas
+ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans_SA_HIVSynthesis24Jun24.xlsx"
 options(sheet_name='base1' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
@@ -2200,11 +2153,7 @@ ods excel close;
 ***Check if Zim incidence is in line with zimphia;
 data z; 
 
-<<<<<<<< HEAD:create_wide_file_malawi_18Jul24.sas
 merge a sf;
-========
-merge a &sf;
->>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:create_wide_file_malawi_04Dec24a.sas
 by run ;
 
 * incidence1549;   incidence1549_ = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);

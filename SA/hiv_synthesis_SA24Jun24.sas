@@ -8,7 +8,11 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
+<<<<<<<< HEAD:SA/hiv_synthesis_SA24Jun24.sas
 %let population = 100000  ; 
+========
+%let population = 5000  ; 
+>>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:SA/hiv_synthesis_SA24Jun24_check_03dec24.sas
 %let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -16616,68 +16620,76 @@ end;
 * 1	Undiagnosed (also included those undiag in last 3m, e.g person presenting with AIDS in hospital and then being diag); 
 if registd_tm1 ne 1 then dead_undiag=1; 
 
-* 2	Diagnosed without ART initiation, not in care;
-if registd_tm1=1 and visit ne 1 then dead_diag_not_linked=1; 
+* 2	Diagnosed without ART initiation;
+if registd_tm1=1 and yrart=. then dead_diag_not_linked=1; 
 
 * 3	On ART <6months after first ART initiation, initiated with CD4 <200 ;
-if onart=1 and (caldate&j - yrart <= 0.5) and date_last_interrupt = . and . < cd4art <200 then dead_Alt6_artcd4lt200=1;
+*(Adding in the restriction that dead_undiag ne 1 as this is reliant on tm1);
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and onart=1 and (caldate&j - yrart <= 0.5) and date_last_interrupt = . and . < cd4art <200 then dead_Alt6_artcd4lt200=1;
 
 * 4	On ART <6months after first ART initiation, initiated with CD4 >=200  ;
-if onart=1 and (caldate&j - yrart <= 0.5) and date_last_interrupt = . and  . < cd4art >=200 then dead_Alt6_artcd4gt200=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and onart=1 and (caldate&j - yrart <= 0.5) and date_last_interrupt = . and  . < cd4art >=200 then dead_Alt6_artcd4gt200=1;
 
 * 5	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 <200  ;
+<<<<<<<< HEAD:SA/hiv_synthesis_SA24Jun24.sas
 if onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and 0 < cd4_tcur0 <200 then dead_I_Alt6_Rcd4lt200=1;
 
 * 6	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 >=200 ;
 if onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and cd4_tcur0 >=200 then dead_I_Alt6_Rcd4gt200=1;
+========
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and . < cd4_tcur0 <200 then dead_I_Alt6_Rcd4lt200=1;
+
+* 6	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 >=200 ;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and cd4_tcur0 >=200 then dead_I_Alt6_Rcd4gt200=1;
+>>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:SA/hiv_synthesis_SA24Jun24_check_03dec24.sas
 
 * 7	On ART (irrespective of time on ART), current VL <1000;
-if onart=1 and vl1000=1 then dead_A_vl1000=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and vl1000=1 then dead_A_vl1000=1;
 
 * 8	On ART (irrespective of time on ART), current VL >=1000;
-if onart=1 and vg1000=1 then dead_A_vg1000=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and vg1000=1 then dead_A_vg1000=1;
 
 * 9	On ART <6 months (regardless of first or subsequent ART initiation), current VL<1000;
-if onart=1 and tcur <= 0.5 and vl1000=1 then dead_Alt6_vl1000=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and tcur <= 0.5 and vl1000=1 then dead_Alt6_vl1000=1;
 
 * 10	On ART <6 months (regardless of first or subsequent ART initiation), current VL>1000;
-if onart=1 and tcur <= 0.5 and vg1000=1 then dead_Alt6_vg1000=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and onart=1 and tcur <= 0.5 and vg1000=1 then dead_Alt6_vg1000=1;
 
 * 11	On ART continuously for >6months (regardless of first or subsequent ART initiation), current VL<1000;
-if onart=1 and tcur > 0.5 and vl1000=1 then dead_Agt6_vl1000=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and tcur > 0.5 and vl1000=1 then dead_Agt6_vl1000=1;
 
 * 12	On ART continuously for >6months (regardless of first or subsequent ART initiation), current VL>1000;
-if onart=1 and tcur > 0.5 and vg1000=1 then dead_Agt6_vg1000=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and tcur > 0.5 and vg1000=1 then dead_Agt6_vg1000=1;
 
-* 13	ART interrupted, out of care, any interruption;
-if yrart ne . and onart ne 1 and lost=1 then dead_int_lost=1;
+* 13	ART interrupted, any interruption;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 then dead_int_lost=1;
 
-* 14	ART interrupted, out of care, first interruption;
-if yrart ne . and onart ne 1 and lost=1 and date_last_interrupt=date_1st_int then dead_1stint_lost=1; 
+* 14	ART interrupted, first interruption;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1  and date_last_interrupt=date_1st_int then dead_1stint_lost=1; 
 
-* 15	ART interrupted, out of care, subsequent interruption, < 6 months from last interruption ;
-if yrart ne . and onart ne 1 and lost=1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then dead_subintlt6_lost=1; 
+* 15	ART interrupted, subsequent interruption, < 6 months from last interruption ;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then dead_subintlt6_lost=1; 
 
-* 16	ART interrupted, out of care, subsequent interruption, > 6 months from last interruption ;
-if yrart ne . and onart ne 1 and lost=1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart >0.5) then dead_subintgt6_lost=1;
+* 16	ART interrupted, subsequent interruption, > 6 months from last interruption ;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  yrart ne . and onart ne 1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart >0.5) then dead_subintgt6_lost=1;
 
 * 17	On ART, no time restrictions, CD4<200 at time of death;
-if onart=1 and 0 < cd4_dead lt 200 then dead_A_cd4lt200=1; 
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and . < cd4_dead lt 200 then dead_A_cd4lt200=1; 
 
 * 18	On ART, no time restrictions, CD4>200 at time of death;
-if onart=1 and cd4_dead ge 200 then dead_A_cd4gt200=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and cd4_dead ge 200 then dead_A_cd4gt200=1;
 
 * 19	On ART, <6 months since first ART initiation, CD4<200 at time of death (not stated in template but I am assuming regardless of interruption for last 4);
-if onart=1 and (caldate&j - yrart <= 0.5) and cd4_dead lt 200 then dead_Alt6_cd4lt200=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and (caldate&j - yrart <= 0.5) and cd4_dead lt 200 then dead_Alt6_cd4lt200=1;
 
 * 20	On ART, <6 months since first ART initiation, CD4>200 at time of death;
-if onart=1 and (caldate&j - yrart <= 0.5) and cd4_dead ge 200 then dead_Alt6_cd4gt200=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and (caldate&j - yrart <= 0.5) and cd4_dead ge 200 then dead_Alt6_cd4gt200=1;
 
 * 21	On ART, >6 months since first ART initiation, CD4<200 at time of death;
-if onart=1 and (caldate&j - yrart > 0.5) and cd4_dead lt 200 then dead_Agt6_cd4lt200=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and (caldate&j - yrart > 0.5) and cd4_dead lt 200 then dead_Agt6_cd4lt200=1;
 
 * 22	On ART, >6 months since first ART initiation, CD4>200 at time of death;
-if onart=1 and (caldate&j - yrart > 0.5) and cd4_dead ge 200 then dead_Agt6_cd4gt200=1;
+if (dead_undiag ne 1) and (dead_diag_not_linked ne 1) and  onart=1 and (caldate&j - yrart > 0.5) and cd4_dead ge 200 then dead_Agt6_cd4gt200=1;
 
 
 
@@ -20240,12 +20252,20 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
+proc print;var gender dead death registd registd_tm1 visit onart yrart cd4 vl1000 dead_undiag dead_diag_not_linked dead_A_vl1000 dead_A_vg1000 dead_int_lost
+dead_A_cd4lt200 dead_A_cd4gt200; where hiv_death=1;run;
 
+<<<<<<<< HEAD:SA/hiv_synthesis_SA24Jun24.sas
 
 
 * procs;
 
 
+========
+* procs;
+
+
+>>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:SA/hiv_synthesis_SA24Jun24_check_03dec24.sas
 /*
 
 proc freq; tables cald hiv ; where death=.; run;
@@ -22416,6 +22436,7 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 ***Malawi specific;                 *JAS Feb24;
+<<<<<<<< HEAD:SA/hiv_synthesis_SA24Jun24.sas
 
 if country = 'Malawi' then do;
       if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
@@ -22435,6 +22456,27 @@ if country = 'South Africa' then do;
 end;
 
  
+========
+
+if country = 'Malawi' then do;
+      if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+      if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+      if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
+      if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
+      if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+end;
+/*
+
+***South Africa specific;     *JAS Feb24;
+
+if country = 'South Africa' then do;
+     if cald = 2017.5 and (prevalence1549 < 0.166 or prevalence1549 > 0.246) then do; abort abend; end;
+	 if cald = 2022 and (prevalence1549w > 0.24) then do; abort abend; end;
+	 if cald = 2021 and (s_onart < 3333 or s_onart > 6400) then do; abort abend; end;
+end;
+
+ */
+>>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:SA/hiv_synthesis_SA24Jun24_check_03dec24.sas
 
 ***Zim specific;              *JAS Feb24;
 

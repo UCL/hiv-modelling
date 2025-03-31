@@ -910,7 +910,11 @@ non_hiv_tb_risk = 0.0005;
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
+<<<<<<<< HEAD:Malawi/hiv_synthesis_mlw24Jun24.sas
 %include "/home/rmjllob/Malawi_parameters.sas";
+========
+%include "/home/rmjllob/SA_parameters.sas";
+>>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:SA/hiv_synthesis_SA24Jun24.sas
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
@@ -1320,6 +1324,29 @@ inc12=0.026;
 inc13=0.020;
 end;
 
+<<<<<<<< HEAD:Malawi/hiv_synthesis_mlw24Jun24.sas
+========
+*JAS Nov23;
+*This is used for South Africa;
+if inc_cat=3 and caldate1=1984  then do;
+*Inc1 is obtained as 0.128 (inc1 for inc_Cat)/14*19=0.1737;
+*1.0457= 1 + (0.1737-0.128);
+inc1=0.1737/1.0457;*19 years instead of 14, so a total of 139 years;
+inc2=0.1190/1.0457;
+inc3=0.1130/1.0457;
+inc4=0.1040/1.0457;
+inc5=0.0970/1.0457;
+inc6=0.0900/1.0457;
+inc7=0.0810/1.0457;
+inc8=0.074/1.0457;
+inc9 =0.060/1.0457;
+inc10=0.050/1.0457;
+inc11=0.038/1.0457;
+inc12=0.026/1.0457;
+inc13=0.020/1.0457;
+end;
+
+>>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:SA/hiv_synthesis_SA24Jun24.sas
 *2nd October 2023;
 if inc_cat=4 and caldate1=1984  then do;
 inc1 =0.15004;*-75 to -65, 9 years ;
@@ -20221,11 +20248,17 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
+<<<<<<<< HEAD:Malawi/hiv_synthesis_mlw24Jun24.sas
 
 
 * procs;
 
 
+========
+* procs;
+
+
+>>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:SA/hiv_synthesis_SA24Jun24.sas
 /*
 
 proc freq; tables cald hiv ; where death=.; run;
@@ -22405,6 +22438,7 @@ if country = 'Malawi' then do;
       if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
 end;
 
+<<<<<<<< HEAD:Malawi/hiv_synthesis_mlw24Jun24.sas
 
 ***South Africa specific;     *JAS Feb24;
 
@@ -22424,7 +22458,23 @@ if country = 'Zimbabwe' then do;
       if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
       if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 end;
+========
+***South Africa specific;     *JAS Feb24;
+>>>>>>>> ba09e7ab88c63ffe34145a96febdb29f133a0c33:SA/hiv_synthesis_SA24Jun24.sas
 
+if country = 'South Africa' then do;
+     if cald = 2017.5 and (prevalence1549 < 0.166 or prevalence1549 > 0.246) then do; abort abend; end;
+	 if cald = 2022 and (prevalence1549w > 0.24) then do; abort abend; end;
+	 if cald = 2021 and (s_onart < 3333 or s_onart > 6400) then do; abort abend; end;
+end;
+
+***Zim specific;              *JAS Feb24;
+
+if country = 'Zimbabwe' then do;
+      if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
+      if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
+      if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
+end;
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;

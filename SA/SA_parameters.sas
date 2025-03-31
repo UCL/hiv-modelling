@@ -6,6 +6,7 @@
 
 ****% on ART of those diag too high***
 
+***CHECK CD4<200;
 
 /***************************************************************************/
 ******************     SOUTH AFRICA SPECIFIC PARAMETERS    ******************
@@ -63,7 +64,7 @@
 * fold_change_in_risk_base_rate;
 							*  fold_change_in_risk_base_rate = 0.85;
 
-* fold_decr_hivdeath;		  fold_decr_hivdeath = 0.15 ; 	
+* fold_decr_hivdeath;		  fold_decr_hivdeath = 0.07 ; ***Changed from 0.15 to get closer to Thembisa; 	
 
 * fx;						  fx = 0.85;
 
