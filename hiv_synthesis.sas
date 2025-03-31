@@ -633,7 +633,7 @@ newp_seed = 7;
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 
 * lencab_available;			lencab_available=0;
-* lencab_uptake_vlg1000;		%sample_uniform(lencab_uptake_vlg1000, 0.3 0.5 0.7); * laa_ac ; 
+* lencab_uptake_vlg1000;	%sample_uniform(lencab_uptake_vlg1000, 0.3 0.5 0.7); * laa_ac ; 
 * lencab_uptake;			%sample_uniform(lencab_uptake, 0.001 0.003 0.01 0.03 0.05 0.1 0.3); * len_ac ;
 
 * rate_return_for_lencab;  %sample_uniform(rate_return_for_lencab, 0.5  0.7  0.9); * laa_ac; * cioa_g - better for cioa as availably in community;
@@ -2647,6 +2647,23 @@ all art stopped (no_art_disrup_covid)
 if caldate{t} ge 2019.5 then reg_option = 120;
 
 if caldate{t} ge 2021 then reg_option = 125;
+
+
+* lencab availability ;
+
+if lencab_available=1 and registd = 1 then do;
+
+	if p_len ne 1 then do; * dont include p_cab because could have been as prep - p_len implies p_cab automatically;  
+		s = rand('uniform');
+		if vm > 3 and caldate{t} - date_v_alert >= 0.25 and (caldate{t} - date_lencab_last_offered > 1 or date_lencab_last_offered =.) then do;
+			date_lencab_last_offered=caldate{t}; if s < lencab_uptake_vlg1000 then do; reg_option = 130; started_lencab_vmgt1000=1; started_lencab=1; end;
+		end;
+		if strong_pref_lencab = 1 and s < lencab_uptake then do; reg_option = 130; started_lencab=1; end;
+	end;
+	h = rand('uniform');  if c_isr=1 then h = h * 0.9;
+	if o_len=1 and h < rate_lencab_to_tld then do; reg_option=125;  end; 
+end;
+
 
 * if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
 * reg_option 107 is used for people who seroconverted on prep_inj / cab ;
@@ -8937,16 +8954,16 @@ res_test=.;
 * interruption due to "choice";
 	if stop_tox    ne 1 then do; 
 
-		if t ge 2 and onart_tm1 =1 then do;
-			if  adh_tm1 >= 0.8   and o_len_tm1 ne 1 then do;
+		if t ge 2 and onart_tm1 =1 then do;  
+			if  adh_tm1 >= 0.8   and o_len_tm1 ne 1 then do; * this section does not apply to those on lencab;
 			    if c_tox_tm1=0 then prointer=eff_rate_int_choice ;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*eff_rate_int_choice; 
 			end;
-			if 0.5 <= adh_tm1 < 0.8  and o_len_tm1 ne 1 then do;
+			if 0.5 <= adh_tm1 < 0.8  and o_len_tm1 ne 1 then do;* this section does not apply to those on lencab;
 			    if c_tox_tm1=0 then prointer=1.5*incr_rate_int_low_adh*eff_rate_int_choice;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*1.5*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
-			if adh_tm1 < 0.5  and o_len_tm1 ne 1 then do;
+			if adh_tm1 < 0.5  and o_len_tm1 ne 1 then do;* this section does not apply to those on lencab;
 			    if c_tox_tm1=0 then prointer=2*incr_rate_int_low_adh*eff_rate_int_choice;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*2*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
