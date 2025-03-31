@@ -2762,9 +2762,9 @@ if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_
 	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
 end;
 
-***MOBILE MEN;
-* risk for mobile men;
+***MOBILE MEN - only modelling mobile men with current hiv risk;
 
+* probability of becoming a mobile man;
 if gender=1 and curr_mobile_tm1 ne 1 and adc ne 1 then do; u=rand('uniform');
 	if 15 <= age < 20 and u < prob_mobile1519_ then curr_mobile=1; 
 	if 20 <= age < 60 and u < prob_mobile2060_ then curr_mobile=1;
