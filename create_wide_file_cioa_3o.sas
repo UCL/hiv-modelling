@@ -2395,6 +2395,11 @@ if 0.85 <= p_vl1000_24 < 0.90 then p_vl1000_24_g=3;
 if 0.90 <= p_vl1000_24 < 0.95 then p_vl1000_24_g=4;
 if 0.95 <= p_vl1000_24        then p_vl1000_24_g=5;
 
+d_prop_elig_on_prep_10y_2 = prop_elig_on_prep_10y_2 - prop_elig_on_prep_10y_1;
+d_prop_elig_on_prep_10y_3 = prop_elig_on_prep_10y_3 - prop_elig_on_prep_10y_1;
+
+d_prop_1564_onprep_10y_2 = prop_1564_onprep_10y_2 - prop_1564_onprep_10y_1 ;
+d_prop_1564_onprep_10y_3 = prop_1564_onprep_10y_3 - prop_1564_onprep_10y_1 ;
 
 d_prop_elig_on_prep_50y_1_2 = prop_elig_on_prep_50y_2 - prop_elig_on_prep_50y_1;
 
@@ -2403,6 +2408,14 @@ prevalence1549_percent_24 = prevalence1549_24 * 100;
 p_diag_percent_24 = p_diag_24 * 100;  
 p_onart_diag_percent_24 = p_onart_diag_24 * 100; 
 p_onart_vl1000_percent_24 = p_onart_vl1000_24 * 100;
+
+
+n_tested_all_10y_1 = n_tested_10y_1 + n_self_tested_10y_1;
+n_tested_all_10y_2 = n_tested_10y_2 + n_self_tested_10y_2;
+n_tested_all_10y_3 = n_tested_10y_3 + n_self_tested_10y_3;
+d_n_tested_all_10y_2 = n_tested_all_10y_2 - n_tested_all_10y_1 ;
+d_n_tested_all_10y_3 = n_tested_all_10y_3 - n_tested_all_10y_1 ;
+
 
 ods html;
 proc print noobs; var run; run;
@@ -2421,6 +2434,7 @@ p_vl1000_24 p_vl1000_w_24 p_vl1000_m_24
 prevalence_vg1000_24   
 p_onart_cd4_l200_24
 p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24  
+s_alive_24
 ;
 run;
 ods html close;
@@ -2429,11 +2443,10 @@ ods html close;
 ods html;
 proc means median p5 p95 mean lclm uclm;
 var
-d_n_self_tested_10y_2_1  n_self_tested_10y_2  n_self_tested_10y_1 
-d_n_self_tested_10y_3_1  n_self_tested_10y_3  n_self_tested_10y_1 
 
-d_n_tested_10y_2_1  n_tested_10y_2  n_tested_10y_1 
-d_n_tested_10y_3_1  n_tested_10y_3  n_tested_10y_1 
+n_tested_all_10y_1 n_tested_all_10y_2 n_tested_all_10y_3
+
+d_n_tested_all_10y_2 d_n_tested_all_10y_3
 
 p_tested_incl_self_10y_1 p_tested_incl_self_10y_2 p_tested_incl_self_10y_3 
 
@@ -2467,9 +2480,18 @@ r_incidence1549_10y_3_1  incidence1549_10y_3  incidence1549_10y_1
 r_n_mtct_10y_2_1  n_mtct_10y_2  n_mtct_10y_1 
 r_n_mtct_10y_3_1  n_mtct_10y_3  n_mtct_10y_1 
 
+prop_elig_on_prep_10y_1 prop_elig_on_prep_10y_2  prop_elig_on_prep_10y_3 
+
+d_prop_elig_on_prep_10y_2 d_prop_elig_on_prep_10y_3 
+
+prop_1564_onprep_10y_1 prop_1564_onprep_10y_2 prop_1564_onprep_10y_3 
+
+d_prop_1564_onprep_10y_2 d_prop_1564_onprep_10y_3 
+
 n_prep_any_10y_1 n_prep_any_10y_2 n_prep_any_10y_3 
 
 p_mcirc_10y_1 p_mcirc_10y_2  p_mcirc_10y_3  
+
 ;
 run;
 ods html close;
@@ -2512,7 +2534,7 @@ title '';
 proc freq data=f; tables lowest_dcost lowest_ddaly lowest_ddaly_1_2 lowest_netdaly lowest_netdaly_gbd lowest_netdaly500_1_2  lowest_netdaly300_1_2
 lowest_netdaly150_1_2 lowest_ddaly_1_2 lowest_dcost_1_2  dalys_averted_2_1 dalys_averted_3_1
 ;
-where prevalence1549_24 >= 0.05;
+* where prevalence1549_24 >= 0.05;
 run;
 ods html close;
 
