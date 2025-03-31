@@ -1,5 +1,5 @@
-libname a  "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths SA\";
-
+*libname a  "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths SA\";
+libname a  "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths SA\";
 data a;
 set a.sa_19Mar25;
 if run=. then delete;
@@ -22,6 +22,98 @@ proc sort; by run;
 data y; 
 merge a sf;
 by run ;
+run;
+
+data b;
+set y;
+
+* Of people on ART, proportion with CD4 < 200;	
+if s_onart_iicu > 0 then  p_onart_cd4_l200_ = s_onart_cl200 / s_onart_iicu ;
+
+* Of people on ART, number with CD4 < 200;
+n_onart_cl200_	= s_onart_cl200 ;
+
+
+keep run cald p_onart_cd4_l200_ n_onart_cl200_;run;
+
+
+proc sort; by cald run ;run;
+data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
+proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
+%let nfit =60;
+%let year_end = 2045.00 ;
+proc sort;by cald option ;run;
+
+data option_0;
+set b;
+if option =1 then delete;
+
+%let var =  
+p_onart_cd4_l200_ n_onart_cl200_	;
+
+***transpose given name; *starts with %macro and ends with %mend;
+%macro option_0;
+%let p25_var = p25_&var_0;
+%let p75_var = p75_&var_0;
+%let p5_var = p5_&var_0;
+%let p95_var = p95_&var_0;
+%let p2p5_var = p2p5_&var_0;
+%let p97p5_var = p97p5_&var_0;
+%let p50_var = median_&var_0;
+
+%let count = 0;
+%do %while (%qscan(&var, &count+1, %str( )) ne %str());
+%let count = %eval(&count + 1);
+%let varb = %scan(&var, &count, %str( ));
+      
+proc transpose data=option_0 out=g&count prefix=&varb;var &varb; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data g&count;set g&count;***creates one dataset per variable;
+p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
+p2p5_&varb._0  = PCTL(2.5,of &varb.1-&varb.&nfit);
+p97p5_&varb._0 = PCTL(97.5,of &varb.1-&varb.&nfit);
+p50_&varb._0 = median(of &varb.1-&varb.&nfit);
+
+keep cald option p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 p2p5_&varb._0 p97p5_&varb._0;
+run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  gg&count;quit;run;
+%end;
+%mend;
+
+%option_0;
+run;
+
+
+
+data d; * this is number of variables in %let var = above ;
+merge 
+g1   g2;
+by cald;
+
+run;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_cd4_lt200";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2045)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12) valueattrs=(size=10);
+series  x=cald y=p50_n_onart_cl200__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_onart_cl200__0 	upper=p95_n_onart_cl200__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_cd4_lt200";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2045)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12) valueattrs=(size=10);
+series  x=cald y=p50_p_onart_cd4_l200__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_cd4_l200__0 	upper=p95_p_onart_cd4_l200__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
 
 *if run ne  989218009 then delete;
 
@@ -1515,7 +1607,7 @@ n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 60  ;
+%let nfit = 76  ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -2075,7 +2167,7 @@ l_n_dead_Agt6_cd4gt200&age		l_n_dead_Agt6_cd4gt200&mage 		l_n_dead_Agt6_cd4gt200
 ods listing close;
 ods results off;
 
-ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_SA19Mar25a.xlsx"
+ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_SA19Mar25.xlsx"
 options(sheet_name='base' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
