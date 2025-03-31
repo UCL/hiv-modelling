@@ -1978,13 +1978,6 @@ if p_onart_diag_m_24 > 0.80;
 if p_onart_diag_w_24 > 0.85;
 if p_onart_vl1000_m_24 > 0.80;
 if p_onart_vl1000_w_24 > 0.80;
-
-* ods html;
-* proc print noobs; 
-* var run; 
-* run; 
-* ods html close;
-
  
 d_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 - n_death_hiv_10y_1;
 r_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 / n_death_hiv_10y_1;
@@ -2122,7 +2115,7 @@ netdaly300_3 = ddaly_50y_3 + (dcost_50y_3 / 0.0003);
 netdaly300_4 = ddaly_50y_4 + (dcost_50y_4 / 0.0003);
 netdaly300_5 = ddaly_50y_5 + (dcost_50y_5 / 0.0003);
 
-min_netdaly300 = min(netdaly300_1, netdaly300_2, netdaly300_3, netdaly300_4, netdaly300_5);
+min_netdaly300 = min(netdaly300_1, netdaly300_2, netdaly300_3);
 min_netdaly300_1_2 = min(netdaly300_1, netdaly300_2);
 
 if netdaly300_1 = min_netdaly300_1_2 then lowest_netdaly300_1_2=1;
@@ -2141,7 +2134,7 @@ netdaly150_3 = ddaly_50y_3 + (dcost_50y_3 / 0.00015);
 netdaly150_4 = ddaly_50y_4 + (dcost_50y_4 / 0.00015);
 netdaly150_5 = ddaly_50y_5 + (dcost_50y_5 / 0.00015);
 
-min_netdaly150 = min(netdaly150_1, netdaly150_2, netdaly150_3, netdaly150_4, netdaly150_5);
+min_netdaly150 = min(netdaly150_1, netdaly150_2, netdaly150_3);
 min_netdaly150_1_2 = min(netdaly150_1, netdaly150_2);
 
 d_netdaly150_2_1 = netdaly150_1 - netdaly150_2; * net dalys averted ;
@@ -2170,6 +2163,14 @@ if netdaly_gbd500_2 = min_netdaly_gbd500 then lowest_netdaly_gbd=2;
 if netdaly_gbd500_3 = min_netdaly_gbd500 then lowest_netdaly_gbd=3;
 if netdaly_gbd500_4 = min_netdaly_gbd500 then lowest_netdaly_gbd=4;
 if netdaly_gbd500_5 = min_netdaly_gbd500 then lowest_netdaly_gbd=5;
+
+if netdaly300_1 = min_netdaly300 then lowest_netdaly300=1;
+if netdaly300_2 = min_netdaly300 then lowest_netdaly300=2;
+if netdaly300_3 = min_netdaly300 then lowest_netdaly300=3;
+
+if netdaly150_1 = min_netdaly150 then lowest_netdaly150=1;
+if netdaly150_2 = min_netdaly150 then lowest_netdaly150=2;
+if netdaly150_3 = min_netdaly150 then lowest_netdaly150=3;
 
 min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_2, ddaly_50y_3, ddaly_50y_4, ddaly_50y_5);
 min_ddaly_50y_1_4 = min(ddaly_50y_1, ddaly_50y_4);
@@ -2488,6 +2489,8 @@ prop_1564_onprep_10y_1 prop_1564_onprep_10y_2 prop_1564_onprep_10y_3
 
 d_prop_1564_onprep_10y_2 d_prop_1564_onprep_10y_3 
 
+p_prep_adhg80_10y_1  p_prep_adhg80_10y_2  p_prep_adhg80_10y_3
+
 n_prep_any_10y_1 n_prep_any_10y_2 n_prep_any_10y_3 
 
 p_mcirc_10y_1 p_mcirc_10y_2  p_mcirc_10y_3  
@@ -2532,7 +2535,7 @@ ods html close;
 ods html;
 title '';
 proc freq data=f; tables lowest_dcost lowest_ddaly lowest_ddaly_1_2 lowest_netdaly lowest_netdaly_gbd lowest_netdaly500_1_2  lowest_netdaly300_1_2
-lowest_netdaly150_1_2 lowest_ddaly_1_2 lowest_dcost_1_2  dalys_averted_2_1 dalys_averted_3_1
+lowest_netdaly150_1_2 lowest_ddaly_1_2 lowest_dcost_1_2  dalys_averted_2_1 dalys_averted_3_1  lowest_netdaly150  lowest_netdaly300
 ;
 * where prevalence1549_24 >= 0.05;
 run;
@@ -2590,6 +2593,14 @@ proc logistic data=f;
 model x_ce_150_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 ;  run;
 ods html close;
 
+
+
+
+  ods html;
+  proc print data=f noobs; 
+  var run; 
+  run; 
+  ods html close;
 
 
 
