@@ -1,5 +1,5 @@
 
-***THIS FILE HAS BEEN USED FOR HARRIETT'S PAPER;
+***THIS FILE HAS BEEN USED FOR HARRIETT'S PAPER NAD AMETHIST FINAL ANALYSIS;
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
@@ -912,7 +912,7 @@ non_hiv_tb_risk = 0.0005;
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
-%include "/home/rmjllob/Zim_parameters10.sas";
+%include "/home/rmjllob/Zim_parameters11.sas";
 *%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling\Zim_parameters10.sas";
 
 * OVERWRITES country specific parameters;
