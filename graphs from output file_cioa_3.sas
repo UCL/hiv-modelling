@@ -41,7 +41,10 @@ p_newp_ge1_ = p_newp_ge1;
 n_tested_incl_self = n_self_tested + n_tested; 
 
 
-%let single_var = n_mtct                                        ;
+
+%let single_var = p_diag                                       ;
+
+if rate_self_test_if_introduced = 0.05;
 
 
 if run in (
@@ -1063,7 +1066,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -1082,7 +1085,7 @@ band    x=cald lower=p5_prevalence_vg1000__2 upper=p95_prevalence_vg1000__2 / tr
 
 run;quit;
 
-
+*/
 
 /*
 
@@ -1104,6 +1107,7 @@ band    x=cald lower=p5_p_onart_vl1000__2 upper=p95_p_onart_vl1000__2 / transpar
 run;quit;
 
 */
+
 
 /*
 
@@ -1175,7 +1179,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -1194,7 +1198,7 @@ band    x=cald lower=p5_p_diag_2 upper=p95_p_diag_2 / transparency=0.9 fillattrs
 
 run;quit;
 
-*/
+
 
 /*
 
@@ -1443,7 +1447,7 @@ run;quit;
 */
 
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -1462,7 +1466,7 @@ band    x=cald lower=p5_n_mtct_2 upper=p95_n_mtct_2 / transparency=0.9 fillattrs
 
 run;quit;
 
-
+*/
 
 /*
 
@@ -1587,7 +1591,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -1606,7 +1610,7 @@ band    x=cald lower=p5_prop_elig_on_prep_2 upper=p95_prop_elig_on_prep_2 / tran
 
 run;quit;
 
-
+*/
 
 /*
 

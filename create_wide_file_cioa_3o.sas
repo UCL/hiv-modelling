@@ -2538,6 +2538,8 @@ proc freq data=f; tables lowest_dcost lowest_ddaly lowest_ddaly_1_2 lowest_netda
 lowest_netdaly150_1_2 lowest_ddaly_1_2 lowest_dcost_1_2  dalys_averted_2_1 dalys_averted_3_1  lowest_netdaly150  lowest_netdaly300
 ;
 * where prevalence1549_24 >= 0.05;
+  where rate_self_test_if_introduced = 0.05;
+
 run;
 ods html close;
 
