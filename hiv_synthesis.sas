@@ -9465,9 +9465,9 @@ if onart = 1 and switch_for_tox = 1 then do;
 		if t_taz_tm1=0  and o_taz ne 1  then do; t_dol=1;tss_dol   =0; o_taz=1;o_dol=0; goto x9; end;
 	x9: end;
  
-* cab ; * see code above for switching from lancab back to oral ;
+* cab ; * see code above for switching from lencab back to oral ;
 
-* len ; * see code above for switching from lancab back to oral ;
+* len ; * see code above for switching from lencab back to oral ;
 
 
 	end;
@@ -9746,14 +9746,14 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 
 * current tox can affect adherence;  
-		r=rand('uniform'); if c_tox_tm1=1 and r < 0.5 and (o_cab=1 or o_len = 1) then adh=adh-red_adh_tox;
+		r=rand('uniform'); if c_tox_tm1=1 and r < 0.5 and o_cab ne 1 and o_len ne 1 then adh=adh-red_adh_tox;
 
 * reduced adherence if regimen is not 1 pill once a day - red_adh_multi_pill;
 		if o_zdv = 1 or o_taz = 1 or o_lpr = 1 or o_dar = 1 then adh = adh - red_adh_multi_pill ;
 
 
 * poorer "adherence" (lower drug levels) if have "current" tb or adc;  
-		if t ge 3 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5 or adc_tm1=1)  and (o_cab=1 or o_len = 1) then adh=adh- red_adh_tb_adc ;
+		if t ge 3 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5 or adc_tm1=1)  and o_cab ne 1 and o_len ne 1  then adh=adh- red_adh_tb_adc ;
 
 * occasional severe drop in adherence / absorption (more likely when on PI) (only way I can think to explain v fail with no mutations on PI);
 	f=rand('uniform');
@@ -22142,7 +22142,7 @@ data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
 
-
+data r1; set a;
 * 3) Option 1 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
