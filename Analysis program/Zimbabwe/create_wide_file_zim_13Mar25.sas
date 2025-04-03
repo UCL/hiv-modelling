@@ -1,9 +1,9 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
 
 data a;
-set a.fsw_zim_17Apr24;  
+set a.zim_fsw13mar25;  
 if run=. then delete; 
 proc sort;
 by run cald option;run;
@@ -27,12 +27,13 @@ sf_2024 = (16665409 * 0.581) / s_alive;
 *Source for Zimbabwe population is https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
 *accessed 22/1/2024;
 * 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
-keep run sf_2024;
+
+sf=sf_2024;
+keep run sf_2024 sf;
 
 proc sort; by run;run;
 
 
-%let sf=sf_2024;
 
 
 data y; 
@@ -67,12 +68,12 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
 ***Scaling up to annual discounted DALYs in the whole population;
-ddaly = s_ddaly * &sf * 4;
+ddaly = s_ddaly * sf * 4;
 
 
 ***These are additional potential DALYs to include which have not so far been included;
 
-ddaly_mtct = s_ddaly_mtct * &sf * 4;  ***Crude estimate of number of DALYs incurred in a child born with HIV;
+ddaly_mtct = s_ddaly_mtct * sf * 4;  ***Crude estimate of number of DALYs incurred in a child born with HIV;
 
 
 * ================================================================================= ;
@@ -85,15 +86,15 @@ ddaly_mtct = s_ddaly_mtct * &sf * 4;  ***Crude estimate of number of DALYs incur
 * ts1m - 12 instead of 4; 
 
 ***These are scaled up discounted costs;
-dzdv_cost = s_dcost_zdv * &sf * 4 / 1000;
-dten_cost = s_dcost_ten * &sf * 4 / 1000;
-d3tc_cost = s_dcost_3tc * &sf * 4 / 1000; 
-dnev_cost = s_dcost_nev * &sf * 4 / 1000;
-dlpr_cost = s_dcost_lpr * &sf * 4 / 1000;
-ddar_cost = s_dcost_dar * &sf * 4 / 1000;
-dtaz_cost = s_dcost_taz * &sf * 4 / 1000;
-defa_cost = s_dcost_efa * &sf * 4 / 1000;
-ddol_cost = s_dcost_dol * &sf * 4 / 1000;
+dzdv_cost = s_dcost_zdv * sf * 4 / 1000;
+dten_cost = s_dcost_ten * sf * 4 / 1000;
+d3tc_cost = s_dcost_3tc * sf * 4 / 1000; 
+dnev_cost = s_dcost_nev * sf * 4 / 1000;
+dlpr_cost = s_dcost_lpr * sf * 4 / 1000;
+ddar_cost = s_dcost_dar * sf * 4 / 1000;
+dtaz_cost = s_dcost_taz * sf * 4 / 1000;
+defa_cost = s_dcost_efa * sf * 4 / 1000;
+ddol_cost = s_dcost_dol * sf * 4 / 1000;
 
 if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_prep_oral=. then s_dcost_prep_oral=0;
@@ -107,36 +108,36 @@ if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_inj;
 s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_inj;
 
-dvis_cost = s_dvis_cost * &sf * 4 / 1000;
-dart_cost = s_dart_cost * &sf * 4 / 1000; ***This should be the same as dart_cost_y below (and is not used);
-dvl_cost = s_dvl_cost * &sf * 4 / 1000;
-dcd4_cost = s_dcd4_cost * &sf * 4 / 1000;
-dadc_cost = s_dadc_cost * &sf * 4 / 1000;
-dnon_tb_who3_cost = s_dnon_tb_who3_cost * &sf * 4 / 1000;
-dtb_cost = s_dtb_cost * &sf * 4 / 1000;
-dtest_cost = s_dtest_cost * &sf * 4 / 1000;
-dtest_cost_sw = s_dcost_test_f_sw * &sf * 4 / 1000;
-dcot_cost = s_dcot_cost * &sf * 4 / 1000;
-dres_cost = s_dres_cost * &sf * 4 / 1000;
-d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
-dcost_prep = s_dcost_prep * &sf * 4 / 1000; 
-dcost_prep_inj = s_dcost_prep_inj * &sf * 4 / 1000; 
-dcost_prep_oral = s_dcost_prep_oral * &sf * 4 / 1000; 
-dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 	
-dcost_prep_visit_inj  = s_dcost_prep_visit_inj * &sf * 4 / 1000; 	
-dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
-dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
-dcost_sw_program = s_dcost_sw_program  * &sf * 4 / 1000; 
-dcost_avail_self_test = s_dcost_avail_self_test * &sf * 4 / 1000; 
+dvis_cost = s_dvis_cost * sf * 4 / 1000;
+dart_cost = s_dart_cost * sf * 4 / 1000; ***This should be the same as dart_cost_y below (and is not used);
+dvl_cost = s_dvl_cost * sf * 4 / 1000;
+dcd4_cost = s_dcd4_cost * sf * 4 / 1000;
+dadc_cost = s_dadc_cost * sf * 4 / 1000;
+dnon_tb_who3_cost = s_dnon_tb_who3_cost * sf * 4 / 1000;
+dtb_cost = s_dtb_cost * sf * 4 / 1000;
+dtest_cost = s_dtest_cost * sf * 4 / 1000;
+dtest_cost_sw = s_dcost_test_f_sw * sf * 4 / 1000;
+dcot_cost = s_dcot_cost * sf * 4 / 1000;
+dres_cost = s_dres_cost * sf * 4 / 1000;
+d_t_adh_int_cost = s_d_t_adh_int_cost * sf * 4 / 1000;  
+dcost_prep = s_dcost_prep * sf * 4 / 1000; 
+dcost_prep_inj = s_dcost_prep_inj * sf * 4 / 1000; 
+dcost_prep_oral = s_dcost_prep_oral * sf * 4 / 1000; 
+dcost_prep_visit  = s_dcost_prep_visit * sf * 4 / 1000; 	
+dcost_prep_visit_inj  = s_dcost_prep_visit_inj * sf * 4 / 1000; 	
+dcost_prep_visit_oral  = s_dcost_prep_visit_oral * sf * 4 / 1000; 	 
+dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
+dcost_sw_program = s_dcost_sw_program  * sf * 4 / 1000; 
+dcost_avail_self_test = s_dcost_avail_self_test * sf * 4 / 1000; 
 
-dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
-dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
-dcost_condom_dn = s_dcost_condom_dn * &sf * 4 / 1000; 
-dswitchline_cost = s_dcost_switch_line * &sf * 4 / 1000;
+dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
+dcost_circ = s_dcost_circ * sf * 4 / 1000; 
+dcost_condom_dn = s_dcost_condom_dn * sf * 4 / 1000; 
+dswitchline_cost = s_dcost_switch_line * sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
-dcost_drug_level_test = s_dcost_drug_level_test * &sf * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; 
+dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
+dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; 
 
 dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 
@@ -147,430 +148,32 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
 
 
-***Assuming a cost of $150 per SW (Email from Frances and Primrose 15may24 - SW program costs $8.5m and reaches 40,000 SW=$212.50/SW. These analyses are across SSA and expect running costs to 
-reduce if more SW are reached so assume $150). ;
-
-cost_sis150perSW=0.00015;
-s_cost_sis150_ = 0.00015 * s_sw_program_visit;
-dcost_swprog150_ = s_cost_sis150_ * &discount *&sf;
+***Assuming a cost of $132 per SW (Email from Collin 11Feb2025 in Sisters and 155 in AMETHIST per year;
 
 
-***total cost WITH a SW prog (this will include additional sw seen at the prog as a result of amethist if option=1);
+***total cost with Sisters;
+if option=0 then do;
+	cost_sis_perSW=0.000132/4;
+	s_cost_sisprog_ = cost_sis_perSW * s_sw_program_visit;
+	dcost_sisprog_ = s_cost_sisprog_ * &discount *sf;
+
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
-		dcost_swprog150_;
-
-
-
-
-if option =1 then do;
-s_cost_amt_program=0.3;
-s_cost_amt_program10=10;
-s_cost_amt_program15=15;
-s_cost_amt_program20=20;
-s_cost_amt_program25=25;
-s_cost_amt_program30=30;
-s_cost_amt_program35=35;
-s_cost_amt_program40=40;
-s_cost_amt_program45=45;
-s_cost_amt_program50=50;
-s_cost_amt_program55=55;
-s_cost_amt_program60=60;
-s_cost_amt_program65=65;
-s_cost_amt_program70=70;
-s_cost_amt_program75=75;
-s_cost_amt_program80=80;
-s_cost_amt_program85=85;
-s_cost_amt_program90=90;
-s_cost_amt_program95=95;
-s_cost_amt_program100=100;
-s_cost_amt_program105=105;
-s_cost_amt_program110=110;
-s_cost_amt_program115=115;
-s_cost_amt_program120=120;
-s_cost_amt_program125=125;
-s_cost_amt_program130=130;
-s_cost_amt_program135=135;
-s_cost_amt_program140=140;
-s_cost_amt_program145=145;
-s_cost_amt_program150=150;
-s_cost_amt_program155=155;
-s_cost_amt_program160=160;
-s_cost_amt_program165=165;
-s_cost_amt_program170=170;
-s_cost_amt_program175=175;
-s_cost_amt_program180=180;
-s_cost_amt_program185=185;
-s_cost_amt_program190=190;
-s_cost_amt_program195=195;
-s_cost_amt_program200=200;
-s_cost_amt_program205=205;
-s_cost_amt_program210=210;
-s_cost_amt_program215=215;
-s_cost_amt_program220=220;
-s_cost_amt_program225=225;
-s_cost_amt_program230=230;
-s_cost_amt_program235=235;
-s_cost_amt_program240=240;
-s_cost_amt_program245=245;
-s_cost_amt_program250=250;
-
-dcost_amt_program = s_cost_amt_program * &discount;
-dcost_amt_program10_= s_cost_amt_program10 * &discount;
-dcost_amt_program15_= s_cost_amt_program15 * &discount;
-dcost_amt_program20_= s_cost_amt_program20 * &discount;
-dcost_amt_program25_= s_cost_amt_program25 * &discount;
-dcost_amt_program30_= s_cost_amt_program30 * &discount;
-dcost_amt_program35_= s_cost_amt_program35 * &discount;
-dcost_amt_program40_= s_cost_amt_program40 * &discount;
-dcost_amt_program45_= s_cost_amt_program45 * &discount;
-dcost_amt_program50_= s_cost_amt_program50 * &discount;
-dcost_amt_program55_= s_cost_amt_program55 * &discount;
-dcost_amt_program60_= s_cost_amt_program60 * &discount;
-dcost_amt_program65_= s_cost_amt_program65 * &discount;
-dcost_amt_program70_= s_cost_amt_program70 * &discount;
-dcost_amt_program75_= s_cost_amt_program75 * &discount;
-dcost_amt_program80_= s_cost_amt_program80 * &discount;
-dcost_amt_program85_= s_cost_amt_program85 * &discount;
-dcost_amt_program90_= s_cost_amt_program90 * &discount;
-dcost_amt_program95_= s_cost_amt_program95 * &discount;
-dcost_amt_program100_= s_cost_amt_program100 * &discount;
-dcost_amt_program105_= s_cost_amt_program105 * &discount;
-dcost_amt_program110_= s_cost_amt_program110 * &discount;
-dcost_amt_program115_= s_cost_amt_program115 * &discount;
-dcost_amt_program120_= s_cost_amt_program120 * &discount;
-dcost_amt_program125_= s_cost_amt_program125 * &discount;
-dcost_amt_program130_= s_cost_amt_program130 * &discount;
-dcost_amt_program135_= s_cost_amt_program135 * &discount;
-dcost_amt_program140_= s_cost_amt_program140 * &discount;
-dcost_amt_program145_= s_cost_amt_program145 * &discount;
-dcost_amt_program150_= s_cost_amt_program150 * &discount;
-dcost_amt_program155_= s_cost_amt_program155 * &discount;
-dcost_amt_program160_= s_cost_amt_program160 * &discount;
-dcost_amt_program165_= s_cost_amt_program165 * &discount;
-dcost_amt_program170_= s_cost_amt_program170 * &discount;
-dcost_amt_program175_= s_cost_amt_program175 * &discount;
-dcost_amt_program180_= s_cost_amt_program180 * &discount;
-dcost_amt_program185_= s_cost_amt_program185 * &discount;
-dcost_amt_program190_= s_cost_amt_program190 * &discount;
-dcost_amt_program195_= s_cost_amt_program195 * &discount;
-dcost_amt_program200_= s_cost_amt_program200 * &discount;
-dcost_amt_program205_= s_cost_amt_program205 * &discount;
-dcost_amt_program210_= s_cost_amt_program210 * &discount;
-dcost_amt_program215_= s_cost_amt_program215 * &discount;
-dcost_amt_program220_= s_cost_amt_program220 * &discount;
-dcost_amt_program225_= s_cost_amt_program225 * &discount;
-dcost_amt_program230_= s_cost_amt_program230 * &discount;
-dcost_amt_program235_= s_cost_amt_program235 * &discount;
-dcost_amt_program240_= s_cost_amt_program240 * &discount;
-dcost_amt_program245_= s_cost_amt_program245 * &discount;
-dcost_amt_program250_= s_cost_amt_program250 * &discount;
+		dcost_sisprog_;
 end;
 
-if option=0 then do;
-dcost_amt_program = 0;
-dcost_amt_program10_= 0;
-dcost_amt_program15_= 0; 
-dcost_amt_program20_= 0; 
-dcost_amt_program25_= 0; 
-dcost_amt_program30_= 0;
-dcost_amt_program35_= 0; 
-dcost_amt_program40_= 0; 
-dcost_amt_program45_= 0; 
-dcost_amt_program50_= 0; 
-dcost_amt_program55_= 0; 
-dcost_amt_program60_= 0; 
-dcost_amt_program65_= 0; 
-dcost_amt_program70_= 0; 
-dcost_amt_program75_= 0; 
-dcost_amt_program80_= 0;
-dcost_amt_program85_= 0; 
-dcost_amt_program90_= 0;
-dcost_amt_program95_= 0; 
-dcost_amt_program100_= 0; 
-dcost_amt_program105_= 0; 
-dcost_amt_program110_= 0; 
-dcost_amt_program115_= 0; 
-dcost_amt_program120_= 0; 
-dcost_amt_program125_= 0;
-dcost_amt_program130_= 0; 
-dcost_amt_program135_= 0; 
-dcost_amt_program140_= 0; 
-dcost_amt_program145_= 0; 
-dcost_amt_program150_= 0; 
-dcost_amt_program155_= 0; 
-dcost_amt_program160_= 0; 
-dcost_amt_program165_= 0; 
-dcost_amt_program170_= 0; 
-dcost_amt_program175_= 0; 
-dcost_amt_program180_= 0; 
-dcost_amt_program185_= 0;
-dcost_amt_program190_= 0;
-dcost_amt_program195_= 0; 
-dcost_amt_program200_= 0;
-dcost_amt_program205_= 0;
-dcost_amt_program210_= 0; 
-dcost_amt_program215_= 0; 
-dcost_amt_program220_= 0; 
-dcost_amt_program225_= 0; 
-dcost_amt_program230_= 0; 
-dcost_amt_program235_= 0; 
-dcost_amt_program240_= 0; 
-dcost_amt_program245_= 0; 
-dcost_amt_program250_= 0;
-end; 
 
-***including additional fixed cost of the program;
-dcost_amt = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+if option=1 then do;
+	cost_amt_perSW=0.000155/4;
+	s_cost_amtprog_ = cost_amt_perSW * s_sw_program_visit;
+	dcost_amtprog_ = s_cost_amtprog_ * &discount *sf;
+
+dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program;
-
-dcost_amt10_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program10_;
-
-dcost_amt15_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program15_;
-
-dcost_amt20_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program20_;
-
-dcost_amt25_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program25_;
-
-dcost_amt30_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program30_;
-
-dcost_amt35_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program35_;
-
-dcost_amt40_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ  + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program40_;
-
-dcost_amt45_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program45_;
-
-dcost_amt50_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program50_;
-
-dcost_amt55_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program55_;
-
-dcost_amt60_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program60_;
-
-dcost_amt65_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program65_;
-
-dcost_amt70_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program70_;
-
-dcost_amt75_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program75_;
-
-dcost_amt80_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program80_;
-
-dcost_amt85_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program85_;
-
-dcost_amt90_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program90_;
-
-dcost_amt95_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program95_;
-
-dcost_amt100_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program100_;
-
-dcost_amt105_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program105_;
-
-dcost_amt110_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program110_;
-
-dcost_amt115_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ  + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program115_;
-
-dcost_amt120_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program120_;
-
-dcost_amt125_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program125_;
-
-dcost_amt130_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program130_;
-
-dcost_amt135_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program135_;
-
-dcost_amt140_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program140_;
-
-dcost_amt145_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program145_;
-
-dcost_amt150_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program150_;
-
-dcost_amt155_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program155_;
-
-dcost_amt160_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program160_;
-
-dcost_amt165_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program165_;
-
-dcost_amt170_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program170_;
-
-dcost_amt175_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program175_;
-
-dcost_amt180_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program180_;
-
-dcost_amt185_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program185_;
-
-dcost_amt190_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ  + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program190_;
-
-dcost_amt195_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program195_;
-
-dcost_amt200_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program200_;
-
-dcost_amt205_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program205_;
-
-dcost_amt210_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program210_;
-
-dcost_amt215_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program215_;
-
-dcost_amt220_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program220_;
-
-dcost_amt225_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program225_;
-
-dcost_amt230_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program230_;
-
-dcost_amt235_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program235_;
-
-dcost_amt240_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program240_;
-
-dcost_amt245_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program245_;
-
-dcost_amt250_ = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
-		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj +
-		dcost_swprog150_ + dcost_amt_program250_;
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
+		dcost_amtprog_;
+end;
 
 
 ***This reverses the discount (if needed);
@@ -593,14 +196,14 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 
 ***general population;
 
-* n_alive;						n_alive = s_alive * &sf;
-* n_alive1549_;					n_alive1549_ = s_alive1549* &sf;
+* n_alive;						n_alive = s_alive * sf;
+* n_alive1549_;					n_alive1549_ = s_alive1549* sf;
 
-* n_onart  ;					n_onart   = s_onart   * &sf;
-* n_onart_w;					n_onart_w = s_onart_w * &sf;
-* n_onart_m;					n_onart_m = s_onart_m * &sf;
-* n_hiv;						n_hiv = s_hivge15 * &sf;
-* n_prep_ever;					n_prep_ever = s_prep_any_ever * &sf;
+* n_onart  ;					n_onart   = s_onart   * sf;
+* n_onart_w;					n_onart_w = s_onart_w * sf;
+* n_onart_m;					n_onart_m = s_onart_m * sf;
+* n_hiv;						n_hiv = s_hivge15 * sf;
+* n_prep_ever;					n_prep_ever = s_prep_any_ever * sf;
 * p_prep_ever;					p_prep_ever = s_prep_any_ever / (s_alive1564_w + s_alive1564_m) ;
 
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
@@ -739,14 +342,7 @@ dart_cost_y		dadc_cost  			dcd4_cost		  dvl_cost  dvis_cost	dnon_tb_who3_cost	dc
 dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_circ  		dcost_condom_dn  dcost_avail_self_test 		
 dcost_prep_visit_oral  				dcost_prep_oral   dcost_prep_visit_inj  dcost_prep_inj 		dtest_cost_sw
 
-dcost_amt
-dcost_amt10_  dcost_amt15_  dcost_amt20_  dcost_amt25_  dcost_amt30_  dcost_amt35_  dcost_amt40_  dcost_amt45_  dcost_amt50_  
-dcost_amt55_  dcost_amt60_  dcost_amt65_  dcost_amt70_  dcost_amt75_  dcost_amt80_  dcost_amt85_  dcost_amt90_  dcost_amt95_  
-dcost_amt100_ dcost_amt105_ dcost_amt110_ dcost_amt115_ dcost_amt120_ dcost_amt125_ dcost_amt130_ dcost_amt135_ 
-dcost_amt140_ dcost_amt145_ dcost_amt150_ dcost_amt155_ dcost_amt160_ dcost_amt165_ dcost_amt170_ dcost_amt175_ dcost_amt180_
-dcost_amt185_ dcost_amt190_ dcost_amt195_ dcost_amt200_ dcost_amt205_ dcost_amt210_ dcost_amt215_ dcost_amt220_
-dcost_amt225_ dcost_amt230_ dcost_amt235_ dcost_amt240_ dcost_amt245_ dcost_amt250_	dcost_swprog150_
-
+dcost_sisprog_ dcost_amtprog_
 effect_sw_prog_newp
 s_tested s_tested_m s_tested_f 
 n_hiv n_onart
@@ -759,7 +355,9 @@ data sw_diag;
 set y;
 
 /*proc freq;table p_diag_sw;where cald=2023.75 and option=0;run;*/
-if cald=2023.75 and p_diag_sw>=   0.9193548387 then high_diag_sw=1;
+if cald=2023.75 and p_diag_sw>   0.9482758621
+
+ then high_diag_sw=1;
 
 
 /*proc freq;table run;where high_diag_sw=1;run;*/
@@ -767,197 +365,62 @@ if cald=2023.75 and p_diag_sw>=   0.9193548387 then high_diag_sw=1;
 if run in 
 
 (
-11562229
-12889012
-14571392
-20239101
-21265720
-37615938
-47355514
-51504038
-56544085
-65590063
-69019180
-71035187
-84207345
-101829858
-104031408
-106558738
-116414168
-116790148
-118546145
-121435130
-125975535
-126568357
-137235573
-145900688
-147109873
-157208663
-168595992
-168796533
-174935994
-177108627
-178447219
-203613164
-206070305
-212102981
-231652064
-234756274
-252258795
-261546633
-263245141
-267440134
-273255508
-284993843
-285004470
-286548493
-312853947
-322359851
-325068374
-325768316
-329268796
-330579111
-332070334
-334840282
-336591821
-336773970
-337978427
-338447775
-340503531
-349275135
-354078333
-354153856
-363202093
-370798767
-375476270
-384135560
-384281442
-385713605
-388691875
-391737358
-392503618
-400674687
-403598296
-404050636
-408202869
-413449821
-422746474
-435854068
-446638656
-453401926
-462389491
-462913559
-473056802
-488194036
-492056858
-496452735
-496633105
-497970358
-526345883
-533753676
-534907434
-535983159
-537078945
-537855311
-543624985
-544296808
-545399293
-546808382
-549183936
-566844722
-568700077
-574428649
-576498125
-580527453
-584296480
-588848596
-595562956
-602987891
-608388424
-610054023
-618488210
-620372307
-627828110
-634954760
-635748491
-642076385
-646480925
-651118210
-652818478
-657931876
-664543644
-672170177
-678110079
-683728739
-684898465
-694651562
-695057373
-699568704
-701472347
-701940160
-702108512
-705454944
-718796512
-719217327
-732298255
-734896150
-738276260
-745689335
-748649670
-755409844
-757049141
-774127301
-781582688
-781835801
-782142976
-782350359
-783219568
-794063549
-795046430
-800738398
-811049947
-818889721
-821433476
-823065979
-823259445
-830824015
-832740883
-839375875
-842109868
-844253713
-844962778
-847107397
-853271698
-861992896
-871111021
-875433698
-876002428
-880380282
-885529081
-886833028
-889183577
-890748674
-893746304
-894081429
-899929312
-907009291
-909035068
-914037420
-921053538
-936349690
-940405486
-941871805
-942016870
-948252378
-953188799
-956555299
-957408643
-962638414
-962761568
-966643233
-968551573
-973246577
-993539900
+380618
+829864
+23190772
+53533866
+79433938
+87916055
+96986986
+144558947
+145292923
+185530023
+199384975
+214036900
+243232633
+258124650
+274433601
+307616899
+312079179
+315854072
+335483067
+361871127
+371002729
+390836118
+406580203
+423039495
+430265152
+465558521
+466661351
+467494694
+472151993
+493149412
+509602540
+570923893
+581100014
+595943841
+597493420
+610355682
+612587082
+644746201
+664578305
+707830843
+733557480
+738923823
+745911878
+779603148
+779654529
+781039166
+805923293
+833433303
+852269341
+858843792
+907749226
+912415826
+935054314
+941469111
+987074094
+
 )
 
 then delete;
@@ -967,47 +430,9 @@ proc means n mean p50;var p_diag_sw;where cald=2023;run;
 
 
 
-data a.fsw_17_04_24_short_b; set sw_diag;run;
+data a.fsw_13_03_25_short; set sw_diag;run;
 
-data y; set a.fsw_17_04_24_short_b;run;
-
-
-proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2011<= cald <2014 and option=0 ;run;
-proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2014<= cald <2017 and option=0 ;run;
-proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2017<= cald <2020 and option=0 ;run;
-proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2020<= cald <2023 and option=0 ;run;
-
-
-
-proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2022< cald <2025 and option=0 ;run;
-
-
-
-/*
-
-
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where 2021.0 <= cald < 2022.0 and sw_trans_matrix=1;run;
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where 2021.0 <= cald < 2022.0 and sw_trans_matrix=2;run;
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where 2021.0 <= cald < 2022.0 and sw_trans_matrix=3;run;
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where 2021.0 <= cald < 2022.0 and sw_trans_matrix=4;run;
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where 2021.0 <= cald < 2022.0 and sw_trans_matrix=5;run;
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where 2021.0 <= cald < 2022.0 and sw_trans_matrix=6;run;
-
-
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where cald in (2022,2022.25.2022.5,2022.75) and sw_trans_matrix=1;run;
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where cald in (2022,2022.25.2022.5,2022.75) and sw_trans_matrix=2;run;
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where cald in (2022,2022.25.2022.5,2022.75) and sw_trans_matrix=3;run;
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where cald in (2022,2022.25.2022.5,2022.75) and sw_trans_matrix=4;run;
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where cald in (2022,2022.25.2022.5,2022.75) and sw_trans_matrix=5;run;
-proc means n p5 p50 p95;var incidence_sw p_fsw_newp0_;where cald in (2022,2022.25.2022.5,2022.75) and sw_trans_matrix=6;run;
-
-
-proc glm; class sw_trans_matrix; model p_fsw_newp0_= sw_trans_matrix/solutions;where cald=2022;run;
-proc glm; class sw_trans_matrix; model incidence_sw= sw_trans_matrix/solutions;where cald=2022;run;
-
-
-*/
-
+data y; set a.fsw_13_03_25_short;run;
 
 
 options nomprint;
@@ -1078,19 +503,9 @@ data &v ; merge y_20 y_23 t_30 t_24_25 t_24_29 t_24_44 t_24_74;
 %var(v=dcost_circ); 	  %var(v=dcost_condom_dn);  %var(v=dcost_avail_self_test); 	%var(v=dcost_prep_visit_oral);  	
 %var(v=dcost_prep_oral);  %var(v=dcost_prep_visit_inj);  %var(v=dcost_prep_inj); 
 
-%var(v=dcost_amt);
-%var(v=dcost_amt10_);  %var(v=dcost_amt15_);  %var(v=dcost_amt20_);  %var(v=dcost_amt25_);  %var(v=dcost_amt30_); 
-%var(v=dcost_amt35_);  %var(v=dcost_amt40_);  %var(v=dcost_amt45_);  %var(v=dcost_amt50_);  %var(v=dcost_amt55_); 
-%var(v=dcost_amt60_);  %var(v=dcost_amt65_);  %var(v=dcost_amt70_);  %var(v=dcost_amt75_);  %var(v=dcost_amt80_);
-%var(v=dcost_amt85_);  %var(v=dcost_amt90_);  %var(v=dcost_amt95_);  %var(v=dcost_amt100_); %var(v=dcost_amt105_);
-%var(v=dcost_amt110_); %var(v=dcost_amt115_); %var(v=dcost_amt120_); %var(v=dcost_amt125_); %var(v=dcost_amt130_);
-%var(v=dcost_amt135_); %var(v=dcost_amt140_); %var(v=dcost_amt145_); %var(v=dcost_amt150_); %var(v=dcost_amt155_);
-%var(v=dcost_amt160_); %var(v=dcost_amt165_); %var(v=dcost_amt170_); %var(v=dcost_amt175_); %var(v=dcost_amt180_);
-%var(v=dcost_amt185_); %var(v=dcost_amt190_); %var(v=dcost_amt195_); %var(v=dcost_amt200_); %var(v=dcost_amt205_);
-%var(v=dcost_amt210_); %var(v=dcost_amt215_); %var(v=dcost_amt220_); %var(v=dcost_amt225_); %var(v=dcost_amt230_);
-%var(v=dcost_amt235_); %var(v=dcost_amt240_); %var(v=dcost_amt245_); %var(v=dcost_amt250_);
 %var(v=n_hiv);			%var(v=n_onart);
 
+%var(v=dcost_sisprog_); %var(v=dcost_amtprog_);
 run;
 
 data wide_outputs;merge
@@ -1123,15 +538,9 @@ dcot_cost		dtb_cost  		dres_cost 		dtest_cost		dtest_cost_sw	d_t_adh_int_cost  	
 dcost_drug_level_test			dcost_circ 		dcost_condom_dn	dcost_avail_self_test 	
 dcost_prep_visit_oral  			dcost_prep_oral dcost_prep_visit_inj  	dcost_prep_inj
 
-dcost_amt
-dcost_amt10_  dcost_amt15_  dcost_amt20_  dcost_amt25_  dcost_amt30_  dcost_amt35_  dcost_amt40_ 
-dcost_amt45_  dcost_amt50_  dcost_amt55_  dcost_amt60_  dcost_amt65_  dcost_amt70_  dcost_amt75_ 
-dcost_amt80_  dcost_amt85_  dcost_amt90_  dcost_amt95_  dcost_amt100_ dcost_amt105_ dcost_amt110_ 
-dcost_amt115_ dcost_amt120_ dcost_amt125_ dcost_amt130_ dcost_amt135_ dcost_amt140_ dcost_amt145_
-dcost_amt150_ dcost_amt155_ dcost_amt160_ dcost_amt165_ dcost_amt170_ dcost_amt175_ dcost_amt180_
-dcost_amt185_ dcost_amt190_ dcost_amt195_ dcost_amt200_ dcost_amt205_ dcost_amt210_ dcost_amt215_
-dcost_amt220_ dcost_amt225_ dcost_amt230_ dcost_amt235_ dcost_amt240_ dcost_amt245_ dcost_amt250_
 n_hiv	n_onart
+
+dcost_sisprog_  dcost_amtprog_
 ;
 
 proc sort; by run;run;
@@ -1155,9 +564,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-*Suffix b includes 2 more variables, n_onart and n_hiv and restricts runs to those with lower % SW diag to match usual
-care AMETHIST;
-data a.wide_fsw_zim_17_04_24AMTb;
+data a.wide_fsw_zim_13_03_25;
 merge   wide_outputs  wide_par ;  
 by run;run;
 

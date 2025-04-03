@@ -147,22 +147,56 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
 
 
-***Assuming a cost of $150 per SW (Email from Frances and Primrose 15may24 - SW program costs $8.5m and reaches 40,000 SW=$212.50/SW. These analyses are across SSA and expect running costs to 
-reduce if more SW are reached so assume $150). ;
-
-cost_sis150perSW=0.00015;
-s_cost_sis150_ = 0.00015 * s_sw_program_visit;
-dcost_swprog150_ = s_cost_sis150_ * &discount *&sf;
+***Assuming a cost of $132 per SW (Email from Collin 11Feb2025 in Sisters and 155 in AMETHIST;
 
 
-***total cost WITH a SW prog (this will include additional sw seen at the prog as a result of amethist if option=1);
+
+
+
+
+
+
+
+
+**Check units for costs;
+***Probably need to divide costs by 4 - check with Collin;
+***Check &discount and change &sf;
+
+
+
+
+
+
+
+
+
+
+
+
+
+***total cost with Sisters;
+if option=0 then do;
+	cost_sis132perSW=0.000132;
+	s_cost_sis132_ = 0.000132 * s_sw_program_visit;
+	dcost_swprog132_ = s_cost_sis132_ * &discount *&sf;
+
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
-		dcost_swprog150_;
+		dcost_swprog132_;
+end;
 
 
+if option=1 then do;
+	s_cost_AMT155_ = 0.000155 * s_sw_program_visit;
+	dcost_swprog155_ = s_cost_AMT155_ * &discount *&sf;
+	cost_AMT155perSW=0.000155;
 
+dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
+		dcost_swprog155_;
+end;
 
 if option =1 then do;
 s_cost_amt_program=0.3;
@@ -967,9 +1001,9 @@ proc means n mean p50;var p_diag_sw;where cald=2023;run;
 
 
 
-data a.fsw_17_04_24_short_b; set sw_diag;run;
+data a.fsw_17_04_24_short_c; set sw_diag;run;
 
-data y; set a.fsw_17_04_24_short_b;run;
+data y; set a.fsw_17_04_24_short_c;run;
 
 
 proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2011<= cald <2014 and option=0 ;run;
@@ -1157,7 +1191,8 @@ sw_trans_matrix;
 
 *Suffix b includes 2 more variables, n_onart and n_hiv and restricts runs to those with lower % SW diag to match usual
 care AMETHIST;
-data a.wide_fsw_zim_17_04_24AMTb;
+*Suffix c includes Collin's costs for the program;
+data a.wide_fsw_zim_17_04_24AMTc;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
