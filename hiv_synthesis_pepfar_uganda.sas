@@ -22054,6 +22054,37 @@ end;
 
 
 
+*JAS Feb24;
+/*
+Define macro run_update_r1 to run update_r1 multiple times		
+Inputs are: 
+	start year (can be &caldate1 as defined in code above)
+	end year (can be relative to &year_interv as defined in code above)
+	option number (s)
+*/
+*dependent_on_time_step_length;
+
+%macro run_update_r1(r1_start_year,r1_end_year,intervention_option);
+
+	%do ii = %sysevalf((1 + 4*(&r1_start_year-&caldate1))) %to %sysevalf((1 + 4*(&r1_end_year-&caldate1)));
+	
+		%let year = %sysevalf(&caldate1 + 0.25*(&ii-1));
+		%let aa = %sysevalf(%sysfunc(mod(%sysevalf(&ii+1),2)) + 1);
+		%let bb = %sysevalf(3 - &aa);
+		%let ee = %sysfunc(min(&ii, %sysevalf(%sysfunc(mod(%sysevalf(&ii+3),4))+5)));
+		%let ff = %sysevalf(&ee + 1);
+		%let gg = %sysevalf(1 + %sysevalf(4*%sysfunc(ceil(%sysfunc(max(0,(%sysevalf(&year-&caldate1-1.75))))))) );
+		%let hh = %sysevalf(&gg + 7);
+		%let jj = &ii;
+
+		%update_r1(da1=&aa, da2=&bb, e=&ee, f=&ff, g=&gg, h=&hh, j=&jj, y=&year, s=&intervention_option);
+
+	%end;
+
+%mend;
+
+
+
 *** RUN PROGRAM; 
 
 *1) Run from caldate1 to intervention year;
