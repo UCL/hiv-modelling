@@ -2606,7 +2606,7 @@ end;
 
 *
 
-reg_option from 2021: 125
+this table is just reg_option recently used - full list of all reg_option are listed below
  
        new 		currently on 1st line tle	currently on 2nd line zl-pi		failure criteria	tle failure			tld failure 	zld failure
       initiators   																
@@ -2617,6 +2617,8 @@ reg_option from 2021: 125
 104    tld		--> tld 					--> tld regardless of vl		two VL > 1000		na					--> zl-pi		na 
 
 125    tld		--> tld 					--> tld regardless of vl		two VL > 1000		na					--> tl-pi		na 
+
+130    this just means currently on lencab
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -9778,31 +9780,12 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 	e=rand('uniform');
 
-/*
-
-	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=1 and 50 <= age      and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-
-	if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2   then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-	if gender=2 and 20 <= age < 25 and adh > 0.8 and e < 0.05  then do; r=rand('uniform'); adh=0.65; if r < 0.66 then adh=0.1; end;
-
-*/
+* this below changed apr2025 ;
 
 	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-
 
 	if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=2 and 20 <= age < 25 and adh < 0.8 and e < 0.1 then adh=0.90;
@@ -9830,7 +9813,7 @@ if t ge 2 then adhmin=min(adh,adhmin_tm1);
 if art_low_adh_disrup_covid = 1 then adh = adh - 0.25 ;
 
 * effect of weekly isl / ole on adherence;
-if o_ole=1 and o_isl=1 then adh = ahd + ( isl_ole_adh_improve * (1 - adh)) ;
+if o_ole=1 and o_isl=1 then adh = adh + ( isl_ole_adh_improve * (1 - adh)) ;
 
 
 * effect of onartvisit0 on adh (in context of pop_wide_tld=1) - if artvis0_lower_adh = 1 then 20% of people with artvisit0 have reduced adherence; 
@@ -9925,7 +9908,6 @@ if prep_len = 1 or prep_len_tm1 = 1 or currently_in_prep_len_tail = 1 then do;
 	if prep_len = 1 or prep_len_tm1 = 1 or currently_in_prep_len_tail = 1 then 
 		nactive_tm1 = (1 + len_higher_potency) * (1 - r_len_tm1); 
 end;
-
 
 if onart=0 and 0.25 <= tss_len <= 0.5 then do; tcur_tm1=0; nactive_tm1 = (1 + len_higher_potency) * (1 - r_len_tm1); adh_dl = 0.65; end;
 
@@ -11323,7 +11305,11 @@ x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1
 				--> tld if linefail = 0										
 117	   tld		--> zld if linefail = 1		--> zld							two vl > 1000		na					zl-pi			--> tl-pi
 				--> tld if linefail = 0										and 80% adh
+125    tld		--> tld 					--> tld regardless of vl		two VL > 1000		na					--> tl-pi		na 
+
+130     this just means currently on lencab
 ------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 * underlying virologic failure (this used to compare with data from studies, not used to instigate switch);
@@ -11609,6 +11595,7 @@ end;
 
 if caldate{t} le 2025 and art_monitoring_strategy=150  and visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
 and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
+
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and 
 	(caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; * jan15;
 		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
@@ -11649,12 +11636,12 @@ and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_fro
 end;
 
 
-* TLD_SWITCH comparison  ; 
+* this was originally included for the tld_switch comparison - while the art_monitoring strategies other than 150 are not currently turned on they may be in future;
 
 drug_level_test=0; res_test_dol=0; second_vlg1000_first=0; second_vlg1000_first_dol_r=0;
 
-if art_monitoring_strategy in (150, 160, 1500, 1600, 1700) and visit=1 and (o_dol=1 or (mr_dol_tm1 = 1 and int_clinic_not_aw=1)) and o_len ne 1 
-and f_dol ne 1 and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1)
+if caldate{t} > 2025 and art_monitoring_strategy in (150, 160, 1500, 1600) and visit=1 and (o_dol=1 or (mr_dol_tm1 = 1 and int_clinic_not_aw=1)) and
+o_len ne 1 and f_dol ne 1 and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1)
 and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	
 	* evaluate if a viral load test is indicated;
@@ -11759,11 +11746,6 @@ if art_monitoring_strategy = 1700 and visit=1 and o_cab=1 and o_len=1 and restar
 	end;
 
 end;
-
-
-
-
-
 
 
 
@@ -12550,7 +12532,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 		if tb=1 then do;
 			date_most_recent_tb = caldate{t};
 			tb_prob_diag_l = tb_base_prob_diag_l; 
-			if visit=1 and onartvisit0 ne 1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_l = tb_prob_diag_l * effect_visit_prob_diag_l ;
+			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_l = tb_prob_diag_l * effect_visit_prob_diag_l ;
 			if tblam_measured_this_per = 1 then tb_prob_diag_l = tb_prob_diag_l * tblam_eff_prob_diag_l ;
 			tb_prob_diag_e = 1 - tb_prob_diag_l ;
 			ii=rand('uniform'); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  
@@ -13171,7 +13153,7 @@ vis_cost_lencab=0;vis_cost_no_lencab=0;
 if o_len=1 then vis_cost_lencab = vis_cost;
 if o_len ne 1 then vis_cost_no_lencab = vis_cost;
 
-* here here;
+
 if offered_return_lencab_this_per = 1 then cost_lencab_return = cost_offered_return_for_lencab;
 
 * pre-death morbidity costs if people dying with dcause =2;
