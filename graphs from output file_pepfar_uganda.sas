@@ -40,7 +40,7 @@ p_newp_ge1_ = p_newp_ge1;
 
 n_tested_incl_self = n_self_tested + n_tested; 
 
-%let single_var = p_onart_vl1000_             ;
+%let single_var = p_adh_hi                    ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -228,7 +228,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -244,7 +244,7 @@ band    x=cald lower=p5_p_onart_vl1000__1 upper=p95_p_onart_vl1000__1 / transpar
 
 run;quit;
 
-*/
+
 
 
 /*
@@ -925,7 +925,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -944,7 +944,7 @@ band    x=cald lower=p5_prop_elig_on_prep_2 upper=p95_prop_elig_on_prep_2 / tran
 
 run;quit;
 
-
+*/
 
 /*
 
@@ -1408,7 +1408,7 @@ run;quit;
 
 * ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d ; 
@@ -1417,13 +1417,13 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2018 by 0.5)	 	 
 yaxis grid label	= 'prevalence'		labelattrs=(size=12)  values = (0 to 1          by 0.1     ) valueattrs=(size=10);
 
 label p50_p_adh_hi_0 = "option 0";
-label p50_p_adh_hi_3 = "option 3";
+label p50_p_adh_hi_1 = "option 1";
 
 series  x=cald y=p50_p_adh_hi_0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_p_adh_hi_0 upper=p95_p_adh_hi_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
 
-series  x=cald y=p50_p_adh_hi_3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_p_adh_hi_3 upper=p95_p_adh_hi_3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
+series  x=cald y=p50_p_adh_hi_1 / lineattrs = (color=lightblue thickness = 4);
+band    x=cald lower=p5_p_adh_hi_1 upper=p95_p_adh_hi_1 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
 
 run;quit;
 

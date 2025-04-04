@@ -2218,8 +2218,6 @@ who may be dead and hence have caldate{t} missing;
 			if 0.7 <= vv < 0.8 then adh_reduction_pepfar = 0.15 ;
 			if 0.8 <= vv < 0.9 then adh_reduction_pepfar = 0.2 ;
 			if 0.9 <= vv       then adh_reduction_pepfar = 0.25 ;
-
-			adh_reduction_pepfar = 0.5;
 		end;				 
 	end;
 													  
@@ -9777,7 +9775,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 
 
-if adh_reduction_pepfar > 0 then adh = ahd - adh_reduction_pepfar;
+if adh_reduction_pepfar > 0 then adh = adh - adh_reduction_pepfar;
 	
 
 if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have disadvantages;
