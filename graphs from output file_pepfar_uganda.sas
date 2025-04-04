@@ -1413,7 +1413,7 @@ run;quit;
 ods html;
 proc sgplot data=d ; 
 * Title    height=1.5 justify=center "p_adh_hi_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2018 by 0.5)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2030 by 1  )	 	 valueattrs=(size=10); 
 yaxis grid label	= 'prevalence'		labelattrs=(size=12)  values = (0 to 1          by 0.1     ) valueattrs=(size=10);
 
 label p50_p_adh_hi_0 = "option 0";
