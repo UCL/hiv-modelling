@@ -1421,7 +1421,7 @@ adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld
 
-p_tested_incl_self
+p_tested_incl_self   effect_comm_tld_hard_reach
 ;
 
  
@@ -1725,7 +1725,7 @@ p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_
 p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct p_ever_len_v_failed  p_diag_vl1000  p_len_plw  p_len_w  p_len_m prevalence15pl
 n_prep_oral  n_infection_incl_mtct
 n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0 dcost_sw_program  n_self_tested n_adc dcost_self_test
-p_tested_incl_self
+p_tested_incl_self  
 ;
 
 
@@ -1797,7 +1797,7 @@ prob_prep_oral_b_comm_tld
 incr_pref_prep_oral_comm_tld
 adh_effect_comm_tld
 rr_return_comm_tld
-rr_interrupt_comm_tld
+rr_interrupt_comm_tld  effect_comm_tld_hard_reach
 ;
 
 %macro par(p=);
@@ -1871,7 +1871,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=incr_pref_prep_oral_comm_tld);
 %par(p=adh_effect_comm_tld);
 %par(p=rr_return_comm_tld);
-%par(p=rr_interrupt_comm_tld);
+%par(p=rr_interrupt_comm_tld); %par(p=effect_comm_tld_hard_reach);
 
 data b.wide_par2; merge 
 
@@ -1939,7 +1939,7 @@ prob_prep_oral_b_comm_tld
 incr_pref_prep_oral_comm_tld
 adh_effect_comm_tld
 rr_return_comm_tld
-rr_interrupt_comm_tld
+rr_interrupt_comm_tld  effect_comm_tld_hard_reach
 ;
 
 run;
@@ -2418,6 +2418,15 @@ d_n_tested_all_10y_2 = n_tested_all_10y_2 - n_tested_all_10y_1 ;
 d_n_tested_all_10y_3 = n_tested_all_10y_3 - n_tested_all_10y_1 ;
 
 
+_incr_pref_prep_oral_comm_tld = incr_pref_prep_oral_comm_tld * 100;
+_rr_interrupt_comm_tld = rr_interrupt_comm_tld * 10;
+_rr_return_comm_tld = rr_return_comm_tld ;
+_effect_comm_tld_hard_reach = effect_comm_tld_hard_reach * 10; 
+
+
+ratio_targeting_self_regular = log(self_test_targeting / test_targeting);
+
+
 ods html;
 proc print noobs; var run; run;
 ods html close;
@@ -2585,23 +2594,15 @@ ods html close;
 
 ods html;
 proc logistic data=f; 
-model x_ce_500_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 ;  run;
+model x_ce_500_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 
+_incr_pref_prep_oral_comm_tld _rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular;  run;
 proc logistic data=f; 
-model x_ce_300_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 ;  run;
+model x_ce_300_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 
+_incr_pref_prep_oral_comm_tld _rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular;  run;
 proc logistic data=f; 
-model x_ce_150_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 ;  run;
+model x_ce_150_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 
+_incr_pref_prep_oral_comm_tld _rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular;  run;
 ods html close;
-
-
-
-
-  ods html;
-  proc print data=f noobs; 
-  var run; 
-  run; 
-  ods html close;
-
-
 
 
 
