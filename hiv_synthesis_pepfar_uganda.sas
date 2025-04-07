@@ -2211,6 +2211,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;
 		
 		adh_reduction_pepfar = 0;
+
 		if cald = 2025 then do;
 			vv=rand('uniform');
 			if 0.5 <= vv < 0.6 then adh_reduction_pepfar = 0.05 ;
@@ -2218,6 +2219,9 @@ who may be dead and hence have caldate{t} missing;
 			if 0.7 <= vv < 0.8 then adh_reduction_pepfar = 0.15 ;
 			if 0.8 <= vv < 0.9 then adh_reduction_pepfar = 0.2 ;
 			if 0.9 <= vv       then adh_reduction_pepfar = 0.25 ;
+
+			adh_reduction_pepfar = 0.8  ;
+
 		end;				 
 	end;
 													  
@@ -9773,9 +9777,6 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	if gender=2 and 40 <= age < 45 and adh < 0.8 and e < 0.8 then adh=0.90;
 	if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.8 then adh=0.90;
 	if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
-
-
-if adh_reduction_pepfar > 0 then adh = adh - adh_reduction_pepfar;
 	
 
 if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have disadvantages;
@@ -9833,6 +9834,11 @@ gender_art_adj=0;
 if gender=2 then gender_art_adj=2;
 
 cd4_art_adj = cd4_art_adj + age_art_adj + pi_art_adj + gender_art_adj;  * note for ts1m we divide cc by 3 below ;
+
+
+
+if adh_reduction_pepfar > 0 then adh = adh - adh_reduction_pepfar;
+
 
 if adh < 0 then adh=0;
 if adh gt 1 then adh=1;

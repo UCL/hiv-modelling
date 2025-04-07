@@ -51,7 +51,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 32   ;
+%let nfit = 56   ;
 
 %let year_end = 2030.00 ;
 run;
@@ -1410,11 +1410,13 @@ run;quit;
 
 */
 
+
+
 ods html;
 proc sgplot data=d ; 
 * Title    height=1.5 justify=center "p_adh_hi_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2030 by 1  )	 	 valueattrs=(size=10); 
-yaxis grid label	= 'prevalence'		labelattrs=(size=12)  values = (0 to 1          by 0.1     ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2026 by 0.25  )	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1          by 0.1     ) valueattrs=(size=10);
 
 label p50_p_adh_hi_0 = "option 0";
 label p50_p_adh_hi_1 = "option 1";
