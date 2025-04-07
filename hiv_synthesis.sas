@@ -602,6 +602,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;	
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							* dependent_on_time_step_length ;
+* year_tld_switch_change;	year_tld_switch_change = 3000; * can be changed if a new policy for tld switch is introduced in countries ; 
 * pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  );   * tld_switch mar 2025;      
 * pr_res_len;				%sample_uniform(pr_res_len, 0.005  0.01  0.02  0.05);   
 * incr_len_res_mono;		incr_len_res_mono = 10 ;
@@ -684,7 +685,7 @@ newp_seed = 7;
 * rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
 * rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
-* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest,0.03 0.05 0.07);
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.03 0.05 0.07);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
 * effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.10 0.15 0.25);
 * effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
@@ -2214,6 +2215,13 @@ end;
 
 *  ======================================================================================================================================== ;
 
+
+/* possible change in tld-switch */
+
+if caldate_never_dot = year_tld_switch_change then do;
+	dol_pi_fail_by_tld_switch_year=0; 
+	if yrart ne . and naive=0 and (f_lpr=1 or f_taz=1 or f_dar=1 or f_dol=1) then dol_pi_fail_by_tld_switch_year=1;
+end;
 
 
 /* PrEP */
@@ -14466,7 +14474,7 @@ onart_iicu_tldsw1=0; adh_lt80_tldsw1=0; vis_tldsw1=0;
 tldsw2_elig=0; o_dar_tldsw2 =0; o_dol_tldsw2=0;  onart_tldsw2=0; vl1000_tldsw2=0;  vl200_tldsw2=0; dead_tldsw2=0;dead_hiv_tldsw2=0;c_tox_tldsw2=0; r_dol_ge_p5_tldsw2=0;
 onart_iicu_tldsw2=0; adh_lt80_tldsw2=0; vis_tldsw2=0;
 
-if hiv=1 and naive=0 and dol_pi_fail_by_year_interv ne 1 then do;
+if hiv=1 and naive=0 and dol_pi_fail_by_tld_switch_year ne 1 then do;
 	tldsw_elig=1;
 	if o_dar=1 then o_dar_tldsw=1;
 	if o_dol=1 then o_dol_tldsw=1;
@@ -18691,7 +18699,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_onartvisit0 + onartvisit0; s_onartvisit0_vl1000 + onartvisit0_vl1000;
 
-	s_dol_pi_fail_by_year_interv + dol_pi_fail_by_year_interv;  s_any_vfail_by_year_interv + any_vfail_by_year_interv;
+	s_dol_pi_fail_by_tld_switch_year + dol_pi_fail_by_tld_switch_year;  s_any_vfail_by_year_interv + any_vfail_by_year_interv;
 
 	s_tldsw_elig  +  tldsw_elig ; s_o_dar_tldsw  + o_dar_tldsw ; s_o_dol_tldsw  + o_dol_tldsw ;  s_onart_tldsw  +  onart_tldsw ;  s_vl1000_tldsw +  vl1000_tldsw ;   
 	s_vl200_tldsw  + vl200_tldsw  ; s_dead_tldsw   + dead_tldsw   ;s_dead_hiv_tldsw +   dead_hiv_tldsw ;  s_c_tox_tldsw  + c_tox_tldsw  ; 
@@ -19239,7 +19247,7 @@ run;
 * adhav = 0.75; * adhvar=0.20;
 * eff_prob_vl_meas_done=1;
 
-proc print; var art_monitoring_strategy caldate&j dol_pi_fail_by_year_interv f_dol_tm1 f_dol date_f_dol o_dol o_dar eff_pr_switch_line  visit onart  
+proc print; var art_monitoring_strategy caldate&j dol_pi_fail_by_tld_switch_year f_dol_tm1 f_dol date_f_dol o_dol o_dar eff_pr_switch_line  visit onart  
 int_clinic_not_aw restart restart_tm1 vm vl 
 yrart time_since_last_vm value_last_vm  second_vlg1000 date_last_second_vlg1000 eff_prob_vl_meas_done date_last_vlm_g1000  date_vl_switch_eval 
 time_since_last_vm 
@@ -20548,7 +20556,7 @@ s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
 
-s_dol_pi_fail_by_year_interv  s_any_vfail_by_year_interv
+s_dol_pi_fail_by_tld_switch_year  s_any_vfail_by_year_interv
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
@@ -21642,7 +21650,7 @@ s_infected_inm s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
 
-s_dol_pi_fail_by_year_interv  s_any_vfail_by_year_interv
+s_dol_pi_fail_by_tld_switch_year  s_any_vfail_by_year_interv
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
@@ -22609,7 +22617,7 @@ s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0  s_onartvisit0_vl1000
 
-s_dol_pi_fail_by_year_interv  s_any_vfail_by_year_interv
+s_dol_pi_fail_by_tld_switch_year  s_any_vfail_by_year_interv
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
