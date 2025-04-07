@@ -633,7 +633,7 @@ newp_seed = 7;
 * res_level_dol_cab_mut;	%sample_uniform(res_level_dol_cab_mut, 0.5 0.75  1.00); * tld_switch; * for dol this applies to 118 and 263, for 118 it applies with 0.25 added; 
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 
-* lencab_available;			lencab_available=0;
+* lencab_available;			lencab_available=0;  * note that we are assuming these two drugs as treatment are always given together ;
 * lencab_uptake_vlg1000;	%sample_uniform(lencab_uptake_vlg1000, 0.3 0.5 0.7); * laa_ac ; 
 * lencab_uptake;			%sample_uniform(lencab_uptake, 0.001 0.003 0.01 0.03 0.05 0.1 0.3); * len_ac ;
 
@@ -2208,20 +2208,12 @@ who may be dead and hence have caldate{t} missing;
 		*Specify option 1;
 												 
 	end;
-													  
+ 
 end;
 
 
 
 *  ======================================================================================================================================== ;
-
-
-/* possible change in tld-switch */
-
-if caldate_never_dot = year_tld_switch_change then do;
-	dol_pi_fail_by_tld_switch_year=0; 
-	if yrart ne . and naive=0 and (f_lpr=1 or f_taz=1 or f_dar=1 or f_dol=1) then dol_pi_fail_by_tld_switch_year=1;
-end;
 
 
 /* PrEP */
@@ -2657,6 +2649,18 @@ all art stopped (no_art_disrup_covid)
 if caldate{t} ge 2019.5 then reg_option = 120;
 
 if caldate{t} ge 2021 then reg_option = 125;
+
+
+
+/* possible change in tld-switch */
+
+if caldate_never_dot = year_tld_switch_change then do;
+	dol_pi_fail_by_tld_switch_year=0; 
+	any_vfail_by_tld_switch_year=0;
+	if yrart ne . and naive=0 and (f_lpr=1 or f_taz=1 or f_dar=1 or f_dol=1) then dol_pi_fail_by_tld_switch_year=1;
+	if yrart ne . and naive=0 and (f_3tc=1 or f_ten=1 or f_zdc=1) then any_vfail_by_tld_switch_year=1;
+end;
+
 
 
 * lencab availability ;
@@ -14491,7 +14495,7 @@ if hiv=1 and naive=0 and dol_pi_fail_by_tld_switch_year ne 1 then do;
 	if r_dol >= 0.5 then r_dol_ge_p5_tldsw=1;
 	if visit=1 then vis_tldsw=1;
 
-	if any_vfail_by_year_interv = 0 then do;
+	if any_vfail_by_tld_switch_year = 0 then do;
 		tldsw1_elig=1;
 		if o_dar=1 then o_dar_tldsw1=1;
 		if o_dol=1 then o_dol_tldsw1=1;
@@ -14506,7 +14510,7 @@ if hiv=1 and naive=0 and dol_pi_fail_by_tld_switch_year ne 1 then do;
 		if r_dol >= 0.5 then r_dol_ge_p5_tldsw1=1;
 		if visit=1 then vis_tldsw1=1;
 	end;
-	if any_vfail_by_year_interv = 1 then do;
+	if any_vfail_by_tld_switch_year = 1 then do;
 		tldsw2_elig=1;
 		if o_dar=1 then o_dar_tldsw2=1;
 		if o_dol=1 then o_dol_tldsw2=1;
@@ -14549,7 +14553,7 @@ if naive=0 and date_last_second_vlg1000 ne . then do;
 	if visit=1 then vis_uvl2=1;
 	if cd4 < 200 then cd4_lt200_uvl2 = 1;
 
-	if any_vfail_by_year_interv = 0 then do;
+	if any_vfail_by_tld_switch_year = 0 then do;
 		uvl21_elig=1;
 		if o_dar=1 then o_dar_uvl21=1;
 		if o_dol=1 then o_dol_uvl21=1;
@@ -14565,7 +14569,7 @@ if naive=0 and date_last_second_vlg1000 ne . then do;
 		if visit=1 then vis_uvl21=1;
 		if cd4 < 200 then cd4_lt200_uvl21 = 1;
 	end;
-	if any_vfail_by_year_interv = 1 then do;
+	if any_vfail_by_tld_switch_year = 1 then do;
 		uvl22_elig=1;
 		if o_dar=1 then o_dar_uvl22=1;
 		if o_dol=1 then o_dol_uvl22=1;
@@ -16050,6 +16054,26 @@ if prep_any=1 then do;
 	if gender=2 and 15 le age lt 25 then onprep_1524w=1;
 	if gender=2 and 15 le age lt 25 and newp >= 1 then onprep_w1524_newpge1_=1;
 end;
+
+
+*To calculate number of current users (SDC and PLW only, AGYW and SW are coded above);
+prep_any_sdc = 0; prep_oral_sdc = 0; prep_cab_sdc = 0;prep_len_sdc = 0; prep_vr_sdc = 0;
+if sdc = 1 then do; 
+	if prep_any = 1 then prep_any_sdc = 1;
+	if prep_oral = 1 then prep_oral_sdc = 1;
+	if prep_cab = 1 then prep_cab_sdc = 1;
+	if prep_len = 1 then prep_len_sdc = 1;
+	if prep_vr = 1 then prep_vr_sdc = 1;
+end;
+prep_any_plw = 0; prep_oral_plw = 0; prep_cab_plw = 0; prep_len_plw = 0; prep_vr_plw = 0;
+if plw = 1 then do; 
+	if prep_any = 1 then prep_any_plw = 1;
+	if prep_oral = 1 then prep_oral_plw = 1;
+	if prep_cab = 1 then prep_cab_plw = 1;
+	if prep_len = 1 then prep_len_plw = 1;
+	if prep_vr = 1 then prep_vr_plw = 1;
+end;
+
 
 *To calculate number initiated for the first time on different types of PrEP;
 init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;init_prep_oral_plw=0;
@@ -18699,7 +18723,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_onartvisit0 + onartvisit0; s_onartvisit0_vl1000 + onartvisit0_vl1000;
 
-	s_dol_pi_fail_by_tld_switch_year + dol_pi_fail_by_tld_switch_year;  s_any_vfail_by_year_interv + any_vfail_by_year_interv;
+	s_dol_pi_fail_by_tld_switch_year + dol_pi_fail_by_tld_switch_year;  s_any_vfail_by_tld_switch_year + any_vfail_by_tld_switch_year;
 
 	s_tldsw_elig  +  tldsw_elig ; s_o_dar_tldsw  + o_dar_tldsw ; s_o_dol_tldsw  + o_dol_tldsw ;  s_onart_tldsw  +  onart_tldsw ;  s_vl1000_tldsw +  vl1000_tldsw ;   
 	s_vl200_tldsw  + vl200_tldsw  ; s_dead_tldsw   + dead_tldsw   ;s_dead_hiv_tldsw +   dead_hiv_tldsw ;  s_c_tox_tldsw  + c_tox_tldsw  ; 
@@ -20556,7 +20580,7 @@ s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
 
-s_dol_pi_fail_by_tld_switch_year  s_any_vfail_by_year_interv
+s_dol_pi_fail_by_tld_switch_year  s_any_vfail_by_tld_switch_year
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
@@ -21650,7 +21674,7 @@ s_infected_inm s_infected_inm_this_per
 
 s_onartvisit0 s_onartvisit0_vl1000
 
-s_dol_pi_fail_by_tld_switch_year  s_any_vfail_by_year_interv
+s_dol_pi_fail_by_tld_switch_year  s_any_vfail_by_tld_switch_year
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
@@ -22617,7 +22641,7 @@ s_infected_inm  s_infected_inm_this_per
 
 s_onartvisit0  s_onartvisit0_vl1000
 
-s_dol_pi_fail_by_tld_switch_year  s_any_vfail_by_year_interv
+s_dol_pi_fail_by_tld_switch_year  s_any_vfail_by_tld_switch_year
 
 s_tldsw_elig  s_o_dar_tldsw   s_o_dol_tldsw    s_onart_tldsw    s_vl1000_tldsw 	s_vl200_tldsw  s_dead_tldsw  s_dead_hiv_tldsw  s_c_tox_tldsw  s_r_dol_ge_p5_tldsw 
 s_uvl2_elig  s_o_dar_uvl2   s_o_dol_uvl2    s_onart_uvl2    s_vl1000_uvl2 	s_vl200_uvl2  s_dead_uvl2  s_dead_hiv_uvl2  s_c_tox_uvl2  s_r_dol_ge_p5_uvl2 
