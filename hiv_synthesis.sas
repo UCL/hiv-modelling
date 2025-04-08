@@ -21669,14 +21669,6 @@ end;
 %mend update_r1;
 
 
-
-
-
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-
-
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -21728,40 +21720,38 @@ Inputs are:
 
 *** RUN PROGRAM; 
 
-*1) Run from caldate1 to intervention year;
+*   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
-* 2) Save dataset at this point;
+*    Save dataset at this point;
 data a ;  set r1 ;
 data r1 ; set a ;
 
-* 3) Option 0 - repetition 1;
+*    Option 0 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
 
-
-* 4) Option 0 - repetition 2;
+*    Option 0 - repetition 2;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
-* 5) Option 0 - repetition 3;
+*    Option 0 - repetition 3;
 
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
 
 data r1; set a;
-* 3) Option 1 - repetition 1;
+*    Option 1 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
 
-
-* 4) Option 1 - repetition 2;
+*    Option 1 - repetition 2;
 			   
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
-* 5) Option 1 - repetition 3;
+*    Option 1 - repetition 3;
  
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
