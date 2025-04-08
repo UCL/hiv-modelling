@@ -10,7 +10,8 @@ proc freq data=a.l_base_24_03_2025;table option;run;
 
 %let pth_export_mihpsa= C:\Users\rmjlja9\Dropbox (UCL)\MIHPSA Zimbabwe\Phase 2 - Comparison\Results\Originals\Synthesis;run;
 
-** options 31 and 32 have not worked - probably did not update option number in update_r1 statement;
+%let year_start = 2023;
+%let year_end = 2072.75;
 
 
 data b;
@@ -78,14 +79,10 @@ proc print data=b; var option cald count_csim;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
  ***number of runs - this is manually inputted in nfit in the macros below;
 
-proc means max data=b;var count_csim cald;run;*30;
-proc means max data=b;var count_csim cald;where option=0;run;*30;
-proc means max data=b;var count_csim cald;where option=1;run;*30;
+proc means max data=b;var count_csim cald;run;*137;
+proc means max data=b;var count_csim cald;where option=0;run;*137;
+proc means max data=b;var count_csim cald;where option=1;run;*137;
 
-
-%let year_start = 2023;
-%let year_end = 2072.75;
-run;
 /*proc freq data=b;table cald;run;*/
 
 proc sort;by cald option ;run;
@@ -186,7 +183,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=30;
+%let nfit=137;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -1756,16 +1753,24 @@ band    x=cald lower=p5_n_prep_oral_sw_33 	upper=p95_n_prep_oral_sw_33  / transp
 /*band    x=cald lower=p5_n_prep_33 	upper=p95_n_prep_33  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 run;quit;
 * CHECK Op 33: none on PrEP. Op 8: low number on PrEP - but cannot tell if distributed via program;
+
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of FSW diagnosed";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_diag_sw_0  = "Prop of HIV+ FSW diagnosed op 0 (median) ";
 label p50_p_diag_sw_1  = "Prop of HIV+ FSW diagnosed op 1 (median) ";
+label p50_p_diag_sw_8  = "Prop of HIV+ FSW diagnosed op 8 (median) ";
+label p50_p_diag_sw_33  = "Prop of HIV+ FSW diagnosed op 33 (median) ";
 series  x=cald y=p50_p_diag_sw_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_diag_sw_0 	upper=p95_p_diag_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_p_diag_sw_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_diag_sw_1 	upper=p95_p_diag_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_sw_8/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_diag_sw_8 	upper=p95_p_diag_sw_8  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_sw_33/	lineattrs = (color=purple thickness = 2);
+band    x=cald lower=p5_p_diag_sw_33 	upper=p95_p_diag_sw_33  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -1775,10 +1780,16 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 2e4 by 2e3) valueattrs=(size=10);
 label p50_n_diag_progsw_0  = "Number SW diagnosed this period by program op 0 (median) ";
 label p50_n_diag_progsw_1  = "Number SW diagnosed this period by program op 1 (median) ";
+label p50_n_diag_progsw_8  = "Number SW diagnosed this period by program op 8 (median) ";
+label p50_n_diag_progsw_33  = "Number SW diagnosed this period by program op 33 (median) ";
 series  x=cald y=p50_n_diag_progsw_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_diag_progsw_0 	upper=p95_n_diag_progsw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_diag_progsw_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_diag_progsw_1 	upper=p95_n_diag_progsw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_diag_progsw_8/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_diag_progsw_8 	upper=p95_n_diag_progsw_8  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_diag_progsw_33/	lineattrs = (color=purple thickness = 2);
+band    x=cald lower=p5_n_diag_progsw_33 	upper=p95_n_diag_progsw_33  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
 run;quit;
 /*proc freq data=d; table p50_n_diag_progsw_0; run;*/
 
@@ -1796,20 +1807,33 @@ run;quit;
 /*proc freq data=d; table p50_n_diag_progsw_0; run;*/
 
 
-
-
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence sw";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+Title    height=1.5 justify=center "Incidence FSW";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 20 by 1) valueattrs=(size=10);
 label p50_incidence_sw_0 = "Status quo (median) ";
 label p50_incidence_sw_1 = "Minimal (median) ";
+label p50_incidence_sw_8 = "Option 8 (median) ";
+label p50_incidence_sw_33 = "Option 33 (median) ";
 series  x=cald y=p50_incidence_sw_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence_sw_0 	upper=p95_incidence_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_incidence_sw_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence_sw_1 	upper=p95_incidence_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence_sw_8/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_incidence_sw_8 	upper=p95_incidence_sw_8  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence_sw_33/	lineattrs = (color=purple thickness = 2);
+band    x=cald lower=p5_incidence_sw_33 	upper=p95_incidence_sw_33  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
 run;
 quit;
+
+
+
+
+
+
+* ------------ ;
+* --- PrEP --- ;
+* ------------ ;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people on PrEP";
@@ -3922,10 +3946,10 @@ quit;
 *** Checking mens clinics, ART support interventions at higher uptake;
 * (options 32, 38-40 vs 12, 28-30);
 
-* Mens clinics (op 12 and 32);
+*** Mens clinics (op 12 and 32);
 * HIV incidence;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence (age 15-49)";
+Title    height=1.5 justify=center "Incidence (age 15-49) - median";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
 label p50_incidence1549__0 = "Status quo (median) ";
@@ -3939,9 +3963,25 @@ series  x=cald y=p50_incidence1549__32/	lineattrs = (color=blue thickness = 2 );
 run;
 quit;
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence (age 15-49) - mean";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
+label mean_incidence1549__0 = "Status quo (median) ";
+label mean_incidence1549__1  = "Min (median)";
+label mean_incidence1549__12 = "Mens clinics 5%";
+label mean_incidence1549__32 = "Mens clinics 40%";
+series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
+series  x=cald y=mean_incidence1549__1/	lineattrs = (color=red thickness = 2);
+series  x=cald y=mean_incidence1549__12/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_incidence1549__32/	lineattrs = (color=blue thickness = 2 );
+run;
+quit;
+
+
 * Proportion on ART - men;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion on ART";
+Title    height=1.5 justify=center "Proportion on ART - median";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
 label p50_p_onart_m_0 = "Status quo (median) ";
@@ -3955,9 +3995,56 @@ series  x=cald y=p50_p_onart_m_32/	lineattrs = (color=blue thickness = 2 );
 run;
 quit;
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion on ART - mean";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
+label mean_p_onart_m_0 = "Status quo (median) ";
+label mean_p_onart_m_1  = "Min (median)";
+label mean_p_onart_m_12 = "Mens clinics 5%";
+label mean_p_onart_m_32 = "Mens clinics 40%";
+series  x=cald y=mean_p_onart_m_0/	lineattrs = (color=black thickness = 2);
+series  x=cald y=mean_p_onart_m_1/	lineattrs = (color=red thickness = 2);
+series  x=cald y=mean_p_onart_m_12/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_p_onart_m_32/	lineattrs = (color=blue thickness = 2 );
+run;
+quit;
 
 
-* Adolescent ART support (op 28 and 38);
+*Number on ART - men;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number on ART - median";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
+label p50_n_onart_m_0 = "Status quo (median) ";
+label p50_n_onart_m_1  = "Min (median)";
+label p50_n_onart_m_12 = "Mens clinics 5%";
+label p50_n_onart_m_32 = "Mens clinics 40%";
+series  x=cald y=p50_n_onart_m_0/	lineattrs = (color=black thickness = 2);
+series  x=cald y=p50_n_onart_m_1/	lineattrs = (color=red thickness = 2);
+series  x=cald y=p50_n_onart_m_12/	lineattrs = (color=green thickness = 2);
+series  x=cald y=p50_n_onart_m_32/	lineattrs = (color=blue thickness = 2 );
+run;
+quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number on ART - mean";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
+label mean_n_onart_m_0 = "Status quo (median) ";
+label mean_n_onart_m_1  = "Min (median)";
+label mean_n_onart_m_12 = "Mens clinics 5%";
+label mean_n_onart_m_32 = "Mens clinics 40%";
+series  x=cald y=mean_n_onart_m_0/	lineattrs = (color=black thickness = 2);
+series  x=cald y=mean_n_onart_m_1/	lineattrs = (color=red thickness = 2);
+series  x=cald y=mean_n_onart_m_12/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_n_onart_m_32/	lineattrs = (color=blue thickness = 2 );
+run;
+quit;
+
+
+
+*** Adolescent ART support (op 28 and 38);
 * HIV incidence;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
@@ -3992,7 +4079,7 @@ quit;
 
 
 
-* Adult adherence support (op 29 and 39);
+*** Adult adherence support (op 29 and 39);
 * HIV incidence;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
@@ -4030,24 +4117,39 @@ quit;
 * Adult retention support (op 30 and 40);
 * Number receiving intervention - n_access_adult_ret_supp;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number accessing intervention (age 15-49)";
+Title    height=1.5 justify=center "Number accessing intervention";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
-label p50_incidence1549__0 = "Status quo (median) ";
-label p50_incidence1549__1  = "Min (median)";
-label p50_incidence1549__30 = "Adult retention support 15%";
-label p50_incidence1549__40 = "Adult retention support 40%";
-series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
-series  x=cald y=p50_incidence1549__1/	lineattrs = (color=red thickness = 2);
-series  x=cald y=p50_incidence1549__30/	lineattrs = (color=green thickness = 2);
-series  x=cald y=p50_incidence1549__40/	lineattrs = (color=blue thickness = 2 );
+label p50_n_access_adult_ret_supp_0 = "Status quo (median) ";
+label p50_n_access_adult_ret_supp_1  = "Min (median)";
+label p50_n_access_adult_ret_supp_30 = "Adult retention support 15%";
+label p50_n_access_adult_ret_supp_40 = "Adult retention support 40%";
+series  x=cald y=p50_n_access_adult_ret_supp_0/	lineattrs = (color=black thickness = 2);
+series  x=cald y=p50_n_access_adult_ret_supp_1/	lineattrs = (color=red thickness = 2);
+series  x=cald y=p50_n_access_adult_ret_supp_30/	lineattrs = (color=green thickness = 2);
+series  x=cald y=p50_n_access_adult_ret_supp_40/	lineattrs = (color=blue thickness = 2 );
 run;
 quit;
 
+* Number on ART who have received intervention - n_onart_adult_ret_supp;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number on ART who have accessed intervention";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
+label p50_n_onart_adult_ret_supp_0 = "Status quo (median) ";
+label p50_n_onart_adult_ret_supp_1  = "Min (median)";
+label p50_n_onart_adult_ret_supp_30 = "Adult retention support 15%";
+label p50_n_onart_adult_ret_supp_40 = "Adult retention support 40%";
+series  x=cald y=p50_n_onart_adult_ret_supp_0/	lineattrs = (color=black thickness = 2);
+series  x=cald y=p50_n_onart_adult_ret_supp_1/	lineattrs = (color=red thickness = 2);
+series  x=cald y=p50_n_onart_adult_ret_supp_30/	lineattrs = (color=green thickness = 2);
+series  x=cald y=p50_n_onart_adult_ret_supp_40/	lineattrs = (color=blue thickness = 2 );
+run;
+quit;
 
 * HIV incidence;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence (age 15-49)";
+Title    height=1.5 justify=center "Incidence - median (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
 label p50_incidence1549__0 = "Status quo (median) ";
@@ -4061,9 +4163,24 @@ series  x=cald y=p50_incidence1549__40/	lineattrs = (color=blue thickness = 2 );
 run;
 quit;
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence - mean (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
+label mean_incidence1549__0 = "Status quo (median) ";
+label mean_incidence1549__1  = "Min (median)";
+label mean_incidence1549__30 = "Adult retention support 15%";
+label mean_incidence1549__40 = "Adult retention support 40%";
+series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
+series  x=cald y=mean_incidence1549__1/	lineattrs = (color=red thickness = 2);
+series  x=cald y=mean_incidence1549__30/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_incidence1549__40/	lineattrs = (color=blue thickness = 2 );
+run;
+quit;
+
 * Proportion on ART;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion on ART";
+Title    height=1.5 justify=center "Proportion on ART - median";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
 label p50_p_onart_0 = "Status quo (median) ";
@@ -4074,6 +4191,21 @@ series  x=cald y=p50_p_onart_0/	lineattrs = (color=black thickness = 2);
 series  x=cald y=p50_p_onart_1/	lineattrs = (color=red thickness = 2);
 series  x=cald y=p50_p_onart_30/	lineattrs = (color=green thickness = 2);
 series  x=cald y=p50_p_onart_40/	lineattrs = (color=blue thickness = 2 );
+run;
+quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion on ART - mean";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  /*values = (0 to 0.8 by 0.2)*/ valueattrs=(size=10);
+label mean_p_onart_0 = "Status quo (median) ";
+label mean_p_onart_1  = "Min (median)";
+label mean_p_onart_30 = "Adult retention support 15%";
+label mean_p_onart_40 = "Adult retention support 40%";
+series  x=cald y=mean_p_onart_0/	lineattrs = (color=black thickness = 2);
+series  x=cald y=mean_p_onart_1/	lineattrs = (color=red thickness = 2);
+series  x=cald y=mean_p_onart_30/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_p_onart_40/	lineattrs = (color=blue thickness = 2 );
 run;
 quit;
 
