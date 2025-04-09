@@ -1,4 +1,6 @@
 
+***THIS FILE HAS BEEN USED FOR HARRIETT'S PAPER NAD AMETHIST FINAL ANALYSIS;
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -9,7 +11,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000  ; 
-%let year_interv = 2024;	* Using 2023 for MIHPSA only JAS Oct23;
+%let year_interv = 2025;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -369,6 +371,8 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * rr_testing_female;		rr_testing_female=1.5;
+* rr_testing_sw;			rr_testing_sw=0.5;
+
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
@@ -634,7 +638,7 @@ if sw_prog_intensity=2 then do;
 end; 
 */
 
-* effect_sw_prog_6mtest2;   effect_sw_prog_6mtest2	 =	effect_sw_prog_6mtest * fold_hi_sw_prog_6mtest;
+* effect_sw_prog_6mtest2;   *effect_sw_prog_6mtest2	 =	effect_sw_prog_6mtest * fold_hi_sw_prog_6mtest; *no impact on testing 13Mar25;
 * effect_sw_prog_int2;      effect_sw_prog_int2		 = 	effect_sw_prog_int / fold_hi_sw_prog_int;
 * effect_sw_prog_adh2;      effect_sw_prog_adh2		 = 	effect_sw_prog_adh * fold_hi_sw_prog_adh;
 * effect_sw_prog_lossdiag2; effect_sw_prog_lossdiag2 =  effect_sw_prog_lossdiag / fold_hi_sw_prog_lossdiag;
@@ -739,7 +743,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * INJECTABLE CABOTEGRAVIR PREP ; * lapr;
 
-* date_prep_inj_intro;			date_prep_inj_intro=2027;		* Introduction of injectable PrEP ;
+* date_prep_inj_intro;			date_prep_inj_intro=2040;		* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep;
 * prob_prep_inj_b;				prob_prep_inj_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
@@ -908,7 +912,8 @@ non_hiv_tb_risk = 0.0005;
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
-%include "/home/rmjllob/Zim_parameters2.sas";
+%include "/home/rmjllob/Zim_parameters12.sas";
+*%include "C:\Users\Loveleen\Documentos\GitHub\hiv-modelling\Zim_parameters10.sas";
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
@@ -937,7 +942,7 @@ sw_newp_lev_5_1 = 0.00 ; sw_newp_lev_5_2 = 0.00 ; sw_newp_lev_5_3 = 0.000 ; sw_n
 end;
 
 if sw_trans_matrix=2 then do;
-p_sw_init_newp_g1=0.20; p_sw_init_newp_g2=0.75; p_sw_init_newp_g3= 0.03; p_sw_init_newp_g4=0.01; p_sw_init_newp_g5=0.01;
+p_sw_init_newp_g1=0.20; p_sw_init_newp_g2=0.77; p_sw_init_newp_g3= 0.01; p_sw_init_newp_g4=0.01; p_sw_init_newp_g5=0.01;
 
 sw_newp_lev_1_1 = 0.99 ; sw_newp_lev_1_2 = 0.01 ; sw_newp_lev_1_3 = 0.000  ; sw_newp_lev_1_4 = 0.000 ; sw_newp_lev_1_5 = 0.000 ; 
 sw_newp_lev_2_1 = 0.01 ; sw_newp_lev_2_2 = 0.98 ; sw_newp_lev_2_3 = 0.010  ; sw_newp_lev_2_4 = 0.000 ; sw_newp_lev_2_5 = 0.000 ; 
@@ -948,9 +953,10 @@ end;
 
 if sw_trans_matrix=3 then do;
 p_sw_init_newp_g1=0.20; p_sw_init_newp_g2=0.75; p_sw_init_newp_g3= 0.03; p_sw_init_newp_g4=0.01; p_sw_init_newp_g5=0.01;
+
 sw_newp_lev_1_1 = 0.20 ; sw_newp_lev_1_2 = 0.80 ; sw_newp_lev_1_3 = 0.000  ; sw_newp_lev_1_4 = 0.000 ; sw_newp_lev_1_5 = 0.000 ; 
 sw_newp_lev_2_1 = 0.09 ; sw_newp_lev_2_2 = 0.90 ; sw_newp_lev_2_3 = 0.010  ; sw_newp_lev_2_4 = 0.000 ; sw_newp_lev_2_5 = 0.000 ; 
-sw_newp_lev_3_1 = 0.00 ; sw_newp_lev_3_2 = 0.01 ; sw_newp_lev_3_3 = 0.98  ; sw_newp_lev_3_4 = 0.010 ; sw_newp_lev_3_5 = 0.000 ; 
+sw_newp_lev_3_1 = 0.00 ; sw_newp_lev_3_2 = 0.10 ; sw_newp_lev_3_3 = 0.88  ; sw_newp_lev_3_4 = 0.010 ; sw_newp_lev_3_5 = 0.000 ; 
 sw_newp_lev_4_1 = 0.00  ; sw_newp_lev_4_2 = 0.01  ; sw_newp_lev_4_3 = 0.01  ; sw_newp_lev_4_4 = 0.97 ; sw_newp_lev_4_5 = 0.010; 
 sw_newp_lev_5_1 = 0.00  ; sw_newp_lev_5_2 = 0.01  ; sw_newp_lev_5_3 = 0.01   ; sw_newp_lev_5_4 = 0.08 ; sw_newp_lev_5_5 = 0.90 ; 
 end;
@@ -2043,6 +2049,8 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
+
+
 %macro update_r1(da1=,da2=,e=,f=,g=,h=,a=,b=,i=,k=,l=,x=,j=,s=);
 
 * options mprint;
@@ -2152,11 +2160,10 @@ if caldate_never_dot >= &year_interv then do;
 	if option = 0 then do;  *SW program continues at same intensity;
 	end; 
 
-	if option =1 then do; *AMETHIST (no impact on HIV-ve);
+	if option =1 then do; *AMETHIST (no impact on HIV-ve or on testing);
 	* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
 	* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
 
-		effect_sw_prog_6mtest 	= effect_sw_prog_6mtest2;
 		effect_sw_prog_lossdiag	= effect_sw_prog_lossdiag2;
 		effect_sw_prog_int		= effect_sw_prog_int2;
 		effect_sw_prog_adh		= effect_sw_prog_adh2; 
@@ -2188,7 +2195,26 @@ if caldate_never_dot >= &year_interv then do;
 
 	end;
 
+	if option=2 then do; *SW program discontinued and SW disadvantages worsened due to UNAIDS funding cuts;
+		eff_sw_program=0;sw_program=0; sw_program_visit=0;
+		eff_sw_higher_int=sw_higher_int;
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
+		eff_rate_persist_sti = eff_rate_persist_sti;
+		sw_test_6mthly=0;
+		if sw_prog_prep=1 then eff_rate_choose_stop_prep_oral=1;
+
+		if sw_art_disadv=1  then do;
+    	 r = rand('uniform'); if r < 0.5 then sw_higher_int =5; if r >= 0.5 then sw_higher_int =10;
+		 s = rand('uniform'); if s < 0.5 then rel_sw_lower_adh = 0.5; if s >= 0.5 then rel_sw_lower_adh = 0.7;
+		 u = rand('uniform'); if u < 0.5 then sw_higher_prob_loss_at_diag = 5; if u >= 0.5 then sw_higher_prob_loss_at_diag = 10;
+		end;
+
+	end;
+
+
 end;
+
+
 
 *  ======================================================================================================================================== ;
 
@@ -2613,15 +2639,14 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 
 
-
-if caldate{t} = date_sw_prog_intro then eff_sw_program=sw_program;
+if caldate_never_dot >= date_sw_prog_intro then eff_sw_program=sw_program;
 
 * Attendance at SW program (if it exists) and effects of program;
 
 if eff_sw_program=1 and sw=1 then do;
-
+sw_prog_prep=0;
 if sw_program_visit=0 then do; e=rand('uniform');
-	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
+	if (caldate{t} lt 2016 and e < rate_engage_sw_program/1.5) or (caldate{t} ge 2016 and e < rate_engage_sw_program) then do; * dependent_on_time_step_length ;
 		sw_program_visit=1 ; 
 		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
 
@@ -2630,7 +2655,7 @@ if sw_program_visit=0 then do; e=rand('uniform');
 		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		s= rand('uniform'); if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
-			prep_any_willing = 1; * lapr and dpv-vr ;
+			prep_any_willing = 1; sw_prog_prep=1;* lapr and dpv-vr ;
 			* select which prep type individual will be willing to use based on preference;
 			* increase preference for highest preference to ensure pref_prep_oral (or inj)  is above threshold  =1 ; 
 			select;
@@ -2870,7 +2895,7 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 		rate_1sttest_2011 = initial_rate_1sttest + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;																					
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
-
+		/*if sw=1 and caldate{t} le 2015 then do;rate_1sttest = rate_1sttest * rr_testing_sw; rate_reptest = rate_reptest * rr_testing_sw  ;   end;*/
 end;
 
 if caldate{t} >= &year_interv then do;
@@ -4056,8 +4081,12 @@ if sw=1 and newp ge 1 then do;
 u=rand('uniform'); if u < (1-rred)*p_rred_sw_newp then do; newp=newp/3; newp=round(newp,1);end;
 end;
 
-if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
+if sw=1 and 1 le newp lt 10 and eff_sw_program = 1 and sw_program_visit=1 then do;
 	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
+end;
+
+if sw=1 and newp ge 10 and eff_sw_program = 1 and sw_program_visit=1 then do;*lbmfeb24;
+	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/10; newp=round(newp,1);
 end;
 
 
@@ -4411,6 +4440,8 @@ end;
 *HIV Testing in ANC;
 *I thought I would determine in the first trimester of the pregnancy whether they are going to attend ANC,
 so that it is the same as before, but then I do allow for re-testing;
+if sw=1 and caldate{t} le 2020 then prob_anc=prob_anc * rr_testing_sw; ***check lbmfeb24;
+
 a=rand('uniform');
 tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
 tested_labdel=0;
@@ -12541,15 +12572,19 @@ npge2_l4p_1549w=0;if gender=2 and 18 <= age < 50 and (nnewp_l4p ge 2 or (nnewp_l
 newpge1_l4p_1529m=0;if gender=1 and 15 <= age < 30 and (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or newp_tm3 ge 1) then newpge1_l4p_1529m=1;
 newpge1_l4p_1529w=0;if gender=2 and 15 <= age < 30 and (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or newp_tm3 ge 1) then newpge1_l4p_1529w=1;
 
-sw_1564=0;sw_1549=0;sw_1849=0;sw_1519=0;sw_2024=0;sw_2529=0;sw_3039=0;sw_ov40=0;sw_newp=0;sw1524_newp=0;
-
+sw_1564=0;sw_1549=0;sw_1849=0;sw_1839=0;sw_1519=0;sw_2024=0;sw_2529=0;sw_3039=0;sw_ov40=0;sw_newp=0;sw1524_newp=0;
+sw_1824=0;sw_2539=0;sw_1924=0;
 if gender=2 and sw=1 then do;
 	if 15 le age lt 65 then sw_1564=1;
 	if 15 le age lt 50 then sw_1549=1;
+	if 18 le age lt 25 then sw_1824=1;
 	if 18 le age lt 50 then sw_1849=1;
+	if 18 le age lt 40 then sw_1839=1;
+	if 19 le age lt 25 then sw_1924=1;
 	if 15 le age lt 20 then sw_1519=1;
 	if 20 le age lt 25 then sw_2024=1;
 	if 25 le age lt 30 then sw_2529=1;
+	if 25 le age lt 40 then sw_2539=1;
 	if 30 le age lt 40 then sw_3039=1;
 	if 		 age ge 40 then sw_ov40=1;
 	sw_newp=newp;
@@ -13149,9 +13184,12 @@ end;
 
 primary_sw=0;   	if sw=1   		and primary=1 then primary_sw=1;
 primary_sw1519_=0;  if sw_1519=1    and primary=1 then primary_sw1519_=1;
+primary_sw1824_=0;  if sw_1824=1    and primary=1 then primary_sw1824_=1;
 primary_sw2024_=0;  if sw_2024=1    and primary=1 then primary_sw2024_=1;
 primary_sw2529_=0;  if sw_2529=1    and primary=1 then primary_sw2529_=1;
+primary_sw2539_=0;  if sw_2539=1    and primary=1 then primary_sw2539_=1;
 primary_sw3039_=0;  if sw_3039=1    and primary=1 then primary_sw3039_=1;
+primary_sw1839_=0;  if sw_1839=1    and primary=1 then primary_sw1839_=1;
 
 sw_vg1000=0;if sw=1                 and vl > 3.0 then sw_vg1000=1;
 
@@ -13276,15 +13314,19 @@ end;
 
 
 ***HIV amongst FSW;
-hiv_sw=0;hiv_sw1849_=0;hiv_sw1549_=0;hiv_sw1519_=0;hiv_sw2024_=0;hiv_sw2529_=0;hiv_sw3039_=0;hiv_swov40_=0;
-
+hiv_sw=0;hiv_sw1849_=0;hiv_sw1549_=0;hiv_sw1839_=0;hiv_sw1519_=0;hiv_sw2024_=0;hiv_sw2529_=0;hiv_sw3039_=0;hiv_swov40_=0;
+hiv_sw1824_=0;hiv_sw2539_=0;hiv_sw1924_=0;
 if hiv=1 and sw=1 then do;
 	hiv_sw=1;
 	if 18 le age lt 50 then hiv_sw1849_=1;
+	if 18 le age lt 25 then hiv_sw1824_=1;
+	if 19 le age lt 25 then hiv_sw1924_=1;
 	if 15 le age lt 50 then hiv_sw1549_=1;
+	if 18 le age lt 40 then hiv_sw1839_=1;
 	if 15 le age lt 20 then hiv_sw1519_=1;
 	if 20 le age lt 25 then hiv_sw2024_=1;	
 	if 25 le age lt 30 then hiv_sw2529_=1;
+	if 25 le age lt 40 then hiv_sw2539_=1;
 	if 30 le age lt 40 then hiv_sw3039_=1;
 	if 		 age ge 40 then hiv_swov40_=1;
 end;
@@ -13293,6 +13335,7 @@ end;
 i_ep=0;diag_ep=0; 
 if hiv1564=1 then i_ep=ep;
 if registd=1  then diag_ep=ep;
+
 
 diag_epun=0;if registd=1 and ep=1 and epdiag ne 1 then diag_epun=ep;
 
@@ -13945,16 +13988,64 @@ if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) then do;
 end;
 
 ***90-90-90 indicators for SW according to whether or not they have visited a SW program;
-diag_sw_inprog=0;diag_sw_noprog=0;onart_sw_inprog=0;onart_sw_noprog=0;vl1000_art_gt6m_iicu_sw_inprog=0;
-vl1000_art_gt6m_iicu_sw_noprog=0;
 
-if sw_program_visit=1 and sw=1 then do;
-diag_sw_inprog=diag_sw; onart_sw_inprog=onart_sw; vl1000_art_gt6m_iicu_sw_inprog=vl1000_art_gt6m_iicu_sw;
+
+sw_inprog1839_=0;sw_noprog1839_=0;diag_sw_inprog1839_=0;diag_sw_noprog1839_=0;onart_sw_inprog1839_=0;onart_sw_noprog1839_=0;
+vl1000_art_gt6m_sw_inprog1839_=0;vl1000_art_gt6m_sw_noprog1839_=0;primary_sw_inprog1839_=0;primary_sw_noprog1839_=0;
+sw_hiv_inprog1839_=0;sw_hiv_noprog1839_=0;
+sw_inprog1824_=0;sw_noprog1824_=0;diag_sw_inprog1824_=0;diag_sw_noprog1824_=0;onart_sw_inprog1824_=0;onart_sw_noprog1824_=0;
+vl1000_art_gt6m_sw_inprog1824_=0;vl1000_art_gt6m_sw_noprog1824_=0;primary_sw_inprog1824_=0;primary_sw_noprog1824_=0;
+sw_hiv_inprog1824_=0;sw_hiv_noprog1824_=0;
+sw_inprog2539_=0;sw_noprog2539_=0;diag_sw_inprog2539_=0;diag_sw_noprog2539_=0;onart_sw_inprog2539_=0;onart_sw_noprog2539_=0;
+vl1000_art_gt6m_sw_inprog2539_=0;vl1000_art_gt6m_sw_noprog2539_=0;primary_sw_inprog2539_=0;primary_sw_noprog2539_=0;
+sw_hiv_inprog2539_=0;sw_hiv_noprog2539_=0;
+
+if sw=1 then do;
+	if sw_program_visit=1 and (caldate&j-date_1st_sw_prog_vis >=0.25) then do;*lbmfeb24 must have been in a prog for at least 3m;
+		sw_inprog=1;
+		diag_sw_inprog=diag_sw; onart_sw_inprog=onart_sw; vl1000_art_gt6m_iicu_sw_inprog=vl1000_art_gt6m_iicu_sw;
+		primary_sw_inprog=primary_sw;sw_hiv_inprog=hiv;
+	end;
+
+	if sw_program_visit=0 then do;
+		sw_noprog=1;
+		diag_sw_noprog=diag_sw; onart_sw_noprog=onart_sw; vl1000_art_gt6m_iicu_sw_noprog=vl1000_art_gt6m_iicu_sw;
+		primary_sw_noprog=primary_sw;sw_hiv_noprog=hiv;
+	end;
 end;
 
-if sw_program_visit=0 and sw=1 then do;
-diag_sw_noprog=diag_sw; onart_sw_noprog=onart_sw; vl1000_art_gt6m_iicu_sw_noprog=vl1000_art_gt6m_iicu_sw;
+if sw=1 and 18 <= age < 40 then do;
+	sw_inprog1839_=sw_inprog; 					sw_noprog1839_=sw_noprog;
+	sw_hiv_inprog1839_=sw_hiv_inprog;			sw_hiv_noprog1839_=sw_hiv_noprog;
+	primary_sw_inprog1839_=primary_sw_inprog;	primary_sw_noprog1839_=primary_sw_noprog;
+	diag_sw_inprog1839_=diag_sw_inprog;			diag_sw_noprog1839_=diag_sw_noprog;
+	onart_sw_inprog1839_=onart_sw_inprog;		onart_sw_noprog1839_=onart_sw_noprog;
+	vl1000_art_gt6m_sw_inprog1839_= vl1000_art_gt6m_iicu_sw_inprog; vl1000_art_gt6m_sw_noprog1839_= vl1000_art_gt6m_iicu_sw_noprog;
 end;
+
+if sw=1 and 18 <= age < 25 then do;
+	sw_inprog1824_=sw_inprog; 					sw_noprog1824_=sw_noprog;
+	sw_hiv_inprog1824_=sw_hiv_inprog;			sw_hiv_noprog1824_=sw_hiv_noprog;
+	primary_sw_inprog1824_=primary_sw_inprog;	primary_sw_noprog1824_=primary_sw_noprog;
+	diag_sw_inprog1824_=diag_sw_inprog;			diag_sw_noprog1824_=diag_sw_noprog;
+	onart_sw_inprog1824_=onart_sw_inprog;		onart_sw_noprog1824_=onart_sw_noprog;
+	vl1000_art_gt6m_sw_inprog1824_= vl1000_art_gt6m_iicu_sw_inprog; vl1000_art_gt6m_sw_noprog1824_= vl1000_art_gt6m_iicu_sw_noprog;
+end;
+
+if sw=1 and 25 <= age < 40 then do;
+	sw_inprog2539_=sw_inprog; 					sw_noprog2539_=sw_noprog;
+	sw_hiv_inprog2539_=sw_hiv_inprog;			sw_hiv_noprog2539_=sw_hiv_noprog;
+	primary_sw_inprog2539_=primary_sw_inprog;	primary_sw_noprog2539_=primary_sw_noprog;
+	diag_sw_inprog2539_=diag_sw_inprog;			diag_sw_noprog2539_=diag_sw_noprog;
+	onart_sw_inprog2539_=onart_sw_inprog;		onart_sw_noprog2539_=onart_sw_noprog;
+	vl1000_art_gt6m_sw_inprog2539_= vl1000_art_gt6m_iicu_sw_inprog; vl1000_art_gt6m_sw_noprog2539_= vl1000_art_gt6m_iicu_sw_noprog;
+end;
+
+
+
+
+if sw=1 and 18 <= age < 25 then sw_inprog1824=1;
+if sw=1 and 25 <= age < 40 then sw_inprog2539=1;
 
 sti_sw=0;
 if sw=1 then sti_sw=sti;
@@ -16352,8 +16443,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_primary4554w_ep + primary4554w_ep ; s_primary5564w_ep + primary5564w_ep ;  
 	
 	s_primary_sw + primary_sw ; s_primary_sw1519_ + primary_sw1519_; s_primary_sw2024_ + primary_sw2024_; 
-	s_primary_sw2529_ + primary_sw2529_; s_primary_sw3039_ + primary_sw3039_;
-
+	s_primary_sw2529_ + primary_sw2529_; s_primary_sw3039_ + primary_sw3039_; s_primary_sw1839_ + primary_sw1839_;
+	s_primary_sw1824_ + primary_sw1824_; s_primary_sw2539_ + primary_sw2539_;
 	s_inf_vlsupp + inf_vlsupp ; s_inf_newp + inf_newp ; s_inf_ep + inf_ep ; s_inf_diag + inf_diag ; s_inf_naive + inf_naive ;
 
 	
@@ -17072,10 +17163,15 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	/*sex workers*/
 
-	s_base_rate_sw + base_rate_sw ; s_sw + sw ; s_sw_1549 + sw_1549 ; s_sw_1849 + sw_1849 ; s_sw_1519 + sw_1519 ; s_sw_2024 + sw_2024 ;
-	s_sw_2529 + sw_2529 ; s_sw_3039 + sw_3039 ; s_sw_ov40 + sw_ov40 ; s_ever_sw + ever_sw ; s_sw_1564 + sw_1564 ;
-	s_ever_sw_hiv + ever_sw_hiv ; s_ever_sw_diag + ever_sw_diag ; s_hiv_sw + hiv_sw ; s_hiv_sw1849_ + hiv_sw1849_ ; s_hiv_sw1549_ + hiv_sw1549_ ; 
+	s_base_rate_sw + base_rate_sw ; s_sw + sw ; s_sw_1549 + sw_1549 ; s_sw_1849 + sw_1849 ; s_sw_1839 + sw_1839 ;
+	s_sw_1519 + sw_1519 ; s_sw_2024 + sw_2024 ; s_sw_2529 + sw_2529 ; s_sw_3039 + sw_3039 ; 
+	s_sw_ov40 + sw_ov40 ; s_ever_sw + ever_sw ; s_sw_1564 + sw_1564 ;
+	s_sw_1824 + sw_1824 ; s_sw_2539 + sw_2539 ; s_sw_1924 + sw_1924 ;
+	s_ever_sw_hiv + ever_sw_hiv ; s_ever_sw_diag + ever_sw_diag ; s_hiv_sw + hiv_sw ; s_hiv_sw1849_ + hiv_sw1849_ ;
+	s_hiv_sw1549_ + hiv_sw1549_ ; s_hiv_sw1839_ + hiv_sw1839_ ; 
   	s_hiv_sw1519_ + hiv_sw1519_ ; s_hiv_sw2024_ + hiv_sw2024_ ; s_hiv_sw2529_ + hiv_sw2529_ ; s_hiv_sw3039_ + hiv_sw3039_ ; s_hiv_swov40_ + hiv_swov40_ ;              
+	s_hiv_sw1824_ + hiv_sw1824_ ; s_hiv_sw2539_ + hiv_sw2539_ ; s_hiv_sw1924_ + hiv_sw1924_ ;
+
 	s_i_fsw_v1_np + i_fsw_v1_np ; s_i_fsw_v2_np + i_fsw_v2_np ; s_i_fsw_v3_np + i_fsw_v3_np ; s_i_fsw_v4_np + i_fsw_v4_np ; 
 	s_i_fsw_v5_np + i_fsw_v5_np ; s_i_fsw_v6_np + i_fsw_v6_np ; s_sw_newp + sw_newp ; s_sw1524_newp + sw1524_newp ; s_sw_newp_cat1 + sw_newp_cat1 ;
 	s_sw_newp_cat2 + sw_newp_cat2 ; s_sw_newp_cat3 + sw_newp_cat3 ; s_sw_newp_cat4 + sw_newp_cat4 ; s_sw_newp_cat5 + sw_newp_cat5 ;
@@ -17097,12 +17193,25 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_act_dur_sw + act_dur_sw;  s_tot_dur_sw + tot_dur_sw;
 
 	s_sw_program_visit + sw_program_visit ;
+	s_sw_noprog + sw_noprog;  s_sw_inprog + sw_inprog;
+
+
 	s_diag_sw_noprog + diag_sw_noprog; 	s_diag_sw_inprog + diag_sw_inprog;
 	s_onart_sw_noprog + onart_sw_noprog; s_onart_sw_inprog + onart_sw_inprog;
 	s_vl1000_art_gt6m_iicu_sw_noprog + vl1000_art_gt6m_iicu_sw_noprog; s_vl1000_art_gt6m_iicu_sw_inprog + vl1000_art_gt6m_iicu_sw_inprog;
+	s_primary_sw_noprog + primary_sw_noprog;  s_primary_sw_inprog + primary_sw_inprog;
+	s_sw_hiv_noprog + sw_hiv_noprog; s_sw_hiv_inprog + sw_hiv_inprog;
+	s_sw_hiv_noprog1839_ + sw_hiv_noprog1839_;  s_sw_hiv_inprog1839_ + sw_hiv_inprog1839_;
+	s_sw_hiv_noprog1824_ + sw_hiv_noprog1824_;  s_sw_hiv_inprog1824_ + sw_hiv_inprog1824_;
+	s_sw_hiv_noprog2539_ + sw_hiv_noprog2539_;  s_sw_hiv_inprog2539_ + sw_hiv_inprog2539_;
+	s_sw_noprog1839_ + sw_noprog1839_;  s_sw_inprog1839_ + sw_inprog1839_;  
+	s_sw_noprog1824_ + sw_noprog1824_;  s_sw_inprog1824_ + sw_inprog1824_;
+	s_sw_noprog2539_ + sw_noprog2539_;  s_sw_inprog2539_ + sw_inprog2539_;
+	s_primary_sw_noprog1839_ + primary_sw_noprog1839_; s_primary_sw_inprog1839_ + primary_sw_inprog1839_; 
+	s_primary_sw_noprog1824_ + primary_sw_noprog1824_; s_primary_sw_inprog1824_ + primary_sw_inprog1824_; 
+	s_primary_sw_noprog2539_ + primary_sw_noprog2539_; s_primary_sw_inprog2539_ + primary_sw_inprog2539_;
 
 	s_sw1519_tp1 + sw1519_tp1; s_sw2024_tp1 + sw2024_tp1; s_sw2529_tp1 + sw2529_tp1; s_sw3039_tp1 + sw3039_tp1; s_swov40_tp1 + swov40_tp1;
-
 	s_sti_sw + sti_sw;
 
 	/*ADC and advanced hiv disease etc*/
@@ -18248,7 +18357,8 @@ s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_pr
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
-s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
+s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_  s_primary_sw1839_
+s_primary_sw1824_  s_primary_sw2539_   s_primary_sw2539_
 s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
 
 /*outputs amongst those infected*/
@@ -18705,9 +18815,12 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849  s_sw_1839  s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_sw_1824  s_sw_2539  s_sw_1924 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
-s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
+s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1839_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
+s_hiv_sw1824_  s_hiv_sw2539_   s_hiv_sw1924_ 
+
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
 s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
 s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp
@@ -18724,10 +18837,14 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
-s_sw_program_visit
-
-s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
-s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
+s_sw_program_visit  s_sw_noprog  	  s_sw_inprog  
+s_diag_sw_noprog    s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  s_vl1000_art_gt6m_iicu_sw_noprog s_vl1000_art_gt6m_iicu_sw_inprog 
+s_primary_sw_noprog s_primary_sw_inprog 
+s_sw_hiv_inprog  	s_sw_hiv_noprog
+s_sw_hiv_noprog1839_  s_sw_hiv_inprog1839_  s_sw_hiv_noprog1824_  s_sw_hiv_inprog1824_  s_sw_hiv_noprog2539_  s_sw_hiv_inprog2539_ 	
+s_sw_noprog1839_ 	  s_sw_inprog1839_ 	    s_sw_noprog1824_      s_sw_inprog1824_   	s_sw_noprog2539_      s_sw_inprog2539_ 
+s_primary_sw_noprog1839_  s_primary_sw_inprog1839_  	s_primary_sw_noprog1824_  s_primary_sw_inprog1824_  
+s_primary_sw_noprog2539_  s_primary_sw_inprog2539_ 
 
 s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1 s_sti_sw
 
@@ -19197,7 +19314,8 @@ s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_pr
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
-s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
+s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_  s_primary_sw1839_
+s_primary_sw1824_  s_primary_sw2539_
 s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
 
 /*outputs amongst those infected*/
@@ -19648,9 +19766,11 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849  s_sw_1839  s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_sw_1824  s_sw_2539  s_sw_1924 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
-s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
+s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1839_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
+s_hiv_sw1824_  s_hiv_sw2539_   s_hiv_sw1924_ 
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
 s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
 s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp
@@ -19666,10 +19786,15 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw s_tot_dur_sw
 
-s_sw_program_visit
+s_sw_program_visit  s_sw_noprog  	  s_sw_inprog  
+s_diag_sw_noprog    s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  s_vl1000_art_gt6m_iicu_sw_noprog s_vl1000_art_gt6m_iicu_sw_inprog 
+s_primary_sw_noprog s_primary_sw_inprog 
+s_sw_hiv_inprog  	s_sw_hiv_noprog
 
-s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
-s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
+s_sw_hiv_noprog1839_  s_sw_hiv_inprog1839_  s_sw_hiv_noprog1824_  s_sw_hiv_inprog1824_  s_sw_hiv_noprog2539_  s_sw_hiv_inprog2539_ 	
+s_sw_noprog1839_ 	  s_sw_inprog1839_ 	    s_sw_noprog1824_      s_sw_inprog1824_   	s_sw_noprog2539_      s_sw_inprog2539_ 
+s_primary_sw_noprog1839_  s_primary_sw_inprog1839_  	s_primary_sw_noprog1824_  s_primary_sw_inprog1824_  
+s_primary_sw_noprog2539_  s_primary_sw_inprog2539_ 
 
 s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1	s_sti_sw
 
@@ -19905,8 +20030,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-
-%update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);			* core starts in 1989, Zim starts in 1984 JAS Sep23;
+%update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);		* core starts in 1989, Zim starts in 1984 JAS Sep23;
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=0);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=0);
@@ -20066,15 +20190,14 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);*2024;
-
-data a ;  set r1 ;
-data r1 ; set a;
-
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=0);
+
+data a ;  set r1 ;
+data r1 ; set a;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
@@ -20272,13 +20395,9 @@ data r1 ; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=353,h=360,j=359,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=353,h=360,j=360,s=0);	
 
+
 data r1; 
 set a;
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=1);
@@ -20477,9 +20596,210 @@ set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=353,h=360,j=357,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=353,h=360,j=358,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=353,h=360,j=359,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=353,h=360,j=360,s=1);	
+%update_r1(da1=2,da2=1,e=8,f=9,g=353,h=360,j=360,s=1);
 
+data r1; 
+set a;
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=2);		
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=2);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);		
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=329,h=336,j=335,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=329,h=336,j=336,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=333,h=340,j=337,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=333,h=340,j=338,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=333,h=340,j=339,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=333,h=340,j=340,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=337,h=344,j=341,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=337,h=344,j=342,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=337,h=344,j=343,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=337,h=344,j=344,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=341,h=348,j=345,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=341,h=348,j=346,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=341,h=348,j=347,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=341,h=348,j=348,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=345,h=352,j=349,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=345,h=352,j=350,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=345,h=352,j=351,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=345,h=352,j=352,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=349,h=356,j=353,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=349,h=356,j=354,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=349,h=356,j=355,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=349,h=356,j=356,s=2);	
+%update_r1(da1=1,da2=2,e=5,f=6,g=353,h=360,j=357,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=353,h=360,j=358,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=353,h=360,j=359,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=353,h=360,j=360,s=2);	
 
 
 * ts1m:  need more update statements ;
@@ -20563,7 +20883,8 @@ s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_pr
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
-s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
+s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_  s_primary_sw1839_
+s_primary_sw1824_  s_primary_sw2539_
 s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
 
 /*outputs amongst those infected*/
@@ -21015,9 +21336,11 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849 s_sw_1839   s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_sw_1824  s_sw_2539  s_sw_1924 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
-s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
+s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1839_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
+s_hiv_sw1824_  s_hiv_sw2539_   s_hiv_sw1924_ 
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
 s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
 s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp
@@ -21034,10 +21357,15 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
-s_sw_program_visit
+s_sw_program_visit  s_sw_noprog  	  s_sw_inprog  
+s_diag_sw_noprog    s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  s_vl1000_art_gt6m_iicu_sw_noprog s_vl1000_art_gt6m_iicu_sw_inprog 
+s_primary_sw_noprog s_primary_sw_inprog 
+s_sw_hiv_inprog  	s_sw_hiv_noprog
 
-s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
-s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
+s_sw_hiv_noprog1839_  s_sw_hiv_inprog1839_  s_sw_hiv_noprog1824_  s_sw_hiv_inprog1824_  s_sw_hiv_noprog2539_  s_sw_hiv_inprog2539_ 	
+s_sw_noprog1839_ 	  s_sw_inprog1839_ 	    s_sw_noprog1824_      s_sw_inprog1824_   	s_sw_noprog2539_      s_sw_inprog2539_ 
+s_primary_sw_noprog1839_  s_primary_sw_inprog1839_  	s_primary_sw_noprog1824_  s_primary_sw_inprog1824_  
+s_primary_sw_noprog2539_  s_primary_sw_inprog2539_ 
 
 s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1  s_sti_sw
 

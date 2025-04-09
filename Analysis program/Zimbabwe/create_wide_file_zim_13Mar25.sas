@@ -1,27 +1,200 @@
-* options user="/folders/myfolders/";
+***For the final paper, two output files are being set on top of each other, 13Mar and 28Mar. The latter includes 
+   Zim_parameters11 which has lower 6 monthly testing but this has not made much difference to % diagnosed (the 13Mar 
+   file used Zim_parameters10); 
+
 
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
 
 data a;
 set a.zim_fsw13mar25;  
 if run=. then delete; 
-proc sort;
-by run cald option;run;
+proc sort;by run cald option;run;
+proc freq;table cald;run;
 
-proc freq;table run;where cald=2020;run;
+data b;
+set a.zim_fsw28mar25;  
+proc sort;by run cald option;run;
+proc freq;table cald;run;
 
-proc freq;table cald option;run;
+
+data c;
+set a b;
+
+***Remove runs with high % diag;
+
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
+
+/*proc freq;table p_diag_sw;where cald=2023.75 and option=0;run;*/
+if cald=2023.75 and p_diag_sw> 0.9357798165 then high_diag_sw=1;
 
 
-/*
-proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cost_test_f_sw;where option=0 and cald>2023.5;run;
-proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cost_test_f_sw;where option=2 and cald>2023.5;run;
-*/
+/*proc freq;table run;where high_diag_sw=1;run;*/
+
+if run in 
+
+(
+380618
+829864
+14802140
+23190772
+25062176
+28764025
+47729828
+50219894
+53533866
+54752245
+58553479
+72042669
+74382458
+79433938
+84293851
+87916055
+95661137
+95848253
+96986986
+116885412
+127818372
+133920320
+137329268
+143045480
+144558947
+145292923
+146629841
+185530023
+199384975
+214036900
+232860235
+235893387
+240676045
+242605359
+243232633
+254204476
+256064765
+258124650
+269161666
+274433601
+278173698
+303077439
+307616899
+312079179
+314579698
+315854072
+326410432
+335483067
+337609144
+338738118
+340209852
+361411241
+361871127
+371002729
+385320909
+385596974
+389495187
+390836118
+406580203
+415706113
+421867901
+423039495
+426478107
+429843820
+430265152
+434252170
+435908778
+442824267
+465558521
+466661351
+467494694
+470086052
+472151993
+473942089
+492458148
+493149412
+495373090
+496842371
+506374780
+509602540
+521939914
+530501966
+542486242
+554877426
+556925998
+564658684
+566084965
+569707039
+570923893
+581100014
+595943841
+597493420
+610355682
+612587082
+621506824
+628237812
+635803750
+644746201
+664578305
+671021337
+676856634
+700792283
+704572279
+707830843
+708454097
+725581365
+727146114
+731768531
+733557480
+738923823
+744153298
+745911878
+747024003
+756104436
+759712559
+768896776
+779603148
+779654529
+780943677
+781039166
+798660128
+803344359
+805923293
+833433303
+852269341
+858843792
+869213838
+876741527
+893155207
+907749226
+909418825
+912415826
+912694182
+918439231
+920371556
+923428933
+930420210
+935054314
+940204434
+941469111
+947019710
+949380018
+956643875
+963129855
+969073205
+984186871
+986385775
+987074094
+997949556
+
+)
+
+then delete;
+proc sort; by run;run;
+
+
 
 data sf;
-set a;
+set c;
 
 if cald=2024.5;
+
 s_alive = s_alive_m + s_alive_w ;
 sf_2024 = (16665409 * 0.581) / s_alive; 
 *Source for Zimbabwe population is https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
@@ -30,15 +203,118 @@ sf_2024 = (16665409 * 0.581) / s_alive;
 
 sf=sf_2024;
 keep run sf_2024 sf;
-
 proc sort; by run;run;
 
 
 
+proc print;var run sf sf_2024;run;
 
-data y; 
-merge a sf;
+data d; 
+merge c sf;
 by run ;
+run;
+
+/*
+Why is sf_2024 missing for all but 1984?
+proc freq;table sf sf_2024;run;
+*/
+
+***Remove runs where p_fsw_newp0 is too high;
+data e;
+set d;
+
+* p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
+
+/*
+proc freq;table p_fsw_newp0_ ;where cald=2023.75;run;;
+*/
+
+if cald=2023.75 and p_fsw_newp0_>0.60 then hi_newp=1;
+
+/*
+proc freq;table run;where hi_newp=1;run;
+*/
+
+if run in (
+100465704
+108884448
+120775351
+153208075
+162954438
+168548518
+170834459
+212714669
+239932643
+263186186
+295201506
+305962265
+345170905
+511395383
+524033322
+545062697
+559636979
+657452420
+676313719
+723834816
+839436269
+888266056
+930058920
+934208564
+948852429
+952231763)
+then delete;
+
+run;
+
+***Remove runs with too few/many FSW - get down to 100 runs;
+data f;
+set e;
+* n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf;
+
+/*
+proc freq;table n_sw_1549_;where cald=2023.75;run;
+proc means mean p5 p5 p95;var n_sw_1549_;where cald=2023.75;run;
+*/
+
+if cald=2023.75 and (n_sw_1549_>  125000  or n_sw_1549_ < 16000) then exc_sw=1;
+
+/*
+proc freq;table run;where exc_sw=1;run;
+*/
+
+if run in (
+62954569
+69741991
+223500976
+241167254
+297447728
+299154835
+314613687
+323017285
+385017925
+483348989
+528699584
+588407701
+634391778
+683610709
+690796991
+696709013
+769278632
+794209406
+814266128
+855092383
+914969543
+926823587
+947076261
+
+) then delete;
+
+run;
+proc freq;table run;where cald=2020;run;
+
+data y;
+set f;
+
 
 * preparatory code ;
 
@@ -228,11 +504,11 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
-* n_tested;						n_tested = s_tested * sf_2024 * 4;
+* n_tested;						n_tested = s_tested * sf * 4;
 
 ***FSW;
-* n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2024;
-* n_sw_1564;					n_sw_1564_ = s_sw_1564 * sf_2024;
+* n_sw_1549_;					n_sw_1549_ = s_sw_1549 * sf;
+* n_sw_1564_;					n_sw_1564_ = s_sw_1564 * sf;
 
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
@@ -289,7 +565,7 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
 
-* n_tested_sw;					n_tested_sw = s_tested_sw * sf_2024 * 4;
+* n_tested_sw;					n_tested_sw = s_tested_sw * sf * 4;
 * p_tested_past_year_sw;		if s_sw_1564 - s_diag_sw > 0 then p_tested_past_year_sw = s_tested_4p_sw /  (s_sw_1564 - s_diag_sw) ;
 
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
@@ -351,89 +627,13 @@ n_hiv n_onart
 
 proc sort data=y;by run option;run;
 
-data sw_diag;
-set y;
-
-/*proc freq;table p_diag_sw;where cald=2023.75 and option=0;run;*/
-if cald=2023.75 and p_diag_sw>   0.9482758621
-
- then high_diag_sw=1;
-
-
-/*proc freq;table run;where high_diag_sw=1;run;*/
-
-if run in 
-
-(
-380618
-829864
-23190772
-53533866
-79433938
-87916055
-96986986
-144558947
-145292923
-185530023
-199384975
-214036900
-243232633
-258124650
-274433601
-307616899
-312079179
-315854072
-335483067
-361871127
-371002729
-390836118
-406580203
-423039495
-430265152
-465558521
-466661351
-467494694
-472151993
-493149412
-509602540
-570923893
-581100014
-595943841
-597493420
-610355682
-612587082
-644746201
-664578305
-707830843
-733557480
-738923823
-745911878
-779603148
-779654529
-781039166
-805923293
-833433303
-852269341
-858843792
-907749226
-912415826
-935054314
-941469111
-987074094
-
-)
-
-then delete;
-
-
-proc means n mean p50;var p_diag_sw;where cald=2023;run;
+proc means n mean p50 p5 p95;var p_diag_sw n_sw_1549_;where cald=2023;run;
 
 
 
-data a.fsw_13_03_25_short; set sw_diag;run;
+data a.fsw_13_03_25_short; set y;run;
 
 data y; set a.fsw_13_03_25_short;run;
-
 
 options nomprint;
   option nospool;
