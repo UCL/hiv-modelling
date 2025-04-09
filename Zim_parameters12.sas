@@ -14,10 +14,14 @@ startyr = 1991 + 0.25;
 * HIV TESTING;
 
 * date_start_testing;       date_start_testing = 2005  ;
-* test_targeting;   		%sample(test_targeting, 1 1.1 1.3, 0.8 0.1 0.1);**Mar25;
-* an_lin_incr_test;         %sample(an_lin_incr_test, 
-								0.005 0.01 0.015, 
-								0.6    0.35   0.05);**Mar25;
+
+* test_targeting;   		%sample(test_targeting, 1 1.1 1.3, 0.7 0.2 0.1);
+
+* an_lin_incr_test;   		%sample(an_lin_incr_test, 
+								0.0001	0.0005 	0.0030 	0.0100, 
+								0.35	0.30	0.30	0.05);**Mar25;
+
+
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
 * fold_rate_decr_test_future;%sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5 0.75);
 
