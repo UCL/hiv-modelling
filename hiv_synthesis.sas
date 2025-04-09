@@ -4594,10 +4594,16 @@ if msm=1 then msm_random_this_period=rand('uniform');
 if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) > . then do;   
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
+	* Define random variables r and s that are held constant for continuous periods of prep eligibility;
 	r_prep_tm1=r_prep;
 	if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
 	else r_prep = rand('Uniform');
 
+	s_prep_tm1=s_prep;
+	if prep_any_elig_tm1=1 then s_prep=s_prep_tm1; 
+	else s_prep = rand('Uniform');
+
+	* PrEP eligibility criteria;
 	if prep_any_strategy=1 then do;		*FSW and/or AGYW;
 		if gender=2 and (sw=1 or 15<=age<25) and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
@@ -4703,7 +4709,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))
  		then prep_any_elig=1; 
 
-		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s < prob_prep_elig_pwid ) then prep_any_elig=1; 
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
