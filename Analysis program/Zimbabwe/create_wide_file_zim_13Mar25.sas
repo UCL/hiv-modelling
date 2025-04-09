@@ -8,11 +8,14 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 data a;
 set a.zim_fsw13mar25;  
 if run=. then delete; 
+a=1;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
 data b;
 set a.zim_fsw28mar25;  
+if run=. then delete;
+b=1;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
@@ -226,6 +229,9 @@ set d;
 * p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
 
 /*
+proc means mean;var p_fsw_newp0_;where cald=2023.75 and sw_trans_matrix=1;run; 
+proc means mean;var p_fsw_newp0_;where cald=2023.75 and sw_trans_matrix=2;run; 
+proc means mean;var p_fsw_newp0_;where cald=2023.75 and sw_trans_matrix=3;run; 
 proc freq;table p_fsw_newp0_ ;where cald=2023.75;run;;
 */
 
@@ -266,14 +272,14 @@ then delete;
 
 run;
 
-***Remove runs with too few/many FSW - get down to 100 runs;
+***Remove runs with too few/many FSW;
 data f;
 set e;
 * n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf;
 
 /*
 proc freq;table n_sw_1549_;where cald=2023.75;run;
-proc means mean p5 p5 p95;var n_sw_1549_;where cald=2023.75;run;
+proc means mean p5 p5 p95;var n_sw_1549_;where cald=2023.75 and b=1;run;
 */
 
 if cald=2023.75 and (n_sw_1549_>  125000  or n_sw_1549_ < 16000) then exc_sw=1;
@@ -312,6 +318,19 @@ if run in (
 run;
 proc freq;table run;where cald=2020;run;
 
+data g;
+set f;
+
+* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
+
+/*
+proc freq;table p_onart_vl1000_sw;where cald=2023.75;run;
+*/
+
+if  cald=2023.75 and p_onart_vl1000_sw <0.75 then low_vs_sw=1;
+
+proc freq;table run;where low_vs_sw=1;run;
+proc means mean p50;var p_onart_vl1000_sw;where cald=2023.75;run ;
 data y;
 set f;
 
