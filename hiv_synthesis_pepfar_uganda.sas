@@ -9839,6 +9839,8 @@ cd4_art_adj = cd4_art_adj + age_art_adj + pi_art_adj + gender_art_adj;  * note f
 
 if adh_reduction_pepfar > 0 then adh = adh - adh_reduction_pepfar;
 
+if option=1 and 2025 <= caldate{t} < 2025.5 then adh=min(adh, 0.65);
+
 
 if adh < 0 then adh=0;
 if adh gt 1 then adh=1;

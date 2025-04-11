@@ -40,7 +40,7 @@ p_newp_ge1_ = p_newp_ge1;
 
 n_tested_incl_self = n_self_tested + n_tested; 
 
-%let single_var = p_adh_hi                    ;
+%let single_var = p_onart_vl1000_                 ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -51,7 +51,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 56   ;
+%let nfit = 18   ;
 
 %let year_end = 2030.00 ;
 run;
@@ -228,7 +228,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -244,7 +244,7 @@ band    x=cald lower=p5_p_onart_vl1000__1 upper=p95_p_onart_vl1000__1 / transpar
 
 run;quit;
 
-*/
+
 
 
 /*
@@ -1410,7 +1410,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d ; 
@@ -1429,7 +1429,7 @@ band    x=cald lower=p5_p_adh_hi_1 upper=p95_p_adh_hi_1 / transparency=0.9 filla
 
 run;quit;
 
-
+*/
 
 
 

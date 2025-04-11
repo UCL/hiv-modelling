@@ -5,7 +5,7 @@
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pepfar_uganda\pepfar_uganda_out\";
 
 
-/*
+
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pepfar_uganda\pepfar_uganda_out\";
 
@@ -16,7 +16,7 @@ data b.k_pepfar_uganda;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
-*/
+
 
 
 
