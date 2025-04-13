@@ -3,14 +3,12 @@
 
 ods html close;
 
-* libname a "C:\Users\rmjlja9\OneDrive - University College London\MIHPSA Malawi\HIV Synthesis outputs\MIHPSA Phase II\mw_mihpsa_O99_29thApr24";
-* libname b "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mw_mihpsa_O99_out_29thApr24";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_out\";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_i_out\";
 
 /*
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_i_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_out\";
 
 data g ; set a.out: ;
 
@@ -20,25 +18,6 @@ data a.g;   set a.out:;run;
 
 
 
-
-/* show the contents of the input SAS file */
-/*
-proc contents data=a.g;run;
-
-proc freq data=a.g; table option;run;
-proc freq data=a.g; table cald;run;
-
-proc freq data=a.g; table run option;where cald=2023.75;run;
-proc freq data=a.g; table run*option/norow nocol nopercent; where cald=2023.75;run;
-proc freq data=a.g; table run cald option;run;
-proc freq data=a.g; table option*cald/norow nocol nopercent;run;
-*run refers to the dataset they are starting from;
-*/
-
-* Jennys notes for MW 13th Apr 24:
-	Option 99: 63 runs (63 separate fits)
-
-ods html close;
 ods listing;
 
 
@@ -46,51 +25,24 @@ data g; set  a.g;
 
 if cald=. then delete;
 
-*keeping the runs that I have for all the options;
-/*where run in (*/
-/*359925		15933803	43826521	57300682	74364458*/
-/*91792915	96530861	105417180	109566870	114468511);run;*/
-/*
-proc freq data=g; table run*option/norow nocol nopercent; where cald=2023.75;run;
-*/
-
-* Jennys MW notes;
-*So now:
-	still 63 simulations for option 99;
 
 
 proc sort data=g; 
 by run cald option;run;
 
-*Dont have this from MW at the moment;
-/*
-*Locations of file up to end 2022;
-libname c "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_sa\Phase II\SA_toend2022_1stApr24\sa_toend2022_1stApr24_out";
-data a.base_to2022_20240429;   set c.out:;
-proc freq data=a.base_to2022_20240429; table run cald option;run;
 
-data a.base_to2022_20240429;set a.base_to2022_20240429;
-if cald=. then delete;
-run;
-*/
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 set g;
 
-/*
-if cald=2024; 	***Update as required;
-s_alive = s_alive_m + s_alive_w ;
-sf_2024 = 10000000 / s_alive; ***If calibrating to a specific setting, change 10000000 to desired 15+ population size;
-keep run sf_2024;
-*/
 
-if cald=2021.25;
+if cald=2024;
 s_alive = s_alive_m + s_alive_w ;
-sf_2021 = (19000000 * 0.57) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
-sf=sf_2021;
+sf_2024 = (20000000 * 0.58) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
+sf=sf_2024;
 * 20.4 million in 2022.5, 58.1% are >=15);
-keep run sf sf_2021;
+keep run sf sf_2024;
 proc sort; by run;run;
 
 
