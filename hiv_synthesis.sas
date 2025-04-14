@@ -1263,7 +1263,7 @@ Age Group	Total (%)   % of 15-65 (47.2% are 15-65)
 ;
 
 
-* Running for 86 years - 1989 - 2075;  * AP 29-12-23 ;
+* Running for 86 years - 1989 - 2075 for setting scenarios (caldate1=1989, inc_cat sampled from 1-3);  * AP 29-12-23 ;
 * Using a moderate rate of population growth;
 
 if inc_cat=1 then do;
@@ -1314,7 +1314,10 @@ inc12=0.026; * 45 to 55;
 inc13=0.020; * 55 to 65;
 end;
 
-if country = 'South Africa'  then do;	* South Africa, old inc_cat=3 with inc1 split into two and rescaled JAS Apr25;
+* Calibrated countries;
+* Running for 91 years - 1984 - 2075 for South Africa, Zimbabwe and Malawi (caldate1=1984, increments are country-specific); * JAS Apr25;
+* Extra increment for youngest age groups;
+if country = 'South Africa'  then do;	* South Africa, old inc_cat=3 with inc1 split into two and totals rescaled JAS Apr25;
 inc1= 0.1139; *-76 to -65, 11 years;
 inc2= 0.1094; *-65 to -55, 10 years;
 inc3= 0.1039; *-55 to -45;
@@ -1328,7 +1331,7 @@ inc10=0.0547; * 15 to 25;
 inc11=0.0456; * 25 to 35;
 inc12=0.0346; * 35 to 45;
 inc13=0.0237; * 45 to 55;
-inc14=0.0182; * 55 to 65;
+inc14=0.0183; * 55 to 65;
 end;
 
 if country = 'Zimbabwe'  then do;	* Zimbabwe, old inc_cat=4 JAS Apr25;
@@ -1382,31 +1385,32 @@ if cum9 <= e < cum10  then age= 25+rand('uniform')*10;
 if cum10 <= e < cum11  then age= 35+rand('uniform')*10;  
 if cum11 <= e < cum12  then age= 45+rand('uniform')*10;  
 if cum12 <= e          then age= 55+rand('uniform')*10;  
+lowest_age_at_start=-71;
+
 
 if country in ('South Africa', 'Zimbabwe', 'Malawi') then do;
-cum13=cum12+inc13; 
-e=rand('uniform');
-if 0.0 <= e < inc1    then age=-76+rand('uniform')*11;																				   
-if inc1 <= e < cum2   then age=-65+rand('uniform')*10;  
-if cum2 <= e < cum3   then age=-55+rand('uniform')*10;  
-if cum3 <= e < cum4   then age=-45+rand('uniform')*10;  
-if cum4 <= e < cum5   then age=-35+rand('uniform')*10;  
-if cum5 <= e < cum6   then age=-25+rand('uniform')*10;  
-if cum6 <= e < cum7   then age=-15+rand('uniform')*10;  
-if cum7 <= e < cum8   then age=-5+rand('uniform')*10;  
-if cum8 <= e < cum9   then age=  5+rand('uniform')*10;  
-if cum9 <= e < cum10  then age= 15+rand('uniform')*10;  
-if cum10<= e < cum11  then age= 25+rand('uniform')*10;  
-if cum11 <= e < cum12  then age= 35+rand('uniform')*10;  
-if cum12 <= e < cum13  then age= 45+rand('uniform')*10;  
-if cum13 <= e          then age= 55+rand('uniform')*10;  
+	cum13=cum12+inc13; 
+	e=rand('uniform');
+	if 0.0 <= e < inc1    then age=-76+rand('uniform')*11;																				   
+	if inc1 <= e < cum2   then age=-65+rand('uniform')*10;  
+	if cum2 <= e < cum3   then age=-55+rand('uniform')*10;  
+	if cum3 <= e < cum4   then age=-45+rand('uniform')*10;  
+	if cum4 <= e < cum5   then age=-35+rand('uniform')*10;  
+	if cum5 <= e < cum6   then age=-25+rand('uniform')*10;  
+	if cum6 <= e < cum7   then age=-15+rand('uniform')*10;  
+	if cum7 <= e < cum8   then age=-5+rand('uniform')*10;  
+	if cum8 <= e < cum9   then age=  5+rand('uniform')*10;  
+	if cum9 <= e < cum10  then age= 15+rand('uniform')*10;  
+	if cum10<= e < cum11  then age= 25+rand('uniform')*10;  
+	if cum11 <= e < cum12  then age= 35+rand('uniform')*10;  
+	if cum12 <= e < cum13  then age= 45+rand('uniform')*10;  
+	if cum13 <= e          then age= 55+rand('uniform')*10;  
+	lowest_age_at_start=-76;
 end;
 
+age=round(age, .25);
 
-age =round(age ,.25);
 
-lowest_age_at_start=-73;
-if caldate1=1984 then lowest_age_at_start=-74;									 
 
 if age  >= lowest_age_at_start;
 
