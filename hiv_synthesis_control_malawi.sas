@@ -1024,7 +1024,7 @@ call symput('caldate1',caldate1);
 
 
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
-if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
+if inc_cat = 1 or country = 'Malawi' then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 if inc_cat = 4 then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
 prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
