@@ -15,9 +15,6 @@
 * caldate1;					caldate1 = 1984;		*core: 1989;
 * caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
 
-* POPULATION GROWTH AND DEMOGRAPHY;
-* inc_cat; 					inc_cat = 3;
-
 * population aged >= 15 in 1990: 22 million ;
 
 * fold_change_ac_death_rate;fold_change_ac_death_rate_w = 0.65; fold_change_ac_death_rate_m = 0.65; 

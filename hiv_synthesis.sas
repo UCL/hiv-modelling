@@ -163,7 +163,7 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					%sample_uniform(inc_cat, 1:3);
+* inc_cat; 					%sample_uniform(inc_cat, 1:3);		* Note that country-specific values are used for calibrated countries;
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
@@ -286,7 +286,7 @@ newp_seed = 7;
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
 * res_trans_factor_ii;		%sample(res_trans_factor_ii, 0.2 0.4 0.6 0.8, 0.25 0.25 0.25 0.25);
 
-* res_trans_factor_ca;		%sample(res_trans_factor_ca, 0.2 0.5 0.8, 0.33 0.33 0.33);  * capsid inhibitor (len) hence the _ca ;
+* res_trans_factor_ca;		%sample_uniform(res_trans_factor_ca, 0.2 0.5 0.8);  * capsid inhibitor (len) hence the _ca ;
 
 * super_inf_res;			%sample(super_inf_res, 0.2 0.8, 0.9 0.1);
 
@@ -1016,6 +1016,7 @@ non_hiv_tb_risk = 0.0005;
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
+
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
@@ -1028,7 +1029,11 @@ call symput('caldate1',caldate1);
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
-if inc_cat = 4 then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
+
+if country = 'South Africa' then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;		* same as inc_cat=3;
+if country = 'Zimbabwe' 	then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
+if country = 'Malawi' 		then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;		* same as inc_cat=1;
+
 prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 
 
@@ -1263,35 +1268,35 @@ Age Group	Total (%)   % of 15-65 (47.2% are 15-65)
 ;
 
 
-* Running for 86 years - 1989 - 2075;  * AP 29-12-23 ;
+* Running for 86 years - 1989 - 2075 for setting scenarios (caldate1=1989, inc_cat sampled from 1-3);  * AP 29-12-23 ;
 * Using a moderate rate of population growth;
 
 if inc_cat=1 then do;
-inc1=0.2000;
-inc2=0.1550;
-inc3=0.1340;
-inc4=0.1140;
-inc5=0.0900;
-inc6=0.0800;
-inc7=0.0680;
-inc8=0.0470;
-inc9 =0.036;
-inc10=0.027;
-inc11=0.021;
-inc12=0.016;
-inc13=0.012;
+inc1= 0.200; *-71 to -55, 16 years;
+inc2= 0.155; *-55 to -45, 10 years;
+inc3= 0.134; *-45 to -35;
+inc4= 0.114; *-35 to -25;
+inc5= 0.090; *-25 to -15;
+inc6= 0.080; *-15 to -5;
+inc7= 0.068; *-5 to 5;
+inc8= 0.047; * 5 to 15;
+inc9= 0.036; * 15 to 25;
+inc10=0.027; * 25 to 35;
+inc11=0.021; * 35 to 45;
+inc12=0.016; * 45 to 55;
+inc13=0.012; * 55 to 65;
 end;
 
 if inc_cat=2 then do;
-inc1=0.1700; *-69 to -55;
-inc2=0.1250; *-55 to -45;
-inc3=0.1150; *-45 to -35;
-inc4=0.1050; *-35 to -25;
-inc5=0.0950; *-25 to -15;
-inc6=0.0900; *-15 to -5;
-inc7=0.0800; *-5 to 5;
-inc8=0.0650; * 5 to 15;
-inc9 =0.048; * 15 to 25; 
+inc1= 0.170; *-71 to -55, 16 years;
+inc2= 0.125; *-55 to -45, 10 years;
+inc3= 0.115; *-45 to -35;
+inc4= 0.105; *-35 to -25;
+inc5= 0.095; *-25 to -15;
+inc6= 0.090; *-15 to -5;
+inc7= 0.080; *-5 to 5;
+inc8= 0.065; * 5 to 15;
+inc9= 0.048; * 15 to 25; 
 inc10=0.040; * 25 to 35;
 inc11=0.030; * 35 to 45;
 inc12=0.021; * 45 to 55;
@@ -1299,43 +1304,80 @@ inc13=0.016; * 55 to 65;
 end;
 
 if inc_cat=3 then do;
-inc1=0.1480;
-inc2=0.1140;
-inc3=0.1080;
-inc4=0.0990;
-inc5=0.0920;
-inc6=0.0900;
-inc7=0.0810;
-inc8=0.074;
-inc9 =0.060;
-inc10=0.050;
-inc11=0.038;
-inc12=0.026;
-inc13=0.020;
+inc1= 0.148; *-71 to -55, 16 years;
+inc2= 0.114; *-55 to -45, 10 years;
+inc3= 0.108; *-45 to -35;
+inc4= 0.099; *-35 to -25;
+inc5= 0.092; *-25 to -15;
+inc6= 0.090; *-15 to -5;
+inc7= 0.081; *-5 to 5;
+inc8= 0.074; * 5 to 15;
+inc9= 0.060; * 15 to 25;
+inc10=0.050; * 25 to 35;
+inc11=0.038; * 35 to 45;
+inc12=0.026; * 45 to 55;
+inc13=0.020; * 55 to 65;
 end;
 
-*2nd October 2023;
-if inc_cat=4 and caldate1=1984  then do;
-inc1 =0.15004;*-75 to -65, 9 years ;
-inc2 =0.15071;*-65 to -55, 10 years ;
-inc3 =0.13471;*-55 to -45;
-inc4 =0.11871;*-45 to -35;
-inc5 =0.10271;*-35 to -25;
-inc6 =0.08671;*-25 to -15;
-inc7 =0.07071;*-15 to -5;
-inc8 =0.05471;*-5 to 5;
-inc9 =0.03871;*5 to 15;
-inc10=0.02965;*15 to 25; 
-inc11=0.02224;*25 to 35;
-inc12=0.01730;*35 to 45;
-inc13=0.01318;*45 to 55;
-inc14=0.00988;*55 to 65;
+* Calibrated countries;
+* Running for 91 years - 1984 - 2075 for South Africa, Zimbabwe and Malawi (caldate1=1984, increments are country-specific); * JAS Apr25;
+* Extra increment to account for earlier start date;
+if country = 'South Africa'  then do;	* South Africa, old inc_cat=3 with inc1 split into two and totals rescaled JAS Apr25;
+inc1= 0.1139; *-76 to -65, 11 years;
+inc2= 0.1094; *-65 to -55, 10 years;
+inc3= 0.1039; *-55 to -45;
+inc4= 0.0985; *-45 to -35;
+inc5= 0.0902; *-35 to -25;
+inc6= 0.0839; *-25 to -15;
+inc7= 0.0820; *-15 to -5;
+inc8= 0.0738; *-5 to 5;
+inc9= 0.0675; * 5 to 15;
+inc10=0.0547; * 15 to 25;
+inc11=0.0456; * 25 to 35;
+inc12=0.0346; * 35 to 45;
+inc13=0.0237; * 45 to 55;
+inc14=0.0183; * 55 to 65;
 end;
+
+if country = 'Zimbabwe'  then do;	* Zimbabwe, old inc_cat=4 JAS Apr25;
+inc1 =0.15004; *-76 to -65, 11 years ;
+inc2 =0.15071; *-65 to -55, 10 years ;
+inc3 =0.13471; *-55 to -45;
+inc4 =0.11871; *-45 to -35;
+inc5 =0.10271; *-35 to -25;
+inc6 =0.08671; *-25 to -15;
+inc7 =0.07071; *-15 to -5;
+inc8 =0.05471; *-5 to 5;
+inc9 =0.03871; * 5 to 15;
+inc10=0.02965; * 15 to 25; 
+inc11=0.02224; * 25 to 35;
+inc12=0.01730; * 35 to 45;
+inc13=0.01318; * 45 to 55;
+inc14=0.00988; * 55 to 65;
+end;
+
+if country = 'Malawi'  then do;		* Malawi, old inc_cat=5 JAS Nov23;
+inc1 =0.17252; *-76 to -65, 11 years ;
+inc2 =0.15514; *-65 to -55, 10 years ;
+inc3 =0.13775; *-55 to -45;
+inc4 =0.12036; *-45 to -35;
+inc5 =0.10316; *-35 to -25;
+inc6 =0.09117; *-25 to -15;
+inc7 =0.06499; *-15 to -5;
+inc8 =0.04829; *-5 to 5;
+inc9 =0.03753; * 5 to 15;
+inc10=0.02350; * 15 to 25; 
+inc11=0.01554; * 25 to 35;
+inc12=0.01205; * 35 to 45;
+inc13=0.00821; * 45 to 55;
+inc14=0.00979; * 55 to 65;
+end;
+
 cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7=cum6+inc7;cum8=cum7+inc8;
-cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; cum13=cum12+inc13; 
+cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; 
 
 e=rand('uniform');
-if 0.0 <= e < inc1    then age=-73+rand('uniform')*18;   
+if 0.0 <= e < inc1    then age=-71+rand('uniform')*16;   
 if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
 if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
 if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
@@ -1348,29 +1390,32 @@ if cum9 <= e < cum10  then age= 25+rand('uniform')*10;
 if cum10 <= e < cum11  then age= 35+rand('uniform')*10;  
 if cum11 <= e < cum12  then age= 45+rand('uniform')*10;  
 if cum12 <= e          then age= 55+rand('uniform')*10;  
+lowest_age_at_start=-71;
 
-if caldate1=1984 and inc_cat=4 then do;
-e=rand('uniform');
-if 0.0 <= e < inc1    then age=-74+rand('uniform')*9;																				   
-if inc1 <= e < cum2   then age=-65+rand('uniform')*10;  
-if cum2 <= e < cum3   then age=-55+rand('uniform')*10;  
-if cum3 <= e < cum4   then age=-45+rand('uniform')*10;  
-if cum4 <= e < cum5   then age=-35+rand('uniform')*10;  
-if cum5 <= e < cum6   then age=-25+rand('uniform')*10;  
-if cum6 <= e < cum7   then age=-15+rand('uniform')*10;  
-if cum7 <= e < cum8   then age=-5+rand('uniform')*10;  
-if cum8 <= e < cum9   then age=  5+rand('uniform')*10;  
-if cum9 <= e < cum10  then age= 15+rand('uniform')*10;  
-if cum10<= e < cum11  then age= 25+rand('uniform')*10;  
-if cum11 <= e < cum12  then age= 35+rand('uniform')*10;  
-if cum12 <= e < cum13  then age= 45+rand('uniform')*10;  
-if cum13 <= e          then age= 55+rand('uniform')*10;  
+
+if country in ('South Africa', 'Zimbabwe', 'Malawi') then do;
+	cum13=cum12+inc13; 
+	e=rand('uniform');
+	if 0.0 <= e < inc1    then age=-76+rand('uniform')*11;																				   
+	if inc1 <= e < cum2   then age=-65+rand('uniform')*10;  
+	if cum2 <= e < cum3   then age=-55+rand('uniform')*10;  
+	if cum3 <= e < cum4   then age=-45+rand('uniform')*10;  
+	if cum4 <= e < cum5   then age=-35+rand('uniform')*10;  
+	if cum5 <= e < cum6   then age=-25+rand('uniform')*10;  
+	if cum6 <= e < cum7   then age=-15+rand('uniform')*10;  
+	if cum7 <= e < cum8   then age=-5+rand('uniform')*10;  
+	if cum8 <= e < cum9   then age=  5+rand('uniform')*10;  
+	if cum9 <= e < cum10  then age= 15+rand('uniform')*10;  
+	if cum10<= e < cum11  then age= 25+rand('uniform')*10;  
+	if cum11 <= e < cum12  then age= 35+rand('uniform')*10;  
+	if cum12 <= e < cum13  then age= 45+rand('uniform')*10;  
+	if cum13 <= e          then age= 55+rand('uniform')*10;  
+	lowest_age_at_start=-76;
 end;
 
-age =round(age ,.25);
+age=round(age, .25);
 
-lowest_age_at_start=-73;
-if caldate1=1984 then lowest_age_at_start=-74;									 
+
 
 if age  >= lowest_age_at_start;
 
@@ -4587,84 +4632,83 @@ prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and differ
 
 * for msm we do not model newp explicitly - this random number below determines the risk of having exposure to hiv in the period 
   (it is used below in transmission code) and is used here to determine prep_any_elig for msm - if at some point we define newp for sex between msm (newpm) then
-  that code will replace this;
+  that code will replace this. msm_random_this_period is resampled in 20% of time periods, otherwise it keeps the same value;
 
-if msm=1 then msm_random_this_period=rand('uniform');
+if msm=1 then do;
+	msm_random_this_period_tm1=msm_random_this_period;
+	msm_random_this_period = rand('Uniform');
+	if rand('Uniform') < 0.8 and msm_random_this_period_tm1 ne . then msm_random_this_period=msm_random_this_period_tm1;
+end;
 
 if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) > . then do;   
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
-	if prep_any_strategy=1 then do;
-		r = rand('Uniform');			*FSW and/or AGYW;
+	* Define random variables r and s that are held constant for continuous periods of prep eligibility;
+	r_prep_tm1=r_prep;
+	if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
+	else r_prep = rand('Uniform');
+
+	s_prep_tm1=s_prep;
+	if prep_any_elig_tm1=1 then s_prep=s_prep_tm1; 
+	else s_prep = rand('Uniform');
+
+	* PrEP eligibility criteria;
+	if prep_any_strategy=1 then do;		*FSW and/or AGYW;
 		if gender=2 and (sw=1 or 15<=age<25) and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=2 then do;		*FSW;	* Continuous r_prep JAS 5thFeb2024;
-		r_prep_tm1=r_prep;
-		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
-		else r_prep = rand('Uniform');
 		if gender=2 and sw=1 and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=3 then do;		*AGYW;	* Continuous r_prep JAS 5thFeb2024;
-		r_prep_tm1=r_prep;
-		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
-		else r_prep = rand('Uniform');
 		if gender=2 and 15<=age<25 and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
-    	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=5 then do;   
-     	r = rand('Uniform');
-    	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
+    	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1) ) ) )
         and 15 <= age < 50 then prep_any_elig=1; 
     end;
 
 	if prep_any_strategy=6 then do;	* as 4 but women only;	
-    	r = rand('Uniform');
       	if gender=2 and 
 		((newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) )) then prep_any_elig=1; 
+      	(15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1))) )) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=7 then do; * as 5 but women only ;        
-     	r = rand('Uniform');
     	if gender=2 and 
-		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
+		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1) ) ) )
         and 15 <= age < 50) then prep_any_elig=1; 
     end;
 
 	if prep_any_strategy=8 then do;	* as 4 but change in prop ep;
-    	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.1  or (r_prep < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=9 then do; * as 5 but change in prop ep;     
-     	r = rand('Uniform');
-    	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
+    	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r_prep < 0.1  or (r_prep < 0.5 and epi=1) ) ) )
         and 15 <= age < 50 then prep_any_elig=1; 
     end;
 
 	if prep_any_strategy=10 then do;* as 6 but change in prop ep;
-    	r = rand('Uniform');
       	if gender=2 and 
 		((newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1))) )) then prep_any_elig=1; 
+      	(15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.1  or (r_prep < 0.5 and epi=1))) )) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=11 then do; * as 7 but change in prop ep;     
-     	r = rand('Uniform');
     	if gender=2 and 
-		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
+		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r_prep < 0.1  or (r_prep < 0.5 and epi=1) ) ) )
         and 15 <= age < 50) then prep_any_elig=1; 
     end;
 
@@ -4677,17 +4721,13 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
     end;
 
 	if prep_any_strategy=14 then do;	* as 4 but with newp_tm1 ge 1 also;	
-    	r = rand('Uniform');
       	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=15 then do;	* Serodiscordant couples - new for MIHPSA Zimbabwe; *JAS Apr2023;
 		* Limited to a proportion based on age (not gender) and a random fraction;
 		* Note that there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;
-		r_prep_tm1=r_prep;
-		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
-		else r_prep = rand('Uniform');
       	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
       	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)) ) 
 		then prep_any_elig=1; 	* Note changed from 5pc to 1pc of eps who may not have HIV JAS Jul23;
@@ -4697,31 +4737,27 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		* Note that there is a component of sexual behaviour in prep eligibility for pregnant and breastfeeding women;
       	if gender=2 and (pregnant=1 or breastfeeding=1) and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
 	end;
-
 	
 	if prep_any_strategy=17 then do;	* as 4 but with newp_tm1 ge 1 also and change for women with ep=1;
-    	r = rand('Uniform');
       	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.01 or (r < 0.2 and epi=1)))) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.2 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=18 then do;	* as 4 with change for women with ep=1;
-    	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.01 or (r < 0.2 and epi=1)))) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.2 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=19 then do;	* as 4 but excludes heterosexual men and  includes msm;	
-    	r = rand('Uniform');s = rand('Uniform');
+	if prep_any_strategy=19 then do;	* as 4 but excludes heterosexual men and includes msm;	
       	if 
 		(newp ge 1 and gender=2) 
 		or 
 		(epdiag=1 and epart ne 1 and gender=2) 
 		or 
-      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))
  		then prep_any_elig=1; 
 
-		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s < prob_prep_elig_pwid ) then prep_any_elig=1; 
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
