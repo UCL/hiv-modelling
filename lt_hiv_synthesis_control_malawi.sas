@@ -9,7 +9,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 100000;
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -1016,8 +1016,115 @@ non_hiv_tb_risk = 0.0005;
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
+
+
+
+
+
+
+
+
+/*
+
+
+
 * OVERWRITES country specific parameters;
-  %include "/home/rmjlaph/malawi_parameters.sas";
+* These parameters are up to date at 1st Nov 2023, based on "Malawi parameters" file in core;
+* caldate1 and caldate_never_dot specified here to overwrite core value (could also be added to Zim parameter file?);
+* country added to switch on SA-spcific abort statements;
+* JAS Nov23;
+
+
+/***************************************************************************/
+******************     MALAWI SPECIFIC PARAMETERS    ******************
+/***************************************************************************/
+
+* country;				  * country='Malawi';
+* caldate1;					caldate1 = 1984;		*core: 1989;
+* caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
+
+* POPULATION GROWTH AND DEMOGRAPHY;
+
+/** inc_cat; 					 inc_cat = 4 ;  	* Changed to new inc_cat 4 (specified for Zim) from inc_cat 1 JAS Nov23;*/
+* inc_cat; 				* inc_cat = 5 ;  	* Try new inc_cat 5 specified for Malawi JAS Nov23;
+
+* SEXUAL BEHAVIOUR;
+
+/** ych_risk_beh_newp;        %sample(ych_risk_beh_newp, 0.5 0.6 0.7 , 0.4 0.3 0.3); */
+/** ych_risk_beh_ep;          %sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95);*/
+/** p_rred_p;                 %sample_uniform(p_rred_p, 0.4 0.5 0.6);*/
+/** p_hsb_p;                  %sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.25 0.25 0.25  0.25);*/
+/** newp_factor;              %sample_uniform(newp_factor, 1 2 3 5 ); */
+/**/
+/** ych2_risk_beh_newp;       %sample(ych2_risk_beh_newp,*/
+/*                                0.95    0.99    1   ,*/
+/*                                0.3     0.3     0.4   );*/
+
+* HIV TESTING;
+
+* date_start_testing;       date_start_testing = 2005  ;
+
+
+* test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.5 0.3 0.2); 
+
+* an_lin_incr_test;         %sample(an_lin_incr_test,
+                                  0.002    0.003   0.005  0.01,
+                                  0.10      0.25   0.35   0.30	);
+
+
+* date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
+                          
+
+* HIV SELF_TESTING;
+
+* prob_self_test_hard_reach;prob_self_test_hard_reach = 0.05;
+* self_test_targeting;		self_test_targeting = 1.5;
+* rate_self_test;			rate_self_test = 0.015;
+* date_self_testing_intro;	date_self_testing_intro = 2018;
+
+
+* NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
+
+* fold_change_in_risk_base_rate;
+							* fold_change_in_risk_base_rate = 0.85; * it is 0.85 rather than 1 in south africa parameter sets but not evidence
+							that this lower rate holds in malawi ;
+
+* fold_decr_hivdeath;		fold_decr_hivdeath = 0.15 ; * this value was used in south africa in order to have model reflect observed death rates;  	
+
+* fx;						fx = 0.85;  * this value was used in south africa in order to have model reflect observed death rates; 
+
+
+
+* LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
+
+prob_loss_at_diag = 0.05;  
+
+reg_option_104 = 1;
+
+rate_ch_art_init_str_9 = 0.1 ;
+
+rate_int_choice = 0.003;  
+
+* SEX WORKERS;				
+
+* CIRCUMCISION;
+
+* circ_inc_rate;            circ_inc_rate = 0.001; 
+
+* prob_birth_circ;          prob_birth_circ = 0.2 ; 
+
+
+
+
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 1 3);
+
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.1  0.2 ); 	
+
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.10 0.30);
+
+*/
+
+
 
 
 call symput('caldate1',caldate1);
@@ -1260,14 +1367,15 @@ Age Group	Total (%)   % of 15-65 (47.2% are 15-65)
 
 ;
 
+*Malawi JAS Nov23;
+* inc_cat=5;
+* Running for 87 years - 1984 - 2071;
 
-* Running for 86 years - 1989 - 2075;  * AP 29-12-23 ;
-* Using a moderate rate of population growth;
-
+***LBM Jul19;
 if inc_cat=1 then do;
-inc1=0.2000;
-inc2=0.1550;
-inc3=0.1340;
+inc1=0.1800;
+inc2=0.1650;
+inc3=0.1440;
 inc4=0.1140;
 inc5=0.0900;
 inc6=0.0800;
@@ -1281,11 +1389,11 @@ inc13=0.012;
 end;
 
 if inc_cat=2 then do;
-inc1=0.1700; *-69 to -55;
-inc2=0.1250; *-55 to -45;
-inc3=0.1150; *-45 to -35;
-inc4=0.1050; *-35 to -25;
-inc5=0.0950; *-25 to -15;
+inc1=0.1500; *-65 to -55;
+inc2=0.1300; *-55 to -45;
+inc3=0.1200; *-45 to -35;
+inc4=0.1100; *-35 to -25;
+inc5=0.1000; *-25 to -15;
 inc6=0.0900; *-15 to -5;
 inc7=0.0800; *-5 to 5;
 inc8=0.0650; * 5 to 15;
@@ -1297,11 +1405,11 @@ inc13=0.016; * 55 to 65;
 end;
 
 if inc_cat=3 then do;
-inc1=0.1480;
-inc2=0.1140;
-inc3=0.1080;
-inc4=0.0990;
-inc5=0.0920;
+inc1=0.1280;
+inc2=0.1190;
+inc3=0.1130;
+inc4=0.1040;
+inc5=0.0970;
 inc6=0.0900;
 inc7=0.0810;
 inc8=0.074;
@@ -1329,11 +1437,30 @@ inc12=0.01730;*35 to 45;
 inc13=0.01318;*45 to 55;
 inc14=0.00988;*55 to 65;
 end;
+
+*20th November 2023;
+if country = 'Malawi'  then do;	* Malawi, inc_cat=5 JAS Nov23;
+inc1 =0.17252;*-75 to -65;
+inc2 =0.15514;*-65 to -55;
+inc3 =0.13775;*-55 to -45;
+inc4 =0.12036;*-45 to -35;
+inc5 =0.10316;*-35 to -25;
+inc6 =0.09117;*-25 to -15;
+inc7 =0.06499;*-15 to -5;
+inc8 =0.04829;*-5 to 5;
+inc9 =0.03753;*5 to 15;
+inc10=0.02350;*15 to 25; 
+inc11=0.01554;*25 to 35;
+inc12=0.01205;*35 to 45;
+inc13=0.00821;*45 to 55;
+inc14=0.00979;*55 to 65;
+end;
+
 cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7=cum6+inc7;cum8=cum7+inc8;
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; cum13=cum12+inc13; 
 
 e=rand('uniform');
-if 0.0 <= e < inc1    then age=-73+rand('uniform')*18;   
+if 0.0 <= e < inc1    then age=-69+rand('uniform')*14;   
 if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
 if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
 if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
@@ -1391,8 +1518,6 @@ if caldate1=1984 then lowest_age_at_start=-74;
 if age  >= lowest_age_at_start;
 
 hiv =0;
-
-
 
 if gender=2 and age >=15 then do;
 	if 15 <= age  < 25 then do;u=rand('uniform');
@@ -19267,10 +19392,11 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 * procs;
 
+
+
+proc freq; tables cald age hiv ; where death=.; run;
+
 /*
-
-proc freq; tables cald hiv ; where death=.; run;
-
 
 proc print; var reg_option onart art_monitoring_strategy adh adh_dl o_dol o_3tc o_ten o_cab o_len nactive  r_cab r_len f_cab f_len ;
 where naive=0 and caldate&j ge 2025;
@@ -22685,6 +22811,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 run;
 
+proc print; run;
 
 
 *
