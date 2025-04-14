@@ -1,5 +1,5 @@
 
-libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Mobile men\MM_02dec24";
+libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Mobile men\MM_21Jan25";
 libname b "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Mobile men";
 
 data b;
@@ -7,7 +7,7 @@ set a.out:;
 run;
 
 
-data b.cdi_02Dec24;
+data b.MM_21Jan25;
 set b;
 run;
 

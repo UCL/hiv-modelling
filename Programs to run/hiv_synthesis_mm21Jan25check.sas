@@ -2762,9 +2762,9 @@ if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_
 	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
 end;
 
-***MOBILE MEN - only modelling mobile men with current hiv risk;
+***MOBILE MEN;
+* risk for mobile men;
 
-* probability of becoming a mobile man;
 if gender=1 and curr_mobile_tm1 ne 1 and adc ne 1 then do; u=rand('uniform');
 	if 15 <= age < 20 and u < prob_mobile1519_ then curr_mobile=1; 
 	if 20 <= age < 60 and u < prob_mobile2060_ then curr_mobile=1;
@@ -15425,7 +15425,6 @@ onart_w1519_=0;onart_w2024_=0;onart_w2529_=0;onart_w3034_=0;onart_w3539_=0;onart
 onart_w6569_=0;onart_w7074_=0;onart_w7579_=0;onart_w8084_=0;onart_w85pl_=0; 
 onart_sw=0; 		
 
-ever_tested_mm1549_=0; diag_mm1549_=0;  onart_mm1549_=0;ever_tested_mm1564_=0; diag_mm1564_=0;  onart_mm1564_=0;
 
 
 if gender=1 then do;
@@ -18256,7 +18255,7 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
-
+proc print;var cald infection hiv hiv1564mm diag_mm1549_ registd;where curr_mobile=1;run;
 
 * procs;
 
