@@ -1352,7 +1352,7 @@ inc13=0.01318; * 45 to 55;
 inc14=0.00988; * 55 to 65;
 end;
 
-if country = 'Malawi'  then do;	* Malawi, old inc_cat=5 JAS Nov23;
+if country = 'Malawi'  then do;		* Malawi, old inc_cat=5 JAS Nov23;
 inc1 =0.17252; *-76 to -65, 11 years ;
 inc2 =0.15514; *-65 to -55, 10 years ;
 inc3 =0.13775; *-55 to -45;
