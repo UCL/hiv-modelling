@@ -286,7 +286,7 @@ newp_seed = 7;
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
 * res_trans_factor_ii;		%sample(res_trans_factor_ii, 0.2 0.4 0.6 0.8, 0.25 0.25 0.25 0.25);
 
-* res_trans_factor_ca;		%sample(res_trans_factor_ca, 0.2 0.5 0.8, 0.33 0.33 0.33);  * capsid inhibitor (len) hence the _ca ;
+* res_trans_factor_ca;		%sample_uniform(res_trans_factor_ca, 0.2 0.5 0.8);  * capsid inhibitor (len) hence the _ca ;
 
 * super_inf_res;			%sample(super_inf_res, 0.2 0.8, 0.9 0.1);
 
