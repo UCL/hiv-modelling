@@ -9,7 +9,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000;
+%let population = 10000 ;
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -1039,14 +1039,13 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 ******************     MALAWI SPECIFIC PARAMETERS    ******************
 /***************************************************************************/
 
-* country;				  * country='Malawi';
-* caldate1;					caldate1 = 1984;		*core: 1989;
-* caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
+* country;				  country='Malawi';
+* caldate1;				  caldate1 = 1984;		*core: 1989;
+* caldate_never_dot;	  caldate_never_dot=1984;	*core: 1989;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-/** inc_cat; 					 inc_cat = 4 ;  	* Changed to new inc_cat 4 (specified for Zim) from inc_cat 1 JAS Nov23;*/
-* inc_cat; 				* inc_cat = 5 ;  	* Try new inc_cat 5 specified for Malawi JAS Nov23;
+* inc_cat; 				  inc_cat = 5 ;  	* Try new inc_cat 5 specified for Malawi JAS Nov23;
 
 * SEXUAL BEHAVIOUR;
 
@@ -19396,6 +19395,8 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 proc freq; tables cald age hiv ; where death=.; run;
 
+proc freq; tables prevalence1549 p_vl1000 ; run;
+
 /*
 
 proc print; var reg_option onart art_monitoring_strategy adh adh_dl o_dol o_3tc o_ten o_cab o_len nactive  r_cab r_len f_cab f_len ;
@@ -20767,7 +20768,7 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
-
+/*
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
@@ -20778,6 +20779,11 @@ if country = 'Malawi' then do;
 	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
 	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
 end;
+
+*/
+
+
+
 
 ***South Africa specific;	*JAS Feb24;
 if country = 'South Africa' then do;

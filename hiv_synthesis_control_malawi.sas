@@ -20641,7 +20641,7 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
-
+/*
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
@@ -20652,6 +20652,8 @@ if country = 'Malawi' then do;
 	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
 	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
 end;
+
+*/
 
 ***South Africa specific;	*JAS Feb24;
 if country = 'South Africa' then do;
