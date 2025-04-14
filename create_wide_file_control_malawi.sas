@@ -1337,25 +1337,25 @@ proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_mlw_i; set y;
+data a.long_mlw; set y;
 if cald=. then delete;run;
 /*proc freq data=a.long_20240429; table s_alive;run;*/
 /*proc freq data=a.long_20240429; table p_ep;run;*/
-proc contents data = a.long_mlw_i; run;
+proc contents data = a.long_mlw; run;
 
 
 
-
+/*
 
 
 
 * producing the output files for debra and rob;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_i_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_out\";
 
 ods html close;
 
-data y; set a.long_mlw_i; 
+data y; set a.long_mlw; 
 
 keep
 
@@ -1864,3 +1864,4 @@ ods html close;
 
 
 
+*/

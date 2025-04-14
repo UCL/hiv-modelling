@@ -8,7 +8,8 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_h_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_out\";
+
 
 /*
 
@@ -19,21 +20,9 @@ proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome mode
 */
 
 data c;
-  set a.long_mlw_h;
+  set a.long_mlw;
 
 
-if option in (0 1 2 3 4 5 6 7 8 9 10 11 12         ) then delete;
-
-* if option=0 and cald gt 2023 then delete;
-
-* if option = 2 then option = 1;
-  if option = 99 then option = 0;
-
-
-
-* if option = 0 then option = 99;
-
- 
 
 p_onart_vl1000_all = .;
 
@@ -111,14 +100,14 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 * n_tested_self_test = 0;
 
 
-%let single_var =   n_diag_self_test                          /* n_new_inf1549_ */        ;
+%let single_var =   prevalence1549_                           /* n_new_inf1549_ */        ;
 
 
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 515 ;			* 94 fits out of 1000 JAS Nov23;
-%let year_end = 2052.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
+%let nfit = 47  ;			* 94 fits out of 1000 JAS Nov23;
+%let year_end = 2025    ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
 
@@ -739,7 +728,7 @@ data a.d;set d;run;
 
 /*/data d;set b.d;run;*/
 
-%let start = 2015;
+%let start = 1990;
 
 
 
@@ -1035,6 +1024,7 @@ run;quit;
 
 */
 
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -1052,7 +1042,7 @@ band    x=cald lower=p5_n_diag_self_test_1 	upper=p95_n_diag_self_test_1  / tran
 
 run;quit;
 
-
+*/
 
 /*
 
@@ -1134,6 +1124,8 @@ band    x=cald lower=p5_p_newp_ge1__1 	upper=p95_p_newp_ge1__1  / transparency=0
 
 run;quit;
 
+*/
+
 
 ods html ;
 proc sgplot data=d; 
@@ -1156,6 +1148,7 @@ label prevalence1549_threshold = "Calibration thresholds";
 run;quit;
 
 
+/*
 
 
 proc sgplot data=d; 
