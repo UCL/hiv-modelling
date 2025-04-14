@@ -249,6 +249,8 @@ s_alive = s_alive_m + s_alive_w ;
 * prop_1564mm_onprep_oral_mm;	prop_1564mm_onprep_oral_mm =   max(s_onprep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
 
 * prop_elig_on_prep_mm;			if s_elig_prep_any_mm_1564_ > 0 then prop_elig_on_prep_mm = s_onprep_mm / s_elig_prep_any_mm_1564_ ;
+* prop_elig_on_prep_nmm;		if s_elig_prep_any_nmm_1564_ > 0 then prop_elig_on_prep_nmm = s_onprep_nmm / s_elig_prep_any_nmm_1564_ ;
+
 
 * n_prep_any_mm;				n_prep_any_mm = s_onprep_mm * sf;
 * n_prep_oral_mm;				n_prep_oral_mm = s_onprep_oral_mm * sf;
@@ -265,7 +267,7 @@ prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence15
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
 n_onprep_w			 n_onprep_m			n_onprep			prop_1564m_onprep   prop_1564w_onprep	n_prep_any_start
-prop_elig_on_prep_w	 prop_elig_on_prep_m	prop_elig_on_prep
+prop_elig_on_prep_w	 prop_elig_on_prep_m	prop_elig_on_prep	prop_elig_on_prep_mm	prop_elig_on_prep_nmm
 prop_1564m_onprep_nmm	p_hiv_nmm		p_prep_any_ever_nmm
 
 dcost ddaly
@@ -309,7 +311,7 @@ prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_o
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
 p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 	prop_elig_on_prep_w	 prop_elig_on_prep
-prop_elig_on_prep_m
+prop_elig_on_prep_m prop_elig_on_prep_mm	prop_elig_on_prep_nmm
 prop_1564m_onprep_nmm	p_hiv_nmm		p_prep_any_ever_nmm
 ;
 
@@ -357,7 +359,7 @@ prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_o
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
 p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 	prop_elig_on_prep_w	 prop_elig_on_prep
-prop_elig_on_prep_m
+prop_elig_on_prep_m prop_elig_on_prep_mm	prop_elig_on_prep_nmm
 prop_1564m_onprep_nmm	p_hiv_nmm		p_prep_any_ever_nmm
 ;
 
@@ -403,7 +405,7 @@ prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_o
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
 p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 	prop_elig_on_prep_w	 prop_elig_on_prep
-prop_elig_on_prep_m
+prop_elig_on_prep_m prop_elig_on_prep_mm	prop_elig_on_prep_nmm
 prop_1564m_onprep_nmm	p_hiv_nmm		p_prep_any_ever_nmm
 ;
 
@@ -443,7 +445,7 @@ run;
 data d; * this is number of variables in %let var = above ;
 merge 
 g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  
-g25  g26  g27  g28  g29  g30  g31  g32/*  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48  g49  g50 
+g25  g26  g27  g28  g29  g30  g31  g32  g33  g34/*  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48  g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 /* g73 g74 g75  g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
@@ -454,9 +456,9 @@ g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 
 g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252*/ 
 
 h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20	h21  h22  h23  h24
-h25  h26  h27  h28  h29	 h30  h31  h32
+h25  h26  h27  h28  h29	 h30  h31  h32  h33  h34
 i1   i2   i3   i4   i5   i6   i7   i8   i9   i10  i11  i12  i13  i14  i15  i16  i17  i18  i19  i20	i21  i22  i23  i24
-i25  i26  i27  i28  i29  i30  i31  i32
+i25  i26  i27  i28  i29  i30  i31  i32  i33  i34
 ;
 by cald;
 
@@ -549,7 +551,6 @@ band    x=cald lower=p5_p_prep_any_ever_nmm_0 	upper=p95_p_prep_any_ever_nmm_0  
 
 run;quit;
 
-proc freq;table p50_p_prep_any_ever_nmm_0;run;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of those eligible, proportion of men currently on any PrEP";
