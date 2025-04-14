@@ -6,9 +6,6 @@
 * caldate1;					caldate1 = 1984;		*core: 1989;
 * caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
 
-* POPULATION GROWTH AND DEMOGRAPHY;
-* inc_cat; 					inc_cat = 4 ;  
-
 * INTRODUCTION OF HIV;
 * startyr;					startyr = 1991 + 0.25;
 

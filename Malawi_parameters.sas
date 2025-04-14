@@ -7,10 +7,6 @@
 * caldate1;					caldate1 = 1984;		*core: 1989;
 * caldate_never_dot;		caldate_never_dot=1984;	*core: 1989;
 
-* POPULATION GROWTH AND DEMOGRAPHY;
-
-* inc_cat; 					 inc_cat = 4 ;  	* Changed to new inc_cat 4 (specified for Zim) from inc_cat 1 JAS Nov23;
-
 * SEXUAL BEHAVIOUR;
 
 /** ych_risk_beh_newp;        %sample(ych_risk_beh_newp, 0.5 0.6 0.7 , 0.4 0.3 0.3); */

@@ -163,7 +163,7 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					%sample_uniform(inc_cat, 1:3);
+* inc_cat; 					%sample_uniform(inc_cat, 1:3);		* Note that country-specific values are used for calibrated countries;
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
@@ -1016,6 +1016,7 @@ non_hiv_tb_risk = 0.0005;
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
+
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
@@ -1316,7 +1317,7 @@ end;
 
 * Calibrated countries;
 * Running for 91 years - 1984 - 2075 for South Africa, Zimbabwe and Malawi (caldate1=1984, increments are country-specific); * JAS Apr25;
-* Extra increment for youngest age groups;
+* Extra increment to account for earlier start date;
 if country = 'South Africa'  then do;	* South Africa, old inc_cat=3 with inc1 split into two and totals rescaled JAS Apr25;
 inc1= 0.1139; *-76 to -65, 11 years;
 inc2= 0.1094; *-65 to -55, 10 years;
