@@ -1,7 +1,12 @@
+* These parameters are up to date at 1st Nov 2023, based on "Malawi parameters" file in core;
+* caldate1 and caldate_never_dot specified here to overwrite core value (could also be added to Zim parameter file?);
+* country added to switch on SA-spcific abort statements;
+* JAS Nov23;
+
+
 /***************************************************************************/
 ******************     MALAWI SPECIFIC PARAMETERS    ******************
 /***************************************************************************/
-
 
 * country;					country='Malawi';
 * caldate1;					caldate1 = 1984;		*core: 1989;
@@ -9,7 +14,6 @@
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					 inc_cat = 4 ;  	* Changed to new inc_cat 4 (specified for Zim) from inc_cat 1 JAS Nov23;
 
 * SEXUAL BEHAVIOUR;
 
@@ -37,6 +41,13 @@
 
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
                           
+
+* HIV SELF_TESTING;
+
+* prob_self_test_hard_reach;prob_self_test_hard_reach = 0.05;
+* self_test_targeting;		self_test_targeting = 1.5;
+* rate_self_test;			rate_self_test = 0.015;
+* date_self_testing_intro;	date_self_testing_intro = 2018;
 
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
@@ -73,3 +84,7 @@ rate_int_choice = 0.003;
 
 
 * prep_any_strategy;			%sample_uniform(prep_any_strategy, 1 3);
+
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.1  0.2 ); 	
+
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.10 0.30);
