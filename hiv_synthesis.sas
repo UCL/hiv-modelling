@@ -4632,9 +4632,13 @@ prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and differ
 
 * for msm we do not model newp explicitly - this random number below determines the risk of having exposure to hiv in the period 
   (it is used below in transmission code) and is used here to determine prep_any_elig for msm - if at some point we define newp for sex between msm (newpm) then
-  that code will replace this;
+  that code will replace this. msm_random_this_period is resampled in 20% of time periods, otherwise it keeps the same value;
 
-if msm=1 then msm_random_this_period=rand('uniform');
+if msm=1 then do;
+	msm_random_this_period_tm1=msm_random_this_period;
+	msm_random_this_period = rand('Uniform');
+	if rand('Uniform') < 0.8 and msm_random_this_period_tm1 ne . then msm_random_this_period=msm_random_this_period_tm1;
+end;
 
 if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) > . then do;   
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
@@ -4745,7 +4749,6 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 	end;
 
 	if prep_any_strategy=19 then do;	* as 4 but excludes heterosexual men and includes msm;	
-    	s = rand('Uniform');
       	if 
 		(newp ge 1 and gender=2) 
 		or 
