@@ -2,7 +2,7 @@
 libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
 
 data a; 
-set a.wide_fsw_zim_13_03_25; 
+set a.wide_fsw_zim_08_04_25; 
 
 
 ***Within run differences;
@@ -24,7 +24,7 @@ d_p_onart_vl1000 = (p_onart_vl1000__30_2 - p_onart_vl1000__30_1)*100;
 run;
 
 ***table Ao - use either 2020 or 2023 estimates - whichever is closest to observed data;
-proc means n p50 p5 p95;var n_hiv_23  n_onart_23
+proc means n p50 mean p5 p95;var n_hiv_23  n_onart_23
 prevalence1549__23 	 prevalence1549w_23 	prevalence1549m_23 	 incidence1549__23 	incidence1549w_23 	incidence1549m_23
 p_diag_23			 p_diag_w_23			p_diag_m_23 		 p_onart_diag_23	p_onart_diag_w_23	p_onart_diag_m_23
 p_onart_vl1000__23	 p_onart_vl1000_w_23	p_onart_vl1000_m_23	 p_vl1000__23 		
@@ -59,13 +59,13 @@ run;
 ***table 3 - outputs in 2030 for Sisters and Sisters + Amethist;
 proc means n mean p5 p95;var
 /*Current SW program*/
-p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1
+p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1	p_tested_swprog_30_1
 p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
 p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
 incidence1549__30_1	prevalence1549__30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000__30_1 
 
 /*AMETHIST*/
-p_sw_prog_vis_30_2  p_tested_past_year_sw_30_2
+p_sw_prog_vis_30_2  p_tested_past_year_sw_30_2 p_tested_swprog_30_2
 p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2		p_fsw_newp0__30_2	prop_sw_onprep_30_2
 p_sti_sw_30_2		incidence_sw_30_2	prevalence_sw_30_2
 incidence1549__30_2	prevalence1549__30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000__30_2

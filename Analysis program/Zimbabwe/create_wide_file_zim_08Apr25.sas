@@ -8,12 +8,99 @@ libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa u
 data a;
 set a.zim_fsw08apr25;  
 if run=. then delete; 
-a=1;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
-data sf;
+***Remove runs with low % diag in 2020 as currently mean is about 3% lower than PHIA;
+data b;
 set a;
+
+s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
+s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
+s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
+
+* p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
+* p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m1564_ / s_hiv1564m ;  
+* p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
+
+/*PHIA 2020 - 88% IN WOMWN, 84% IN MEN, 87% OVERALL
+PROC FREQ;TABLE P_DIAG_M;WHERE CALD=2020;RUN;
+*/
+if cald=2020 and p_diag_m < 0.7475728155 then a=1;
+
+/*
+proc freq;table run;where a=1;run;
+*/
+
+if run in (
+5838791
+9147395
+12992660
+54228249
+80476159
+86017606
+116163149
+139481356
+159762806
+165769043
+198103801
+224689455
+233603992
+269571490
+270187644
+281007092
+301834912
+340101428
+346462555
+359521561
+375058733
+378621871
+442334215
+474473088
+492361889
+497625623
+518348854
+520223077
+522775152
+531890376
+548932691
+549265706
+552687539
+558405306
+583052624
+595204916
+613155312
+615568179
+624672404
+649875726
+656852870
+660874740
+663985483
+687874362
+698792475
+702622060
+715293024
+724905991
+751151279
+773798923
+807688853
+814760446
+821209162
+842142863
+843335890
+866724049
+910639565
+920398785
+956494284
+963219651
+963539534
+994354050
+) 
+then delete;
+run;
+
+data sf;
+set b;
 
 if cald=2024.5;
 
@@ -29,7 +116,7 @@ proc sort; by run;run;
 
 
 data y;
-merge a sf;
+merge b sf;
 by run;
 
 * preparatory code ;
@@ -284,6 +371,9 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * n_tested_sw;					n_tested_sw = s_tested_sw * sf * 4;
 * p_tested_past_year_sw;		if s_sw_1564 - s_diag_sw > 0 then p_tested_past_year_sw = s_tested_4p_sw /  (s_sw_1564 - s_diag_sw) ;
 
+* p_tested_swprog;				if  (s_sw_inprog - s_diag_sw_inprog) > 0 then p_tested_swprog = s_tested_as_sw /  (s_sw_inprog - s_diag_sw_inprog) ;
+
+
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
 
 * p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
@@ -321,7 +411,7 @@ p_actdur_0to3_  	 p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_
 p_totdur_0to3_  	 p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
 p_sw_prog_vis		 n_tested_sw	    prop_sw_onprep		prevalence_sw	  	incidence_sw
 p_diag_sw			 p_onart_diag_sw	p_onart_vl1000_sw
-p_sti_sw			 p_tested_past_year_sw
+p_sti_sw			 p_tested_past_year_sw	p_tested_swprog
 
 /*Sampled parameters*/
 sw_art_disadv	sw_program	effect_sw_prog_newp		effect_sw_prog_6mtest	effect_sw_prog_int	effect_sw_prog_adh
@@ -339,7 +429,6 @@ effect_sw_prog_newp
 s_tested s_tested_m s_tested_f 
 n_hiv n_onart
 ;
-
 
 proc sort data=y;by run option;run;
 
@@ -408,7 +497,7 @@ data &v ; merge y_20 y_23 t_30 t_24_25 t_24_29 t_24_44 t_24_74;
 %var(v=p_actdur_0to3_); %var(v=p_actdur_3to5_);     %var(v=p_actdur_6to9_);  	%var(v=p_actdur_10to19_); 
 %var(v=p_totdur_0to3_); %var(v=p_totdur_3to5_);     %var(v=p_totdur_6to9_);  	%var(v=p_totdur_10to19_); 
 
-%var(v=p_sw_prog_vis);  %var(v=n_tested_sw);	    %var(v=p_tested_past_year_sw);
+%var(v=p_sw_prog_vis);  %var(v=n_tested_sw);	    %var(v=p_tested_past_year_sw); %var(v=p_tested_swprog);
 %var(v=prop_sw_onprep);	%var(v=prevalence_sw);	    %var(v=incidence_sw);
 %var(v=p_diag_sw);		%var(v=p_onart_diag_sw);	%var(v=p_onart_vl1000_sw);	%var(v=p_sti_sw);
 %var(v=dcost);			%var(v=ddaly);
@@ -445,7 +534,8 @@ tot_dur_sw  	act_dur_sw
 p_actdur_0to3_  p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_ 
 p_totdur_0to3_  p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
 
-p_sw_prog_vis   n_tested_sw	   	   p_tested_past_year_sw  prop_sw_onprep	prevalence_sw	  incidence_sw
+p_sw_prog_vis   n_tested_sw	   	   p_tested_past_year_sw  p_tested_swprog	
+prop_sw_onprep	prevalence_sw	   incidence_sw
 p_diag_sw		p_onart_diag_sw	   p_onart_vl1000_sw	p_sti_sw
 dcost			ddaly
 
