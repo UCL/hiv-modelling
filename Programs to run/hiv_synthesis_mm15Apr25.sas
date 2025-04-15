@@ -13876,7 +13876,7 @@ hiv_nmm=0; if hiv=1 and curr_mobile ne 1 and gender=1 then hiv_nmm=1;
 hiv1564mm=0; if hiv=1 and curr_mobile=1 and 15 <= age < 65 then hiv1564mm=1;
 hiv1549mm=0; if hiv=1 and curr_mobile=1 and 15 <= age < 50 then hiv1549mm=1;
 
-hiv1564nmm=0; if hiv=1 and curr_mobile ne 1 gender=1 and 15 <= age < 65 then hiv1564nmm=1;
+hiv1564nmm=0; if hiv=1 and curr_mobile ne 1 and gender=1 and 15 <= age < 65 then hiv1564nmm=1;
 
 
 hiv1517w=0; if hiv=1 and gender=2 and 15 <= age < 18 then hiv1517w=1;
