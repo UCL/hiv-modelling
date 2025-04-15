@@ -3,7 +3,7 @@
 libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_14Apr25; 
+set a.mm_14Apr25a; 
 if run=. then delete; 
 
 proc sort;
@@ -220,8 +220,9 @@ s_alive = s_alive_m + s_alive_w ;
 								if s_elig_prep_any_m_1549 = 0 then prop_elig_on_prep_m=0;
 *nmm=non mobile men;
 * prop_1564m_onprep_nmm;  		prop_1564m_onprep_nmm = (s_onprep_m - s_onprep_mm)/ ((s_alive1564_m - s_hiv1564m) - (s_alive1564mm - s_hiv1564mm));
-* p_hiv_nmm;					p_hiv_nmm = (s_hiv1564m - s_hiv1564mm) /(s_ageg1564m -s_alive1564mm) ;
+* p_hiv_nmm;					p_hiv_nmm = s_hiv1564nmm /s_alive1564nmm ;
 * p_prep_any_ever_nmm;			p_prep_any_ever_nmm = (s_prep_any_ever_m - s_prep_any_ever_mm)/ (s_alive_m - s_mm);
+* prop_elig_on_prep_nmm;		if s_elig_prep_any_nmm_1564_ > 0 then prop_elig_on_prep_nmm = s_onprep_nmm / s_elig_prep_any_nmm_1564_ ;
 
 
 ***Mobile men;
@@ -251,7 +252,6 @@ s_alive = s_alive_m + s_alive_w ;
 * prop_1564mm_onprep_oral_mm;	if (s_alive1564mm - s_hiv1564mm) > 0 then prop_1564mm_onprep_oral_mm =   max(s_onprep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
 
 * prop_elig_on_prep_mm;			if s_elig_prep_any_mm_1564_ > 0 then prop_elig_on_prep_mm = s_onprep_mm / s_elig_prep_any_mm_1564_ ;
-* prop_elig_on_prep_nmm;		if s_elig_prep_any_nmm_1564_ > 0 then prop_elig_on_prep_nmm = s_onprep_nmm / s_elig_prep_any_nmm_1564_ ;
 
 
 * n_prep_any_mm;				n_prep_any_mm = s_onprep_mm * sf;
@@ -295,7 +295,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 903   ;
+%let nfit = 771   ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -466,8 +466,8 @@ by cald;
 
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = 'C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
-graphs_04_02_25.doc' startpage=never; 
+ods rtf file = 'C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
+graphs_14_04_25.doc' startpage=never; 
 
 
 ***Diagnostic;
