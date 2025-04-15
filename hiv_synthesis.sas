@@ -1030,9 +1030,10 @@ call symput('caldate1',caldate1);
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 
-if country = 'South Africa' then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;		* same as inc_cat=3;
-if country = 'Zimbabwe' 	then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
-if country = 'Malawi' 		then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;		* same as inc_cat=1;
+if country = 'South Africa'  then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;		* same as inc_cat=3;
+if country = 'Zimbabwe' 	 then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
+if country = 'Malawi' 		 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;		* same as inc_cat=1;
+if country = 'Cote d Ivoire' then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;		* same as inc_cat=1;
 
 prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 
@@ -1373,6 +1374,24 @@ inc13=0.00821; * 45 to 55;
 inc14=0.00979; * 55 to 65;
 end;
 
+if country = 'Cote d Ivoire' then do;*starting in 1980;
+inc1=0.1611;  *-80 to -65;
+inc2=0.1510;  *-65 to -55;
+inc3=0.1384;  *-55 to -45;
+inc4=0.1208;  *-45 to -35;
+inc5=0.0956;  *-35 to -25;
+inc6=0.0755;  *-25 to -15;
+inc7=0.0671;  *-15 to -5;
+inc8=0.0570;  *-5 to 5;
+inc9=0.0394;  * 5 to 15;
+inc10=0.0302; * 15 to 25;
+inc11=0.0227; * 25 to 35;
+inc12=0.0176; * 35 to 45;
+inc13=0.0134; * 45 to 55;
+inc14=0.0101; * 55 to 65;
+end;
+
+
 cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7=cum6+inc7;cum8=cum7+inc8;
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; 
 
@@ -1411,6 +1430,26 @@ if country in ('South Africa', 'Zimbabwe', 'Malawi') then do;
 	if cum12 <= e < cum13  then age= 45+rand('uniform')*10;  
 	if cum13 <= e          then age= 55+rand('uniform')*10;  
 	lowest_age_at_start=-76;
+end;
+
+if country = 'Cote d Ivoire' then do;
+	cum13=cum12+inc13; 
+	e=rand('uniform');
+	if 0.0 <= e < inc1    then age=-80+rand('uniform')*15;*15 is width of inc1;																				   
+	if inc1 <= e < cum2   then age=-65+rand('uniform')*10;  
+	if cum2 <= e < cum3   then age=-55+rand('uniform')*10;  
+	if cum3 <= e < cum4   then age=-45+rand('uniform')*10;  
+	if cum4 <= e < cum5   then age=-35+rand('uniform')*10;  
+	if cum5 <= e < cum6   then age=-25+rand('uniform')*10;  
+	if cum6 <= e < cum7   then age=-15+rand('uniform')*10;  
+	if cum7 <= e < cum8   then age=-5+rand('uniform')*10;  
+	if cum8 <= e < cum9   then age=  5+rand('uniform')*10;  
+	if cum9 <= e < cum10  then age= 15+rand('uniform')*10;  
+	if cum10<= e < cum11  then age= 25+rand('uniform')*10;  
+	if cum11 <= e < cum12  then age= 35+rand('uniform')*10;  
+	if cum12 <= e < cum13  then age= 45+rand('uniform')*10;  
+	if cum13 <= e          then age= 55+rand('uniform')*10;  
+	lowest_age_at_start=-80;
 end;
 
 age=round(age, .25);
@@ -20688,8 +20727,12 @@ if country = 'Zimbabwe' then do;
 	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 end;
 
-
-
+***Cote d Ivoite specific;
+if country = 'Cote d Ivoire' then do;
+	if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
+	if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
+	if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
+end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
