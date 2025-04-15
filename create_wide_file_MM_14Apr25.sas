@@ -227,7 +227,7 @@ s_alive = s_alive_m + s_alive_w ;
 ***Mobile men;
 * p_mm;							p_mm = s_alive1564mm/s_ageg1564m;
 
-* p_hiv_mm;						p_hiv_mm = s_hiv1564mm/s_alive1564mm;
+* p_hiv_mm;						if s_alive1564mm > 0 then  p_hiv_mm = s_hiv1564mm/s_alive1564mm;
 
 * p_diag_mm;					if s_hiv1564mm  > 0 then p_diag_mm = s_diag_mm1564_ / s_hiv1564mm ;
  
@@ -236,17 +236,19 @@ s_alive = s_alive_m + s_alive_w ;
 
 * p_vg1000_mm, p_vl1000_mm;		if s_hiv1564mm  > 0 then p_vg1000_mm = s_vg1000_mm / s_hiv1564mm ;  p_vl1000_mm = 1- p_vg1000_mm ;
 
-* prevalence1549_mm;			prevalence1549_mm = s_hiv1549mm  / s_alive1549mm ;
-* prevalence1564_mm;			prevalence1564_mm = s_hiv1564mm  / s_alive1564mm ;
+* prevalence1549_mm;			if s_alive1549mm > 0 then prevalence1549_mm = s_hiv1549mm  / s_alive1549mm ;
+* prevalence1564_mm;			if s_alive1564mm > 0 then prevalence1564_mm = s_hiv1564mm  / s_alive1564mm ;
 
-* incidence1549_mm;				incidence1549_mm = (s_primary1549mm * 4 * 100) / (s_alive1549mm  - s_hiv1549mm  + s_primary1549mm);
-* incidence1564_mm;				incidence1564_mm = (s_primary1564mm * 4 * 100) / (s_alive1564mm  - s_hiv1564mm  + s_primary1564mm);
+* incidence1549_mm;				if (s_alive1549mm  - s_hiv1549mm  + s_primary1549mm) > 0 then 
+								incidence1549_mm = (s_primary1549mm * 4 * 100) / (s_alive1549mm  - s_hiv1549mm  + s_primary1549mm);
+* incidence1564_mm;				if (s_alive1564mm  - s_hiv1564mm  + s_primary1564mm) > 0 then 
+								incidence1564_mm = (s_primary1564mm * 4 * 100) / (s_alive1564mm  - s_hiv1564mm  + s_primary1564mm);
 
 * n_tested_mm;					n_tested_mm = s_tested_mm * sf ;
 
-* prop_1564mm_onprep_mm;		prop_1564mm_onprep_mm =   max(s_onprep_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
-* prop_1564mm_onprep_inj_mm;	prop_1564mm_onprep_inj_mm =   max(s_onprep_inj_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
-* prop_1564mm_onprep_oral_mm;	prop_1564mm_onprep_oral_mm =   max(s_onprep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* prop_1564mm_onprep_mm;		if (s_alive1564mm - s_hiv1564mm) > 0 then prop_1564mm_onprep_mm =   max(s_onprep_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* prop_1564mm_onprep_inj_mm;	if (s_alive1564mm - s_hiv1564mm) > 0 then prop_1564mm_onprep_inj_mm =   max(s_onprep_inj_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* prop_1564mm_onprep_oral_mm;	if (s_alive1564mm - s_hiv1564mm) > 0 then prop_1564mm_onprep_oral_mm =   max(s_onprep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
 
 * prop_elig_on_prep_mm;			if s_elig_prep_any_mm_1564_ > 0 then prop_elig_on_prep_mm = s_onprep_mm / s_elig_prep_any_mm_1564_ ;
 * prop_elig_on_prep_nmm;		if s_elig_prep_any_nmm_1564_ > 0 then prop_elig_on_prep_nmm = s_onprep_nmm / s_elig_prep_any_nmm_1564_ ;
@@ -257,9 +259,9 @@ s_alive = s_alive_m + s_alive_w ;
 * n_prep_inj_mm;				n_prep_inj_mm = s_onprep_inj_mm * sf;
 
 * n_prep_ever_mm;				n_prep_ever_mm = s_prep_any_ever_mm * sf;
-* p_prep_any_ever_mm;			p_prep_any_ever_mm = s_prep_any_ever_mm / s_mm;
+* p_prep_any_ever_mm;			if  s_mm > 0 then p_prep_any_ever_mm = s_prep_any_ever_mm / s_mm;
 
-* p_newp_ge1;					p_newp_ge1_mm = s_newp_ge1_mm / s_alive1564mm ;
+* p_newp_ge1_mm;				if s_alive1564mm  > 0 then p_newp_ge1_mm = s_newp_ge1_mm / s_alive1564mm ;
 * p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive;
 
 keep run option cald n_alive_m			n_alive_w			n_alive				p_mm				p_hiv_mm	p_hiv_m
