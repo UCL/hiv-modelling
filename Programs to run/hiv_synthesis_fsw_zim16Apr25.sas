@@ -2161,7 +2161,7 @@ if caldate_never_dot >= &year_interv then do;
 	end; 
 
 	if option =1 then do; *AMETHIST (no impact on HIV-ve or on testing);
-	* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
+	* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.07 0.10); 
 	* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
 
 		effect_sw_prog_lossdiag	= effect_sw_prog_lossdiag2;

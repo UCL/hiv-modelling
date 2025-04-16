@@ -99,8 +99,84 @@ if run in (
 then delete;
 run;
 
-data sf;
+* Remove runs in which p_tested_past_year_sw in AMETHIST are high;
+
+data c;
 set b;
+
+* p_tested_past_year_sw;		if s_sw_1564 - s_diag_sw > 0 then p_tested_past_year_sw = s_tested_4p_sw /  (s_sw_1564 - s_diag_sw) ;
+
+/*
+proc freq;table p_tested_past_year_sw;where cald=2030 and option=1;run;
+*/
+
+if p_tested_past_year_sw >   0.8095238095 and option=1 and cald=2030 then b=1;
+/*
+proc freq;table run;where b=1;run;
+*/
+if run in (
+34653231
+79506296
+85192058
+86568068
+174306929
+175792389
+210725652
+217854927
+233376617
+245632864
+246650536
+257687137
+277428868
+282667887
+330283391
+330975299
+342003453
+347323077
+398063312
+419641238
+420486811
+433799775
+451355832
+460997680
+466796941
+511494797
+520269144
+526773161
+533894260
+550034053
+594905565
+597335922
+603074687
+626288401
+629358995
+630861148
+662862087
+690444873
+697156949
+725308634
+751784543
+785735381
+810472262
+811100678
+831990816
+847509447
+859302138
+867821218
+876401028
+918728467
+942220072
+950389041
+964000773
+983583761
+)
+then delete;
+
+proc means p50 mean ;var p_tested_past_year_sw;where option=1 and cald=2030;run;
+
+
+data sf;
+set c;
 
 if cald=2024.5;
 
@@ -116,7 +192,7 @@ proc sort; by run;run;
 
 
 data y;
-merge b sf;
+merge c sf;
 by run;
 
 * preparatory code ;

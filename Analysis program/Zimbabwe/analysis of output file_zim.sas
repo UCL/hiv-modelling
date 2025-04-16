@@ -44,7 +44,7 @@ incidence_sw_20		p_fsw_newp0__20
 
 
 ***table 2 - characteristics of FSW in 2024 (these are suffixed 23 but are actually 24);
-proc means n p50 p5 p95 mean;var
+proc means n p50 mean p5 p95;var
 n_sw_1549__23		prop_w_1549_sw_23 		prop_w_ever_sw_23		act_dur_sw_23 
 p_sw_age1519__23	p_sw_age2024__23		p_sw_age2529__23 		p_sw_age3039__23 p_sw_age40pl__23  
 p_age_deb_sw1519__23 p_age_deb_sw2029__23	p_age_deb_sw3039__23	p_age_deb_sw40pl__23
@@ -57,7 +57,7 @@ run;
 
 
 ***table 3 - outputs in 2030 for Sisters and Sisters + Amethist;
-proc means n mean p5 p95;var
+proc means n p50 mean p5 p95;var
 /*Current SW program*/
 p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1	p_tested_swprog_30_1
 p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
