@@ -295,7 +295,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 771   ;
+%let nfit = 546   ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -559,14 +559,14 @@ Title    height=1.5 justify=center "Of those eligible, proportion of men current
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label p50_prop_1564mm_onprep_mm_0 = "Mobile men";
-label p50_prop_1564m_onprep_nmm_0 = "Non-mobile men";
+label p50_prop_elig_on_prep_mm_0 = "Mobile men";
+label p50_prop_elig_on_prep_nmm_0 = "Non-Mobile men";
 
-series  x=cald y=p50_prop_1564mm_onprep_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_mm_0 	upper=p95_prop_1564mm_onprep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_elig_on_prep_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_mm_0 	upper=p95_prop_elig_on_prep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=p50_prop_1564m_onprep_nmm_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_1564m_onprep_nmm_0 	upper=p95_prop_1564m_onprep_nmm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_elig_on_prep_nmm_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_nmm_0 	upper=p95_prop_elig_on_prep_nmm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -613,7 +613,7 @@ band    x=cald lower=p5_n_prep_inj_mm_0 	upper=p95_n_prep_inj_mm_0  / transparen
 run;quit;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of mobile men number on oral PrEP";
+Title    height=1.5 justify=center "Proportion of mobile men on oral PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05) valueattrs=(size=10);
 
@@ -655,15 +655,15 @@ Title    height=1.5 justify=center "Proportion of mobile men currently on any Pr
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label p50_prop_1564mm_onprep_mm_0 = "Without intervention";
-label p50_prop_1564mm_onprep_mm_1 = "With intervention";
+label p50_prop_elig_on_prep_mm_0 = "Without intervention";
+label p50_prop_elig_on_prep_mm_2 = "With intervention";
 
-series  x=cald y=p50_prop_1564mm_onprep_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_mm_0 	upper=p95_prop_1564mm_onprep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_mm_1/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_mm_1 	upper=p95_prop_1564mm_onprep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_mm_2/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_mm_2 	upper=p95_prop_1564mm_onprep_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_elig_on_prep_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_mm_0 	upper=p95_prop_elig_on_prep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prop_elig_on_prep_mm_1/	lineattrs = (color=green thickness = 2);
+*band    x=cald lower=p5_prop_elig_on_prep_mm_1 	upper=p95_prop_elig_on_prep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_elig_on_prep_mm_2/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_mm_2 	upper=p95_prop_elig_on_prep_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 
