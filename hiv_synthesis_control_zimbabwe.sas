@@ -1021,7 +1021,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
-
+%include "/home/rmjlja9/Zim_parameters.sas";
+/*%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";*/
 
 call symput('caldate1',caldate1);
 
@@ -19327,6 +19328,15 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 /*
 
+proc print; var cald country gender age hiv ;
+where serial_no < 50;
+run;
+
+*/
+
+
+/*
+
 proc freq; tables cald hiv ; where death=.; run;
 
 
@@ -21800,6 +21810,11 @@ Inputs are:
 
 *** RUN PROGRAM; 
 
+%run_update_r1(&caldate1,2076,0);
+
+
+/*
+
 *   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
@@ -21836,6 +21851,7 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
+*/			 
 			
 														 
 
