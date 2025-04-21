@@ -18117,6 +18117,35 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	/*number alive and with hiv in each age group*/
 
+
+
+
+
+
+**** create the s_ + code and do a PR to add to core as well as here *******
+
+
+
+
+/* MSM */
+
+s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_primary1564msm s_hiv1564msm  s_hiv_msm s_hiv1549msm  s_vl1000_msm  
+s_art_start_msm   s_diag_msm_age1564   s_vg1000_msm
+s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
+s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm  s_tested1549msm
+s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_   s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
+s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ 
+s_diag_this_period_msm  s_tested_msm  s_naive_msm   s_prep_any_msm  s_prep_any_m  s_prep_any_pwid
+
+
+
+
+
+
+
+
+
+
 	s_alive1549 + alive1549; s_alive1549_w	+ alive1549_w;	s_alive1549_m + alive1549_m; s_alive1564 + alive1564; s_alive1564_w + alive1564_w ;
 	s_alive1564_m + alive1564_m ; 
 

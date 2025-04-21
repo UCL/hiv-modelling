@@ -6,7 +6,7 @@ ods html close;
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_out\";
 
 
-
+/*
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_out\";
 
@@ -14,7 +14,7 @@ data g ; set a.out: ;
 
 data a.g;   set a.out:;run;
 
-
+*/
 
 
 
@@ -682,6 +682,8 @@ so the one above is the annual number of tests conducted in ANC;
 * p_inf_diag ;					p_inf_diag = s_inf_diag   / s_primary;
 * p_inf_naive ; 				p_inf_naive = s_inf_naive / s_primary;
 * p_inf_primary ;				p_inf_primary = s_inf_primary / s_primary;
+* p_inf_msm;					p_inf_msm = s_inf_msm / s_primary;
+* p_inf_pwid;					p_inf_pwid = s_inf_pwid / s_primary;
 
 *The meaning of the following is: among newly infected people, which proportion are SW, etc..;
 * p_sw_newinf;				    p_sw_newinf = s_primary_sw / s_primary;		
@@ -878,6 +880,43 @@ end;
 * p_iime;						p_iime = s_iime_ / s_hivge15 ;
 * p_pime;						p_pime = s_pime_ / s_hivge15 ;
 * p_nnme;						p_nnme = s_nnme_ / s_hivge15 ;
+
+
+* MSM;
+
+* n_alive_msm;					n_alive_msm = s_alive_msm * sf ;
+* n_alive1564_msm;				n_alive1564_msm = s_alive1564_msm * sf ;
+* incidence1549msm;             incidence1549msm = (s_primary1549msm * 4 * 100) / (s_alive1549_msm  - s_hiv1549msm  + s_primary1549msm);
+* incidence1564msm;             incidence1564msm = (s_primary1564msm * 4 * 100) / (s_alive1564_msm  - s_hiv1564msm  + s_primary1564msm);
+* prevalence1549_msm;			prevalence1549_msm = s_hiv1549msm / s_alive1549_msm; 
+* prevalence1564_msm;			prevalence1564_msm = s_hiv1564msm / s_alive1564_msm; 
+* prevalence_msm;				prevalence_msm = prevalence1549_msm;
+* p_elig_prep_any_msm_1564;		p_elig_prep_any_msm_1564 = s_elig_prep_any_msm_1564 / (s_alive1564_msm - s_hiv1564msm);
+* p_onprep_msm;					p_onprep_msm = s_onprep_msm / (s_alive1564_msm - s_hiv1564msm);
+* p_onart_msm;					if s_hiv_msm  > 0 then p_onart_msm = s_onart_msm / s_hiv_msm  ;
+* prevalence_vg1000_msm;		prevalence_vg1000_msm = s_vg1000_msm / s_alive_msm;
+* p_diag_msm;					p_diag_msm = s_diag_msm / s_hiv_msm  ;
+* p_onart_diag_msm;				p_onart_diag_msm = s_onart_msm / s_diag_msm ;
+* p_vl1000_art_gt6m_msm;		p_vl1000_art_gt6m_msm = s_vl1000_art_gt6m_msm / s_onart_gt6m_msm ;
+* p_ever_tested_msm; 			p_ever_tested_msm = s_ever_tested_msm / s_msm;
+* p_tested_this_period_msm;		p_tested_this_period_msm = s_tested_msm / (s_msm - s_diag_msm) ;
+* p_msm_infected_from_msm;		p_msm_infected_from_msm = s_infected_from_msm / s_hiv_msm ;
+* prop_m_msm;					prop_m_msm = s_alive1564_msm / s_alive1564_m;
+
+* p_ep;							p_ep = s_ep / s_alive1564;				
+* p_ep_msm;						p_msm_ep = s_msm_ep / s_alive1564_msm;
+* p_msm_ge1newp;				p_msm_ge1newp = s_msm_ge1newp / s_alive1564_msm;
+* p_m_ge1newp;					p_m_ge1newp = s_m_ge1newp / s_alive1564_m;
+
+
+* PWID;
+
+* n_pwid;						n_pwid = s_pwid * sf ;
+* p_onprep_pwid;				p_onprep_pwid = s_onprep_pwid / (s_alive1564_pwid - s_hiv1564pwid);
+* p_onart_pwid;					if s_hiv_pwid  > 0 then p_onart_pwid = s_onart_pwid / s_pwid  ;
+
+
+
 
 * blood pressure;
 
@@ -1326,6 +1365,11 @@ eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
 p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 s_cost_prep s_cost_prep_visit
 dcost_80 ddaly_80  overall_test_yield  n_vm_this_per  n_death_hiv   n_daly cost
+
+p_inf_msm p_inf_pwid
+n_alive_msm n_alive1564_msm incidence1549msm incidence1564msm prevalence1549_msm prevalence1564_msm prevalence_msm p_elig_prep_any_msm_1564 p_onprep_msm
+p_onart_msm prevalence_vg1000_msm p_diag_msm p_onart_diag_msm p_vl1000_art_gt6m_msm p_ever_tested_msm p_tested_this_period_msm p_msm_infected_from_msm prop_m_msm		
+p_ep_msm p_msm_ge1newp p_m_ge1newp n_pwid p_onprep_pwid p_onart_pwid
 ;
 
 
