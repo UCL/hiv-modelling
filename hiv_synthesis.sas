@@ -19067,6 +19067,24 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_sti_sw + sti_sw;
 
+
+	/* MSM */
+
+	s_alive_msm + alive_msm; s_alive1549_msm + alive1549_msm ;  s_alive1564_msm + alive1564_msm ; s_primary1549msm + primary1549msm;
+	s_primary1564msm + primary1564msm;  s_hiv1564msm + hiv1564msm;  s_hiv_msm + hiv_msm;  s_hiv1549msm + hiv1549msm; s_vl1000_msm + vl1000_msm;
+	s_art_start_msm + art_start_msm;   s_diag_msm_age1564 + diag_msm_age1564;   s_vg1000_msm + vg1000_msm;
+	s_vl1000_art_msm + vl1000_art_msm ; s_onart_iicu_msm + onart_iicu_msm ; s_vl1000_art_iicu_msm + vl1000_art_iicu_msm ;	
+	s_onart_gt6m_msm + onart_gt6m_msm ; s_vl1000_art_gt6m_msm + vl1000_art_gt6m_msm ; s_onart_gt6m_iicu_msm + onart_gt6m_iicu_msm ;
+	s_vl1000_art_gt6m_iicu_msm + vl1000_art_gt6m_iicu_msm ; s_artexp_msm + artexp_msm ; s_diag_msm + diag_msm ; s_onart_msm + onart_msm ;
+	s_prep_oral_msm + prep_oral_msm ; s_prep_cab_msm + prep_cab_msm ; s_prep_len_msm + prep_len_msm ; s_elig_prep_any_msm_1564 + elig_prep_any_msm_1564 ;
+	s_onprep_msm + onprep_msm ; s_onprep_oral_msm + onprep_oral_msm ; s_tested1549msm + tested1549msm ; s_ever_tested_msm + ever_tested_msm ;
+	s_ever_tested_msm1549_ + ever_tested_msm1549_ ; s_ever_tested_msm1564_ + ever_tested_msm1564_ ; s_diag_msm1564_ + diag_msm1564_ ;
+	s_onart_msm1564_ + onart_msm1564_ ; s_infected_from_msm + infected_from_msm ; s_inf_msm + inf_msm ; s_inf_pwid + inf_pwid ; 
+	s_ever_tested_msm1549_ + ever_tested_msm1549_ ; s_diag_msm1549_ + diag_msm1549_ ; s_onart_msm1549_ + onart_msm1549_ ; s_ever_tested_msm1564_ + ever_tested_msm1564_ ;
+	s_diag_msm1564_ + diag_msm1564_ ; s_diag_this_period_msm + diag_this_period_msm ; s_tested_msm + tested_msm ; s_naive_msm + naive_msm ; 
+	s_prep_any_msm + prep_any_msm ; s_prep_any_m + prep_any_m ; s_prep_any_pwid + prep_any_pwid ;
+
+
 	/*ADC and advanced hiv disease etc*/
 
 	s_adc + adc ; s_non_tb_who3_ev + non_tb_who3_ev ; s_who4_ + who4_ ; s_tb + tb ; s_adc_diagnosed + adc_diagnosed ; s_onart_adc + onart_adc ;
