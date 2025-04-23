@@ -14,6 +14,12 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 
 data b.k_cioa_y;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
+if rr_return_comm_tld in (1.5 2 );
+
+if rr_interrupt_comm_tld in (0.67 0.5 );
+
+if effect_comm_tld_hard_reach in (0.75  0.5  0.25);
+
 run;
 
 */
