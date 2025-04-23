@@ -2,6 +2,10 @@
 
 reduce proportion hard_reach ?
 
+lower distribution of effect_comm_tld_hard_reach ?
+
+reduce effect on interruption and return ?
+
 also changs sens of testing in primary infection after year_interv
 
 art_monitoring_strategy_options saved in parameters 
@@ -1290,11 +1294,11 @@ end;
 
 * incr_pref_prep_oral_comm_tld;	%sample_uniform(incr_pref_prep_oral_comm_tld, 0.0  0.01  0.03  0.05  );    
 
-* rr_return_comm_tld;			%sample_uniform(rr_return_comm_tld, 1.5 2 3 );
+* rr_return_comm_tld;			%sample_uniform(rr_return_comm_tld, 1.5 2 );
 
-* rr_interrupt_comm_tld;		%sample_uniform(rr_interrupt_comm_tld, 0.67 0.5 0.33 );
+* rr_interrupt_comm_tld;		%sample_uniform(rr_interrupt_comm_tld, 0.67 0.5 );
 
-* effect_comm_tld_hard_reach;	%sample_uniform(effect_comm_tld_hard_reach, 1  0.75  0.5 );
+* effect_comm_tld_hard_reach;	%sample_uniform(effect_comm_tld_hard_reach,    0.75  0.5  0.25 );
 
 
 
