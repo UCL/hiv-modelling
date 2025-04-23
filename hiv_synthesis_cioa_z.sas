@@ -1,5 +1,7 @@
 * cioa_z
 
+reduce proportion hard_reach ?
+
 also changs sens of testing in primary infection after year_interv
 
 art_monitoring_strategy_options saved in parameters 
