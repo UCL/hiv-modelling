@@ -8,7 +8,7 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_h_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_i_out\";
 
 /*
 
@@ -19,14 +19,14 @@ proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome mode
 */
 
 data c;
-  set a.long_mlw_h;
+  set a.long_mlw_i;
 
 
-if option in (0 1 2 3 4 5 6 7 8 9 10 11 12         ) then delete;
+if option in (0   2 3 4 5 6 7 8 9 10 11 12         ) then delete;
 
 * if option=0 and cald gt 2023 then delete;
 
-* if option = 2 then option = 1;
+  if option = 1 then option = 1;
   if option = 99 then option = 0;
 
 
@@ -111,13 +111,13 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 * n_tested_self_test = 0;
 
 
-%let single_var =   n_diag_self_test                          /* n_new_inf1549_ */        ;
+%let single_var =   incidence1524w                          /* n_new_inf1549_ */        ;
 
 
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 515 ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 445 ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2052.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
@@ -894,7 +894,9 @@ band    x=cald lower=p5_n_sw_program_visit_1 	upper=p95_n_sw_program_visit_1  / 
 
 run;quit;
 
+*/
 
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -912,8 +914,8 @@ band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparen
 
 run;quit;
 
-
 */
+
 
 /*
 
@@ -934,6 +936,25 @@ band    x=cald lower=p5_incidence_sw_1 	upper=p95_incidence_sw_1  / transparency
 run;quit;
 
 */
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2.0 by 0.5) valueattrs=(size=10);
+
+label mean_incidence1524w_0 = "Option 0 (median) ";
+label mean_incidence1524w_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_incidence1524w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1524w_0 	upper=p95_incidence1524w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_incidence1524w_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1524w_1 	upper=p95_incidence1524w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
 
 /*
 
@@ -1035,6 +1056,7 @@ run;quit;
 
 */
 
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -1052,10 +1074,10 @@ band    x=cald lower=p5_n_diag_self_test_1 	upper=p95_n_diag_self_test_1  / tran
 
 run;quit;
 
+*/
 
 
 /*
-
 
 ods html;
 proc sgplot data=d; 
@@ -1075,7 +1097,7 @@ series  x=cald y=n_prep_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
 
 run; quit;
 
-
+*/
 
 /*
 
