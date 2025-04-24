@@ -97,8 +97,8 @@ rate_ch_art_init_str_9 = 0.1 ;
 * effect_sw_prog_int2;      effect_sw_prog_int2		 = 	effect_sw_prog_int / fold_hi_sw_prog_int;
 * effect_sw_prog_adh2;      effect_sw_prog_adh2		 = 	effect_sw_prog_adh * fold_hi_sw_prog_adh;
 * effect_sw_prog_lossdiag2; effect_sw_prog_lossdiag2 =  effect_sw_prog_lossdiag / fold_hi_sw_prog_lossdiag;
-* rate_engage_sw_program2;	rate_engage_sw_program2 =   rate_engage_sw_program * 1.2;
-* rate_disengage_sw_program2; rate_disengage_sw_program2 = rate_disengage_sw_program/1.2;
+* rate_engage_sw_program2;	rate_engage_sw_program2 =   rate_engage_sw_program * 1.1;
+* rate_disengage_sw_program2; rate_disengage_sw_program2 = rate_disengage_sw_program/1.1;
 
 
 * CIRCUMCISION;
