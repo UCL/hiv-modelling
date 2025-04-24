@@ -2,22 +2,20 @@
 
 * options user="/folders/myfolders/"  ;
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_y_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_yz_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_y_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_yz_out\";
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_cioa_y;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_cioa_yz;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 if rr_return_comm_tld in (1.5 2 );
-
 if rr_interrupt_comm_tld in (0.67 0.5 );
-
 if effect_comm_tld_hard_reach in (0.75  0.5  0.25);
 
 run;
@@ -27,7 +25,7 @@ run;
 
 
 
-proc sort data=b.k_cioa_y; 
+proc sort data=b.k_cioa_yz; 
 by run cald option;
 run;
 
@@ -36,7 +34,7 @@ run;
 data sf;
 
 
-set b.k_cioa_y ;
+set b.k_cioa_yz ;
 
 
 if cald=2024   ;
@@ -55,7 +53,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_cioa_y sf;
+merge b.k_cioa_yz sf;
 by run ;
 
 
@@ -1453,7 +1451,7 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_cioa_y; set y;  
+data    b.l_cioa_yz; set y;  
 
 * to give n = 1000 ;
 * if run in (
@@ -1462,7 +1460,7 @@ data    b.l_cioa_y; set y;
 
 proc freq; tables run; where cald = 2018; run;
 
-data y ; set b.l_cioa_y; 
+data y ; set b.l_cioa_yz; 
 
 
   options nomprint;
@@ -1956,7 +1954,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_cioa_y     ; 
+  data  b.w_cioa_yz     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1969,9 +1967,9 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_y_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_yz_out\";
 
-data f; set b.w_cioa_y;
+data f; set b.w_cioa_yz;
 
 if prevalence1549w_24 < 0.35;
 if prevalence1549m_24 < 0.25;
