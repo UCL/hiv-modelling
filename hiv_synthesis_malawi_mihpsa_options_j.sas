@@ -1,3 +1,22 @@
+* mlw_j
+
+change circ_inc_rate_year_i = 5
+
+check with rob and debra on costing of adh support intervention and economic empowerment comprehensive sexuality education
+
+explain how adh support intervention and economic empowerment comprehensive sexuality education
+
+explain to debra prep_any_strategy = 4
+
+;
+
+
+
+
+
+
+
+
 * mlw_i
 
 add prep_any_strategy = 2 to option 5
@@ -2287,7 +2306,7 @@ who may be dead and hence have caldate{t} missing;
 	*Option 13 is min + continuation of PrEP;
 
 	* start by going to minimal, unless option = 0 (status quo) ;
-	if option in (99 1 2 3 4 5 6 7 8 9 10 11 12 13) then do;
+	if option in (99 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18) then do;
 
 		*Including; 
 		*Testing (PITC, ANC, VCT, out-patient testing for symptomatic patients, routine in-patient testing, testing at malnutrition wards 
@@ -2298,22 +2317,28 @@ who may be dead and hence have caldate{t} missing;
 
 		*Testing; 
 		*Keep all testing at SQ level;
+		if option ne 16 then do;
 		sw_program_set_in_opts = 1 ; eff_sw_program = 0;		 			*No SW program;
 		rate_diseng_sw_prog_set_in_opts = 1; rate_disengage_sw_program=1;
+		end;
 
 		* self_testing;
+		if option ne 15 then do; * option 15 keeps self testing;
 		prob_self_test_hard_reach = 0;
 		rate_self_test = 0;
+		end;	
 
 		*Prevention;
 		*Condom promotion and provision: keep at SQ level;
 		*SBCC: not explicitly modelled, but the switch off is;
 		*condom_incr_year_i=2;    		*Switches off SBCC;
+		if option ne 8 then do;  * option 8 maintains vmmc;
 		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 2;		*No VMMC;
+		end;
 
 		*PrEP;
 		*Turn off all PrEP;
-		if option ne 13 then do;
+		if option ne 13 then do; * option 13 is keep prep ;
 		prep_any_strategy=0;
 		date_prep_oral_intro=2100;
 		date_prep_inj_intro=2100;
@@ -2330,10 +2355,17 @@ who may be dead and hence have caldate{t} missing;
 
 		*Linkage, management, ART Interv;
 		*PCP is part of the essential scenario;
+		if option ne 18 then do; *option 18 is keeping cd4 on;
 		absence_cd4_set_in_options = 1; absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
+		end;
+			
+		if option ne 17 then do;  * option 17 is keeping vl monitoring;
 		p_vl_meas_done_set_in_opts = 1; eff_prob_vl_meas_done = 0; cd4_monitoring = 1;	*If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
-
+		end;
+			
+		if option ne 14 then do;
 		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
+		end;
 
 	end;
 
@@ -2403,7 +2435,7 @@ who may be dead and hence have caldate{t} missing;
 
 	*Option 8 is SQ + 	Voluntary medical male circumcision (VMMC) [Zim O14 / SA O9-10];
 	if option = 8 then do;	*SA O10: VMMC for males aged 15+;
-		circ_inc_rate_set_in_opts = 1; circ_inc_rate_year_i = 5;						******************************ADD VMMC PARAMS ************;
+		* see above;
 	end;
 
 	*Option 9 is SQ + 	ART adherence support [not in Zim MIHPSA / SA O11]; 
@@ -22851,6 +22883,360 @@ data r1; set dsf;
 %update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=15);
 %update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=15);
 %update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=15);
+
+* ts1m:  need more update statements ;
+
+
+data r1; set dsf;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=16);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=16);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=16);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=16);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=16);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=16);
+
+* ts1m:  need more update statements ;
+
+
+data r1; set dsf;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=17);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=17);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=17);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=17);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=17);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=17);
+
+* ts1m:  need more update statements ;
+
+
+data r1; set dsf;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=18);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=18);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=18);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=18);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=18);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=18);
 
 * ts1m:  need more update statements ;
 

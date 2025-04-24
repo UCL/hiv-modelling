@@ -22,11 +22,11 @@ data c;
   set a.long_mlw_i;
 
 
-if option in (0   2 3 4 5 6 7 8 9 10 11 12         ) then delete;
+if option in (  1 2 3 4 5 6 7 8 9 10 11 12         ) then delete;
 
 * if option=0 and cald gt 2023 then delete;
 
-  if option = 1 then option = 1;
+  if option = 0 then option = 1;
   if option = 99 then option = 0;
 
 
@@ -111,7 +111,7 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 * n_tested_self_test = 0;
 
 
-%let single_var =   incidence1524w                          /* n_new_inf1549_ */        ;
+%let single_var =   incidence1549_                        /* n_new_inf1549_ */        ;
 
 
 proc sort; by cald run ;run;
@@ -752,7 +752,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 
 
 
-ods html close;
+  ods html close;
 
 
 /*
@@ -937,7 +937,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -955,8 +955,9 @@ band    x=cald lower=p5_incidence1524w_1 	upper=p95_incidence1524w_1  / transpar
 
 run;quit;
 
+*/
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
@@ -974,9 +975,9 @@ band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transpar
 
 run;quit;
 
-*/
-
 /*
+
+
 
 ods html;
 proc sgplot data=d; 
@@ -1918,6 +1919,27 @@ series  x=cald y=mean_p_artexp_diag_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_artexp_diag_1 	upper=p95_p_artexp_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
+
+
+
+ods html;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of diagnosed men on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.9 to 1 by 0.01) valueattrs=(size=10);
+
+label mean_p_onart_diag_0 = "Option 0 (median) ";
+label mean_p_onart_diag_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_p_onart_diag_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_diag_0 	upper=p95_p_onart_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_p_onart_diag_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_diag_1 	upper=p95_p_onart_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
 
 
 proc sgplot data=d; 
