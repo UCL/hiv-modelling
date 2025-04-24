@@ -92,6 +92,15 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.20 0.35 0.50);
 
+***These need to be here as are using parameters from this file - if left in core, it would use parameters in core file;
+* effect_sw_prog_6mtest2;   *effect_sw_prog_6mtest2	 =	effect_sw_prog_6mtest * fold_hi_sw_prog_6mtest; *no impact on testing 13Mar25;
+* effect_sw_prog_int2;      effect_sw_prog_int2		 = 	effect_sw_prog_int / fold_hi_sw_prog_int;
+* effect_sw_prog_adh2;      effect_sw_prog_adh2		 = 	effect_sw_prog_adh * fold_hi_sw_prog_adh;
+* effect_sw_prog_lossdiag2; effect_sw_prog_lossdiag2 =  effect_sw_prog_lossdiag / fold_hi_sw_prog_lossdiag;
+* rate_engage_sw_program2;	rate_engage_sw_program2 =   rate_engage_sw_program * 1.2;
+* rate_disengage_sw_program2; rate_disengage_sw_program2 = rate_disengage_sw_program/1.2;
+
+
 * CIRCUMCISION;
 
 * circ_inc_rate;           	%sample(circ_inc_rate, 0.0001 0.001	0.002, 								 
