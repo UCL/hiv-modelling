@@ -262,6 +262,17 @@ cost_clin_care = dcost_clin_care / discount;
 cost = dcost / discount;
 
 
+if run le 37262268 ;
+
+proc print ; var option cald 
+dcost  dart_cost_y   dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dnon_tb_who3_cost   dcot_cost   dtb_cost dres_cost   dtest_cost   d_t_adh_int_cost
+		  dswitchline_cost   dcost_drug_level_test   dcost_circ   dcost_condom_dn   dcost_prep_visit   dcost_prep   
+		dcost_child_hiv   dcost_non_aids_pre_death   dtb_lam_cost   dtb_proph_cost   dcrag_cost   dcrypm_proph_cost   dsbi_proph_cost   dcost_sw_program
+		  dcost_self_test;
+where 2015 <= cald < 2025;
+run; 
+
+
 
 * checks;
 
@@ -1967,22 +1978,32 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_yz_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_y_out\";
 
 data f; set b.w_cioa_yz;
 
-if prevalence1549w_24 < 0.35;
-if prevalence1549m_24 < 0.25;
+
+if prevalence1549w_24 < 0.35 ;
+if prevalence1549m_24 < 0.25 ;
 if incidence1549m_24 < 1.5;
-if incidence1549w_24 < 2.25;
-if max(incidence1549m_24, incidence1549w_24) > 0.10;
-if p_diag_m_24 > 0.75;
+if incidence1549w_24 < 2.5;
+if max(incidence1549m_24, incidence1549w_24) > 0.05;
+if p_diag_m_24 > 0.70;
 if p_diag_w_24 > 0.75;
 if p_onart_diag_m_24 > 0.80;
 if p_onart_diag_w_24 > 0.85;
-if p_onart_vl1000_m_24 > 0.80;
+if p_onart_vl1000_m_24 > 0.75;
 if p_onart_vl1000_w_24 > 0.80;
- 
+
+if run lt 999214339 ;
+
+/*
+ods html;
+proc print noobs; var run; run;
+ods html close;
+*/
+
+
 d_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 - n_death_hiv_10y_1;
 r_n_death_hiv_10y_4_1 = n_death_hiv_10y_4 / n_death_hiv_10y_1;
 d_n_death_hiv_10y_5_1 = n_death_hiv_10y_5 - n_death_hiv_10y_1;
@@ -2598,11 +2619,15 @@ ods html close;
 
 ods html;
 proc logistic data=f; 
+model x_ce_300_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 _incr_pref_prep_oral_comm_tld 
+_rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular;  run;
+ods html close;
+
+ods html;
+proc logistic data=f; 
 model x_ce_500_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 
 _incr_pref_prep_oral_comm_tld _rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular;  run;
-proc logistic data=f; 
-model x_ce_300_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 
-_incr_pref_prep_oral_comm_tld _rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular;  run;
+
 proc logistic data=f; 
 model x_ce_150_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 
 _incr_pref_prep_oral_comm_tld _rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular;  run;
