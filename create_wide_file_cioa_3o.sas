@@ -262,16 +262,6 @@ cost_clin_care = dcost_clin_care / discount;
 cost = dcost / discount;
 
 
-if run le 37262268 ;
-
-proc print ; var option cald 
-dcost  dart_cost_y   dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dnon_tb_who3_cost   dcot_cost   dtb_cost dres_cost   dtest_cost   d_t_adh_int_cost
-		  dswitchline_cost   dcost_drug_level_test   dcost_circ   dcost_condom_dn   dcost_prep_visit   dcost_prep   
-		dcost_child_hiv   dcost_non_aids_pre_death   dtb_lam_cost   dtb_proph_cost   dcrag_cost   dcrypm_proph_cost   dsbi_proph_cost   dcost_sw_program
-		  dcost_self_test;
-where 2015 <= cald < 2025;
-run; 
-
 
 
 * checks;
