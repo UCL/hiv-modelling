@@ -47,7 +47,10 @@ p_newp_ge1_ = p_newp_ge1;
 
 n_tested_incl_self = n_self_tested + n_tested; 
 
-%let single_var = n_hiv             ;
+p_cur_res_dol = (n_cur_res_dol * 100) / n_hiv ;
+
+
+%let single_var = p_onart_vl1000_             ;
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
@@ -215,9 +218,24 @@ by cald;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
-
-
 /*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';  
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2030 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percentage'		labelattrs=(size=12)  values = (0 to  5        by 1  ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_cur_res_dol_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_cur_res_dol_0 upper=p95_p_cur_res_dol_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_p_cur_res_dol_1 / lineattrs = (color=darkblue    thickness = 4);
+band    x=cald lower=p5_p_cur_res_dol_1 upper=p95_p_cur_res_dol_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
+
+run;quit;
+
+
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -235,7 +253,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -251,7 +269,7 @@ band    x=cald lower=p5_p_onart_vl1000__1 upper=p95_p_onart_vl1000__1 / transpar
 
 run;quit;
 
-*/
+
 
 /*
 
