@@ -53,6 +53,7 @@ p_cur_res_dol = (n_cur_res_dol * 100) / n_hiv ;
 %let single_var = p_onart_vl1000_             ;
 
 
+
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
 p_cur_full_vac_e_1564_ prop_elig_on_prep  prop_1564_hivneg_onprep  n_tested  p_diag  p_onart_diag  p_onart_vl1000_  incidence1549_;
 
