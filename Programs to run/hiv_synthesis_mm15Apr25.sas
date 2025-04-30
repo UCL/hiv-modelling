@@ -1,3 +1,10 @@
+/*Considerations;
+
+Rather than increasing newp for MM, should MM be selected based on their newp e.g. >1 newp/3 months?
+Cabotegravir introduction - should this be for women only (and MM)?
+*/
+
+
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
