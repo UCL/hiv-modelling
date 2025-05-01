@@ -12,7 +12,7 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_cioa_yz;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_cioa_yz_2;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 if rr_return_comm_tld in (1.5 2 );
 if rr_interrupt_comm_tld in (0.67 0.5 );
@@ -23,9 +23,12 @@ run;
 */
 
 
+proc print data=b.k_cioa_yz; var run cald option art_monitoring_strategy_options ; run;
 
 
-proc sort data=b.k_cioa_yz; 
+
+
+proc sort data=b.k_cioa_yz  ; 
 by run cald option;
 run;
 
@@ -34,7 +37,7 @@ run;
 data sf;
 
 
-set b.k_cioa_yz ;
+set b.k_cioa_yz   ;
 
 
 if cald=2024   ;
@@ -53,7 +56,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_cioa_yz sf;
+merge b.k_cioa_yz   sf;
 by run ;
 
 
@@ -1426,7 +1429,7 @@ adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld
 
-p_tested_incl_self   effect_comm_tld_hard_reach  p_hard_reach
+p_tested_incl_self   effect_comm_tld_hard_reach  p_hard_reach  art_monitoring_strategy_options
 ;
 
  
@@ -1452,7 +1455,7 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_cioa_yz; set y;  
+data    b.l_cioa_yz_2; set y;  
 
 * to give n = 1000 ;
 * if run in (
@@ -1461,7 +1464,7 @@ data    b.l_cioa_yz; set y;
 
 proc freq; tables run; where cald = 2018; run;
 
-data y ; set b.l_cioa_yz; 
+data y ; set b.l_cioa_yz_2; 
 
 
   options nomprint;
@@ -1665,7 +1668,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onartvisit0);  %var(v=p_hard_reach);
 %var(v=n_infection_incl_mtct);
 %var(v=cost);  %var(v=prevalence15pl);  %var(v=n_self_tested); %var(v=dcost_self_test);
-%var(v=n_prep_oral);
+%var(v=n_prep_oral); 
 %var(v=n_pop_wide_tld_as_art) %var(v=n_pop_wide_tld_prep) %var(v=p_oral_pep_not_prep);  %var(v=dcost_sw_program);  %var(v=n_adc); %var(v=p_tested_incl_self);
 
 data   b.wide_outputs; merge 
@@ -1730,7 +1733,7 @@ p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_
 p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct p_ever_len_v_failed  p_diag_vl1000  p_len_plw  p_len_w  p_len_m prevalence15pl
 n_prep_oral  n_infection_incl_mtct
 n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0 dcost_sw_program  n_self_tested n_adc dcost_self_test
-p_tested_incl_self  p_hard_reach
+p_tested_incl_self  p_hard_reach  
 ;
 
 
@@ -1802,7 +1805,7 @@ prob_prep_oral_b_comm_tld
 incr_pref_prep_oral_comm_tld
 adh_effect_comm_tld
 rr_return_comm_tld
-rr_interrupt_comm_tld  effect_comm_tld_hard_reach
+rr_interrupt_comm_tld  effect_comm_tld_hard_reach art_monitoring_strategy_options
 ;
 
 %macro par(p=);
@@ -1876,7 +1879,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=incr_pref_prep_oral_comm_tld);
 %par(p=adh_effect_comm_tld);
 %par(p=rr_return_comm_tld);
-%par(p=rr_interrupt_comm_tld); %par(p=effect_comm_tld_hard_reach);
+%par(p=rr_interrupt_comm_tld); %par(p=effect_comm_tld_hard_reach); %par(p=art_monitoring_strategy_options);
 
 data b.wide_par2; merge 
 
@@ -1944,7 +1947,7 @@ prob_prep_oral_b_comm_tld
 incr_pref_prep_oral_comm_tld
 adh_effect_comm_tld
 rr_return_comm_tld
-rr_interrupt_comm_tld  effect_comm_tld_hard_reach
+rr_interrupt_comm_tld  effect_comm_tld_hard_reach  art_monitoring_strategy_options
 ;
 
 run;
@@ -1955,7 +1958,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_cioa_yz     ; 
+  data  b.w_cioa_yz_2     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1970,7 +1973,7 @@ proc sort; by run;run;
 
   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_y_out\";
 
-data f; set b.w_cioa_yz;
+data f; set b.w_cioa_yz_2;
 
 
 if prevalence1549w_24 < 0.35 ;
@@ -2459,10 +2462,12 @@ p_vl1000_24 p_vl1000_w_24 p_vl1000_m_24
 prevalence_vg1000_24   
 p_onart_cd4_l200_24
 p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24  
-s_alive_24
+s_alive_24 p_hard_reach_24
 ;
 run;
 ods html close;
+
+
 
 
 ods html;

@@ -44,6 +44,10 @@ n_tested_incl_self = n_self_tested + n_tested;
 if option in (0 1);
 
 
+proc print; var run cald option art_monitoring_strategy_options ; run;
+
+
+
 %let single_var =   cost                           ;
 
 
@@ -1052,6 +1056,9 @@ if run in (
 998859272 
 
 );
+
+
+
 
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
