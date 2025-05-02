@@ -8,36 +8,17 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_a_out\";
 
 
-/*
-
-proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
-
-%let pth_export_mihpsa_mw= C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_f_out\export_files;run;
-
-*/
 
 data c;
-  set a.long_mlw;
+  set a.long_mlw_a;
 
 
 
 p_onart_vl1000_all = .;
 
-
-
-/*
-if option =0 or (prep_improvements  = 1 and option =1);
-
-ods  html;
-proc sgplot data=b; Title    height=1.5 justify=center "incidence1549";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'incidence1549'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
-series  x=cald y=incidence1549/	lineattrs = (color=black thickness = 2); run;
-ods html close;
-*/
 
 
 * NB: note lines below, because variable names cannot end with a number;
