@@ -1818,6 +1818,9 @@ eff_rate_restart = rate_restart;
 * define effective prob_loss_at_diag ;
 eff_prob_loss_at_diag = prob_loss_at_diag;
 
+***CdI specific;
+if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*2.2;
+
 * define effective rate_lost;
 eff_rate_lost = rate_lost ;
 
