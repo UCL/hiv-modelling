@@ -15554,8 +15554,15 @@ vl1000_art_iicu_50pl_ 	= .;	onart_gt6m_50pl_		= .; 	vl1000_art_gt6m_50pl_	= .;	o
 vl1000_art_gt6m_iicu_50pl_ = .;  onart_gt6m_iicu_sw	= .;	vl1000_art_gt6m_iicu_sw = .;
 vl1000_artgt6miicu_w1524evpr=.;onartgt6miicu_w1524evpr=.;
 
+vl1000_art_1524_m = .; vl1000_art_2549_m = .; vl1000_art_50pl_m = .; 
+vl1000_art_1524_w = .; vl1000_art_2549_w = .; vl1000_art_50pl_w = .; 
+
+
 if gender=1 then do;
 	vl1000_art_m 		= vl1000_art;
+	if 15 <= age < 25 then vl1000_art_1524_m = vl1000_art;
+	if 25 <= age < 50 then vl1000_art_2549_m = vl1000_art;
+	if 50 <= age      then vl1000_art_50pl_m = vl1000_art;
 
 	onart_iicu_m 		= onart_iicu;
 	vl1000_art_iicu_m 	= vl1000_art_iicu;
@@ -15601,6 +15608,9 @@ end;
 
 if gender=2 then do;
 	vl1000_art_w 		= vl1000_art;
+	if 15 <= age < 25 then vl1000_art_1524_w = vl1000_art;
+	if 25 <= age < 50 then vl1000_art_2549_w = vl1000_art;
+	if 50 <= age      then vl1000_art_50pl_w = vl1000_art;
 
 	onart_iicu_w 		= onart_iicu;
 	vl1000_art_iicu_w 	= vl1000_art_iicu;
@@ -16353,9 +16363,11 @@ test_not_costed=0; if tested=1 and cost_test <= 0 then test_not_costed=1;
 
 diag_m1549_=0;diag_m1564_=0;
 diag_m1519_=0;diag_m2024_=0;diag_m2529_=0;diag_m3034_=0;diag_m3539_=0;diag_m4044_=0;diag_m4549_=0;diag_m5054_=0;diag_m5559_=0;diag_m6064_=0;  
+diag_m_1524=0; diag_m_2549=0; diag_m_50pl=0;
 * msm ; diag_msm1549_=0;diag_msm1564_=0;diag_pwid1549_=0;diag_pwid1564_=0;
 diag_w1549_=0;diag_w1564_=0;
 diag_w1519_=0;diag_w2024_=0;diag_w2529_=0;diag_w3034_=0;diag_w3539_=0;diag_w4044_=0;diag_w4549_=0;diag_w5054_=0;diag_w5559_=0;diag_w6064_=0;  
+diag_w_1524=0; diag_w_2549=0; diag_w_50pl=0;
 diag_sw=0; 	
 
 onart_m1549_=0;onart_m1564_=0;
@@ -16389,6 +16401,10 @@ if gender=1 then do;
 	else if 85 le age       then do; diag_m85pl_=registd;  onart_m85pl_=onart; end;
 end;
 
+if gender=1 and registd=1 and 15 <= age < 25 then diag_m_1524=1; 
+if gender=1 and registd=1 and 25 <= age < 50 then diag_m_2549=1; 
+if gender=1 and registd=1 and 50 <= age      then diag_m_50pl=1; 
+
 if msm=1 then do;
 	if      15 le age lt 50 then do; ever_tested_msm1549_=ever_tested; diag_msm1549_=registd;  onart_msm1549_=onart; end;
 	if      15 le age lt 65 then do; ever_tested_msm1564_=ever_tested; diag_msm1564_=registd;  onart_msm1564_=onart; end;
@@ -16419,6 +16435,10 @@ if gender=2 then do;
 	if sw = 1 		   then do;  ever_tested_sw   =ever_tested; diag_sw   =registd; onart_sw   =onart;vs_sw=vl1000; end;
 	if sw ne 1           then      ever_tested_sw=0;
 end;
+
+if gender=2 and registd=1 and 15 <= age < 25 then diag_w_1524=1; 
+if gender=2 and registd=1 and 25 <= age < 50 then diag_w_2549=1; 
+if gender=2 and registd=1 and 50 <= age      then diag_w_50pl=1; 
 
 year_1_infection=0;year_2_infection=0;year_3_infection=0;year_4_infection=0;year_5_infection=0;
 year_1_infection_diag=0;year_2_infection_diag=0;year_3_infection_diag=0;year_4_infection_diag=0;year_5_infection_diag=0;
@@ -18631,7 +18651,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;  s_test_not_costed + test_not_costed;
 	s_self_tested + self_tested;  s_tested_due_to_self_test + tested_due_to_self_test;  s_diagnosed_self_test + diagnosed_self_test;
 	s_self_tested_m + self_tested_m ; s_self_tested_w + self_tested_w ;
-
+ 	s_diag_m_1524 + diag_m_1524; s_diag_m_2549 + diag_m_2549; s_diag_m_50pl + diag_m_50pl;
+	s_diag_w_1524 + diag_w_1524; s_diag_w_2549 + diag_w_2549; s_diag_w_50pl + diag_w_50pl;
 
 	/*VL and CD4*/
 
@@ -18645,6 +18666,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_r_vg1000 + r_vg1000 ; s_vl1000 + vl1000 ; s_vl1000_art + vl1000_art ; s_onart_iicu + onart_iicu ; s_vl1000_art_iicu + vl1000_art_iicu ;
     s_onart_gt6m + onart_gt6m ; s_vl1000_art_gt6m + vl1000_art_gt6m ; s_onart_gt6m_iicu + onart_gt6m_iicu ; s_diag_vl1000 + diag_vl1000;
 	s_vl1000_art_gt6m_iicu + vl1000_art_gt6m_iicu; s_vl1000_m + vl1000_m ; s_vl1000_art_m + vl1000_art_m ; s_onart_iicu_m + onart_iicu_m ;
+
+	s_vl1000_art_1524_m + vl1000_art_1524_m;      s_vl1000_art_2549_m + vl1000_art_2549_m;     s_vl1000_art_50pl_m + vl1000_art_50pl_m;    
+	s_vl1000_art_1524_w + vl1000_art_1524_w;   s_vl1000_art_2549_w + vl1000_art_2549_w;  s_vl1000_art_50pl_w + vl1000_art_50pl_w; 
+
     s_vl1000_art_iicu_m + vl1000_art_iicu_m ; s_onart_gt6m_m + onart_gt6m_m ; s_vl1000_art_gt6m_m + vl1000_art_gt6m_m ;       
 	s_onart_gt6m_iicu_m + onart_gt6m_iicu_m ; s_vl1000_art_gt6m_iicu_m + vl1000_art_gt6m_iicu_m ; s_vl1000_w + vl1000_w ; s_vl1000_art_w + vl1000_art_w ;	  	        
  	s_onart_iicu_w + onart_iicu_w ; s_vl1000_art_iicu_w + vl1000_art_iicu_w ; s_onart_gt6m_w + onart_gt6m_w ; s_vl1000_art_gt6m_w + vl1000_art_gt6m_w ;
@@ -20135,6 +20160,8 @@ s_diag_m5054_  s_diag_m5559_  s_diag_m6064_
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
 s_nn_tdr_diag
+ 	s_diag_m_1524  s_diag_m_2549  s_diag_m_50pl 
+	s_diag_w_1524  s_diag_w_2549  s_diag_w_50pl 
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc s_diag_this_period_f_labdel s_diag_this_period_f_pd
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f
@@ -20157,6 +20184,8 @@ s_vg1000 s_vg1000_1549 s_vg1000_m  s_vg1000_w s_vg1000_w_1524  s_vg1000_m_1524 s
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
+
+s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w 
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
@@ -21226,6 +21255,8 @@ s_diag_m5054_  s_diag_m5559_  s_diag_m6064_
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
 s_nn_tdr_diag
+ 	s_diag_m_1524  s_diag_m_2549  s_diag_m_50pl 
+	s_diag_w_1524  s_diag_w_2549  s_diag_w_50pl 
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc  s_diag_this_period_f_labdel s_diag_this_period_f_pd
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f 
@@ -21248,6 +21279,9 @@ s_vg1000  s_vg1000_1549  s_vg1000_m  s_vg1000_w  s_vg1000_w_1524  s_vg1000_m_152
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
+
+s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w 
+
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
@@ -22188,6 +22222,8 @@ s_diag_m5054_  s_diag_m5559_  s_diag_m6064_
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  
 s_nn_tdr_diag
+ 	s_diag_m_1524  s_diag_m_2549  s_diag_m_50pl 
+	s_diag_w_1524  s_diag_w_2549  s_diag_w_50pl 
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc  s_diag_this_period_f_labdel s_diag_this_period_f_pd
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f 
@@ -22209,6 +22245,9 @@ s_vg1000  s_vg1000_1549  s_vg1000_m  s_vg1000_w  s_vg1000_w_1524  s_vg1000_m_152
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
+
+s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w 
+
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
