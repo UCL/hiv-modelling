@@ -1382,11 +1382,10 @@ proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_mlw; set y;
+data a.long_mlw_a; set y;
 if cald=. then delete;run;
-/*proc freq data=a.long_20240429; table s_alive;run;*/
-/*proc freq data=a.long_20240429; table p_ep;run;*/
-proc contents data = a.long_mlw; run;
+
+proc contents data = a.long_mlw_a; run;
 
 
 
