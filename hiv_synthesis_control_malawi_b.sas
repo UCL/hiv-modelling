@@ -15557,6 +15557,7 @@ vl1000_artgt6miicu_w1524evpr=.;onartgt6miicu_w1524evpr=.;
 vl1000_art_1524_m = .; vl1000_art_2549_m = .; vl1000_art_50pl_m = .; 
 vl1000_art_1524_w = .; vl1000_art_2549_w = .; vl1000_art_50pl_w = .; 
 
+vl1000_art_sw = .; 
 
 if gender=1 then do;
 	vl1000_art_m 		= vl1000_art;
@@ -15663,6 +15664,7 @@ if 50 <= age  then do;
 end;
 
 if sw=1 then do;
+	vl1000_art_sw    		= vl1000_art;
 	onart_gt6m_iicu_sw		= onart_gt6m_iicu;
 	vl1000_art_gt6m_iicu_sw = vl1000_art_gt6m_iicu;
 end;
@@ -18668,7 +18670,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl1000_art_gt6m_iicu + vl1000_art_gt6m_iicu; s_vl1000_m + vl1000_m ; s_vl1000_art_m + vl1000_art_m ; s_onart_iicu_m + onart_iicu_m ;
 
 	s_vl1000_art_1524_m + vl1000_art_1524_m;      s_vl1000_art_2549_m + vl1000_art_2549_m;     s_vl1000_art_50pl_m + vl1000_art_50pl_m;    
-	s_vl1000_art_1524_w + vl1000_art_1524_w;   s_vl1000_art_2549_w + vl1000_art_2549_w;  s_vl1000_art_50pl_w + vl1000_art_50pl_w; 
+	s_vl1000_art_1524_w + vl1000_art_1524_w;   s_vl1000_art_2549_w + vl1000_art_2549_w;  s_vl1000_art_50pl_w + vl1000_art_50pl_w; s_vl1000_art_sw + vl1000_art_sw;
 
     s_vl1000_art_iicu_m + vl1000_art_iicu_m ; s_onart_gt6m_m + onart_gt6m_m ; s_vl1000_art_gt6m_m + vl1000_art_gt6m_m ;       
 	s_onart_gt6m_iicu_m + onart_gt6m_iicu_m ; s_vl1000_art_gt6m_iicu_m + vl1000_art_gt6m_iicu_m ; s_vl1000_w + vl1000_w ; s_vl1000_art_w + vl1000_art_w ;	  	        
@@ -20185,7 +20187,7 @@ s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
 
-s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w 
+s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w s_vl1000_art_sw
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
@@ -21280,7 +21282,7 @@ s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
 
-s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w 
+s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w s_vl1000_art_sw
 
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
@@ -22246,7 +22248,7 @@ s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
 
-s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w 
+s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w s_vl1000_art_sw
 
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_

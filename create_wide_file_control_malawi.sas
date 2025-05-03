@@ -770,14 +770,15 @@ end;
 * n_onart_sw;					n_onart_sw = s_onart_sw * sf;
 * n_onart_msm;					n_onart_msm = s_onart_msm * sf;
 
+* n_vl1000_art_1524_m;			n_vl1000_art_1524_m = s_vl1000_art_1524_m * sf;    
+* n_vl1000_art_2549_m;			n_vl1000_art_2549_m = s_vl1000_art_1549_m * sf;    
+* n_vl1000_art_50pl_m;			n_vl1000_art_50pl_m = s_vl1000_art_50pl_m * sf;    
 
+* n_vl1000_art_1524_w;			n_vl1000_art_1524_w = s_vl1000_art_1524_w * sf;    
+* n_vl1000_art_2549_w;			n_vl1000_art_2549_w = s_vl1000_art_1549_w * sf;    
+* n_vl1000_art_50pl_w;			n_vl1000_art_50pl_w = s_vl1000_art_50pl_w * sf;    
 
-
-s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w 
-
-
-
-
+* n_vl1000_art_sw;				n_vl1000_art_sw = s_vl1000_art_sw * sf;    
 
 
 * p_efa;						if s_onart > 0 then p_efa = s_efa / s_onart ;
@@ -1102,7 +1103,12 @@ s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_
 													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all)  * 4 * sf ;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * sf ;
-													
+					
+* n_dead1524w_all;				n_dead1524w_all = (s_dead1519w_all + s_dead2024m_all) * 4 * sf;
+
+
+
+	
 *future YLL (assuming age and gender specific life expectancy), all incurred at the calendar year of death (for adults aged 15+ years old); 
 * n_total_yllag;				n_total_yllag = s_total_yllag  * 4 * sf;
 * n_dyll_GBD;					n_dyll_GBD = s_dyll_GBD  * 4 * sf;
@@ -1403,7 +1409,8 @@ p_ep_msm p_msm_ge1newp p_m_ge1newp n_pwid p_onprep_pwid p_onart_pwid
  n_diag_m_1524   n_diag_m_2549   n_diag_m_50pl   n_diag_w_1524  n_diag_w_2549  n_diag_w_50pl  n_diag_msm
 
  n_onart1524_m  n_onart1524_w  n_onart2549_m  n_onart2549_w  n_onart50pl_m  n_onart50pl_w
-  n_onart_sw  n_onart_msm                                      
+  n_onart_sw  n_onart_msm    n_vl1000_art_1524_m    n_vl1000_art_2549_m  n_vl1000_art_50pl_m n_vl1000_art_1524_w    n_vl1000_art_2549_w  n_vl1000_art_50pl_w 
+n_vl1000_art_sw
 ;
 
 
@@ -1469,23 +1476,22 @@ ART_50_UP_F = n_onart50pl_w;
 ART_FSW = n_onart_sw;
 ART_MSM = n_onart_msm;
 VLS_00_14_M = .;
-
-VLS_15_24_M
-VLS_25_49_M
-VLS_50_UP_M
-VLS_00_14_F
-VLS_15_24_F
-VLS_25_49_F
-VLS_50_UP_F
-VLS_FSW
-VLS_MSM
-Birth_All
-Birth_HIV
-DeathsAll_00_14_M
-DeathsAll_15_24_M
+VLS_15_24_M = n_vl1000_art_1524_m;
+VLS_25_49_M = n_vl1000_art_2549_m;
+VLS_50_UP_M = n_vl1000_art_50pl_m;
+VLS_00_14_F = .;
+VLS_15_24_F = n_vl1000_art_1524_w;
+VLS_25_49_F = n_vl1000_art_2549_w;
+VLS_50_UP_F = n_vl1000_art_50pl_w;
+VLS_FSW = n_vl1000_art_sw;
+VLS_MSM = n_vl1000_art_msm;
+Birth_All = n_birth;
+Birth_HIV = n_give_birth_w_hiv;
+DeathsAll_00_14_M = .;
+DeathsAll_15_24_M =
 DeathsAll_25_49_M
 DeathsAll_50_UP_M
-DeathsAll_00_14_F
+DeathsAll_00_14_F = .;
 DeathsAll_15_24_F
 DeathsAll_25_49_F
 DeathsAll_50_UP_F
