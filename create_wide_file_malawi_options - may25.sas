@@ -1100,8 +1100,8 @@ end;
 * n_hiv1524w;					n_hiv1524w = s_hiv1524w * sf; *VCFeb2023;
 * n_hiv2549m;					n_hiv2549m = (s_hiv1549m - s_hiv1524m) * sf; *VCFeb2023;
 * n_hiv2549w;					n_hiv2549w = (s_hiv1549w - s_hiv1524w) * sf; *VCFeb2023;
-* n_hiv55plm;					n_hiv55plm = (s_hivge15m - s_hiv1549m) * sf; *JASJun2024;
-* n_hiv55plw;					n_hiv55plw = (s_hivge15w - s_hiv1549w) * sf; *JASJun2024;
+* n_hiv50plm;					n_hiv50plm = (s_hivge15m - s_hiv1549m) * sf; *JASJun2024;
+* n_hiv50plw;					n_hiv50plw = (s_hivge15w - s_hiv1549w) * sf; *JASJun2024;
 * n_hiv_sw;						n_hiv_sw = s_hiv_sw * sf;*VCFeb2023;
 
 * n_alive;						n_alive = s_alive * sf;
@@ -1111,8 +1111,8 @@ end;
 * n_alive_1524w;				n_alive_1524w = s_ageg1w * sf; *VCFeb2023;
 * n_alive_2549m;				n_alive_2549m = (s_alive1549_m - s_ageg1m) * sf; *VCFeb2023; 
 * n_alive_2549w;				n_alive_2549w = (s_alive1549_w - s_ageg1w) * sf; *VCFeb2023; 
-* n_alive_55plm;				n_alive_55plm = (s_ageg5559m + s_ageg6064m + s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg8084m + s_ageg85plm) * sf; *JASJun2024;
-* n_alive_55plw;				n_alive_55plw = (s_ageg5559w + s_ageg6064w + s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85plw) * sf; *JASJun2024;
+* n_alive_50plm;				n_alive_50plm = (s_ageg5054m + s_ageg5559m + s_ageg6064m + s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg8084m + s_ageg85plm) * sf; *JASJun2024;
+* n_alive_50plw;				n_alive_50plw = (s_ageg5054w + s_ageg5559w + s_ageg6064w + s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85plw) * sf; *JASJun2024;
 * n_alive0_;					n_alive0_ = s_alive0_ * sf *4;*otherwise it is only the births in a 3 month periodl;
 * n_alive_014_;					n_alive_014_ = (s_ageg014_) * sf; 
 * n_alive_1014m;				n_alive_1014m = s_ageg1014m * sf; 
@@ -1170,14 +1170,14 @@ inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 * n_new_inf1524w;				n_new_inf1524w = (s_primary1519w + s_primary2024w) * sf * 4;
 * n_new_inf2549m;				n_new_inf2549m = (s_primary1549m - s_primary1519m - s_primary2024m) * sf * 4;
 * n_new_inf2549w;				n_new_inf2549w = (s_primary1549w - s_primary1519w - s_primary2024w) * sf * 4;
-* n_new_inf55plm;				n_new_inf55plm = (s_primary5559m + s_primary6064m) * sf * 4;	*JASJUN2024;
-* n_new_inf55plw;				n_new_inf55plw = (s_primary5559w + s_primary6064w) * sf * 4;	*JASJUN2024;
+* n_new_inf50plm;				n_new_inf50plm = (s_primary5054m + s_primary5559m + s_primary6064m) * sf * 4;	*JASJUN2024;
+* n_new_inf50plw;				n_new_inf50plw = (s_primary5054w + s_primary5559w + s_primary6064w) * sf * 4;	*JASJUN2024;
 
 
 
 keep run option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 
-n_hiv n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv55plm n_hiv55plw n_hiv_sw
-n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive_55plm n_alive_55plw n_alive0_ 
+n_hiv n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv50plm n_hiv50plw n_hiv_sw
+n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive_50plm n_alive_50plw n_alive0_ 
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd40200 n_not_on_art_cd4050 n_not_on_art_cd450200 n_not_on_art_cd4200350 n_not_on_art_cd4350500 n_not_on_art_cd4ge500 
@@ -1235,7 +1235,7 @@ p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vl
 p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vlg1000   p_tams_ontld_vlg1000 p_vlg1000_184m p_vlg1000_65m
 death_rate_artexp  death_rate_hiv death_rate_hiv_w death_rate_hiv_m death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
 n_new_inf1549m n_new_inf1549w n_new_inf1549 n_new_inf1564m n_new_inf1564w n_infection  n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w
-n_new_inf55plm n_new_inf55plw
+n_new_inf50plm n_new_inf50plw
 p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  n_onart_birth_with_inf_child
@@ -1413,14 +1413,14 @@ n_hiv1524m
 n_hiv1524w
 n_hiv2549m
 n_hiv2549w
-n_hiv55plm
-n_hiv55plw
+n_hiv50plm
+n_hiv50plw
 n_alive_1524m
 n_alive_1524w
 n_alive_2549m
 n_alive_2549w
-n_alive_55plm
-n_alive_55plw
+n_alive_50plm
+n_alive_50plw
 n_diag_ever_m
 n_diag_ever_w
 n_onart_m
@@ -1440,8 +1440,8 @@ n_new_inf1524m
 n_new_inf1524w
 n_new_inf2549m
 n_new_inf2549w
-n_new_inf55plm
-n_new_inf55plw
+n_new_inf50plm
+n_new_inf50plw
 n_death_hivrel_m
 n_death_hivrel_w
 n_death_m
@@ -1587,14 +1587,14 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var_stock(v=n_hiv1524w);
 %var_stock(v=n_hiv2549m);
 %var_stock(v=n_hiv2549w);
-%var_stock(v=n_hiv55plm);
-%var_stock(v=n_hiv55plw);
+%var_stock(v=n_hiv50plm);
+%var_stock(v=n_hiv50plw);
 %var_stock(v=n_alive_1524m);
 %var_stock(v=n_alive_1524w);
 %var_stock(v=n_alive_2549m);
 %var_stock(v=n_alive_2549w);
-%var_stock(v=n_alive_55plm);
-%var_stock(v=n_alive_55plw);
+%var_stock(v=n_alive_50plm);
+%var_stock(v=n_alive_50plw);
 %var_stock(v=n_diag_ever_m);
 %var_stock(v=n_diag_ever_w);
 %var_stock(v=n_onart_m);
@@ -1655,14 +1655,14 @@ n_hiv1524m
 n_hiv1524w
 n_hiv2549m
 n_hiv2549w
-n_hiv55plm
-n_hiv55plw
+n_hiv50plm
+n_hiv50plw
 n_alive_1524m
 n_alive_1524w
 n_alive_2549m
 n_alive_2549w
-n_alive_55plm
-n_alive_55plw
+n_alive_50plm
+n_alive_50plw
 n_diag_ever_m
 n_diag_ever_w
 n_onart_m
@@ -1689,15 +1689,15 @@ n_hiv1524m
 n_hiv1524w
 n_hiv2549m
 n_hiv2549w
-n_hiv55plm
-n_hiv55plw
+n_hiv50plm
+n_hiv50plw
 dummy2
 n_alive_1524m
 n_alive_1524w
 n_alive_2549m
 n_alive_2549w
-n_alive_55plm
-n_alive_55plw
+n_alive_50plm
+n_alive_50plw
 dummy3
 n_diag_ever_m
 n_diag_ever_w
@@ -1745,8 +1745,8 @@ proc print noobs data=a; run;
 %var_flow(v=n_new_inf1524w);
 %var_flow(v=n_new_inf2549m);
 %var_flow(v=n_new_inf2549w);
-%var_flow(v=n_new_inf55plm);
-%var_flow(v=n_new_inf55plw);
+%var_flow(v=n_new_inf50plm);
+%var_flow(v=n_new_inf50plw);
 %var_flow(v=n_death_hivrel_m);
 %var_flow(v=n_death_hivrel_w);
 %var_flow(v=n_death_m);
@@ -1819,8 +1819,8 @@ n_new_inf1524m
 n_new_inf1524w
 n_new_inf2549m
 n_new_inf2549w
-n_new_inf55plm
-n_new_inf55plw
+n_new_inf50plm
+n_new_inf50plw
 n_death_hivrel_m
 n_death_hivrel_w
 n_death_m
@@ -1859,8 +1859,8 @@ n_new_inf1524m
 n_new_inf1524w
 n_new_inf2549m
 n_new_inf2549w
-n_new_inf55plm
-n_new_inf55plw
+50
+n_new_inf50plw
 dummy2
 n_death_hivrel_m
 n_death_hivrel_w
@@ -1906,7 +1906,7 @@ proc transpose data=flows out=data3 ; run;
 data a; set data3;
 drop _name_;
 
-ods html;
+
 proc print noobs data=a; run; 
 ods html close;
 

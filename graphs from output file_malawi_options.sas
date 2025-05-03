@@ -8,7 +8,7 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_i_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\mihpsa_malawi\mlw_j_out\";
 
 /*
 
@@ -19,14 +19,14 @@ proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome mode
 */
 
 data c;
-  set a.long_mlw_i;
+  set a.long_mlw_j;
 
 
-if option in (  1 2 3 4 5 6 7 8 9 10 11 12         ) then delete;
+if option in (0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17    ) then delete;
 
 * if option=0 and cald gt 2023 then delete;
 
-  if option = 0 then option = 1;
+  if option = 18 then option = 1;
   if option = 99 then option = 0;
 
 
@@ -117,7 +117,7 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 445 ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 182 ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2052.75 ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
