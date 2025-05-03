@@ -13755,6 +13755,8 @@ primary1549w=0; if gender=2 and primary=1 and 15 <= age < 50 then primary1549w=1
 
 primary1549=0; if primary=1 and 15 <= age < 50 then primary1549=1;
 
+primary_prep_elig=0; if primary=1 and prep_any_elig = 1 then primary_prep_elig=1;
+primary_onprep=0; if primary=1 and prep_any = 1 then primary_onprep=1;
 
 primary1524m_ep=0; if gender=1 and primary=1 and 15 <= age < 25 and ep=1 then primary1524m_ep=1;
 primary2534m_ep=0; if gender=1 and primary=1 and 25 <= age < 35 and ep=1 then primary2534m_ep=1;
@@ -16533,6 +16535,7 @@ if gender=2  then deadw_all=dead;
 
 death_hivrel=0;   if caldate&j = death > . and dcause=1 then death_hivrel=dead;
 death_hivrel_m=0; if caldate&j = death > . and dcause=1 and gender=1 then death_hivrel_m=dead;
+death_hivrel_w=0; if caldate&j = death > . and dcause=1 and gender=2 then death_hivrel_w=dead;
 
 death_dcause3 = 0; if caldate&j = death > . and dcause=3 then death_dcause3 = dead ;
 
@@ -17042,6 +17045,10 @@ if visit=1 and naive=1 then pre_art_care=1;
 status_death_hr_g=.;death_hiv=.;death_hiv_m=.;death_hiv_w=.;
 sdg_hr_1=.;sdg_hr_2=.;sdg_hr_3=.;sdg_hr_4=.;sdg_hr_5=.;sdg_hr_6=.;sdg_hr_7=.;sdg_hr_8=.;sdg_hr_9=.;sdg_hr_99=.;
 death_hiv_age_1524=0; death_hiv_age_2534=0; death_hiv_age_3544=0; death_hiv_age_4554=0; death_hiv_age_5564=0; 
+
+death_hiv_age_1524_m=0; death_hiv_age_2549_m=0; death_hiv_age_50pl_m=0; 
+death_hiv_age_1524_w=0; death_hiv_age_2549_w=0; death_hiv_age_50pl_w=0; 
+
 death_hiv_inf_pre_year_interv=.; death_hiv_inf_post_year_interv=.; 
 
 if hiv=1 and caldate&j=death and dead_ = 1 and rdcause=1 then do;
@@ -17049,6 +17056,14 @@ death_hiv=1;if gender=1 then death_hiv_m=1;
 
 if infection_pre_year_interv=1 then death_hiv_inf_pre_year_interv=1; 
 if infection_post_year_interv=1 then death_hiv_inf_post_year_interv=1; 
+
+if gender=1 and 15 <= age < 25 then death_hiv_age_1524_m=1;
+if gender=1 and 25 <= age < 50 then death_hiv_age_2549_m=1;
+if gender=1 and 50 <= age      then death_hiv_age_50pl_m=1;
+
+if gender=2 and 15 <= age < 25 then death_hiv_age_1524_w=1;
+if gender=2 and 25 <= age < 50 then death_hiv_age_2549_w=1;
+if gender=2 and 50 <= age      then death_hiv_age_50pl_w=1;
 
 if gender=2 then death_hiv_w=1;
 if 15 <= age < 25 and death_hiv=1 then death_hiv_age_1524=1;
@@ -18212,7 +18227,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_inf_vlsupp + inf_vlsupp ; s_inf_newp + inf_newp ; s_inf_ep + inf_ep ; s_inf_diag + inf_diag ; s_inf_naive + inf_naive ;
 
-	
+	s_primary_prep_elig + primary_prep_elig; s_primary_onprep + primary_onprep; 
+
 	/*outputs amongst those infected*/
 
 	s_i_m_d_newp + i_m_d_newp ; s_i_w_d_newp + i_w_d_newp ; s_i_w_np + i_w_np ; s_i_m_np + i_m_np ; s_i_ep + i_ep ;
@@ -18896,8 +18912,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dead85plw_all + dead85plw_all; 	
 	s_dead6569m_all + dead6569m_all;  s_dead7074m_all + dead7074m_all; s_dead7579m_all + dead7579m_all;  s_dead8084m_all + dead8084m_all;
 	s_dead85plm_all + dead85plm_all; 
-
-	s_death_hivrel + death_hivrel ;	s_death_hivrel_m + death_hivrel_m ; s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead_ + dead_ ;
+	s_death_hivrel + death_hivrel ;	s_death_hivrel_m + death_hivrel_m ; s_death_hivrel_w + death_hivrel_w ; s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead_ + dead_ ;
 	s_death_hiv + death_hiv ;s_death_hiv_m + death_hiv_m ;s_death_hiv_w + death_hiv_w ; s_dead_hivrel_onart + dead_hivrel_onart;
 	s_dead_diag + dead_diag ; s_dead_naive + dead_naive ; s_dead_onart + dead_onart ; s_dead_line1_lf0 + dead_line1_lf0 ;
     s_dead_line1_lf1 + dead_line1_lf1 ; s_dead_line2_lf1 + dead_line2_lf1 ; s_dead_line2_lf2 + dead_line2_lf2 ; s_dead_artexp + dead_artexp ;
@@ -18915,7 +18930,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_death_hiv_age_1524 + death_hiv_age_1524; s_death_hiv_age_2534 + death_hiv_age_2534; s_death_hiv_age_3544 + death_hiv_age_3544; 
 	s_death_hiv_age_4554 + death_hiv_age_4554; s_death_hiv_age_5564 + death_hiv_age_5564; 
 
-	s_dead_hivpos_cause1 + dead_hivpos_cause1 ; s_dead_hivpos_tb + dead_hivpos_tb ; s_dead_hivpos_crypm + dead_hivpos_crypm ; 
+ 	s_death_hiv_age_1524_m + death_hiv_age_1524_m;   s_death_hiv_age_2549_m + death_hiv_age_2549_m ;  s_death_hiv_age_50pl_m + death_hiv_age_50pl_m;
+ 	s_death_hiv_age_1524_w + death_hiv_age_1524_w;   s_death_hiv_age_2549_w + death_hiv_age_2549_w ;  s_death_hiv_age_50pl_w + death_hiv_age_50pl_w;
+
+ 	s_dead_hivpos_cause1 + dead_hivpos_cause1 ; s_dead_hivpos_tb + dead_hivpos_tb ; s_dead_hivpos_crypm + dead_hivpos_crypm ; 
 	s_dead_hivpos_sbi + dead_hivpos_sbi ; s_dead_hivpos_oth_adc + dead_hivpos_oth_adc ; s_dead_hivpos_cause2 + dead_hivpos_cause2 ; 
 	s_dead_hivpos_cause3 + dead_hivpos_cause3 ; 	s_dead_hivpos_cause4 + dead_hivpos_cause4 ; s_dead_hivpos_cvd + dead_hivpos_cvd ; 
 	s_dead_cvd + dead_cvd ; s_dead_hivneg_cause4 + dead_hivneg_cause4 ; s_dead_hivneg_cause3 + dead_hivneg_cause3 ; 
@@ -19882,7 +19900,7 @@ s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_pr
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
 s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
-s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
+s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive s_primary_prep_elig s_primary_onprep
 
 /*outputs amongst those infected*/
 s_i_m_d_newp  s_i_w_d_newp   s_i_w_np   s_i_m_np  s_i_ep 
@@ -20374,8 +20392,10 @@ s_dead s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
-s_death_hivrel  s_death_hivrel_m  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
+s_death_hivrel  s_death_hivrel_m  s_death_hivrel_w  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
+ s_death_hiv_age_1524_m   s_death_hiv_age_2549_m  s_death_hiv_age_50pl_m
+ s_death_hiv_age_1524_w   s_death_hiv_age_2549_w  s_death_hiv_age_50pl_w
 s_dead_   s_death_hiv  s_death_hiv_m  s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p s_dead_hivrel_onart
 s_dead_u_vfail1  s_dead_line1_vlg1000  s_dead_line2_vlg1000  s_ev_onart_gt6m_vlg1000_dead
@@ -20980,7 +21000,7 @@ s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_pr
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
 s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
-s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
+s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive s_primary_prep_elig s_primary_onprep
 
 /*outputs amongst those infected*/
 s_i_m_d_newp  s_i_w_d_newp   s_i_w_np   s_i_m_np  s_i_ep 
@@ -21470,8 +21490,10 @@ s_dead s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
-s_death_hivrel s_death_hivrel_m  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
+s_death_hivrel s_death_hivrel_m  s_death_hivrel_w  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
+ s_death_hiv_age_1524_m   s_death_hiv_age_2549_m  s_death_hiv_age_50pl_m
+ s_death_hiv_age_1524_w   s_death_hiv_age_2549_w  s_death_hiv_age_50pl_w
 s_dead_   s_death_hiv s_death_hiv_m s_death_hiv_w s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p s_dead_hivrel_onart
 s_dead_u_vfail1  s_dead_line1_vlg1000  s_dead_line2_vlg1000  s_ev_onart_gt6m_vlg1000_dead
@@ -21941,7 +21963,7 @@ s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_pr
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
 s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
-s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
+s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive s_primary_prep_elig s_primary_onprep
 
 /*outputs amongst those infected*/
 s_i_m_d_newp  s_i_w_d_newp   s_i_w_np   s_i_m_np  s_i_ep 
@@ -22435,8 +22457,10 @@ s_dead  s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
-s_death_hivrel s_death_hivrel_m s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
+s_death_hivrel s_death_hivrel_m  s_death_hivrel_w s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
+ s_death_hiv_age_1524_m   s_death_hiv_age_2549_m  s_death_hiv_age_50pl_m
+ s_death_hiv_age_1524_w   s_death_hiv_age_2549_w  s_death_hiv_age_50pl_w
 s_dead_  s_death_hiv  s_death_hiv_m s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p s_dead_hivrel_onart
 s_dead_u_vfail1  s_dead_line1_vlg1000  s_dead_line2_vlg1000  s_ev_onart_gt6m_vlg1000_dead

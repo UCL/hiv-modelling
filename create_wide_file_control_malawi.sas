@@ -84,10 +84,9 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 * ================================================================================= ;
 
 * discount rate is 3%; 
-* note discounting is from 2021 - no adjustment needed;
 * ts1m - this code needs to change for ts1m;
 
-%let year_start_disc=2024  ; * year_interv + 1;
+%let year_start_disc=2027  ; * year_interv + 1;
 discount_3py = 1/(1.03**(cald-&year_start_disc));
 discount_10py = 1/(1.10**(cald-&year_start_disc));
 *The following can be changed if we want instead 10% discount rate;
@@ -389,6 +388,7 @@ so the one above is the annual number of tests conducted in ANC;
 
 *n_pmtct;						n_pmtct = s_pmtct * sf;
 
+* n_mcirc;						n_mcirc = s_mcirc * sf;
 * p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;
 * p_mcirc_1519m;				p_mcirc_1519m = s_mcirc_1519m / s_ageg1519m ;
 * p_mcirc_2024m;				p_mcirc_2024m = s_mcirc_2024m / s_ageg2024m ;
@@ -481,7 +481,9 @@ so the one above is the annual number of tests conducted in ANC;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
 
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = max(s_prep_any_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
-
+* n_onprep_sw;					n_onprep_sw = s_onprep_sw * sf;
+* n_onprep_w;					n_onprep_w = s_onprep_w * sf;
+* n_onprep_m;					n_onprep_m = s_onprep_m * sf;
 
 * n_prep;						n_prep = s_prep_any * sf;
 * n_prep_1524w;					n_prep_1524w = s_onprep_1524w * sf;
@@ -496,6 +498,8 @@ so the one above is the annual number of tests conducted in ANC;
 * n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * sf;
 * n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * sf;
 * n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * sf;
+
+* n_elig_prep;					n_elig_prep = s_elig_prep * sf;
 
 *Currently on PrEP: Number of clients actively taking PrEP during the last month of the date range displayed;
 *Note we can't do the last month so we will do the last 3 months;
@@ -703,6 +707,8 @@ so the one above is the annual number of tests conducted in ANC;
 end;
 
 * mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
+
+* n_hiv_child;					n_hiv_child = (s_birth_with_inf_child + s_child_infected_breastfeeding) * 4 * sf; 
 
 * p_births_hiv_vlg1000;			p_births_hiv_vlg1000 = s_vl_when_giving_birth_g1000 / s_give_birth_with_hiv ; 
 
@@ -938,7 +944,7 @@ end;
 * p_msm_ge1newp;				p_msm_ge1newp = s_msm_ge1newp / s_alive1564_msm;
 * p_m_ge1newp;					p_m_ge1newp = s_m_ge1newp / s_alive1564_m;
 * n_diag_msm;					n_diag_msm = s_diag_msm * sf;
-
+* n_onprep_msm;					n_onprep_msm = s_onprep_msm * sf;
 
 * PWID;
 
@@ -1089,7 +1095,14 @@ end;
 
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel  * 4* sf;
 * n_death_hivrel_m;				n_death_hivrel_m = s_death_hivrel_m  * 4* sf;
-* n_death_hivrel_w;				n_death_hivrel_w = (s_death_hivrel - s_death_hivrel_m) * 4* sf;
+* n_death_hivrel_w;				n_death_hivrel_w = s_death_hivrel_w * 4* sf;
+
+* n_death_hiv_age_1524_m;		n_death_hiv_age_1524_m = s_death_hiv_age_1524_m * 4 * sf; 
+* n_death_hiv_age_2549_m;		n_death_hiv_age_2549_m = s_death_hiv_age_1549_m * 4 * sf; 
+* n_death_hiv_age_50pl_m;		n_death_hiv_age_50pl_m = s_death_hiv_age_50pl_m * 4 * sf; 
+* n_death_hiv_age_1524_w;		n_death_hiv_age_1524_w = s_death_hiv_age_1524_w * 4 * sf; 
+* n_death_hiv_age_2549_w;		n_death_hiv_age_2549_w = s_death_hiv_age_1549_w * 4 * sf; 
+* n_death_hiv_age_50pl_w;		n_death_hiv_age_50pl_w = s_death_hiv_age_50pl_w * 4 * sf; 
 
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* sf;
 * n_death;						n_death = s_dead_allage  * 4 * sf;
@@ -1104,9 +1117,16 @@ end;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * sf ;
 					
-* n_dead1524w_all;				n_dead1524w_all = (s_dead1519w_all + s_dead2024m_all) * 4 * sf;
 
+* n_dead_w;						n_dead_w = s_dead_w * 4 * sf;
+* n_dead1524w_all;				n_dead1524w_all = (s_dead1519w_all + s_dead2024w_all) * 4 * sf;
+* n_dead2549w_all;				n_dead2549w_all = (s_dead2529w_all + s_dead3034w_all + s_dead3539w_all + s_dead4044w_all + s_dead4549w_all) * 4 * sf;
+* n_dead50plw_all;				n_dead50plw_all = n_dead_w - n_dead1524w_all - n_dead2549w_all;
 
+* n_dead_m;						n_dead_m = s_dead_m * 4 * sf;
+* n_dead1524m_all;				n_dead1524m_all = (s_dead1519m_all + s_dead2024m_all) * 4 * sf;
+* n_dead2549m_all;				n_dead2549m_all = (s_dead2529m_all + s_dead3034m_all + s_dead3539m_all + s_dead4044m_all + s_dead4549m_all) * 4 * sf;
+* n_dead50plm_all;				n_dead50plm_all = n_dead_m - n_dead1524m_all - n_dead2549m_all;
 
 	
 *future YLL (assuming age and gender specific life expectancy), all incurred at the calendar year of death (for adults aged 15+ years old); 
@@ -1198,10 +1218,13 @@ inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 * n_new_inf1524w;				n_new_inf1524w = (s_primary1519w + s_primary2024w) * sf * 4;
 * n_new_inf2549m;				n_new_inf2549m = (s_primary1549m - s_primary1519m - s_primary2024m) * sf * 4;
 * n_new_inf2549w;				n_new_inf2549w = (s_primary1549w - s_primary1519w - s_primary2024w) * sf * 4;
-* n_new_inf55plm;				n_new_inf55plm = (s_primary5559m + s_primary6064m) * sf * 4;	*JASJUN2024;
-* n_new_inf55plw;				n_new_inf55plw = (s_primary5559w + s_primary6064w) * sf * 4;	*JASJUN2024;
+* n_new_inf50plm;				n_new_inf50plm = (s_primary5054m + s_primary5559m + s_primary6064m) * sf * 4;	*JASJUN2024;
+* n_new_inf50plw;				n_new_inf50plw = (s_primary5054w + s_primary5559w + s_primary6064w) * sf * 4;	*JASJUN2024;
+* n_new_inf_sw;					n_new_inf_sw = s_primary_sw * 4 * sf;
+* n_new_inf_msm;				n_new_inf_msm = s_primary_msm * 4 * sf;
 
-
+* n_new_inf_prep_elig;			n_new_inf_prep_elig = s_primary_prep_elig * 4 * sf; 
+* n_new_inf_onprep;				n_new_inf_onprep = s_primary_onprep * 4 * sf;
 
 keep run option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 
 n_hiv n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv50plm n_hiv50plw n_hiv_sw
@@ -1214,11 +1237,11 @@ s_alive n_birth n_give_birth_w_hiv n_give_birth_on_art p_w_giv_birth_this_per n_
 p_newp_ge1 p_1524_newp_ge1 n_w1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m  n_tested_w p_tested_past_year_1549m  p_tested_past_year_1549w n_pmtct
 p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_vm p_vm_ly_onart n_pcp_p p_onart_cd4_l200
-p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m  p_mcirc_1049m 
+p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m  p_mcirc_1049m n_mcirc
 p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m p_vmmc_1049m	
 n_new_vmmc n_new_vmmc1549m n_new_vmmc1049m n_new_vmmc1014m n_new_birth_circ n_new_mcirc n_new_mcirc_1549m n_new_mcirc_1049m
 prop_w_1549_sw  prop_w_1564_sw	prop_w_ever_sw prop_sw_program_visit p_reached_sbcc
-prop_sw_hiv prop_w_1524_onprep p_w1524newpge1_onprep prop_1564_hivneg_onprep prop_sw_onprep p_prep_adhg80
+prop_sw_hiv prop_w_1524_onprep p_w1524newpge1_onprep prop_1564_hivneg_onprep prop_sw_onprep p_prep_adhg80 n_onprep_sw  n_onprep_msm n_onprep_m n_onprep_w
 prevalence1549m prevalence1549w prevalence1549 
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 		
@@ -1230,6 +1253,7 @@ r_prev_4044w_4549w  r_prev_5054w_4549w r_prev_5559w_4549w r_prev_6064w_4549w r_p
 r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_prev_3539m_4549w r_prev_4044m_4549w r_prev_4549m_4549w
 r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
 incidence1549 incidence1564 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary 
+n_new_inf_prep_elig n_new_inf_onprep
 p_sw_newinf p_w1524_newinf p_w25ov_newinf p_m1524_newinf p_m25ov_newinf mtct_prop  incidence_onprep
 p_diag p_diag_m p_diag_w prop_diag_infection_1yr p_ai_no_arv_c_nnm prop_sw_newp0  t_sw_newp
 n_sbcc_visit_1524m n_sbcc_visit_1524w n_sbcc_visit_1524_ n_sbcc_visit_2564_ n_sbcc_visit_1564_
@@ -1263,7 +1287,7 @@ p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vl
 p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vlg1000   p_tams_ontld_vlg1000 p_vlg1000_184m p_vlg1000_65m
 death_rate_artexp  death_rate_hiv death_rate_hiv_w death_rate_hiv_m death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
 n_new_inf1549m n_new_inf1549w n_new_inf1549 n_new_inf1564m n_new_inf1564w n_infection  n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w
-n_new_inf55plm n_new_inf55plw
+n_new_inf50plm n_new_inf50plw
 p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  n_onart_birth_with_inf_child
@@ -1296,6 +1320,8 @@ n_prep_vr_ever_1524w    n_prep_vr_ever_sw  	 n_prep_vr_ever_sdc		n_prep_vr_ever_
 n_prep_oral_w			n_prep_oral_m
 py_prep_oral_1524w		py_prep_oral_sw
 py_prep_inj_1524w		py_prep_inj_sw
+
+n_elig_prep
 
 p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw incidence_sd1564_ incidence_sd1564w test_prop_positive 
@@ -1411,6 +1437,10 @@ p_ep_msm p_msm_ge1newp p_m_ge1newp n_pwid p_onprep_pwid p_onart_pwid
  n_onart1524_m  n_onart1524_w  n_onart2549_m  n_onart2549_w  n_onart50pl_m  n_onart50pl_w
   n_onart_sw  n_onart_msm    n_vl1000_art_1524_m    n_vl1000_art_2549_m  n_vl1000_art_50pl_m n_vl1000_art_1524_w    n_vl1000_art_2549_w  n_vl1000_art_50pl_w 
 n_vl1000_art_sw
+ n_dead_w	n_dead1524w_all	 n_dead2549w_all	 n_dead50plw_all   n_dead_m		n_dead1524m_all		n_dead2549m_all	 n_dead50plm_all				
+n_hiv_child  n_new_inf_sw  n_new_inf_msm
+ n_death_hiv_age_1524_m   n_death_hiv_age_2549_m  n_death_hiv_age_50pl_m
+ n_death_hiv_age_1524_w   n_death_hiv_age_2549_w  n_death_hiv_age_50pl_w
 ;
 
 
@@ -1488,46 +1518,42 @@ VLS_MSM = n_vl1000_art_msm;
 Birth_All = n_birth;
 Birth_HIV = n_give_birth_w_hiv;
 DeathsAll_00_14_M = .;
-DeathsAll_15_24_M =
-DeathsAll_25_49_M
-DeathsAll_50_UP_M
+DeathsAll_15_24_M = n_dead1524m_all;
+DeathsAll_25_49_M = n_dead2549m_all;
+DeathsAll_50_UP_M = n_dead50plm_all;
 DeathsAll_00_14_F = .;
-DeathsAll_15_24_F
-DeathsAll_25_49_F
-DeathsAll_50_UP_F
-NewHIV_00_14_M
-NewHIV_15_24_M
-NewHIV_25_49_M
-NewHIV_50_UP_M
-NewHIV_00_14_F
-NewHIV_15_24_F
-NewHIV_25_49_F
-NewHIV_50_UP_F
-NewHIV_FSW
-NewHIV_MSM
-DeathsHIV_00_14_M
-DeathsHIV_15_24_M
-DeathsHIV_25_49_M
-DeathsHIV_50_UP_M
-DeathsHIV_00_14_F
-DeathsHIV_15_24_F
-DeathsHIV_25_49_F
-DeathsHIV_50_UP_F
-DALYs_Undiscounted
-TotalCost_Undiscounted
-Percent_circumcised
-Percent_condom use_GP
-PrEP_FSW
-PrEP_MSM
-PrEP_GP
-PrEP_Pop_GP
-NewHIV_PrEP_Pop_GP
-Percent_FSW reached
-Percent_MSM reached
-
-
-
-
+DeathsAll_15_24_F = n_dead1524w_all;
+DeathsAll_25_49_F = n_dead2549w_all;
+DeathsAll_50_UP_F = n_dead50plw_all;
+NewHIV_00_14_M = n_hiv_child / 2;
+NewHIV_15_24_M = n_new_inf1524m;
+NewHIV_25_49_M = n_new_inf2549m;
+NewHIV_50_UP_M = n_new_inf50plm;
+NewHIV_00_14_F = n_hiv_child / 2;
+NewHIV_15_24_F = n_new_inf1524w;
+NewHIV_25_49_F = n_new_inf2549w;
+NewHIV_50_UP_F = n_new_inf50plw;
+NewHIV_FSW = n_new_inf_sw;
+NewHIV_MSM = n_new_inf_msm;
+DeathsHIV_00_14_M = .;
+DeathsHIV_15_24_M = n_death_hiv_age_1524_m;
+DeathsHIV_25_49_M = n_death_hiv_age_2549_m;
+DeathsHIV_50_UP_M = n_death_hiv_age_50pl_m;
+DeathsHIV_00_14_F = .;
+DeathsHIV_15_24_F = n_death_hiv_age_1524_w;
+DeathsHIV_25_49_F = n_death_hiv_age_2549_w;
+DeathsHIV_50_UP_F = n_death_hiv_age_50pl_w;
+DALYs_Undiscounted = n_daly;
+TotalCost_Undiscounted = cost;
+Percent_circumcised = p_mcirc;
+Percent_condom_use_GP = .;
+PrEP_FSW = n_onprep_sw;
+PrEP_MSM = n_onprep_msm;
+PrEP_GP = n_onprep_m + n_onprep_w;
+PrEP_Pop_GP = n_elig_prep;
+NewHIV_PrEP_Pop_GP = n_new_inf_prep_elig;
+Percent_FSW_reached = n_sw_program_visit * 4;
+Percent_MSM_reached = .;
 
 
 keep
