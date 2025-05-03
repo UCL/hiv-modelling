@@ -1716,8 +1716,6 @@ proc means noprint data=y; var &v; output out=y_2025 mean= &v;  where cald = 202
 
 /*
 
-proc means noprint data=y; var &v; output out=y_24  mean= &v   ; where cald = 2024.5 and option=12 ;
-proc means noprint data=y; var &v; output out=y_25  mean= &v   ; where cald = 2025.5 and option=12 ;
 proc means noprint data=y; var &v; output out=y_26  mean= &v   ; where cald = 2026.5 and option=12 ;
 proc means noprint data=y; var &v; output out=y_27  mean= &v   ; where cald = 2027.5 and option=12 ;
 proc means noprint data=y; var &v; output out=y_28  mean= &v   ; where cald = 2028.5 and option=12 ;
@@ -1747,9 +1745,11 @@ proc means noprint data=y; var &v; output out=y_50  mean= &v   ; where cald = 20
 */
 																										
 data &v ; set  
-
+y_1984  y_1985  y_1986  y_1987  y_1988  y_1989  y_1990  y_1991  y_1992  y_1993  y_1994  y_1995  y_1996  y_1997  y_1998  y_1999  y_2000  y_2001  y_2002  
+y_2003  y_2004  y_2005  y_2006  y_2007  y_2008  y_2009  y_2010  y_2011  y_2012  y_2013  y_2014  y_2015  y_2016  y_2017  y_2018  y_2019  y_2020  y_2021  
+y_2022  y_2023  y_2024  y_2025
 /*
-y_24 y_25 y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40  y_41 y_42 y_43 y_44 y_45 y_46 y_47 y_48 y_49 y_50  
+ y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40  y_41 y_42 y_43 y_44 y_45 y_46 y_47 y_48 y_49 y_50  
 */
 ;  
 drop _NAME_ _TYPE_ _FREQ_;
@@ -1763,7 +1763,6 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %macro var_flow(v=);
 
-proc means noprint data=y; var &v; output out=z_1984 mean= &v; where 1983.5 < cald <= 1984.5;
 proc means noprint data=y; var &v; output out=z_1985 mean= &v; where 1984.5 < cald <= 1985.5;
 proc means noprint data=y; var &v; output out=z_1986 mean= &v; where 1985.5 < cald <= 1986.5;
 proc means noprint data=y; var &v; output out=z_1987 mean= &v; where 1986.5 < cald <= 1987.5;
@@ -1807,8 +1806,6 @@ proc means noprint data=y; var &v; output out=z_2024 mean= &v; where 2023.5 < ca
 proc means noprint data=y; var &v; output out=z_2025 mean= &v; where 2024.5 < cald <= 2025.5;
 
 /*
-proc means noprint data=y; var &v; output out=z_24  mean= &v   ; where 2023.5 < cald <= 2024.5 and option=12 ;
-proc means noprint data=y; var &v; output out=z_25  mean= &v   ; where 2024.5 < cald <= 2025.5 and option=12 ;
 proc means noprint data=y; var &v; output out=z_26  mean= &v   ; where 2025.5 < cald <= 2026.5 and option=12 ;
 proc means noprint data=y; var &v; output out=z_27  mean= &v   ; where 2026.5 < cald <= 2027.5 and option=12 ;
 proc means noprint data=y; var &v; output out=z_28  mean= &v   ; where 2027.5 < cald <= 2028.5 and option=12 ;
@@ -1837,7 +1834,9 @@ proc means noprint data=y; var &v; output out=z_50  mean= &v   ; where 2049.5 < 
 */
 
 data &v ; set  
-z_21 z_22 z_23 
+z_1985  z_1986  z_1987  z_1988  z_1989  z_1990  z_1991  z_1992  z_1993  z_1994  z_1995  z_1996  z_1997  z_1998  z_1999  z_2000  z_2001  z_2002  
+z_2003  z_2004  z_2005  z_2006  z_2007  z_2008  z_2009  z_2010  z_2011  z_2012  z_2013  z_2014  z_2015  z_2016  z_2017  z_2018  z_2019  z_2020  z_2021  
+z_2022  z_2023  z_2024  z_2025
 /*
 z_24 z_25 z_26 z_27 z_28 z_29 z_30 z_31 z_32 z_33 z_34 z_35 z_36 z_37 z_38 z_39 z_40  z_41 z_42 z_43 z_44 z_45 z_46 z_47 z_48 z_49 z_50  
 */
@@ -1859,30 +1858,57 @@ drop _NAME_ _TYPE_ _FREQ_;
 * stocks ;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
+%var_stock(v=Total_00_14_M);
+%var_stock(v=Total_15_24_M);
+%var_stock(v=Total_25_49_M);
+%var_stock(v=Total_50_UP_M);
+%var_stock(v=Total_00_14_F);
+%var_stock(v=Total_15_24_F);
+%var_stock(v=Total_25_49_F);
+%var_stock(v=Total_50_UP_F);
+%var_stock(v=Total_FSW);
+%var_stock(v=Total_MSM);
+%var_stock(v=PLHIV_00_14_M);
+%var_stock(v=PLHIV_15_24_M);
+%var_stock(v=PLHIV_25_49_M);
+%var_stock(v=PLHIV_50_UP_M);
+%var_stock(v=PLHIV_00_14_F);
+%var_stock(v=PLHIV_15_24_F);
+%var_stock(v=PLHIV_25_49_F);
+%var_stock(v=PLHIV_50_UP_F);
+%var_stock(v=PLHIV_FSW);
+%var_stock(v=PLHIV_MSM);
+%var_stock(v=Diagnosed_00_14_M);
+%var_stock(v=Diagnosed_15_24_M);
+%var_stock(v=Diagnosed_25_49_M);
+%var_stock(v=Diagnosed_50_UP_M);
+%var_stock(v=Diagnosed_00_14_F);
+%var_stock(v=Diagnosed_15_24_F);
+%var_stock(v=Diagnosed_25_49_F);
+%var_stock(v=Diagnosed_50_UP_F);
+%var_stock(v=Diagnosed_FSW);
+%var_stock(v=Diagnosed_MSM);
+%var_stock(v=ART_00_14_M);
+%var_stock(v=ART_15_24_M);
+%var_stock(v=ART_25_49_M);
+%var_stock(v=ART_50_UP_M);
+%var_stock(v=ART_00_14_F);
+%var_stock(v=ART_15_24_F);
+%var_stock(v=ART_25_49_F);
+%var_stock(v=ART_50_UP_F);
+%var_stock(v=ART_FSW);
+%var_stock(v=ART_MSM);
+%var_stock(v=VLS_00_14_M);
+%var_stock(v=VLS_15_24_M);
+%var_stock(v=VLS_25_49_M);
+%var_stock(v=VLS_50_UP_M);
+%var_stock(v=VLS_00_14_F);
+%var_stock(v=VLS_15_24_F);
+%var_stock(v=VLS_25_49_F);
+%var_stock(v=VLS_50_UP_F);
+%var_stock(v=VLS_FSW);
+%var_stock(v=VLS_MSM);
 
-%var_stock(v=n_hiv1524m);
-%var_stock(v=n_hiv1524w);
-%var_stock(v=n_hiv2549m);
-%var_stock(v=n_hiv2549w);
-%var_stock(v=n_hiv55plm);
-%var_stock(v=n_hiv55plw);
-%var_stock(v=n_alive_1524m);
-%var_stock(v=n_alive_1524w);
-%var_stock(v=n_alive_2549m);
-%var_stock(v=n_alive_2549w);
-%var_stock(v=n_alive_50plm);
-%var_stock(v=n_alive_50plw);
-%var_stock(v=n_diag_ever_m);
-%var_stock(v=n_diag_ever_w);
-%var_stock(v=n_onart_m);
-%var_stock(v=n_onart_w);
-%var_stock(v=n_onart_vl1000_m);
-%var_stock(v=n_onart_vl1000_w);
-%var_stock(v=n_not_on_art_cd4ge500); 
-%var_stock(v=n_not_on_art_cd4350500); 
-%var_stock(v=n_not_on_art_cd4200350); 
-%var_stock(v=n_not_on_art_cd450200); 
-%var_stock(v=n_not_on_art_cd4050); 
 
 
 * for status quo - option = 0;
@@ -1976,68 +2002,115 @@ data  wide_outputs ; merge
 
 year
 
-n_hiv1524m
-n_hiv1524w
-n_hiv2549m
-n_hiv2549w
-n_hiv55plm
-n_hiv55plw
-n_alive_1524m
-n_alive_1524w
-n_alive_2549m
-n_alive_2549w
-n_alive_55plm
-n_alive_55plw
-n_diag_ever_m
-n_diag_ever_w
-n_onart_m
-n_onart_w
-n_onart_vl1000_m
-n_onart_vl1000_w
-n_not_on_art_cd4ge500 
-n_not_on_art_cd4350500 
-n_not_on_art_cd4200350 
-n_not_on_art_cd450200 
-n_not_on_art_cd4050 
+Total_00_14_M
+Total_15_24_M
+Total_25_49_M
+Total_50_UP_M
+Total_00_14_F
+Total_15_24_F
+Total_25_49_F
+Total_50_UP_F
+Total_FSW
+Total_MSM
+PLHIV_00_14_M
+PLHIV_15_24_M
+PLHIV_25_49_M
+PLHIV_50_UP_M
+PLHIV_00_14_F
+PLHIV_15_24_F
+PLHIV_25_49_F
+PLHIV_50_UP_F
+PLHIV_FSW
+PLHIV_MSM
+Diagnosed_00_14_M
+Diagnosed_15_24_M
+Diagnosed_25_49_M
+Diagnosed_50_UP_M
+Diagnosed_00_14_F
+Diagnosed_15_24_F
+Diagnosed_25_49_F
+Diagnosed_50_UP_F
+Diagnosed_FSW
+Diagnosed_MSM
+ART_00_14_M
+ART_15_24_M
+ART_25_49_M
+ART_50_UP_M
+ART_00_14_F
+ART_15_24_F
+ART_25_49_F
+ART_50_UP_F
+ART_FSW
+ART_MSM
+VLS_00_14_M
+VLS_15_24_M
+VLS_25_49_M
+VLS_50_UP_M
+VLS_00_14_F
+VLS_15_24_F
+VLS_25_49_F
+VLS_50_UP_F
+VLS_FSW
+VLS_MSM
+
 ;
 
-
-dummy1=.;dummy2=.;dummy3=.;dummy4=.;dummy5=.;dummy6=.;
 
 
 data stocks; 
 retain 
 year 
 
-dummy1
-n_hiv1524m
-n_hiv1524w
-n_hiv2549m
-n_hiv2549w
-n_hiv55plm
-n_hiv55plw
-dummy2
-n_alive_1524m
-n_alive_1524w
-n_alive_2549m
-n_alive_2549w
-n_alive_55plm
-n_alive_55plw
-dummy3
-n_diag_ever_m
-n_diag_ever_w
-dummy4
-n_onart_m
-n_onart_w
-n_onart_vl1000_m
-n_onart_vl1000_w
-n_not_on_art_cd4ge500 
-n_not_on_art_cd4350500 
-n_not_on_art_cd4200350 
-n_not_on_art_cd450200 
-n_not_on_art_cd4050 
-dummy5
-dummy6
+Total_00_14_M
+Total_15_24_M
+Total_25_49_M
+Total_50_UP_M
+Total_00_14_F
+Total_15_24_F
+Total_25_49_F
+Total_50_UP_F
+Total_FSW
+Total_MSM
+PLHIV_00_14_M
+PLHIV_15_24_M
+PLHIV_25_49_M
+PLHIV_50_UP_M
+PLHIV_00_14_F
+PLHIV_15_24_F
+PLHIV_25_49_F
+PLHIV_50_UP_F
+PLHIV_FSW
+PLHIV_MSM
+Diagnosed_00_14_M
+Diagnosed_15_24_M
+Diagnosed_25_49_M
+Diagnosed_50_UP_M
+Diagnosed_00_14_F
+Diagnosed_15_24_F
+Diagnosed_25_49_F
+Diagnosed_50_UP_F
+Diagnosed_FSW
+Diagnosed_MSM
+ART_00_14_M
+ART_15_24_M
+ART_25_49_M
+ART_50_UP_M
+ART_00_14_F
+ART_15_24_F
+ART_25_49_F
+ART_50_UP_F
+ART_FSW
+ART_MSM
+VLS_00_14_M
+VLS_15_24_M
+VLS_25_49_M
+VLS_50_UP_M
+VLS_00_14_F
+VLS_15_24_F
+VLS_25_49_F
+VLS_50_UP_F
+VLS_FSW
+VLS_MSM
 ;
 set wide_outputs;
 run;
@@ -2063,39 +2136,46 @@ proc print noobs data=a; run;
 * flows;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-%var_flow(v=n_birth);
-%var_flow(v=n_give_birth_w_hiv);
-%var_flow(v=n_give_birth_on_art);
-%var_flow(v=n_new_inf1524m);
-%var_flow(v=n_new_inf1524w);
-%var_flow(v=n_new_inf2549m);
-%var_flow(v=n_new_inf2549w);
-%var_flow(v=n_new_inf55plm);
-%var_flow(v=n_new_inf55plw);
-%var_flow(v=n_death_hivrel_m);
-%var_flow(v=n_death_hivrel_w);
-%var_flow(v=n_death_m);
-%var_flow(v=n_death_w);
-%var_flow(v=n_yllag_hiv_m);  
-%var_flow(v=n_yllag_hiv_w);  
-%var_flow(v=n_diag_self_test);
-%var_flow(v=n_self_tests);
-%var_flow(v=n_new_vmmc);
-%var_flow(v=py_prep_oral_1524w);
-%var_flow(v=py_prep_oral_sw);
-%var_flow(v=py_prep_inj_1524w);
-%var_flow(v=py_prep_inj_sw);
-%var_flow(v=n_vm);
-%var_flow(v=n_sw_program_visit);
-%var_flow(v=n_hivneg_tests);
-%var_flow(v=n_hivpos_tests);
-%var_flow(v=n_daly);
-%var_flow(v=cost);
+%var_flow(v=Birth_All);
+%var_flow(v=Birth_HIV);
+%var_flow(v=DeathsAll_00_14_M);
+%var_flow(v=DeathsAll_15_24_M);
+%var_flow(v=DeathsAll_25_49_M);
+%var_flow(v=DeathsAll_50_UP_M);
+%var_flow(v=DeathsAll_00_14_F);
+%var_flow(v=DeathsAll_15_24_F);
+%var_flow(v=DeathsAll_25_49_F);
+%var_flow(v=DeathsAll_50_UP_F);
+%var_flow(v=NewHIV_00_14_M);
+%var_flow(v=NewHIV_15_24_M);
+%var_flow(v=NewHIV_25_49_M);
+%var_flow(v=NewHIV_50_UP_M);
+%var_flow(v=NewHIV_00_14_F);
+%var_flow(v=NewHIV_15_24_F);
+%var_flow(v=NewHIV_25_49_F);
+%var_flow(v=NewHIV_50_UP_F);
+%var_flow(v=NewHIV_FSW);
+%var_flow(v=NewHIV_MSM);
+%var_flow(v=DeathsHIV_00_14_M);
+%var_flow(v=DeathsHIV_15_24_M);
+%var_flow(v=DeathsHIV_25_49_M);
+%var_flow(v=DeathsHIV_50_UP_M);
+%var_flow(v=DeathsHIV_00_14_F);
+%var_flow(v=DeathsHIV_15_24_F);
+%var_flow(v=DeathsHIV_25_49_F);
+%var_flow(v=DeathsHIV_50_UP_F);
+%var_flow(v=DALYs_Undiscounted);
+%var_flow(v=TotalCost_Undiscounted);
+%var_flow(v=Percent_circumcised);
+%var_flow(v=Percent_condom use_GP);
+%var_flow(v=PrEP_FSW);
+%var_flow(v=PrEP_MSM);
+%var_flow(v=PrEP_GP);
+%var_flow(v=PrEP_Pop_GP);
+%var_flow(v=NewHIV_PrEP_Pop_GP);
+%var_flow(v=Percent_FSW reached);
+%var_flow(v=Percent_MSM reached);
 
-
-* for status quo - option = 0;
-
-* 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 2010 2021 2022 ;
 
 data year;
 input year;
@@ -2183,34 +2263,45 @@ data  wide_outputs ; merge
 
 year
 
-n_birth
-n_give_birth_w_hiv
-n_give_birth_on_art
-n_new_inf1524m
-n_new_inf1524w
-n_new_inf2549m
-n_new_inf2549w
-n_new_inf55plm
-n_new_inf55plw
-n_death_hivrel_m
-n_death_hivrel_w
-n_death_m
-n_death_w
-n_yllag_hiv_m
-n_yllag_hiv_w  
-n_diag_self_test
-n_self_tests
-n_new_vmmc
-py_prep_oral_1524w
-py_prep_oral_sw
-py_prep_inj_1524w
-py_prep_inj_sw
-n_vm
-n_sw_program_visit
-n_hivneg_tests
-n_hivpos_tests
-n_daly
-cost
+Birth_All
+Birth_HIV
+DeathsAll_00_14_M
+DeathsAll_15_24_M
+DeathsAll_25_49_M
+DeathsAll_50_UP_M
+DeathsAll_00_14_F
+DeathsAll_15_24_F
+DeathsAll_25_49_F
+DeathsAll_50_UP_F
+NewHIV_00_14_M
+NewHIV_15_24_M
+NewHIV_25_49_M
+NewHIV_50_UP_M
+NewHIV_00_14_F
+NewHIV_15_24_F
+NewHIV_25_49_F
+NewHIV_50_UP_F
+NewHIV_FSW
+NewHIV_MSM
+DeathsHIV_00_14_M
+DeathsHIV_15_24_M
+DeathsHIV_25_49_M
+DeathsHIV_50_UP_M
+DeathsHIV_00_14_F
+DeathsHIV_15_24_F
+DeathsHIV_25_49_F
+DeathsHIV_50_UP_F
+DALYs_Undiscounted
+TotalCost_Undiscounted
+Percent_circumcised
+Percent_condom use_GP
+PrEP_FSW
+PrEP_MSM
+PrEP_GP
+PrEP_Pop_GP
+NewHIV_PrEP_Pop_GP
+Percent_FSW reached
+Percent_MSM reached
 
 ;
 
@@ -2222,52 +2313,45 @@ dummy11=.;dummy12=.;dummy13=.;dummy14=.;dummy15=.;dummy16=.;dummy17=.;dummy18=.;
 data flows; 
 retain 
 year 
-n_birth
-n_give_birth_w_hiv
-n_give_birth_on_art
-dummy1
-n_new_inf1524m
-n_new_inf1524w
-n_new_inf2549m
-n_new_inf2549w
-n_new_inf55plm
-n_new_inf55plw
-dummy2
-n_death_hivrel_m
-n_death_hivrel_w
-dummy3
-n_death_m
-n_death_w
-dummy4
-n_yllag_hiv_m
-n_yllag_hiv_w  
-n_hivneg_tests
-n_hivpos_tests
-dummy5
-dummy6
-dummy7
-dummy8 
-n_diag_self_test
-n_self_tests
-dummy9 
-n_new_vmmc
-py_prep_oral_1524w
-py_prep_oral_sw
-dummy10
-py_prep_inj_1524w
-py_prep_inj_sw
-dummy11
-dummy12
-dummy13
-n_vm
-dummy14
-n_sw_program_visit
-dummy15
-dummy16
-dummy17
-dummy18
-n_daly
-cost
+Birth_All
+Birth_HIV
+DeathsAll_00_14_M
+DeathsAll_15_24_M
+DeathsAll_25_49_M
+DeathsAll_50_UP_M
+DeathsAll_00_14_F
+DeathsAll_15_24_F
+DeathsAll_25_49_F
+DeathsAll_50_UP_F
+NewHIV_00_14_M
+NewHIV_15_24_M
+NewHIV_25_49_M
+NewHIV_50_UP_M
+NewHIV_00_14_F
+NewHIV_15_24_F
+NewHIV_25_49_F
+NewHIV_50_UP_F
+NewHIV_FSW
+NewHIV_MSM
+DeathsHIV_00_14_M
+DeathsHIV_15_24_M
+DeathsHIV_25_49_M
+DeathsHIV_50_UP_M
+DeathsHIV_00_14_F
+DeathsHIV_15_24_F
+DeathsHIV_25_49_F
+DeathsHIV_50_UP_F
+DALYs_Undiscounted
+TotalCost_Undiscounted
+Percent_circumcised
+Percent_condom use_GP
+PrEP_FSW
+PrEP_MSM
+PrEP_GP
+PrEP_Pop_GP
+NewHIV_PrEP_Pop_GP
+Percent_FSW reached
+Percent_MSM reached
 ;
 set wide_outputs;
 run;
