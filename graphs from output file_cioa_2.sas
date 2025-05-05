@@ -44,7 +44,7 @@ n_tested_incl_self = n_self_tested + n_tested;
 if option in (0 1);
 
 
-%let single_var =   prevalence1549_                           ;
+%let single_var =  prevalence_vg1000_                   ;
 
 
   if run in (
@@ -1204,9 +1204,27 @@ run;quit;
 
 ods html;
 proc sgplot data=d nolegend; 
+* Title '';  * Title    height=1.5 justify=center "proportion of people with a prep/pep indication taking prep/pep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.5       by 0.1     ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_tested_incl_self_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_tested_incl_self_0 upper=p95_p_tested_incl_self_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_p_tested_incl_self_1 / lineattrs = (color=darkblue    thickness = 4);
+band    x=cald lower=p5_p_tested_incl_self_1 upper=p95_p_tested_incl_self_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
 * Title '';  *  Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.5       by 0.1     ) valueattrs=(size=10);
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.8       by 0.1     ) valueattrs=(size=10);
 
 series  x=cald y=p50_incidence1549__0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_incidence1549__0 upper=p95_incidence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
@@ -1237,6 +1255,24 @@ band    x=cald lower=p5_prevalence1549__1 upper=p95_prevalence1549__1 / transpar
 run;quit;
 
 * ods html close;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';  * Title    height=1.5 justify=center "proportion of people with a prep/pep indication taking prep/pep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1         by 0.1     ) valueattrs=(size=10);
+
+series  x=cald y=p50_prop_elig_on_prep_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_prop_elig_on_prep_0 upper=p95_prop_elig_on_prep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_prop_elig_on_prep_1 / lineattrs = (color=darkblue    thickness = 4);
+band    x=cald lower=p5_prop_elig_on_prep_1 upper=p95_prop_elig_on_prep_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
+
+run;quit;
 
 */
 
@@ -1328,7 +1364,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -1344,7 +1380,7 @@ band    x=cald lower=p5_prevalence_vg1000__1 upper=p95_prevalence_vg1000__1 / tr
 
 run;quit;
 
-*/
+
 
 /*
 
@@ -1374,7 +1410,7 @@ ods html;
 proc sgplot data=d nolegend; 
 * Title ''; *  Title    height=1.5 justify=center "p_onart_diag";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.80 to  1       by 0.05  ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.70 to  1       by 0.05  ) valueattrs=(size=10);
 
 series  x=cald y=p50_p_onart_diag_0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_p_onart_diag_0 upper=p95_p_onart_diag_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
@@ -1827,41 +1863,8 @@ run;quit;
 
 */
 
-/*
 
-ods html;
-proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "proportion of people with a prep/pep indication taking prep/pep";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.7       by 0.1     ) valueattrs=(size=10);
 
-series  x=cald y=p50_p_tested_incl_self_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_p_tested_incl_self_0 upper=p95_p_tested_incl_self_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_p_tested_incl_self_1 / lineattrs = (color=darkblue    thickness = 4);
-band    x=cald lower=p5_p_tested_incl_self_1 upper=p95_p_tested_incl_self_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
-
-run;quit;
-
-*/
-
-/*
-
-ods html;
-proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "proportion of people with a prep/pep indication taking prep/pep";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1         by 0.1     ) valueattrs=(size=10);
-
-series  x=cald y=p50_prop_elig_on_prep_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prop_elig_on_prep_0 upper=p95_prop_elig_on_prep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_elig_on_prep_1 / lineattrs = (color=darkblue    thickness = 4);
-band    x=cald lower=p5_prop_elig_on_prep_1 upper=p95_prop_elig_on_prep_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
-
-run;quit;
-
-*/
 
 /*
 
@@ -2278,50 +2281,6 @@ band    x=cald lower=p5_incidence1549m_0 upper=p95_incidence1549m_0 / transparen
 
 series  x=cald y=p50_incidence1549m_1 / lineattrs = (color=darkred       thickness = 4);
 band    x=cald lower=p5_incidence1549m_1 upper=p95_incidence1549m_1 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
-
-run;quit;
-
-* ods html close;
-
-*/
-
-/*
-
-ods html;
-proc sgplot data=d ; 
-* Title    height=1.5 justify=center "prevalence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'prevalence'		labelattrs=(size=12)  values = (0 to 0.3        by 0.05    ) valueattrs=(size=10);
-
-label p50_prevalence1549__0 = "option 0";
-label p50_prevalence1549__3 = "option 3";
-
-series  x=cald y=p50_prevalence1549__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prevalence1549__0 upper=p95_prevalence1549__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_prevalence1549__3 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_prevalence1549__3 upper=p95_prevalence1549__3 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
-
-run;quit;
-
-* ods html close;
-
-
-
-ods html;
-proc sgplot data=d ; 
-* Title    height=1.5 justify=center "prevalence vlg1000)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2070 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'prevalence'		labelattrs=(size=12)  values = (0 to 0.05       by 0.01    ) valueattrs=(size=10);
-
-label p50_prevalence_vg1000__0 = "option 0";
-label p50_prevalence_vg1000__1 = "option 1";
-
-series  x=cald y=p50_prevalence_vg1000__0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prevalence_vg1000__0 upper=p95_prevalence_vg1000__0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_prevalence_vg1000__1 / lineattrs = (color=lightblue thickness = 4);
-band    x=cald lower=p5_prevalence_vg1000__1 upper=p95_prevalence_vg1000__1 / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
 
 run;quit;
 
