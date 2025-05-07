@@ -243,20 +243,19 @@ dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
-		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep + 
-		dcost_child_hiv + dcost_non_aids_pre_death + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost + dcost_sw_program
-		+ dcost_self_test
-;
-
+dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + 
+					dcot_cost + dtb_cost + dres_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost + 
+					dcost_circ + dcost_condom_dn + dcost_child_hiv + dcost_non_aids_pre_death + dcost_drug_level_test
+					+ dcost_prep_visit + dcost_prep + dcost_sw_program  + dcost_self_test ;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost ; 
 
+dcost_clinical_care_hiv = dadc_cost + dnon_tb_who3_cost + dtb_cost + d_t_adh_int_cost + dswitchline_cost + dcot_cost + dcost_non_aids_pre_death + dres_cost;
+
+
 cost_clin_care = dcost_clin_care / discount;
-
 cost = dcost / discount;
-
 
 
 
@@ -1472,6 +1471,7 @@ data y ; set b.l_cioa_ab;
 
 data e; set y; keep &v run cald option ;
 
+proc means  noprint data=e; var &v; output out=y_19 mean= &v._19; by run ; where 2018.5 <= cald <= 2019.5; 
 proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2023.5 <= cald <= 2024.75; 
 
 
@@ -1490,7 +1490,7 @@ proc sort data=y_3y    ; by run; proc transpose data=y_3y  out=t_3y  prefix=&v._
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
 proc sort data=y_50y    ; by run; proc transpose data=y_50y  out=t_50y  prefix=&v._50y_  ; var &v._50y    ; by run; 																																																						
 
-data &v ; merge y_24 t_3y t_10y t_50y ; 
+data &v ; merge y_19 y_24 t_3y t_10y t_50y ; 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -2281,6 +2281,9 @@ _effect_comm_tld_hard_reach = effect_comm_tld_hard_reach * 10;
 
 ratio_targeting_self_regular = log(self_test_targeting / test_targeting);
 
+cost_decline = cost_3y_2 / cost_19 ;
+
+
 
 ods html;
 title 'Characteristics of the setting scenarios in 2024 (median, 90% range)';
@@ -2423,10 +2426,10 @@ ods html close;
 
 
 ods html;
-proc means data=f  n mean p5 p95;
+proc means data=f  n median p5 p95;
 var 
-cost_24
-cost_3y_1 cost_3y_2 
+cost_19 cost_24 
+cost_3y_1 cost_3y_2  cost_decline
 ;
 run;
 ods html close;

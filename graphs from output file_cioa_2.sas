@@ -44,7 +44,7 @@ n_tested_incl_self = n_self_tested + n_tested;
 if option in (0 1);
 
 
-%let single_var =  dcost                                 ;
+%let single_var =  cost                                 ;
 
 
   if run in (
@@ -1770,13 +1770,13 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
 * Title '';  * Title    height=1.5 justify=center "Discounted cost";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'dcost'		labelattrs=(size=12)  values = (0 to  300         by 50    ) valueattrs=(size=10);
+yaxis grid label	= 'Discounted Cost $m'		labelattrs=(size=12)  values = (0 to  300         by 50    ) valueattrs=(size=10);
 
 loess   x=cald y=p50_dcost_0 / lineattrs = (color=grey thickness = 4) nomarkers;
 band    x=cald lower=p5_dcost_0 upper=p95_dcost_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
@@ -1786,9 +1786,9 @@ band    x=cald lower=p5_dcost_1 upper=p95_dcost_1 / transparency=0.9 fillattrs =
 
 run;quit;
 
+*/
 
 
-/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -1804,7 +1804,7 @@ band    x=cald lower=p5_cost_1 upper=p95_cost_1 / transparency=0.9 fillattrs = (
 
 run;quit;
 
-*/
+
 
 /*
 
