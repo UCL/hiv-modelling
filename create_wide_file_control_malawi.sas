@@ -3,12 +3,12 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_b_out\";
 
 
 /*
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_b_out\";
 
 data g ; set a.out: ;
 
@@ -1453,17 +1453,17 @@ proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_mlw_a; set y;
+data a.long_mlw_control_b; set y;
 if cald=. then delete;run;
 
-proc contents data = a.long_mlw_a; run;
+proc contents data = a.long_mlw_control_b; run;
 
 
 
 
 
 
-data y; set a.long_mlw_a; 
+data y; set a.long_mlw_control_b; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;

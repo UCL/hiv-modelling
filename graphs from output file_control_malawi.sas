@@ -8,12 +8,12 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_b_out\";
 
 
 
 data c;
-  set a.long_mlw_a;
+  set a.long_mlw_b;
 
 
 
