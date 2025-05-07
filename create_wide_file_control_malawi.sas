@@ -25,6 +25,9 @@ data g; set  a.g;
 
 if cald=. then delete;
 
+/*
+proc freq data=g; tables s_onart_m2529_   s_onart_m3034_   s_onart_m3539_   s_onart_m4044_   s_onart_m4549_ ; run;
+*/
 
 
 proc sort data=g; 
@@ -499,7 +502,7 @@ so the one above is the annual number of tests conducted in ANC;
 * n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * sf;
 * n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * sf;
 
-* n_elig_prep;					n_elig_prep = s_elig_prep * sf;
+* n_elig_prep;					n_elig_prep = (elig_prep_any_m_1564 + elig_prep_any_w_1564) * sf;
 
 *Currently on PrEP: Number of clients actively taking PrEP during the last month of the date range displayed;
 *Note we can't do the last month so we will do the last 3 months;
@@ -768,8 +771,8 @@ end;
 
 * n_onart1524_m;				n_onart1524_m = (s_onart_m1519_ + s_onart_m2024_) * sf;
 * n_onart1524_w;				n_onart1524_w = (s_onart_w1519_ + s_onart_w2024_) * sf;
-* n_onart2549_m;				n_onart2549_m = (s_onart_m2529_ + s_onart_m3034_ + s_onart_m3539_ + s_onart_m4044_ + s_onart_m449_) * sf;
-* n_onart2549_w;				n_onart2549_w = (s_onart_w2529_ + s_onart_w3034_ + s_onart_w3539_ + s_onart_w4044_ + s_onart_w449_) * sf;
+* n_onart2549_m;				n_onart2549_m = (s_onart_m2529_ + s_onart_m3034_ + s_onart_m3539_ + s_onart_m4044_ + s_onart_m4549_) * sf;
+* n_onart2549_w;				n_onart2549_w = (s_onart_w2529_ + s_onart_w3034_ + s_onart_w3539_ + s_onart_w4044_ + s_onart_w4549_) * sf;
 * n_onart50pl_m;				n_onart50pl_m = n_onart_m - n_onart2549_m - n_onart1524_m;
 * n_onart50pl_w;				n_onart50pl_w = n_onart_w - n_onart2549_w - n_onart1524_w;
 
@@ -777,14 +780,15 @@ end;
 * n_onart_msm;					n_onart_msm = s_onart_msm * sf;
 
 * n_vl1000_art_1524_m;			n_vl1000_art_1524_m = s_vl1000_art_1524_m * sf;    
-* n_vl1000_art_2549_m;			n_vl1000_art_2549_m = s_vl1000_art_1549_m * sf;    
+* n_vl1000_art_2549_m;			n_vl1000_art_2549_m = s_vl1000_art_2549_m * sf;    
 * n_vl1000_art_50pl_m;			n_vl1000_art_50pl_m = s_vl1000_art_50pl_m * sf;    
 
 * n_vl1000_art_1524_w;			n_vl1000_art_1524_w = s_vl1000_art_1524_w * sf;    
-* n_vl1000_art_2549_w;			n_vl1000_art_2549_w = s_vl1000_art_1549_w * sf;    
+* n_vl1000_art_2549_w;			n_vl1000_art_2549_w = s_vl1000_art_2549_w * sf;    
 * n_vl1000_art_50pl_w;			n_vl1000_art_50pl_w = s_vl1000_art_50pl_w * sf;    
 
 * n_vl1000_art_sw;				n_vl1000_art_sw = s_vl1000_art_sw * sf;    
+* n_vl1000_art_msm;				n_vl1000_art_msm = s_vl1000_art_msm * sf;    
 
 
 * p_efa;						if s_onart > 0 then p_efa = s_efa / s_onart ;
@@ -1098,10 +1102,10 @@ end;
 * n_death_hivrel_w;				n_death_hivrel_w = s_death_hivrel_w * 4* sf;
 
 * n_death_hiv_age_1524_m;		n_death_hiv_age_1524_m = s_death_hiv_age_1524_m * 4 * sf; 
-* n_death_hiv_age_2549_m;		n_death_hiv_age_2549_m = s_death_hiv_age_1549_m * 4 * sf; 
+* n_death_hiv_age_2549_m;		n_death_hiv_age_2549_m = s_death_hiv_age_2549_m * 4 * sf; 
 * n_death_hiv_age_50pl_m;		n_death_hiv_age_50pl_m = s_death_hiv_age_50pl_m * 4 * sf; 
 * n_death_hiv_age_1524_w;		n_death_hiv_age_1524_w = s_death_hiv_age_1524_w * 4 * sf; 
-* n_death_hiv_age_2549_w;		n_death_hiv_age_2549_w = s_death_hiv_age_1549_w * 4 * sf; 
+* n_death_hiv_age_2549_w;		n_death_hiv_age_2549_w = s_death_hiv_age_2549_w * 4 * sf; 
 * n_death_hiv_age_50pl_w;		n_death_hiv_age_50pl_w = s_death_hiv_age_50pl_w * 4 * sf; 
 
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* sf;
@@ -1118,15 +1122,16 @@ end;
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * sf ;
 					
 
-* n_dead_w;						n_dead_w = s_dead_w * 4 * sf;
 * n_dead1524w_all;				n_dead1524w_all = (s_dead1519w_all + s_dead2024w_all) * 4 * sf;
 * n_dead2549w_all;				n_dead2549w_all = (s_dead2529w_all + s_dead3034w_all + s_dead3539w_all + s_dead4044w_all + s_dead4549w_all) * 4 * sf;
-* n_dead50plw_all;				n_dead50plw_all = n_dead_w - n_dead1524w_all - n_dead2549w_all;
+* n_dead50plm_all;				n_dead50plw_all = (s_dead5054w_all + s_dead5559w_all + s_dead6064w_all + s_dead6569w_all + s_dead7074w_all + s_dead7579w_all +
+								s_dead8084w_all	+ s_dead85plw_all ) * 4 * sf;
 
-* n_dead_m;						n_dead_m = s_dead_m * 4 * sf;
 * n_dead1524m_all;				n_dead1524m_all = (s_dead1519m_all + s_dead2024m_all) * 4 * sf;
 * n_dead2549m_all;				n_dead2549m_all = (s_dead2529m_all + s_dead3034m_all + s_dead3539m_all + s_dead4044m_all + s_dead4549m_all) * 4 * sf;
-* n_dead50plm_all;				n_dead50plm_all = n_dead_m - n_dead1524m_all - n_dead2549m_all;
+* n_dead50plm_all;				n_dead50plm_all = (s_dead5054m_all + s_dead5559m_all + s_dead6064m_all + s_dead6569m_all + s_dead7074m_all + s_dead7579m_all +
+								s_dead8084m_all	+ s_dead85plm_all ) * 4 * sf;
+
 
 	
 *future YLL (assuming age and gender specific life expectancy), all incurred at the calendar year of death (for adults aged 15+ years old); 
@@ -1436,7 +1441,7 @@ p_ep_msm p_msm_ge1newp p_m_ge1newp n_pwid p_onprep_pwid p_onart_pwid
 
  n_onart1524_m  n_onart1524_w  n_onart2549_m  n_onart2549_w  n_onart50pl_m  n_onart50pl_w
   n_onart_sw  n_onart_msm    n_vl1000_art_1524_m    n_vl1000_art_2549_m  n_vl1000_art_50pl_m n_vl1000_art_1524_w    n_vl1000_art_2549_w  n_vl1000_art_50pl_w 
-n_vl1000_art_sw
+n_vl1000_art_sw n_vl1000_art_msm
  n_dead_w	n_dead1524w_all	 n_dead2549w_all	 n_dead50plw_all   n_dead_m		n_dead1524m_all		n_dead2549m_all	 n_dead50plm_all				
 n_hiv_child  n_new_inf_sw  n_new_inf_msm
  n_death_hiv_age_1524_m   n_death_hiv_age_2549_m  n_death_hiv_age_50pl_m
@@ -1460,7 +1465,7 @@ proc contents data = a.long_mlw_control_b; run;
 
 
 
-
+************************************************************************************************************************************************************;
 
 
 data y; set a.long_mlw_control_b; 
@@ -1474,15 +1479,15 @@ Total_15_24_F = n_alive_1524w;
 Total_25_49_F = n_alive_2549w;
 Total_50_UP_F = n_alive_50plw;
 Total_FSW = n_sw_1564 ;
-Total_MSM = s_alive_msm ;
+Total_MSM = n_alive_msm ;
 PLHIV_00_14_M = .;
 PLHIV_15_24_M = n_hiv1524m;
-PLHIV_25_49_M = n_hiv1549m;
+PLHIV_25_49_M = n_hiv2549m;
 PLHIV_50_UP_M = n_hiv50plm;
 PLHIV_00_14_F = .;
-PLHIV_15_24_F = n_hiv1524f;
-PLHIV_25_49_F = n_hiv1549f;
-PLHIV_50_UP_F = n_hiv50plf;
+PLHIV_15_24_F = n_hiv1524w;
+PLHIV_25_49_F = n_hiv2549w;
+PLHIV_50_UP_F = n_hiv50plw;
 PLHIV_FSW = n_hiv_sw;
 PLHIV_MSM = n_hiv_msm;
 Diagnosed_00_14_M = .;
@@ -1497,11 +1502,11 @@ Diagnosed_FSW = n_diag_sw;
 Diagnosed_MSM = n_diag_msm;
 ART_00_14_M = .;
 ART_15_24_M = n_onart1524_m;
-ART_25_49_M = n_onart1549_m;
+ART_25_49_M = n_onart2549_m;
 ART_50_UP_M = n_onart50pl_m;
 ART_00_14_F = .;
 ART_15_24_F = n_onart1524_w;
-ART_25_49_F = n_onart1549_w;
+ART_25_49_F = n_onart2549_w;
 ART_50_UP_F = n_onart50pl_w;
 ART_FSW = n_onart_sw;
 ART_MSM = n_onart_msm;
@@ -1545,14 +1550,14 @@ DeathsHIV_25_49_F = n_death_hiv_age_2549_w;
 DeathsHIV_50_UP_F = n_death_hiv_age_50pl_w;
 DALYs_Undiscounted = n_daly;
 TotalCost_Undiscounted = cost;
-Percent_circumcised = p_mcirc;
+Percent_circumcised = p_mcirc * 100;
 Percent_condom_use_GP = .;
 PrEP_FSW = n_onprep_sw;
 PrEP_MSM = n_onprep_msm;
 PrEP_GP = n_onprep_m + n_onprep_w;
 PrEP_Pop_GP = n_elig_prep;
 NewHIV_PrEP_Pop_GP = n_new_inf_prep_elig;
-Percent_FSW_reached = n_sw_program_visit * 4;
+Percent_FSW_reached = (n_sw_program_visit * 100) / n_sw_1564;
 Percent_MSM_reached = .;
 
 
@@ -1642,21 +1647,16 @@ DeathsHIV_50_UP_F
 DALYs_Undiscounted
 TotalCost_Undiscounted
 Percent_circumcised
-Percent_condom use_GP
+Percent_condom_use_GP
 PrEP_FSW
 PrEP_MSM
 PrEP_GP
 PrEP_Pop_GP
 NewHIV_PrEP_Pop_GP
-Percent_FSW reached
-Percent_MSM reached
-
-
+Percent_FSW_reached
+Percent_MSM_reached
 
 ;
-
-
-
 
  
   options nomprint;
@@ -1671,7 +1671,6 @@ Percent_MSM reached
 
 * stock ;
 
-proc means noprint data=y; var &v; output out=y_1984 mean= &v;  where cald = 1984.5;
 proc means noprint data=y; var &v; output out=y_1985 mean= &v;  where cald = 1985.5;
 proc means noprint data=y; var &v; output out=y_1986 mean= &v;  where cald = 1986.5;
 proc means noprint data=y; var &v; output out=y_1987 mean= &v;  where cald = 1987.5;
@@ -1745,7 +1744,7 @@ proc means noprint data=y; var &v; output out=y_50  mean= &v   ; where cald = 20
 */
 																										
 data &v ; set  
-y_1984  y_1985  y_1986  y_1987  y_1988  y_1989  y_1990  y_1991  y_1992  y_1993  y_1994  y_1995  y_1996  y_1997  y_1998  y_1999  y_2000  y_2001  y_2002  
+y_1985  y_1986  y_1987  y_1988  y_1989  y_1990  y_1991  y_1992  y_1993  y_1994  y_1995  y_1996  y_1997  y_1998  y_1999  y_2000  y_2001  y_2002  
 y_2003  y_2004  y_2005  y_2006  y_2007  y_2008  y_2009  y_2010  y_2011  y_2012  y_2013  y_2014  y_2015  y_2016  y_2017  y_2018  y_2019  y_2020  y_2021  
 y_2022  y_2023  y_2024  y_2025
 /*
@@ -1919,7 +1918,6 @@ drop _NAME_ _TYPE_ _FREQ_;
 data year;
 input year;
 cards;
-1984
 1985
 1986
 1987
@@ -1998,7 +1996,7 @@ proc contents; run;
 2050
 ;
 
-data  wide_outputs ; merge 
+data  wide_outputs_stocks ; merge 
 
 year
 
@@ -2055,7 +2053,7 @@ VLS_MSM
 
 ;
 
-
+proc print; run;
 
 data stocks; 
 retain 
@@ -2112,16 +2110,16 @@ VLS_50_UP_F
 VLS_FSW
 VLS_MSM
 ;
-set wide_outputs;
+set wide_outputs_stocks;
 run;
 
-proc transpose data=stocks out=data3 ; run;
+proc transpose data=stocks out=data_stock ; run;
 
-data a; set data3;
-  drop _name_;
+data a_stock; set data_stock;
+* drop _name_;
 
 ods html;
-proc print noobs data=a; run; 
+proc print noobs data=a_stock; run; 
 
 
 
@@ -2167,20 +2165,19 @@ proc print noobs data=a; run;
 %var_flow(v=DALYs_Undiscounted);
 %var_flow(v=TotalCost_Undiscounted);
 %var_flow(v=Percent_circumcised);
-%var_flow(v=Percent_condom use_GP);
+%var_flow(v=Percent_condom_use_GP);
 %var_flow(v=PrEP_FSW);
 %var_flow(v=PrEP_MSM);
 %var_flow(v=PrEP_GP);
 %var_flow(v=PrEP_Pop_GP);
 %var_flow(v=NewHIV_PrEP_Pop_GP);
-%var_flow(v=Percent_FSW reached);
-%var_flow(v=Percent_MSM reached);
+%var_flow(v=Percent_FSW_reached);
+%var_flow(v=Percent_MSM_reached);
 
 
 data year;
 input year;
 cards;
-1984
 1985
 1986
 1987
@@ -2259,7 +2256,7 @@ proc contents; run;
 */
 
 
-data  wide_outputs ; merge 
+data  wide_outputs_flows ; merge 
 
 year
 
@@ -2294,20 +2291,16 @@ DeathsHIV_50_UP_F
 DALYs_Undiscounted
 TotalCost_Undiscounted
 Percent_circumcised
-Percent_condom use_GP
+Percent_condom_use_GP
 PrEP_FSW
 PrEP_MSM
 PrEP_GP
 PrEP_Pop_GP
 NewHIV_PrEP_Pop_GP
-Percent_FSW reached
-Percent_MSM reached
+Percent_FSW_reached
+Percent_MSM_reached
 
 ;
-
-
-dummy1=.;dummy2=.;dummy3=.;dummy4=.;dummy5=.;dummy6=.;dummy7=.;dummy8=.;dummy9=.;dummy10=.;
-dummy11=.;dummy12=.;dummy13=.;dummy14=.;dummy15=.;dummy16=.;dummy17=.;dummy18=.;
 
 
 data flows; 
@@ -2344,25 +2337,32 @@ DeathsHIV_50_UP_F
 DALYs_Undiscounted
 TotalCost_Undiscounted
 Percent_circumcised
-Percent_condom use_GP
+Percent_condom_use_GP
 PrEP_FSW
 PrEP_MSM
 PrEP_GP
 PrEP_Pop_GP
 NewHIV_PrEP_Pop_GP
-Percent_FSW reached
-Percent_MSM reached
+Percent_FSW_reached
+Percent_MSM_reached
 ;
-set wide_outputs;
+set wide_outputs_flows;
 run;
 
-proc transpose data=flows out=data3 ; run;
+proc transpose data=flows out=data_flow ; run;
 
-data a; set data3;
-drop _name_;
+data a_flow; set data_flow;
+* drop _name_;
+
 
 ods html;
-proc print noobs data=a; run; 
+proc print noobs data=a_flow; run; 
+ods html close;
+
+
+ods html;
+proc print noobs data=a_stock; run; 
+proc print noobs data=a_flow; run; 
 ods html close;
 
 
