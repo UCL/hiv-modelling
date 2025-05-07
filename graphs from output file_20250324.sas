@@ -756,6 +756,101 @@ var p50_prop_sw_program_visit_0
 where cald in (2030);run;
 
 
+* TYPES OF TESTING;
+
+* From code, in order of appearance:
+tested_tb 				--> n_tested_tb
+tested_circ 			--> n_tested_m_circ (should be same as tested_m_circ below)
+tested_symptoms_not_hiv --> n_tested_symptoms_not_hiv
+tested_anc
+tested_labdel
+tested_pd
+tested_due_to_self_test
+tested_as_sw
+tested_general
+testfor_prep_any (testfor_prep_oral, testfor_prep_inj, testfor_prep_vr)
+tested_onprep_any
+tested_rsprep_any
+tested_sbcc_program
+tested_sympt
+
+* Extra outputs in code:
+Men
+tested_m   				if gender=1 and tested=1 then tested_m=1
+tested_m_sympt			if gender=1 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1) then tested_m_sympt=1
+tested_m_sympt_test		if gender=1 and tested=1 and tested_sympt=1 then tested_m_sympt_test=1
+tested_m_circ 			if gender=1 and tested=1 and tested_circ=1 then tested_m_circ=1
+
+Women
+ allocation of tests in women - 1 anc  2 symptoms  3  sw
+tested_f				if gender=2 and tested=1 then tested_f=1
+tested_f_anc			if gender=2 and tested=1 and tested_anc = 1 then tested_f_anc=1
+tested_f_sympt			if gender=2 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1) and tested_anc ne 1 then tested_f_sympt=1
+tested_f_sympt_test		if gender=2 and tested=1 and tested_sympt=1 then tested_f_sympt_test=1
+tested_f_progsw			if gender=2 and tested=1 and tested_as_sw=1 and tested_anc ne 1 and tested_labdel ne 1 and tested_pd ne 1 and (elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then tested_f_progsw=1
+tested_f_non_anc		if gender=2 and tested=1 and tested_anc ne 1 then tested_f_non_anc=1
+
+The following applies only at 1 point in time as I wasnt to know the number of women tested
+tested_ancpd			if dt_lastbirth=caldate&j-0.25 and (tested_pd=1 or (dt_last_test ne . and dt_lastbirth ne . and dt_lastbirth-0.75 lt dt_last_test le dt_lastbirth)) then tested_ancpd=1
+test_anclabpd			if gender=2 and tested=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then test_anclabpd=1
+tested_1524w			if gender=2 and tested=1 and 15 <= age < 25 then tested_1524w=1
+
+tested_at_return is when a previously diagnosed person returns to care - these can be added when summing positive tests
+tested_at_return		if return = 1 then tested_at_return=1
+;
+
+
+
+
+* SQ;
+proc print data=d;
+var  				
+	p50_n_tested_0
+ 	p50_n_tested_w_0
+	p50_n_tested_m_0
+	p50_n_tested_m_circ_0
+	p50_n_tested_m_sympt_0
+	p50_n_tested_w_sympt_0
+	p50_n_tested_anc_0 			
+	p50_n_tested_w_labdel_0		
+	p50_n_tested_w_pd_0 		
+	p50_n_tested_sw_0
+	p50_n_tested_swprog_0
+	p50_n_tested_tb_0
+	p50_n_tested_general_0
+	p50_n_tested_startprep_0
+	p50_n_tested_onprep_0
+	p50_n_tested_rsprep_0
+	p50_n_tested_prep_0
+;
+where cald in (2030);run;
+
+* Minimal;
+proc print data=d;
+var  				
+	p50_n_tested_1
+ 	p50_n_tested_w_1
+	p50_n_tested_m_1
+	p50_n_tested_m_circ_1
+	p50_n_tested_m_sympt_1
+	p50_n_tested_w_sympt_1
+	p50_n_tested_anc_1 			
+	p50_n_tested_w_labdel_1		
+	p50_n_tested_w_pd_1 		
+	p50_n_tested_sw_1
+	p50_n_tested_swprog_1
+	p50_n_tested_tb_1
+	p50_n_tested_general_1
+	p50_n_tested_startprep_1
+	p50_n_tested_onprep_1
+	p50_n_tested_rsprep_1
+	p50_n_tested_prep_1
+;
+where cald in (2030);run;
+
+
+
+
 
 
 
@@ -1038,52 +1133,6 @@ scatter x=cald y=o_p_testedanc_1549_zdhs / markerattrs = (symbol=square color=or
 scatter x=cald y=o_p_TESTEDorAW_anc_MoH / markerattrs = (symbol=square color=blue size = 10);
 run;quit;
 
-
-
-*Testing;
-proc print data=a.d_all;
-var  				
-	p50_n_tested_1
- 	p50_n_tested_w_1
-	p50_n_tested_m_1
-	p50_n_tested_m_circ_1
-	p50_n_tested_m_sympt_1
-	p50_n_tested_w_sympt_1
-	p50_n_tested_anc_1 			
-	p50_n_tested_w_labdel_1		
-	p50_n_tested_w_pd_1 		
-	p50_n_tested_sw_1
-	p50_n_tested_swprog_1
-	p50_n_tested_tb_1
-	p50_n_tested_general_1
-	p50_n_tested_startprep_1
-	p50_n_tested_onprep_1
-	p50_n_tested_rsprep_1
-	p50_n_tested_prep_1
-;
-where cald in (2030);run;
-
-proc print data=a.d_all;
-var  				
-	p50_n_tested_0
- 	p50_n_tested_w_0
-	p50_n_tested_m_0
-	p50_n_tested_m_circ_0
-	p50_n_tested_m_sympt_0
-	p50_n_tested_w_sympt_0
-	p50_n_tested_anc_0 			
-	p50_n_tested_w_labdel_0		
-	p50_n_tested_w_pd_0 		
-	p50_n_tested_sw_0
-	p50_n_tested_swprog_0
-	p50_n_tested_tb_0
-	p50_n_tested_general_0
-	p50_n_tested_startprep_0
-	p50_n_tested_onprep_0
-	p50_n_tested_rsprep_0
-	p50_n_tested_prep_0
-;
-where cald in (2030);run;
 
 
 *Number attending ANC;
