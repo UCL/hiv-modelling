@@ -145,7 +145,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 
 
 * start of epidemic;
-startyr = 1989 + 0.25;  	* overwritten in country-specific include statements (SA, Zim, Malawi, Cote d'Ivoire, Kenya) JAS Feb24;
+startyr = 1989 + 0.25;  	* overwritten in country-specific include statements (SA, Zim, Malawi, Cote dIvoire, Kenya) JAS Feb24;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
