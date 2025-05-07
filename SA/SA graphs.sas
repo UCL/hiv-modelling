@@ -1,8 +1,9 @@
-libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths SA\";
+*libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths SA\";
+libname a  "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths SA\";
 
 
 data a;
-set a.SA_02;
+set a.sa_19Mar25a;
 proc sort;by run;run;
 
 
@@ -167,11 +168,12 @@ prevalence_vg1000_	n_death_2059_m		n_death_2059_w		n_death_hiv_m		n_death_hiv_w
 n_cd4_lt200_		n_hiv				n_alive				n_alive1549_		n_alive_m			n_alive_w			n_art_start_y	
 n_prep 				n_prep_ever			p_prep_ever			p_elig_prep			prop_elig_on_prep	p_prep_any_ever;		
 
-
+ods listing;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =142;
+
+%let nfit =69;
 %let year_end = 2045.00 ;
 proc sort;by cald option ;run;
 
@@ -376,15 +378,13 @@ run;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\SA\SA_02.doc' startpage=never; 
-
-ods html ;
+ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths.doc' startpage=never; 
 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000000 by 10000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  valueattrs=(size=10);
 
 label p50_n_alive_0 = "Option 0 (median) ";
 
@@ -404,6 +404,10 @@ series  x=cald y=p50_n_hiv_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_hiv_0 	upper=p95_n_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 run;quit;
+
+run;
+ods rtf close;
+run;
 
 
 proc sgplot data=d; 

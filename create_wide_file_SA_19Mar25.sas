@@ -1,7 +1,7 @@
 *libname a  "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths SA\";
 libname a  "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths SA\";
 data a;
-set a.sa_19Mar25;
+set a.sa_19Mar25a;
 if run=. then delete;
 
 proc sort;by run;run;
@@ -22,8 +22,10 @@ proc sort; by run;
 data y; 
 merge a sf;
 by run ;
-run;
 
+* n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * sf; 
+
+/*
 data b;
 set y;
 
@@ -40,7 +42,7 @@ keep run cald p_onart_cd4_l200_ n_onart_cl200_;run;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =60;
+%let nfit =69;
 %let year_end = 2045.00 ;
 proc sort;by cald option ;run;
 
@@ -114,7 +116,7 @@ series  x=cald y=p50_p_onart_cd4_l200__0/	lineattrs = (color=black thickness = 2
 band    x=cald lower=p5_p_onart_cd4_l200__0 	upper=p95_p_onart_cd4_l200__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
 
-
+*/
 *if run ne  989218009 then delete;
 
 ***these are used for checking the raw data so not scaled up;
@@ -941,7 +943,7 @@ n_dead_Agt6_cd4gt200&wage 		= s_dead_Agt6_cd4gt200&wage * sf * 4;
 %scaleup(7579_,7579m,7579w); %scaleup(8084_,8084m,8084w); 
 
 
-keep cald	run sf_2022
+keep cald	run sf_2022 n_cd4_lt200
 n_alive1564_	n_alive1564_m		n_alive1564_w		prevalence1564_		prevalence1564m		prevalence1564w	
 incidence1564_	incidence1564_m		incidence1564_w		p_diag				p_diag_m			p_diag_w
 p_onart_diag	p_onart_diag_m		p_onart_diag_w		p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w
@@ -1602,12 +1604,12 @@ n_I_undiag8084w n_I_diag_naive8084w n_I_diag_startart8084w n_I_onart8084w n_I_of
 n_I_onart_lt6m_nvs8084w n_I_onart_gt6m_nvs8084w n_I_onart_gt6m_vs8084w n_I_offart_1stI8084w n_I_offart_SI8084w 
 n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w 
 ;run;
-*/
+*/	
 
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 76  ;
+%let nfit = 69  ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -2167,7 +2169,8 @@ l_n_dead_Agt6_cd4gt200&age		l_n_dead_Agt6_cd4gt200&mage 		l_n_dead_Agt6_cd4gt200
 ods listing close;
 ods results off;
 
-ods excel file="C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_SA19Mar25.xlsx"
+ods excel file="C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\Deaths_HIVSynthesis_SA19Mar25a.xlsx"
+
 options(sheet_name='base' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
