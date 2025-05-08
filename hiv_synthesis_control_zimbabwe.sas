@@ -1018,10 +1018,9 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-* %include "/home/rmjlaph/SA_parameters.sas";
-* %include "/home/rmjlvca/Zim_parameters_08_f.sas";
- *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
-%include "/home/rmjlja9/Zim_parameters.sas";
+* %include "/home/rmjlaph/malawi_parameters.sas";
+  %include "/home/rmjlja9/Zimbabwe_parameters.sas";
+* %include "/home/rmjllob/CdI_parameters.sas";
 /*%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";*/
 
 call symput('caldate1',caldate1);
@@ -1031,9 +1030,9 @@ call symput('caldate1',caldate1);
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 
-if country = 'South Africa'  then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;		* same as inc_cat=3;
-if country = 'Zimbabwe' 	 then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
-if country = 'Malawi' 		 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;		* same as inc_cat=1;
+if country = 'South Africa' then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;		* same as inc_cat=3;
+if country = 'Zimbabwe' 	then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
+if country = 'Malawi' 		then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;		* same as inc_cat=1;
 if country = 'Cote d Ivoire' then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;		* same as inc_cat=1;
 
 prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
@@ -1071,6 +1070,21 @@ sw_newp_lev_3_1 = 0.00 ; sw_newp_lev_3_2 = 0.01 ; sw_newp_lev_3_3 = 0.98  ; sw_n
 sw_newp_lev_4_1 = 0.00  ; sw_newp_lev_4_2 = 0.01  ; sw_newp_lev_4_3 = 0.01  ; sw_newp_lev_4_4 = 0.97 ; sw_newp_lev_4_5 = 0.010; 
 sw_newp_lev_5_1 = 0.00  ; sw_newp_lev_5_2 = 0.01  ; sw_newp_lev_5_3 = 0.01   ; sw_newp_lev_5_4 = 0.08 ; sw_newp_lev_5_5 = 0.90 ; 
 end;
+
+
+if country='Cote d Ivoire' then do;
+***CdI only - low prevalence amongst sw;
+if sw_trans_matrix=4 then do; ***CdI only - low prevalence amongst sw;
+p_sw_init_newp_g1=0.95; p_sw_init_newp_g2=0.03; p_sw_init_newp_g3= 0.01; p_sw_init_newp_g4=0.005; p_sw_init_newp_g5=0.005;
+
+sw_newp_lev_1_1 = 0.85 ; sw_newp_lev_1_2 = 0.14 ; sw_newp_lev_1_3 = 0.01  ; sw_newp_lev_1_4 = 0.000 ; sw_newp_lev_1_5 = 0.000 ; 
+sw_newp_lev_2_1 = 0.14 ; sw_newp_lev_2_2 = 0.85 ; sw_newp_lev_2_3 = 0.01  ; sw_newp_lev_2_4 = 0.000 ; sw_newp_lev_2_5 = 0.000 ; 
+sw_newp_lev_3_1 = 0.01 ; sw_newp_lev_3_2 = 0.05 ; sw_newp_lev_3_3 = 0.93  ; sw_newp_lev_3_4 = 0.005 ; sw_newp_lev_3_5 = 0.005 ; 
+sw_newp_lev_4_1 = 0.00 ; sw_newp_lev_4_2 = 0.00 ; sw_newp_lev_4_3 = 0.030 ; sw_newp_lev_4_4 = 0.950 ; sw_newp_lev_4_5 = 0.020; 
+sw_newp_lev_5_1 = 0.00 ; sw_newp_lev_5_2 = 0.00 ; sw_newp_lev_5_3 = 0.000 ; sw_newp_lev_5_4 = 0.050 ; sw_newp_lev_5_5 = 0.95 ; 
+end;
+end;
+
 
 
 * test type;
@@ -1433,6 +1447,8 @@ if country in ('South Africa', 'Zimbabwe', 'Malawi') then do;
 	lowest_age_at_start=-76;
 end;
 
+
+
 if country = 'Cote d Ivoire' then do;
 	cum13=cum12+inc13; 
 	e=rand('uniform');
@@ -1452,6 +1468,7 @@ if country = 'Cote d Ivoire' then do;
 	if cum13 <= e          then age= 55+rand('uniform')*10;  
 	lowest_age_at_start=-80;
 end;
+
 
 
 age=round(age, .25);
@@ -1810,6 +1827,11 @@ eff_rate_restart = rate_restart;
 
 * define effective prob_loss_at_diag ;
 eff_prob_loss_at_diag = prob_loss_at_diag;
+
+if country='Cote d Ivoire' then do;
+***CdI specific;
+if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*2.2;
+end;
 
 * define effective rate_lost;
 eff_rate_lost = rate_lost ;
@@ -9871,10 +9893,24 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 * this below changed apr2025 ;
 
+	if country ne 'Cote d Ivoire' then do;
 	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	end;
+
+	if country='Cote d Ivoire' then do;
+	***CdI - reducing adherence in men to match observational CdI data;
+	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.7 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.6 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.5 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.4 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	end;
 
 	if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 	if gender=2 and 20 <= age < 25 and adh < 0.8 and e < 0.1 then adh=0.90;
@@ -13729,18 +13765,26 @@ if gender=2 then do;
 	if 15 <= age < 50 then ageg1549w=1;else ageg1549w=0;
 end;
 
-alive_m = 0;  if age ge 15 and gender=1 then alive_m = 1;
+
+
+alive_m = 0;  if age ge 15 and gender=1   then alive_m = 1;
 alive_w = 0;  if age ge 15 and gender=2 then alive_w = 1;
+alive_msm = 0; if age ge 15 and msm=1 then alive_msm=1;
+alive_pwid = 0; if age ge 15 and pwid=1 then alive_pwid=1;
 if 15 <= age < 50 then alive1549=1;else alive1549=0;
-if 15 <= age < 50 and gender=1 then alive1549_m=1;else alive1549_m=0;
+if 15 <= age < 50 and gender = 1 then alive1549_m=1;else alive1549_m=0;
+if 15 <= age < 50 and msm=1 then alive1549_msm=1;else alive1549_msm=0;
+if 15 <= age < 50 and pwid=1 then alive1549_pwid=1;else alive1549_pwid=0;
 if 15 <= age < 50 and gender=2 then alive1549_w=1;else alive1549_w=0;
 if 15 <= age < 65 then alive1564=1;else alive1564=0;
-if 15 <= age < 65 and gender=1 then alive1564_m=1;else alive1564_m=0;
+if 15 <= age < 65 and gender = 1 then alive1564_m=1;else alive1564_m=0;
+if 15 <= age < 65 and msm=1 then alive1564_msm=1;else alive1564_msm=0;
+if 15 <= age < 65 and pwid=1 then alive1564_pwid=1;else alive1564_pwid=0;
 if 15 <= age < 65 and gender=2 then alive1564_w=1;else alive1564_w=0;
 
 ageg014_=0;if  0 <= age < 15 then ageg014_=1; 
 age_1849w=0;if 18 <= age < 50 and gender=2 then age_1849w=1;
-age_1844m=0;if 18 <= age < 45 and gender=1 then age_1844m=1;
+age_1844m=0;if 18 <= age < 45 and gender = 1 then age_1844m=1;
 age_1844w=0;if 18 <= age < 45 and gender=2 then age_1844w=1;
 
 
@@ -13788,6 +13832,8 @@ primary1549w=0; if gender=2 and primary=1 and 15 <= age < 50 then primary1549w=1
 
 primary1549=0; if primary=1 and 15 <= age < 50 then primary1549=1;
 
+primary_prep_elig=0; if primary=1 and prep_any_elig = 1 then primary_prep_elig=1;
+primary_onprep=0; if primary=1 and prep_any = 1 then primary_onprep=1;
 
 primary1524m_ep=0; if gender=1 and primary=1 and 15 <= age < 25 and ep=1 then primary1524m_ep=1;
 primary2534m_ep=0; if gender=1 and primary=1 and 25 <= age < 35 and ep=1 then primary2534m_ep=1;
@@ -14917,7 +14963,7 @@ diag_epun=0;if registd=1 and ep=1 and epdiag ne 1 then diag_epun=ep;
 
 ***HIV specific outputs;
 vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vg1000_w=.; vg1000_m_1524=.;vg1000_w_1524=.;vg1000_w_1524=.;vg1000_1549=.;
-ever_ep_hiv=.;ever_ep_diag=.;ever_newp_hiv=.;ever_newp_diag=.;
+ever_ep_hiv=.;ever_ep_diag=.;ever_newp_hiv=.;ever_newp_diag=.;  vl1000_msm=.; vg1000_msm=.;vg1000_msm=.; 
 ever_sw_hiv=.;ever_sw_diag=.; dead_=.;dead_diag=.;
 vl1000_onart_1524m=0; vl1000_onart_1524w=0;  vl1000_1524m=0; vl1000_1524w=0; r_len_1524m=0; r_len_1524w=0; r_cab_1524m=0; r_cab_1524w=0; o_len_1524=0; o_cab_1524=0;
 o_len_1524m = 0; o_len_1524w = 0; o_cab_1524m = 0; o_cab_1524w = 0; o_len_vl1000=0; o_cab_vl1000=0; r_len_o_len=0; r_cab_o_cab=0;
@@ -15424,7 +15470,7 @@ end;
 
 	if caldate&j=yrart >. then do;
 		art_start=1;
-		if gender=1 then art_start_m=1; if gender=2 then art_start_w=1; 
+		if gender=1 then art_start_m=1; if gender=2 then art_start_w=1; if msm=1 then art_start_msm=1; 
 		if gender=2 and pregnant=1 then art_start_pregnant=1;
 
 		if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then nnm_art=1;
@@ -15587,8 +15633,16 @@ vl1000_art_iicu_50pl_ 	= .;	onart_gt6m_50pl_		= .; 	vl1000_art_gt6m_50pl_	= .;	o
 vl1000_art_gt6m_iicu_50pl_ = .;  onart_gt6m_iicu_sw	= .;	vl1000_art_gt6m_iicu_sw = .;
 vl1000_artgt6miicu_w1524evpr=.;onartgt6miicu_w1524evpr=.;
 
+vl1000_art_1524_m = .; vl1000_art_2549_m = .; vl1000_art_50pl_m = .; 
+vl1000_art_1524_w = .; vl1000_art_2549_w = .; vl1000_art_50pl_w = .; 
+
+vl1000_art_sw = .; 
+
 if gender=1 then do;
 	vl1000_art_m 		= vl1000_art;
+	if 15 <= age < 25 then vl1000_art_1524_m = vl1000_art;
+	if 25 <= age < 50 then vl1000_art_2549_m = vl1000_art;
+	if 50 <= age      then vl1000_art_50pl_m = vl1000_art;
 
 	onart_iicu_m 		= onart_iicu;
 	vl1000_art_iicu_m 	= vl1000_art_iicu;
@@ -15634,6 +15688,9 @@ end;
 
 if gender=2 then do;
 	vl1000_art_w 		= vl1000_art;
+	if 15 <= age < 25 then vl1000_art_1524_w = vl1000_art;
+	if 25 <= age < 50 then vl1000_art_2549_w = vl1000_art;
+	if 50 <= age      then vl1000_art_50pl_w = vl1000_art;
 
 	onart_iicu_w 		= onart_iicu;
 	vl1000_art_iicu_w 	= vl1000_art_iicu;
@@ -15686,6 +15743,7 @@ if 50 <= age  then do;
 end;
 
 if sw=1 then do;
+	vl1000_art_sw    		= vl1000_art;
 	onart_gt6m_iicu_sw		= onart_gt6m_iicu;
 	vl1000_art_gt6m_iicu_sw = vl1000_art_gt6m_iicu;
 end;
@@ -15825,6 +15883,7 @@ prep_vr_w=0; 	if gender=2 and prep_vr =1 	then prep_vr_w=1;
 prep_oral_m=0; 	if gender=1 and prep_oral=1 then prep_oral_m=1;
 prep_cab_m=0; 	if gender=1 and prep_cab=1 	then prep_cab_m=1;
 prep_len_m=0; 	if gender=1 and prep_len=1 	then prep_len_m=1;
+prep_oral_msm=0; 	if msm=1 and prep_oral=1 then prep_oral_msm=1;
 prep_cab_msm=0; 	if msm=1  and prep_cab=1 	then prep_cab_msm=1;
 prep_len_msm=0; 	if msm=1  and prep_len=1 	then prep_len_msm=1;
 prep_oral_pwid=0; 	if pwid=1 and prep_oral=1 then prep_oral_pwid=1;
@@ -16385,9 +16444,11 @@ test_not_costed=0; if tested=1 and cost_test <= 0 then test_not_costed=1;
 
 diag_m1549_=0;diag_m1564_=0;
 diag_m1519_=0;diag_m2024_=0;diag_m2529_=0;diag_m3034_=0;diag_m3539_=0;diag_m4044_=0;diag_m4549_=0;diag_m5054_=0;diag_m5559_=0;diag_m6064_=0;  
+diag_m_1524=0; diag_m_2549=0; diag_m_50pl=0;
 * msm ; diag_msm1549_=0;diag_msm1564_=0;diag_pwid1549_=0;diag_pwid1564_=0;
 diag_w1549_=0;diag_w1564_=0;
 diag_w1519_=0;diag_w2024_=0;diag_w2529_=0;diag_w3034_=0;diag_w3539_=0;diag_w4044_=0;diag_w4549_=0;diag_w5054_=0;diag_w5559_=0;diag_w6064_=0;  
+diag_w_1524=0; diag_w_2549=0; diag_w_50pl=0;
 diag_sw=0; 	
 
 onart_m1549_=0;onart_m1564_=0;
@@ -16421,6 +16482,10 @@ if gender=1 then do;
 	else if 85 le age       then do; diag_m85pl_=registd;  onart_m85pl_=onart; end;
 end;
 
+if gender=1 and registd=1 and 15 <= age < 25 then diag_m_1524=1; 
+if gender=1 and registd=1 and 25 <= age < 50 then diag_m_2549=1; 
+if gender=1 and registd=1 and 50 <= age      then diag_m_50pl=1; 
+
 if msm=1 then do;
 	if      15 le age lt 50 then do; ever_tested_msm1549_=ever_tested; diag_msm1549_=registd;  onart_msm1549_=onart; end;
 	if      15 le age lt 65 then do; ever_tested_msm1564_=ever_tested; diag_msm1564_=registd;  onart_msm1564_=onart; end;
@@ -16451,6 +16516,10 @@ if gender=2 then do;
 	if sw = 1 		   then do;  ever_tested_sw   =ever_tested; diag_sw   =registd; onart_sw   =onart;vs_sw=vl1000; end;
 	if sw ne 1           then      ever_tested_sw=0;
 end;
+
+if gender=2 and registd=1 and 15 <= age < 25 then diag_w_1524=1; 
+if gender=2 and registd=1 and 25 <= age < 50 then diag_w_2549=1; 
+if gender=2 and registd=1 and 50 <= age      then diag_w_50pl=1; 
 
 year_1_infection=0;year_2_infection=0;year_3_infection=0;year_4_infection=0;year_5_infection=0;
 year_1_infection_diag=0;year_2_infection_diag=0;year_3_infection_diag=0;year_4_infection_diag=0;year_5_infection_diag=0;
@@ -16543,6 +16612,7 @@ if gender=2  then deadw_all=dead;
 
 death_hivrel=0;   if caldate&j = death > . and dcause=1 then death_hivrel=dead;
 death_hivrel_m=0; if caldate&j = death > . and dcause=1 and gender=1 then death_hivrel_m=dead;
+death_hivrel_w=0; if caldate&j = death > . and dcause=1 and gender=2 then death_hivrel_w=dead;
 
 death_dcause3 = 0; if caldate&j = death > . and dcause=3 then death_dcause3 = dead ;
 
@@ -17052,6 +17122,10 @@ if visit=1 and naive=1 then pre_art_care=1;
 status_death_hr_g=.;death_hiv=.;death_hiv_m=.;death_hiv_w=.;
 sdg_hr_1=.;sdg_hr_2=.;sdg_hr_3=.;sdg_hr_4=.;sdg_hr_5=.;sdg_hr_6=.;sdg_hr_7=.;sdg_hr_8=.;sdg_hr_9=.;sdg_hr_99=.;
 death_hiv_age_1524=0; death_hiv_age_2534=0; death_hiv_age_3544=0; death_hiv_age_4554=0; death_hiv_age_5564=0; 
+
+death_hiv_age_1524_m=0; death_hiv_age_2549_m=0; death_hiv_age_50pl_m=0; 
+death_hiv_age_1524_w=0; death_hiv_age_2549_w=0; death_hiv_age_50pl_w=0; 
+
 death_hiv_inf_pre_year_interv=.; death_hiv_inf_post_year_interv=.; 
 
 if hiv=1 and caldate&j=death and dead_ = 1 and rdcause=1 then do;
@@ -17059,6 +17133,14 @@ death_hiv=1;if gender=1 then death_hiv_m=1;
 
 if infection_pre_year_interv=1 then death_hiv_inf_pre_year_interv=1; 
 if infection_post_year_interv=1 then death_hiv_inf_post_year_interv=1; 
+
+if gender=1 and 15 <= age < 25 then death_hiv_age_1524_m=1;
+if gender=1 and 25 <= age < 50 then death_hiv_age_2549_m=1;
+if gender=1 and 50 <= age      then death_hiv_age_50pl_m=1;
+
+if gender=2 and 15 <= age < 25 then death_hiv_age_1524_w=1;
+if gender=2 and 25 <= age < 50 then death_hiv_age_2549_w=1;
+if gender=2 and 50 <= age      then death_hiv_age_50pl_w=1;
 
 if gender=2 then death_hiv_w=1;
 if 15 <= age < 25 and death_hiv=1 then death_hiv_age_1524=1;
@@ -18222,7 +18304,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_inf_vlsupp + inf_vlsupp ; s_inf_newp + inf_newp ; s_inf_ep + inf_ep ; s_inf_diag + inf_diag ; s_inf_naive + inf_naive ;
 
-	
+	s_primary_prep_elig + primary_prep_elig; s_primary_onprep + primary_onprep; 
+
 	/*outputs amongst those infected*/
 
 	s_i_m_d_newp + i_m_d_newp ; s_i_w_d_newp + i_w_d_newp ; s_i_w_np + i_w_np ; s_i_m_np + i_m_np ; s_i_ep + i_ep ;
@@ -18663,7 +18746,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;  s_test_not_costed + test_not_costed;
 	s_self_tested + self_tested;  s_tested_due_to_self_test + tested_due_to_self_test;  s_diagnosed_self_test + diagnosed_self_test;
 	s_self_tested_m + self_tested_m ; s_self_tested_w + self_tested_w ;
-
+ 	s_diag_m_1524 + diag_m_1524; s_diag_m_2549 + diag_m_2549; s_diag_m_50pl + diag_m_50pl;
+	s_diag_w_1524 + diag_w_1524; s_diag_w_2549 + diag_w_2549; s_diag_w_50pl + diag_w_50pl;
 
 	/*VL and CD4*/
 
@@ -18677,6 +18761,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_r_vg1000 + r_vg1000 ; s_vl1000 + vl1000 ; s_vl1000_art + vl1000_art ; s_onart_iicu + onart_iicu ; s_vl1000_art_iicu + vl1000_art_iicu ;
     s_onart_gt6m + onart_gt6m ; s_vl1000_art_gt6m + vl1000_art_gt6m ; s_onart_gt6m_iicu + onart_gt6m_iicu ; s_diag_vl1000 + diag_vl1000;
 	s_vl1000_art_gt6m_iicu + vl1000_art_gt6m_iicu; s_vl1000_m + vl1000_m ; s_vl1000_art_m + vl1000_art_m ; s_onart_iicu_m + onart_iicu_m ;
+
+	s_vl1000_art_1524_m + vl1000_art_1524_m;      s_vl1000_art_2549_m + vl1000_art_2549_m;     s_vl1000_art_50pl_m + vl1000_art_50pl_m;    
+	s_vl1000_art_1524_w + vl1000_art_1524_w;   s_vl1000_art_2549_w + vl1000_art_2549_w;  s_vl1000_art_50pl_w + vl1000_art_50pl_w; s_vl1000_art_sw + vl1000_art_sw;
+
     s_vl1000_art_iicu_m + vl1000_art_iicu_m ; s_onart_gt6m_m + onart_gt6m_m ; s_vl1000_art_gt6m_m + vl1000_art_gt6m_m ;       
 	s_onart_gt6m_iicu_m + onart_gt6m_iicu_m ; s_vl1000_art_gt6m_iicu_m + vl1000_art_gt6m_iicu_m ; s_vl1000_w + vl1000_w ; s_vl1000_art_w + vl1000_art_w ;	  	        
  	s_onart_iicu_w + onart_iicu_w ; s_vl1000_art_iicu_w + vl1000_art_iicu_w ; s_onart_gt6m_w + onart_gt6m_w ; s_vl1000_art_gt6m_w + vl1000_art_gt6m_w ;
@@ -18901,8 +18989,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dead85plw_all + dead85plw_all; 	
 	s_dead6569m_all + dead6569m_all;  s_dead7074m_all + dead7074m_all; s_dead7579m_all + dead7579m_all;  s_dead8084m_all + dead8084m_all;
 	s_dead85plm_all + dead85plm_all; 
-
-	s_death_hivrel + death_hivrel ;	s_death_hivrel_m + death_hivrel_m ; s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead_ + dead_ ;
+	s_death_hivrel + death_hivrel ;	s_death_hivrel_m + death_hivrel_m ; s_death_hivrel_w + death_hivrel_w ; s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead_ + dead_ ;
 	s_death_hiv + death_hiv ;s_death_hiv_m + death_hiv_m ;s_death_hiv_w + death_hiv_w ; s_dead_hivrel_onart + dead_hivrel_onart;
 	s_dead_diag + dead_diag ; s_dead_naive + dead_naive ; s_dead_onart + dead_onart ; s_dead_line1_lf0 + dead_line1_lf0 ;
     s_dead_line1_lf1 + dead_line1_lf1 ; s_dead_line2_lf1 + dead_line2_lf1 ; s_dead_line2_lf2 + dead_line2_lf2 ; s_dead_artexp + dead_artexp ;
@@ -18920,7 +19007,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_death_hiv_age_1524 + death_hiv_age_1524; s_death_hiv_age_2534 + death_hiv_age_2534; s_death_hiv_age_3544 + death_hiv_age_3544; 
 	s_death_hiv_age_4554 + death_hiv_age_4554; s_death_hiv_age_5564 + death_hiv_age_5564; 
 
-	s_dead_hivpos_cause1 + dead_hivpos_cause1 ; s_dead_hivpos_tb + dead_hivpos_tb ; s_dead_hivpos_crypm + dead_hivpos_crypm ; 
+ 	s_death_hiv_age_1524_m + death_hiv_age_1524_m;   s_death_hiv_age_2549_m + death_hiv_age_2549_m ;  s_death_hiv_age_50pl_m + death_hiv_age_50pl_m;
+ 	s_death_hiv_age_1524_w + death_hiv_age_1524_w;   s_death_hiv_age_2549_w + death_hiv_age_2549_w ;  s_death_hiv_age_50pl_w + death_hiv_age_50pl_w;
+
+ 	s_dead_hivpos_cause1 + dead_hivpos_cause1 ; s_dead_hivpos_tb + dead_hivpos_tb ; s_dead_hivpos_crypm + dead_hivpos_crypm ; 
 	s_dead_hivpos_sbi + dead_hivpos_sbi ; s_dead_hivpos_oth_adc + dead_hivpos_oth_adc ; s_dead_hivpos_cause2 + dead_hivpos_cause2 ; 
 	s_dead_hivpos_cause3 + dead_hivpos_cause3 ; 	s_dead_hivpos_cause4 + dead_hivpos_cause4 ; s_dead_hivpos_cvd + dead_hivpos_cvd ; 
 	s_dead_cvd + dead_cvd ; s_dead_hivneg_cause4 + dead_hivneg_cause4 ; s_dead_hivneg_cause3 + dead_hivneg_cause3 ; 
@@ -19068,6 +19158,22 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_sw1519_tp1 + sw1519_tp1; s_sw2024_tp1 + sw2024_tp1; s_sw2529_tp1 + sw2529_tp1; s_sw3039_tp1 + sw3039_tp1; s_swov40_tp1 + swov40_tp1;
 
 	s_sti_sw + sti_sw;
+
+/* MSM */
+
+s_alive_msm + alive_msm; s_alive1549_msm + alive1549_msm ;  s_alive1564_msm + alive1564_msm ; s_primary1549msm + primary1549msm;
+s_primary1564msm + primary1564msm;  s_hiv1564msm + hiv1564msm;  s_hiv_msm + hiv_msm;  s_hiv1549msm + hiv1549msm; s_vl1000_msm + vl1000_msm;
+s_art_start_msm + art_start_msm;   s_diag_msm_age1564 + diag_msm_age1564;   s_vg1000_msm + vg1000_msm;
+s_vl1000_art_msm + vl1000_art_msm ; s_onart_iicu_msm + onart_iicu_msm ; s_vl1000_art_iicu_msm + vl1000_art_iicu_msm ;
+s_onart_gt6m_msm + onart_gt6m_msm ; s_vl1000_art_gt6m_msm + vl1000_art_gt6m_msm ; s_onart_gt6m_iicu_msm + onart_gt6m_iicu_msm ;
+s_vl1000_art_gt6m_iicu_msm + vl1000_art_gt6m_iicu_msm ; s_artexp_msm + artexp_msm ; s_diag_msm + diag_msm ; s_onart_msm + onart_msm ;
+s_prep_oral_msm + prep_oral_msm ; s_prep_cab_msm + prep_cab_msm ; s_prep_len_msm + prep_len_msm ; s_elig_prep_any_msm_1564 + elig_prep_any_msm_1564 ;
+s_onprep_msm + onprep_msm ; s_onprep_oral_msm + onprep_oral_msm ; s_tested1549msm + tested1549msm ; s_ever_tested_msm + ever_tested_msm ;
+s_ever_tested_msm1549_ + ever_tested_msm1549_ ; s_ever_tested_msm1564_ + ever_tested_msm1564_ ; s_diag_msm1564_ + diag_msm1564_ ;
+s_onart_msm1564_ + onart_msm1564_ ; s_infected_from_msm + infected_from_msm ; s_inf_msm + inf_msm ; s_inf_pwid + inf_pwid ; 
+s_ever_tested_msm1549_ + ever_tested_msm1549_ ; s_diag_msm1549_ + diag_msm1549_ ; s_onart_msm1549_ + onart_msm1549_ ; s_ever_tested_msm1564_ + ever_tested_msm1564_ ;
+s_diag_msm1564_ + diag_msm1564_ ; s_diag_this_period_msm + diag_this_period_msm ; s_tested_msm + tested_msm ; s_naive_msm + naive_msm ; 
+s_prep_any_msm + prep_any_msm ; s_prep_any_m + prep_any_m ; s_prep_any_pwid + prep_any_pwid ;
 
 	/*ADC and advanced hiv disease etc*/
 
@@ -19880,7 +19986,7 @@ s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_pr
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
 s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
-s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
+s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive s_primary_prep_elig s_primary_onprep
 
 /*outputs amongst those infected*/
 s_i_m_d_newp  s_i_w_d_newp   s_i_w_np   s_i_m_np  s_i_ep 
@@ -20160,6 +20266,8 @@ s_diag_m5054_  s_diag_m5559_  s_diag_m6064_
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
 s_nn_tdr_diag
+ 	s_diag_m_1524  s_diag_m_2549  s_diag_m_50pl 
+	s_diag_w_1524  s_diag_w_2549  s_diag_w_50pl 
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc s_diag_this_period_f_labdel s_diag_this_period_f_pd
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f
@@ -20182,6 +20290,8 @@ s_vg1000 s_vg1000_1549 s_vg1000_m  s_vg1000_w s_vg1000_w_1524  s_vg1000_m_1524 s
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
+
+s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w s_vl1000_art_sw
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
@@ -20368,8 +20478,10 @@ s_dead s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
-s_death_hivrel  s_death_hivrel_m  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
+s_death_hivrel  s_death_hivrel_m  s_death_hivrel_w  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
+ s_death_hiv_age_1524_m   s_death_hiv_age_2549_m  s_death_hiv_age_50pl_m
+ s_death_hiv_age_1524_w   s_death_hiv_age_2549_w  s_death_hiv_age_50pl_w
 s_dead_   s_death_hiv  s_death_hiv_m  s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p s_dead_hivrel_onart
 s_dead_u_vfail1  s_dead_line1_vlg1000  s_dead_line2_vlg1000  s_ev_onart_gt6m_vlg1000_dead
@@ -20744,6 +20856,7 @@ if country = 'Cote d Ivoire' then do;
 	if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
 	if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
 end;
+
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -20978,7 +21091,7 @@ s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_pr
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
 s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
-s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
+s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive s_primary_prep_elig s_primary_onprep
 
 /*outputs amongst those infected*/
 s_i_m_d_newp  s_i_w_d_newp   s_i_w_np   s_i_m_np  s_i_ep 
@@ -21255,6 +21368,8 @@ s_diag_m5054_  s_diag_m5559_  s_diag_m6064_
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
 s_nn_tdr_diag
+ 	s_diag_m_1524  s_diag_m_2549  s_diag_m_50pl 
+	s_diag_w_1524  s_diag_w_2549  s_diag_w_50pl 
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc  s_diag_this_period_f_labdel s_diag_this_period_f_pd
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f 
@@ -21277,6 +21392,9 @@ s_vg1000  s_vg1000_1549  s_vg1000_m  s_vg1000_w  s_vg1000_w_1524  s_vg1000_m_152
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
+
+s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w s_vl1000_art_sw
+
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
@@ -21463,8 +21581,10 @@ s_dead s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
-s_death_hivrel s_death_hivrel_m  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
+s_death_hivrel s_death_hivrel_m  s_death_hivrel_w  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
+ s_death_hiv_age_1524_m   s_death_hiv_age_2549_m  s_death_hiv_age_50pl_m
+ s_death_hiv_age_1524_w   s_death_hiv_age_2549_w  s_death_hiv_age_50pl_w
 s_dead_   s_death_hiv s_death_hiv_m s_death_hiv_w s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p s_dead_hivrel_onart
 s_dead_u_vfail1  s_dead_line1_vlg1000  s_dead_line2_vlg1000  s_ev_onart_gt6m_vlg1000_dead
@@ -21811,6 +21931,7 @@ Inputs are:
 *** RUN PROGRAM; 
 
 %run_update_r1(&caldate1,2076,0);
+											  
 
 
 /*
@@ -21851,8 +21972,7 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
-*/			 
-			
+*/	
 														 
 
 			
@@ -21937,7 +22057,7 @@ s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_pr
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
 s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
-s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
+s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive s_primary_prep_elig s_primary_onprep
 
 /*outputs amongst those infected*/
 s_i_m_d_newp  s_i_w_d_newp   s_i_w_np   s_i_m_np  s_i_ep 
@@ -22220,6 +22340,8 @@ s_diag_m5054_  s_diag_m5559_  s_diag_m6064_
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  
 s_nn_tdr_diag
+ 	s_diag_m_1524  s_diag_m_2549  s_diag_m_50pl 
+	s_diag_w_1524  s_diag_w_2549  s_diag_w_50pl 
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc  s_diag_this_period_f_labdel s_diag_this_period_f_pd
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f 
@@ -22241,6 +22363,9 @@ s_vg1000  s_vg1000_1549  s_vg1000_m  s_vg1000_w  s_vg1000_w_1524  s_vg1000_m_152
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
+
+s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_1524_w    s_vl1000_art_2549_w  s_vl1000_art_50pl_w s_vl1000_art_sw
+
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
@@ -22426,8 +22551,10 @@ s_dead  s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
-s_death_hivrel s_death_hivrel_m s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
+s_death_hivrel s_death_hivrel_m  s_death_hivrel_w s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
+ s_death_hiv_age_1524_m   s_death_hiv_age_2549_m  s_death_hiv_age_50pl_m
+ s_death_hiv_age_1524_w   s_death_hiv_age_2549_w  s_death_hiv_age_50pl_w
 s_dead_  s_death_hiv  s_death_hiv_m s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p s_dead_hivrel_onart
 s_dead_u_vfail1  s_dead_line1_vlg1000  s_dead_line2_vlg1000  s_ev_onart_gt6m_vlg1000_dead
