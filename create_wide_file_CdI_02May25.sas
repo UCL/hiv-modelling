@@ -870,8 +870,8 @@ cards;
 
 /*     *SQ OUTPUTS;
 data   wide_outputs_base; merge year 
-n_alive1549_m		n_alive1549_w    	n_alive1549_	
-prevalence1549m		prevalence1549w   	prevalence1549 	
+n_alive1549m		n_alive1549w    	n_alive1549_	
+prevalence1549m		prevalence1549w   	prevalence1549_
 n_newinf1549m 		n_newinf1549w 		n_newinf1549_		
 p_diag1549m    		p_diag1549w     	p_diag1549_ 		
 p_onart_diag_m		p_onart_diag_w		p_onart_diag 
