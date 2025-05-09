@@ -701,13 +701,13 @@ set a.l_base_CdI_13nov24;
 
   
 keep run cald option 
-n_alive_m			n_alive_w			n_alive				prevalence_m		prevalence_w		prevalence	
-n_infected			n_infected_m		n_infected_w		p_diag1549_			p_diag1549m			p_diag1549w	
+n_alive1549_		n_alive1549_m		n_alive1549_w		prevalence1549m		prevalence1549w		prevalence1549
+n_newinf1549_		n_newinf1549m		n_newinf1549w		p_diag1549_			p_diag1549m			p_diag1549w	
 p_onart_diag_m 		p_onart_diag_w		p_onart_diag 		p_onart_vl1000_m 	p_onart_vl1000_w 	p_onart_vl1000_		
-prop_w_1564_sw  	prop_sw_hiv1549_   	p_mcirc  			p_vmmc				p_trad_circ			
+prop_w_1549_sw  	prop_sw_hiv1549_   	p_mcirc  			p_vmmc				p_trad_circ			
 n_death_hivrel_m	n_death_hivrel_w 	n_death_hivrel 		n_hiv_m 			n_hiv_w 			n_hiv			
-prevalence_msm  	prop_m_msm 			incidence1524m		incidence1524w		incidence1564m		incidence1564w		
-incidence1564_		n_onart 			n_infected_agyw		incidence_agyw		incidence_sw		incidence_msm		n_onprep_m			n_onprep_w
+prevalence_msm  	prop_m_msm 			incidence1564m		incidence1564w		incidence1564_		n_onart 	
+n_infected_agyw		incidence_agyw		incidence_sw		incidence_msm		n_onprep_m			n_onprep_w
 n_onprep			p_1564_onprep		n_onprep_sw			p_onprep_sw			n_onprep_msm		p_onprep_msm
 yll_m 				yll_w 				yll
 ;
@@ -812,18 +812,18 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;	
 
-%var(v=n_alive_m);			%var(v=n_alive_w);    		%var(v=n_alive);		%var(v=prevalence_m);		%var(v=prevalence_w);  
-%var(v=prevalence); 		%var(v=n_infected_m); 		%var(v=n_infected_w); 	%var(v=n_infected);			%var(v=p_diag1549m);    	
-%var(v=p_diag1549w);     	%var(v=p_diag1549_); 		%var(v=p_onart_diag_m);	%var(v=p_onart_diag_w);		%var(v=p_onart_diag); 
-%var(v=p_onart_vl1000_m);  	%var(v=p_onart_vl1000_w);  	%var(v=p_onart_vl1000_);%var(v=prop_w_1564_sw);		%var(v=prop_sw_hiv1549_); 
-%var(v=p_mcirc);			%var(v=p_vmmc);				%var(v=p_trad_circ);	%var(v=n_death_hivrel_m );  %var(v=n_death_hivrel_w ); 
-%var(v=n_death_hivrel ); 	%var(v=n_hiv_m);			%var(v=n_hiv_w);		%var(v=n_hiv);				%var(v=prevalence_msm);
-%var(v=prop_m_msm);    		%var(v=incidence1524m);		%var(v=incidence1524w);	%var(v=incidence1564m);		%var(v=incidence1564w);
-%var(v=incidence1564_);		%var(v=n_onart); 			%var(v=n_infected_agyw);%var(v=incidence_agyw);		%var(v=incidence_sw);	%var(v=incidence_msm);		%var(v=n_onprep_m);			
-%var(v=n_onprep_w);			%var(v=n_onprep);			%var(v=p_1564_onprep);	%var(v=n_onprep_sw);		%var(v=p_onprep_sw);	
-%var(v=n_onprep_msm);		%var(v=p_onprep_msm);		%var(v=yll_m); 			%var(v=yll_w); 				%var(v=yll);
-	
-
+%var(v=n_alive1549_m);		%var(v=n_alive1549_w);    	%var(v=n_alive1549_);	
+%var(v=prevalence1549m);	%var(v=prevalence1549w);    %var(v=prevalence1549); 	
+%var(v=n_newinf1549m); 		%var(v=n_newinf1549w); 		%var(v=n_newinf1549_);		
+%var(v=p_diag1549m);    	%var(v=p_diag1549w);     	%var(v=p_diag1549_); 		
+%var(v=p_onart_diag_m);		%var(v=p_onart_diag_w);		%var(v=p_onart_diag); 
+%var(v=p_onart_vl1000_m);  	%var(v=p_onart_vl1000_w);  	%var(v=p_onart_vl1000_);
+%var(v=prop_w_1549_sw);		%var(v=prop_sw_hiv1549_); 	%var(v=p_mcirc);		%var(v=p_vmmc);			%var(v=p_trad_circ);
+%var(v=n_death_hivrel_m );  %var(v=n_death_hivrel_w );  %var(v=n_death_hivrel ); 
+%var(v=n_hiv_m);			%var(v=n_hiv_w);			%var(v=n_hiv);			
+%var(v=prevalence_msm);		%var(v=prop_m_msm);    		%var(v=incidence1564m);	%var(v=incidence1564w);	%var(v=incidence1564_);		
+%var(v=n_onart); 			%var(v=n_infected_agyw);	%var(v=incidence_agyw);	
+;
 data year;
 
 input year;
