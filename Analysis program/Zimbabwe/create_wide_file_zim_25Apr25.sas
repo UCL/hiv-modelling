@@ -11,169 +11,6 @@ if run=. then delete;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
-***Remove runs with low % diag in 2020 as currently mean is about 3% lower than PHIA;
-data b;
-set a;
-
-s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
-s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
-s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
-
-* p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
-* p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m1564_ / s_hiv1564m ;  
-* p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
-
-/*PHIA 2020 - 88% IN WOMWN, 84% IN MEN, 87% OVERALL
-PROC FREQ;TABLE P_DIAG_M;WHERE CALD=2020;RUN;
-*/
-if cald=2020 and p_diag_m < 0.7475728155 then a=1;
-
-/*
-proc freq;table run;where a=1;run;
-*/
-
-if run in (
-5838791
-9147395
-12992660
-54228249
-80476159
-86017606
-116163149
-139481356
-159762806
-165769043
-198103801
-224689455
-233603992
-269571490
-270187644
-281007092
-301834912
-340101428
-346462555
-359521561
-375058733
-378621871
-442334215
-474473088
-492361889
-497625623
-518348854
-520223077
-522775152
-531890376
-548932691
-549265706
-552687539
-558405306
-583052624
-595204916
-613155312
-615568179
-624672404
-649875726
-656852870
-660874740
-663985483
-687874362
-698792475
-702622060
-715293024
-724905991
-751151279
-773798923
-807688853
-814760446
-821209162
-842142863
-843335890
-866724049
-910639565
-920398785
-956494284
-963219651
-963539534
-994354050
-) 
-then delete;
-run;
-
-* Remove runs in which p_tested_past_year_sw in AMETHIST are high;
-
-data c;
-set b;
-
-* p_tested_past_year_sw;		if s_sw_1564 - s_diag_sw > 0 then p_tested_past_year_sw = s_tested_4p_sw /  (s_sw_1564 - s_diag_sw) ;
-
-/*
-proc freq;table p_tested_past_year_sw;where cald=2030 and option=1;run;
-*/
-
-if p_tested_past_year_sw >   0.8095238095 and option=1 and cald=2030 then b=1;
-/*
-proc freq;table run;where b=1;run;
-*/
-if run in (
-34653231
-79506296
-85192058
-86568068
-174306929
-175792389
-210725652
-217854927
-233376617
-245632864
-246650536
-257687137
-277428868
-282667887
-330283391
-330975299
-342003453
-347323077
-398063312
-419641238
-420486811
-433799775
-451355832
-460997680
-466796941
-511494797
-520269144
-526773161
-533894260
-550034053
-594905565
-597335922
-603074687
-626288401
-629358995
-630861148
-662862087
-690444873
-697156949
-725308634
-751784543
-785735381
-810472262
-811100678
-831990816
-847509447
-859302138
-867821218
-876401028
-918728467
-942220072
-950389041
-964000773
-983583761
-)
-then delete;
-
-proc means p50 mean ;var p_tested_past_year_sw;where option=1 and cald=2030;run;
-
 
 data sf;
 set a;
@@ -512,9 +349,9 @@ proc means n mean p50 p5 p95;var p_diag_sw n_sw_1549_;where cald=2023;run;
 
 
 
-data a.fsw_16_04_25_short; set y;run;
+data a.fsw_25_04_25_short; set y;run;
 
-data y; set a.fsw_16_04_25_short;run;
+data y; set a.fsw_25_04_25_short;run;
 
 options nomprint;
   option nospool;
@@ -646,7 +483,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_zim_16_04_25;
+data a.wide_fsw_zim_25_04_25;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
