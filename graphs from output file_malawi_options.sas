@@ -31,6 +31,7 @@ if option in (0 1   3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 ) then delete;
 
 
 
+
 * if option = 0 then option = 99;
 
  
@@ -758,7 +759,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n daly";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (150000000 to 200000000 by 10000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (150000000 to 200000000 by 10000000) valueattrs=(size=10);
 
 label mean_n_daly_0 = "Option 0 (median) ";
 label mean_n_daly_1 = "Option 1  (median) ";
