@@ -193,6 +193,10 @@ if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
 *dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; * s_cost_child_hiv is discounted cost; ***Not outputted - check;
 
+
+dcost_child_hiv_at_child_inf = s_dcost_child_hiv_at_child_inf * sf; *One off lifetime cost for a child living with HIV;
+
+
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
@@ -211,7 +215,8 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv + dcost_non_aids_pre_death + dcost_self_test + dcost_econ_empow + dcost_comp_sex_educ + dcost_adh_intervention;
+		/*dcost_child_hiv*/ + dcost_child_hiv_at_child_inf + dcost_non_aids_pre_death + dcost_self_test + dcost_econ_empow + dcost_comp_sex_educ + dcost_adh_intervention;
+*replaced dcost_child_hiv with dcost_child_hiv_at_child_inf to match variable name change in core_hiv_synthesis file;
 
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
