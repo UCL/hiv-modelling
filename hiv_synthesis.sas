@@ -16881,6 +16881,90 @@ if caldate&j = death and death ne . then do;
 end;
 
 
+
+
+*Test new way of accumulating YLL;	*JASMay24;
+yllag_total_test=0;		*undiscounted;
+yllag_w=0;			yllag_m=0;
+yllag_hiv_w=0;		yllag_hiv_m=0;
+dyllag_total=0;			*discounted;
+dyllag_w=0; 		dyllag_m=0;
+dyllag_hiv_w=0; 	dyllag_hiv_m=0;
+
+***COULD READ THESE IN FROM EXTERNAL SCRIPT***;
+array ages_w[77]   
+   (68.020, 67.032, 66.044, 65.056, 64.068, 63.080, 62.098, 61.116, 60.134, 59.152,
+    58.170, 57.190, 56.210, 55.230, 54.250, 53.270, 52.292, 51.314, 50.336, 49.358,
+    48.380, 47.410, 46.440, 45.470, 44.500, 43.530, 42.568, 41.606, 40.644, 39.682,
+	38.720, 37.774, 36.828, 35.882, 34.936, 33.990, 33.066, 32.142, 31.218, 30.294,
+	29.370, 28.462, 27.554, 26.646, 25.738, 24.830, 23.952, 23.074, 22.196, 21.318,
+	20.440, 19.592, 18.744, 17.896, 17.048, 16.200, 15.416, 14.632, 13.848, 13.064,
+	12.280, 11.604, 10.928, 10.252, 9.576, 8.9, 8.345, 7.825, 7.337, 6.879,
+	6.450, 6.048, 5.671, 5.317, 4.986, 4.675, 4.383);
+
+array ages_m[77]
+   (65.410, 64.416, 63.422, 62.428, 61.434, 60.440, 59.446, 58.452, 57.458, 56.464, 
+	55.470, 54.478, 53.486, 52.494, 51.502, 50.510, 49.520, 48.530, 47.540, 46.550, 
+	45.560, 44.576, 43.592, 42.608, 41.624, 40.640, 39.666, 38.692, 37.718, 36.744,
+	35.770, 34.814, 33.858, 32.902, 31.946, 30.990, 30.056, 29.122, 28.188, 27.254,
+	26.320, 25.418, 24.516, 23.614, 22.712, 21.810, 20.948, 20.086, 19.224, 18.362, 
+	17.500, 16.716, 15.932, 15.148, 14.364, 13.580, 12.898, 12.216, 11.534, 10.852, 
+	10.170, 9.626, 9.082, 8.538, 7.994, 7.450, 7.000, 6.578, 6.181, 5.808, 
+	5.457, 5.128, 4.819, 4.528, 4.255, 3.998, 3.757);
+
+*West level 26 life expectancies, discount rate	0.029558802;
+array ages_w_disc[77]   
+   (29.30, 29.17, 29.03, 28.89, 28.74, 28.59, 28.43, 28.27, 28.11, 27.94, 
+	27.77, 27.59, 27.41, 27.22, 27.02, 26.82, 26.62, 26.41, 26.19, 25.97, 
+	25.74, 25.50, 25.26, 25.01, 24.75, 24.49, 24.22, 23.94, 23.66, 23.36, 
+	23.06, 22.75, 22.44, 22.12, 21.79, 21.44, 21.10, 20.75, 20.39, 20.01, 
+	19.63, 19.24, 18.85, 18.44, 18.02, 17.59, 17.16, 16.73, 16.28, 15.82, 
+	15.34, 14.87, 14.39, 13.90, 13.39, 12.87, 12.38, 11.88, 11.36, 10.84, 
+	10.30, 9.82, 9.34, 8.84, 8.34, 7.83, 7.40, 6.99, 6.60, 6.22, 
+	5.87, 5.54, 5.22, 4.92, 4.64, 4.37, 4.11);
+
+array ages_m_disc[77]   
+   (28.94, 28.79, 28.64, 28.49, 28.33, 28.16, 27.99, 27.82, 27.64, 27.46, 
+	27.27, 27.07, 26.87, 26.66, 26.45, 26.23, 26.00, 25.77, 25.53, 25.29, 
+	25.03, 24.77, 24.50, 24.23, 23.95, 23.65, 23.36, 23.05, 22.74, 22.41, 
+	22.08, 21.74, 21.40, 21.04, 20.67, 20.29, 19.92, 19.53, 19.13, 18.71, 
+	18.29, 17.87, 17.44, 17.00, 16.54, 16.08, 15.62, 15.15, 14.66, 14.17, 
+	13.66, 13.19, 12.71, 12.21, 11.70, 11.19, 10.72, 10.25, 9.77, 9.28, 
+	8.78, 8.38, 7.97, 7.55, 7.12, 6.69, 6.32, 5.98, 5.65, 5.34, 
+	5.04, 4.76, 4.49, 4.24, 4.00, 3.77, 3.56);
+
+if caldate&j = death and death ne . then do;
+
+	if 15 le agedeath < 92 then do;						*Assumes YLL=0 for deaths age 92+;
+		if gender = 2 then do;
+/*			yllag_total_test = ages_w[agedeath - 14]; 	*Offset array index by 15;*/
+			yllag_w = ages_w[agedeath - 14]; 			*Offset array index by 15;
+			dyllag_w=ages_w_disc[agedeath - 14]; 
+			if death_hivrel>0 then do;					*Based on dcause=1 not rdcause=1;
+				yllag_hiv_w=ages_w[agedeath - 14];;
+				dyllag_hiv_w=ages_w_disc[agedeath - 14]; 	
+			end;
+		end;
+		if gender = 1 then do;
+/*			yllag_total_test = ages_m[agedeath - 14];*/
+			yllag_m = ages_m[agedeath - 14];
+			dyllag_m=ages_m_disc[agedeath - 14]; 
+			if death_hivrel>0 then do;
+				yllag_hiv_m=ages_m[agedeath - 14];;
+				dyllag_hiv_m=ages_m_disc[agedeath - 14]; 	
+			end;
+		end;
+		yllag_total_test=yllag_w+yllag_m;
+		dyllag_total=dyllag_w+dyllag_m;
+	end;
+
+end;
+
+
+
+
+
+
 _dcost = cost* discount;
 _dart_cost = art_cost*discount ;
 _donart_cost = cost_onart*discount ;
@@ -19295,7 +19379,12 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_daly_mtct + daly_mtct ;
 	s_daly_non_aids_pre_death + daly_non_aids_pre_death ;     
 	s_total_yll80le + total_yll80le;
-	s_total_yllag + total_yllag;						 
+	s_total_yllag + total_yllag;						 			 
+	s_yllag_total_test + yllag_total_test;
+	s_yllag_w + yllag_w;
+	s_yllag_m + yllag_m;
+	s_yllag_hiv_w + yllag_hiv_w;
+	s_yllag_hiv_m + yllag_hiv_m;
 
 	*discounted;
 	s_live_ddaly + live_ddaly ; 
@@ -19305,6 +19394,9 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_ddaly_non_aids_pre_death + ddaly_non_aids_pre_death ;     
 	
 	s_dyll_Optima80 + dyll_Optima80; s_dyll_GBD + dyll_GBD;
+	s_dyllag_total + dyllag_total;
+	s_dyllag_w + dyllag_w; s_dyllag_m + dyllag_m;
+	s_dyllag_hiv_w + dyllag_hiv_w; s_dyllag_hiv_m + dyllag_hiv_m;
 
 	*undiscounted;
 	s_cost + cost; s_art_cost + art_cost;  s_onart_cost + onart_cost; s_cd4_cost + cd4_cost; s_vl_cost + vl_cost;  s_vis_cost + vis_cost; 
@@ -20390,8 +20482,11 @@ s_dcost_child_hiv_mo_art  s_dcost_child_hiv_at_child_inf 	 s_dcost_hypert_vis 		
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_total_yll80le  s_total_yllag							  
+s_yllag_total_test s_yllag_w s_yllag_m
+s_yllag_hiv_w s_yllag_hiv_m
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
 s_dyll_Optima80 s_dyll_GBD       
+s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m      
 																																			   
 		
 /*visits*/
@@ -21487,8 +21582,11 @@ s_dcost_child_hiv_mo_art   s_dcost_child_hiv_at_child_inf 	 s_dcost_hypert_vis 	
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_total_yll80le  s_total_yllag						  
+s_yllag_total_test s_yllag_w s_yllag_m
+s_yllag_hiv_w s_yllag_hiv_m
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
 s_dyll_Optima80 s_dyll_GBD  
+s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
@@ -22445,8 +22543,11 @@ s_dcost_child_hiv_mo_art   s_dcost_child_hiv_at_child_inf 	 s_dcost_hypert_vis 	
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_total_yll80le  s_total_yllag																			   
+s_yllag_total_test s_yllag_w s_yllag_m
+s_yllag_hiv_w s_yllag_hiv_m
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
 s_dyll_Optima80 s_dyll_GBD	 		 
+s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m			 
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
