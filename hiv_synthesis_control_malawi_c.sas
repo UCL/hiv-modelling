@@ -20936,7 +20936,7 @@ end;
 ***Cote d Ivoite specific;
 if country = 'Cote d Ivoire' then do;
 	if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
-	if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
+	if cald = 2010 and (0.03 > prevalence1549w > 0.08) then do; abort abend; end;
 	if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
 end;
 
