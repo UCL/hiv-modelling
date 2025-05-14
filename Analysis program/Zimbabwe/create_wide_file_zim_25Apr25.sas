@@ -11,9 +11,132 @@ if run=. then delete;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
+***Remove runs with low % diag in 2020 as currently mean is about 3% lower than PHIA. In men, this is about 6% lower;
+data b;
+set a;
+
+s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
+s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
+s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
+
+* p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
+* p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m1564_ / s_hiv1564m ;  
+* p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
+
+/*PHIA 2020 - 88% IN WOMEN, 84% IN MEN, 87% OVERALL
+PROC MEANS N MEAN;VAR P_DIAG P_DIAG_M P_DIAG_W;WHERE CALD=2020;RUN;
+PROC FREQ;TABLE P_DIAG_M;WHERE CALD=2020;RUN;
+*/
+if cald=2020 and p_diag_m < 0.7288590604 then a=1;
+
+
+/*
+proc freq;table run;where a=1;run;
+*/
+
+if run in (
+14413801
+22431981
+24401850
+35775041
+59903590
+62889013
+66307721
+76804905
+108691246
+108859553
+122088617
+132807041
+135112158
+150319598
+199008316
+204394962
+230759024
+260701847
+264995244
+280537548
+312698723
+412263490
+439042968
+445270451
+553398015
+559819030
+597538271
+606863934
+637117594
+641556282
+660680544
+686359016
+722288927
+736358158
+769815418
+796931864
+799023936
+810713678
+832639544
+837606567
+850699938
+874472830
+889262111
+903066629
+909037111
+913551535
+960557279
+977298487
+980793267
+) then delete;
+run;
+
+***Remove runs with low numbers on art in 2023 as currently UNAIDS estimate is not withing 95% range;
+data c;
+set b;
+
+/*
+proc freq;table s_onart;where cald=2023;run;
+*/
+
+if cald=2023 and s_onart < 2450 then b=1;
+/*
+proc freq;table run;where b=1;run;
+*/
+
+if run in (
+7480844
+70939610
+131261725
+147821951
+284811116
+303897581
+305589249
+338827130
+411093219
+422840627
+425630420
+457994939
+470301331
+487401670
+496281356
+502234075
+519669724
+523032733
+537822091
+724051840
+730937131
+773749813
+808275531
+820977304
+832757338
+871036689
+872563841
+959754060
+965533196
+987364331
+)
+then delete;
+run;
 
 data sf;
-set a;
+set c;
 
 if cald=2024.5;
 
@@ -28,8 +151,10 @@ keep run sf_2024 sf;
 proc sort; by run;run;
 
 
+
+
 data y;
-merge a sf;
+merge c sf;
 by run;
 
 * preparatory code ;
