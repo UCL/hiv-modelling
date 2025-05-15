@@ -270,7 +270,7 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 
 ***total cost with Sisters;
 if option=0 then do;
-	cost_sis_perSW=0.000132/4;
+	cost_sis_perSW=0.000132;
 	s_cost_sisprog_ = cost_sis_perSW * s_sw_program_visit;
 	dcost_sisprog_ = s_cost_sisprog_ * &discount *sf;
 
@@ -282,7 +282,7 @@ end;
 
 
 if option=1 then do;
-	cost_amt_perSW=0.000155/4;
+	cost_amt_perSW=0.000155;
 	s_cost_amtprog_ = cost_amt_perSW * s_sw_program_visit;
 	dcost_amtprog_ = s_cost_amtprog_ * &discount *sf;
 

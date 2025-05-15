@@ -144,13 +144,6 @@ maxcost_amt= diff_netdalys * 500;
 diff_cost = dcost_24_74_2 - dcost_24_74_1;
 ICER = (diff_cost/diff_ddaly)*1000000;
 
-proc freq;table diff_cost diff_ddaly;run;
-
-proc means n mean p50 lclm uclm;
-var diff_cost diff_ddaly ICER;RUN;
-proc means n mean lclm uclm;
-var ICER;where diff_ddaly<0;RUN;
-
 ***Absolute costs and differences;
 proc means n mean lclm uclm;
 var dcost_24_74_1 dcost_24_74_2 diff_dcost
@@ -163,6 +156,20 @@ var dcost_24_74_1 dcost_24_74_2 diff_dcost
 proc means n mean lclm uclm;
 var	ddaly_24_74_1 ddaly_24_74_2 diff_ddaly;
 run;
+
+
+proc means n mean p50 lclm uclm;
+var diff_cost diff_ddaly;RUN;
+
+
+proc means n mean lclm uclm;
+var ICER;RUN;
+
+proc means n mean lclm uclm;
+var ICER;where diff_ddaly<0;RUN;
+
+
+
 
 /****DID NOT USE THIS METHOD, INSTEAD USED THE GRAPH METHOD;
 
