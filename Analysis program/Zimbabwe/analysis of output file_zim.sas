@@ -387,14 +387,15 @@ _2=Amethist
 _3=Discontinuation;
 */
 
-*difference in costs;
-diff_dcost = dcost_24_74_3 - dcost_34_74_1;
-diff_artcost= dart_cost_y_34_74_3 - dart_cost_y_34_74_1;
-diff_testcost = dtest_cost_34_74_3 - dtest_cost_34_74_1;
-diff_testcost_sw = dtest_cost_sw_34_74_3 - dtest_cost_sw_34_74_1;
+*difference in costs KP-discont;
+diff_dcost = dcost_24_74_1 - dcost_24_74_3;
+diff_artcost= dart_cost_y_24_74_1 - dart_cost_y_24_74_3;
+diff_testcost = dtest_cost_24_74_1 - dtest_cost_24_74_3;
+diff_testcost_sw = dtest_cost_sw_24_74_1 - dtest_cost_sw_24_74_3;
+diff_dcost_sisprog = dcost_sisprog__24_74_1-0;
 
 *difference in dalys (dalys averted);
-diff_ddaly = ddaly_34_74_3 - ddaly_34_74_1;
+diff_ddaly = ddaly_24_74_1 - ddaly_24_74_3;
 
 ***DALYs averted * CET - this gives max cost for SW prog to be CE
    (multiplied by -1 since we want to cost the DALYs averted rather than the difference which is negative);
@@ -404,36 +405,35 @@ dalys_avert_x_CET = (diff_ddaly * 0.0005)*-1;
 maxcost= (diff_dcost)*-1 +  dalys_avert_x_CET;
 
 *net dalys using $500;
-netdalys_sis =  ddaly_34_74_1 + (dcost_34_74_1)/0.0005;
-netdalys_amt =  ddaly_34_74_3 + (dcost_34_74_3)/0.0005;*expect dalys to be lower here;
+netdalys_sis =  ddaly_24_74_1 + (dcost_24_74_1)/0.0005;
+netdalys_discon =  ddaly_24_74_3 + (dcost_24_74_3)/0.0005;*expect dalys to be lower here;
 
 *net dalys averted;
-diff_netdalys = netdalys_amt - netdalys_sis; *take absolute number;
+diff_netdalys = netdalys_sis - netdalys_discon; *take absolute number;
 
 *net monetary benefit (Dalys * cost-effectivenss threshold) + costs;
-nmb_sis = (ddaly_34_74_1*0.0005) + dcost_34_74_1;
-nmb_amt= (ddaly_34_74_3*0.0005) + dcost_34_74_3;
-diff_nmb = nmb_amt - nmb_sis;
-
-***max cost of SW prog;
-maxcost_amt= diff_netdalys * 500;
+nmb_sis = (ddaly_24_74_1*0.0005) + dcost_24_74_1;
+nmb_discon= (ddaly_24_74_3*0.0005) + dcost_24_74_3;
+diff_nmb = nmb_sis - nmb_discon;
 
 
-***ICER based on actual costs of AMETHIST and Sisters;
-diff_cost = dcost_34_74_3 - dcost_34_74_1;
+diff_cost = dcost_24_74_1 - dcost_24_74_3;
 ICER = (diff_cost/diff_ddaly)*1000000;
+
+
 
 ***Absolute costs and differences;
 proc means n mean lclm uclm;
-var dcost_34_74_1 dcost_34_74_3 diff_dcost
-	dart_cost_y_34_74_1 dart_cost_y_34_74_3  diff_artcost
-	dtest_cost_34_74_1 dtest_cost_34_74_3 diff_testcost 
-	dtest_cost_sw_34_74_1 dtest_cost_sw_34_74_3 diff_testcost_sw;
+var dcost_24_74_1 dcost_24_74_3 diff_dcost
+	dart_cost_y_24_74_1 dart_cost_y_24_74_3  diff_artcost
+	dtest_cost_24_74_1 dtest_cost_24_74_3 diff_testcost 
+	dtest_cost_sw_24_74_1 dtest_cost_sw_24_74_3 diff_testcost_sw
+	dcost_sisprog__24_74_1 diff_dcost_sisprog;
 ;run;
 
 ***DALYs;
 proc means n mean lclm uclm;
-var	ddaly_34_74_1 ddaly_34_74_3 diff_ddaly;
+var	ddaly_24_74_1 ddaly_24_74_3 diff_ddaly;
 run;
 
 ***Since DALYs are averted and costs are saved, no need to calculate an ICER;
@@ -441,6 +441,4 @@ proc means n mean lclm uclm;
 var ICER;RUN;
 
 proc means n mean lclm uclm;var
-netdalys_sis netdalys_amt diff_netdalys;run;
-
-/*
+netdalys_sis netdalys_discon diff_netdalys;run;
