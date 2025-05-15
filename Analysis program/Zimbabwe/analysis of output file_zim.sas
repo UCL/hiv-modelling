@@ -1,6 +1,9 @@
 *libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
 libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
 
+***This is the final program used for the AMETHIST cost effectiveness paper. 
+***Towards the bottom, the impact of funding cuts is also analysed (option 2);
+
 data a; 
 set a.wide_fsw_zim_25_04_25; 
 
@@ -157,63 +160,15 @@ proc means n mean lclm uclm;
 var	ddaly_24_74_1 ddaly_24_74_2 diff_ddaly;
 run;
 
-
-proc means n mean p50 lclm uclm;
-var diff_cost diff_ddaly;RUN;
-
-
+***Since DALYs are averted and costs are saved, no need to calculate an ICER;
 proc means n mean lclm uclm;
 var ICER;RUN;
 
-proc means n mean lclm uclm;
-var ICER;where diff_ddaly<0;RUN;
+proc means n mean lclm uclm;var
+netdalys_sis netdalys_amt diff_netdalys;run;
 
-
-
-
-/****DID NOT USE THIS METHOD, INSTEAD USED THE GRAPH METHOD;
-
-***Additional we can spend taking into account DALYs averted using $500 threshold;
-proc means n 5 p95 lclm uclm;
-var dalys_avert_x_CET ;
-run;
-
-***Max we can spend for a SW prog to be CE;
-proc means n mean p50 p5 p95 lclm uclm;
-var maxcost_low_v_none maxcost_high_v_none;run;
-
-proc means n mean p50 p5 p95 lclm uclm;
-var maxcost_low_v_none maxcost_high_v_none;where incidence=1;run;
-proc means n mean p50 p5 p95 lclm uclm;
-var maxcost_low_v_none maxcost_high_v_none;where incidence=2;run;
-proc means n mean p50 p5 p95 lclm uclm;
-var maxcost_low_v_none maxcost_high_v_none;where incidence=3;run;
-proc means n mean p50 p5 p95 lclm uclm;
-var maxcost_low_v_none maxcost_high_v_none;where incidence=4;run;
-proc means n mean p50 p5 p95 lclm uclm;
-var maxcost_low_v_none maxcost_high_v_none;where incidence=5;run;
-
-
-***Cost per DALY using CET;
-
-***Net DALYs;
-proc means n mean p50 p5 p95 lclm uclm;
-var	netdalys_no_swprog netdalys_swprog_low netdalys_swprog_high
-	diff_netdalys_swprog_low_v_none diff_netdalys_swprog_high_v_none
-;run;
-
-***Net monetary benefit;
-proc means n mean p50 p5 p95 lclm uclm;
-var	nmb_none nmb_swprog_high nmb_swprog_low
-	diff_nmb_swprog_low_v_none diff_nmb_swprog_high_v_none
-;run;
-
-
-*/
-
-
-
-
+/*
+***Did not use;
 data maxcosts;
 set a;
 
@@ -396,3 +351,96 @@ d_netdalys500_amt225  d_netdalys500_amt230  d_netdalys500_amt235  d_netdalys500_
 ;
 run;
 proc means mean p5 p95 lclm uclm ;var max_cost_amt_program;run;
+*/
+
+
+***ANALYSING THE IMPACT OF FUNDING CUTS - OPTION 0;
+
+data one;
+set a;
+***table 3 - outputs in 2030 for Sisters and Sisters + Amethist;
+proc means n p50 mean p5 p95;var
+/*Current SW program*/
+p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1	p_tested_swprog_30_1
+p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
+p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
+incidence1549__30_1	prevalence1549__30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000__30_1 
+
+/*Discontinuation*/
+p_sw_prog_vis_30_3  p_tested_past_year_sw_30_3 p_tested_swprog_30_3
+p_diag_sw_30_3		p_onart_diag_sw_30_3	p_onart_vl1000_sw_30_3		p_fsw_newp0__30_3	prop_sw_onprep_30_3
+p_sti_sw_30_3		incidence_sw_30_3	prevalence_sw_30_3
+incidence1549__30_3	prevalence1549__30_3		p_diag_30_3	  p_onart_diag_30_3   p_onart_vl1000__30_3
+
+;
+run;
+
+
+data two;
+set one;
+
+
+****Cost effectiveness;
+/*
+_1=Sisters
+_2=Amethist
+_3=Discontinuation;
+*/
+
+*difference in costs;
+diff_dcost = dcost_24_74_3 - dcost_34_74_1;
+diff_artcost= dart_cost_y_34_74_3 - dart_cost_y_34_74_1;
+diff_testcost = dtest_cost_34_74_3 - dtest_cost_34_74_1;
+diff_testcost_sw = dtest_cost_sw_34_74_3 - dtest_cost_sw_34_74_1;
+
+*difference in dalys (dalys averted);
+diff_ddaly = ddaly_34_74_3 - ddaly_34_74_1;
+
+***DALYs averted * CET - this gives max cost for SW prog to be CE
+   (multiplied by -1 since we want to cost the DALYs averted rather than the difference which is negative);
+dalys_avert_x_CET = (diff_ddaly * 0.0005)*-1;
+
+***Max cost of a SW program - additional $m paid for averting DALYs + initial cost savings;
+maxcost= (diff_dcost)*-1 +  dalys_avert_x_CET;
+
+*net dalys using $500;
+netdalys_sis =  ddaly_34_74_1 + (dcost_34_74_1)/0.0005;
+netdalys_amt =  ddaly_34_74_3 + (dcost_34_74_3)/0.0005;*expect dalys to be lower here;
+
+*net dalys averted;
+diff_netdalys = netdalys_amt - netdalys_sis; *take absolute number;
+
+*net monetary benefit (Dalys * cost-effectivenss threshold) + costs;
+nmb_sis = (ddaly_34_74_1*0.0005) + dcost_34_74_1;
+nmb_amt= (ddaly_34_74_3*0.0005) + dcost_34_74_3;
+diff_nmb = nmb_amt - nmb_sis;
+
+***max cost of SW prog;
+maxcost_amt= diff_netdalys * 500;
+
+
+***ICER based on actual costs of AMETHIST and Sisters;
+diff_cost = dcost_34_74_3 - dcost_34_74_1;
+ICER = (diff_cost/diff_ddaly)*1000000;
+
+***Absolute costs and differences;
+proc means n mean lclm uclm;
+var dcost_34_74_1 dcost_34_74_3 diff_dcost
+	dart_cost_y_34_74_1 dart_cost_y_34_74_3  diff_artcost
+	dtest_cost_34_74_1 dtest_cost_34_74_3 diff_testcost 
+	dtest_cost_sw_34_74_1 dtest_cost_sw_34_74_3 diff_testcost_sw;
+;run;
+
+***DALYs;
+proc means n mean lclm uclm;
+var	ddaly_34_74_1 ddaly_34_74_3 diff_ddaly;
+run;
+
+***Since DALYs are averted and costs are saved, no need to calculate an ICER;
+proc means n mean lclm uclm;
+var ICER;RUN;
+
+proc means n mean lclm uclm;var
+netdalys_sis netdalys_amt diff_netdalys;run;
+
+/*
