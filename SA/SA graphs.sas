@@ -3,7 +3,7 @@ libname a  "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa 
 
 
 data a;
-set a.sa_19Mar25a;
+set a.sa_08may25;
 proc sort;by run;run;
 
 
@@ -32,6 +32,8 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
 s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
 s_hivge15 = s_hivge15m + s_hivge15w ;
+
+* n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * sf; 
 
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
 * mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
@@ -173,7 +175,7 @@ proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit =69;
+%let nfit =101;
 %let year_end = 2045.00 ;
 proc sort;by cald option ;run;
 
@@ -1293,10 +1295,11 @@ series  x=cald y=p50_n_death_hiv_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_death_hiv_w_0 	upper=p95_n_death_hiv_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
 
-
+ods listing close; 
+ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_cd4_lt200";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2040)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 5000000 by 500000) valueattrs=(size=10);
 
 label p50_n_cd4_lt200__0 = "Option 0 (median) ";
