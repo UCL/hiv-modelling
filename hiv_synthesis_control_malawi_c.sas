@@ -1,4 +1,10 @@
 
+*
+_c  remove if msm=1 then hard_reach=1;
+;
+
+
+
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -2128,7 +2134,7 @@ p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 
 
-if msm=1 or pwid=1 then hard_reach=1;
+if pwid=1 then hard_reach=1;
 
 
 

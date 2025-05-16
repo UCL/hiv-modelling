@@ -13,7 +13,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data c;
-  set a.long_mlw_b;
+  set a.long_mlw_control_b;
 
 
 
@@ -81,9 +81,7 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 * n_tested_self_test = 0;
 
 
-%let single_var =   prevalence_msm                                   /* n_new_inf1549_ */        ;
-
-proc freq; tables  prevalence_msm  ; run;
+%let single_var =   p_diag_msm                                   /* n_new_inf1549_ */        ;
 
 
 
@@ -98,7 +96,7 @@ p_ep_msm p_msm_ge1newp p_m_ge1newp n_pwid p_onprep_pwid p_onart_pwid
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 80  ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 83  ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2025    ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
@@ -736,6 +734,38 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html close;
 
 
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of HIV positive msm diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to 2024 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_p_diag_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=mean_p_diag_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diag_msm_0 	upper=p95_p_diag_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;quit;
+
+/*
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of HIV positive msm with VL<1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to 2024 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_p_vl1000_msm_0 = "Option 0 (median) ";
+
+series  x=cald y=mean_p_vl1000_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_vl1000_msm_0 	upper=p95_p_vl1000_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;quit;
+
+*/
+
 /*
 
 ods html;
@@ -1155,8 +1185,7 @@ run;quit;
 */
 
 
-
-
+/*
 
 ods html ;
 proc sgplot data=d; 
@@ -1172,7 +1201,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 /*
 
@@ -1920,6 +1949,7 @@ run;quit;
 
 */
 
+/*
 
 ods html;
 
@@ -1939,6 +1969,8 @@ band    x=cald lower=p5_p_onart_diag_1 	upper=p95_p_onart_diag_1  / transparency
 run;quit;
 
 ods html close;
+
+*/
 
 /*
 
@@ -2177,21 +2209,22 @@ ods html close;
 
 /*
 
-
+ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV positive people with VL<1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to 2024 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_vl1000__0 = "Option 0 (median) ";
-label mean_p_vl1000__1 = "Option 1  (median) ";
 
 series  x=cald y=mean_p_vl1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=mean_p_vl1000__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
+
+*/
+
+/*
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV positive people with VL > 1000";
