@@ -14866,6 +14866,7 @@ if gender = 2 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_
 if sw=1 then do; elig_prep_any_sw = 0; if prep_any_elig = 1 then elig_prep_any_sw = 1;   end;
 if sdc=1 then do; elig_prep_any_sdc = 0; if prep_any_elig = 1 then elig_prep_any_sdc = 1;   end;
 if plw=1 then do; elig_prep_any_plw = 0; if prep_any_elig = 1 then elig_prep_any_plw = 1;   end;
+
 if curr_mobile=1 and 15 <= age < 65 and prep_any_elig=1 then elig_prep_any_mm_1564_=1;
 if curr_mobile=1 and 15 <= age < 50 and prep_any_elig=1 then elig_prep_any_mm_1549_=1;
 if gender=1 and curr_mobile ne 1 and 15 <= age < 65 and prep_any_elig=1 then elig_prep_any_nmm_1564_=1;
