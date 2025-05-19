@@ -1,6 +1,6 @@
 /*Considerations;
 
-Rather than increasing newp for MM, should MM be selected based on their newp e.g. >1 newp/3 months?
+Might have to reduce rred in non MM if prevalence in all men is too high.
 Cabotegravir introduction - should this be for women only (and MM)?
 */
 
