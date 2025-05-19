@@ -1503,7 +1503,18 @@ end;
 
 if msm =1 then p_rred_p = p_rred_p * msm_rred ;  * life sex risk incresaes with increasing life_sex_risk ;
 
+r=rand('uniform');
+rred_p=1; if r < p_rred_p then rred_p=0.00001;
+
 * life_sex_risk used for determining sw=1; 
+if gender=2 then do;
+	life_sex_risk=2;
+	if r < p_rred_p then life_sex_risk = 1; 
+	if 1-p_hsb_p < r then life_sex_risk = 3; 
+end;
+
+
+***REMOVE FROM CORE;
 r=rand('uniform');
 if gender=2 then life_sex_risk=2; 
 rred_p=1;
@@ -15939,7 +15950,7 @@ end;
 										
 
 elig_prep_any_w_1524 = 0; elig_prep_any_w_2534 = 0; elig_prep_any_w_3544 = 0; elig_prep_any_w_1549 = 0;  elig_prep_any_w_1564 = 0; 
-elig_prep_any_m_1556 = 0
+elig_prep_any_m_1564 = 0; elig_prep_any_sw = 0;elig_prep_any_sdc = 0;elig_prep_any_plw = 0; elig_prep_any_mm_1564_=0;
 if gender = 2 and 15 <= age < 25 then do; if prep_any_elig=1 then elig_prep_any_w_1524 = 1;  end;
 if gender = 2 and 25 <= age < 35 then do; if prep_any_elig=1 then elig_prep_any_w_2534 = 1;  end;
 if gender = 2 and 35 <= age < 45 then do; if prep_any_elig=1 then elig_prep_any_w_3544 = 1;  end;
