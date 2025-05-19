@@ -715,6 +715,14 @@ end;
 
 end;
 
+*MOBILE MEN;
+
+* prob_mobile1519_;			%sample_uniform(prob_mobile1519_, 0.01 0.02);
+* prob_mobile2060_;			%sample_uniform(prob_mobile2060_, 0.025 0.05);
+* prob_mobile60pl;			%sample_uniform(prob_mobile60pl,  0.01 0.02);
+* prob_stop_mobile;			%sample_uniform(prob_stop_mobile, 0.05 0.10);
+* inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 5 10 20 50);*change in sexual behaviour due to being mobile;
+* mm_hardreach;				mm_hardreach=0.70;
 
 
 * CIRCUMCISION;
@@ -746,7 +754,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14 19);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 14);
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -1495,18 +1503,7 @@ end;
 
 if msm =1 then p_rred_p = p_rred_p * msm_rred ;  * life sex risk incresaes with increasing life_sex_risk ;
 
-r=rand('uniform');
-rred_p=1; if r < p_rred_p then rred_p=0.00001;
-
 * life_sex_risk used for determining sw=1; 
-if gender=2 then do;
-	life_sex_risk=2;
-	if r < p_rred_p then life_sex_risk = 1; 
-	if 1-p_hsb_p < r then life_sex_risk = 3; 
-end;
-
-
-
 r=rand('uniform');
 if gender=2 then life_sex_risk=2; 
 rred_p=1;
@@ -2285,12 +2282,15 @@ who may be dead and hence have caldate{t} missing;
 
 
  	*Option 0 is continuation at current rates - status quo;
-							  
- 	*Option 1;
-																														  
+	if option=0 then do;
+	end;
+
+ 	*Option 1 - Set hard to reach to 0 for all MM;
 	if option = 1 then do;
-		*Specify option 1;
-												 
+		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
+			hard_reach_due_to_mobile=0;
+			hard_reach=0;
+		end;
 	end;
  
 end;
@@ -2855,6 +2855,29 @@ if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_
 	eff_sw_higher_int = sw_higher_int ; 
 	*eff_prob_sw_lower_adh = prob_sw_lower_adh ; 
 	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
+end;
+
+***MOBILE MEN;
+* Risk of becoming mobile (with an increased sexual risk) and impact on hard to reach;
+
+if gender=1 and curr_mobile_tm1 ne 1 and adc ne 1 then do; u=rand('uniform');
+	if 15 <= age < 20 and u < prob_mobile1519_ then curr_mobile=1; 
+	if 20 <= age < 60 and u < prob_mobile2060_ then curr_mobile=1;
+	if age >=60 and u < prob_mobile60pl then curr_mobile=1;
+
+	if curr_mobile=1 and u < mm_hardreach then do;
+		if hard_reach ne 1 then hard_reach_due_to_mobile=1;
+		hard_reach=1;
+	end;
+end;
+
+r=rand('Uniform');
+if (curr_mobile=1 or adc=1) and r < prob_stop_mobile then do; 
+	curr_mobile=0;
+	if hard_reach_due_to_mobile=1 then do;
+		hard_reach=0;
+		hard_reach_due_to_mobile=0;
+	end;
 end;
 
 
@@ -3558,6 +3581,11 @@ if hiv_tm1=1 then do;
 end;
 
 
+***MOBILE MEN;
+* change in sexual beh for mobile men;
+rred_mm=1.0; if curr_mobile=1 then rred_mm=inc_risk_mobile;
+
+
 rred_balance= 1 ;
 
 if gender=1 then do;
@@ -3595,7 +3623,7 @@ end;
 
 rred_ep = 1 ; if ep_tm1  = 1 and conc_ep ne . then rred_ep = conc_ep ;  * mar16 ;
 
-rred= newp_factor*(rred_a * rred_p * rred_adc * rred_d * rred_rc * rred_balance * rred_ep * rred_adhav); 
+rred= newp_factor*(rred_a * rred_p * rred_adc * rred_d * rred_rc * rred_balance * rred_ep * rred_adhav * rred_mm); 
 * rred_ep lower or greater concurrence with ep - to introduce a potential dependence of newp on ep - which could influence
 the magnitude of an epidemic generated for a given mean level of condomless sex;
 
@@ -4710,6 +4738,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1))) ) then prep_any_elig=1; 
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=5 then do;   
@@ -4762,6 +4791,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 	if prep_any_strategy=14 then do;	* as 4 but with newp_tm1 ge 1 also;	
       	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=15 then do;	* Serodiscordant couples - new for MIHPSA Zimbabwe; *JAS Apr2023;
@@ -13727,6 +13757,13 @@ if gender=2 then do;
 	if 15 <= age < 50 then ageg1549w=1;else ageg1549w=0;
 end;
 
+***MOBILE MEN;
+alive1549mm=0;alive1564mm=0;alive1564nmm=0;
+if curr_mobile=1 then do;
+	if 15 <= age < 50 then alive1549mm=1;
+	if 15 <= age < 65 then alive1564mm=1;
+end;
+if curr_mobile ne 1 and gender=1 and 15 <= age < 65 then alive1564nmm=1;
 
 
 alive_m = 0;  if age ge 15 and gender=1   then alive_m = 1;
@@ -13794,6 +13831,9 @@ primary1549w=0; if gender=2 and primary=1 and 15 <= age < 50 then primary1549w=1
 
 primary1549=0; if primary=1 and 15 <= age < 50 then primary1549=1;
 
+***MOBILE MEN;
+primary1549mm=0; if curr_mobile=1 and primary=1 and 15 <= age < 50 then primary1549mm=1;
+primary1564mm=0; if curr_mobile=1 and primary=1 and 15 <= age < 65 then primary1564mm=1;
 
 primary1524m_ep=0; if gender=1 and primary=1 and 15 <= age < 25 and ep=1 then primary1524m_ep=1;
 primary2534m_ep=0; if gender=1 and primary=1 and 25 <= age < 35 and ep=1 then primary2534m_ep=1;
@@ -13932,6 +13972,13 @@ end;
 
 nnewp_l4p=0;
 nnewp_l4p=(newp+newp_tm1+newp_tm2+newp_tm3);
+
+*MOBILE MEN;
+newp_ge1_mm=0;if curr_mobile=1 then do;
+	if newp >= 1 then newp_ge1_mm=1; 
+	if newp=. then newp_ge1_mm=.;
+end;
+
 
 * ts1m: can define nnewp_l4p last year but note this is not used below, l4p is used;
 /*
@@ -14868,6 +14915,16 @@ hiv85plm=0; if hiv=1 and gender=1 and 85 <= age      then hiv85plm=1;
 hiv1564m=0; if hiv=1 and gender=1 and 15 <= age < 65 then hiv1564m=1;
 hiv1549m=0; if hiv=1 and gender=1 and 15 <= age < 50 then hiv1549m=1;
 
+***MOBILE MEN;
+hiv_mm=0; if hiv=1 and curr_mobile=1 then hiv_mm=1;
+hiv_nmm=0; if hiv=1 and curr_mobile ne 1 and gender=1 then hiv_nmm=1;
+
+hiv1564mm=0; if hiv=1 and curr_mobile=1 and 15 <= age < 65 then hiv1564mm=1;
+hiv1549mm=0; if hiv=1 and curr_mobile=1 and 15 <= age < 50 then hiv1549mm=1;
+
+hiv1564nmm=0; if hiv=1 and curr_mobile ne 1 and gender=1 and 15 <= age < 65 then hiv1564nmm=1;
+
+
 hiv1517w=0; if hiv=1 and gender=2 and 15 <= age < 18 then hiv1517w=1;
 hiv1819w=0; if hiv=1 and gender=2 and 18 <= age < 20 then hiv1819w=1;
 hiv1519w=0; if hiv=1 and gender=2 and 15 <= age < 20 then hiv1519w=1;
@@ -14975,7 +15032,11 @@ if hiv =1 then do;
 	if pwid=1 then do;
 	vl1000_pwid = vl1000;
 	end;
-
+	*** MOBILE MEN;
+	if curr_mobile=1 then do;
+	vl1000_mm = vl1000;
+	vg1000_mm = vg1000;
+	end;
 
 	if 15 <= age < 50 then do; vg1000_1549=0; if vg1000=1 then vg1000_1549=1;   end;
 
@@ -15636,6 +15697,19 @@ if pwid=1 then do;
 	vl1000_art_gt6m_iicu_pwid= vl1000_art_gt6m_iicu;
 end;
 
+*** MOBILE MEN;
+if curr_mobile=1 then do;
+	vl1000_art_mm 		= vl1000_art;
+
+	onart_iicu_mm		= onart_iicu;
+	vl1000_art_iicu_mm 	= vl1000_art_iicu;
+
+	onart_gt6m_mm 		= onart_gt6m;
+	vl1000_art_gt6m_mm	= vl1000_art_gt6m;
+
+	onart_gt6m_iicu_mm	= onart_gt6m_iicu;
+	vl1000_art_gt6m_iicu_mm = vl1000_art_gt6m_iicu;
+end;
 
 
 if gender=2 then do;
@@ -15837,10 +15911,14 @@ prep_len_msm=0; 	if msm=1  and prep_len=1 	then prep_len_msm=1;
 prep_oral_pwid=0; 	if pwid=1 and prep_oral=1 then prep_oral_pwid=1;
 prep_cab_pwid=0; 	if pwid=1 and prep_cab=1 	then prep_cab_pwid=1;
 prep_len_pwid=0; 	if pwid=1 and prep_len=1 	then prep_len_pwid=1;
+***MOBILE MEN;
+prep_oral_mm=0; 	if curr_mobile=1 and prep_oral=1 then prep_oral_mm=1;
+prep_cab_mm=0; 		if curr_mobile=1 and prep_cab =1 then prep_cab_mm=1;
+prep_len_mm=0; 		if curr_mobile=1 and prep_len =1 then prep_len_mm=1;
 
 
 prep_any_ever=0; if prep_oral_ever=1 or prep_cab_ever=1 or prep_len_ever=1 or prep_vr_ever=1 then prep_any_ever=1;
-
+prep_any_ever_mm=0; if curr_mobile=1 and (prep_oral_ever=1 or prep_cab_ever=1 or prep_len_ever=1) then prep_any_ever_mm=1;
 
 *Resistance in people infected on prep;
 
@@ -15861,14 +15939,24 @@ end;
 										
 
 elig_prep_any_w_1524 = 0; elig_prep_any_w_2534 = 0; elig_prep_any_w_3544 = 0; elig_prep_any_w_1549 = 0;  elig_prep_any_w_1564 = 0; 
+elig_prep_any_m_1556 = 0
 if gender = 2 and 15 <= age < 25 then do; if prep_any_elig=1 then elig_prep_any_w_1524 = 1;  end;
 if gender = 2 and 25 <= age < 35 then do; if prep_any_elig=1 then elig_prep_any_w_2534 = 1;  end;
 if gender = 2 and 35 <= age < 45 then do; if prep_any_elig=1 then elig_prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 50 then do; if prep_any_elig=1 then elig_prep_any_w_1549 = 1;  end;
 if gender = 2 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_w_1564 = 1;  end;
+if gender = 1 and 15 <= age < 64 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
+
 if sw=1 then do; elig_prep_any_sw = 0; if prep_any_elig = 1 then elig_prep_any_sw = 1;   end;
 if sdc=1 then do; elig_prep_any_sdc = 0; if prep_any_elig = 1 then elig_prep_any_sdc = 1;   end;
 if plw=1 then do; elig_prep_any_plw = 0; if prep_any_elig = 1 then elig_prep_any_plw = 1;   end;
+
+***MOBILE MEN;
+elig_prep_any_mm_1549_=0;elig_prep_any_mm_1564_=0;elig_prep_any_nmm_1564_=0;
+
+if curr_mobile=1 and 15 <= age < 65 and prep_any_elig=1 then elig_prep_any_mm_1564_=1;
+if curr_mobile=1 and 15 <= age < 50 and prep_any_elig=1 then elig_prep_any_mm_1549_=1;
+if gender=1 and curr_mobile ne 1 and 15 <= age < 65 and prep_any_elig=1 then elig_prep_any_nmm_1564_=1;
 
 prep_any_w_1524 = 0; prep_any_w_2534 = 0; prep_any_w_3544 = 0; prep_any_w_1549 = 0;
 if gender = 2 and 15 <= age < 25 then do;  if prep_any=1 then prep_any_w_1524 = 1;  end;
@@ -15879,6 +15967,7 @@ if gender = 2 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_w_1549 = 
 prep_any_m = 0; if gender = 1 and prep_any=1 then prep_any_m = 1;
 * msm; prep_any_msm = 0; if msm=1 and prep_any=1 then prep_any_msm = 1; 
 * pwid;  prep_any_pwid = 0; if pwid=1 and prep_any=1 then prep_any_pwid = 1; 
+* mm;	 prep_any_mm = 0; if curr_mobile=1 and prep_any=1 then prep_any_mm = 1; 
 
 elig_prep_any_m_1564 = 0; if gender = 1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
 										  
@@ -16140,6 +16229,15 @@ if prep_any=1 then do;
 	if (15<=age<25) then onprep_1524=1;
 	if gender=2 and 15 le age lt 25 then onprep_1524w=1;
 	if gender=2 and 15 le age lt 25 and newp >= 1 then onprep_w1524_newpge1_=1;
+end;
+
+***MOBILE MEN;
+onprep_mm=0; onprep_oral_mm=0; onprep_inj_mm=0;onprep_nmm=0;
+
+***sTART HERE;
+if prep_any=1 and 15 <= age < 65 then do;
+	if curr_mobile=1 then onprep_mm=1;
+	if gender=1 and curr_mobile ne 1 then onprep_nmm=1;
 end;
 
 
