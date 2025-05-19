@@ -1,5 +1,7 @@
 
-*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
+***19 May 25;
+**Might have to reduce rred in non MM if prevalence in all men is too high;
+ 
 
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -2369,12 +2371,13 @@ if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldat
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
 
+
 if (caldate{t} = date_prep_cab_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_cab_intro > .) then do;  * len_prep_b ;
-	* pref_prep_cab;  	pref_prep_cab=yy ; * this is the preference for cab or len, whichever is available (see above);
+	* pref_prep_cab;  	if gender=2 or curr_mobile=1 then pref_prep_cab=yy ; * Women and Mobile men only, this is the preference for cab or len, whichever is available (see above);
 end;
 
 if (caldate{t} = date_prep_len_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_len_intro > .) then do;
-	* pref_prep_len;  	pref_prep_len=yy ; * this is the preference for cab or len, whichever is available (see above);
+	* pref_prep_len;  	if gender=2 or curr_mobile=1 pref_prep_len=yy ; * Women and Mobile men only, this is the preference for cab or len, whichever is available (see above);
 end;
 
 if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) then do;
@@ -15948,42 +15951,51 @@ end;
 
 *Number of people eligible for PrEP;
 										
-
 elig_prep_any_w_1524 = 0; elig_prep_any_w_2534 = 0; elig_prep_any_w_3544 = 0; elig_prep_any_w_1549 = 0;  elig_prep_any_w_1564 = 0; 
-elig_prep_any_m_1564 = 0; elig_prep_any_sw = 0;elig_prep_any_sdc = 0;elig_prep_any_plw = 0; elig_prep_any_mm_1564_=0;
+elig_prep_any_m_1564 = 0;
+elig_prep_any_sw = 0; elig_prep_any_sdc = 0;elig_prep_any_plw = 0; elig_prep_any_msm_1564 = 0;elig_prep_any_pwid_1564 = 0; 
+elig_prep_any_mm_1549_=0;elig_prep_any_mm_1564_=0;elig_prep_any_nmm_1564_=0;
+
 if gender = 2 and 15 <= age < 25 then do; if prep_any_elig=1 then elig_prep_any_w_1524 = 1;  end;
 if gender = 2 and 25 <= age < 35 then do; if prep_any_elig=1 then elig_prep_any_w_2534 = 1;  end;
 if gender = 2 and 35 <= age < 45 then do; if prep_any_elig=1 then elig_prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 50 then do; if prep_any_elig=1 then elig_prep_any_w_1549 = 1;  end;
 if gender = 2 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_w_1564 = 1;  end;
-if gender = 1 and 15 <= age < 64 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
+if gender = 1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
 
-if sw=1 then do; elig_prep_any_sw = 0; if prep_any_elig = 1 then elig_prep_any_sw = 1;   end;
-if sdc=1 then do; elig_prep_any_sdc = 0; if prep_any_elig = 1 then elig_prep_any_sdc = 1;   end;
-if plw=1 then do; elig_prep_any_plw = 0; if prep_any_elig = 1 then elig_prep_any_plw = 1;   end;
+if sw=1 then do;  if prep_any_elig = 1 then elig_prep_any_sw = 1;   end; 
+if sdc=1 then do; if prep_any_elig = 1 then elig_prep_any_sdc = 1;   end; 
+if plw=1 then do; if prep_any_elig = 1 then elig_prep_any_plw = 1;   end; 
 
+if msm=1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_msm_1564 = 1;  end;
+if pwid=1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_pwid_1564 = 1;  end;
 ***MOBILE MEN;
-elig_prep_any_mm_1549_=0;elig_prep_any_mm_1564_=0;elig_prep_any_nmm_1564_=0;
-
 if curr_mobile=1 and 15 <= age < 65 and prep_any_elig=1 then elig_prep_any_mm_1564_=1;
 if curr_mobile=1 and 15 <= age < 50 and prep_any_elig=1 then elig_prep_any_mm_1549_=1;
 if gender=1 and curr_mobile ne 1 and 15 <= age < 65 and prep_any_elig=1 then elig_prep_any_nmm_1564_=1;
 
-prep_any_w_1524 = 0; prep_any_w_2534 = 0; prep_any_w_3544 = 0; prep_any_w_1549 = 0;
+*Number of people on PrEP;**SW, SDC and PLW outputs are further down in the relevant sections;
+prep_any_w_1524 = 0; prep_any_w_2534 = 0; prep_any_w_3544 = 0; prep_any_w_1549 = 0; prep_any_w_1564 = 0; prep_any_m_1564 = 0; 
+prep_any_msm_1564 = 0;prep_any_pwid_1564 = 0; prep_any_mm_1564 = 0;prep_any_mm_1549 = 0;prep_any_nmm_1564=0;
+
 if gender = 2 and 15 <= age < 25 then do;  if prep_any=1 then prep_any_w_1524 = 1;  end;
 if gender = 2 and 25 <= age < 35 then do;  if prep_any=1 then prep_any_w_2534 = 1;  end;
 if gender = 2 and 35 <= age < 45 then do;  if prep_any=1 then prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_w_1549 = 1;  end;
+if gender = 2 and 15 <= age < 65 then do;  if prep_any=1 then prep_any_w_1564 = 1;  end;
+if gender = 1 and 15 <= age < 65 then do;  if prep_any=1 then prep_any_m_1564 = 1;  end;
+if msm=1 and 15 <= age < 65 and prep_any=1 then prep_any_msm_1564 = 1; 
+if pwid=1 and 15 <= age < 65 and prep_any=1 then prep_any_pwid_1564 = 1; 
+***MOBILE MEN;
+if curr_mobile=1 and 15 <= age < 65 and prep_any=1 then prep_any_mm_1564 = 1; 
+if curr_mobile=1 and 15 <= age < 50 and prep_any=1 then prep_any_mm_1549 = 1; 
+if gender=1 and curr_mobile ne 1 and 15 <= age < 65 and prep_any=1 then prep_any_nmm_1564=1;
+prep_oral_mm = 0 ; 	if prep_oral =1 and curr_mobile=1 and 15 <= age < 65 then prep_oral_mm = 1 ;
+prep_cab_mm = 0 ; 	if prep_cab  =1 and curr_mobile=1 and 15 <= age < 65 then prep_cab_mm = 1 ;
+prep_len_mm = 0 ; 	if prep_len  =1 and curr_mobile=1 and 15 <= age < 65 then prep_len_mm = 1 ;
+prep_any_willing_mm=0; if curr_mobile=1 then prep_any_willing_mm=prep_any_willing;
 
 prep_any_m = 0; if gender = 1 and prep_any=1 then prep_any_m = 1;
-* msm; prep_any_msm = 0; if msm=1 and prep_any=1 then prep_any_msm = 1; 
-* pwid;  prep_any_pwid = 0; if pwid=1 and prep_any=1 then prep_any_pwid = 1; 
-* mm;	 prep_any_mm = 0; if curr_mobile=1 and prep_any=1 then prep_any_mm = 1; 
-
-elig_prep_any_m_1564 = 0; if gender = 1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
-										  
-* msm ; elig_prep_any_msm_1564 = 0; if msm=1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_msm_1564 = 1;  end;
-* pwid ; elig_prep_any_pwid_1564 = 0; if pwid=1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_pwid_1564 = 1;  end;
 
 * Infected while eligible for PrEP, whether currently using or not. NB infected while using PrEP is output infected_prep_any or primary_prep;
 primary_prep_any_elig=0;
@@ -16002,6 +16014,7 @@ prep_oral_sw = 0 ; 	if prep_oral =1 and sw=1 then prep_oral_sw = 1 ;
 prep_cab_sw = 0 ; 	if prep_cab  =1 and sw=1 then prep_cab_sw = 1 ;
 prep_len_sw = 0 ; 	if prep_len  =1 and sw=1 then prep_len_sw = 1 ;
 prep_vr_sw = 0 ; 	if prep_vr   =1 and sw=1 then prep_vr_sw = 1 ;
+
 
 *At start of PrEP;	* lapr - any prep - JAS Nov2021;
 prep_any_start=0; age_prepstart=.; ep_prepstart=.; newp_prepstart=.;
@@ -16242,15 +16255,6 @@ if prep_any=1 then do;
 	if gender=2 and 15 le age lt 25 and newp >= 1 then onprep_w1524_newpge1_=1;
 end;
 
-***MOBILE MEN;
-onprep_mm=0; onprep_oral_mm=0; onprep_inj_mm=0;onprep_nmm=0;
-
-***sTART HERE;
-if prep_any=1 and 15 <= age < 65 then do;
-	if curr_mobile=1 then onprep_mm=1;
-	if gender=1 and curr_mobile ne 1 then onprep_nmm=1;
-end;
-
 
 *To calculate number of current users (SDC and PLW only, AGYW and SW are coded above);
 prep_any_sdc = 0; prep_oral_sdc = 0; prep_cab_sdc = 0;prep_len_sdc = 0; prep_vr_sdc = 0;
@@ -16488,6 +16492,8 @@ end;
 ever_tested_m=.;if gender=1 and ever_tested=1 then ever_tested_m=1;
 * msm ; ever_tested_msm=.;if msm=1 and ever_tested=1 then ever_tested_msm=1;
 * pwid; ever_tested_pwid=.;if pwid=1 and ever_tested=1 then ever_tested_pwid=1;
+* MOBILE MEN;   ever_tested_mm=.;if curr_mobile=1 and ever_tested=1 then ever_tested_mm=1;
+
 ever_tested_w=.;if gender=2 and ever_tested=1 then ever_tested_w=1;
 
 ever_tested_m1549_=0;ever_tested_m1564_=0;
@@ -16519,7 +16525,6 @@ onart_w6569_=0;onart_w7074_=0;onart_w7579_=0;onart_w8084_=0;onart_w85pl_=0;
 onart_sw=0; 		
 		
 
-
 if gender=1 then do;
 	if      15 le age lt 50 then do; ever_tested_m1549_=ever_tested; diag_m1549_=registd;  onart_m1549_=onart; end;
 	if      15 le age lt 65 then do; ever_tested_m1564_=ever_tested; diag_m1564_=registd;  onart_m1564_=onart; end;
@@ -16548,6 +16553,14 @@ if pwid=1 then do;
 	if      15 le age lt 50 then do; ever_tested_pwid1549_=ever_tested; diag_pwid1549_=registd;  onart_pwid1549_=onart; end;
 	if      15 le age lt 65 then do; ever_tested_pwid1564_=ever_tested; diag_pwid1564_=registd;  onart_pwid1564_=onart; end;
 end;
+
+***MOBILE MEN;
+ever_tested_mm1549_=0; diag_mm1549_=0;  onart_mm1549_=0;ever_tested_mm1564_=0; diag_mm1564_=0;  onart_mm1564_=0;
+if curr_mobile=1 then do;
+	if      15 le age lt 50 then do; ever_tested_mm1549_=ever_tested; diag_mm1549_=registd;  onart_mm1549_=onart; end;
+	if      15 le age lt 65 then do; ever_tested_mm1564_=ever_tested; diag_mm1564_=registd;  onart_mm1564_=onart; end;
+end;
+
 
 if gender=2 then do;
 	if      15 le age lt 50 then do; ever_tested_w1549_=ever_tested; diag_w1549_=registd;  onart_w1549_=onart; end;
@@ -17190,6 +17203,8 @@ tested_m_circ=0; if gender=1 and tested=1 and tested_circ=1 then tested_m_circ=1
 
 * msm; tested_msm=0; if msm=1 and tested=1 then tested_msm=1;
 * pwid; tested_pwid=0; if pwid=1 and tested=1 then tested_pwid=1;
+* MOBILE MEN;   tested_mm=0; if curr_mobile=1 and tested=1 then tested_mm=1;
+
 tested_msm_sympt=0; if msm=1 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
 then tested_msm_sympt=1;
 
@@ -18645,7 +18660,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tam1_ + tam1_ ; s_tam2_ + tam2_ ; s_tam3_ + tam3_ ; s_m184m_ + m184m_ ; s_k103m_ + k103m_ ; s_y181m_ + y181m_ ; s_g190m_ + g190m_ ; 
 	s_nnm_ + nnm_ ; s_q151m_ + q151m_ ; s_k65m_ + k65m_ ; s_p32m_ + p32m_ ; s_p33m_ + p33m_ ; s_p46m_ + p46m_ ; s_p47m_ + p47m_ ; s_p50vm_ + p50vm_ ;
 	s_p50lm_ + p50lm_ ; s_p54m_ + p54m_ ; s_p76m_ + p76m_ ; s_p82m_ + p82m_ ; s_p84m_ + p84m_ ; s_p88m_ + p88m_ ; s_p90m_ + p90m_ ; s_pim_ + pim_;
-    s_in118m_ + in118m_ ; s_in140m_ + in140m_ ; s_in148m_ + in148m_ ; s_in155m_ + in155m_ ; s_in263m_ + in263m_ ; s_ca66m + ca66m_ ;
+    s_in118m_ + in118m_ ; s_in140m_ + in140m_ ; s_in148m_ + in148m_ ; s_in155m_ + in155m_ ; s_in263m_ + in263m_ ; s_ca66m_ + ca66m_ ;
 	s_rm_ + rm_ ; s_i_nnm + i_nnm ; s_i_rm + i_rm ; s_i_pim + i_pim ; s_i_tam + i_tam ; s_i_im + i_im ;
     s_inm_ + inm_ ; s_i_184m + i_184m ; s_im_art + im_art ; s_pim_art + pim_art ; s_tam_art + tam_art ; s_m184_art + m184_art ; s_r_ + r_ ;
     s_r_3tc + r_3tc ; s_r_nev + r_nev ; s_r_lpr + r_lpr ; s_r_taz + r_taz ; s_r_efa + r_efa ; s_r_ten + r_ten ; s_r_zdv + r_zdv ; s_r_dol + r_dol ;
@@ -19288,7 +19303,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_onart_msm1564_ + onart_msm1564_ ; s_infected_from_msm + infected_from_msm ; s_inf_msm + inf_msm ;  
 	s_ever_tested_msm1549_ + ever_tested_msm1549_ ; s_diag_msm1549_ + diag_msm1549_ ; s_onart_msm1549_ + onart_msm1549_ ; s_ever_tested_msm1564_ + ever_tested_msm1564_ ;
 	s_diag_msm1564_ + diag_msm1564_ ; s_diag_this_period_msm + diag_this_period_msm ; s_tested_msm + tested_msm ; s_naive_msm + naive_msm ; 
-	s_prep_any_msm + prep_any_msm ; s_prep_any_m + prep_any_m ; 
+	s_prep_any_msm_1564 + prep_any_msm_1564 ; s_prep_any_m + prep_any_m ; 
 
 
       
@@ -19302,7 +19317,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
       s_elig_prep_any_pwid_1564 + elig_prep_any_pwid_1564;  s_onprep_pwid + onprep_pwid;  s_onprep_oral_pwid + onprep_oral_pwid;   
       s_tested1549pwid + tested1549pwid; s_ever_tested_pwid + ever_tested_pwid;  s_ever_tested_pwid1549_ + ever_tested_pwid1549_;
       s_ever_tested_pwid1564_ + ever_tested_pwid1564_;  s_diag_pwid1549_ + diag_pwid1549_;   s_diag_pwid1564_ + diag_pwid1564_;  s_onart_pwid1549_ + onart_pwid1549_;  
-      s_onart_pwid1564_ + onart_pwid1564_;   s_prep_any_pwid + prep_any_pwid ;
+      s_onart_pwid1564_ + onart_pwid1564_;   s_prep_any_pwid_1564 + prep_any_pwid_1564 ;
       s_inf_pwid + inf_pwid ;s_diag_this_period_pwid + diag_this_period_pwid ;  s_tested_pwid + tested_pwid;  s_naive_pwid + naive_pwid; 
 	  s_newp_this_per_hivneg_pwid + newp_this_per_hivneg_pwid;
 
@@ -19441,6 +19456,22 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/* covid */ 
 
 	s_covid + covid ; 
+
+	/* Mobile men */ 
+	s_alive1549mm + alive1549mm;  	  s_alive1564mm	+ alive1564mm; 	   s_alive1564nmm + alive1564nmm;   s_hiv_mm + hiv_mm;			
+	s_hiv_nmm + hiv_nmm; 			  s_hiv1564mm + hiv1564mm; 		   s_hiv1549mm + hiv1549mm;			s_hiv1564nmm + hiv1564nmm;
+	s_vl1000_art_mm	+ vl1000_art_mm;  s_onart_iicu_mm + onart_iicu_mm; s_vl1000_art_iicu_mm	+ vl1000_art_iicu_mm;
+	s_onart_gt6m_mm + onart_gt6m_mm;  s_vl1000_art_gt6m_mm + vl1000_art_gt6m_mm;	 					s_onart_gt6m_iicu_mm + onart_gt6m_iicu_mm;
+	s_vl1000_art_gt6m_iicu_mm + vl1000_art_gt6m_iicu_mm; 			   s_ever_tested_mm + ever_tested_mm;
+	s_ever_tested_mm1549_ + ever_tested_mm1549_;					   s_diag_mm1549_ + diag_mm1549_;  	s_onart_mm1549_ + onart_mm1549_;
+	s_ever_tested_mm1564_ + ever_tested_mm1564_;					   s_diag_mm1564_ + diag_mm1564_;	s_onart_mm1564_ + onart_mm1564_;  
+	s_prep_any_ever_mm + prep_any_ever_mm; 							   s_elig_prep_any_mm_1564_	+ elig_prep_any_mm_1564_;
+	s_elig_prep_any_mm_1549_ + elig_prep_any_mm_1549_;				   s_elig_prep_any_nmm_1564_ + elig_prep_any_nmm_1564_;
+	s_prep_any_mm_1564 + prep_any_mm_1564; 							   s_prep_any_mm_1549 + prep_any_mm_1549 ;
+	s_prep_any_nmm_1564 + prep_any_nmm_1564;  						   s_prep_oral_mm + prep_oral_mm;	s_prep_cab_mm + prep_cab_mm;
+	s_prep_len_mm + prep_len_mm; 	  s_hard_reach_due_to_mobile + hard_reach_due_to_mobile;			s_primary1549mm + primary1549mm;
+	s_primary1564mm + primary1564mm;  s_vl1000_mm	+ vl1000_mm;	   s_vg1000_mm + vg1000_mm;			s_tested_mm + tested_mm;	
+	s_newp_ge1_mm + newp_ge1_mm;	s_prep_any_willing + prep_any_willing;
 
 end;
 
@@ -20667,7 +20698,7 @@ s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_   s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
 s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  s_onprep_cab_pwid s_onprep_len_pwid 
-s_i_msm s_i_v1_msm s_i_v2_msm s_i_v3_msm s_i_v4_msm s_i_v5_msm s_i_v6_msm s_msm  s_prop_i_msm  s_prep_any_msm  s_prep_any_m  s_prep_any_pwid
+s_i_msm s_i_v1_msm s_i_v2_msm s_i_v3_msm s_i_v4_msm s_i_v5_msm s_i_v6_msm s_msm  s_prop_i_msm  s_prep_any_msm_1564  s_prep_any_m  s_prep_any_pwid_1564
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
 
 /* PWID */ 
@@ -20881,6 +20912,18 @@ s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_np
 /* covid */
 
 s_covid
+
+/* mobile men */
+
+	s_alive1549mm   	  s_alive1564mm		  s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
+	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
+	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
+	s_ever_tested_mm1549_ s_diag_mm1549_ 	  s_onart_mm1549_ 		s_ever_tested_mm1564_ 						s_diag_mm1564_
+	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
+	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
+	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_prep_any_willing
+
 
 /* used in abort statements */
 
@@ -21764,7 +21807,7 @@ s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
 s_ever_tested_msm1549_   s_diag_msm1549_     s_ever_tested_msm1564_   s_onart_msm1564_   s_onprep_cab_pwid s_onprep_len_pwid 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm
-s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm  s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
+s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm  s_msm   s_prep_any_msm_1564  s_prep_any_m s_prep_any_pwid_1564
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
 
 /* PWID */ 
@@ -21867,6 +21910,17 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 /* covid */
 
 s_covid
+
+/* mobile men */
+
+	s_alive1549mm   	  s_alive1564mm		  s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
+	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
+	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
+	s_ever_tested_mm1549_ s_diag_mm1549_ 	  s_onart_mm1549_ 		s_ever_tested_mm1564_ 						s_diag_mm1564_
+	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
+	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
+	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_prep_any_willing
 
 /*supp material*/
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
@@ -22062,34 +22116,20 @@ Inputs are:
 data a ;  set r1 ;
 data r1 ; set a ;
 
-*    Option 0 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+50,0);
+* 	Option 0 ;
+%run_update_r1(&year_interv,&year_interv+20,0);
 
 
-*    Option 0 - repetition 2;
+* 	Option 1;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,0);
+%run_update_r1(&year_interv,&year_interv+20,1);
 
-*    Option 0 - repetition 3;
-
+/*
+* 	Option 2;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,0);
+%run_update_r1(&year_interv,&year_interv+20,2);
 
-
-data r1; set a;
-*    Option 1 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+50,1);
-
-
-*    Option 1 - repetition 2;
-			   
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,1);
-
-*    Option 1 - repetition 3;
- 
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,1);
+/*
 
 			
 														 
@@ -22725,7 +22765,7 @@ s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
 s_ever_tested_msm1549_   s_diag_msm1549_    s_ever_tested_msm1564_   s_onart_msm1564_  s_onprep_cab_pwid s_onprep_len_pwid 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
-s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
+s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm   s_prep_any_msm_1564  s_prep_any_m s_prep_any_pwid_1564
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
 
 /* PWID */ 
@@ -22936,6 +22976,17 @@ s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_np
 /* covid */
 
 s_covid
+
+/* mobile men */
+
+	s_alive1549mm   	  s_alive1564mm		  s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
+	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
+	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
+	s_ever_tested_mm1549_ s_diag_mm1549_ 	  s_onart_mm1549_ 		s_ever_tested_mm1564_ 						s_diag_mm1564_
+	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
+	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
+	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_prep_any_willing
 
 /* used in abort statements */
 
