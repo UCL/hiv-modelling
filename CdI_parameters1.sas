@@ -37,8 +37,8 @@ country = 'Cote d Ivoire';
 
 * prop_m_msm;				%sample_uniform(prop_m_msm,   0.004   0.008); 
 
-* msm_risk_cls;				%sample(msm_risk_cls, 0.1 0.3 0.5, 0.40 0.40 0.20); * risk of one or more cls partners in msm per period ;
-* msm_rred;                 %sample((msm_rred, 1.5 2 3, 0.50 0.30 0.20); * extent to which p_rred_p is higher in msm than het men;
+* msm_risk_cls;				*%sample(msm_risk_cls, 0.1 0.3 0.5, 0.40 0.40 0.20); * risk of one or more cls partners in msm per period ;
+* msm_rred;                * %sample(msm_rred, 1.5 2 3, 0.50 0.30 0.20); * extent to which p_rred_p is higher in msm than het men;
 
 * msm_tr_factor;			msm_tr_factor = 2.5;
 
@@ -67,11 +67,11 @@ country = 'Cote d Ivoire';
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.15 	0.35 	0.50, 
 
-								0.25 	0.30	0.30	0.10	0.05	); 
+								0.30 	0.30	0.30	0.05	0.05	); 
 ***PROB_LOSS_AT_DIAG IS MULTIPLIED BY 2.2 IN THE MAIN PROGRAM FOR MEN;
 
 * rate_int_choice;  		%sample(rate_int_choice, 	0.005 0.01 0.05, 
-														0.10 0.50 0.40);
+														0.30 0.40 0.30);
 
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
