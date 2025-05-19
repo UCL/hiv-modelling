@@ -38,8 +38,9 @@ country = 'Cote d Ivoire';
 * prop_m_msm;				%sample_uniform(prop_m_msm,   0.004   0.008); 
 
 * msm_risk_cls;				%sample(msm_risk_cls, 0.1 0.3 0.5, 0.40 0.40 0.20); * risk of one or more cls partners in msm per period ;
+* msm_rred;                 %sample((msm_rred, 1.5 2 3, 0.50 0.30 0.20); * extent to which p_rred_p is higher in msm than het men;
 
-* msm_tr_factor;			msm_tr_factor = 3.5;
+* msm_tr_factor;			msm_tr_factor = 2.5;
 
 * prep_any_strategy;		prep_any_strategy=18;
 
