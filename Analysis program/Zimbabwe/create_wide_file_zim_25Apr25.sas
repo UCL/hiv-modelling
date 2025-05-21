@@ -507,16 +507,22 @@ proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; 
 proc means noprint data=y; var &v; output out=y_24_25 mean= &v._24_25; by run option ; where 2024 <= cald < 2025.25;
 
 proc means noprint data=y; var &v; output out=y_24_29 mean= &v._24_29; by run option ; where 2024 <= cald < 2030.25;
+proc means noprint data=y; var &v; output out=y_24_34 mean= &v._24_34; by run option ; where 2024 <= cald < 2034.25;
+proc means noprint data=y; var &v; output out=y_24_39 mean= &v._24_39; by run option ; where 2024 <= cald < 2040.25;
 proc means noprint data=y; var &v; output out=y_24_44 mean= &v._24_44; by run option ; where 2024 <= cald < 2044.25;
 proc means noprint data=y; var &v; output out=y_24_74 mean= &v._24_74; by run option ; where 2024 <= cald < 2074.25;
 
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
 proc sort data=y_24_25; by run; proc transpose data=y_24_25 out=t_24_25 prefix=&v._24_25_; var &v._24_25; by run;
 proc sort data=y_24_29; by run; proc transpose data=y_24_29 out=t_24_29 prefix=&v._24_29_; var &v._24_29; by run;
+
+proc sort data=y_24_34; by run; proc transpose data=y_24_34 out=t_24_34 prefix=&v._24_34_; var &v._24_34; by run;
+proc sort data=y_24_39; by run; proc transpose data=y_24_39 out=t_24_39 prefix=&v._24_39_; var &v._24_39; by run;
+
 proc sort data=y_24_44; by run; proc transpose data=y_24_44 out=t_24_44 prefix=&v._24_44_; var &v._24_44; by run;
 proc sort data=y_24_74; by run; proc transpose data=y_24_74 out=t_24_74 prefix=&v._24_74_; var &v._24_74; by run;
 
-data &v ; merge y_20 y_23 t_30 t_24_25 t_24_29 t_24_44 t_24_74;  
+data &v ; merge y_20 y_23 t_30 t_24_25 t_24_29 t_24_34 t_24_39 t_24_44 t_24_74;  
 
 %mend var;
 

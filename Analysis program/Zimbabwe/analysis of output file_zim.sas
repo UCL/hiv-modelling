@@ -147,6 +147,24 @@ maxcost_amt= diff_netdalys * 500;
 diff_cost = dcost_24_74_2 - dcost_24_74_1;
 ICER = (diff_cost/diff_ddaly)*1000000;
 
+***Checking to see when AMETHIST becomes CE;
+*5 years; 
+diff_dcost5y = dcost_24_29_2 - dcost_24_29_1;
+diff_ddaly5y = ddaly_24_29_2 - ddaly_24_29_1;
+*10 years; 
+diff_dcost10y = dcost_24_34_2 - dcost_24_34_1;
+diff_ddaly10y = ddaly_24_34_2 - ddaly_24_34_1;
+*15 years; 
+diff_dcost15y = dcost_24_39_2 - dcost_24_39_1;
+diff_ddaly15y = ddaly_24_39_2 - ddaly_24_39_1;
+*20 years; 
+diff_dcost20y = dcost_24_44_2 - dcost_24_44_1;
+diff_ddaly20y = ddaly_24_44_2 - ddaly_24_44_1;
+
+***Do same for Sisters vs nothing;
+
+
+
 ***Absolute costs and differences;
 proc means n mean lclm uclm;
 var dcost_24_74_1 dcost_24_74_2 diff_dcost
@@ -166,6 +184,90 @@ var ICER;RUN;
 
 proc means n mean lclm uclm;var
 netdalys_sis netdalys_amt diff_netdalys;run;
+
+
+***Identifying when AMETHIST becomes CE;
+proc means n mean lclm uclm;
+var	diff_dcost diff_ddaly diff_dcost5y diff_ddaly5y  diff_dcost10y diff_ddaly10y diff_dcost15y diff_ddaly15y diff_dcost20y diff_ddaly20y;
+run;
+
+**After 15y, costs are saved and DALYs averted. Check actual costs and DALYs to make sure this is correct;
+proc means n mean lclm uclm;
+var	dcost_24_39_2 dcost_24_39_1 ddaly_24_39_2 ddaly_24_39_1  diff_dcost15y diff_ddaly15y;
+run;
+
+***Breakdown of costs;
+proc means mean lclm uclm;var
+dcost_24_74_1
+dart_cost_y_24_74_1
+dadc_cost_24_74_1
+dcd4_cost_24_74_1 
+dvl_cost_24_74_1 
+dvis_cost_24_74_1 
+dnon_tb_who3_cost_24_74_1
+dcot_cost_24_74_1 
+dtb_cost_24_74_1 
+dres_cost_24_74_1 
+dtest_cost_24_74_1 
+d_t_adh_int_cost_24_74_1 
+dswitchline_cost_24_74_1 
+dcost_drug_level_test_24_74_1 
+dcost_circ_24_74_1 
+dcost_condom_dn_24_74_1 
+dcost_avail_self_test_24_74_1 
+dcost_prep_visit_oral_24_74_1 
+dcost_prep_oral_24_74_1 
+dcost_prep_visit_inj_24_74_1
+dcost_prep_inj_24_74_1 	
+dcost_sisprog__24_74_1
+
+dcost_24_74_2
+dart_cost_y_24_74_2
+dadc_cost_24_74_2
+dcd4_cost_24_74_2 
+dvl_cost_24_74_2 
+dvis_cost_24_74_2 
+dnon_tb_who3_cost_24_74_2
+dcot_cost_24_74_2 
+dtb_cost_24_74_2 
+dres_cost_24_74_2 
+dtest_cost_24_74_2 
+d_t_adh_int_cost_24_74_2 
+dswitchline_cost_24_74_2 
+dcost_drug_level_test_24_74_2 
+dcost_circ_24_74_2 
+dcost_condom_dn_24_74_2 
+dcost_avail_self_test_24_74_2 
+dcost_prep_visit_oral_24_74_2 
+dcost_prep_oral_24_74_2 
+dcost_prep_visit_inj_24_74_2
+dcost_prep_inj_24_74_2 	
+dcost_amtprog__24_74_2
+
+dcost_24_74_3
+dart_cost_y_24_74_3
+dadc_cost_24_74_3
+dcd4_cost_24_74_3 
+dvl_cost_24_74_3 
+dvis_cost_24_74_3 
+dnon_tb_who3_cost_24_74_3
+dcot_cost_24_74_3 
+dtb_cost_24_74_3 
+dres_cost_24_74_3 
+dtest_cost_24_74_3 
+d_t_adh_int_cost_24_74_3 
+dswitchline_cost_24_74_3 
+dcost_drug_level_test_24_74_3 
+dcost_circ_24_74_3 
+dcost_condom_dn_24_74_3 
+dcost_avail_self_test_24_74_3 
+dcost_prep_visit_oral_24_74_3 
+dcost_prep_oral_24_74_3 
+dcost_prep_visit_inj_24_74_3
+dcost_prep_inj_24_74_3 	
+;
+run;
+
 
 /*
 ***Did not use;
