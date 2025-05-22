@@ -17,7 +17,7 @@ pct <- function(x) {
 }
 
 #### Import Synthesis output ####
-df_sas_wide <- read_sas("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/synthesis/w_base_105_ug.sas7bdat")
+df_sas_wide <- read_sas("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/synthesis/w_base_105_d3pct.sas7bdat")
 df_sas_wide <- df_sas_wide %>% mutate(source = ifelse(option ==1, "SOC",
                                      ifelse(option ==2, "CCC",
                                      ifelse(option ==3, "CHW",
@@ -67,11 +67,11 @@ df_scenario_chars <- df_sas_wide %>%
     colnames(df_sas_wide) <- names2
     
 #####===subset data for country profiles===#####
-uganda  <- df_sas_wide %>% filter(p_hypert_ge18.23 < 0.32,
-                                  p_diagnosed_hypert_ge18.23 < 0.26,
-                                  prevalence1549.23 < 0.19) %>% select(country)
-ug <- left_join(uganda, df_sas_wide, by = "country")
-df_sas_wide <- ug
+# uganda  <- df_sas_wide %>% filter(p_hypert_ge18.23 < 0.32,
+#                                   p_diagnosed_hypert_ge18.23 < 0.26,
+#                                   prevalence1549.23 < 0.19) %>% select(country)
+# ug <- left_join(uganda, df_sas_wide, by = "country")
+# df_sas_wide <- ug
 #####======================================#####
 
 #### pivot to long dataset ####
@@ -620,6 +620,15 @@ df_netdaly_graph<- df_netdaly %>%
   select(-c(cf)) %>% 
   mutate(source = factor(source, levels = sourcenames))
 
+df_netdaly_distribution <- df_netdaly %>% 
+  select(-c(cost_inc, ddaly_averted, netdaly_averted, cf_netdaly_any)) %>% 
+  pivot_longer(cols = starts_with("netdaly"),
+               names_to = c("netdaly", "ce_threshold"), 
+               names_sep = "\\_",
+               values_to = "netdaly_averted") %>% 
+  filter(cost_cat == "Base case cost assumptions", year == "2474")
+  
+
 df_netdaly_graph_summ <- df_netdaly_graph %>% 
   filter(year == "2474", cost_cat == "Base case cost assumptions") %>% 
   group_by(source, ce_threshold) %>% 
@@ -666,7 +675,7 @@ plot_icer %>% filter(source !="SOC")
 
 #### Save ####
 
-save.image("SynthesisHTN_105_ug.RData")
+save.image("SynthesisHTN_105_d3pct.RData")
 
 
 

@@ -1,0 +1,67 @@
+---
+title: "PLOS Medicine Revisions - Model Diagnostics"
+author: "Matt Hickey"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+always_allow_html: true
+---
+
+
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(RColorBrewer)
+
+options(tinytex.verbose = TRUE)
+options(scipen = 999)
+
+
+knitr::opts_chunk$set(echo = FALSE, fig.height=10, fig.width=15)
+knitr::opts_knit$set(root.dir = '~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration')
+
+pct <- function(x) {
+  y <- paste0(round((x*100),0),"%")
+  return(y)
+}
+
+load("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration/SynthesisHTN_105.RData")
+
+```
+
+# Net DALY probability distribution
+
+```{r}
+# Netdaly probability distribution
+df_netdaly_distribution %>% mutate(ce_threshold = as.numeric(ce_threshold)) %>% 
+  filter(year == "2474", cost_cat == "Base case cost assumptions", ce_threshold >=50) %>% 
+  group_by(source, ce_threshold) %>% 
+  summarize(netdaly_averted = mean(netdaly_averted),
+            quantile_05 = quantile(netdaly_averted, 0.05),
+            quantile_95 = quantile(netdaly_averted, 0.95)) %>% 
+  ggplot(aes(x = ce_threshold, color=source, fill = source)) +
+    geom_line(y = netdaly_averted) +
+    geom_ribbon(aes(ymin = quantile_05, ymax = quantile_95), alpha = 0.2) + 
+    coord_cartesian(xlim = c(0,1000)) +
+    theme_classic(base_size = 16) +
+    scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0,1000)) + 
+    labs(title = "Net DALYs averted by cost-effectiveness threshold",
+         subtitle = "2024-2074",
+         y = "Net DALYs averted (thousands)",
+         x = "Cost-effectiveness threshold (USD/DALY averted)") +
+    theme(
+      plot.title = element_text(size = 20, face = "bold", color = "#636363"),
+      legend.position = "bottom",
+      text = element_text(color = "#636363"),
+      axis.line = element_line(color = "#636363"),
+      axis.ticks = element_line(color = "#636363"),
+      axis.text = element_text(color = "#636363")
+    ) +
+    scale_color_brewer(palette = "Dark2")
+
+
+```

@@ -1,10 +1,9 @@
 ---
-title: "SEARCH Hypertension Modelling with HIV Synthesis"
+title: "PLOS Medicine Revisions - Model Diagnostics"
 author: "Matt Hickey"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document:
-    reference_docx: mynew_template.docx
     toc: true
     toc_depth: 2
 always_allow_html: true
@@ -15,9 +14,8 @@ always_allow_html: true
 ```{r setup, include=FALSE}
 
 library(tidyverse)
-library(readxl)
-library(knitr)
-library(kableExtra)
+library(RColorBrewer)
+library(ggrepel)
 
 options(tinytex.verbose = TRUE)
 options(scipen = 999)
@@ -31,110 +29,229 @@ pct <- function(x) {
   return(y)
 }
 
+load("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration/SynthesisHTN_105.RData")
 
-load("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration/run105_long.RData")
+df_netdaly_distribution <- df_netdaly_distribution %>% 
+  rename(policy = source)
+df_netdaly <- df_netdaly %>% 
+  rename(policy = source)
+
 
 ```
 
-# Hypertension diagnosis, treatment, control over time among age 45-64
-### 0.25 year increments
+# Net DALYs averted across different cost-effectiveness thresholds
 ```{r}
-# List of variables and their y-axis labels
-variables <- list(
-  p_htn_4564 = "Prevalence of hypertension among adults aged 45-64 years",
-  p_diag_htn_4564 = "Proportion of adults aged 45-64 years with hypertension who are diagnosed",
-  p_on_tx_htn_4564 = "Proportion of adults aged 45-64 years with hypertension who are treated",
-  p_htn_ctrl_4564 = "Proportion of adults aged 45-64 years with hypertension with SBP <140"
-)
 
-# Loop over variables to create summary data and plots
-plots <- list()
+df_netdaly_distribution %>% mutate(ce_threshold = as.numeric(ce_threshold)) %>% 
+  filter(year == "2474", cost_cat == "Base case cost assumptions", ce_threshold >50) %>% 
+  group_by(policy, ce_threshold) %>% 
+  summarize(netdaly = median(netdaly_averted),
+            quantile_05 = quantile(netdaly_averted, 0.05),
+            quantile_95 = quantile(netdaly_averted, 0.95)) %>% 
+  ggplot(aes(x = ce_threshold, fill = policy, color=policy)) +
+  geom_line(aes(y = netdaly)) +
+  geom_ribbon(aes(ymin = quantile_05, ymax = quantile_95), color = NA, show.legend = FALSE, alpha = 0.1) + 
+  coord_cartesian(xlim = c(0,1000)) +
+  theme_classic(base_size = 16) +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10), limits = c(0,1000)) + 
+  labs(title = "B. Net DALYs averted by cost-effectiveness threshold",
+       subtitle = "Median (90% range), estimated for population of 10 million adults over 50-year time horizon from 2024-2074",
+       y = "Net DALYs averted (thousands)",
+       x = "Cost-effectiveness threshold (USD/DALY averted)") +
+  theme(
+    plot.title = element_text(size = 20, face = "bold", color = "#636363"),
+    legend.position = "bottom",
+    text = element_text(color = "#636363"),
+    axis.line = element_line(color = "#636363"),
+    axis.ticks = element_line(color = "#636363"),
+    axis.text = element_text(color = "#636363")
+  ) +
+  scale_color_brewer(palette = "Dark2") + 
+  scale_fill_brewer(palette = "Dark2")
 
-for (var in names(variables)) {
-  # Summarize data
-  summary_df <- df %>%
-    group_by(cald, policy) %>%
-    summarize(
-      median = median(.data[[var]]),
-      lower_90 = quantile(.data[[var]], 0.05),
-      upper_90 = quantile(.data[[var]], 0.95),
-      .groups = "drop"
-    )
-  
-  # Generate plot
-  p <- ggplot(summary_df, aes(x = cald, color = policy, fill = policy)) +
-    geom_line(aes(y = median), size = 1.2) +  # Median line
-    geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
-    labs(
-      title = paste("Median and 90% Range of", var, "Over Time by Policy"),
-      x = "Time (cald)",
-      y = variables[[var]],  # Custom y-axis label
-      color = "Policy",
-      fill = "Policy"
-    ) +
-    theme_minimal()  # Clean theme
-  
-  # Add to list of plots
-  plots[[var]] <- p
-}
-
-# Display plots
-print(plots[["p_htn_4564"]])
-print(plots[["p_diag_htn_4564"]])
-print(plots[["p_on_tx_htn_4564"]])
-print(plots[["p_htn_ctrl_4564"]])
 
 ```
 
-
-### 1 year increments
+# Net DALYs averted probability distribution
+At CE threshold $500 USD/DALY averted
 ```{r}
-plots2 <- list()
-# create plots for data frame compressed one row per year
-for (var in names(variables)) {
-  # Summarize data
-  summary_df_yr <- df_yr %>%
-    group_by(year, policy) %>%
-    summarize(
-      median = median(.data[[var]]),
-      lower_90 = quantile(.data[[var]], 0.05),
-      upper_90 = quantile(.data[[var]], 0.95),
-      .groups = "drop"
-    )
-  
-  # Generate plot
-  p2 <- ggplot(summary_df_yr, aes(x = year, color = policy, fill = policy)) +
-    geom_line(aes(y = median), size = 1.2) +  # Median line
-    geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
-    labs(
-      title = paste("Median and 90% Range of", var, "Over Time by Policy"),
-      x = "Year",
-      y = variables[[var]],  # Custom y-axis label
-      color = "Policy",
-      fill = "Policy"
-    ) +
-    theme_minimal()  # Clean theme
-  
-  # Add to list of plots
-  plots2[[var]] <- p2
-}
+# Get the Brewer palette colors
+colors <- RColorBrewer::brewer.pal(n = 3, name = "Dark2")  # Adjust n as needed
+colors <- colors[-1]  # Remove the first color
 
-# Display plots
-print(plots2[["p_htn_4564"]])
-print(plots2[["p_diag_htn_4564"]])
-print(plots2[["p_on_tx_htn_4564"]])
-print(plots2[["p_htn_ctrl_4564"]])
+df_netdaly %>% 
+  filter(year == "2474", cost_cat == "Base case cost assumptions", policy != "SOC") %>% 
+  ggplot(aes(x = netdaly_averted, fill = policy, color = policy)) +
+  geom_density(alpha = 0.5) +  # Standard density plot with transparency
+  geom_rug(alpha = 0.5, sides = "b") +  # Add rug plot
+  theme_classic(base_size = 16) +
+  labs(
+    title = "Net DALYs averted at CE threshold of $500 USD/DALY averted",
+    subtitle = "Median (90% range), estimated for population of 10 million adults over 50-year time horizon from 2024-2074",
+    x = "Net DALYs averted (thousands)",
+    y = "Density"
+  ) +
+  theme(
+    plot.title = element_text(size = 20, face = "bold", color = "#636363"),
+    legend.position = "bottom",
+    text = element_text(color = "#636363"),
+    axis.line = element_line(color = "#636363"),
+    axis.ticks = element_line(color = "#636363"),
+    axis.text = element_text(color = "#636363")
+  ) +
+  scale_color_manual(values = colors) +  # Use the modified color vector
+  scale_fill_manual(values = colors)    # Use the modified color vector
+
 ```
 
-# Hypertension Diagnosis, Treatment, Control Over Time Among Age 18+
+
+# Cost-effectiveness frontiers with scatterplot
+Including all data points to show distribution around ICER estimates
+```{r}
+# Extract ICER values for annotations
+plot_icer_base <- plot_icer %>% 
+  rename(policy = source) %>% 
+  filter(cost_cat == "Base case cost assumptions") %>% 
+  mutate(icer_text = ifelse(is.na(icer2), NA, paste0("$", icer2, "/DALY")),
+         nudge_y = ifelse(policy == "CCC", 6, 
+                          ifelse(policy == "CHW", 0, NA)))
+  
+ccc_icer <- plot_icer_base %>% filter(policy == "CCC") %>% ungroup() %>% select(icer2)
+chw_icer <- plot_icer_base %>% filter(policy == "CHW") %>% ungroup() %>% select(icer2)
+
+# Create the overlayed plot
+combined_plot <- ggplot() +
+  # Axis lines at x=0 and y=0
+  geom_hline(yintercept = 0, color = "#636363", linetype = "solid") +
+  geom_vline(xintercept = 0, color = "#636363", linetype = "solid") +
+  # First plot: Points from df_netdaly
+  geom_point(data = df_netdaly %>% filter(year == "2474", cost_cat == "Base case cost assumptions", policy != "SOC"),
+             aes(x = ddaly_averted, y = cost_inc, color = policy), alpha = 0.4) +
+  # Second plot: Lines and points from plot_icer_base
+  geom_line(data = plot_icer_base %>% filter(cost_cat == "Base case cost assumptions"),
+            aes(x = mean_ddaly, y = mean_cost),
+            linewidth = 1.5) +
+  geom_point(data = plot_icer_base %>% filter(cost_cat == "Base case cost assumptions"),
+             aes(x = mean_ddaly, y = mean_cost)) +
+  # ggrepel annotations
+  geom_label_repel(aes(label = ifelse(is.na(icer_text), NA, icer_text)), 
+                   nudge_y = plot_icer_base$nudge_y,
+                   nudge_x = -10,
+                   direction = "y",  # Keep labels in a vertical column
+                   hjust = 0,  # Left-align the text
+                   segment.size = 0.2,
+                   force = 1,
+                   min.segment.length = 0,
+                   show.legend = FALSE) +
+  # Lines from points to annotations
+  geom_segment(data = plot_icer_base %>% filter(policy == "SOC"),
+               aes(x = mean_ddaly, y = mean_cost, xend = -20, yend = 6),
+               color = "lightgray") +
+  geom_segment(data = plot_icer_base %>% filter(policy == "CCC"),
+               aes(x = mean_ddaly, y = mean_cost, xend = 158, yend = 6),
+               color = "lightgray") +
+  geom_segment(data = plot_icer_base %>% filter(policy == "CHW"),
+               aes(x = mean_ddaly, y = mean_cost, xend = 165, yend = 22),
+               color = "lightgray") +
+  # Shared labels, theme, and scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  labs(title = "Cost-effectiveness frontier",
+       subtitle = "Per 10 million adults over 50-year time horizon (2024 - 2074), n=3000 setting-scenarios",
+       y = "Annual incremental cost (millions $USD)",
+       x = "Annual DALYs averted (thousands)") +
+  # Annotations
+  annotate("text", x=-32, y=6, label= "SOC", size = 8) +
+  annotate("text", x=200, y=6, label= "Chronic Care Clinic", size = 8) +
+  annotate("text", x=200, y=4, label= paste0("$",ccc_icer, "/DALY"), size = 8, font = "bold") +
+  annotate("text", x=200, y=22, label= "CHW Screening", size = 8) +
+  annotate("text", x=200, y=20, label= paste0("$",chw_icer, "/DALY"), size = 8) +
+  theme_classic(base_size = 16) +
+  theme(
+    plot.title = element_text(size = 20, face = "bold", color = "#636363"),
+    legend.position = "bottom",
+    text = element_text(color = "#636363"),
+    axis.line = element_line(color = "#636363"),
+    axis.ticks = element_line(color = "#636363"),
+    axis.text = element_text(color = "#636363")
+  ) +
+  scale_color_manual(values = colors) +  # Use the modified color vector
+  scale_fill_manual(values = colors)    # Use the modified color vector
+
+# Display the combined plot
+print(combined_plot)
+```
+
+Including selected paired datapoints (for illustration only)
+```{r}
+# # Extract ICER values for annotations
+# 
+# # Create the overlayed plot
+# combined_plot <- ggplot() +
+#   # First plot: Points from df_netdaly
+#   geom_point(data = df_netdaly %>% filter(year == "2474", cost_cat == "Base case cost assumptions"),
+#              aes(x = ddaly_averted, y = cost_inc, color = policy), alpha = 0.4) +
+#   # Lines grouped by country with light grey and removed from legend
+#   geom_line(
+#     data = df_netdaly %>% filter(year == "2474", cost_cat == "Base case cost assumptions", policy != "SOC", country < 12000000) %>% mutate(country = as.character(country)),
+#     aes(x = ddaly_averted, y = cost_inc, group = country),  # Group by country
+#     color = "#636363",  # Set color to light grey
+#     show.legend = FALSE   # Remove from legend
+#   ) +
+#   # Second plot: Lines and points from plot_icer
+#   geom_line(data = plot_icer %>% filter(cost_cat == "Base case cost assumptions"),
+#             aes(x = mean_ddaly, y = mean_cost),
+#             linewidth = 1.5) +
+#   geom_point(data = plot_icer %>% filter(cost_cat == "Base case cost assumptions"),
+#              aes(x = mean_ddaly, y = mean_cost)) +
+#   # Shared labels, theme, and scales
+#   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+#   scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+#   labs(title = "Cost-effectiveness frontier",
+#        subtitle = "Per 10 million adults over 50-year time horizon (2024 - 2074), n=3000 setting-scenarios",
+#        y = "Annual incremental cost (millions $USD)",
+#        x = "Annual DALYs averted (thousands)") +
+#   theme_classic(base_size = 16) +
+#   theme(
+#     plot.title = element_text(size = 20, face = "bold", color = "#636363"),
+#     legend.position = "bottom",
+#     text = element_text(color = "#636363"),
+#     axis.line = element_line(color = "#636363"),
+#     axis.ticks = element_line(color = "#636363"),
+#     axis.text = element_text(color = "#636363")
+#   ) +
+#   scale_color_brewer(palette = "Dark2")
+# 
+# # Display the combined plot
+# print(combined_plot)
+```
+
+
+# Hypertension diagnosis, treatment, control over time
+## Age 18+
 ### 0.25-Year Increments
 ```{r}
+load("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration/run105_long.RData")
+
+sourcenames <- c("SOC", "CCC", "CHW")
+df$policy <- factor(df$policy, levels = sourcenames)
+df_yr$policy <- factor(df_yr$policy, levels = sourcenames)
+
 # List of variables and their y-axis labels
 variables_ge18 <- list(
   p_htn_ge18 = "Prevalence of hypertension among adults aged 18+ years",
   p_diag_htn_ge18 = "Proportion of adults aged 18+ years with hypertension who are diagnosed",
   p_on_tx_htn_ge18 = "Proportion of adults aged 18+ years with hypertension who are treated",
   p_htn_ctrl_ge18 = "Proportion of adults aged 18+ years with hypertension with SBP <140"
+)
+
+# List of plot titles
+plot_titles_ge18 <- list(
+  p_htn_ge18 = "Hypertension Prevalence",
+  p_diag_htn_ge18 = "Hypertension Diagnosis",
+  p_on_tx_htn_ge18 = "Hypertension Current Treatment",
+  p_htn_ctrl_ge18 = "Hypertension Control"
 )
 
 # Loop over variables to create summary data and plots
@@ -156,13 +273,24 @@ for (var in names(variables_ge18)) {
     geom_line(aes(y = median), size = 1.2) +  # Median line
     geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
     labs(
-      title = paste("Median and 90% Range of", var, "Over Time by Policy"),
-      x = "Time (cald)",
+      title = plot_titles_ge18[[var]],
+      x = "Time (3-month intervals)",
       y = variables_ge18[[var]],  # Custom y-axis label
       color = "Policy",
       fill = "Policy"
     ) +
-    theme_minimal()  # Clean theme
+    theme_minimal()  +
+    scale_y_continuous(limits = c(0, NA)) +
+    theme(
+      plot.title = element_text(size = 18, face = "bold"),  # Increase plot title size
+      axis.title.x = element_text(size = 14),              # Increase x-axis title size
+      axis.title.y = element_text(size = 14),              # Increase y-axis title size
+      axis.text = element_text(size = 12),                 # Increase axis tick labels size
+      legend.title = element_text(size = 14),              # Increase legend title size
+      legend.text = element_text(size = 12)                # Increase legend text size
+    ) +
+    scale_color_brewer(palette = "Dark2") +
+    scale_fill_brewer(palette = "Dark2")
   
   # Add to list of plots
   plots_ge18[[var]] <- p
@@ -177,41 +305,164 @@ print(plots_ge18[["p_htn_ctrl_ge18"]])
 
 ### 1 year increments
 ```{r}
-plots_ge18_yr <- list()
-
-# Create plots for data frame compressed one row per year
-for (var in names(variables_ge18)) {
-  # Summarize data
-  summary_df_yr <- df_yr %>%
-    group_by(year, policy) %>%
-    summarize(
-      median = median(.data[[var]]),
-      lower_90 = quantile(.data[[var]], 0.05),
-      upper_90 = quantile(.data[[var]], 0.95),
-      .groups = "drop"
-    )
-  
-  # Generate plot
-  p2 <- ggplot(summary_df_yr, aes(x = year, color = policy, fill = policy)) +
-    geom_line(aes(y = median), size = 1.2) +  # Median line
-    geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
-    labs(
-      title = paste("Median and 90% Range of", var, "Over Time by Policy"),
-      x = "Year",
-      y = variables_ge18[[var]],  # Custom y-axis label
-      color = "Policy",
-      fill = "Policy"
-    ) +
-    theme_minimal()  # Clean theme
-  
-  # Add to list of plots
-  plots_ge18_yr[[var]] <- p2
-}
-
-# Display plots
-print(plots_ge18_yr[["p_htn_ge18"]])
-print(plots_ge18_yr[["p_diag_htn_ge18"]])
-print(plots_ge18_yr[["p_on_tx_htn_ge18"]])
-print(plots_ge18_yr[["p_htn_ctrl_ge18"]])
+# plots_ge18_yr <- list()
+# 
+# # Create plots for data frame compressed one row per year
+# for (var in names(variables_ge18)) {
+#   # Summarize data
+#   summary_df_yr <- df_yr %>%
+#     group_by(year, policy) %>%
+#     summarize(
+#       median = median(.data[[var]]),
+#       lower_90 = quantile(.data[[var]], 0.05),
+#       upper_90 = quantile(.data[[var]], 0.95),
+#       .groups = "drop"
+#     )
+#   
+#   # Generate plot
+#   p2 <- ggplot(summary_df_yr, aes(x = year, color = policy, fill = policy)) +
+#     geom_line(aes(y = median), size = 1.2) +  # Median line
+#     geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
+#     labs(
+#       title = plot_titles_ge18[[var]],
+#       x = "Year",
+#       y = variables_ge18[[var]],  # Custom y-axis label
+#       color = "Policy",
+#       fill = "Policy"
+#     ) +
+#     theme_minimal() +
+#     theme(
+#       plot.title = element_text(size = 18, face = "bold"),  # Increase plot title size
+#       axis.title.x = element_text(size = 14),              # Increase x-axis title size
+#       axis.title.y = element_text(size = 14),              # Increase y-axis title size
+#       axis.text = element_text(size = 12),                 # Increase axis tick labels size
+#       legend.title = element_text(size = 14),              # Increase legend title size
+#       legend.text = element_text(size = 12)                # Increase legend text size
+#     )
+#   
+#   # Add to list of plots
+#   plots_ge18_yr[[var]] <- p2
+# }
+# 
+# # Display plots
+# print(plots_ge18_yr[["p_htn_ge18"]])
+# print(plots_ge18_yr[["p_diag_htn_ge18"]])
+# print(plots_ge18_yr[["p_on_tx_htn_ge18"]])
+# print(plots_ge18_yr[["p_htn_ctrl_ge18"]])
+# ```
+# 
+# 
+# ## Age 45-64
+# ### 0.25 year increments
+# ```{r}
+# # List of variables and their y-axis labels
+# variables_4564 <- list(
+#   p_htn_4564 = "Prevalence of hypertension among adults aged 45-64 years",
+#   p_diag_htn_4564 = "Proportion of adults aged 45-64 years with hypertension who are diagnosed",
+#   p_on_tx_htn_4564 = "Proportion of adults aged 45-64 years with hypertension who are treated",
+#   p_htn_ctrl_4564 = "Proportion of adults aged 45-64 years with hypertension with SBP <140"
+# )
+# 
+# # List of plot titles
+# plot_titles_4564 <- list(
+#   p_htn_4564 = "Hypertension Prevalence",
+#   p_diag_htn_4564 = "Hypertension Diagnosis",
+#   p_on_tx_htn_4564 = "Hypertension Current Treatment",
+#   p_htn_ctrl_4564 = "Hypertension Control"
+# )
+# 
+# # Loop over variables to create summary data and plots
+# plots <- list()
+# 
+# for (var in names(variables_4564)) {
+#   # Summarize data
+#   summary_df <- df %>%
+#     group_by(cald, policy) %>%
+#     summarize(
+#       median = median(.data[[var]]),
+#       lower_90 = quantile(.data[[var]], 0.05),
+#       upper_90 = quantile(.data[[var]], 0.95),
+#       .groups = "drop"
+#     )
+#   
+#   # Generate plot
+#   p <- ggplot(summary_df, aes(x = cald, color = policy, fill = policy)) +
+#     geom_line(aes(y = median), size = 1.2) +  # Median line
+#     geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
+#     labs(
+#       title = plot_titles_4564[[var]],
+#       x = "time (3-month intervals)",
+#       y = variables_4564[[var]],  # Custom y-axis label
+#       color = "Policy",
+#       fill = "Policy"
+#     ) +
+#     theme_minimal() +
+#     theme(
+#       plot.title = element_text(size = 18, face = "bold"),  # Increase plot title size
+#       axis.title.x = element_text(size = 14),              # Increase x-axis title size
+#       axis.title.y = element_text(size = 14),              # Increase y-axis title size
+#       axis.text = element_text(size = 12),                 # Increase axis tick labels size
+#       legend.title = element_text(size = 14),              # Increase legend title size
+#       legend.text = element_text(size = 12)                # Increase legend text size
+#     )
+#   
+#   # Add to list of plots
+#   plots[[var]] <- p
+# }
+# 
+# # Display plots
+# print(plots[["p_htn_4564"]])
+# print(plots[["p_diag_htn_4564"]])
+# print(plots[["p_on_tx_htn_4564"]])
+# print(plots[["p_htn_ctrl_4564"]])
+# 
+# ```
+# 
+# 
+# ### 1 year increments
+# ```{r}
+# plots2 <- list()
+# # create plots for data frame compressed one row per year
+# for (var in names(variables_4564)) {
+#   # Summarize data
+#   summary_df_yr <- df_yr %>%
+#     group_by(year, policy) %>%
+#     summarize(
+#       median = median(.data[[var]]),
+#       lower_90 = quantile(.data[[var]], 0.05),
+#       upper_90 = quantile(.data[[var]], 0.95),
+#       .groups = "drop"
+#     )
+#   
+#   # Generate plot
+#   p2 <- ggplot(summary_df_yr, aes(x = year, color = policy, fill = policy)) +
+#     geom_line(aes(y = median), size = 1.2) +  # Median line
+#     geom_ribbon(aes(ymin = lower_90, ymax = upper_90), alpha = 0.2) +  # Shaded 90% range
+#     labs(
+#       title = plot_titles_4564[[var]],
+#       x = "Year",
+#       y = variables_4564[[var]],  # Custom y-axis label
+#       color = "Policy",
+#       fill = "Policy"
+#     ) +
+#     theme_minimal() +
+#     theme(
+#       plot.title = element_text(size = 18, face = "bold"),  # Increase plot title size
+#       axis.title.x = element_text(size = 14),              # Increase x-axis title size
+#       axis.title.y = element_text(size = 14),              # Increase y-axis title size
+#       axis.text = element_text(size = 12),                 # Increase axis tick labels size
+#       legend.title = element_text(size = 14),              # Increase legend title size
+#       legend.text = element_text(size = 12)                # Increase legend text size
+#     )
+#   
+#   # Add to list of plots
+#   plots2[[var]] <- p2
+# }
+# 
+# # Display plots
+# print(plots2[["p_htn_4564"]])
+# print(plots2[["p_diag_htn_4564"]])
+# print(plots2[["p_on_tx_htn_4564"]])
+# print(plots2[["p_htn_ctrl_4564"]])
 ```
 
