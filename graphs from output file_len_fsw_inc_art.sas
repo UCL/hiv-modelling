@@ -3,7 +3,7 @@ ods html close;
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\len_fsw_inc_art_a_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\len_fsw_inc_art_b_out\";
 
 footnote;
 
@@ -12,7 +12,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_len_fsw_inc_art_a ;
+set a.l_len_fsw_inc_art_b ;
 
 
 * for this program, variable names cannot end on a number;
@@ -41,7 +41,7 @@ p_newp_ge1_ = p_newp_ge1;
 n_tested_incl_self = n_self_tested + n_tested; 
 
 
-%let single_var =  incidence1549_          ;
+%let single_var =  n_prep_any              ;
 
 
 
@@ -212,7 +212,7 @@ ods html ;
 
 
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -233,7 +233,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 /*
 
@@ -359,7 +359,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -380,7 +380,7 @@ run;quit;
 
 * ods html close;
 
-
+*/
 
 /*
 
