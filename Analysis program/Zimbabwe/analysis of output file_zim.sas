@@ -147,22 +147,82 @@ maxcost_amt= diff_netdalys * 500;
 diff_cost = dcost_24_74_2 - dcost_24_74_1;
 ICER = (diff_cost/diff_ddaly)*1000000;
 
-***Checking to see when AMETHIST becomes CE;
+***Checking to see when AMETHIST becomes CE (AS = AMETHIST SISTERS);
 *5 years; 
-diff_dcost5y = dcost_24_29_2 - dcost_24_29_1;
-diff_ddaly5y = ddaly_24_29_2 - ddaly_24_29_1;
+diff_dcost5yAS = dcost_24_29_2 - dcost_24_29_1;
+diff_ddaly5yAS = ddaly_24_29_2 - ddaly_24_29_1;
 *10 years; 
-diff_dcost10y = dcost_24_34_2 - dcost_24_34_1;
-diff_ddaly10y = ddaly_24_34_2 - ddaly_24_34_1;
+diff_dcost10yAS = dcost_24_34_2 - dcost_24_34_1;
+diff_ddaly10yAS = ddaly_24_34_2 - ddaly_24_34_1;
 *15 years; 
-diff_dcost15y = dcost_24_39_2 - dcost_24_39_1;
-diff_ddaly15y = ddaly_24_39_2 - ddaly_24_39_1;
+diff_dcost15yAS = dcost_24_39_2 - dcost_24_39_1;
+diff_ddaly15yAS = ddaly_24_39_2 - ddaly_24_39_1;
 *20 years; 
-diff_dcost20y = dcost_24_44_2 - dcost_24_44_1;
-diff_ddaly20y = ddaly_24_44_2 - ddaly_24_44_1;
+diff_dcost20yAS = dcost_24_44_2 - dcost_24_44_1;
+diff_ddaly20yAS = ddaly_24_44_2 - ddaly_24_44_1;
+*25 years; 
+diff_dcost25yAS = dcost_24_49_2 - dcost_24_49_1;
+diff_ddaly25yAS = ddaly_24_49_2 - ddaly_24_49_1;
+*30 years; 
+diff_dcost30yAS = dcost_24_54_2 - dcost_24_54_1;
+diff_ddaly30yAS = ddaly_24_54_2 - ddaly_24_54_1;
+*35 years; 
+diff_dcost35yAS = dcost_24_59_2 - dcost_24_59_1;
+diff_ddaly35yAS = ddaly_24_59_2 - ddaly_24_59_1;
+*40 years; 
+diff_dcost40yAS = dcost_24_64_2 - dcost_24_64_1;
+diff_ddaly40yAS = ddaly_24_64_2 - ddaly_24_64_1;
+*45 years; 
+diff_dcost45yAS = dcost_24_69_2 - dcost_24_69_1;
+diff_ddaly45yAS = ddaly_24_69_2 - ddaly_24_69_1;
+*50 years; 
+diff_dcost50yAS = dcost_24_74_2 - dcost_24_74_1;
+diff_ddaly50yAS = ddaly_24_74_2 - ddaly_24_74_1;
 
-***Do same for Sisters vs nothing;
+***Do same for Sisters vs discontinuation (SD=SISTERS DISCONTINUATION);
 
+*5 years; 
+diff_dcost5ySD = dcost_24_29_1 - dcost_24_29_3;
+diff_ddaly5ySD = ddaly_24_29_1 - ddaly_24_29_3;
+*10 years; 
+diff_dcost10ySD = dcost_24_34_1 - dcost_24_34_3;
+diff_ddaly10ySD = ddaly_24_34_1 - ddaly_24_34_3;
+*15 years; 
+diff_dcost15ySD = dcost_24_39_1 - dcost_24_39_3;
+diff_ddaly15ySD = ddaly_24_39_1 - ddaly_24_39_3;
+*20 years; 
+diff_dcost20ySD = dcost_24_44_1 - dcost_24_44_3;
+diff_ddaly20ySD = ddaly_24_44_1 - ddaly_24_44_3;
+*25 years; 
+diff_dcost25ySD = dcost_24_49_1 - dcost_24_49_3;
+diff_ddaly25ySD = ddaly_24_49_1 - ddaly_24_49_3;
+*30 years; 
+diff_dcost30ySD = dcost_24_54_1 - dcost_24_54_3;
+diff_ddaly30ySD = ddaly_24_54_1 - ddaly_24_54_3;
+*35 years; 
+diff_dcost35ySD = dcost_24_59_1 - dcost_24_59_3;
+diff_ddaly35ySD = ddaly_24_59_1 - ddaly_24_59_3;
+*40 years; 
+diff_dcost40ySD = dcost_24_64_1 - dcost_24_64_3;
+diff_ddaly40ySD = ddaly_24_64_1 - ddaly_24_64_3;
+*45 years; 
+diff_dcost45ySD = dcost_24_69_1 - dcost_24_69_3;
+diff_ddaly45ySD = ddaly_24_69_1 - ddaly_24_69_3;
+*50 years; 
+diff_dcost50ySD = dcost_24_74_1 - dcost_24_74_3;
+diff_ddaly50ySD = ddaly_24_74_1 - ddaly_24_74_3;
+
+
+
+
+
+***Breakdown of costs - group clinical costs together;
+d_clin_costs_1 = 	dadc_cost_24_74_1 + dnon_tb_who3_cost_24_74_1 + dcot_cost_24_74_1 + dtb_cost_24_74_1 + 
+					d_t_adh_int_cost_24_74_1 + dswitchline_cost_24_74_1;
+d_clin_costs_2 = 	dadc_cost_24_74_2 + dnon_tb_who3_cost_24_74_2 + dcot_cost_24_74_2 + dtb_cost_24_74_2 + 
+					d_t_adh_int_cost_24_74_2 + dswitchline_cost_24_74_2; 
+d_clin_costs_3 = 	dadc_cost_24_74_3 + dnon_tb_who3_cost_24_74_3 + dcot_cost_24_74_3 + dtb_cost_24_74_3 + 
+					d_t_adh_int_cost_24_74_3 + dswitchline_cost_24_74_3;
 
 
 ***Absolute costs and differences;
@@ -188,29 +248,36 @@ netdalys_sis netdalys_amt diff_netdalys;run;
 
 ***Identifying when AMETHIST becomes CE;
 proc means n mean lclm uclm;
-var	diff_dcost diff_ddaly diff_dcost5y diff_ddaly5y  diff_dcost10y diff_ddaly10y diff_dcost15y diff_ddaly15y diff_dcost20y diff_ddaly20y;
+var	diff_dcost diff_ddaly diff_dcost5yAS diff_ddaly5yAS  diff_dcost10yAS diff_ddaly10yAS diff_dcost15yAS diff_ddaly15yAS
+diff_dcost20yAS diff_ddaly20yAS diff_dcost25yAS diff_ddaly25yAS diff_dcost30yAS diff_ddaly30yAS diff_dcost35yAS diff_ddaly35yAS
+diff_dcost40yAS diff_ddaly40yAS diff_dcost45yAS diff_ddaly45yAS diff_dcost50yAS diff_ddaly50yAS;
 run;
 
 **After 15y, costs are saved and DALYs averted. Check actual costs and DALYs to make sure this is correct;
 proc means n mean lclm uclm;
-var	dcost_24_39_2 dcost_24_39_1 ddaly_24_39_2 ddaly_24_39_1  diff_dcost15y diff_ddaly15y;
+var	dcost_24_39_2 dcost_24_39_1 ddaly_24_39_2 ddaly_24_39_1  diff_dcost15yAS diff_ddaly15yAS;
 run;
+
+
+***Identifying when Sisters becomes CE compared to discontinuation;
+proc means n mean lclm uclm;
+var	diff_dcost diff_ddaly diff_dcost5ySD diff_ddaly5ySD  diff_dcost10ySD diff_ddaly10ySD diff_dcost15ySD diff_ddaly15ySD
+diff_dcost20ySD diff_ddaly20ySD diff_dcost25ySD diff_ddaly25ySD diff_dcost30ySD diff_ddaly30ySD diff_dcost35ySD diff_ddaly35ySD
+diff_dcost40ySD diff_ddaly40ySD diff_dcost45ySD diff_ddaly45ySD diff_dcost50ySD diff_ddaly50ySD;
+run;
+
+
 
 ***Breakdown of costs;
 proc means mean lclm uclm;var
 dcost_24_74_1
 dart_cost_y_24_74_1
-dadc_cost_24_74_1
+d_clin_costs_1
 dcd4_cost_24_74_1 
 dvl_cost_24_74_1 
 dvis_cost_24_74_1 
-dnon_tb_who3_cost_24_74_1
-dcot_cost_24_74_1 
-dtb_cost_24_74_1 
 dres_cost_24_74_1 
 dtest_cost_24_74_1 
-d_t_adh_int_cost_24_74_1 
-dswitchline_cost_24_74_1 
 dcost_drug_level_test_24_74_1 
 dcost_circ_24_74_1 
 dcost_condom_dn_24_74_1 
@@ -223,17 +290,12 @@ dcost_sisprog__24_74_1
 
 dcost_24_74_2
 dart_cost_y_24_74_2
-dadc_cost_24_74_2
+d_clin_costs_2
 dcd4_cost_24_74_2 
 dvl_cost_24_74_2 
 dvis_cost_24_74_2 
-dnon_tb_who3_cost_24_74_2
-dcot_cost_24_74_2 
-dtb_cost_24_74_2 
 dres_cost_24_74_2 
 dtest_cost_24_74_2 
-d_t_adh_int_cost_24_74_2 
-dswitchline_cost_24_74_2 
 dcost_drug_level_test_24_74_2 
 dcost_circ_24_74_2 
 dcost_condom_dn_24_74_2 
@@ -246,17 +308,12 @@ dcost_amtprog__24_74_2
 
 dcost_24_74_3
 dart_cost_y_24_74_3
-dadc_cost_24_74_3
+d_clin_costs_3
 dcd4_cost_24_74_3 
 dvl_cost_24_74_3 
 dvis_cost_24_74_3 
-dnon_tb_who3_cost_24_74_3
-dcot_cost_24_74_3 
-dtb_cost_24_74_3 
 dres_cost_24_74_3 
 dtest_cost_24_74_3 
-d_t_adh_int_cost_24_74_3 
-dswitchline_cost_24_74_3 
 dcost_drug_level_test_24_74_3 
 dcost_circ_24_74_3 
 dcost_condom_dn_24_74_3 

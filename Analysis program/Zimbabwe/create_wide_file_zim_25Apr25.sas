@@ -11,6 +11,8 @@ if run=. then delete;
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
+
+
 ***Remove runs with low % diag in 2020 as currently mean is about 3% lower than PHIA. In men, this is about 6% lower;
 data b;
 set a;
@@ -157,6 +159,20 @@ data y;
 merge c sf;
 by run;
 
+
+* prop_onprep; 		if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep = (s_prep_any/ (s_alive1564 - s_hiv1564))*100 ;
+* prop_onprep_inj; 	if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep_inj = (s_prep_inj/ (s_alive1564 - s_hiv1564))*100 ;
+
+* prop_onprep_oral; if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep_oral = (s_prep_oral/ (s_alive1564 - s_hiv1564))*100 ;
+* prop_sw_onprep; 	if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_oral = (s_prep_oral_sw/ (s_sw_1564 - s_hiv_sw))*100 ;
+* prop_sw_onprep; 	if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_inj = (s_prep_inj_sw/ (s_sw_1564 - s_hiv_sw))*100 ;
+
+
+proc means;var prop_onprep_inj prop_onprep_oral  prop_sw_onprep_inj  prop_sw_onprep_oral;where 2040<cald<2074 and option=0;run;
+proc means;var prop_onprep_inj prop_onprep_oral prop_sw_onprep_inj  prop_sw_onprep_oral;where 2040<cald<2074 and option=1;run;
+proc means;var prop_onprep_inj prop_onprep_oral prop_sw_onprep_inj  prop_sw_onprep_oral;where 2040<cald<2074 and option=2;run;
+
+run;
 * preparatory code ;
 
 
