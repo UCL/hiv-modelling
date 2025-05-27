@@ -41,7 +41,7 @@ p_newp_ge1_ = p_newp_ge1;
 n_tested_incl_self = n_self_tested + n_tested; 
 
 
-%let single_var =  n_prep_any              ;
+%let single_var =  p_diag                        ;
 
 
 
@@ -53,7 +53,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 612  ;
+%let nfit = 855  ;
 
 %let year_end = 2076.00 ;
 run;
@@ -212,7 +212,7 @@ ods html ;
 
 
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -233,7 +233,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 /*
 
@@ -570,7 +570,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title ''; *  Title    height=1.5 justify=center "p_onart_diag";
+* Title '';    Title    height=1.5 justify=center "p_onart_diag";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.70 to  1       by 0.05  ) valueattrs=(size=10);
 
@@ -579,6 +579,9 @@ band    x=cald lower=p5_p_onart_diag_0 upper=p95_p_onart_diag_0 / transparency=0
 
 series  x=cald y=p50_p_onart_diag_1 / lineattrs = (color=darkblue    thickness = 4);
 band    x=cald lower=p5_p_onart_diag_1 upper=p95_p_onart_diag_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
+
+series  x=cald y=p50_p_onart_diag_2 / lineattrs = (color=darkred     thickness = 4);
+band    x=cald lower=p5_p_onart_diag_2 upper=p95_p_onart_diag_2 / transparency=0.9 fillattrs = (color=darkred    ) legendlabel= "90% range";
 
 run;quit;
 
@@ -632,11 +635,11 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "p_diag";
+* Title '';    Title    height=1.5 justify=center "p_diag";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.50 to  1       by 0.05  ) valueattrs=(size=10);
 
@@ -646,9 +649,12 @@ band    x=cald lower=p5_p_diag_0 upper=p95_p_diag_0 / transparency=0.9 fillattrs
 series  x=cald y=p50_p_diag_1 / lineattrs = (color=darkblue    thickness = 4);
 band    x=cald lower=p5_p_diag_1 upper=p95_p_diag_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
 
+series  x=cald y=p50_p_diag_2 / lineattrs = (color=darkred     thickness = 4);
+band    x=cald lower=p5_p_diag_2 upper=p95_p_diag_2 / transparency=0.9 fillattrs = (color=darkred    ) legendlabel= "90% range";
+
 run;quit;
 
-*/
+
 
 /*
 
