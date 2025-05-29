@@ -3034,7 +3034,7 @@ if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_me
 if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0.85; end; 
 if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121 125 130) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
-if p_vl_meas_done_set_in_opts ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
+if p_vl_meas_done_set_in_opts ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
