@@ -1,14 +1,7 @@
 
 
-* options user="/folders/myfolders/";
 
- proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\dcp_lab\";
-
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ae_out\";
-
-
-
-/*
+ proc printto ; 
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ae_out\";
 
@@ -22,16 +15,12 @@ data b.k_dcp_cab_ae;  set i1  i2 i3 i4 i5 i6 i7 i8 i9 ;
 run;
 
 
-*/
-
-
 
 proc sort data=b.k_dcp_cab_ae; 
 by run cald option;
 run;
 
 
-* calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
 set b.k_dcp_cab_ae ;
@@ -56,10 +45,6 @@ merge b.k_dcp_cab_ae sf;
 by run ;
 
 
-* preparatory code ;
-
-* ================================================================================= ;
-
 if s_pregnant_oth_dol_adv_birth_e = . then s_pregnant_oth_dol_adv_birth_e = 0;
 
 pregnant_hiv_diagnosed = s_pregnant - s_pregnant_not_diagnosed_pos;
@@ -70,34 +55,6 @@ s_w_newp = s_w_1524_newp  +	 s_w_2534_newp  +  s_w_3544_newp +   s_w_4554_newp  
 s_i_m_newp = s_i_age1_m_newp + s_i_age2_m_newp + s_i_age3_m_newp + s_i_age4_m_newp + s_i_age5_m_newp ;
 s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_newp + s_i_age5_w_newp ;
 
-*r_bir_w_infected_child_ = rate_birth_with_infected_child_;
-
-* ================================================================================= ;
-
-
-* discount rate;
-
-* ================================================================================= ;
-
-* discount rate is 3%; 
-* note discounting is from 2023 - no adjustment needed;
-* ts1m - this code needs to change for ts1m;
-
-* %let year_start_disc=2023.5;
-* discount_10py = 1/(1.10**(cald-&year_start_disc));
-* The following can be changed if we want instead 10% discount rate;
-* %let discount=discount_3py;
-
-
-* ================================================================================= ;
-
-
-
-
-
-* dalys and life years;
-
-* ================================================================================= ;
 
 ly = s_ly * sf;
 dly = s_dly * sf;
@@ -108,26 +65,20 @@ s_ddaly_gbd = s_dyll_GBD + s_live_ddaly;
 
 
 dead_ddaly_ntd = s_dead_ddaly_ntd * sf * 4 * (0.0022 / 0.0058); 
-*  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
-*  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
 
 ddaly = s_ddaly * sf * 4;
 
 ddaly_gbd = s_ddaly_gbd * sf * 4;
 
-
-* sensitivity analysis;
-* dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
-
 s_mtct = s_birth_with_inf_child + s_child_infected_breastfeeding ;
 
-ddaly_yll_mtct = s_mtct * sf * 4 * 5   * discount ; * 5  yll dalys per infected child ;  
+ddaly_yll_mtct = s_mtct * sf * 4 * 5   * discount ; 
 
-ddaly_mtct = ddaly_yll_mtct + (s_ddaly_mtct * sf * 4); * adding the yll to the live dalys;
+ddaly_mtct = ddaly_yll_mtct + (s_ddaly_mtct * sf * 4); 
 
-dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf * 4; * odabe ;
+dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf * 4; 
 
-ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf * 4; * napd;
+ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf * 4; 
 
 ddaly_ac_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
 
@@ -141,21 +92,8 @@ ddaly_all = ddaly_ntd_mtct_odab_napd;
 
 ddaly_ac_mtct = ddaly + ddaly_mtct;
 
-* NOTE !: ;
-
   ddaly = ddaly_ac_mtct ;
 
-* ================================================================================= ;
-
-
-
-* costs ;
-
-* ================================================================================= ;
-
-* all costs expressed as $ millions per year in 2018 USD;
-
-* ts1m - 12 instead of 4; 
 
 dzdv_cost = s_dcost_zdv * sf * 4 / 1000;
 dten_cost = s_dcost_ten * sf * 4 / 1000;
@@ -178,7 +116,6 @@ if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_inj;
 s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_inj;
 
-* ts1m - 12 instead of 4; 
 dvis_cost = s_dvis_cost * sf * 4 / 1000;
 dart_1_cost = s_dart_1_cost * sf * 4 / 1000;
 dart_2_cost = s_dart_2_cost * sf * 4 / 1000;
@@ -200,12 +137,10 @@ dcost_prep_visit  = s_dcost_prep_visit * sf * 4 / 1000;
 dcost_prep_visit_inj  = max(0,s_dcost_prep_visit_inj * sf * 4 / 1000); 	
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * sf * 4 / 1000; 	 
 dcost_prep_ac_ad_adh = s_dcost_prep_ac_ad_adh * sf * 4 / 1000; 
-dcost_dcp_visit = max(0, s_dcost_dcp_visit * sf * 4 / 1000); dcost_dcp_visit = dcost_dcp_visit * 1.2; * $12 instead of $10;
+dcost_dcp_visit = max(0, s_dcost_dcp_visit * sf * 4 / 1000); dcost_dcp_visit = dcost_dcp_visit * 1.2; 
 
-
-* note this below can be used if outputs are from program beyond 1-1-20;
   dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf * 4 / 1000;
-  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
+  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf * 4 / 1000; 
 
 dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
 dcost_circ = s_dcost_circ * sf * 4 / 1000; 
@@ -214,7 +149,7 @@ dswitchline_cost = s_dcost_switch_line * sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
-dcost_child_hiv = (s_birth_with_inf_child + s_child_infected_breastfeeding) * 1 * discount * sf * 4 / 1000; * unit cost of 1000 applied (hence the 1);
+dcost_child_hiv = (s_birth_with_inf_child + s_child_infected_breastfeeding) * 1 * discount * sf * 4 / 1000; 
 
 
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
@@ -232,15 +167,6 @@ cost_clin_care = dcost_clin_care / discount;
 
 cost = dcost / discount;
 
-
-* checks;
-
-* proc print; 
-* var run cald option dcost_prep_inj  dcost_prep_oral   dcost_prep  dcost_prep_visit;
-
-* ================================================================================= ;
-
-* derived variables relating to population, not only those with hiv ;
 
 if s_ai_naive_no_pmtct_c_nnm_ = . then s_ai_naive_no_pmtct_c_nnm_ = 0; 
 if s_ai_naive_no_pmtct_c_pim_ = . then s_ai_naive_no_pmtct_c_pim_ = 0;
@@ -313,13 +239,6 @@ s_hiv = s_hivge15 ;
 * n_sw_1549;					n_sw_1549 = s_sw_1549 * sf;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw = s_sw_newp / s_w_newp ;
 
-* rate_susc_np_1549_m;			*rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
-* rate_susc_np_1549_w;			*rate_susc_np_1549_w = s_susc_newp_1549_w / (s_alive1549_w - s_hiv1549w);
-* rate_susc_np_ic_1549_m;		*rate_susc_np_ic_1549_m = s_susc_newp_inc_circ_1549_m / (s_alive1549_m - s_hiv1549m);  * circumcised count as not susceptible;
-
-* mean_num_tests_ly_m1549_;		*mean_num_tests_ly_m1549_ = s_tested_ly_m1549_ / (s_alive1549_m  - s_hiv1549m) ;
-* mean_num_tests_ly_w1549_;		*mean_num_tests_ly_w1549_ = s_tested_ly_w1549_ / (s_alive1549_w  - s_hiv1549w) ;
-
 * n_tested_m;					n_tested_m = s_tested_m * sf * 4;
 * n_tested_w;					n_tested_w = s_tested_f * sf * 4;
 * n_tested_sw;					n_tested_sw = s_tested_sw * sf * 4;
@@ -327,7 +246,6 @@ s_hiv = s_hivge15 ;
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
-* of people alive and within 1 year of infection, proportion diagnosed ;
 * prop_diag_infection_1yr;		prop_diag_infection_1yr = s_year_1_infection_diag / s_year_1_infection ;
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
@@ -381,8 +299,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * prop_onprep_newpge2;			if s_prep_any > 0 then prop_onprep_newpge2 = (s_prep_newpg2 + s_prep_newpg3 + s_prep_newpg4)/ s_prep_any ;
 * prop_onprep_newpge3;			if s_prep_any > 0 then prop_onprep_newpge3 = (s_prep_newpg3 + s_prep_newpg4)/ s_prep_any ;
 
-* p_newp_this_per_prep;			p_newp_this_per_prep = s_newp_this_per_prep / s_newp_this_per_hivneg ;  * newp this per means at least one newp ;
-
+* p_newp_this_per_prep;			p_newp_this_per_prep = s_newp_this_per_prep / s_newp_this_per_hivneg ;  
 * prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;
 								if s_prep_any_elig = 0 then prop_elig_on_prep = 0;
 
@@ -451,10 +368,9 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * proportion who were on dcp who drop off;
 * p_dcp_drop_off_this_period;  p_dcp_drop_off_this_period =  s_dcp_drop_off_this_period / s_dcp_tm1 ; 
 
-* p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  * proportion of all newp for which person is on prep;
+* p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  
 
-* p_newp_prep_hivneg;			p_newp_prep_hivneg = s_prep_newp / s_newp_hivneg ;  * proportion of all newp in hiv-ve people for which person is on prep;
-
+* p_newp_prep_hivneg;			p_newp_prep_hivneg = s_prep_newp / s_newp_hivneg ;  
 
 * p_elig_all_prep_criteria;		p_elig_all_prep_criteria = s_all_prep_criteria / s_prep_any_elig;
 
@@ -515,7 +431,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * of people who initiate prep_inj in same period as primary infection, proportion developing insti resistance in the period; 
 * p_prep_inj_init_prim_res;		p_prep_inj_init_prim_res = s_prep_inj_reinit_prim_res / s_prep_inj_init_prim;
-* as above but including also all reinitiations of prep;
 * p_prep_inj_reinit_prim_res;	p_prep_inj_reinit_prim_res = (s_prep_inj_reinit_prim_res + s_prep_inj_init_prim_res) / 
 															(s_prep_inj_reinit_prim + s_prep_inj_init_prim);
 * of people with hiv on cab who do not have resistance, proportion developing resistance in given period; 
@@ -546,7 +461,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * proportion of primary infections in which inm is present or arises due to cab ;
 * p_cab_res_primary	;			p_cab_res_primary = s_cab_res_primary / s_primary;
 
-***** ^^^^^ ******;
 * n_prep_any_start;				n_prep_any_start = s_prep_any_start * sf; 
 * n_prep_oral_start;			n_prep_oral_start = s_prep_oral_start * sf; 
 * n_prep_inj_start;				n_prep_inj_start = s_prep_inj_start * sf; 
@@ -697,8 +611,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * r_prev_sex_1549 ;				r_prev_sex_1549 = prevalence1549w / prevalence1549m ;
 
-
-* derived variables relating to people with hiv ;
 								if s_primary gt 0 then do;
 * p_inf_vlsupp ;				p_inf_vlsupp = s_inf_vlsupp   / s_primary;
 * p_inf_newp ;					p_inf_newp = s_inf_newp / s_primary;
@@ -707,7 +619,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_inf_naive ; 				p_inf_naive = s_inf_naive / s_primary;
 * p_inf_primary ;				p_inf_primary = s_inf_primary / s_primary;
 
-*The meaning of the following is: among newly infected people, which proportion are SW, etc..;
 * p_sw_newinf;				    p_sw_newinf = s_primary_sw / s_primary;		
 * p_w1524_newinf;				p_w1524_newinf = sum(s_primary1519w,s_primary2024w) / s_primary;
 * p_w25ov_newinf;				p_w25ov_newinf = sum(s_primary2529w,s_primary3034w,s_primary3539w,s_primary4044w,s_primary4549w,s_primary5054w,s_primary5559w,s_primary6064w) / s_primary;		
@@ -733,15 +644,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_ai_no_arv_e_inm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_e_inm = s_ai_naive_no_pmtct_e_inm_ / s_ai_naive_no_pmtct_;
 * n_ai_naive_no_pmtct_e_inm;    n_ai_naive_no_pmtct_e_inm = s_ai_naive_no_pmtct_e_inm_ * sf;
 
-
-/*
-
-proc sort; by option;
-proc means; var p_ai_no_arv_e_inm ; by option;
-where cald ge 2043 and res_trans_factor_ii=1;
-run;
-
-*/
 
 * p_artexp_diag;  				if s_diag > 0 then p_artexp_diag = s_artexp / s_diag;
 * p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag;
@@ -979,10 +881,6 @@ run;
 								if s_alive_w > 0 then death_rate_hiv_all_w = (4 * 100 * s_death_hiv_w) / s_alive_w;
 
 
-
-
-* n deaths and death rate by cause and hiv status - age 15+ ;
-
 			n_dead_hivpos_cause1 = s_dead_hivpos_cause1 * 4 * sf; 
 			rate_dead_hivpos_cause1 = (s_dead_hivpos_cause1 * 4 * 100) / s_hivge15 ;
 			n_dead_hivpos_tb = s_dead_hivpos_tb  * 4* sf; 
@@ -1062,8 +960,6 @@ run;
 * n_need_cd4m;					n_need_cd4m = n_art_initiation + n_restart + n_line1_fail_this_period;
  
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
-
-* number of women with hiv giving birth per year;
 
 n_give_birth_w_hiv = s_give_birth_with_hiv * sf * 4;
 n_birth_with_inf_child = s_birth_with_inf_child * sf * 4;
@@ -1226,8 +1122,6 @@ run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
-* rev inserted here so dont overwrite - may need to remive the rev to use the original version ;
-
 data    b.l_dcp_cab_ae_y_rev; set y;  
 
 
@@ -1237,12 +1131,8 @@ data y ; set b.l_dcp_cab_ae_y_rev;
   options nomprint;
   option nospool;
 
-***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;
-* user to decide what years and year ranges to include ;
 
 %macro var(v=);
-
-* &v ;
 
 data e; set y; keep &v run cald option ;
 
@@ -1466,7 +1356,7 @@ proc contents; run;
 
 proc sort; by run; run;
 
-***Macro par used to add in values of all sampled parameters - values before intervention;
+
 data f; set y; 
 if cald=2024;
 
@@ -1523,7 +1413,6 @@ prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_will
 
 %macro par(p=);
 
-* &p ;
 proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2024; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
@@ -1633,25 +1522,13 @@ prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_will
 run;
 proc sort; by run;run;
 
-* To get one row per run;
-
-
   data  b.w_dcp_cab_ae_rev     ; 
   merge b.wide_outputs_rev   b.wide_par2_rev    ;
   by run;
 
 
-
-
-
-
-
-
-
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\dcp_cab_ae_out\";
-
 data g;
-* set b.w_dcp_cab_ae     ; 
+
   set b.w_dcp_cab_ae_rev ;
 
   if incidence1549_24 ge 0.1;
@@ -1704,7 +1581,7 @@ p_diag_m_24 = p_diag_m_24 / 100;
 * dcost_dcp_visit_50y_2 = dcost_dcp_visit_50y_2 * ( 5 / 12);
 * dcost_dcp_visit_50y_3 = dcost_dcp_visit_50y_3 * ( 5 / 12);
 * dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * 200 / 60;
-  dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * 0   / 60; * to give cost of cab la drug + visit of $60;
+  dcost_prep_inj_50y_3 = dcost_prep_inj_50y_3 * 0   / 60; 
 
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
@@ -1893,53 +1770,6 @@ clinical_care_costs_5y_2 = adc_cost_5y_2 + non_tb_who3_cost_5y_2 + tb_cost_5y_2 
 clinical_care_costs_5y_3 = adc_cost_5y_3 + non_tb_who3_cost_5y_3 + tb_cost_5y_3 + cost_non_aids_pre_death_5y_3; 
 
 
-
-* label 
-
-prop_ever_tested_1549w_24 = "Proportion of women aged 15-49 who have previously tested for HIV"
-prop_ever_tested_1549m_24 = "Proportion of men aged 15-49 who have previously tested for HIV"
-p_tested_past_year_1549w_24 = "Proportion of women aged 15-49 who have tested for HIV in the past 1 year"
-p_tested_past_year_1549m_24 = "Proportion of men aged 15-49 who have tested for HIV in the past 1 year"
-prop_elig_dcp_24 = "Proportion of people who are eligible for PrEP who are under DCP"
-prop_dcp_prep_elig = "Proportion of people on DCP who are currently PrEP eligible"
-prop_1564_ondcp_24 = "Proportion of people aged 15-64 who are under DCP" 
-p_elig_prep_24 = "Proportion of adults age 15-64 with indication for DCP/PrEP"
-prop_elig_on_prep_24 = "Proportion of people with a current PrEP indication who take PrEP"
-prop_1564_onprep_24 = "Proportion of HIV negative adults aged 15-64 who are taking PrEP"
-prevalence1549w_24 = "HIV prevalence in women age 15-49"
-prevalence1549m_24 = "HIV prevalence in men age 15-49"
-incidence1549w_24 = "HIV incidence in women age 15-49 (/100 person years)"  
-incidence1549m_24 = "HIV incidence in men age 15-49 (/100 person years)"  
-p_diag_w_24 = "Proportion of HIV positive women age 15+ who are diagnosed"  
-p_diag_m_24 = "Proportion of HIV positive men age 15+ who are diagnosed"  
-p_onart_diag_w_24 = "Proportion of diagnosed HIV+ women on ART"
-p_onart_diag_m_24 = "Proportion of diagnosed HIV+ men on ART"
-p_vl1000_24 = "Proportion of all HIV positive people with VL < 1000 copes/mL (age 15+)"
-prevalence_vg1000_24 = "Of adult population, proportion with viral load > 1000 copies/mL (age 15+)"
-p_onart_vl1000_w_24 = "Of women on ART, proportion with VL < 1000"
-p_onart_vl1000_m_24 = "Of men on ART, proportion with VL < 1000"
-p_alive_1549_24 = "Proportion of adults aged 15-49"  
-p_tested_tm1_elig_onprep_24 =  "Of those with a test in the last period, prop of eligible on PrEP" 
-p_prep_tm1_elig_onprep_24 = "Proportion of PrEP/DCP eligible people who took prep in the last 3 months who remain on PrEP"   
-p_prep_past3yr_elig_onprep_24 = "Proportion of PrEP/DCP eligible people who have taken prep in the past 3 years who remain on PrEP"    
-p_dcp_tm1_rem_elig_offdcp_24 = "Proportion who are on DCP and remain eligible who drop off per 3 months"  
-p_dcp_drop_off_this_period_24 = "Proportion who were on DCP 3 months ago who drop off this period" 
-prop_dcp_oral_prep_24 = "Proportion of people on DCP who are on oral PrEP"  
-prop_dcp_inj_prep_24 = "Proportion of people on DCP who are on Cab-LA PrEP" 
-prop_dcp_prep_any_24 = "Proportion of people on DCP who are on any PrEP (or PEP)"
-prop_dcp_elig_prep_oral_24 = "Proportion of people on DCP who have an indication for PrEP who are on oral PrEP"  
-prop_dcp_elig_prep_inj_24 = "Proportion of people on DCP who have an indication for PrEP who are on Cab-LA PrEP"  
-prop_elig_on_prep_oral_24 = "Of people with indication for PrEP proportion on oral PrEP"  
-prop_elig_on_prep_inj_24 = "Of people with indication for PrEP proportion on cab-LA PrEP"  
-p_elig_offp_tm1_oralprep_24 = "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on oral PrEP"    
-p_elig_offp_tm1_injprep_24 = "Of people with a PrEP indication but not on PrEP 3 months ago, proportion on Cab-LA PrEP"    
-p_dcp_v1_prep_elig_oralp_24 = "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on oral PrEP"
-p_dcp_v1_prep_elig_injp_24 = "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on prep inj"
-p_dcp_v1_prep_elig_onprep_24 = "Of people with dcp=1 & dcp_tm1 = 0 who are PrEP eligible, proportion on PrEP"
-;
-
-
-
 %macro lab(l=);
 
 label 
@@ -1950,14 +1780,11 @@ label
 %mend;
 
 
-* table 1;
 
 ods html close;
-* ods rtf close;
+
 
 options linesize = 240;
-
-* ods rtf file="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\dcp_cab\output_n.rtf";
 
 ods html;
 title "Characteristics in 2024";
@@ -2070,27 +1897,6 @@ cost_condom_dn_5y_1  cost_condom_dn_5y_2  cost_condom_dn_5y_3
 run;
 ods html close;
 
-*
-art - art drug
-adc - treating people with who stage 4 conditions
-dcp - dcp visits
-vl - viral load tests
-cd4 - cd4 counts
-vis - visit costs for people with hiv
-non_tb_who3 - treatment for people with who stage 3 conditions apart from tb
-tb - tb treatment
-test - hiv tests
-t_adh_int - adherence intervention
-switchline - switching line of treatment (non-drug costs)
-circ - vmmc
-child_hiv - a notional cost of treating a child with hiv (children not explicitly modelled)
-non_aids_pre_death - costs of treating people for non aids conditions for which risk is raised with hiv
-prep_visit_oral - clinic visits for oral prep
-prep_oral - oral prep drug
-prep_visit_inj - clinic visits for cab prep
-prep_inj - cab prep drug 
-;
-
 
 
 title 'Effects of policies on incidence, DALYs, cost and cost-effectiveness (net DALYs) over 50 years';
@@ -2172,10 +1978,6 @@ run;
 ods html close;
 
 
-
-
-
-* concise parsimoneous model that captures the key influences ; 
 ods html;
 proc logistic data = g;
 class prevalence_vg1000_24_g p_elig_prep_24_g;
@@ -2285,245 +2087,4 @@ run;
 ods html close;
 
 
-/*
-
-proc logistic; 
-class prep_any_strategy;
-model lowest_netdaly_23 = prep_any_strategy; run; 
-proc glm; 
-class prep_any_strategy;
-model p_elig_prep_24 = prep_any_strategy / solution; run; 
-
-
-proc logistic;
-model lowest_netdaly_23 =
-p_elig_prep_24
-prevalence_vg1000_24 
-;
-run;
-
-proc freq; tables 
-p_elig_prep_24
-prevalence_vg1000_24 
-;
-run;
-
-proc freq;
-tables p_elig_prep_24_g * prevalence_vg1000_24_g * lowest_netdaly_23 ; run; 
-
-proc freq; tables lowest_netdaly100_dcp lowest_netdaly300_dcp lowest_netdaly1000_dcp;
-run;
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-proc freq; tables prop_elig_dcp_10y_3_g * lowest_netdaly  ;
-
-proc freq; tables incidence1549_24_g * lowest_netdaly ; run; 
-
-
-proc glm data=g; 
-class 
-
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
-p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
-ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
-external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
-date_test_rate_plateau  incr_test_rate_sympt max_freq_testing
-test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice
-clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
-poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
-fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
-red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
-fold_tr fold_tr_newp switch_for_tox  
-circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
-p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
-rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_ac_adtivity_k65r    red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
-rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
-incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
-crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
-effect_sw_prog_prep_any  prob_prep_any_restart_choice 
-adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
-prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any   
-prob_prep_any_restart_choice  
-prob_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
-
-higher_future_prep_oral_cov   prep_inj_efficacy
-rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
-rel_pr_inm_inj_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_inj   hivtest_type_1_prep_inj
-sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m
-sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
-
-effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
-sens_tests_prep_inj  pr_inm_inj_prep_primary
-pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
- res_level_dol_cab_mut  pr_res_dol effect_dcp_pref_prep rate_start_dcp_not_prep  rate_stop_dcp  incr_test_rate_dcp
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prob_prep_oral_b  pref_prep_oral_beta_s1
-
-;
-
-model d_netdaly500_3_1 = 
-
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
-p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
-ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
-external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
-date_test_rate_plateau  incr_test_rate_sympt max_freq_testing
-test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice
-clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
-poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
-fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
-red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
-fold_tr fold_tr_newp switch_for_tox  
-circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
-p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
-rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
-incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_ac_adtivity_k65r    red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
-rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
-incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
-crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
-
-effect_sw_prog_prep_any  prob_prep_any_restart_choice 
-adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
-prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any   
-prob_prep_any_restart_choice  
-prob_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
-
-higher_future_prep_oral_cov   prep_inj_efficacy
-rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
-rel_pr_inm_inj_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_inj   hivtest_type_1_prep_inj
-sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m
-sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
-
-effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
-sens_tests_prep_inj  pr_inm_inj_prep_primary
-pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
- res_level_dol_cab_mut  pr_res_dol effect_dcp_pref_prep rate_start_dcp_not_prep  rate_stop_dcp  incr_test_rate_dcp
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prob_prep_oral_b  pref_prep_oral_beta_s1
-
-; 
-run;
-
-
-
-proc glm;
-class
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w fold_tr fold_tr_newp 
-hivtest_type_1_init_prep_inj sens_ttype3_prep_inj_infge6m effect_dcp_pref_prep reg_option_107_after_cab
-;
-model d_netdaly500_3_1 = 
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w fold_tr fold_tr_newp 
-hivtest_type_1_init_prep_inj sens_ttype3_prep_inj_infge6m effect_dcp_pref_prep reg_option_107_after_cab
-;
-run;
-
-
-
-
-
-proc glm; model prop_elig_on_prep_20y_1 = effect_dcp_pref_prep rate_start_dcp_not_prep rate_stop_dcp incr_test_rate_dcp
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prep_any_strategy
-prob_prep_oral_b rate_choose_stop_prep_oral pref_prep_oral_beta_s1 / solution;
-run;
-
-
-
-proc glm data=g; 
-model d_netdaly500_3_1 = 
-p_elig_prep_24 
-prop_elig_on_prep_24 
-prevalence1549_24 
-incidence1549_24 
-p_diag_24 
-p_onart_diag_24 
-prevalence_vg1000_24 
-p_onart_vl1000_24 
-/ solution
-;
-run;
-ods html close;
-
-
-proc glm data=g; 
-model d_netdaly500_3_1 = 
-p_elig_prep_24
-prevalence_vg1000_24 
-/ solution
-;
-run;
-ods html close;
-
-*/
-
-
-/*
-
-proc logistic data = g;
-class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
-model lowest_netdaly_3 =
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
-p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
-ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
-external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
-date_test_rate_plateau  incr_test_rate_sympt max_freq_testing
-test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice
-clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
-poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
-fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
-red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
-fold_tr fold_tr_newp switch_for_tox  
-circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
- inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
-rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-effect_visit_prob_diag_l 
-incr_death_rate_tb incr_death_rate_oth_adc 
-effect_sw_prog_prep_any  prob_prep_any_restart_choice 
-adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
-prep_any_strategy   
-prob_prep_any_restart_choice  
-prob_prep_oral_b  prep_oral_efficacy    
- prep_inj_efficacy
-rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
-rel_pr_inm_inj_prep_tail_primary      rr_res_cab_dol  sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
-
-effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
-sens_tests_prep_inj  pr_inm_inj_prep_primary
-pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
- res_level_dol_cab_mut  pr_res_dol effect_dcp_pref_prep rate_start_dcp_not_prep  rate_stop_dcp  incr_test_rate_dcp
-prob_prep_b_dcp rate_choose_stop_prep_dcp rate_test_startprep_any_dcp  prep_willingness_th_dcp  prob_prep_oral_b  
-;
-
-run;
-
-*/
 
