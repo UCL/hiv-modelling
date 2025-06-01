@@ -1,126 +1,24 @@
 
 
-* 
-
-
-output to to allow us report durations of viral non-suppression
-
-;
-
-
-
-
-*
-
-output to ascertain rate of new mutations appearing after initial uvl2 
-
-also number of resistance tests per person with a test done
-
-(note: people who have not virologically failed before tld have not had their adh alert yet and so generally will start tld with lower adherence than those 
-who started after their adherence alert)
-
-
-* consider changes to effect of vl meas alert (smaller effect, greater effect, less durable effect) - think just extend to 0.2 0.35 0.5 0.8
-
-* consider lower adh pattern but higher effect of meas alert ;
-
-* lower dol resistance risk ?  or extend effect of nactive to still lower risk of resistance if 3.25, 3.5, 3.75 or 4 active drugs (in the context of perhaps
-even higher basic dol resistance risk) ?  or best probably just to decrease the newmut risk when nactive = 3 (perhaps sample the value)
-
-* ? remove the increased risk of art interruption on darunavir for some runs 
-
-* aim for a bit less than 96% suppressed at baseline
-
-
-
-* get outputs for: of people that have experienced one viral load value > 1000 proportion with integrase inhibitor resistance ;
-
-* add outputs for adh x r_dol (ie actual adherence not drug level test) ;
-
-* ? get outputs so can also calculate dalys and costs specifically for those with uvl2, for a sensitivity analysis
-
-* make sure have outputs to calculate Of all people living with HIV, percentage on ART more than 6 months and having current VL > 1000 copies/mL 
-
-
-
-
-
-* run as additional analysis with strategies only applying to those with no previous virologic failure, or those with no previous art experience before tld
-
-* consider a separate strategy in which the strategy of no switch is until population level INSTI resistance exceeds a certain threshold ?
-
-* consider atazanavir as the PI ? - do sensitivity analysis around darunavir cost
-
-* $200 for resistance test (make clear that cost of resistance test accounts for the chance of failure of amplification) consider also cost of national committees making decision on switch ?
-
-* switching could include doubling the dose of dol if resistance testing indicates low or moderate dol resistance ? (discussion point only)
-
-
-
-Special considerations in undertaking this work include the following:  
-
-(i) With tenofovir drug level testing, there may be some pill-taking just before a 
-clinic appointment, resulting in the appearance of high adherence when, in fact, pill-taking is low.  We will consider the possibility of the existence of 
-such “false positive” tests. 
-
-(ii) Data are only just starting to accrue on the profile of INSTI mutations acquired in people on TLD.  Data on the evolution of INSTI drug resistance mutations 
-in people on TLD with prolonged viral non-suppression are lacking.  We will have to consider alternative possibilities and see whether they affect the answer to 
-the question.  
-
-(iii) There is uncertainty over how likely a person being infected from a person with INSTI resistance mutations will themselves have virus with these INSTI 
-resistance mutations (ie. Transmission of INSTI mutations) – we will again make a range of assumptions informed by the limited data available.     
-
-; 
-
-
-
-
-
-*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
-
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   * here ! ;
+  libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
-* proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
-
 %let population = 100000 ; 
-%let year_interv = 2026;	* Using 2023 for MIHPSA only JAS Oct23;
-
+%let year_interv = 2026;	
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
-/*
-Macro for sampling from a categorical distribution.
 
-Usage:
-%sample(<variable name>, <list of possible values>, <list of probabilities>)
-
-Example:
-To set a variable my_var to 0, 1 or 5 with probabilities 0.2, 0.1 and 0.7 respectively, use:
-%sample(my_var, 0 1 5, 0.2 0.1 0.7);
-
-The above example is essentially the same as:
-
-r = rand('uniform');
-if r < 0.2 then my_var = 0;
-if 0.2 <= r < 0.2 + 0.1 then my_var = 1;
-if 0.2 + 0.1 <= r then my_var = 5;
-
-Note that the values must be separated by spaces, as must the probabilities.
-The list of probabilities must sum to 1.
-The lengths of the two lists (values and probabilities) must be equal.
-*/
 %macro sample(name, v, p);
 	%let cnt=%sysfunc(countw(&p,,s));
 	%let cnt_v=%sysfunc(countw(&v,,s));
-	%if &cnt ^= &cnt_v %then %do; * stop if p and v have different lengths;
+	%if &cnt ^= &cnt_v %then %do; 
 		%put ERROR: mismatched values and probabilities for &name;
 		%abort cancel;
 	%end;
 	randvar = rand('uniform');
-	%let cum_prob=%scan(&p,1,,s); * cumulative probability;
+	%let cum_prob=%scan(&p,1,,s); 
 	if randvar < &cum_prob then
 		&name = %scan(&v,1,,s);
 	%do i=2 %to &cnt;
@@ -131,38 +29,15 @@ The lengths of the two lists (values and probabilities) must be equal.
 	%end;
 %mend sample;
 
-/*
-Macro for sampling from a discrete uniform distribution.
-
-Usage:
-%sample_uniform(<variable name>, <list of possible values>)
-
-A variant of %sample where all the values have equal weights/probabilities,
-which therefore dont need to be specified.
-
-The values can be specified in two ways:
-(a) as a space-separated list, as for %sample: %sample_uniform(my_var, 1 2 3 4 5);
-(b) as a range of the form low:high, as in: %sample_uniform(my_var, 1:5);
-
-The two examples above are equivalent, and will result in 20% probability for
-each of the values 1-5. They are also equivalent to
-%sample(my_var, 1 2 3 4 5, 0.2 0.2 0.2 0.2 0.2);
-
-Form (a) is more flexible, allowing to choose from any set of values.
-Form (b) is more concise but can only be used for consecutive integer values.
-Note that the range does not have to start from 1; for example, integer ages
-between 18-49 can be sampled using %sample_uniform(my_var, 18:49);
-*/
 %macro sample_uniform(name, v);
-	* First determine whether v is a range or not, by checking the presence of :;
 	%let split_ind=%index(&v, :);
 	%if &split_ind = 0 %then
-		%do; * values enumerated explicitly, count them and use them directly;
+		%do; 
 			%let cnt=%sysfunc(countw(&v,,s));
 			%let first_value=%scan(&v,1,,s);
 		%end;
 	%else
-		%do; * values given as range, infer length and get limits of range;
+		%do; 
 			%let lower_value=%substr(&v, 1, %eval(&split_ind-1));
 			%let upper_value=%substr(&v, %eval(&split_ind+1));
 			%let cnt=%sysevalf(&upper_value - &lower_value + 1);
@@ -209,7 +84,6 @@ call symput('dataset_id',dataset_id);
 caldate1=1989;
 caldate_never_dot=1989;
 
-* these used after year_interv - code is here so value the same for all people;
 _u1 = rand('uniform'); _u2 = rand('uniform'); _u3 = rand('uniform'); _u4 = rand('uniform'); _u5 = rand('uniform');  _u6 = rand('uniform'); _u7 = rand('uniform'); _u8 = rand('uniform');
 _u9 = rand('uniform'); _u10 = rand('uniform'); _u11 = rand('uniform'); _u12 = rand('uniform'); _u13 = rand('uniform'); _u14 = rand('uniform'); _u15 = rand('uniform'); _u16 = rand('uniform');
 _u17 = rand('uniform'); _u18 = rand('uniform'); _u19 = rand('uniform'); _u20 = rand('uniform'); _u21 = rand('uniform'); _u22 = rand('uniform'); _u23 = rand('uniform'); _u24 = rand('uniform');
@@ -220,12 +94,8 @@ _u49 = rand('uniform'); _u50 = rand('uniform'); _u51 = rand('uniform'); _u52 = r
 _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = rand('uniform'); _u61 = rand('uniform'); _u62 = rand('uniform'); _u63 = rand('uniform'); _u64 = rand('uniform');
 
 
-* start of epidemic;
 startyr = 1989 + 0.25;
-* ts1m;
-/*
-startyr = 1989 + 1/12;
-*/
+
 
 
 newp_seed = 7;  
@@ -241,7 +111,7 @@ newp_seed = 7;
 
 * inc_cat; 					%sample_uniform(inc_cat, 1:3);
 						
-* hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
+* hard_reach;				hard_reach=0; 			
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
 * hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (rand('uniform')*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
 * p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
@@ -256,25 +126,21 @@ newp_seed = 7;
 * fold_preg4554;			fold_preg4554=0.2;  
 * fold_preg5564;			fold_preg5564=0.0;
 * rate_want_no_more_children;	
-							rate_want_no_more_children = 0.005;	* rate of women wanting no more children;
-							* dependent_on_time_step_length ;
+							rate_want_no_more_children = 0.005;	
 
 * prob_pregnancy_base;  	r=rand('uniform'); prob_pregnancy_base=0.06 + r*0.05;  
 * rate_birth_with_infected_child; 
 							%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);
 
-* prob_stop_breastfeeding_yr1;		*JAS Apr2023;
-							prob_stop_breastfeeding_yr1 = 0.02;*73;	* 3-monthly probability of stopping breastfeeding in first year after birth;
-							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
+* prob_stop_breastfeeding_yr1;		
+							prob_stop_breastfeeding_yr1 = 0.02;
 * prob_stop_breastfeeding_yr2;		*JAS Apr2023;
-							prob_stop_breastfeeding_yr2 = 0.132;*5;	* 3-monthly probability of stopping breastfeeding in second year after birth;
-							* see Excel worksheet Breastfeeding probabilities for calculations of probabilities (based on Neves et al 2021 and Zong et al 2021);
-							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
+							prob_stop_breastfeeding_yr2 = 0.132;
 
 
 * SEXUAL BEHAVIOUR;
 
-* condom_incr_year_i;		condom_incr_year_i = 0; 			* mar19; * initialising condom_incr_year_i - this is set again in year_i variables section;
+* condom_incr_year_i;		condom_incr_year_i = 0; 			
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.80;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
@@ -282,27 +148,26 @@ newp_seed = 7;
 * rr_sw_prev_sw;			rr_sw_prev_sw = 10;
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
-* ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.15 0.30 0.35 0.10 0.05); * change sep22 for pop_wide_tld;
+* ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.15 0.30 0.35 0.10 0.05); 
 					
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.975  0.990  0.995  	1	1/0.995  1/0.990  1/0.975, 	0.05  0.05  0.15  0.5  0.15  0.05  0.05);
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  
 * prop_redattr_sbcc;		%sample_uniform(prop_redattr_sbcc,0.1 0.3 0.5);
 * eprate;					eprate = 0.1* exp(rand('normal')*0.25); eprate = round(eprate,0.01);
-							* rate of new long term partners in youngest age group; 
-							* dependent_on_time_step_length ;
-* newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						* 15_1_20 4pm ;
-* rred_initial;				rred_initial = 1;  * this is to allow changes to the initial proportions in newp categories (applies in first period only);
-* p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.60 0.30 0.1);  * change sep22 for pop_wide_tld;
+							
+* newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						
+* rred_initial;				rred_initial = 1;  
+* p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.60 0.30 0.1);  
 * p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15); 
 
 * exp_setting_lower_p_vl1000;	
 * external_exp_factor;			
 * rate_exp_set_lower_p_vl1000;	
 							r=rand('uniform'); if r < 0.20 then do; 
-								exp_setting_lower_p_vl1000 = 1; * exposure to hiv in an external setting where p_vl1000 is lower - during short term out migration followed by return; 
-								external_exp_factor = 1 + rand('uniform'); external_exp_factor = round(external_exp_factor,0.01); * effect of exposure ; 
+								exp_setting_lower_p_vl1000 = 1;  
+								external_exp_factor = 1 + rand('uniform'); external_exp_factor = round(external_exp_factor,0.01); 
 								rate_exp_set_lower_p_vl1000 = rand('uniform') * 0.01 ; rate_exp_set_lower_p_vl1000 = round(rate_exp_set_lower_p_vl1000,0.0001); 
 							end;
 							else do;
@@ -310,7 +175,7 @@ newp_seed = 7;
 								external_exp_factor = 1;
 								rate_exp_set_lower_p_vl1000 = 0; 
 							end;
-							* rate of exposure;  * rate_exp_set_lower_p_vl1000 * dependent_on_time_step_length ;
+							
 * sex_beh_trans_matrix_m;	%sample_uniform(sex_beh_trans_matrix_m, 1:15);
 * sex_beh_trans_matrix_w;	%sample_uniform(sex_beh_trans_matrix_w, 1:15);
 * sex_age_mixing_matrix_m;	%sample_uniform(sex_age_mixing_matrix_m, 1:6);
@@ -327,9 +192,7 @@ newp_seed = 7;
 * tr_rate_primary;			tr_rate_primary = 0.16; 
 * tr_rate_undetec_vl;		%sample(tr_rate_undetec_vl, 0.0000 0.0001 0.0010, 0.7 0.2 0.1);
 * rate_loss_nnres_pmtct_maj;rate_loss_nnres_pmtct_maj = 0.75;  rate_loss_nnres_pmtct_min = rate_loss_nnres_pmtct_maj; 
-							* apr 2019 - increased from 0.25 due as part of reconciling model with higher proportion of men with viral suppression on art than women, when data are the opposite;
-							* dependent_on_time_step_length ;
-
+							
 * fold_tr;					%sample_uniform(fold_tr, 1/1.5 1 1.5);
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
@@ -337,7 +200,7 @@ newp_seed = 7;
 * fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1/0.8 1/0.6 1/0.4); 
 * super_infection_pop; 		%sample_uniform(super_infection_pop, 0 1);
 * res_trans_factor_nn;		%sample_uniform(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1.0);
-							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
+
 * res_trans_factor_ii;		%sample(res_trans_factor_ii, 0.2 0.4 0.6 0.8, 0.25 0.25 0.25 0.25);
 
 * res_trans_factor_ca;		%sample(res_trans_factor_ca, 0.2 0.5 0.8, 0.33 0.33 0.33); 
@@ -347,25 +210,22 @@ newp_seed = 7;
 * rate_loss_persistence;	%sample(rate_loss_persistence, 
 								0 		0.005 	0.010 	0.015 	0.020, 
 								0.1 	0.1 	0.1 	0.4 	0.3);
-							* loss of persistence of tdr - at the moment rate same for each mutation, but rate transmission not same for each mutation; 
-							* dependent_on_time_step_length ; 	
 
 
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
-* mean_sqrtcd4_inf;			mean_sqrtcd4_inf=27.5 ; 				* mean sqrt CD4 at infection; 
+* mean_sqrtcd4_inf;			mean_sqrtcd4_inf=27.5 ; 				
 
 * fold_incr_who3;			fold_incr_who3 = 5;
-* fold_decr_hivdeath;		fold_decr_hivdeath=0.25; 				* degree to which hiv death rate is lower than aids rate;
+* fold_decr_hivdeath;		fold_decr_hivdeath=0.25; 				
 * fold_change_in_risk_base_rate;
 							fold_change_in_risk_base_rate = 1;
 
-* rate of sti and persistence, function of newp;
 * rate_sti;					rate_sti = 1 / 20 ;
-							* dependent_on_time_step_length ;
+
 * rate_persist_sti;			rate_persist_sti = 1 / 5 ;
-							* dependent_on_time_step_length ;
+
 
 * incr_death_rate_oth_adc;	%sample_uniform(incr_death_rate_oth_adc, 1.5 2 3); 
 * incr_death_rate_crypm;	%sample_uniform(incr_death_rate_crypm, 3  5 10);
@@ -380,31 +240,30 @@ newp_seed = 7;
 * prop_adc_crypm;			prop_adc_crypm = 0.15;
 * prop_adc_sbi;				prop_adc_sbi = 0.15;
 
-* following values are placeholders - should result in similar aids and death rate to previous coding;
-* rate_crypm_proph_init;	rate_crypm_proph_init = 0.01; * placeholder ;
-* rate_tb_proph_init; 		rate_tb_proph_init = 0.01;  * placeholder;
+* rate_crypm_proph_init;	rate_crypm_proph_init = 0.01; 
+* rate_tb_proph_init; 		rate_tb_proph_init = 0.01;  
 * rate_sbi_proph_init;		rate_sbi_proph_init = 0;
-* effect_tb_proph;			effect_tb_proph = 0.5; 					* effect of tb prophylaxis on risk of tb;
-* effect_crypm_proph;		effect_crypm_proph = 0.5; 				* as above for crypm;
+* effect_tb_proph;			effect_tb_proph = 0.5; 					
+* effect_crypm_proph;		effect_crypm_proph = 0.5; 				
 * effect_sbi_proph;			effect_sbi_proph = 0.5;
-* tblam_eff_prob_diag_l;	tblam_eff_prob_diag_l = 0.5; 			* effect of tb lam test on tb being diagnosed late;
-* crag_eff_prob_diag_l;		crag_eff_prob_diag_l = 0.5; 			* effect of    test on crypm being diagnosed late;  
+* tblam_eff_prob_diag_l;	tblam_eff_prob_diag_l = 0.5; 			
+* crag_eff_prob_diag_l;		crag_eff_prob_diag_l = 0.5; 			
 
-* tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.25 0.50 0.75); 			* base probability that tb is diagnosed late ;
-* crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.25 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
-* sbi_base_prob_diag_l;		%sample_uniform(sbi_base_prob_diag_l, 0.25 0.50 0.75); 			* base probability that sbi is diagnosed late ;
-* oth_adc_base_prob_diag_l;	%sample_uniform(oth_adc_base_prob_diag_l, 0.25 0.50 0.75); 		* base probability that other adc is diagnosed late; 
-* rel_rate_death_tb_diag_e;	%sample_uniform(rel_rate_death_tb_diag_e, 0.50 0.67 0.80); 		* effect of tb being diagnosed early on rate of death from the tb event; 
+* tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.25 0.50 0.75); 			
+* crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.25 0.50 0.75); 		
+* sbi_base_prob_diag_l;		%sample_uniform(sbi_base_prob_diag_l, 0.25 0.50 0.75); 			
+* oth_adc_base_prob_diag_l;	%sample_uniform(oth_adc_base_prob_diag_l, 0.25 0.50 0.75); 		
+* rel_rate_death_tb_diag_e;	%sample_uniform(rel_rate_death_tb_diag_e, 0.50 0.67 0.80); 		 
 * rel_rate_death_oth_adc_diag_e;
-							%sample_uniform(rel_rate_death_oth_adc_diag_e, 0.50 0.67 0.80);	* effect of oth_adc being diagnosed early on rate of death from the other adc event; 
+							%sample_uniform(rel_rate_death_oth_adc_diag_e, 0.50 0.67 0.80);	 
 * rel_rate_death_crypm_diag_e;	
-							%sample_uniform(rel_rate_death_crypm_diag_e, 0.50 0.67 0.80);	* effect of crypm being diagnosed early on rate of death from the crypm event; 
+							%sample_uniform(rel_rate_death_crypm_diag_e, 0.50 0.67 0.80);	 
 * rel_rate_death_sbi_diag_e;
-							%sample_uniform(rel_rate_death_sbi_diag_e, 0.50 0.67 0.80);	* effect of sbi being diagnosed early on rate of death from the sbi event; 
-* effect_visit_prob_diag_l;	%sample_uniform(effect_visit_prob_diag_l, 0.50 0.67 0.80); 		* effect of being under care on prob of an adc or tb being diagnosed late;
+							%sample_uniform(rel_rate_death_sbi_diag_e, 0.50 0.67 0.80);	 
+* effect_visit_prob_diag_l;	%sample_uniform(effect_visit_prob_diag_l, 0.50 0.67 0.80); 	
 
 * fx;						%sample_uniform(fx, 0.70 0.85 1.00 1/0.85 1/0.70);
-							* factor determining rate of natural cd4 decline;
+
 * gx;						%sample_uniform(gx, 1.0 1.5 2.0);
 
 
@@ -412,20 +271,19 @@ newp_seed = 7;
 * HIV TESTING;
 
 * date_start_testing;		date_start_testing = 2003.5; 
-* initial_rate_1sttest;		initial_rate_1sttest = 0; 				* dependent_on_time_step_length ;
-* test_rate_who4;			test_rate_who4=0.10;  					* dependent_on_time_step_length ;
-* test_rate_tb;				test_rate_tb  =0.10;  					* dependent_on_time_step_length ;
-* test_rate_non_tb_who3;	test_rate_non_tb_who3=0.05; 			* dependent_on_time_step_length ;
-* hivtest_type;				hivtest_type=3; 						* HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen); *Jul2016; 
+* initial_rate_1sttest;		initial_rate_1sttest = 0; 				
+* test_rate_who4;			test_rate_who4=0.10;  					
+* test_rate_tb;				test_rate_tb  =0.10;  					
+* test_rate_non_tb_who3;	test_rate_non_tb_who3=0.05; 			
+* hivtest_type;				hivtest_type=3; 						
 * date_pmtct;				date_pmtct=2004;
-* pmtct_inc_rate;			pmtct_inc_rate = 0.20; 					* rate_per_year ; 
+* pmtct_inc_rate;			pmtct_inc_rate = 0.20; 					
 * incr_test_year_i;			incr_test_year_i = 3;
 * sw_test_6mthly;			sw_test_6mthly=0;
 
 * sens_primary_testtype3;	%sample_uniform(sens_primary_testtype3,  0.5 0.75);
 
-* rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.01;			* rate of development of non-hiv symptoms, regardless of hiv status;
-							* dependent_on_time_step_length ;
+* rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.01;			
 
 * np_lasttest;				np_lasttest=0;  
 * newp_lasttest;			newp_lasttest=0; 
@@ -444,9 +302,8 @@ newp_seed = 7;
 
 *% fold_rate_decr_test_future; %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
 
-							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
-							* dependent_on_time_step_length ;
+							
 
 * rr_testing_female;		rr_testing_female=1.5;
 
@@ -455,54 +312,48 @@ newp_seed = 7;
 * art_monitoring_strategy;	art_monitoring_strategy = 8; 
 * base_res_test;			base_res_test=0;
 * flr;						flr=0;  
-* third_line;				third_line=1; 						* this means third line with dar unavailable but it is possible to have 1st line efa, 2nd line dol, 3rd line taz or lpr;
+* third_line;				third_line=1; 						
 * art_intro_date;			art_intro_date = 2004;
 * v_min_art;				v_min_art=1.0;  
 * sd_v_art;					sd_v_art=0.5; 
-* sd_cd4;					sd_cd4 = 1.2;						* sd of cd4 (on sqrt scale);
-* sd_measured_cd4;			sd_measured_cd4 = 1.7; 				* error added to measured cd4 (on sqrt scale); 
-* prob_supply_interrupted;	prob_supply_interrupted=0.003; 		* drug supply; * dependent_on_time_step_length ;
-* prob_supply_resumed;		prob_supply_resumed=0.8; 			* per 3 mths - base 0.8; * dependent_on_time_step_length ;
-* rate_loss_acq_nnm_offart;	rate_loss_acq_nnm_offart = 0.05;  	* informed by consideration of data on proportion of people ART experienced re-initiators with nnrti resistance in padr program;  * dependent_on_time_step_length ;
+* sd_cd4;					sd_cd4 = 1.2;						
+* sd_measured_cd4;			sd_measured_cd4 = 1.7; 				 
+* prob_supply_interrupted;	prob_supply_interrupted=0.003; 		
+* prob_supply_resumed;		prob_supply_resumed=0.8; 			
+* rate_loss_acq_nnm_offart;	rate_loss_acq_nnm_offart = 0.05;  	
 
 * prob_nnresmaj_sd_nvp; 	prob_nnresmaj_sd_nvp=0.35;
-* prob_nnresmaj_dual_nvp; 	prob_nnresmaj_dual_nvp=0.045; 		* In SA guidelines in 2010: AZT from 14 weeks, sdNVP + AZT 3hrly during labour, TDF + FTC single dose (stat) after delivery,
-																	Arrive 2007, meta-analysis, prevalence of nnres 4-8 weeks post partum ( single dose nevirapine+additional post-partum) 0.045,
-																	22% had resistance mutation to  AZT (8% considering prop>20%), 18% to NVP (4% considering prop>5%) ;
-* fold_change_tams_risk; 	fold_change_tams_risk=1; 			* fold change tams risk; 
-* fold_change_151_risk;		fold_change_151_risk=1; 			* fold change in 151 risk (high enough rate of development of cross-class nuc resistance ?);
-* is_red_activity;			is_red_activity=0;  				* extent to which number of active drugs is under or over-estimated by interpretation systems;
-* sd_patient_cd4_rise_art;	sd_patient_cd4_rise_art= 0.2; 		* inter-patient variation in rate of CD4 rise - when CD4 is rising;
-* prob_cd4_meas_done;		prob_cd4_meas_done=0.85; 			* consider whether effectively * dependent_on_time_step_length ;
-* cm_1stvis_return_vlmg1000; cm_1stvis_return_vlmg1000=1;		* whether cd4 is measured each time a person comes back into care to see if have advanced hiv disease;
-* crag_cd4_l100;			crag_cd4_l100=0;					* whether cryp antigen testing done if measured cd4 count < 100;
-* crag_cd4_l200;			crag_cd4_l200=1;					* whether cryp antigen testing done if measured cd4 count < 200;
-* tblam_cd4_l100; 			tblam_cd4_l100=0;					* whether tblam test done if measured cd4 count < 100;
-* tblam_cd4_l200; 			tblam_cd4_l200=1;					* whether tblam test done if measured cd4 count < 200;
+* prob_nnresmaj_dual_nvp; 	prob_nnresmaj_dual_nvp=0.045; 		
+* fold_change_tams_risk; 	fold_change_tams_risk=1; 			 
+* fold_change_151_risk;		fold_change_151_risk=1; 			
+* is_red_activity;			is_red_activity=0;  				
+* sd_patient_cd4_rise_art;	sd_patient_cd4_rise_art= 0.2; 		
+* prob_cd4_meas_done;		prob_cd4_meas_done=0.85; 			
+* cm_1stvis_return_vlmg1000; cm_1stvis_return_vlmg1000=1;		
+* crag_cd4_l100;			crag_cd4_l100=0;					
+* crag_cd4_l200;			crag_cd4_l200=1;					
+* tblam_cd4_l100; 			tblam_cd4_l100=0;					
+* tblam_cd4_l200; 			tblam_cd4_l200=1;					
 * prob_who3_diagnosed;		prob_who3_diagnosed=0.50; 
 * prob_who4_diagnosed;		prob_who4_diagnosed=0.80;
 * res_test_6m_if_vlg1000;	res_test_6m_if_vlg1000=0;
-* sd_vl_whb;				sd_vl_whb=0.50; 					* whb relates to whole blood for viral load sample - as used in dbs;
-* decr_sd_vl_whb;			decr_sd_vl_whb=0.05;  				* whb relates to whole blood for viral load sample - as used in dbs;
-* vl_whb_offset;			vl_whb_offset= 0.0; 				* whb relates to whole blood for viral load sample - as used in dbs;
+* sd_vl_whb;				sd_vl_whb=0.50; 					
+* decr_sd_vl_whb;			decr_sd_vl_whb=0.05;  				
+* vl_whb_offset;			vl_whb_offset= 0.0; 				
 * sv_secondline;			sv_secondline = 1;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0;
-* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.1  0.9); * changed to 1 after discussion with jonathan schapiro;		
-																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
+* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.1  0.9); 
 * len_higher_potency;		%sample(len_higher_potency, 0.5 1 , 0.25 0.75);	
 * efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
-																* updated to equal dol potency JAS Nov2021;
+																
 * pir_higher_potency;		pir_higher_potency=1; 
 
 
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.4;rate_ch_art_init_str_10 = 0.4;rate_ch_art_init_str_3 = 0.4;	
-							* dependent_on_time_step_length ;
 
-* 26_11_19; 
-* all * dependent_on_time_step_length ;
 * r_swi_efa_cns;			r_swi_efa_cns = 	0.02;
 * r_swi_efa_ras;			r_swi_efa_ras = 	0.05;
 * r_swi_nev_hep;			r_swi_nev_hep = 	0.10;
@@ -520,7 +371,7 @@ newp_seed = 7;
 * r_swi_dol_cns;			r_swi_dol_cns = 	0.02;
 * rate_loss_acq_pim_offart;	rate_loss_acq_pim_offart = 0.2;
 * rate_loss_acq_iim_offart;	rate_loss_acq_iim_offart = 0.2;
-* rate_loss_acq_cam_offart;	rate_loss_acq_cam_offart = 0.2; * len placeholder;
+* rate_loss_acq_cam_offart;	rate_loss_acq_cam_offart = 0.2; 
 
 * all * dependent_on_time_step_length ;
 * r_otx_start;				r_otx_start = 			0.03;
@@ -550,81 +401,73 @@ newp_seed = 7;
 * p_neph_stops_ten;			p_neph_stops_ten = 		0 ;
 * p_neph_stops_after_ten;	p_neph_stops_after_ten = 0.1;
 
-							* AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
-* reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.15 	0.35 	0.50, 
 
-								0.60 	0.30	0.05	0.04	0.01	); * change sep22 for pop_wide_tld;
+								0.60 	0.30	0.05	0.04	0.01	); 
 
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
 * prob_lossdiag_non_tb_who3e;  
 							prob_lossdiag_non_tb_who3e = round(rand('beta',15,85),0.01);
 * rate_lost; 				%sample_uniform(rate_lost, 0.20 0.35 0.50);
-							* dependent_on_time_step_length ;
+							
 * prob_lost_art; 			%sample_uniform(prob_lost_art, 0.5 0.6 0.7 0.8 0.9);
-							* dependent_on_time_step_length ;
+							
 
 * rate_return;  			%sample(rate_return, 
 								0.05  0.10 	0.30   0.60, 
-							  	0.25  0.25	0.25   0.25); * change sep22 for pop_wide_tld;
+							  	0.25  0.25	0.25   0.25); 
 
-							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
-							* dependent_on_time_step_length ;
+							
 * pr_art_init; 				%sample_uniform(pr_art_init, 0.5 0.7 0.9 0.95 1); 
-							* dependent_on_time_step_length ;
-* fold_change_mut_risk; 	%sample(fold_change_mut_risk, 0.5 1 2, 0.1 0.8 0.1);		* jan18;
-* pr_switch_line;  			%sample(pr_switch_line, 0.5 0.75 0.9 1, 0.1 0.2 0.35 0.35); * tld_switch;
-							* dependent_on_time_step_length ;  
+							
+* fold_change_mut_risk; 	%sample(fold_change_mut_risk, 0.5 1 2, 0.1 0.8 0.1);		
+* pr_switch_line;  			%sample(pr_switch_line, 0.5 0.75 0.9 1, 0.1 0.2 0.35 0.35); 
+						 
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0   	0   	0.20	0.20	0.20	0.20	0.20) ; * tld_switch_an;  *note that this is moderated a lot with vl alert;
+								0   	0   	0.20	0.20	0.20	0.20	0.20) ; 
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
-							* reduced adherence in those with TB disease or active WHO4;
+							
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.00 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
-							* reduced adherence in those with toxicity;
+							
 * add_eff_adh_nnrti; 		add_eff_adh_nnrti=round(0.10* exp(rand('normal')*0.30),.01);	
-							* additional "effective" adh of nnrti due to longer half life;
-* adh_effect_of_meas_alert; %sample_uniform(adh_effect_of_meas_alert, 0.20 0.35 0.50 0.80);  * tld_switch_an (in core this is/was 0.35 0.70 0.90, 0.15 0.7 0.15);
+							
+* adh_effect_of_meas_alert; %sample_uniform(adh_effect_of_meas_alert, 0.20 0.35 0.50 0.80);  
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
-							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
-							* dependent_on_time_step_length ;
+							
 * rate_int_ch;  		%sample(rate_int_ch, 	0.0020 0.0040 0.0080 0.02 0.05, 
-														0.10 0.30 0.30 0.25 0.05);  * tld_switch;
+														0.10 0.30 0.30 0.25 0.05);  
 
-* clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac,  0.7 0.9);  * tld_switch;
-							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
+* clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac,  0.7 0.9);  
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
 									0.3	   0.5  	0.7		1,
-									0.05   0.05 	0.05	0.85); * tld_switch;
+									0.05   0.05 	0.05	0.85); 
 
 * sd_measured_adh;			%sample_uniform(sd_measured_adh, 0 0.05 0.1 0.15);
 
-* red_int_risk_poc_vl;		%sample_uniform(red_int_risk_poc_vl, 0.7  0.8   0.9);  * relative reduction in risk of interrupting ART with poc vl monitoring;
+* red_int_risk_poc_vl;		%sample_uniform(red_int_risk_poc_vl, 0.7  0.8   0.9);  
 
-* incr_adh_poc_vl;		   %sample_uniform(incr_adh_poc_vl, 0.1  0.2  0.3  0.4);   * effect of poc vl monitoring on ART adherence;
+* incr_adh_poc_vl;		   %sample_uniform(incr_adh_poc_vl, 0.1  0.2  0.3  0.4);   
 
-							* dependent_on_time_step_length ;	
 * incr_rate_int_low_adh;	%sample(incr_rate_int_low_adh, 1 2 5, 0.5 0.25 0.25);
-* prob_return_adc; 			%sample(prob_return_adc, 0.7 0.8 0.9, 0.05 0.15 0.8); * change sep22 for pop_wide_tld;
+* prob_return_adc; 			%sample(prob_return_adc, 0.7 0.8 0.9, 0.05 0.15 0.8); 
 * switch_for_tox; 			%sample(switch_for_tox, 0 1, 0.8 0.2);
 * higher_newp_less_engagement; 
 							%sample(higher_newp_less_engagement, 0 1, 0.8 0.2);
-							* are people with more newp less likely to be engaged with care; 
 
-* AP 19-7-19 ; 
 * rel_dol_tox; 				%sample(rel_dol_tox, 1 2, 0.8 0.2);
-							* = 2 means same rate as efavirenz (although persistence still lower);
+							
 * zero_3tc_activity_m184; 	%sample(zero_3tc_activity_m184, 0 1, 0.8 0.2);
 * zero_tdf_activity_k65r; 	%sample(zero_tdf_activity_k65r, 0 1, 0.8 0.2);
 
 * poorer_cd4rise_fail_ii;  	%sample_uniform(poorer_cd4rise_fail_ii, 0 1);
-							* dependent_on_time_step_length ;	
+							
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
-							* dependent_on_time_step_length ;
-* pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  0.01 );   * tld_switch ;      
+							
+* pr_res_dol;				%sample_uniform(pr_res_dol, 0.001  0.003  0.005  0.01 );      
 * pr_res_len;				%sample_uniform(pr_res_len, 0.005  0.01  0.02  0.05);   
 * sens_res_test;			%sample_uniform(sens_res_test, 0.9   0.95  0.99); 
 * incr_len_res_mono;		incr_len_res_mono = 10 ;
@@ -652,7 +495,7 @@ newp_seed = 7;
 								0.20	0.40	0.20	0.20);
 * prop_bmi_ge23;			%sample_uniform(prop_bmi_ge23, 0.5 0.75);
 * nnrti_res_no_effect; 		%sample(nnrti_res_no_effect, 0 0.25 0.5, 0.75 0.2 0.05);
-* res_level_dol_cab_mut;	%sample_uniform(res_level_dol_cab_mut, 0.5 0.75 1.00); * tld_switch; * for dol this applies to 118 and 263, for 118 it applies with 0.25 added; 
+* res_level_dol_cab_mut;	%sample_uniform(res_level_dol_cab_mut, 0.5 0.75 1.00); 
 * res_level_len_mut;		%sample(res_level_len_mut, 0.5  1.00, 0.5  0.5 ); 
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
 
@@ -663,12 +506,11 @@ newp_seed = 7;
 * age_effect_stop_sexwork;	age_effect_stop_sexwork=3;
 
 * base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
-							* dependent_on_time_step_length ;
+							
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
-							* dependent_on_time_step_length ;
+							
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.10 0.80 0.10);
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
-							* rate of sex workers moving to one category lower;
 
 * sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.15 0.85);
                               if sw_art_disadv=0  then do; sw_higher_int = 1; rel_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1;end;
@@ -684,11 +526,10 @@ newp_seed = 7;
 
 * sw_prog_intensity;		if sw_program = 1  then do;
 
-%sample(sw_prog_intensity, 1 2, 0.8 0.2);*1=low, 2=high;
+%sample(sw_prog_intensity, 1 2, 0.8 0.2);
 
-***These parameters initially set for all SW programs and then overwritten below for high intensity programs;
-* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
-* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); 
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); 
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
 * effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
@@ -697,7 +538,6 @@ newp_seed = 7;
 * effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.05 0.10);
 * effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.10 0.20);
 
-***These factors increase the impact of the low intensity SW program by sampled fold factor;
 * fold_hi_sw_prog_newp;		%sample_uniform(fold_hi_sw_prog_newp, 2 3);
 * fold_hi_sw_prog_6mtest;	%sample_uniform(fold_hi_sw_prog_6mtest, 1.5 2);
 * fold_hi_sw_prog_int	;	%sample_uniform(fold_hi_sw_prog_int, 1.5 2 3);
@@ -748,113 +588,83 @@ end;
 *abs_decr_birth_circ;		abs_decr_birth_circ=0;											 
 
 * ALL PREP ;
-
-* These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
 * prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
 
-* prob_prep_any_restart;		*removed ;
-* prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
-* rate_test_onprep_any;			rate_test_onprep_any=1.00; 		* Rate of being tested for HIV whilst on oral PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on oral prep (this will need to be considered again) ;
-								* dependent_on_time_step_length ;
-																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
-* prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is willing to take a particular type of PrEP;
+* prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	
+* rate_test_onprep_any;			rate_test_onprep_any=1.00; 		
 
-* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
-* prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
+* prep_willingness_threshold;	prep_willingness_threshold=0.2;	
+
+* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); 
+* prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); 
 
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
-								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
-								* dependent_on_time_step_length ;
-* rate_test_restartprep_any;   * removed;
+								
 * prob_prep_any_restart_choice; %sample_uniform(prob_prep_any_restart_choice, 0.05 0.10 0.20);
-								* dependent_on_time_step_length ;
-								* lapr and dpv-vr - this might be the same for lapr and dpv-vr - we will have to consider people switching between prep modalities;
-* add_prep_any_uptake_sw;		add_prep_any_uptake_sw=0; 		***this may be sampled at a later date; 
-																* lapr this could be defined for all prep types or for each modality individually ;
 
+* add_prep_any_uptake_sw;		add_prep_any_uptake_sw=0; 		
 
 * ORAL PREP ;
 
-* Oral PrEP assumed introduced in fsw/agyw 2018 - with level of coverage and retention; 
-* note there are multiple parameters that affect use of oral prep besides the prep_any_strategy: prob_prep_oral_b is prob of starting if prep_any_elig=1 and tested=1
-and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and pref_prep_oral > pref_prep_vr
-* a person cannot be prep_any_elig=1 if hard_reach=1; 
-* a person prep_any_elig=1 will only actually have a chance of starting prep if prep_any_willing=1;
-* lapr and dpv-vr - assume following all apply unless stated ; * lapr - add specific testing routines?
-
-
-* date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
-* dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1  0.2 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
-																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
-																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
-* annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
-																* lapr JAS - should this be the same for all prep? may want more frequently for CAB-LA;
-* rel_prep_oral_adh_younger;	rel_prep_oral_adh_younger=0.8; 	* factor determining how much lower adh to oral prep is in people age < 25 compared to > 25; 
-																* lapr and dpv-vr - may need to define different values? -  JAS dont think this is relevent for inj & vr forms? ;
-																* changed from 0.7 to 0.8 after discussion due to low overall adherence resulting from 0.7;
-* prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
-
+* date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	
+* dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1  0.2 ); 		
+* annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	
+* rel_prep_oral_adh_younger;	rel_prep_oral_adh_younger=0.8; 	
+* prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 	
 * rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.15 0.30);
-								* dependent_on_time_step_length ;
+							
 
 * higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
-								* note we have switched this off - apr 2022;
-								* lapr - leave for now but we may want to specify the extent to which this is tdf/3tc versus la cab versus dpv-vr;
+
 * pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 1.1 1.3 1.5) ;
 
-* pop_wide_tld_prob_egfr;		pop_wide_tld_prob_egfr=0.0; 	* probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
-								* dependent_on_time_step_length ;
-																* not applicable for lapr or dpv-vr; * not marked with _oral as tld prep is separate intervention ;
+* pop_wide_tld_prob_egfr;		pop_wide_tld_prob_egfr=0.0; 	
 
 * rr_mort_tdf_prep;				%sample(rr_mort_tdf_prep, 1.005 1.01 1.03, 0.65 0.30 0.05);
 
-* pr_184m_oral_prep_primary ; pr_184m_oral_prep_primary = 0.3; ******************* placeholder ;
-* pr_65m_oral_prep_primary ;	pr_65m_oral_prep_primary = 0.1; ******************* placeholder ;
+* pr_184m_oral_prep_primary ; pr_184m_oral_prep_primary = 0.3; 
+* pr_65m_oral_prep_primary ;	pr_65m_oral_prep_primary = 0.1; 
 
 * oral_prep_eff_3tc_ten_res;	%sample_uniform(oral_prep_eff_3tc_ten_res, 0.25 0.5);
 
 
-* INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ; * lapr;
+* INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ; 
 
 
-* date_prep_cab_intro;			%sample(date_prep_cab_intro, 2027 2090, 0.50 0.50); 		* Introduction of injectable cab PrEP ;
+* date_prep_cab_intro;			%sample(date_prep_cab_intro, 2027 2090, 0.50 0.50); 		
 
+* date_prep_len_intro;			date_prep_len_intro=3000;		
+* dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;			
+* dur_prep_len_scaleup;			dur_prep_len_scaleup=5;			
+* prob_prep_cab_b;				prob_prep_cab_b = prob_prep_oral_b; 
+* prob_prep_len_b;				prob_prep_len_b = prob_prep_oral_b;	
 
-* date_prep_len_intro;			date_prep_len_intro=3000;		* Introduction of injectable len PrEP ;
-* dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;			* Assume 5 years to scale up injectable cab prep;
-* dur_prep_len_scaleup;			dur_prep_len_scaleup=5;			* Assume 5 years to scale up injectable len prep;
-* prob_prep_cab_b;				prob_prep_cab_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
-* prob_prep_len_b;				prob_prep_len_b = prob_prep_oral_b;	* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
+* annual_testing_prep_cab;		annual_testing_prep_cab=0.25;	
+* annual_testing_prep_len;		annual_testing_prep_len=0.25;	
 
-* annual_testing_prep_cab;		annual_testing_prep_cab=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
-* annual_testing_prep_len;		annual_testing_prep_len=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
-														* REF HIV MC joint project - this takes into account delayed or skipped injections ;
-
-* prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
-* prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
+* prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		
+* prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		
 * rate_choose_stop_prep_cab; 	%sample_uniform(rate_choose_stop_prep_cab, 0.05 0.15 0.30);
 * rate_choose_stop_prep_len; 	rate_choose_stop_prep_len = rate_choose_stop_prep_cab ;
-								* dependent_on_time_step_length ;
-																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_prep_inj/vr or one indicating the relative rate compared with oral prep;
+
 * prep_cab_effect_inm_partner;	%sample_uniform(prep_cab_effect_inm_partner, 0.0 0.25 0.5 );				
 * prep_len_effect_cam_partner;	%sample_uniform(prep_len_effect_cam_partner, 0.0 0.25 0.5 );				
 
 * cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
 * len_time_to_lower_threshold_g; 	%sample_uniform(len_time_to_lower_threshold_g, 1 2); 
 
-* pr_inm_cab_prep_primary ;		%sample_uniform(pr_inm_cab_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation ;
-* pr_cam_len_prep_primary ;		%sample_uniform(pr_cam_len_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation ;
+* pr_inm_cab_prep_primary ;		%sample_uniform(pr_inm_cab_prep_primary, 0.1 0.2 0.3 0.5) ; 
+* pr_cam_len_prep_primary ;		%sample_uniform(pr_cam_len_prep_primary, 0.1 0.2 0.3 0.5) ; 
 * rel_pr_inm_cab_prep_tail_primary; %sample_uniform(rel_pr_inm_cab_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
 * rel_pr_inm_len_prep_tail_primary; %sample_uniform(rel_pr_inm_len_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 * incr_res_risk_len_inf_3m;		incr_res_risk_len_inf_3m = incr_res_risk_cab_inf_3m;
 
-* new for pop_wide_tld ;
 
-* pref_prep_cab_beta_s1;		pref_prep_cab_beta_s1 = pref_prep_oral_beta_s1 + 0.3 ; * tends to be more preference for inj ;
+* pref_prep_cab_beta_s1;		pref_prep_cab_beta_s1 = pref_prep_oral_beta_s1 + 0.3 ; 
 * pref_prep_len_beta_s1;		pref_prep_len_beta_s1 = pref_prep_cab_beta_s1;  
 
 * hivtest_type_1_init_prep_cab; %sample(hivtest_type_1_init_prep_cab, 0 1, 0.5 0.5);
@@ -873,7 +683,6 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * sens_tests_prep_cab;			%sample_uniform(sens_tests_prep_cab, 1 2 3 4); 
 * sens_tests_prep_len;			sens_tests_prep_len =  sens_tests_prep_cab;	
 
-* note that these below also apply to pop_wide_tld;
 %sample_uniform(sens_ttype3_prep_cab_primary, 0 0.1); %sample_uniform(sens_ttype3_prep_cab_inf3m, 0 0.2); 
 %sample_uniform(sens_ttype3_prep_cab_infge6m, 0.1 0.25 0.5); 
 %sample_uniform(sens_ttype3_prep_len_primary, 0 0.1); %sample_uniform(sens_ttype3_prep_len_inf3m, 0 0.2); 
@@ -912,28 +721,17 @@ end;
 * reg_option_107_after_cab;		%sample(reg_option_107_after_cab, 0 1, 0.8 0.2);
 
 
-* DAPIVIRINE VAGINAL RING PREP ; * dpv-vr;
-* vr code needs more work before using ;
-* lapr - note that only women can use DPV ring - make sure this is coded in uptake step;
+* DAPIVIRINE VAGINAL RING PREP ; 
 
-* date_prep_vr_intro;			date_prep_vr_intro=2100; 		* Introduction of DPV-VR PrEP ;
-* prep_vr_efficacy;				prep_vr_efficacy=0.31; 			* DPV-VR PrEP effectiveness with 100% adherence (assuming always 100% adherence in first month) ; 
-																* REF The Ring Study Nel NEJM 2016 - but does this represent effectiveness rather than efficacy? ;
-																* Also see follow-up DREAM OLE Nel Lancet 2021 - higher protection. We may change to sample this parameter JAS Oct23 ;
-* dur_prep_vr_scaleup;			dur_prep_vr_scaleup=2;			* Assume 2 years to scale up DPV ring; * lapr;
-* prob_prep_vr_b;				prob_prep_vr_b = prob_prep_oral_b;	* probability of starting vr PrEP in people (who are eligible and willing to take vr prep) tested for HIV according to the base rate of testing;
-																* since we have different preference for oral and inj and vr, dont think we need separate values of this for oral and vr and inj 
+* date_prep_vr_intro;			date_prep_vr_intro=2100; 		
+* prep_vr_efficacy;				prep_vr_efficacy=0.31; 			
+* dur_prep_vr_scaleup;			dur_prep_vr_scaleup=2;			
+* prob_prep_vr_b;				prob_prep_vr_b = prob_prep_oral_b;	
 * annual_testing_prep_vr;		annual_testing_prep_vr=annual_testing_prep_oral;	
-																* frequency of HIV testing for people on DPV-VR PrEP same as oral PrEP; 
 * rate_choose_stop_prep_vr; 	%sample(rate_choose_stop_prep_vr, 0.05 0.15 0.30, 0.8 0.1 0.1); 
-																* currently sampling from the same distribution as for inj prep, values for oral PrEP are higher;
-								* dependent_on_time_step_length ;
+																
+* pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = pref_prep_oral_beta_s1 - 0.1 ; 
 
-* pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = pref_prep_oral_beta_s1 - 0.1 ; * this will change depending on assumed uptake;
-
-
-
-* new for pop_wide_tld ;
 
 * POP WIDE TLD * ;
 
@@ -949,30 +747,22 @@ end;
 * prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25     ); 
 
 * pop_wide_tld_selective_hiv;	%sample_uniform(pop_wide_tld_selective_hiv,  10  30  100); 
-																														 
-																													   
-																		 
+																														 													 
 
-* death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk due to not in care;
+* death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); 
 																		
 
 * prop_pep;						%sample_uniform(prop_pep, 0.5 0.7 0.9); 
 * pep_effiacy;					%sample(pep_efficacy, 0.9 0.95,  0.8  0.2);
 
-* artvis0_lower_adh;					%sample(artvis0_lower_adh, 0 1 , 0.8 0.2	);		* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
-																										  
-												
+* artvis0_lower_adh;					%sample(artvis0_lower_adh, 0 1 , 0.8 0.2	);		
 
-* pop_wide_prep_adh_effect;		%sample(pop_wide_prep_adh_effect, 1 0.75 0.9 1/0.9 1/0.75, 0.6 0.1 0.1 0.1 0.1) ; * effect of taking pop wide tld without clinical supervision 
-																					(indicated by testing=1) on prev effectiveness;
+* pop_wide_prep_adh_effect;		%sample(pop_wide_prep_adh_effect, 1 0.75 0.9 1/0.9 1/0.75, 0.6 0.1 0.1 0.1 0.1) ; 
 
 * prob_prep_pop_wide_tld;		%sample(prob_prep_pop_wide_tld,  0.05  0.1     , 0.5 0.5 );
 
 * inc_oral_prep_pref_pop_wide_tld;		%sample(inc_oral_prep_pref_pop_wide_tld, 0.1 0.3 0.5, 0.33 0.34 0.33);	
-									* how much does the appeal (preference) of oral prep increase with pop_wide_tld, due to the easy access ? 
-										(this is indicated by inc_oral_prep_pref_pop_wide_tld)
-									   this could diminish the use of prep_inj which is a negative as prep_inj has higher effectiveness ; 
-
+								
 
 * COVID-19 ;
 
@@ -981,8 +771,6 @@ end;
 
 
 * SBP AND CVD MORTALITY RISK ;   
-
-* values of these will be sampled from distributions as part of the calibration to reflect uncertainty and variability ;
 
 * probability of 1 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
 prob_sbp_increase = 0.10; 
@@ -1019,21 +807,14 @@ effect_age_cvd_death = 0.03;
 base_cvd_death_risk = 0.00002;
 
 
-* NON-HIV TB ;  * update_24_4_21;
 non_hiv_tb_risk = 0.0005;  
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
-* OVERWRITES country specific parameters;
-* %include "/home/rmjlaph/SA_parameters.sas";
-* %include "/home/rmjlvca/Zim_parameters_08_f.sas";
- *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
-
-* inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 if inc_cat = 4 then prob_pregnancy_base = prob_pregnancy_base / 1.25 ;
-prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
+prob_pregnancy_base = round(prob_pregnancy_base,0.001);	
 
 
 * ===================== ;
@@ -1072,9 +853,6 @@ end;
 
 * test type;
 
-*1= PCR (RNA VL) tests - assume window period of 10 days; 
-*3= 3rd gen (Ab) tests / community-based POC tests / rapid tests ; 
-*4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 if hivtest_type=1 then do; sens_primary=0.86; sens_vct=0.98; spec_vct=1;     end; 
 else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; sens_vct=0.98; spec_vct=0.992; end;
 else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; end;
@@ -1082,55 +860,42 @@ else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; en
 
 * COSTS;
 
-* todo:  ALL COSTS BELOW TO BE REVIEWED ;
-
-* drug costs are perhaps 10% higher due to supply chain but for monitoring comparison this will not differ by option;
-*cost of the following drugs updated in July 2014 based on MSF report, without including cost of supply chain;
-
-* all * dependent_on_time_step_length ;
-cost_zdv_a=(0.068/4)*1.2; * chai 2022  ;
-cost_3tc_a=(0.012/4)*1.2; * jun 24 chai ;
-cost_ten_a=(0.021/4)*1.2; * jun 24 chai ;
+cost_zdv_a=(0.068/4)*1.2; 
+cost_3tc_a=(0.012/4)*1.2; 
+cost_ten_a=(0.021/4)*1.2; 
 cost_taf = (0.018/4)*1.2;
-cost_nev_a=(0.027/4)*1.2; * chai 2017 market report - global fund price;   
-cost_efa_a=(0.019/4)*1.2; * chai 2022 - $62 for tle   ;
+cost_nev_a=(0.027/4)*1.2;    
+cost_efa_a=(0.019/4)*1.2; 
 cost_lpr_a=(0.152/4)*1.2;                     
-cost_taz_a=(0.133/4)*1.2;   * chai 2022 zl-taz 216 ;
-cost_dol_a=(0.009/4)*1.2;  * june 202 chai - $42 for tld;
+cost_taz_a=(0.133/4)*1.2;  
+cost_dol_a=(0.009/4)*1.2;  
 cost_dar_a=(0.210/4)*1.2;	
-prep_cab_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost; 
-prep_len_drug_cost = (0.030 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost; 
-cost_cab_a = prep_cab_drug_cost ; * note that when cab used as treatment we use cost_cab_a rather than prep_cab_drug_cost;
-cost_len_a = prep_len_drug_cost ; * placeholder ;
-tb_cost_a=(.050); * todo: this cost to be re-considered;
-
-cost_tb_lam = 0.015 ; * placeholder ;
-cost_tb_proph = 0.005 ; * placeholder ;
+prep_cab_drug_cost = (0.050 * 1.2) / 4 ; 
+prep_len_drug_cost = (0.030 * 1.2) / 4 ; 
+cost_cab_a = prep_cab_drug_cost ; 
+cost_len_a = prep_len_drug_cost ; 
+tb_cost_a=(.050); 
+cost_tb_lam = 0.015 ; 
+cost_tb_proph = 0.005 ; 
 cost_crag = 0.005 ; 
-cost_crypm_proph = 0.020 ; * placeholder ;
-cost_sbi_proph = 0.020 ; * azithro - placeholder ; 
-
+cost_crypm_proph = 0.020 ; 
+cost_sbi_proph = 0.020 ; 
 cot_cost_a=(.005/4);
-vis_cost_a=(.010);  * changed june 24 as a result of BU cost data;
+vis_cost_a=(.010);  
 redn_in_vis_cost_vlm_supp = 0.005 ;
-extra_vis_cost_cab_len_a = 0.015 ; * the additional cost of clinic visits per 3 months if on la cab len treatment 
--(cost is less than separate additional costs if on cab or len as prep as both done in same visit);
+extra_vis_cost_cab_len_a = 0.015 ; 
 cost_child_hiv_a = 0.030; 
 cost_child_hiv_mo_art_a = 0.030; 
-prep_oral_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
-prep_vr_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
-	* lapr and dpv-vr - may need to update for cab and dpv in future;
-prep_tld_drug_cost = (0.054 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
-cost_prep_oral_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals;
-cost_prep_cab_clinic = 0.015; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - lapr is 1.5 times oral prep due to 6 visits per year;
-cost_prep_len_clinic = 0.007; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - len is < oral prep    due to 2 visits per year;
-cost_prep_vr_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - same as oral PrEP for now, may need to update in future;
-cost_prep_any_clinic_couns = 0.010; *Further clinic costs relating to adherence counselling;
-av_cost_self_test_avail = 0.001; * this is under pop wide tld with self test kits available - we dont know how frequently they will be used - we 
-									dont explicitly model self tests use, it only helps status informed tld use - cost ;
+prep_oral_drug_cost = (0.050 * 1.2) / 4 ; 
+prep_vr_drug_cost = (0.050 * 1.2) / 4 ; 
+prep_tld_drug_cost = (0.054 * 1.2) / 4 ; 
+cost_prep_oral_clinic = 0.010; 
+cost_prep_cab_clinic = 0.015; 
+cost_prep_len_clinic = 0.007; 	
+cost_prep_vr_clinic = 0.010; 	
+cost_prep_any_clinic_couns = 0.010; 
+av_cost_self_test_avail = 0.001; 
 
-* not * dependent_on_time_step_length ;
-* todo: add in crag and tb lam test costs, add in cost of treating tb crypm sbi (may be higher if diagnosed early, + costs of tb crypm prophylaxis;
 adc_cost_a=(.200); 
 non_tb_who3_cost_a=(.020);
 cd4_cost_a=(.010);
@@ -1139,12 +904,12 @@ vl_cost_plasma=0.022;
 vl_cost_lab=0.022; 
 vl_cost_poc=0.022;
 res_cost_a=(0.200);
-cost_test_a=0.025; *HCW-testing symptomatic, it applies only to positive people with symptoms ;
-cost_test_b=0.025; *HCW-testing general pop, HIV positive;
-cost_test_c=0.0037; *HCW-testing general pop, hiv negative - changed 30dec2016 - email from anna osborne chai 8nov2016 - this is for facility based testing, which most testing is;
-cost_test_d=0.02521; *HCW-testing positive (community based);
-cost_test_e=0.0245; *HCW-testing negative (community based);
-cost_test_g=0.022; *vl test to diagnose;
+cost_test_a=0.025; 
+cost_test_b=0.025; 
+cost_test_c=0.0037; 
+cost_test_d=0.02521; 
+cost_test_e=0.0245; 
+cost_test_g=0.022; 
 cost_t_adh_int = 0.010;  
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
