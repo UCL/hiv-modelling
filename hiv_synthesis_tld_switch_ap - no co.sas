@@ -911,24 +911,21 @@ cost_test_d=0.02521;
 cost_test_e=0.0245; 
 cost_test_g=0.022; 
 cost_t_adh_int = 0.010;  
-art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
+art_init_cost = 0.010; 
 cost_switch_line_a = 0.020 ;
-cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
-circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
-condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ;
-sw_program_cost = 0.010 ; * placeholder; *consider varying by intensity;
-cost_antihyp = 0.0015; * cost per 3 months of anti-hypertensive drug (in $1000) ;
-cost_vis_hypert = 0.0015; * clinic cost per hypertension visit (in $1000);
+cost_drug_level_test = 0.015; 
+circ_cost_a = 0.090;  
+condom_dn_cost = 0.001  ; 
+sw_program_cost = 0.010 ; 
+cost_antihyp = 0.0015; 
+cost_vis_hypert = 0.0015; 
 
-
-* based on salomom et al lancet 2012;
 util_hiv = 0.98;
 util_tox = rand('beta',10,2); util_tox = 0.95;
 if greater_disability_tox = 1 then util_tox = 0.75 ;
 util_non_tb_who3 = rand('beta',8,2);  util_non_tb_who3 = 0.78;
 util_tb = rand('beta',7,7);  util_tb = 0.60;
 util_adc = rand('beta',2,6); util_adc = 0.46;
-* util_rec_ntd = 0.8; * removed aug18 - since dont have this for mtct;
 
 
 
@@ -969,64 +966,6 @@ data r1; set r1;
 if gender ne . then do; obs+1; end;
 
 
-*
-cia world factbook 
-malawi
-Total population (x 1000)	Population aged 0 E4 (%)	Population aged 15 E4 (%)	Population aged 65+ (%)   n population aged 15 E4
-1990	9 381	45.9	51.4	2.7		4821000
-1995	9 883	44.7	52.2	3.1		5159000
-2000	11 229	45.8	51.1	3.1		5738000
-2005	12 823	46.1	50.9	3.1		6527000
-2010	14 901	45.8	51.1	3.1		7614000
-
-
-
-World mortality report
-
-prob survival to age 60 in 15 year olds
-
-			1990-1995	2010-2015
-
-Malawi		0.62		0.62
-Zimbabwe  	0.59   		0.63
-Zambia		0.40		0.69
-Uganda		0.51		0.68
-Tanzania	0.60		0.71
-S Africa	0.71		0.57
-Nigeria		0.61		0.63
-Kenya		0.71		0.73
-
-(with current all cause death rates alone it is 0.63 for men, 0.76 for women)
-
-this above information suggests leaving fold_change_ac_death_rate = 1 
-
-
-Structure of the population (DHS 2010) (Males 55 159, Females 58 414 = 113 574) :
-
-Age Group	Total (%)   % of 15-65 (47.2% are 15-65)
-0-4		17,2
-5-9		17,1
-10-14	14,7
-15-19	9,8		20.1%
-20-24	7,8		16.5*		36.6% 15-25
-25-29	7,3		15.5%
-30-34	5,8		12.3%		27.8% 25-35
-35-39	4,6		9.7%
-40-44	3,1		6.6%		16.3% 35-45
-45-49	2,7		5.7%
-50-54	2,5		5.3%		11.0% 45-55
-55-59	1,9		4.0%
-60-64	1,8		3.8%		7.8%  55-65
-65-69	1,2
-70-74	1,0
-75-79	0,8
-80+		0,8
-
-;
-
-
-* Running for 86 years - 1989 - 2075;  * AP 29-12-23 ;
-* Using a moderate rate of population growth;
 
 if inc_cat=1 then do;
 inc1=0.2000;
@@ -1045,19 +984,19 @@ inc13=0.012;
 end;
 
 if inc_cat=2 then do;
-inc1=0.1700; *-65 to -55;
-inc2=0.1250; *-55 to -45;
-inc3=0.1150; *-45 to -35;
-inc4=0.1050; *-35 to -25;
-inc5=0.0950; *-25 to -15;
-inc6=0.0900; *-15 to -5;
-inc7=0.0800; *-5 to 5;
-inc8=0.0650; * 5 to 15;
-inc9 =0.048; * 15 to 25; 
-inc10=0.040; * 25 to 35;
-inc11=0.030; * 35 to 45;
-inc12=0.021; * 45 to 55;
-inc13=0.016; * 55 to 65;
+inc1=0.1700; 
+inc2=0.1250; 
+inc3=0.1150; 
+inc4=0.1050; 
+inc5=0.0950; 
+inc6=0.0900; 
+inc7=0.0800; 
+inc8=0.0650; 
+inc9 =0.048; 
+inc10=0.040; 
+inc11=0.030; 
+inc12=0.021; 
+inc13=0.016; 
 end;
 
 if inc_cat=3 then do;
@@ -1076,22 +1015,21 @@ inc12=0.026;
 inc13=0.020;
 end;
 
-*2nd October 2023;
 if inc_cat=4 and caldate1=1984  then do;
-inc1 =0.15004;*-75 to -65, 9 years ;
-inc2 =0.15071;*-65 to -55, 10 years ;
-inc3 =0.13471;*-55 to -45;
-inc4 =0.11871;*-45 to -35;
-inc5 =0.10271;*-35 to -25;
-inc6 =0.08671;*-25 to -15;
-inc7 =0.07071;*-15 to -5;
-inc8 =0.05471;*-5 to 5;
-inc9 =0.03871;*5 to 15;
-inc10=0.02965;*15 to 25; 
-inc11=0.02224;*25 to 35;
-inc12=0.01730;*35 to 45;
-inc13=0.01318;*45 to 55;
-inc14=0.00988;*55 to 65;
+inc1 =0.15004;
+inc2 =0.15071;
+inc3 =0.13471;
+inc4 =0.11871;
+inc5 =0.10271;
+inc6 =0.08671;
+inc7 =0.07071;
+inc8 =0.05471;
+inc9 =0.03871;
+inc10=0.02965;
+inc11=0.02224;
+inc12=0.01730;
+inc13=0.01318;
+inc14=0.00988;
 end;
 cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7=cum6+inc7;cum8=cum7+inc8;
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; cum13=cum12+inc13; 
@@ -1165,12 +1103,6 @@ if gender=2 and age >=15 then do;
 		else if 0.96 le u lt 0.98 then cum_children=8;else if 0.98 le u le 1    then cum_children=10;
 	end;
 end;
-
-
-* NUMBER OF PARTNERS / NUMBER OF NEW PARTNERS AT TIME 0;
-
-
-*-----------------------------------------------------------------------------------------------------------------------------------;
 
 
 
@@ -1251,7 +1183,7 @@ if 60 <= age < 65 then rred_a=rred_a_60m;
 
 rred= newp_factor * rred_a*rred_p*rred_initial;
 
-* newp=0; s1=0.85; * newp1=1; s2=0.10   ;* newp >= 2; s3=0.05  ; * newp1 10x; s4=0.0030 ;
+s1=0.85;  s2=0.10   ; s3=0.05  ;  s4=0.0030 ;
 
 
 s2=s2*rred; s3=s3*rred; s4=s4*rred; 
@@ -1266,8 +1198,6 @@ if cu3/cu4 <= a < cu4/cu4 then do; if e < 0.22 then newp=10; if 0.22 <= e < 0.42
 
 end;
 
-
-* RISK BEHAVIOUR AT TIME 0 - FEMALES;
 
 if gender=2 then do;
 
@@ -1285,7 +1215,7 @@ if 60 <= age < 65 then rred_a=rred_a_60w;
 
 rred= newp_factor * rred_a*rred_p*rred_initial;
 
-* newp=0; s1=0.97;* newp = 1-3; s2=0.03;
+s1=0.97;              s2=0.03;
 s2=s2*rred;
 cu1=s1;cu2=cu1+s2; a=rand('uniform');
 if            a < cu1/cu2 then newp=0; 
@@ -1328,7 +1258,6 @@ if sw=1 then do;
 	age_deb_sw= age - (caldate1-date_start_sw);
 end;
 
-***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
 if sw = 1 then do;
 	a=rand('uniform');if a<0.95 then episodes_sw=1;if 0.95 <= a <0.98 then episodes_sw=2;if a>=0.98 then episodes_sw=3;
 
@@ -1346,16 +1275,10 @@ if sw = 1 then do;
 			when (0.99 <= e) 		do; newp_lower = 51; newp_higher = 151; end;
 			otherwise xxx=1;
 		end;
-		* choose uniformly between newp_lower and newp_higher;
 		newp = round(newp_lower + rand('uniform') * (newp_higher - newp_lower), 1);
 	end;
 	if age > 30 then newp = min(30,newp);
 end;
-
-
-* ts1m;
-* newp = newp/3;  
-* newp=round(newp,1);
 
 
 if 15 <= age < 65 then do; ep =0; ageg_ep=0; epmono=0; end;
@@ -1387,10 +1310,7 @@ sti =0;
 s=rand('uniform'); if s < newp/20 then sti=1;
 
 dead=0;
-dcause = . ; * can be who4_=1 / liver=2 / CVD=3 / drug death=4 / other=5 ( or 1=HIV - 2 = non-HIV in simpler version);
-
-
-* set initial values for these defined in main part of program ;
+dcause = . ; 
 
 ccsqr = . ;  e_rt184_tm1 = . ;  e_rt65_tm1 = . ;  e_rt151_tm1 = . ; 
 e_rt103_tm1 = . ;  e_rt181_tm1 = . ;  e_rt190_tm1 = . ;  e_pr32_tm1 = . ;  e_pr33_tm1 = . ;  e_pr46_tm1 = . ;  e_pr47_tm1 = . ;  e_pr50v_tm1 = . ; 
@@ -1412,9 +1332,6 @@ prevalence2534w = . ;  prevalence3544w = . ;  prevalence4554w = . ;  prevalence5
 prevalence3544m = . ;  prevalence4554m = . ;  prevalence5564m = . ;   prevalence1524w = . ; 
 
 
-
-* co-infection with hep B and C - currently assume no change over calendar time in proportion co-infected
-with B or C and also that no new infections during HIV infection;
 d=rand('uniform');
 hcv=0;
 if d < 0.02 then hcv=1;
@@ -1422,10 +1339,7 @@ e=rand('uniform');
 hbv=0;
 if e < 0.03 then hbv=1;
 
-
-* define sbp in 1989 ;  * update_24_4_21;
-
-select;	* JAS May2021 ;
+select;	
 	when ( age < 15) 		do; sbp=.;
 							end;	
 	when (15 <= age < 25) 		do; %sample(sbp,	115		125 	135, 
@@ -1449,10 +1363,8 @@ select;	* JAS May2021 ;
 	otherwise xxx=1;
 end;
 
-* for simplicity assume nobody on anti-hypertensives at baseline in 1989;
 diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
 
-* define person-specific effect of 1, 2 and 3 anti-hypertensives;
 %sample(effect_anti_hyp_1, 10 20 30, 0.7 0.2 0.1); 
 %sample(effect_anti_hyp_2, 10 20 30, 0.7 0.2 0.1); 
 %sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
@@ -1463,94 +1375,63 @@ if u>can_be_pregnant then low_preg_risk=1;
 prob_pregnancy_b = prob_pregnancy_base;
 if low_preg_risk=1 then prob_pregnancy_b=0; 
 
-*** eff variables are defined for specific parameters which may change as a result of the code. Values of the original
-	parameters are stored and only eff_ variables are used throughout the code;
 
-* define effective max_freq_testing;
 eff_max_freq_testing = max_freq_testing;
 
-* define effectve rate of restart;
 eff_rate_restart = rate_restart;
 
-* define effective prob_loss_at_diag ;
 eff_prob_loss_at_diag = prob_loss_at_diag;
 
-* define effective rate_lost;
 eff_rate_lost = rate_lost ;
 
-* define effective prob_lost_art;
 eff_prob_lost_art = prob_lost_art;
 
-* define rate_return ;
 eff_rate_return = rate_return;
 
-* define effective pr_art_init;
 eff_pr_art_init = pr_art_init;
 
-* define effective rate_int_ch;
 eff_rate_int_ch = rate_int_ch;
 
-* define effective prob_vl_meas_done;
 eff_prob_vl_meas_done = prob_vl_meas_done;
 
-* define effective pr_switch_line;
 eff_pr_switch_line = pr_switch_line;
 
-* define effective rate_test_startprep_any;
 eff_rate_test_startprep_any = rate_test_startprep_any;
 
-* define effective prob_prep_ variables;		*JAS Oct23;
 eff_prob_prep_oral_b = prob_prep_oral_b;
 eff_prob_prep_cab_b = prob_prep_cab_b;
 eff_prob_prep_len_b = prob_prep_len_b;
 eff_prob_prep_vr_b = prob_prep_vr_b;
 
-* define effective rate_choose_stop_prep_ variables;
 eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral;
 eff_rate_choose_stop_prep_cab = rate_choose_stop_prep_cab;
 eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len;
 eff_rate_choose_stop_prep_vr = rate_choose_stop_prep_vr;
 
-* define effective prob_prep_any_restart_choice;
 eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice;	
 
-* define effective prob_lossdiag_non_tb_who3e;
 eff_prob_lossdiag_non_tb_who3e = prob_lossdiag_non_tb_who3e ;
 
-* define eff_prob_lossdiag_adctb ;
 eff_prob_lossdiag_adctb = prob_lossdiag_adctb ;
 
-* define eff_prob_return_adc;
 eff_prob_return_adc = prob_return_adc ;
-
-* define effective test_targeting;
 
 eff_test_targeting = test_targeting;
 
-* define eff_prob_birth_circ;
 eff_prob_birth_circ=prob_birth_circ;
 
 keep_going_1999=.;  keep_going_2004=.; keep_going_2016=.;  keep_going_2020=.;
 
-* eff sex worker program variables;
 eff_sw_program=0;
 eff_sw_higher_int = sw_higher_int;
-*eff_prob_sw_lower_adh = prob_sw_lower_adh;
+
 eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
 eff_rate_persist_sti=rate_persist_sti;
 sw_program_visit=0;
 
-* na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
-
-* ADHERENCE PATTERN;
-
-* remember that there are additional negative effects on adherence of younger age, tox, adc/tb, occasional drops i adh, 2nd line; 
-* deleted former adherence patterns 99, 98 and 101 *Apr2021;
 
 if adh_pattern=1 then do;  
 
-*adherence pattern 1;
-*formerly #100 *Apr2021;
 e=rand('uniform');
 if         e < 0.01 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.01 <= e < 0.02 then do; adhav = 0.79; adhvar=0.20; end;
@@ -1564,8 +1445,6 @@ end;
 
 if adh_pattern=2 then do;
 
-*adherence pattern 2;
-*formerly #1 *Apr2021;
 e=rand('uniform');
 if         e < 0.03 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.03 <= e < 0.06 then do; adhav = 0.79; adhvar=0.20; end;
@@ -1579,8 +1458,6 @@ end;
 
 if adh_pattern=3 then do;
 
-*adherence pattern 3;  
-*formerly #105 *Apr2021;
 e=rand('uniform');
 if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.05 <= e < 0.12 then do; adhav = 0.79 ; adhvar=0.20; end;
@@ -1595,8 +1472,6 @@ end;
 
 if adh_pattern=4 then do;
 
-*adherence pattern 4;
-*formerly #2 *Apr2021;
 e=rand('uniform');
 if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.05 <= e < 0.15 then do; adhav = 0.79 ; adhvar=0.20; end;
@@ -1610,8 +1485,6 @@ end;
 
 if adh_pattern=5 then do;
 
-* adherence pattern 5 ;
-*formerly #3 *Apr2021;
 e=rand('uniform');
 if         e < 0.15 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.15 <= e < 0.30 then do; adhav = 0.79 ; adhvar=0.20; end;
@@ -1625,8 +1498,6 @@ end;
 
 if adh_pattern=6 then do;
 
-* adherence pattern 6 ;
-*formerly #4 *Apr2021;
 e=rand('uniform');
 if         e < 0.20 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.20 <= e < 0.40 then do; adhav = 0.79 ; adhvar=0.20; end;
@@ -1638,8 +1509,6 @@ end;
 
 if adh_pattern=7 then do;
 
-* adherence pattern 7 ;
-*formerly #5 *Apr2021;
 e=rand('uniform');
 if         e < 0.30 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.30 <= e < 0.60 then do; adhav = 0.60 ; adhvar=0.20; end;
@@ -1649,47 +1518,28 @@ if 0.70 <= e        then do; adhav = 0.90; adhvar=0.05; end;
 end;
 
 
-
-* EFFECT OF VIRAL LOAD MEASURED HIGH, NO RESISTANCE ON RESISTANCE TEST AND LOW ADHERENCE ON ADHERENCE TEST ON SUBSEQUENT ADHERENCE;
-
-* assume first measure of high vl leads to adh intervention with possible 6m or permanent increase in adherence - no additional effect after the 
-first measure of any type ;
-
 h=rand('uniform'); 
 
-* person level effect of viral load high alert on adherence (and probability of restarting if interrupted art);
 a=rand('uniform');
 v_alert_perm_incr_adh=0;  v_alert_6m_incr_adh=0;
 if h <  adh_effect_of_meas_alert then do;
-	if a < 0.9 then v_alert_perm_incr_adh = 1; * this value of 0.9 changed from 0.4 for tld_switch and laa - also with change in dist of adh_effect_of_meas_alert
-	seems more plausible that a smaller proportion of people have an an effect but the effect is more likely to be permanent than for 6 months;
+	if a < 0.9 then v_alert_perm_incr_adh = 1; 
 	if 0.9 <= a  then v_alert_6m_incr_adh = 1; 
 end;
 
 
-* effect of tox on adherence differs by individual;
 red_adh_tox = red_adh_tox_pop * exp(rand('normal')*0.3); red_adh_tox=round(red_adh_tox,.01); 
 
-* effect of multi_pill on adherence differs by individual;
 red_adh_multi_pill = red_adh_multi_pill_pop * exp(rand('normal')*0.3); red_adh_multi_pill=round(red_adh_multi_pill,.01); 
 
 
-* INDIVIDUAL-LEVEL PREP PARAMETERS
-
-* adherence pattern for oral prep; * simplified to be equal to adhav june 22;
 adhav_prep_oral = adhav; 
-
-
-* PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	* lapr JAS Sept2021 ;
-* Will need to update distributions with data / expert opinion ;
-* Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
 pref_prep_oral = 0;
 pref_prep_cab = 0;
 pref_prep_len = 0;
 pref_prep_vr = 0;
 
-* willingness to take prep if offered; 
 prep_oral_willing = 0; 	
 prep_cab_willing = 0; 
 prep_len_willing = 0; 
@@ -1697,7 +1547,7 @@ prep_vr_willing = 0;
 prep_any_willing = 0; 
 
 
-if cab_time_to_lower_threshold_g = 1 then do; * the tail is conceptualized as the time when levels are above 75% of therapeutic dose;
+if cab_time_to_lower_threshold_g = 1 then do; 
 	aa=rand('uniform'); 
 	if aa < 0.67 then cab_time_to_lower_threshold = 0.25; if aa >= 0.67 then cab_time_to_lower_threshold = 0.5;
 end;
@@ -1708,7 +1558,7 @@ if cab_time_to_lower_threshold_g = 2 then do;
 end;
 
 
-if len_time_to_lower_threshold_g = 1 then do; * the tail is conceptualized as the time when levels are above 75% of therapeutic dose;
+if len_time_to_lower_threshold_g = 1 then do; 
 	aa=rand('uniform'); 
 	if aa < 0.33 then len_time_to_lower_threshold = 0.25; if aa >= 0.33 then len_time_to_lower_threshold = 0.5;
 end;
@@ -1740,9 +1590,6 @@ dead_tm1=0;
 
 
 
-
-
-***LBM21 Assume a proportion of men were circumcised at birth prior to 1989; 
 mcirc =0;birth_circ=0;new_birth_circ=0;
 
 if  gender=1 and age gt 0.25 then do;
@@ -1755,7 +1602,6 @@ end;
 p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 
-* if disruption due to covid, but in less than 100%, who does it affect ?;
 
 covid_disrup_extent = 1.0 ;
 
@@ -1766,8 +1612,6 @@ if covid_disrup_extent = 1   then do; w=rand('uniform'); if w <= 1.0 then covid_
 
 option=.;
 
-
-* this is a random uniform number for each person;
 _p1 = rand('uniform'); _p2 = rand('uniform'); _p3 = rand('uniform'); _p4 = rand('uniform'); _p5 = rand('uniform'); _p6 = rand('uniform'); 
 _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand('uniform'); 
 
@@ -1815,13 +1659,8 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 
 %macro update_r1(da1=,da2=,e=,f=,g=,h=,a=,b=,i=,k=,l=,x=,j=,s=);
 
-* options mprint;
 
-
-
-* primary - currently in primary infection;
-array caldate{8} caldate&g-caldate&h; * calendar date 1980.00 , 1980.25, etc;
-* adh is the adherence between t-1 and t, not from t to t+1;
+array caldate{8} caldate&g-caldate&h; 
 
 
 
@@ -1838,20 +1677,8 @@ do until (t=&f);
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
  
 
-if t ge 2 then caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time_step_length ;
-* ts1m ; * change this line to: 
-caldate_never_dot = caldate_never_dot + (1/12);
+if t ge 2 then caldate_never_dot = caldate_never_dot + 0.25; 
 
-
- * note that age variable continues to increase after death so need to be aware of death status - dont try to change this without
-careful checking of whether serial_no = obs 
-except where stated below (e.g. updated newp and for people with hiv) we are not conditioning on death ne . so people who are dead
-go through most of this code - the counting of attributes for living people only is dealth with in the sum statments in section 5.
-we can insert a "death =." condition on any specific blocks of code below to ensure that dead people do not go through that code
-but that should not be strictly necessary
-; 
-
-* Variables tracked at previous time steps;
 tested_tm3=tested_tm2; 
 ep_tm3=ep_tm2;
 newp_tm3=newp_tm2;
@@ -1877,41 +1704,21 @@ onart_tm1=onart;
 dead_tm1=dead;
 adhmin_tm1=adhmin;
 adh_tm1 = adh; adh = .;
-* changes ***;
 adh_dl_tm1 = adh_dl; adh_dl = .;
 primary_tm1 = primary; primary = .; 
 sw_tm1=sw;
 hiv_tm1 = hiv; 
 age_tm1=age;
 
-art_initiation=0;  * started art this period - intentional that this appears in code for all adults, not just those with hiv;
+art_initiation=0; 
+
+if t ge 2 and caldate{t-1} < &year_interv + 50  and death=. then caldate{t}=caldate{t-1}+0.25; 
+age=age+0.25;  
 
 
-* note that caldate{t} becomes = . when a person dies - need to use caldate_never_dot if want to change value of a population-wide parameter
-value at a certain calendar time;
-
-if t ge 2 and caldate{t-1} < &year_interv + 50  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
-* ts1m ; * change this line to: 
-if t ge 2 and caldate{t-1} < &year_interv + 50  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
-;
-
-age=age+0.25;  * dependent_on_time_step_length ;
-* ts1m ; * change this line to: 
-age=age + (1/12);
-;
-
-agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
-
+agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		
 
 * ==========================================================================================================================================;
-
-
-* OPTIONS TO IMPLEMENT FROM year_i onwards;
-
-* code in this section can differ from unified program due to specifying exactly what interventions / changes are running; 
-* I suggest that we just leave this shell in the core program as we are not running beyond year_i ;
-
-* INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
 mihpsa_params_set_in_options=0;				
@@ -1925,18 +1732,11 @@ if caldate_never_dot = &year_interv then do;
 end;
 
 if caldate_never_dot >= &year_interv then do;
-* we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
-who may be dead and hence have caldate{t} missing;
 
-* reg_option = 125 from 2021;
 
 art_mon_strategy_in_options = 1;
 
-
-
-* ASSUMING SAME POLICY REGARDLESS OF any_vfail_by_year_interv;
-
-if option = 0 then art_monitoring_strategy = 150; * no change ;
+if option = 0 then art_monitoring_strategy = 150; 
 
 if option = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1500;
 
@@ -1946,68 +1746,19 @@ if option = 3 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar 
 
 if option = 4 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1700;
 
-
-
-/*
-
-* CONSIDERING SWITCH ONLY IF any_vfail_by_year_interv = 1 ;
-
-art_monitoring_strategy = 150; 
-if any_vfail_by_year_interv ne 1 then art_monitoring_strategy = 1700; 
-
-if option = 0 then do; end; * no change;                
-
-if option = 1 and any_vfail_by_year_interv = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1500;
-
-if option = 2 and any_vfail_by_year_interv = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 160;
-
-if option = 3 and any_vfail_by_year_interv = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1600;
-
-if option = 4 and any_vfail_by_year_interv = 1 and (o_dol=1 or p_dol=1) and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1) then art_monitoring_strategy = 1700;
-
-*/
-
-
 end;
 
-*
-
-tld_switch
-
-switching strategy options for people on tld without previous virologic failure identified
-
-150	 Switch at the point of having confirmed viral non-suppression (current WHO recommended policy).
-
-1500 Perform a test for tenofovir drug concentration (using a low-cost urine tenofovir assay) as a check on adherence.  
-     Only if this shows drug concentration is suggestive of adequate adherence is the switch made.
-
-160  Perform a drug resistance test.  Only if this shows INSTI resistance mutations is the switch made (there may be 
-     several sub-options based on which specific mutations are present).
-
-1600 Perform a test for tenofovir drug concentration using a low-cost urine tenofovir assay as a check on adherence.  
-	 A resistance test is done only if this shows a drug level suggestive of adequate adherence .  Only if this shows INSTI 
-     resistance mutations is the switch made (there may be several sub-options based on which specific mutations are present).
-
-1700 No switch
-;
 
 
 *  ======================================================================================================================================== ;
 
 
 
-
-/* PrEP */
-
-* by default currently introduction of len prep leads to moving all inj prep to len;
 cab_prep_available=0; if caldate{t} >= date_prep_cab_intro and (caldate{t} < date_prep_len_intro or date_prep_len_intro=.) then cab_prep_available=1;
 
 
 
-* Oral PREP introduction in fsw/agyw 2018; 
-
-* Oral PrEP effectiveness against non-resistant virus;
-prep_oral_effect_non_res_v = .;  * we only want this defined for people currently on oral prep so set to . at start of loop;
+prep_oral_effect_non_res_v = .;  
 
 prep_any_tm3=	prep_any_tm2;  prep_any_tm2=	prep_any_tm1; 	prep_any_tm1=	prep_any;
 prep_oral_tm3=	prep_oral_tm2; prep_oral_tm2=	prep_oral_tm1; 	prep_oral_tm1=	prep_oral;
@@ -2015,16 +1766,14 @@ prep_cab_tm3=	prep_cab_tm2;  prep_cab_tm2=	prep_cab_tm1; 	prep_cab_tm1=	prep_cab
 prep_len_tm3=	prep_len_tm2;  prep_len_tm2=	prep_len_tm1; 	prep_len_tm1=	prep_len;  
 prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 
-* Oral prep scale-up over 4 years;
+
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
 else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and mihpsa_params_set_in_options ne 1
 	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
 else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and mihpsa_params_set_in_options ne 1
 	then eff_prob_prep_oral_b = prob_prep_oral_b;
 
-* lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
-* Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
 if 		cab_prep_available ne 1 then eff_prob_prep_cab_b = 0;
 else if . < date_prep_cab_intro <= caldate{t} < (date_prep_cab_intro + dur_prep_cab_scaleup) and mihpsa_params_set_in_options ne 1
 	then eff_prob_prep_cab_b = 0.05 +  (  (prob_prep_cab_b-0.05) * ( 1 -    (date_prep_cab_intro + dur_prep_cab_scaleup - caldate{t}) / dur_prep_cab_scaleup  )   );
@@ -2037,7 +1786,7 @@ else if . < date_prep_len_intro <= caldate{t} < (date_prep_len_intro + dur_prep_
 else if caldate{t} >= (date_prep_len_intro + dur_prep_len_scaleup) and mihpsa_params_set_in_options ne 1
 	then eff_prob_prep_len_b = prob_prep_len_b;
 
-* DPV VR prep scale-up; * dpv-vr JAS Sep2021;
+
 if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then eff_prob_prep_vr_b = 0;
 else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_params_set_in_options ne 1
 	then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
@@ -2045,26 +1794,23 @@ else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and mihpsa_para
 	then eff_prob_prep_vr_b = prob_prep_vr_b;
 
 
-* PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
-* Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
-
-yy = rand('beta',pref_prep_cab_beta_s1,5); * this is the preference for cab or len, whichever is available;
+yy = rand('beta',pref_prep_cab_beta_s1,5); 
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
-	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
+	 pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
 
 if (cab_prep_available = 1 and age ge 15) or (age = 15 and cab_prep_available = 1) then do;
 	if pop_wide_tld = 1 then pref_prep_cab_beta_s1 = pref_prep_cab_beta_s1 - 0.7 ; 
-	* pref_prep_cab;  	pref_prep_cab=yy ; * this is the preference for cab or len, whichever is available (see above);
+	 	pref_prep_cab=yy ; 
 end;
 
 if (caldate{t} = date_prep_len_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_len_intro > .) then do;
-	* pref_prep_len;  	pref_prep_len=yy ; * this is the preference for cab or len, whichever is available (see above);
+		pref_prep_len=yy ; 
 end;
 
 if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) then do;
-	* pref_prep_vr;		pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	*women only;		
+		pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 			
 end;
 
 if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
@@ -2072,17 +1818,11 @@ if cab_prep_available ne 1 then pref_prep_cab = 0;
 if . < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then pref_prep_len = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
 
-* highest_prep_pref;
-* does not show people who are not willing to take any PrEP type;
-* note that assume cab and len never both available concurrently;
-if 		pref_prep_oral > max(pref_prep_cab, pref_prep_len) and pref_prep_oral > pref_prep_vr then highest_prep_pref=1;	* 1=preference for oral PrEP;
-else if pref_prep_cab > pref_prep_oral and pref_prep_cab > pref_prep_vr then highest_prep_pref=2;	* 2=preference for cab PrEP;
-else if pref_prep_len > pref_prep_oral and pref_prep_len > pref_prep_vr then highest_prep_pref=3;	* 3=preference for len PrEP; 
-else if pref_prep_vr > pref_prep_oral and pref_prep_vr > max(pref_prep_cab, pref_prep_len) then highest_prep_pref=4;	* 4=preference for vaginal ring;			
-* lapr - encode no preference between types? / no type acceptable? ;
 
-
-* willingness to take prep if offered;
+if 		pref_prep_oral > max(pref_prep_cab, pref_prep_len) and pref_prep_oral > pref_prep_vr then highest_prep_pref=1;	
+else if pref_prep_cab > pref_prep_oral and pref_prep_cab > pref_prep_vr then highest_prep_pref=2;	
+else if pref_prep_len > pref_prep_oral and pref_prep_len > pref_prep_vr then highest_prep_pref=3;	
+else if pref_prep_vr > pref_prep_oral and pref_prep_vr > max(pref_prep_cab, pref_prep_len) then highest_prep_pref=4;	
 
 if caldate{t} ge date_prep_oral_intro then do;
 	if  pref_prep_oral > prep_willingness_threshold	then prep_oral_willing =1;
@@ -2093,7 +1833,7 @@ end;
 if cab_prep_available = 1 then do;
 	if  pref_prep_cab  > prep_willingness_threshold	then prep_cab_willing =1;
 end;
-* note that assume cab and len never both available concurrently;
+
 if caldate{t} ge date_prep_len_intro then do;
 	if  pref_prep_len  > prep_willingness_threshold	then prep_len_willing =1;
 end;
@@ -2111,65 +1851,6 @@ if prep_oral_willing = 1 or prep_cab_willing = 1 or prep_len_willing = 1 or prep
 
 
 tcur_tm1=tcur;
-* dependent_on_time_step_length ; * can keep this but will need to use caldate to assess past prep ;
-
-* ts1m :;
-/*
-newp_tm12 = max(0,newp_tm11); newp_tm11 = max(0,newp_tm10); newp_tm10 = max(0,newp_tm9);  newp_tm9 = max(0,newp_tm8); newp_tm8 = max(0,newp_tm7); 
-newp_tm7 = max(0,newp_tm6); newp_tm6 = max(0,newp_tm5); newp_tm5 = max(0,newp_tm4); newp_tm4 = max(0,newp_tm3); newp_tm3 = max(0,newp_tm2); 
-newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);  
-*/
-
-
-
-* MONITORING AND ART STRATEGIES;
-
-* hiv_monitoring_strategy
-1  strategy for monitoring HIV positive people naive to ART 1: presence of tb or who4
-2  strategy for monitoring HIV positive people naive to ART 2: cd4 6 monthly + presence of tb or who4
-
-* art initiation strategy
-1  all with who4
-2  all with tb or who4
-3  all with hiv diagnosed
-4  cd4 < 200 or who4
-5  cd4 < 200 or tb or who4
-6  cd4 < 350 or who4
-9  cd4<350 + ART immediately to pregnant women
-10 cd4<500 + ART immediately to pregnant women;
-
-* art_monitoring_strategy
-1. Clinical monitoring alone
-2. Clinical monitoring with single VL confirmation
-3. Clinical monitoring with VL confirmation
-7. Clinical monitoring with CD4 confirmation
-8. CD4 monitoring (6 mthly) alone
-9. CD4 count monitoring (6 mthly) with single VL confirmation
-10. CD4 monitoring (6 mthly) with VL confirmation
-150. Viral load monitoring (6m, 12m, annual) - WHO
-152. As above with 2 yearly viral load monitoring
-153. Viral load monitoring (6m, annual) no confirmation
-1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test;
-
-*
-
-tld_switch
-
-150	 Switch at the point of having confirmed viral non-suppression (current WHO recommended policy).
-
-1500 Perform a test for tenofovir drug concentration (using a low-cost urine tenofovir assay) as a check on adherence.  
-     Only if this shows drug concentration is suggestive of adequate adherence is the switch made.
-
-160  Perform a drug resistance test.  Only if this shows INSTI resistance mutations is the switch made (there may be 
-     several sub-options based on which specific mutations are present).
-
-1600 Perform a test for tenofovir drug concentration using a low-cost urine tenofovir assay as a check on adherence.  
-	 A resistance test is done only if this shows a drug level suggestive of adequate adherence .  Only if this shows INSTI 
-     resistance mutations is the switch made (there may be several sub-options based on which specific mutations are present).
-
-;
-
-
 
 
 if		caldate{t} < 2005.5 then do; 
@@ -2183,30 +1864,24 @@ if art_initiation_strategy ne 4 and 2008 <= caldate{t} < 2011.5 and q < rate_ch_
 	hiv_monitoring_strategy=2;
 	art_initiation_strategy=4;  
 end;
-* dependent_on_time_step_length ; 
+
 
 q=rand('uniform');
 if art_initiation_strategy ne 9 and 2011.5 <= caldate{t} < 2014 and q < rate_ch_art_init_str_9  then art_initiation_strategy=9;  
-* dependent_on_time_step_length ; 
+
 
 q=rand('uniform');
 if art_initiation_strategy ne 10 and 2014 <= caldate{t} < 2016.5 and q < rate_ch_art_init_str_10  then art_initiation_strategy=10;  
-* dependent_on_time_step_length ; 
+
 
 q=rand('uniform');
 if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_init_str_3 then do;art_initiation_strategy=3;hiv_monitoring_strategy=1;   end;
-* dependent_on_time_step_length ;
 
 
-if caldate{t} ge 2016.25  then do;  * need to show vl testing started this early so can assess 2 year influence of v alert before baseline;
-* 
-vm_format=1  plasma  lab 
-vm_format=2  whb     lab 
-vm_format=3  plasma  poc 
-vm_format=4  whb     poc 
-; 
+
+if caldate{t} ge 2016.25  then do;  
 		if art_mon_strategy_in_options ne 1 then art_monitoring_strategy = 150; 
-		vm_format=2; ***measuring vl using whole blood dbs;   
+		vm_format=2;   
 		vl_threshold=1000;
 		time_of_first_vm = 0.5;
 		min_time_repeat_vm = 0.25;	
@@ -2216,12 +1891,8 @@ end;
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 8;  
  
 
-
-
-***Changes in ART coverage (~20% lower in 3% of runs) and oral PrEP coverage after option start date;
 if caldate{t} = &year_interv then do;
 
-	*lower future ART coverage;
 	if lower_future_art_cov=1 then do;							
 		eff_rate_int_ch = eff_rate_int_ch * 1.25;
 		eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.25;
@@ -2236,19 +1907,15 @@ if caldate{t} = &year_interv then do;
 		eff_prob_return_adc = eff_prob_return_adc  * 0.8;
 	end;
 
-	*higher future oral prep coverage;
 	if	higher_future_prep_oral_cov=1 then do;
-	* lapr and dpv-vr - consider inclusion of scale up of lapr and dpv-vr ;
 
-	* incr_adh_prep_oral_yr_i;
 						incr_adh_prep_oral_yr_i = 0;  
 						if _u25 < 0.95 then do; 
 							incr_adh_prep_oral_yr_i = 1; 
 							adhav_prep_oral = adhav*1.00; 
 						end;		
 
-	* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
-						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
+							inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_any_yr_i = 1; 
 							if mihpsa_params_set_in_options ne 1 then do;
 								eff_rate_test_startprep_any = 0.9; 
@@ -2256,13 +1923,11 @@ if caldate{t} = &year_interv then do;
 							end;
 						end;		
 
-	* incr_r_test_restartprep_any_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
-						incr_r_test_restartprep_any_yr_i = 0;  
+							incr_r_test_restartprep_any_yr_i = 0;  
 						if _u28 <= 0.95 then do; 
 							incr_r_test_restartprep_any_yr_i = 1; 
 						end;		
 
-	* decr_r_choose_stopprep_oral_yr_i; * dependent_on_time_step_length;
 						decr_r_choose_stopprep_oral_yr_i = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stopprep_oral_yr_i = 1; 
@@ -2272,7 +1937,6 @@ if caldate{t} = &year_interv then do;
 							end;
 						end;		
 
-	* inc_p_prep_any_restart_choi_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_p_prep_any_restart_choi_yr_i = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_any_restart_choi_yr_i = 1; 
@@ -2282,91 +1946,59 @@ if caldate{t} = &year_interv then do;
 							end;
 						end;		
 
-	* prep_any_strategy;
-						if mihpsa_params_set_in_options ne 1 then prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
-
+						if mihpsa_params_set_in_options ne 1 then prep_any_strategy = 5;	
 	end;
 
-	*Other potential changes after year_i which can be turned on in the Options code;
-	*(impact of changes are coded below the options code);
 
-	*increase in testing;
-	if mihpsa_params_set_in_options ne 1 then incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022, 4=no testing in the general population;
-
-	*decrease in the proportion of people hard to reach;
+	if mihpsa_params_set_in_options ne 1 then incr_test_year_i = 3; 
 	decr_hard_reach_year_i = 0;
 
-	*decrease in probability of being lost at diagnosis; 
 	decr_prob_loss_at_diag_year_i = 0;
 
-	*absence CD4;
 	if mihpsa_params_set_in_options ne 1 then absence_cd4_year_i = 0;
 
-	*absence VL;
 	if mihpsa_params_set_in_options ne 1 then absence_vl_year_i = 0;
 
-	* crag cd4 < 200;
 	if mihpsa_params_set_in_options ne 1 then crag_cd4_l200 = 0;
 
-	* tblam cd4 < 200;
 	if mihpsa_params_set_in_options ne 1 then tblam_cd4_l200 = 0;
 
-	*decrease in the rate of being lost;
 	decr_rate_lost_year_i = 0;
 
-	*decrease in the rate of being lost whilst on ART;
 	decr_rate_lost_art_year_i = 0; 
 
-	*increase in the rate of return;
 	incr_rate_return_year_i = 0 ;
 
-	*increase in the rate of restarting ART;
 	incr_rate_restart_year_i = 0;
 
-	*increase in the rate of ART initiation;
 	incr_rate_init_year_i = 0 ;
 
-	*increase in adherence;
 	incr_adh_year_i = 0;
 
-	*decrease in the rate of interruption by choice;
 	decr_rate_int_ch_year_i = 0 ;
 
-	*increase in the the probability of a VL measure being done;
 	incr_prob_vl_meas_done_year_i = 0;  
 
-	* poc viral load monitoring;
-	*poc_vl_monitoring_i = 0 ;						* commented out as already used above JAS Nov23;				 
-
-	*ART monitoring drug levels;
 	art_mon_drug_levels_year_i = 0;
 
-	*increase in the probabilty of switching lines;
 	incr_pr_switch_line_year_i = 0 ;
 
-	*increase in test targeting;
 	incr_test_targeting_year_i = 0;
 
-	*switching regimens;
 	reg_option_switch_year_i = 0;
 
-	*tenofovir is taf, rather than tdf as it is by default;
-	ten_is_taf_year_i = 0; *coded within core (not below options code);
+	ten_is_taf_year_i = 0; 
 
-	*increase in rates of circumcision;
-	if mihpsa_params_set_in_options ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
+	if mihpsa_params_set_in_options ne 1 then circ_inc_rate_year_i = 0; 
 
-	*increase in condom use;
-	if mihpsa_params_set_in_options ne 1 then condom_incr_year_i = 0; *coded within core (not below options code);
-
-	*population wide tld;
+	if mihpsa_params_set_in_options ne 1 then condom_incr_year_i = 0; 
 	pop_wide_tld = 0;
 	pop_wide_tld_year_i = 0;
 
-	*covid disruption variables;
+
 	vmmc_disrup_covid = 0 ; 
 	condom_disrup_covid = 0; 
-	prep_oral_disrup_covid = 0; 	* lapr and dpv-vr - no change as this is before lapr and dpv-vr introduced ;
+	prep_oral_disrup_covid = 0; 	
 	testing_disrup_covid = 0; 
 	art_init_disrup_covid = 0; 
 	vl_adh_switch_disrup_covid = 0; 
@@ -2379,46 +2011,6 @@ if caldate{t} = &year_interv then do;
 end;
 
 	
-
-*
-
-reg_option from 2021: 125
- 
-       new 		currently on 1st line tle	currently on 2nd line zl-pi		failure criteria	tle failure			tld failure 	zld failure
-      initiators   																
-------------------------------------------------------------------------------------------------------------------------------------------------
-
-120    tld      remain on tle				remain on zl-pi					two VL > 1000		--> zld			    zl-pi			tl_pi
-
-104    tld		--> tld 					--> tld regardless of vl		two VL > 1000		na					--> zl-pi		na 
-
-125    tld		--> tld 					--> tld regardless of vl		two VL > 1000		na					--> tl-pi		na 
-
-------------------------------------------------------------------------------------------------------------------------------------------------
-
-art_monitoring_strategy for tld and zld before moving to pi
-
-150			
-1500
-
-;
-
-*
-covid consequences hiv programs
-
-vmmc stopped (vmmc_disrup_covid)
-condom availability stopped resulting in increase in newp (condom_disrup_covid)
-oral prep stopped (prep_oral_disrup_covid)
-sex worker program stopped (swprog_disrup_covid)
-all hiv testing stopped (testing_disrup_covid) 
-all art use switched to tld (art_tld_disrup_covid)
-every other day tld (art_tld_eod_disrup_covid)
-all art initiations stopped (art_init_disrup_covid)
-viral load  testing, enhanced adherence counselling and switches stopped (vl_adh_switch_disrup_covid)
-all co-trimoxazole stopped (cotrim_disrup_covid)
-all art stopped (no_art_disrup_covid)
-	
-;
 
 if caldate{t} ge 2019.5 then reg_option = 120;
 
