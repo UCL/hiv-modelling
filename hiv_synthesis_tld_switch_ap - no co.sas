@@ -2018,47 +2018,37 @@ if caldate{t} ge 2021 then reg_option = 125;
 
 if reg_option_set_in_options ne . then reg_option = reg_option_set_in_options;
 
-* if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
-* reg_option 107 is used for people who seroconverted on prep_inj / cab ;
-
-
 if caldate{t} = date_sw_prog_intro then eff_sw_program=sw_program;
-
-* Attendance at SW program (if it exists) and effects of program;
 
 if eff_sw_program=1 and sw=1 then do;
 
 if sw_program_visit=0 then do; e=rand('uniform');
-	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
+	if e < rate_engage_sw_program then do; 
 		sw_program_visit=1 ; 
-		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
+		date_1st_sw_prog_vis=caldate{t};
 
 		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
 		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
 		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		s= rand('uniform'); if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
-			prep_any_willing = 1; * lapr and dpv-vr ;
-			* select which prep type individual will be willing to use based on preference;
-			* increase preference for highest preference to ensure pref_prep_oral (or inj)  is above threshold  =1 ; 
+			prep_any_willing = 1; 
 			select;
 				when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + pref_prep_oral ; end;
 				when (highest_prep_pref = 2) 	do; prep_cab_willing = 1;	pref_prep_cab=	prep_willingness_threshold + pref_prep_cab ; end;
 				when (highest_prep_pref = 3) 	do; prep_len_willing = 1;	pref_prep_len=	prep_willingness_threshold + pref_prep_len ; end;
-				when (highest_prep_pref = 4)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + pref_prep_vr ; end;	* This will apply only to women;								
+				when (highest_prep_pref = 4)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + pref_prep_vr ; end;									
 				otherwise xxx=1;
-			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
 		if mihpsa_params_set_in_options ne 1 then do;
 			if prep_any_willing=1 then eff_rate_test_startprep_any=1;
-			eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
+			eff_rate_choose_stop_prep_oral=0.05;	
 			eff_rate_choose_stop_prep_cab=0.05;
 			eff_rate_choose_stop_prep_len=0.05;
 			eff_rate_choose_stop_prep_vr=0.05;
 			eff_prob_prep_any_restart_choice=0.7;
 		end;
-		* lapr and dpv-vr - consider if any needs to change ;
 		end;
 	end;
 end; 
