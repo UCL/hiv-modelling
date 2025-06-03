@@ -3,12 +3,12 @@
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\hiv_control_zim_20250508_out\";
+libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\hiv_control_zim_20250515_out\";
 
 
 /*
 
-libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\hiv_control_zim_20250508_out\";
+libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\hiv_control_zim_20250515_out\";
 
 data g ; set a.out: ;
 
@@ -47,9 +47,9 @@ set g;
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
 sf_2022 = (16320000 * 0.581) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
-sf=sf_2022;
-
+sf = sf_2022;
 keep run sf sf_2022;
+
 proc sort; by run;run;
 
 
@@ -59,7 +59,6 @@ proc sort; by run;run;
 data y; 
 merge g sf;
 by run ; 
-
 
 * preparatory code ;
 
@@ -193,7 +192,10 @@ if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
 /*dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; * s_cost_child_hiv is discounted cost;*/
-dcost_child_hiv_at_child_inf  = s_dcost_child_hiv_at_child_inf * sf / 1000; * one off cost for a child born with HIV;
+
+
+dcost_child_hiv_at_child_inf = s_dcost_child_hiv_at_child_inf * sf; *One off lifetime cost for a child living with HIV;
+
 
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
@@ -213,7 +215,8 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv_at_child_inf + dcost_non_aids_pre_death + dcost_self_test + dcost_econ_empow + dcost_comp_sex_educ + dcost_adh_intervention;
+		/*dcost_child_hiv*/ + dcost_child_hiv_at_child_inf + dcost_non_aids_pre_death + dcost_self_test + dcost_econ_empow + dcost_comp_sex_educ + dcost_adh_intervention;
+*replaced dcost_child_hiv with dcost_child_hiv_at_child_inf to match variable name change in core_hiv_synthesis file;
 
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
@@ -261,6 +264,129 @@ s_ageg65plw = s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85pl
 
 s_onart_m50pl = s_onart_m5054_ + s_onart_m5559_ + s_onart_m6064_ + s_onart_m6569_	+ s_onart_m7074_ + s_onart_m7579_ + s_onart_m8084_ + s_onart_m85pl_	;
 s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569_	+ s_onart_w7074_ + s_onart_w7579_ + s_onart_w8084_ + s_onart_w85pl_	;
+
+
+***HIV Control variables;
+* n_alive_1524m;				n_alive_1524m = s_ageg1m * sf; 
+* n_alive_1524w;				n_alive_1524w = s_ageg1w * sf; 
+* n_alive_2549m;				n_alive_2549m = (s_alive1549_m - s_ageg1m) * sf;
+* n_alive_2549w;				n_alive_2549w = (s_alive1549_w - s_ageg1w) * sf;
+* n_alive_50plm;				n_alive_50plm = (s_ageg5054m + s_ageg5559m + s_ageg6064m + s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg8084m + s_ageg85plm) * sf; *JASJun2024;
+* n_alive_50plw;				n_alive_50plw = (s_ageg5054w + s_ageg5559w + s_ageg6064w + s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85plw) * sf; *JASJun2024;
+* n_sw_1564;					n_sw_1564 = s_sw_1564 * sf;
+* n_alive_msm;					n_alive_msm = s_alive_msm * sf ;
+
+* n_hiv1524m;					n_hiv1524m = s_hiv1524m * sf; 
+* n_hiv1524w;					n_hiv1524w = s_hiv1524w * sf; 
+* n_hiv2549m;					n_hiv2549m = (s_hiv1549m - s_hiv1524m) * sf; 
+* n_hiv2549w;					n_hiv2549w = (s_hiv1549w - s_hiv1524w) * sf; 
+* n_hiv50plm;					n_hiv50plm = (s_hivge15m - s_hiv1549m) * sf; 
+* n_hiv50plw;					n_hiv50plw = (s_hivge15w - s_hiv1549w) * sf; 
+* n_hiv_sw;						n_hiv_sw = s_hiv_sw * sf;
+* n_hiv_msm;					n_hiv_msm = s_hiv_msm * sf;
+
+* n_diag_m_1524  ;				n_diag_m_1524 = s_diag_m_1524 * sf;
+* n_diag_m_2549  ;				n_diag_m_2549 = s_diag_m_2549 * sf;
+* n_diag_m_50pl  ;				n_diag_m_50pl = s_diag_m_50pl * sf;
+* n_diag_w_1524  ;				n_diag_w_1524 = s_diag_w_1524 * sf;
+* n_diag_w_2549  ;				n_diag_w_2549 = s_diag_w_2549 * sf;
+* n_diag_w_50pl  ;				n_diag_w_50pl = s_diag_w_50pl * sf;
+* n_diag_sw ;					n_diag_sw = s_diag_sw * sf;
+* n_diag_msm;					n_diag_msm = s_diag_msm * sf;
+
+* n_onart_m;					n_onart_m = s_onart_m * sf;
+* n_onart_w;					n_onart_w = s_onart_w * sf;
+* n_onart1524_m;				n_onart1524_m = (s_onart_m1519_ + s_onart_m2024_) * sf;
+* n_onart1524_w;				n_onart1524_w = (s_onart_w1519_ + s_onart_w2024_) * sf;
+* n_onart2549_m;				n_onart2549_m = (s_onart_m2529_ + s_onart_m3034_ + s_onart_m3539_ + s_onart_m4044_ + s_onart_m4549_) * sf;
+* n_onart2549_w;				n_onart2549_w = (s_onart_w2529_ + s_onart_w3034_ + s_onart_w3539_ + s_onart_w4044_ + s_onart_w4549_) * sf;
+* n_onart50pl_m;				n_onart50pl_m = n_onart_m - n_onart2549_m - n_onart1524_m;
+* n_onart50pl_w;				n_onart50pl_w = n_onart_w - n_onart2549_w - n_onart1524_w;
+* n_onart_sw;					n_onart_sw = s_onart_sw * sf;
+* n_onart_msm;					n_onart_msm = s_onart_msm * sf;
+
+* n_vl1000_art_1524_m;			n_vl1000_art_1524_m = s_vl1000_art_1524_m * sf;    
+* n_vl1000_art_2549_m;			n_vl1000_art_2549_m = s_vl1000_art_2549_m * sf;    
+* n_vl1000_art_50pl_m;			n_vl1000_art_50pl_m = s_vl1000_art_50pl_m * sf;    
+* n_vl1000_art_1524_w;			n_vl1000_art_1524_w = s_vl1000_art_1524_w * sf;    
+* n_vl1000_art_2549_w;			n_vl1000_art_2549_w = s_vl1000_art_2549_w * sf;    
+* n_vl1000_art_50pl_w;			n_vl1000_art_50pl_w = s_vl1000_art_50pl_w * sf;    
+* n_vl1000_art_sw;				n_vl1000_art_sw = s_vl1000_art_sw * sf;    
+* n_vl1000_art_msm;				n_vl1000_art_msm = s_vl1000_art_msm * sf;    
+
+* n_birth;						n_birth = s_birth * sf * 4;
+* n_give_birth_w_hiv; 			n_give_birth_w_hiv = s_give_birth_with_hiv * sf * 4;
+
+* n_dead1524m_all;				n_dead1524m_all = (s_dead1519m_all + s_dead2024m_all) * 4 * sf;
+* n_dead2549m_all;				n_dead2549m_all = (s_dead2529m_all + s_dead3034m_all + s_dead3539m_all + s_dead4044m_all + s_dead4549m_all) * 4 * sf;
+* n_dead50plm_all;				n_dead50plm_all = (s_dead5054m_all + s_dead5559m_all + s_dead6064m_all + s_dead6569m_all + s_dead7074m_all + s_dead7579m_all +
+								s_dead8084m_all	+ s_dead85plm_all ) * 4 * sf;
+* n_dead1524w_all;				n_dead1524w_all = (s_dead1519w_all + s_dead2024w_all) * 4 * sf;
+* n_dead2549w_all;				n_dead2549w_all = (s_dead2529w_all + s_dead3034w_all + s_dead3539w_all + s_dead4044w_all + s_dead4549w_all) * 4 * sf;
+* n_dead50plm_all;				n_dead50plw_all = (s_dead5054w_all + s_dead5559w_all + s_dead6064w_all + s_dead6569w_all + s_dead7074w_all + s_dead7579w_all +
+								s_dead8084w_all	+ s_dead85plw_all ) * 4 * sf;
+* n_death_hiv_age_1524_m;		n_death_hiv_age_1524_m = s_death_hiv_age_1524_m * 4 * sf; 
+* n_death_hiv_age_2549_m;		n_death_hiv_age_2549_m = s_death_hiv_age_2549_m * 4 * sf; 
+* n_death_hiv_age_50pl_m;		n_death_hiv_age_50pl_m = s_death_hiv_age_50pl_m * 4 * sf; 
+* n_death_hiv_age_1524_w;		n_death_hiv_age_1524_w = s_death_hiv_age_1524_w * 4 * sf; 
+* n_death_hiv_age_2549_w;		n_death_hiv_age_2549_w = s_death_hiv_age_2549_w * 4 * sf; 
+* n_death_hiv_age_50pl_w;		n_death_hiv_age_50pl_w = s_death_hiv_age_50pl_w * 4 * sf; 
+
+* n_hiv_child;					n_hiv_child = (s_birth_with_inf_child + s_child_infected_breastfeeding) * 4 * sf; 
+
+* n_new_inf1524m;				n_new_inf1524m = (s_primary1519m + s_primary2024m) * sf * 4;
+* n_new_inf1524w;				n_new_inf1524w = (s_primary1519w + s_primary2024w) * sf * 4;
+* n_new_inf2549m;				n_new_inf2549m = (s_primary1549m - s_primary1519m - s_primary2024m) * sf * 4;
+* n_new_inf2549w;				n_new_inf2549w = (s_primary1549w - s_primary1519w - s_primary2024w) * sf * 4;
+* n_new_inf50plm;				n_new_inf50plm = (s_primary5054m + s_primary5559m + s_primary6064m) * sf * 4;	
+* n_new_inf50plw;				n_new_inf50plw = (s_primary5054w + s_primary5559w + s_primary6064w) * sf * 4;	
+* n_new_inf_sw;					n_new_inf_sw = s_primary_sw * 4 * sf;
+* n_new_inf_msm;				n_new_inf_msm = s_primary_msm * 4 * sf;
+
+* n_daly;						n_daly = (s_yllag_hiv_m + s_yllag_hiv_w + s_live_daly ) * 4 * sf; *Not outputted - check;
+* p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;
+
+* n_onprep_m;					n_onprep_m = s_onprep_m * sf;
+* n_onprep_w;					n_onprep_w = s_onprep_w * sf;
+* n_onprep_sw;					n_onprep_sw = s_onprep_sw * sf;
+* n_onprep_msm;					n_onprep_msm = s_onprep_msm * sf;
+* n_elig_prep;					n_elig_prep = (s_elig_prep_any_m_1564 + s_elig_prep_any_w_1564) * sf;
+* n_new_inf_prep_elig;			n_new_inf_prep_elig = s_primary_prep_elig * 4 * sf; 
+
+* n_sw_program_visit;			n_sw_program_visit = s_sw_program_visit * sf;* Note this is per three months to approximate number of SW reached;
+
+
+***Extra outputs for calibration;
+
+
+
+keep run cald option
+
+/*HIV Control variables*/
+n_alive_1524m	n_alive_2549m	n_alive_50plm	n_alive_1524w	n_alive_2549w	n_alive_50plw	n_sw_1564	n_alive_msm
+n_hiv1524m		n_hiv2549m		n_hiv50plm		n_hiv1524w		n_hiv2549w		n_hiv50plw		n_hiv_sw	n_hiv_msm
+n_diag_m_1524	n_diag_m_2549	n_diag_m_50pl	n_diag_w_1524	n_diag_w_2549	n_diag_w_50pl	n_diag_sw	n_diag_msm
+n_onart1524_m	n_onart2549_m	n_onart50pl_m	n_onart1524_w	n_onart2549_w	n_onart50pl_w	n_onart_sw	n_onart_msm
+n_vl1000_art_1524_m		n_vl1000_art_2549_m		n_vl1000_art_50pl_m		n_vl1000_art_1524_w		n_vl1000_art_2549_w		n_vl1000_art_50pl_w
+n_vl1000_art_sw			n_vl1000_art_msm		n_birth					n_give_birth_w_hiv		n_hiv_child
+n_dead1524m_all	n_dead2549m_all	n_dead50plm_all	n_dead1524w_all	n_dead2549w_all	n_dead50plw_all
+n_new_inf1524m	n_new_inf2549m	n_new_inf50plm	n_new_inf1524w	n_new_inf2549w	n_new_inf50plw	n_new_inf_sw n_new_inf_msm
+n_death_hiv_age_1524_m	n_death_hiv_age_2549_m	n_death_hiv_age_50pl_m	n_death_hiv_age_1524_w	n_death_hiv_age_2549_w	n_death_hiv_age_50pl_w
+n_onprep_sw		n_onprep_msm	n_onprep_m		n_onprep_w		n_elig_prep		n_new_inf_prep_elig
+n_daly			cost			p_mcirc			n_sw_program_visit
+
+/*Extra outputs for calibration*/
+
+;
+
+
+
+
+
+
+/*
+* Previous list of outputs ;
+
 
 * p_age1549_hiv ; 				p_age1549_hiv = (s_hiv1549m + s_hiv1549w) / s_hivge15 ;
 * p_age1549_hivneg ;			p_age1549_hivneg = ((s_alive1549_w + s_alive1549_m) - (s_hiv1549m + s_hiv1549w)) / ((s_alive_m + s_alive_w) - s_hivge15);
@@ -1286,7 +1412,7 @@ dcost_clin_care dcost_non_aids_pre_death  dcost_child_hiv  dzdv_cost   dten_cost
 defa_cost   ddol_cost
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r r_efa_hiv 
 p_dol_2vg1000_dolr1_adh0 p_dol_2vg1000_dolr1_adh1 p_dol_2vg1000_dolr0_adh0 p_dol_2vg1000_dolr0_adh1 p_onart_cd4_l500  p_startedline2  prop_art_or_prep
-n_sw_1564 n_sw_1549 prev_sti_sw  /*n_sw_inprog_ly  n_sw_inprog_ever*/ n_sw_program_visit
+n_sw_1564 n_sw_1549 prev_sti_sw  n_sw_inprog_ly  n_sw_inprog_ever n_sw_program_visit
 prop_sw_onprep  p_vl1000_art_12m  p_vl1000_art_12m_onart
 p_o_zdv_tox p_o_3tc_tox p_o_ten_tox p_o_taz_tox p_o_lpr_tox p_o_efa_tox p_o_nev_tox p_o_dol_tox p_o_zdv_adh_hi p_o_3tc_adh_hi p_o_ten_adh_hi
 p_o_taz_adh_hi p_o_lpr_adh_hi p_o_efa_adh_hi p_o_nev_adh_hi p_o_dol_adh_hi
@@ -1359,11 +1485,11 @@ n_dead_hivpos_crypm  rate_dead_hivpos_crypm n_dead_hivpos_sbi  rate_dead_hivpos_
 n_dead_hivpos_cause2  rate_dead_hivpos_cause2 	n_dead_hivpos_cause3  rate_dead_hivpos_cause3 	n_dead_hivpos_cvd  rate_dead_hivpos_cvd 
 n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_hivneg_cvd n_dead_hivneg_tb  rate_dead_hivneg_tb
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4  rate_dead_hivneg_cause4 
-n_dead_hivneg_cause5  rate_dead_hivneg_cause5 /*rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause*/ n_death_2059_m n_death_2059_w
+n_dead_hivneg_cause5  rate_dead_hivneg_cause5 rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause n_death_2059_m n_death_2059_w
 n_total_yllag 	n_dyll_GBD
 n_dyllag_hiv_w	n_dyllag_hiv_m
 n_yllag_hiv_w	n_yllag_hiv_m
-/*n_death_hiv_m n_death_hiv_w*/ n_cd4_lt50 n_cd4_lt200
+n_death_hiv_m n_death_hiv_w n_cd4_lt50 n_cd4_lt200
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
@@ -1380,12 +1506,12 @@ poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
 red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
 prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e  higher_newp_less_engagement
-fold_tr switch_for_tox /*adh_pattern_prep rate_test_startprep*/ rate_test_restartprep
+fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
 rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_activity_k65r  zero_3tc_activity_m184  /*red_adh_multi_pill_pop*/   greater_disability_tox	  greater_tox_zdv
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 prep_strategy higher_future_prep_coverage  sens_test_prep
 
 eff_max_freq_testing     eff_rate_restart    eff_prob_loss_at_diag     eff_rate_lost  eff_prob_lost_art   eff_rate_return   eff_pr_art_init  
@@ -1432,7 +1558,7 @@ prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep
 
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_onart_1524_ n_art_start_y p_diag_w p_diag_m p_onart_vl1000 
-/*n_death_hiv_m n_death_hiv_w*/ n_tested_m n_tested_w
+n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
 p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 s_cost_prep s_cost_prep_visit
@@ -1453,7 +1579,7 @@ n_hiv_child  n_new_inf_sw  n_new_inf_msm
  n_death_hiv_age_1524_w   n_death_hiv_age_2549_w  n_death_hiv_age_50pl_w
 ;
 
-
+*/
 
 
 proc sort data=y;by run option;run;
@@ -1662,7 +1788,7 @@ Percent_FSW_reached
 Percent_MSM_reached
 
 ;
-
+run;
  
   options nomprint;
   option nospool;

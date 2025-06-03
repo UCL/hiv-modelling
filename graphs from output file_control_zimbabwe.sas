@@ -23,13 +23,13 @@ p_onart_vl1000_all = .;
 
 * NB: note lines below, because variable names cannot end with a number;
 n_sw_1564_ = n_sw_1564;*VCFeb2023;
-n_not_on_art_cd4050_ = n_not_on_art_cd4050;*VCFeb2023;
-n_not_on_art_cd450200_ = n_not_on_art_cd450200;*VCFeb2023;
-n_not_on_art_cd4200350_ = n_not_on_art_cd4200350;*VCFeb2023;
-n_not_on_art_cd4350500_ = n_not_on_art_cd4350500;*VCFeb2023;
-n_not_on_art_cd4ge500_  = n_not_on_art_cd4ge500;*VCFeb2023;
+/*n_not_on_art_cd4050_ = n_not_on_art_cd4050;*VCFeb2023;*/
+/*n_not_on_art_cd450200_ = n_not_on_art_cd450200;*VCFeb2023;*/
+/*n_not_on_art_cd4200350_ = n_not_on_art_cd4200350;*VCFeb2023;*/
+/*n_not_on_art_cd4350500_ = n_not_on_art_cd4350500;*VCFeb2023;*/
+/*n_not_on_art_cd4ge500_  = n_not_on_art_cd4ge500;*VCFeb2023;*/
 
-log_gender_r_newp  = log(gender_r_newp);
+/*log_gender_r_newp  = log(gender_r_newp);*/
 prevalence1549_ = prevalence1549;
 incidence1549_ = incidence1549;
 incidence1564_ = incidence1564;
