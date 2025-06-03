@@ -3,12 +3,12 @@
 
 ods html close;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_b_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_c_out\";
 
 
 /*
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_b_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_c_out\";
 
 data g ; set a.out: ;
 
@@ -790,6 +790,8 @@ end;
 * n_vl1000_art_sw;				n_vl1000_art_sw = s_vl1000_art_sw * sf;    
 * n_vl1000_art_msm;				n_vl1000_art_msm = s_vl1000_art_msm * sf;    
 
+* incidence_msm;				if (s_msm  - s_hiv_msm  + s_primary_msm) gt 0 then incidence_msm=(s_primary_msm * 4 * 100) 
+									/ (s_msm  - s_hiv_msm  + s_primary_msm);
 
 * p_efa;						if s_onart > 0 then p_efa = s_efa / s_onart ;
 * p_taz;						if s_onart > 0 then p_taz = s_taz / s_onart ;
@@ -938,6 +940,7 @@ end;
 * p_diag_msm;					p_diag_msm = s_diag_msm / s_hiv_msm  ;
 * p_onart_diag_msm;				p_onart_diag_msm = s_onart_msm / s_diag_msm ;
 * p_vl1000_art_gt6m_msm;		p_vl1000_art_gt6m_msm = s_vl1000_art_gt6m_msm / s_onart_gt6m_msm ;
+* p_vl1000_msm;					p_vl1000_msm = s_vl1000_msm / s_hiv_msm;
 * p_ever_tested_msm; 			p_ever_tested_msm = s_ever_tested_msm / s_msm;
 * p_tested_this_period_msm;		p_tested_this_period_msm = s_tested_msm / (s_msm - s_diag_msm) ;
 * p_msm_infected_from_msm;		p_msm_infected_from_msm = s_infected_from_msm / s_hiv_msm ;
@@ -1445,7 +1448,7 @@ n_vl1000_art_sw n_vl1000_art_msm
  n_dead_w	n_dead1524w_all	 n_dead2549w_all	 n_dead50plw_all   n_dead_m		n_dead1524m_all		n_dead2549m_all	 n_dead50plm_all				
 n_hiv_child  n_new_inf_sw  n_new_inf_msm
  n_death_hiv_age_1524_m   n_death_hiv_age_2549_m  n_death_hiv_age_50pl_m
- n_death_hiv_age_1524_w   n_death_hiv_age_2549_w  n_death_hiv_age_50pl_w
+ n_death_hiv_age_1524_w   n_death_hiv_age_2549_w  n_death_hiv_age_50pl_w  p_vl1000_msm  incidence_msm
 ;
 
 
@@ -1458,17 +1461,17 @@ proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_mlw_control_b; set y;
+data a.long_mlw_control_c; set y;
 if cald=. then delete;run;
 
-proc contents data = a.long_mlw_control_b; run;
+proc contents data = a.long_mlw_control_c; run;
 
 
 
 ************************************************************************************************************************************************************;
 
 
-data y; set a.long_mlw_control_b; 
+data y; set a.long_mlw_control_c; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
