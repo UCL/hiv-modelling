@@ -12,7 +12,7 @@ ods listing;
 
 
 data a;
-set a.cdi_16May25;
+set a.cdi_28May25;
 if run=. then delete;
 
 proc sort;by run cald option;run;
@@ -373,10 +373,10 @@ proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_cdi_control_16May25; set y;
+data a.long_cdi_control_28May25; set y;
 if cald=. then delete;run;
 
-proc contents data = a.long_cdi_control_16May25; run;
+proc contents data = a.long_cdi_control_29May25; run;
 
 
 
