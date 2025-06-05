@@ -2,28 +2,7 @@
 
 
 
-* options user="/folders/myfolders/";
-
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ap_out\";
-
-
-/*
-
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\tld_switch\tld_switch_ap_out\";
-
-
-data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
-data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
-
-data b.k_tld_switch_ap;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
-
-* this contains out.. files up to 15.03 28-aug-24 ;
-
-if option in (0, 2, 4);
-
-run;
-
-*/
 
 
 
@@ -33,7 +12,6 @@ by run cald option;
 run;
 
 
-* calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
 set b.k_tld_switch_ap ;
@@ -59,11 +37,6 @@ merge b.k_tld_switch_ap sf;
 by run ;
 
 
-
-* preparatory code ;
-
-* ================================================================================= ;
-
 if s_pregnant_oth_dol_adv_birth_e = . then s_pregnant_oth_dol_adv_birth_e = 0;
 
 pregnant_hiv_diagnosed = s_pregnant - s_pregnant_not_diagnosed_pos;
@@ -74,34 +47,6 @@ s_w_newp = s_w_1524_newp  +	 s_w_2534_newp  +  s_w_3544_newp +   s_w_4554_newp  
 s_i_m_newp = s_i_age1_m_newp + s_i_age2_m_newp + s_i_age3_m_newp + s_i_age4_m_newp + s_i_age5_m_newp ;
 s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_newp + s_i_age5_w_newp ;
 
-*r_bir_w_infected_child_ = rate_birth_with_infected_child_;
-
-* ================================================================================= ;
-
-
-* discount rate;
-
-* ================================================================================= ;
-
-* discount rate is 3%; 
-* note discounting is from 2023 - no adjustment needed;
-* ts1m - this code needs to change for ts1m;
-
-* %let year_start_disc=2023.5;
-* discount_10py = 1/(1.10**(cald-&year_start_disc));
-* The following can be changed if we want instead 10% discount rate;
-* %let discount=discount_3py;
-
-
-* ================================================================================= ;
-
-
-
-
-
-* dalys and life years;
-
-* ================================================================================= ;
 
 ly = s_ly * sf;
 dly = s_dly * sf;
@@ -109,21 +54,15 @@ dly = s_dly * sf;
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
 dead_ddaly_ntd = s_dead_ddaly_ntd * sf * 4 * (0.0022 / 0.0058); 
-*  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
-*  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
+
 
 ddaly = s_ddaly * sf * 4;
 
-
-* sensitivity analysis;
-* dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
-
-
-dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf * 4; * odabe ;
+dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf * 4; 
 
 ddaly_mtct = s_ddaly_mtct * sf * 4;
 
-ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf * 4; * napd;
+ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf * 4; 
 
 ddaly_ac_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
 
@@ -137,17 +76,6 @@ ddaly_all = ddaly_ntd_mtct_odab_napd;
 
 ddaly_ac_mtct = ddaly + ddaly_mtct ;
 
-* ================================================================================= ;
-
-
-
-* costs ;
-
-* ================================================================================= ;
-
-* all costs expressed as $ millions per year in 2018 USD;
-
-* ts1m - 12 instead of 4; 
 
 dzdv_cost = s_dcost_zdv * sf * 4 / 1000;
 dten_cost = s_dcost_ten * sf * 4 / 1000;
@@ -181,9 +109,7 @@ if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
 s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_cab +  s_dcost_prep_len ;
 s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_cab + s_dcost_prep_visit_len   ;
-
-
-* ts1m - 12 instead of 4; 
+ 
 dvis_cost = s_dvis_cost * sf * 4 / 1000;
 dart_1_cost = s_dart_1_cost * sf * 4 / 1000;
 dart_2_cost = s_dart_2_cost * sf * 4 / 1000;
@@ -214,14 +140,12 @@ dcrag_cost =  s_dcrag_cost  * sf * 4 / 1000;
 dcrypm_proph_cost = s_dcrypm_proph_cost * sf * 4 / 1000;  
 dsbi_proph_cost = s_dsbi_proph_cost  * sf * 4 / 1000; 
 
-
-* note this below can be used if outputs are from program beyond 1-1-20;
   dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf * 4 / 1000;
-  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
+  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf * 4 / 1000; 
 
 dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
 dcost_circ = s_dcost_circ * sf * 4 / 1000; 
-dcost_condom_dn = s_dcost_condom_dn * sf * 4 / 1000; dcost_condom_dn = dcost_condom_dn / 4; * note reduction in this ;
+dcost_condom_dn = s_dcost_condom_dn * sf * 4 / 1000; dcost_condom_dn = dcost_condom_dn / 4; 
 dswitchline_cost = s_dcost_switch_line * sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
@@ -229,9 +153,6 @@ dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
 dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; 
 
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
-
-* sens analysis;
-* ddar_cost = ddar_cost * 0.71 ;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
@@ -244,17 +165,6 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 cost_clin_care = dcost_clin_care / discount;
 
 cost = dcost / discount;
-
-
-
-* checks;
-
-* proc print; 
-* var run cald option dcost_prep_cab dcost_prep_len  dcost_prep_oral   dcost_prep  dcost_prep_visit;
-
-* ================================================================================= ;
-
-* derived variables relating to population, not only those with hiv ;
 
 if s_ai_naive_no_pmtct_c_nnm_ = . then s_ai_naive_no_pmtct_c_nnm_ = 0; 
 if s_ai_naive_no_pmtct_c_pim_ = . then s_ai_naive_no_pmtct_c_pim_ = 0;
@@ -303,7 +213,6 @@ s_hiv = s_hivge15 ;
 
 * av_newp_ge1;					av_newp_ge1 = s_newp / s_newp_ge1 ;
 
-* av number of newp amongst people with newp ge 1, exlcuding sw;
 * av_newp_ge1_non_sw;			av_newp_ge1_non_sw = (s_newp - s_newp_sw) / (s_newp_ge1 - (s_sw_newp_cat2 + s_sw_newp_cat3 +s_sw_newp_cat4 +s_sw_newp_cat5));
 
 
@@ -327,14 +236,6 @@ s_hiv = s_hivge15 ;
 * n_sw_1549;					n_sw_1549 = s_sw_1549 * sf;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw = s_sw_newp / s_w_newp ;
 
-* rate_susc_np_1549_m;			*rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
-* rate_susc_np_1549_w;			*rate_susc_np_1549_w = s_susc_newp_1549_w / (s_alive1549_w - s_hiv1549w);
-* rate_susc_np_ic_1549_m;		*rate_susc_np_ic_1549_m = s_susc_newp_inc_circ_1549_m / (s_alive1549_m - s_hiv1549m);  * circumcised count as not susceptible;
-
-* mean_num_tests_ly_m1549_;		*mean_num_tests_ly_m1549_ = s_tested_ly_m1549_ / (s_alive1549_m  - s_hiv1549m) ;
-* mean_num_tests_ly_w1549_;		*mean_num_tests_ly_w1549_ = s_tested_ly_w1549_ / (s_alive1549_w  - s_hiv1549w) ;
-
-* note these are now number tested per 3 months;
 * n_tested_m;					n_tested_m = s_tested_m * sf ;
 * n_tested_w;					n_tested_w = s_tested_f * sf ;
 * n_tested_sw;					n_tested_sw = s_tested_sw * sf ;
@@ -342,7 +243,6 @@ s_hiv = s_hivge15 ;
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
-* of people alive and within 1 year of infection, proportion diagnosed ;
 * prop_diag_infection_1yr;		prop_diag_infection_1yr = s_year_1_infection_diag / s_year_1_infection ;
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
@@ -395,7 +295,6 @@ s_hiv = s_hivge15 ;
 
 s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
-* proportion of those on prep who have ge 1 newp in the period ;
 * p_prep_newp ;					if s_prep_any > 0 then p_prep_newp = (s_newp_this_per_hivneg_m_prep + s_newp_this_per_hivneg_w_prep) / s_prep_any ; 
 
 * prop_1564m_onprep;			prop_1564m_onprep =   max(s_onprep_m, 0) / (s_alive1564_m - s_hiv1564m) ;
@@ -410,15 +309,15 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * prop_onprep_newpge2;			if s_prep_any > 0 then prop_onprep_newpge2 = (s_prep_newpg2 + s_prep_newpg3 + s_prep_newpg4)/ s_prep_any ;
 * prop_onprep_newpge3;			if s_prep_any > 0 then prop_onprep_newpge3 = (s_prep_newpg3 + s_prep_newpg4)/ s_prep_any ;
 
-* p_newp_this_per_prep;			p_newp_this_per_prep = s_newp_this_per_prep / s_newp_this_per_hivneg ;  * newp this per means at least one newp ;
+* p_newp_this_per_prep;			p_newp_this_per_prep = s_newp_this_per_prep / s_newp_this_per_hivneg ;  
 
 * prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;
 								if s_prep_any_elig = 0 then prop_elig_on_prep = 0;
 
 
-* p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  * proportion of all newp for which person is on prep;
+* p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  
 
-* p_newp_prep_hivneg;			p_newp_prep_hivneg = s_prep_newp / s_newp_hivneg ;  * proportion of all newp in hiv-ve people for which person is on prep;
+* p_newp_prep_hivneg;			p_newp_prep_hivneg = s_prep_newp / s_newp_hivneg ;  
 
 
 * p_elig_all_prep_criteria;		p_elig_all_prep_criteria = s_all_prep_criteria / s_prep_any_elig;
@@ -758,8 +657,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * r_prev_sex_1549 ;				r_prev_sex_1549 = prevalence1549w / prevalence1549m ;
 
-
-* derived variables relating to people with hiv ;
 								if s_primary gt 0 then do;
 * p_inf_vlsupp ;				p_inf_vlsupp = s_inf_vlsupp   / s_primary;
 * p_inf_newp ;					p_inf_newp = s_inf_newp / s_primary;
@@ -768,7 +665,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_inf_naive ; 				p_inf_naive = s_inf_naive / s_primary;
 * p_inf_primary ;				p_inf_primary = s_inf_primary / s_primary;
 
-*The meaning of the following is: among newly infected people, which proportion are SW, etc..;
 * p_sw_newinf;				    p_sw_newinf = s_primary_sw / s_primary;		
 * p_w1524_newinf;				p_w1524_newinf = sum(s_primary1519w,s_primary2024w) / s_primary;
 * p_w25ov_newinf;				p_w25ov_newinf = sum(s_primary2529w,s_primary3034w,s_primary3539w,s_primary4044w,s_primary4549w,s_primary5054w,s_primary5559w,s_primary6064w) / s_primary;		
@@ -793,16 +689,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_ai_no_arv_c_rttams;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_rttams = s_ai_naive_no_pmtct_c_rttams_ / s_ai_naive_no_pmtct_;
 * p_ai_no_arv_e_inm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_e_inm = s_ai_naive_no_pmtct_e_inm_ / s_ai_naive_no_pmtct_;
 * n_ai_naive_no_pmtct_e_inm;    n_ai_naive_no_pmtct_e_inm = s_ai_naive_no_pmtct_e_inm_ * sf;
-
-
-/*
-
-proc sort; by option;
-proc means; var p_ai_no_arv_e_inm ; by option;
-where cald ge 2043 and res_trans_factor_ii=1;
-run;
-
-*/
 
 * p_artexp_diag;  				if s_diag > 0 then p_artexp_diag = s_artexp / s_diag;
 * p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag;
@@ -964,7 +850,6 @@ run;
 * prev_vg1000_newp_w;			prev_vg1000_newp_w = (s_i_w_newp - s_i_vl1000_w_newp) /  s_w_newp;
 * r_efa_hiv;					if s_hivge15 > 0 then r_efa_hiv = s_r_efa / s_hivge15 ;
 
-* note o_dol_2nd_vlg1000 is if have 2nd vlg1000 in this period;
 * p_dol_2vg1000_dolr1_adh0;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr1_adh0 = s_o_dol_2nd_vlg1000_dolr1_adh0 / s_o_dol_2nd_vlg1000 ;
 * p_dol_2vg1000_dolr1_adh1;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr1_adh1 = s_o_dol_2nd_vlg1000_dolr1_adh1 / s_o_dol_2nd_vlg1000 ;
 * p_dol_2vg1000_dolr0_adh0;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr0_adh0 = s_o_dol_2nd_vlg1000_dolr0_adh0 / s_o_dol_2nd_vlg1000 ;
@@ -1001,15 +886,6 @@ run;
 * p_o_dar_uvl2_onart;			p_o_dar_uvl2_onart = s_o_dar_uvl2 / s_onart_iicu_uvl2;
 * p_onart_iicu_vl1000_uvl2;		p_onart_iicu_vl1000_uvl2 = s_onart_iicu_vl1000_uvl2 / s_onart_iicu_uvl2;
 * p_r_dol_vl1000_uvl2;			p_r_dol_vl1000_uvl2 = s_r_dol_vl1000_uvl2 / s_r_dol_uvl2 ;
-
-* 
-s_uvl2_now_tld_only  s_uvl2_now_no_prev_vfail 
-
-s_uvl2_now_prev_vfail 
-
-s_uvl2_now_tld_only_dol_r  s_uvl2_now_no_prev_vfail_dol_r s_uvl2_now_prev_vfail_dol_r 
-;
-
 
 * n_uvl2_only_tld_dolr ;   		n_uvl2_only_tld_dolr = s_uvl2_only_tld_dolr * sf    ; 
 * n_uvl2_no_prev_fail_dolr ;    n_uvl2_no_prev_fail_dolr = s_uvl2_no_prev_fail_dolr * sf    ;
@@ -1190,11 +1066,6 @@ s_uvl2_now_tld_only_dol_r  s_uvl2_now_no_prev_vfail_dol_r s_uvl2_now_prev_vfail_
 				 				if s_alive_m > 0 then death_rate_hiv_all_m = (4 * 100 * s_death_hiv_m) / s_alive_m;
 								if s_alive_w > 0 then death_rate_hiv_all_w = (4 * 100 * s_death_hiv_w) / s_alive_w;
 
-
-
-
-* n deaths and death rate by cause and hiv status - age 15+ ;
-
 			n_dead_hivpos_cause1 = s_dead_hivpos_cause1 * 4 * sf; 
 			rate_dead_hivpos_cause1 = (s_dead_hivpos_cause1 * 4 * 100) / s_hivge15 ;
 			n_dead_hivpos_tb = s_dead_hivpos_tb  * 4* sf; 
@@ -1278,13 +1149,11 @@ s_uvl2_now_tld_only_dol_r  s_uvl2_now_no_prev_vfail_dol_r s_uvl2_now_prev_vfail_
 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
-* number of women with hiv giving birth per year;
-
 n_give_birth_w_hiv = s_give_birth_with_hiv * sf * 4;
 n_birth_with_inf_child = s_birth_with_inf_child * sf * 4;
 s_pregnant_ntd = s_pregnant_ntd * (0.0022 / 0.0058);
 n_pregnant_ntd = s_pregnant_ntd    * sf * 4 ; 
-n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf * 4;  * annual number;
+n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf * 4; 
 n_mcirc1549_ = s_mcirc_1549m * sf * 4;
 n_mcirc1549_3m = s_mcirc_1549m * sf;
 n_vmmc1549_ = s_vmmc1549m * sf * 4;
@@ -1429,9 +1298,6 @@ p_artexp_uvl2   rel_dol_tox
 
 proc sort data=y;by run option;run;
 
-* l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-
-* check on when branching to options occurs;
 proc freq; tables cald option; where cald=2024.25;
 proc freq; tables cald option; where cald=2024.50;
 proc freq; tables cald option; where cald=2024.75;
@@ -1455,20 +1321,13 @@ data y ; set b.l_tld_switch_ap_rev;
   options nomprint;
   option nospool;
 
-***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;
-* user to decide what years and year ranges to include ;
-
-
-
 %macro var(v=);
 
-* &v ;
 
 data e; set y; keep &v run cald option ;
 
 proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2023 <= cald <= 2025; 
 
-* note: it is critical that this starts at year_interv;
 
 proc means noprint data=e; var &v; output out=y_26 mean= &v._26; by run option ; where cald = 2026; 
 proc means noprint data=e; var &v; output out=y_1y mean= &v._1y; by run option ; where 2026.0 <= cald < 2027.00; 
@@ -1741,7 +1600,6 @@ proc contents; run;
 
 proc sort; by run; run;
 
-***Macro par used to add in values of all sampled parameters - values before intervention;
 data f; set y; 
 if cald=2024;
 
@@ -1804,7 +1662,6 @@ date_prep_cab_intro  rel_dol_tox
 
 %macro par(p=);
 
-* &p ;
 proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2024; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
@@ -1931,9 +1788,6 @@ run;
 proc sort; by run;run;
 
 
-* To get one row per run;
-
-
   data  b.w_tld_switch_ap_rev    ; 
   merge b.wide_outputs_rev   b.wide_par2_rev    ;
   by run;
@@ -1949,11 +1803,7 @@ set b.w_tld_switch_ap_rev   ;
 
   if 0.0001 <= prop_r_dol_ge_p5_uvl2_24 < 0.35;
 
-  if run le  973893787; * for tld_switch_ap final results for ms - 29 aug 24 ;
-
-* if run le 984208102 ; * for tld_switch_ap results on first 1000 for sending out new draft after 26 aug 24;
-
-* if run le 980648583  ; * for tld_switch_an - results in ms sent out 18th aug 24;
+  if run le  973893787; 
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -1990,10 +1840,6 @@ d_n_dead_hivrel_onart_10y_3_1 = n_dead_hivrel_onart_10y_3 - n_dead_hivrel_onart_
 d_n_dead_hivrel_onart_1y_2_1 = n_dead_hivrel_onart_1y_2 - n_dead_hivrel_onart_1y_1;
 d_n_dead_hivrel_onart_1y_3_1 = n_dead_hivrel_onart_1y_3 - n_dead_hivrel_onart_1y_1;
 
-* for sensitivity analysis;
-* dres_cost_50y_2 = dres_cost_50y_2 * 0.5  ;
-
-* checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
 dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
@@ -2101,8 +1947,6 @@ r_incidence1549_10y_3_1 = incidence1549_10y_3 / incidence1549_10y_1;
 r_incidence1549_10y_2_1 = incidence1549_10y_2 / incidence1549_10y_1;
 
 
-* take means across optioms for 1y (ie the year 2026) as a baseline;
-
 p_uvl2_elig_uvl21_1y = (p_uvl2_elig_uvl21_1y_1 + p_uvl2_elig_uvl21_1y_2 + p_uvl2_elig_uvl21_1y_3) / 3;
 p_uvl2_elig_uvl22_1y = (p_uvl2_elig_uvl22_1y_1 + p_uvl2_elig_uvl22_1y_2 + p_uvl2_elig_uvl22_1y_3) / 3;
 p_uvl2_elig_uvl23_1y = (p_uvl2_elig_uvl23_1y_1 + p_uvl2_elig_uvl23_1y_2 + p_uvl2_elig_uvl23_1y_3) / 3;
@@ -2147,18 +1991,6 @@ d_deathr_dol_r_uvl2_10y_2_3 = deathr_dol_r_uvl2_10y_3 - deathr_dol_r_uvl2_10y_2;
 
 n_res_test_p100k_dol_py_10y_2 = n_res_test_dol_py_10y_2 / n_onart_10y_2;
 
-
-* s_uvl2_elig_10y_1 = n_uvl2_elig_10y_1 / sf_2024 ;  
-* restrict to s onart iicu vlg1000 ;
-* if s_uvl2_elig_10y_1 > 300;
-* proc freq; 
-* tables s_o_dol_2nd_vlg1000_24 s_vl1000_art_gt6m_iicu_24 ;
-* run;
-
-
-
-
-* table 1;
 
 ods html;
 proc means   data = b  n p50  p5  p95 ;  
@@ -2250,8 +2082,7 @@ cost_3y_2
 cost_3y_3
 
 ;
-* where prop_r_dol_ge_p5_uvl2_24 < 0.05;
-* where pr_switch_line = 1;
+
 run;
 ods html close;
 
@@ -2511,200 +2342,3 @@ run;
 ods html close;
 
 
-
-/*
-
-
-proc means; var prevalence1549_24 incidence1549_24 prevalence_vg1000_24 prop_r_dol_ge_p5_uvl2_24; run; 
-
-proc freq data=c; tables prevalence_vg1000_24 ; run;
-
-proc corr; var prevalence1549_24 incidence1549_24 ; run;
-
-
-proc logistic data=c; model x = prevalence1549_24 ; run; 
-proc logistic data=c; model x = incidence1549_24 ; run; 
-proc logistic data=c; model x = p_diag_24 ; run; 
-proc logistic data=c; model x = p_onart_diag_24 ; run; 
-proc logistic data=c; model x = p_onart_vl1000_24 ; run; 
-proc logistic data=c; model x = p_vl1000_24 ; run; 
-proc logistic data=c; model x = prevalence_vg1000_24 ; run; 
-proc logistic data=c; model x = prop_r_dol_ge_p5_uvl2_24 ; run; 
-proc logistic data=c; model x = prop_tldsw_uvl2_24 ; run; 
-
-
-proc logistic data=c; model x = prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24  p_onart_vl1000_24  p_vl1000_24  prevalence_vg1000_24 
-prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 ; 
-run; 
-
-proc logistic data=c; model x = prevalence1549_24  p_diag_24 p_onart_diag_24  p_onart_vl1000_24  p_vl1000_24  prevalence_vg1000_24 
-prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 ; 
-run; 
-
-proc logistic data=c; model x = incidence1549_24 p_diag_24 p_onart_diag_24  p_onart_vl1000_24  p_vl1000_24  prevalence_vg1000_24 
-prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 ; 
-run; 
-
-proc logistic data=c; model x = prevalence1549_24  p_diag_24 p_onart_diag_24  p_onart_vl1000_24  prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24 ; 
-run; 
-
-proc logistic data=c; model x = prevalence1549_24  p_diag_24 p_onart_diag_24  p_onart_vl1000_24  prop_r_dol_ge_p5_uvl2_24  prop_tldsw_uvl2_24
-int1 int2 int3 int4 int5 int6 int7 int8 int9 int10 int11 int12 int13 int14 int15
-; 
-run; 
-
-
-proc logistic data=c; model x =
-
-prevalence1549_24_g2 
-prevalence1549_24_g3 
-prevalence1549_24_g4 
-
-incidence1549_24_g2 
-incidence1549_24_g3 
-
-p_diag_24_g2 
-p_diag_24_g3 
-
-p_onart_diag_24_g2 
-p_onart_diag_24_g3 
-
-p_onart_vl1000_24_g2 
-p_onart_vl1000_24_g3 
-
-p_vl1000_24_g2 
-p_vl1000_24_g3 
-
-prevalence_vg1000_24_g2 
-prevalence_vg1000_24_g3 
-
-prop_r_dol_ge_p5_uvl2_24_g2 
-prop_r_dol_ge_p5_uvl2_24_g3 
-
-prop_tldsw_uvl2_24_g2 
-prop_tldsw_uvl2_24_g3 
-
-;
-run:
-
-
-proc logistic data=c; model x = 
-
-prevalence1549_24_g2 
-prevalence1549_24_g3 
-prevalence1549_24_g4 
-;
-run;
-
-proc logistic data=c; model x = 
-
-incidence1549_24_g2 
-incidence1549_24_g3 
-;
-run;
-
-proc logistic data=c; model x = 
-
-p_diag_24_g2 
-p_diag_24_g3 
-;
-run;
-
-proc logistic data=c; model x = 
-
-p_onart_diag_24_g2 
-p_onart_diag_24_g3 
-;
-run;
-
-proc logistic data=c; model x = 
-
-p_onart_vl1000_24_g2 
-p_onart_vl1000_24_g3 
-;
-run;
-
-proc logistic data=c; model x = 
-
-p_vl1000_24_g2 
-p_vl1000_24_g3 
-;
-run;
-
-proc logistic data=c; model x = 
-
-prevalence_vg1000_24_g2 
-prevalence_vg1000_24_g3 
-;
-run;
-
-proc logistic data=c; model x = 
-
-prop_r_dol_ge_p5_uvl2_24_g2 
-prop_r_dol_ge_p5_uvl2_24_g3 
-;
-run;
-
-proc logistic data=c; model x = 
-
-prop_tldsw_uvl2_24_g2 
-prop_tldsw_uvl2_24_g3 
-;
-run;
-
-
-proc logistic data=c; model x = p_adh_lt80_iicu_tldsw_24 ; run; 
-proc logistic data=c; model x = p_vis_tldsw_24 ; run; 
-proc logistic data=c; model x = p_dol_24 ; run; 
-proc logistic data=c; model x = p_iime_24 ; run; 
-proc logistic data=c; model x = p_onart_cd4_l200_24 ; run; 
-proc logistic data=c; model x = n_death_hiv_24 ; run; 
-proc logistic data=c; model x = p_dol_start_nactive_2_r_1y_3 ; run;         
-           
-run;
-
-
-
-ods html;
-
-proc logistic data=c; model x_ce_sw = prevalence1549_24 ; run; 
-proc logistic data=c; model x_ce_sw = incidence1549_24 ; run; 
-proc logistic data=c; model x_ce_sw = p_diag_24 ; run; 
-proc logistic data=c; model x_ce_sw = p_onart_diag_24 ; run; 
-proc logistic data=c; model x_ce_sw = p_onart_vl1000_24 ; run; 
-proc logistic data=c; model x_ce_sw = p_vl1000_24 ; run; 
-proc logistic data=c; model x_ce_sw = prop_tldsw_uvl2_24 ; run;
-proc logistic data=c; model x_ce_sw = prevalence_vg1000_24 ; run;  
-proc logistic data=c; model x_ce_sw = prop_r_dol_ge_p5_uvl2_24 ; run; 
-
-ods html close;
-
-ods html;
-
-proc logistic data=c; model x_ce_rt = prevalence1549_24 ; run; 
-proc logistic data=c; model x_ce_rt = incidence1549_24 ; run; 
-proc logistic data=c; model x_ce_rt = p_diag_24 ; run; 
-proc logistic data=c; model x_ce_rt = p_onart_diag_24 ; run; 
-proc logistic data=c; model x_ce_rt = p_onart_vl1000_24 ; run; 
-proc logistic data=c; model x_ce_rt = p_vl1000_24 ; run; 
-proc logistic data=c; model x_ce_rt = prop_tldsw_uvl2_24 ; run;
-proc logistic data=c; model x_ce_rt = prevalence_vg1000_24 ; run;  
-proc logistic data=c; model x_ce_rt = prop_r_dol_ge_p5_uvl2_24 ; run; 
-
-ods html close;
-
-ods html;
-
-proc logistic data=c; model x_ce_nsw = prevalence1549_24 ; run; 
-proc logistic data=c; model x_ce_nsw = incidence1549_24 ; run; 
-proc logistic data=c; model x_ce_nsw = p_diag_24 ; run; 
-proc logistic data=c; model x_ce_nsw = p_onart_diag_24 ; run; 
-proc logistic data=c; model x_ce_nsw = p_onart_vl1000_24 ; run; 
-proc logistic data=c; model x_ce_nsw = p_vl1000_24 ; run; 
-proc logistic data=c; model x_ce_nsw = prop_tldsw_uvl2_24 ; run;
-proc logistic data=c; model x_ce_nsw = prevalence_vg1000_24 ; run;  
-proc logistic data=c; model x_ce_nsw = prop_r_dol_ge_p5_uvl2_24 ; run; 
-
-ods html close;
-
-*/
