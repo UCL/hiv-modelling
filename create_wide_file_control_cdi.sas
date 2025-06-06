@@ -376,7 +376,7 @@ proc contents; run;
 data a.long_cdi_control_28May25; set y;
 if cald=. then delete;run;
 
-proc contents data = a.long_cdi_control_29May25; run;
+proc contents data = a.long_cdi_control_28May25; run;
 
 
 
