@@ -1,10 +1,4 @@
 
-*
-_c  remove if msm=1 then hard_reach=1;
-;
-
-
-
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -1024,9 +1018,9 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-  %include "/home/rmjlaph/malawi_parameters.sas";
+*  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
-* %include "/home/rmjllob/CdI_parameters.sas";
+ %include "/home/rmjllob/CdI_parameters2.sas";
 
 call symput('caldate1',caldate1);
 
@@ -2134,7 +2128,7 @@ p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 
 
-if pwid=1 then hard_reach=1;
+*if msm=1 or pwid=1 then hard_reach=1;
 
 
 
