@@ -2128,7 +2128,7 @@ p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 
 
-*if msm=1 or pwid=1 then hard_reach=1;
+if pwid=1 then hard_reach=1;
 
 
 
@@ -2374,10 +2374,11 @@ prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 
 * Oral prep scale-up over 4 years;
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
-else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
+else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and prob_prep_oral_b_set_in_opts ne 1
 	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
-else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
+else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and prob_prep_oral_b_set_in_opts ne 1
 	then eff_prob_prep_oral_b = prob_prep_oral_b;
+
 
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
@@ -2604,14 +2605,15 @@ if caldate{t} = &year_interv then do;
 							adhav_prep_oral = adhav*1.00; 
 						end;		
 
-	* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
+		* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_any_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if rate_test_startprep_set_in_opts ne 1 then do; 
 								eff_rate_test_startprep_any = 0.9; 
 								eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
 							end;
-						end;		
+						end;
+
 
 	* incr_r_test_restartprep_any_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						incr_r_test_restartprep_any_yr_i = 0;  
@@ -2623,21 +2625,21 @@ if caldate{t} = &year_interv then do;
 						decr_r_choose_stopprep_oral_yr_i = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stopprep_oral_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if r_ch_stop_prep_oral_set_in_opts ne 1 then do;
 								eff_rate_choose_stop_prep_oral = 0.03 ; 
 								eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
 							end;
-						end;		
+						end;			
 
 	* inc_p_prep_any_restart_choi_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_p_prep_any_restart_choi_yr_i = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_any_restart_choi_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if p_prep_restart_set_in_opts ne 1 then do;
 								eff_prob_prep_any_restart_choice = 0.8 ; 
 								eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
 							end;
-						end;		
+						end;			
 
 	* prep_any_strategy;
 						if set_in_options ne 1 then prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
@@ -2661,7 +2663,7 @@ if caldate{t} = &year_interv then do;
 	decr_prob_loss_at_diag_year_i = 0;
 
 	*absence CD4;
-	if set_in_options ne 1 then absence_cd4_year_i = 0;
+	if absence_cd4_set_in_options ne 1 then absence_cd4_year_i = 0;
 
 	*absence VL;
 	if set_in_options ne 1 then absence_vl_year_i = 0;
@@ -3027,6 +3029,7 @@ if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_me
 if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0.85; end; 
 if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121 125 130) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
+if p_vl_meas_done_set_in_opts ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
@@ -8804,6 +8807,9 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 
 	e_rate_return = eff_rate_return; 
 	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = e_rate_return / 1.5;
+
+* for malawi mihpsa nov 2024 and hiv control - for minimal scenario we need to be able to switch off the implicit effect of ongoing interventions to bring people back to care;
+	if return_interventions_off = 1 then e_rate_return = e_rate_return / effect_return_interv;
 
 * new for pop_wide_tld;
 	if pop_wide_tld      = 1 then e_rate_return = e_rate_return * rr_return_pop_wide_tld;
