@@ -754,7 +754,7 @@ end;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is willing to take a particular type of PrEP;
 
-* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.80 0.20); * does prep use depend on the prevalence of vl > 1000 in population; * cioa_j ;
+* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 1 0); * does prep use depend on the prevalence of vl > 1000 in population; * cioa_j ;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
@@ -2333,6 +2333,14 @@ if caldate{t} ge date_prep_len_intro then do;
 end;
 
 
+if caldate{t} ge date_prep_vr_intro then do;
+	if  pref_prep_vr > prep_willingness_threshold	then prep_vr_willing =1;
+end;
+
+if prep_dependent_prev_vg1000=1 and . < prev_vg1000_1549 < prep_vlg1000_threshold then do; 
+	prep_oral_willing=0; prep_cab_willing=0; prep_len_willing=0; prep_vr_willing=0;
+end;
+
 
 
 * here here;
@@ -2344,6 +2352,7 @@ end;
 * for len_prep_pregnant_birth;
 prep_len_willing = 0;
 if option=1 then do;
+	hard_reach = 0;
 	if caldate{t} - dt_lastbirth > 0.5 then do;
 		eff_rate_choose_stop_prep_len=1;
 	end;	
@@ -2355,18 +2364,13 @@ end;
 
 
 
-
-
-if caldate{t} ge date_prep_vr_intro then do;
-	if  pref_prep_vr > prep_willingness_threshold	then prep_vr_willing =1;
-end;
-
-if prep_dependent_prev_vg1000=1 and . < prev_vg1000_1549 < prep_vlg1000_threshold then do; 
-	prep_oral_willing=0; prep_cab_willing=0; prep_len_willing=0; prep_vr_willing=0;
-end;
-
 prep_any_willing = 0;
 if prep_oral_willing = 1 or prep_cab_willing = 1 or prep_len_willing = 1 or prep_vr_willing = 1 then prep_any_willing = 1;
+
+
+
+
+
 
 
 tcur_tm1=tcur;
@@ -19270,9 +19274,11 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 proc freq; tables cald hiv ; where death=.; run;
 
+proc freq; tables prep_oral prep_len ; run;
+
 
 proc print; var caldate&j option gender age cum_children prep_any_strategy dt_lastbirth pregnant birth dt_start_pregn prep_len_willing prep_oral_willing 
-prep_oral prep_len prep_any_strategy ; where gender = 2 and 15 <= age < 50 and serial_no < 300; run;
+prep_oral prep_len prep_any_strategy ; where gender = 2 and 15 <= age < 50 and serial_no < 300 and death = .; run;
 
 
 
@@ -22425,6 +22431,7 @@ data r1; set a;
 * 2024;
 
 data a.asasas; set r1;
+
 
 
 data r1; set a.asasas;
