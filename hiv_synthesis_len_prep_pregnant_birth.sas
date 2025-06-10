@@ -5083,7 +5083,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 	* starting PrEP for the first time ever;
 	 
 	* the anc=1 and prep_len_willing=1 added for len_prep_pregnat_birth;
-			if prep_any_willing=1 and (hard_reach ne 1 or (anc=1 and prep_len_willing=1) then do; 
+			if prep_any_willing=1 and (hard_reach ne 1 or (anc=1 and prep_len_willing=1)) then do; 
 				* person has testesd explicitly to start PrEP;
 				if testfor_prep_oral = 1  		then do;	
 					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
