@@ -988,6 +988,8 @@ run;
 * p_onart_vl1000;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000 = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu ;
 * p_artexp_vl1000;				if s_artexp > 0 then p_artexp_vl1000 = s_vl1000_art_gt6m_iicu / s_artexp ;
 
+* n_vm_this_per;				n_vm_this_per = s_vm_this_per * sf;
+
 * p_vg1000, p_vl1000;			if s_hivge15  > 0 then p_vg1000 = s_vg1000 / s_hivge15 ;  p_vl1000 = 1- p_vg1000 ;
 * p_vg1000_m, p_vl1000_m;		if s_hivge15m  > 0 then p_vg1000_m = s_vg1000_m / s_hivge15m ;  p_vl1000_m = 1- p_vg1000_m ;
 * p_vg1000_w, p_vl1000_w;		if s_hivge15w  > 0 then p_vg1000_w = s_vg1000_w / s_hivge15w ;  p_vl1000_w = 1- p_vg1000_w ;
@@ -1421,7 +1423,7 @@ adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld
 
-p_tested_incl_self   effect_comm_tld_hard_reach  p_hard_reach
+p_tested_incl_self   effect_comm_tld_hard_reach  p_hard_reach  n_vm_this_per
 ;
 
  
