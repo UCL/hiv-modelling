@@ -13,7 +13,7 @@ libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
+  proc printto ;  *  log='C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc\log';
 
 %let population = 10000 ; 
 %let year_interv = 2025.0 ;	* Using 2023 for MIHPSA only JAS Oct23;
@@ -21112,7 +21112,7 @@ if country = 'Zimbabwe' then do;
 	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 end;
 
-
+/*
 
 if cald = 2024 and prevalence1549 < 0.03 then do; abort abend; end;
 
@@ -21130,6 +21130,9 @@ if cald = 2024 then do;
 	if p_onart_vl1000_w    < 0.7 then do; abort abend; end;
 
 end;
+
+*/
+
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
