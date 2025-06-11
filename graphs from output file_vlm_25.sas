@@ -44,7 +44,7 @@ n_tested_incl_self = n_self_tested + n_tested;
 * if adh_pattern=2 and prob_vl_meas_done=1;
 
 
-%let single_var =  dvis_cost                        ;
+%let single_var =  n_death_hiv                        ;
 
 * p_agege15_ever_vaccinated n_death_hiv  ddaly  p_cur_any_vac_e_1564_  deathr_dol_r_first_uvl2 p_first_uvl2_dol_r
 p_cur_full_vac_e_1564_ prop_elig_on_prep  prop_1564_hivneg_onprep  n_tested  p_diag  p_onart_diag  p_onart_vl1000_  incidence1549_;
@@ -363,11 +363,11 @@ run;quit;
 */
 
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title '';  *  Title    height=1.5 justify=center "n death hiv";
+* Title '';    Title    height=1.5 justify=center "n death hiv";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  20000       by 5000  ) valueattrs=(size=10);
 
@@ -379,7 +379,7 @@ band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9
 
 run;quit;
 
-*/
+
 
 
 /*
@@ -874,7 +874,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -890,7 +890,7 @@ band    x=cald lower=p5_dvis_cost_1 upper=p95_dvis_cost_1 / transparency=0.9 fil
 
 run;quit;
 
-
+*/
 
 /*
 
