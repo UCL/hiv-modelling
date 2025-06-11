@@ -3,7 +3,7 @@ ods html close;
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_ab_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep_pregnant_birth\len_prep_pregnant_birth_out\";
 
 footnote;
 
@@ -12,7 +12,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_cioa_ab ;
+set a.l_len_prep_pregnant_birth ;
 
 
 * for this program, variable names cannot end on a number;
@@ -41,1018 +41,9 @@ p_newp_ge1_ = p_newp_ge1;
 n_tested_incl_self = n_self_tested + n_tested; 
 
 
-if option in (0 1);
+proc freq; tables n_prep_any_plw ; run; 
 
-
-%let single_var =  cost                                 ;
-
-
-  if run in (
-
-620393 
-3339757 
-3352450 
-3636867 
-4700848 
-4901606 
-10275404 
-10530398 
-10749210 
-11605177 
-12889115 
-13210962 
-13364569 
-13398526 
-14055614 
-14397772 
-14853031 
-17720063 
-20236661 
-21805605 
-23425615 
-24116659 
-24508279 
-24656269 
-26488734 
-26735165 
-27054516 
-27570036 
-30835429 
-31622453 
-32440942 
-32501099 
-33383905 
-34646430 
-35635288 
-38397929 
-39927906 
-43090514 
-44206948 
-44412456 
-46592377 
-46757475 
-47128072 
-49350617 
-50368770 
-51902979 
-52136519 
-52292254 
-52664985 
-53328609 
-58421549 
-58756751 
-59316189 
-59420265 
-59736182 
-61149664 
-62784098 
-65363493 
-65403505 
-65523907 
-68700318 
-68716038 
-70776939 
-72442220 
-73137962 
-73635337 
-75560840 
-76910609 
-77064542 
-78040998 
-79026986 
-79076462 
-79718435 
-80019317 
-81200367 
-82840544 
-84186721 
-85620811 
-85842513 
-86177409 
-87436121 
-87522948 
-88322803 
-92226242 
-93884015 
-94444441 
-95906975 
-96170097 
-96713995 
-97032192 
-97713872 
-97857971 
-100299909 
-101580137 
-101728947 
-102710628 
-102855165 
-103527960 
-104622016 
-104801757 
-104823724 
-104949770 
-105334527 
-105713723 
-106192558 
-107482210 
-108526955 
-111447824 
-114159735 
-114669321 
-115555197 
-115751615 
-117844903 
-117988455 
-118426734 
-119526417 
-119664079 
-119885172 
-122414178 
-123430404 
-123480013 
-124753295 
-124846710 
-125817269 
-125904824 
-127687913 
-127859327 
-128259717 
-128679615 
-133092653 
-133171373 
-134033001 
-134611328 
-135958402 
-138686930 
-138716946 
-139067902 
-140113063 
-140344682 
-143577707 
-144488046 
-146345938 
-146454751 
-146752798 
-147015034 
-147102621 
-148038392 
-148808261 
-149658286 
-152441027 
-152695001 
-153254623 
-153268300 
-153369229 
-154060842 
-154795389 
-155026243 
-155412960 
-155523540 
-156956292 
-157298963 
-158072903 
-158180647 
-159433416 
-159593095 
-160709359 
-161119439 
-165574962 
-165986933 
-166666365 
-166971392 
-167519812 
-167520302 
-168004083 
-168149672 
-168591594 
-168715702 
-169131741 
-169768822 
-169910404 
-170380832 
-170468842 
-171019159 
-171932638 
-172460394 
-173881219 
-173926143 
-174976042 
-176256169 
-177589153 
-179182164 
-180439778 
-181079388 
-184109477 
-184187966 
-184667533 
-185348312 
-185486702 
-185747199 
-186294191 
-186322866 
-187746083 
-188301417 
-190526104 
-190886143 
-191362629 
-193259185 
-196450101 
-197861852 
-197989136 
-198524323 
-198805673 
-199702879 
-202037843 
-202514211 
-203058061 
-203183730 
-203500986 
-205629463 
-206038598 
-206615786 
-206621246 
-209740905 
-211555005 
-211808459 
-215570225 
-215598848 
-217488558 
-217516109 
-217875561 
-218241596 
-218609076 
-220704380 
-221263895 
-222016739 
-222029437 
-222615145 
-222799135 
-223555332 
-225552271 
-225864171 
-226128248 
-226777087 
-227787915 
-230028571 
-230210128 
-230592330 
-231238666 
-231850223 
-233978597 
-234582623 
-234838682 
-235085087 
-236648225 
-236761074 
-238248976 
-238550210 
-240440009 
-241876431 
-241897732 
-241975044 
-243814877 
-244370196 
-246507282 
-247782768 
-248945475 
-249058494 
-249959491 
-251618479 
-252997410 
-253815677 
-254191046 
-255258326 
-255346321 
-256130362 
-256716511 
-257600104 
-258334519 
-258674501 
-260471988 
-260502039 
-262341690 
-262676979 
-262706288 
-263159270 
-264110868 
-265407343 
-267763477 
-267970458 
-269946616 
-270731919 
-272591465 
-273985885 
-276350868 
-276704018 
-276825883 
-277351684 
-277459623 
-277697087 
-277936417 
-278037972 
-278046794 
-278205742 
-279343273 
-281168169 
-281219720 
-285900054 
-286445177 
-286979125 
-296412668 
-296549381 
-297257466 
-297880186 
-300477849 
-300492142 
-302799775 
-303093090 
-303397978 
-303487940 
-304116155 
-304177527 
-304472122 
-304774301 
-304776884 
-305166568 
-305599686 
-305684786 
-306944655 
-308878331 
-310284541 
-311855556 
-311924133 
-312387601 
-312857679 
-312862979 
-313518850 
-315080166 
-315093201 
-315220346 
-315897629 
-317030450 
-318603828 
-319879067 
-321057160 
-321205934 
-321428433 
-322068382 
-323117129 
-323370297 
-323744406 
-324737661 
-325148783 
-325673762 
-328387039 
-329204642 
-329355596 
-329612143 
-330072704 
-333937362 
-334585329 
-335106114 
-335525179 
-335894619 
-336216718 
-337108793 
-338698157 
-339465533 
-339972656 
-340046570 
-340534568 
-340814007 
-342011851 
-342410226 
-346427676 
-347239657 
-347439855 
-348823472 
-349153980 
-349460420 
-349662964 
-350230427 
-350354434 
-350595911 
-354513430 
-357576641 
-357615557 
-357780875 
-358853556 
-359113753 
-359185127 
-360640394 
-361257674 
-361867151 
-362168688 
-364587495 
-364989761 
-367392189 
-367915320 
-368504938 
-369623370 
-370527452 
-370715714 
-375883841 
-377138561 
-377862812 
-378148512 
-380133265 
-381508594 
-382409126 
-382838385 
-383113891 
-384398801 
-386972482 
-387195965 
-387209890 
-387480031 
-387931433 
-388001232 
-388337381 
-388484026 
-388633879 
-389711629 
-391973308 
-392283286 
-392623247 
-393942009 
-394797178 
-395622359 
-395870090 
-396443234 
-398510859 
-399135250 
-400520945 
-400597632 
-402510419 
-403840993 
-406874906 
-406993338 
-407340209 
-409056278 
-409301517 
-412042326 
-412255003 
-412399116 
-414258632 
-417151038 
-417615566 
-417762057 
-417890109 
-419569646 
-422207422 
-423140443 
-423204094 
-424223680 
-425292627 
-425976863 
-426094344 
-426214020 
-426624157 
-427635300 
-429650020 
-430732793 
-431020052 
-433027115 
-437962441 
-438294760 
-438867387 
-440217017 
-440890330 
-441222654 
-441299653 
-441803662 
-442728051 
-444172372 
-445203871 
-446593295 
-446829251 
-448909278 
-448931339 
-449229337 
-450267386 
-450984292 
-451543975 
-451775532 
-452248648 
-454706308 
-455242980 
-456803952 
-457238174 
-457301567 
-459075580 
-459743061 
-459884650 
-460020528 
-461244915 
-461531313 
-461551380 
-461831098 
-462424034 
-462592321 
-463616152 
-464628663 
-464785280 
-465639964 
-468480233 
-468839813 
-469375762 
-471030238 
-473670383 
-474366580 
-474870060 
-475668907 
-475796910 
-476057407 
-476268227 
-478684424 
-478979322 
-479053379 
-479113896 
-479462662 
-482640885 
-484722728 
-485211755 
-486740723 
-486913733 
-487047689 
-487503259 
-487833883 
-487848905 
-493408266 
-494206385 
-495920846 
-496887028 
-497799487 
-498511280 
-498890485 
-499394735 
-500849047 
-501282415 
-501390432 
-503929062 
-505678957 
-506032419 
-506630211 
-507170548 
-507456209 
-507767669 
-507909198 
-509684655 
-510084593 
-512176739 
-512217804 
-512256273 
-512575138 
-514643715 
-515900547 
-517282891 
-518866509 
-520424332 
-520488500 
-521242070 
-521290827 
-522724488 
-523397420 
-524788413 
-525051486 
-527349125 
-528110235 
-529948720 
-531107618 
-532056020 
-533875724 
-534385384 
-537490610 
-537518758 
-538314615 
-538334126 
-538390115 
-539046956 
-541706922 
-541846202 
-544293344 
-547551642 
-547600374 
-547714385 
-548280035 
-548345199 
-548646052 
-548688219 
-549136261 
-549491016 
-550853451 
-551561069 
-551752339 
-553697396 
-553995541 
-555104725 
-555219569 
-555248875 
-558342825 
-558754545 
-559609044 
-560246145 
-560380456 
-560555069 
-561934076 
-563414715 
-564072229 
-564098930 
-564442026 
-569212352 
-570309770 
-570979810 
-571072680 
-571339291 
-571351425 
-571423420 
-572300169 
-572782203 
-573520974 
-574718854 
-576395822 
-578250472 
-579497642 
-580344680 
-581670440 
-581907933 
-582739112 
-582896153 
-586349468 
-586506221 
-586733782 
-588512877 
-589049596 
-590885405 
-591542268 
-595365974 
-595601651 
-595986478 
-597119984 
-597899786 
-598508778 
-599892572 
-599988051 
-601158074 
-602126016 
-602155769 
-603013486 
-604766866 
-605462391 
-606447609 
-606575829 
-607239337 
-607255285 
-609007947 
-609509617 
-610482441 
-610703086 
-611193836 
-611502148 
-613098229 
-613230171 
-614138732 
-617649351 
-618918270 
-619664433 
-620414768 
-621069991 
-623157736 
-623305744 
-624282553 
-627507867 
-627887708 
-629234177 
-629356888 
-629517285 
-629675332 
-629879711 
-629927810 
-630667203 
-631415824 
-633013288 
-633657730 
-634569922 
-634927354 
-637051127 
-638847525 
-639599841 
-639983032 
-641104701 
-641806358 
-641839469 
-644020035 
-644289438 
-645758310 
-646332607 
-647875048 
-650673306 
-652258484 
-652502614 
-652761584 
-652952265 
-654806256 
-656421025 
-659669573 
-659958944 
-660756120 
-662215924 
-662216122 
-663371329 
-663533576 
-663695069 
-664722566 
-664817919 
-664848511 
-665170727 
-665213695 
-665950076 
-668469132 
-668670038 
-669154368 
-669164654 
-669485220 
-669573876 
-671789683 
-671902397 
-674443450 
-674801586 
-676105483 
-677446766 
-679337641 
-680034681 
-680411040 
-682473391 
-683496320 
-683598882 
-684574470 
-684938665 
-685052617 
-687300869 
-688480436 
-689204122 
-689588442 
-689622201 
-690785147 
-690977867 
-691917674 
-692939722 
-693324838 
-695537102 
-697104005 
-697149398 
-699577869 
-700273386 
-700780391 
-700835828 
-700856202 
-701088896 
-702666585 
-703419433 
-703646041 
-707296466 
-709592121 
-709756512 
-709819319 
-710072421 
-711315798 
-712562864 
-712892734 
-714552669 
-715304790 
-715695406 
-716139147 
-716489227 
-716512297 
-716667652 
-717008953 
-717675478 
-717677939 
-718810580 
-719733879 
-720175862 
-720760954 
-722562673 
-723683869 
-724110611 
-725166513 
-725778173 
-726101057 
-726567918 
-727501214 
-727781380 
-728078840 
-732697502 
-733454333 
-735300138 
-735979855 
-736208802 
-737128070 
-737555422 
-739522083 
-744603425 
-745419700 
-746068428 
-746256870 
-746388137 
-749386989 
-751497290 
-752176709 
-752701076 
-754583429 
-755817580 
-756055569 
-756746159 
-757212007 
-757976654 
-758095028 
-760190271 
-762000536 
-762719009 
-763012281 
-763550894 
-763552906 
-764227639 
-764572881 
-764658777 
-765637323 
-769087399 
-770007581 
-770424096 
-770771920 
-771202834 
-771747591 
-773434303 
-774505943 
-776594443 
-776994416 
-777043871 
-777687432 
-779555990 
-780503748 
-781054123 
-781512225 
-782064311 
-783463791 
-783660720 
-784086846 
-787485877 
-788020806 
-788216777 
-788433631 
-789294869 
-790262607 
-791116770 
-792108703 
-792763174 
-794321914 
-795258265 
-795270161 
-796259928 
-796795228 
-798018385 
-798674742 
-802409894 
-804311989 
-804694931 
-806150164 
-807809018 
-808480642 
-808622664 
-808816813 
-808860926 
-809259892 
-809381259 
-809973366 
-810400734 
-811674014 
-813514015 
-813778370 
-814030262 
-815791859 
-816694696 
-819898199 
-819935122 
-820709717 
-820904055 
-821675296 
-823139742 
-823951880 
-824469148 
-825311413 
-826163393 
-826681564 
-827453179 
-827788842 
-828686528 
-828823468 
-829521088 
-833246964 
-835898190 
-835918929 
-837200535 
-837533583 
-837860398 
-839999899 
-840167644 
-842003036 
-842664818 
-842954129 
-843047403 
-843893102 
-844863631 
-845010465 
-847345518 
-847365980 
-847584341 
-849988782 
-853965756 
-854420218 
-857088004 
-857987414 
-861839016 
-862385784 
-863712771 
-864872542 
-864997722 
-867045567 
-867143096 
-868175042 
-869962645 
-870678652 
-871032512 
-871389173 
-871756995 
-872171923 
-873174901 
-873408338 
-874375914 
-874376940 
-874471858 
-874595277 
-874934691 
-876142427 
-876828647 
-878122410 
-881168489 
-883724112 
-886317230 
-886386886 
-886427085 
-886483076 
-887625954 
-889086827 
-889512911 
-891694016 
-892650232 
-892735432 
-893156911 
-893457750 
-894469905 
-894928508 
-894951587 
-895642227 
-897549956 
-897881207 
-901769498 
-901896570 
-902605096 
-902866949 
-903367826 
-903944241 
-904197326 
-904427232 
-904428620 
-904802688 
-905663399 
-905804403 
-907437437 
-910559346 
-911961287 
-913213461 
-913726970 
-913781554 
-916353808 
-917381164 
-918245698 
-921830924 
-922753562 
-923572944 
-923960470 
-924071443 
-924106620 
-924810407 
-925826321 
-925995994 
-926177193 
-926940803 
-927161348 
-927630691 
-928774822 
-
-);
-
-
+%let single_var =  n_prep_len                                 ;
 
 
 
@@ -1064,7 +55,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 2000 ;
+%let nfit = 114  ;
 
 %let year_end = 2076.00 ;
 run;
@@ -1176,6 +167,154 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';   Title    height=1.5 justify=center "n prep_len_willing";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000     by 100000 ) valueattrs=(size=10);
+
+series  x=cald y=p50_n_prep_len_willing_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_prep_len_willing_0 upper=p95_n_prep_len_willing_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_prep_len_willing_1 / lineattrs = (color=darkblue      thickness = 4);
+band    x=cald lower=p5_n_prep_len_willing_1 upper=p95_n_prep_len_willing_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';   Title    height=1.5 justify=center "n prep_any_plw";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000     by 100000 ) valueattrs=(size=10);
+
+series  x=cald y=p50_n_prep_any_plw_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_prep_any_plw_0 upper=p95_n_prep_any_plw_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_prep_any_plw_1 / lineattrs = (color=darkblue      thickness = 4);
+band    x=cald lower=p5_n_prep_any_plw_1 upper=p95_n_prep_any_plw_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';   Title    height=1.5 justify=center "n prep_any_m";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000     by 100000 ) valueattrs=(size=10);
+
+series  x=cald y=p50_n_prep_any_m_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_prep_any_m_0 upper=p95_n_prep_any_m_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_prep_any_m_1 / lineattrs = (color=darkblue      thickness = 4);
+band    x=cald lower=p5_n_prep_any_m_1 upper=p95_n_prep_any_m_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+
+
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';   Title    height=1.5 justify=center "n prep_len";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000     by 100000 ) valueattrs=(size=10);
+
+series  x=cald y=p50_n_prep_len_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_prep_len_0 upper=p95_n_prep_len_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_prep_len_1 / lineattrs = (color=darkblue      thickness = 4);
+band    x=cald lower=p5_n_prep_len_1 upper=p95_n_prep_len_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+ Title    height=1.5 justify=center "Discounted cost";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Discounted Cost $m'		labelattrs=(size=12)  values = (0 to  300         by 50    ) valueattrs=(size=10);
+
+series  x=cald y=p50_dcost_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_dcost_0 upper=p95_dcost_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_dcost_1 / lineattrs = (color=blue      thickness = 4);
+band    x=cald lower=p5_dcost_1 upper=p95_dcost_1 / transparency=0.9 fillattrs = (color=blue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title ''; Title    height=1.5 justify=center "Incidence (age 15-49) men";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.5       by 0.1     ) valueattrs=(size=10);
+
+series  x=cald y=p50_incidence1549m_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_incidence1549m_0 upper=p95_incidence1549m_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_incidence1549m_1 / lineattrs = (color=darkblue      thickness = 4);
+band    x=cald lower=p5_incidence1549m_1 upper=p95_incidence1549m_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title ''; Title    height=1.5 justify=center "Incidence (age 15-49) women";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.5       by 0.1     ) valueattrs=(size=10);
+
+series  x=cald y=p50_incidence1549w_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_incidence1549w_0 upper=p95_incidence1549w_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_incidence1549w_1 / lineattrs = (color=darkblue      thickness = 4);
+band    x=cald lower=p5_incidence1549w_1 upper=p95_incidence1549w_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';   Title    height=1.5 justify=center "n prep_any";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000     by 100000 ) valueattrs=(size=10);
+
+series  x=cald y=p50_n_prep_any_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_prep_any_0 upper=p95_n_prep_any_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_prep_any_1 / lineattrs = (color=darkblue      thickness = 4);
+band    x=cald lower=p5_n_prep_any_1 upper=p95_n_prep_any_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
 
 
 
@@ -1262,7 +401,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title ''; *   height=1.5 justify=center "Number of children newly infected with HIV per year";
+ Title  height=1.5 justify=center "Number of children newly infected with HIV per year";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to  8000   by 1000     ) valueattrs=(size=10);
 
@@ -1333,26 +472,7 @@ run;quit;
 */
 
 
-/*
 
-ods html;
-proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "n prep_any";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000     by 100000 ) valueattrs=(size=10);
-
-series  x=cald y=p50_n_prep_any_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_n_prep_any_0 upper=p95_n_prep_any_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_n_prep_any_1 / lineattrs = (color=darkblue      thickness = 4);
-band    x=cald lower=p5_n_prep_any_1 upper=p95_n_prep_any_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
-
-series  x=cald y=p50_n_prep_any_2 / lineattrs = (color=darkred     thickness = 4);
-band    x=cald lower=p5_n_prep_any_2 upper=p95_n_prep_any_2 / transparency=0.9 fillattrs = (color=darkred    ) legendlabel= "90% range";
-
-run;quit;
-
-*/
 
 /*
 
@@ -1770,25 +890,8 @@ run;quit;
 
 */
 
+
 /*
-
-ods html;
-proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "Discounted cost";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Discounted Cost $m'		labelattrs=(size=12)  values = (0 to  300         by 50    ) valueattrs=(size=10);
-
-loess   x=cald y=p50_dcost_0 / lineattrs = (color=grey thickness = 4) nomarkers;
-band    x=cald lower=p5_dcost_0 upper=p95_dcost_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-loess   x=cald y=p50_dcost_1 / lineattrs = (color=blue      thickness = 4) nomarkers;
-band    x=cald lower=p5_dcost_1 upper=p95_dcost_1 / transparency=0.9 fillattrs = (color=blue     ) legendlabel= "90% range";
-
-run;quit;
-
-*/
-
-
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -1804,7 +907,7 @@ band    x=cald lower=p5_cost_1 upper=p95_cost_1 / transparency=0.9 fillattrs = (
 
 run;quit;
 
-
+*/
 
 /*
 
@@ -2260,24 +1363,6 @@ run;quit;
 /*
 
 ods html;
-proc sgplot data=d nolegend; 
-* Title ''; * * Title    height=1.5 justify=center "Incidence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  0.5       by 0.1     ) valueattrs=(size=10);
-
-series  x=cald y=p50_incidence1549m_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_incidence1549m_0 upper=p95_incidence1549m_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_incidence1549m_1 / lineattrs = (color=darkred       thickness = 4);
-band    x=cald lower=p5_incidence1549m_1 upper=p95_incidence1549m_1 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
-
-run;quit;
-
-* ods html close;
-
-
-
-ods html;
 proc sgplot data=d ; 
 * Title    height=1.5 justify=center "p_adh_hi_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2018 by 0.5)	 	 valueattrs=(size=10); 
@@ -2294,7 +1379,7 @@ band    x=cald lower=p5_p_adh_hi_3 upper=p95_p_adh_hi_3 / transparency=0.9 filla
 
 run;quit;
 
-
+*/
 
 
 

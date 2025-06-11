@@ -19,6 +19,9 @@ run;
 */
 
 
+proc freq data=b.k_len_prep_pregnant_birth; tables s_prep_any_m; run;
+
+
 
 
 proc sort data=b.k_len_prep_pregnant_birth; 
@@ -459,6 +462,12 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * n_prep_oral;					n_prep_oral = s_prep_oral * sf;
 * n_prep_cab;					n_prep_cab = s_prep_cab * sf;
 * n_prep_len;					n_prep_len = s_prep_len * sf;
+
+* n_prep_any_m;					n_prep_any_m = s_prep_any_m * sf;
+* n_prep_len_w;					n_prep_len_w = s_prep_len_w * sf;
+* n_prep_any_plw;				n_prep_any_plw = s_prep_any_plw * sf;
+
+* n_prep_len_willing;			n_prep_len_willing = s_prep_len_willing * sf;
 
 * n_prep_ever;					n_prep_ever = s_prep_any_ever * sf;
 * p_prep_any_ever;				p_prep_any_ever = s_prep_any_ever / s_alive;
@@ -1421,7 +1430,7 @@ adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld
 
-p_tested_incl_self   effect_comm_tld_hard_reach  p_hard_reach
+p_tested_incl_self   effect_comm_tld_hard_reach  p_hard_reach  n_prep_any_m  n_prep_any_plw n_prep_len_w  n_prep_len_willing
 ;
 
  
