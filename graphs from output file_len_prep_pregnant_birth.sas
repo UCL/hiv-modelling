@@ -43,7 +43,7 @@ n_tested_incl_self = n_self_tested + n_tested;
 
 proc freq; tables n_prep_any_plw ; run; 
 
-%let single_var =  n_prep_len                                 ;
+%let single_var =  n_death_hiv                                ;
 
 
 
@@ -222,7 +222,7 @@ run;quit;
 */
 
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -238,7 +238,7 @@ band    x=cald lower=p5_n_prep_len_1 upper=p95_n_prep_len_1 / transparency=0.9 f
 
 run;quit;
 
-
+*/
 
 
 /*
@@ -434,11 +434,11 @@ run;quit;
 */
 
 
-/*
+  
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title '';  *  Title    height=1.5 justify=center "n death hiv";
+Title    height=1.5 justify=center "n death hiv";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  20000       by 5000  ) valueattrs=(size=10);
 
@@ -450,7 +450,7 @@ band    x=cald lower=p5_n_death_hiv_1 upper=p95_n_death_hiv_1 / transparency=0.9
 
 run;quit;
 
-*/
+
 
 
 /*
