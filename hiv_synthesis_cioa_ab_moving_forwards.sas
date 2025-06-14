@@ -6,6 +6,8 @@ review cost of sex worker program visits
 
 make the increase in use of self-tests and prep more gradual as people become educated
 
+review differences with core hiv_synthesis.sas
+
 ; 
 
 
