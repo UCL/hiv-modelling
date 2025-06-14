@@ -18436,7 +18436,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_cab_m + prep_cab_m; 	s_prep_len_m + prep_len_m; 	s_prep_any_sw + prep_any_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_cab_sw + prep_cab_sw ; 
 	s_prep_len_sw + prep_len_sw ;  s_prep_vr_sw + prep_vr_sw ; s_prep_any_m + prep_any_m;
 	s_prep_any_w_1524 + prep_any_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_cab_w_1524 + prep_cab_w_1524 ;  s_prep_len_w_1524 + prep_len_w_1524 ; 
-	s_pregnant_6m_birth_prep + pregnant_6m_birth_prep; s_pregnant_6m_birth + pregnant_6m_birth
+	s_pregnant_6m_birth_prep + pregnant_6m_birth_prep; s_pregnant_6m_birth + pregnant_6m_birth;
 
 	s_onprep_cab_msm + onprep_cab_msm; s_onprep_len_msm + onprep_len_msm; s_onprep_cab_pwid + onprep_cab_pwid; s_onprep_len_pwid + onprep_len_pwid; 
 
@@ -20434,7 +20434,7 @@ s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_pl
 
 
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
-s_elig_prep_any_sw  
+ 
 s_onprep_cab_m s_onprep_cab_w s_onprep_len_m s_onprep_len_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
