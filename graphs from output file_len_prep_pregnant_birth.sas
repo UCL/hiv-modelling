@@ -3,7 +3,7 @@ ods html close;
 
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep_pregnant_birth\len_prep_pregnant_birth_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep_pregnant_birth\len_prep_pregnant_birth_b_out\";
 
 footnote;
 
@@ -12,7 +12,7 @@ proc printto ;
 * ods html close;
 
 data b;
-set a.l_len_prep_pregnant_birth ;
+set a.l_len_prep_pregnant_birth_b ;
 
 
 * for this program, variable names cannot end on a number;
@@ -41,9 +41,7 @@ p_newp_ge1_ = p_newp_ge1;
 n_tested_incl_self = n_self_tested + n_tested; 
 
 
-proc freq; tables n_prep_any_plw ; run; 
-
-%let single_var =  n_death_hiv                                ;
+%let single_var =  n_death_hiv                               ;
 
 
 
@@ -55,7 +53,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 114  ;
+%let nfit = 458  ;
 
 %let year_end = 2076.00 ;
 run;
@@ -167,6 +165,80 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+ Title    height=1.5 justify=center "Undiscounted cost ($m)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'cost'		labelattrs=(size=12)  values = (0 to  300         by 50    ) valueattrs=(size=10);
+
+loess   x=cald y=p50_cost_0 / lineattrs = (color=grey thickness = 4) nomarkers;
+band    x=cald lower=p5_cost_0 upper=p95_cost_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+loess   x=cald y=p50_cost_1 / lineattrs = (color=darkblue      thickness = 4) nomarkers;
+band    x=cald lower=p5_cost_1 upper=p95_cost_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';   Title    height=1.5 justify=center "number of women pregnant or recently having given birth";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000     by 100000 ) valueattrs=(size=10);
+
+series  x=cald y=p50_n_pregnant_6m_birth_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_pregnant_6m_birth_0 upper=p95_n_pregnant_6m_birth_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_pregnant_6m_birth_1 / lineattrs = (color=darkblue      thickness = 4);
+band    x=cald lower=p5_n_pregnant_6m_birth_1 upper=p95_n_pregnant_6m_birth_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';   Title    height=1.5 justify=center "n pregnant_6m_birth_prep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000     by 100000 ) valueattrs=(size=10);
+
+series  x=cald y=p50_n_pregnant_6m_birth_prep_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_n_pregnant_6m_birth_prep_0 upper=p95_n_pregnant_6m_birth_prep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_n_pregnant_6m_birth_prep_1 / lineattrs = (color=darkblue      thickness = 4);
+band    x=cald lower=p5_n_pregnant_6m_birth_prep_1 upper=p95_n_pregnant_6m_birth_prep_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';   Title    height=1.5 justify=center "of number of women pregnant or recently having given birth, proportion on len prep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1           by 0.1    ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_pregnant_6m_birth_prep_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_pregnant_6m_birth_prep_0 upper=p95_p_pregnant_6m_birth_prep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_p_pregnant_6m_birth_prep_1 / lineattrs = (color=darkblue      thickness = 4);
+band    x=cald lower=p5_p_pregnant_6m_birth_prep_1 upper=p95_p_pregnant_6m_birth_prep_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
 /*
 
 ods html;
@@ -226,7 +298,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title '';   Title    height=1.5 justify=center "n prep_len";
+* Title '';   Title    height=1.5 justify=center "number of women on len prep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000     by 100000 ) valueattrs=(size=10);
 
@@ -301,7 +373,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title '';   Title    height=1.5 justify=center "n prep_any";
+* Title '';   Title    height=1.5 justify=center "total number of people on prep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000     by 100000 ) valueattrs=(size=10);
 
@@ -434,11 +506,11 @@ run;quit;
 */
 
 
-  
+
 
 ods html;
 proc sgplot data=d nolegend; 
-Title    height=1.5 justify=center "n death hiv";
+Title    height=1.5 justify=center "number of deaths from hiv in adults";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  20000       by 5000  ) valueattrs=(size=10);
 
@@ -891,23 +963,6 @@ run;quit;
 */
 
 
-/*
-
-ods html;
-proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "Undiscounted cost";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'cost'		labelattrs=(size=12)  values = (0 to  300         by 50    ) valueattrs=(size=10);
-
-loess   x=cald y=p50_cost_0 / lineattrs = (color=grey thickness = 4) nomarkers;
-band    x=cald lower=p5_cost_0 upper=p95_cost_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-loess   x=cald y=p50_cost_1 / lineattrs = (color=darkblue      thickness = 4) nomarkers;
-band    x=cald lower=p5_cost_1 upper=p95_cost_1 / transparency=0.9 fillattrs = (color=darkblue     ) legendlabel= "90% range";
-
-run;quit;
-
-*/
 
 /*
 

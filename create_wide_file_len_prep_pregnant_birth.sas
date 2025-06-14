@@ -2,29 +2,26 @@
 
 * options user="/folders/myfolders/"  ;
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep_pregnant_birth\len_prep_pregnant_birth_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep_pregnant_birth\len_prep_pregnant_birth_b_out\";
 
 
 /*
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep_pregnant_birth\len_prep_pregnant_birth_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep_pregnant_birth\len_prep_pregnant_birth_b_out\";
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_len_prep_pregnant_birth;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_len_prep_pregnant_birth_b;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
 
-proc freq data=b.k_len_prep_pregnant_birth; tables s_prep_any_m; run;
 
 
-
-
-proc sort data=b.k_len_prep_pregnant_birth; 
+proc sort data=b.k_len_prep_pregnant_birth_b; 
 by run cald option;
 run;
 
@@ -33,7 +30,7 @@ run;
 data sf;
 
 
-set b.k_len_prep_pregnant_birth ;
+set b.k_len_prep_pregnant_birth_b ;
 
 
 if cald=2024   ;
@@ -52,7 +49,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_len_prep_pregnant_birth sf;
+merge b.k_len_prep_pregnant_birth_b sf;
 by run ;
 
 
@@ -438,6 +435,11 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * p_newp_prep_hivneg;			p_newp_prep_hivneg = s_prep_newp / s_newp_hivneg ;  * proportion of all newp in hiv-ve people for which person is on prep;
 
+* n_pregnant_6m_birth;			n_pregnant_6m_birth = s_pregnant_6m_birth * sf;
+
+* n_pregnant_6m_birth_prep;		n_pregnant_6m_birth_prep = s_pregnant_6m_birth_prep * sf;
+
+* p_pregnant_6m_birth_prep;		p_pregnant_6m_birth_prep = s_pregnant_6m_birth_prep / s_pregnant_6m_birth ;
 
 * p_elig_all_prep_criteria;		p_elig_all_prep_criteria = s_all_prep_criteria / s_prep_any_elig;
 
@@ -1431,6 +1433,8 @@ rr_return_comm_tld
 rr_interrupt_comm_tld
 
 p_tested_incl_self   effect_comm_tld_hard_reach  p_hard_reach  n_prep_any_m  n_prep_any_plw n_prep_len_w  n_prep_len_willing
+
+n_pregnant_6m_birth  n_pregnant_6m_birth_prep  p_pregnant_6m_birth_prep
 ;
 
  
@@ -1456,7 +1460,7 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_len_prep_pregnant_birth; set y;  
+data    b.l_len_prep_pregnant_birth_b; set y;  
 
 * to give n = 1000 ;
 * if run in (
@@ -1465,7 +1469,7 @@ data    b.l_len_prep_pregnant_birth; set y;
 
 proc freq; tables run; where cald = 2018; run;
 
-data y ; set b.l_len_prep_pregnant_birth; 
+data y ; set b.l_len_prep_pregnant_birth_b; 
 
 
   options nomprint;
@@ -1960,7 +1964,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_len_prep_pregnant_birth     ; 
+  data  b.w_len_prep_pregnant_birth_b     ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -1973,9 +1977,9 @@ proc sort; by run;run;
 
 
 
-  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep_pregnant_birth\len_prep_pregnant_birth_out\";
+  libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\len_prep_pregnant_birth\len_prep_pregnant_birth_b_out\";
 
-data f; set b.w_len_prep_pregnant_birth;
+data f; set b.w_len_prep_pregnant_birth_b;
 
 
 if prevalence1549w_24 < 0.35 ;
