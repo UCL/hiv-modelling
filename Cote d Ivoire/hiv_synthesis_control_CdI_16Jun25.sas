@@ -1020,7 +1020,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * OVERWRITES country specific parameters;
 *  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
- %include "/home/rmjllob/CdI_parameters3.sas";
+ %include "/home/rmjllob/CdI_parameters5.sas";
 
 call symput('caldate1',caldate1);
 
@@ -2574,8 +2574,7 @@ if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 8;
  
 if caldate{t} ge 2026 and o_cab=1 and o_len=1 then art_monitoring_strategy = 1700; 
 
-if caldate <= 2018 then do;
-	
+
 
 ***Changes in ART coverage (~20% lower in 3% of runs) and oral PrEP coverage after option start date;
 if caldate{t} = &year_interv then do;
@@ -3087,7 +3086,7 @@ tested_anc=.;
 if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_testing is never changed from 2003.5;
 
 		rate_1sttest = initial_rate_1sttest; rate_reptest = initial_rate_reptest;
-		if caldate{t} >= date_start_testing+5.5 then do;
+		if ((gender=2 and caldate{t} >= date_start_testing+5.5) or (gender=1 and caldate{t} >= date_start_testing+8.5)) then do;
 			rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 			rate_reptest = initial_rate_reptest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 																				
