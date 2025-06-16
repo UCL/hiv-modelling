@@ -2574,7 +2574,8 @@ if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 8;
  
 if caldate{t} ge 2026 and o_cab=1 and o_len=1 then art_monitoring_strategy = 1700; 
 
-
+if caldate <= 2018 then do;
+	
 
 ***Changes in ART coverage (~20% lower in 3% of runs) and oral PrEP coverage after option start date;
 if caldate{t} = &year_interv then do;
@@ -22055,6 +22056,15 @@ Inputs are:
 
 *   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
+
+
+
+*    Save dataset at this point;
+data a ;  set r1 ;
+
+data r1 ; set a ;
+*    Option 0 - repetition 1;
+%run_update_r1(&year_interv,&year_interv+50,0);
 
 
 /*
