@@ -6,6 +6,8 @@ _e prep_any_strategy as 1,3 in malawi_parameters - now removed
 
 introduce hiv into population: if caldate{t}=startyr and ((newp >= newp_seed and d < 0.8) or (msm=1 and d < 0.05))   and infection=.  then do ..........
 
+added in effect_return_interv
+
 ;
 
 
@@ -561,6 +563,8 @@ newp_seed = 7;
 * rate_return;  			%sample(rate_return, 
 								0.05  0.10 	0.30   0.60, 
 							  	0.25  0.25	0.25   0.25); * change sep22 for pop_wide_tld;
+
+* effect_return_interv;		effect_return_interv = 5; * effect of implicit return to care interventions on prob of return;  * added for malawi mihpsa nov 24;
 
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
