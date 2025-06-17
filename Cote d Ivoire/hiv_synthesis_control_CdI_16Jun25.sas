@@ -1,26 +1,4 @@
 
-
-* 
-
-_e prep_any_strategy as 1,3 in malawi_parameters - now removed
-
-introduce hiv into population: if caldate{t}=startyr and ((newp >= newp_seed and d < 0.8) or (msm=1 and d < 0.05))   and infection=.  then do ..........
-
-added in effect_return_interv
-
-;
-
-
-
-
-*
-
-_c  remove if msm=1 then hard_reach=1
-
-;
-
-
-
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -32,7 +10,7 @@ _c  remove if msm=1 then hard_reach=1
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2024.0 ;	
+%let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -564,8 +542,6 @@ newp_seed = 7;
 								0.05  0.10 	0.30   0.60, 
 							  	0.25  0.25	0.25   0.25); * change sep22 for pop_wide_tld;
 
-* effect_return_interv;		effect_return_interv = 5; * effect of implicit return to care interventions on prob of return;  * added for malawi mihpsa nov 24;
-
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
 							* dependent_on_time_step_length ;
@@ -1042,9 +1018,9 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-  %include "/home/rmjlaph/malawi_parameters.sas";
+*  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
-* %include "/home/rmjllob/CdI_parameters.sas";
+ %include "/home/rmjllob/CdI_parameters5.sas";
 
 call symput('caldate1',caldate1);
 
@@ -2321,11 +2297,12 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 * INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
+								   
 
 
 if caldate_never_dot >= &year_interv then do;
 
-		*Testing; *Keep all testing at SQ level;	
+*Testing; *Keep all testing at SQ level;	
 
 		eff_sw_program = 0;		 			*No SW program;
 		rate_disengage_sw_program=1;
@@ -2401,6 +2378,7 @@ else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_or
 	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
 else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and prob_prep_oral_b_set_in_opts ne 1
 	then eff_prob_prep_oral_b = prob_prep_oral_b;
+
 
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
@@ -2626,7 +2604,6 @@ if caldate{t} = &year_interv then do;
 							incr_adh_prep_oral_yr_i = 1; 
 							adhav_prep_oral = adhav*1.00; 
 						end;		
-
 
 		* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
@@ -3109,7 +3086,7 @@ tested_anc=.;
 if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_testing is never changed from 2003.5;
 
 		rate_1sttest = initial_rate_1sttest; rate_reptest = initial_rate_reptest;
-		if caldate{t} >= date_start_testing+5.5 then do;
+		if ((gender=2 and caldate{t} >= date_start_testing+5.5) or (gender=1 and caldate{t} >= date_start_testing+8.5)) then do;
 			rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 			rate_reptest = initial_rate_reptest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 																				
@@ -7551,7 +7528,7 @@ end;
 * INTRODUCE HIV INTO POPULATION ;
 
 d=rand('uniform');
-if caldate{t}=startyr and ((newp >= newp_seed and d < 0.8) or (msm=1 and d < 0.05))   and infection=.  then do; 
+if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
@@ -8831,10 +8808,8 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 	e_rate_return = eff_rate_return; 
 	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = e_rate_return / 1.5;
 
-
 * for malawi mihpsa nov 2024 and hiv control - for minimal scenario we need to be able to switch off the implicit effect of ongoing interventions to bring people back to care;
 	if return_interventions_off = 1 then e_rate_return = e_rate_return / effect_return_interv;
-
 
 * new for pop_wide_tld;
 	if pop_wide_tld      = 1 then e_rate_return = e_rate_return * rr_return_pop_wide_tld;
@@ -22090,13 +22065,43 @@ data r1 ; set a ;
 *    Option 0 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
+
 /*
+
+*    Save dataset at this point;
+data a ;  set r1 ;
+data r1 ; set a ;
+
+*    Option 0 - repetition 1;
+%run_update_r1(&year_interv,&year_interv+50,0);
+
+
+*    Option 0 - repetition 2;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,0);
+
+*    Option 0 - repetition 3;
+
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,0);
+
 
 data r1; set a;
 *    Option 1 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
-*/
+
+*    Option 1 - repetition 2;
+			   
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,1);
+
+*    Option 1 - repetition 3;
+ 
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,1);
+
+*/	
 														 
 
 			
