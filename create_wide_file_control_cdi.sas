@@ -373,14 +373,14 @@ proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_cdi_control_05June25; set y;
+data a.long_cdi_control_09June25; set y;
 if cald=. then delete;run;
 
 
 ************************************************************************************************************************************************************;
 
 
-data y; set a.long_cdi_control_05June25; 
+data y; set a.long_cdi_control_09June25; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
@@ -625,7 +625,6 @@ proc means noprint data=y; var &v; output out=y_2023 mean= &v;  where cald = 202
 proc means noprint data=y; var &v; output out=y_2024 mean= &v;  where cald = 2024.5;
 proc means noprint data=y; var &v; output out=y_2025 mean= &v;  where cald = 2025.5;
 
-/*
 
 proc means noprint data=y; var &v; output out=y_26  mean= &v   ; where cald = 2026.5 and option=12 ;
 proc means noprint data=y; var &v; output out=y_27  mean= &v   ; where cald = 2027.5 and option=12 ;
@@ -653,15 +652,14 @@ proc means noprint data=y; var &v; output out=y_48  mean= &v   ; where cald = 20
 proc means noprint data=y; var &v; output out=y_49  mean= &v   ; where cald = 2049.5 and option=12 ;
 proc means noprint data=y; var &v; output out=y_50  mean= &v   ; where cald = 2050.5 and option=12 ;
 
-*/
-																										
+																								
 data &v ; set  
 y_1985  y_1986  y_1987  y_1988  y_1989  y_1990  y_1991  y_1992  y_1993  y_1994  y_1995  y_1996  y_1997  y_1998  y_1999  y_2000  y_2001  y_2002  
 y_2003  y_2004  y_2005  y_2006  y_2007  y_2008  y_2009  y_2010  y_2011  y_2012  y_2013  y_2014  y_2015  y_2016  y_2017  y_2018  y_2019  y_2020  y_2021  
 y_2022  y_2023  y_2024  y_2025
-/*
+
  y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40  y_41 y_42 y_43 y_44 y_45 y_46 y_47 y_48 y_49 y_50  
-*/
+
 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -716,7 +714,7 @@ proc means noprint data=y; var &v; output out=z_2023 mean= &v; where 2022.5 < ca
 proc means noprint data=y; var &v; output out=z_2024 mean= &v; where 2023.5 < cald <= 2024.5;
 proc means noprint data=y; var &v; output out=z_2025 mean= &v; where 2024.5 < cald <= 2025.5;
 
-/*
+
 proc means noprint data=y; var &v; output out=z_26  mean= &v   ; where 2025.5 < cald <= 2026.5 and option=12 ;
 proc means noprint data=y; var &v; output out=z_27  mean= &v   ; where 2026.5 < cald <= 2027.5 and option=12 ;
 proc means noprint data=y; var &v; output out=z_28  mean= &v   ; where 2027.5 < cald <= 2028.5 and option=12 ;
@@ -742,15 +740,15 @@ proc means noprint data=y; var &v; output out=z_47  mean= &v   ; where 2046.5 < 
 proc means noprint data=y; var &v; output out=z_48  mean= &v   ; where 2047.5 < cald <= 2048.5 and option=12 ;
 proc means noprint data=y; var &v; output out=z_49  mean= &v   ; where 2048.5 < cald <= 2049.5 and option=12 ;
 proc means noprint data=y; var &v; output out=z_50  mean= &v   ; where 2049.5 < cald <= 2050.5 and option=12 ;
-*/
+
 
 data &v ; set  
 z_1985  z_1986  z_1987  z_1988  z_1989  z_1990  z_1991  z_1992  z_1993  z_1994  z_1995  z_1996  z_1997  z_1998  z_1999  z_2000  z_2001  z_2002  
 z_2003  z_2004  z_2005  z_2006  z_2007  z_2008  z_2009  z_2010  z_2011  z_2012  z_2013  z_2014  z_2015  z_2016  z_2017  z_2018  z_2019  z_2020  z_2021  
 z_2022  z_2023  z_2024  z_2025
-/*
-z_24 z_25 z_26 z_27 z_28 z_29 z_30 z_31 z_32 z_33 z_34 z_35 z_36 z_37 z_38 z_39 z_40  z_41 z_42 z_43 z_44 z_45 z_46 z_47 z_48 z_49 z_50  
-*/
+
+z_26 z_27 z_28 z_29 z_30 z_31 z_32 z_33 z_34 z_35 z_36 z_37 z_38 z_39 z_40  z_41 z_42 z_43 z_44 z_45 z_46 z_47 z_48 z_49 z_50  
+
 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -866,16 +864,6 @@ cards;
 2018
 2019
 2020
-2021
-2022
-2023
-2024
-2025
-
-
-proc contents; run;
-
-*
 2021
 2022
 2023
@@ -1126,15 +1114,6 @@ cards;
 2018
 2019
 2020
-2021
-2022
-2023
-2024
-2025
-
-proc contents; run;
-
-/*
 2021
 2022
 2023
