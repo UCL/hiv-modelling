@@ -1024,18 +1024,24 @@ comm_test_interval = .;
 * comm test age (e.g. all adults vs targeted to >=40);
 comm_test_age = .;
 
-* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
-%sample_uniform(prob_imm_htn_tx_s1, 0.1 0.2 0.3); 
-* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
-%sample_uniform(prob_imm_htn_tx_s2, 0.4 0.5 0.6);
-* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
-%sample_uniform(prob_start_htn_tx_s1, 0.3 0.4 0.5);
-* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
-%sample_uniform(prob_start_htn_tx_s2, 0.6 0.7 0.8);
-* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
-%sample_uniform(prob_restart_htn_tx_s1, 0.9 0.95 1); 
-* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
-%sample_uniform(prob_restart_htn_tx_s2, 0.9 0.95 1);
+* probability of hypertension treatment initiation and intensification ;
+	* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
+	%sample_uniform(prob_imm_htn_tx_s1, 0.1 0.2 0.3); 
+	* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
+	prob_imm_htn_tx_s2 = prob_imm_htn_tx_s1 + 0.3;
+	* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
+	%sample_uniform(prob_start_htn_tx_s1, 0.3 0.4 0.5);
+	* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
+	prob_start_htn_tx_s2 = prob_start_htn_tx_s1 + 0.3;
+	* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
+	%sample_uniform(prob_restart_htn_tx_s1, 0.9 0.95 1); 
+	* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
+	prob_restart_htn_tx_s2 = prob_restart_htn_tx_s1;
+	
+	* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
+	%sample_uniform(prob_intensify_1_2, 0.1 0.15 0.2); 
+	* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
+	%sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 										   
 
 * probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
 		%sample_uniform(htn_retention_patt, 1 2 3);
@@ -1067,10 +1073,6 @@ interval_visit_hypertension=0.25;
 * integration of hiv and hypertension visits;
 integration = 0;
 
-* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
-%sample_uniform(prob_intensify_1_2, 0.1 0.15 0.2); 
-* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
-%sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 
 
 * probability of acute treatment for MI or CVA;
 %sample_uniform(rr_cvd_tx, 0.5 1 2);
@@ -1084,20 +1086,7 @@ prob_cva_tx_effective = 0.25 * rr_cvd_tx_effective;
 rr_mort_ihd_tx = 0.8;
 rr_mort_cva_tx = 0.6;
 
-* cost of hypertension care (in thousands);
-cost_htn_link_voucher = .;
-cost_htn_screen_comm = .;
-cost_htn_visit1 = 0.005;
-cost_htn_visit2 = 0.010;
-%sample_uniform(cost_htn_visitInt, 0 0.5);
-cost_htn_drug1 = 0.0015;
-cost_htn_drug2 = 0.0015;
-cost_htn_drug3 = 0.0030;
-cost_ihd_tx = 2.56;
-cost_cva_tx = 2.38;
-%sample_uniform(cost_lowqual_cvdcare, 0.25 0.5 1.0);
-cost_ihd_tx_lowqual = cost_ihd_tx * cost_lowqual_cvdcare;
-cost_cva_tx_lowqual = cost_cva_tx * cost_lowqual_cvdcare;
+
 
 ** CVD events;
 	* Ischemic heart disease (IHD);
@@ -1290,6 +1279,20 @@ circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ; * note this is reduced by 75% in create wide file;
 sw_program_cost = 0.010 ; * placeholder;
 
+* HYPERTENSION costs (in thousands);
+cost_htn_link_voucher = .;
+cost_htn_screen_comm = .;
+cost_htn_visit1 = 0.005;
+cost_htn_visit2 = 0.010;
+%sample_uniform(rr_cost_htn_visitInt, 0 0.5);
+cost_htn_drug1 = 0.0015;
+cost_htn_drug2 = 0.0015;
+cost_htn_drug3 = 0.0030;
+cost_ihd_tx = 2.56;
+cost_cva_tx = 2.38;
+%sample_uniform(rr_cost_lowqual_cvdcare, 0.25 0.5 1.0);
+cost_ihd_tx_lowqual = cost_ihd_tx * rr_cost_lowqual_cvdcare;
+cost_cva_tx_lowqual = cost_cva_tx * rr_cost_lowqual_cvdcare;												
 
 
 * HYPERTENSION utilities; * GBD 2019 DISABILITY WEIGHTS;
@@ -3739,7 +3742,7 @@ select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to incl
 end; 
 
 if on_tx_htn >=1 then a_sbp = a_sbp / rr_sbp_inc_on_antihyp ; *probabilty of SBP increase is reduced if on antihypertensive;
-if cald > sbp_cal_yr then prob_sbp_increase = prob_sbp_increase + sbp_cal_eff ; * increase SBP rise in future years after designatd year (2015 based on last available GBD data);
+if caldate{t} > sbp_cal_yr then prob_sbp_increase = prob_sbp_increase + sbp_cal_eff ; * increase SBP rise in future years after designatd year (2015 based on last available GBD data);
 if  a_sbp < prob_sbp_increase then do;
 	sbp = sbp + 1 ; 
 	if on_tx_htn >=1 then sbp_last_start_anti_hyp = sbp_last_start_anti_hyp + 1 ;
@@ -3919,7 +3922,7 @@ if visit_hypertension = 1 then do;
 	if sbp_m <  140 then htn_cost_clin = cost_htn_visit1;
 	if sbp_m >= 140 then htn_cost_clin = cost_htn_visit2;
 
-	if visit = 1 and integration = 1 then htn_cost_clin = htn_cost_clin * cost_htn_visitInt;
+	if visit = 1 and integration = 1 then htn_cost_clin = htn_cost_clin * rr_cost_htn_visitInt;
 end;
 if on_tx_htn = 1 then htn_cost_drug = cost_htn_drug1;
 if on_tx_htn = 2 then htn_cost_drug = cost_htn_drug1 + cost_htn_drug2;
@@ -21868,7 +21871,7 @@ prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 
 prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
 prob_visit_htn_lifestyle
 prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
-rr_cvd_tx rr_cvd_tx_effective cost_lowqual_cvdcare
+rr_cvd_tx rr_cvd_tx_effective rr_cost_lowqual_cvdcare
 discount
 
 /*year_i interventions*/
@@ -22695,7 +22698,7 @@ s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len  s_cost_ole  s_cost_isl s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
-s_cost_child_hiv_mo_art  s_cost_child_hiv_at_child_inf  s_cost_lencab_return s_dcost_lencab_return
+s_cost_child_hiv_mo_art  s_cost_child_hiv_at_child_inf s_cost_lencab_return s_dcost_lencab_return
 
 				   
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost   s_dvis_cost_no_lencab s_dvis_cost_lencab
@@ -23717,7 +23720,7 @@ s_dcost_child_hiv_mo_art   s_dcost_child_hiv_at_child_inf
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 																	   
-s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 	 
+s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death
 
  
 
@@ -23873,7 +23876,7 @@ s_birth_circ s_new_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_
 
 
 /* *HYPERTENSION* */
-prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link rr_cost_lowqual_cvdcare
 
 s_hypertension_ge18 s_hypertension_2534 s_hypertension_3544 s_hypertension_4554 s_hypertension_5564 s_hypertension_ge65
 s_dx_htn_ge18 s_dx_htn_2534 s_dx_htn_3544 s_dx_htn_4554 s_dx_htn_5564 s_dx_htn_ge65
@@ -23940,7 +23943,7 @@ s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 	s_ihd_prev_7079m s_ihd_prev_7079w 
 	s_cva_prev_7079m s_cva_prev_7079w 
 	s_ihd_prev_ge80m s_ihd_prev_ge80w 
-	s_cva_prev_ge80m s_cva_prev_ge80w 
+	s_cva_prev_ge80m s_cva_prev_ge80w
 
 /*parameters sampled*/
 
@@ -24010,7 +24013,7 @@ prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 
 prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
 prob_visit_htn_lifestyle
 prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
-rr_cvd_tx rr_cvd_tx_effective cost_lowqual_cvdcare
+rr_cvd_tx rr_cvd_tx_effective rr_cost_lowqual_cvdcare
 discount
 
 /*year_i interventions*/

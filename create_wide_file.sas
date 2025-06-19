@@ -1011,7 +1011,7 @@ dcost
 inc_cat
 
 /* *HYPERTENSION */
-prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link rr_cost_lowqual_cvdcare
 s_alive popge18 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85
 popsizege18 popsizege40
 p_hypert_ge18 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
@@ -1177,7 +1177,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=popge18); %var(v=pop2534); %var(v=pop3544); %var(v=pop4554); %var(v=pop5564); %var(v=pop6574); %var(v=pop7584); %var(v=popge85);
 
 
-%var(v=prob_sbp_increase); %var(v=sbp_cal_eff); %var(v=rr_cvd_tx); %var(v=rr_cvd_tx_effective); %var(v=prob_htn_link); %var(v=cost_lowqual_cvdcare);
+%var(v=prob_sbp_increase); %var(v=sbp_cal_eff); %var(v=rr_cvd_tx); %var(v=rr_cvd_tx_effective); %var(v=prob_htn_link); %var(v=rr_cost_lowqual_cvdcare);
 
 %var(v=p_hypert_ge18); %var(v=p_hypert_2534); %var(v=p_hypert_3544); %var(v=p_hypert_4554); %var(v=p_hypert_5564); %var(v=p_hypert_ge65); 
 %var(v=p_htn_true_ge18); %var(v=p_htn_true_2534); %var(v=p_htn_true_3544); %var(v=p_htn_true_4554); %var(v=p_htn_true_5564); %var(v=p_htn_true_ge65); 
@@ -1289,7 +1289,7 @@ inc_cat
 s_alive popsizege18 popsizege40
 popge18 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85
 
-prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link cost_lowqual_cvdcare
+prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective prob_htn_link rr_cost_lowqual_cvdcare
 
 p_hypert_ge18 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
 p_htn_true_ge18 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
