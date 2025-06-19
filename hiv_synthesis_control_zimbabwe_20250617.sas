@@ -1,3 +1,13 @@
+* 17/6/25 updates
+
+- changed year_interv from 2026 to 2024
+- added implicit effect_return_interv code
+- removed msm=1 from hard to reach section
+- copied options section from malawi e
+- added set_in_opts line for eff_prob_vl_meas_done=initial_prob_vl_meas_done
+- seeded more infection in MSM
+
+;
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
@@ -22064,7 +22074,7 @@ Inputs are:
 
 *** RUN PROGRAM; 
 
-%run_update_r1(&caldate1,2075,0);
+%run_update_r1(&caldate1,2076,0);
 											  
 
 
