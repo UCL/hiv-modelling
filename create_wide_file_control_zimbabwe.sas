@@ -3,12 +3,12 @@
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250515_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250617_out\";
 
 
 /*
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250515_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250617_out\";
 
 data g ; set a.out: ;
 
@@ -2408,7 +2408,7 @@ run;
 
 proc transpose data=stocks out=data_stock ; run;
 
-data a_stock; set data_stock;
+data a_stock; set data_stock; run;
 * drop _name_;
 
 ods html;
@@ -2694,7 +2694,7 @@ run;
 
 proc transpose data=flows out=data_flow ; run;
 
-data a_flow; set data_flow;
+data a_flow; set data_flow; run;
 * drop _name_;
 
 
