@@ -4,15 +4,15 @@
 ods html close;
 
 
-*libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
+*libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 ods listing;
 
 
 
 data a;
-set a.cdi_16jun25;
+set a.cdi_19jun25;
 if run=. then delete;
 
 proc sort;by run cald option;run;
@@ -356,14 +356,14 @@ proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_cdi_control_16June25; set y;
+data a.long_cdi_control_19June25; set y;
 if cald=. then delete;run;
 
 
 ************************************************************************************************************************************************************;
 
 
-data y; set a.long_cdi_control_16June25; 
+data y; set a.long_cdi_control_19June25; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
