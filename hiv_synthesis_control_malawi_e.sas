@@ -2,11 +2,15 @@
 
 * 
 
+increase cls due to condom promotion / availability 
+
 _e prep_any_strategy as 1,3 in malawi_parameters - now removed
 
 introduce hiv into population: if caldate{t}=startyr and ((newp >= newp_seed and d < 0.8) or (msm=1 and d < 0.05))   and infection=.  then do ..........
 
 added in effect_return_interv
+
+re-visit effect of retention intervention - make smaller
 
 ;
 
