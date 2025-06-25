@@ -8,6 +8,8 @@ make the increase in use of self-tests and prep more gradual as people become ed
 
 review differences with core hiv_synthesis.sas
 
+turn off vmmc fully
+
 ; 
 
 
