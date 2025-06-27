@@ -10,6 +10,12 @@ review differences with core hiv_synthesis.sas
 
 turn off vmmc fully
 
+vale review assumptions: that HIV self-testing is leading to an increase in the number of tests, and retention on treatment will remain the same.
+
+have a more gradual impact of the policy
+
+include possibility of smaller impact on testing rates
+
 ; 
 
 
