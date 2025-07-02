@@ -1,16 +1,16 @@
 
-*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
+libname a 'C:\Users\micha\UCL_repos\hiv-modelling\outputs';   
 
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   
-%let tmpfilename = %scan(&sysparm,2," ");
+  * libname a "&outputdir/";   
+%let tmpfilename = 'runout'; * %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
-%let year_interv = 2026.0 ;	
+%let population = 1000 ; 
+%let year_interv = 2000.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -21951,7 +21951,7 @@ Inputs are:
 *    Save dataset at this point;
 data a ;  set r1 ;
 data r1 ; set a ;
-
+/*
 *    Option 0 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
@@ -21982,7 +21982,7 @@ data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
 			
-														 
+*/														 
 
 			
 														 
@@ -22942,6 +22942,4 @@ cab_res_primary					Is in primary infection and has insti resistance (from cab-l
 cab_res_emerge_primary			Is in primary infection and insti resistance emerged in this period from cab-la (was not infected with insti resistant virus) (could be the same as em_inm_res_o_cab_off_3m_pr)
 
 ;
-
-
 
