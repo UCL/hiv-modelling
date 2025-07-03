@@ -1,3 +1,18 @@
+* 02/07/25 updates
+
+- add CMMC code from MIHPSA Zimbabwe program
+- remove references to SBCC
+
+* 17/6/25 updates
+
+- changed year_interv from 2026 to 2024
+- added implicit effect_return_interv code
+- removed msm=1 from hard to reach section
+- copied options section from malawi e
+- added set_in_opts line for eff_prob_vl_meas_done=initial_prob_vl_meas_done
+- seeded more infection in MSM
+
+;
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
@@ -719,9 +734,9 @@ end;
 
 * OTHER PROGRAMS;	
 
-* CONDOMS;					*Adapted from CMMC code from MIHPSA Zim - represents both condom provision and promotion interventions. JAS Jul2025; 
-* prop_redattr_newp_condoms;	%sample(prop_redattr_newp_condoms, 0 0.03 0.115 0.2, 0.2 0.2 0.4 0.2);		* 20% no impact, remaining values based on suggested impact 12thNov2024;
-* prop_redattr_ep_condoms;		%sample(prop_redattr_ep_condoms, 0 0.05 0.17 0.30, 0.2 0.2 0.4 0.2);
+* CMMC;						*JAS Nov2024; 
+* prop_redattr_newp_cmmc;	%sample(prop_redattr_newp_cmmc, 0 0.03 0.115 0.2, 0.2 0.2 0.4 0.2);		* 20% no impact, remaining values based on suggested impact 12thNov2024;
+* prop_redattr_ep_cmmc;		%sample(prop_redattr_ep_cmmc, 0 0.05 0.17 0.30, 0.2 0.2 0.4 0.2);
 
 
 * CIRCUMCISION;
@@ -1025,9 +1040,10 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-  %include "/home/rmjlaph/malawi_parameters.sas";
-* %include "/home/rmjlja9/Zim_parameters.sas";
+* %include "/home/rmjlaph/malawi_parameters.sas";
+  %include "/home/rmjlja9/Zim_parameters.sas";
 * %include "/home/rmjllob/CdI_parameters.sas";
+/*%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";*/
 
 call symput('caldate1',caldate1);
 
@@ -2318,9 +2334,9 @@ if caldate_never_dot >= &year_interv then do;
 		rate_self_test = 0;
 
 		*Prevention;
-		*Condom provision and promotion: keep at SQ level;
-		*Not explicitly modelled before year_interv, but the implicit switch off impacts newp and ep;
-		condom_change_year_i=2;    			*Switches off condom provision and promotion (0 restores SQ);
+		*Condom promotion and provision: keep at SQ level;
+		*Condom mass media campaign (CMMC): not explicitly modelled, but the switch off is;
+		condom_change_year_i=2;    			*Switches off CMMC (0 restores SQ);
 
 		*VMMC;
 		circ_inc_rate_year_i = 2;		*No VMMC;
@@ -2350,6 +2366,7 @@ if caldate_never_dot >= &year_interv then do;
 																														  
 	if option = 1 then do;
 		*Specify option 1;
+		condom_change_year_i=0;    			*Restores SQ;
 												 
 	end;
  
@@ -3482,10 +3499,9 @@ if        caldate{t} =  2000 then ch_risk_beh_ep2000_ = ych_risk_beh_ep**(2000-1
 if        caldate{t} >  2000 then ch_risk_beh_ep = ch_risk_beh_ep2000_;
 
 
-* Condom provision and promotion;
+* Condom mass media campaign (CMMC);
 /*
-From MIHPSA Zimbabwe:
-CMMC (condom mass media campaign) in Zimbabwe was introduced at least since 2004
+CMMC in Zimbabwe was introduced at least since 2004
 CMMC assumed to be switched ON from 2011 until year_interv
 Condom_change_year_i = 0 refers to CMMC being switched on (SQ and all runs up to year_interv)
 Condom_change_year_i = 2 refers to CMMC being switched off
@@ -3497,15 +3513,15 @@ In 2021											from 	0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.97
 													   	0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
 												to		1.321 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
 */
-*Proportion of reduction attributable to condom intervetions: prop_redattr_newp_condoms;
-*We have not modelled condoms retrospectively and so we have not included their cost;
+*Proportion of reduction attributable to CMMC: prop_redattr_newp_cmmc;
+*We have not modelled CMMC retrospectively and so we have not included its cost;
 rred_rc_base = rred_rc;					* use this to determine FSW rates;
 
 if caldate{t} >= &year_interv and condom_change_year_i = 2 then do;
 	*newp;
-	rred_rc = (rred_rc - prop_redattr_newp_condoms*rred_rc2011_) / (1 - prop_redattr_newp_condoms);
+	rred_rc = (rred_rc - prop_redattr_newp_cmmc*rred_rc2011_) / (1 - prop_redattr_newp_cmmc);
 	*ep;
-	ch_risk_beh_ep = ch_risk_beh_ep / (1 - prop_redattr_ep_condoms);
+	ch_risk_beh_ep = ch_risk_beh_ep / (1 - prop_redattr_ep_cmmc);
 end;
 
 
@@ -19577,6 +19593,15 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 /*
 
+proc print; var cald country gender age hiv ;
+where serial_no < 50;
+run;
+
+*/
+
+
+/*
+
 proc freq; tables cald hiv ; where death=.; run;
 
 
@@ -20782,7 +20807,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 /*parameters sampled*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
-eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_newp_condoms prop_redattr_ep_condoms
+eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_newp_cmmc prop_redattr_ep_cmmc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
@@ -22071,11 +22096,22 @@ Inputs are:
 
 *** RUN PROGRAM; 
 
-*   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
+											  
+data a ;  set r1 ;
+
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,0);
+
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,1);
+
 
 
 /*
+
+*   Run from caldate1 to intervention year;
+%run_update_r1(&caldate1,&year_interv-0.25,0);
 
 *    Save dataset at this point;
 data a ;  set r1 ;
@@ -22855,7 +22891,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 /*parameters sampled*/
 
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  rred_initial newp_factor  fold_tr_newp
-eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
+eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_newp_cmmc prop_redattr_ep_cmmc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
