@@ -10,7 +10,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2024.0 ;	
+%let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -214,6 +214,7 @@ newp_seed = 7;
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								  1.05  1.1 , 0.5 0.5 );
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  
+* prop_redattr_sbcc;		%sample_uniform(prop_redattr_sbcc,0.1 0.3 0.5);
 * eprate;					eprate = 0.1* exp(rand('normal')*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
@@ -541,8 +542,6 @@ newp_seed = 7;
 								0.05  0.10 	0.30   0.60, 
 							  	0.25  0.25	0.25   0.25); * change sep22 for pop_wide_tld;
 
-* effect_return_interv;		effect_return_interv = 5; * effect of implicit return to care interventions on prob of return;  * added for malawi mihpsa nov 24;
-
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
 							* dependent_on_time_step_length ;
@@ -716,12 +715,6 @@ end;
 
 end;
 
-
-* OTHER PROGRAMS;	
-
-* CONDOMS;					*Adapted from CMMC code from MIHPSA Zim - represents both condom provision and promotion interventions. JAS Jul2025; 
-* prop_redattr_newp_condoms;	%sample(prop_redattr_newp_condoms, 0 0.03 0.115 0.2, 0.2 0.2 0.4 0.2);		* 20% no impact, remaining values based on suggested impact 12thNov2024;
-* prop_redattr_ep_condoms;		%sample(prop_redattr_ep_condoms, 0 0.05 0.17 0.30, 0.2 0.2 0.4 0.2);
 
 
 * CIRCUMCISION;
@@ -1025,9 +1018,9 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-  %include "/home/rmjlaph/malawi_parameters.sas";
-* %include "/home/rmjlja9/Zim_parameters.sas";
-* %include "/home/rmjllob/CdI_parameters.sas";
+*  %include "/home/rmjlaph/malawi_parameters.sas";
+* %include "/home/rmjlja9/Zimbabwe_parameters.sas";
+ %include "/home/rmjllob/CdI_parameters8.sas";
 
 call symput('caldate1',caldate1);
 
@@ -1836,7 +1829,7 @@ eff_prob_loss_at_diag = prob_loss_at_diag;
 
 if country='Cote d Ivoire' then do;
 ***CdI specific;
-if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*2.2;
+if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.3;
 end;
 
 * define effective rate_lost;
@@ -2304,11 +2297,12 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 * INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
+								   
 
 
 if caldate_never_dot >= &year_interv then do;
 
-		*Testing; *Keep all testing at SQ level;	
+*Testing; *Keep all testing at SQ level;	
 
 		eff_sw_program = 0;		 			*No SW program;
 		rate_disengage_sw_program=1;
@@ -2318,11 +2312,10 @@ if caldate_never_dot >= &year_interv then do;
 		rate_self_test = 0;
 
 		*Prevention;
-		*Condom provision and promotion: keep at SQ level;
-		*Not explicitly modelled before year_interv, but the implicit switch off impacts newp and ep;
-		condom_change_year_i=2;    			*Switches off condom provision and promotion (0 restores SQ);
+		*Condom promotion and provision: keep at SQ level;
+		*SBCC: not explicitly modelled, but the switch off is;
+		*condom_incr_year_i=2;    		*Switches off SBCC;
 
-		*VMMC;
 		circ_inc_rate_year_i = 2;		*No VMMC;
 
 		*PrEP;
@@ -2381,10 +2374,11 @@ prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 
 * Oral prep scale-up over 4 years;
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
-else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
+else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and prob_prep_oral_b_set_in_opts ne 1
 	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
-else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
+else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and prob_prep_oral_b_set_in_opts ne 1
 	then eff_prob_prep_oral_b = prob_prep_oral_b;
+
 
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
@@ -2611,14 +2605,15 @@ if caldate{t} = &year_interv then do;
 							adhav_prep_oral = adhav*1.00; 
 						end;		
 
-	* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
+		* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_any_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if rate_test_startprep_set_in_opts ne 1 then do; 
 								eff_rate_test_startprep_any = 0.9; 
 								eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
 							end;
-						end;		
+						end;
+
 
 	* incr_r_test_restartprep_any_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						incr_r_test_restartprep_any_yr_i = 0;  
@@ -2630,21 +2625,21 @@ if caldate{t} = &year_interv then do;
 						decr_r_choose_stopprep_oral_yr_i = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stopprep_oral_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if r_ch_stop_prep_oral_set_in_opts ne 1 then do;
 								eff_rate_choose_stop_prep_oral = 0.03 ; 
 								eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
 							end;
-						end;		
+						end;			
 
 	* inc_p_prep_any_restart_choi_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_p_prep_any_restart_choi_yr_i = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_any_restart_choi_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if p_prep_restart_set_in_opts ne 1 then do;
 								eff_prob_prep_any_restart_choice = 0.8 ; 
 								eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
 							end;
-						end;		
+						end;			
 
 	* prep_any_strategy;
 						if set_in_options ne 1 then prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
@@ -2668,7 +2663,7 @@ if caldate{t} = &year_interv then do;
 	decr_prob_loss_at_diag_year_i = 0;
 
 	*absence CD4;
-	if set_in_options ne 1 then absence_cd4_year_i = 0;
+	if absence_cd4_set_in_options ne 1 then absence_cd4_year_i = 0;
 
 	*absence VL;
 	if set_in_options ne 1 then absence_vl_year_i = 0;
@@ -3034,7 +3029,7 @@ if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_me
 if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0.85; end; 
 if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121 125 130) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
-if set_in_opts ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
+if p_vl_meas_done_set_in_opts ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
@@ -3085,6 +3080,7 @@ if date_start_testing lt caldate{t} le 2015  then do;
 end;	
 
 
+if gender=1 then date_start_testing=2006.5;
 
 tested_anc=.;
 
@@ -3102,6 +3098,8 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 		end;
 
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
+		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
+
 end;
 
 
@@ -3456,7 +3454,6 @@ if sbp_m ne . then most_recent_sbp_m = sbp_m;
 
 * SEXUAL BEHAVIOUR;
 
-* (1) NEWP;
 rred_rc=1.0;
 
 * not * dependent_on_time_step_length ;
@@ -3472,42 +3469,32 @@ if 2025 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(yc
 %sample(ych2_risk_beh_newp, 0.975  0.990  0.995  	1	1/0.995  1/0.990  1/0.975, 	0.05  0.05  0.15  0.5  0.15  0.05  0.05);
 
 if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc * 1.5;
+*
+ condom_change_year_i = 2 refers to SBCC being switched off,
+ SBCC in Zimbabwe was introduced at least in 2011
+ In 2011 rred_rc depending on the sampling varies from 0.031 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
+													   0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
+													to 1.026 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
+ In 2021                                          from 0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
+													   0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
+													to 1.321 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975);
+*Proportion in reduction attributable to SBCC: prop_redattr_sbcc;
+*We are using rred_rc2011_ if sbbc was implemented from 2011 (this needs to be cheked),
+and 1 if we assume it was implemented from 1995
+if SBBC implemented before 2000 then it shoudl affect ch_risk_beh_ep.
+We have not modelled SBBC retrospectively and so we have not included its cost;
+if caldate{t} >= &year_interv and condom_change_year_i = 2 then do;
+*rred_rc =rred_rc2021_+((rred_rc2011_-rred_rc2021_)*prop_redattr_sbcc);
+rred_rc =rred_rc2021_+((1-rred_rc2021_)*prop_redattr_sbcc);
+end;
 
-
-* (2) EP;
 * not * dependent_on_time_step_length ;
 ch_risk_beh_ep=1.0;
 if 1995 < caldate{t} <= 2000 then ch_risk_beh_ep = ych_risk_beh_ep**(caldate{t}-1995);
 if        caldate{t} =  2000 then ch_risk_beh_ep2000_ = ych_risk_beh_ep**(2000-1995);
 if        caldate{t} >  2000 then ch_risk_beh_ep = ch_risk_beh_ep2000_;
-
-
-* Condom provision and promotion;
-/*
-From MIHPSA Zimbabwe:
-CMMC (condom mass media campaign) in Zimbabwe was introduced at least since 2004
-CMMC assumed to be switched ON from 2011 until year_interv
-Condom_change_year_i = 0 refers to CMMC being switched on (SQ and all runs up to year_interv)
-Condom_change_year_i = 2 refers to CMMC being switched off
-
-In 2011 rred_rc depending on the sampling varies from	0.031 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
-														0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
-												to		1.026 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
-In 2021											from 	0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
-													   	0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
-												to		1.321 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
-*/
-*Proportion of reduction attributable to condom intervetions: prop_redattr_newp_condoms;
-*We have not modelled condoms retrospectively and so we have not included their cost;
-rred_rc_base = rred_rc;					* use this to determine FSW rates;
-
-if caldate{t} >= &year_interv and condom_change_year_i = 2 then do;
-	*newp;
-	rred_rc = (rred_rc - prop_redattr_newp_condoms*rred_rc2011_) / (1 - prop_redattr_newp_condoms);
-	*ep;
-	ch_risk_beh_ep = ch_risk_beh_ep / (1 - prop_redattr_ep_condoms);
-end;
-
+if caldate{t} >= &year_interv and condom_change_year_i = 2 then 
+ch_risk_beh_ep = ch_risk_beh_ep2000_+((1-ch_risk_beh_ep2000_)*prop_redattr_sbcc);
 
 
 
@@ -4086,7 +4073,7 @@ if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 	end;
 
 	* dependent_on_time_step_length;
-	prob_becoming_sw = base_rate_sw * sqrt(rred_rc_base) * sw_age_factor;
+	prob_becoming_sw = base_rate_sw * sqrt(rred_rc) * sw_age_factor;
 
 	* effect of the life sex risk on becoming a sex worker;
 	if life_sex_risk = 3 then prob_becoming_sw = prob_becoming_sw * rr_sw_life_sex_risk_3;
@@ -4145,7 +4132,7 @@ rate_stop_sexwork = base_rate_stop_sexwork; if age >= 40 then rate_stop_sexwork 
 if t ge 2 then do;
 	if sw_tm1=1 then do;
 		d_sw=rand('uniform');
-		if d_sw < rate_stop_sexwork/(sqrt(rred_rc_base)) or age ge 50 then do; 
+		if d_sw < rate_stop_sexwork/(sqrt(rred_rc)) or age ge 50 then do; 
 			sw=0; sw_program_visit=0; date_stop_sw=caldate{t};  
 			date_last_sw_prog_vis=caldate{t};
 			sw_test_6mthly=0;
@@ -7544,7 +7531,7 @@ end;
 * INTRODUCE HIV INTO POPULATION ;
 
 d=rand('uniform');
-if caldate{t}=startyr and ((newp >= newp_seed and d < 0.8) or (msm=1 and d < 0.05))   and infection=.  then do; 
+if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
@@ -8824,10 +8811,8 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 	e_rate_return = eff_rate_return; 
 	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = e_rate_return / 1.5;
 
-
 * for malawi mihpsa nov 2024 and hiv control - for minimal scenario we need to be able to switch off the implicit effect of ongoing interventions to bring people back to care;
 	if return_interventions_off = 1 then e_rate_return = e_rate_return / effect_return_interv;
-
 
 * new for pop_wide_tld;
 	if pop_wide_tld      = 1 then e_rate_return = e_rate_return * rr_return_pop_wide_tld;
@@ -20782,7 +20767,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 /*parameters sampled*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
-eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_newp_condoms prop_redattr_ep_condoms
+eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
@@ -20982,12 +20967,12 @@ end;
 
 ***Zim specific;			*JAS Feb24;
 if country = 'Zimbabwe' then do;
-	if cald = 1999.5 and (prevalence1549 < 0.10) then do; abort abend; end;
-	if cald = 2004.5 and (prevalence1549 < 0.09) then do; abort abend; end;
+	if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
 	if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 end;
 
-***Cote d Ivoire specific;
+***Cote d Ivoite specific;
 if country = 'Cote d Ivoire' then do;
 	if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 	if cald = 2010 and (0.03 > prevalence1549w > 0.08) then do; abort abend; end;
@@ -22075,6 +22060,15 @@ Inputs are:
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
 
+
+*    Save dataset at this point;
+data a ;  set r1 ;
+
+data r1 ; set a ;
+*    Option 0 - repetition 1;
+%run_update_r1(&year_interv,&year_interv+50,0);
+
+
 /*
 
 *    Save dataset at this point;
@@ -22855,7 +22849,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 /*parameters sampled*/
 
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  rred_initial newp_factor  fold_tr_newp
-eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_newp_condoms prop_redattr_ep_condoms
+eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
