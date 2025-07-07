@@ -811,16 +811,23 @@ scatter x=cald y=o_HIVIncid1539_fsw_hj / markerattrs = (symbol=circle       colo
 
 run;quit;
 
+ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
+ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Zim\FSW\07Jul25a.doc' startpage=never; 
+
+ods listing close;
+
+
 ***FOR SUNGAI CROI POSTER AND HARRIETT;
+
 proc sgplot data=e; 
 
-title    height=1.5 justify=center "HIV incidence amongst female sex workers (FSW) aged 18-39";
+title    height=1.5 justify=center "HIV incidence amongst female sex workers aged 18-39";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 30 by 5)    valueattrs=(size=10);
 
-label mean_mean_sw_inc1839_  = "Incidence amongst all female sex workers";
-label mean_mean_sw_inc_inprog1839_  = "Incidence amongst female sex workers attending a sex-worker program";
-label mean_mean_sw_inc_noprog1839_  = "Incidence amongst female sex workers not attending a sex-worker program";
+label mean_mean_sw_inc1839_  = "Mean incidence amongst all female sex workers";
+label mean_mean_sw_inc_inprog1839_  = "Mean incidence amongst female sex workers attending a sex-worker program";
+label mean_mean_sw_inc_noprog1839_  = "Mean incidence amongst female sex workers not attending a sex-worker program";
 label o_HIVIncid_fsw = "JH JAIDS";
 label o_HIVIncid1824_fsw= "18-24 SAli";
 label o_HIVIncid2539_fsw= "25-39 SAli";
@@ -842,57 +849,57 @@ scatter x=cald y=o_HIVIncid1539_fsw_hj / markerattrs = (symbol=circle       colo
 */
 run;quit;
 
+/*
 proc means n mean  p5 p95;var  mean_mean_sw_inc1839_ p5_mean_sw_inc1839_ p95_mean_sw_inc1839_;where cald=2023;run;
 proc means n mean  p5 p95;var  mean_mean_sw_inc_inprog1839_ p5_mean_sw_inc_inprog1839_ p95_mean_sw_inc_inprog1839_;
 where cald=2021;run;
- 
+ */
 
 proc sgplot data=e; 
 
-title    height=1.5 justify=center "HIV incidence amongst female sex workers (FSW) aged 18-24";
+title    height=1.5 justify=center "HIV incidence amongst female sex workers aged 18-24";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 30 by 5)    valueattrs=(size=10);
 
-label mean_mean_sw_inc1824_  = "Incidence amongst all female sex workers";
-label mean_mean_sw_inc_inprog1824_  = "Incidence amongst female sex workers attending a sex-worker program";
-label mean_mean_sw_inc_noprog1824_  = "Incidence amongst female sex workers not attending a sex-worker program";
+label mean_mean_sw_inc1824_  = "Mean HIV incidence amongst all female sex workers";
+label mean_mean_sw_inc_inprog1824_  = "Mean HIV incidence amongst female sex workers attending a sex-worker program";
+label mean_mean_sw_inc_noprog1824_  = "Mean HIV incidence amongst female sex workers not attending a sex-worker program";
 
 series  x=cald y=mean_mean_sw_inc1824_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_mean_sw_inc1824_  upper=p95_mean_sw_inc1824_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for incidence amongst all sex workers ";
+band    x=cald lower=p5_mean_sw_inc1824_  upper=p95_mean_sw_inc1824_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for HIV incidence amongst female sex workers aged 18-24";
 series  x=cald y=mean_mean_sw_inc_inprog1824_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_mean_sw_inc_inprog1824_  upper=p95_mean_sw_inc_inprog1824_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range for incidence amongst sex workers attendng a program";
+band    x=cald lower=p5_mean_sw_inc_inprog1824_  upper=p95_mean_sw_inc_inprog1824_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range for HIV incidence amongst female sex workers aged 18-24 attendng a program";
 series  x=cald y=mean_mean_sw_inc_noprog1824_ /  lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_mean_sw_inc_noprog1824_  upper=p95_mean_sw_inc_noprog1824_ / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range for incidence amongst sex workers not attending a program";
+band    x=cald lower=p5_mean_sw_inc_noprog1824_  upper=p95_mean_sw_inc_noprog1824_ / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range for HIV incidence amongst female sex workers aged 18-24 not attending a program";
 
 run;quit;
 
 proc sgplot data=e; 
 
-title    height=1.5 justify=center "HIV incidence amongst female sex workers (FSW) aged 25-39";
+title    height=1.5 justify=center "HIV incidence amongst female sex workers aged 25-39";
 xaxis label      = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 30 by 5)    valueattrs=(size=10);
 
-label mean_mean_sw_inc2539_  = "Incidence amongst all female sex workers";
-label mean_mean_sw_inc_inprog2539_  = "Incidence amongst female sex workers attending a sex-worker program";
-label mean_mean_sw_inc_noprog2539_  = "Incidence amongst female sex workers not attending a sex-worker program";
+label mean_mean_sw_inc2539_  = "Mean HIV incidence amongst all female sex workers";
+label mean_mean_sw_inc_inprog2539_  = "Mean HIV incidence amongst female sex workers attending a sex-worker program";
+label mean_mean_sw_inc_noprog2539_  = "Mean HIV incidence amongst female sex workers not attending a sex-worker program";
 
 series  x=cald y=mean_mean_sw_inc2539_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_mean_sw_inc2539_  upper=p95_mean_sw_inc2539_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for incidence amongst all sex workers ";
+band    x=cald lower=p5_mean_sw_inc2539_  upper=p95_mean_sw_inc2539_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for HIV incidence amongst female sex workers aged 25-39 ";
 series  x=cald y=mean_mean_sw_inc_inprog2539_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_mean_sw_inc_inprog2539_  upper=p95_mean_sw_inc_inprog2539_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range for incidence amongst sex workers attendng a program";
+band    x=cald lower=p5_mean_sw_inc_inprog2539_  upper=p95_mean_sw_inc_inprog2539_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range for HIV incidence amongst female sex workers aged 25-39 attendng a program";
 series  x=cald y=mean_mean_sw_inc_noprog2539_ /  lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_mean_sw_inc_noprog2539_  upper=p95_mean_sw_inc_noprog2539_ / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range for incidence amongst sex workers not attending a program";
+band    x=cald lower=p5_mean_sw_inc_noprog2539_  upper=p95_mean_sw_inc_noprog2539_ / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range for HIV incidence amongst female sex workers aged 25-39 not attending a program";
 
 run;quit;
 
 
 proc sgplot data=e; 
-
-title    height=1.5 justify=center "HIV prevalence in SW (All ages)";
+title    height=1.5 justify=center "HIV prevalence in female sex workers";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
 
-label p50_prevalence_sw = "Median ";
+label p50_prevalence_sw = "Median HIV prevalence in female sex workers";
 label o_prev_fsw_rds_mut = "RDS Mutare";
 label o_prev_fsw_rds_vf = "RDS Vic Falls";
 label o_prev_fsw_rds_hwa = "RDS Hwange";
@@ -900,7 +907,7 @@ label o_prev_fsw_rds = "RDS Sapphire";
 label o_prev_fsw_AMT = "RDS Amethist";
 
 series  x=cald y=p50_prevalence_sw /  lineattrs = (color=black thickness = 2);
-band   x=cald lower=p5_prevalence_sw  upper=p95_prevalence_sw / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+band   x=cald lower=p5_prevalence_sw  upper=p95_prevalence_sw / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for HIV prevalence in female sex workers";
 
 scatter x=cald y=o_prev_fsw_rds_mut / markerattrs = (symbol=circle       color=blue size = 12);
 scatter x=cald y=o_prev_fsw_rds_vf / markerattrs = (symbol=circle       color=green size = 12);
@@ -913,19 +920,18 @@ run;quit;
 
 proc sgplot data=e; 
 
-title    height=1.5 justify=center "HIV prevalence in SW aged 18-39";
+title    height=1.5 justify=center "HIV prevalence in female sex workers aged 18-39";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
 
-label p50_prevalence_1839sw = "Median ";
+label p50_prevalence_1839sw = "Median HIV prevalence in female sex workers aged 18-39";
 
 series  x=cald y=p50_prevalence_1839sw /  lineattrs = (color=black thickness = 2);
-band   x=cald lower=p5_prevalence_1839sw  upper=p95_prevalence_1839sw / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+band   x=cald lower=p5_prevalence_1839sw  upper=p95_prevalence_1839sw / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for HIV prevalence in female sex workers aged 18-39";
 run;quit;
-
-ods html;
+/*
 proc means n mean  p5 p95;var  p50_prevalence_1839sw p5_prevalence_1839sw p95_prevalence_1839sw ;where cald=2016;run;
-
+*/
 proc sgplot data=e; 
 
 title    height=1.5 justify=center "HIV prevalence in SW aged 18-24";
