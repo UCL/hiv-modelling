@@ -1836,7 +1836,7 @@ eff_prob_loss_at_diag = prob_loss_at_diag;
 
 if country='Cote d Ivoire' then do;
 ***CdI specific;
-if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.3;
+if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*2.2;
 end;
 
 * define effective rate_lost;
@@ -2308,6 +2308,8 @@ option = &s;
 
 if caldate_never_dot >= &year_interv then do;
 
+		set_in_options=1;
+
 		*Testing; *Keep all testing at SQ level;	
 
 		eff_sw_program = 0;		 			*No SW program;
@@ -2327,22 +2329,22 @@ if caldate_never_dot >= &year_interv then do;
 
 		*PrEP;
 		*Turn off all PrEP;
-
+		
 		prep_any_strategy=0;
 		date_prep_oral_intro=2100;
 		date_prep_inj_intro=2100;
 		date_prep_vr_intro=2100;
-		rate_test_startprep_set_in_opts = 1; eff_rate_test_startprep_any=0;
-		prob_prep_oral_b_set_in_opts = 1; eff_prob_prep_oral_b=0;
-		r_ch_stop_prep_oral_set_in_opts = 1; eff_rate_choose_stop_prep_oral=1;
-		p_prep_restart_set_in_opts = 1; eff_prob_prep_any_restart_choice=0;	
+		eff_rate_test_startprep_any=0;
+		eff_prob_prep_oral_b=0;
+		eff_rate_choose_stop_prep_oral=1;
+		eff_prob_prep_any_restart_choice=0;	
 
 		*Linkage, management, ART Interv;
 		*PCP is part of the essential scenario;
 
-		absence_cd4_set_in_options = 1; absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
+		absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
 
-		p_vl_meas_done_set_in_opts = 1; eff_prob_vl_meas_done = 0; 
+		eff_prob_vl_meas_done = 0; 
 
 		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
 							  
@@ -2582,171 +2584,6 @@ if caldate{t} ge 2026 and o_cab=1 and o_len=1 then art_monitoring_strategy = 170
 
 
 
-***Changes in ART coverage (~20% lower in 3% of runs) and oral PrEP coverage after option start date;
-if caldate{t} = &year_interv then do;
-
-	*lower future ART coverage;
-	if lower_future_art_cov=1 then do;							
-		eff_rate_int_choice = eff_rate_int_choice * 1.25;
-		eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.25;
-		eff_prob_lossdiag_non_tb_who3e = eff_prob_lossdiag_non_tb_who3e * 1.25;
-		eff_prob_lossdiag_adctb = eff_prob_lossdiag_adctb * 1.25;
-		eff_prob_lost_art = eff_prob_lost_art * 1.25;
-		eff_rate_lost = eff_rate_lost * 1.25;
-
-		eff_rate_restart = eff_rate_restart * 0.8;
-		eff_rate_return = eff_rate_return   * 0.8;
-		eff_pr_art_init =  eff_pr_art_init  * 0.8;  
-		eff_prob_return_adc = eff_prob_return_adc  * 0.8;
-	end;
-
-	*higher future oral prep coverage;
-	if	higher_future_prep_oral_cov=1 then do;
-	* lapr and dpv-vr - consider inclusion of scale up of lapr and dpv-vr ;
-
-	* incr_adh_prep_oral_yr_i;
-						incr_adh_prep_oral_yr_i = 0;  
-						if _u25 < 0.95 then do; 
-							incr_adh_prep_oral_yr_i = 1; 
-							adhav_prep_oral = adhav*1.00; 
-						end;		
-
-	* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
-						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
-							inc_r_test_startprep_any_yr_i = 1; 
-							if set_in_options ne 1 then do;
-								eff_rate_test_startprep_any = 0.9; 
-								eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
-							end;
-						end;		
-
-	* incr_r_test_restartprep_any_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
-						incr_r_test_restartprep_any_yr_i = 0;  
-						if _u28 <= 0.95 then do; 
-							incr_r_test_restartprep_any_yr_i = 1; 
-						end;		
-
-	* decr_r_choose_stopprep_oral_yr_i; * dependent_on_time_step_length;
-						decr_r_choose_stopprep_oral_yr_i = 0;  
-						if _u30 < 0.95 then do; 
-							decr_r_choose_stopprep_oral_yr_i = 1; 
-							if set_in_options ne 1 then do;
-								eff_rate_choose_stop_prep_oral = 0.03 ; 
-								eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
-							end;
-						end;		
-
-	* inc_p_prep_any_restart_choi_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
-						inc_p_prep_any_restart_choi_yr_i = 0;  
-						if _u32 < 0.95 then do; 
-							inc_p_prep_any_restart_choi_yr_i = 1; 
-							if set_in_options ne 1 then do;
-								eff_prob_prep_any_restart_choice = 0.8 ; 
-								eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
-							end;
-						end;		
-
-	* prep_any_strategy;
-						if set_in_options ne 1 then prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
-
-	end;
-
-	*Other potential changes after year_i which can be turned on in the Options code;
-	*(impact of changes are coded below the options code);
-
-	*increase in testing;
-	if set_in_options ne 1 then incr_test_year_i = 0; 
-	* 0= decrease in testing after 2022 (default), 
-	1= 2-fold increase in testing for everyone, 
-	2= 2-fold increase in testing for men only,  
-	4=no testing in the general population;
-
-	*decrease in the proportion of people hard to reach;
-	decr_hard_reach_year_i = 0;
-
-	*decrease in probability of being lost at diagnosis; 
-	decr_prob_loss_at_diag_year_i = 0;
-
-	*absence CD4;
-	if set_in_options ne 1 then absence_cd4_year_i = 0;
-
-	*absence VL;
-	if set_in_options ne 1 then absence_vl_year_i = 0;
-
-	* crag cd4 < 200;
-	if set_in_options ne 1 then crag_cd4_l200 = 0;
-
-	* tblam cd4 < 200;
-	if set_in_options ne 1 then tblam_cd4_l200 = 0;
-
-	*decrease in the rate of being lost;
-	decr_rate_lost_year_i = 0;
-
-	*decrease in the rate of being lost whilst on ART;
-	decr_rate_lost_art_year_i = 0; 
-
-	*increase in the rate of return;
-	incr_rate_return_year_i = 0 ;
-
-	*increase in the rate of restarting ART;
-	incr_rate_restart_year_i = 0;
-
-	*increase in the rate of ART initiation;
-	incr_rate_init_year_i = 0 ;
-
-	*increase in adherence;
-	incr_adh_year_i = 0;
-
-	*decrease in the rate of interruption by choice;
-	decr_rate_int_choice_year_i = 0 ;
-
-	*increase in the the probability of a VL measure being done;
-	incr_prob_vl_meas_done_year_i = 0;  
-
-	* poc viral load monitoring;
-	*poc_vl_monitoring_i = 0 ;						* commented out as already used above JAS Nov23;				 
-
-	*ART monitoring drug levels;
-	art_mon_drug_levels_year_i = 0;
-
-	*increase in the probabilty of switching lines;
-	incr_pr_switch_line_year_i = 0 ;
-
-	*increase in test targeting;
-	incr_test_targeting_year_i = 0;
-
-	*switching regimens;
-	reg_option_switch_year_i = 0;
-
-	*tenofovir is taf, rather than tdf as it is by default;
-	ten_is_taf_year_i = 0; *coded within core (not below options code);
-
-	*increase in rates of circumcision;
-	if set_in_options ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
-
-	*increase in condom use;
-	if set_in_options ne 1 then condom_change_year_i = 0; *coded within core (not below options code);
-
-	*population wide tld;
-	pop_wide_tld = 0;
-	pop_wide_tld_year_i = 0;
-
-	*covid disruption variables;
-	vmmc_disrup_covid = 0 ; 
-	condom_disrup_covid = 0; 
-	prep_oral_disrup_covid = 0; 	* lapr and dpv-vr - no change as this is before lapr and dpv-vr introduced ;
-	testing_disrup_covid = 0; 
-	art_init_disrup_covid = 0; 
-	vl_adh_switch_disrup_covid = 0; 
-	cotrim_disrup_covid = 0; 
-	inc_death_rate_aids_disrup_covid = 0; 
-	no_art_disrup_covid = 0; 
-	art_low_adh_disrup_covid = 0; 
-
-
-end;
-
-	
 
 *
 
