@@ -3,12 +3,12 @@
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250617_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250702_out\";
 
 
 /*
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250617_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250702_out\";
 
 data g ; set a.out: ;
 
@@ -358,35 +358,22 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_sw_program_visit;			n_sw_program_visit = s_sw_program_visit * sf;* Note this is per three months to approximate number of SW reached;
 
 
+
+
+
+
+
 ***Extra outputs for calibration;
 
-
-
-keep run cald option
-
-/*HIV Control variables*/
-n_alive_1524m	n_alive_2549m	n_alive_50plm	n_alive_1524w	n_alive_2549w	n_alive_50plw	n_sw_1564	n_alive_msm
-n_hiv1524m		n_hiv2549m		n_hiv50plm		n_hiv1524w		n_hiv2549w		n_hiv50plw		n_hiv_sw	n_hiv_msm
-n_diag_m_1524	n_diag_m_2549	n_diag_m_50pl	n_diag_w_1524	n_diag_w_2549	n_diag_w_50pl	n_diag_sw	n_diag_msm
-n_onart1524_m	n_onart2549_m	n_onart50pl_m	n_onart1524_w	n_onart2549_w	n_onart50pl_w	n_onart_sw	n_onart_msm
-n_vl1000_art_1524_m		n_vl1000_art_2549_m		n_vl1000_art_50pl_m		n_vl1000_art_1524_w		n_vl1000_art_2549_w		n_vl1000_art_50pl_w
-n_vl1000_art_sw			n_vl1000_art_msm		n_birth					n_give_birth_w_hiv		n_hiv_child
-n_dead1524m_all	n_dead2549m_all	n_dead50plm_all	n_dead1524w_all	n_dead2549w_all	n_dead50plw_all
-n_new_inf1524m	n_new_inf2549m	n_new_inf50plm	n_new_inf1524w	n_new_inf2549w	n_new_inf50plw	n_new_inf_sw n_new_inf_msm
-n_death_hiv_age_1524_m	n_death_hiv_age_2549_m	n_death_hiv_age_50pl_m	n_death_hiv_age_1524_w	n_death_hiv_age_2549_w	n_death_hiv_age_50pl_w
-n_onprep_sw		n_onprep_msm	n_onprep_m		n_onprep_w		n_elig_prep		n_new_inf_prep_elig
-n_daly			cost			p_mcirc			n_sw_program_visit
-
-/*Extra outputs for calibration*/
-
-;
+* Add truncated list here? ;
 
 
 
 
 
 
-/*
+
+
 * Previous list of outputs ;
 
 
@@ -1367,7 +1354,38 @@ inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 * n_new_inf_prep_elig;			n_new_inf_prep_elig = s_primary_prep_elig * 4 * sf; 
 * n_new_inf_onprep;				n_new_inf_onprep = s_primary_onprep * 4 * sf;
 
-keep run option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 
+
+
+
+
+
+
+
+
+keep run cald option
+
+/*HIV Control variables*/
+n_alive_1524m	n_alive_2549m	n_alive_50plm	n_alive_1524w	n_alive_2549w	n_alive_50plw	n_sw_1564	n_alive_msm
+n_hiv1524m		n_hiv2549m		n_hiv50plm		n_hiv1524w		n_hiv2549w		n_hiv50plw		n_hiv_sw	n_hiv_msm
+n_diag_m_1524	n_diag_m_2549	n_diag_m_50pl	n_diag_w_1524	n_diag_w_2549	n_diag_w_50pl	n_diag_sw	n_diag_msm
+n_onart1524_m	n_onart2549_m	n_onart50pl_m	n_onart1524_w	n_onart2549_w	n_onart50pl_w	n_onart_sw	n_onart_msm
+n_vl1000_art_1524_m		n_vl1000_art_2549_m		n_vl1000_art_50pl_m		n_vl1000_art_1524_w		n_vl1000_art_2549_w		n_vl1000_art_50pl_w
+n_vl1000_art_sw			n_vl1000_art_msm		n_birth					n_give_birth_w_hiv		n_hiv_child
+n_dead1524m_all	n_dead2549m_all	n_dead50plm_all	n_dead1524w_all	n_dead2549w_all	n_dead50plw_all
+n_new_inf1524m	n_new_inf2549m	n_new_inf50plm	n_new_inf1524w	n_new_inf2549w	n_new_inf50plw	n_new_inf_sw n_new_inf_msm
+n_death_hiv_age_1524_m	n_death_hiv_age_2549_m	n_death_hiv_age_50pl_m	n_death_hiv_age_1524_w	n_death_hiv_age_2549_w	n_death_hiv_age_50pl_w
+n_onprep_sw		n_onprep_msm	n_onprep_m		n_onprep_w		n_elig_prep		n_new_inf_prep_elig
+n_daly			cost			p_mcirc			n_sw_program_visit
+
+
+
+
+/*Extra outputs for calibration*/
+/* Add truncated list here? */
+
+/* Original long list */
+
+cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 
 n_hiv n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv50plm n_hiv50plw n_hiv_sw
 n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_alive_50plm n_alive_50plw n_alive0_ 
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl
@@ -1584,20 +1602,31 @@ n_hiv_child  n_new_inf_sw  n_new_inf_msm
  n_death_hiv_age_1524_w   n_death_hiv_age_2549_w  n_death_hiv_age_50pl_w  p_vl1000_msm  incidence_msm
 ;
 
-*/
+
 
 
 proc sort data=y;by run option;run;
+/*proc freq data=y; table option;run;*/
 
 
 proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
+data a.long_zim_all; 
+	set y;
+	if cald=. then delete; 
+run;
+
+
 data a.long_zim_control; set y;
-if cald=. then delete;run;
+if option ne 0 then delete;
+if cald=. then delete; run;
 
 proc contents data = a.long_zim_control; run;
+
+/*proc freq data=a.long_zim_all; table option;run;*/
+/*proc freq data=a.long_zim_control; table option;run;*/
 
 
 

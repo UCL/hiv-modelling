@@ -2,11 +2,11 @@
 ***Program to produce graphs using averages across runs
 ***Use include statement in analysis program to read the code below in;
 
-libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\hiv_control_zim_20250508_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250702_out\";
 /*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
-proc freq data=a.long_zim_control;table option;run;
+proc freq data=a.long_zim_all;table option;run;
 
 %let pth_export_hiv_control= C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe;run;
 
@@ -15,7 +15,7 @@ proc freq data=a.long_zim_control;table option;run;
 
 
 data b;
-set a.long_zim_control;
+set a.long_zim_all;
 
 p_onart_vl1000_all = .;
 
@@ -79,7 +79,7 @@ proc print data=b; var option cald count_csim;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
  ***number of runs - this is manually inputted in nfit in the macros below;
 
-proc means max data=b;var count_csim cald;run;*108;
+proc means max data=b;var count_csim cald;run;*190;
 
 /*proc freq data=b;table cald;run;*/
 
@@ -191,15 +191,15 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=108;
-%option_(0);
+%let nfit=190;
+%option_(1);
 run;
 
 
 data d; * this is number of variables in %let var = above ;
 merge 
-g0_1   g0_2   g0_3   g0_4   g0_5   g0_6   g0_7   g0_8   g0_9   g0_10  g0_11  g0_12  g0_13  g0_14  g0_15  g0_16  g0_17  g0_18  g0_19  g0_20  g0_21  g0_22  g0_23  g0_24  g0_25  
-g0_26  g0_27  g0_28  g0_29  g0_30  g0_31  g0_32  g0_33  g0_34  g0_35  g0_36  g0_37  g0_38  g0_39  g0_40  g0_41  g0_42  g0_43  g0_44  g0_45  g0_46  g0_47  g0_48  g0_49  g0_50 
+g0_1   g0_2   g0_3   g0_4   g0_5   g0_6   g0_7   g0_8   g0_9   g0_10  g0_11  g0_12  g0_13  g0_14  g0_15  g0_16  g0_17  g0_18  g0_19  g0_20  g0_21  g0_22  g0_23  /*g0_24  g0_25  
+g0_26  g0_27  g0_28*/  g0_29  g0_30  g0_31  g0_32  g0_33  g0_34  g0_35  g0_36  g0_37  g0_38  g0_39  g0_40  g0_41  g0_42  g0_43  g0_44  g0_45  /*g0_46*/  g0_47  g0_48  g0_49  g0_50 
 g0_51  g0_52  g0_53  g0_54  g0_55  g0_56  g0_57  g0_58  g0_59  g0_60  g0_61  g0_62  g0_63  g0_64  g0_65  g0_66  g0_67  g0_68  g0_69  g0_70  g0_71  g0_72  g0_73  g0_74  g0_75  
 g0_76  g0_77  g0_78  g0_79  g0_80  g0_81  g0_82  g0_83  g0_84  g0_85  g0_86  g0_87  g0_88  g0_89  g0_90  g0_91  g0_92  g0_93  g0_94  g0_95  g0_96  g0_97  g0_98  g0_99  g0_100 
 g0_101 g0_102 g0_103 g0_104 g0_105 g0_106 g0_107 g0_108 g0_109 g0_110 g0_111 g0_112 g0_113 g0_114 g0_115 g0_116 g0_117 g0_118 g0_119 g0_120 g0_121 g0_122 g0_123 g0_124 g0_125 
@@ -208,9 +208,23 @@ g0_151 g0_152 g0_153 g0_154 g0_155 g0_156 g0_157 g0_158 g0_159 g0_160 g0_161 g0_
 g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182 g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 
 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208 g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 
 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234 g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 
-g0_251 g0_252 g0_253 g0_254 g0_255 g0_256 g0_257 g0_258 g0_259 g0_260 g0_261 g0_262 g0_263 g0_264 g0_265 /*g0_266 g0_267 g0_268 g0_269 g0_270 g0_271 g0_272 g0_273 g0_274 g0_275 
+g0_251 g0_252 g0_253 g0_254 g0_255 g0_256 g0_257 g0_258 g0_259 g0_260 g0_261 g0_262 g0_263 g0_264 g0_265 g0_266 /*g0_267 g0_268 g0_269 g0_270 g0_271 g0_272 g0_273 g0_274 g0_275 
 g0_276 g0_277 g0_278 g0_279 g0_280 g0_281 g0_282 g0_283 g0_284 g0_285 g0_286 g0_287 g0_288 g0_289 g0_290 g0_291 g0_292 g0_293 g0_294 g0_295 g0_296 g0_297 g0_298 g0_299 g0_300 
 g0_301 g0_302 g0_303 g0_304 g0_305 g0_306 g0_307 g0_308 g0_309 g0_310 g0_311 g0_312 g0_313 g0_314*/
+
+g1_1   g1_2   g1_3   g1_4   g1_5   g1_6   g1_7   g1_8   g1_9   g1_10  g1_11  g1_12  g1_13  g1_14  g1_15  g1_16  g1_17  g1_18  g1_19  g1_20  g1_21  g1_22  g1_23  /*g1_24  g1_25  
+g1_26  g1_27  g1_28*/  g1_29  g1_30  g1_31  g1_32  g1_33  g1_34  g1_35  g1_36  g1_37  g1_38  g1_39  g1_40  g1_41  g1_42  g1_43  g1_44  g1_45  /*g1_46*/  g1_47  g1_48  g1_49  g1_50 
+g1_51  g1_52  g1_53  g1_54  g1_55  g1_56  g1_57  g1_58  g1_59  g1_60  g1_61  g1_62  g1_63  g1_64  g1_65  g1_66  g1_67  g1_68  g1_69  g1_70  g1_71  g1_72  g1_73  g1_74  g1_75  
+g1_76  g1_77  g1_78  g1_79  g1_80  g1_81  g1_82  g1_83  g1_84  g1_85  g1_86  g1_87  g1_88  g1_89  g1_90  g1_91  g1_92  g1_93  g1_94  g1_95  g1_96  g1_97  g1_98  g1_99  g1_100 
+g1_101 g1_102 g1_103 g1_104 g1_105 g1_106 g1_107 g1_108 g1_109 g1_110 g1_111 g1_112 g1_113 g1_114 g1_115 g1_116 g1_117 g1_118 g1_119 g1_120 g1_121 g1_122 g1_123 g1_124 g1_125 
+g1_126 g1_127 g1_128 g1_129 g1_130 g1_131 g1_132 g1_133 g1_134 g1_135 g1_136 g1_137 g1_138 g1_139 g1_140 g1_141 g1_142 g1_143 g1_144 g1_145 g1_146 g1_147 g1_148 g1_149 g1_150 
+g1_151 g1_152 g1_153 g1_154 g1_155 g1_156 g1_157 g1_158 g1_159 g1_160 g1_161 g1_162 g1_163 g1_164 g1_165 g1_166 g1_167 g1_168 g1_169 g1_170 g1_171 g1_172 g1_173 g1_174 g1_175 
+g1_176 g1_177 g1_178 g1_179 g1_180 g1_181 g1_182 g1_183 g1_184 g1_185 g1_186 g1_187 g1_188 g1_189 g1_190 g1_191 g1_192 g1_193 g1_194 g1_195 g1_196 g1_197 g1_198 g1_199 g1_200 
+g1_201 g1_202 g1_203 g1_204 g1_205 g1_206 g1_207 g1_208 g1_209 g1_210 g1_211 g1_212 g1_213 g1_214 g1_215 g1_216 g1_217 g1_218 g1_219 g1_220 g1_221 g1_222 g1_223 g1_224 g1_225 
+g1_226 g1_227 g1_228 g1_229 g1_230 g1_231 g1_232 g1_233 g1_234 g1_235 g1_236 g1_237 g1_238 g1_239 g1_240 g1_241 g1_242 g1_243 g1_244 g1_245 g1_246 g1_247 g1_248 g1_249 g1_250 
+g1_251 g1_252 g1_253 g1_254 g1_255 g1_256 g1_257 g1_258 g1_259 g1_260 g1_261 g1_262 g1_263 g1_264 g1_265 g1_266 /*g1_267 g1_268 g1_269 g1_270 g1_271 g1_272 g1_273 g1_274 g1_275 
+g1_276 g1_277 g1_278 g1_279 g1_280 g1_281 g1_282 g1_283 g1_284 g1_285 g1_286 g1_287 g1_288 g1_289 g1_290 g1_291 g1_292 g1_293 g1_294 g1_295 g1_296 g1_297 g1_298 g1_299 g1_300 
+g1_301 g1_302 g1_303 g1_304 g1_305 g1_306 g1_307 g1_308 g1_309 g1_310 g1_311 g1_312 g1_313 g1_314*/
 ;
 by cald;
 %include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe.sas";
@@ -227,7 +241,7 @@ ods listing;
 ***Graphs comparing observed data to outputs for Status quo 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20250508.doc' startpage=never;
+ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20250702.doc' startpage=never;
 
 
 
@@ -312,9 +326,13 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "p_newp_ge1_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.25 /*0.2*/ by 0.05) valueattrs=(size=10);
-label p50_p_newp_ge1__0  = "Status quo (median) - 15+";
+label p50_p_newp_ge1__0  = "Baseline (median) - 15+";
+label p50_p_newp_ge1__1  = "+ condom availability (median) - 15+";
+
 series  x=cald y=p50_p_newp_ge1__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_newp_ge1__0 	upper=p95_p_newp_ge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_newp_ge1__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_newp_ge1__1 	upper=p95_p_newp_ge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
