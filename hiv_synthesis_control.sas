@@ -1836,7 +1836,7 @@ eff_prob_loss_at_diag = prob_loss_at_diag;
 
 if country='Cote d Ivoire' then do;
 ***CdI specific;
-if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*2.2;
+if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.3;
 end;
 
 * define effective rate_lost;
@@ -2583,8 +2583,6 @@ if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 8;
 if caldate{t} ge 2026 and o_cab=1 and o_len=1 then art_monitoring_strategy = 1700; 
 
 
-
-
 *
 
 this table is just reg_option recently used - full list of all reg_option are listed below
@@ -2692,14 +2690,12 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
-		if set_in_options ne 1 then do;
 			if prep_any_willing=1 then eff_rate_test_startprep_any=1;
 			eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
 			eff_rate_choose_stop_prep_cab=0.05;
 			eff_rate_choose_stop_prep_len=0.05;
 			eff_rate_choose_stop_prep_vr=0.05;
 			eff_prob_prep_any_restart_choice=0.7;
-		end;
 		* lapr and dpv-vr - consider if any needs to change ;
 		end;
 	end;
@@ -2714,14 +2710,12 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		eff_sw_higher_int = sw_higher_int;
 		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-		if set_in_options ne 1 then do;
 			eff_rate_test_startprep_any=rate_test_startprep_any;
 			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 			eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
 			eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
 			eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
 			eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-		end;
 		* lapr and dpv-vr - consider if any needs to change ;
 end; 
 
@@ -2864,6 +2858,10 @@ if reg_option = 130 then flr=3;
     if flr=2 ten + 3tc + dol                                                           
  	if flr=3 len + cab        
 ;
+
+***RESTART HERE***;
+***SET_IN_OPTS SHOULD BE SET IN OPTIONS;
+
 
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
