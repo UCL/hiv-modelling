@@ -2,12 +2,12 @@
 
 ***OPTION COMPARISON FOR WHO AT END OF PROGRAM;
 
-*libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
+*libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 
 
 data a;
-set a.cdi_19jun25;
+set a.cdi_03jul25;
 
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
@@ -602,14 +602,14 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_CdI_16jun25; 
+data a.l_base_CdI_03jul25; 
 set y;
 run;
 
 
 ***GRAPHS;
 data b;
-set a.l_base_CdI_16jun25; 
+set a.l_base_CdI_03jul25; 
 if option ne 0 then delete;
 s_sw_1549_ = s_sw_1549;
 
@@ -619,7 +619,7 @@ proc freq;table cald;run;
  
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  467
+%let nfit =  210
 %let year_end = 2040 ;
 run;
 proc sort;by cald option ;run;
@@ -784,7 +784,7 @@ g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 
 
 ;
 by cald;
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\Observed_data_Cote_dIvoire.sas";
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Cote d Ivoire\Observed_data_Cote_dIvoire.sas";
 ***LOok at Spectrum AIM file;
 ***Number of HIV tests done;
 ***Ever tested;
@@ -797,7 +797,7 @@ run;
 
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\HIV Control\19Jun25.doc' startpage=never; 
+ods rtf file = 'C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\HIV Control\03Jul25.doc' startpage=never; 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Population 15+";
