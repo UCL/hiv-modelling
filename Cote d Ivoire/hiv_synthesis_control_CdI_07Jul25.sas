@@ -10,7 +10,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2024.0 ;	
+%let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -716,7 +716,6 @@ end;
 
 end;
 
-
 * OTHER PROGRAMS;	
 
 * CONDOMS;					*Adapted from CMMC code from MIHPSA Zim - represents both condom provision and promotion interventions. JAS Jul2025; 
@@ -1025,9 +1024,9 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-  %include "/home/rmjlaph/malawi_parameters.sas";
-* %include "/home/rmjlja9/Zim_parameters.sas";
-* %include "/home/rmjllob/CdI_parameters.sas";
+*  %include "/home/rmjlaph/malawi_parameters.sas";
+* %include "/home/rmjlja9/Zimbabwe_parameters.sas";
+ %include "/home/rmjllob/CdI_parameters9.sas";
 
 call symput('caldate1',caldate1);
 
@@ -2304,11 +2303,12 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 * INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
+								   
 
 
 if caldate_never_dot >= &year_interv then do;
 
-		*Testing; *Keep all testing at SQ level;	
+*Testing; *Keep all testing at SQ level;	
 
 		eff_sw_program = 0;		 			*No SW program;
 		rate_disengage_sw_program=1;
@@ -2322,7 +2322,6 @@ if caldate_never_dot >= &year_interv then do;
 		*Not explicitly modelled before year_interv, but the implicit switch off impacts newp and ep;
 		condom_change_year_i=2;    			*Switches off condom provision and promotion (0 restores SQ);
 
-		*VMMC;
 		circ_inc_rate_year_i = 2;		*No VMMC;
 
 		*PrEP;
@@ -2385,6 +2384,8 @@ else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_or
 	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
 else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
 	then eff_prob_prep_oral_b = prob_prep_oral_b;
+
+
 
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
@@ -2611,14 +2612,15 @@ if caldate{t} = &year_interv then do;
 							adhav_prep_oral = adhav*1.00; 
 						end;		
 
-	* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
+		* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_any_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if rate_test_startprep_set_in_opts ne 1 then do; 
 								eff_rate_test_startprep_any = 0.9; 
 								eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
 							end;
-						end;		
+						end;
+
 
 	* incr_r_test_restartprep_any_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						incr_r_test_restartprep_any_yr_i = 0;  
@@ -2630,21 +2632,21 @@ if caldate{t} = &year_interv then do;
 						decr_r_choose_stopprep_oral_yr_i = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stopprep_oral_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if r_ch_stop_prep_oral_set_in_opts ne 1 then do;
 								eff_rate_choose_stop_prep_oral = 0.03 ; 
 								eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
 							end;
-						end;		
+						end;			
 
 	* inc_p_prep_any_restart_choi_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_p_prep_any_restart_choi_yr_i = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_any_restart_choi_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if p_prep_restart_set_in_opts ne 1 then do;
 								eff_prob_prep_any_restart_choice = 0.8 ; 
 								eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
 							end;
-						end;		
+						end;			
 
 	* prep_any_strategy;
 						if set_in_options ne 1 then prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
@@ -2668,7 +2670,7 @@ if caldate{t} = &year_interv then do;
 	decr_prob_loss_at_diag_year_i = 0;
 
 	*absence CD4;
-	if set_in_options ne 1 then absence_cd4_year_i = 0;
+	if absence_cd4_set_in_options ne 1 then absence_cd4_year_i = 0;
 
 	*absence VL;
 	if set_in_options ne 1 then absence_vl_year_i = 0;
@@ -3034,7 +3036,7 @@ if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_me
 if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0.85; end; 
 if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121 125 130) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
-if set_in_opts ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
+if p_vl_meas_done_set_in_opts ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
@@ -3085,6 +3087,7 @@ if date_start_testing lt caldate{t} le 2015  then do;
 end;	
 
 
+if gender=1 then date_start_testing=2006.5;
 
 tested_anc=.;
 
@@ -3102,6 +3105,8 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 		end;
 
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
+		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
+
 end;
 
 
@@ -3507,7 +3512,6 @@ if caldate{t} >= &year_interv and condom_change_year_i = 2 then do;
 	*ep;
 	ch_risk_beh_ep = ch_risk_beh_ep / (1 - prop_redattr_ep_condoms);
 end;
-
 
 
 
@@ -7544,7 +7548,7 @@ end;
 * INTRODUCE HIV INTO POPULATION ;
 
 d=rand('uniform');
-if caldate{t}=startyr and ((newp >= newp_seed and d < 0.8) or (msm=1 and d < 0.05))   and infection=.  then do; 
+if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
@@ -8824,10 +8828,8 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 	e_rate_return = eff_rate_return; 
 	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = e_rate_return / 1.5;
 
-
 * for malawi mihpsa nov 2024 and hiv control - for minimal scenario we need to be able to switch off the implicit effect of ongoing interventions to bring people back to care;
 	if return_interventions_off = 1 then e_rate_return = e_rate_return / effect_return_interv;
-
 
 * new for pop_wide_tld;
 	if pop_wide_tld      = 1 then e_rate_return = e_rate_return * rr_return_pop_wide_tld;
@@ -22073,6 +22075,15 @@ Inputs are:
 
 *   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
+
+
+
+*    Save dataset at this point;
+data a ;  set r1 ;
+
+data r1 ; set a ;
+*    Option 0 - repetition 1;
+%run_update_r1(&year_interv,&year_interv+50,0);
 
 
 /*
