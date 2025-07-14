@@ -738,6 +738,8 @@ end;
 * prop_redattr_newp_condoms;	%sample(prop_redattr_newp_condoms, 0 0.03 0.115 0.2, 0.2 0.2 0.4 0.2);		* 20% no impact, remaining values based on suggested impact 12thNov2024;
 * prop_redattr_ep_condoms;		%sample(prop_redattr_ep_condoms, 0 0.05 0.17 0.30, 0.2 0.2 0.4 0.2);
 
+* prop_use_condom_int_newp;		prop_use_condom_int_newp=prop_redattr_newp_condoms;
+
 
 * CIRCUMCISION;
 
@@ -2336,7 +2338,11 @@ if caldate_never_dot >= &year_interv then do;
 		*Prevention;
 		*Condom provision and promotion: keep at SQ level;
 		*Not explicitly modelled before year_interv, but the implicit switch off impacts newp and ep;
-		condom_change_year_i=2;    			*Switches off condom provision and promotion (0 restores SQ);
+		condom_change_year_i=1;    			*Switches off condom provision and promotion (0 restores SQ);
+		if caldate_never_dot = &year_interv then do; 
+			use_condom_intervention_newp = 0;
+			if rand('uniform')<prop_use_condom_int_newp then use_condom_intervention_newp = 1;		*Proportion of individuals use condoms provided by funded intervention;
+		end;
 
 		*VMMC;
 		circ_inc_rate_year_i = 2;		*No VMMC;
@@ -3505,7 +3511,7 @@ From MIHPSA Zimbabwe:
 CMMC (condom mass media campaign) in Zimbabwe was introduced at least since 2004
 CMMC assumed to be switched ON from 2011 until year_interv
 Condom_change_year_i = 0 refers to CMMC being switched on (SQ and all runs up to year_interv)
-Condom_change_year_i = 2 refers to CMMC being switched off
+Condom_change_year_i = 1 refers to CMMC being switched off
 
 In 2011 rred_rc depending on the sampling varies from	0.031 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
 														0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
@@ -3518,9 +3524,10 @@ In 2021											from 	0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.97
 *We have not modelled condoms retrospectively and so we have not included their cost;
 rred_rc_base = rred_rc;					* use this to determine FSW rates;
 
-if caldate{t} >= &year_interv and condom_change_year_i = 2 then do;
+if caldate{t} >= &year_interv and condom_change_year_i = 1 then do;
 	*newp;
-	rred_rc = (rred_rc - prop_redattr_newp_condoms*rred_rc2011_) / (1 - prop_redattr_newp_condoms);
+/*	rred_rc = (rred_rc - prop_redattr_newp_condoms*rred_rc2011_) / (1 - prop_redattr_newp_condoms);*/
+	* Try turning this off and replacing with direct effect on newp - 10thJuly;
 	*ep;
 	ch_risk_beh_ep = ch_risk_beh_ep / (1 - prop_redattr_ep_condoms);
 end;
@@ -4331,11 +4338,15 @@ end;
 
 
 
-* Reducing newp by 50% if condom incr =1;
-if caldate{t} = &year_interv and condom_change_year_i = 1 then do;
-	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
-end;
+/** Reducing newp by 50% if condom incr =1;*/
+/*if caldate{t} = &year_interv and condom_change_year_i = 1 then do;*/
+/*	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;*/
+/*end;*/
+* Commented out as implementing this intervention below;
 
+
+* Condom intervention - removing the effect of condom provision and promotion for HIV Control baseline;
+if caldate{t} >= &year_interv and condom_change_year_i = 1 and use_condom_intervention_newp=1 then newp = newp + 1;
 
 
 
@@ -19594,7 +19605,11 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 /*
 
-proc print; var cald country gender age hiv ;
+proc print; var cald country gender age hiv 
+	rred_rc2011_
+	prop_redattr_newp_condoms rred_rc_base rred_rc 
+	newp_tm2 newp_tm1 newp
+;
 where serial_no < 50;
 run;
 
