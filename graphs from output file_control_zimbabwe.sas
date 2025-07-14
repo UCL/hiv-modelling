@@ -192,7 +192,7 @@ run;
 
 *We need the same number of simulations for each option;
 %let nfit=190;
-%option_(1);
+%option_(0);
 run;
 
 
@@ -339,10 +339,12 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "p_newp_ge5_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) valueattrs=(size=10);
-label p50_p_newp_ge5__0  = "Status quo (median) - 15+";
-*label p50_p_newp_ge5__15 = "Oral PrEP AGYW (median) - 15+ ";
+label p50_p_newp_ge5__0  = "Baseline (median) - 15+";
+label p50_p_newp_ge5__1  = "+ condom availability (median) - 15+";
 series  x=cald y=p50_p_newp_ge5__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_newp_ge5__0 	upper=p95_p_newp_ge5__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_newp_ge5__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_newp_ge5__1 	upper=p95_p_newp_ge5__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -359,9 +361,12 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "p_ep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
-label p50_p_ep_0  = "Status quo (median) - 15+";
+label p50_p_ep_0  = "Baseline (median) - 15+";
+label p50_p_ep_1  = "+ condom availability (median) - 15+";
 series  x=cald y=p50_p_ep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_ep_0 	upper=p95_p_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_ep_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_ep_1 	upper=p95_p_ep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 * "Number of AGYW at elevated risk" n_w1524_newp_ge1; 
@@ -373,6 +378,36 @@ label p50_n_w1524_newp_ge1__0  = "Status quo (median) - 15+";
 series  x=cald y=p50_n_w1524_newp_ge1__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_w1524_newp_ge1__0 	upper=p95_n_w1524_newp_ge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
+
+
+* Proportion with condomless sex in past 3 months;
+* (can compare this outcome with Goals);
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of men with condomless sex in past 3 months - p_m_npge1_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_p_m_npge1__0  = "Baseline (median) - 15+";
+label p50_p_m_npge1__1  = "+ condom availability (median) - 15+";
+series  x=cald y=p50_p_m_npge1__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_m_npge1__0 	upper=p95_p_m_npge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_m_npge1__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_m_npge1__1 	upper=p95_p_m_npge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of women with condomless sex in past 3 months - p_w_npge1_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_p_w_npge1__0  = "Baseline (median) - 15+";
+label p50_p_w_npge1__1  = "+ condom availability (median) - 15+";
+series  x=cald y=p50_p_w_npge1__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_w_npge1__0 	upper=p95_p_m_npge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_w_npge1__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_w_npge1__1 	upper=p95_p_w_npge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+
+
 
 
 * Births;
