@@ -200,7 +200,30 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-* condom_change_year_i;		condom_change_year_i = 0; 			* mar19; * initialising condom_change_year_i - this is set again in year_i variables section;
+* condom_change_year_i;				condom_change_year_i = 0; 			* mar19; * initialising condom_change_year_i - this is set again in year_i variables section;
+* decr_hard_reach_year_i;			decr_hard_reach_year_i = 0;			
+* incr_adh_year_i;					incr_adh_year_i = 0;			
+* decr_prob_loss_at_diag_year_i;	decr_prob_loss_at_diag_year_i = 0; 
+* absence_cd4_year_i;				absence_cd4_year_i = 0; 		
+* absence_vl_year_i;				absence_vl_year_i = 0; 		
+* decr_rate_lost_year_i;			decr_rate_lost_year_i = 0;  	
+* decr_rate_lost_art_year_i;		decr_rate_lost_art_year_i = 0;   
+* incr_rate_return_year_i;			incr_rate_return_year_i = 0;     	
+* incr_rate_restart_year_i;			incr_rate_restart_year_i = 0;       
+* incr_rate_init_year_i;			incr_rate_init_year_i = 0;   
+* decr_rate_int_choice_year_i;		decr_rate_int_choice_year_i = 0; 
+* incr_prob_vl_meas_done_year_i;	incr_prob_vl_meas_done_year_i = 0; 	
+* incr_pr_switch_line_year_i;		incr_pr_switch_line_year_i = 0;    	
+* poc_vl_monitoring_i;				poc_vl_monitoring_i = 0; 	
+* circ_inc_rate_year_i;				circ_inc_rate_year_i = 0; 		 
+* incr_test_targeting_year_i;		incr_test_targeting_year_i = 0;   	
+* reg_option_switch_year_i;			reg_option_switch_year_i = 0; 		
+* art_mon_drug_levels_year_i;		art_mon_drug_levels_year_i = 0;   
+* ten_is_taf_year_i;				ten_is_taf_year_i = 0;  	
+* pop_wide_tld_year_i;				pop_wide_tld_year_i = 0;  		
+* single_vl_switch_efa_year_i;		single_vl_switch_efa_year_i = 0;	
+* e_decr_hard_reach_year_i;			e_decr_hard_reach_year_i = 0;  
+*
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.80;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
