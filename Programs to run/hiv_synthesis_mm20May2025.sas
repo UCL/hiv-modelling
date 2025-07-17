@@ -2377,7 +2377,7 @@ if (caldate{t} = date_prep_cab_intro > . and age ge 15) or (age = 15 and caldate
 end;
 
 if (caldate{t} = date_prep_len_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_len_intro > .) then do;
-	* pref_prep_len;  	if gender=2 or curr_mobile=1 pref_prep_len=yy ; * Women and Mobile men only, this is the preference for cab or len, whichever is available (see above);
+	* pref_prep_len;  	if gender=2 or curr_mobile=1 then pref_prep_len=yy ; * Women and Mobile men only, this is the preference for cab or len, whichever is available (see above);
 end;
 
 if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) then do;
