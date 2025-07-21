@@ -2,7 +2,7 @@
 ***Program to produce graphs using averages across runs
 ***Use include statement in analysis program to read the code below in;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250702_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250715_out\";
 /*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
@@ -95,7 +95,8 @@ n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpart
 /*n_not_on_art_cd40200_*/ n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
 n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_ p_newp_ge1_ p_newp_ge5_ p_1524_newp_ge1_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
-log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
+log_gender_r_newp av_newp_ge1  av_newp_ge1_non_sw 
+p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
 p_mcirc_1549m	p_mcirc_1049m	n_new_vmmc	n_new_vmmc1549m 	n_new_vmmc1049m  n_new_vmmc1014m	n_new_birth_circ n_new_mcirc n_new_mcirc_1549m 	n_new_mcirc_1049m
 p_vmmc_1549m	p_vmmc_1049m
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  p_w1524newpge1_onprep prop_1564_onprep 	
@@ -191,7 +192,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=190;
+%let nfit=63;
 %option_(0);
 run;
 
@@ -241,7 +242,7 @@ ods listing;
 ***Graphs comparing observed data to outputs for Status quo 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20250702.doc' startpage=never;
+ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20250715.doc' startpage=never;
 
 
 
@@ -334,6 +335,37 @@ band    x=cald lower=p5_p_newp_ge1__0 	upper=p95_p_newp_ge1__0  / transparency=0
 series  x=cald y=p50_p_newp_ge1__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_newp_ge1__1 	upper=p95_p_newp_ge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
+
+  
+* av_newp_ge1;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "av_newp_ge1";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 5 by 1) valueattrs=(size=10);
+label p50_av_newp_ge1_0  = "Baseline (median) - 15+";
+label p50_av_newp_ge1_1  = "+ condom availability (median) - 15+";
+
+series  x=cald y=p50_av_newp_ge1_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_av_newp_ge1_0 	upper=p95_av_newp_ge1_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_av_newp_ge1_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_av_newp_ge1_1 	upper=p95_av_newp_ge1_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+* av_newp_ge1_non_sw;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "av_newp_ge1_non_sw";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 5 by 1) valueattrs=(size=10);
+label p50_av_newp_ge1_non_sw_0  = "Baseline (median) - 15+";
+label p50_av_newp_ge1_non_sw_1  = "+ condom availability (median) - 15+";
+
+series  x=cald y=p50_av_newp_ge1_non_sw_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_av_newp_ge1_non_sw_0 	upper=p95_av_newp_ge1_non_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_av_newp_ge1_non_sw_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_av_newp_ge1_non_sw_1 	upper=p95_av_newp_ge1_non_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge5_";
@@ -1588,42 +1620,43 @@ band    x=cald lower=p5_n_new_inf1524w_0 	upper=p95_n_new_inf1524w_0  / transpar
 series  x=cald y=p50_n_new_inf2549w_0/	lineattrs = (color=lightblue thickness = 2);
 band    x=cald lower=p5_n_new_inf2549w_0 	upper=p95_n_new_inf2549w_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
 run;quit;
-/*
+
+
+* Incidence 15-64;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1564__0 = "Status quo (median) ";
-label p50_incidence1564__1 = "Minimal  (median) ";
+label p50_incidence1564__1 = "  (median) ";
 label o_HIVincid_1564_Zimphia = "ZIMPHIA 15-64";
 series  x=cald y=p50_incidence1564__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1564__0 	upper=p95_incidence1564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-*series  x=cald y=p50_incidence1564__1/	lineattrs = (color=red thickness = 2);
-*band    x=cald lower=p5_incidence1564__1 	upper=p95_incidence1564__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1564__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1564__1 	upper=p95_incidence1564__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter x=cald y=o_HIVincid_1564_Zimphia / yerrorlower=o_HIVincid_1564_ll_Zimphia yerrorupper=o_HIVincid_1564_ul_Zimphia markerattrs = (symbol=square color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
 
-
-
+* Incidence 15-49;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 15-49";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1549m_0 = "Status quo (median) - Men";
-label p50_incidence1549m_1 = "Minimal  (median) - Men";
+label p50_incidence1549m_1 = "+ condom availability  (median) - Men";
 label p50_incidence1549w_0 = "Status quo (median) - Women";
-label p50_incidence1549w_1 = "Minimal  (median) - Women";
+label p50_incidence1549w_1 = "+ condom availability  (median) - Women";
 label o_HIVincid_1549m_Zimphia = "ZIMPHIA Men 15-49";
 label o_HIVincid_1549w_Zimphia = "ZIMPHIA Women 15-49";
 series  x=cald y=p50_incidence1549m_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_incidence1549m_0 	upper=p95_incidence1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-*series  x=cald y=p50_incidence1549m_1/	lineattrs = (color=red thickness = 2);
-*band    x=cald lower=p5_incidence1549m_1 	upper=p95_incidence1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence1549w_0/	lineattrs = (color=orange thickness = 2);
-band    x=cald lower=p5_incidence1549w_0 	upper=p95_incidence1549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
-*series  x=cald y=p50_incidence1549w_1/	lineattrs = (color=red thickness = 2);
-*band    x=cald lower=p5_incidence1549w_1 	upper=p95_incidence1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549m_1/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_incidence1549m_1 	upper=p95_incidence1549m_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549w_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1549w_0 	upper=p95_incidence1549w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549w_1/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_incidence1549w_1 	upper=p95_incidence1549w_1  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
 scatter x=cald y=o_HIVincid_1549m_Zimphia / yerrorlower=o_HIVincid_1549m_ll_Zimphia yerrorupper=o_HIVincid_1549m_ul_Zimphia markerattrs = (color=blue) errorbarattrs = (color = blue);
 scatter x=cald y=o_HIVincid_1549w_Zimphia / yerrorlower=o_HIVincid_1549w_ll_Zimphia yerrorupper=o_HIVincid_1549w_ul_Zimphia markerattrs = (color=orange) errorbarattrs = (color = orange);
 run;
@@ -1631,7 +1664,7 @@ quit;
 
 
 
-
+/*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 15-24";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
