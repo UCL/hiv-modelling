@@ -7,7 +7,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 
 
 data a;
-set a.cdi_03jul25;
+set a.cdi_07jul25;
 
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
@@ -619,7 +619,7 @@ proc freq;table cald;run;
  
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  210
+%let nfit =  192;
 %let year_end = 2040 ;
 run;
 proc sort;by cald option ;run;
@@ -797,7 +797,7 @@ run;
 
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\HIV Control\03Jul25.doc' startpage=never; 
+ods rtf file = 'C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\HIV Control\07Jul25.doc' startpage=never; 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Population 15+";
