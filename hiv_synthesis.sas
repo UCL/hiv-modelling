@@ -8959,11 +8959,11 @@ res_test=.;
 			if anc=1 and naive=1 and uu < prob_pmtct then do;
 				if time0=. then do;
 					if caldate{t} le 2010.5 then do;
-						on_sd_nvp=1; 
+						on_sd_nvp=1; ever_sd_nvp=1;
 						if u < prob_nnresmaj_sd_nvp then do; c_rt103m=1; nn_res_pmtct=1; e_rt103m=1; end;
 					end;
 					else if 2010.5 <= caldate{t} < 2012.5 then do;   
-						on_dual_nvp=1; 
+						on_dual_nvp=1; ever_dual_nvp=1;
 						if u < prob_nnresmaj_dual_nvp then do; c_rt103m=1; nn_res_pmtct=1; e_rt103m=1; end;
 					end;
 				end;
@@ -9035,6 +9035,8 @@ res_test=.;
 
 * interruption due to "choice";
 	if stop_tox    ne 1 then do; 
+
+		prointer = eff_rate_int_choice;
 
 		if t ge 2 and onart_tm1 =1 then do;  
 			if  adh_tm1 >= 0.8   and o_len_tm1 ne 1 then do; * this section does not apply to those on lencab;
@@ -9251,10 +9253,7 @@ o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_cab=0;o_len=0;
     if 2010.5 <= caldate{t} and reg_option < 100 then do; o_ten=1; o_3tc=1; o_efa=1; end; 
     if reg_option in ( 101 108 109 110 111 112 114) then do; o_ten=1; o_3tc=1; o_efa=1; end; 
 
-if reg_option in (102 103 104 105 106 118 119 125) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=2;
-if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 115 is a place holder - this does not apply for any current policy option;
-if reg_option = 130 then flr=3;
-
+	* note flr is defined above;
     if flr=1 then do; o_ten=1; o_3tc=1; o_taz=1; o_zdv=0; o_dol=0; end;
     if flr=2 then do; o_ten=1; o_3tc=1; o_dol=1; o_zdv=0; o_taz=0; o_efa=0; end;
  	if flr=3 then do; o_len=1; o_cab=1; end;
