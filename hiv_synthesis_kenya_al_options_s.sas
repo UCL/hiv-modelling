@@ -2,7 +2,7 @@
 
 * options s
 
-correct pref_prep_vr
+corrected pref_prep_vr
 
 ;
 
