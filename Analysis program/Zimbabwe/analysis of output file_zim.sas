@@ -212,10 +212,6 @@ diff_ddaly45ySD = ddaly_24_69_1 - ddaly_24_69_3;
 diff_dcost50ySD = dcost_24_74_1 - dcost_24_74_3;
 diff_ddaly50ySD = ddaly_24_74_1 - ddaly_24_74_3;
 
-
-
-
-
 ***Breakdown of costs - group clinical costs together;
 d_clin_costs_1 = 	dadc_cost_24_74_1 + dnon_tb_who3_cost_24_74_1 + dcot_cost_24_74_1 + dtb_cost_24_74_1 + 
 					d_t_adh_int_cost_24_74_1 + dswitchline_cost_24_74_1;
@@ -223,6 +219,90 @@ d_clin_costs_2 = 	dadc_cost_24_74_2 + dnon_tb_who3_cost_24_74_2 + dcot_cost_24_7
 					d_t_adh_int_cost_24_74_2 + dswitchline_cost_24_74_2; 
 d_clin_costs_3 = 	dadc_cost_24_74_3 + dnon_tb_who3_cost_24_74_3 + dcot_cost_24_74_3 + dtb_cost_24_74_3 + 
 					d_t_adh_int_cost_24_74_3 + dswitchline_cost_24_74_3;
+
+***********************************;
+
+***Further analyses in response to reviewer;
+
+***********************************;
+
+***Combined treatment and prevention cost with SQ;
+dart_prep_24_29_1 = dcost_prep_oral_24_29_1 + dcost_prep_inj_24_29_1 + dcost_prep_visit_oral_24_29_1 + dcost_prep_visit_inj_24_29_1 +
+dart_cost_y_24_29_1 + dadc_cost_24_29_1 + dcd4_cost_24_29_1 + dvl_cost_24_29_1 + dvis_cost_24_29_1 + dres_cost_24_29_1 + d_t_adh_int_cost_24_29_1 +
+dswitchline_cost_24_29_1; 
+
+dart_prep_24_34_1 = dcost_prep_oral_24_34_1 + dcost_prep_inj_24_34_1 + dcost_prep_visit_oral_24_34_1 + dcost_prep_visit_inj_24_34_1 +
+dart_cost_y_24_34_1 + dadc_cost_24_34_1 + dcd4_cost_24_34_1 + dvl_cost_24_34_1 + dvis_cost_24_34_1 + dres_cost_24_34_1 + d_t_adh_int_cost_24_34_1 +
+dswitchline_cost_24_34_1; 
+
+dart_prep_24_39_1 = dcost_prep_oral_24_39_1 + dcost_prep_inj_24_39_1 + dcost_prep_visit_oral_24_39_1 + dcost_prep_visit_inj_24_39_1 +
+dart_cost_y_24_39_1 + dadc_cost_24_39_1 + dcd4_cost_24_39_1 + dvl_cost_24_39_1 + dvis_cost_24_39_1 + dres_cost_24_39_1 + d_t_adh_int_cost_24_39_1 +
+dswitchline_cost_24_39_1; 
+
+dart_prep_24_44_1 = dcost_prep_oral_24_44_1 + dcost_prep_inj_24_44_1 + dcost_prep_visit_oral_24_44_1 + dcost_prep_visit_inj_24_44_1 +
+dart_cost_y_24_44_1 + dadc_cost_24_44_1 + dcd4_cost_24_44_1 + dvl_cost_24_44_1 + dvis_cost_24_44_1 + dres_cost_24_44_1 + d_t_adh_int_cost_24_44_1 +
+dswitchline_cost_24_44_1; 
+
+dart_prep_24_49_1 = dcost_prep_oral_24_49_1 + dcost_prep_inj_24_49_1 + dcost_prep_visit_oral_24_49_1 + dcost_prep_visit_inj_24_49_1 +
+dart_cost_y_24_49_1 + dadc_cost_24_49_1 + dcd4_cost_24_49_1 + dvl_cost_24_49_1 + dvis_cost_24_49_1 + dres_cost_24_49_1 + d_t_adh_int_cost_24_49_1 +
+dswitchline_cost_24_49_1; 
+
+dart_prep_24_54_1 = dcost_prep_oral_24_54_1 + dcost_prep_inj_24_54_1 + dcost_prep_visit_oral_24_54_1 + dcost_prep_visit_inj_24_54_1 +
+dart_cost_y_24_54_1 + dadc_cost_24_54_1 + dcd4_cost_24_54_1 + dvl_cost_24_54_1 + dvis_cost_24_54_1 + dres_cost_24_54_1 + d_t_adh_int_cost_24_54_1 +
+dswitchline_cost_24_54_1; 
+
+dart_prep_24_59_1 = dcost_prep_oral_24_59_1 + dcost_prep_inj_24_59_1 + dcost_prep_visit_oral_24_59_1 + dcost_prep_visit_inj_24_59_1 +
+dart_cost_y_24_59_1 + dadc_cost_24_59_1 + dcd4_cost_24_59_1 + dvl_cost_24_59_1 + dvis_cost_24_59_1 + dres_cost_24_59_1 + d_t_adh_int_cost_24_59_1 +
+dswitchline_cost_24_59_1; 
+
+dart_prep_24_64_1 = dcost_prep_oral_24_64_1 + dcost_prep_inj_24_64_1 + dcost_prep_visit_oral_24_64_1 + dcost_prep_visit_inj_24_64_1 +
+dart_cost_y_24_64_1 + dadc_cost_24_64_1 + dcd4_cost_24_64_1 + dvl_cost_24_64_1 + dvis_cost_24_64_1 + dres_cost_24_64_1 + d_t_adh_int_cost_24_64_1 +
+dswitchline_cost_24_64_1; 
+
+*Treatment cost with discontinuation;
+dart_24_29_3 = 
+dart_cost_y_24_29_3 + dadc_cost_24_29_3 + dcd4_cost_24_29_3 + dvl_cost_24_29_3 + dvis_cost_24_29_3 + dres_cost_24_29_3 + d_t_adh_int_cost_24_29_3 +
+dswitchline_cost_24_29_3; 
+
+dart_24_34_3 = 
+dart_cost_y_24_34_3 + dadc_cost_24_34_3 + dcd4_cost_24_34_3 + dvl_cost_24_34_3 + dvis_cost_24_34_3 + dres_cost_24_34_3 + d_t_adh_int_cost_24_34_3 +
+dswitchline_cost_24_34_3; 
+
+dart_24_39_3 = 
+dart_cost_y_24_39_3 + dadc_cost_24_39_3 + dcd4_cost_24_39_3 + dvl_cost_24_39_3 + dvis_cost_24_39_3 + dres_cost_24_39_3 + d_t_adh_int_cost_24_39_3 +
+dswitchline_cost_24_39_3; 
+
+
+dart_24_44_3 = 
+dart_cost_y_24_44_3 + dadc_cost_24_44_3 + dcd4_cost_24_44_3 + dvl_cost_24_44_3 + dvis_cost_24_44_3 + dres_cost_24_44_3 + d_t_adh_int_cost_24_44_3 +
+dswitchline_cost_24_44_3; 
+
+dart_24_49_3 = 
+dart_cost_y_24_49_3 + dadc_cost_24_49_3 + dcd4_cost_24_49_3 + dvl_cost_24_49_3 + dvis_cost_24_49_3 + dres_cost_24_49_3 + d_t_adh_int_cost_24_49_3 +
+dswitchline_cost_24_49_3; 
+
+dart_24_54_3 = 
+dart_cost_y_24_54_3 + dadc_cost_24_54_3 + dcd4_cost_24_54_3 + dvl_cost_24_54_3 + dvis_cost_24_54_3 + dres_cost_24_54_3 + d_t_adh_int_cost_24_54_3 +
+dswitchline_cost_24_54_3; 
+
+dart_24_59_3 = 
+dart_cost_y_24_59_3 + dadc_cost_24_59_3 + dcd4_cost_24_59_3 + dvl_cost_24_59_3 + dvis_cost_24_59_3 + dres_cost_24_59_3 + d_t_adh_int_cost_24_59_3 +
+dswitchline_cost_24_59_3; 
+
+dart_24_64_3 = 
+dart_cost_y_24_64_3 + dadc_cost_24_64_3 + dcd4_cost_24_64_3 + dvl_cost_24_64_3 + dvis_cost_24_64_3 + dres_cost_24_64_3 + d_t_adh_int_cost_24_64_3 +
+dswitchline_cost_24_64_3; 
+
+
+
+
+
+proc means;var 		
+dart_prep_24_29_1  dart_prep_24_34_1  dart_prep_24_39_1  dart_prep_24_44_1  dart_prep_24_49_1  dart_prep_24_54_1
+dart_prep_24_59_1  dart_prep_24_64_1
+dart_24_29_3  dart_24_34_3  dart_24_39_3  dart_24_44_3  dart_24_49_3  dart_24_54_3
+dart_24_59_3  dart_24_64_3;run;
+
 
 
 ***Absolute costs and differences;
