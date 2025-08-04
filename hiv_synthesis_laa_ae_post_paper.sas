@@ -4,6 +4,8 @@
 
 prointer=eff_rate_int_choice
 
+corrected  	if caldate{t} >= 2024.5 and (f_cab=1 or f_len=1) then do;
+
 ;
 
 
@@ -7261,7 +7263,7 @@ start_line2_this_period=.;
 			if (t_ten=1 or f_ten=1) and t_zdv=0  and f_zdv=0 then do; o_zdv=1; goto vv66; end;
 	end;
 
- 	if caldate{t} >= 2024.5 and (f_dol=1 or f_len=1) then do;
+ 	if caldate{t} >= 2024.5 and (f_cab=1 or f_len=1) then do;
 			failed_lencab=1;
 			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_cab=0;o_len=0; o_ole=0; o_isl=0;
 			o_3tc=1; o_dar=1; o_ten=1; goto vv66; 
@@ -8864,6 +8866,7 @@ if art_monitoring_strategy = 1700 and visit=1 and o_cab=1 and o_len=1 and restar
 				date_conf_vl_measure_done = caldate{t} ; 
 				if value_last_vm gt log10(vl_threshold) then do; 
 					second_vlg1000=1; if date_last_second_vlg1000 = . then second_vlg1000_first=1; date_last_second_vlg1000 = caldate{t}; 
+					f_len=1; f_cab=1;
 				end;
 				if second_vlg1000_first = 1 and r_dol > 0 then second_vlg1000_first_dol_r=1;
 				if art_monitoring_strategy = 1700 then do;  end;
