@@ -2351,11 +2351,14 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 120 then do;* this is like 109 but no scale up oral prep - this is an alternative status quo comparator to option 0 ;
 		date_prep_inj_intro = 2024;
+		pref_prep_inj = 0.95;
 		if 2024 <= caldate{t} < 2025 then p_prep_inj_b_set_in_opts = 0.3;
 		if 2025 <= caldate{t} < 2026 then p_prep_inj_b_set_in_opts = 0.5;
 		if 2026 <= caldate{t} < 2027 then p_prep_inj_b_set_in_opts = 0.95;
 		if 2027 <= caldate{t} then p_prep_inj_b_set_in_opts = 0.95; 
-		rate_stop_prep_inj_set_in_opts = 0.002; 
+		rate_stop_prep_inj_set_in_opts = 0.002;
+		prob_prep_restart_set_in_opts = 0.8;  
+
 	end;
 
 
@@ -2363,12 +2366,63 @@ if caldate_never_dot >= &year_interv then do;
 
 	if option = 121 then do;* this is partial disruption ;
 
+		* stop vmmc;
+		circ_inc_rate_set_in_opts = 1; circ_inc_rate_h_year_i = 99 ;
+
+		* maintain pwid intervention as is;
+
+		* leave oral prep as is - scale up inj prep - no vr intro;
+		date_prep_inj_intro = 2024;
+		pref_prep_inj = 0.95;
+		if 2024 <= caldate{t} < 2025 then p_prep_inj_b_set_in_opts = 0.3;
+		if 2025 <= caldate{t} < 2026 then p_prep_inj_b_set_in_opts = 0.5;
+		if 2026 <= caldate{t} < 2027 then p_prep_inj_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_inj_b_set_in_opts = 0.95; 
+		rate_stop_prep_inj_set_in_opts = 0.002; 
+		prob_prep_restart_set_in_opts = 0.8; 
+
+		* testing left much as is because already targeted;
+
+		* self testing scaled up;
+		prob_self_test_hard_reach = 0.5;
+		eff_self_test_targeting = 10; self_test_targeting = 10;
+		rate_self_test = 0.03 ;
+
+		* increased ahd;
+		hiv_death_rate_modif_in_opts=0.5;
+
+		* other intervebtions no change;
+
 	end;
 
 
 
 
 	if option = 122 then do;* this is greater disruption ;
+
+		* stop vmmc;
+		circ_inc_rate_set_in_opts = 1; circ_inc_rate_h_year_i = 99 ;
+
+		* reduce   pwid intervention so this increases;
+		fold_tr_pwid = 10;
+
+		* leave oral prep as is - scale up inj prep - no vr intro
+		date_prep_inj_intro = 2024;
+		pref_prep_inj = 0.95;
+		if 2024 <= caldate{t} < 2025 then p_prep_inj_b_set_in_opts = 0.3;
+		if 2025 <= caldate{t} < 2026 then p_prep_inj_b_set_in_opts = 0.5;
+		if 2026 <= caldate{t} < 2027 then p_prep_inj_b_set_in_opts = 0.95;
+		if 2027 <= caldate{t} then p_prep_inj_b_set_in_opts = 0.95; 
+		rate_stop_prep_inj_set_in_opts = 0.002; 
+
+		* testing left much as is because already targeted;
+
+		* self testing scaled up or maintained;
+		prob_self_test_hard_reach = 0.5;
+		eff_self_test_targeting = 10; self_test_targeting = 10;
+		rate_self_test = 0.03/2 ;
+
+		* other intervebtions no change;
 
 	end;
 
@@ -3446,6 +3500,10 @@ end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_h_year_i = 2.5 then do;
 	prob_circ = 0.02;
+end;
+
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_h_year_i = 99  then do;
+	prob_circ = 0;
 end;
 
 
