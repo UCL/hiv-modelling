@@ -1,11 +1,11 @@
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
 *libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
 
 ***This is the final program used for the AMETHIST cost effectiveness paper. 
 ***Towards the bottom, the impact of funding cuts is also analysed (option 2);
 
 data a; 
-set a.wide_fsw_zim_25_04_25; 
+set a.wide_fsw_zim_04_08_25; 
 
 
 ***Within run differences;
