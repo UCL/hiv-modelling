@@ -2364,6 +2364,10 @@ if caldate_never_dot >= &year_interv then do;
 
 
 
+* DO THESE BELOW + / - prep_inj SCALED UP;
+
+
+
 	if option = 121 then do;* this is partial disruption ;
 
 		* stop vmmc;
