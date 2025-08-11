@@ -1,11 +1,12 @@
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
+*libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
 *libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\04Aug25_";
 
 ***This is the final program used for the AMETHIST cost effectiveness paper. 
 ***Towards the bottom, the impact of funding cuts is also analysed (option 2);
 
 data a; 
-set a.wide_fsw_zim_04_08_25; 
+set a.wide_fsw_zim_04_08_25_; 
 
 
 ***Within run differences;
@@ -266,10 +267,68 @@ diff_dcost20ySD diff_ddaly20ySD diff_dcost25ySD diff_ddaly25ySD diff_dcost30ySD 
 diff_dcost40ySD diff_ddaly40ySD diff_dcost45ySD diff_ddaly45ySD diff_dcost50ySD diff_ddaly50ySD;
 run;
 
+proc means n mean lclm uclm;var
+prop_sw_onprep_oral_24_74_1
+prop_sw_onprep_oral_24_74_2
+prop_sw_onprep_oral_24_74_3
+
+prop_sw_onprep_inj_24_74_1
+prop_sw_onprep_inj_24_74_2
+prop_sw_onprep_inj_24_74_3
+
+
+dcost_prep_visit_oral_24_74_1 
+dcost_prep_visit_oral_24_74_2 
+dcost_prep_visit_oral_24_74_3 
+
+dcost_prep_oral_24_74_1 
+dcost_prep_oral_24_74_2
+dcost_prep_oral_24_74_3 
+
+dcost_prep_visit_inj_24_74_1 
+dcost_prep_visit_inj_24_74_2 
+dcost_prep_visit_inj_24_74_3 
+
+dcost_prep_inj_24_74_1 
+dcost_prep_inj_24_74_2
+dcost_prep_inj_24_74_3 
+
+;run;
+
+
+
+proc means n mean lclm uclm;var
+prop_sw_onprep_oral_24_29_1
+prop_sw_onprep_oral_24_29_2
+prop_sw_onprep_oral_24_29_3
+
+prop_sw_onprep_inj_24_29_1
+prop_sw_onprep_inj_24_29_2
+prop_sw_onprep_inj_24_29_3
+
+
+dcost_prep_visit_oral_24_29_1 
+dcost_prep_visit_oral_24_29_2 
+dcost_prep_visit_oral_24_29_3 
+
+dcost_prep_oral_24_29_1 
+dcost_prep_oral_24_29_2
+dcost_prep_oral_24_29_3 
+
+dcost_prep_visit_inj_24_29_1 
+dcost_prep_visit_inj_24_29_2 
+dcost_prep_visit_inj_24_29_3 
+
+dcost_prep_inj_24_29_1 
+dcost_prep_inj_24_29_2
+dcost_prep_inj_24_29_3 
+
+;run;
+
 
 
 ***Breakdown of costs;
-proc means mean lclm uclm;var
+proc means n mean lclm uclm;var
 dcost_24_74_1
 dart_cost_y_24_74_1
 d_clin_costs_1

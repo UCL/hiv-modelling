@@ -3,9 +3,10 @@
    file used Zim_parameters10); 
 
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\04Aug25_";
+
 data a;
-set a.fsw_zim_04aug25;  
+set a.zim_fsw04aug25;  
 if run=. then delete; 
 proc sort;by run cald option;run;
 proc freq;table cald;run;
@@ -435,6 +436,10 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 
 
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
+* prop_sw_onprep_oral; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_oral = s_prep_oral_sw/ (s_sw_1564 - s_hiv_sw) ;
+* prop_sw_onprep_inj; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_inj = s_prep_inj_sw/ (s_sw_1564 - s_hiv_sw) ;
+
+
 
 * p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
@@ -470,7 +475,7 @@ tot_dur_sw  		 act_dur_sw
 p_actdur_0to3_  	 p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_ 
 p_totdur_0to3_  	 p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
 p_sw_prog_vis		 n_tested_sw	    prop_sw_onprep		prevalence_sw	  	incidence_sw
-p_diag_sw			 p_onart_diag_sw	p_onart_vl1000_sw
+p_diag_sw			 p_onart_diag_sw	p_onart_vl1000_sw	prop_sw_onprep_oral	prop_sw_onprep_inj
 p_sti_sw			 p_tested_past_year_sw	p_tested_swprog
 
 /*Sampled parameters*/
@@ -492,7 +497,7 @@ n_hiv n_onart
 
 proc sort data=y;by run option;run;
 
-proc means n mean p50 p5 p95;var p_diag_sw n_sw_1549_;where cald=2023;run;
+proc means n mean p50 p5 p95;var p_diag_sw n_sw_1549_ p_diag_m;where cald=2023;run;
 
 
 /*
@@ -574,7 +579,8 @@ t_24_74;
 %var(v=p_totdur_0to3_); %var(v=p_totdur_3to5_);     %var(v=p_totdur_6to9_);  	%var(v=p_totdur_10to19_); 
 
 %var(v=p_sw_prog_vis);  %var(v=n_tested_sw);	    %var(v=p_tested_past_year_sw); %var(v=p_tested_swprog);
-%var(v=prop_sw_onprep);	%var(v=prevalence_sw);	    %var(v=incidence_sw);
+%var(v=prop_sw_onprep);	%var(v=prop_sw_onprep_oral);	%var(v=prop_sw_onprep_inj);	
+%var(v=prevalence_sw);	    %var(v=incidence_sw);
 %var(v=p_diag_sw);		%var(v=p_onart_diag_sw);	%var(v=p_onart_vl1000_sw);	%var(v=p_sti_sw);
 %var(v=dcost);			%var(v=ddaly);
 
@@ -594,7 +600,7 @@ prevalence1549m	prevalence1549w 	prevalence1549_ 		incidence1549_ 	incidence1549
 
 p_diag	 		p_diag_m	 		p_diag_w   			p_onart_diag  	p_onart_diag_w
 p_onart_diag_m 	p_onart_vl1000_		p_onart_vl1000_w   	p_onart_vl1000_m  n_tested	 	
-p_vg1000_ 		p_vl1000_			prevalence_vg1000_
+p_vg1000_ 		p_vl1000_			prevalence_vg1000_	
 
 n_sw_1564_      n_sw_1549_		    prop_w_1564_sw		prop_w_1549_sw 	prop_w_ever_sw  
 p_fsw1519_	  	p_fsw2024_		    p_fsw2529_					p_fsw3039_	
@@ -611,7 +617,7 @@ p_actdur_0to3_  p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_
 p_totdur_0to3_  p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
 
 p_sw_prog_vis   n_tested_sw	   	   p_tested_past_year_sw  p_tested_swprog	
-prop_sw_onprep	prevalence_sw	   incidence_sw
+prop_sw_onprep	prop_sw_onprep_oral		prop_sw_onprep_inj	prevalence_sw	   incidence_sw
 p_diag_sw		p_onart_diag_sw	   p_onart_vl1000_sw	p_sti_sw
 dcost			ddaly
 
@@ -646,7 +652,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_zim_04_08_25;
+data a.wide_fsw_zim_04_08_25_;
 merge   wide_outputs  wide_par ;  
 by run;run;
 

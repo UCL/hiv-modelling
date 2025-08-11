@@ -2171,7 +2171,7 @@ if caldate_never_dot >= &year_interv then do;
 		rate_engage_sw_program  =	rate_engage_sw_program2;
 		rate_disengage_sw_program = rate_disengage_sw_program2;
 
-		if sw_program_visit=1 then do;
+		if sw_program_visit=1 then do; ***This applies only to those who were in the program in the last period;
 			eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
 			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 			eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
