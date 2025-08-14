@@ -1,24 +1,24 @@
 *** THIS FILE READS IN THE MULTIPLE OUTPUT FILES (WHICH ARE ALREADY SET ON TOP OF EACH OTHER IN 'ZIM_FSW04AUG25') TO 
 CREATE A WIDE FILE WITH MEANS OF KEY OUTPUTS IN SPECIFIC TIME PERIODS; 
 
+
 ***SPECIFY LIBRARY 'A' WHICH IS THE FILEPATH WHERE OUTPUT FILES ARE STORED;
-***REPLACE FILEPATH BELOW WITH LOCAL FILEPATH;
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\04Aug25_";
+
+* libname a "FILEPATH";
+*libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\04Aug25_";
 
 
 ***READ IN OUTPUT FILES (NOTE THE MULTIPLE OUTPUT FILES NEED TO BE SET ON TOP OF EACH OTHER BEFORE THIS STEP 
-   IF NOT AUTOMATICALLY DONE IN MYRIAD);
+	IF NOT AUTOMATICALLY DONE IN MYRIAD);
 
 data a;
 set a.zim_fsw04aug25;  
 if run=. then delete; 
+
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
-***187/2000 RUNS WERE OUTPUTTED FROM THE CORE FILE AFTER THE ABORT STATEMENTS. OF THESE, CHOOSE 100 RUNS MOST CLOSELY
-   ALIGNED WITH THE ZIMBABWE EPIDEMIC. % DIAG IN MEN AND NUMBER ON ART WERE LOW COMPARED TO OBSERVED DATA SO REFINE THESE;
 
-***NOTE THE RUN NUMBERS WILL BE DIFFERENT IF THE CORE FILE IS RE-RUN;
 
 ***Remove runs with low % diag in 2020 as currently mean is about 3% lower than PHIA. In men, this is about 6% lower;
 data b;
@@ -36,66 +36,67 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 PROC MEANS N MEAN;VAR P_DIAG P_DIAG_M P_DIAG_W;WHERE CALD=2020;RUN;
 PROC FREQ;TABLE P_DIAG_M;WHERE CALD=2020;RUN;
 */
-if cald=2020 and p_diag_m < 0.75 then a=1;
+if cald=2020 and p_diag_m < 0.7288590604 then a=1;
+
 
 /*
 proc freq;table run;where a=1;run;
 */
 
 if run in (
-6563872
-38081205
-91842902
-95670252
-118102326
-127894985
-130322502
-170393322
-173123188
-207906602
-239032128
-247564828
-285970689
-329657894
-356136525
-400853516
-448975191
-448978387
-494341282
-495488349
-501626557
-510177565
-530537999
-535764843
-551927729
-571404484
-585064688
-613484845
-662312159
-732640198
-743027003
-753313174
-755098729
-781530003
-793181068
-823550366
-826899810
-841715960
-919699942
-926108786
-935586797
-945713111
-949659997
-956004112
-956759376
-963511670
-980569228
-980636087
-982312368
+14413801
+22431981
+24401850
+35775041
+59903590
+62889013
+66307721
+76804905
+108691246
+108859553
+122088617
+132807041
+135112158
+150319598
+199008316
+204394962
+230759024
+260701847
+264995244
+280537548
+312698723
+412263490
+439042968
+445270451
+553398015
+559819030
+597538271
+606863934
+637117594
+641556282
+660680544
+686359016
+722288927
+736358158
+769815418
+796931864
+799023936
+810713678
+832639544
+837606567
+850699938
+874472830
+889262111
+903066629
+909037111
+913551535
+960557279
+977298487
+980793267
 ) then delete;
 run;
 
-***Remove runs with low numbers on art in 2023 as currently mean is below UNAIDS estimate, to get to 100 runs;
+***Remove runs with low numbers on art in 2023 as currently UNAIDS estimate is not withing 95% range;
 data c;
 set b;
 
@@ -103,58 +104,49 @@ set b;
 proc freq;table s_onart;where cald=2023;run;
 */
 
-if cald=2023 and s_onart <= 2485 then b=1;
+if cald=2023 and s_onart < 2450 then b=1;
 /*
 proc freq;table run;where b=1;run;
 */
 
 if run in (
-3612417
-17621521
-26898246
-28919881
-40279405
-41251503
-66544904
-73650337
-139877048
-160434562
-196001267
-197288500
-198645337
-294344307
-301115362
-350399012
-351448248
-441973273
-496929002
-501993249
-505897472
-507186100
-507678821
-540047373
-543147736
-584476242
-648704696
-689722403
-763790522
-771285769
-796124945
-805397056
-839749999
-955188307
-966792422
-976984892
-977625330
-999105579
+7480844
+70939610
+131261725
+147821951
+284811116
+303897581
+305589249
+338827130
+411093219
+422840627
+425630420
+457994939
+470301331
+487401670
+496281356
+502234075
+519669724
+523032733
+537822091
+724051840
+730937131
+773749813
+808275531
+820977304
+832757338
+871036689
+872563841
+959754060
+965533196
+987364331
 )
 then delete;
 run;
 
-
-***SCALE UP SIMULATED POPULATION TO ZIMBABWE;
 data sf;
-set c;
+*set c;
+set a;
 if cald=2024.5;
 
 s_alive = s_alive_m + s_alive_w ;
@@ -171,11 +163,37 @@ proc sort; by run;run;
 
 
 data y;
-merge c sf;
-
+*merge c sf;
+merge a sf;
 by run;
 
-* preparatory code for dalys, costs and key epidemic outputs ;
+proc print;var s_prep_inj_w s_onprep_inj_w s_prep_inj_w;where cald>2027;run;
+
+
+
+* prop_onprep; 		if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep = (s_prep_any/ (s_alive1564 - s_hiv1564))*100 ;
+* prop_onprep_inj; 	if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep_inj = (s_prep_inj/ (s_alive1564 - s_hiv1564))*100 ;
+* prop_onprep_oral; if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep_oral = (s_prep_oral/ (s_alive1564 - s_hiv1564))*100 ;
+
+* prop_onprep_inj_m; if (s_alive1564_m - s_hiv1564m) gt 0 then prop_onprep_inj_m = (s_prep_inj_m/ (s_alive1564_m - s_hiv1564m))*100 ;
+* prop_onprep_oral_m; if (s_alive1564_m - s_hiv1564m) gt 0 then prop_onprep_oral_m = (s_prep_oral_m/ (s_alive1564_m - s_hiv1564m))*100;
+* prop_onprep_inj_w; if (s_alive1564_w - s_hiv1564w) gt 0 then prop_onprep_inj_w = (s_prep_inj_w/ (s_alive1564_w - s_hiv1564w))*100 ;
+* prop_onprep_oral_w; if (s_alive1564_w - s_hiv1564w) gt 0 then prop_onprep_oral_w = (s_prep_oral_w/ (s_alive1564_w - s_hiv1564w))*100;
+
+
+
+* prop_sw_onprep_oral; 	if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_oral = (s_prep_oral_sw/ (s_sw_1564 - s_hiv_sw))*100 ;
+* prop_sw_onprep_inj; 	if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_inj = (s_prep_inj_sw/ (s_sw_1564 - s_hiv_sw))*100 ;
+
+/*
+proc means;var prop_onprep_inj prop_onprep_oral  prop_sw_onprep_inj  prop_sw_onprep_oral;where 2040<cald<2074 and option=0;run;
+proc means;var prop_onprep_inj prop_onprep_oral prop_sw_onprep_inj  prop_sw_onprep_oral;where 2040<cald<2074 and option=1;run;
+proc means;var prop_onprep_inj prop_onprep_oral prop_sw_onprep_inj  prop_sw_onprep_oral;where 2040<cald<2074 and option=2;run;
+*/
+
+* preparatory code ;
+
+
 * ================================================================================= ;
 
 * discount rate;
@@ -455,22 +473,7 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * linked_diag_sw;				*if s_diag_thisper_sw>0 then p_linked_diag_sw = s_linked_diag_sw/s_diag_thisper_sw;
 
 
-* prop_onprep; 		if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep = (s_prep_any/ (s_alive1564 - s_hiv1564))*100 ;
-* prop_onprep_inj; 	if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep_inj = (s_prep_inj/ (s_alive1564 - s_hiv1564))*100 ;
-* prop_onprep_oral; if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep_oral = (s_prep_oral/ (s_alive1564 - s_hiv1564))*100 ;
-
-* prop_onprep_inj_m; if (s_alive1564_m - s_hiv1564m) gt 0 then prop_onprep_inj_m = (s_prep_inj_m/ (s_alive1564_m - s_hiv1564m))*100 ;
-* prop_onprep_oral_m; if (s_alive1564_m - s_hiv1564m) gt 0 then prop_onprep_oral_m = (s_prep_oral_m/ (s_alive1564_m - s_hiv1564m))*100;
-* prop_onprep_inj_w; if (s_alive1564_w - s_hiv1564m) gt 0 then prop_onprep_inj_w = (s_prep_inj_w/ (s_alive1564_w - s_hiv1564m))*100 ;
-* prop_onprep_oral_w; if (s_alive1564_w - s_hiv1564m) gt 0 then prop_onprep_oral_w = (s_prep_oral_w/ (s_alive1564_w - s_hiv1564m))*100;
-
-
-
-* prop_sw_onprep_oral; 	if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_oral = (s_prep_oral_sw/ (s_sw_1564 - s_hiv_sw))*100 ;
-* prop_sw_onprep_inj; 	if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_inj = (s_prep_inj_sw/ (s_sw_1564 - s_hiv_sw))*100 ;
-
-
-keep run option cald 
+keep run option cald prep_dependent_prev_vg1000
 n_alive				 n_alive1549_		n_onart				n_onart_w			n_onart_m			
 n_prep_ever			 p_prep_ever
 prevalence1549m 	 prevalence1549w 	prevalence1549_		incidence1549_ 		incidence1549w 		incidence1549m
@@ -512,12 +515,14 @@ prop_onprep_oral	prop_onprep_inj	prop_onprep_inj_m	prop_onprep_inj_w	prop_onprep
 
 proc sort data=y;by run option;run;
 
+proc means n mean p50 p5 p95;var p_diag_sw n_sw_1549_ p_diag_m;where cald=2023;run;
 
+
+/*
 data a.fsw_04_08_25_short; set y;run;
 
 data y; set a.fsw_04_08_25_short;run;
-
-
+*/
 options nomprint;
   option nospool;
 
@@ -530,7 +535,7 @@ options nomprint;
 ***outputs for PHIA comparison in 2020;
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run; where 2020 <= cald < 2021; 
 
-***baseline outputs in 2024;
+***baseline outputs in 2023;
 proc means  noprint data=y; var &v; output out=y_23 mean= &v._23; by run; where 2024 <= cald < 2025; 
 
 ***outputs in 2030 by option;
@@ -668,16 +673,15 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-***THIS STORES THE NEWLY CREATED WIDE FILE IN LIBRARY A;
 data a.wide_fsw_zim_04_08_25_;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
 
 
-
 ***GRAPHS;
 
+***Use this to identify runs with implausible incidence and delete below;
 data b;
 set a.fsw_17_04_24_short;
 if cald ge 2024 then delete;
