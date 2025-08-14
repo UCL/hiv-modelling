@@ -163,10 +163,17 @@ by run;
 
 * prop_onprep; 		if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep = (s_prep_any/ (s_alive1564 - s_hiv1564))*100 ;
 * prop_onprep_inj; 	if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep_inj = (s_prep_inj/ (s_alive1564 - s_hiv1564))*100 ;
-
 * prop_onprep_oral; if (s_alive1564 - s_hiv1564) gt 0 then prop_onprep_oral = (s_prep_oral/ (s_alive1564 - s_hiv1564))*100 ;
-* prop_sw_onprep; 	if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_oral = (s_prep_oral_sw/ (s_sw_1564 - s_hiv_sw))*100 ;
-* prop_sw_onprep; 	if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_inj = (s_prep_inj_sw/ (s_sw_1564 - s_hiv_sw))*100 ;
+
+* prop_onprep_inj_m; if (s_alive1564_m - s_hiv1564m) gt 0 then prop_onprep_inj_m = (s_prep_inj_m/ (s_alive1564_m - s_hiv1564m))*100 ;
+* prop_onprep_oral_m; if (s_alive1564_m - s_hiv1564m) gt 0 then prop_onprep_oral_m = (s_prep_oral_m/ (s_alive1564_m - s_hiv1564m))*100;
+* prop_onprep_inj_w; if (s_alive1564_w - s_hiv1564m) gt 0 then prop_onprep_inj_w = (s_prep_inj_w/ (s_alive1564_w - s_hiv1564m))*100 ;
+* prop_onprep_oral_w; if (s_alive1564_w - s_hiv1564m) gt 0 then prop_onprep_oral_w = (s_prep_oral_w/ (s_alive1564_w - s_hiv1564m))*100;
+
+
+
+* prop_sw_onprep_oral; 	if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_oral = (s_prep_oral_sw/ (s_sw_1564 - s_hiv_sw))*100 ;
+* prop_sw_onprep_inj; 	if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_inj = (s_prep_inj_sw/ (s_sw_1564 - s_hiv_sw))*100 ;
 
 /*
 proc means;var prop_onprep_inj prop_onprep_oral  prop_sw_onprep_inj  prop_sw_onprep_oral;where 2040<cald<2074 and option=0;run;
@@ -493,6 +500,7 @@ dcost_sisprog_ dcost_amtprog_
 effect_sw_prog_newp
 s_tested s_tested_m s_tested_f 
 n_hiv n_onart
+prop_onprep_oral	prop_onprep_inj	prop_onprep_inj_m	prop_onprep_inj_w	prop_onprep_oral_m	prop_onprep_oral_w
 ;
 
 proc sort data=y;by run option;run;
@@ -592,7 +600,8 @@ t_24_74;
 
 %var(v=n_hiv);			%var(v=n_onart);
 
-%var(v=dcost_sisprog_); %var(v=dcost_amtprog_);
+%var(v=dcost_sisprog_); %var(v=dcost_amtprog_); %var(v=prop_onprep_inj); %var(v=prop_onprep_oral);
+%var(v=prop_onprep_inj_m);	%var(v=prop_onprep_inj_w);	%var(v=prop_onprep_oral_m);	%var(v=prop_onprep_oral_w);
 run;
 
 data wide_outputs;merge
@@ -628,7 +637,9 @@ dcost_prep_visit_oral  			dcost_prep_oral dcost_prep_visit_inj  	dcost_prep_inj
 
 n_hiv	n_onart
 
-dcost_sisprog_  dcost_amtprog_
+dcost_sisprog_  dcost_amtprog_  prop_onprep_inj  prop_onprep_oral
+prop_onprep_inj_m	prop_onprep_inj_w	prop_onprep_oral_m	prop_onprep_oral_w
+
 ;
 
 proc sort; by run;run;
