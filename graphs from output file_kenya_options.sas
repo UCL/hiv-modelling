@@ -9,7 +9,8 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_kenya_al_options_r ;
+  set a.l_base_kenya_al_options_s ;
+
 
 
 /*
@@ -19,9 +20,7 @@ data b;
 */
 
 
-
-
-  s =  20  ;
+  s =  110 ;
   if option ne 0 and option ne s then delete;
   if option = s then option = 1;
 
@@ -31,39 +30,51 @@ data b;
 
 /*
 
+NOTE TARGETS LISTED BELOW ARE FULL TARGETS AND WITH THESE OPTIONS WE ARE MODELLING HALF TARGETS
 
-1 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	Proportion of PLHIV aware of HIV status = 100%
+101 General community testing in adults, not focussed only on those with recent sexual risk (administered by community health workers)	Proportion of PLHIV aware of HIV status = 100%
 
-2 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
+102 Recent sexual risk-informed testing (clinic-based) (index testing, testing in STI clinics) in adults 	Proportion of PLHIV aware of HIV status = 100%;
 
-3 General wide distribution of self tests in adults, not focussed only on those with recent sexual risk	Proportion of PLHIV aware of HIV status = 100%
+103 General wide distribution of self tests in adults, not focussed only on those with recent sexual risk	Proportion of PLHIV aware of HIV status = 100%
 
-4 Recent sexual risk-informed self-testing (index testing) for adults	Proportion of PLHIV aware of HIV status = 100%
+104 Recent sexual risk-informed self-testing (index testing) for adults	Proportion of PLHIV aware of HIV status = 100%
 
-5 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%
+105 General community testing in AGYW not focussed only on those with recent sexual risk (e.g. as in DREAMS)	Proportion of PLHIV aware of HIV status = 100%
 
-6 Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
+106 Behaviour change advice for AGYW to reduce condomless sex and condom provision (e.g. as in DREAMS)	Proportion of people using condoms at last
 sexual encounter = 95%
 
-7 VMMC males aged 15+	Increase in male circumcision in priority counties = 80% **
+107 VMMC males aged 15+	Increase in male circumcision in priority counties = 80% **
 
-8 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80%***
+108 Increased oral PrEP / PEP support and uptake 	Proportion of at risk populations initiated on (any) PrEP = 80%***
 
-9 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP	Proportion of at risk populations initiated on (any) PrEP = 80%
+109 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP	Proportion of at risk populations initiated on (any) PrEP = 80%
 
-10 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP and dapivirine ring	Proportion of at risk populations initiated on (any) PrEP = 80%
+110 Increased oral PrEP / PEP support and uptake plus Cab-LA PrEP and dapivirine ring	Proportion of at risk populations initiated on (any) PrEP = 80%
 
-11 Harm reduction services for PWID	Proportion of PWID using sterile needles and syringes in the last injecting episode = 100%
+111 Harm reduction services for PWID	Proportion of PWID using sterile needles and syringes in the last injecting episode = 100%
 Proportion of PWID using Medically Assisted Therapy = 80%
 
-12 Interventions to maximize linkage to care and retention in PLHIV 	Proportion of PLHIV with known HIV status on ART = 95%
+112 Interventions to maximize linkage to care and retention in PLHIV 	Proportion of PLHIV with known HIV status on ART = 95%
 
-13 Interventions to enhance adherence in people on ART	Proportion of PLHIV on ART achieving viral suppression  = 95% 
+113 Interventions to enhance adherence in people on ART	Proportion of PLHIV on ART achieving viral suppression  = 95% 
 
-14 Interventions to maximize ART coverage in pregnant and breastfeeding women living with HIV 	Proportion of PLHIV aware of HIV status = 100%
+114 Interventions to maximize ART coverage in pregnant and breastfeeding women living with HIV 	Proportion of PLHIV aware of HIV status = 100%
 Proportion of PLHIV with known HIV status on ART = 95%
 
-15 Maximize access to the WHO AHD package of care (having the effect of a reduction in AIDS death rate)	WHO package of care fully implemented.
+115 Maximize access to the WHO AHD package of care (having the effect of a reduction in AIDS death rate)	WHO package of care fully implemented.
+
+
+120  like 109 but no scale up oral prep - this is an alternative status quo comparator to option 0  
+
+121  partial disruption   
+
+122  greater disruption  
+
+123  partial disruption as 121 but without prep_inj scale-up 
+
+124  greater disruption as 122 but without prep_inj scale-up  
 
 */
 
@@ -113,7 +124,7 @@ n_tested_due_to_self_test = n_tested_due_to_self_t ;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =   286 ;
+%let nfit =   50  ;
 %let year_end = 2040.00 ;
 run;
 proc sort;by cald option ;run;
@@ -273,7 +284,7 @@ run;
 
 
 
-data d; * this is number of variables in %let var = above ;
+data   d; * this is number of variables in %let var = above ;
 merge 
 g1  g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14 
 
@@ -411,6 +422,8 @@ proportion of women sex workers  197000 / 14100000 women age 1549 in 2020 = 1.4%
 
 
 */
+
+
 
 
 
@@ -643,7 +656,13 @@ Condom use at last high-risk sex among adults aged 15 to 49 (%)	67.9	 	 	Source:
 
 
 
-ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
+
+
+
+
+  ods graphics / reset imagefmt=jpeg height=4in width=6in;   run;
+
+
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
 
