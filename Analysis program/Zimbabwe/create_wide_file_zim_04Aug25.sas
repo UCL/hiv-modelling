@@ -1,160 +1,23 @@
-*** THIS FILE READS IN THE MULTIPLE OUTPUT FILES (WHICH ARE ALREADY SET ON TOP OF EACH OTHER IN 'ZIM_FSW04AUG25') TO 
+*** THIS FILE READS IN THE MULTIPLE OUTPUT FILES (WHICH ARE ALREADY SET ON TOP OF EACH OTHER IN 'REVISED_OUTPUT_FILES') TO 
 CREATE A WIDE FILE WITH MEANS OF KEY OUTPUTS IN SPECIFIC TIME PERIODS; 
 
 ***SPECIFY LIBRARY 'A' WHICH IS THE FILEPATH WHERE OUTPUT FILES ARE STORED;
 ***REPLACE FILEPATH BELOW WITH LOCAL FILEPATH;
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\04Aug25_";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
 
 
 ***READ IN OUTPUT FILES (NOTE THE MULTIPLE OUTPUT FILES NEED TO BE SET ON TOP OF EACH OTHER BEFORE THIS STEP 
    IF NOT AUTOMATICALLY DONE IN MYRIAD);
 
 data a;
-set a.zim_fsw04aug25;  
+set a.fsw_zim04Aug25_revised;
 if run=. then delete; 
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
-***187/2000 RUNS WERE OUTPUTTED FROM THE CORE FILE AFTER THE ABORT STATEMENTS. OF THESE, CHOOSE 100 RUNS MOST CLOSELY
-   ALIGNED WITH THE ZIMBABWE EPIDEMIC. % DIAG IN MEN AND NUMBER ON ART WERE LOW COMPARED TO OBSERVED DATA SO REFINE THESE;
-
-***NOTE THE RUN NUMBERS WILL BE DIFFERENT IF THE CORE FILE IS RE-RUN;
-
-***Remove runs with low % diag in 2020 as currently mean is about 3% lower than PHIA. In men, this is about 6% lower;
-data b;
-set a;
-
-s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
-s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
-s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
-
-* p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
-* p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m1564_ / s_hiv1564m ;  
-* p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
-
-/*PHIA 2020 - 88% IN WOMEN, 84% IN MEN, 87% OVERALL
-PROC MEANS N MEAN;VAR P_DIAG P_DIAG_M P_DIAG_W;WHERE CALD=2020;RUN;
-PROC FREQ;TABLE P_DIAG_M;WHERE CALD=2020;RUN;
-*/
-if cald=2020 and p_diag_m < 0.75 then a=1;
-
-/*
-proc freq;table run;where a=1;run;
-*/
-
-if run in (
-6563872
-38081205
-91842902
-95670252
-118102326
-127894985
-130322502
-170393322
-173123188
-207906602
-239032128
-247564828
-285970689
-329657894
-356136525
-400853516
-448975191
-448978387
-494341282
-495488349
-501626557
-510177565
-530537999
-535764843
-551927729
-571404484
-585064688
-613484845
-662312159
-732640198
-743027003
-753313174
-755098729
-781530003
-793181068
-823550366
-826899810
-841715960
-919699942
-926108786
-935586797
-945713111
-949659997
-956004112
-956759376
-963511670
-980569228
-980636087
-982312368
-) then delete;
-run;
-
-***Remove runs with low numbers on art in 2023 as currently mean is below UNAIDS estimate, to get to 100 runs;
-data c;
-set b;
-
-/*
-proc freq;table s_onart;where cald=2023;run;
-*/
-
-if cald=2023 and s_onart <= 2485 then b=1;
-/*
-proc freq;table run;where b=1;run;
-*/
-
-if run in (
-3612417
-17621521
-26898246
-28919881
-40279405
-41251503
-66544904
-73650337
-139877048
-160434562
-196001267
-197288500
-198645337
-294344307
-301115362
-350399012
-351448248
-441973273
-496929002
-501993249
-505897472
-507186100
-507678821
-540047373
-543147736
-584476242
-648704696
-689722403
-763790522
-771285769
-796124945
-805397056
-839749999
-955188307
-966792422
-976984892
-977625330
-999105579
-)
-then delete;
-run;
-
-
 ***SCALE UP SIMULATED POPULATION TO ZIMBABWE;
 data sf;
-set c;
+set a;
 if cald=2024.5;
 
 s_alive = s_alive_m + s_alive_w ;
@@ -169,9 +32,9 @@ proc sort; by run;run;
 
 
 
-
+***APPLY SCALE FACTOR AND CALCULATE KEY EPIDEMIC METRICS INCLUDING COSTS AND DALYS;
 data y;
-merge c sf;
+merge a sf;
 
 by run;
 
@@ -281,7 +144,7 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
 
 
-***Assuming a cost of $132 per SW (Email from Collin 11Feb2025 in Sisters and 155 in AMETHIST per year;
+***Assuming a cost of $132 per SW (Email Ccommunication from CeSSHAR health economist Collin 11Feb2025) in Sisters and 155 in AMETHIST per year;
 
 
 ***total cost with Sisters;
@@ -296,7 +159,7 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who
 		dcost_sisprog_;
 end;
 
-
+***total cost with Amethist;
 if option=1 then do;
 	cost_amt_perSW=0.000155;
 	s_cost_amtprog_ = cost_amt_perSW * s_sw_program_visit;
@@ -512,10 +375,7 @@ prop_onprep_oral	prop_onprep_inj	prop_onprep_inj_m	prop_onprep_inj_w	prop_onprep
 
 proc sort data=y;by run option;run;
 
-
-data a.fsw_04_08_25_short; set y;run;
-
-data y; set a.fsw_04_08_25_short;run;
+proc means n mean p5 p95;var n_onart;where cald=2023;run; 
 
 
 options nomprint;
@@ -568,6 +428,8 @@ proc sort data=y_24_74; by run; proc transpose data=y_24_74 out=t_24_74 prefix=&
 data &v ; merge y_20 y_23 t_30 t_24_25 t_24_29 t_24_34 t_24_39 t_24_44 t_24_49 t_24_54 t_24_59 t_24_64 t_24_69
 t_24_74;  
 
+
+***MACRO IS USED TO CALCULATE SUMMARY MEASURES FOR THE YEARS ABOVE FOR EACH OUTPUT;
 %mend var;
 
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549_); 	
@@ -609,6 +471,7 @@ t_24_74;
 %var(v=prop_onprep_inj_m);	%var(v=prop_onprep_inj_w);	%var(v=prop_onprep_oral_m);	%var(v=prop_onprep_oral_w);
 run;
 
+***ALL FILES ARE MERGED TOGETHER TO FORM ONE DATASET;
 data wide_outputs;merge
 prevalence1549m	prevalence1549w 	prevalence1549_ 		incidence1549_ 	incidence1549w 	incidence1549m
 
@@ -669,7 +532,7 @@ sw_trans_matrix;
 ;proc sort; by run;run;
 
 ***THIS STORES THE NEWLY CREATED WIDE FILE IN LIBRARY A;
-data a.wide_fsw_zim_04_08_25_;
+data a.wide_fsw_zim_04_08_25_revised;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
@@ -679,47 +542,52 @@ by run;run;
 ***GRAPHS;
 
 data b;
-set a.fsw_17_04_24_short;
-if cald ge 2024 then delete;
+set a.fsw_04_08_25_short;
+if cald gt 2025 then delete;
 proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 291;
-%let year_end = 2024.00 ;
+%let nfit = 100;
+%let year_end = 2025.00 ;
 run;
 proc sort;by cald option ;run;
 
 
-***Just need one macro for calibration graphs, ignore the 2nd;
+***USE MACRO TO CALCULATE SUMMARY MEASURES;;
 
-***Two macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
 if option =1 then delete;
 
 %let var =  
+prevalence1549m	prevalence1549w 	prevalence1549_ 		incidence1549_ 	incidence1549w 	incidence1549m
 
-n_alive				 n_alive1549_		n_onart				n_onart_w			n_onart_m			
-n_prep_ever			 p_prep_ever
-prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
-p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
-p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
-n_tested
+p_diag	 		p_diag_m	 		p_diag_w   			p_onart_diag  	p_onart_diag_w
+p_onart_diag_m 	p_onart_vl1000_		p_onart_vl1000_w   	p_onart_vl1000_m  n_tested	 	
+p_vg1000_ 		p_vl1000_			prevalence_vg1000_	
 
-n_sw_1564_  	 	 n_sw_1549_ 	 	prop_w_1564_sw		prop_w_1549_sw 	 	prop_w_ever_sw  
-p_fsw1519_	  		 p_fsw2024_		  	p_fsw2529_			p_fsw3039_	
-p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_sw_age3039_ 		p_sw_age40pl_
-p_age_deb_sw1519_  	 p_age_deb_sw2024_  p_age_deb_sw2529_   p_age_deb_sw3039_   p_age_deb_sw40pl_
-sw_episodes 	  	 p_sw_gt1ep
-p_fsw_newp0_   	 	 p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_  p_fsw_newpov130_
-av_sw_newp	 		 p_newp_sw
-tot_dur_sw  		 act_dur_sw  	 
-p_actdur_0to3_  	 p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_ 
-p_totdur_0to3_  	 p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
-p_sw_prog_vis		 n_tested_sw	    prop_sw_onprep		prevalence_sw	  	incidence_sw
-p_diag_sw			 p_onart_diag_sw	p_onart_vl1000_sw
-p_sti_sw			 p_tested_past_year_sw
+n_sw_1564_      n_sw_1549_		    prop_w_1564_sw		prop_w_1549_sw 	prop_w_ever_sw  
+p_fsw1519_	  	p_fsw2024_		    p_fsw2529_					p_fsw3039_	
+
+p_sw_age1519_	  p_sw_age2024_		p_sw_age2529_ 		p_sw_age3039_ 	p_sw_age40pl_
+p_age_deb_sw1519_ p_age_deb_sw2024_ p_age_deb_sw2529_  	p_age_deb_sw2029_	p_age_deb_sw3039_ p_age_deb_sw40pl_
+
+sw_episodes 	p_sw_gt1ep
+p_fsw_newp0_   	p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_	p_fsw_newpov130_
+av_sw_newp	 	p_newp_sw
+
+tot_dur_sw  	act_dur_sw  	 
+p_actdur_0to3_  p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_ 
+p_totdur_0to3_  p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
+
+p_sw_prog_vis   n_tested_sw	   	   p_tested_past_year_sw  p_tested_swprog	
+prop_sw_onprep	prop_sw_onprep_oral		prop_sw_onprep_inj	prevalence_sw	   incidence_sw
+p_diag_sw		p_onart_diag_sw	   p_onart_vl1000_sw	p_sti_sw
+
+n_hiv	n_onart
+prop_onprep_inj  prop_onprep_oral
+prop_onprep_inj_m	prop_onprep_inj_w	prop_onprep_oral_m	prop_onprep_oral_w
 
 ;
 
@@ -757,182 +625,110 @@ run;
 
 %option_0;
 run;
-/*
-***Two macros, one for each option. Gives medians ranges etc by option;
-data option_1;
-set b;
-if option =0 or option =2 then delete;
-
-%let var =  
-
-n_sw_1564_  n_sw_1549_  prop_w_1564_sw  prop_w_1549_sw  prop_w_ever_sw  p_fsw1519_  p_fsw2024_  p_fsw2529_  p_fsw3039_
-p_sw_age1519_  p_sw_age2024_  p_sw_age2529_  p_sw_age3039_ p_age_deb_sw1519_  p_age_deb_sw2024_  p_age_deb_sw2529_  p_age_deb_sw3039_
-sw_episodes  p_sw_gt1ep  tot_dur_sw  act_dur_sw
-p_actdur_0to3_  p_actdur_3to5_  p_actdur_6to9_  p_actdur_10to19_
-p_totdur_0to3_  p_totdur_3to5_  p_totdur_6to9_  p_totdur_10to19_
-p_fsw_newp0_  av_sw_newp   p_newp_sw
-
-p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
-prevalence_sw  incidence_sw p_sti_sw;
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_1;
-%let p25_var = p25_&var_1;
-%let p75_var = p75_&var_1;
-%let p5_var = p5_&var_1;
-%let p95_var = p95_&var_1;
-%let p50_var = median_&var_1;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-      
-proc transpose data=option_1 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data h&count;set h&count;***creates one dataset per variable;
-p25_&varb._1  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._1 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._1 = median(of &varb.1-&varb.&nfit);
-
-keep cald option p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  hh&count;quit;run;
-%end;
-%mend;
-
-%option_1;
-run;
-
-
-data option_2;
-set b;
-if option =0 or option=1 then delete;
-
-%let var =  
-
-n_sw_1564_  n_sw_1549_  prop_w_1564_sw  prop_w_1549_sw  prop_w_ever_sw  p_fsw1519_  p_fsw2024_  p_fsw2529_  p_fsw3039_
-p_sw_age1519_  p_sw_age2024_  p_sw_age2529_  p_sw_age3039_ p_age_deb_sw1519_  p_age_deb_sw2024_  p_age_deb_sw2529_  p_age_deb_sw3039_
-sw_episodes  p_sw_gt1ep  tot_dur_sw  act_dur_sw
-p_actdur_0to3_  p_actdur_3to5_  p_actdur_6to9_  p_actdur_10to19_
-p_totdur_0to3_  p_totdur_3to5_  p_totdur_6to9_  p_totdur_10to19_
-p_fsw_newp0_  av_sw_newp   p_newp_sw
-
-p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
-prevalence_sw  incidence_sw p_sti_sw;
-
-
-*starts with %macro and ends with %mend;
-%macro option_2;
-%let p25_var = p25_&var_2;
-%let p75_var = p75_&var_2;
-%let p5_var = p5_&var_2;
-%let p95_var = p95_&var_2;
-%let p50_var = median_&var_2;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-
-      
-proc transpose data=option_2 out=i&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data i&count;set i&count;***creates one dataset per variable;
-p25_&varb._2  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._2 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._2  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._2 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._2 = median(of &varb.1-&varb.&nfit);
-
-keep cald option p5_&varb._2 p95_&varb._2 p50_&varb._2 p25_&varb._2 p75_&varb._2;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  ii&count;quit;run;
-%end;
-%mend;
-
-%option_2;
-run;
-*/
 
 
 data d; * this is number of variables in %let var = above ;
 merge 
 g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
-g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 g73 g74 /*g75  g76  g77  g78 
-g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
-g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
-g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
-g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
-g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
-g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
-g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252 
-
-h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
-h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
-h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72 h73
-
-i1   i2   i3   i4   i5   i6   i7   i8   i9   i10  i11  i12  i13  i14  i15  i16  i17  i18  i19  i20  i21  i22  i23  i24  i25  i26 
-i27  i28  i29  i30  i31  i32  i33  i34  i35  i36  i37  i38  i39  i40  i41*/
+g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 g73 g74 g75  g76  g77  g78 
+g79
 ;
 by cald;
 run;
 
-
+***READ IN SAS FILES WITH OBSERVED DATA;
 data d1;
 set d;
-%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Observed data_FSW_Zimbabwe.sas"; by cald;
+%include "C:\Users\loveleen\Documents\GitHub\hiv-modelling\Observed data_FSW_Zimbabwe.sas"; by cald;
 run;
 
 data e;
 set d1;
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe_Sep2021.sas";by cald;
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas";by cald;
 run;
 
-
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\25Apr2023.doc' startpage=never; 
+ods rtf file = 'C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Zim\FSW\Zimbabwe_AMETHIST paper\05Aug2025.doc' startpage=never; 
 
 
 proc sgplot data=e; 
-Title    height=1.5 justify=center "n_alive 15+";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000000 by  5000000) valueattrs=(size=10);
-label p50_n_alive_0 = "Option 0 (median) - 15+ ";
-label p50_n_alive1549__0 = "Option 0 (median) - 15-49 ";
-label o_pop_all_Zi_cens = "Census - All ages";
-label o_pop_1549_Zi_cens = "Census - 15-49";
-label o_pop_all_Zi_CIA = "CIA - All ages";
-label o_pop_1565_Zi_CIA = "CIA - All 15-64";
-series  x=cald y=p50_n_alive_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_alive1549__0/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_n_alive1549__0 	upper=p95_n_alive1549__0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+Title    height=1.5 justify=center "People living with HIV";
 
-scatter x=cald y=o_pop_all_Zi_cens / markerattrs = (symbol=square color=grey size = 10);
-scatter x=cald y=o_pop_1549_Zi_cens / markerattrs = (symbol=square color=green size = 10);
-scatter x=cald y=o_pop_all_Zi_CIA / markerattrs = (symbol=triangle color=grey size = 10);
-scatter x=cald y=o_pop_1565_Zi_CIA / markerattrs = (symbol=triangle color=brown size = 10);
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2024.75 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 13000000)  valueattrs=(size=10);
+label pmean_n_hiv_0	 = "Model";
+label o_livingHIV_15plus = "UNAIDS";
+
+series  x=cald y=pmean_n_hiv_0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=pmean_n_hiv_0     upper=pmean_n_hiv_0/ transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y= o_livingHIV_15plus/ markerattrs = (symbol=circle color=green size = 12);
 run;quit;
 
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Number of people living with HIV on ART";
 
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2024.75 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 1200000)  valueattrs=(size=10);
+label pmean_n_onart_0	 = "Model";
+label o_s_onart_adults_garpr = "Global AIDS Response Progress Report";
+label o_s_onart_adults_unaids = "UNAIDS";
+
+series  x=cald y=pmean_n_onart_0 /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=pmean_n_onart_0    upper=pmean_n_onart_0/ transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y= o_s_onart_adults_garpr/ markerattrs = (symbol=circle color=green size = 12);
+scatter x=cald y= o_s_onart_adults_unaids/ markerattrs = (symbol=circle color=blue size = 12);
+
+run;quit;
 
 proc sgplot data=e; 
-Title    height=1.5 justify=center "newp_ge1";
+Title    height=1.5 justify=center "Of those living with HIV, proportion diagnosed";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2050 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 0.1 by 0.02)  valueattrs=(size=10);
-label p50_p_newp_ge1__0	               = "Median";
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2024.75 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
+label pmean_p_diag_0	 = "Model";
+label o_p_diag_1564_zimphia = "ZIMPHIA";
+label o_p_diag_15pl_zimphia = "ZIMPHIA";
 
-series  x=cald y=p50_p_newp_ge1__0  /           lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_newp_ge1__0     upper=p95_p_newp_ge1__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=pmean_p_diag_0 /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=pmean_p_diag_0    upper=pmean_p_diag_0/ transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y= o_p_diag_1564_zimphia/ markerattrs = (symbol=circle color=green size = 12);
+scatter x=cald y= o_p_diag_15pl_zimphia/ markerattrs = (symbol=circle color=green size = 12);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of those diagnosed, proportion on ART";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2024.75 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
+label pmean_p_onart_diag_0	 = "Model";
+label o_p_onart_1564_diag_zimphia= "ZIMPHIA";
+label o_p_onart_15pl_diag_zimphia = "ZIMPHIA";
+
+series  x=cald y=pmean_p_onart_diag_0 /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=pmean_p_onart_diag_0    upper=pmean_p_onart_diag_0/ transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y= o_p_onart_1564_diag_zimphia/ markerattrs = (symbol=circle color=green size = 12);
+scatter x=cald y= o_p_onart_15pl_diag_zimphia/ markerattrs = (symbol=circle color=green size = 12);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of those on ART, proportion virally suppressed";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2024.75 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
+label pmean_p_onart_vl1000__0	 = "Model";
+label o_p_vlsupp_1564_Zimphia= "ZIMPHIA";
+label o_p_vlsupp_15pl_Zimphia = "ZIMPHIA";
+
+series  x=cald y=pmean_p_onart_vl1000__0 /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=pmean_p_onart_vl1000__0    upper=pmean_p_onart_vl1000__0/ transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y= o_p_vlsupp_1564_Zimphia/ markerattrs = (symbol=circle color=green size = 12);
+scatter x=cald y= o_p_vlsupp_15pl_Zimphia/ markerattrs = (symbol=circle color=green size = 12);
 run;quit;
 
 
@@ -949,12 +745,8 @@ label p50_incidence_sw_0	               = "Median";
 series  x=cald y=pmean_incidence_sw_0  /           lineattrs = (color=blue thickness = 2);
 band    x=cald lower=pmean_incidence_sw_0     upper=pmean_incidence_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
-series  x=cald y=p50_incidence_sw_0  /           lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_incidence_sw_0     upper=p95_incidence_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-
-
+scatter x=cald y=o_livingHIV_15plus/ markerattrs = (symbol=circle color=black size = 12);
 run;quit;
-
 
 
 proc sgplot data=e; 

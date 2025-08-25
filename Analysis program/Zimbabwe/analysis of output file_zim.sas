@@ -1,12 +1,11 @@
-*libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
 *libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\04Aug25_";
 
 ***This is the final program used for the AMETHIST cost effectiveness paper. 
 ***Towards the bottom, the impact of funding cuts is also analysed (option 2);
 
 data a; 
-set a.wide_fsw_zim_04_08_25_; 
+set a.wide_fsw_zim_04_08_25_revised; 
 
 
 ***Within run differences;
@@ -276,6 +275,29 @@ prop_sw_onprep_inj_24_74_1
 prop_sw_onprep_inj_24_74_2
 prop_sw_onprep_inj_24_74_3
 
+prop_onprep_oral_24_74_1
+prop_onprep_oral_24_74_2
+prop_onprep_oral_24_74_3
+
+prop_onprep_inj_24_74_1
+prop_onprep_inj_24_74_2
+prop_onprep_inj_24_74_3
+
+prop_onprep_oral_m_24_74_1
+prop_onprep_oral_m_24_74_2
+prop_onprep_oral_m_24_74_3
+
+prop_onprep_inj_m_24_74_1
+prop_onprep_inj_m_24_74_2
+prop_onprep_inj_m_24_74_3
+
+prop_onprep_oral_w_24_74_1
+prop_onprep_oral_w_24_74_2
+prop_onprep_oral_w_24_74_3
+
+prop_onprep_inj_w_24_74_1
+prop_onprep_inj_w_24_74_2
+prop_onprep_inj_w_24_74_3
 
 dcost_prep_visit_oral_24_74_1 
 dcost_prep_visit_oral_24_74_2 

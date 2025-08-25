@@ -242,7 +242,7 @@ if cald=2012.5 then do; o_pop_fsw_1ts12m_nbcs=292937; end;
 
 
 Numbers below are estimated by multiplying 67.7% with David Wilson's and NBCP estimates above
-(In Document ìSisters numbers v4î circulated in Mar 2016 55% used condom at last sex);
+(In Document ìSisters numbers v4ÅEcirculated in Mar 2016 55% used condom at last sex);
 
 /* these numbers were calculated using the 59.3% which we are now unable to find;
 if cald=2002.5 then do; o_pop_fswccu_dw=48011; o_pop_fswccu_ll_dw= 10915; o_pop_fswccu_ul_dw=199829;end;
@@ -405,7 +405,7 @@ if cald=2020 then o_s_fertility_un2015=3.65;
 
 
 ***Number of expected live births;
-*Source:ìZimbabwe_PMTCT_surveillance_protocol_231215î at page 16 where it is cited "Health Information, Ministry of Health and Child Care, Zimbabwe";
+*Source:ìZimbabwe_PMTCT_surveillance_protocol_231215ÅEat page 16 where it is cited "Health Information, Ministry of Health and Child Care, Zimbabwe";
 *In an email by Frances Cowan on 4/11/2016 she confirmed aroun 400,000 deliveries a year;
 *Update VC Nov 2016;
 if cald=2011.5 then o_s_livebirths_MoH=412122;
@@ -1211,6 +1211,7 @@ if cald=2011.5 then o_livingHIV_1549=1200000;*(1.2-1.3)	2011	Estimated by UNAIDS
 ***LBM Update Sep 2016;
 *Source: UNAIDS (Section ìCountry overview") http://www.unaids.org/en/regionscountries/countries/zimbabwe/#5;
 if cald=2015 then do; o_livingHIV_all=1300000;o_livingHIV_ll_all=1200000;o_livingHIV_ul_all=1500000;end;
+if cald=2024 then o_livingHIV_15plus=1200000;
 
 *Source: "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo. (Slide 13 in Zim_ePMS Data Completeness.ppt)
 		Senior Monitoring and Evaluation Officer, AIDS and TB National Programme, Zimbabwe, 23 November 2015;
@@ -1399,7 +1400,7 @@ if cald=2011  then do; o_p_paidsex_ly_1554m_dhs=0.030;  o_p_paidsex_ly_1519m_dhs
 
 
 ***Number of clients per week
- Source: Document ìSisters numbers v4î circulated in Mar2016, not sure whether the data are form the Sisters with a Voice programme or RDS
+ Source: Document ìSisters numbers v4ÅEcirculated in Mar2016, not sure whether the data are form the Sisters with a Voice programme or RDS
 36% 0-3  clients/week, 
 41% 4-10 clients/week, 
 23% >10, 
@@ -1681,7 +1682,7 @@ Q1 - Are people diagnosed in hospital symptomatic people or are they due to PITC
 	 PITC is implemented very well in the ANC settings for PMTCT and in the TB clinics. But needs strengthening in the other areas."
 Q2 - Would most people who develop WHO4 or WHO3 disease present in the hospital?
 	 Reply from Tsitsi on 5th July 2016: "yes, this is true"
-Q3 - I know that circumcision is rolled out in Zim, if a person is diagnosed at the test pre-circumcision to which of the ìreasonsî it belongs? 
+Q3 - I know that circumcision is rolled out in Zim, if a person is diagnosed at the test pre-circumcision to which of the ìreasonsÅEit belongs? 
 	 Reply from Tsitsi on 5th July 2016: It could be classified as either as  'hospital/illness' where VMMC is offered at the hospital or 'Other'. 
 	 We are revising the Green book so there is need to specifiy VMMC."
 Q4 - What is the denominator?
@@ -1768,7 +1769,7 @@ if cald=2013.75 then do;
 end;
 
 *Number of FSW who attended Sisters clinics
-Source: Document ìSisters numbers v4î;
+Source: Document ìSisters numbers v4;
 if cald=2014.75 then do;
 	o_nfsw_sistclin_fc   =13168;
 	o_nfsw_sistclin1st_fc=10019;
@@ -1793,7 +1794,7 @@ if cald=2014 then do;o_n_test_fsw_sister=3526;o_yield_fsw=0.303;end;
 if cald=2015 then do;o_n_test_fsw_sister=5677;o_yield_fsw=0.224;end;
 
 
-*Source: RDS last quarter 2013 (reported in Document ìSisters numbers v4î & in cascade manuscript);
+*Source: RDS last quarter 2013 (reported in Document ìSisters numbers v4ÅE& in cascade manuscript);
 if cald=2013.75 then do;
 	o_p_diag_fsw_rds=0.64;*0.67 reported in the manuscript of trial citing
 *Source: AIDS 2014 Conference, Cowan F. HIV care cascade among female sex workers in zimbabwe: Baseline results of the sAPPH-iRe trial;
@@ -1991,7 +1992,7 @@ if cald=2014.5 then o_p_PMTCTorART_pospreg_Cowan=0.65;
 
 
 ***Repeat testing;
-*Source: Increases in HIV Testing and Case Detection from NIMH Project Accept (HPTN 043) among 16ñ32 Year Olds;
+*Source: Increases in HIV Testing and Case Detection from NIMH Project Accept (HPTN 043) among 16ÅE2 Year Olds;
 if cald=2011 then o_rct_max_p_repeat_test=0.28;
 
 
@@ -2059,8 +2060,8 @@ if cald=2015.75 then do;o_s_onart_adults_garpr = 817722; o_s_onart_adults_ll = 7
 *Source: Global AIDS Response Progress Report 2020, page 16;
 if cald=2019.75 then do;o_s_onart_adults_garpr = 1149191;end;
 
-
-
+*Source UNAIDS - https://www.unaids.org/en/regionscountries/countries/zimbabwe;
+if cald=2024 then o_s_onart_adults_unaids= 1192466;
 
 *Source: "Zimbabwe data.xls" sent by David Wilson
 		  Also reported in "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo
@@ -2117,7 +2118,7 @@ if cald=2022.5  then o_s_all_onart_NAC=1182126;
 
 
 *Source: Operational and Service Delivery Manual for the Prevention, Care and Treatment of HIV in Zimbabwe 
-		 by AIDS & TB programme, Ministry of Health and Child Care, Zimbabwe ñ June 2015;
+		 by AIDS & TB programme, Ministry of Health and Child Care, Zimbabwe ÅEJune 2015;
 if cald=2013.75 then o_s_onart_adults_osdm = 620867; ***LBM Update Sep 2016 - changed from 544200;
 
 *Global fund reports - sent by Trevor:
@@ -2251,7 +2252,7 @@ end;
 		 (Slide 7 in Zim_ePMS Data Completeness.ppt)
 		 The data are available for all years and are the same as those indicated in the doc above
 
-		Note: The denominator is ëestimated number of adults and children in need of ARTí based on the criteria detailed in the 
+		Note: The denominator is ëestimated number of adults and children in need of ARTÅEbased on the criteria detailed in the 
 		2013 ART Guidelines. The denominator is derived from the Zimbabwe 2014 National and Subnational HIV Estimates Report;
 if cald=2004.75 then e_p_onart_cd4200=0.05;
 if cald=2005.75 then e_p_onart_cd4200=0.117;
@@ -2284,7 +2285,7 @@ if cald=2019.75 then e_p_adults_onart=0.856;
 
 
 *** Number of adults eligible for ART;
-*Source: Operational and Service Delivery Manual ñ June 2015, Page 5 (unclear to which year it refers to but between Nov 2013 and Dec 2014);
+*Source: Operational and Service Delivery Manual ÅEJune 2015, Page 5 (unclear to which year it refers to but between Nov 2013 and Dec 2014);
 if cald=2014.5 then m_adults_elig_art_osdm=1207175;
 
 
@@ -2350,12 +2351,12 @@ if cald=2009.5 then e_ratiofm_newart_unaids=1.43;
 
 
 ***Number of FSW on art (this is a minimum estimate);
-*Source: Document ìSisters numbers v4î, Page 3;
+*Source: Document ìSisters numbers v4ÅE Page 3;
 if cald=2013.75 then o_s_fsw_onart_fc=4500;
 
 
 *** Proportion on ART of FSW diagnosed;
-*Source: RDS survey last quarter 2013: Document ìSisters numbers v4î, Page 6 and 7 (in 7 calculated as (21%/39% & 48%/69%);
+*Source: RDS survey last quarter 2013: Document ìSisters numbers v4ÅE Page 6 and 7 (in 7 calculated as (21%/39% & 48%/69%);
 if cald=2013.75 then do;
 	o_p_onart_fswdiag_rds =0.677;
 	o_p_onart_fsw1524diag_rds =0.54;
@@ -2373,9 +2374,9 @@ if cald=2019.5 then o_p_onart_fswdiag_garpr =0.78;
 **** Reasons for ART initiation in the following hierarchical order 
      (1. WHO3/4/TB, 2.CD4<=350, 3. B+ pregnant or breastfeeding, 4. CD4 351-500, 5. not known);
 
-*Source: Lablite slides ìZIM_demoproj_v2î and the data are collected from August 2013, Slide 6, eg. denom=tot num females >15
-         Banket: hospital (hub ñ ART since 2005), Mutorashanga & Nyabira (outreach site for Banket since 2010), 
-		 Zowa (previously ART-naÔve, ART initiation from 2014, only 21 init);
+*Source: Lablite slides ìZIM_demoproj_v2ÅEand the data are collected from August 2013, Slide 6, eg. denom=tot num females >15
+         Banket: hospital (hub ÅEART since 2005), Mutorashanga & Nyabira (outreach site for Banket since 2010), 
+		 Zowa (previously ART-naÅEe, ART initiation from 2014, only 21 init);
 
 if cald=2014 then do;
 	o_p_artinit_whotb_fbanket=0.51; o_p_artinit_cl350_fbanket=0.12; o_p_artinit_pregb_fbanket=0.32; o_p_artinit_c350500_fbanket=0.01;o_p_artinit_Unk_fbanket=0.03;
@@ -2400,7 +2401,7 @@ end;
 
 *** At ART initiation
 Source: Gender-related differences in outcomes and attrition on antiretroviral treatment among an HIV-infected patient 
-cohort in Zimbabwe: 2007ñ2010, Takarinda KC 2014
+cohort in Zimbabwe: 2007ÅE010, Takarinda KC 2014
 
 Retrospective patient record review of 3919 HIV-infected patients aged  15 or more who initiated ART between 2007 and 2009 
 in 40 randomly selected ART facilities countrywide;
@@ -2413,7 +2414,7 @@ end;
 
 ***LBM Update Sep 2016;
 *Source: Patient Retention, Clinical Outcomes and Attrition-Associated Factors of HIV-Infected Patients Enrolled in Zimbabwe's
-		 National Antiretroviral Therapy Programme, 2007ñ2010, Mutasa-Apollo 2014;
+		 National Antiretroviral Therapy Programme, 2007ÅE010, Mutasa-Apollo 2014;
 
 if cald=2008 then do;
 	o_medcd4_artinit=121;
@@ -2433,7 +2434,7 @@ end;
 *DART trial;
 if cald=2008.5 then o_median_cd4art_DART=80;
 
-*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ñ2010, Mungati 2016
+*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ÅE010, Mungati 2016
 n=1610, new ART initiations from 2008-2010;
 if cald=2009 then do;
 	o_medcd4_artinit=168;
@@ -2499,7 +2500,7 @@ end;
 
 
 *** % FSW virally suppressed (of those on ART);
-*Source: RDS survey last quarter 2013 (& document ìSisters numbers v4î);
+*Source: RDS survey last quarter 2013 (& document ìSisters numbers v4ÅE;
 if cald=2013.75 then do;
 	o_p_vlsupp_FSWonart =0.778;
 	o_p_vlsupp_FSW1524onart_rds =0.62;
@@ -2520,7 +2521,7 @@ if cald=2010 then do; o_ratecifail_Renaud=0.264; o_ratecifail_ll_Renaud=0.173; o
 
 *** Proportion with treatment failure (based on viral load);
 
-*Source: Report on the National HIV Drug Resistance Monitoring at Sentinel sites (2009ñ2011)î 2009-2011 (n=1000),
+*Source: Report on the National HIV Drug Resistance Monitoring at Sentinel sites (2009ÅE011)ÅE2009-2011 (n=1000),
 		 cited in 'Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
 		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014; 
 
@@ -2759,7 +2760,7 @@ if cald=2010.5 then do; o_p_res_artstart_WHOres=0.061; o_p_res_artstart_lc_WHOre
 
 
 ***LBM Update Sep 2016;
-*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ñ2010, Mungati 2016
+*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ÅE010, Mungati 2016
 n=1610, new ART initiations from 2008-2010;
 if cald=2009 then o_p_res_artstart=0.0063;
 
