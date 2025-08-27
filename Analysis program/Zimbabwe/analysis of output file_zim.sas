@@ -615,6 +615,7 @@ incidence1549__30_3	prevalence1549__30_3		p_diag_30_3	  p_onart_diag_30_3   p_on
 ;
 run;
 
+proc means n p50 mean p5 p95;var prop_sw_onprep_inj_30_1 prop_sw_onprep_oral_30_1;run;
 
 data two;
 set one;
