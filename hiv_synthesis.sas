@@ -2951,16 +2951,6 @@ end;
 if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup_covid = 1 or art_low_adh_disrup_covid = 1) then reg_option = 125 ;
 
 
-if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121 125) then flr=2; 
-if reg_option in (107) then flr=1;
-if reg_option = 130 then flr=3;
-
-*
-    if flr=1 ten + 3tc + taz
-    if flr=2 ten + 3tc + dol                                                           
- 	if flr=3 len + cab        
-;
-
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
 
@@ -9253,7 +9243,16 @@ o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_cab=0;o_len=0;
     if 2010.5 <= caldate{t} and reg_option < 100 then do; o_ten=1; o_3tc=1; o_efa=1; end; 
     if reg_option in ( 101 108 109 110 111 112 114) then do; o_ten=1; o_3tc=1; o_efa=1; end; 
 
-	* note flr is defined above;
+	if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121 125) then flr=2; 
+	if reg_option in (107) then flr=1;
+	if reg_option = 130 then flr=3;
+
+	*
+    if flr=1 ten + 3tc + taz
+    if flr=2 ten + 3tc + dol                                                           
+ 	if flr=3 len + cab        
+	;
+
     if flr=1 then do; o_ten=1; o_3tc=1; o_taz=1; o_zdv=0; o_dol=0; end;
     if flr=2 then do; o_ten=1; o_3tc=1; o_dol=1; o_zdv=0; o_taz=0; o_efa=0; end;
  	if flr=3 then do; o_len=1; o_cab=1; end;
