@@ -14,10 +14,10 @@ if cald=2016.75 then do;
 	o_p_fsw_1549w_Fearon=0.012;o_p_fsw_ll_1549w_Fearon=0.009;o_p_fsw_ul_1549w_Fearon=0.018;
 end;
 
-* Source: Liz Fearon, Sungai Chabata, Powerpoint -  Getting to precision ñ Female Sex Worker  population size estimates in Zimbabwe;
+* Source: Liz Fearon, Sungai Chabata, Powerpoint -  Getting to precision ÅEFemale Sex Worker  population size estimates in Zimbabwe;
 if cald=2022 then do;
-	o_pop_fsw_1549w_Fearon=70423;o_pop_fsw_ll_1549w_Fearon=59271;o_pop_fsw_ul_1549w_Fearon=79518;
-	o_p_fsw_1549w_Fearon=0.016;o_p_fsw_ll_1549w_Fearon=0.013;o_p_fsw_ul_1549w_Fearon=0.018;
+	o_pop_fsw_1549w_Fearon_ICASA=70423;o_pop_fsw_ll_1549w_Fearon=59271;o_pop_fsw_ul_1549w_Fearon=79518;
+	o_p_fsw_1549w_Fearon_ICASA=0.016;o_p_fsw_ll_1549w_Fearon=0.013;o_p_fsw_ul_1549w_Fearon=0.018;
 end;
 
 **South Africa;* Source: Estimating the number of sex workers in South Africa: rapid population size estimation;
@@ -242,6 +242,21 @@ if cald=2022 then do;
 	obs_p_art_fsw_AMT=0.95;
 	obs_p_vs_fsw_AMT=0.93;
 end;
+
+
+*********************************************************************************************************************
+CONDOMLESS SEX;
+*********************************************************************************************************************
+*Source: Amethist draft paper 'a risk-differentiated, community-led intervention to strengthen uptake and engagement with
+		 HIV prevention and care cascades among female sex workers in Zimbabwe: the results of a cluster randomised trial 
+		 (Cowan 2023). Estimate taken from usual care arm;
+
+if cald=2022 then obs_p_0newp_amt=0.276;
+
+*Source: Targeted combination prevention to support female sex workers in Zimbabwe accessing and adhering to
+		 antiretrovirals for treatment and prevention of HIV (SAPPH-IRe): a cluster-randomised trial (Endline RDS);
+
+if cald=2016.25 then obs_p_0newp_rds=0.391;
 
 
 

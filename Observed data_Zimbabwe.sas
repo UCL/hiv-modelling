@@ -1205,13 +1205,28 @@ if cald=1990.5 then o_livingHIV_1549=800000;
 if cald=1995.5 then o_livingHIV_1549=1600000;
 if cald=2000.5 then o_livingHIV_1549=1900000;
 if cald=2005.5 then o_livingHIV_1549=1500000;
-if cald=2011.5 then o_livingHIV_1549=1200000;*(1.2-1.3)	2011	Estimated by UNAIDS model, exact;
+*if cald=2011.5 then o_livingHIV_1549=1200000;*(1.2-1.3)	2011	Estimated by UNAIDS model, exact;
 
+*Source: UNAIDS (Section “Country overview") http://www.unaids.org/en/regionscountries/countries/zimbabwe/#5
+https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.unaids.org%2Fsites%2Fdefault%2Ffiles%2Fmedia_asset%2FHIV_estimates_from_1990-to-present.xlsx&wdOrigin=BROWSELINK
+Accessed on 3rd Aug 2025;
 
-***LBM Update Sep 2016;
-*Source: UNAIDS (Section “Country overview") http://www.unaids.org/en/regionscountries/countries/zimbabwe/#5;
-if cald=2015 then do; o_livingHIV_all=1300000;o_livingHIV_ll_all=1200000;o_livingHIV_ul_all=1500000;end;
-if cald=2024 then o_livingHIV_15plus=1200000;
+if cald=2010 then o_livingHIV_1549=1200000;
+if cald=2011 then o_livingHIV_1549=1200000;
+if cald=2012 then o_livingHIV_1549=1200000;
+if cald=2013 then o_livingHIV_1549=1200000;
+if cald=2014 then o_livingHIV_1549=1200000;
+if cald=2015 then o_livingHIV_1549=1200000;
+if cald=2016 then o_livingHIV_1549=1300000;
+if cald=2017 then o_livingHIV_1549=1300000;
+if cald=2018 then o_livingHIV_1549=1300000;
+if cald=2019 then o_livingHIV_1549=1300000;
+if cald=2020 then o_livingHIV_1549=1200000;
+if cald=2021 then o_livingHIV_1549=1200000;
+if cald=2022 then o_livingHIV_1549=1200000;
+if cald=2023 then o_livingHIV_1549=1200000;
+if cald=2024 then o_livingHIV_1549=1200000;
+
 
 *Source: "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo. (Slide 13 in Zim_ePMS Data Completeness.ppt)
 		Senior Monitoring and Evaluation Officer, AIDS and TB National Programme, Zimbabwe, 23 November 2015;
@@ -2061,7 +2076,7 @@ if cald=2015.75 then do;o_s_onart_adults_garpr = 817722; o_s_onart_adults_ll = 7
 if cald=2019.75 then do;o_s_onart_adults_garpr = 1149191;end;
 
 *Source UNAIDS - https://www.unaids.org/en/regionscountries/countries/zimbabwe;
-if cald=2024 then o_s_onart_adults_unaids= 1192466;
+if cald=2024 then o_s_onart_adults_garpr= 1192466;
 
 *Source: "Zimbabwe data.xls" sent by David Wilson
 		  Also reported in "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo

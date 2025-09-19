@@ -1,5 +1,10 @@
+*** THIS FILE READS IN THE WIDE FILE (CREATED FROM RUNNING 'CREATE_WIDE_FILE_ZIM' PROGRAM) AND IS USED TO ANALYSE 
+OUTPUTS;
+
+***SPECIFY LIBRARY 'A' WHICH IS THE FILEPATH WHERE THE WIDE FILE IS STORED;
+***REPLACE FILEPATH BELOW WITH LOCAL FILEPATH;
+
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim\";
-*libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\Zim";
 
 ***This is the final program used for the AMETHIST cost effectiveness paper. 
 ***Towards the bottom, the impact of funding cuts is also analysed (option 2);
@@ -26,7 +31,7 @@ d_p_onart_diag = (p_onart_diag_30_2 - p_onart_diag_30_1)*100;
 d_p_onart_vl1000 = (p_onart_vl1000__30_2 - p_onart_vl1000__30_1)*100;
 run;
 
-***table Ao - use either 2020 or 2023 estimates - whichever is closest to observed data;
+***Table A0 - use either 2020 or 2023 estimates - whichever is closest to observed data;
 proc means n p50 mean p5 p95;var n_hiv_23  n_onart_23
 prevalence1549__23 	 prevalence1549w_23 	prevalence1549m_23 	 incidence1549__23 	incidence1549w_23 	incidence1549m_23
 p_diag_23			 p_diag_w_23			p_diag_m_23 		 p_onart_diag_23	p_onart_diag_w_23	p_onart_diag_m_23
@@ -46,7 +51,7 @@ incidence_sw_20		p_fsw_newp0__20
 
 
 
-***table 2 - characteristics of FSW in 2024 (these are suffixed 23 but are actually 24);
+***Table 2 - characteristics of FSW in 2024;
 proc means n p50 mean p5 p95;var
 n_sw_1549__23		prop_w_1549_sw_23 		prop_w_ever_sw_23		act_dur_sw_23 
 p_sw_age1519__23	p_sw_age2024__23		p_sw_age2529__23 		p_sw_age3039__23 p_sw_age40pl__23  
@@ -59,7 +64,7 @@ p_diag_sw_23		p_onart_diag_sw_23		p_onart_vl1000_sw_23 p_sw_prog_vis_23;
 run;
 
 
-***table 3 - outputs in 2030 for Sisters and Sisters + Amethist;
+***Table 3 - outputs in 2030 for Sisters and Sisters + Amethist;
 proc means n p50 mean p5 p95;var
 /*Current SW program*/
 p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1	p_tested_swprog_30_1
@@ -111,11 +116,26 @@ _1=Sisters
 _2=Amethist
 */
 
+
+
+***Costs other than ART and testing (other programming costs);
+
+oth_prog_costs_1 = dcost_24_74_1 - dart_cost_y_24_74_1 - dtest_cost_24_74_1;
+oth_prog_costs_2 = dcost_24_74_2 - dart_cost_y_24_74_2 - dtest_cost_24_74_2;
+diff_oth_prog_costs = oth_prog_costs_2 - oth_prog_costs_1;
+
+***total prep costs;
+total_prep_1 = dcost_prep_oral_24_74_1 + dcost_prep_inj_24_74_1 + dcost_prep_visit_oral_24_74_1 + dcost_prep_visit_inj_24_74_1;
+total_prep_2 = dcost_prep_oral_24_74_2 + dcost_prep_inj_24_74_2 + dcost_prep_visit_oral_24_74_2 + dcost_prep_visit_inj_24_74_2;
+total_prep_3 = dcost_prep_oral_24_74_3 + dcost_prep_inj_24_74_3 + dcost_prep_visit_oral_24_74_3 + dcost_prep_visit_inj_24_74_3;
+
+
 *difference in costs;
 diff_dcost = dcost_24_74_2 - dcost_24_74_1;
 diff_artcost= dart_cost_y_24_74_2 - dart_cost_y_24_74_1;
 diff_testcost = dtest_cost_24_74_2 - dtest_cost_24_74_1;
 diff_testcost_sw = dtest_cost_sw_24_74_2 - dtest_cost_sw_24_74_1;
+
 
 *difference in dalys (dalys averted);
 diff_ddaly = ddaly_24_74_2 - ddaly_24_74_1;
@@ -213,9 +233,6 @@ diff_dcost50ySD = dcost_24_74_1 - dcost_24_74_3;
 diff_ddaly50ySD = ddaly_24_74_1 - ddaly_24_74_3;
 
 
-
-
-
 ***Breakdown of costs - group clinical costs together;
 d_clin_costs_1 = 	dadc_cost_24_74_1 + dnon_tb_who3_cost_24_74_1 + dcot_cost_24_74_1 + dtb_cost_24_74_1 + 
 					d_t_adh_int_cost_24_74_1 + dswitchline_cost_24_74_1;
@@ -225,12 +242,96 @@ d_clin_costs_3 = 	dadc_cost_24_74_3 + dnon_tb_who3_cost_24_74_3 + dcot_cost_24_7
 					d_t_adh_int_cost_24_74_3 + dswitchline_cost_24_74_3;
 
 
+***********************************;
+
+***Further analyses in response to reviewer;
+
+***********************************;
+
+***Combined treatment and prevention cost with SQ;
+dart_prep_24_29_1 = dcost_prep_oral_24_29_1 + dcost_prep_inj_24_29_1 + dcost_prep_visit_oral_24_29_1 + dcost_prep_visit_inj_24_29_1 +
+dart_cost_y_24_29_1 + dadc_cost_24_29_1 + dcd4_cost_24_29_1 + dvl_cost_24_29_1 + dvis_cost_24_29_1 + dres_cost_24_29_1 + d_t_adh_int_cost_24_29_1 +
+dswitchline_cost_24_29_1; 
+
+dart_prep_24_34_1 = dcost_prep_oral_24_34_1 + dcost_prep_inj_24_34_1 + dcost_prep_visit_oral_24_34_1 + dcost_prep_visit_inj_24_34_1 +
+dart_cost_y_24_34_1 + dadc_cost_24_34_1 + dcd4_cost_24_34_1 + dvl_cost_24_34_1 + dvis_cost_24_34_1 + dres_cost_24_34_1 + d_t_adh_int_cost_24_34_1 +
+dswitchline_cost_24_34_1; 
+
+dart_prep_24_39_1 = dcost_prep_oral_24_39_1 + dcost_prep_inj_24_39_1 + dcost_prep_visit_oral_24_39_1 + dcost_prep_visit_inj_24_39_1 +
+dart_cost_y_24_39_1 + dadc_cost_24_39_1 + dcd4_cost_24_39_1 + dvl_cost_24_39_1 + dvis_cost_24_39_1 + dres_cost_24_39_1 + d_t_adh_int_cost_24_39_1 +
+dswitchline_cost_24_39_1; 
+
+dart_prep_24_44_1 = dcost_prep_oral_24_44_1 + dcost_prep_inj_24_44_1 + dcost_prep_visit_oral_24_44_1 + dcost_prep_visit_inj_24_44_1 +
+dart_cost_y_24_44_1 + dadc_cost_24_44_1 + dcd4_cost_24_44_1 + dvl_cost_24_44_1 + dvis_cost_24_44_1 + dres_cost_24_44_1 + d_t_adh_int_cost_24_44_1 +
+dswitchline_cost_24_44_1; 
+
+dart_prep_24_49_1 = dcost_prep_oral_24_49_1 + dcost_prep_inj_24_49_1 + dcost_prep_visit_oral_24_49_1 + dcost_prep_visit_inj_24_49_1 +
+dart_cost_y_24_49_1 + dadc_cost_24_49_1 + dcd4_cost_24_49_1 + dvl_cost_24_49_1 + dvis_cost_24_49_1 + dres_cost_24_49_1 + d_t_adh_int_cost_24_49_1 +
+dswitchline_cost_24_49_1; 
+
+dart_prep_24_54_1 = dcost_prep_oral_24_54_1 + dcost_prep_inj_24_54_1 + dcost_prep_visit_oral_24_54_1 + dcost_prep_visit_inj_24_54_1 +
+dart_cost_y_24_54_1 + dadc_cost_24_54_1 + dcd4_cost_24_54_1 + dvl_cost_24_54_1 + dvis_cost_24_54_1 + dres_cost_24_54_1 + d_t_adh_int_cost_24_54_1 +
+dswitchline_cost_24_54_1; 
+
+dart_prep_24_59_1 = dcost_prep_oral_24_59_1 + dcost_prep_inj_24_59_1 + dcost_prep_visit_oral_24_59_1 + dcost_prep_visit_inj_24_59_1 +
+dart_cost_y_24_59_1 + dadc_cost_24_59_1 + dcd4_cost_24_59_1 + dvl_cost_24_59_1 + dvis_cost_24_59_1 + dres_cost_24_59_1 + d_t_adh_int_cost_24_59_1 +
+dswitchline_cost_24_59_1; 
+
+dart_prep_24_64_1 = dcost_prep_oral_24_64_1 + dcost_prep_inj_24_64_1 + dcost_prep_visit_oral_24_64_1 + dcost_prep_visit_inj_24_64_1 +
+dart_cost_y_24_64_1 + dadc_cost_24_64_1 + dcd4_cost_24_64_1 + dvl_cost_24_64_1 + dvis_cost_24_64_1 + dres_cost_24_64_1 + d_t_adh_int_cost_24_64_1 +
+dswitchline_cost_24_64_1; 
+
+
+*Treatment cost with discontinuation;
+dart_24_29_3 = 
+dart_cost_y_24_29_3 + dadc_cost_24_29_3 + dcd4_cost_24_29_3 + dvl_cost_24_29_3 + dvis_cost_24_29_3 + dres_cost_24_29_3 + d_t_adh_int_cost_24_29_3 +
+dswitchline_cost_24_29_3; 
+
+dart_24_34_3 = 
+dart_cost_y_24_34_3 + dadc_cost_24_34_3 + dcd4_cost_24_34_3 + dvl_cost_24_34_3 + dvis_cost_24_34_3 + dres_cost_24_34_3 + d_t_adh_int_cost_24_34_3 +
+dswitchline_cost_24_34_3; 
+
+dart_24_39_3 = 
+dart_cost_y_24_39_3 + dadc_cost_24_39_3 + dcd4_cost_24_39_3 + dvl_cost_24_39_3 + dvis_cost_24_39_3 + dres_cost_24_39_3 + d_t_adh_int_cost_24_39_3 +
+dswitchline_cost_24_39_3; 
+
+dart_24_44_3 = 
+dart_cost_y_24_44_3 + dadc_cost_24_44_3 + dcd4_cost_24_44_3 + dvl_cost_24_44_3 + dvis_cost_24_44_3 + dres_cost_24_44_3 + d_t_adh_int_cost_24_44_3 +
+dswitchline_cost_24_44_3; 
+
+dart_24_49_3 = 
+dart_cost_y_24_49_3 + dadc_cost_24_49_3 + dcd4_cost_24_49_3 + dvl_cost_24_49_3 + dvis_cost_24_49_3 + dres_cost_24_49_3 + d_t_adh_int_cost_24_49_3 +
+dswitchline_cost_24_49_3; 
+
+dart_24_54_3 = 
+dart_cost_y_24_54_3 + dadc_cost_24_54_3 + dcd4_cost_24_54_3 + dvl_cost_24_54_3 + dvis_cost_24_54_3 + dres_cost_24_54_3 + d_t_adh_int_cost_24_54_3 +
+dswitchline_cost_24_54_3; 
+
+dart_24_59_3 = 
+dart_cost_y_24_59_3 + dadc_cost_24_59_3 + dcd4_cost_24_59_3 + dvl_cost_24_59_3 + dvis_cost_24_59_3 + dres_cost_24_59_3 + d_t_adh_int_cost_24_59_3 +
+dswitchline_cost_24_59_3; 
+
+dart_24_64_3 = 
+dart_cost_y_24_64_3 + dadc_cost_24_64_3 + dcd4_cost_24_64_3 + dvl_cost_24_64_3 + dvis_cost_24_64_3 + dres_cost_24_64_3 + d_t_adh_int_cost_24_64_3 +
+dswitchline_cost_24_64_3; 
+
+
+proc means;var 		
+dart_prep_24_29_1  dart_prep_24_34_1  dart_prep_24_39_1  dart_prep_24_44_1  dart_prep_24_49_1  dart_prep_24_54_1
+dart_prep_24_59_1  dart_prep_24_64_1
+dart_24_29_3  dart_24_34_3  dart_24_39_3  dart_24_44_3  dart_24_49_3  dart_24_54_3
+dart_24_59_3  dart_24_64_3;run;
+
+
+
+
 ***Absolute costs and differences;
 proc means n mean lclm uclm;
 var dcost_24_74_1 dcost_24_74_2 diff_dcost
 	dart_cost_y_24_74_1 dart_cost_y_24_74_2  diff_artcost
 	dtest_cost_24_74_1 dtest_cost_24_74_2 diff_testcost 
-	dtest_cost_sw_24_74_1 dtest_cost_sw_24_74_2 diff_testcost_sw;
+	dtest_cost_sw_24_74_1 dtest_cost_sw_24_74_2 diff_testcost_sw
+	oth_prog_costs_1 oth_prog_costs_2 diff_oth_prog_costs
 ;run;
 
 ***DALYs;
@@ -266,88 +367,6 @@ diff_dcost20ySD diff_ddaly20ySD diff_dcost25ySD diff_ddaly25ySD diff_dcost30ySD 
 diff_dcost40ySD diff_ddaly40ySD diff_dcost45ySD diff_ddaly45ySD diff_dcost50ySD diff_ddaly50ySD;
 run;
 
-proc means n mean lclm uclm;var
-prop_sw_onprep_oral_24_74_1
-prop_sw_onprep_oral_24_74_2
-prop_sw_onprep_oral_24_74_3
-
-prop_sw_onprep_inj_24_74_1
-prop_sw_onprep_inj_24_74_2
-prop_sw_onprep_inj_24_74_3
-
-prop_onprep_oral_24_74_1
-prop_onprep_oral_24_74_2
-prop_onprep_oral_24_74_3
-
-prop_onprep_inj_24_74_1
-prop_onprep_inj_24_74_2
-prop_onprep_inj_24_74_3
-
-prop_onprep_oral_m_24_74_1
-prop_onprep_oral_m_24_74_2
-prop_onprep_oral_m_24_74_3
-
-prop_onprep_inj_m_24_74_1
-prop_onprep_inj_m_24_74_2
-prop_onprep_inj_m_24_74_3
-
-prop_onprep_oral_w_24_74_1
-prop_onprep_oral_w_24_74_2
-prop_onprep_oral_w_24_74_3
-
-prop_onprep_inj_w_24_74_1
-prop_onprep_inj_w_24_74_2
-prop_onprep_inj_w_24_74_3
-
-dcost_prep_visit_oral_24_74_1 
-dcost_prep_visit_oral_24_74_2 
-dcost_prep_visit_oral_24_74_3 
-
-dcost_prep_oral_24_74_1 
-dcost_prep_oral_24_74_2
-dcost_prep_oral_24_74_3 
-
-dcost_prep_visit_inj_24_74_1 
-dcost_prep_visit_inj_24_74_2 
-dcost_prep_visit_inj_24_74_3 
-
-dcost_prep_inj_24_74_1 
-dcost_prep_inj_24_74_2
-dcost_prep_inj_24_74_3 
-
-;run;
-
-
-
-proc means n mean lclm uclm;var
-prop_sw_onprep_oral_24_29_1
-prop_sw_onprep_oral_24_29_2
-prop_sw_onprep_oral_24_29_3
-
-prop_sw_onprep_inj_24_29_1
-prop_sw_onprep_inj_24_29_2
-prop_sw_onprep_inj_24_29_3
-
-
-dcost_prep_visit_oral_24_29_1 
-dcost_prep_visit_oral_24_29_2 
-dcost_prep_visit_oral_24_29_3 
-
-dcost_prep_oral_24_29_1 
-dcost_prep_oral_24_29_2
-dcost_prep_oral_24_29_3 
-
-dcost_prep_visit_inj_24_29_1 
-dcost_prep_visit_inj_24_29_2 
-dcost_prep_visit_inj_24_29_3 
-
-dcost_prep_inj_24_29_1 
-dcost_prep_inj_24_29_2
-dcost_prep_inj_24_29_3 
-
-;run;
-
-
 
 ***Breakdown of costs;
 proc means n mean lclm uclm;var
@@ -368,6 +387,7 @@ dcost_prep_oral_24_74_1
 dcost_prep_visit_inj_24_74_1
 dcost_prep_inj_24_74_1 	
 dcost_sisprog__24_74_1
+total_prep_1
 
 dcost_24_74_2
 dart_cost_y_24_74_2
@@ -386,6 +406,7 @@ dcost_prep_oral_24_74_2
 dcost_prep_visit_inj_24_74_2
 dcost_prep_inj_24_74_2 	
 dcost_amtprog__24_74_2
+total_prep_2
 
 dcost_24_74_3
 dart_cost_y_24_74_3
@@ -402,202 +423,18 @@ dcost_avail_self_test_24_74_3
 dcost_prep_visit_oral_24_74_3 
 dcost_prep_oral_24_74_3 
 dcost_prep_visit_inj_24_74_3
-dcost_prep_inj_24_74_3 	
+dcost_prep_inj_24_74_3 
+total_prep_3
 ;
 run;
 
 
-/*
-***Did not use;
-data maxcosts;
-set a;
 
-
-*500 CET, Sisters;
-netdalys500_sis=  ddaly_24_74_1 + (dcost_24_74_1)/0.0005;
-
-
-*500 CET, AMETHIST;
-netdalys500_amt10 =  ddaly_24_74_2 + (dcost_amt10__24_74_2)/0.0005;
-netdalys500_amt15 =  ddaly_24_74_2 + (dcost_amt15__24_74_2)/0.0005;
-netdalys500_amt20 =  ddaly_24_74_2 + (dcost_amt20__24_74_2)/0.0005;
-netdalys500_amt25 =  ddaly_24_74_2 + (dcost_amt25__24_74_2)/0.0005;
-netdalys500_amt30 =  ddaly_24_74_2 + (dcost_amt30__24_74_2)/0.0005;
-netdalys500_amt35 =  ddaly_24_74_2 + (dcost_amt35__24_74_2)/0.0005;
-netdalys500_amt40 =  ddaly_24_74_2 + (dcost_amt40__24_74_2)/0.0005;
-netdalys500_amt45 =  ddaly_24_74_2 + (dcost_amt45__24_74_2)/0.0005;
-netdalys500_amt50 =  ddaly_24_74_2 + (dcost_amt50__24_74_2)/0.0005;
-netdalys500_amt55 =  ddaly_24_74_2 + (dcost_amt55__24_74_2)/0.0005;
-netdalys500_amt60 =  ddaly_24_74_2 + (dcost_amt60__24_74_2)/0.0005;
-netdalys500_amt65 =  ddaly_24_74_2 + (dcost_amt65__24_74_2)/0.0005;
-netdalys500_amt70 =  ddaly_24_74_2 + (dcost_amt70__24_74_2)/0.0005;
-netdalys500_amt75 =  ddaly_24_74_2 + (dcost_amt75__24_74_2)/0.0005;
-netdalys500_amt80 =  ddaly_24_74_2 + (dcost_amt80__24_74_2)/0.0005;
-netdalys500_amt85 =  ddaly_24_74_2 + (dcost_amt85__24_74_2)/0.0005;
-netdalys500_amt90 =  ddaly_24_74_2 + (dcost_amt90__24_74_2)/0.0005;
-netdalys500_amt95 =  ddaly_24_74_2 + (dcost_amt95__24_74_2)/0.0005;
-netdalys500_amt100 =  ddaly_24_74_2 + (dcost_amt100__24_74_2)/0.0005;
-netdalys500_amt105 =  ddaly_24_74_2 + (dcost_amt105__24_74_2)/0.0005;
-netdalys500_amt110 =  ddaly_24_74_2 + (dcost_amt110__24_74_2)/0.0005;
-netdalys500_amt115 =  ddaly_24_74_2 + (dcost_amt115__24_74_2)/0.0005;
-netdalys500_amt120 =  ddaly_24_74_2 + (dcost_amt120__24_74_2)/0.0005;
-netdalys500_amt125 =  ddaly_24_74_2 + (dcost_amt125__24_74_2)/0.0005;
-netdalys500_amt130 =  ddaly_24_74_2 + (dcost_amt130__24_74_2)/0.0005;
-netdalys500_amt135 =  ddaly_24_74_2 + (dcost_amt135__24_74_2)/0.0005;
-netdalys500_amt140 =  ddaly_24_74_2 + (dcost_amt140__24_74_2)/0.0005;
-netdalys500_amt145 =  ddaly_24_74_2 + (dcost_amt145__24_74_2)/0.0005;
-netdalys500_amt150 =  ddaly_24_74_2 + (dcost_amt150__24_74_2)/0.0005;
-netdalys500_amt155 =  ddaly_24_74_2 + (dcost_amt155__24_74_2)/0.0005;
-netdalys500_amt160 =  ddaly_24_74_2 + (dcost_amt160__24_74_2)/0.0005;
-netdalys500_amt165 =  ddaly_24_74_2 + (dcost_amt165__24_74_2)/0.0005;
-netdalys500_amt170 =  ddaly_24_74_2 + (dcost_amt170__24_74_2)/0.0005;
-netdalys500_amt175 =  ddaly_24_74_2 + (dcost_amt175__24_74_2)/0.0005;
-netdalys500_amt180 =  ddaly_24_74_2 + (dcost_amt180__24_74_2)/0.0005;
-netdalys500_amt185 =  ddaly_24_74_2 + (dcost_amt185__24_74_2)/0.0005;
-netdalys500_amt190 =  ddaly_24_74_2 + (dcost_amt190__24_74_2)/0.0005;
-netdalys500_amt195 =  ddaly_24_74_2 + (dcost_amt195__24_74_2)/0.0005;
-netdalys500_amt200 =  ddaly_24_74_2 + (dcost_amt200__24_74_2)/0.0005;
-netdalys500_amt205 =  ddaly_24_74_2 + (dcost_amt205__24_74_2)/0.0005;
-netdalys500_amt210 =  ddaly_24_74_2 + (dcost_amt210__24_74_2)/0.0005;
-netdalys500_amt215 =  ddaly_24_74_2 + (dcost_amt215__24_74_2)/0.0005;
-netdalys500_amt220 =  ddaly_24_74_2 + (dcost_amt220__24_74_2)/0.0005;
-netdalys500_amt225 =  ddaly_24_74_2 + (dcost_amt225__24_74_2)/0.0005;
-netdalys500_amt230 =  ddaly_24_74_2 + (dcost_amt230__24_74_2)/0.0005;
-netdalys500_amt235 =  ddaly_24_74_2 + (dcost_amt235__24_74_2)/0.0005;
-netdalys500_amt240 =  ddaly_24_74_2 + (dcost_amt240__24_74_2)/0.0005;
-netdalys500_amt245 =  ddaly_24_74_2 + (dcost_amt245__24_74_2)/0.0005;
-netdalys500_amt250 =  ddaly_24_74_2 + (dcost_amt250__24_74_2)/0.0005;
-
-
-***Difference in netdalys;
-d_netdalys500_amt10 = netdalys500_amt10 - netdalys500_sis;
-d_netdalys500_amt15 = netdalys500_amt15 - netdalys500_sis;
-d_netdalys500_amt20 = netdalys500_amt20 - netdalys500_sis;
-d_netdalys500_amt25 = netdalys500_amt25 - netdalys500_sis;
-d_netdalys500_amt30 = netdalys500_amt30 - netdalys500_sis;
-d_netdalys500_amt35 = netdalys500_amt35 - netdalys500_sis;
-d_netdalys500_amt40 = netdalys500_amt40 - netdalys500_sis;
-d_netdalys500_amt45 = netdalys500_amt45 - netdalys500_sis;
-d_netdalys500_amt50 = netdalys500_amt50 - netdalys500_sis;
-d_netdalys500_amt55 = netdalys500_amt55 - netdalys500_sis;
-d_netdalys500_amt60 = netdalys500_amt60 - netdalys500_sis;
-d_netdalys500_amt65 = netdalys500_amt65 - netdalys500_sis;
-d_netdalys500_amt70 = netdalys500_amt70 - netdalys500_sis;
-d_netdalys500_amt75 = netdalys500_amt75 - netdalys500_sis;
-d_netdalys500_amt80 = netdalys500_amt80 - netdalys500_sis;
-d_netdalys500_amt85 = netdalys500_amt85 - netdalys500_sis;
-d_netdalys500_amt90 = netdalys500_amt90 - netdalys500_sis;
-d_netdalys500_amt95 = netdalys500_amt95 - netdalys500_sis;
-d_netdalys500_amt100 = netdalys500_amt100 - netdalys500_sis;
-d_netdalys500_amt105 = netdalys500_amt105 - netdalys500_sis;
-d_netdalys500_amt110 = netdalys500_amt110 - netdalys500_sis;
-d_netdalys500_amt115 = netdalys500_amt115 - netdalys500_sis;
-d_netdalys500_amt120 = netdalys500_amt120 - netdalys500_sis;
-d_netdalys500_amt125 = netdalys500_amt125 - netdalys500_sis;
-d_netdalys500_amt130 = netdalys500_amt130 - netdalys500_sis;
-d_netdalys500_amt135 = netdalys500_amt135 - netdalys500_sis;
-d_netdalys500_amt140 = netdalys500_amt140 - netdalys500_sis;
-d_netdalys500_amt145 = netdalys500_amt145 - netdalys500_sis;
-d_netdalys500_amt150 = netdalys500_amt150 - netdalys500_sis;
-d_netdalys500_amt155 = netdalys500_amt155 - netdalys500_sis;
-d_netdalys500_amt160 = netdalys500_amt160 - netdalys500_sis;
-d_netdalys500_amt165 = netdalys500_amt165 - netdalys500_sis;
-d_netdalys500_amt170 = netdalys500_amt170 - netdalys500_sis;
-d_netdalys500_amt175 = netdalys500_amt175 - netdalys500_sis;
-d_netdalys500_amt180 = netdalys500_amt180 - netdalys500_sis;
-d_netdalys500_amt185 = netdalys500_amt185 - netdalys500_sis;
-d_netdalys500_amt190 = netdalys500_amt190 - netdalys500_sis;
-d_netdalys500_amt195 = netdalys500_amt195 - netdalys500_sis;
-d_netdalys500_amt200 = netdalys500_amt200 - netdalys500_sis;
-d_netdalys500_amt205 = netdalys500_amt205 - netdalys500_sis;
-d_netdalys500_amt210 = netdalys500_amt210 - netdalys500_sis;
-d_netdalys500_amt215 = netdalys500_amt215 - netdalys500_sis;
-d_netdalys500_amt220 = netdalys500_amt220 - netdalys500_sis;
-d_netdalys500_amt225 = netdalys500_amt225 - netdalys500_sis;
-d_netdalys500_amt230 = netdalys500_amt230 - netdalys500_sis;
-d_netdalys500_amt235 = netdalys500_amt235 - netdalys500_sis;
-d_netdalys500_amt240 = netdalys500_amt240 - netdalys500_sis;
-d_netdalys500_amt245 = netdalys500_amt245 - netdalys500_sis;
-d_netdalys500_amt250 = netdalys500_amt250 - netdalys500_sis;
-
-if  d_netdalys500_amt10 > 0 then do;max_cost_amt_program = 0;  goto xx;end;
-if  d_netdalys500_amt15 > 0 then do;max_cost_amt_program = 10;  goto xx;end; 
-if  d_netdalys500_amt20 > 0 then do;max_cost_amt_program = 15;  goto xx;end; 
-if  d_netdalys500_amt25 > 0 then do;max_cost_amt_program = 20;  goto xx;end; 
-if  d_netdalys500_amt30 > 0 then do;max_cost_amt_program = 25;  goto xx;end; 
-if  d_netdalys500_amt35 > 0 then do;max_cost_amt_program = 30;  goto xx;end; 
-if  d_netdalys500_amt40 > 0 then do;max_cost_amt_program = 35;  goto xx;end;
-if  d_netdalys500_amt45 > 0 then do;max_cost_amt_program = 40;  goto xx;end; 
-if  d_netdalys500_amt50 > 0 then do;max_cost_amt_program = 45;  goto xx;end; 
-if  d_netdalys500_amt55 > 0 then do;max_cost_amt_program = 50;  goto xx;end; 
-if  d_netdalys500_amt60 > 0 then do;max_cost_amt_program = 55;  goto xx;end; 
-if  d_netdalys500_amt65 > 0 then do;max_cost_amt_program = 60;  goto xx;end; 
-if  d_netdalys500_amt70 > 0 then do;max_cost_amt_program = 65;  goto xx;end;
-if  d_netdalys500_amt75 > 0 then do;max_cost_amt_program = 70;  goto xx;end; 
-if  d_netdalys500_amt80 > 0 then do;max_cost_amt_program = 75;  goto xx;end; 
-if  d_netdalys500_amt85 > 0 then do;max_cost_amt_program = 80;  goto xx;end;
-if  d_netdalys500_amt90 > 0 then do;max_cost_amt_program = 85;  goto xx;end; 
-if  d_netdalys500_amt95 > 0 then do;max_cost_amt_program = 90;  goto xx;end; 
-if  d_netdalys500_amt100 > 0 then do;max_cost_amt_program = 95;  goto xx;end; 
-if  d_netdalys500_amt105 > 0 then do;max_cost_amt_program = 100;  goto xx;end; 
-if  d_netdalys500_amt110 > 0 then do;max_cost_amt_program = 105;  goto xx;end; 
-if  d_netdalys500_amt115 > 0 then do;max_cost_amt_program = 110;  goto xx;end;
-if  d_netdalys500_amt120 > 0 then do;max_cost_amt_program = 115;  goto xx;end; 
-if  d_netdalys500_amt125 > 0 then do;max_cost_amt_program = 120;  goto xx;end; 
-if  d_netdalys500_amt130 > 0 then do;max_cost_amt_program = 125;  goto xx;end; 
-if  d_netdalys500_amt135 > 0 then do;max_cost_amt_program = 130;  goto xx;end; 
-if  d_netdalys500_amt140 > 0 then do;max_cost_amt_program = 135;  goto xx;end; 
-if  d_netdalys500_amt145 > 0 then do;max_cost_amt_program = 140;  goto xx;end;
-if  d_netdalys500_amt150 > 0 then do;max_cost_amt_program = 145;  goto xx;end; 
-if  d_netdalys500_amt155 > 0 then do;max_cost_amt_program = 150;  goto xx;end; 
-if  d_netdalys500_amt160 > 0 then do;max_cost_amt_program = 155;  goto xx;end;
-if  d_netdalys500_amt165 > 0 then do;max_cost_amt_program = 160;  goto xx;end; 
-if  d_netdalys500_amt170 > 0 then do;max_cost_amt_program = 165;  goto xx;end; 
-if  d_netdalys500_amt175 > 0 then do;max_cost_amt_program = 170;  goto xx;end; 
-if  d_netdalys500_amt180 > 0 then do;max_cost_amt_program = 175;  goto xx;end; 
-if  d_netdalys500_amt185 > 0 then do;max_cost_amt_program = 180;  goto xx;end; 
-if  d_netdalys500_amt190 > 0 then do;max_cost_amt_program = 185;  goto xx;end;
-if  d_netdalys500_amt195 > 0 then do;max_cost_amt_program = 190;  goto xx;end; 
-if  d_netdalys500_amt200 > 0 then do;max_cost_amt_program = 195;  goto xx;end; 
-if  d_netdalys500_amt205 > 0 then do;max_cost_amt_program = 200;  goto xx;end; 
-if  d_netdalys500_amt210 > 0 then do;max_cost_amt_program = 205;  goto xx;end; 
-if  d_netdalys500_amt215 > 0 then do;max_cost_amt_program = 210;  goto xx;end;
-if  d_netdalys500_amt220 > 0 then do;max_cost_amt_program = 215;  goto xx;end; 
-if  d_netdalys500_amt225 > 0 then do;max_cost_amt_program = 220;  goto xx;end; 
-if  d_netdalys500_amt230 > 0 then do;max_cost_amt_program = 225;  goto xx;end; 
-if  d_netdalys500_amt235 > 0 then do;max_cost_amt_program = 230;  goto xx;end; 
-if  d_netdalys500_amt240 > 0 then do;max_cost_amt_program = 235;  goto xx;end; 
-if  d_netdalys500_amt245 > 0 then do;max_cost_amt_program = 240;  goto xx;end;
-if  d_netdalys500_amt250 > 0 then do;max_cost_amt_program = 245;  goto xx;end; 
-xx:
-
-if max_cost_amt_program=. then max_cost_sw_program=350;
-
-max_cost_amt_program_per_sw=max_cost_amt_program /n_sw_1549__23;
-
-***Figure 1;*max cost is when the diff in netdalys crosses 0;
-**For the graphs, multiply by -1 to get DALYs averted rather than difference;
-
-proc means n mean p5 p95;var
-d_netdalys500_amt10  d_netdalys500_amt15  d_netdalys500_amt20  d_netdalys500_amt25  d_netdalys500_amt30  d_netdalys500_amt35
-d_netdalys500_amt40  d_netdalys500_amt45  d_netdalys500_amt50  d_netdalys500_amt55  d_netdalys500_amt60  d_netdalys500_amt65 
-d_netdalys500_amt70	 d_netdalys500_amt75  d_netdalys500_amt80  d_netdalys500_amt85	d_netdalys500_amt90  d_netdalys500_amt95
-d_netdalys500_amt100  d_netdalys500_amt105  d_netdalys500_amt110  d_netdalys500_amt115  d_netdalys500_amt120  d_netdalys500_amt125
-d_netdalys500_amt130  d_netdalys500_amt135  d_netdalys500_amt140  d_netdalys500_amt145  d_netdalys500_amt150  d_netdalys500_amt155
-d_netdalys500_amt160  d_netdalys500_amt165  d_netdalys500_amt170  d_netdalys500_amt175  d_netdalys500_amt180  d_netdalys500_amt185
-d_netdalys500_amt190  d_netdalys500_amt195  d_netdalys500_amt200  d_netdalys500_amt205  d_netdalys500_amt210  d_netdalys500_amt215
-d_netdalys500_amt225  d_netdalys500_amt230  d_netdalys500_amt235  d_netdalys500_amt240  d_netdalys500_amt245  d_netdalys500_amt250
-
-;
-run;
-proc means mean p5 p95 lclm uclm ;var max_cost_amt_program;run;
-*/
-
-
-***ANALYSING THE IMPACT OF FUNDING CUTS - OPTION 0;
+***ANALYSING THE IMPACT OF FUNDING CUTS - OPTION 3;
 
 data one;
 set a;
+
 ***table 3 - outputs in 2030 for Sisters and Sisters + Amethist;
 proc means n p50 mean p5 p95;var
 /*Current SW program*/
