@@ -2486,6 +2486,7 @@ if caldate_never_dot >= &year_interv then do;
 	if option = 10 then do;
 		prob_self_test_hard_reach=0;    	*Restore SQ;				* prob_self_test_hard_reach set to 0 at baseline - confirm this is intended;
 		eff_rate_self_test=rate_self_test;	*Restore SQ;				* made rate_self_test an eff variable;
+		* Note that we are not restoring 6-monthly testing among FSW in SW program;
 	end;
 
  	*Option 11: adherence support;																										  
