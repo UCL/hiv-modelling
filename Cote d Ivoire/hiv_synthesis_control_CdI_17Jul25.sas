@@ -200,30 +200,7 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-* condom_change_year_i;				condom_change_year_i = 0; 			* mar19; * initialising condom_change_year_i - this is set again in year_i variables section;
-* decr_hard_reach_year_i;			decr_hard_reach_year_i = 0;			
-* incr_adh_year_i;					incr_adh_year_i = 0;			
-* decr_prob_loss_at_diag_year_i;	decr_prob_loss_at_diag_year_i = 0; 
-* absence_cd4_year_i;				absence_cd4_year_i = 0; 		
-* absence_vl_year_i;				absence_vl_year_i = 0; 		
-* decr_rate_lost_year_i;			decr_rate_lost_year_i = 0;  	
-* decr_rate_lost_art_year_i;		decr_rate_lost_art_year_i = 0;   
-* incr_rate_return_year_i;			incr_rate_return_year_i = 0;     	
-* incr_rate_restart_year_i;			incr_rate_restart_year_i = 0;       
-* incr_rate_init_year_i;			incr_rate_init_year_i = 0;   
-* decr_rate_int_choice_year_i;		decr_rate_int_choice_year_i = 0; 
-* incr_prob_vl_meas_done_year_i;	incr_prob_vl_meas_done_year_i = 0; 	
-* incr_pr_switch_line_year_i;		incr_pr_switch_line_year_i = 0;    	
-* poc_vl_monitoring_i;				poc_vl_monitoring_i = 0; 	
-* circ_inc_rate_year_i;				circ_inc_rate_year_i = 0; 		 
-* incr_test_targeting_year_i;		incr_test_targeting_year_i = 0;   	
-* reg_option_switch_year_i;			reg_option_switch_year_i = 0; 		
-* art_mon_drug_levels_year_i;		art_mon_drug_levels_year_i = 0;   
-* ten_is_taf_year_i;				ten_is_taf_year_i = 0;  	
-* pop_wide_tld_year_i;				pop_wide_tld_year_i = 0;  		
-* single_vl_switch_efa_year_i;		single_vl_switch_efa_year_i = 0;	
-* e_decr_hard_reach_year_i;			e_decr_hard_reach_year_i = 0;  
-*
+* condom_change_year_i;		condom_change_year_i = 0; 			* mar19; * initialising condom_change_year_i - this is set again in year_i variables section;
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.80;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
@@ -743,9 +720,8 @@ end;
 * OTHER PROGRAMS;	
 
 * CONDOMS;					*Adapted from CMMC code from MIHPSA Zim - represents both condom provision and promotion interventions. JAS Jul2025; 
-							*Impact on newp: proportion of population receive condoms via intervention - 20% no impact, remaining values based on suggested impact from CMMC MIHPSA Zimbabwe;
-* prop_use_condom_int_newp;	%sample(prop_use_condom_int_newp, 0 0.03 0.115 0.2, 0.2 0.2 0.4 0.2);		
-* prop_redattr_ep_condoms;	%sample(prop_redattr_ep_condoms, 0 0.05 0.17 0.30, 0.2 0.2 0.4 0.2);
+* prop_redattr_newp_condoms;	%sample(prop_redattr_newp_condoms, 0 0.03 0.115 0.2, 0.2 0.2 0.4 0.2);		* 20% no impact, remaining values based on suggested impact 12thNov2024;
+* prop_redattr_ep_condoms;		%sample(prop_redattr_ep_condoms, 0 0.05 0.17 0.30, 0.2 0.2 0.4 0.2);
 
 
 * CIRCUMCISION;
@@ -1049,9 +1025,9 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-  %include "/home/rmjlaph/malawi_parameters.sas";
-* %include "/home/rmjlja9/Zim_parameters.sas";
-* %include "/home/rmjllob/CdI_parameters.sas";
+*  %include "/home/rmjlaph/malawi_parameters.sas";
+* %include "/home/rmjlja9/Zimbabwe_parameters.sas";
+ %include "/home/rmjllob/CdI_parameters10.sas";
 
 call symput('caldate1',caldate1);
 
@@ -2346,17 +2322,14 @@ if caldate_never_dot >= &year_interv then do;
 		*Prevention;
 		*Condom provision and promotion: keep at SQ level;
 		*Not explicitly modelled before year_interv, but the implicit switch off impacts newp and ep;
-		condom_change_year_i=1;    			*Switches off condom provision and promotion (0 restores SQ);
-		if caldate_never_dot = &year_interv then do; 
-			use_condom_intervention_newp = 0;
-			if rand('uniform')<prop_use_condom_int_newp then use_condom_intervention_newp = 1;		*Proportion of individuals use condoms provided by funded intervention;
-		end;
+		condom_change_year_i=2;    			*Switches off condom provision and promotion (0 restores SQ);
 
 		*VMMC;
 		circ_inc_rate_year_i = 2;		*No VMMC;
 
 		*PrEP;
 		*Turn off all PrEP;
+		
 		prep_any_strategy=0;
 		date_prep_oral_intro=2100;
 		date_prep_inj_intro=2100;
@@ -2886,14 +2859,13 @@ if reg_option = 130 then flr=3;
  	if flr=3 len + cab        
 ;
 
-
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
 
 if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0.85; end; 
 if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121 125 130) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
-if set_in_options ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
+if p_vl_meas_done_set_in_opts ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
@@ -2943,7 +2915,8 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	end;
 end;	
 
-if country="Cote d Ivoire" then gender=1 then date_start_testing=2006.5;
+
+if gender=1 then date_start_testing=2006.5;
 
 tested_anc=.;
 
@@ -2961,6 +2934,8 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 		end;
 
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
+		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
+
 end;
 
 
@@ -3347,7 +3322,7 @@ From MIHPSA Zimbabwe:
 CMMC (condom mass media campaign) in Zimbabwe was introduced at least since 2004
 CMMC assumed to be switched ON from 2011 until year_interv
 Condom_change_year_i = 0 refers to CMMC being switched on (SQ and all runs up to year_interv)
-Condom_change_year_i = 1 refers to CMMC being switched off
+Condom_change_year_i = 2 refers to CMMC being switched off
 
 In 2011 rred_rc depending on the sampling varies from	0.031 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
 														0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
@@ -3360,11 +3335,12 @@ In 2021											from 	0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.97
 *We have not modelled condoms retrospectively and so we have not included their cost;
 rred_rc_base = rred_rc;					* use this to determine FSW rates;
 
-if caldate{t} >= &year_interv and condom_change_year_i = 1 then do;
-	*Impact on ep (impact on newp is below);
+if caldate{t} >= &year_interv and condom_change_year_i = 2 then do;
+	*newp;
+	rred_rc = (rred_rc - prop_redattr_newp_condoms*rred_rc2011_) / (1 - prop_redattr_newp_condoms);
+	*ep;
 	ch_risk_beh_ep = ch_risk_beh_ep / (1 - prop_redattr_ep_condoms);
 end;
-
 
 
 
@@ -4170,9 +4146,12 @@ if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
 end;
 
 
-* Condom intervention - removing the effect of condom provision and promotion for HIV Control baseline;
-*Impact on newp (impact on ep is above);
-if caldate{t} >= &year_interv and condom_change_year_i = 1 and use_condom_intervention_newp=1 and newp_ever>0 then newp = newp + 1;
+
+* Reducing newp by 50% if condom incr =1;
+if caldate{t} = &year_interv and condom_change_year_i = 1 then do;
+	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
+end;
+
 
 
 
@@ -8678,10 +8657,8 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 	e_rate_return = eff_rate_return; 
 	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = e_rate_return / 1.5;
 
-
 * for malawi mihpsa nov 2024 and hiv control - for minimal scenario we need to be able to switch off the implicit effect of ongoing interventions to bring people back to care;
 	if return_interventions_off = 1 then e_rate_return = e_rate_return / effect_return_interv;
-
 
 * new for pop_wide_tld;
 	if pop_wide_tld      = 1 then e_rate_return = e_rate_return * rr_return_pop_wide_tld;
@@ -20702,13 +20679,17 @@ discount
 
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
-condom_change_year_i			decr_hard_reach_year_i			incr_adh_year_i			decr_prob_loss_at_diag_year_i 
-absence_cd4_year_i  			absence_vl_year_i 				decr_rate_lost_year_i  	decr_rate_lost_art_year_i   
-incr_rate_return_year_i     	incr_rate_restart_year_i        incr_rate_init_year_i   decr_rate_int_choice_year_i 
-incr_prob_vl_meas_done_year_i 	incr_pr_switch_line_year_i    	poc_vl_monitoring_i 	circ_inc_rate_year_i 		 
-incr_test_targeting_year_i   	reg_option_switch_year_i 		art_mon_drug_levels_year_i   ten_is_taf_year_i  	
-pop_wide_tld_year_i  			single_vl_switch_efa_year_i		e_decr_hard_reach_year_i  
-initial_pr_switch_line      	initial_prob_vl_meas_done  
+condom_change_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
+decr_prob_loss_at_diag_year_i 	 absence_cd4_year_i  absence_vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
+incr_pr_switch_line_year_i    	 incr_adh_prep_oral_yr_i  poc_vl_monitoring_i 
+inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
+inc_p_prep_any_restart_choi_yr_i        
+ circ_inc_rate_year_i 		     incr_test_targeting_year_i   
+initial_pr_switch_line       initial_prob_vl_meas_done  reg_option_switch_year_i 
+art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i  single_vl_switch_efa_year_i
+
+e_decr_hard_reach_year_i  
 
 vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
@@ -21924,6 +21905,8 @@ Inputs are:
 *   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
+
+
 *    Save dataset at this point;
 data a ;  set r1 ;
 
@@ -22777,13 +22760,17 @@ prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd
 discount
 
 /*year_i interventions*/
-condom_change_year_i			decr_hard_reach_year_i			incr_adh_year_i			decr_prob_loss_at_diag_year_i 
-absence_cd4_year_i  			absence_vl_year_i 				decr_rate_lost_year_i  	decr_rate_lost_art_year_i   
-incr_rate_return_year_i     	incr_rate_restart_year_i        incr_rate_init_year_i   decr_rate_int_choice_year_i 
-incr_prob_vl_meas_done_year_i 	incr_pr_switch_line_year_i    	poc_vl_monitoring_i 	circ_inc_rate_year_i 		 
-incr_test_targeting_year_i   	reg_option_switch_year_i 		art_mon_drug_levels_year_i   ten_is_taf_year_i  	
-pop_wide_tld_year_i  			single_vl_switch_efa_year_i		e_decr_hard_reach_year_i  
-initial_pr_switch_line      	initial_prob_vl_meas_done  
+condom_change_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
+decr_prob_loss_at_diag_year_i 	   absence_cd4_year_i  absence_vl_year_i	 decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
+incr_pr_switch_line_year_i    	 incr_adh_prep_oral_yr_i poc_vl_monitoring_i 
+inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
+inc_p_prep_any_restart_choi_yr_i 
+	  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
+initial_pr_switch_line       initial_prob_vl_meas_done  reg_option_switch_year_i 
+art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i single_vl_switch_efa_year_i
+
+e_decr_hard_reach_year_i 
 
 vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid

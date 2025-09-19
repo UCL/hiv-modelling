@@ -1,3 +1,24 @@
+* 15/07/25 updates
+
+- added condition newp_ever>0 to condom intervention
+- changed condom_change_year_i to 0/1 rather than 0/2
+- deleted additional references to condom_change_year_i from prior code
+
+* 02/07/25 updates
+
+- add CMMC code from MIHPSA Zimbabwe program - renamed to refer to condom provision and promotion
+- remove references to SBCC
+
+* 17/6/25 updates
+
+- changed year_interv from 2026 to 2024
+- added implicit effect_return_interv code
+- removed msm=1 from hard to reach section
+- copied options section from malawi e
+- added set_in_opts line for eff_prob_vl_meas_done=initial_prob_vl_meas_done
+- seeded more infection in MSM
+
+;
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
@@ -200,30 +221,7 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-* condom_change_year_i;				condom_change_year_i = 0; 			* mar19; * initialising condom_change_year_i - this is set again in year_i variables section;
-* decr_hard_reach_year_i;			decr_hard_reach_year_i = 0;			
-* incr_adh_year_i;					incr_adh_year_i = 0;			
-* decr_prob_loss_at_diag_year_i;	decr_prob_loss_at_diag_year_i = 0; 
-* absence_cd4_year_i;				absence_cd4_year_i = 0; 		
-* absence_vl_year_i;				absence_vl_year_i = 0; 		
-* decr_rate_lost_year_i;			decr_rate_lost_year_i = 0;  	
-* decr_rate_lost_art_year_i;		decr_rate_lost_art_year_i = 0;   
-* incr_rate_return_year_i;			incr_rate_return_year_i = 0;     	
-* incr_rate_restart_year_i;			incr_rate_restart_year_i = 0;       
-* incr_rate_init_year_i;			incr_rate_init_year_i = 0;   
-* decr_rate_int_choice_year_i;		decr_rate_int_choice_year_i = 0; 
-* incr_prob_vl_meas_done_year_i;	incr_prob_vl_meas_done_year_i = 0; 	
-* incr_pr_switch_line_year_i;		incr_pr_switch_line_year_i = 0;    	
-* poc_vl_monitoring_i;				poc_vl_monitoring_i = 0; 	
-* circ_inc_rate_year_i;				circ_inc_rate_year_i = 0; 		 
-* incr_test_targeting_year_i;		incr_test_targeting_year_i = 0;   	
-* reg_option_switch_year_i;			reg_option_switch_year_i = 0; 		
-* art_mon_drug_levels_year_i;		art_mon_drug_levels_year_i = 0;   
-* ten_is_taf_year_i;				ten_is_taf_year_i = 0;  	
-* pop_wide_tld_year_i;				pop_wide_tld_year_i = 0;  		
-* single_vl_switch_efa_year_i;		single_vl_switch_efa_year_i = 0;	
-* e_decr_hard_reach_year_i;			e_decr_hard_reach_year_i = 0;  
-*
+* condom_change_year_i;		condom_change_year_i = 0; 			* mar19; * initialising condom_change_year_i - this is set again in year_i variables section;
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.80;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
@@ -1049,9 +1047,10 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-  %include "/home/rmjlaph/malawi_parameters.sas";
-* %include "/home/rmjlja9/Zim_parameters.sas";
+* %include "/home/rmjlaph/malawi_parameters.sas";
+  %include "/home/rmjlja9/Zim_parameters.sas";
 * %include "/home/rmjllob/CdI_parameters.sas";
+/*%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";*/
 
 call symput('caldate1',caldate1);
 
@@ -2379,6 +2378,7 @@ if caldate_never_dot >= &year_interv then do;
 																														  
 	if option = 1 then do;
 		*Specify option 1;
+		condom_change_year_i=0;    			*Restores SQ;
 												 
 	end;
  
@@ -2943,7 +2943,7 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	end;
 end;	
 
-if country="Cote d Ivoire" then gender=1 then date_start_testing=2006.5;
+
 
 tested_anc=.;
 
@@ -19431,6 +19431,19 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 /*
 
+proc print; var cald country gender age hiv 
+	rred_rc2011_
+	prop_redattr_newp_condoms rred_rc_base rred_rc 
+	newp_tm2 newp_tm1 newp
+;
+where serial_no < 50;
+run;
+
+*/
+
+
+/*
+
 proc freq; tables cald hiv ; where death=.; run;
 
 
@@ -21921,18 +21934,22 @@ Inputs are:
 
 *** RUN PROGRAM; 
 
-*   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
-
-*    Save dataset at this point;
+											  
 data a ;  set r1 ;
 
 data r1 ; set a ;
-*    Option 0 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,0);
+
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,1);
+
 
 
 /*
+
+*   Run from caldate1 to intervention year;
+%run_update_r1(&caldate1,&year_interv-0.25,0);
 
 *    Save dataset at this point;
 data a ;  set r1 ;
