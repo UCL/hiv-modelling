@@ -431,7 +431,6 @@ if cald=. then delete; run;
 
 proc contents data = a.long_mlw_control; run;
 
-/*proc freq data=a.long_mlw_all; table option;run;*/
 /*proc freq data=a.long_mlw_control; table option;run;*/
 
 
@@ -448,7 +447,7 @@ proc contents data = a.long_mlw_control; run;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 ** Set option number for var_stock and var_flow macros here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-%let op_num=0;
+%let op_num=2;
 
 /*
 0 = baseline (minimal)
@@ -471,7 +470,7 @@ proc contents data = a.long_mlw_control; run;
 
 
 
-data y; set a.long_zim_control; 
+data y; set a.long_mlw_control; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
@@ -1175,18 +1174,6 @@ VLS_MSM
 set wide_outputs_stocks;
 run;
 
-proc transpose data=stocks out=data_stock ; run;
-
-/*
-data a_stock; set data_stock; run;
-* drop _name_;
-
-ods html;
-proc print noobs data=a_stock; run; 
-*/
-
-
-
 
 
 
@@ -1442,19 +1429,6 @@ set wide_outputs_flows;
 run;
 
 
-proc transpose data=flows out=data_flow ; run;
-
-
-/*
-data a_flow; set data_flow; run;
-* drop _name_;
-
-ods html;
-proc print noobs data=a_flow; run; 
-ods html close;
-*/
-
-
 * Save output file;
 data a.outputs_&op_num; merge stocks flows;
 	by year;
@@ -1462,13 +1436,8 @@ run;
 
 proc transpose data=a.outputs_&op_num out=a.outputs_&op_num; run;
 
-
-/*ods html;*/
-/*proc print noobs data=a.outputs_&op_num; run; */
-/*ods html close;*/
-
 proc export data=a.outputs_&op_num
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\outputs_&op_num..csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_sep25_out_jenny_tmp\outputs_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;

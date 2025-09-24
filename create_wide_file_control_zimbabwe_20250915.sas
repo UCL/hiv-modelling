@@ -1184,18 +1184,6 @@ VLS_MSM
 set wide_outputs_stocks;
 run;
 
-proc transpose data=stocks out=data_stock ; run;
-
-/*
-data a_stock; set data_stock; run;
-* drop _name_;
-
-ods html;
-proc print noobs data=a_stock; run; 
-*/
-
-
-
 
 
 
@@ -1451,30 +1439,12 @@ set wide_outputs_flows;
 run;
 
 
-proc transpose data=flows out=data_flow ; run;
-
-
-/*
-data a_flow; set data_flow; run;
-* drop _name_;
-
-ods html;
-proc print noobs data=a_flow; run; 
-ods html close;
-*/
-
-
 * Save output file;
 data a.outputs_&op_num; merge stocks flows;
 	by year;
 run;
 
 proc transpose data=a.outputs_&op_num out=a.outputs_&op_num; run;
-
-
-/*ods html;*/
-/*proc print noobs data=a.outputs_&op_num; run; */
-/*ods html close;*/
 
 proc export data=a.outputs_&op_num
 	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\outputs_&op_num..csv" 
