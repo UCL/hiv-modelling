@@ -2838,7 +2838,23 @@ if option=500 then do; ***funding crisis, 30% cuts;
 	eff_prob_vl_meas_done=prob_vl_meas_done;
 	prob_vl_meas_done=0.4;
 
-	if option=66 then do;
+	***ART;
+	eff_prob_loss_at_diag = prob_loss_at_diag;
+	eff_rate_lost = rate_lost;
+	eff_rate_return = rate_return;
+	eff_prob_lost_art = prob_lost_art; 
+	eff_rate_restart = rate_restart;
+	e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+
+	eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.1;
+	e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.1;
+	eff_rate_lost=eff_rate_lost*1.1;
+	eff_rate_return=eff_rate_return/1.1;
+	eff_prob_lost_art=eff_prob_lost_art*1.1;
+	eff_rate_restart=eff_rate_restart/1.1;
+
+	***PMTCT;
+	if pregnant=1 then do;
 		eff_prob_loss_at_diag = prob_loss_at_diag;
 		eff_rate_lost = rate_lost;
 		eff_rate_return = rate_return;
@@ -2846,16 +2862,14 @@ if option=500 then do; ***funding crisis, 30% cuts;
 		eff_rate_restart = rate_restart;
 		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
 
-
-		***START HERE;
-		eff_prob_loss_at_diag=eff_prob_loss_at_diag/2;
-		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/2;
-		eff_rate_lost=eff_rate_lost/2;
-		eff_rate_return=min(eff_rate_return*2, 1);
-		eff_prob_lost_art=eff_prob_lost_art/2;
-		eff_rate_restart=min(eff_rate_restart*2,1);
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.1;
+		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.1;
+		eff_rate_lost=eff_rate_lost*1.1;
+		eff_rate_return=eff_rate_return/1.1;
+		eff_prob_lost_art=eff_prob_lost_art*1.1;
+		eff_rate_restart=eff_rate_restart/1.1;
 	end;
-
+	
 end;
 
 
@@ -2968,6 +2982,42 @@ if option=516 then do;
 end;
 
 
+***ART;
+if option=517 then do;
+	eff_prob_loss_at_diag = prob_loss_at_diag;
+	eff_rate_lost = rate_lost;
+	eff_rate_return = rate_return;
+	eff_prob_lost_art = prob_lost_art; 
+	eff_rate_restart = rate_restart;
+	e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+
+	eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.1;
+	e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.1;
+	eff_rate_lost=eff_rate_lost*1.1;
+	eff_rate_return=eff_rate_return/1.1;
+	eff_prob_lost_art=eff_prob_lost_art*1.1;
+	eff_rate_restart=eff_rate_restart/1.1;
+end;
+
+***PMTCT;
+if option=518 then do;
+	if pregnant=1 then do;
+		eff_prob_loss_at_diag = prob_loss_at_diag;
+		eff_rate_lost = rate_lost;
+		eff_rate_return = rate_return;
+		eff_prob_lost_art = prob_lost_art; 
+		eff_rate_restart = rate_restart;
+		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.1;
+		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.1;
+		eff_rate_lost=eff_rate_lost*1.1;
+		eff_rate_return=eff_rate_return/1.1;
+		eff_prob_lost_art=eff_prob_lost_art*1.1;
+		eff_rate_restart=eff_rate_restart/1.1;
+	end;
+end;
+
 end;
 
 
@@ -3041,6 +3091,39 @@ if option=601 then do; ***funding crisis, 50% cuts;
 	***VL testing;
 	eff_prob_vl_meas_done=prob_vl_meas_done;
 	prob_vl_meas_done=0.2;
+
+	***ART;
+	eff_prob_loss_at_diag = prob_loss_at_diag;
+	eff_rate_lost = rate_lost;
+	eff_rate_return = rate_return;
+	eff_prob_lost_art = prob_lost_art; 
+	eff_rate_restart = rate_restart;
+	e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+
+	eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.25;
+	e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.25;
+	eff_rate_lost=eff_rate_lost*1.25;
+	eff_rate_return=eff_rate_return/1.25;
+	eff_prob_lost_art=eff_prob_lost_art*1.25;
+	eff_rate_restart=eff_rate_restart/1.25;
+
+	***PMTCT;
+	if pregnant=1 then do;
+		eff_prob_loss_at_diag = prob_loss_at_diag;
+		eff_rate_lost = rate_lost;
+		eff_rate_return = rate_return;
+		eff_prob_lost_art = prob_lost_art; 
+		eff_rate_restart = rate_restart;
+		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.25;
+		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.25;
+		eff_rate_lost=eff_rate_lost*1.25;
+		eff_rate_return=eff_rate_return/1.25;
+		eff_prob_lost_art=eff_prob_lost_art*1.25;
+		eff_rate_restart=eff_rate_restart/1.25;
+	end;
+
 end;
 
 
