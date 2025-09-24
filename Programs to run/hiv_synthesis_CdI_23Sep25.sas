@@ -2496,11 +2496,6 @@ if option=21 then do;
 end;
 
 
-if option=22 then do; ***funding cuts, full targets;
-
-
-
-
 ***halfway targets;
 
 	***FSW prevention: Increased engagement in SW program leading to less cls- take out prep and testing here and have as a separate options (7);
@@ -2768,6 +2763,295 @@ if option=71 then do;
 	inc_rate_anc_op=0.25;
 
 end;
+
+
+
+
+if option=500 then do; ***funding crisis, 30% cuts;
+
+	***Decrease in condom use;
+	set_in_options=1;
+	condom_incr_year_i = 4;
+
+	***FSW and AGYW prevention: Decreased engagement in SW program (coded together for both fsw and agyw);
+	rate_engage_sw_program=0.03;
+	effect_sw_prog_newp=0.10;
+
+	***MSM prev - risk of one or more cls partners in msm per period ;
+	msm_risk_cls=0.8; 
+
+	***PWID: Integrating harm reduction care package. Increase OST, needle exchange program;
+	fold_tr_pwid = 8;
+
+	***FSW PrEP: Modelled independently of the program using prep_any_strategy;
+	prob_prep_elig_sw = 0.05;
+	eff_prob_prep_oral_b = prob_prep_oral_b;
+	if sw=1 then eff_prob_prep_oral_b = 0.1;
+
+	***MSM PrEP;
+	prob_prep_elig_msm = 0.05;
+	eff_prob_prep_oral_b = prob_prep_oral_b;
+	if msm=1 then eff_prob_prep_oral_b = 0.1;
+
+	***AGYW PrEP;
+	if agyw=1 then do;
+		prep_any_elig = 0.05;
+		eff_prob_prep_oral_b = prob_prep_oral_b;
+		eff_prob_prep_oral_b = 0.1;
+	end;
+
+	***HIV Self testing;
+	rate_self_test = 0.001;
+
+	***FB testing;
+	high_test_set_in_options=1;
+	incr_test_year_i = 5;             
+
+	***AGYW testing;
+	if agyw=1 then do;
+		high_test_set_in_options=1;
+		incr_test_agywfsw_year_i=3;
+	end;
+	
+	***FSW testing;
+	if sw=1 then do;
+		rate_engage_sw_program=0.03;
+		effect_sw_prog_6mtest = 0.10;
+	end;
+
+	***MSM testing;
+	if msm=1 then do;
+		high_test_set_in_options=1;
+		incr_test_msm_year_i=3;
+	end;
+
+	***PWID testing;
+	if pwid=1 then do;
+		high_test_set_in_options=1;
+		incr_test_pwid_year_i=3;
+	end;
+	
+	***ANC testing;
+	inc_rate_anc_op=inc_rate_anc_op/1.25;
+
+	***VL testing;
+	eff_prob_vl_meas_done=prob_vl_meas_done;
+	prob_vl_meas_done=0.4;
+
+	if option=66 then do;
+		eff_prob_loss_at_diag = prob_loss_at_diag;
+		eff_rate_lost = rate_lost;
+		eff_rate_return = rate_return;
+		eff_prob_lost_art = prob_lost_art; 
+		eff_rate_restart = rate_restart;
+		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
+
+
+		***START HERE;
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag/2;
+		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/2;
+		eff_rate_lost=eff_rate_lost/2;
+		eff_rate_return=min(eff_rate_return*2, 1);
+		eff_prob_lost_art=eff_prob_lost_art/2;
+		eff_rate_restart=min(eff_rate_restart*2,1);
+	end;
+
+end;
+
+
+***Check individual options;
+
+***Decrease in condom use;
+if option=501 then do; 
+	set_in_options=1;
+	condom_incr_year_i = 4;
+end;
+
+***FSW prevention: Decreased engagement in SW program (coded together for both fsw and agyw);
+if option=502 then do; 
+	rate_engage_sw_program=0.03;
+	effect_sw_prog_newp=0.10;
+end;
+
+***AGYW prevention;
+if option=503 then do;
+	if agywfsw=1 then do;
+		rate_engage_sw_program=0.03;
+		effect_sw_prog_newp=0.10;
+	end;
+end;
+
+***MSM prevention;
+if option=504 then do;
+	msm_risk_cls=0.8; 
+end;
+
+***PWID prevention;
+if option=505 then do;
+	msm_risk_cls=8; 
+end;
+
+***FSW PrEP: Modelled independently of the program using prep_any_strategy;
+if option=506 then do;
+	prob_prep_elig_sw = 0.05;
+	eff_prob_prep_oral_b = prob_prep_oral_b;
+	if sw=1 then eff_prob_prep_oral_b = 0.1;
+end;
+
+***MSM PrEP;
+if option=507 then do;
+	prob_prep_elig_msm = 0.05;
+	eff_prob_prep_oral_b = prob_prep_oral_b;
+	if msm=1 then eff_prob_prep_oral_b = 0.1;
+end;
+
+***AGYW PrEP;
+if option=508 then do;
+	if agyw=1 then do;
+		prep_any_elig = 0.05;
+		eff_prob_prep_oral_b = prob_prep_oral_b;
+		eff_prob_prep_oral_b = 0.1;
+	end;
+end;
+
+***HIV Self testing;
+if option=509 then do;
+	rate_self_test = 0.001;
+end;
+
+***FB testing;
+if option=510 then do;
+	high_test_set_in_options=1;
+	incr_test_year_i = 5;   
+end;
+
+***AGYW testing;
+if option=511 then do;
+	if agyw=1 then do;
+		incr_test_agywfsw_year_i=3;
+	end;
+end;
+
+***FSW testing;
+if option=512 then do;
+	if sw=1 then do;
+		rate_engage_sw_program=0.03;
+		effect_sw_prog_6mtest = 0.10;
+	end;
+end;
+
+***MSM testing;
+if option=513 then do;
+	if msm=1 then do;
+		high_test_set_in_options=1;
+		incr_test_msm_year_i=4;
+	end;
+end;
+
+***PWID testing;
+if option=514 then do;
+	if pwid=1 then do;
+		high_test_set_in_options=1;
+		incr_test_pwid_year_i=3;
+	end;
+end;
+
+***ANC testing;
+if option=515 then do;
+	inc_rate_anc_op=inc_rate_anc_op/1.25;
+end;
+
+***VL testing;
+if option=516 then do;
+	eff_prob_vl_meas_done=prob_vl_meas_done;
+	prob_vl_meas_done=0.4;
+end;
+
+
+end;
+
+
+if option=601 then do; ***funding crisis, 50% cuts;
+
+	***Decrease in condom use;
+	set_in_options=1;
+	condom_incr_year_i = 5;
+
+	***FSW prevention: Decreased engagement in SW program;
+	rate_engage_sw_program=0.01;
+	effect_sw_prog_newp=0.05;
+
+	***Risk of one or more cls partners in msm per period ;
+	msm_risk_cls=0.9; 
+
+	***PWID: Integrating harm reduction care package. Increase OST, needle exchange program;
+	fold_tr_pwid = 10;
+
+	***FSW PrEP: Modelled independently of the program using prep_any_strategy;
+	prob_prep_elig_sw = 0;
+	eff_prob_prep_oral_b = prob_prep_oral_b;
+	if sw=1 then eff_prob_prep_oral_b = 0;
+
+	***MSM PrEP;
+	prob_prep_elig_msm = 0;
+	eff_prob_prep_oral_b = prob_prep_oral_b;
+	if msm=1 then eff_prob_prep_oral_b = 0;
+
+	***AGYW PrEP;
+	if agyw=1 then do;
+		prep_any_elig = 0;
+		eff_prob_prep_oral_b = prob_prep_oral_b;
+		eff_prob_prep_oral_b = 0;
+	end;
+
+	***HIV Self testing;
+	rate_self_test = 0.0001;
+
+	***FB testing;
+	high_test_set_in_options=1;
+	incr_test_year_i = 6;
+
+	***AGYW testing;
+	if agyw=1 then do;
+		high_test_set_in_options=1;
+		incr_test_agywfsw_year_i=4;
+	end;
+
+	***Increased testing in FSW;
+	if sw=1 then do;
+		rate_engage_sw_program=0.01;
+		effect_sw_prog_6mtest = 0.05;
+	end;
+
+	***MSM testing;
+	if msm=1 then do;
+		high_test_set_in_options=1;
+		incr_test_msm_year_i=4;
+	end;
+
+	***PWID testing;
+	if pwid=1 then do;
+		high_test_set_in_options=1;
+		incr_test_pwid_year_i=4;
+	end;
+
+	***ANC testing;
+	inc_rate_anc_op=inc_rate_anc_op/1.25; *this stays the same as the partial cut scenario;
+
+	***VL testing;
+	eff_prob_vl_meas_done=prob_vl_meas_done;
+	prob_vl_meas_done=0.2;
+end;
+
+
+
+
+
+if option=602 then do; ***just to see what this option alone does;
+	set_in_options=1;
+	condom_incr_year_i = 5;***decrease in condom use;
+end;
+
 
 
 end;
@@ -3481,19 +3765,30 @@ if caldate{t} >= &year_interv and high_test_set_in_options=1 then do;
 	end;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
 
+	if incr_test_year_i = 5              then do; rate_1sttest = rate_1sttest * 0.6; rate_reptest = rate_reptest * 0.6; end;
+	if incr_test_year_i = 6              then do; rate_1sttest = rate_1sttest * 0.3; rate_reptest = rate_reptest * 0.3; end;
+
+
 
 ***CdI options (1=max targets, 2=halfway);
 if incr_test_msm_year_i = 1 and msm=1 then do; rate_1sttest = rate_1sttest * 8.0; rate_reptest = rate_reptest * 8.0; end;
 if incr_test_msm_year_i = 2 and msm=1 then do; rate_1sttest = rate_1sttest * 4.0; rate_reptest = rate_reptest * 4.0; end;
+if incr_test_msm_year_i = 3 and msm=1 then do; rate_1sttest = rate_1sttest * 0.5; rate_reptest = rate_reptest * 0.5; end;
+if incr_test_msm_year_i = 4 and msm=1 then do; rate_1sttest = rate_1sttest * 0.2; rate_reptest = rate_reptest * 0.2; end;
 /*
 if incr_test_fsw_year_i = 1 and sw=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
 if incr_test_fsw_year_i = 2 and sw=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
 */
 if incr_test_pwid_year_i = 1 and pwid=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
 if incr_test_pwid_year_i = 2 and pwid=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
+if incr_test_pwid_year_i = 1 and pwid=1 then do; rate_1sttest = rate_1sttest * 0.5; rate_reptest = rate_reptest * 0.5; end;
+if incr_test_pwid_year_i = 2 and pwid=1 then do; rate_1sttest = rate_1sttest * 0.2; rate_reptest = rate_reptest * 0.2; end;
+
 
 if incr_test_agywfsw_year_i = 1 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 75.0; rate_reptest = rate_reptest * 75.0; end;
 if incr_test_agywfsw_year_i = 2 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
+if incr_test_agywfsw_year_i = 3 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 0.6; rate_reptest = rate_reptest * 0.6; end;
+if incr_test_agywfsw_year_i = 4 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 0.4; rate_reptest = rate_reptest * 0.4; end;
 
 if incr_test_fb25_year_i = 1 and age>25 then do; rate_1sttest = rate_1sttest * 3.0; rate_reptest = rate_reptest * 3.0; end;
 if incr_test_fb25_year_i = 2 and age>25 then do; rate_1sttest = rate_1sttest * 1.5; rate_reptest = rate_reptest * 1.5; end;
@@ -4708,6 +5003,15 @@ if caldate{t} >= &year_interv and condom_incr_year_i = 3 then do;
 	u=rand('uniform'); if u < 0.50 then do;newp=newp/4;newp=round(newp,1);end;
 end;
 
+*Increase newp by x2;
+if caldate{t} >= &year_interv and condom_incr_year_i = 4 then do;
+	u=rand('uniform'); if u < 0.50 then do;newp=newp*1.5;newp=round(newp,1);end;
+end;
+
+*Increase newp by x5;
+if caldate{t} >= &year_interv and condom_incr_year_i = 5 then do;
+	u=rand('uniform'); if u < 0.50 then do;newp=newp*1.5;newp=round(newp,1);end;
+end;
 
 
 
