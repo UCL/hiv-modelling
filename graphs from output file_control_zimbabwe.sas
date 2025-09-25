@@ -2049,6 +2049,7 @@ run;quit;
 
 * KP programs not currently working;
 
+* Incidence;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49, mean)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -2096,11 +2097,158 @@ series  x=cald y=mean_incidence1549__10/	lineattrs = (color=purple thickness = 2
 band    x=cald lower=p5_incidence1549__10 	upper=p95_incidence1549__10  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
 series  x=cald y=mean_incidence1549__11/	lineattrs = (color=lightpurple thickness = 2);
 band    x=cald lower=p5_incidence1549__11 	upper=p95_incidence1549__11  / transparency=0.9 fillattrs = (color=lightpurple) legendlabel= "Model 90% range";
-
+/* Data */
 scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
 scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
+
+
+* Prevalence;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Prevalence (age 15-49, mean)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.35 by 0.05) valueattrs=(size=10);
+label mean_prevalence1549__0 = "Baseline";
+label mean_prevalence1549__1 = "FSW - oral PrEP";
+label mean_prevalence1549__2 = "FSW - oral + len PrEP";
+label mean_prevalence1549__3 = "AGYW + pregnant women - oral PrEP";
+label mean_prevalence1549__4 = "AGYW + pregnant women - oral + len PrEP";
+label mean_prevalence1549__5 = "MSM - oral PrEP";
+label mean_prevalence1549__6 = "MSM - oral + len PrEP PrEP";
+label mean_prevalence1549__7 = "VMMC";
+label mean_prevalence1549__8 = "condoms";
+label mean_prevalence1549__9 = "KP programs";
+label mean_prevalence1549__10 = "testing";
+label mean_prevalence1549__11 = "adherence support";
+label o_prev1549_Z_ess = "CAL - ZIMPHIA or DHS";
+
+series  x=cald y=mean_prevalence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+/* PrEP */
+series  x=cald y=mean_prevalence1549__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=mean_prevalence1549__2/	lineattrs = (color=pink thickness = 2);
+band    x=cald lower=p5_prevalence1549__2 	upper=p95_prevalence1549__2  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";
+series  x=cald y=mean_prevalence1549__3/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_prevalence1549__3 	upper=p95_prevalence1549__3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=mean_prevalence1549__4/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_prevalence1549__4 	upper=p95_prevalence1549__4  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+series  x=cald y=mean_prevalence1549__5/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_prevalence1549__5 	upper=p95_prevalence1549__5  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=mean_prevalence1549__6/	lineattrs = (color=lightgreen thickness = 2);
+band    x=cald lower=p5_prevalence1549__6 	upper=p95_prevalence1549__6  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
+/* Prevention */
+series  x=cald y=mean_prevalence1549__7/	lineattrs = (color=darkorange thickness = 2);
+band    x=cald lower=p5_prevalence1549__7 	upper=p95_prevalence1549__7  / transparency=0.9 fillattrs = (color=darkorange) legendlabel= "Model 90% range";
+series  x=cald y=mean_prevalence1549__8/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prevalence1549__8 	upper=p95_prevalence1549__8  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+/* KP programs */
+/* this option not working */
+/*series  x=cald y=mean_prevalence1549__9/	lineattrs = (color=green thickness = 2);*/
+/*band    x=cald lower=p5_prevalence1549__9 	upper=p95_prevalence1549__9  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+/* Testing and treatment */
+series  x=cald y=mean_prevalence1549__10/	lineattrs = (color=purple thickness = 2);
+band    x=cald lower=p5_prevalence1549__10 	upper=p95_prevalence1549__10  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
+series  x=cald y=mean_prevalence1549__11/	lineattrs = (color=lightpurple thickness = 2);
+band    x=cald lower=p5_prevalence1549__11 	upper=p95_prevalence1549__11  / transparency=0.9 fillattrs = (color=lightpurple) legendlabel= "Model 90% range";
+/* Data */
+scatter x=cald y=o_prev1549_Z_ess  /  yerrorlower=o_prev1549_ll_Z_ess yerrorupper=o_prev1549_ul_Z_ess markerattrs = (color=black) errorbarattrs = (color = black) ;
+run;
+quit;
+
+proc print data=d; var 
+	mean_prevalence1549__0 
+	mean_prevalence1549__1 
+	mean_prevalence1549__2 
+	mean_prevalence1549__3 
+	mean_prevalence1549__4 
+	mean_prevalence1549__5 
+	mean_prevalence1549__6 
+	mean_prevalence1549__7 
+	mean_prevalence1549__8 
+/*	mean_prevalence1549__9 */
+	mean_prevalence1549__10 
+	mean_prevalence1549__11 
+	mean_prevalence1549__12 
+	mean_prevalence1549__13 
+	mean_prevalence1549__14 
+/*	mean_prevalence1549__30 */
+	;
+	where cald=2050;
+run;
+
+
+* Number of new infections;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of new HIV infections (age 15-49, mean)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000 by  10000) valueattrs=(size=10);*20000000 is stoping in 2023;
+label mean_n_new_inf1549__0 = "Baseline";
+label mean_n_new_inf1549__1 = "FSW - oral PrEP";
+label mean_n_new_inf1549__2 = "FSW - oral + len PrEP";
+label mean_n_new_inf1549__3 = "AGYW + pregnant women - oral PrEP";
+label mean_n_new_inf1549__4 = "AGYW + pregnant women - oral + len PrEP";
+label mean_n_new_inf1549__5 = "MSM - oral PrEP";
+label mean_n_new_inf1549__6 = "MSM - oral + len PrEP PrEP";
+label mean_n_new_inf1549__7 = "VMMC";
+label mean_n_new_inf1549__8 = "condoms";
+label mean_n_new_inf1549__9 = "KP programs";
+label mean_n_new_inf1549__10 = "testing";
+label mean_n_new_inf1549__11 = "adherence support";
+
+series  x=cald y=mean_n_new_inf1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__0 	upper=p95_n_new_inf1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+/* PrEP */
+series  x=cald y=mean_n_new_inf1549__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__1 	upper=p95_n_new_inf1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_new_inf1549__2/	lineattrs = (color=pink thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__2 	upper=p95_n_new_inf1549__2  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_new_inf1549__3/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__3 	upper=p95_n_new_inf1549__3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_new_inf1549__4/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__4 	upper=p95_n_new_inf1549__4  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_new_inf1549__5/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__5 	upper=p95_n_new_inf1549__5  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_new_inf1549__6/	lineattrs = (color=lightgreen thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__6 	upper=p95_n_new_inf1549__6  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
+/* Prevention */
+series  x=cald y=mean_n_new_inf1549__7/	lineattrs = (color=darkorange thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__7 	upper=p95_n_new_inf1549__7  / transparency=0.9 fillattrs = (color=darkorange) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_new_inf1549__8/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__8 	upper=p95_n_new_inf1549__8  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+/* KP programs */
+/* this option not working */
+/*series  x=cald y=mean_n_new_inf1549__9/	lineattrs = (color=green thickness = 2);*/
+/*band    x=cald lower=p5_n_new_inf1549__9 	upper=p95_n_new_inf1549__9  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+/* Testing and treatment */
+series  x=cald y=mean_n_new_inf1549__10/	lineattrs = (color=purple thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__10 	upper=p95_n_new_inf1549__10  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_new_inf1549__11/	lineattrs = (color=lightpurple thickness = 2);
+band    x=cald lower=p5_n_new_inf1549__11 	upper=p95_n_new_inf1549__11  / transparency=0.9 fillattrs = (color=lightpurple) legendlabel= "Model 90% range";
+run;
+quit;
+
+proc print data=d; var 
+	mean_n_new_inf1549__0 
+	mean_n_new_inf1549__1 
+	mean_n_new_inf1549__2 
+	mean_n_new_inf1549__3 
+	mean_n_new_inf1549__4 
+	mean_n_new_inf1549__5 
+	mean_n_new_inf1549__6 
+	mean_n_new_inf1549__7 
+	mean_n_new_inf1549__8 
+/*	mean_n_new_inf1549__9 */
+	mean_n_new_inf1549__10 
+	mean_n_new_inf1549__11 
+	mean_n_new_inf1549__12 
+	mean_n_new_inf1549__13 
+	mean_n_new_inf1549__14 
+/*	mean_n_new_inf1549__30 */
+	;
+	where cald=2050;
+run;
 
 
 
@@ -2244,34 +2392,38 @@ scatter  x=cald y=target_p_circ_1549m_NSP /	markerattrs = (color=pink);
 run;quit;
 
 
+
+* ---------------------- ;
+* --- 8. KP outreach --- ;
+* ---------------------- ;
+
+
+
+
+* Incidence in FSW;
+* Prevalence in FSW;
+
+* Incidence in MSM;
+* Prevalence in MSM;
+
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of people on PrEP, mean";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 350000   by 50000 ) valueattrs=(size=10);
-label mean_n_prep_0 = "Baseline";
-label mean_n_prep_1 = "FSW - oral PrEP";
-label mean_n_prep_2 = "FSW - oral + len PrEP";
-label mean_n_prep_3 = "AGYW + pregnant women - oral PrEP";
-label mean_n_prep_4 = "AGYW + pregnant women - oral + len PrEP";
-label mean_n_prep_5 = "MSM - oral PrEP";
-label mean_n_prep_6 = "MSM - oral + len PrEP PrEP";
-series  x=cald y=mean_n_prep_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_prep_0 	upper=p95_n_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=mean_n_prep_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_prep_1 	upper=p95_n_prep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=mean_n_prep_2/	lineattrs = (color=pink thickness = 2);
-band    x=cald lower=p5_n_prep_2 	upper=p95_n_prep_2  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";
-series  x=cald y=mean_n_prep_3/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_prep_3 	upper=p95_n_prep_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=mean_n_prep_4/	lineattrs = (color=lightblue thickness = 2);
-band    x=cald lower=p5_n_prep_4 	upper=p95_n_prep_4  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
-series  x=cald y=mean_n_prep_5/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_n_prep_5 	upper=p95_n_prep_5  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=mean_n_prep_6/	lineattrs = (color=lightgreen thickness = 2);
-band    x=cald lower=p5_n_prep_6 	upper=p95_n_prep_6  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
-run;quit;
-
-
+Title    height=1.5 justify=center "Incidence FSW";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 20 by 1) valueattrs=(size=10);
+label p50_incidence_sw_0 = "Status quo (median) ";
+/*label p50_incidence_sw_1 = "Minimal (median) ";*/
+/*label p50_incidence_sw_8 = "Option 8 (median) ";*/
+/*label p50_incidence_sw_33 = "Option 33 (median) ";*/
+series  x=cald y=p50_incidence_sw_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence_sw_0 	upper=p95_incidence_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+/*series  x=cald y=p50_incidence_sw_1/	lineattrs = (color=red thickness = 2);*/
+/*band    x=cald lower=p5_incidence_sw_1 	upper=p95_incidence_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+/*series  x=cald y=p50_incidence_sw_8/	lineattrs = (color=green thickness = 2);*/
+/*band    x=cald lower=p5_incidence_sw_8 	upper=p95_incidence_sw_8  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+/*series  x=cald y=p50_incidence_sw_33/	lineattrs = (color=purple thickness = 2);*/
+/*band    x=cald lower=p5_incidence_sw_33 	upper=p95_incidence_sw_33  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
+run;
+quit;
 
 
 

@@ -2091,7 +2091,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 
-** Set option number for macro here;
+** Set option number for var_stock and var_flow macros here;
 %let op_num=0;
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -2250,8 +2250,9 @@ cards;
 2073
 2074
 2075
-run;
 
+
+proc contents; run;
 
 
 data  wide_outputs_stocks ; merge 
