@@ -609,6 +609,8 @@ s_primary_w		s_primary_m			sf					n_onprep_m			n_onprep_w			n_onprep	n_onprep_ms
 an_lin_incr_test					yll_m 				yll_w 				yll
 ;
 
+proc print;var cald n_infected n_hiv;where cald in (2022, 2023, 2024, 2025, 2026, 2027, 2028);run;
+
 proc sort data=y;by run option;run;
 
 proc means mean;var n_alive;where cald=2015;run;
@@ -716,6 +718,8 @@ prevalence 			n_infected_m 		n_infected_w 		n_infected
 ;
 run;
 
+proc print;var cald option n_infected n_newinf1549_		n_newinf1549m		n_newinf1549w;where cald in (2022,2023,2024,2025,2026,2027);
+run;
 
 
 data z; 
@@ -838,30 +842,6 @@ data year;
 
 input year;
 cards;
-2000
-2001
-2002
-2003
-2004
-2005
-2006
-2007
-2008
-2009
-2010
-2011
-2012 
-2013
-2014
-2015
-2016
-2017
-2018
-2019
-2020
-2021
-2022
-2023
 2024
 2025
 2026
