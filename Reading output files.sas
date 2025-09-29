@@ -1,13 +1,13 @@
 
-libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI\cdi_01Dec24";
-libname b "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI\cdi_23Sep25";
+libname b "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
 
 data b;
 set a.out:;
 run;
 
 
-data b.cdi_01Dec24;
+data b.cdi_23sep25;
 set b;
 run;
 
