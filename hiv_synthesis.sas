@@ -180,6 +180,7 @@ newp_seed = 7;
 * p_hard_reach_htn_w;		p_hard_reach_htn_w = p_hard_reach_w - hard_reach_lower_htn;
 * p_hard_reach_htn_m;		p_hard_reach_htn_m = p_hard_reach_m - hard_reach_lower_htn;
 
+
 * PREGNANCY AND BREASTFEEDING;
 
 * can_be_pregnant;			can_be_pregnant=0.95;
@@ -1007,11 +1008,14 @@ prob_test_sbp_undiagnosed = 0.01 * rr_htn_diagnosis;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 10; 
 * RR of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
+
+
 prob_test_sbp_diagnosed = 0.05 * rr_htn_diagnosis; 
 * RR of getting bp tested in a person <40 years of age compared to baseline probability;
 rr_test_sbp_young = 0.5; 
 * relative risk of bp testing for current HIV visit;
 rr_test_sbp_hiv = 2;
+
 
 ** Community testing;
 first_comm_test = .;
@@ -1041,7 +1045,8 @@ comm_test_age = .;
 	* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
 	%sample_uniform(prob_intensify_1_2, 0.1 0.15 0.2); 
 	* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
-	%sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 										   
+	%sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 
+	
 
 * probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
 		%sample_uniform(htn_retention_patt, 1 2 3);
@@ -1073,7 +1078,6 @@ interval_visit_hypertension=0.25;
 * integration of hiv and hypertension visits;
 integration = 0;
 
-
 * probability of acute treatment for MI or CVA;
 %sample_uniform(rr_cvd_tx, 0.5 1 2);
 prob_ihd_tx = 0.4 * rr_cvd_tx;
@@ -1085,8 +1089,6 @@ prob_cva_tx_effective = 0.25 * rr_cvd_tx_effective;
 * effect of admission for MI or CVA treatment;
 rr_mort_ihd_tx = 0.8;
 rr_mort_cva_tx = 0.6;
-
-
 
 ** CVD events;
 	* Ischemic heart disease (IHD);
@@ -1129,7 +1131,6 @@ rr_mort_cva_tx = 0.6;
 	
 	* relative risk of CVD with HIV (base risk for CD4 >500 and VL <1000);
 	risk_cvd_hiv = 1.2;
-
 
 * NON-HIV TB ;  * update_24_4_21;
 non_hiv_tb_risk = 0.0005;  
@@ -1277,7 +1278,7 @@ cost_switch_line_a = 0.020 ;
 cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ; * note this is reduced by 75% in create wide file;
-sw_program_cost = 0.010 ; * placeholder;
+sw_program_cost = 0.010 ; * placeholder; *consider varying by intensity;
 
 * HYPERTENSION costs (in thousands);
 cost_htn_link_voucher = .;
@@ -1292,7 +1293,7 @@ cost_ihd_tx = 2.56;
 cost_cva_tx = 2.38;
 %sample_uniform(rr_cost_lowqual_cvdcare, 0.25 0.5 1.0);
 cost_ihd_tx_lowqual = cost_ihd_tx * rr_cost_lowqual_cvdcare;
-cost_cva_tx_lowqual = cost_cva_tx * rr_cost_lowqual_cvdcare;												
+cost_cva_tx_lowqual = cost_cva_tx * rr_cost_lowqual_cvdcare;
 
 
 * HYPERTENSION utilities; * GBD 2019 DISABILITY WEIGHTS;
@@ -1305,6 +1306,7 @@ util_ihda_sev = 0.821; * avg weight for angina/heart failure = 0.179;
 util_ihdc_mild = 0.963; * avg weight for angina/heart failure = 0.037;
 util_ihdc_mod = 0.924; * avg weight for angina/heart failure = 0.076;
 util_ihdc_sev = 0.827; * avg weight for angina/heart failure = 0.173;
+
 
 * based on salomom et al lancet 2012;
 util_hiv = 0.98;
@@ -2248,8 +2250,9 @@ end;
 
 
 p=rand('uniform'); q=rand('uniform');
-if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;  
+if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 if (gender=1 and p <= p_hard_reach_htn_m) or (gender=2 and q <= p_hard_reach_htn_w) then hard_reach_htn=1;
+
 
 
 if msm=1 or pwid=1 then hard_reach=1;
@@ -3399,16 +3402,6 @@ end;
 if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup_covid = 1 or art_low_adh_disrup_covid = 1) then reg_option = 125 ;
 
 
-if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121 125) then flr=2; 
-if reg_option in (107) then flr=1;
-if reg_option = 130 then flr=3;
-
-*
-    if flr=1 ten + 3tc + taz
-    if flr=2 ten + 3tc + dol                                                           
- 	if flr=3 len + cab        
-;
-
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
 
@@ -3712,9 +3705,7 @@ if t ge 2 and gender=2 then do;
 
 end;
 
-
 * SBP AND *HYPERTENSION* DIAGNOSIS AND TREATMENT  ;  * update_24_4_21 * again 04_11_21 to include intrinsic risk of increased HBP;
-
 
 * generates distribution of BP values around 115 at age 15 to fit left-skew beta distributionwith SD 12 (SD based on SEARCH data);
 if age = 15  then do; 
@@ -3723,6 +3714,7 @@ if age = 15  then do;
 	dx_htn = 0; on_tx_htn = 0; htn_visit_count = 0;
 	prior_cvd = 0; prior_cvd_modsev = 0; prior_cva = 0; prior_ihd = 0;
 end;
+																	  
 
 if age = 15 and gender = 2 then do;
 	sbp = sbp - 2;
@@ -3735,7 +3727,6 @@ end;
 * underlying increases in blood pressure in people not on anti-hypertensives; 
 a_sbp=rand('uniform');  tested_bp = 0; sbp_m=.; visit_hypertension=0; *reset vars this period;
 
-
 select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
 	when (40 <= age < 65) a_sbp = a_sbp / (sbp_rr * sbp_rr_age) ;  * 27APR24, change to age 40 to <65;
 	otherwise a_sbp = a_sbp / sbp_rr ;
@@ -3743,6 +3734,7 @@ end;
 
 if on_tx_htn >=1 then a_sbp = a_sbp / rr_sbp_inc_on_antihyp ; *probabilty of SBP increase is reduced if on antihypertensive;
 if caldate{t} > sbp_cal_yr then prob_sbp_increase = prob_sbp_increase + sbp_cal_eff ; * increase SBP rise in future years after designatd year (2015 based on last available GBD data);
+
 if  a_sbp < prob_sbp_increase then do;
 	sbp = sbp + 1 ; 
 	if on_tx_htn >=1 then sbp_last_start_anti_hyp = sbp_last_start_anti_hyp + 1 ;
@@ -3773,6 +3765,7 @@ if sbp_comm_m >=140 then do;
 end;
 
 * tested_bp = whether blood pressure measured in this period (1) or not (0) for people not currently under hypertension care;
+
 if on_tx_htn = 0 and visit_hypertension_tm1 = 0 then do; 
 	e=rand('uniform'); 
 	if symp_hypertension = 1 or prior_cvd_modsev =1 then e = e / 2;
@@ -3781,7 +3774,7 @@ if on_tx_htn = 0 and visit_hypertension_tm1 = 0 then do;
 	if visit = 1 then e = e / rr_test_sbp_hiv; * relative risk of BP measure at HIV visit;
 	if dx_htn = 0 and e < prob_test_sbp_undiagnosed and (hard_reach_htn ne 1 or symp_hypertension = 1) then tested_bp = 1; 
 	if dx_htn = 1 and e < prob_test_sbp_diagnosed and (hard_reach_htn ne 1 or symp_hypertension = 1) then tested_bp = 1; 
-		*in SEARCH: community dx still have higher rate of delayed linkage but this is ignored here;
+
 end;
 
 * clinic visit for hypertension;
@@ -3789,7 +3782,10 @@ visit_hypertension=0;
 e=rand('uniform');
 if on_tx_htn = 0 and htn_lifestyle_counsel_tm1 = 1 and 160 > sbp_m_tm1 >=140 then do; * prob of coming back after lifestyle recommendations for new stage 1 HTN dx;
 	 if e < prob_visit_htn_v1 then visit_hypertension = 1;
+
 end;
+
+													  
 if most_recent_sbp_m < 140 and on_tx_htn ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
 	e=rand('uniform'); 
 	if htn_visit_count  = 1 and e < prob_visit_htn_v1 then visit_hypertension = 1;
@@ -3807,12 +3803,14 @@ if (most_recent_sbp_m >= 140 and on_tx_htn ge 1) or deintensify_anti_hyp_tm1 = 1
 	if htn_visit_count >= 5 and e < prob_visit_htn_v5 then visit_hypertension = 1;
 end;
 
+
 * measurement of bp at clinic;
 if visit_hypertension=1 then tested_bp=1;
 if tested_bp = 1 then do;
 	sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
 	if sbp_m >= 140 then visit_hypertension = 1;
 	if sbp_m < 140 and on_tx_htn = 0 then last_bp_ge140 = 0;
+
 	if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
 end;
 
@@ -3857,6 +3855,7 @@ if visit_hypertension=1 and sbp_m >= 140 and 1 <= on_tx_htn <= 2 then do;
 	select; 
 		when (160 <= sbp_m < 180) e = e /1.5; 
 		when (180 <= sbp_m) e = e / 2; 
+
 		otherwise e = e;
 	end;
 	if on_tx_htn=2 and e < prob_intensify_2_3 then do; intensify_anti_hyp_this_per_2_3=1 ; on_tx_htn=3; end; 
@@ -3876,6 +3875,7 @@ if visit_hypertension = 1 and sbp_m < 90 and on_tx_htn >=1 then do;
 	if on_tx_htn =3 then sbp = sbp + effect_anti_hyp_3 ;
 	on_tx_htn = on_tx_htn - 1;
 end;
+
 
 * duration of treatment;
 if on_tx_htn ge 1 and visit_hypertension = 1 then do;
@@ -9503,11 +9503,11 @@ res_test=.;
 			if anc=1 and naive=1 and uu < prob_pmtct then do;
 				if time0=. then do;
 					if caldate{t} le 2010.5 then do;
-						on_sd_nvp=1; 
+						on_sd_nvp=1; ever_sd_nvp=1;
 						if u < prob_nnresmaj_sd_nvp then do; c_rt103m=1; nn_res_pmtct=1; e_rt103m=1; end;
 					end;
 					else if 2010.5 <= caldate{t} < 2012.5 then do;   
-						on_dual_nvp=1; 
+						on_dual_nvp=1; ever_dual_nvp=1;
 						if u < prob_nnresmaj_dual_nvp then do; c_rt103m=1; nn_res_pmtct=1; e_rt103m=1; end;
 					end;
 				end;
@@ -9579,6 +9579,8 @@ res_test=.;
 
 * interruption due to "choice";
 	if stop_tox    ne 1 then do; 
+
+		prointer = eff_rate_int_choice;
 
 		if t ge 2 and onart_tm1 =1 then do;  
 			if  adh_tm1 >= 0.8   and o_len_tm1 ne 1 then do; * this section does not apply to those on lencab;
@@ -9795,9 +9797,15 @@ o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_cab=0;o_len=0;
     if 2010.5 <= caldate{t} and reg_option < 100 then do; o_ten=1; o_3tc=1; o_efa=1; end; 
     if reg_option in ( 101 108 109 110 111 112 114) then do; o_ten=1; o_3tc=1; o_efa=1; end; 
 
-if reg_option in (102 103 104 105 106 118 119 125) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=2;
-if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 115 is a place holder - this does not apply for any current policy option;
-if reg_option = 130 then flr=3;
+	if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121 125) then flr=2; 
+	if reg_option in (107) then flr=1;
+	if reg_option = 130 then flr=3;
+
+	*
+    if flr=1 ten + 3tc + taz
+    if flr=2 ten + 3tc + dol                                                           
+ 	if flr=3 len + cab        
+	;
 
     if flr=1 then do; o_ten=1; o_3tc=1; o_taz=1; o_zdv=0; o_dol=0; end;
     if flr=2 then do; o_ten=1; o_3tc=1; o_dol=1; o_zdv=0; o_taz=0; o_efa=0; end;
@@ -13571,7 +13579,8 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 			if 80 <= age < 85 then ac_death_rate = 0.07249;
 			if 85 <= age  then ac_death_rate = 0.12256;
 		end;
-	end;
+	end;	 
+
 		if c_neph=1 then ac_death_rate=ac_death_rate+0.005;
 		if c_lac=1 then ac_death_rate=ac_death_rate+0.10;
 
@@ -13596,7 +13605,6 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 		if x3 le ac_deathrix then do;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; dcause=2; rdcause=2; agedeath=age;
 		end;
-	 	
 
 
 * covid and covid death (effectively assuming all get covid); * update_24_4_21;
@@ -13644,6 +13652,7 @@ if dead ne 1 then do;
 		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_ihd) + prior_cvd * 1.8) ;
 		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva) + prior_cvd * 1.8) ;
 	end;
+
 
 	* risk of cvd death;	
 	xihd = rand('uniform');
@@ -13747,14 +13756,14 @@ if dead ne 1 then do;
 		prior_cva = 1;
 		prior_cvd = 1;
 	end;
-
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
 		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 	end;
 end; * end if dead ne 1 statement;
 
-end; * end if dead=0 and death = . and dead_ ne 1 statement	
+end; * end if dead=0 and death = . and dead_ ne 1 statement;
+
 
 * time known to have been virally suppressed at last vlm;
 
@@ -14057,6 +14066,7 @@ cost_circ=0; if new_mcirc=1 then cost_circ=circ_cost_a;
 cost_condom_dn=0; if caldate{t} ge 1995 and 15 <= age < 65 then cost_condom_dn=condom_dn_cost;
 
 cost_sw_program=0; if sw_program_visit=1 then cost_sw_program = sw_program_cost;
+
  
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
 +max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_cab) + max(0, cost_prep_len) 
@@ -14286,6 +14296,7 @@ if dead ne 1 then do;
 		if ihd_severity = 3 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_3;
 	end;
 
+
 	if xihd le ihd_risk then do;
 		ihd_this_per =1;
 		cvd_this_per =1;
@@ -14367,12 +14378,12 @@ if dead ne 1 then do;
 		prior_cva = 1;
 		prior_cvd = 1;
 	end;
-
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
 		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 	end;
-end; * end if dead ne 1 statement;
+
+end; * end if dead ne 1 statement;								  
 
 * incidence non_hiv_tb ;  * update_24_4_21;
 
@@ -14412,7 +14423,8 @@ if  caldate_never_dot > death > . then do; * update_24_4_21; *HYPERTENSION;
 	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  visit_hypertension=.; sbp_m=.;
 	dx_htn=. ; on_tx_htn =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
 	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.; prior_ihd =.; prior_cvd =.; prior_cva =.;
-	non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
+
+	non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  											  
 	date_last_non_hiv_tb =.; non_hiv_tb =.; non_hiv_tb_death =.;
 	non_hiv_tb_risk=.;  non_hiv_tb_diag_e=.;  non_hiv_tb_diag_e=.;  cur_non_hiv_tb_death_risk=.; 
 	cd4=.;cc=.;vc=.;vl=.;adc=.;adh=.;who4_=.;nod   =.;tcur=.;non_tb_who3_=.;
@@ -17442,8 +17454,10 @@ cur_efa_cns_tox=0; if o_efa and c_cns=1 then cur_efa_cns_tox=1;
 cur_dol_cns_tox=0; if o_dol and c_cns=1 then cur_dol_cns_tox=1;
 
 if 15 <= age  then do;
-	util=1; * these in order ; 
-	if hiv=1 then util=util_hiv;* note this is for all with hiv - considered making it just for those registd;																									   
+
+util=1; * these in order ;
+if hiv=1 then util=util_hiv;* note this is for all with hiv - considered making it just for those registd;
+
 	* change utilities to be multiplicative (e.g. if two comorbid conditions each with utility 0.9, total utility will be 0.9*0.9=0.81);
 	if c_tox=1 then util=util_tox;
 	if cur_efa_cns_tox=1 then util = util * util_cns_efa_tox;
@@ -17693,13 +17707,12 @@ _dcost_test_f_sympt = cost_test_f_sympt*discount ;
 _dcost_test_f_sw = cost_test_f_sw *discount ;
 _dcost_test_f_non_anc = cost_test_f_non_anc*discount ;
 _dres_cost = res_cost*discount ; 
+_dcost_self_test = cost_self_test*discount ;
 
 _dhtn_cost_scr = htn_cost_scr*discount;
 _dhtn_cost_drug = htn_cost_drug*discount;
 _dhtn_cost_clin = htn_cost_clin*discount;
 _dhtn_cost_cvd = htn_cost_cvd*discount;
-
-
 
 _d_t_adh_int_cost = t_adh_int_cost *discount;
 _dpi_cost=pi_cost*discount;
@@ -18283,8 +18296,8 @@ dead_hivpos_cause4=0; dead_hivpos_cvd=0; dead_cvd=0; dead_hivneg_cause4=0;dead_h
 dead_hivneg_cvd=0; dead_cvd=0; dead_hivneg_cause5=0; dead_hivneg_tb=0; dead_tb=0; dead_hivpos_anycause=0;dead_hivneg_anycause=0;
 
 dead_hivpos_cvd_ge18=0; dead_hivpos_anycause_ge18=0; dead_hivneg_cvd_ge18=0; dead_hivneg_anycause_ge18=0;
+dead_cvd_ge18=0; dead_cvd_2544=0;dead_cvd_4564=0;dead_cvd_ge65=0;											 
 
-dead_cvd_ge18=0; dead_cvd_2544=0;dead_cvd_4564=0;dead_cvd_ge65=0;
 dead_cvd_3039m=0;dead_cvd_4049m=0;dead_cvd_5059m=0;dead_cvd_6069m=0;dead_cvd_7079m=0;dead_cvd_ge80m=0;
 dead_cvd_3039w=0;dead_cvd_4049w=0;dead_cvd_5059w=0;dead_cvd_6069w=0;dead_cvd_7079w=0;dead_cvd_ge80w=0;
 
@@ -18852,6 +18865,7 @@ htn_true_dx_ge18 = 0; htn_true_dx_1524 = 0; htn_true_dx_2534 = 0; htn_true_dx_35
 htn_over_dx_ge18 = 0; htn_over_dx_1524 = 0; htn_over_dx_2534 = 0; htn_over_dx_3544 = 0; htn_over_dx_4554 = 0; htn_over_dx_5564 = 0; htn_over_dx_ge65 = 0;
 sbp_max_over_ge18 = 0; sbp_over_ge18 = 0;
 
+
 hypertens160_ge18 = 0; hypertens160_1524 = 0; hypertens160_2534 = 0; hypertens160_3544 = 0; hypertens160_4554 = 0; hypertens160_5564 = 0; hypertens160_ge65 = 0; 
 htn_true160_ge18 = 0; htn_true160_1524 = 0; htn_true160_2534 = 0; htn_true160_3544 = 0; htn_true160_4554 = 0; htn_true160_5564 = 0; htn_true160_ge65 = 0;
 htn_true_dx160_ge18 = 0; htn_true_dx160_1524 = 0; htn_true_dx160_2534 = 0; htn_true_dx160_3544 = 0; htn_true_dx160_4554 = 0; htn_true_dx160_5564 = 0; htn_true_dx160_ge65 = 0;
@@ -18862,8 +18876,7 @@ sbp_1519w = 0; sbp_2024w = 0; sbp_2529w = 0; sbp_3034w = 0; sbp_3539w = 0; sbp_4
 sbp_1519m = 0; sbp_2024m = 0; sbp_2529m = 0; sbp_3034m = 0; sbp_3539m = 0; sbp_4044m = 0; sbp_4549m = 0; sbp_5054m = 0; sbp_5559m = 0; sbp_6064m = 0; sbp_6569m = 0; sbp_7074m = 0; sbp_7579m = 0; sbp_ge80m = 0; 
 sbp_1519  = 0; sbp_2024  = 0; sbp_2529  = 0; sbp_3034  = 0; sbp_3539  = 0; sbp_4044  = 0; sbp_4549  = 0; sbp_5054  = 0; sbp_5559  = 0; sbp_6064  = 0; sbp_6569  = 0; sbp_7074  = 0; sbp_7579  = 0; sbp_ge80  = 0; 
 
-* CVD incidence - all events, both first and recurrent; * in run 93, drop all first event and non-moderate/severe events (can go back and pick code from run 92 commit if needed);
-
+* CVD incidence - all events, both first and recurrent - symptomatic only (modsev); 
 ihd_inc_all_modsev_ge18m = 0; ihd_inc_all_modsev_ge18w = 0; 
 cva_inc_all_modsev_ge18m = 0; cva_inc_all_modsev_ge18w = 0;
 ihd_inc_all_modsev_2039m = 0; ihd_inc_all_modsev_2039w = 0;
@@ -18919,11 +18932,10 @@ if 40 <= age < 50 then do;
 	if prior_ihd = 1 and gender = 1 then prior_ihd_4049m = 1;
 	if prior_ihd = 1 and gender = 2 then prior_ihd_4049w = 1;
 	if prior_cva = 1 and gender = 1 then prior_cva_4049m = 1;
-	if prior_cva = 1 and gender = 2 then prior_cva_4049w = 1;
+
+	if prior_cva = 1 and gender = 2 then prior_cva_4049w = 1;													  
 end;
-
-if 50 <= age < 60 then do; 
-
+if 50 <= age < 60 then do; 															  
 	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_5059m = 1; 
 	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_5059w = 1; 
 	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_5059m = 1;
@@ -18935,21 +18947,19 @@ if 50 <= age < 60 then do;
 	if prior_cva = 1 and gender = 2 then prior_cva_5059w = 1;
 end;
 
-if 60 <= age < 70 then do; 
-
+if 60 <= age < 70 then do; 															  
 	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_6069m = 1; 
 	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_6069w = 1; 
 	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_6069m = 1;
 	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_6069w = 1;
-
+														
 	if prior_ihd = 1 and gender = 1 then prior_ihd_6069m = 1;
 	if prior_ihd = 1 and gender = 2 then prior_ihd_6069w = 1;
 	if prior_cva = 1 and gender = 1 then prior_cva_6069m = 1;
 	if prior_cva = 1 and gender = 2 then prior_cva_6069w = 1;
 end;
 
-if 70 <= age < 80 then do; 
-
+if 70 <= age < 80 then do; 															  
 	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_7079m = 1; 
 	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_7079w = 1; 
 	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_7079m = 1;
@@ -19906,9 +19916,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_o_len_plw + o_len_plw ;  s_hiv_breastfeeding + hiv_breastfeeding;
 
-
 	/* *HYPERTENSION* */
-
 	s_hypertension_ge18 + hypertension_ge18 ; s_hypertension_2534 + hypertension_2534 ; s_hypertension_3544 + hypertension_3544 ;
 	s_hypertension_4554 + hypertension_4554 ; s_hypertension_5564 + hypertension_5564 ; s_hypertension_ge65 + hypertension_ge65 ;
 	s_dx_htn_ge18 + dx_htn_ge18; s_dx_htn_2534 + dx_htn_2534 ; s_dx_htn_3544 + dx_htn_3544 ;
@@ -20037,8 +20045,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_cva_prev_7079 + prior_cva_7079; s_cva_prev_7079m + prior_cva_7079m; s_cva_prev_7079w + prior_cva_7079w;
 	s_ihd_prev_ge80 + prior_ihd_ge80; s_ihd_prev_ge80m + prior_ihd_ge80m; s_ihd_prev_ge80w + prior_ihd_ge80w;
 	s_cva_prev_ge80 + prior_cva_ge80; s_cva_prev_ge80m + prior_cva_ge80m; s_cva_prev_ge80w + prior_cva_ge80w;
-     		
-	/*visits and linkage*/ 
+
+	/*visits and linkage*/
 
 	s_visit + visit ; s_lost + lost ; s_linked_to_care + linked_to_care ; s_linked_to_care_this_period + linked_to_care_this_period ;
 	s_pre_art_care + pre_art_care ; s_visit_prep_oral_no + visit_prep_oral_no ; s_visit_prep_oral_d + visit_prep_oral_d ; s_visit_prep_oral_dt + visit_prep_oral_dt ;
@@ -20090,7 +20098,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dead_cvd_2544 + dead_cvd_2544 ;
 	s_dead_cvd_4564 + dead_cvd_4564 ;
 	s_dead_cvd_ge65 + dead_cvd_ge65 ;
-	s_dead_cvd_htn_ge18 + dead_cvd_htn_ge18 ;
+	s_dead_cvd_htn_ge18 + dead_cvd_htn_ge18 ;									  
+
 	s_dead_cvd_3039m + dead_cvd_3039m ; s_dead_cvd_4049m + dead_cvd_4049m ; s_dead_cvd_5059m + dead_cvd_5059m ;s_dead_cvd_6069m + dead_cvd_6069m ;
 	s_dead_cvd_7079m + dead_cvd_7079m ; s_dead_cvd_ge80m + dead_cvd_ge80m ;
 	s_dead_cvd_3039w + dead_cvd_3039w ; s_dead_cvd_4049w + dead_cvd_4049w ; s_dead_cvd_5059w + dead_cvd_5059w ;s_dead_cvd_6069w + dead_cvd_6069w ;
@@ -20488,9 +20497,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_cost_ole + cost_ole;  s_cost_isl + cost_isl; 
 	s_cost_non_aids_pre_death + cost_non_aids_pre_death ; s_drug_level_test_cost + drug_level_test_cost;
     s_cost_child_hiv_mo_art + cost_child_hiv_mo_art;  s_cost_child_hiv_at_child_inf + cost_child_hiv_at_child_inf;
- 
-	s_htn_cost_scr + htn_cost_scr; s_htn_cost_drug + htn_cost_drug; s_htn_cost_clin + htn_cost_clin; s_htn_cost_cvd + htn_cost_cvd;
-
+	s_htn_cost_scr + htn_cost_scr; s_htn_cost_drug + htn_cost_drug; s_htn_cost_clin + htn_cost_clin; s_htn_cost_cvd + htn_cost_cvd;																					
 
 	*discounted; 
 	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
@@ -20510,13 +20517,9 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_ole + _dcost_ole;  s_dcost_isl + _dcost_isl; s_dcost_lencab_return + _dcost_lencab_return;
 	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
  	s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ; s_dcost_child_hiv_at_child_inf + _dcost_child_hiv_at_child_inf;
- 
 
 	s_dhtn_cost_scr + _dhtn_cost_scr; s_dhtn_cost_drug + _dhtn_cost_drug; s_dhtn_cost_clin + _dhtn_cost_clin; s_dhtn_cost_cvd + _dhtn_cost_cvd;
-	 	
-
-
-
+																																		
 end;
 
 cald = caldate_never_dot ;
@@ -21561,7 +21564,9 @@ s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol  s_cost_cab  s_cost_len  s_cost_ole  s_cost_isl 	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
 s_cost_child_hiv_mo_art   s_cost_child_hiv_at_child_inf
-s_cost_lencab_return s_dcost_lencab_return
+
+  s_cost_lencab_return s_dcost_lencab_return
+
 
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost   s_dvis_cost_no_lencab s_dvis_cost_lencab
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
@@ -21571,7 +21576,9 @@ s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_d
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol s_dcost_cab s_dcost_len  s_dcost_ole  s_dcost_isl 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
-s_dcost_child_hiv_mo_art  s_dcost_child_hiv_at_child_inf 	
+
+s_dcost_child_hiv_mo_art  s_dcost_child_hiv_at_child_inf  
+
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_total_yll80le  s_total_yllag							  
@@ -21602,7 +21609,9 @@ s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
  s_ev_art_g1k_not2l_adead    
- s_dead_allcause_ge18 s_dead_allcause_2039 s_dead_allcause_4059 s_dead_allcause_6079
+
+ s_dead_allcause_ge18 s_dead_allcause_2039 s_dead_allcause_4059 s_dead_allcause_6079																					
+
  s_dead_hivneg_anycause  s_dead_hivpos_anycause 
 
 /* deaths by cause - age 15+ */
@@ -21612,7 +21621,9 @@ s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
 s_dead_hivpos_cvd_ge18 s_dead_hivpos_anycause_ge18 
 s_dead_hivneg_cvd_ge18 s_dead_hivneg_anycause_ge18 
-s_dead_cvd_ge18 s_dead_cvd_htn_ge18 s_dead_cvd_2544 s_dead_cvd_4564 s_dead_cvd_ge65
+
+s_dead_cvd_ge18 s_dead_cvd_htn_ge18 s_dead_cvd_2544 s_dead_cvd_4564 s_dead_cvd_ge65																			   
+
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m s_dead_cvd_3039w  s_dead_cvd_4049w
 s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
@@ -21752,6 +21763,7 @@ s_htn_over_dx_ge18 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_ht
 
 s_sbp_max_over_ge18 s_sbp_over_ge18
 
+
 s_hypertens160_ge18 s_hypertens160_2534 s_hypertens160_3544 s_hypertens160_4554 s_hypertens160_5564 s_hypertens160_ge65 
 s_htn_true160_ge18 s_htn_true160_2534 s_htn_true160_3544 s_htn_true160_4554 s_htn_true160_5564 s_htn_true160_ge65 
 s_htn_true_dx160_ge18 s_htn_true_dx160_2534 s_htn_true_dx160_3544 s_htn_true_dx160_4554 s_htn_true_dx160_5564 s_htn_true_dx160_ge65 
@@ -21801,7 +21813,6 @@ s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 	s_cva_prev_7079m s_cva_prev_7079w 
 	s_ihd_prev_ge80m s_ihd_prev_ge80w 
 	s_cva_prev_ge80m s_cva_prev_ge80w 
-	
 
 /*parameters sampled*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
@@ -21871,7 +21882,8 @@ prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 
 prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
 prob_visit_htn_lifestyle
 prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
-rr_cvd_tx rr_cvd_tx_effective rr_cost_lowqual_cvdcare
+rr_cvd_tx rr_cvd_tx_effective rr_cost_lowqual_cvdcare												  
+
 discount
 
 /*year_i interventions*/
@@ -22743,7 +22755,8 @@ s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
  s_ev_art_g1k_not2l_adead  
- s_dead_allcause_ge18 s_dead_allcause_2039 s_dead_allcause_4059 s_dead_allcause_6079
+ s_dead_allcause_ge18 s_dead_allcause_2039 s_dead_allcause_4059 s_dead_allcause_6079																					
+
 s_dead_hivneg_anycause  s_dead_hivpos_anycause
 
 /* deaths by cause - age 15+ */
@@ -22752,7 +22765,9 @@ s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
 s_dead_hivpos_cvd_ge18 s_dead_hivpos_anycause_ge18 
 s_dead_hivneg_cvd_ge18 s_dead_hivneg_anycause_ge18 
-s_dead_cvd_ge18 s_dead_cvd_htn_ge18 s_dead_cvd_2544 s_dead_cvd_4564 s_dead_cvd_ge65
+
+s_dead_cvd_ge18 s_dead_cvd_htn_ge18 s_dead_cvd_2544 s_dead_cvd_4564 s_dead_cvd_ge65																	   
+
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
 s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
@@ -22937,7 +22952,6 @@ s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 	s_cva_prev_7079m s_cva_prev_7079w 
 	s_ihd_prev_ge80m s_ihd_prev_ge80w 
 	s_cva_prev_ge80m s_cva_prev_ge80w 
-
 
 /* covid */
 
@@ -23747,7 +23761,9 @@ s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
 s_ev_art_g1k_not2l_adead  
-s_dead_allcause_ge18 s_dead_allcause_2039 s_dead_allcause_4059 s_dead_allcause_6079
+
+s_dead_allcause_ge18 s_dead_allcause_2039 s_dead_allcause_4059 s_dead_allcause_6079																				   
+
 s_dead_hivneg_anycause  s_dead_hivpos_anycause
 
 /* deaths by cause - age 15+ */
@@ -23756,7 +23772,9 @@ s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
 s_dead_hivpos_cvd_ge18 s_dead_hivpos_anycause_ge18 
 s_dead_hivneg_cvd_ge18 s_dead_hivneg_anycause_ge18 
-s_dead_cvd_ge18 s_dead_cvd_htn_ge18 s_dead_cvd_2544 s_dead_cvd_4564 s_dead_cvd_ge65
+
+s_dead_cvd_ge18 s_dead_cvd_htn_ge18 s_dead_cvd_2544 s_dead_cvd_4564 s_dead_cvd_ge65													   
+
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
 s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
@@ -23895,6 +23913,7 @@ s_htn_over_dx_ge18 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_ht
 
 s_sbp_max_over_ge18 s_sbp_over_ge18
 
+
 s_hypertens160_ge18 s_hypertens160_2534 s_hypertens160_3544 s_hypertens160_4554 s_hypertens160_5564 s_hypertens160_ge65 
 s_htn_true160_ge18 s_htn_true160_2534 s_htn_true160_3544 s_htn_true160_4554 s_htn_true160_5564 s_htn_true160_ge65 
 s_htn_true_dx160_ge18 s_htn_true_dx160_2534 s_htn_true_dx160_3544 s_htn_true_dx160_4554 s_htn_true_dx160_5564 s_htn_true_dx160_ge65 
@@ -23943,7 +23962,8 @@ s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 	s_ihd_prev_7079m s_ihd_prev_7079w 
 	s_cva_prev_7079m s_cva_prev_7079w 
 	s_ihd_prev_ge80m s_ihd_prev_ge80w 
-	s_cva_prev_ge80m s_cva_prev_ge80w
+	s_cva_prev_ge80m s_cva_prev_ge80w 					   
+
 
 /*parameters sampled*/
 
@@ -24014,6 +24034,7 @@ prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_vis
 prob_visit_htn_lifestyle
 prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
 rr_cvd_tx rr_cvd_tx_effective rr_cost_lowqual_cvdcare
+
 discount
 
 /*year_i interventions*/
