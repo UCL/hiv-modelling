@@ -744,7 +744,7 @@ ods html close;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "av_newp_ge1_non_sw";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 10 by 0.1) valueattrs=(size=10);
 
 label mean_av_newp_ge1_non_sw_0 = "Option 0 (median) ";
 label mean_av_newp_ge1_non_sw_1 = "Option 1  (median) ";
