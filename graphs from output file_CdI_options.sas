@@ -1,12 +1,11 @@
 
 ***Program to produce graphs using averages across runs;
 ***Read in long file created from create wide file;
-libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\CdI";
 
 
 data b1;
-set a.l_base_CdI_01Dec24;
-
+set a.l_base_CdI_23sep25; 
 s_sw_1549_ = s_sw_1549;
 
 new_option=option;
@@ -16,7 +15,7 @@ run;
 data b;set b1;
 *change this for every option;
 if new_option=0 then option=0;
-if new_option=7 then option=1;
+if new_option=501 then option=1;
 
 if option in (0,1) then a=1;
 if a ne 1 then delete;
@@ -26,7 +25,7 @@ proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  192;
+%let nfit =  112;
 %let year_end = 2040 ;
 run;
 proc sort;by cald option ;run;
@@ -197,7 +196,7 @@ g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 
 
 ;
 by cald;
-%include "C:\Users\loveleen\Documentos\GitHub\hiv-modelling\Observed_data_Cote_dIvoire.sas";
+%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Observed_data_Cote_dIvoire.sas";
 ***LOok at Spectrum AIM file;
 ***Number of HIV tests done;
 ***Ever tested;

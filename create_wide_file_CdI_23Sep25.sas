@@ -613,7 +613,6 @@ proc print;var cald n_infected n_hiv;where cald in (2022, 2023, 2024, 2025, 2026
 
 proc sort data=y;by run option;run;
 
-proc means mean;var n_alive;where cald=2015;run;
 data low_inc;
 set y;
 
@@ -625,61 +624,30 @@ if cald=2012 and prevalence1549w <= 0.0296498586 then a=1;
 /*proc freq;table run;where a=1;run;*/
 
 if run in (
-12061235
-13289120
-44305224
-47770690
-52681369
-55356431
-64194485
-73974711
-81636854
-100968944
-104926555
-112620591
-170956343
-173086919
-173929715
-187254170
-195511210
-198187949
-216968285
-220284758
-243282981
-249845292
-276743925
-282020011
-304977963
-331570028
-359835809
-372392020
-383287884
-386619059
-391320389
-396124436
-463436002
-586958409
-605891021
-610214581
-634556897
-668528367
-673442940
-683190888
-697660892
-759888585
-782477796
-808420889
-813111778
-823712423
-856002253
-883975696
-889811103
-896354272
-950066119
-975214271
-982839197
-984201312
-997614895
+195560010
+206078582
+294690389
+305512541
+343721613
+350720461
+383727073
+469237604
+471753933
+510627586
+580244118
+616037695
+643562557
+703213449
+788553975
+791410303
+866819120
+917391161
+937592997
+944538733
+947957311
+963445670
+965373451
+
 
 )
 
@@ -757,7 +725,8 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v;  ; where 2020   <=
 proc means  noprint data=y; var &v; output out=y_21 mean= &v;  ; where 2021   <= cald < 2022  ; 
 proc means  noprint data=y; var &v; output out=y_22 mean= &v;  ; where 2022   <= cald < 2023  ; 
 proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <= cald < 2024  ; 
-*/
+proc means noprint data=z; var &v; output out=y_24  mean= &v   ; where 2024   <= cald < 2025  ;
+ */
 ***in same order as excel sheet;
 **OST		 				= Not modelled;
 **Condom					= Option 5 /56;
@@ -789,8 +758,6 @@ proc means  noprint data=y; var &v; output out=y_23 mean= &v;  ; where 2023   <=
 ***CURRENTLY NOT PUT INTO SPREADSHEETS:
 
 **TB testing		= Option 17;
-
-proc means noprint data=z; var &v; output out=y_24  mean= &v   ; where 2024 <= cald < 2025 and option=501 ;
 proc means noprint data=z; var &v; output out=y_25  mean= &v   ; where 2025 <= cald < 2026 and option=501 ;
 proc means noprint data=z; var &v; output out=y_26  mean= &v   ; where 2026 <= cald < 2027 and option=501 ;
 proc means noprint data=z; var &v; output out=y_27  mean= &v   ; where 2027 <= cald < 2028 and option=501 ;
@@ -811,8 +778,8 @@ proc means noprint data=z; var &v; output out=y_40  mean= &v   ; where 2040 <= c
 																										
 data &v ; set 
 
-/*y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23 */
-y_24 y_25 y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40;
+/*y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_11 y_12 y_13 y_14 y_15 y_16 y_17 y_18 y_19 y_20 y_21 y_22 y_23
+y_24 */y_25 y_26 y_27 y_28 y_29 y_30 y_31 y_32 y_33 y_34 y_35 y_36 y_37 y_38 y_39 y_40;
 drop _NAME_ _TYPE_ _FREQ_;
 
 
@@ -838,11 +805,58 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prevalence_m);		%var(v=prevalence_w);  		%var(v=prop_w_1564_sw);
 %var(v=prevalence); 		%var(v=n_infected_m); 		%var(v=n_infected_w );		%var(v=n_infected);
 ;
+/*
 data year;
 
 input year;
 cards;
+2000
+2001
+2002
+2003
+2004
+2005
+2006
+2007
+2008
+2009
+2010
+2011
+2012
+2013
+2014
+2015
+2016
+2017
+2018
+2019
+2020
+2021
+2022
+2023
 2024
+2025
+2026
+2027
+2028
+2029
+2030
+2031
+2032
+2033
+2034
+2035
+2036
+2037
+2038
+2039
+2040
+*/
+
+data year;
+
+input year;
+cards;
 2025
 2026
 2027

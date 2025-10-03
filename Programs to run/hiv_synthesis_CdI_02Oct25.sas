@@ -708,6 +708,7 @@ end;
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
 * prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
+prep_any_strategy=18;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -2774,17 +2775,17 @@ if option=500 then do; ***funding crisis, 30% cuts;
 	condom_incr_year_i = 4;
 
 	***FSW and AGYW prevention: Decreased engagement in SW program (coded together for both fsw and agyw);
-	rate_engage_sw_program=0.03;
+	rate_engage_sw_program=0.01;
 	effect_sw_prog_newp=0.10;
 
 	***MSM prev - risk of one or more cls partners in msm per period ;
-	msm_risk_cls=0.8; 
+	msm_risk_cls=0.8; ***ASK AP
 
 	***PWID: Integrating harm reduction care package. Increase OST, needle exchange program;
 	fold_tr_pwid = 8;
 
 	***FSW PrEP: Modelled independently of the program using prep_any_strategy;
-	prob_prep_elig_sw = 0.05;
+	prob_prep_elig_sw = 0.03;
 	eff_prob_prep_oral_b = prob_prep_oral_b;
 	if sw=1 then eff_prob_prep_oral_b = 0.1;
 
@@ -2815,7 +2816,7 @@ if option=500 then do; ***funding crisis, 30% cuts;
 	
 	***FSW testing;
 	if sw=1 then do;
-		rate_engage_sw_program=0.03;
+		rate_engage_sw_program=0.01;
 		effect_sw_prog_6mtest = 0.10;
 	end;
 
@@ -2832,7 +2833,7 @@ if option=500 then do; ***funding crisis, 30% cuts;
 	end;
 	
 	***ANC testing;
-	inc_rate_anc_op=inc_rate_anc_op/1.25;
+	inc_rate_anc_op=-0.2;
 
 	***VL testing;
 	eff_prob_vl_meas_done=prob_vl_meas_done;
@@ -2883,14 +2884,14 @@ end;
 
 ***FSW prevention: Decreased engagement in SW program (coded together for both fsw and agyw);
 if option=502 then do; 
-	rate_engage_sw_program=0.03;
+	rate_engage_sw_program=0.01;
 	effect_sw_prog_newp=0.10;
 end;
 
 ***AGYW prevention;
 if option=503 then do;
 	if agywfsw=1 then do;
-		rate_engage_sw_program=0.03;
+		rate_engage_sw_program=0.01;
 		effect_sw_prog_newp=0.10;
 	end;
 end;
@@ -2902,12 +2903,12 @@ end;
 
 ***PWID prevention;
 if option=505 then do;
-	msm_risk_cls=8; 
+	fold_tr_pwid=8; 
 end;
 
 ***FSW PrEP: Modelled independently of the program using prep_any_strategy;
 if option=506 then do;
-	prob_prep_elig_sw = 0.05;
+	prob_prep_elig_sw = 0.03;
 	eff_prob_prep_oral_b = prob_prep_oral_b;
 	if sw=1 then eff_prob_prep_oral_b = 0.1;
 end;
@@ -2950,7 +2951,7 @@ end;
 ***FSW testing;
 if option=512 then do;
 	if sw=1 then do;
-		rate_engage_sw_program=0.03;
+		rate_engage_sw_program=0.01;
 		effect_sw_prog_6mtest = 0.10;
 	end;
 end;
@@ -2959,7 +2960,7 @@ end;
 if option=513 then do;
 	if msm=1 then do;
 		high_test_set_in_options=1;
-		incr_test_msm_year_i=4;
+		incr_test_msm_year_i=3;
 	end;
 end;
 
@@ -2973,7 +2974,7 @@ end;
 
 ***ANC testing;
 if option=515 then do;
-	inc_rate_anc_op=inc_rate_anc_op/1.25;
+	inc_rate_anc_op=-0.2;
 end;
 
 ***VL testing;
@@ -2992,12 +2993,12 @@ if option=517 then do;
 	eff_rate_restart = rate_restart;
 	e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
 
-	eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.1;
-	e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.1;
-	eff_rate_lost=eff_rate_lost*1.1;
-	eff_rate_return=eff_rate_return/1.1;
-	eff_prob_lost_art=eff_prob_lost_art*1.1;
-	eff_rate_restart=eff_rate_restart/1.1;
+	eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.5;
+	e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.5;
+	eff_rate_lost=eff_rate_lost*1.5;
+	eff_rate_return=eff_rate_return/1.5;
+	eff_prob_lost_art=eff_prob_lost_art*1.5;
+	eff_rate_restart=eff_rate_restart/1.5;
 end;
 
 ***PMTCT;
@@ -3010,12 +3011,12 @@ if option=518 then do;
 		eff_rate_restart = rate_restart;
 		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
 
-		eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.1;
-		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.1;
-		eff_rate_lost=eff_rate_lost*1.1;
-		eff_rate_return=eff_rate_return/1.1;
-		eff_prob_lost_art=eff_prob_lost_art*1.1;
-		eff_rate_restart=eff_rate_restart/1.1;
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.5;
+		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.5;
+		eff_rate_lost=eff_rate_lost*1.5;
+		eff_rate_return=eff_rate_return/1.5;
+		eff_prob_lost_art=eff_prob_lost_art*1.5;
+		eff_rate_restart=eff_rate_restart/1.5;
 	end;
 end;
 
@@ -3028,7 +3029,7 @@ if option=600 then do; ***funding crisis, 50% cuts;
 	condom_incr_year_i = 5;
 
 	***FSW and AGYW prevention: Decreased engagement in SW program;
-	rate_engage_sw_program=0.01;
+	rate_engage_sw_program=0.001;
 	effect_sw_prog_newp=0.05;
 
 	***Risk of one or more cls partners in msm per period ;
@@ -3055,7 +3056,7 @@ if option=600 then do; ***funding crisis, 50% cuts;
 	end;
 
 	***HIV Self testing;
-	rate_self_test = 0.0001;
+	rate_self_test = 0.0005;
 
 	***FB testing;
 	high_test_set_in_options=1;
@@ -3086,7 +3087,7 @@ if option=600 then do; ***funding crisis, 50% cuts;
 	end;
 
 	***ANC testing;
-	inc_rate_anc_op=inc_rate_anc_op/1.25; *this stays the same as the partial cut scenario;
+	inc_rate_anc_op=-0.2; *this stays the same as the partial cut scenario;
 
 	***VL testing;
 	eff_prob_vl_meas_done=prob_vl_meas_done;
@@ -3116,12 +3117,12 @@ if option=600 then do; ***funding crisis, 50% cuts;
 		eff_rate_restart = rate_restart;
 		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
 
-		eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.25;
-		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.25;
-		eff_rate_lost=eff_rate_lost*1.25;
-		eff_rate_return=eff_rate_return/1.25;
-		eff_prob_lost_art=eff_prob_lost_art*1.25;
-		eff_rate_restart=eff_rate_restart/1.25;
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.8;
+		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.8;
+		eff_rate_lost=eff_rate_lost*1.8;
+		eff_rate_return=eff_rate_return/1.8;
+		eff_prob_lost_art=eff_prob_lost_art*1.8;
+		eff_rate_restart=eff_rate_restart/1.8;
 	end;
 
 end;
@@ -3137,14 +3138,14 @@ end;
 
 ***FSW prevention: Decreased engagement in SW program (coded together for both fsw and agyw);
 if option=602 then do; 
-	rate_engage_sw_program=0.01;
+	rate_engage_sw_program=0.005;
 	effect_sw_prog_newp=0.05;
 end;
 
 ***AGYW prevention;
 if option=603 then do;
 	if agywfsw=1 then do;
-		rate_engage_sw_program=0.01;
+		rate_engage_sw_program=0.005;
 		effect_sw_prog_newp=0.05;
 	end;
 end;
@@ -3156,7 +3157,7 @@ end;
 
 ***PWID prevention;
 if option=605 then do;
-	msm_risk_cls=10; 
+	fold_tr_pwid=10; 
 end;
 
 ***FSW PrEP: Modelled independently of the program using prep_any_strategy;
@@ -3184,7 +3185,7 @@ end;
 
 ***HIV Self testing;
 if option=609 then do;
-	rate_self_test = 0.0001;
+	rate_self_test = 0.0005;
 end;
 
 ***FB testing;
@@ -3204,7 +3205,7 @@ end;
 ***FSW testing;
 if option=612 then do;
 	if sw=1 then do;
-		rate_engage_sw_program=0.01;
+		rate_engage_sw_program=0.001;
 		effect_sw_prog_6mtest = 0.05;
 	end;
 end;
@@ -3227,7 +3228,7 @@ end;
 
 ***ANC testing;
 if option=615 then do;
-	inc_rate_anc_op=inc_rate_anc_op/1.25;
+	inc_rate_anc_op=-0.2;
 end;
 
 ***VL testing;
@@ -3246,12 +3247,12 @@ if option=617 then do;
 	eff_rate_restart = rate_restart;
 	e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
 
-	eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.25;
-	e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.25;
-	eff_rate_lost=eff_rate_lost*1.25;
-	eff_rate_return=eff_rate_return/1.25;
-	eff_prob_lost_art=eff_prob_lost_art*1.25;
-	eff_rate_restart=eff_rate_restart/1.25;
+	eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.8;
+	e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.8;
+	eff_rate_lost=eff_rate_lost*1.8;
+	eff_rate_return=eff_rate_return/1.8;
+	eff_prob_lost_art=eff_prob_lost_art*1.8;
+	eff_rate_restart=eff_rate_restart/1.8;
 end;
 
 ***PMTCT;
@@ -3264,12 +3265,12 @@ if option=618 then do;
 		eff_rate_restart = rate_restart;
 		e_eff_prob_loss_at_diag = eff_prob_loss_at_diag;
 
-		eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.25;
-		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.25;
-		eff_rate_lost=eff_rate_lost*1.25;
-		eff_rate_return=eff_rate_return/1.25;
-		eff_prob_lost_art=eff_prob_lost_art*1.25;
-		eff_rate_restart=eff_rate_restart/1.25;
+		eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.8;
+		e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag*1.8;
+		eff_rate_lost=eff_rate_lost*1.8;
+		eff_rate_return=eff_rate_return/1.8;
+		eff_prob_lost_art=eff_prob_lost_art*1.8;
+		eff_rate_restart=eff_rate_restart/1.8;
 	end;
 end;
 
@@ -4001,8 +4002,8 @@ if incr_test_fsw_year_i = 2 and sw=1 then do; rate_1sttest = rate_1sttest * 30.0
 */
 if incr_test_pwid_year_i = 1 and pwid=1 then do; rate_1sttest = rate_1sttest * 60.0; rate_reptest = rate_reptest * 60.0; end;
 if incr_test_pwid_year_i = 2 and pwid=1 then do; rate_1sttest = rate_1sttest * 30.0; rate_reptest = rate_reptest * 30.0; end;
-if incr_test_pwid_year_i = 1 and pwid=1 then do; rate_1sttest = rate_1sttest * 0.5; rate_reptest = rate_reptest * 0.5; end;
-if incr_test_pwid_year_i = 2 and pwid=1 then do; rate_1sttest = rate_1sttest * 0.2; rate_reptest = rate_reptest * 0.2; end;
+if incr_test_pwid_year_i = 3 and pwid=1 then do; rate_1sttest = rate_1sttest * 0.5; rate_reptest = rate_reptest * 0.5; end;
+if incr_test_pwid_year_i = 4 and pwid=1 then do; rate_1sttest = rate_1sttest * 0.2; rate_reptest = rate_reptest * 0.2; end;
 
 
 if incr_test_agywfsw_year_i = 1 and agyw=1 and sw=1 then do; rate_1sttest = rate_1sttest * 75.0; rate_reptest = rate_reptest * 75.0; end;
