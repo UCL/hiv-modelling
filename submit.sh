@@ -7,6 +7,8 @@ jobname="hivmodel"
 model="hiv_synthesis.sas"
 clock="h_rt=24:00:00"
 account="HIVSynthMod"
+#$ -P Gold
+#$ -A HIVSynthMod
 
 while getopts a:i:o:r:j:m:c:t: flag
 do
@@ -21,9 +23,7 @@ do
         t) tmpfiles=${OPTARG};;
     esac
 done
-finaloutdir="${HOME}/Scratch/${combinedsas}_${tmpfiles}"
-
-
+finaloutdir="/myriadfs/home/sejj463/Scratch/combined_data_out"
 echo "===== JOB SUMMARY ======="
 echo "directory of input files: $inputdir";
 if [ -d $finaloutdir ]
@@ -40,6 +40,4 @@ echo "jobname for model runs: $jobname";
 echo "clock is set to: $clock";
 echo "using SAS HIV model file: $model";
 echo "job is run on account: $account";
-qsub -N $jobname -A $account -t 1-$runs -wd $finaloutdir -l $clock -v SASINPUT=$inputdir,SASOUTPUTDIR=$finaloutdir,SASMODEL=$model,SASTMPFILES=$tmpfiles $inputdir/testmodel.sh
-qsub -hold_jid $jobname -N create_wide -v sas_infile=$inputdir/create_wide_file.sas,SASOUTPUTDIR=$finaloutdir,SASTMPFILES=$tmpfiles $inputdir/run_create_wide_file.sh
-
+qsub -N $jobname -P Gold -A $account -t 1-$runs -wd $finaloutdir -l $clock -v SASINPUT=$inputdir,SASOUTPUTDIR=$finaloutdir,SASMODEL=$model,SASTMPFILES=$tmpfiles $inputdir/testmodel.sh

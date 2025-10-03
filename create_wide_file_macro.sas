@@ -4,6 +4,8 @@ run;
 * Matt's local machine input;
 libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105";
 
+/* ===== safer way to combine many OUT* tables ===== */
+
 /* Build a macro list of OUT* tables */
 proc sql noprint;
   select memname
@@ -43,7 +45,6 @@ run;
 
 /* Clean up */
 proc datasets lib=work nolist; delete part:; quit;
-
 /*
 * Myriad input;
 %let sasoutputdir = %scan(&sysparm,1," ");

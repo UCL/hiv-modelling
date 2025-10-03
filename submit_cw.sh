@@ -22,7 +22,7 @@ do
         t) tmpfiles=${OPTARG};;
     esac
 done
-finaloutdir="/lustre/scratch/scratch/sejj463/combined_data_out"
+finaloutdir="/myriadfs/home/sejj463/Scratch/combined_data_out"
 
 
 echo "===== JOB SUMMARY ======="

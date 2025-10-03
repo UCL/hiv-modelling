@@ -7,6 +7,7 @@ jobname="hivmodel"
 model="hiv_synthesis.sas"
 clock="h_rt=24:00:00"
 account="HIVSynthMod"
+#$ -A HIVSynthMod
 
 while getopts a:i:o:r:j:m:c:t: flag
 do
@@ -21,7 +22,7 @@ do
         t) tmpfiles=${OPTARG};;
     esac
 done
-finaloutdir="/lustre/scratch/scratch/sejj463/combined_data_out"
+finaloutdir="/myriadfs/home/sejj463/Scratch/combined_data_out"
 echo "===== JOB SUMMARY ======="
 echo "directory of input files: $inputdir";
 if [ -d $finaloutdir ]
