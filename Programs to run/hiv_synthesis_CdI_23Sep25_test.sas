@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 10000 ; 
 %let year_interv = 2025;	* Using 2023 for MIHPSA only JAS Oct23;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -8256,7 +8256,7 @@ end;
 * INTRODUCE HIV INTO POPULATION ;
 
 d=rand('uniform');
-if caldate{t}=startyr    and ((newp >= newp_seed and d < 0.8) or (d < 0.05 and msm=1)) and infection=.  then do; 
+if caldate{t}=startyr    and ((newp >= 1 and d < 0.8) or (d < 0.05 and msm=1)) and infection=.  then do; 
 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
@@ -19304,7 +19304,7 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
-
+proc freq;table cald s_primary;run;
 /*
 proc print;var caldate&j msm gender option eff_test_targeting hiv np_lasttest tested date1test unitest rate_1sttest ;
 where age ge 15 and death=.;run;
@@ -20601,11 +20601,11 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ***CdI;
 /*if cald = 1990 and (prevalence1549w > 0.06) then do; abort abend; end;*/
 
-
+/*
 if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
 if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
-
+*/
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
@@ -21791,17 +21791,10 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=0);*2024;
-<<<<<<< HEAD
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=177,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=178,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=179,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=180,s=0);*2025;
-=======
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);*2025;
->>>>>>> 2d3c42f873c340b215026ec4e0de76836e720205
 
 data a ;  set r1 ;
 
