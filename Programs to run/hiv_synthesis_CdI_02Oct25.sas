@@ -5814,7 +5814,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	end;
 
 
-	if hard_reach=0 or high_test_set_in_options = 1 then do;
+	if hard_reach=0 /*or high_test_set_in_options = 1*/ then do;
 												
 		unitest=rand('uniform');
 
