@@ -2301,7 +2301,7 @@ who may be dead and hence have caldate{t} missing;
 
 	 *Option 1 - if prep_any_strategy=19, change so mobile men are eligible AND CAB is introduced AND hard to reach=0;
 	if option = 1 then do;
-		if prep_any_strategy=19 then if prep_any_strategy=20;
+		if prep_any_strategy=19 then prep_any_strategy=20;
 		pref_prep_cab=pref_prep_cablen_beta_s1;
 
 		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
@@ -2313,13 +2313,13 @@ who may be dead and hence have caldate{t} missing;
 ***OPTIONS 2 AND 3 ARE JUST TO SEE THE IMPACT OF EACH COMPONENT;
 	 *Option 2 - if prep_any_strategy=19, change so mobile men are eligible AND CAB is introduced;
 	if option = 2 then do;
-		if prep_any_strategy=19 then if prep_any_strategy=20;
+		if prep_any_strategy=19 then prep_any_strategy=20;
 		pref_prep_cab=pref_prep_cablen_beta_s1;
 	end;	
 
 	*Option 3 - if prep_any_strategy=19, change so mobile men are eligible and set hard to reach=0 (no CAB);
 	if option = 3 then do;
-		if prep_any_strategy=19 then if prep_any_strategy=20;
+		if prep_any_strategy=19 then prep_any_strategy=20;
 		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
 			hard_reach_due_to_mobile=0;
 			hard_reach=0;
