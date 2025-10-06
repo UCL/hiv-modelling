@@ -65,7 +65,3 @@ rate_int_choice = 0.003;
 
 * prob_birth_circ;          prob_birth_circ = 0.2 ; 
 
-
-
-
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 1 3);
