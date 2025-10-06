@@ -80,12 +80,12 @@ n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 * n_tested_self_test = 0;
 
 
-if option in (1 2 3 4 5 6   8 9 10 11 12 30 31) then delete;
-if option = 7  then option = 1;
+if option in (1 2 3 4 5 6 7   9 10 11 12 30 31) then delete;
+if option = 8  then option = 1;
 
 
 
-%let single_var = n_new_vmmc               /*incidence_msm  prevalence1549_  p_newp_ge1_ incidence1549_  prop_1564_onprep  n_new_inf1549_ */        ;
+%let single_var = av_newp_ge1_non_sw               /*incidence_msm  prevalence1549_  p_newp_ge1_ incidence1549_  prop_1564_onprep  n_new_inf1549_ */        ;
 
 
 
@@ -100,7 +100,7 @@ p_ep_msm p_msm_ge1newp p_m_ge1newp n_pwid p_onprep_pwid p_onart_pwid
 proc sort; by cald run ;run;
 data c;set c;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=c;var count_csim     ;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 90  ;			* 94 fits out of 1000 JAS Nov23;
+%let nfit = 154 ;			* 94 fits out of 1000 JAS Nov23;
 %let year_end = 2050   ;	*simulation ends at 2072.75 for calibration JAS Oct;
 run;
 proc sort;by cald option ;run;
@@ -741,6 +741,24 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html close;
 
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "av_newp_ge1_non_sw";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 10 by 0.1) valueattrs=(size=10);
+
+label mean_av_newp_ge1_non_sw_0 = "Option 0 (median) ";
+label mean_av_newp_ge1_non_sw_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_av_newp_ge1_non_sw_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_av_newp_ge1_non_sw_0 	upper=p95_av_newp_ge1_non_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_av_newp_ge1_non_sw_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_av_newp_ge1_non_sw_1 	upper=p95_av_newp_ge1_non_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
+
 /*
 
 ods html;
@@ -756,9 +774,25 @@ band    x=cald lower=p5_p_onart_sw_0 	upper=p95_p_onart_sw_0  / transparency=0.9
 
 run;quit;
 
-*/
 
-/*
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of all HIV positive men on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_p_onart_m_0 = "Option 0 (median) ";
+label mean_p_onart_m_1 = "Option 1  (median) ";
+
+series  x=cald y=mean_p_onart_m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_m_0 	upper=p95_p_onart_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_p_onart_m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_m_1 	upper=p95_p_onart_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
 
 ods html;
 proc sgplot data=d; 
@@ -882,7 +916,7 @@ ods html close;
 */
 
 
-
+/*
 
 ods html;
 
@@ -903,7 +937,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 /*
 
@@ -965,7 +999,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -984,8 +1018,10 @@ band    x=cald lower=p5_incidence_msm_1 	upper=p95_incidence_msm_1  / transparen
 run;quit;
 
 
+*/
 
-  
+
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -1023,6 +1059,7 @@ band    x=cald lower=p5_n_new_inf1549__1 	upper=p95_n_new_inf1549__1  / transpar
 
 run; quit;
 
+*/
 
 /*
 
@@ -1154,7 +1191,7 @@ run; quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -1174,7 +1211,7 @@ series  x=cald y=n_vmmc_obs_mlw/	lineattrs = (color=orange thickness = 2) ;
 
 run; quit;
 
-
+*/
 
 
 /*
@@ -1197,7 +1234,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html ;
 proc sgplot data=d; 
@@ -1222,7 +1259,7 @@ label prevalence1549_threshold = "Calibration thresholds";
 
 run;quit;
 
-
+*/
 
 
 /*
@@ -1337,6 +1374,7 @@ run;quit;
 
 */
 
+/*
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_tested_past_year_1549m";
@@ -1353,6 +1391,7 @@ band    x=cald lower=p5_p_tested_past_year_1549m_1 	upper=p95_p_tested_past_year
 
 run;quit;
 
+*/
 
 /*
 
@@ -1917,6 +1956,9 @@ run;quit;
 
 */
 
+
+/*
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of women giving birth with HIV, proportion of children infected";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -1931,6 +1973,8 @@ series  x=cald y=mean_mtct_prop_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_mtct_prop_1 	upper=p95_mtct_prop_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
+
+*/
 
 /*
 
@@ -2000,7 +2044,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 
@@ -2021,7 +2065,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 /*
 
@@ -2292,20 +2336,11 @@ band    x=cald lower=p5_p_vg1000__1 	upper=p95_p_vg1000__1  / transparency=0.9 f
 
 run;quit;
 
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of all HIV positive men on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+*/
 
-label mean_p_onart_m_0 = "Option 0 (median) ";
-label mean_p_onart_m_1 = "Option 1  (median) ";
 
-series  x=cald y=mean_p_onart_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_m_0 	upper=p95_p_onart_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=mean_p_onart_m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_m_1 	upper=p95_p_onart_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+/*
 
-run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of all HIV positive women on ART";

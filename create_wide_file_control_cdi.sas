@@ -12,7 +12,7 @@ ods listing;
 
 
 data a;
-set a.cdi_07jul25;
+set a.cdi_19sep25;
 if run=. then delete;
 
 proc sort;by run cald option;run;
@@ -103,14 +103,16 @@ run;
 
 s_dcost_circ = s_dcost_circ * 104 / 90 ;
 
-s_dcost_prep_inj = s_dcost_prep_inj * (204 / (50 * 1.2));  
+s_dcost_prep_cab = s_dcost_prep_cab * (204 / (50 * 1.2));  
+s_dcost_prep_len = s_dcost_prep_len * (204 / (50 * 1.2));  
 s_dcost_prep_oral = s_dcost_prep_oral * (40 / (50*1.2)); 
 s_dcost_prep_vr = s_dcost_prep_vr * (155 / (50 * 1.2));
-s_dcost_prep_visit_inj = s_dcost_prep_visit_inj * (18 / 60) ;
+s_dcost_prep_visit_cab = s_dcost_prep_visit_cab * (18 / 60) ;
+s_dcost_prep_visit_len = s_dcost_prep_visit_len * (18 / 60) ;	*LEN set to match CAB - check this;
 s_dcost_prep_visit_oral = s_dcost_prep_visit_oral * (18 / 40) ;
 s_dcost_prep_visit_vr = s_dcost_prep_visit_vr * (21 / 40) ;
-s_dcost_prep_visit = s_dcost_prep_visit_inj + s_dcost_prep_visit_oral + s_dcost_prep_visit_vr; 
-s_dcost_prep = s_dcost_prep_inj + s_dcost_prep_oral + s_dcost_prep_vr;
+s_dcost_prep_visit = s_dcost_prep_visit_cab + s_dcost_prep_visit_len + s_dcost_prep_visit_oral + s_dcost_prep_visit_vr; 
+s_dcost_prep = s_dcost_prep_cab + s_dcost_prep_len + s_dcost_prep_oral + s_dcost_prep_vr;
 
 dcost_self_test = s_self_tested * sf * 0.00314 * &discount * 4 / 1000; 
 
@@ -209,6 +211,7 @@ if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
 
 cost = (dcost * 1000000) / &discount;
 
+dcost_80 = s_dcost__80 * sf * 4 / 1000;
 
 * ================================================================================= ;
 
@@ -324,7 +327,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_new_inf_sw;					n_new_inf_sw = s_primary_sw * 4 * sf;
 * n_new_inf_msm;				n_new_inf_msm = s_primary_msm * 4 * sf;
 
-* n_daly;						*n_daly = (s_yllag_hiv_m + s_yllag_hiv_w + s_live_daly ) * 4 * sf; *Not outputted - check;
+* n_daly;						n_daly = (s_yllag_hiv_m + s_yllag_hiv_w + s_live_daly ) * 4 * sf; *Not outputted - check;
 * p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;
 
 * n_onprep_m;					n_onprep_m = s_onprep_m * sf;
@@ -335,6 +338,12 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_new_inf_prep_elig;			n_new_inf_prep_elig = s_primary_prep_elig * 4 * sf; 
 
 * n_sw_program_visit;			n_sw_program_visit = s_sw_program_visit * sf;* Note this is per three months to approximate number of SW reached;
+
+* Added Sept 2025;
+* n_circumcised_15_24_m;		n_circumcised_15_24_m = (s_mcirc_1519m + s_mcirc_2024m) * sf;	* Currently circumcised men (trad + medical), not just new circumcisions;
+* prep_agyw_pg;					prep_agyw_pg=1;* need to add new code in 15/09 version; * Person years of PrEP distributed to sexually active AGYW and pregnant women;
+* total_agyw_pg;				total_agyw_pg=1;* need to add new code in 15/09 version; * Number of people in the total population, sexually active AGYW and pregnant women;
+
 
 keep run cald option
 n_alive_1524m	n_alive_2549m	n_alive_50plm	n_alive_1524w	n_alive_2549w	n_alive_50plw	n_sw_1564	n_alive_msm
@@ -347,8 +356,8 @@ n_dead1524m_all	n_dead2549m_all	n_dead50plm_all	n_dead1524w_all	n_dead2549w_all	
 n_new_inf1524m	n_new_inf2549m	n_new_inf50plm	n_new_inf1524w	n_new_inf2549w	n_new_inf50plw	n_new_inf_sw n_new_inf_msm
 n_death_hiv_age_1524_m	n_death_hiv_age_2549_m	n_death_hiv_age_50pl_m	n_death_hiv_age_1524_w	n_death_hiv_age_2549_w	n_death_hiv_age_50pl_w
 n_onprep_sw		n_onprep_msm	n_onprep_m		n_onprep_w		n_elig_prep		n_new_inf_prep_elig
-n_daly			cost			p_mcirc			n_sw_program_visit;
-
+n_daly			cost			p_mcirc			n_sw_program_visit
+n_circumcised_15_24_m			prep_agyw_pg	total_agyw_pg;
 proc sort data=y;by run option;run;
 
 
@@ -356,14 +365,14 @@ proc contents; run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_cdi_control_07Jul25; set y;
+data a.long_cdi_control_19Sep25; set y;
 if cald=. then delete;run;
 
 
 ************************************************************************************************************************************************************;
 
 
-data y; set a.long_cdi_control_07Jul25; 
+data y; set a.long_cdi_control_19Sep25; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
@@ -454,6 +463,9 @@ PrEP_Pop_GP = n_elig_prep;
 NewHIV_PrEP_Pop_GP = n_new_inf_prep_elig;
 Percent_FSW_reached = (n_sw_program_visit * 100) / n_sw_1564;
 Percent_MSM_reached = .;
+N_circumcised_15_24_M = n_circumcised_15_24_m;	/* added Sept 2025 */
+PrEP_AGYW_PG = prep_agyw_pg;					/* added Sept 2025 */
+Total_AGYW_PG = total_agyw_pg;					/* added Sept 2025 */
 
 
 keep
@@ -550,6 +562,9 @@ PrEP_Pop_GP
 NewHIV_PrEP_Pop_GP
 Percent_FSW_reached
 Percent_MSM_reached
+N_circumcised_15_24_M 	
+PrEP_AGYW_PG
+Total_AGYW_PG
 
 ;
 run;
@@ -1056,7 +1071,9 @@ proc print noobs data=a_stock; run;
 %var_flow(v=NewHIV_PrEP_Pop_GP);
 %var_flow(v=Percent_FSW_reached);
 %var_flow(v=Percent_MSM_reached);
-
+%var_flow(v=N_circumcised_15_24_M);		/* added Sept 2025 */
+%var_flow(v=PrEP_AGYW_PG);				/* added Sept 2025 */
+%var_flow(v=Total_AGYW_PG);				/* added Sept 2025 */
 
 data year;
 input year;
@@ -1127,7 +1144,31 @@ cards;
 2048
 2049
 2050
-
+2051
+2052
+2053
+2054
+2055
+2056
+2057
+2058
+2059
+2060
+2061
+2062
+2063
+2064
+2065
+2066
+2067
+2068
+2069
+2070
+2071
+2072
+2073
+2074
+2075
 ;
 
 data  wide_outputs_flows ; merge 
@@ -1173,7 +1214,9 @@ PrEP_Pop_GP
 NewHIV_PrEP_Pop_GP
 Percent_FSW_reached
 Percent_MSM_reached
-
+N_circumcised_15_24_M	/* added Sept 2025 */
+PrEP_AGYW_PG			/* added Sept 2025 */
+Total_AGYW_PG			/* added Sept 2025 */
 ;
 
 
@@ -1219,6 +1262,9 @@ PrEP_Pop_GP
 NewHIV_PrEP_Pop_GP
 Percent_FSW_reached
 Percent_MSM_reached
+N_circumcised_15_24_M	/* added Sept 2025 */
+PrEP_AGYW_PG			/* added Sept 2025 */
+Total_AGYW_PG			/* added Sept 2025 */
 ;
 set wide_outputs_flows;
 run;
