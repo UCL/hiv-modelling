@@ -503,7 +503,7 @@ proc contents data = a.long_zim_control; run;
 ** Variable lists;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-%let keep_stocks = 
+%let stock_list = 
 	Total_00_14_M			Total_15_24_M			Total_25_49_M			Total_50_UP_M
 	Total_00_14_F			Total_15_24_F			Total_25_49_F			Total_50_UP_F
 	Total_FSW				Total_MSM
@@ -521,11 +521,6 @@ proc contents data = a.long_zim_control; run;
 	VLS_FSW					VLS_MSM
 	N_circumcised_15_24_M		/* added Sept 2025 - stock */
 	Total_AGYW_PG				/* added Sept 2025 - stock */
-	;
-/*%put &keep_stocks;*/
-
-/* Additional stocks */
-%let extra_stocks = 
 	n_onprep_agyw_plw			n_agyw_plw
 	n_onprep_oral_agyw_pg		n_onprep_len_agyw_pg
 	n_onprep_oral_agyw_plw		n_onprep_len_agyw_plw
@@ -534,9 +529,9 @@ proc contents data = a.long_zim_control; run;
 	n_onprep_oral_sw			n_onprep_len_sw			
 	n_onprep_oral_msm			n_onprep_len_msm
 	;
-/*%put &extra_stocks;*/
+/*%put &stock_list;*/
 
-%let keep_flows = 
+%let flow_list = 
 	Birth_All				Birth_HIV
 	DeathsAll_00_14_M		DeathsAll_15_24_M		DeathsAll_25_49_M		DeathsAll_50_UP_M
 	DeathsAll_00_14_F		DeathsAll_15_24_F		DeathsAll_25_49_F		DeathsAll_50_UP_F
@@ -551,17 +546,12 @@ proc contents data = a.long_zim_control; run;
 	PrEP_Pop_GP				NewHIV_PrEP_Pop_GP
 	Percent_FSW_reached		Percent_MSM_reached
 	PrEP_AGYW_PG			/* added Sept 2025 */
-	;
-/*%put &keep_flows;*/
-
-/* Additional flows */
-%let extra_flows = 
 	incidence1549			incidence1549w			incidence1549m			incidence1564
 	p_newp_ge1				p_newp_ge5				av_newp_ge1				p_ep
 	p_m_npge1_				p_w_npge1_
 	p_mcirc_1524m
 	;
-/*%put &extra_flows;*/
+/*%put &flow_list;*/
 
 %let keep_vars_in_order = 
 	Total_00_14_M			Total_15_24_M			Total_25_49_M			Total_50_UP_M
@@ -832,8 +822,17 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 
+* make_stocks macro runs the var_stock macro through a list of variable names;
+%macro make_stocks;
+	%let n=%sysfunc(countw(&stock_list));	/* number of variables in flow_list */
+    %do i=1 %to &n;
+        %let var=%scan(&stock_list, &i);
+        %var_stock(v=&var);
+    %end;
+%mend;
+
+
 * make_flows macro runs the var_flow macro through a list of variable names;
-%let flow_list = &keep_flows &extra_flows;
 %macro make_flows;
 	%let n=%sysfunc(countw(&flow_list));	/* number of variables in flow_list */
     %do i=1 %to &n;
@@ -843,16 +842,6 @@ drop _NAME_ _TYPE_ _FREQ_;
 %mend;
 
 
-
-* make_stocks macro runs the var_stock macro through a list of variable names;
-%let stock_list = &keep_stocks &extra_stocks;
-%macro make_stocks;
-	%let n=%sysfunc(countw(&stock_list));	/* number of variables in flow_list */
-    %do i=1 %to &n;
-        %let var=%scan(&stock_list, &i);
-        %var_stock(v=&var);
-    %end;
-%mend;
 
 
 
@@ -962,10 +951,8 @@ keep
 cald
 option
 
-&keep_stocks
-&extra_stocks
-&keep_flows
-&extra_flows
+&stock_list
+&flow_list
 ;
 run;
  
