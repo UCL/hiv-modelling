@@ -757,7 +757,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 19);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 19);prep_any_strategy=19;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -2395,11 +2395,11 @@ end;
 
 
 if (caldate{t} = date_prep_cab_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_cab_intro > .) then do;  * len_prep_b ;
-	* pref_prep_cab;  	if gender=2 then pref_prep_cab=yy ; * Women only, this is the preference for cab or len, whichever is available (see above);
+	* pref_prep_cab;  	if gender=2 or curr_mobile=1 then pref_prep_cab=yy ; * Women and Mobile men only, this is the preference for cab or len, whichever is available (see above);
 end;
 
 if (caldate{t} = date_prep_len_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_len_intro > .) then do;
-	* pref_prep_len;  	if gender=2 then pref_prep_len=yy ; * Women only, this is the preference for cab or len, whichever is available (see above);
+	* pref_prep_len;  	if gender=2 or curr_mobile=1 then pref_prep_len=yy ; * Women and Mobile men only, this is the preference for cab or len, whichever is available (see above);
 end;
 
 if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) then do;
@@ -13809,11 +13809,25 @@ if gender=2 then do;
 end;
 
 ***MOBILE MEN;
-alive1549mm=0;alive1564mm=0;alive1564nmm=0;
+alive1549mm=0;alive1564mm=0;alive1564nmm=0;alive1517mm=0;alive1519mm=0;alive2024mm=0;alive2529mm=0;alive3034mm=0;
+alive3540mm=0;alive4044mm=0;alive4549mm=0;alive5054mm=0;alive5560mm=0;alive6064mm=0;
+
 if curr_mobile=1 then do;
 	if 15 <= age < 50 then alive1549mm=1;
 	if 15 <= age < 65 then alive1564mm=1;
+	if 15 <= age < 18 then alive1517mm=1;
+	if 15 <= age < 20 then alive1519mm=1;
+	if 20 <= age < 25 then alive2024mm=1;
+	if 25 <= age < 30 then alive2529mm=1;
+	if 30 <= age < 35 then alive3034mm=1;
+	if 35 <= age < 40 then alive3540mm=1;
+	if 40 <= age < 45 then alive4044mm=1;
+	if 45 <= age < 50 then alive4549mm=1;
+	if 50 <= age < 55 then alive5054mm=1;
+	if 55 <= age < 60 then alive5560mm=1;
+	if 60 <= age < 65 then alive6064mm=1;
 end;
+
 if curr_mobile ne 1 and gender=1 and 15 <= age < 65 then alive1564nmm=1;
 
 
@@ -19495,7 +19509,12 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_covid + covid ; 
 
 	/* Mobile men */ 
-	s_alive1549mm + alive1549mm;  	  s_alive1564mm	+ alive1564mm; 	   s_alive1564nmm + alive1564nmm;   s_hiv_mm + hiv_mm;			
+	s_alive1549mm + alive1549mm; s_alive1564mm + alive1564mm; s_alive1517mm + alive1517mm; s_alive1519mm + alive1519mm;
+	s_alive2024mm + alive2024mm; s_alive2529mm + alive2529mm; s_alive3034mm + alive3034mm; s_alive3539mm + alive3539mm;
+	s_alive4044mm + alive4044mm; s_alive4549mm + alive4549mm; s_alive5054mm + alive5054mm; s_alive5559mm + alive5559mm; 
+	s_alive6064mm + alive6064mm; 
+
+	s_alive1564nmm + alive1564nmm;   s_hiv_mm + hiv_mm;			
 	s_hiv_nmm + hiv_nmm; 			  s_hiv1564mm + hiv1564mm; 		   s_hiv1549mm + hiv1549mm;			s_hiv1564nmm + hiv1564nmm;
 	s_vl1000_art_mm	+ vl1000_art_mm;  s_onart_iicu_mm + onart_iicu_mm; s_vl1000_art_iicu_mm	+ vl1000_art_iicu_mm;
 	s_onart_gt6m_mm + onart_gt6m_mm;  s_vl1000_art_gt6m_mm + vl1000_art_gt6m_mm;	 					s_onart_gt6m_iicu_mm + onart_gt6m_iicu_mm;
@@ -20952,7 +20971,9 @@ s_covid
 
 /* mobile men */
 
-	s_alive1549mm   	  s_alive1564mm		  s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
+	s_alive1549mm   s_alive1564mm	s_alive1517mm  s_alive1519mm 	s_alive2024mm 	s_alive2529mm  s_alive3034mm 
+	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm 
+	s_alive1564nmm    	  s_hiv_mm 			  s_hiv_nmm 		  	s_hiv1564mm 	
 	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
 	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
 	s_ever_tested_mm1549_ s_diag_mm1549_ 	  s_onart_mm1549_ 		s_ever_tested_mm1564_ 						s_diag_mm1564_
@@ -21950,7 +21971,9 @@ s_covid
 
 /* mobile men */
 
-	s_alive1549mm   	  s_alive1564mm		  s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
+	s_alive1549mm   s_alive1564mm	s_alive1517mm  s_alive1519mm 	s_alive2024mm 	s_alive2529mm  s_alive3034mm 
+	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm 
+	s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
 	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
 	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
 	s_ever_tested_mm1549_ s_diag_mm1549_ 	  s_onart_mm1549_ 		s_ever_tested_mm1564_ 						s_diag_mm1564_
@@ -23018,7 +23041,9 @@ s_covid
 
 /* mobile men */
 
-	s_alive1549mm   	  s_alive1564mm		  s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
+	s_alive1549mm   s_alive1564mm	s_alive1517mm  s_alive1519mm 	s_alive2024mm 	s_alive2529mm  s_alive3034mm 
+	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm 	 
+	s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
 	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
 	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
 	s_ever_tested_mm1549_ s_diag_mm1549_ 	  s_onart_mm1549_ 		s_ever_tested_mm1564_ 						s_diag_mm1564_
