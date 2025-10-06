@@ -2994,16 +2994,6 @@ end;
 if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup_covid = 1 or art_low_adh_disrup_covid = 1) then reg_option = 125 ;
 
 
-if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121 125) then flr=2; 
-if reg_option in (107) then flr=1;
-if reg_option = 130 then flr=3;
-
-*
-    if flr=1 ten + 3tc + taz
-    if flr=2 ten + 3tc + dol                                                           
- 	if flr=3 len + cab        
-;
-
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
 
@@ -18787,7 +18777,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_len_agyw_pg + prep_len_agyw_pg; s_prep_vr_agyw_pg + prep_vr_agyw_pg;
 	s_prep_any_agyw_plw + prep_any_agyw_plw; s_prep_oral_agyw_plw + prep_oral_agyw_plw; s_prep_cab_agyw_plw + prep_cab_agyw_plw; 
 	s_prep_len_agyw_plw + prep_len_agyw_plw; s_prep_vr_agyw_plw + prep_vr_agyw_plw;
-	s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
+	s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
 	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
     s_prep_any_w_2534 + prep_any_w_2534 ; s_prep_any_w_3544 + prep_any_w_3544 ; s_inf_prep_any_source_prep_r + inf_prep_any_source_prep_r ;
     s_prepinfect_prep_r + prepinfect_prep_r ; s_prepinfect_prep_r_p + prepinfect_prep_r_p ; s_infected_prep_no_r + infected_prep_no_r ;
