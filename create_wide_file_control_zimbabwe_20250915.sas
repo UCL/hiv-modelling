@@ -446,19 +446,11 @@ proc sort data=y;by run option;run;
 /*proc freq data=y; table option;run;*/
 
 
-proc contents; run;
-
-
-* l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_zim_all; 
+data a.long_zim_control; 
 	set y;
+	/*if option ne 0 then delete;*/
 	if cald=. then delete; 
 run;
-
-
-data a.long_zim_control; set y;
-/*if option ne 0 then delete;*/
-if cald=. then delete; run;
 
 proc contents data = a.long_zim_control; run;
 
@@ -521,6 +513,7 @@ proc contents data = a.long_zim_control; run;
 	VLS_FSW					VLS_MSM
 	N_circumcised_15_24_M		/* added Sept 2025 - stock */
 	Total_AGYW_PG				/* added Sept 2025 - stock */
+	/* Extras for calibration */
 	n_onprep_agyw_plw			n_agyw_plw
 	n_onprep_oral_agyw_pg		n_onprep_len_agyw_pg
 	n_onprep_oral_agyw_plw		n_onprep_len_agyw_plw
@@ -546,6 +539,7 @@ proc contents data = a.long_zim_control; run;
 	PrEP_Pop_GP				NewHIV_PrEP_Pop_GP
 	Percent_FSW_reached		Percent_MSM_reached
 	PrEP_AGYW_PG			/* added Sept 2025 */
+	/* Extras for calibration */
 	incidence1549			incidence1549w			incidence1549m			incidence1564
 	p_newp_ge1				p_newp_ge5				av_newp_ge1				p_ep
 	p_m_npge1_				p_w_npge1_
