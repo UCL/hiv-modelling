@@ -1,7 +1,8 @@
-
-***19 May 25;
-**Might have to reduce rred in non MM if prevalence in all men is too high;
- 
+/***Check comment in options, I don't think it is true;
+ 	*Option 0 is continuation at current rates - status quo;
+	if option=0 then do; **no cab, only oral prep because pref_prep_cab is only set for women ;
+	end;
+ */
 
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -15983,7 +15984,11 @@ prep_len_mm=0; 		if curr_mobile=1 and prep_len =1 then prep_len_mm=1;
 
 
 prep_any_ever=0; if prep_oral_ever=1 or prep_cab_ever=1 or prep_len_ever=1 or prep_vr_ever=1 then prep_any_ever=1;
+if gender=1 then prep_any_ever_m=prep_any_ever;
+if gender=2 then prep_any_ever_w=prep_any_ever;
+
 prep_any_ever_mm=0; if curr_mobile=1 and (prep_oral_ever=1 or prep_cab_ever=1 or prep_len_ever=1) then prep_any_ever_mm=1;
+
 
 *Resistance in people infected on prep;
 
@@ -17504,11 +17509,6 @@ end;
 
 newp_hivneg=0;
 if hiv ne 1 then newp_hivneg = max(newp,0);
-
-prep_any_ever_m=.;prep_any_ever_w=.;
-if gender=1 then do;prep_any_ever_m=0; if prep_any_ever = 1 then if prep_any_ever_m=1;end;
-if gender=2 then do;prep_any_ever_w=0; if prep_any_ever = 1 then if prep_any_ever_w=1;end;
-
 
 
 *added Feb2017;

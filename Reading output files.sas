@@ -1,16 +1,16 @@
 
-*libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Mobile men\MM_21Jan25";
-*libname b "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Mobile men";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile men\MM_15Sep25";
+libname b "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile men";
 
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Mobile men\MM_15Apr25";
-libname b "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Mobile men";
+*libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Mobile men\MM_15Sep25";
+*libname b "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Mobile men";
 
 data b;
 set a.out:;
 run;
 
 
-data b.MM_15Apr25;
+data b.MM_15Sep25;
 set b;
 run;
 
