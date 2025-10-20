@@ -825,7 +825,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ; * lapr;
 
-* date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 2029          ); * Introduction of injectable cab PrEP ; * consider len as the only la prep option;
+* date_prep_cab_intro;			date_prep_cab_intro= 2029; * Introduction of injectable cab PrEP ; * consider len as the only la prep option;
 * date_prep_len_intro;			date_prep_len_intro=3000;		* Introduction of injectable len PrEP ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;			* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;			* Assume 5 years to scale up injectable len prep;
@@ -2298,12 +2298,13 @@ who may be dead and hence have caldate{t} missing;
 
  	*Option 0 is continuation at current rates - status quo;
 	if option=0 then do; **no cab, only oral prep because pref_prep_cab is only set for women ;
+	date_prep_cab_intro=2100;
 	end;
 
 	 *Option 1 - if prep_any_strategy=19, change so mobile men are eligible AND CAB is introduced AND hard to reach=0;
 	if option = 1 then do;
-		if prep_any_strategy=19 then prep_any_strategy=20;
-		pref_prep_cab=pref_prep_cablen_beta_s1;
+		prep_any_strategy=20;
+		*pref_prep_cab=pref_prep_cablen_beta_s1;
 
 		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
 			hard_reach_due_to_mobile=0;
@@ -2311,22 +2312,28 @@ who may be dead and hence have caldate{t} missing;
 		end;
 	end;
 
-***OPTIONS 2 AND 3 ARE JUST TO SEE THE IMPACT OF EACH COMPONENT;
-	 *Option 2 - if prep_any_strategy=19, change so mobile men are eligible AND CAB is introduced;
-	if option = 2 then do;
-		if prep_any_strategy=19 then prep_any_strategy=20;
-		pref_prep_cab=pref_prep_cablen_beta_s1;
+***OPTIONS 2 - 4 ARE JUST TO SEE THE IMPACT OF EACH COMPONENT;
+	 *Option 2 - change only the prep strategy (no CAB, no changes to hard to reach);
+		if option = 2 then do;
+		prep_any_strategy=20;
+		date_prep_cab_intro=2100;
+		*pref_prep_cab=pref_prep_cablen_beta_s1;
 	end;	
 
-	*Option 3 - if prep_any_strategy=19, change so mobile men are eligible and set hard to reach=0 (no CAB);
+	*Option 3 - change only prep strategy and hard to reach=0 (no CAB);
 	if option = 3 then do;
-		if prep_any_strategy=19 then prep_any_strategy=20;
+		prep_any_strategy=20;
+		date_prep_cab_intro=2100;
 		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
 			hard_reach_due_to_mobile=0;
 			hard_reach=0;
 		end;
 	end;	
 
+	*Option 4 - change only prep strategy and introduction of CAB (no changes to hard to reach);
+	if option=4 then do;
+		prep_any_strategy=20;
+	end;
 
  
 end;
@@ -22190,6 +22197,10 @@ data r1; set a;
 * 	Option 3;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+20,3);
+
+* 	Option 4;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+20,4);
 
 			
 														 

@@ -1,6 +1,6 @@
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
-*libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
+*libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
 set a.mm_09Oct25; 
@@ -316,6 +316,8 @@ proc means max data=b;var count_csim;run; ***number of runs - this is manually i
 run;
 proc sort;by cald option ;run;
 
+
+
 ***Three macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
@@ -555,7 +557,7 @@ graphs_06_06_25.doc' startpage=never;
 
 
 ***Diagnostic;
-ods html;
+ods listing;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people on any PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
@@ -754,7 +756,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05) valu
 label p50_prop_1564mm_onprep_oral_mm_0 = "Option 0";
 label p50_prop_1564mm_onprep_oral_mm_1 = "Option 1";
 label p50_prop_1564mm_onprep_oral_mm_2 = "Option 2";
-label p50_prop_1564mm_onprep_oral_mm_2 = "Option 3";
+label p50_prop_1564mm_onprep_oral_mm_3 = "Option 3";
 
 
 series  x=cald y=p50_prop_1564mm_onprep_oral_mm_0/	lineattrs = (color=black thickness = 2);
@@ -790,7 +792,6 @@ series  x=cald y=p50_prop_1564mm_onprep_inj_mm_3/	lineattrs = (color=blue thickn
 band    x=cald lower=p5_prop_1564mm_onprep_inj_mm_3 	upper=p95_prop_1564mm_onprep_inj_mm_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
 run;quit;
-
 
 ***Longer time horizon;
 proc sgplot data=d; 
