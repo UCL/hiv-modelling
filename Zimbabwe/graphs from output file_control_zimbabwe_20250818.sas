@@ -2,9 +2,9 @@
 ***Program to produce graphs using averages across runs
 ***Use include statement in analysis program to read the code below in;
 
-*** 20250915 version has options 0-12 (but no 99), adding one intervention at a time to the minimal. Using original condom change intervention parameters (strong effect);
+*** 20250818 version has options 0-12 (but no 99), adding one intervention at a time to the minimal. Using original condom change intervention parameters (strong effect);
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250818_out\";
 /*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
@@ -191,7 +191,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=108;
+%let nfit=71;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -205,6 +205,8 @@ run;
 %option_(10);
 %option_(11);
 %option_(12);
+%option_(13);
+%option_(14);
 run;
 
 
@@ -331,7 +333,12 @@ g11_61  g11_62  g11_63  g11_64  g11_65  g11_66  g11_67  g11_68  g11_69  g11_70  
 g11_81  g11_82  g11_83  g11_84  g11_85  g11_86  g11_87  g11_88  g11_89  g11_90  g11_91  g11_92  g11_93  g11_94  g11_95  g11_96  g11_97  g11_98  g11_99  g11_100
 g11_101 g11_102 g11_103 g11_104 g11_105 g11_106 g11_107 g11_108 g11_109 g11_110 g11_111 g11_112 g11_113 g11_114 g11_115 g11_116 g11_117 g11_118 g11_119 g11_120
 g11_121 g11_122 g11_123 g11_124 g11_125 g11_126 g11_127 g11_128 g11_129 g11_130 g11_131 g11_132 g11_133
+;
+by cald;
+run;
 
+data d_g;
+merge 
 g12_1   g12_2   g12_3   g12_4   g12_5   g12_6   g12_7   g12_8   g12_9   g12_10  g12_11  g12_12  g12_13  g12_14  g12_15  g12_16  g12_17  g12_18  g12_19  g12_20
 g12_21  g12_22  g12_23  g12_24  g12_25  g12_26  g12_27  g12_28  g12_29  g12_30  g12_31  g12_32  g12_33  g12_34  g12_35  g12_36  g12_37  g12_38  g12_39  g12_40
 g12_41  g12_42  g12_43  g12_44  g12_45  g12_46  g12_47  g12_48  g12_49  g12_50  g12_51  g12_52  g12_53  g12_54  g12_55  g12_56  g12_57  g12_58  g12_59  g12_60  
@@ -339,12 +346,28 @@ g12_61  g12_62  g12_63  g12_64  g12_65  g12_66  g12_67  g12_68  g12_69  g12_70  
 g12_81  g12_82  g12_83  g12_84  g12_85  g12_86  g12_87  g12_88  g12_89  g12_90  g12_91  g12_92  g12_93  g12_94  g12_95  g12_96  g12_97  g12_98  g12_99  g12_100
 g12_101 g12_102 g12_103 g12_104 g12_105 g12_106 g12_107 g12_108 g12_109 g12_110 g12_111 g12_112 g12_113 g12_114 g12_115 g12_116 g12_117 g12_118 g12_119 g12_120
 g12_121 g12_122 g12_123 g12_124 g12_125 g12_126 g12_127 g12_128 g12_129 g12_130 g12_131 g12_132 g12_133
+
+g13_1   g13_2   g13_3   g13_4   g13_5   g13_6   g13_7   g13_8   g13_9   g13_10  g13_11  g13_12  g13_13  g13_14  g13_15  g13_16  g13_17  g13_18  g13_19  g13_20
+g13_21  g13_22  g13_23  g13_24  g13_25  g13_26  g13_27  g13_28  g13_29  g13_30  g13_31  g13_32  g13_33  g13_34  g13_35  g13_36  g13_37  g13_38  g13_39  g13_40
+g13_41  g13_42  g13_43  g13_44  g13_45  g13_46  g13_47  g13_48  g13_49  g13_50  g13_51  g13_52  g13_53  g13_54  g13_55  g13_56  g13_57  g13_58  g13_59  g13_60  
+g13_61  g13_62  g13_63  g13_64  g13_65  g13_66  g13_67  g13_68  g13_69  g13_70  g13_71  g13_72  g13_73  g13_74  /*g13_75  g13_76  g13_77  g13_78  g13_79  g13_80  
+g13_81  g13_82*/  g13_83  g13_84  g13_85  g13_86  /*g13_87  g13_88  g13_89  g13_90*/  g13_91  g13_92  g13_93  g13_94  /*g13_95*/  g13_96  g13_97  g13_98  g13_99  g13_100
+g13_101 g13_102 g13_103 g13_104 g13_105 g13_106 g13_107 g13_108 g13_109 g13_110 g13_111 g13_112 g13_113 g13_114 g13_115 g13_116 g13_117 g13_118 g13_119 g13_120
+g13_121 g13_122 g13_123 g13_124 g13_125 g13_126 g13_127 g13_128 g13_129 g13_130 g13_131 g13_132 g13_133
+
+g14_1   g14_2   g14_3   g14_4   g14_5   g14_6   g14_7   g14_8   g14_9   g14_10  g14_11  g14_12  g14_13  g14_14  g14_15  g14_16  g14_17  g14_18  g14_19  g14_20
+g14_21  g14_22  g14_23  g14_24  g14_25  g14_26  g14_27  g14_28  g14_29  g14_30  g14_31  g14_32  g14_33  g14_34  g14_35  g14_36  g14_37  g14_38  g14_39  g14_40
+g14_41  g14_42  g14_43  g14_44  g14_45  g14_46  g14_47  g14_48  g14_49  g14_50  g14_51  g14_52  g14_53  g14_54  g14_55  g14_56  g14_57  g14_58  g14_59  g14_60  
+g14_61  g14_62  g14_63  g14_64  g14_65  g14_66  g14_67  g14_68  g14_69  g14_70  g14_71  g14_72  g14_73  g14_74  /*g14_75  g14_76  g14_77  g14_78  g14_79  g14_80  
+g14_81  g14_82*/  g14_83  g14_84  g14_85  g14_86  /*g14_87  g14_88  g14_89  g14_90*/  g14_91  g14_92  g14_93  g14_94  /*g14_95*/  g14_96  g14_97  g14_98  g14_99  g14_100
+g14_101 g14_102 g14_103 g14_104 g14_105 g14_106 g14_107 g14_108 g14_109 g14_110 g14_111 g14_112 g14_113 g14_114 g14_115 g14_116 g14_117 g14_118 g14_119 g14_120
+g14_121 g14_122 g14_123 g14_124 g14_125 g14_126 g14_127 g14_128 g14_129 g14_130 g14_131 g14_132 g14_133
 ;
 by cald;
 run;
 
 data d; * this is number of variables in %let var = above ;
-	merge d_a d_b d_c d_d d_e d_f;
+	merge d_a d_b d_c d_d d_e d_f d_g;
 	by cald;
 	%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe.sas";
 run;
@@ -361,10 +384,10 @@ ods listing;
 ***Graphs comparing observed data to outputs for Status quo 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20250915.doc' startpage=never;
+ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20250818.doc' startpage=never;
 
 
-***Options 0-12 
+***Options 0-14 
 	0 = Minimal (turning off PrEP, SW program, VMMC, condoms, CD4 and VL monitoring, ART support)
 	1 = PrEP - FSW - oral
 	2 = PrEP - FSW - oral + inj
@@ -374,10 +397,12 @@ ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_
 	6 = PrEP - MSM - oral + inj
 	7 = VMMC
 	8 = condoms
-	9 = FSW program
-	10 = MSM program
-	11 = (self-) testing
-	12 = adherence support
+	9 = FSW & MSM program
+	10 = (self-) testing
+	11 = adherence support
+	12 = VMMC op 1
+	13 = VMMC op 3
+	14 = VMMC op 4
 ;
 
 * Incidence;
@@ -1094,51 +1119,52 @@ series  x=cald y=mean_p_mcirc_1549m_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_12 	upper=p95_p_mcirc_1549m_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 run;quit;
 
+
+* Testing VMMC intervention;
+* Proportion circumcised (15-49);
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_mcirc_1549m";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label mean_p_mcirc_1549m_0 = "minimal";
+label mean_p_mcirc_1549m_7 = "vmmc";
+label mean_p_mcirc_1549m_12 = "vmmc op 1";
+label mean_p_mcirc_1549m_13 = "vmmc op 3";
+label mean_p_mcirc_1549m_14 = "vmmc op 4";
+series  x=cald y=mean_p_mcirc_1549m_0/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1549m_7/	lineattrs = (color=blue thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1549m_7 	upper=p95_p_mcirc_1549m_7  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1549m_12/	lineattrs = (color=green thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1549m_12 	upper=p95_p_mcirc_1549m_12  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1549m_13/	lineattrs = (color=purple thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1549m_13 	upper=p95_p_mcirc_1549m_13  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1549m_14/	lineattrs = (color=orange thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1549m_14 	upper=p95_p_mcirc_1549m_14  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";*/
+run;quit;
+
 * Proportion circumcised (15-24);
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_mcirc_1524m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label mean_p_mcirc_1524m_0 = "minimal";
-label mean_p_mcirc_1524m_1 = "PrEPoral_FSW";
-label mean_p_mcirc_1524m_2 = "PrEPmix_FSW";
-label mean_p_mcirc_1524m_3 = "PrEPoral_AGYW";
-label mean_p_mcirc_1524m_4 = "PrEPmix_AGYW";
-label mean_p_mcirc_1524m_5 = "PrEPoral_MSM";
-label mean_p_mcirc_1524m_6 = "PrEPmix_MSM";
 label mean_p_mcirc_1524m_7 = "vmmc";
-label mean_p_mcirc_1524m_8 = "condom";
-label mean_p_mcirc_1524m_9 = "FSW";
-label mean_p_mcirc_1524m_10 = "MSM";
-label mean_p_mcirc_1524m_11 = "test";
-label mean_p_mcirc_1524m_12 = "adherence";
+label mean_p_mcirc_1524m_12 = "vmmc op 1";
+label mean_p_mcirc_1524m_13 = "vmmc op 3";
+label mean_p_mcirc_1524m_14 = "vmmc op 4";
 series  x=cald y=mean_p_mcirc_1524m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_0 	upper=p95_p_mcirc_1524m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_1/	lineattrs = (color=darkred thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_1 	upper=p95_p_mcirc_1524m_1  / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_2/	lineattrs = (color=red thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_2 	upper=p95_p_mcirc_1524m_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_3/	lineattrs = (color=orange thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_3 	upper=p95_p_mcirc_1524m_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_4/	lineattrs = (color=yellow thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_4 	upper=p95_p_mcirc_1524m_4  / transparency=0.9 fillattrs = (color=yellow) legendlabkel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_5/	lineattrs = (color=lightgreen thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_5 	upper=p95_p_mcirc_1524m_5  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_6/	lineattrs = (color=green thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_6 	upper=p95_p_mcirc_1524m_6  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_7/	lineattrs = (color=lightblue thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_7 	upper=p95_p_mcirc_1524m_7  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_8/	lineattrs = (color=blue thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_ 	upper=p95_p_mcirc_1524m_8  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_9/	lineattrs = (color=purple thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_9 	upper=p95_p_mcirc_1524m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_10/	lineattrs = (color=lightpurple thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_10 	upper=p95_p_mcirc_1524m_10  / transparency=0.9 fillattrs = (color=lightpurple) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_11/	lineattrs = (color=pink thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_11 	upper=p95_p_mcirc_1524m_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_mcirc_1524m_12/	lineattrs = (color=brown thickness = 2);
-/*band    x=cald lower=p5_p_mcirc_1524m_12 	upper=p95_p_mcirc_1524m_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1524m_7/	lineattrs = (color=blue thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1524m_7 	upper=p95_p_mcirc_1524m_7  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1524m_12/	lineattrs = (color=green thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1524m_12 	upper=p95_p_mcirc_1524m_12  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1524m_13/	lineattrs = (color=purple thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1524m_13 	upper=p95_p_mcirc_1524m_13  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1524m_14/	lineattrs = (color=orange thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1524m_14 	upper=p95_p_mcirc_1524m_14  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";*/
 run;quit;
+
 
 * Number on PrEP;
 proc sgplot data=d; 

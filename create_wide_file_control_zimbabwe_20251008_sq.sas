@@ -3,12 +3,12 @@
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251008_sq_out\";
 
 
 /*
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251008_sq_out\";
 
 data g ; set a.out: ;
 
@@ -384,8 +384,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_onprep_len_m;				n_onprep_len_m = s_onprep_len_m * sf;
 * n_onprep_oral_w;				n_onprep_oral_w = s_onprep_oral_w * sf;
 * n_onprep_len_w;				n_onprep_len_w = s_onprep_len_w * sf;
-* n_onprep_oral_sw;				n_onprep_oral_sw = s_prep_oral_sw * sf;		* NB different notation to other prep outputs;
-* n_onprep_len_sw;				n_onprep_len_sw = s_prep_len_sw * sf;		* NB different notation to other prep outputs;
+* n_onprep_oral_sw;				n_onprep_oral_sw = s_onprep_oral_sw * sf;
+* n_onprep_len_sw;				n_onprep_len_sw = s_onprep_len_sw * sf;
 * n_onprep_oral_msm;			n_onprep_oral_msm = s_onprep_oral_msm * sf;
 * n_onprep_len_msm;				n_onprep_len_msm = s_onprep_len_msm * sf;
 
@@ -1109,7 +1109,7 @@ run;
 proc transpose data=outputs_&op_num out=a.outputs_&op_num; run;
 
 proc export data=a.outputs_&op_num
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\outputs_&op_num..csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251008_sq_out\outputs_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;

@@ -3,12 +3,12 @@
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251002_out\";
 
 
 /*
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251002_out\";
 
 data g ; set a.out: ;
 
@@ -352,6 +352,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_new_inf_msm;				n_new_inf_msm = s_primary_msm * 4 * sf;
 
 * n_daly;						n_daly = (s_yllag_hiv_m + s_yllag_hiv_w + s_live_daly ) * 4 * sf; *Not outputted - check;
+/** p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;*/
 * p_mcirc_1549m;				p_mcirc_1549m = (s_mcirc_1519m + s_mcirc_2024m + s_mcirc_2529m + s_mcirc_3034m + s_mcirc_3539m + s_mcirc_4044m + s_mcirc_4549m) / 
 									(s_ageg1519m + s_ageg2024m + s_ageg2529m + s_ageg3034m + s_ageg3539m + s_ageg4044m + s_ageg4549m) ;
 
@@ -384,16 +385,10 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_onprep_len_m;				n_onprep_len_m = s_onprep_len_m * sf;
 * n_onprep_oral_w;				n_onprep_oral_w = s_onprep_oral_w * sf;
 * n_onprep_len_w;				n_onprep_len_w = s_onprep_len_w * sf;
-* n_onprep_oral_sw;				n_onprep_oral_sw = s_prep_oral_sw * sf;		* NB different notation to other prep outputs;
-* n_onprep_len_sw;				n_onprep_len_sw = s_prep_len_sw * sf;		* NB different notation to other prep outputs;
+* n_onprep_oral_sw;				n_onprep_oral_sw = s_onprep_oral_sw * sf;
+* n_onprep_len_sw;				n_onprep_len_sw = s_onprep_len_sw * sf;
 * n_onprep_oral_msm;			n_onprep_oral_msm = s_onprep_oral_msm * sf;
 * n_onprep_len_msm;				n_onprep_len_msm = s_onprep_len_msm * sf;
-
-* n_tested_m;					n_tested_m = s_tested_m * sf * 4;
-* n_tested_w;					n_tested_w = (s_tested_f + s_tested_anc_prevdiag )* sf * 4;
-* n_self_tested_m;				n_self_tested_m = s_self_tested_m * sf ;
-* n_self_tested_w;				n_self_tested_w = s_self_tested_w * sf ;
-* n_tested_due_to_self_test;	n_tested_due_to_self_test =  s_tested_due_to_self_test * sf ;
 
 ** Flows; 
 * incidence1549;				incidence1549 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
@@ -410,6 +405,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_w_npge1_; 					p_w_npge1_ = s_w_npge1 / s_alive1564_w; *VCFeb2023;
 
 * p_mcirc_1524m;				p_mcirc_1524m = (s_mcirc_1519m + s_mcirc_2024m) / (s_ageg1519m + s_ageg2024m) ;
+
+
 ;
 
 
@@ -437,9 +434,6 @@ n_onprep_agyw_plw				n_agyw_plw
 n_onprep_oral_agyw_pg			n_onprep_len_agyw_pg			n_onprep_oral_agyw_plw				n_onprep_len_agyw_plw
 n_onprep_oral_m					n_onprep_len_m					n_onprep_oral_w						n_onprep_len_w
 n_onprep_oral_sw				n_onprep_len_sw					n_onprep_oral_msm					n_onprep_len_msm
-n_tested_m						n_tested_w
-n_self_tested_m					n_self_tested_w					n_tested_due_to_self_test
-
 /* Flows */
 incidence1549					incidence1549w					incidence1549m						incidence1564
 p_newp_ge1						p_newp_ge5						av_newp_ge1							p_ep
@@ -529,8 +523,6 @@ proc contents data = a.long_zim_control; run;
 	n_onprep_oral_w				n_onprep_len_w
 	n_onprep_oral_sw			n_onprep_len_sw			
 	n_onprep_oral_msm			n_onprep_len_msm
-	n_tested_m					n_tested_w
-	n_self_tested_m				n_self_tested_w					n_tested_due_to_self_test
 	;
 /*%put &stock_list;*/
 
@@ -1099,17 +1091,17 @@ run;
 
 
 * Save output file for HIV Control spreadsheet;
-data outputs_&op_num; 
+data a.outputs_&op_num; 
 	retain year &keep_vars_in_order;	* Reorders variables;
 	set a.outputs_all_&op_num;
 	keep year &keep_vars_in_order;		* Drops extra variables;
 run;
 
 
-proc transpose data=outputs_&op_num out=a.outputs_&op_num; run;
+proc transpose data=a.outputs_&op_num out=a.outputs_&op_num; run;
 
 proc export data=a.outputs_&op_num
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\outputs_&op_num..csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251002_out\outputs_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;

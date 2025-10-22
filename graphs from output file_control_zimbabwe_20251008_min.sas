@@ -2,9 +2,9 @@
 ***Program to produce graphs using averages across runs
 ***Use include statement in analysis program to read the code below in;
 
-*** 20250915 version has options 0-12 (but no 99), adding one intervention at a time to the minimal. Using original condom change intervention parameters (strong effect);
+*** 20261008_min version has options 0-12+99, using original condom change intervention parameters (strong effect);
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251008_min_out\";
 /*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
@@ -191,7 +191,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=108;
+%let nfit=179;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -205,6 +205,7 @@ run;
 %option_(10);
 %option_(11);
 %option_(12);
+%option_(99);
 run;
 
 
@@ -331,7 +332,12 @@ g11_61  g11_62  g11_63  g11_64  g11_65  g11_66  g11_67  g11_68  g11_69  g11_70  
 g11_81  g11_82  g11_83  g11_84  g11_85  g11_86  g11_87  g11_88  g11_89  g11_90  g11_91  g11_92  g11_93  g11_94  g11_95  g11_96  g11_97  g11_98  g11_99  g11_100
 g11_101 g11_102 g11_103 g11_104 g11_105 g11_106 g11_107 g11_108 g11_109 g11_110 g11_111 g11_112 g11_113 g11_114 g11_115 g11_116 g11_117 g11_118 g11_119 g11_120
 g11_121 g11_122 g11_123 g11_124 g11_125 g11_126 g11_127 g11_128 g11_129 g11_130 g11_131 g11_132 g11_133
+;
+by cald;
+run;
 
+data d_g; * this is number of variables in %let var = above ;
+merge 
 g12_1   g12_2   g12_3   g12_4   g12_5   g12_6   g12_7   g12_8   g12_9   g12_10  g12_11  g12_12  g12_13  g12_14  g12_15  g12_16  g12_17  g12_18  g12_19  g12_20
 g12_21  g12_22  g12_23  g12_24  g12_25  g12_26  g12_27  g12_28  g12_29  g12_30  g12_31  g12_32  g12_33  g12_34  g12_35  g12_36  g12_37  g12_38  g12_39  g12_40
 g12_41  g12_42  g12_43  g12_44  g12_45  g12_46  g12_47  g12_48  g12_49  g12_50  g12_51  g12_52  g12_53  g12_54  g12_55  g12_56  g12_57  g12_58  g12_59  g12_60  
@@ -339,12 +345,20 @@ g12_61  g12_62  g12_63  g12_64  g12_65  g12_66  g12_67  g12_68  g12_69  g12_70  
 g12_81  g12_82  g12_83  g12_84  g12_85  g12_86  g12_87  g12_88  g12_89  g12_90  g12_91  g12_92  g12_93  g12_94  g12_95  g12_96  g12_97  g12_98  g12_99  g12_100
 g12_101 g12_102 g12_103 g12_104 g12_105 g12_106 g12_107 g12_108 g12_109 g12_110 g12_111 g12_112 g12_113 g12_114 g12_115 g12_116 g12_117 g12_118 g12_119 g12_120
 g12_121 g12_122 g12_123 g12_124 g12_125 g12_126 g12_127 g12_128 g12_129 g12_130 g12_131 g12_132 g12_133
+
+g99_1   g99_2   g99_3   g99_4   g99_5   g99_6   g99_7   g99_8   g99_9   g99_10  g99_11  g99_12  g99_13  g99_14  g99_15  g99_16  g99_17  g99_18  g99_19  g99_20
+g99_21  g99_22  g99_23  g99_24  g99_25  g99_26  g99_27  g99_28  g99_29  g99_30  g99_31  g99_32  g99_33  g99_34  g99_35  g99_36  g99_37  g99_38  g99_39  g99_40
+g99_41  g99_42  g99_43  g99_44  g99_45  g99_46  g99_47  g99_48  g99_49  g99_50  g99_51  g99_52  g99_53  g99_54  g99_55  g99_56  g99_57  g99_58  g99_59  g99_60  
+g99_61  g99_62  g99_63  g99_64  g99_65  g99_66  g99_67  g99_68  g99_69  g99_70  g99_71  g99_72  g99_73  g99_74  g99_75  g99_76  g99_77  g99_78  g99_79  g99_80  
+g99_81  g99_82  g99_83  g99_84  g99_85  g99_86  g99_87  g99_88  g99_89  g99_90  g99_91  g99_92  g99_93  g99_94  g99_95  g99_96  g99_97  g99_98  g99_99  g99_100
+g99_101 g99_102 g99_103 g99_104 g99_105 g99_106 g99_107 g99_108 g99_109 g99_110 g99_111 g99_112 g99_113 g99_114 g99_115 g99_116 g99_117 g99_118 g99_119 g99_120
+g99_121 g99_122 g99_123 g99_124 g99_125 g99_126 g99_127 g99_128 g99_129 g99_130 g99_131 g99_132 g99_133
 ;
 by cald;
 run;
 
 data d; * this is number of variables in %let var = above ;
-	merge d_a d_b d_c d_d d_e d_f;
+	merge d_a d_b d_c d_d d_e d_f d_g;
 	by cald;
 	%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe.sas";
 run;
@@ -361,11 +375,11 @@ ods listing;
 ***Graphs comparing observed data to outputs for Status quo 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20250915.doc' startpage=never;
+ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20251008_min.doc' startpage=never;
 
 
-***Options 0-12 
-	0 = Minimal (turning off PrEP, SW program, VMMC, condoms, CD4 and VL monitoring, ART support)
+***Options 0-12 + 99
+	0 = Minimal (turning off PrEP, SW program, VMMC, condoms, CD4 and VL monitoring, ART support but keeping self-testing)
 	1 = PrEP - FSW - oral
 	2 = PrEP - FSW - oral + inj
 	3 = PrEP - AGYW and pregnant women - oral
@@ -378,7 +392,9 @@ ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_
 	10 = MSM program
 	11 = (self-) testing
 	12 = adherence support
+	99 = status quo
 ;
+
 
 * Incidence;
 proc sgplot data=d; 
@@ -398,6 +414,7 @@ label mean_incidence1549__9 = "FSW";
 label mean_incidence1549__10 = "MSM";
 label mean_incidence1549__11 = "test";
 label mean_incidence1549__12 = "adherence";
+label mean_incidence1549__99 = "status quo";
 label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
 label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
 series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
@@ -426,6 +443,8 @@ series  x=cald y=mean_incidence1549__11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_incidence1549__11 	upper=p95_incidence1549__11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_incidence1549__12 	upper=p95_incidence1549__12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1549__99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_incidence1549__99 	upper=p95_incidence1549__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
 scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
@@ -449,6 +468,7 @@ label mean_n_new_inf1549__9 = "FSW";
 label mean_n_new_inf1549__10 = "MSM";
 label mean_n_new_inf1549__11 = "test";
 label mean_n_new_inf1549__12 = "adherence";
+label mean_n_new_inf1549__99 = "status quo";
 series  x=cald y=mean_n_new_inf1549__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_new_inf1549__0 	upper=p95_n_new_inf1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_new_inf1549__1/	lineattrs = (color=darkred thickness = 2);
@@ -475,12 +495,15 @@ series  x=cald y=mean_n_new_inf1549__11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_n_new_inf1549__11 	upper=p95_n_new_inf1549__11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_new_inf1549__12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_n_new_inf1549__12 	upper=p95_n_new_inf1549__12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_new_inf1549__99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_n_new_inf1549__99 	upper=p95_n_new_inf1549__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 proc print data=d;
 	var mean_n_new_inf1549__0 mean_n_new_inf1549__1 mean_n_new_inf1549__2 mean_n_new_inf1549__3 mean_n_new_inf1549__4
 	mean_n_new_inf1549__5 mean_n_new_inf1549__6 mean_n_new_inf1549__7 mean_n_new_inf1549__8
 	mean_n_new_inf1549__9 mean_n_new_inf1549__10 mean_n_new_inf1549__11 mean_n_new_inf1549__12
+	mean_n_new_inf1549__99
 	;
 	where cald=2070;
 run;
@@ -503,6 +526,7 @@ label mean_p_newp_ge1__9 = "FSW";
 label mean_p_newp_ge1__10 = "MSM";
 label mean_p_newp_ge1__11 = "test";
 label mean_p_newp_ge1__12 = "adherence";
+label mean_p_newp_ge1__99 = "status quo";
 series  x=cald y=mean_p_newp_ge1__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_newp_ge1__0 	upper=p95_p_newp_ge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_newp_ge1__1/	lineattrs = (color=darkred thickness = 2);
@@ -529,6 +553,8 @@ series  x=cald y=mean_p_newp_ge1__11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_newp_ge1__11 	upper=p95_p_newp_ge1__11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_newp_ge1__12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_newp_ge1__12 	upper=p95_p_newp_ge1__12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_newp_ge1__99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_newp_ge1__99 	upper=p95_p_newp_ge1__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -550,6 +576,7 @@ label mean_p_ep_9 = "FSW";
 label mean_p_ep_10 = "MSM";
 label mean_p_ep_11 = "test";
 label mean_p_ep_12 = "adherence";
+label mean_p_ep_99 = "status quo";
 series  x=cald y=mean_p_ep_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_ep_0 	upper=p95_p_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_ep_1/	lineattrs = (color=darkred thickness = 2);
@@ -576,6 +603,8 @@ series  x=cald y=mean_p_ep_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_ep_11 	upper=p95_p_ep_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_ep_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_ep_12 	upper=p95_p_ep_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_ep_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_ep_99 	upper=p95_p_ep_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -598,6 +627,7 @@ label mean_p_m_npge1__9 = "FSW";
 label mean_p_m_npge1__10 = "MSM";
 label mean_p_m_npge1__11 = "test";
 label mean_p_m_npge1__12 = "adherence";
+label mean_p_m_npge1__99 = "status quo";
 series  x=cald y=mean_p_m_npge1__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_m_npge1__0 	upper=p95_p_m_npge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_m_npge1__1/	lineattrs = (color=darkred thickness = 2);
@@ -624,6 +654,8 @@ series  x=cald y=mean_p_m_npge1__11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_m_npge1__11 	upper=p95_p_m_npge1__11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_m_npge1__12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_m_npge1__12 	upper=p95_p_m_npge1__12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_m_npge1__99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_m_npge1__99 	upper=p95_p_m_npge1__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 proc sgplot data=d; 
@@ -643,6 +675,7 @@ label mean_p_w_npge1__9 = "FSW";
 label mean_p_w_npge1__10 = "MSM";
 label mean_p_w_npge1__11 = "test";
 label mean_p_w_npge1__12 = "adherence";
+label mean_p_w_npge1__99 = "status quo";
 series  x=cald y=mean_p_w_npge1__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_w_npge1__0 	upper=p95_p_w_npge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_w_npge1__1/	lineattrs = (color=darkred thickness = 2);
@@ -669,6 +702,8 @@ series  x=cald y=mean_p_w_npge1__11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_w_npge1__11 	upper=p95_p_w_npge1__11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_w_npge1__12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_w_npge1__12 	upper=p95_p_w_npge1__12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_w_npge1__99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_w_npge1__99 	upper=p95_p_w_npge1__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -690,6 +725,7 @@ label mean_p_diag_m_9 = "FSW";
 label mean_p_diag_m_10 = "MSM";
 label mean_p_diag_m_11 = "test";
 label mean_p_diag_m_12 = "adherence";
+label mean_p_diag_m_99 = "status quo";
 series  x=cald y=mean_p_diag_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -716,6 +752,8 @@ series  x=cald y=mean_p_diag_m_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_11 	upper=p95_p_diag_m_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_m_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_12 	upper=p95_p_diag_m_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_diag_m_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_diag_m_99 	upper=p95_p_diag_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -736,6 +774,7 @@ label mean_p_diag_w_9 = "FSW";
 label mean_p_diag_w_10 = "MSM";
 label mean_p_diag_w_11 = "test";
 label mean_p_diag_w_12 = "adherence";
+label mean_p_diag_w_99 = "status quo";
 series  x=cald y=mean_p_diag_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -762,6 +801,8 @@ series  x=cald y=mean_p_diag_w_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_11 	upper=p95_p_diag_w_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_w_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_12 	upper=p95_p_diag_w_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_diag_w_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_diag_w_99 	upper=p95_p_diag_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -784,6 +825,7 @@ label mean_p_art_m_9 = "FSW";
 label mean_p_art_m_10 = "MSM";
 label mean_p_art_m_11 = "test";
 label mean_p_art_m_12 = "adherence";
+label mean_p_art_m_99 = "status quo";
 series  x=cald y=mean_p_art_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_m_0 	upper=p95_p_art_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -810,6 +852,8 @@ series  x=cald y=mean_p_art_m_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_art_m_11 	upper=p95_p_art_m_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_m_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_art_m_12 	upper=p95_p_art_m_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_art_m_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_art_m_99 	upper=p95_p_art_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -831,6 +875,7 @@ label mean_p_art_w_9 = "FSW";
 label mean_p_art_w_10 = "MSM";
 label mean_p_art_w_11 = "test";
 label mean_p_art_w_12 = "adherence";
+label mean_p_art_w_99 = "status quo";
 series  x=cald y=mean_p_art_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_w_0 	upper=p95_p_art_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -857,6 +902,8 @@ series  x=cald y=mean_p_art_w_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_art_w_11 	upper=p95_p_art_w_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_w_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_art_w_12 	upper=p95_p_art_w_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_art_w_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_art_w_99 	upper=p95_p_art_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -878,6 +925,7 @@ label mean_p_diag_art_m_9 = "FSW";
 label mean_p_diag_art_m_10 = "MSM";
 label mean_p_diag_art_m_11 = "test";
 label mean_p_diag_art_m_12 = "adherence";
+label mean_p_diag_art_m_99 = "status quo";
 series  x=cald y=mean_p_diag_art_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_0 	upper=p95_p_diag_art_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -904,6 +952,8 @@ series  x=cald y=mean_p_diag_art_m_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_11 	upper=p95_p_diag_art_m_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_m_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_12 	upper=p95_p_diag_art_m_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_diag_art_m_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_diag_art_m_99 	upper=p95_p_diag_art_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -925,6 +975,7 @@ label mean_p_diag_art_w_9 = "FSW";
 label mean_p_diag_art_w_10 = "MSM";
 label mean_p_diag_art_w_11 = "test";
 label mean_p_diag_art_w_12 = "adherence";
+label mean_p_diag_art_w_99 = "status quo";
 series  x=cald y=mean_p_diag_art_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_0 	upper=p95_p_diag_art_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -951,6 +1002,8 @@ series  x=cald y=mean_p_diag_art_w_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_11 	upper=p95_p_diag_art_w_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_w_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_12 	upper=p95_p_diag_art_w_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_diag_art_w_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_diag_art_w_99 	upper=p95_p_diag_art_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -972,6 +1025,7 @@ label mean_p_art_vls_m_9 = "FSW";
 label mean_p_art_vls_m_10 = "MSM";
 label mean_p_art_vls_m_11 = "test";
 label mean_p_art_vls_m_12 = "adherence";
+label mean_p_art_vls_m_99 = "status quo";
 series  x=cald y=mean_p_art_vls_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_0 	upper=p95_p_art_vls_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -998,6 +1052,8 @@ series  x=cald y=mean_p_art_vls_m_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_11 	upper=p95_p_art_vls_m_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_m_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_12 	upper=p95_p_art_vls_m_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_art_vls_m_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_art_vls_m_99 	upper=p95_p_art_vls_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -1019,6 +1075,7 @@ label mean_p_art_vls_w_9 = "FSW";
 label mean_p_art_vls_w_10 = "MSM";
 label mean_p_art_vls_w_11 = "test";
 label mean_p_art_vls_w_12 = "adherence";
+label mean_p_art_vls_w_99 = "status quo";
 series  x=cald y=mean_p_art_vls_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_0 	upper=p95_p_art_vls_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1045,6 +1102,8 @@ series  x=cald y=mean_p_art_vls_w_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_11 	upper=p95_p_art_vls_w_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_w_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_12 	upper=p95_p_art_vls_w_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_art_vls_w_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_art_vls_w_99 	upper=p95_p_art_vls_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -1066,6 +1125,7 @@ label mean_p_mcirc_1549m_9 = "FSW";
 label mean_p_mcirc_1549m_10 = "MSM";
 label mean_p_mcirc_1549m_11 = "test";
 label mean_p_mcirc_1549m_12 = "adherence";
+label mean_p_mcirc_1549m_99 = "status quo";
 series  x=cald y=mean_p_mcirc_1549m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1549m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1092,6 +1152,8 @@ series  x=cald y=mean_p_mcirc_1549m_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_11 	upper=p95_p_mcirc_1549m_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1549m_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_12 	upper=p95_p_mcirc_1549m_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1549m_12/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1549m_99 	upper=p95_p_mcirc_1549m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 * Proportion circumcised (15-24);
@@ -1112,6 +1174,7 @@ label mean_p_mcirc_1524m_9 = "FSW";
 label mean_p_mcirc_1524m_10 = "MSM";
 label mean_p_mcirc_1524m_11 = "test";
 label mean_p_mcirc_1524m_12 = "adherence";
+label mean_p_mcirc_1524m_99 = "status quo";
 series  x=cald y=mean_p_mcirc_1524m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_0 	upper=p95_p_mcirc_1524m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1524m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1138,6 +1201,8 @@ series  x=cald y=mean_p_mcirc_1524m_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_11 	upper=p95_p_mcirc_1524m_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1524m_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_12 	upper=p95_p_mcirc_1524m_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_p_mcirc_1524m_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_p_mcirc_1524m_99 	upper=p95_p_mcirc_1524m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 * Number on PrEP;
@@ -1158,6 +1223,7 @@ label mean_n_onprep_9 = "FSW";
 label mean_n_onprep_10 = "MSM";
 label mean_n_onprep_11 = "test";
 label mean_n_onprep_12 = "adherence";
+label mean_n_onprep_99 = "status quo";
 series  x=cald y=mean_n_onprep_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_onprep_0 	upper=p95_n_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_onprep_1/	lineattrs = (color=darkred thickness = 2);
@@ -1184,6 +1250,8 @@ series  x=cald y=mean_n_onprep_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_n_onprep_11 	upper=p95_n_onprep_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_onprep_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_n_onprep_12 	upper=p95_n_onprep_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_onprep_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_n_onprep_99 	upper=p95_n_onprep_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 proc print data=d;
@@ -1233,6 +1301,7 @@ data prep_sums; set d;
 /*	cum_onprep_any_10 + mean_n_onprep_10;*/
 /*	cum_onprep_any_11 + mean_n_onprep_11;*/
 /*	cum_onprep_any_12 + mean_n_onprep_12;*/
+	cum_onprep_any_99 + mean_n_onprep_99;
 	cum_onprep_oral_0 + mean_n_onprep_oral_0;
 /*	cum_onprep_oral_1 + mean_n_onprep_oral_1;*/
 	cum_onprep_oral_2 + mean_n_onprep_oral_2;
@@ -1246,6 +1315,7 @@ data prep_sums; set d;
 /*	cum_onprep_oral_10 + mean_n_onprep_oral_10;*/
 /*	cum_onprep_oral_11 + mean_n_onprep_oral_11;*/
 /*	cum_onprep_oral_12 + mean_n_onprep_oral_12;*/
+	cum_onprep_oral_99 + mean_n_onprep_oral_99;
 	cum_onprep_len_0 + mean_n_onprep_len_0;
 /*	cum_onprep_len_1 + mean_n_onprep_len_1;*/
 	cum_onprep_len_2 + mean_n_onprep_len_2;
@@ -1259,17 +1329,18 @@ data prep_sums; set d;
 /*	cum_onprep_len_10 + mean_n_onprep_len_10;*/
 /*	cum_onprep_len_11 + mean_n_onprep_len_11;*/
 /*	cum_onprep_len_12 + mean_n_onprep_len_12;*/
+	cum_onprep_len_99 + mean_n_onprep_len_99;
 	ratio_oral_len_2 = cum_onprep_oral_2 / cum_onprep_len_2;	* should be 3/7 = 0.43;
 	ratio_oral_len_4 = cum_onprep_oral_4 / cum_onprep_len_4;	* should be 3/7 = 0.43;
 	ratio_oral_len_6 = cum_onprep_oral_6 / cum_onprep_len_6;	* should be 3/7 = 0.43;
 
 	keep cald 
 		cum_onprep_any_0 cum_onprep_any_1 cum_onprep_any_2 cum_onprep_any_3 cum_onprep_any_4 cum_onprep_any_5 cum_onprep_any_6 
-		cum_onprep_any_7 cum_onprep_any_8 cum_onprep_any_9 cum_onprep_any_10 cum_onprep_any_11 cum_onprep_any_12
+		cum_onprep_any_7 cum_onprep_any_8 cum_onprep_any_9 cum_onprep_any_10 cum_onprep_any_11 cum_onprep_any_12 cum_onprep_any_99
 		cum_onprep_oral_0 cum_onprep_oral_1 cum_onprep_oral_2 cum_onprep_oral_3 cum_onprep_oral_4 cum_onprep_oral_5 cum_onprep_oral_6 
-		cum_onprep_oral_7 cum_onprep_oral_8 cum_onprep_oral_9 cum_onprep_oral_10 cum_onprep_oral_11 cum_onprep_oral_12
+		cum_onprep_oral_7 cum_onprep_oral_8 cum_onprep_oral_9 cum_onprep_oral_10 cum_onprep_oral_11 cum_onprep_oral_12 cum_onprep_oral_99
 		cum_onprep_len_0 cum_onprep_len_1 cum_onprep_len_2 cum_onprep_len_3 cum_onprep_len_4 cum_onprep_len_5 cum_onprep_len_6 
-		cum_onprep_len_7 cum_onprep_len_8 cum_onprep_len_9 cum_onprep_len_10 cum_onprep_len_11 cum_onprep_len_12
+		cum_onprep_len_7 cum_onprep_len_8 cum_onprep_len_9 cum_onprep_len_10 cum_onprep_len_11 cum_onprep_len_12 cum_onprep_len_99
 		ratio_oral_len_2 ratio_oral_len_4 ratio_oral_len_6
 		;
 	if cald ne 2073.75 then delete;
@@ -1299,6 +1370,7 @@ label mean_n_sw_program_visit_9 = "FSW";
 label mean_n_sw_program_visit_10 = "MSM";
 label mean_n_sw_program_visit_11 = "test";
 label mean_n_sw_program_visit_12 = "adherence";
+label mean_n_sw_program_visit_99 = "status quo";
 series  x=cald y=mean_n_sw_program_visit_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_sw_program_visit_0 	upper=p95_n_sw_program_visit_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_sw_program_visit_1/	lineattrs = (color=darkred thickness = 2);
@@ -1325,6 +1397,8 @@ series  x=cald y=mean_n_sw_program_visit_11/	lineattrs = (color=pink thickness =
 /*band    x=cald lower=p5_n_sw_program_visit_11 	upper=p95_n_sw_program_visit_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_sw_program_visit_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_n_sw_program_visit_12 	upper=p95_n_sw_program_visit_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_sw_program_visit_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_n_sw_program_visit_99 	upper=p95_n_sw_program_visit_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -1347,6 +1421,7 @@ label mean_n_self_tested_9 = "FSW";
 label mean_n_self_tested_10 = "MSM";
 label mean_n_self_tested_11 = "test";
 label mean_n_self_tested_12 = "adherence";
+label mean_n_self_tested_99 = "status quo";
 series  x=cald y=mean_n_self_tested_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_self_tested_0 	upper=p95_n_self_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_self_tested_1/	lineattrs = (color=darkred thickness = 2);
@@ -1373,6 +1448,8 @@ series  x=cald y=mean_n_self_tested_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_n_self_tested_11 	upper=p95_n_self_tested_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_self_tested_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_n_self_tested_12 	upper=p95_n_self_tested_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_self_tested_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_n_self_tested_99 	upper=p95_n_self_tested_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -1394,6 +1471,7 @@ label mean_n_tested_m_9 = "FSW";
 label mean_n_tested_m_10 = "MSM";
 label mean_n_tested_m_11 = "test";
 label mean_n_tested_m_12 = "adherence";
+label mean_n_tested_m_99 = "status quo";
 series  x=cald y=mean_n_tested_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_tested_m_0 	upper=p95_n_tested_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_tested_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1420,6 +1498,8 @@ series  x=cald y=mean_n_tested_m_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_n_tested_m_11 	upper=p95_n_tested_m_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_tested_m_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_n_tested_m_12 	upper=p95_n_tested_m_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_tested_m_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_n_tested_m_99 	upper=p95_n_tested_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 proc sgplot data=d; 
@@ -1439,6 +1519,7 @@ label mean_n_tested_w_9 = "FSW";
 label mean_n_tested_w_10 = "MSM";
 label mean_n_tested_w_11 = "test";
 label mean_n_tested_w_12 = "adherence";
+label mean_n_tested_w_99 = "status quo";
 series  x=cald y=mean_n_tested_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_tested_w_0 	upper=p95_n_tested_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_tested_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1465,6 +1546,8 @@ series  x=cald y=mean_n_tested_w_11/	lineattrs = (color=pink thickness = 2);
 /*band    x=cald lower=p5_n_tested_w_11 	upper=p95_n_tested_w_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_tested_w_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_n_tested_w_12 	upper=p95_n_tested_w_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_tested_w_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_n_tested_w_99 	upper=p95_n_tested_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
 
 
@@ -1473,7 +1556,6 @@ run;quit;
 ods html close;
 
 ods rtf close;run;
-
 
 
 
