@@ -3264,9 +3264,8 @@ if circ_inc_rate_year_i = 5 and caldate{t}>=2030 then do; 	*option=5 - continue 
 	if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_30_50;
 end;
 
-if circ_inc_rate_year_i = 6 and caldate{t}>=&year_interv; then do; 	*option=6 - increase prob_circ directly;
-	prob_circ = prob_circ*3
-;
+if circ_inc_rate_year_i = 6 and caldate{t}>=&year_interv then do; 	*option=6 - increase prob_circ directly;
+	prob_circ = prob_circ*3;
 end;
 
 ***Zim specific;	*JAS Feb24;
