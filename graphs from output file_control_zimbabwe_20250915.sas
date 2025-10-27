@@ -205,6 +205,8 @@ run;
 %option_(10);
 %option_(11);
 %option_(12);
+%option_(30);
+%option_(31);
 run;
 
 
@@ -343,8 +345,30 @@ g12_121 g12_122 g12_123 g12_124 g12_125 g12_126 g12_127 g12_128 g12_129 g12_130 
 by cald;
 run;
 
+data d_g; * this is number of variables in %let var = above ;
+merge 
+g30_1   g30_2   g30_3   g30_4   g30_5   g30_6   g30_7   g30_8   g30_9   g30_10  g30_11  g30_12  g30_13  g30_14  g30_15  g30_16  g30_17  g30_18  g30_19  g30_20
+g30_21  g30_22  g30_23  g30_24  g30_25  g30_26  g30_27  g30_28  g30_29  g30_30  g30_31  g30_32  g30_33  g30_34  g30_35  g30_36  g30_37  g30_38  g30_39  g30_40
+g30_41  g30_42  g30_43  g30_44  g30_45  g30_46  g30_47  g30_48  g30_49  g30_50  g30_51  g30_52  g30_53  g30_54  g30_55  g30_56  g30_57  g30_58  g30_59  g30_60  
+g30_61  g30_62  g30_63  g30_64  g30_65  g30_66  g30_67  g30_68  g30_69  g30_70  g30_71  g30_72  g30_73  g30_74  g30_75  g30_76  g30_77  g30_78  g30_79  g30_80  
+g30_81  g30_82  g30_83  g30_84  g30_85  g30_86  g30_87  g30_88  g30_89  g30_90  g30_91  g30_92  g30_93  g30_94  g30_95  g30_96  g30_97  g30_98  g30_99  g30_100
+g30_101 g30_102 g30_103 g30_104 g30_105 g30_106 g30_107 g30_108 g30_109 g30_110 g30_111 g30_112 g30_113 g30_114 g30_115 g30_116 g30_117 g30_118 g30_119 g30_120
+g30_121 g30_122 g30_123 g30_124 g30_125 g30_126 g30_127 g30_128 g30_129 g30_130 g30_131 g30_132 g30_133
+
+g31_1   g31_2   g31_3   g31_4   g31_5   g31_6   g31_7   g31_8   g31_9   g31_10  g31_11  g31_12  g31_13  g31_14  g31_15  g31_16  g31_17  g31_18  g31_19  g31_20
+g31_21  g31_22  g31_23  g31_24  g31_25  g31_26  g31_27  g31_28  g31_29  g31_30  g31_31  g31_32  g31_33  g31_34  g31_35  g31_36  g31_37  g31_38  g31_39  g31_40
+g31_41  g31_42  g31_43  g31_44  g31_45  g31_46  g31_47  g31_48  g31_49  g31_50  g31_51  g31_52  g31_53  g31_54  g31_55  g31_56  g31_57  g31_58  g31_59  g31_60  
+g31_61  g31_62  g31_63  g31_64  g31_65  g31_66  g31_67  g31_68  g31_69  g31_70  g31_71  g31_72  g31_73  g31_74  g31_75  g31_76  g31_77  g31_78  g31_79  g31_80  
+g31_81  g31_82  g31_83  g31_84  g31_85  g31_86  g31_87  g31_88  g31_89  g31_90  g31_91  g31_92  g31_93  g31_94  g31_95  g31_96  g31_97  g31_98  g31_99  g31_100
+g31_101 g31_102 g31_103 g31_104 g31_105 g31_106 g31_107 g31_108 g31_109 g31_110 g31_111 g31_112 g31_113 g31_114 g31_115 g31_116 g31_117 g31_118 g31_119 g31_120
+g31_121 g31_122 g31_123 g31_124 g31_125 g31_126 g31_127 g31_128 g31_129 g31_130 g31_131 g31_132 g31_133
+;
+by cald;
+run;
+
+
 data d; * this is number of variables in %let var = above ;
-	merge d_a d_b d_c d_d d_e d_f;
+	merge d_a d_b d_c d_d d_e d_f d_g;
 	by cald;
 	%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe.sas";
 run;
@@ -1140,7 +1164,7 @@ series  x=cald y=mean_p_mcirc_1524m_12/	lineattrs = (color=brown thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_12 	upper=p95_p_mcirc_1524m_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 run;quit;
 
-* Number on PrEP;
+* Number on PrEP - including extra PrEP otpions;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_onprep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -1152,12 +1176,14 @@ label mean_n_onprep_3 = "PrEPoral_AGYW";
 label mean_n_onprep_4 = "PrEPmix_AGYW";
 label mean_n_onprep_5 = "PrEPoral_MSM";
 label mean_n_onprep_6 = "PrEPmix_MSM";
-label mean_n_onprep_7 = "vmmc";
-label mean_n_onprep_8 = "condom";
+/*label mean_n_onprep_7 = "vmmc";*/
+/*label mean_n_onprep_8 = "condom";*/
 label mean_n_onprep_9 = "FSW";
-label mean_n_onprep_10 = "MSM";
-label mean_n_onprep_11 = "test";
-label mean_n_onprep_12 = "adherence";
+/*label mean_n_onprep_10 = "MSM";*/
+/*label mean_n_onprep_11 = "test";*/
+/*label mean_n_onprep_12 = "adherence";*/
+label mean_n_onprep_30 = "PrEPoral_AGYW+PLW";
+label mean_n_onprep_31 = "PrEPmix_AGYW+PLW";
 series  x=cald y=mean_n_onprep_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_onprep_0 	upper=p95_n_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_onprep_1/	lineattrs = (color=darkred thickness = 2);
@@ -1172,50 +1198,102 @@ series  x=cald y=mean_n_onprep_5/	lineattrs = (color=lightgreen thickness = 2);
 /*band    x=cald lower=p5_n_onprep_5 	upper=p95_n_onprep_5  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_onprep_6/	lineattrs = (color=green thickness = 2);
 /*band    x=cald lower=p5_n_onprep_6 	upper=p95_n_onprep_6  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_n_onprep_7/	lineattrs = (color=lightblue thickness = 2);
+/*series  x=cald y=mean_n_onprep_7/	lineattrs = (color=lightblue thickness = 2);*/
 /*band    x=cald lower=p5_n_onprep_7 	upper=p95_n_onprep_7  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_n_onprep_8/	lineattrs = (color=blue thickness = 2);
+/*series  x=cald y=mean_n_onprep_8/	lineattrs = (color=blue thickness = 2);*/
 /*band    x=cald lower=p5_n_onprep_ 	upper=p95_n_onprep_8  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_onprep_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_n_onprep_9 	upper=p95_n_onprep_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_n_onprep_10/	lineattrs = (color=lightpurple thickness = 2);
+/*series  x=cald y=mean_n_onprep_10/	lineattrs = (color=lightpurple thickness = 2);*/
 /*band    x=cald lower=p5_n_onprep_10 	upper=p95_n_onprep_10  / transparency=0.9 fillattrs = (color=lightpurple) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_n_onprep_11/	lineattrs = (color=pink thickness = 2);
+/*series  x=cald y=mean_n_onprep_11/	lineattrs = (color=pink thickness = 2);*/
 /*band    x=cald lower=p5_n_onprep_11 	upper=p95_n_onprep_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_n_onprep_12/	lineattrs = (color=brown thickness = 2);
+/*series  x=cald y=mean_n_onprep_12/	lineattrs = (color=brown thickness = 2);*/
 /*band    x=cald lower=p5_n_onprep_12 	upper=p95_n_onprep_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_onprep_30/	lineattrs = (color=darkorange thickness = 2);
+/*band    x=cald lower=p5_n_onprep_30 	upper=p95_n_onprep_30  / transparency=0.9 fillattrs = (color=darkorange) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_n_onprep_31/	lineattrs = (color=darkyellow thickness = 2);
+/*band    x=cald lower=p5_n_onprep_31 	upper=p95_n_onprep_31  / transparency=0.9 fillattrs = (color=darkyellow) legendlabel= "Model 90% range";*/
 run;quit;
 
-proc print data=d;
-	var mean_n_onprep_0 
-	;
-	where cald=2070;
-run;
-
-/*
-n_onprep			n_onprep_oral		n_onprep_len
-*/
-
+* PrEP for FSW;
 proc print data=d;
 	var 
-	mean_n_elig_prep_1  mean_n_sw_1564__1	mean_n_onprep_sw_1		mean_n_onprep_w_1
-	mean_n_elig_prep_2	mean_n_sw_1564__2	mean_n_onprep_sw_2		mean_n_onprep_w_2	mean_n_onprep_oral_sw_2		mean_n_onprep_len_sw_2
-
-	mean_n_elig_prep_3  mean_n_agyw_pg_3	mean_n_onprep_agyw_pg_3	mean_n_onprep_w_3
-	mean_n_elig_prep_4	mean_n_agyw_pg_4	mean_n_onprep_agyw_pg_4	mean_n_onprep_w_4	mean_n_onprep_oral_agyw_pg_4	mean_n_onprep_len_agyw_pg_4
-
-	mean_n_elig_prep_5  mean_n_alive_msm_5	mean_n_onprep_msm_5		mean_n_onprep_m_5
-	mean_n_elig_prep_6	mean_n_alive_msm_6	mean_n_onprep_msm_6		mean_n_onprep_m_6	mean_n_onprep_oral_msm_6	mean_n_onprep_len_msm_6
-
-	mean_pc_elig_onprep_1	mean_pc_elig_onprep_2	mean_pc_elig_onprep_3	mean_pc_elig_onprep_4	mean_pc_elig_onprep_5	mean_pc_elig_onprep_6	
+	mean_n_elig_prep_1  mean_n_sw_1564__1	mean_n_onprep_1		mean_n_onprep_oral_1	mean_n_onprep_len_1		mean_n_onprep_sw_1		mean_n_onprep_w_1
+	mean_n_elig_prep_2	mean_n_sw_1564__2	mean_n_onprep_2		mean_n_onprep_oral_2	mean_n_onprep_len_2		mean_n_onprep_sw_2		mean_n_onprep_w_2	mean_n_onprep_oral_sw_2		mean_n_onprep_len_sw_2
 	;
-	where cald=2030;
+	where cald=2050;
 run;
 
+* PrEP for AGYW;
+proc print data=d;
+	var 
+	mean_n_elig_prep_3  mean_n_agyw_pg_3	mean_n_onprep_3		mean_n_onprep_oral_3	mean_n_onprep_len_3		mean_n_onprep_agyw_pg_3	mean_n_onprep_w_3
+	mean_n_elig_prep_4	mean_n_agyw_pg_4	mean_n_onprep_4		mean_n_onprep_oral_4	mean_n_onprep_len_4		mean_n_onprep_agyw_pg_4	mean_n_onprep_w_4	mean_n_onprep_oral_agyw_pg_4	mean_n_onprep_len_agyw_pg_4
+	;
+	where cald=2050;
+run;
+
+* PrEP for AGYW+PLW;
+proc print data=d;
+	var 
+	mean_n_elig_prep_30	mean_n_agyw_plw_30	mean_n_onprep_30	mean_n_onprep_oral_30	mean_n_onprep_len_30		mean_n_onprep_agyw_plw_30	mean_n_onprep_w_30
+	mean_n_elig_prep_31	mean_n_agyw_plw_31	mean_n_onprep_31	mean_n_onprep_oral_31	mean_n_onprep_len_31		mean_n_onprep_agyw_plw_31	mean_n_onprep_w_31	mean_n_onprep_oral_agyw_plw_31	mean_n_onprep_len_agyw_plw_31
+	;
+	where cald=2050;
+run;
+
+* PrEP for MSM;
+proc print data=d;
+	var 
+	mean_n_elig_prep_5  mean_n_alive_msm_5	mean_n_onprep_5		mean_n_onprep_oral_5	mean_n_onprep_len_5		mean_n_onprep_msm_5		mean_n_onprep_m_5
+	mean_n_elig_prep_6	mean_n_alive_msm_6	mean_n_onprep_6		mean_n_onprep_oral_6	mean_n_onprep_len_6		mean_n_onprep_msm_6		mean_n_onprep_m_6	mean_n_onprep_oral_msm_6	mean_n_onprep_len_msm_6
+	;
+	where cald=2050;
+run;
+
+* Proportion eligible on PrEP;
+proc print data=d;
+	var 
+	mean_pc_elig_onprep_1	mean_pc_elig_onprep_2	mean_pc_elig_onprep_3	mean_pc_elig_onprep_4	mean_pc_elig_onprep_5	mean_pc_elig_onprep_6	mean_pc_elig_onprep_30	mean_pc_elig_onprep_31
+	;
+	where cald=2050;
+run;
+
+* % eligible on PrEP;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "mean_pc_elig_onprep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label mean_pc_elig_onprep_0 = "minimal";
+label mean_pc_elig_onprep_1 = "PrEPoral_FSW";
+label mean_pc_elig_onprep_2 = "PrEPmix_FSW";
+label mean_pc_elig_onprep_3 = "PrEPoral_AGYW";
+label mean_pc_elig_onprep_4 = "PrEPmix_AGYW";
+label mean_pc_elig_onprep_5 = "PrEPoral_MSM";
+label mean_pc_elig_onprep_6 = "PrEPmix_MSM";
+label mean_pc_elig_onprep_9 = "FSW";
+series  x=cald y=mean_pc_elig_onprep_0/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_pc_elig_onprep_0 	upper=p95_pc_elig_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_pc_elig_onprep_1/	lineattrs = (color=darkred thickness = 2);
+/*band    x=cald lower=p5_pc_elig_onprep_1 	upper=p95_pc_elig_onprep_1  / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_pc_elig_onprep_2/	lineattrs = (color=red thickness = 2);
+/*band    x=cald lower=p5_pc_elig_onprep_2 	upper=p95_pc_elig_onprep_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_pc_elig_onprep_3/	lineattrs = (color=orange thickness = 2);
+/*band    x=cald lower=p5_pc_elig_onprep_3 	upper=p95_pc_elig_onprep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_pc_elig_onprep_4/	lineattrs = (color=yellow thickness = 2);
+/*band    x=cald lower=p5_pc_elig_onprep_4 	upper=p95_pc_elig_onprep_4  / transparency=0.9 fillattrs = (color=yellow) legendlabkel= "Model 90% range";*/
+series  x=cald y=mean_pc_elig_onprep_5/	lineattrs = (color=lightgreen thickness = 2);
+/*band    x=cald lower=p5_pc_elig_onprep_5 	upper=p95_pc_elig_onprep_5  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_pc_elig_onprep_6/	lineattrs = (color=green thickness = 2);
+/*band    x=cald lower=p5_pc_elig_onprep_6 	upper=p95_pc_elig_onprep_6  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_pc_elig_onprep_9/	lineattrs = (color=purple thickness = 2);
+/*band    x=cald lower=p5_pc_elig_onprep_9 	upper=p95_pc_elig_onprep_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
+run;quit;
 
 
 
-%let &year_interv=2024;
+%let year_interv=2024;
 /*%put &year_interv;*/
 
 data prep_sums; set d;
@@ -1233,6 +1311,8 @@ data prep_sums; set d;
 /*	cum_onprep_any_10 + mean_n_onprep_10;*/
 /*	cum_onprep_any_11 + mean_n_onprep_11;*/
 /*	cum_onprep_any_12 + mean_n_onprep_12;*/
+	cum_onprep_any_30 + mean_n_onprep_30;
+	cum_onprep_any_31 + mean_n_onprep_31;
 	cum_onprep_oral_0 + mean_n_onprep_oral_0;
 /*	cum_onprep_oral_1 + mean_n_onprep_oral_1;*/
 	cum_onprep_oral_2 + mean_n_onprep_oral_2;
@@ -1246,6 +1326,8 @@ data prep_sums; set d;
 /*	cum_onprep_oral_10 + mean_n_onprep_oral_10;*/
 /*	cum_onprep_oral_11 + mean_n_onprep_oral_11;*/
 /*	cum_onprep_oral_12 + mean_n_onprep_oral_12;*/
+	cum_onprep_oral_30 + mean_n_onprep_oral_30;
+	cum_onprep_oral_31 + mean_n_onprep_oral_31;
 	cum_onprep_len_0 + mean_n_onprep_len_0;
 /*	cum_onprep_len_1 + mean_n_onprep_len_1;*/
 	cum_onprep_len_2 + mean_n_onprep_len_2;
@@ -1259,27 +1341,32 @@ data prep_sums; set d;
 /*	cum_onprep_len_10 + mean_n_onprep_len_10;*/
 /*	cum_onprep_len_11 + mean_n_onprep_len_11;*/
 /*	cum_onprep_len_12 + mean_n_onprep_len_12;*/
+	cum_onprep_len_30 + mean_n_onprep_len_30;
+	cum_onprep_len_31 + mean_n_onprep_len_31;
 	ratio_oral_len_2 = cum_onprep_oral_2 / cum_onprep_len_2;	* should be 3/7 = 0.43;
 	ratio_oral_len_4 = cum_onprep_oral_4 / cum_onprep_len_4;	* should be 3/7 = 0.43;
 	ratio_oral_len_6 = cum_onprep_oral_6 / cum_onprep_len_6;	* should be 3/7 = 0.43;
+	ratio_oral_len_31 = cum_onprep_oral_31 / cum_onprep_len_31;	* should be 3/7 = 0.43;
 
 	keep cald 
 		cum_onprep_any_0 cum_onprep_any_1 cum_onprep_any_2 cum_onprep_any_3 cum_onprep_any_4 cum_onprep_any_5 cum_onprep_any_6 
-		cum_onprep_any_7 cum_onprep_any_8 cum_onprep_any_9 cum_onprep_any_10 cum_onprep_any_11 cum_onprep_any_12
+		cum_onprep_any_7 cum_onprep_any_8 cum_onprep_any_9 cum_onprep_any_10 cum_onprep_any_11 cum_onprep_any_12 cum_onprep_any_30 cum_onprep_any_31
 		cum_onprep_oral_0 cum_onprep_oral_1 cum_onprep_oral_2 cum_onprep_oral_3 cum_onprep_oral_4 cum_onprep_oral_5 cum_onprep_oral_6 
-		cum_onprep_oral_7 cum_onprep_oral_8 cum_onprep_oral_9 cum_onprep_oral_10 cum_onprep_oral_11 cum_onprep_oral_12
+		cum_onprep_oral_7 cum_onprep_oral_8 cum_onprep_oral_9 cum_onprep_oral_10 cum_onprep_oral_11 cum_onprep_oral_12 cum_onprep_oral_30 cum_onprep_oral_31
 		cum_onprep_len_0 cum_onprep_len_1 cum_onprep_len_2 cum_onprep_len_3 cum_onprep_len_4 cum_onprep_len_5 cum_onprep_len_6 
-		cum_onprep_len_7 cum_onprep_len_8 cum_onprep_len_9 cum_onprep_len_10 cum_onprep_len_11 cum_onprep_len_12
-		ratio_oral_len_2 ratio_oral_len_4 ratio_oral_len_6
+		cum_onprep_len_7 cum_onprep_len_8 cum_onprep_len_9 cum_onprep_len_10 cum_onprep_len_11 cum_onprep_len_12 cum_onprep_len_30 cum_onprep_len_31
+		ratio_oral_len_2 ratio_oral_len_4 ratio_oral_len_6 ratio_oral_len_31
 		;
 	if cald ne 2073.75 then delete;
 
 run;
 
 proc print data=prep_sums;
-	var ratio_oral_len_2 ratio_oral_len_4 ratio_oral_len_6;		* should be 3/7 = 0.43;
+	var ratio_oral_len_2 ratio_oral_len_4 ratio_oral_len_6 ratio_oral_len_31;		* should be 3/7 = 0.43;
 run;
 ** Too much len, not enough oral PrEP;
+
+
 
 * SW program;
 proc sgplot data=d; 

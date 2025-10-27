@@ -1,11 +1,15 @@
 * 22/10/25 updates
 
-- add circ_inc_rate_year_i=5 option to allow p_mcirc to continue to increase after 2030
+- add circ_inc_rate_year_i=5 and 6 options (ops 7 and 20) to allow p_mcirc to continue to increase after 2030
+- changed distribution of cablen_extra_pref from (0.5, 0.7, 1) to (0.1 0.3 0.5) to increase relative use of oral pref
+- changed distribution of prob_prep_oral_b from (0.05, 0.1, 0.2) to (0.1, 0.2, 0.3) (options 1 and 2) or to (0.2, 0.3, 0.4) (options 5 and 6) from year_interv onwards
+	to increase PrEP uptake in intervention
+- only run options 0-7, 20 and 99
 
 * 08/10/25_min updates
 
 - change back to Minimal as the comparator scenario, with self-testing NOT switched off
-- orignal condom intervention (ie before we added the 10% to reduce impact)
+- original condom intervention (ie before we added the 10% to reduce impact)
 
 * 08/10/25_sq updates
 
@@ -913,7 +917,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 * incr_res_risk_len_inf_3m;		incr_res_risk_len_inf_3m = incr_res_risk_cab_inf_3m;
 
-* cablen_extra_pref;			%sample_uniform(cablen_extra_pref,      0.5 0.7 1) ; 
+* cablen_extra_pref;			%sample_uniform(cablen_extra_pref, 0.1 0.3 0.5) ;	* test changing (0.5, 0.7, 1) to (0.1 0.3 0.5) - HIV Control Oct25; 
 * pref_prep_cablen_beta_s1;		pref_prep_cablen_beta_s1 = pref_prep_oral_beta_s1 + cablen_extra_pref ; * tends to be more preference for inj ;
 
 * hivtest_type_1_init_prep_cab; %sample(hivtest_type_1_init_prep_cab, 0 1, 0.5 0.5); hivtest_type_1_init_prep_cab=0;
@@ -2408,6 +2412,12 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 							  
 	*Option 1: FSW - oral PrEP;																										  
 	if option = 1 then do;
+		* Oct 2025;
+		* To increase uptake, could alternatively lower prep_willingness_threshold from 0.2 to 0.1 ;
+		if caldate_never_dot = &year_interv then do;
+			%sample_uniform(prob_prep_oral_b, 0.1  0.2  0.3); 				*Increase from (0.05, 0.1, 0.2) to (0.1, 0.2, 0.3);
+		end;
+
 		prep_any_strategy=20;												* Try new FSW strategy (no newp requirement);
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
 		eff_rate_test_startprep_any=rate_test_startprep_any;				* Restore SQ;
@@ -2418,6 +2428,10 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 	*Option 2: FSW - oral and inj PrEP;								* Assume inj is LEN ;																									  
 	if option = 2 then do;
+		if caldate_never_dot = &year_interv then do;
+			%sample_uniform(prob_prep_oral_b, 0.1  0.2  0.3); 				*Increase from (0.05, 0.1, 0.2) to (0.1, 0.2, 0.3);
+		end;
+
 		prep_any_strategy=20;												* Try new FSW strategy (no newp requirement);
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
 		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
@@ -2430,6 +2444,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 	*Option 3: AGYW and pregnant women - oral PrEP;																										  
 	if option = 3 then do;
+		*NB do not need to adjust prob_prep_oral_b to increase uptake for options 3 and 4;
 		prep_any_strategy=21;												* New strategy for HIV control;
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
 		eff_rate_test_startprep_any=rate_test_startprep_any;				* Restore SQ;
@@ -2440,6 +2455,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 	*Option 4: AGYW and pregnant women - oral and inj PrEP;					* Assume inj is LEN ;	
 	if option = 4 then do;
+		*NB do not need to adjust prob_prep_oral_b to increase uptake for options 3 and 4;
 		prep_any_strategy=21;												* New strategy for HIV control;
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
 		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
@@ -2452,6 +2468,11 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 	*Option 5: MSM - oral PrEP;																										  
 	if option = 5 then do;
+		* Oct 2025;
+		if caldate_never_dot = &year_interv then do;
+			%sample_uniform(prob_prep_oral_b, 0.2  0.3  0.4); 				*Increase from (0.05, 0.1, 0.2) to (0.2, 0.3, 0,4);
+		end;
+
 		prep_any_strategy=22;												* New strategy for HIV control;
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
 		eff_rate_test_startprep_any=rate_test_startprep_any;				* Restore SQ;
@@ -2463,6 +2484,11 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 	*Option 6: MSM - oral and inj PrEP;								* Assume inj is LEN ;	
 	if option = 6 then do;
+		* Oct 2025;
+		if caldate_never_dot = &year_interv then do;
+			%sample_uniform(prob_prep_oral_b, 0.2  0.3  0.4); 				*Increase from (0.05, 0.1, 0.2) to (0.2, 0.3, 0,4);
+		end;
+
 		prep_any_strategy=22;												* New strategy for HIV control;
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
 		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
@@ -2523,10 +2549,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 	* TEST EXTRA OPTIONS;
 	if option = 20 then do;		*VMMC in 15-49 years old;
-		circ_inc_rate_year_i = 0;					*Switch on VMMC;
-		eff_circ_inc_15_19 = circ_inc_15_19*3;		*Increase probability by factor of 3 ( we do this in MIHPSA - increase p_mcirc to 80% coverage in 15-49;
-		eff_circ_red_20_30 = circ_red_20_30*3;
-		eff_circ_red_30_50 = circ_red_30_50*3;
+		circ_inc_rate_year_i=6;    			*Increase VMMC until p_mcirc_1524m is 90%;				 
 	end;
 
 end;
@@ -3241,6 +3264,10 @@ if circ_inc_rate_year_i = 5 and caldate{t}>=2030 then do; 	*option=5 - continue 
 	if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_30_50;
 end;
 
+if circ_inc_rate_year_i = 6 and caldate{t}>=&year_interv; then do; 	*option=6 - increase prob_circ directly;
+	prob_circ = prob_circ*3
+;
+end;
 
 ***Zim specific;	*JAS Feb24;
 if country = 'Zimbabwe' then do;
@@ -22182,6 +22209,7 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,7);
 
+/*
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,8);
 
@@ -22196,7 +22224,7 @@ data r1; set a;
 
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,12);
-
+*/
 
 * Test extra VMMC option;
 data r1; set a;
