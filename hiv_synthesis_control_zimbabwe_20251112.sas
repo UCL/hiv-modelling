@@ -1,3 +1,10 @@
+* 12/11/25 updates
+
+- add option 13 for worst-case scenario - halving eff_pr_art_init
+- ensure that self-testing is removed from baseline/minimal to align with Optima halfHTS baseline (already done)
+- ensure that we are using the original (strong) condom impact (already done)
+- 
+
 * 10/11/25 updates
 
 - replace sampling of eff_rate_test_startprep_any and eff_prob_prep_oral_b in option with selection of one fixed value
@@ -2557,6 +2564,11 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 	if option = 12 then do;
 		return_interventions_off=0;    		*Restore SQ;				* Note this is not initialised - add to parameter section above;
 																		* Do we need to restore CD4 and VL testing as part of adherence support?; 
+	end;
+
+	*Option 13: worst-case;
+	if option = 13 then do;
+		eff_pr_art_init = pr_art_init / 2;	*Halve ART / PMTCT;
 	end;
 
 end;
@@ -22198,7 +22210,6 @@ data a ;  set r1 ;
 data r1 ; set a ;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
-
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
@@ -22217,7 +22228,6 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,6);
 
-/*
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,7);
 
@@ -22235,7 +22245,10 @@ data r1; set a;
 
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,12);
-*/
+
+* Worst-case;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,13);
 
 * SQ;
 data r1; set a;
