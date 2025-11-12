@@ -4288,8 +4288,8 @@ quit;
 *Output to be exported to fill in the file "Output template MIHPSAZimP2";
 
 data d;set a.d_all;run;
-proc contents data=d;run;
-proc freq data=d; table option;run;
+/*proc contents data=d;run;*/
+/*proc freq data=d; table option;run;*/
 %macro stock(o=);
 *Note: we do export 90% range even if they are name 95% LL and UL
 	   we do not export:
@@ -4689,7 +4689,7 @@ option nospool;
   ***Macro var used to calculate means across each year and transpose to one line per run,
   need to write manually all the years to merge;
 
-%let nfit=127;		/*** UPDATE IF ADD MORE RUNS ***/
+%let nfit=137;		/*** UPDATE IF ADD MORE RUNS ***/
 
 /* Define the lists of variables */
 %let var_list_flow = 
