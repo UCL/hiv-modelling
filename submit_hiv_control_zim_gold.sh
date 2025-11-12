@@ -39,6 +39,6 @@ echo "jobname for model runs: $jobname";
 echo "clock is set to: $clock";
 echo "using SAS HIV model file: $model";
 									   
-qsub -N $jobname -t 1-$runs -wd $finaloutdir -A HIVSynthMod -l $clock -v SASINPUT=$inputdir,SASOUTPUTDIR=$finaloutdir,SASMODEL=$model,SASTMPFILES=$tmpfiles $inputdir/testmodel.sh
+qsub -N $jobname -t 1-$runs -wd $finaloutdir -P Gold -A HIVSynthMod -l $clock -v SASINPUT=$inputdir,SASOUTPUTDIR=$finaloutdir,SASMODEL=$model,SASTMPFILES=$tmpfiles $inputdir/testmodel.sh
 
 

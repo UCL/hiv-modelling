@@ -372,6 +372,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 ***Extra outputs for calibration;
 ** Stocks;
+* n_sw_1549;					n_sw_1549 = s_sw_1549 * sf;
 * n_onprep_agyw_plw;			n_onprep_agyw_plw = s_prep_any_agyw_plw * sf; * Person years of PrEP distributed to sexually active AGYW and pregnant and breastfeeding women;
 * n_agyw_plw;					n_agyw_plw = s_agyw_plw * sf; * need to add new code in 15/09 version; * Number of people in the total population, sexually active AGYW and pregnant and breastfeeding women;
 
@@ -388,6 +389,10 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_onprep_len_sw;				n_onprep_len_sw = s_prep_len_sw * sf;		* NB different notation to other prep outputs;
 * n_onprep_oral_msm;			n_onprep_oral_msm = s_onprep_oral_msm * sf;
 * n_onprep_len_msm;				n_onprep_len_msm = s_onprep_len_msm * sf;
+
+* n_elig_prep_any_sw;			n_elig_prep_any_sw = s_elig_prep_any_sw * sf;
+* n_elig_prep_w_1549_;			n_elig_prep_w_1549_ = s_elig_prep_any_w_1549 * sf;
+* n_elig_prep_w_1564_;			n_elig_prep_w_1564_ = s_elig_prep_any_w_1564 * sf;
 
 * n_tested_m;					n_tested_m = s_tested_m * sf * 4;
 * n_tested_w;					n_tested_w = (s_tested_f + s_tested_anc_prevdiag )* sf * 4;
@@ -433,10 +438,13 @@ n_circumcised_15_24_m			n_onprep_agyw_pg		n_agyw_pg	/* added Sept 2025 */
 
 /*Extra outputs for calibration*/	/* added Sept 2025 */
 /* Stocks */
+n_sw_1549
 n_onprep_agyw_plw				n_agyw_plw
 n_onprep_oral_agyw_pg			n_onprep_len_agyw_pg			n_onprep_oral_agyw_plw				n_onprep_len_agyw_plw
 n_onprep_oral_m					n_onprep_len_m					n_onprep_oral_w						n_onprep_len_w
 n_onprep_oral_sw				n_onprep_len_sw					n_onprep_oral_msm					n_onprep_len_msm
+n_elig_prep_any_sw				n_elig_prep_w_1549_				n_elig_prep_w_1564_
+
 n_tested_m						n_tested_w
 n_self_tested_m					n_self_tested_w					n_tested_due_to_self_test
 
@@ -464,7 +472,6 @@ proc contents data = a.long_zim_control; run;
 
 /*proc freq data=a.long_zim_all; table option;run;*/
 /*proc freq data=a.long_zim_control; table option;run;*/
-
 
 
 

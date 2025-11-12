@@ -1,49 +1,7 @@
 * 12/11/25 updates
 
-- add option 13 for worst-case scenario - halving eff_pr_art_init
-- ensure that self-testing is removed from baseline/minimal to align with Optima halfHTS baseline (already done)
-- ensure that we are using the original (strong) condom impact (already done)
-- changed distribution of adh_pattern in Zim_parameters file to be slightly less adherent to try and reduce proportion VLS to match Optima
-- removed duplicated counting of s_elig_prep_any_sw
-- recode elig_prep_any_sw, elig_prep_any_sdc and elig_prep_any_plw to remove inconsistencies
-- increase start PrEP and decrease stop PrEP probabilities for KP PrEP options
-
-* 10/11/25 updates
-
-- replace sampling of eff_rate_test_startprep_any and eff_prob_prep_oral_b in options with selection of one fixed value
-- change max to min to stop eff_prob_prep_len_b increasing above 1
-
-* 04/11/25 updates
-
-- remove circ_inc_rate_year_i=6 / option 20, keeping only option 7 (circ_inc_rate_year_i=5, allows p_mcirc to continue to increase after 2030 even though it does not 
-	reach uptake target of 90% coverage in 15-24 year-old men)
-- change eff_prob_prep_oral_b distribution to (0.4, 0.5, 0.6) in FSW and MSM PrEP option (1 & 2, 5 & 6), apply change to eff_prob_prep_len_b as well, increase 
-	eff_rate_test_startprep_any distribution from (0.25, 0.5, 0.75) to (0.5, 0.7, 0.9)
-- revert to version removing self-testing in the Minimal
-- only run options 0-6 and 99
-
-* 22/10/25 updates
-
-- add circ_inc_rate_year_i=5 and 6 options (ops 7 and 20) to allow p_mcirc to continue to increase after 2030
-- changed distribution of cablen_extra_pref from (0.5, 0.7, 1) to (0.1 0.3 0.5) to increase relative use of oral pref
-- changed distribution of prob_prep_oral_b from (0.05, 0.1, 0.2) to (0.1, 0.2, 0.3) (options 1 and 2) or to (0.2, 0.3, 0.4) (options 5 and 6) from year_interv onwards
-	to increase PrEP uptake in intervention
-- only run options 0-7, 20 and 99
-
-* 08/10/25_min updates
-
-- change back to Minimal as the comparator scenario, with self-testing NOT switched off
-- original condom intervention (ie before we added the 10% to reduce impact)
-
-* 08/10/25_sq updates
-
-- removed xx<0.1 condition from condom_change_year_i intervention
-- removed duplicated section of life_sex_risk code
-
-* 02/10/25 updates
-
-- running SQ as baseline and removing one intervention at a time
-
+- changed rate_int_choice from 0.003 to 0.005 in malawi_parameters
+- all other changes should bring Malawi script in line with Zim script dated 20251112
 * 29/09/25 updates
 
 - add condition to reduce impact of condom intervention by 90% (impact on ep and newp, search condom_change_year_i)
@@ -1113,9 +1071,9 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/malawi_parameters.sas";
-  %include "/home/rmjlja9/Zim_parameters.sas";
+* %include "/home/rmjlja9/Zim_parameters.sas";
 * %include "/home/rmjllob/CdI_parameters.sas";
-/*%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";*/
+  %include "/home/rmjlja9/malawi_parameters.sas";
 
 call symput('caldate1',caldate1);
 
@@ -19676,18 +19634,9 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 /*
 proc print; var cald country gender age hiv 
-	option
-	highest_prep_pref
-	rate_test_startprep_any
-	new_rate_test_startprep_any
-	eff_rate_test_startprep_any
-	prob_prep_oral_b
-	new_prob_prep_oral_b
-	eff_prob_prep_oral_b
-	prob_prep_len_b
-	eff_prob_prep_len_b
-	prep_len
-	prep_oral
+	rred_rc2011_
+	rred_rc_base rred_rc 
+	newp_tm2 newp_tm1 newp
 ;
 where serial_no < 50;
 run;
