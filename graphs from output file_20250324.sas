@@ -29,7 +29,6 @@ n_not_on_art_cd4200350_ = n_not_on_art_cd4200350;*VCFeb2023;
 n_not_on_art_cd4350500_ = n_not_on_art_cd4350500;*VCFeb2023;
 n_not_on_art_cd4ge500_  = n_not_on_art_cd4ge500;*VCFeb2023;
 
-log_gender_r_newp  = log(gender_r_newp);
 prevalence1549_ = prevalence1549;
 incidence1549_ = incidence1549;
 incidence1564_ = incidence1564;
@@ -47,6 +46,16 @@ p_1524_newp_ge1_ = p_1524_newp_ge1;
 p_diag_m1524_ = p_diag_m1524;
 p_diag_w1524_ = p_diag_w1524;
 
+n_new_inf1549_ = n_new_inf1549;
+n_everpregn_w1524_ = n_everpregn_w1524;
+n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
+
+*Shorten variable names;
+p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
+n_hivnegw_sdpartoffart = n_hivnegw_sdpartneroffart;
+
+*Extra outputs;
+log_gender_r_newp  = log(gender_r_newp);
 loggender_r_newp = log(gender_r_newp+0.0001);
 
 logw15r = log(w15r+0.0001);
@@ -60,11 +69,6 @@ logm35r = log(m35r+0.0001);
 logm45r = log(m45r+0.0001);
 logm55r = log(m55r+0.0001);
 
-p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
-
-n_new_inf1549_ = n_new_inf1549;
-n_everpregn_w1524_ = n_everpregn_w1524;
-n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 run;
 
 
@@ -93,7 +97,7 @@ n_alive n_alive_m n_alive_w n_alive_1014m n_alive_1524m n_alive_1524w n_alive_25
 n_alive_014_ 	n_alive_1524_	 n_alive_2564_		n_alive_65pl									
 n_sw_1564_		prev_sti_sw  n_sw_program_visit n_sw_inprog_ly  /*n_sw_inprog_ever*/ n_diag_sw_inprog
 prop_sw_program_visit n_diag_progsw n_diag_sw
-n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
+n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartoffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
 n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_ p_newp_ge1_ p_newp_ge5_ p_1524_newp_ge1_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
@@ -4340,7 +4344,7 @@ rename p95_n_sw_1564__&o = NAlive_FSW1599_95UL;
 rename mean_n_hivneg_sdpartner_&o = Nalive_NEGInSDA1599_M;*Number of HIV-negative  adults 15+ years old in a sero-discordant relationship;
 rename mean_n_hivneg_sdpartneroffart_&o = Nalive_NEGInSDNotOnARTA1599_M;*Number of HIV-negative  adults 15+ years old in a sero-discordant relationship, whom partner is not on ART;
 rename mean_n_hivnegw_sdpartner_&o = Nalive_NEGInSDF1599_M;
-rename mean_n_hivnegw_sdpartneroffart_&o = Nalive_NEGInSDNotOnARTF1599_M;
+rename mean_n_hivnegw_sdpartoffart_&o = Nalive_NEGInSDNotOnARTF1599_M;
 
 rename mean_n_hivge15m_&o = NHIV_M1599_M;
 rename p5_n_hivge15m_&o  = NHIV_M1599_95LL;
@@ -4498,7 +4502,7 @@ mean_n_sw_1564__&o 		p5_n_sw_1564__&o	p95_n_sw_1564__&o
 mean_n_hivneg_sdpartner_&o 
 mean_n_hivneg_sdpartneroffart_&o
 mean_n_hivnegw_sdpartner_&o 
-mean_n_hivnegw_sdpartneroffart_&o
+mean_n_hivnegw_sdpartoffart_&o
 
 mean_n_hivge15m_&o	p5_n_hivge15m_&o 	p95_n_hivge15m_&o
 mean_n_hivge15w_&o	p5_n_hivge15w_&o	p95_n_hivge15w_&o
