@@ -1753,6 +1753,8 @@ series  x=cald y=p50_n_sw_inprog_ly_8/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_n_sw_inprog_ly_8 	upper=p95_n_sw_inprog_ly_8  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_sw_inprog_ly_33/	lineattrs = (color=purple thickness = 2);
 band    x=cald lower=p5_n_sw_inprog_ly_33 	upper=p95_n_sw_inprog_ly_33  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sw_inprog_ly_2/	lineattrs = (color=pink thickness = 2);
+band    x=cald lower=p5_n_sw_inprog_ly_2 	upper=p95_n_sw_inprog_ly_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 **CHECK IF THIS OUTPUT NOW WORKING - SQ value restored in op 8 and 33;
 
