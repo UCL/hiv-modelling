@@ -1909,7 +1909,6 @@ eff_rate_disengage_sw_program = rate_disengage_sw_program;
 
 * ADHERENCE PATTERN;
 
-
 * remember that there are additional negative effects on adherence of younger age, tox, adc/tb, occasional drops i adh, 2nd line; 
 * deleted former adherence patterns 99, 98 and 101 *Apr2021;
 
@@ -2534,6 +2533,7 @@ else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and set_in_opti
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 * pref_prep values are set only once at date_prep_xxx_intro or when an individual reaches age 15;
 
+
 yy = rand('beta',pref_prep_cablen_beta_s1,5); * this is the preference for cab or len, whichever is available;
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
@@ -2703,6 +2703,7 @@ if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 8;
 if caldate{t} ge 2026 and o_cab=1 and o_len=1 then art_monitoring_strategy = 1700; 
 
 
+
 *
 
 this table is just reg_option recently used - full list of all reg_option are listed below
@@ -2810,12 +2811,14 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
+
 			if prep_any_willing=1 then eff_rate_test_startprep_any=1;
 			eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
 			eff_rate_choose_stop_prep_cab=0.05;
 			eff_rate_choose_stop_prep_len=0.05;
 			eff_rate_choose_stop_prep_vr=0.05;
 			eff_prob_prep_any_restart_choice=0.7;
+
 		* lapr and dpv-vr - consider if any needs to change ;
 		end;
 	end;
@@ -2830,12 +2833,14 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		eff_sw_higher_int = sw_higher_int;
 		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+
 			eff_rate_test_startprep_any=rate_test_startprep_any;
 			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 			eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
 			eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
 			eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
 			eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+
 		* lapr and dpv-vr - consider if any needs to change ;
 end; 
 
@@ -2969,6 +2974,7 @@ end;
 if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup_covid = 1 or art_low_adh_disrup_covid = 1) then reg_option = 125 ;
 
 
+
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
 
@@ -2976,6 +2982,7 @@ if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0
 if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121 125 130) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
 if set_in_options ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
+
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
@@ -3173,6 +3180,14 @@ if t ge 2 and &year_interv         <= caldate{t} and circ_inc_rate_year_i = 4 th
       prob_circ = 0;test_link_circ_prob=0;
     end;
 end;
+
+if circ_inc_rate_year_i = 5 and caldate{t}>=2030 then do; 	*option=5 - continue increasing prob_circ after 2030;
+	if  10 le age lt 14 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_10_14;
+	if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_inc_15_19;
+	if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_20_30;
+	if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_30_50;
+end;
+
 
 ***Zim specific;	*JAS Feb24;
 if country = 'Zimbabwe' then do;
@@ -3417,7 +3432,6 @@ if 2025 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(yc
 
 if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc * 1.5;
 
-
 * (2) EP;
 * not * dependent_on_time_step_length ;
 ch_risk_beh_ep=1.0;
@@ -3445,13 +3459,11 @@ In 2021											from 	0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.97
 *We have not modelled condoms retrospectively and so we have not included their cost;
 rred_rc_base = rred_rc;					* use this to determine FSW rates;
 
-if caldate{t} >= &year_interv and condom_change_year_i = 1 then do;
+xx=rand('uniform');
+if caldate{t} >= &year_interv and condom_change_year_i = 1 and xx < 0.1 then do;
 	*Impact on ep (impact on newp is below);
-																								
-	 
 	ch_risk_beh_ep = ch_risk_beh_ep / (1 - prop_redattr_ep_condoms);
 end;
-
 
 
 
@@ -4090,6 +4102,7 @@ if t ge 2 then do;
 	if sw_tm1=1 then do;
 		d_sw=rand('uniform');
 		if d_sw < rate_stop_sexwork/(sqrt(rred_rc_base)) or age ge 50 then do; 
+
 			sw=0; sw_program_visit=0; date_stop_sw=caldate{t};  
 			date_last_sw_prog_vis=caldate{t};
 			sw_test_6mthly=0;
@@ -4258,12 +4271,9 @@ end;
 
 
 * Condom intervention - removing the effect of condom provision and promotion for HIV Control baseline;
-
 *Impact on newp (impact on ep is above);
-if caldate{t} >= &year_interv and condom_change_year_i = 1 and use_condom_intervention_newp=1 and newp_ever>0 then newp = newp + 1;
-
-
-
+xx=rand('uniform');
+if caldate{t} >= &year_interv and condom_change_year_i = 1 and use_condom_intervention_newp=1 and newp_ever>0 and xx < 0.1 then newp = newp + 1;
 
 
 e=rand('uniform');
@@ -8790,8 +8800,10 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 	e_rate_return = eff_rate_return; 
 	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = e_rate_return / 1.5;
 
+
 * for malawi mihpsa nov 2024 and hiv control - for minimal scenario we need to be able to switch off the implicit effect of ongoing interventions to bring people back to care;
 	if return_interventions_off = 1 then e_rate_return = e_rate_return / effect_return_interv;
+
 
 * new for pop_wide_tld;
 	if pop_wide_tld      = 1 then e_rate_return = e_rate_return * rr_return_pop_wide_tld;
@@ -9085,7 +9097,7 @@ if caldate&j<2015 then eff_pr_art_init=eff_pr_art_init/2;
 * interruption due to "choice";
 	if stop_tox    ne 1 then do; 
 
-	prointer = eff_rate_int_choice;
+		prointer = eff_rate_int_choice;
 
 		if t ge 2 and onart_tm1 =1 then do;  
 			if  adh_tm1 >= 0.8   and o_len_tm1 ne 1 then do; * this section does not apply to those on lencab;
@@ -15944,9 +15956,11 @@ if gender = 2 and 25 <= age < 35 then do; if prep_any_elig=1 then elig_prep_any_
 if gender = 2 and 35 <= age < 45 then do; if prep_any_elig=1 then elig_prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 50 then do; if prep_any_elig=1 then elig_prep_any_w_1549 = 1;  end;
 if gender = 2 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_w_1564 = 1;  end;
-if sw=1 then do; elig_prep_any_sw = 0; if prep_any_elig = 1 then elig_prep_any_sw = 1;   end;
-if sdc=1 then do; elig_prep_any_sdc = 0; if prep_any_elig = 1 then elig_prep_any_sdc = 1;   end;
-if plw=1 then do; elig_prep_any_plw = 0; if prep_any_elig = 1 then elig_prep_any_plw = 1;   end;
+
+elig_prep_any_sw = 0; elig_prep_any_sdc = 0; elig_prep_any_plw = 0; 
+if sw=1 and prep_any_elig = 1 then elig_prep_any_sw = 1;
+if sdc=1 and prep_any_elig = 1 then elig_prep_any_sdc = 1;
+if plw=1 and prep_any_elig = 1 then elig_prep_any_plw = 1;
 
 prep_any_w_1524 = 0; prep_any_w_2534 = 0; prep_any_w_3544 = 0; prep_any_w_1549 = 0;
 if gender = 2 and 15 <= age < 25 then do;  if prep_any=1 then prep_any_w_1524 = 1;  end;
@@ -16354,8 +16368,6 @@ if agyw_plw = 1 then do;
 	if prep_len = 1 then prep_len_agyw_plw = 1;
 	if prep_vr = 1 then prep_vr_agyw_plw = 1;
 end;
-
-
 
 
 * whether fulfil all criteria for prep (although also need to test negative to actually start prep [except under pop_wide_tld]);
@@ -18745,14 +18757,15 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_oral_ever_1524w + prep_oral_ever_1524w; s_prep_oral_ever_sw + prep_oral_ever_sw; s_prep_oral_ever_sdc + prep_oral_ever_sdc; s_prep_oral_ever_plw + prep_oral_ever_plw;
 	s_prep_cab_ever_1524w + prep_cab_ever_1524w; s_prep_cab_ever_sw + prep_cab_ever_sw; s_prep_cab_ever_sdc + prep_cab_ever_sdc; s_prep_cab_ever_plw + prep_cab_ever_plw;
 	s_prep_len_ever_1524w + prep_len_ever_1524w; s_prep_len_ever_sw + prep_len_ever_sw; s_prep_len_ever_sdc + prep_len_ever_sdc; s_prep_len_ever_plw + prep_len_ever_plw;
-	s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_sdc + elig_prep_any_sdc ; s_elig_prep_any_plw + elig_prep_any_plw ; 
+	s_elig_prep_any_sdc + elig_prep_any_sdc ; s_elig_prep_any_plw + elig_prep_any_plw ; 
 	s_prep_vr_ever_1524w + prep_vr_ever_1524w; s_prep_vr_ever_sw + prep_vr_ever_sw; s_prep_vr_ever_sdc + prep_vr_ever_sdc; s_prep_vr_ever_plw + prep_vr_ever_plw;
 	s_agyw_pg + agyw_pg; s_agyw_plw + agyw_plw;
 	s_prep_any_agyw_pg + prep_any_agyw_pg; s_prep_oral_agyw_pg + prep_oral_agyw_pg; s_prep_cab_agyw_pg + prep_cab_agyw_pg; 
-	s_prep_len_agyw_pg + prep_len_agyw_pg; s_prep_vr_agyw_pg + prep_vr_agyw_pg;
+		s_prep_len_agyw_pg + prep_len_agyw_pg; s_prep_vr_agyw_pg + prep_vr_agyw_pg;
 	s_prep_any_agyw_plw + prep_any_agyw_plw; s_prep_oral_agyw_plw + prep_oral_agyw_plw; s_prep_cab_agyw_plw + prep_cab_agyw_plw; 
-	s_prep_len_agyw_plw + prep_len_agyw_plw; s_prep_vr_agyw_plw + prep_vr_agyw_plw;
-	s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
+		s_prep_len_agyw_plw + prep_len_agyw_plw; s_prep_vr_agyw_plw + prep_vr_agyw_plw;
+
+	s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
 	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
     s_prep_any_w_2534 + prep_any_w_2534 ; s_prep_any_w_3544 + prep_any_w_3544 ; s_inf_prep_any_source_prep_r + inf_prep_any_source_prep_r ;
     s_prepinfect_prep_r + prepinfect_prep_r ; s_prepinfect_prep_r_p + prepinfect_prep_r_p ; s_infected_prep_no_r + infected_prep_no_r ;
@@ -20302,13 +20315,14 @@ s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_eve
 s_prep_cab_ever_1524w   s_prep_cab_ever_sw  s_prep_cab_ever_sdc		s_prep_cab_ever_plw 
 s_prep_len_ever_1524w   s_prep_len_ever_sw  s_prep_len_ever_sdc		s_prep_len_ever_plw 
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
+
+
 s_agyw_pg 				s_agyw_plw 
 s_prep_any_agyw_pg		s_prep_oral_agyw_pg		s_prep_cab_agyw_pg		s_prep_len_agyw_pg 		s_prep_vr_agyw_pg 
 s_prep_any_agyw_plw  	s_prep_oral_agyw_plw  	s_prep_cab_agyw_plw 	s_prep_len_agyw_plw  	s_prep_vr_agyw_plw
 
-
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
-s_elig_prep_any_sw  
+
 s_onprep_cab_m s_onprep_cab_w s_onprep_len_m s_onprep_len_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
@@ -20862,7 +20876,7 @@ discount
 condom_change_year_i			decr_hard_reach_year_i			incr_adh_year_i			decr_prob_loss_at_diag_year_i 
 absence_cd4_year_i  			absence_vl_year_i 				decr_rate_lost_year_i  	decr_rate_lost_art_year_i   
 incr_rate_return_year_i     	incr_rate_restart_year_i        incr_rate_init_year_i   decr_rate_int_choice_year_i 
-incr_prob_vl_meas_done_year_i 	incr_pr_switch_line_year_i    	poc_vl_monitoring_i 	circ_inc_rate_year_i 		 																 
+incr_prob_vl_meas_done_year_i 	incr_pr_switch_line_year_i    	poc_vl_monitoring_i 	circ_inc_rate_year_i 		 
 incr_test_targeting_year_i   	reg_option_switch_year_i 		art_mon_drug_levels_year_i   ten_is_taf_year_i  	
 pop_wide_tld_year_i  			single_vl_switch_efa_year_i		e_decr_hard_reach_year_i  
 initial_pr_switch_line      	initial_prob_vl_meas_done  
@@ -21407,12 +21421,12 @@ s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_eve
 s_prep_cab_ever_1524w   s_prep_cab_ever_sw  s_prep_cab_ever_sdc		s_prep_cab_ever_plw 
 s_prep_len_ever_1524w   s_prep_len_ever_sw  s_prep_len_ever_sdc		s_prep_len_ever_plw 
 s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
+
 s_agyw_pg 				s_agyw_plw 
 s_prep_any_agyw_pg		s_prep_oral_agyw_pg		s_prep_cab_agyw_pg		s_prep_len_agyw_pg 		s_prep_vr_agyw_pg 
 s_prep_any_agyw_plw  	s_prep_oral_agyw_plw  	s_prep_cab_agyw_plw 	s_prep_len_agyw_plw  	s_prep_vr_agyw_plw
 
 s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
-
 s_onprep_cab_m s_onprep_cab_w s_onprep_len_m s_onprep_len_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
@@ -21420,7 +21434,6 @@ s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544
 s_prep_oral_w_1524 		s_prep_cab_w_1524 s_prep_len_w_1524 		s_prep_vr_w_1524 
 s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc	s_prep_len_sdc			s_prep_vr_sdc
 s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw	s_prep_len_plw			s_prep_vr_plw
-
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_cab_in_primary	s_started_prep_len_in_primary		s_started_prep_vr_in_primary
@@ -22083,17 +22096,11 @@ Inputs are:
 
 *** RUN PROGRAM; 
 
-										   
 %run_update_r1(&caldate1,&year_interv-0.25,0);
-
-
-
-								
 data a ;  set r1 ;
-										  
+
 
 data r1 ; set a ;
-							 
 %run_update_r1(&year_interv,&year_interv+50,0);
 
 data r1; set a;
@@ -22102,8 +22109,6 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,2);
 
-								
-				  
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,3);
 
@@ -22113,7 +22118,6 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,5);
 
-							 
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,6);
 
@@ -22128,23 +22132,20 @@ data r1; set a;
 
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,10);
-											   
 
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,11);
 
-							 
-	  
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,12);
 
-
-** Extra options to test;
+* Worst-case;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,30);
+%run_update_r1(&year_interv,&year_interv+50,13);
 
+* SQ;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,31);
+%run_update_r1(&year_interv,&year_interv+50,99);
 
 			
 														 
@@ -22956,7 +22957,6 @@ prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd
 
 discount
 
-
 /*year_i interventions*/
 condom_change_year_i			decr_hard_reach_year_i			incr_adh_year_i			decr_prob_loss_at_diag_year_i 
 absence_cd4_year_i  			absence_vl_year_i 				decr_rate_lost_year_i  	decr_rate_lost_art_year_i   
@@ -22965,7 +22965,6 @@ incr_prob_vl_meas_done_year_i 	incr_pr_switch_line_year_i    	poc_vl_monitoring_
 incr_test_targeting_year_i   	reg_option_switch_year_i 		art_mon_drug_levels_year_i   ten_is_taf_year_i  	
 pop_wide_tld_year_i  			single_vl_switch_efa_year_i		e_decr_hard_reach_year_i  
 initial_pr_switch_line      	initial_prob_vl_meas_done  
-
 
 vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
