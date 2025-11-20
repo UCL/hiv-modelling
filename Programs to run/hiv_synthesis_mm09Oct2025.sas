@@ -19533,7 +19533,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_any_nmm_1564 + prep_any_nmm_1564;  						   s_prep_oral_mm + prep_oral_mm;	s_prep_cab_mm + prep_cab_mm;
 	s_prep_len_mm + prep_len_mm; 	  s_hard_reach_due_to_mobile + hard_reach_due_to_mobile;			s_primary1549mm + primary1549mm;
 	s_primary1564mm + primary1564mm;  s_vl1000_mm	+ vl1000_mm;	   s_vg1000_mm + vg1000_mm;			s_tested_mm + tested_mm;	
-	s_newp_ge1_mm + newp_ge1_mm;	s_prep_any_willing + prep_any_willing;
+	s_newp_ge1_mm + newp_ge1_mm;
 
 end;
 
@@ -20985,7 +20985,7 @@ s_covid
 	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
 	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
 	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
-	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_prep_any_willing
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		
 
 
 /* used in abort statements */
@@ -21985,7 +21985,7 @@ s_covid
 	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
 	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
 	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
-	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_prep_any_willing
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		
 
 /*supp material*/
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
@@ -23059,7 +23059,7 @@ s_covid
 	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
 	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
 	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
-	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_prep_any_willing
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		
 
 /* used in abort statements */
 

@@ -6,7 +6,6 @@ data a;
 set a.mm_09Oct25; 
 if run=. then delete; 
 
-proc freq;table s_hard_reach;run;
 proc sort;
 by run cald option;run;
 
@@ -311,7 +310,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 400  ;
+%let nfit = 900  ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -324,6 +323,7 @@ set b;
 if option =1 then delete;
 if option =2 then delete;
 if option =3 then delete;
+if option =4 then delete;
 
 %let var =  
 p_mm				p_hiv_mm			p_hiv_m
@@ -376,6 +376,7 @@ set b;
 if option =0 then delete;
 if option =2 then delete;
 if option =3 then delete;
+if option =4 then delete;
 
 %let var =  
 p_mm				p_hiv_mm			p_hiv_m
@@ -427,6 +428,7 @@ set b;
 if option =0 then delete;
 if option =1 then delete;
 if option =3 then delete;
+if option =4 then delete;
 
 %let var =  
 p_mm				p_hiv_mm			p_hiv_m
@@ -478,6 +480,7 @@ set b;
 if option =0 then delete;
 if option =1 then delete;
 if option =2 then delete;
+if option =4 then delete;
 
 %let var =  
 p_mm				p_hiv_mm			p_hiv_m
@@ -525,6 +528,59 @@ run;
 
 
 
+data option_4;
+set b;
+if option =0 then delete;
+if option =1 then delete;
+if option =2 then delete;
+if option =3 then delete;
+
+%let var =  
+p_mm				p_hiv_mm			p_hiv_m
+p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		prevalence1549_mm	
+prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_onprep_mm
+prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
+n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
+p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 		 prop_elig_on_prep
+ prop_elig_on_prep_mm	prop_elig_on_prep_nmm
+prop_1564m_onprep_nmm	p_hiv_nmm		
+n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
+prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm  			prop_elig_on_prep_genmen
+prop_elig_on_prep_m	prop_elig_on_prep_w p_prep_any_ever_nmm
+;
+
+
+***transpose given name; *starts with %macro and ends with %mend;
+%macro option_4;
+%let p5_var = p5_&var_4;
+%let p95_var = p95_&var_4;
+%let p50_var = median_&var_4;
+
+%let count = 0;
+%do %while (%qscan(&var, &count+1, %str( )) ne %str());
+%let count = %eval(&count + 1);
+%let varb = %scan(&var, &count, %str( ));
+      
+proc transpose data=option_4 out=k&count prefix=&varb;var &varb; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data k&count;set k&count;***creates one dataset per variable;
+p5_&varb._4  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._4 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._4 = median(of &varb.1-&varb.&nfit);
+
+keep cald option p5_&varb._4 p95_&varb._4 p50_&varb._4 ;
+run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  kk&count;quit;run;
+%end;
+%mend;
+
+%option_4;
+run;
+
+
+
 
 
 
@@ -547,17 +603,21 @@ i1   i2   i3   i4   i5   i6   i7   i8   i9   i10  i11  i12  i13  i14  i15  i16  
 i25  i26  i27  i28  i29  i30  i31  i32  i33  i34  i35  i36  i37  i38  i39  i40  i41
 j1   j2   j3   j4   j5   j6   j7   j8   j9   j10  j11  j12  j13  j14  j15  j16  j17  j18  j19  j20	j21  j22  j23  j24
 j25  j26  j27  j28  j29  j30  j31  j32  j33  j34  j35  j36  j37  j38  j39  j40  j41
+k1   k2   k3   k4   k5   k6   k7   k8   k9   k10  k11  k12  k13  k14  k15  k16  k17  k18  k19  k20	k21  k22  k23  k24
+k25  k26  k27  k28  k29  k30  k31  k32  k33  k34  k35  k36  k37  k38  k39  k40  k41
 ;
 by cald;
 
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = 'C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
-graphs_06_06_25.doc' startpage=never; 
+ods rtf file = 'C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
+graphs_20_11_25.doc' startpage=never; 
 
 
 ***Diagnostic;
-ods listing;
+ods listing close;
+ods html style=htmlblue;
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people on any PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
@@ -643,7 +703,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Percentage of men ever on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.7 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.01) valueattrs=(size=10);
 
 label p50_p_prep_any_ever_mm_0 = "Mobile men";
 label p50_p_prep_any_ever_nmm_0 = "Non-mobile men (inc. MSM and PWID)";
@@ -653,23 +713,6 @@ band    x=cald lower=p5_p_prep_any_ever_mm_0 	upper=p95_p_prep_any_ever_mm_0  / 
 
 series  x=cald y=p50_p_prep_any_ever_nmm_0/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_prep_any_ever_nmm_0 	upper=p95_p_prep_any_ever_nmm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
-
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Percentage of men ever on PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.7 by 0.1) valueattrs=(size=10);
-
-label p50_p_prep_any_ever_mm_0 = "Mobile men";
-label p50_p_prep_any_ever_nmm_0 = "Non-mobile men";
-
-series  x=cald y=p50_p_prep_any_ever_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_prep_any_ever_mm_0 	upper=p95_p_prep_any_ever_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_prop_elig_on_prep_genmen_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_genmen_0 	upper=p95_prop_elig_on_prep_genmen_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -712,111 +755,57 @@ Title    height=1.5 justify=center "Number of mobile men currently on any PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000) valueattrs=(size=10);
 
-label p50_n_prep_oral_mm_0 = "Mobile men";
+label p50_n_prep_any_mm_0 = "Mobile men";
 
-series  x=cald y=p50_n_prep_oral_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_prep_oral_mm_0 	upper=p95_n_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_prep_any_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_any_mm_0 	upper=p95_n_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
 
 
-
+/*
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of mobile men currently on oral PrEP";
+Title    height=1.5 justify=center "Number of mobile men currently on any PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000) valueattrs=(size=10);
 
-label p50_n_prep_oral_mm_0 = "Option 0";
-label p50_n_prep_oral_mm_1 = "Option 1";
-label p50_n_prep_oral_mm_2 = "Option 2";
+label p50_n_prep_oral_mm_0 = "Option 0 (SQ, No CAB-LA, No PrEP for MM)";
+label p50_n_prep_oral_mm_1 = "Option 1 (MM intervention - CAB-LA, MM PrEP elig and not hard to reach)";
+label p50_n_prep_oral_mm_2 = "Option 2 (MM PrEP elig - No CAB, % MM still hard to reach)";
+label p50_n_prep_oral_mm_3 = "Option 3 (MM PrEP elig and not hard to reach - No CAB)";
+label p50_n_prep_oral_mm_4 = "Option 4 (MM PrEP elig, CAB-LA avail - % MM still hard to reach)";
 
 series  x=cald y=p50_n_prep_oral_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_prep_oral_mm_0 	upper=p95_n_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 run;quit;
+*/
 
+***After intervention;
 
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of mobile men currently on injectable PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000) valueattrs=(size=10);
-
-label p50_n_prep_inj_mm_0 = "Option 0";
-label p50_n_prep_inj_mm_1 = "Option 1";
-label p50_n_prep_inj_mm_2 = "Option 2";
-
-series  x=cald y=p50_n_prep_inj_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_prep_inj_mm_0 	upper=p95_n_prep_inj_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of mobile men on oral PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05) valueattrs=(size=10);
-
-label p50_prop_1564mm_onprep_oral_mm_0 = "Option 0";
-label p50_prop_1564mm_onprep_oral_mm_1 = "Option 1";
-label p50_prop_1564mm_onprep_oral_mm_2 = "Option 2";
-label p50_prop_1564mm_onprep_oral_mm_3 = "Option 3";
-
-
-series  x=cald y=p50_prop_1564mm_onprep_oral_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_oral_mm_0 	upper=p95_prop_1564mm_onprep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_oral_mm_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_oral_mm_1 	upper=p95_prop_1564mm_onprep_oral_mm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_oral_mm_2/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_oral_mm_2 	upper=p95_prop_1564mm_onprep_oral_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_oral_mm_3/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_oral_mm_3 	upper=p95_prop_1564mm_onprep_oral_mm_2  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-
-
-run;quit;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of mobile men number on inj PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.005) valueattrs=(size=10);
-
-label p50_prop_1564mm_onprep_inj_mm_0 = "Option 0";
-label p50_prop_1564mm_onprep_inj_mm_1 = "Option 1";
-label p50_prop_1564mm_onprep_inj_mm_2 = "Option 2";
-label p50_prop_1564mm_onprep_inj_mm_3 = "Option 3";
-
-
-series  x=cald y=p50_prop_1564mm_onprep_inj_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_inj_mm_0 	upper=p95_prop_1564mm_onprep_inj_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_inj_mm_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_inj_mm_1 	upper=p95_prop_1564mm_onprep_inj_mm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_inj_mm_2/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_inj_mm_2 	upper=p95_prop_1564mm_onprep_inj_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_inj_mm_3/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_inj_mm_3 	upper=p95_prop_1564mm_onprep_inj_mm_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-
-run;quit;
-
-***Longer time horizon;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of mobile men currently on any PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label p50_prop_elig_on_prep_mm_0 = "Without intervention (Op 0)";
-label p50_prop_elig_on_prep_mm_1 = "With intervention (Op 1)";
-label p50_prop_elig_on_prep_mm_2 = "With intervention (prep eligible, Op 2)";
-label p50_prop_elig_on_prep_mm_3 = "With intervention (prep eligible and hard to reach=0, Op 3)";
-
+label p50_prop_elig_on_prep_mm_0 = "Option 0 (SQ, No CAB-LA, No PrEP for MM)";
+label p50_prop_elig_on_prep_mm_1 = "Option 1 (MM intervention - CAB-LA, MM PrEP elig and not hard to reach)";
+label p50_prop_elig_on_prep_mm_2 = "Option 2 (MM PrEP elig - No CAB, % MM still hard to reach)";
+label p50_prop_elig_on_prep_mm_3 = "Option 3 (MM PrEP elig and not hard to reach - No CAB)";
+label p50_prop_elig_on_prep_mm_4 = "Option 4 (MM PrEP elig, CAB-LA avail - % MM still hard to reach)";
 
 series  x=cald y=p50_prop_elig_on_prep_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_elig_on_prep_mm_0 	upper=p95_prop_elig_on_prep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_prop_elig_on_prep_mm_1/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prop_elig_on_prep_mm_1 	upper=p95_prop_elig_on_prep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-
 series  x=cald y=p50_prop_elig_on_prep_mm_2/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_prop_elig_on_prep_mm_2 	upper=p95_prop_elig_on_prep_mm_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 series  x=cald y=p50_prop_elig_on_prep_mm_3/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_prop_elig_on_prep_mm_3 	upper=p95_prop_elig_on_prep_mm_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_elig_on_prep_mm_4/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_mm_4 	upper=p95_prop_elig_on_prep_mm_4  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
 
 run;quit;
-/*
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prep willing";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
@@ -831,7 +820,7 @@ series  x=cald y=p50_p_prep_any_willing_1/	lineattrs = (color=green thickness = 
 band    x=cald lower=p5_p_prep_any_willing_1 	upper=p95_p_prep_any_willing_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
-*/
+
 ods rtf close;
 ods listing;
 run;
