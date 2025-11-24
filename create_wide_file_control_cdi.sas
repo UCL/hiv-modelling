@@ -1,18 +1,18 @@
 
 * options user="/folders/myfolders/";
 
-ods html close;
+*ods html close;
 
 
 *libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
-ods listing;
+*ods listing;
 
 
 
 data a;
-set a.cdi_19sep25;
+set a.cdi_19nov25;
 if run=. then delete;
 
 proc sort;by run cald option;run;
@@ -389,7 +389,7 @@ proc sort data=y;by run option;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_cdi_control_19Sep25; set y;
+data a.long_cdi_control_19Nov25; set y;
 if cald=. then delete;run;
 
 
@@ -403,7 +403,7 @@ if cald=. then delete;run;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 ** Set option number for var_stock and var_flow macros here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-%let op_num=12;
+%let op_num=0;
 
 /*
 0 = baseline (minimal)
@@ -428,7 +428,7 @@ if cald=. then delete;run;
 ************************************************************************************************************************************************************;
 
 
-data y; set a.long_cdi_control_19Sep25; 
+data y; set a.long_cdi_control_19Nov25; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
@@ -640,7 +640,7 @@ run;
 
 ***Comment out option <2023 for option ne 0 to speed it up;
 
-/*proc means noprint data=y; var &v; output out=y_1985 mean= &v;  where cald = 1985.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1985 mean= &v;  where cald = 1985.5 and option = 0;
 proc means noprint data=y; var &v; output out=y_1986 mean= &v;  where cald = 1986.5 and option = 0;
 proc means noprint data=y; var &v; output out=y_1987 mean= &v;  where cald = 1987.5 and option = 0;
 proc means noprint data=y; var &v; output out=y_1988 mean= &v;  where cald = 1988.5 and option = 0;
@@ -679,7 +679,7 @@ proc means noprint data=y; var &v; output out=y_2020 mean= &v;  where cald = 202
 proc means noprint data=y; var &v; output out=y_2021 mean= &v;  where cald = 2021.5 and option = 0;
 proc means noprint data=y; var &v; output out=y_2022 mean= &v;  where cald = 2022.5 and option = 0;
 proc means noprint data=y; var &v; output out=y_2023 mean= &v;  where cald = 2023.5 and option = 0;
-*/
+
 proc means noprint data=y; var &v; output out=y_2024 mean= &v;  where cald = 2024.5 and option = &op_num;
 proc means noprint data=y; var &v; output out=y_2025 mean= &v;  where cald = 2025.5 and option = &op_num;
 proc means noprint data=y; var &v; output out=y_2026 mean= &v;  where cald = 2026.5 and option = &op_num;
@@ -734,8 +734,8 @@ proc means noprint data=y; var &v; output out=y_2074 mean= &v;  where cald = 207
 proc means noprint data=y; var &v; output out=y_2075 mean= &v;  where cald = 2075.5 and option = &op_num;
 																								
 data &v ; set  
-/*y_1985  y_1986  y_1987  y_1988  y_1989  y_1990  y_1991  y_1992  y_1993  y_1994  y_1995  y_1996  y_1997  y_1998  y_1999  y_2000  y_2001  y_2002  y_2003  y_2004  
-y_2005  y_2006  y_2007  y_2008  y_2009  y_2010  y_2011  y_2012  y_2013  y_2014  y_2015  y_2016  y_2017  y_2018  y_2019  y_2020  y_2021  y_2022  y_2023  */y_2024  
+y_1985  y_1986  y_1987  y_1988  y_1989  y_1990  y_1991  y_1992  y_1993  y_1994  y_1995  y_1996  y_1997  y_1998  y_1999  y_2000  y_2001  y_2002  y_2003  y_2004  
+y_2005  y_2006  y_2007  y_2008  y_2009  y_2010  y_2011  y_2012  y_2013  y_2014  y_2015  y_2016  y_2017  y_2018  y_2019  y_2020  y_2021  y_2022  y_2023  y_2024  
 y_2025  y_2026  y_2027  y_2028  y_2029  y_2030  y_2031  y_2032  y_2033  y_2034  y_2035  y_2036  y_2037  y_2038  y_2039  y_2040  y_2041  y_2042  y_2043  y_2044  
 y_2045  y_2046  y_2047  y_2048  y_2049  y_2050  y_2051  y_2052  y_2053  y_2054  y_2055  y_2056  y_2057  y_2058  y_2059  y_2060  y_2061  y_2062  y_2063  y_2064  
 y_2065  y_2066  y_2067  y_2068  y_2069  y_2070  y_2071  y_2072  y_2073  y_2074  y_2075  
@@ -751,7 +751,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %macro var_flow(v=);
 * Use option 0 outputs for years 1985-2023;
-/*
+
 proc means noprint data=y; var &v; output out=z_1985 mean= &v; where 1984.5 < cald <= 1985.5 and option = 0;
 proc means noprint data=y; var &v; output out=z_1986 mean= &v; where 1985.5 < cald <= 1986.5 and option = 0;
 proc means noprint data=y; var &v; output out=z_1987 mean= &v; where 1986.5 < cald <= 1987.5 and option = 0;
@@ -791,7 +791,7 @@ proc means noprint data=y; var &v; output out=z_2020 mean= &v; where 2019.5 < ca
 proc means noprint data=y; var &v; output out=z_2021 mean= &v; where 2020.5 < cald <= 2021.5 and option = 0;
 proc means noprint data=y; var &v; output out=z_2022 mean= &v; where 2021.5 < cald <= 2022.5 and option = 0;
 proc means noprint data=y; var &v; output out=z_2023 mean= &v; where 2022.5 < cald <= 2023.5 and option = 0;
-*/
+
 * Set option = &op_num for options 1-12;
 proc means noprint data=y; var &v; output out=z_2024 mean= &v; where 2023.5 < cald <= 2024.5 and option = &op_num;
 proc means noprint data=y; var &v; output out=z_2025 mean= &v; where 2024.5 < cald <= 2025.5 and option = &op_num;
@@ -847,8 +847,8 @@ proc means noprint data=y; var &v; output out=z_2074 mean= &v; where 2073.5 < ca
 proc means noprint data=y; var &v; output out=z_2075 mean= &v; where 2074.5 < cald <= 2075.5 and option = &op_num;
 
 data &v ; set  
-/*z_1985  z_1986  z_1987  z_1988  z_1989  z_1990  z_1991  z_1992  z_1993  z_1994  z_1995  z_1996  z_1997  z_1998  z_1999  z_2000  z_2001  z_2002  z_2003  z_2004  
-z_2005  z_2006  z_2007  z_2008  z_2009  z_2010  z_2011  z_2012  z_2013  z_2014  z_2015  z_2016  z_2017  z_2018  z_2019  z_2020  z_2021  z_2022  z_2023 */ z_2024  
+z_1985  z_1986  z_1987  z_1988  z_1989  z_1990  z_1991  z_1992  z_1993  z_1994  z_1995  z_1996  z_1997  z_1998  z_1999  z_2000  z_2001  z_2002  z_2003  z_2004  
+z_2005  z_2006  z_2007  z_2008  z_2009  z_2010  z_2011  z_2012  z_2013  z_2014  z_2015  z_2016  z_2017  z_2018  z_2019  z_2020  z_2021  z_2022  z_2023  z_2024  
 z_2025  z_2026  z_2027  z_2028  z_2029  z_2030  z_2031  z_2032  z_2033  z_2034  z_2035  z_2036  z_2037  z_2038  z_2039  z_2040  z_2041  z_2042  z_2043  z_2044  
 z_2045  z_2046  z_2047  z_2048  z_2049  z_2050  z_2051  z_2052  z_2053  z_2054  z_2055  z_2056  z_2057  z_2058  z_2059  z_2060  z_2061  z_2062  z_2063  z_2064  
 z_2065  z_2066  z_2067  z_2068  z_2069  z_2070  z_2071  z_2072  z_2073  z_2074  z_2075
@@ -920,7 +920,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 data year;
 input year;
 
-/*
+
 cards;
 1985
 1986
@@ -960,8 +960,7 @@ cards;
 2020
 2021
 2022
-2023*/
-cards;
+2023
 2024
 2025
 2026
@@ -1015,7 +1014,7 @@ cards;
 2074
 2075
 
-;
+;run;
 
 data  wide_outputs_stocks ; merge 
 
@@ -1187,7 +1186,7 @@ run;
 
 data year;
 input year;
-/*
+
 cards;
 1985
 1986
@@ -1227,8 +1226,7 @@ cards;
 2020
 2021
 2022
-2023*/
-cards;
+2023
 2024
 2025
 2026
