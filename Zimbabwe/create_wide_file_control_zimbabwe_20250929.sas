@@ -3,12 +3,12 @@
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_sep25_out_jenny_tmp\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250929_out\";
 
 
 /*
 
-libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_sep25_out_jenny_tmp\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250929_out\";
 
 data g ; set a.out: ;
 
@@ -42,13 +42,16 @@ proc freq data=g; table option;run;
 data sf;
 set g;
 
-*Malawi;
-if cald=2024;
+*Zimbabwe;
+*Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
+*accessed 9/2/2023;
+* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
+
+if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2024 = (20000000 * 0.58) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
-sf=sf_2024;
-* 20.4 million in 2022.5, 58.1% are >=15);
-keep run sf sf_2024;
+sf_2022 = (16320000 * 0.581) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
+sf = sf_2022;
+keep run sf sf_2022;
 
 proc sort; by run;run;
 
@@ -365,6 +368,19 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 
 ***Extra outputs for calibration;
+* incidence1549;				incidence1549 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
+* incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
+* incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
+* incidence1564;                incidence1564 = (s_primary * 4 * 100) / (s_alive1564  - s_hiv1564  + s_primary);
+
+* p_newp_ge1;					p_newp_ge1 = s_newp_ge1 / s_alive1564 ;
+* p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
+* av_newp_ge1;					av_newp_ge1 = s_newp / s_newp_ge1 ;
+* p_ep;							p_ep = s_ep / s_alive1564;				
+
+* p_m_npge1_; 					p_m_npge1_ = s_m_npge1 / s_alive1564_m; *VCFeb2023;
+* p_w_npge1_; 					p_w_npge1_ = s_w_npge1 / s_alive1564_w; *VCFeb2023;
+
 * p_mcirc_1524m;				p_mcirc_1524m = (s_mcirc_1519m + s_mcirc_2024m) / (s_ageg1519m + s_ageg2024m) ;
 
 * n_onprep_agyw_plw;			n_onprep_agyw_plw = s_prep_any_agyw_plw * sf; * Person years of PrEP distributed to sexually active AGYW and pregnant and breastfeeding women;
@@ -406,6 +422,9 @@ n_daly			cost			p_mcirc			n_sw_program_visit
 n_circumcised_15_24_m			n_onprep_agyw_pg		n_agyw_pg	/* added Sept 2025 */
 
 /*Extra outputs for calibration*/	/* added Sept 2025 */
+incidence1549					incidence1549w					incidence1549m						incidence1564
+p_newp_ge1						p_newp_ge5						av_newp_ge1							p_ep
+p_m_npge1_						p_w_npge1_
 p_mcirc_1524m
 n_onprep_agyw_plw				n_agyw_plw
 n_onprep_oral_agyw_pg			n_onprep_len_agyw_pg			n_onprep_oral_agyw_plw				n_onprep_inj_agyw_plw
@@ -424,14 +443,21 @@ proc sort data=y;by run option;run;
 proc contents; run;
 
 
-* long_mlw_control is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_mlw_control; set y;
+* l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
+data a.long_zim_all; 
+	set y;
+	if cald=. then delete; 
+run;
+
+
+data a.long_zim_control; set y;
 /*if option ne 0 then delete;*/
 if cald=. then delete; run;
 
-proc contents data = a.long_mlw_control; run;
+proc contents data = a.long_zim_control; run;
 
-/*proc freq data=a.long_mlw_control; table option;run;*/
+/*proc freq data=a.long_zim_all; table option;run;*/
+/*proc freq data=a.long_zim_control; table option;run;*/
 
 
 
@@ -447,7 +473,7 @@ proc contents data = a.long_mlw_control; run;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 ** Set option number for var_stock and var_flow macros here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-%let op_num=3;
+%let op_num=0;
 
 /*
 0 = baseline (minimal)
@@ -470,7 +496,7 @@ proc contents data = a.long_mlw_control; run;
 
 
 
-data y; set a.long_mlw_control; 
+data y; set a.long_zim_control; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
@@ -1437,7 +1463,7 @@ run;
 proc transpose data=a.outputs_&op_num out=a.outputs_&op_num; run;
 
 proc export data=a.outputs_&op_num
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_sep25_out_jenny_tmp\outputs_&op_num..csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250929_out\outputs_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;

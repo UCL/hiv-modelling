@@ -55,7 +55,7 @@ reg_option_104 = 1;
 
 rate_ch_art_init_str_9 = 0.1 ;
 
-rate_int_choice = 0.003;  
+rate_int_choice = 0.005;  	* Changed from 0.003 to 0.005 12/11/25 to align with Optima 90s for HIV control project;
 
 * SEX WORKERS;				
 
@@ -65,7 +65,3 @@ rate_int_choice = 0.003;
 
 * prob_birth_circ;          prob_birth_circ = 0.2 ; 
 
-
-
-
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 1 3);

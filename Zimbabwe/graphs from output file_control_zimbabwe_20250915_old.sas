@@ -2,7 +2,171 @@
 ***Program to produce graphs using averages across runs
 ***Use include statement in analysis program to read the code below in;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250818_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\";
+
+
+data all_outputs;
+    set a.outputs_0(in=a) a.outputs_1(in=b) a.outputs_2(in=c) a.outputs_3(in=d) a.outputs_4(in=e) a.outputs_5(in=f) a.outputs_6(in=g) 
+		a.outputs_7(in=h) a.outputs_8(in=i) a.outputs_9(in=j) a.outputs_10(in=k) a.outputs_11(in=l) a.outputs_12(in=m)
+		/*a.outputs_99(in=n)*/;
+    if a then option = 0;
+    else if b then option = 1;
+    else if c then option = 2;
+    else if d then option = 3;
+    else if e then option = 4;
+    else if f then option = 5;
+    else if g then option = 6;
+    else if h then option = 7;
+    else if i then option = 8;
+    else if j then option = 9;
+    else if k then option = 10;
+    else if l then option = 11;
+    else if m then option = 12;
+    else if n then option = 99;
+run;
+
+proc transpose data=all_outputs out=combined_long(drop=_NAME_);
+    by option;  /* keep option as identifier */
+run;
+
+
+
+* Add new variables;
+data combined_long; set combined_long;
+	n_alive_m = n_alive_1524m + n_alive_2549m + n_alive_50plm;
+	n_alive_w = n_alive_1524w + n_alive_2549w + n_alive_50plw;
+	n_alive = n_alive_m + n_alive_w;
+	NewHIV_total = NewHIV_00_14_M + NewHIV_15_24_M + NewHIV_25_49_M + NewHIV_50_UP_M + NewHIV_00_14_F + NewHIV_15_24_F + NewHIV_25_49_F + NewHIV_50_UP_F;
+	pc_prep_fsw = 100 * PrEP_FSW / Total_FSW;
+	pc_prep_agyw = 100 * PrEP_AGYW_PG / Total_AGYW_PG;
+	pc_prep_msm = 100 * PrEP_MSM / Total_MSM;
+	pc_circumcised_15_24_m = 100 * N_circumcised_15_24_M / Total_15_24_M;
+run;
+
+
+
+%let year_start=1990;
+%let year_end=2050;
+
+ods html;
+
+proc format;
+    value option_fmt
+        0 = "Baseline"
+        1 = "PrEPoral_FSW"
+        2 = "PrEPmix_FSW"
+        3 = "PrEPoral_AGYW"
+        4 = "PrEPmix_AGYW"
+        5 = "PrEPoral_MSM"
+        6 = "PrEPmix_MSM"
+		7 = "vmmc"
+		8 = "condom"
+		9 = "FSW"
+		10 = "MSM"
+		11 = "test"
+		12 = "adherence"
+		;
+run;
+
+
+
+
+
+
+
+***************
+*** FIGURES ***
+***************;
+
+
+*** General;
+* New infections;
+proc sgplot data=combined_long;
+/*	where option in (0,1);*/
+    series x=year y=NewHIV_total / group=option lineattrs = (thickness = 2);
+    format option option_fmt.;   /* applies custom legend text */
+	xaxis label="Year";
+    yaxis label="Number";
+    title "NewHIV_total";
+run;
+
+
+
+
+*** PrEP (options 1-6);
+proc sgplot data=combined_long;
+	where option in (0,1,2);
+    series x=year y=pc_prep_fsw / group=option lineattrs = (thickness = 2);
+    format option option_fmt.;   /* applies custom legend text */
+	xaxis label="Year";
+    yaxis label="%";
+    title "pc_prep_fsw";
+run;
+
+
+
+proc sgplot data=combined_long;
+	where option in (0,3,4);
+    series x=year y=pc_prep_agyw / group=option lineattrs = (thickness = 2);
+    format option option_fmt.;   /* applies custom legend text */
+	xaxis label="Year";
+    yaxis label="%";
+    title "pc_prep_agyw";
+run;
+
+proc sgplot data=combined_long;
+	where option in (0,5,6);
+    series x=year y=pc_prep_msm / group=option lineattrs = (thickness = 2);
+    format option option_fmt.;   /* applies custom legend text */
+	xaxis label="Year";
+    yaxis label="%";
+    title "pc_prep_msm";
+run;
+
+
+*** VMMC (option 7);
+proc sgplot data=combined_long;
+	where option in (0,7);
+    series x=year y=Percent_circumcised / group=option lineattrs = (thickness = 2);
+    format option option_fmt.;   /* applies custom legend text */
+	xaxis label="Year";
+    yaxis label="%";
+    title "Percent_circumcised";
+run;
+
+proc sgplot data=combined_long;
+	where option in (0,7);
+    series x=year y=pc_circumcised_15_24_m / group=option lineattrs = (thickness = 2);
+    format option option_fmt.;   /* applies custom legend text */
+	xaxis label="Year";
+    yaxis label="%";
+    title "pc_circumcised_15_24_m";
+run;
+
+
+*** KP programs (options 9 & 10);
+proc sgplot data=combined_long;
+	where option in (0,9);
+    series x=year y=Percent_FSW_reached / group=option lineattrs = (thickness = 2);
+    format option option_fmt.;   /* applies custom legend text */
+	xaxis label="Year";
+    yaxis label="%";
+    title "Percent_FSW_reached";
+run;
+
+proc sgplot data=combined_long;
+	where option in (0,10);
+    series x=year y=Percent_MSM_reached / group=option lineattrs = (thickness = 2);
+    format option option_fmt.;   /* applies custom legend text */
+	xaxis label="Year";
+    yaxis label="%";
+    title "Percent_MSM_reached";
+run;
+* Output missing;
+
+
+
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20250915_out\";
 /*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
@@ -486,7 +650,7 @@ ods listing;
 ***Graphs comparing observed data to outputs for Status quo 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20250818.doc' startpage=never;
+ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20250915.doc' startpage=never;
 
 
 *Option 0 only;
@@ -637,11 +801,11 @@ Title    height=1.5 justify=center "p_ep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_ep_0  = "Baseline (median) - 15+";
-label p50_p_ep_8  = "+ condom availability (median) - 15+";
+label p50_p_ep_1  = "+ condom availability (median) - 15+";
 series  x=cald y=p50_p_ep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_ep_0 	upper=p95_p_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_ep_8/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_ep_8 	upper=p95_p_ep_8  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_ep_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_ep_1 	upper=p95_p_ep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 * "Number of AGYW at elevated risk" n_w1524_newp_ge1; 

@@ -71,6 +71,7 @@ country = 'Cote d Ivoire';
 ***PROB_LOSS_AT_DIAG IS MULTIPLIED BY 1.3 IN THE MAIN PROGRAM FOR MEN;
 * art_intro_date;			art_intro_date = 2007;
 
+* art_intro_date;			art_intro_date = 2007;
 
 * pr_art_init; 				%sample(pr_art_init, 0.5 0.7 0.9 0.95 1, 0.30 0.25 0.20 0.15 0.10 );  
 

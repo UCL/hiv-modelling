@@ -43,7 +43,9 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * adh_pattern;              %sample(adh_pattern,
                                 1       2       3       4       5     ,
-                                0.05    0.55    0.20    0.10    0.10  );
+                                0.05    0.35    0.20    0.20    0.20  );			
+								* Changed distribution from (0.05 0.55 0.2 0.1 0.1) to (0.05 0.35 0.2 0.2 0.2) (less adherent) on 12/11/25 to 
+								help align proportion VLS with Optimas 3rd 90 for the HIV control project;
 * rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0020 0.0030 0.0040);*Vale - 20220105;
 
 
