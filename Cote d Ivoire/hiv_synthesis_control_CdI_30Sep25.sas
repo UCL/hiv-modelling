@@ -855,7 +855,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 * incr_res_risk_len_inf_3m;		incr_res_risk_len_inf_3m = incr_res_risk_cab_inf_3m;
 
-* cablen_extra_pref;			%sample_uniform(cablen_extra_pref,      0.5 0.7 1) ; 
+* cablen_extra_pref;			%sample_uniform(cablen_extra_pref, 0.1 0.3 0.5) ;	* test changing (0.5, 0.7, 1) to (0.1 0.3 0.5) - HIV Control Oct25; 
 * pref_prep_cablen_beta_s1;		pref_prep_cablen_beta_s1 = pref_prep_oral_beta_s1 + cablen_extra_pref ; * tends to be more preference for inj ;
 
 * hivtest_type_1_init_prep_cab; %sample(hivtest_type_1_init_prep_cab, 0 1, 0.5 0.5); hivtest_type_1_init_prep_cab=0;
@@ -1532,12 +1532,6 @@ if gender=2 then do;
 end;
 
 
-
-r=rand('uniform');
-if gender=2 then life_sex_risk=2; 
-rred_p=1;
-if r < p_rred_p then do; life_sex_risk = 1;  rred_p=0.00001; end;
-if gender=2 and 1-p_hsb_p < r < 1 then life_sex_risk = 3; 
 
 ever_newp=0;
 
