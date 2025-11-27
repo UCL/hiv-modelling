@@ -123,6 +123,7 @@ run;
 
 * Adjustments to costs for Zimbabwe - HIV Control ;
 * Original costs in 000s of USD;
+* Use costs provided in spreadsheet unit_cost-kp_cvg-2025-07-14_draft;
 * Updated Nov 25;
 
 * VMMC;
