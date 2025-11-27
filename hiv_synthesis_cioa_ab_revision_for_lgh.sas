@@ -2,19 +2,36 @@
 
 *
 
-changes for lgh revised version:
+changes for lgh revision:
 
-- review cost of sex worker program visits
+- no cost of birth circ
 
-- make the increase in use of self-tests and prep more gradual as people become educated ?
+- make the increase in use of self-tests and prep more gradual as people become educated ?  
 
-- turn off vmmc fully
+- need minimal self testing in option 0 ?  
 
-- provide and additional support for assumptions that hiv self-testing is leading to an increase in the number of tests ? include possibility of smaller 
-  impact on testing rates
+- get output on number of health-care work tests in each policy
 
-; 
+- The authors acknowledge that in some settings, community-based pharmacies are lacking, and that CHWs would be an alternate source for TLD treatment in these 
+  settings. How might the availability, quality, and training of pharmacies / pharmacists impact the model or the extent to which a CHW program is already 
+  integrated in the community, or already integrated into hospital systems or public health systems impact the model? It seems this would be a major component 
+  of costs / success of community-based TLD for treatment, PEP, as well as PrEP. Is this accounted for in the variability of the model parameters already?
 
+- (for appendix) concurrently run additional 3 options with (i) just the increased art access (ii) just the change in testing to self (iii) just the increase 
+  in prep/pep -  ? also consider an option keeping facility based testing
+
+- (for appendix) probably run 0 vs 1 in context of viral load monitoring 
+
+- include up front costs for advising pharmacists / chw ?
+
+- create outputs so that effects of the policy can be shown specifically for groups such as msm, sw, hard to reach, male/female
+
+- ? dont do replicates (or maybe just for option 0 amd 1) but say in response willing to do so / same with 0 vs 1 in context of vmmc continuing 
+
+- provide at least simple inequality metrics—such as changes in absolute or relative differences in diagnosis or viral suppression rates between those with and 
+  without service access
+
+;
 
 
 
@@ -814,23 +831,26 @@ newp_seed = 7;
 
 * rr_testing_female;		rr_testing_female=1.5;
 
+
+* SELF TESTING;
+
 * prob_self_test_hard_reach;prob_self_test_hard_reach = 0;
 
 * self_test_targeting;		%sample_uniform(self_test_targeting, 1.5 2 3 5);* cioa_k;
 
-
 * rate_self_test;			rate_self_test = 0;
-* rate_self_test_if_introduced;  %sample_uniform(rate_self_test_if_introduced, 0.05 0.1 0.15  );          
+
+* rate_self_test_if_introduced;  %sample_uniform(rate_self_test_if_introduced, 0.05 0.1 0.15  );  * revised for lgh;        
 
 * self_test_sens;			self_test_sens = 0.93;    * wonfo test has 95.8% sensitivity but oral tests will be lower
 							https://supply.unicef.org/s0004269.html#:~:text=Technical%20specifications:,Medsun%20Medical%20Co.%2C%20Ltd.;      
 
 * prob_pos_self_test_conf;	%sample_uniform(prob_pos_self_test_conf, 0.7 0.8 0.9);
 
-* secondary_dist_self_test;	secondary_dist_self_test = 0; 
-* intervention in place to give to sexual partners ;
+* secondary_dist_self_test;	secondary_dist_self_test = 0; * intervention in place to give to sexual partners ;
 
 * secondary_self_test_targeting; secondary_self_test_targeting = self_test_targeting ;
+
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
@@ -2631,17 +2651,28 @@ who may be dead and hence have caldate{t} missing;
 
 	if option=1 then do;
 		if comm_tld_set_in_options ne 1 then do; * so do these things only in year_interv;
+
+			* prep/pep; 
 			pref_prep_oral_beta_s1 = pref_prep_oral_beta_s1 + incr_pref_prep_oral_comm_tld;
 			pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);	
+			start_pep_prep_without_test = 1;continue_pep_prep_without_test=1;
+			cost_prep_oral_clinic = 0.005; * now that prep pep is from local pharmacy or village health worker and no testing required ;
+
+			* art access;
 			eff_rate_return = eff_rate_return * rr_return_comm_tld ; 
 			eff_rate_int_choice = eff_rate_int_choice * rr_interrupt_comm_tld ;
+
+			* testing;
 			rate_self_test=rate_self_test_if_introduced;
-		 	start_pep_prep_without_test = 1;continue_pep_prep_without_test=1;
+
+			* reducing hard reach ;
 	  		if hard_reach=1 and gender=1 then hard_reach_vmmc=1; * reduce hard reach for testing and self testing and prep pep but not vmmc;
 			if hard_reach = 1 then do;  r=rand('uniform'); if r < effect_comm_tld_hard_reach then hard_reach=0; end;
+
 			comm_tld_set_in_options = 1;
-			cost_prep_oral_clinic = 0.005; * now that prep pep is from local pharmacy or village health worker and no testing required ;
 		end;
+
+		* testing;
 		regular_testing_stops = 1;
 		eff_sens_vct = 0.93; sens_vct = 0.93; sens_primary_testtype3 = 0; 
 		sens_vct_testtype3_cab_tail=0; sens_vct_testtype3_len_tail=0;
@@ -13704,7 +13735,7 @@ if start_line2_this_period=1 then cost_switch_line=cost_switch_line_a;
 	art_3_cost=0; if artline=3 then art_3_cost=art_cost;
 
 
-cost_circ=0; if new_mcirc=1 then cost_circ=circ_cost_a; 
+cost_circ=0; if new_mcirc=1 and new_birth_circ ne 1 then cost_circ=circ_cost_a; * amended for lgh revision;
 
 cost_condom_dn=0; if caldate{t} ge 1995 and 15 <= age < 65 then cost_condom_dn=condom_dn_cost;
 
