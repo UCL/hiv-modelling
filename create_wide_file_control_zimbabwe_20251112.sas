@@ -392,6 +392,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_elig_prep_any_sw;			n_elig_prep_any_sw = s_elig_prep_any_sw * sf;
 * n_elig_prep_w_1549_;			n_elig_prep_w_1549_ = s_elig_prep_any_w_1549 * sf;
 * n_elig_prep_w_1564_;			n_elig_prep_w_1564_ = s_elig_prep_any_w_1564 * sf;
+* s_elig_prep_any_msm_1564;
 
 * n_tested_m;					n_tested_m = s_tested_m * sf * 4;
 * n_tested_w;					n_tested_w = (s_tested_f + s_tested_anc_prevdiag )* sf * 4;
