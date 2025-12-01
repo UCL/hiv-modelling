@@ -1033,7 +1033,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 *  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
  *%include "/home/rmjllob/CdI_parameters27.sas";
- %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters27";
+ %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters27.sas";
+
 call symput('caldate1',caldate1);
 
 
@@ -19593,7 +19594,7 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 
-proc print;var cald age;run;
+proc print;var cald age country prevalence1549;run;
 * procs;
 
 /*
@@ -20913,7 +20914,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549  p_vl1000
+prevalence1549  prevalence1549w prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549  p_vl1000
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
@@ -21009,8 +21010,9 @@ if country = 'Zimbabwe' then do;
 end;
 
 ***Cote d Ivoire specific;
+
 if country = 'Cote d Ivoire' then do;
-	if cald=1981 then do; abort abend;end;
+	
 	if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 	if cald = 2010 and (0.03 < prevalence1549w < 0.08) then do; abort abend; end;
 	if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
@@ -23000,7 +23002,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw  prev_vg1000_1549
+prevalence1549  prevalence1549w  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw  prev_vg1000_1549
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
