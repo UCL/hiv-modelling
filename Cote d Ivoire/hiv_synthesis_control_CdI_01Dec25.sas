@@ -1032,8 +1032,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * OVERWRITES country specific parameters;
 *  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
- %include "/home/rmjllob/CdI_parameters27.sas";
- *%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters27.sas";
+%include "/home/rmjllob/CdI_parameters27.sas";
+* %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters27.sas";
 
 call symput('caldate1',caldate1);
 
@@ -19591,6 +19591,7 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
+
 
 
 * procs;
