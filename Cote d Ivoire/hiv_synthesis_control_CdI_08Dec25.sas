@@ -1832,10 +1832,12 @@ eff_rate_restart = rate_restart;
 * define effective prob_loss_at_diag ;
 eff_prob_loss_at_diag = prob_loss_at_diag;
 
+/*
 if country='Cote d Ivoire' then do;
 ***CdI specific;
 if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.3;
 end;
+*/
 
 * define effective rate_lost;
 eff_rate_lost = rate_lost ;
