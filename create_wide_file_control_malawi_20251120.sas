@@ -3,12 +3,12 @@
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251112_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251120_out\";
 
 
 /*
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251112_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251120_out\";
 
 data g ; set a.out: ;
 
@@ -123,45 +123,15 @@ run;
 * Use costs provided in spreadsheet unit_cost-kp_cvg-2025-07-14_draft;
 * Updated Nov 25;
 
-* HIV testing;
+* VMMC;
+s_cost_circ = s_cost_circ * 60.24 / 90 ;
+s_dcost_circ = s_dcost_circ * 60.24 / 90 ;
 
-
-* ART;
-
-
-* PMTCT;
-
-
-* Condoms;
-* na;
-
-* PrEP;
-s_cost_prep_cab = s_cost_prep_cab * (0.7259 / (0.042 * 1.2));	* Should be 88.36 for but using LEN cost as only LEN is implemented;
-s_cost_prep_len = s_cost_prep_len * (72.59 / (25 * 1.2));
-s_cost_prep_oral = s_cost_prep_oral * (76.15 / (50 * 1.2));
-s_cost_prep = s_dcost_prep_cab + s_dcost_prep_len + s_dcost_prep_oral;
-
-s_dcost_prep_cab = s_dcost_prep_cab * (72.59 / (42 * 1.2));		* Should be 88.36 for but using LEN cost as only LEN is implemented;
-s_dcost_prep_len = s_dcost_prep_len * (72.59 / (25 * 1.2));
-s_dcost_prep_oral = s_dcost_prep_oral * (76.15 / (50 * 1.2));
+s_dcost_prep_cab = s_dcost_prep_cab * (73.6 / (42 * 1.2));		* Should be 89.89 for but using LEN cost as only LEN is implemented; * Updated Nov 25 for HIV Control;
+s_dcost_prep_len = s_dcost_prep_len * (73.6 / (42 * 1.2));  	* Updated Nov 25 for HIV Control;
+s_dcost_prep_oral = s_dcost_prep_oral * (76.88 / (50 * 1.2)); 	* Updated Nov 25 for HIV Control;
 s_dcost_prep = s_dcost_prep_cab + s_dcost_prep_len + s_dcost_prep_oral;
 ** Taken out VR PrEP costs and PrEP clinic costs as these are incorporated in the PY costs;
-
-* VMMC;
-s_cost_circ = s_cost_circ * 32.08 / 90 ;
-s_dcost_circ = s_dcost_circ * 32.08 / 90 ;
-
-* FSW services;
-
-
-* MSM services;
-
-
-* ART adherence support;
-
-
-
-
 
 dcost_self_test = s_self_tested * sf * 27.52 * &discount * 4; 
 
@@ -171,7 +141,7 @@ dcost_adh_intervention=0; if option=12 then do; dcost_adh_intervention=(s_diag) 
 clients in their first year? Routine financial costs of retention interventions at Lighthouse Trustin Lilongwe, Malawi. Res Sq [Preprint]. 2024 Oct 
 15:rs.3.rs-4939155. doi: 10.21203/rs.3.rs-4939155/v1. PMID: 39483880 PMCID: PMC11527224.;
 
-dzdv_cost = s_cost_zdv * &discount * sf * 4 / 1000;
+dzdv_cost = s_cost_zdv * &discount * 111.92/((0.068/4)*1.2) * sf * 4 / 1000; *** CHECK UNITS HERE ***;
 dten_cost = s_cost_ten * &discount * sf * 4 / 1000;
 d3tc_cost = s_cost_3tc * &discount * sf * 4 / 1000; 
 dnev_cost = s_cost_nev * &discount * sf * 4 / 1000;
@@ -419,6 +389,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_elig_prep_any_sw;			n_elig_prep_any_sw = s_elig_prep_any_sw * sf;
 * n_elig_prep_w_1549_;			n_elig_prep_w_1549_ = s_elig_prep_any_w_1549 * sf;
 * n_elig_prep_w_1564_;			n_elig_prep_w_1564_ = s_elig_prep_any_w_1564 * sf;
+* n_elig_prep_any_msm_1564_;	n_elig_prep_any_msm_1564_ = s_elig_prep_any_msm_1564 * sf;
 
 * n_tested_m;					n_tested_m = s_tested_m * sf * 4;
 * n_tested_w;					n_tested_w = (s_tested_f + s_tested_anc_prevdiag )* sf * 4;
@@ -441,7 +412,11 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_w_npge1_; 					p_w_npge1_ = s_w_npge1 / s_alive1564_w; *VCFeb2023;
 
 * p_mcirc_1524m;				p_mcirc_1524m = (s_mcirc_1519m + s_mcirc_2024m) / (s_ageg1519m + s_ageg2024m) ;
-;
+
+* n_diag_sw;					n_diag_sw = s_diag_sw * sf;
+* n_diag_msm_age1564_;			n_diag_msm_age1564_ = s_diag_msm_age1564 * sf;
+* n_undiag_sw;					n_undiag_sw = n_sw_1564 - n_diag_sw;
+* n_undiag_msm;					n_undiag_msm = n_alive_msm - n_diag_msm_age1564_;
 
 
 
@@ -469,7 +444,7 @@ n_onprep_agyw_plw				n_agyw_plw
 n_onprep_oral_agyw_pg			n_onprep_len_agyw_pg			n_onprep_oral_agyw_plw				n_onprep_len_agyw_plw
 n_onprep_oral_m					n_onprep_len_m					n_onprep_oral_w						n_onprep_len_w
 n_onprep_oral_sw				n_onprep_len_sw					n_onprep_oral_msm					n_onprep_len_msm
-n_elig_prep_any_sw				n_elig_prep_w_1549_				n_elig_prep_w_1564_
+n_elig_prep_any_sw				n_elig_prep_w_1549_				n_elig_prep_w_1564_					n_elig_prep_any_msm_1564_
 
 n_tested_m						n_tested_w
 n_self_tested_m					n_self_tested_w					n_tested_due_to_self_test
@@ -479,6 +454,8 @@ incidence1549					incidence1549w					incidence1549m						incidence1564
 p_newp_ge1						p_newp_ge5						av_newp_ge1							p_ep
 p_m_npge1_						p_w_npge1_
 p_mcirc_1524m
+n_diag_sw						n_undiag_sw
+n_diag_msm_age1564_				n_undiag_msm
 ;
 
 
@@ -511,7 +488,7 @@ proc contents data = a.long_mlw_control; run;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 ** Set option number for var_stock and var_flow macros here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-%let op_num=0;
+%let op_num=13;
 
 /*
 0 = baseline (minimal)
@@ -1142,7 +1119,7 @@ run;
 proc transpose data=outputs_&op_num out=a.outputs_&op_num; run;
 
 proc export data=a.outputs_&op_num
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251112_out\outputs_&op_num..csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251120_out\outputs_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
