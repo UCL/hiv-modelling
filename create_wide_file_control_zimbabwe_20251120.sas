@@ -126,7 +126,8 @@ run;
 * Use costs provided in spreadsheet unit_cost-kp_cvg-2025-07-14_draft;
 * Updated Nov 25;
 
-* VMMC;
+/* COMPARE VMMC*/
+
 * Compare 
 s_cost_circ - calculated in model (original cost) [s_new_mcirc * circ_cost_a]
 s_cost_circ - calculated here from epi outputs (original cost)
@@ -142,10 +143,8 @@ new s_cost_circ - scaling cost from original epi outputs (circ_cost_a = 0.090 - 
 same with dcost
 
 circ_cost_a = 0.090
-
 ;
 
-/* COMPARE VMMC*/
 s_cost_circ_original = s_cost_circ;
 s_cost_circ_epi = s_new_mcirc * 0.090;
 
@@ -160,9 +159,9 @@ s_dcost_circ_epi_scaled = s_new_mcirc * 0.06024 * &discount;
 /* END COMPARE */
 
 
-
-/*s_cost_circ = s_cost_circ * 60.24 / 90 ;*/
-/*s_dcost_circ = s_dcost_circ * 60.24 / 90 ;*/
+* VMMC;
+s_cost_circ = s_cost_circ * 60.24 / 90 ;						* circ_cost_a = 0.090, new cost = 60.24;
+s_dcost_circ = s_dcost_circ * 60.24 / 90 ;
 
 s_dcost_prep_cab = s_dcost_prep_cab * (73.6 / (42 * 1.2));		* Should be 89.89 for but using LEN cost as only LEN is implemented; * Updated Nov 25 for HIV Control;
 s_dcost_prep_len = s_dcost_prep_len * (73.6 / (42 * 1.2));  	* Updated Nov 25 for HIV Control;
