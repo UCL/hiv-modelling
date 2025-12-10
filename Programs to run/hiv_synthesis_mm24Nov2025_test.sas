@@ -1,7 +1,8 @@
-
-***19 May 25;
-**Might have to reduce rred in non MM if prevalence in all men is too high;
- 
+/***Check comment in options, I don't think it is true;
+ 	*Option 0 is continuation at current rates - status quo;
+	if option=0 then do; **no cab, only oral prep because pref_prep_cab is only set for women ;
+	end;
+ */
 
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -11,8 +12,8 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
-%let year_interv = 2026.0 ;	
+%let population = 500; 
+%let year_interv = 1995.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -359,7 +360,7 @@ newp_seed = 7;
 
 * HIV TESTING;
 
-* date_start_testing;		date_start_testing = 2003.5; 
+* date_start_testing;		date_start_testing = 1980; 
 * initial_rate_1sttest;		initial_rate_1sttest = 0; 				* dependent_on_time_step_length ;
 * initial_rate_reptest;		initial_rate_reptest = 0;
 * test_rate_who4;			test_rate_who4=0.10;  					* dependent_on_time_step_length ;
@@ -719,12 +720,13 @@ end;
 
 *MOBILE MEN;
 
-* prob_mobile1519_;			%sample_uniform(prob_mobile1519_, 0.01 0.02);
-* prob_mobile2060_;			%sample_uniform(prob_mobile2060_, 0.025 0.05);
+* prob_mobile1517_;			%sample_uniform(prob_mobile1517_, 0.01 0.02);***amend when outputs are ready;
+* prob_mobile1835_;			%sample_uniform(prob_mobile1835_, 0.03 0.04);
+* prob_mobile3660_;			%sample_uniform(prob_mobile3660_, 0.02 0.03);
 * prob_mobile60pl;			%sample_uniform(prob_mobile60pl,  0.01 0.02);
 * prob_stop_mobile;			%sample_uniform(prob_stop_mobile, 0.05 0.10);
 * inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 5 10 20 50);*change in sexual behaviour due to being mobile;
-* mm_hardreach;				mm_hardreach=0.70;
+* mm_hardreach;				%sample_uniform(mm_hardreach, 0.30 0.50);
 
 
 * CIRCUMCISION;
@@ -756,7 +758,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 14);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 19);prep_any_strategy=19;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -789,7 +791,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * lapr and dpv-vr - assume following all apply unless stated ; * lapr - add specific testing routines?
 
 
-* date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
+* date_prep_oral_intro;			date_prep_oral_intro=1980; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
 * prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1  0.2 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
@@ -823,7 +825,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ; * lapr;
 
-* date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 3000          ); * Introduction of injectable cab PrEP ; * consider len as the only la prep option;
+* date_prep_cab_intro;			date_prep_cab_intro= 3000; * Introduction of injectable cab PrEP ; * consider len as the only la prep option;
 * date_prep_len_intro;			date_prep_len_intro=3000;		* Introduction of injectable len PrEP ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;			* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;			* Assume 5 years to scale up injectable len prep;
@@ -2271,7 +2273,31 @@ age=age + (1/12);
 
 agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
+***MOBILE MEN;
+* Risk of becoming mobile (with an increased sexual risk) and impact on hard to reach;
+if gender=1 then curr_mobile=1;
 
+if gender=1 and curr_mobile_tm1 ne 1 and adc ne 1 then do; u=rand('uniform');
+	/*if 15 <= age < 17 and u < prob_mobile1517_ then curr_mobile=1; 
+	if 18 <= age < 35 and u < prob_mobile1835_ then curr_mobile=1; 
+	if 36 <= age < 60 and u < prob_mobile3660_ then curr_mobile=1;
+	if age >=60 and u < prob_mobile60pl then curr_mobile=1;
+*/
+	curr_mobile=1;
+	if curr_mobile=1 and u < mm_hardreach then do;
+		if hard_reach ne 1 then hard_reach_due_to_mobile=1;
+		hard_reach=1;
+	end;
+end;
+
+r=rand('Uniform');
+if (curr_mobile=1 or adc=1) and r < prob_stop_mobile then do; 
+	curr_mobile=0;
+	if hard_reach_due_to_mobile=1 then do;
+		hard_reach=0;
+		hard_reach_due_to_mobile=0;
+	end;
+end;
 * ==========================================================================================================================================;
 
 
@@ -2295,16 +2321,44 @@ who may be dead and hence have caldate{t} missing;
 
 
  	*Option 0 is continuation at current rates - status quo;
-	if option=0 then do;
+	if option=0 then do; **no cab, only oral prep because pref_prep_cab is only set for women ;
+	
 	end;
 
- 	*Option 1 - Set hard to reach to 0 for all MM;
+	 *Option 1 - if prep_any_strategy=19, change so mobile men are eligible AND CAB is introduced AND hard to reach=0;
 	if option = 1 then do;
+		prep_any_strategy=20;
+		date_prep_cab_intro=2027;
+		prep_willingness_threshold=prep_willingness_threshold/2;
 		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
 			hard_reach_due_to_mobile=0;
 			hard_reach=0;
 		end;
 	end;
+
+***OPTIONS 2 - 4 ARE JUST TO SEE THE IMPACT OF EACH COMPONENT;
+	 *Option 2 - change only the prep strategy (no CAB, no changes to hard to reach);
+		if option = 2 then do;
+		prep_any_strategy=20;
+		*pref_prep_cab=pref_prep_cablen_beta_s1;
+	end;	
+
+	*Option 3 - change only prep strategy and hard to reach=0 (no CAB);
+	if option = 3 then do;
+		prep_any_strategy=20;
+		*date_prep_cab_intro=2100;
+		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
+			hard_reach_due_to_mobile=0;
+			hard_reach=0;
+		end;
+	end;	
+
+	*Option 4 - change only prep strategy and introduction of CAB (no changes to hard to reach);
+	if option=4 then do;
+		prep_any_strategy=20;
+		date_prep_cab_intro=2027;
+	end;
+
  
 end;
 
@@ -2871,28 +2925,8 @@ if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_
 	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
 end;
 
-***MOBILE MEN;
-* Risk of becoming mobile (with an increased sexual risk) and impact on hard to reach;
 
-if gender=1 and curr_mobile_tm1 ne 1 and adc ne 1 then do; u=rand('uniform');
-	if 15 <= age < 20 and u < prob_mobile1519_ then curr_mobile=1; 
-	if 20 <= age < 60 and u < prob_mobile2060_ then curr_mobile=1;
-	if age >=60 and u < prob_mobile60pl then curr_mobile=1;
 
-	if curr_mobile=1 and u < mm_hardreach then do;
-		if hard_reach ne 1 then hard_reach_due_to_mobile=1;
-		hard_reach=1;
-	end;
-end;
-
-r=rand('Uniform');
-if (curr_mobile=1 or adc=1) and r < prob_stop_mobile then do; 
-	curr_mobile=0;
-	if hard_reach_due_to_mobile=1 then do;
-		hard_reach=0;
-		hard_reach_due_to_mobile=0;
-	end;
-end;
 
 
 ***Impact of potential changes in policy after year_i;
@@ -4831,7 +4865,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.2 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=19 then do;	* as 4 but excludes heterosexual men and includes msm;	
+	if prep_any_strategy=19 then do;	* For mobile men (as 4 but excludes heterosexual men and includes msm);	
       	if 
 		(newp ge 1 and gender=2) 
 		or 
@@ -4842,6 +4876,20 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
+
+	if prep_any_strategy=20 then do;	* as 19 but includes mobile men;	
+      	if 
+		(newp ge 1 and gender=2) 
+		or 
+		(epdiag=1 and epart ne 1 and gender=2) 
+		or 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))
+ 		then prep_any_elig=1; 
+
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) or
+		(curr_mobile=1)		then prep_any_elig=1; 
+
+end;
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 
@@ -13772,11 +13820,25 @@ if gender=2 then do;
 end;
 
 ***MOBILE MEN;
-alive1549mm=0;alive1564mm=0;alive1564nmm=0;
+alive1549mm=0;alive1564mm=0;alive1564nmm=0;alive1517mm=0;alive1519mm=0;alive2024mm=0;alive2529mm=0;alive3034mm=0;
+alive3540mm=0;alive4044mm=0;alive4549mm=0;alive5054mm=0;alive5560mm=0;alive6064mm=0;
+
 if curr_mobile=1 then do;
 	if 15 <= age < 50 then alive1549mm=1;
 	if 15 <= age < 65 then alive1564mm=1;
+	if 15 <= age < 18 then alive1517mm=1;
+	if 15 <= age < 20 then alive1519mm=1;
+	if 20 <= age < 25 then alive2024mm=1;
+	if 25 <= age < 30 then alive2529mm=1;
+	if 30 <= age < 35 then alive3034mm=1;
+	if 35 <= age < 40 then alive3540mm=1;
+	if 40 <= age < 45 then alive4044mm=1;
+	if 45 <= age < 50 then alive4549mm=1;
+	if 50 <= age < 55 then alive5054mm=1;
+	if 55 <= age < 60 then alive5560mm=1;
+	if 60 <= age < 65 then alive6064mm=1;
 end;
+
 if curr_mobile ne 1 and gender=1 and 15 <= age < 65 then alive1564nmm=1;
 
 
@@ -15932,7 +15994,11 @@ prep_len_mm=0; 		if curr_mobile=1 and prep_len =1 then prep_len_mm=1;
 
 
 prep_any_ever=0; if prep_oral_ever=1 or prep_cab_ever=1 or prep_len_ever=1 or prep_vr_ever=1 then prep_any_ever=1;
+if gender=1 then prep_any_ever_m=prep_any_ever;
+if gender=2 then prep_any_ever_w=prep_any_ever;
+
 prep_any_ever_mm=0; if curr_mobile=1 and (prep_oral_ever=1 or prep_cab_ever=1 or prep_len_ever=1) then prep_any_ever_mm=1;
+
 
 *Resistance in people infected on prep;
 
@@ -17455,13 +17521,6 @@ newp_hivneg=0;
 if hiv ne 1 then newp_hivneg = max(newp,0);
 
 
-prep_any_ever_w=.;
-if gender=2 then do;
-prep_any_ever_w = 0 ;
-if prep_any_ever = 1 then prep_any_ever_w = 1;
-end;
-
-
 *added Feb2017;
 visit_prep_oral_no=0; if visit_prep_oral=0 then visit_prep_oral_no=1; 	*no visit;
 visit_prep_oral_d=0; if visit_prep_oral=1 then visit_prep_oral_d=1;	 	*drug pick up only;
@@ -18699,7 +18758,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_cab_m + prep_cab_m; 	s_prep_len_m + prep_len_m; 	s_prep_any_sw + prep_any_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_cab_sw + prep_cab_sw ; 
 	s_prep_len_sw + prep_len_sw ;  s_prep_vr_sw + prep_vr_sw ; 
 	s_prep_any_w_1524 + prep_any_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_cab_w_1524 + prep_cab_w_1524 ;  s_prep_len_w_1524 + prep_len_w_1524 ; 
-
+	s_prep_any_w_1564 + prep_any_w_1564 ; s_prep_any_m_1564 + prep_any_m_1564 ;
 	s_onprep_cab_msm + onprep_cab_msm; s_onprep_len_msm + onprep_len_msm; s_onprep_cab_pwid + onprep_cab_pwid; s_onprep_len_pwid + onprep_len_pwid; 
 
 	s_prep_any_sdc + prep_any_sdc; s_prep_oral_sdc + prep_oral_sdc; s_prep_cab_sdc + prep_cab_sdc;  s_prep_len_sdc + prep_len_sdc; s_prep_vr_sdc + prep_vr_sdc;
@@ -18773,7 +18832,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_hiv_prep_reason_3 + hiv_prep_reason_3 ; s_hiv_prep_reason_4 + hiv_prep_reason_4 ;  s_prep_newp + prep_newp ;
     s_prep_newpg0 + prep_newpg0 ; s_prep_newpg1 + prep_newpg1 ; s_prep_newpg2 + prep_newpg2 ; s_prep_newpg3 + prep_newpg3 ; 
 	s_prep_newpg4  + prep_newpg4  ; s_newp_this_per_age1524w_onprep + newp_this_per_age1524w_onprep ;
-  	s_newp_this_per_age1524w + newp_this_per_age1524w ; s_prep_any_ever_w_1524 + prep_any_ever_w_1524 ; s_prep_any_ever_w + prep_any_ever_w ;
+  	s_newp_this_per_age1524w + newp_this_per_age1524w ; s_prep_any_ever_w_1524 + prep_any_ever_w_1524 ; 
+	s_prep_any_ever_w + prep_any_ever_w ;  s_prep_any_ever_m + prep_any_ever_m ;
     s_test_gt_per1_on_prep_oral + test_gt_per1_on_prep_oral ; s_test_gt_per1_on_prep_oral_pos + test_gt_per1_on_prep_oral_pos ;
     s_test_per1_on_prep_oral + test_per1_on_prep_oral ; s_test_per1_on_prep_oral_pos + test_per1_on_prep_oral_pos ; 
 	s_prob_prep_any_restart_choice + prob_prep_any_restart_choice ; s_prep_oral_past_year + prep_oral_past_year ;
@@ -19458,7 +19518,12 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_covid + covid ; 
 
 	/* Mobile men */ 
-	s_alive1549mm + alive1549mm;  	  s_alive1564mm	+ alive1564mm; 	   s_alive1564nmm + alive1564nmm;   s_hiv_mm + hiv_mm;			
+	s_alive1549mm + alive1549mm; s_alive1564mm + alive1564mm; s_alive1517mm + alive1517mm; s_alive1519mm + alive1519mm;
+	s_alive2024mm + alive2024mm; s_alive2529mm + alive2529mm; s_alive3034mm + alive3034mm; s_alive3539mm + alive3539mm;
+	s_alive4044mm + alive4044mm; s_alive4549mm + alive4549mm; s_alive5054mm + alive5054mm; s_alive5559mm + alive5559mm; 
+	s_alive6064mm + alive6064mm; 
+
+	s_alive1564nmm + alive1564nmm;   s_hiv_mm + hiv_mm;			
 	s_hiv_nmm + hiv_nmm; 			  s_hiv1564mm + hiv1564mm; 		   s_hiv1549mm + hiv1549mm;			s_hiv1564nmm + hiv1564nmm;
 	s_vl1000_art_mm	+ vl1000_art_mm;  s_onart_iicu_mm + onart_iicu_mm; s_vl1000_art_iicu_mm	+ vl1000_art_iicu_mm;
 	s_onart_gt6m_mm + onart_gt6m_mm;  s_vl1000_art_gt6m_mm + vl1000_art_gt6m_mm;	 					s_onart_gt6m_iicu_mm + onart_gt6m_iicu_mm;
@@ -19471,7 +19536,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_any_nmm_1564 + prep_any_nmm_1564;  						   s_prep_oral_mm + prep_oral_mm;	s_prep_cab_mm + prep_cab_mm;
 	s_prep_len_mm + prep_len_mm; 	  s_hard_reach_due_to_mobile + hard_reach_due_to_mobile;			s_primary1549mm + primary1549mm;
 	s_primary1564mm + primary1564mm;  s_vl1000_mm	+ vl1000_mm;	   s_vg1000_mm + vg1000_mm;			s_tested_mm + tested_mm;	
-	s_newp_ge1_mm + newp_ge1_mm;	s_prep_any_willing + prep_any_willing;
+	s_newp_ge1_mm + newp_ge1_mm;
 
 end;
 
@@ -19601,7 +19666,6 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 
-
 * procs;
 
 /*
@@ -19615,6 +19679,8 @@ run;
 
 */
 
+proc print;var caldate&j option  curr_mobile prep_any_strategy prep_any_elig date_prep_oral_intro date_prep_cab_intro
+hard_reach_due_to_mobile hard_reach tested prep_any_willing prep_willingness_threshold prep_any;where gender=1 and age gt 15;run;
 
 
 
@@ -20330,7 +20396,7 @@ s_onprep_cab_m s_onprep_cab_w s_onprep_len_m s_onprep_len_w s_onprep_vr_w s_onpr
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_primary_prep_any_elig
-s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
+s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 	s_prep_any_w_1564  s_prep_any_m_1564
 s_prep_oral_w_1524 		s_prep_cab_w_1524 s_prep_len_w_1524 		s_prep_vr_w_1524 
 s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc	s_prep_len_sdc			s_prep_vr_sdc
 s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw	s_prep_len_plw			s_prep_vr_plw
@@ -20353,7 +20419,7 @@ s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
 s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
 
 s_prep_newp s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
-s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w
+s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w s_prep_any_ever_m
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
 s_prob_prep_any_restart_choice
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
@@ -20915,14 +20981,16 @@ s_covid
 
 /* mobile men */
 
-	s_alive1549mm   	  s_alive1564mm		  s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
+	s_alive1549mm   s_alive1564mm	s_alive1517mm  s_alive1519mm 	s_alive2024mm 	s_alive2529mm  s_alive3034mm 
+	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm 
+	s_alive1564nmm    	  s_hiv_mm 			  s_hiv_nmm 		  	s_hiv1564mm 	
 	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
 	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
 	s_ever_tested_mm1549_ s_diag_mm1549_ 	  s_onart_mm1549_ 		s_ever_tested_mm1564_ 						s_diag_mm1564_
 	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
 	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
 	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
-	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_prep_any_willing
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		
 
 
 /* used in abort statements */
@@ -21439,7 +21507,7 @@ s_onprep_cab_m s_onprep_cab_w s_onprep_len_m s_onprep_len_w s_onprep_vr_w s_onpr
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_primary_prep_any_elig
-s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
+s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 	s_prep_any_w_1564  s_prep_any_m_1564
 s_prep_oral_w_1524 		s_prep_cab_w_1524 s_prep_len_w_1524 		s_prep_vr_w_1524 
 s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc	s_prep_len_sdc			s_prep_vr_sdc
 s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw	s_prep_len_plw			s_prep_vr_plw
@@ -21466,7 +21534,7 @@ s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
 s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
 
 s_prep_newp s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
-s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w
+s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w  s_prep_any_ever_m
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
 s_prob_prep_any_restart_choice
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
@@ -21913,14 +21981,16 @@ s_covid
 
 /* mobile men */
 
-	s_alive1549mm   	  s_alive1564mm		  s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
+	s_alive1549mm   s_alive1564mm	s_alive1517mm  s_alive1519mm 	s_alive2024mm 	s_alive2529mm  s_alive3034mm 
+	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm 
+	s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
 	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
 	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
 	s_ever_tested_mm1549_ s_diag_mm1549_ 	  s_onart_mm1549_ 		s_ever_tested_mm1564_ 						s_diag_mm1564_
 	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
 	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
 	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
-	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_prep_any_willing
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		
 
 /*supp material*/
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
@@ -22117,19 +22187,25 @@ data a ;  set r1 ;
 data r1 ; set a ;
 
 * 	Option 0 ;
-%run_update_r1(&year_interv,&year_interv+20,0);
+%run_update_r1(&year_interv,&year_interv+5,0);
 
 
 * 	Option 1;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,1);
+%run_update_r1(&year_interv,&year_interv+5,1);
 
-/*
+
 * 	Option 2;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,2);
+%run_update_r1(&year_interv,&year_interv+5,2);
 
-/*
+* 	Option 3;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+5,3);
+
+* 	Option 4;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+5,4);
 
 			
 														 
@@ -22400,7 +22476,7 @@ s_onprep_cab_m s_onprep_cab_w s_onprep_len_m s_onprep_len_w s_onprep_vr_w s_onpr
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_primary_prep_any_elig
-s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
+s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 	s_prep_any_w_1564  s_prep_any_m_1564
 s_prep_oral_w_1524 		s_prep_cab_w_1524 s_prep_len_w_1524 		s_prep_vr_w_1524 
 s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc	s_prep_len_sdc			s_prep_vr_sdc
 s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw		s_prep_len_plw			s_prep_vr_plw
@@ -22425,7 +22501,7 @@ s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
 s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
 
 s_prep_newp s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
-s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w
+s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w  s_prep_any_ever_m
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
 s_prob_prep_any_restart_choice
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
@@ -22979,14 +23055,16 @@ s_covid
 
 /* mobile men */
 
-	s_alive1549mm   	  s_alive1564mm		  s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
+	s_alive1549mm   s_alive1564mm	s_alive1517mm  s_alive1519mm 	s_alive2024mm 	s_alive2529mm  s_alive3034mm 
+	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm 	 
+	s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
 	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
 	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
 	s_ever_tested_mm1549_ s_diag_mm1549_ 	  s_onart_mm1549_ 		s_ever_tested_mm1564_ 						s_diag_mm1564_
 	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
 	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
 	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
-	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_prep_any_willing
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		
 
 /* used in abort statements */
 

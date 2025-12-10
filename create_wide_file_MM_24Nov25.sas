@@ -3,7 +3,7 @@
 libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_15Apr25; 
+set a.mm_24nov25; 
 if run=. then delete; 
 
 proc sort;
@@ -23,7 +23,6 @@ sf_2025=10000000/s_alive;
 sf=sf_2025;
 keep run sf sf_2025;
 proc sort; by run;run;
-
 
 
 data y; 
@@ -97,15 +96,16 @@ ddol_cost = s_dcost_dol * sf * 4 / 1000;
 
 if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_prep_oral=. then s_dcost_prep_oral=0;
-if s_dcost_prep_inj=. then s_dcost_prep_inj=0;
+if s_dcost_prep_cab=. then s_dcost_prep_cab=0;
+if s_dcost_prep_len=. then s_dcost_prep_len=0;
 if s_dcost_prep_visit=. then s_dcost_prep_visit=0;
 if s_dcost_prep_ac_adh=. then s_dcost_prep_ac_adh=0;
 if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
 ***Vaginal ring cost will also needed to be added here when used in HIV Synthesis;
-s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_inj;
-s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_inj;
+s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_cab + s_dcost_prep_len;
+s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_cab + s_dcost_prep_visit_len;
 
 dvis_cost = s_dvis_cost * sf * 4 / 1000;
 dart_cost = s_dart_cost * sf * 4 / 1000; ***This should be the same as dart_cost_y below (and is not used);
@@ -119,10 +119,10 @@ dcot_cost = s_dcot_cost * sf * 4 / 1000;
 dres_cost = s_dres_cost * sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * sf * 4 / 1000;  
 dcost_prep = s_dcost_prep * sf * 4 / 1000; 
-dcost_prep_inj = s_dcost_prep_inj * sf * 4 / 1000; 
+dcost_prep_inj = s_dcost_prep_cab * sf * 4 / 1000; 
 dcost_prep_oral = s_dcost_prep_oral * sf * 4 / 1000; 
 dcost_prep_visit  = s_dcost_prep_visit * sf * 4 / 1000; 	
-dcost_prep_visit_inj  = s_dcost_prep_visit_inj * sf * 4 / 1000; 	
+dcost_prep_visit_inj  = s_dcost_prep_visit_cab * sf * 4 / 1000; 	
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
 dcost_sw_program = s_dcost_sw_program  * sf * 4 / 1000; 
@@ -214,25 +214,27 @@ s_alive = s_alive_m + s_alive_w ;
 * n_prep_any_start;				n_prep_any_start = max(s_prep_any_start, 0) * sf;
 * prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;
 								if s_prep_any_elig = 0 then prop_elig_on_prep = 0;
-* prop_elig_on_prep_inj;		if s_prep_any_elig > 0 then prop_elig_on_prep_inj = s_prep_inj / s_prep_any_elig ;
+* prop_elig_on_prep_inj;		if s_prep_any_elig > 0 then prop_elig_on_prep_inj = s_prep_cab / s_prep_any_elig ;
 								if s_prep_any_elig = 0 then prop_elig_on_prep_inj = 0;
 * prop_elig_on_prep_oral;		if s_prep_any_elig > 0 then prop_elig_on_prep_oral = s_prep_oral / s_prep_any_elig ;
 								if s_prep_any_elig = 0 then prop_elig_on_prep_oral = 0;
 
 
 
-
-* prop_elig_on_prep_w;			if s_elig_prep_any_w_1549 > 0 then prop_elig_on_prep_w = s_prep_any_w_1549/s_elig_prep_any_w_1549;
-								if s_elig_prep_any_w_1549 = 0 then prop_elig_on_prep_w=0;
-* prop_elig_on_prep_m;			if s_elig_prep_any_m_1549 > 0 then prop_elig_on_prep_m = s_prep_any_m_1549/s_elig_prep_any_m_1549;
-								if s_elig_prep_any_m_1549 = 0 then prop_elig_on_prep_m=0;
+***Not correctly outputted - should be ok next time;
+* prop_elig_on_prep_w;			if s_elig_prep_any_w_1564 > 0 then prop_elig_on_prep_w = s_prep_any_w_1564/s_elig_prep_any_w_1564;
+								if s_elig_prep_any_w_1564 = 0 then prop_elig_on_prep_w=0;
+* prop_elig_on_prep_m;			if s_elig_prep_any_m_1564 > 0 then prop_elig_on_prep_m = s_prep_any_m_1564/s_elig_prep_any_m_1564;
+								if s_elig_prep_any_m_1564 = 0 then prop_elig_on_prep_m=0;
 *nmm=non mobile men;
-* prop_1564m_onprep_nmm;  		prop_1564m_onprep_nmm = (s_onprep_m - s_onprep_mm)/ ((s_alive1564_m - s_hiv1564m) - (s_alive1564mm - s_hiv1564mm));
+* prop_1564m_onprep_nmm;  		prop_1564m_onprep_nmm = (s_onprep_cab_m + s_onprep_oral_m - s_prep_any_mm_1564)/ ((s_alive1564_m - s_hiv1564m) - (s_alive1564mm - s_hiv1564mm));
 * p_hiv_nmm;					p_hiv_nmm = s_hiv1564nmm /s_alive1564nmm ;
-* p_prep_any_ever_nmm;			p_prep_any_ever_nmm = (s_prep_any_ever_m - s_prep_any_ever_mm)/ (s_alive_m - s_mm);
-* prop_elig_on_prep_nmm;		if s_elig_prep_any_nmm_1564_ > 0 then prop_elig_on_prep_nmm = s_onprep_nmm / s_elig_prep_any_nmm_1564_ ;
+* p_prep_any_ever_nmm;			p_prep_any_ever_nmm = (s_prep_any_ever_m - s_prep_any_ever_mm)/ (s_alive_m - s_alive1564mm);
+* prop_elig_on_prep_nmm;		if s_elig_prep_any_nmm_1564_ > 0 then prop_elig_on_prep_nmm = (s_onprep_m - s_prep_any_mm_1564) / s_elig_prep_any_nmm_1564_ ;
+* prop_elig_on_prep_msm;		if s_elig_prep_any_msm_1564 > 0 then prop_elig_on_prep_msm = s_onprep_msm/s_elig_prep_any_msm_1564;
 
-
+*prop_elig_on_prep_genmen;		if (s_elig_prep_any_nmm_1564_ - s_elig_prep_any_msm_1564 - s_elig_prep_any_pwid_1564)>0 then 
+								prop_elig_on_prep_genmen = (s_onprep_m - s_prep_any_mm_1564 - s_onprep_msm - s_onprep_pwid)/(s_elig_prep_any_nmm_1564_ - s_elig_prep_any_msm_1564 - s_elig_prep_any_pwid_1564);
 ***Mobile men;
 * p_mm;							p_mm = s_alive1564mm/s_ageg1564m;
 
@@ -255,25 +257,26 @@ s_alive = s_alive_m + s_alive_w ;
 
 * n_tested_mm;					n_tested_mm = s_tested_mm * sf ;
 
-* prop_1564mm_onprep_mm;		if (s_alive1564mm - s_hiv1564mm) > 0 then prop_1564mm_onprep_mm =   max(s_onprep_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
-* prop_1564mm_onprep_inj_mm;	if (s_alive1564mm - s_hiv1564mm) > 0 then prop_1564mm_onprep_inj_mm =   max(s_onprep_inj_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
-* prop_1564mm_onprep_oral_mm;	if (s_alive1564mm - s_hiv1564mm) > 0 then prop_1564mm_onprep_oral_mm =   max(s_onprep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* prop_1564mm_onprep_mm;		if (s_alive1564mm - s_hiv1564mm) > 0 then prop_1564mm_onprep_mm =   max(s_prep_any_mm_1564, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* prop_1564mm_onprep_inj_mm;	if (s_alive1564mm - s_hiv1564mm) > 0 then prop_1564mm_onprep_inj_mm =   max(s_prep_cab_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* prop_1564mm_onprep_oral_mm;	if (s_alive1564mm - s_hiv1564mm) > 0 then prop_1564mm_onprep_oral_mm =   max(s_prep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
 
-* prop_elig_on_prep_mm;			if s_elig_prep_any_mm_1564_ > 0 then prop_elig_on_prep_mm = s_onprep_mm / s_elig_prep_any_mm_1564_ ;
+* prop_elig_on_prep_mm;			if s_elig_prep_any_mm_1564_ > 0 then prop_elig_on_prep_mm = s_prep_any_mm_1564 / s_elig_prep_any_mm_1564_ ;
 * prop_elig_on_prep_oral_mm;	if s_elig_prep_any_mm_1564_ > 0 then prop_elig_on_prep_oral_mm = s_prep_oral_mm / s_elig_prep_any_mm_1564_ ;
-* prop_elig_on_prep_inj_mm;		if s_elig_prep_any_mm_1564_ > 0 then prop_elig_on_prep_inj_mm = s_prep_inj_mm / s_elig_prep_any_mm_1564_ ;
+* prop_elig_on_prep_inj_mm;		if s_elig_prep_any_mm_1564_ > 0 then prop_elig_on_prep_inj_mm = s_prep_cab_mm / s_elig_prep_any_mm_1564_ ;
 
 
 
-* n_prep_any_mm;				n_prep_any_mm = s_onprep_mm * sf;
-* n_prep_oral_mm;				n_prep_oral_mm = s_onprep_oral_mm * sf;
-* n_prep_inj_mm;				n_prep_inj_mm = s_onprep_inj_mm * sf;
+* n_prep_any_mm;				n_prep_any_mm = s_prep_any_mm_1564 * sf;
+* n_prep_oral_mm;				n_prep_oral_mm = s_prep_oral_mm * sf;
+* n_prep_inj_mm;				n_prep_inj_mm = s_prep_cab_mm * sf;
 
 * n_prep_ever_mm;				n_prep_ever_mm = s_prep_any_ever_mm * sf;
-* p_prep_any_ever_mm;			if  s_mm > 0 then p_prep_any_ever_mm = s_prep_any_ever_mm / s_mm;
+* p_prep_any_ever_mm;			if  s_alive1564mm > 0 then p_prep_any_ever_mm = s_prep_any_ever_mm / s_alive1564mm;
 
 * p_newp_ge1_mm;				if s_alive1564mm  > 0 then p_newp_ge1_mm = s_newp_ge1_mm / s_alive1564mm ;
 * p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive;
+
 
 keep run option cald n_alive_m			n_alive_w			n_alive				p_mm				p_hiv_mm	p_hiv_m
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
@@ -281,8 +284,7 @@ p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
 n_onprep_w			 n_onprep_m			n_onprep			prop_1564m_onprep   prop_1564w_onprep	n_prep_any_start
 prop_elig_on_prep_w	 prop_elig_on_prep_m	prop_elig_on_prep	prop_elig_on_prep_mm	prop_elig_on_prep_nmm
-prop_1564m_onprep_nmm	p_hiv_nmm		p_prep_any_ever_nmm
-
+prop_1564m_onprep_nmm	p_hiv_nmm		p_prep_any_ever_nmm  prop_elig_on_prep_genmen
 dcost ddaly
 
 
@@ -291,10 +293,11 @@ prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		prop_1564mm_on
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm				prop_elig_on_prep_mm
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm	p_prep_any_ever_mm
 p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
-prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm
+prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm	prop_elig_on_prep_genmen
 ;
 
 proc sort data=y;by run option;run;
+
 
 options nomprint;
 option nospool;
@@ -307,16 +310,20 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 546   ;
+%let nfit = 500  ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
+
+
 
 ***Three macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
 if option =1 then delete;
 if option =2 then delete;
+if option =3 then delete;
+if option =4 then delete;
 
 %let var =  
 p_mm				p_hiv_mm			p_hiv_m
@@ -324,12 +331,12 @@ p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		preva
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_onprep_mm
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
-p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 	prop_elig_on_prep_w	 prop_elig_on_prep
-prop_elig_on_prep_m prop_elig_on_prep_mm	prop_elig_on_prep_nmm
-prop_1564m_onprep_nmm	p_hiv_nmm		p_prep_any_ever_nmm
+p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 		 prop_elig_on_prep
+ prop_elig_on_prep_mm	prop_elig_on_prep_nmm
+prop_1564m_onprep_nmm	p_hiv_nmm		
 n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
-prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm
-
+prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm            prop_elig_on_prep_genmen
+prop_elig_on_prep_m	prop_elig_on_prep_w p_prep_any_ever_nmm		
 ;
 
 
@@ -368,6 +375,8 @@ data option_1;
 set b;
 if option =0 then delete;
 if option =2 then delete;
+if option =3 then delete;
+if option =4 then delete;
 
 %let var =  
 p_mm				p_hiv_mm			p_hiv_m
@@ -375,11 +384,12 @@ p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		preva
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_onprep_mm
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
-p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 	prop_elig_on_prep_w	 prop_elig_on_prep
-prop_elig_on_prep_m prop_elig_on_prep_mm	prop_elig_on_prep_nmm
-prop_1564m_onprep_nmm	p_hiv_nmm		p_prep_any_ever_nmm
+p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 		 prop_elig_on_prep
+ prop_elig_on_prep_mm	prop_elig_on_prep_nmm
+prop_1564m_onprep_nmm	p_hiv_nmm		
 n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
-prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm
+prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm  			prop_elig_on_prep_genmen
+prop_elig_on_prep_m	prop_elig_on_prep_w p_prep_any_ever_nmm
 
 ;
 
@@ -417,6 +427,8 @@ data option_2;
 set b;
 if option =0 then delete;
 if option =1 then delete;
+if option =3 then delete;
+if option =4 then delete;
 
 %let var =  
 p_mm				p_hiv_mm			p_hiv_m
@@ -424,11 +436,12 @@ p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		preva
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_onprep_mm
 prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
 n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
-p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 	prop_elig_on_prep_w	 prop_elig_on_prep
-prop_elig_on_prep_m prop_elig_on_prep_mm	prop_elig_on_prep_nmm
-prop_1564m_onprep_nmm	p_hiv_nmm		p_prep_any_ever_nmm
+p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 		 prop_elig_on_prep
+ prop_elig_on_prep_mm	prop_elig_on_prep_nmm
+prop_1564m_onprep_nmm	p_hiv_nmm		
 n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
-prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm
+prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm  			prop_elig_on_prep_genmen
+prop_elig_on_prep_m	prop_elig_on_prep_w p_prep_any_ever_nmm
 ;
 
 
@@ -462,12 +475,119 @@ run;
 run;
 
 
+data option_3;
+set b;
+if option =0 then delete;
+if option =1 then delete;
+if option =2 then delete;
+if option =4 then delete;
+
+%let var =  
+p_mm				p_hiv_mm			p_hiv_m
+p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		prevalence1549_mm	
+prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_onprep_mm
+prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
+n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
+p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 		 prop_elig_on_prep
+ prop_elig_on_prep_mm	prop_elig_on_prep_nmm
+prop_1564m_onprep_nmm	p_hiv_nmm		
+n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
+prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm  			prop_elig_on_prep_genmen
+prop_elig_on_prep_m	prop_elig_on_prep_w p_prep_any_ever_nmm
+;
+
+
+***transpose given name; *starts with %macro and ends with %mend;
+%macro option_3;
+%let p5_var = p5_&var_3;
+%let p95_var = p95_&var_3;
+%let p50_var = median_&var_3;
+
+%let count = 0;
+%do %while (%qscan(&var, &count+1, %str( )) ne %str());
+%let count = %eval(&count + 1);
+%let varb = %scan(&var, &count, %str( ));
+      
+proc transpose data=option_3 out=j&count prefix=&varb;var &varb; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data j&count;set j&count;***creates one dataset per variable;
+p5_&varb._3  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._3 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._3 = median(of &varb.1-&varb.&nfit);
+
+keep cald option p5_&varb._3 p95_&varb._3 p50_&varb._3 ;
+run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  jj&count;quit;run;
+%end;
+%mend;
+
+%option_3;
+run;
+
+
+
+data option_4;
+set b;
+if option =0 then delete;
+if option =1 then delete;
+if option =2 then delete;
+if option =3 then delete;
+
+%let var =  
+p_mm				p_hiv_mm			p_hiv_m
+p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		prevalence1549_mm	
+prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_onprep_mm
+prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
+n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
+p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 		 prop_elig_on_prep
+ prop_elig_on_prep_mm	prop_elig_on_prep_nmm
+prop_1564m_onprep_nmm	p_hiv_nmm		
+n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
+prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm  			prop_elig_on_prep_genmen
+prop_elig_on_prep_m	prop_elig_on_prep_w p_prep_any_ever_nmm
+;
+
+
+***transpose given name; *starts with %macro and ends with %mend;
+%macro option_4;
+%let p5_var = p5_&var_4;
+%let p95_var = p95_&var_4;
+%let p50_var = median_&var_4;
+
+%let count = 0;
+%do %while (%qscan(&var, &count+1, %str( )) ne %str());
+%let count = %eval(&count + 1);
+%let varb = %scan(&var, &count, %str( ));
+      
+proc transpose data=option_4 out=k&count prefix=&varb;var &varb; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data k&count;set k&count;***creates one dataset per variable;
+p5_&varb._4  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._4 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._4 = median(of &varb.1-&varb.&nfit);
+
+keep cald option p5_&varb._4 p95_&varb._4 p50_&varb._4 ;
+run;
+
+      proc datasets nodetails nowarn nolist; 
+      delete  kk&count;quit;run;
+%end;
+%mend;
+
+%option_4;
+run;
+
+
+
+
 
 
 data d; * this is number of variables in %let var = above ;
 merge 
 g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  
-g25  g26  g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40 /* g41  g42  g43  g44  g45  g46  g47  g48  g49  g50 
+g25  g26  g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37   g38  g39  g40 g41  /*g42  g43  g44  g45  g46  g47  g48  g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 /* g73 g74 g75  g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
@@ -478,23 +598,29 @@ g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 
 g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252*/ 
 
 h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20	h21  h22  h23  h24
-h25  h26  h27  h28  h29	 h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40 
+h25  h26  h27  h28  h29	 h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41
 i1   i2   i3   i4   i5   i6   i7   i8   i9   i10  i11  i12  i13  i14  i15  i16  i17  i18  i19  i20	i21  i22  i23  i24
-i25  i26  i27  i28  i29  i30  i31  i32  i33  i34  i35  i36  i37  i38  i39  i40 
+i25  i26  i27  i28  i29  i30  i31  i32  i33  i34  i35  i36  i37  i38  i39  i40  i41
+j1   j2   j3   j4   j5   j6   j7   j8   j9   j10  j11  j12  j13  j14  j15  j16  j17  j18  j19  j20	j21  j22  j23  j24
+j25  j26  j27  j28  j29  j30  j31  j32  j33  j34  j35  j36  j37  j38  j39  j40  j41
+k1   k2   k3   k4   k5   k6   k7   k8   k9   k10  k11  k12  k13  k14  k15  k16  k17  k18  k19  k20	k21  k22  k23  k24
+k25  k26  k27  k28  k29  k30  k31  k32  k33  k34  k35  k36  k37  k38  k39  k40  k41
 ;
 by cald;
 
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = 'C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
-graphs_14_04_25.doc' startpage=never; 
+graphs_24_11_25.doc' startpage=never; 
 
 
 ***Diagnostic;
-ods html;
+ods listing close;
+ods html style=htmlblue;
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people on any PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.02) valueattrs=(size=10);
 
 label p50_prop_1564m_onprep_0 = "Men";
@@ -510,7 +636,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people with an indication for PrEP currently on any PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 
 label p50_prop_elig_on_prep_0 = "All";
@@ -528,7 +654,7 @@ run;quit;
 
 *On oral/injectable;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of men with an indication for PrEP currently on oral and injectable PrEP";
+Title    height=1.5 justify=center "Proportion of people with an indication for PrEP currently on oral and injectable PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 
@@ -544,7 +670,7 @@ run;quit;
 
 
 
-***First lot of graphs up until 2025;
+***Mobile men;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of men, proportion mobile with increased risk";
@@ -577,10 +703,10 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Percentage of men ever on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.7 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.01) valueattrs=(size=10);
 
 label p50_p_prep_any_ever_mm_0 = "Mobile men";
-label p50_p_prep_any_ever_nmm_0 = "Non-mobile men";
+label p50_p_prep_any_ever_nmm_0 = "Non-mobile men (inc. MSM and PWID)";
 
 series  x=cald y=p50_p_prep_any_ever_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_prep_any_ever_mm_0 	upper=p95_p_prep_any_ever_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
@@ -609,7 +735,7 @@ run;quit;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Of those with an indication for PrEP, proportion of mobile men currently on oral and injectable PrEP";
+Title    height=1.5 justify=center "Of mobile men with an indication for PrEP, proportion currently on oral and injectable PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
@@ -629,94 +755,54 @@ Title    height=1.5 justify=center "Number of mobile men currently on any PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000) valueattrs=(size=10);
 
-label p50_n_prep_oral_mm_0 = "Mobile men";
+label p50_n_prep_any_mm_0 = "Mobile men";
 
-series  x=cald y=p50_n_prep_oral_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_prep_oral_mm_0 	upper=p95_n_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_prep_any_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_any_mm_0 	upper=p95_n_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
 
 
-
+/*
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of men currently on oral PrEP";
+Title    height=1.5 justify=center "Number of mobile men currently on any PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000) valueattrs=(size=10);
 
-label p50_n_prep_oral_mm_0 = "Option 0";
-label p50_n_prep_oral_mm_1 = "Option 1";
-label p50_n_prep_oral_mm_2 = "Option 2";
+label p50_n_prep_oral_mm_0 = "Option 0 (SQ, No CAB-LA, No PrEP for MM)";
+label p50_n_prep_oral_mm_1 = "Option 1 (MM intervention - CAB-LA, MM PrEP elig and not hard to reach)";
+label p50_n_prep_oral_mm_2 = "Option 2 (MM PrEP elig - No CAB, % MM still hard to reach)";
+label p50_n_prep_oral_mm_3 = "Option 3 (MM PrEP elig and not hard to reach - No CAB)";
+label p50_n_prep_oral_mm_4 = "Option 4 (MM PrEP elig, CAB-LA avail - % MM still hard to reach)";
 
 series  x=cald y=p50_n_prep_oral_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_prep_oral_mm_0 	upper=p95_n_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 run;quit;
+*/
 
+***After intervention;
 
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of men currently on injectable PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000) valueattrs=(size=10);
-
-label p50_n_prep_inj_mm_0 = "Option 0";
-label p50_n_prep_inj_mm_1 = "Option 1";
-label p50_n_prep_inj_mm_2 = "Option 2";
-
-series  x=cald y=p50_n_prep_inj_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_prep_inj_mm_0 	upper=p95_n_prep_inj_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of mobile men on oral PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05) valueattrs=(size=10);
-
-label p50_prop_1564mm_onprep_oral_mm_0 = "Option 0";
-label p50_prop_1564mm_onprep_oral_mm_1 = "Option 1";
-label p50_prop_1564mm_onprep_oral_mm_2 = "Option 2";
-
-series  x=cald y=p50_prop_1564mm_onprep_oral_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_oral_mm_0 	upper=p95_prop_1564mm_onprep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_oral_mm_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_oral_mm_1 	upper=p95_prop_1564mm_onprep_oral_mm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_oral_mm_2/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_oral_mm_2 	upper=p95_prop_1564mm_onprep_oral_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-
-run;quit;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of mobile men number on inj PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.005) valueattrs=(size=10);
-
-label p50_prop_1564mm_onprep_inj_mm_0 = "Option 0";
-label p50_prop_1564mm_onprep_inj_mm_1 = "Option 1";
-label p50_prop_1564mm_onprep_inj_mm_2 = "Option 2";
-
-series  x=cald y=p50_prop_1564mm_onprep_inj_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_inj_mm_0 	upper=p95_prop_1564mm_onprep_inj_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_inj_mm_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_inj_mm_1 	upper=p95_prop_1564mm_onprep_inj_mm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564mm_onprep_inj_mm_2/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_prop_1564mm_onprep_inj_mm_2 	upper=p95_prop_1564mm_onprep_inj_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-
-run;quit;
-
-
-***Longer time horizon;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of mobile men currently on any PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label p50_prop_elig_on_prep_mm_0 = "Without intervention";
-label p50_prop_elig_on_prep_mm_2 = "With intervention";
+label p50_prop_elig_on_prep_mm_0 = "Option 0 (SQ, No CAB-LA, No PrEP for MM)";
+label p50_prop_elig_on_prep_mm_1 = "Option 1 (MM intervention - CAB-LA, MM PrEP elig and not hard to reach)";
+label p50_prop_elig_on_prep_mm_2 = "Option 2 (MM PrEP elig - No CAB, % MM still hard to reach)";
+label p50_prop_elig_on_prep_mm_3 = "Option 3 (MM PrEP elig and not hard to reach - No CAB)";
+label p50_prop_elig_on_prep_mm_4 = "Option 4 (MM PrEP elig, CAB-LA avail - % MM still hard to reach)";
 
 series  x=cald y=p50_prop_elig_on_prep_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_elig_on_prep_mm_0 	upper=p95_prop_elig_on_prep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-*series  x=cald y=p50_prop_elig_on_prep_mm_1/	lineattrs = (color=green thickness = 2);
-*band    x=cald lower=p5_prop_elig_on_prep_mm_1 	upper=p95_prop_elig_on_prep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_elig_on_prep_mm_2/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_mm_2 	upper=p95_prop_elig_on_prep_mm_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_elig_on_prep_mm_1/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_mm_1 	upper=p95_prop_elig_on_prep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_elig_on_prep_mm_2/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_mm_2 	upper=p95_prop_elig_on_prep_mm_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_elig_on_prep_mm_3/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_mm_3 	upper=p95_prop_elig_on_prep_mm_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_elig_on_prep_mm_4/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_mm_4 	upper=p95_prop_elig_on_prep_mm_4  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
 
 run;quit;
 
