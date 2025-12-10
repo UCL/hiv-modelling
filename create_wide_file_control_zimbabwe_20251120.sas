@@ -97,8 +97,8 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 * ts1m - this code needs to change for ts1m;
 
 %let year_start_disc=2025  ; * year_interv + 1;
-discount_3py = 1/(1.03**(cald-&year_start_disc));
-discount_10py = 1/(1.10**(cald-&year_start_disc));
+discount_3py = min(1, 1/(1.03**(cald-&year_start_disc)));	* Value = 1 before year_interv;
+discount_10py = min(1, 1/(1.10**(cald-&year_start_disc)));
 *The following can be changed if we want instead 10% discount rate;
 %let discount=discount_3py;
 
@@ -126,42 +126,61 @@ run;
 * Use costs provided in spreadsheet unit_cost-kp_cvg-2025-07-14_draft;
 * Updated Nov 25;
 
+%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_costs.sas";
+/*%put &cost_VMMC;*/
+
 /* COMPARE VMMC*/
 
 * Compare 
-s_cost_circ - calculated in model (original cost) [s_new_mcirc * circ_cost_a]
-s_cost_circ - calculated here from epi outputs (original cost)
-
-s_dcost_circ - calculated in model (original cost) 
-s_dcost_circ - calculated here from epi outputs (original cost)
-
-THEN
+s_cost_circ - calculated in model (original cost) [s_new_mcirc * circ_cost_a] - this is VMMC only (despite mcirc in name) for 15-49
+s_cost_circ - calculated here from epi outputs (original cost) - (1) 15-49, (2) 10-49
 
 new s_cost_circ - scaling modelled cost from original (circ_cost_a = 0.090 - in model) to new ($60.24)
-new s_cost_circ - scaling cost from original epi outputs (circ_cost_a = 0.090 - in model) to new ($60.24)
+new s_cost_circ - scaling cost from original epi outputs (circ_cost_a = 0.090 - in model) to new ($60.24) - (1) 15-49, (2) 10-49
 
-same with dcost
+s_dcost_circ - calculated in model (original cost) 
+s_dcost_circ - calculated here from epi outputs (original cost
 
-circ_cost_a = 0.090
+NB. circ_cost_a = 0.090
 ;
 
-s_cost_circ_original = s_cost_circ;
-s_cost_circ_epi = s_new_mcirc * 0.090;
+s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vmmc3034m + s_new_vmmc3539m + s_new_vmmc4044m + s_new_vmmc4549m ; 
 
-s_cost_circ_orig_scaled = s_cost_circ * 60.24 / 90;
-s_cost_circ_epi_scaled = s_new_mcirc * 0.06024;
+s_cost_circ_original = s_cost_circ;		* NB. this cost does not include 10-14s ;
+s_cost_circ_epi_1549m = s_new_vmmc1549m * 0.090;	* VMMC  15-49; 
+s_cost_circ_epi_1049m = s_new_vmmc * 0.090;			* VMMC  10-49; 
+
+s_cost_circ_orig_scaled = s_cost_circ / 0.090 * &cost_VMMC;
+s_cost_circ_epi_scaled_1549m = s_new_vmmc1549m * &cost_VMMC;
+s_cost_circ_epi_scaled_1049m = s_new_vmmc * &cost_VMMC;
 
 s_dcost_circ_original = s_dcost_circ;
-s_dcost_circ_epi = s_new_mcirc * 0.090 * &discount;
+s_dcost_circ_epi_1549m = s_new_vmmc1549m * 0.090 * &discount;
+s_dcost_circ_epi_1049m = s_new_vmmc * 0.090 * &discount;
 
-s_dcost_circ_orig_scaled = s_dcost_circ * 60.24 / 90;
-s_dcost_circ_epi_scaled = s_new_mcirc * 0.06024 * &discount;
+s_dcost_circ_orig_scaled = s_dcost_circ / 0.090 * &cost_VMMC;
+s_dcost_circ_epi_1549m_scaled = s_new_vmmc1549m * &cost_VMMC * &discount;
+s_dcost_circ_epi_1049m_scaled = s_new_vmmc * &cost_VMMC * &discount;
+
 /* END COMPARE */
 
 
+
+
+* Testing;
+cost_self_test = 	s_self_tested * &cost_self_test * 4 * sf; 			* We need *4 to get an annual cost and *sf to scale up to Zimbabwe population size;
+dcost_self_test = s_self_tested * &cost_self_test * 4 * sf * &discount; 
+
 * VMMC;
-s_cost_circ = s_cost_circ * 60.24 / 90 ;						* circ_cost_a = 0.090, new cost = 60.24;
-s_dcost_circ = s_dcost_circ * 60.24 / 90 ;
+* Use 10-49;
+cost_circ = 	s_new_vmmc * &cost_VMMC ;								* Replace original s_cost_circ because that does not include VMMC for age 10-14; * Why no *4 * sf? ;
+dcost_circ = 	s_new_vmmc * &cost_VMMC * &discount ;
+
+* PrEP;
+s_cost_prep_cab = s_cost_prep_cab * (73.6 / (42 * 1.2));		* Should be 89.89 for but using LEN cost as only LEN is implemented; * Updated Nov 25 for HIV Control;
+s_cost_prep_len = s_cost_prep_len * (73.6 / (42 * 1.2));  	* Updated Nov 25 for HIV Control;
+s_cost_prep_oral = s_cost_prep_oral * (76.88 / (50 * 1.2)); 	* Updated Nov 25 for HIV Control;
+s_cost_prep = s_dcost_prep_cab + s_dcost_prep_len + s_dcost_prep_oral;
 
 s_dcost_prep_cab = s_dcost_prep_cab * (73.6 / (42 * 1.2));		* Should be 89.89 for but using LEN cost as only LEN is implemented; * Updated Nov 25 for HIV Control;
 s_dcost_prep_len = s_dcost_prep_len * (73.6 / (42 * 1.2));  	* Updated Nov 25 for HIV Control;
@@ -169,14 +188,15 @@ s_dcost_prep_oral = s_dcost_prep_oral * (76.88 / (50 * 1.2)); 	* Updated Nov 25 
 s_dcost_prep = s_dcost_prep_cab + s_dcost_prep_len + s_dcost_prep_oral;
 ** Taken out VR PrEP costs and PrEP clinic costs as these are incorporated in the PY costs;
 
-dcost_self_test = s_self_tested * sf * 27.52 * &discount * 4; 
 
+* Adherence;
 dcost_adh_intervention=0; if option=12 then do; dcost_adh_intervention=(s_diag) * sf * (22 / 4) * &discount ; end;	* Why /4? * Updated Nov 25 for HIV Control;
 ** Adherence support - using $22 PP diagnosed;
 * Informed by Weldemariam H, Thawani A, Kiruthu-Kamamia C, Huwa J, Chipanda M, Tweya H, Feldacker C. How much does it cost to retain antiretroviral therapy (ART) 
 clients in their first year? Routine financial costs of retention interventions at Lighthouse Trustin Lilongwe, Malawi. Res Sq [Preprint]. 2024 Oct 
 15:rs.3.rs-4939155. doi: 10.21203/rs.3.rs-4939155/v1. PMID: 39483880 PMCID: PMC11527224.;
 
+* ART;
 dzdv_cost = s_cost_zdv * &discount * 111.92/((0.068/4)*1.2) * sf * 4 / 1000; *** CHECK UNITS HERE ***;
 dten_cost = s_cost_ten * &discount * sf * 4 / 1000;
 d3tc_cost = s_cost_3tc * &discount * sf * 4 / 1000; 
@@ -495,8 +515,10 @@ n_diag_sw						n_undiag_sw
 n_diag_msm_age1564_				n_undiag_msm
 
 /* Check costs */
-s_cost_circ_original 			s_cost_circ_epi 				s_cost_circ_orig_scaled 			s_cost_circ_epi_scaled 
-s_dcost_circ_original			s_dcost_circ_epi 				s_dcost_circ_orig_scaled 			s_dcost_circ_epi_scaled 
+s_cost_circ_original 			s_cost_circ_epi_1549m 			s_cost_circ_epi_1049m
+s_cost_circ_orig_scaled 		s_cost_circ_epi_scaled_1549m 	s_cost_circ_epi_scaled_1049m
+s_dcost_circ_original			s_dcost_circ_epi_1549m 			s_dcost_circ_epi_1049m		
+s_dcost_circ_orig_scaled 		s_dcost_circ_epi_1549m_scaled 	s_dcost_circ_epi_1049m_scaled
 
 ;
 
