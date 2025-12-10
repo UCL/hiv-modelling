@@ -1032,8 +1032,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * OVERWRITES country specific parameters;
 *  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
-%include "/home/rmjllob/CdI_parameters27.sas";
-* %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters27.sas";
+%include "/home/rmjllob/CdI_parameters28.sas";
+* %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters28.sas";
 
 call symput('caldate1',caldate1);
 
@@ -3035,8 +3035,9 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	end;
 end;	
 
-
+/*
 if gender=1 then date_start_testing=2006.5;
+*/
 
 tested_anc=.;
 
@@ -3052,10 +3053,10 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 		if caldate{t} >= 2022  then do; * note this is equivalent to incr_test_year_i = 0;
 			rate_1sttest = rate_1sttest * 0.8; rate_reptest = rate_reptest * 0.8; 	eff_test_targeting = test_targeting * 1.5 ; 
 		end;
-
+/*
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
-
+*/
 end;
 
 
@@ -8943,8 +8944,9 @@ res_test=.;
   art initiation strategy 10: cd4<500 + ART immediately to pregnant women
 ;
 
+/*
 if caldate&j<2015 then eff_pr_art_init=eff_pr_art_init/2;
-
+*/
 		if art_initiation_strategy=1 then do; 
 			if t ge 3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} and who4_tm1=1 then do;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
@@ -9933,14 +9935,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	e=rand('uniform');
 
 * this below changed apr2025 ;
-/*
-	if country ne 'Cote d Ivoire' then do;
-	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-	end;
-*/
+
 	if country='Cote d Ivoire' then do;
 	***CdI - reducing adherence in men to match observational CdI data;
 	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.7 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
@@ -21016,6 +21011,7 @@ if country = 'Cote d Ivoire' then do;
 	
 	if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
 	if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
+	if cald = 2010 and (prevalence1549w < 0.03) then do; abort abend; end;
 	if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
 end;
 
