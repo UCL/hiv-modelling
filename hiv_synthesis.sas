@@ -1735,7 +1735,7 @@ c_pr47_tm1 = . ;  c_pr50v_tm1 = . ;  c_pr50l_tm1 = . ;  c_pr54_tm1 = . ;  c_pr76
 c_pr90_tm1 = . ;  c_in118_tm1=.; c_in140_tm1=.; c_in148_tm1=.; c_in263_tm1=.; c_ca66_tm1=.;
 restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184  = . ;   r_nau_start_taz_dar = . ; 
 p_nau_stops_taz_dar = . ;  onart_gt6m_vlg500 = . ;  rm_inf = . ;  util_cns_efa_tox = . ;  util_cns_dol_tox = . ;  cost_art_init = . ; 
-newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2449m = . ;  npgt1conc_l4p_2449w = . ;
+newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2549m = . ;  npgt1conc_l4p_2549w = . ;
 d_s_newp = .; r_s_ep_m15w15 = . ; r_s_ep_m25w25 = . ; r_s_ep_m35w35 = . ; r_s_ep_m45w45 = . ; r_s_ep_m55w55 = . ;  r_ep_mw = . ;  prop_mono_m_1524 = . ; 
 prop_mono_m_2534 = . ;  prop_mono_m_3544 = . ;  prop_mono_m_4554 = . ;  prop_mono_m_5564 = . ;  prop_mono_w_1524 = . ;  prop_mono_w_2534 = . ; 
 prop_mono_w_3544 = . ;  prop_mono_w_4554 = . ;  prop_mono_w_5564 = . ;  incidence1524w_epnewp = . ;  incidence2534w_epnewp = . ; 
@@ -18316,7 +18316,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_npgt1conc_l4p_1524m + npgt1conc_l4p_1524m ; s_npgt1conc_l4p_1524w + npgt1conc_l4p_1524w ; 
 
 	s_npgt1conc_l4p_1519m + npgt1conc_l4p_1519m ; s_npgt1conc_l4p_1519w + npgt1conc_l4p_1519w ; 
-	s_npgt1conc_l4p_2449m + npgt1conc_l4p_2449m ; s_npgt1conc_l4p_2449w + npgt1conc_l4p_2449w ; 
+	s_npgt1conc_l4p_2549m + npgt1conc_l4p_2549m ; s_npgt1conc_l4p_2549w + npgt1conc_l4p_2549w ; 
 	s_npgt1conc_l4p_5064m + npgt1conc_l4p_5064m ; s_npgt1conc_l4p_5064w + npgt1conc_l4p_5064w ; 
 
 	s_susc_np_inc_circ_1549_m + susc_np_inc_circ_1549_m ; s_susc_np_1549_m + susc_np_1549_m ; s_susc_np_1549_w + susc_np_1549_w ;
