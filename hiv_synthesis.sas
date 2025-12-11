@@ -21070,7 +21070,7 @@ s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp
 s_newp_this_per_elig_prep_any 	s_newp_this_per_elig_prep_any_sw 
 s_newp_this_per   s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_this_per_hivneg_1549  s_newp_this_per_1549
 
-s_s_m_newp  s_s_w_newp
+s_s_m_newp  s_s_w_newp		/* NB. these are in drop but not keep statements */
 
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
