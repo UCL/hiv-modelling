@@ -20587,7 +20587,7 @@ msm_rred red_chance_ep_msm prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_fem
 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
-p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   
+p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency  isl_higher_potency  isl_ole_adh_improve
@@ -22729,7 +22729,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw  prev_vg1000_1549
+prevalence1549  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw  prev_vg1000_1549  p_vl1000
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
@@ -22740,8 +22740,8 @@ s_prop_vlg1_rm1_naive  s_prop_vlg2_rm1_naive  s_prop_vlg3_rm1_naive  s_prop_vlg4
 s_prop_tam1   s_prop_tam2   s_prop_tam3  s_prop_k103m  s_prop_y181m  s_prop_g190m   
 s_prop_m184m  s_prop_q151m  s_prop_k65m   
 s_prop_p32m   s_prop_p33m   s_prop_p46m  s_prop_p47m  s_prop_p50vm   
-s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_in118m  s_prop_in140m s_prop_in148m 
-s_prop_in155m s_prop_in263m  s_prop_ca66m 
+s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_in118m  s_prop_in140m 
+s_prop_in148m s_prop_in155m s_prop_in263m  s_prop_ca66m 
 
 prevalence1524m  prevalence2534m  prevalence3544m  prevalence4554m  prevalence5564m
 prevalence1524w  prevalence2534w  prevalence3544w  prevalence4554w  prevalence5564w
