@@ -1845,7 +1845,7 @@ c_pr47_tm1 = . ;  c_pr50v_tm1 = . ;  c_pr50l_tm1 = . ;  c_pr54_tm1 = . ;  c_pr76
 c_pr90_tm1 = . ;  c_in118_tm1=.; c_in140_tm1=.; c_in148_tm1=.; c_in263_tm1=.; c_ca66_tm1=.;
 restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184  = . ;   r_nau_start_taz_dar = . ; 
 p_nau_stops_taz_dar = . ;  onart_gt6m_vlg500 = . ;  rm_inf = . ;  util_cns_efa_tox = . ;  util_cns_dol_tox = . ;  cost_art_init = . ; 
-newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2449m = . ;  npgt1conc_l4p_2449w = . ;
+newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2549m = . ;  npgt1conc_l4p_2549w = . ;
 d_s_newp = .; r_s_ep_m15w15 = . ; r_s_ep_m25w25 = . ; r_s_ep_m35w35 = . ; r_s_ep_m45w45 = . ; r_s_ep_m55w55 = . ;  r_ep_mw = . ;  prop_mono_m_1524 = . ; 
 prop_mono_m_2534 = . ;  prop_mono_m_3544 = . ;  prop_mono_m_4554 = . ;  prop_mono_m_5564 = . ;  prop_mono_w_1524 = . ;  prop_mono_w_2534 = . ; 
 prop_mono_w_3544 = . ;  prop_mono_w_4554 = . ;  prop_mono_w_5564 = . ;  incidence1524w_epnewp = . ;  incidence2534w_epnewp = . ; 
@@ -3540,7 +3540,8 @@ In 2021											from 	0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.97
 													   	0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
 												to		1.321 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
 */
-*Proportion of reduction attributable to condom intervetions: prop_redattr_newp_condoms;
+
+*Proportion of reduction attributable to condom intervetions: prop_redattr_ep_condoms;
 *We have not modelled condoms retrospectively and so we have not included their cost;
 rred_rc_base = rred_rc;					* use this to determine FSW rates;
 
@@ -18755,7 +18756,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tam1_ + tam1_ ; s_tam2_ + tam2_ ; s_tam3_ + tam3_ ; s_m184m_ + m184m_ ; s_k103m_ + k103m_ ; s_y181m_ + y181m_ ; s_g190m_ + g190m_ ; 
 	s_nnm_ + nnm_ ; s_q151m_ + q151m_ ; s_k65m_ + k65m_ ; s_p32m_ + p32m_ ; s_p33m_ + p33m_ ; s_p46m_ + p46m_ ; s_p47m_ + p47m_ ; s_p50vm_ + p50vm_ ;
 	s_p50lm_ + p50lm_ ; s_p54m_ + p54m_ ; s_p76m_ + p76m_ ; s_p82m_ + p82m_ ; s_p84m_ + p84m_ ; s_p88m_ + p88m_ ; s_p90m_ + p90m_ ; s_pim_ + pim_;
-    s_in118m_ + in118m_ ; s_in140m_ + in140m_ ; s_in148m_ + in148m_ ; s_in155m_ + in155m_ ; s_in263m_ + in263m_ ; s_ca66m + ca66m_ ;
+    s_in118m_ + in118m_ ; s_in140m_ + in140m_ ; s_in148m_ + in148m_ ; s_in155m_ + in155m_ ; s_in263m_ + in263m_ ; s_ca66m_ + ca66m_ ;
 	s_rm_ + rm_ ; s_i_nnm + i_nnm ; s_i_rm + i_rm ; s_i_pim + i_pim ; s_i_tam + i_tam ; s_i_im + i_im ;
     s_inm_ + inm_ ; s_i_184m + i_184m ; s_im_art + im_art ; s_pim_art + pim_art ; s_tam_art + tam_art ; s_m184_art + m184_art ; s_r_ + r_ ;
     s_r_3tc + r_3tc ; s_r_nev + r_nev ; s_r_lpr + r_lpr ; s_r_taz + r_taz ; s_r_efa + r_efa ; s_r_ten + r_ten ; s_r_zdv + r_zdv ; s_r_dol + r_dol ;
@@ -19038,6 +19039,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_lpr + o_lpr ; s_taz + o_taz ; s_3tc + o_3tc ; s_nev + o_nev ; s_efa + o_efa ; s_ten + o_ten ; s_zdv + o_zdv ; s_dol + o_dol ; s_cab + o_cab ; s_len + o_len ;
 	s_dar + o_dar;
 	s_o_len_1524m + o_len_1524m; s_o_len_1524w + o_len_1524w; s_o_cab_1524m + o_cab_1524m; s_o_cab_1524w + o_cab_1524w;
+	s_o_len_or_o_len_tm1 + o_len_or_o_len_tm1 ; s_o_len_or_o_len_tm1_no_r + o_len_or_o_len_tm1_no_r ; s_o_len_or_o_len_tm1_no_r_prim + o_len_or_o_len_tm1_no_r_prim;
 	s_o_cab_or_o_cab_tm1 + o_cab_or_o_cab_tm1 ; s_o_cab_or_o_cab_tm1_no_r + o_cab_or_o_cab_tm1_no_r ; s_o_cab_or_o_cab_tm1_no_r_prim + o_cab_or_o_cab_tm1_no_r_prim;
 	s_o_len_vl1000 + o_len_vl1000; s_o_cab_vl1000 + o_cab_vl1000; 
 
@@ -20956,7 +20958,7 @@ s_covid
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
-eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_newp_condoms prop_redattr_ep_condoms
+eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_use_condom_int_newp prop_redattr_ep_condoms
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
@@ -21001,7 +21003,7 @@ artvis0_lower_adh  pop_wide_prep_adh_effect rate_lencab_to_tld  rel_rate_interru
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary 	pr_inm_cab_prep_primary  pr_cam_len_prep_primary
 rel_pr_inm_cab_prep_tail_primary  rel_pr_cam_len_prep_tail_primary
-rr_res_cab_dol  rr_res_len
+rr_res_cab_dol
 hivtest_type_1_init_prep_cab hivtest_type_1_prep_cab
 hivtest_type_1_init_prep_len hivtest_type_1_prep_len
 sens_ttype3_prep_cab_primary sens_ttype3_prep_cab_inf3m sens_ttype3_prep_cab_infge6m
@@ -23100,7 +23102,7 @@ s_covid
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
-eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_newp_condoms prop_redattr_ep_condoms
+eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_use_condom_int_newp prop_redattr_ep_condoms
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
@@ -23145,7 +23147,7 @@ artvis0_lower_adh  pop_wide_prep_adh_effect rate_lencab_to_tld  rel_rate_interru
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary 	pr_inm_cab_prep_primary  pr_cam_len_prep_primary
 rel_pr_inm_cab_prep_tail_primary  rel_pr_cam_len_prep_tail_primary
-rr_res_cab_dol  rr_res_len
+rr_res_cab_dol
 hivtest_type_1_init_prep_cab hivtest_type_1_prep_cab
 hivtest_type_1_init_prep_len hivtest_type_1_prep_len
 sens_ttype3_prep_cab_primary sens_ttype3_prep_cab_inf3m sens_ttype3_prep_cab_infge6m
