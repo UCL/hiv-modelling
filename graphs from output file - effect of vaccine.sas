@@ -29,8 +29,16 @@ prop_prep_any = (n_prep_any / n_alive) * 100;
 p_cur_any_vac_e_1564_ = p_current_any_vac_e_1564; 
 p_cur_full_vac_e_1564_ = p_current_full_vac_e_1564;
 
+/*
+prop_elig_on_prep
+prop_prep_inj
 
-%let single_var = n_daly_gbd          ;
+
+proc print; var cald option n_prep_elig n_prep_any prop_elig_on_prep prop_prep_inj ; run;
+
+*/
+
+%let single_var = incidence1549_         ;
 
 
 * p_inf_newp p_inf_ep p_inf_diag p_inf_naive p_inf_primary ;
@@ -264,7 +272,7 @@ if 2015 <= cald < 2070;
 proc print; run;
 run;
 
-
+*/
 
 ods html;
 proc sgplot data=d ; 
@@ -291,8 +299,9 @@ band    x=cald lower=p5_incidence1549__3 upper=p95_incidence1549__3 / transparen
 
 run;quit;
 
-* ods html close;
+ods html close;
 
+/*
 
 
 
@@ -408,6 +417,8 @@ band    x=cald lower=p5_n_death_hiv_3 upper=p95_n_death_hiv_3 / transparency=0.9
 
 run;quit;
 
+ods html close;
+
 
 
 ods html;
@@ -437,7 +448,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d ; 
@@ -464,7 +475,7 @@ band    x=cald lower=p5_n_daly_gbd_3 upper=p95_n_daly_gbd_3 / transparency=0.9 f
 
 run;quit;
 
-
+*/
 
 /*
 
