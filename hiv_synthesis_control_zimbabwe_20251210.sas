@@ -16052,7 +16052,6 @@ if gender = 2 and 25 <= age < 35 then do;  if prep_any=1 then prep_any_w_2534 = 
 if gender = 2 and 35 <= age < 45 then do;  if prep_any=1 then prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_w_1549 = 1;  end;
 
-prep_any_m = 0; if gender = 1 and prep_any=1 then prep_any_m = 1;
 * msm; prep_any_msm = 0; if msm=1 and prep_any=1 then prep_any_msm = 1; 
 * pwid;  prep_any_pwid = 0; if pwid=1 and prep_any=1 then prep_any_pwid = 1; 
 
@@ -18738,8 +18737,6 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_i_msm + i_msm ; s_i_v1_msm + i_v1_msm; s_i_v2_msm + i_v2_msm ; s_i_v3_msm + i_v3_msm ;
 	s_i_v4_msm + i_v4_msm ; s_i_v5_msm + i_v5_msm ;s_i_v6_msm + i_v6_msm  ;
 
-	s_pwid + pwid ;  s_hiv_pwid + hiv_pwid;
-
 	s_i_pwid + i_pwid ; s_i_v1_pwid + i_v1_pwid; s_i_v2_pwid + i_v2_pwid ; s_i_v3_pwid + i_v3_pwid ;
 	s_i_v4_pwid + i_v4_pwid ; s_i_v5_pwid + i_v5_pwid ;s_i_v6_pwid + i_v6_pwid  ;
 
@@ -18797,8 +18794,6 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_cab_m + prep_cab_m; 	s_prep_len_m + prep_len_m; 	s_prep_any_sw + prep_any_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_cab_sw + prep_cab_sw ; 
 	s_prep_len_sw + prep_len_sw ;  s_prep_vr_sw + prep_vr_sw ; 
 	s_prep_any_w_1524 + prep_any_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_cab_w_1524 + prep_cab_w_1524 ;  s_prep_len_w_1524 + prep_len_w_1524 ; 
-
-	s_onprep_cab_msm + onprep_cab_msm; s_onprep_len_msm + onprep_len_msm; s_onprep_cab_pwid + onprep_cab_pwid; s_onprep_len_pwid + onprep_len_pwid; 
 
 	s_prep_any_sdc + prep_any_sdc; s_prep_oral_sdc + prep_oral_sdc; s_prep_cab_sdc + prep_cab_sdc;  s_prep_len_sdc + prep_len_sdc; s_prep_vr_sdc + prep_vr_sdc;
 	s_prep_any_plw + prep_any_plw; s_prep_oral_plw + prep_oral_plw; s_prep_cab_plw + prep_cab_plw;  s_prep_len_plw + prep_len_plw; s_prep_vr_plw + prep_vr_plw;
@@ -19036,7 +19031,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_art_start_m + art_start_m ; s_art_start_w + art_start_w ; s_artexp  + artexp  ;
 	s_artexp_m + artexp_m; s_artexp_w + artexp_w; s_artexp_1524_ + artexp_1524_; s_artexp_sw + artexp_sw; s_artexp_w1524evpreg + artexp_w1524evpreg;
 	s_artexpoff +  artexpoff ; s_onart_m + onart_m ; s_onart_w + onart_w ; 
-    s_onart_sw + onart_sw ; s_onart_w1524evpreg + onart_w1524evpreg; s_art_dur_l6m + art_dur_l6m ; s_art_dur_g6m + art_dur_g6m ; s_art_tdur_l6m + art_tdur_l6m ; s_art_tdur_g6m + art_tdur_g6m ;
+    s_onart_sw + onart_sw ; s_onart_w1524evpreg + onart_w1524evpreg; 
+	s_art_dur_l6m + art_dur_l6m ; s_art_dur_g6m + art_dur_g6m ; s_art_tdur_l6m + art_tdur_l6m ; s_art_tdur_g6m + art_tdur_g6m ;
 	s_eponart_m + eponart_m ; s_eponart_w + eponart_w ; s_hiv1564_onart + hiv1564_onart ; 
 	s_non_tb_who3_art_init + non_tb_who3_art_init ; s_who4_art_init + who4_art_init ; s_art_start_pregnant + art_start_pregnant ; 
 	s_lpr + o_lpr ; s_taz + o_taz ; s_3tc + o_3tc ; s_nev + o_nev ; s_efa + o_efa ; s_ten + o_ten ; s_zdv + o_zdv ; s_dol + o_dol ; s_cab + o_cab ; s_len + o_len ;
@@ -19400,19 +19396,45 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	/* MSM */
 
-	s_alive_msm + alive_msm; s_alive1549_msm + alive1549_msm ;  s_alive1564_msm + alive1564_msm ; s_primary1549msm + primary1549msm;
-	s_primary1564msm + primary1564msm;  s_hiv1564msm + hiv1564msm;  s_hiv_msm + hiv_msm;  s_hiv1549msm + hiv1549msm; s_vl1000_msm + vl1000_msm;
-	s_art_start_msm + art_start_msm;   s_diag_msm_age1564 + diag_msm_age1564;   s_vg1000_msm + vg1000_msm;
-	s_vl1000_art_msm + vl1000_art_msm ; s_onart_iicu_msm + onart_iicu_msm ; s_vl1000_art_iicu_msm + vl1000_art_iicu_msm ;
-	s_onart_gt6m_msm + onart_gt6m_msm ; s_vl1000_art_gt6m_msm + vl1000_art_gt6m_msm ; s_onart_gt6m_iicu_msm + onart_gt6m_iicu_msm ;
-	s_vl1000_art_gt6m_iicu_msm + vl1000_art_gt6m_iicu_msm ; s_artexp_msm + artexp_msm ; s_diag_msm + diag_msm ; s_onart_msm + onart_msm ;
-	s_prep_oral_msm + prep_oral_msm ; s_prep_cab_msm + prep_cab_msm ; s_prep_len_msm + prep_len_msm ; s_elig_prep_any_msm_1564 + elig_prep_any_msm_1564 ;
-	s_onprep_msm + onprep_msm ; s_onprep_oral_msm + onprep_oral_msm ; s_tested1549msm + tested1549msm ; s_ever_tested_msm + ever_tested_msm ;
-	s_ever_tested_msm1549_ + ever_tested_msm1549_ ; s_ever_tested_msm1564_ + ever_tested_msm1564_ ; s_diag_msm1564_ + diag_msm1564_ ;
-	s_onart_msm1564_ + onart_msm1564_ ; s_infected_from_msm + infected_from_msm ; s_inf_msm + inf_msm ; s_inf_pwid + inf_pwid ; 
-	s_ever_tested_msm1549_ + ever_tested_msm1549_ ; s_diag_msm1549_ + diag_msm1549_ ; s_onart_msm1549_ + onart_msm1549_ ; s_ever_tested_msm1564_ + ever_tested_msm1564_ ;
-	s_diag_msm1564_ + diag_msm1564_ ; s_diag_this_period_msm + diag_this_period_msm ; s_tested_msm + tested_msm ; s_naive_msm + naive_msm ; 
-	s_prep_any_msm + prep_any_msm ; s_prep_any_m + prep_any_m ; s_prep_any_pwid + prep_any_pwid ;
+	s_alive_msm + alive_msm ; s_alive1549_msm + alive1549_msm ; s_alive1564_msm + alive1564_msm ; 
+	s_primary1549msm + primary1549msm ;	s_primary1564msm + primary1564msm ; 
+	s_hiv_msm + hiv_msm ; s_hiv1549msm + hiv1549msm ; s_hiv1564msm + hiv1564msm ; 
+	s_infected_from_msm + infected_from_msm ; s_inf_msm + inf_msm ; 
+	s_tested_msm + tested_msm ; s_tested1549msm + tested1549msm ;
+	s_ever_tested_msm + ever_tested_msm ; s_ever_tested_msm1549_ + ever_tested_msm1549_ ; s_ever_tested_msm1564_ + ever_tested_msm1564_ ; 
+	s_diag_msm + diag_msm ; s_diag_msm1549_ + diag_msm1549_ ; s_diag_msm1564_ + diag_msm1564_ ; s_diag_msm_age1564 + diag_msm_age1564 ;
+	s_diag_this_period_msm + diag_this_period_msm ; 
+	s_art_start_msm + art_start_msm ; s_onart_msm + onart_msm ; s_onart_msm1549_ + onart_msm1549_ ; s_onart_msm1564_ + onart_msm1564_ ; 
+	s_vl1000_msm + vl1000_msm ; s_vl1000_art_msm + vl1000_art_msm ; s_vg1000_msm + vg1000_msm;
+	s_onart_iicu_msm + onart_iicu_msm ; s_vl1000_art_iicu_msm + vl1000_art_iicu_msm ;
+	s_onart_gt6m_msm + onart_gt6m_msm ; s_vl1000_art_gt6m_msm + vl1000_art_gt6m_msm ; 
+	s_onart_gt6m_iicu_msm + onart_gt6m_iicu_msm ; s_vl1000_art_gt6m_iicu_msm + vl1000_art_gt6m_iicu_msm ; 
+	s_artexp_msm + artexp_msm ; s_naive_msm + naive_msm ; 
+	s_onprep_msm + onprep_msm ; s_onprep_oral_msm + onprep_oral_msm ; s_onprep_cab_msm + onprep_cab_msm; s_onprep_len_msm + onprep_len_msm; 
+	s_prep_any_msm + prep_any_msm ; s_prep_oral_msm + prep_oral_msm ; s_prep_cab_msm + prep_cab_msm ; s_prep_len_msm + prep_len_msm ; 
+	s_elig_prep_any_msm_1564 + elig_prep_any_msm_1564 ;
+
+	/* PWID */
+
+	s_alive_pwid + alive_pwid; s_alive1549_pwid + alive1549_pwid; s_alive1564_pwid + alive1564_pwid; 
+	s_primary1549pwid + primary1549pwid;  
+	s_hiv_pwid + hiv_pwid; s_hiv1549pwid + hiv1549pwid;  s_hiv1564pwid + hiv1564pwid;
+	s_inf_pwid + inf_pwid ;
+	s_tested_pwid + tested_pwid; s_tested1549pwid + tested1549pwid; 
+	s_ever_tested_pwid + ever_tested_pwid;  s_ever_tested_pwid1549_ + ever_tested_pwid1549_; s_ever_tested_pwid1564_ + ever_tested_pwid1564_; 
+	s_diag_pwid + diag_pwid ; s_diag_pwid1549_ + diag_pwid1549_;   s_diag_pwid1564_ + diag_pwid1564_;  s_diag_pwid_age1564 + diag_pwid_age1564;
+ 	s_diag_this_period_pwid + diag_this_period_pwid ;  
+	s_art_start_pwid + art_start_pwid; s_onart_pwid + onart_pwid; s_onart_pwid1549_ + onart_pwid1549_; s_onart_pwid1564_ + onart_pwid1564_;
+	s_vl1000_pwid + vl1000_pwid; s_vl1000_art_pwid + vl1000_art_pwid; 
+	s_onart_iicu_pwid + onart_iicu_pwid; s_vl1000_art_iicu_pwid + vl1000_art_iicu_pwid;  
+	s_onart_gt6m_pwid + onart_gt6m_pwid; s_vl1000_art_gt6m_pwid + vl1000_art_gt6m_pwid;  
+	s_onart_gt6m_iicu_pwid + onart_gt6m_iicu_pwid; s_vl1000_art_gt6m_iicu_pwid + vl1000_art_gt6m_iicu_pwid;
+	s_artexp_pwid + artexp_pwid; s_naive_pwid + naive_pwid; 
+	s_onprep_pwid + onprep_pwid; s_onprep_oral_pwid + onprep_oral_pwid; s_onprep_cab_pwid + onprep_cab_pwid; s_onprep_len_pwid + onprep_len_pwid;
+	s_prep_any_pwid_1564 + prep_any_pwid_1564 ; s_prep_oral_pwid + prep_oral_pwid; 
+    s_elig_prep_any_pwid_1564 + elig_prep_any_pwid_1564;  
+	s_pwid + pwid;  s_newp_this_per_hivneg_pwid + newp_this_per_hivneg_pwid;
+
 
 	/*ADC and advanced hiv disease etc*/
 
@@ -19804,6 +19826,7 @@ if s_m_4554_newp = 0 then s_prop_newp_i_m_4554 = 0;
 if s_m_5564_newp = 0 then s_prop_newp_i_m_5564 = 0;
 
 * msm; if s_msm = 0 then s_prop_i_msm = 0;
+* pwid; if s_pwid = 0 then s_prop_i_pwid = 0;
 
 
 * Used for balance;
@@ -20351,6 +20374,9 @@ s_i_v6_age1_m_newp s_i_v6_age2_m_newp s_i_v6_age3_m_newp s_i_v6_age4_m_newp s_i_
 s_i_v6_age1_w_ep s_i_v6_age2_w_ep s_i_v6_age3_w_ep s_i_v6_age4_w_ep s_i_v6_age5_w_ep 
 s_i_v6_age1_m_ep s_i_v6_age2_m_ep s_i_v6_age3_m_ep s_i_v6_age4_m_ep s_i_v6_age5_m_ep 
 
+s_i_msm		s_i_v1_msm 	s_i_v2_msm 	s_i_v3_msm 	s_i_v4_msm 	s_i_v5_msm 	s_i_v6_msm
+s_i_pwid	s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid 
+
 s_i_age1_m_np s_i_age2_m_np	s_i_age3_m_np	s_i_age4_m_np	s_i_age5_m_np
 s_i_age1_w_np	s_i_age2_w_np	s_i_age3_w_np	s_i_age4_w_np	s_i_age5_w_np
 s_i_age1_m_newp s_i_age2_m_newp	s_i_age3_m_newp	s_i_age4_m_newp	s_i_age5_m_newp
@@ -20565,16 +20591,16 @@ s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl
 
 /*ART*/
  s_naive    s_onart  s_int_clinic_not_aw
-s_art_start  	s_art_start_m   s_art_start_w   s_artexp  
+s_art_start  	s_art_start_m   s_art_start_w   s_artexp
 s_artexp_m 		s_artexp_w 		s_artexp_1524_ 	s_artexp_sw 	s_artexp_w1524evpreg
-s_artexpoff  s_onart_m  s_onart_w
+s_artexpoff  s_onart_m  s_onart_w s_onart_sw
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
 s_onart_m4044_  s_onart_m4549_  s_onart_m5054_  s_onart_m5559_  s_onart_m6064_	
 s_onart_m6569_	s_onart_m7074_	s_onart_m7579_	s_onart_m8084_	s_onart_m85pl_	
 s_onart_w1549_  s_onart_w1564_  s_onart_w1519_  s_onart_w2024_  s_onart_w2529_  s_onart_w3034_  s_onart_w3539_  
 s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_	
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_
-s_onart_sw 	s_onart_w1524evpreg
+ 	
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart   s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
@@ -20767,7 +20793,7 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_base_rate_sw  s_sw	s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
@@ -20796,28 +20822,36 @@ s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1 s_sti_sw
 
 /* MSM */
 
-s_alive_msm  s_alive1549_msm  s_alive1564_msm  s_primary1549msm  s_primary1564msm s_hiv1564msm  s_hiv_msm s_hiv1549msm  s_vl1000_msm  
-s_art_start_msm   s_diag_msm_age1564   s_vg1000_msm
-s_vl1000_art_msm s_onart_iicu_msm  s_vl1000_art_iicu_msm  s_onart_gt6m_msm s_vl1000_art_gt6m_msm s_onart_gt6m_iicu_msm s_vl1000_art_gt6m_iicu_msm  s_artexp_msm  
-s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig_prep_any_msm_1564  s_onprep_msm  s_onprep_oral_msm s_onprep_len_msm s_onprep_cab_msm  s_tested1549msm
-s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_   s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
-s_ever_tested_msm1549_   s_diag_msm1549_  s_onart_msm1549_    s_ever_tested_msm1564_  s_diag_msm1564_ 
-s_diag_this_period_msm  s_tested_msm  s_naive_msm  s_onprep_cab_pwid s_onprep_len_pwid 
-s_i_msm s_i_v1_msm s_i_v2_msm s_i_v3_msm s_i_v4_msm s_i_v5_msm s_i_v6_msm s_msm  s_prop_i_msm  s_prep_any_msm  s_prep_any_m  s_prep_any_pwid
-s_msm_ep s_m_ge1newp s_msm_ge1newp 
+s_alive_msm			s_alive1549_msm			s_alive1564_msm			s_primary1549msm		s_primary1564msm
+s_hiv_msm			s_hiv1549msm			s_hiv1564msm			s_infected_from_msm		s_inf_msm
+s_tested_msm		s_tested1549msm			s_ever_tested_msm		s_ever_tested_msm1549_	s_ever_tested_msm1564_
+s_diag_msm			s_diag_msm1549_			s_diag_msm1564_			s_diag_msm_age1564		s_diag_this_period_msm
+s_art_start_msm		s_onart_msm				s_onart_msm1549_		s_onart_msm1564_
+s_vl1000_msm		s_vl1000_art_msm		s_vg1000_msm
+s_onart_iicu_msm	s_vl1000_art_iicu_msm	s_onart_gt6m_msm		s_vl1000_art_gt6m_msm
+s_onart_gt6m_iicu_msm 		s_vl1000_art_gt6m_iicu_msm				s_artexp_msm			s_naive_msm
+s_onprep_msm		s_onprep_oral_msm		s_onprep_cab_msm		s_onprep_len_msm
+s_prep_any_msm		s_prep_oral_msm			s_prep_cab_msm			s_prep_len_msm
+s_elig_prep_any_msm_1564
+s_msm 				s_msm_ep 				s_m_ge1newp 			s_msm_ge1newp			s_prop_i_msm  
+   
 
 /* PWID */ 
 
-s_alive_pwid  s_alive1549_pwid  s_alive1564_pwid  s_primary1549pwid  s_hiv1564pwid   s_hiv1549pwid  s_vl1000_pwid  s_art_start_pwid   s_diag_pwid_age1564  
-s_vl1000_art_pwid s_onart_iicu_pwid  s_vl1000_art_iicu_pwid  s_onart_gt6m_pwid s_vl1000_art_gt6m_pwid s_onart_gt6m_iicu_pwid s_vl1000_art_gt6m_iicu_pwid  s_artexp_pwid  
-s_diag_pwid  s_onart_pwid  s_prep_oral_pwid  s_prep_cab_pwid s_prep_len_pwid  s_elig_prep_any_pwid_1564  s_onprep_pwid  s_onprep_oral_pwid s_onprep_cab_pwid 
-s_onprep_len_pwid 
-s_tested1549pwid
-s_ever_tested_pwid  s_ever_tested_pwid1549_  s_ever_tested_pwid1564_  s_diag_pwid1549_   s_diag_pwid1564_  s_onart_pwid1549_  s_onart_pwid1564_  
-s_ever_tested_pwid1549_   s_diag_pwid1549_  s_onart_pwid1549_    s_ever_tested_pwid1564_  s_diag_pwid1564_ s_onart_pwid1564_
-s_diag_this_period_pwid  s_tested_pwid  s_naive_pwid  s_newp_this_per_hivneg_pwid 
+s_alive_pwid 		s_alive1549_pwid 		s_alive1564_pwid		s_primary1549pwid
+s_hiv_pwid 			s_hiv1549pwid 			s_hiv1564pwid			s_inf_pwid
+s_tested_pwid 		s_tested1549pwid		s_ever_tested_pwid 		s_ever_tested_pwid1549_ s_ever_tested_pwid1564_
+s_diag_pwid 		s_diag_pwid1549_ 		s_diag_pwid1564_ 		s_diag_pwid_age1564		s_diag_this_period_pwid 
+s_art_start_pwid 	s_onart_pwid 			s_onart_pwid1549_ 		s_onart_pwid1564_
+s_vl1000_pwid 		s_vl1000_art_pwid 		
+s_onart_iicu_pwid 	s_vl1000_art_iicu_pwid	s_onart_gt6m_pwid 		s_vl1000_art_gt6m_pwid	
+s_onart_gt6m_iicu_pwid 		s_vl1000_art_gt6m_iicu_pwid				s_artexp_pwid 			s_naive_pwid
+s_onprep_pwid 		s_onprep_oral_pwid 		s_onprep_cab_pwid 		s_onprep_len_pwid
+s_prep_any_pwid_1564 s_prep_oral_pwid
+s_elig_prep_any_pwid_1564
+s_pwid 				s_newp_this_per_hivneg_pwid
 
-s_i_pwid s_i_v1_pwid s_i_v2_pwid s_i_v3_pwid s_i_v4_pwid s_i_v5_pwid s_i_v6_pwid s_pwid  s_prop_i_pwid s_hiv_pwid
+ s_prop_i_pwid
 
 
 
@@ -21873,7 +21907,7 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_base_rate_sw  s_sw	s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
@@ -21883,6 +21917,7 @@ s_sw_newp   s_sw1524_newp s_sw_newp_cat1 s_sw_newp_cat2 s_sw_newp_cat3 s_sw_newp
 s_episodes_sw  s_sw_gt1ep
 s_new_1519sw  s_new_2024sw  s_new_2529sw  s_new_3039sw  s_new_ge40sw  
 s_vs_sw
+
 s_age_deb_sw1519_  s_age_deb_sw2024_  s_age_deb_sw2529_  s_age_deb_sw3039_  s_age_deb_swov40_ 
 
 s_age_stop_sw1519_  s_age_stop_sw2024_  s_age_stop_sw2529_  s_age_stop_sw3039_  s_age_stop_swov40_ 
@@ -21908,7 +21943,7 @@ s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_   s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
 s_ever_tested_msm1549_   s_diag_msm1549_     s_ever_tested_msm1564_   s_onart_msm1564_   s_onprep_cab_pwid s_onprep_len_pwid 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm
-s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm  s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
+s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm  s_msm   s_prep_any_msm
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
 
 /* PWID */ 
@@ -22045,7 +22080,7 @@ s_art_attrit_1yr     	s_art_attrit_1yr_on     s_art_attrit_2yr   s_art_attrit_2y
 s_art_attrit_3yr_on     s_art_attrit_4yr      s_art_attrit_4yr_on  s_art_attrit_5yr   
 s_art_attrit_5yr_on     s_art_attrit_6yr      s_art_attrit_6yr_on   s_art_attrit_7yr   s_art_attrit_7yr_on   
 s_art_attrit_8yr    	s_art_attrit_8yr_on   s_dead_daly   s_epart    s_hiv1564  s_m_newp 
-s_naive_m       		s_naive_w      s_npgt1conc_l4p_1519m    s_npgt1conc_l4p_1519w   s_npgt1conc_l4p_1524m 
+s_npgt1conc_l4p_1519m    s_npgt1conc_l4p_1519w   s_npgt1conc_l4p_1524m 
 s_npgt1conc_l4p_1524w    s_npgt1conc_l4p_2449m    s_npgt1conc_l4p_2449w    s_npgt1conc_l4p_5064m    s_npgt1conc_l4p_5064w 
 s_prop_ageg1_m_vlg1    s_prop_ageg1_m_vlg2    s_prop_ageg1_m_vlg3   s_prop_ageg1_m_vlg4  s_prop_ageg1_m_vlg5 
 s_prop_ageg1_m_vlg6    s_prop_ageg1_w_vlg1    s_prop_ageg1_w_vlg2   s_prop_ageg1_w_vlg3    s_prop_ageg1_w_vlg4 
@@ -22071,12 +22106,11 @@ s_prop_vlg3_rm0_diag   s_prop_vlg3_rm0_naive    s_prop_vlg3_rm1_diag   s_prop_vl
 s_prop_vlg4_rm0_diag    s_prop_vlg4_rm0_naive   s_prop_vlg4_rm1_diag     s_prop_vlg4_rm1_naive  s_prop_vlg5_rm  
 s_prop_vlg5_rm0_diag    s_prop_vlg5_rm0_naive    s_prop_vlg5_rm1_diag  s_prop_vlg5_rm1_naive  s_prop_vlg6_rm s_prop_vlg6_rm0_diag 
 s_prop_vlg6_rm0_naive  s_prop_vlg6_rm1_diag    s_prop_vlg6_rm1_naive s_prop_w_vlg1   s_prop_w_vlg2 s_prop_w_vlg3   s_prop_w_vlg4  
-s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp 
-s_prop_i_msm  s_prop_i_pwid
+s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m  s_w_newp 
 
 s_prop_msm_vlg1 s_prop_msm_vlg2  s_prop_msm_vlg3 s_prop_msm_vlg4 s_prop_msm_vlg5 s_prop_msm_vlg6 
 
-s_prop_pwid_vlg1 s_prop_pwid_vlg2  s_prop_pwid_vlg3 s_prop_pwid_vlg4 s_prop_pwid_vlg5 s_prop_pwid_vlg6  s_prop_i_pwid
+s_prop_pwid_vlg1 s_prop_pwid_vlg2  s_prop_pwid_vlg3 s_prop_pwid_vlg4 s_prop_pwid_vlg5 s_prop_pwid_vlg6 
 ;
 
 
@@ -22855,7 +22889,7 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_base_rate_sw  s_sw	s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
@@ -22864,7 +22898,9 @@ s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp
 s_sw_newp   s_sw1524_newp s_sw_newp_cat1 s_sw_newp_cat2 s_sw_newp_cat3 s_sw_newp_cat4 s_sw_newp_cat5  
 s_episodes_sw  s_sw_gt1ep
 s_new_1519sw  s_new_2024sw  s_new_2529sw  s_new_3039sw  s_new_ge40sw  
-s_diag_sw s_onart_sw s_onart_w1524evpreg s_vs_sw 
+s_vs_sw
+
+s_onart_sw s_onart_w1524evpreg 
 
 s_age_deb_sw1519_  s_age_deb_sw2024_  s_age_deb_sw2529_  s_age_deb_sw3039_  s_age_deb_swov40_ 
 
@@ -22890,7 +22926,7 @@ s_diag_msm  s_onart_msm  s_prep_oral_msm  s_prep_cab_msm  s_prep_len_msm  s_elig
 s_ever_tested_msm  s_ever_tested_msm1549_  s_ever_tested_msm1564_    s_diag_msm1564_  s_onart_msm1549_  s_onart_msm1564_  s_infected_from_msm   s_inf_msm  s_inf_pwid
 s_ever_tested_msm1549_   s_diag_msm1549_    s_ever_tested_msm1564_   s_onart_msm1564_  s_onprep_cab_pwid s_onprep_len_pwid 
 s_diag_this_period_msm  s_tested_msm  s_naive_msm  
-s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm   s_prep_any_msm  s_prep_any_m s_prep_any_pwid
+s_i_msm  s_i_v1_msm s_i_v2_msm  s_i_v3_msm  s_i_v4_msm  s_i_v5_msm  s_i_v6_msm   s_msm   s_prep_any_msm 
 s_msm_ep s_m_ge1newp s_msm_ge1newp 
 
 /* PWID */ 
@@ -23141,9 +23177,9 @@ s_prop_ageg5_w_vlg1  s_prop_ageg5_w_vlg2  s_prop_ageg5_w_vlg3   s_prop_ageg5_w_v
 s_prop_m_vlg1  s_prop_m_vlg2  s_prop_m_vlg3  s_prop_m_vlg4  s_prop_m_vlg5 s_prop_m_vlg6 
 s_prop_w_vlg1  s_prop_w_vlg2  s_prop_w_vlg3  s_prop_w_vlg4  s_prop_w_vlg5 s_prop_w_vlg6
 
-s_prop_i_msm s_prop_msm_vlg1   s_prop_msm_vlg2 s_prop_msm_vlg3 s_prop_msm_vlg4 s_prop_msm_vlg5 s_prop_msm_vlg6 
+s_prop_msm_vlg1   s_prop_msm_vlg2 s_prop_msm_vlg3 s_prop_msm_vlg4 s_prop_msm_vlg5 s_prop_msm_vlg6 
 
-s_prop_i_pwid s_prop_pwid_vlg1 s_prop_pwid_vlg2  s_prop_pwid_vlg3 s_prop_pwid_vlg4 s_prop_pwid_vlg5 s_prop_pwid_vlg6  
+s_prop_pwid_vlg1 s_prop_pwid_vlg2  s_prop_pwid_vlg3 s_prop_pwid_vlg4 s_prop_pwid_vlg5 s_prop_pwid_vlg6  
 
 p_onart_vls  p_onart_epvls  d_vls
 p_diag  p_diag_onart  p_diag_eponart  p_diag_m  p_diag_w  p_epdiag_m  p_epdiag_w  d_diag_m  d_diag_w

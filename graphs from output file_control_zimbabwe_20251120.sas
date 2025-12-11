@@ -1365,7 +1365,7 @@ series  x=cald y=mean_n_onprep_99/	lineattrs = (color=black thickness = 2);
 run;quit;
 
 proc print data=d;
-	var mean_n_onprep_0 
+	var mean_n_onprep_0 mean_n_onprep_1 mean_n_onprep_2 mean_n_onprep_3 mean_n_onprep_4 mean_n_onprep_5 mean_n_onprep_6 mean_n_onprep_99
 	;
 	where cald=2070;
 run;
