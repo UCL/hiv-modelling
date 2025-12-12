@@ -542,9 +542,36 @@ proc print data=d;
 	mean_n_new_inf1549__9 mean_n_new_inf1549__10 mean_n_new_inf1549__11 mean_n_new_inf1549__12 mean_n_new_inf1549__13
 	mean_n_new_inf1549__99
 	;
-	where cald=2070;
+	where cald=2040;
 run;
 
+data art_sums; set d;
+	if cald < 2024 then delete;
+	cum_n_new_inf1549_0 + mean_n_new_inf1549__0;
+	cum_n_new_inf1549_1 + mean_n_new_inf1549__1;
+	cum_n_new_inf1549_2 + mean_n_new_inf1549__2;
+	cum_n_new_inf1549_3 + mean_n_new_inf1549__3;
+	cum_n_new_inf1549_4 + mean_n_new_inf1549__4;
+	cum_n_new_inf1549_5 + mean_n_new_inf1549__5;
+	cum_n_new_inf1549_6 + mean_n_new_inf1549__6;
+	cum_n_new_inf1549_7 + mean_n_new_inf1549__7;
+	cum_n_new_inf1549_8 + mean_n_new_inf1549__8;
+	cum_n_new_inf1549_9 + mean_n_new_inf1549__9;
+	cum_n_new_inf1549_10 + mean_n_new_inf1549__10;
+	cum_n_new_inf1549_11 + mean_n_new_inf1549__11;
+	cum_n_new_inf1549_12 + mean_n_new_inf1549__12;
+	cum_n_new_inf1549_13 + mean_n_new_inf1549__13;
+	cum_n_new_inf1549_99 + mean_n_new_inf1549__99;
+
+	keep cald 
+		cum_n_new_inf1549_0 	cum_n_new_inf1549_1 	cum_n_new_inf1549_2 	cum_n_new_inf1549_3 	cum_n_new_inf1549_4 
+		cum_n_new_inf1549_5 	cum_n_new_inf1549_6 	cum_n_new_inf1549_7 	cum_n_new_inf1549_8 	cum_n_new_inf1549_9 	
+		cum_n_new_inf1549_10 	cum_n_new_inf1549_11 	cum_n_new_inf1549_12 	cum_n_new_inf1549_13 	cum_n_new_inf1549_99
+		;
+
+	if cald ne 2073.75 then delete;
+
+run;
 
 * p_newp;
 proc sgplot data=d; 
@@ -1338,7 +1365,7 @@ series  x=cald y=mean_n_onprep_99/	lineattrs = (color=black thickness = 2);
 run;quit;
 
 proc print data=d;
-	var mean_n_onprep_0 
+	var mean_n_onprep_0 mean_n_onprep_1 mean_n_onprep_2 mean_n_onprep_3 mean_n_onprep_4 mean_n_onprep_5 mean_n_onprep_6 mean_n_onprep_99
 	;
 	where cald=2070;
 run;
