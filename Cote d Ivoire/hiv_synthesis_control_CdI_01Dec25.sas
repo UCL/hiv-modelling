@@ -1,90 +1,3 @@
-* 20/11/25 updates
-
-- reduce impact of condom intervention (back to 29/09/25 version)
-- changed distribution of cablen_extra_pref from (0.1 0.3 0.5) to (0.1 0.2 0.3) to increase relative use of oral pref
-
-* 12/11/25 updates
-
-- add option 13 for worst-case scenario - halving eff_pr_art_init
-- ensure that self-testing is removed from baseline/minimal to align with Optima halfHTS baseline (already done)
-- ensure that we are using the original (strong) condom impact (already done)
-- changed distribution of adh_pattern in Zim_parameters file to be slightly less adherent to try and reduce proportion VLS to match Optima
-- removed duplicated counting of s_elig_prep_any_sw
-- recode elig_prep_any_sw, elig_prep_any_sdc and elig_prep_any_plw to remove inconsistencies
-- increase start PrEP and decrease stop PrEP probabilities for KP PrEP options
-
-* 10/11/25 updates
-
-- replace sampling of eff_rate_test_startprep_any and eff_prob_prep_oral_b in options with selection of one fixed value
-- change max to min to stop eff_prob_prep_len_b increasing above 1
-
-* 04/11/25 updates
-
-- remove circ_inc_rate_year_i=6 / option 20, keeping only option 7 (circ_inc_rate_year_i=5, allows p_mcirc to continue to increase after 2030 even though it does not 
-	reach uptake target of 90% coverage in 15-24 year-old men)
-- change eff_prob_prep_oral_b distribution to (0.4, 0.5, 0.6) in FSW and MSM PrEP option (1 & 2, 5 & 6), apply change to eff_prob_prep_len_b as well, increase 
-	eff_rate_test_startprep_any distribution from (0.25, 0.5, 0.75) to (0.5, 0.7, 0.9)
-- revert to version removing self-testing in the Minimal
-- only run options 0-6 and 99
-
-* 22/10/25 updates
-
-- add circ_inc_rate_year_i=5 and 6 options (ops 7 and 20) to allow p_mcirc to continue to increase after 2030
-- changed distribution of cablen_extra_pref from (0.5, 0.7, 1) to (0.1 0.3 0.5) to increase relative use of oral pref
-- changed distribution of prob_prep_oral_b from (0.05, 0.1, 0.2) to (0.1, 0.2, 0.3) (options 1 and 2) or to (0.2, 0.3, 0.4) (options 5 and 6) from year_interv onwards
-	to increase PrEP uptake in intervention
-- only run options 0-7, 20 and 99
-
-* 08/10/25_min updates
-
-- change back to Minimal as the comparator scenario, with self-testing NOT switched off
-- original condom intervention (ie before we added the 10% to reduce impact)
-
-* 08/10/25_sq updates
-
-- removed xx<0.1 condition from condom_change_year_i intervention
-- removed duplicated section of life_sex_risk code
-
-* 02/10/25 updates
-
-- running SQ as baseline and removing one intervention at a time
-
-* 29/09/25 updates
-
-- add condition to reduce impact of condom intervention by 90% (impact on ep and newp, search condom_change_year_i)
-- add option 99 for status quo
-- run options 0, 8 and 99 only
-
-* 15/09/25 updates
-
-- adding changes from PR 27
-
-* 18/08/25 updates
-
-- adding interventions
-
-* 15/07/25 updates
-
-- added condition newp_ever>0 to condom intervention
-- changed condom_change_year_i to 0/1 rather than 0/2
-- deleted additional references to condom_change_year_i from prior code
-
-* 02/07/25 updates
-
-- add CMMC code from MIHPSA Zimbabwe program - renamed to refer to condom provision and promotion
-- remove references to SBCC
-
-* 17/6/25 updates
-
-- changed year_interv from 2026 to 2024
-- added implicit effect_return_interv code
-- removed msm=1 from hard to reach section
-- copied options section from malawi e
-- added set_in_opts line for eff_prob_vl_meas_done=initial_prob_vl_meas_done
-- seeded more infection in MSM
-
-;
-
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
@@ -946,7 +859,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 * incr_res_risk_len_inf_3m;		incr_res_risk_len_inf_3m = incr_res_risk_cab_inf_3m;
 
-* cablen_extra_pref;			%sample_uniform(cablen_extra_pref, 0.1 0.2 0.3) ; 
+* cablen_extra_pref;			%sample_uniform(cablen_extra_pref, 0.1 0.3 0.5) ;	* test changing (0.5, 0.7, 1) to (0.1 0.3 0.5) - HIV Control Oct25; 
 * pref_prep_cablen_beta_s1;		pref_prep_cablen_beta_s1 = pref_prep_oral_beta_s1 + cablen_extra_pref ; * tends to be more preference for inj ;
 
 * hivtest_type_1_init_prep_cab; %sample(hivtest_type_1_init_prep_cab, 0 1, 0.5 0.5); hivtest_type_1_init_prep_cab=0;
@@ -1117,10 +1030,10 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-* %include "/home/rmjlaph/malawi_parameters.sas";
-  %include "/home/rmjlja9/Zim_parameters.sas";
-* %include "/home/rmjllob/CdI_parameters.sas";
-/*%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";*/
+*  %include "/home/rmjlaph/malawi_parameters.sas";
+* %include "/home/rmjlja9/Zimbabwe_parameters.sas";
+%include "/home/rmjllob/CdI_parameters27.sas";
+* %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters27.sas";
 
 call symput('caldate1',caldate1);
 
@@ -3121,6 +3034,7 @@ if date_start_testing lt caldate{t} le 2015  then do;
 end;	
 
 
+if gender=1 then date_start_testing=2006.5;
 
 tested_anc=.;
 
@@ -3138,6 +3052,8 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 		end;
 
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
+		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
+
 end;
 
 
@@ -9025,6 +8941,7 @@ res_test=.;
   art initiation strategy 10: cd4<500 + ART immediately to pregnant women
 ;
 
+if caldate&j<2015 then eff_pr_art_init=eff_pr_art_init/2;
 
 		if art_initiation_strategy=1 then do; 
 			if t ge 3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} and who4_tm1=1 then do;
@@ -19677,46 +19594,7 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 
-
 * procs;
-
-/*
-proc print; var cald country gender age hiv 
-	option
-	sw_tm1
-	sw
-	prep_any_elig
-	prep_any_elig_tm1
-	date_most_recent_prep_any_elig
-	elig_prep_any_sw
-	s_elig_prep_any_sw
-	s_sw
-	s_sw_1549
-	s_sw_1564
-	;
-where sw = 1;
-run;
-*/
-
-/*
-proc print; var cald country gender age hiv 
-	option
-	highest_prep_pref
-	rate_test_startprep_any
-	new_rate_test_startprep_any
-	eff_rate_test_startprep_any
-	prob_prep_oral_b
-	new_prob_prep_oral_b
-	eff_prob_prep_oral_b
-	prob_prep_len_b
-	eff_prob_prep_len_b
-	prep_len
-	prep_oral
-;
-where serial_no < 50;
-run;
-*/
-
 
 /*
 
@@ -21035,7 +20913,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549  p_vl1000
+prevalence1549  prevalence1549w prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549  p_vl1000
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
@@ -21131,9 +21009,11 @@ if country = 'Zimbabwe' then do;
 end;
 
 ***Cote d Ivoire specific;
+
 if country = 'Cote d Ivoire' then do;
+	
 	if cald = 1995 and (prevalence1549w < 0.04) then do; abort abend; end;
-	if cald = 2010 and (0.03 > prevalence1549w > 0.08) then do; abort abend; end;
+	if cald = 2010 and (prevalence1549w > 0.08) then do; abort abend; end;
 	if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
 end;
 
@@ -22225,6 +22105,7 @@ data a ;  set r1 ;
 data r1 ; set a ;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
+/*
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
@@ -22264,14 +22145,15 @@ data r1; set a;
 * Worst-case;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,13);
-
+*/
 * SQ;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,99);
 
+			
+														 
 
-
-
+			
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -23119,7 +23001,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw  prev_vg1000_1549
+prevalence1549  prevalence1549w  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw  prev_vg1000_1549
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  

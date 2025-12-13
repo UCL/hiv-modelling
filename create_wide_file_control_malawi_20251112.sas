@@ -488,16 +488,16 @@ proc sort data=y;by run option;run;
 /*proc freq data=y; table option;run;*/
 
 
-data a.long_zim_control; 
+data a.long_mlw_control; 
 	set y;
 	/*if option ne 0 then delete;*/
 	if cald=. then delete; 
 run;
 
-proc contents data = a.long_zim_control; run;
+proc contents data = a.long_mlw_control; run;
 
-/*proc freq data=a.long_zim_all; table option;run;*/
-/*proc freq data=a.long_zim_control; table option;run;*/
+/*proc freq data=a.long_mlw_all; table option;run;*/
+/*proc freq data=a.long_mlw_control; table option;run;*/
 
 
 
@@ -888,7 +888,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 ** Data processing;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-data y; set a.long_zim_control; 
+data y; set a.long_mlw_control; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
@@ -1142,7 +1142,7 @@ run;
 proc transpose data=outputs_&op_num out=a.outputs_&op_num; run;
 
 proc export data=a.outputs_&op_num
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251112_out\outputs_&op_num..csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251112_out\outputs_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
