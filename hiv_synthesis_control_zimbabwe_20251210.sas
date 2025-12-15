@@ -1,3 +1,11 @@
+* 10/12/25 updates
+
+- Reordered keep and drop variables to be consistently ordered
+- Fixing some minor typos/repetitions in MSM s_ section
+- Update MSM and PWID s_ sections to include all relevant variables
+- Remove ANC testing from worst-case scenario
+- Run SQ, Minimal, MSM interventions and worst-case scenario only (options 0,5,6,10,13,99)
+
 * 20/11/25 updates
 
 - reduce impact of condom intervention (back to 29/09/25 version)
@@ -474,8 +482,6 @@ newp_seed = 7;
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
-
-*fold_rate_decr_test_future; %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
 
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
