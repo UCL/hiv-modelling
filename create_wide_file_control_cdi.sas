@@ -1396,10 +1396,9 @@ run;
 proc transpose data=a.outputs_&op_num out=a.outputs_&op_num; run;
 
 proc export data=a.outputs_&op_num
-	outfile= "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\cdi_12Dec25_excel_a_&op_num..csv" 
+
+	outfile= "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\cdi_12Dec25_excel_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
-
-
 
