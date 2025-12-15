@@ -14907,6 +14907,8 @@ mcirc_7579m=0;new_mcirc_7579m=0;vmmc7579m=0;new_vmmc7579m=0;if gender=1 and 75 l
 mcirc_8084m=0;new_mcirc_8084m=0;vmmc8084m=0;new_vmmc8084m=0;if gender=1 and 80 le age lt 85 then do; mcirc_8084m=mcirc; new_mcirc_8084m=new_mcirc; new_vmmc8084m=new_vmmc; vmmc8084m=vmmc; end;
 mcirc_85plm=0;new_mcirc_85plm=0;vmmc85plm=0;new_vmmc85plm=0;if gender=1 and 85 le age       then do; mcirc_85plm=mcirc; new_mcirc_85plm=new_mcirc; new_vmmc85plm=new_vmmc; vmmc85plm=vmmc; end;
 
+new_mcirc_1549m=0;	if gender=1 and 15 le age lt 50 then do; new_mcirc_1549m=new_mcirc; end;
+
 
 * uncertain about this code here below - currently setting all variables to . so they do not come up as errors in proc univariate;
 
@@ -19369,7 +19371,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	/*sex workers*/
 
-	s_base_rate_sw + base_rate_sw ; s_sw + sw ; s_sw_1549 + sw_1549 ; s_sw_1849 + sw_1849 ; s_sw_1519 + sw_1519 ; s_sw_2024 + sw_2024 ;
+	s_sw + sw ; s_sw_1549 + sw_1549 ; s_sw_1849 + sw_1849 ; s_sw_1519 + sw_1519 ; s_sw_2024 + sw_2024 ;
 	s_sw_2529 + sw_2529 ; s_sw_3039 + sw_3039 ; s_sw_ov40 + sw_ov40 ; s_ever_sw + ever_sw ; s_sw_1564 + sw_1564 ;
 	s_ever_sw_hiv + ever_sw_hiv ; s_ever_sw_diag + ever_sw_diag ; s_hiv_sw + hiv_sw ; s_hiv_sw1849_ + hiv_sw1849_ ; s_hiv_sw1549_ + hiv_sw1549_ ; 
   	s_hiv_sw1519_ + hiv_sw1519_ ; s_hiv_sw2024_ + hiv_sw2024_ ; s_hiv_sw2529_ + hiv_sw2529_ ; s_hiv_sw3039_ + hiv_sw3039_ ; s_hiv_swov40_ + hiv_swov40_ ;              
@@ -19533,7 +19535,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_vmmc4044m + vmmc4044m ; s_vmmc4549m + vmmc4549m ; s_vmmc50plm + vmmc50plm ;
 	s_new_vmmc1519m + new_vmmc1519m ; s_new_vmmc2024m + new_vmmc2024m ; s_new_vmmc2529m + new_vmmc2529m ; s_new_vmmc3034m + new_vmmc3034m ; s_new_vmmc3539m + new_vmmc3539m ;
     s_new_vmmc4044m + new_vmmc4044m ; s_new_vmmc4549m + new_vmmc4549m ; 
-	s_new_mcirc1549m + new_mcirc ; s_new_mcirc_1519m + new_mcirc_1519m ; s_new_mcirc_2024m + new_mcirc_2024m ; s_new_mcirc_2529m + new_mcirc_2529m ;
+	s_new_mcirc1549m + new_mcirc_1549m ; s_new_mcirc_1519m + new_mcirc_1519m ; s_new_mcirc_2024m + new_mcirc_2024m ; s_new_mcirc_2529m + new_mcirc_2529m ;
 	s_new_mcirc_3034m + new_mcirc_3034m ; s_new_mcirc_3539m + new_mcirc_3539m ; s_new_mcirc_4044m + new_mcirc_4044m ; s_new_mcirc_4549m + new_mcirc_4549m ; 
        
 	/*supp mat*/
@@ -20811,7 +20813,7 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw	s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_sw	s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
@@ -20960,11 +20962,75 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 
 s_covid
 
+/*supp material*/
+s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
+s_onart_vlg1_r   s_onart_vlg2_r   s_onart_vlg3_r   s_onart_vlg4_r   s_onart_vlg5_r 
+s_onart_who4_year1   s_onart_who4_year1_vlt1000  s_onart_who4_year3   s_onart_who4_year3_vlt1000  s_onart_cd4l200_year1  
+s_onart_cd4l200_year1_vlt1000  s_onart_cd4l200_year3   s_onart_cd4l200_year3_vlt1000  s_onart_res_1stline_linefail0   
+s_onart_res_1stline  s_onart_linefail0  s_onart_linefail0_cl200  s_onart_linefail0_cl50  s_onart_cl50  s_onart_linefail0_vg1000  
+s_onart_vg1000   s_onart_linefail0_vg1000_r   s_onart_vg1000_r   s_onart_cl350
+
+s_newpge1_l4p_1529m	s_newpge1_l4p_1529w
+
+s_m_1524_ge1newpever  s_m_2534_ge1newpever  s_m_3544_ge1newpever  s_m_4554_ge1newpever  s_m_5564_ge1newpever
+s_m_1524_ge2newpever  s_m_2534_ge2newpever  s_m_3544_ge2newpever  s_m_4554_ge2newpever  s_m_5564_ge2newpever
+s_m_1524_ge5newpever  s_m_2534_ge5newpever  s_m_3544_ge5newpever  s_m_4554_ge5newpever  s_m_5564_ge5newpever
+s_w_ge1newpever		  s_w_ge2newpever		s_w_ge5newpever
+
+s_npge1_l4p_1564m  s_npge1_l4p_1524m  s_npge1_l4p_2534m  s_npge1_l4p_3544m  s_npge1_l4p_4554m  s_npge1_l4p_5564m  s_npge1_l4p_1564w  s_npge1_l4p_1524w  s_npge1_l4p_2534w  s_npge1_l4p_3544w  s_npge1_l4p_4554w  s_npge1_l4p_5564w
+s_npge2_l4p_1564m  s_npge2_l4p_1524m  s_npge2_l4p_2534m  s_npge2_l4p_3544m  s_npge2_l4p_4554m  s_npge2_l4p_5564m  s_npge2_l4p_1564w  s_npge2_l4p_1524w  s_npge2_l4p_2534w  s_npge2_l4p_3544w  s_npge2_l4p_4554w  s_npge2_l4p_5564w
+s_npge10_l4p_1564m  s_npge10_l4p_1524m  s_npge10_l4p_2534m  s_npge10_l4p_3544m  s_npge10_l4p_4554m  s_npge10_l4p_5564m  s_npge10_l4p_1564w  s_npge10_l4p_1524w  s_npge10_l4p_2534w  s_npge10_l4p_3544w  s_npge10_l4p_4554w  s_npge10_l4p_5564w
+s_npge50_l4p_1564m  s_npge50_l4p_1524m  s_npge50_l4p_2534m  s_npge50_l4p_3544m  s_npge50_l4p_4554m  s_npge50_l4p_5564m  s_npge50_l4p_1564w  s_npge50_l4p_1524w  s_npge50_l4p_2534w  s_npge50_l4p_3544w  s_npge50_l4p_4554w  s_npge50_l4p_5564w
+s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_npge2_l4p_1564_hivdiag  s_npge1_l4p_1564_hivneg  s_npge2_l4p_1564_hivneg
+
+
+/* variables created after proc univariate which are used in the body of the program in order to update*/
+
+s_prop_vlg1_rm  		s_prop_vlg2_rm  		s_prop_vlg3_rm  		s_prop_vlg4_rm  		s_prop_vlg5_rm  		s_prop_vlg6_rm
+s_prop_vlg1_rm0_diag  	s_prop_vlg2_rm0_diag  	s_prop_vlg3_rm0_diag  	s_prop_vlg4_rm0_diag  	s_prop_vlg5_rm0_diag  	s_prop_vlg6_rm0_diag
+s_prop_vlg1_rm1_diag  	s_prop_vlg2_rm1_diag  	s_prop_vlg3_rm1_diag  	s_prop_vlg4_rm1_diag  	s_prop_vlg5_rm1_diag  	s_prop_vlg6_rm1_diag
+s_prop_vlg1_rm0_naive  	s_prop_vlg2_rm0_naive  	s_prop_vlg3_rm0_naive  	s_prop_vlg4_rm0_naive  	s_prop_vlg5_rm0_naive  	s_prop_vlg6_rm0_naive
+s_prop_vlg1_rm1_naive  	s_prop_vlg2_rm1_naive  	s_prop_vlg3_rm1_naive  	s_prop_vlg4_rm1_naive  	s_prop_vlg5_rm1_naive  	s_prop_vlg6_rm1_naive
+s_prop_tam1		s_prop_tam2		s_prop_tam3		s_prop_k103m	s_prop_y181m	s_prop_g190m
+s_prop_m184m	s_prop_q151m	s_prop_k65m
+s_prop_p32m		s_prop_p33m		s_prop_p46m		s_prop_p47m		s_prop_p50vm
+s_prop_p50lm	s_prop_p54m		s_prop_p76m		s_prop_p82m		s_prop_p84m		s_prop_p88m		s_prop_p90m		s_prop_pim		s_prop_in118m		s_prop_in140m
+s_prop_in148m	s_prop_in155m	s_prop_in263m	s_prop_ca66m
+
+s_prop_newp_i_m_1524	s_prop_newp_i_m_2534	s_prop_newp_i_m_3544	s_prop_newp_i_m_4554	s_prop_newp_i_m_5564 
+s_prop_newp_i_w_1524	s_prop_newp_i_w_2534	s_prop_newp_i_w_3544	s_prop_newp_i_w_4554	s_prop_newp_i_w_5564 
+
+s_prop_ageg1_m_vlg1		s_prop_ageg1_m_vlg2		s_prop_ageg1_m_vlg3		s_prop_ageg1_m_vlg4		s_prop_ageg1_m_vlg5		s_prop_ageg1_m_vlg6
+s_prop_ageg2_m_vlg1		s_prop_ageg2_m_vlg2		s_prop_ageg2_m_vlg3		s_prop_ageg2_m_vlg4		s_prop_ageg2_m_vlg5		s_prop_ageg2_m_vlg6
+s_prop_ageg3_m_vlg1		s_prop_ageg3_m_vlg2		s_prop_ageg3_m_vlg3		s_prop_ageg3_m_vlg4		s_prop_ageg3_m_vlg5		s_prop_ageg3_m_vlg6
+s_prop_ageg4_m_vlg1		s_prop_ageg4_m_vlg2		s_prop_ageg4_m_vlg3		s_prop_ageg4_m_vlg4		s_prop_ageg4_m_vlg5		s_prop_ageg4_m_vlg6
+s_prop_ageg5_m_vlg1		s_prop_ageg5_m_vlg2		s_prop_ageg5_m_vlg3		s_prop_ageg5_m_vlg4		s_prop_ageg5_m_vlg5		s_prop_ageg5_m_vlg6
+
+s_prop_ageg1_w_vlg1		s_prop_ageg1_w_vlg2		s_prop_ageg1_w_vlg3		s_prop_ageg1_w_vlg4		s_prop_ageg1_w_vlg5  	s_prop_ageg1_w_vlg6
+s_prop_ageg2_w_vlg1		s_prop_ageg2_w_vlg2		s_prop_ageg2_w_vlg3		s_prop_ageg2_w_vlg4		s_prop_ageg2_w_vlg5		s_prop_ageg2_w_vlg6
+s_prop_ageg3_w_vlg1		s_prop_ageg3_w_vlg2		s_prop_ageg3_w_vlg3		s_prop_ageg3_w_vlg4		s_prop_ageg3_w_vlg5		s_prop_ageg3_w_vlg6
+s_prop_ageg4_w_vlg1		s_prop_ageg4_w_vlg2		s_prop_ageg4_w_vlg3		s_prop_ageg4_w_vlg4		s_prop_ageg4_w_vlg5		s_prop_ageg4_w_vlg6
+s_prop_ageg5_w_vlg1		s_prop_ageg5_w_vlg2		s_prop_ageg5_w_vlg3		s_prop_ageg5_w_vlg4		s_prop_ageg5_w_vlg5		s_prop_ageg5_w_vlg6
+
+s_prop_m_vlg1	s_prop_m_vlg2	s_prop_m_vlg3	s_prop_m_vlg4	s_prop_m_vlg5   s_prop_m_vlg6
+s_prop_w_vlg1	s_prop_w_vlg2	s_prop_w_vlg3	s_prop_w_vlg4	s_prop_w_vlg5	s_prop_w_vlg6
+
+s_prop_msm_vlg1		s_prop_msm_vlg2		s_prop_msm_vlg3		s_prop_msm_vlg4		s_prop_msm_vlg5		s_prop_msm_vlg6 
+s_prop_pwid_vlg1	s_prop_pwid_vlg2	s_prop_pwid_vlg3	s_prop_pwid_vlg4	s_prop_pwid_vlg5	s_prop_pwid_vlg6
+
+s_m_newp   s_w_newp
+
+
+/* s_ variables in keep but not drop statements */
+
+/* used in abort statements */
+prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549 p_vl1000
+
 /*parameters sampled*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
-eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_use_condom_int_newp prop_redattr_ep_condoms
+eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep  prop_use_condom_int_newp  prop_redattr_ep_condoms
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
@@ -21051,64 +21117,8 @@ vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
 cov_death_risk_mult
 
-
-/*supp material*/
-s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
-s_onart_vlg1_r   s_onart_vlg2_r   s_onart_vlg3_r   s_onart_vlg4_r   s_onart_vlg5_r 
-s_onart_who4_year1   s_onart_who4_year1_vlt1000  s_onart_who4_year3   s_onart_who4_year3_vlt1000  s_onart_cd4l200_year1  
-s_onart_cd4l200_year1_vlt1000  s_onart_cd4l200_year3   s_onart_cd4l200_year3_vlt1000  s_onart_res_1stline_linefail0   
-s_onart_res_1stline  s_onart_linefail0  s_onart_linefail0_cl200  s_onart_linefail0_cl50  s_onart_cl50  s_onart_linefail0_vg1000  
-s_onart_vg1000   s_onart_linefail0_vg1000_r   s_onart_vg1000_r   s_onart_cl350
-
-s_newpge1_l4p_1529m	s_newpge1_l4p_1529w
-
-s_m_1524_ge1newpever  s_m_2534_ge1newpever  s_m_3544_ge1newpever  s_m_4554_ge1newpever  s_m_5564_ge1newpever
-s_m_1524_ge2newpever  s_m_2534_ge2newpever  s_m_3544_ge2newpever  s_m_4554_ge2newpever  s_m_5564_ge2newpever
-s_m_1524_ge5newpever  s_m_2534_ge5newpever  s_m_3544_ge5newpever  s_m_4554_ge5newpever  s_m_5564_ge5newpever
-s_w_ge1newpever		  s_w_ge2newpever		s_w_ge5newpever
-
-s_npge1_l4p_1564m  s_npge1_l4p_1524m  s_npge1_l4p_2534m  s_npge1_l4p_3544m  s_npge1_l4p_4554m  s_npge1_l4p_5564m  s_npge1_l4p_1564w  s_npge1_l4p_1524w  s_npge1_l4p_2534w  s_npge1_l4p_3544w  s_npge1_l4p_4554w  s_npge1_l4p_5564w
-s_npge2_l4p_1564m  s_npge2_l4p_1524m  s_npge2_l4p_2534m  s_npge2_l4p_3544m  s_npge2_l4p_4554m  s_npge2_l4p_5564m  s_npge2_l4p_1564w  s_npge2_l4p_1524w  s_npge2_l4p_2534w  s_npge2_l4p_3544w  s_npge2_l4p_4554w  s_npge2_l4p_5564w
-s_npge10_l4p_1564m  s_npge10_l4p_1524m  s_npge10_l4p_2534m  s_npge10_l4p_3544m  s_npge10_l4p_4554m  s_npge10_l4p_5564m  s_npge10_l4p_1564w  s_npge10_l4p_1524w  s_npge10_l4p_2534w  s_npge10_l4p_3544w  s_npge10_l4p_4554w  s_npge10_l4p_5564w
-s_npge50_l4p_1564m  s_npge50_l4p_1524m  s_npge50_l4p_2534m  s_npge50_l4p_3544m  s_npge50_l4p_4554m  s_npge50_l4p_5564m  s_npge50_l4p_1564w  s_npge50_l4p_1524w  s_npge50_l4p_2534w  s_npge50_l4p_3544w  s_npge50_l4p_4554w  s_npge50_l4p_5564w
-s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_npge2_l4p_1564_hivdiag  s_npge1_l4p_1564_hivneg  s_npge2_l4p_1564_hivneg
-
-
-/* used in abort statements */
-prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549 p_vl1000
-
-/* variables created after proc univariate which are used in the body of the program in order to update*/
-s_prop_vlg1_rm  		s_prop_vlg2_rm  		s_prop_vlg3_rm  		s_prop_vlg4_rm  		s_prop_vlg5_rm  		s_prop_vlg6_rm
-s_prop_vlg1_rm0_diag  	s_prop_vlg2_rm0_diag  	s_prop_vlg3_rm0_diag  	s_prop_vlg4_rm0_diag  	s_prop_vlg5_rm0_diag  	s_prop_vlg6_rm0_diag
-s_prop_vlg1_rm1_diag  	s_prop_vlg2_rm1_diag  	s_prop_vlg3_rm1_diag  	s_prop_vlg4_rm1_diag  	s_prop_vlg5_rm1_diag  	s_prop_vlg6_rm1_diag
-s_prop_vlg1_rm0_naive  	s_prop_vlg2_rm0_naive  	s_prop_vlg3_rm0_naive  	s_prop_vlg4_rm0_naive  	s_prop_vlg5_rm0_naive  	s_prop_vlg6_rm0_naive
-s_prop_vlg1_rm1_naive  	s_prop_vlg2_rm1_naive  	s_prop_vlg3_rm1_naive  	s_prop_vlg4_rm1_naive  	s_prop_vlg5_rm1_naive  	s_prop_vlg6_rm1_naive
-s_prop_tam1		s_prop_tam2		s_prop_tam3		s_prop_k103m	s_prop_y181m	s_prop_g190m
-s_prop_m184m	s_prop_q151m	s_prop_k65m
-s_prop_p32m		s_prop_p33m		s_prop_p46m		s_prop_p47m		s_prop_p50vm
-s_prop_p50lm	s_prop_p54m		s_prop_p76m		s_prop_p82m		s_prop_p84m		s_prop_p88m		s_prop_p90m		s_prop_pim		s_prop_in118m		s_prop_in140m
-s_prop_in148m	s_prop_in155m	s_prop_in263m	s_prop_ca66m
-
-s_prop_newp_i_m_1524	s_prop_newp_i_m_2534	s_prop_newp_i_m_3544	s_prop_newp_i_m_4554	s_prop_newp_i_m_5564 
-s_prop_newp_i_w_1524	s_prop_newp_i_w_2534	s_prop_newp_i_w_3544	s_prop_newp_i_w_4554	s_prop_newp_i_w_5564 
-
-s_prop_ageg1_m_vlg1		s_prop_ageg1_m_vlg2		s_prop_ageg1_m_vlg3		s_prop_ageg1_m_vlg4		s_prop_ageg1_m_vlg5		s_prop_ageg1_m_vlg6
-s_prop_ageg2_m_vlg1		s_prop_ageg2_m_vlg2		s_prop_ageg2_m_vlg3		s_prop_ageg2_m_vlg4		s_prop_ageg2_m_vlg5		s_prop_ageg2_m_vlg6
-s_prop_ageg3_m_vlg1		s_prop_ageg3_m_vlg2		s_prop_ageg3_m_vlg3		s_prop_ageg3_m_vlg4		s_prop_ageg3_m_vlg5		s_prop_ageg3_m_vlg6
-s_prop_ageg4_m_vlg1		s_prop_ageg4_m_vlg2		s_prop_ageg4_m_vlg3		s_prop_ageg4_m_vlg4		s_prop_ageg4_m_vlg5		s_prop_ageg4_m_vlg6
-s_prop_ageg5_m_vlg1		s_prop_ageg5_m_vlg2		s_prop_ageg5_m_vlg3		s_prop_ageg5_m_vlg4		s_prop_ageg5_m_vlg5		s_prop_ageg5_m_vlg6
-
-s_prop_ageg1_w_vlg1		s_prop_ageg1_w_vlg2		s_prop_ageg1_w_vlg3		s_prop_ageg1_w_vlg4		s_prop_ageg1_w_vlg5  	s_prop_ageg1_w_vlg6
-s_prop_ageg2_w_vlg1		s_prop_ageg2_w_vlg2		s_prop_ageg2_w_vlg3		s_prop_ageg2_w_vlg4		s_prop_ageg2_w_vlg5		s_prop_ageg2_w_vlg6
-s_prop_ageg3_w_vlg1		s_prop_ageg3_w_vlg2		s_prop_ageg3_w_vlg3		s_prop_ageg3_w_vlg4		s_prop_ageg3_w_vlg5		s_prop_ageg3_w_vlg6
-s_prop_ageg4_w_vlg1		s_prop_ageg4_w_vlg2		s_prop_ageg4_w_vlg3		s_prop_ageg4_w_vlg4		s_prop_ageg4_w_vlg5		s_prop_ageg4_w_vlg6
-s_prop_ageg5_w_vlg1		s_prop_ageg5_w_vlg2		s_prop_ageg5_w_vlg3		s_prop_ageg5_w_vlg4		s_prop_ageg5_w_vlg5		s_prop_ageg5_w_vlg6
-
-s_prop_m_vlg1	s_prop_m_vlg2	s_prop_m_vlg3	s_prop_m_vlg4	s_prop_m_vlg5   s_prop_m_vlg6
-s_prop_w_vlg1	s_prop_w_vlg2	s_prop_w_vlg3	s_prop_w_vlg4	s_prop_w_vlg5	s_prop_w_vlg6
-
-s_prop_msm_vlg1		s_prop_msm_vlg2		s_prop_msm_vlg3		s_prop_msm_vlg4		s_prop_msm_vlg5		s_prop_msm_vlg6 
-s_prop_pwid_vlg1	s_prop_pwid_vlg2	s_prop_pwid_vlg3	s_prop_pwid_vlg4	s_prop_pwid_vlg5	s_prop_pwid_vlg6
+ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
+ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 prop_mono_m_1524  prop_mono_m_2534  prop_mono_m_3544  prop_mono_m_4554  prop_mono_m_5564
 prop_mono_w_1524  prop_mono_w_2534  prop_mono_w_3544  prop_mono_w_4554  prop_mono_w_5564
@@ -21129,10 +21139,8 @@ d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw
 r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55 
 
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  
-s_m_newp   s_w_newp
 
-ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
-ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
+  
 
 /* keep going - only needed for test runs */
 
@@ -21372,7 +21380,7 @@ drop
 
 /*general*/
 s_n  cald  
-																														 										  
+
 /*number alive and in each age group*/
 s_alive0_
 s_alive1549 	s_alive1549_w	s_alive1549_m	s_alive1564 	s_alive1564_w	s_alive1564_m
@@ -21462,7 +21470,6 @@ s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw  s_newp_this_per_elig_prep_any  s_newp_this_per_elig_prep_any_sw
 s_newp_this_per  s_newp_sw  s_newp_hivneg  s_newp_this_per_hivneg  s_newp_this_per_hivneg_1549  s_newp_this_per_1549
 
-s_s_m_newp  s_s_w_newp		/* NB. these are in drop but not keep statements */
 
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
@@ -21948,7 +21955,7 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw	s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_sw	s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
@@ -22118,7 +22125,8 @@ s_npge10_l4p_1564m  s_npge10_l4p_1524m  s_npge10_l4p_2534m  s_npge10_l4p_3544m  
 s_npge50_l4p_1564m  s_npge50_l4p_1524m  s_npge50_l4p_2534m  s_npge50_l4p_3544m  s_npge50_l4p_4554m  s_npge50_l4p_5564m  s_npge50_l4p_1564w  s_npge50_l4p_1524w  s_npge50_l4p_2534w  s_npge50_l4p_3544w  s_npge50_l4p_4554w  s_npge50_l4p_5564w
 s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_npge2_l4p_1564_hivdiag  s_npge1_l4p_1564_hivneg  s_npge2_l4p_1564_hivneg
 
-/* other s_ variables to drop before next round */
+
+/* variables created after proc univariate which are used in the body of the program in order to update*/
 
 s_prop_vlg1_rm  		s_prop_vlg2_rm  		s_prop_vlg3_rm  		s_prop_vlg4_rm  		s_prop_vlg5_rm  		s_prop_vlg6_rm
 s_prop_vlg1_rm0_diag  	s_prop_vlg2_rm0_diag  	s_prop_vlg3_rm0_diag  	s_prop_vlg4_rm0_diag  	s_prop_vlg5_rm0_diag  	s_prop_vlg6_rm0_diag
@@ -22152,6 +22160,11 @@ s_prop_w_vlg1	s_prop_w_vlg2	s_prop_w_vlg3	s_prop_w_vlg4	s_prop_w_vlg5	s_prop_w_v
 s_prop_msm_vlg1		s_prop_msm_vlg2		s_prop_msm_vlg3		s_prop_msm_vlg4		s_prop_msm_vlg5		s_prop_msm_vlg6 
 s_prop_pwid_vlg1	s_prop_pwid_vlg2	s_prop_pwid_vlg3	s_prop_pwid_vlg4	s_prop_pwid_vlg5	s_prop_pwid_vlg6
 
+s_m_newp   s_w_newp
+
+
+/* s_ variables in drop but not keep statements */
+
 s_ai_naive_no_pmtct_c_inm_  s_ai_naive_no_pmtct_c_pim_  s_ai_naive_no_pmtct_c_r_      s_ai_naive_no_pmtct_c_rt184m_  s_ai_naive_no_pmtct_c_rt65m_  
 s_ai_naive_no_pmtct_c_rttams_ s_ai_naive_no_pmtct_e_inm_   s_ai_naive_no_pmtct_e_nnm_   s_ai_naive_no_pmtct_e_pim_  
 s_ai_naive_no_pmtct_e_r_    s_ai_naive_no_pmtct_e_rt184m_   s_ai_naive_no_pmtct_e_rt65m_   s_ai_naive_no_pmtct_e_rttams_ 
@@ -22163,7 +22176,7 @@ s_art_attrit_3yr_on     s_art_attrit_4yr      s_art_attrit_4yr_on  s_art_attrit_
 s_art_attrit_5yr_on     s_art_attrit_6yr      s_art_attrit_6yr_on   s_art_attrit_7yr   s_art_attrit_7yr_on   
 s_art_attrit_8yr    	s_art_attrit_8yr_on   s_dead_daly   s_epart    s_hiv1564   
 
-s_m_newp   s_w_newp
+s_s_m_newp  s_s_w_newp
 
 ;
 
@@ -22955,7 +22968,7 @@ s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv
 
 
 /*sex workers*/
-s_base_rate_sw  s_sw	s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
+s_sw	s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
@@ -23104,11 +23117,75 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 
 s_covid
 
+/*supp material*/
+s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
+s_onart_vlg1_r   s_onart_vlg2_r   s_onart_vlg3_r   s_onart_vlg4_r   s_onart_vlg5_r 
+s_onart_who4_year1   s_onart_who4_year1_vlt1000  s_onart_who4_year3   s_onart_who4_year3_vlt1000  s_onart_cd4l200_year1  
+s_onart_cd4l200_year1_vlt1000  s_onart_cd4l200_year3   s_onart_cd4l200_year3_vlt1000  s_onart_res_1stline_linefail0   
+s_onart_res_1stline  s_onart_linefail0  s_onart_linefail0_cl200  s_onart_linefail0_cl50  s_onart_cl50  s_onart_linefail0_vg1000  
+s_onart_vg1000   s_onart_linefail0_vg1000_r   s_onart_vg1000_r   s_onart_cl350
+
+s_newpge1_l4p_1529m	s_newpge1_l4p_1529w
+
+s_m_1524_ge1newpever  s_m_2534_ge1newpever  s_m_3544_ge1newpever  s_m_4554_ge1newpever  s_m_5564_ge1newpever
+s_m_1524_ge2newpever  s_m_2534_ge2newpever  s_m_3544_ge2newpever  s_m_4554_ge2newpever  s_m_5564_ge2newpever
+s_m_1524_ge5newpever  s_m_2534_ge5newpever  s_m_3544_ge5newpever  s_m_4554_ge5newpever  s_m_5564_ge5newpever
+s_w_ge1newpever		  s_w_ge2newpever		s_w_ge5newpever
+
+s_npge1_l4p_1564m  s_npge1_l4p_1524m  s_npge1_l4p_2534m  s_npge1_l4p_3544m  s_npge1_l4p_4554m  s_npge1_l4p_5564m  s_npge1_l4p_1564w  s_npge1_l4p_1524w  s_npge1_l4p_2534w  s_npge1_l4p_3544w  s_npge1_l4p_4554w  s_npge1_l4p_5564w
+s_npge2_l4p_1564m  s_npge2_l4p_1524m  s_npge2_l4p_2534m  s_npge2_l4p_3544m  s_npge2_l4p_4554m  s_npge2_l4p_5564m  s_npge2_l4p_1564w  s_npge2_l4p_1524w  s_npge2_l4p_2534w  s_npge2_l4p_3544w  s_npge2_l4p_4554w  s_npge2_l4p_5564w
+s_npge10_l4p_1564m  s_npge10_l4p_1524m  s_npge10_l4p_2534m  s_npge10_l4p_3544m  s_npge10_l4p_4554m  s_npge10_l4p_5564m  s_npge10_l4p_1564w  s_npge10_l4p_1524w  s_npge10_l4p_2534w  s_npge10_l4p_3544w  s_npge10_l4p_4554w  s_npge10_l4p_5564w
+s_npge50_l4p_1564m  s_npge50_l4p_1524m  s_npge50_l4p_2534m  s_npge50_l4p_3544m  s_npge50_l4p_4554m  s_npge50_l4p_5564m  s_npge50_l4p_1564w  s_npge50_l4p_1524w  s_npge50_l4p_2534w  s_npge50_l4p_3544w  s_npge50_l4p_4554w  s_npge50_l4p_5564w
+s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_npge2_l4p_1564_hivdiag  s_npge1_l4p_1564_hivneg  s_npge2_l4p_1564_hivneg
+
+
+/* variables created after proc univariate which are used in the body of the program in order to update*/
+
+s_prop_vlg1_rm  		s_prop_vlg2_rm  		s_prop_vlg3_rm  		s_prop_vlg4_rm  		s_prop_vlg5_rm  		s_prop_vlg6_rm
+s_prop_vlg1_rm0_diag  	s_prop_vlg2_rm0_diag  	s_prop_vlg3_rm0_diag  	s_prop_vlg4_rm0_diag  	s_prop_vlg5_rm0_diag  	s_prop_vlg6_rm0_diag
+s_prop_vlg1_rm1_diag  	s_prop_vlg2_rm1_diag  	s_prop_vlg3_rm1_diag  	s_prop_vlg4_rm1_diag  	s_prop_vlg5_rm1_diag  	s_prop_vlg6_rm1_diag
+s_prop_vlg1_rm0_naive  	s_prop_vlg2_rm0_naive  	s_prop_vlg3_rm0_naive  	s_prop_vlg4_rm0_naive  	s_prop_vlg5_rm0_naive  	s_prop_vlg6_rm0_naive
+s_prop_vlg1_rm1_naive  	s_prop_vlg2_rm1_naive  	s_prop_vlg3_rm1_naive  	s_prop_vlg4_rm1_naive  	s_prop_vlg5_rm1_naive  	s_prop_vlg6_rm1_naive
+s_prop_tam1		s_prop_tam2		s_prop_tam3		s_prop_k103m	s_prop_y181m	s_prop_g190m
+s_prop_m184m	s_prop_q151m	s_prop_k65m
+s_prop_p32m		s_prop_p33m		s_prop_p46m		s_prop_p47m		s_prop_p50vm
+s_prop_p50lm	s_prop_p54m		s_prop_p76m		s_prop_p82m		s_prop_p84m		s_prop_p88m		s_prop_p90m		s_prop_pim		s_prop_in118m		s_prop_in140m
+s_prop_in148m	s_prop_in155m	s_prop_in263m	s_prop_ca66m
+
+s_prop_newp_i_m_1524	s_prop_newp_i_m_2534	s_prop_newp_i_m_3544	s_prop_newp_i_m_4554	s_prop_newp_i_m_5564 
+s_prop_newp_i_w_1524	s_prop_newp_i_w_2534	s_prop_newp_i_w_3544	s_prop_newp_i_w_4554	s_prop_newp_i_w_5564 
+
+s_prop_ageg1_m_vlg1		s_prop_ageg1_m_vlg2		s_prop_ageg1_m_vlg3		s_prop_ageg1_m_vlg4		s_prop_ageg1_m_vlg5		s_prop_ageg1_m_vlg6
+s_prop_ageg2_m_vlg1		s_prop_ageg2_m_vlg2		s_prop_ageg2_m_vlg3		s_prop_ageg2_m_vlg4		s_prop_ageg2_m_vlg5		s_prop_ageg2_m_vlg6
+s_prop_ageg3_m_vlg1		s_prop_ageg3_m_vlg2		s_prop_ageg3_m_vlg3		s_prop_ageg3_m_vlg4		s_prop_ageg3_m_vlg5		s_prop_ageg3_m_vlg6
+s_prop_ageg4_m_vlg1		s_prop_ageg4_m_vlg2		s_prop_ageg4_m_vlg3		s_prop_ageg4_m_vlg4		s_prop_ageg4_m_vlg5		s_prop_ageg4_m_vlg6
+s_prop_ageg5_m_vlg1		s_prop_ageg5_m_vlg2		s_prop_ageg5_m_vlg3		s_prop_ageg5_m_vlg4		s_prop_ageg5_m_vlg5		s_prop_ageg5_m_vlg6
+
+s_prop_ageg1_w_vlg1		s_prop_ageg1_w_vlg2		s_prop_ageg1_w_vlg3		s_prop_ageg1_w_vlg4		s_prop_ageg1_w_vlg5  	s_prop_ageg1_w_vlg6
+s_prop_ageg2_w_vlg1		s_prop_ageg2_w_vlg2		s_prop_ageg2_w_vlg3		s_prop_ageg2_w_vlg4		s_prop_ageg2_w_vlg5		s_prop_ageg2_w_vlg6
+s_prop_ageg3_w_vlg1		s_prop_ageg3_w_vlg2		s_prop_ageg3_w_vlg3		s_prop_ageg3_w_vlg4		s_prop_ageg3_w_vlg5		s_prop_ageg3_w_vlg6
+s_prop_ageg4_w_vlg1		s_prop_ageg4_w_vlg2		s_prop_ageg4_w_vlg3		s_prop_ageg4_w_vlg4		s_prop_ageg4_w_vlg5		s_prop_ageg4_w_vlg6
+s_prop_ageg5_w_vlg1		s_prop_ageg5_w_vlg2		s_prop_ageg5_w_vlg3		s_prop_ageg5_w_vlg4		s_prop_ageg5_w_vlg5		s_prop_ageg5_w_vlg6
+
+s_prop_m_vlg1	s_prop_m_vlg2	s_prop_m_vlg3	s_prop_m_vlg4	s_prop_m_vlg5   s_prop_m_vlg6
+s_prop_w_vlg1	s_prop_w_vlg2	s_prop_w_vlg3	s_prop_w_vlg4	s_prop_w_vlg5	s_prop_w_vlg6
+
+s_prop_msm_vlg1		s_prop_msm_vlg2		s_prop_msm_vlg3		s_prop_msm_vlg4		s_prop_msm_vlg5		s_prop_msm_vlg6 
+s_prop_pwid_vlg1	s_prop_pwid_vlg2	s_prop_pwid_vlg3	s_prop_pwid_vlg4	s_prop_pwid_vlg5	s_prop_pwid_vlg6
+
+s_m_newp   s_w_newp
+
+
+/* s_ variables in keep but not drop statements */
+
+/* used in abort statements */
+prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549 p_vl1000
+
 /*parameters sampled*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
-eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_use_condom_int_newp prop_redattr_ep_condoms
+eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep  prop_use_condom_int_newp  prop_redattr_ep_condoms
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
@@ -23195,64 +23272,8 @@ vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
 cov_death_risk_mult
 
-
-/*supp material*/
-s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
-s_onart_vlg1_r   s_onart_vlg2_r   s_onart_vlg3_r   s_onart_vlg4_r   s_onart_vlg5_r 
-s_onart_who4_year1   s_onart_who4_year1_vlt1000  s_onart_who4_year3   s_onart_who4_year3_vlt1000  s_onart_cd4l200_year1  
-s_onart_cd4l200_year1_vlt1000  s_onart_cd4l200_year3   s_onart_cd4l200_year3_vlt1000  s_onart_res_1stline_linefail0   
-s_onart_res_1stline  s_onart_linefail0  s_onart_linefail0_cl200  s_onart_linefail0_cl50  s_onart_cl50  s_onart_linefail0_vg1000  
-s_onart_vg1000   s_onart_linefail0_vg1000_r   s_onart_vg1000_r   s_onart_cl350
-
-s_newpge1_l4p_1529m	s_newpge1_l4p_1529w
-
-s_m_1524_ge1newpever  s_m_2534_ge1newpever  s_m_3544_ge1newpever  s_m_4554_ge1newpever  s_m_5564_ge1newpever
-s_m_1524_ge2newpever  s_m_2534_ge2newpever  s_m_3544_ge2newpever  s_m_4554_ge2newpever  s_m_5564_ge2newpever
-s_m_1524_ge5newpever  s_m_2534_ge5newpever  s_m_3544_ge5newpever  s_m_4554_ge5newpever  s_m_5564_ge5newpever
-s_w_ge1newpever		  s_w_ge2newpever		s_w_ge5newpever
-
-s_npge1_l4p_1564m  s_npge1_l4p_1524m  s_npge1_l4p_2534m  s_npge1_l4p_3544m  s_npge1_l4p_4554m  s_npge1_l4p_5564m  s_npge1_l4p_1564w  s_npge1_l4p_1524w  s_npge1_l4p_2534w  s_npge1_l4p_3544w  s_npge1_l4p_4554w  s_npge1_l4p_5564w
-s_npge2_l4p_1564m  s_npge2_l4p_1524m  s_npge2_l4p_2534m  s_npge2_l4p_3544m  s_npge2_l4p_4554m  s_npge2_l4p_5564m  s_npge2_l4p_1564w  s_npge2_l4p_1524w  s_npge2_l4p_2534w  s_npge2_l4p_3544w  s_npge2_l4p_4554w  s_npge2_l4p_5564w
-s_npge10_l4p_1564m  s_npge10_l4p_1524m  s_npge10_l4p_2534m  s_npge10_l4p_3544m  s_npge10_l4p_4554m  s_npge10_l4p_5564m  s_npge10_l4p_1564w  s_npge10_l4p_1524w  s_npge10_l4p_2534w  s_npge10_l4p_3544w  s_npge10_l4p_4554w  s_npge10_l4p_5564w
-s_npge50_l4p_1564m  s_npge50_l4p_1524m  s_npge50_l4p_2534m  s_npge50_l4p_3544m  s_npge50_l4p_4554m  s_npge50_l4p_5564m  s_npge50_l4p_1564w  s_npge50_l4p_1524w  s_npge50_l4p_2534w  s_npge50_l4p_3544w  s_npge50_l4p_4554w  s_npge50_l4p_5564w
-s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_npge2_l4p_1564_hivdiag  s_npge1_l4p_1564_hivneg  s_npge2_l4p_1564_hivneg
-
-
-/* used in abort statements */
-prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw prev_vg1000_1549 p_vl1000
-
-/* variables created after proc univariate which are used in the body of the program in order to update*/
-s_prop_vlg1_rm  		s_prop_vlg2_rm  		s_prop_vlg3_rm  		s_prop_vlg4_rm  		s_prop_vlg5_rm  		s_prop_vlg6_rm
-s_prop_vlg1_rm0_diag  	s_prop_vlg2_rm0_diag  	s_prop_vlg3_rm0_diag  	s_prop_vlg4_rm0_diag  	s_prop_vlg5_rm0_diag  	s_prop_vlg6_rm0_diag
-s_prop_vlg1_rm1_diag  	s_prop_vlg2_rm1_diag  	s_prop_vlg3_rm1_diag  	s_prop_vlg4_rm1_diag  	s_prop_vlg5_rm1_diag  	s_prop_vlg6_rm1_diag
-s_prop_vlg1_rm0_naive  	s_prop_vlg2_rm0_naive  	s_prop_vlg3_rm0_naive  	s_prop_vlg4_rm0_naive  	s_prop_vlg5_rm0_naive  	s_prop_vlg6_rm0_naive
-s_prop_vlg1_rm1_naive  	s_prop_vlg2_rm1_naive  	s_prop_vlg3_rm1_naive  	s_prop_vlg4_rm1_naive  	s_prop_vlg5_rm1_naive  	s_prop_vlg6_rm1_naive
-s_prop_tam1		s_prop_tam2		s_prop_tam3		s_prop_k103m	s_prop_y181m	s_prop_g190m
-s_prop_m184m	s_prop_q151m	s_prop_k65m
-s_prop_p32m		s_prop_p33m		s_prop_p46m		s_prop_p47m		s_prop_p50vm
-s_prop_p50lm	s_prop_p54m		s_prop_p76m		s_prop_p82m		s_prop_p84m		s_prop_p88m		s_prop_p90m		s_prop_pim		s_prop_in118m		s_prop_in140m
-s_prop_in148m	s_prop_in155m	s_prop_in263m	s_prop_ca66m
-
-s_prop_newp_i_m_1524	s_prop_newp_i_m_2534	s_prop_newp_i_m_3544	s_prop_newp_i_m_4554	s_prop_newp_i_m_5564 
-s_prop_newp_i_w_1524	s_prop_newp_i_w_2534	s_prop_newp_i_w_3544	s_prop_newp_i_w_4554	s_prop_newp_i_w_5564 
-
-s_prop_ageg1_m_vlg1		s_prop_ageg1_m_vlg2		s_prop_ageg1_m_vlg3		s_prop_ageg1_m_vlg4		s_prop_ageg1_m_vlg5		s_prop_ageg1_m_vlg6
-s_prop_ageg2_m_vlg1		s_prop_ageg2_m_vlg2		s_prop_ageg2_m_vlg3		s_prop_ageg2_m_vlg4		s_prop_ageg2_m_vlg5		s_prop_ageg2_m_vlg6
-s_prop_ageg3_m_vlg1		s_prop_ageg3_m_vlg2		s_prop_ageg3_m_vlg3		s_prop_ageg3_m_vlg4		s_prop_ageg3_m_vlg5		s_prop_ageg3_m_vlg6
-s_prop_ageg4_m_vlg1		s_prop_ageg4_m_vlg2		s_prop_ageg4_m_vlg3		s_prop_ageg4_m_vlg4		s_prop_ageg4_m_vlg5		s_prop_ageg4_m_vlg6
-s_prop_ageg5_m_vlg1		s_prop_ageg5_m_vlg2		s_prop_ageg5_m_vlg3		s_prop_ageg5_m_vlg4		s_prop_ageg5_m_vlg5		s_prop_ageg5_m_vlg6
-
-s_prop_ageg1_w_vlg1		s_prop_ageg1_w_vlg2		s_prop_ageg1_w_vlg3		s_prop_ageg1_w_vlg4		s_prop_ageg1_w_vlg5  	s_prop_ageg1_w_vlg6
-s_prop_ageg2_w_vlg1		s_prop_ageg2_w_vlg2		s_prop_ageg2_w_vlg3		s_prop_ageg2_w_vlg4		s_prop_ageg2_w_vlg5		s_prop_ageg2_w_vlg6
-s_prop_ageg3_w_vlg1		s_prop_ageg3_w_vlg2		s_prop_ageg3_w_vlg3		s_prop_ageg3_w_vlg4		s_prop_ageg3_w_vlg5		s_prop_ageg3_w_vlg6
-s_prop_ageg4_w_vlg1		s_prop_ageg4_w_vlg2		s_prop_ageg4_w_vlg3		s_prop_ageg4_w_vlg4		s_prop_ageg4_w_vlg5		s_prop_ageg4_w_vlg6
-s_prop_ageg5_w_vlg1		s_prop_ageg5_w_vlg2		s_prop_ageg5_w_vlg3		s_prop_ageg5_w_vlg4		s_prop_ageg5_w_vlg5		s_prop_ageg5_w_vlg6
-
-s_prop_m_vlg1	s_prop_m_vlg2	s_prop_m_vlg3	s_prop_m_vlg4	s_prop_m_vlg5   s_prop_m_vlg6
-s_prop_w_vlg1	s_prop_w_vlg2	s_prop_w_vlg3	s_prop_w_vlg4	s_prop_w_vlg5	s_prop_w_vlg6
-
-s_prop_msm_vlg1		s_prop_msm_vlg2		s_prop_msm_vlg3		s_prop_msm_vlg4		s_prop_msm_vlg5		s_prop_msm_vlg6 
-s_prop_pwid_vlg1	s_prop_pwid_vlg2	s_prop_pwid_vlg3	s_prop_pwid_vlg4	s_prop_pwid_vlg5	s_prop_pwid_vlg6
+ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
+ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 prop_mono_m_1524  prop_mono_m_2534  prop_mono_m_3544  prop_mono_m_4554  prop_mono_m_5564
 prop_mono_w_1524  prop_mono_w_2534  prop_mono_w_3544  prop_mono_w_4554  prop_mono_w_5564
@@ -23273,10 +23294,6 @@ d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw
 r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55 
 
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  
-s_m_newp   s_w_newp
-
-ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
-ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w									
 
 ; 
 
