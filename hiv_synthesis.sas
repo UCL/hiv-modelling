@@ -4943,7 +4943,7 @@ if msm=1 then do;
 	if rand('Uniform') < 0.8 and msm_random_this_period_tm1 ne . then msm_random_this_period=msm_random_this_period_tm1;
 end;
 
-if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) > . then do;   
+if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_prep_cab_intro, date_prep_len_intro, date_prep_vr_intro) > . then do;   
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
 	* Define random variables r and s that are held constant for continuous periods of prep eligibility;
