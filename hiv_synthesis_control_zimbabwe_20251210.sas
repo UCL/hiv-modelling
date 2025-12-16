@@ -2443,6 +2443,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 		absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
 
+		absence_vl_year_i = 1;				*Dec 25;
 		eff_prob_vl_meas_done = 0; 
 
 		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
