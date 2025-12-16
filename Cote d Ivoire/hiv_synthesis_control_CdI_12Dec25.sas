@@ -1032,7 +1032,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * OVERWRITES country specific parameters;
 *  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
-%include "/home/rmjllob/CdI_parameters28.sas";
+%include "/home/rmjllob/CdI_parameters29.sas";
 * %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters28.sas";
 
 call symput('caldate1',caldate1);
@@ -2316,11 +2316,11 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 		eff_sw_program = 0;		 			*No SW program;
 		eff_rate_disengage_sw_program=1;
-
+/*
 		* self_testing;
 		prob_self_test_hard_reach = 0;
 		eff_rate_self_test = 0;
-
+*/
 		*Prevention;
 		*Condom provision and promotion: keep at SQ level;
 		*Not explicitly modelled before year_interv, but the implicit switch off impacts newp and ep;

@@ -12,13 +12,13 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data a;
-set a.cdi_01dec25;
+set a.cdi_12dec25;
 if run=. then delete;
 
+*if prop_v_alert_perm ne 0.3 then delete;
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
 
-proc contents;run;
 
 
 data sf;
@@ -387,9 +387,20 @@ n_onprep_oral_sw				n_onprep_len_sw					n_onprep_oral_msm					n_onprep_len_msm
 ;
 proc sort data=y;by run option;run;
 
+data test;
+set y;
+
+prev=(n_hiv1524m+n_hiv2549m+n_hiv50plm+n_hiv1524w+n_hiv2549w+n_hiv50plw)/
+(n_alive_1524m	+ n_alive_2549m + n_alive_50plm	+ n_alive_1524w	+ n_alive_2549w	+ n_alive_50plw);
+
+prev_f=(n_hiv1524w+n_hiv2549w+n_hiv50plw)/(n_alive_1524w	+ n_alive_2549w	+ n_alive_50plw);
+
+proc means mean;var prev_f;where cald =2010;run;
+
+
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_cdi_control_01Dec25; set y;
+data a.long_cdi_control_12Dec25; set y;
 if cald=. then delete;run;
 
 
@@ -426,7 +437,7 @@ if cald=. then delete;run;
 ************************************************************************************************************************************************************;
 
 
-data y; set a.long_cdi_control_01Dec25; 
+data y; set a.long_cdi_control_12Dec25; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
@@ -643,16 +654,16 @@ proc means noprint data=y; var &v; output out=y_1986 mean= &v;  where cald = 198
 proc means noprint data=y; var &v; output out=y_1987 mean= &v;  where cald = 1987.5 and option = 0;
 proc means noprint data=y; var &v; output out=y_1988 mean= &v;  where cald = 1988.5 and option = 0;
 proc means noprint data=y; var &v; output out=y_1989 mean= &v;  where cald = 1989.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_100 mean= &v;  where cald = 100.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_101 mean= &v;  where cald = 101.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_102 mean= &v;  where cald = 102.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_103 mean= &v;  where cald = 103.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_104 mean= &v;  where cald = 104.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_105 mean= &v;  where cald = 105.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_106 mean= &v;  where cald = 106.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_107 mean= &v;  where cald = 107.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_108 mean= &v;  where cald = 108.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_109 mean= &v;  where cald = 109.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1990 mean= &v;  where cald = 1990.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1991 mean= &v;  where cald = 1991.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1992 mean= &v;  where cald = 1992.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1993 mean= &v;  where cald = 1993.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1994 mean= &v;  where cald = 1994.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1995 mean= &v;  where cald = 1995.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1996 mean= &v;  where cald = 1996.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1997 mean= &v;  where cald = 1997.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1998 mean= &v;  where cald = 1998.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1999 mean= &v;  where cald = 1999.5 and option = 0;
 proc means noprint data=y; var &v; output out=y_2000 mean= &v;  where cald = 2000.5 and option = 0;
 proc means noprint data=y; var &v; output out=y_2001 mean= &v;  where cald = 2001.5 and option = 0;
 proc means noprint data=y; var &v; output out=y_2002 mean= &v;  where cald = 2002.5 and option = 0;
@@ -757,17 +768,17 @@ proc means noprint data=y; var &v; output out=z_1986 mean= &v; where 1985.5 < ca
 proc means noprint data=y; var &v; output out=z_1987 mean= &v; where 1986.5 < cald <= 1987.5 and option = 0;
 proc means noprint data=y; var &v; output out=z_1988 mean= &v; where 1987.5 < cald <= 1988.5 and option = 0;
 proc means noprint data=y; var &v; output out=z_1989 mean= &v; where 1988.5 < cald <= 1989.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_100 mean= &v; where 1989.5 < cald <= 100.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_101 mean= &v; where 100.5 < cald <= 101.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_102 mean= &v; where 101.5 < cald <= 102.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_103 mean= &v; where 102.5 < cald <= 103.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_104 mean= &v; where 103.5 < cald <= 104.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_105 mean= &v; where 104.5 < cald <= 105.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_106 mean= &v; where 105.5 < cald <= 106.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_107 mean= &v; where 106.5 < cald <= 107.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_108 mean= &v; where 107.5 < cald <= 108.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_109 mean= &v; where 108.5 < cald <= 109.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2000 mean= &v; where 109.5 < cald <= 2000.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_1990 mean= &v; where 1989.5 < cald <= 1990.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_1991 mean= &v; where 1990.5 < cald <= 1991.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_1992 mean= &v; where 1991.5 < cald <= 1992.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_1993 mean= &v; where 1992.5 < cald <= 1993.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_1994 mean= &v; where 1993.5 < cald <= 1994.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_1995 mean= &v; where 1994.5 < cald <= 1995.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_1996 mean= &v; where 1995.5 < cald <= 1996.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_1997 mean= &v; where 1996.5 < cald <= 1997.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_1998 mean= &v; where 1997.5 < cald <= 1998.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_1999 mean= &v; where 1998.5 < cald <= 1999.5 and option = 0;
+proc means noprint data=y; var &v; output out=z_2000 mean= &v; where 1999.5 < cald <= 2000.5 and option = 0;
 proc means noprint data=y; var &v; output out=z_2001 mean= &v; where 2000.5 < cald <= 2001.5 and option = 0;
 proc means noprint data=y; var &v; output out=z_2002 mean= &v; where 2001.5 < cald <= 2002.5 and option = 0;
 proc means noprint data=y; var &v; output out=z_2003 mean= &v; where 2002.5 < cald <= 2003.5 and option = 0;
@@ -915,6 +926,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var_stock(v=VLS_50_UP_F);
 %var_stock(v=VLS_FSW);
 %var_stock(v=VLS_MSM);
+
 
 data year;
 input year;
@@ -1385,7 +1397,7 @@ proc transpose data=a.outputs_&op_num out=a.outputs_&op_num; run;
 
 proc export data=a.outputs_&op_num
 
-	outfile= "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\cdi_01Dec25_excel_&op_num..csv" 
+	outfile= "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\cdi_12Dec25_excel_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;

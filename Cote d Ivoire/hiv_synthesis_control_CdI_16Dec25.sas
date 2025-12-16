@@ -1032,7 +1032,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * OVERWRITES country specific parameters;
 *  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
-%include "/home/rmjllob/CdI_parameters28.sas";
+%include "/home/rmjllob/CdI_parameters.sas";
 * %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters28.sas";
 
 call symput('caldate1',caldate1);
@@ -2316,11 +2316,11 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 		eff_sw_program = 0;		 			*No SW program;
 		eff_rate_disengage_sw_program=1;
-
+/*
 		* self_testing;
 		prob_self_test_hard_reach = 0;
 		eff_rate_self_test = 0;
-
+*/
 		*Prevention;
 		*Condom provision and promotion: keep at SQ level;
 		*Not explicitly modelled before year_interv, but the implicit switch off impacts newp and ep;
@@ -2349,6 +2349,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		*PCP is part of the essential scenario;
 
 		absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
+		absence_vl_year_i = 1;
 
 		eff_prob_vl_meas_done = 0; 
 
@@ -8944,9 +8945,9 @@ res_test=.;
   art initiation strategy 10: cd4<500 + ART immediately to pregnant women
 ;
 
-/*
-if caldate&j<2015 then eff_pr_art_init=eff_pr_art_init/2;
-*/
+*Cote d Ivoire;
+if caldate&j<2015 then eff_pr_art_init=eff_pr_art_init/3;
+
 		if art_initiation_strategy=1 then do; 
 			if t ge 3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} and who4_tm1=1 then do;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
