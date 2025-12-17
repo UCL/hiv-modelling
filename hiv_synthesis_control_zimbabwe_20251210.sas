@@ -104,7 +104,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 1000 ; 
+%let population = 100000 ; 
 %let year_interv = 2024.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -483,7 +483,9 @@ newp_seed = 7;
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
 
-							* dependent_on_time_step_length ;
+*fold_rate_decr_test_future; %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
+							* NB not currently used; * dependent_on_time_step_length ;
+
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
 
@@ -1851,7 +1853,7 @@ c_pr47_tm1 = . ;  c_pr50v_tm1 = . ;  c_pr50l_tm1 = . ;  c_pr54_tm1 = . ;  c_pr76
 c_pr90_tm1 = . ;  c_in118_tm1=.; c_in140_tm1=.; c_in148_tm1=.; c_in263_tm1=.; c_ca66_tm1=.;
 restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184  = . ;   r_nau_start_taz_dar = . ; 
 p_nau_stops_taz_dar = . ;  onart_gt6m_vlg500 = . ;  rm_inf = . ;  util_cns_efa_tox = . ;  util_cns_dol_tox = . ;  cost_art_init = . ; 
-newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2549m = . ;  npgt1conc_l4p_2549w = . ;
+newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;
 d_s_newp = .; r_s_ep_m15w15 = . ; r_s_ep_m25w25 = . ; r_s_ep_m35w35 = . ; r_s_ep_m45w45 = . ; r_s_ep_m55w55 = . ;  r_ep_mw = . ;  prop_mono_m_1524 = . ; 
 prop_mono_m_2534 = . ;  prop_mono_m_3544 = . ;  prop_mono_m_4554 = . ;  prop_mono_m_5564 = . ;  prop_mono_w_1524 = . ;  prop_mono_w_2534 = . ; 
 prop_mono_w_3544 = . ;  prop_mono_w_4554 = . ;  prop_mono_w_5564 = . ;  incidence1524w_epnewp = . ;  incidence2534w_epnewp = . ; 
@@ -2441,6 +2443,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 		absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
 
+		absence_vl_year_i = 1;				*Dec 25;
 		eff_prob_vl_meas_done = 0; 
 
 		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
@@ -18813,26 +18816,28 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_infected_prep_len + infected_prep_len ; s_infected_prep_vr + infected_prep_vr ;
 	s_prep_any_ever + prep_any_ever ; s_primary_prep + primary_prep ; s_hiv1_prep_oral + hiv1_prep_oral ; s_prim_r_prep + prim_r_prep ; 
 	s_ever_prim_nor_prep + ever_prim_nor_prep ;   s_primary_prep_cab  + primary_prep_cab ; s_primary_prep_len  + primary_prep_len ;  s_primary_prep_vr  + primary_prep_vr ;  
-	s_prep_any_elig + prep_any_elig ;  s_primary_prep_oral + primary_prep_oral; s_prim_r_prep + prim_r_prep; s_ever_prim_tdr_prep + ever_prim_tdr_prep;
-	s_rt65m_3_prep + rt65m_3_prep ; s_rt184m_3_prep + rt184m_3_prep ; s_rtm_3_prep + rtm_3_prep ; s_rt65m_6_prep + rt65m_6_prep ; 
-	s_rt184m_6_prep + rt184m_6_prep ; s_rtm_6_prep + rtm_6_prep ; s_rt65m_9_prep + rt65m_9_prep ; s_rt184m_9_prep + rt184m_9_prep ;               
-    s_rtm_9_prep + rtm_9_prep ; s_rt65m_12_prep + rt65m_12_prep ; s_rt184m_12_prep + rt184m_12_prep ; s_rtm_12_prep + rtm_12_prep ;        
-    s_rt65m_18_prep + rt65m_18_prep ; s_rt184m_18_prep + rt184m_18_prep ; s_rtm_18_prep + rtm_18_prep ; s_onprep_3 + onprep_3 ; s_onprep_6 + onprep_6 ;       
-    s_onprep_9 + onprep_9 ; s_onprep_12 + onprep_12 ; s_onprep_18 + onprep_18 ; s_prep_any_start + prep_any_start ; s_age_prepstart + age_prepstart;
-	s_prep_vr_start + prep_vr_start ; s_prep_oral_start + prep_oral_start ; s_prep_cab_start + prep_cab_start ;  s_prep_len_start + prep_len_start ; 
-	s_prep_cab_restart + prep_cab_restart ;s_prep_len_restart + prep_len_restart ; s_prep_oral_restart + prep_oral_restart ; s_prep_vr_restart + prep_vr_restart ; 
-	s_ever_stopped_prep_oral_choice + ever_stopped_prep_oral_choice ; s_preprestart + preprestart ; s_acq_rt65m_3_prep + acq_rt65m_3_prep ;   
-    s_acq_rt184m_3_prep + acq_rt184m_3_prep ; s_acq_rtm_3_prep + acq_rtm_3_prep ; s_acq_rt65m_6_prep + acq_rt65m_6_prep ; 
-	s_acq_rt184m_6_prep + acq_rt184m_6_prep ; s_acq_rtm_6_prep + acq_rtm_6_prep ; s_acq_rt65m_9_prep + acq_rt65m_9_prep ; 
-	s_acq_rt184m_9_prep + acq_rt184m_9_prep ; s_acq_rtm_9_prep + acq_rtm_9_prep ; s_acq_rt65m_12_prep + acq_rt65m_12_prep ;
-    s_acq_rt184m_12_prep + acq_rt184m_12_prep ; s_acq_rtm_12_prep + acq_rtm_12_prep ; s_acq_rt65m_18_prep + acq_rt65m_18_prep ;
-	s_acq_rt184m_18_prep + acq_rt184m_18_prep ; s_acq_rtm_18_prep + acq_rtm_18_prep ;                                              
-	s_inf_prep_adhg80 + inf_prep_adhg80 ; s_inf_prep_adh5080 + inf_prep_adh5080 ;
-    s_inf_prep_adhl50 + inf_prep_adhl50 ; s_prep_adhg80 + prep_adhg80 ; s_prep_adh5080 + prep_adh5080 ; s_prep_adhl50 + prep_adhl50 ;
-	s_onprep_1549 + onprep_1549 ; s_onprep_m + onprep_m ; s_onprep_w + onprep_w ; s_onprep_sw + onprep_sw ; s_onprep_1524 + onprep_1524 ;
-	s_onprep_cab_m + onprep_cab_m; s_onprep_cab_w + onprep_cab_w; s_onprep_oral_m + onprep_oral_m; s_onprep_oral_w + onprep_oral_w; 
-	s_onprep_vr_w + onprep_vr_w;  s_onprep_len_m + onprep_len_m; s_onprep_len_w + onprep_len_w; 
-	s_onprep_1524w + onprep_1524w ; s_onprep_w1524_newpge1_ + onprep_w1524_newpge1_; 
+	s_prep_any_elig + prep_any_elig ;  s_primary_prep_oral + primary_prep_oral; s_ever_prim_tdr_prep + ever_prim_tdr_prep;
+	s_rt65m_3_prep + rt65m_3_prep ; 	s_rt184m_3_prep + rt184m_3_prep ; 	s_rtm_3_prep + rtm_3_prep ; 
+	s_rt65m_6_prep + rt65m_6_prep ; 	s_rt184m_6_prep + rt184m_6_prep ; 	s_rtm_6_prep + rtm_6_prep ; 
+	s_rt65m_9_prep + rt65m_9_prep ; 	s_rt184m_9_prep + rt184m_9_prep ; 	s_rtm_9_prep + rtm_9_prep ; 
+	s_rt65m_12_prep + rt65m_12_prep ; 	s_rt184m_12_prep + rt184m_12_prep ; s_rtm_12_prep + rtm_12_prep ;        
+    s_rt65m_18_prep + rt65m_18_prep ; 	s_rt184m_18_prep + rt184m_18_prep ; s_rtm_18_prep + rtm_18_prep ; 
+	s_onprep_3 + onprep_3 ; s_onprep_6 + onprep_6 ; s_onprep_9 + onprep_9 ; s_onprep_12 + onprep_12 ; s_onprep_18 + onprep_18 ; 
+	s_prep_any_start + prep_any_start ; s_age_prepstart + age_prepstart; s_preprestart + preprestart ; 
+	s_prep_oral_start + prep_oral_start ; 		s_prep_vr_start + prep_vr_start ; 		s_prep_cab_start + prep_cab_start ;  	s_prep_len_start + prep_len_start ; 
+	s_prep_oral_restart + prep_oral_restart ; 	s_prep_vr_restart + prep_vr_restart ; 	s_prep_cab_restart + prep_cab_restart ;	s_prep_len_restart + prep_len_restart ; 
+	s_ever_stopped_prep_oral_choice + ever_stopped_prep_oral_choice ; 
+	s_acq_rt65m_3_prep + acq_rt65m_3_prep ;		s_acq_rt184m_3_prep + acq_rt184m_3_prep ; 	s_acq_rtm_3_prep + acq_rtm_3_prep ; 
+	s_acq_rt65m_6_prep + acq_rt65m_6_prep ; 	s_acq_rt184m_6_prep + acq_rt184m_6_prep ; 	s_acq_rtm_6_prep + acq_rtm_6_prep ; 
+	s_acq_rt65m_9_prep + acq_rt65m_9_prep ; 	s_acq_rt184m_9_prep + acq_rt184m_9_prep ; 	s_acq_rtm_9_prep + acq_rtm_9_prep ; 
+	s_acq_rt65m_12_prep + acq_rt65m_12_prep ;	s_acq_rt184m_12_prep + acq_rt184m_12_prep ; s_acq_rtm_12_prep + acq_rtm_12_prep ; 
+	s_acq_rt65m_18_prep + acq_rt65m_18_prep ;	s_acq_rt184m_18_prep + acq_rt184m_18_prep ; s_acq_rtm_18_prep + acq_rtm_18_prep ;                                              
+	s_inf_prep_adhg80 + inf_prep_adhg80 ; 		s_inf_prep_adh5080 + inf_prep_adh5080 ;		s_inf_prep_adhl50 + inf_prep_adhl50 ; 
+	s_prep_adhg80 + prep_adhg80 ; 				s_prep_adh5080 + prep_adh5080 ; 			s_prep_adhl50 + prep_adhl50 ;
+	s_onprep_1549 + onprep_1549 ; 		s_onprep_m + onprep_m ; 			s_onprep_w + onprep_w ; 			s_onprep_sw + onprep_sw ; 		
+	s_onprep_oral_m + onprep_oral_m; 	s_onprep_oral_w + onprep_oral_w; 	s_onprep_vr_w + onprep_vr_w;  
+	s_onprep_cab_m + onprep_cab_m; 		s_onprep_cab_w + onprep_cab_w; 		s_onprep_len_m + onprep_len_m; 		s_onprep_len_w + onprep_len_w; 
+	s_onprep_1524 + onprep_1524 ;		s_onprep_1524w + onprep_1524w ; 	s_onprep_w1524_newpge1_ + onprep_w1524_newpge1_; 
 	s_init_prep_oral_1524w + init_prep_oral_1524w; s_init_prep_oral_sw + init_prep_oral_sw; s_init_prep_oral_sdc + init_prep_oral_sdc; s_init_prep_oral_plw + init_prep_oral_plw;
 	s_init_prep_cab_1524w + init_prep_cab_1524w; s_init_prep_cab_sw + init_prep_cab_sw; s_init_prep_cab_sdc + init_prep_cab_sdc; s_init_prep_cab_plw + init_prep_cab_plw;
 	s_init_prep_len_1524w + init_prep_len_1524w; s_init_prep_len_sw + init_prep_len_sw; s_init_prep_len_sdc + init_prep_len_sdc; s_init_prep_len_plw + init_prep_len_plw;
@@ -19711,7 +19716,7 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 * procs;
 
-
+/*
 proc print; var cald country gender age hiv 
 	option
 	highest_prep_pref
@@ -19726,7 +19731,7 @@ proc print; var cald country gender age hiv
 ;
 where serial_no < 50;
 run;
-
+*/
 
 
 /*
@@ -20427,7 +20432,7 @@ s_prep_any_sw 	s_prep_oral_sw 	s_prep_cab_sw 	s_prep_len_sw 	s_prep_vr_sw
 s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_cab s_infected_prep_len 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_cab s_primary_prep_len s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
-s_prep_any_elig s_prim_r_prep  s_ever_prim_tdr_prep
+s_prep_any_elig  s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
@@ -20458,9 +20463,9 @@ s_agyw_pg 				s_agyw_plw
 s_prep_any_agyw_pg		s_prep_oral_agyw_pg		s_prep_cab_agyw_pg		s_prep_len_agyw_pg 		s_prep_vr_agyw_pg 
 s_prep_any_agyw_plw  	s_prep_oral_agyw_plw  	s_prep_cab_agyw_plw 	s_prep_len_agyw_plw  	s_prep_vr_agyw_plw
 
-s_elig_prep_any_sw 		s_elig_prep_any_sdc	s_elig_prep_any_plw 
+s_elig_prep_any_sw 		s_elig_prep_any_sdc		s_elig_prep_any_plw 
 
-s_onprep_cab_m s_onprep_cab_w s_onprep_len_m s_onprep_len_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
+s_onprep_cab_m 	s_onprep_cab_w 	s_onprep_len_m 	s_onprep_len_w 	s_onprep_vr_w 	s_onprep_oral_m  	s_onprep_oral_w 	s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
@@ -21569,7 +21574,7 @@ s_prep_any_sw 	s_prep_oral_sw 	s_prep_cab_sw 	s_prep_len_sw 	s_prep_vr_sw
 s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_cab s_infected_prep_len 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_cab s_primary_prep_len s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
-s_prep_any_elig s_prim_r_prep  s_ever_prim_tdr_prep
+s_prep_any_elig  s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
@@ -22582,7 +22587,7 @@ s_prep_any_sw 	s_prep_oral_sw 	s_prep_cab_sw 	s_prep_len_sw 	s_prep_vr_sw
 s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_cab s_infected_prep_len 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_cab s_primary_prep_len s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
-s_prep_any_elig s_prim_r_prep  s_ever_prim_tdr_prep
+s_prep_any_elig  s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
