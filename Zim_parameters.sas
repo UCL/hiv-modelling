@@ -56,22 +56,14 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.10 0.80 0.10);
 
-* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.10 0.90);
-						   	  if sw_art_disadv=1  then do; 
-						   		%sample_uniform(sw_higher_int, 2 5 10 20);
-						   		%sample_uniform(rel_sw_lower_adh, 0.8 0.9);
-						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 5 10);
-							  end;
 
 * rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
-* rate_disengage_sw_program;	%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
 
-* date_sw_prog_intro;		date_sw_prog_intro=2010;
-* sw_program;               %sample(sw_program, 0 1, 0.2 0.8);sw_program=1;*Discuss;
-					            if sw_program = 1  then do; 
-								%sample_uniform(rate_engage_sw_program, 0.10 0.20); 
-								%sample_uniform(rate_disengage_sw_program, 0.02 0.05);
-								end;
+***Change these parameters as are assuming higher impact than in core and Zim has Sisters program in place;
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest,0.05 0.10 0.15);*consider changing in core as this is now lower than core and Zim should have one of the better programs;
+* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.20 0.35 0.50);
+
 
 * CIRCUMCISION;
 
