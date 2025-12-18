@@ -3040,7 +3040,7 @@ end;
 ***Cote d Ivoire;
 **Set an_lin_incr to increase gradually to reach around 0.01 in 2019. The 0.00001 is the starting value, 0.01 the end value
 which we want it to stay at after 2019 and the 14 is 2019-2005;
-if caldate{t} gt 2005 then do; an_lin_incr_test = max ((0.00001 + ((0.01 - 0.00001)/14) * (caldate{t} - 2005)), 0.01);end;
+if caldate{t} gt 2005 then do; an_lin_incr_test = min ((0.00001 + ((0.01 - 0.00001)/14) * (caldate{t} - 2005)), 0.01);end;
 
 
 tested_anc=.;
