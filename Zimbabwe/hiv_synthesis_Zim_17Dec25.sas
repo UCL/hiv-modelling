@@ -2354,8 +2354,33 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
  	*Option 1: FSW program restored;																										  
 	if option = 1 then do;
-		eff_sw_program = sw_program;		
-		eff_rate_disengage_sw_program = rate_disengage_sw_program;		
+		eff_sw_program = sw_program;	
+		u = rand("Uniform");
+
+effect_sw_prog_int =
+    ifn(u < 1/3, 0.30,
+    ifn(u < 2/3, 0.50, 0.70));
+		rate_engage_sw_program = ifc(rand("Uniform") < 0.5, 0.05, 0.10);
+		rate_disengage_sw_program = ifc(rand("Uniform") < 0.02 0.04
+		effect_sw_prog_newp = ifc(rand("Uniform") < 0.05 0.10)
+		effect_sw_prog_6mtest = ifc(rand("Uniform") < 0.20 0.35 0.50)
+		(effect_sw_prog_int = ifc(rand("Uniform") < 0.30 0.50 0.70);
+		effect_sw_prog_adh = ifc(rand("Uniform") < 0.10 0.15 0.25);
+		effect_sw_prog_lossdiag = ifc(rand("Uniform") < 0.30 0.50 0.70);
+		effect_sw_prog_prep_any = ifc(rand("Uniform") < 0.05 0.10);
+		effect_sw_prog_pers_sti = ifc(rand("Uniform") < 0.10 0.20);
+
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
+* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
+* effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
+* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.10 0.15 0.25);
+* effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
+* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.05 0.10);
+* effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.10 0.20);
+	
+		eff_rate_disengage_sw_program = rate_disengage_sw_program;
 		if sw_program_visit=1 then do;				*Restore oral PrEP for SW who have had an program visit this period;
 			prep_any_strategy = 20;											* Use FSW prep_any_strategy above;
 			date_prep_oral_intro=&year_interv;								* Ensure PrEP is available;
