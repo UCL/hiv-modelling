@@ -2352,50 +2352,53 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 	
 
 
- 	*Option 1: FSW program restored;																										  
+ 	*Option 1: FSW program at low impact - not the same as SQ which has both low and high impact so need to redefine here;																										  
 	if option = 1 then do;
-		eff_sw_program = sw_program;	
-		u = rand("Uniform");
-
-effect_sw_prog_int =
-    ifn(u < 1/3, 0.30,
-    ifn(u < 2/3, 0.50, 0.70));
-		rate_engage_sw_program = ifc(rand("Uniform") < 0.5, 0.05, 0.10);
-		rate_disengage_sw_program = ifc(rand("Uniform") < 0.02 0.04
-		effect_sw_prog_newp = ifc(rand("Uniform") < 0.05 0.10)
-		effect_sw_prog_6mtest = ifc(rand("Uniform") < 0.20 0.35 0.50)
-		(effect_sw_prog_int = ifc(rand("Uniform") < 0.30 0.50 0.70);
-		effect_sw_prog_adh = ifc(rand("Uniform") < 0.10 0.15 0.25);
-		effect_sw_prog_lossdiag = ifc(rand("Uniform") < 0.30 0.50 0.70);
-		effect_sw_prog_prep_any = ifc(rand("Uniform") < 0.05 0.10);
-		effect_sw_prog_pers_sti = ifc(rand("Uniform") < 0.10 0.20);
-
-* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
-* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
-* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
-* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
-* effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
-* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.10 0.15 0.25);
-* effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
-* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.05 0.10);
-* effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.10 0.20);
-	
-		eff_rate_disengage_sw_program = rate_disengage_sw_program;
-		if sw_program_visit=1 then do;				*Restore oral PrEP for SW who have had an program visit this period;
-			prep_any_strategy = 20;											* Use FSW prep_any_strategy above;
-			date_prep_oral_intro=&year_interv;								* Ensure PrEP is available;
-			eff_rate_test_startprep_any=rate_test_startprep_any;			* Restore SQ;
-			eff_prob_prep_oral_b=prob_prep_oral_b;							* Restore SQ;
-			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;		* Restore SQ;
-			eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;	* Restore SQ;
-		end;
+		rate_engage_sw_program = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
+		rate_disengage_sw_program = ifn(rand("Uniform") < 0.5, 0.02, 0.04);
+		effect_sw_prog_newp = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
+		u = rand("Uniform");effect_sw_prog_6mtest = ifn(u < 1/3, 0.20, ifn(u < 2/3, 0.35, 0.50));
+		u = rand("Uniform");effect_sw_prog_int = ifn(u < 1/3, 0.30, ifn(u < 2/3, 0.50, 0.70));
+		u = rand("Uniform");effect_sw_prog_adh = ifn(u < 1/3, 0.10, ifn(u < 2/3, 0.15, 0.25));
+		u = rand("Uniform");effect_sw_prog_lossdiag = ifn(u < 1/3, 0.30, ifn(u < 2/3, 0.50, 0.70));
+		effect_sw_prog_prep_any = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
+		effect_sw_prog_pers_sti = ifn(rand("Uniform") < 0.5, 0.10, 0.20);
 	end;
 
+	*Option 2: FSW program at high impact;	
+	**This will change low impact programs to high impact, but do nothing if already high impact; 
+	if option = 2 then do;
+		if sw_prog_intensity=1 then do;
+			u = rand("Uniform");rate_engage_sw_program = ifn(u < 1/3, 0.10, ifn(u < 2/3, 0.20, 0.30));
+			rate_disengage_sw_program = ifn(rand("Uniform") < 0.5, 0.01, 0.03);
+			effect_sw_prog_newp		 =	effect_sw_prog_newp * fold_hi_sw_prog_newp;
+			effect_sw_prog_6mtest	 =	effect_sw_prog_6mtest * fold_hi_sw_prog_6mtest;
+			effect_sw_prog_int		 = 	effect_sw_prog_int / fold_hi_sw_prog_int;
+			effect_sw_prog_adh		 = 	effect_sw_prog_adh * fold_hi_sw_prog_adh;
+			effect_sw_prog_lossdiag  =  effect_sw_prog_lossdiag / fold_hi_sw_prog_lossdiag;
+			effect_sw_prog_prep_any  = 	effect_sw_prog_prep_any * fold_hi_sw_prog_prep;
+			effect_sw_prog_pers_sti  =	effect_sw_prog_pers_sti * fold_hi_sw_prog_sti;
+		end; 
+`	end;
 
+	*Option 3: condoms at SQ level;																										  
+	if option = 3 then do;
+		condom_change_year_i=0;    								 
+	end;
+
+	*Option 4: Keep VMMC at SQ ;																										  
+	if option = 4 then do;
+		circ_inc_rate_year_i=.;    						 
+	end;
+
+	*Option 5: Increase VMMC from SQ levels ;																										  
+	if option = 5 then do;
+		circ_inc_rate_year_i=5;    			*Increase VMMC until p_mcirc_1524m is 90%;				 
+	end;
  
-	*Option 1: FSW - oral PrEP;																										  
-	if option = 1 then do;
-		prep_any_strategy=20;												* Try new FSW strategy (no newp requirement);
+	*Option 6: FSW - oral PrEP;																										  
+	if option = 6 then do;
+		prep_any_strategy=23;												* New KP strategy ;
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
 		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
 		eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
@@ -4886,6 +4889,18 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 	** Extra prep_any_strategy to test;
 	if prep_any_strategy=30 then do;		*Sexually active AGYW (newp or ep) and pregnant and breastfeeding women; 
 		if gender=2 and ( (15<=age<25 and (newp ge 1 or ep ge 1)) or pregnant=1 or breastfeeding=1 ) then prep_any_elig=1; 
+	end;
+
+
+	***New for Genesis (FSW, AGYW, MSM AND PWID);
+	if prep_any_strategy=23 then do;
+		if gender=2 and sw=1 and 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
+
+		if gender=2 and 15<=age<25 and 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
+		
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
 
 
