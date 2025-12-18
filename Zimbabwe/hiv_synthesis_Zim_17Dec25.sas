@@ -2309,8 +2309,8 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 		set_in_options=1;
 		
-		* Reduction in facility based testing;
-
+		* Reduction in facility based testing (20%);
+		decr_test_year_i=1;
 
 		* No impact of SW program other than on newp;*(will have to redefine all SW parameters when re-introducing the program);
 		effect_sw_prog_6mtest = 0;
@@ -2351,6 +2351,20 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
 	
 
+
+ 	*Option 1: FSW program restored;																										  
+	if option = 1 then do;
+		eff_sw_program = sw_program;		
+		eff_rate_disengage_sw_program = rate_disengage_sw_program;		
+		if sw_program_visit=1 then do;				*Restore oral PrEP for SW who have had an program visit this period;
+			prep_any_strategy = 20;											* Use FSW prep_any_strategy above;
+			date_prep_oral_intro=&year_interv;								* Ensure PrEP is available;
+			eff_rate_test_startprep_any=rate_test_startprep_any;			* Restore SQ;
+			eff_prob_prep_oral_b=prob_prep_oral_b;							* Restore SQ;
+			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;		* Restore SQ;
+			eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;	* Restore SQ;
+		end;
+	end;
 
 
  
@@ -3063,7 +3077,9 @@ end;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
 */
 
-
+if caldate{t} >= &year_interv and set_in_options=1 then do;
+	if decr_test_year_i = 1              then do; rate_1sttest = rate_1sttest * 0.8; rate_reptest = rate_reptest * 0.8; end;
+end;
 
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
