@@ -2339,7 +2339,9 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		date_prep_vr_intro=2100;
 		eff_rate_test_startprep_any=0;
 		eff_prob_prep_oral_b=0;
+		eff_prob_prep_len_b=0;
 		eff_rate_choose_stop_prep_oral=1;
+		eff_rate_choose_stop_prep_len=1;
 		eff_prob_prep_any_restart_choice=0;	
 
 
@@ -2396,28 +2398,48 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		circ_inc_rate_year_i=5;    			*Increase VMMC until p_mcirc_1524m is 90%;				 
 	end;
  
-	*Option 6: FSW - oral PrEP;																										  
+	*Option 6: KP - oral PrEP;																										  
 	if option = 6 then do;
 		prep_any_strategy=23;												* New KP strategy ;
-		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
-		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
-		eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
-		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
+		date_prep_oral_intro=&year_interv;	
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
 	end;
 
-	*Option 2: FSW - oral and inj PrEP;								* Assume inj is LEN ;																									  
-	if option = 2 then do;
-		prep_any_strategy=20;												* Try new FSW strategy (no newp requirement);
+	*Option 7: KP - oral and inj PrEP;								* Assume inj is LEN ;																									  
+	if option = 7 then do;
+		prep_any_strategy=23;												
+		date_prep_oral_intro=&year_interv;									
+		date_prep_len_intro=&year_interv;	
+
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_len_b=prob_prep_len_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+	end;
+
+	*Option 8: KP - oral and scale up of Len;
+		if option = 7 then do;
+		prep_any_strategy=23;												* Try new FSW strategy (no newp requirement);
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
-		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
+		date_prep_len_intro=&year_interv;	
+
 		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
-		eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
-		eff_prob_prep_len_b=min(1,eff_prob_prep_oral_b + add_prob_prep_b_len);		* Set to new value relative to value above;
+		*eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
 		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;
 		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
 	end;
+
+***Think about doing this separately for FSW, MSM and AGYW:
+
+
 
 	*Option 3: AGYW and pregnant women - oral PrEP;																										  
 	if option = 3 then do;
