@@ -1033,7 +1033,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 *  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
 %include "/home/rmjllob/CdI_parameters5.sas";
-* %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters28.sas";
+* %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters5.sas";
 
 call symput('caldate1',caldate1);
 
@@ -9939,6 +9939,12 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	e=rand('uniform');
 
 * this below changed apr2025 ;
+	if country ne 'Cote d Ivoire' then do;
+	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	end;
 
 	if country='Cote d Ivoire' then do;
 	***CdI - reducing adherence in men to match observational CdI data;
@@ -19607,10 +19613,6 @@ where naive=0 and caldate&j ge 2025;
 run;
 
 */
-
-
-
-
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
