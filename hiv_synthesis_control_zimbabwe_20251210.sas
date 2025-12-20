@@ -3,7 +3,7 @@
 - Reordered keep and drop variables to be consistently ordered
 - Fixing some minor typos/repetitions in MSM s_ section
 - Update MSM and PWID s_ sections to include all relevant variables
-- Remove ANC testing from worst-case scenario
+- Remove ANC testing in worst-case scenario
 - Run SQ, Minimal, MSM interventions and worst-case scenario only (options 0,5,6,10,13,99)
 
 * 20/11/25 updates
@@ -2566,8 +2566,10 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 	end;
 
 	*Option 13: worst-case;
+	* ART rates halved and testing remains only for symptomatics ;
 	if option = 13 then do;
-		eff_pr_art_init = pr_art_init / 2;	*Halve ART / PMTCT;
+		worst_case_scenario = 1;										* Turns off general population testing, ANC screening, post-delivery testing, halves PMTCT;
+		eff_pr_art_init = pr_art_init / 2;								* Halves ART;
 	end;
 
 end;
@@ -3157,6 +3159,11 @@ end;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
 */
 
+if worst_case_scenario = 1 then do;		* HIV Control JAS Dec 2025;
+	rate_1sttest = 0;
+	rate_reptest = 0;
+end;
+
 
 
 
@@ -3178,11 +3185,13 @@ if gender=2 then do;
 	if                            caldate{t} =  2014.75 then prob_anc_2015 = prob_anc;
 	if                      	  caldate{t} ge 2015    then prob_anc      = prob_anc_2015;
 	if prob_anc gt 0.975   then prob_anc=0.975;  
+	if worst_case_scenario = 1 then prob_anc=0;						* HIV Control JAS Dec 2025;
 
 
 * Receiving PMTCT;
 	if caldate{t} gt date_pmtct then prob_pmtct = 0 + (caldate{t}-date_pmtct)*pmtct_inc_rate; * not * dependent_on_time_step_length ;
 	if 							  	 prob_pmtct gt 0.975 then prob_pmtct=0.975;
+	if worst_case_scenario = 1 then prob_pmtct = prob_pmtct/2;		* HIV Control JAS Dec 2025;
 end;
 
 
@@ -4746,7 +4755,7 @@ tested_pd=0;
 if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 then do; * dependent_on_time_step_length ;
 * ts1m ; * replace line above with:  
 * if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-(1/12) and tested_tm1=1 then do; 
-	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2=1 or tested_tm3=1) and u lt prob_test_postdel then do;
+	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 or worst_case_scenario ne 1)) and (tested_tm1=1 or tested_tm2=1 or tested_tm3=1) and u lt prob_test_postdel then do;
 		tested=1; tested_pd=1; 
 		if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 		np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
