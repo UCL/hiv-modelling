@@ -3,8 +3,8 @@
 - Reordered keep and drop variables to be consistently ordered
 - Fixing some minor typos/repetitions in MSM s_ section
 - Update MSM and PWID s_ sections to include all relevant variables
-- Remove ANC testing in worst-case scenario
-- Run SQ, Minimal, MSM interventions and worst-case scenario only (options 0,5,6,10,13,99)
+- Remove general population, ANC and post delivery testing and halve PMTCT rate in worst-case scenario
+- Change msm_risk_cls in MSM program in option code to non-sampled 0.1;
 
 * 20/11/25 updates
 
@@ -2549,7 +2549,8 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		* MSM: Strengthening demand, increased accessibility of condoms, peer education ;	
 		* Currently no PrEP element to MSM program;
 		if caldate_never_dot = &year_interv then do; 
-			%sample_uniform(msm_risk_cls, 0.05 0.1); 		* risk of one or more cls partners in msm per period ;	*re-sample only once;
+/*			%sample_uniform(msm_risk_cls, 0.05 0.1); 		* risk of one or more cls partners in msm per period ;	*re-sample only once;*/
+			msm_risk_cls = 0.1;
 		end;
 	end;
 
