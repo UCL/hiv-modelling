@@ -2383,7 +2383,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 			effect_sw_prog_pers_sti  =	effect_sw_prog_pers_sti * fold_hi_sw_prog_sti;
 			prep_any_strategy=24;
 		end; 
-`	end;
+	end;
 
 	*Option 3: condoms at SQ level;																										  
 	if option = 3 then do;
