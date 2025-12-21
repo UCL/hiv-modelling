@@ -2365,6 +2365,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		u = rand("Uniform");effect_sw_prog_lossdiag = ifn(u < 1/3, 0.30, ifn(u < 2/3, 0.50, 0.70));
 		effect_sw_prog_prep_any = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
 		effect_sw_prog_pers_sti = ifn(rand("Uniform") < 0.5, 0.10, 0.20);
+		prep_any_strategy=24;
 	end;
 
 	*Option 2: FSW program at high impact;	
@@ -2380,6 +2381,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 			effect_sw_prog_lossdiag  =  effect_sw_prog_lossdiag / fold_hi_sw_prog_lossdiag;
 			effect_sw_prog_prep_any  = 	effect_sw_prog_prep_any * fold_hi_sw_prog_prep;
 			effect_sw_prog_pers_sti  =	effect_sw_prog_pers_sti * fold_hi_sw_prog_sti;
+			prep_any_strategy=24;
 		end; 
 `	end;
 
@@ -2398,7 +2400,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		circ_inc_rate_year_i=5;    			*Increase VMMC until p_mcirc_1524m is 90%;				 
 	end;
  
-	*Option 6: KP - oral PrEP;																										  
+	*Option 6: KP - oral PrEP continuation;																										  
 	if option = 6 then do;
 		prep_any_strategy=23;												* New KP strategy ;
 		date_prep_oral_intro=&year_interv;	
@@ -2408,7 +2410,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
 	end;
 
-	*Option 7: KP - oral and inj PrEP;								* Assume inj is LEN ;																									  
+	*Option 7: KP - oral and introduction of inj PrEP;								* Assume inj is LEN ;																									  
 	if option = 7 then do;
 		prep_any_strategy=23;												
 		date_prep_oral_intro=&year_interv;									
@@ -2421,6 +2423,9 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
 		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
 	end;
+
+****THINK ABOUT HAVING MORE PEOPLE ELIGIBLE LIKE IN HIV CONTROL;
+****ie. FOR SCALE UP, NEW PREP_ANY_STRATEGY ALLOWING ALL FSW, HIGH RIGK AGYW AND HIGHER % MSM ELIGIBLE;
 
 	*Option 8: KP - oral and scale up of Len;
 		if option = 7 then do;
@@ -2437,106 +2442,158 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
 	end;
 
-***Think about doing this separately for FSW, MSM and AGYW:
-
-
-
-	*Option 3: AGYW and pregnant women - oral PrEP;																										  
-	if option = 3 then do;
-		prep_any_strategy=21;												* New strategy for HIV control;
-		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
-		eff_rate_test_startprep_any=rate_test_startprep_any;				* Restore SQ;
-		eff_prob_prep_oral_b=prob_prep_oral_b;								* Restore SQ;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;			* Restore SQ;
-		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;		* Restore SQ;		 
+***Split KPs up;
+	*Option 9: FSW - oral PrEP;																										  
+	if option = 9 then do;
+		prep_any_strategy=24;												
+		date_prep_oral_intro=&year_interv;	
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
 	end;
 
-	*Option 4: AGYW and pregnant women - oral and inj PrEP;					* Assume inj is LEN ;	
-	if option = 4 then do;
-		prep_any_strategy=21;												* New strategy for HIV control;
-		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
-		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
-		eff_rate_test_startprep_any=rate_test_startprep_any;				* Restore SQ;
-		eff_prob_prep_oral_b=prob_prep_oral_b;								* Restore SQ;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;			* Restore SQ;
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;			* Restore SQ;
-		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;		* Restore SQ;		 
+	*Option 10: AGYW - oral PrEP;																										  
+	if option = 10 then do;
+		prep_any_strategy=25;												
+		date_prep_oral_intro=&year_interv;	
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
 	end;
 
-	*Option 5: MSM - oral PrEP;																										  
-	if option = 5 then do;
-		prep_any_strategy=22;												* New strategy for HIV control;
+	*Option 11: MSM - oral PrEP;																										  
+	if option = 11 then do;
+		prep_any_strategy=26;												
+		date_prep_oral_intro=&year_interv;	
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+	end;
+
+	*Option 12: FSW - oral and inj PrEP;																																	  
+	if option = 12 then do;
+		prep_any_strategy=24;												
+		date_prep_oral_intro=&year_interv;									
+		date_prep_len_intro=&year_interv;	
+
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_len_b=prob_prep_len_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+	end;
+
+	*Option 13: FSW - oral and inj PrEP;																																	  
+	if option = 13 then do;
+		prep_any_strategy=24;												
+		date_prep_oral_intro=&year_interv;									
+		date_prep_len_intro=&year_interv;	
+
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_len_b=prob_prep_len_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+	end;
+
+	*Option 14: AGYW - oral and inj PrEP;																																	  
+	if option = 14 then do;
+		prep_any_strategy=25;												
+		date_prep_oral_intro=&year_interv;									
+		date_prep_len_intro=&year_interv;	
+
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_len_b=prob_prep_len_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+	end;
+
+	*Option 15: MSM - oral and inj PrEP;																																	  
+	if option = 15 then do;
+		prep_any_strategy=26;												
+		date_prep_oral_intro=&year_interv;									
+		date_prep_len_intro=&year_interv;	
+
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_len_b=prob_prep_len_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+	end;
+
+	*Option 16: FSW - oral and scale up of Len;
+		if option = 16 then do;
+		prep_any_strategy=24;												* Try new FSW strategy (no newp requirement);
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
+		date_prep_len_intro=&year_interv;	
+
 		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
-		eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
-		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
-		prob_prep_elig_msm = 0.5;
-	end;
-
-	*Option 6: MSM - oral and inj PrEP;								* Assume inj is LEN ;	
-	if option = 6 then do;
-		prep_any_strategy=22;												* New strategy for HIV control;
-		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
-		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
-		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
-		eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
-		eff_prob_prep_len_b=min(1,eff_prob_prep_oral_b + add_prob_prep_b_len);		* Set to new value relative to value above;
+		*eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
 		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;
 		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
-		prob_prep_elig_msm = 0.5;
 	end;
 
-	*Option 7: VMMC;																										  
-	if option = 7 then do;
-		circ_inc_rate_year_i=5;    			*Increase VMMC until p_mcirc_1524m is 90%;				 
+	*Option 17: AGYW - oral and scale up of Len;
+		if option = 17 then do;
+		prep_any_strategy=25;												* Try new FSW strategy (no newp requirement);
+		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
+		date_prep_len_intro=&year_interv;	
+
+		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
+		*eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;
+		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
 	end;
 
-	*Option 8: condoms;																										  
-	if option = 8 then do;
-		condom_change_year_i=0;    			*Restore SQ;						 
+	*Option 18: MSM - oral and scale up of Len;
+		if option = 18 then do;
+		prep_any_strategy=26;												* Try new FSW strategy (no newp requirement);
+		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
+		date_prep_len_intro=&year_interv;	
+
+		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
+		*eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;
+		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
 	end;
 
- 	*Option 9: KP outreach - FSW;																										  
-	if option = 9 then do;
-		*FSW;
-		eff_sw_program = sw_program;		*Restore SQ;	
-		eff_rate_disengage_sw_program = rate_disengage_sw_program;		
-		if sw_program_visit=1 then do;				*Restore oral PrEP for SW who have had an program visit this period;
-			prep_any_strategy = 20;											* Use FSW prep_any_strategy above;
-			date_prep_oral_intro=&year_interv;								* Ensure PrEP is available;
-			eff_rate_test_startprep_any=rate_test_startprep_any;			* Restore SQ;
-			eff_prob_prep_oral_b=prob_prep_oral_b;							* Restore SQ;
-			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;		* Restore SQ;
-			eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;	* Restore SQ;
-		end;
-	end;
-
- 	*Option 10: KP outreach - MSM;			
-	*** Need to test that this is working correctly; 
-	if option = 10 then do;
+ 	*Option 19: KP outreach - MSM;			
+	if option = 19 then do;
 		* MSM: Strengthening demand, increased accessibility of condoms, peer education ;	
 		* Currently no PrEP element to MSM program;
 		if caldate_never_dot = &year_interv then do; 
-			%sample_uniform(msm_risk_cls, 0.05 0.1); 		* risk of one or more cls partners in msm per period ;	*re-sample only once;
+			msm_risk_cls = ifn(rand("Uniform") < 0.5, 0.05, 0.10);		* risk of one or more cls partners in msm per period ;	*re-sample only once;
 		end;
 	end;
 
- 	*Option 11: testing;																										  
-	if option = 11 then do;
-		prob_self_test_hard_reach=0;    	*Restore SQ;				* prob_self_test_hard_reach set to 0 at baseline - confirm this is intended;
-		eff_rate_self_test=rate_self_test;	*Restore SQ;				* made rate_self_test an eff variable;
-	end;
 
- 	*Option 12: adherence support;																										  
-	if option = 12 then do;
+ 	*Option 20: adherence support;																										  
+	if option = 20 then do;
 		return_interventions_off=0;    		*Restore SQ;				* Note this is not initialised - add to parameter section above;
 																		* Do we need to restore CD4 and VL testing as part of adherence support?; 
 	end;
 
-	*Option 13: worst-case;
-	if option = 13 then do;
+
+
+	*Option 21: low scale up;
+	if option = 21 then do;
 		eff_pr_art_init = pr_art_init / 2;	*Halve ART / PMTCT;
 	end;
 
@@ -4924,6 +4981,25 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
+
+	***FSW only;
+	if prep_any_strategy=24 then do;
+		if gender=2 and sw=1 and 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
+	end;
+
+	***AGYW only;
+	if prep_any_strategy=25 then do;
+		if gender=2 and 15<=age<25 and 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
+	end;
+
+	***MSM /PWID only;
+	if prep_any_strategy=26 then do;
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
+	end;
+
+
 
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
