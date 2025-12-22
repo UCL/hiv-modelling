@@ -310,7 +310,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 500  ;
+%let nfit = 495  ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -611,7 +611,7 @@ by cald;
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = 'C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
-graphs_24_11_25.doc' startpage=never; 
+graphs_15_12_25.doc' startpage=never; 
 
 
 ***Diagnostic;
@@ -792,7 +792,11 @@ label p50_prop_elig_on_prep_mm_1 = "Option 1 (MM intervention - CAB-LA, MM PrEP 
 label p50_prop_elig_on_prep_mm_2 = "Option 2 (MM PrEP elig - No CAB, % MM still hard to reach)";
 label p50_prop_elig_on_prep_mm_3 = "Option 3 (MM PrEP elig and not hard to reach - No CAB)";
 label p50_prop_elig_on_prep_mm_4 = "Option 4 (MM PrEP elig, CAB-LA avail - % MM still hard to reach)";
+series  x=cald y=p50_prop_elig_on_prep_mm_2/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_mm_2 	upper=p95_prop_elig_on_prep_mm_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
+
+/*
 series  x=cald y=p50_prop_elig_on_prep_mm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_elig_on_prep_mm_0 	upper=p95_prop_elig_on_prep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_prop_elig_on_prep_mm_1/	lineattrs = (color=green thickness = 2);
@@ -803,7 +807,7 @@ series  x=cald y=p50_prop_elig_on_prep_mm_3/	lineattrs = (color=blue thickness =
 band    x=cald lower=p5_prop_elig_on_prep_mm_3 	upper=p95_prop_elig_on_prep_mm_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_prop_elig_on_prep_mm_4/	lineattrs = (color=orange thickness = 2);
 band    x=cald lower=p5_prop_elig_on_prep_mm_4 	upper=p95_prop_elig_on_prep_mm_4  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
-
+*/
 run;quit;
 
 proc sgplot data=d; 
