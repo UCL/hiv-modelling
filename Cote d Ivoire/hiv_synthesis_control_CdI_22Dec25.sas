@@ -1844,8 +1844,6 @@ eff_rate_lost = rate_lost ;
 
 * define effective prob_lost_art;
 eff_prob_lost_art = prob_lost_art;
-if caldate{t} < 2017 then eff_rate_int_choice = eff_rate_int_choice * 2;
-if caldate{t} >= 2017 then eff_rate_int_choice = eff_rate_int_choice * 0.5;
 
 * define rate_return ;
 eff_rate_return = rate_return;
@@ -1855,7 +1853,6 @@ eff_pr_art_init = pr_art_init;
 
 * define effective rate_int_choice;
 eff_rate_int_choice = rate_int_choice;
-if 
 
 * define effective prob_vl_meas_done;
 eff_prob_vl_meas_done = prob_vl_meas_done;
@@ -4862,6 +4859,10 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 
 end;
 
+
+***Cote d Ivoire;
+if caldate{t} < 2017 then eff_rate_int_choice = eff_rate_int_choice * 2;
+if caldate{t} >= 2017 then eff_rate_int_choice = eff_rate_int_choice * 0.5;
 
 
 
