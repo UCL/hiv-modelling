@@ -283,6 +283,55 @@ proc sort;by cald option ;run;
 
 
 
+%macro option_stats(option_num);
+
+    data option_data;
+        set b;
+        if option=&option_num then var_to_keep=1;
+        if var_to_keep ne 1 then delete;
+    run;
+
+    %let varlist =  
+    n_alive_m n_alive_w n_alive n_hivge15m n_hivge15w n_hivge15_
+    prevalence1549m prevalence1549w prevalence1549_ incidence1549_ incidence1549w incidence1549m
+    p_onart p_onart_m p_onart_w n_onart n_onart_m n_onart_w
+    p_diag p_diag_m p_diag_w p_onart_diag p_onart_diag_m p_onart_diag_w  
+    p_onart_vl1000_ p_onart_vl1000_m p_onart_vl1000_w n_onprep_w n_onprep_m n_onprep
+    prop_elig_on_prep n_prep_ever
+    n_sw_1564_ n_sw_1549_ p_w_1564_sw p_w_1549_sw prevalence_1564sw incidence_1564sw
+    p_onprep_sw n_onprep_sw
+    n_msm_1564_ p_m_msm prevalence1549_msm incidence_msm p_onprep_msm n_onprep_msm
+    n_death_hivrel n_death_hivrel_m n_death_hivrel_w
+    ;
+
+    %let count = 1;
+    %let varname = %scan(&varlist, &count);
+
+    %do %while(&varname ne);
+
+        proc means data=option_data noprint;
+            var &varname;
+            output out=stats_&varname
+                p5=p5_&varname._&option_num
+                p50=median_&varname._&option_num
+                p95=p95_&varname._&option_num
+                mean=mean_&varname._&option_num;
+        run;
+
+        %let count = %eval(&count + 1);
+        %let varname = %scan(&varlist, &count);
+    %end;
+
+%mend;
+
+*Run for option 0;
+%option_stats(0);
+
+
+
+
+
+
 ***Need a macro for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
@@ -310,6 +359,7 @@ n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w
 %let p5_var = p5_&var_0;
 %let p95_var = p95_&var_0;
 %let p50_var = median_&var_0;
+%let pmean_var = mean_&var_0;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -321,8 +371,9 @@ data g&count;set g&count;***creates one dataset per variable;
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
+pmean_&varb._0 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option p5_&varb._0 p95_&varb._0 p50_&varb._0;
+keep cald option p5_&varb._0 p95_&varb._0 p50_&varb._0 pmean_&varb._0;
 run;
 
       proc datasets nodetails nowarn nolist; 
