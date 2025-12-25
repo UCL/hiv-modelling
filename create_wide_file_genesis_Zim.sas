@@ -277,7 +277,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 650  ;
+%let nfit = 1075  ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -299,7 +299,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 
     /* List of variables to summarize */
     %let var =  
-        n_alive_m n_alive_w /*n_alive n_hivge15m n_hivge15w n_hivge15_
+        n_alive_m n_alive_w n_alive n_hivge15m n_hivge15w n_hivge15_
         prevalence1549m prevalence1549w prevalence1549_ incidence1549_ incidence1549w incidence1549m
         p_onart p_onart_m p_onart_w n_onart n_onart_m n_onart_w
         p_diag p_diag_m p_diag_w p_onart_diag p_onart_diag_m p_onart_diag_w  
@@ -308,7 +308,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
         n_sw_1564_ n_sw_1549_ p_w_1564_sw p_w_1549_sw prevalence_1564sw incidence_1564sw
         p_onprep_sw n_onprep_sw
         n_msm_1564_ p_m_msm prevalence1549_msm incidence_msm p_onprep_msm n_onprep_msm
-        n_death_hivrel n_death_hivrel_m n_death_hivrel_w*/;
+        n_death_hivrel n_death_hivrel_m n_death_hivrel_w;
 
     /* Count number of variables */
     %let count = 0;
@@ -402,7 +402,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = 'C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
-graphs_15_12_25.doc' startpage=never; 
+graphs_17_12_25.doc' startpage=never; 
 
 
 ***Diagnostic;
