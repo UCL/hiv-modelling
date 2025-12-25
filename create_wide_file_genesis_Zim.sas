@@ -1,9 +1,10 @@
 
 *libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
+
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
-set a.mm_15dec25; 
+set a.Genesis_Zim_17Dec25; 
 if run=. then delete; 
 
 proc sort;
@@ -184,7 +185,7 @@ s_alive = s_alive_m + s_alive_w ;
 
 * n_hivge15m;					n_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
 * n_hivge15w;					n_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
-* n_hivge15_;					n_hivge15_ = s_hivge15m + s_hivge15w ;
+* n_hivge15_;					n_hivge15_ = n_hivge15m + n_hivge15w ;
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -194,9 +195,9 @@ s_alive = s_alive_m + s_alive_w ;
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
-* p_onart_w;					if s_hivge15w gt 0 then p_onart_w = s_onart_w / s_hivge15w;
-* p_onart_m;					if s_hivge15m gt 0 then p_onart_m = s_onart_m / s_hivge15m;
-* p_onart;						if s_hivge15 gt 0 then p_onart = s_onart / s_hivge15; 
+* p_onart_w;					if n_hivge15w gt 0 then p_onart_w = s_onart_w / n_hivge15w;
+* p_onart_m;					if n_hivge15m gt 0 then p_onart_m = s_onart_m / n_hivge15m;
+* p_onart;						if n_hivge15_ gt 0 then p_onart = s_onart / n_hivge15_; 
 
 * n_onart_w;					n_onart_w = s_onart_w * sf;
 * n_onart_m;					n_onart_m = s_onart_m * sf;
@@ -276,352 +277,127 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 495  ;
+%let nfit = 650  ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
 
+*turns log off;
+options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 
 
-%macro option_stats(option_num);
+/*-----------------------------------------*/
+/* Step 1: Macro to summarize a single option */
+/*-----------------------------------------*/
+%macro option_summary(option_num=0);***Option_num is a macro parameter with a default value of 0;
 
+    /* Filter dataset for the selected option */
     data option_data;
         set b;
-        if option=&option_num then var_to_keep=1;
-        if var_to_keep ne 1 then delete;
+        where option = &option_num;
     run;
 
-    %let varlist =  
-    n_alive_m n_alive_w n_alive n_hivge15m n_hivge15w n_hivge15_
-    prevalence1549m prevalence1549w prevalence1549_ incidence1549_ incidence1549w incidence1549m
-    p_onart p_onart_m p_onart_w n_onart n_onart_m n_onart_w
-    p_diag p_diag_m p_diag_w p_onart_diag p_onart_diag_m p_onart_diag_w  
-    p_onart_vl1000_ p_onart_vl1000_m p_onart_vl1000_w n_onprep_w n_onprep_m n_onprep
-    prop_elig_on_prep n_prep_ever
-    n_sw_1564_ n_sw_1549_ p_w_1564_sw p_w_1549_sw prevalence_1564sw incidence_1564sw
-    p_onprep_sw n_onprep_sw
-    n_msm_1564_ p_m_msm prevalence1549_msm incidence_msm p_onprep_msm n_onprep_msm
-    n_death_hivrel n_death_hivrel_m n_death_hivrel_w
-    ;
+    /* List of variables to summarize */
+    %let var =  
+        n_alive_m n_alive_w /*n_alive n_hivge15m n_hivge15w n_hivge15_
+        prevalence1549m prevalence1549w prevalence1549_ incidence1549_ incidence1549w incidence1549m
+        p_onart p_onart_m p_onart_w n_onart n_onart_m n_onart_w
+        p_diag p_diag_m p_diag_w p_onart_diag p_onart_diag_m p_onart_diag_w  
+        p_onart_vl1000_ p_onart_vl1000_m p_onart_vl1000_w n_onprep_w n_onprep_m n_onprep
+        prop_elig_on_prep n_prep_ever
+        n_sw_1564_ n_sw_1549_ p_w_1564_sw p_w_1549_sw prevalence_1564sw incidence_1564sw
+        p_onprep_sw n_onprep_sw
+        n_msm_1564_ p_m_msm prevalence1549_msm incidence_msm p_onprep_msm n_onprep_msm
+        n_death_hivrel n_death_hivrel_m n_death_hivrel_w*/;
 
-    %let count = 1;
-    %let varname = %scan(&varlist, &count);
+    /* Count number of variables */
+    %let count = 0;
+    %do %while (%qscan(&var, &count+1, %str( )) ne %str());
+        %let count = %eval(&count + 1);
+    %end;
 
-    %do %while(&varname ne);
+    /* Initialize empty summary dataset (only cald and option) */
+    data summary_option_&option_num;
+        length cald 8 option 8;
+        stop;
+    run;
 
-        proc means data=option_data noprint;
-            var &varname;
-            output out=stats_&varname
-                p5=p5_&varname._&option_num
-                p50=median_&varname._&option_num
-                p95=p95_&varname._&option_num
-                mean=mean_&varname._&option_num;
+    /* Loop over variables and calculate stats */
+    %do i = 1 %to &count;
+        %let varb = %scan(&var,&i);
+
+        /* Transpose the variable across simulations */
+        proc transpose data=option_data out=tmp prefix=&varb;
+            var &varb;
+            by cald;
+            id count_csim;
         run;
 
-        %let count = %eval(&count + 1);
-        %let varname = %scan(&varlist, &count);
+        /* Calculate statistics and keep only suffixed variables */
+        data tmp_stat(keep=cald
+                          p5_&varb._&option_num p95_&varb._&option_num
+                          median_&varb._&option_num mean_&varb._&option_num);
+            set tmp;
+            p5_&varb._&option_num  = pctl(5, of &varb.1-&varb.&nfit);
+            p95_&varb._&option_num = pctl(95, of &varb.1-&varb.&nfit);
+            median_&varb._&option_num = median(of &varb.1-&varb.&nfit);
+            mean_&varb._&option_num = mean(of &varb.1-&varb.&nfit);
+        run;
+
+        /* Merge stats into summary dataset */
+        proc sort data=tmp_stat; by cald; run;
+        proc sort data=summary_option_&option_num; by cald; run;
+
+        data summary_option_&option_num;
+            merge summary_option_&option_num tmp_stat;
+            by cald;
+            option = &option_num;
+        run;
+
     %end;
 
 %mend;
 
-*Run for option 0;
-%option_stats(0);
 
+/*-----------------------------------------*/
+/* Step 2: Macro to combine multiple options */
+/*-----------------------------------------*/
+%macro summary_all_options(options=);
 
+    /* Initialize empty master dataset */
+    data master_summary;
+        length cald 8 option 8;
+        stop;
+    run;
 
+    %do j=1 %to %sysfunc(countw(&options));
+        %let opt = %scan(&options, &j);
 
+        /* Generate summary for this option */
+        %option_summary(option_num=&opt);
 
+        /* Merge option summary into master dataset */
+        data master_summary;
+            merge master_summary summary_option_&opt;
+            by cald;
+        run;
 
-***Need a macro for each option. Gives medians ranges etc by option;
-data option_0;
-set b;
-if option=0 then var_to_keep=1;
-if var_to_keep ne 1 then delete;
+    %end;
 
-
-%let var =  
-n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_
-prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
-p_onart				 p_onart_m			p_onart_w			n_onart				n_onart_m			n_onart_w
-p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
-p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	n_onprep_w			n_onprep_m			n_onprep
-prop_elig_on_prep	 n_prep_ever		
-n_sw_1564_			 n_sw_1549_			p_w_1564_sw			p_w_1549_sw			prevalence_1564sw	incidence_1564sw
-p_onprep_sw			 n_onprep_sw
-n_msm_1564_			 p_m_msm			prevalence1549_msm	incidence_msm		p_onprep_msm		n_onprep_msm
-n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w		
-;
-
-
-*starts with %macro and ends with %mend;
-%macro option_0;
-
-%let p5_var = p5_&var_0;
-%let p95_var = p95_&var_0;
-%let p50_var = median_&var_0;
-%let pmean_var = mean_&var_0;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-      
-proc transpose data=option_0 out=g&count prefix=&varb;var &varb; by cald; id count_csim;run;
-data g&count;set g&count;***creates one dataset per variable;
-p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._0 = median(of &varb.1-&varb.&nfit);
-pmean_&varb._0 = mean(of &varb.1-&varb.&nfit);
-
-keep cald option p5_&varb._0 p95_&varb._0 p50_&varb._0 pmean_&varb._0;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  gg&count;quit;run;
-%end;
 %mend;
 
-%option_0;
-run;
+/*-----------------------------------------*/
+/* Step 3: Example call for options 0, 1, 2 */
+/*-----------------------------------------*/
+%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
 
 
-
-data option_1;
-set b;
-if option =0 then delete;
-if option =2 then delete;
-if option =3 then delete;
-if option =4 then delete;
-
-%let var =  
-p_mm				p_hiv_mm			p_hiv_m
-p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		prevalence1549_mm	
-prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_onprep_mm
-prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
-n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
-p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 		 prop_elig_on_prep
- prop_elig_on_prep_mm	prop_elig_on_prep_nmm
-prop_1564m_onprep_nmm	p_hiv_nmm		
-n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
-prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm  			prop_elig_on_prep_genmen
-prop_elig_on_prep_m	prop_elig_on_prep_w p_prep_any_ever_nmm
-
-;
+*ADD AN INCLUDE STATEMENT FOR THE OBSERVED DATA;
 
 
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_1;
-%let p5_var = p5_&var_1;
-%let p95_var = p95_&var_1;
-%let p50_var = median_&var_1;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-      
-proc transpose data=option_1 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data h&count;set h&count;***creates one dataset per variable;
-p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._1 = median(of &varb.1-&varb.&nfit);
-
-keep cald option p5_&varb._1 p95_&varb._1 p50_&varb._1 ;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  hh&count;quit;run;
-%end;
-%mend;
-
-%option_1;
-run;
-
-data option_2;
-set b;
-if option =0 then delete;
-if option =1 then delete;
-if option =3 then delete;
-if option =4 then delete;
-
-%let var =  
-p_mm				p_hiv_mm			p_hiv_m
-p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		prevalence1549_mm	
-prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_onprep_mm
-prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
-n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
-p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 		 prop_elig_on_prep
- prop_elig_on_prep_mm	prop_elig_on_prep_nmm
-prop_1564m_onprep_nmm	p_hiv_nmm		
-n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
-prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm  			prop_elig_on_prep_genmen
-prop_elig_on_prep_m	prop_elig_on_prep_w p_prep_any_ever_nmm
-;
+***Graphs like the intervention file;
 
 
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_2;
-%let p5_var = p5_&var_2;
-%let p95_var = p95_&var_2;
-%let p50_var = median_&var_2;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-      
-proc transpose data=option_2 out=i&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data i&count;set i&count;***creates one dataset per variable;
-p5_&varb._2  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._2 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._2 = median(of &varb.1-&varb.&nfit);
-
-keep cald option p5_&varb._2 p95_&varb._2 p50_&varb._2 ;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  ii&count;quit;run;
-%end;
-%mend;
-
-%option_2;
-run;
-
-
-data option_3;
-set b;
-if option =0 then delete;
-if option =1 then delete;
-if option =2 then delete;
-if option =4 then delete;
-
-%let var =  
-p_mm				p_hiv_mm			p_hiv_m
-p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		prevalence1549_mm	
-prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_onprep_mm
-prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
-n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
-p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 		 prop_elig_on_prep
- prop_elig_on_prep_mm	prop_elig_on_prep_nmm
-prop_1564m_onprep_nmm	p_hiv_nmm		
-n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
-prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm  			prop_elig_on_prep_genmen
-prop_elig_on_prep_m	prop_elig_on_prep_w p_prep_any_ever_nmm
-;
-
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_3;
-%let p5_var = p5_&var_3;
-%let p95_var = p95_&var_3;
-%let p50_var = median_&var_3;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-      
-proc transpose data=option_3 out=j&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data j&count;set j&count;***creates one dataset per variable;
-p5_&varb._3  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._3 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._3 = median(of &varb.1-&varb.&nfit);
-
-keep cald option p5_&varb._3 p95_&varb._3 p50_&varb._3 ;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  jj&count;quit;run;
-%end;
-%mend;
-
-%option_3;
-run;
-
-
-
-data option_4;
-set b;
-if option =0 then delete;
-if option =1 then delete;
-if option =2 then delete;
-if option =3 then delete;
-
-%let var =  
-p_mm				p_hiv_mm			p_hiv_m
-p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		prevalence1549_mm	
-prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			prop_1564mm_onprep_mm
-prop_1564mm_onprep_inj_mm				prop_1564mm_onprep_oral_mm					prop_elig_on_prep_mm
-n_prep_any_mm		n_prep_oral_mm		n_prep_inj_mm			n_prep_ever_mm		p_prep_any_ever_mm
-p_newp_ge1_mm		p_prep_any_willing	prop_1564m_onprep		prop_1564w_onprep 		 prop_elig_on_prep
- prop_elig_on_prep_mm	prop_elig_on_prep_nmm
-prop_1564m_onprep_nmm	p_hiv_nmm		
-n_prep_oral_mm			n_prep_inj_mm	prop_elig_on_prep_inj	prop_elig_on_prep_oral
-prop_elig_on_prep_oral_mm	prop_elig_on_prep_inj_mm  			prop_elig_on_prep_genmen
-prop_elig_on_prep_m	prop_elig_on_prep_w p_prep_any_ever_nmm
-;
-
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_4;
-%let p5_var = p5_&var_4;
-%let p95_var = p95_&var_4;
-%let p50_var = median_&var_4;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-      
-proc transpose data=option_4 out=k&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data k&count;set k&count;***creates one dataset per variable;
-p5_&varb._4  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._4 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._4 = median(of &varb.1-&varb.&nfit);
-
-keep cald option p5_&varb._4 p95_&varb._4 p50_&varb._4 ;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  kk&count;quit;run;
-%end;
-%mend;
-
-%option_4;
-run;
-
-
-
-
-
-
-data d; * this is number of variables in %let var = above ;
-merge 
-g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  
-g25  g26  g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37   g38  g39  g40 g41  /*g42  g43  g44  g45  g46  g47  g48  g49  g50 
-g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 /* g73 g74 g75  g76  g77  g78 
-g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
-g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
-g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
-g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
-g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
-g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
-g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252*/ 
-
-h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20	h21  h22  h23  h24
-h25  h26  h27  h28  h29	 h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41
-i1   i2   i3   i4   i5   i6   i7   i8   i9   i10  i11  i12  i13  i14  i15  i16  i17  i18  i19  i20	i21  i22  i23  i24
-i25  i26  i27  i28  i29  i30  i31  i32  i33  i34  i35  i36  i37  i38  i39  i40  i41
-j1   j2   j3   j4   j5   j6   j7   j8   j9   j10  j11  j12  j13  j14  j15  j16  j17  j18  j19  j20	j21  j22  j23  j24
-j25  j26  j27  j28  j29  j30  j31  j32  j33  j34  j35  j36  j37  j38  j39  j40  j41
-k1   k2   k3   k4   k5   k6   k7   k8   k9   k10  k11  k12  k13  k14  k15  k16  k17  k18  k19  k20	k21  k22  k23  k24
-k25  k26  k27  k28  k29  k30  k31  k32  k33  k34  k35  k36  k37  k38  k39  k40  k41
-;
-by cald;
 
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;

@@ -1030,7 +1030,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/malawi_parameters.sas";
-  %include "/home/rmjlja9/Zim_parameters.sas";
+ %include "/home/rmjllob/Zim_parameters.sas";
 * %include "/home/rmjllob/CdI_parameters.sas";
 /*%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";*/
 
