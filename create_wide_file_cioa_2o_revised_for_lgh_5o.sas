@@ -4,7 +4,6 @@
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_lgh_rev_out\";
 
-
 /*
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_lgh_rev_out\";
@@ -12,14 +11,50 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_cioa_lgh_rev_5o;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.cioa_lgh_rev;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-* if option in (0, 1);
+s_hiv_ehr = .; s_prep_any_elig_ehr = .;
+
+run;
+
+libname c "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_lgh_rev_a_out\";
+
+data i1;set c.out1:;data i2; set c.out2:; data i3; set c.out3:; data i4; set c.out4:; data i5; set c.out5:; 
+data i6; set c.out6:; data i7; set c.out7:; data i8; set c.out8:; data i9; set c.out9:;  
+
+data b.cioa_lgh_rev_a;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+
+s_diag_ehr = .;
+
+run;
+
+
+libname d "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_lgh_rev_b_out\";
+
+data i1;set d.out1:;data i2; set d.out2:; data i3; set d.out3:; data i4; set d.out4:; data i5; set d.out5:; 
+data i6; set d.out6:; data i7; set d.out7:; data i8; set d.out8:; data i9; set d.out9:;  
+
+data b.cioa_lgh_rev_b;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+
+s_diag_ehr = .;
+
+run;
+
+
+libname e "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\cioa_lgh_rev_c_out\";
+
+data i1;set e.out1:;data i2; set e.out2:; data i3; set e.out3:; data i4; set e.out4:; data i5; set e.out5:; 
+data i6; set e.out6:; data i7; set e.out7:; data i8; set e.out8:; data i9; set e.out9:;  
+
+data b.cioa_lgh_rev_c;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
 */
 
+data b.k_cioa_lgh_rev_5o; set b.cioa_lgh_rev b.cioa_lgh_rev_a  b.cioa_lgh_rev_b  b.cioa_lgh_rev_c ;
+
+run;
 
 
 
