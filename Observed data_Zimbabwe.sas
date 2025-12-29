@@ -54,25 +54,34 @@
 *******************************************************************************************
 ************************************     CONTENT   ************************************
 *******************************************************************************************
-1.  Population...................................Line 77
-2.  Fertility....................................Line 343
-3.  Mortality....................................Line 439
-4.  Prevalence...................................Line 615
-5.  Incidence....................................Line 1027
-6.  Number living with HIV ......................Line 1179
-7.  Sexual behaviour.............................Line 1239
-8.  Testing......................................Line 1416
-9.  Linkage from testing to ART Uptake...........Line 2000
-10. On ART: In need, started, on ART.............Line 2033
-11. Median CD4 at diagnosis and ART initiation...Line 2388
-12. Virological outcomes on 1st line.............Line 2447
-13. Retention on ART.............................Line 2557
-14. Resistance...................................Line 2725
-15. Male circumcision............................Line 2793
-16. PrEP.........................................Line 2904
-17. Structural intervention and social enablers..Line 2919
-18. Sexually transmitted infections..............Line 2929
-19. Tubercolosis.................................Line 2939
+1.  Population...................................Line 87
+2.  Fertility....................................Line 362
+3.  Mortality....................................Line 467
+4.  Prevalence...................................Line 645
+5.  Incidence....................................Line 1057
+6.  Number living with HIV ......................Line 1210
+7.  Sexual behaviour.............................Line 1270
+8.  Testing......................................Line 1450
+	8a. % ever tested for HIV and tested in the last year in the general population ...Line 1453
+    8b. Number of HIV tests performed & positivity rate in the general population .....Line 1574
+    8c. Diagnosed with HIV in the general population...................................Line 1777
+    8d. Testing in female sex workers..................................................Line 1811
+    8e. Testing in Pregnant women......................................................Line 1900
+    8f. PMTCT..........................................................................Line 2009
+9.  Linkage from testing to ART Uptake...........Line 2077
+10. On ART: In need, started, on ART.............Line 2110
+11. Median CD4 at diagnosis and ART initiation...Line 2481
+12. Virological outcomes on 1st line.............Line 2543
+13. Retention on ART.............................Line 2660
+14. Resistance...................................Line 2828
+15. Male circumcision............................Line 2896
+16. Packages of HIV combination prevention services for key populations ...............Line 3046
+17. PrEP.........................................Line 3077
+18. Structural intervention and social enablers..Line 3166
+19. Social behavioural change communication		 Line 3179
+20. Sexually transmitted infections..............Line 3190
+21. Tubercolosis.................................Line 3202
+
 
 *******************************************************************************************
 *********************************     1. Population    ************************************
@@ -102,16 +111,6 @@ if cald=2012.5 then do;
 	o_pop_1549m_Zi_cens	=3226126;
 	o_pop_1549w_Zi_cens	=3291432;
 end;
-
-*Compare to:
-- s_alive1549_w  
-- s_alive1549_m  
-t_alive1549_
-t_alive1565_
-- s_age_1549
-t_alive1565m_  t_alive1565w_
-t_ageg1m  t_ageg6m
-  t_ageg1w  t_ageg6w;
 
 *Source: "Zimbabwe data.xls" sent by David Wilson;
 if cald=2002.5 then do;
@@ -194,6 +193,25 @@ https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryrep
 *"according to the 2017 Inter -Censual Demographic Projections Report";
 if cald=2019.5 then o_pop_all_Zi=15800000;
 
+*Source: World Population Prospect, file "World Population Prospect 2022.pdf";
+if cald=2025.5 then do;
+	o_pop_014_WPP =7000000;
+	o_pop_1524_WPP=3500000;
+	o_pop_2564_WPP=6000000;
+	o_pop_65pl_WPP=1000000;
+end;
+if cald=2050.5 then do;
+	o_pop_014_WPP = 8000000;
+	o_pop_1524_WPP= 4900000;
+	o_pop_2564_WPP=12500000;
+	o_pop_65pl_WPP= 1800000;
+end;
+if cald=2070.5 then do;
+	o_pop_014_WPP = 7600000;
+	o_pop_1524_WPP= 5200000;
+	o_pop_2564_WPP=17000000;
+	o_pop_65pl_WPP= 2500000;
+end;
 
 
 
@@ -227,7 +245,7 @@ if cald=2012.5 then do; o_pop_ab1ts6m_nbcs=39497; end;
 *** >=1 TS partner in last 12 months (Notes made by VC (Notes_CEA_meeting_28Jan2016_final (002)_LBM) state 1 TSP should not be 
 	considered as FSW);
 
-*Source: Population-Level Impact of Zimbabwe's National Behavioural Change Programme, Buzdugan, Cowan 2015,5.1%+3.8%=8.9% in 2011
+*Source: Population-Level Impact of Zimbabwes National Behavioural Change Programme, Buzdugan, Cowan 2015,5.1%+3.8%=8.9% in 2011
 		 Estimated as above - 8.9% * 3291432;
 if cald=2012.5 then do; o_pop_fsw_1ts12m_nbcs=292937; end;
 
@@ -241,8 +259,8 @@ if cald=2012.5 then do; o_pop_fsw_1ts12m_nbcs=292937; end;
 		  implying 41% CCU in 2016
 
 
-Numbers below are estimated by multiplying 67.7% with David Wilson's and NBCP estimates above
-(In Document ìSisters numbers v4ÅEcirculated in Mar 2016 55% used condom at last sex);
+Numbers below are estimated by multiplying 67.7% with David Wilson and NBCP estimates above
+(In Document ìSisters numbers v4î circulated in Mar 2016 55% used condom at last sex);
 
 /* these numbers were calculated using the 59.3% which we are now unable to find;
 if cald=2002.5 then do; o_pop_fswccu_dw=48011; o_pop_fswccu_ll_dw= 10915; o_pop_fswccu_ul_dw=199829;end;
@@ -296,7 +314,7 @@ if cald=2011.5 then o_fsw_seen_py_cowan=3560;
 	- o_p_fsw_1ts6m_1849w_nbcs:   1 transactional sex partners in the last 6 months;
 
 ***LBM update Sep2016;
-*Source: Population-Level Impact of Zimbabwe's National Behavioural Change Programme, Cowan 2015,5.1%+3.8%=8.9% in 2011
+*Source: Population-Level Impact of Zimbabwes National Behavioural Change Programme, Cowan 2015,5.1%+3.8%=8.9% in 2011
 	- o_p_fsw_1ts12m_1849w_nbcs:   >=1 transactional sex partners in the last 12 months;
 
 if cald=2011.5 then do;
@@ -307,7 +325,7 @@ if cald=2011.5 then do;
 end;
 
 *Source: email from Debra tenBrink on 22/12/2021 reporting as source 2016 Respondent Driven Sampling Survey;
-if cald=2016.5 then o_p_fsw_1549w_rdss=0.012;
+if cald=2016.5 then o_p_fsw_1549w_rds=0.012;
 *In Goals 1.2% of women 15-49 are FSW based on 45,000 FSW from UNAIDS Key Population Atlas and a 15-49 female population of 3,634,000 from World Population Prospects 2019;
 
 
@@ -339,8 +357,9 @@ end;
 
 
 
+
 *******************************************************************************************
-************************************     Fertility     ************************************
+************************************    2. Fertility     ************************************
 *******************************************************************************************
 
 ***Total births per woman;
@@ -382,7 +401,7 @@ if cald=2014 then o_s_fertility_mims=4.3;
 
 *Source: CIA website, accessed Sep 2016 "https://www.cia.gov/library/publications/the-world-factbook/geos/zi.html";
 if cald=2016 then o_s_fertility_cia=3.5;
-if cald=2014 then o_s_fertility_cia=3.56; *(page no longer active, number reported from Vale's Zimbabwe Summary data file);
+if cald=2014 then o_s_fertility_cia=3.56; *(page no longer active, number reported from Vales Zimbabwe Summary data file);
 
 *Source: United Nations World Population Prospects, 2012 revision
          "https://esa.un.org/unpd/wpp/Publications/Files/WPP2012_Volume-I_Comprehensive-Tables.pdf";
@@ -405,7 +424,7 @@ if cald=2020 then o_s_fertility_un2015=3.65;
 
 
 ***Number of expected live births;
-*Source:ìZimbabwe_PMTCT_surveillance_protocol_231215ÅEat page 16 where it is cited "Health Information, Ministry of Health and Child Care, Zimbabwe";
+*Source:ìZimbabwe_PMTCT_surveillance_protocol_231215î at page 16 where it is cited "Health Information, Ministry of Health and Child Care, Zimbabwe";
 *In an email by Frances Cowan on 4/11/2016 she confirmed aroun 400,000 deliveries a year;
 *Update VC Nov 2016;
 if cald=2011.5 then o_s_livebirths_MoH=412122;
@@ -423,11 +442,10 @@ if cald=2016.5 then o_s_exppregn_MoH=433914;
 if cald=2022.5 then o_s_exppregn_MoH=508952;*VCMar2023;
 
 
-*Source:  'Issues_with_testing_in_anc_20161107'. Document produced by VC to explore discrepancies in anc data;
+*Source:  "Issues_with_testing_in_anc_20161107". Document produced by VC to explore discrepancies in anc data;
 ***Number of pregnant women;
 if cald=2011.5 then o_s_pregnant_MoH=412122;
 if cald=2013.5 then o_s_pregnant_WHO=398474;
-if cald=2016.5 then o_s_pregnant_Mhangara=433914; *expected;
 
 *Source: Census 2012 - Fertility rates by age, Page 111;
 if cald=2012 then do;
@@ -446,7 +464,7 @@ end;
 
 
 *******************************************************************************************
-************************************     Mortality     ************************************
+************************************   3. Mortality     ************************************
 *******************************************************************************************
 
 ***HIV Deaths Adults and Children;
@@ -621,8 +639,10 @@ if cald=2019.5 then do;o_r_aidsdeath_Zim_GARPR=0.001267;o_ll_r_aidsdeath_Zim_GAR
 
 
 
+
+
 *******************************************************************************************
-************************************    Prevalence     ************************************
+************************************   4. Prevalence     ************************************
 *******************************************************************************************
 
 *** Antenatal clinics;
@@ -766,7 +786,7 @@ if cald=2006 then do;
 *The following are from Hogan 2012;o_prev1549m_ll_Z_Hog=0.113;o_prev1549m_ul_Z_Hog=0.253; 
 *The following are from Hogan 2012;o_prev1549w_ll_Z_Hog=0.133;o_prev1549w_ul_Z_Hog=0.333; 
 
-*Source: David Wilson's estimates;
+*Source: David Wilson estimates;
 	o_prev2549m_Z_DHS=0.233; o_prev2549w_Z_DHS=0.325;
 	o_prev50plm_Z_DHS=0.20;  o_prev50plw_Z_DHS=0.28;
 
@@ -799,7 +819,7 @@ if cald=2011 then do;
 *The following are based on Hogan 2012; o_prev1549m_ll_Z_Hog=0.096;o_prev1549m_ul_Z_Hog=0.214; 
 
 
-*Source: David Wilson's estimates;
+*Source: David Wilson estimates;
 	o_prev2549m_Z_DHS=0.166; o_prev2549w_Z_DHS=0.253;
 	o_prev50plm_Z_DHS=0.194; o_prev50plw_Z_DHS=0.296;
 end;
@@ -1014,11 +1034,9 @@ end;
 
 
 
-
-
 ***LBM Feb 2017;
 ***Prevalence stratified by age and duration of FSW;
-*Source: Draft Paper  - 'How can programmes better support female sex workers to avoid HIV infection in Zimbabwe' (Cowen 2017)? ;
+*Source: Draft Paper  - "How can programmes better support female sex workers to avoid HIV infection in Zimbabwe" (Cowen 2017)? ;
 if cald=2013.5 then do;
 	o_prev_1824fsw_0_2_rds=0.31;	o_prev_2529fsw_0_2_rds=0.53;	o_prev_3039fsw_0_2_rds=0.63;	o_prev_ov40fsw_0_2_rds=0.80;
 	o_prev_1824fsw_3_4_rds=0.43;	o_prev_2529fsw_3_4_rds=0.54;	o_prev_3039fsw_3_4_rds=0.63;	o_prev_ov40fsw_3_4_rds=0.67;
@@ -1033,8 +1051,10 @@ end;
 
 
 
+
+
 *******************************************************************************************
-************************************     Incidence     ************************************
+************************************   5. Incidence     ************************************
 *******************************************************************************************
 
 *** Pregnant women;
@@ -1185,8 +1205,9 @@ if cald=2011.5 then o_HIVIncid_fsw=0.10*100;
 
 
 
+
 *******************************************************************************************
-******************************     Number living with HIV     *****************************
+******************************   6. Number living with HIV     *****************************
 *******************************************************************************************
 
 *Source: Avert 2009;
@@ -1205,28 +1226,12 @@ if cald=1990.5 then o_livingHIV_1549=800000;
 if cald=1995.5 then o_livingHIV_1549=1600000;
 if cald=2000.5 then o_livingHIV_1549=1900000;
 if cald=2005.5 then o_livingHIV_1549=1500000;
-*if cald=2011.5 then o_livingHIV_1549=1200000;*(1.2-1.3)	2011	Estimated by UNAIDS model, exact;
+if cald=2011.5 then o_livingHIV_1549=1200000;*(1.2-1.3)	2011	Estimated by UNAIDS model, exact;
 
-*Source: UNAIDS (Section ìCountry overview") http://www.unaids.org/en/regionscountries/countries/zimbabwe/#5
-https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.unaids.org%2Fsites%2Fdefault%2Ffiles%2Fmedia_asset%2FHIV_estimates_from_1990-to-present.xlsx&wdOrigin=BROWSELINK
-Accessed on 3rd Aug 2025;
 
-if cald=2010 then o_livingHIV_1549=1200000;
-if cald=2011 then o_livingHIV_1549=1200000;
-if cald=2012 then o_livingHIV_1549=1200000;
-if cald=2013 then o_livingHIV_1549=1200000;
-if cald=2014 then o_livingHIV_1549=1200000;
-if cald=2015 then o_livingHIV_1549=1200000;
-if cald=2016 then o_livingHIV_1549=1300000;
-if cald=2017 then o_livingHIV_1549=1300000;
-if cald=2018 then o_livingHIV_1549=1300000;
-if cald=2019 then o_livingHIV_1549=1300000;
-if cald=2020 then o_livingHIV_1549=1200000;
-if cald=2021 then o_livingHIV_1549=1200000;
-if cald=2022 then o_livingHIV_1549=1200000;
-if cald=2023 then o_livingHIV_1549=1200000;
-if cald=2024 then o_livingHIV_1549=1200000;
-
+***LBM Update Sep 2016;
+*Source: UNAIDS (Section ìCountry overview") http://www.unaids.org/en/regionscountries/countries/zimbabwe/#5;
+if cald=2015 then do; o_livingHIV_all=1300000;o_livingHIV_ll_all=1200000;o_livingHIV_ul_all=1500000;end;
 
 *Source: "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo. (Slide 13 in Zim_ePMS Data Completeness.ppt)
 		Senior Monitoring and Evaluation Officer, AIDS and TB National Programme, Zimbabwe, 23 November 2015;
@@ -1415,7 +1420,7 @@ if cald=2011  then do; o_p_paidsex_ly_1554m_dhs=0.030;  o_p_paidsex_ly_1519m_dhs
 
 
 ***Number of clients per week
- Source: Document ìSisters numbers v4ÅEcirculated in Mar2016, not sure whether the data are form the Sisters with a Voice programme or RDS
+ Source: Document ìSisters numbers v4î circulated in Mar2016, not sure whether the data are form the Sisters with a Voice programme or RDS
 36% 0-3  clients/week, 
 41% 4-10 clients/week, 
 23% >10, 
@@ -1438,14 +1443,14 @@ if cald=2016 then do; o_p_cls_last_1524w_zdhs=0.56;o_p_cls_last_1524m_zdhs=0.34;
 
 
 
+
+
+
 *******************************************************************************************
 **********************************     8. Testing     *************************************
 *******************************************************************************************
 
-
-
-
-**** Proportion ever tested for HIV and tested in the last year in the general population;
+**** 8a. Proportion ever tested for HIV and tested in the last year in the general population;
 
 *I did not use "Percentage of population tested for HIV in the last 12 months" in
 male 15-24, female 15-24, male 25-49, female 25-49, male 50+, female 50+ from David Wilson 
@@ -1543,7 +1548,7 @@ if cald=2009.5 then o_p_evertested_1549w_mim=0.449;
 if cald=2014.5 then o_p_evertested_1549w_mim=0.816;
 
 *Source: National Behavioural Change Programme, AIDS 2010 Conference
-		(Langhaug L, Buzdugan R, Dirawo J, et al. An evaluation of Zimbabwe's national behaviour change programme: results of the mid-term evaluation survey. 2010 Jul, Vienna, Austria 2010.);
+		(Langhaug L, Buzdugan R, Dirawo J, et al. An evaluation of Zimbabwe national behaviour change programme: results of the mid-term evaluation survey. 2010 Jul, Vienna, Austria 2010.);
 if cald=2010.5 then do; o_p_evertested_1844_i_nbcp=0.5; o_p_evertested_1844_c_nbcp=0.36; end;
 
 *Source: National Behavioural Change Programme 2013 
@@ -1556,10 +1561,17 @@ if cald=2011.5 then do; o_p_evertested_1844m_nbcp=0.5; o_p_evertested_1844w_nbcp
 
 if cald=2011.5 then do; o_p_evertested_1844m_nbcp=0.588; o_p_evertested_1844w_nbcp=0.763; end;
 
+*Percentage of women and men aged 15-49 who received an HIV test in the last 12 months and know their status;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2025.75 then do;
+	target_p_testedly_1549m_NSP=0.95;
+	target_p_testedly_1549w_NSP=0.95;
+end;
 
 
 
-*** Number of HIV tests performed & positivity rate in the general population;
+**** 8b. Number of HIV tests performed & positivity rate in the general population;
 
 *Source: Global AIDS response country  progress report Zimbabwe 2015;
 if cald=2010.5 then o_s_tested_1549_py_garcpr =1653603;
@@ -1581,8 +1593,45 @@ if cald=2014.5 then do; o_s_tested_1549_py_garcpr =1755179;o_s_tested_py_garcpr 
 if cald=2015.5 then do; o_s_tested_1549_py_garcpr =2201246;o_s_tested_py_garcpr =1952278;end;*how can alla ges be higher than 15-49?;
 if cald=2016.5 then do; o_s_tested_1549_py_garcpr =2664844;o_s_tested_py_garcpr =2580766;end;
 if cald=2017.5 then o_s_tested_1549_py_garcpr =2851049;
-if cald=2018.5 then o_s_tested_1549_py_garcpr =3011027;
+if cald=2018.5 then do;o_s_tested_1549_py_garcpr =3011027;
+					   o_s_tested_1549w_py_garcpr =1959193;
+					   o_s_tested_1549m_py_garcpr =1051834;end;
 if cald=2019.5 then o_s_tested_1549_py_garcpr =2382768;
+
+*Number of men and women who were tested and received their results;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+*Note: I am using the same variable name as above as the etsimate for 2018 were the same;
+if cald=2018.5 then    o_pos_rate_15ov_z=0.06;
+if cald=2020.5 then do;target_s_tested_1549_py_NSP =2580149;
+					   target_s_tested_1549w_py_NSP=1625494;
+					   target_s_tested_1549m_py_NSP= 954655;end;
+if cald=2021.5 then do;target_s_tested_1549_py_NSP =1769084;
+					   target_s_tested_1549w_py_NSP=1096832;
+					   target_s_tested_1549m_py_NSP= 672252;
+						target_pos_rate_15ov_NSP=0.05;end;
+if cald=2022.5 then do;target_s_tested_1549_py_NSP =1805214;
+					   target_s_tested_1549w_py_NSP=1101181;
+					   target_s_tested_1549m_py_NSP= 704033;
+						target_pos_rate_15ov_NSP=0.05;end;             
+if cald=2023.5 then do;target_s_tested_1549_py_NSP =1793079;
+					   target_s_tested_1549w_py_NSP=1075847;
+					   target_s_tested_1549m_py_NSP= 717232;
+						target_pos_rate_15ov_NSP=0.05;end;
+if cald=2024.5 then do;target_s_tested_1549_py_NSP =1777957;
+					   target_s_tested_1549w_py_NSP=1048994;
+					   target_s_tested_1549m_py_NSP= 728962;
+						target_pos_rate_15ov_NSP=0.05;end;
+if cald=2025.5 then do;target_s_tested_1549_py_NSP =1814657;
+					   target_s_tested_1549w_py_NSP=1052501;
+					   target_s_tested_1549m_py_NSP= 762156;
+					   target_pos_rate_15ov_NSP=0.05;end;
+
+*Source: PEPFAR testing 2024 Q1_SymptomaticTesting.xls sent by John in May-June2024; 
+if cald=2024.25 then do;
+	o_pos_rate_pepfar=0.046;
+	o_pos_rate_sympt_pepfar=0.064;*5.7% or 7.1 dependning on definition;
+end;
 
 *HIV tests performed in adults (15+) in the public health sector, including first antenatal tests but not second antenatal tests;
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
@@ -1697,8 +1746,8 @@ Q1 - Are people diagnosed in hospital symptomatic people or are they due to PITC
 	 PITC is implemented very well in the ANC settings for PMTCT and in the TB clinics. But needs strengthening in the other areas."
 Q2 - Would most people who develop WHO4 or WHO3 disease present in the hospital?
 	 Reply from Tsitsi on 5th July 2016: "yes, this is true"
-Q3 - I know that circumcision is rolled out in Zim, if a person is diagnosed at the test pre-circumcision to which of the ìreasonsÅEit belongs? 
-	 Reply from Tsitsi on 5th July 2016: It could be classified as either as  'hospital/illness' where VMMC is offered at the hospital or 'Other'. 
+Q3 - I know that circumcision is rolled out in Zim, if a person is diagnosed at the test pre-circumcision to which of the ìreasonsî it belongs? 
+	 Reply from Tsitsi on 5th July 2016: It could be classified as either as  "hospital/illness" where VMMC is offered at the hospital or "Other". 
 	 We are revising the Green book so there is need to specifiy VMMC."
 Q4 - What is the denominator?
 	 Reply from Tsitsi on 11th July 2016: 
@@ -1706,6 +1755,13 @@ Q4 - What is the denominator?
 	 While reporting ePMS sites are now about 410, they were way fewer back then when this analysis was done.
 	 - The denominator excludes individuals who tested HIV positive but did not enrol into HIV care.
 	 - Those tested at PSI sites are excluded since those sites never had ePMS at the time;
+
+
+** Estimate for number of tests in symptomatic people in Minimal scenario (MIHPSA) based on PEPFAR and MoH data (see spreadsheet PEPFAR testing 2024 Q1_SymptomaticTesting_updated);
+if cald=2022.5 then do;
+	o_n_tested_sympt = 109350; 
+	o_n_diag_sympt = 6351;
+end;
 
 
 ** Source for all of the followings: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
@@ -1720,13 +1776,17 @@ if cald=2022.5 then o_n_hivst_secd_partners =31538;*VCMar2023;
 if cald=2022.5 then o_n_contactsested_fac =62526;*VCMar2023;
 
 
+*Source: Draft 2023 HIV Prevention Targets Handbook 20022023 (1).docs sent by Ngwarai on 28/6/2023;
+if cald=2023.75 then target_n_hcwtest=1793079;*Conventional tests;
+if cald=2023.75 then target_n_hivst=769860;
+
+***Repeat testing;
+*Source: Increases in HIV Testing and Case Detection from NIMH Project Accept (HPTN 043) among 16ñ32 Year Olds;
+if cald=2011 then o_rct_max_p_repeat_test=0.28;
 
 
 
-
-
-
-***Diagnosed with HIV in the general population;
+**** 8c. Diagnosed with HIV in the general population;
 *Source: DHS 2010-11
 		 Table 14.10 page 227 "Percent distribution of women and men age 15-49 who tested HIV positive...");
 if cald=2011 then do;
@@ -1757,10 +1817,20 @@ if cald=2020 then do;
 	o_p_diag_15plw_zimphia=0.883;
 end;
 
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+if  cald=2025.75 then do;
+	target_p_diag_15pl_NSP=0.95;
+	target_p_diag_15plm_NSP=0.95;
+	target_p_diag_15plw_NSP=0.95;
+	target_p_diag_1524_NSP=0.95;
+	target_p_diag_1524m_NSP=0.95;
+	target_p_diag_1524w_NSP=0.95;
+end;
 
 
 
-*** Testing in female sex workers;
+**** 8d. Testing in female sex workers;
 
 *3Nov2015;
 *Source: "Zimbabwe data.xls" sent by David Wilson;
@@ -1784,7 +1854,7 @@ if cald=2013.75 then do;
 end;
 
 *Number of FSW who attended Sisters clinics
-Source: Document ìSisters numbers v4;
+Source: Document ìSisters numbers v4î;
 if cald=2014.75 then do;
 	o_nfsw_sistclin_fc   =13168;
 	o_nfsw_sistclin1st_fc=10019;
@@ -1809,7 +1879,7 @@ if cald=2014 then do;o_n_test_fsw_sister=3526;o_yield_fsw=0.303;end;
 if cald=2015 then do;o_n_test_fsw_sister=5677;o_yield_fsw=0.224;end;
 
 
-*Source: RDS last quarter 2013 (reported in Document ìSisters numbers v4ÅE& in cascade manuscript);
+*Source: RDS last quarter 2013 (reported in Document ìSisters numbers v4î & in cascade manuscript);
 if cald=2013.75 then do;
 	o_p_diag_fsw_rds=0.64;*0.67 reported in the manuscript of trial citing
 *Source: AIDS 2014 Conference, Cowan F. HIV care cascade among female sex workers in zimbabwe: Baseline results of the sAPPH-iRe trial;
@@ -1826,10 +1896,20 @@ if cald=2017.5 then o_p_diag_fsw_garpr=0.91;
 if cald=2018.5 then o_p_diag_fsw_garpr=0.93;
 if cald=2019.5 then o_p_diag_fsw_garpr=0.81;
 
+*Percentage of FSW living with HIV who know their status;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2018.5 then o_p_diag_fsw_NSP=0.936;
+if cald=2020.5 then target_p_diag_fsw_NSP=0.95;
+if cald=2021.5 then target_p_diag_fsw_NSP=0.95;
+if cald=2022.5 then target_p_diag_fsw_NSP=0.95;
+if cald=2023.5 then target_p_diag_fsw_NSP=0.95;
+if cald=2024.5 then target_p_diag_fsw_NSP=0.95;
+if cald=2025.5 then target_p_diag_fsw_NSP=0.95;
 
 
 
-**** Testing in Pregnant women;
+**** 8e. Testing in Pregnant women;
 
 *** Proportion of pregnant women attending ANC (irrespective of HIV status) ;
 *Source: Figure 6 in "Policy brief_Option A IE (3).doc" sent by Frances Cowan on 4th November 2016;
@@ -1838,7 +1918,6 @@ if cald=2012.5 then o_p_anc_pregnant_Cowan=0.94;
 if cald=2014.5 then o_p_anc_pregnant_Cowan=0.95;
 
 *** Proportion of pregnant women tested in ANC;
-
 *Source: DHS 2005-2006, page 203;
 if cald=2006 then do;
 	o_p_testedanc_1549_zdhs = 0.226;
@@ -1848,7 +1927,6 @@ if cald=2006 then do;
 	o_p_testedanc_3039_zdhs = 0.225;
 	o_p_testedanc_4049_zdhs = 0.119;
 end;
-
 *Source: DHS 2010-2011, Page 201;
 if cald=2011 then do;
 	o_p_testedanc_1549_zdhs = 0.591;
@@ -1909,21 +1987,21 @@ end;
 
 
 ** Source for all of the following: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
-*# of women who were tested for the first time in ANC (not clear whetehr it includes those tested for the first time at delivery);
-if cald=2022.5 then o_n_firsttested_anc =411830;*VCMar2023;
+*# of women who were tested for the first time in ANC (it does not includes those tested for the first time at delivery);
+if cald=2022.5 then o_n_firsttested_anc =411830;*Probably it means teatsed for the first time during the ANC period;
 *# test done in ANC;
-if cald=2022.5 then o_n_tests_anc =411830+150337;*VCMar2023;
+if cald=2022.5 then o_n_tests_anc =411830+150337; *This is higher than the number of live births;
 *# Women tested for the first time in Labour and Delivery;
-if cald=2022.5 then o_n_firsttested_labdel =6864;*VCMar2023;
+if cald=2022.5 then o_n_firsttested_labdel =6864;
 *# Women tested during Labour and Delivery;
-if cald=2022.5 then o_n_tested_labdel =6864+23901;*VCMar2023;
-*# Women tested for the first time during Post delivery (I assumed it was a typo in excel spreadsheet); 
-if cald=2022.5 then o_n_firsttested_postdel =15259;*VCMar2023;
+if cald=2022.5 then o_n_tested_labdel =6864+23901;
+*# Women tested for the first time during Post delivery ; 
+if cald=2022.5 then o_n_firsttested_postdel =15259;
 *# Women tested during Post delivery;
-if cald=2022.5 then o_n_tested_postdel =15259+139141;*VCMar2023;
+if cald=2022.5 then o_n_tested_postdel =15259+139141;
 
 ** Source for all fo the following: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
-*# HIV +  for the first time  in ANC (i.e. number of new diagnoses);
+*# HIV +  for the first time (i.e. number of new diagnoses) in ANC;
 if cald=2022.5 then o_n_newdiag_anc =11272;*VCMar2023;
 *# HIV + first time during Labour& delivery;
 if cald=2022.5 then o_n_newdiag_labdel =328;*VCMar2023;
@@ -1934,12 +2012,13 @@ if cald=2022.5 then o_n_newdiag_postdel =368;*VCMar2023;
 *# HIV +  during Post delivery (I assumed it was a typo in excel spreadsheet); 
 if cald=2022.5 then o_n_hiv_postdel =368;*VCMar2023;
 
-
 *** # of deliveries by HIV+ women ;
 *Source: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
 if cald=2022.5 then o_n_births_hivposmother =40988;*VCMar2023;
 
 
+
+**** 8f. PMTCT;
 
 *** Number of pregnant women who were given PMTCT prophylaxis in the 3 months period;
 
@@ -1966,7 +2045,6 @@ if cald=2013.25 then     o_s_pregnant_pmtct_Z_GF=13444;*(84% REPORTING RATE);
 *Source: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
 if cald=2022.5 then     o_s_pregnant_pmtct_Z_NAC=43856;
 
-
 *** % HIV+ pregnant women receiving PMTCT;
 if cald=2010.25 then o_P_hivpospreg_pmtct_Z_GF=0.16;
 if cald=2010.5  then o_P_hivpospreg_pmtct_Z_GF=0.20;
@@ -1982,7 +2060,6 @@ if cald=2013.25 then o_P_hivpospreg_pmtct_Z_GF=0.905;
 if cald=2012.75 then o_P_hivpospreg_pmtct_dw = 0.93;
 if cald=2013.75 then o_P_hivpospreg_pmtct_dw = 0.82;	
 if cald=2014.75 then o_P_hivpospreg_pmtct_dw = 0.66;
-
 
 ***LBM update;
 *Source: Global AIDS response country  progress report 2016;
@@ -2004,12 +2081,6 @@ if cald=2019.5 then o_P_hivpospreg_pmtct_garcpr = 0.908;
 *Update VC Nov 2016;
 if cald=2012.5 then o_p_PMTCTorART_pospreg_Cowan=0.59;
 if cald=2014.5 then o_p_PMTCTorART_pospreg_Cowan=0.65;
-
-
-***Repeat testing;
-*Source: Increases in HIV Testing and Case Detection from NIMH Project Accept (HPTN 043) among 16ÅE2 Year Olds;
-if cald=2011 then o_rct_max_p_repeat_test=0.28;
-
 
 
 
@@ -2075,8 +2146,8 @@ if cald=2015.75 then do;o_s_onart_adults_garpr = 817722; o_s_onart_adults_ll = 7
 *Source: Global AIDS Response Progress Report 2020, page 16;
 if cald=2019.75 then do;o_s_onart_adults_garpr = 1149191;end;
 
-*Source UNAIDS - https://www.unaids.org/en/regionscountries/countries/zimbabwe;
-if cald=2024 then o_s_onart_adults_garpr= 1192466;
+
+
 
 *Source: "Zimbabwe data.xls" sent by David Wilson
 		  Also reported in "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo
@@ -2105,7 +2176,7 @@ if cald=2015.5  then do; o_s_all_on1stline_NAC = 831584; o_s_all_2ndline_NAC = 2
 
 
 ***LBM Update Mar 2017;
-*  Tsitsi Apollo, received 23rd Feb 2017 'Zim_Adults on ART by gender';
+*  Tsitsi Apollo, received 23rd Feb 2017 "Zim_Adults on ART by gender";
 * "all refers to adults";
 if cald=2004.75 then do;	o_s_allmale_onart_NAC = 4857;   o_s_allfemale_onart_NAC = 6143; 	o_s_all_onart_NAC=11000; end;
 if cald=2005.75 then do;	o_s_allmale_onart_NAC = 11305;  o_s_allfemale_onart_NAC = 14562;	o_s_all_onart_NAC=25867; end;
@@ -2133,7 +2204,7 @@ if cald=2022.5  then o_s_all_onart_NAC=1182126;
 
 
 *Source: Operational and Service Delivery Manual for the Prevention, Care and Treatment of HIV in Zimbabwe 
-		 by AIDS & TB programme, Ministry of Health and Child Care, Zimbabwe ÅEJune 2015;
+		 by AIDS & TB programme, Ministry of Health and Child Care, Zimbabwe ñ June 2015;
 if cald=2013.75 then o_s_onart_adults_osdm = 620867; ***LBM Update Sep 2016 - changed from 544200;
 
 *Global fund reports - sent by Trevor:
@@ -2267,7 +2338,7 @@ end;
 		 (Slide 7 in Zim_ePMS Data Completeness.ppt)
 		 The data are available for all years and are the same as those indicated in the doc above
 
-		Note: The denominator is ëestimated number of adults and children in need of ARTÅEbased on the criteria detailed in the 
+		Note: The denominator is ëestimated number of adults and children in need of ARTí based on the criteria detailed in the 
 		2013 ART Guidelines. The denominator is derived from the Zimbabwe 2014 National and Subnational HIV Estimates Report;
 if cald=2004.75 then e_p_onart_cd4200=0.05;
 if cald=2005.75 then e_p_onart_cd4200=0.117;
@@ -2300,7 +2371,7 @@ if cald=2019.75 then e_p_adults_onart=0.856;
 
 
 *** Number of adults eligible for ART;
-*Source: Operational and Service Delivery Manual ÅEJune 2015, Page 5 (unclear to which year it refers to but between Nov 2013 and Dec 2014);
+*Source: Operational and Service Delivery Manual ñ June 2015, Page 5 (unclear to which year it refers to but between Nov 2013 and Dec 2014);
 if cald=2014.5 then m_adults_elig_art_osdm=1207175;
 
 
@@ -2365,13 +2436,16 @@ if cald=2009.5 then do; o_ratiofm_newart_mmwr=1.76; o_ratiofm_newart_ll_mmwr=1.5
 if cald=2009.5 then e_ratiofm_newart_unaids=1.43;
 
 
+
+
+
 ***Number of FSW on art (this is a minimum estimate);
-*Source: Document ìSisters numbers v4ÅE Page 3;
+*Source: Document ìSisters numbers v4î, Page 3;
 if cald=2013.75 then o_s_fsw_onart_fc=4500;
 
 
 *** Proportion on ART of FSW diagnosed;
-*Source: RDS survey last quarter 2013: Document ìSisters numbers v4ÅE Page 6 and 7 (in 7 calculated as (21%/39% & 48%/69%);
+*Source: RDS survey last quarter 2013: Document ìSisters numbers v4î, Page 6 and 7 (in 7 calculated as (21%/39% & 48%/69%);
 if cald=2013.75 then do;
 	o_p_onart_fswdiag_rds =0.677;
 	o_p_onart_fsw1524diag_rds =0.54;
@@ -2383,15 +2457,24 @@ if cald=2015.5 then o_p_onart_fswdiag_garpr =0.69;
 if cald=2018.5 then o_p_onart_fswdiag_garpr =0.72;
 if cald=2019.5 then o_p_onart_fswdiag_garpr =0.78;
 
-
+*Percentage of FSW who received ART;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2018.5 then o_p_onart_fsw_NSP=0.719;
+if cald=2020.5 then target_p_onart_fsw_NSP=0.75;
+if cald=2021.5 then target_p_onart_fsw_NSP=0.80;
+if cald=2022.5 then target_p_onart_fsw_NSP=0.85;
+if cald=2023.5 then target_p_onart_fsw_NSP=0.90;
+if cald=2024.5 then target_p_onart_fsw_NSP=0.95;
+if cald=2025.5 then target_p_onart_fsw_NSP=0.95;
 
 
 **** Reasons for ART initiation in the following hierarchical order 
      (1. WHO3/4/TB, 2.CD4<=350, 3. B+ pregnant or breastfeeding, 4. CD4 351-500, 5. not known);
 
-*Source: Lablite slides ìZIM_demoproj_v2ÅEand the data are collected from August 2013, Slide 6, eg. denom=tot num females >15
-         Banket: hospital (hub ÅEART since 2005), Mutorashanga & Nyabira (outreach site for Banket since 2010), 
-		 Zowa (previously ART-naÅEe, ART initiation from 2014, only 21 init);
+*Source: Lablite slides ìZIM_demoproj_v2î and the data are collected from August 2013, Slide 6, eg. denom=tot num females >15
+         Banket: hospital (hub ñ ART since 2005), Mutorashanga & Nyabira (outreach site for Banket since 2010), 
+		 Zowa (previously ART-naÔve, ART initiation from 2014, only 21 init);
 
 if cald=2014 then do;
 	o_p_artinit_whotb_fbanket=0.51; o_p_artinit_cl350_fbanket=0.12; o_p_artinit_pregb_fbanket=0.32; o_p_artinit_c350500_fbanket=0.01;o_p_artinit_Unk_fbanket=0.03;
@@ -2400,6 +2483,8 @@ if cald=2014 then do;
 	o_p_artinit_whotb_Mutoras=0.55; o_p_artinit_cl350_Mutoras=0.12; o_p_artinit_pregb_Mutoras=0.35; o_p_artinit_c350500_Mutoras=0.05;o_p_artinit_Unk_Mutoras=0.03;
 	o_p_artinit_whotb_Nyabira=0.23; o_p_artinit_cl350_Nyabira=0.25; o_p_artinit_pregb_Nyabira=0.30; o_p_artinit_c350500_Nyabira=0.08;o_p_artinit_Unk_Nyabira=0.13;
 end;
+
+
 
 
 
@@ -2416,7 +2501,7 @@ end;
 
 *** At ART initiation
 Source: Gender-related differences in outcomes and attrition on antiretroviral treatment among an HIV-infected patient 
-cohort in Zimbabwe: 2007ÅE010, Takarinda KC 2014
+cohort in Zimbabwe: 2007ñ2010, Takarinda KC 2014
 
 Retrospective patient record review of 3919 HIV-infected patients aged  15 or more who initiated ART between 2007 and 2009 
 in 40 randomly selected ART facilities countrywide;
@@ -2428,8 +2513,8 @@ if cald=2009 then do;
 end;
 
 ***LBM Update Sep 2016;
-*Source: Patient Retention, Clinical Outcomes and Attrition-Associated Factors of HIV-Infected Patients Enrolled in Zimbabwe's
-		 National Antiretroviral Therapy Programme, 2007ÅE010, Mutasa-Apollo 2014;
+*Source: Patient Retention, Clinical Outcomes and Attrition-Associated Factors of HIV-Infected Patients Enrolled in Zimbabwe
+		 National Antiretroviral Therapy Programme, 2007ñ2010, Mutasa-Apollo 2014;
 
 if cald=2008 then do;
 	o_medcd4_artinit=121;
@@ -2449,7 +2534,7 @@ end;
 *DART trial;
 if cald=2008.5 then o_median_cd4art_DART=80;
 
-*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ÅE010, Mungati 2016
+*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ñ2010, Mungati 2016
 n=1610, new ART initiations from 2008-2010;
 if cald=2009 then do;
 	o_medcd4_artinit=168;
@@ -2460,6 +2545,9 @@ end;
 *Source: Outcomes of antiretroviral treatment programs in rural Southern Africa, Wandeler 2012
  Zaka, Zimbabwe, n=1254;
 if cald=2005 then o_medcd4_artinit=91;
+
+
+
 
 
 
@@ -2515,7 +2603,7 @@ end;
 
 
 *** % FSW virally suppressed (of those on ART);
-*Source: RDS survey last quarter 2013 (& document ìSisters numbers v4ÅE;
+*Source: RDS survey last quarter 2013 (& document ìSisters numbers v4î);
 if cald=2013.75 then do;
 	o_p_vlsupp_FSWonart =0.778;
 	o_p_vlsupp_FSW1524onart_rds =0.62;
@@ -2536,9 +2624,9 @@ if cald=2010 then do; o_ratecifail_Renaud=0.264; o_ratecifail_ll_Renaud=0.173; o
 
 *** Proportion with treatment failure (based on viral load);
 
-*Source: Report on the National HIV Drug Resistance Monitoring at Sentinel sites (2009ÅE011)ÅE2009-2011 (n=1000),
-		 cited in 'Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
-		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014; 
+*Source: Report on the National HIV Drug Resistance Monitoring at Sentinel sites (2009ñ2011)î 2009-2011 (n=1000),
+		 cited in "Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
+		 Zimbabwe National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014; 
 
 *Treatment failure definition: VL>1000 at 12m;
 if cald=2010.5 then o_p_vlab1000_12mart_HDRM=0.104;
@@ -2556,7 +2644,7 @@ end;
 *** Proportion who switched to 2nd line;
 
 *Source: Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
-		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014, Page 3; 
+		 Zimbabwe National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014, Page 3; 
 
 *Treatment failure definition: switch to 2nd line based on clinical or immunological monitoring;
 if cald=2009 then o_p_switch2nd_17mart_Mutasa=0.104;
@@ -2571,10 +2659,11 @@ if cald=2019.5 then o_p_vll1000_6mart_garcpr=0.82;
 if cald=2020.5 then o_p_vll1000_6mart_garcpr=0.889;
 
 
-
 ***Virological rebound
 ***Virological failure
 *Currently no data but check old observed file to see what % to look for;
+
+
 
 
 
@@ -2612,7 +2701,7 @@ if cald=2008.5 then o_p_ret_12m_art_WHORes=0.952;*0.939 if exlucing 1.3% people 
 *At different time points;
 
 *Source: Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
-		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014;
+		 Zimbabwe National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014;
 if cald=2009 then do;
 	 o_p_ret_6m_art_mutasa=0.907; o_p_ret_6m_art_ll_mutasa=0.861; o_p_ret_6m_art_ul_mutasa=0.938;
 	o_p_ret_12m_art_mutasa=0.781;o_p_ret_12m_art_ll_mutasa=0.697;o_p_ret_12m_art_ul_mutasa=0.847;
@@ -2652,7 +2741,7 @@ end;
 *** Proportion dead at timepoints since ART initiation;
 
 *Source: Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
-		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014, Page 5;
+		 Zimbabwes National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014, Page 5;
 if cald=2009 then do;
 	 o_p_dead_6m_art_mutasa=0.041; 
 	o_p_dead_12m_art_mutasa=0.048;
@@ -2696,7 +2785,7 @@ if cald=2007 then do; o_deathrate_art_2430_msfb=0.077; o_deathrate_art_2430_ll_m
 
 *** Proportion lost at x months since ART initiation;
 *Source: Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
-		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014, Page 5;
+		 Zimbabwes National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014, Page 5;
 
 *Definition of lost to follow-up is >90 days late for a scheduled visit with the healthcare provider or pharamcy;
 if cald=2009 then do;
@@ -2775,7 +2864,7 @@ if cald=2010.5 then do; o_p_res_artstart_WHOres=0.061; o_p_res_artstart_lc_WHOre
 
 
 ***LBM Update Sep 2016;
-*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ÅE010, Mungati 2016
+*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ñ2010, Mungati 2016
 n=1610, new ART initiations from 2008-2010;
 if cald=2009 then o_p_res_artstart=0.0063;
 
@@ -2808,8 +2897,8 @@ if cald=2008 then do;
 	o_p_k219_resvfail_1y_WHORes=0.067;
 	o_p_ab2tam_resvfail_1y_WHORes=0.333;
 	o_p_nnrti_resvfail_1y_WHORes=0.60;
-
 end;
+
 
 
 
@@ -2826,15 +2915,15 @@ if cald=2011 then do; o_p_mcirc_1524m_dw = 0.07; o_p_mcirc_2549m_dw = 0.11; o_p_
 if cald=2014 then do; o_p_mcirc_1524m_dw = 0.24; o_p_mcirc_2549m_dw = 0.11; o_p_mcirc_50plm_dw = 0.11; end;
 
 
-*** New male circumcisions per year;
+*** New VMMC per year;
 *Source: WHO. Progress in scaling up voluntary medical male circumcision for HIV prevention in East and Southern Africa: January-December 2011. WHO 2011 September [cited 2014 Mar 15] 
 		      Available from: URL: http://www.malecircumcision.org/country_updates/documents/FINAL%20VMMC%20Progress%20Report%20Jan-Dec%202011%20WHO.pdf;
 
 *(LBM: These reports go up to 2012 but same figures are reported in GARPR reports);
-if cald = 2008.5 then o_s_new_mcirc=0;
-if cald = 2009.5 then o_s_new_mcirc=2801;
-if cald = 2010.5 then o_s_new_mcirc=11176;
-if cald = 2011.5 then o_s_new_mcirc=36603;
+if cald = 2008.5 then o_s_new_vmmc=0;
+if cald = 2009.5 then o_s_new_vmmc=2801;
+if cald = 2010.5 then o_s_new_vmmc=11176;
+if cald = 2011.5 then o_s_new_vmmc=36603;
 
 ***LBM Update Sep 2016;
 *Source: Global AIDS Response Country Progress Report Zimbabwe 2016. Page 8 Table 3
@@ -2842,33 +2931,43 @@ if cald = 2011.5 then o_s_new_mcirc=36603;
 
 *Updated using HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,
 they are reported as 2008-2009, 2009-2010, age range 10-49;
-if cald = 2009.5  then o_s_new_mcirc=2784 ;
-if cald = 2010.5  then o_s_new_mcirc=9381;*9384;  *slightly updated based on Isaac;
-if cald = 2011.5  then o_s_new_mcirc=27973;*27971;*slightly updated based on Isaac;
-if cald = 2012.5  then o_s_new_mcirc=29321;*29625;*slightly updated based on Isaac;
-if cald = 2013.5  then o_s_new_mcirc=65679;*65613;*slightly updated based on Isaac;
+if cald = 2009.5  then o_s_new_vmmc_1049m=2784 ;
+if cald = 2010.5  then o_s_new_vmmc_1049m=9381;*9384;  *slightly updated based on Isaac;
+if cald = 2011.5  then o_s_new_vmmc_1049m=27973;*27971;*slightly updated based on Isaac;
+if cald = 2012.5  then o_s_new_vmmc_1049m=29321;*29625;*slightly updated based on Isaac;
+if cald = 2013.5  then o_s_new_vmmc_1049m=65679;*65613;*slightly updated based on Isaac;
 
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,;
-if cald = 2014.5  then o_s_new_mcirc=110163;
-if cald = 2015.5  then o_s_new_mcirc=133012;
-if cald = 2016.5  then o_s_new_mcirc=136986;
-if cald = 2017.5  then o_s_new_mcirc=159476;
-if cald = 2018.5  then o_s_new_mcirc=197705;
-if cald = 2019.5  then o_s_new_mcirc=207375;
-if cald = 2020.5  then o_s_new_mcirc=53743;
+if cald = 2014.5  then o_s_new_vmmc_1049m=110163;
+if cald = 2015.5  then o_s_new_vmmc_1049m=133012;
+if cald = 2016.5  then o_s_new_vmmc_1049m=136986;
+if cald = 2017.5  then o_s_new_vmmc_1049m=159476;
+if cald = 2018.5  then o_s_new_vmmc_1049m=197705;
+if cald = 2019.5  then o_s_new_vmmc_1049m=207375;
+if cald = 2020.5  then o_s_new_vmmc_1049m=53743;
 
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
 *page 22;
 *Note: the age range is not indicated so probably all ages;
-if cald = 2013.5  then o_s_new_mcirc_all=112084;
-if cald = 2014.5  then o_s_new_mcirc_all=209125;
-if cald = 2015.5  then o_s_new_mcirc_all=188732;
-if cald = 2016.5  then o_s_new_mcirc_all=205784;
-if cald = 2017.5  then o_s_new_mcirc_all=301366;
-if cald = 2018.5  then o_s_new_mcirc_all=326012;
-if cald = 2019.5  then o_s_new_mcirc_all=354819;
+if cald = 2013.5  then o_s_new_vmmc_all=112084;
+if cald = 2014.5  then o_s_new_vmmc_all=209125;
+if cald = 2015.5  then o_s_new_vmmc_all=188732;
+if cald = 2016.5  then o_s_new_vmmc_all=205784;
+if cald = 2017.5  then o_s_new_vmmc_all=301366;
+if cald = 2018.5  then o_s_new_vmmc_all=326012;
+if cald = 2019.5  then o_s_new_vmmc_all=354819;
 
+***Source: Draft 2023 HIV Prevention Targets Handbook 20022023 (1).docs sent by Ngwarai on 28/6/2023;
+if cald=2023.75 then target_s_new_vmmc=211526;
+
+**Target: Number of Men aged 15+ years circumcised as part of the minimum package of male 
+circumcision for HIV prevention services;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2018.75 then o_s_new_vmmc_NSP=299302;
+if cald=2024.75 then target_s_new_vmmc_NSP=463448;*These could have been changed given COVID;
+if cald=2025.75 then target_s_new_vmmc_NSP=175211;*These could have been changed given COVID;
 
 
 
@@ -2877,25 +2976,25 @@ if cald = 2019.5  then o_s_new_mcirc_all=354819;
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
 *page 10;
-if cald = 2013.5  then o_cum_mcirc=112084; 
-if cald = 2014.5  then o_cum_mcirc=400235;
-if cald = 2015.5  then o_cum_mcirc=601303;
-if cald = 2016.5  then o_cum_mcirc=839681;
-if cald = 2017.5  then o_cum_mcirc=1141046;
-if cald = 2018.5  then o_cum_mcirc=1466731;
-if cald = 2019.5  then o_cum_mcirc=1821550;
+if cald = 2013.5  then o_cum_vmmc=112084; 
+if cald = 2014.5  then o_cum_vmmc=400235;
+if cald = 2015.5  then o_cum_vmmc=601303;
+if cald = 2016.5  then o_cum_vmmc=839681;
+if cald = 2017.5  then o_cum_vmmc=1141046;
+if cald = 2018.5  then o_cum_vmmc=1466731;
+if cald = 2019.5  then o_cum_vmmc=1821550;
 
 *Reply from Tsitsi on 5th July 2016: Circumcisions are performed both in the health facilities (mainly) and also by some NGOs such as PSI;
 
 ***Number of <15 year olds circumcised;
 *Source: Global AIDS Response Country Progress Report Zimbabwe 2016. Page 8 Table 3;
-if cald = 2009.5  then o_s_child1314_mcirc=17;
-if cald = 2010.5 then o_s_child1314_mcirc=1792;
-if cald = 2011.5  then o_s_child1314_mcirc=8771 ;
-if cald = 2012.5 then o_s_child1314_mcirc=11087;
-if cald = 2013.5  then o_s_child1314_mcirc=46471 ;
-if cald = 2014.5 then o_s_child1314_mcirc=97687;
-if cald = 2015.5  then o_s_child1014_mcirc=78623;
+if cald = 2009.5  then o_s_child1314_vmmc=17;
+if cald = 2010.5 then o_s_child1314_vmmc=1792;
+if cald = 2011.5  then o_s_child1314_vmmc=8771 ;
+if cald = 2012.5 then o_s_child1314_vmmc=11087;
+if cald = 2013.5  then o_s_child1314_vmmc=46471 ;
+if cald = 2014.5 then o_s_child1314_vmmc=97687;
+if cald = 2015.5  then o_s_child1014_vmmc=78623;
 
  
 ***LBM Update feb 2017;
@@ -2919,15 +3018,75 @@ end;
 
 ***Proportion of men aged 15+ who report that they have been circumcised (household surveys) - MIHPSA optional;
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
-if cald=2006   then o_p_circ_15pl_DHIS2_z=0.105;
-if cald=2010.5 then o_p_circ_15pl_DHIS2_z=0.091;
-if cald=2016   then o_p_circ_15pl_DHIS2_z=0.143;
+if cald=2006   then o_p_circ_15pl_DHS_z=0.105;
+if cald=2010.5 then o_p_circ_15pl_DHS_z=0.091;
+if cald=2016   then do;
+	o_p_circ_1549_zimphia=0.143;
+	o_p_medcirc_1549_zimphia=0.124;
+	o_p_tradcirc_1549_zimphia=0.019;
+end;
+
+if cald=2020 then do;
+	o_p_circ_15pl_zimphia=0.231;
+	o_p_medcirc_15pl_zimphia=0.192;
+	o_p_tradcirc_15pl_zimphia=0.039;
+
+	o_p_circ_1549_zimphia=0.249;
+	o_p_medcirc_1549_zimphia=0.218;
+	o_p_tradcirc_1549_zimphia=0.032;
+
+	o_p_medcirc_1524_zimphia=0.344;
+end;
+
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+*The following have been revised as with discussion with Getrude the hope is to achieve 80% by 2040;
+if cald=2018.75   then o_p_circ_1549m_NSP=0.43;
+if cald=2020.75   then target_p_circ_1549m_NSP=0.43;
+if cald=2021.75   then target_p_circ_1549m_NSP=0.50;
+if cald=2022.75   then target_p_circ_1549m_NSP=0.60;
+if cald=2023.75   then target_p_circ_1549m_NSP=0.65;
+if cald=2024.75   then target_p_circ_1549m_NSP=0.70;
+if cald=2025.75   then target_p_circ_1549m_NSP=0.80;
+
+
 
 
 
 
 *******************************************************************************************
-*******************************     16. PreP     **********************************
+********   16. Packages of HIV combination prevention services for key populations ********
+*******************************************************************************************
+
+*Percentage of FSW reached with the package of HIV combination prevention services;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2020.75 then target_p_FSWprog_fsw_NSP =0.75;
+if cald=2021.75 then target_p_FSWprog_fsw_NSP = 0.80;
+if cald=2022.75 then target_p_FSWprog_fsw_NSP = 0.85;
+if cald=2023.75 then target_p_FSWprog_fsw_NSP = 0.85;
+if cald=2024.75 then target_p_FSWprog_fsw_NSP = 0.90;
+if cald=2025.75 then target_p_FSWprog_fsw_NSP = 0.90;
+
+*Number of FSW reached with the defined package of HIV combination prevention services;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2018.75 then o_FSWprog_NSP =19800;
+
+if cald=2020.75 then o_FSWprog_NSP = 33750;
+if cald=2021.75 then o_FSWprog_NSP = 36000;
+if cald=2022.75 then o_FSWprog_NSP = 38250;
+if cald=2023.75 then o_FSWprog_NSP = 40500;
+if cald=2024.75 then o_FSWprog_NSP = 42750;
+if cald=2025.75 then o_FSWprog_NSP = 42750;
+
+
+
+
+
+
+*******************************************************************************************
+*******************************     17. PreP     **********************************
 *******************************************************************************************
 *Source: https://www.prepwatch.org/country/zimbabwe/, accessed 08/07/2022, updated aRpil 2022;
 *Estimated Cumulative Number of People Initiating PrEP:
@@ -2938,28 +3097,85 @@ if cald=2016   then o_p_circ_15pl_DHIS2_z=0.143;
 This is presented as a range due to difficulty in tracking precise numbers and possible double reporting, I used the midlle number in the range;
 if cald=2022.25   then o_n_prep_ever=72500;
 
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2018.75 then do;
+	o_n_prep_fsw_NSP=1570;
+	o_n_prep_all_NSP=6528;
+end;
+
+*Source: PrEP Interventions for consideration_MIHPSA_Zimbabwe_wm.xls sent on 5/7/2023 by Ngwarai;
+if cald=2021.75 then do; 
+	o_prepinit_1524w=12070;
+	o_prepinit_fsw=11830;
+	o_prepinit_sdc=1730;
+	o_prepinit_pbf=545;*pregnant and breastfeeding women;
+end;
+if cald=2022.75 then do;
+	o_prepinit_1524w=26425;
+	o_prepinit_fsw=17773;
+	o_prepinit_sdc=4447;
+	o_prepinit_pbf=8177;
+end;
+
+***Targets for PrEP are taken from file "Revised PrEP Targets and Assumptions 12022023 (2) GN" as they are the most up to date;
+
 *PrEP_New: Number of clients initiating the indicated PrEP method(s) for the first time during the date range displayed.;
-if cald=2023.75 then target_prepinit_1524w =37144;
-if cald=2024.75 then target_prepinit_1524w =41639;
-if cald=2025.75 then target_prepinit_1524w =44303;
-if cald=2026.75 then target_prepinit_1524w =45084;
+if cald in (2023.75 2024.75 2025.75 2026.75) then do;
+	target_prepinit_sdc  = 10149;	target_prepinit_fsw   = 6960;end;
+if cald=2023.75 then do;
+	target_prepinit_1524w = 37144;	target_prepinit_pbf   = 18900;*Pregnant and Lactating Women;end;
+if cald=2024.75 then do;
+	target_prepinit_1524w = 41639; 	target_prepinit_pbf   = 21187;*Pregnant and Lactating Women;end;
+if cald=2025.75 then do;
+	target_prepinit_1524w = 44303;	target_prepinit_pbf   = 22543;*Pregnant and Lactating Women;end;
+if cald=2026.75 then do;
+	target_prepinit_1524w = 45084;	target_prepinit_pbf   = 22941;*Pregnant and Lactating Women;end;
+
 
 *** PrEP_CT: Number of clients actively taking the indicated PrEP method(s) (excluding newly enrolled) during the last quarter of the date range displayed;
-if cald=2023.75 then target_prep_1524w_lq = 11594;
-if cald=2024.75 then target_prep_1524w_lq = 22544;
-if cald=2025.75 then target_prep_1524w_lq = 33436;
-if cald=2026.75 then target_prep_1524w_lq = 42431;
+if cald=2023.75 then do;
+	target_prep_lq_1524w = 11594;	target_prep_lq_sdc   = 14388;
+	target_prep_lq_fsw   = 16638;	target_prep_lq_pbf   = 16144; 
+end;
+if cald=2024.75 then do;
+	target_prep_lq_1524w = 22544;	target_prep_lq_sdc   = 15641;
+	target_prep_lq_fsw   = 14127;	target_prep_lq_pbf   = 18252; 
+end;
+if cald=2025.75 then do;
+	target_prep_lq_1524w = 33436;	target_prep_lq_sdc   = 18520;
+	target_prep_lq_fsw   = 15592;	target_prep_lq_pbf   = 26981; 
+end;
+if cald=2026.75 then do;
+	target_prep_lq_1524w = 42431;	target_prep_lq_sdc   = 20718;
+	target_prep_lq_fsw   = 16939;	target_prep_lq_pbf   = 32070;
+end;
+
 
 *Currently on PrEP;
-if cald=2023.75 then target_curr_prep_1524w =15292;
-if cald=2024.75 then target_curr_prep_1524w =26125;
-if cald=2025.75 then target_curr_prep_1524w =35484;
-if cald=2026.75 then target_curr_prep_1524w =43443;
+if cald=2023.75 then do;
+	target_curr_prep_1524w = 15292;	target_curr_prep_sdc   = 13854;
+	target_curr_prep_fsw   = 15478;	target_curr_prep_pbf   = 18890; end;
+if cald=2024.75 then do;
+	target_curr_prep_1524w = 26125;	target_curr_prep_sdc   = 16337;
+	target_curr_prep_fsw   = 13262;	target_curr_prep_pbf   = 21883; end;
+if cald=2025.75 then do; 
+	target_curr_prep_1524w = 35484; target_curr_prep_sdc   = 18699;
+	target_curr_prep_fsw   = 14583;	target_curr_prep_pbf   = 28938; end;
+if cald=2026.75 then do; 
+	target_curr_prep_1524w = 43443; target_curr_prep_sdc   = 20670;
+	target_curr_prep_fsw   = 15746;	target_curr_prep_pbf   = 33533;end;
+
+***Source: Draft 2023 HIV Prevention Targets Handbook 20022023 (1).docs sent by Ngwarai on 28/6/2023;
+if cald=2023.75 then target_prep=79092; *not clear exactly what it is;
+
+
+
 
 
 
 *******************************************************************************************
-*************    17. Structural intervention and social enablers..Line 2919    ************
+*******************    18. Structural intervention and social enablers.    ***************
 *******************************************************************************************
 
 *** Number of adolescnet girls and young women receving DREAMS;
@@ -2968,8 +3184,33 @@ if cald=2021.5 then o_w1524_dreams=31930;*VCMar2023;
 
 
 
+
+
+
 *******************************************************************************************
-********************     18. Sexually transmitted infections     **************************
+******************    19. Social behavioural change communication	************************	
+*******************************************************************************************
+*Source: MIHPSA Zimbabwe modellers call 21Nov2023_withNotes.ppt Data shared by Amon Mpofu;
+*The correct calendar year is 2022 but I want it to appear in the graph going forward);
+if cald in (2022.5 2023.5) then do;
+	o_n_reached_sbcc_1024m= 11627;	o_n_tested_sbcc_1024m=1525;	o_p_tested_sbcc_1024m=0.13;
+	*The following includes SISTA2SISTA and DREAMS;
+	o_n_reached_sbcc_1024w=113723;	o_n_tested_sbcc_1024w=31902;o_p_tested_sbcc_1024w=0.28;
+	o_n_reached_sbcc_1024=125350;
+	o_n_reached_sbcc_2564=14557;	o_n_tested_sbcc_2564=2241;	o_p_tested_sbcc_2564=0.15;
+end;
+if cald= 2025.75 then do;
+	target_n_reached_sbcc_1524=690269;
+	target_n_reached_sbcc_2564=60000;
+end;
+
+
+
+
+
+
+*******************************************************************************************
+********************     20. Sexually transmitted infections     **************************
 *******************************************************************************************
 
 *Source: RDS surveys last quarter 2013;
@@ -2978,8 +3219,10 @@ if cald=2013.75 then do; o_p_ever_sti_fsw_rds=0.374; o_p_ever_sti_fsw_ll_rds=0.1
 
 
 
+
+
 *******************************************************************************************
-*******************************     19. Tubercolosis     **********************************
+*******************************    21. Tubercolosis     **********************************
 *******************************************************************************************
 
 *Source: "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo
