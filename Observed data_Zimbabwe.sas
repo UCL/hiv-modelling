@@ -98,6 +98,9 @@ if cald=2002.5 then do;
 	o_pop_all_Zi_cens   =11631657;
 	o_pop_allm_Zi_cens  = 5634180;
 	o_pop_allw_Zi_cens  = 5997477;
+	o_pop_15plus_Zim_cens = 4722453; *based on 59.4% of the population being aged 15+ (Page 9 of the 2002 Census);
+	o_pop_15plus_m_Zim_cens = 3346703;
+	o_pop_15plus_w_Zim_cens = 3562501;
 end;
 
 *Source: Zimbabwe Census 2012;
@@ -110,6 +113,26 @@ if cald=2012.5 then do;
 	o_pop_1549_Zi_cens	=6517558;
 	o_pop_1549m_Zi_cens	=3226126;
 	o_pop_1549w_Zi_cens	=3291432;
+	o_pop_15plus_Zim_cens = 7688958; *https://zimbabwe.opendataforafrica.org/wikohbg/zimbabwe-population-census-2012;
+	o_pop_15plus_m_Zim_cens = 3599408;
+	o_pop_15plus_w_Zim_cens = 4089550;
+
+end;
+
+*Source: Zimbabwe Census 2022;
+*https://www.zimstat.co.zw/wp-content/uploads/Census/2022_PHC_Report_27012023_Final.pdf;
+*Using Table 2.7 Page 112;
+if cald=2022.5 then do;
+	o_pop_all_Zi_cens   =15178957;
+	o_pop_allm_Zi_cens  =7289922;
+	o_pop_allw_Zi_cens  =7891035;
+	o_pop_1549_Zi_cens	=7290055;
+	o_pop_1549m_Zi_cens	=3475354;
+	o_pop_1549w_Zi_cens	=3814701;
+	o_pop_15plus_Zim_cens = 9046415;
+	o_pop_15plus_m_Zim_cens = 4226689;
+	o_pop_15plus_w_Zim_cens = 4819726;
+
 end;
 
 *Source: "Zimbabwe data.xls" sent by David Wilson;
@@ -194,6 +217,16 @@ https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryrep
 if cald=2019.5 then o_pop_all_Zi=15800000;
 
 *Source: World Population Prospect, file "World Population Prospect 2022.pdf";
+*https://population.un.org/wpp/downloads?folder=Standard%20Projections&group=Population
+(Excel sheet, 'population by select age groups');
+
+if cald=2000 then o_pop_15plus_WPP=6557000;
+if cald=2005 then o_pop_15plus_WPP=6960000;
+if cald=2010 then o_pop_15plus_WPP=7323000;
+if cald=2015 then o_pop_15plus_WPP=7625000;
+if cald=2020 then o_pop_15plus_WPP=8608000;
+if cald=2023 then o_pop_15plus_WPP=9198000;
+
 if cald=2025.5 then do;
 	o_pop_014_WPP =7000000;
 	o_pop_1524_WPP=3500000;

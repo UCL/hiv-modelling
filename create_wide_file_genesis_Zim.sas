@@ -12,17 +12,21 @@ by run cald option;run;
 
 proc freq;table cald option;run;
 
-
+***zim specific;
 data sf;
 set a;
 
-if cald=2025.25; ***Update as required;
+*Zimbabwe;
+*Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
+*accessed 9/2/2023;
+* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
+if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
+sf = (16320000 * 0.581) / s_alive; 
 
-*sf_2025 = (40912109) / s_alive;  * Mihpsa_SA calibration folder in output files using World Bank;
-sf_2025=10000000/s_alive;
-sf=sf_2025;
-keep run sf sf_2025;
+
+
+keep run sf;
 proc sort; by run;run;
 
 
@@ -183,8 +187,8 @@ s_alive = s_alive_m + s_alive_w ;
 * n_alive_m;					n_alive_m = s_alive_m * sf;
 * n_alive_w;					n_alive_w = s_alive_w * sf;
 
-* n_hivge15m;					n_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
-* n_hivge15w;					n_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
+* n_hivge15m;					n_hivge15m = (s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm) * sf ;
+* n_hivge15w;					n_hivge15w = (s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw) * sf ;
 * n_hivge15_;					n_hivge15_ = n_hivge15m + n_hivge15w ;
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
@@ -402,6 +406,79 @@ run;
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = '"C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_graphs_29_12_25.doc' startpage=never; 
 ods listing close;
+
+
+ods html;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Population (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 15000000) valueattrs=(size=10);
+
+label mean_n_alive_0 = "Population";
+label o_pop_15plus_Zim_cens  = "Census";
+label o_pop_1565_Zi_CIA = "CIA 15-65";
+label o_pop_15plus_WPP = "World population prospectus";
+
+series  x=cald y=mean_n_alive_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_pop_15plus_Zim_cens / markerattrs=(symbol=circle color=red size=10);
+scatter x=cald y=o_pop_1565_Zi_CIA / markerattrs=(symbol=circle color=green size=10);
+scatter x=cald y=o_pop_15plus_WPP / markerattrs=(symbol=circle color=blue size=10);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Population Male (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 15000000) valueattrs=(size=10);
+
+label mean_n_alive_m_0 = "Population";
+label o_pop_15plus_m_Zim_cens  = "Census";
+label o_pop_1564m_Zi_CIA = "CIA 15-65";
+
+series  x=cald y=mean_n_alive_m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_alive_m_0 	upper=p95_n_alive_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_pop_15plus_m_Zim_cens / markerattrs=(symbol=circle color=red size=10);
+scatter x=cald y=o_pop_1564m_Zi_CIA / markerattrs=(symbol=circle color=green size=10);
+
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Population Female (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 15000000) valueattrs=(size=10);
+
+label mean_n_alive_w_0 = "Population";
+label o_pop_15plus_w_Zim_cens  = "Census";
+
+series  x=cald y=mean_n_alive_w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_alive_w_0 	upper=p95_n_alive_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_pop_15plus_w_Zim_cens / markerattrs=(symbol=circle color=red size=10);
+run;quit;
+
+n_hivge15m n_hivge15w n_hivge15_
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "People living with HIV (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)   valueattrs=(size=10);
+
+label n_hivge15_ = "PLHIV";
+*label o_pop_15plus_Zim_cens  = "Census";
+*label o_pop_1565_Zi_CIA = "CIA 15-65";
+*label o_pop_15plus_WPP = "World population prospectus";
+
+series  x=cald y=mean_n_hivge15__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_hivge15__0 	upper=p95_n_hivge15__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+*scatter x=cald y=o_pop_15plus_Zim_cens / markerattrs=(symbol=circle color=red size=10);
+*scatter x=cald y=o_pop_1565_Zi_CIA / markerattrs=(symbol=circle color=green size=10);
+*scatter x=cald y=o_pop_15plus_WPP / markerattrs=(symbol=circle color=blue size=10);
+run;quit;
+
 
 
 
