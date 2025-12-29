@@ -391,23 +391,19 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /*-----------------------------------------*/
 %summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
 
+*turns log back on;
+options notes source source2 mprint mlogic symbolgen;
+data e;
+set Master_summary;
+%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas"; by cald;
+run;
 
-*ADD AN INCLUDE STATEMENT FOR THE OBSERVED DATA;
 
-
-***Graphs like the intervention file;
-
-
-
-ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = 'C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
-graphs_17_12_25.doc' startpage=never; 
-
-
-***Diagnostic;
+ods rtf file = '"C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_graphs_29_12_25.doc' startpage=never; 
 ods listing close;
-ods html style=htmlblue;
+
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people on any PrEP";
