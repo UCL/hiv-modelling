@@ -1244,27 +1244,47 @@ if cald=2011.5 then o_HIVIncid_fsw=0.10*100;
 *******************************************************************************************
 
 *Source: Avert 2009;
-if cald=2009 then o_livingHIV_1549=1200000;
+if cald=2009 then o_livingHIV_1549_Avert=1200000;
 
 ***LBM update Sep 2006;
 *Source: Avert 2015;
-if cald=2015 then o_livingHIV_all=1400000;
+if cald=2015 then o_livingHIV_all_Avert=1400000;
 
 
 *Source: UNAIDS (Section “Country overview") http://www.unaids.org/en/regionscountries/countries/zimbabwe/#5
 Rough estimates(from graphs) on	entire population (0+) 
 Accessed on 11th Feb 2013, Estimated by UNAIDS model. Site no longer exists in Sep 2016;
 
-if cald=1990.5 then o_livingHIV_1549=800000;
-if cald=1995.5 then o_livingHIV_1549=1600000;
-if cald=2000.5 then o_livingHIV_1549=1900000;
-if cald=2005.5 then o_livingHIV_1549=1500000;
-if cald=2011.5 then o_livingHIV_1549=1200000;*(1.2-1.3)	2011	Estimated by UNAIDS model, exact;
-
+if cald=1990.5 then o_livingHIV_1549_UNAIDS=800000;
+if cald=1995.5 then o_livingHIV_1549_UNAIDS=1600000;
+if cald=2000.5 then o_livingHIV_1549_UNAIDS=1900000;
+if cald=2005.5 then o_livingHIV_1549_UNAIDS=1500000;
+if cald=2011.5 then o_livingHIV_1549_UNAIDS=1200000;*(1.2-1.3)	2011	Estimated by UNAIDS model, exact;
 
 ***LBM Update Sep 2016;
 *Source: UNAIDS (Section “Country overview") http://www.unaids.org/en/regionscountries/countries/zimbabwe/#5;
-if cald=2015 then do; o_livingHIV_all=1300000;o_livingHIV_ll_all=1200000;o_livingHIV_ul_all=1500000;end;
+if cald=2015 then do; o_livingHIV_all_UNAIDS=1300000;o_livingHIV_ll_all_UNAIDS=1200000;o_livingHIV_ul_all_UNAIDS=1500000;end;
+
+***LBM Dec 2025;
+*Source: UNAIDS https://www.unaids.org/sites/default/files/media_asset/data-book-2024_en.pdf;
+if cald=2010.5 then do;
+	o_livingHIV_15plus_UNAIDS=1130000;
+	o_livingHIV_15plus_m_UNAIDS=470000;
+	o_livingHIV_15plus_w_UNAIDS=660000;
+end;
+
+if cald=2015.5 then do;
+	o_livingHIV_15plus_UNAIDS=1230000;
+	o_livingHIV_15plus_m_UNAIDS=500000;
+	o_livingHIV_15plus_w_UNAIDS=730000;
+end;
+
+if cald=2023.5 then do;
+	o_livingHIV_15plus_UNAIDS=1230000;
+	o_livingHIV_15plus_m_UNAIDS=480000;
+	o_livingHIV_15plus_w_UNAIDS=750000;
+end;
+
 
 *Source: "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo. (Slide 13 in Zim_ePMS Data Completeness.ppt)
 		Senior Monitoring and Evaluation Officer, AIDS and TB National Programme, Zimbabwe, 23 November 2015;
@@ -1273,11 +1293,14 @@ if 2015.5 then do;
 	e_hiv2024_nac=115631;
 	e_hiv25ov_nac=1274581;
 end;
+if cald=2015.5 then 	e_hiv_15plus_nac=1449842;*summed above three;
 
 *Source: AIDS 2016, Durban - 2015 Zimbabwe National HIV estimates cited in "Zimbabwe HIV treatment cascade_15.07.2016.ppt, Tsitsi Apollo;
 if cald=2016.5 then e_livingHIV_1549=1413000;*It is not clear whether 2015 or 2016;
 
+***LBM    Suggest removing below as new 15 plus UNAIDS estimates added above for 2010, 2015 and 2023;
 
+/*
 ***Number of women 15 years old or more living with HIV 
 *Source: UNAIDS (Section “Country overview) http://www.unaids.org/en/regionscountries/countries/zimbabwe/#5 (Accessed on 11th Feb 2013);
 if cald=2011.5 then o_livingHIV_ov15w=600000;*(570-640);
@@ -1290,11 +1313,11 @@ I am aiming for prevalence in 15-45 women to increase to around 28% by 1995, sta
 about 29%-30% then decreasing from about 99 to around 20% or below by 2006, matching with the DHS data (fig 14.1) 
 for 2005 and 2011 by gender.  If you run again I suggest you save both my long file and your long file.
 */
-
+*/
 
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
-if cald=2019.5 then o_livingHIV_all=1400000;
+if cald=2019.5 then o_livingHIV_all_GARPR=1400000;
 
 
 

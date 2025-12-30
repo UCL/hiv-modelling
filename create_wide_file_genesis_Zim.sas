@@ -397,6 +397,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 
 *turns log back on;
 options notes source source2 mprint mlogic symbolgen;
+
 data e;
 set Master_summary;
 %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas"; by cald;
@@ -459,25 +460,28 @@ band    x=cald lower=p5_n_alive_w_0 	upper=p95_n_alive_w_0  / transparency=0.9 f
 scatter x=cald y=o_pop_15plus_w_Zim_cens / markerattrs=(symbol=circle color=red size=10);
 run;quit;
 
+/*
 n_hivge15m n_hivge15w n_hivge15_
-
+*/
 proc sgplot data=e; 
 Title    height=1.5 justify=center "People living with HIV (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'	labelattrs=(size=12)   valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 1500000 by 250000) valueattrs=(size=10);
 
-label n_hivge15_ = "PLHIV";
-*label o_pop_15plus_Zim_cens  = "Census";
-*label o_pop_1565_Zi_CIA = "CIA 15-65";
-*label o_pop_15plus_WPP = "World population prospectus";
+label mean_n_hivge15__0 = "PLHIV";
+label o_livingHIV_15plus_UNAIDS  = "UNAIDS";
+label e_hiv_15plus_nac = "National AIDS Council";
+label o_livingHIV_all_GARPR = "Global AIDS Progress Report (All ages)";
 
 series  x=cald y=mean_n_hivge15__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_hivge15__0 	upper=p95_n_hivge15__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-*scatter x=cald y=o_pop_15plus_Zim_cens / markerattrs=(symbol=circle color=red size=10);
-*scatter x=cald y=o_pop_1565_Zi_CIA / markerattrs=(symbol=circle color=green size=10);
-*scatter x=cald y=o_pop_15plus_WPP / markerattrs=(symbol=circle color=blue size=10);
+scatter x=cald y=o_livingHIV_15plus_UNAIDS / markerattrs=(symbol=circle color=red size=10);
+scatter x=cald y=e_hiv_15plus_nac / markerattrs=(symbol=circle color=green size=10);
+scatter x=cald y=o_livingHIV_all_GARPR / markerattrs=(symbol=circle color=blue size=10);
 run;quit;
+
+***Do for men and women;
 
 
 
