@@ -2360,6 +2360,32 @@ if cald=2013.75 then do; o_s_allmale_onart_NAC = 248764; o_s_allfemale_onart_NAC
 if cald=2014.75 then do; o_s_allmale_onart_NAC = 291607; o_s_allfemale_onart_NAC = 496373; end;
 if cald=2015.5  then do; o_s_allmale_onart_NAC = 319307; o_s_allfemale_onart_NAC = 534874; end;*Up to Sept 2015;
 
+***LBM Dec2025;
+*Source: Data from Optimas HIV Control spreadsheet labelled as Spectrum data;
+*https://www.dropbox.com/scl/fi/np27fhtqiozicua5nf6up/Intervention-comparison_Zim.xlsx?cloud_editor=excel&dl=0&rlkey=502oe7xcj2p80l0x7ou2cp713;
+if cald = 2004 then do; m_n_onart_m_spectrum = 4855; m_n_onart_w_spectrum = 6147; end;
+if cald = 2005 then do; m_n_onart_m_spectrum = 10049; m_n_onart_w_spectrum = 15816; end;
+if cald = 2006 then do; m_n_onart_m_spectrum = 22320; m_n_onart_w_spectrum = 31305; end;
+if cald = 2007 then do; m_n_onart_m_spectrum = 37525; m_n_onart_w_spectrum = 52563; end;
+if cald = 2008 then do; m_n_onart_m_spectrum = 57609; m_n_onart_w_spectrum = 77116; end;
+if cald = 2009 then do; m_n_onart_m_spectrum = 82265; m_n_onart_w_spectrum = 117364; end;
+if cald = 2010 then do; m_n_onart_m_spectrum = 119234; m_n_onart_w_spectrum = 211145; end;
+if cald = 2011 then do; m_n_onart_m_spectrum = 148549; m_n_onart_w_spectrum = 296108; end;
+if cald = 2012 then do; m_n_onart_m_spectrum = 178018; m_n_onart_w_spectrum = 340776; end;
+if cald = 2013 then do; m_n_onart_m_spectrum = 245690; m_n_onart_w_spectrum = 373186; end;
+if cald = 2014 then do; m_n_onart_m_spectrum = 254029; m_n_onart_w_spectrum = 449575; end;
+if cald = 2015 then do; m_n_onart_m_spectrum = 285796; m_n_onart_w_spectrum = 490733; end;
+if cald = 2016 then do; m_n_onart_m_spectrum = 309856; m_n_onart_w_spectrum = 544744; end;
+if cald = 2017 then do; m_n_onart_m_spectrum = 361448; m_n_onart_w_spectrum = 616711; end;
+if cald = 2018 then do; m_n_onart_m_spectrum = 384897; m_n_onart_w_spectrum = 647085; end;
+if cald = 2019 then do; m_n_onart_m_spectrum = 412198; m_n_onart_w_spectrum = 676284; end;
+if cald = 2020 then do; m_n_onart_m_spectrum = 431417; m_n_onart_w_spectrum = 686083; end;
+if cald = 2021 then do; m_n_onart_m_spectrum = 437240; m_n_onart_w_spectrum = 698999; end;
+if cald = 2022 then do; m_n_onart_m_spectrum = 450089; m_n_onart_w_spectrum = 732035; end;
+if cald = 2023 then do; m_n_onart_m_spectrum = 439120; m_n_onart_w_spectrum = 750678; end;
+if cald = 2024 then do; m_n_onart_m_spectrum = 436348; m_n_onart_w_spectrum = 756120; end;
+
+
 
 
 
@@ -2467,23 +2493,24 @@ if cald=2015.5  then e_p_onart_15ovhivpos_nac=0.548;
 
 
 
-***Of HIV+ people who know their status, proportion on ART;
+***Of HIV+ people who know their status, proportion on ART and of PLHIV, proportion on ART;
 ***LBM update Jan2017;
 *Source: ZIMPHIA 2015-2016;
 if cald=2016.25  then do;
-	o_p_onart_1564_diag_zimphia=0.868;
-	o_p_onart_1564m_diag_zimphia=0.860;
-	o_p_onart_1564f_diag_zimphia=0.873;
+	o_p_onart_1564_diag_zimphia=0.868;o_p_onart_1564_zimphia=0.638;*table 8.4, page 59 of Zimphia report;
+	o_p_onart_1564m_diag_zimphia=0.860;o_p_onart_1564m_zimphia=0.597;
+	o_p_onart_1564f_diag_zimphia=0.873;o_p_onart_1564f_zimphia=0.667;
 	*Source: file:///C:/Users/ValentinaCambiano/Downloads/Progress_Toward_the_90_90_90_HIV_Targets_in.7.pdf;
 	o_p_onart_1564_diag_zimphia=0.884; o_p_onart_1564_diag_ll_zimphia=0.871;o_p_onart_1564_diag_ul_zimphia=0.897;
 	o_p_onart_1564m_diag_zimphia=0.88;o_p_onart_1564m_diag_ll_zimphia=0.855;o_p_onart_1564m_diag_ul_zimphia=0.905;
 	o_p_onart_1564f_diag_zimphia=0.886;o_p_onart_1564f_diag_ll_zimphia=0.870;o_p_onart_1564f_diag_ul_zimphia=0.903;
+
 end;	
 * Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
 if cald=2020  then do;
-	o_p_onart_15pl_diag_zimphia=0.97;
-	o_p_onart_15plm_diag_zimphia=0.959;
-	o_p_onart_15plf_diag_zimphia=0.976;
+	o_p_onart_15pl_diag_zimphia=0.97;o_p_onart_1564_zimphia=0.82;
+	o_p_onart_15plm_diag_zimphia=0.959;o_p_onart_1564m_zimphia=0.79;
+	o_p_onart_15plf_diag_zimphia=0.976;o_p_onart_1564f_zimphia=0.84;
 end;
 
 *Source: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
