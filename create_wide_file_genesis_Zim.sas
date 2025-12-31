@@ -416,7 +416,7 @@ Title    height=1.5 justify=center "Population (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 15000000) valueattrs=(size=10);
 
-label mean_n_alive_0 = "Population";
+label mean_n_alive_0 = "Modelled Population";
 label o_pop_15plus_Zim_cens  = "Census";
 label o_pop_1565_Zi_CIA = "CIA 15-65";
 label o_pop_15plus_WPP = "World population prospectus";
@@ -434,7 +434,7 @@ Title    height=1.5 justify=center "Population Male (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 15000000) valueattrs=(size=10);
 
-label mean_n_alive_m_0 = "Population";
+label mean_n_alive_m_0 = "Modelled Population";
 label o_pop_15plus_m_Zim_cens  = "Census";
 label o_pop_1564m_Zi_CIA = "CIA 15-65";
 
@@ -451,7 +451,7 @@ Title    height=1.5 justify=center "Population Female (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 15000000) valueattrs=(size=10);
 
-label mean_n_alive_w_0 = "Population";
+label mean_n_alive_w_0 = "Modelled Population";
 label o_pop_15plus_w_Zim_cens  = "Census";
 
 series  x=cald y=mean_n_alive_w_0/	lineattrs = (color=black thickness = 2);
@@ -460,15 +460,13 @@ band    x=cald lower=p5_n_alive_w_0 	upper=p95_n_alive_w_0  / transparency=0.9 f
 scatter x=cald y=o_pop_15plus_w_Zim_cens / markerattrs=(symbol=circle color=red size=10);
 run;quit;
 
-/*
-n_hivge15m n_hivge15w n_hivge15_
-*/
+
 proc sgplot data=e; 
 Title    height=1.5 justify=center "People living with HIV (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 1500000 by 250000) valueattrs=(size=10);
 
-label mean_n_hivge15__0 = "PLHIV";
+label mean_n_hivge15__0 = "Modelled PLHIV";
 label o_livingHIV_15plus_UNAIDS  = "UNAIDS";
 label e_hiv_15plus_nac = "National AIDS Council";
 label o_livingHIV_all_GARPR = "Global AIDS Progress Report (All ages)";
@@ -481,8 +479,127 @@ scatter x=cald y=e_hiv_15plus_nac / markerattrs=(symbol=circle color=green size=
 scatter x=cald y=o_livingHIV_all_GARPR / markerattrs=(symbol=circle color=blue size=10);
 run;quit;
 
-***Do for men and women;
+proc sgplot data=e; 
+Title    height=1.5 justify=center "People living with HIV (Males 15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 1500000 by 250000) valueattrs=(size=10);
 
+label mean_n_hivge15m_0 = "Modelled PLHIV";
+label o_livingHIV_15plus_m_UNAIDS  = "UNAIDS";
+
+series  x=cald y=mean_n_hivge15m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_hivge15m_0 	upper=p95_n_hivge15m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_livingHIV_15plus_m_UNAIDS / markerattrs=(symbol=circle color=red size=10);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "People living with HIV (Females 15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 1500000 by 250000) valueattrs=(size=10);
+
+label mean_n_hivge15m_0 = "Modelled PLHIV";
+label o_livingHIV_15plus_m_UNAIDS  = "UNAIDS";
+
+series  x=cald y=mean_n_hivge15m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_hivge15m_0 	upper=p95_n_hivge15m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_livingHIV_15plus_m_UNAIDS / markerattrs=(symbol=circle color=red size=10);
+run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Prevalence (15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Prevalence'	labelattrs=(size=12)   valueattrs=(size=10);
+
+label mean_prevalence1549__0 = "Modelled prevalence";
+label m_prev1549_2016unaids  = "UNAIDS";
+label m_prev1549_2014unaids = "UNAIDS";
+label m_prev1549_unaids = "UNAIDS";
+label o_prev1549_Z_DHS = "DHS";
+label o_prev_1549_zimphia = "ZIMPHIA";
+label o_prev_1549_garpr = "GARPR";
+
+series  x=cald y=mean_prevalence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549__0	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=m_prev1549_2016unaids / markerattrs=(symbol=circle color=red size=10);
+scatter x=cald y=m_prev1549_2014unaids / markerattrs=(symbol=circle color=red size=10);
+scatter x=cald y=m_prev1549_unaids / markerattrs=(symbol=circle color=red size=10);
+scatter x=cald y=o_prev1549_Z_DHS / markerattrs=(symbol=circle color=blue size=10);
+scatter x=cald y=o_prev_1549_zimphia / markerattrs=(symbol=circle color=orange size=10);
+scatter x=cald y=o_prev_1549_garpr / markerattrs=(symbol=circle color=green size=10);
+run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Prevalence (Males 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Prevalence'	labelattrs=(size=12)   valueattrs=(size=10);
+
+label mean_prevalence1549m_0 = "Modelled prevalence";
+label o_prev1549m_Z_DHS = "DHS";
+label o_prev_1549m_zimphia = "ZIMPHIA";
+
+series  x=cald y=mean_prevalence1549m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549m_0	upper=p95_prevalence1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_prev1549m_Z_DHS / markerattrs=(symbol=circle color=blue size=10);
+scatter x=cald y=o_prev_1549m_zimphia / markerattrs=(symbol=circle color=orange size=10);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Prevalence (Females 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Prevalence'	labelattrs=(size=12)   valueattrs=(size=10);
+
+label mean_prevalence1549w_0 = "Modelled prevalence";
+label o_prev1549w_Z_DHS = "DHS";
+label o_prev_1549w_zimphia = "ZIMPHIA";
+
+series  x=cald y=mean_prevalence1549w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549w_0	upper=p95_prevalence1549w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_prev1549w_Z_DHS / markerattrs=(symbol=circle color=blue size=10);
+scatter x=cald y=o_prev_1549w_zimphia / markerattrs=(symbol=circle color=orange size=10);
+run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Incidence (15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Prevalence'	labelattrs=(size=12)  values = (0 to 2 by 0.25) valueattrs=(size=10);
+
+label mean_incidence1549__0 = "Modelled incidence";
+label m_HIVIncid_1549_2016UNAIDS  = "UNAIDS 2016 report";
+label m_HIVIncid1549_Zim_unaids = "UNAIDS";
+label m_HIVIncid_GARPR = "GARPR";
+label o_HIVincid_1549_Zimphia = "ZIMPHIA";
+
+series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1549__0	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=m_HIVIncid_1549_2016UNAIDS / markerattrs=(symbol=circle color=red size=10);
+scatter x=cald y=m_HIVIncid1549_Zim_unaids / markerattrs=(symbol=circle color=maroon size=10);
+scatter x=cald y=m_HIVIncid_GARPR / markerattrs=(symbol=circle color=green size=10);
+scatter x=cald y=o_HIVincid_1549_Zimphia / markerattrs=(symbol=circle color=orange size=10);
+run;quit;
+
+***men and women incidence to do - have not updated observed data;
+
+
+
+
+        prevalence1549m prevalence1549w prevalence1549_ incidence1549_ incidence1549w incidence1549m
+        p_onart p_onart_m p_onart_w n_onart n_onart_m n_onart_w
+        p_diag p_diag_m p_diag_w p_onart_diag p_onart_diag_m p_onart_diag_w  
+        p_onart_vl1000_ p_onart_vl1000_m p_onart_vl1000_w n_onprep_w n_onprep_m n_onprep
+        prop_elig_on_prep n_prep_ever
+        n_sw_1564_ n_sw_1549_ p_w_1564_sw p_w_1549_sw prevalence_1564sw incidence_1564sw
+        p_onprep_sw n_onprep_sw
+        n_msm_1564_ p_m_msm prevalence1549_msm incidence_msm p_onprep_msm n_onprep_msm
+        n_death_hivrel n_death_hivrel_m n_death_hivrel_w;
 
 
 

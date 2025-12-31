@@ -218,7 +218,7 @@ if cald=2019.5 then o_pop_all_Zi=15800000;
 
 *Source: World Population Prospect, file "World Population Prospect 2022.pdf";
 *https://population.un.org/wpp/downloads?folder=Standard%20Projections&group=Population
-(Excel sheet, 'population by select age groups');
+(Excel sheet, population by select age groups);
 
 if cald=2000 then o_pop_15plus_WPP=6557000;
 if cald=2005 then o_pop_15plus_WPP=6960000;
@@ -778,6 +778,19 @@ if cald=2014.5 then do; m_prev1549_2016unaids=0.149; m_prev1549_ll_2016unaids=0.
 if cald=2015.5 then do; m_prev1549_2016unaids=0.147; m_prev1549_ll_2016unaids=0.133; m_prev1549_ul_2016unaids=0.160;m_prev1524m_2014unaids=0.038; m_prev1524w_2014unaids=0.059;   end;
 
 
+***LBM Dec25 update using UNAIDS estimates, posted on https://data.worldbank.org/indicator/SH.DYN.AIDS.ZS?locations=ZW;
+if cald=2016.5 then do; m_prev1549_unaids=0.141;end;
+if cald=2017.5 then do; m_prev1549_unaids=0.136;end;
+if cald=2018.5 then do; m_prev1549_unaids=0.131;end;
+if cald=2019.5 then do; m_prev1549_unaids=0.125;end;
+if cald=2020.5 then do; m_prev1549_unaids=0.120;end;
+if cald=2021.5 then do; m_prev1549_unaids=0.115;end;
+if cald=2022.5 then do; m_prev1549_unaids=0.109;end;
+if cald=2023.5 then do; m_prev1549_unaids=0.103;end;
+if cald=2024.5 then do; m_prev1549_unaids=0.098;end;
+
+
+
 *Source: Zimbabwe Young Adult Survey (YAS), Ministry of Health and Child Welfare (Zimbabwe), Page 25
          Available from: URL: http://stacks.cdc.gov/view/cdc/8237;
 if cald=2002 then do;
@@ -1188,7 +1201,12 @@ if cald=2019.5 then do;
 	m_HIVIncid1549_MasC_GARPR=0.0025*100;*Mashonaland Central having the lowest incidence;
 end;
 
-
+*LBM Dec2025;
+*Source: UNAIDS via https://data.worldbank.org/indicator/SH.HIV.INCD.ZS?locations=ZW;
+if cald= 2020.5 then do;m_HIVIncid1549_Zim_unaids=0.19;end;
+if cald=2021.5 then do;m_HIVIncid1549_Zim_unaids=0.22;end;
+if cald=2022.5 then do;m_HIVIncid1549_Zim_unaids=0.16;end;
+if cald=2023.5 then do;m_HIVIncid1549_Zim_unaids=0.14;end;
 
 
 *** LBM Updated Jan2017;
