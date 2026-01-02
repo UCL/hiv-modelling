@@ -293,7 +293,7 @@ if cald=2012.5 then do; o_pop_fsw_1ts12m_nbcs=292937; end;
 
 
 Numbers below are estimated by multiplying 67.7% with David Wilson and NBCP estimates above
-(In Document ìSisters numbers v4î circulated in Mar 2016 55% used condom at last sex);
+(In Document ìSisters numbers v4ÅEcirculated in Mar 2016 55% used condom at last sex);
 
 /* these numbers were calculated using the 59.3% which we are now unable to find;
 if cald=2002.5 then do; o_pop_fswccu_dw=48011; o_pop_fswccu_ll_dw= 10915; o_pop_fswccu_ul_dw=199829;end;
@@ -457,7 +457,7 @@ if cald=2020 then o_s_fertility_un2015=3.65;
 
 
 ***Number of expected live births;
-*Source:ìZimbabwe_PMTCT_surveillance_protocol_231215î at page 16 where it is cited "Health Information, Ministry of Health and Child Care, Zimbabwe";
+*Source:ìZimbabwe_PMTCT_surveillance_protocol_231215ÅEat page 16 where it is cited "Health Information, Ministry of Health and Child Care, Zimbabwe";
 *In an email by Frances Cowan on 4/11/2016 she confirmed aroun 400,000 deliveries a year;
 *Update VC Nov 2016;
 if cald=2011.5 then o_s_livebirths_MoH=412122;
@@ -1494,7 +1494,7 @@ if cald=2011  then do; o_p_paidsex_ly_1554m_dhs=0.030;  o_p_paidsex_ly_1519m_dhs
 
 
 ***Number of clients per week
- Source: Document ìSisters numbers v4î circulated in Mar2016, not sure whether the data are form the Sisters with a Voice programme or RDS
+ Source: Document ìSisters numbers v4ÅEcirculated in Mar2016, not sure whether the data are form the Sisters with a Voice programme or RDS
 36% 0-3  clients/week, 
 41% 4-10 clients/week, 
 23% >10, 
@@ -1637,7 +1637,7 @@ if cald=2011.5 then do; o_p_evertested_1844m_nbcp=0.588; o_p_evertested_1844w_nb
 
 *Percentage of women and men aged 15-49 who received an HIV test in the last 12 months and know their status;
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
-		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");
 if cald=2025.75 then do;
 	target_p_testedly_1549m_NSP=0.95;
 	target_p_testedly_1549w_NSP=0.95;
@@ -1674,7 +1674,7 @@ if cald=2019.5 then o_s_tested_1549_py_garcpr =2382768;
 
 *Number of men and women who were tested and received their results;
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
-		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");
 *Note: I am using the same variable name as above as the etsimate for 2018 were the same;
 if cald=2018.5 then    o_pos_rate_15ov_z=0.06;
 if cald=2020.5 then do;target_s_tested_1549_py_NSP =2580149;
@@ -1820,7 +1820,7 @@ Q1 - Are people diagnosed in hospital symptomatic people or are they due to PITC
 	 PITC is implemented very well in the ANC settings for PMTCT and in the TB clinics. But needs strengthening in the other areas."
 Q2 - Would most people who develop WHO4 or WHO3 disease present in the hospital?
 	 Reply from Tsitsi on 5th July 2016: "yes, this is true"
-Q3 - I know that circumcision is rolled out in Zim, if a person is diagnosed at the test pre-circumcision to which of the ìreasonsî it belongs? 
+Q3 - I know that circumcision is rolled out in Zim, if a person is diagnosed at the test pre-circumcision to which of the ìreasonsÅEit belongs? 
 	 Reply from Tsitsi on 5th July 2016: It could be classified as either as  "hospital/illness" where VMMC is offered at the hospital or "Other". 
 	 We are revising the Green book so there is need to specifiy VMMC."
 Q4 - What is the denominator?
@@ -1855,7 +1855,7 @@ if cald=2023.75 then target_n_hcwtest=1793079;*Conventional tests;
 if cald=2023.75 then target_n_hivst=769860;
 
 ***Repeat testing;
-*Source: Increases in HIV Testing and Case Detection from NIMH Project Accept (HPTN 043) among 16ñ32 Year Olds;
+*Source: Increases in HIV Testing and Case Detection from NIMH Project Accept (HPTN 043) among 16ÅE2 Year Olds;
 if cald=2011 then o_rct_max_p_repeat_test=0.28;
 
 
@@ -1892,7 +1892,7 @@ if cald=2020 then do;
 end;
 
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
-		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");
 if  cald=2025.75 then do;
 	target_p_diag_15pl_NSP=0.95;
 	target_p_diag_15plm_NSP=0.95;
@@ -1928,7 +1928,7 @@ if cald=2013.75 then do;
 end;
 
 *Number of FSW who attended Sisters clinics
-Source: Document ìSisters numbers v4î;
+Source: Document ìSisters numbers v4;
 if cald=2014.75 then do;
 	o_nfsw_sistclin_fc   =13168;
 	o_nfsw_sistclin1st_fc=10019;
@@ -1953,7 +1953,7 @@ if cald=2014 then do;o_n_test_fsw_sister=3526;o_yield_fsw=0.303;end;
 if cald=2015 then do;o_n_test_fsw_sister=5677;o_yield_fsw=0.224;end;
 
 
-*Source: RDS last quarter 2013 (reported in Document ìSisters numbers v4î & in cascade manuscript);
+*Source: RDS last quarter 2013 (reported in Document ìSisters numbers v4ÅE& in cascade manuscript);
 if cald=2013.75 then do;
 	o_p_diag_fsw_rds=0.64;*0.67 reported in the manuscript of trial citing
 *Source: AIDS 2014 Conference, Cowan F. HIV care cascade among female sex workers in zimbabwe: Baseline results of the sAPPH-iRe trial;
@@ -1972,7 +1972,7 @@ if cald=2019.5 then o_p_diag_fsw_garpr=0.81;
 
 *Percentage of FSW living with HIV who know their status;
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
-		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");
 if cald=2018.5 then o_p_diag_fsw_NSP=0.936;
 if cald=2020.5 then target_p_diag_fsw_NSP=0.95;
 if cald=2021.5 then target_p_diag_fsw_NSP=0.95;
@@ -2278,7 +2278,7 @@ if cald=2022.5  then o_s_all_onart_NAC=1182126;
 
 
 *Source: Operational and Service Delivery Manual for the Prevention, Care and Treatment of HIV in Zimbabwe 
-		 by AIDS & TB programme, Ministry of Health and Child Care, Zimbabwe ñ June 2015;
+		 by AIDS & TB programme, Ministry of Health and Child Care, Zimbabwe ÅEJune 2015;
 if cald=2013.75 then o_s_onart_adults_osdm = 620867; ***LBM Update Sep 2016 - changed from 544200;
 
 *Global fund reports - sent by Trevor:
@@ -2438,7 +2438,7 @@ end;
 		 (Slide 7 in Zim_ePMS Data Completeness.ppt)
 		 The data are available for all years and are the same as those indicated in the doc above
 
-		Note: The denominator is ëestimated number of adults and children in need of ARTí based on the criteria detailed in the 
+		Note: The denominator is ëestimated number of adults and children in need of ARTÅEbased on the criteria detailed in the 
 		2013 ART Guidelines. The denominator is derived from the Zimbabwe 2014 National and Subnational HIV Estimates Report;
 if cald=2004.75 then e_p_onart_cd4200=0.05;
 if cald=2005.75 then e_p_onart_cd4200=0.117;
@@ -2471,7 +2471,7 @@ if cald=2019.75 then e_p_adults_onart=0.856;
 
 
 *** Number of adults eligible for ART;
-*Source: Operational and Service Delivery Manual ñ June 2015, Page 5 (unclear to which year it refers to but between Nov 2013 and Dec 2014);
+*Source: Operational and Service Delivery Manual ÅEJune 2015, Page 5 (unclear to which year it refers to but between Nov 2013 and Dec 2014);
 if cald=2014.5 then m_adults_elig_art_osdm=1207175;
 
 
@@ -2541,12 +2541,12 @@ if cald=2009.5 then e_ratiofm_newart_unaids=1.43;
 
 
 ***Number of FSW on art (this is a minimum estimate);
-*Source: Document ìSisters numbers v4î, Page 3;
+*Source: Document ìSisters numbers v4ÅE Page 3;
 if cald=2013.75 then o_s_fsw_onart_fc=4500;
 
 
 *** Proportion on ART of FSW diagnosed;
-*Source: RDS survey last quarter 2013: Document ìSisters numbers v4î, Page 6 and 7 (in 7 calculated as (21%/39% & 48%/69%);
+*Source: RDS survey last quarter 2013: Document ìSisters numbers v4ÅE Page 6 and 7 (in 7 calculated as (21%/39% & 48%/69%);
 if cald=2013.75 then do;
 	o_p_onart_fswdiag_rds =0.677;
 	o_p_onart_fsw1524diag_rds =0.54;
@@ -2560,7 +2560,7 @@ if cald=2019.5 then o_p_onart_fswdiag_garpr =0.78;
 
 *Percentage of FSW who received ART;
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
-		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");
 if cald=2018.5 then o_p_onart_fsw_NSP=0.719;
 if cald=2020.5 then target_p_onart_fsw_NSP=0.75;
 if cald=2021.5 then target_p_onart_fsw_NSP=0.80;
@@ -2573,9 +2573,9 @@ if cald=2025.5 then target_p_onart_fsw_NSP=0.95;
 **** Reasons for ART initiation in the following hierarchical order 
      (1. WHO3/4/TB, 2.CD4<=350, 3. B+ pregnant or breastfeeding, 4. CD4 351-500, 5. not known);
 
-*Source: Lablite slides ìZIM_demoproj_v2î and the data are collected from August 2013, Slide 6, eg. denom=tot num females >15
-         Banket: hospital (hub ñ ART since 2005), Mutorashanga & Nyabira (outreach site for Banket since 2010), 
-		 Zowa (previously ART-naÔve, ART initiation from 2014, only 21 init);
+*Source: Lablite slides ìZIM_demoproj_v2ÅEand the data are collected from August 2013, Slide 6, eg. denom=tot num females >15
+         Banket: hospital (hub ÅEART since 2005), Mutorashanga & Nyabira (outreach site for Banket since 2010), 
+		 Zowa (previously ART-naÅEe, ART initiation from 2014, only 21 init);
 
 if cald=2014 then do;
 	o_p_artinit_whotb_fbanket=0.51; o_p_artinit_cl350_fbanket=0.12; o_p_artinit_pregb_fbanket=0.32; o_p_artinit_c350500_fbanket=0.01;o_p_artinit_Unk_fbanket=0.03;
@@ -2602,7 +2602,7 @@ end;
 
 *** At ART initiation
 Source: Gender-related differences in outcomes and attrition on antiretroviral treatment among an HIV-infected patient 
-cohort in Zimbabwe: 2007ñ2010, Takarinda KC 2014
+cohort in Zimbabwe: 2007ÅE010, Takarinda KC 2014
 
 Retrospective patient record review of 3919 HIV-infected patients aged  15 or more who initiated ART between 2007 and 2009 
 in 40 randomly selected ART facilities countrywide;
@@ -2615,7 +2615,7 @@ end;
 
 ***LBM Update Sep 2016;
 *Source: Patient Retention, Clinical Outcomes and Attrition-Associated Factors of HIV-Infected Patients Enrolled in Zimbabwe
-		 National Antiretroviral Therapy Programme, 2007ñ2010, Mutasa-Apollo 2014;
+		 National Antiretroviral Therapy Programme, 2007ÅE010, Mutasa-Apollo 2014;
 
 if cald=2008 then do;
 	o_medcd4_artinit=121;
@@ -2635,7 +2635,7 @@ end;
 *DART trial;
 if cald=2008.5 then o_median_cd4art_DART=80;
 
-*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ñ2010, Mungati 2016
+*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ÅE010, Mungati 2016
 n=1610, new ART initiations from 2008-2010;
 if cald=2009 then do;
 	o_medcd4_artinit=168;
@@ -2704,7 +2704,7 @@ end;
 
 
 *** % FSW virally suppressed (of those on ART);
-*Source: RDS survey last quarter 2013 (& document ìSisters numbers v4î);
+*Source: RDS survey last quarter 2013 (& document ìSisters numbers v4ÅE;
 if cald=2013.75 then do;
 	o_p_vlsupp_FSWonart =0.778;
 	o_p_vlsupp_FSW1524onart_rds =0.62;
@@ -2725,7 +2725,7 @@ if cald=2010 then do; o_ratecifail_Renaud=0.264; o_ratecifail_ll_Renaud=0.173; o
 
 *** Proportion with treatment failure (based on viral load);
 
-*Source: Report on the National HIV Drug Resistance Monitoring at Sentinel sites (2009ñ2011)î 2009-2011 (n=1000),
+*Source: Report on the National HIV Drug Resistance Monitoring at Sentinel sites (2009ÅE011)ÅE2009-2011 (n=1000),
 		 cited in "Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
 		 Zimbabwe National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014; 
 
@@ -2965,7 +2965,7 @@ if cald=2010.5 then do; o_p_res_artstart_WHOres=0.061; o_p_res_artstart_lc_WHOre
 
 
 ***LBM Update Sep 2016;
-*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ñ2010, Mungati 2016
+*Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008ÅE010, Mungati 2016
 n=1610, new ART initiations from 2008-2010;
 if cald=2009 then o_p_res_artstart=0.0063;
 
@@ -3065,7 +3065,7 @@ if cald=2023.75 then target_s_new_vmmc=211526;
 **Target: Number of Men aged 15+ years circumcised as part of the minimum package of male 
 circumcision for HIV prevention services;
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
-		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");
 if cald=2018.75 then o_s_new_vmmc_NSP=299302;
 if cald=2024.75 then target_s_new_vmmc_NSP=463448;*These could have been changed given COVID;
 if cald=2025.75 then target_s_new_vmmc_NSP=175211;*These could have been changed given COVID;
@@ -3140,7 +3140,7 @@ if cald=2020 then do;
 end;
 
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
-		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");
 *The following have been revised as with discussion with Getrude the hope is to achieve 80% by 2040;
 if cald=2018.75   then o_p_circ_1549m_NSP=0.43;
 if cald=2020.75   then target_p_circ_1549m_NSP=0.43;
@@ -3161,7 +3161,7 @@ if cald=2025.75   then target_p_circ_1549m_NSP=0.80;
 
 *Percentage of FSW reached with the package of HIV combination prevention services;
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
-		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");
 if cald=2020.75 then target_p_FSWprog_fsw_NSP =0.75;
 if cald=2021.75 then target_p_FSWprog_fsw_NSP = 0.80;
 if cald=2022.75 then target_p_FSWprog_fsw_NSP = 0.85;
@@ -3171,7 +3171,7 @@ if cald=2025.75 then target_p_FSWprog_fsw_NSP = 0.90;
 
 *Number of FSW reached with the defined package of HIV combination prevention services;
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
-		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");
 if cald=2018.75 then o_FSWprog_NSP =19800;
 
 if cald=2020.75 then o_FSWprog_NSP = 33750;
@@ -3199,7 +3199,7 @@ This is presented as a range due to difficulty in tracking precise numbers and p
 if cald=2022.25   then o_n_prep_ever=72500;
 
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
-		(file name is "ï	Monitoring and Evaluation Plan_report_WEB.pdf");
+		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");
 if cald=2018.75 then do;
 	o_n_prep_fsw_NSP=1570;
 	o_n_prep_all_NSP=6528;
