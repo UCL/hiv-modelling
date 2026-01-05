@@ -635,15 +635,14 @@ if cald=2014.5 then o_s_deaths_HIVrel_GARPR = 18942;
 if cald=2014.5 then o_s_deaths_HIVrel_Spectrum = 39000;
 *Compare to s_death_hivrel;
 
-***LBM update Sep2016;
-*Source: Global AIDS Response Country Progress Report Zimbabwe 2016. 
-http://www.unaids.org/sites/default/files/country/documents/ZWE_narrative_report_2016.pdf;
 
-if cald=2011.5 then      o_s_deaths_HIVrel_GARCPR = 115117;
-if cald=2012.5 then      o_s_deaths_HIVrel_GARCPR =  87335;
-if cald=2013.5 then      o_s_deaths_HIVrel_GARCPR =  61476;
-if cald=2014.5 then      o_s_deaths_HIVrel_GARCPR =  54994; 
-if cald=2015.5 then      o_s_deaths_HIVrel_GARCPR =  31217;
+***LBM update Dec2025;
+*Source: https://www.unaids.org/sites/default/files/media_asset/data-book-2024_en.pdf;;
+*Accessed Dec 2025;
+if cald=2010 then do;o_s_deaths_HIVrel_unaids=44000; o_s_deaths_HIVrel_unaids_m=21000; o_s_deaths_HIVrel_unaids_w=23000;end;
+if cald=2015 then do;o_s_deaths_HIVrel_unaids=23000; o_s_deaths_HIVrel_unaids_m=11000; o_s_deaths_HIVrel_unaids_w=12000;end;
+if cald=2023 then do;o_s_deaths_HIVrel_unaids=17100; o_s_deaths_HIVrel_unaids_m=8000; o_s_deaths_HIVrel_unaids_w=9100;end;
+
 
 *adults;
 if cald=2010.5 then      o_s_deaths_HIVrel_adults_GARCPR = 71299;* reported on Zimbabwe National HIV and AIDS strategic plan 2011-2015;

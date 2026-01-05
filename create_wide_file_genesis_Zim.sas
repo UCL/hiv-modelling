@@ -185,6 +185,11 @@ s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_
 s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw;
 s_hivge15_ = s_hivge15m + s_hivge15w;
 
+
+
+***ADD AGYW;
+
+
 ***general population;
 
 * n_alive;						n_alive = s_alive * sf;
@@ -405,16 +410,25 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 *turns log back on;
 options notes source source2 mprint mlogic symbolgen;
 
-data e;
+data d;
 set Master_summary;
 
 /*%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas"; by cald;*/
 %include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas"; by cald;
 run;
 
+data e;
+set d;
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Observed data_FSW_Zimbabwe.sas"; by cald;
+run;
+
+
+DATA A.Genesis_Zim_Analysis_17Dec25;
+SET E;
+RUN;
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = '"C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_graphs_29_12_25.doc' startpage=never; 
+ods rtf file = '"C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_calibration_05_01_26.doc' startpage=never; 
 ods listing close;
 
 
@@ -716,7 +730,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Proportion diagnosed (15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
 label mean_p_diag_0 = "Model";
 label o_p_diag_1549_dhs = "DHS 15-49";
@@ -914,316 +928,206 @@ band    x=cald lower=p5_prop_elig_on_prep_0	upper=p95_prop_elig_on_prep_0  / tra
 run;quit;
 
 proc sgplot data=e; 
-Title    height=1.5 justify=center "Of those eligible, proportion on PrEP (15+)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2026 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 0.5 by 0.1) valueattrs=(size=10);
+Title    height=1.5 justify=center "FSW Population (15-49)";
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 200000 by 50000)  valueattrs=(size=10);
 
-label mean_prop_elig_on_prep_0 = "Model";
+label mean_n_sw_1549__0	                  = "Model";
+label o_pop_fsw_1549w_Fearon			  = "Fearon";
 
-series  x=cald y=mean_prop_elig_on_prep_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_0	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_sw_1549__0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_sw_1549__0      upper=p95_n_sw_1549__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_pop_fsw_1549w_Fearon / markerattrs = (symbol=circle color=red size = 10)
+										   yerrorlower=o_pop_fsw_ll_1549w_Fearon yerrorupper=o_pop_fsw_ul_1549w_Fearon errorbarattrs= (color=red thickness = 1);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of all women, proportion FSW (15-49)";
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'              labelattrs=(size=12)  values = (0 to 0.1 by 0.01)  valueattrs=(size=10);
+
+label mean_p_w_1549_sw_0	          = "Model";
+label o_p_fsw_1549w_Fearon			  = "Fearon/Chabata FSW Size Estimation studies";
+
+series  x=cald y=mean_p_w_1549_sw_0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_w_1549_sw_0      upper=p95_p_w_1549_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_p_fsw_1549w_Fearon / markerattrs = (symbol=circle color=red size = 10)
+										   yerrorlower=o_p_fsw_ll_1549w_Fearon yerrorupper=o_p_fsw_ul_1549w_Fearon errorbarattrs= (color=red thickness = 1);
+run;quit;
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "HIV prevalence in female sex workers";
+xaxis label      = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
+
+label mean_prevalence_1564sw_0 = "Model";
+label o_prev_fsw_rds_mut = "RDS Mutare";
+label o_prev_fsw_rds_vf = "RDS Vic Falls";
+label o_prev_fsw_rds_hwa = "RDS Hwange";
+label o_prev_fsw_rds = "RDS Sapphire";
+label o_prev_fsw_AMT = "RDS Amethist";
+
+series  x=cald y=mean_prevalence_1564sw_0 /  lineattrs = (color=black thickness = 2);
+band   x=cald lower=p5_prevalence_1564sw_0  upper=p95_prevalence_1564sw_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for HIV prevalence in female sex workers";
+
+scatter x=cald y=o_prev_fsw_rds_mut / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_prev_fsw_rds_vf / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_prev_fsw_rds_hwa / markerattrs = (symbol=circle       color=purple size = 12);
+scatter x=cald y=o_prev_fsw_rds / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_prev_fsw_AMT / markerattrs = (symbol=circle       color=black size = 12);
 run;quit;
 
 
-        n_sw_1564_ n_sw_1549_ p_w_1564_sw p_w_1549_sw prevalence_1564sw incidence_1564sw
-        p_onprep_sw n_onprep_sw
-        n_msm_1564_ p_m_msm prevalence1549_msm incidence_msm p_onprep_msm n_onprep_msm
-        n_death_hivrel n_death_hivrel_m n_death_hivrel_w;
+proc sgplot data=e; 
+title    height=1.5 justify=center "HIV incidence amongst sex workers";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
+yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 to 20 by 2)    valueattrs=(size=10);
+
+label mean_incidence_1564sw_0  = "Mean";
+label o_HIVIncid_fsw = "JH JAIDS";
+label o_HIVIncid1824_fsw= "18-24 SAli";
+label o_HIVIncid2539_fsw= "25-39 SAli";
+label o_HIVIncid_fsw_dreams = "DREAMS";
+label o_HIVIncid1539_fsw_hj = "15-39 HJones";
+
+series  x=cald y=mean_incidence_1564sw_0 /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence_1564sw_0  upper=p95_incidence_1564sw_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+
+scatter x=cald y=o_HIVIncid_fsw / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_HIVIncid1824_fsw / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_HIVIncid2539_fsw / markerattrs = (symbol=circle       color=yellow size = 12);
+scatter x=cald y=o_HIVIncid_fsw_dreams / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_HIVIncid1539_fsw_hj / markerattrs = (symbol=circle       color=black size = 12);
+run;quit;
 
 
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of people on any PrEP";
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Proportion of FSW on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.02) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.02 ) valueattrs=(size=10);
 
-label p50_prop_1564m_onprep_0 = "Men";
-label p50_prop_1564w_onprep_0 = "Women";
+label mean_p_onprep_sw_0 = "Model";
+label o_n_prep_fsw_AMT_SR = "AMETHIST self-report";
+label o_n_prep_fsw_AMT_TDF = "AMETHIST TDF samples";
 
-series  x=cald y=p50_prop_1564m_onprep_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_1564m_onprep_0 	upper=p95_prop_1564m_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564w_onprep_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_1564w_onprep_0 	upper=p95_prop_1564w_onprep_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "model 90% range";
+series  x=cald y=mean_p_onprep_sw_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onprep_sw_0 	upper=p95_p_onprep_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_n_prep_fsw_AMT_SR / markerattrs = (symbol=circle       color=red size = 10);
+scatter x=cald y=o_n_prep_fsw_AMT_TDF / markerattrs = (symbol=circle       color=blue size = 10);
+run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "MSM Population (15-64)";
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 200000 by 50000)  valueattrs=(size=10);
+
+label mean_n_msm_1564__0                  = "Model";
+
+series  x=cald y=mean_n_msm_1564__0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_msm_1564__0      upper=p95_n_msm_1564__0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
 run;quit;
 
 
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of people with an indication for PrEP currently on any PrEP";
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of all men, proportion MSM (15-64)";
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'              labelattrs=(size=12)  values = (0 to 0.1 by 0.01)  valueattrs=(size=10);
+
+label mean_p_m_msm_0	          = "Model";
+
+series  x=cald y=mean_p_m_msm_0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_m_msm_0      upper=p95_p_m_msm_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "HIV prevalence in MSM";
+xaxis label      = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0 to 1 by 0.2)    valueattrs=(size=10);
+
+label mean_prevalence1549_msm_0 = "Model";
+
+series  x=cald y=mean_prevalence1549_msm_0 /  lineattrs = (color=black thickness = 2);
+band   x=cald lower=p5_prevalence1549_msm_0  upper=p95_prevalence1549_msm_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for HIV prevalence in female sex workers";
+
+run;quit;
+
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "HIV incidence amongst MSM";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
+yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 to 20 by 2)    valueattrs=(size=10);
+
+label mean_incidence_msm_0  = "Mean";
+
+series  x=cald y=mean_incidence_msm_0 /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence_msm_0  upper=p95_incidence_msm_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Proportion of MSM on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.02 ) valueattrs=(size=10);
 
-label p50_prop_elig_on_prep_0 = "All";
-label p50_prop_elig_on_prep_w_0 = "Women";
-label p50_prop_elig_on_prep_m_0 = "Men";
+label mean_p_onprep_msm_0 = "Model";
 
-series  x=cald y=p50_prop_elig_on_prep_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_0 	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "model 90% range";
-series  x=cald y=p50_prop_elig_on_prep_w_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_w_0 	upper=p95_prop_elig_on_prep_w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "model 90% range";
-series  x=cald y=p50_prop_elig_on_prep_m_0/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_m_0 	upper=p95_prop_elig_on_prep_m_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "model 90% range";
-
+series  x=cald y=mean_p_onprep_msm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onprep_msm_0 	upper=p95_p_onprep_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
 
-*On oral/injectable;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of people with an indication for PrEP currently on oral and injectable PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
-
-label p50_prop_elig_on_prep_oral_0 = "Oral";
-label p50_prop_elig_on_prep_inj_0 = "Injectable";
-
-series  x=cald y=p50_prop_elig_on_prep_oral_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_oral_0 	upper=p95_prop_elig_on_prep_oral_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "model 90% range";
-series  x=cald y=p50_prop_elig_on_prep_inj_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_inj_0 	upper=p95_prop_elig_on_prep_inj_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "model 90% range";
-run;quit;
-
-
-
-
-***Mobile men;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Of men, proportion mobile with increased risk";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
-
-label p50_p_mm_0 = "Median";
-
-series  x=cald y=p50_p_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_mm_0 	upper=p95_p_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-run;quit;
-
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of men with HIV";
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Number of HIV-related deaths (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 30000 by 2000 ) valueattrs=(size=10);
 
-label p50_p_hiv_mm_0 = "Mobile men";
-label p50_p_hiv_nmm_0 = "non-mobile men";
+label mean_n_death_hivrel_0 = "Model";
+label o_s_deaths_HIVrel_GARPR = "GARPR all ages";
+label o_s_deaths_HIVrel_unaids= "UNAIDS 15+";
 
-series  x=cald y=p50_p_hiv_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_hiv_mm_0 	upper=p95_p_hiv_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_hiv_nmm_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_hiv_nmm_0 	upper=p95_p_hiv_nmm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_death_hivrel_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_death_hivrel_0 	upper=p95_n_death_hivrel_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_s_deaths_HIVrel_GARPR / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_s_deaths_HIVrel_unaids / markerattrs = (symbol=circle       color=green size = 12);
 run;quit;
 
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Number of HIV-related deaths (Males 15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
 
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Percentage of men ever on PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.01) valueattrs=(size=10);
+label mean_n_death_hivrel_m_0 = "Model";
+label o_s_deaths_HIVrel_unaids_m= "UNAIDS 15+";
 
-label p50_p_prep_any_ever_mm_0 = "Mobile men";
-label p50_p_prep_any_ever_nmm_0 = "Non-mobile men (inc. MSM and PWID)";
+series  x=cald y=mean_n_death_hivrel_m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_death_hivrel_m_0 	upper=p95_n_death_hivrel_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=p50_p_prep_any_ever_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_prep_any_ever_mm_0 	upper=p95_p_prep_any_ever_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_p_prep_any_ever_nmm_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_prep_any_ever_nmm_0 	upper=p95_p_prep_any_ever_nmm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+scatter x=cald y=o_s_deaths_HIVrel_unaids_m / markerattrs = (symbol=circle       color=green size = 12);
 run;quit;
 
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Number of HIV-related deaths (Males 15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
 
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Of those with an indication for PrEP, proportion of men currently on any PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
+label mean_n_death_hivrel_w_0 = "Model";
+label o_s_deaths_HIVrel_unaids_w= "UNAIDS 15+";
 
-label p50_prop_elig_on_prep_mm_0 = "Mobile men";
-label p50_prop_elig_on_prep_nmm_0 = "Non-Mobile men";
+series  x=cald y=mean_n_death_hivrel_w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_death_hivrel_w_0 	upper=p95_n_death_hivrel_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=p50_prop_elig_on_prep_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_mm_0 	upper=p95_prop_elig_on_prep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_prop_elig_on_prep_nmm_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_nmm_0 	upper=p95_prop_elig_on_prep_nmm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
-
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Of mobile men with an indication for PrEP, proportion currently on oral and injectable PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
-
-label p50_prop_elig_on_prep_oral_mm_0 = "Oral";
-label p50_prop_elig_on_prep_inj_mm_0 = "Injectable";
-
-series  x=cald y=p50_prop_elig_on_prep_oral_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_oral_mm_0 	upper=p95_prop_elig_on_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_prop_elig_on_prep_inj_mm_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_inj_mm_0 	upper=p95_prop_elig_on_prep_inj_mm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of mobile men currently on any PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000) valueattrs=(size=10);
-
-label p50_n_prep_any_mm_0 = "Mobile men";
-
-series  x=cald y=p50_n_prep_any_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_prep_any_mm_0 	upper=p95_n_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-run;quit;
-
-
-/*
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of mobile men currently on any PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000) valueattrs=(size=10);
-
-label p50_n_prep_oral_mm_0 = "Option 0 (SQ, No CAB-LA, No PrEP for MM)";
-label p50_n_prep_oral_mm_1 = "Option 1 (MM intervention - CAB-LA, MM PrEP elig and not hard to reach)";
-label p50_n_prep_oral_mm_2 = "Option 2 (MM PrEP elig - No CAB, % MM still hard to reach)";
-label p50_n_prep_oral_mm_3 = "Option 3 (MM PrEP elig and not hard to reach - No CAB)";
-label p50_n_prep_oral_mm_4 = "Option 4 (MM PrEP elig, CAB-LA avail - % MM still hard to reach)";
-
-series  x=cald y=p50_n_prep_oral_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_prep_oral_mm_0 	upper=p95_n_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-run;quit;
-*/
-
-***After intervention;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of mobile men currently on any PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
-
-label p50_prop_elig_on_prep_mm_0 = "Option 0 (SQ, No CAB-LA, No PrEP for MM)";
-label p50_prop_elig_on_prep_mm_1 = "Option 1 (MM intervention - CAB-LA, MM PrEP elig and not hard to reach)";
-label p50_prop_elig_on_prep_mm_2 = "Option 2 (MM PrEP elig - No CAB, % MM still hard to reach)";
-label p50_prop_elig_on_prep_mm_3 = "Option 3 (MM PrEP elig and not hard to reach - No CAB)";
-label p50_prop_elig_on_prep_mm_4 = "Option 4 (MM PrEP elig, CAB-LA avail - % MM still hard to reach)";
-series  x=cald y=p50_prop_elig_on_prep_mm_2/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_mm_2 	upper=p95_prop_elig_on_prep_mm_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-
-/*
-series  x=cald y=p50_prop_elig_on_prep_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_mm_0 	upper=p95_prop_elig_on_prep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_elig_on_prep_mm_1/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_mm_1 	upper=p95_prop_elig_on_prep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_elig_on_prep_mm_2/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_mm_2 	upper=p95_prop_elig_on_prep_mm_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_elig_on_prep_mm_3/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_mm_3 	upper=p95_prop_elig_on_prep_mm_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_elig_on_prep_mm_4/	lineattrs = (color=orange thickness = 2);
-band    x=cald lower=p5_prop_elig_on_prep_mm_4 	upper=p95_prop_elig_on_prep_mm_4  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
-*/
-run;quit;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Prep willing";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
-
-label p50_p_prep_any_willing_0 = "Without intervention";
-label p50_p_prep_any_willing_1 = "With intervention";
-
-series  x=cald y=p50_p_prep_any_willing_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_prep_any_willing_0 	upper=p95_p_prep_any_willing_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_prep_any_willing_1/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_prep_any_willing_1 	upper=p95_p_prep_any_willing_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-
+scatter x=cald y=o_s_deaths_HIVrel_unaids_w / markerattrs = (symbol=circle       color=green size = 12);
 run;quit;
 
 ods rtf close;
 ods listing;
 run;
 
-
-***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;
-* user to decide what years and year ranges to include ;
-
-%macro var(v=);
-
-***OUTPUTS IN SPECIFIC YEARS - AMEND TO E.G. PROJECT SPECIFIC BASELINE (NOTE THESE ARE NOT BY OPTION);
-proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 2021.0 <= cald < 2022.0; 
-
-***OUTPUTS IN SPECIFIC YEARS BY OPTION - THIS MAY NOT BE NEEDED IN ALL ANALYSES;
-proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
-
-***OUTPUTS FOR CE ANALYSES OVER 5, 20 AND 50 years BY OPTION;
-proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option ; where 2022.5 <= cald < 2027.50;
-proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option ; where 2022.5 <= cald < 2042.50;
-proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option ; where 2022.5 <= cald < 2072.50;
-
-***SORT OUTPUT DATASETS BY RUN BEFORE MERGING;
-proc sort data=y_22; by run; proc transpose data=y_22 out=t_22 prefix=&v._22_; var &v._22; by run;
-proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
-proc sort data=y_22_27; by run; proc transpose data=y_22_27 out=t_22_27 prefix=&v._22_27_; var &v._22_27; by run;
-proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&v._22_42_; var &v._22_42; by run;
-proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
-
-***MERGE TOGETHER SO THE DATASET NOW CONTAINS MEANS OVER SPECIFIED PERIODS;
-data &v ; merge  y_22 t_30 t_22_27 t_22_42 t_22_72;  
-
-
-***THIS MACRO CALCULATES THE MEANS OVER PERIOD AT EACH OF THE SPECIFIED TIME PERIODS ABOVE ANS STORES THESE IN INDIVIDUAL DATASETS;
-%mend var;
-
-
-%var(v=p_diag);	 		%var(v=p_diag_m);	 		%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
-%var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);
-%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);
-
-%var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
-%var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
-%var(v=dcost);	 		%var(v=ddaly);
-
-*/ADD IN PROJECT SPECIFIC OUTPUTS/*;
-
-run;
-
-
-***MERGE THE DATASETS CREATED ABOVE INTO ONE DATASET;
-data wide_outputs;merge
-p_diag	 		p_diag_m	 		p_diag_w   			p_onart_diag  	p_onart_diag_w
-p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m
-p_vg1000 		p_vl1000			prevalence_vg1000
-prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
-dcost			ddaly
-
-/*ADD IN PROJECT SPECIFIC OUTPUTS*/
-;
-
-proc sort; by run;run;
-
-
-***Macro par used to add in values of all sampled parameters - values before intervention;
-%macro par(p=);
-proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2022.5; run;
-data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
-
-%mend par; 
-
-/*ADD PROJECT SPECIFIC PARAMETERS OF INTEREST*/
-%par(p=sw_art_disadv);		%par(p=sw_program);			%par(p=effect_sw_prog_newp);	%par(p=effect_sw_prog_6mtest);	
-%par(p=effect_sw_prog_int);	%par(p=effect_sw_prog_adh);	%par(p=effect_sw_prog_lossdiag);%par(p=effect_sw_prog_prep_any);
-%par(p=effect_sw_prog_pers_sti); %par(p=sw_trans_matrix);
-run;
-
-
-data wide_par; merge 
-sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
-effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
-sw_trans_matrix;
-;proc sort; by run;run;
-
-***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_XXX;
-merge   wide_outputs  wide_par ;  
-by run;run;
 
