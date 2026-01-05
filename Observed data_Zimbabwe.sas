@@ -3197,6 +3197,7 @@ if cald=2025.75 then o_FSWprog_NSP = 42750;
 		- program/country reports where available. 
 This is presented as a range due to difficulty in tracking precise numbers and possible double reporting, I used the midlle number in the range;
 if cald=2022.25   then o_n_prep_ever=72500;
+if cald=2025.75   then o_n_prep_ever=337010; 
 
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
 		(file name is "ÅEMonitoring and Evaluation Plan_report_WEB.pdf");

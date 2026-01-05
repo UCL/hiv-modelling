@@ -857,7 +857,7 @@ run;quit;
 
 
 proc sgplot data=e; 
-Title    height=1.5 justify=center "Of those on ART, proportion virally suppressed (Feales 15-64)";
+Title    height=1.5 justify=center "Of those on ART, proportion virally suppressed (Females 15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 
@@ -874,9 +874,57 @@ run;quit;
 
 
 
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Currently on PrEP (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 100000 by 10000) valueattrs=(size=10);
 
-n_onprep_w n_onprep_m n_onprep
-        prop_elig_on_prep n_prep_ever
+label mean_n_onprep_0 = "Model";
+label o_n_prep_all_NSP = "National Strategic Plan 2021-25";
+
+series  x=cald y=mean_n_onprep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_onprep_0	upper=p95_n_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_n_prep_all_NSP/ markerattrs=(symbol=circle color=red size=10);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Ever initiated PrEP (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2026 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 500000 by 50000) valueattrs=(size=10);
+
+label mean_n_prep_ever_0 = "Model";
+label o_n_prep_ever = "PrEPWatch";
+
+series  x=cald y=mean_n_prep_ever_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_ever_0	upper=p95_n_prep_ever_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_n_prep_ever/ markerattrs=(symbol=circle color=red size=10);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of those eligible, proportion on PrEP (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2026 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 0.5 by 0.1) valueattrs=(size=10);
+
+label mean_prop_elig_on_prep_0 = "Model";
+
+series  x=cald y=mean_prop_elig_on_prep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_0	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of those eligible, proportion on PrEP (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2026 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 0.5 by 0.1) valueattrs=(size=10);
+
+label mean_prop_elig_on_prep_0 = "Model";
+
+series  x=cald y=mean_prop_elig_on_prep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_0	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+
         n_sw_1564_ n_sw_1549_ p_w_1564_sw p_w_1549_sw prevalence_1564sw incidence_1564sw
         p_onprep_sw n_onprep_sw
         n_msm_1564_ p_m_msm prevalence1549_msm incidence_msm p_onprep_msm n_onprep_msm
