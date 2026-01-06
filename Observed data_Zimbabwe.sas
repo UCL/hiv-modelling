@@ -81,6 +81,7 @@
 19. Social behavioural change communication		 Line 3179
 20. Sexually transmitted infections..............Line 3190
 21. Tubercolosis.................................Line 3202
+22. AGYW.........................................Line 3202
 
 
 *******************************************************************************************
@@ -3319,9 +3320,6 @@ if cald=2013.75 then do; o_p_ever_sti_fsw_rds=0.374; o_p_ever_sti_fsw_ll_rds=0.1
 
 
 
-
-
-
 *******************************************************************************************
 *******************************    21. Tubercolosis     **********************************
 *******************************************************************************************
@@ -3336,3 +3334,34 @@ if cald=2015.5 then o_p_tb_hivposcare_nac=0.046;
 *Zimbabwe gross national index per capita of $860 
 (Source: World Bnank 2015 cited by Page 1 of "Proposal_v1_25 Nov_15");
 
+
+*******************************************************************************************
+********************     22. AGYW     **************************
+*******************************************************************************************
+
+***Population***;
+
+*Source: https://www.zimstat.co.zw/wp-content/uploads/Census/Zimbabwe_2022_PHC_Gender_thematic_FINAL_DRAFT_Jan_25.pdf;
+*Table 1;
+if cald=2022 then do;
+	o_pop_agyw_census = 1468035;
+	o_p_agyw_census =0.33; *1468035/4398751 Table 2.4;
+end;
+
+***Prevalence***;
+
+*Source: https://zimbabwe.unfpa.org/sites/default/files/pub-pdf/unfpa_zimbabwe_2021_annual_report.pdf;
+if cald=2021 then o_prev_agyw_un = 0.09;
+
+*Source: ZIMPHIA: https://phia.icap.columbia.edu/wp-content/uploads/2020/02/ZIMPHIA-Final-Report_integrated_Web-1.pdf;
+if cald=2015.75 then o_prev_agyw_zimphia=0.059;
+if cald=2020    then o_prev_agyw_zimphia=0.05;
+
+***Incidence***;
+
+*Source: https://zimbabwe.unfpa.org/sites/default/files/pub-pdf/unfpa_zimbabwe_2021_annual_report.pdf;
+if cald=2021 then o_incid_agyw_un = 0.8;
+
+*Source: ZIMPHIA: https://phia.icap.columbia.edu/wp-content/uploads/2020/02/ZIMPHIA-Final-Report_integrated_Web-1.pdf;
+if cald=2015.75 then o_incid_agyw_zimphia=0.46;
+if cald=2020    then o_incid_agyw_zimphia=0.76;

@@ -252,6 +252,17 @@ s_hivge15_ = s_hivge15m + s_hivge15w;
 * p_onprep_msm;					p_onprep_msm = s_onprep_msm / (s_alive1564_msm - s_hiv1564msm);
 * n_onprep_msm;					n_onprep_msm = s_onprep_msm * sf;
 
+s_ageg1524w = s_ageg1519w + s_ageg2024w;
+s_hiv1524w = s_hiv1519w + s_hiv2024w;
+s_primary1524w = s_primary1519w + s_primary2024w;
+
+* n_agyw;						n_agyw = s_ageg1524w * sf;
+* p_agyw;						p_w_agyw = s_ageg1524w/s_alive1564_w;
+* prevalence_agyw;				prevalence_agyw = s_hiv1524w/s_ageg1524w;
+* incidence_agyw;				if (s_ageg1524w - s_hiv1524w + s_primary1524w) gt 0 then incidence_agyw = (s_primary1524w *4 * 100)/(s_ageg1524w - s_hiv1524w + s_primary1524w); 
+* p_onprep_agyw;				p_onprep_agyw = s_onprep_1524w/ (s_ageg1524w - s_hiv1524w);
+* n_onprep_agyw;				n_onprep_agyw = s_onprep_1524w * sf;
+
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel  * 4* sf;
 * n_death_hivrel_m;				n_death_hivrel_m = s_death_hivrel_m  * 4* sf;
 * n_death_hivrel_w;				n_death_hivrel_w = s_death_hivrel_w * 4* sf;
@@ -270,6 +281,7 @@ n_sw_1564_			 n_sw_1549_			p_w_1564_sw			p_w_1549_sw			prevalence_1564sw	inciden
 p_onprep_sw			 n_onprep_sw
 
 n_msm_1564_			 p_m_msm			prevalence1549_msm	incidence_msm		p_onprep_msm		n_onprep_msm
+n_agyw				 p_w_agyw			prevalence_agyw		incidence_agyw		p_onprep_agyw		n_onprep_agyw
 
 n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w
 
@@ -321,6 +333,8 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
         n_sw_1564_ n_sw_1549_ p_w_1564_sw p_w_1549_sw prevalence_1564sw incidence_1564sw
         p_onprep_sw n_onprep_sw
         n_msm_1564_ p_m_msm prevalence1549_msm incidence_msm p_onprep_msm n_onprep_msm
+		n_agyw p_w_agyw prevalence_agyw	incidence_agyw	p_onprep_agyw n_onprep_agyw
+
         n_death_hivrel n_death_hivrel_m n_death_hivrel_w;
 
     /* Count number of variables */
@@ -423,7 +437,7 @@ set d;
 run;
 
 
-DATA A.Genesis_Zim_Analysis_17Dec25;
+DATA A.Zim_options_graphs_17Dec25;
 SET E;
 RUN;
 
@@ -970,7 +984,7 @@ label o_prev_fsw_rds = "RDS Sapphire";
 label o_prev_fsw_AMT = "RDS Amethist";
 
 series  x=cald y=mean_prevalence_1564sw_0 /  lineattrs = (color=black thickness = 2);
-band   x=cald lower=p5_prevalence_1564sw_0  upper=p95_prevalence_1564sw_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for HIV prevalence in female sex workers";
+band   x=cald lower=p5_prevalence_1564sw_0  upper=p95_prevalence_1564sw_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
 scatter x=cald y=o_prev_fsw_rds_mut / markerattrs = (symbol=circle       color=blue size = 12);
 scatter x=cald y=o_prev_fsw_rds_vf / markerattrs = (symbol=circle       color=green size = 12);
@@ -993,7 +1007,7 @@ label o_HIVIncid_fsw_dreams = "DREAMS";
 label o_HIVIncid1539_fsw_hj = "15-39 HJones";
 
 series  x=cald y=mean_incidence_1564sw_0 /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence_1564sw_0  upper=p95_incidence_1564sw_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+band    x=cald lower=p5_incidence_1564sw_0  upper=p95_incidence_1564sw_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
 scatter x=cald y=o_HIVIncid_fsw / markerattrs = (symbol=circle       color=blue size = 12);
 scatter x=cald y=o_HIVIncid1824_fsw / markerattrs = (symbol=circle       color=green size = 12);
@@ -1054,7 +1068,7 @@ yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0 to 
 label mean_prevalence1549_msm_0 = "Model";
 
 series  x=cald y=mean_prevalence1549_msm_0 /  lineattrs = (color=black thickness = 2);
-band   x=cald lower=p5_prevalence1549_msm_0  upper=p95_prevalence1549_msm_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range for HIV prevalence in female sex workers";
+band   x=cald lower=p5_prevalence1549_msm_0  upper=p95_prevalence1549_msm_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
 run;quit;
 
@@ -1067,7 +1081,7 @@ yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 t
 label mean_incidence_msm_0  = "Mean";
 
 series  x=cald y=mean_incidence_msm_0 /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence_msm_0  upper=p95_incidence_msm_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+band    x=cald lower=p5_incidence_msm_0  upper=p95_incidence_msm_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
 run;quit;
 
@@ -1081,6 +1095,85 @@ label mean_p_onprep_msm_0 = "Model";
 series  x=cald y=mean_p_onprep_msm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onprep_msm_0 	upper=p95_p_onprep_msm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "AGYW Population";
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 2000000 by 250000)  valueattrs=(size=10);
+
+label mean_n_agyw_0        	= "Model";
+label o_pop_agyw_census		= "Census";
+
+series  x=cald y=mean_n_agyw_0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_agyw_0     		 upper=p95_n_agyw_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_pop_agyw_census / markerattrs = (symbol=circle       color=blue size = 12);
+run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of women aged 15-64, proportion AGYW";
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'              labelattrs=(size=12)  values = (0 to 0.5 by 0.1)  valueattrs=(size=10);
+
+label mean_p_w_agyw_0	    = "Model";
+label o_p_agyw_census		= "Census";
+
+series  x=cald y=mean_p_w_agyw_0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_w_agyw_0      upper=p95_p_w_agyw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_p_agyw_census / markerattrs = (symbol=circle       color=blue size = 12);
+
+run;quit;
+
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "HIV prevalence in AGYW";
+xaxis label      = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0 to 0.2 by 0.05)    valueattrs=(size=10);
+
+label mean_prevalence_agyw_0 = "Model";
+label o_prev_agyw_un = "UN";
+label o_prev_agyw_zimphia = "ZIMPHIA";
+
+series  x=cald y=mean_prevalence_agyw_0 /  lineattrs = (color=black thickness = 2);
+band   x=cald lower=p5_prevalence_agyw_0 upper=p95_prevalence_agyw_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+
+scatter x=cald y=o_prev_agyw_un / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_prev_agyw_zimphia / markerattrs = (symbol=circle  color=green size = 12);
+
+run;quit;
+
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "HIV incidence amongst AGYW";
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
+yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 to 5 by 1)    valueattrs=(size=10);
+
+label mean_incidence_agyw_0  = "Mean";
+label o_incid_agyw_un = "UN";
+label o_incid_agyw_zimphia = "ZIMPHIA";
+
+series  x=cald y=mean_incidence_agyw_0 /  lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence_agyw_0  upper=p95_incidence_agyw_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
+
+scatter x=cald y=o_incid_agyw_un / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_incid_agyw_zimphia / markerattrs = (symbol=circle  color=green size = 12);
+
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Proportion of AGYW on PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.02 ) valueattrs=(size=10);
+
+label mean_p_onprep_agyw_0 = "Model";
+
+series  x=cald y=mean_p_onprep_agyw_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onprep_agyw_0 	upper=p95_p_onprep_agyw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (15+)";
