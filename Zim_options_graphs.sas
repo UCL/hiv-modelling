@@ -158,7 +158,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Proportion diagnosed (15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0.9 to 1 by 0.01) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0.9 to 0.98 by 0.01) valueattrs=(size=10);
 
 label mean_p_diag_99 = "SQ";
 label mean_p_diag_0 = "Base";
@@ -463,7 +463,7 @@ run;quit;
 proc sgplot data=e; 
 title    height=1.5 justify=center "HIV prevalence in AGYW";
 xaxis label      = 'Year'                labelattrs=(size=12)  values = (2020 to 2050 by 2)       valueattrs=(size=10); 
-yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0.2 to 0.5 by 0.05)    valueattrs=(size=10);
+yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0.0 to 0.05 by 0.01)    valueattrs=(size=10);
 
 label mean_prevalence_agyw_99 = "SQ";
 label mean_prevalence_agyw_0 = "Base";
@@ -475,6 +475,7 @@ label mean_prevalence_agyw_2 = "FSW high";
 label mean_prevalence_agyw_6 = "KP Oral PrEP continuation";
 label mean_prevalence_agyw_7 = "KP Oral PrEP and intro of Len";
 label mean_prevalence_agyw_8 = "KP Oral PrEP and scale up of Len";
+
 *label mean_prevalence_agyw_9 = "Oral PrEP FSW only";
 label mean_prevalence_agyw_10 = "Oral PrEP AGYW only";
 
@@ -499,23 +500,23 @@ series  x=cald y=mean_prevalence_agyw_6/	lineattrs = (color=blue thickness = 2 p
 series  x=cald y=mean_prevalence_agyw_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_agyw_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
 
-*series  x=cald y=mean_prevalence_1564sw_9/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
-*series  x=cald y=mean_prevalence_1564sw_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
-*series  x=cald y=mean_prevalence_1564sw_16/	lineattrs = (color=lightgrey thickness = 2 pattern=solid);
+*series  x=cald y=mean_prevalence_agyw_9/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
+*series  x=cald y=mean_prevalence_agyw_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
+*series  x=cald y=mean_prevalence_agyw_16/	lineattrs = (color=lightgrey thickness = 2 pattern=solid);
 
-series  x=cald y=mean_prevalence_1564sw_10/	lineattrs = (color=lavendar thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence_1564sw_14/	lineattrs = (color=plum thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence_1564sw_17/	lineattrs = (color=indigo thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_agyw_10/	lineattrs = (color=lavendar thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_agyw_14/	lineattrs = (color=plum thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_agyw_17/	lineattrs = (color=indigo thickness = 2 pattern=solid);
 
 
-*series  x=cald y=mean_prevalence_1564sw_20/	lineattrs = (color=pink thickness = 2 pattern=solid);
+*series  x=cald y=mean_prevalence_agyw_20/	lineattrs = (color=pink thickness = 2 pattern=solid);
 run;quit;
 
 
 proc sgplot data=e; 
 title    height=1.5 justify=center "HIV incidence amongst AGYWs";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2020 to 2050  by 2)       valueattrs=(size=10); 
-yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 to 10 by 2)    valueattrs=(size=10);
+yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 to 1 by 0.1)    valueattrs=(size=10);
 
 label mean_incidence_agyw_99 = "SQ";
 label mean_incidence_agyw_0 = "Base";
@@ -527,12 +528,15 @@ label mean_incidence_agyw_2 = "FSW high";
 label mean_incidence_agyw_6 = "KP Oral PrEP continuation";
 label mean_incidence_agyw_7 = "KP Oral PrEP and intro of Len";
 label mean_incidence_agyw_8 = "KP Oral PrEP and scale up of Len";
+
 *label mean_incidence_agyw_9 = "Oral PrEP FSW only";
-label mean_incidence_agyw_9 = "Oral PrEP AGYW only";
+label mean_incidence_agyw_10 = "Oral PrEP AGYW only";
+
 *label mean_incidence_agyw_12 = "Oral PrEP and intro of Len FSW only";
-label mean_incidence_agyw_12 = "Oral PrEP and intro of Len AGYW only";
+label mean_incidence_agyw_14 = "Oral PrEP and intro of Len AGYW only";
+
 *label mean_incidence_agyw_16 = "Oral PrEP and scale up of Len FSW only";
-label mean_incidence_agyw_16 = "Oral PrEP and scale up of Len AGYW only";
+label mean_incidence_agyw_17 = "Oral PrEP and scale up of Len AGYW only";
 
 *label mean_incidence_agyw_20 = "Return interventions";
 
@@ -565,7 +569,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Proportion of FSW on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.30 by 0.03) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.08 by 0.01) valueattrs=(size=10);
 
 label mean_p_onprep_agyw_99 = "SQ";
 label mean_p_onprep_agyw_0 = "Base";
@@ -577,12 +581,15 @@ label mean_p_onprep_agyw_2 = "FSW high";
 label mean_p_onprep_agyw_6 = "KP Oral PrEP continuation";
 label mean_p_onprep_agyw_7 = "KP Oral PrEP and intro of Len";
 label mean_p_onprep_agyw_8 = "KP Oral PrEP and scale up of Len";
+
 *label mean_p_onprep_agyw_9 = "Oral PrEP FSW only";
-label mean_p_onprep_agyw_9 = "Oral PrEP AGYW only";
+label mean_p_onprep_agyw_10 = "Oral PrEP AGYW only";
+
 *label mean_p_onprep_agyw_12 = "Oral PrEP and intro of Len FSW only";
-label mean_p_onprep_agyw_12 = "Oral PrEP and intro of Len AGYW only";
+label mean_p_onprep_agyw_14 = "Oral PrEP and intro of Len AGYW only";
+
 *label mean_p_onprep_agyw_16 = "Oral PrEP and scale up of Len FSW only";
-label mean_p_onprep_agyw_16 = "Oral PrEP and scale up of Len AGYW only";
+label mean_p_onprep_agyw_17 = "Oral PrEP and scale up of Len AGYW only";
 
 *label mean_p_onprep_agyw_20 = "Return interventions";
 
@@ -619,8 +626,8 @@ yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0.15 
 
 label mean_prevalence1549_msm_99 = "SQ";
 label mean_prevalence1549_msm_0 = "Base";
-label mean_prevalence1549_msm_1 = "FSW low";
-label mean_prevalence1549_msm_2 = "FSW high";
+*label mean_prevalence1549_msm_1 = "FSW low";
+*label mean_prevalence1549_msm_2 = "FSW high";
 *label mean_prevalence1549_msm_3 = "Condoms";
 *label mean_prevalence1549_msm_4 = "VMMC";
 *label mean_prevalence1549_msm_5 = "VMMC increase";
@@ -638,8 +645,8 @@ label mean_prevalence1549_msm_18 = "Oral PrEP and scale up of Len MSM only";
 
 series  x=cald y=mean_prevalence1549_msm_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549_msm_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_prevalence1549_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence1549_msm_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_prevalence1549_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_prevalence1549_msm_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
 *series  x=cald y=mean_prevalence1549_msm_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_prevalence1549_msm_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -668,8 +675,8 @@ yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 t
 
 label mean_incidence_msm_99 = "SQ";
 label mean_incidence_msm_0 = "Base";
-label mean_incidence_msm_1 = "FSW low";
-label mean_incidence_msm_2 = "FSW high";
+*label mean_incidence_msm_1 = "FSW low";
+*label mean_incidence_msm_2 = "FSW high";
 *label mean_incidence_msm_3 = "Condoms";
 *label mean_incidence_msm_4 = "VMMC";
 *label mean_incidence_msm_5 = "VMMC increase";
@@ -687,8 +694,8 @@ label mean_incidence_msm_18 = "Oral PrEP and scale up of Len MSM only";
 
 series  x=cald y=mean_incidence_msm_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_msm_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_incidence_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence_msm_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_incidence_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_incidence_msm_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
 *series  x=cald y=mean_incidence_msm_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_incidence_msm_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -717,8 +724,8 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.0
 
 label mean_p_onprep_msm_99 = "SQ";
 label mean_p_onprep_msm_0 = "Base";
-label mean_p_onprep_msm_1 = "FSW low";
-label mean_p_onprep_msm_2 = "FSW high";
+*label mean_p_onprep_msm_1 = "FSW low";
+*label mean_p_onprep_msm_2 = "FSW high";
 *label mean_p_onprep_msm_3 = "Condoms";
 *label mean_p_onprep_msm_4 = "VMMC";
 *label mean_p_onprep_msm_5 = "VMMC increase";
@@ -736,8 +743,8 @@ label mean_p_onprep_msm_18 = "Oral PrEP and scale up of Len MSM only";
 
 series  x=cald y=mean_p_onprep_msm_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_msm_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_p_onprep_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onprep_msm_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_p_onprep_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_p_onprep_msm_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
 *series  x=cald y=mean_p_onprep_msm_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_p_onprep_msm_4/	lineattrs = (color=purple thickness = 2 pattern=solid);

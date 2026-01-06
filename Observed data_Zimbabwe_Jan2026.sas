@@ -1,87 +1,35 @@
-***Observed data, numbers updated by Loveleen Sep 2016, AFTER?;
-*starting from "Observed data_Zimbabwe_LBMMay2017.sas
-*update in July 2017, March 2021 and then March 2023;
-
-
-*CHECK
-	- Cowan F. HIV care cascade among female sex workers in zimbabwe: Baseline results of the sAPPH-iRe trial. 
-	*********CAREFUL CHECK WHETHER IT IS AWARE OUT OF THOSE POSITIVE,
-		O WHETHER IT IS BASICALLY RECENT TESTING (it refers to Sisters with a voice progframme for the period 2009-2013)
-		if cald=2011.55 then obs_p_diag_fsw_rds=0.67;
-
-
-
-
-*To export in the program:
-	- Proportion of FSW with >=16 newp/3m (oe_p_newple16_fsw_fc), 
-							16-54 newp/3m (oe_p_newp1654_fsw_fc=0.41),
-							>54   newp/3m (oe_p_newpgt54_fsw_fc=0.23)
-
-	- number of FSW who tested in the last year to compare to the number of FSW attending Sisters with a Voice Clinic 
-	 (o_nfsw_sistclin_fc & o_nfsw_sistclin1st_fc)
-
-	- # of HIV+ FSW aged 15-24, # of HIV+ FSW aged >=25, # of HIV+ FSW aged 15-24 diagnosed with HIV, # of HIV+ FSW aged >=25 
-	  diagnosed with HIV to be able to calculate proportion diagnosed with HIV for these 2 groups and compare to 
-	  obs_p_diag_fsw1524_clsfsw & obs_p_diag_fswge25_clsfsw
-
-	- # of HIV+ FSW aged 15-24 on ART, # of HIV+ FSW aged >=25 on ART to be able to calculate proportion on ART of those diagnosed
-	  for these 2 groups and compare to o_p_onart_fsw1524diag_clsfsw & o_p_onart_fswge25diag_clsfsw & o_s_fsw_onart_fc
-	- # of HIV+ FSW aged 15-24 VL suppressed on ART, # of HIV+ FSW aged >=25 VL suppressed on ART to be able to calculate 
-	  proportion suppressed of those on ART for these 2 groups and compare to o_p_vlsupp_FSW1524onart_clsfsw & 
-	  o_p_vlsupp_FSWge25onart_clsfsw;
-
-	*17June2017:
-	- # of men on ART, # of women on ART
-	- proportion on ART out of all positive 
-	- number of people 15-19, 20-24, 25+ (I can obtain this has a difference), male 15+ and female 15+ living with HIV
-	- number of people 15-19, 20-24, 25+ (I can obtain this has a difference), male 15+ and female 15+  on ART
-	- hiv positive people in care who have had tb and then calculate the proportion out of those positive in care
-	- number of people diagnosed in the last year
-	- number of people diagnosed & initiated on ART in the last year (in the same year)
-	- number of diagnoses in men 15-65 and in women 15-65, number separately of men and women diagnosed in hospital, vct anc, 
-	  and because of tb
-	- number of people at stage 3 a month ago and number of people staged 3m and now on ART, the same for 12m
-	- number of pregnant women who initiate on ART/PMTCT within 3m
-	- proportion on 2nd line at 12m since ART init
-	- I have renamed o_s_rec_vct_Z_GF_w_ly with o_s_rec_htc_Z_GF_w_ly, I have added the following observed data - 
-	  o_s_rec_htc_Z_all_ly_PSI   o_s_rec_comhtc_Z_all_ly_PSI=425000
-	- the proportion of tests conducted in circumcision should be less than 20%
-	- the prop of tests conducted in ANC should be around 40%, based on the fact that Karin said that most tests done by 
-	  government are done in ANC;
-*Look for 17June2016;
-
 
 *******************************************************************************************
 ************************************     CONTENT   ************************************
 *******************************************************************************************
-1.  Population...................................Line 87
-2.  Fertility....................................Line 362
-3.  Mortality....................................Line 467
-4.  Prevalence...................................Line 645
-5.  Incidence....................................Line 1057
-6.  Number living with HIV ......................Line 1210
-7.  Sexual behaviour.............................Line 1270
-8.  Testing......................................Line 1450
-	8a. % ever tested for HIV and tested in the last year in the general population ...Line 1453
-    8b. Number of HIV tests performed & positivity rate in the general population .....Line 1574
-    8c. Diagnosed with HIV in the general population...................................Line 1777
-    8d. Testing in female sex workers..................................................Line 1811
-    8e. Testing in Pregnant women......................................................Line 1900
-    8f. PMTCT..........................................................................Line 2009
-9.  Linkage from testing to ART Uptake...........Line 2077
-10. On ART: In need, started, on ART.............Line 2110
-11. Median CD4 at diagnosis and ART initiation...Line 2481
-12. Virological outcomes on 1st line.............Line 2543
-13. Retention on ART.............................Line 2660
-14. Resistance...................................Line 2828
+1.  Population...................................Line 36
+2.  Fertility....................................Line 344
+3.  Mortality....................................Line 449
+4.  Prevalence...................................Line 626
+5.  Incidence....................................Line 1051
+6.  Number living with HIV ......................Line 1209
+7.  Sexual behaviour.............................Line 1292
+8.  Testing......................................Line 1472
+	8a. % ever tested for HIV and tested in the last year in the general population ...Line 1475
+    8b. Number of HIV tests performed & positivity rate in the general population .....Line 1596
+    8c. Diagnosed with HIV in the general population...................................Line 1811
+    8d. Testing in female sex workers..................................................Line 1855
+    8e. Testing in Pregnant women......................................................Line 1934
+    8f. PMTCT..........................................................................Line 2043
+9.  Linkage from testing to ART Uptake...........Line 2111
+10. On ART: In need, started, on ART.............Line 2144
+11. Median CD4 at diagnosis and ART initiation...Line 2542
+12. Virological outcomes on 1st line.............Line 2599
+13. Retention on ART.............................Line 2716
+14. Resistance...................................Line 2884
 15. Male circumcision............................Line 2896
-16. Packages of HIV combination prevention services for key populations ...............Line 3046
-17. PrEP.........................................Line 3077
-18. Structural intervention and social enablers..Line 3166
-19. Social behavioural change communication		 Line 3179
-20. Sexually transmitted infections..............Line 3190
-21. Tubercolosis.................................Line 3202
-22. AGYW.........................................Line 3202
+16. Packages of HIV combination prevention services for key populations ...............Line 2952
+17. PrEP.........................................Line 3102
+18. Structural intervention and social enablers..Line 3133
+19. Social behavioural change communication		 Line 3220
+20. Sexually transmitted infections..............Line 3231
+21. Tubercolosis.................................Line 3251
+22. AGYW.........................................Line 3260
 
 
 *******************************************************************************************
@@ -2594,11 +2542,6 @@ end;
 ***************    11. Median CD4 at diagnosis and ART initiation     *******************
 *******************************************************************************************
 
-***START HERE;
-*** At diagnosis;
-
-* NO ZIM DATA;
-
 
 *** At ART initiation
 Source: Gender-related differences in outcomes and attrition on antiretroviral treatment among an HIV-infected patient 
@@ -3273,9 +3216,6 @@ if cald=2023.75 then target_prep=79092; *not clear exactly what it is;
 
 
 
-
-
-
 *******************************************************************************************
 *******************    18. Structural intervention and social enablers.    ***************
 *******************************************************************************************
@@ -3283,8 +3223,6 @@ if cald=2023.75 then target_prep=79092; *not clear exactly what it is;
 *** Number of adolescnet girls and young women receving DREAMS;
 *Source: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
 if cald=2021.5 then o_w1524_dreams=31930;*VCMar2023;
-
-
 
 
 
@@ -3305,8 +3243,6 @@ if cald= 2025.75 then do;
 	target_n_reached_sbcc_1524=690269;
 	target_n_reached_sbcc_2564=60000;
 end;
-
-
 
 
 
