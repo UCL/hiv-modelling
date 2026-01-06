@@ -1,18 +1,15 @@
-
-* options user="/folders/myfolders/";
-
-*ods html close;
+options notes source source2 mprint mlogic symbolgen;
 
 
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
+*libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 
-*libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 *ods listing;
 
 
 
 data a;
-set a.cdi_16dec25;
+set a.cdi_05Jan25;
 if run=. then delete;
 
 *if prop_v_alert_perm ne 0.3 then delete;
@@ -400,7 +397,7 @@ proc means mean;var prev_f;where cald =2010;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_cdi_control_16Dec25; set y;
+data a.long_cdi_control_05Jan25; set y;
 if cald=. then delete;run;
 
 
@@ -437,7 +434,7 @@ if cald=. then delete;run;
 ************************************************************************************************************************************************************;
 
 
-data y; set a.long_cdi_control_16Dec25; 
+data y; set a.long_cdi_control_05Jan25; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
@@ -1397,7 +1394,7 @@ proc transpose data=a.outputs_&op_num out=a.outputs_&op_num; run;
 
 proc export data=a.outputs_&op_num
 
-	outfile= "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\cdi_16Dec25_excel_&op_num..csv" 
+	outfile= "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\cdi_05Jan25_excel_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
