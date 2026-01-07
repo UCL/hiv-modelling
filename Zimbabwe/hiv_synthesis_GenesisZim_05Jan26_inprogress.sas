@@ -2355,6 +2355,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 
  	*Option 1: FSW program at low impact - not the same as SQ which has both low and high impact so need to redefine here;																										  
+	* Note this also includes return of oral PrEP for FSW only;
 	if option = 1 then do;
 		rate_engage_sw_program = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
 		rate_disengage_sw_program = ifn(rand("Uniform") < 0.5, 0.02, 0.04);
@@ -2366,10 +2367,18 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		effect_sw_prog_prep_any = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
 		effect_sw_prog_pers_sti = ifn(rand("Uniform") < 0.5, 0.10, 0.20);
 		prep_any_strategy=24;
+		date_prep_oral_intro=&year_interv;	
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+
+
 	end;
 
 	*Option 2: FSW program at high impact;	
 	**This will change low impact programs to high impact, but do nothing if already high impact; 
+	* Note this includes oral and intro of Len;
 	if option = 2 then do;
 		if sw_prog_intensity=1 then do;
 			u = rand("Uniform");rate_engage_sw_program = ifn(u < 1/3, 0.10, ifn(u < 2/3, 0.20, 0.30));
@@ -2382,6 +2391,14 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 			effect_sw_prog_prep_any  = 	effect_sw_prog_prep_any * fold_hi_sw_prog_prep;
 			effect_sw_prog_pers_sti  =	effect_sw_prog_pers_sti * fold_hi_sw_prog_sti;
 			prep_any_strategy=24;
+			date_prep_oral_intro=&year_interv;									
+			date_prep_len_intro=&year_interv;	
+			eff_rate_test_startprep_any=rate_test_startprep_any;
+			eff_prob_prep_oral_b=prob_prep_oral_b;
+			eff_prob_prep_len_b=prob_prep_len_b;
+			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+			eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
+			eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
 		end; 
 	end;
 
@@ -2426,10 +2443,6 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 
 
-***CHECK PREP STRATEGY MATCHES OPTIONS NUMBER AS THESE HAVE ALL BEEN CHANGED;
-
-
-
 ****THINK ABOUT HAVING MORE PEOPLE ELIGIBLE LIKE IN HIV CONTROL;
 ****ie. FOR SCALE UP, NEW PREP_ANY_STRATEGY ALLOWING ALL FSW, HIGH RIGK AGYW AND HIGHER % MSM ELIGIBLE;
 
@@ -2440,7 +2453,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		date_prep_len_intro=&year_interv;	
 
 		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
-		*eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
+		*eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);					* Triple rate of starting oral PrEP compared to SQ;
 		eff_prob_prep_oral_b=prob_prep_oral_b;
 		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
