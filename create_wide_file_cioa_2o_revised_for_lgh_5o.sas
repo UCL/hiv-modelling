@@ -1957,7 +1957,6 @@ proc sort; by run;run;
 
 data f; set b.w_cioa_lgh_rev_5o;
 
-
 if prevalence1549w_24 < 0.35 ;
 if prevalence1549m_24 < 0.25 ;
 if incidence1549m_24 < 1.5;
@@ -1970,7 +1969,8 @@ if p_onart_diag_w_24 > 0.85;
 if p_onart_vl1000_m_24 > 0.75;
 if p_onart_vl1000_w_24 > 0.80;
 
-* if run <= 928774822;
+
+if run <= 996015935;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 d_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 - n_death_hiv_10y_1;
@@ -2037,7 +2037,7 @@ d_ddaly_50y_5_1 = ddaly_50y_1 - ddaly_50y_5; * dalys averted;
 
 
 ods html;
-proc means median p5 p95 mean lclm uclm;
+proc means n median p5 p95 mean lclm uclm;
 var
 
 p_tested_incl_self_10y_1 p_tested_incl_self_10y_2 p_tested_incl_self_10y_3 p_tested_incl_self_10y_4 p_tested_incl_self_10y_5
