@@ -2587,12 +2587,12 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 			msm_risk_cls = ifn(rand("Uniform") < 0.5, 0.05, 0.10);		* risk of one or more cls partners in msm per period ;	*re-sample only once;
 		end;
 	end;
-
 */
+
  	*Option 19: adherence support;																										  
 	if option = 19 then do;
-		return_interventions_off ne 1;    		*Restore SQ;				* Note this is not initialised - add to parameter section above;
-																		* Do we need to restore CD4 and VL testing as part of adherence support?; 
+		return_interventions_off = 0;    		*Restore SQ;				* Note this is not initialised - add to parameter section above;
+	* Do we need to restore CD4 and VL testing as part of adherence support?; 
 	end;
 
 
@@ -2691,22 +2691,22 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 	end;
 
-	end;
 
 
 	***CD4/VL TESTING AND RETURN INTERVENTIONS RE-INTRODUCED ;
 		if option=23 then do;
-			absence_cd4_year_i ne 1;				
+			absence_cd4_year_i =0;				
 		end;
 
 		if option=24 then do;
-			absence_vl_year_i ne 1;				
+			absence_vl_year_i =0;				
 		end;
 
 		if option=25 then do;
 			eff_prob_vl_meas_done = prob_vl_meas_done;				
 		end;
 		
+end;
 
 
 *  ======================================================================================================================================== ;
