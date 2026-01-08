@@ -2578,7 +2578,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;
 		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
 	end;
-
+/*
  	*Option 18: KP outreach - MSM;			
 	if option = 18 then do;
 		* MSM: Strengthening demand, increased accessibility of condoms, peer education ;	
@@ -2588,13 +2588,12 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		end;
 	end;
 
-
+*/
  	*Option 19: adherence support;																										  
 	if option = 19 then do;
 		return_interventions_off ne 1;    		*Restore SQ;				* Note this is not initialised - add to parameter section above;
 																		* Do we need to restore CD4 and VL testing as part of adherence support?; 
 	end;
-
 
 
 	*Option 20: low scale up;
@@ -22531,10 +22530,10 @@ data r1; set a;
 
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,17);
-
+/*
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,18);
-
+*/
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,19);
 
@@ -22557,8 +22556,6 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,25);
 
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,26);
 
 * SQ;
 data r1; set a;

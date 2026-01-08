@@ -302,14 +302,14 @@ options nomprint;
 proc means  noprint data=y; var &v; output out=y_25 mean= &v._25; by run; where 2024.5 <= cald < 2025.5; 
 
 **Outputs in 5, 20 and 50 years time;
-proc means noprint data=y; var &v; output out=y_31 mean= &v._31; by run option; where 2031.0 <= cald < 2032; 
-proc means noprint data=y; var &v; output out=y_46 mean= &v._46; by run option; where 2046.0 <= cald < 2047; 
-proc means noprint data=y; var &v; output out=y_76 mean= &v._76; by run option; where 2076.0 <= cald < 2077;
+proc means noprint data=y; var &v; output out=y_31 mean= &v._31; by run option; where 2030.0 <= cald < 2031; 
+proc means noprint data=y; var &v; output out=y_46 mean= &v._46; by run option; where 2045.0 <= cald < 2046; 
+proc means noprint data=y; var &v; output out=y_76 mean= &v._76; by run option; where 2075.0 <= cald < 2076;
 
 **Outputs for CE analyses, across 5, 20 and 50 years by option;
-proc means noprint data=y; var &v; output out=y_26_31 mean= &v._26_31; by run option ; where 2026.25 <= cald < 2032;
-proc means noprint data=y; var &v; output out=y_26_46 mean= &v._26_46; by run option ; where 2026.25 <= cald < 2047;
-proc means noprint data=y; var &v; output out=y_26_76 mean= &v._26_76; by run option ; where 2026.25 <= cald < 2077;
+proc means noprint data=y; var &v; output out=y_26_31 mean= &v._26_31; by run option ; where 2026.25 <= cald < 2031;
+proc means noprint data=y; var &v; output out=y_26_46 mean= &v._26_46; by run option ; where 2026.25 <= cald < 2046;
+proc means noprint data=y; var &v; output out=y_26_76 mean= &v._26_76; by run option ; where 2026.25 <= cald < 2076;
 
 proc sort data=y_31; by run; proc transpose data=y_31 out=t_31 prefix=&v._31_; var &v._31; by run;
 proc sort data=y_46; by run; proc transpose data=y_46 out=t_46 prefix=&v._46_; var &v._46; by run;
