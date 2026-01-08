@@ -3050,8 +3050,9 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 		if caldate{t} >= 2022  then do; * note this is equivalent to incr_test_year_i = 0;
 			rate_1sttest = rate_1sttest * 0.8; rate_reptest = rate_reptest * 0.8; 	eff_test_targeting = test_targeting * 1.5 ; 
 		end;
+
+		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 */
-		*if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
 
 end;
