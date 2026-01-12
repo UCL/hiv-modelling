@@ -59,13 +59,247 @@ if cald=2025 then o_livingHIV_15plus_nac=938000;
 *Source: Report of a Country-Wide Survey of HIV / AIDS services in Malawi;
 *https://assets.publishing.service.gov.uk/media/57a08bfae5274a31e0000efa/malawi-rep.pdf  page 52;
 
-if cald=2002.5 then n_tests_obs_mlw=  149540 ;*new;
-if cald=2003.5 then n_tests_obs_mlw=  215269 ;*new;
-if cald=2004.5 then n_tests_obs_mlw=  283467 ;
-if cald=2005.5 then n_tests_obs_mlw=  482364 ;*new;
-if cald=2006.5 then n_tests_obs_mlw=  661400 ;*new;
+if cald=2002.5 then do; n_tests_obs_mlw = 149540; n_tests_f_anc_obs_mlw = 5059;end;
+if cald=2003.5 then do; n_tests_obs_mlw = 215269; n_tests_f_anc_obs_mlw = 26791;end;
+if cald=2004.5 then do; n_tests_obs_mlw = 283467; n_tests_f_anc_obs_mlw = 43345;end;
+if cald=2005.5 then do; n_tests_obs_mlw = 482364; n_tests_f_anc_obs_mlw = 52904;end;
+if cald=2006.5 then do; n_tests_obs_mlw = 661400; n_tests_f_anc_obs_mlw = 137996;end;
 
-if cald=2008.5 then n_tests_obs_mlw=  746400 ;
+
+*Source: Malawi integrated program reports (by quarter) https://dms.hiv.health.gov.mw/group/publication;
+*e.g. https://dms.hiv.health.gov.mw/dataset/malawi-art-htc-program-report-2008-q1/resource/5c2a2a1c-0d23-421b-b655-9e8412d3ed41;
+if cald=2008.0 then n_tests_obs_mlw = 166786 * 4;
+if cald=2008.25 then n_tests_obs_mlw = 171648 * 4 ;
+if cald=2008.5 then n_tests_obs_mlw = 196710  * 4;
+if cald=2008.75 then do;
+n_tests_m_obs_mlw= 72025 *4; n_tests_f_non_anc_obs_mlw= 82983 *4; n_tests_f_anc_obs_mlw= 56248 *4; n_tests_obs_mlw= 211256 * 4;
+end;
+
+if cald=2009.0 then do;
+n_tests_m_obs_mlw= 76694 *4; n_tests_f_non_anc_obs_mlw= 91381 *4; n_tests_f_anc_obs_mlw= 63636 *4; n_tests_obs_mlw= 231711 * 4;
+n_tests_w_obs_mlw= n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;
+end;
+if cald=2009.25 then do;
+n_tests_m_obs_mlw= 68043 *4; n_tests_f_non_anc_obs_mlw= 80174 *4; n_tests_f_anc_obs_mlw= 59082 *4; n_tests_obs_mlw= 207299 * 4;
+n_tests_w_obs_mlw= n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;
+end;
+if cald=2009.5 then do;
+n_tests_m_obs_mlw= 72669 *4; n_tests_f_non_anc_obs_mlw= 79359 *4; n_tests_f_anc_obs_mlw= 70309 *4; n_tests_obs_mlw= 222337 * 4;
+n_tests_w_obs_mlw= n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;
+end;
+***No data on testing in 2009.75;
+
+if cald=2010.0 then do;
+n_tests_m_obs_mlw= 139163 *4; n_tests_f_non_anc_obs_mlw= 158986 *4; n_tests_f_anc_obs_mlw= 118221 *4; n_tests_obs_mlw= 416370 * 4;
+n_tests_w_obs_mlw= n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;
+end;
+if cald=2010.25 then do;
+n_tests_m_obs_mlw= 160607 *4; n_tests_f_non_anc_obs_mlw= 181889 *4; n_tests_f_anc_obs_mlw= 141456 *4; n_tests_obs_mlw= 483952 * 4;
+n_tests_w_obs_mlw= n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;
+end;
+if cald=2010.5 then do;
+n_tests_m_obs_mlw= 147851 *4; n_tests_f_non_anc_obs_mlw= 163961 *4; n_tests_f_anc_obs_mlw= 144024 *4; n_tests_obs_mlw= 455836 * 4;
+n_tests_w_obs_mlw= n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;
+end;
+if cald=2010.75 then do;
+n_tests_m_obs_mlw= 123606 *4; n_tests_f_non_anc_obs_mlw= 131846 *4; n_tests_f_anc_obs_mlw= 115152 *4; n_tests_obs_mlw= 370604* 4;
+n_tests_w_obs_mlw= n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;
+end;
+
+if cald=2011.0 then do;
+n_tests_m_obs_mlw= 143914 *4; n_tests_f_non_anc_obs_mlw= 163385 *4; n_tests_f_anc_obs_mlw= 129883 *4; n_tests_obs_mlw= 437182 * 4;
+n_tests_w_obs_mlw= n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;
+end;
+if cald=2011.25 then do;
+n_tests_m_obs_mlw= 167057 *4; n_tests_f_non_anc_obs_mlw= 185690 *4; n_tests_f_anc_obs_mlw= 156898 *4; n_tests_obs_mlw= 509645 * 4;
+n_tests_w_obs_mlw= n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;
+end;
+if cald=2011.5 then do;
+n_tests_m_obs_mlw= 127451 *4; n_tests_f_non_anc_obs_mlw= 133479 *4; n_tests_f_anc_obs_mlw= 120886 *4; n_tests_obs_mlw= 381816 * 4;
+n_tests_w_obs_mlw= n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;
+end;
+if cald=2011.75 then do;*non ANC women reported (can deduce but don't think it's needed);
+n_tests_obs_mlw= 299017* 4; n_tests_m_obs_mlw= 0.33 *299017 *4;n_tests_w_obs_mlw= 0.67 *299017 *4; n_tests_f_anc_obs_mlw= 134909 *4;
+end;
+
+if cald=2012.0 then do;
+n_tests_obs_mlw= 299017* 4; n_tests_m_obs_mlw= 0.33 *299017 *4;n_tests_w_obs_mlw= 0.67 *299017 *4;n_tests_f_anc_obs_mlw= 128959 *4; 
+end;
+***No 2012.25 report;
+if cald=2012.5 then do;
+n_tests_obs_mlw= 579509* 4; n_tests_m_obs_mlw= 0.33 *579509 *4;n_tests_w_obs_mlw= 0.67 *579509 *4;n_tests_f_anc_obs_mlw= 119587 *4; 
+end;
+if cald=2012.75 then do;
+n_tests_obs_mlw= 378560* 4; n_tests_m_obs_mlw= 0.33 *378560 *4;n_tests_w_obs_mlw= 0.67 *378560 *4;n_tests_f_anc_obs_mlw= 111503*4; 
+end;
+
+if cald=2013.0 then do;
+n_tests_obs_mlw= 460559* 4; n_tests_m_obs_mlw= 0.32 *460559 *4;n_tests_w_obs_mlw= 0.68 *460559 *4;n_tests_f_anc_obs_mlw= 128959 *4; 
+end;
+if cald=2013.25 then do;
+n_tests_obs_mlw= 462334* 4; n_tests_m_obs_mlw= 0.33 *462334 *4;n_tests_w_obs_mlw= 0.67 *462334 *4;n_tests_f_anc_obs_mlw= 113061 *4; 
+end;
+if cald=2013.5 then do;
+n_tests_obs_mlw= 405278* 4; n_tests_m_obs_mlw= 0.34 *405278 *4;n_tests_w_obs_mlw= 0.66 *405278 *4;n_tests_f_anc_obs_mlw= 128022 *4; 
+end;
+if cald=2013.75 then do;
+n_tests_obs_mlw= 374456* 4; n_tests_m_obs_mlw= 0.32 *374456 *4;n_tests_w_obs_mlw= 0.68 *374456 *4;n_tests_f_anc_obs_mlw= 144897 *4; 
+end;
+
+if cald=2014.0 then do;
+n_tests_obs_mlw= 444365 * 4; n_tests_m_obs_mlw= 0.32 *444365 *4;n_tests_w_obs_mlw= 0.68 * 444365 *4;n_tests_f_anc_obs_mlw= 130257 *4; 
+end;
+if cald=2014.25 then do;
+n_tests_obs_mlw= 435976* 4; n_tests_m_obs_mlw= 0.34 *435976 *4;n_tests_w_obs_mlw= 0.66 *435976 *4;n_tests_f_anc_obs_mlw= 120022 *4; 
+end;
+if cald=2014.5 then do;
+n_tests_obs_mlw= 550425* 4; n_tests_m_obs_mlw= 0.36 *550425 *4;n_tests_w_obs_mlw= 0.64 *550425 *4;n_tests_f_anc_obs_mlw= 135958 *4; 
+end;
+if cald=2014.75 then do;
+n_tests_obs_mlw= 464292* 4; n_tests_m_obs_mlw= 0.34 *464292 *4;n_tests_w_obs_mlw= 0.66 *464292 *4;n_tests_f_anc_obs_mlw= 134985 *4; 
+end;
+
+if cald=2015.0 then do;
+n_tests_obs_mlw= 500086 * 4; n_tests_m_obs_mlw= 0.33 *500086 *4;n_tests_w_obs_mlw= 0.67 * 500086 *4;n_tests_f_anc_obs_mlw= 148838 *4; 
+end;
+if cald=2015.25 then do;
+n_tests_obs_mlw= 493567* 4; n_tests_m_obs_mlw= 0.35 *493567 *4;n_tests_w_obs_mlw= 0.65 *493567 *4;n_tests_f_anc_obs_mlw= 141212 *4; 
+end;
+if cald=2015.5 then do;
+n_tests_obs_mlw= 625803* 4; n_tests_m_obs_mlw= 0.37 *625803 *4;n_tests_w_obs_mlw= 0.63 *625803 *4;n_tests_f_anc_obs_mlw= 129887 *4; 
+end;
+if cald=2015.75 then do;
+n_tests_obs_mlw= 606558* 4; n_tests_m_obs_mlw= 0.34 *606558 *4;n_tests_w_obs_mlw= 0.66 *606558 *4;n_tests_f_anc_obs_mlw= 137958 *4; 
+end;
+
+if cald=2016.0 then do;
+n_tests_obs_mlw= 862157* 4; n_tests_m_obs_mlw= 0.34 *862157 *4;n_tests_w_obs_mlw= 0.66 *862157 *4;n_tests_f_anc_obs_mlw= 147765 *4; 
+end;
+if cald=2016.25 then do;
+n_tests_obs_mlw= 876337* 4; n_tests_m_obs_mlw= 0.34 *876337 *4;n_tests_w_obs_mlw= 0.66 *876337 *4;n_tests_f_anc_obs_mlw= 140475 *4; 
+end;
+if cald=2016.5 then do;
+n_tests_obs_mlw= 872393* 4; n_tests_m_obs_mlw= 0.37 *872393 *4;n_tests_w_obs_mlw= 0.63 *872393 *4;n_tests_f_anc_obs_mlw= 146596 *4; 
+end;
+if cald=2016.75 then do;
+n_tests_obs_mlw= 788275* 4; n_tests_m_obs_mlw= 0.35 *788275 *4;n_tests_w_obs_mlw= 0.65 *788275 *4;n_tests_f_anc_obs_mlw= 149150 *4; 
+end;
+
+if cald=2017.0 then do;
+n_tests_obs_mlw= 982561* 4; n_tests_m_obs_mlw= 0.35 *982561 *4;n_tests_w_obs_mlw= 0.65 *982561 *4;n_tests_f_anc_obs_mlw= 151227 *4; 
+end;
+if cald=2017.25 then do;
+n_tests_obs_mlw= 1018328*4; n_tests_m_obs_mlw= 0.37*1018328 *4;n_tests_w_obs_mlw= 0.63*1018328 *4;n_tests_f_anc_obs_mlw= 148638 *4; 
+end;
+if cald=2017.5 then do;
+n_tests_obs_mlw= 1186676*4; n_tests_m_obs_mlw= 0.40*1186676 *4;n_tests_w_obs_mlw= 0.60*1186676 *4;n_tests_f_anc_obs_mlw= 159751 *4; 
+end;
+if cald=2017.75 then do;
+n_tests_obs_mlw= 977745* 4; n_tests_m_obs_mlw= 0.35 *977745 *4;n_tests_w_obs_mlw= 0.65 *977745 *4;n_tests_f_anc_obs_mlw= 146974 *4; 
+end;
+
+if cald=2018.0 then do;
+n_tests_obs_mlw= 1185792 * 4; n_tests_m_obs_mlw= 0.36*1185792 *4;n_tests_w_obs_mlw= 0.64*1185792 *4;n_tests_f_anc_obs_mlw= 161570 *4; 
+end;
+if cald=2018.25 then do;
+n_tests_obs_mlw=1133277* 4; n_tests_m_obs_mlw= 0.36*1133277 *4;n_tests_w_obs_mlw= 0.64*1133277 *4;n_tests_f_anc_obs_mlw= 157822 *4; 
+end;
+if cald=2018.5 then do;
+n_tests_obs_mlw= 1210048* 4; n_tests_m_obs_mlw= 0.36*1210048 *4;n_tests_w_obs_mlw= 0.64*1210048 *4;n_tests_f_anc_obs_mlw= 171922 *4; 
+end;
+if cald=2018.75 then do;
+n_tests_obs_mlw= 1106090* 4; n_tests_m_obs_mlw= 0.36*1106090 *4;n_tests_w_obs_mlw= 0.64*1106090 *4;n_tests_f_anc_obs_mlw= 156321 *4; 
+end;
+
+if cald=2019.0 then do;
+n_tests_obs_mlw= 1117587* 4; n_tests_m_obs_mlw= 0.34*1117587 *4;n_tests_w_obs_mlw= 0.66*1117587 *4;n_tests_f_anc_obs_mlw= 129256 *4; 
+end;
+if cald=2019.25 then do;
+n_tests_obs_mlw= 1007296* 4; n_tests_m_obs_mlw= 0.34*1007296 *4;n_tests_w_obs_mlw= 0.66*1007296 *4;n_tests_f_anc_obs_mlw= 160860 *4; 
+end;
+if cald=2019.5 then do;
+n_tests_obs_mlw= 1019610* 4; n_tests_m_obs_mlw= 0.35*1019610 *4;n_tests_w_obs_mlw= 0.65*1019610 *4;n_tests_f_anc_obs_mlw= 168033 *4; 
+end;
+if cald=2019.75 then do;
+n_tests_obs_mlw= 922473* 4; n_tests_m_obs_mlw= 0.34 *922473 *4;n_tests_w_obs_mlw= 0.66 *922473 *4;n_tests_f_anc_obs_mlw= 157171 *4; 
+end;
+
+*No report for 2020.0;
+if cald=2020.25 then do;
+n_tests_obs_mlw= 634564* 4; n_tests_m_obs_mlw= 0.31 *634564 *4;n_tests_w_obs_mlw= 0.69 *634564 *4;n_tests_f_anc_obs_mlw= 162127 *4; 
+end;
+if cald=2020.5 then do;
+n_tests_obs_mlw= 697991* 4; n_tests_m_obs_mlw= 0.31 *697991 *4;n_tests_w_obs_mlw= 0.69 *697991 *4;n_tests_f_anc_obs_mlw= 155128 *4; 
+end;
+if cald=2020.75 then do;
+n_tests_obs_mlw= 768126* 4; n_tests_m_obs_mlw= 0.33 *788275 *4;n_tests_w_obs_mlw= 0.67 *788275 *4;n_tests_f_anc_obs_mlw= 150492 *4; 
+end;
+
+if cald=2021.0 then do;
+n_tests_obs_mlw= 670567* 4; n_tests_m_obs_mlw= 0.33 *670567 *4;n_tests_w_obs_mlw= 0.67 *670567 *4;n_tests_f_anc_obs_mlw= 155575 *4; 
+end;
+if cald=2021.25 then do;
+n_tests_obs_mlw= 655092* 4; n_tests_m_obs_mlw= 0.33 *655092 *4;n_tests_w_obs_mlw= 0.67 *655092 *4;n_tests_f_anc_obs_mlw= 150647 *4; 
+end;
+if cald=2021.5 then do;
+n_tests_obs_mlw= 642325* 4; n_tests_m_obs_mlw= 0.33 *642325 *4;n_tests_w_obs_mlw= 0.67 *642325 *4;n_tests_f_anc_obs_mlw= 156552 *4; 
+end;
+if cald=2021.75 then do;
+n_tests_obs_mlw= 684267* 4; n_tests_m_obs_mlw= 0.33 *684267 *4;n_tests_w_obs_mlw= 0.67 *684267 *4;n_tests_f_anc_obs_mlw= 157139 *4; 
+end;
+
+if cald=2022.0 then do;
+n_tests_obs_mlw= 717316 * 4; n_tests_m_obs_mlw= 0.32 *717316 *4;n_tests_w_obs_mlw= 0.68 *717316 *4;n_tests_f_anc_obs_mlw= 167127 *4; 
+end;
+***From this point there are no reports available, only raw Excel sheets which I have used to calculate the numbers;
+***HTS Site Report Sheet, columns L, M and N;
+if cald=2022.25 then do;
+n_tests_obs_mlw= 743686* 4; n_tests_m_obs_mlw= 239513 *4;n_tests_w_obs_mlw= 504173 *4;n_tests_f_anc_obs_mlw= 182824 *4; 
+end;
+if cald=2022.5 then do;
+n_tests_obs_mlw=1019610* 4; n_tests_m_obs_mlw= 355091 *4;n_tests_w_obs_mlw= 664519 *4;n_tests_f_anc_obs_mlw= 216054 *4; 
+end;
+if cald=2022.75 then do;
+n_tests_obs_mlw= 740631* 4; n_tests_m_obs_mlw= 235936 *4;n_tests_w_obs_mlw= 504675 *4;n_tests_f_anc_obs_mlw= 192521 *4; 
+end;
+
+if cald=2023.0 then do;
+n_tests_obs_mlw= 799051 * 4; n_tests_m_obs_mlw= 248835 *4;n_tests_w_obs_mlw= 550216 *4;n_tests_f_anc_obs_mlw= 204435 *4; 
+end;
+if cald=2023.25 then do;
+n_tests_obs_mlw= 828974* 4; n_tests_m_obs_mlw= 258904 *4;n_tests_w_obs_mlw= 570070 *4;n_tests_f_anc_obs_mlw= 197016 *4; 
+end;
+if cald=2023.5 then do;
+n_tests_obs_mlw=870741* 4; n_tests_m_obs_mlw= 277603 *4;n_tests_w_obs_mlw= 593138 *4;n_tests_f_anc_obs_mlw= 192923*4; 
+end;
+if cald=2023.75 then do;
+n_tests_obs_mlw= 907999* 4; n_tests_m_obs_mlw= 284697 *4;n_tests_w_obs_mlw= 623302 *4;n_tests_f_anc_obs_mlw= 203475 *4; 
+end;
+
+if cald=2024.0 then do;
+n_tests_obs_mlw= 1060797 * 4; n_tests_m_obs_mlw= 346623 *4;n_tests_w_obs_mlw= 714174 *4;n_tests_f_anc_obs_mlw= 211041 *4; 
+end;
+if cald=2024.25 then do;
+n_tests_obs_mlw= 1034109* 4; n_tests_m_obs_mlw= 340701 *4;n_tests_w_obs_mlw= 693408 *4;n_tests_f_anc_obs_mlw= 195075 *4; 
+end;
+if cald=2024.5 then do;
+n_tests_obs_mlw=1071342* 4; n_tests_m_obs_mlw= 360657 *4;n_tests_w_obs_mlw= 710685 *4;n_tests_f_anc_obs_mlw= 206720*4; 
+end;
+if cald=2024.75 then do;
+n_tests_obs_mlw= 1008762* 4; n_tests_m_obs_mlw= 326413 *4;n_tests_w_obs_mlw= 682349 *4;n_tests_f_anc_obs_mlw= 205360 *4; 
+end;
+
+if cald=2025.0 then do;
+n_tests_obs_mlw= 814386 * 4; n_tests_m_obs_mlw= 256909 *4;n_tests_w_obs_mlw= 557477 *4;n_tests_f_anc_obs_mlw= 194991 *4; 
+end;
+if cald=2025.25 then do;
+n_tests_obs_mlw= 890254* 4; n_tests_m_obs_mlw= 282119 *4;n_tests_w_obs_mlw= 608135 *4;n_tests_f_anc_obs_mlw= 197502 *4; 
+end;
+
+
+
+
+***Where are these data from - looks similar to above -  suggest removing as replaced by the above?;
 if cald=2011.5 then do; n_tests_m_obs_mlw= 489100; n_tests_f_non_anc_obs_mlw= 488583; n_tests_f_anc_obs_mlw= 503264;
 						n_tests_obs_mlw= n_tests_m_obs_mlw + n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw ;end;
 if cald=2014.5 then do; n_tests_m_obs_mlw= 539486; n_tests_f_non_anc_obs_mlw= 475691; n_tests_f_anc_obs_mlw=604001;
@@ -75,8 +309,8 @@ if cald=2015.5 then do; n_tests_m_obs_mlw= 701041; n_tests_f_non_anc_obs_mlw= 71
 if cald=2016.5 then do; n_tests_m_obs_mlw= 993028; n_tests_f_non_anc_obs_mlw= 1291520 ;n_tests_f_anc_obs_mlw= 636122 ;
 						n_tests_obs_mlw= n_tests_m_obs_mlw + n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw ;end;
 
-*Source: Malawi integrated program reports (by quarter) https://dms.hiv.health.gov.mw/group/publication;
-*Verified Jan 2026;
+*** Where are these data from? Again, possibly rounded up from the quartely reports in which case remove as replaced by
+	exact numbers above?;
 if cald=2016.0 then n_tests_obs_mlw = 832000 * 4;
 if cald=2016.25 then n_tests_obs_mlw = 838000 * 4 ;
 if cald=2016.5 then n_tests_obs_mlw = 832000  * 4;
@@ -106,48 +340,17 @@ if cald=2021.00 then n_tests_obs_mlw= 670567 * 4 ;
 if cald=2021.00 then n_tests_m_obs_mlw= 670567 * 0.33 * 4;
 if cald=2021.00 then n_tests_f_obs_mlw= 670567 * 0.67 * 4;
 
-if cald=2021.0 then n_tests_f_anc_obs_mlw= 155575 * 4; * of which 10724 ( * 4) positive;
 
+***Replace with above?;
 if cald=2022.50 then n_tests_obs_mlw= 3000000    ;  * this is the number of tests in the whole year ;
 if cald=2022.50 then n_tests_obs_mlw= 3400000    ;  * this is the number of tests in the whole year ;
-
-***ANC TESTING;
-
-if cald=2002.5 then n_tests_f_anc_obs_mlw = 5059;
-if cald=2003.5 then n_tests_f_anc_obs_mlw = 26791;
-if cald=2004.5 then n_tests_f_anc_obs_mlw = 43345;
-if cald=2005.5 then n_tests_f_anc_obs_mlw = 52904;
-if cald=2006.5 then n_tests_f_anc_obs_mlw = 137996;
-
-
-
-
-if cald=2016.00 then n_tests_f_anc_obs_mlw = 147765  * 4;
-if cald=2016.25 then n_tests_f_anc_obs_mlw = 140475  * 4;
-if cald=2016.50 then n_tests_f_anc_obs_mlw = 146596  * 4      ;
-if cald=2016.75 then n_tests_f_anc_obs_mlw = 149150  * 4      ;
-if cald=2017.00 then n_tests_f_anc_obs_mlw = 151227  * 4      ;
-if cald=2017.25 then n_tests_f_anc_obs_mlw = 148638  * 4      ;
-if cald=2017.50 then n_tests_f_anc_obs_mlw = 159751  * 4      ;
-if cald=2017.75 then n_tests_f_anc_obs_mlw = 146974  * 4      ;
-if cald=2018.00 then n_tests_f_anc_obs_mlw = 161570  * 4      ;
-if cald=2018.25 then n_tests_f_anc_obs_mlw = 157822  * 4      ;
-if cald=2018.50 then n_tests_f_anc_obs_mlw = 171922  * 4      ;
-if cald=2018.75 then n_tests_f_anc_obs_mlw = 156321  * 4      ;
-if cald=2019.00 then n_tests_f_anc_obs_mlw = 152908  * 4      ;
-if cald=2019.25 then n_tests_f_anc_obs_mlw = 160860  * 4      ;
-if cald=2019.50 then n_tests_f_anc_obs_mlw = 168033  * 4      ;
-if cald=2019.75 then n_tests_f_anc_obs_mlw = 157171  * 4      ;
-if cald=2020.00 then n_tests_f_anc_obs_mlw = 167545  * 4      ;
-if cald=2020.25 then n_tests_f_anc_obs_mlw = 162127  * 4      ;
-if cald=2020.50 then n_tests_f_anc_obs_mlw = 155128  * 4      ;
-if cald=2020.75 then n_tests_f_anc_obs_mlw = 150492  * 4      ;
-if cald=2021.00 then n_tests_f_anc_obs_mlw = 155575  * 4      ;
-
 if cald=2022.50 then n_tests_f_anc_obs_mlw = 630000           ; * this is the annual number of tests;
 if cald=2023.50 then n_tests_f_anc_obs_mlw = 690000           ; * this is the annual number of tests;
 
-***EVER TESTED;
+
+
+
+***EVER TESTED - where are these data from? ; 
 if cald=2004 then ever_tested_w_1549_obs_mlw= 0.17;
 if cald=2004 then ever_tested_m_1549_obs_mlw= 0.17;
 if cald=2010 then ever_tested_w_1549_obs_mlw= 0.716;
@@ -155,7 +358,7 @@ if cald=2010 then ever_tested_m_1549_obs_mlw= 0.509; *15-54;
 
 
 
-
+**************************stop here;
 
 
 
