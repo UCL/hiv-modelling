@@ -1032,8 +1032,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * OVERWRITES country specific parameters;
 *  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
-%include "/home/rmjllob/CdI_parameters3.sas";
-* %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters28.sas";
+%include "/home/rmjllob/CdI_parameters8.sas";
+* %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters5.sas";
 
 call symput('caldate1',caldate1);
 
@@ -1832,13 +1832,6 @@ eff_rate_restart = rate_restart;
 * define effective prob_loss_at_diag ;
 eff_prob_loss_at_diag = prob_loss_at_diag;
 
-/*
-if country='Cote d Ivoire' then do;
-***CdI specific;
-if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.3;
-end;
-*/
-
 * define effective rate_lost;
 eff_rate_lost = rate_lost ;
 
@@ -2349,6 +2342,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		*PCP is part of the essential scenario;
 
 		absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
+		absence_vl_year_i = 1;
 
 		eff_prob_vl_meas_done = 0; 
 
@@ -3035,9 +3029,12 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	end;
 end;	
 
-/*
-if gender=1 then date_start_testing=2006.5;
-*/
+
+***Cote d Ivoire;
+**Set an_lin_incr to increase gradually to reach around 0.01 in 2019. The 0.0001 is the starting value, 0.01 the end value
+which we want it to stay at after 2019 and the 14 is 2019-2005;
+if caldate{t} gt 2005 then do; an_lin_incr_test = min ((0.000020 + ((0.0025 - 0.000020)/14) * (caldate{t} - 2005)), 0.0025);end;
+
 
 tested_anc=.;
 
@@ -3049,14 +3046,15 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 			rate_reptest = initial_rate_reptest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 																				
 		end;	
-
+/*
 		if caldate{t} >= 2022  then do; * note this is equivalent to incr_test_year_i = 0;
 			rate_1sttest = rate_1sttest * 0.8; rate_reptest = rate_reptest * 0.8; 	eff_test_targeting = test_targeting * 1.5 ; 
 		end;
-/*
+
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
-		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
 */
+		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
+
 end;
 
 
@@ -4856,6 +4854,24 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 end;
 
 
+***Cote d Ivoire;
+if caldate{t} < 2017 and change_int_choice_pre2017 ne 1 then do;
+     change_int_choice_pre2017=1; 
+	 eff_rate_int_choice = eff_rate_int_choice * 3.0;
+	 if gender=1 then eff_prob_loss_at_diag = eff_prob_loss_at_diag * 2.0;
+	 if gender=2 then eff_prob_loss_at_diag = eff_prob_loss_at_diag * 3.0;
+
+end;
+
+if caldate{t} >= 2017 and  change_int_choice_post2017 ne 1 then do;
+    change_int_choice_post2017=1;
+	if gender=1 then eff_rate_int_choice = eff_rate_int_choice * 0.03; 
+	if gender=2 then eff_rate_int_choice = eff_rate_int_choice * 0.3; 
+	eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.5;
+end;
+
+
+
 
 
 	* SELF-TESTING;
@@ -4863,7 +4879,8 @@ end;
 	eff_self_test_targeting = self_test_targeting;
 
 	w = rand('uniform');	
-	if caldate{t} ge date_self_test_intro and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
+	if caldate{t} ge date_self_test_intro and (
+hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
 
 		u_self_test=rand('uniform');
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
@@ -8944,9 +8961,8 @@ res_test=.;
   art initiation strategy 10: cd4<500 + ART immediately to pregnant women
 ;
 
-/*
-if caldate&j<2015 then eff_pr_art_init=eff_pr_art_init/2;
-*/
+
+
 		if art_initiation_strategy=1 then do; 
 			if t ge 3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} and who4_tm1=1 then do;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
@@ -9935,6 +9951,12 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	e=rand('uniform');
 
 * this below changed apr2025 ;
+	if country ne 'Cote d Ivoire' then do;
+	if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+	end;
 
 	if country='Cote d Ivoire' then do;
 	***CdI - reducing adherence in men to match observational CdI data;
@@ -19603,10 +19625,6 @@ where naive=0 and caldate&j ge 2025;
 run;
 
 */
-
-
-
-
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
