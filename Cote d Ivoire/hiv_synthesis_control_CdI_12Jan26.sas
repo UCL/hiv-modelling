@@ -3033,7 +3033,7 @@ end;
 ***Cote d Ivoire;
 **Set an_lin_incr to increase gradually to reach around 0.01 in 2019. The 0.0001 is the starting value, 0.01 the end value
 which we want it to stay at after 2019 and the 14 is 2019-2005;
-if caldate{t} gt 2005 then do; an_lin_incr_test = min ((0.000020 + ((0.0025 - 0.000020)/14) * (caldate{t} - 2005)), 0.0025);end;
+if caldate{t} gt 2005 then do; an_lin_incr_test = min ((0.000015 + ((0.0025 - 0.000015)/14) * (caldate{t} - 2005)), 0.0025);end;
 
 
 tested_anc=.;
@@ -4857,15 +4857,15 @@ end;
 ***Cote d Ivoire;
 if caldate{t} < 2017 and change_int_choice_pre2017 ne 1 then do;
      change_int_choice_pre2017=1; 
-	 eff_rate_int_choice = eff_rate_int_choice * 3.0;
-	 if gender=1 then eff_prob_loss_at_diag = eff_prob_loss_at_diag * 2.0;
-	 if gender=2 then eff_prob_loss_at_diag = eff_prob_loss_at_diag * 3.0;
+	 eff_rate_int_choice = eff_rate_int_choice * 5.0;
+	 if gender=1 then eff_prob_loss_at_diag = eff_prob_loss_at_diag * 3.5;
+	 if gender=2 then eff_prob_loss_at_diag = eff_prob_loss_at_diag * 4.5;
 
 end;
 
 if caldate{t} >= 2017 and  change_int_choice_post2017 ne 1 then do;
     change_int_choice_post2017=1;
-	if gender=1 then eff_rate_int_choice = eff_rate_int_choice * 0.03; 
+	if gender=1 then eff_rate_int_choice = eff_rate_int_choice * 0.1; 
 	if gender=2 then eff_rate_int_choice = eff_rate_int_choice * 0.3; 
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.5;
 end;
