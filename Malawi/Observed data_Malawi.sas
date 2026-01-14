@@ -46,15 +46,27 @@ if cald=2023.5 then do;
 	o_livingHIV_15plus_w_UNAIDS=350000;
 end;
 
+*Source: https://dms.hiv.health.gov.mw/dataset/malawi-hiv-syphilis-sentinel-surveillance-report-2010 Table 20;
+if cald=2005 then o_livingHIV15plus_nac=778392;
+if cald=2006 then o_livingHIV15plus_nac=769669;
+if cald=2007 then o_livingHIV15plus_nac=761801;
+if cald=2008 then o_livingHIV15plus_nac=754257;
+if cald=2009 then o_livingHIV15plus_nac=746604;
+if cald=2010 then o_livingHIV15plus_nac=742086;
+if cald=2011 then o_livingHIV15plus_nac=741373;
+if cald=2012 then o_livingHIV15plus_nac=745616;
+if cald=2013 then o_livingHIV15plus_nac=754615;
+if cald=2014 then o_livingHIV15plus_nac=765921;
+if cald=2015 then o_livingHIV15plus_nac=777676;
 
 *Source: (MODELLED DATA)https://www.aidsmalawi.org.mw/wp-content/uploads/2025/08/Malawi-HIV-Factsheet-2025.pdf;
-if cald=2025 then o_livingHIV_15plus_nac=938000;
-
+if cald=2025 then o_livingHIV15plus_nac=938000;
 
 **************************************************************************************************************************
-													HIV TESTS
+													HIV TESTING
 **************************************************************************************************************************
 
+***Number tested;
 
 *Source: Report of a Country-Wide Survey of HIV / AIDS services in Malawi;
 *https://assets.publishing.service.gov.uk/media/57a08bfae5274a31e0000efa/malawi-rep.pdf  page 52;
@@ -297,75 +309,63 @@ n_tests_obs_mlw= 890254* 4; n_tests_m_obs_mlw= 282119 *4;n_tests_w_obs_mlw= 6081
 end;
 
 
+***Percentage ever tested;
+
+*DHS: https://dhsprogram.com/methodology/survey-search.cfm?pgtype=main&SrvyTp=country&ctry_id=24;
+if cald=2004 then do; 
+	o_p_evertested_1549w_mdhs= 0.129;*Table 11.11 (ever tested, received results);
+	o_p_evertested_1549m_mdhs= 0.151;
+end;
+if cald=2010 then do;
+	o_p_evertested_1549w_mdhs= 0.716;
+	o_p_evertested_1549m_mdhs= 0.512;
+end;
+
+if cald=2015.75 then do;
+	o_p_evertested_1549w_mdhs= 0.820;
+	o_p_evertested_1549m_mdhs= 0.683;
+end;
+*Source: DHS report not yet published, https://www.jointdatacenter.org/2024-malawi-demographic-and-health-survey-mdhs-key-indicators-report/;
+if cald=2024 then do;
+	o_p_evertested_1549w_mdhs= 0.861;
+	o_p_evertested_1549m_mdhs= 0.867;
+end;	
 
 
-***Where are these data from - looks similar to above -  suggest removing as replaced by the above?;
-if cald=2011.5 then do; n_tests_m_obs_mlw= 489100; n_tests_f_non_anc_obs_mlw= 488583; n_tests_f_anc_obs_mlw= 503264;
-						n_tests_obs_mlw= n_tests_m_obs_mlw + n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw ;end;
-if cald=2014.5 then do; n_tests_m_obs_mlw= 539486; n_tests_f_non_anc_obs_mlw= 475691; n_tests_f_anc_obs_mlw=604001;
-						n_tests_obs_mlw= n_tests_m_obs_mlw + n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw;end;
-if cald=2015.5 then do; n_tests_m_obs_mlw= 701041; n_tests_f_non_anc_obs_mlw= 715458; n_tests_f_anc_obs_mlw= 595720;
-						n_tests_obs_mlw= n_tests_m_obs_mlw + n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw ;end;
-if cald=2016.5 then do; n_tests_m_obs_mlw= 993028; n_tests_f_non_anc_obs_mlw= 1291520 ;n_tests_f_anc_obs_mlw= 636122 ;
-						n_tests_obs_mlw= n_tests_m_obs_mlw + n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw ;end;
+***Percentage diagnosed;
+*Source: DHS: https://dhsprogram.com/pubs/pdf/FR319/FR319.pdf Table 14.10;
+if cald=2015.75 then do;
+	o_p_diag_1549_mdhs =0.889;
+	o_p_diag_m1549_mdhs=0.830;
+	o_p_diag_w1549_mdhs=0.919;
+end;
+*Not reported in earlier DHS, likely will be in DHS 2024 which is not yet published;
 
-*** Where are these data from? Again, possibly rounded up from the quartely reports in which case remove as replaced by
-	exact numbers above?;
-if cald=2016.0 then n_tests_obs_mlw = 832000 * 4;
-if cald=2016.25 then n_tests_obs_mlw = 838000 * 4 ;
-if cald=2016.5 then n_tests_obs_mlw = 832000  * 4;
-if cald=2016.75 then n_tests_obs_mlw = 750000 * 4 ;
+*Source: MPHIA: https://phia.icap.columbia.edu/wp-content/uploads/2022/12/241122_Mphia_Foreword.pdf;
+*using table 3.4G - self reported only;
+if cald=2015.75 then do;
+	o_p_diag_m1549_mdhs=0.655;o_p_diag_w1549_mdhs=0.754;o_p_diag_1549_mdhs=0.717;
+	o_p_diag_m15pl_mdhs=0.676;o_p_diag_w15pl_mdhs=0.759;o_p_diag_15pl_mdhs=0.727;
+end;
 
-if cald=2017.0 then n_tests_obs_mlw =  936000 * 4 ;
-if cald=2017.25 then n_tests_obs_mlw =  974000 * 4 ;
-if cald=2017.5 then n_tests_obs_mlw = 1142000  * 4;
-if cald=2017.75 then n_tests_obs_mlw =  939000 * 4 ;
-
-if cald=2018.00 then n_tests_obs_mlw = 1098000 * 4 ;
-if cald=2018.25 then n_tests_obs_mlw = 1094000 * 4 ;
-if cald=2018.50 then n_tests_obs_mlw = 1170000 * 4 ;
-if cald=2018.75 then n_tests_obs_mlw = 1071000 * 4 ;
-
-if cald=2019.00 then n_tests_obs_mlw = 1082000 * 4 ;
-if cald=2019.25 then n_tests_obs_mlw =  974000 * 4 ;
-if cald=2019.50 then n_tests_obs_mlw =  987000 * 4 ;
-if cald=2019.75 then n_tests_obs_mlw =  992000 * 4 ;
-
-if cald=2020.00 then n_tests_obs_mlw =  941000 * 4 ;
-if cald=2020.25 then n_tests_obs_mlw =  613000 * 4 ;
-if cald=2020.50 then n_tests_obs_mlw =  675000 * 4 ;
-if cald=2020.75 then n_tests_obs_mlw =  743000 * 4 ;
-
-if cald=2021.00 then n_tests_obs_mlw= 670567 * 4 ;
-if cald=2021.00 then n_tests_m_obs_mlw= 670567 * 0.33 * 4;
-if cald=2021.00 then n_tests_f_obs_mlw= 670567 * 0.67 * 4;
-
-
-***Replace with above?;
-if cald=2022.50 then n_tests_obs_mlw= 3000000    ;  * this is the number of tests in the whole year ;
-if cald=2022.50 then n_tests_obs_mlw= 3400000    ;  * this is the number of tests in the whole year ;
-if cald=2022.50 then n_tests_f_anc_obs_mlw = 630000           ; * this is the annual number of tests;
-if cald=2023.50 then n_tests_f_anc_obs_mlw = 690000           ; * this is the annual number of tests;
+*using Table 9.1A which takes into account self-report and biomarker data;
+if cald=2020.75 then do;
+	o_p_diag_m1549_mdhs=0.829;o_p_diag_w1549_mdhs=0.896;o_p_diag_1549_mdhs=0.873;
+	o_p_diag_m15pl_mdhs=0.850;o_p_diag_w15pl_mdhs=0.904;o_p_diag_15pl_mdhs=0.883;
+end;
 
 
 
+***Number of people diagnosed;
 
-***EVER TESTED - where are these data from? ; 
-if cald=2004 then ever_tested_w_1549_obs_mlw= 0.17;
-if cald=2004 then ever_tested_m_1549_obs_mlw= 0.17;
-if cald=2010 then ever_tested_w_1549_obs_mlw= 0.716;
-if cald=2010 then ever_tested_m_1549_obs_mlw= 0.509; *15-54;
+*Source: Report of a country-wide survey of HIV in Malawi for 2005;
+*  https://dms.hiv.health.gov.mw/dataset/e6202dd3-cf96-4f0a-aae7-876784fe35e8/resource/4d5325dd-aebf-466c-87e4-1ff796a82a84/download/malawi-hiv-services-situation-analysis-2005.pdf;
+if cald=2002.5 then n_diag_obs_mlw= 33303 ;
+if cald=2003.5 then n_diag_obs_mlw= 50115 ;
+if cald=2004.5 then n_diag_obs_mlw= 64635 ;
 
-
-
-**************************stop here;
-
-
-
-
-
-* these are annual totals, put at 0.5 through the year;
-if cald=2004.5 then n_diag_obs_mlw= 64000 ;
+*Source: Malawi integrated program reports (by quarter) https://dms.hiv.health.gov.mw/group/publication;
+* These are annual totals and have been verified by adding up the number of HIV positives in each quarter;
 if cald=2005.5 then n_diag_obs_mlw= 59041 ;
 if cald=2006.5 then n_diag_obs_mlw= 91382 ;
 if cald=2007.5 then n_diag_obs_mlw= 110204 ;
@@ -379,33 +379,53 @@ if cald=2014.5 then n_diag_obs_mlw= 116959 ;
 if cald=2015.5 then n_diag_obs_mlw= 124280 ;
 
 * these below are multiplied by 4 so expressed as annual number at each time point;
-if cald=2016.00 then n_diag_obs_mlw= 41901 * 4     ;
-if cald=2016.25 then n_diag_obs_mlw= 39176 * 4      ;
-if cald=2016.50 then n_diag_obs_mlw= 36253 * 4      ;
-if cald=2016.75 then n_diag_obs_mlw= 32987 * 4      ; 
+if cald=2016.00 then n_diag_obs_mlw= 41901 * 4 ;
+if cald=2016.25 then n_diag_obs_mlw= 39176 * 4;
+if cald=2016.50 then n_diag_obs_mlw= 36253 * 4;
+if cald=2016.75 then n_diag_obs_mlw= 32987 * 4; 
 
-if cald=2017.00 then n_diag_obs_mlw= 41113 * 4      ;
-if cald=2017.25 then n_diag_obs_mlw= 37562 * 4      ;
-if cald=2017.50 then n_diag_obs_mlw= 36886 * 4      ;
-if cald=2017.75 then n_diag_obs_mlw= 32052 * 4      ; 
+if cald=2017.00 then n_diag_obs_mlw= 41113 * 4;
+if cald=2017.25 then n_diag_obs_mlw= 37562 * 4;
+if cald=2017.50 then n_diag_obs_mlw= 36886 * 4;
+if cald=2017.75 then n_diag_obs_mlw= 32052 * 4; 
 
-if cald=2018.00 then n_diag_obs_mlw= 38048 * 4      ;
-if cald=2018.25 then n_diag_obs_mlw= 34414 * 4      ;
-if cald=2018.50 then n_diag_obs_mlw= 36052 * 4      ;
-if cald=2018.75 then n_diag_obs_mlw= 31089 * 4      ; 
+if cald=2018.00 then n_diag_obs_mlw= 38048 * 4;
+if cald=2018.25 then n_diag_obs_mlw= 34414 * 4;
+if cald=2018.50 then n_diag_obs_mlw= 36052 * 4;
+if cald=2018.75 then n_diag_obs_mlw= 31089 * 4; 
 
-if cald=2019.00 then n_diag_obs_mlw= 32313 * 4      ;
-if cald=2019.25 then n_diag_obs_mlw= 28912 * 4      ;
-if cald=2019.50 then n_diag_obs_mlw= 28376 * 4      ;
-if cald=2019.75 then n_diag_obs_mlw= 26276 * 4      ; 
+if cald=2019.00 then n_diag_obs_mlw= 32313 * 4;
+if cald=2019.25 then n_diag_obs_mlw= 28912 * 4;
+if cald=2019.50 then n_diag_obs_mlw= 28376 * 4;
+if cald=2019.75 then n_diag_obs_mlw= 26276 * 4; 
 
-if cald=2020.00 then n_diag_obs_mlw= 28852 * 4      ;
-if cald=2020.25 then n_diag_obs_mlw= 18882 * 4      ;
-if cald=2020.50 then n_diag_obs_mlw= 20206 * 4      ;
-if cald=2020.75 then n_diag_obs_mlw= 22634 * 4      ; 
+if cald=2020.00 then n_diag_obs_mlw= 28852 * 4;
+if cald=2020.25 then n_diag_obs_mlw= 18882 * 4;
+if cald=2020.50 then n_diag_obs_mlw= 20206 * 4;
+if cald=2020.75 then n_diag_obs_mlw= 22634 * 4; 
 
-if cald=2021.00 then n_diag_obs_mlw= 20078 * 4; * note reports say multiply this by about 0.5 
-due to correction of testing in people previously diagnosed ;
+if cald=2021.00 then n_diag_obs_mlw= 20078 * 4;
+if cald=2021.25 then n_diag_obs_mlw= 19509 * 4;
+if cald=2021.50 then n_diag_obs_mlw= 18568 * 4;
+if cald=2021.75 then n_diag_obs_mlw= 19453 * 4; 
+
+
+***need to calculate these from spreadsheets;
+if cald=2022.00 then n_diag_obs_mlw= 20078 * 4;
+if cald=2022.25 then n_diag_obs_mlw= 19509 * 4;
+if cald=2022.50 then n_diag_obs_mlw= 18568 * 4;
+if cald=2022.75 then n_diag_obs_mlw= 19453 * 4; 
+
+
+
+
+**************************stop here;
+
+
+***CIRCUMCISION;
+*Source: DHS: https://dhsprogram.com/pubs/pdf/FR175/FR-175-MW04.pdf Table 11.24;
+
+if cald=2004 then o_p_circ_1549_dhs=0.207;
 
 * this is number at end of year;
 
