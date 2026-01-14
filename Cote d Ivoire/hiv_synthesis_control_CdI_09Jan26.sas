@@ -1032,7 +1032,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * OVERWRITES country specific parameters;
 *  %include "/home/rmjlaph/malawi_parameters.sas";
 * %include "/home/rmjlja9/Zimbabwe_parameters.sas";
-%include "/home/rmjllob/CdI_parameters6.sas";
+%include "/home/rmjllob/CdI_parameters8.sas";
 * %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_parameters5.sas";
 
 call symput('caldate1',caldate1);
@@ -1831,13 +1831,6 @@ eff_rate_restart = rate_restart;
 
 * define effective prob_loss_at_diag ;
 eff_prob_loss_at_diag = prob_loss_at_diag;
-
-/*
-if country='Cote d Ivoire' then do;
-***CdI specific;
-if gender=1 then eff_prob_loss_at_diag=eff_prob_loss_at_diag*1.3;
-end;
-*/
 
 * define effective rate_lost;
 eff_rate_lost = rate_lost ;
@@ -3038,9 +3031,9 @@ end;
 
 
 ***Cote d Ivoire;
-**Set an_lin_incr to increase gradually to reach around 0.01 in 2019. The 0.00001 is the starting value, 0.01 the end value
+**Set an_lin_incr to increase gradually to reach around 0.01 in 2019. The 0.0001 is the starting value, 0.01 the end value
 which we want it to stay at after 2019 and the 14 is 2019-2005;
-if caldate{t} gt 2005 then do; an_lin_incr_test = min ((0.0001 + ((0.005 - 0.0001)/14) * (caldate{t} - 2005)), 0.005);end;
+if caldate{t} gt 2005 then do; an_lin_incr_test = min ((0.000025 + ((0.0023 - 0.000025)/14) * (caldate{t} - 2005)), 0.0023);end;
 
 
 tested_anc=.;
@@ -3053,14 +3046,15 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 			rate_reptest = initial_rate_reptest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 																				
 		end;	
-
+/*
 		if caldate{t} >= 2022  then do; * note this is equivalent to incr_test_year_i = 0;
 			rate_1sttest = rate_1sttest * 0.8; rate_reptest = rate_reptest * 0.8; 	eff_test_targeting = test_targeting * 1.5 ; 
 		end;
-/*
+
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
-		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
 */
+		if gender=1 then do; rate_1sttest = rate_1sttest * rr_testing_male  ; rate_reptest = rate_reptest * rr_testing_male  ;   end;
+
 end;
 
 
@@ -4860,6 +4854,23 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 end;
 
 
+***Cote d Ivoire;
+if caldate{t} < 2017 and change_int_choice_pre2017 ne 1 then do;
+     change_int_choice_pre2017=1; 
+	 eff_rate_int_choice = eff_rate_int_choice * 2.0;
+	 if gender=1 then eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.5;
+	 if gender=2 then eff_prob_loss_at_diag = eff_prob_loss_at_diag * 2.0;
+
+end;
+
+if caldate{t} >= 2017 and  change_int_choice_post2017 ne 1 then do;
+    change_int_choice_post2017=1; eff_rate_int_choice = eff_rate_int_choice * 0.3; 
+	*if gender=1 then eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.5;
+	*if gender=2 then eff_prob_loss_at_diag = eff_prob_loss_at_diag * 2.0;
+end;
+
+
+
 
 
 	* SELF-TESTING;
@@ -4867,7 +4878,8 @@ end;
 	eff_self_test_targeting = self_test_targeting;
 
 	w = rand('uniform');	
-	if caldate{t} ge date_self_test_intro and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
+	if caldate{t} ge date_self_test_intro and (
+hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
 
 		u_self_test=rand('uniform');
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  

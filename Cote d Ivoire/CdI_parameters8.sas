@@ -53,7 +53,7 @@ country = 'Cote d Ivoire';
 
 * art_intro_date;			*art_intro_date = 2006;
 
-* an_lin_incr_test;   		an_lin_incr_test=0.00001;
+* an_lin_incr_test;   		an_lin_incr_test=0.0001;
 
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
 
@@ -65,15 +65,12 @@ country = 'Cote d Ivoire';
 
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15);
 
-/*
-* rr_testing_female;		rr_testing_female=0.5;
+
+* rr_testing_female;		*rr_testing_female=0.5;
 * rr_testing_male;			rr_testing_male=1.3;
-*/
 
-* prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
-								0.02 	0.05 	0.15 	0.35 	0.50, 
 
-								0.30 	0.30	0.30	0.05	0.05	); 
+* prob_loss_at_diag;  		prob_loss_at_diag = 0.06;
 
 * rate_int_choice;  		%sample(rate_int_choice, 	0.005 0.01 0.05, 
 														0.30 0.40 0.30);
