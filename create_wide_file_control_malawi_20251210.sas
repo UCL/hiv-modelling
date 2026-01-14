@@ -3,12 +3,12 @@
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251210_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251210_out\";
 
 
 /*
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251210_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251210_out\";
 
 data g1; set a.out1:; if not missing(cald);
 data g2; set a.out2:; if not missing(cald);
@@ -56,19 +56,17 @@ proc freq data=g; table option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
-*Zimbabwe;
-*Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
-*accessed 9/2/2023;
-* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
+*Malawi;
+* 20.4 million in 2022.5, 58.1% are >=15);
 
 data sf;
 	set g;
-	where cald=2022.5;
+	where cald=2024;
 
 	s_alive = s_alive_m + s_alive_w ;
-	sf_2022 = (16320000 * 0.581) / s_alive;  * 58.1% of Zim population in 2020 >= age 15 ;
-	sf = sf_2022;
-	keep run sf sf_2022;
+	sf_2024 = (20000000 * 0.58) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
+	sf=sf_2024;
+	keep run sf sf_2024;
 run;
 
 proc sort data=sf; 
@@ -157,18 +155,18 @@ run;
 * ================================================================================= ;
 
 
-* Adjustments to costs for Zimbabwe - HIV Control ;
+* Adjustments to costs for Malawi - HIV Control ;
 * Original costs in 000s of USD;
 * Use costs provided in spreadsheet unit_cost-kp_cvg-2025-07-14_draft;
-* Updated Dec 25;
+* Updated Jan 26;
 
 * NB 
 1. *4 to get annual cost for each time step (because we take the mean over several 3-month time steps)
-2. *sf to scale up to Zim population size
+2. *sf to scale up to Malawi population size
 3. total cost required for output spreadsheet so do not /1e6
 ;
 
-%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_costs.sas";
+%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Malawi_costs.sas";
 /*%put &cost_VMMC;*/
 
 
@@ -584,12 +582,12 @@ run;
 /* Check costs */
 
 
-data a.long_zim_control; 
+data a.long_mlw_control; 
 	set y;
 	/*if option ne 0 then delete;*/
 run;
 
-proc contents data = a.long_zim_control; run;
+proc contents data = a.long_mlw_control; run;
 
 /*proc freq data=a.long_zim_all; table option;run;*/
 /*proc freq data=a.long_zim_control; table option;run;*/
@@ -983,7 +981,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 ** Data processing;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-data y; set a.long_zim_control; 
+data y; set a.long_mlw_control; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
@@ -1237,7 +1235,7 @@ run;
 proc transpose data=outputs_&op_num out=a.outputs_&op_num; run;
 
 proc export data=a.outputs_&op_num
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251210_out\outputs_&op_num..csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251210_out\outputs_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
