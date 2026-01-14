@@ -410,12 +410,25 @@ if cald=2021.50 then n_diag_obs_mlw= 18568 * 4;
 if cald=2021.75 then n_diag_obs_mlw= 19453 * 4; 
 
 
-***need to calculate these from spreadsheets;
-if cald=2022.00 then n_diag_obs_mlw= 20078 * 4;
-if cald=2022.25 then n_diag_obs_mlw= 19509 * 4;
-if cald=2022.50 then n_diag_obs_mlw= 18568 * 4;
-if cald=2022.75 then n_diag_obs_mlw= 19453 * 4; 
+***Numbers below are calculated from quarterly excel sheets as reports have not been published;
+*Source: e.g. https://dms.hiv.health.gov.mw/dataset/malawi-hiv-program-data-2022-q3/resource/8464d697-7f05-4f4b-a04e-2e629a29adcb;
+if cald=2022.00 then n_diag_obs_mlw= 19994 * 4;
+if cald=2022.25 then n_diag_obs_mlw= 19310 * 4;
+if cald=2022.50 then n_diag_obs_mlw= 19512 * 4;
+if cald=2022.75 then n_diag_obs_mlw= 17116 * 4; 
 
+if cald=2023.00 then n_diag_obs_mlw= 18024 * 4;
+if cald=2023.25 then n_diag_obs_mlw= 16696 * 4;
+if cald=2023.50 then n_diag_obs_mlw= 16536 * 4;
+if cald=2023.75 then n_diag_obs_mlw= 16579 * 4; 
+
+if cald=2024.00 then n_diag_obs_mlw= 17984 * 4;
+if cald=2024.25 then n_diag_obs_mlw= 15744 * 4;
+if cald=2024.50 then n_diag_obs_mlw= 15613 * 4;
+if cald=2024.75 then n_diag_obs_mlw= 14938 * 4; 
+
+if cald=2025.00 then n_diag_obs_mlw= 13518 * 4;
+if cald=2025.25 then n_diag_obs_mlw= 13936 * 4;
 
 
 
