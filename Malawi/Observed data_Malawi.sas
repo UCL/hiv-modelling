@@ -5,7 +5,7 @@
 * 1. POPULATION;
 * 2. PLHIV;
 * 3. HIV TESTING;
-
+* 4. ART;
 
 
 
@@ -61,6 +61,8 @@ if cald=2015 then o_livingHIV15plus_nac=777676;
 
 *Source: (MODELLED DATA)https://www.aidsmalawi.org.mw/wp-content/uploads/2025/08/Malawi-HIV-Factsheet-2025.pdf;
 if cald=2025 then o_livingHIV15plus_nac=938000;
+
+
 
 **************************************************************************************************************************
 													HIV TESTING
@@ -453,6 +455,30 @@ if cald=2018.75 then n_onart_obs_mlw= 759782  ;
 if cald=2019.75 then n_onart_obs_mlw= 787609  ;
 if cald=2020.75 then n_onart_obs_mlw= 818218  ; 
 if cald=2021.75 then n_onart_obs_mlw= 826138 ; * adults ;
+
+*Source: UNAIDS report using country progress data;
+* https://www.unaids.org/sites/default/files/country/documents/malawi_2010_country_progress_report_en.pdf Table 3.7;
+if cald=2004.75 thendo; n_onart_obs_mlw_all= 10761; p_onart_obs_mlw_all=0.0429;end;
+if cald=2005.75 then n_onart_obs_mlw_all= 29087; p_onart_obs_mlw_all=0.1126;end;
+if cald=2006.75 then n_onart_obs_mlw_all= 59980; p_onart_obs_mlw_all=0.2259;end;
+if cald=2007.75 then n_onart_obs_mlw_all= 100649; p_onart_obs_mlw_all=0.3645;end;
+if cald=2008.75 then n_onart_obs_mlw_15pl= 135697; p_onart_obs_mlw_all_15pl=0.5153;end;
+if cald=2009.75 then n_onart_obs_mlw_15pl= 181482; p_onart_obs_mlw_all_15pl=0.6508;end;
+
+
+if cald=2010.75 then n_onart_obs_mlw_15pl= 181482; p_onart_obs_mlw_all_15pl=0.6508;end;
+
+
+if cald=2011.75 then n_onart_obs_mlw= 294585 ;
+if cald=2014.75 then n_onart_obs_mlw= 489775 ;
+if cald=2015.75 then n_onart_obs_mlw= 540071 ;
+if cald=2016.75 then n_onart_obs_mlw= 625689      ;  
+if cald=2017.75 then n_onart_obs_mlw= 700360   ;  
+if cald=2018.75 then n_onart_obs_mlw= 759782  ;
+if cald=2019.75 then n_onart_obs_mlw= 787609  ;
+if cald=2020.75 then n_onart_obs_mlw= 818218  ; 
+if cald=2021.75 then n_onart_obs_mlw= 826138 ; * adults ;
+
 
 /*
 
