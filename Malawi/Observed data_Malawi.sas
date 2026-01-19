@@ -496,7 +496,8 @@ end;
 * Of those diagnosed, proportion on ART;
 
 * Source: MPHIA;
-* https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf Figure 3.4 E;
+* https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf Table 3.4G;
+* https://phia.icap.columbia.edu/wp-content/uploads/2022/12/241122_Mphia_Foreword.pdf Table 9.1B;
 if cald=2016.25 then do;
 	p_diag_onart_mlw_1549_phia=0.887;p_diag_onart_mlw_15pl_phia=0.896;
 	p_diag_onart_mlw_w1549_phia=0.838;p_diag_onart_mlw_m15pl_phia=0.861;
