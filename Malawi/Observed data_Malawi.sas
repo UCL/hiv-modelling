@@ -70,7 +70,7 @@ if cald=2022 then m_livingHIV_all_unaids=1006633;
 if cald=2025 then m_livingHIV15plus_unaids=938000;
 
 * Source : PHIA https://phia.icap.columbia.edu/wp-content/uploads/2022/12/241122_Mphia_Foreword.pdf;
-if cald=2015.75 then o_livingHIV_15pl_phia=946000;
+if cald=2016.25 then o_livingHIV_15pl_phia=946000;
 if cald=2020.75 then o_livingHIV_15pl_phia=900000;
 
 
@@ -358,16 +358,16 @@ end;
 
 *Source: MPHIA https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf;
 *using table 3.4G - self reported only;
-if cald=2015.75 then do;
-	o_p_diag_m1549_mdhs=0.655;o_p_diag_w1549_mdhs=0.754;o_p_diag_1549_mdhs=0.717;
-	o_p_diag_m15pl_mdhs=0.676;o_p_diag_w15pl_mdhs=0.759;o_p_diag_15pl_mdhs=0.727;
+if cald=2016.25 then do;
+	o_p_diag_m1549_phia=0.655;o_p_diag_w1549_phia=0.754;o_p_diag_1549_phia=0.717;
+	o_p_diag_m15pl_phia=0.676;o_p_diag_w15pl_phia=0.759;o_p_diag_15pl_phia=0.727;
 end;
 
 *Source: MPHIA: https://phia.icap.columbia.edu/wp-content/uploads/2022/12/241122_Mphia_Foreword.pdf;
 *using Table 9.1A which takes into account self-report and biomarker data;
 if cald=2020.75 then do;
-	o_p_diag_m1549_mdhs=0.829;o_p_diag_w1549_mdhs=0.896;o_p_diag_1549_mdhs=0.873;
-	o_p_diag_m15pl_mdhs=0.850;o_p_diag_w15pl_mdhs=0.904;o_p_diag_15pl_mdhs=0.883;
+	o_p_diag_m1549_phia=0.829;o_p_diag_w1549_phia=0.896;o_p_diag_1549_phia=0.873;
+	o_p_diag_m15pl_phia=0.850;o_p_diag_w15pl_phia=0.904;o_p_diag_15pl_phia=0.883;
 end;
 
 
@@ -493,41 +493,107 @@ if cald=2024.75 then do;
 end;
 
 
+* Of those diagnosed, proportion on ART;
+
+* Source: MPHIA;
+* https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf Figure 3.4 E;
+if cald=2016.25 then do;
+	p_diag_onart_mlw_1549_phia=0.887;p_diag_onart_mlw_15pl_phia=0.896;
+	p_diag_onart_mlw_w1549_phia=0.838;p_diag_onart_mlw_m15pl_phia=0.861;
+	p_diag_onart_mlw_w1549_phia=0.913;p_diag_onart_mlw_w15pl_phia=0.916;
+end;
+
+if cald=2020.75 then do;
+	p_diag_onart_mlw_1549_phia=0.979;p_diag_onart_mlw_15pl_phia=0.979;
+	p_diag_onart_mlw_m1549_phia=0.974;p_diag_onart_mlw_m15pl_phia=0.974;
+	p_diag_onart_mlw_w1549_phia=0.982;p_diag_onart_mlw_w15pl_phia=0.982;
+end;
+
 
 **************************************************************************************************************************
 													PREVALENCE
 **************************************************************************************************************************;
 
-* Source: DHS 2004, 2010, 2016, 2020, 2024;
-if cald=2004.5 then prevalence1549_obs_mlw= 0.127;
-if cald=2004.5 then prevalence1549m_obs_mlw= 0.108;
-if cald=2004.5 then prevalence1549w_obs_mlw= 0.144;
+* Source: DHS 2004, 2010, 2016 (2024 needs to be added, currently not published);
+* https://dhsprogram.com/pubs/pdf/FR175/FR-175-MW04.pdf Table G1;
+* https://dhsprogram.com/pubs/pdf/FR247/FR247.pdf Table 14.4 and 14.8;
+* https://dhsprogram.com/pubs/pdf/FR319/FR319.pdf Table 14.3;
 
-if cald=2010.5 then prevalence1549_obs_mlw= 0.106;
-if cald=2010.5 then prevalence1549m_obs_mlw= 0.081;
-if cald=2010.5 then prevalence1549w_obs_mlw= 0.129;
+if cald=2004.5 then do;
+	prevalence1549_obs_mlw_mdhs= 0.127;
+	prevalence1549m_obs_mlw_mdhs= 0.108;
+	prevalence1549w_obs_mlw_mdhs= 0.144;
+	prevalence1524_obs_mlw_mdhs= 0.060;
+	prevalence1524m_obs_mlw_mdhs= 0.021;
+	prevalence1524w_obs_mlw_mdhs= 0.091;
+end;
 
-if cald=2016.0 then prevalence1549_obs_mlw= 0.094; *between phia and dhs;
-if cald=2016.0 then prevalence1549m_obs_mlw= 0.071; *between phia and dhs;
-if cald=2016.0 then prevalence1549w_obs_mlw= 0.115; *between phia and dhs;
+if cald=2010.5 then do;
+	prevalence1549_obs_mlw_mdhs= 0.106;
+	prevalence1549m_obs_mlw_mdhs= 0.081;
+	prevalence1549w_obs_mlw_mdhs= 0.129;
+	prevalence1524_obs_mlw_mdhs= 0.036;
+	prevalence1524m_obs_mlw_mdhs= 0.019;
+	prevalence1524w_obs_mlw_mdhs= 0.052;
+end;
+
+if cald=2016.0 then do;
+	prevalence1549_obs_mlw_mdhs= 0.108;
+	prevalence1549m_obs_mlw_mdhs= 0.064;
+	prevalence1549w_obs_mlw_mdhs= 0.088;
+	prevalence1524_obs_mlw_mdhs= 0.035;
+	prevalence1524m_obs_mlw_mdhs= 0.011;
+	prevalence1524w_obs_mlw_mdhs= 0.056;
+end;
+
+* Source MPHIA;
+* https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf Table 3.3C;
+if cald=2016.25 then prevalence1549_obs_mlw_mdhs= 0.100;
+if cald=2016.25 then prevalence1549m_obs_mlw_mdhs= 0.078;
+if cald=2016.25 then prevalence1549w_obs_mlw_mdhs= 0.121;
+
+* https://phia.icap.columbia.edu/wp-content/uploads/2022/12/241122_Mphia_Foreword.pdf Table 6.1;
+if cald=2020.75 then prevalence1549_obs_mlw_mdhs= 0.080;
+if cald=2020.75 then prevalence1549m_obs_mlw_mdhs= 0.058;
+if cald=2020.75 then prevalence1549w_obs_mlw_mdhs= 0.100;
 
 
-if cald=2016.5 then incidence1549_obs_mlw= 0.32;
+*Source: (MODELLED DATA) Spectrum AIMS estimates;
+* https://data.worldbank.org/indicator/SH.DYN.AIDS.ZS?locations=MW;
+* Only put here selected years but estimates for all years are available);
+if cald=1990 then prevalence1549_obs_mlw_unaids=0.09;
+if cald=1992 then prevalence1549_obs_mlw_unaids=0.121;
+if cald=1994 then prevalence1549_obs_mlw_unaids=0.142;
+if cald=1996 then prevalence1549_obs_mlw_unaids=0.157;
+if cald=1998 then prevalence1549_obs_mlw_unaids=0.160;
+if cald=2000 then prevalence1549_obs_mlw_unaids=0.153;
+if cald=2005 then prevalence1549_obs_mlw_unaids=0.123;
+if cald=2010 then prevalence1549_obs_mlw_unaids=0.107;
+if cald=2015 then prevalence1549_obs_mlw_unaids=0.096;
+if cald=2020 then prevalence1549_obs_mlw_unaids=0.079;
+if cald=2024 then prevalence1549_obs_mlw_unaids=0.062;
 
-if cald=2010.5 then prevalence1525w_obs_mlw= 0.052;
-if cald=2010.5 then prevalence2535w_obs_mlw= 0.164;
-if cald=2010.5 then prevalence3545w_obs_mlw= 0.224;
 
-if cald=2010.5 then prevalence1525m_obs_mlw= 0.019;
-if cald=2010.5 then prevalence2535m_obs_mlw= 0.087;
-if cald=2010.5 then prevalence3545m_obs_mlw= 0.192;
-if cald=2010.5 then prevalence4555m_obs_mlw= 0.141;
+**************************************************************************************************************************
+													INCIDENCE
+**************************************************************************************************************************;
 
-* if cald=1999.5 then prevalence1549_obs_mlw = 0.164;
 
-if cald=1992.5 then prevalence1549_obs_mlw = 0.108;  * spectrum aim outputs ;  * current median = 0.095 ;
-if cald=1995.5 then prevalence1549_obs_mlw = 0.140;  * spectrum aim outputs ;  * current median = 0.147 ;
-if cald=1998.5 then prevalence1549_obs_mlw = 0.152;  * spectrum aim outputs ;  * current median = 0.175 ;
+* Source MPHIA;
+* https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf Table 3.3A;
+
+if cald=2016.25 then do;
+	incidence1549_obs_mlw= 0.36;
+	incidence1549m_obs_mlw= 0.26;
+	incidence1549w_obs_mlw= 0.46;
+end;
+
+if cald=2020.75 then do;
+	incidence1549_obs_mlw= 0.23;
+	incidence1549m_obs_mlw= 0.15;
+	incidence1549w_obs_mlw= 0.31;
+end;
+
 
 
 if cald=2014.5 then p_onart_vl1000_obs_mlw= 0.84;
@@ -540,17 +606,6 @@ if cald=2014.5 then n_secondline_obs_mlw= 5700 ;
 if cald=2015.5 then n_secondline_obs_mlw= 6758 ; * 2nd  quarter of 2015;
 if cald=2016.5 then n_secondline_obs_mlw= 8811 ; * 2nd  quarter of 2016;
 
-* Population size;
-* merged pop_size_obs_mw into d;
-
-* Calibration thresholds;
-if cald=1998.5 then do; prevalence1549_threshold_lower=0.08; prevalence1549_threshold_higher=0.19; end;
-if cald=1999.5 then do; prevalence1549_threshold_lower=0.08; prevalence1549_threshold_higher=0.19; end;
-if cald=2004.5 then do; prevalence1549_threshold_lower=0.07; prevalence1549_threshold_higher=0.20; end;
-if cald=2016.5 then do; prevalence1549_threshold_lower=0.07; prevalence1549_threshold_higher=0.13; end;
-if cald=2020 then p_vl1000_threshold=0.75;
-
-prevalence1549_threshold=prevalence1549_threshold_lower+0.5*(prevalence1549_threshold_higher-prevalence1549_threshold_lower);
 
 
 if cald = 2021.5 then n_prep_obs_mlw = 3200 ;  * from data in template - from implementing partners;
