@@ -9,7 +9,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 
 
 data a;
-set a.cdi_15jan26;
+set a.cdi_14Jan26;
 if run=. then delete;
 
 *if prop_v_alert_perm ne 0.3 then delete;
@@ -397,7 +397,7 @@ proc means mean;var prev_f;where cald =2010;run;
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_cdi_control_15jan26; set y;
+data a.long_cdi_control_14Jan26; set y;
 if cald=. then delete;run;
 
 
@@ -434,7 +434,7 @@ if cald=. then delete;run;
 ************************************************************************************************************************************************************;
 
 
-data y; set a.long_cdi_control_15jan26; 
+data y; set a.long_cdi_control_14Jan26; 
 
 Total_00_14_M = .;
 Total_15_24_M = n_alive_1524m;
@@ -1394,7 +1394,7 @@ proc transpose data=a.outputs_&op_num out=a.outputs_&op_num; run;
 
 proc export data=a.outputs_&op_num
 
-	outfile= "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\cdi_15jan26_excel_&op_num..csv" 
+	outfile= "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\cdi_14Jan26_excel_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
