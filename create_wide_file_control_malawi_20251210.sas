@@ -22,7 +22,7 @@ data g9; set a.out9:; if not missing(cald);
 run;
 
 data g;
-	set g1 g2 g3 g4 g5 /*g6 g7 g8 g9 */;
+	set g1 g2 g3 g4 g5 g6 g7 g8 g9 ;
 run;
 
 
@@ -32,26 +32,20 @@ run;
 
 */
 
-
-
 ods listing;
 
 
-data g; set  a.g;
-
-
-/*
-proc contents data=a.g; run;
-proc freq data=g; tables s_onart_m2529_   s_onart_m3034_   s_onart_m3539_   s_onart_m4044_   s_onart_m4549_ ; run;
-*/
-
-
-proc sort data=g; 
-/*by run cald option;run;*/
-	by run;
+data g; 
+	set a.g;
 run;
 
-proc freq data=g; table option;run;
+
+
+proc sort data=g; 			* Can omit this if using proc sql to merge;
+	by run cald option;
+run;
+
+proc freq data=g; table option; run;
 
 
 
@@ -75,7 +69,7 @@ run;
 
 
 /*
-* alternative merge - avoids sorting;
+* alternative merge - avoids sorting g and sf;
 proc sql;
     create table y as
     select a.*, b.sf, b.sf_2022
@@ -161,7 +155,7 @@ run;
 * Updated Jan 26;
 
 * NB 
-1. *4 to get annual cost for each time step (because we take the mean over several 3-month time steps)
+1. *4 to get annual cost for each time step (because we take the mean over several 3-month time steps) for testing and VMMC only (item-based costs) 
 2. *sf to scale up to Malawi population size
 3. total cost required for output spreadsheet so do not /1e6
 ;
@@ -178,7 +172,7 @@ cost_self_test = s_self_tested * &cost_per_self_test * 4 * sf;
 dcost_self_test = cost_self_test * &discount;
 
 * ART;
-cost_art = s_onart * &cost_art_pppy * 4 * sf;						* Using one ART cost for all ART;
+cost_art = s_onart * &cost_art_pppy * sf;							* Using one ART cost for all ART;	* removed  * 4 ;
 dcost_art = cost_art * &discount;
 
 * PMTCT;
@@ -193,9 +187,9 @@ dcost_condoms = cost_condoms * &discount;
 * NB only LEN-PrEP is introduced in the injectable PrEP scenarios;
 * Omitting VR PrEP costs;
 * Omitting PrEP clinic costs as these are incorporated in the PPPY costs;
-cost_prep_oral = s_prep_oral * &cost_prep_oral_pppy * 4 * sf;
-cost_prep_cab = s_prep_cab * &cost_prep_cab_pppy * 4 * sf;
-cost_prep_len = s_prep_len * &cost_prep_len_pppy * 4 * sf;
+cost_prep_oral = s_prep_oral * &cost_prep_oral_pppy * sf;		* removed  * 4 ;
+cost_prep_cab = s_prep_cab * &cost_prep_cab_pppy * sf;			* removed  * 4 ;
+cost_prep_len = s_prep_len * &cost_prep_len_pppy * sf;			* removed  * 4 ;
 
 dcost_prep_oral = cost_prep_oral * &discount;
 dcost_prep_cab = cost_prep_cab * &discount;
@@ -211,15 +205,15 @@ dcost_vmmc = 	cost_vmmc * &discount;
 
 * FSW and MSM services;
 * MSM services cost only applies to SQ and MSM intervention scenarios;
-cost_fsw_services = s_sw_program_visit * &cost_FSW_services_pppy * 4 * sf;
-cost_msm_services = 0; if option in (99 10) then cost_msm_services = s_alive1549_msm / 2 * &cost_MSM_services_pppy * 4 * sf;		
+cost_fsw_services = s_sw_program_visit * &cost_FSW_services_pppy * sf;		* removed  * 4 ;
+cost_msm_services = 0; if option in (99 10) then cost_msm_services = s_alive1549_msm / 2 * &cost_MSM_services_pppy * sf;			* removed  * 4 ;	
 	* Assumes 50% of 15-49 year-old MSM are reached by MSM services? - to discuss ;
 
 dcost_fsw_services = cost_fsw_services * &discount;
 dcost_msm_services = cost_msm_services * &discount;
 
 * Adherence support;
-cost_adh_support = 0; if option in (99 12) then cost_adh_support = s_onart * &cost_AdhSupp_pppy * sf * 4;		* Assumes the cost is applied to everyone on ART;
+cost_adh_support = 0; if option in (99 12) then cost_adh_support = s_onart * &cost_AdhSupp_pppy * sf;		* Assumes the cost is applied to everyone on ART;	* removed  * 4 ;
 dcost_adh_support = cost_adh_support * &discount;
 
 total_cost_hiv_control =	sum( cost_test,  cost_self_test,  cost_art,  cost_condoms,  cost_prep_tot,  cost_vmmc,  cost_fsw_services,  cost_msm_services,  cost_adh_support);
@@ -227,117 +221,7 @@ total_dcost_hiv_control = 	sum(dcost_test, dcost_self_test, dcost_art, dcost_con
 
 
 
-*** Original costs (some are not included in HIV Control list of costs);
 
-s_dcost_circ = s_dcost_circ * &cost_VMMC_per_procedure / 90 ;
-
-s_dcost_prep_cab = s_dcost_prep_cab * (&cost_prep_cab_pppy / (42 * 1.2));  
-s_dcost_prep_len = s_dcost_prep_len * (&cost_prep_len_pppy / (25 * 1.2));  
-s_dcost_prep_oral = s_dcost_prep_oral * (&cost_prep_oral_pppy / (50*1.2)); 
-s_dcost_prep_vr = s_dcost_prep_vr * (152.02 / (50 * 1.2));						* Cost from MIHPSA Zim;
-/*s_dcost_prep_visit_cab = s_dcost_prep_visit_cab * (18 / 60) ;*/				* Not sure why we need to rescale this;
-/*s_dcost_prep_visit_len = s_dcost_prep_visit_len * (18 / 60) ;*/				* Not sure why we need to rescale this;
-/*s_dcost_prep_visit_oral = s_dcost_prep_visit_oral * (18 / 40) ;*/				* Not sure why we need to rescale this;
-/*s_dcost_prep_visit_vr = s_dcost_prep_visit_vr * (21 / 40) ;*/					* Not sure why we need to rescale this;
-/*s_dcost_prep_visit = s_dcost_prep_visit_cab + s_dcost_prep_visit_len + s_dcost_prep_visit_oral + s_dcost_prep_visit_vr; */
-s_dcost_prep = s_dcost_prep_cab + s_dcost_prep_len + s_dcost_prep_oral + s_dcost_prep_vr;
-
-dcost_self_test = s_self_tested * sf * &cost_per_self_test * &discount * 4 / 1e6; 			* Cost in model script is $1.5;
-
-dcost_adh_intervention=0; if option in (99 12) then do; dcost_adh_intervention=(s_diag) * sf * (&cost_AdhSupp_pppy / 4) * &discount / 1e6 ; end;	* Updated option numbers for HIV Control;
-* Informed by Weldemariam H, Thawani A, Kiruthu-Kamamia C, Huwa J, Chipanda M, Tweya H, Feldacker C. How much does it cost to retain antiretroviral therapy (ART) 
-clients in their first year? Routine financial costs of retention interventions at Lighthouse Trustin Lilongwe, Malawi. Res Sq [Preprint]. 2024 Oct 
-15:rs.3.rs-4939155. doi: 10.21203/rs.3.rs-4939155/v1. PMID: 39483880 PMCID: PMC11527224.;
-
-dzdv_cost = s_cost_zdv * &discount * sf * 4 / 1000;
-dten_cost = s_cost_ten * &discount * sf * 4 / 1000;
-d3tc_cost = s_cost_3tc * &discount * sf * 4 / 1000; 
-dnev_cost = s_cost_nev * &discount * sf * 4 / 1000;
-dlpr_cost = s_cost_lpr * &discount * sf * 4 / 1000;
-ddar_cost = s_cost_dar * &discount * sf * 4 / 1000;
-dtaz_cost = s_cost_taz * &discount * sf * 4 / 1000;
-defa_cost = s_cost_efa * &discount * sf * 4 / 1000;
-ddol_cost = s_cost_dol * &discount * sf * 4 / 1000;
-
-
-if s_dart_cost=. then s_dart_cost=0;
-if s_dcost_cascade_interventions=. then s_dcost_cascade_interventions=0;
-if s_dcost_prep=. then s_dcost_prep=0;
-if s_dcost_prep_visit=. then s_dcost_prep_visit=0;
-if s_dcost_prep_ac_adh=. then s_dcost_prep_ac_adh=0;
-if s_dcost_circ=. then s_dcost_circ=0;
-if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
-
-* ts1m - 12 instead of 4; 
-dvis_cost = s_dvis_cost * sf * 4 / 1000;
-dart_1_cost = s_dart_1_cost * sf * 4 / 1000;
-dart_2_cost = s_dart_2_cost * sf * 4 / 1000;
-dart_3_cost = s_dart_3_cost * sf * 4 / 1000;
-dart_cost = s_dart_cost * sf * 4 / 1000;
-dvl_cost = s_dvl_cost * sf * 4 / 1000;
-dcd4_cost = s_dcd4_cost * sf * 4 / 1000;
-dadc_cost = s_dadc_cost * sf * 4 / 1000;
-dnon_tb_who3_cost = s_dnon_tb_who3_cost * sf * 4 / 1000;
-dtb_cost = s_dtb_cost * sf * 4 / 1000;
-dtest_cost = s_dtest_cost * sf * 4 / 1000;
-/*dtest_cost_prep = s_dtest_cost_prep * sf * 4 / 1000;  * note that this cost is part of dtest_cost so if want to change this cost need to subtract first from total cost;*/
-dcot_cost = s_dcot_cost * sf * 4 / 1000;
-dres_cost = s_dres_cost * sf * 4 / 1000;
-d_t_adh_int_cost = s_d_t_adh_int_cost * sf * 4 / 1000;  
-dcost_cascade_interventions = s_dcost_cascade_interventions * sf * 4 / 1000;  
-dcost_prep = s_dcost_prep * sf * 4 / 1000; 
-dcost_prep_visit  = s_dcost_prep_visit * sf * 4 / 1000; 			   
-dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf * 4 / 1000; 
-
-
-* note this below can be used if outputs are from program beyond 1-1-20;
-* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf * 4 / 1000;
-  dcost_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
-
-dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
-dcost_circ = s_dcost_circ * sf * 4 / 1000; 
-dcost_condom_dn = s_dcost_condom_dn * sf * 4 / 1000; 
-dswitchline_cost = s_dcost_switch_line * sf * 4 / 1000;
-if dswitchline_cost=. then dswitchline_cost=0;
-if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
-dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
-/*dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; * s_cost_child_hiv is discounted cost;*/
-
-
-dcost_child_hiv_at_child_inf = s_dcost_child_hiv_at_child_inf * sf; *One off lifetime cost for a child living with HIV;
-
-
-dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
-
-* sens analysis;
-
-* dtaz_cost = dtaz_cost * (100 / 180);
-* dtaz_cost = dtaz_cost * (50 / 180);
-* dzdv_cost = dzdv_cost * (25 / 45);
-
-
-dart_cost_x = dart_1_cost + dart_2_cost + dart_3_cost; 
-dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
-
-* dcost = dart_cost_y + dclin_cost + dcd4_cost + dvl_cost + dvis_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost
-		+dcost_circ + dcost_condom_dn  + dcost_child_hiv  + dcost_non_aids_pre_death ;
-
-
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
-		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		/*dcost_child_hiv*/ + dcost_child_hiv_at_child_inf + dcost_non_aids_pre_death + dcost_self_test + dcost_adh_intervention;
-*replaced dcost_child_hiv with dcost_child_hiv_at_child_inf to match variable name change in core_hiv_synthesis file;
-
-s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
-
-dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
-				dswitchline_cost; 
-
-if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
-
-cost = (dcost * 1000000) / &discount;
-
-dcost_80 = s_dcost__80 * sf * 4 / 1000;
 
 * ================================================================================= ;
 
@@ -570,26 +454,16 @@ n_diag_msm_age1564_				n_undiag_msm
 total_dcost_hiv_control
 cost_test	cost_self_test	cost_art	cost_condoms	cost_prep_tot	cost_vmmc	cost_fsw_services	cost_msm_services	cost_adh_support
 dcost_test	dcost_self_test	dcost_art	dcost_condoms	dcost_prep_tot	dcost_vmmc	dcost_fsw_services	dcost_msm_services	dcost_adh_support
-cost
 ;
 run;
 
 
 
-/*proc sort data=y;by run option;run;*/	** Do we need this line? ;
-/*proc freq data=y; table option;run;*/
-
-/* Check costs */
-
-
 data a.long_mlw_control; 
 	set y;
-	/*if option ne 0 then delete;*/
 run;
 
-proc contents data = a.long_mlw_control; run;
-
-/*proc freq data=a.long_zim_all; table option;run;*/
+/*proc contents data = a.long_mlw_control; run;*/
 /*proc freq data=a.long_zim_control; table option;run;*/
 
 
@@ -604,6 +478,10 @@ proc contents data = a.long_mlw_control; run;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 ** Set option number for var_stock and var_flow macros here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+data y; 
+	set a.long_mlw_control;
+run;
+
 %let op_num=0;
 
 /*
@@ -620,8 +498,8 @@ proc contents data = a.long_mlw_control; run;
 10 = KP outreach - MSM
 11 = testing
 12 = adherence support
+13 = worst case
 
-20 = VMMC 2nd test
 99 = status quo
 */
 
@@ -1064,7 +942,7 @@ DeathsHIV_50_UP_F = n_death_hiv_age_50pl_w;
 DALYs_Undiscounted = n_daly;
 TotalCost_Undiscounted = total_cost_hiv_control;
 Percent_circumcised = p_mcirc_1549m * 100;
-Percent_condom_use_GP = . /* (1 - (p_m_npge1_ + p_w_npge1_) / 2) * 100;	* Estimate is percent of population with no condomless sex (mean m and w); */
+Percent_condom_use_GP = .; /* (1 - (p_m_npge1_ + p_w_npge1_) / 2) * 100;	* Estimate is percent of population with no condomless sex (mean m and w); */
 PrEP_FSW = n_onprep_sw;
 PrEP_MSM = n_onprep_msm;
 PrEP_GP = n_onprep_m + n_onprep_w;
