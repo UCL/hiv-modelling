@@ -846,8 +846,6 @@ data icer_sums_2049; set d;
 run;
 
 
-
-
 * p_newp;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge1_";
@@ -1931,6 +1929,57 @@ series  x=cald y=mean_n_tested_w_99/	lineattrs = (color=black thickness = 2);
 run;quit;
 
 
+* Cost;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "total_cost_hiv_control";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1e9 by 1e8) valueattrs=(size=10);
+label mean_total_cost_hiv_control_0 = "minimal";
+label mean_total_cost_hiv_control_1 = "PrEPoral_FSW";
+label mean_total_cost_hiv_control_2 = "PrEPmix_FSW";
+label mean_total_cost_hiv_control_3 = "PrEPoral_AGYW";
+label mean_total_cost_hiv_control_4 = "PrEPmix_AGYW";
+label mean_total_cost_hiv_control_5 = "PrEPoral_MSM";
+label mean_total_cost_hiv_control_6 = "PrEPmix_MSM";
+label mean_total_cost_hiv_control_7 = "vmmc";
+label mean_total_cost_hiv_control_8 = "condom";
+label mean_total_cost_hiv_control_9 = "FSW";
+label mean_total_cost_hiv_control_10 = "MSM";
+label mean_total_cost_hiv_control_11 = "test";
+label mean_total_cost_hiv_control_12 = "adherence";
+label mean_total_cost_hiv_control_13 = "worst case";
+label mean_total_cost_hiv_control_99 = "status quo";
+series  x=cald y=mean_total_cost_hiv_control_0/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_0 	upper=p95_total_cost_hiv_control_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_1/	lineattrs = (color=darkred thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_1 	upper=p95_total_cost_hiv_control_1  / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_2/	lineattrs = (color=red thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_2 	upper=p95_total_cost_hiv_control_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_3/	lineattrs = (color=orange thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_3 	upper=p95_total_cost_hiv_control_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_4/	lineattrs = (color=yellow thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_4 	upper=p95_total_cost_hiv_control_4  / transparency=0.9 fillattrs = (color=yellow) legendlabkel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_5/	lineattrs = (color=lightgreen thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_5 	upper=p95_total_cost_hiv_control_5  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_6/	lineattrs = (color=green thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_6 	upper=p95_total_cost_hiv_control_6  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_7/	lineattrs = (color=lightblue thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_7 	upper=p95_total_cost_hiv_control_7  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_8/	lineattrs = (color=blue thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_ 	upper=p95_total_cost_hiv_control_8  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_9/	lineattrs = (color=purple thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_9 	upper=p95_total_cost_hiv_control_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_10/	lineattrs = (color=lightpurple thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_10 	upper=p95_total_cost_hiv_control_10  / transparency=0.9 fillattrs = (color=lightpurple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_11/	lineattrs = (color=pink thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_11 	upper=p95_total_cost_hiv_control_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_12/	lineattrs = (color=brown thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_12 	upper=p95_total_cost_hiv_control_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_13/	lineattrs = (color=red thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_13 	upper=p95_total_cost_hiv_control_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_99 	upper=p95_total_cost_hiv_control_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+run;quit;
 
 
 ods html close;

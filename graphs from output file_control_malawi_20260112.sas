@@ -28,6 +28,7 @@ n_new_inf1549m = n_new_inf1524m + n_new_inf2549m;
 n_new_inf1549w = n_new_inf1524w + n_new_inf2549w;
 n_new_inf1549_ = n_new_inf1549m + n_new_inf1549w;
 n_new_inf1564_ = n_new_inf1549_	+ n_new_inf50plm + n_new_inf50plw;
+n_new_inf0064_ = n_new_inf1564_ + n_hiv_child;
 
 p_diag_m = (n_diag_m_1524 + n_diag_m_2549 + n_diag_m_50pl) / (n_hiv1524m + n_hiv2549m + n_hiv50plm);
 p_diag_w = (n_diag_w_1524 + n_diag_w_2549 + n_diag_w_50pl) / (n_hiv1524w + n_hiv2549w + n_hiv50plw);
@@ -154,11 +155,10 @@ n_diag_msm_age1564_				n_undiag_msm
 total_dcost_hiv_control
 cost_test	cost_self_test	cost_art	cost_condoms	cost_prep_tot	cost_vmmc	cost_fsw_services	cost_msm_services	cost_adh_support
 dcost_test	dcost_self_test	dcost_art	dcost_condoms	dcost_prep_tot	dcost_vmmc	dcost_fsw_services	dcost_msm_services	dcost_adh_support
-cost
 
 /* Calculated above */
 n_alive				n_alive_m			n_alive_w
-n_new_inf1549m 		n_new_inf1549w 		n_new_inf1549_ 		n_new_inf1564_ 
+n_new_inf1549m 		n_new_inf1549w 		n_new_inf1549_ 		n_new_inf1564_		n_new_inf0064_
 p_diag_m 			p_diag_w 			p_diag 
 p_art_m 			p_art_w 			p_art 
 p_diag_art_m 		p_diag_art_w 		p_diag_art
@@ -585,65 +585,65 @@ run;
 
 data icer_sums; set d;
 	if cald < 2024 then delete;
-	cum_n_new_inf1549_0 + mean_n_new_inf1549__0;
-	cum_n_new_inf1549_1 + mean_n_new_inf1549__1;
-	cum_n_new_inf1549_2 + mean_n_new_inf1549__2;
-	cum_n_new_inf1549_3 + mean_n_new_inf1549__3;
-	cum_n_new_inf1549_4 + mean_n_new_inf1549__4;
-	cum_n_new_inf1549_5 + mean_n_new_inf1549__5;
-	cum_n_new_inf1549_6 + mean_n_new_inf1549__6;
-	cum_n_new_inf1549_7 + mean_n_new_inf1549__7;
-	cum_n_new_inf1549_8 + mean_n_new_inf1549__8;
-	cum_n_new_inf1549_9 + mean_n_new_inf1549__9;
-	cum_n_new_inf1549_99 + mean_n_new_inf1549__99;
+	cum_n_new_inf1549_0 + mean_n_new_inf1549__0/4;
+	cum_n_new_inf1549_1 + mean_n_new_inf1549__1/4;
+	cum_n_new_inf1549_2 + mean_n_new_inf1549__2/4;
+	cum_n_new_inf1549_3 + mean_n_new_inf1549__3/4;
+	cum_n_new_inf1549_4 + mean_n_new_inf1549__4/4;
+	cum_n_new_inf1549_5 + mean_n_new_inf1549__5/4;
+	cum_n_new_inf1549_6 + mean_n_new_inf1549__6/4;
+	cum_n_new_inf1549_7 + mean_n_new_inf1549__7/4;
+	cum_n_new_inf1549_8 + mean_n_new_inf1549__8/4;
+	cum_n_new_inf1549_9 + mean_n_new_inf1549__9/4;
+	cum_n_new_inf1549_99 + mean_n_new_inf1549__99/4;
 
-	cum_n_new_inf1564_0 + mean_n_new_inf1564__0;
-	cum_n_new_inf1564_1 + mean_n_new_inf1564__1;
-	cum_n_new_inf1564_2 + mean_n_new_inf1564__2;
-	cum_n_new_inf1564_3 + mean_n_new_inf1564__3;
-	cum_n_new_inf1564_4 + mean_n_new_inf1564__4;
-	cum_n_new_inf1564_5 + mean_n_new_inf1564__5;
-	cum_n_new_inf1564_6 + mean_n_new_inf1564__6;
-	cum_n_new_inf1564_7 + mean_n_new_inf1564__7;
-	cum_n_new_inf1564_8 + mean_n_new_inf1564__8;
-	cum_n_new_inf1564_9 + mean_n_new_inf1564__9;
-	cum_n_new_inf1564_99 + mean_n_new_inf1564__99;
+	cum_n_new_inf1564_0 + mean_n_new_inf1564__0/4;
+	cum_n_new_inf1564_1 + mean_n_new_inf1564__1/4;
+	cum_n_new_inf1564_2 + mean_n_new_inf1564__2/4;
+	cum_n_new_inf1564_3 + mean_n_new_inf1564__3/4;
+	cum_n_new_inf1564_4 + mean_n_new_inf1564__4/4;
+	cum_n_new_inf1564_5 + mean_n_new_inf1564__5/4;
+	cum_n_new_inf1564_6 + mean_n_new_inf1564__6/4;
+	cum_n_new_inf1564_7 + mean_n_new_inf1564__7/4;
+	cum_n_new_inf1564_8 + mean_n_new_inf1564__8/4;
+	cum_n_new_inf1564_9 + mean_n_new_inf1564__9/4;
+	cum_n_new_inf1564_99 + mean_n_new_inf1564__99/4;
 
-	cum_cost_hiv_control_0 + mean_total_cost_hiv_control_0;
-	cum_cost_hiv_control_1 + mean_total_cost_hiv_control_1;
-	cum_cost_hiv_control_2 + mean_total_cost_hiv_control_2;
-	cum_cost_hiv_control_3 + mean_total_cost_hiv_control_3;
-	cum_cost_hiv_control_4 + mean_total_cost_hiv_control_4;
-	cum_cost_hiv_control_5 + mean_total_cost_hiv_control_5;
-	cum_cost_hiv_control_6 + mean_total_cost_hiv_control_6;
-	cum_cost_hiv_control_7 + mean_total_cost_hiv_control_7;
-	cum_cost_hiv_control_8 + mean_total_cost_hiv_control_8;
-	cum_cost_hiv_control_9 + mean_total_cost_hiv_control_9;
-	cum_cost_hiv_control_99 + mean_total_cost_hiv_control_99;
+	cum_cost_hiv_control_0 + mean_total_cost_hiv_control_0/4;
+	cum_cost_hiv_control_1 + mean_total_cost_hiv_control_1/4;
+	cum_cost_hiv_control_2 + mean_total_cost_hiv_control_2/4;
+	cum_cost_hiv_control_3 + mean_total_cost_hiv_control_3/4;
+	cum_cost_hiv_control_4 + mean_total_cost_hiv_control_4/4;
+	cum_cost_hiv_control_5 + mean_total_cost_hiv_control_5/4;
+	cum_cost_hiv_control_6 + mean_total_cost_hiv_control_6/4;
+	cum_cost_hiv_control_7 + mean_total_cost_hiv_control_7/4;
+	cum_cost_hiv_control_8 + mean_total_cost_hiv_control_8/4;
+	cum_cost_hiv_control_9 + mean_total_cost_hiv_control_9/4;
+	cum_cost_hiv_control_99 + mean_total_cost_hiv_control_99/4;
 
-	cum_cost_0 + mean_cost_0;
-	cum_cost_1 + mean_cost_1;
-	cum_cost_2 + mean_cost_2;
-	cum_cost_3 + mean_cost_3;
-	cum_cost_4 + mean_cost_4;
-	cum_cost_5 + mean_cost_5;
-	cum_cost_6 + mean_cost_6;
-	cum_cost_7 + mean_cost_7;
-	cum_cost_8 + mean_cost_8;
-	cum_cost_9 + mean_cost_9;
-	cum_cost_99 + mean_cost_99;
+	cum_n_new_inf0064_0 + mean_n_new_inf0064__0/4;
+	cum_n_new_inf0064_1 + mean_n_new_inf0064__1/4;
+	cum_n_new_inf0064_2 + mean_n_new_inf0064__2/4;
+	cum_n_new_inf0064_3 + mean_n_new_inf0064__3/4;
+	cum_n_new_inf0064_4 + mean_n_new_inf0064__4/4;
+	cum_n_new_inf0064_5 + mean_n_new_inf0064__5/4;
+	cum_n_new_inf0064_6 + mean_n_new_inf0064__6/4;
+	cum_n_new_inf0064_7 + mean_n_new_inf0064__7/4;
+	cum_n_new_inf0064_8 + mean_n_new_inf0064__8/4;
+	cum_n_new_inf0064_9 + mean_n_new_inf0064__9/4;
+	cum_n_new_inf0064_99 + mean_n_new_inf0064__99/4;
 
-	cum_n_daly_0 + mean_n_daly_0;
-	cum_n_daly_1 + mean_n_daly_1;
-	cum_n_daly_2 + mean_n_daly_2;
-	cum_n_daly_3 + mean_n_daly_3;
-	cum_n_daly_4 + mean_n_daly_4;
-	cum_n_daly_5 + mean_n_daly_5;
-	cum_n_daly_6 + mean_n_daly_6;
-	cum_n_daly_7 + mean_n_daly_7;
-	cum_n_daly_8 + mean_n_daly_8;
-	cum_n_daly_9 + mean_n_daly_9;
-	cum_n_daly_99 + mean_n_daly_99;
+	cum_n_daly_0 + mean_n_daly_0/4;
+	cum_n_daly_1 + mean_n_daly_1/4;
+	cum_n_daly_2 + mean_n_daly_2/4;
+	cum_n_daly_3 + mean_n_daly_3/4;
+	cum_n_daly_4 + mean_n_daly_4/4;
+	cum_n_daly_5 + mean_n_daly_5/4;
+	cum_n_daly_6 + mean_n_daly_6/4;
+	cum_n_daly_7 + mean_n_daly_7/4;
+	cum_n_daly_8 + mean_n_daly_8/4;
+	cum_n_daly_9 + mean_n_daly_9/4;
+	cum_n_daly_99 + mean_n_daly_99/4;
 
 	keep cald 
 		cum_n_new_inf1549_0 	cum_n_new_inf1549_1 	cum_n_new_inf1549_2 	cum_n_new_inf1549_3 	cum_n_new_inf1549_4 
@@ -658,9 +658,9 @@ data icer_sums; set d;
 		cum_cost_hiv_control_5 	cum_cost_hiv_control_6 	cum_cost_hiv_control_7 	cum_cost_hiv_control_8 	cum_cost_hiv_control_9 	
 		cum_cost_hiv_control_99
 
-		cum_cost_0 	cum_cost_1 	cum_cost_2 	cum_cost_3 	cum_cost_4 
-		cum_cost_5 	cum_cost_6 	cum_cost_7 	cum_cost_8 	cum_cost_9 	
-		cum_cost_99
+		cum_n_new_inf0064_0 	cum_n_new_inf0064_1 	cum_n_new_inf0064_2 	cum_n_new_inf0064_3 	cum_n_new_inf0064_4 
+		cum_n_new_inf0064_5 	cum_n_new_inf0064_6 	cum_n_new_inf0064_7 	cum_n_new_inf0064_8 	cum_n_new_inf0064_9 	
+		cum_n_new_inf0064_99
 
 		cum_n_daly_0 	cum_n_daly_1 	cum_n_daly_2 	cum_n_daly_3 	cum_n_daly_4 
 		cum_n_daly_5 	cum_n_daly_6 	cum_n_daly_7 	cum_n_daly_8 	cum_n_daly_9 	
@@ -670,6 +670,117 @@ data icer_sums; set d;
 	if cald ne 2073.75 then delete;
 
 run;
+
+
+
+data icer_sums_2049; set d;
+	if cald < 2024 then delete;
+	cum_n_new_inf1549_0 + mean_n_new_inf1549__0/4;
+	cum_n_new_inf1549_1 + mean_n_new_inf1549__1/4;
+	cum_n_new_inf1549_2 + mean_n_new_inf1549__2/4;
+	cum_n_new_inf1549_3 + mean_n_new_inf1549__3/4;
+	cum_n_new_inf1549_4 + mean_n_new_inf1549__4/4;
+	cum_n_new_inf1549_5 + mean_n_new_inf1549__5/4;
+	cum_n_new_inf1549_6 + mean_n_new_inf1549__6/4;
+	cum_n_new_inf1549_7 + mean_n_new_inf1549__7/4;
+	cum_n_new_inf1549_8 + mean_n_new_inf1549__8/4;
+	cum_n_new_inf1549_9 + mean_n_new_inf1549__9/4;
+												 
+												 
+												 
+												 
+	cum_n_new_inf1549_99 + mean_n_new_inf1549__99/4;
+
+	cum_n_new_inf1564_0 + mean_n_new_inf1564__0/4;
+	cum_n_new_inf1564_1 + mean_n_new_inf1564__1/4;
+	cum_n_new_inf1564_2 + mean_n_new_inf1564__2/4;
+	cum_n_new_inf1564_3 + mean_n_new_inf1564__3/4;
+	cum_n_new_inf1564_4 + mean_n_new_inf1564__4/4;
+	cum_n_new_inf1564_5 + mean_n_new_inf1564__5/4;
+	cum_n_new_inf1564_6 + mean_n_new_inf1564__6/4;
+	cum_n_new_inf1564_7 + mean_n_new_inf1564__7/4;
+	cum_n_new_inf1564_8 + mean_n_new_inf1564__8/4;
+	cum_n_new_inf1564_9 + mean_n_new_inf1564__9/4;
+												 
+												 
+												 
+												 
+	cum_n_new_inf1564_99 + mean_n_new_inf1564__99/4;
+
+	cum_cost_hiv_control_0 + mean_total_cost_hiv_control_0/4;
+	cum_cost_hiv_control_1 + mean_total_cost_hiv_control_1/4;
+	cum_cost_hiv_control_2 + mean_total_cost_hiv_control_2/4;
+	cum_cost_hiv_control_3 + mean_total_cost_hiv_control_3/4;
+	cum_cost_hiv_control_4 + mean_total_cost_hiv_control_4/4;
+	cum_cost_hiv_control_5 + mean_total_cost_hiv_control_5/4;
+	cum_cost_hiv_control_6 + mean_total_cost_hiv_control_6/4;
+	cum_cost_hiv_control_7 + mean_total_cost_hiv_control_7/4;
+	cum_cost_hiv_control_8 + mean_total_cost_hiv_control_8/4;
+	cum_cost_hiv_control_9 + mean_total_cost_hiv_control_9/4;
+															
+															
+															
+															
+	cum_cost_hiv_control_99 + mean_total_cost_hiv_control_99/4;
+
+	cum_n_new_inf0064_0 + mean_n_new_inf0064__0/4;
+	cum_n_new_inf0064_1 + mean_n_new_inf0064__1/4;
+	cum_n_new_inf0064_2 + mean_n_new_inf0064__2/4;
+	cum_n_new_inf0064_3 + mean_n_new_inf0064__3/4;
+	cum_n_new_inf0064_4 + mean_n_new_inf0064__4/4;
+	cum_n_new_inf0064_5 + mean_n_new_inf0064__5/4;
+	cum_n_new_inf0064_6 + mean_n_new_inf0064__6/4;
+	cum_n_new_inf0064_7 + mean_n_new_inf0064__7/4;
+	cum_n_new_inf0064_8 + mean_n_new_inf0064__8/4;
+	cum_n_new_inf0064_9 + mean_n_new_inf0064__9/4;
+												 
+												 
+												 
+												 
+	cum_n_new_inf0064_99 + mean_n_new_inf0064__99/4;
+
+	cum_n_daly_0 + mean_n_daly_0/4;
+	cum_n_daly_1 + mean_n_daly_1/4;
+	cum_n_daly_2 + mean_n_daly_2/4;
+	cum_n_daly_3 + mean_n_daly_3/4;
+	cum_n_daly_4 + mean_n_daly_4/4;
+	cum_n_daly_5 + mean_n_daly_5/4;
+	cum_n_daly_6 + mean_n_daly_6/4;
+	cum_n_daly_7 + mean_n_daly_7/4;
+	cum_n_daly_8 + mean_n_daly_8/4;
+	cum_n_daly_9 + mean_n_daly_9/4;
+								  
+								  
+								  
+								  
+	cum_n_daly_99 + mean_n_daly_99/4;
+
+	keep cald 
+		cum_n_new_inf1549_0 	cum_n_new_inf1549_1 	cum_n_new_inf1549_2 	cum_n_new_inf1549_3 	cum_n_new_inf1549_4 
+		cum_n_new_inf1549_5 	cum_n_new_inf1549_6 	cum_n_new_inf1549_7 	cum_n_new_inf1549_8 	cum_n_new_inf1549_9 	
+		cum_n_new_inf1549_99
+
+		cum_n_new_inf1564_0 	cum_n_new_inf1564_1 	cum_n_new_inf1564_2 	cum_n_new_inf1564_3 	cum_n_new_inf1564_4 
+		cum_n_new_inf1564_5 	cum_n_new_inf1564_6 	cum_n_new_inf1564_7 	cum_n_new_inf1564_8 	cum_n_new_inf1564_9 	
+		cum_n_new_inf1564_99
+
+		cum_cost_hiv_control_0 	cum_cost_hiv_control_1 	cum_cost_hiv_control_2 	cum_cost_hiv_control_3 	cum_cost_hiv_control_4 
+		cum_cost_hiv_control_5 	cum_cost_hiv_control_6 	cum_cost_hiv_control_7 	cum_cost_hiv_control_8 	cum_cost_hiv_control_9 	
+		cum_cost_hiv_control_99
+
+		cum_n_new_inf0064_0 	cum_n_new_inf0064_1 	cum_n_new_inf0064_2 	cum_n_new_inf0064_3 	cum_n_new_inf0064_4 
+		cum_n_new_inf0064_5 	cum_n_new_inf0064_6 	cum_n_new_inf0064_7 	cum_n_new_inf0064_8 	cum_n_new_inf0064_9 	
+		cum_n_new_inf0064_99
+
+		cum_n_daly_0 	cum_n_daly_1 	cum_n_daly_2 	cum_n_daly_3 	cum_n_daly_4 
+		cum_n_daly_5 	cum_n_daly_6 	cum_n_daly_7 	cum_n_daly_8 	cum_n_daly_9 	
+		cum_n_daly_99
+		;
+
+	if cald ne 2049.75 then delete;
+
+run;
+
 
 * p_newp;
 proc sgplot data=d; 
@@ -1464,6 +1575,45 @@ series  x=cald y=mean_n_tested_w_99/	lineattrs = (color=black thickness = 2);
 run;quit;
 
 
+* Cost;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "total_cost_hiv_control";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1e9 by 1e8) valueattrs=(size=10);
+label mean_total_cost_hiv_control_0 = "minimal";
+label mean_total_cost_hiv_control_1 = " + condoms";
+label mean_total_cost_hiv_control_2 = " + vmmc";
+label mean_total_cost_hiv_control_3 = " + fsw-prep-mix";
+label mean_total_cost_hiv_control_4 = " + fsw-program";
+label mean_total_cost_hiv_control_5 = " + adh-supp";
+label mean_total_cost_hiv_control_6 = " + agyw-prep-mix";
+label mean_total_cost_hiv_control_7 = " + testing";
+label mean_total_cost_hiv_control_8 = " + msm-program";
+label mean_total_cost_hiv_control_9 = " + msm-prep-mix";
+label mean_total_cost_hiv_control_99 = "status quo";
+series  x=cald y=mean_total_cost_hiv_control_0/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_0 	upper=p95_total_cost_hiv_control_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_1/	lineattrs = (color=darkred thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_1 	upper=p95_total_cost_hiv_control_1  / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_2/	lineattrs = (color=red thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_2 	upper=p95_total_cost_hiv_control_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_3/	lineattrs = (color=orange thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_3 	upper=p95_total_cost_hiv_control_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_4/	lineattrs = (color=yellow thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_4 	upper=p95_total_cost_hiv_control_4  / transparency=0.9 fillattrs = (color=yellow) legendlabkel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_5/	lineattrs = (color=lightgreen thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_5 	upper=p95_total_cost_hiv_control_5  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_6/	lineattrs = (color=green thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_6 	upper=p95_total_cost_hiv_control_6  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_7/	lineattrs = (color=lightblue thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_7 	upper=p95_total_cost_hiv_control_7  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_8/	lineattrs = (color=blue thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_ 	upper=p95_total_cost_hiv_control_8  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_9/	lineattrs = (color=purple thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_9 	upper=p95_total_cost_hiv_control_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_99 	upper=p95_total_cost_hiv_control_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+run;quit;
 
 
 ods html close;
@@ -1479,3 +1629,9 @@ proc export data=icer_sums
 	putnames=yes;
 run;
 
+* export icer_sums_2049;
+proc export data=icer_sums_2049
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20260112_out\icer_sums_2049.csv" 
+	dbms=csv replace; 
+	putnames=yes;
+run;
