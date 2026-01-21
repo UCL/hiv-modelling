@@ -73,7 +73,6 @@ if cald=2025 then m_livingHIV15plus_unaids=938000;
 if cald=2016.25 then o_livingHIV_15pl_phia=946000;
 if cald=2020.75 then o_livingHIV_15pl_phia=900000;
 
-
 **************************************************************************************************************************
 													HIV TESTING
 **************************************************************************************************************************;
@@ -347,7 +346,7 @@ end;
 													DIAGNOSED
 **************************************************************************************************************************;
 
-***Percentage diagnosed;
+***Proportion diagnosed;
 *Source: DHS: https://dhsprogram.com/pubs/pdf/FR319/FR319.pdf Table 14.10;
 if cald=2015.75 then do;
 	o_p_diag_1549_mdhs =0.889;
@@ -369,6 +368,17 @@ if cald=2020.75 then do;
 	o_p_diag_m1549_phia=0.829;o_p_diag_w1549_phia=0.896;o_p_diag_1549_phia=0.873;
 	o_p_diag_m15pl_phia=0.850;o_p_diag_w15pl_phia=0.904;o_p_diag_15pl_phia=0.883;
 end;
+
+
+*Source: Quarterly reports;
+
+if cald=2016.75 then o_p_diag_obs_mlw_moh= 0.83;
+if cald=2017.75 then o_p_diag_obs_mlw_moh= 0.89;
+if cald=2018.75 then o_p_diag_obs_mlw_moh= 0.91;
+if cald=2019.75 then o_p_diag_obs_mlw_moh= 0.90;
+if cald=2020.75 then o_p_diag_obs_mlw_moh= 0.91;
+if cald=2021.75 then o_p_diag_obs_mlw_moh= 0.93;
+
 
 
 ***Number diagnosed;
@@ -493,6 +503,23 @@ if cald=2024.75 then do;
 end;
 
 
+***2nd line ART;
+
+
+***Source: Quarterly reports - uising data from Q4. 2022 onwards not published and unable to find numbers in spreadsheets;
+if cald=2011.75 then n_secondline_obs_mlw_moh= 1378 ;
+if cald=2012.75 then n_secondline_obs_mlw_moh= 2480 ; 
+if cald=2013.75 then n_secondline_obs_mlw_moh= 3694 ; 
+if cald=2014.75 then n_secondline_obs_mlw_moh= 5700 ; 
+if cald=2015.75 then n_secondline_obs_mlw_moh= 7769 ; 
+if cald=2016.75 then n_secondline_obs_mlw_moh= 10116 ; 
+if cald=2017.75 then n_secondline_obs_mlw_moh= 15014 ; 
+if cald=2018.75 then n_secondline_obs_mlw_moh= 22736 ; 
+if cald=2019.75 then n_secondline_obs_mlw_moh= 29846 ; 
+if cald=2020.75 then n_secondline_obs_mlw_moh= 20313 ; 
+if cald=2021.75 then n_secondline_obs_mlw_moh= 2400 ; 
+
+
 * Of those diagnosed, proportion on ART;
 
 * Source: MPHIA;
@@ -500,7 +527,7 @@ end;
 * https://phia.icap.columbia.edu/wp-content/uploads/2022/12/241122_Mphia_Foreword.pdf Table 9.1B;
 if cald=2016.25 then do;
 	p_diag_onart_mlw_1549_phia=0.887;p_diag_onart_mlw_15pl_phia=0.896;
-	p_diag_onart_mlw_w1549_phia=0.838;p_diag_onart_mlw_m15pl_phia=0.861;
+	p_diag_onart_mlw_m1549_phia=0.838;p_diag_onart_mlw_m15pl_phia=0.861;
 	p_diag_onart_mlw_w1549_phia=0.913;p_diag_onart_mlw_w15pl_phia=0.916;
 end;
 
@@ -510,6 +537,14 @@ if cald=2020.75 then do;
 	p_diag_onart_mlw_w1549_phia=0.982;p_diag_onart_mlw_w15pl_phia=0.982;
 end;
 
+*Source: Quarterly reports;
+
+if cald=2016.75 then p_diag_onart_mlw_all_moh=0.84;
+if cald=2017.75 then p_diag_onart_mlw_all_moh=0.80;
+if cald=2018.75 then p_diag_onart_mlw_all_moh=0.83;
+if cald=2019.75 then p_diag_onart_mlw_all_moh=0.87;
+if cald=2020.75 then p_diag_onart_mlw_all_moh=0.88;
+if cald=2021.75 then p_diag_onart_mlw_all_moh=0.98;
 
 **************************************************************************************************************************
 													PREVALENCE
@@ -584,31 +619,65 @@ if cald=2024 then prevalence1549_obs_mlw_unaids=0.062;
 * https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf Table 3.3A;
 
 if cald=2016.25 then do;
-	incidence1549_obs_mlw= 0.36;
-	incidence1549m_obs_mlw= 0.26;
-	incidence1549w_obs_mlw= 0.46;
+	incidence1549_obs_mlw_phia= 0.36;
+	incidence1549m_obs_mlw_phia= 0.26;
+	incidence1549w_obs_mlw_phia= 0.46;
 end;
 
 if cald=2020.75 then do;
-	incidence1549_obs_mlw= 0.23;
-	incidence1549m_obs_mlw= 0.15;
-	incidence1549w_obs_mlw= 0.31;
+	incidence1549_obs_mlw_phia= 0.23;
+	incidence1549m_obs_mlw_phia= 0.15;
+	incidence1549w_obs_mlw_phia= 0.31;
 end;
 
 
+**************************************************************************************************************************
+													VIRAL SUPPRESSION
+**************************************************************************************************************************;
 
-if cald=2014.5 then p_onart_vl1000_obs_mlw= 0.84;
-if cald=2015.5 then p_onart_vl1000_obs_mlw= 0.86;
-if cald=2016.5 then p_onart_vl1000_obs_mlw= 0.90;
+* Source: https://www.unaids.org/sites/default/files/country/documents/MWI_narrative_report_2015.pdf Page 39;
+if cald=2014.5 then p_onart_vl1000_obs_mlw_unaids= 0.855; *only 17% of people had VL tests;
 
-if cald=2021.00 then p_onart_vl1000_obs_mlw= 0.96;
+* Source: https://www.cdc.gov/mmwr/volumes/65/wr/mm6547a2.htm;
+if cald=2015.5 then p_onart_vl1000_obs_mlw_moh= 0.82;
+if cald=2016.5 then p_onart_vl1000_obs_mlw_moh= 0.89;
 
-if cald=2014.5 then n_secondline_obs_mlw= 5700 ;
-if cald=2015.5 then n_secondline_obs_mlw= 6758 ; * 2nd  quarter of 2015;
-if cald=2016.5 then n_secondline_obs_mlw= 8811 ; * 2nd  quarter of 2016;
+* Source: Quarterly reports;
+if cald=2016.75 then p_onart_vl1000_obs_mlw_moh=0.88;
+if cald=2017.75 then p_onart_vl1000_obs_mlw_moh=0.86;
+if cald=2018.75 then p_onart_vl1000_obs_mlw_moh=0.90;
+if cald=2019.75 then p_onart_vl1000_obs_mlw_moh=0.93;
+if cald=2020.75 then p_onart_vl1000_obs_mlw_moh=0.95;
+if cald=2021.75 then p_onart_vl1000_obs_mlw_moh=0.93;
+
+* Source: MPHIA;
+* https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf Table 3.4G;
+* https://phia.icap.columbia.edu/wp-content/uploads/2022/12/241122_Mphia_Foreword.pdf Table 9.1B;
+if cald=2016.25 then do;
+	p_onart_vl1000_mlw_1549_phia=0.887;p_onart_vl1000_mlw_15pl_phia=0.896;
+	p_onart_vl1000_mlw_m1549_phia=0.838;p_onart_vl1000_mlw_m15pl_phia=0.861;
+	p_onart_vl1000_mlw_w1549_phia=0.913;p_onart_vl1000_mlw_w15pl_phia=0.916;
+end;
+
+if cald=2020.75 then do;
+	p_onart_vl1000_mlw_1549_phia=0.887;p_onart_vl1000_mlw_15pl_phia=0.896;
+	p_onart_vl1000_mlw_m1549_phia=0.838;p_onart_vl1000_mlw_m15pl_phia=0.861;
+	p_onart_vl1000_mlw_w1549_phia=0.913;p_onart_vl1000_mlw_w15pl_phia=0.916;
+end;
 
 
+**************************************************************************************************************************
+													PREP
+**************************************************************************************************************************;
 
+
+* Source: 2024 Global AIDS Monitoring Report for Malawi;
+* https://www.aidsmalawi.org.mw/wp-content/uploads/2024/05/2024-Narrative-Draft-GAM-Report-Malawi-Ver-2.pdf;
+if cald = 2021.75 then do; n_onprep_obs_mlw_moh = 7631 ; n_everstarted_prep_mlw_moh=11078;end;
+if cald = 2022.75 then do; n_onprep_obs_mlw_moh = 20482 ; n_everstarted_prep_mlw_moh=.;end;
+if cald = 2023.75 then do; n_onprep_obs_mlw_moh = 50638 ; n_everstarted_prep_mlw_moh=.;end;
+
+*Not sure where these numbers came from;
 if cald = 2021.5 then n_prep_obs_mlw = 3200 ;  * from data in template - from implementing partners;
 if cald = 2022.5 then n_prep_obs_mlw = 9600 ;  * from data in template - from implementing partners;
 if cald = 2023.5 then n_prep_obs_mlw = 36000 ;  * from data in template - from implementing partners;
