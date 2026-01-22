@@ -208,7 +208,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=30;
+%let nfit=38;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -219,10 +219,10 @@ run;
 %option_(7);
 %option_(8);
 %option_(9);
-%option_(10);
-%option_(11);
-%option_(12);
-%option_(13);
+/*%option_(10);*/
+/*%option_(11);*/
+/*%option_(12);*/
+/*%option_(13);*/
 %option_(99);
 run;
 

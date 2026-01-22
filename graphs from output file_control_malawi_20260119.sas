@@ -207,7 +207,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=14;
+%let nfit=21;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -219,9 +219,9 @@ run;
 %option_(8);
 %option_(9);
 %option_(10);
-%option_(11);
-%option_(12);
-%option_(13);
+/*%option_(11);*/
+/*%option_(12);*/
+/*%option_(13);*/
 %option_(99);
 run;
 
@@ -439,12 +439,13 @@ ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Malawi\graphs_20
 	1 =  + condoms
 	2 =  + vmmc
 	3 =  + fsw-prep-mix
-	4 =  + fsw-program
-	5 =  + adh-supp
-	6 =  + agyw-prep-mix
-	7 =  + testing
-	8 =  + msm-program
+	4 =  + msm-program
+	5 =  + msm-prep-oral
+	6 =  + adh-supp
+	7 =  + fsw-program
+	8 =  + agyw-prep-mix
 	9 =  + msm-prep-mix
+	10 = + testing
 	99 = status quo
 ;
 
@@ -458,12 +459,13 @@ label mean_incidence1549__0 = "minimal";
 label mean_incidence1549__1 = " + condoms";
 label mean_incidence1549__2 = " + vmmc";
 label mean_incidence1549__3 = " + fsw-prep-mix";
-label mean_incidence1549__4 = " + fsw-program";
-label mean_incidence1549__5 = " + adh-supp";
-label mean_incidence1549__6 = " + agyw-prep-mix";
-label mean_incidence1549__7 = " + testing";
-label mean_incidence1549__8 = " + msm-program";
+label mean_incidence1549__4 = " + msm-program";
+label mean_incidence1549__5 = " + msm-prep-oral";
+label mean_incidence1549__6 = " + adh-supp";
+label mean_incidence1549__7 = " + fsw-program";
+label mean_incidence1549__8 = " + agyw-prep-mix";
 label mean_incidence1549__9 = " + msm-prep-mix";
+label mean_incidence1549__10 = " + testing";
 label mean_incidence1549__99 = "status quo";
 label incidence1549_obs_mlw = "Observed data";
 series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
@@ -486,6 +488,8 @@ series  x=cald y=mean_incidence1549__8/	lineattrs = (color=blue thickness = 2);
 /*band    x=cald lower=p5_incidence1549__ 	upper=p95_incidence1549__8  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_incidence1549__9 	upper=p95_incidence1549__9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1549__10/	lineattrs = (color=lightpurple thickness = 2);
+/*band    x=cald lower=p5_incidence1549__10 	upper=p95_incidence1549__10  / transparency=0.9 fillattrs = (color=lightpurple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1549__99 	upper=p95_incidence1549__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 scatter x=cald y=incidence1549_obs_mlw / yerrorlower=incidence1549_ll_obs_mlw yerrorupper=incidence1549_ul_obs_mlw markerattrs = (color=black size = 10) errorbarattrs = (color = black);
@@ -501,13 +505,14 @@ label mean_incidence1564__0 = "minimal";
 label mean_incidence1564__1 = " + condoms";
 label mean_incidence1564__2 = " + vmmc";
 label mean_incidence1564__3 = " + fsw-prep-mix";
-label mean_incidence1564__4 = " + fsw-program";
-label mean_incidence1564__5 = " + adh-supp";
-label mean_incidence1564__6 = " + agyw-prep-mix";
-label mean_incidence1564__7 = " + testing";
-label mean_incidence1564__8 = " + msm-program";
+label mean_incidence1564__4 = " + msm-program";
+label mean_incidence1564__5 = " + msm-prep-oral";
+label mean_incidence1564__6 = " + adh-supp";
+label mean_incidence1564__7 = " + fsw-program";
+label mean_incidence1564__8 = " + agyw-prep-mix";
 label mean_incidence1564__9 = " + msm-prep-mix";
-label mean_incidence1549__99 = "status quo";
+label mean_incidence1564__10 = " + testing";
+label mean_incidence1564__99 = "status quo";
 label incidence15pl_obs_mlw = "Observed data";
 series  x=cald y=mean_incidence1564__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1564__0 	upper=p95_incidence1564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -529,6 +534,8 @@ series  x=cald y=mean_incidence1564__8/	lineattrs = (color=blue thickness = 2);
 /*band    x=cald lower=p5_incidence1564__ 	upper=p95_incidence1564__8  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1564__9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_incidence1564__9 	upper=p95_incidence1564__9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__10/	lineattrs = (color=lightpurple thickness = 2);
+/*band    x=cald lower=p5_incidence1564__10 	upper=p95_incidence1564__10  / transparency=0.9 fillattrs = (color=lightpurple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1564__99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1564__99 	upper=p95_incidence1564__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 scatter x=cald y=incidence15pl_obs_mlw / yerrorlower=incidence15pl_ll_obs_mlw yerrorupper=incidence15pl_ul_obs_mlw markerattrs = (color=black size = 10) errorbarattrs = (color = black);

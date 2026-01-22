@@ -482,23 +482,20 @@ data y;
 	set a.long_mlw_control;
 run;
 
-%let op_num=0;
+%let op_num=7;	* minimum package for control = minimal + condoms + vmmc + fsw-prep-mix + msm-program + msm-prep-oral + adh-supp + fsw-program (option 7);
 
 /*
 0 = baseline (minimal)
-1 = oral PrEP for FSW
-2 = oral + inj PrEP for FSW
-3 = oral PrEP for sexually active AGYW + pregnant women
-4 = oral + inj PrEP for sexually active AGYW + pregnant women
-5 = oral PrEP for MSM
-6 = oral + inj PrEP for MSM
-7 = VMMC
-8 = condom provision + promotion
-9 = KP outreach - FSW
-10 = KP outreach - MSM
-11 = testing
-12 = adherence support
-13 = worst case
+1 =  + condoms
+2 =  + vmmc
+3 =  + fsw-prep-mix
+4 =  + msm-program
+5 =  + msm-prep-oral
+6 =  + adh-supp
+7 =  + fsw-program
+8 =  + agyw-prep-mix
+9 =  + msm-prep-mix [REMOVE msm-prep-oral]
+10 = + testing
 
 99 = status quo
 */
