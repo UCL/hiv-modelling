@@ -2,23 +2,22 @@
 ***Program to produce graphs using averages across runs
 ***Use include statement in analysis program to read the code below in;
 
-*** 20260112 version has options 0-9 and 99, using weaker condom change intervention parameters and removing self-testing in the minimal (option 0);
+*** 20260116 version has options 0-9 and 99, using weaker condom change intervention parameters and removing self-testing in the minimal (option 0);
 * Building up package of interventions in order of decreasing cost-effectivesness (based on ICER);
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260112_out\";
-/*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20260116_out\";
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
-proc freq data=a.long_zim_control;table option;run;
+proc freq data=a.long_mlw_control;table option;run;
 
-%let pth_export_hiv_control= C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe;run;
+%let pth_export_hiv_control= C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Malawi;run;
 
 %let year_start = 1990;
 %let year_end = 2075;
 
 
 data b;
-set a.long_zim_control;
+set a.long_mlw_control;
 
 * Define new variables;
 n_alive_m = n_alive_1524m + n_alive_2549m + n_alive_50plm;
@@ -208,7 +207,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=52;
+%let nfit=54;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -417,7 +416,7 @@ run;
 data d; * this is number of variables in %let var = above ;
 	merge d_a d_b d_c d_d d_e d_f d_g;
 	by cald;
-	%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe.sas";
+	%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Malawi\Observed data_Malawi.sas";
 run;
 
 
@@ -432,7 +431,7 @@ ods listing;
 ***Graphs comparing observed data to outputs for Status quo 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20260112.doc' startpage=never;
+ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Malawi\graphs_20260116.doc' startpage=never;
 
 
 ***Options 0-9 (building up package of interventions) + 99
@@ -466,8 +465,7 @@ label mean_incidence1549__7 = " + testing";
 label mean_incidence1549__8 = " + msm-program";
 label mean_incidence1549__9 = " + msm-prep-mix";
 label mean_incidence1549__99 = "status quo";
-label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
-label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
+label incidence1549_obs_mlw = "Observed data";
 series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__1/	lineattrs = (color=darkred thickness = 2);
@@ -490,8 +488,7 @@ series  x=cald y=mean_incidence1549__9/	lineattrs = (color=purple thickness = 2)
 /*band    x=cald lower=p5_incidence1549__9 	upper=p95_incidence1549__9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1549__99 	upper=p95_incidence1549__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
-scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
-scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+scatter x=cald y=incidence1549_obs_mlw / yerrorlower=incidence1549_ll_obs_mlw yerrorupper=incidence1549_ul_obs_mlw markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
 
@@ -511,8 +508,7 @@ label mean_incidence1564__7 = " + testing";
 label mean_incidence1564__8 = " + msm-program";
 label mean_incidence1564__9 = " + msm-prep-mix";
 label mean_incidence1549__99 = "status quo";
-label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
-label o_HIVincid_1564_Zimphia = "ZIMPHIA 15-64";
+label incidence15pl_obs_mlw = "Observed data";
 series  x=cald y=mean_incidence1564__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1564__0 	upper=p95_incidence1564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1564__1/	lineattrs = (color=darkred thickness = 2);
@@ -535,8 +531,7 @@ series  x=cald y=mean_incidence1564__9/	lineattrs = (color=purple thickness = 2)
 /*band    x=cald lower=p5_incidence1564__9 	upper=p95_incidence1564__9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1564__99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1564__99 	upper=p95_incidence1564__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
-scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
-scatter x=cald y=o_HIVincid_1564_Zimphia / yerrorlower=o_HIVincid_1564_ll_Zimphia yerrorupper=o_HIVincid_1564_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+scatter x=cald y=incidence15pl_obs_mlw / yerrorlower=incidence15pl_ll_obs_mlw yerrorupper=incidence15pl_ul_obs_mlw markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
 
@@ -690,6 +685,10 @@ data icer_sums_2049; set d;
 	cum_n_new_inf1549_7 + mean_n_new_inf1549__7/4;
 	cum_n_new_inf1549_8 + mean_n_new_inf1549__8/4;
 	cum_n_new_inf1549_9 + mean_n_new_inf1549__9/4;
+												 
+												 
+												 
+												 
 	cum_n_new_inf1549_99 + mean_n_new_inf1549__99/4;
 
 	cum_n_new_inf1564_0 + mean_n_new_inf1564__0/4;
@@ -702,6 +701,10 @@ data icer_sums_2049; set d;
 	cum_n_new_inf1564_7 + mean_n_new_inf1564__7/4;
 	cum_n_new_inf1564_8 + mean_n_new_inf1564__8/4;
 	cum_n_new_inf1564_9 + mean_n_new_inf1564__9/4;
+												 
+												 
+												 
+												 
 	cum_n_new_inf1564_99 + mean_n_new_inf1564__99/4;
 
 	cum_cost_hiv_control_0 + mean_total_cost_hiv_control_0/4;
@@ -714,6 +717,10 @@ data icer_sums_2049; set d;
 	cum_cost_hiv_control_7 + mean_total_cost_hiv_control_7/4;
 	cum_cost_hiv_control_8 + mean_total_cost_hiv_control_8/4;
 	cum_cost_hiv_control_9 + mean_total_cost_hiv_control_9/4;
+															
+															
+															
+															
 	cum_cost_hiv_control_99 + mean_total_cost_hiv_control_99/4;
 
 	cum_n_new_inf0064_0 + mean_n_new_inf0064__0/4;
@@ -726,6 +733,10 @@ data icer_sums_2049; set d;
 	cum_n_new_inf0064_7 + mean_n_new_inf0064__7/4;
 	cum_n_new_inf0064_8 + mean_n_new_inf0064__8/4;
 	cum_n_new_inf0064_9 + mean_n_new_inf0064__9/4;
+												 
+												 
+												 
+												 
 	cum_n_new_inf0064_99 + mean_n_new_inf0064__99/4;
 
 	cum_n_daly_0 + mean_n_daly_0/4;
@@ -738,6 +749,10 @@ data icer_sums_2049; set d;
 	cum_n_daly_7 + mean_n_daly_7/4;
 	cum_n_daly_8 + mean_n_daly_8/4;
 	cum_n_daly_9 + mean_n_daly_9/4;
+								  
+								  
+								  
+								  
 	cum_n_daly_99 + mean_n_daly_99/4;
 
 	keep cald 
@@ -865,6 +880,7 @@ label mean_p_diag_m_7 = " + testing";
 label mean_p_diag_m_8 = " + msm-program";
 label mean_p_diag_m_9 = " + msm-prep-mix";
 label mean_p_diag_m_99 = "status quo";
+label p_diag_obs_m_mlw = "Observed data";
 series  x=cald y=mean_p_diag_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -887,6 +903,7 @@ series  x=cald y=mean_p_diag_m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_9 	upper=p95_p_diag_m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_99 	upper=p95_p_diag_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_diag_obs_m_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -905,6 +922,7 @@ label mean_p_diag_w_7 = " + testing";
 label mean_p_diag_w_8 = " + msm-program";
 label mean_p_diag_w_9 = " + msm-prep-mix";
 label mean_p_diag_w_99 = "status quo";
+label p_diag_obs_w_mlw = "Observed data";
 series  x=cald y=mean_p_diag_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -927,6 +945,7 @@ series  x=cald y=mean_p_diag_w_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_9 	upper=p95_p_diag_w_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_w_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_99 	upper=p95_p_diag_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_diag_obs_w_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1029,6 +1048,7 @@ label mean_p_diag_art_m_7 = " + testing";
 label mean_p_diag_art_m_8 = " + msm-program";
 label mean_p_diag_art_m_9 = " + msm-prep-mix";
 label mean_p_diag_art_m_99 = "status quo";
+label p_diag_onart_obs_m_mlw = "Observed data";
 series  x=cald y=mean_p_diag_art_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_0 	upper=p95_p_diag_art_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1051,6 +1071,7 @@ series  x=cald y=mean_p_diag_art_m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_9 	upper=p95_p_diag_art_m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_99 	upper=p95_p_diag_art_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_diag_onart_obs_m_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1070,6 +1091,7 @@ label mean_p_diag_art_w_7 = " + testing";
 label mean_p_diag_art_w_8 = " + msm-program";
 label mean_p_diag_art_w_9 = " + msm-prep-mix";
 label mean_p_diag_art_w_99 = "status quo";
+label p_diag_onart_obs_w_mlw = "Observed data";
 series  x=cald y=mean_p_diag_art_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_0 	upper=p95_p_diag_art_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1092,6 +1114,7 @@ series  x=cald y=mean_p_diag_art_w_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_9 	upper=p95_p_diag_art_w_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_w_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_99 	upper=p95_p_diag_art_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_diag_onart_obs_w_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1111,6 +1134,7 @@ label mean_p_art_vls_m_7 = " + testing";
 label mean_p_art_vls_m_8 = " + msm-program";
 label mean_p_art_vls_m_9 = " + msm-prep-mix";
 label mean_p_art_vls_m_99 = "status quo";
+label p_onart_vl1000_obs_m_mlw = "Observed data";
 series  x=cald y=mean_p_art_vls_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_0 	upper=p95_p_art_vls_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1133,6 +1157,7 @@ series  x=cald y=mean_p_art_vls_m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_9 	upper=p95_p_art_vls_m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_99 	upper=p95_p_art_vls_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_onart_vl1000_obs_m_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1152,6 +1177,7 @@ label mean_p_art_vls_w_7 = " + testing";
 label mean_p_art_vls_w_8 = " + msm-program";
 label mean_p_art_vls_w_9 = " + msm-prep-mix";
 label mean_p_art_vls_w_99 = "status quo";
+label p_onart_vl1000_obs_w_mlw = "Observed data";
 series  x=cald y=mean_p_art_vls_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_0 	upper=p95_p_art_vls_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1174,6 +1200,7 @@ series  x=cald y=mean_p_art_vls_w_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_9 	upper=p95_p_art_vls_w_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_w_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_99 	upper=p95_p_art_vls_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_onart_vl1000_obs_w_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1193,6 +1220,7 @@ label mean_p_mcirc_1549m_7 = " + testing";
 label mean_p_mcirc_1549m_8 = " + msm-program";
 label mean_p_mcirc_1549m_9 = " + msm-prep-mix";
 label mean_p_mcirc_1549m_99 = "status quo";
+label p_mcirc_15plm_obs_mlw = "Observed data";
 series  x=cald y=mean_p_mcirc_1549m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1549m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1215,6 +1243,7 @@ series  x=cald y=mean_p_mcirc_1549m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_9 	upper=p95_p_mcirc_1549m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1549m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_99 	upper=p95_p_mcirc_1549m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_mcirc_15plm_obs_mlw /	markerattrs = (color=black);
 run;quit;
 
 * Proportion circumcised (15-24);
@@ -1233,6 +1262,7 @@ label mean_p_mcirc_1524m_7 = " + testing";
 label mean_p_mcirc_1524m_8 = " + msm-program";
 label mean_p_mcirc_1524m_9 = " + msm-prep-mix";
 label mean_p_mcirc_1524m_99 = "status quo";
+label p_mcirc_1524m_obs_mlw = "Observed data";
 series  x=cald y=mean_p_mcirc_1524m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_0 	upper=p95_p_mcirc_1524m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1524m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1255,6 +1285,7 @@ series  x=cald y=mean_p_mcirc_1524m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_9 	upper=p95_p_mcirc_1524m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1524m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_99 	upper=p95_p_mcirc_1524m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_mcirc_1524m_obs_mlw /	markerattrs = (color=black);
 run;quit;
 
 * Number on PrEP;
@@ -1273,6 +1304,7 @@ label mean_n_onprep_7 = " + testing";
 label mean_n_onprep_8 = " + msm-program";
 label mean_n_onprep_9 = " + msm-prep-mix";
 label mean_n_onprep_99 = "status quo";
+label n_prep_obs_mlw = "Observed data";
 series  x=cald y=mean_n_onprep_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_onprep_0 	upper=p95_n_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_onprep_1/	lineattrs = (color=darkred thickness = 2);
@@ -1295,6 +1327,7 @@ series  x=cald y=mean_n_onprep_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_n_onprep_9 	upper=p95_n_onprep_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_onprep_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_onprep_99 	upper=p95_n_onprep_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=n_prep_obs_mlw /	markerattrs = (color=black);
 run;quit;
 
 proc print data=d;
@@ -1436,6 +1469,7 @@ label mean_n_self_tested_7 = " + testing";
 label mean_n_self_tested_8 = " + msm-program";
 label mean_n_self_tested_9 = " + msm-prep-mix";
 label mean_n_self_tested_99 = "status quo";
+label n_self_tested_obs_mlw = "Observed data";
 series  x=cald y=mean_n_self_tested_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_self_tested_0 	upper=p95_n_self_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_self_tested_1/	lineattrs = (color=darkred thickness = 2);
@@ -1458,6 +1492,7 @@ series  x=cald y=mean_n_self_tested_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_n_self_tested_9 	upper=p95_n_self_tested_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_self_tested_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_self_tested_99 	upper=p95_n_self_tested_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=n_self_tested_obs_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1579,6 +1614,8 @@ series  x=cald y=mean_total_cost_hiv_control_9/	lineattrs = (color=purple thickn
 series  x=cald y=mean_total_cost_hiv_control_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_total_cost_hiv_control_99 	upper=p95_total_cost_hiv_control_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
+
+
 ods html close;
 
 ods rtf close;run;
@@ -1587,14 +1624,14 @@ ods rtf close;run;
 
 * export icer_sums;
 proc export data=icer_sums
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260112_out\icer_sums.csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20260116_out\icer_sums.csv" 
 	dbms=csv replace; 
 	putnames=yes;
 run;
 
 * export icer_sums_2049;
 proc export data=icer_sums_2049
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260112_out\icer_sums_2049.csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20260116_out\icer_sums_2049.csv" 
 	dbms=csv replace; 
 	putnames=yes;
 run;

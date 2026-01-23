@@ -2,10 +2,10 @@
 ***Program to produce graphs using averages across runs
 ***Use include statement in analysis program to read the code below in;
 
-*** 20260112 version has options 0-9 and 99, using weaker condom change intervention parameters and removing self-testing in the minimal (option 0);
+*** 20260119 version has options 0-9 and 99, using weaker condom change intervention parameters and removing self-testing in the minimal (option 0);
 * Building up package of interventions in order of decreasing cost-effectivesness (based on ICER);
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260112_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260119_out\";
 /*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
@@ -208,7 +208,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=52;
+%let nfit=38;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -219,10 +219,10 @@ run;
 %option_(7);
 %option_(8);
 %option_(9);
-%option_(10);
-%option_(11);
-%option_(12);
-%option_(13);
+/*%option_(10);*/
+/*%option_(11);*/
+/*%option_(12);*/
+/*%option_(13);*/
 %option_(99);
 run;
 
@@ -432,7 +432,7 @@ ods listing;
 ***Graphs comparing observed data to outputs for Status quo 1 and 15;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20260112.doc' startpage=never;
+ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20260119.doc' startpage=never;
 
 
 ***Options 0-9 (building up package of interventions) + 99
@@ -442,10 +442,10 @@ ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_
 	3 =  + fsw-prep-mix
 	4 =  + fsw-program
 	5 =  + adh-supp
-	6 =  + agyw-prep-mix
-	7 =  + testing
+	6 =  + msm-prep-mix
+	7 =  + agyw-prep-mix
 	8 =  + msm-program
-	9 =  + msm-prep-mix
+	9 =  + testing
 	99 = status quo
 ;
 
@@ -461,10 +461,10 @@ label mean_incidence1549__2 = " + vmmc";
 label mean_incidence1549__3 = " + fsw-prep-mix";
 label mean_incidence1549__4 = " + fsw-program";
 label mean_incidence1549__5 = " + adh-supp";
-label mean_incidence1549__6 = " + agyw-prep-mix";
-label mean_incidence1549__7 = " + testing";
+label mean_incidence1549__6 = " + msm-prep-mix";
+label mean_incidence1549__7 = " + agyw-prep-mix";
 label mean_incidence1549__8 = " + msm-program";
-label mean_incidence1549__9 = " + msm-prep-mix";
+label mean_incidence1549__9 = " + testing";
 label mean_incidence1549__99 = "status quo";
 label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
 label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
@@ -506,10 +506,10 @@ label mean_incidence1564__2 = " + vmmc";
 label mean_incidence1564__3 = " + fsw-prep-mix";
 label mean_incidence1564__4 = " + fsw-program";
 label mean_incidence1564__5 = " + adh-supp";
-label mean_incidence1564__6 = " + agyw-prep-mix";
-label mean_incidence1564__7 = " + testing";
+label mean_incidence1564__6 = " + msm-prep-mix";
+label mean_incidence1564__7 = " + agyw-prep-mix";
 label mean_incidence1564__8 = " + msm-program";
-label mean_incidence1564__9 = " + msm-prep-mix";
+label mean_incidence1564__9 = " + testing";
 label mean_incidence1549__99 = "status quo";
 label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
 label o_HIVincid_1564_Zimphia = "ZIMPHIA 15-64";
@@ -551,10 +551,10 @@ label mean_n_new_inf1549__2 = " + vmmc";
 label mean_n_new_inf1549__3 = " + fsw-prep-mix";
 label mean_n_new_inf1549__4 = " + fsw-program";
 label mean_n_new_inf1549__5 = " + adh-supp";
-label mean_n_new_inf1549__6 = " + agyw-prep-mix";
-label mean_n_new_inf1549__7 = " + testing";
+label mean_n_new_inf1549__6 = " + msm-prep-mix";
+label mean_n_new_inf1549__7 = " + agyw-prep-mix";
 label mean_n_new_inf1549__8 = " + msm-program";
-label mean_n_new_inf1549__9 = " + msm-prep-mix";
+label mean_n_new_inf1549__9 = " + testing";
 label mean_n_new_inf1549__99 = "status quo";
 series  x=cald y=mean_n_new_inf1549__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_new_inf1549__0 	upper=p95_n_new_inf1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -778,10 +778,10 @@ label mean_p_newp_ge1__2 = " + vmmc";
 label mean_p_newp_ge1__3 = " + fsw-prep-mix";
 label mean_p_newp_ge1__4 = " + fsw-program";
 label mean_p_newp_ge1__5 = " + adh-supp";
-label mean_p_newp_ge1__6 = " + agyw-prep-mix";
-label mean_p_newp_ge1__7 = " + testing";
+label mean_p_newp_ge1__6 = " + msm-prep-mix";
+label mean_p_newp_ge1__7 = " + agyw-prep-mix";
 label mean_p_newp_ge1__8 = " + msm-program";
-label mean_p_newp_ge1__9 = " + msm-prep-mix";
+label mean_p_newp_ge1__9 = " + testing";
 label mean_p_newp_ge1__99 = "status quo";
 series  x=cald y=mean_p_newp_ge1__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_newp_ge1__0 	upper=p95_p_newp_ge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -819,10 +819,10 @@ label mean_p_ep_2 = " + vmmc";
 label mean_p_ep_3 = " + fsw-prep-mix";
 label mean_p_ep_4 = " + fsw-program";
 label mean_p_ep_5 = " + adh-supp";
-label mean_p_ep_6 = " + agyw-prep-mix";
-label mean_p_ep_7 = " + testing";
+label mean_p_ep_6 = " + msm-prep-mix";
+label mean_p_ep_7 = " + agyw-prep-mix";
 label mean_p_ep_8 = " + msm-program";
-label mean_p_ep_9 = " + msm-prep-mix";
+label mean_p_ep_9 = " + testing";
 label mean_p_ep_99 = "status quo";
 series  x=cald y=mean_p_ep_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_ep_0 	upper=p95_p_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -860,10 +860,10 @@ label mean_p_diag_m_2 = " + vmmc";
 label mean_p_diag_m_3 = " + fsw-prep-mix";
 label mean_p_diag_m_4 = " + fsw-program";
 label mean_p_diag_m_5 = " + adh-supp";
-label mean_p_diag_m_6 = " + agyw-prep-mix";
-label mean_p_diag_m_7 = " + testing";
+label mean_p_diag_m_6 = " + msm-prep-mix";
+label mean_p_diag_m_7 = " + agyw-prep-mix";
 label mean_p_diag_m_8 = " + msm-program";
-label mean_p_diag_m_9 = " + msm-prep-mix";
+label mean_p_diag_m_9 = " + testing";
 label mean_p_diag_m_99 = "status quo";
 series  x=cald y=mean_p_diag_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -900,10 +900,10 @@ label mean_p_diag_w_2 = " + vmmc";
 label mean_p_diag_w_3 = " + fsw-prep-mix";
 label mean_p_diag_w_4 = " + fsw-program";
 label mean_p_diag_w_5 = " + adh-supp";
-label mean_p_diag_w_6 = " + agyw-prep-mix";
-label mean_p_diag_w_7 = " + testing";
+label mean_p_diag_w_6 = " + msm-prep-mix";
+label mean_p_diag_w_7 = " + agyw-prep-mix";
 label mean_p_diag_w_8 = " + msm-program";
-label mean_p_diag_w_9 = " + msm-prep-mix";
+label mean_p_diag_w_9 = " + testing";
 label mean_p_diag_w_99 = "status quo";
 series  x=cald y=mean_p_diag_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -942,10 +942,10 @@ label mean_p_art_m_2 = " + vmmc";
 label mean_p_art_m_3 = " + fsw-prep-mix";
 label mean_p_art_m_4 = " + fsw-program";
 label mean_p_art_m_5 = " + adh-supp";
-label mean_p_art_m_6 = " + agyw-prep-mix";
-label mean_p_art_m_7 = " + testing";
+label mean_p_art_m_6 = " + msm-prep-mix";
+label mean_p_art_m_7 = " + agyw-prep-mix";
 label mean_p_art_m_8 = " + msm-program";
-label mean_p_art_m_9 = " + msm-prep-mix";
+label mean_p_art_m_9 = " + testing";
 label mean_p_art_m_99 = "status quo";
 series  x=cald y=mean_p_art_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_m_0 	upper=p95_p_art_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -983,10 +983,10 @@ label mean_p_art_w_2 = " + vmmc";
 label mean_p_art_w_3 = " + fsw-prep-mix";
 label mean_p_art_w_4 = " + fsw-program";
 label mean_p_art_w_5 = " + adh-supp";
-label mean_p_art_w_6 = " + agyw-prep-mix";
-label mean_p_art_w_7 = " + testing";
+label mean_p_art_w_6 = " + msm-prep-mix";
+label mean_p_art_w_7 = " + agyw-prep-mix";
 label mean_p_art_w_8 = " + msm-program";
-label mean_p_art_w_9 = " + msm-prep-mix";
+label mean_p_art_w_9 = " + testing";
 label mean_p_art_w_99 = "status quo";
 series  x=cald y=mean_p_art_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_w_0 	upper=p95_p_art_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1024,10 +1024,10 @@ label mean_p_diag_art_m_2 = " + vmmc";
 label mean_p_diag_art_m_3 = " + fsw-prep-mix";
 label mean_p_diag_art_m_4 = " + fsw-program";
 label mean_p_diag_art_m_5 = " + adh-supp";
-label mean_p_diag_art_m_6 = " + agyw-prep-mix";
-label mean_p_diag_art_m_7 = " + testing";
+label mean_p_diag_art_m_6 = " + msm-prep-mix";
+label mean_p_diag_art_m_7 = " + agyw-prep-mix";
 label mean_p_diag_art_m_8 = " + msm-program";
-label mean_p_diag_art_m_9 = " + msm-prep-mix";
+label mean_p_diag_art_m_9 = " + testing";
 label mean_p_diag_art_m_99 = "status quo";
 series  x=cald y=mean_p_diag_art_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_0 	upper=p95_p_diag_art_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1065,10 +1065,10 @@ label mean_p_diag_art_w_2 = " + vmmc";
 label mean_p_diag_art_w_3 = " + fsw-prep-mix";
 label mean_p_diag_art_w_4 = " + fsw-program";
 label mean_p_diag_art_w_5 = " + adh-supp";
-label mean_p_diag_art_w_6 = " + agyw-prep-mix";
-label mean_p_diag_art_w_7 = " + testing";
+label mean_p_diag_art_w_6 = " + msm-prep-mix";
+label mean_p_diag_art_w_7 = " + agyw-prep-mix";
 label mean_p_diag_art_w_8 = " + msm-program";
-label mean_p_diag_art_w_9 = " + msm-prep-mix";
+label mean_p_diag_art_w_9 = " + testing";
 label mean_p_diag_art_w_99 = "status quo";
 series  x=cald y=mean_p_diag_art_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_0 	upper=p95_p_diag_art_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1106,10 +1106,10 @@ label mean_p_art_vls_m_2 = " + vmmc";
 label mean_p_art_vls_m_3 = " + fsw-prep-mix";
 label mean_p_art_vls_m_4 = " + fsw-program";
 label mean_p_art_vls_m_5 = " + adh-supp";
-label mean_p_art_vls_m_6 = " + agyw-prep-mix";
-label mean_p_art_vls_m_7 = " + testing";
+label mean_p_art_vls_m_6 = " + msm-prep-mix";
+label mean_p_art_vls_m_7 = " + agyw-prep-mix";
 label mean_p_art_vls_m_8 = " + msm-program";
-label mean_p_art_vls_m_9 = " + msm-prep-mix";
+label mean_p_art_vls_m_9 = " + testing";
 label mean_p_art_vls_m_99 = "status quo";
 series  x=cald y=mean_p_art_vls_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_0 	upper=p95_p_art_vls_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1147,10 +1147,10 @@ label mean_p_art_vls_w_2 = " + vmmc";
 label mean_p_art_vls_w_3 = " + fsw-prep-mix";
 label mean_p_art_vls_w_4 = " + fsw-program";
 label mean_p_art_vls_w_5 = " + adh-supp";
-label mean_p_art_vls_w_6 = " + agyw-prep-mix";
-label mean_p_art_vls_w_7 = " + testing";
+label mean_p_art_vls_w_6 = " + msm-prep-mix";
+label mean_p_art_vls_w_7 = " + agyw-prep-mix";
 label mean_p_art_vls_w_8 = " + msm-program";
-label mean_p_art_vls_w_9 = " + msm-prep-mix";
+label mean_p_art_vls_w_9 = " + testing";
 label mean_p_art_vls_w_99 = "status quo";
 series  x=cald y=mean_p_art_vls_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_0 	upper=p95_p_art_vls_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1188,10 +1188,10 @@ label mean_p_mcirc_1549m_2 = " + vmmc";
 label mean_p_mcirc_1549m_3 = " + fsw-prep-mix";
 label mean_p_mcirc_1549m_4 = " + fsw-program";
 label mean_p_mcirc_1549m_5 = " + adh-supp";
-label mean_p_mcirc_1549m_6 = " + agyw-prep-mix";
-label mean_p_mcirc_1549m_7 = " + testing";
+label mean_p_mcirc_1549m_6 = " + msm-prep-mix";
+label mean_p_mcirc_1549m_7 = " + agyw-prep-mix";
 label mean_p_mcirc_1549m_8 = " + msm-program";
-label mean_p_mcirc_1549m_9 = " + msm-prep-mix";
+label mean_p_mcirc_1549m_9 = " + testing";
 label mean_p_mcirc_1549m_99 = "status quo";
 series  x=cald y=mean_p_mcirc_1549m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1228,10 +1228,10 @@ label mean_p_mcirc_1524m_2 = " + vmmc";
 label mean_p_mcirc_1524m_3 = " + fsw-prep-mix";
 label mean_p_mcirc_1524m_4 = " + fsw-program";
 label mean_p_mcirc_1524m_5 = " + adh-supp";
-label mean_p_mcirc_1524m_6 = " + agyw-prep-mix";
-label mean_p_mcirc_1524m_7 = " + testing";
+label mean_p_mcirc_1524m_6 = " + msm-prep-mix";
+label mean_p_mcirc_1524m_7 = " + agyw-prep-mix";
 label mean_p_mcirc_1524m_8 = " + msm-program";
-label mean_p_mcirc_1524m_9 = " + msm-prep-mix";
+label mean_p_mcirc_1524m_9 = " + testing";
 label mean_p_mcirc_1524m_99 = "status quo";
 series  x=cald y=mean_p_mcirc_1524m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_0 	upper=p95_p_mcirc_1524m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1268,10 +1268,10 @@ label mean_n_onprep_2 = " + vmmc";
 label mean_n_onprep_3 = " + fsw-prep-mix";
 label mean_n_onprep_4 = " + fsw-program";
 label mean_n_onprep_5 = " + adh-supp";
-label mean_n_onprep_6 = " + agyw-prep-mix";
-label mean_n_onprep_7 = " + testing";
+label mean_n_onprep_6 = " + msm-prep-mix";
+label mean_n_onprep_7 = " + agyw-prep-mix";
 label mean_n_onprep_8 = " + msm-program";
-label mean_n_onprep_9 = " + msm-prep-mix";
+label mean_n_onprep_9 = " + testing";
 label mean_n_onprep_99 = "status quo";
 series  x=cald y=mean_n_onprep_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_onprep_0 	upper=p95_n_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1389,10 +1389,10 @@ label mean_n_sw_program_visit_2 = " + vmmc";
 label mean_n_sw_program_visit_3 = " + fsw-prep-mix";
 label mean_n_sw_program_visit_4 = " + fsw-program";
 label mean_n_sw_program_visit_5 = " + adh-supp";
-label mean_n_sw_program_visit_6 = " + agyw-prep-mix";
-label mean_n_sw_program_visit_7 = " + testing";
+label mean_n_sw_program_visit_6 = " + msm-prep-mix";
+label mean_n_sw_program_visit_7 = " + agyw-prep-mix";
 label mean_n_sw_program_visit_8 = " + msm-program";
-label mean_n_sw_program_visit_9 = " + msm-prep-mix";
+label mean_n_sw_program_visit_9 = " + testing";
 label mean_n_sw_program_visit_99 = "status quo";
 series  x=cald y=mean_n_sw_program_visit_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_sw_program_visit_0 	upper=p95_n_sw_program_visit_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1431,10 +1431,10 @@ label mean_n_self_tested_2 = " + vmmc";
 label mean_n_self_tested_3 = " + fsw-prep-mix";
 label mean_n_self_tested_4 = " + fsw-program";
 label mean_n_self_tested_5 = " + adh-supp";
-label mean_n_self_tested_6 = " + agyw-prep-mix";
-label mean_n_self_tested_7 = " + testing";
+label mean_n_self_tested_6 = " + msm-prep-mix";
+label mean_n_self_tested_7 = " + agyw-prep-mix";
 label mean_n_self_tested_8 = " + msm-program";
-label mean_n_self_tested_9 = " + msm-prep-mix";
+label mean_n_self_tested_9 = " + testing";
 label mean_n_self_tested_99 = "status quo";
 series  x=cald y=mean_n_self_tested_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_self_tested_0 	upper=p95_n_self_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1472,10 +1472,10 @@ label mean_n_tested_m_2 = " + vmmc";
 label mean_n_tested_m_3 = " + fsw-prep-mix";
 label mean_n_tested_m_4 = " + fsw-program";
 label mean_n_tested_m_5 = " + adh-supp";
-label mean_n_tested_m_6 = " + agyw-prep-mix";
-label mean_n_tested_m_7 = " + testing";
+label mean_n_tested_m_6 = " + msm-prep-mix";
+label mean_n_tested_m_7 = " + agyw-prep-mix";
 label mean_n_tested_m_8 = " + msm-program";
-label mean_n_tested_m_9 = " + msm-prep-mix";
+label mean_n_tested_m_9 = " + testing";
 label mean_n_tested_m_99 = "status quo";
 series  x=cald y=mean_n_tested_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_tested_m_0 	upper=p95_n_tested_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1511,10 +1511,10 @@ label mean_n_tested_w_2 = " + vmmc";
 label mean_n_tested_w_3 = " + fsw-prep-mix";
 label mean_n_tested_w_4 = " + fsw-program";
 label mean_n_tested_w_5 = " + adh-supp";
-label mean_n_tested_w_6 = " + agyw-prep-mix";
-label mean_n_tested_w_7 = " + testing";
+label mean_n_tested_w_6 = " + msm-prep-mix";
+label mean_n_tested_w_7 = " + agyw-prep-mix";
 label mean_n_tested_w_8 = " + msm-program";
-label mean_n_tested_w_9 = " + msm-prep-mix";
+label mean_n_tested_w_9 = " + testing";
 label mean_n_tested_w_99 = "status quo";series  x=cald y=mean_n_tested_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_tested_w_0 	upper=p95_n_tested_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_tested_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1551,10 +1551,10 @@ label mean_total_cost_hiv_control_2 = " + vmmc";
 label mean_total_cost_hiv_control_3 = " + fsw-prep-mix";
 label mean_total_cost_hiv_control_4 = " + fsw-program";
 label mean_total_cost_hiv_control_5 = " + adh-supp";
-label mean_total_cost_hiv_control_6 = " + agyw-prep-mix";
-label mean_total_cost_hiv_control_7 = " + testing";
+label mean_total_cost_hiv_control_6 = " + msm-prep-mix";
+label mean_total_cost_hiv_control_7 = " + agyw-prep-mix";
 label mean_total_cost_hiv_control_8 = " + msm-program";
-label mean_total_cost_hiv_control_9 = " + msm-prep-mix";
+label mean_total_cost_hiv_control_9 = " + testing";
 label mean_total_cost_hiv_control_99 = "status quo";
 series  x=cald y=mean_total_cost_hiv_control_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_total_cost_hiv_control_0 	upper=p95_total_cost_hiv_control_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -1579,6 +1579,7 @@ series  x=cald y=mean_total_cost_hiv_control_9/	lineattrs = (color=purple thickn
 series  x=cald y=mean_total_cost_hiv_control_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_total_cost_hiv_control_99 	upper=p95_total_cost_hiv_control_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
+
 ods html close;
 
 ods rtf close;run;
@@ -1587,14 +1588,14 @@ ods rtf close;run;
 
 * export icer_sums;
 proc export data=icer_sums
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260112_out\icer_sums.csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260119_out\icer_sums.csv" 
 	dbms=csv replace; 
 	putnames=yes;
 run;
 
 * export icer_sums_2049;
 proc export data=icer_sums_2049
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260112_out\icer_sums_2049.csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260119_out\icer_sums_2049.csv" 
 	dbms=csv replace; 
 	putnames=yes;
 run;

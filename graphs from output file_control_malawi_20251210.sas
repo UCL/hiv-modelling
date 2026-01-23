@@ -28,6 +28,7 @@ n_new_inf1549m = n_new_inf1524m + n_new_inf2549m;
 n_new_inf1549w = n_new_inf1524w + n_new_inf2549w;
 n_new_inf1549_ = n_new_inf1549m + n_new_inf1549w;
 n_new_inf1564_ = n_new_inf1549_	+ n_new_inf50plm + n_new_inf50plw;
+n_new_inf0064_ = n_new_inf1564_ + n_hiv_child;
 
 p_diag_m = (n_diag_m_1524 + n_diag_m_2549 + n_diag_m_50pl) / (n_hiv1524m + n_hiv2549m + n_hiv50plm);
 p_diag_w = (n_diag_w_1524 + n_diag_w_2549 + n_diag_w_50pl) / (n_hiv1524w + n_hiv2549w + n_hiv50plw);
@@ -56,18 +57,6 @@ n_onprep_len = n_onprep_len_m + n_onprep_len_w;
 pc_elig_onprep = n_onprep / n_elig_prep;
 pc_elig_onprep_oral= n_onprep_oral / n_elig_prep;
 pc_elig_onprep_len = n_onprep_len / n_elig_prep;
-
-/*pc_elig_fsw_onprep = n_onprep_sw / n_sw_1564_;*/
-/*pc_elig_fsw_onprep_oral = n_onprep_sw_oral / n_sw_1564_;*/
-/*pc_elig_fsw_onprep_len = n_onprep_sw_oral / n_sw_1564_;*/
-/**/
-/*pc_elig_agyw_onprep = n_onprep_agyw_pg / n_agyw_pg;*/
-/*pc_elig_agyw_onprep_oral = n_onprep_oral_agyw_pg / n_agyw_pg;*/
-/*pc_elig_agyw_onprep_len = n_onprep_len_agyw_pg / n_agyw_pg;*/
-/**/
-/*pc_elig_msm_onprep = n_onprep_msm / n_alive_msm;*/
-/*pc_elig_msm_onprep_oral = n_onprep_oral_msm / n_alive_msm;*/
-/*pc_elig_msm_onprep_len = n_onprep_len_msm / n_alive_msm;*/
 
 n_tested = n_tested_m + n_tested_w;
 n_self_tested = n_self_tested_m + n_self_tested_w;
@@ -117,10 +106,8 @@ proc sql;
 quit;
 */
 
-/*proc print data=b; var option cald count_csim; run;*/
 proc means max data=b; var count_csim cald; run;
 
-/*proc freq data=b;table cald;run;*/
 
 /*
 proc sort data=b;
@@ -168,20 +155,16 @@ n_diag_msm_age1564_				n_undiag_msm
 total_dcost_hiv_control
 cost_test	cost_self_test	cost_art	cost_condoms	cost_prep_tot	cost_vmmc	cost_fsw_services	cost_msm_services	cost_adh_support
 dcost_test	dcost_self_test	dcost_art	dcost_condoms	dcost_prep_tot	dcost_vmmc	dcost_fsw_services	dcost_msm_services	dcost_adh_support
-cost
 
 /* Calculated above */
 n_alive				n_alive_m			n_alive_w
-n_new_inf1549m 		n_new_inf1549w 		n_new_inf1549_ 		n_new_inf1564_ 
+n_new_inf1549m 		n_new_inf1549w 		n_new_inf1549_ 		n_new_inf1564_		n_new_inf0064_
 p_diag_m 			p_diag_w 			p_diag 
 p_art_m 			p_art_w 			p_art 
 p_diag_art_m 		p_diag_art_w 		p_diag_art
 p_art_vls_m 		p_art_vls_w			p_art_vls 
 n_onprep			n_onprep_oral		n_onprep_len
 pc_elig_onprep		pc_elig_onprep_oral	pc_elig_onprep_len
-/*pc_elig_fsw_onprep		pc_elig_fsw_onprep_oral		pc_elig_fsw_onprep_len*/
-/*pc_elig_agyw_onprep		pc_elig_agyw_onprep_oral	pc_elig_agyw_onprep_len*/
-/*pc_elig_msm_onprep		pc_elig_msm_onprep_oral		pc_elig_msm_onprep_len*/
 n_tested			n_self_tested
 
 ;
@@ -224,7 +207,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=89;	*g1 - g5 only;
+%let nfit=164;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -468,7 +451,7 @@ ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Malawi\graphs_20
 ;
 
 
-* Incidence;
+* Incidence 15-49;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49, mean)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -488,8 +471,7 @@ label mean_incidence1549__11 = "test";
 label mean_incidence1549__12 = "adherence";
 label mean_incidence1549__13 = "worst case";
 label mean_incidence1549__99 = "status quo";
-label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
-label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
+label incidence1549_obs_mlw = "Observed data";
 series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__1/	lineattrs = (color=darkred thickness = 2);
@@ -520,8 +502,62 @@ series  x=cald y=mean_incidence1549__13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_incidence1549__13 	upper=p95_incidence1549__13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1549__99 	upper=p95_incidence1549__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
-scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
-scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+scatter x=cald y=incidence1549_obs_mlw / yerrorlower=incidence1549_ll_obs_mlw yerrorupper=incidence1549_ul_obs_mlw markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+run;
+quit;
+
+* Incidence 15-64;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence (age 15-64, mean)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 1.5 by 0.25) valueattrs=(size=10);
+label mean_incidence1564__0 = "minimal";
+label mean_incidence1564__1 = "PrEPoral_FSW";
+label mean_incidence1564__2 = "PrEPmix_FSW";
+label mean_incidence1564__3 = "PrEPoral_AGYW";
+label mean_incidence1564__4 = "PrEPmix_AGYW";
+label mean_incidence1564__5 = "PrEPoral_MSM";
+label mean_incidence1564__6 = "PrEPmix_MSM";
+label mean_incidence1564__7 = "vmmc";
+label mean_incidence1564__8 = "condom";
+label mean_incidence1564__9 = "FSW";
+label mean_incidence1564__10 = "MSM";
+label mean_incidence1564__11 = "test";
+label mean_incidence1564__12 = "adherence";
+label mean_incidence1564__13 = "worst case";
+label mean_incidence1564__99 = "status quo";
+label incidence15pl_obs_mlw = "Observed data";
+series  x=cald y=mean_incidence1564__0/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_incidence1564__0 	upper=p95_incidence1564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__1/	lineattrs = (color=darkred thickness = 2);
+/*band    x=cald lower=p5_incidence1564__1 	upper=p95_incidence1564__1  / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__2/	lineattrs = (color=red thickness = 2);
+/*band    x=cald lower=p5_incidence1564__2 	upper=p95_incidence1564__2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__3/	lineattrs = (color=orange thickness = 2);
+/*band    x=cald lower=p5_incidence1564__3 	upper=p95_incidence1564__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__4/	lineattrs = (color=yellow thickness = 2);
+/*band    x=cald lower=p5_incidence1564__4 	upper=p95_incidence1564__4  / transparency=0.9 fillattrs = (color=yellow) legendlabkel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__5/	lineattrs = (color=lightgreen thickness = 2);
+/*band    x=cald lower=p5_incidence1564__5 	upper=p95_incidence1564__5  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__6/	lineattrs = (color=green thickness = 2);
+/*band    x=cald lower=p5_incidence1564__6 	upper=p95_incidence1564__6  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__7/	lineattrs = (color=lightblue thickness = 2);
+/*band    x=cald lower=p5_incidence1564__7 	upper=p95_incidence1564__7  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__8/	lineattrs = (color=blue thickness = 2);
+/*band    x=cald lower=p5_incidence1564__ 	upper=p95_incidence1564__8  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__9/	lineattrs = (color=purple thickness = 2);
+/*band    x=cald lower=p5_incidence1564__9 	upper=p95_incidence1564__9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__10/	lineattrs = (color=lightpurple thickness = 2);
+/*band    x=cald lower=p5_incidence1564__10 	upper=p95_incidence1564__10  / transparency=0.9 fillattrs = (color=lightpurple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__11/	lineattrs = (color=pink thickness = 2);
+/*band    x=cald lower=p5_incidence1564__11 	upper=p95_incidence1564__11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__12/	lineattrs = (color=brown thickness = 2);
+/*band    x=cald lower=p5_incidence1564__12 	upper=p95_incidence1564__12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__13/	lineattrs = (color=red thickness = 2);
+/*band    x=cald lower=p5_incidence1564__13 	upper=p95_incidence1564__13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1564__99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_incidence1564__99 	upper=p95_incidence1564__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=incidence15pl_obs_mlw / yerrorlower=incidence15pl_ll_obs_mlw yerrorupper=incidence15pl_ul_obs_mlw markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
 
@@ -588,85 +624,85 @@ run;
 
 data icer_sums; set d;
 	if cald < 2024 then delete;
-	cum_n_new_inf1549_0 + mean_n_new_inf1549__0;
-	cum_n_new_inf1549_1 + mean_n_new_inf1549__1;
-	cum_n_new_inf1549_2 + mean_n_new_inf1549__2;
-	cum_n_new_inf1549_3 + mean_n_new_inf1549__3;
-	cum_n_new_inf1549_4 + mean_n_new_inf1549__4;
-	cum_n_new_inf1549_5 + mean_n_new_inf1549__5;
-	cum_n_new_inf1549_6 + mean_n_new_inf1549__6;
-	cum_n_new_inf1549_7 + mean_n_new_inf1549__7;
-	cum_n_new_inf1549_8 + mean_n_new_inf1549__8;
-	cum_n_new_inf1549_9 + mean_n_new_inf1549__9;
-	cum_n_new_inf1549_10 + mean_n_new_inf1549__10;
-	cum_n_new_inf1549_11 + mean_n_new_inf1549__11;
-	cum_n_new_inf1549_12 + mean_n_new_inf1549__12;
-	cum_n_new_inf1549_13 + mean_n_new_inf1549__13;
-	cum_n_new_inf1549_99 + mean_n_new_inf1549__99;
+	cum_n_new_inf1549_0 + mean_n_new_inf1549__0/4;
+	cum_n_new_inf1549_1 + mean_n_new_inf1549__1/4;
+	cum_n_new_inf1549_2 + mean_n_new_inf1549__2/4;
+	cum_n_new_inf1549_3 + mean_n_new_inf1549__3/4;
+	cum_n_new_inf1549_4 + mean_n_new_inf1549__4/4;
+	cum_n_new_inf1549_5 + mean_n_new_inf1549__5/4;
+	cum_n_new_inf1549_6 + mean_n_new_inf1549__6/4;
+	cum_n_new_inf1549_7 + mean_n_new_inf1549__7/4;
+	cum_n_new_inf1549_8 + mean_n_new_inf1549__8/4;
+	cum_n_new_inf1549_9 + mean_n_new_inf1549__9/4;
+	cum_n_new_inf1549_10 + mean_n_new_inf1549__10/4;
+	cum_n_new_inf1549_11 + mean_n_new_inf1549__11/4;
+	cum_n_new_inf1549_12 + mean_n_new_inf1549__12/4;
+	cum_n_new_inf1549_13 + mean_n_new_inf1549__13/4;
+	cum_n_new_inf1549_99 + mean_n_new_inf1549__99/4;
 
-	cum_n_new_inf1564_0 + mean_n_new_inf1564__0;
-	cum_n_new_inf1564_1 + mean_n_new_inf1564__1;
-	cum_n_new_inf1564_2 + mean_n_new_inf1564__2;
-	cum_n_new_inf1564_3 + mean_n_new_inf1564__3;
-	cum_n_new_inf1564_4 + mean_n_new_inf1564__4;
-	cum_n_new_inf1564_5 + mean_n_new_inf1564__5;
-	cum_n_new_inf1564_6 + mean_n_new_inf1564__6;
-	cum_n_new_inf1564_7 + mean_n_new_inf1564__7;
-	cum_n_new_inf1564_8 + mean_n_new_inf1564__8;
-	cum_n_new_inf1564_9 + mean_n_new_inf1564__9;
-	cum_n_new_inf1564_10 + mean_n_new_inf1564__10;
-	cum_n_new_inf1564_11 + mean_n_new_inf1564__11;
-	cum_n_new_inf1564_12 + mean_n_new_inf1564__12;
-	cum_n_new_inf1564_13 + mean_n_new_inf1564__13;
-	cum_n_new_inf1564_99 + mean_n_new_inf1564__99;
+	cum_n_new_inf1564_0 + mean_n_new_inf1564__0/4;
+	cum_n_new_inf1564_1 + mean_n_new_inf1564__1/4;
+	cum_n_new_inf1564_2 + mean_n_new_inf1564__2/4;
+	cum_n_new_inf1564_3 + mean_n_new_inf1564__3/4;
+	cum_n_new_inf1564_4 + mean_n_new_inf1564__4/4;
+	cum_n_new_inf1564_5 + mean_n_new_inf1564__5/4;
+	cum_n_new_inf1564_6 + mean_n_new_inf1564__6/4;
+	cum_n_new_inf1564_7 + mean_n_new_inf1564__7/4;
+	cum_n_new_inf1564_8 + mean_n_new_inf1564__8/4;
+	cum_n_new_inf1564_9 + mean_n_new_inf1564__9/4;
+	cum_n_new_inf1564_10 + mean_n_new_inf1564__10/4;
+	cum_n_new_inf1564_11 + mean_n_new_inf1564__11/4;
+	cum_n_new_inf1564_12 + mean_n_new_inf1564__12/4;
+	cum_n_new_inf1564_13 + mean_n_new_inf1564__13/4;
+	cum_n_new_inf1564_99 + mean_n_new_inf1564__99/4;
 
-	cum_cost_hiv_control_0 + mean_total_cost_hiv_control_0;
-	cum_cost_hiv_control_1 + mean_total_cost_hiv_control_1;
-	cum_cost_hiv_control_2 + mean_total_cost_hiv_control_2;
-	cum_cost_hiv_control_3 + mean_total_cost_hiv_control_3;
-	cum_cost_hiv_control_4 + mean_total_cost_hiv_control_4;
-	cum_cost_hiv_control_5 + mean_total_cost_hiv_control_5;
-	cum_cost_hiv_control_6 + mean_total_cost_hiv_control_6;
-	cum_cost_hiv_control_7 + mean_total_cost_hiv_control_7;
-	cum_cost_hiv_control_8 + mean_total_cost_hiv_control_8;
-	cum_cost_hiv_control_9 + mean_total_cost_hiv_control_9;
-	cum_cost_hiv_control_10 + mean_total_cost_hiv_control_10;
-	cum_cost_hiv_control_11 + mean_total_cost_hiv_control_11;
-	cum_cost_hiv_control_12 + mean_total_cost_hiv_control_12;
-	cum_cost_hiv_control_13 + mean_total_cost_hiv_control_13;
-	cum_cost_hiv_control_99 + mean_total_cost_hiv_control_99;
+	cum_cost_hiv_control_0 + mean_total_cost_hiv_control_0/4;
+	cum_cost_hiv_control_1 + mean_total_cost_hiv_control_1/4;
+	cum_cost_hiv_control_2 + mean_total_cost_hiv_control_2/4;
+	cum_cost_hiv_control_3 + mean_total_cost_hiv_control_3/4;
+	cum_cost_hiv_control_4 + mean_total_cost_hiv_control_4/4;
+	cum_cost_hiv_control_5 + mean_total_cost_hiv_control_5/4;
+	cum_cost_hiv_control_6 + mean_total_cost_hiv_control_6/4;
+	cum_cost_hiv_control_7 + mean_total_cost_hiv_control_7/4;
+	cum_cost_hiv_control_8 + mean_total_cost_hiv_control_8/4;
+	cum_cost_hiv_control_9 + mean_total_cost_hiv_control_9/4;
+	cum_cost_hiv_control_10 + mean_total_cost_hiv_control_10/4;
+	cum_cost_hiv_control_11 + mean_total_cost_hiv_control_11/4;
+	cum_cost_hiv_control_12 + mean_total_cost_hiv_control_12/4;
+	cum_cost_hiv_control_13 + mean_total_cost_hiv_control_13/4;
+	cum_cost_hiv_control_99 + mean_total_cost_hiv_control_99/4;
 
-	cum_cost_0 + mean_cost_0;
-	cum_cost_1 + mean_cost_1;
-	cum_cost_2 + mean_cost_2;
-	cum_cost_3 + mean_cost_3;
-	cum_cost_4 + mean_cost_4;
-	cum_cost_5 + mean_cost_5;
-	cum_cost_6 + mean_cost_6;
-	cum_cost_7 + mean_cost_7;
-	cum_cost_8 + mean_cost_8;
-	cum_cost_9 + mean_cost_9;
-	cum_cost_10 + mean_cost_10;
-	cum_cost_11 + mean_cost_11;
-	cum_cost_12 + mean_cost_12;
-	cum_cost_13 + mean_cost_13;
-	cum_cost_99 + mean_cost_99;
+	cum_n_new_inf0064_0 + mean_n_new_inf0064__0/4;
+	cum_n_new_inf0064_1 + mean_n_new_inf0064__1/4;
+	cum_n_new_inf0064_2 + mean_n_new_inf0064__2/4;
+	cum_n_new_inf0064_3 + mean_n_new_inf0064__3/4;
+	cum_n_new_inf0064_4 + mean_n_new_inf0064__4/4;
+	cum_n_new_inf0064_5 + mean_n_new_inf0064__5/4;
+	cum_n_new_inf0064_6 + mean_n_new_inf0064__6/4;
+	cum_n_new_inf0064_7 + mean_n_new_inf0064__7/4;
+	cum_n_new_inf0064_8 + mean_n_new_inf0064__8/4;
+	cum_n_new_inf0064_9 + mean_n_new_inf0064__9/4;
+	cum_n_new_inf0064_10 + mean_n_new_inf0064__10/4;
+	cum_n_new_inf0064_11 + mean_n_new_inf0064__11/4;
+	cum_n_new_inf0064_12 + mean_n_new_inf0064__12/4;
+	cum_n_new_inf0064_13 + mean_n_new_inf0064__13/4;
+	cum_n_new_inf0064_99 + mean_n_new_inf0064__99/4;
 
-	cum_n_daly_0 + mean_n_daly_0;
-	cum_n_daly_1 + mean_n_daly_1;
-	cum_n_daly_2 + mean_n_daly_2;
-	cum_n_daly_3 + mean_n_daly_3;
-	cum_n_daly_4 + mean_n_daly_4;
-	cum_n_daly_5 + mean_n_daly_5;
-	cum_n_daly_6 + mean_n_daly_6;
-	cum_n_daly_7 + mean_n_daly_7;
-	cum_n_daly_8 + mean_n_daly_8;
-	cum_n_daly_9 + mean_n_daly_9;
-	cum_n_daly_10 + mean_n_daly_10;
-	cum_n_daly_11 + mean_n_daly_11;
-	cum_n_daly_12 + mean_n_daly_12;
-	cum_n_daly_13 + mean_n_daly_13;
-	cum_n_daly_99 + mean_n_daly_99;
+	cum_n_daly_0 + mean_n_daly_0/4;
+	cum_n_daly_1 + mean_n_daly_1/4;
+	cum_n_daly_2 + mean_n_daly_2/4;
+	cum_n_daly_3 + mean_n_daly_3/4;
+	cum_n_daly_4 + mean_n_daly_4/4;
+	cum_n_daly_5 + mean_n_daly_5/4;
+	cum_n_daly_6 + mean_n_daly_6/4;
+	cum_n_daly_7 + mean_n_daly_7/4;
+	cum_n_daly_8 + mean_n_daly_8/4;
+	cum_n_daly_9 + mean_n_daly_9/4;
+	cum_n_daly_10 + mean_n_daly_10/4;
+	cum_n_daly_11 + mean_n_daly_11/4;
+	cum_n_daly_12 + mean_n_daly_12/4;
+	cum_n_daly_13 + mean_n_daly_13/4;
+	cum_n_daly_99 + mean_n_daly_99/4;
 
 	keep cald 
 		cum_n_new_inf1549_0 	cum_n_new_inf1549_1 	cum_n_new_inf1549_2 	cum_n_new_inf1549_3 	cum_n_new_inf1549_4 
@@ -681,9 +717,9 @@ data icer_sums; set d;
 		cum_cost_hiv_control_5 	cum_cost_hiv_control_6 	cum_cost_hiv_control_7 	cum_cost_hiv_control_8 	cum_cost_hiv_control_9 	
 		cum_cost_hiv_control_10 cum_cost_hiv_control_11 cum_cost_hiv_control_12 cum_cost_hiv_control_13 cum_cost_hiv_control_99
 
-		cum_cost_0 	cum_cost_1 	cum_cost_2 	cum_cost_3 	cum_cost_4 
-		cum_cost_5 	cum_cost_6 	cum_cost_7 	cum_cost_8 	cum_cost_9 	
-		cum_cost_10 cum_cost_11 cum_cost_12 cum_cost_13 cum_cost_99
+		cum_n_new_inf0064_0 	cum_n_new_inf0064_1 	cum_n_new_inf0064_2 	cum_n_new_inf0064_3 	cum_n_new_inf0064_4 
+		cum_n_new_inf0064_5 	cum_n_new_inf0064_6 	cum_n_new_inf0064_7 	cum_n_new_inf0064_8 	cum_n_new_inf0064_9 	
+		cum_n_new_inf0064_10 	cum_n_new_inf0064_11 	cum_n_new_inf0064_12 	cum_n_new_inf0064_13 	cum_n_new_inf0064_99
 
 		cum_n_daly_0 	cum_n_daly_1 	cum_n_daly_2 	cum_n_daly_3 	cum_n_daly_4 
 		cum_n_daly_5 	cum_n_daly_6 	cum_n_daly_7 	cum_n_daly_8 	cum_n_daly_9 	
@@ -693,6 +729,119 @@ data icer_sums; set d;
 	if cald ne 2073.75 then delete;
 
 run;
+
+
+
+data icer_sums_2049; set d;
+	if cald < 2024 then delete;
+	cum_n_new_inf1549_0 + mean_n_new_inf1549__0/4;
+	cum_n_new_inf1549_1 + mean_n_new_inf1549__1/4;
+	cum_n_new_inf1549_2 + mean_n_new_inf1549__2/4;
+	cum_n_new_inf1549_3 + mean_n_new_inf1549__3/4;
+	cum_n_new_inf1549_4 + mean_n_new_inf1549__4/4;
+	cum_n_new_inf1549_5 + mean_n_new_inf1549__5/4;
+	cum_n_new_inf1549_6 + mean_n_new_inf1549__6/4;
+	cum_n_new_inf1549_7 + mean_n_new_inf1549__7/4;
+	cum_n_new_inf1549_8 + mean_n_new_inf1549__8/4;
+	cum_n_new_inf1549_9 + mean_n_new_inf1549__9/4;
+	cum_n_new_inf1549_10 + mean_n_new_inf1549__10/4;
+	cum_n_new_inf1549_11 + mean_n_new_inf1549__11/4;
+	cum_n_new_inf1549_12 + mean_n_new_inf1549__12/4;
+	cum_n_new_inf1549_13 + mean_n_new_inf1549__13/4;
+	cum_n_new_inf1549_99 + mean_n_new_inf1549__99/4;
+
+	cum_n_new_inf1564_0 + mean_n_new_inf1564__0/4;
+	cum_n_new_inf1564_1 + mean_n_new_inf1564__1/4;
+	cum_n_new_inf1564_2 + mean_n_new_inf1564__2/4;
+	cum_n_new_inf1564_3 + mean_n_new_inf1564__3/4;
+	cum_n_new_inf1564_4 + mean_n_new_inf1564__4/4;
+	cum_n_new_inf1564_5 + mean_n_new_inf1564__5/4;
+	cum_n_new_inf1564_6 + mean_n_new_inf1564__6/4;
+	cum_n_new_inf1564_7 + mean_n_new_inf1564__7/4;
+	cum_n_new_inf1564_8 + mean_n_new_inf1564__8/4;
+	cum_n_new_inf1564_9 + mean_n_new_inf1564__9/4;
+	cum_n_new_inf1564_10 + mean_n_new_inf1564__10/4;
+	cum_n_new_inf1564_11 + mean_n_new_inf1564__11/4;
+	cum_n_new_inf1564_12 + mean_n_new_inf1564__12/4;
+	cum_n_new_inf1564_13 + mean_n_new_inf1564__13/4;
+	cum_n_new_inf1564_99 + mean_n_new_inf1564__99/4;
+
+	cum_cost_hiv_control_0 + mean_total_cost_hiv_control_0/4;
+	cum_cost_hiv_control_1 + mean_total_cost_hiv_control_1/4;
+	cum_cost_hiv_control_2 + mean_total_cost_hiv_control_2/4;
+	cum_cost_hiv_control_3 + mean_total_cost_hiv_control_3/4;
+	cum_cost_hiv_control_4 + mean_total_cost_hiv_control_4/4;
+	cum_cost_hiv_control_5 + mean_total_cost_hiv_control_5/4;
+	cum_cost_hiv_control_6 + mean_total_cost_hiv_control_6/4;
+	cum_cost_hiv_control_7 + mean_total_cost_hiv_control_7/4;
+	cum_cost_hiv_control_8 + mean_total_cost_hiv_control_8/4;
+	cum_cost_hiv_control_9 + mean_total_cost_hiv_control_9/4;
+	cum_cost_hiv_control_10 + mean_total_cost_hiv_control_10/4;
+	cum_cost_hiv_control_11 + mean_total_cost_hiv_control_11/4;
+	cum_cost_hiv_control_12 + mean_total_cost_hiv_control_12/4;
+	cum_cost_hiv_control_13 + mean_total_cost_hiv_control_13/4;
+	cum_cost_hiv_control_99 + mean_total_cost_hiv_control_99/4;
+
+	cum_n_new_inf0064_0 + mean_n_new_inf0064__0/4;
+	cum_n_new_inf0064_1 + mean_n_new_inf0064__1/4;
+	cum_n_new_inf0064_2 + mean_n_new_inf0064__2/4;
+	cum_n_new_inf0064_3 + mean_n_new_inf0064__3/4;
+	cum_n_new_inf0064_4 + mean_n_new_inf0064__4/4;
+	cum_n_new_inf0064_5 + mean_n_new_inf0064__5/4;
+	cum_n_new_inf0064_6 + mean_n_new_inf0064__6/4;
+	cum_n_new_inf0064_7 + mean_n_new_inf0064__7/4;
+	cum_n_new_inf0064_8 + mean_n_new_inf0064__8/4;
+	cum_n_new_inf0064_9 + mean_n_new_inf0064__9/4;
+	cum_n_new_inf0064_10 + mean_n_new_inf0064__10/4;
+	cum_n_new_inf0064_11 + mean_n_new_inf0064__11/4;
+	cum_n_new_inf0064_12 + mean_n_new_inf0064__12/4;
+	cum_n_new_inf0064_13 + mean_n_new_inf0064__13/4;
+	cum_n_new_inf0064_99 + mean_n_new_inf0064__99/4;
+
+	cum_n_daly_0 + mean_n_daly_0/4;
+	cum_n_daly_1 + mean_n_daly_1/4;
+	cum_n_daly_2 + mean_n_daly_2/4;
+	cum_n_daly_3 + mean_n_daly_3/4;
+	cum_n_daly_4 + mean_n_daly_4/4;
+	cum_n_daly_5 + mean_n_daly_5/4;
+	cum_n_daly_6 + mean_n_daly_6/4;
+	cum_n_daly_7 + mean_n_daly_7/4;
+	cum_n_daly_8 + mean_n_daly_8/4;
+	cum_n_daly_9 + mean_n_daly_9/4;
+	cum_n_daly_10 + mean_n_daly_10/4;
+	cum_n_daly_11 + mean_n_daly_11/4;
+	cum_n_daly_12 + mean_n_daly_12/4;
+	cum_n_daly_13 + mean_n_daly_13/4;
+	cum_n_daly_99 + mean_n_daly_99/4;
+
+	keep cald 
+		cum_n_new_inf1549_0 	cum_n_new_inf1549_1 	cum_n_new_inf1549_2 	cum_n_new_inf1549_3 	cum_n_new_inf1549_4 
+		cum_n_new_inf1549_5 	cum_n_new_inf1549_6 	cum_n_new_inf1549_7 	cum_n_new_inf1549_8 	cum_n_new_inf1549_9 	
+		cum_n_new_inf1549_10 	cum_n_new_inf1549_11 	cum_n_new_inf1549_12 	cum_n_new_inf1549_13 	cum_n_new_inf1549_99
+
+		cum_n_new_inf1564_0 	cum_n_new_inf1564_1 	cum_n_new_inf1564_2 	cum_n_new_inf1564_3 	cum_n_new_inf1564_4 
+		cum_n_new_inf1564_5 	cum_n_new_inf1564_6 	cum_n_new_inf1564_7 	cum_n_new_inf1564_8 	cum_n_new_inf1564_9 	
+		cum_n_new_inf1564_10 	cum_n_new_inf1564_11 	cum_n_new_inf1564_12 	cum_n_new_inf1564_13 	cum_n_new_inf1564_99
+
+		cum_cost_hiv_control_0 	cum_cost_hiv_control_1 	cum_cost_hiv_control_2 	cum_cost_hiv_control_3 	cum_cost_hiv_control_4 
+		cum_cost_hiv_control_5 	cum_cost_hiv_control_6 	cum_cost_hiv_control_7 	cum_cost_hiv_control_8 	cum_cost_hiv_control_9 	
+		cum_cost_hiv_control_10 cum_cost_hiv_control_11 cum_cost_hiv_control_12 cum_cost_hiv_control_13 cum_cost_hiv_control_99
+
+		cum_n_new_inf0064_0 	cum_n_new_inf0064_1 	cum_n_new_inf0064_2 	cum_n_new_inf0064_3 	cum_n_new_inf0064_4 
+		cum_n_new_inf0064_5 	cum_n_new_inf0064_6 	cum_n_new_inf0064_7 	cum_n_new_inf0064_8 	cum_n_new_inf0064_9 	
+		cum_n_new_inf0064_10 	cum_n_new_inf0064_11 	cum_n_new_inf0064_12 	cum_n_new_inf0064_13 	cum_n_new_inf0064_99
+
+		cum_n_daly_0 	cum_n_daly_1 	cum_n_daly_2 	cum_n_daly_3 	cum_n_daly_4 
+		cum_n_daly_5 	cum_n_daly_6 	cum_n_daly_7 	cum_n_daly_8 	cum_n_daly_9 	
+		cum_n_daly_10 	cum_n_daly_11 	cum_n_daly_12 	cum_n_daly_13 	cum_n_daly_99
+		;
+
+	if cald ne 2049.75 then delete;
+
+run;
+
+
+
 
 * p_newp;
 proc sgplot data=d; 
@@ -925,6 +1074,7 @@ label mean_p_diag_m_11 = "test";
 label mean_p_diag_m_12 = "adherence";
 label mean_p_diag_m_13 = "worst case";
 label mean_p_diag_m_99 = "status quo";
+label p_diag_obs_m_mlw = "Observed data";
 series  x=cald y=mean_p_diag_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -955,6 +1105,7 @@ series  x=cald y=mean_p_diag_m_13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_13 	upper=p95_p_diag_m_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_99 	upper=p95_p_diag_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_diag_obs_m_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -977,6 +1128,7 @@ label mean_p_diag_w_11 = "test";
 label mean_p_diag_w_12 = "adherence";
 label mean_p_diag_w_13 = "worst case";
 label mean_p_diag_w_99 = "status quo";
+label p_diag_obs_w_mlw = "Observed data";
 series  x=cald y=mean_p_diag_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1007,6 +1159,7 @@ series  x=cald y=mean_p_diag_w_13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_13 	upper=p95_p_diag_w_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_w_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_99 	upper=p95_p_diag_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_diag_obs_w_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1137,6 +1290,7 @@ label mean_p_diag_art_m_11 = "test";
 label mean_p_diag_art_m_12 = "adherence";
 label mean_p_diag_art_m_13 = "worst case";
 label mean_p_diag_art_m_99 = "status quo";
+label p_diag_onart_obs_m_mlw = "Observed data";
 series  x=cald y=mean_p_diag_art_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_0 	upper=p95_p_diag_art_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1167,6 +1321,7 @@ series  x=cald y=mean_p_diag_art_m_13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_13 	upper=p95_p_diag_art_m_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_99 	upper=p95_p_diag_art_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_diag_onart_obs_m_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1190,6 +1345,7 @@ label mean_p_diag_art_w_11 = "test";
 label mean_p_diag_art_w_12 = "adherence";
 label mean_p_diag_art_w_13 = "worst case";
 label mean_p_diag_art_w_99 = "status quo";
+label p_diag_onart_obs_w_mlw = "Observed data";
 series  x=cald y=mean_p_diag_art_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_0 	upper=p95_p_diag_art_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1220,6 +1376,7 @@ series  x=cald y=mean_p_diag_art_w_13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_13 	upper=p95_p_diag_art_w_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_w_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_99 	upper=p95_p_diag_art_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_diag_onart_obs_w_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1243,6 +1400,7 @@ label mean_p_art_vls_m_11 = "test";
 label mean_p_art_vls_m_12 = "adherence";
 label mean_p_art_vls_m_13 = "adherence";
 label mean_p_art_vls_m_99 = "status quo";
+label p_onart_vl1000_obs_m_mlw = "Observed data";
 series  x=cald y=mean_p_art_vls_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_0 	upper=p95_p_art_vls_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1273,6 +1431,7 @@ series  x=cald y=mean_p_art_vls_m_13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_13 	upper=p95_p_art_vls_m_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_99 	upper=p95_p_art_vls_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_onart_vl1000_obs_m_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1296,6 +1455,7 @@ label mean_p_art_vls_w_11 = "test";
 label mean_p_art_vls_w_12 = "adherence";
 label mean_p_art_vls_w_13 = "worst case";
 label mean_p_art_vls_w_99 = "status quo";
+label p_onart_vl1000_obs_w_mlw = "Observed data";
 series  x=cald y=mean_p_art_vls_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_0 	upper=p95_p_art_vls_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1326,6 +1486,7 @@ series  x=cald y=mean_p_art_vls_w_13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_13 	upper=p95_p_art_vls_w_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_w_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_99 	upper=p95_p_art_vls_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_onart_vl1000_obs_w_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1349,6 +1510,7 @@ label mean_p_mcirc_1549m_11 = "test";
 label mean_p_mcirc_1549m_12 = "adherence";
 label mean_p_mcirc_1549m_13 = "worst case";
 label mean_p_mcirc_1549m_99 = "status quo";
+label p_mcirc_15plm_obs_mlw = "Observed data";
 series  x=cald y=mean_p_mcirc_1549m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1549m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1379,6 +1541,7 @@ series  x=cald y=mean_p_mcirc_1549m_13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_13 	upper=p95_p_mcirc_1549m_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1549m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_99 	upper=p95_p_mcirc_1549m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_mcirc_15plm_obs_mlw /	markerattrs = (color=black);
 run;quit;
 
 * Proportion circumcised (15-24);
@@ -1401,6 +1564,7 @@ label mean_p_mcirc_1524m_11 = "test";
 label mean_p_mcirc_1524m_12 = "adherence";
 label mean_p_mcirc_1524m_13 = "worst case";
 label mean_p_mcirc_1524m_99 = "status quo";
+label p_mcirc_1524m_obs_mlw = "Observed data";
 series  x=cald y=mean_p_mcirc_1524m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_0 	upper=p95_p_mcirc_1524m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1524m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1431,6 +1595,7 @@ series  x=cald y=mean_p_mcirc_1524m_13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_13 	upper=p95_p_mcirc_1524m_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1524m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_99 	upper=p95_p_mcirc_1524m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=p_mcirc_1524m_obs_mlw /	markerattrs = (color=black);
 run;quit;
 
 * Number on PrEP;
@@ -1453,6 +1618,7 @@ label mean_n_onprep_11 = "test";
 label mean_n_onprep_12 = "adherence";
 label mean_n_onprep_13 = "worst case";
 label mean_n_onprep_99 = "status quo";
+label n_prep_obs_mlw = "Observed data";
 series  x=cald y=mean_n_onprep_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_onprep_0 	upper=p95_n_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_onprep_1/	lineattrs = (color=darkred thickness = 2);
@@ -1483,6 +1649,7 @@ series  x=cald y=mean_n_onprep_13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_n_onprep_13 	upper=p95_n_onprep_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_onprep_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_onprep_99 	upper=p95_n_onprep_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=n_prep_obs_mlw /	markerattrs = (color=black);
 run;quit;
 
 proc print data=d;
@@ -1640,6 +1807,7 @@ label mean_n_self_tested_11 = "test";
 label mean_n_self_tested_12 = "adherence";
 label mean_n_self_tested_13 = "worst case";
 label mean_n_self_tested_99 = "status quo";
+label n_self_tested_obs_mlw = "Observed data";
 series  x=cald y=mean_n_self_tested_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_self_tested_0 	upper=p95_n_self_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_self_tested_1/	lineattrs = (color=darkred thickness = 2);
@@ -1670,6 +1838,7 @@ series  x=cald y=mean_n_self_tested_13/	lineattrs = (color=red thickness = 2);
 /*band    x=cald lower=p5_n_self_tested_13 	upper=p95_n_self_tested_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_n_self_tested_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_n_self_tested_99 	upper=p95_n_self_tested_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter  x=cald y=n_self_tested_obs_mlw /	markerattrs = (color=black);
 run;quit;
 
 
@@ -1777,6 +1946,57 @@ series  x=cald y=mean_n_tested_w_99/	lineattrs = (color=black thickness = 2);
 run;quit;
 
 
+* Cost;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "total_cost_hiv_control";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1e9 by 1e8) valueattrs=(size=10);
+label mean_total_cost_hiv_control_0 = "minimal";
+label mean_total_cost_hiv_control_1 = "PrEPoral_FSW";
+label mean_total_cost_hiv_control_2 = "PrEPmix_FSW";
+label mean_total_cost_hiv_control_3 = "PrEPoral_AGYW";
+label mean_total_cost_hiv_control_4 = "PrEPmix_AGYW";
+label mean_total_cost_hiv_control_5 = "PrEPoral_MSM";
+label mean_total_cost_hiv_control_6 = "PrEPmix_MSM";
+label mean_total_cost_hiv_control_7 = "vmmc";
+label mean_total_cost_hiv_control_8 = "condom";
+label mean_total_cost_hiv_control_9 = "FSW";
+label mean_total_cost_hiv_control_10 = "MSM";
+label mean_total_cost_hiv_control_11 = "test";
+label mean_total_cost_hiv_control_12 = "adherence";
+label mean_total_cost_hiv_control_13 = "worst case";
+label mean_total_cost_hiv_control_99 = "status quo";
+series  x=cald y=mean_total_cost_hiv_control_0/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_0 	upper=p95_total_cost_hiv_control_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_1/	lineattrs = (color=darkred thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_1 	upper=p95_total_cost_hiv_control_1  / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_2/	lineattrs = (color=red thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_2 	upper=p95_total_cost_hiv_control_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_3/	lineattrs = (color=orange thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_3 	upper=p95_total_cost_hiv_control_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_4/	lineattrs = (color=yellow thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_4 	upper=p95_total_cost_hiv_control_4  / transparency=0.9 fillattrs = (color=yellow) legendlabkel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_5/	lineattrs = (color=lightgreen thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_5 	upper=p95_total_cost_hiv_control_5  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_6/	lineattrs = (color=green thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_6 	upper=p95_total_cost_hiv_control_6  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_7/	lineattrs = (color=lightblue thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_7 	upper=p95_total_cost_hiv_control_7  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_8/	lineattrs = (color=blue thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_ 	upper=p95_total_cost_hiv_control_8  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_9/	lineattrs = (color=purple thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_9 	upper=p95_total_cost_hiv_control_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_10/	lineattrs = (color=lightpurple thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_10 	upper=p95_total_cost_hiv_control_10  / transparency=0.9 fillattrs = (color=lightpurple) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_11/	lineattrs = (color=pink thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_11 	upper=p95_total_cost_hiv_control_11  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_12/	lineattrs = (color=brown thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_12 	upper=p95_total_cost_hiv_control_12  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_13/	lineattrs = (color=red thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_13 	upper=p95_total_cost_hiv_control_13  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_total_cost_hiv_control_99/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_total_cost_hiv_control_99 	upper=p95_total_cost_hiv_control_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+run;quit;
 
 
 ods html close;
@@ -1792,3 +2012,9 @@ proc export data=icer_sums
 	putnames=yes;
 run;
 
+* export icer_sums_2049;
+proc export data=icer_sums_2049
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251210_out\icer_sums_2049.csv" 
+	dbms=csv replace; 
+	putnames=yes;
+run;

@@ -209,8 +209,106 @@
 	if cald=2016.0 then prevalence1549m_obs_mlw= 0.071; *between phia and dhs;
 	if cald=2016.0 then prevalence1549w_obs_mlw= 0.115; *between phia and dhs;
 
-
 	if cald=2016.5 then incidence1549_obs_mlw= 0.32;
+
+
+*** MPHIA 2015-16;	* JAS Jan 26;
+*Data collection Nov 2015 - Aug 2016;
+if cald=2016.25 then do;	
+	* Prevalence 15-49;
+	prevalence1549_obs_mlw= 0.100;		prevalence1549_ll_obs_mlw= 0.093;		prevalence1549_ul_obs_mlw= 0.107;
+	prevalence1549m_obs_mlw= 0.078;		prevalence1549m_ll_obs_mlw= 0.070;		prevalence1549m_ul_obs_mlw= 0.085;
+	prevalence1549w_obs_mlw= 0.121;		prevalence1549w_ll_obs_mlw= 0.112;		prevalence1549w_ul_obs_mlw= 0.131;
+
+	* Prevalence 15+;
+	prevalence15pl_obs_mlw= 0.106;		prevalence15pl_ll_obs_mlw= 0.099;		prevalence15pl_ul_obs_mlw= 0.112;
+	prevalence15plm_obs_mlw= 0.085;		prevalence15plm_ll_obs_mlw= 0.078;		prevalence15plm_ul_obs_mlw= 0.092;
+	prevalence15plw_obs_mlw= 0.125;		prevalence15plw_ll_obs_mlw= 0.116;		prevalence15plw_ul_obs_mlw= 0.134;
+
+	* Incidence 15-49;	
+	incidence1549_obs_mlw = 0.33;		incidence1549_ll_obs_mlw = 0.17;		incidence1549_ul_obs_mlw = 0.49;
+	incidence1549m_obs_mlw = 0.22;		incidence1549m_ll_obs_mlw = 0.02;		incidence1549m_ul_obs_mlw = 0.42;
+	incidence1549w_obs_mlw = 0.44;		incidence1549w_ll_obs_mlw = 0.16;		incidence1549w_ul_obs_mlw = 0.72;
+
+	* Incidence 15+;	
+	incidence15pl_obs_mlw= 0.37;		incidence15pl_ll_obs_mlw= 0.20;			incidence15pl_ul_obs_mlw= 0.54;
+	incidence15plm_obs_mlw= 0.23;		incidence15plm_ll_obs_mlw= 0.04;		incidence15plm__ulobs_mlw= 0.43;
+	incidence15plw_obs_mlw= 0.50;		incidence15plw_ll_obs_mlw= 0.20;		incidence15plw_ul_obs_mlw= 0.79;
+
+	*1st 95;
+	p_diag_obs_mlw = 0.768;
+	p_diag_obs_m_mlw = 0.717;
+	p_diag_obs_w_mlw = 0.802;
+
+	*2nd 95;
+	p_diag_onart_obs_mlw = 0.914;
+	p_diag_onart_obs_m_mlw = 0.887;
+	p_diag_onart_obs_w_mlw = 0.929;
+
+	*3rd 95;
+	p_onart_vl1000_obs_mlw = 0.913;
+	p_onart_vl1000_obs_m_mlw = 0.898;
+	p_onart_vl1000_obs_w_mlw = 0.921;
+
+	*All circumcisions;
+	p_mcirc_15plm_obs_mlw = 0.253;	*NB 15-64 not 15+;
+	p_mcirc_1524m_obs_mlw = 0.275;
+
+	*VMMC;
+	p_vmmc_15plm_obs_mlw = 0.092;	*NB 15-64 not 15+;
+	p_vmmc_1524m_obs_mlw = 0.128;
+
+end;
+
+
+
+*** MPHIA 2020-21;	* JAS Jan 26;
+*Data collection Jan 2020 - Apr 2021;
+if cald=2020.75 then do;
+	* Prevalence 15-49;
+	prevalence1549_obs_mlw= 0.080;		prevalence1549_ll_obs_mlw= 0.075;		prevalence1549_ul_obs_mlw= 0.085;
+	prevalence1549m_obs_mlw= 0.058;		prevalence1549m_ll_obs_mlw= 0.052;		prevalence1549m_ul_obs_mlw= 0.064;
+	prevalence1549w_obs_mlw= 0.100;		prevalence1549w_ll_obs_mlw= 0.094;		prevalence1549w_ul_obs_mlw= 0.106;
+
+	* Prevalence 15+;
+	prevalence15pl_obs_mlw= 0.089;		prevalence15pl_ll_obs_mlw= 0.084;		prevalence15pl_ul_obs_mlw= 0.094;
+	prevalence15plm_obs_mlw= 0.071;		prevalence15plm_ll_obs_mlw= 0.065;		prevalence15plm_ul_obs_mlw= 0.077;
+	prevalence15plw_obs_mlw= 0.105;		prevalence15plw_ll_obs_mlw= 0.099;		prevalence15plw_ul_obs_mlw= 0.111;
+
+	* Incidence 15-49;	
+	incidence1549_obs_mlw = 0.23;		incidence1549_ll_obs_mlw = 0.11;		incidence1549_ul_obs_mlw = 0.36;
+	incidence1549m_obs_mlw = 0.15;		incidence1549m_ll_obs_mlw = 0.00;		incidence1549m_ul_obs_mlw = 0.32;
+	incidence1549w_obs_mlw = 0.31;		incidence1549w_ll_obs_mlw = 0.13;		incidence1549w_ul_obs_mlw = 0.50;
+
+	* Incidence 15+;	
+	incidence15pl_obs_mlw= 0.21;		incidence15pl_ll_obs_mlw= 0.10;			incidence15pl_ul_obs_mlw= 0.32;
+	incidence15plm_obs_mlw= 0.12;		incidence15plm_ll_obs_mlw= 0.00;		incidence15plm__ulobs_mlw= 0.27;
+	incidence15plw_obs_mlw= 0.29;		incidence15plw_ll_obs_mlw= 0.12;		incidence15plw_ul_obs_mlw= 0.45;
+
+	*1st 95;
+	p_diag_obs_mlw = 0.883;
+	p_diag_obs_m_mlw = 0.850;
+	p_diag_obs_w_mlw = 0.904;
+
+	*2nd 95;
+	p_diag_onart_obs_mlw = 0.979;
+	p_diag_onart_obs_m_mlw = 0.974;
+	p_diag_onart_obs_w_mlw = 0.982;
+
+	*1st 95;
+	p_onart_vl1000_obs_mlw = 0.969;
+	p_onart_vl1000_obs_m_mlw = 0.968;
+	p_onart_vl1000_obs_w_mlw = 0.969;
+
+	*All circumcisions;
+	p_mcirc_15plm_obs_mlw = 0.334;
+	p_mcirc_1524m_obs_mlw = 0.380;
+
+	*VMMC;
+	p_vmmc_15plm_obs_mlw = 0.153;
+	p_vmmc_1524m_obs_mlw = 0.236;
+
+end;
 
 	if cald=2010.5 then prevalence1525w_obs_mlw= 0.052;
 	if cald=2010.5 then prevalence2535w_obs_mlw= 0.164;
@@ -226,7 +324,6 @@
 	if cald=1992.5 then prevalence1549_obs_mlw = 0.108;  * spectrum aim outputs ;  * current median = 0.095 ;
 	if cald=1995.5 then prevalence1549_obs_mlw = 0.140;  * spectrum aim outputs ;  * current median = 0.147 ;
 	if cald=1998.5 then prevalence1549_obs_mlw = 0.152;  * spectrum aim outputs ;  * current median = 0.175 ;
-
 
 	if cald=2014.5 then p_onart_vl1000_obs_mlw= 0.84;
 	if cald=2015.5 then p_onart_vl1000_obs_mlw= 0.86;
