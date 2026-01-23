@@ -10,7 +10,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2026.0 ;	
+%let year_interv = 2027.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -2445,7 +2445,19 @@ who may be dead and hence have caldate{t} missing;
 																														  
 	if option = 1 then do;
 		*Specify option 1;
-												 
+					
+		search_2 = 1;
+
+		first_comm_test = &year_interv;
+		* prob testing in commmunity;
+		prob_test_sbp_comm = 1;
+		* prob link from community testing to clinic;
+		prob_htn_link = 1;
+		* comm test interval;
+		comm_test_interval = 1;
+		* comm test age (e.g. all adults vs targeted to >=40);
+		comm_test_age = 40;
+
 	end;
  
 end;
@@ -3183,6 +3195,11 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 
 		if caldate{t} >= 2022  then do; * note this is equivalent to incr_test_year_i = 0;
 			rate_1sttest = rate_1sttest * 0.8; rate_reptest = rate_reptest * 0.8; 	eff_test_targeting = test_targeting * 1.5 ; 
+		end;
+
+		* search_2 ;
+		if caldate{t} >= 2027 and search_2=1  then do; * note this is equivalent to incr_test_year_i = 0;
+			rate_1sttest = rate_1sttest * 1.5; rate_reptest = rate_reptest * 1.5; 	eff_test_targeting = test_targeting * 2.0 ; 
 		end;
 
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
@@ -23057,19 +23074,10 @@ Inputs are:
 
 *    Save dataset at this point;
 data a ;  set r1 ;
+
 data r1 ; set a ;
 
 *    Option 0 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+50,0);
-
-
-*    Option 0 - repetition 2;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,0);
-
-*    Option 0 - repetition 3;
-
-data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
 
@@ -23077,16 +23085,6 @@ data r1; set a;
 *    Option 1 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
-
-*    Option 1 - repetition 2;
-			   
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,1);
-
-*    Option 1 - repetition 3;
- 
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,1);
 
 			
 														 
