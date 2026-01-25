@@ -66,7 +66,7 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 
 * discount rate;
 
-discount_adj_5_3 = discount * (1.03**(cald - 2026)) / (1.05**(cald - 2026)) ;
+discount_adj_5_3 = discount * (1.03**(cald - 2027)) / (1.05**(cald - 2027)) ;
 
 * ================================================================================= ;
 
@@ -105,29 +105,6 @@ dead_ddaly_ntd = s_dead_ddaly_ntd * sf * 4 * (0.0022 / 0.0058);
 ddaly = s_ddaly * sf * 4;
 
 ddaly_gbd = s_ddaly_gbd * sf * 4;
-
-
-
-
-
-
-* HYPERTENSION COSTS;
-htn_cost_scr = s_htn_cost_scr * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-htn_cost_drug = s_htn_cost_drug * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-htn_cost_clin = s_htn_cost_clin * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-htn_cost_cvd = s_htn_cost_cvd * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-htn_cost_total = (htn_cost_scr + htn_cost_drug + htn_cost_clin + htn_cost_cvd) ; 
-
-dhtn_cost_scr = s_dhtn_cost_scr * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-dhtn_cost_drug = s_dhtn_cost_drug * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-dhtn_cost_clin = s_dhtn_cost_clin * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-dhtn_cost_cvd = s_dhtn_cost_cvd * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-dhtn_cost_total = (dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd) ; 
-
-
-
-
-
 
 
 * sensitivity analysis;
@@ -256,9 +233,20 @@ dcost_child_hiv = (s_birth_with_inf_child + s_child_infected_breastfeeding) * 1 
 
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
+* hypertension costs; * todo: make sure this hypertension code is integrated accurately;
+htn_cost_scr = s_htn_cost_scr * 4 / 1000 * sf; 
+htn_cost_drug = s_htn_cost_drug * 4 / 1000 * sf; 
+htn_cost_clin = s_htn_cost_clin * 4 / 1000 * sf; 
+htn_cost_cvd = s_htn_cost_cvd * 4 / 1000 * sf; 
+htn_cost_total = (htn_cost_scr + htn_cost_drug + htn_cost_clin + htn_cost_cvd) ; 
+
+dhtn_cost_scr = s_dhtn_cost_scr * 4 / 1000 * sf; 
+dhtn_cost_drug = s_dhtn_cost_drug * 4 / 1000 * sf; 
+dhtn_cost_clin = s_dhtn_cost_clin * 4 / 1000 * sf; 
+dhtn_cost_cvd = s_dhtn_cost_cvd * 4 / 1000 * sf; 
+dhtn_cost_total = (dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd) ; 
+
 * sens analysis;
-
-
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + 
@@ -1067,7 +1055,7 @@ run;
 
 
 
-* *HYPERTENSION* ;
+* *hypertension* ;
 
 * pop size;
 pop1524 = s_ageg1517m + s_ageg1819m + s_ageg2024m + s_ageg1517w + s_ageg1819w + s_ageg2024w ;
@@ -1663,20 +1651,20 @@ s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw p
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn dlen_cost dcab_cost
 dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost dvis_cost_no_lencab dvis_cost_lencab  
-dcot_cost       dtb_cost    n_hiv  ddcp_cost dcost_drug_level_test p_drug_level_test
+dcot_cost       dtb_cost    n_hiv   dcost_drug_level_test p_drug_level_test
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 prevalence_vg1000_1549 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw  mtct_birth_prop  ddaly_mtct
-p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
-p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
+p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m   p_pime
+p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz  n_cd4_lt50
 p_ten p_zdv p_dol p_3tc p_lpr p_nev p_dar p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  p_onart_cd4_l200
 p_vl1000_art_12m p_vl1000_art_12m_onart  p_onart_vl1000_w p_onart_vl1000_m  p_startedline2 p_linefail_ge1 m15r  m25r  m35r  m45r  m55r  w15r  
 w25r  w35r  w45r  w55r p_onart_cd4_l500  prop_art_or_prep  prop_prep_tot5yrs prop_sw_onprep   p_onart p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz death_rate_hiv 
 death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w  n_dead_hivrel_onart  p_iime n_infected_inm n_iime
 n_tested n_tested_sw test_prop_positive p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  
 p_prep_any_ever p_hiv1_prep  p_hiv1_prep_cab  p_hiv1_prep_len p_hiv1_prep_oral   incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
-prop_prep_cab prop_prep_len   ratio_cab_prep_on_tail  ratio_len_prep_on_tail    pr_ever_prep_cab_res_cab  pr_ever_prep_len_res_cab    
+prop_prep_cab prop_prep_len   ratio_cab_prep_on_tail  ratio_len_prep_on_tail   p_prep_len_hiv   p_lenr_start_rest_prep_len
 pr_ev_prep_cab_res_cab_hiv pr_ev_prep_len_res_cab_hiv prop_cab_res_o_cab    prop_cab_res_tail    
 prop_prep_cab_at_inf_diag prop_prep_len_at_inf_diag   of_all_o_cab_prop_dur_3m of_all_o_cab_prop_dur_6m   p_prep_cab_hiv p_prep_cab_hiv  prop_cab_dol_res_attr_cab   
 n_cur_res_cab  n_cur_res_dol  n_emerge_inm_res_cab  n_switch_prep_from_oral n_switch_prep_from_cab n_switch_prep_from_len  n_switch_prep_to_oral 
@@ -1686,9 +1674,9 @@ p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_cab p_e
 ddaly ddaly_5p ddaly_ad_mtct p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m
 s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_cab_tail_no_r   s_cur_in_prep_len_tail_no_r  p_emerge_inm_res_cab 
 p_cabr_start_rest_prep_cab p_cabr_start_rest_prep_len p_emerge_inm_res_cab_tail  n_death_hiv n_death_hiv_age_1524 death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
-p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ad_ntd_mtct
+ p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ad_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_cab  dcost_prep_len  n_line1_fail_this_period  n_need_cd4m  n_alive
-ddaly_birth_with_inf_child  ddaly_gbd
+ ddaly_gbd
 
 prop_1564_hivneg_onprep  p_newp_prep_hivneg cost n_cd4_lt200 n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  
 death_rate_hiv death_rate_hiv_all  n_onart  n_art_or_prep n_prep_cab n_prep_len n_death_hivneg_anycause
@@ -1712,7 +1700,7 @@ p_tldsw2_elig_tldsw
 p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
 
-/* *HYPERTENSION */
+/* *hypertension */
 pop1524 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85 
 p_hypert_1524 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
 p_htn_true_1524 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
@@ -1748,7 +1736,7 @@ m_sbp_1519  m_sbp_2024  m_sbp_2529  m_sbp_3034  m_sbp_3539  m_sbp_4044  m_sbp_45
 
 htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin htn_cost_cvd
 dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin dhtn_cost_cvd
-tot_dyll_cvd tot_dyll
+
 
 rate_ihd_one 
 rate_ihd_one_4049m rate_ihd_one_5059m rate_ihd_one_6069m rate_ihd_one_7079m rate_ihd_one_ge80m
@@ -1884,6 +1872,8 @@ p_diag_ehr  p_onart_diag_ehr  prop_elig_on_prep_ehr  p_onart_vl1000_ehr   prob_p
 
 proc sort data=y;by run option;run;
 
+proc contents; run;
+
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 
@@ -1985,7 +1975,7 @@ drop _NAME_ _TYPE_ _FREQ_;
   %var(v=dadc_cost);     %var(v=dcd4_cost);     %var(v=dvl_cost);     %var(v=dvis_cost);      %var(v=dcot_cost);     %var(v=dtb_cost);   
   %var(v=dres_cost);    %var(v=dtest_cost);     %var(v=d_t_adh_int_cost);     %var(v=dswitchline_cost);    %var(v=dtaz_cost);   %var(v=dcab_cost);   %var(v=dlen_cost); 
 %var(v=dcost_drug_level_test);  
-  %var(v=dclin_cost );  %var(v=dnon_tb_who3_cost); %var(v=ddcp_cost);
+  %var(v=dclin_cost );  %var(v=dnon_tb_who3_cost); 
   %var(v=dcost_circ );    %var(v=dcost_condom_dn);
    %var(v=dcost_prep_oral);   %var(v=dcost_prep_cab);%var(v=dcost_prep_len);
  %var(v=dcost_prep_visit );   %var(v=dcost_prep_visit_oral );   %var(v=dcost_prep_visit_cab );   %var(v=dcost_prep_visit_len );     %var(v=dcost_prep );  
@@ -2055,7 +2045,6 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000);  * %var(v=n_new_inf1549m); * %var(v=n_new_inf1549w); 
 %var(v=n_tested_w); %var(v=test_prop_positive);
 %var(v=prop_prep_cab);  %var(v=prop_prep_len);   %var(v=ratio_cab_prep_on_tail);  %var(v=ratio_len_prep_on_tail);  
-%var(v=pr_ever_prep_cab_res_cab); %var(v=pr_ever_prep_len_res_cab);    %var(v=pr_ev_prep_cab_res_cab_hiv); %var(v=pr_ev_prep_len_res_len_hiv);
 
 %var(v=prop_cab_res_o_cab);    %var(v=prop_cab_res_tail);      %var(v=prop_prep_cab_at_inf_diag);   %var(v=prop_prep_len_at_inf_diag);   
 %var(v=of_all_o_cab_prop_dur_3m);
@@ -2066,7 +2055,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_switch_prep_to_cab); %var(v=n_switch_prep_to_len);  %var(v=n_prep_any_start); %var(v=n_prep_oral_start);  %var(v=n_prep_cab_start);  %var(v=n_prep_len_start); 
 %var(v=n_prep_vr_start);
 %var(v=n_prep_any); %var(v=prop_elig_on_prep); %var(v=p_elig_prep);  %var(v=prop_onprep_newpge1); %var(v=p_prep_elig_past_year); 
-%var(v=p_prep_newp); %var(v=prop_sw_onprep);  %var(v=p_em_inm_res_ever_prep_cab);  %var(v=p_em_cam_res_ever_prep_len);  %var(v=p_cabr_start_rest_prep_cab);
+%var(v=p_prep_newp); %var(v=prop_sw_onprep);  %var(v=p_em_inm_res_ever_prep_cab);   %var(v=p_cabr_start_rest_prep_cab);
  %var(v=p_lenr_start_rest_prep_len);
 
 %var(v=n_o_cab_at_3m);    %var(v=n_o_cab_at_6m);    %var(v=n_o_cab_at_9m);   %var(v=n_o_cab_at_ge12m); 
@@ -2075,7 +2064,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=s_em_inm_res_o_cab_off_3m);  %var(v=s_o_cab_or_o_cab_tm1_no_r);   %var(v=s_emerge_inm_res_cab_tail);   %var(v=s_cur_in_prep_cab_tail_no_r);  
 %var(v=s_cur_in_prep_len_tail_no_r);
 %var(v=p_emerge_inm_res_cab); %var(v=p_emerge_inm_res_cab_tail);
-%var(v=p_prep_init_primary_res); %var(v=p_prep_reinit_primary_res);   %var(v=p_emerge_inm_res_cab_prim);  %var(v=n_prep_primary_prevented);   
+  %var(v=p_emerge_inm_res_cab_prim);  %var(v=n_prep_primary_prevented);   
 %var(v=p_prep_primary_prevented); %var(v=p_u_vfail1_this_period); 
 %var(v=n_art_initiation);  %var(v=n_restart);     %var(v=n_line1_fail_this_period);    %var(v=n_need_cd4m);
 %var(v=p_elig_all_prep_criteria);  %var(v=p_elig_all_prep_cri_hivneg);  %var(v=p_elig_hivneg_onprep);  %var(v=p_prep_elig_onprep_cab);  %var(v=p_prep_elig_onprep_len);
@@ -2102,7 +2091,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=p_len);  %var(v=p_cab);  %var(v=p_len_1524);  %var(v=p_cab_1524);  %var(v=p_onart_1524);   %var(v=incidence1524);  %var(v=p_onart_vl1000_w_1524);   
 %var(v=p_onart_vl1000_m_1524); %var(v=p_r_len);  %var(v=p_r_cab);  %var(v=p_r_len_1524);  %var(v=p_r_cab_1524); %var(v=n_started_lencab_vmgt1000);  
-%var(v=n_started_lencab); %var(v=ddaly_birth_with_inf_child); %var_v=n_started_lencab_offart); %var(v=p_len_vl1000); %var(v=p_cab_vl1000);
+%var(v=n_started_lencab);  %var_v=n_started_lencab_offart); %var(v=p_len_vl1000); %var(v=p_cab_vl1000);
 %var(v=n_started_lencab_offart); %var(v=p_started_lencab_vmgt1000)  %var(v=p_started_lencab_offart);  %var(v=dvis_cost_no_lencab) ;
 %var(v=p_started_lencab_vls); %var(v=p_ever_len_o_len);  %var(v=n_offered_return_lencab);   %var(v=dvis_cost_lencab) ; %var(v=n_mtct);
 %var(v=p_ever_len_v_failed);  %var(v=p_diag_vl1000);  %var(v=p_len_plw); %var(v=p_len_w); %var(v=p_len_m);  %var(v=p_onartvisit0_vl1000);
@@ -2158,7 +2147,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=htn_cost_total); %var(v=htn_cost_scr); %var(v=htn_cost_drug); %var(v=htn_cost_clin); %var(v=htn_cost_cvd);
 %var(v=dhtn_cost_total); %var(v=dhtn_cost_scr); %var(v=dhtn_cost_drug); %var(v=dhtn_cost_clin); %var(v=dhtn_cost_cvd);
-%var(v=tot_dyll_cvd); %var(v=tot_dyll);
+
 %var(v=dcost); %var(v=ddaly);
 
 
@@ -2194,6 +2183,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prev_cva_4049m); %var(v=prev_cva_5059m); %var(v=prev_cva_6069m); %var(v=prev_cva_7079m); %var(v=prev_cva_ge80m);
 %var(v=prev_cva_4049w); %var(v=prev_cva_5059w); %var(v=prev_cva_6069w); %var(v=prev_cva_7079w); %var(v=prev_cva_ge80w); 
 
+/*
 
 %var(v=rate_dead_cvd); %var(v=n_dead_cvd );
 	%var(v=rate_dead_cvd_3039m); %var(v=rate_dead_cvd_4049m); %var(v=rate_dead_cvd_5059m); %var(v=rate_dead_cvd_6069m);
@@ -2204,7 +2194,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 	%var(v=n_dead_hivneg_cvd ); %var(v=rate_dead_hivneg_cvd);
 	%var(v=n_dead_allage ); %var(v=n_dead_hivneg_anycause ); %var(v=n_dead_hivpos_anycause );
 	
-
+*/
 
 
 data   b.wide_outputs; merge 
@@ -2216,7 +2206,7 @@ dzdv_cost dten_cost  d3tc_cost  dnev_cost  dlpr_cost  ddar_cost  defa_cost
  ddol_cost  dcab_cost  dlen_cost  cost
 
 dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
-dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  ddcp_cost dcost_drug_level_test n_hiv n_alive  p_drug_level_test
+dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  dcost_drug_level_test n_hiv n_alive  p_drug_level_test
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 prevalence_vg1000_1549 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
@@ -2231,18 +2221,17 @@ n_tested n_tested_sw test_prop_positive p_vlg1000_onart_65m   p_vlg1000_onart_18
 
 p_prep_any_ever p_hiv1_prep p_hiv1_prep_cab p_hiv1_prep_len p_hiv1_prep_oral incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
 prop_prep_cab   ratio_cab_prep_on_tail    pr_ever_prep_cab_res_cab    pr_ev_prep_cab_res_cab_hiv 
-prop_prep_len   ratio_len_prep_on_tail     pr_ev_prep_len_res_len_hiv 
-prop_cab_res_o_cab    prop_cab_res_tail    
+prop_prep_len   ratio_len_prep_on_tail    prop_cab_res_o_cab    prop_cab_res_tail   
 prop_prep_cab_at_inf_diag prop_prep_len_at_inf_diag   of_all_o_cab_prop_dur_3m of_all_o_cab_prop_dur_6m   p_prep_cab_hiv  p_prep_len_hiv  
 prop_cab_dol_res_attr_cab   
 n_cur_res_cab  n_cur_res_dol  n_emerge_inm_res_cab  n_switch_prep_from_oral n_switch_prep_from_cab  n_switch_prep_from_len  n_switch_prep_to_oral 
 n_switch_prep_to_cab  n_switch_prep_to_len  
 n_prep_any_start n_prep_oral_start  n_prep_cab_start n_prep_len_start n_prep_vr_start n_prep_any prop_elig_on_prep p_elig_prep  prop_onprep_newpge1 
-p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_cab  p_em_cam_res_ever_prep_len n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
+p_prep_elig_past_year p_prep_newp prop_sw_onprep  p_em_inm_res_ever_prep_cab  n_o_cab_at_3m    n_o_cab_at_6m    n_o_cab_at_9m   n_o_cab_at_ge12m 
 ddaly ddaly_5p ddaly_gbd  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m of_all_o_cab_prop_dur_ge12m  ddaly_ad_mtct
 s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_cab_tail_no_r  s_cur_in_prep_len_tail_no_r  p_emerge_inm_res_cab 
 p_cabr_start_rest_prep_cab p_lenr_start_rest_prep_len  p_emerge_inm_res_cab_tail  n_death_hiv n_death_hiv_age_1524 death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
-p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ad_ntd_mtct
+p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ad_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_cab   dcost_prep_len n_line1_fail_this_period  n_need_cd4m
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_cab  p_prep_elig_onprep_len prop_1564_hivneg_onprep prop_hivneg_onprep
 pref_prep_oral_beta_s1 n_started_prep_cab_hiv  n_started_prep_len_hiv n_started_prep_any_hiv   prop_prep_tot5yrs n_start_rest_prep_cab_hiv n_start_rest_prep_len_hiv 
@@ -2265,15 +2254,12 @@ p_dol_2vg1000_dolr1 p_pime  p_hivpos_new_dol_r n_incident_r_dol  n_dead_hivrel_o
 s_o_dol_2nd_vlg1000  s_vl1000_art_gt6m_iicu  p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
 p_len p_cab p_len_1524 p_cab_1524 p_onart_1524  incidence1524 p_onart_vl1000_w_1524  p_onart_vl1000_m_1524 p_r_len p_r_cab p_r_len_1524 p_r_cab_1524 
-p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi ddaly_birth_with_inf_child  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
+p_onart_vl1000_1524 n_started_lencab_vmgt1000  n_started_lencab  p_adh_hi  n_started_lencab_offart p_len_vl1000 p_cab_vl1000 p_started_lencab_vmgt1000 p_started_lencab_offart  dvis_cost_no_lencab dvis_cost_lencab
 p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct p_ever_len_v_failed  p_diag_vl1000  p_len_plw  p_len_w  p_len_m prevalence15pl
 n_prep_oral  n_infection_incl_mtct
 n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0 dcost_sw_program  n_self_tested n_adc dcost_self_test
 p_tested_incl_self  p_hard_reach
 p_diag_ehr  p_onart_diag_ehr  prop_elig_on_prep_ehr  p_onart_vl1000_ehr
-
-
-
 
 
 p_hypert_1524 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
@@ -2348,6 +2334,8 @@ prev_cva
 prev_cva_4049m prev_cva_5059m prev_cva_6069m prev_cva_7079m prev_cva_ge80m
 prev_cva_4049w prev_cva_5059w prev_cva_6069w prev_cva_7079w prev_cva_ge80w 
 
+/*
+
 rate_dead_cvd n_dead_cvd 
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w 
@@ -2355,15 +2343,22 @@ rate_dead_hivneg_anycause rate_dead_hivpos_anycause
 n_dead_hivpos_cvd  rate_dead_hivpos_cvd 
 n_dead_hivneg_cvd  rate_dead_hivneg_cvd
 
+*/
+
+
 htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin htn_cost_cvd
 dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin dhtn_cost_cvd
 
 
 /* todo: reconcile these below with existing code above */
 
-tot_dyll_cvd tot_dyll dcost ddaly  n_dead_allage n_dead_hivneg_anycause n_dead_hivpos_anycause
+ dcost ddaly  
 
+/*
 
+n_dead_allage n_dead_hivneg_anycause n_dead_hivpos_anycause
+
+*/
 
 
 ;
