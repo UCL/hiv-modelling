@@ -1738,6 +1738,11 @@ htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin htn_cost_cvd
 dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin dhtn_cost_cvd
 
 
+prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
+prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
+prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 
+
+
 rate_ihd_one 
 rate_ihd_one_4049m rate_ihd_one_5059m rate_ihd_one_6069m rate_ihd_one_7079m rate_ihd_one_ge80m
 rate_ihd_one_4049w rate_ihd_one_5059w rate_ihd_one_6069w rate_ihd_one_7079w rate_ihd_one_ge80w 
@@ -1790,20 +1795,20 @@ p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
 fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
-date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+date_test_rate_plateau  incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
 rate_lost prob_lost_art rate_return rate_restart rate_int_choice prob_strong_pref_lencab
 clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
-red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line
 prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
 fold_tr fold_tr_newp switch_for_tox  
 circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
-incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_adtivity_k65r  zero_3tc_adtivity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+incr_mort_risk_dol_weightg   sw_trans_matrix
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -1811,11 +1816,11 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 effect_sw_prog_prep_any  prob_prep_any_restart_choice 
-adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
+  rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
-prob_prep_any_restart_choice  future_prep_condom
-pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
-higher_future_prep_oral_cov  pr_prep_cab_b   pr_prep_len_b  prep_cab_efficacy prep_len_efficacy
+prob_prep_any_restart_choice  
+prob_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
+higher_future_prep_oral_cov  prob_prep_cab_b   prob_prep_len_b  prep_cab_efficacy prep_len_efficacy
 rate_choose_stop_prep_cab rate_choose_stop_prep_len   prep_cab_effect_inm_partner   prep_len_effect_inm_partner  res_trans_factor_ii
 rel_pr_inm_cab_prep_tail_primary  rel_pr_inm_len_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_cab  hivtest_type_1_init_prep_len   
 hivtest_type_1_prep_cab hivtest_type_1_prep_len 
@@ -2384,20 +2389,20 @@ p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp  n_alive
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
 fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
-date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+date_test_rate_plateau incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
 rate_lost prob_lost_art rate_return rate_restart rate_int_choice prob_strong_pref_lencab
 clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
-red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line
 prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
-fold_tr fold_tr_newp switch_for_tox  future_prep_condom
+fold_tr fold_tr_newp switch_for_tox 
 circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
-incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_adtivity_k65r  zero_3tc_adtivity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+incr_mort_risk_dol_weightg   sw_trans_matrix
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -2405,11 +2410,11 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 effect_sw_prog_prep_any  prob_prep_any_restart_choice 
-adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
+  rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
 prob_prep_any_restart_choice  
-pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
-higher_future_prep_oral_cov  pr_prep_cab_b  pr_prep_len_b  prep_cab_efficacy prep_len_efficacy
+prob_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
+higher_future_prep_oral_cov  prob_prep_cab_b  prob_prep_len_b  prep_cab_efficacy prep_len_efficacy
 rate_choose_stop_prep_cab   prep_cab_effect_inm_partner  
 rate_choose_stop_prep_len   prep_len_effect_cam_partner 
 res_trans_factor_ii   rr_res_cab_dol 
@@ -2438,12 +2443,17 @@ incr_pref_prep_oral_comm_tld
 adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld  effect_comm_tld_hard_reach  prob_pos_self_test_conf
+
+prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
+prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
+prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 
+
 ;
 
 %macro par(p=);
 
 * &p ;
-proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2024; run;
+proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2026; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
@@ -2455,15 +2465,15 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=external_exp_factor ); %par(p=rate_exp_set_lower_p_vl1000 ); %par(p=prob_pregnancy_base ); %par(p=fold_change_w );
 %par(p=fold_change_yw ); %par(p=fold_change_sti ); %par(p=tr_rate_undetec_vl); %par(p=super_infection_pop ); %par(p= super_inf_res ); 
 %par(p=an_lin_incr_test );
-%par(p=date_test_rate_plateau ); %par(p=rate_testanc_inc ); %par(p=incr_test_rate_sympt ); %par(p=max_freq_testing );
+%par(p=date_test_rate_plateau );  %par(p=incr_test_rate_sympt ); %par(p=max_freq_testing );
 %par(p=test_targeting ); %par(p=fx );  %par(p=gx );  %par(p=adh_pattern ); %par(p=prob_loss_at_diag ); %par(p=pr_art_init ); 
 %par(p=rate_lost ); %par(p=prob_lost_art ); %par(p=rate_return ); %par(p=rate_restart ); %par(p=rate_int_choice ); 
 %par(p=clinic_not_aw_int_frac ); %par(p=res_trans_factor_nn ); %par(p=rate_loss_persistence ); %par(p=incr_rate_int_low_adh );
-%par(p=poorer_cd4rise_fail_nn ); %par(p=poorer_cd4rise_fail_ii ); %par(p=rate_res_ten );  %par(p=future_prep_condom);
+%par(p=poorer_cd4rise_fail_nn ); %par(p=poorer_cd4rise_fail_ii ); %par(p=rate_res_ten );  
 %par(p=fold_change_mut_risk ); %par(p=adh_effect_of_meas_alert ); %par(p=pr_switch_line ); %par(p=prob_vl_meas_done );
-%par(p=red_adh_tb_adc ); %par(p=red_adh_tox_pop ); %par(p=add_eff_adh_nnrti ); %par(p=altered_adh_sec_line_pop );
+%par(p=red_adh_tb_adc ); %par(p=red_adh_tox_pop ); %par(p=add_eff_adh_nnrti ); %par(p=altered_adh_sec_line );
 %par(p=prob_return_adc ); %par(p=prob_lossdiag_adctb ); %par(p=prob_lossdiag_non_tb_who3e); %par(p=higher_newp_less_engagement );
-%par(p=fold_tr ); %par(p=fold_tr_newp); %par(p=switch_for_tox ); %par(p=adh_pattern_prep_oral ); %par(p=rate_test_startprep_any ); 
+%par(p=fold_tr ); %par(p=fold_tr_newp); %par(p=switch_for_tox ); %par(p=rate_test_startprep_any ); 
 %par(p=circ_inc_rate ); %par(p=p_hard_reach_w ); %par(p=hard_reach_higher_in_men );
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
 %par(p= rr_int_tox );     %par(p= nnrti_res_no_effect );  %par(p= double_rate_gas_tox_taz );   
@@ -2475,16 +2485,16 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=incr_death_rate_crypm); %par(p=incr_death_rate_sbi);%par(p=cm_1stvis_return_vlmg1000);  %par(p=crag_cd4_l200); %par(p=crag_cd4_l100);  
 %par(p=tblam_cd4_l200);  %par(p=tblam_cd4_l100);    %par(p=effect_tb_proph);   %par(p=effect_crypm_proph);  %par(p=effect_sbi_proph);
 
-%par(p=sw_init_newp); %par(p=sw_trans_matrix);
-%par(p=zero_tdf_adtivity_k65r );  %par(p=zero_3tc_adtivity_m184 ); 
+ %par(p=sw_trans_matrix);
+%par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); 
 
 %par(p=effect_sw_prog_prep_any);  %par(p=prob_prep_any_restart_choice);  
 %par(p=prob_prep_any_visit_counsel);  %par(p=rate_test_onprep_any); %par(p=prep_willingness_threshold);  
 %par(p=prob_prep_any_restart_choice);  
-%par(p=pr_prep_oral_b);  %par(p=rel_prep_oral_adh_younger); %par(p=prep_oral_efficacy);    
-%par(p=rate_choose_stop_prep_oral);  %par(p=higher_future_prep_oral_cov);  %par(p=pr_prep_cab_b);  %par(p=prep_cab_efficacy);
- %par(p=pr_prep_len_b);  %par(p=prep_len_efficacy);
+%par(p=prob_prep_oral_b);  %par(p=rel_prep_oral_adh_younger); %par(p=prep_oral_efficacy);    
+%par(p=rate_choose_stop_prep_oral);  %par(p=higher_future_prep_oral_cov);  %par(p=prob_prep_cab_b);  %par(p=prep_cab_efficacy);
+ %par(p=prob_prep_len_b);  %par(p=prep_len_efficacy);
 %par(p=rate_choose_stop_prep_cab);   %par(p=prep_cab_effect_inm_partner);  
 %par(p=rate_choose_stop_prep_len);   %par(p=prep_len_effect_cam_partner); 
 %par(p=res_trans_factor_ii);   %par(p=rr_res_cab_dol); %par(p=dol_higher_potency); %par(p=cab_time_to_lower_threshold_g); 
@@ -2512,6 +2522,11 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=adh_effect_comm_tld);
 %par(p=rr_return_comm_tld);
 %par(p=rr_interrupt_comm_tld); %par(p=effect_comm_tld_hard_reach);  %par(p=prob_pos_self_test_conf);
+%par(p=prob_sbp_increase sbp_cal_eff);  %par(p=prob_test_sbp_undiagnosed);  %par(p=prob_test_sbp_diagnosed);  %par(p=prob_htn_link); 
+%par(p=prob_imm_htn_tx_s1);  %par(p=prob_imm_htn_tx_s2);  %par(p=prob_start_htn_tx_s1);  %par(p=prob_start_htn_tx_s2);  %par(p=prob_restart_htn_tx_s1);  %par(p=prob_restart_htn_tx_s2);  
+%par(p=prob_test_sbp_comm);  %par(p=prob_htn_link); %par(p=prob_visit_htn_v1);  %par(p=prob_visit_htn_v2);  %par(p=prob_visit_htn_v3);  %par(p=prob_visit_htn_v4);  %par(p=prob_visit_htn_v5);  
+
+
 
 data b.wide_par2; merge 
 
@@ -2520,20 +2535,20 @@ p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
 fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
-date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+date_test_rate_plateau incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
 rate_lost prob_lost_art rate_return rate_restart rate_int_choice
 clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
-red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line
 prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
-fold_tr fold_tr_newp switch_for_tox  future_prep_condom
+fold_tr fold_tr_newp switch_for_tox  
 circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
-incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_adtivity_k65r  zero_3tc_adtivity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+incr_mort_risk_dol_weightg   sw_trans_matrix
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -2541,11 +2556,11 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 effect_sw_prog_prep_any  prob_prep_any_restart_choice 
-adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
+  rate_test_startprep_any    rate_choose_stop_prep_oral
 prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
 prob_prep_any_restart_choice  
-pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
-higher_future_prep_oral_cov  pr_prep_cab_b  prep_cab_efficacy pr_prep_len_b  prep_len_efficacy
+prob_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
+higher_future_prep_oral_cov  prob_prep_cab_b  prep_cab_efficacy prob_prep_len_b  prep_len_efficacy
   res_trans_factor_ii  rr_res_cab_dol  
 
 rate_choose_stop_prep_cab   prep_cab_effect_inm_partner
@@ -2580,6 +2595,10 @@ incr_pref_prep_oral_comm_tld
 adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld  effect_comm_tld_hard_reach  prob_pos_self_test_conf
+
+prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
+prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
+prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 
 
 ;
 
