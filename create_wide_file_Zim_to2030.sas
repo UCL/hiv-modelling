@@ -7,7 +7,10 @@ data y;
 set a.long_gen_07Jan26; 
 run;
 
-%let op_num=1;
+%let op_num=99;
+
+*Use SQ for most outputs, but use the PrEP KP scenario for the PrEP outputs as inj PrEP is not introduced in SQ;
+*This means need to overwrite the SQ PrEP outputs with the option=xx ones;
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 ** Variable lists;
@@ -19,6 +22,7 @@ n_alive1564_			n_alive				n_hivge15m			n_hivge1564_		n_agyw			n_agyw_pg
 n_sw_1564_				n_msm_1564_			n_hiv_pregnant		n_give_birth_with_hiv				s_onart
 n_vm_this_per		 	n_cd4m_this_per		n_vmmc				n_onprep_oral		n_onprep_cab	n_onprep_len
 n_selftested		 	n_tested			n_pregnant_onart	n_infbirth_testing	n_postdel_testing
+p_diag					p_onart_diag		p_onart_vl1000_
 ;
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
