@@ -78,6 +78,7 @@ p_newp_ge5_ = p_newp_ge5 ;
 av_newp_ge1_ = av_newp_ge1;
 
 n_sw_1549_ = n_sw_1549;
+
 run;
 
 
@@ -208,7 +209,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=38;
+%let nfit=75;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -380,25 +381,25 @@ run;
 
 data d_g; * this is number of variables in %let var = above ;
 merge 
-g12_1   g12_2   g12_3   g12_4   g12_5   g12_6   g12_7   g12_8   g12_9   g12_10  g12_11  g12_12  g12_13  g12_14  g12_15  g12_16  g12_17  g12_18  g12_19  g12_20
-g12_21  g12_22  g12_23  g12_24  g12_25  g12_26  g12_27  g12_28  g12_29  g12_30  g12_31  g12_32  g12_33  g12_34  g12_35  g12_36  g12_37  g12_38  g12_39  g12_40
-g12_41  g12_42  g12_43  g12_44  g12_45  g12_46  g12_47  g12_48  g12_49  g12_50  g12_51  g12_52  g12_53  g12_54  g12_55  g12_56  g12_57  g12_58  g12_59  g12_60  
-g12_61  g12_62  g12_63  g12_64  g12_65  g12_66  g12_67  g12_68  g12_69  g12_70  g12_71  g12_72  g12_73  g12_74  g12_75  g12_76  g12_77  g12_78  g12_79  g12_80  
-g12_81  g12_82  g12_83  g12_84  g12_85  g12_86  g12_87  g12_88  g12_89  g12_90  g12_91  g12_92  g12_93  g12_94  g12_95  g12_96  g12_97  g12_98  g12_99  g12_100
-g12_101 g12_102 g12_103 g12_104 g12_105 g12_106 g12_107 g12_108 g12_109 g12_110 g12_111 g12_112 g12_113 g12_114 g12_115 g12_116 g12_117 g12_118 g12_119 g12_120
-g12_121 g12_122 g12_123 g12_124 g12_125 g12_126 g12_127 g12_128 g12_129 g12_130 g12_131 g12_132 g12_133 g12_134 g12_135 g12_136 g12_137 g12_138 g12_139 g12_140 
-g12_141 g12_142 g12_143 g12_144 g12_145 g12_146 g12_147 g12_148 g12_149 g12_150 g12_151 g12_152 g12_153 g12_154 g12_155 g12_156 g12_157 g12_158 g12_159 g12_160 
-g12_161 g12_162
-
-g13_1   g13_2   g13_3   g13_4   g13_5   g13_6   g13_7   g13_8   g13_9   g13_10  g13_11  g13_12  g13_13  g13_14  g13_15  g13_16  g13_17  g13_18  g13_19  g13_20
-g13_21  g13_22  g13_23  g13_24  g13_25  g13_26  g13_27  g13_28  g13_29  g13_30  g13_31  g13_32  g13_33  g13_34  g13_35  g13_36  g13_37  g13_38  g13_39  g13_40
-g13_41  g13_42  g13_43  g13_44  g13_45  g13_46  g13_47  g13_48  g13_49  g13_50  g13_51  g13_52  g13_53  g13_54  g13_55  g13_56  g13_57  g13_58  g13_59  g13_60  
-g13_61  g13_62  g13_63  g13_64  g13_65  g13_66  g13_67  g13_68  g13_69  g13_70  g13_71  g13_72  g13_73  g13_74  g13_75  g13_76  g13_77  g13_78  g13_79  g13_80  
-g13_81  g13_82  g13_83  g13_84  g13_85  g13_86  g13_87  g13_88  g13_89  g13_90  g13_91  g13_92  g13_93  g13_94  g13_95  g13_96  g13_97  g13_98  g13_99  g13_100
-g13_101 g13_102 g13_103 g13_104 g13_105 g13_106 g13_107 g13_108 g13_109 g13_110 g13_111 g13_112 g13_113 g13_114 g13_115 g13_116 g13_117 g13_118 g13_119 g13_120
-g13_121 g13_122 g13_123 g13_124 g13_125 g13_126 g13_127 g13_128 g13_129 g13_130 g13_131 g13_132 g13_133 g13_134 g13_135 g13_136 g13_137 g13_138 g13_139 g13_140 
-g13_141 g13_142 g13_143 g13_144 g13_145 g13_146 g13_147 g13_148 g13_149 g13_150 g13_151 g13_152 g13_153 g13_154 g13_155 g13_156 g13_157 g13_158 g13_159 g13_160 
-g13_161 g13_162
+/*g12_1   g12_2   g12_3   g12_4   g12_5   g12_6   g12_7   g12_8   g12_9   g12_10  g12_11  g12_12  g12_13  g12_14  g12_15  g12_16  g12_17  g12_18  g12_19  g12_20*/
+/*g12_21  g12_22  g12_23  g12_24  g12_25  g12_26  g12_27  g12_28  g12_29  g12_30  g12_31  g12_32  g12_33  g12_34  g12_35  g12_36  g12_37  g12_38  g12_39  g12_40*/
+/*g12_41  g12_42  g12_43  g12_44  g12_45  g12_46  g12_47  g12_48  g12_49  g12_50  g12_51  g12_52  g12_53  g12_54  g12_55  g12_56  g12_57  g12_58  g12_59  g12_60  */
+/*g12_61  g12_62  g12_63  g12_64  g12_65  g12_66  g12_67  g12_68  g12_69  g12_70  g12_71  g12_72  g12_73  g12_74  g12_75  g12_76  g12_77  g12_78  g12_79  g12_80  */
+/*g12_81  g12_82  g12_83  g12_84  g12_85  g12_86  g12_87  g12_88  g12_89  g12_90  g12_91  g12_92  g12_93  g12_94  g12_95  g12_96  g12_97  g12_98  g12_99  g12_100*/
+/*g12_101 g12_102 g12_103 g12_104 g12_105 g12_106 g12_107 g12_108 g12_109 g12_110 g12_111 g12_112 g12_113 g12_114 g12_115 g12_116 g12_117 g12_118 g12_119 g12_120*/
+/*g12_121 g12_122 g12_123 g12_124 g12_125 g12_126 g12_127 g12_128 g12_129 g12_130 g12_131 g12_132 g12_133 g12_134 g12_135 g12_136 g12_137 g12_138 g12_139 g12_140 */
+/*g12_141 g12_142 g12_143 g12_144 g12_145 g12_146 g12_147 g12_148 g12_149 g12_150 g12_151 g12_152 g12_153 g12_154 g12_155 g12_156 g12_157 g12_158 g12_159 g12_160 */
+/*g12_161 g12_162*/
+/**/
+/*g13_1   g13_2   g13_3   g13_4   g13_5   g13_6   g13_7   g13_8   g13_9   g13_10  g13_11  g13_12  g13_13  g13_14  g13_15  g13_16  g13_17  g13_18  g13_19  g13_20*/
+/*g13_21  g13_22  g13_23  g13_24  g13_25  g13_26  g13_27  g13_28  g13_29  g13_30  g13_31  g13_32  g13_33  g13_34  g13_35  g13_36  g13_37  g13_38  g13_39  g13_40*/
+/*g13_41  g13_42  g13_43  g13_44  g13_45  g13_46  g13_47  g13_48  g13_49  g13_50  g13_51  g13_52  g13_53  g13_54  g13_55  g13_56  g13_57  g13_58  g13_59  g13_60  */
+/*g13_61  g13_62  g13_63  g13_64  g13_65  g13_66  g13_67  g13_68  g13_69  g13_70  g13_71  g13_72  g13_73  g13_74  g13_75  g13_76  g13_77  g13_78  g13_79  g13_80  */
+/*g13_81  g13_82  g13_83  g13_84  g13_85  g13_86  g13_87  g13_88  g13_89  g13_90  g13_91  g13_92  g13_93  g13_94  g13_95  g13_96  g13_97  g13_98  g13_99  g13_100*/
+/*g13_101 g13_102 g13_103 g13_104 g13_105 g13_106 g13_107 g13_108 g13_109 g13_110 g13_111 g13_112 g13_113 g13_114 g13_115 g13_116 g13_117 g13_118 g13_119 g13_120*/
+/*g13_121 g13_122 g13_123 g13_124 g13_125 g13_126 g13_127 g13_128 g13_129 g13_130 g13_131 g13_132 g13_133 g13_134 g13_135 g13_136 g13_137 g13_138 g13_139 g13_140 */
+/*g13_141 g13_142 g13_143 g13_144 g13_145 g13_146 g13_147 g13_148 g13_149 g13_150 g13_151 g13_152 g13_153 g13_154 g13_155 g13_156 g13_157 g13_158 g13_159 g13_160 */
+/*g13_161 g13_162*/
 
 g99_1   g99_2   g99_3   g99_4   g99_5   g99_6   g99_7   g99_8   g99_9   g99_10  g99_11  g99_12  g99_13  g99_14  g99_15  g99_16  g99_17  g99_18  g99_19  g99_20
 g99_21  g99_22  g99_23  g99_24  g99_25  g99_26  g99_27  g99_28  g99_29  g99_30  g99_31  g99_32  g99_33  g99_34  g99_35  g99_36  g99_37  g99_38  g99_39  g99_40
@@ -415,9 +416,9 @@ run;
 
 
 data d; * this is number of variables in %let var = above ;
-	merge d_a d_b d_c d_d d_e d_f d_g;
+	merge d_a d_b d_c d_d d_e /*d_f*/ d_g;
 	by cald;
-	%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe.sas";
+	%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026.sas";
 run;
 
 
@@ -429,8 +430,6 @@ ods listing;
 
 
 
-***Graphs comparing observed data to outputs for Status quo 1 and 15;
-*Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20260119.doc' startpage=never;
 
@@ -466,7 +465,8 @@ label mean_incidence1549__7 = " + agyw-prep-mix";
 label mean_incidence1549__8 = " + msm-program";
 label mean_incidence1549__9 = " + testing";
 label mean_incidence1549__99 = "status quo";
-label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
+label m_HIVIncid1549_Zim_GARPR = "GARPR 2020 model projection 15-49";
+label m_HIVIncid1549_Zim_unaids = "UNAIDS 15-49";
 label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
 series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
@@ -490,7 +490,8 @@ series  x=cald y=mean_incidence1549__9/	lineattrs = (color=purple thickness = 2)
 /*band    x=cald lower=p5_incidence1549__9 	upper=p95_incidence1549__9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1549__99 	upper=p95_incidence1549__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
-scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
+scatter x=cald y=m_HIVIncid1549_Zim_GARPR / markerattrs = (color=green size = 10);
+scatter x=cald y=m_HIVIncid1549_Zim_unaids / markerattrs = (color=red size = 10);
 scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
@@ -510,7 +511,7 @@ label mean_incidence1564__6 = " + msm-prep-mix";
 label mean_incidence1564__7 = " + agyw-prep-mix";
 label mean_incidence1564__8 = " + msm-program";
 label mean_incidence1564__9 = " + testing";
-label mean_incidence1549__99 = "status quo";
+label mean_incidence1564__99 = "status quo";
 label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
 label o_HIVincid_1564_Zimphia = "ZIMPHIA 15-64";
 series  x=cald y=mean_incidence1564__0/	lineattrs = (color=black thickness = 2);
@@ -535,7 +536,7 @@ series  x=cald y=mean_incidence1564__9/	lineattrs = (color=purple thickness = 2)
 /*band    x=cald lower=p5_incidence1564__9 	upper=p95_incidence1564__9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1564__99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1564__99 	upper=p95_incidence1564__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
-scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
+scatter x=cald y=m_HIVIncid_Zim_GARPR /	yerrorlower=m_ll_HIVIncid_Zim_GARPR yerrorupper=m_ul_HIVIncid_Zim_GARPR markerattrs = (color=green size = 10) errorbarattrs = (color = green);
 scatter x=cald y=o_HIVincid_1564_Zimphia / yerrorlower=o_HIVincid_1564_ll_Zimphia yerrorupper=o_HIVincid_1564_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
@@ -865,6 +866,9 @@ label mean_p_diag_m_7 = " + agyw-prep-mix";
 label mean_p_diag_m_8 = " + msm-program";
 label mean_p_diag_m_9 = " + testing";
 label mean_p_diag_m_99 = "status quo";
+label o_p_diag_m1549_dhs = "DHS 15-49";
+label o_p_diag_1564m_zimphia = "ZIMPHIA 15-64";
+label o_p_diag_15plm_zimphia = "ZIMPHIA 15+";
 series  x=cald y=mean_p_diag_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -887,6 +891,9 @@ series  x=cald y=mean_p_diag_m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_9 	upper=p95_p_diag_m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_m_99 	upper=p95_p_diag_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=o_p_diag_m1549_dhs / markerattrs = (color=green size = 10);
+scatter x=cald y=o_p_diag_1564m_zimphia / markerattrs = (color=red size = 10);
+scatter x=cald y=o_p_diag_15plm_zimphia / markerattrs = (color=orange size = 10);
 run;quit;
 
 
@@ -905,6 +912,9 @@ label mean_p_diag_w_7 = " + agyw-prep-mix";
 label mean_p_diag_w_8 = " + msm-program";
 label mean_p_diag_w_9 = " + testing";
 label mean_p_diag_w_99 = "status quo";
+label o_p_diag_w1549_dhs = "DHS 15-49";
+label o_p_diag_1564w_zimphia = "ZIMPHIA 15-64";
+label o_p_diag_15plw_zimphia = "ZIMPHIA 15+";
 series  x=cald y=mean_p_diag_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -927,6 +937,9 @@ series  x=cald y=mean_p_diag_w_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_9 	upper=p95_p_diag_w_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_w_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_w_99 	upper=p95_p_diag_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=o_p_diag_w1549_dhs / markerattrs = (color=green size = 10);
+scatter x=cald y=o_p_diag_1564w_zimphia / markerattrs = (color=red size = 10);
+scatter x=cald y=o_p_diag_15plw_zimphia / markerattrs = (color=orange size = 10);
 run;quit;
 
 
@@ -947,6 +960,7 @@ label mean_p_art_m_7 = " + agyw-prep-mix";
 label mean_p_art_m_8 = " + msm-program";
 label mean_p_art_m_9 = " + testing";
 label mean_p_art_m_99 = "status quo";
+label o_p_onart_1564m_zimphia = "ZIMPHIA 15-64";
 series  x=cald y=mean_p_art_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_m_0 	upper=p95_p_art_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -969,6 +983,7 @@ series  x=cald y=mean_p_art_m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_art_m_9 	upper=p95_p_art_m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_m_99 	upper=p95_p_art_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=o_p_onart_1564m_zimphia / markerattrs = (color=black size = 10);
 run;quit;
 
 
@@ -988,6 +1003,7 @@ label mean_p_art_w_7 = " + agyw-prep-mix";
 label mean_p_art_w_8 = " + msm-program";
 label mean_p_art_w_9 = " + testing";
 label mean_p_art_w_99 = "status quo";
+label o_p_onart_1564f_zimphia = "ZIMPHIA 15-64";
 series  x=cald y=mean_p_art_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_w_0 	upper=p95_p_art_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1008,8 +1024,9 @@ series  x=cald y=mean_p_art_w_8/	lineattrs = (color=blue thickness = 2);
 /*band    x=cald lower=p5_p_art_w_ 	upper=p95_p_art_w_8  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_w_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_art_w_9 	upper=p95_p_art_w_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
-series  x=cald y=mean_p_art_w_10/	lineattrs = (color=lightpurple thickness = 2);
+series  x=cald y=mean_p_art_w_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_w_99 	upper=p95_p_art_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=o_p_onart_1564f_zimphia / markerattrs = (color=black size = 10);
 run;quit;
 
 
@@ -1029,6 +1046,8 @@ label mean_p_diag_art_m_7 = " + agyw-prep-mix";
 label mean_p_diag_art_m_8 = " + msm-program";
 label mean_p_diag_art_m_9 = " + testing";
 label mean_p_diag_art_m_99 = "status quo";
+label o_p_onart_1564m_diag_zimphia = "ZIMPHIA 15-64";
+label o_p_onart_15plm_diag_zimphia = "ZIMPHIA 15+";
 series  x=cald y=mean_p_diag_art_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_0 	upper=p95_p_diag_art_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1051,6 +1070,8 @@ series  x=cald y=mean_p_diag_art_m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_9 	upper=p95_p_diag_art_m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_m_99 	upper=p95_p_diag_art_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=o_p_onart_1564m_diag_zimphia / yerrorlower=o_p_onart_1564m_diag_ll_zimphia yerrorupper=o_p_onart_1564m_diag_ul_zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+scatter x=cald y=o_p_onart_15plm_diag_zimphia / markerattrs = (color=black size = 10);
 run;quit;
 
 
@@ -1070,6 +1091,8 @@ label mean_p_diag_art_w_7 = " + agyw-prep-mix";
 label mean_p_diag_art_w_8 = " + msm-program";
 label mean_p_diag_art_w_9 = " + testing";
 label mean_p_diag_art_w_99 = "status quo";
+label o_p_onart_1564f_diag_zimphia = "ZIMPHIA 15-64";
+label o_p_onart_15plf_diag_zimphia = "ZIMPHIA 15+";
 series  x=cald y=mean_p_diag_art_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_0 	upper=p95_p_diag_art_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1092,6 +1115,8 @@ series  x=cald y=mean_p_diag_art_w_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_9 	upper=p95_p_diag_art_w_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_diag_art_w_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_diag_art_w_99 	upper=p95_p_diag_art_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=o_p_onart_1564f_diag_zimphia / yerrorlower=o_p_onart_1564f_diag_ll_zimphia yerrorupper=o_p_onart_1564f_diag_ul_zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+scatter x=cald y=o_p_onart_15plf_diag_zimphia / markerattrs = (color=black size = 10);
 run;quit;
 
 
@@ -1111,6 +1136,8 @@ label mean_p_art_vls_m_7 = " + agyw-prep-mix";
 label mean_p_art_vls_m_8 = " + msm-program";
 label mean_p_art_vls_m_9 = " + testing";
 label mean_p_art_vls_m_99 = "status quo";
+label o_p_vlsupp_1564m_Zimphia = "ZIMPHIA 15-64";
+label o_p_vlsupp_15plm_Zimphia = "ZIMPHIA 15+";
 series  x=cald y=mean_p_art_vls_m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_0 	upper=p95_p_art_vls_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1133,6 +1160,8 @@ series  x=cald y=mean_p_art_vls_m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_9 	upper=p95_p_art_vls_m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_m_99 	upper=p95_p_art_vls_m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=o_p_vlsupp_1564m_Zimphia / yerrorlower=o_p_vlsupp_1564m_ll_Zimphia yerrorupper=o_p_vlsupp_1564m_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+scatter x=cald y=o_p_vlsupp_15plm_Zimphia / markerattrs = (color=black size = 10);
 run;quit;
 
 
@@ -1152,6 +1181,8 @@ label mean_p_art_vls_w_7 = " + agyw-prep-mix";
 label mean_p_art_vls_w_8 = " + msm-program";
 label mean_p_art_vls_w_9 = " + testing";
 label mean_p_art_vls_w_99 = "status quo";
+label o_p_vlsupp_1564w_Zimphia = "ZIMPHIA 15-64";
+label o_p_vlsupp_15plw_Zimphia = "ZIMPHIA 15+";
 series  x=cald y=mean_p_art_vls_w_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_0 	upper=p95_p_art_vls_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_w_1/	lineattrs = (color=darkred thickness = 2);
@@ -1174,6 +1205,8 @@ series  x=cald y=mean_p_art_vls_w_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_9 	upper=p95_p_art_vls_w_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_art_vls_w_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_art_vls_w_99 	upper=p95_p_art_vls_w_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=o_p_vlsupp_1564w_Zimphia / yerrorlower=o_p_vlsupp_1564w_ll_Zimphia yerrorupper=o_p_vlsupp_1564w_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
+scatter x=cald y=o_p_vlsupp_15plw_Zimphia / markerattrs = (color=black size = 10);
 run;quit;
 
 
@@ -1193,6 +1226,7 @@ label mean_p_mcirc_1549m_7 = " + agyw-prep-mix";
 label mean_p_mcirc_1549m_8 = " + msm-program";
 label mean_p_mcirc_1549m_9 = " + testing";
 label mean_p_mcirc_1549m_99 = "status quo";
+label o_p_circ_1549_zimphia = "ZIMPHIA 15-49";
 series  x=cald y=mean_p_mcirc_1549m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1549m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1215,6 +1249,7 @@ series  x=cald y=mean_p_mcirc_1549m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_9 	upper=p95_p_mcirc_1549m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1549m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1549m_99 	upper=p95_p_mcirc_1549m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=o_p_circ_1549_zimphia / markerattrs = (color=black size = 10);
 run;quit;
 
 * Proportion circumcised (15-24);
@@ -1233,6 +1268,7 @@ label mean_p_mcirc_1524m_7 = " + agyw-prep-mix";
 label mean_p_mcirc_1524m_8 = " + msm-program";
 label mean_p_mcirc_1524m_9 = " + testing";
 label mean_p_mcirc_1524m_99 = "status quo";
+label o_p_mcirc_1524m_dw = "Observed VMMC data 15-24 - D Wilson";
 series  x=cald y=mean_p_mcirc_1524m_0/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_0 	upper=p95_p_mcirc_1524m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1524m_1/	lineattrs = (color=darkred thickness = 2);
@@ -1255,6 +1291,7 @@ series  x=cald y=mean_p_mcirc_1524m_9/	lineattrs = (color=purple thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_9 	upper=p95_p_mcirc_1524m_9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_p_mcirc_1524m_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_p_mcirc_1524m_99 	upper=p95_p_mcirc_1524m_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+scatter x=cald y=o_p_mcirc_1524m_dw / markerattrs = (color=black size = 10);
 run;quit;
 
 * Number on PrEP;

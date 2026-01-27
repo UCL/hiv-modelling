@@ -30,7 +30,7 @@
 
 * Key pop programs;
 * Per person reached;
-%let cost_FSW_services_pppy=234;
+%let cost_FSW_services_pppy=132;	* Cost updated based on LBM Amethist paper Nature Comms 2025;
 %let cost_MSM_services_pppy=234;
 
 * ART adherence support;
