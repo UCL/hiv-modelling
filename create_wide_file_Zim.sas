@@ -139,7 +139,7 @@ dswitchline_cost = s_dcost_switch_line * sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; 
+*dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; 
 
 dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 
@@ -183,10 +183,7 @@ s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_
 s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw;
 s_hivge15_ = s_hivge15m + s_hivge15w;
 
-
-
-***ADD AGYW;
-
+s_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vmmc3034m + s_new_vmmc3539m + s_new_vmmc4044m +s_new_vmmc4549m;
 
 ***general population;
 
@@ -194,9 +191,15 @@ s_hivge15_ = s_hivge15m + s_hivge15w;
 * n_alive_m;					n_alive_m = s_alive_m * sf;
 * n_alive_w;					n_alive_w = s_alive_w * sf;
 
+* n_alive1564_;					n_alive1564_ = s_alive1564 * sf;
+* n_alive1564m;					n_alive1564m = s_alive1564_m * sf;
+* n_alive1564w;					n_alive1564w = s_alive1564_w * sf;
+
 * n_hivge15m;					n_hivge15m = s_hivge15m * sf ;
 * n_hivge15w;					n_hivge15w = s_hivge15w * sf ;
 * n_hivge15_;					n_hivge15_ = n_hivge15m + n_hivge15w ;
+* n_hivge1564_;					n_hivge1564_ = (s_hiv1564m + s_hiv1564w) * sf;
+
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -212,11 +215,14 @@ s_hivge15_ = s_hivge15m + s_hivge15w;
 
 * n_onart_w;					n_onart_w = s_onart_w * sf;
 * n_onart_m;					n_onart_m = s_onart_m * sf;
-* n_onart  ;					n_onart   = s_onart   * sf;
+* n_onart  ;					n_onart   = s_onart * sf;
 
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
 * p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m1564_ / s_hiv1564m ;  
 * p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
+
+* n_selftested;					n_selftested = s_self_tested * 4 * sf;
+* n_tested;						n_tested  = s_tested * 4 * sf;
 
 * p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag;
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
@@ -230,6 +236,11 @@ s_hivge15_ = s_hivge15m + s_hivge15w;
 * n_onprep_w;					n_onprep_w = max(s_onprep_w, 0) * sf;
 * n_onprep_m;					n_onprep_m = max(s_onprep_m, 0) * sf;
 * n_onprep;						n_onprep = n_onprep_w + n_onprep_m ;
+* prop_1564_onprep;				prop_1564_onprep =   (s_onprep_m + s_onprep_w) / (s_alive1564 - s_hiv1564) ;
+* n_onprep_oral;				n_onprep_oral =   (s_onprep_oral_m + s_onprep_oral_w) * sf;
+* n_onprep_cab;					n_onprep_cab =   (s_onprep_cab_m + s_onprep_cab_w) * sf ;
+* n_onprep_len;					n_onprep_len =   (s_onprep_len_m + s_onprep_len_w)  * sf ;
+
 * prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;
 								if s_prep_any_elig = 0 then prop_elig_on_prep = 0;
 * n_prep_ever;					n_prep_ever = s_prep_any_ever * sf;
@@ -256,6 +267,7 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 
 * n_agyw;						n_agyw = s_ageg1524w * sf;
 * p_agyw;						p_w_agyw = s_ageg1524w/s_alive1564_w;
+* n_agyw_pg;					n_agyw_pg = s_agyw_pg * sf;
 * prevalence_agyw;				prevalence_agyw = s_hiv1524w/s_ageg1524w;
 * incidence_agyw;				if (s_ageg1524w - s_hiv1524w + s_primary1524w) gt 0 then incidence_agyw = (s_primary1524w *4 * 100)/(s_ageg1524w - s_hiv1524w + s_primary1524w); 
 * p_onprep_agyw;				p_onprep_agyw = s_onprep_1524w/ (s_ageg1524w - s_hiv1524w);
@@ -265,28 +277,47 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_death_hivrel_m;				n_death_hivrel_m = s_death_hivrel_m  * 4* sf;
 * n_death_hivrel_w;				n_death_hivrel_w = s_death_hivrel_w * 4* sf;
 
+* n_hiv_pregnant;				n_hiv_pregnant = s_hiv_pregnant * sf;
+* n_pregnant_onart;				n_pregnant_onart = s_pregnant_onart * sf;
+* n_give_birth_with_hiv;		n_give_birth_with_hiv = s_give_birth_with_hiv * 4 * sf;
+* n_infbirth_testing;			n_infbirth_testing = s_tested_labdel *4 * sf;
+* n_postdel_testing;			n_postdel_testing = s_tested_pd * 4 * sf;
 
-keep run 			 option				cald 
-n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_
+
+* n_vm_this_per;				n_vm_this_per = s_vm_this_per *4 * sf;	
+* n_cd4m_this_per;				n_cd4m_this_per = s_cm_this_per*4 * sf;
+* n_vmmc;						n_vmmc = s_vmmc1549m * 4* sf;
+
+keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w
+n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_onart				 p_onart_m			p_onart_w			n_onart				n_onart_m			n_onart_w
 
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	n_onprep_w			n_onprep_m			n_onprep
-prop_elig_on_prep	 n_prep_ever		
+prop_elig_on_prep	 n_prep_ever		prop_1564_onprep	n_onprep_oral		n_onprep_cab		n_onprep_len
 
 n_sw_1564_			 n_sw_1549_			p_w_1564_sw			p_w_1549_sw			prevalence_1564sw	incidence_1564sw
 p_onprep_sw			 n_onprep_sw
 
-n_msm_1564_			 p_m_msm			prevalence1549_msm	incidence_msm		p_onprep_msm		n_onprep_msm
-n_agyw				 p_w_agyw			prevalence_agyw		incidence_agyw		p_onprep_agyw		n_onprep_agyw
+n_selftested		 n_tested			
 
-n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w
+n_msm_1564_			 p_m_msm			prevalence1549_msm	incidence_msm		p_onprep_msm		n_onprep_msm
+n_agyw				 n_agyw_pg			p_w_agyw			prevalence_agyw		incidence_agyw		p_onprep_agyw		n_onprep_agyw
+
+n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	
+n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_postdel_testing
+n_vm_this_per		 n_cd4m_this_per	n_vmmc
 
 
 ;
 
 proc sort data=y;by run option;run;
+
+data a.short_gen_07Jan25;
+set y;
+run;
+
 
 
 options nomprint;
