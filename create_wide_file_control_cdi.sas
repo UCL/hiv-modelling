@@ -7,9 +7,8 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 *ods listing;
 
 
-
 data a;
-set a.cdi_15jan26;
+set a.cdi_15jan26 a.cdi_15jan26_a;
 if run=. then delete;
 
 *if prop_v_alert_perm ne 0.3 then delete;
@@ -452,7 +451,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * p_newp_ge1;					p_newp_ge1 = s_newp_ge1 / s_alive1564 ;
 * p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
-* av_newp_ge1;					av_newp_ge1 = s_newp / s_newp_ge1 ;
+* av_newp_ge1;					if s_newp_ge1 then av_newp_ge1 = s_newp / s_newp_ge1 ;
 * p_ep;							p_ep = s_ep / s_alive1564;				
 
 * p_m_npge1_; 					p_m_npge1_ = s_m_npge1 / s_alive1564_m; *VCFeb2023;
@@ -528,6 +527,7 @@ if cald=. then delete;run;
 
 
 ************************************************************************************************************************************************************;
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 
 
 data y; set a.long_cdi_control_15Jan26; 
@@ -535,7 +535,7 @@ data y; set a.long_cdi_control_15Jan26;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 ** Set option number for var_stock and var_flow macros here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-%let op_num=1;
+%let op_num=0;
 /*
 0 = baseline (minimal)
 1 = oral PrEP for FSW
@@ -665,98 +665,99 @@ data y; set a.long_cdi_control_15Jan26;
 
 * Use option 0 outputs for years 1985-2023;
 
-proc means noprint data=y; var &v; output out=y_1985 mean= &v;  where cald = 1985.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1986 mean= &v;  where cald = 1986.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1987 mean= &v;  where cald = 1987.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1988 mean= &v;  where cald = 1988.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1989 mean= &v;  where cald = 1989.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1990 mean= &v;  where cald = 1990.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1991 mean= &v;  where cald = 1991.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1992 mean= &v;  where cald = 1992.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1993 mean= &v;  where cald = 1993.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1994 mean= &v;  where cald = 1994.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1995 mean= &v;  where cald = 1995.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1996 mean= &v;  where cald = 1996.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1997 mean= &v;  where cald = 1997.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1998 mean= &v;  where cald = 1998.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_1999 mean= &v;  where cald = 1999.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2000 mean= &v;  where cald = 2000.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2001 mean= &v;  where cald = 2001.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2002 mean= &v;  where cald = 2002.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2003 mean= &v;  where cald = 2003.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2004 mean= &v;  where cald = 2004.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2005 mean= &v;  where cald = 2005.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2006 mean= &v;  where cald = 2006.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2007 mean= &v;  where cald = 2007.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2008 mean= &v;  where cald = 2008.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2009 mean= &v;  where cald = 2009.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2010 mean= &v;  where cald = 2010.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2011 mean= &v;  where cald = 2011.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2012 mean= &v;  where cald = 2012.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2013 mean= &v;  where cald = 2013.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2014 mean= &v;  where cald = 2014.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2015 mean= &v;  where cald = 2015.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2016 mean= &v;  where cald = 2016.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2017 mean= &v;  where cald = 2017.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2018 mean= &v;  where cald = 2018.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2019 mean= &v;  where cald = 2019.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2020 mean= &v;  where cald = 2020.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2021 mean= &v;  where cald = 2021.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2022 mean= &v;  where cald = 2022.5 and option = 0;
-proc means noprint data=y; var &v; output out=y_2023 mean= &v;  where cald = 2023.5 and option = 0;
+proc means noprint data=y; var &v; output out=y_1985 mean= &v;  where 1985 <= cald <1986 and option = 0;
+proc means noprint data=y; var &v; output out=y_1986 mean= &v;  where 1986 <= cald <1987 and option = 0;
+proc means noprint data=y; var &v; output out=y_1987 mean= &v;  where 1987 <= cald <1988 and option = 0;
+proc means noprint data=y; var &v; output out=y_1988 mean= &v;  where 1988 <= cald <1989 and option = 0;
+proc means noprint data=y; var &v; output out=y_1989 mean= &v;  where 1989 <= cald <1990 and option = 0;
+proc means noprint data=y; var &v; output out=y_1990 mean= &v;  where 1990 <= cald <1991 and option = 0;
+proc means noprint data=y; var &v; output out=y_1991 mean= &v;  where 1991 <= cald <1991 and option = 0;
+proc means noprint data=y; var &v; output out=y_1992 mean= &v;  where 1992 <= cald <1993 and option = 0;
+proc means noprint data=y; var &v; output out=y_1993 mean= &v;  where 1993 <= cald <1994 and option = 0;
+proc means noprint data=y; var &v; output out=y_1994 mean= &v;  where 1994 <= cald <1995 and option = 0;
+proc means noprint data=y; var &v; output out=y_1995 mean= &v;  where 1995 <= cald <1996 and option = 0;
+proc means noprint data=y; var &v; output out=y_1996 mean= &v;  where 1996 <= cald <1997 and option = 0;
+proc means noprint data=y; var &v; output out=y_1997 mean= &v;  where 1997 <= cald <1998 and option = 0;
+proc means noprint data=y; var &v; output out=y_1998 mean= &v;  where 1998 <= cald <1999 and option = 0;
+proc means noprint data=y; var &v; output out=y_1999 mean= &v;  where 1999 <= cald <2000 and option = 0;
+proc means noprint data=y; var &v; output out=y_2000 mean= &v;  where 2000 <= cald <2001 and option = 0;
+proc means noprint data=y; var &v; output out=y_2001 mean= &v;  where 2001 <= cald <2002 and option = 0;
+proc means noprint data=y; var &v; output out=y_2002 mean= &v;  where 2002 <= cald <2003 and option = 0;
+proc means noprint data=y; var &v; output out=y_2003 mean= &v;  where 2003 <= cald <2004 and option = 0;
+proc means noprint data=y; var &v; output out=y_2004 mean= &v;  where 2004 <= cald <2005 and option = 0;
+proc means noprint data=y; var &v; output out=y_2005 mean= &v;  where 2005 <= cald <2006 and option = 0;
+proc means noprint data=y; var &v; output out=y_2006 mean= &v;  where 2006 <= cald <2007 and option = 0;
+proc means noprint data=y; var &v; output out=y_2007 mean= &v;  where 2007 <= cald <2008 and option = 0;
+proc means noprint data=y; var &v; output out=y_2008 mean= &v;  where 2008 <= cald <2009 and option = 0;
+proc means noprint data=y; var &v; output out=y_2009 mean= &v;  where 2009 <= cald <2010 and option = 0;
+proc means noprint data=y; var &v; output out=y_2010 mean= &v;  where 2010 <= cald <2011 and option = 0;
+proc means noprint data=y; var &v; output out=y_2011 mean= &v;  where 2011 <= cald <2012 and option = 0;
+proc means noprint data=y; var &v; output out=y_2012 mean= &v;  where 2012 <= cald <2013 and option = 0;
+proc means noprint data=y; var &v; output out=y_2013 mean= &v;  where 2013 <= cald <2014 and option = 0;
+proc means noprint data=y; var &v; output out=y_2014 mean= &v;  where 2014 <= cald <2015 and option = 0;
+proc means noprint data=y; var &v; output out=y_2015 mean= &v;  where 2015 <= cald <2016 and option = 0;
+proc means noprint data=y; var &v; output out=y_2016 mean= &v;  where 2016 <= cald <2017 and option = 0;
+proc means noprint data=y; var &v; output out=y_2017 mean= &v;  where 2017 <= cald <2018 and option = 0;
+proc means noprint data=y; var &v; output out=y_2018 mean= &v;  where 2018 <= cald <2019 and option = 0;
+proc means noprint data=y; var &v; output out=y_2019 mean= &v;  where 2019 <= cald <2020 and option = 0;
+proc means noprint data=y; var &v; output out=y_2020 mean= &v;  where 2020 <= cald <2021 and option = 0;
+proc means noprint data=y; var &v; output out=y_2021 mean= &v;  where 2021 <= cald <2022 and option = 0;
+proc means noprint data=y; var &v; output out=y_2022 mean= &v;  where 2022 <= cald <2023 and option = 0;
+proc means noprint data=y; var &v; output out=y_2023 mean= &v;  where 2023 <= cald <2024 and option = 0;
 
-proc means noprint data=y; var &v; output out=y_2024 mean= &v;  where cald = 2024.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2025 mean= &v;  where cald = 2025.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2026 mean= &v;  where cald = 2026.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2027 mean= &v;  where cald = 2027.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2028 mean= &v;  where cald = 2028.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2029 mean= &v;  where cald = 2029.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2030 mean= &v;  where cald = 2030.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2031 mean= &v;  where cald = 2031.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2032 mean= &v;  where cald = 2032.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2033 mean= &v;  where cald = 2033.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2034 mean= &v;  where cald = 2034.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2035 mean= &v;  where cald = 2035.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2036 mean= &v;  where cald = 2036.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2037 mean= &v;  where cald = 2037.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2038 mean= &v;  where cald = 2038.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2039 mean= &v;  where cald = 2039.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2040 mean= &v;  where cald = 2040.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2041 mean= &v;  where cald = 2041.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2042 mean= &v;  where cald = 2042.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2043 mean= &v;  where cald = 2043.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2044 mean= &v;  where cald = 2044.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2045 mean= &v;  where cald = 2045.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2046 mean= &v;  where cald = 2046.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2047 mean= &v;  where cald = 2047.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2048 mean= &v;  where cald = 2048.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2049 mean= &v;  where cald = 2049.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2050 mean= &v;  where cald = 2050.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2051 mean= &v;  where cald = 2051.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2052 mean= &v;  where cald = 2052.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2053 mean= &v;  where cald = 2053.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2054 mean= &v;  where cald = 2054.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2055 mean= &v;  where cald = 2055.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2056 mean= &v;  where cald = 2056.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2057 mean= &v;  where cald = 2057.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2058 mean= &v;  where cald = 2058.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2059 mean= &v;  where cald = 2059.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2060 mean= &v;  where cald = 2060.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2061 mean= &v;  where cald = 2061.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2062 mean= &v;  where cald = 2062.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2063 mean= &v;  where cald = 2063.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2064 mean= &v;  where cald = 2064.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2065 mean= &v;  where cald = 2065.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2066 mean= &v;  where cald = 2066.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2067 mean= &v;  where cald = 2067.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2068 mean= &v;  where cald = 2068.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2069 mean= &v;  where cald = 2069.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2070 mean= &v;  where cald = 2070.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2071 mean= &v;  where cald = 2071.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2072 mean= &v;  where cald = 2072.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2073 mean= &v;  where cald = 2073.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2074 mean= &v;  where cald = 2074.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=y_2075 mean= &v;  where cald = 2075.5 and option = &op_num;
+
+proc means noprint data=y; var &v; output out=y_2024 mean= &v; where 2024 <= cald < 2025 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2025 mean= &v; where 2025 <= cald < 2026 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2026 mean= &v; where 2026 <= cald < 2027 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2027 mean= &v; where 2027 <= cald < 2028 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2028 mean= &v; where 2028 <= cald < 2029 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2029 mean= &v; where 2029 <= cald < 2030 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2030 mean= &v; where 2030 <= cald < 2031 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2031 mean= &v; where 2031 <= cald < 2032 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2032 mean= &v; where 2032 <= cald < 2033 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2033 mean= &v; where 2033 <= cald < 2034 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2034 mean= &v; where 2034 <= cald < 2035 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2035 mean= &v; where 2035 <= cald < 2036 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2036 mean= &v; where 2036 <= cald < 2037 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2037 mean= &v; where 2037 <= cald < 2038 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2038 mean= &v; where 2038 <= cald < 2039 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2039 mean= &v; where 2039 <= cald < 2040 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2040 mean= &v; where 2040 <= cald < 2041 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2041 mean= &v; where 2041 <= cald < 2042 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2042 mean= &v; where 2042 <= cald < 2043 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2043 mean= &v; where 2043 <= cald < 2044 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2044 mean= &v; where 2044 <= cald < 2045 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2045 mean= &v; where 2045 <= cald < 2046 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2046 mean= &v; where 2046 <= cald < 2047 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2047 mean= &v; where 2047 <= cald < 2048 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2048 mean= &v; where 2048 <= cald < 2049 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2049 mean= &v; where 2049 <= cald < 2050 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2050 mean= &v; where 2050 <= cald < 2051 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2051 mean= &v; where 2051 <= cald < 2052 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2052 mean= &v; where 2052 <= cald < 2053 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2053 mean= &v; where 2053 <= cald < 2054 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2054 mean= &v; where 2054 <= cald < 2055 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2055 mean= &v; where 2055 <= cald < 2056 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2056 mean= &v; where 2056 <= cald < 2057 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2057 mean= &v; where 2057 <= cald < 2058 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2058 mean= &v; where 2058 <= cald < 2059 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2059 mean= &v; where 2059 <= cald < 2060 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2060 mean= &v; where 2060 <= cald < 2061 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2061 mean= &v; where 2061 <= cald < 2062 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2062 mean= &v; where 2062 <= cald < 2063 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2063 mean= &v; where 2063 <= cald < 2064 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2064 mean= &v; where 2064 <= cald < 2065 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2065 mean= &v; where 2065 <= cald < 2066 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2066 mean= &v; where 2066 <= cald < 2067 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2067 mean= &v; where 2067 <= cald < 2068 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2068 mean= &v; where 2068 <= cald < 2069 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2069 mean= &v; where 2069 <= cald < 2070 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2070 mean= &v; where 2070 <= cald < 2071 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2071 mean= &v; where 2071 <= cald < 2072 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2072 mean= &v; where 2072 <= cald < 2073 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2073 mean= &v; where 2073 <= cald < 2074 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2074 mean= &v; where 2074 <= cald < 2075 and option= &op_num;
+proc means noprint data=y; var &v; output out=y_2075 mean= &v; where 2075 <= cald < 2076 and option= &op_num;
 																								
 data &v ; set  
 y_1985  y_1986  y_1987  y_1988  y_1989  y_1990  y_1991  y_1992  y_1993  y_1994  y_1995  y_1996  y_1997  y_1998  y_1999  y_2000  y_2001  y_2002  y_2003  y_2004  
