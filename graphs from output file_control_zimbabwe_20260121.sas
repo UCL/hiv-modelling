@@ -2,10 +2,10 @@
 ***Program to produce graphs using averages across runs
 ***Use include statement in analysis program to read the code below in;
 
-*** 20251210 version has options 0-13 and 99, using weaker condom change intervention parameters and removing self-testing in the minimal (option 0);
+*** 20260121 version has options 0-13 and 99, using weaker condom change intervention parameters and removing self-testing in the minimal (option 0);
 * Testing distribution of cablen_extra_pref increase relative use of oral pref;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251210_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260121_out\";
 /*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
@@ -209,7 +209,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=183;
+%let nfit=256;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -431,7 +431,7 @@ ods listing;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20251210.doc' startpage=never;
+ods rtf file = 'C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zimbabwe\graphs_20260121.doc' startpage=never;
 
 
 ***Options 0-13 + 99
@@ -2029,14 +2029,14 @@ ods rtf close;run;
 
 * export icer_sums;
 proc export data=icer_sums
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251210_out\icer_sums.csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260121_out\icer_sums.csv" 
 	dbms=csv replace; 
 	putnames=yes;
 run;
 
 * export icer_sums_2049;
 proc export data=icer_sums_2049
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251210_out\icer_sums_2049.csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260121_out\icer_sums_2049.csv" 
 	dbms=csv replace; 
 	putnames=yes;
 run;
