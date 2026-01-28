@@ -20,10 +20,10 @@ run;
 
 %let stock_list = 
 
-n_alive1564_			n_alive				n_hivge15_			n_hivge1564_		n_agyw			n_agyw_pg
-n_sw_1549_				n_msm_1564_			n_hiv_pregnant		n_give_birth_with_hiv				s_onart
-n_vm_this_per		 	n_cd4m_this_per		n_vmmc				n_selftested		n_tested		n_pregnant_onart
-n_infbirth_testing		n_postdel_testing	p_diag				p_onart_diag		p_onart_vl1000_
+n_alive					n_alive1564_		n_hivge15_			n_hivge1564_		n_agyw			n_agyw_pg
+n_sw_1549_				n_msm_1564_			n_hiv_pregnant		n_give_birth_with_hiv				n_onart
+n_vm_this_per		 	n_cd4m_this_per		n_vmmc1549m			n_selftested		n_tested		n_pregnant_onart
+n_infbirth_testing		n_postdel_testing	p_diag				p_onart_diag		p_onart_vl1000_	n_vmmc_all
 /*n_onprep_oral			n_onprep_cab	n_onprep_len*/
 ;
 
@@ -164,7 +164,8 @@ set c;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_calibration_means_27_01_26.doc' startpage=never; 
+ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_calibration_means_28_01_26.doc' startpage=never; 
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Population (15+)";
@@ -299,12 +300,15 @@ Title    height=1.5 justify=center "Number of VMMCs";
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2030  by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 300000 by 25000)  valueattrs=(size=10);
 
-label n_vmmc    	= "Model";
+label n_vmmc1549m    = "Model 15-49";
+label n_vmmc_all    = "Model 10+";
 label o_s_new_vmmc  = "WHO 15+";
 label o_s_new_vmmc_1049m  = "Ministry of Health 10+";
 label o_s_new_vmmc_all = "UNAIDS 10+";
 
-series  x=cald y=n_vmmc /           lineattrs = (color=black thickness = 2);
+series  x=cald y=n_vmmc1549m /           lineattrs = (color=black thickness = 2);
+series  x=cald y=n_vmmc_all /           lineattrs = (color=blue thickness = 2);
+
 
 scatter x=cald y=o_s_new_vmmc / markerattrs = (symbol=circle color=red size = 10);
 scatter x=cald y=o_s_new_vmmc_1049m / markerattrs = (symbol=circle color=green size = 10);
@@ -314,7 +318,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of self tests";
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2030  by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 35000000 by 25000)  valueattrs=(size=10);
+yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 7000000 by 1000000)  valueattrs=(size=10);
 
 label n_selftested    	= "Model";
 label o_n_hivst_primd  = "MoH: Self tests distributed for primary use";
@@ -569,9 +573,48 @@ rename year=cald;
 run;
 
 
+data c1;
+set stocks1;
+
+%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026_genesis.sas";by cald;
+run;
+
+
+data d1;
+set c1;
+%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_FSW_Zimbabwe_genesis.sas"; by cald;
+run;
+
+proc sgplot data=d1; 
+Title    height=1.5 justify=center "Currently on PrEP (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2030 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 100000 by 10000) valueattrs=(size=10);
+
+label n_onprep_oral = "Model oral PrEP";
+label n_onprep_len = "Model len PrEP";
+label o_n_prep_all_NSP = "National Strategic Plan 2021-25";
+
+series  x=cald y=n_onprep_oral/	lineattrs = (color=black thickness = 2);
+series  x=cald y=n_onprep_len/	lineattrs = (color=blue thickness = 2);
+
+scatter x=cald y=o_n_prep_all_NSP/ markerattrs=(symbol=circle color=red size=10);
+run;quit;
+
+
 proc transpose data=stocks1 out=outputs_27Jan26_1; id cald; run;
 
 
 data final;
 set outputs_27Jan26 outputs_27Jan26_1;
+run;
+
+data final1;
+set final;
+keep _NAME_ _2024 _2025 _2026 _2027 _2028 _2029 _2030;
+run;
+
+proc export data=final1
+	outfile= "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\outputs_2024_2030.csv"
+	dbms=csv replace; 
+	putnames=yes;
 run;
