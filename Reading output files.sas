@@ -3,7 +3,7 @@
 *libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Genesis_Zim\17Dec25";
 *libname b "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim\17Dec2025";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim\07Jan2026_a";
 libname b "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data b;
@@ -11,7 +11,7 @@ set a.out:;
 run;
 
 
-data b.Genesis_Zim_17Dec25;
+data b.GenesisZim_07Jan26_a;
 set b;
 run;
 
