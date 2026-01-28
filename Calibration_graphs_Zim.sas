@@ -453,10 +453,10 @@ Title    height=1.5 justify=center "Population (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 15000000) valueattrs=(size=10);
 
-label mean_n_alive_0 = "Model";
-label o_pop_15plus_Zim_cens  = "Census";
+label mean_n_alive_0 = "Model 15+";
+label o_pop_15plus_Zim_cens  = "Census 15+";
 label o_pop_1565_Zi_CIA = "CIA 15-65";
-label o_pop_15plus_WPP = "World population prospectus";
+label o_pop_15plus_WPP = "World population prospectus 15+";
 
 series  x=cald y=mean_n_alive_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
