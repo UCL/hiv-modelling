@@ -4,7 +4,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 *libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
-set a.genesiszim_07jan26; 
+set a.genesiszim_07jan26 a.genesis_zim_07jan26_a; 
 if run=. then delete; 
 
 proc sort;
@@ -20,9 +20,9 @@ set a;
 *Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
 *accessed 9/2/2023;
 * 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
-if cald=2022.5;
+if cald=2023;
 s_alive = s_alive_m + s_alive_w ;
-sf = (16320000 * 0.581) / s_alive; 
+sf = 9198000 / s_alive; 
 
 keep run sf;
 proc sort; by run;run;
@@ -183,7 +183,7 @@ s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_
 s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw;
 s_hivge15_ = s_hivge15m + s_hivge15w;
 
-s_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vmmc3034m + s_new_vmmc3539m + s_new_vmmc4044m +s_new_vmmc4549m;
+s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vmmc3034m + s_new_vmmc3539m + s_new_vmmc4044m +s_new_vmmc4549m;
 
 ***general population;
 
@@ -286,7 +286,9 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 
 * n_vm_this_per;				n_vm_this_per = s_vm_this_per *4 * sf;	
 * n_cd4m_this_per;				n_cd4m_this_per = s_cm_this_per*4 * sf;
-* n_vmmc;						n_vmmc = s_vmmc1549m * 4* sf;
+* n_vmmc1549m;					n_vmmc1549m = s_new_vmmc1549m * 4* sf;
+* n_vmmc_all;					n_vmmc_all = s_new_vmmc * 4* sf;
+
 
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
@@ -307,7 +309,7 @@ n_agyw				 n_agyw_pg			p_w_agyw			prevalence_agyw		incidence_agyw		p_onprep_agyw
 
 n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	
 n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_postdel_testing
-n_vm_this_per		 n_cd4m_this_per	n_vmmc
+n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all
 
 
 ;

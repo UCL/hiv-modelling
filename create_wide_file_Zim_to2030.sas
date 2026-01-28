@@ -141,7 +141,7 @@ run;
 
 data stocks ; 
 merge year &stock_list;
-drop _TYPE_ _FREQ_ n_onprep_oral n_onprep_cab n_onprep_len;***dropping the prep vars as inj prep was not introduced so need to overwrite these by running with option=
+drop _TYPE_ _FREQ_ n_onprep_oral n_onprep_cab n_onprep_len;***dropping the prep vars as inj prep was not introduced so need to overwrite these by running with option=7;
 rename year=cald;
 run;
 
