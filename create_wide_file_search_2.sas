@@ -1699,6 +1699,7 @@ p_tldsw2_elig_tldsw
 
 p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
+p_tested_incl_self
 
 /* *hypertension */
 pop1524 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85 
@@ -1939,7 +1940,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
 %var(v=n_tested_m);
-%var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;
+%var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;   %var(v=p_tested_incl_self);
 %var(v=p_mcirc) ; * %var(v=p_mcirc_1519m); * %var(v=p_mcirc_2024m);* %var(v=p_mcirc_2529m);
 * %var(v=p_mcirc_3034m);* %var(v=p_mcirc_3539m);* %var(v=p_mcirc_4044m);* %var(v=p_mcirc_4549m); 
 * %var(v=p_mcirc_5064m); * %var(v=p_mcirc_1549m);
@@ -2209,7 +2210,7 @@ dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cos
 ddaly_mtct
 dzdv_cost dten_cost  d3tc_cost  dnev_cost  dlpr_cost  ddar_cost  defa_cost
  ddol_cost  dcab_cost  dlen_cost  cost
-
+p_tested_incl_self
 dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  dcost_drug_level_test n_hiv n_alive  p_drug_level_test
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
@@ -2619,6 +2620,17 @@ if p_onart_diag_w_24 > 0.85;
 if p_onart_vl1000_m_24 > 0.75;
 if p_onart_vl1000_w_24 > 0.80;
 
+d_p_tested_incl_self_10y_2 = p_tested_incl_self_10y_2 -  p_tested_incl_self_10y_1; 
+
+d_p_diag_10y_2_1 = p_diag_10y_2 - p_diag_10y_1;
+
+d_p_onart_diag_10y_2_1 = p_onart_diag_10y_2 - p_onart_diag_10y_1;
+
+d_p_onart_vl1000_10y_2_1 = p_onart_vl1000_10y_2 - p_onart_vl1000_10y_1;
+
+d_prop_1564_onprep_10y_2 = prop_1564_onprep_10y_2 - prop_1564_onprep_10y_1 ;
+
+d_p_diagnosed_hypert_1549_10y_2 = p_diagnosed_hypert_1549_10y_2 - p_diagnosed_hypert_1549_10y_1;
 
 
 ods html;
@@ -2638,6 +2650,29 @@ p_hard_reach_25
 ;
 run;
 ods html close;
+
+
+
+ods html;
+proc means median p5 p95 mean lclm uclm;
+var
+
+p_tested_incl_self_10y_1 p_tested_incl_self_10y_2  d_p_tested_incl_self_10y_2 
+
+d_p_diag_10y_2_1  p_diag_10y_2  p_diag_10y_1
+
+d_p_onart_diag_10y_2_1  p_onart_diag_10y_2  p_onart_diag_10y_1
+
+d_p_onart_vl1000_10y_2_1  p_onart_vl1000_10y_2  p_onart_vl1000_10y_1
+
+prop_1564_onprep_10y_1 prop_1564_onprep_10y_2  d_prop_1564_onprep_10y_2 
+
+
+;
+
+run;
+ods html close;
+
 
 
 
