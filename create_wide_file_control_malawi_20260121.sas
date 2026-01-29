@@ -1,10 +1,10 @@
-* Note this create wide file uses the outputs from re-running hiv_synthesis_control_zimbabwe_20260121 on 21/01/2026 therefore output runs can be added to those generated previously;
+* Note this create wide file uses the outputs from re-running hiv_synthesis_control_malawi_20251210 on 21/01/2026 therefore output runs can be added to those generated previously;
 
 * options user="/folders/myfolders/";
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260121_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20260121_out\";
 
 
 * Define var list needed to create costs and outputs ;
@@ -68,13 +68,13 @@ s_m_npge1				s_w_npge1				s_alive1564_m				s_alive1564_w
 s_diag_msm_age1564
 ;
 
-%put &keep_var_list;
+/*%put &keep_var_list;*/
 
 
 /*
 
 * 20251210 outputs;
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20251210_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20251210_out\";
 
 data f1; set a.out1:(keep=&keep_var_list); if not missing(cald);
 data f2; set a.out2:(keep=&keep_var_list); if not missing(cald);
@@ -88,7 +88,7 @@ data f9; set a.out9:(keep=&keep_var_list); if not missing(cald);
 run;
 
 * 20260121 outputs;
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260121_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20260121_out\";
 
 data g1; set a.out1:(keep=&keep_var_list); if not missing(cald);
 data g2; set a.out2:(keep=&keep_var_list); if not missing(cald);
@@ -125,24 +125,23 @@ proc sort data=g; 			* Can omit this if using proc sql to merge;
 	by run cald option;
 run;
 
-proc freq data=g; table option; run;
+proc freq data=g; table option; where cald=2023.75; run;	* option 0 only;
+proc freq data=g; table option; where cald=2024; run;		* all options;
 
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
-*Zimbabwe;
-*Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
-*accessed 9/2/2023;
-* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
+*Malawi;
+* 20.4 million in 2022.5, 58.1% are >=15);
 
 data sf;
 	set g;
-	where cald=2022.5;
+	where cald=2024;
 
 	s_alive = s_alive_m + s_alive_w ;
-	sf_2022 = (16320000 * 0.581) / s_alive;  * 58.1% of Zim population in 2020 >= age 15 ;
-	sf = sf_2022;
-	keep run sf sf_2022;
+	sf_2024 = (20000000 * 0.58) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
+	sf = sf_2024;
+	keep run sf sf_2024;
 run;
 
 proc sort data=sf; 
@@ -163,7 +162,6 @@ quit;
 
 
 
-/*%put(sf);*/
 
 data y; 
 merge g sf;
@@ -200,18 +198,18 @@ discount_10py = min(1, 1/(1.10**(cald-&year_start_disc)));
 * ================================================================================= ;
 
 
-* Adjustments to costs for Zimbabwe - HIV Control ;
+* Adjustments to costs for Malawi - HIV Control ;
 * Original costs in 000s of USD;
 * Use costs provided in spreadsheet unit_cost-kp_cvg-2025-07-14_draft;
-* Updated Dec 25;
+* Updated Jan 26;
 
 * NB 
 1. *4 to get annual cost for each time step (because we take the mean over several 3-month time steps) for testing and VMMC only (item-based costs) 
-2. *sf to scale up to Zim population size
+2. *sf to scale up to Malawi population size
 3. total cost required for output spreadsheet so do not /1e6
 ;
 
-%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_costs.sas";
+%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Malawi_costs.sas";
 /*%put &cost_VMMC;*/
 
 
@@ -503,12 +501,12 @@ run;
 
 
 
-data a.long_zim_control; 
+data a.long_mlw_control; 
 	set y;
 run;
 
-/*proc contents data = a.long_zim_control; run;*/
-/*proc freq data=a.long_zim_control; table option;run;*/
+/*proc contents data = a.long_mlw_control; run;*/
+/*proc freq data=a.long_mlw_control; table option;run;*/
 
 
 
@@ -564,16 +562,6 @@ OPTIONS
 	VLS_FSW					VLS_MSM
 	N_circumcised_15_24_M		/* added Sept 2025 - stock */
 	Total_AGYW_PG				/* added Sept 2025 - stock */
-	/* Extras for calibration */
-	n_onprep_agyw_plw			n_agyw_plw
-	n_onprep_oral_agyw_pg		n_onprep_len_agyw_pg
-	n_onprep_oral_agyw_plw		n_onprep_len_agyw_plw
-	n_onprep_oral_m				n_onprep_len_m				
-	n_onprep_oral_w				n_onprep_len_w
-	n_onprep_oral_sw			n_onprep_len_sw			
-	n_onprep_oral_msm			n_onprep_len_msm
-	n_tested_m					n_tested_w
-	n_self_tested_m				n_self_tested_w					n_tested_due_to_self_test
 	;
 /*%put &stock_list;*/
 
@@ -592,11 +580,6 @@ OPTIONS
 	PrEP_Pop_GP				NewHIV_PrEP_Pop_GP
 	Percent_FSW_reached		Percent_MSM_reached
 	PrEP_AGYW_PG			/* added Sept 2025 */
-	/* Extras for calibration */
-	incidence1549			incidence1549w			incidence1549m			incidence1564
-	p_newp_ge1				p_newp_ge5				av_newp_ge1				p_ep
-	p_m_npge1_				p_w_npge1_
-	p_mcirc_1524m
 	;
 /*%put &flow_list;*/
 
@@ -640,10 +623,10 @@ OPTIONS
 ** Load data and update variable names for outputs;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-data y; set a.long_zim_control; 
+data y; set a.long_mlw_control; 
 
 	year_stock=floor(cald);			* calendar year variable to group stocks when calculating means;
-	year_flow=floor(cald+0.5);		* mid-year to mid-year variable to group flows when calculating means;
+	year_flow=floor(cald+0.25);		* mid-year to mid-year variable to group flows when calculating means (.75 - .5);
 
 
 	Total_00_14_M = .;
@@ -759,82 +742,7 @@ run;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-** Define macros;
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-
-
-* var_stock macro takes the mean over the calendar year for each stock variable in turn;
-/*	%let v=n_alive_1524m;	*test variable; */
-%macro var_stock(v=);
-
-	proc means noprint data=y;		/* take one-year mean over calendar year and all runs for each variable */
-		where (option = 0 and cald < 2024.0)			/* option 0 from 1984 to end 2023 */
-		   or (option = &op_num and cald >= 2024.0);	/* option &op_num from 2024 onwards */
-		class year_stock;
-		var &v;
-		output out=&v(drop=_type_ _freq_)
-			mean=&v;
-	run;
-
-	data &v;						/* replace column year_stock with year */
-	    set &v; if not missing(year_stock);
-	    year = year_stock;
-	    drop year_stock;
-	run;
-
-%mend var_stock;
-
-
-
-* var_flow macro takes a 1-year mean from mid-year to mid-year for each flow variable in turn;
-/*	%let v=n_birth;	*test variable; */
-%macro var_flow(v=);
-
-	proc means noprint data=y;			/* take one-year mean from mid-year to mid-year and over all runs for each variable */
-		where (option = 0 and cald < 2024.0)			/* option 0 from 1984 to end 2023 */
-		   or (option = &op_num and cald >= 2024.0);
-		class year_flow;
-		var &v;
-		output out=&v(drop=_type_ _freq_)
-			mean=&v;
-	run;
-
-	data &v;						/* replace column year_stock with year */
-	    set &v; if not missing(year_flow);
-	    year = year_flow;
-	    drop year_flow;
-	run;
-
-%mend var_flow;
-
-
-
-
-* make_stocks macro runs the var_stock macro through a list of variable names;
-%macro make_stocks;
-	%let n=%sysfunc(countw(&stock_list));	/* number of variables in flow_list */
-    %do i=1 %to &n;
-        %let var=%scan(&stock_list, &i);
-        %var_stock(v=&var);
-    %end;
-%mend;
-
-
-* make_flows macro runs the var_flow macro through a list of variable names;
-%macro make_flows;
-	%let n=%sysfunc(countw(&flow_list));	/* number of variables in flow_list */
-    %do i=1 %to &n;
-        %let var=%scan(&flow_list, &i);
-        %var_flow(v=&var);
-    %end;
-%mend;
-
-
-
-
-
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-** Set option number for var_stock and var_flow macros here;
+** Set option number here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 %let op_num=0;
@@ -842,24 +750,52 @@ run;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-** Run macros;
+** proc means for all stocks and flows;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-* Stocks;
-%make_stocks;		/* runs make_stocks macro */
+proc means noprint data=y;
+    /* Filter data by calendar year and option */
+    where (cald < 2024 and option = 0)				/* option 0 from 1984 to end 2023 */
+       or (cald >= 2024 and option = &op_num);		/* option &op_num from 2024 onwards */
+       
+    /* Group by year_stock */
+    class year_stock;
 
-data stocks;		/* merge stocks outputs into one dataset */
-    merge &stock_list;
-    by year;
+    /* Specify the list of variables */
+    var &stock_list;
+
+    /* Output means into a new dataset, keeping only means and grouping vars */
+    output out=stock_means(drop=_type_ _freq_)
+        mean=;
+run;
+
+data stock_means; 
+	set stock_means; if not missing(year_stock);
+	year = year_stock;								/* replace column year_stock with year */
+	drop year_stock;
 run;
 
 
-* Flows;
-%make_flows;		/* runs make_flows macro */
+proc means noprint data=y;
+    /* Filter data by calendar year and option */
+    where (cald < 2024 and option = 0)				/* option 0 from 1984 to end 2023 */
+       or (cald >= 2024 and option = &op_num);		/* option &op_num from 2024 onwards */
+       
+    /* Group by year_stock */
+    class year_flow;
 
-data flows;			/* merge flows outputs into one dataset */
-    merge &flow_list;
-    by year;
+    /* Specify the list of variables */
+    var &flow_list;
+
+    /* Output means into a new dataset, keeping only means and grouping vars */
+    output out=flow_means(drop=_type_ _freq_)
+        mean=;
+run;
+
+data flow_means; 
+	set flow_means; if not missing(year_flow);
+	year = year_flow;								/* replace column year_flow with year */
+	drop year_flow;
 run;
 
 
@@ -869,24 +805,17 @@ run;
 ** Save outputs;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-* Save output file with all outputs;
-data a.outputs_all_&op_num; merge stocks flows;
-	by year;
-run;
-
-
-* Save output file for HIV Control spreadsheet;
 data outputs_&op_num; 
-	retain year &keep_vars_in_order;	* Reorders variables;
-	set a.outputs_all_&op_num;
-	keep year &keep_vars_in_order;		* Drops extra variables;
+	retain year &keep_vars_in_order;				/* sort variables into order needed for output spreadsheet */
+	merge stock_means flow_means;
+	by year;
+	if year >= 1985;								/* keep only year 1985 onwards */
 run;
 
+proc transpose data=outputs_&op_num out=outputs_&op_num; run;			/* transpose to change outputs from columns to rows */
 
-proc transpose data=outputs_&op_num out=a.outputs_&op_num; run;
-
-proc export data=a.outputs_&op_num
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260121_out\outputs_&op_num..csv" 
+proc export data=outputs_&op_num										/* export to csv in output folder */
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20260121_out\outputs_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
