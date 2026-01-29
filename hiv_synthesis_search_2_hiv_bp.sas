@@ -21739,7 +21739,9 @@ rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effec
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  cablen_extra_pref  add_prob_prep_b_cab add_prob_prep_b_len
 
-prep_willingness_threshold
+dol_higher_potency
+
+prep_willingness_threshold  pr_inm_len_prep_primary
 
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti   prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid prob_prep_elig_pwid msm_risk_cls  prob_prep_elig_msm
@@ -23918,7 +23920,9 @@ rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr
 
 prep_cab_effect_inm_partner pref_prep_cablen_beta_s1 incr_res_risk_cab_inf_3m prep_len_effect_cam_partner  incr_res_risk_len_inf_3m 
 
-prep_willingness_threshold
+dol_higher_potency
+
+prep_willingness_threshold pr_inm_len_prep_primary
 
 rr_testing_female prob_prep_pop_wide_tld
 pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut res_level_len_mut super_inf_res  
@@ -23926,6 +23930,11 @@ oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on
 artvis0_lower_adh  pop_wide_prep_adh_effect rate_lencab_to_tld  rel_rate_interrupt_lencab
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_cab_prep_primary  pr_cam_len_prep_primary    rel_pr_inm_cab_prep_tail_primary 
+
+pr_inm_cab_prep_primary  pr_cam_len_prep_primary  rel_pr_inm_cab_prep_tail_primary  rr_res_cab_dol hivtest_type_1_init_prep_cab hivtest_type_1_prep_cab
+
+pr_cam_len_prep_primary  pr_cam_len_prep_primary  rel_pr_cam_len_prep_tail_primary   hivtest_type_1_init_prep_len hivtest_type_1_prep_len
+
   rel_pr_cam_len_prep_tail_primary rr_res_cab_dol    
 hivtest_type_1_init_prep_cab hivtest_type_1_prep_cab hivtest_type_1_init_prep_len hivtest_type_1_prep_len
 sens_ttype3_prep_cab_primary sens_ttype3_prep_cab_inf3m sens_ttype3_prep_cab_infge6m

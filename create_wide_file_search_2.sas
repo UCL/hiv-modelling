@@ -1831,7 +1831,7 @@ sens_ttype3_prep_len_primary sens_ttype3_prep_len_inf3m sens_ttype3_prep_len_inf
 
 effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
 sens_tests_prep_cab sens_tests_prep_len  pr_inm_cab_prep_primary pr_inm_len_prep_primary
-pref_prep_cab_beta_s1 pref_prep_len_beta_s1  testt1_prep_cab_eff_on_res_prim    testt1_prep_len_eff_on_res_prim  
+pref_prep_cab_beta_s1 pref_prep_cablen_beta_s1  testt1_prep_cab_eff_on_res_prim    testt1_prep_len_eff_on_res_prim  
 incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 
 dzdv_cost dten_cost  d3tc_cost  dnev_cost  dlpr_cost  ddar_cost  defa_cost
@@ -1839,9 +1839,13 @@ dzdv_cost dten_cost  d3tc_cost  dnev_cost  dlpr_cost  ddar_cost  defa_cost
 
 lencab_uptake lencab_uptake_vlg1000   rate_return_for_lencab
 
+prep_len_effect_cam_partner  
+
+lencab_uptake lencab_uptake_vlg1000  rate_return_for_lencab  date_prep_cab_intro pr_res_len  by rr_mort_tdf_prep prep_dependent_prev_vg1000
+
 p_emerge_inm_res_cab_notpr
 
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld    
 
 pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol  p_dol_2vg1000_dolr1  p_o_dar_uvl2
 
@@ -1855,21 +1859,15 @@ p_started_lencab_vls  p_ever_len_o_len  n_offered_return_lencab  n_mtct  p_ever_
 p_len_w p_len_m  p_diag_vl1000  p_len_plw  pr_res_len prevalence15pl  n_death_hiv_m  n_death_hiv_w n_death
 n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1000  p_onartvisit0  dcost_sw_program n_self_tested  by rr_mort_tdf_prep n_adc
 
-artvis0_lower_adh  rate_dead_hivpos_cause1  dcost_self_test  n_prep_oral  prep_dependent_prev_vg1000 rate_self_test_if_introduced self_test_targeting
+artvis0_lower_adh  rate_dead_hivpos_cause1  dcost_self_test  n_prep_oral  prep_dependent_prev_vg1000 rate_self_test self_test_targeting
 
 n_infection_incl_mtct
 
-r_choose_stop_prep_oral_comm_tld 
-r_test_startprep_any_comm_tld
-prob_prep_oral_b_comm_tld
-incr_pref_prep_oral_comm_tld
-adh_effect_comm_tld
-rr_return_comm_tld
-rr_interrupt_comm_tld
-
-p_tested_incl_self   effect_comm_tld_hard_reach  p_hard_reach
+p_tested_incl_self    p_hard_reach
 
 p_diag_ehr  p_onart_diag_ehr  prop_elig_on_prep_ehr  p_onart_vl1000_ehr   prob_pos_self_test_conf
+
+pr_ever_prep_cab_res_cab  pr_ev_prep_cab_res_cab_hiv
 
 ;
 
@@ -2188,6 +2186,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prev_cva_4049m); %var(v=prev_cva_5059m); %var(v=prev_cva_6069m); %var(v=prev_cva_7079m); %var(v=prev_cva_ge80m);
 %var(v=prev_cva_4049w); %var(v=prev_cva_5059w); %var(v=prev_cva_6069w); %var(v=prev_cva_7079w); %var(v=prev_cva_ge80w); 
 
+%var(v=pr_ever_prep_cab_res_cab);   %var(v=pr_ev_prep_cab_res_cab_hiv); 
+
 /*
 
 %var(v=rate_dead_cvd); %var(v=n_dead_cvd );
@@ -2350,6 +2350,7 @@ n_dead_hivneg_cvd  rate_dead_hivneg_cvd
 
 */
 
+pr_ever_prep_cab_res_cab  pr_ev_prep_cab_res_cab_hiv
 
 htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin htn_cost_cvd
 dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin dhtn_cost_cvd
@@ -2429,20 +2430,14 @@ effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_tim
 sens_tests_prep_cab  pr_inm_cab_prep_primary
 sens_tests_prep_len  pr_cam_len_prep_primary
 pref_prep_cab_beta_s1  testt1_prep_cab_eff_on_res_prim 
-pref_prep_len_beta_s1  testt1_prep_len_eff_on_res_prim  
+pref_prep_cablen_beta_s1  testt1_prep_len_eff_on_res_prim  
 incr_res_risk_cab_inf_3m  reg_option_107_after_cab
-p_emerge_inm_res_cab_notpr rate_self_test_if_introduced self_test_targeting
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
+p_emerge_inm_res_cab_notpr rate_self_test self_test_targeting
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld   
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
 lencab_uptake lencab_uptake_vlg1000  rate_return_for_lencab  date_prep_cab_intro pr_res_len  by rr_mort_tdf_prep prep_dependent_prev_vg1000
 
-r_choose_stop_prep_oral_comm_tld 
-r_test_startprep_any_comm_tld
-prob_prep_oral_b_comm_tld
-incr_pref_prep_oral_comm_tld
-adh_effect_comm_tld
-rr_return_comm_tld
-rr_interrupt_comm_tld  effect_comm_tld_hard_reach  prob_pos_self_test_conf
+ prob_pos_self_test_conf
 
 prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
 prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
@@ -2508,20 +2503,14 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
  %par(p=sens_ttype1_prep_len_primary);  %par(p=sens_ttype1_prep_len_inf3m);  %par(p=sens_ttype1_prep_len_infge6m);
  %par(p=sens_ttype3_prep_len_primary);  %par(p=sens_ttype3_prep_len_inf3m);  %par(p=sens_ttype3_prep_len_infge6m);
  %par(p=sens_tests_prep_len);  %par(p=pr_inm_len_prep_primary);
-%par(p=pref_prep_len_beta_s1); %par(p=testt1_prep_len_eff_on_res_prim);  
-%par(p=incr_res_risk_cab_inf_3m);  %par(p=rate_self_test_if_introduced);
+%par(p=pref_prep_cablen_beta_s1); %par(p=testt1_prep_len_eff_on_res_prim);  
+%par(p=incr_res_risk_cab_inf_3m);  %par(p=rate_self_test);
 %par(p=p_emerge_inm_res_cab_notpr);  %par(p=date_prep_cab_intro);
-%par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
- %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
+%par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  
+   %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
 %par(p=lencab_uptake); %par(p=lencab_uptake_vlg1000);  %par(p=rate_return_for_lencab);  %par(p=prob_strong_pref_lencab); %par(p=pr_res_len)
 %par(p=rr_mort_tdf_prep); %par(p=prep_dependent_prev_vg1000);  %par(p=self_test_targeting);
-%par(p=r_choose_stop_prep_oral_comm_tld); 
-%par(p=r_test_startprep_any_comm_tld);
-%par(p=prob_prep_oral_b_comm_tld);
-%par(p=incr_pref_prep_oral_comm_tld);
-%par(p=adh_effect_comm_tld);
-%par(p=rr_return_comm_tld);
-%par(p=rr_interrupt_comm_tld); %par(p=effect_comm_tld_hard_reach);  %par(p=prob_pos_self_test_conf);
+ %par(p=prob_pos_self_test_conf);
 %par(p=prob_sbp_increase sbp_cal_eff);  %par(p=prob_test_sbp_undiagnosed);  %par(p=prob_test_sbp_diagnosed);  %par(p=prob_htn_link); 
 %par(p=prob_imm_htn_tx_s1);  %par(p=prob_imm_htn_tx_s2);  %par(p=prob_start_htn_tx_s1);  %par(p=prob_start_htn_tx_s2);  %par(p=prob_restart_htn_tx_s1);  %par(p=prob_restart_htn_tx_s2);  
 %par(p=prob_test_sbp_comm);  %par(p=prob_htn_link); %par(p=prob_visit_htn_v1);  %par(p=prob_visit_htn_v2);  %par(p=prob_visit_htn_v3);  %par(p=prob_visit_htn_v4);  %par(p=prob_visit_htn_v5);  
@@ -2578,23 +2567,17 @@ sens_tests_prep_cab  pr_inm_cab_prep_primary sens_tests_prep_len  pr_cam_len_pre
 
 pref_prep_cab_beta_s1  testt1_prep_cab_eff_on_res_prim  
 
-pref_prep_len_beta_s1  testt1_prep_len_eff_on_res_prim   rate_self_test_if_introduced
+pref_prep_cablen_beta_s1  testt1_prep_len_eff_on_res_prim   rate_self_test
 
 incr_res_risk_cab_inf_3m  reg_option_107_after_cab
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
- prob_prep_pop_wide_tld  date_prep_cab_intro 
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld   
+ date_prep_cab_intro 
 
 p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol  lencab_uptake lencab_uptake_vlg1000  prob_strong_pref_lencab  rate_return_for_lencab
 
 pr_res_len prep_dependent_prev_vg1000  self_test_targeting
 
-r_choose_stop_prep_oral_comm_tld 
-r_test_startprep_any_comm_tld
-prob_prep_oral_b_comm_tld
-incr_pref_prep_oral_comm_tld
-adh_effect_comm_tld
-rr_return_comm_tld
-rr_interrupt_comm_tld  effect_comm_tld_hard_reach  prob_pos_self_test_conf
+ prob_pos_self_test_conf
 
 prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
 prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
@@ -2976,7 +2959,7 @@ _rr_return_comm_tld = rr_return_comm_tld ;
 _effect_comm_tld_hard_reach = effect_comm_tld_hard_reach * 10; 
 
 _prob_pos_self_test_conf   = prob_pos_self_test_conf * 100;
-_rate_self_test_if_introduced = rate_self_test_if_introduced * 100 ;
+_rate_self_test = rate_self_test * 100 ;
 
 ratio_targeting_self_regular = log(self_test_targeting / test_targeting);
 
@@ -3168,7 +3151,7 @@ prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl
 
 _incr_pref_prep_oral_comm_tld 
 _rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular
-_prob_pos_self_test_conf  _rate_self_test_if_introduced adh_pattern; 
+_prob_pos_self_test_conf  _rate_self_test adh_pattern; 
 
 run;
 ods html close;
@@ -3277,7 +3260,7 @@ proc glm data=f;
 adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld 
-rate_self_test_if_introduced
+rate_self_test
 ;
 
 model d_netdaly300_2_1 =
@@ -3285,7 +3268,7 @@ model d_netdaly300_2_1 =
 adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld 
-rate_self_test_if_introduced
+rate_self_test
 / solution;
 
 run;
@@ -3298,7 +3281,7 @@ model d_dcost_50y_2_1 =
 adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld 
-rate_self_test_if_introduced
+rate_self_test
 / solution;
 run;
 ods html close;
@@ -3309,7 +3292,7 @@ model d_ddaly_50y_2_1 =
 adh_effect_comm_tld
 rr_return_comm_tld
 rr_interrupt_comm_tld 
-rate_self_test_if_introduced
+rate_self_test
 / solution;
 run;
 ods html close;
