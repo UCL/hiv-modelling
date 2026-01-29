@@ -4,15 +4,44 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
-set a.Zim_options_graphs_17Dec25;
+set a.Zim_options_graphs_07Jan26;
 run;
+
+
+/***Scenarios;
+1 = Min;
+2 = FSW low;
+3 = FSW high;
+4 = Condoms;
+5 = VMMC;
+6 = VMMC increase;
+7 = Oral PrEP continuation;
+8 = Oral PrEP continuation and introduction of Len;
+9 = Oral PrEP continuation and scale up of Len;
+10 = FSW oral PrEP;
+11 = AGYW oral PrEP;
+12 = MSM oral PrEP;
+13 = FSW oral PrEP and introduction of Len;
+14 = AGYW oral PrEP and introduction of Len;
+15 = MSM oral PrEP and introduction of Len;
+16 = FSW oral PrEP and scale up of Len;
+17 = AGYW oral PrEP and scale up of Len;
+18 = MSM oral PrEP and scale up of Len;
+19 = MSM outreach NO LONGER CONSIDERED;
+20 = Return interventions;
+21 = Low scale up combination;
+22 = Medium scale up combination;
+23 = High scale up combination;
+24 = CD4 testing reintroduced;
+25 = VL testing reintroduced; **25 and 25 are wrongly coded, they should be one option;
+26 = VL measurements;
+99 = SQ;
+*/
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = '"C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_options_05_01_26.doc' startpage=never; 
 ods listing close;
 
-
-***OPTIONS 7 AND 8 ARE WRONGLY CODED, IGNORE FOR NOW;
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "People living with HIV (15+)";
@@ -29,7 +58,7 @@ label mean_n_hivge15__5 = "VMMC increase";
 label mean_n_hivge15__6 = "Oral PrEP continuation";
 label mean_n_hivge15__7 = "Oral PrEP and intro of Len";
 label mean_n_hivge15__8 = "Oral PrEP and scale up of Len";
-label mean_n_hivge15__20 = "Return interventions";
+label mean_n_hivge15__19 = "Return interventions";
 
 series  x=cald y=mean_n_hivge15__99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_n_hivge15__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
@@ -44,7 +73,7 @@ series  x=cald y=mean_n_hivge15__6/	lineattrs = (color=blue thickness = 2 patter
 series  x=cald y=mean_n_hivge15__7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_hivge15__8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
 
-series  x=cald y=mean_n_hivge15__20/	lineattrs = (color=pink thickness = 2 pattern=solid);
+series  x=cald y=mean_n_hivge15__19/	lineattrs = (color=pink thickness = 2 pattern=solid);
 
 
 run;quit;
@@ -65,7 +94,7 @@ label mean_prevalence1549__5 = "VMMC increase";
 label mean_prevalence1549__6 = "Oral PrEP continuation";
 label mean_prevalence1549__7 = "Oral PrEP and intro of Len";
 label mean_prevalence1549__8 = "Oral PrEP and scale up of Len";
-label mean_prevalence1549__20 = "Return interventions";
+label mean_prevalence1549__19 = "Return interventions";
 
 series  x=cald y=mean_prevalence1549__99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
@@ -80,7 +109,7 @@ series  x=cald y=mean_prevalence1549__6/	lineattrs = (color=blue thickness = 2 p
 series  x=cald y=mean_prevalence1549__7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549__8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
 
-series  x=cald y=mean_prevalence1549__20/	lineattrs = (color=pink thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence1549__19/	lineattrs = (color=pink thickness = 2 pattern=solid);
 
 
 run;quit;

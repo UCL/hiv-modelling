@@ -290,6 +290,10 @@ n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w
 proc sort data=y;by run option;run;
 
 
+data a.long_genesis_zim_07jan26;
+set y;run;
+
+
 options nomprint;
 option nospool;
 
