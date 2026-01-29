@@ -4,7 +4,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 *libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
-set a.Genesis_Zim_17Dec25; 
+set a.genesiszim_07jan26 a.genesis_zim_07jan26_a; 
 if run=. then delete; 
 
 proc sort;
@@ -17,14 +17,13 @@ data sf;
 set a;
 
 *Zimbabwe;
-*Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
-*accessed 9/2/2023;
-* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
-if cald=2022.5;
+*Source: World Population Prospect, file "World Population Prospect 2022.pdf";
+*https://population.un.org/wpp/downloads?folder=Standard%20Projections&group=Population
+(Excel sheet, population by select age groups);
+
+if cald=2023;
 s_alive = s_alive_m + s_alive_w ;
-sf = (16320000 * 0.581) / s_alive; 
-
-
+sf = 9198000 / s_alive; 
 
 keep run sf;
 proc sort; by run;run;
@@ -302,7 +301,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 400;
+%let nfit = 1118;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -427,22 +426,22 @@ options notes source source2 mprint mlogic symbolgen;
 data d;
 set Master_summary;
 
-/*%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas"; by cald;*/
-%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas"; by cald;
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026.sas"; by cald;
 run;
 
 data e;
 set d;
-%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Observed data_FSW_Zimbabwe.sas"; by cald;
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_FSW_Zimbabwe.sas"; by cald;
 run;
 
 
-DATA A.Zim_options_graphs_17Dec25;
+DATA A.Zim_options_graphs_07Jan26;
 SET E;
 RUN;
 
+
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = '"C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_calibration_05_01_26.doc' startpage=never; 
+ods rtf file = '"C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_calibration_29_01_26.doc' startpage=never; 
 ods listing close;
 
 
