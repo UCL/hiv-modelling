@@ -516,6 +516,8 @@ data a.long_cdi_control_15Jan26; set y;
 if cald=. then delete;run;
 
 proc freq;table cald;run;
+
+
 ************************************************************************************************************************************************************;
 ** GENERATE OUTPUTS FOR HIV CONTROL SPREADSHEET;
 ************************************************************************************************************************************************************;
@@ -586,39 +588,39 @@ OPTIONS
 	;
 /*%put &flow_list;*/
 
-/*%let keep_vars_in_order = */
-/*	Total_00_14_M			Total_15_24_M			Total_25_49_M			Total_50_UP_M*/
-/*	Total_00_14_F			Total_15_24_F			Total_25_49_F			Total_50_UP_F*/
-/*	Total_FSW				Total_MSM*/
-/*	PLHIV_00_14_M			PLHIV_15_24_M			PLHIV_25_49_M			PLHIV_50_UP_M*/
-/*	PLHIV_00_14_F			PLHIV_15_24_F			PLHIV_25_49_F			PLHIV_50_UP_F*/
-/*	PLHIV_FSW				PLHIV_MSM*/
-/*	Diagnosed_00_14_M		Diagnosed_15_24_M		Diagnosed_25_49_M		Diagnosed_50_UP_M*/
-/*	Diagnosed_00_14_F		Diagnosed_15_24_F		Diagnosed_25_49_F		Diagnosed_50_UP_F*/
-/*	Diagnosed_FSW			Diagnosed_MSM*/
-/*	ART_00_14_M				ART_15_24_M				ART_25_49_M				ART_50_UP_M*/
-/*	ART_00_14_F				ART_15_24_F				ART_25_49_F				ART_50_UP_F*/
-/*	ART_FSW					ART_MSM*/
-/*	VLS_00_14_M				VLS_15_24_M				VLS_25_49_M				VLS_50_UP_M*/
-/*	VLS_00_14_F				VLS_15_24_F				VLS_25_49_F				VLS_50_UP_F*/
-/*	VLS_FSW					VLS_MSM*/
-/*	Birth_All				Birth_HIV*/
-/*	DeathsAll_00_14_M		DeathsAll_15_24_M		DeathsAll_25_49_M		DeathsAll_50_UP_M*/
-/*	DeathsAll_00_14_F		DeathsAll_15_24_F		DeathsAll_25_49_F		DeathsAll_50_UP_F*/
-/*	NewHIV_00_14_M			NewHIV_15_24_M			NewHIV_25_49_M			NewHIV_50_UP_M*/
-/*	NewHIV_00_14_F			NewHIV_15_24_F			NewHIV_25_49_F			NewHIV_50_UP_F*/
-/*	NewHIV_FSW				NewHIV_MSM*/
-/*	DeathsHIV_00_14_M		DeathsHIV_15_24_M		DeathsHIV_25_49_M		DeathsHIV_50_UP_M*/
-/*	DeathsHIV_00_14_F		DeathsHIV_15_24_F		DeathsHIV_25_49_F		DeathsHIV_50_UP_F*/
-/*	DALYs_Undiscounted		TotalCost_Undiscounted*/
-/*	Percent_circumcised		Percent_condom_use_GP*/
-/*	PrEP_FSW				PrEP_MSM				PrEP_GP					*/
-/*	PrEP_Pop_GP				NewHIV_PrEP_Pop_GP*/
-/*	Percent_FSW_reached		Percent_MSM_reached*/
-/*	N_circumcised_15_24_M	*/
-/*	PrEP_AGYW_PG			*/
-/*	Total_AGYW_PG			*/
-/*	;*/
+%let keep_vars_in_order = 
+	Total_00_14_M			Total_15_24_M			Total_25_49_M			Total_50_UP_M
+	Total_00_14_F			Total_15_24_F			Total_25_49_F			Total_50_UP_F
+	Total_FSW				Total_MSM
+	PLHIV_00_14_M			PLHIV_15_24_M			PLHIV_25_49_M			PLHIV_50_UP_M
+	PLHIV_00_14_F			PLHIV_15_24_F			PLHIV_25_49_F			PLHIV_50_UP_F
+	PLHIV_FSW				PLHIV_MSM
+	Diagnosed_00_14_M		Diagnosed_15_24_M		Diagnosed_25_49_M		Diagnosed_50_UP_M
+	Diagnosed_00_14_F		Diagnosed_15_24_F		Diagnosed_25_49_F		Diagnosed_50_UP_F
+	Diagnosed_FSW			Diagnosed_MSM
+	ART_00_14_M				ART_15_24_M				ART_25_49_M				ART_50_UP_M
+	ART_00_14_F				ART_15_24_F				ART_25_49_F				ART_50_UP_F
+	ART_FSW					ART_MSM
+	VLS_00_14_M				VLS_15_24_M				VLS_25_49_M				VLS_50_UP_M
+	VLS_00_14_F				VLS_15_24_F				VLS_25_49_F				VLS_50_UP_F
+	VLS_FSW					VLS_MSM
+	Birth_All				Birth_HIV
+	DeathsAll_00_14_M		DeathsAll_15_24_M		DeathsAll_25_49_M		DeathsAll_50_UP_M
+	DeathsAll_00_14_F		DeathsAll_15_24_F		DeathsAll_25_49_F		DeathsAll_50_UP_F
+	NewHIV_00_14_M			NewHIV_15_24_M			NewHIV_25_49_M			NewHIV_50_UP_M
+	NewHIV_00_14_F			NewHIV_15_24_F			NewHIV_25_49_F			NewHIV_50_UP_F
+	NewHIV_FSW				NewHIV_MSM
+	DeathsHIV_00_14_M		DeathsHIV_15_24_M		DeathsHIV_25_49_M		DeathsHIV_50_UP_M
+	DeathsHIV_00_14_F		DeathsHIV_15_24_F		DeathsHIV_25_49_F		DeathsHIV_50_UP_F
+	DALYs_Undiscounted		TotalCost_Undiscounted
+	Percent_circumcised		Percent_condom_use_GP
+	PrEP_FSW				PrEP_MSM				PrEP_GP					
+	PrEP_Pop_GP				NewHIV_PrEP_Pop_GP
+	Percent_FSW_reached		Percent_MSM_reached
+	N_circumcised_15_24_M	
+	PrEP_AGYW_PG			
+	Total_AGYW_PG			
+	;
 
 
 
@@ -751,15 +753,14 @@ run;
 %let op_num=0;
 
 
-
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 ** proc means for all stocks and flows;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 proc means noprint data=y;
     /* Filter data by calendar year and option */
-    where (cald < 2024 and option = 0)
-       or (cald >= 2024 and option = &op_num);
+    where (cald < 2024 and option = 0)				/* option 0 from 1984 to end 2023 */
+       or (cald >= 2024 and option = &op_num);		/* option &op_num from 2024 onwards */
        
     /* Group by year_stock */
     class year_stock;
@@ -774,14 +775,14 @@ run;
 
 data stock_means; 
 	set stock_means; if not missing(year_stock);
-	year = year_stock;
+	year = year_stock;								/* replace column year_stock with year */
 	drop year_stock;
 run;
 
 proc means noprint data=y;
     /* Filter data by calendar year and option */
-    where (cald < 2024 and option = 0)
-       or (cald >= 2024 and option = &op_num);
+    where (cald < 2024 and option = 0)				/* option 0 from 1984 to end 2023 */
+       or (cald >= 2024 and option = &op_num);		/* option &op_num from 2024 onwards */
        
     /* Group by year_stock */
     class year_flow;
@@ -796,7 +797,7 @@ run;
 
 data flow_means; 
 	set flow_means; if not missing(year_flow);
-	year = year_flow;
+	year = year_flow;								/* replace column year_flow with year */
 	drop year_flow;
 run;
 
@@ -808,14 +809,16 @@ run;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 data outputs_&op_num; 
+	retain year &keep_vars_in_order;				/* sort variables into order needed for output spreadsheet */
 	merge stock_means flow_means;
 	by year;
+	if year >= 1985;								/* keep only year 1985 onwards */
 run;
 
-proc transpose data=outputs_&op_num out=a.outputs_&op_num; run;
+proc transpose data=outputs_&op_num out=outputs_&op_num; run;			/* transpose to change outputs from columns to rows */
 
-proc export data=a.outputs_&op_num
-	outfile= "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\hiv_control_cdi_15Jan25_test_&op_num..csv" 
+proc export data=outputs_&op_num
+	outfile= "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\hiv_control_cdi_15Jan25_testa_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
