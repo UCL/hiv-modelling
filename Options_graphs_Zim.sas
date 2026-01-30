@@ -8,33 +8,38 @@ set a.Zim_options_graphs_07Jan26;
 run;
 
 
+
+
 /***Scenarios;
-1 = Min;
-2 = FSW low;
-3 = FSW high;
-4 = Condoms;
-5 = VMMC;
-6 = VMMC increase;
-7 = Oral PrEP continuation;
-8 = Oral PrEP continuation and introduction of Len;
-9 = Oral PrEP continuation and scale up of Len;
-10 = FSW oral PrEP;
-11 = AGYW oral PrEP;
-12 = MSM oral PrEP;
-13 = FSW oral PrEP and introduction of Len;
-14 = AGYW oral PrEP and introduction of Len;
-15 = MSM oral PrEP and introduction of Len;
-16 = FSW oral PrEP and scale up of Len;
-17 = AGYW oral PrEP and scale up of Len;
-18 = MSM oral PrEP and scale up of Len;
-19 = MSM outreach NO LONGER CONSIDERED;
-20 = Return interventions;
-21 = Low scale up combination;
-22 = Medium scale up combination;
-23 = High scale up combination;
-24 = CD4 testing reintroduced;
-25 = VL testing reintroduced; **25 and 25 are wrongly coded, they should be one option;
-26 = VL measurements;
+0 = Min;
+1 = FSW low;  ***CODING ERROR, IGNORE. FEWER WOMEN ENGAGING THAN IN SQ;
+2 = FSW high; ***CODING ERROR, NOT STRICTLY HIGH INTENSITY:
+			  WORSE THAN SQ: NO 6 MONTH TESTING,NO ADDITIONAL PREP WILLING, MORE LIKELY TO HAVE PERSISTENT STI;
+			  SAME AS SQ; EFFECT INT, LOSS DIAG;
+			  BETTER THAN SQ: EFFECT ON NEWP, ADH;
+3 = Condoms;
+4 = VMMC;
+5 = VMMC increase;
+6 = Oral PrEP continuation in KP;
+7 = Oral PrEP continuation and introduction of Len in KP;
+8 = Oral PrEP continuation and scale up of Len in KP;
+9 = FSW oral PrEP;
+10 = AGYW oral PrEP;
+11 = MSM oral PrEP;
+12 = FSW oral PrEP and introduction of Len;
+13 = AGYW oral PrEP and introduction of Len;
+14 = MSM oral PrEP and introduction of Len;
+15 = FSW oral PrEP and scale up of Len;
+16 = AGYW oral PrEP and scale up of Len;
+17 = MSM oral PrEP and scale up of Len;
+18 = MSM outreach NO LONGER CONSIDERED;
+19 = Return interventions;
+20 = Low scale up combination;
+21 = Medium scale up combination;
+22 = High scale up combination;
+23 = CD4 testing reintroduced;
+24 = VL testing reintroduced; **25 and 25 are wrongly coded, they should be one option;
+25 = VL measurements;
 99 = SQ;
 */
 
@@ -50,7 +55,7 @@ yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (1000000 to 1500000 b
 
 label mean_n_hivge15__99 = "SQ";
 label mean_n_hivge15__0 = "Base";
-label mean_n_hivge15__1 = "FSW low";
+*label mean_n_hivge15__1 = "FSW program";
 label mean_n_hivge15__2 = "FSW high";
 label mean_n_hivge15__3 = "Condoms";
 label mean_n_hivge15__4 = "VMMC";
@@ -62,8 +67,8 @@ label mean_n_hivge15__19 = "Return interventions";
 
 series  x=cald y=mean_n_hivge15__99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_n_hivge15__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_n_hivge15__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_n_hivge15__2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_hivge15__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_n_hivge15__2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 series  x=cald y=mean_n_hivge15__3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 series  x=cald y=mean_n_hivge15__4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -71,7 +76,7 @@ series  x=cald y=mean_n_hivge15__5/	lineattrs = (color=lightpurple thickness = 2
 
 series  x=cald y=mean_n_hivge15__6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_hivge15__7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_n_hivge15__8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_n_hivge15__8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_n_hivge15__19/	lineattrs = (color=pink thickness = 2 pattern=solid);
 
@@ -86,7 +91,7 @@ yaxis grid label	= 'Prevalence'	labelattrs=(size=12)  values = (0.025 to 0.075 b
 
 label mean_prevalence1549__99 = "SQ";
 label mean_prevalence1549__0 = "Base";
-label mean_prevalence1549__1 = "FSW low";
+*label mean_prevalence1549__1 = "FSW low";
 label mean_prevalence1549__2 = "FSW high";
 label mean_prevalence1549__3 = "Condoms";
 label mean_prevalence1549__4 = "VMMC";
@@ -98,8 +103,8 @@ label mean_prevalence1549__19 = "Return interventions";
 
 series  x=cald y=mean_prevalence1549__99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_prevalence1549__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence1549__2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_prevalence1549__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence1549__2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549__3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 series  x=cald y=mean_prevalence1549__4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -107,7 +112,7 @@ series  x=cald y=mean_prevalence1549__5/	lineattrs = (color=lightpurple thicknes
 
 series  x=cald y=mean_prevalence1549__6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549__7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence1549__8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence1549__8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_prevalence1549__19/	lineattrs = (color=pink thickness = 2 pattern=solid);
 
@@ -123,7 +128,7 @@ yaxis grid label	= 'Incidence/100py'	labelattrs=(size=12)  values = (0 to 0.5 by
 
 label mean_incidence1549__99 = "SQ";
 label mean_incidence1549__0 = "Base";
-label mean_incidence1549__1 = "FSW low";
+*label mean_incidence1549__1 = "FSW low";
 label mean_incidence1549__2 = "FSW high";
 label mean_incidence1549__3 = "Condoms";
 label mean_incidence1549__4 = "VMMC";
@@ -135,8 +140,8 @@ label mean_incidence1549__20 = "Return interventions";
 
 series  x=cald y=mean_incidence1549__99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_incidence1549__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence1549__2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_incidence1549__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence1549__2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 series  x=cald y=mean_incidence1549__4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -144,7 +149,7 @@ series  x=cald y=mean_incidence1549__5/	lineattrs = (color=lightpurple thickness
 
 series  x=cald y=mean_incidence1549__6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence1549__8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence1549__8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_incidence1549__20/	lineattrs = (color=pink thickness = 2 pattern=solid);
 
@@ -158,7 +163,7 @@ yaxis grid label	= '%'	labelattrs=(size=12)  values = (0.8 to 0.95 by 0.05) valu
 
 label mean_p_onart_99 = "SQ";
 label mean_p_onart_0 = "Base";
-label mean_p_onart_1 = "FSW low";
+*label mean_p_onart_1 = "FSW low";
 label mean_p_onart_2 = "FSW high";
 label mean_p_onart_3 = "Condoms";
 label mean_p_onart_4 = "VMMC";
@@ -170,8 +175,8 @@ label mean_p_onart_20 = "Return interventions";
 
 series  x=cald y=mean_p_onart_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_p_onart_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_p_onart_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 series  x=cald y=mean_p_onart_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -179,7 +184,7 @@ series  x=cald y=mean_p_onart_5/	lineattrs = (color=lightpurple thickness = 2 pa
 
 series  x=cald y=mean_p_onart_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_p_onart_20/	lineattrs = (color=pink thickness = 2 pattern=solid);
 run;quit;
@@ -191,7 +196,7 @@ yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0.9 to 0.98 by 0
 
 label mean_p_diag_99 = "SQ";
 label mean_p_diag_0 = "Base";
-label mean_p_diag_1 = "FSW low";
+*label mean_p_diag_1 = "FSW low";
 label mean_p_diag_2 = "FSW high";
 label mean_p_diag_3 = "Condoms";
 label mean_p_diag_4 = "VMMC";
@@ -203,8 +208,8 @@ label mean_p_diag_20 = "Return interventions";
 
 series  x=cald y=mean_p_diag_99/lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_p_diag_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_p_diag_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_p_diag_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_p_diag_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 series  x=cald y=mean_p_diag_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -212,7 +217,7 @@ series  x=cald y=mean_p_diag_5/	lineattrs = (color=lightpurple thickness = 2 pat
 
 series  x=cald y=mean_p_diag_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_diag_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_p_diag_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_p_diag_20/	lineattrs = (color=pink thickness = 2 pattern=solid);
 run;quit;
@@ -225,7 +230,7 @@ yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0.9 to 1 by 0.01
 
 label mean_p_onart_diag_99 = "SQ";
 label mean_p_onart_diag_0 = "Base";
-label mean_p_onart_diag_1 = "FSW low";
+*label mean_p_onart_diag_1 = "FSW low";
 label mean_p_onart_diag_2 = "FSW high";
 label mean_p_onart_diag_3 = "Condoms";
 label mean_p_onart_diag_4 = "VMMC";
@@ -238,8 +243,8 @@ label mean_p_onart_diag_20 = "Return interventions";
 
 series  x=cald y=mean_p_onart_diag_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_p_onart_diag_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_diag_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_p_onart_diag_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 series  x=cald y=mean_p_onart_diag_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -247,7 +252,7 @@ series  x=cald y=mean_p_onart_diag_5/	lineattrs = (color=lightpurple thickness =
 
 series  x=cald y=mean_p_onart_diag_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_diag_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_p_onart_diag_20/	lineattrs = (color=pink thickness = 2 pattern=solid);
 
@@ -262,7 +267,7 @@ yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0.96 to 1 by 0.0
 
 label mean_p_onart_vl1000__99 = "SQ";
 label mean_p_onart_vl1000__0 = "Base";
-label mean_p_onart_vl1000__1 = "FSW low";
+*label mean_p_onart_vl1000__1 = "FSW low";
 label mean_p_onart_vl1000__2 = "FSW high";
 label mean_p_onart_vl1000__3 = "Condoms";
 label mean_p_onart_vl1000__4 = "VMMC";
@@ -275,8 +280,8 @@ label mean_p_onart_vl1000__20 = "Return interventions";
 
 series  x=cald y=mean_p_onart_vl1000__99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_vl1000__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_p_onart_vl1000__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_vl1000__2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_p_onart_vl1000__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000__2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_vl1000__3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 series  x=cald y=mean_p_onart_vl1000__4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -284,7 +289,7 @@ series  x=cald y=mean_p_onart_vl1000__5/	lineattrs = (color=lightpurple thicknes
 
 series  x=cald y=mean_p_onart_vl1000__6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_vl1000__7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_vl1000__8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000__8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_p_onart_vl1000__20/	lineattrs = (color=pink thickness = 2 pattern=solid);
 run;quit;
@@ -297,7 +302,7 @@ yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 1500000 by 1000
 
 label mean_n_prep_ever_99 = "SQ";
 label mean_n_prep_ever_0 = "Base";
-label mean_n_prep_ever_1 = "FSW low";
+*label mean_n_prep_ever_1 = "FSW low";
 label mean_n_prep_ever_2 = "FSW high";
 *label mean_n_prep_ever_3 = "Condoms";
 *label mean_n_prep_ever_4 = "VMMC";
@@ -310,8 +315,8 @@ label mean_n_prep_ever_8 = "Oral PrEP and scale up of Len";
 
 series  x=cald y=mean_n_prep_ever_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_n_prep_ever_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_n_prep_ever_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_n_prep_ever_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_prep_ever_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_n_prep_ever_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_n_prep_ever_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_n_prep_ever_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -319,7 +324,7 @@ series  x=cald y=mean_n_prep_ever_2/	lineattrs = (color=darkgreen thickness = 2 
 
 series  x=cald y=mean_n_prep_ever_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_prep_ever_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_n_prep_ever_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_n_prep_ever_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_n_prep_ever_20/	lineattrs = (color=pink thickness = 2 pattern=solid);
 
@@ -333,7 +338,7 @@ yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 150000 by 10000
 
 label mean_n_onprep_99 = "SQ";
 label mean_n_onprep_0 = "Base";
-label mean_n_onprep_1 = "FSW low";
+*label mean_n_onprep_1 = "FSW low";
 label mean_n_onprep_2 = "FSW high";
 *label mean_n_onprep_3 = "Condoms";
 *label mean_n_onprep_4 = "VMMC";
@@ -346,8 +351,8 @@ label mean_n_onprep_8 = "Oral PrEP and scale up of Len";*CURRENTLY INCORRECTLY C
 
 series  x=cald y=mean_n_onprep_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_n_onprep_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_n_onprep_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_n_onprep_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_onprep_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_n_onprep_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_n_onprep_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_n_onprep_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -355,7 +360,7 @@ series  x=cald y=mean_n_onprep_2/	lineattrs = (color=darkgreen thickness = 2 pat
 
 series  x=cald y=mean_n_onprep_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_onprep_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_n_onprep_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_n_onprep_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_n_onprep_20/	lineattrs = (color=pink thickness = 2 pattern=solid);
 run;quit;
@@ -369,7 +374,7 @@ yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0.2 t
 
 label mean_prevalence_1564sw_99 = "SQ";
 label mean_prevalence_1564sw_0 = "Base";
-label mean_prevalence_1564sw_1 = "FSW low";
+*label mean_prevalence_1564sw_1 = "FSW low";
 label mean_prevalence_1564sw_2 = "FSW high";
 *label mean_prevalence_1564sw_3 = "Condoms";
 *label mean_prevalence_1564sw_4 = "VMMC";
@@ -384,8 +389,8 @@ label mean_prevalence_1564sw_16 = "Oral PrEP and scale up of Len FSW only";
 
 series  x=cald y=mean_prevalence_1564sw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_1564sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_prevalence_1564sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence_1564sw_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_prevalence_1564sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_1564sw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_prevalence_1564sw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_prevalence_1564sw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -393,7 +398,7 @@ series  x=cald y=mean_prevalence_1564sw_2/	lineattrs = (color=darkgreen thicknes
 
 series  x=cald y=mean_prevalence_1564sw_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_1564sw_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence_1564sw_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_1564sw_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_prevalence_1564sw_9/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_1564sw_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
@@ -410,7 +415,7 @@ yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 t
 
 label mean_incidence_1564sw_99 = "SQ";
 label mean_incidence_1564sw_0 = "Base";
-label mean_incidence_1564sw_1 = "FSW low";
+*label mean_incidence_1564sw_1 = "FSW low";
 label mean_incidence_1564sw_2 = "FSW high";
 *label mean_incidence_1564sw_3 = "Condoms";
 *label mean_incidence_1564sw_4 = "VMMC";
@@ -425,8 +430,8 @@ label mean_incidence_1564sw_16 = "Oral PrEP and scale up of Len FSW only";
 
 series  x=cald y=mean_incidence_1564sw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_1564sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_incidence_1564sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence_1564sw_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_incidence_1564sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence_1564sw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_incidence_1564sw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_incidence_1564sw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -434,7 +439,7 @@ series  x=cald y=mean_incidence_1564sw_2/	lineattrs = (color=darkgreen thickness
 
 series  x=cald y=mean_incidence_1564sw_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_1564sw_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence_1564sw_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence_1564sw_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_incidence_1564sw_9/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_1564sw_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
@@ -452,7 +457,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.30 by 0.
 
 label mean_p_onprep_sw_99 = "SQ";
 label mean_p_onprep_sw_0 = "Base";
-label mean_p_onprep_sw_1 = "FSW low";
+*label mean_p_onprep_sw_1 = "FSW low";
 label mean_p_onprep_sw_2 = "FSW high";
 *label mean_p_onprep_sw_3 = "Condoms";
 *label mean_p_onprep_sw_4 = "VMMC";
@@ -467,8 +472,8 @@ label mean_p_onprep_sw_16 = "Oral PrEP and scale up of Len FSW only";
 
 series  x=cald y=mean_p_onprep_sw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_p_onprep_sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onprep_sw_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_p_onprep_sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onprep_sw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_p_onprep_sw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_p_onprep_sw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -476,7 +481,7 @@ series  x=cald y=mean_p_onprep_sw_2/	lineattrs = (color=darkgreen thickness = 2 
 
 series  x=cald y=mean_p_onprep_sw_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onprep_sw_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onprep_sw_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_p_onprep_sw_9/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
@@ -496,7 +501,7 @@ yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0.0 t
 
 label mean_prevalence_agyw_99 = "SQ";
 label mean_prevalence_agyw_0 = "Base";
-label mean_prevalence_agyw_1 = "FSW low";
+*label mean_prevalence_agyw_1 = "FSW low";
 label mean_prevalence_agyw_2 = "FSW high";
 *label mean_prevalence_agyw_3 = "Condoms";
 *label mean_prevalence_agyw_4 = "VMMC";
@@ -518,8 +523,8 @@ label mean_prevalence_agyw_17 = "Oral PrEP and scale up of Len AGYW only";
 
 series  x=cald y=mean_prevalence_agyw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_agyw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_prevalence_agyw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence_agyw_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_prevalence_agyw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_agyw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_prevalence_agyw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_prevalence_agyw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -527,7 +532,7 @@ series  x=cald y=mean_prevalence_agyw_2/	lineattrs = (color=darkgreen thickness 
 
 series  x=cald y=mean_prevalence_agyw_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_agyw_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence_agyw_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_agyw_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_prevalence_agyw_9/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
 *series  x=cald y=mean_prevalence_agyw_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
@@ -549,7 +554,7 @@ yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 t
 
 label mean_incidence_agyw_99 = "SQ";
 label mean_incidence_agyw_0 = "Base";
-label mean_incidence_agyw_1 = "FSW low";
+*label mean_incidence_agyw_1 = "FSW low";
 label mean_incidence_agyw_2 = "FSW high";
 *label mean_incidence_agyw_3 = "Condoms";
 *label mean_incidence_agyw_4 = "VMMC";
@@ -571,8 +576,8 @@ label mean_incidence_agyw_17 = "Oral PrEP and scale up of Len AGYW only";
 
 series  x=cald y=mean_incidence_agyw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_agyw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_incidence_agyw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence_agyw_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_incidence_agyw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence_agyw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_incidence_agyw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_incidence_agyw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -580,7 +585,7 @@ series  x=cald y=mean_incidence_agyw_2/	lineattrs = (color=darkgreen thickness =
 
 series  x=cald y=mean_incidence_agyw_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_agyw_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence_agyw_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence_agyw_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_incidence_agyw_8/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
 *series  x=cald y=mean_incidence_agyw_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
@@ -602,7 +607,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.08 by 0.
 
 label mean_p_onprep_agyw_99 = "SQ";
 label mean_p_onprep_agyw_0 = "Base";
-label mean_p_onprep_agyw_1 = "FSW low";
+*label mean_p_onprep_agyw_1 = "FSW low";
 label mean_p_onprep_agyw_2 = "FSW high";
 *label mean_p_onprep_agyw_3 = "Condoms";
 *label mean_p_onprep_agyw_4 = "VMMC";
@@ -624,8 +629,8 @@ label mean_p_onprep_agyw_17 = "Oral PrEP and scale up of Len AGYW only";
 
 series  x=cald y=mean_p_onprep_agyw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_agyw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_p_onprep_agyw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onprep_agyw_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_p_onprep_agyw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onprep_agyw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_p_onprep_agyw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_p_onprep_agyw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -633,7 +638,7 @@ series  x=cald y=mean_p_onprep_agyw_2/	lineattrs = (color=darkgreen thickness = 
 
 series  x=cald y=mean_p_onprep_agyw_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_agyw_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onprep_agyw_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onprep_agyw_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_p_onprep_agyw_8/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
 *series  x=cald y=mean_p_onprep_agyw_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
@@ -675,7 +680,7 @@ label mean_prevalence1549_msm_18 = "Oral PrEP and scale up of Len MSM only";
 series  x=cald y=mean_prevalence1549_msm_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549_msm_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 *series  x=cald y=mean_prevalence1549_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-*series  x=cald y=mean_prevalence1549_msm_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_prevalence1549_msm_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_prevalence1549_msm_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_prevalence1549_msm_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -683,7 +688,7 @@ series  x=cald y=mean_prevalence1549_msm_0/	lineattrs = (color=red thickness = 3
 
 series  x=cald y=mean_prevalence1549_msm_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549_msm_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence1549_msm_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence1549_msm_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_prevalence1549_msm_8/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
 *series  x=cald y=mean_prevalence1549_msm_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
@@ -724,7 +729,7 @@ label mean_incidence_msm_18 = "Oral PrEP and scale up of Len MSM only";
 series  x=cald y=mean_incidence_msm_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_msm_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 *series  x=cald y=mean_incidence_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-*series  x=cald y=mean_incidence_msm_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_incidence_msm_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_incidence_msm_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_incidence_msm_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -732,7 +737,7 @@ series  x=cald y=mean_incidence_msm_0/	lineattrs = (color=red thickness = 3 patt
 
 series  x=cald y=mean_incidence_msm_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_msm_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence_msm_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence_msm_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_incidence_msm_8/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
 *series  x=cald y=mean_incidence_msm_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
@@ -773,7 +778,7 @@ label mean_p_onprep_msm_18 = "Oral PrEP and scale up of Len MSM only";
 series  x=cald y=mean_p_onprep_msm_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_msm_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 *series  x=cald y=mean_p_onprep_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-*series  x=cald y=mean_p_onprep_msm_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_p_onprep_msm_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 *series  x=cald y=mean_p_onprep_msm_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_p_onprep_msm_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -781,7 +786,7 @@ series  x=cald y=mean_p_onprep_msm_0/	lineattrs = (color=red thickness = 3 patte
 
 series  x=cald y=mean_p_onprep_msm_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_msm_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onprep_msm_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onprep_msm_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 *series  x=cald y=mean_p_onprep_msm_8/	lineattrs = (color=darkgrey thickness = 2 pattern=solid);
 *series  x=cald y=mean_p_onprep_msm_12/	lineattrs = (color=grey thickness = 2 pattern=solid);
@@ -801,7 +806,7 @@ yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (2000 to 12000 by
 
 label mean_n_death_hivrel_99 = "SQ";
 label mean_n_death_hivrel_0 = "Base";
-label mean_n_death_hivrel_1 = "FSW low";
+*label mean_n_death_hivrel_1 = "FSW low";
 label mean_n_death_hivrel_2 = "FSW high";
 label mean_n_death_hivrel_3 = "Condoms";
 label mean_n_death_hivrel_4 = "VMMC";
@@ -814,8 +819,8 @@ label mean_n_death_hivrel_20 = "Return interventions";
 
 series  x=cald y=mean_n_death_hivrel_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_n_death_hivrel_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_n_death_hivrel_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_n_death_hivrel_2/	lineattrs = (color=darkgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_hivrel_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
 series  x=cald y=mean_n_death_hivrel_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 
 series  x=cald y=mean_n_death_hivrel_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
@@ -823,7 +828,7 @@ series  x=cald y=mean_n_death_hivrel_5/	lineattrs = (color=lightpurple thickness
 
 series  x=cald y=mean_n_death_hivrel_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_death_hivrel_7/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
-series  x=cald y=mean_n_death_hivrel_8/	lineattrs = (color=darkblue thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_8/	lineattrs = (color=green thickness = 2 pattern=solid);
 
 series  x=cald y=mean_n_death_hivrel_20/	lineattrs = (color=pink thickness = 2 pattern=solid);
 
