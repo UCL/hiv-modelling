@@ -198,6 +198,8 @@ s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vm
 * n_hivge1564_;					n_hivge1564_ = (s_hiv1564m + s_hiv1564w) * sf;
 
 
+* n_new_inf;					n_new_inf	 = s_primary * sf * 4;
+
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
 * prevalence1549_;				prevalence1549_ = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
@@ -287,7 +289,7 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_vmmc_all;					n_vmmc_all = s_new_vmmc * 4* sf;
 
 
-keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w
+keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_onart				 p_onart_m			p_onart_w			n_onart				n_onart_m			n_onart_w
@@ -332,9 +334,10 @@ options nomprint;
 proc means  noprint data=y; var &v; output out=y_25 mean= &v._25; by run; where 2024.5 <= cald < 2025.5; 
 
 **Outputs in 5, 20 and 50 years time;
-proc means noprint data=y; var &v; output out=y_31 mean= &v._31; by run option; where 2030.0 <= cald < 2031; 
-proc means noprint data=y; var &v; output out=y_46 mean= &v._46; by run option; where 2045.0 <= cald < 2046; 
-proc means noprint data=y; var &v; output out=y_76 mean= &v._76; by run option; where 2075.0 <= cald < 2076;
+
+proc means noprint data=y; var &v; output out=y_31 mean= &v._31; by run option; where 2031.0 <= cald < 2032; 
+proc means noprint data=y; var &v; output out=y_46 mean= &v._46; by run option; where 2046.0 <= cald < 2047; 
+proc means noprint data=y; var &v; output out=y_76 mean= &v._76; by run option; where 2076.0 <= cald < 2077;
 
 **Outputs for CE analyses, across 5, 20 and 50 years by option;
 proc means noprint data=y; var &v; output out=y_26_31 mean= &v._26_31; by run option ; where 2026.25 <= cald < 2031;
@@ -357,6 +360,8 @@ data &v ; merge y_25 t_31 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=prevalence1549m); 	%var(v=prevalence1549w);	%var(v=prevalence1549_); 	%var(v=incidence1549_); %var(v=incidence1549w); 	%var(v=incidence1549m);
 %var(v=p_onart);		 	%var(v=p_onart_m);			%var(v=p_onart_w);			%var(v=n_onart);		%var(v=n_onart_m);			%var(v=n_onart_w);
 
+%var(v=n_new_inf);
+
 %var(v=p_diag);	 		 	%var(v=p_diag_m); 			%var(v=p_diag_w);  			%var(v=p_onart_diag);   %var(v=p_onart_diag_m);   	%var(v=p_onart_diag_w);  
 %var(v=p_onart_vl1000_);	%var(v=p_onart_vl1000_m);	%var(v=p_onart_vl1000_w);	%var(v=n_onprep_w);		%var(v=n_onprep_m);			%var(v=n_onprep);
 %var(v=prop_elig_on_prep);	%var(v=n_prep_ever);		
@@ -374,6 +379,8 @@ n_alive_m		 	n_alive_w			n_alive				n_hivge15m		n_hivge15w		    n_hivge15_
 prevalence1549m 	prevalence1549w		prevalence1549_ 	incidence1549_ 	incidence1549w	 	incidence1549m
 p_onart		 		p_onart_m			p_onart_w			n_onart			n_onart_m			n_onart_w
 
+n_new_inf
+
 p_diag	 		 	p_diag_m 			p_diag_w  			p_onart_diag  	p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w	n_onprep_w		n_onprep_m			n_onprep
 prop_elig_on_prep	n_prep_ever		
@@ -388,6 +395,7 @@ n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w;
 
 proc sort; by run;run;
 
-data a.wide_Zim_17_12_2025;
+
+data a.wide_Zim_07_12_2026;
 set wide_outputs  ;  
 by run;run; 
