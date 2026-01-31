@@ -12,7 +12,6 @@ by run cald option;run;
 
 proc freq;table cald option;run;
 
-***zim specific;
 data sf;
 set a;
 
