@@ -198,7 +198,10 @@ s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vm
 * n_hivge1564_;					n_hivge1564_ = (s_hiv1564m + s_hiv1564w) * sf;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 * n_new_inf;					n_new_inf	 = s_primary * sf * 4;
@@ -338,7 +341,10 @@ proc means  noprint data=y; var &v; output out=y_25 mean= &v._25; by run; where 
 
 **Outputs in 5, 20 and 50 years time;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 proc means noprint data=y; var &v; output out=y_31 mean= &v._31; by run option; where 2031.0 <= cald < 2032; 
@@ -366,7 +372,10 @@ data &v ; merge y_25 t_31 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=prevalence1549m); 	%var(v=prevalence1549w);	%var(v=prevalence1549_); 	%var(v=incidence1549_); %var(v=incidence1549w); 	%var(v=incidence1549m);
 %var(v=p_onart);		 	%var(v=p_onart_m);			%var(v=p_onart_w);			%var(v=n_onart);		%var(v=n_onart_m);			%var(v=n_onart_w);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 %var(v=n_new_inf);
@@ -388,7 +397,10 @@ n_alive_m		 	n_alive_w			n_alive				n_hivge15m		n_hivge15w		    n_hivge15_
 prevalence1549m 	prevalence1549w		prevalence1549_ 	incidence1549_ 	incidence1549w	 	incidence1549m
 p_onart		 		p_onart_m			p_onart_w			n_onart			n_onart_m			n_onart_w
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 n_new_inf
@@ -408,7 +420,10 @@ n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w;
 proc sort; by run;run;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 data a.wide_Zim_07_12_2026;
