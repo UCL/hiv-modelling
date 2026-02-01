@@ -12,6 +12,7 @@ by run cald option;run;
 
 proc freq;table cald option;run;
 
+
 ***zim specific;
 data sf;
 set a;
@@ -274,6 +275,7 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel  * 4* sf;
 * n_death_hivrel_m;				n_death_hivrel_m = s_death_hivrel_m  * 4* sf;
 * n_death_hivrel_w;				n_death_hivrel_w = s_death_hivrel_w * 4* sf;
+* n_death;						n_death = s_dead_all * 4 * sf;
 
 * n_hiv_pregnant;				n_hiv_pregnant = s_hiv_pregnant * sf;
 * n_pregnant_onart;				n_pregnant_onart = s_pregnant_onart * sf;
@@ -286,6 +288,9 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_cd4m_this_per;				n_cd4m_this_per = s_cm_this_per*4 * sf;
 * n_vmmc1549m;					n_vmmc1549m = s_new_vmmc1549m * 4* sf;
 * n_vmmc_all;					n_vmmc_all = s_new_vmmc * 4* sf;
+
+* n_death_discount;				n_death_discount = n_death*discount;
+* d_n_new_inf;					d_n_new_inf = n_new_inf * discount;
 
 
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
@@ -308,6 +313,9 @@ n_agyw				 n_agyw_pg			p_w_agyw			prevalence_agyw		incidence_agyw		p_onprep_agyw
 n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	
 n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_postdel_testing
 n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all
+n_death_discount	 d_n_new_inf
+
+dcost	ddaly
 
 
 ;
@@ -372,6 +380,11 @@ data &v ; merge y_25 t_31 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=n_agyw);				%var(v=p_w_agyw);			%var(v=prevalence_agyw);	%var(v=incidence_agyw);	%var(v=p_onprep_agyw);		%var(v=n_onprep_agyw);
 
 %var(v=n_death_hivrel);		%var(v=n_death_hivrel_m);	%var(v=n_death_hivrel_w);
+%var(v=n_death_discount);	%var(v=d_n_new_inf);
+
+%var(v=dcost);	%var(v=ddaly);
+
+	 
 
 data wide_outputs;merge
 n_alive_m		 	n_alive_w			n_alive				n_hivge15m		n_hivge15w		    n_hivge15_
@@ -390,7 +403,10 @@ p_onprep_sw			n_onprep_sw
 n_msm_1564_			p_m_msm				prevalence1549_msm	incidence_msm	p_onprep_msm		n_onprep_msm
 n_agyw				p_w_agyw			prevalence_agyw		incidence_agyw	p_onprep_agyw		n_onprep_agyw
 
-n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w;
+n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death_discount	 d_n_new_inf
+
+dcost ddaly
+;
 
 proc sort; by run;run;
 
