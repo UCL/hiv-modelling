@@ -2,7 +2,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 
 
 data a;
-set a.wide_Zim_17_12_2025;
+set a.wide_Zim_07_12_2026;
 run;
 
 data b;
@@ -52,10 +52,10 @@ n_onprep_w_25		 n_onprep_m_25			n_onprep_25			prop_elig_on_prep_25 n_prep_ever_2
 prevalence_1564sw_25 incidence_1564sw_25    p_onprep_sw_25		n_onprep_sw_25	
 prevalence1549_msm_25	incidence_msm_25	p_onprep_msm_25		n_onprep_msm_25
 prevalence_agyw_25		incidence_agyw_25	p_onprep_agyw_25	n_onprep_agyw_25
-n_death_hivrel_25	 n_death_hivrel_m_25	n_death_hivrel_w_25
+n_death_hivrel_25	 n_death_hivrel_m_25	n_death_hivrel_w_25 n_new_inf_25;
 ;run;
 
-***Difference in incidence and deaths in 5, 20 and 50 years between selected options;
+***Difference in new infections, incidence and deaths in 5, 20 and 50 years between selected options;
 
 *5 years;
 proc means n mean p5 p95;var 
@@ -72,6 +72,14 @@ n_death_hivrel_31_6 	n_death_hivrel_31_7		n_death_hivrel_31_8		n_death_hivrel_31
 n_death_hivrel_31_11	n_death_hivrel_31_12	n_death_hivrel_31_13	n_death_hivrel_31_14	n_death_hivrel_31_15	
 n_death_hivrel_31_16	n_death_hivrel_31_17	n_death_hivrel_31_18	n_death_hivrel_31_19	n_death_hivrel_31_20
 n_death_hivrel_31_21	n_death_hivrel_31_24	n_death_hivrel_31_25	n_death_hivrel_31_26;
+run;
+
+proc means n mean p5 p95;var 
+n_new_inf_31_1		n_new_inf_31_2		n_new_inf_31_3		n_new_inf_31_4		n_new_inf_31_5	
+n_new_inf_31_6 		n_new_inf_31_7		n_new_inf_31_8		n_new_inf_31_9		n_new_inf_31_10
+n_new_inf_31_11		n_new_inf_31_12		n_new_inf_31_13		n_new_inf_31_14		n_new_inf_31_15	
+n_new_inf_31_16		n_new_inf_31_17		n_new_inf_31_18		n_new_inf_31_19		n_new_inf_31_20
+n_new_inf_31_21		n_new_inf_31_24		n_new_inf_31_25		n_new_inf_31_26;
 run;
 
 *20 years;
@@ -91,6 +99,14 @@ n_death_hivrel_46_16	n_death_hivrel_46_17	n_death_hivrel_46_18	n_death_hivrel_46
 n_death_hivrel_46_21	n_death_hivrel_46_24	n_death_hivrel_46_25	n_death_hivrel_46_26;
 run;
 
+proc means n mean p5 p95;var 
+n_new_inf_46_1		n_new_inf_46_2		n_new_inf_46_3		n_new_inf_46_4		n_new_inf_46_5	
+n_new_inf_46_6 		n_new_inf_46_7		n_new_inf_46_8		n_new_inf_46_9		n_new_inf_46_10
+n_new_inf_46_11		n_new_inf_46_12		n_new_inf_46_13		n_new_inf_46_14		n_new_inf_46_15	
+n_new_inf_46_16		n_new_inf_46_17		n_new_inf_46_18		n_new_inf_46_19		n_new_inf_46_20
+n_new_inf_46_21		n_new_inf_46_24		n_new_inf_46_25		n_new_inf_46_26;
+run;
+
 *50 years;
 proc means n mean p5 p95;var 
 incidence1549__76_1		incidence1549__76_2		incidence1549__76_3		incidence1549__76_4		incidence1549__76_5	
@@ -108,6 +124,13 @@ n_death_hivrel_76_16	n_death_hivrel_76_17	n_death_hivrel_76_18	n_death_hivrel_76
 n_death_hivrel_76_21	n_death_hivrel_76_24	n_death_hivrel_76_25	n_death_hivrel_76_26;
 run;
 
+proc means n mean p5 p95;var 
+n_new_inf_76_1		n_new_inf_76_2		n_new_inf_76_3		n_new_inf_76_4		n_new_inf_76_5	
+n_new_inf_76_6 		n_new_inf_76_7		n_new_inf_76_8		n_new_inf_76_9		n_new_inf_76_10
+n_new_inf_76_11		n_new_inf_76_12		n_new_inf_76_13		n_new_inf_76_14		n_new_inf_76_15	
+n_new_inf_76_16		n_new_inf_76_17		n_new_inf_76_18		n_new_inf_76_19		n_new_inf_76_20
+n_new_inf_76_21		n_new_inf_76_24		n_new_inf_76_25		n_new_inf_76_26;
+run;
 
 
 
