@@ -203,7 +203,7 @@ cost_condom_py=1030350;*FIXED COST;
 cost_FSW_services_pppy=132;*annual cost per year;
 cost_AdhSupp_pppy=7.89;* This cost is from MIHPSA Zim and is per client per year;
 
-cost_condoms = 0; if option in (99, 3) then cost_condoms = cost_condom_py; * Fixed population-level py cost so scaling not needed;
+cost_condoms = 0; if option in (99, 3) then cost_condoms = cost_condom_py;		* Fixed population-level py cost so scaling not needed;
 dcost_condoms = cost_condoms * discount;
 
 cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
@@ -211,6 +211,7 @@ dcost_fsw_services = cost_fsw_services * discount;
 
 cost_adh_support = 0; if option in (99 19) then cost_adh_support = s_onart * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone on ART;	
 dcost_adh_support = cost_adh_support * discount;
+
 
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
