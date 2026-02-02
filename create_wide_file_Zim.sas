@@ -198,13 +198,27 @@ dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
 
+***USE CONDOM COSTS, ADHERENCE SUPPORT COSTS AND FSW COSTS AS PER HIV CONTROL;
+cost_condom_py=1030350;*FIXED COST;
+cost_FSW_services_pppy=132;*annual cost per year;
+cost_AdhSupp_pppy=7.89;* This cost is from MIHPSA Zim and is per client per year;
+
+cost_condoms = 0; if option in (99, 3) then cost_condoms = cost_condom_py; * Fixed population-level py cost so scaling not needed;
+dcost_condoms = cost_condoms * discount;
+
+cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
+dcost_fsw_services = cost_fsw_services * discount;
+
+cost_adh_support = 0; if option in (99 19) then cost_adh_support = s_onart * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone on ART;	
+dcost_adh_support = cost_adh_support * discount;
+
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost + dcab_cost + dlen_cost;
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + 
 					dcot_cost + dtb_cost + dres_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost + 
-					dcost_circ + dcost_condom_dn + dcost_child_hiv + dcost_non_aids_pre_death + dcost_drug_level_test
-					+ dcost_prep_visit + dcost_prep + dcost_sw_program  + dcost_self_test ;
+					dcost_circ + dcost_condoms + dcost_child_hiv + dcost_non_aids_pre_death + dcost_drug_level_test
+					+ dcost_prep_visit + dcost_prep + dcost_fsw_services  + dcost_self_test ;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost ; 
