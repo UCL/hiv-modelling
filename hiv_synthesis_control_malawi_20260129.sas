@@ -1,6 +1,6 @@
 * 29/01/26 updates
 
-- Slightly updated order of re-adding interventions based on adding more runs (n=280)
+- Slightly updated order of re-adding interventions based on adding more runs (n=248)
 - Run for 52 years after year_interv
 - This version uses the minimal with self-testing removed (same as 10/12/25 version)
 
@@ -2427,11 +2427,11 @@ option = &s;
 2	Min + condoms + vmmc
 3	Min + condoms + vmmc + fsw-prep-mix
 4	Min + condoms + vmmc + fsw-prep-mix + adh-supp
-5	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program 
-6	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program
-7	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix
-8	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix
-9	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix + testing
+5	Min + condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program 
+6	Min + condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program + msm-program
+7	Min + condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program + msm-program + agyw-prep-mix
+8	Min + condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program + msm-program + agyw-prep-mix + msm-prep-mix
+9	Min + condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program + msm-program + agyw-prep-mix + msm-prep-mix + testing
 
 99	SQ 
 
@@ -2518,19 +2518,9 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 																		* Do we need to restore CD4 and VL testing as part of adherence support?; 
 	end;
 
-	*Option 5: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program;
+	*Option 5: condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program;
 	if option ge 5 then do;
-		*1-4 + msm-program;
-		* MSM: Strengthening demand, increased accessibility of condoms, peer education ;	
-		* Currently no PrEP element to MSM program;
-		if caldate_never_dot = &year_interv then do; 
-			msm_risk_cls = 0.1;
-		end;
-	end;
-
-	*Option 6: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program;
-	if option ge 6 then do;
-		*1-5 + fsw-program;
+		*1-4 + fsw-program;
 		eff_sw_program = sw_program;		*Restore SQ;	
 		eff_rate_disengage_sw_program = rate_disengage_sw_program;		
 		if sw_program_visit=1 then do;				*Restore oral PrEP for SW who have had an program visit this period;
@@ -2543,7 +2533,18 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		end;
 	end;
 
-	*Option 7: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix;
+	*Option 6: condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program + msm-program;
+	if option ge 6 then do;
+		*1-5 + msm-program;
+		* MSM: Strengthening demand, increased accessibility of condoms, peer education ;	
+		* Currently no PrEP element to MSM program;
+		if caldate_never_dot = &year_interv then do; 
+			msm_risk_cls = 0.1;
+		end;
+	end;
+
+
+	*Option 7: condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program + msm-program + agyw-prep-mix;
 	if option ge 7 then do;
 		*1-6 + agyw-prep-mix;
 		prep_any_strategy=21;												* New strategy for HIV control;
@@ -2556,7 +2557,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;		* Restore SQ;		 
 	end;
 
-	*Option 8: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix;
+	*Option 8: condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program + msm-program + agyw-prep-mix + msm-prep-mix;
 	if option ge 8 then do;
 		*1-7 + msm-prep-mix;
 		prep_any_strategy=22;												* New strategy for HIV control;
@@ -2571,7 +2572,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		prob_prep_elig_msm = 0.5;
 	end;
 
-	*Option 9: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix + testing;
+	*Option 9: condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program + msm-program + agyw-prep-mix + msm-prep-mix + testing;
 	if option ge 9 then do;
 		*1-8 + testing;
 		prob_self_test_hard_reach=0;    	*Restore SQ;				* prob_self_test_hard_reach set to 0 at baseline - confirm this is intended;
