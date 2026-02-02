@@ -573,14 +573,14 @@ output out=means_dnewinf_50y mean=;
 run;
 ***Cost per infection averted;
 proc means data=c  mean;var 
-/*cost_inf_avtd_20y_2*/	cost_inf_avtd_20y_3		cost_inf_avtd_20y_4		cost_inf_avtd_20y_5	
+/*cost_inf_avtd_20y_2*/		cost_inf_avtd_20y_3		cost_inf_avtd_20y_4		cost_inf_avtd_20y_5	
 cost_inf_avtd_20y_6 		cost_inf_avtd_20y_7		cost_inf_avtd_20y_8		cost_inf_avtd_20y_9		cost_inf_avtd_20y_10
 cost_inf_avtd_20y_11		cost_inf_avtd_20y_12		cost_inf_avtd_20y_13		cost_inf_avtd_20y_14		cost_inf_avtd_20y_15	
 cost_inf_avtd_20y_16		cost_inf_avtd_20y_17		cost_inf_avtd_20y_18		/*cost_inf_avtd_20y_19*/	cost_inf_avtd_20y_20;
-output out=means_inf_avtd_20y mean=;
+output out=means_inf_avt_20y mean=;
 run;
 proc means data=c  mean;var 
-/*cost_inf_avtd_50y_2*/	cost_inf_avtd_50y_3		cost_inf_avtd_50y_4		cost_inf_avtd_50y_5	
+/*cost_inf_avtd_50y_2*/		cost_inf_avtd_50y_3		cost_inf_avtd_50y_4		cost_inf_avtd_50y_5	
 cost_inf_avtd_50y_6 		cost_inf_avtd_50y_7		cost_inf_avtd_50y_8		cost_inf_avtd_50y_9		cost_inf_avtd_50y_10
 cost_inf_avtd_50y_11		cost_inf_avtd_50y_12		cost_inf_avtd_50y_13		cost_inf_avtd_50y_14		cost_inf_avtd_50y_15	
 cost_inf_avtd_50y_16		cost_inf_avtd_50y_17		cost_inf_avtd_50y_18		/*cost_inf_avtd_50y_19*/	cost_inf_avtd_50y_20;
@@ -599,7 +599,7 @@ data means_inf_avtd;
     merge t_dnewinf_20y(rename=(_NAME_=scenario))
 		  t_inf_avt_20y
 		  t_dnewinf_50y
-          t_inf_avt_50y
+          t_inf_avt_50y;
 drop _name_;
 run;
 
