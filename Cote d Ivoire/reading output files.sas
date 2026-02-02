@@ -1,5 +1,5 @@
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\cdi_15Jan26_a";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\cdi_15Jan26_min";
 libname b "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi";
 
 
