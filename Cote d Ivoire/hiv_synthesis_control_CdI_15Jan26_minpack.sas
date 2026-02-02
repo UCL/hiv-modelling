@@ -22269,52 +22269,36 @@ data a ;  set r1 ;
 
 
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,0);
+%run_update_r1(&year_interv,&year_interv+52,0);
 
 
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,1);
+%run_update_r1(&year_interv,&year_interv+52,1);
 
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,2);
+%run_update_r1(&year_interv,&year_interv+52,2);
 
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,3);
+%run_update_r1(&year_interv,&year_interv+52,3);
 
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,4);
+%run_update_r1(&year_interv,&year_interv+52,4);
 
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,5);
+%run_update_r1(&year_interv,&year_interv+52,5);
 
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,6);
+%run_update_r1(&year_interv,&year_interv+52,6);
 
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,7);
+%run_update_r1(&year_interv,&year_interv+52,7);
 
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,8);
-
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,9);
-
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,10);
-
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,11);
-
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,12);
-
-* Worst-case;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,13);
+%run_update_r1(&year_interv,&year_interv+52,8);
 
 * SQ;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,99);
+%run_update_r1(&year_interv,&year_interv+52,99);
 
 			
 														 
