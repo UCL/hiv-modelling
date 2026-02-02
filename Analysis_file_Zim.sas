@@ -227,6 +227,7 @@ diff_dcost_20y_18 = dcost_26_46_18 - dcost_26_46_1;
 diff_dcost_20y_19 = dcost_26_46_19 - dcost_26_46_1;
 diff_dcost_20y_20 = dcost_26_46_20 - dcost_26_46_1;
 
+
 *50 years;
 diff_dcost_50y_2 = dcost_26_76_2 - dcost_26_76_1;
 diff_dcost_50y_3 = dcost_26_76_3 - dcost_26_76_1;
@@ -247,7 +248,6 @@ diff_dcost_50y_17 = dcost_26_76_17 - dcost_26_76_1;
 diff_dcost_50y_18 = dcost_26_76_18 - dcost_26_76_1;
 diff_dcost_50y_19 = dcost_26_76_19 - dcost_26_76_1;
 diff_dcost_50y_20 = dcost_26_76_20 - dcost_26_76_1;
-
 
 *** discounted new infections;
 * 20 years;
@@ -294,45 +294,49 @@ diff_dnewinf_50y_20 = d_n_new_inf_26_76_1 - d_n_new_inf_26_76_20;
 
 *difference in discounted dalys (dalys averted);
 * 20 years;
-diff_ddaly_20y_2 = ddaly_26_46_2 - ddaly_26_46_1;
-diff_ddaly_20y_3 = ddaly_26_46_3 - ddaly_26_46_1;
-diff_ddaly_20y_4 = ddaly_26_46_4 - ddaly_26_46_1;
-diff_ddaly_20y_5 = ddaly_26_46_5 - ddaly_26_46_1;
-diff_ddaly_20y_6 = ddaly_26_46_6 - ddaly_26_46_1;
-diff_ddaly_20y_7 = ddaly_26_46_7 - ddaly_26_46_1;
-diff_ddaly_20y_8 = ddaly_26_46_8 - ddaly_26_46_1;
-diff_ddaly_20y_9 = ddaly_26_46_9 - ddaly_26_46_1;
-diff_ddaly_20y_10 = ddaly_26_46_10 - ddaly_26_46_1;
-diff_ddaly_20y_11 = ddaly_26_46_11 - ddaly_26_46_1;
-diff_ddaly_20y_12 = ddaly_26_46_12 - ddaly_26_46_1;
-diff_ddaly_20y_13 = ddaly_26_46_13 - ddaly_26_46_1;
-diff_ddaly_20y_14 = ddaly_26_46_14 - ddaly_26_46_1;
-diff_ddaly_20y_15 = ddaly_26_46_15 - ddaly_26_46_1;
-diff_ddaly_20y_16 = ddaly_26_46_16 - ddaly_26_46_1;
-diff_ddaly_20y_17 = ddaly_26_46_17 - ddaly_26_46_1;
-diff_ddaly_20y_18 = ddaly_26_46_18 - ddaly_26_46_1;
-diff_ddaly_20y_19 = ddaly_26_46_19 - ddaly_26_46_1;
+
+diff_ddaly_20y_2  = ddaly_26_46_1 - ddaly_26_46_2;
+diff_ddaly_20y_3  = ddaly_26_46_1 - ddaly_26_46_3;
+diff_ddaly_20y_4  = ddaly_26_46_1 - ddaly_26_46_4;
+diff_ddaly_20y_5  = ddaly_26_46_1 - ddaly_26_46_5;
+diff_ddaly_20y_6  = ddaly_26_46_1 - ddaly_26_46_6;
+diff_ddaly_20y_7  = ddaly_26_46_1 - ddaly_26_46_7;
+diff_ddaly_20y_8  = ddaly_26_46_1 - ddaly_26_46_8;
+diff_ddaly_20y_9  = ddaly_26_46_1 - ddaly_26_46_9;
+diff_ddaly_20y_10 = ddaly_26_46_1 - ddaly_26_46_10;
+diff_ddaly_20y_11 = ddaly_26_46_1 - ddaly_26_46_11;
+diff_ddaly_20y_12 = ddaly_26_46_1 - ddaly_26_46_12;
+diff_ddaly_20y_13 = ddaly_26_46_1 - ddaly_26_46_13;
+diff_ddaly_20y_14 = ddaly_26_46_1 - ddaly_26_46_14;
+diff_ddaly_20y_15 = ddaly_26_46_1 - ddaly_26_46_15;
+diff_ddaly_20y_16 = ddaly_26_46_1 - ddaly_26_46_16;
+diff_ddaly_20y_17 = ddaly_26_46_1 - ddaly_26_46_17;
+diff_ddaly_20y_18 = ddaly_26_46_1 - ddaly_26_46_18;
+diff_ddaly_20y_19 = ddaly_26_46_1 - ddaly_26_46_19;
+diff_ddaly_20y_20 = ddaly_26_46_1 - ddaly_26_46_20;
+
 
 *50 years;
-diff_ddaly_50y_2 = ddaly_26_76_2 - ddaly_26_76_1;
-diff_ddaly_50y_3 = ddaly_26_76_3 - ddaly_26_76_1;
-diff_ddaly_50y_4 = ddaly_26_76_4 - ddaly_26_76_1;
-diff_ddaly_50y_5 = ddaly_26_76_5 - ddaly_26_76_1;
-diff_ddaly_50y_6 = ddaly_26_76_6 - ddaly_26_76_1;
-diff_ddaly_50y_7 = ddaly_26_76_7 - ddaly_26_76_1;
-diff_ddaly_50y_8 = ddaly_26_76_8 - ddaly_26_76_1;
-diff_ddaly_50y_9 = ddaly_26_76_9 - ddaly_26_76_1;
-diff_ddaly_50y_10 = ddaly_26_76_10 - ddaly_26_76_1;
-diff_ddaly_50y_11 = ddaly_26_76_11 - ddaly_26_76_1;
-diff_ddaly_50y_12 = ddaly_26_76_12 - ddaly_26_76_1;
-diff_ddaly_50y_13 = ddaly_26_76_13 - ddaly_26_76_1;
-diff_ddaly_50y_14 = ddaly_26_76_14 - ddaly_26_76_1;
-diff_ddaly_50y_15 = ddaly_26_76_15 - ddaly_26_76_1;
-diff_ddaly_50y_16 = ddaly_26_76_16 - ddaly_26_76_1;
-diff_ddaly_50y_17 = ddaly_26_76_17 - ddaly_26_76_1;
-diff_ddaly_50y_18 = ddaly_26_76_18 - ddaly_26_76_1;
-diff_ddaly_50y_19 = ddaly_26_76_19 - ddaly_26_76_1;
-diff_ddaly_50y_20 = ddaly_26_76_20 - ddaly_26_76_1;
+diff_ddaly_50y_2  = ddaly_26_76_1 - ddaly_26_76_2;
+diff_ddaly_50y_3  = ddaly_26_76_1 - ddaly_26_76_3;
+diff_ddaly_50y_4  = ddaly_26_76_1 - ddaly_26_76_4;
+diff_ddaly_50y_5  = ddaly_26_76_1 - ddaly_26_76_5;
+diff_ddaly_50y_6  = ddaly_26_76_1 - ddaly_26_76_6;
+diff_ddaly_50y_7  = ddaly_26_76_1 - ddaly_26_76_7;
+diff_ddaly_50y_8  = ddaly_26_76_1 - ddaly_26_76_8;
+diff_ddaly_50y_9  = ddaly_26_76_1 - ddaly_26_76_9;
+diff_ddaly_50y_10 = ddaly_26_76_1 - ddaly_26_76_10;
+diff_ddaly_50y_11 = ddaly_26_76_1 - ddaly_26_76_11;
+diff_ddaly_50y_12 = ddaly_26_76_1 - ddaly_26_76_12;
+diff_ddaly_50y_13 = ddaly_26_76_1 - ddaly_26_76_13;
+diff_ddaly_50y_14 = ddaly_26_76_1 - ddaly_26_76_14;
+diff_ddaly_50y_15 = ddaly_26_76_1 - ddaly_26_76_15;
+diff_ddaly_50y_16 = ddaly_26_76_1 - ddaly_26_76_16;
+diff_ddaly_50y_17 = ddaly_26_76_1 - ddaly_26_76_17;
+diff_ddaly_50y_18 = ddaly_26_76_1 - ddaly_26_76_18;
+diff_ddaly_50y_19 = ddaly_26_76_1 - ddaly_26_76_19;
+diff_ddaly_50y_20 = ddaly_26_76_1 - ddaly_26_76_20;
+
 
 /*
 *net dalys using $500;
@@ -413,6 +417,8 @@ ICER_20y_18 = (diff_dcost_20y_18/diff_ddaly_20y_18)*1000000;
 ICER_20y_19 = (diff_dcost_20y_19/diff_ddaly_20y_19)*1000000;
 ICER_20y_20 = (diff_dcost_20y_20/diff_ddaly_20y_20)*1000000;
 
+
+
 * 50 years;
 ICER_50y_2 = (diff_dcost_50y_2/diff_ddaly_50y_2)*1000000;
 ICER_50y_3 = (diff_dcost_50y_3/diff_ddaly_50y_3)*1000000;
@@ -434,215 +440,168 @@ ICER_50y_18 = (diff_dcost_50y_18/diff_ddaly_50y_18)*1000000;
 ICER_50y_19 = (diff_dcost_50y_19/diff_ddaly_50y_19)*1000000;
 ICER_50y_20 = (diff_dcost_50y_20/diff_ddaly_50y_20)*1000000;
 
+
+***Cost per infection averted;
+* 20 years;
+cost_inf_avtd_20y_2 = (diff_dcost_20y_2/diff_dnewinf_20y_2)*1000000;
+cost_inf_avtd_20y_3 = (diff_dcost_20y_3/diff_dnewinf_20y_3)*1000000;
+cost_inf_avtd_20y_4 = (diff_dcost_20y_4/diff_dnewinf_20y_4)*1000000;
+cost_inf_avtd_20y_5 = (diff_dcost_20y_5/diff_dnewinf_20y_5)*1000000;
+cost_inf_avtd_20y_6 = (diff_dcost_20y_6/diff_dnewinf_20y_6)*1000000;
+cost_inf_avtd_20y_7 = (diff_dcost_20y_7/diff_dnewinf_20y_7)*1000000;
+cost_inf_avtd_20y_8 = (diff_dcost_20y_8/diff_dnewinf_20y_8)*1000000;
+cost_inf_avtd_20y_9 = (diff_dcost_20y_9/diff_dnewinf_20y_9)*1000000;
+cost_inf_avtd_20y_10 = (diff_dcost_20y_10/diff_dnewinf_20y_10)*1000000;
+cost_inf_avtd_20y_11 = (diff_dcost_20y_11/diff_dnewinf_20y_11)*1000000;
+cost_inf_avtd_20y_12 = (diff_dcost_20y_12/diff_dnewinf_20y_12)*1000000;
+cost_inf_avtd_20y_13 = (diff_dcost_20y_13/diff_dnewinf_20y_13)*1000000;
+cost_inf_avtd_20y_14 = (diff_dcost_20y_14/diff_dnewinf_20y_14)*1000000;
+cost_inf_avtd_20y_15 = (diff_dcost_20y_15/diff_dnewinf_20y_15)*1000000;
+cost_inf_avtd_20y_16 = (diff_dcost_20y_16/diff_dnewinf_20y_16)*1000000;
+cost_inf_avtd_20y_17 = (diff_dcost_20y_17/diff_dnewinf_20y_17)*1000000;
+cost_inf_avtd_20y_18 = (diff_dcost_20y_18/diff_dnewinf_20y_18)*1000000;
+cost_inf_avtd_20y_19 = (diff_dcost_20y_19/diff_dnewinf_20y_19)*1000000;
+cost_inf_avtd_20y_20 = (diff_dcost_20y_20/diff_dnewinf_20y_20)*1000000;
+
+* 50 years;
+cost_inf_avtd_50y_2 = (diff_dcost_50y_2/diff_dnewinf_50y_2)*1000000;
+cost_inf_avtd_50y_3 = (diff_dcost_50y_3/diff_dnewinf_50y_3)*1000000;
+cost_inf_avtd_50y_4 = (diff_dcost_50y_4/diff_dnewinf_50y_4)*1000000;
+cost_inf_avtd_50y_5 = (diff_dcost_50y_5/diff_dnewinf_50y_5)*1000000;
+cost_inf_avtd_50y_6 = (diff_dcost_50y_6/diff_dnewinf_50y_6)*1000000;
+cost_inf_avtd_50y_7 = (diff_dcost_50y_7/diff_dnewinf_50y_7)*1000000;
+cost_inf_avtd_50y_8 = (diff_dcost_50y_8/diff_dnewinf_50y_8)*1000000;
+cost_inf_avtd_50y_9 = (diff_dcost_50y_9/diff_dnewinf_50y_9)*1000000;
+cost_inf_avtd_50y_10 = (diff_dcost_50y_10/diff_dnewinf_50y_10)*1000000;
+cost_inf_avtd_50y_11 = (diff_dcost_50y_11/diff_dnewinf_50y_11)*1000000;
+cost_inf_avtd_50y_12 = (diff_dcost_50y_12/diff_dnewinf_50y_12)*1000000;
+cost_inf_avtd_50y_13 = (diff_dcost_50y_13/diff_dnewinf_50y_13)*1000000;
+cost_inf_avtd_50y_14 = (diff_dcost_50y_14/diff_dnewinf_50y_14)*1000000;
+cost_inf_avtd_50y_15 = (diff_dcost_50y_15/diff_dnewinf_50y_15)*1000000;
+cost_inf_avtd_50y_16 = (diff_dcost_50y_16/diff_dnewinf_50y_16)*1000000;
+cost_inf_avtd_50y_17 = (diff_dcost_50y_17/diff_dnewinf_50y_17)*1000000;
+cost_inf_avtd_50y_18 = (diff_dcost_50y_18/diff_dnewinf_50y_18)*1000000;
+cost_inf_avtd_50y_19 = (diff_dcost_50y_19/diff_dnewinf_50y_19)*1000000;
+cost_inf_avtd_50y_20 = (diff_dcost_50y_20/diff_dnewinf_50y_20)*1000000;
+
+
+***Difference in discounted costs;
 proc means data=c  mean;var 
 /*diff_dcost_20y_2*/	diff_dcost_20y_3		diff_dcost_20y_4		diff_dcost_20y_5	
 diff_dcost_20y_6 		diff_dcost_20y_7		diff_dcost_20y_8		diff_dcost_20y_9		diff_dcost_20y_10
 diff_dcost_20y_11		diff_dcost_20y_12		diff_dcost_20y_13		diff_dcost_20y_14		diff_dcost_20y_15	
-diff_dcost_20y_16		diff_dcost_20y_17		diff_dcost_20y_18		/*diff_dcost_20y_19*/		diff_dcost_20y_20;
-*output out=means_costs_20y mean=;
+diff_dcost_20y_16		diff_dcost_20y_17		diff_dcost_20y_18		/*diff_dcost_20y_19*/	diff_dcost_20y_20;
+output out=means_costs_20y mean=;
 run;
-proc means data=b  mean;var 
+proc means data=c  mean;var 
 /*diff_dcost_50y_2*/	diff_dcost_50y_3		diff_dcost_50y_4		diff_dcost_50y_5	
 diff_dcost_50y_6 		diff_dcost_50y_7		diff_dcost_50y_8		diff_dcost_50y_9		diff_dcost_50y_10
 diff_dcost_50y_11		diff_dcost_50y_12		diff_dcost_50y_13		diff_dcost_50y_14		diff_dcost_50y_15	
-diff_dcost_50y_16		diff_dcost_50y_17		diff_dcost_50y_18		/*diff_dcost_50y_19*/		diff_dcost_50y_20;
+diff_dcost_50y_16		diff_dcost_50y_17		diff_dcost_50y_18		/*diff_dcost_50y_19*/	diff_dcost_50y_20;
 output out=means_costs_50y mean=;
 run;
 
-
-
-***Absolute costs and differences;
-proc means n mean lclm uclm;
-var dcost_24_74_1 dcost_24_74_2 diff_dcost
-	dart_cost_y_24_74_1 dart_cost_y_24_74_2  diff_artcost
-	dtest_cost_24_74_1 dtest_cost_24_74_2 diff_testcost 
-	dtest_cost_sw_24_74_1 dtest_cost_sw_24_74_2 diff_testcost_sw
-	oth_prog_costs_1 oth_prog_costs_2 diff_oth_prog_costs
-;run;
-
-***DALYs;
-proc means n mean lclm uclm;
-var	ddaly_24_74_1 ddaly_24_74_2 diff_ddaly;
+***DALYs averted;
+proc means data=c  mean;var 
+/*diff_ddaly_20y_2*/	diff_ddaly_20y_3		diff_ddaly_20y_4		diff_ddaly_20y_5	
+diff_ddaly_20y_6 		diff_ddaly_20y_7		diff_ddaly_20y_8		diff_ddaly_20y_9		diff_ddaly_20y_10
+diff_ddaly_20y_11		diff_ddaly_20y_12		diff_ddaly_20y_13		diff_ddaly_20y_14		diff_ddaly_20y_15	
+diff_ddaly_20y_16		diff_ddaly_20y_17		diff_ddaly_20y_18		/*diff_ddaly_20y_19*/	diff_ddaly_20y_20;
+output out=means_dalys_20y mean=;
+run;
+proc means data=c  mean;var 
+/*diff_ddaly_50y_2*/	diff_ddaly_50y_3		diff_ddaly_50y_4		diff_ddaly_50y_5	
+diff_ddaly_50y_6 		diff_ddaly_50y_7		diff_ddaly_50y_8		diff_ddaly_50y_9		diff_ddaly_50y_10
+diff_ddaly_50y_11		diff_ddaly_50y_12		diff_ddaly_50y_13		diff_ddaly_50y_14		diff_ddaly_50y_15	
+diff_ddaly_50y_16		diff_ddaly_50y_17		diff_ddaly_50y_18		/*diff_ddaly_50y_19*/	diff_ddaly_50y_20;
+output out=means_dalys_50y mean=;
 run;
 
-***Since DALYs are averted and costs are saved, no need to calculate an ICER;
-proc means n mean lclm uclm;
-var ICER;RUN;
-
-proc means n mean lclm uclm;var
-netdalys_sis netdalys_amt diff_netdalys;run;
-
-
-***Identifying when AMETHIST becomes CE;
-proc means n mean lclm uclm;
-var	diff_dcost diff_ddaly diff_dcost5yAS diff_ddaly5yAS  diff_dcost10yAS diff_ddaly10yAS diff_dcost15yAS diff_ddaly15yAS
-diff_dcost20yAS diff_ddaly20yAS diff_dcost25yAS diff_ddaly25yAS diff_dcost30yAS diff_ddaly30yAS diff_dcost35yAS diff_ddaly35yAS
-diff_dcost40yAS diff_ddaly40yAS diff_dcost45yAS diff_ddaly45yAS diff_dcost50yAS diff_ddaly50yAS;
+proc means data=c  mean;var 
+/*icer_20y_2*/	icer_20y_3		icer_20y_4		icer_20y_5	
+icer_20y_6 		icer_20y_7		icer_20y_8		icer_20y_9		icer_20y_10
+icer_20y_11		icer_20y_12		icer_20y_13		icer_20y_14		icer_20y_15	
+icer_20y_16		icer_20y_17		icer_20y_18		/*icer_20y_19*/	icer_20y_20;
+output out=means_icer_20y mean=;
 run;
-
-**After 15y, costs are saved and DALYs averted. Check actual costs and DALYs to make sure this is correct;
-proc means n mean lclm uclm;
-var	dcost_24_39_2 dcost_24_39_1 ddaly_24_39_2 ddaly_24_39_1  diff_dcost15yAS diff_ddaly15yAS;
+proc means data=c  mean;var 
+/*icer_50y_2*/	icer_50y_3		icer_50y_4		icer_50y_5	
+icer_50y_6 		icer_50y_7		icer_50y_8		icer_50y_9		icer_50y_10
+icer_50y_11		icer_50y_12		icer_50y_13		icer_50y_14		icer_50y_15	
+icer_50y_16		icer_50y_17		icer_50y_18		/*icer_50y_19*/	icer_50y_20;
+output out=means_icer_50y mean=;
 run;
 
 
-***Identifying when Sisters becomes CE compared to discontinuation;
-proc means n mean lclm uclm;
-var	diff_dcost diff_ddaly diff_dcost5ySD diff_ddaly5ySD  diff_dcost10ySD diff_ddaly10ySD diff_dcost15ySD diff_ddaly15ySD
-diff_dcost20ySD diff_ddaly20ySD diff_dcost25ySD diff_ddaly25ySD diff_dcost30ySD diff_ddaly30ySD diff_dcost35ySD diff_ddaly35ySD
-diff_dcost40ySD diff_ddaly40ySD diff_dcost45ySD diff_ddaly45ySD diff_dcost50ySD diff_ddaly50ySD;
+proc transpose data=means_costs_20y out=t_costs_20y(rename=(col1=mean_costs_20y));run;
+proc transpose data=means_costs_50y out=t_costs_50y(rename=(col1=mean_costs_50y));run;
+proc transpose data=means_dalys_20y out=t_dalys_20y(rename=(col1=mean_dalys_20y));run;
+proc transpose data=means_dalys_50y out=t_dalys_50y(rename=(col1=mean_dalys_50y));run;
+proc transpose data=means_icer_20y out=t_icer_20y(rename=(col1=mean_icer_20y));run;
+proc transpose data=means_icer_50y out=t_icer_50y(rename=(col1=mean_icer_50y));run;
+
+**Use html so can copy and paste into Excel (could automate but this gives more flexibility);
+ods html;
+data means_costs_dalys;
+    merge t_costs_20y(rename=(_NAME_=scenario))
+		  t_dalys_20y
+		  t_icer_20y
+          t_costs_50y
+		  t_dalys_50y
+		  t_icer_50y;
+drop _name_;
 run;
 
-
-***Breakdown of costs;
-proc means n mean lclm uclm;var
-dcost_24_74_1
-dart_cost_y_24_74_1
-d_clin_costs_1
-dcd4_cost_24_74_1 
-dvl_cost_24_74_1 
-dvis_cost_24_74_1 
-dres_cost_24_74_1 
-dtest_cost_24_74_1 
-dcost_drug_level_test_24_74_1 
-dcost_circ_24_74_1 
-dcost_condom_dn_24_74_1 
-dcost_avail_self_test_24_74_1 
-dcost_prep_visit_oral_24_74_1 
-dcost_prep_oral_24_74_1 
-dcost_prep_visit_inj_24_74_1
-dcost_prep_inj_24_74_1 	
-dcost_sisprog__24_74_1
-total_prep_1
-
-dcost_24_74_2
-dart_cost_y_24_74_2
-d_clin_costs_2
-dcd4_cost_24_74_2 
-dvl_cost_24_74_2 
-dvis_cost_24_74_2 
-dres_cost_24_74_2 
-dtest_cost_24_74_2 
-dcost_drug_level_test_24_74_2 
-dcost_circ_24_74_2 
-dcost_condom_dn_24_74_2 
-dcost_avail_self_test_24_74_2 
-dcost_prep_visit_oral_24_74_2 
-dcost_prep_oral_24_74_2 
-dcost_prep_visit_inj_24_74_2
-dcost_prep_inj_24_74_2 	
-dcost_amtprog__24_74_2
-total_prep_2
-
-dcost_24_74_3
-dart_cost_y_24_74_3
-d_clin_costs_3
-dcd4_cost_24_74_3 
-dvl_cost_24_74_3 
-dvis_cost_24_74_3 
-dres_cost_24_74_3 
-dtest_cost_24_74_3 
-dcost_drug_level_test_24_74_3 
-dcost_circ_24_74_3 
-dcost_condom_dn_24_74_3 
-dcost_avail_self_test_24_74_3 
-dcost_prep_visit_oral_24_74_3 
-dcost_prep_oral_24_74_3 
-dcost_prep_visit_inj_24_74_3
-dcost_prep_inj_24_74_3 
-total_prep_3
-;
+proc print data=means_costs_dalys noobs;
 run;
 
 
 
-***ANALYSING THE IMPACT OF FUNDING CUTS - OPTION 3;
-
-data one;
-set a;
-
-***table 3 - outputs in 2030 for Sisters and Sisters + Amethist;
-proc means n p50 mean p5 p95;var
-/*Current SW program*/
-p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1	p_tested_swprog_30_1
-p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
-p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
-incidence1549__30_1	prevalence1549__30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000__30_1 
-
-/*Discontinuation*/
-p_sw_prog_vis_30_3  p_tested_past_year_sw_30_3 p_tested_swprog_30_3
-p_diag_sw_30_3		p_onart_diag_sw_30_3	p_onart_vl1000_sw_30_3		p_fsw_newp0__30_3	prop_sw_onprep_30_3
-p_sti_sw_30_3		incidence_sw_30_3	prevalence_sw_30_3
-incidence1549__30_3	prevalence1549__30_3		p_diag_30_3	  p_onart_diag_30_3   p_onart_vl1000__30_3
-
-;
+proc means data=c  mean;var 
+/*diff_dnewinf_20y_2*/	diff_dnewinf_20y_3		diff_dnewinf_20y_4		diff_dnewinf_20y_5	
+diff_dnewinf_20y_6 		diff_dnewinf_20y_7		diff_dnewinf_20y_8		diff_dnewinf_20y_9		diff_dnewinf_20y_10
+diff_dnewinf_20y_11		diff_dnewinf_20y_12		diff_dnewinf_20y_13		diff_dnewinf_20y_14		diff_dnewinf_20y_15	
+diff_dnewinf_20y_16		diff_dnewinf_20y_17		diff_dnewinf_20y_18		/*diff_dnewinf_20y_19*/	diff_dnewinf_20y_20;
+output out=means_dnewinf_20y mean=;
+run;
+proc means data=c  mean;var 
+/*diff_dnewinf_50y_2*/	diff_dnewinf_50y_3		diff_dnewinf_50y_4		diff_dnewinf_50y_5	
+diff_dnewinf_50y_6 		diff_dnewinf_50y_7		diff_dnewinf_50y_8		diff_dnewinf_50y_9		diff_dnewinf_50y_10
+diff_dnewinf_50y_11		diff_dnewinf_50y_12		diff_dnewinf_50y_13		diff_dnewinf_50y_14		diff_dnewinf_50y_15	
+diff_dnewinf_50y_16		diff_dnewinf_50y_17		diff_dnewinf_50y_18		/*diff_dnewinf_50y_19*/	diff_dnewinf_50y_20;
+output out=means_dnewinf_50y mean=;
+run;
+***Cost per infection averted;
+proc means data=c  mean;var 
+/*cost_inf_avtd_20y_2*/	cost_inf_avtd_20y_3		cost_inf_avtd_20y_4		cost_inf_avtd_20y_5	
+cost_inf_avtd_20y_6 		cost_inf_avtd_20y_7		cost_inf_avtd_20y_8		cost_inf_avtd_20y_9		cost_inf_avtd_20y_10
+cost_inf_avtd_20y_11		cost_inf_avtd_20y_12		cost_inf_avtd_20y_13		cost_inf_avtd_20y_14		cost_inf_avtd_20y_15	
+cost_inf_avtd_20y_16		cost_inf_avtd_20y_17		cost_inf_avtd_20y_18		/*cost_inf_avtd_20y_19*/	cost_inf_avtd_20y_20;
+output out=means_inf_avtd_20y mean=;
+run;
+proc means data=c  mean;var 
+/*cost_inf_avtd_50y_2*/	cost_inf_avtd_50y_3		cost_inf_avtd_50y_4		cost_inf_avtd_50y_5	
+cost_inf_avtd_50y_6 		cost_inf_avtd_50y_7		cost_inf_avtd_50y_8		cost_inf_avtd_50y_9		cost_inf_avtd_50y_10
+cost_inf_avtd_50y_11		cost_inf_avtd_50y_12		cost_inf_avtd_50y_13		cost_inf_avtd_50y_14		cost_inf_avtd_50y_15	
+cost_inf_avtd_50y_16		cost_inf_avtd_50y_17		cost_inf_avtd_50y_18		/*cost_inf_avtd_50y_19*/	cost_inf_avtd_50y_20;
+output out=means_inf_avt_50y mean=;
 run;
 
-proc means n p50 mean p5 p95;var prop_sw_onprep_inj_30_1 prop_sw_onprep_oral_30_1;run;
-
-data two;
-set one;
 
 
-****Cost effectiveness;
-/*
-_1=Sisters
-_2=Amethist
-_3=Discontinuation;
-*/
+proc transpose data=means_dnewinf_20y out=t_dnewinf_20y(rename=(col1=mean_dnewinf_20y));run;
+proc transpose data=means_dnewinf_50y out=t_dnewinf_50y(rename=(col1=mean_dnewinf_50y));run;
+proc transpose data=means_inf_avt_20y out=t_inf_avt_20y(rename=(col1=mean_inf_avt_20y));run;
+proc transpose data=means_inf_avt_50y out=t_inf_avt_50y(rename=(col1=mean_inf_avt_50y));run;
 
-*difference in costs KP-discont;
-diff_dcost = dcost_24_74_1 - dcost_24_74_3;
-diff_artcost= dart_cost_y_24_74_1 - dart_cost_y_24_74_3;
-diff_testcost = dtest_cost_24_74_1 - dtest_cost_24_74_3;
-diff_testcost_sw = dtest_cost_sw_24_74_1 - dtest_cost_sw_24_74_3;
-diff_dcost_sisprog = dcost_sisprog__24_74_1-0;
-
-*difference in dalys (dalys averted);
-diff_ddaly = ddaly_24_74_1 - ddaly_24_74_3;
-
-***DALYs averted * CET - this gives max cost for SW prog to be CE
-   (multiplied by -1 since we want to cost the DALYs averted rather than the difference which is negative);
-dalys_avert_x_CET = (diff_ddaly * 0.0005)*-1;
-
-***Max cost of a SW program - additional $m paid for averting DALYs + initial cost savings;
-maxcost= (diff_dcost)*-1 +  dalys_avert_x_CET;
-
-*net dalys using $500;
-netdalys_sis =  ddaly_24_74_1 + (dcost_24_74_1)/0.0005;
-netdalys_discon =  ddaly_24_74_3 + (dcost_24_74_3)/0.0005;*expect dalys to be lower here;
-
-*net dalys averted;
-diff_netdalys = netdalys_sis - netdalys_discon; *take absolute number;
-
-*net monetary benefit (Dalys * cost-effectivenss threshold) + costs;
-nmb_sis = (ddaly_24_74_1*0.0005) + dcost_24_74_1;
-nmb_discon= (ddaly_24_74_3*0.0005) + dcost_24_74_3;
-diff_nmb = nmb_sis - nmb_discon;
-
-
-diff_cost = dcost_24_74_1 - dcost_24_74_3;
-ICER = (diff_cost/diff_ddaly)*1000000;
-
-
-
-***Absolute costs and differences;
-proc means n mean lclm uclm;
-var dcost_24_74_1 dcost_24_74_3 diff_dcost
-	dart_cost_y_24_74_1 dart_cost_y_24_74_3  diff_artcost
-	dtest_cost_24_74_1 dtest_cost_24_74_3 diff_testcost 
-	dtest_cost_sw_24_74_1 dtest_cost_sw_24_74_3 diff_testcost_sw
-	dcost_sisprog__24_74_1 diff_dcost_sisprog;
-;run;
-
-***DALYs;
-proc means n mean lclm uclm;
-var	ddaly_24_74_1 ddaly_24_74_3 diff_ddaly;
+ods html;
+data means_inf_avtd;
+    merge t_dnewinf_20y(rename=(_NAME_=scenario))
+		  t_inf_avt_20y
+		  t_dnewinf_50y
+          t_inf_avt_50y
+drop _name_;
 run;
 
-***Since DALYs are averted and costs are saved, no need to calculate an ICER;
-proc means n mean lclm uclm;
-var ICER;RUN;
-
-proc means n mean lclm uclm;var
-netdalys_sis netdalys_discon diff_netdalys;run;
+proc print data=means_inf_avtd noobs;
+run;
