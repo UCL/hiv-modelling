@@ -79,7 +79,7 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 * ================================================================================= ;
 
-%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_costs.sas";
+%include "C:\Users\loveleen\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_costs.sas";
 
 * Adjustments to costs for Zimbabwe - HIV Control ;
 * Original costs in 000s of USD;
@@ -240,7 +240,7 @@ dcost_art = cost_art * &discount;
 
 * Condoms;
 * Cost only applies to SQ and condom intervention scenarios;
-cost_condoms = 0; if option in (99 7) then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+cost_condoms = 0; if option in (99 8) then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
 dcost_condoms = cost_condoms * &discount;
 
 * PrEP;
@@ -527,7 +527,7 @@ if cald=. then delete;run;
 
 
 ************************************************************************************************************************************************************;
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
+libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 
 
 data y; set a.long_cdi_control_15Jan26; 
