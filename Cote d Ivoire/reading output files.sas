@@ -8,7 +8,7 @@ set a.out:;
 run;
 
 
-data b.cdi_15Jan26_a;
+data b.cdi_15Jan26_min;
 set b;
 run;
 
