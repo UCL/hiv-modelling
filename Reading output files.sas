@@ -11,7 +11,7 @@ data b.GenesisZim_07Jan26_a;
 set b;
 run;
 
-
+proc freq;table cald;run;
 DATA simula2;
 	do i = 1 to 100;
        b = ranbin(2340234,100,0.5);
