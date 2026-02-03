@@ -15,15 +15,26 @@
 **************************************************************************************************************************;
 *Source: World Bank https://data.worldbank.org/indicator/SP.POP.1564.TO?locations=MW&name_desc=false&utm_;
 *Accessed Jan 2026;
-if cald=1990 then do; o_pop_1564_wb=4800000;o_pop_1564m_wb=2300000;o_pop_1564w_wb=2500000;
-if cald=1995 then do; o_pop_1564_wb=5100000;o_pop_1564m_wb=2500000;o_pop_1564w_wb=2700000;
-if cald=2000 then do; o_pop_1564_wb=5700000;o_pop_1564m_wb=3700000;o_pop_1564w_wb=3000000;
-if cald=2005 then do; o_pop_1564_wb=6400000;o_pop_1564m_wb=3100000;o_pop_1564w_wb=3300000;
-if cald=2010 then do; o_pop_1564_wb=7400000;o_pop_1564m_wb=3600000;o_pop_1564w_wb=3900000;
-if cald=2015 then do; o_pop_1564_wb=8800000;o_pop_1564m_wb=4200000;o_pop_1564w_wb=4600000;
-if cald=2020 then do; o_pop_1564_wb=10600000;o_pop_1564m_wb=5100000;o_pop_1564w_wb=5500000;
-if cald=2024 then do; o_pop_1564_wb=12300000;o_pop_1564m_wb=5900000;o_pop_1564w_wb=6400000;
+if cald=1990 then do; o_pop_1564_wb=4800000;o_pop_1564m_wb=2300000;o_pop_1564w_wb=2500000;end;
+if cald=1995 then do; o_pop_1564_wb=5100000;o_pop_1564m_wb=2500000;o_pop_1564w_wb=2700000;end;
+if cald=2000 then do; o_pop_1564_wb=5700000;o_pop_1564m_wb=3700000;o_pop_1564w_wb=3000000;end;
+if cald=2005 then do; o_pop_1564_wb=6400000;o_pop_1564m_wb=3100000;o_pop_1564w_wb=3300000;end;
+if cald=2010 then do; o_pop_1564_wb=7400000;o_pop_1564m_wb=3600000;o_pop_1564w_wb=3900000;end;
+if cald=2015 then do; o_pop_1564_wb=8800000;o_pop_1564m_wb=4200000;o_pop_1564w_wb=4600000;end;
+if cald=2020 then do; o_pop_1564_wb=10600000;o_pop_1564m_wb=5100000;o_pop_1564w_wb=5500000;end;
+if cald=2024 then do; o_pop_1564_wb=12300000;o_pop_1564m_wb=5900000;o_pop_1564w_wb=6400000;end;
 
+*Source: World Population Prospect, file "World Population Prospect 2022.pdf";
+*https://population.un.org/wpp/downloads?folder=Standard%20Projections&group=Population
+(Excel sheet, population by select age groups);
+if cald=1990 then do;o_pop_15plus_WPP=5211000;o_pop1564_WPP=4841000;end;
+if cald=1995 then do;o_pop_15plus_WPP=5466000;o_pop1564_WPP=5132000;end;
+if cald=2000 then do;o_pop_15plus_WPP=6091000;o_pop1564_WPP=5717000;end;
+if cald=2005 then do; o_pop_15plus_WPP=6929000;o_pop1564_WPP=6423000;end;
+if cald=2010 then do; o_pop_15plus_WPP=7973000;o_pop1564_WPP=7439000;end;
+if cald=2015 then do; o_pop_15plus_WPP=9324000;o_pop1564_WPP=8799000;end;
+if cald=2020 then do; o_pop_15plus_WPP=11111000;o_pop1564_WPP=10582000;end;
+if cald=2023 then do; o_pop_15plus_WPP=12385000;o_pop1564_WPP=11853000;end;
 
 
 
@@ -681,6 +692,23 @@ if cald = 2023.75 then do; n_onprep_obs_mlw_moh = 50638 ; n_everstarted_prep_mlw
 if cald = 2021.5 then n_prep_obs_mlw = 3200 ;  * from data in template - from implementing partners;
 if cald = 2022.5 then n_prep_obs_mlw = 9600 ;  * from data in template - from implementing partners;
 if cald = 2023.5 then n_prep_obs_mlw = 36000 ;  * from data in template - from implementing partners;
+
+
+
+
+* Self testing;
+
+* Source quarterly reports - multiply by 4 to get annual numbers (using number of people given tests rather than number of tests);
+if cald = 2019.50 then n_self_tested_obs_mlw_moh = 30619 * 4;
+if cald = 2019.75 then n_self_tested_obs_mlw_moh = 31747 * 4; 
+
+
+if cald = 2020.25 then n_self_tested_obs_mlw_moh = 105211 * 4; 
+if cald = 2020.50 then n_self_tested_obs_mlw_moh = 186487 * 4;
+if cald = 2020.75 then n_self_tested_obs_mlw_moh = 345411 * 4; 
+
+
+
 
 
 if cald = 2019.5 then n_self_tested_obs_mlw = 101000; * this is annual number;  
