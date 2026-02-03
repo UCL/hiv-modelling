@@ -8,7 +8,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data a;
-set a.cdi_15jan26 a.cdi_15jan26_a;
+set a.cdi_15jan26_min;
 if run=. then delete;
 
 *if prop_v_alert_perm ne 0.3 then delete;
@@ -79,7 +79,7 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 * ================================================================================= ;
 
-%include "C:\Users\loveleen\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_costs.sas";
+%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_costs.sas";
 
 * Adjustments to costs for Zimbabwe - HIV Control ;
 * Original costs in 000s of USD;
@@ -240,7 +240,9 @@ dcost_art = cost_art * &discount;
 
 * Condoms;
 * Cost only applies to SQ and condom intervention scenarios;
-cost_condoms = 0; if option in (99 8) then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+*cost_condoms = 0; *if option in (99 7) then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+cost_condoms = 0;if option gt 0 then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+
 dcost_condoms = cost_condoms * &discount;
 
 * PrEP;
@@ -273,7 +275,9 @@ dcost_fsw_services = cost_fsw_services * &discount;
 dcost_msm_services = cost_msm_services * &discount;
 
 * Adherence support;
-cost_adh_support = 0; if option in (99 12) then cost_adh_support = s_onart * &cost_AdhSupp_pppy * sf;		* Assumes the cost is applied to everyone on ART;	* removed  * 4 ;
+*cost_adh_support = 0; *if option in (99 12) then cost_adh_support = s_onart * &cost_AdhSupp_pppy * sf;		* Assumes the cost is applied to everyone on ART;	* removed  * 4 ;
+cost_adh_support = 0; if option ge 3 then cost_adh_support = s_onart * &cost_AdhSupp_pppy * sf;	
+
 dcost_adh_support = cost_adh_support * &discount;
 
 total_cost_hiv_control =	sum( cost_test,  cost_self_test,  cost_art,  cost_condoms,  cost_prep_tot,  cost_vmmc,  cost_fsw_services,  cost_msm_services,  cost_adh_support);
@@ -444,7 +448,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_tested_due_to_self_test;	n_tested_due_to_self_test =  s_tested_due_to_self_test * sf ;
 
 ** Flows; 
-* incidence1549;				incidence1549 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
+* incidence1549_;				incidence1549_ = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 * incidence1564;                incidence1564 = (s_primary * 4 * 100) / (s_alive1564  - s_hiv1564  + s_primary);
@@ -497,7 +501,7 @@ n_tested_m						n_tested_w
 n_self_tested_m					n_self_tested_w					n_tested_due_to_self_test
 
 /* Flows */
-incidence1549					incidence1549w					incidence1549m						incidence1564
+incidence1549_					incidence1549w					incidence1549m						incidence1564
 p_newp_ge1						p_newp_ge5						av_newp_ge1							p_ep
 p_m_npge1_						p_w_npge1_
 p_mcirc_1524m
@@ -511,6 +515,160 @@ dcost_test	dcost_self_test	dcost_art	dcost_condoms	dcost_prep_tot	dcost_vmmc	dco
 ;
 run;
 
+proc sort data=y;by run option;run;
+
+
+options nomprint;
+option nospool;
+
+
+***This section is to create graphs in SAS - mostly specific to mobile men for which there is no observed data;
+
+data b;
+set y;
+proc sort; by cald run ;run;
+data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
+proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
+%let nfit = 550;
+%let year_end = 2075.00 ;
+run;
+proc sort;by cald option ;run;
+
+*turns log off;
+*options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
+
+
+/*-----------------------------------------*/
+/* Step 1: Macro to summarize a single option */
+/*-----------------------------------------*/
+%macro option_summary(option_num=0);***Option_num is a macro parameter with a default value of 0;
+
+    /* Filter dataset for the selected option */
+    data option_data;
+        set b;
+        where option = &option_num;
+    run;
+
+    /* List of variables to summarize */
+    %let var =  
+	incidence1549_ incidence1549w incidence1549m
+	;
+
+    /* Count number of variables */
+    %let count = 0;
+    %do %while (%qscan(&var, &count+1, %str( )) ne %str());
+        %let count = %eval(&count + 1);
+    %end;
+
+    /* Initialize empty summary dataset (only cald and option) */
+    data summary_option_&option_num;
+        length cald 8 option 8;
+        stop;
+    run;
+
+    /* Loop over variables and calculate stats */
+    %do i = 1 %to &count;
+        %let varb = %scan(&var,&i);
+
+        /* Transpose the variable across simulations */
+        proc transpose data=option_data out=tmp prefix=&varb;
+            var &varb;
+            by cald;
+            id count_csim;
+        run;
+
+        /* Calculate statistics and keep only suffixed variables */
+        data tmp_stat(keep=cald
+                          p5_&varb._&option_num p95_&varb._&option_num
+                          median_&varb._&option_num mean_&varb._&option_num);
+            set tmp;
+            p5_&varb._&option_num  = pctl(5, of &varb.1-&varb.&nfit);
+            p95_&varb._&option_num = pctl(95, of &varb.1-&varb.&nfit);
+            median_&varb._&option_num = median(of &varb.1-&varb.&nfit);
+            mean_&varb._&option_num = mean(of &varb.1-&varb.&nfit);
+        run;
+
+        /* Merge stats into summary dataset */
+        proc sort data=tmp_stat; by cald; run;
+        proc sort data=summary_option_&option_num; by cald; run;
+
+        data summary_option_&option_num;
+            merge summary_option_&option_num tmp_stat;
+            by cald;
+            *option = &option_num;
+        run;
+
+    %end;
+
+%mend;
+
+
+/*-----------------------------------------*/
+/* Step 2: Macro to combine multiple options */
+/*-----------------------------------------*/
+%macro summary_all_options(options=);
+
+    /* Initialize empty master dataset */
+    data master_summary;
+        length cald 8 option 8;
+        stop;
+    run;
+
+    %do j=1 %to %sysfunc(countw(&options));
+        %let opt = %scan(&options, &j);
+
+        /* Generate summary for this option */
+        %option_summary(option_num= &opt);
+
+        /* Merge option summary into master dataset */
+        data master_summary;
+            merge master_summary summary_option_&opt;
+            by cald;
+        run;
+
+    %end;
+
+%mend;
+
+/*-----------------------------------------*/
+/* Step 3: Example call for options 0, 1, 2 */
+/*-----------------------------------------*/
+%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 99);
+
+
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "Incidence (15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2073 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence/100py'	labelattrs=(size=12)  values = (0 to 0.2 by 0.02) valueattrs=(size=10);
+
+label mean_incidence1549__0 = "Minimum";
+label mean_incidence1549__1 = "+condoms";
+label mean_incidence1549__2 = "+FSW prog";
+label mean_incidence1549__3 = "+return int";
+label mean_incidence1549__4 = "+ scale up oral PrEP FSW";
+label mean_incidence1549__5 = "+ inj PrEP FSW";
+label mean_incidence1549__6 = "+ PrEP mix MSM";
+label mean_incidence1549__7 = "+ PrEP mix AGYW";
+label mean_incidence1549__8 = "Worst case";
+label mean_incidence1549__99 = "SQ";
+
+
+series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence1549__1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_incidence1549__2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_incidence1549__3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_incidence1549__4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_incidence1549__5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_incidence1549__6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_incidence1549__7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_incidence1549__8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence1549__99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+
+
+***ADD IN NEW CREATE WIDE FILE HERE;
 
 
 
@@ -527,7 +685,7 @@ if cald=. then delete;run;
 
 
 ************************************************************************************************************************************************************;
-libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 
 
 data y; set a.long_cdi_control_15Jan26; 

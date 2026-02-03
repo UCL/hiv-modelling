@@ -240,7 +240,7 @@ dcost_art = cost_art * &discount;
 
 * Condoms;
 * Cost only applies to SQ and condom intervention scenarios;
-cost_condoms = 0; if option in (99 7) then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+cost_condoms = 0; if option in (99 8) then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
 dcost_condoms = cost_condoms * &discount;
 
 * PrEP;
@@ -628,11 +628,10 @@ OPTIONS
 ** Load data and update variable names for outputs;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-data y; set a.long_cdi_control_15Jan26; 
+data y; set a.long_cdi_control_15Jan26;
 
 	year_stock=floor(cald);			* calendar year variable to group stocks when calculating means;
 	year_flow=floor(cald+0.25);		* mid-year to mid-year variable to group flows when calculating means (.75 - .5);
-
 
 	Total_00_14_M = .;
 	Total_15_24_M = n_alive_1524m;
@@ -750,7 +749,7 @@ run;
 ** Set option number here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-%let op_num=0;
+%let op_num=99;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -818,7 +817,7 @@ run;
 proc transpose data=outputs_&op_num out=outputs_&op_num; run;			/* transpose to change outputs from columns to rows */
 
 proc export data=outputs_&op_num
-	outfile= "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\hiv_control_cdi_15Jan25_testa_&op_num..csv" 
+	outfile= "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\hiv_control_cdi_15Jan25_new_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
