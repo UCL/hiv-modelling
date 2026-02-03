@@ -4,7 +4,7 @@
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260129_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20260129_out\";
 
 
 * Define var list needed to create costs and outputs ;
@@ -73,7 +73,7 @@ s_diag_msm_age1564
 
 /*
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260129_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20260129_out\";
 
 data g1; set a.out1:(keep=&keep_var_list); if not missing(cald);
 data g2; set a.out2:(keep=&keep_var_list); if not missing(cald);
@@ -116,19 +116,17 @@ proc freq data=g; table option; where cald=2024; run;		* all options;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
-*Zimbabwe;
-*Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
-*accessed 9/2/2023;
-* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
+*Malawi;
+* 20.4 million in 2022.5, 58.1% are >=15);
 
 data sf;
 	set g;
-	where cald=2022.5;
+	where cald=2024;
 
 	s_alive = s_alive_m + s_alive_w ;
-	sf_2022 = (16320000 * 0.581) / s_alive;  * 58.1% of Zim population in 2020 >= age 15 ;
-	sf = sf_2022;
-	keep run sf sf_2022;
+	sf_2024 = (20000000 * 0.58) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
+	sf = sf_2024;
+	keep run sf sf_2024;
 run;
 
 proc sort data=sf; 
@@ -185,14 +183,14 @@ discount_10py = min(1, 1/(1.10**(cald-&year_start_disc)));
 * ================================================================================= ;
 
 
-* Adjustments to costs for Zimbabwe - HIV Control ;
+* Adjustments to costs for Malawi - HIV Control ;
 * Original costs in 000s of USD;
 * Use costs provided in spreadsheet unit_cost-kp_cvg-2025-07-14_draft;
-* Updated Dec 25;
+* Updated Jan 26;
 
 * NB 
 1. *4 to get annual cost for each time step (because we take the mean over several 3-month time steps) for testing and VMMC only (item-based costs) 
-2. *sf to scale up to Zim population size
+2. *sf to scale up to Malawi population size
 3. total cost required for output spreadsheet so do not /1e6
 
 Order of adding interventions:
@@ -200,16 +198,16 @@ Order of adding interventions:
 	1 =  + condoms
 	2 =  + vmmc
 	3 =  + fsw-prep-mix
-	4 =  + fsw-program
-	5 =  + msm-prep-mix
-	6 =  + adh-supp
+	4 =  + adh-supp
+	5 =  + fsw-program
+	6 =  + msm-program
 	7 =  + agyw-prep-mix
-	8 =  + msm-program
+	8 =  + msm-prep-mix
 	9 =  + testing
 	99 = status quo
 ;
 
-%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_costs.sas";
+%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Malawi_costs.sas";
 /*%put &cost_VMMC;*/
 
 
@@ -253,17 +251,17 @@ cost_vmmc = 	s_new_vmmc * &cost_VMMC_per_procedure * 4 * sf;				* Replacing orig
 dcost_vmmc = 	cost_vmmc * &discount;
 
 * FSW and MSM services;
-* MSM services cost applies to option 8 onwards;
+* MSM services cost applies to option 6 onwards;
 cost_fsw_services = s_sw_program_visit * &cost_FSW_services_pppy * sf;		* removed  * 4 ;
-cost_msm_services = 0; if option ge 8 then cost_msm_services = s_alive1549_msm / 2 * &cost_MSM_services_pppy * sf;			* removed  * 4 ;	
+cost_msm_services = 0; if option ge 6 then cost_msm_services = s_alive1549_msm / 2 * &cost_MSM_services_pppy * sf;			* removed  * 4 ;	
 	* Assumes 50% of 15-49 year-old MSM are reached by MSM services? - to discuss ;
 
 dcost_fsw_services = cost_fsw_services * &discount;
 dcost_msm_services = cost_msm_services * &discount;
 
 * Adherence support;
-* Cost applies to option 6 onwards;
-cost_adh_support = 0; if option ge 8 then cost_adh_support = s_diag * &cost_AdhSupp_pppy * sf;		* Assumes the cost is applied to everyone diagnosed (changed from on ART Feb 26);	* removed  * 4 ;
+* Cost applies to option 4 onwards;
+cost_adh_support = 0; if option ge 4 then cost_adh_support = s_diag * &cost_AdhSupp_pppy * sf;		* Assumes the cost is applied to everyone diagnosed (changed from on ART Feb 26);	* removed  * 4 ;
 dcost_adh_support = cost_adh_support * &discount;
 
 total_cost_hiv_control =	sum( cost_test,  cost_self_test,  cost_art,  cost_condoms,  cost_prep_tot,  cost_vmmc,  cost_fsw_services,  cost_msm_services,  cost_adh_support);
@@ -502,12 +500,12 @@ run;
 
 
 
-data a.long_zim_control; 
+data a.long_mlw_control; 
 	set y;
 run;
 
-/*proc contents data = a.long_zim_control; run;*/
-/*proc freq data=a.long_zim_control; table option;run;*/
+/*proc contents data = a.long_mlw_control; run;*/
+/*proc freq data=a.long_mlw_control; table option;run;*/
 
 
 
@@ -624,7 +622,7 @@ OPTIONS
 ** Load data and update variable names for outputs;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-data y; set a.long_zim_control; 
+data y; set a.long_mlw_control; 
 
 	year_stock=floor(cald);			* calendar year variable to group stocks when calculating means;
 	year_flow=floor(cald+0.25);		* mid-year to mid-year variable to group flows when calculating means (.75 - .5);
@@ -776,6 +774,7 @@ data stock_means;
 	drop year_stock;
 run;
 
+
 proc means noprint data=y;
     /* Filter data by calendar year and option */
     where (cald < 2024 and option = 0)				/* option 0 from 1984 to end 2023 */
@@ -815,7 +814,7 @@ run;
 proc transpose data=outputs_&op_num out=outputs_&op_num; run;			/* transpose to change outputs from columns to rows */
 
 proc export data=outputs_&op_num										/* export to csv in output folder */
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260129_out\outputs_&op_num..csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_malawi\mlw_control_20260129_out\outputs_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;

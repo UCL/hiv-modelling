@@ -411,8 +411,8 @@ newp_seed = 7;
 								0.1 	0.1 	0.2 	0.3 	0.3);
 
 *fold_rate_decr_test_future; %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
+							* NB not currently used; * dependent_on_time_step_length ;
 
-							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
 
@@ -1554,14 +1554,6 @@ if gender=2 then do;
 	if 1-p_hsb_p < r then life_sex_risk = 3; 
 end;
 
-
-
-r=rand('uniform');
-if gender=2 then life_sex_risk=2; 
-rred_p=1;
-if r < p_rred_p then do; life_sex_risk = 1;  rred_p=0.00001; end;
-if gender=2 and 1-p_hsb_p < r < 1 then life_sex_risk = 3; 
-
 ever_newp=0;
 
 if rred_a_p=1 then do;
@@ -1784,7 +1776,7 @@ c_pr47_tm1 = . ;  c_pr50v_tm1 = . ;  c_pr50l_tm1 = . ;  c_pr54_tm1 = . ;  c_pr76
 c_pr90_tm1 = . ;  c_in118_tm1=.; c_in140_tm1=.; c_in148_tm1=.; c_in263_tm1=.; c_ca66_tm1=.;
 restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184  = . ;   r_nau_start_taz_dar = . ; 
 p_nau_stops_taz_dar = . ;  onart_gt6m_vlg500 = . ;  rm_inf = . ;  util_cns_efa_tox = . ;  util_cns_dol_tox = . ;  cost_art_init = . ; 
-newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2449m = . ;  npgt1conc_l4p_2449w = . ;
+newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;
 d_s_newp = .; r_s_ep_m15w15 = . ; r_s_ep_m25w25 = . ; r_s_ep_m35w35 = . ; r_s_ep_m45w45 = . ; r_s_ep_m55w55 = . ;  r_ep_mw = . ;  prop_mono_m_1524 = . ; 
 prop_mono_m_2534 = . ;  prop_mono_m_3544 = . ;  prop_mono_m_4554 = . ;  prop_mono_m_5564 = . ;  prop_mono_w_1524 = . ;  prop_mono_w_2534 = . ; 
 prop_mono_w_3544 = . ;  prop_mono_w_4554 = . ;  prop_mono_w_5564 = . ;  incidence1524w_epnewp = . ;  incidence2534w_epnewp = . ; 
@@ -1912,11 +1904,11 @@ eff_prob_lossdiag_adctb = prob_lossdiag_adctb ;
 eff_prob_return_adc = prob_return_adc ;
 
 * define effective test_targeting;
-
 eff_test_targeting = test_targeting;
 
-* define effective self_test_targeting;
+* define effective self_test parameters;
 eff_self_test_targeting = self_test_targeting;
+eff_rate_self_test = rate_self_test;
 
 * define eff_prob_birth_circ;
 eff_prob_birth_circ=prob_birth_circ;
@@ -1930,6 +1922,7 @@ eff_sw_higher_int = sw_higher_int;
 eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
 eff_rate_persist_sti=rate_persist_sti;
 sw_program_visit=0;
+eff_rate_disengage_sw_program = rate_disengage_sw_program;
 
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
 
@@ -2321,7 +2314,7 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 
 * OPTIONS TO IMPLEMENT FROM year_i onwards;
-
+* ==========================================================================================================================================;
 * code in this section can differ from unified program due to specifying exactly what interventions / changes are running; 
 * I suggest that we just leave this shell in the core program as we are not running beyond year_i ;
 
@@ -2337,7 +2330,7 @@ if caldate_never_dot >= &year_interv then do;
 		*Testing; *Keep all testing at SQ level;	
 
 		eff_sw_program = 0;		 			*No SW program;
-		rate_disengage_sw_program=1;
+		eff_rate_disengage_sw_program=1;
 
 		* self_testing;
 		prob_self_test_hard_reach = 0;
@@ -2359,7 +2352,8 @@ if caldate_never_dot >= &year_interv then do;
 		*Turn off all PrEP;
 		prep_any_strategy=0;
 		date_prep_oral_intro=2100;
-		date_prep_inj_intro=2100;
+		date_prep_cab_intro=2100;
+		date_prep_len_intro=2100;
 		date_prep_vr_intro=2100;
 		eff_rate_test_startprep_any=0;
 		eff_prob_prep_oral_b=0;
@@ -2371,6 +2365,7 @@ if caldate_never_dot >= &year_interv then do;
 
 		absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
 
+		absence_vl_year_i = 1;				*Dec 25;
 		eff_prob_vl_meas_done = 0; 
 
 		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
@@ -2440,6 +2435,8 @@ else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and set_in_opti
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
+* pref_prep values are set only once at date_prep_xxx_intro or when an individual reaches age 15;
+
 
 yy = rand('beta',pref_prep_cablen_beta_s1,5); * this is the preference for cab or len, whichever is available;
 
@@ -2717,19 +2714,21 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
+
 			if prep_any_willing=1 then eff_rate_test_startprep_any=1;
 			eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
 			eff_rate_choose_stop_prep_cab=0.05;
 			eff_rate_choose_stop_prep_len=0.05;
 			eff_rate_choose_stop_prep_vr=0.05;
 			eff_prob_prep_any_restart_choice=0.7;
+
 		* lapr and dpv-vr - consider if any needs to change ;
 		end;
 	end;
 end; 
 
 else if sw_program_visit=1 then do; e=rand('uniform');
-	if (e < rate_disengage_sw_program) then do; * dependent_on_time_step_length ;
+	if (e < eff_rate_disengage_sw_program) then do; * dependent_on_time_step_length ;
 		sw_program_visit=0 ; 
 		date_last_sw_prog_vis=caldate{t};
 		sw_test_6mthly=0;
@@ -2737,12 +2736,14 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		eff_sw_higher_int = sw_higher_int;
 		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+
 			eff_rate_test_startprep_any=rate_test_startprep_any;
 			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 			eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
 			eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
 			eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
 			eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+
 		* lapr and dpv-vr - consider if any needs to change ;
 end; 
 
@@ -2876,16 +2877,6 @@ end;
 if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup_covid = 1 or art_low_adh_disrup_covid = 1) then reg_option = 125 ;
 
 
-if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121 125) then flr=2; 
-if reg_option in (107) then flr=1;
-if reg_option = 130 then flr=3;
-
-*
-    if flr=1 ten + 3tc + taz
-    if flr=2 ten + 3tc + dol                                                           
- 	if flr=3 len + cab        
-;
-
 
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
@@ -2894,6 +2885,7 @@ if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0
 if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121 125 130) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
 if set_in_options ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
+
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
@@ -2943,7 +2935,7 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	end;
 end;	
 
-if country="Cote d Ivoire" then gender=1 then date_start_testing=2006.5;
+
 
 tested_anc=.;
 
@@ -3332,7 +3324,6 @@ if 2025 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(yc
 
 if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc * 1.5;
 
-
 * (2) EP;
 * not * dependent_on_time_step_length ;
 ch_risk_beh_ep=1.0;
@@ -3356,15 +3347,16 @@ In 2021											from 	0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.97
 													   	0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
 												to		1.321 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
 */
-*Proportion of reduction attributable to condom intervetions: prop_redattr_newp_condoms;
+
+*Proportion of reduction attributable to condom intervetions: prop_redattr_ep_condoms;
 *We have not modelled condoms retrospectively and so we have not included their cost;
 rred_rc_base = rred_rc;					* use this to determine FSW rates;
 
-if caldate{t} >= &year_interv and condom_change_year_i = 1 then do;
+xx=rand('uniform');
+if caldate{t} >= &year_interv and condom_change_year_i = 1 and xx < 0.1 then do;
 	*Impact on ep (impact on newp is below);
 	ch_risk_beh_ep = ch_risk_beh_ep / (1 - prop_redattr_ep_condoms);
 end;
-
 
 
 
@@ -4172,8 +4164,8 @@ end;
 
 * Condom intervention - removing the effect of condom provision and promotion for HIV Control baseline;
 *Impact on newp (impact on ep is above);
-if caldate{t} >= &year_interv and condom_change_year_i = 1 and use_condom_intervention_newp=1 and newp_ever>0 then newp = newp + 1;
-
+xx=rand('uniform');
+if caldate{t} >= &year_interv and condom_change_year_i = 1 and use_condom_intervention_newp=1 and newp_ever>0 and xx < 0.1 then newp = newp + 1;
 
 
 e=rand('uniform');
@@ -4605,7 +4597,7 @@ if msm=1 then do;
 	if rand('Uniform') < 0.8 and msm_random_this_period_tm1 ne . then msm_random_this_period=msm_random_this_period_tm1;
 end;
 
-if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) > . then do;   
+if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_prep_cab_intro, date_prep_len_intro, date_prep_vr_intro) > . then do;   
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
 	* Define random variables r and s that are held constant for continuous periods of prep eligibility;
@@ -4743,7 +4735,7 @@ end;
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
 		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
 		if secondary_self_test=1 and epart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  
-		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
+		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < eff_rate_self_test then do;
 			self_tested=1; 
 			dt_last_self_test=caldate{t}; 
 		end;
@@ -8897,11 +8889,11 @@ res_test=.;
 			if anc=1 and naive=1 and uu < prob_pmtct then do;
 				if time0=. then do;
 					if caldate{t} le 2010.5 then do;
-						on_sd_nvp=1; 
+						on_sd_nvp=1; ever_sd_nvp=1;
 						if u < prob_nnresmaj_sd_nvp then do; c_rt103m=1; nn_res_pmtct=1; e_rt103m=1; end;
 					end;
 					else if 2010.5 <= caldate{t} < 2012.5 then do;   
-						on_dual_nvp=1; 
+						on_dual_nvp=1; ever_dual_nvp=1;
 						if u < prob_nnresmaj_dual_nvp then do; c_rt103m=1; nn_res_pmtct=1; e_rt103m=1; end;
 					end;
 				end;
@@ -8973,6 +8965,8 @@ res_test=.;
 
 * interruption due to "choice";
 	if stop_tox    ne 1 then do; 
+
+		prointer = eff_rate_int_choice;
 
 		if t ge 2 and onart_tm1 =1 then do;  
 			if  adh_tm1 >= 0.8   and o_len_tm1 ne 1 then do; * this section does not apply to those on lencab;
@@ -14685,6 +14679,7 @@ mcirc_7579m=0;new_mcirc_7579m=0;vmmc7579m=0;new_vmmc7579m=0;if gender=1 and 75 l
 mcirc_8084m=0;new_mcirc_8084m=0;vmmc8084m=0;new_vmmc8084m=0;if gender=1 and 80 le age lt 85 then do; mcirc_8084m=mcirc; new_mcirc_8084m=new_mcirc; new_vmmc8084m=new_vmmc; vmmc8084m=vmmc; end;
 mcirc_85plm=0;new_mcirc_85plm=0;vmmc85plm=0;new_vmmc85plm=0;if gender=1 and 85 le age       then do; mcirc_85plm=mcirc; new_mcirc_85plm=new_mcirc; new_vmmc85plm=new_vmmc; vmmc85plm=vmmc; end;
 
+new_mcirc_1549m=0;	if gender=1 and 15 le age lt 50 then do; new_mcirc_1549m=new_mcirc; end;
 
 * uncertain about this code here below - currently setting all variables to . so they do not come up as errors in proc univariate;
 
@@ -15825,9 +15820,11 @@ if gender = 2 and 25 <= age < 35 then do; if prep_any_elig=1 then elig_prep_any_
 if gender = 2 and 35 <= age < 45 then do; if prep_any_elig=1 then elig_prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 50 then do; if prep_any_elig=1 then elig_prep_any_w_1549 = 1;  end;
 if gender = 2 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_w_1564 = 1;  end;
-if sw=1 then do; elig_prep_any_sw = 0; if prep_any_elig = 1 then elig_prep_any_sw = 1;   end;
-if sdc=1 then do; elig_prep_any_sdc = 0; if prep_any_elig = 1 then elig_prep_any_sdc = 1;   end;
-if plw=1 then do; elig_prep_any_plw = 0; if prep_any_elig = 1 then elig_prep_any_plw = 1;   end;
+
+elig_prep_any_sw = 0; elig_prep_any_sdc = 0; elig_prep_any_plw = 0; 
+if sw=1 and prep_any_elig = 1 then elig_prep_any_sw = 1;
+if sdc=1 and prep_any_elig = 1 then elig_prep_any_sdc = 1;
+if plw=1 and prep_any_elig = 1 then elig_prep_any_plw = 1;
 
 prep_any_w_1524 = 0; prep_any_w_2534 = 0; prep_any_w_3544 = 0; prep_any_w_1549 = 0;
 if gender = 2 and 15 <= age < 25 then do;  if prep_any=1 then prep_any_w_1524 = 1;  end;
@@ -15835,7 +15832,6 @@ if gender = 2 and 25 <= age < 35 then do;  if prep_any=1 then prep_any_w_2534 = 
 if gender = 2 and 35 <= age < 45 then do;  if prep_any=1 then prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_w_1549 = 1;  end;
 
-prep_any_m = 0; if gender = 1 and prep_any=1 then prep_any_m = 1;
 * msm; prep_any_msm = 0; if msm=1 and prep_any=1 then prep_any_msm = 1; 
 * pwid;  prep_any_pwid = 0; if pwid=1 and prep_any=1 then prep_any_pwid = 1; 
 

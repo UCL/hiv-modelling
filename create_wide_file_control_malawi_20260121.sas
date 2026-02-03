@@ -12,7 +12,7 @@ libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified
 /* for scaling */
 run cald option s_alive_m s_alive_w
 /* for costs */
-s_tested		s_self_tested	s_onart			s_prep_oral		s_prep_cab		s_prep_len		s_new_vmmc		s_sw_program_visit		s_alive1549_msm
+s_tested		s_self_tested	s_diag			s_onart			s_prep_oral		s_prep_cab		s_prep_len		s_new_vmmc		s_sw_program_visit		s_alive1549_msm
 /* for grouping outputs by age */
 s_mcirc_1519m	s_mcirc_2024m	s_mcirc_2529m	s_mcirc_3034m	s_mcirc_3539m	s_mcirc_4044m	s_mcirc_4549m	
 s_vmmc1519m		s_vmmc2024m		s_vmmc2529m		s_vmmc3034m		s_vmmc3539m		s_vmmc4044m		s_vmmc4549m
@@ -229,7 +229,7 @@ dcost_art = cost_art * &discount;
 
 * Condoms;
 * Cost only applies to SQ and condom intervention scenarios;
-cost_condoms = 0; if option in (99 7) then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+cost_condoms = 0; if option in (99 8) then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
 dcost_condoms = cost_condoms * &discount;
 
 * PrEP;
@@ -262,7 +262,7 @@ dcost_fsw_services = cost_fsw_services * &discount;
 dcost_msm_services = cost_msm_services * &discount;
 
 * Adherence support;
-cost_adh_support = 0; if option in (99 12) then cost_adh_support = s_onart * &cost_AdhSupp_pppy * sf;		* Assumes the cost is applied to everyone on ART;	* removed  * 4 ;
+cost_adh_support = 0; if option in (99 12) then cost_adh_support = s_diag * &cost_AdhSupp_pppy * sf;		* Assumes the cost is applied to everyone diagnosed (changed from on ART Feb 26);	* removed  * 4 ;
 dcost_adh_support = cost_adh_support * &discount;
 
 total_cost_hiv_control =	sum( cost_test,  cost_self_test,  cost_art,  cost_condoms,  cost_prep_tot,  cost_vmmc,  cost_fsw_services,  cost_msm_services,  cost_adh_support);
