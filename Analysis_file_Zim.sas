@@ -1,8 +1,8 @@
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 
 data a;
-set a.wide_Zim_07_12_2026;
+set a.wide_Zim_07_01_2026;
 run;
 
 /*
@@ -424,6 +424,10 @@ diff_netdalys_50y_18 = netdalys_50y_18 - netdalys_50y_1;
 diff_netdalys_50y_19 = netdalys_50y_19 - netdalys_50y_1;
 diff_netdalys_50y_20 = netdalys_50y_20 - netdalys_50y_1;
 
+
+***INSTEAD OF CALCULATING THE MEAN OF THE MEANS, TAKE MEAN COSTS AND DIVIDE BY MEAN DALYS MANUALLY;
+***THIS MEANS NOT USING THE ICER OR COST PER INFECTION AVERTED CODE;
+
 ***ICER (cost per DALY averted);
 * 20 years;
 ICER_20y_2 = (diff_dcost_20y_2/diff_ddaly_20y_2)*1000000;
@@ -574,27 +578,26 @@ diff_netdalys_50y_16	diff_netdalys_50y_17	diff_netdalys_50y_18	/*diff_netdalys_5
 output out=means_diff_netdalys_50y mean=;
 run;
 
-
+***MANUALLY CALCUALE ICER;
 proc transpose data=means_costs_20y out=t_costs_20y(rename=(col1=mean_costs_20y));run;
 proc transpose data=means_costs_50y out=t_costs_50y(rename=(col1=mean_costs_50y));run;
 proc transpose data=means_dalys_20y out=t_dalys_20y(rename=(col1=mean_dalys_20y));run;
 proc transpose data=means_dalys_50y out=t_dalys_50y(rename=(col1=mean_dalys_50y));run;
-proc transpose data=means_icer_20y out=t_icer_20y(rename=(col1=mean_icer_20y));run;
-proc transpose data=means_icer_50y out=t_icer_50y(rename=(col1=mean_icer_50y));run;
+/*proc transpose data=means_icer_20y out=t_icer_20y(rename=(col1=mean_icer_20y));run;
+proc transpose data=means_icer_50y out=t_icer_50y(rename=(col1=mean_icer_50y));run;*/
 proc transpose data=means_diff_netdalys_20y out=t_diff_netdalys_20y(rename=(col1=mean_diff_netdalys_20y));run;
 proc transpose data=means_diff_netdalys_50y out=t_diff_netdalys_50y(rename=(col1=mean_diff_netdalys_50y));run;
+*/
 
 **Use html so can copy and paste into Excel (could automate but this gives more flexibility);
 ods html;
 data means_costs_dalys;
     merge t_costs_20y(rename=(_NAME_=scenario))
 		  t_dalys_20y
-		  t_icer_20y
 		  t_diff_netdalys_20y
           t_costs_50y
 		  t_dalys_50y
-		  t_icer_50y
-		  t_diff_netdalys_50y;
+		  t_diff_netdalys_50y
 drop _name_;
 run;
 
@@ -637,15 +640,14 @@ run;
 
 proc transpose data=means_dnewinf_20y out=t_dnewinf_20y(rename=(col1=mean_dnewinf_20y));run;
 proc transpose data=means_dnewinf_50y out=t_dnewinf_50y(rename=(col1=mean_dnewinf_50y));run;
-proc transpose data=means_inf_avt_20y out=t_inf_avt_20y(rename=(col1=mean_inf_avt_20y));run;
+/*proc transpose data=means_inf_avt_20y out=t_inf_avt_20y(rename=(col1=mean_inf_avt_20y));run;
 proc transpose data=means_inf_avt_50y out=t_inf_avt_50y(rename=(col1=mean_inf_avt_50y));run;
-
+*/
 ods html;
 data means_inf_avtd;
     merge t_dnewinf_20y(rename=(_NAME_=scenario))
-		  t_inf_avt_20y
-		  t_dnewinf_50y
-          t_inf_avt_50y;
+
+		  t_dnewinf_50y;
 drop _name_;
 run;
 

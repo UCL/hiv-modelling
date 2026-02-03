@@ -1,15 +1,29 @@
 
-libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW\29Jan26";
-libname b "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim\07Jan2026_a";
+libname b "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data b;
 set a.out:;
 run;
 
+data b.GenesisZim_07Jan26a;
+set b;
+run;
+
+
+libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW\29Jan26";
+libname b "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
+data b;
+set a.out:;
+run;
 
 data b.GenesisMLW_29Jan26;
 set b;
 run;
+
+
+
+
 
 proc freq;table cald;run;
 DATA simula2;
