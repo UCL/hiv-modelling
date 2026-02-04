@@ -1,7 +1,7 @@
 
 ***THIS PROGRAM IS USED TO COMPARE GRAPHS OF THE DIFFERENT OPTIONS;
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
 set a.Zim_options_graphs_07Jan26;
@@ -44,7 +44,7 @@ run;
 */
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = '"C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_options_05_01_26.doc' startpage=never; 
+ods rtf file = '"C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_options_07_01_26.doc' startpage=never; 
 ods listing close;
 
 

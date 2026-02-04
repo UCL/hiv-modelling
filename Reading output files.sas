@@ -6,7 +6,7 @@ data b;
 set a.out:;
 run;
 
-data b.GenesisZim_07Jan26a;
+data b.GenesisZim_07Jan26_a;
 set b;
 run;
 
