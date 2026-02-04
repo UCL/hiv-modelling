@@ -1,4 +1,4 @@
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 
 data a;
@@ -578,7 +578,7 @@ diff_netdalys_50y_16	diff_netdalys_50y_17	diff_netdalys_50y_18	/*diff_netdalys_5
 output out=means_diff_netdalys_50y mean=;
 run;
 
-***MANUALLY CALCUALE ICER;
+***MANUALLY CALCULATE ICER;
 proc transpose data=means_costs_20y out=t_costs_20y(rename=(col1=mean_costs_20y));run;
 proc transpose data=means_costs_50y out=t_costs_50y(rename=(col1=mean_costs_50y));run;
 proc transpose data=means_dalys_20y out=t_dalys_20y(rename=(col1=mean_dalys_20y));run;
@@ -597,7 +597,7 @@ data means_costs_dalys;
 		  t_diff_netdalys_20y
           t_costs_50y
 		  t_dalys_50y
-		  t_diff_netdalys_50y
+		  t_diff_netdalys_50y;
 drop _name_;
 run;
 

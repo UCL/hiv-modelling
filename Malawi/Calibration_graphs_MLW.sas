@@ -13,14 +13,13 @@ proc freq;table cald option;run;
 data sf;
 set a;
 
-*Zimbabwe;
+*Malawi;
 *Source: World Population Prospect, file "World Population Prospect 2022.pdf";
 *https://population.un.org/wpp/downloads?folder=Standard%20Projections&group=Population
 (Excel sheet, population by select age groups);
 
-if cald=2023;
-s_alive = s_alive_m + s_alive_w ;
-sf = 9198000 / s_alive; 
+if cald=2024;
+sf = 12300000 / s_alive1564; 
 
 keep run sf;
 proc sort; by run;run;
@@ -188,6 +187,7 @@ s_hivge15_ = s_hivge15m + s_hivge15w;
 
 ***general population;
 
+* n_alive;						n_alive1564_ = s_alive1564 * sf;
 * n_alive;						n_alive = s_alive * sf;
 * n_alive_m;					n_alive_m = s_alive_m * sf;
 * n_alive_w;					n_alive_w = s_alive_w * sf;
@@ -287,7 +287,7 @@ n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w
 proc sort data=y;by run option;run;
 
 
-data a.long_genesis_zim_07jan26;
+data a.long_genesis_mlw_29jan26;
 set y;run;
 
 options nomprint;
@@ -301,7 +301,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 1118;
+%let nfit = 40;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -415,8 +415,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /*-----------------------------------------*/
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
-%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
-
+%summary_all_options(options=0 99);
 
 
 
@@ -426,22 +425,16 @@ options notes source source2 mprint mlogic symbolgen;
 data d;
 set Master_summary;
 
-%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026.sas"; by cald;
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Malawi\Observed data_Malawi.sas"; by cald;
 run;
 
-data e;
-set d;
-%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_FSW_Zimbabwe.sas"; by cald;
-run;
-
-
-DATA A.Zim_options_graphs_07Jan26;
-SET E;
+DATA A.MLW_options_graphs_29Jan26;
+SET d;
 RUN;
 
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = '"C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_calibration_29_01_26.doc' startpage=never; 
+ods rtf file = '"C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\MLW_calibration_29_01_26.doc' startpage=never; 
 ods listing close;
 
 
@@ -453,15 +446,13 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 va
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 15000000) valueattrs=(size=10);
 
 label mean_n_alive_0 = "Model 15+";
-label o_pop_15plus_Zim_cens  = "Census 15+";
-label o_pop_1565_Zi_CIA = "CIA 15-65";
-label o_pop_15plus_WPP = "World population prospectus 15+";
+label o_pop_1564_wb  = "World bank 15-64";
+label o_pop_15plus_WPP = "World population prospects 15+";
 
 series  x=cald y=mean_n_alive_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-scatter x=cald y=o_pop_15plus_Zim_cens / markerattrs=(symbol=circle color=red size=10);
-scatter x=cald y=o_pop_1565_Zi_CIA / markerattrs=(symbol=circle color=green size=10);
+scatter x=cald y=o_pop_1564_wb / markerattrs=(symbol=circle color=red size=10);
 scatter x=cald y=o_pop_15plus_WPP / markerattrs=(symbol=circle color=blue size=10);
 run;quit;
 
