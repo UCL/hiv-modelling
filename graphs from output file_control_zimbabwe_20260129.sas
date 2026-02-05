@@ -6,7 +6,6 @@
 * Building up package of interventions in order of decreasing cost-effectivesness (based on ICER);
 
 libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260129_out\";
-/*libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";*/
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 proc freq data=a.long_zim_control;table option;run;
@@ -209,7 +208,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=32;
+%let nfit=45;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -354,30 +353,30 @@ g9_161 g9_162
 by cald;
 run;
 
-data d_f; * this is number of variables in %let var = above ;
-merge 
-g10_1   g10_2   g10_3   g10_4   g10_5   g10_6   g10_7   g10_8   g10_9   g10_10  g10_11  g10_12  g10_13  g10_14  g10_15  g10_16  g10_17  g10_18  g10_19  g10_20
-g10_21  g10_22  g10_23  g10_24  g10_25  g10_26  g10_27  g10_28  g10_29  g10_30  g10_31  g10_32  g10_33  g10_34  g10_35  g10_36  g10_37  g10_38  g10_39  g10_40
-g10_41  g10_42  g10_43  g10_44  g10_45  g10_46  g10_47  g10_48  g10_49  g10_50  g10_51  g10_52  g10_53  g10_54  g10_55  g10_56  g10_57  g10_58  g10_59  g10_60  
-g10_61  g10_62  g10_63  g10_64  g10_65  g10_66  g10_67  g10_68  g10_69  g10_70  g10_71  g10_72  g10_73  g10_74  g10_75  g10_76  g10_77  g10_78  g10_79  g10_80  
-g10_81  g10_82  g10_83  g10_84  g10_85  g10_86  g10_87  g10_88  g10_89  g10_90  g10_91  g10_92  g10_93  g10_94  g10_95  g10_96  g10_97  g10_98  g10_99  g10_100
-g10_101 g10_102 g10_103 g10_104 g10_105 g10_106 g10_107 g10_108 g10_109 g10_110 g10_111 g10_112 g10_113 g10_114 g10_115 g10_116 g10_117 g10_118 g10_119 g10_120
-g10_121 g10_122 g10_123 g10_124 g10_125 g10_126 g10_127 g10_128 g10_129 g10_130 g10_131 g10_132 g10_133 g10_134 g10_135 g10_136 g10_137 g10_138 g10_139 g10_140 
-g10_141 g10_142 g10_143 g10_144 g10_145 g10_146 g10_147 g10_148 g10_149 g10_150 g10_151 g10_152 g10_153 g10_154 g10_155 g10_156 g10_157 g10_158 g10_159 g10_160 
-g10_161 g10_162
-
-g11_1   g11_2   g11_3   g11_4   g11_5   g11_6   g11_7   g11_8   g11_9   g11_10  g11_11  g11_12  g11_13  g11_14  g11_15  g11_16  g11_17  g11_18  g11_19  g11_20
-g11_21  g11_22  g11_23  g11_24  g11_25  g11_26  g11_27  g11_28  g11_29  g11_30  g11_31  g11_32  g11_33  g11_34  g11_35  g11_36  g11_37  g11_38  g11_39  g11_40
-g11_41  g11_42  g11_43  g11_44  g11_45  g11_46  g11_47  g11_48  g11_49  g11_50  g11_51  g11_52  g11_53  g11_54  g11_55  g11_56  g11_57  g11_58  g11_59  g11_60  
-g11_61  g11_62  g11_63  g11_64  g11_65  g11_66  g11_67  g11_68  g11_69  g11_70  g11_71  g11_72  g11_73  g11_74  g11_75  g11_76  g11_77  g11_78  g11_79  g11_80  
-g11_81  g11_82  g11_83  g11_84  g11_85  g11_86  g11_87  g11_88  g11_89  g11_90  g11_91  g11_92  g11_93  g11_94  g11_95  g11_96  g11_97  g11_98  g11_99  g11_100
-g11_101 g11_102 g11_103 g11_104 g11_105 g11_106 g11_107 g11_108 g11_109 g11_110 g11_111 g11_112 g11_113 g11_114 g11_115 g11_116 g11_117 g11_118 g11_119 g11_120
-g11_121 g11_122 g11_123 g11_124 g11_125 g11_126 g11_127 g11_128 g11_129 g11_130 g11_131 g11_132 g11_133 g11_134 g11_135 g11_136 g11_137 g11_138 g11_139 g11_140 
-g11_141 g11_142 g11_143 g11_144 g11_145 g11_146 g11_147 g11_148 g11_149 g11_150 g11_151 g11_152 g11_153 g11_154 g11_155 g11_156 g11_157 g11_158 g11_159 g11_160 
-g11_161 g11_162
-;
-by cald;
-run;
+/*data d_f; * this is number of variables in %let var = above ;*/
+/*merge */
+/*g10_1   g10_2   g10_3   g10_4   g10_5   g10_6   g10_7   g10_8   g10_9   g10_10  g10_11  g10_12  g10_13  g10_14  g10_15  g10_16  g10_17  g10_18  g10_19  g10_20*/
+/*g10_21  g10_22  g10_23  g10_24  g10_25  g10_26  g10_27  g10_28  g10_29  g10_30  g10_31  g10_32  g10_33  g10_34  g10_35  g10_36  g10_37  g10_38  g10_39  g10_40*/
+/*g10_41  g10_42  g10_43  g10_44  g10_45  g10_46  g10_47  g10_48  g10_49  g10_50  g10_51  g10_52  g10_53  g10_54  g10_55  g10_56  g10_57  g10_58  g10_59  g10_60  */
+/*g10_61  g10_62  g10_63  g10_64  g10_65  g10_66  g10_67  g10_68  g10_69  g10_70  g10_71  g10_72  g10_73  g10_74  g10_75  g10_76  g10_77  g10_78  g10_79  g10_80  */
+/*g10_81  g10_82  g10_83  g10_84  g10_85  g10_86  g10_87  g10_88  g10_89  g10_90  g10_91  g10_92  g10_93  g10_94  g10_95  g10_96  g10_97  g10_98  g10_99  g10_100*/
+/*g10_101 g10_102 g10_103 g10_104 g10_105 g10_106 g10_107 g10_108 g10_109 g10_110 g10_111 g10_112 g10_113 g10_114 g10_115 g10_116 g10_117 g10_118 g10_119 g10_120*/
+/*g10_121 g10_122 g10_123 g10_124 g10_125 g10_126 g10_127 g10_128 g10_129 g10_130 g10_131 g10_132 g10_133 g10_134 g10_135 g10_136 g10_137 g10_138 g10_139 g10_140 */
+/*g10_141 g10_142 g10_143 g10_144 g10_145 g10_146 g10_147 g10_148 g10_149 g10_150 g10_151 g10_152 g10_153 g10_154 g10_155 g10_156 g10_157 g10_158 g10_159 g10_160 */
+/*g10_161 g10_162*/
+/**/
+/*g11_1   g11_2   g11_3   g11_4   g11_5   g11_6   g11_7   g11_8   g11_9   g11_10  g11_11  g11_12  g11_13  g11_14  g11_15  g11_16  g11_17  g11_18  g11_19  g11_20*/
+/*g11_21  g11_22  g11_23  g11_24  g11_25  g11_26  g11_27  g11_28  g11_29  g11_30  g11_31  g11_32  g11_33  g11_34  g11_35  g11_36  g11_37  g11_38  g11_39  g11_40*/
+/*g11_41  g11_42  g11_43  g11_44  g11_45  g11_46  g11_47  g11_48  g11_49  g11_50  g11_51  g11_52  g11_53  g11_54  g11_55  g11_56  g11_57  g11_58  g11_59  g11_60  */
+/*g11_61  g11_62  g11_63  g11_64  g11_65  g11_66  g11_67  g11_68  g11_69  g11_70  g11_71  g11_72  g11_73  g11_74  g11_75  g11_76  g11_77  g11_78  g11_79  g11_80  */
+/*g11_81  g11_82  g11_83  g11_84  g11_85  g11_86  g11_87  g11_88  g11_89  g11_90  g11_91  g11_92  g11_93  g11_94  g11_95  g11_96  g11_97  g11_98  g11_99  g11_100*/
+/*g11_101 g11_102 g11_103 g11_104 g11_105 g11_106 g11_107 g11_108 g11_109 g11_110 g11_111 g11_112 g11_113 g11_114 g11_115 g11_116 g11_117 g11_118 g11_119 g11_120*/
+/*g11_121 g11_122 g11_123 g11_124 g11_125 g11_126 g11_127 g11_128 g11_129 g11_130 g11_131 g11_132 g11_133 g11_134 g11_135 g11_136 g11_137 g11_138 g11_139 g11_140 */
+/*g11_141 g11_142 g11_143 g11_144 g11_145 g11_146 g11_147 g11_148 g11_149 g11_150 g11_151 g11_152 g11_153 g11_154 g11_155 g11_156 g11_157 g11_158 g11_159 g11_160 */
+/*g11_161 g11_162*/
+/*;*/
+/*by cald;*/
+/*run;*/
 
 data d_g; * this is number of variables in %let var = above ;
 merge 
@@ -496,6 +495,19 @@ scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphi
 run;
 quit;
 
+proc print data=d;
+	where cald=2024;
+	var mean_incidence1549__0;
+run;
+* inc = 0.44253 in 2024. 10% less = 0.39828;
+
+proc print data=d;
+	where cald=2074;
+	var mean_incidence1549__0	mean_incidence1549__1	mean_incidence1549__2	mean_incidence1549__3	mean_incidence1549__4	mean_incidence1549__5	mean_incidence1549__6
+		mean_incidence1549__7	mean_incidence1549__8	mean_incidence1549__9	mean_incidence1549__99;
+run;
+* option 4 brings incidence below the threshold;
+
 * Incidence 15-64;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-64, mean)";
@@ -540,6 +552,7 @@ scatter x=cald y=m_HIVIncid_Zim_GARPR /	yerrorlower=m_ll_HIVIncid_Zim_GARPR yerr
 scatter x=cald y=o_HIVincid_1564_Zimphia / yerrorlower=o_HIVincid_1564_ll_Zimphia yerrorupper=o_HIVincid_1564_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
+
 
 * Number of new infections;
 proc sgplot data=d; 
@@ -1399,11 +1412,11 @@ data prep_sums; set d;
 
 	keep cald 
 		cum_onprep_any_0 cum_onprep_any_1 cum_onprep_any_2 cum_onprep_any_3 cum_onprep_any_4 cum_onprep_any_5 cum_onprep_any_6 
-		cum_onprep_any_7 cum_onprep_any_8 cum_onprep_any_9 cum_onprep_any_10 cum_onprep_any_11 cum_onprep_any_12 cum_onprep_any_99
+		cum_onprep_any_7 cum_onprep_any_8 cum_onprep_any_9 cum_onprep_any_99
 		cum_onprep_oral_0 cum_onprep_oral_1 cum_onprep_oral_2 cum_onprep_oral_3 cum_onprep_oral_4 cum_onprep_oral_5 cum_onprep_oral_6 
-		cum_onprep_oral_7 cum_onprep_oral_8 cum_onprep_oral_9 cum_onprep_oral_10 cum_onprep_oral_11 cum_onprep_oral_12 cum_onprep_oral_99
+		cum_onprep_oral_7 cum_onprep_oral_8 cum_onprep_oral_9 cum_onprep_oral_99
 		cum_onprep_len_0 cum_onprep_len_1 cum_onprep_len_2 cum_onprep_len_3 cum_onprep_len_4 cum_onprep_len_5 cum_onprep_len_6 
-		cum_onprep_len_7 cum_onprep_len_8 cum_onprep_len_9 cum_onprep_len_10 cum_onprep_len_11 cum_onprep_len_12 cum_onprep_len_99
+		cum_onprep_len_7 cum_onprep_len_8 cum_onprep_len_9 cum_onprep_len_99
 		ratio_oral_len_2 ratio_oral_len_4 ratio_oral_len_6
 		;
 	if cald ne 2073.75 then delete;
@@ -1616,6 +1629,7 @@ series  x=cald y=mean_total_cost_hiv_control_9/	lineattrs = (color=purple thickn
 series  x=cald y=mean_total_cost_hiv_control_99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_total_cost_hiv_control_99 	upper=p95_total_cost_hiv_control_99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 run;quit;
+
 
 ods html close;
 

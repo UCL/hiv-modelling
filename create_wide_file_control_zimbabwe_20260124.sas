@@ -1,10 +1,10 @@
-* Note this create wide file builds up the minimum package of interventions in order of decreasing cost-effectiveness to identify the minimum package required to control HIV incidence ;
+* Note this create wide file compiles the results from the model runs on 24/1/26 where self-testing is kept in the Minimal scenario;
 
 * options user="/folders/myfolders/";
 
 ods html close;
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260129_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260124_out\";
 
 
 * Define var list needed to create costs and outputs ;
@@ -73,7 +73,7 @@ s_diag_msm_age1564
 
 /*
 
-libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260129_out\";
+libname a "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260124_out\";
 
 data g1; set a.out1:(keep=&keep_var_list); if not missing(cald);
 data g2; set a.out2:(keep=&keep_var_list); if not missing(cald);
@@ -194,19 +194,6 @@ discount_10py = min(1, 1/(1.10**(cald-&year_start_disc)));
 1. *4 to get annual cost for each time step (because we take the mean over several 3-month time steps) for testing and VMMC only (item-based costs) 
 2. *sf to scale up to Zim population size
 3. total cost required for output spreadsheet so do not /1e6
-
-Order of adding interventions:
-	0 = Minimal 
-	1 =  + condoms
-	2 =  + vmmc
-	3 =  + fsw-prep-mix
-	4 =  + fsw-program
-	5 =  + msm-prep-mix
-	6 =  + adh-supp
-	7 =  + agyw-prep-mix
-	8 =  + msm-program
-	9 =  + testing
-	99 = status quo
 ;
 
 %include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_costs.sas";
@@ -228,8 +215,8 @@ dcost_art = cost_art * &discount;
 * The PMTCT cost provided is for ANC testing. This is the same cost as facility-based testing so will be included in the total testing cost above;
 
 * Condoms;
-* Cost applies to all interventions except minimal;
-cost_condoms = 0; if option ne 0 then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+* Cost only applies to SQ and condom intervention scenarios;
+cost_condoms = 0; if option in (99 8) then cost_condoms = &cost_condom_py;		* Fixed population-level py cost so scaling not needed;
 dcost_condoms = cost_condoms * &discount;
 
 * PrEP;
@@ -253,17 +240,16 @@ cost_vmmc = 	s_new_vmmc * &cost_VMMC_per_procedure * 4 * sf;				* Replacing orig
 dcost_vmmc = 	cost_vmmc * &discount;
 
 * FSW and MSM services;
-* MSM services cost applies to option 8 onwards;
+* MSM services cost only applies to SQ and MSM intervention scenarios;
 cost_fsw_services = s_sw_program_visit * &cost_FSW_services_pppy * sf;		* removed  * 4 ;
-cost_msm_services = 0; if option ge 8 then cost_msm_services = s_alive1549_msm / 2 * &cost_MSM_services_pppy * sf;			* removed  * 4 ;	
+cost_msm_services = 0; if option in (99 10) then cost_msm_services = s_alive1549_msm / 2 * &cost_MSM_services_pppy * sf;			* removed  * 4 ;	
 	* Assumes 50% of 15-49 year-old MSM are reached by MSM services? - to discuss ;
 
 dcost_fsw_services = cost_fsw_services * &discount;
 dcost_msm_services = cost_msm_services * &discount;
 
 * Adherence support;
-* Cost applies to option 6 onwards;
-cost_adh_support = 0; if option ge 8 then cost_adh_support = s_diag * &cost_AdhSupp_pppy * sf;		* Assumes the cost is applied to everyone diagnosed (changed from on ART Feb 26);	* removed  * 4 ;
+cost_adh_support = 0; if option in (99 12) then cost_adh_support = s_diag * &cost_AdhSupp_pppy * sf;		* Assumes the cost is applied to everyone diagnosed (changed from on ART Feb 26);	* removed  * 4 ;
 dcost_adh_support = cost_adh_support * &discount;
 
 total_cost_hiv_control =	sum( cost_test,  cost_self_test,  cost_art,  cost_condoms,  cost_prep_tot,  cost_vmmc,  cost_fsw_services,  cost_msm_services,  cost_adh_support);
@@ -519,18 +505,23 @@ run;
 ************************************************************************************************************************************************************;
 
 /*
-Order of adding interventions:
-	0 = Minimal 
-	1 =  + condoms
-	2 =  + vmmc
-	3 =  + fsw-prep-mix
-	4 =  + fsw-program
-	5 =  + msm-prep-mix
-	6 =  + adh-supp
-	7 =  + agyw-prep-mix
-	8 =  + msm-program
-	9 =  + testing
-	99 = status quo
+OPTIONS
+0 = baseline (minimal)
+1 = oral PrEP for FSW
+2 = oral + inj PrEP for FSW
+3 = oral PrEP for sexually active AGYW + pregnant women
+4 = oral + inj PrEP for sexually active AGYW + pregnant women
+5 = oral PrEP for MSM
+6 = oral + inj PrEP for MSM
+7 = VMMC
+8 = condom provision + promotion
+9 = KP outreach - FSW
+10 = KP outreach - MSM
+11 = testing
+12 = adherence support
+13 = worst case
+
+99 = status quo
 */
 
 
@@ -741,7 +732,7 @@ run;
 ** Set option number here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-%let op_num=4;
+%let op_num=0;
 
 
 
@@ -810,7 +801,7 @@ run;
 proc transpose data=outputs_&op_num out=outputs_&op_num; run;			/* transpose to change outputs from columns to rows */
 
 proc export data=outputs_&op_num										/* export to csv in output folder */
-	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260129_out\outputs_&op_num..csv" 
+	outfile= "C:\Users\rmjlja9\UCL Dropbox\Jennifer Smith\hiv synthesis ssa unified program\output files\hiv_control_zimbabwe\hiv_control_zim_20260124_out\outputs_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
