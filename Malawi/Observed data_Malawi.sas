@@ -341,6 +341,23 @@ if cald=2025.25 then do;
 n_tests_obs_mlw_moh= 890254* 4; n_tests_m_obs_mlw_moh= 282119 *4;n_tests_w_obs_mlw_moh= 608135 *4;n_tests_f_anc_obs_mlw_moh= 197502 *4; 
 end;
 
+* Self testing;
+
+* Source quarterly reports - multiply by 4 to get annual numbers (using number of people given tests rather than number of tests);
+if cald = 2019.50 then n_self_tested_obs_mlw_moh = 30619 * 4;
+if cald = 2019.75 then n_self_tested_obs_mlw_moh = 31747 * 4; 
+
+if cald = 2020.25 then n_self_tested_obs_mlw_moh = 105211 * 4; 
+if cald = 2020.50 then n_self_tested_obs_mlw_moh = 186487 * 4;
+if cald = 2020.75 then n_self_tested_obs_mlw_moh = 345411 * 4; 
+
+***Not sure of source of these numbers (from AP file)- quarterly reports not published after 2021 but they look broadly in line with those above;
+*if cald = 2019.5 then n_self_tested_obs_mlw = 101000; * this is annual number;  
+*if cald = 2020.5 then n_self_tested_obs_mlw = 561000; * this is annual number;  
+if cald = 2021.5 then n_self_tested_obs_mlw = 827000; * this is annual number;  
+if cald = 2022.5 then n_self_tested_obs_mlw = 750000; * this is annual number;  
+if cald = 2023.5 then n_self_tested_obs_mlw = 802000; * this is annual number;  
+
 
 ***Percentage ever tested;
 
@@ -739,45 +756,28 @@ if cald = 2023.5 then n_prep_obs_mlw = 36000 ;  * from data in template - from i
 */
 
 **************************************************************************************************************************
-													Self-testing
+													CIRCUMCISION
 **************************************************************************************************************************;
+*Source: DHS: https://dhsprogram.com/pubs/pdf/FR175/FR-175-MW04.pdf Table 11.24;
+if cald=2004 then o_p_circ_1549_dhs=0.207;
+if cald=2010 then o_p_circ_1549_dhs=0.216;
+if cald=2016 then do;o_p_circ_1549_dhs=0.28;o_p_vmmc_1549_dhs=0.09;end;
+if cald=2024 then do;o_p_circ_1549_dhs=0.379;o_p_vmmc_1549_dhs=0.209;end;
 
+* Source: PHIA https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf;
+if cald=2016.25 then do;o_p_circ_1549_phia=30.1;o_p_vmmc_1549_phia=0.092;end;
+if cald=2020.75 then o_p_circ_1549_phia=34.6;o_p_vmmc_1549_phia=0.153;end;
 
-* Self testing;
-
-* Source quarterly reports - multiply by 4 to get annual numbers (using number of people given tests rather than number of tests);
-if cald = 2019.50 then n_self_tested_obs_mlw_moh = 30619 * 4;
-if cald = 2019.75 then n_self_tested_obs_mlw_moh = 31747 * 4; 
-
-
-if cald = 2020.25 then n_self_tested_obs_mlw_moh = 105211 * 4; 
-if cald = 2020.50 then n_self_tested_obs_mlw_moh = 186487 * 4;
-if cald = 2020.75 then n_self_tested_obs_mlw_moh = 345411 * 4; 
-
-
-
-
-
-if cald = 2019.5 then n_self_tested_obs_mlw = 101000; * this is annual number;  
-if cald = 2020.5 then n_self_tested_obs_mlw = 561000; * this is annual number;  
-if cald = 2021.5 then n_self_tested_obs_mlw = 827000; * this is annual number;  
-if cald = 2022.5 then n_self_tested_obs_mlw = 750000; * this is annual number;  
-if cald = 2023.5 then n_self_tested_obs_mlw = 802000; * this is annual number;  
-
-if cald = 2019.5 then n_vmmc_obs_mlw = 141000; * this is annual number;  
-if cald = 2020.5 then n_vmmc_obs_mlw = 69000; * this is annual number;  
-if cald = 2021.5 then n_vmmc_obs_mlw = 142000; * this is annual number;  
-if cald = 2022.5 then n_vmmc_obs_mlw = 135000; * this is annual number;  
-if cald = 2023.5 then n_vmmc_obs_mlw = 95000; * this is annual number;  
+* Source: Global AIDS Monitoring Report for Malawi 2024;
+* https://www.aidsmalawi.org.mw/wp-content/uploads/2024/05/2024-Narrative-Draft-GAM-Report-Malawi-Ver-2.pdf;
+if cald = 2019.5 then n_vmmc_obs_mlw_amr = 141193;  
+if cald = 2020.5 then n_vmmc_obs_mlw_amr = 69322;  
+if cald = 2021.5 then n_vmmc_obs_mlw_amr = 141570;  
+if cald = 2022.5 then n_vmmc_obs_mlw_amr = 132519;  
+if cald = 2023.5 then n_vmmc_obs_mlw_amr = 119161;  
 
 if cald = 2019.5 then n_vm_obs_mlw = 410000; * this is annual number;  
 if cald = 2020.5 then n_vm_obs_mlw = 403000; * this is annual number;  
 if cald = 2021.5 then n_vm_obs_mlw = 455000; * this is annual number;  
 if cald = 2022.5 then n_vm_obs_mlw = 351000; * this is annual number;  
 if cald = 2023.5 then n_vm_obs_mlw = 458000; * this is annual number;  
-
-
-***CIRCUMCISION;
-*Source: DHS: https://dhsprogram.com/pubs/pdf/FR175/FR-175-MW04.pdf Table 11.24;
-
-if cald=2004 then o_p_circ_1549_dhs=0.207;
