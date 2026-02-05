@@ -17100,7 +17100,7 @@ hiv_anc=0;      if anc=1      and hiv=1 then hiv_anc=1;
 everpregn_w1524    =0;if gender=2 and 15 le age lt 25 and (dt_lastbirth ne . or pregnant=1)           then everpregn_w1524=1;
 everpregn_hiv_w1524=0;if gender=2 and 15 le age lt 25 and (dt_lastbirth ne . or pregnant=1) and hiv=1 then everpregn_hiv_w1524=1;
 
-pmtct=0;if pregnant=1 and (on_sd_nvp=1 or on_dual_nvp=1 or . lt time0 le caldate&j) then pmtct=1;
+pmtct=0;if pregnant=1 and (on_sd_nvp=1 or on_dual_nvp=1 or onart=1) then pmtct=1;
 
 
 ***Deaths;
