@@ -770,11 +770,11 @@ if cald=2020.75 then o_p_circ_1549_phia=34.6;o_p_vmmc_1549_phia=0.153;end;
 
 * Source: Global AIDS Monitoring Report for Malawi 2024;
 * https://www.aidsmalawi.org.mw/wp-content/uploads/2024/05/2024-Narrative-Draft-GAM-Report-Malawi-Ver-2.pdf;
-if cald = 2019.5 then n_vmmc_obs_mlw_amr = 141193;  
-if cald = 2020.5 then n_vmmc_obs_mlw_amr = 69322;  
-if cald = 2021.5 then n_vmmc_obs_mlw_amr = 141570;  
-if cald = 2022.5 then n_vmmc_obs_mlw_amr = 132519;  
-if cald = 2023.5 then n_vmmc_obs_mlw_amr = 119161;  
+if cald = 2019.5 then n_new_vmmc_obs_mlw_amr = 141193;  
+if cald = 2020.5 then n_new_vmmc_obs_mlw_amr = 69322;  
+if cald = 2021.5 then n_new_vmmc_obs_mlw_amr = 141570;  
+if cald = 2022.5 then n_new_vmmc_obs_mlw_amr = 132519;  
+if cald = 2023.5 then n_new_vmmc_obs_mlw_amr = 119161;  
 
 if cald = 2019.5 then n_vm_obs_mlw = 410000; * this is annual number;  
 if cald = 2020.5 then n_vm_obs_mlw = 403000; * this is annual number;  
