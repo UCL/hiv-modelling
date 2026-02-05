@@ -67,5 +67,5 @@ rate_int_choice = 0.003;
 
 
 
-
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 1 3);
+*LBM Feb26 - removed this to match core so MSM and general pop are eligible;
+* prep_any_strategy;			*%sample_uniform(prep_any_strategy, 1 3);
