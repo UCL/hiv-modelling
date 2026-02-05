@@ -467,8 +467,21 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_diag_msm_age1564_;			n_diag_msm_age1564_ = s_diag_msm_age1564 * sf;
 * n_undiag_sw;					n_undiag_sw = n_sw_1564 - n_diag_sw;
 * n_undiag_msm;					n_undiag_msm = n_alive_msm - n_diag_msm_age1564_;
-;
 
+/*to check why incidence is going up*/
+
+* n_alive1549m;					n_alive1549m = s_alive1549_m * sf; 
+* n_alive1549w;					n_alive1549w = s_alive1549_w * sf; 
+* n_hiv1549m;					n_hiv1549m = s_hiv1549m * sf; 
+* n_hiv1549w;					n_hiv1549w = s_hiv1549w * sf; 
+* p_diag_m;						if s_hivge15m  > 0 then p_diag_m = s_diag_m / s_hivge15m ;  
+* p_diag_w;						if s_hivge15w  > 0 then p_diag_w = s_diag_w / s_hivge15w ;  
+* p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
+* p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
+* p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
+* p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
+
+;
 
 
 
@@ -512,10 +525,18 @@ n_diag_msm_age1564_				n_undiag_msm
 total_dcost_hiv_control
 cost_test	cost_self_test	cost_art	cost_condoms	cost_prep_tot	cost_vmmc	cost_fsw_services	cost_msm_services	cost_adh_support
 dcost_test	dcost_self_test	dcost_art	dcost_condoms	dcost_prep_tot	dcost_vmmc	dcost_fsw_services	dcost_msm_services	dcost_adh_support
+
+/*to check why incidence is going up*/
+n_alive1549m  n_alive1549w  n_hiv1549m  n_hiv1549w  p_diag_m  p_diag_w p_onart_diag_m  p_onart_diag_w  p_onart_vl1000_m  p_onart_vl1000_w
+
 ;
 run;
 
 proc sort data=y;by run option;run;
+
+
+data a.long_cdi_control_15Jan26_min; set y;
+if cald=. then delete;run;
 
 
 options nomprint;
@@ -529,13 +550,13 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 550;
+%let nfit = 1950;
 %let year_end = 2075.00 ;
 run;
 proc sort;by cald option ;run;
 
 *turns log off;
-*options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
+options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 
 
 /*-----------------------------------------*/
@@ -552,6 +573,8 @@ proc sort;by cald option ;run;
     /* List of variables to summarize */
     %let var =  
 	incidence1549_ incidence1549w incidence1549m
+	n_alive1549m  n_alive1549w  n_hiv1549m  n_hiv1549w  p_diag_m  p_diag_w p_onart_diag_m  p_onart_diag_w  p_onart_vl1000_m  p_onart_vl1000_w
+
 	;
 
     /* Count number of variables */
@@ -633,12 +656,21 @@ proc sort;by cald option ;run;
 /*-----------------------------------------*/
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
-%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 99);
+%summary_all_options(options=0 1 2 3 4 5 6 7 8 99);
+
+
+/* turns log on */
+options notes source source2 mprint mlogic symbolgen;
+
+ods listing close;
+ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
+ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Modelling Consortium\HIV Control\min_pack.doc' startpage=never; 
+
 
 
 proc sgplot data=master_summary; 
 Title    height=1.5 justify=center "Incidence (15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2025 to 2073 by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence/100py'	labelattrs=(size=12)  values = (0 to 0.2 by 0.02) valueattrs=(size=10);
 
 label mean_incidence1549__0 = "Minimum";
@@ -666,57 +698,384 @@ series  x=cald y=mean_incidence1549__99/lineattrs = (color=purple thickness = 2 
 
 run;quit;
 
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "Incidence men (15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence/100py'	labelattrs=(size=12)  values = (0 to 0.2 by 0.02) valueattrs=(size=10);
+
+label mean_incidence1549m_0 = "Minimum";
+label mean_incidence1549m_1 = "+condoms";
+label mean_incidence1549m_2 = "+FSW prog";
+label mean_incidence1549m_3 = "+return int";
+label mean_incidence1549m_4 = "+ scale up oral PrEP FSW";
+label mean_incidence1549m_5 = "+ inj PrEP FSW";
+label mean_incidence1549m_6 = "+ PrEP mix MSM";
+label mean_incidence1549m_7 = "+ PrEP mix AGYW";
+label mean_incidence1549m_8 = "Worst case";
+label mean_incidence1549m_99 = "SQ";
+
+series  x=cald y=mean_incidence1549m_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence1549m_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_incidence1549m_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_incidence1549m_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_incidence1549m_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_incidence1549m_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_incidence1549m_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_incidence1549m_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_incidence1549m_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence1549m_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
 
 
-***ADD IN NEW CREATE WIDE FILE HERE;
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "Incidence women (15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Incidence/100py'	labelattrs=(size=12)  values = (0 to 0.2 by 0.02) valueattrs=(size=10);
+
+label mean_incidence1549w_0 = "Minimum";
+label mean_incidence1549w_1 = "+condoms";
+label mean_incidence1549w_2 = "+FSW prog";
+label mean_incidence1549w_3 = "+return int";
+label mean_incidence1549w_4 = "+ scale up oral PrEP FSW";
+label mean_incidence1549w_5 = "+ inj PrEP FSW";
+label mean_incidence1549w_6 = "+ PrEP mix MSM";
+label mean_incidence1549w_7 = "+ PrEP mix AGYW";
+label mean_incidence1549w_8 = "Worst case";
+label mean_incidence1549w_99 = "SQ";
+
+series  x=cald y=mean_incidence1549w_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence1549w_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_incidence1549w_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_incidence1549w_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_incidence1549w_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_incidence1549w_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_incidence1549w_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_incidence1549w_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_incidence1549w_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence1549w_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
 
 
 
-* l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_cdi_control_15Jan26; set y;
-if cald=. then delete;run;
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "n_alive males (15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n_alive/100py'	labelattrs=(size=12)  values = (0 to 15000000 by 2000000) valueattrs=(size=10);
+
+label mean_n_alive1549m_0 = "Minimum";
+label mean_n_alive1549m_1 = "+condoms";
+label mean_n_alive1549m_2 = "+FSW prog";
+label mean_n_alive1549m_3 = "+return int";
+label mean_n_alive1549m_4 = "+ scale up oral PrEP FSW";
+label mean_n_alive1549m_5 = "+ inj PrEP FSW";
+label mean_n_alive1549m_6 = "+ PrEP mix MSM";
+label mean_n_alive1549m_7 = "+ PrEP mix AGYW";
+label mean_n_alive1549m_8 = "Worst case";
+label mean_n_alive1549m_99 = "SQ";
 
 
-************************************************************************************************************************************************************;
-** GENERATE OUTPUTS FOR HIV CONTROL SPREADSHEET;
-************************************************************************************************************************************************************;
+series  x=cald y=mean_n_alive1549m_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_alive1549m_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_n_alive1549m_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_n_alive1549m_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_n_alive1549m_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_n_alive1549m_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_n_alive1549m_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_n_alive1549m_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_n_alive1549m_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_n_alive1549m_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "n_alive females (15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n_alive/100py'	labelattrs=(size=12)  values = (0 to 15000000 by 2000000) valueattrs=(size=10);
+
+label mean_n_alive1549w_0 = "Minimum";
+label mean_n_alive1549w_1 = "+condoms";
+label mean_n_alive1549w_2 = "+FSW prog";
+label mean_n_alive1549w_3 = "+return int";
+label mean_n_alive1549w_4 = "+ scale up oral PrEP FSW";
+label mean_n_alive1549w_5 = "+ inj PrEP FSW";
+label mean_n_alive1549w_6 = "+ PrEP mix MSM";
+label mean_n_alive1549w_7 = "+ PrEP mix AGYW";
+label mean_n_alive1549w_8 = "Worst case";
+label mean_n_alive1549w_99 = "SQ";
+
+
+series  x=cald y=mean_n_alive1549w_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_alive1549w_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_n_alive1549w_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_n_alive1549w_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_n_alive1549w_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_n_alive1549w_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_n_alive1549w_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_n_alive1549w_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_n_alive1549w_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_n_alive1549w_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "n_hiv males (15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n_hiv/100py'	labelattrs=(size=12)  values = (0 to 1250000 by 200000) valueattrs=(size=10);
+
+label mean_n_hiv1549m_0 = "Minimum";
+label mean_n_hiv1549m_1 = "+condoms";
+label mean_n_hiv1549m_2 = "+FSW prog";
+label mean_n_hiv1549m_3 = "+return int";
+label mean_n_hiv1549m_4 = "+ scale up oral PrEP FSW";
+label mean_n_hiv1549m_5 = "+ inj PrEP FSW";
+label mean_n_hiv1549m_6 = "+ PrEP mix MSM";
+label mean_n_hiv1549m_7 = "+ PrEP mix AGYW";
+label mean_n_hiv1549m_8 = "Worst case";
+label mean_n_hiv1549m_99 = "SQ";
+
+
+series  x=cald y=mean_n_hiv1549m_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_hiv1549m_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_n_hiv1549m_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_n_hiv1549m_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_n_hiv1549m_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_n_hiv1549m_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_n_hiv1549m_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_n_hiv1549m_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_n_hiv1549m_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_n_hiv1549m_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "n_hiv females (15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n_hiv/100py'	labelattrs=(size=12)  values = (0 to 1250000 by 200000) valueattrs=(size=10);
+
+label mean_n_hiv1549w_0 = "Minimum";
+label mean_n_hiv1549w_1 = "+condoms";
+label mean_n_hiv1549w_2 = "+FSW prog";
+label mean_n_hiv1549w_3 = "+return int";
+label mean_n_hiv1549w_4 = "+ scale up oral PrEP FSW";
+label mean_n_hiv1549w_5 = "+ inj PrEP FSW";
+label mean_n_hiv1549w_6 = "+ PrEP mix MSM";
+label mean_n_hiv1549w_7 = "+ PrEP mix AGYW";
+label mean_n_hiv1549w_8 = "Worst case";
+label mean_n_hiv1549w_99 = "SQ";
+
+
+series  x=cald y=mean_n_hiv1549w_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_hiv1549w_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_n_hiv1549w_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_n_hiv1549w_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_n_hiv1549w_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_n_hiv1549w_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_n_hiv1549w_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_n_hiv1549w_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_n_hiv1549w_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_n_hiv1549w_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+
+
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "p_diag males";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n_hiv/100py'	labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_p_diag_m_0 = "Minimum";
+label mean_p_diag_m_1 = "+condoms";
+label mean_p_diag_m_2 = "+FSW prog";
+label mean_p_diag_m_3 = "+return int";
+label mean_p_diag_m_4 = "+ scale up oral PrEP FSW";
+label mean_p_diag_m_5 = "+ inj PrEP FSW";
+label mean_p_diag_m_6 = "+ PrEP mix MSM";
+label mean_p_diag_m_7 = "+ PrEP mix AGYW";
+label mean_p_diag_m_8 = "Worst case";
+label mean_p_diag_m_99 = "SQ";
+
+
+series  x=cald y=mean_p_diag_m_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_diag_m_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_p_diag_m_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_p_diag_m_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_p_diag_m_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_p_diag_m_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_p_diag_m_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_p_diag_m_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_p_diag_m_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_p_diag_m_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "p_diag females";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n_hiv/100py'	labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_p_diag_w_0 = "Minimum";
+label mean_p_diag_w_1 = "+condoms";
+label mean_p_diag_w_2 = "+FSW prog";
+label mean_p_diag_w_3 = "+return int";
+label mean_p_diag_w_4 = "+ scale up oral PrEP FSW";
+label mean_p_diag_w_5 = "+ inj PrEP FSW";
+label mean_p_diag_w_6 = "+ PrEP mix MSM";
+label mean_p_diag_w_7 = "+ PrEP mix AGYW";
+label mean_p_diag_w_8 = "Worst case";
+label mean_p_diag_w_99 = "SQ";
+
+
+series  x=cald y=mean_p_diag_w_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_diag_w_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_p_diag_w_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_p_diag_w_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_p_diag_w_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_p_diag_w_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_p_diag_w_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_p_diag_w_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_p_diag_w_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_p_diag_w_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "p_onart_diag males";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n_hiv/100py'	labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_p_onart_diag_m_0 = "Minimum";
+label mean_p_onart_diag_m_1 = "+condoms";
+label mean_p_onart_diag_m_2 = "+FSW prog";
+label mean_p_onart_diag_m_3 = "+return int";
+label mean_p_onart_diag_m_4 = "+ scale up oral PrEP FSW";
+label mean_p_onart_diag_m_5 = "+ inj PrEP FSW";
+label mean_p_onart_diag_m_6 = "+ PrEP mix MSM";
+label mean_p_onart_diag_m_7 = "+ PrEP mix AGYW";
+label mean_p_onart_diag_m_8 = "Worst case";
+label mean_p_onart_diag_m_99 = "SQ";
+
+
+series  x=cald y=mean_p_onart_diag_m_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_m_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_p_onart_diag_m_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_p_onart_diag_m_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_p_onart_diag_m_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_p_onart_diag_m_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_p_onart_diag_m_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_p_onart_diag_m_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_p_onart_diag_m_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_m_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "p_onart_diag females";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n_hiv/100py'	labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_p_onart_diag_w_0 = "Minimum";
+label mean_p_onart_diag_w_1 = "+condoms";
+label mean_p_onart_diag_w_2 = "+FSW prog";
+label mean_p_onart_diag_w_3 = "+return int";
+label mean_p_onart_diag_w_4 = "+ scale up oral PrEP FSW";
+label mean_p_onart_diag_w_5 = "+ inj PrEP FSW";
+label mean_p_onart_diag_w_6 = "+ PrEP mix MSM";
+label mean_p_onart_diag_w_7 = "+ PrEP mix AGYW";
+label mean_p_onart_diag_w_8 = "Worst case";
+label mean_p_onart_diag_w_99 = "SQ";
+
+
+series  x=cald y=mean_p_onart_diag_w_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_w_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_p_onart_diag_w_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_p_onart_diag_w_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_p_onart_diag_w_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_p_onart_diag_w_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_p_onart_diag_w_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_p_onart_diag_w_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_p_onart_diag_w_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_w_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "p_onart_vl1000 males";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n_hiv/100py'	labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_p_onart_vl1000_m_0 = "Minimum";
+label mean_p_onart_vl1000_m_1 = "+condoms";
+label mean_p_onart_vl1000_m_2 = "+FSW prog";
+label mean_p_onart_vl1000_m_3 = "+return int";
+label mean_p_onart_vl1000_m_4 = "+ scale up oral PrEP FSW";
+label mean_p_onart_vl1000_m_5 = "+ inj PrEP FSW";
+label mean_p_onart_vl1000_m_6 = "+ PrEP mix MSM";
+label mean_p_onart_vl1000_m_7 = "+ PrEP mix AGYW";
+label mean_p_onart_vl1000_m_8 = "Worst case";
+label mean_p_onart_vl1000_m_99 = "SQ";
+
+
+series  x=cald y=mean_p_onart_vl1000_m_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000_m_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_m_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_m_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_m_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_m_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_m_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_m_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_m_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000_m_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+proc sgplot data=master_summary; 
+Title    height=1.5 justify=center "p_onart_vl1000 females";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2024 to 2075 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n_hiv/100py'	labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_p_onart_vl1000_w_0 = "Minimum";
+label mean_p_onart_vl1000_w_1 = "+condoms";
+label mean_p_onart_vl1000_w_2 = "+FSW prog";
+label mean_p_onart_vl1000_w_3 = "+return int";
+label mean_p_onart_vl1000_w_4 = "+ scale up oral PrEP FSW";
+label mean_p_onart_vl1000_w_5 = "+ inj PrEP FSW";
+label mean_p_onart_vl1000_w_6 = "+ PrEP mix MSM";
+label mean_p_onart_vl1000_w_7 = "+ PrEP mix AGYW";
+label mean_p_onart_vl1000_w_8 = "Worst case";
+label mean_p_onart_vl1000_w_99 = "SQ";
+
+
+series  x=cald y=mean_p_onart_vl1000_w_0/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000_w_1/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_w_2/	lineattrs = (color=green thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_w_3/	lineattrs = (color=pink thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_w_4/	lineattrs = (color=yellow thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_w_5/	lineattrs = (color=lightblue thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_w_6/	lineattrs = (color=lightgreen thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_w_7/	lineattrs = (color=orange thickness = 2);
+series  x=cald y=mean_p_onart_vl1000_w_8/	lineattrs = (color=brown thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000_w_99/lineattrs = (color=purple thickness = 2 pattern=solid);
+
+run;quit;
+
+
+ods rtf close;
+ods listing;
+run;
 
 
 
 
-************************************************************************************************************************************************************;
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
-
-
-data y; set a.long_cdi_control_15Jan26; 
-
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-** Set option number for var_stock and var_flow macros here;
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-%let op_num=0;
-/*
-0 = baseline (minimal)
-1 = oral PrEP for FSW
-2 = oral + inj PrEP for FSW
-3 = oral PrEP for sexually active AGYW + pregnant women
-4 = oral + inj PrEP for sexually active AGYW + pregnant women
-5 = oral PrEP for MSM
-6 = oral + inj PrEP for MSM
-7 = VMMC
-8 = condom provision + promotion
-9 = KP outreach - FSW
-10 = KP outreach - MSM
-11 = testing
-12 = adherence support
-13 = worst case
-
-99 = status quo
-*/
-
-
+proc means data=master_summary;var mean_incidence1549__0;where cald=2024;run;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 ** Variable lists;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+
+* Define lists of variables that we need to run in the macros and keep as outputs;
 
 %let stock_list = 
 	Total_00_14_M			Total_15_24_M			Total_25_49_M			Total_50_UP_M
@@ -736,16 +1095,6 @@ data y; set a.long_cdi_control_15Jan26;
 	VLS_FSW					VLS_MSM
 	N_circumcised_15_24_M		/* added Sept 2025 - stock */
 	Total_AGYW_PG				/* added Sept 2025 - stock */
-	/* Extras for calibration */
-	n_onprep_agyw_plw			n_agyw_plw
-	n_onprep_oral_agyw_pg		n_onprep_len_agyw_pg
-	n_onprep_oral_agyw_plw		n_onprep_len_agyw_plw
-	n_onprep_oral_m				n_onprep_len_m				
-	n_onprep_oral_w				n_onprep_len_w
-	n_onprep_oral_sw			n_onprep_len_sw			
-	n_onprep_oral_msm			n_onprep_len_msm
-	n_tested_m					n_tested_w
-	n_self_tested_m				n_self_tested_w					n_tested_due_to_self_test
 	;
 /*%put &stock_list;*/
 
@@ -764,11 +1113,6 @@ data y; set a.long_cdi_control_15Jan26;
 	PrEP_Pop_GP				NewHIV_PrEP_Pop_GP
 	Percent_FSW_reached		Percent_MSM_reached
 	PrEP_AGYW_PG			/* added Sept 2025 */
-	/* Extras for calibration */
-	incidence1549			incidence1549w			incidence1549m			incidence1564
-	p_newp_ge1				p_newp_ge5				av_newp_ge1				p_ep
-	p_m_npge1_				p_w_npge1_
-	p_mcirc_1524m
 	;
 /*%put &flow_list;*/
 
@@ -807,527 +1151,203 @@ data y; set a.long_cdi_control_15Jan26;
 	;
 
 
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-** Macros;
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-
-
-* var_stock macro takes the mid-year data point;
-%macro var_stock(v=);
-
-* &v ;
-
-* option is set to &op_num - defined below where macro is run;
-
-* stock ;
-
-* Use option 0 outputs for years 1985-2023;
-
-proc means noprint data=y; var &v; output out=y_1985 mean= &v;  where 1985 <= cald <1986 and option = 0;
-proc means noprint data=y; var &v; output out=y_1986 mean= &v;  where 1986 <= cald <1987 and option = 0;
-proc means noprint data=y; var &v; output out=y_1987 mean= &v;  where 1987 <= cald <1988 and option = 0;
-proc means noprint data=y; var &v; output out=y_1988 mean= &v;  where 1988 <= cald <1989 and option = 0;
-proc means noprint data=y; var &v; output out=y_1989 mean= &v;  where 1989 <= cald <1990 and option = 0;
-proc means noprint data=y; var &v; output out=y_1990 mean= &v;  where 1990 <= cald <1991 and option = 0;
-proc means noprint data=y; var &v; output out=y_1991 mean= &v;  where 1991 <= cald <1991 and option = 0;
-proc means noprint data=y; var &v; output out=y_1992 mean= &v;  where 1992 <= cald <1993 and option = 0;
-proc means noprint data=y; var &v; output out=y_1993 mean= &v;  where 1993 <= cald <1994 and option = 0;
-proc means noprint data=y; var &v; output out=y_1994 mean= &v;  where 1994 <= cald <1995 and option = 0;
-proc means noprint data=y; var &v; output out=y_1995 mean= &v;  where 1995 <= cald <1996 and option = 0;
-proc means noprint data=y; var &v; output out=y_1996 mean= &v;  where 1996 <= cald <1997 and option = 0;
-proc means noprint data=y; var &v; output out=y_1997 mean= &v;  where 1997 <= cald <1998 and option = 0;
-proc means noprint data=y; var &v; output out=y_1998 mean= &v;  where 1998 <= cald <1999 and option = 0;
-proc means noprint data=y; var &v; output out=y_1999 mean= &v;  where 1999 <= cald <2000 and option = 0;
-proc means noprint data=y; var &v; output out=y_2000 mean= &v;  where 2000 <= cald <2001 and option = 0;
-proc means noprint data=y; var &v; output out=y_2001 mean= &v;  where 2001 <= cald <2002 and option = 0;
-proc means noprint data=y; var &v; output out=y_2002 mean= &v;  where 2002 <= cald <2003 and option = 0;
-proc means noprint data=y; var &v; output out=y_2003 mean= &v;  where 2003 <= cald <2004 and option = 0;
-proc means noprint data=y; var &v; output out=y_2004 mean= &v;  where 2004 <= cald <2005 and option = 0;
-proc means noprint data=y; var &v; output out=y_2005 mean= &v;  where 2005 <= cald <2006 and option = 0;
-proc means noprint data=y; var &v; output out=y_2006 mean= &v;  where 2006 <= cald <2007 and option = 0;
-proc means noprint data=y; var &v; output out=y_2007 mean= &v;  where 2007 <= cald <2008 and option = 0;
-proc means noprint data=y; var &v; output out=y_2008 mean= &v;  where 2008 <= cald <2009 and option = 0;
-proc means noprint data=y; var &v; output out=y_2009 mean= &v;  where 2009 <= cald <2010 and option = 0;
-proc means noprint data=y; var &v; output out=y_2010 mean= &v;  where 2010 <= cald <2011 and option = 0;
-proc means noprint data=y; var &v; output out=y_2011 mean= &v;  where 2011 <= cald <2012 and option = 0;
-proc means noprint data=y; var &v; output out=y_2012 mean= &v;  where 2012 <= cald <2013 and option = 0;
-proc means noprint data=y; var &v; output out=y_2013 mean= &v;  where 2013 <= cald <2014 and option = 0;
-proc means noprint data=y; var &v; output out=y_2014 mean= &v;  where 2014 <= cald <2015 and option = 0;
-proc means noprint data=y; var &v; output out=y_2015 mean= &v;  where 2015 <= cald <2016 and option = 0;
-proc means noprint data=y; var &v; output out=y_2016 mean= &v;  where 2016 <= cald <2017 and option = 0;
-proc means noprint data=y; var &v; output out=y_2017 mean= &v;  where 2017 <= cald <2018 and option = 0;
-proc means noprint data=y; var &v; output out=y_2018 mean= &v;  where 2018 <= cald <2019 and option = 0;
-proc means noprint data=y; var &v; output out=y_2019 mean= &v;  where 2019 <= cald <2020 and option = 0;
-proc means noprint data=y; var &v; output out=y_2020 mean= &v;  where 2020 <= cald <2021 and option = 0;
-proc means noprint data=y; var &v; output out=y_2021 mean= &v;  where 2021 <= cald <2022 and option = 0;
-proc means noprint data=y; var &v; output out=y_2022 mean= &v;  where 2022 <= cald <2023 and option = 0;
-proc means noprint data=y; var &v; output out=y_2023 mean= &v;  where 2023 <= cald <2024 and option = 0;
-
-
-proc means noprint data=y; var &v; output out=y_2024 mean= &v; where 2024 <= cald < 2025 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2025 mean= &v; where 2025 <= cald < 2026 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2026 mean= &v; where 2026 <= cald < 2027 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2027 mean= &v; where 2027 <= cald < 2028 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2028 mean= &v; where 2028 <= cald < 2029 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2029 mean= &v; where 2029 <= cald < 2030 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2030 mean= &v; where 2030 <= cald < 2031 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2031 mean= &v; where 2031 <= cald < 2032 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2032 mean= &v; where 2032 <= cald < 2033 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2033 mean= &v; where 2033 <= cald < 2034 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2034 mean= &v; where 2034 <= cald < 2035 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2035 mean= &v; where 2035 <= cald < 2036 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2036 mean= &v; where 2036 <= cald < 2037 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2037 mean= &v; where 2037 <= cald < 2038 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2038 mean= &v; where 2038 <= cald < 2039 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2039 mean= &v; where 2039 <= cald < 2040 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2040 mean= &v; where 2040 <= cald < 2041 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2041 mean= &v; where 2041 <= cald < 2042 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2042 mean= &v; where 2042 <= cald < 2043 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2043 mean= &v; where 2043 <= cald < 2044 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2044 mean= &v; where 2044 <= cald < 2045 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2045 mean= &v; where 2045 <= cald < 2046 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2046 mean= &v; where 2046 <= cald < 2047 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2047 mean= &v; where 2047 <= cald < 2048 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2048 mean= &v; where 2048 <= cald < 2049 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2049 mean= &v; where 2049 <= cald < 2050 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2050 mean= &v; where 2050 <= cald < 2051 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2051 mean= &v; where 2051 <= cald < 2052 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2052 mean= &v; where 2052 <= cald < 2053 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2053 mean= &v; where 2053 <= cald < 2054 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2054 mean= &v; where 2054 <= cald < 2055 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2055 mean= &v; where 2055 <= cald < 2056 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2056 mean= &v; where 2056 <= cald < 2057 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2057 mean= &v; where 2057 <= cald < 2058 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2058 mean= &v; where 2058 <= cald < 2059 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2059 mean= &v; where 2059 <= cald < 2060 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2060 mean= &v; where 2060 <= cald < 2061 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2061 mean= &v; where 2061 <= cald < 2062 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2062 mean= &v; where 2062 <= cald < 2063 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2063 mean= &v; where 2063 <= cald < 2064 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2064 mean= &v; where 2064 <= cald < 2065 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2065 mean= &v; where 2065 <= cald < 2066 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2066 mean= &v; where 2066 <= cald < 2067 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2067 mean= &v; where 2067 <= cald < 2068 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2068 mean= &v; where 2068 <= cald < 2069 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2069 mean= &v; where 2069 <= cald < 2070 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2070 mean= &v; where 2070 <= cald < 2071 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2071 mean= &v; where 2071 <= cald < 2072 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2072 mean= &v; where 2072 <= cald < 2073 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2073 mean= &v; where 2073 <= cald < 2074 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2074 mean= &v; where 2074 <= cald < 2075 and option= &op_num;
-proc means noprint data=y; var &v; output out=y_2075 mean= &v; where 2075 <= cald < 2076 and option= &op_num;
-																								
-data &v ; set  
-y_1985  y_1986  y_1987  y_1988  y_1989  y_1990  y_1991  y_1992  y_1993  y_1994  y_1995  y_1996  y_1997  y_1998  y_1999  y_2000  y_2001  y_2002  y_2003  y_2004  
-y_2005  y_2006  y_2007  y_2008  y_2009  y_2010  y_2011  y_2012  y_2013  y_2014  y_2015  y_2016  y_2017  y_2018  y_2019  y_2020  y_2021  y_2022  y_2023 
-
-y_2024  
-y_2025  y_2026  y_2027  y_2028  y_2029  y_2030  y_2031  y_2032  y_2033  y_2034  y_2035  y_2036  y_2037  y_2038  y_2039  y_2040  y_2041  y_2042  y_2043  y_2044  
-y_2045  y_2046  y_2047  y_2048  y_2049  y_2050  y_2051  y_2052  y_2053  y_2054  y_2055  y_2056  y_2057  y_2058  y_2059  y_2060  y_2061  y_2062  y_2063  y_2064  
-y_2065  y_2066  y_2067  y_2068  y_2069  y_2070  y_2071  y_2072  y_2073  y_2074  y_2075  
-;  
-drop _NAME_ _TYPE_ _FREQ_;
-
-%mend var_stock;
-
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* flow;
+** Load data and update variable names for outputs;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-%macro var_flow(v=);
-* Use option 0 outputs for years 1985-2023;
+data y; set a.long_cdi_control_15Jan26_min;
 
-proc means noprint data=y; var &v; output out=z_1985 mean= &v; where 1984.5 < cald <= 1985.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1986 mean= &v; where 1985.5 < cald <= 1986.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1987 mean= &v; where 1986.5 < cald <= 1987.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1988 mean= &v; where 1987.5 < cald <= 1988.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1989 mean= &v; where 1988.5 < cald <= 1989.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1990 mean= &v; where 1989.5 < cald <= 1990.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1991 mean= &v; where 1990.5 < cald <= 1991.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1992 mean= &v; where 1991.5 < cald <= 1992.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1993 mean= &v; where 1992.5 < cald <= 1993.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1994 mean= &v; where 1993.5 < cald <= 1994.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1995 mean= &v; where 1994.5 < cald <= 1995.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1996 mean= &v; where 1995.5 < cald <= 1996.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1997 mean= &v; where 1996.5 < cald <= 1997.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1998 mean= &v; where 1997.5 < cald <= 1998.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_1999 mean= &v; where 1998.5 < cald <= 1999.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2000 mean= &v; where 1999.5 < cald <= 2000.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2001 mean= &v; where 2000.5 < cald <= 2001.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2002 mean= &v; where 2001.5 < cald <= 2002.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2003 mean= &v; where 2002.5 < cald <= 2003.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2004 mean= &v; where 2003.5 < cald <= 2004.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2005 mean= &v; where 2004.5 < cald <= 2005.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2006 mean= &v; where 2005.5 < cald <= 2006.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2007 mean= &v; where 2006.5 < cald <= 2007.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2008 mean= &v; where 2007.5 < cald <= 2008.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2009 mean= &v; where 2008.5 < cald <= 2009.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2010 mean= &v; where 2009.5 < cald <= 2010.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2011 mean= &v; where 2010.5 < cald <= 2011.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2012 mean= &v; where 2011.5 < cald <= 2012.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2013 mean= &v; where 2012.5 < cald <= 2013.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2014 mean= &v; where 2013.5 < cald <= 2014.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2015 mean= &v; where 2014.5 < cald <= 2015.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2016 mean= &v; where 2015.5 < cald <= 2016.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2017 mean= &v; where 2016.5 < cald <= 2017.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2018 mean= &v; where 2017.5 < cald <= 2018.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2019 mean= &v; where 2018.5 < cald <= 2019.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2020 mean= &v; where 2019.5 < cald <= 2020.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2021 mean= &v; where 2020.5 < cald <= 2021.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2022 mean= &v; where 2021.5 < cald <= 2022.5 and option = 0;
-proc means noprint data=y; var &v; output out=z_2023 mean= &v; where 2022.5 < cald <= 2023.5 and option = 0;
+	year_stock=floor(cald);			* calendar year variable to group stocks when calculating means;
+	year_flow=floor(cald+0.25);		* mid-year to mid-year variable to group flows when calculating means (.75 - .5);
 
-* Set option = &op_num for options 1-12;
-proc means noprint data=y; var &v; output out=z_2024 mean= &v; where 2023.5 < cald <= 2024.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2025 mean= &v; where 2024.5 < cald <= 2025.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2026 mean= &v; where 2025.5 < cald <= 2026.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2027 mean= &v; where 2026.5 < cald <= 2027.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2028 mean= &v; where 2027.5 < cald <= 2028.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2029 mean= &v; where 2028.5 < cald <= 2029.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2030 mean= &v; where 2029.5 < cald <= 2030.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2031 mean= &v; where 2030.5 < cald <= 2031.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2032 mean= &v; where 2031.5 < cald <= 2032.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2033 mean= &v; where 2032.5 < cald <= 2033.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2034 mean= &v; where 2033.5 < cald <= 2034.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2035 mean= &v; where 2034.5 < cald <= 2035.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2036 mean= &v; where 2035.5 < cald <= 2036.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2037 mean= &v; where 2036.5 < cald <= 2037.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2038 mean= &v; where 2037.5 < cald <= 2038.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2039 mean= &v; where 2038.5 < cald <= 2039.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2040 mean= &v; where 2039.5 < cald <= 2040.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2041 mean= &v; where 2040.5 < cald <= 2041.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2042 mean= &v; where 2041.5 < cald <= 2042.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2043 mean= &v; where 2042.5 < cald <= 2043.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2044 mean= &v; where 2043.5 < cald <= 2044.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2045 mean= &v; where 2044.5 < cald <= 2045.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2046 mean= &v; where 2045.5 < cald <= 2046.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2047 mean= &v; where 2046.5 < cald <= 2047.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2048 mean= &v; where 2047.5 < cald <= 2048.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2049 mean= &v; where 2048.5 < cald <= 2049.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2050 mean= &v; where 2049.5 < cald <= 2050.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2051 mean= &v; where 2050.5 < cald <= 2051.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2052 mean= &v; where 2051.5 < cald <= 2052.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2053 mean= &v; where 2052.5 < cald <= 2053.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2054 mean= &v; where 2053.5 < cald <= 2054.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2055 mean= &v; where 2054.5 < cald <= 2055.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2056 mean= &v; where 2055.5 < cald <= 2056.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2057 mean= &v; where 2056.5 < cald <= 2057.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2058 mean= &v; where 2057.5 < cald <= 2058.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2059 mean= &v; where 2058.5 < cald <= 2059.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2060 mean= &v; where 2059.5 < cald <= 2060.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2061 mean= &v; where 2060.5 < cald <= 2061.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2062 mean= &v; where 2061.5 < cald <= 2062.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2063 mean= &v; where 2062.5 < cald <= 2063.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2064 mean= &v; where 2063.5 < cald <= 2064.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2065 mean= &v; where 2064.5 < cald <= 2065.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2066 mean= &v; where 2065.5 < cald <= 2066.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2067 mean= &v; where 2066.5 < cald <= 2067.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2068 mean= &v; where 2067.5 < cald <= 2068.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2069 mean= &v; where 2068.5 < cald <= 2069.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2070 mean= &v; where 2069.5 < cald <= 2070.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2071 mean= &v; where 2070.5 < cald <= 2071.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2072 mean= &v; where 2071.5 < cald <= 2072.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2073 mean= &v; where 2072.5 < cald <= 2073.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2074 mean= &v; where 2073.5 < cald <= 2074.5 and option = &op_num;
-proc means noprint data=y; var &v; output out=z_2075 mean= &v; where 2074.5 < cald <= 2075.5 and option = &op_num;
+	Total_00_14_M = .;
+	Total_15_24_M = n_alive_1524m;
+	Total_25_49_M = n_alive_2549m;
+	Total_50_UP_M = n_alive_50plm;
+	Total_00_14_F = .;
+	Total_15_24_F = n_alive_1524w;
+	Total_25_49_F = n_alive_2549w;
+	Total_50_UP_F = n_alive_50plw;
+	Total_FSW = n_sw_1564 ;
+	Total_MSM = n_alive_msm ;
+	PLHIV_00_14_M = .;
+	PLHIV_15_24_M = n_hiv1524m;
+	PLHIV_25_49_M = n_hiv2549m;
+	PLHIV_50_UP_M = n_hiv50plm;
+	PLHIV_00_14_F = .;
+	PLHIV_15_24_F = n_hiv1524w;
+	PLHIV_25_49_F = n_hiv2549w;
+	PLHIV_50_UP_F = n_hiv50plw;
+	PLHIV_FSW = n_hiv_sw;
+	PLHIV_MSM = n_hiv_msm;
+	Diagnosed_00_14_M = .;
+	Diagnosed_15_24_M = n_diag_m_1524;
+	Diagnosed_25_49_M = n_diag_m_2549;
+	Diagnosed_50_UP_M = n_diag_m_50pl;
+	Diagnosed_00_14_F = .;
+	Diagnosed_15_24_F = n_diag_w_1524;
+	Diagnosed_25_49_F = n_diag_w_2549;
+	Diagnosed_50_UP_F = n_diag_w_50pl;
+	Diagnosed_FSW = n_diag_sw;
+	Diagnosed_MSM = n_diag_msm;
+	ART_00_14_M = .;
+	ART_15_24_M = n_onart1524_m;
+	ART_25_49_M = n_onart2549_m;
+	ART_50_UP_M = n_onart50pl_m;
+	ART_00_14_F = .;
+	ART_15_24_F = n_onart1524_w;
+	ART_25_49_F = n_onart2549_w;
+	ART_50_UP_F = n_onart50pl_w;
+	ART_FSW = n_onart_sw;
+	ART_MSM = n_onart_msm;
+	VLS_00_14_M = .;
+	VLS_15_24_M = n_vl1000_art_1524_m;
+	VLS_25_49_M = n_vl1000_art_2549_m;
+	VLS_50_UP_M = n_vl1000_art_50pl_m;
+	VLS_00_14_F = .;
+	VLS_15_24_F = n_vl1000_art_1524_w;
+	VLS_25_49_F = n_vl1000_art_2549_w;
+	VLS_50_UP_F = n_vl1000_art_50pl_w;
+	VLS_FSW = n_vl1000_art_sw;
+	VLS_MSM = n_vl1000_art_msm;
+	Birth_All = n_birth;
+	Birth_HIV = n_give_birth_w_hiv;
+	DeathsAll_00_14_M = .;
+	DeathsAll_15_24_M = n_dead1524m_all;
+	DeathsAll_25_49_M = n_dead2549m_all;
+	DeathsAll_50_UP_M = n_dead50plm_all;
+	DeathsAll_00_14_F = .;
+	DeathsAll_15_24_F = n_dead1524w_all;
+	DeathsAll_25_49_F = n_dead2549w_all;
+	DeathsAll_50_UP_F = n_dead50plw_all;
+	NewHIV_00_14_M = n_hiv_child / 2;
+	NewHIV_15_24_M = n_new_inf1524m;
+	NewHIV_25_49_M = n_new_inf2549m;
+	NewHIV_50_UP_M = n_new_inf50plm;
+	NewHIV_00_14_F = n_hiv_child / 2;
+	NewHIV_15_24_F = n_new_inf1524w;
+	NewHIV_25_49_F = n_new_inf2549w;
+	NewHIV_50_UP_F = n_new_inf50plw;
+	NewHIV_FSW = n_new_inf_sw;
+	NewHIV_MSM = n_new_inf_msm;
+	DeathsHIV_00_14_M = .;
+	DeathsHIV_15_24_M = n_death_hiv_age_1524_m;
+	DeathsHIV_25_49_M = n_death_hiv_age_2549_m;
+	DeathsHIV_50_UP_M = n_death_hiv_age_50pl_m;
+	DeathsHIV_00_14_F = .;
+	DeathsHIV_15_24_F = n_death_hiv_age_1524_w;
+	DeathsHIV_25_49_F = n_death_hiv_age_2549_w;
+	DeathsHIV_50_UP_F = n_death_hiv_age_50pl_w;
+	DALYs_Undiscounted = n_daly;
+	TotalCost_Undiscounted = total_cost_hiv_control;
+	Percent_circumcised = p_mcirc_1549m * 100;
+	Percent_condom_use_GP = .; /* (1 - (p_m_npge1_ + p_w_npge1_) / 2) * 100;	* Estimate is percent of population with no condomless sex (mean m and w); */
+	PrEP_FSW = n_onprep_sw;
+	PrEP_MSM = n_onprep_msm;
+	PrEP_GP = n_onprep_m + n_onprep_w;
+	PrEP_Pop_GP = n_elig_prep;
+	NewHIV_PrEP_Pop_GP = n_new_inf_prep_elig;
+	Percent_FSW_reached = (n_sw_program_visit * 100) / n_sw_1564;
+	Percent_MSM_reached = .;
+	N_circumcised_15_24_M = n_circumcised_15_24_m;	/* added Sept 2025 */
+	PrEP_AGYW_PG = n_onprep_agyw_pg;				/* added Sept 2025 */
+	Total_AGYW_PG = n_agyw_pg;						/* added Sept 2025 */
 
-data &v ; set  
-z_1985  z_1986  z_1987  z_1988  z_1989  z_1990  z_1991  z_1992  z_1993  z_1994  z_1995  z_1996  z_1997  z_1998  z_1999  z_2000  z_2001  z_2002  z_2003  z_2004  
-z_2005  z_2006  z_2007  z_2008  z_2009  z_2010  z_2011  z_2012  z_2013  z_2014  z_2015  z_2016  z_2017  z_2018  z_2019  z_2020  z_2021  z_2022  z_2023  
-z_2024  
-z_2025  z_2026  z_2027  z_2028  z_2029  z_2030  z_2031  z_2032  z_2033  z_2034  z_2035  z_2036  z_2037  z_2038  z_2039  z_2040  z_2041  z_2042  z_2043  z_2044  
-z_2045  z_2046  z_2047  z_2048  z_2049  z_2050  z_2051  z_2052  z_2053  z_2054  z_2055  z_2056  z_2057  z_2058  z_2059  z_2060  z_2061  z_2062  z_2063  z_2064  
-z_2065  z_2066  z_2067  z_2068  z_2069  z_2070  z_2071  z_2072  z_2073  z_2074  z_2075
-;  
-drop _NAME_ _TYPE_ _FREQ_;
+	keep
 
-%mend var_flow;
+	cald
+	option
 
+	year_stock
+	year_flow
 
-
-
-* make_stocks macro runs the var_stock macro through a list of variable names;
-%macro make_stocks;
-	%let n=%sysfunc(countw(&stock_list));	/* number of variables in flow_list */
-    %do i=1 %to &n;
-        %let var=%scan(&stock_list, &i);
-        %var_stock(v=&var);
-    %end;
-%mend;
-
-
-* make_flows macro runs the var_flow macro through a list of variable names;
-%macro make_flows;
-	%let n=%sysfunc(countw(&flow_list));	/* number of variables in flow_list */
-    %do i=1 %to &n;
-        %let var=%scan(&flow_list, &i);
-        %var_flow(v=&var);
-    %end;
-%mend;
-
-
-
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-** Data processing;
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-
-data y; set a.long_cdi_control_15Jan26; 
-
-Total_00_14_M = .;
-Total_15_24_M = n_alive_1524m;
-Total_25_49_M = n_alive_2549m;
-Total_50_UP_M = n_alive_50plm;
-Total_00_14_F = .;
-Total_15_24_F = n_alive_1524w;
-Total_25_49_F = n_alive_2549w;
-Total_50_UP_F = n_alive_50plw;
-Total_FSW = n_sw_1564 ;
-Total_MSM = n_alive_msm ;
-PLHIV_00_14_M = .;
-PLHIV_15_24_M = n_hiv1524m;
-PLHIV_25_49_M = n_hiv2549m;
-PLHIV_50_UP_M = n_hiv50plm;
-PLHIV_00_14_F = .;
-PLHIV_15_24_F = n_hiv1524w;
-PLHIV_25_49_F = n_hiv2549w;
-PLHIV_50_UP_F = n_hiv50plw;
-PLHIV_FSW = n_hiv_sw;
-PLHIV_MSM = n_hiv_msm;
-Diagnosed_00_14_M = .;
-Diagnosed_15_24_M = n_diag_m_1524;
-Diagnosed_25_49_M = n_diag_m_2549;
-Diagnosed_50_UP_M = n_diag_m_50pl;
-Diagnosed_00_14_F = .;
-Diagnosed_15_24_F = n_diag_w_1524;
-Diagnosed_25_49_F = n_diag_w_2549;
-Diagnosed_50_UP_F = n_diag_w_50pl;
-Diagnosed_FSW = n_diag_sw;
-Diagnosed_MSM = n_diag_msm;
-ART_00_14_M = .;
-ART_15_24_M = n_onart1524_m;
-ART_25_49_M = n_onart2549_m;
-ART_50_UP_M = n_onart50pl_m;
-ART_00_14_F = .;
-ART_15_24_F = n_onart1524_w;
-ART_25_49_F = n_onart2549_w;
-ART_50_UP_F = n_onart50pl_w;
-ART_FSW = n_onart_sw;
-ART_MSM = n_onart_msm;
-VLS_00_14_M = .;
-VLS_15_24_M = n_vl1000_art_1524_m;
-VLS_25_49_M = n_vl1000_art_2549_m;
-VLS_50_UP_M = n_vl1000_art_50pl_m;
-VLS_00_14_F = .;
-VLS_15_24_F = n_vl1000_art_1524_w;
-VLS_25_49_F = n_vl1000_art_2549_w;
-VLS_50_UP_F = n_vl1000_art_50pl_w;
-VLS_FSW = n_vl1000_art_sw;
-VLS_MSM = n_vl1000_art_msm;
-Birth_All = n_birth;
-Birth_HIV = n_give_birth_w_hiv;
-DeathsAll_00_14_M = .;
-DeathsAll_15_24_M = n_dead1524m_all;
-DeathsAll_25_49_M = n_dead2549m_all;
-DeathsAll_50_UP_M = n_dead50plm_all;
-DeathsAll_00_14_F = .;
-DeathsAll_15_24_F = n_dead1524w_all;
-DeathsAll_25_49_F = n_dead2549w_all;
-DeathsAll_50_UP_F = n_dead50plw_all;
-NewHIV_00_14_M = n_hiv_child / 2;
-NewHIV_15_24_M = n_new_inf1524m;
-NewHIV_25_49_M = n_new_inf2549m;
-NewHIV_50_UP_M = n_new_inf50plm;
-NewHIV_00_14_F = n_hiv_child / 2;
-NewHIV_15_24_F = n_new_inf1524w;
-NewHIV_25_49_F = n_new_inf2549w;
-NewHIV_50_UP_F = n_new_inf50plw;
-NewHIV_FSW = n_new_inf_sw;
-NewHIV_MSM = n_new_inf_msm;
-DeathsHIV_00_14_M = .;
-DeathsHIV_15_24_M = n_death_hiv_age_1524_m;
-DeathsHIV_25_49_M = n_death_hiv_age_2549_m;
-DeathsHIV_50_UP_M = n_death_hiv_age_50pl_m;
-DeathsHIV_00_14_F = .;
-DeathsHIV_15_24_F = n_death_hiv_age_1524_w;
-DeathsHIV_25_49_F = n_death_hiv_age_2549_w;
-DeathsHIV_50_UP_F = n_death_hiv_age_50pl_w;
-DALYs_Undiscounted = n_daly;
-TotalCost_Undiscounted = total_cost_hiv_control;
-Percent_circumcised = p_mcirc_1549m * 100;
-Percent_condom_use_GP = .; /* (1 - (p_m_npge1_ + p_w_npge1_) / 2) * 100;	* Estimate is percent of population with no condomless sex (mean m and w); */
-PrEP_FSW = n_onprep_sw;
-PrEP_MSM = n_onprep_msm;
-PrEP_GP = n_onprep_m + n_onprep_w;
-PrEP_Pop_GP = n_elig_prep;
-NewHIV_PrEP_Pop_GP = n_new_inf_prep_elig;
-Percent_FSW_reached = (n_sw_program_visit * 100) / n_sw_1564;
-Percent_MSM_reached = .;
-N_circumcised_15_24_M = n_circumcised_15_24_m;	/* added Sept 2025 */
-PrEP_AGYW_PG = n_onprep_agyw_pg;				/* added Sept 2025 */
-Total_AGYW_PG = n_agyw_pg;						/* added Sept 2025 */
-
-keep
-
-cald
-option
-
-&stock_list
-&flow_list
-;
+	&stock_list
+	&flow_list
+	;
 run;
  
-  options nomprint;
-  option nospool;
+ options nomprint;
+ option nospool;
 
 
 
-* Note years 1985-2023 are option 0 and 2024 onwards are selected option;
-data year;
-input year;
-cards;
-1985
-1986 
-1987 
-1988 
-1989 
-1990 
-1991 
-1992 
-1993 
-1994 
-1995 
-1996 
-1997 
-1998 
-1999 
-2000 
-2001 
-2002 
-2003 
-2004 
-2005 
-2006 
-2007 
-2008 
-2009 
-2010 
-2011 
-2012 
-2013 
-2014 
-2015 
-2016 
-2017 
-2018 
-2019 
-2020 
-2021 
-2022 
-2023 
-2024 
-2025 
-2026 
-2027 
-2028 
-2029 
-2030 
-2031 
-2032 
-2033 
-2034 
-2035 
-2036 
-2037 
-2038 
-2039 
-2040 
-2041 
-2042 
-2043 
-2044 
-2045 
-2046 
-2047 
-2048 
-2049 
-2050 
-2051 
-2052 
-2053 
-2054 
-2055 
-2056 
-2057 
-2058 
-2059 
-2060 
-2061 
-2062 
-2063 
-2064 
-2065 
-2066 
-2067 
-2068 
-2069 
-2070 
-2071 
-2072 
-2073 
-2074 
-2075
-proc contents; 
+
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+** Set option number here;
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+
+%let op_num=;
+
+
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+** proc means for all stocks and flows;
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+
+proc means noprint data=y;
+    /* Filter data by calendar year and option */
+    where (cald < 2024 and option = 0)				/* option 0 from 1984 to end 2023 */
+       or (cald >= 2024 and option = &op_num);		/* option &op_num from 2024 onwards */
+       
+    /* Group by year_stock */
+    class year_stock;
+
+    /* Specify the list of variables */
+    var &stock_list;
+
+    /* Output means into a new dataset, keeping only means and grouping vars */
+    output out=stock_means(drop=_type_ _freq_)
+        mean=;
+run;
+
+data stock_means; 
+	set stock_means; if not missing(year_stock);
+	year = year_stock;								/* replace column year_stock with year */
+	drop year_stock;
+run;
+
+proc means noprint data=y;
+    /* Filter data by calendar year and option */
+    where (cald < 2024 and option = 0)				/* option 0 from 1984 to end 2023 */
+       or (cald >= 2024 and option = &op_num);		/* option &op_num from 2024 onwards */
+       
+    /* Group by year_stock */
+    class year_flow;
+
+    /* Specify the list of variables */
+    var &flow_list;
+
+    /* Output means into a new dataset, keeping only means and grouping vars */
+    output out=flow_means(drop=_type_ _freq_)
+        mean=;
+run;
+
+data flow_means; 
+	set flow_means; if not missing(year_flow);
+	year = year_flow;								/* replace column year_flow with year */
+	drop year_flow;
 run;
 
 
 
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* stocks;
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-
-%make_stocks;
-
-data stocks ; 
-	merge year &stock_list;
-run;
-
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* flows;
+** Save outputs;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-%make_flows;
-
-data flows ; 
-	merge year &flow_list;
-run;
-
-
-
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* Save outputs;
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-
-* Save output file with all outputs;
-data a.outputs_all_&op_num; merge stocks flows;
-	by year;
-run;
-
-
-* Save output file for HIV Control spreadsheet;
 data outputs_&op_num; 
-	retain year &keep_vars_in_order;	* Reorders variables;
-	set a.outputs_all_&op_num;
-	keep year &keep_vars_in_order;		* Drops extra variables;
+	retain year &keep_vars_in_order;				/* sort variables into order needed for output spreadsheet */
+	merge stock_means flow_means;
+	by year;
+	if year >= 1985;								/* keep only year 1985 onwards */
 run;
 
+proc transpose data=outputs_&op_num out=outputs_&op_num; run;			/* transpose to change outputs from columns to rows */
 
-proc transpose data=outputs_&op_num out=a.outputs_&op_num; run;
-
-proc export data=a.outputs_&op_num
-	outfile= "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\hiv_control_cdi_15Jan25_&op_num..csv" 
+proc export data=outputs_&op_num
+	outfile= "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\hiv_control_cdi_15Jan25_min_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
+
 
