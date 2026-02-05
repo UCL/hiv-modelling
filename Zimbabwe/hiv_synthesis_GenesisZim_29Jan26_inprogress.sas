@@ -2304,13 +2304,14 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 option = &s;
 
+***CHANGE BASELINE FROM INDIVIDUAL SCENARIOS - NO IMPACT ON FBT OR CONDOMS;
 
 if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 		set_in_options=1;
 		
 		* Reduction in facility based testing (20%);
-		decr_test_year_i=1;
+		*decr_test_year_i=1;
 
 		* No impact of SW program other than on newp;*(will have to redefine all SW parameters when re-introducing the program);
 		effect_sw_prog_6mtest = 0;
@@ -2321,12 +2322,14 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		effect_sw_prog_pers_sti = 1;
 
 		* Condom provision and promotion: reduce in around 10% of people;
+		/*
 		* Not explicitly modelled before year_interv, but the implicit switch off impacts newp and ep;
 		condom_change_year_i=1;    			*Switches off condom provision and promotion (0 restores SQ);
 		if caldate_never_dot = &year_interv then do; 
 			use_condom_intervention_newp = 0;
 			if rand('uniform')<prop_use_condom_int_newp then use_condom_intervention_newp = 1;		*Proportion of individuals use condoms provided by funded intervention;
 		end;
+		*/
 
 		* No VMMC;
 		circ_inc_rate_year_i = 2;		
@@ -2353,9 +2356,8 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
 	
 
+	*Option 1: Restore FSW program, VMMC at SQ;
 
- 	*Option 1: FSW program at low impact - not the same as SQ which has both low and high impact so need to redefine here;																										  
-	* Note this also includes return of oral PrEP for FSW only;
 	if option = 1 then do;
 
 		u = rand("Uniform");rate_engage_sw_program = ifn(u < 1/3, 0.10, ifn(u < 2/3, 0.20, 0.30));
@@ -2368,95 +2370,17 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		effect_sw_prog_prep_any = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
 		effect_sw_prog_pers_sti = ifn(rand("Uniform") < 0.5, 0.10, 0.20);
 		prep_any_strategy=24;
-		date_prep_oral_intro=&year_interv;	
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_oral_b=prob_prep_oral_b;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
-		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-
-
-	end;
-
-	*Option 2: FSW program at high impact;	
-	* Note this includes oral and intro of Len;
-	if option = 2 then do;
-			u = rand("Uniform");rate_engage_sw_program = ifn(u < 1/3, 0.15, ifn(u < 2/3, 0.25, 0.35));
-			rate_disengage_sw_program = ifn(rand("Uniform") < 0.5, 0.01, 0.02);
-*re-input original parameters;
-			effect_sw_prog_newp = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
-			u = rand("Uniform");effect_sw_prog_6mtest = ifn(u < 1/3, 0.05, ifn(u < 2/3, 0.10, 0.15));
-			u = rand("Uniform");effect_sw_prog_int = ifn(u < 1/3, 0.30, ifn(u < 2/3, 0.50, 0.70));
-			u = rand("Uniform");effect_sw_prog_adh = ifn(u < 1/3, 0.20, ifn(u < 2/3, 0.35, 0.50));
-			u = rand("Uniform");effect_sw_prog_lossdiag = ifn(u < 1/3, 0.30, ifn(u < 2/3, 0.50, 0.70));
-			effect_sw_prog_prep_any = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
-			effect_sw_prog_pers_sti = ifn(rand("Uniform") < 0.5, 0.10, 0.20);
-
-			effect_sw_prog_newp		 =	effect_sw_prog_newp * fold_hi_sw_prog_newp;
-			effect_sw_prog_6mtest	 =	effect_sw_prog_6mtest * fold_hi_sw_prog_6mtest;
-			effect_sw_prog_int		 = 	effect_sw_prog_int / fold_hi_sw_prog_int;
-			effect_sw_prog_adh		 = 	effect_sw_prog_adh * fold_hi_sw_prog_adh;
-			effect_sw_prog_lossdiag  =  effect_sw_prog_lossdiag / fold_hi_sw_prog_lossdiag;
-			effect_sw_prog_prep_any  = 	effect_sw_prog_prep_any * fold_hi_sw_prog_prep;
-			effect_sw_prog_pers_sti  =	effect_sw_prog_pers_sti * fold_hi_sw_prog_sti;
-
-			prep_any_strategy=24;
-			date_prep_oral_intro=&year_interv;									
-			date_prep_len_intro=&year_interv;	
-			eff_rate_test_startprep_any=rate_test_startprep_any;
-			eff_prob_prep_oral_b=prob_prep_oral_b;
-			eff_prob_prep_len_b=prob_prep_len_b;
-			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
-			eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
-			eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-		
-	end;
-
-	*Option 3: condoms at SQ level;																										  
-	if option = 3 then do;
-		condom_change_year_i=0;    								 
-	end;
-
-	*Option 4: Keep VMMC at SQ ;																										  
-	if option = 4 then do;
-		circ_inc_rate_year_i=.;    						 
-	end;
-
-	*Option 5: Increase VMMC from SQ levels ;																										  
-	if option = 5 then do;
-		circ_inc_rate_year_i=5;    			*Increase VMMC until p_mcirc_1524m is 90%;				 
-	end;
- 
-	*Option 6: KP - oral PrEP continuation;																										  
-	if option = 6 then do;
-		prep_any_strategy=23;												* New KP strategy ;
-		date_prep_oral_intro=&year_interv;	
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_oral_b=prob_prep_oral_b;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
-		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-	end;
-
-	*Option 7: KP - oral and introduction of inj PrEP;								* Assume inj is LEN ;																									  
-	if option = 7 then do;
-		prep_any_strategy=23;												
 		date_prep_oral_intro=&year_interv;									
 		date_prep_len_intro=&year_interv;	
-
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_oral_b=prob_prep_oral_b;
 		eff_prob_prep_len_b=prob_prep_len_b;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
 		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
 		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-	end;
+		
+		circ_inc_rate_year_i=.;    						 
 
-
-
-****THINK ABOUT HAVING MORE PEOPLE ELIGIBLE LIKE IN HIV CONTROL;
-****ie. FOR SCALE UP, NEW PREP_ANY_STRATEGY ALLOWING ALL FSW, HIGH RIGK AGYW AND HIGHER % MSM ELIGIBLE;
-
-	*Option 8: KP - oral and scale up of Len;
-	if option = 8 then do;
 		prep_any_strategy=23;												* New KP strategy;
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
 		date_prep_len_intro=&year_interv;	
