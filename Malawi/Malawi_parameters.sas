@@ -57,7 +57,9 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 rate_int_choice = 0.003;  
 
-* SEX WORKERS;				
+* SEX WORKERS;		
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.05 0.10 0.15);
+
 
 * CIRCUMCISION;
 

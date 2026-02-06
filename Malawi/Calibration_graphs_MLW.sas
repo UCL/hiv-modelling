@@ -1,10 +1,8 @@
 
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
-*turns log back on;
-options notes source source2 mprint mlogic symbolgen;
 
 data y;
-set a.long_gen_mlw_29_01_2026
+set a.long_gen_mlw_29_01_2026;
 run;
 proc freq;table cald;run;
 
@@ -811,19 +809,50 @@ Title    height=1.5 justify=center "Number of HIV tests (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 5000000) valueattrs=(size=10);
 
-/*
 label mean_n_tested_0 = "Model";
 label n_tests_obs_mlw_moh = "MoH Quarterly report";
-*/
+
 series  x=cald y=mean_n_tested_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-*scatter x=cald y=n_tests_obs_mlw_moh / markerattrs = (symbol=circle  color=green size = 12);
+scatter x=cald y=n_tests_obs_mlw_moh / markerattrs = (symbol=circle  color=green size = 12);
 run;quit;
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of HIV self-tests (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 20000000 by 5000000) valueattrs=(size=10);
 
-4481374
-PROC MEANS ;VAR mean_n_tested_0;RUN;
+label mean_n_selftested_0 = "Model";
+label n_self_tested_obs_mlw_moh = "MoH Quarterly report";
+label n_self_tested_obs_mlw = "MoH?";
+
+series  x=cald y=mean_n_selftested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_selftested_0 	upper=p95_n_selftested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=n_self_tested_obs_mlw_moh / markerattrs = (symbol=circle  color=green size = 12);
+scatter x=cald y=n_self_tested_obs_mlw / markerattrs = (symbol=circle  color=lightgreen size = 12);
+
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of VMMCs";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 300000 by 100000) valueattrs=(size=10);
+
+label mean_n_vmmc1549m_0 = "Model 15+";
+label mean_n_vmmc_all_0 = "Model 10+";
+
+label n_new_vmmc_obs_mlw_amr = "MoH Quarterly report";
+
+series  x=cald y=mean_n_vmmc1549m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_vmmc1549m_0 	upper=p95_n_vmmc1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_vmmc_all_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_vmmc_all_0 	upper=p95_n_vmmc_all_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y=n_new_vmmc_obs_mlw_amr / markerattrs = (symbol=circle  color=green size = 12);
+run;quit;
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (15+)";
