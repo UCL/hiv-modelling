@@ -400,7 +400,10 @@ data a.long_gen_07Jan26;
 set y;
 run;
 
-data long_gen_zim;;
+
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+
+data y;
 set a.long_gen_07Jan26;
 run; 
 
@@ -509,7 +512,7 @@ t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=n_death_hivrel);		%var(v=n_death_hivrel_m);	%var(v=n_death_hivrel_w);
 %var(v=n_death_discount);	%var(v=d_n_new_inf);
 
-%var(v=dcost);	%var(v=ddaly);
+%var(v=dcost);	%var(v=ddaly);	%var(v=cost);
 
 	 
 
@@ -532,7 +535,7 @@ n_agyw				p_w_agyw			prevalence_agyw		incidence_agyw	p_onprep_agyw		n_onprep_agy
 
 n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death_discount	 d_n_new_inf
 
-dcost ddaly
+dcost ddaly cost
 ;
 
 proc sort; by run;run;
