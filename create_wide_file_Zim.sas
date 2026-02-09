@@ -389,7 +389,7 @@ n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_pos
 n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all
 n_death_discount	 d_n_new_inf
 
-dcost	ddaly
+dcost	ddaly  cost
 
 
 ;
@@ -401,6 +401,11 @@ set y;
 run;
 
 
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+
+data y;
+set a.long_gen_07Jan26;
+run; 
 
 options nomprint;
   option nospool;
@@ -411,29 +416,80 @@ options nomprint;
 %macro var(v=);
 
 
-***baseline outputs in 2026;
-proc means  noprint data=y; var &v; output out=y_25 mean= &v._25; by run; where 2024.5 <= cald < 2025.5; 
+***baseline outputs in 2025;
+proc means  noprint data=y; var &v; output out=y_25 mean= &v._25; by run; where 2025 <= cald < 2026; 
 
 **Outputs in 5, 20 and 50 years time;
 
-proc means noprint data=y; var &v; output out=y_31 mean= &v._31; by run option; where 2031.0 <= cald < 2032; 
-proc means noprint data=y; var &v; output out=y_46 mean= &v._46; by run option; where 2046.0 <= cald < 2047; 
+**the ones commented out are now included in the budget impact;
+/*proc means noprint data=y; var &v; output out=y_31 mean= &v._31; by run option; where 2031.0 <= cald < 2032; 
+proc means noprint data=y; var &v; output out=y_46 mean= &v._46; by run option; where 2046.0 <= cald < 2047; */
 proc means noprint data=y; var &v; output out=y_76 mean= &v._76; by run option; where 2076.0 <= cald < 2077;
+
+**Outputs in each year for budget impact;
+proc means noprint data=y; var &v; output out=y_26 mean=&v._26; by run option; where 2026.0 <= cald < 2027;
+proc means noprint data=y; var &v; output out=y_27 mean=&v._27; by run option; where 2027.0 <= cald < 2028;
+proc means noprint data=y; var &v; output out=y_28 mean=&v._28; by run option; where 2028.0 <= cald < 2029;
+proc means noprint data=y; var &v; output out=y_29 mean=&v._29; by run option; where 2029.0 <= cald < 2030;
+proc means noprint data=y; var &v; output out=y_30 mean=&v._30; by run option; where 2030.0 <= cald < 2031;
+proc means noprint data=y; var &v; output out=y_31 mean=&v._31; by run option; where 2031.0 <= cald < 2032;
+proc means noprint data=y; var &v; output out=y_32 mean=&v._32; by run option; where 2032.0 <= cald < 2033;
+proc means noprint data=y; var &v; output out=y_33 mean=&v._33; by run option; where 2033.0 <= cald < 2034;
+proc means noprint data=y; var &v; output out=y_34 mean=&v._34; by run option; where 2034.0 <= cald < 2035;
+proc means noprint data=y; var &v; output out=y_35 mean=&v._35; by run option; where 2035.0 <= cald < 2036;
+proc means noprint data=y; var &v; output out=y_36 mean=&v._36; by run option; where 2036.0 <= cald < 2037;
+proc means noprint data=y; var &v; output out=y_37 mean=&v._37; by run option; where 2037.0 <= cald < 2038;
+proc means noprint data=y; var &v; output out=y_38 mean=&v._38; by run option; where 2038.0 <= cald < 2039;
+proc means noprint data=y; var &v; output out=y_39 mean=&v._39; by run option; where 2039.0 <= cald < 2040;
+proc means noprint data=y; var &v; output out=y_40 mean=&v._40; by run option; where 2040.0 <= cald < 2041;
+proc means noprint data=y; var &v; output out=y_41 mean=&v._41; by run option; where 2041.0 <= cald < 2042;
+proc means noprint data=y; var &v; output out=y_42 mean=&v._42; by run option; where 2042.0 <= cald < 2043;
+proc means noprint data=y; var &v; output out=y_43 mean=&v._43; by run option; where 2043.0 <= cald < 2044;
+proc means noprint data=y; var &v; output out=y_44 mean=&v._44; by run option; where 2044.0 <= cald < 2045;
+proc means noprint data=y; var &v; output out=y_45 mean=&v._45; by run option; where 2045.0 <= cald < 2046;
+proc means noprint data=y; var &v; output out=y_46 mean=&v._46; by run option; where 2046.0 <= cald < 2047;
+
 
 **Outputs for CE analyses, across 5, 20 and 50 years by option;
 proc means noprint data=y; var &v; output out=y_26_31 mean= &v._26_31; by run option ; where 2026.25 <= cald < 2031;
 proc means noprint data=y; var &v; output out=y_26_46 mean= &v._26_46; by run option ; where 2026.25 <= cald < 2046;
 proc means noprint data=y; var &v; output out=y_26_76 mean= &v._26_76; by run option ; where 2026.25 <= cald < 2076;
 
-proc sort data=y_31; by run; proc transpose data=y_31 out=t_31 prefix=&v._31_; var &v._31; by run;
-proc sort data=y_46; by run; proc transpose data=y_46 out=t_46 prefix=&v._46_; var &v._46; by run;
+
+/*proc sort data=y_31; by run; proc transpose data=y_31 out=t_31 prefix=&v._31_; var &v._31; by run;
+proc sort data=y_46; by run; proc transpose data=y_46 out=t_46 prefix=&v._46_; var &v._46; by run;*/
 proc sort data=y_76; by run; proc transpose data=y_76 out=t_76 prefix=&v._76_; var &v._76; by run;
+
+proc sort data=y_26; by run; proc transpose data=y_26 out=t_26 prefix=&v._26_; var &v._26; by run;
+proc sort data=y_27; by run; proc transpose data=y_27 out=t_27 prefix=&v._27_; var &v._27; by run;
+proc sort data=y_28; by run; proc transpose data=y_28 out=t_28 prefix=&v._28_; var &v._28; by run;
+proc sort data=y_29; by run; proc transpose data=y_29 out=t_29 prefix=&v._29_; var &v._29; by run;
+proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
+proc sort data=y_31; by run; proc transpose data=y_31 out=t_31 prefix=&v._31_; var &v._31; by run;
+proc sort data=y_32; by run; proc transpose data=y_32 out=t_32 prefix=&v._32_; var &v._32; by run;
+proc sort data=y_33; by run; proc transpose data=y_33 out=t_33 prefix=&v._33_; var &v._33; by run;
+proc sort data=y_34; by run; proc transpose data=y_34 out=t_34 prefix=&v._34_; var &v._34; by run;
+proc sort data=y_35; by run; proc transpose data=y_35 out=t_35 prefix=&v._35_; var &v._35; by run;
+proc sort data=y_36; by run; proc transpose data=y_36 out=t_36 prefix=&v._36_; var &v._36; by run;
+proc sort data=y_37; by run; proc transpose data=y_37 out=t_37 prefix=&v._37_; var &v._37; by run;
+proc sort data=y_38; by run; proc transpose data=y_38 out=t_38 prefix=&v._38_; var &v._38; by run;
+proc sort data=y_39; by run; proc transpose data=y_39 out=t_39 prefix=&v._39_; var &v._39; by run;
+proc sort data=y_40; by run; proc transpose data=y_40 out=t_40 prefix=&v._40_; var &v._40; by run;
+proc sort data=y_41; by run; proc transpose data=y_41 out=t_41 prefix=&v._41_; var &v._41; by run;
+proc sort data=y_42; by run; proc transpose data=y_42 out=t_42 prefix=&v._42_; var &v._42; by run;
+proc sort data=y_43; by run; proc transpose data=y_43 out=t_43 prefix=&v._43_; var &v._43; by run;
+proc sort data=y_44; by run; proc transpose data=y_44 out=t_44 prefix=&v._44_; var &v._44; by run;
+proc sort data=y_45; by run; proc transpose data=y_45 out=t_45 prefix=&v._45_; var &v._45; by run;
+proc sort data=y_46; by run; proc transpose data=y_46 out=t_46 prefix=&v._46_; var &v._46; by run;
+
 
 proc sort data=y_26_31; by run; proc transpose data=y_26_31 out=t_26_31 prefix=&v._26_31_; var &v._26_31; by run;
 proc sort data=y_26_46; by run; proc transpose data=y_26_46 out=t_26_46 prefix=&v._26_46_; var &v._26_46; by run;
 proc sort data=y_26_76; by run; proc transpose data=y_26_76 out=t_26_76 prefix=&v._26_76_; var &v._26_76; by run;
 
-data &v ; merge y_25 t_31 t_46 t_76 t_26_31 t_26_46 t_26_76;  
+
+data &v ; merge y_25 t_26 t_27 t_28 t_29 t_30 t_31 t_32 t_33 t_34 t_35 t_36 t_37 t_38 t_39 t_40 t_41 t_42 t_43 t_44
+t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;  
 
 %mend var;
 
@@ -456,7 +512,7 @@ data &v ; merge y_25 t_31 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=n_death_hivrel);		%var(v=n_death_hivrel_m);	%var(v=n_death_hivrel_w);
 %var(v=n_death_discount);	%var(v=d_n_new_inf);
 
-%var(v=dcost);	%var(v=ddaly);
+%var(v=dcost);	%var(v=ddaly);	%var(v=cost);
 
 	 
 
@@ -479,7 +535,7 @@ n_agyw				p_w_agyw			prevalence_agyw		incidence_agyw	p_onprep_agyw		n_onprep_agy
 
 n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death_discount	 d_n_new_inf
 
-dcost ddaly
+dcost ddaly cost
 ;
 
 proc sort; by run;run;

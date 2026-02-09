@@ -57,9 +57,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 rate_int_choice = 0.003;  
 
-* SEX WORKERS;		
-* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.05 0.10 0.15);
-
+* SEX WORKERS;				
 
 * CIRCUMCISION;
 
@@ -69,5 +67,5 @@ rate_int_choice = 0.003;
 
 
 
-*LBM Feb26 - removed this to match core so MSM and general pop are eligible;
-* prep_any_strategy;			*%sample_uniform(prep_any_strategy, 1 3);
+
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 1 3);
