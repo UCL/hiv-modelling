@@ -18088,8 +18088,6 @@ dead_cvd_3039w=0;dead_cvd_4049w=0;dead_cvd_5059w=0;dead_cvd_6069w=0;dead_cvd_707
 
 * death by cause and hiv status ;
 if dead=1 and caldate&j = death then do;
-* death by cause and hiv status ;
-if dead=1 and caldate&j = death then do;
 	if hiv=1 then do;
 		if dcause=1 then dead_hivpos_cause1=1;
 		if dcause=1 and dead_hiv_tb=1 then dead_hivpos_tb=1; 
@@ -19724,44 +19722,136 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_o_len_plw + o_len_plw ;  s_hiv_breastfeeding + hiv_breastfeeding;
 
 
-	/* blood pressure */
+	/* *HYPERTENSION* */
 
-	s_diagnosed_hypertension_1549 + diagnosed_hypertension_1549 ;  s_on_anti_hypertensive_1549 + on_anti_hypertensive_1549 ;  
-	s_hypertension_1549 + hypertension_1549 ;	s_hypertens180_1549 + hypertens180_1549 ;	
-	s_diagnosed_hypertension_5059 + diagnosed_hypertension_5059 ;  s_on_anti_hypertensive_5059 + on_anti_hypertensive_5059 ;  
-	s_hypertension_5059 + hypertension_5059 ;   s_hypertens180_5059 + hypertens180_5059 ;
-	s_diagnosed_hypertension_6069 + diagnosed_hypertension_6069 ;  s_on_anti_hypertensive_6069 + on_anti_hypertensive_6069 ;  
-	s_hypertension_6069 + hypertension_6069 ;  s_hypertens180_6069 + hypertens180_6069 ;
-	s_diagnosed_hypertension_7079 + diagnosed_hypertension_7079 ;  s_on_anti_hypertensive_7079 + on_anti_hypertensive_7079 ;  
-	s_hypertension_7079 + hypertension_7079 ;  s_hypertens180_7079 + hypertension180_7079 ;	
-	s_diagnosed_hypertension_ge80 + diagnosed_hypertension_ge80 ;  s_on_anti_hypertensive_ge80 + on_anti_hypertensive_ge80 ;  
-	s_hypertension_ge80 + hypertension_ge80 ;  s_hypertens180_ge80 + hypertens180_ge80 ; 
-	s_diagnosed_hypertension_1549m + diagnosed_hypertension_1549m ;  s_on_anti_hypertensive_1549m + on_anti_hypertensive_1549m ;  
-	s_hypertension_1549m + hypertension_1549m ;	
-	s_diagnosed_hypertension_5059m + diagnosed_hypertension_5059m ;  s_on_anti_hypertensive_5059m + on_anti_hypertensive_5059m ;  
-	s_hypertension_5059m + hypertension_5059m ;	
-	s_diagnosed_hypertension_6069m + diagnosed_hypertension_6069m ;  s_on_anti_hypertensive_6069m + on_anti_hypertensive_6069m ;  
-	s_hypertension_6069m + hypertension_6069m ;	
-	s_diagnosed_hypertension_7079m + diagnosed_hypertension_7079m ;  s_on_anti_hypertensive_7079m + on_anti_hypertensive_7079m ;  
-	s_hypertension_7079m + hypertension_7079m ;	
-	s_diagnosed_hypertension_ge80m + diagnosed_hypertension_ge80m ;  s_on_anti_hypertensive_ge80m + on_anti_hypertensive_ge80m ;  
-	s_hypertension_ge80m + hypertension_ge80m ;	
-	s_diagnosed_hypertension_1549w + diagnosed_hypertension_1549w ;  s_on_anti_hypertensive_1549w + on_anti_hypertensive_1549w ;  
-	s_hypertension_1549w + hypertension_1549w ;	
-	s_diagnosed_hypertension_5059w + diagnosed_hypertension_5059w ;  s_on_anti_hypertensive_5059w + on_anti_hypertensive_5059w ;  
-	s_hypertension_5059w + hypertension_5059w ;	
-	s_diagnosed_hypertension_6069w + diagnosed_hypertension_6069w ;  s_on_anti_hypertensive_6069w + on_anti_hypertensive_6069w ;  
-	s_hypertension_6069w + hypertension_6069w ;	
-	s_diagnosed_hypertension_7079w + diagnosed_hypertension_7079w ;  s_on_anti_hypertensive_7079w + on_anti_hypertensive_7079w ;  
-	s_hypertension_7079w + hypertension_7079w ;	
-	s_diagnosed_hypertension_ge80w + diagnosed_hypertension_ge80w ;  s_on_anti_hypertensive_ge80w + on_anti_hypertensive_ge80w ;  
-	s_hypertension_ge80w + hypertension_ge80w ;	
-	s_on1drug_antihyp_1549 + on1drug_antihyp_1549 ; s_on1drug_antihyp_5059 + on1drug_antihyp_5059 ; s_on1drug_antihyp_6069 + on1drug_antihyp_6069 ;     
-	s_on1drug_antihyp_7079 + on1drug_antihyp_7079 ; s_on1drug_antihyp_ge80 + on1drug_antihyp_ge80 ;    
-	s_on2drug_antihyp_1549 + on2drug_antihyp_1549 ; s_on2drug_antihyp_5059 + on2drug_antihyp_5059 ; s_on2drug_antihyp_6069 + on2drug_antihyp_6069 ;     
-	s_on2drug_antihyp_7079 + on2drug_antihyp_7079 ; s_on2drug_antihyp_ge80 + on2drug_antihyp_ge80 ; 
-	s_on3drug_antihyp_1549 + on3drug_antihyp_1549 ; s_on3drug_antihyp_5059 + on3drug_antihyp_5059 ; s_on3drug_antihyp_6069 + on3drug_antihyp_6069 ;     
-	s_on3drug_antihyp_7079 + on3drug_antihyp_7079 ; s_on3drug_antihyp_ge80 + on3drug_antihyp_ge80 ; 
+	s_hypertension_ge18 + hypertension_ge18 ; s_hypertension_2534 + hypertension_2534 ; s_hypertension_3544 + hypertension_3544 ;
+	s_hypertension_4554 + hypertension_4554 ; s_hypertension_5564 + hypertension_5564 ; s_hypertension_ge65 + hypertension_ge65 ;
+	s_dx_htn_ge18 + dx_htn_ge18; s_dx_htn_2534 + dx_htn_2534 ; s_dx_htn_3544 + dx_htn_3544 ;
+	s_dx_htn_4554 + dx_htn_4554 ; s_dx_htn_5564 + dx_htn_5564 ; s_dx_htn_ge65 + dx_htn_ge65 ;
+	s_on_tx_htn_ge18 + on_tx_htn_ge18 ; s_on_tx_htn_2534 + on_tx_htn_2534 ; s_on_tx_htn_3544 + on_tx_htn_3544 ;
+	s_on_tx_htn_4554 + on_tx_htn_4554 ; s_on_tx_htn_5564 + on_tx_htn_5564 ; s_on_tx_htn_ge65 + on_tx_htn_ge65 ;
+	s_ever_tx_htn_ge18 + ever_tx_htn_ge18 ; s_ever_tx_htn_2534 + ever_tx_htn_2534 ; s_ever_tx_htn_3544 + ever_tx_htn_3544 ;
+	s_ever_tx_htn_4554 + ever_tx_htn_4554 ; s_ever_tx_htn_5564 + ever_tx_htn_5564 ; s_ever_tx_htn_ge65 + ever_tx_htn_ge65 ;
+	s_on_tx_htn_over_ge18 + on_tx_htn_over_ge18 ; s_on_tx_htn_over_2534 + on_tx_htn_over_2534 ; s_on_tx_htn_over_3544 + on_tx_htn_over_3544 ;
+	s_on_tx_htn_over_4554 + on_tx_htn_over_4554 ; s_on_tx_htn_over_5564 + on_tx_htn_over_5564 ; s_on_tx_htn_over_ge65 + on_tx_htn_over_ge65 ;
+	s_ever_tx_htn_over_ge18 + ever_tx_htn_over_ge18 ; s_ever_tx_htn_over_2534 + ever_tx_htn_over_2534 ; s_ever_tx_htn_over_3544 + ever_tx_htn_over_3544 ;
+	s_ever_tx_htn_over_4554 + ever_tx_htn_over_4554 ; s_ever_tx_htn_over_5564 + ever_tx_htn_over_5564 ; s_ever_tx_htn_over_ge65 + ever_tx_htn_over_ge65 ;
+	s_htn_control_ge18 + htn_control_ge18 ; s_htn_control_2534 + htn_control_2534 ; s_htn_control_3544 + htn_control_3544 ;
+	s_htn_control_4554 + htn_control_4554 ; s_htn_control_5564 + htn_control_5564 ; s_htn_control_ge65 + htn_control_ge65 ;
+	s_htn_true_ge18 + htn_true_ge18 ; s_htn_true_2534 + htn_true_2534 ; s_htn_true_3544 + htn_true_3544 ;
+	s_htn_true_4554 + htn_true_4554 ; s_htn_true_5564 + htn_true_5564 ; s_htn_true_ge65 + htn_true_ge65 ;
+	s_normotensive_ge18 + normotensive_ge18 ; s_normotensive_2534 + normotensive_2534 ; s_normotensive_3544 + normotensive_3544 ;
+	s_normotensive_4554 + normotensive_4554 ; s_normotensive_5564 + normotensive_5564 ; s_normotensive_ge65 + normotensive_ge65 ;
+	s_htn_true_dx_ge18 + htn_true_dx_ge18 ; s_htn_true_dx_2534 + htn_true_dx_2534 ; s_htn_true_dx_3544 + htn_true_dx_3544 ;
+	s_htn_true_dx_4554 + htn_true_dx_4554 ; s_htn_true_dx_5564 + htn_true_dx_5564 ; s_htn_true_dx_ge65 + htn_true_dx_ge65 ;
+	s_htn_over_dx_ge18 + htn_over_dx_ge18 ; s_htn_over_dx_2534 + htn_over_dx_2534 ; s_htn_over_dx_3544 + htn_over_dx_3544 ;
+	s_htn_over_dx_4554 + htn_over_dx_4554 ; s_htn_over_dx_5564 + htn_over_dx_5564 ; s_htn_over_dx_ge65 + htn_over_dx_ge65 ;
+
+	s_sbp_max_over_ge18 + sbp_max_over_ge18; 
+	s_sbp_over_ge18 + sbp_over_ge18 ;
+
+	s_hypertens160_ge18 + hypertens160_ge18 ; s_hypertens160_2534 + hypertens160_2534 ; s_hypertens160_3544 + hypertens160_3544 ;
+	s_hypertens160_4554 + hypertens160_4554 ; s_hypertens160_5564 + hypertens160_5564 ; s_hypertens160_ge65 + hypertens160_ge65 ;
+	s_htn_true160_ge18 + htn_true160_ge18 ; s_htn_true160_2534 + htn_true160_2534 ; s_htn_true160_3544 + htn_true160_3544 ;
+	s_htn_true160_4554 + htn_true160_4554 ; s_htn_true160_5564 + htn_true160_5564 ; s_htn_true160_ge65 + htn_true160_ge65 ;
+	s_htn_true_dx160_ge18 + htn_true_dx160_ge18 ; s_htn_true_dx160_2534 + htn_true_dx160_2534 ; s_htn_true_dx160_3544 + htn_true_dx160_3544 ;
+	s_htn_true_dx160_4554 + htn_true_dx160_4554 ; s_htn_true_dx160_5564 + htn_true_dx160_5564 ; s_htn_true_dx160_ge65 + htn_true_dx160_ge65 ;
+	s_on_tx_htn160_ge18 + on_tx_htn160_ge18 ; s_on_tx_htn160_2534 + on_tx_htn160_2534 ; s_on_tx_htn160_3544 + on_tx_htn160_3544 ;
+	s_on_tx_htn160_4554 + on_tx_htn160_4554 ; s_on_tx_htn160_5564 + on_tx_htn160_5564 ; s_on_tx_htn160_ge65 + on_tx_htn160_ge65 ;
+	s_htn_control160_ge18 + htn_control160_ge18 ; s_htn_control160_2534 + htn_control160_2534 ; s_htn_control160_3544 + htn_control160_3544 ;
+	s_htn_control160_4554 + htn_control160_4554 ; s_htn_control160_5564 + htn_control160_5564 ; s_htn_control160_ge65 + htn_control160_ge65 ;
+
+	s_on1drug_antihyp_ge18 + on1drug_antihyp_ge18 ; s_on1drug_antihyp_2534 + on1drug_antihyp_2534 ;
+	s_on1drug_antihyp_3544 + on1drug_antihyp_3544 ; s_on1drug_antihyp_4554 + on1drug_antihyp_4554 ;     
+	s_on1drug_antihyp_5564 + on1drug_antihyp_5564 ; s_on1drug_antihyp_ge65 + on1drug_antihyp_ge65 ;    
+	s_on2drug_antihyp_ge18 + on2drug_antihyp_ge18 ; s_on2drug_antihyp_2534 + on2drug_antihyp_2534 ;
+	s_on2drug_antihyp_3544 + on2drug_antihyp_3544 ; s_on2drug_antihyp_4554 + on2drug_antihyp_4554 ;     
+	s_on2drug_antihyp_5564 + on2drug_antihyp_5564 ; s_on2drug_antihyp_ge65 + on2drug_antihyp_ge65 ; 
+	s_on3drug_antihyp_ge18 + on3drug_antihyp_ge18 ; s_on3drug_antihyp_2534 + on3drug_antihyp_2534 ;
+	s_on3drug_antihyp_3544 + on3drug_antihyp_3544 ; s_on3drug_antihyp_4554 + on3drug_antihyp_4554 ;     
+	s_on3drug_antihyp_5564 + on3drug_antihyp_5564 ; s_on3drug_antihyp_ge65 + on3drug_antihyp_ge65 ; 
+
+	s_sbp_1519w  + sbp_1519w ;   				
+	s_sbp_2024w  + sbp_2024w ;				
+	s_sbp_2529w  + sbp_2529w ;   				
+	s_sbp_3034w  + sbp_3034w ;				
+	s_sbp_3539w  + sbp_3539w ;   				
+	s_sbp_4044w  + sbp_4044w ;				
+	s_sbp_4549w  + sbp_4549w ;   				
+	s_sbp_5054w  + sbp_5054w ;				
+	s_sbp_5559w  + sbp_5559w ;   				
+	s_sbp_6064w  + sbp_6064w ;				
+	s_sbp_6569w  + sbp_6569w ;   				
+	s_sbp_7074w  + sbp_7074w ;				
+	s_sbp_7579w  + sbp_7579w ;   				
+	s_sbp_ge80w  + sbp_ge80w ;				
+					
+	s_sbp_1519m  + sbp_1519m ;   				
+	s_sbp_2024m  + sbp_2024m ;				
+	s_sbp_2529m  + sbp_2529m ;   				
+	s_sbp_3034m  + sbp_3034m ;				
+	s_sbp_3539m  + sbp_3539m ;   				
+	s_sbp_4044m  + sbp_4044m ;				
+	s_sbp_4549m  + sbp_4549m ;   				
+	s_sbp_5054m  + sbp_5054m ;				
+	s_sbp_5559m  + sbp_5559m ;   				
+	s_sbp_6064m  + sbp_6064m ;				
+	s_sbp_6569m  + sbp_6569m ;   				
+	s_sbp_7074m  + sbp_7074m ;				
+	s_sbp_7579m  + sbp_7579m ;   				
+	s_sbp_ge80m  + sbp_ge80m ;	
+
+	s_sbp_1519  + sbp_1519 ;   				
+	s_sbp_2024  + sbp_2024 ;				
+	s_sbp_2529  + sbp_2529 ;   				
+	s_sbp_3034  + sbp_3034 ;				
+	s_sbp_3539  + sbp_3539 ;   				
+	s_sbp_4044  + sbp_4044 ;				
+	s_sbp_4549  + sbp_4549 ;   				
+	s_sbp_5054  + sbp_5054 ;				
+	s_sbp_5559  + sbp_5559 ;   				
+	s_sbp_6064  + sbp_6064 ;				
+	s_sbp_6569  + sbp_6569 ;   				
+	s_sbp_7074  + sbp_7074 ;				
+	s_sbp_7579  + sbp_7579 ;   				
+	s_sbp_ge80  + sbp_ge80 ;	
+
+	s_ihd_inc_all_modsev_ge18m + ihd_inc_all_modsev_ge18m ; s_ihd_inc_all_modsev_ge18w + ihd_inc_all_modsev_ge18w ;
+	s_cva_inc_all_modsev_ge18m + cva_inc_all_modsev_ge18m ; s_cva_inc_all_modsev_ge18w + cva_inc_all_modsev_ge18w ;
+	s_ihd_inc_all_modsev_2039m + ihd_inc_all_modsev_2039m ; s_ihd_inc_all_modsev_2039w + ihd_inc_all_modsev_2039w ;
+	s_cva_inc_all_modsev_2039m + cva_inc_all_modsev_2039m ; s_cva_inc_all_modsev_2039w + cva_inc_all_modsev_2039w ;
+	s_ihd_inc_all_modsev_4049m + ihd_inc_all_modsev_4049m ; s_ihd_inc_all_modsev_4049w + ihd_inc_all_modsev_4049w ;
+	s_cva_inc_all_modsev_4049m + cva_inc_all_modsev_4049m ; s_cva_inc_all_modsev_4049w + cva_inc_all_modsev_4049w ;
+	s_ihd_inc_all_modsev_5059m + ihd_inc_all_modsev_5059m ; s_ihd_inc_all_modsev_5059w + ihd_inc_all_modsev_5059w ;
+	s_cva_inc_all_modsev_5059m + cva_inc_all_modsev_5059m ; s_cva_inc_all_modsev_5059w + cva_inc_all_modsev_5059w ;
+	s_ihd_inc_all_modsev_6069m + ihd_inc_all_modsev_6069m ; s_ihd_inc_all_modsev_6069w + ihd_inc_all_modsev_6069w ;
+	s_cva_inc_all_modsev_6069m + cva_inc_all_modsev_6069m ; s_cva_inc_all_modsev_6069w + cva_inc_all_modsev_6069w ;
+	s_ihd_inc_all_modsev_7079m + ihd_inc_all_modsev_7079m ; s_ihd_inc_all_modsev_7079w + ihd_inc_all_modsev_7079w ;
+	s_cva_inc_all_modsev_7079m + cva_inc_all_modsev_7079m ; s_cva_inc_all_modsev_7079w + cva_inc_all_modsev_7079w ;
+	s_ihd_inc_all_modsev_ge80m + ihd_inc_all_modsev_ge80m ; s_ihd_inc_all_modsev_ge80w + ihd_inc_all_modsev_ge80w ;
+	s_cva_inc_all_modsev_ge80m + cva_inc_all_modsev_ge80m ; s_cva_inc_all_modsev_ge80w + cva_inc_all_modsev_ge80w ;
+
+	s_ihd_inc_all_modsev_2544 + ihd_inc_all_modsev_2544;
+	s_cva_inc_all_modsev_2544 + cva_inc_all_modsev_2544;
+	s_ihd_inc_all_modsev_4564 + ihd_inc_all_modsev_4564;
+	s_cva_inc_all_modsev_4564 + cva_inc_all_modsev_4564;
+	s_ihd_inc_all_modsev_ge65 + ihd_inc_all_modsev_ge65;
+	s_cva_inc_all_modsev_ge65 + cva_inc_all_modsev_ge65;
+
+	s_ihd_prev_ge18m + prior_ihd_ge18m; s_ihd_prev_ge18w + prior_ihd_ge18w;
+	s_cva_prev_ge18m + prior_cva_ge18m; s_cva_prev_ge18w + prior_cva_ge18w;
+	s_ihd_prev_2039m + prior_ihd_2039m; s_ihd_prev_2039w + prior_ihd_2039w; 
+	s_cva_prev_2039m + prior_cva_2039m; s_cva_prev_2039w + prior_cva_2039w;
+	s_ihd_prev_4049m + prior_ihd_4049m; s_ihd_prev_4049w + prior_ihd_4049w;
+	s_cva_prev_4049m + prior_cva_4049m; s_cva_prev_4049w + prior_cva_4049w;
+	s_ihd_prev_5059m + prior_ihd_5059m; s_ihd_prev_5059w + prior_ihd_5059w;
+	s_cva_prev_5059m + prior_cva_5059m; s_cva_prev_5059w + prior_cva_5059w;
+	s_ihd_prev_6069m + prior_ihd_6069m; s_ihd_prev_6069w + prior_ihd_6069w;
+	s_cva_prev_6069m + prior_cva_6069m; s_cva_prev_6069w + prior_cva_6069w;
+	s_ihd_prev_7079m + prior_ihd_7079m; s_ihd_prev_7079w + prior_ihd_7079w;
+	s_cva_prev_7079m + prior_cva_7079m; s_cva_prev_7079w + prior_cva_7079w;
+	s_ihd_prev_ge80m + prior_ihd_ge80m; s_ihd_prev_ge80w + prior_ihd_ge80w;
+	s_cva_prev_ge80m + prior_cva_ge80m; s_cva_prev_ge80w + prior_cva_ge80w;
 
      		
 	/*visits and linkage*/
@@ -19773,16 +19863,17 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/*deaths*/
 
 	s_dead + dead; s_dead_all + dead_all ; s_deadm_all + deadm_all ; s_deadw_all + deadw_all ; 
-	s_dead1519m_all + dead1519m_all ; s_dead2024m_all + dead2024m_all ; s_dead2529m_all + dead2529m_all ; s_dead3034m_all + dead3034m_all ;  
-	s_dead3539m_all + dead3539m_all ; s_dead4044m_all + dead4044m_all ; s_dead4549m_all + dead4549m_all ;
-	s_dead5054m_all + dead5054m_all ;s_dead5559m_all + dead5559m_all ;s_dead6064m_all + dead6064m_all ;
-	s_dead1519w_all + dead1519w_all ; s_dead2024w_all + dead2024w_all ; s_dead2529w_all + dead2529w_all ; s_dead3034w_all + dead3034w_all ;  
-	s_dead3539w_all + dead3539w_all ; s_dead4044w_all + dead4044w_all ; s_dead4549w_all + dead4549w_all ;
-	s_dead5054w_all + dead5054w_all ;s_dead5559w_all + dead5559w_all ;s_dead6064w_all + dead6064w_all ;
-	s_dead6569w_all + dead6569w_all;  s_dead7074w_all + dead7074w_all; s_dead7579w_all + dead7579w_all;  s_dead8084w_all + dead8084w_all;
+	s_dead1519m_all + dead1519m_all ; 	s_dead2024m_all + dead2024m_all ; 	s_dead2529m_all + dead2529m_all ; 	s_dead3034m_all + dead3034m_all ;  
+	s_dead3539m_all + dead3539m_all ; 	s_dead4044m_all + dead4044m_all ; 	s_dead4549m_all + dead4549m_all ;
+	s_dead5054m_all + dead5054m_all ;	s_dead5559m_all + dead5559m_all ;	s_dead6064m_all + dead6064m_all ;
+	s_dead1519w_all + dead1519w_all ; 	s_dead2024w_all + dead2024w_all ; 	s_dead2529w_all + dead2529w_all ; 	s_dead3034w_all + dead3034w_all ;  
+	s_dead3539w_all + dead3539w_all ; 	s_dead4044w_all + dead4044w_all ; 	s_dead4549w_all + dead4549w_all ;
+	s_dead5054w_all + dead5054w_all ;	s_dead5559w_all + dead5559w_all ;	s_dead6064w_all + dead6064w_all ;
+	s_dead6569w_all + dead6569w_all;  	s_dead7074w_all + dead7074w_all; 	s_dead7579w_all + dead7579w_all;  	s_dead8084w_all + dead8084w_all;
 	s_dead85plw_all + dead85plw_all; 	
-	s_dead6569m_all + dead6569m_all;  s_dead7074m_all + dead7074m_all; s_dead7579m_all + dead7579m_all;  s_dead8084m_all + dead8084m_all;
+	s_dead6569m_all + dead6569m_all;  	s_dead7074m_all + dead7074m_all; 	s_dead7579m_all + dead7579m_all;  	s_dead8084m_all + dead8084m_all;
 	s_dead85plm_all + dead85plm_all; 
+
 	s_death_hivrel + death_hivrel ;	s_death_hivrel_m + death_hivrel_m ; s_death_hivrel_w + death_hivrel_w ; s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead_ + dead_ ;
 	s_death_hiv + death_hiv ;s_death_hiv_m + death_hiv_m ;s_death_hiv_w + death_hiv_w ; s_dead_hivrel_onart + dead_hivrel_onart;
 	s_dead_diag + dead_diag ; s_dead_naive + dead_naive ; s_dead_onart + dead_onart ; s_dead_line1_lf0 + dead_line1_lf0 ;
