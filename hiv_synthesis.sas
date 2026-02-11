@@ -3417,15 +3417,6 @@ if (most_recent_sbp_m >= 140 and on_tx_htn ge 1) or deintensify_anti_hyp_tm1 = 1
 	if htn_visit_count >= 5 and e < prob_visit_htn_v5 then visit_hypertension = 1;
 end;
 
-* visits for hypertension while on anti-hypertensive; 
-if on_anti_hypertensive ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
-e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
-end;
-if most_recent_sbp_m > 140 and on_anti_hypertensive ge 1 then visit_hypertension = 1;
-
-if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
-
-
 * measurement of bp at clinic;
 if visit_hypertension=1 then tested_bp=1;
 if tested_bp = 1 then do;
@@ -3438,53 +3429,52 @@ if tested_bp = 1 then do;
 	 
 end;
 
-* effect of stopping anti-hypertensive on sbp ;
-if on_anti_hypertensive ge 1 then do;
-	z_sbp=rand('uniform');
-	if z_sbp < prob_stop_anti_hypertensive then do; 
-		previous_anti_hyp = on_anti_hypertensive; on_anti_hypertensive =0; visit_hypertension=0; sbp = sbp_last_start_anti_hyp ;
-		date_last_stop_anti_hyp = caldate{t}; 
-	end;
+* effect of stopping anti-hypertensive on sbp; *modified 2/25/22 to stop anti-hypertensive when beyond visit interval and no visit (removed prob_stop_anti_hypertensive);
+if on_tx_htn >= 1 and ((caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension | most_recent_sbp_m >=140) and visit_hypertension = 0 then do;
+	previous_anti_hyp = on_tx_htn; on_tx_htn =0; visit_hypertension=0; sbp = sbp_last_start_anti_hyp ; date_last_stop_anti_hyp = caldate{t}; htn_visit_count = 0;
 end;
 
-* initiation of anti-hypertensives - on_anti_hypertensive takes values 0, 1, 2, 3 to indicate number of drugs;
-start_anti_hyp_this_per = 0 ; 
-ah=rand('uniform'); i_sbp = rand('uniform');d_sbp=rand('uniform');  t_sbp = rand('uniform');  
-if (visit_hypertension=1 and (sbp_m_tm1 > 140) and diagnosed_hypertension ne 1) then do; 
-	diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive then start_anti_hyp_this_per =1 ; 
+* initiation of anti-hypertensives - on_tx_htn takes values 0, 1, 2, 3 to indicate number of drugs; 
+start_anti_hyp_this_per = 0 ; ah=rand('uniform'); i_sbp = rand('uniform'); htn_lifestyle_counsel = 0;
+if (visit_hypertension=1 and sbp_m >= 140 and dx_htn ne 1) then do; *new diagnosis;
+	htn_lifestyle_counsel = 1;
+	if sbp_m >= 160 or last_bp_ge140 = 1 or sbp_comm_m >=140 then dx_htn =1; *community screening included in diagnosis;
+	last_bp_ge140 = 1; 
 end;
-
-if (diagnosed_hypertension = 1 and on_anti_hypertensive = 0 and visit_hypertension_tm1 =0 
-and i_sbp < prob_start_anti_hyptertensive) then do; start_anti_hyp_this_per =1 ; visit_hypertension=1; end; * assume start with 1 drug ;
+if (visit_hypertension =1 and sbp_m >= 140 and dx_htn = 1 and ever_on_anti_hyp =0) then do; * hypertension diagnosis but never started treatment;
+	if sbp_m  < 160 and i_sbp < prob_start_htn_tx_s1 then start_anti_hyp_this_per =1 ; 
+	if sbp_m >= 160 and i_sbp < prob_start_htn_tx_s2 then start_anti_hyp_this_per =1 ; 
+end; 
 if start_anti_hyp_this_per = 1 then do;
-	sbp_last_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t}; on_anti_hypertensive = 1 ; 
-	if on_anti_hypertensive =1 then sbp = sbp - effect_anti_hyp_1 ;
+	sbp_last_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t}; on_tx_htn = 1 ; * assume start with 1 drug ;
+	sbp = sbp - effect_anti_hyp_1 ;
 end;
 
 * restarting anti-hypertensives;
-restart_anti_hyp_this_per = 0;
-if (visit_hypertension=1 and visit_hypertension_tm1 =0 and sbp_m_tm1 > 140 and diagnosed_hypertension = 1 
-and ever_on_anti_hyp = 1 and on_anti_hypertensive=0) then do; restart_anti_hyp_this_per =1 ; sbp_last_start_anti_hyp = sbp; end;
-
+restart_anti_hyp_this_per = 0; 
+if (visit_hypertension=1 and visit_hypertension_tm1 =0 and sbp_m >= 140 and dx_htn = 1 and ever_on_anti_hyp = 1 and on_tx_htn=0) then do; 
+	if sbp_m  < 160 and i_sbp < prob_restart_htn_tx_s1 then restart_anti_hyp_this_per =1 ; 
+	if sbp_m >= 160 and i_sbp < prob_restart_htn_tx_s2 then restart_anti_hyp_this_per =1 ;
+end;
 if restart_anti_hyp_this_per = 1 then do;
-	sbp_restart_anti_hyp = sbp; date_restart_anti_hyp = caldate{t}; on_anti_hypertensive = previous_anti_hyp; 
-	if on_anti_hypertensive =1 then sbp = sbp - effect_anti_hyp_1 ;
-	if on_anti_hypertensive =2 then sbp = sbp - effect_anti_hyp_1 - effect_anti_hyp_2 ;
-	if on_anti_hypertensive =3 then sbp = sbp - effect_anti_hyp_1 - effect_anti_hyp_2 - effect_anti_hyp_3;
+	sbp_last_start_anti_hyp = sbp; date_restart_anti_hyp = caldate{t}; on_tx_htn = previous_anti_hyp;
+	if on_tx_htn =1 then sbp = sbp - effect_anti_hyp_1 ;
+	if on_tx_htn =2 then sbp = sbp - effect_anti_hyp_1 - effect_anti_hyp_2 ;
+	if on_tx_htn =3 then sbp = sbp - effect_anti_hyp_1 - effect_anti_hyp_2 - effect_anti_hyp_3;
 end;
 
 * intensification of anti-hypertensives;
 intensify_anti_hyp_this_per_1_2 = 0; intensify_anti_hyp_this_per_2_3 = 0; 
-if  visit_hypertension=1 and sbp_m_tm1 > 140 and 1 <= on_anti_hypertensive <= 2 then do; 
+if visit_hypertension=1 and sbp_m >= 140 and 1 <= on_tx_htn <= 2 then do; 
 	e=rand('uniform'); 
 	select; 
-		when (160 <= sbp_m_tm1 < 180) e = e /2; 
-		when (180 <= sbp_m_tm1 < 200) e = e / 4; 
-		when (200 <= sbp_m_tm1)       e = e / 10; 
+		when (160 <= sbp_m < 180) e = e /1.5; 
+		when (180 <= sbp_m) e = e / 2; 
+											
 		otherwise e = e;
 	end;
-	if on_anti_hypertensive=2 and e < prob_intensify_2_3 then do; intensify_anti_hyp_this_per_2_3=1 ; on_anti_hypertensive=3; end; 
-	if on_anti_hypertensive=1 and e < prob_intensify_1_2 then do; intensify_anti_hyp_this_per_1_2=1 ; on_anti_hypertensive=2; end; 
+	if on_tx_htn=2 and e < prob_intensify_2_3 then do; intensify_anti_hyp_this_per_2_3=1 ; on_tx_htn=3; end; 
+	if on_tx_htn=1 and e < prob_intensify_1_2 then do; intensify_anti_hyp_this_per_1_2=1 ; on_tx_htn=2; end; 
 end;
 
 
@@ -3493,14 +3483,66 @@ if intensify_anti_hyp_this_per_1_2 = 1 then sbp = sbp - effect_anti_hyp_2 ;
 if intensify_anti_hyp_this_per_2_3 = 1 then sbp = sbp - effect_anti_hyp_3 ;
 
 
-* sbp_m = measured value of sbp in this period, . if unmeasured;
-if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
+* de-intensification of antihypertensive therapy;
+deintensify_anti_hyp_this_per = 0;
+if visit_hypertension = 1 and sbp_m < 90 and on_tx_htn >=1 then do;
+	deintensify_anti_hyp_this_per = 1;
+	if on_tx_htn =1 then sbp = sbp + effect_anti_hyp_1 ;
+	if on_tx_htn =2 then sbp = sbp + effect_anti_hyp_2 ;
+	if on_tx_htn =3 then sbp = sbp + effect_anti_hyp_3 ;
+	on_tx_htn = on_tx_htn - 1;
+end;
 
-hypertension = 0; if sbp > 140 or on_anti_hypertensive ge 1 then hypertension = 1;
-hypertens180 = 0; if sbp > 180 or (on_anti_hypertensive ge 1 and max_sbp > 180) then hypertens180 = 1;
+* duration of treatment;
+if on_tx_htn ge 1 and visit_hypertension = 1 then do;
+	htn_visit_count =  htn_visit_count + 1;
+end;
 
 max_sbp = max(sbp, sbp_last_start_anti_hyp);
 if sbp_m ne . then most_recent_sbp_m = sbp_m;
+
+* true hypertension;
+htn_true = 0; if max_sbp >= 140 then htn_true = 1;
+normotensive = 0; if htn_true = 0 then normotensive = 1;
+htn_true_dx = 0; if dx_htn = 1 and htn_true = 1 then htn_true_dx = 1;
+htn_over_dx = 0; sbp_max_over = 0; sbp_over = 0;
+if dx_htn = 1 and htn_true = 0 then do;
+	htn_over_dx = 1;
+	sbp_max_over = max_sbp;
+	sbp_over = sbp;
+end;
+
+htn_true160 = 0; if max_sbp >= 160 then htn_true160 = 1;
+htn_true_dx160 = 0; if dx_htn = 1 and htn_true160 = 1 then htn_true_dx160 = 1;
+
+
+* hypertension control;
+hypertension = 0; if sbp >= 140 or on_tx_htn ge 1 then hypertension = 1;
+hypertens160 = 0; if sbp >= 160 then hypertens160 = 1;
+
+htn_control = .; 
+if htn_true = 1 then htn_control = 0;
+if htn_true = 1 and sbp <  140 and on_tx_htn ge 1 then htn_control = 1;
+
+
+* hypertension cost this period;
+htn_cost_scr = 0; *cost of screening this period;
+htn_cost_drug = 0; * drug costs this period; 
+htn_cost_clin = 0; * clinical care costs this period (exclusive of drugs);
+htn_cost_cvd = 0; * costs of acute CVD treatment;
+if test_sbp_comm =1 then do;
+	htn_cost_scr = cost_htn_screen_comm;
+	if sbp_comm_m >=140 and visit_hypertension = 1 then htn_cost_scr = htn_cost_scr + cost_htn_link_voucher;
+end;
+if visit_hypertension = 1 then do;
+	if sbp_m <  140 then htn_cost_clin = cost_htn_visit1;
+	if sbp_m >= 140 then htn_cost_clin = cost_htn_visit2;
+
+	if visit = 1 and integration = 1 then htn_cost_clin = htn_cost_clin * rr_cost_htn_visitInt;
+end;
+if on_tx_htn = 1 then htn_cost_drug = cost_htn_drug1;
+if on_tx_htn = 2 then htn_cost_drug = cost_htn_drug1 + cost_htn_drug2;
+if on_tx_htn = 3 then htn_cost_drug = cost_htn_drug1 + cost_htn_drug2 + cost_htn_drug3;
 
 
 * SEXUAL BEHAVIOUR;
