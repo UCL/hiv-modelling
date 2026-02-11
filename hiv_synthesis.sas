@@ -1694,6 +1694,7 @@ if gender=2 then do;
 	if 1-p_hsb_p < r then life_sex_risk = 3; 
 end;
 
+
 ever_newp=0;
 
 if rred_a_p=1 then do;
@@ -1981,7 +1982,6 @@ cva_severity = 0; ihd_severity = 0;
 %sample_uniform(sbp_rr, 0.56 1 1.8);
 * define person-specific risk of sbp increase per period during middle age (40-64);
 %sample_uniform(sbp_rr_age, 1 1.5 2);
-
 
 u=rand('uniform');low_preg_risk=0;
 if u>can_be_pregnant then low_preg_risk=1;
@@ -2300,7 +2300,7 @@ end;
 
 p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
-
+if (gender=1 and p <= p_hard_reach_htn_m) or (gender=2 and q <= p_hard_reach_htn_w) then hard_reach_htn=1;																										  
 
 if pwid=1 then hard_reach=1;
 
@@ -2425,6 +2425,20 @@ self_tested_tm1=self_tested; self_tested=0;
 visit_hypertension_tm1 = visit_hypertension;
 tested_bp_tm1 = tested_bp;
 sbp_m_tm1 = sbp_m;
+htn_lifestyle_counsel_tm1 = htn_lifestyle_counsel;
+deintensify_anti_hyp_tm1 = deintensify_anti_hyp_this_per;
+ihd_this_per = 0;
+cva_this_per = 0;
+ihd_this_per_modsev = 0;
+cva_this_per_modsev = 0;
+first_ihd = 0;
+first_cva = 0;
+first_ihd_modsev = 0;
+first_cva_modsev = 0;
+first_cvd = 0;
+severity_cva_this_per = 0;
+severity_ihd_this_per = 0;
+cvd_death_risk = 0;
 ep_tm1=ep;
 if t > 1 then do; newp_tm1=newp; newp = .; end;
 np_tm1=np; np = .;
@@ -2475,59 +2489,21 @@ option = &s;
 
 
 if caldate_never_dot >= &year_interv then do;
+* we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
+who may be dead and hence have caldate{t} missing;
 
-		set_in_options=1;
+	set_in_options=1;
+	* note that we can use the set_in_options variable when we want to overwrite parameter values in option;
 
-		*Testing; *Keep all testing at SQ level;	
-
-		eff_sw_program = 0;		 			*No SW program;
-		eff_rate_disengage_sw_program=1;
-
-		* self_testing;
-		prob_self_test_hard_reach = 0;
-		rate_self_test = 0;
-
-		*Prevention;
-		*Condom provision and promotion: keep at SQ level;
-		*Not explicitly modelled before year_interv, but the implicit switch off impacts newp and ep;
-		condom_change_year_i=1;    			*Switches off condom provision and promotion (0 restores SQ);
-		if caldate_never_dot = &year_interv then do; 
-			use_condom_intervention_newp = 0;
-			if rand('uniform')<prop_use_condom_int_newp then use_condom_intervention_newp = 1;		*Proportion of individuals use condoms provided by funded intervention;
-		end;
-
-		*VMMC;
-		circ_inc_rate_year_i = 2;		*No VMMC;
-
-		*PrEP;
-		*Turn off all PrEP;
-		prep_any_strategy=0;
-		date_prep_oral_intro=2100;
-		date_prep_cab_intro=2100;
-		date_prep_len_intro=2100;
-		date_prep_vr_intro=2100;
-		eff_rate_test_startprep_any=0;
-		eff_prob_prep_oral_b=0;
-		eff_rate_choose_stop_prep_oral=1;
-		eff_prob_prep_any_restart_choice=0;	
-
-		*Linkage, management, ART Interv;
-		*PCP is part of the essential scenario;
-
-		absence_cd4_year_i = 1;				*If CD4 and VL are both not available clinical monitoring is assumed;
-
-		absence_vl_year_i = 1;				*Dec 25;
-		eff_prob_vl_meas_done = 0; 
-
-		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
+ 	*Option 0 is continuation at current rates - status quo;
 							  
  	*Option 1;
 																														  
 	if option = 1 then do;
 		*Specify option 1;
-												 																																			   
+												 
 	end;
-
+ 
 end;
 
 
@@ -3116,11 +3092,6 @@ end;
 */
 
 																
-				  
-				  
-	
-
-
 
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
@@ -3137,16 +3108,15 @@ end;
 * RATE OF ATTENDING AN ANC FOR PREGNANT WOMEN; 
 
 if gender=2 then do;
+
 	if      date_start_testing le caldate{t} lt 2015    then prob_anc      = max(prob_anc, 0.1)+rate_anc_inc; * dependent_on_time_step_length ;
 	if                            caldate{t} =  2014.75 then prob_anc_2015 = prob_anc;
 	if                      	  caldate{t} ge 2015    then prob_anc      = prob_anc_2015;
 	if prob_anc gt 0.975   then prob_anc=0.975;  
-																			 
 
-
-* Receiving PMTCT;
+	* Receiving PMTCT;
 	if caldate{t} gt date_pmtct then prob_pmtct = 0 + (caldate{t}-date_pmtct)*pmtct_inc_rate; * not * dependent_on_time_step_length ;
-	if 							  	 prob_pmtct gt 0.975 then prob_pmtct=0.975;
+	if prob_pmtct gt 0.975 then prob_pmtct=0.975;
 																						
 end;
 
@@ -3239,14 +3209,6 @@ if t ge 2 and &year_interv         <= caldate{t} and circ_inc_rate_year_i = 4 th
       prob_circ = 0;test_link_circ_prob=0;
     end;
 end;
-
-																												
-																																																		 
-																																																		 
-																																																		 
-																																																		 
-	
-
 
 ***Zim specific;	*JAS Feb24;
 if country = 'Zimbabwe' then do;
@@ -3359,40 +3321,100 @@ z=rand('uniform'); if pwid_tm1 = 1 and z < prob_stop_pwid then pwid=0;
 
 
 
-* SBP AND HYPERTENSION DIAGNOSIS AND TREATMENT  ;  * update_24_4_21;
+* SBP AND *HYPERTENSION* DIAGNOSIS AND TREATMENT  ;  * update_24_4_21 * again 04_11_21 to include intrinsic risk of increased HBP;
 
-* initially at age 15 nobody has hypertension;
-if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
-* underlying increases in blood pressure in people not on anti-hypertensives;
-a_sbp=rand('uniform'); 
-	select;
-		when (140 <= sbp < 160) a_sbp = a_sbp / 1.5; 
-		when (160 <= sbp < 180) a_sbp = a_sbp / (1.5**2)  ;
-		when (180 <= abp) 	  a_sbp = a_sbp / (1.5**3) ;  
-		otherwise a_sbp = a_sbp;
-	end;
-if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
+* generates distribution of BP values around 115 at age 15 to fit left-skew beta distributionwith SD 12 (SD based on SEARCH data);
+if age = 15  then do; 
+	%sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+					0.27	0.20	0.19 	0.16 	0.10	0.07	0.01	0.00	0.00	0.00); 
+	dx_htn = 0; on_tx_htn = 0; htn_visit_count = 0;
+	prior_cvd = 0; prior_cvd_modsev = 0; prior_cva = 0; prior_ihd = 0;
+end;
+																	  
+if age = 15 and gender = 2 then do;
+	sbp = sbp - 2;
+end;
+if age = 15 and gender = 1 then do;
+	sbp = sbp + 2;
+end;
+
+
+* underlying increases in blood pressure in people not on anti-hypertensives; 
+a_sbp=rand('uniform');  tested_bp = 0; sbp_m=.; visit_hypertension=0; *reset vars this period;
+
+select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
+	when (40 <= age < 65) a_sbp = a_sbp / (sbp_rr * sbp_rr_age) ;  * 27APR24, change to age 40 to <65;
+	otherwise a_sbp = a_sbp / sbp_rr ;
+end; 
+
+if on_tx_htn >=1 then a_sbp = a_sbp / rr_sbp_inc_on_antihyp ; *probabilty of SBP increase is reduced if on antihypertensive;
+if caldate{t} > sbp_cal_yr then prob_sbp_increase = prob_sbp_increase + sbp_cal_eff ; * increase SBP rise in future years after designatd year (2015 based on last available GBD data);
+	 
+if  a_sbp < prob_sbp_increase then do;
+	sbp = sbp + 1 ; 
+	if on_tx_htn >=1 then sbp_last_start_anti_hyp = sbp_last_start_anti_hyp + 1 ;
+end;
+if on_tx_htn = 0 and deintensify_anti_hyp_tm1 ne 1 then htn_visit_count =  0;
 
 * symptoms of hypertension ;
 symp_hypertension=0;
 d=rand('uniform');
 if sbp > 180 and d < prob_symp_hypertension then symp_hypertension=1;
 if symp_hypertension_tm1 = 1 then symp_hypertension=1;
-if symp_hypertension_tm1=1 and sbp < 160 then symp_hypertension=0; 
+if symp_hypertension_tm1=1 and sbp < 180 then symp_hypertension=0; 
+
+* Community testing: if tested in the commmunity, must link to clinic to have tested_bp = 1;
+	*allows repeat bp measurement in clinic which may/may not be >=140 based on measurement error;
+	*if hard_reach_htn =1, assumes will not test unless symptoms present;
+if caldate{t} = first_comm_test and first_comm_test ne . then last_comm_test = first_comm_test - comm_test_interval; *set first_comm_test date in options;
+test_sbp_comm = 0; link = 0; sbp_comm_m = .; a_comm_test = rand('uniform'); a_htn_link = rand('uniform');
+if (caldate{t} - last_comm_test) >= comm_test_interval then do;
+	last_comm_test = caldate{t};
+	if a_comm_test < prob_test_sbp_comm and age >= comm_test_age and (hard_reach_htn ne 1 or symp_hypertension = 1) then test_sbp_comm = 1;
+end;
+if test_sbp_comm =1 then do;
+	sbp_comm_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_comm_m = round(sbp_comm_m, 1);
+end;
+if sbp_comm_m >=140 then do;
+	if a_htn_link < prob_htn_link then tested_bp = 1;
+end;
 
 * tested_bp = whether blood pressure measured in this period (1) or not (0) for people not currently under hypertension care;
-tested_bp = 0; sbp_m=.; 
-if on_anti_hypertensive = 0 and visit_hypertension_tm1 = 0 then do; 
+if on_tx_htn = 0 and visit_hypertension_tm1 = 0 then do; 
 	e=rand('uniform'); 
-	if diagnosed_hypertension = 0 and e < prob_test_sbp_undiagnosed then tested_bp = 1; 
-	if diagnosed_hypertension = 1 and e < prob_test_sbp_diagnosed then tested_bp = 1; 
+	if symp_hypertension = 1 or prior_cvd_modsev =1 then e = e / 2;
+	if gender = 2 then e = e / rr_test_sbp_women;
+	if age <40 then e = e / rr_test_sbp_young;
+	if visit = 1 then e = e / rr_test_sbp_hiv; * relative risk of BP measure at HIV visit;
+	if dx_htn = 0 and e < prob_test_sbp_undiagnosed and (hard_reach_htn ne 1 or symp_hypertension = 1) then tested_bp = 1; 
+	if dx_htn = 1 and e < prob_test_sbp_diagnosed and (hard_reach_htn ne 1 or symp_hypertension = 1) then tested_bp = 1; 
+		
 end;
 
 * clinic visit for hypertension;
-visit_hypertension=0;
-if visit_hypertension_tm1 = 0 then do;
-if tested_bp_tm1 = 1 and sbp_m_tm1 > 140 then visit_hypertension=1; 
+visit_hypertension=0; 
+e=rand('uniform');
+if on_tx_htn = 0 and htn_lifestyle_counsel_tm1 = 1 and 160 > sbp_m_tm1 >=140 then do; * prob of coming back after lifestyle recommendations for new stage 1 HTN dx;
+	 if e < prob_visit_htn_v1 then visit_hypertension = 1;
+end;
+
+													  
+if most_recent_sbp_m < 140 and on_tx_htn ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
+	e=rand('uniform'); 
+	if htn_visit_count  = 1 and e < prob_visit_htn_v1 then visit_hypertension = 1;
+	if htn_visit_count  = 2 and e < prob_visit_htn_v2 then visit_hypertension = 1;
+	if htn_visit_count  = 3 and e < prob_visit_htn_v3 then visit_hypertension = 1;
+	if htn_visit_count  = 4 and e < prob_visit_htn_v4 then visit_hypertension = 1;
+	if htn_visit_count >= 5 and e < prob_visit_htn_v5 then visit_hypertension = 1;
+end;
+if (most_recent_sbp_m >= 140 and on_tx_htn ge 1) or deintensify_anti_hyp_tm1 = 1 then do;
+	e=rand('uniform'); 
+	if htn_visit_count  = 1 and e < prob_visit_htn_v1 then visit_hypertension = 1;
+	if htn_visit_count  = 2 and e < prob_visit_htn_v2 then visit_hypertension = 1;
+	if htn_visit_count  = 3 and e < prob_visit_htn_v3 then visit_hypertension = 1;
+	if htn_visit_count  = 4 and e < prob_visit_htn_v4 then visit_hypertension = 1;
+	if htn_visit_count >= 5 and e < prob_visit_htn_v5 then visit_hypertension = 1;
 end;
 
 * visits for hypertension while on anti-hypertensive; 
@@ -3404,8 +3426,17 @@ if most_recent_sbp_m > 140 and on_anti_hypertensive ge 1 then visit_hypertension
 if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
 
 
-* measurement of bp at clinic visit for hypertension;
+* measurement of bp at clinic;
 if visit_hypertension=1 then tested_bp=1;
+if tested_bp = 1 then do;
+	sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
+	if sbp_m >= 140 then visit_hypertension = 1;
+	if sbp_m < 140 and on_tx_htn = 0 then last_bp_ge140 = 0;
+												 
+																														  
+	if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
+	 
+end;
 
 * effect of stopping anti-hypertensive on sbp ;
 if on_anti_hypertensive ge 1 then do;
