@@ -222,7 +222,7 @@ newp_seed = 7;
 * pop_wide_tld_year_i;				pop_wide_tld_year_i = 0;  		
 * single_vl_switch_efa_year_i;		single_vl_switch_efa_year_i = 0;	
 * e_decr_hard_reach_year_i;			e_decr_hard_reach_year_i = 0;  
-*
+
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.80;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
@@ -9346,15 +9346,15 @@ o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_cab=0;o_len=0;
     if 2010.5 <= caldate{t} and reg_option < 100 then do; o_ten=1; o_3tc=1; o_efa=1; end; 
     if reg_option in ( 101 108 109 110 111 112 114) then do; o_ten=1; o_3tc=1; o_efa=1; end; 
 
-if reg_option in (102 103 104 105 106 118 119 125) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=2;
-if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 115 is a place holder - this does not apply for any current policy option;
-if reg_option = 130 then flr=3;
+	if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121 125) then flr=2; 
+	if reg_option in (107) then flr=1;
+	if reg_option = 130 then flr=3;
 
-  
-							
-																					   
-							
-  
+	*
+    if flr=1 ten + 3tc + taz
+    if flr=2 ten + 3tc + dol                                                           
+ 	if flr=3 len + cab        
+	;
 
     if flr=1 then do; o_ten=1; o_3tc=1; o_taz=1; o_zdv=0; o_dol=0; end;
     if flr=2 then do; o_ten=1; o_3tc=1; o_dol=1; o_zdv=0; o_taz=0; o_efa=0; end;
@@ -16374,33 +16374,33 @@ if prep_vr_ever=1 then do;
 	if pregnant=1 or breastfeeding=1 	then prep_vr_ever_plw=1;
 end;
 
-											   
-																							
-																			 
+** Extra outputs for HIV control; *JAS Sep2025;
+* FSW: see onprep_sw, prep_any_sw, prep_oral_sw, prep_cab_sw, prep_len_sw, prep_vr_sw above;
+* MSM: see onprep_msm, onprep_oral_msm, onprep_cab_msm, onprep_len_msm above;
 
-													
-													
-																									  
-																														 
+* Number of sexually active AGYW and pregnant women;
+* Includes newp and ep (as in prep_any_strategy=21);
+agyw_pg=0; 		if gender=2 and ( (15<=age<25 and (newp ge 1 or ep ge 1)) or pregnant=1 ) then agyw_pg=1;
+agyw_plw=0; 	if gender=2 and ( (15<=age<25 and (newp ge 1 or ep ge 1)) or pregnant=1 or breastfeeding=1) then agyw_plw=1;
 
-																					  
-																											 
-						
-										   
-											 
-										   
-										   
-										 
-	
+* Number of current PrEP users (AGYW/pregnant women only, SW and MSM are coded above);
+prep_any_agyw_pg = 0; prep_oral_agyw_pg = 0; prep_cab_agyw_pg = 0; prep_len_agyw_pg = 0; prep_vr_agyw_pg = 0;
+if agyw_pg = 1 then do; 
+	if prep_any = 1 then prep_any_agyw_pg = 1;
+	if prep_oral = 1 then prep_oral_agyw_pg = 1;
+	if prep_cab = 1 then prep_cab_agyw_pg = 1;
+	if prep_len = 1 then prep_len_agyw_pg = 1;
+	if prep_vr = 1 then prep_vr_agyw_pg = 1;
+end;
 
-																												  
-						 
-											
-											  
-											
-											
-										  
-	
+prep_any_agyw_plw = 0; prep_oral_agyw_plw = 0; prep_cab_agyw_plw = 0; prep_len_agyw_plw = 0; prep_vr_agyw_plw = 0;
+if agyw_plw = 1 then do; 
+	if prep_any = 1 then prep_any_agyw_plw = 1;
+	if prep_oral = 1 then prep_oral_agyw_plw = 1;
+	if prep_cab = 1 then prep_cab_agyw_plw = 1;
+	if prep_len = 1 then prep_len_agyw_plw = 1;
+	if prep_vr = 1 then prep_vr_agyw_plw = 1;
+end;
 
 
 * whether fulfil all criteria for prep (although also need to test negative to actually start prep [except under pop_wide_tld]);
@@ -21085,6 +21085,7 @@ r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  
 
   
+
 /* keep going - only needed for test runs */
 
 keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020   
@@ -22815,7 +22816,6 @@ s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line	s_c
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  		s_cost_zdv 	 	s_cost_ten	s_cost_3tc  	s_cost_nev   
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  	s_cost_dol  	s_cost_cab  s_cost_len  	s_cost_ole			s_cost_isl
 s_cost_non_aids_pre_death	s_drug_level_test_cost  
-			   
 s_cost_child_hiv_mo_art		s_cost_child_hiv_at_child_inf
 s_cost_hypert_vis   		s_cost_hypert_drug			s_cost_lencab_return 		s_dcost_lencab_return
 
@@ -22832,6 +22832,7 @@ s_dart_2_cost 	s_dart_3_cost 	s_dcost_vl_not_done
 s_dcost_zdv		s_dcost_ten		s_dcost_3tc		s_dcost_nev  	s_dcost_lpr		s_dcost_dar		s_dcost_taz		s_dcost_efa		s_dcost_dol		s_dcost_cab		s_dcost_len		s_dcost_ole		s_dcost_isl
 s_dcost_non_aids_pre_death  s_dcost_drug_level_test   
 s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf 	s_dcost_hypert_vis 		s_dcost_hypert_drug  
+
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_total_yll80le  s_total_yllag																			   
@@ -22997,8 +22998,6 @@ s_new_vmmc4549m
 
 s_birth_circ s_new_birth_circ  s_mcirc_1014m  s_new_mcirc  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
-
-
 /* blood pressure */
 
 s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 s_hypertens180_1549
@@ -23110,7 +23109,6 @@ prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fo
 msm_tr_factor switch_for_tox 
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
-																				 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 nnrti_res_no_effect

@@ -12,7 +12,7 @@
 
 - Slightly updated order of re-adding interventions based on analysis of more runs from 10/12/25
 
-* 12/01/26 updated
+* 12/01/26 updates
 
 - Adding back in interventions in order of decreasing cost-effectiveness
 - Run options 0-9 + 99 (see options section for details)
@@ -2996,9 +2996,6 @@ end;
 if	decr_prob_loss_at_diag_year_i = 1 then do;
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/3; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
 end;
-
-
-
 
 * decr_rate_lost_year_i; 	
 if decr_rate_lost_year_i = 1 then do;
