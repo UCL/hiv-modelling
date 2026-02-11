@@ -1,3 +1,4 @@
+
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -9,7 +10,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2024.0 ;	
+%let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -144,7 +145,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 
 
 * start of epidemic;
-startyr = 1989 + 0.25;  	* overwritten in country-specific include statements (SA, Zim, Malawi, Cote dIvoire, Kenya) JAS Feb24;
+startyr = 1989 + 0.25;  	* overwritten in country-specific include statements (SA, Zim, Malawi, Cote d Ivoire, Kenya) JAS Feb24;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
@@ -2379,127 +2380,8 @@ if caldate_never_dot >= &year_interv then do;
 																														  
 	if option = 1 then do;
 		*Specify option 1;
-												 
-																											   
-																										  
-																												  
-																																			   
+												 																																			   
 	end;
- 
-																							
-					   
-																				
-																		
-																	   
-																											   
-																										  
-																													 
-																												  
-																												
-																																			   
-	 
-
-																			
-					   
-																  
-																		
-																	   
-															 
-																			
-																				  
-	 
-
-																				   
-					   
-																  
-																		
-																	   
-																	   
-															 
-																			
-																		  
-																				  
-	 
-
-														
-					   
-																  
-																		
-																											   
-																										  
-																												  
-																																			   
-						   
-	 
-
-																  
-					   
-																  
-																		
-																	   
-																											   
-																										  
-																													 
-																												  
-																												
-																																			   
-						   
-	 
-
-											 
-					   
-																			   
-	 
-
-												
-					   
-												   
-	 
-
-														   
-					   
-	   
-											 
-															  
-																										
-																	   
-																		
-																	   
-															 
-																			
-																			   
-	  
-	 
-
-								   
-												  
-						
-																					
-											 
-											   
-																															  
-					  
-	  
-	 
-
-												  
-						
-																															   
-																						   
-	 
-
-															
-						
-																												   
-																							
-	 
-
-						
-															   
-						
-																															   
-														 
-	 
 
 end;
 
@@ -16666,7 +16548,7 @@ hiv_anc=0;      if anc=1      and hiv=1 then hiv_anc=1;
 everpregn_w1524    =0;if gender=2 and 15 le age lt 25 and (dt_lastbirth ne . or pregnant=1)           then everpregn_w1524=1;
 everpregn_hiv_w1524=0;if gender=2 and 15 le age lt 25 and (dt_lastbirth ne . or pregnant=1) and hiv=1 then everpregn_hiv_w1524=1;
 
-pmtct=0;if pregnant=1 and (on_sd_nvp=1 or on_dual_nvp=1 or . lt time0 le caldate&j) then pmtct=1;
+pmtct=0;if pregnant=1 and (on_sd_nvp=1 or on_dual_nvp=1 or onart=1) then pmtct=1;
 
 
 ***Deaths;
