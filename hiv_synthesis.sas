@@ -3091,7 +3091,7 @@ end;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
 */
 
-																
+
 
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
@@ -3573,23 +3573,8 @@ if        caldate{t} >  2000 then ch_risk_beh_ep = ch_risk_beh_ep2000_;
 
 
 * Condom provision and promotion;
-/*
-From MIHPSA Zimbabwe:
-CMMC (condom mass media campaign) in Zimbabwe was introduced at least since 2004
-CMMC assumed to be switched ON from 2011 until year_interv
-Condom_change_year_i = 0 refers to CMMC being switched on (SQ and all runs up to year_interv)
-Condom_change_year_i = 1 refers to CMMC being switched off
-
-In 2011 rred_rc depending on the sampling varies from	0.031 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
-														0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
-												to		1.026 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
-In 2021											from 	0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
-													   	0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
-												to		1.321 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
-*/
-
-*Proportion of reduction attributable to condom intervetions: prop_redattr_ep_condoms;
-*We have not modelled condoms retrospectively and so we have not included their cost;
+* Proportion of reduction attributable to condom intervetions: prop_redattr_ep_condoms;
+* We have not modelled condoms retrospectively and so we have not included their cost;
 rred_rc_base = rred_rc;					* use this to determine FSW rates;
 
 xx=rand('uniform');
@@ -4417,10 +4402,6 @@ if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
 end;
 
 
-* Condom intervention - removing the effect of condom provision and promotion for HIV Control baseline;
-*Impact on newp (impact on ep is above);
-xx=rand('uniform');
-if caldate{t} >= &year_interv and condom_change_year_i = 1 and use_condom_intervention_newp=1 and newp_ever>0 and xx < 0.1 then newp = newp + 1;
 
 
 e=rand('uniform');
@@ -4971,27 +4952,6 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
-
-									 
-
-																  
-											 
-	 
-
-																						  
-																								  
-	 
-													  
-
-													   
-																				 
-	 
-
-
-									
-																											
-																													 
-	 
 
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
@@ -13266,10 +13226,131 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
 
-* cvd mortality; * update_24_4_21;
+* HYPERTENSION: cvd events and mortality among HIV+; * update_3-11-2022;
 
-* risk of cvd death per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv -ve people below;
-	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+* risk of ihd and cva per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv -ve people below;
+	
+if dead ne 1 then do;
+	* risk of ihd and cva;
+	if age ge 60 then do;
+		effect_sbp_ihd = 0.03;
+		effect_sbp_cva = 0.04;
+	end;
+	if age ge 80 then do;
+		effect_sbp_ihd = 0.02;
+		effect_sbp_cva = 0.02;
+	end;
+	if sbp  < 115 then do; *male = 1 and female = 2;
+		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + prior_cvd * 1.8) ; 
+		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + prior_cvd * 1.8) ;
+	end;
+	if sbp ge 115 then do;
+		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_ihd) + prior_cvd * 1.8) ;
+		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva) + prior_cvd * 1.8) ;
+	end;
+
+	* risk of cvd death;	
+	xihd = rand('uniform');
+		* increased CVD risk with HIV;
+		if vg1000 = 0 and cd4 >= 500 then xihd = xihd / risk_cvd_hiv;
+		if vg1000 = 1 and cd4 >= 500 then xihd = xihd / (risk_cvd_hiv**2);
+		if vg1000 = 0 and cd4 <  500 then xihd = xihd / (risk_cvd_hiv**2);
+		if vg1000 = 1 and cd4 <  500 then xihd = xihd / (risk_cvd_hiv**4);
+
+	if prior_ihd = 1 then do;
+		if ihd_severity = 1 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_1;
+		if ihd_severity = 2 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_2;
+		if ihd_severity = 3 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_3;
+	end;
+
+	if xihd le ihd_risk then do;
+		ihd_this_per =1;
+		cvd_this_per =1;
+		%sample(ihd_severity_this_per, 1 2 3, 0.6 0.3 0.1);
+		if ihd_severity < ihd_severity_this_per then ihd_severity = ihd_severity_this_per;
+		if ihd_severity_this_per = 1 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_1;
+		if ihd_severity_this_per ge 2 then do;
+			if prior_ihd_modsev = 0 then first_ihd_modsev = 1;
+			ihd_this_per_modsev = 1;
+			yihd = rand('uniform');
+			zihd = rand('uniform');
+			if zihd <= prob_ihd_tx then do;
+				if yihd <= prob_ihd_tx_effective then do;  * effective treatment;
+					if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + (ihd_acute_death_risk_2 * rr_mort_ihd_tx);
+					if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + (ihd_acute_death_risk_3 * rr_mort_ihd_tx);
+					ihd_tx_eff = 1;
+					htn_cost_cvd = htn_cost_cvd + cost_ihd_tx;
+				end; 
+				else do; * ineffective treatment;
+					if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_2;
+					if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_3;
+					ihd_tx_lowqual = 1;
+					htn_cost_cvd = htn_cost_cvd + cost_ihd_tx_lowqual;
+				end;
+			end;
+			else do; * no treatment; 
+				if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_2;
+				if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_3;
+			end;
+			prior_cvd_modsev = 1;
+		end;
+		if prior_ihd = 0 then do;
+			first_ihd = 1;
+			if prior_cvd = 0 then first_cvd = 1;
+		end;			
+		prior_ihd = 1;
+		prior_cvd = 1;
+	end;
+	
+	xcva = rand('uniform');
+		* increased CVD risk with HIV;
+		if vg1000 = 0 and cd4 >=500 then xcva = xcva / risk_cvd_hiv;
+		if vg1000 = 1 and cd4 >=500 then xcva = xcva / (risk_cvd_hiv**2);
+		if vg1000 = 0 and cd4 < 500 then xcva = xcva / (risk_cvd_hiv**2);
+		if vg1000 = 1 and cd4 < 500 then xcva = xcva / (risk_cvd_hiv**4);
+
+	if prior_cva = 1 then do;
+		if cva_severity = 1 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_1;
+		if cva_severity = 2 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_2;
+		if cva_severity = 3 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_3;
+	end;
+
+	if xcva le cva_risk then do;
+		cva_this_per =1;
+		cvd_this_per =1;
+		%sample(cva_severity_this_per, 1 2 3, 0.6 0.3 0.1);
+		if cva_severity < cva_severity_this_per then cva_severity = cva_severity_this_per;
+		if cva_severity_this_per = 1 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_1;
+		if cva_severity_this_per ge 2 then do;
+			if prior_cvd_modsev = 0 then first_cva_modsev = 1;
+			cva_this_per_modsev = 1;
+			ycva = rand('uniform');
+			zcva = rand('uniform');
+			if zcva <= prob_cva_tx then do;
+				if ycva <= prob_cva_tx_effective then do; * effective treatment;
+					if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + (cva_acute_death_risk_2 * rr_mort_cva_tx);
+					if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + (cva_acute_death_risk_3 * rr_mort_cva_tx);
+					htn_cost_cvd = htn_cost_cvd + cost_cva_tx;
+				end;
+				else do; *ineffective treatment;
+					if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_2;
+					if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_3;
+					htn_cost_cvd = htn_cost_cvd + cost_cva_tx_lowqual;
+				end;			
+			end;
+			else do; * no treatment; 
+				if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_2;
+				if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_3;
+			end;
+			prior_cvd_modsev = 1;
+		end;
+		if prior_cva = 0 then do;
+			first_cva = 1;
+			if prior_cvd = 0 then first_cvd = 1;
+		end;
+		prior_cva = 1;
+		prior_cvd = 1;
+	end;
 
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
@@ -13580,9 +13661,6 @@ cost_condom_dn=0; if caldate{t} ge 1995 and 15 <= age < 65 then cost_condom_dn=c
 
 cost_sw_program=0; if sw_program_visit=1 then cost_sw_program = sw_program_cost;
 
-cost_hypert_vis = 0; if visit_hypertension=1 then cost_hypert_vis = cost_vis_hypert ; 
-cost_hypert_drug = 0; if on_anti_hypertensive ge 1 then cost_hypert_drug = on_anti_hypertensive * cost_antihyp ; 
- 
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
 +max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_cab) + max(0, cost_prep_len) 
 + max(0, cost_prep_vr )+ max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program)
@@ -13736,10 +13814,119 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
 
-* cvd mortality; * update_24_4_21;
+* HYPERTENSION: cvd events and mortality among HIV-negative; * update_3-11-2022;
 
-* risk of cvd death per 3 months according to sbp, age and gender ; * remember this appears twice - once for hiv +ve people ;
-	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+* risk of ihd and cva per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv +ve people above;
+	
+if dead ne 1 then do;
+	* risk of ihd and cva;
+	if age ge 60 then do;
+		effect_sbp_ihd = 0.03;
+		effect_sbp_cva = 0.04;
+	end;
+	if age ge 80 then do;
+		effect_sbp_ihd = 0.02;
+		effect_sbp_cva = 0.02;
+	end;
+	if sbp  < 115 then do; *male = 1 and female = 2;
+		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + prior_cvd * 1.8) ; 
+		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + prior_cvd * 1.8) ;
+	end;
+	if sbp ge 115 then do;
+		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_ihd) + prior_cvd * 1.8) ;
+		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva) + prior_cvd * 1.8) ;
+	end;
+	
+	* risk of cvd death;	
+	xihd = rand('uniform');
+	
+	if prior_ihd = 1 then do;
+		if ihd_severity = 1 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_1;
+		if ihd_severity = 2 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_2;
+		if ihd_severity = 3 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_3;
+	end;
+
+	if xihd le ihd_risk then do;
+		ihd_this_per =1;
+		cvd_this_per =1;
+		%sample(ihd_severity_this_per, 1 2 3, 0.6 0.3 0.1);
+		if ihd_severity < ihd_severity_this_per then ihd_severity = ihd_severity_this_per;
+		if ihd_severity_this_per = 1 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_1;
+		if ihd_severity_this_per ge 2 then do;
+			if prior_ihd_modsev = 0 then first_ihd_modsev = 1;
+			ihd_this_per_modsev = 1;
+			yihd = rand('uniform');
+			zihd = rand('uniform');
+			if zihd <= prob_ihd_tx then do;
+				if yihd <= prob_ihd_tx_effective then do;  * effective treatment;
+					if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + (ihd_acute_death_risk_2 * rr_mort_ihd_tx);
+					if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + (ihd_acute_death_risk_3 * rr_mort_ihd_tx);
+					htn_cost_cvd = htn_cost_cvd + cost_ihd_tx;
+				end; 
+				else do; * ineffective treatment;
+					if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_2;
+					if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_3;
+					htn_cost_cvd = htn_cost_cvd + cost_ihd_tx_lowqual;
+				end;
+			end;
+			else do; * no treatment; 
+				if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_2;
+				if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_3;
+			end;
+			prior_cvd_modsev = 1;
+		end;
+		if prior_ihd = 0 then do;
+			first_ihd = 1;
+			if prior_cvd = 0 then first_cvd = 1;
+		end;			
+		prior_ihd = 1;
+		prior_cvd = 1;
+	end;
+	
+	xcva = rand('uniform');
+
+	if prior_cva = 1 then do;
+		if cva_severity = 1 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_1;
+		if cva_severity = 2 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_2;
+		if cva_severity = 3 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_3;
+	end;
+
+	if xcva le cva_risk then do;
+		cva_this_per =1;
+		cvd_this_per =1;
+		%sample(cva_severity_this_per, 1 2 3, 0.6 0.3 0.1);
+		if cva_severity < cva_severity_this_per then cva_severity = cva_severity_this_per;
+		if cva_severity_this_per = 1 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_1;
+		if cva_severity_this_per ge 2 then do;
+			if prior_cvd_modsev = 0 then first_cva_modsev = 1;
+			cva_this_per_modsev = 1;
+			ycva = rand('uniform');
+			zcva = rand('uniform');
+			if zcva <= prob_cva_tx then do;
+				if ycva <= prob_cva_tx_effective then do; * effective treatment;
+					if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + (cva_acute_death_risk_2 * rr_mort_cva_tx);
+					if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + (cva_acute_death_risk_3 * rr_mort_cva_tx);
+					htn_cost_cvd = htn_cost_cvd + cost_cva_tx;
+				end;
+				else do; *ineffective treatment;
+					if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_2;
+					if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_3;
+					htn_cost_cvd = htn_cost_cvd + cost_cva_tx_lowqual;
+				end;			
+			end;
+			else do; * no treatment; 
+				if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_2;
+				if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_3;
+			end;
+			prior_cvd_modsev = 1;
+		end;
+		if prior_cva = 0 then do;
+			first_cva = 1;
+			if prior_cvd = 0 then first_cvd = 1;
+		end;
+		prior_cva = 1;
+		prior_cvd = 1;
+	end;
 
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
@@ -13781,8 +13968,9 @@ if tested=1 then ever_tested=1;
 
 if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from caldate{t} to caldate_never_dot because caldate is missing for people who died in the previous time step JAS Jul23;
 	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  visit_hypertension=.; sbp_m=.;
-	diagnosed_hypertension=. ; on_anti_hypertensive =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
-	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.;  non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
+	dx_htn=. ; on_tx_htn =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
+	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.; prior_ihd =.; prior_cvd =.; prior_cva =.;
+	non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
 	date_last_non_hiv_tb =.; non_hiv_tb =.; non_hiv_tb_death =.;
 	non_hiv_tb_risk=.;  non_hiv_tb_diag_e=.;  non_hiv_tb_diag_e=.;  cur_non_hiv_tb_death_risk=.; 
 	cd4=.;cc=.;vc=.;vl=.;adc=.;adh=.;who4_=.;nod   =.;tcur=.;non_tb_who3_=.;
@@ -16861,13 +17049,34 @@ cur_dol_cns_tox=0; if o_dol and c_cns=1 then cur_dol_cns_tox=1;
 if 15 <= age  then do;
 util=1; * these in order ;
 if hiv=1 then util=util_hiv;* note this is for all with hiv - considered making it just for those registd;
-if c_tox=1 then util=util_tox;
-if cur_efa_cns_tox=1 then util=min(util,util_cns_efa_tox);
-if cur_dol_cns_tox=1 then util=min(util,util_cns_dol_tox); * cant be on both efa and dol;
-if non_tb_who3_ev  =1 and tb  =0 then util=util_non_tb_who3;
-if t ge 2 and (0 <= (caldate&j - date_most_recent_tb) < 0.5) then util=util_tb;
-if adc=1 then util=util_adc;
-* ts1m:  note that disability due to adc, who3 etc will only last 1 month when time step is 1 month ;
+	* change utilities to be multiplicative (e.g. if two comorbid conditions each with utility 0.9, total utility will be 0.9*0.9=0.81);
+	if c_tox=1 then util=util_tox;
+	if cur_efa_cns_tox=1 then util = util * util_cns_efa_tox;
+	if cur_dol_cns_tox=1 then util = util * util_cns_dol_tox; * cant be on both efa and dol;
+	if non_tb_who3_ev  =1 and tb  =0 then util = util * util_non_tb_who3;
+	if t ge 2 and (0 <= (caldate&j - date_most_recent_tb) < 0.5) then util = util * util_tb;
+	if adc=1 then util = util * util_adc;
+	* ts1m:  note that disability due to adc, who3 etc will only last 1 month when time step is 1 month ;
+	* HYPERTENSION;
+	if prior_cva = 1 then do;
+		if cva_severity =1 then util = util * util_cva_mild;
+		if cva_severity =2 then util = util * util_cva_mod;
+		if cva_severity =3 then util = util * util_cva_sev;
+	end;
+
+
+	if prior_ihd = 1 then do;
+		if ihd_this_per = 1 then do;
+			if ihd_severity =1 then util = util * util_ihda_mild;
+			if ihd_severity =2 then util = util * util_ihda_mod;
+			if ihd_severity =3 then util = util * util_ihda_sev;
+		end;
+		if ihd_this_per = 0 then do;
+			if ihd_severity =1 then util = util * util_ihdc_mild;
+			if ihd_severity =2 then util = util * util_ihdc_mod;
+			if ihd_severity =3 then util = util * util_ihdc_sev;
+		end;
+	end;
 end;
 
 
@@ -17273,8 +17482,10 @@ _dcost_test_f_sympt = cost_test_f_sympt*discount ;
 _dcost_test_f_sw = cost_test_f_sw *discount ;
 _dcost_test_f_non_anc = cost_test_f_non_anc*discount ;
 _dres_cost = res_cost*discount ; 
-_dcost_hypert_vis  = cost_hypert_vis*discount ; 
-_dcost_hypert_drug = cost_hypert_drug*discount ; 
+_dhtn_cost_scr = htn_cost_scr*discount;
+_dhtn_cost_drug = htn_cost_drug*discount;
+_dhtn_cost_clin = htn_cost_clin*discount;
+_dhtn_cost_cvd = htn_cost_cvd*discount;
 _dcost_self_test = cost_self_test*discount ;
 
 _d_t_adh_int_cost = t_adh_int_cost *discount;
@@ -17869,36 +18080,61 @@ end;
 dead_hivpos_cause1=0;dead_hivpos_tb=0; dead_hivpos_crypm=0; dead_hivpos_sbi=0; dead_hivpos_oth_adc=0; dead_hivpos_cause2=0;dead_hivpos_cause3=0;
 dead_hivpos_cause4=0; dead_hivpos_cvd=0; dead_cvd=0; dead_hivneg_cause4=0;dead_hivneg_cause3=0;dead_hivneg_cause2=0; 
 dead_hivneg_cvd=0; dead_cvd=0; dead_hivneg_cause5=0; dead_hivneg_tb=0; dead_tb=0; dead_hivpos_anycause=0;dead_hivneg_anycause=0;
+dead_hivpos_cvd_ge18=0; dead_hivpos_anycause_ge18=0; dead_hivneg_cvd_ge18=0; dead_hivneg_anycause_ge18=0;
+
+dead_cvd_ge18=0; dead_cvd_2544=0;dead_cvd_4564=0;dead_cvd_ge65=0;											 
 dead_cvd_3039m=0;dead_cvd_4049m=0;dead_cvd_5059m=0;dead_cvd_6069m=0;dead_cvd_7079m=0;dead_cvd_ge80m=0;
 dead_cvd_3039w=0;dead_cvd_4049w=0;dead_cvd_5059w=0;dead_cvd_6069w=0;dead_cvd_7079w=0;dead_cvd_ge80w=0;
+
 * death by cause and hiv status ;
 if dead=1 and caldate&j = death then do;
-if hiv=1 and dcause=1 then dead_hivpos_cause1=1;
-if hiv=1 and dcause=1 and dead_hiv_tb=1 then dead_hivpos_tb=1; 
-if hiv=1 and dcause=1 and dead_crypm=1 then dead_hivpos_crypm=1; 
-if hiv=1 and dcause=1 and dead_sbi=1 then dead_hivpos_sbi=1; 
-if hiv=1 and dcause=1 and dead_oth_adc=1 then dead_hivpos_oth_adc=1; 
-if hiv=1 and dcause=2 then dead_hivpos_cause2=1;
-if hiv=1 and dcause=3 then dead_hivpos_cause3=1;
-if hiv=1 and dcause=4 then do; dead_hivpos_cause4=1; dead_hivpos_cvd=1; dead_cvd=1; end;
-if hiv=1 then dead_hivpos_anycause=1;
-if hiv ne 1 and dcause=2 then dead_hivneg_cause2=1;
-if hiv ne 1 and dcause=3 then dead_hivneg_cause3=1;
-if hiv ne 1 and dcause=4 then do; dead_hivneg_cause4=1; dead_hivneg_cvd=1; dead_cvd=1; end;
-if hiv ne 1 and dcause=5 then do; dead_hivneg_cause5=1; dead_hivneg_tb=1; dead_tb=1; end;
-if hiv ne 1 then dead_hivneg_anycause=1;
-if dcause=4 and 30 <= age < 39 and gender=1 then dead_cvd_3039m=1;
-if dcause=4 and 40 <= age < 49 and gender=1 then dead_cvd_4049m=1;
-if dcause=4 and 50 <= age < 59 and gender=1 then dead_cvd_5059m=1;
-if dcause=4 and 60 <= age < 69 and gender=1 then dead_cvd_6069m=1;
-if dcause=4 and 70 <= age < 79 and gender=1 then dead_cvd_7079m=1;
-if dcause=4 and 80 <= age      and gender=1 then dead_cvd_ge80m=1;
-if dcause=4 and 30 <= age < 39 and gender=2 then dead_cvd_3039w=1;
-if dcause=4 and 40 <= age < 49 and gender=2 then dead_cvd_4049w=1;
-if dcause=4 and 50 <= age < 59 and gender=2 then dead_cvd_5059w=1;
-if dcause=4 and 60 <= age < 69 and gender=2 then dead_cvd_6069w=1;
-if dcause=4 and 70 <= age < 79 and gender=2 then dead_cvd_7079w=1;
-if dcause=4 and 80 <= age      and gender=2 then dead_cvd_ge80w=1;
+* death by cause and hiv status ;
+if dead=1 and caldate&j = death then do;
+	if hiv=1 then do;
+		if dcause=1 then dead_hivpos_cause1=1;
+		if dcause=1 and dead_hiv_tb=1 then dead_hivpos_tb=1; 
+		if dcause=1 and dead_crypm=1 then dead_hivpos_crypm=1; 
+		if dcause=1 and dead_sbi=1 then dead_hivpos_sbi=1; 
+		if dcause=1 and dead_oth_adc=1 then dead_hivpos_oth_adc=1; 
+		if dcause=2 then dead_hivpos_cause2=1;
+		if dcause=3 then dead_hivpos_cause3=1;
+		if dcause=4 then do; dead_hivpos_cause4=1; dead_hivpos_cvd=1; dead_cvd=1; end;
+		if 18 <= age and dcause=4 then dead_hivpos_cvd_ge18 = 1;
+		if 18 <= age then dead_hivpos_anycause_ge18 = 1;
+		dead_hivpos_anycause=1;
+	end;
+	if hiv ne 1 then do;
+		if dcause=2 then dead_hivneg_cause2=1;
+		if dcause=3 then dead_hivneg_cause3=1;
+		if dcause=4 then do; dead_hivneg_cause4=1; dead_hivneg_cvd=1; dead_cvd=1; end;
+		if dcause=5 then do; dead_hivneg_cause5=1; dead_hivneg_tb=1; dead_tb=1; end;
+		if 18 <= age and dcause=4 then dead_hivneg_cvd_ge18 = 1;
+		if 18 <= age then dead_hivneg_anycause_ge18 = 1;
+		dead_hivneg_anycause=1;
+	end;
+	if 18 <= age then dead_allcause_ge18=1;
+	if 20 <= age < 40 then dead_allcause_2039=1;
+	if 40 <= age < 60 then dead_allcause_4059=1;
+	if 60 <= age < 79 then dead_allcause_6079=1;
+	if dcause=4 then do;
+		if 30 <= age < 40 and gender=1 then dead_cvd_3039m=1;
+		if 40 <= age < 50 and gender=1 then dead_cvd_4049m=1;
+		if 50 <= age < 60 and gender=1 then dead_cvd_5059m=1;
+		if 60 <= age < 70 and gender=1 then dead_cvd_6069m=1;
+		if 70 <= age < 80 and gender=1 then dead_cvd_7079m=1;
+		if 80 <= age      and gender=1 then dead_cvd_ge80m=1;
+		if 30 <= age < 40 and gender=2 then dead_cvd_3039w=1;
+		if 40 <= age < 50 and gender=2 then dead_cvd_4049w=1;
+		if 50 <= age < 60 and gender=2 then dead_cvd_5059w=1;
+		if 60 <= age < 70 and gender=2 then dead_cvd_6069w=1;
+		if 70 <= age < 80 and gender=2 then dead_cvd_7079w=1;
+		if 80 <= age      and gender=2 then dead_cvd_ge80w=1;
+		if 18 <= age then dead_cvd_ge18 = 1;
+		if 25 <= age < 45 then dead_cvd_2544 = 1;
+		if 45 <= age < 65 then dead_cvd_4564 = 1;
+		if 65 <= age      then dead_cvd_ge65=1;
+		if htn_true = 1 and 18 <= age then dead_cvd_htn_ge18 = 1;
+	end;
 end;
 
 
@@ -18400,114 +18636,370 @@ s2_f =. ; if gender = 2 then s2_f = s2;
 newp_sw = 0;  if sw = 1 then newp_sw = newp; 
 
 
-*** hypertension by age and gender;
+*** *HYPERTENSION* by age and gender;
 
-diagnosed_hypertension_1549 = 0 ; on_anti_hypertensive_1549 = 0; hypertension_1549 = 0; hypertens180_1549 = 0;
-diagnosed_hypertension_5059 = 0 ; on_anti_hypertensive_5059 = 0; hypertension_5059 = 0; hypertens180_5059 = 0;
-diagnosed_hypertension_6069 = 0 ; on_anti_hypertensive_6069 = 0; hypertension_6069 = 0; hypertens180_6069 = 0;
-diagnosed_hypertension_7079 = 0 ; on_anti_hypertensive_7079 = 0; hypertension_7079 = 0; hypertens180_7079 = 0;
-diagnosed_hypertension_ge80 = 0 ; on_anti_hypertensive_ge80 = 0; hypertension_ge80 = 0; hypertens180_ge80 = 0;
-diagnosed_hypertension_1549m = 0 ; on_anti_hypertensive_1549m = 0; hypertension_1549m = 0;
-diagnosed_hypertension_5059m = 0 ; on_anti_hypertensive_5059m = 0; hypertension_5059m = 0;
-diagnosed_hypertension_6069m = 0 ; on_anti_hypertensive_6069m = 0; hypertension_6069m = 0;
-diagnosed_hypertension_7079m = 0 ; on_anti_hypertensive_7079m = 0; hypertension_7079m = 0;
-diagnosed_hypertension_ge80m = 0 ; on_anti_hypertensive_ge80m = 0; hypertension_ge80m = 0;
-diagnosed_hypertension_1549w = 0 ; on_anti_hypertensive_1549w = 0; hypertension_1549w = 0;
-diagnosed_hypertension_5059w = 0 ; on_anti_hypertensive_5059w = 0; hypertension_5059w = 0;
-diagnosed_hypertension_6069w = 0 ; on_anti_hypertensive_6069w = 0; hypertension_6069w = 0;
-diagnosed_hypertension_7079w = 0 ; on_anti_hypertensive_7079w = 0; hypertension_7079w = 0;
-diagnosed_hypertension_ge80w = 0 ; on_anti_hypertensive_ge80w = 0; hypertension_ge80w = 0;
-on1drug_antihyp_1549=0; on2drug_antihyp_1549=0; on3drug_antihyp_1549=0; on1drug_antihyp_5059=0; on2drug_antihyp_5059=0; on3drug_antihyp_5059=0; 
-on1drug_antihyp_6069=0; on2drug_antihyp_6069=0; on3drug_antihyp_6069=0; on1drug_antihyp_7079=0; on2drug_antihyp_7079=0; on3drug_antihyp_7079=0; 
-on1drug_antihyp_ge80=0; on2drug_antihyp_ge80=0; on3drug_antihyp_ge80=0; 
+hypertension_ge18 = 0; hypertension_1524 = 0; hypertension_2534 = 0; hypertension_3544 = 0; hypertension_4554 = 0; hypertension_5564 = 0; hypertension_ge65 = 0; 
+dx_htn_ge18 = 0; dx_htn_1524 = 0; dx_htn_2534 = 0; dx_htn_3544 = 0; dx_htn_4554 = 0; dx_htn_5564 = 0; dx_htn_ge65 = 0; 
+on_tx_htn_ge18 = 0; on_tx_htn_1524 = 0; on_tx_htn_2534 = 0; on_tx_htn_3544 = 0; on_tx_htn_4554 = 0; on_tx_htn_5564 = 0; on_tx_htn_ge65 = 0; 
+on_tx_htn_over_ge18 = 0; on_tx_htn_over_1524 = 0; on_tx_htn_over_2534 = 0; on_tx_htn_over_3544 = 0; on_tx_htn_over_4554 = 0; on_tx_htn_over_5564 = 0; on_tx_htn_over_ge65 = 0; 
+on1drug_antihyp_ge18 = 0; on1drug_antihyp_1524 = 0; on1drug_antihyp_2534 = 0; on1drug_antihyp_3544 = 0; on1drug_antihyp_4554 = 0; on1drug_antihyp_5564 = 0; on1drug_antihyp_ge65 = 0; 
+on2drug_antihyp_ge18 = 0; on2drug_antihyp_1524 = 0; on2drug_antihyp_2534 = 0; on2drug_antihyp_3544 = 0; on2drug_antihyp_4554 = 0; on2drug_antihyp_5564 = 0; on2drug_antihyp_ge65 = 0; 
+on3drug_antihyp_ge18 = 0; on3drug_antihyp_1524 = 0; on3drug_antihyp_2534 = 0; on3drug_antihyp_3544 = 0; on3drug_antihyp_4554 = 0; on3drug_antihyp_5564 = 0; on3drug_antihyp_ge65 = 0; 
+ever_tx_htn_ge18 = 0; ever_tx_htn_1524 = 0; ever_tx_htn_2534 = 0; ever_tx_htn_3544 = 0; ever_tx_htn_4554 = 0; ever_tx_htn_5564 = 0; ever_tx_htn_ge65 = 0; 
+ever_tx_htn_over_ge18 = 0; ever_tx_htn_over_1524 = 0; ever_tx_htn_over_2534 = 0; ever_tx_htn_over_3544 = 0; ever_tx_htn_over_4554 = 0; ever_tx_htn_over_5564 = 0; ever_tx_htn_over_ge65 = 0; 
+htn_control_ge18 = 0; htn_control_1524 = 0; htn_control_2534 = 0; htn_control_3544 = 0; htn_control_4554 = 0; htn_control_5564 = 0; htn_control_ge65 = 0; 
+htn_true_ge18 = 0; htn_true_1524 = 0; htn_true_2534 = 0; htn_true_3544 = 0; htn_true_4554 = 0; htn_true_5564 = 0; htn_true_ge65 = 0;
+normotensive_ge18 = 0; normotensive_1524 = 0; normotensive_2534 = 0; normotensive_3544 = 0; normotensive_4554 = 0; normotensive_5564 = 0; normotensive_ge65 = 0;
+htn_true_dx_ge18 = 0; htn_true_dx_1524 = 0; htn_true_dx_2534 = 0; htn_true_dx_3544 = 0; htn_true_dx_4554 = 0; htn_true_dx_5564 = 0; htn_true_dx_ge65 = 0;
+htn_over_dx_ge18 = 0; htn_over_dx_1524 = 0; htn_over_dx_2534 = 0; htn_over_dx_3544 = 0; htn_over_dx_4554 = 0; htn_over_dx_5564 = 0; htn_over_dx_ge65 = 0;
+sbp_max_over_ge18 = 0; sbp_over_ge18 = 0;
+																																				
+																																				
+																		
 
-if 15 <= age < 50 then do; 
-	if diagnosed_hypertension = 1 then diagnosed_hypertension_1549 = 1 ;
-	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_1549m = 1 ;
-	if diagnosed_hypertension = 1 and gender=2 then diagnosed_hypertension_1549w = 1 ;
+hypertens160_ge18 = 0; hypertens160_1524 = 0; hypertens160_2534 = 0; hypertens160_3544 = 0; hypertens160_4554 = 0; hypertens160_5564 = 0; hypertens160_ge65 = 0; 
+htn_true160_ge18 = 0; htn_true160_1524 = 0; htn_true160_2534 = 0; htn_true160_3544 = 0; htn_true160_4554 = 0; htn_true160_5564 = 0; htn_true160_ge65 = 0;
+htn_true_dx160_ge18 = 0; htn_true_dx160_1524 = 0; htn_true_dx160_2534 = 0; htn_true_dx160_3544 = 0; htn_true_dx160_4554 = 0; htn_true_dx160_5564 = 0; htn_true_dx160_ge65 = 0;
+on_tx_htn160_ge18 = 0; on_tx_htn160_1524 = 0; on_tx_htn160_2534 = 0; on_tx_htn160_3544 = 0; on_tx_htn160_4554 = 0; on_tx_htn160_5564 = 0; on_tx_htn160_ge65 = 0;
+htn_control160_ge18 = 0; htn_control160_1524 = 0; htn_control160_2534 = 0; htn_control160_3544 = 0; htn_control160_4554 = 0; htn_control160_5564 = 0; htn_control160_ge65 = 0;
 
-	if on_anti_hypertensive ge 1 then on_anti_hypertensive_1549 = 1 ;
-	if on_anti_hypertensive ge 1 and gender=1 then on_anti_hypertensive_1549m = 1 ;
-	if on_anti_hypertensive ge 1 and gender=2 then on_anti_hypertensive_1549w = 1 ;
-	if on_anti_hypertensive = 1 then on1drug_antihyp_1549 = 1 ;
-	if on_anti_hypertensive = 2 then on2drug_antihyp_1549 = 1 ;
-	if on_anti_hypertensive = 3 then on3drug_antihyp_1549 = 1 ;
+sbp_1519w = 0; sbp_2024w = 0; sbp_2529w = 0; sbp_3034w = 0; sbp_3539w = 0; sbp_4044w = 0; sbp_4549w = 0; sbp_5054w = 0; sbp_5559w = 0; sbp_6064w = 0; sbp_6569w = 0; sbp_7074w = 0; sbp_7579w = 0; sbp_ge80w = 0;  
+sbp_1519m = 0; sbp_2024m = 0; sbp_2529m = 0; sbp_3034m = 0; sbp_3539m = 0; sbp_4044m = 0; sbp_4549m = 0; sbp_5054m = 0; sbp_5559m = 0; sbp_6064m = 0; sbp_6569m = 0; sbp_7074m = 0; sbp_7579m = 0; sbp_ge80m = 0; 
+sbp_1519  = 0; sbp_2024  = 0; sbp_2529  = 0; sbp_3034  = 0; sbp_3539  = 0; sbp_4044  = 0; sbp_4549  = 0; sbp_5054  = 0; sbp_5559  = 0; sbp_6064  = 0; sbp_6569  = 0; sbp_7074  = 0; sbp_7579  = 0; sbp_ge80  = 0; 
+															
+															
+															
 
-	if hypertension = 1 then hypertension_1549 = 1;
-	if hypertension = 1 and gender=1 then hypertension_1549m = 1;
-	if hypertension = 1 and gender=2 then hypertension_1549w = 1;
-	if hypertens180 = 1 then hypertens180_1549 = 1;
+* CVD incidence - all events, both first and recurrent - symptomatic only (modsev); 
+
+ihd_inc_all_modsev_ge18m = 0; ihd_inc_all_modsev_ge18w = 0; 
+cva_inc_all_modsev_ge18m = 0; cva_inc_all_modsev_ge18w = 0;
+ihd_inc_all_modsev_2039m = 0; ihd_inc_all_modsev_2039w = 0;
+cva_inc_all_modsev_2039m = 0; cva_inc_all_modsev_2039w = 0;
+ihd_inc_all_modsev_4049m = 0; ihd_inc_all_modsev_4049w = 0;
+cva_inc_all_modsev_4049m = 0; cva_inc_all_modsev_4049w = 0;
+ihd_inc_all_modsev_5059m = 0; ihd_inc_all_modsev_5059w = 0;
+cva_inc_all_modsev_5059m = 0; cva_inc_all_modsev_5059w = 0;
+ihd_inc_all_modsev_6069m = 0; ihd_inc_all_modsev_6069w = 0;
+cva_inc_all_modsev_6069m = 0; cva_inc_all_modsev_6069w = 0;
+ihd_inc_all_modsev_7079m = 0; ihd_inc_all_modsev_7079w = 0;
+cva_inc_all_modsev_7079m = 0; cva_inc_all_modsev_7079w = 0;
+ihd_inc_all_modsev_ge80m = 0; ihd_inc_all_modsev_ge80w = 0;
+cva_inc_all_modsev_ge80m = 0; cva_inc_all_modsev_ge80w = 0;
+
+
+ihd_inc_all_modsev_2544 = 0;
+cva_inc_all_modsev_2544 = 0;
+ihd_inc_all_modsev_4564 = 0;
+cva_inc_all_modsev_4564 = 0;
+ihd_inc_all_modsev_ge65 = 0;
+cva_inc_all_modsev_ge65 = 0;
+
+prior_ihd_ge18m = 0; prior_ihd_ge18w = 0; 
+prior_cva_ge18m = 0; prior_cva_ge18w = 0; 
+prior_ihd_2039m=0; prior_cva_2039m=0; prior_ihd_2039w=0; prior_cva_2039w=0;
+prior_ihd_4049m=0; prior_cva_4049m=0; prior_ihd_4049w=0; prior_cva_4049w=0;
+prior_ihd_5059m=0; prior_cva_5059m=0; prior_ihd_5059w=0; prior_cva_5059w=0;
+prior_ihd_6069m=0; prior_cva_6069m=0; prior_ihd_6069w=0; prior_cva_6069w=0;
+prior_ihd_7079m=0; prior_cva_7079m=0; prior_ihd_7079w=0; prior_cva_7079w=0;
+prior_ihd_ge80m=0; prior_cva_ge80m=0; prior_ihd_ge80w=0; prior_cva_ge80w=0;
+
+if 20 <= age < 40 then do; 
+
+	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_2039m = 1; 
+	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_2039w = 1; 
+	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_2039m = 1;
+	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_2039w = 1;
+
+	if prior_ihd = 1 and gender = 1 then prior_ihd_2039m = 1;
+	if prior_ihd = 1 and gender = 2 then prior_ihd_2039w = 1;
+	if prior_cva = 1 and gender = 1 then prior_cva_2039m = 1;
+	if prior_cva = 1 and gender = 2 then prior_cva_2039w = 1;
 end;
-if 50 <= age < 59 then do; 
-	if diagnosed_hypertension = 1 then diagnosed_hypertension_5059 = 1 ;
-	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_5059m = 1 ;
-	if diagnosed_hypertension = 1 and gender=2 then diagnosed_hypertension_5059w = 1 ;
 
-	if on_anti_hypertensive ge 1 then on_anti_hypertensive_5059 = 1 ;
-	if on_anti_hypertensive ge 1 and gender=1 then on_anti_hypertensive_5059m = 1 ;
-	if on_anti_hypertensive ge 1 and gender=2 then on_anti_hypertensive_5059w = 1 ;
-	if on_anti_hypertensive = 1 then on1drug_antihyp_5059 = 1 ;
-	if on_anti_hypertensive = 2 then on2drug_antihyp_5059 = 1 ;
-	if on_anti_hypertensive = 3 then on3drug_antihyp_5059 = 1 ;
+if 40 <= age < 50 then do; 
 
-	if hypertension = 1 then hypertension_5059 = 1;
-	if hypertension = 1 and gender=1 then hypertension_5059m = 1;
-	if hypertension = 1 and gender=2 then hypertension_5059w = 1;
-	if hypertens180 = 1 then hypertens180_5059 = 1;
+	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_4049m = 1; 
+	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_4049w = 1; 
+	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_4049m = 1;
+	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_4049w = 1;
+
+	if prior_ihd = 1 and gender = 1 then prior_ihd_4049m = 1;
+	if prior_ihd = 1 and gender = 2 then prior_ihd_4049w = 1;
+	if prior_cva = 1 and gender = 1 then prior_cva_4049m = 1;
+	if prior_cva = 1 and gender = 2 then prior_cva_4049w = 1;													  
 end;
-if 60 <= age < 69 then do; 
-	if diagnosed_hypertension = 1 then diagnosed_hypertension_6069 = 1 ;
-	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_6069m = 1 ;
-	if diagnosed_hypertension = 1 and gender=2 then diagnosed_hypertension_6069w = 1 ;
-
-	if on_anti_hypertensive ge 1 then on_anti_hypertensive_6069 = 1 ;
-	if on_anti_hypertensive ge 1 and gender=1 then on_anti_hypertensive_6069m = 1 ;
-	if on_anti_hypertensive ge 1 and gender=2 then on_anti_hypertensive_6069w = 1 ;
-	if on_anti_hypertensive = 1 then on1drug_antihyp_6069 = 1 ;
-	if on_anti_hypertensive = 2 then on2drug_antihyp_6069 = 1 ;
-	if on_anti_hypertensive = 3 then on3drug_antihyp_6069 = 1 ;
-
-	if hypertension = 1 then hypertension_6069 = 1;
-	if hypertension = 1 and gender=1 then hypertension_6069m = 1;
-	if hypertension = 1 and gender=2 then hypertension_6069w = 1;
-	if hypertens180 = 1 then hypertens180_6069 = 1;
+if 50 <= age < 60 then do; 
+																  
+	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_5059m = 1; 
+	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_5059w = 1; 
+	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_5059m = 1;
+	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_5059w = 1;
+															
+	if prior_ihd = 1 and gender = 1 then prior_ihd_5059m = 1;
+	if prior_ihd = 1 and gender = 2 then prior_ihd_5059w = 1;
+	if prior_cva = 1 and gender = 1 then prior_cva_5059m = 1;
+	if prior_cva = 1 and gender = 2 then prior_cva_5059w = 1;
 end;
-if 70 <= age < 79 then do; 
-	if diagnosed_hypertension = 1 then diagnosed_hypertension_7079 = 1 ;
-	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_7079m = 1 ;
-	if diagnosed_hypertension = 1 and gender=2 then diagnosed_hypertension_7079w = 1 ;
 
-	if on_anti_hypertensive ge 1 then on_anti_hypertensive_7079 = 1 ;
-	if on_anti_hypertensive ge 1 and gender=1 then on_anti_hypertensive_7079m = 1 ;
-	if on_anti_hypertensive ge 1 and gender=2 then on_anti_hypertensive_7079w = 1 ;
-	if on_anti_hypertensive = 1 then on1drug_antihyp_7079 = 1 ;
-	if on_anti_hypertensive = 2 then on2drug_antihyp_7079 = 1 ;
-	if on_anti_hypertensive = 3 then on3drug_antihyp_7079 = 1 ;
+if 60 <= age < 70 then do; 
+																  
+	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_6069m = 1; 
+	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_6069w = 1; 
+	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_6069m = 1;
+	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_6069w = 1;
+														
+	if prior_ihd = 1 and gender = 1 then prior_ihd_6069m = 1;
+	if prior_ihd = 1 and gender = 2 then prior_ihd_6069w = 1;
+	if prior_cva = 1 and gender = 1 then prior_cva_6069m = 1;
+	if prior_cva = 1 and gender = 2 then prior_cva_6069w = 1;
+end;
 
-	if hypertension = 1 then hypertension_7079 = 1;
-	if hypertension = 1 and gender=1 then hypertension_7079m = 1;
-	if hypertension = 1 and gender=2 then hypertension_7079w = 1;
-	if hypertens180 = 1 then hypertens180_7079 = 1;
+if 70 <= age < 80 then do; 
+																  
+	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_7079m = 1; 
+	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_7079w = 1; 
+	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_7079m = 1;
+	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_7079w = 1;
+														
+	if prior_ihd = 1 and gender = 1 then prior_ihd_7079m = 1;
+	if prior_ihd = 1 and gender = 2 then prior_ihd_7079w = 1;
+	if prior_cva = 1 and gender = 1 then prior_cva_7079m = 1;
+	if prior_cva = 1 and gender = 2 then prior_cva_7079w = 1;
 end;
 
 if 80 <= age      then do; 
-	if diagnosed_hypertension = 1 then diagnosed_hypertension_ge80 = 1 ;
-	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_ge80m = 1 ;
-	if diagnosed_hypertension = 1 and gender=2 then diagnosed_hypertension_ge80w = 1 ;
 
-	if on_anti_hypertensive ge 1 then on_anti_hypertensive_ge80 = 1 ;
-	if on_anti_hypertensive ge 1 and gender=1 then on_anti_hypertensive_ge80m = 1 ;
-	if on_anti_hypertensive ge 1 and gender=2 then on_anti_hypertensive_ge80w = 1 ;
-	if on_anti_hypertensive = 1 then on1drug_antihyp_ge80 = 1 ;
-	if on_anti_hypertensive = 2 then on2drug_antihyp_ge80 = 1 ;
-	if on_anti_hypertensive = 3 then on3drug_antihyp_ge80 = 1 ;
-
-	if hypertension = 1 then hypertension_ge80 = 1;
-	if hypertension = 1 and gender=1 then hypertension_ge80m = 1;
-	if hypertension = 1 and gender=2 then hypertension_ge80w = 1;
-	if hypertens180 = 1 then hypertens180_ge80 = 1;
+	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_ge80m = 1; 
+	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_ge80w = 1; 
+	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_ge80m = 1;
+	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_ge80w = 1;
+															
+	if prior_ihd = 1 and gender = 1 then prior_ihd_ge80m = 1;
+	if prior_ihd = 1 and gender = 2 then prior_ihd_ge80w = 1;
+	if prior_cva = 1 and gender = 1 then prior_cva_ge80m = 1;
+	if prior_cva = 1 and gender = 2 then prior_cva_ge80w = 1;
 end;
 
+* hypertension cascade ;
+     
+if 18 <= age then do;
+	if hypertension = 1 then hypertension_ge18 = 1;
+	if hypertens160 = 1 then hypertens160_ge18 = 1;
+	if htn_true160 = 1 then do;
+		htn_true160_ge18 = 1;
+		if htn_true_dx = 1 then htn_true_dx160_ge18 = 1;
+		if on_tx_htn ge 1 then on_tx_htn160_ge18 = 1;
+		if htn_control = 1 then htn_control160_ge18 = 1;
+	end;
+	if dx_htn = 1 then dx_htn_ge18 = 1;
+	if htn_true_dx = 1 then htn_true_dx_ge18 = 1;
+	if htn_true = 1 then do;
+		htn_true_ge18 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_ge18 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_ge18 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_ge18 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_ge18 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_ge18 = 1;
+		if htn_control = 1 then htn_control_ge18 = 1;
+		if ihd_this_per_modsev=1 then ihd_inc_all_modsev_htn_ge18 = 1; 
+		if cva_this_per_modsev=1 then cva_inc_all_modsev_htn_ge18 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_ge18 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_ge18 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_ge18 = 1;
+	end;
+	if normotensive = 1 then normotensive_ge18 = 1;
+	sbp_max_over_ge18 = sbp_max_over; 
+	sbp_over_ge18 = sbp_over;
+
+	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_ge18m = 1; 
+	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_ge18w = 1; 
+	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_ge18m = 1;
+	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_ge18w = 1;
+	if prior_ihd = 1 and gender = 1 then prior_ihd_ge18m = 1;
+	if prior_ihd = 1 and gender = 2 then prior_ihd_ge18w = 1;
+	if prior_cva = 1 and gender = 1 then prior_cva_ge18m = 1;
+	if prior_cva = 1 and gender = 2 then prior_cva_ge18w = 1;
+end;
+
+if 25 <= age < 35 then do;
+	if hypertension = 1 then hypertension_2534 = 1;
+	if hypertens160 = 1 then hypertens160_2534 = 1;
+	if htn_true160 = 1 then do;
+		htn_true160_2534 = 1;
+		if htn_true_dx = 1 then htn_true_dx160_2534 = 1;
+		if on_tx_htn ge 1 then on_tx_htn160_2534 = 1;
+		if htn_control = 1 then htn_control160_2534 = 1;
+	end;
+	if dx_htn = 1 then dx_htn_2534 = 1;
+	if htn_true_dx = 1 then htn_true_dx_2534 = 1;
+	if htn_true = 1 then do;
+		htn_true_2534 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_2534 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_2534 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_2534 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_2534 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_2534 = 1;
+		if htn_control = 1 then htn_control_2534 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_2534 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_2534 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_2534 = 1;
+	end;
+	if normotensive = 1 then normotensive_2534 = 1;
+end;
+
+if 35 <= age < 45 then do;
+	if hypertension = 1 then hypertension_3544 = 1;
+	if hypertens160 = 1 then hypertens160_3544 = 1;
+	if htn_true160 = 1 then do;
+		htn_true160_3544 = 1;
+		if htn_true_dx = 1 then htn_true_dx160_3544 = 1;
+		if on_tx_htn ge 1 then on_tx_htn160_3544 = 1;
+		if htn_control = 1 then htn_control160_3544 = 1;
+	end;
+	if dx_htn = 1 then dx_htn_3544 = 1;
+	if htn_true_dx = 1 then htn_true_dx_3544 = 1;
+	if htn_true = 1 then do;
+		htn_true_3544 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_3544 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_3544 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_3544 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_3544 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_3544 = 1;
+		if htn_control = 1 then htn_control_3544 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_3544 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_3544 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_3544 = 1;
+	end;
+	if normotensive = 1 then normotensive_3544 = 1;
+end;
+
+if 45 <= age < 55 then do;
+	if hypertension = 1 then hypertension_4554 = 1;
+	if hypertens160 = 1 then hypertens160_4554 = 1;
+	if htn_true160 = 1 then do;
+		htn_true160_4554 = 1;
+		if htn_true_dx = 1 then htn_true_dx160_4554 = 1;
+		if on_tx_htn ge 1 then on_tx_htn160_4554 = 1;
+		if htn_control = 1 then htn_control160_4554 = 1;
+	end;
+	if dx_htn = 1 then dx_htn_4554 = 1;
+	if htn_true_dx = 1 then htn_true_dx_4554 = 1;
+	if htn_true = 1 then do;
+		htn_true_4554 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_4554 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_4554 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_4554 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_4554 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_4554 = 1;
+		if htn_control = 1 then htn_control_4554 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_4554 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_4554 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_4554 = 1;
+	end;
+	if normotensive = 1 then normotensive_4554 = 1;
+end;
+
+if 55 <= age < 65 then do;
+	if hypertension = 1 then hypertension_5564 = 1;
+	if hypertens160 = 1 then hypertens160_5564 = 1;
+	if htn_true160 = 1 then do;
+		htn_true160_5564 = 1;
+		if htn_true_dx = 1 then htn_true_dx160_5564 = 1;
+		if on_tx_htn ge 1 then on_tx_htn160_5564 = 1;
+		if htn_control = 1 then htn_control160_5564 = 1;
+	end;
+	if dx_htn = 1 then dx_htn_5564 = 1;
+	if htn_true_dx = 1 then htn_true_dx_5564 = 1;
+	if htn_true = 1 then do;
+		htn_true_5564 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_5564 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_5564 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_5564 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_5564 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_5564 = 1;
+		if htn_control = 1 then htn_control_5564 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_5564 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_5564 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_5564 = 1;
+	end;
+	if normotensive = 1 then normotensive_5564 = 1;
+end	;
+
+if 65 <= age 	 then do;
+	if hypertension = 1 then hypertension_ge65 = 1;
+	if hypertens160 = 1 then hypertens160_ge65 = 1;
+	if htn_true160 = 1 then do;
+		htn_true160_ge65 = 1;
+		if htn_true_dx = 1 then htn_true_dx160_ge65 = 1;
+		if on_tx_htn ge 1 then on_tx_htn160_ge65 = 1;
+		if htn_control = 1 then htn_control160_ge65 = 1;
+	end;
+	if dx_htn = 1 then dx_htn_ge65 = 1;
+	if htn_true_dx = 1 then htn_true_dx_ge65 = 1;
+	if htn_true = 1 then do;
+		htn_true_ge65 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_ge65 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_ge65 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_ge65 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_ge65 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_ge65 = 1;
+		if htn_control = 1 then htn_control_ge65 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_ge65 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_ge65 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_ge65 = 1;
+	end;
+	if normotensive = 1 then normotensive_ge65 = 1;
+	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_ge65 = 1; 
+	if cva_this_per_modsev=1 then cva_inc_all_modsev_ge65 = 1;
+end;
+
+* CVD event and mortality incidence age groupings (added 6-feb-24 for lancet gh reviews);
+if 25 <= age < 45 then do;
+	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_2544 = 1; 
+	if cva_this_per_modsev=1 then cva_inc_all_modsev_2544 = 1;
+end;
+
+if 45 <= age < 65 then do;
+	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_4564 = 1; 
+	if cva_this_per_modsev=1 then cva_inc_all_modsev_4564 = 1;
+end;
+
+if 15 <= age < 20 then sbp_1519 = sbp;  if 20 <= age < 25 then sbp_2024 = sbp;
+if 25 <= age < 30 then sbp_2529 = sbp;  if 30 <= age < 35 then sbp_3034 = sbp;
+if 35 <= age < 40 then sbp_3539 = sbp;  if 40 <= age < 45 then sbp_4044 = sbp;
+if 45 <= age < 50 then sbp_4549 = sbp;  if 50 <= age < 55 then sbp_5054 = sbp;
+if 55 <= age < 60 then sbp_5559 = sbp;  if 60 <= age < 65 then sbp_6064 = sbp;
+if 65 <= age < 70 then sbp_6569 = sbp;  if 70 <= age < 75 then sbp_7074 = sbp;
+if 75 <= age < 80 then sbp_7579 = sbp;  if 80 <= age then sbp_ge80 = sbp;
+
+if gender=2 and 15 <= age < 20 then sbp_1519w = sbp;  if gender=2 and 20 <= age < 25 then sbp_2024w = sbp;
+if gender=2 and 25 <= age < 30 then sbp_2529w = sbp;  if gender=2 and 30 <= age < 35 then sbp_3034w = sbp;
+if gender=2 and 35 <= age < 40 then sbp_3539w = sbp;  if gender=2 and 40 <= age < 45 then sbp_4044w = sbp;
+if gender=2 and 45 <= age < 50 then sbp_4549w = sbp;  if gender=2 and 50 <= age < 55 then sbp_5054w = sbp;
+if gender=2 and 55 <= age < 60 then sbp_5559w = sbp;  if gender=2 and 60 <= age < 65 then sbp_6064w = sbp;
+if gender=2 and 65 <= age < 70 then sbp_6569w = sbp;  if gender=2 and 70 <= age < 75 then sbp_7074w = sbp;
+if gender=2 and 75 <= age < 80 then sbp_7579w = sbp;  if gender=2 and 80 <= age then sbp_ge80w = sbp;
+
+if gender=1 and 15 <= age < 20 then sbp_1519m = sbp;  if gender=1 and 20 <= age < 25 then sbp_2024m = sbp;
+if gender=1 and 25 <= age < 30 then sbp_2529m = sbp;  if gender=1 and 30 <= age < 35 then sbp_3034m = sbp;
+if gender=1 and 35 <= age < 40 then sbp_3539m = sbp;  if gender=1 and 40 <= age < 45 then sbp_4044m = sbp;
+if gender=1 and 45 <= age < 50 then sbp_4549m = sbp;  if gender=1 and 50 <= age < 55 then sbp_5054m = sbp;
+if gender=1 and 55 <= age < 60 then sbp_5559m = sbp;  if gender=1 and 60 <= age < 65 then sbp_6064m = sbp;
+if gender=1 and 65 <= age < 70 then sbp_6569m = sbp;  if gender=1 and 70 <= age < 75 then sbp_7074m = sbp;
+if gender=1 and 75 <= age < 80 then sbp_7579m = sbp;  if gender=1 and 80 <= age then sbp_ge80m = sbp;
 	
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
