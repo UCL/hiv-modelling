@@ -1009,44 +1009,154 @@ end;
 
 
 
-* SBP AND CVD MORTALITY RISK ;   
+* *HYPERTENSION* SBP AND CVD MORTALITY RISK ;   
 
 * values of these will be sampled from distributions as part of the calibration to reflect uncertainty and variability ;
 
-* probability of 1 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
-prob_sbp_increase = 0.10; 
+* probability of 1 mmHg rise in sbp in a period;
+%sample(prob_sbp_increase, 0.075 0.100 0.125 0.150 0.175, 0.125 0.250 0.250 0.250 0.125); 
+* additive probability of 1 mmHg rise in sbp each period in the future (modelling 0/0.5/1 mmHg mean SBP rise per decade in the future);
+%sample_uniform(sbp_cal_eff, 0.0 0.0125 0.025);
+* year in which calendar year sbp rise effect starts;
+sbp_cal_yr = 2015;
+* relative risk of SBP increase if on antihypertensive medication;
+rr_sbp_inc_on_antihyp = 0.5;
+* probability of having symptoms if SBP >180;
+prob_symp_hypertension = 0.025; 
+* Probability of hypertension diagnosis for a given setting (low, med, high);
+%sample_uniform(rr_htn_diagnosis, 0.67 1 1.5);
+* probabily of higher rate of diagnosis in women (greater health system exposure/health-seeking)
+	* References: 
+		Geldsetzer Lancet 2019 - RR for diagnosis in women 1.43 (1.36-1.50) in SSA using multivariate regression, 1.52 (1.45-1.60) with all countries having same weight)
+								RR for measurement in women 1.10 (1.08-1.12) in SSA with all countries having same weight)
+		Zhou Lancet 2021 - proportion women in SSA diagnosed 54%, proportion men diagnosed 34% (1.59-fold higher);		
+%sample_uniform(rr_test_sbp_women, 1 1.1 1.2);
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
-prob_test_sbp_undiagnosed = 0.01;
+prob_test_sbp_undiagnosed = 0.01 * rr_htn_diagnosis;
 * measurement error and variability in sbp ;
-measurement_error_var_sbp = 7; 
-* probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for 
-hypertension, per period;
-prob_test_sbp_diagnosed = 0.1; 
-* probability of initiating anti-hypertensive at initial clinic visit at which hypertension is diagnosed ;
-prob_imm_anti_hypertensive = 0.9; 
-* for a person with diagnosed hypertension but not in care (and therefore not on anti-hyptertensives, probability of returning to care and 
-starting anti-hypertensive;
-prob_start_anti_hyptertensive = 0.01; 
-* probability of having a clinic visitfor hypertension if on antihypertensives and due a visit (currently programmed as annual);
-prob_visit_hypertension = 0.7;
-* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
-interval_visit_hypertension=1;
-* for person on anti-hypertensive probability of stopping anti-hypertensive (and therefore no longer under care for hypertension 
-(visit_hypertenion = 0);
-prob_stop_anti_hypertensive = 0.03; 
-* for a person on 1 anti-hypertensive with current measured sbp > 140 probability of intensification to 2 drugs;
-prob_intensify_1_2 = 0.1; 
-* for a person on 2 anti-hypertensives with current measured sbp > 140 probability of intensification to 3 drugs;
-prob_intensify_2_3 = 0.1; 
-* effect of sbp on risk of cvd death;
-effect_sbp_cvd_death = 0.05;
-* effect of gender on risk of cvd death;
-effect_gender_cvd_death = 0.4;
-* effect of age on risk of cvd death;
-effect_age_cvd_death = 0.03;
-* base risk of cvd (before adding effects of age, gender, sbp);
-base_cvd_death_risk = 0.00002;
+measurement_error_var_sbp = 10; 
+* RR of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
+						 
+prob_test_sbp_diagnosed = 0.05 * rr_htn_diagnosis; 
+* RR of getting bp tested in a person <40 years of age compared to baseline probability;
+rr_test_sbp_young = 0.5; 
+* relative risk of bp testing for current HIV visit;
+rr_test_sbp_hiv = 2;
 
+** Community testing;
+first_comm_test = .;
+* prob testing in commmunity;
+prob_test_sbp_comm = 0;
+* prob link from community testing to clinic;
+prob_htn_link = 0;
+* comm test interval;
+comm_test_interval = .;
+* comm test age (e.g. all adults vs targeted to >=40);
+comm_test_age = .;
+
+* probability of hypertension treatment initiation and intensification ;
+	* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
+	%sample_uniform(prob_imm_htn_tx_s1, 0.1 0.2 0.3); 
+	* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
+	prob_imm_htn_tx_s2 = prob_imm_htn_tx_s1 + 0.3;
+	* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
+	%sample_uniform(prob_start_htn_tx_s1, 0.3 0.4 0.5);
+	* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
+	prob_start_htn_tx_s2 = prob_start_htn_tx_s1 + 0.3;
+	* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
+	%sample_uniform(prob_restart_htn_tx_s1, 0.9 0.95 1); 
+	* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
+	prob_restart_htn_tx_s2 = prob_restart_htn_tx_s1;
+	
+	* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
+	%sample_uniform(prob_intensify_1_2, 0.1 0.15 0.2); 
+	* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
+	%sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 
+	
+
+* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
+		%sample_uniform(htn_retention_patt, 1 2 3);
+		if htn_retention_patt = 1 then do;
+			prob_visit_htn_v1 = 0.57 ;
+			prob_visit_htn_v2 = 0.67 ;
+			prob_visit_htn_v3 = 0.76 ;
+			prob_visit_htn_v4 = 0.81 ;
+			prob_visit_htn_v5 = 0.86 ;
+		end; 
+		if htn_retention_patt = 2 then do;
+			prob_visit_htn_v1 = 0.60 ;
+			prob_visit_htn_v2 = 0.70 ;
+			prob_visit_htn_v3 = 0.80 ;
+			prob_visit_htn_v4 = 0.85 ;
+			prob_visit_htn_v5 = 0.90 ;
+		end; 
+		if htn_retention_patt = 3 then do;
+			prob_visit_htn_v1 = 0.63 ;
+			prob_visit_htn_v2 = 0.74 ;
+			prob_visit_htn_v3 = 0.84 ;
+			prob_visit_htn_v4 = 0.89 ;
+			prob_visit_htn_v5 = 0.90 ;
+		end; 
+
+* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
+interval_visit_hypertension=0.25;
+
+* integration of hiv and hypertension visits;
+integration = 0;
+
+* probability of acute treatment for MI or CVA;
+%sample_uniform(rr_cvd_tx, 0.5 1 2);
+prob_ihd_tx = 0.4 * rr_cvd_tx;
+prob_cva_tx = 0.4 * rr_cvd_tx;
+%sample_uniform(rr_cvd_tx_effective, 0.5 1 2);
+prob_ihd_tx_effective = 0.25 * rr_cvd_tx_effective;
+prob_cva_tx_effective = 0.25 * rr_cvd_tx_effective;
+
+* effect of admission for MI or CVA treatment;
+rr_mort_ihd_tx = 0.8;
+rr_mort_cva_tx = 0.6;
+
+** CVD events;
+	* Ischemic heart disease (IHD);
+	* effect of sbp on risk of IHD events;
+	effect_sbp_ihd = 0.035;
+	* effect of gender on risk of cvd death;
+	effect_gender_ihd = 0.4;
+	* effect of age on risk of cvd death;
+	effect_age_ihd = 0.07;
+	* base risk of cvd (before adding effects of age, gender, sbp);
+	%sample_uniform(base_ihd_risk, 0.000018 0.000027);
+	* effect of prior CVD on IHD risk;
+	effect_cvd_ihd = 1.8;
+	* probability of death with acute and chronic IHD;
+	ihd_acute_death_risk_1 = 0.05;
+	ihd_acute_death_risk_2 = 0.2;
+	ihd_acute_death_risk_3 = 0.4;
+	ihd_chronic_death_risk_1 = 0.01;
+	ihd_chronic_death_risk_2 = 0.02;
+	ihd_chronic_death_risk_3 = 0.04;
+
+	* Stroke (CVA);
+	* effect of sbp on risk of CVA events;
+	effect_sbp_cva = 0.05;
+	* effect of gender on risk of cvd death;
+	effect_gender_cva = 0;
+	* effect of age on risk of cvd death;
+	effect_age_cva = 0.09;
+	* base risk of cvd (before adding effects of age, gender, sbp);
+	%sample_uniform(base_cva_risk, 0.000005 0.0000075);
+	* effect of prior CVD on CVA risk;
+	effect_cvd_cva = 1.8;
+	* probability of death with acute and chronic CVA;
+	cva_acute_death_risk_1 = 0.1;
+	cva_acute_death_risk_2 = 0.3;
+	cva_acute_death_risk_3 = 0.5;
+	cva_chronic_death_risk_1 = 0.01;
+	cva_chronic_death_risk_2 = 0.03;
+	cva_chronic_death_risk_3 = 0.05;
+	
+	* relative risk of CVD with HIV (base risk for CD4 >500 and VL <1000);
+	risk_cvd_hiv = 1.2;
 
 * NON-HIV TB ;  * update_24_4_21;
 non_hiv_tb_risk = 0.0005;  
@@ -1210,8 +1320,33 @@ cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ; * note this is reduced by 75% in create wide file;
 sw_program_cost = 0.010 ; * placeholder; *consider varying by intensity;
-cost_antihyp = 0.0015; * cost per 3 months of anti-hypertensive drug (in $1000) ;
-cost_vis_hypert = 0.0015; * clinic cost per hypertension visit (in $1000);
+
+* HYPERTENSION costs (in thousands);
+cost_htn_link_voucher = .;
+cost_htn_screen_comm = .;
+cost_htn_visit1 = 0.005;
+cost_htn_visit2 = 0.010;
+%sample_uniform(rr_cost_htn_visitInt, 0 0.5);
+cost_htn_drug1 = 0.0015;
+cost_htn_drug2 = 0.0015;
+cost_htn_drug3 = 0.0030;
+cost_ihd_tx = 2.56;
+cost_cva_tx = 2.38;
+%sample_uniform(rr_cost_lowqual_cvdcare, 0.25 0.5 1.0);
+cost_ihd_tx_lowqual = cost_ihd_tx * rr_cost_lowqual_cvdcare;
+cost_cva_tx_lowqual = cost_cva_tx * rr_cost_lowqual_cvdcare;
+
+
+* HYPERTENSION utilities; * GBD 2019 DISABILITY WEIGHTS;
+util_cva_mild = 0.981; *disability weight = 0.019;
+util_cva_mod = 0.684; *disability weight = 0.316;
+util_cva_sev = 0.412; *disability weight = 0.588;
+util_ihda_mild = 0.963; * avg weight for angina/heart failure = 0.037;
+util_ihda_mod = 0.916; * avg weight for angina/heart failure = 0.084;
+util_ihda_sev = 0.821; * avg weight for angina/heart failure = 0.179;
+util_ihdc_mild = 0.963; * avg weight for angina/heart failure = 0.037;
+util_ihdc_mod = 0.924; * avg weight for angina/heart failure = 0.076;
+util_ihdc_sev = 0.827; * avg weight for angina/heart failure = 0.173;																 
 
 
 * based on salomom et al lancet 2012;
@@ -1485,7 +1620,6 @@ if country in ('South Africa', 'Zimbabwe', 'Malawi') then do;
 end;
 
 
-
 if country = 'Cote d Ivoire' then do;
 	cum13=cum12+inc13; 
 	e=rand('uniform');
@@ -1505,7 +1639,6 @@ if country = 'Cote d Ivoire' then do;
 	if cum13 <= e          then age= 55+rand('uniform')*10;  
 	lowest_age_at_start=-80;
 end;
-
 
 
 age=round(age, .25);
@@ -1805,39 +1938,49 @@ hbv=0;
 if e < 0.03 then hbv=1;
 
 
-* define sbp in 1989 ;  * update_24_4_21;
+* *HYPERTENSION* define sbp in 1989 ;  * update_24_4_21;
 
-select;	* JAS May2021 ;
+select;	* JAS May2021 ; * based on values from NCD-RisC Int J Epi 2018. uPDATED 21Apr2023;
 	when ( age < 15) 		do; sbp=.;
 							end;	
-	when (15 <= age < 25) 		do; %sample(sbp,	115		125 	135, 
-												0.40 	0.40 	0.20); 
+	when (15 <= age < 20) 	do; %sample(sbp,	95		105		115 	125 	135 	145 	155 	165 	175 	185,
+												0.27	0.20	0.19 	0.16 	0.10	0.07	0.01	0.00	0.00	0.00); 
 							end;
-	when (25 <= age < 35) 	do; %sample(sbp, 	115 	125 	135, 
-												0.20 	0.50 	0.30); 
+	when (20 <= age < 30) 	do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.18	0.20	0.20 	0.17 	0.11	0.10	0.03	0.01	0.00	0.00); 
 							end;
-	when (35 <= age < 45) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185,
-												0.20 	0.25 	0.15 	0.15 	0.15 	0.05 	0.04 	0.01);
+	when (30 <= age < 40) 	do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185,
+												0.18	0.18	0.14 	0.14 	0.14 	0.14 	0.06 	0.01 	0.01 	0.00);
 							end;
-	when (45 <= age < 55) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
-												0.20 	0.15 	0.15 	0.15 	0.15 	0.10 	0.08 	0.02);
+	when (40 <= age < 50) 	do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.12	0.12	0.14 	0.16 	0.16 	0.16 	0.10 	0.02 	0.01 	0.01);
 							end;
-	when (55 <= age < 65) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
-												0.15 	0.15 	0.15 	0.15 	0.15 	0.10 	0.10 	0.05); 
+	when (50 <= age < 60) 	do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.08	0.08	0.08 	0.15 	0.15 	0.20 	0.18 	0.04 	0.02 	0.02); 
 							end;
-	when (65 <= age) 		do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
-												0.10 	0.10 	0.10 	0.15 	0.15 	0.15 	0.15 	0.10); 
+	when (60 <= age < 70) 	do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.02	0.04	0.08 	0.14 	0.16 	0.20 	0.20 	0.07 	0.05 	0.04); 
+							end;
+	when (70 <= age) 		do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.01	0.03	0.06 	0.11 	0.17 	0.20 	0.20 	0.09 	0.07 	0.06); 
 							end;
 	otherwise xxx=1;
 end;
 
-* for simplicity assume nobody on anti-hypertensives at baseline in 1989;
-diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
+* for simplicity assume nobody on anti-hypertensives at baseline in 1989 and no one with prior CVD;
+dx_htn = 0; on_tx_htn = 0; ever_on_anti_hyp=0;
+prior_cvd = 0; prior_cvd_modsev = 0; prior_cva = 0; prior_ihd = 0;
+cva_severity = 0; ihd_severity = 0; 
 
 * define person-specific effect of 1, 2 and 3 anti-hypertensives;
 %sample(effect_anti_hyp_1, 10 20 30, 0.7 0.2 0.1); 
 %sample(effect_anti_hyp_2, 10 20 30, 0.7 0.2 0.1); 
 %sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
+
+* define person-specific risk of sbp increase per period;
+%sample_uniform(sbp_rr, 0.56 1 1.8);
+* define person-specific risk of sbp increase per period during middle age (40-64);
+%sample_uniform(sbp_rr_age, 1 1.5 2);
 
 
 u=rand('uniform');low_preg_risk=0;
