@@ -169,7 +169,9 @@ newp_seed = 7;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
 * hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (rand('uniform')*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
 * p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
-
+* hard_reach_lower_htn;		hard_reach_lower_htn = 0 + (rand('uniform')*0.05); hard_reach_lower_htn = round(hard_reach_lower_htn,0.01);
+* p_hard_reach_htn_w;		p_hard_reach_htn_w = p_hard_reach_w - hard_reach_lower_htn;
+* p_hard_reach_htn_m;		p_hard_reach_htn_m = p_hard_reach_m - hard_reach_lower_htn;
 
 
 * PREGNANCY AND BREASTFEEDING;
@@ -4018,12 +4020,26 @@ if t ge 2 then do;
 		d_sw=rand('uniform');
 		if d_sw < rate_stop_sexwork/(sqrt(rred_rc_base)) or age ge 50 then do; 
 
-			sw=0; sw_program_visit=0; date_stop_sw=caldate{t};  
-			date_last_sw_prog_vis=caldate{t};
-			sw_test_6mthly=0;
-			eff_sw_higher_int = sw_higher_int;
-			*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
-			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+			sw=0; 
+			if sw_program_visit=1 then do;		
+				date_stop_sw=caldate{t};  
+				date_last_sw_prog_vis=caldate{t};
+				sw_test_6mthly=0;
+				eff_sw_higher_int = sw_higher_int;
+				*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
+				eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+			end;
+			sw_program_visit=0; 
+			* CHECK BEFORE MERGING PR - does this now work? 
+			Do we need to reset these variables as well (as in section on disengaging from SW program): 
+				eff_rate_persist_sti
+				eff_rate_test_startprep_any
+				eff_rate_choose_stop_prep_oral	
+				eff_rate_choose_stop_prep_cab
+				eff_rate_choose_stop_prep_len	
+				eff_rate_choose_stop_prep_vr 	
+				eff_prob_prep_any_restart_choice
+				;
 
 		end;
 	end;
