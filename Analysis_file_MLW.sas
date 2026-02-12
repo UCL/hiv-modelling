@@ -1,8 +1,8 @@
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 
 
 data a;
-set a.wide_mlw_07_01_2026_ops;
+set a.wide_gen_mlw_29_01_2026_ops;;
 run;
 
 /*
