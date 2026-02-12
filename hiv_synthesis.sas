@@ -2320,6 +2320,15 @@ if covid_disrup_extent = 1   then do; w=rand('uniform'); if w <= 1.0 then covid_
 option=.;
 
 
+
+* USE OF CONDOM INTERVENTION;
+* Condom provision and promotion;
+* Condom use can be reduced from year_interv by changing condom_change_year_i to 1 in options code;
+* Not explicitly modelled before year_interv, but the switch off impacts newp and ep;
+use_condom_intervention_newp = 0;
+if rand('uniform')<prop_use_condom_int_newp then use_condom_intervention_newp = 1;		*Proportion of individuals use condoms provided by funded intervention;
+
+
 * this is a random uniform number for each person;
 _p1 = rand('uniform'); _p2 = rand('uniform'); _p3 = rand('uniform'); _p4 = rand('uniform'); _p5 = rand('uniform'); _p6 = rand('uniform'); 
 _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand('uniform'); 
@@ -2497,12 +2506,12 @@ who may be dead and hence have caldate{t} missing;
 	set_in_options=1;
 	* note that we can use the set_in_options variable when we want to overwrite parameter values in option;
 
+
  	*Option 0 is continuation at current rates - status quo;
-							  
+
+ 
  	*Option 1;
-																														  
 	if option = 1 then do;
-		*Specify option 1;
 												 
 	end;
  
