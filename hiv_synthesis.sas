@@ -2304,7 +2304,7 @@ p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 if (gender=1 and p <= p_hard_reach_htn_m) or (gender=2 and q <= p_hard_reach_htn_w) then hard_reach_htn=1;																										  
 
-if pwid=1 then hard_reach=1;
+if pwid=1 then hard_reach=1;		* MSM are no longer automatically defined as hard to reach Feb 2026;
 
 
 
@@ -13071,8 +13071,8 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 
 	who4_time = who4_date-date1pos;
 
-* latest measured vl;
-if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
+	* latest measured vl;
+	if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 
 
 
@@ -13080,9 +13080,9 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 	
 	if dead=0 and death = . and dead_ ne 1 then do;  * update_24_4_21;
 
-	dead_diagnosed=.; dead_naive=.; dead_onart=.; dead_line1_lf0=.; dead_line1_lf1=.; dead_line2_lf1=.; dead_line2_lf2=.; dead_artexpoff=.; dead_nn=.;dead_pir=.;
-	dead_adc=.;  dead_oth_adc=.; dead_crypm=.; dead_sbi=.; dead_hivrel_onart=.;
-	dead_6m_onart=.;dead_12m_onart=.;dead_24m_onart=.;dead_36m_onart=.;
+		dead_diagnosed=.; dead_naive=.; dead_onart=.; dead_line1_lf0=.; dead_line1_lf1=.; dead_line2_lf1=.; dead_line2_lf2=.; dead_artexpoff=.; dead_nn=.;dead_pir=.;
+		dead_adc=.;  dead_oth_adc=.; dead_crypm=.; dead_sbi=.; dead_hivrel_onart=.;
+		dead_6m_onart=.;dead_12m_onart=.;dead_24m_onart=.;dead_36m_onart=.;
 
 		hiv_death_rate=base_rate*fold_decr_hivdeath;
 
@@ -13100,11 +13100,11 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		* todo: ensure only one adc / tb per 3 month period;
 
 		if  inc_death_rate_aids_disrup_covid = 1 and covid_disrup_affected = 1 and (adc=1 or (0 <= (caldate{t} - date_most_recent_tb) <= 0.5)) then do;  
-		hiv_death_rate = hiv_death_rate * 2;
+			hiv_death_rate = hiv_death_rate * 2;
 		end;
 
-		if pcp_p   =1  then hiv_death_rate = hiv_death_rate*effect_pcp_p_death_rate;  
-		if onart = 1 then hiv_death_rate = ind_effect_art_hiv_disease_death * hiv_death_rate;   
+		if pcp_p = 1	then hiv_death_rate = hiv_death_rate*effect_pcp_p_death_rate;  
+		if onart = 1 	then hiv_death_rate = ind_effect_art_hiv_disease_death * hiv_death_rate;   
 
 		* iris risk due to starting art with very low cd4 count and not under clinical care;
 		if time0=caldate{t} and onartvisit0=1 and . < cd4 < 100 then hiv_death_rate = hiv_death_rate + death_r_iris_pop_wide_tld ;
@@ -13112,12 +13112,13 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		death_rix = 1 - exp(-0.25*hiv_death_rate); 
 * ts1m: *	death_rix = 1 - exp (-(1/12)*hiv_death_rate);
 		x3=rand('uniform');
+
 		if x3 le death_rix then do;
 
-		rdcause=1;
+			rdcause=1;
 
-* some of these deaths are related to CD4 but wont go down as who4_ related (eg other cancers, but not incl liver death)
-so a proportion (15%) are classified as non-who4_;
+			* some of these deaths are related to CD4 but wont go down as who4_ related (eg other cancers, but not incl liver death)
+			so a proportion (15%) are classified as non-who4_;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4;agedeath=age;
 			if tb=1 then dead_hiv_tb=1; if crypm=1 then dead_crypm=1; if sbi=1 then dead_sbi=1; if oth_adc=1 then dead_oth_adc=1;  
 
@@ -13139,6 +13140,7 @@ so a proportion (15%) are classified as non-who4_;
 			r=rand('uniform');
 			if r < 0.85 then do; dcause=1;if who4_=0 then do; who4_=1; who4_date=caldate{t}; cd4_who4_=cd4;end; end;
 			if r >= 0.85 then dcause=2;
+
 		end;
 
 		if hbv=1 or hcv=1 then do;
@@ -13147,6 +13149,7 @@ so a proportion (15%) are classified as non-who4_;
 * consider if * dependent_on_time_step_length ;
 			liverdri3 = 1 - exp(-0.25*liverdra); x3=rand('uniform');
 		end;
+
 		if x3 le liverdri3 then do;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; liver_death=1; dcause=2; rdcause=1; agedeath=age;
 		end;
@@ -13170,92 +13173,93 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 		death rates change linearly between 1989 and 2019 to arrive at 2019 global burden of disease data
 		death rates remain constant at GBD 2019 levels after 2019; 
 		*HYPERTENSION - ALL CAUSE MORTALITY HIV;
-	if caldate{t} < 2019 then do;
-		if gender=1 then do; 
-			if 15 <= age < 20 then ac_death_rate = 0.00200 - (0.000024 * (caldate{t} - 1989));
-			if 20 <= age < 25 then ac_death_rate = 0.00320 - (0.000044 * (caldate{t} - 1989));
-			if 25 <= age < 30 then ac_death_rate = 0.00580 - (0.000118 * (caldate{t} - 1989));
-			if 30 <= age < 35 then ac_death_rate = 0.00750 - (0.000159 * (caldate{t} - 1989));
-			if 35 <= age < 40 then ac_death_rate = 0.00800 - (0.000153 * (caldate{t} - 1989));
-			if 40 <= age < 45 then ac_death_rate = 0.01000*0.97 - (0.000166 * (caldate{t} - 1989));
-			if 45 <= age < 50 then ac_death_rate = 0.01200*0.97 - (0.000174 * (caldate{t} - 1989));
-			if 50 <= age < 55 then ac_death_rate = 0.01900*0.90 - (0.000252 * (caldate{t} - 1989));
-			if 55 <= age < 60 then ac_death_rate = 0.02500*0.90 - (0.000287 * (caldate{t} - 1989));
-			if 60 <= age < 65 then ac_death_rate = 0.03500*0.90 - (0.000368 * (caldate{t} - 1989));
-			if 65 <= age < 70 then ac_death_rate = 0.04500*0.90 - (0.000379 * (caldate{t} - 1989));
-			if 70 <= age < 75 then ac_death_rate = 0.05500*0.90 - (0.000224 * (caldate{t} - 1989));
-			if 75 <= age < 80 then ac_death_rate = 0.06500*0.90 + (0.000100 * (caldate{t} - 1989));
-			if 80 <= age < 85 then ac_death_rate = 0.10000*0.90 + (0.000035 * (caldate{t} - 1989));
-			if 85 <= age  then ac_death_rate = 0.4000*0.90 - (0.007056 * (caldate{t} - 1989));
+		if caldate{t} < 2019 then do;
+			if gender=1 then do; 
+				if 15 <= age < 20 then ac_death_rate = 0.00200 - (0.000024 * (caldate{t} - 1989));
+				if 20 <= age < 25 then ac_death_rate = 0.00320 - (0.000044 * (caldate{t} - 1989));
+				if 25 <= age < 30 then ac_death_rate = 0.00580 - (0.000118 * (caldate{t} - 1989));
+				if 30 <= age < 35 then ac_death_rate = 0.00750 - (0.000159 * (caldate{t} - 1989));
+				if 35 <= age < 40 then ac_death_rate = 0.00800 - (0.000153 * (caldate{t} - 1989));
+				if 40 <= age < 45 then ac_death_rate = 0.01000*0.97 - (0.000166 * (caldate{t} - 1989));
+				if 45 <= age < 50 then ac_death_rate = 0.01200*0.97 - (0.000174 * (caldate{t} - 1989));
+				if 50 <= age < 55 then ac_death_rate = 0.01900*0.90 - (0.000252 * (caldate{t} - 1989));
+				if 55 <= age < 60 then ac_death_rate = 0.02500*0.90 - (0.000287 * (caldate{t} - 1989));
+				if 60 <= age < 65 then ac_death_rate = 0.03500*0.90 - (0.000368 * (caldate{t} - 1989));
+				if 65 <= age < 70 then ac_death_rate = 0.04500*0.90 - (0.000379 * (caldate{t} - 1989));
+				if 70 <= age < 75 then ac_death_rate = 0.05500*0.90 - (0.000224 * (caldate{t} - 1989));
+				if 75 <= age < 80 then ac_death_rate = 0.06500*0.90 + (0.000100 * (caldate{t} - 1989));
+				if 80 <= age < 85 then ac_death_rate = 0.10000*0.90 + (0.000035 * (caldate{t} - 1989));
+				if 85 <= age  then ac_death_rate = 0.4000*0.90 - (0.007056 * (caldate{t} - 1989));
+			end;
+
+			if gender=2 then do; 
+				if 15 <= age < 20 then ac_death_rate = 0.00150 - (0.000023 * (caldate{t} - 1989));
+				if 20 <= age < 25 then ac_death_rate = 0.00280 - (0.000057 * (caldate{t} - 1989));
+				if 25 <= age < 30 then ac_death_rate = 0.00400 - (0.000087 * (caldate{t} - 1989));
+				if 30 <= age < 35 then ac_death_rate = 0.00400 - (0.000075 * (caldate{t} - 1989));
+				if 35 <= age < 40 then ac_death_rate = 0.00420 - (0.000064 * (caldate{t} - 1989));
+				if 40 <= age < 45 then ac_death_rate = 0.00550*0.97 - (0.000074 * (caldate{t} - 1989));
+				if 45 <= age < 50 then ac_death_rate = 0.00750*0.97 - (0.000103 * (caldate{t} - 1989));
+				if 50 <= age < 55 then ac_death_rate = 0.01100*0.90 - (0.000127 * (caldate{t} - 1989));
+				if 55 <= age < 60 then ac_death_rate = 0.01500*0.90 - (0.000153 * (caldate{t} - 1989));	
+				if 60 <= age < 65 then ac_death_rate = 0.02100*0.90 - (0.000179 * (caldate{t} - 1989));
+				if 65 <= age < 70 then ac_death_rate = 0.03000*0.90 - (0.000249 * (caldate{t} - 1989));
+				if 70 <= age < 75 then ac_death_rate = 0.03800*0.90 - (0.000125 * (caldate{t} - 1989));
+				if 75 <= age < 80 then ac_death_rate = 0.05000*0.90 - (0.000002 * (caldate{t} - 1989));
+				if 80 <= age < 85 then ac_death_rate = 0.07000*0.90 + (0.000316 * (caldate{t} - 1989));
+				if 85 <= age  then ac_death_rate = 0.15000*0.90 - (0.000415 * (caldate{t} - 1989));
+			end;
 		end;
 
-		if gender=2 then do; 
-			if 15 <= age < 20 then ac_death_rate = 0.00150 - (0.000023 * (caldate{t} - 1989));
-			if 20 <= age < 25 then ac_death_rate = 0.00280 - (0.000057 * (caldate{t} - 1989));
-			if 25 <= age < 30 then ac_death_rate = 0.00400 - (0.000087 * (caldate{t} - 1989));
-			if 30 <= age < 35 then ac_death_rate = 0.00400 - (0.000075 * (caldate{t} - 1989));
-			if 35 <= age < 40 then ac_death_rate = 0.00420 - (0.000064 * (caldate{t} - 1989));
-			if 40 <= age < 45 then ac_death_rate = 0.00550*0.97 - (0.000074 * (caldate{t} - 1989));
-			if 45 <= age < 50 then ac_death_rate = 0.00750*0.97 - (0.000103 * (caldate{t} - 1989));
-			if 50 <= age < 55 then ac_death_rate = 0.01100*0.90 - (0.000127 * (caldate{t} - 1989));
-			if 55 <= age < 60 then ac_death_rate = 0.01500*0.90 - (0.000153 * (caldate{t} - 1989));	
-			if 60 <= age < 65 then ac_death_rate = 0.02100*0.90 - (0.000179 * (caldate{t} - 1989));
-			if 65 <= age < 70 then ac_death_rate = 0.03000*0.90 - (0.000249 * (caldate{t} - 1989));
-			if 70 <= age < 75 then ac_death_rate = 0.03800*0.90 - (0.000125 * (caldate{t} - 1989));
-			if 75 <= age < 80 then ac_death_rate = 0.05000*0.90 - (0.000002 * (caldate{t} - 1989));
-			if 80 <= age < 85 then ac_death_rate = 0.07000*0.90 + (0.000316 * (caldate{t} - 1989));
-			if 85 <= age  then ac_death_rate = 0.15000*0.90 - (0.000415 * (caldate{t} - 1989));
-		end;
-	end;
-	if caldate{t} ge 2019 then do;
-		if gender=1 then do; 
-			if 15 <= age < 20 then ac_death_rate = 0.00128;
-			if 20 <= age < 25 then ac_death_rate = 0.00189;
-			if 25 <= age < 30 then ac_death_rate = 0.00226;
-			if 30 <= age < 35 then ac_death_rate = 0.00274;
-			if 35 <= age < 40 then ac_death_rate = 0.00342;
-			if 40 <= age < 45 then ac_death_rate = 0.00472;
-			if 45 <= age < 50 then ac_death_rate = 0.00643;
-			if 50 <= age < 55 then ac_death_rate = 0.00954;
-			if 55 <= age < 60 then ac_death_rate = 0.01388;
-			if 60 <= age < 65 then ac_death_rate = 0.02045;
-			if 65 <= age < 70 then ac_death_rate = 0.02913;
-			if 70 <= age < 75 then ac_death_rate = 0.04279;
-			if 75 <= age < 80 then ac_death_rate = 0.06150;
-			if 80 <= age < 85 then ac_death_rate = 0.09105;
-			if 85 <= age  then ac_death_rate = 0.14833;
-		end;
+		if caldate{t} ge 2019 then do;
+			if gender=1 then do; 
+				if 15 <= age < 20 then ac_death_rate = 0.00128;
+				if 20 <= age < 25 then ac_death_rate = 0.00189;
+				if 25 <= age < 30 then ac_death_rate = 0.00226;
+				if 30 <= age < 35 then ac_death_rate = 0.00274;
+				if 35 <= age < 40 then ac_death_rate = 0.00342;
+				if 40 <= age < 45 then ac_death_rate = 0.00472;
+				if 45 <= age < 50 then ac_death_rate = 0.00643;
+				if 50 <= age < 55 then ac_death_rate = 0.00954;
+				if 55 <= age < 60 then ac_death_rate = 0.01388;
+				if 60 <= age < 65 then ac_death_rate = 0.02045;
+				if 65 <= age < 70 then ac_death_rate = 0.02913;
+				if 70 <= age < 75 then ac_death_rate = 0.04279;
+				if 75 <= age < 80 then ac_death_rate = 0.06150;
+				if 80 <= age < 85 then ac_death_rate = 0.09105;
+				if 85 <= age  then ac_death_rate = 0.14833;
+			end;
 
-		if gender=2 then do; 
-			if 15 <= age < 20 then ac_death_rate = 0.00081;
-			if 20 <= age < 25 then ac_death_rate = 0.00110;
-			if 25 <= age < 30 then ac_death_rate = 0.00139;
-			if 30 <= age < 35 then ac_death_rate = 0.00175;
-			if 35 <= age < 40 then ac_death_rate = 0.00229;
-			if 40 <= age < 45 then ac_death_rate = 0.00310;
-			if 45 <= age < 50 then ac_death_rate = 0.00419;
-			if 50 <= age < 55 then ac_death_rate = 0.00608;
-			if 55 <= age < 60 then ac_death_rate = 0.00891;	
-			if 60 <= age < 65 then ac_death_rate = 0.01353;
-			if 65 <= age < 70 then ac_death_rate = 0.01953;
-			if 70 <= age < 75 then ac_death_rate = 0.03046;
-			if 75 <= age < 80 then ac_death_rate = 0.04494;
-			if 80 <= age < 85 then ac_death_rate = 0.07249;
-			if 85 <= age  then ac_death_rate = 0.12256;
-		end;
-	end;	
+			if gender=2 then do; 
+				if 15 <= age < 20 then ac_death_rate = 0.00081;
+				if 20 <= age < 25 then ac_death_rate = 0.00110;
+				if 25 <= age < 30 then ac_death_rate = 0.00139;
+				if 30 <= age < 35 then ac_death_rate = 0.00175;
+				if 35 <= age < 40 then ac_death_rate = 0.00229;
+				if 40 <= age < 45 then ac_death_rate = 0.00310;
+				if 45 <= age < 50 then ac_death_rate = 0.00419;
+				if 50 <= age < 55 then ac_death_rate = 0.00608;
+				if 55 <= age < 60 then ac_death_rate = 0.00891;	
+				if 60 <= age < 65 then ac_death_rate = 0.01353;
+				if 65 <= age < 70 then ac_death_rate = 0.01953;
+				if 70 <= age < 75 then ac_death_rate = 0.03046;
+				if 75 <= age < 80 then ac_death_rate = 0.04494;
+				if 80 <= age < 85 then ac_death_rate = 0.07249;
+				if 85 <= age  then ac_death_rate = 0.12256;
+			end;
+		end;	
 
 		if c_neph=1 then ac_death_rate=ac_death_rate+0.005;
 		if c_lac=1 then ac_death_rate=ac_death_rate+0.10;
 
-* increased risk of death due to tdf toxicity (ckd / osteoporosis);
-	if prep_oral=1 and tot_yrs_prep_oral > 5 and c_neph ne 1 then ac_death_rate = ac_death_rate * rr_mort_tdf_prep ;
+		* increased risk of death due to tdf toxicity (ckd / osteoporosis);
+		if prep_oral=1 and tot_yrs_prep_oral > 5 and c_neph ne 1 then ac_death_rate = ac_death_rate * rr_mort_tdf_prep ;
 
-	if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
-	if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
+		if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
+		if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
 
-	if onart ne 1 then ac_death_rate = rr_non_aids_death_hiv_off_art * ac_death_rate;
-	if onart =1 then ac_death_rate = rr_non_aids_death_hiv_on_art * ac_death_rate;
+		if onart ne 1 then ac_death_rate = rr_non_aids_death_hiv_off_art * ac_death_rate;
+		if onart =1 then ac_death_rate = rr_non_aids_death_hiv_on_art * ac_death_rate;
 
 		if o_dol=1 and incr_mort_risk_dol_weightg ge 1 then ac_death_rate = ac_death_rate  * incr_mort_risk_dol_weightg_i; 
 
