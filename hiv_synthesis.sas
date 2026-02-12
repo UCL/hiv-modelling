@@ -21523,7 +21523,7 @@ s_dcost_test_f_sw  			s_dcost_test_f_non_anc  		s_dpi_cost     			s_dcost_switch
 s_dart_2_cost 	s_dart_3_cost 	s_dcost_vl_not_done	
 s_dcost_zdv		s_dcost_ten		s_dcost_3tc		s_dcost_nev  	s_dcost_lpr		s_dcost_dar		s_dcost_taz		s_dcost_efa		s_dcost_dol		s_dcost_cab		s_dcost_len		s_dcost_ole		s_dcost_isl
 s_dcost_non_aids_pre_death  s_dcost_drug_level_test   
-s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf 	s_dcost_hypert_vis 		s_dcost_hypert_drug  
+s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf
 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
@@ -21899,8 +21899,8 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
-prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
-prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
+prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed 
+prob_intensify_1_2 prob_intensify_2_3
 
 discount
 
@@ -22711,7 +22711,7 @@ s_dcost_test_f_sw  			s_dcost_test_f_non_anc  		s_dpi_cost     			s_dcost_switch
 s_dart_2_cost 	s_dart_3_cost 	s_dcost_vl_not_done	
 s_dcost_zdv		s_dcost_ten		s_dcost_3tc		s_dcost_nev  	s_dcost_lpr		s_dcost_dar		s_dcost_taz		s_dcost_efa		s_dcost_dol		s_dcost_cab		s_dcost_len		s_dcost_ole		s_dcost_isl
 s_dcost_non_aids_pre_death  s_dcost_drug_level_test   
-s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf 	s_dcost_hypert_vis 		s_dcost_hypert_drug  
+s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf
 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
@@ -23733,7 +23733,7 @@ s_dcost_test_f_sw  			s_dcost_test_f_non_anc  		s_dpi_cost     			s_dcost_switch
 s_dart_2_cost 	s_dart_3_cost 	s_dcost_vl_not_done	
 s_dcost_zdv		s_dcost_ten		s_dcost_3tc		s_dcost_nev  	s_dcost_lpr		s_dcost_dar		s_dcost_taz		s_dcost_efa		s_dcost_dol		s_dcost_cab		s_dcost_len		s_dcost_ole		s_dcost_isl
 s_dcost_non_aids_pre_death  s_dcost_drug_level_test   
-s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf 	s_dcost_hypert_vis 		s_dcost_hypert_drug  
+s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf
 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
@@ -24109,8 +24109,8 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
-prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
-prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
+prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed  
+prob_intensify_1_2 prob_intensify_2_3
 
 discount
 
