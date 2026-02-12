@@ -20379,12 +20379,14 @@ if age=0 and (death = . or caldate&j = death ) then s_alive0_ + alive0_;
 																																			  
 																								 
 if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
+
 	*undiscounted;
 	s_live_daly + live_daly; 
 	s_dead_daly_oth_dol_adv_birth_e + dead_daly_oth_dol_adv_birth_e ;
 	s_dead_daly_ntd + dead_daly_ntd;
 	s_daly_mtct + daly_mtct ;
-	s_daly_non_aids_pre_death + daly_non_aids_pre_death ;     
+	s_daly_non_aids_pre_death + daly_non_aids_pre_death ;    
+ 
 	s_total_yll80le + total_yll80le;
 	s_total_yllag + total_yllag;						 			 
 	s_yllag_total_test + yllag_total_test;
@@ -20407,37 +20409,48 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 
 	*undiscounted;
 	s_cost + cost; s_art_cost + art_cost;  s_onart_cost + onart_cost; s_cd4_cost + cd4_cost; s_vl_cost + vl_cost;  s_vis_cost + vis_cost; 
-	s_dvis_cost_no_lencab + dvis_cost_no_lencab; s_dvis_cost_lencab + dvis_cost_lencab; 
-																										  
-
+	s_vis_cost_no_lencab + vis_cost_no_lencab; s_vis_cost_lencab + vis_cost_lencab; 
 	s_full_vis_cost + full_vis_cost; s_adc_cost + adc_cost; s_non_tb_who3_cost + non_tb_who3_cost; s_cot_cost + cot_cost;  
-	s_dtb_lam_cost + _dtb_lam_cost ;  s_tb_lam_cost + tb_lam_cost ; s_dtb_proph_cost +  _dtb_proph_cost ; s_tb_proph_cost + tb_proph_cost ; 
-	s_dcrag_cost  +  _dcrag_cost ;  s_crag_cost + crag_cost ; s_dcrypm_proph_cost +  _dcrypm_proph_cost ; s_crypm_proph_cost + crypm_proph_cost ; 
-	s_dsbi_proph_cost +  _dsbi_proph_cost ; s_sbi_proph_cost + sbi_proph_cost ;
+	s_tb_lam_cost + tb_lam_cost ; s_tb_proph_cost + tb_proph_cost ; 
+	s_crag_cost + crag_cost ; s_crypm_proph_cost + crypm_proph_cost ; 
+	s_sbi_proph_cost + sbi_proph_cost ;
 	s_tb_cost + tb_cost;  s_cost_test + cost_test; s_res_cost + res_cost;  s_cost_circ + cost_circ;  s_cost_condom_dn + cost_condom_dn; 
-	s_cost_sw_program + cost_sw_program;  s_t_adh_int_cost + t_adh_int_cost; s_cost_test_m + cost_test_m; s_cost_lencab_return + cost_lencab_return;
-	s_cost_test_f + cost_test_f; s_cost_prep + cost_prep; s_cost_prep_visit + cost_prep_visit; s_cost_avail_self_test + cost_avail_self_test ; 
+	s_cost_sw_program + cost_sw_program;  s_t_adh_int_cost + t_adh_int_cost ; s_cost_test_m + cost_test_m ; s_cost_test_f + cost_test_f; 
+	s_test_cost_type1 + cost_test_type1;
+	s_cost_self_test + cost_self_test;
+
+	s_cost_prep + cost_prep; s_cost_prep_visit + cost_prep_visit; s_cost_avail_self_test + cost_avail_self_test ; 
 	s_cost_prep_visit_oral + cost_prep_visit_oral; 
-	s_cost_prep_visit_cab + cost_prep_visit_cab; s_cost_prep_visit_len + cost_prep_visit_len; s_cost_prep_visit_vr + cost_prep_visit_vr; 	s_cost_prep_ac_adh + cost_prep_ac_adh; 
-	s_dcost_self_test + _dcost_self_test;
+	s_cost_prep_visit_cab + cost_prep_visit_cab; s_cost_prep_visit_len + cost_prep_visit_len; s_cost_prep_visit_vr + cost_prep_visit_vr; 	
+	s_cost_prep_ac_adh + cost_prep_ac_adh; 
 	s_cost_test_m_sympt + cost_test_m_sympt; s_cost_test_f_sympt + cost_test_f_sympt; s_cost_test_m_circ + cost_test_m_circ;
+
 	s_cost_test_f_anc + cost_test_f_anc; s_cost_test_f_sw + cost_test_f_sw;  s_cost_test_f_non_anc + cost_test_f_non_anc;
 	s_pi_cost + pi_cost;  s_cost_switch_line + cost_switch_line;  s_cost_art_init + cost_art_init;
 	s_art_1_cost + art_1_cost; s_art_2_cost + art_2_cost;  s_art_3_cost + art_3_cost; s_cost_vl_not_done + cost_vl_not_done; 
 	s_cost_zdv + cost_zdv; s_cost_ten + cost_ten; s_cost_3tc + cost_3tc; s_cost_nev + cost_nev; s_cost_lpr + cost_lpr; 
 	s_cost_dar + cost_dar; s_cost_taz + cost_taz; s_cost_efa + cost_efa; s_cost_dol + cost_dol;  s_cost_cab + cost_cab;  s_cost_len + cost_len; 
-	s_cost_ole + cost_ole;  s_cost_isl + cost_isl; 
+	s_cost_ole + cost_ole;  s_cost_isl + cost_isl; s_cost_lencab_return + cost_lencab_return;
 	s_cost_non_aids_pre_death + cost_non_aids_pre_death ; s_drug_level_test_cost + drug_level_test_cost;
     s_cost_child_hiv_mo_art + cost_child_hiv_mo_art;  s_cost_child_hiv_at_child_inf + cost_child_hiv_at_child_inf;
-	s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;  
+	s_htn_cost_scr + htn_cost_scr; s_htn_cost_drug + htn_cost_drug; s_htn_cost_clin + htn_cost_clin; s_htn_cost_cvd + htn_cost_cvd;
+
 	*discounted; 
 	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
+	s_dvis_cost_no_lencab + dvis_cost_no_lencab; s_dvis_cost_lencab + dvis_cost_lencab; 
 	s_dfull_vis_cost + _dfull_vis_cost ;  s_dadc_cost + _dadc_cost ;  s_dnon_tb_who3_cost + _dnon_tb_who3_cost ; s_dcot_cost + _dcot_cost ; 
+	s_dtb_lam_cost + _dtb_lam_cost ;  s_dtb_proph_cost +  _dtb_proph_cost ;
+	s_dcrag_cost  +  _dcrag_cost ;  s_dcrypm_proph_cost +  _dcrypm_proph_cost ; 
+	s_dsbi_proph_cost +  _dsbi_proph_cost ; 
 	s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;  s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + _dcost_condom_dn ; 
-	s_dcost_sw_program + _dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + _dtest_cost_type1;
-	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep_oral + _dcost_prep_oral ; s_dcost_prep_cab + _dcost_prep_cab ; s_dcost_prep_len + _dcost_prep_len ; s_dcost_prep_vr + _dcost_prep_vr ; 
+	s_dcost_sw_program + _dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_f + _dtest_cost_f ; 
+	s_dtest_cost_type1 + _dtest_cost_type1;
+	s_dcost_self_test + _dcost_self_test;
+	
+	s_dcost_prep_oral + _dcost_prep_oral ; s_dcost_prep_cab + _dcost_prep_cab ; s_dcost_prep_len + _dcost_prep_len ; s_dcost_prep_vr + _dcost_prep_vr ; 
 	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_avail_self_test + _dcost_avail_self_test;
-	s_dcost_prep_visit_cab + _dcost_prep_visit_cab;s_dcost_prep_visit_len + _dcost_prep_visit_len; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
+	s_dcost_prep_visit_cab + _dcost_prep_visit_cab;s_dcost_prep_visit_len + _dcost_prep_visit_len; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; 
+	s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
 	s_dcost_test_m_sympt + _dcost_test_m_sympt ; s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ;
 																																		  
 	s_dcost_test_f_anc + _dcost_test_f_anc ;  s_dcost_test_f_sw + _dcost_test_f_sw ; s_dcost_test_f_non_anc + _dcost_test_f_non_anc ; 
@@ -20448,7 +20461,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_ole + _dcost_ole;  s_dcost_isl + _dcost_isl; s_dcost_lencab_return + _dcost_lencab_return;
 	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
  	s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ; s_dcost_child_hiv_at_child_inf + _dcost_child_hiv_at_child_inf;
-	s_dcost_hypert_vis + _dcost_hypert_vis; s_dcost_hypert_drug + _dcost_hypert_drug;  
+	s_dhtn_cost_scr + _dhtn_cost_scr; s_dhtn_cost_drug + _dhtn_cost_drug; s_dhtn_cost_clin + _dhtn_cost_clin; s_dhtn_cost_cvd + _dhtn_cost_cvd;
 
 end;
 
@@ -20473,24 +20486,6 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 /*
 											
-	   
-				  
-						
-							
-				 
-					 
-				
-					
-		 
-		  
- 
-					 
-	
-  
-
-
-  
-
 proc freq; tables cald hiv ; where death=.; run;
 
 
@@ -21514,7 +21509,7 @@ s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  		s_cost_zdv 	 	s_cost_ten	s_cos
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  	s_cost_dol  	s_cost_cab  s_cost_len  	s_cost_ole			s_cost_isl
 s_cost_non_aids_pre_death	s_drug_level_test_cost  
 s_cost_child_hiv_mo_art		s_cost_child_hiv_at_child_inf
-s_cost_hypert_vis   		s_cost_hypert_drug			s_cost_lencab_return 		s_dcost_lencab_return
+s_cost_lencab_return 		s_dcost_lencab_return
 
 s_dcost_  s_dart_cost   	s_donart_cost  	s_dcd4_cost		s_dvl_cost     			s_dvis_cost    	s_dfull_vis_cost    	s_dadc_cost	
 s_dvis_cost_no_lencab 		s_dvis_cost_lencab
@@ -21695,29 +21690,74 @@ s_new_vmmc4549m
 
 s_birth_circ s_new_birth_circ  s_mcirc_1014m  s_new_mcirc  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
-/* blood pressure */
+/* *HYPERTENSION* */
 
-s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 s_hypertens180_1549
-s_diagnosed_hypertension_5059 s_on_anti_hypertensive_5059 s_hypertension_5059 s_hypertens180_5059 	
-s_diagnosed_hypertension_6069 s_on_anti_hypertensive_6069 s_hypertension_6069 s_hypertens180_6069 	
-s_diagnosed_hypertension_7079 s_on_anti_hypertensive_7079 s_hypertension_7079 s_hypertens180_7079 	
-s_diagnosed_hypertension_ge80 s_on_anti_hypertensive_ge80 s_hypertension_ge80 s_hypertens180_ge80	
+s_hypertension_ge18 s_hypertension_2534 s_hypertension_3544 s_hypertension_4554 s_hypertension_5564 s_hypertension_ge65
+s_dx_htn_ge18 s_dx_htn_2534 s_dx_htn_3544 s_dx_htn_4554 s_dx_htn_5564 s_dx_htn_ge65
+s_on_tx_htn_ge18 s_on_tx_htn_2534 s_on_tx_htn_3544 s_on_tx_htn_4554 s_on_tx_htn_5564 s_on_tx_htn_ge65
+s_on_tx_htn_over_ge18 s_on_tx_htn_over_2534 s_on_tx_htn_over_3544 s_on_tx_htn_over_4554 s_on_tx_htn_over_5564 s_on_tx_htn_over_ge65
+ s_on1drug_antihyp_ge18 s_on1drug_antihyp_2534 s_on1drug_antihyp_3544 s_on1drug_antihyp_4554 s_on1drug_antihyp_5564  s_on1drug_antihyp_ge65     
+ s_on2drug_antihyp_ge18 s_on2drug_antihyp_2534 s_on2drug_antihyp_3544 s_on2drug_antihyp_4554 s_on2drug_antihyp_5564  s_on2drug_antihyp_ge65 
+ s_on3drug_antihyp_ge18 s_on3drug_antihyp_2534 s_on3drug_antihyp_3544 s_on3drug_antihyp_4554 s_on3drug_antihyp_5564  s_on3drug_antihyp_ge65 
+s_ever_tx_htn_ge18 s_ever_tx_htn_2534 s_ever_tx_htn_3544 s_ever_tx_htn_4554 s_ever_tx_htn_5564 s_ever_tx_htn_ge65
+s_ever_tx_htn_over_ge18 s_ever_tx_htn_over_2534 s_ever_tx_htn_over_3544 s_ever_tx_htn_over_4554 s_ever_tx_htn_over_5564 s_ever_tx_htn_over_ge65
+s_htn_control_ge18 s_htn_control_2534 s_htn_control_3544 s_htn_control_4554 s_htn_control_5564 s_htn_control_ge65
+s_htn_true_ge18 s_htn_true_2534 s_htn_true_3544 s_htn_true_4554 s_htn_true_5564 s_htn_true_ge65
+s_normotensive_ge18 s_normotensive_2534 s_normotensive_3544 s_normotensive_4554 s_normotensive_5564 s_normotensive_ge65
+s_htn_true_dx_ge18 s_htn_true_dx_2534 s_htn_true_dx_3544 s_htn_true_dx_4554 s_htn_true_dx_5564 s_htn_true_dx_ge65
+s_htn_over_dx_ge18 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_htn_over_dx_5564 s_htn_over_dx_ge65
 
-s_diagnosed_hypertension_1549m s_on_anti_hypertensive_1549m s_hypertension_1549m 	
-s_diagnosed_hypertension_5059m s_on_anti_hypertensive_5059m s_hypertension_5059m 	
-s_diagnosed_hypertension_6069m s_on_anti_hypertensive_6069m s_hypertension_6069m 	
-s_diagnosed_hypertension_7079m s_on_anti_hypertensive_7079m s_hypertension_7079m 	
-s_diagnosed_hypertension_ge80m s_on_anti_hypertensive_ge80m s_hypertension_ge80m
+s_sbp_max_over_ge18 s_sbp_over_ge18
+																				  
+s_hypertens160_ge18 s_hypertens160_2534 s_hypertens160_3544 s_hypertens160_4554 s_hypertens160_5564 s_hypertens160_ge65 
+s_htn_true160_ge18 s_htn_true160_2534 s_htn_true160_3544 s_htn_true160_4554 s_htn_true160_5564 s_htn_true160_ge65 
+s_htn_true_dx160_ge18 s_htn_true_dx160_2534 s_htn_true_dx160_3544 s_htn_true_dx160_4554 s_htn_true_dx160_5564 s_htn_true_dx160_ge65 
+s_on_tx_htn160_ge18 s_on_tx_htn160_2534 s_on_tx_htn160_3544 s_on_tx_htn160_4554 s_on_tx_htn160_5564 s_on_tx_htn160_ge65 
+s_htn_control160_ge18 s_htn_control160_2534 s_htn_control160_3544 s_htn_control160_4554 s_htn_control160_5564 s_htn_control160_ge65 
 
-s_diagnosed_hypertension_1549w s_on_anti_hypertensive_1549w s_hypertension_1549w 	
-s_diagnosed_hypertension_5059w s_on_anti_hypertensive_5059w s_hypertension_5059w 	
-s_diagnosed_hypertension_6069w s_on_anti_hypertensive_6069w s_hypertension_6069w 	
-s_diagnosed_hypertension_7079w s_on_anti_hypertensive_7079w s_hypertension_7079w 	
-s_diagnosed_hypertension_ge80w s_on_anti_hypertensive_ge80w s_hypertension_ge80w
+s_sbp_1519w s_sbp_2024w s_sbp_2529w s_sbp_3034w s_sbp_3539w s_sbp_4044w s_sbp_4549w s_sbp_5054w s_sbp_5559w s_sbp_6064w s_sbp_6569w s_sbp_7074w s_sbp_7579w s_sbp_ge80w  
+s_sbp_1519m s_sbp_2024m s_sbp_2529m s_sbp_3034m s_sbp_3539m s_sbp_4044m s_sbp_4549m s_sbp_5054m s_sbp_5559m	s_sbp_6064m s_sbp_6569m s_sbp_7074m s_sbp_7579m s_sbp_ge80m 
+s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_4549  s_sbp_5054	s_sbp_5559  s_sbp_6064  s_sbp_6569  s_sbp_7074  s_sbp_7579  s_sbp_ge80  
 
-s_on1drug_antihyp_1549  s_on1drug_antihyp_5059 s_on1drug_antihyp_6069 s_on1drug_antihyp_7079  s_on1drug_antihyp_ge80     
-s_on2drug_antihyp_1549  s_on2drug_antihyp_5059 s_on2drug_antihyp_6069 s_on2drug_antihyp_7079  s_on2drug_antihyp_ge80 
-s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_antihyp_7079  s_on3drug_antihyp_ge80 
+s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
+s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
+
+	s_ihd_inc_all_modsev_ge18m s_ihd_inc_all_modsev_ge18w
+	s_cva_inc_all_modsev_ge18m s_cva_inc_all_modsev_ge18w
+	s_ihd_inc_all_modsev_2039m s_ihd_inc_all_modsev_2039w
+	s_cva_inc_all_modsev_2039m s_cva_inc_all_modsev_2039w
+	s_ihd_inc_all_modsev_4049m s_ihd_inc_all_modsev_4049w 
+	s_cva_inc_all_modsev_4049m s_cva_inc_all_modsev_4049w 
+	s_ihd_inc_all_modsev_5059m s_ihd_inc_all_modsev_5059w 
+	s_cva_inc_all_modsev_5059m s_cva_inc_all_modsev_5059w 
+	s_ihd_inc_all_modsev_6069m s_ihd_inc_all_modsev_6069w 
+	s_cva_inc_all_modsev_6069m s_cva_inc_all_modsev_6069w 
+	s_ihd_inc_all_modsev_7079m s_ihd_inc_all_modsev_7079w 
+	s_cva_inc_all_modsev_7079m s_cva_inc_all_modsev_7079w 
+	s_ihd_inc_all_modsev_ge80m s_ihd_inc_all_modsev_ge80w 
+	s_cva_inc_all_modsev_ge80m s_cva_inc_all_modsev_ge80w 
+
+	s_ihd_inc_all_modsev_2544
+	s_cva_inc_all_modsev_2544
+	s_ihd_inc_all_modsev_4564 
+	s_cva_inc_all_modsev_4564 
+	s_ihd_inc_all_modsev_ge65 
+	s_cva_inc_all_modsev_ge65 
+
+	s_ihd_prev_ge18m s_ihd_prev_ge18w
+	s_cva_prev_ge18m s_cva_prev_ge18w
+	s_ihd_prev_2039m s_ihd_prev_2039w 
+	s_cva_prev_2039m s_cva_prev_2039w 
+	s_ihd_prev_4049m s_ihd_prev_4049w 
+	s_cva_prev_4049m s_cva_prev_4049w 
+	s_ihd_prev_5059m s_ihd_prev_5059w 
+	s_cva_prev_5059m s_cva_prev_5059w 
+	s_ihd_prev_6069m s_ihd_prev_6069w 
+	s_cva_prev_6069m s_cva_prev_6069w 
+	s_ihd_prev_7079m s_ihd_prev_7079w 
+	s_cva_prev_7079m s_cva_prev_7079w 
+	s_ihd_prev_ge80m s_ihd_prev_ge80w 
+	s_cva_prev_ge80m s_cva_prev_ge80w 
 
 /* covid */
 
@@ -22657,7 +22697,7 @@ s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  		s_cost_zdv 	 	s_cost_ten	s_cos
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  	s_cost_dol  	s_cost_cab  s_cost_len  	s_cost_ole			s_cost_isl
 s_cost_non_aids_pre_death	s_drug_level_test_cost  
 s_cost_child_hiv_mo_art		s_cost_child_hiv_at_child_inf
-s_cost_hypert_vis   		s_cost_hypert_drug			s_cost_lencab_return 		s_dcost_lencab_return
+s_cost_lencab_return 		s_dcost_lencab_return
 
 s_dcost_  s_dart_cost   	s_donart_cost  	s_dcd4_cost		s_dvl_cost     			s_dvis_cost    	s_dfull_vis_cost    	s_dadc_cost	
 s_dvis_cost_no_lencab 		s_dvis_cost_lencab
@@ -22838,29 +22878,74 @@ s_new_vmmc4549m
 
 s_birth_circ s_new_birth_circ  s_mcirc_1014m  s_new_mcirc  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
-/* blood pressure */
+/* *HYPERTENSION* */
 
-s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 s_hypertens180_1549
-s_diagnosed_hypertension_5059 s_on_anti_hypertensive_5059 s_hypertension_5059 s_hypertens180_5059 	
-s_diagnosed_hypertension_6069 s_on_anti_hypertensive_6069 s_hypertension_6069 s_hypertens180_6069 	
-s_diagnosed_hypertension_7079 s_on_anti_hypertensive_7079 s_hypertension_7079 s_hypertens180_7079 	
-s_diagnosed_hypertension_ge80 s_on_anti_hypertensive_ge80 s_hypertension_ge80 s_hypertens180_ge80	
+s_hypertension_ge18 s_hypertension_2534 s_hypertension_3544 s_hypertension_4554 s_hypertension_5564 s_hypertension_ge65
+s_dx_htn_ge18 s_dx_htn_2534 s_dx_htn_3544 s_dx_htn_4554 s_dx_htn_5564 s_dx_htn_ge65
+s_on_tx_htn_ge18 s_on_tx_htn_2534 s_on_tx_htn_3544 s_on_tx_htn_4554 s_on_tx_htn_5564 s_on_tx_htn_ge65
+s_on_tx_htn_over_ge18 s_on_tx_htn_over_2534 s_on_tx_htn_over_3544 s_on_tx_htn_over_4554 s_on_tx_htn_over_5564 s_on_tx_htn_over_ge65
+ s_on1drug_antihyp_ge18 s_on1drug_antihyp_2534 s_on1drug_antihyp_3544 s_on1drug_antihyp_4554 s_on1drug_antihyp_5564  s_on1drug_antihyp_ge65     
+ s_on2drug_antihyp_ge18 s_on2drug_antihyp_2534 s_on2drug_antihyp_3544 s_on2drug_antihyp_4554 s_on2drug_antihyp_5564  s_on2drug_antihyp_ge65 
+ s_on3drug_antihyp_ge18 s_on3drug_antihyp_2534 s_on3drug_antihyp_3544 s_on3drug_antihyp_4554 s_on3drug_antihyp_5564  s_on3drug_antihyp_ge65 
+s_ever_tx_htn_ge18 s_ever_tx_htn_2534 s_ever_tx_htn_3544 s_ever_tx_htn_4554 s_ever_tx_htn_5564 s_ever_tx_htn_ge65
+s_ever_tx_htn_over_ge18 s_ever_tx_htn_over_2534 s_ever_tx_htn_over_3544 s_ever_tx_htn_over_4554 s_ever_tx_htn_over_5564 s_ever_tx_htn_over_ge65
+s_htn_control_ge18 s_htn_control_2534 s_htn_control_3544 s_htn_control_4554 s_htn_control_5564 s_htn_control_ge65
+s_htn_true_ge18 s_htn_true_2534 s_htn_true_3544 s_htn_true_4554 s_htn_true_5564 s_htn_true_ge65
+s_normotensive_ge18 s_normotensive_2534 s_normotensive_3544 s_normotensive_4554 s_normotensive_5564 s_normotensive_ge65
+s_htn_true_dx_ge18 s_htn_true_dx_2534 s_htn_true_dx_3544 s_htn_true_dx_4554 s_htn_true_dx_5564 s_htn_true_dx_ge65
+s_htn_over_dx_ge18 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_htn_over_dx_5564 s_htn_over_dx_ge65
 
-s_diagnosed_hypertension_1549m s_on_anti_hypertensive_1549m s_hypertension_1549m 	
-s_diagnosed_hypertension_5059m s_on_anti_hypertensive_5059m s_hypertension_5059m 	
-s_diagnosed_hypertension_6069m s_on_anti_hypertensive_6069m s_hypertension_6069m 	
-s_diagnosed_hypertension_7079m s_on_anti_hypertensive_7079m s_hypertension_7079m 	
-s_diagnosed_hypertension_ge80m s_on_anti_hypertensive_ge80m s_hypertension_ge80m
+s_sbp_max_over_ge18 s_sbp_over_ge18
+																				  
+s_hypertens160_ge18 s_hypertens160_2534 s_hypertens160_3544 s_hypertens160_4554 s_hypertens160_5564 s_hypertens160_ge65 
+s_htn_true160_ge18 s_htn_true160_2534 s_htn_true160_3544 s_htn_true160_4554 s_htn_true160_5564 s_htn_true160_ge65 
+s_htn_true_dx160_ge18 s_htn_true_dx160_2534 s_htn_true_dx160_3544 s_htn_true_dx160_4554 s_htn_true_dx160_5564 s_htn_true_dx160_ge65 
+s_on_tx_htn160_ge18 s_on_tx_htn160_2534 s_on_tx_htn160_3544 s_on_tx_htn160_4554 s_on_tx_htn160_5564 s_on_tx_htn160_ge65 
+s_htn_control160_ge18 s_htn_control160_2534 s_htn_control160_3544 s_htn_control160_4554 s_htn_control160_5564 s_htn_control160_ge65 
 
-s_diagnosed_hypertension_1549w s_on_anti_hypertensive_1549w s_hypertension_1549w 	
-s_diagnosed_hypertension_5059w s_on_anti_hypertensive_5059w s_hypertension_5059w 	
-s_diagnosed_hypertension_6069w s_on_anti_hypertensive_6069w s_hypertension_6069w 	
-s_diagnosed_hypertension_7079w s_on_anti_hypertensive_7079w s_hypertension_7079w 	
-s_diagnosed_hypertension_ge80w s_on_anti_hypertensive_ge80w s_hypertension_ge80w
+s_sbp_1519w s_sbp_2024w s_sbp_2529w s_sbp_3034w s_sbp_3539w s_sbp_4044w s_sbp_4549w s_sbp_5054w s_sbp_5559w s_sbp_6064w s_sbp_6569w s_sbp_7074w s_sbp_7579w s_sbp_ge80w  
+s_sbp_1519m s_sbp_2024m s_sbp_2529m s_sbp_3034m s_sbp_3539m s_sbp_4044m s_sbp_4549m s_sbp_5054m s_sbp_5559m	s_sbp_6064m s_sbp_6569m s_sbp_7074m s_sbp_7579m s_sbp_ge80m 
+s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_4549  s_sbp_5054	s_sbp_5559  s_sbp_6064  s_sbp_6569  s_sbp_7074  s_sbp_7579  s_sbp_ge80  
 
-s_on1drug_antihyp_1549  s_on1drug_antihyp_5059 s_on1drug_antihyp_6069 s_on1drug_antihyp_7079  s_on1drug_antihyp_ge80     
-s_on2drug_antihyp_1549  s_on2drug_antihyp_5059 s_on2drug_antihyp_6069 s_on2drug_antihyp_7079  s_on2drug_antihyp_ge80 
-s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_antihyp_7079  s_on3drug_antihyp_ge80 
+s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
+s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
+
+	s_ihd_inc_all_modsev_ge18m s_ihd_inc_all_modsev_ge18w
+	s_cva_inc_all_modsev_ge18m s_cva_inc_all_modsev_ge18w
+	s_ihd_inc_all_modsev_2039m s_ihd_inc_all_modsev_2039w
+	s_cva_inc_all_modsev_2039m s_cva_inc_all_modsev_2039w
+	s_ihd_inc_all_modsev_4049m s_ihd_inc_all_modsev_4049w 
+	s_cva_inc_all_modsev_4049m s_cva_inc_all_modsev_4049w 
+	s_ihd_inc_all_modsev_5059m s_ihd_inc_all_modsev_5059w 
+	s_cva_inc_all_modsev_5059m s_cva_inc_all_modsev_5059w 
+	s_ihd_inc_all_modsev_6069m s_ihd_inc_all_modsev_6069w 
+	s_cva_inc_all_modsev_6069m s_cva_inc_all_modsev_6069w 
+	s_ihd_inc_all_modsev_7079m s_ihd_inc_all_modsev_7079w 
+	s_cva_inc_all_modsev_7079m s_cva_inc_all_modsev_7079w 
+	s_ihd_inc_all_modsev_ge80m s_ihd_inc_all_modsev_ge80w 
+	s_cva_inc_all_modsev_ge80m s_cva_inc_all_modsev_ge80w 
+
+	s_ihd_inc_all_modsev_2544
+	s_cva_inc_all_modsev_2544
+	s_ihd_inc_all_modsev_4564 
+	s_cva_inc_all_modsev_4564 
+	s_ihd_inc_all_modsev_ge65 
+	s_cva_inc_all_modsev_ge65 
+
+	s_ihd_prev_ge18m s_ihd_prev_ge18w
+	s_cva_prev_ge18m s_cva_prev_ge18w
+	s_ihd_prev_2039m s_ihd_prev_2039w 
+	s_cva_prev_2039m s_cva_prev_2039w 
+	s_ihd_prev_4049m s_ihd_prev_4049w 
+	s_cva_prev_4049m s_cva_prev_4049w 
+	s_ihd_prev_5059m s_ihd_prev_5059w 
+	s_cva_prev_5059m s_cva_prev_5059w 
+	s_ihd_prev_6069m s_ihd_prev_6069w 
+	s_cva_prev_6069m s_cva_prev_6069w 
+	s_ihd_prev_7079m s_ihd_prev_7079w 
+	s_cva_prev_7079m s_cva_prev_7079w 
+	s_ihd_prev_ge80m s_ihd_prev_ge80w 
+	s_cva_prev_ge80m s_cva_prev_ge80w 
 
 /* covid */
 
@@ -23634,7 +23719,7 @@ s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  		s_cost_zdv 	 	s_cost_ten	s_cos
 s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  	s_cost_dol  	s_cost_cab  s_cost_len  	s_cost_ole			s_cost_isl
 s_cost_non_aids_pre_death	s_drug_level_test_cost  
 s_cost_child_hiv_mo_art		s_cost_child_hiv_at_child_inf
-s_cost_hypert_vis   		s_cost_hypert_drug			s_cost_lencab_return 		s_dcost_lencab_return
+s_cost_lencab_return 		s_dcost_lencab_return
 
 s_dcost_  s_dart_cost   	s_donart_cost  	s_dcd4_cost		s_dvl_cost     			s_dvis_cost    	s_dfull_vis_cost    	s_dadc_cost	
 s_dvis_cost_no_lencab 		s_dvis_cost_lencab
@@ -23815,29 +23900,74 @@ s_new_vmmc4549m
 
 s_birth_circ s_new_birth_circ  s_mcirc_1014m  s_new_mcirc  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
-/* blood pressure */
+/* *HYPERTENSION* */
 
-s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 s_hypertens180_1549
-s_diagnosed_hypertension_5059 s_on_anti_hypertensive_5059 s_hypertension_5059 s_hypertens180_5059 	
-s_diagnosed_hypertension_6069 s_on_anti_hypertensive_6069 s_hypertension_6069 s_hypertens180_6069 	
-s_diagnosed_hypertension_7079 s_on_anti_hypertensive_7079 s_hypertension_7079 s_hypertens180_7079 	
-s_diagnosed_hypertension_ge80 s_on_anti_hypertensive_ge80 s_hypertension_ge80 s_hypertens180_ge80	
+s_hypertension_ge18 s_hypertension_2534 s_hypertension_3544 s_hypertension_4554 s_hypertension_5564 s_hypertension_ge65
+s_dx_htn_ge18 s_dx_htn_2534 s_dx_htn_3544 s_dx_htn_4554 s_dx_htn_5564 s_dx_htn_ge65
+s_on_tx_htn_ge18 s_on_tx_htn_2534 s_on_tx_htn_3544 s_on_tx_htn_4554 s_on_tx_htn_5564 s_on_tx_htn_ge65
+s_on_tx_htn_over_ge18 s_on_tx_htn_over_2534 s_on_tx_htn_over_3544 s_on_tx_htn_over_4554 s_on_tx_htn_over_5564 s_on_tx_htn_over_ge65
+ s_on1drug_antihyp_ge18 s_on1drug_antihyp_2534 s_on1drug_antihyp_3544 s_on1drug_antihyp_4554 s_on1drug_antihyp_5564  s_on1drug_antihyp_ge65     
+ s_on2drug_antihyp_ge18 s_on2drug_antihyp_2534 s_on2drug_antihyp_3544 s_on2drug_antihyp_4554 s_on2drug_antihyp_5564  s_on2drug_antihyp_ge65 
+ s_on3drug_antihyp_ge18 s_on3drug_antihyp_2534 s_on3drug_antihyp_3544 s_on3drug_antihyp_4554 s_on3drug_antihyp_5564  s_on3drug_antihyp_ge65 
+s_ever_tx_htn_ge18 s_ever_tx_htn_2534 s_ever_tx_htn_3544 s_ever_tx_htn_4554 s_ever_tx_htn_5564 s_ever_tx_htn_ge65
+s_ever_tx_htn_over_ge18 s_ever_tx_htn_over_2534 s_ever_tx_htn_over_3544 s_ever_tx_htn_over_4554 s_ever_tx_htn_over_5564 s_ever_tx_htn_over_ge65
+s_htn_control_ge18 s_htn_control_2534 s_htn_control_3544 s_htn_control_4554 s_htn_control_5564 s_htn_control_ge65
+s_htn_true_ge18 s_htn_true_2534 s_htn_true_3544 s_htn_true_4554 s_htn_true_5564 s_htn_true_ge65
+s_normotensive_ge18 s_normotensive_2534 s_normotensive_3544 s_normotensive_4554 s_normotensive_5564 s_normotensive_ge65
+s_htn_true_dx_ge18 s_htn_true_dx_2534 s_htn_true_dx_3544 s_htn_true_dx_4554 s_htn_true_dx_5564 s_htn_true_dx_ge65
+s_htn_over_dx_ge18 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_htn_over_dx_5564 s_htn_over_dx_ge65
 
-s_diagnosed_hypertension_1549m s_on_anti_hypertensive_1549m s_hypertension_1549m 	
-s_diagnosed_hypertension_5059m s_on_anti_hypertensive_5059m s_hypertension_5059m 	
-s_diagnosed_hypertension_6069m s_on_anti_hypertensive_6069m s_hypertension_6069m 	
-s_diagnosed_hypertension_7079m s_on_anti_hypertensive_7079m s_hypertension_7079m 	
-s_diagnosed_hypertension_ge80m s_on_anti_hypertensive_ge80m s_hypertension_ge80m
+s_sbp_max_over_ge18 s_sbp_over_ge18
+																				  
+s_hypertens160_ge18 s_hypertens160_2534 s_hypertens160_3544 s_hypertens160_4554 s_hypertens160_5564 s_hypertens160_ge65 
+s_htn_true160_ge18 s_htn_true160_2534 s_htn_true160_3544 s_htn_true160_4554 s_htn_true160_5564 s_htn_true160_ge65 
+s_htn_true_dx160_ge18 s_htn_true_dx160_2534 s_htn_true_dx160_3544 s_htn_true_dx160_4554 s_htn_true_dx160_5564 s_htn_true_dx160_ge65 
+s_on_tx_htn160_ge18 s_on_tx_htn160_2534 s_on_tx_htn160_3544 s_on_tx_htn160_4554 s_on_tx_htn160_5564 s_on_tx_htn160_ge65 
+s_htn_control160_ge18 s_htn_control160_2534 s_htn_control160_3544 s_htn_control160_4554 s_htn_control160_5564 s_htn_control160_ge65 
 
-s_diagnosed_hypertension_1549w s_on_anti_hypertensive_1549w s_hypertension_1549w 	
-s_diagnosed_hypertension_5059w s_on_anti_hypertensive_5059w s_hypertension_5059w 	
-s_diagnosed_hypertension_6069w s_on_anti_hypertensive_6069w s_hypertension_6069w 	
-s_diagnosed_hypertension_7079w s_on_anti_hypertensive_7079w s_hypertension_7079w 	
-s_diagnosed_hypertension_ge80w s_on_anti_hypertensive_ge80w s_hypertension_ge80w
+s_sbp_1519w s_sbp_2024w s_sbp_2529w s_sbp_3034w s_sbp_3539w s_sbp_4044w s_sbp_4549w s_sbp_5054w s_sbp_5559w s_sbp_6064w s_sbp_6569w s_sbp_7074w s_sbp_7579w s_sbp_ge80w  
+s_sbp_1519m s_sbp_2024m s_sbp_2529m s_sbp_3034m s_sbp_3539m s_sbp_4044m s_sbp_4549m s_sbp_5054m s_sbp_5559m	s_sbp_6064m s_sbp_6569m s_sbp_7074m s_sbp_7579m s_sbp_ge80m 
+s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_4549  s_sbp_5054	s_sbp_5559  s_sbp_6064  s_sbp_6569  s_sbp_7074  s_sbp_7579  s_sbp_ge80  
 
-s_on1drug_antihyp_1549  s_on1drug_antihyp_5059 s_on1drug_antihyp_6069 s_on1drug_antihyp_7079  s_on1drug_antihyp_ge80     
-s_on2drug_antihyp_1549  s_on2drug_antihyp_5059 s_on2drug_antihyp_6069 s_on2drug_antihyp_7079  s_on2drug_antihyp_ge80 
-s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_antihyp_7079  s_on3drug_antihyp_ge80 
+s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
+s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
+
+	s_ihd_inc_all_modsev_ge18m s_ihd_inc_all_modsev_ge18w
+	s_cva_inc_all_modsev_ge18m s_cva_inc_all_modsev_ge18w
+	s_ihd_inc_all_modsev_2039m s_ihd_inc_all_modsev_2039w
+	s_cva_inc_all_modsev_2039m s_cva_inc_all_modsev_2039w
+	s_ihd_inc_all_modsev_4049m s_ihd_inc_all_modsev_4049w 
+	s_cva_inc_all_modsev_4049m s_cva_inc_all_modsev_4049w 
+	s_ihd_inc_all_modsev_5059m s_ihd_inc_all_modsev_5059w 
+	s_cva_inc_all_modsev_5059m s_cva_inc_all_modsev_5059w 
+	s_ihd_inc_all_modsev_6069m s_ihd_inc_all_modsev_6069w 
+	s_cva_inc_all_modsev_6069m s_cva_inc_all_modsev_6069w 
+	s_ihd_inc_all_modsev_7079m s_ihd_inc_all_modsev_7079w 
+	s_cva_inc_all_modsev_7079m s_cva_inc_all_modsev_7079w 
+	s_ihd_inc_all_modsev_ge80m s_ihd_inc_all_modsev_ge80w 
+	s_cva_inc_all_modsev_ge80m s_cva_inc_all_modsev_ge80w 
+
+	s_ihd_inc_all_modsev_2544
+	s_cva_inc_all_modsev_2544
+	s_ihd_inc_all_modsev_4564 
+	s_cva_inc_all_modsev_4564 
+	s_ihd_inc_all_modsev_ge65 
+	s_cva_inc_all_modsev_ge65 
+
+	s_ihd_prev_ge18m s_ihd_prev_ge18w
+	s_cva_prev_ge18m s_cva_prev_ge18w
+	s_ihd_prev_2039m s_ihd_prev_2039w 
+	s_cva_prev_2039m s_cva_prev_2039w 
+	s_ihd_prev_4049m s_ihd_prev_4049w 
+	s_cva_prev_4049m s_cva_prev_4049w 
+	s_ihd_prev_5059m s_ihd_prev_5059w 
+	s_cva_prev_5059m s_cva_prev_5059w 
+	s_ihd_prev_6069m s_ihd_prev_6069w 
+	s_cva_prev_6069m s_cva_prev_6069w 
+	s_ihd_prev_7079m s_ihd_prev_7079w 
+	s_cva_prev_7079m s_cva_prev_7079w 
+	s_ihd_prev_ge80m s_ihd_prev_ge80w 
+	s_cva_prev_ge80m s_cva_prev_ge80w 
 
 /* covid */
 
