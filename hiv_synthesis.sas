@@ -13189,7 +13189,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 				if 70 <= age < 75 then ac_death_rate = 0.05500*0.90 - (0.000224 * (caldate{t} - 1989));
 				if 75 <= age < 80 then ac_death_rate = 0.06500*0.90 + (0.000100 * (caldate{t} - 1989));
 				if 80 <= age < 85 then ac_death_rate = 0.10000*0.90 + (0.000035 * (caldate{t} - 1989));
-				if 85 <= age  then ac_death_rate = 0.4000*0.90 - (0.007056 * (caldate{t} - 1989));
+				if 85 <= age 	  then ac_death_rate = 0.4000*0.90 - (0.007056 * (caldate{t} - 1989));
 			end;
 
 			if gender=2 then do; 
@@ -13207,7 +13207,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 				if 70 <= age < 75 then ac_death_rate = 0.03800*0.90 - (0.000125 * (caldate{t} - 1989));
 				if 75 <= age < 80 then ac_death_rate = 0.05000*0.90 - (0.000002 * (caldate{t} - 1989));
 				if 80 <= age < 85 then ac_death_rate = 0.07000*0.90 + (0.000316 * (caldate{t} - 1989));
-				if 85 <= age  then ac_death_rate = 0.15000*0.90 - (0.000415 * (caldate{t} - 1989));
+				if 85 <= age 	  then ac_death_rate = 0.15000*0.90 - (0.000415 * (caldate{t} - 1989));
 			end;
 		end;
 
@@ -13227,7 +13227,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 				if 70 <= age < 75 then ac_death_rate = 0.04279;
 				if 75 <= age < 80 then ac_death_rate = 0.06150;
 				if 80 <= age < 85 then ac_death_rate = 0.09105;
-				if 85 <= age  then ac_death_rate = 0.14833;
+				if 85 <= age 	  then ac_death_rate = 0.14833;
 			end;
 
 			if gender=2 then do; 
@@ -13245,7 +13245,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 				if 70 <= age < 75 then ac_death_rate = 0.03046;
 				if 75 <= age < 80 then ac_death_rate = 0.04494;
 				if 80 <= age < 85 then ac_death_rate = 0.07249;
-				if 85 <= age  then ac_death_rate = 0.12256;
+				if 85 <= age 	  then ac_death_rate = 0.12256;
 			end;
 		end;	
 
@@ -13273,7 +13273,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 		if x3 le ac_deathrix then do;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; dcause=2; rdcause=2; agedeath=age;
 		end;
-	end;
+	end;		*** QUERY IF THIS DO END LOOP SHOULD END HERE OR BELOW THE HTN DEATH SECTION;
 
 
 * covid and covid death (effectively assuming all get covid); * update_24_4_21;
@@ -13282,21 +13282,21 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
 
 	if covid = 1 and dead ne 1 then do;
-	if 15 <= age < 20 then cov_deathrix = 0.0001  ;
-	if 20 <= age < 30 then cov_deathrix = 0.0003  ;
-	if 30 <= age < 40 then cov_deathrix = 0.0008  ;
-	if 40 <= age < 50 then cov_deathrix = 0.0016  ;
-	if 50 <= age < 60 then cov_deathrix = 0.006   ;
-	if 60 <= age < 70 then cov_deathrix = 0.019   ;
-	if 70 <= age < 80 then cov_deathrix = 0.043   ;
-	if 80 <= age      then cov_deathrix = 0.078   ;
-	if cov_death_risk_mult = 2 then cov_deathrix = cov_deathrix * 2;
-	if cov_death_risk_mult = 3 then cov_deathrix = cov_deathrix * 3;
+		if 15 <= age < 20 then cov_deathrix = 0.0001  ;
+		if 20 <= age < 30 then cov_deathrix = 0.0003  ;
+		if 30 <= age < 40 then cov_deathrix = 0.0008  ;
+		if 40 <= age < 50 then cov_deathrix = 0.0016  ;
+		if 50 <= age < 60 then cov_deathrix = 0.006   ;
+		if 60 <= age < 70 then cov_deathrix = 0.019   ;
+		if 70 <= age < 80 then cov_deathrix = 0.043   ;
+		if 80 <= age      then cov_deathrix = 0.078   ;
+		if cov_death_risk_mult = 2 then cov_deathrix = cov_deathrix * 2;
+		if cov_death_risk_mult = 3 then cov_deathrix = cov_deathrix * 3;
 	end;
 
 	xcovid = rand('uniform');
 	if covid = 1 and xcovid le cov_deathrix then do;
-		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
+		dead=1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
 
 * HYPERTENSION: cvd events and mortality among HIV+; * update_3-11-2022;
@@ -13427,7 +13427,7 @@ if dead ne 1 then do;
 
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
-		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
+		dead=1; death=caldate{t}; dcause=4; agedeath=age; 
 	end;
 
 
@@ -13813,6 +13813,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 		death rates remain constant at GBD 2019 levels after 2019; 
 		*ALL CAUSE MORTALITY non-HIV;
 		* all death rates multiplied by 0.93 to remove non-HIV TB deaths since these are explicitly modeled;
+
 	if caldate{t} < 2019 then do;
 		if gender=1 then do; 
 			if 15 <= age < 20 then ac_death_rate = (0.00200 - (0.000024 * (caldate{t} - 1989))) * 0.93;
@@ -13829,7 +13830,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 			if 70 <= age < 75 then ac_death_rate = (0.05500*0.90 - (0.000224 * (caldate{t} - 1989))) * 0.93;
 			if 75 <= age < 80 then ac_death_rate = (0.06500*0.90 + (0.000100 * (caldate{t} - 1989))) * 0.93;
 			if 80 <= age < 85 then ac_death_rate = (0.10000*0.90 + (0.000035 * (caldate{t} - 1989))) * 0.93;
-			if 85 <= age  then ac_death_rate = (0.4000*0.90 - (0.007056 * (caldate{t} - 1989))) * 0.93;
+			if 85 <= age 	  then ac_death_rate = (0.4000*0.90 - (0.007056 * (caldate{t} - 1989))) * 0.93;
 		end;
 
 		if gender=2 then do; 
@@ -13847,9 +13848,10 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 			if 70 <= age < 75 then ac_death_rate = (0.03800*0.90 - (0.000125 * (caldate{t} - 1989))) * 0.93;
 			if 75 <= age < 80 then ac_death_rate = (0.05000*0.90 - (0.000002 * (caldate{t} - 1989))) * 0.93;
 			if 80 <= age < 85 then ac_death_rate = (0.07000*0.90 + (0.000316 * (caldate{t} - 1989))) * 0.93;
-			if 85 <= age  then ac_death_rate = (0.15000*0.90 - (0.000415 * (caldate{t} - 1989))) * 0.93;
+			if 85 <= age	  then ac_death_rate = (0.15000*0.90 - (0.000415 * (caldate{t} - 1989))) * 0.93;
 		end;
 	end;
+
 	if caldate{t} ge 2019 then do;
 		if gender=1 then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00128 * 0.93;
@@ -13903,7 +13905,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 * ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
 
 	if x3 le ac_deathrix then do;  * update_24_4_21;
-		dead   =1; death=caldate{t};  dcause=2; agedeath=age;
+		dead=1; death=caldate{t};  dcause=2; agedeath=age;
 	end;
 
 
@@ -13913,169 +13915,169 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
 
 	if covid = 1 and dead ne 1 then do;
-	if 15 <= age < 20 then cov_deathrix = 0.0001  ;
-	if 20 <= age < 30 then cov_deathrix = 0.0003  ;
-	if 30 <= age < 40 then cov_deathrix = 0.0008  ;
-	if 40 <= age < 50 then cov_deathrix = 0.0016  ;
-	if 50 <= age < 60 then cov_deathrix = 0.006   ;
-	if 60 <= age < 70 then cov_deathrix = 0.019   ;
-	if 70 <= age < 80 then cov_deathrix = 0.043   ;
-	if 80 <= age      then cov_deathrix = 0.078   ;
-	if cov_death_risk_mult = 2 then cov_deathrix = cov_deathrix * 2;
-	if cov_death_risk_mult = 3 then cov_deathrix = cov_deathrix * 3;
+		if 15 <= age < 20 then cov_deathrix = 0.0001  ;
+		if 20 <= age < 30 then cov_deathrix = 0.0003  ;
+		if 30 <= age < 40 then cov_deathrix = 0.0008  ;
+		if 40 <= age < 50 then cov_deathrix = 0.0016  ;
+		if 50 <= age < 60 then cov_deathrix = 0.006   ;
+		if 60 <= age < 70 then cov_deathrix = 0.019   ;
+		if 70 <= age < 80 then cov_deathrix = 0.043   ;
+		if 80 <= age      then cov_deathrix = 0.078   ;
+		if cov_death_risk_mult = 2 then cov_deathrix = cov_deathrix * 2;
+		if cov_death_risk_mult = 3 then cov_deathrix = cov_deathrix * 3;
 	end;
 
 	xcovid = rand('uniform');
 	if covid = 1 and xcovid le cov_deathrix then do;
-		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
+		dead=1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
 
 * HYPERTENSION: cvd events and mortality among HIV-negative; * update_3-11-2022;
 
 * risk of ihd and cva per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv +ve people above;
 	
-if dead ne 1 then do;
-	* risk of ihd and cva;
-	if age ge 60 then do;
-		effect_sbp_ihd = 0.03;
-		effect_sbp_cva = 0.04;
-	end;
-	if age ge 80 then do;
-		effect_sbp_ihd = 0.02;
-		effect_sbp_cva = 0.02;
-	end;
-	if sbp  < 115 then do; *male = 1 and female = 2;
-		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + prior_cvd * 1.8) ; 
-		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + prior_cvd * 1.8) ;
-	end;
-	if sbp ge 115 then do;
-		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_ihd) + prior_cvd * 1.8) ;
-		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva) + prior_cvd * 1.8) ;
-	end;
-	
-	* risk of cvd death;	
-	xihd = rand('uniform');
-	
-	if prior_ihd = 1 then do;
-		if ihd_severity = 1 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_1;
-		if ihd_severity = 2 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_2;
-		if ihd_severity = 3 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_3;
-	end;
+	if dead ne 1 then do;
+		* risk of ihd and cva;
+		if age ge 60 then do;
+			effect_sbp_ihd = 0.03;
+			effect_sbp_cva = 0.04;
+		end;
+		if age ge 80 then do;
+			effect_sbp_ihd = 0.02;
+			effect_sbp_cva = 0.02;
+		end;
+		if sbp  < 115 then do; *male = 1 and female = 2;
+			ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + prior_cvd * 1.8) ; 
+			cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + prior_cvd * 1.8) ;
+		end;
+		if sbp ge 115 then do;
+			ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_ihd) + prior_cvd * 1.8) ;
+			cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva) + prior_cvd * 1.8) ;
+		end;
+		
+		* risk of cvd death;	
+		xihd = rand('uniform');
+		
+		if prior_ihd = 1 then do;
+			if ihd_severity = 1 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_1;
+			if ihd_severity = 2 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_2;
+			if ihd_severity = 3 then cvd_death_risk = cvd_death_risk + ihd_chronic_death_risk_3;
+		end;
 
-	if xihd le ihd_risk then do;
-		ihd_this_per =1;
-		cvd_this_per =1;
-		%sample(ihd_severity_this_per, 1 2 3, 0.6 0.3 0.1);
-		if ihd_severity < ihd_severity_this_per then ihd_severity = ihd_severity_this_per;
-		if ihd_severity_this_per = 1 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_1;
-		if ihd_severity_this_per ge 2 then do;
-			if prior_ihd_modsev = 0 then first_ihd_modsev = 1;
-			ihd_this_per_modsev = 1;
-			yihd = rand('uniform');
-			zihd = rand('uniform');
-			if zihd <= prob_ihd_tx then do;
-				if yihd <= prob_ihd_tx_effective then do;  * effective treatment;
-					if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + (ihd_acute_death_risk_2 * rr_mort_ihd_tx);
-					if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + (ihd_acute_death_risk_3 * rr_mort_ihd_tx);
-					htn_cost_cvd = htn_cost_cvd + cost_ihd_tx;
-				end; 
-				else do; * ineffective treatment;
+		if xihd le ihd_risk then do;
+			ihd_this_per =1;
+			cvd_this_per =1;
+			%sample(ihd_severity_this_per, 1 2 3, 0.6 0.3 0.1);
+			if ihd_severity < ihd_severity_this_per then ihd_severity = ihd_severity_this_per;
+			if ihd_severity_this_per = 1 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_1;
+			if ihd_severity_this_per ge 2 then do;
+				if prior_ihd_modsev = 0 then first_ihd_modsev = 1;
+				ihd_this_per_modsev = 1;
+				yihd = rand('uniform');
+				zihd = rand('uniform');
+				if zihd <= prob_ihd_tx then do;
+					if yihd <= prob_ihd_tx_effective then do;  * effective treatment;
+						if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + (ihd_acute_death_risk_2 * rr_mort_ihd_tx);
+						if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + (ihd_acute_death_risk_3 * rr_mort_ihd_tx);
+						htn_cost_cvd = htn_cost_cvd + cost_ihd_tx;
+					end; 
+					else do; * ineffective treatment;
+						if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_2;
+						if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_3;
+						htn_cost_cvd = htn_cost_cvd + cost_ihd_tx_lowqual;
+					end;
+				end;
+				else do; * no treatment; 
 					if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_2;
 					if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_3;
-					htn_cost_cvd = htn_cost_cvd + cost_ihd_tx_lowqual;
 				end;
+				prior_cvd_modsev = 1;
 			end;
-			else do; * no treatment; 
-				if ihd_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_2;
-				if ihd_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + ihd_acute_death_risk_3;
-			end;
-			prior_cvd_modsev = 1;
+			if prior_ihd = 0 then do;
+				first_ihd = 1;
+				if prior_cvd = 0 then first_cvd = 1;
+			end;			
+			prior_ihd = 1;
+			prior_cvd = 1;
 		end;
-		if prior_ihd = 0 then do;
-			first_ihd = 1;
-			if prior_cvd = 0 then first_cvd = 1;
-		end;			
-		prior_ihd = 1;
-		prior_cvd = 1;
-	end;
-	
-	xcva = rand('uniform');
+		
+		xcva = rand('uniform');
 
-	if prior_cva = 1 then do;
-		if cva_severity = 1 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_1;
-		if cva_severity = 2 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_2;
-		if cva_severity = 3 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_3;
-	end;
+		if prior_cva = 1 then do;
+			if cva_severity = 1 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_1;
+			if cva_severity = 2 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_2;
+			if cva_severity = 3 then cvd_death_risk = cvd_death_risk + cva_chronic_death_risk_3;
+		end;
 
-	if xcva le cva_risk then do;
-		cva_this_per =1;
-		cvd_this_per =1;
-		%sample(cva_severity_this_per, 1 2 3, 0.6 0.3 0.1);
-		if cva_severity < cva_severity_this_per then cva_severity = cva_severity_this_per;
-		if cva_severity_this_per = 1 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_1;
-		if cva_severity_this_per ge 2 then do;
-			if prior_cvd_modsev = 0 then first_cva_modsev = 1;
-			cva_this_per_modsev = 1;
-			ycva = rand('uniform');
-			zcva = rand('uniform');
-			if zcva <= prob_cva_tx then do;
-				if ycva <= prob_cva_tx_effective then do; * effective treatment;
-					if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + (cva_acute_death_risk_2 * rr_mort_cva_tx);
-					if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + (cva_acute_death_risk_3 * rr_mort_cva_tx);
-					htn_cost_cvd = htn_cost_cvd + cost_cva_tx;
+		if xcva le cva_risk then do;
+			cva_this_per =1;
+			cvd_this_per =1;
+			%sample(cva_severity_this_per, 1 2 3, 0.6 0.3 0.1);
+			if cva_severity < cva_severity_this_per then cva_severity = cva_severity_this_per;
+			if cva_severity_this_per = 1 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_1;
+			if cva_severity_this_per ge 2 then do;
+				if prior_cvd_modsev = 0 then first_cva_modsev = 1;
+				cva_this_per_modsev = 1;
+				ycva = rand('uniform');
+				zcva = rand('uniform');
+				if zcva <= prob_cva_tx then do;
+					if ycva <= prob_cva_tx_effective then do; * effective treatment;
+						if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + (cva_acute_death_risk_2 * rr_mort_cva_tx);
+						if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + (cva_acute_death_risk_3 * rr_mort_cva_tx);
+						htn_cost_cvd = htn_cost_cvd + cost_cva_tx;
+					end;
+					else do; *ineffective treatment;
+						if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_2;
+						if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_3;
+						htn_cost_cvd = htn_cost_cvd + cost_cva_tx_lowqual;
+					end;			
 				end;
-				else do; *ineffective treatment;
+				else do; * no treatment; 
 					if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_2;
 					if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_3;
-					htn_cost_cvd = htn_cost_cvd + cost_cva_tx_lowqual;
-				end;			
+				end;
+				prior_cvd_modsev = 1;
 			end;
-			else do; * no treatment; 
-				if cva_severity_this_per = 2 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_2;
-				if cva_severity_this_per = 3 then cvd_death_risk = cvd_death_risk + cva_acute_death_risk_3;
+			if prior_cva = 0 then do;
+				first_cva = 1;
+				if prior_cvd = 0 then first_cvd = 1;
 			end;
-			prior_cvd_modsev = 1;
+			prior_cva = 1;
+			prior_cvd = 1;
 		end;
-		if prior_cva = 0 then do;
-			first_cva = 1;
-			if prior_cvd = 0 then first_cvd = 1;
+
+		xcvd = rand('uniform');
+		if xcvd le cvd_death_risk then do;
+			dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 		end;
-		prior_cva = 1;
-		prior_cvd = 1;
-	end;
 
-	xcvd = rand('uniform');
-	if xcvd le cvd_death_risk then do;
-		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
-	end;
+	* incidence non_hiv_tb ;  * update_24_4_21;
 
-* incidence non_hiv_tb ;  * update_24_4_21;
+		non_hiv_tb = 0;
+		ynon_hiv_tb = rand('uniform');
+		if hiv ne 1 and ynon_hiv_tb le non_hiv_tb_risk then do; 
+			non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  date_most_recent_tb = caldate{t};
+		end;
 
-	non_hiv_tb = 0;
-	ynon_hiv_tb = rand('uniform');
-	if hiv ne 1 and ynon_hiv_tb le non_hiv_tb_risk then do; 
-		non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  date_most_recent_tb = caldate{t};
-	end;
-
-	non_hiv_tb_diag_e = .; 
-	if non_hiv_tb=1 then do;
-		ii=rand('uniform'); non_hiv_tb_diag_e=0; if ii < non_hiv_tb_prob_diag_e then non_hiv_tb_diag_e=1 ;  
-	end;
+		non_hiv_tb_diag_e = .; 
+		if non_hiv_tb=1 then do;
+			ii=rand('uniform'); non_hiv_tb_diag_e=0; if ii < non_hiv_tb_prob_diag_e then non_hiv_tb_diag_e=1 ;  
+		end;
 
 
-* non-hiv tb mortality ;  * update_24_4_21;
-	* note assumes tb treatment available - treatment not explicitly modelled but survival higher with early diagnosis;
+	* non-hiv tb mortality ;  * update_24_4_21;
+		* note assumes tb treatment available - treatment not explicitly modelled but survival higher with early diagnosis;
 
-	cur_non_hiv_tb_death_risk=.;
-	if non_hiv_tb=1 and hiv ne 1 then do; * note rel_rate_death_tb_diag_e is the same parameter value for hiv and non hiv;
-		cur_non_hiv_tb_death_risk = non_hiv_tb_death_risk;
-		if non_hiv_tb_diag_e = 1 then cur_non_hiv_tb_death_risk = cur_non_hiv_tb_death_risk * rel_rate_death_tb_diag_e ;
-	end;
+		cur_non_hiv_tb_death_risk=.;
+		if non_hiv_tb=1 and hiv ne 1 then do; * note rel_rate_death_tb_diag_e is the same parameter value for hiv and non hiv;
+			cur_non_hiv_tb_death_risk = non_hiv_tb_death_risk;
+			if non_hiv_tb_diag_e = 1 then cur_non_hiv_tb_death_risk = cur_non_hiv_tb_death_risk * rel_rate_death_tb_diag_e ;
+		end;
 
-	xnon_hiv_tb = rand('uniform');
-	if xnon_hiv_tb le cur_non_hiv_tb_death_risk then do; 
-		dead   =1; death=caldate{t}; dcause=5; agedeath=age; 
-	end;
+		xnon_hiv_tb = rand('uniform');
+		if xnon_hiv_tb le cur_non_hiv_tb_death_risk then do; 
+			dead   =1; death=caldate{t}; dcause=5; agedeath=age; 
+		end;
 
 end;
 
