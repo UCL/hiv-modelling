@@ -20420,8 +20420,8 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_cost_self_test + cost_self_test;
 
 	s_cost_prep + cost_prep; s_cost_prep_visit + cost_prep_visit; s_cost_avail_self_test + cost_avail_self_test ; 
-	s_cost_prep_visit_oral + cost_prep_visit_oral; 
-	s_cost_prep_visit_cab + cost_prep_visit_cab; s_cost_prep_visit_len + cost_prep_visit_len; s_cost_prep_visit_vr + cost_prep_visit_vr; 	
+		/* line missing here? s_cost_prep_oral, s_cost_prep_cab, s_cost_prep_len, s_cost_prep_vr */
+	s_cost_prep_visit_oral + cost_prep_visit_oral; s_cost_prep_visit_cab + cost_prep_visit_cab; s_cost_prep_visit_len + cost_prep_visit_len; s_cost_prep_visit_vr + cost_prep_visit_vr; 	
 	s_cost_prep_ac_adh + cost_prep_ac_adh; 
 	s_cost_test_m_sympt + cost_test_m_sympt; s_cost_test_f_sympt + cost_test_f_sympt; s_cost_test_m_circ + cost_test_m_circ;
 
@@ -20434,6 +20434,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_cost_non_aids_pre_death + cost_non_aids_pre_death ; s_drug_level_test_cost + drug_level_test_cost;
     s_cost_child_hiv_mo_art + cost_child_hiv_mo_art;  s_cost_child_hiv_at_child_inf + cost_child_hiv_at_child_inf;
 	s_htn_cost_scr + htn_cost_scr; s_htn_cost_drug + htn_cost_drug; s_htn_cost_clin + htn_cost_clin; s_htn_cost_cvd + htn_cost_cvd;
+		* Note that the HTN s_ cost outputs are listed with the HTN s_ epi outputs in the drop and keep statements ;
 
 	*discounted; 
 	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
@@ -20447,9 +20448,10 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dtest_cost_type1 + _dtest_cost_type1;
 	s_dcost_self_test + _dcost_self_test;
 	
+		/* s_ output missing here? s_dcost_prep */
+	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_avail_self_test + _dcost_avail_self_test;
 	s_dcost_prep_oral + _dcost_prep_oral ; s_dcost_prep_cab + _dcost_prep_cab ; s_dcost_prep_len + _dcost_prep_len ; s_dcost_prep_vr + _dcost_prep_vr ; 
-	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_avail_self_test + _dcost_avail_self_test;
-	s_dcost_prep_visit_cab + _dcost_prep_visit_cab;s_dcost_prep_visit_len + _dcost_prep_visit_len; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; 
+	s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_prep_visit_cab + _dcost_prep_visit_cab; s_dcost_prep_visit_len + _dcost_prep_visit_len; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; 
 	s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
 	s_dcost_test_m_sympt + _dcost_test_m_sympt ; s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ;
 																																		  
@@ -20462,6 +20464,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
  	s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ; s_dcost_child_hiv_at_child_inf + _dcost_child_hiv_at_child_inf;
 	s_dhtn_cost_scr + _dhtn_cost_scr; s_dhtn_cost_drug + _dhtn_cost_drug; s_dhtn_cost_clin + _dhtn_cost_clin; s_dhtn_cost_cvd + _dhtn_cost_cvd;
+		* Note that the HTN s_ cost outputs are listed with the HTN s_ epi outputs in the drop and keep statements ;
 
 end;
 
