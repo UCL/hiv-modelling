@@ -202,30 +202,6 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-* condom_change_year_i;				condom_change_year_i = 0; 			* mar19; * initialising condom_change_year_i - this is set again in year_i variables section;
-* decr_hard_reach_year_i;			decr_hard_reach_year_i = 0;			
-* incr_adh_year_i;					incr_adh_year_i = 0;			
-* decr_prob_loss_at_diag_year_i;	decr_prob_loss_at_diag_year_i = 0; 
-* absence_cd4_year_i;				absence_cd4_year_i = 0; 		
-* absence_vl_year_i;				absence_vl_year_i = 0; 		
-* decr_rate_lost_year_i;			decr_rate_lost_year_i = 0;  	
-* decr_rate_lost_art_year_i;		decr_rate_lost_art_year_i = 0;   
-* incr_rate_return_year_i;			incr_rate_return_year_i = 0;     	
-* incr_rate_restart_year_i;			incr_rate_restart_year_i = 0;       
-* incr_rate_init_year_i;			incr_rate_init_year_i = 0;   
-* decr_rate_int_choice_year_i;		decr_rate_int_choice_year_i = 0; 
-* incr_prob_vl_meas_done_year_i;	incr_prob_vl_meas_done_year_i = 0; 	
-* incr_pr_switch_line_year_i;		incr_pr_switch_line_year_i = 0;    	
-* poc_vl_monitoring_i;				poc_vl_monitoring_i = 0; 	
-* circ_inc_rate_year_i;				circ_inc_rate_year_i = 0; 		 
-* incr_test_targeting_year_i;		incr_test_targeting_year_i = 0;   	
-* reg_option_switch_year_i;			reg_option_switch_year_i = 0; 		
-* art_mon_drug_levels_year_i;		art_mon_drug_levels_year_i = 0;   
-* ten_is_taf_year_i;				ten_is_taf_year_i = 0;  	
-* pop_wide_tld_year_i;				pop_wide_tld_year_i = 0;  		
-* single_vl_switch_efa_year_i;		single_vl_switch_efa_year_i = 0;	
-* e_decr_hard_reach_year_i;			e_decr_hard_reach_year_i = 0;  
-
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.80;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
@@ -747,10 +723,36 @@ end;
 
 * OTHER PROGRAMS;	
 
+***Impact of potential changes in policy after year_i;
+* decr_hard_reach_year_i;			decr_hard_reach_year_i = 0;			
+* incr_adh_year_i;					incr_adh_year_i = 0;			
+* decr_prob_loss_at_diag_year_i;	decr_prob_loss_at_diag_year_i = 0; 
+* absence_cd4_year_i;				absence_cd4_year_i = 0; 			* keep ;
+* absence_vl_year_i;				absence_vl_year_i = 0; 				* keep ;	
+* decr_rate_lost_year_i;			decr_rate_lost_year_i = 0;  	
+* decr_rate_lost_art_year_i;		decr_rate_lost_art_year_i = 0;   
+* incr_rate_return_year_i;			incr_rate_return_year_i = 0;     	
+* incr_rate_restart_year_i;			incr_rate_restart_year_i = 0;       
+* incr_rate_init_year_i;			incr_rate_init_year_i = 0;   
+* decr_rate_int_choice_year_i;		decr_rate_int_choice_year_i = 0; 
+* incr_prob_vl_meas_done_year_i;	incr_prob_vl_meas_done_year_i = 0; 	
+* incr_pr_switch_line_year_i;		incr_pr_switch_line_year_i = 0;    	
+* poc_vl_monitoring_i;				poc_vl_monitoring_i = 0; 	
+* circ_inc_rate_year_i;				circ_inc_rate_year_i = 0;  			* keep ;
+* incr_test_targeting_year_i;		incr_test_targeting_year_i = 0;   	
+* reg_option_switch_year_i;			reg_option_switch_year_i = 0; 		
+* art_mon_drug_levels_year_i;		art_mon_drug_levels_year_i = 0;   
+* ten_is_taf_year_i;				ten_is_taf_year_i = 0;  	
+* pop_wide_tld_year_i;				pop_wide_tld_year_i = 0;  		
+* single_vl_switch_efa_year_i;		single_vl_switch_efa_year_i = 0;	
+* e_decr_hard_reach_year_i;			e_decr_hard_reach_year_i = 0;  
+
+
 * CONDOMS;					*Adapted from CMMC code from MIHPSA Zim - represents both condom provision and promotion interventions. JAS Jul2025; 
 							*Impact on newp: proportion of population receive condoms via intervention - 20% no impact, remaining values based on suggested impact from CMMC MIHPSA Zimbabwe;
 * prop_use_condom_int_newp;	%sample(prop_use_condom_int_newp, 0 0.03 0.115 0.2, 0.2 0.2 0.4 0.2);		
 * prop_redattr_ep_condoms;	%sample(prop_redattr_ep_condoms, 0 0.05 0.17 0.30, 0.2 0.2 0.4 0.2);
+* condom_change_year_i;		condom_change_year_i = 0;			* Switches off condom intervention from year_interv when set to 1;
 
 
 
@@ -2920,9 +2922,6 @@ if	decr_prob_loss_at_diag_year_i = 1 then do;
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/3; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
 end;
 
-
-
-
 * decr_rate_lost_year_i; 	
 if decr_rate_lost_year_i = 1 then do;
 	eff_rate_lost = eff_rate_lost * _u10 / 3; eff_rate_lost=round(eff_rate_lost,0.01); 
@@ -3573,6 +3572,21 @@ if        caldate{t} >  2000 then ch_risk_beh_ep = ch_risk_beh_ep2000_;
 
 
 * Condom provision and promotion;
+/*
+From MIHPSA Zimbabwe:
+CMMC (condom mass media campaign) in Zimbabwe was introduced at least since 2004
+CMMC assumed to be switched ON from 2011 until year_interv
+Condom_change_year_i = 0 refers to CMMC being switched on (SQ and all runs up to year_interv)
+Condom_change_year_i = 1 refers to CMMC being switched off
+
+In 2011 rred_rc depending on the sampling varies from	0.031 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
+														0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
+												to		1.026 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
+In 2021											from 	0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
+													   	0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
+												to		1.321 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
+*/
+
 * Proportion of reduction attributable to condom intervetions: prop_redattr_ep_condoms;
 * We have not modelled condoms retrospectively and so we have not included their cost;
 rred_rc_base = rred_rc;					* use this to determine FSW rates;
@@ -4402,6 +4416,10 @@ if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
 end;
 
 
+* Condom intervention - removing the effect of condom provision and promotion for HIV Control baseline;
+*Impact on newp (impact on ep is above);
+xx=rand('uniform');
+if caldate{t} >= &year_interv and condom_change_year_i = 1 and use_condom_intervention_newp=1 and newp_ever>0 and xx < 0.1 then newp = newp + 1;
 
 
 e=rand('uniform');
