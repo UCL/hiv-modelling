@@ -13430,7 +13430,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 				dead=1; death=caldate{t}; dcause=4; agedeath=age; 
 			end;
 
-		end;	* of HTN dead ne 1 statement (starts line 13306);
+		end;	* end of HTN dead ne 1 statement (starts line 13306);
 
 	end;	* end of dead=0 and death = . and dead_ ne 1 statement (starts line 13081);
 
@@ -13891,25 +13891,25 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	end;
 
 
-* if using tld_prep in whole population need to consider effects of dolutegravir on weight gain and any consequent effect on mortality;
+	* if using tld_prep in whole population need to consider effects of dolutegravir on weight gain and any consequent effect on mortality;
 	if i_mort_risk_dol_prep_weightg = . then i_mort_risk_dol_prep_weightg = 1.00 ;
 	if pop_wide_tld_prep=1 then ac_death_rate = ac_death_rate  * i_mort_risk_dol_prep_weightg; 
 
-* increased risk of death due to tdf toxicity (ckd / osteoporosis);
+	* increased risk of death due to tdf toxicity (ckd / osteoporosis);
 	if prep_oral=1 and tot_yrs_prep_oral > 5  then ac_death_rate = ac_death_rate * rr_mort_tdf_prep ;
 
 	if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
 	if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
 
 	ac_deathrix = 1 - exp(-0.25*ac_death_rate); x3=rand('uniform');
-* ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
+	* ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
 
 	if x3 le ac_deathrix then do;  * update_24_4_21;
 		dead=1; death=caldate{t};  dcause=2; agedeath=age;
 	end;
 
 
-* covid and covid death (effectively assuming all get covid); * update_24_4_21;
+	* covid and covid death (effectively assuming all get covid); * update_24_4_21;
 
 	covid = 0; a = rand('uniform');
 	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
@@ -13932,9 +13932,9 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 		dead=1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
 
-* HYPERTENSION: cvd events and mortality among HIV-negative; * update_3-11-2022;
+	* HYPERTENSION: cvd events and mortality among HIV-negative; * update_3-11-2022;
 
-* risk of ihd and cva per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv +ve people above;
+	* risk of ihd and cva per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv +ve people above;
 	
 	if dead ne 1 then do;
 		* risk of ihd and cva;
@@ -14051,35 +14051,37 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 			dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 		end;
 
+	end;	* end of HTN dead ne 1 statement (starts line 13939);
+
 	* incidence non_hiv_tb ;  * update_24_4_21;
 
-		non_hiv_tb = 0;
-		ynon_hiv_tb = rand('uniform');
-		if hiv ne 1 and ynon_hiv_tb le non_hiv_tb_risk then do; 
-			non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  date_most_recent_tb = caldate{t};
-		end;
+	non_hiv_tb = 0;
+	ynon_hiv_tb = rand('uniform');
+	if hiv ne 1 and ynon_hiv_tb le non_hiv_tb_risk then do; 
+		non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  date_most_recent_tb = caldate{t};
+	end;
 
-		non_hiv_tb_diag_e = .; 
-		if non_hiv_tb=1 then do;
-			ii=rand('uniform'); non_hiv_tb_diag_e=0; if ii < non_hiv_tb_prob_diag_e then non_hiv_tb_diag_e=1 ;  
-		end;
+	non_hiv_tb_diag_e = .; 
+	if non_hiv_tb=1 then do;
+		ii=rand('uniform'); non_hiv_tb_diag_e=0; if ii < non_hiv_tb_prob_diag_e then non_hiv_tb_diag_e=1 ;  
+	end;
 
 
 	* non-hiv tb mortality ;  * update_24_4_21;
-		* note assumes tb treatment available - treatment not explicitly modelled but survival higher with early diagnosis;
+	* note assumes tb treatment available - treatment not explicitly modelled but survival higher with early diagnosis;
 
-		cur_non_hiv_tb_death_risk=.;
-		if non_hiv_tb=1 and hiv ne 1 then do; * note rel_rate_death_tb_diag_e is the same parameter value for hiv and non hiv;
-			cur_non_hiv_tb_death_risk = non_hiv_tb_death_risk;
-			if non_hiv_tb_diag_e = 1 then cur_non_hiv_tb_death_risk = cur_non_hiv_tb_death_risk * rel_rate_death_tb_diag_e ;
-		end;
+	cur_non_hiv_tb_death_risk=.;
+	if non_hiv_tb=1 and hiv ne 1 then do; * note rel_rate_death_tb_diag_e is the same parameter value for hiv and non hiv;
+		cur_non_hiv_tb_death_risk = non_hiv_tb_death_risk;
+		if non_hiv_tb_diag_e = 1 then cur_non_hiv_tb_death_risk = cur_non_hiv_tb_death_risk * rel_rate_death_tb_diag_e ;
+	end;
 
-		xnon_hiv_tb = rand('uniform');
-		if xnon_hiv_tb le cur_non_hiv_tb_death_risk then do; 
-			dead   =1; death=caldate{t}; dcause=5; agedeath=age; 
-		end;
+	xnon_hiv_tb = rand('uniform');
+	if xnon_hiv_tb le cur_non_hiv_tb_death_risk then do; 
+		dead   =1; death=caldate{t}; dcause=5; agedeath=age; 
+	end;
 
-end;
+end;	* end of dead=0 and death = . and dead_ ne 1 statement (starts line 13786);
 
 
 if tested=1 then ever_tested=1;
