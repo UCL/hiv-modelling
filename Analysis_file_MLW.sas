@@ -27,32 +27,23 @@ set a;
 /*
 ***Remember the options have automatically renumbered as a result of the create wide file macro;
 1 = Minimal;
-2 = Low impact FSW program; ***ERROR IN CODE - IGNORE;
-3 = High impact FSW program;
-4 = Condoms;
-5 = VMMC;
-6 = VMMC scale up;
-7 = KP Oral PrEP continuation;
-8 = KP Oral PrEP continuation plus intro up of Len;
-9 = KP Oral PrEP continuation plus scale up of Len;
-10 = FSW Oral PrEP continuation;
-11 = AGYW Oral PrEP continuation;
-12 = MSM Oral PrEP continuation;
-13 = FSW Oral PrEP continuation plus intro up of Len;
-14 = AGYW Oral PrEP continuation plus intro up of Len;
-15 = MSM Oral PrEP continuation plus intro up of Len;
-16 = FSW Oral PrEP continuation plus scale up of Len;
-17 = AGYW Oral PrEP continuation plus scale up of Len;
-18 = MSM Oral PrEP continuation plus scale up of Len;
-19 = MSM Outreach; ***NOT CONSIDERED;
-20 = Adherence support;
-21 = Low scale up;
-22 = Medium scale up;
-23 = High scale up;
-24 = CD4;
-25 = VL;
-26 = Return interventions;
-27 = SQ;
+2 = Low impact FSW program at SQ level;
+3 = VMMC;
+4 = VMMC scale up;
+5 = KP Oral PrEP continuation;
+6 = KP Oral PrEP continuation plus intro up of Len;
+7 = KP Oral PrEP continuation plus scale up of Len;
+8 = FSW Oral PrEP continuation;
+9 = AGYW Oral PrEP continuation;
+10 = MSM Oral PrEP continuation;
+11 = FSW Oral PrEP continuation plus intro up of Len;
+12 = AGYW Oral PrEP continuation plus intro up of Len;
+13 = MSM Oral PrEP continuation plus intro up of Len;
+14 = FSW Oral PrEP continuation plus scale up of Len;
+15 = AGYW Oral PrEP continuation plus scale up of Len;
+16 = MSM Oral PrEP continuation plus scale up of Len;
+17 = Adherence support;
+18 = Return interventions;
 
 */
 
@@ -61,7 +52,7 @@ set a;
 * Infections;
 
 * 20 years;
-*d_n_new_inf_20y_2  = n_new_inf_26_46_1 - n_new_inf_26_46_2;
+d_n_new_inf_20y_2  = n_new_inf_26_46_1 - n_new_inf_26_46_2;
 d_n_new_inf_20y_3  = n_new_inf_26_46_1 - n_new_inf_26_46_3;
 d_n_new_inf_20y_4  = n_new_inf_26_46_1 - n_new_inf_26_46_4;
 d_n_new_inf_20y_5  = n_new_inf_26_46_1 - n_new_inf_26_46_5;
@@ -79,11 +70,11 @@ d_n_new_inf_20y_16 = n_new_inf_26_46_1 - n_new_inf_26_46_16;
 d_n_new_inf_20y_17 = n_new_inf_26_46_1 - n_new_inf_26_46_17;
 d_n_new_inf_20y_18 = n_new_inf_26_46_1 - n_new_inf_26_46_18;
 *d_n_new_inf_20y_19 = n_new_inf_26_46_1 - n_new_inf_26_46_19;
-d_n_new_inf_20y_20 = n_new_inf_26_46_1 - n_new_inf_26_46_20;
+*d_n_new_inf_20y_20 = n_new_inf_26_46_1 - n_new_inf_26_46_20;
 
 
 * 50 years;
-*d_n_new_inf_50y_2  = n_new_inf_26_76_1 - n_new_inf_26_76_2;
+d_n_new_inf_50y_2  = n_new_inf_26_76_1 - n_new_inf_26_76_2;
 d_n_new_inf_50y_3  = n_new_inf_26_76_1 - n_new_inf_26_76_3;
 d_n_new_inf_50y_4  = n_new_inf_26_76_1 - n_new_inf_26_76_4;
 d_n_new_inf_50y_5  = n_new_inf_26_76_1 - n_new_inf_26_76_5;
@@ -101,12 +92,12 @@ d_n_new_inf_50y_16 = n_new_inf_26_76_1 - n_new_inf_26_76_16;
 d_n_new_inf_50y_17 = n_new_inf_26_76_1 - n_new_inf_26_76_17;
 d_n_new_inf_50y_18 = n_new_inf_26_76_1 - n_new_inf_26_76_18;
 *d_n_new_inf_50y_19 = n_new_inf_26_76_1 - n_new_inf_26_76_19;
-d_n_new_inf_50y_20 = n_new_inf_26_76_1 - n_new_inf_26_76_20;
+*d_n_new_inf_50y_20 = n_new_inf_26_76_1 - n_new_inf_26_76_20;
 
 *Deaths;
 
 * 20 years;
-*d_n_death_hivrel_20y_2  = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_2;
+d_n_death_hivrel_20y_2  = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_2;
 d_n_death_hivrel_20y_3  = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_3;
 d_n_death_hivrel_20y_4  = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_4;
 d_n_death_hivrel_20y_5  = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_5;
@@ -124,11 +115,11 @@ d_n_death_hivrel_20y_16 = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_16;
 d_n_death_hivrel_20y_17 = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_17;
 d_n_death_hivrel_20y_18 = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_18;
 *d_n_death_hivrel_20y_19 = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_19;
-d_n_death_hivrel_20y_20 = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_20;
+*d_n_death_hivrel_20y_20 = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_20;
 
 
 * 50 years;
-*d_n_death_hivrel_50y_2  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_2;
+d_n_death_hivrel_50y_2  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_2;
 d_n_death_hivrel_50y_3  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_3;
 d_n_death_hivrel_50y_4  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_4;
 d_n_death_hivrel_50y_5  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_5;
@@ -146,37 +137,37 @@ d_n_death_hivrel_50y_16 = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_16;
 d_n_death_hivrel_50y_17 = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_17;
 d_n_death_hivrel_50y_18 = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_18;
 *d_n_death_hivrel_50y_19 = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_19;
-d_n_death_hivrel_50y_20 = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_20;
+*d_n_death_hivrel_50y_20 = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_20;
 
 *Difference in number of new infections over 20 and 50 years;
 *Using output statement in order to merge the 3 year groups later);
 proc means data=b  mean;var 
-/*d_n_new_inf_20y_2*/	d_n_new_inf_20y_3		d_n_new_inf_20y_4		d_n_new_inf_20y_5	
+d_n_new_inf_20y_2	d_n_new_inf_20y_3			d_n_new_inf_20y_4		d_n_new_inf_20y_5	
 d_n_new_inf_20y_6 		d_n_new_inf_20y_7		d_n_new_inf_20y_8		d_n_new_inf_20y_9		d_n_new_inf_20y_10
 d_n_new_inf_20y_11		d_n_new_inf_20y_12		d_n_new_inf_20y_13		d_n_new_inf_20y_14		d_n_new_inf_20y_15	
-d_n_new_inf_20y_16		d_n_new_inf_20y_17		d_n_new_inf_20y_18		/*d_n_new_inf_20y_19*/		d_n_new_inf_20y_20;
+d_n_new_inf_20y_16		d_n_new_inf_20y_17		d_n_new_inf_20y_18;
 output out=means_new_inf_20y mean=;
 run;
 proc means data=b  mean;var 
-/*d_n_new_inf_50y_2*/	d_n_new_inf_50y_3		d_n_new_inf_50y_4		d_n_new_inf_50y_5	
+d_n_new_inf_50y_2		d_n_new_inf_50y_3		d_n_new_inf_50y_4		d_n_new_inf_50y_5	
 d_n_new_inf_50y_6 		d_n_new_inf_50y_7		d_n_new_inf_50y_8		d_n_new_inf_50y_9		d_n_new_inf_50y_10
 d_n_new_inf_50y_11		d_n_new_inf_50y_12		d_n_new_inf_50y_13		d_n_new_inf_50y_14		d_n_new_inf_50y_15	
-d_n_new_inf_50y_16		d_n_new_inf_50y_17		d_n_new_inf_50y_18		/*d_n_new_inf_50y_19*/		d_n_new_inf_50y_20;
+d_n_new_inf_50y_16		d_n_new_inf_50y_17		d_n_new_inf_50y_18;	
 output out=means_new_inf_50y mean=;
 run;
 
 proc means data=b  mean;var 
-/*d_n_death_hivrel_20y_2*/	d_n_death_hivrel_20y_3		d_n_death_hivrel_20y_4		d_n_death_hivrel_20y_5	
+d_n_death_hivrel_20y_2		d_n_death_hivrel_20y_3		d_n_death_hivrel_20y_4		d_n_death_hivrel_20y_5	
 d_n_death_hivrel_20y_6 		d_n_death_hivrel_20y_7		d_n_death_hivrel_20y_8		d_n_death_hivrel_20y_9		d_n_death_hivrel_20y_10
 d_n_death_hivrel_20y_11		d_n_death_hivrel_20y_12		d_n_death_hivrel_20y_13		d_n_death_hivrel_20y_14		d_n_death_hivrel_20y_15	
-d_n_death_hivrel_20y_16		d_n_death_hivrel_20y_17		d_n_death_hivrel_20y_18		/*d_n_death_hivrel_20y_19*/		d_n_death_hivrel_20y_20;
+d_n_death_hivrel_20y_16		d_n_death_hivrel_20y_17		d_n_death_hivrel_20y_18;
 output out=means_death_hivrel_20y mean=;
 run;
 proc means data=b  mean;var 
-/*d_n_death_hivrel_50y_2*/	d_n_death_hivrel_50y_3		d_n_death_hivrel_50y_4		d_n_death_hivrel_50y_5	
+d_n_death_hivrel_50y_2		d_n_death_hivrel_50y_3		d_n_death_hivrel_50y_4		d_n_death_hivrel_50y_5	
 d_n_death_hivrel_50y_6 		d_n_death_hivrel_50y_7		d_n_death_hivrel_50y_8		d_n_death_hivrel_50y_9		d_n_death_hivrel_50y_10
 d_n_death_hivrel_50y_11		d_n_death_hivrel_50y_12		d_n_death_hivrel_50y_13		d_n_death_hivrel_50y_14		d_n_death_hivrel_50y_15	
-d_n_death_hivrel_50y_16		d_n_death_hivrel_50y_17		d_n_death_hivrel_50y_18		/*d_n_death_hivrel_50y_19*/		d_n_death_hivrel_50y_20;
+d_n_death_hivrel_50y_16		d_n_death_hivrel_50y_17		d_n_death_hivrel_50y_18;
 output out=means_death_hivrel_50y mean=;
 run;
 
