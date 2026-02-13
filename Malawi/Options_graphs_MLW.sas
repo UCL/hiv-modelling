@@ -35,6 +35,8 @@ ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\Mlw_options_29_01_26.doc" startpage=never; 
 ods listing close;
 
+ods listing gpath="C:\Users\lovel\Documents";
+ods graphics on / imagename="SGPlot" imagefmt=png;
 proc sgplot data=a; 
 Title    height=1.5 justify=center "People living with HIV (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
@@ -80,7 +82,6 @@ label mean_prevalence1549__6 = "Oral PrEP and scale up of Len";
 label mean_prevalence1549__16 = "Return interventions";
 label mean_prevalence1549__17 = "VL and CD4 testing";
 
-
 series  x=cald y=mean_prevalence1549__99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_prevalence1549__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
@@ -91,11 +92,7 @@ series  x=cald y=mean_prevalence1549__5/	lineattrs = (color=lightpurple thicknes
 series  x=cald y=mean_prevalence1549__6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549__16/	lineattrs = (color=pink thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549__17/	lineattrs = (color=green thickness = 2 pattern=solid);
-
-
 run;quit;
-
-
 
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Incidence (15-49)";
@@ -113,7 +110,6 @@ label mean_incidence1549__6 = "Oral PrEP and scale up of Len";
 label mean_incidence1549__16 = "Return interventions";
 label mean_incidence1549__17 = "VL and CD4 testing";
 
-
 series  x=cald y=mean_incidence1549__99/lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_incidence1549__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
@@ -124,8 +120,6 @@ series  x=cald y=mean_incidence1549__5/	lineattrs = (color=lightpurple thickness
 series  x=cald y=mean_incidence1549__6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__16/lineattrs = (color=pink thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__17/lineattrs = (color=green thickness = 2 pattern=solid);
-
-
 run;quit;
 
 
@@ -134,28 +128,27 @@ Title    height=1.5 justify=center "ART coverage (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= '%'	labelattrs=(size=12)  values = (0.8 to 0.95 by 0.05) valueattrs=(size=10);
 
-label mean_p_onart__99 = "SQ";
-label mean_p_onart__0 = "Base";
-label mean_p_onart__1 = "FSW program";
-label mean_p_onart__2 = "VMMC";
-label mean_p_onart__3 = "VMMC increase";
-label mean_p_onart__4 = "Oral PrEP continuation";
-label mean_p_onart__5 = "Oral PrEP and intro of Len";
-label mean_p_onart__6 = "Oral PrEP and scale up of Len";
-label mean_p_onart__16 = "Return interventions";
-label mean_p_onart__17 = "VL and CD4 testing";
+label mean_p_onart_99 = "SQ";
+label mean_p_onart_0 = "Base";
+label mean_p_onart_1 = "FSW program";
+label mean_p_onart_2 = "VMMC";
+label mean_p_onart_3 = "VMMC increase";
+label mean_p_onart_4 = "Oral PrEP continuation";
+label mean_p_onart_5 = "Oral PrEP and intro of Len";
+label mean_p_onart_6 = "Oral PrEP and scale up of Len";
+label mean_p_onart_16 = "Return interventions";
+label mean_p_onart_17 = "VL and CD4 testing";
 
-
-series  x=cald y=mean_p_onart__99/	lineattrs = (color=black thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_p_onart__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart__2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart__3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart__4/	lineattrs = (color=purple thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart__5/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart__6/	lineattrs = (color=blue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart__16/	lineattrs = (color=pink thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart__17/	lineattrs = (color=green thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_99/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_p_onart_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_5/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_16/	lineattrs = (color=pink thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_17/	lineattrs = (color=green thickness = 2 pattern=solid);
 run;quit;
 
 proc sgplot data=a; 
@@ -174,7 +167,6 @@ label mean_p_diag_6 = "Oral PrEP and scale up of Len";
 label mean_p_diag_16 = "Return interventions";
 label mean_p_diag_17 = "VL and CD4 testing";
 
-
 series  x=cald y=mean_p_diag_99/lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_p_diag_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
@@ -185,7 +177,6 @@ series  x=cald y=mean_p_diag_5/	lineattrs = (color=lightpurple thickness = 2 pat
 series  x=cald y=mean_p_diag_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_16/lineattrs = (color=pink thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_17/lineattrs = (color=green thickness = 2 pattern=solid);
-
 run;quit;
 
 
@@ -205,7 +196,6 @@ label mean_p_onart_diag_6 = "Oral PrEP and scale up of Len";
 label mean_p_onart_diag_16 = "Return interventions";
 label mean_p_onart_diag_17 = "VL and CD4 testing";
 
-
 series  x=cald y=mean_p_onart_diag_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_p_onart_diag_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
@@ -216,9 +206,7 @@ series  x=cald y=mean_p_onart_diag_5/	lineattrs = (color=lightpurple thickness =
 series  x=cald y=mean_p_onart_diag_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_16/	lineattrs = (color=pink thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_17/	lineattrs = (color=green thickness = 2 pattern=solid);
-
 run;quit;
-
 
 
 proc sgplot data=a; 
@@ -247,7 +235,6 @@ series  x=cald y=mean_p_onart_vl1000__5/	lineattrs = (color=lightpurple thicknes
 series  x=cald y=mean_p_onart_vl1000__6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_vl1000__16/	lineattrs = (color=pink thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_vl1000__17/	lineattrs = (color=green thickness = 2 pattern=solid);
-
 run;quit;
 
 
@@ -291,27 +278,24 @@ series  x=cald y=mean_n_onprep_5/	lineattrs = (color=lightpurple thickness = 2 p
 series  x=cald y=mean_n_onprep_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 run;quit;
 
-
-
 proc sgplot data=a; 
 title    height=1.5 justify=center "HIV prevalence in female sex workers";
 xaxis label      = 'Year'                labelattrs=(size=12)  values = (2020 to 2050 by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Prevalence'          labelattrs=(size=12)    values = (0.2 to 0.5 by 0.05)    valueattrs=(size=10);
 
-label mean_prevalence1564sw_99 = "SQ";
-label mean_prevalence1564sw_0 = "Base";
-label mean_prevalence1564sw_1 = "FSW program";
-label mean_prevalence1564sw_7 = "Oral PrEP FSW only";
-label mean_prevalence1564sw_10 = "Oral PrEP and intro of Len FSW only";
-label mean_prevalence1564sw_13 = "Oral PrEP and scale up of Len FSW only";
+label mean_prevalence_1564sw_99 = "SQ";
+label mean_prevalence_1564sw_0 = "Base";
+label mean_prevalence_1564sw_1 = "FSW program";
+label mean_prevalence_1564sw_7 = "Oral PrEP FSW only";
+label mean_prevalence_1564sw_10 = "Oral PrEP and intro of Len FSW only";
+label mean_prevalence_1564sw_13 = "Oral PrEP and scale up of Len FSW only";
 
-series  x=cald y=mean_prevalence1564sw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence1564sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_prevalence1564sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence1564sw_7/	lineattrs = (color=purple thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence1564sw_10/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence1564sw_13/	lineattrs = (color=blue thickness = 2 pattern=solid);
-
+series  x=cald y=mean_prevalence_1564sw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_1564sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_prevalence_1564sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_1564sw_7/	lineattrs = (color=purple thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_1564sw_10/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_1564sw_13/	lineattrs = (color=blue thickness = 2 pattern=solid);
 run;quit;
 
 
@@ -354,7 +338,6 @@ series  x=cald y=mean_p_onprep_sw_1/	lineattrs = (color=lightgreen thickness = 2
 series  x=cald y=mean_p_onprep_sw_7/	lineattrs = (color=purple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_10/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_13/	lineattrs = (color=blue thickness = 2 pattern=solid);
-
 run;quit;
 
 
@@ -419,8 +402,6 @@ series  x=cald y=mean_p_onprep_agyw_8/	lineattrs = (color=purple thickness = 2 p
 series  x=cald y=mean_p_onprep_agyw_11/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_agyw_14/	lineattrs = (color=blue thickness = 2 pattern=solid);
 run;quit;
-
-
 
 proc sgplot data=a; 
 title    height=1.5 justify=center "HIV prevalence in MSM";

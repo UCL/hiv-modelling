@@ -2,11 +2,13 @@
 
 ***UPDATED JAN 2026 BY LBM;
 
-* 1. POPULATION;
-* 2. PLHIV;
-* 3. HIV TESTING;
-* 4. DIAGNOSIS;
-* 4. ART;
+* POPULATION;
+* KEY POPULATIONS
+* PLHIV;
+* HIV TESTING;
+* DIAGNOSIS;
+* ART;
+* PREVALENCE;
 
 
 
@@ -37,6 +39,15 @@ if cald=2020 then do; o_pop_15plus_WPP=11111000;o_pop1564_WPP=10582000;end;
 if cald=2023 then do; o_pop_15plus_WPP=12385000;o_pop1564_WPP=11853000;end;
 
 
+**************************************************************************************************************************
+										KEY POPULATIONS: SEX WORKERS, MSM
+**************************************************************************************************************************;
+
+* Source: UNAIDS: https://www.unaids.org/sites/default/files/media_asset/data-book-2024_en.pdf;
+if cald=2023 then do;
+	m_pop_sw_unaids=39000;
+	m_pop_msm_unaids=49800;
+end;
 
 **************************************************************************************************************************
 													PLHIV
@@ -57,8 +68,8 @@ end;
 
 if cald=2023.5 then do;
 	m_livingHIV_15plus_UNAIDS=940000;
-	m_livingHIV_15plus_m_UNAIDS=590000;
-	m_livingHIV_15plus_w_UNAIDS=350000;
+	m_livingHIV_15plus_w_UNAIDS=590000;
+	m_livingHIV_15plus_m_UNAIDS=350000;
 end;
 
 *Source: https://dms.hiv.health.gov.mw/dataset/malawi-hiv-syphilis-sentinel-surveillance-report-2010 Table 20;
@@ -330,6 +341,23 @@ if cald=2025.25 then do;
 n_tests_obs_mlw_moh= 890254* 4; n_tests_m_obs_mlw_moh= 282119 *4;n_tests_w_obs_mlw_moh= 608135 *4;n_tests_f_anc_obs_mlw_moh= 197502 *4; 
 end;
 
+* Self testing;
+
+* Source quarterly reports - multiply by 4 to get annual numbers (using number of people given tests rather than number of tests);
+if cald = 2019.50 then n_self_tested_obs_mlw_moh = 30619 * 4;
+if cald = 2019.75 then n_self_tested_obs_mlw_moh = 31747 * 4; 
+
+if cald = 2020.25 then n_self_tested_obs_mlw_moh = 105211 * 4; 
+if cald = 2020.50 then n_self_tested_obs_mlw_moh = 186487 * 4;
+if cald = 2020.75 then n_self_tested_obs_mlw_moh = 345411 * 4; 
+
+***Not sure of source of these numbers (from AP file)- quarterly reports not published after 2021 but they look broadly in line with those above;
+*if cald = 2019.5 then n_self_tested_obs_mlw = 101000; * this is annual number;  
+*if cald = 2020.5 then n_self_tested_obs_mlw = 561000; * this is annual number;  
+if cald = 2021.5 then n_self_tested_obs_mlw = 827000; * this is annual number;  
+if cald = 2022.5 then n_self_tested_obs_mlw = 750000; * this is annual number;  
+if cald = 2023.5 then n_self_tested_obs_mlw = 802000; * this is annual number;  
+
 
 ***Percentage ever tested;
 
@@ -517,7 +545,7 @@ end;
 ***2nd line ART;
 
 
-***Source: Quarterly reports - uising data from Q4. 2022 onwards not published and unable to find numbers in spreadsheets;
+***Source: Quarterly reports - using data from Q4. 2022 onwards not published and unable to find numbers in spreadsheets;
 if cald=2011.75 then n_secondline_obs_mlw_moh= 1378 ;
 if cald=2012.75 then n_secondline_obs_mlw_moh= 2480 ; 
 if cald=2013.75 then n_secondline_obs_mlw_moh= 3694 ; 
@@ -595,32 +623,56 @@ end;
 
 * Source MPHIA;
 * https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf Table 3.3C;
-if cald=2016.25 then prevalence1549_obs_mlw_mdhs= 0.100;
-if cald=2016.25 then prevalence1549m_obs_mlw_mdhs= 0.078;
-if cald=2016.25 then prevalence1549w_obs_mlw_mdhs= 0.121;
+if cald=2016.25 then prevalence1549_obs_mlw_mphia= 0.100;
+if cald=2016.25 then prevalence1549m_obs_mlw_mphia= 0.078;
+if cald=2016.25 then prevalence1549w_obs_mlw_mphia= 0.121;
 
 * https://phia.icap.columbia.edu/wp-content/uploads/2022/12/241122_Mphia_Foreword.pdf Table 6.1;
-if cald=2020.75 then prevalence1549_obs_mlw_mdhs= 0.080;
-if cald=2020.75 then prevalence1549m_obs_mlw_mdhs= 0.058;
-if cald=2020.75 then prevalence1549w_obs_mlw_mdhs= 0.100;
+if cald=2020.75 then prevalence1549_obs_mlw_mphia= 0.080;
+if cald=2020.75 then prevalence1549m_obs_mlw_mphia= 0.058;
+if cald=2020.75 then prevalence1549w_obs_mlw_mphia= 0.100;
 
 
 *Source: (MODELLED DATA) Spectrum AIMS estimates;
 * https://data.worldbank.org/indicator/SH.DYN.AIDS.ZS?locations=MW;
 * Only put here selected years but estimates for all years are available);
-if cald=1990 then prevalence1549_obs_mlw_unaids=0.09;
-if cald=1992 then prevalence1549_obs_mlw_unaids=0.121;
-if cald=1994 then prevalence1549_obs_mlw_unaids=0.142;
-if cald=1996 then prevalence1549_obs_mlw_unaids=0.157;
-if cald=1998 then prevalence1549_obs_mlw_unaids=0.160;
-if cald=2000 then prevalence1549_obs_mlw_unaids=0.153;
-if cald=2005 then prevalence1549_obs_mlw_unaids=0.123;
-if cald=2010 then prevalence1549_obs_mlw_unaids=0.107;
-if cald=2015 then prevalence1549_obs_mlw_unaids=0.096;
-if cald=2020 then prevalence1549_obs_mlw_unaids=0.079;
-if cald=2024 then prevalence1549_obs_mlw_unaids=0.062;
+if cald=1990 then m_prevalence1549_mlw_unaids=0.09;
+if cald=1992 then m_prevalence1549_mlw_unaids=0.121;
+if cald=1994 then m_prevalence1549_mlw_unaids=0.142;
+if cald=1996 then m_prevalence1549_mlw_unaids=0.157;
+if cald=1998 then m_prevalence1549_mlw_unaids=0.160;
+if cald=2000 then m_prevalence1549_mlw_unaids=0.153;
+if cald=2005 then m_prevalence1549_mlw_unaids=0.123;
+if cald=2010 then m_prevalence1549_mlw_unaids=0.107;
+if cald=2015 then m_prevalence1549_mlw_unaids=0.096;
+if cald=2020 then m_prevalence1549_mlw_unaids=0.079;
+if cald=2024 then m_prevalence1549_mlw_unaids=0.062;
 
 
+***PREVALENCE IN FSW;
+* Source: UNAIDS: https://www.unaids.org/en/20190402_country_focus_Malawi;
+if cald=2017 then m_prevalence_fsw_mlw_unaids=0.60;
+
+* Source: MALAWI BIOLOGICAL AND BEHAVIOURAL SURVEILLANCE SURVEY; 
+* https://www.aidsmalawi.org.mw/wp-content/uploads/2024/06/2019-2020_Malawi_BBSS_Report_FINAL.pdf;
+if cald=2013.0 then o_prevalence_fsw_mlw_mbbs=0.627;
+if cald=2019.5 then o_prevalence_fsw_mlw_mbbs=0.499;
+
+
+***PREVALENCE IN MSM;
+* Source: MALAWI BIOLOGICAL AND BEHAVIOURAL SURVEILLANCE SURVEY; 
+* https://www.aidsmalawi.org.mw/wp-content/uploads/2024/06/2019-2020_Malawi_BBSS_Report_FINAL.pdf;
+if cald=2019.5 then o_prevalence_msm_mlw_mbbs=0.128;
+
+
+***PREVALENCE IN AGYW;
+* Source: DHS https://dhsprogram.com/pubs/pdf/FR247/FR247.pdf Table 14.8;
+if cald=2010 then prevalence_agyw_mlw_dhs=0.052;
+if cald=2015.75 then prevalence_agyw_mlw_dhs=0.049;
+
+* Source: PHIA https://phia.icap.columbia.edu/wp-content/uploads/2022/12/241122_Mphia_Foreword.pdf Table 6.3;
+if cald=2016.25 then prevalence_agyw_mlw_phia=0.049; 
+if cald=2020.75 then prevalence_agyw_mlw_phia=0.049; 
 **************************************************************************************************************************
 													INCIDENCE
 **************************************************************************************************************************;
@@ -630,15 +682,18 @@ if cald=2024 then prevalence1549_obs_mlw_unaids=0.062;
 * https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf Table 3.3A;
 
 if cald=2016.25 then do;
-	incidence1549_obs_mlw_phia= 0.36;
-	incidence1549m_obs_mlw_phia= 0.26;
-	incidence1549w_obs_mlw_phia= 0.46;
+	o_incidence1549_obs_mlw_phia= 0.36;
+	o_incidence1549m_obs_mlw_phia= 0.26;
+	o_incidence1549w_obs_mlw_phia= 0.46;
+	o_incidence_agyw_obs_mlw_phia=0.40;
 end;
 
 if cald=2020.75 then do;
-	incidence1549_obs_mlw_phia= 0.23;
-	incidence1549m_obs_mlw_phia= 0.15;
-	incidence1549w_obs_mlw_phia= 0.31;
+	o_incidence1549_obs_mlw_phia= 0.23;
+	o_incidence1549m_obs_mlw_phia= 0.15;
+	o_incidence1549w_obs_mlw_phia= 0.31;
+	o_incidence_agyw_obs_mlw_phia=0.42;
+	
 end;
 
 
@@ -682,55 +737,48 @@ end;
 **************************************************************************************************************************;
 
 
-* Source: 2024 Global AIDS Monitoring Report for Malawi;
+* Source: 2024 Global AIDS Monitoring Report for Malawi and quarterly reports 2021 Q4;
 * https://www.aidsmalawi.org.mw/wp-content/uploads/2024/05/2024-Narrative-Draft-GAM-Report-Malawi-Ver-2.pdf;
 if cald = 2021.75 then do; n_onprep_obs_mlw_moh = 7631 ; n_everstarted_prep_mlw_moh=11078;end;
 if cald = 2022.75 then do; n_onprep_obs_mlw_moh = 20482 ; n_everstarted_prep_mlw_moh=.;end;
-if cald = 2023.75 then do; n_onprep_obs_mlw_moh = 50638 ; n_everstarted_prep_mlw_moh=.;end;
+if cald = 2023.75 then do; n_onprep_obs_mlw_moh = 50638 ; o_n_onprep_fsw_mlw_moh=3576; o_n_onprep_msm_mlw_moh=2896;end;
 
-*Not sure where these numbers came from;
+* Source: PrEPWATCH;
+if cald=2025 then o_n_prepever_mlw_pw=183653;
+
+* Source: Quarterly reports 2021 Q4;
+if cald=2021.75 then o_n_everstarted_prep_agyw_moh=3282;
+/*
+*Not sure where these numbers came from - taken from AP file;
 if cald = 2021.5 then n_prep_obs_mlw = 3200 ;  * from data in template - from implementing partners;
 if cald = 2022.5 then n_prep_obs_mlw = 9600 ;  * from data in template - from implementing partners;
 if cald = 2023.5 then n_prep_obs_mlw = 36000 ;  * from data in template - from implementing partners;
+*/
 
+**************************************************************************************************************************
+													CIRCUMCISION
+**************************************************************************************************************************;
+*Source: DHS: https://dhsprogram.com/pubs/pdf/FR175/FR-175-MW04.pdf Table 11.24;
+if cald=2004 then o_p_circ_1549_dhs=0.207;
+if cald=2010 then o_p_circ_1549_dhs=0.216;
+if cald=2016 then do;o_p_circ_1549_dhs=0.28;o_p_vmmc_1549_dhs=0.09;end;
+if cald=2024 then do;o_p_circ_1549_dhs=0.379;o_p_vmmc_1549_dhs=0.209;end;
 
+* Source: PHIA https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf;
+if cald=2016.25 then do;o_p_circ_1549_phia=30.1;o_p_vmmc_1549_phia=0.092;end;
+if cald=2020.75 then do;o_p_circ_1549_phia=34.6;o_p_vmmc_1549_phia=0.153;end;
 
+* Source: Global AIDS Monitoring Report for Malawi 2024;
+* https://www.aidsmalawi.org.mw/wp-content/uploads/2024/05/2024-Narrative-Draft-GAM-Report-Malawi-Ver-2.pdf;
+if cald = 2019.5 then n_new_vmmc_obs_mlw_amr = 141193;  
+if cald = 2020.5 then n_new_vmmc_obs_mlw_amr = 69322;  
+if cald = 2021.5 then n_new_vmmc_obs_mlw_amr = 141570;  
+if cald = 2022.5 then n_new_vmmc_obs_mlw_amr = 132519;  
+if cald = 2023.5 then n_new_vmmc_obs_mlw_amr = 119161;  
 
-* Self testing;
-
-* Source quarterly reports - multiply by 4 to get annual numbers (using number of people given tests rather than number of tests);
-if cald = 2019.50 then n_self_tested_obs_mlw_moh = 30619 * 4;
-if cald = 2019.75 then n_self_tested_obs_mlw_moh = 31747 * 4; 
-
-
-if cald = 2020.25 then n_self_tested_obs_mlw_moh = 105211 * 4; 
-if cald = 2020.50 then n_self_tested_obs_mlw_moh = 186487 * 4;
-if cald = 2020.75 then n_self_tested_obs_mlw_moh = 345411 * 4; 
-
-
-
-
-
-if cald = 2019.5 then n_self_tested_obs_mlw = 101000; * this is annual number;  
-if cald = 2020.5 then n_self_tested_obs_mlw = 561000; * this is annual number;  
-if cald = 2021.5 then n_self_tested_obs_mlw = 827000; * this is annual number;  
-if cald = 2022.5 then n_self_tested_obs_mlw = 750000; * this is annual number;  
-if cald = 2023.5 then n_self_tested_obs_mlw = 802000; * this is annual number;  
-
-if cald = 2019.5 then n_vmmc_obs_mlw = 141000; * this is annual number;  
-if cald = 2020.5 then n_vmmc_obs_mlw = 69000; * this is annual number;  
-if cald = 2021.5 then n_vmmc_obs_mlw = 142000; * this is annual number;  
-if cald = 2022.5 then n_vmmc_obs_mlw = 135000; * this is annual number;  
-if cald = 2023.5 then n_vmmc_obs_mlw = 95000; * this is annual number;  
-
+***NOT SURE WHAT THESE DATA ARE;
 if cald = 2019.5 then n_vm_obs_mlw = 410000; * this is annual number;  
 if cald = 2020.5 then n_vm_obs_mlw = 403000; * this is annual number;  
 if cald = 2021.5 then n_vm_obs_mlw = 455000; * this is annual number;  
 if cald = 2022.5 then n_vm_obs_mlw = 351000; * this is annual number;  
 if cald = 2023.5 then n_vm_obs_mlw = 458000; * this is annual number;  
-
-
-***CIRCUMCISION;
-*Source: DHS: https://dhsprogram.com/pubs/pdf/FR175/FR-175-MW04.pdf Table 11.24;
-
-if cald=2004 then o_p_circ_1549_dhs=0.207;

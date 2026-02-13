@@ -66,6 +66,17 @@ rate_int_choice = 0.003;
 * prob_birth_circ;          prob_birth_circ = 0.2 ; 
 
 
-
+***LBM Feb 2026- too many people on PrEP;
 
 * prep_any_strategy;			*%sample_uniform(prep_any_strategy, 1 3);
+
+***Too many people on PrEP;
+
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.10 0.15  0.30);
+
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05 0.1);
+
+* pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) ;
+
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.10 0.20 0.30);
+
