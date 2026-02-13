@@ -68,4 +68,4 @@ rate_int_choice = 0.003;
 
 
 
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 1 3);
+* prep_any_strategy;			*%sample_uniform(prep_any_strategy, 1 3);
