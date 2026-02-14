@@ -2434,7 +2434,7 @@ option = &s;
 5	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program 
 6	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program
 7	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix
-8	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix + 
+8	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix
 9	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix + testing
 
 99	SQ 
@@ -2999,9 +2999,6 @@ end;
 if	decr_prob_loss_at_diag_year_i = 1 then do;
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/3; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
 end;
-
-
-
 
 * decr_rate_lost_year_i; 	
 if decr_rate_lost_year_i = 1 then do;

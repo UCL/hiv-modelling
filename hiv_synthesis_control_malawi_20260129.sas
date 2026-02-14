@@ -2543,7 +2543,6 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		end;
 	end;
 
-
 	*Option 7: condoms + vmmc + fsw-prep-mix + adh-supp + fsw-program + msm-program + agyw-prep-mix;
 	if option ge 7 then do;
 		*1-6 + agyw-prep-mix;
