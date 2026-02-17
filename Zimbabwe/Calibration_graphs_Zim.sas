@@ -1,5 +1,5 @@
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data y;
 set a.long_gen_07Jan26;
@@ -160,6 +160,11 @@ DATA A.Zim_options_graphs_07Jan26;
 SET E;
 RUN;
 
+
+
+data e;
+set a.Zim_options_graphs_07Jan26;
+RUN;
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = '"C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_calibration_29_01_26.doc' startpage=never; 
