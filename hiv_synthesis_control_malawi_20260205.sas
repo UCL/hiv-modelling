@@ -2433,9 +2433,9 @@ option = &s;
 4	Min + condoms + vmmc + fsw-prep-mix + adh-supp
 5	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program 
 6	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program
-7	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + msm-prep-mix
-8	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + msm-prep-mix + agyw-prep-mix
-9	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + msm-prep-mix + agyw-prep-mix + testing
+7	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix
+8	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix
+9	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix + testing
 
 99	SQ 
 
@@ -2547,9 +2547,22 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		end;
 	end;
 
-	*Option 7: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + msm-prep-mix;
+	*Option 7: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix;
 	if option ge 7 then do;
-		*1-6 + msm-prep-mix;
+		*1-6 + agyw-prep-mix;
+		prep_any_strategy=21;												* New strategy for HIV control;
+		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
+		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
+		eff_rate_test_startprep_any=rate_test_startprep_any;				* Restore SQ;
+		eff_prob_prep_oral_b=prob_prep_oral_b;								* Restore SQ;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;			* Restore SQ;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;			* Restore SQ;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;		* Restore SQ;		 
+	end;
+
+	*Option 8: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix;
+	if option ge 8 then do;
+		*1-7 + msm-prep-mix;
 		prep_any_strategy=22;												* New strategy for HIV control;
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
 		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
@@ -2562,20 +2575,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		prob_prep_elig_msm = 0.5;
 	end;
 
-	*Option 8: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + msm-prep-mix + agyw-prep-mix;
-	if option ge 8 then do;
-		*1-7 + agyw-prep-mix;
-		prep_any_strategy=21;												* New strategy for HIV control;
-		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
-		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
-		eff_rate_test_startprep_any=rate_test_startprep_any;				* Restore SQ;
-		eff_prob_prep_oral_b=prob_prep_oral_b;								* Restore SQ;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;			* Restore SQ;
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;			* Restore SQ;
-		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;		* Restore SQ;		 
-	end;
-
-	*Option 9: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + msm-prep-mix + agyw-prep-mix + testing;
+	*Option 9: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix + testing;
 	if option ge 9 then do;
 		*1-8 + testing;
 		prob_self_test_hard_reach=0;    	*Restore SQ;				* prob_self_test_hard_reach set to 0 at baseline - confirm this is intended;
@@ -2999,9 +2999,6 @@ end;
 if	decr_prob_loss_at_diag_year_i = 1 then do;
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/3; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
 end;
-
-
-
 
 * decr_rate_lost_year_i; 	
 if decr_rate_lost_year_i = 1 then do;

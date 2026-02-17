@@ -208,7 +208,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=13;
+%let nfit=85;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -467,8 +467,6 @@ label mean_incidence1549__8 = " + msm-prep-mix";
 label mean_incidence1549__9 = " + testing";
 label mean_incidence1549__99 = "status quo";
 label incidence1549_obs_mlw = "Observed data";
-series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
-/*band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__1/	lineattrs = (color=darkred thickness = 2);
 /*band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__2/	lineattrs = (color=red thickness = 2);
@@ -489,22 +487,24 @@ series  x=cald y=mean_incidence1549__9/	lineattrs = (color=purple thickness = 2)
 /*band    x=cald lower=p5_incidence1549__9 	upper=p95_incidence1549__9  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";*/
 series  x=cald y=mean_incidence1549__99/	lineattrs = (color=black thickness = 2);
 /*band    x=cald lower=p5_incidence1549__99 	upper=p95_incidence1549__99  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
+series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 2);
+/*band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";*/
 scatter x=cald y=incidence1549_obs_mlw / yerrorlower=incidence1549_ll_obs_mlw yerrorupper=incidence1549_ul_obs_mlw markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
 
 proc print data=d;
-	where cald=2024;
+	where cald=2023;
 	var mean_incidence1549__0;
 run;
-* inc = 0.36586 in 2024. 10% less = 0.32923;
+* inc = 0.23280 in 2023 (85 runs). 10% less = 0.20952;
 
 proc print data=d;
-	where cald=2073;
+	where cald=2074;
 	var mean_incidence1549__0	mean_incidence1549__1	mean_incidence1549__2	mean_incidence1549__3	mean_incidence1549__4	mean_incidence1549__5	mean_incidence1549__6
 		mean_incidence1549__7	mean_incidence1549__8	mean_incidence1549__9	mean_incidence1549__99;
 run;
-* option 2 brings incidence below the threshold (7 runs only);
+* option 6 brings incidence below the threshold (85 runs) - condoms, vmmc, fsw-prep-mix, adh-supp, fsw-program, msm-program;
 
 * Incidence 15-64;
 proc sgplot data=d; 
