@@ -2477,7 +2477,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 	end;
 
-	*Option 7: condoms, FSW program, adherence support, oral PrEP FSW, inj PrEP FSW, PrEP oral and inj MSM;
+	*Option 7: condoms, FSW program, adherence support, oral PrEP FSW, inj PrEP FSW, PrEP oral and inj MSM, PreP AGYW;
 
 	if option = 7 then do;
 

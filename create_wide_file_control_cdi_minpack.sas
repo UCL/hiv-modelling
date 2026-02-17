@@ -1,7 +1,7 @@
 options notes source source2 mprint mlogic symbolgen;
 
 
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 
 *libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 *ods listing;
@@ -79,7 +79,7 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 * ================================================================================= ;
 
-%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_costs.sas";
+%include "C:\Users\loveleen\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_costs.sas";
 
 * Adjustments to costs for Zimbabwe - HIV Control ;
 * Original costs in 000s of USD;
@@ -543,14 +543,14 @@ options nomprint;
 option nospool;
 
 
-***This section is to create graphs in SAS - mostly specific to mobile men for which there is no observed data;
+***This section is to create graphs in SAS;
 
 data b;
 set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 1950;
+%let nfit = 2350;
 %let year_end = 2075.00 ;
 run;
 proc sort;by cald option ;run;
@@ -1071,6 +1071,8 @@ run;
 
 
 proc means data=master_summary;var mean_incidence1549__0;where cald=2024;run;
+
+
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 ** Variable lists;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -1277,7 +1279,7 @@ run;
 ** Set option number here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-%let op_num=;
+%let op_num=7;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
