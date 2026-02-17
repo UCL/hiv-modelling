@@ -2,7 +2,8 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data y;
-set a.long_gen_07Jan26;
+*set a.long_gen_07Jan26;
+set a.long_gen_06Feb26_package;
 run;
 proc freq;table cald;run;
 
@@ -11,7 +12,9 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 1950;
+*%let nfit = 1950;
+%let nfit = 672;
+
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -52,7 +55,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 
 	n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	
 	n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_postdel_testing
-	n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all
+	n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		 p_mcirc			p_vmmc
 	n_death_discount	 d_n_new_inf
 
 	dcost	ddaly;
@@ -136,7 +139,8 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /*-----------------------------------------*/
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
-%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
+*%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
+%summary_all_options(options=0 1 2 3 4 5 99); *package;
 
 
 
@@ -147,20 +151,23 @@ options notes source source2 mprint mlogic symbolgen;
 data d;
 set Master_summary;
 
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026.sas"; by cald;
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026.sas"; by cald;
 run;
 
 data e;
 set d;
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_FSW_Zimbabwe.sas"; by cald;
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_FSW_Zimbabwe.sas"; by cald;
 run;
 
-
+/*
 DATA A.Zim_options_graphs_07Jan26;
 SET E;
 RUN;
+*/
 
-
+DATA A.Zim_options_graphs_06Feb26;
+SET E;
+RUN;
 
 data e;
 set a.Zim_options_graphs_07Jan26;
@@ -687,6 +694,26 @@ band    x=cald lower=p5_n_vmmc_all_0      upper=p95_n_vmmc_all_0 / transparency=
 scatter x=cald y=o_s_new_vmmc / markerattrs = (symbol=circle color=red size = 10);
 scatter x=cald y=o_s_new_vmmc_1049m / markerattrs = (symbol=circle color=green size = 10);
 scatter x=cald y=o_s_new_vmmc_all / markerattrs = (symbol=circle color=blue size = 10);
+run;quit; 
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Proportion circumcised";
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 0.6 by 0.1)  valueattrs=(size=10);
+
+label mean_p_vmmc_0    = "Model VMMCs";
+label mean_p_mcirc_0    = "Model All circumcisions";
+label o_p_circ_15pl_DHS_z  = "DHS";
+label o_p_circ_1549_zimphia  = "ZIMPHIA";
+
+series  x=cald y=mean_p_vmmc_0 /           lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_vmmc_0      upper=p95_p_vmmc_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=mean_p_mcirc_0 /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_mcirc_0      upper=p95_p_mcirc_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_p_circ_15pl_DHS_z / markerattrs = (symbol=circle color=red size = 10);
+scatter x=cald y=o_p_circ_1549_zimphia / markerattrs = (symbol=circle color=green size = 10);
 run;quit; 
 
 

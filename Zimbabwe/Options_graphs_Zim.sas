@@ -1,12 +1,11 @@
 
-***THIS PROGRAM IS USED TO COMPARE GRAPHS OF THE DIFFERENT OPTIONS;
+***THIS PROGRAM IS USED TO COMPARE GRAPHS OF THE DIFFERENT OPTIONS USING DATASET CREATED FROM CALIBRATION GRAPHS PROGRAM;
 
 libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
 set a.Zim_options_graphs_07Jan26;
 run;
-
 
 
 
@@ -467,6 +466,24 @@ series  x=cald y=mean_p_onprep_msm_17/	lineattrs = (color=blue thickness = 2 pat
 run;quit;
 
 proc sgplot data=a; 
+Title    height=1.5 justify=center "Number of VMMCs";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 200000 by 20000 ) valueattrs=(size=10);
+
+label mean_n_vmmc_all_99 = "Status quo";
+label mean_n_vmmc_all_0 = "Base";
+label mean_n_vmmc_all_4 = "VMMC restored to status quo";
+label mean_n_vmmc_all_5 = "VMMC increase";
+
+series  x=cald y=mean_n_vmmc_all_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_vmmc_all_0/lineattrs = (color=red thickness = 2 pattern=solid);
+series  x=cald y=mean_n_vmmc_all_4/	lineattrs = (color=orange thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_vmmc_all_5/	lineattrs = (color=maroon thickness = 3 pattern=solid); 
+
+run;quit;
+
+
+proc sgplot data=a; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (2000 to 12000 by 2000 ) valueattrs=(size=10);
@@ -499,3 +516,4 @@ run;quit;
 ods rtf close;
 ods listing;
 run;
+

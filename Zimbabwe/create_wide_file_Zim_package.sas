@@ -4,7 +4,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 *libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
-set a.genesiszim_07jan26 a.GenesisZim_07Jan26_a; 
+set a.genesis_zim_06feb26_package; 
 if run=. then delete; 
 
 proc sort;
@@ -398,7 +398,7 @@ dcost	ddaly  cost
 
 proc sort data=y;by run option;run;
 
-data a.long_gen_07Jan26;
+data a.long_gen_06Feb26_package;
 set y;
 run;
 
@@ -406,7 +406,7 @@ run;
 libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data y;
-set a.long_gen_07Jan26;
+set a.long_gen_06Feb26;
 run; 
 
 options nomprint;
@@ -543,6 +543,6 @@ dcost ddaly cost
 proc sort; by run;run;
 
 
-data a.wide_Zim_07_01_2026;
+data a.wide_Zim_06_02_2026_package;
 set wide_outputs  ;  
 by run;run; 
