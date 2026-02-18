@@ -1,10 +1,10 @@
 
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_mlw";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_mlw";
 ods listing;
 
 data y;
-set a.long_gen_mlw_29_01_2026_ops;
+set a.long_gen_mlw_29_01_2026;
 run;
 proc freq;table cald;run;
 
@@ -13,7 +13,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 684;
+%let nfit = 1843;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -145,7 +145,7 @@ options notes source source2 mprint mlogic symbolgen;
 data d;
 set Master_summary;
 
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Malawi\Observed data_Malawi.sas"; by cald;
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Malawi\Observed data_Malawi.sas"; by cald;
 run;
 
 DATA A.MLW_options_graphs_29Jan26;

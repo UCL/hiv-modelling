@@ -1,10 +1,12 @@
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 *turns log back on;
 *options notes source source2 mprint mlogic symbolgen;
 
+***97 runs;
+
 data a;
-set a.GenesisMLW_29Jan26_ops;
+set a.GenesisMLW_29Jan26;
 if run=. then delete; 
 
 proc sort;
@@ -364,6 +366,8 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_cd4m_this_per;				n_cd4m_this_per = s_cm_this_per*4 * sf;
 * n_vmmc1549m;					n_vmmc1549m = s_new_vmmc1549m * 4* sf;
 * n_vmmc_all;					n_vmmc_all = s_new_vmmc * 4* sf;
+* p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;
+* p_vmmc;						p_vmmc = s_vmmc / s_alive_m ;
 
 * n_death_discount;				n_death_discount = n_death*discount;
 * d_n_new_inf;					d_n_new_inf = n_new_inf * discount;
@@ -388,7 +392,7 @@ n_agyw				 n_agyw_pg			p_w_agyw			prevalence_agyw		incidence_agyw		p_onprep_agyw
 
 n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	
 n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_postdel_testing
-n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all
+n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc				p_vmmc
 n_death_discount	 d_n_new_inf
 
 dcost	ddaly  cost
@@ -400,11 +404,16 @@ proc sort data=y;by run option;run;
 
 
 
-data a.long_gen_mlw_29_01_2026_ops;
+data a.long_gen_mlw_29_01_2026;
 set y;
 run;
 
 
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
+
+data y;
+set a.long_gen_mlw_29_01_2026;
+run; 
 
 options nomprint;
   option nospool;
@@ -540,6 +549,6 @@ dcost ddaly cost
 proc sort; by run;run;
 
 
-data a.wide_gen_mlw_29_01_2026_ops;
+data a.wide_gen_mlw_29_01_2026;
 set wide_outputs  ;  
 by run;run; 
