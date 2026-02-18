@@ -39,7 +39,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 	n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
 	prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 	p_onart				 p_onart_m			p_onart_w			n_onart				n_onart_m			n_onart_w
-	n_diag_this_period 	 n_diag_this_period_m 					n_diag_this_period_w
+	n_diagnosed	 
 	p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 	p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	n_onprep_w			n_onprep_m			n_onprep
 	prop_elig_on_prep	 n_prep_ever		prop_1564_onprep	n_onprep_oral		n_onprep_cab		n_onprep_len
@@ -51,7 +51,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 	n_agyw				 n_agyw_pg			p_w_agyw			prevalence_agyw		incidence_agyw		p_onprep_agyw		n_onprep_agyw
 	n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	
 	n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_postdel_testing
-	n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all
+	n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc				
 	n_death_discount	 d_n_new_inf
 
 	dcost	ddaly;
@@ -154,7 +154,7 @@ RUN;
 
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\MLW_calibration_29_01_26.doc' startpage=never; 
+ods rtf file = 'C:\Users\lovelEEN\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\MLW_calibration_29_01_26.doc' startpage=never; 
 ods listing close;
 
 
@@ -403,6 +403,8 @@ band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fil
 scatter x=cald y=n_tests_obs_mlw_moh / markerattrs = (symbol=circle  color=green size = 12);
 run;quit;
 
+***NEEDS TO BE CORRECTED IN CORE - CURRENTLY TOO HIGH;
+/* 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV self-tests (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
@@ -419,7 +421,7 @@ scatter x=cald y=n_self_tested_obs_mlw_moh / markerattrs = (symbol=circle  color
 scatter x=cald y=n_self_tested_obs_mlw / markerattrs = (symbol=circle  color=lightgreen size = 12);
 
 run;quit;
-
+*/
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of VMMCs";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
@@ -436,6 +438,23 @@ series  x=cald y=mean_n_vmmc_all_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_vmmc_all_0 	upper=p95_n_vmmc_all_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
 scatter x=cald y=n_new_vmmc_obs_mlw_amr / markerattrs = (symbol=circle  color=green size = 12);
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of men circumcised";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+
+label mean_p_mcirc_0 = "Model proportion circumcised";
+label o_p_circ_1549_dhs = "DHS";
+label o_p_circ_1549_phia = "MPHIA";
+
+series  x=cald y=mean_p_mcirc_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_mcirc_0 	upper=p95_p_mcirc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_p_circ_1549_dhs / markerattrs = (symbol=circle  color=green size = 12);
+scatter x=cald y=o_p_circ_1549_phia  / markerattrs = (symbol=circle  color=blue size = 12);
+
 run;quit;
 
 proc sgplot data=d; 
@@ -496,11 +515,11 @@ Title    height=1.5 justify=center "Number diagnosed per year (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 1000000) valueattrs=(size=10);
 
-label mean_n_diag_this_period_0 = "Model";
+label mean_n_diagnosed_0 = "Model";
 label n_diag_obs_mlw_moh = "MoH Quarterly reports - all ages";
 
-series  x=cald y=mean_n_diag_this_period_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_diag_this_period_0	upper=p95_n_diag_this_period_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=mean_n_diagnosed_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_diagnosed_0	upper=p95_n_diagnosed_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 scatter x=cald y=n_diag_obs_mlw_moh / markerattrs=(symbol=circle color=blue size=10);
 
@@ -618,8 +637,8 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Ever initiated PrEP (15+)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 500000 by 50000) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2026 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 1000000 by 50000) valueattrs=(size=10);
 
 label mean_n_prep_ever_0 = "Model";
 label o_n_prepever_mlw_pw = "PrEPWatch";
@@ -700,7 +719,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of FSW on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 10000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000) valueattrs=(size=10);
 
 label mean_p_onprep_sw_0 = "Model";
 label o_n_onprep_fsw_mlw_moh = "Global AIDS Monitoring Report 2024";
@@ -769,7 +788,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of MSM on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 5000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 5000) valueattrs=(size=10);
 
 label mean_n_onprep_msm_0 = "Model";
 label o_n_onprep_msm_mlw_moh = "Beh survey";
@@ -851,7 +870,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 30000 by 2000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 30000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_0 = "Model";
 series  x=cald y=mean_n_death_hivrel_0/	lineattrs = (color=black thickness = 2);
@@ -862,10 +881,9 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (Males 15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_m_0 = "Model";
-label o_s_deaths_HIVrel_unaids_m= "UNAIDS 15+";
 
 series  x=cald y=mean_n_death_hivrel_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_death_hivrel_m_0 	upper=p95_n_death_hivrel_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
@@ -874,10 +892,9 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (Females 15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_w_0 = "Model";
-label o_s_deaths_HIVrel_unaids_w= "UNAIDS 15+";
 
 series  x=cald y=mean_n_death_hivrel_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_death_hivrel_w_0 	upper=p95_n_death_hivrel_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";

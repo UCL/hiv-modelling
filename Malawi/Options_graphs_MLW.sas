@@ -1,18 +1,18 @@
 
 ***THIS PROGRAM IS USED TO COMPARE GRAPHS OF THE DIFFERENT OPTIONS;
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Mlw";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Mlw";
 
 data a;
 set a.Mlw_options_graphs_29Jan26;
 run;
 
 
-
+proc freq;table mean_n_vmmc_all_2 mean_n_vmmc_all_3;where cald=2050;run;
 
 /***Scenarios;
 0 = Min;
-1 = FSW SQ;
+1 = FSW lower than SQ;
 2 = VMMC;
 3 = VMMC increase;
 4 = Oral PrEP continuation in KP;
@@ -32,11 +32,11 @@ run;
 99 = SQ;
 */
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\Mlw_options_29_01_26.doc" startpage=never; 
+ods rtf file = "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\Mlw_options_29_01_26.doc" startpage=never; 
 ods listing close;
 
-ods listing gpath="C:\Users\lovel\Documents";
-ods graphics on / imagename="SGPlot" imagefmt=png;
+*ods listing gpath="C:\Users\lovel\Documents";
+*ods graphics on / imagename="SGPlot" imagefmt=png;
 proc sgplot data=a; 
 Title    height=1.5 justify=center "People living with HIV (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
@@ -460,9 +460,28 @@ series  x=cald y=mean_p_onprep_msm_15/	lineattrs = (color=blue thickness = 2 pat
 run;quit;
 
 proc sgplot data=a; 
+Title    height=1.5 justify=center "Number of VMMCs";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 200000 by 20000 ) valueattrs=(size=10);
+
+label mean_n_vmmc_all_99 = "Status quo";
+label mean_n_vmmc_all_0 = "Base";
+label mean_n_vmmc_all_2 = "VMMC restored to status quo";
+label mean_n_vmmc_all_3 = "VMMC increase";
+
+series  x=cald y=mean_n_vmmc_all_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_vmmc_all_0/lineattrs = (color=red thickness = 3 pattern=solid);
+series  x=cald y=mean_n_vmmc_all_2/	lineattrs = (color=orange thickness = 2 pattern=solid); 
+series  x=cald y=mean_n_vmmc_all_3/	lineattrs = (color=maroon thickness = 2 pattern=solid); 
+
+run;quit;
+
+
+
+proc sgplot data=a; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (2000 to 12000 by 2000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (2000 to 12000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_99 = "SQ";
 label mean_n_death_hivrel_0 = "Base";

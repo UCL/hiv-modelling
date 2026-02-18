@@ -9,6 +9,10 @@
 * DIAGNOSIS;
 * ART;
 * PREVALENCE;
+* INCIDENCE;
+* VIRAL SUPPRESSION;
+* PREP;
+* CIRCUMCISION;
 
 
 
@@ -613,9 +617,9 @@ if cald=2010.5 then do;
 end;
 
 if cald=2016.0 then do;
-	prevalence1549_obs_mlw_mdhs= 0.108;
+	prevalence1549_obs_mlw_mdhs= 0.088;
 	prevalence1549m_obs_mlw_mdhs= 0.064;
-	prevalence1549w_obs_mlw_mdhs= 0.088;
+	prevalence1549w_obs_mlw_mdhs= 0.108;
 	prevalence1524_obs_mlw_mdhs= 0.035;
 	prevalence1524m_obs_mlw_mdhs= 0.011;
 	prevalence1524w_obs_mlw_mdhs= 0.056;
@@ -765,8 +769,8 @@ if cald=2016 then do;o_p_circ_1549_dhs=0.28;o_p_vmmc_1549_dhs=0.09;end;
 if cald=2024 then do;o_p_circ_1549_dhs=0.379;o_p_vmmc_1549_dhs=0.209;end;
 
 * Source: PHIA https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Final-MPHIA-First-Report_11.15.17.pdf;
-if cald=2016.25 then do;o_p_circ_1549_phia=30.1;o_p_vmmc_1549_phia=0.092;end;
-if cald=2020.75 then do;o_p_circ_1549_phia=34.6;o_p_vmmc_1549_phia=0.153;end;
+if cald=2016.25 then do;o_p_circ_1549_phia=0.301;o_p_vmmc_1549_phia=0.092;end;
+if cald=2020.75 then do;o_p_circ_1549_phia=0.346;o_p_vmmc_1549_phia=0.153;end;
 
 * Source: Global AIDS Monitoring Report for Malawi 2024;
 * https://www.aidsmalawi.org.mw/wp-content/uploads/2024/05/2024-Narrative-Draft-GAM-Report-Malawi-Ver-2.pdf;

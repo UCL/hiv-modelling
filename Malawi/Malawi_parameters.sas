@@ -61,6 +61,10 @@ rate_int_choice = 0.003;
 
 * CIRCUMCISION;
 
+* rel_incr_circ_post_2023;	%sample(rel_incr_circ_post_2023, 
+								2		3		4, 
+								0.25	0.5		0.25); *Vale - 20231010;
+
 * circ_inc_rate;            circ_inc_rate = 0.001; 
 
 * prob_birth_circ;          prob_birth_circ = 0.2 ; 

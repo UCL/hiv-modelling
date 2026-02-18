@@ -1,7 +1,7 @@
 
 ***THIS PROGRAM IS USED TO COMPARE GRAPHS OF THE DIFFERENT OPTIONS USING DATASET CREATED FROM CALIBRATION GRAPHS PROGRAM;
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
 set a.Zim_options_graphs_07Jan26;
@@ -43,7 +43,7 @@ run;
 */
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Zimbabwe\Zim_options_07_01_26.doc" startpage=never; 
+ods rtf file = "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Zimbabwe\Zim_options_07_01_26.doc" startpage=never; 
 ods listing close;
 
 
@@ -117,7 +117,7 @@ label mean_incidence1549__5 = "VMMC increase";
 label mean_incidence1549__6 = "Oral PrEP continuation";
 label mean_incidence1549__7 = "Oral PrEP and intro of Len";
 label mean_incidence1549__8 = "Oral PrEP and scale up of Len";
-label mean_incidence1549__20 = "Return interventions";
+label mean_incidence1549__19 = "Return interventions";
 
 series  x=cald y=mean_incidence1549__99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
@@ -128,7 +128,7 @@ series  x=cald y=mean_incidence1549__5/	lineattrs = (color=maroon thickness = 2 
 series  x=cald y=mean_incidence1549__6/	lineattrs = (color=purple thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__7/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__8/	lineattrs = (color=blue thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence1549__20/	lineattrs = (color=pink thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence1549__19/	lineattrs = (color=pink thickness = 2 pattern=solid);
 run;quit;
 
 
@@ -146,7 +146,7 @@ label mean_p_onart_5 = "VMMC increase";
 label mean_p_onart_6 = "Oral PrEP continuation";
 label mean_p_onart_7 = "Oral PrEP and intro of Len";
 label mean_p_onart_8 = "Oral PrEP and scale up of Len";*incorrectly coded;
-label mean_p_onart_20 = "Return interventions";
+label mean_p_onart_19 = "Return interventions";
 
 series  x=cald y=mean_p_onart_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
@@ -157,7 +157,7 @@ series  x=cald y=mean_p_onart_5/	lineattrs = (color=maroon thickness = 2 pattern
 series  x=cald y=mean_p_onart_6/	lineattrs = (color=purple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_7/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_8/	lineattrs = (color=blue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_20/	lineattrs = (color=pink thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_19/	lineattrs = (color=pink thickness = 2 pattern=solid);
 run;quit;
 
 proc sgplot data=a; 
@@ -174,7 +174,7 @@ label mean_p_diag_5 = "VMMC increase";
 label mean_p_diag_6 = "Oral PrEP continuation";
 label mean_p_diag_7 = "Oral PrEP and intro of Len";
 label mean_p_diag_8 = "Oral PrEP and scale up of Len";
-label mean_p_diag_20 = "Return interventions";
+label mean_p_diag_10 = "Return interventions";
 
 series  x=cald y=mean_p_diag_99/lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
@@ -185,7 +185,7 @@ series  x=cald y=mean_p_diag_5/	lineattrs = (color=maroon thickness = 2 pattern=
 series  x=cald y=mean_p_diag_6/	lineattrs = (color=purple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_7/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_8/	lineattrs = (color=blue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_diag_20/lineattrs = (color=pink thickness = 2 pattern=solid);
+series  x=cald y=mean_p_diag_19/lineattrs = (color=pink thickness = 2 pattern=solid);
 run;quit;
 
 proc sgplot data=a; 
@@ -202,7 +202,7 @@ label mean_p_onart_diag_5 = "VMMC increase";
 label mean_p_onart_diag_6 = "Oral PrEP continuation";
 label mean_p_onart_diag_7 = "Oral PrEP and intro of Len";
 label mean_p_onart_diag_8 = "Oral PrEP and scale up of Len";
-label mean_p_onart_diag_20 = "Return interventions";
+label mean_p_onart_diag_19 = "Return interventions";
 
 series  x=cald y=mean_p_onart_diag_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
@@ -213,7 +213,7 @@ series  x=cald y=mean_p_onart_diag_5/	lineattrs = (color=maroon thickness = 2 pa
 series  x=cald y=mean_p_onart_diag_6/	lineattrs = (color=purple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_7/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_8/	lineattrs = (color=blue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_diag_20/	lineattrs = (color=pink thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_19/	lineattrs = (color=pink thickness = 2 pattern=solid);
 run;quit;
 
 proc sgplot data=a; 
@@ -230,7 +230,7 @@ label mean_p_onart_vl1000__5 = "VMMC increase";
 label mean_p_onart_vl1000__6 = "Oral PrEP continuation";
 label mean_p_onart_vl1000__7 = "Oral PrEP and intro of Len";
 label mean_p_onart_vl1000__8 = "Oral PrEP and scale up of Len";
-label mean_p_onart_vl1000__20 = "Return interventions";
+label mean_p_onart_vl1000__19 = "Return interventions";
 
 series  x=cald y=mean_p_onart_vl1000__99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_vl1000__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
@@ -241,7 +241,7 @@ series  x=cald y=mean_p_onart_vl1000__5/	lineattrs = (color=maroon thickness = 2
 series  x=cald y=mean_p_onart_vl1000__6/	lineattrs = (color=purple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_vl1000__7/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_vl1000__8/	lineattrs = (color=blue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_vl1000__20/	lineattrs = (color=pink thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000__19/	lineattrs = (color=pink thickness = 2 pattern=solid);
 run;quit;
 
 proc sgplot data=a; 
@@ -338,6 +338,7 @@ label mean_p_onprep_sw_2 = "FSW program";
 label mean_p_onprep_sw_9 = "Oral PrEP FSW only";
 label mean_p_onprep_sw_12 = "Oral PrEP and intro of Len FSW only";
 label mean_p_onprep_sw_15 = "Oral PrEP and scale up of Len FSW only";
+
 series  x=cald y=mean_p_onprep_sw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_p_onprep_sw_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
@@ -468,7 +469,7 @@ run;quit;
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Number of VMMCs";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 200000 by 20000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 200000 by 20000 ) valueattrs=(size=10);
 
 label mean_n_vmmc_all_99 = "Status quo";
 label mean_n_vmmc_all_0 = "Base";
@@ -486,7 +487,7 @@ run;quit;
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (2000 to 12000 by 2000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (2000 to 12000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_99 = "SQ";
 label mean_n_death_hivrel_0 = "Base";
