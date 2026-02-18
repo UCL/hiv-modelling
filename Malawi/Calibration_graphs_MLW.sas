@@ -405,6 +405,8 @@ run;quit;
 
 ***NEEDS TO BE CORRECTED IN CORE - CURRENTLY TOO HIGH;
 /* 
+=======
+>>>>>>> Stashed changes
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV self-tests (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
@@ -422,6 +424,7 @@ scatter x=cald y=n_self_tested_obs_mlw / markerattrs = (symbol=circle  color=lig
 
 run;quit;
 */
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of VMMCs";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
@@ -884,6 +887,7 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 va
 yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_m_0 = "Model";
+label o_s_deaths_HIVrel_unaids_m= "UNAIDS 15+";
 
 series  x=cald y=mean_n_death_hivrel_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_death_hivrel_m_0 	upper=p95_n_death_hivrel_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
@@ -895,6 +899,7 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 va
 yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_w_0 = "Model";
+label o_s_deaths_HIVrel_unaids_w= "UNAIDS 15+";
 
 series  x=cald y=mean_n_death_hivrel_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_death_hivrel_w_0 	upper=p95_n_death_hivrel_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
