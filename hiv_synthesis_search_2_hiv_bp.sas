@@ -387,10 +387,10 @@ newp_seed = 7;
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
 								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0300 , 
-								0.2		0.25	0.35	0.1 	0.05 	0.05 );
+								0.3		0.25	0.25	0.1 	0.05 	0.05 );
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
-								0.1 	0.1 	0.2 	0.3 	0.3);
+								0.2 	0.2 	0.2 	0.2 	0.2);
 
 *fold_rate_decr_test_future; %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
 							* NB not currently used; * dependent_on_time_step_length ;
@@ -576,8 +576,8 @@ newp_seed = 7;
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
-* rate_int_choice;  		%sample(rate_int_choice, 	0.0010 0.0040 0.0080 0.012 , 
-														0.30 0.30 0.30 0.10 );  * mar 2025;
+* rate_int_choice;  		%sample(rate_int_choice, 	0.0003 0.001 0.003 0.01 0.03, 
+														0.2 0.2 0.2 0.2 0.2);  * mar 2025;
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 
