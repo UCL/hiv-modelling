@@ -406,7 +406,7 @@ newp_seed = 7;
 							self_test_targeting = stt * test_targeting; 
 
 * date_self_test_intro;		date_self_test_intro = 2018;
-* rate_self_test;			%sample_uniform(rate_self_test, 0.05 0.1 0.3 0.5 );
+* rate_self_test;			%sample_uniform(rate_self_test, 0.01  0.05 0.1 0.3     );
 
 * self_test_sens;			self_test_sens = 0.93;          
 
@@ -2448,7 +2448,13 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;
 		*Specify option 1;
 					
-		search_2 = 1;
+		if (caldate_never_dot = &year_interv or age = 15) then do;
+			eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral / 5 ;		
+			eff_eff_prob_prep_oral_b = prob_prep_oral_b + 0.2; 
+		end;
+
+		/*
+		* hypertension intervention - left out for now;
 
 		first_comm_test = &year_interv;
 		* prob testing in commmunity;
@@ -2459,6 +2465,7 @@ who may be dead and hence have caldate{t} missing;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
 		comm_test_age = 40;
+		*/
 
 	end;
  
@@ -2492,8 +2499,9 @@ prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
 else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
 	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
-else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
-	then eff_prob_prep_oral_b = prob_prep_oral_b;
+* below commented out as want to revert to eff_prob_prep_oral_b
+* else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
+*	then eff_prob_prep_oral_b = prob_prep_oral_b;
 
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
@@ -3199,10 +3207,10 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 			rate_1sttest = rate_1sttest * 0.8; rate_reptest = rate_reptest * 0.8; 	eff_test_targeting = test_targeting * 1.5 ; 
 		end;
 
-		* search_2 ;
-		if caldate{t} >= 2027 and search_2=1  then do; * note this is equivalent to incr_test_year_i = 0;
-			rate_1sttest = rate_1sttest * 1.5; rate_reptest = rate_reptest * 1.5; 	eff_test_targeting = test_targeting * 2.0 ; 
-		end;
+		* search_2 ;  * commented out for now as no sigt effect on intervention on p_diag;
+* 		if caldate{t} >= 2027 and search_2=1  then do; * note this is equivalent to incr_test_year_i = 0;
+*			rate_1sttest = rate_1sttest * 1.5; rate_reptest = rate_reptest * 1.5; 	eff_test_targeting = test_targeting * 2.0 ; 
+*		end;
 
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 end;

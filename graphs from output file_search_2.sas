@@ -52,7 +52,7 @@ if option in (0 1);
 
 
 
-%let single_var =  prop_elig_on_prep                     ;
+%let single_var =  n_self_tested                           ;
 
 
 
@@ -720,8 +720,8 @@ run;quit;
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "n tested per 3 months";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+* Title '';    Title    height=1.5 justify=center "n tested per 3 months";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2025 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'n_tested'		labelattrs=(size=12)  values = (0 to  1500000     by 500000 )  valueattrs=(size=10);
 
 series  x=cald y=p50_n_tested_0 / lineattrs = (color=grey thickness = 4);
@@ -730,25 +730,17 @@ band    x=cald lower=p5_n_tested_0 upper=p95_n_tested_0 / transparency=0.9 filla
 series  x=cald y=p50_n_tested_1 / lineattrs = (color=blue      thickness = 4);
 band    x=cald lower=p5_n_tested_1 upper=p95_n_tested_1 / transparency=0.9 fillattrs = (color=blue     ) legendlabel= "90% range";
 
-series  x=cald y=p50_n_tested_2 / lineattrs = (color=green     thickness = 4);
-band    x=cald lower=p5_n_tested_2 upper=p95_n_tested_2 / transparency=0.9 fillattrs = (color=green    ) legendlabel= "90% range";
-
-series  x=cald y=p50_n_tested_3 / lineattrs = (color=darkblue    thickness = 4);
-band    x=cald lower=p5_n_tested_3 upper=p95_n_tested_3 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
-
-series  x=cald y=p50_n_tested_4 / lineattrs = (color=darkred       thickness = 4);
-band    x=cald lower=p5_n_tested_4 upper=p95_n_tested_4 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
 
 run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
 * Title '';   Title    height=1.5 justify=center "n self_tested per 3 months";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2025 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000     by 1000000 )  valueattrs=(size=10);
 
 series  x=cald y=p50_n_self_tested_0 / lineattrs = (color=grey thickness = 4);
@@ -757,12 +749,9 @@ band    x=cald lower=p5_n_self_tested_0 upper=p95_n_self_tested_0 / transparency
 series  x=cald y=p50_n_self_tested_1 / lineattrs = (color=darkblue    thickness = 4);
 band    x=cald lower=p5_n_self_tested_1 upper=p95_n_self_tested_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
 
-series  x=cald y=p50_n_self_tested_2 / lineattrs = (color=darkred       thickness = 4);
-band    x=cald lower=p5_n_self_tested_2 upper=p95_n_self_tested_2 / transparency=0.9 fillattrs = (color=darkred      ) legendlabel= "90% range";
-
 run;quit;
 
-*/
+
 
 /*
 
