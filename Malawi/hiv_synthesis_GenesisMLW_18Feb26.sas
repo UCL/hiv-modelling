@@ -2199,7 +2199,7 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 %macro update_r1(da1=,da2=,e=,f=,g=,h=,j=,y=,s=);		*Deleted a,b,i,k,l,x and added y - JAS Feb24;
 
 
-* p_mcirc mprint;
+* options mprint;
 
 
 
@@ -2294,7 +2294,7 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 
 
-* p_mcirc TO IMPLEMENT FROM year_i onwards;
+* OPTIONS TO IMPLEMENT FROM year_i onwards;
 * ==========================================================================================================================================;
 
 * code in this section can differ from unified program due to specifying exactly what interventions / changes are running; 
@@ -2569,9 +2569,9 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 	***CD4/VL TESTING AND RETURN INTERVENTIONS RE-INTRODUCED ;
 	if option=17 then do;
-			absence_cd4_year_i =0;				
-			absence_vl_year_i =0;		
-			eff_prob_vl_meas_done = prob_vl_meas_done;	
+		absence_cd4_year_i =0;				
+		absence_vl_year_i =0;		
+		eff_prob_vl_meas_done = prob_vl_meas_done;	
 	end;	
 
 
