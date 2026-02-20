@@ -1,12 +1,12 @@
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 *turns log back on;
 *options notes source source2 mprint mlogic symbolgen;
 
 ***97 runs;
 
 data a;
-set a.GenesisMLW_29Jan26;
+set a.GenesisMLW_18Feb26;
 if run=. then delete; 
 
 proc sort;
@@ -406,7 +406,7 @@ proc sort data=y;by run option;run;
 
 
 
-data a.long_gen_mlw_29_01_2026;
+data a.long_gen_mlw_18_02_2026;
 set y;
 run;
 
@@ -414,7 +414,7 @@ run;
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 
 data y;
-set a.long_gen_mlw_29_01_2026;
+set a.long_gen_mlw_18_02_2026;
 run; 
 
 options nomprint;
@@ -551,6 +551,6 @@ dcost ddaly cost
 proc sort; by run;run;
 
 
-data a.wide_gen_mlw_29_01_2026;
+data a.wide_gen_mlw_18_02_2026;
 set wide_outputs  ;  
 by run;run; 
