@@ -752,7 +752,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14 19);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14 19);  prep_any_strategy = 20;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -2450,7 +2450,7 @@ who may be dead and hence have caldate{t} missing;
 					
 		if (caldate_never_dot = &year_interv or age = 15) then do;
 			eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral / 5 ;		
-			eff_eff_prob_prep_oral_b = prob_prep_oral_b + 0.2; 
+			eff_prob_prep_oral_b = prob_prep_oral_b + 0.3; 
 		end;
 
 		/*
@@ -5089,6 +5089,12 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
+
+	if prep_any_strategy=20 then do;	* as 4 with change for women with ep=1;
+      	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.001 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
+	end;
+
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 

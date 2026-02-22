@@ -1,7 +1,7 @@
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_out\";
 
-/*
+  
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_out\";
 
@@ -12,7 +12,7 @@ data b.k_search_2;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
-*/
+  
 
 
 proc sort data=b.k_search_2; 
@@ -2267,6 +2267,7 @@ n_pop_wide_tld_as_art n_pop_wide_tld_prep p_oral_pep_not_prep  p_onartvisit0_vl1
 p_tested_incl_self  p_hard_reach
 p_diag_ehr  p_onart_diag_ehr  prop_elig_on_prep_ehr  p_onart_vl1000_ehr
 
+/*
 
 p_hypert_1524 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
 p_htn_true_1524 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
@@ -2339,6 +2340,8 @@ prev_ihd_4049w prev_ihd_5059w prev_ihd_6069w prev_ihd_7079w prev_ihd_ge80w
 prev_cva 
 prev_cva_4049m prev_cva_5059m prev_cva_6069m prev_cva_7079m prev_cva_ge80m
 prev_cva_4049w prev_cva_5059w prev_cva_6069w prev_cva_7079w prev_cva_ge80w 
+
+*/
 
 /*
 
@@ -2603,7 +2606,7 @@ proc sort; by run;run;
 
 
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_out\";
+* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_out\";
 
 
 data f; set b.w_search_2;

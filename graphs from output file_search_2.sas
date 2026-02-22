@@ -25,7 +25,7 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_vl1000_ = p_vl1000;
 n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
-prop_prep_any = (n_prep_any / n_alive) * 100;
+prop_prep_any = (n_prep_any / n_alive) ;
 p_len_1524_ = p_len_1524;
 p_onart_vl1000_m_1524_ = p_onart_vl1000_m_1524;
 p_diag_vl1000_ = p_diag_vl1000 ;
@@ -51,8 +51,7 @@ p_on_anti_hypert_1549_ p_on_anti_hypert_1539_ p_on_anti_hypert_4049_ p_on_anti_h
 if option in (0 1);
 
 
-
-%let single_var =  n_self_tested                           ;
+%let single_var =  prop_prep_any                        ;
 
 
 
@@ -81,7 +80,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 134 ;
+%let nfit = 92 ;
 
 %let year_end = 2076.00 ;
 run;
@@ -236,6 +235,23 @@ run;quit;
 */
 
 
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';   Title    height=1.5 justify=center "proportion of people taking prep/pep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.03       by 0.005     ) valueattrs=(size=10);
+
+series  x=cald y=p50_prop_prep_any_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_prop_prep_any_0 upper=p95_prop_prep_any_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_prop_prep_any_1 / lineattrs = (color=darkblue    thickness = 4);
+band    x=cald lower=p5_prop_prep_any_1 upper=p95_prop_prep_any_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
+
+run;quit;
+
+
+
 /*
 
 ods html;
@@ -295,7 +311,7 @@ run;quit;
 */
 
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -311,7 +327,7 @@ band    x=cald lower=p5_prop_elig_on_prep_1 upper=p95_prop_elig_on_prep_1 / tran
 
 run;quit;
 
-
+*/
 
 
 /*
@@ -735,7 +751,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -751,7 +767,7 @@ band    x=cald lower=p5_n_self_tested_1 upper=p95_n_self_tested_1 / transparency
 
 run;quit;
 
-
+*/
 
 /*
 
@@ -1298,8 +1314,6 @@ run;quit;
 
 
 
-
-
 ods html;
 proc sgplot data=d nolegend; 
 * Title ''; * * Title    height=1.5 justify=center "Incidence (age 15-49)";
@@ -1637,7 +1651,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 
 ods html;
@@ -1646,8 +1660,8 @@ proc sgplot data=d ;
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2070 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
 
-label mean_incidence1549__0 = "no vaccine";
-label mean_incidence1549__1 = "vaccine";
+label mean_incidence1549__0 = "no int";
+label mean_incidence1549__1 = "with_int";
 
  series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -1659,6 +1673,8 @@ run;quit;
 * ods html close;
 
 
+
+/*
 
 ods html;
 proc sgplot data=d ; 
