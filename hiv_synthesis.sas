@@ -881,7 +881,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * pr_inm_cab_prep_primary ;		%sample_uniform(pr_inm_cab_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation ;
 * pr_cam_len_prep_primary ;		%sample_uniform(pr_cam_len_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation ;
 * rel_pr_inm_cab_prep_tail_primary; %sample_uniform(rel_pr_inm_cab_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
-* rel_pr_inm_len_prep_tail_primary; %sample_uniform(rel_pr_inm_len_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
+* rel_pr_inm_len_prep_tail_primary; %sample_uniform(rel_pr_cam_len_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 * incr_res_risk_len_inf_3m;		incr_res_risk_len_inf_3m = incr_res_risk_cab_inf_3m;
@@ -3021,7 +3021,6 @@ if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_me
 if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0.85; end; 
 if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121 125 130) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
-if set_in_options ne 1 then eff_prob_vl_meas_done=initial_prob_vl_meas_done; 
 
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
@@ -4999,7 +4998,6 @@ end;
 		u_self_test=rand('uniform');
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
 		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
-		if secondary_self_test=1 and epart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  	*** QUERY secondary_self_test not defined;
 		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < eff_rate_self_test then do;
 			self_tested=1; 
 			dt_last_self_test=caldate{t}; 
@@ -7918,7 +7916,7 @@ end;
 
 if prep_len=1 or caldate{t} = prep_len_last_stop_date then do;
 
-	aa=rand('uniform'); if e_ca66m ne 1 and aa  < pr_cam_cab_prep_primary then do; c_ca66m = 1; e_ca66m = 1; end;		*** QUERY pr_cam_cab_prep_primary not defined - should be pr_cam_len_prep_primary?;
+	aa=rand('uniform'); if e_ca66m ne 1 and aa  < pr_cam_len_prep_primary then do; c_ca66m = 1; e_ca66m = 1; end;
 
  	if (ca66m ne 1 and c_ca66m = 1) then do; em_cam_res_o_len_off_3m=1; em_cam_res_o_len=1; em_cam_res_o_len_off_3m_pr=1;  end;
 * em_cam_res_o_len_off_3m - emergence of capsid    mutation while on len prep or stopped past 3m;
@@ -7971,7 +7969,7 @@ end;
 
 if currently_in_prep_len_tail = 1 and prep_len ne 1 and caldate{t}-prep_len_last_stop_date ne 0 then do;
 
- aa =rand('uniform'); if e_ca66m  ne 1 and aa  < pr_cam_len_prep_primary*rel_pr_cam_len_prep_tail_primary then do; c_ca66m = 1;e_ca66m = 1; end;	*** QUERY rel_pr_cam_len_prep_tail_primary not defined - should be rel_pr_inm_lem_prep_tail_primary?
+ aa =rand('uniform'); if e_ca66m  ne 1 and aa  < pr_cam_len_prep_primary*rel_pr_cam_len_prep_tail_primary then do; c_ca66m = 1;e_ca66m = 1; end;
 
  if (ca66m ne 1 and c_ca66m  = 1) then do; emerge_cam_res_len_tail=1; emerge_cam_res_len_tail_pr=1; end;
 
@@ -8624,7 +8622,6 @@ visit_tm1=visit;
 	
 	cab_res_emerge_primary=0;		start_restart_prep_cab_prim =0;	start_rest_prep_cab_hiv_cabr = 0;	start_rest_prep_cab_prim_cabr = 0; 
 	len_res_emerge_primary=0;		start_restart_prep_len_prim =0;	start_rest_prep_len_hiv_lenr = 0;	start_rest_prep_len_prim_lenr = 0; 
-	*** QUERY rearranging this section - removing duplicates ;
 
 * note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
 	start_restart_prep_oral_hiv = 0; if caldate{t} = prep_oral_first_start_date or caldate{t} = prep_oral_restart_date_choice then start_restart_prep_oral_hiv = 1;
@@ -9488,10 +9485,9 @@ if t ge 2  and interrupt=0 and ((linefail_tm1 =1 and line2=0 and (artline_tm1 =1
 
 
 	if t ge 2 and start_line2=1 then do; 
-		artline=2; onart   =1; tcur=0; cd4_tcur0 = cd4; date_line2=caldate{t}; line2=1;choose_line2=1;adhav=adhav+altered_adh_sec_line;		*** QUERY altered_adh_sec_line not defined;
-		if adhav gt 1 then adhav=1;
+		artline=2; onart   =1; tcur=0; cd4_tcur0 = cd4; date_line2=caldate{t}; line2=1;choose_line2=1;
+		* removed increased adherence for second line treatment altered_adh_sec_line JAS Feb 26;
 	end;
-* increased adh second line;
 
 
 
@@ -9553,10 +9549,9 @@ if t ge 2  and interrupt=0 and ((linefail_tm1 =1 and line2=0 and (artline_tm1 =1
 
 
 	if t ge 2 and start_line3=1 then do; 
-		artline=3; onart=1; tcur=0; cd4_tcur0 = cd4; date_line3=caldate{t}; line3=1;choose_line3=1;adhav=adhav+altered_adh_sec_line;		*** QUERY altered_adh_sec_line not defined;
-		if adhav gt 1 then adhav=1;
+		artline=3; onart=1; tcur=0; cd4_tcur0 = cd4; date_line3=caldate{t}; line3=1;choose_line3=1;
+		* removed increased adherence for third line treatment altered_adh_sec_line JAS Feb 26;
 	end;
-* increased adh second and third line;
 
 
 * set date_last_who3 to missing when start or restart art;
@@ -12732,7 +12727,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 
 	crypm_proph = 0;	
 	u=rand('uniform');
-	if caldate{t} - max(date_most_recent_crypm_proph, date_last_crypm) > 1 and u < rate_crypm_proph_init then do; 	*** QUERY date_last_crypm not defined;
+	if caldate{t} - max(date_most_recent_crypm_proph, date_last_crypm) > 1 and u < rate_crypm_proph_init then do;
 		crypm_proph = 1; date_most_recent_crypm_proph = caldate{t};
 	end;
 
@@ -12744,7 +12739,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 
 	sbi_proph = 0;	
 	u=rand('uniform');
-	if caldate{t} - max(date_most_recent_sbi_proph, date_last_sbi) > 1 and u < rate_sbi_proph_init then do; 	*** QUERY date_last_sbi not defined;
+	if caldate{t} - max(date_most_recent_sbi_proph, date_last_sbi) > 1 and u < rate_sbi_proph_init then do;
 		sbi_proph = 1; date_most_recent_sbi_proph = caldate{t};
 	end;
 
@@ -12963,6 +12958,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 			if crag_measured_this_per = 1 then crypm_prob_diag_l = crypm_prob_diag_l * crag_eff_prob_diag_l ;
 			crypm_prob_diag_e = 1 - crypm_prob_diag_l ;
 			ii=rand('uniform'); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  
+			date_last_crypm = caldate{t};
 		end;
 
 
@@ -12972,6 +12968,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then sbi_prob_diag_l = sbi_prob_diag_l * effect_visit_prob_diag_l ;
 			sbi_prob_diag_e = 1 - sbi_prob_diag_l ;
 			ii=rand('uniform'); sbi_diag_e=0; if ii < sbi_prob_diag_e then sbi_diag_e=1 ;  
+			date_last_sbi = caldate{t};
 		end;
 
 		oth_adc_prob_diag_l = .;  oth_adc_diag_e = .; 
@@ -13546,7 +13543,7 @@ end;
  * len ;
 	cost_len=0; if o_len=1 then do;
 		cost_len=cost_len_a; 
-		if o_len_tm1 ne 1 then cost_len=cost_len*1.5; * loading dose;		*** QUERY change len_tm1 to o_len_tm1 (LEN as Tx not Px);
+		if o_len_tm1 ne 1 then cost_len=cost_len*1.5; * loading dose;
 	end;
 
  * ole ;
@@ -15534,7 +15531,6 @@ if hiv =1 then do;
 	if o_len=1 and registd=1 then ever_len_art=1;
 
 	if ever_len_art=1 and r_len > 0 then ever_len_art_res_len=1;
-	if ever_cab_art=1 and r_cab > 0 then ever_len_art_res_cab=1;	*** QUERY ever_cab_art not defined and ever_len_art_res_cab not used - omit this line? ;
 	
 
 * two variables indicate vl < 500: vlg1 indexes infectivity and viral load is increased by 0.5 log when
@@ -16025,20 +16021,7 @@ sympt_aids=0;    if hiv=1 and                    adc =  1 then sympt_aids=1;
 		if infected_naive=1    then inf_naive=1;
 		if infected_from_msm=1 then inf_msm=1;
 		if infected_from_pwid=1 then inf_pwid=1;
-		if r_=1 then do;
-			inf_tdr_prim=0;inf_tdr_diag=0;inf_tdr_naive=0;inf_tdr_vlsupp=0;inf_tdr_newp=0;inf_tdr_msm=0;inf_tdr_pwid=0;
-			if infected_primary=1   then inf_tdr_prim=1;
-			if infected_diagnosed=1 then inf_tdr_diag=1;
-			if infected_naive=1     then inf_tdr_naive=1;
-			if infected_vlsupp=1    then inf_tdr_vlsupp=1;
-			if infected_newp=1      then inf_tdr_newp=1;
-			if infected_msm=1      then inf_tdr_msm=1;		*** QUERY infected_msm and infected_pwid not defined and none of the _tdr variables are used - delete this section? ;
-			if infected_pwid=1      then inf_tdr_pwid=1;
-		end;
 	end;
-
-	backincare=0;if lost_tm1=1 and visit=1 then backincare=1;	*** QUERY backincare not used - delete this line? ;
-
 
 end; * this closes loop for hiv + only;
 
@@ -19429,6 +19412,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_inm_ + inm_ ; s_i_184m + i_184m ; s_im_art + im_art ; s_pim_art + pim_art ; s_tam_art + tam_art ; s_m184_art + m184_art ; s_r_ + r_ ;
     s_r_3tc + r_3tc ; s_r_nev + r_nev ; s_r_lpr + r_lpr ; s_r_taz + r_taz ; s_r_efa + r_efa ; s_r_ten + r_ten ; s_r_zdv + r_zdv ; s_r_dol + r_dol ;
 	s_r_cab + r_cab ; s_r_len + r_len ; s_r_isl + r_isl;
+
  	s_rme_ + rme_ ; s_iime_ + iime_ ; s_nnme_ + nnme_ ; s_pime_ + pime_ ; s_nrtime_ + nrtime_ ; s_res_1stline_startline2 + res_1stline_startline2 ;
 	s_nnm_art + nnm_art ; s_nnm_art_m + nnm_art_m ; s_nnm_art_w + nnm_art_w ; s_r_art + r_art ; s_acq_rt65m + acq_rt65m ; s_acq_rt184m + acq_rt184m ;
 	s_acq_rtm + acq_rtm ; s_onart_iicu_res + onart_iicu_res ; s_nactive_art_start_lt2 + nactive_art_start_lt2 ; s_nactive_art_start_lt3 + nactive_art_start_lt3 ;
@@ -19436,29 +19420,32 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_nactive_line2_lt2 + nactive_line2_lt2 ; s_nactive_line2_lt1p5 + nactive_line2_lt1p5 ; s_pim_line2 +  pim_line2 ; s_nn_res_pmtct + nn_res_pmtct ;
     s_nn_res_pmtct_art_notdr + nn_res_pmtct_art_notdr ; s_super_i_r + super_i_r ; s_onart_efa_r + onart_efa_r ; s_onart_efa_r_2l + onart_efa_r_2l ;
   	s_onefa_linefail1_r + onefa_linefail1_r ; s_o_dol_2nd_vlg1000 + o_dol_2nd_vlg1000 ;  s_incident_r_dol +  incident_r_dol ;
+
 	s_o_dol_2nd_vlg1000_dolr1_adh0 + o_dol_2nd_vlg1000_dolr1_adh0 ; s_o_dol_2nd_vlg1000_dolr1_adh1 + o_dol_2nd_vlg1000_dolr1_adh1 ;
 	s_o_dol_2nd_vlg1000_dolr0_adh0 + o_dol_2nd_vlg1000_dolr0_adh0 ; s_o_dol_2nd_vlg1000_dolr0_adh1 + o_dol_2nd_vlg1000_dolr0_adh1 ;
     s_ontle + ontle; s_vlg1000_ontle + vlg1000_ontle; s_vlg1000_184m_ontle + vlg1000_184m_ontle; s_vlg1000_65m_ontle + vlg1000_65m_ontle;   
 	s_vlg1000_nnm_ontle + vlg1000_nnm_ontle; s_ontld + ontld ; s_vlg1000_ontld + vlg1000_ontld; s_vlg1000_65m_ontld + vlg1000_65m_ontld; 
 	s_vlg1000_184m_ontld + vlg1000_184m_ontld;  s_vlg1000_nnm_ontld + vlg1000_nnm_ontld; s_vlg1000_inm_ontld + vlg1000_inm_ontld;
     s_vlg1000_tams_ontld + vlg1000_tams_ontld; s_vlg1000_tams_ontle + vlg1000_tams_ontle;  s_cur_res_cab + cur_res_cab ;  s_cur_res_len + cur_res_len ; 
+
 	s_em_inm_res_o_cab_off_3m + em_inm_res_o_cab_off_3m; s_emerge_inm_res_cab_tail + emerge_inm_res_cab_tail ;  
 	s_em_inm_res_o_cab_off_3m_npr + em_inm_res_o_cab_off_3m_npr; 	s_em_inm_res_cab_tail_npr + em_inm_res_cab_tail_npr; 
 	s_em_inm_res_o_cab_off_3m_pr + em_inm_res_o_cab_off_3m_pr;  s_emerge_inm_res_cab_tail_pr + emerge_inm_res_cab_tail_pr;
 	s_em_inm_res_o_cab + em_inm_res_o_cab; s_cab_res_emerge_primary + cab_res_emerge_primary;  s_res_test_dol + res_test_dol;
-	s_failed_lencab + failed_lencab;
 
 	s_em_cam_res_o_len_off_3m + em_cam_res_o_len_off_3m; s_emerge_cam_res_len_tail + emerge_cam_res_len_tail ;  
 	s_em_cam_res_o_len_off_3m_npr + em_cam_res_o_len_off_3m_npr; 	s_em_cam_res_len_tail_npr + em_cam_res_len_tail_npr; 	*** QUERY em_cam_res_o_len_off_3m_npr and em_cam_res_len_tail_npr not defined - omit this line? ;
 	s_em_cam_res_o_len_off_3m_pr + em_cam_res_o_len_off_3m_pr;  s_emerge_cam_res_len_tail_pr + emerge_cam_res_len_tail_pr;
 	s_em_cam_res_o_len + em_cam_res_o_len; s_len_res_emerge_primary + len_res_emerge_primary;  
+	s_failed_lencab + failed_lencab;
+
 	s_r_len_1524m + r_len_1524m;    s_r_len_1524w + r_len_1524w;    s_r_cab_1524m + r_cab_1524m ;   s_r_cab_1524w + r_cab_1524w ;  
 	s_r_len_o_len + r_len_o_len;  s_r_cab_o_cab + r_cab_o_cab;
 
 		/*prep*/
 
 	s_prep_any + prep_any; s_prep_oral + prep_oral; s_prep_cab + prep_cab; s_prep_len + prep_len; s_prep_vr + prep_vr; s_prep_oral_at_infection + prep_oral_at_infection;
-	s_prep_cab_at_infection + prep_cab_at_infection; s_prep_len_at_infection + prep_len_at_infection; 	*** QUERY delete s_prep_vr_at_infection because prep_vr_at_infection not defined;
+	s_prep_cab_at_infection + prep_cab_at_infection; s_prep_len_at_infection + prep_len_at_infection;
  	s_prep_oral_w + prep_oral_w; s_prep_cab_w + prep_cab_w;  s_prep_len_w + prep_len_w; s_prep_oral_m + prep_oral_m; s_prep_vr_w + prep_vr_w;
 	s_prep_cab_m + prep_cab_m; 	s_prep_len_m + prep_len_m; 	s_prep_any_sw + prep_any_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_cab_sw + prep_cab_sw ; 
 	s_prep_len_sw + prep_len_sw ;  s_prep_vr_sw + prep_vr_sw ; 
