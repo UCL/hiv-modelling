@@ -53,7 +53,9 @@ if option in (0 1);
 
 %let single_var =  prop_prep_any                        ;
 
-
+proc means; var prop_prep_any; where option=0 and cald ge 2026;
+proc means; var prop_prep_any; where option=1 and cald ge 2026;
+run;
 
 
 * if run in (
