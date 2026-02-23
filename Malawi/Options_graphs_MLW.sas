@@ -30,7 +30,7 @@ run;
 99 = SQ;
 */
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\Mlw_options_29_01_26.doc" startpage=never; 
+ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\Mlw_options_18_02_26.doc" startpage=never; 
 ods listing close;
 
 ods listing gpath="C:\Users\lovel\Documents";
@@ -61,6 +61,34 @@ series  x=cald y=mean_n_hivge15__5/	lineattrs = (color=lightpurple thickness = 2
 series  x=cald y=mean_n_hivge15__6/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_hivge15__16/lineattrs = (color=pink thickness = 2 pattern=solid);
 series  x=cald y=mean_n_hivge15__17/lineattrs = (color=green thickness = 2 pattern=solid);
+run;quit;
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Number of new infections (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2070 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 75000 by 10000) valueattrs=(size=10);
+
+label mean_n_new_inf_99 = "SQ";
+label mean_n_new_inf_0 = "Base";
+label mean_n_new_inf_1 = "FSW program";
+label mean_n_new_inf_2 = "VMMC";
+label mean_n_new_inf_3 = "VMMC increase";
+label mean_n_new_inf_4 = "Oral PrEP continuation";
+label mean_n_new_inf_5 = "Oral PrEP and intro of Len";
+label mean_n_new_inf_6 = "Oral PrEP and scale up of Len";
+label mean_n_new_inf_16 = "Return interventions";
+label mean_n_new_inf_17 = "VL and CD4 testing";
+
+series  x=cald y=mean_n_new_inf_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_inf_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_new_inf_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_inf_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_inf_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_inf_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_inf_5/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_inf_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_inf_16/lineattrs = (color=pink thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_inf_17/lineattrs = (color=green thickness = 2 pattern=solid);
 run;quit;
 
 
