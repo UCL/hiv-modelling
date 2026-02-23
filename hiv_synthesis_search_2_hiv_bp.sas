@@ -2448,11 +2448,9 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;
 		*Specify option 1;
 					
-		if (caldate_never_dot = &year_interv or age = 15) then do;
-			eff_rate_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral / 5 ;		
-			eff_prob_prep_oral_b = prob_prep_oral_b + 0.3; 
-		end;
-
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 10 ;		
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.5; 
+		
 		/*
 		* hypertension intervention - left out for now;
 
