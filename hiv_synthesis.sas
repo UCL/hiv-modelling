@@ -534,9 +534,6 @@ newp_seed = 7;
 								0.05  0.10 	0.30   0.60, 
 							  	0.25  0.25	0.25   0.25); * change sep22 for pop_wide_tld;
 
-* effect_return_interv;		effect_return_interv = 5; * effect of implicit return to care interventions on prob of return;  * added for malawi mihpsa nov 24;
-
-							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
 							* dependent_on_time_step_length ;
 * pr_art_init; 				%sample_uniform(pr_art_init, 0.5 0.7 0.9 0.95 1); 
@@ -971,6 +968,12 @@ end;
 * prob_prep_pop_wide_tld;		%sample(prob_prep_pop_wide_tld,  0.05  0.1     , 0.5 0.5 );
 
 																			   
+
+*** TREATMENT AND ADHERENCE SUPPORT INTERVENTIONS;
+* return_interventions_off; return_interventions_off = 0;
+* effect_return_interv;		effect_return_interv = 5; * effect of implicit return to care interventions on prob of return;  * added for malawi mihpsa nov 24;
+							* dependent_on_time_step_length
+
 
 *** Other interventions that can be turned on or off at year_interv;
 * absence_cd4_year_i;				absence_cd4_year_i = 0;
@@ -4852,6 +4855,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
  		then prep_any_elig=1; 
 
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
+		* MSM PrEP eligibility restricted to 15-64 because HIV risk stops from age 65;
 	end;
 
 
