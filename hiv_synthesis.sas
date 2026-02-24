@@ -19533,7 +19533,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_pop_wide_tld_prep + pop_wide_tld_prep ;  s_tld_notest_notprepelig_pos + tld_notest_notprepelig_pos;   s_tld_notest_notprepelig_neg + tld_notest_notprepelig_neg; 
 	s_prep_any_elig_past_year + prep_any_elig_past_year ; s_prep_any_elig_past_3year + prep_any_elig_past_3year ; s_prep_any_elig_past_5year + prep_any_elig_past_5year ;
 	s_newp_prep_any + newp_prep_any ; s_newp_prep_oral + newp_prep_oral ; s_newp_prep_cab + newp_prep_cab ; s_newp_prep_len + newp_prep_len ; s_newp_prep_vr + newp_prep_vr ;     
-	s_prop_elig_years_onprep_ayear_i + prop_elig_years_onprep_ayear_i ;  s_continuous_prep_oral_ge1yr + continuous_prep_oral_ge1yr;	*** QUERY prop_elig_years_onprep_ayear_i not defined - delete output? ;
+	s_continuous_prep_oral_ge1yr + continuous_prep_oral_ge1yr;
 	s_newp_this_per_hivneg_m  +  newp_this_per_hivneg_m ; s_newp_this_per_hivneg_w +  newp_this_per_hivneg_w ;   
 	s_newp_this_per_hivneg_age1524w + newp_this_per_hivneg_age1524w  ;  s_newp_this_per_hivneg_sw +  newp_this_per_hivneg_sw ;  
 	s_newp_this_per_hivneg_m_prep + newp_this_per_hivneg_m_prep ;   s_newp_this_per_hivneg_w_prep +  newp_this_per_hivneg_w_prep  ;
@@ -21227,7 +21227,7 @@ s_tot_yrs_prep_len_gt_5  s_tot_yrs_prep_len_gt_10   s_tot_yrs_prep_len_gt_20
 s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep_any s_newp_prep_oral s_newp_prep_cab s_newp_prep_len s_newp_prep_vr 
-s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
+s_continuous_prep_oral_ge1yr
 			
 s_pop_wide_tld_as_art
 
@@ -22410,7 +22410,7 @@ s_tot_yrs_prep_len_gt_5  s_tot_yrs_prep_len_gt_10   s_tot_yrs_prep_len_gt_20
 s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep_any s_newp_prep_oral s_newp_prep_cab s_newp_prep_len s_newp_prep_vr 
-s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
+s_continuous_prep_oral_ge1yr
 			
 s_pop_wide_tld_as_art
 
@@ -23427,7 +23427,7 @@ s_tot_yrs_prep_len_gt_5  s_tot_yrs_prep_len_gt_10   s_tot_yrs_prep_len_gt_20
 s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep_any s_newp_prep_oral s_newp_prep_cab s_newp_prep_len s_newp_prep_vr 
-s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
+s_continuous_prep_oral_ge1yr
 			
 s_pop_wide_tld_as_art
 
