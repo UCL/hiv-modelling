@@ -133,15 +133,6 @@ call symput('dataset_id',dataset_id);
 caldate1=1989;
 caldate_never_dot=1989;
 
-* these used after year_interv - code is here so value the same for all people;
- _u5 = rand('uniform');  _u6 = rand('uniform'); _u7 = rand('uniform'); _u8 = rand('uniform');
-_u9 = rand('uniform'); _u10 = rand('uniform'); _u11 = rand('uniform'); _u12 = rand('uniform'); _u13 = rand('uniform'); _u14 = rand('uniform'); _u15 = rand('uniform'); _u16 = rand('uniform');
-_u17 = rand('uniform'); _u18 = rand('uniform'); _u19 = rand('uniform'); _u20 = rand('uniform'); _u21 = rand('uniform'); _u22 = rand('uniform'); _u23 = rand('uniform'); _u24 = rand('uniform');
-_u25 = rand('uniform'); _u26 = rand('uniform'); _u27 = rand('uniform'); _u28 = rand('uniform'); _u29 = rand('uniform'); _u30 = rand('uniform'); _u31 = rand('uniform'); _u32 = rand('uniform');
-_u33 = rand('uniform'); _u34 = rand('uniform'); _u35 = rand('uniform'); _u36 = rand('uniform'); _u37 = rand('uniform'); _u38 = rand('uniform'); _u39 = rand('uniform'); _u40 = rand('uniform');
-_u41 = rand('uniform'); _u42 = rand('uniform'); _u43 = rand('uniform'); _u44 = rand('uniform'); _u45 = rand('uniform'); _u46 = rand('uniform'); _u47 = rand('uniform'); _u48 = rand('uniform');
-_u49 = rand('uniform'); _u50 = rand('uniform'); _u51 = rand('uniform'); _u52 = rand('uniform'); _u53 = rand('uniform'); _u54 = rand('uniform'); _u55 = rand('uniform'); _u56 = rand('uniform');
-_u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = rand('uniform'); _u61 = rand('uniform'); _u62 = rand('uniform'); _u63 = rand('uniform'); _u64 = rand('uniform');
 
 
 * start of epidemic;
