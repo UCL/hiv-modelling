@@ -19683,7 +19683,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_onart_sw + onart_sw ; s_onart_w1524evpreg + onart_w1524evpreg; 
 	s_art_dur_l6m + art_dur_l6m ; s_art_dur_g6m + art_dur_g6m ; s_art_tdur_l6m + art_tdur_l6m ; s_art_tdur_g6m + art_tdur_g6m ;
 	s_eponart_m + eponart_m ; s_eponart_w + eponart_w ; s_hiv1564_onart + hiv1564_onart ; 
-	s_non_tb_who3_art_init + non_tb_who3_art_init ; s_who4_art_init + who4_art_init ; s_art_start_pregnant + art_start_pregnant ; 	*** QUERY non_tb_who3_art_init not defined ;
+	s_who3_art_init + who3_art_init ; s_who4_art_init + who4_art_init ; s_art_start_pregnant + art_start_pregnant ;
 	s_lpr + o_lpr ; s_taz + o_taz ; s_3tc + o_3tc ; s_nev + o_nev ; s_efa + o_efa ; s_ten + o_ten ; s_zdv + o_zdv ; s_dol + o_dol ; s_cab + o_cab ; s_len + o_len ;
 	s_dar + o_dar;
 	s_o_len_1524m + o_len_1524m; s_o_len_1524w + o_len_1524w; s_o_cab_1524m + o_cab_1524m; s_o_cab_1524w + o_cab_1524w;
@@ -19769,7 +19769,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl1000_art_age1564 + vl1000_art_age1564; s_onart_age1564 + onart_age1564 ;
 
 	s_infected_in118m + infected_in118m ; s_infected_in140m + infected_in140m ; s_infected_in148m + infected_in148m ;  s_infected_in155m + infected_in155m ; 
-	s_infected_in263m + infected_in263m ;s_infected_ca66m + infected_ca66m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;	*** QUERY infected_ca66mnot defined - delete this output? ;
+	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
 
 	s_onartvisit0 + onartvisit0; s_onartvisit0_vl1000 + onartvisit0_vl1000;
 
@@ -21342,7 +21342,7 @@ s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_
 
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
-s_eponart_m	 	s_eponart_w  	s_hiv1564_onart s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
+s_eponart_m	 	s_eponart_w  	s_hiv1564_onart s_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
 s_lpr  s_dar s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab s_len s_failed_lencab s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r  s_o_cab_or_o_cab_tm1_no_r_prim
 s_o_len_1524m  s_o_len_1524w s_o_cab_1524m  s_o_cab_1524w s_o_len_or_o_len_tm1  s_o_len_or_o_len_tm1_no_r  s_o_len_or_o_len_tm1_no_r_prim  
@@ -21395,7 +21395,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
 
-s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m s_infected_ca66m
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m
 
 s_infected_inm  s_infected_inm_this_per
 
@@ -22525,7 +22525,7 @@ s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_
 
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
-s_eponart_m	 	s_eponart_w  	s_hiv1564_onart s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
+s_eponart_m	 	s_eponart_w  	s_hiv1564_onart s_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
 s_lpr  s_dar s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab s_len s_failed_lencab s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r  s_o_cab_or_o_cab_tm1_no_r_prim
 s_o_len_1524m  s_o_len_1524w s_o_cab_1524m  s_o_cab_1524w s_o_len_or_o_len_tm1  s_o_len_or_o_len_tm1_no_r  s_o_len_or_o_len_tm1_no_r_prim  
@@ -22578,7 +22578,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
 
-s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m s_infected_ca66m
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m
 
 s_infected_inm  s_infected_inm_this_per
 
@@ -23542,7 +23542,7 @@ s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_
 
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
-s_eponart_m	 	s_eponart_w  	s_hiv1564_onart s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
+s_eponart_m	 	s_eponart_w  	s_hiv1564_onart s_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
 s_lpr  s_dar s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab s_len s_failed_lencab s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r  s_o_cab_or_o_cab_tm1_no_r_prim
 s_o_len_1524m  s_o_len_1524w s_o_cab_1524m  s_o_cab_1524w s_o_len_or_o_len_tm1  s_o_len_or_o_len_tm1_no_r  s_o_len_or_o_len_tm1_no_r_prim  
@@ -23595,7 +23595,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
 
-s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m s_infected_ca66m
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m
 
 s_infected_inm  s_infected_inm_this_per
 
