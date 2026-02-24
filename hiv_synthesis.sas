@@ -17969,42 +17969,6 @@ if (onart=1 and tcur ge 0.5 and o_dol=1 and o_ten=1 and o_3tc = 1) then do;
 	end;
 end;
 
-if time_to_65m = . and e_rt65m=1 then time_to_65m=caldate&j-infection; 
-if time_to_184m = . and e_rt184m=1 then time_to_184m=caldate&j-infection; 
-
-if hiv=1 and prep_oral ne 1 and prep_oral_tm1=1 then hiv_date_stop_prep=caldate&j;
-
-if 15 <= age and hiv=1 and caldate&j ne . then do;
-
-surv_65m = min(caldate&j-infection, time_to_65m);
-m65_yn=0; if surv_65m = time_to_65m then m65_yn=1;
-
-surv_184m = min(caldate&j-infection, time_to_184m);
-m184_yn=0; if surv_184m = time_to_184m then m184_yn=1;
-
-survaids = min(dateaids,tb_date,caldate&j) - infection;			*** QUERY tb_date not defined ;
-aidsyn=0; if survaids=min(dateaids, tb_date)-infection > . then aidsyn=1; 
-
-survwho34 = min(date_first_who3, tb_date, dateaids, caldate&j) - infection;
-who34yn = 0; if survwho34=min(date_first_who3, tb_date, dateaids)-infection > . then who34yn =1; 
-
-survcl200 = min(date_cd4_l200, caldate&j)  - infection;
-cl200yn=0; if survcl200 = date_cd4_l200 - infection then cl200yn=1;
-
-survdiag = min(date1pos,caldate&j)-infection;
-diag_yn=0; if survdiag=date1pos-infection > . then diag_yn=1;
-
-survarts = min(yrart,caldate&j)-infection;
-arts_yn=0; if survarts=yrart-infection > . then arts_yn=1;
-
-survStopPrep = min(yrart,caldate&j)-infection;
-stopPrep_yn=0; if survStopPrep=yrart-infection > . then stopPrep_yn=1;
-
-surv_hiv_date_stop_prep = min(hiv_date_stop_prep, caldate&j)-infection;
-hiv_stop_prep_yn=0; if surv_hiv_date_stop_prep = hiv_date_stop_prep-infection then hiv_stop_prep_yn=1;
-
-end;
-
 
 
 * outputs relating to extra code for advanced hiv disease, with explicit modelling of crypm and sbi and amendments to modelling on tb;
@@ -19791,7 +19755,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_uvl21_elig  +  uvl21_elig ; s_o_dar_uvl21  + o_dar_uvl21 ; s_o_dol_uvl21  + o_dol_uvl21 ;  s_onart_uvl21  +  onart_uvl21 ;  s_vl1000_uvl21 +  vl1000_uvl21 ;   
 	s_vl200_uvl21  + vl200_uvl21  ; s_dead_uvl21   + dead_uvl21   ;s_dead_hiv_uvl21 +   dead_hiv_uvl21 ;  s_c_tox_uvl21  + c_tox_uvl21  ; 
-	s_r_dol_ge_p5_uvl21  +  r_dol_ge_p5_uvl21 ;  s_adhl_ge80_uvl21 + adhl_ge80_uvl21;  s_onart_iicu_uvl21 + onart_iicu_uvl21;   s_adh_lt80_uvl21 + adh_lt80_uvl21;	*** QUERY adhl_ge80_uvl21 not defined;
+	s_r_dol_ge_p5_uvl21  +  r_dol_ge_p5_uvl21 ;  s_onart_iicu_uvl21 + onart_iicu_uvl21;   s_adh_lt80_uvl21 + adh_lt80_uvl21;
 	s_vis_uvl21  + vis_uvl21 ;  s_cd4_lt200_uvl21 + cd4_lt200_uvl21;
 
 	s_tldsw2_elig  +  tldsw2_elig ; s_o_dar_tldsw2  + o_dar_tldsw2 ; s_o_dol_tldsw2  + o_dol_tldsw2 ;  s_onart_tldsw2  +  onart_tldsw2 ;  s_vl1000_tldsw2 +  vl1000_tldsw2 ;   
@@ -19800,7 +19764,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_uvl22_elig  +  uvl22_elig ; s_o_dar_uvl22  + o_dar_uvl22 ; s_o_dol_uvl22  + o_dol_uvl22 ;  s_onart_uvl22  +  onart_uvl22 ;  s_vl1000_uvl22 +  vl1000_uvl22 ;   
 	s_vl200_uvl22  + vl200_uvl22  ; s_dead_uvl22   + dead_uvl22   ;s_dead_hiv_uvl22 +   dead_hiv_uvl22 ;  s_c_tox_uvl22  + c_tox_uvl22  ; 
-	s_r_dol_ge_p5_uvl22  +  r_dol_ge_p5_uvl22 ;  s_adhl_ge80_uvl22 + adhl_ge80_uvl22;  s_onart_iicu_uvl22 + onart_iicu_uvl22;   s_adh_lt80_uvl22 + adh_lt80_uvl22;	*** QUERY adhl_ge80_uvl22 not defined;
+	s_r_dol_ge_p5_uvl22  +  r_dol_ge_p5_uvl22 ;  s_onart_iicu_uvl22 + onart_iicu_uvl22;   s_adh_lt80_uvl22 + adh_lt80_uvl22;
 	s_vis_uvl22  + vis_uvl22 ;  s_cd4_lt200_uvl22 + cd4_lt200_uvl22;
 
 	s_dol_pi_failed + dol_pi_failed; 
@@ -20133,8 +20097,6 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_onart_sw_noprog + onart_sw_noprog; s_onart_sw_inprog + onart_sw_inprog;
 	s_vl1000_art_gt6m_iicu_sw_noprog + vl1000_art_gt6m_iicu_sw_noprog; s_vl1000_art_gt6m_iicu_sw_inprog + vl1000_art_gt6m_iicu_sw_inprog;
 
-	s_sw1519_tp1 + sw1519_tp1; s_sw2024_tp1 + sw2024_tp1; s_sw2529_tp1 + sw2529_tp1; s_sw3039_tp1 + sw3039_tp1; s_swov40_tp1 + swov40_tp1;	*** QUERY these outputs not defined - delete? ;
-
 	s_sti_sw + sti_sw;
 
 	/* MSM */
@@ -20392,8 +20354,8 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_test_cost_type1 + cost_test_type1;
 	s_cost_self_test + cost_self_test;
 
-	s_cost_prep + cost_prep; s_cost_prep_visit + cost_prep_visit; s_cost_avail_self_test + cost_avail_self_test ; 	*** QUERY cost_prep not defined ;
-		/* line missing here? s_cost_prep_oral, s_cost_prep_cab, s_cost_prep_len, s_cost_prep_vr */
+	s_cost_prep_visit + cost_prep_visit; s_cost_avail_self_test + cost_avail_self_test ;
+	s_cost_prep_oral + cost_prep_oral ; s_cost_prep_cab + cost_prep_cab ; s_cost_prep_len + cost_prep_len ; s_cost_prep_vr + cost_prep_vr ; 
 	s_cost_prep_visit_oral + cost_prep_visit_oral; s_cost_prep_visit_cab + cost_prep_visit_cab; s_cost_prep_visit_len + cost_prep_visit_len; s_cost_prep_visit_vr + cost_prep_visit_vr; 	
 	s_cost_prep_ac_adh + cost_prep_ac_adh; 
 	s_cost_test_m_sympt + cost_test_m_sympt; s_cost_test_f_sympt + cost_test_f_sympt; s_cost_test_m_circ + cost_test_m_circ;
@@ -20421,7 +20383,6 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dtest_cost_type1 + _dtest_cost_type1;
 	s_dcost_self_test + _dcost_self_test;
 	
-		/* s_ output missing here? s_dcost_prep */
 	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_avail_self_test + _dcost_avail_self_test;
 	s_dcost_prep_oral + _dcost_prep_oral ; s_dcost_prep_cab + _dcost_prep_cab ; s_dcost_prep_len + _dcost_prep_len ; s_dcost_prep_vr + _dcost_prep_vr ; 
 	s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_prep_visit_cab + _dcost_prep_visit_cab; s_dcost_prep_visit_len + _dcost_prep_visit_len; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; 
@@ -21409,11 +21370,11 @@ s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt
 
 s_tldsw1_elig  s_o_dar_tldsw1   s_o_dol_tldsw1    s_onart_tldsw1    s_vl1000_tldsw1 	s_vl200_tldsw1  s_dead_tldsw1  s_dead_hiv_tldsw1  s_c_tox_tldsw1  s_r_dol_ge_p5_tldsw1 
 s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	s_vl200_uvl21  s_dead_uvl21  s_dead_hiv_uvl21  s_c_tox_uvl21  s_r_dol_ge_p5_uvl21 
-s_adhl_ge80_uvl21 s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1 s_cd4_lt200_uvl21
+s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1 s_cd4_lt200_uvl21
 
 s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tldsw2 	s_vl200_tldsw2  s_dead_tldsw2  s_dead_hiv_tldsw2  s_c_tox_tldsw2  s_r_dol_ge_p5_tldsw2 
 s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p5_uvl22 
-s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2 s_cd4_lt200_uvl22
+s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2 s_cd4_lt200_uvl22
 
 s_dol_pi_failed
 
@@ -21473,6 +21434,7 @@ s_non_tb_who3_cost	s_cot_cost		s_tb_cost			s_cost_test		s_res_cost		s_cost_circ	
 s_dtb_lam_cost		s_tb_lam_cost	s_dtb_proph_cost	s_tb_proph_cost	s_dcrag_cost	s_crag_cost		s_dcrypm_proph_cost	s_crypm_proph_cost 
 s_dsbi_proph_cost  	s_sbi_proph_cost 
 s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f 		s_cost_prep_visit	s_cost_avail_self_test
+s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_vr
 s_cost_prep_visit_oral 		s_cost_prep_visit_cab		s_cost_prep_visit_len	s_cost_prep_visit_vr  
 s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ	s_cost_test_f_anc	s_dcost_self_test
 s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line	s_cost_art_init		s_art_1_cost  
@@ -21564,7 +21526,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1	s_sti_sw
+s_sti_sw
 
 
 /* MSM */
@@ -22592,11 +22554,11 @@ s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt
 
 s_tldsw1_elig  s_o_dar_tldsw1   s_o_dol_tldsw1    s_onart_tldsw1    s_vl1000_tldsw1 	s_vl200_tldsw1  s_dead_tldsw1  s_dead_hiv_tldsw1  s_c_tox_tldsw1  s_r_dol_ge_p5_tldsw1 
 s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	s_vl200_uvl21  s_dead_uvl21  s_dead_hiv_uvl21  s_c_tox_uvl21  s_r_dol_ge_p5_uvl21 
-s_adhl_ge80_uvl21 s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1 s_cd4_lt200_uvl21
+s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1 s_cd4_lt200_uvl21
 
 s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tldsw2 	s_vl200_tldsw2  s_dead_tldsw2  s_dead_hiv_tldsw2  s_c_tox_tldsw2  s_r_dol_ge_p5_tldsw2 
 s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p5_uvl22 
-s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2 s_cd4_lt200_uvl22
+s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2 s_cd4_lt200_uvl22
 
 s_dol_pi_failed
 
@@ -22656,6 +22618,7 @@ s_non_tb_who3_cost	s_cot_cost		s_tb_cost			s_cost_test		s_res_cost		s_cost_circ	
 s_dtb_lam_cost		s_tb_lam_cost	s_dtb_proph_cost	s_tb_proph_cost	s_dcrag_cost	s_crag_cost		s_dcrypm_proph_cost	s_crypm_proph_cost 
 s_dsbi_proph_cost  	s_sbi_proph_cost 
 s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f 		s_cost_prep_visit	s_cost_avail_self_test
+s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_vr
 s_cost_prep_visit_oral 		s_cost_prep_visit_cab		s_cost_prep_visit_len	s_cost_prep_visit_vr  
 s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ	s_cost_test_f_anc	s_dcost_self_test
 s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line	s_cost_art_init		s_art_1_cost  
@@ -22747,7 +22710,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1	s_sti_sw
+s_sti_sw
 
 
 /* MSM */
@@ -23609,11 +23572,11 @@ s_adhl_ge80_uvl2 s_onart_iicu_tldsw s_adh_lt80_tldsw  s_onart_iicu_uvl2 s_adh_lt
 
 s_tldsw1_elig  s_o_dar_tldsw1   s_o_dol_tldsw1    s_onart_tldsw1    s_vl1000_tldsw1 	s_vl200_tldsw1  s_dead_tldsw1  s_dead_hiv_tldsw1  s_c_tox_tldsw1  s_r_dol_ge_p5_tldsw1 
 s_uvl21_elig  s_o_dar_uvl21   s_o_dol_uvl21    s_onart_uvl21    s_vl1000_uvl21 	s_vl200_uvl21  s_dead_uvl21  s_dead_hiv_uvl21  s_c_tox_uvl21  s_r_dol_ge_p5_uvl21 
-s_adhl_ge80_uvl21 s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1 s_cd4_lt200_uvl21
+s_onart_iicu_tldsw1 s_adh_lt80_tldsw1  s_onart_iicu_uvl21 s_adh_lt80_uvl21 s_vis_uvl21  s_vis_tldsw1 s_cd4_lt200_uvl21
 
 s_tldsw2_elig  s_o_dar_tldsw2   s_o_dol_tldsw2    s_onart_tldsw2    s_vl1000_tldsw2 	s_vl200_tldsw2  s_dead_tldsw2  s_dead_hiv_tldsw2  s_c_tox_tldsw2  s_r_dol_ge_p5_tldsw2 
 s_uvl22_elig  s_o_dar_uvl22   s_o_dol_uvl22    s_onart_uvl22    s_vl1000_uvl22 	s_vl200_uvl22  s_dead_uvl22  s_dead_hiv_uvl22  s_c_tox_uvl22  s_r_dol_ge_p5_uvl22 
-s_adhl_ge80_uvl22 s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2 s_cd4_lt200_uvl22
+s_onart_iicu_tldsw2 s_adh_lt80_tldsw2  s_onart_iicu_uvl22 s_adh_lt80_uvl22 s_vis_uvl22  s_vis_tldsw2 s_cd4_lt200_uvl22
 
 s_dol_pi_failed
 
@@ -23673,6 +23636,7 @@ s_non_tb_who3_cost	s_cot_cost		s_tb_cost			s_cost_test		s_res_cost		s_cost_circ	
 s_dtb_lam_cost		s_tb_lam_cost	s_dtb_proph_cost	s_tb_proph_cost	s_dcrag_cost	s_crag_cost		s_dcrypm_proph_cost	s_crypm_proph_cost 
 s_dsbi_proph_cost  	s_sbi_proph_cost 
 s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f 		s_cost_prep_visit	s_cost_avail_self_test
+s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_vr
 s_cost_prep_visit_oral 		s_cost_prep_visit_cab		s_cost_prep_visit_len	s_cost_prep_visit_vr  
 s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ	s_cost_test_f_anc	s_dcost_self_test
 s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line	s_cost_art_init		s_art_1_cost  
@@ -23764,7 +23728,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1	s_sti_sw
+s_sti_sw
 
 
 /* MSM */
