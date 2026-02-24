@@ -134,7 +134,7 @@ caldate1=1989;
 caldate_never_dot=1989;
 
 * these used after year_interv - code is here so value the same for all people;
-_u1 = rand('uniform'); _u2 = rand('uniform'); _u3 = rand('uniform'); _u4 = rand('uniform'); _u5 = rand('uniform');  _u6 = rand('uniform'); _u7 = rand('uniform'); _u8 = rand('uniform');
+ _u5 = rand('uniform');  _u6 = rand('uniform'); _u7 = rand('uniform'); _u8 = rand('uniform');
 _u9 = rand('uniform'); _u10 = rand('uniform'); _u11 = rand('uniform'); _u12 = rand('uniform'); _u13 = rand('uniform'); _u14 = rand('uniform'); _u15 = rand('uniform'); _u16 = rand('uniform');
 _u17 = rand('uniform'); _u18 = rand('uniform'); _u19 = rand('uniform'); _u20 = rand('uniform'); _u21 = rand('uniform'); _u22 = rand('uniform'); _u23 = rand('uniform'); _u24 = rand('uniform');
 _u25 = rand('uniform'); _u26 = rand('uniform'); _u27 = rand('uniform'); _u28 = rand('uniform'); _u29 = rand('uniform'); _u30 = rand('uniform'); _u31 = rand('uniform'); _u32 = rand('uniform');
@@ -723,32 +723,7 @@ end;
 
 * OTHER PROGRAMS;	
 
-***Impact of potential changes in policy after year_i;
-* decr_hard_reach_year_i;			decr_hard_reach_year_i = 0;			
-* incr_adh_year_i;					incr_adh_year_i = 0;			
-* decr_prob_loss_at_diag_year_i;	decr_prob_loss_at_diag_year_i = 0; 
-* absence_cd4_year_i;				absence_cd4_year_i = 0; 			* keep ;
-* absence_vl_year_i;				absence_vl_year_i = 0; 				* keep ;	
-* decr_rate_lost_year_i;			decr_rate_lost_year_i = 0;  	
-* decr_rate_lost_art_year_i;		decr_rate_lost_art_year_i = 0;   
-* incr_rate_return_year_i;			incr_rate_return_year_i = 0;     	
-* incr_rate_restart_year_i;			incr_rate_restart_year_i = 0;       
-* incr_rate_init_year_i;			incr_rate_init_year_i = 0;   
-* decr_rate_int_choice_year_i;		decr_rate_int_choice_year_i = 0; 
-* incr_prob_vl_meas_done_year_i;	incr_prob_vl_meas_done_year_i = 0; 	
-* incr_pr_switch_line_year_i;		incr_pr_switch_line_year_i = 0;    	
-* poc_vl_monitoring_i;				poc_vl_monitoring_i = 0; 	
-* circ_inc_rate_year_i;				circ_inc_rate_year_i = 0;  			* keep ;
-* incr_test_targeting_year_i;		incr_test_targeting_year_i = 0;   	
-* reg_option_switch_year_i;			reg_option_switch_year_i = 0; 		
-* art_mon_drug_levels_year_i;		art_mon_drug_levels_year_i = 0;   
-* ten_is_taf_year_i;				ten_is_taf_year_i = 0;  	
-* pop_wide_tld_year_i;				pop_wide_tld_year_i = 0;  		
-* single_vl_switch_efa_year_i;		single_vl_switch_efa_year_i = 0;	
-* e_decr_hard_reach_year_i;			e_decr_hard_reach_year_i = 0;  
-
-
-* CONDOMS;					*Adapted from CMMC code from MIHPSA Zim - represents both condom provision and promotion interventions. JAS Jul2025; 
+*** CONDOMS;				*Adapted from CMMC code from MIHPSA Zim - represents both condom provision and promotion interventions. JAS Jul2025; 
 							*Impact on newp: proportion of population receive condoms via intervention - 20% no impact, remaining values based on suggested impact from CMMC MIHPSA Zimbabwe;
 * prop_use_condom_int_newp;	%sample(prop_use_condom_int_newp, 0 0.03 0.115 0.2, 0.2 0.2 0.4 0.2);		
 * prop_redattr_ep_condoms;	%sample(prop_redattr_ep_condoms, 0 0.05 0.17 0.30, 0.2 0.2 0.4 0.2);
@@ -756,9 +731,10 @@ end;
 
 
 
-* CIRCUMCISION;
+*** CIRCUMCISION;
 
 * mc_int;					mc_int=2008;
+* circ_inc_rate_year_i;		circ_inc_rate_year_i = 0;		*Switch to turn on and off circumcision intervention;
 * test_link_circ;			test_link_circ=1; 
 * test_link_circ_prob;		test_link_circ_prob = 0.05;
 
@@ -779,9 +755,11 @@ end;
 * prob_birth_circ; 			%sample(prob_birth_circ, 
 								0.05	0.1		0.40	0.9, 
 								0.30	0.40	0.20	0.10);
-*abs_decr_birth_circ;		abs_decr_birth_circ=0;											 
+* abs_decr_birth_circ;		abs_decr_birth_circ=0;	
+ 
 
-* ALL PREP ;
+
+*** ALL PREP ;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
@@ -970,8 +948,9 @@ end;
 
 
 
-* POP WIDE TLD * ;  * intention is probably to take this out from Core when cioa / community tld is added to Core; 
+*** POP WIDE TLD * ;  			* intention is probably to take this out from Core when cioa / community tld is added to Core; 
 
+* pop_wide_tld_year_i;			pop_wide_tld_year_i = 0;
 * rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 2 3 5);
 
 * rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/2 1/3  1/5  1/10);
@@ -1002,7 +981,13 @@ end;
 
 																			   
 
-																			   
+*** Other interventions that can be turned on or off at year_interv;
+* absence_cd4_year_i;				absence_cd4_year_i = 0;
+* absence_vl_year_i;				absence_vl_year_i = 0;
+* poc_vl_monitoring_i;				poc_vl_monitoring_i = 0;
+
+
+
 
 
 * COVID-19 ;
@@ -1167,9 +1152,9 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-  %include "/home/rmjlaph/malawi_parameters.sas";
-* %include "/home/rmjlja9/Zim_parameters.sas";
-* %include "/home/rmjllob/CdI_parameters.sas";
+* %include "/home/rmjlaph/SA_parameters.sas";
+* %include "/home/rmjlvca/Zim_parameters_08_f.sas";
+ *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
 																				  
 
 call symput('caldate1',caldate1);
@@ -2504,8 +2489,9 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-	set_in_options=1;
-	* note that we can use the set_in_options variable when we want to overwrite parameter values in option;
+	set_in_options=0;
+	* note that we can use set_in_options=1 when we want to ensure that parameter values specified in the options section are not overwritten.
+	The variable name can be updated to reflect specific parameters;
 
 
  	*Option 0 is continuation at current rates - status quo;
@@ -2917,97 +2903,11 @@ if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_
 end;
 
 
-***Impact of potential changes in policy after year_i;
-
-* decr_hard_reach_year_i; 
-if decr_hard_reach_year_i = 1 then do;
-	if _u6 < 0.5 then e_decr_hard_reach_year_i = 0.50; if _u6 ge 0.5 then e_decr_hard_reach_year_i = 0.75; 
-	if hard_reach=1 then do;
-		e = rand('uniform'); if e < e_decr_hard_reach_year_i then hard_reach = 0; 
-	end; 
-end;
-
-* decr_prob_loss_at_diag_year_i; 
-if	decr_prob_loss_at_diag_year_i = 1 then do;
-	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/3; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
-end;
-
-* decr_rate_lost_year_i; 	
-if decr_rate_lost_year_i = 1 then do;
-	eff_rate_lost = eff_rate_lost * _u10 / 3; eff_rate_lost=round(eff_rate_lost,0.01); 
-end;
-
-* decr_rate_lost_art_year_i; 
-if decr_rate_lost_art_year_i = 1 then do;
-	eff_prob_lost_art = eff_prob_lost_art + ((0.5 + 0.5*_u12) * (1 - eff_prob_lost_art) ) ; eff_prob_lost_art = round(eff_prob_lost_art, 0.01); 
-end;
-
-* incr_rate_return_year_i; 
-if incr_rate_return_year_i = 1 then do;
-	eff_rate_return = eff_rate_return * (2 + 3*_u14);  eff_rate_return = round(eff_rate_return,0.01);  
-end;
-
-* incr_rate_restart_year_i; 
-if incr_rate_restart_year_i = 1 then do;
-	eff_rate_restart = eff_rate_restart * (2 + 3*_u18);  eff_rate_restart = round(eff_rate_restart,0.01);  
-end;
-
-* incr_rate_init_year_i; 	
-if incr_rate_init_year_i = 1 then do;
-	eff_pr_art_init = eff_pr_art_init + ( (0.5 + 0.5*_u20) * (1 - eff_pr_art_init) ); eff_pr_art_init=round(eff_pr_art_init,0.01); 
-end;
-
-* incr_adh_year_i;  		
-if incr_adh_year_i = 1 then do;
-	if adhav < 0.8 then do; 
-		if _u4 < 0.5 then e_incr_adh_year_i = 0.5; if _u4 ge 0.5 then e_incr_adh_year_i = 0.75; 
-		e = rand('uniform'); if e < e_incr_adh_year_i then adhav = 0.9; 
-	end;
-end;
-
-* decr_rate_int_choice_year_i; 
-if	decr_rate_int_choice_year_i = 1 then do;
-	eff_rate_int_choice = eff_rate_int_choice * _u22/3; eff_rate_int_choice = round(eff_rate_int_choice,0.001); 
-end;
-
-* incr_prob_vl_meas_done_year_i; 
-if	incr_prob_vl_meas_done_year_i = 1 then do;
-	eff_prob_vl_meas_done = 0.85; 
-	art_monitoring_strategy = 150;*WHO standard VL annual monitoring;
-end;
-
-* art_mon_drug_levels_year_i;
-if art_mon_drug_levels_year_i = 1 then do;
-	if reg_option = 103 then reg_option = 119;
-	if reg_option = 104 then reg_option = 118;
-	if reg_option = 113 then reg_option = 115;
-	if reg_option = 116 then reg_option = 117; 
-end;
-
-* incr_pr_switch_line_year_i; 
-if incr_pr_switch_line_year_i = 1 then do;
-	eff_pr_switch_line = 0.80; 
-end;
-
-* incr_test_targeting_year_i;	
-if incr_test_targeting_year_i = 1 then do;
-	if _u42 < 0.45 then eff_test_targeting = 2;
-	if 0.45 <= _u42 < 0.9 then eff_test_targeting = 5;
-end;						
-
-* reg_option_switch_year_i;	
-if reg_option_switch_year_i = 1 then do;
-	if _u49 < 0.30 then reg_option = 104; 
-	if 0.30 <= _u49 < 0.6 then  reg_option = 116;
-	if 0.60 <= _u49 < 0.9 then  reg_option = 119;
-end;
-
-* pop_wide_tld_year_i;	
-if pop_wide_tld_year_i = 1 then do;	* lapr and dpv-vr - this is using tld as prep so no change;
+* Switching on population-wide TLD intervention (pop_wide_tld_year_i);	
+if pop_wide_tld_year_i = 1 then do;
 	pop_wide_tld = 1; if set_in_options ne 1 then prep_any_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
 	higher_future_prep_oral_cov = 0;  * this is instead of current type of prep program;
 end;
-
 
 	
 
@@ -3040,11 +2940,6 @@ if absence_vl_year_i ne 1 and set_in_options ne 1 then do;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121 125 130) then art_monitoring_strategy=150;  
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
-
-	if single_vl_switch_efa_year_i = 1 then do;
-		art_monitoring_strategy=150;
-		if (o_efa=1 or (int_clinic_not_aw=1 and mr_efa=1) or o_nev=1 or (int_clinic_not_aw=1 and mr_nev=1)) and linefail=0 then art_monitoring_strategy=153; 
-	end;
 
 	* may 2019 - for pico;
 	if reg_option in (112 114) and caldate{t}-yrart ge 1 then art_monitoring_strategy=150;
@@ -3084,22 +2979,12 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 																				
 		end;	
 
-		if caldate{t} >= 2022  then do; * note this is equivalent to incr_test_year_i = 0;
+		if caldate{t} >= 2022  then do;
 			rate_1sttest = rate_1sttest * 0.8; rate_reptest = rate_reptest * 0.8; 	eff_test_targeting = test_targeting * 1.5 ; 
 		end;
 
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 end;
-
-
-/*
-	if incr_test_year_i = 1              then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-	* previously incr_test_year_i set to 3 as default ;
-	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
-*/
-
-
 
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
@@ -3585,8 +3470,8 @@ if        caldate{t} >  2000 then ch_risk_beh_ep = ch_risk_beh_ep2000_;
 From MIHPSA Zimbabwe:
 CMMC (condom mass media campaign) in Zimbabwe was introduced at least since 2004
 CMMC assumed to be switched ON from 2011 until year_interv
-Condom_change_year_i = 0 refers to CMMC being switched on (SQ and all runs up to year_interv)
-Condom_change_year_i = 1 refers to CMMC being switched off
+condom_change_year_i = 0 refers to CMMC being switched on (SQ and all runs up to year_interv)
+condom_change_year_i = 1 refers to CMMC being switched off
 
 In 2011 rred_rc depending on the sampling varies from	0.031 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
 														0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
@@ -13254,8 +13139,6 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 
 		if o_dol=1 and incr_mort_risk_dol_weightg ge 1 then ac_death_rate = ac_death_rate  * incr_mort_risk_dol_weightg_i; 
 
-		if o_ten=1 and ten_is_taf_year_i=1 then ac_death_rate = ac_death_rate  * 1.25; 
-
 		ac_deathrix = 1 - exp(-0.25*ac_death_rate);
 * ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
 
@@ -13517,7 +13400,7 @@ end;
 
 * nucs;
     cost_zdv=0;if o_zdv=1 then cost_zdv=cost_zdv_a;       
-    cost_ten=0;	if o_ten=1 then do; cost_ten=cost_ten_a; if ten_is_taf_year_i = 1 then cost_ten = cost_taf ;  end; 
+    cost_ten=0;	if o_ten=1 then cost_ten=cost_ten_a;
 	cost_3tc=0;if o_3tc=1 then cost_3tc=cost_3tc_a;     
 
 * nnrtis;
@@ -20426,8 +20309,9 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 proc freq; tables cald hiv ; where death=.; run;
 
 
-proc print; var reg_option onart art_monitoring_strategy adh adh_dl o_dol o_3tc o_ten o_cab o_len nactive  r_cab r_len f_cab f_len ;
-where naive=0 and caldate&j ge 2025;
+proc print; 
+	var cald country gender age hiv option;
+	where serial_no < 50;
 run;
 
 */
@@ -21839,12 +21723,9 @@ discount
 
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
-condom_change_year_i			decr_hard_reach_year_i			incr_adh_year_i			decr_prob_loss_at_diag_year_i 
-absence_cd4_year_i  			absence_vl_year_i 				decr_rate_lost_year_i  	decr_rate_lost_art_year_i   
-incr_rate_return_year_i     	incr_rate_restart_year_i        incr_rate_init_year_i   decr_rate_int_choice_year_i 
-incr_prob_vl_meas_done_year_i 	incr_pr_switch_line_year_i    	poc_vl_monitoring_i 	circ_inc_rate_year_i 		 
-incr_test_targeting_year_i   	reg_option_switch_year_i 		art_mon_drug_levels_year_i   ten_is_taf_year_i  	
-pop_wide_tld_year_i  			single_vl_switch_efa_year_i		e_decr_hard_reach_year_i  
+condom_change_year_i			absence_cd4_year_i  		absence_vl_year_i 	
+poc_vl_monitoring_i 			circ_inc_rate_year_i		pop_wide_tld_year_i  
+ 
 initial_pr_switch_line      	initial_prob_vl_meas_done  
 
 vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
@@ -24041,12 +23922,9 @@ discount
 
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
-condom_change_year_i			decr_hard_reach_year_i			incr_adh_year_i			decr_prob_loss_at_diag_year_i 
-absence_cd4_year_i  			absence_vl_year_i 				decr_rate_lost_year_i  	decr_rate_lost_art_year_i   
-incr_rate_return_year_i     	incr_rate_restart_year_i        incr_rate_init_year_i   decr_rate_int_choice_year_i 
-incr_prob_vl_meas_done_year_i 	incr_pr_switch_line_year_i    	poc_vl_monitoring_i 	circ_inc_rate_year_i 		 
-incr_test_targeting_year_i   	reg_option_switch_year_i 		art_mon_drug_levels_year_i   ten_is_taf_year_i  	
-pop_wide_tld_year_i  			single_vl_switch_efa_year_i		e_decr_hard_reach_year_i  
+condom_change_year_i			absence_cd4_year_i  		absence_vl_year_i 	
+poc_vl_monitoring_i 			circ_inc_rate_year_i		pop_wide_tld_year_i  
+ 
 initial_pr_switch_line      	initial_prob_vl_meas_done  
 
 vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
