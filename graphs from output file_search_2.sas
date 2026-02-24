@@ -51,11 +51,9 @@ p_on_anti_hypert_1549_ p_on_anti_hypert_1539_ p_on_anti_hypert_4049_ p_on_anti_h
 if option in (0 1);
 
 
-%let single_var =  prop_prep_any                        ;
+%let single_var =  prop_prep_any                       ;
 
-proc means; var prop_prep_any; where option=0 and cald ge 2026;
-proc means; var prop_prep_any; where option=1 and cald ge 2026;
-run;
+* prop_prep_any ;
 
 
 * if run in (
@@ -1655,10 +1653,11 @@ ods html close;
 
 */
 
+/*
 
 ods html;
 proc sgplot data=d ; 
-* Title    height=1.5 justify=center "Incidence (age 15-49)";
+  Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2070 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Incidence per 100 person years'		labelattrs=(size=12)  values = (0 to  1.0       by 0.1     ) valueattrs=(size=10);
 
@@ -1674,7 +1673,7 @@ run;quit;
 
 * ods html close;
 
-
+*/
 
 /*
 
