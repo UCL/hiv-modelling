@@ -533,7 +533,7 @@ newp_seed = 7;
 * rate_return;  			%sample(rate_return, 
 								0.05  0.10 	0.30   0.60, 
 							  	0.25  0.25	0.25   0.25); * change sep22 for pop_wide_tld;
-
+							* dependent_on_time_step_length ;
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
 							* dependent_on_time_step_length ;
 * pr_art_init; 				%sample_uniform(pr_art_init, 0.5 0.7 0.9 0.95 1); 
@@ -847,7 +847,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * pr_inm_cab_prep_primary ;		%sample_uniform(pr_inm_cab_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation ;
 * pr_cam_len_prep_primary ;		%sample_uniform(pr_cam_len_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation ;
 * rel_pr_inm_cab_prep_tail_primary; %sample_uniform(rel_pr_inm_cab_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
-* rel_pr_inm_len_prep_tail_primary; %sample_uniform(rel_pr_cam_len_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
+* rel_pr_cam_len_prep_tail_primary; %sample_uniform(rel_pr_cam_len_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 * incr_res_risk_len_inf_3m;		incr_res_risk_len_inf_3m = incr_res_risk_cab_inf_3m;
@@ -1165,7 +1165,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
-																				  
+
 
 call symput('caldate1',caldate1);
 
