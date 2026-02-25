@@ -1671,6 +1671,7 @@ if gender = 2 and life_sex_risk >= 2 then do;
 	if life_sex_risk = 3 then prob_sw_init = prob_sw_init * 3;
 
 	if rand('uniform') < prob_sw_init then sw = 1; 
+	sw=1;
 end;
 
 age_deb_sw=.;
@@ -19747,13 +19748,20 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 * procs;
-
+/*
 proc print;var cald option prep_any_strategy date_prep_oral_intro date_prep_len_intro eff_rate_test_startprep_any 
 eff_prob_prep_oral_b eff_prob_prep_len_b eff_rate_choose_stop_prep_len
-eff_rate_choose_stop_prep_oral eff_prob_prep_any_restart_choice prep_any_elig;
+eff_rate_choose_stop_prep_oral eff_prob_prep_any_restart_choice prep_any_elig;run;
+*/
 
-
-where age ge 15 ;run;
+proc print;var cald option sw_prog_intensity 
+		effect_sw_prog_6mtest
+		effect_sw_prog_int 
+		effect_sw_prog_adh 
+		effect_sw_prog_lossdiag 
+		effect_sw_prog_prep_any
+		effect_sw_prog_pers_sti;
+where age ge 15 and sw=1 ;run;
 
 
 
@@ -22352,9 +22360,10 @@ data a ;  set r1 ;
 
 
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+20,0);
+%run_update_r1(&year_interv,&year_interv+2,0);
 
-
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+2,1);
 /*
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,10);
@@ -22408,11 +22417,11 @@ data r1; set a;
 
 */
 
-/*
+
 * SQ;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,99);
-*/
+%run_update_r1(&year_interv,&year_interv+2,99);
+
 
 
 

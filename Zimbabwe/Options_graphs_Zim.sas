@@ -43,7 +43,7 @@ run;
 */
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Zimbabwe\Zim_options_07_01_26.doc" startpage=never; 
+ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Zimbabwe\Zim_options_07_01_26a.doc" startpage=never; 
 ods listing close;
 
 
@@ -511,6 +511,52 @@ series  x=cald y=mean_n_death_hivrel_6/	lineattrs = (color=purple thickness = 2 
 series  x=cald y=mean_n_death_hivrel_7/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
 series  x=cald y=mean_n_death_hivrel_8/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_death_hivrel_20/lineattrs = (color=pink thickness = 2 pattern=solid);
+run;quit;
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Proportion SW diagnosed (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12) values = (0.8 to 1 by 0.2)	  valueattrs=(size=10);
+
+label mean_p_diag_sw_99 = "SQ";
+label mean_p_diag_sw_0 = "Base";
+label mean_p_diag_sw_1 = "FSW program";
+
+series  x=cald y=mean_p_diag_sw_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_diag_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_p_diag_sw_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+run;quit;
+
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Of those diagnosed, proportion SW on ART (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12) values = (0.8 to 1 by 0.2)	  valueattrs=(size=10);
+
+label mean_p_onart_diag_sw_99 = "SQ";
+label mean_p_onart_diag_sw_0 = "Base";
+label mean_p_onart_diag_sw_2 = "FSW program";
+
+series  x=cald y=mean_p_onart_diag_sw_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_p_onart_diag_sw_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+run;quit;
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Of those on ART, proportion SW suppressed (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12) values = (0.8 to 1 by 0.2)	  valueattrs=(size=10);
+
+label mean_p_onart_vl1000_sw_99 = "SQ";
+label mean_p_onart_vl1000_sw_0 = "Base";
+label mean_p_onart_vl1000_sw_2 = "FSW program";
+
+series  x=cald y=mean_p_onart_vl1000_sw_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_p_onart_vl1000_sw_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 run;quit;
 
 

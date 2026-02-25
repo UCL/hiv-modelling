@@ -6,10 +6,11 @@ data b;
 set a.out:;
 run;
 
-data b.GenesisZim_07Jan26_a;
+data b.GenesisZim_07Jan26a;
 set b;
 run;
 
+proc freq;table run;run;
 
 libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW\18Feb26";
 libname b "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";

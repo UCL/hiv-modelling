@@ -2,8 +2,8 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data y;
-*set a.long_gen_07Jan26;
-set a.long_gen_06Feb26_package;
+set a.long_gen_07Jan26;
+*set a.long_gen_06Feb26_package;
 run;
 proc freq;table cald;run;
 
@@ -12,8 +12,8 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-*%let nfit = 1950;
-%let nfit = 672;
+%let nfit = 2392;
+*%let nfit = 672;
 
 %let year_end = 2045.00 ;
 run;
@@ -58,8 +58,8 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 	n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		 p_mcirc			p_vmmc
 	n_death_discount	 d_n_new_inf
 
-	dcost	ddaly;
-
+	dcost	ddaly n_tested_sw p_diag_sw p_onart_diag_sw	p_onart_vl1000_sw
+;
     /* Count number of variables */
     %let count = 0;
     %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -139,8 +139,8 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /*-----------------------------------------*/
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
-*%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
-%summary_all_options(options=0 1 2 3 4 5 99); *package;
+%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
+*%summary_all_options(options=0 1 2 3 4 5 99); *package;
 
 
 

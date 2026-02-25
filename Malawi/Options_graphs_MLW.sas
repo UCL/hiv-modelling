@@ -4,7 +4,7 @@
 libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Mlw";
 
 data a;
-set a.Mlw_options_graphs_18Feb26;
+set a.Mlw_options_graphs_22Feb26;
 run;
 
 
@@ -506,7 +506,7 @@ run;quit;
 
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (15+)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2076 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (2000 to 12000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_99 = "SQ";
@@ -523,15 +523,87 @@ label mean_n_death_hivrel_17 = "VL and CD4 testing";
 series  x=cald y=mean_n_death_hivrel_99/lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_n_death_hivrel_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_n_death_hivrel_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_n_death_hivrel_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_n_death_hivrel_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
-series  x=cald y=mean_n_death_hivrel_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
-series  x=cald y=mean_n_death_hivrel_5/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
-series  x=cald y=mean_n_death_hivrel_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
-series  x=cald y=mean_n_death_hivrel_16/lineattrs = (color=pink thickness = 2 pattern=solid);
-series  x=cald y=mean_n_death_hivrel_17/lineattrs = (color=green thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_hivrel_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_hivrel_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_hivrel_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_hivrel_5/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_hivrel_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_hivrel_16/lineattrs = (color=pink thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_hivrel_17/lineattrs = (color=green thickness = 2 pattern=solid);
 run;quit;
 
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Number of HIV tests in SW (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)   valueattrs=(size=10);
+
+label mean_n_tested_sw_99 = "SQ";
+label mean_n_tested_sw_0 = "Base";
+label mean_n_tested_sw_1 = "FSW program";
+
+series  x=cald y=mean_n_tested_sw_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_tested_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_tested_sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+run;quit;
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Proportion SW diagnosed (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12) values = (0.8 to 1 by 0.2)	  valueattrs=(size=10);
+
+label mean_p_diag_sw_99 = "SQ";
+label mean_p_diag_sw_0 = "Base";
+label mean_p_diag_sw_1 = "FSW program";
+
+series  x=cald y=mean_p_diag_sw_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_diag_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_p_diag_sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+run;quit;
+
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Of those diagnosed, proportion SW on ART (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12) values = (0.8 to 1 by 0.2)	  valueattrs=(size=10);
+
+label mean_p_onart_diag_sw_99 = "SQ";
+label mean_p_onart_diag_sw_0 = "Base";
+label mean_p_onart_diag_sw_1 = "FSW program";
+label mean_p_onart_diag_sw_16 = "Return";
+
+
+series  x=cald y=mean_p_onart_diag_sw_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_p_onart_diag_sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_sw_16/	lineattrs = (color=pink thickness = 2 pattern=solid);
+
+run;quit;
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Of those on ART, proportion SW suppressed (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12) values = (0.8 to 1 by 0.05)	  valueattrs=(size=10);
+
+label mean_p_onart_vl1000_sw_99 = "SQ";
+label mean_p_onart_vl1000_sw_0 = "Base";
+label mean_p_onart_vl1000_sw_1 = "FSW program";
+label mean_p_onart_vl1000_sw_16 = "Return interventions";
+
+
+series  x=cald y=mean_p_onart_vl1000_sw_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_p_onart_vl1000_sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000_sw_16/	lineattrs = (color=pink thickness = 2 pattern=solid);
+
+run;quit;
+
+
+proc freq;table mean_n_tested_sw_0;run;
 
 ods rtf close;
 ods listing;

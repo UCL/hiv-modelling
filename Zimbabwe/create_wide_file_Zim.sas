@@ -4,7 +4,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 *libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
-set a.genesiszim_07jan26 a.GenesisZim_07Jan26_a; 
+set a.genesiszim_07jan26 a.GenesisZim_07Jan26a; 
 if run=. then delete; 
 
 proc sort;
@@ -205,10 +205,11 @@ cost_condom_py=1030350/1000000;*FIXED COST;
 cost_FSW_services_pppy=132/1000000;*annual cost per year;
 cost_AdhSupp_pppy=7.89/1000000;* This cost is from MIHPSA Zim and is per client per year;
 
-cost_condoms = 0; if option in (99, 3) then cost_condoms = cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+cost_condoms = 0;if option in (99, 3) then cost_condoms = cost_condom_py;		* Fixed population-level py cost so scaling not needed;
 dcost_condoms = cost_condoms * discount;
 
-cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
+***check option numbers;
+cost_fsw_services=0;  if option in (99, 1, 2) then cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
 dcost_fsw_services = cost_fsw_services * discount;
 
 cost_adh_support = 0; if option in (99 19) then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
@@ -368,6 +369,12 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_death_discount;				n_death_discount = n_death*discount;
 * d_n_new_inf;					d_n_new_inf = n_new_inf * discount;
 
+*to see if sw prog intervention is working;
+* n_tested_sw;					n_tested_sw = s_tested_sw * sf * 4;
+
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
+* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
+* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
@@ -392,6 +399,8 @@ n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc		p_vmmc
 n_death_discount	 d_n_new_inf
 
 dcost	ddaly  cost
+
+n_tested_sw p_diag_sw p_onart_diag_sw p_onart_vl1000_sw
 
 
 ;

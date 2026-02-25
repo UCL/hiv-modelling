@@ -375,6 +375,12 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_death_discount;				n_death_discount = n_death*discount;
 * d_n_new_inf;					d_n_new_inf = n_new_inf * discount;
 
+*to see if sw prog intervention is working;
+* n_tested_sw;					n_tested_sw = s_tested_sw * sf * 4;
+
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
+* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
+* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
@@ -401,6 +407,7 @@ n_death_discount	 d_n_new_inf
 
 dcost	ddaly  cost dcost_fsw_services
 
+n_tested_sw p_diag_sw p_onart_diag_sw p_onart_vl1000_sw
 
 
 ;
@@ -526,6 +533,8 @@ t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;
 
 %var(v=dcost);	%var(v=ddaly);	%var(v=cost);
 
+%var(v=n_tested_sw); %var(v=p_diag_sw); %var(v=p_onart_diag_sw); %var(v=p_onart_vl1000_sw);
+
 	 
 
 data wide_outputs;merge
@@ -547,7 +556,8 @@ n_agyw				p_w_agyw			prevalence_agyw		incidence_agyw	p_onprep_agyw		n_onprep_agy
 
 n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death_discount	 d_n_new_inf
 
-dcost ddaly cost
+dcost ddaly cost	n_tested_sw p_diag_sw p_onart_diag_sw	p_onart_vl1000_sw
+
 ;
 
 proc sort; by run;run;

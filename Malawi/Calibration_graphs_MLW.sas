@@ -4,7 +4,7 @@ libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa u
 ods listing;
 
 data y;
-set a.long_gen_mlw_18_02_2026;
+set a.long_gen_mlw_22_02_2026;
 run;
 proc freq;table cald;run;
 
@@ -13,7 +13,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 1026;
+%let nfit = 342;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -54,7 +54,8 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 	n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc				
 	n_death_discount	 d_n_new_inf
 
-	dcost	ddaly;
+	dcost	ddaly n_tested_sw p_diag_sw p_onart_diag_sw	p_onart_vl1000_sw
+;
 
     /* Count number of variables */
     %let count = 0;
@@ -148,13 +149,13 @@ set Master_summary;
 %include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Malawi\Observed data_Malawi.sas"; by cald;
 run;
 
-DATA A.MLW_options_graphs_18Feb26;
+DATA A.MLW_options_graphs_22Feb26;
 SET d;
 RUN;
 
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = 'C:\Users\lovelEEN\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\MLW_calibration_29_01_26.doc' startpage=never; 
+ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\MLW_calibration_18_02_26.doc' startpage=never; 
 ods listing close;
 
 
