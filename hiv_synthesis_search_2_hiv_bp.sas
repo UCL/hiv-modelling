@@ -811,7 +811,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 								* dependent_on_time_step_length ;
 																* not applicable for lapr or dpv-vr; * not marked with _oral as tld prep is separate intervention ;
 
-* rr_mort_tdf_prep;				%sample(rr_mort_tdf_prep, 1.005 1.01 1.03, 0.65 0.30 0.05);
+* rr_mort_tdf_prep;				%sample(rr_mort_tdf_prep, 1.005 1.01 1.03, 0.65 0.30 0.05);  rr_mort_tdf_prep = 1.00;  
 
 * pr_184m_oral_prep_primary ; pr_184m_oral_prep_primary = 0.3; ******************* placeholder ;
 * pr_65m_oral_prep_primary ;	pr_65m_oral_prep_primary = 0.1; ******************* placeholder ;
@@ -2453,6 +2453,7 @@ who may be dead and hence have caldate{t} missing;
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 10 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.5;
 		eff_rate_test_startprep_any = 0.9; 
+		eff_prob_prep_any_restart_choice = 0.9;
 		if age = 15 or caldate_never_dot = &year_interv then do;
 			pref_prep_oral = pref_prep_oral + 0.2;
 		end;
