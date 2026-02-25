@@ -984,9 +984,25 @@ end;
 
 
 
-* COVID-19 ;
+*** COVID-19 ;
 
-* cov_death_risk_mult;		%sample(cov_death_risk_mult, 1 2 3, 0.8 0.1 0.1);
+* cov_death_risk_mult;				%sample(cov_death_risk_mult, 1 2 3, 0.8 0.1 0.1);
+
+* COVID consequences for HIV programs;
+* vmmc_disrup_covid; 				vmmc_disrup_covid = 0;
+* condom_disrup_covid; 				condom_disrup_covid = 0;
+* prep_oral_disrup_covid; 			prep_oral_disrup_covid = 0;
+* swprog_disrup_covid; 				swprog_disrup_covid = 0;
+* testing_disrup_covid; 			testing_disrup_covid = 0;
+* art_tld_disrup_covid; 			art_tld_disrup_covid = 0;
+* art_tld_eod_disrup_covid; 		art_tld_eod_disrup_covid = 0;
+* art_init_disrup_covid; 			art_init_disrup_covid = 0;
+* vl_adh_switch_disrup_covid; 		vl_adh_switch_disrup_covid = 0;
+* cotrim_disrup_covid; 				cotrim_disrup_covid = 0;
+* no_art_disrup_covid; 				no_art_disrup_covid = 0;
+* art_low_adh_disrup_covid; 		art_low_adh_disrup_covid = 0;
+* inc_death_rate_aids_disrup_covid; inc_death_rate_aids_disrup_covid = 0;
+
 
 
 
@@ -2412,6 +2428,7 @@ pwid_tm1 = pwid;
 
 tested_tm1=tested; tested=0;
 self_tested_tm1=self_tested; self_tested=0;
+symp_hypertension_tm1 = symp_hypertension;			* Added JAS Feb 2026;
 visit_hypertension_tm1 = visit_hypertension;
 tested_bp_tm1 = tested_bp;
 sbp_m_tm1 = sbp_m;
@@ -2982,6 +2999,7 @@ end;
 
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
+
 ***Zim specific;	* JAS Feb24;
 if country = 'Zimbabwe' then do;
 	if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;
@@ -3249,7 +3267,7 @@ symp_hypertension=0;
 d=rand('uniform');
 if sbp > 180 and d < prob_symp_hypertension then symp_hypertension=1;
 if symp_hypertension_tm1 = 1 then symp_hypertension=1;
-if symp_hypertension_tm1=1 and sbp < 180 then symp_hypertension=0; 
+if symp_hypertension_tm1 = 1 and sbp < 180 then symp_hypertension=0; 
 
 * Community testing: if tested in the commmunity, must link to clinic to have tested_bp = 1;
 	*allows repeat bp measurement in clinic which may/may not be >=140 based on measurement error;
