@@ -1,10 +1,10 @@
-* 05/02/26 updates
+* 25/02/26 updates
 
-- Slightly updated order of re-adding interventions based on adding more runs (n=304)
+- Re-running package with the baseline that keeps self-testing in (24/01/26 outputs)
 
 * 29/01/26 updates
 
-- Slightly updated order of re-adding interventions based on adding more runs (n=248)
+- Slightly updated order of re-adding interventions based on adding more runs (n=280)
 - Run for 52 years after year_interv
 - This version uses the minimal with self-testing removed (same as 10/12/25 version)
 
@@ -16,7 +16,7 @@
 
 - Slightly updated order of re-adding interventions based on analysis of more runs from 10/12/25
 
-* 12/01/26 updated
+* 12/01/26 updates
 
 - Adding back in interventions in order of decreasing cost-effectiveness
 - Run options 0-9 + 99 (see options section for details)
@@ -128,7 +128,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 1000 ; 
+%let population = 100000 ; 
 %let year_interv = 2024.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -1150,10 +1150,9 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/malawi_parameters.sas";
-* %include "/home/rmjlja9/Zim_parameters.sas";
+  %include "/home/rmjlja9/Zim_parameters.sas";
 * %include "/home/rmjllob/CdI_parameters.sas";
-/*  %include "/home/rmjlja9/malawi_parameters.sas";*/
-  %include "C:/Users/rmjlja9/Documents/GitHub/hiv-modelling/Malawi_parameters.sas";
+/*%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";*/
 
 call symput('caldate1',caldate1);
 
@@ -2426,21 +2425,19 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 option = &s;
 
 
-* Order to re-add interventions for HIV Control Malawi:
+* Order to re-add interventions for HIV Control Zim:
 0	Min
 1	Min + condoms
 2	Min + condoms + vmmc
-3	Min + condoms + vmmc + fsw-prep-mix
-4	Min + condoms + vmmc + fsw-prep-mix + adh-supp
-5	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program 
-6	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program
-7	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix
-8	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix
-9	Min + condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix + testing
+3	Min + condoms + vmmc + fsw-program
+4	Min + condoms + vmmc + fsw-program + fsw-prep-mix
+5	Min + condoms + vmmc + fsw-program + fsw-prep-mix + adh-supp
+6	Min + condoms + vmmc + fsw-program + fsw-prep-mix + adh-supp + agyw-prep-mix 
+7	Min + condoms + vmmc + fsw-program + fsw-prep-mix + adh-supp + agyw-prep-mix + msm-program
 
 99	SQ 
 
-Not added: agyw-prep-oral, fsw-prep-oral (mix options already included with lower ICER)
+Not added: agyw-prep-oral (mix options already included), fsw-prep-oral, msm-prep-oral, msm-prep-mix (DALYs not averted), testing (not evaluated at no change to testing in the minimal)
 ;
 
 if caldate_never_dot >= &year_interv and option ne 99 then do;
@@ -2452,9 +2449,9 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		eff_sw_program = 0;		 			*No SW program;
 		eff_rate_disengage_sw_program=1;
 
-		* self_testing;
-		prob_self_test_hard_reach = 0;
-		eff_rate_self_test = 0;
+/*		* self_testing;*/			/* keep ST switched on in Minimal to match 1st 90 to Optima */
+/*		prob_self_test_hard_reach = 0;*/
+/*		eff_rate_self_test = 0;*/
 
 		*Prevention;
 		*Condom provision and promotion: keep at SQ level;
@@ -2502,40 +2499,9 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		circ_inc_rate_year_i=5;    			*Increase VMMC until p_mcirc_1524m is 90%;				 
 	end;
 
-	*Option 3: condoms + vmmc + fsw-prep-mix;																										  
+	*Option 3: condoms + vmmc + fsw-program;																										  
 	if option ge 3 then do;
-		*1-2 + fsw-prep-mix;
-		prep_any_strategy=20;												* Try new FSW strategy (no newp requirement);
-		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
-		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
-		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
-		eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
-		eff_prob_prep_len_b=min(1,eff_prob_prep_oral_b + add_prob_prep_b_len);		* Set to new value relative to value above;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;
-		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		
-	end;
-
-	*Option 4: condoms + vmmc + fsw-prep-mix + adh-supp;																										  
-	if option ge 4 then do;	
-		*1-3 + adh-supp;
-		return_interventions_off=0;    		*Restore SQ;				* Note this is not initialised - add to parameter section above;
-																		* Do we need to restore CD4 and VL testing as part of adherence support?; 
-	end;
-
-	*Option 5: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program;
-	if option ge 5 then do;
-		*1-4 + msm-program;
-		* MSM: Strengthening demand, increased accessibility of condoms, peer education ;	
-		* Currently no PrEP element to MSM program;
-		if caldate_never_dot = &year_interv then do; 
-			msm_risk_cls = 0.1;
-		end;
-	end;
-
-	*Option 6: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program;
-	if option ge 6 then do;
-		*1-5 + fsw-program;
+		*1-2 + fsw-program;
 		eff_sw_program = sw_program;		*Restore SQ;	
 		eff_rate_disengage_sw_program = rate_disengage_sw_program;		
 		if sw_program_visit=1 then do;				*Restore oral PrEP for SW who have had an program visit this period;
@@ -2548,9 +2514,30 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		end;
 	end;
 
-	*Option 7: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix;
-	if option ge 7 then do;
-		*1-6 + agyw-prep-mix;
+	*Option 4: condoms + vmmc + fsw-program + fsw-prep-mix;																										  
+	if option ge 4 then do;
+		*1-3 + fsw-prep-mix;
+		prep_any_strategy=20;												* Try new FSW strategy (no newp requirement);
+		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
+		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
+		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
+		eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
+		eff_prob_prep_len_b=min(1,eff_prob_prep_oral_b + add_prob_prep_b_len);		* Set to new value relative to value above;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;
+		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		
+	end;
+
+	*Option 5: condoms + vmmc + fsw-program + fsw-prep-mix + adh-supp;																										  
+	if option ge 5 then do;	
+		*1-4 + adh-supp;
+		return_interventions_off=0;    		*Restore SQ;				* Note this is not initialised - add to parameter section above;
+																		* Do we need to restore CD4 and VL testing as part of adherence support?; 
+	end;
+
+	*Option 6: condoms + vmmc + fsw-program + fsw-prep-mix + adh-supp + agyw-prep-mix;																										  
+	if option ge 6 then do;
+		*1-5 + agyw-prep-mix;
 		prep_any_strategy=21;												* New strategy for HIV control;
 		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
 		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
@@ -2561,26 +2548,14 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;		* Restore SQ;		 
 	end;
 
-	*Option 8: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix;
-	if option ge 8 then do;
-		*1-7 + msm-prep-mix;
-		prep_any_strategy=22;												* New strategy for HIV control;
-		date_prep_oral_intro=&year_interv;									* Ensure PrEP is available;
-		date_prep_len_intro=&year_interv;									* Ensure PrEP is available;
-		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
-		eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);						* Triple rate of starting oral PrEP compared to SQ;
-		eff_prob_prep_len_b=min(1,eff_prob_prep_oral_b + add_prob_prep_b_len);		* Set to new value relative to value above;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;
-		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
-		prob_prep_elig_msm = 0.5;
-	end;
-
-	*Option 9: condoms + vmmc + fsw-prep-mix + adh-supp + msm-program + fsw-program + agyw-prep-mix + msm-prep-mix + testing;
-	if option ge 9 then do;
-		*1-8 + testing;
-		prob_self_test_hard_reach=0;    	*Restore SQ;				* prob_self_test_hard_reach set to 0 at baseline - confirm this is intended;
-		eff_rate_self_test=rate_self_test;	*Restore SQ;				* made rate_self_test an eff variable;		
+	*Option 7: condoms + vmmc + fsw-program + fsw-prep-mix + adh-supp + agyw-prep-mix + msm-program;																										  
+	if option ge 7 then do;
+		*1-6 + msm-program;
+		* MSM: Strengthening demand, increased accessibility of condoms, peer education ;	
+		* Currently no PrEP element to MSM program;
+		if caldate_never_dot = &year_interv then do; 
+			msm_risk_cls = 0.1;
+		end;
 	end;
 
 	* Worst case not modelled here;
@@ -19738,7 +19713,15 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 /*
 proc print; var cald country gender age hiv 
 	option
-
+	highest_prep_pref
+	rate_test_startprep_any
+	eff_rate_test_startprep_any
+	prob_prep_oral_b
+	eff_prob_prep_oral_b
+	prob_prep_len_b
+	eff_prob_prep_len_b
+	prep_len
+	prep_oral
 ;
 where serial_no < 50;
 run;
@@ -21167,15 +21150,15 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 
 
-/****Malawi specific;			*JAS Feb24;*/
-/*if country = 'Malawi' then do;*/
-/*	if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;*/
-/*	if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;*/
-/*	if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;*/
-/*  */
-/*	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;*/
-/*	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;*/
-/*end;*/
+***Malawi specific;			*JAS Feb24;
+if country = 'Malawi' then do;
+	if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+	if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
+  
+	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
+	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+end;
 
 ***South Africa specific;	*JAS Feb24;
 if country = 'South Africa' then do;
@@ -22345,12 +22328,6 @@ data r1; set a;
 
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+52,7);
-
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+52,8);
-
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+52,9);
 
 
 * SQ;
