@@ -214,8 +214,9 @@ dcost_condoms = cost_condoms * discount;
 
 cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
 dcost_fsw_services = cost_fsw_services * discount;
+if option=0 then dcost_fsw_services=0;
 
-cost_adh_support = 0; if option in (99 19) then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
+cost_adh_support = 0; if option in (99 16) then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
 dcost_adh_support = cost_adh_support * discount;
 
 
