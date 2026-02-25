@@ -209,12 +209,13 @@ cost_condom_py=1030350/1000000;*FIXED COST;
 cost_FSW_services_pppy=132/1000000;*annual cost per year;
 cost_AdhSupp_pppy=7.89/1000000;* This cost is from MIHPSA Zim and is per client per year;
 
-cost_condoms = 0; if option in (99, 3) then cost_condoms = cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+* Not assessing condom use as an option so include the same cost for all scenarios;
+/*cost_condoms = 0; if option in (99, 3) then cost_condoms = cost_condom_py;*/		* Fixed population-level py cost so scaling not needed;
+cost_condoms = cost_condom_py;
 dcost_condoms = cost_condoms * discount;
 
-cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
+cost_fsw_services=0; if option in (99, 1) then cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
 dcost_fsw_services = cost_fsw_services * discount;
-if option=0 then dcost_fsw_services=0;
 
 cost_adh_support = 0; if option in (99 16) then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
 dcost_adh_support = cost_adh_support * discount;
@@ -398,13 +399,13 @@ n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_pos
 n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc				p_vmmc
 n_death_discount	 d_n_new_inf
 
-dcost	ddaly  cost
+dcost	ddaly  cost dcost_fsw_services
+
 
 
 ;
 
 proc sort data=y;by run option;run;
-
 
 
 data a.long_gen_mlw_18_02_2026;
