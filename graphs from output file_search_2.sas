@@ -51,7 +51,7 @@ p_on_anti_hypert_1549_ p_on_anti_hypert_1539_ p_on_anti_hypert_4049_ p_on_anti_h
 if option in (0 1);
 
 
-%let single_var =  incidence1549_                  ;
+%let single_var =  prop_prep_any                    ;
 
 * prop_prep_any ;
 
@@ -234,7 +234,7 @@ run;quit;
 
 */
 
-/*
+  
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -250,9 +250,9 @@ band    x=cald lower=p5_prop_prep_any_1 upper=p95_prop_prep_any_1 / transparency
 
 run;quit;
 
-*/
 
 
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -270,7 +270,7 @@ run;quit;
 
 * ods html close;
 
-
+*/
 
 /*
 

@@ -2434,8 +2434,6 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 option = &s;
 								   
-
-
 if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
@@ -2474,7 +2472,16 @@ who may be dead and hence have caldate{t} missing;
 		*/
 
 	end;
- 
+
+	if caldate_never_dot >= &year_interv+20 then do;
+ 		eff_rate_choose_stop_prep_oral=1;	
+		eff_prob_prep_oral_b = 0;
+		eff_rate_test_startprep_any = 0; 
+		eff_prob_prep_any_restart_choice = 0;
+		pref_prep_oral = 0;
+	end;
+
+
 end;
 
 
