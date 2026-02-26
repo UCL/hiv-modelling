@@ -2450,13 +2450,14 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;
 		*Specify option 1;
 					
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 10 ;		
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 20 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.5;
 		eff_rate_test_startprep_any = 0.9; 
 		eff_prob_prep_any_restart_choice = 0.9;
-		if age = 15 or caldate_never_dot = &year_interv then do;
-			pref_prep_oral = pref_prep_oral + 0.2;
-		end;
+		pref_prep_oral = 0.5;
+		* if age = 15 or caldate_never_dot = &year_interv then do;
+		*	pref_prep_oral = pref_prep_oral + 0.2;
+		* end;
 
 		/*
 		* hypertension intervention - left out for now;

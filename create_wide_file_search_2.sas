@@ -2637,55 +2637,6 @@ d_prop_1564_onprep_10y_2 = prop_1564_onprep_10y_2 - prop_1564_onprep_10y_1 ;
 d_p_diagnosed_hypert_1549_10y_2 = p_diagnosed_hypert_1549_10y_2 - p_diagnosed_hypert_1549_10y_1;
 
 
-ods html;
-title 'Characteristics of the setting scenarios in 2024 (median, 90% range)';
-ods noproctitle;
-proc means data=f   n p50  p5  p95 min max ;  
-var prevalence1549w_25 prevalence1549m_25 prevalence1549_25 incidence1549m_25 incidence1549w_25 incidence1549_25 
-p_diag_25 p_diag_w_25 p_diag_m_25 
-p_onart_diag_25 p_onart_diag_w_25  p_onart_diag_m_25  
-p_onart_vl1000_25 p_onart_vl1000_m_25 p_onart_vl1000_w_25
-p_vl1000_25 p_vl1000_w_25 p_vl1000_m_25 
-prevalence_vg1000_25   
-p_onart_cd4_l200_25
-p_onart_vl1000_w_1524_25 p_onart_vl1000_m_1524_25  
-s_alive_25
-p_hard_reach_25
-;
-run;
-ods html close;
-
-
-
-ods html;
-proc means median p5 p95 mean lclm uclm;
-var
-
-p_tested_incl_self_10y_1 p_tested_incl_self_10y_2  d_p_tested_incl_self_10y_2 
-
-d_p_diag_10y_2_1  p_diag_10y_2  p_diag_10y_1
-
-d_p_onart_diag_10y_2_1  p_onart_diag_10y_2  p_onart_diag_10y_1
-
-d_p_onart_vl1000_10y_2_1  p_onart_vl1000_10y_2  p_onart_vl1000_10y_1
-
-prop_1564_onprep_10y_1 prop_1564_onprep_10y_2  d_prop_1564_onprep_10y_2 
-
-d_p_diagnosed_hypert_1549_10y_2   p_diagnosed_hypert_1549_10y_2   p_diagnosed_hypert_1549_10y_1
-
-;
-
-run;
-ods html close;
-
-
-
-
-
-
-
-/*
-
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1;
 r_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 / n_death_hiv_10y_1;
 d_n_death_hiv_50y_2_1 = n_death_hiv_50y_2 - n_death_hiv_50y_1;
