@@ -816,7 +816,11 @@ proc print data=d;				* compare n_sw_inprog_ly to n_sw_program_visit;
 	;
 	where cald=2040;
 run;
-
+* n_sw_program_visit should be 0 for all runs except SQ and FSW program but there are low numbers showing instead.
+This is because rate_disengage_sw_program should have been set to 0 in the options minimal code but was not. 
+But there is no impact of the SW program on SW who have sw_program_visit=1 because eff_sw_program is set to 0.
+Therefore we need to set the cost to 0 in all runs except SQ and FSW program
+;
 
 proc print data=d;
 var p50_prop_sw_program_visit_0
@@ -4813,7 +4817,7 @@ option nospool;
 	test_proppos_m      test_proppos_w  test_prop_positive
 	test_proppos_1524w  test_proppos_sw
 
-	n_sw_inprog_ly  /*n_sw_inprog_ever*/
+	n_sw_program_visit  /* n_sw_inprog_ever*/	/* Changed n_sw_inprog_ly to n_sw_program_visit Feb 26 */
 	n_sbcc_visit_1564_ 		n_tested_sbcc
 	/*NCUPP_A1599_M ... NCondoms_A1599_M*/
 	n_diag_mens_clinic
@@ -4895,7 +4899,7 @@ option nospool;
 	mean_test_prop_positive_&o	P5_test_prop_positive_&o  P95_test_prop_positive_&o
 	mean_test_proppos_1524w_&o   mean_test_proppos_sw_&o 
 
-	mean_n_sw_inprog_ly_&o 		/*mean_n_sw_inprog_ever_&o*/
+	mean_n_sw_program_visit_&o	/*mean_n_sw_inprog_ever_&o*/		/* Changed n_sw_inprog_ly to n_sw_program_visit Feb 26 */
 	mean_n_sbcc_visit_1564__&o	mean_n_tested_sbcc_&o
 
 	/*NCUPP_A1599_M ... NCondoms_A1599_M*/
@@ -5113,7 +5117,7 @@ l_test_proppos_w_&s  l_test_proppos_w_&s  l_test_proppos_w_&s
 l_test_prop_positive_&s	l_test_prop_positive_&s  l_test_prop_positive_&s
 l_test_proppos_1524w_&s   l_test_proppos_sw_&s 
 
-l_n_sw_inprog_ly_&s    		/*l_n_sw_inprog_ever_&s*/
+l_n_sw_program_visit_&s		/*l_n_sw_inprog_ly_&s    		l_n_sw_inprog_ever_&s*/
 l_n_sbcc_visit_1564__&s 		l_n_tested_sbcc_&s
 
 /*NCUPP_A1599_M ... NCondoms_A1599_M*/
@@ -5396,7 +5400,7 @@ rename mean_test_proppos_sw_&o = PosRate_FSW1599_M;
 
 
 *** PREVENTION;
-rename mean_n_sw_inprog_ly_&o = NFSWprog_FSW1599_M;
+rename mean_n_sw_program_visit_&o = NFSWprog_FSW1599_M;			* Changed from mean_n_sw_inprog_ly_&o Feb 26;
 *rename mean_n_sw_inprog_ever_&o = NFSWprogEver_FSW1599_M;
 *Number of adults 15+ years old recipient of SBCC intervention;
 rename mean_n_sbcc_visit_1564__&o = NSBCC_A1599_M;
