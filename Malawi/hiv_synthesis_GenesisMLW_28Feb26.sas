@@ -1905,6 +1905,14 @@ eff_rate_persist_sti=rate_persist_sti;
 sw_program_visit=0;
 eff_rate_disengage_sw_program = rate_disengage_sw_program;
 
+eff_effect_sw_prog_6mtest=effect_sw_prog_6mtest;
+eff_effect_sw_prog_int=effect_sw_prog_int;
+eff_sw_prog_intensity = sw_prog_intensity;
+eff_effect_sw_prog_lossdiag = effect_sw_prog_lossdiag;
+eff_effect_sw_prog_prep_any = effect_sw_prog_prep_any;
+eff_effect_sw_prog_pers_sti = effect_sw_prog_pers_sti;
+eff_effect_sw_prog_adh = effect_sw_prog_adh;
+
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
 
 * ADHERENCE PATTERN;
@@ -2315,7 +2323,7 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		* No impact of SW program other than on newp;*(will have to redefine all SW parameters when re-introducing the program);
 		effect_sw_prog_6mtest = 0;
 		effect_sw_prog_int = 1;
-		effect_sw_prog_adh = 1;
+		effect_sw_prog_adh = 0;
 		effect_sw_prog_lossdiag = 1;
 		effect_sw_prog_prep_any = 0;
 		effect_sw_prog_pers_sti = 1;
@@ -2356,22 +2364,21 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
  	*Option 1: FSW program at low impact - not the same as SQ which has both low and high impact so need to redefine here;																										  
 	* Note this also includes return of oral PrEP for FSW only;
 	if option = 1 then do;
-
-		rate_engage_sw_program = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
-		rate_disengage_sw_program = ifn(rand("Uniform") < 0.5, 0.02, 0.04);
-		effect_sw_prog_newp = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
-		u = rand("Uniform");effect_sw_prog_6mtest = ifn(u < 1/3, 0.05, ifn(u < 2/3, 0.10, 0.15));
-		u = rand("Uniform");effect_sw_prog_int = ifn(u < 1/3, 0.30, ifn(u < 2/3, 0.50, 0.70));
-		u = rand("Uniform");effect_sw_prog_adh = ifn(u < 1/3, 0.10, ifn(u < 2/3, 0.15, 0.25));
-		u = rand("Uniform");effect_sw_prog_lossdiag = ifn(u < 1/3, 0.30, ifn(u < 2/3, 0.50, 0.70));
-		effect_sw_prog_prep_any = ifn(rand("Uniform") < 0.5, 0.05, 0.10);
-		effect_sw_prog_pers_sti = ifn(rand("Uniform") < 0.5, 0.10, 0.20);
+		sw_prog_intensity = eff_sw_prog_intensity;
+		effect_sw_prog_6mtest = eff_effect_sw_prog_6mtest;
+		effect_sw_prog_int = eff_effect_sw_prog_int;
+		effect_sw_prog_adh = eff_effect_sw_prog_adh;
+		effect_sw_prog_lossdiag = eff_effect_sw_prog_lossdiag;
+		effect_sw_prog_prep_any = eff_effect_sw_prog_prep_any;
+		effect_sw_prog_pers_sti = eff_effect_sw_prog_pers_sti;
+		
 		prep_any_strategy=24;
 		date_prep_oral_intro=&year_interv;	
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_oral_b=prob_prep_oral_b;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
 		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+
 	end;
 
 	*Option 2: Keep VMMC at SQ ;																										  
@@ -2554,11 +2561,13 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 
 
 	***CD4/VL TESTING AND RETURN INTERVENTIONS RE-INTRODUCED ;
-		if option=17 then do;
-			absence_cd4_year_i =0;				
-			absence_vl_year_i =0;		
-			eff_prob_vl_meas_done = prob_vl_meas_done;	
-		end;	
+	if option=17 then do;
+		absence_cd4_year_i =0;				
+		absence_vl_year_i =0;		
+		eff_prob_vl_meas_done = prob_vl_meas_done;	
+	end;	
+
+
 end;
 
 

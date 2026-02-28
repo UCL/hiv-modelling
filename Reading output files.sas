@@ -12,13 +12,13 @@ run;
 
 proc freq;table run;run;
 
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW\18Feb26";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW\22Feb26";
 libname b "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 data b;
 set a.out:;
 run;
 
-data b.GenesisMLW_18Feb26;
+data b.GenesisMLW_22Feb26;
 set b;
 run;
 

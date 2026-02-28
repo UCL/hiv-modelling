@@ -19760,7 +19760,8 @@ proc print;var cald option sw_prog_intensity
 		effect_sw_prog_adh 
 		effect_sw_prog_lossdiag 
 		effect_sw_prog_prep_any
-		effect_sw_prog_pers_sti;
+		effect_sw_prog_pers_sti
+		rate_engage_sw_program rate_disengage_sw_program;
 where age ge 15 and sw=1 ;run;
 
 

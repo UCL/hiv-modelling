@@ -205,13 +205,14 @@ cost_condom_py=1030350/1000000;*FIXED COST;
 cost_FSW_services_pppy=132/1000000;*annual cost per year;
 cost_AdhSupp_pppy=7.89/1000000;* This cost is from MIHPSA Zim and is per client per year;
 
-cost_condoms = 0; if option in (99, 3) then cost_condoms = cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+cost_condoms = 0; cost_condoms = cost_condom_py;		* Fixed population-level py cost so scaling not needed;
 dcost_condoms = cost_condoms * discount;
 
-cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
+cost_fsw_services=0; cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
+if option=0 then cost_fsw_services = s_sw_program_visit * (60/1000000) * sf; *cost of FSW running at very low impact, condom provision only;
 dcost_fsw_services = cost_fsw_services * discount;
 
-cost_adh_support = 0; if option in (99 19) then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
+cost_adh_support = 0; cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
 dcost_adh_support = cost_adh_support * discount;
 
 

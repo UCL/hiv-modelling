@@ -30,7 +30,7 @@ run;
 99 = SQ;
 */
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\Mlw_options_18_02_26.doc" startpage=never; 
+ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\Mlw_options_22_02_26.doc" startpage=never; 
 ods listing close;
 
 ods listing gpath="C:\Users\lovel\Documents";
@@ -601,9 +601,6 @@ series  x=cald y=mean_p_onart_vl1000_sw_1/	lineattrs = (color=lightgreen thickne
 series  x=cald y=mean_p_onart_vl1000_sw_16/	lineattrs = (color=pink thickness = 2 pattern=solid);
 
 run;quit;
-
-
-proc freq;table mean_n_tested_sw_0;run;
 
 ods rtf close;
 ods listing;
