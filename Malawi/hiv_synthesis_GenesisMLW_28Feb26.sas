@@ -22346,6 +22346,7 @@ data r1 ; set a ;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
+/*
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,2);
 
@@ -22420,12 +22421,12 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,25);
 
-*/
+
 
 * SQ;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,99);
-
+*/
 
 
 
