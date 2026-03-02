@@ -316,7 +316,6 @@ diff_ddaly_50y_18 = ddaly_26_76_1 - ddaly_26_76_18;
 *diff_ddaly_50y_20 = ddaly_26_76_1 - ddaly_26_76_20;
 */
 
-diff_death_50y_2 = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_2;
 
 *net dalys using $300 - converts costs into DALYs;
 *20 years;
@@ -408,23 +407,22 @@ diff_netdalys_50y_18 = netdalys_50y_18 - netdalys_50y_1;
 *diff_netdalys_50y_19 = netdalys_50y_19 - netdalys_50y_1;
 *diff_netdalys_50y_20 = netdalys_50y_20 - netdalys_50y_1;
 */
-diff_daly_50y_2  = daly_26_76_1 - daly_26_76_2;
-diff_dead_daly_50y_2  = dead_daly_26_76_1 - dead_daly_26_76_2;
-diff_live_daly_50y_2  = live_daly_26_76_1 - live_daly_26_76_2;
 
-diff_daly_gbd_50y_2  = ddaly_gbd_26_76_1 - ddaly_gbd_26_76_2;
+diff_ddaly_50y_2  = ddaly_26_76_2 - ddaly_26_76_1;
+diff_dead_ddaly_50y_2  = dead_ddaly_26_76_2 - dead_ddaly_26_76_1;
+diff_live_ddaly_50y_2  = live_ddaly_26_76_2 - live_ddaly_26_76_1;
 
-d_n_death_50y_2  = n_death_26_76_1 - n_death_26_76_2;
+diff_ddaly_gbd_50y_2  = ddaly_gbd_26_76_2 - ddaly_gbd_26_76_1;
+
+d_n_death_50y_2  = n_death_26_76_2 - n_death_26_76_1;
+d_cd4_l200 = p_onart_cd4_l200_26_76_2 - p_onart_cd4_l200_26_76_1;
 
 
-proc means data=c mean;
-var run  n_death_26_76_1 n_death_26_76_2 diff_death_50y_2 ddaly_26_76_1 ddaly_26_76_2 diff_ddaly_50y_2;run;
-output out=abc mean=;
-run;
+proc print data=c;var run n_death_26_76_1 n_death_26_76_2 d_n_death_50y_2 p_onart_cd4_l200_26_76_1 p_onart_cd4_l200_26_76_2 d_cd4_l200
+ddaly_26_76_1 ddaly_26_76_2 diff_ddaly_50y_2 diff_live_ddaly_50y_2 diff_dead_ddaly_50y_2;run;
 
-proc print;var run  n_death_26_76_1 n_death_26_76_2 diff_death_50y_2 ddaly_26_76_1 ddaly_26_76_2 diff_ddaly_50y_2;run;
-
-daly_26_76_1 daly_26_76_2 diff_daly_50y_2 ddaly_26_76_1 ddaly_26_76_2 diff_ddaly_50y_2
+proc print data=c;var run n_death_26_76_1 n_death_26_76_2 d_n_death_50y_2 
+ddaly_26_76_1 ddaly_26_76_2 diff_ddaly_50y_2 diff_ddaly_gbd_50y_2;run;
 
 
 ***Difference in discounted costs;
@@ -459,7 +457,11 @@ diff_ddaly_50y_16		diff_ddaly_50y_17		diff_ddaly_50y_18		diff_ddaly_50y_19		diff
 output out=means_dalys_50y mean=;
 run;
 
-
+***DALYs averted;
+proc means data=c  mean;var 
+diff_ddaly_gbd_50y_2		;
+output out=means_dalys_gbd_50y mean=;
+run;
 proc means data=c  mean;var 
 diff_netdalys_20y_2			/*diff_netdalys_20y_3		diff_netdalys_20y_4		diff_netdalys_20y_5	
 diff_netdalys_20y_6 		diff_netdalys_20y_7		diff_netdalys_20y_8		diff_netdalys_20y_9		diff_netdalys_20y_10
@@ -480,8 +482,8 @@ proc transpose data=means_costs_20y out=t_costs_20y(rename=(col1=mean_costs_20y)
 proc transpose data=means_costs_50y out=t_costs_50y(rename=(col1=mean_costs_50y));run;
 proc transpose data=means_dalys_20y out=t_dalys_20y(rename=(col1=mean_dalys_20y));run;
 proc transpose data=means_dalys_50y out=t_dalys_50y(rename=(col1=mean_dalys_50y));run;
-/*proc transpose data=means_icer_20y out=t_icer_20y(rename=(col1=mean_icer_20y));run;
-proc transpose data=means_icer_50y out=t_icer_50y(rename=(col1=mean_icer_50y));run;*/
+proc transpose data=means_dalys_gbd_50y out=t_dalys_gbd_50y(rename=(col1=mean_dalys_gbd50y));run;
+
 proc transpose data=means_diff_netdalys_20y out=t_diff_netdalys_20y(rename=(col1=mean_diff_netdalys_20y));run;
 proc transpose data=means_diff_netdalys_50y out=t_diff_netdalys_50y(rename=(col1=mean_diff_netdalys_50y));run;
 */
@@ -494,6 +496,7 @@ data means_costs_dalys;
 		  t_diff_netdalys_20y
           t_costs_50y
 		  t_dalys_50y
+		  t_dalys_gbd_50y
 		  t_diff_netdalys_50y;
 drop _name_;
 run;
@@ -501,7 +504,9 @@ run;
 proc print data=means_costs_dalys noobs;
 run;
 
-proc print data=c;var run n_death_hivrel_26_76_1 n_death_hivrel_26_76_2 diff_death_50y_2 ddaly_26_76_1  ddaly_26_76_2 diff_ddaly_50y_2;run;
+proc print data=c;var run n_death_hivrel_26_76_1 n_death_hivrel_26_76_2 diff_death_50y_2 
+ddaly_26_76_1  ddaly_26_76_2 diff_ddaly_50y_2	daly_26_76_1  daly_26_76_2 diff_daly_50y_2
+;run;
 
 proc means data=c  mean;var 
 diff_dnewinf_20y_2		diff_dnewinf_20y_3		diff_dnewinf_20y_4		diff_dnewinf_20y_5	
@@ -525,6 +530,7 @@ cost_inf_avtd_20y_11		cost_inf_avtd_20y_12	cost_inf_avtd_20y_13	cost_inf_avtd_20
 cost_inf_avtd_20y_16		cost_inf_avtd_20y_17	cost_inf_avtd_20y_18	/*cost_inf_avtd_20y_19	cost_inf_avtd_20y_20*/;
 output out=means_inf_avt_20y mean=;
 run;
+
 proc means data=c  mean;var 
 cost_inf_avtd_50y_2			cost_inf_avtd_50y_3		cost_inf_avtd_50y_4		cost_inf_avtd_50y_5	
 cost_inf_avtd_50y_6 		cost_inf_avtd_50y_7		cost_inf_avtd_50y_8		cost_inf_avtd_50y_9		cost_inf_avtd_50y_10

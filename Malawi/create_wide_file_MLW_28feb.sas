@@ -78,7 +78,10 @@ ddaly = s_ddaly * sf * 4; * discounted dalys;
 daly = s_daly * sf * 4; * undiscounted dalys;
 
 dead_daly = s_dead_daly * sf * 4; *undiscounted dead dalys;
+dead_ddaly = s_dead_ddaly * sf * 4;*discounted dead dalys;
+
 live_daly= s_live_daly * sf * 4;  *undiscounted live dalys;
+live_ddaly= s_live_ddaly * sf * 4;  *discounted live dalys;
 
 ddaly_gbd = s_ddaly_gbd * sf * 4; *alternative daly calculation;
 
@@ -392,6 +395,8 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
+* Of people on ART, % CD4 < 200;if s_onart_iicu > 0 then  p_onart_cd4_l200 = s_onart_cl200 / s_onart_iicu ;
+
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
@@ -416,9 +421,9 @@ n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc				p_vmmc
 n_death_discount	 d_n_new_inf
 
 dcost 				 cost 				dcost_fsw_services  
-ddaly  				 daly				dead_daly				live_daly		ddaly_gbd	
+ddaly  				 daly				dead_daly				live_daly		dead_ddaly			live_ddaly	ddaly_gbd	
 
-n_tested_sw p_diag_sw p_onart_diag_sw p_onart_vl1000_sw
+n_tested_sw p_diag_sw p_onart_diag_sw p_onart_vl1000_sw		p_onart_cd4_l200
 
 ;
 
@@ -542,9 +547,10 @@ t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=n_death_discount);	%var(v=d_n_new_inf);
 
 %var(v=dcost);				%var(v=cost);
-%var(v=ddaly);				%var(v=daly);				%var(v=dead_daly);			%var(v=live_daly);		%var(v=ddaly_gbd);
+%var(v=ddaly);				%var(v=daly);				%var(v=dead_daly);			%var(v=live_daly);		%var(v=dead_ddaly);			%var(v=live_ddaly);
+%var(v=ddaly_gbd);
 
-%var(v=n_tested_sw); 		%var(v=p_diag_sw); 			%var(v=p_onart_diag_sw); 	%var(v=p_onart_vl1000_sw);
+%var(v=n_tested_sw); 		%var(v=p_diag_sw); 			%var(v=p_onart_diag_sw); 	%var(v=p_onart_vl1000_sw); %var(v=p_onart_cd4_l200);
 
 
 data wide_outputs;merge
@@ -567,9 +573,9 @@ n_agyw				p_w_agyw			prevalence_agyw		incidence_agyw	p_onprep_agyw		n_onprep_agy
 n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death			n_death_discount	d_n_new_inf
 
 dcost 				cost	
-ddaly  				daly				dead_daly			live_daly		ddaly_gbd	
+ddaly  				daly				dead_daly			live_daly		ddaly_gbd			dead_ddaly		live_ddaly
 
-n_tested_sw 		p_diag_sw 			p_onart_diag_sw		p_onart_vl1000_sw
+n_tested_sw 		p_diag_sw 			p_onart_diag_sw		p_onart_vl1000_sw	p_onart_cd4_l200
 
 ;
 

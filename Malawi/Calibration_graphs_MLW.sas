@@ -13,7 +13,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 48;
+%let nfit = 106;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -49,9 +49,9 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 
 	n_msm_1564_			 p_m_msm			prevalence1549_msm	incidence_msm		p_onprep_msm		n_onprep_msm
 	n_agyw				 n_agyw_pg			p_w_agyw			prevalence_agyw		incidence_agyw		p_onprep_agyw		n_onprep_agyw
-	n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	
+	n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	n_death
 	n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_postdel_testing
-	n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc				
+	n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc				p_onart_cd4_l200
 	n_death_discount	 d_n_new_inf
 
 	dcost	ddaly n_tested_sw p_diag_sw p_onart_diag_sw	p_onart_vl1000_sw
