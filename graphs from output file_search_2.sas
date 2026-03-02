@@ -51,9 +51,9 @@ p_on_anti_hypert_1549_ p_on_anti_hypert_1539_ p_on_anti_hypert_4049_ p_on_anti_h
 if option in (0 1);
 
 
-%let single_var =  prop_prep_any                    ;
+%let single_var =  incidence1549_                   ;
 
-* prop_prep_any ;
+* prop_prep_any prop_elig_on_prep p_elig_prep;
 
 
 * if run in (
@@ -220,7 +220,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d nolegend; 
-* Title '';  * Title    height=1.5 justify=center "proportion of people with a prep/pep indication taking prep/pep";
+* Title '';  * Title    height=1.5 justify=center "p_tested_incl_self";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.5       by 0.1     ) valueattrs=(size=10);
 
@@ -234,25 +234,7 @@ run;quit;
 
 */
 
-  
 
-ods html;
-proc sgplot data=d nolegend; 
-* Title '';   Title    height=1.5 justify=center "proportion of people taking prep/pep";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.03       by 0.005     ) valueattrs=(size=10);
-
-series  x=cald y=p50_prop_prep_any_0 / lineattrs = (color=grey thickness = 4);
-band    x=cald lower=p5_prop_prep_any_0 upper=p95_prop_prep_any_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
-
-series  x=cald y=p50_prop_prep_any_1 / lineattrs = (color=darkblue    thickness = 4);
-band    x=cald lower=p5_prop_prep_any_1 upper=p95_prop_prep_any_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
-
-run;quit;
-
-
-
-/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -270,7 +252,7 @@ run;quit;
 
 * ods html close;
 
-*/
+
 
 /*
 
@@ -328,6 +310,43 @@ band    x=cald lower=p5_prop_elig_on_prep_1 upper=p95_prop_elig_on_prep_1 / tran
 run;quit;
 
 */
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title ''; Title    height=1.5 justify=center "proportion of people with a prep/pep indication ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  1         by 0.1     ) valueattrs=(size=10);
+
+series  x=cald y=p50_p_elig_prep_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_p_elig_prep_0 upper=p95_p_elig_prep_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_p_elig_prep_1 / lineattrs = (color=darkblue    thickness = 4);
+band    x=cald lower=p5_p_elig_prep_1 upper=p95_p_elig_prep_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+/*
+
+ods html;
+proc sgplot data=d nolegend; 
+* Title '';   Title    height=1.5 justify=center "proportion of people taking prep/pep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.03       by 0.005     ) valueattrs=(size=10);
+
+series  x=cald y=p50_prop_prep_any_0 / lineattrs = (color=grey thickness = 4);
+band    x=cald lower=p5_prop_prep_any_0 upper=p95_prop_prep_any_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+
+series  x=cald y=p50_prop_prep_any_1 / lineattrs = (color=darkblue    thickness = 4);
+band    x=cald lower=p5_prop_prep_any_1 upper=p95_prop_prep_any_1 / transparency=0.9 fillattrs = (color=darkblue   ) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
 
 
 /*
@@ -1312,7 +1331,10 @@ band    x=cald lower=p5_incidence1549w_1 upper=p95_incidence1549w_1 / transparen
 
 run;quit;
 
+*/
 
+
+/*
 
 ods html;
 proc sgplot data=d nolegend; 

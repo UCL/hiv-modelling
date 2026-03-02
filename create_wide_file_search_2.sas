@@ -2978,7 +2978,7 @@ ods html close;
 
 
 ods html;
-proc means median p5 p95 mean lclm uclm;
+proc means data=f median p5 p95 mean lclm uclm;
 var
 
 n_tested_all_10y_1 n_tested_all_10y_2 
@@ -3024,6 +3024,7 @@ d_prop_1564_onprep_10y_2
 p_prep_adhg80_10y_1  p_prep_adhg80_10y_2  
 
 n_prep_any_10y_1 n_prep_any_10y_2 
+n_prep_any_50y_1 n_prep_any_50y_2 
 
 p_mcirc_10y_1 p_mcirc_10y_2  
 

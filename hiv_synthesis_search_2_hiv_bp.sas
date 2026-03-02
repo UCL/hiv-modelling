@@ -196,7 +196,7 @@ newp_seed = 7;
 							%sample_uniform(prob_stop_breastfeeding_yr1, 0.01 0.02 0.05);*73;	* 3-monthly probability of stopping breastfeeding in first year after birth;
 							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
 * prob_stop_breastfeeding_yr2;		*JAS Apr2023;
-							%sample_uniform(prob_stop_breastfeeding_yr1, 0.07 0.13 0.20);
+							%sample_uniform(prob_stop_breastfeeding_yr2, 0.07 0.13 0.20);
 							*5;	* 3-monthly probability of stopping breastfeeding in second year after birth;
 							* see Excel worksheet Breastfeeding probabilities for calculations of probabilities (based on Neves et al 2021 and Zong et al 2021);
 							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
@@ -850,7 +850,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * pr_inm_cab_prep_primary ;		%sample_uniform(pr_inm_cab_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation ;
 * pr_cam_len_prep_primary ;		%sample_uniform(pr_cam_len_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation ;
 * rel_pr_inm_cab_prep_tail_primary; %sample_uniform(rel_pr_inm_cab_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
-* rel_pr_inm_len_prep_tail_primary; %sample_uniform(rel_pr_inm_len_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
+* rel_pr_cam_len_prep_tail_primary; %sample_uniform(rel_pr_cam_len_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 * incr_res_risk_len_inf_3m;		incr_res_risk_len_inf_3m = incr_res_risk_cab_inf_3m;
@@ -2438,7 +2438,7 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-* note that we can use the set_in_options variable when we want to overwrite parameter values in option;
+* note that we can use the sio variable when we want to overwrite parameter values in option;
 
 
  	*Option 0 is continuation at current rates - status quo;
@@ -2447,15 +2447,22 @@ who may be dead and hence have caldate{t} missing;
 																														  
 	if option = 1 then do;
 		*Specify option 1;
-					
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 20 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.5;
-		eff_rate_test_startprep_any = 0.9; 
-		eff_prob_prep_any_restart_choice = 0.9;
+
+		prep_oral_parameters_sio=1 ;
+	
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 10 ;		
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.4;
+		eff_rate_test_startprep_any = 0.7; 
+		eff_prob_prep_any_restart_choice = 0.7;
 		pref_prep_oral = 0.5;
-		* if age = 15 or caldate_never_dot = &year_interv then do;
-		*	pref_prep_oral = pref_prep_oral + 0.2;
-		* end;
+
+		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
+		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
+		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
+		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
+		pref_prep_oral_sio = pref_prep_oral;
+
+
 
 		/*
 		* hypertension intervention - left out for now;
@@ -2472,15 +2479,6 @@ who may be dead and hence have caldate{t} missing;
 		*/
 
 	end;
-
-	if caldate_never_dot >= &year_interv+20 then do;
- 		eff_rate_choose_stop_prep_oral=1;	
-		eff_prob_prep_oral_b = 0;
-		eff_rate_test_startprep_any = 0; 
-		eff_prob_prep_any_restart_choice = 0;
-		pref_prep_oral = 0;
-	end;
-
 
 end;
 
@@ -2510,32 +2508,32 @@ prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 
 * Oral prep scale-up over 4 years;
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
-else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
+else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) and sio ne 1
 	then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
 * below commented out as want to revert to eff_prob_prep_oral_b
-* else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
+* else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and sio ne 1
 *	then eff_prob_prep_oral_b = prob_prep_oral_b;
 
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
 * Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
 if 		cab_prep_available ne 1 then eff_prob_prep_cab_b = 0;
-else if . < date_prep_cab_intro <= caldate{t} < (date_prep_cab_intro + dur_prep_cab_scaleup) and set_in_options ne 1
+else if . < date_prep_cab_intro <= caldate{t} < (date_prep_cab_intro + dur_prep_cab_scaleup) and sio ne 1
 	then eff_prob_prep_cab_b = 0.05 +  (  (prob_prep_cab_b-0.05) * ( 1 -    (date_prep_cab_intro + dur_prep_cab_scaleup - caldate{t}) / dur_prep_cab_scaleup  )   );
-else if caldate{t} >= (date_prep_cab_intro + dur_prep_cab_scaleup) and set_in_options ne 1
+else if caldate{t} >= (date_prep_cab_intro + dur_prep_cab_scaleup) and sio ne 1
 	then eff_prob_prep_cab_b = prob_prep_cab_b;
 
 if 		. < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then eff_prob_prep_len_b = 0;
-else if . < date_prep_len_intro <= caldate{t} < (date_prep_len_intro + dur_prep_len_scaleup) and set_in_options ne 1
+else if . < date_prep_len_intro <= caldate{t} < (date_prep_len_intro + dur_prep_len_scaleup) and sio ne 1
 	then eff_prob_prep_len_b = 0.05 +  (  (prob_prep_len_b-0.05) * ( 1 -    (date_prep_len_intro + dur_prep_len_scaleup - caldate{t}) / dur_prep_len_scaleup  )   );
-else if caldate{t} >= (date_prep_len_intro + dur_prep_len_scaleup) and set_in_options ne 1
+else if caldate{t} >= (date_prep_len_intro + dur_prep_len_scaleup) and sio ne 1
 	then eff_prob_prep_len_b = prob_prep_len_b;
 
 * DPV VR prep scale-up; * dpv-vr JAS Sep2021;
 if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then eff_prob_prep_vr_b = 0;
-else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) and set_in_options ne 1
+else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) and sio ne 1
 	then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
-else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and set_in_options ne 1
+else if caldate{t} >= (date_prep_vr_intro + dur_prep_vr_scaleup) and sio ne 1
 	then eff_prob_prep_vr_b = prob_prep_vr_b;
 
 
@@ -2564,6 +2562,14 @@ if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_pre
 if . < caldate{t} < date_prep_cab_intro or date_prep_cab_intro=. or caldate{t} >= date_prep_len_intro > . then pref_prep_cab = 0; * once len available we want len to be preferred;
 if . < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then pref_prep_len = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
+
+
+
+if prep_oral_parameters_sio=1 then do ;
+		pref_prep_oral = pref_prep_oral_sio;
+end;
+
+
 
 * highest_prep_pref;
 * does not show people who are not willing to take any PrEP type;
@@ -2698,7 +2704,7 @@ vm_format=2  whb     lab
 vm_format=3  plasma  poc 
 vm_format=4  whb     poc 
 ; 
-		if set_in_options ne 1 then art_monitoring_strategy = 150; 
+		if sio ne 1 then art_monitoring_strategy = 150; 
 		vm_format=2; ***measuring vl using whole blood dbs;   
 		vl_threshold=1000;
 		time_of_first_vm = 0.5;
@@ -2744,7 +2750,7 @@ if caldate{t} = &year_interv then do;
 	* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
 						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_any_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if sio ne 1 then do;
 								eff_rate_test_startprep_any = 0.9; 
 								eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
 							end;
@@ -2760,7 +2766,7 @@ if caldate{t} = &year_interv then do;
 						decr_r_choose_stopprep_oral_yr_i = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stopprep_oral_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if sio ne 1 then do;
 								eff_rate_choose_stop_prep_oral = 0.03 ; 
 								eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
 							end;
@@ -2770,14 +2776,14 @@ if caldate{t} = &year_interv then do;
 						inc_p_prep_any_restart_choi_yr_i = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_any_restart_choi_yr_i = 1; 
-							if set_in_options ne 1 then do;
+							if sio ne 1 then do;
 								eff_prob_prep_any_restart_choice = 0.8 ; 
 								eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
 							end;
 						end;		
 
 	* prep_any_strategy;
-						if set_in_options ne 1 then prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
+						if sio ne 1 then prep_any_strategy = 5;		* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
 
 	end;
 
@@ -2785,7 +2791,7 @@ if caldate{t} = &year_interv then do;
 	*(impact of changes are coded below the options code);
 
 	*increase in testing;
-	if set_in_options ne 1 then incr_test_year_i = 0; 
+	if sio ne 1 then incr_test_year_i = 0; 
 	* 0= decrease in testing after 2022 (default), 
 	1= 2-fold increase in testing for everyone, 
 	2= 2-fold increase in testing for men only,  
@@ -2798,16 +2804,16 @@ if caldate{t} = &year_interv then do;
 	decr_prob_loss_at_diag_year_i = 0;
 
 	*absence CD4;
-	if set_in_options ne 1 then absence_cd4_year_i = 0;
+	if sio ne 1 then absence_cd4_year_i = 0;
 
 	*absence VL;
-	if set_in_options ne 1 then absence_vl_year_i = 0;
+	if sio ne 1 then absence_vl_year_i = 0;
 
 	* crag cd4 < 200;
-	if set_in_options ne 1 then crag_cd4_l200 = 0;
+	if sio ne 1 then crag_cd4_l200 = 0;
 
 	* tblam cd4 < 200;
-	if set_in_options ne 1 then tblam_cd4_l200 = 0;
+	if sio ne 1 then tblam_cd4_l200 = 0;
 
 	*decrease in the rate of being lost;
 	decr_rate_lost_year_i = 0;
@@ -2852,10 +2858,10 @@ if caldate{t} = &year_interv then do;
 	ten_is_taf_year_i = 0; *coded within core (not below options code);
 
 	*increase in rates of circumcision;
-	if set_in_options ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
+	if sio ne 1 then circ_inc_rate_year_i = 0; *variations coded in circumcision section;
 
 	*increase in condom use;
-	if set_in_options ne 1 then condom_change_year_i = 0; *coded within core (not below options code);
+	if sio ne 1 then condom_change_year_i = 0; *coded within core (not below options code);
 
 	*population wide tld;
 	pop_wide_tld = 0;
@@ -2985,7 +2991,7 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
-		if set_in_options ne 1 then do;
+		if sio ne 1 then do;
 			if prep_any_willing=1 then eff_rate_test_startprep_any=1;
 			eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
 			eff_rate_choose_stop_prep_cab=0.05;
@@ -2999,7 +3005,7 @@ if sw_program_visit=0 then do; e=rand('uniform');
 end; 
 
 else if sw_program_visit=1 then do; e=rand('uniform');
-	if (e < rate_disengage_sw_program) then do; * dependent_on_time_step_length ;
+	if (e < eff_rate_disengage_sw_program) then do; * dependent_on_time_step_length ;
 		sw_program_visit=0 ; 
 		date_last_sw_prog_vis=caldate{t};
 		sw_test_6mthly=0;
@@ -3007,7 +3013,7 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		eff_sw_higher_int = sw_higher_int;
 		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-		if set_in_options ne 1 then do;
+		if sio ne 1 then do;
 			eff_rate_test_startprep_any=rate_test_startprep_any;
 			eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 			eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
@@ -3138,7 +3144,7 @@ end;
 
 * pop_wide_tld_year_i;	
 if pop_wide_tld_year_i = 1 then do;	* lapr and dpv-vr - this is using tld as prep so no change;
-	pop_wide_tld = 1; if set_in_options ne 1 then prep_any_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
+	pop_wide_tld = 1; if sio ne 1 then prep_any_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
 	higher_future_prep_oral_cov = 0;  * this is instead of current type of prep program;
 end;
 
@@ -3168,7 +3174,7 @@ end;
 if absence_cd4_year_i ne 1 and absence_vl_year_i =  1 then do;
 	art_monitoring_strategy=1; *Clinical monitoring alone;
 end;
-if absence_vl_year_i ne 1 and set_in_options ne 1 then do;
+if absence_vl_year_i ne 1 and sio ne 1 then do;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121 125 130) then art_monitoring_strategy=150;  
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
@@ -4385,6 +4391,13 @@ if t ge 2 then do;
 			*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
 
+				eff_rate_test_startprep_any=rate_test_startprep_any;
+				eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
+				eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
+				eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
+				eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
+				eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+
 		end;
 	end;
 end;
@@ -5127,7 +5140,7 @@ end;
  		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
 		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
 		if secondary_self_test=1 and epart=1 then u_self_test=u_self_test/secondary_self_test_targeting;  
-		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < rate_self_test then do;
+		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < eff_rate_self_test then do;
 			self_tested=1; 
 			dt_last_self_test=caldate{t}; 
 		end;
@@ -5393,6 +5406,18 @@ end;
 
 
 * PREP INITIATION AND CONTINUATION;
+
+
+if prep_oral_parameters_sio=1 then do ;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral_sio;		
+		eff_prob_prep_oral_b = prob_prep_oral_b_sio;
+		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
+		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
+		pref_prep_oral = pref_prep_oral_sio;
+end;
+
+
+
 /* 
 	PrEP start and restart dates are given by:
 		prep_xxx_current_start_date 		start date of current PrEP course, whether that is first ever PrEP, switching from a different PrEP option, or restarting following a break due to ineligibility or choice
@@ -7782,7 +7807,7 @@ end;
 * INTRODUCE HIV INTO POPULATION ;
 
 d=rand('uniform');
-if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do; 
+if caldate{t}=startyr and ((newp >= newp_seed and d < 0.8) or (msm=1 and d < 0.05))   and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
@@ -8045,7 +8070,7 @@ end;
 
 if prep_len=1 or caldate{t} = prep_len_last_stop_date then do;
 
-	aa=rand('uniform'); if e_ca66m ne 1 and aa  < pr_cam_cab_prep_primary then do; c_ca66m = 1; e_ca66m = 1; end;
+	aa=rand('uniform'); if e_ca66m ne 1 and aa  < pr_cam_len_prep_primary then do; c_ca66m = 1; e_ca66m = 1; end;
 
  	if (ca66m ne 1 and c_ca66m = 1) then do; em_cam_res_o_len_off_3m=1; em_cam_res_o_len=1; em_cam_res_o_len_off_3m_pr=1;  end;
 * em_cam_res_o_len_off_3m - emergence of capsid    mutation while on len prep or stopped past 3m;
@@ -13654,7 +13679,7 @@ end;
  * len ;
 	cost_len=0; if o_len=1 then do;
 		cost_len=cost_len_a; 
-		if len_tm1 ne 1 then cost_len=cost_len*1.5; * loading dose;
+		if o_len_tm1 ne 1 then cost_len=cost_len*1.5; * loading dose;
 	end;
 
  * ole ;
