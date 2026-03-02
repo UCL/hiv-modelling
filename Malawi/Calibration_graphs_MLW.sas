@@ -4,7 +4,7 @@ libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa u
 ods listing;
 
 data y;
-set a.long_gen_mlw_22_02_2026;
+set a.long_gen_mlw_28_02_2026;
 run;
 proc freq;table cald;run;
 
@@ -13,7 +13,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 1368;
+%let nfit = 48;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -136,7 +136,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /*-----------------------------------------*/
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
-%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 99);
+%summary_all_options(options=0 1 );
 
 
 
@@ -149,7 +149,7 @@ set Master_summary;
 %include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Malawi\Observed data_Malawi.sas"; by cald;
 run;
 
-DATA A.MLW_options_graphs_22Feb26;
+DATA A.MLW_options_graphs_28Feb26;
 SET d;
 RUN;
 

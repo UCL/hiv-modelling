@@ -2,8 +2,10 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data y;
-set a.long_gen_07Jan26;
+*set a.long_gen_07Jan26;
 *set a.long_gen_06Feb26_package;
+set a.long_gen_28Feb26_package;
+
 run;
 proc freq;table cald;run;
 
@@ -12,7 +14,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2392;
+%let nfit = 216;
 *%let nfit = 672;
 
 %let year_end = 2045.00 ;
@@ -139,8 +141,10 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /*-----------------------------------------*/
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
-%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
+*%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
 *%summary_all_options(options=0 1 2 3 4 5 99); *package;
+%summary_all_options(options=0 1 2 3 4 5 6 7 99); *package;
+
 
 
 
@@ -151,12 +155,12 @@ options notes source source2 mprint mlogic symbolgen;
 data d;
 set Master_summary;
 
-%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026.sas"; by cald;
+%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026.sas"; by cald;
 run;
 
 data e;
 set d;
-%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_FSW_Zimbabwe.sas"; by cald;
+%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_FSW_Zimbabwe.sas"; by cald;
 run;
 
 /*
@@ -165,7 +169,7 @@ SET E;
 RUN;
 */
 
-DATA A.Zim_options_graphs_06Feb26;
+DATA A.Zim_options_graphs_28Feb26_pack;
 SET E;
 RUN;
 

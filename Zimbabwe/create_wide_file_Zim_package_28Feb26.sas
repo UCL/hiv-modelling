@@ -1,10 +1,10 @@
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+*libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
-*libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
-set a.genesis_zim_06feb26_package; 
+set a.GenesisZim_28Feb26_package; 
 if run=. then delete; 
 
 proc sort;
@@ -209,11 +209,11 @@ cost_AdhSupp_pppy=7.89/1000000;* This cost is from MIHPSA Zim and is per client 
 dcost_condoms = cost_condoms * discount;
 
 cost_fsw_services=0; 
-if option ne 0 then cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
-if option = 0 then cost_fsw_services = s_sw_program_visit * (60/1000000) * sf;
+if option in (1, 2, 3, 4, 5, 6) then cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
+if option=0 then cost_fsw_services = s_sw_program_visit * (60/1000000) * sf;
 dcost_fsw_services = cost_fsw_services * discount;
 
-cost_adh_support = 0; if option ne 0 then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
+cost_adh_support = 0; if option in (1, 2, 3, 4, 5) then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
 dcost_adh_support = cost_adh_support * discount;
 
 
@@ -370,6 +370,13 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_death_discount;				n_death_discount = n_death*discount;
 * d_n_new_inf;					d_n_new_inf = n_new_inf * discount;
 
+*to see if sw prog intervention is working;
+* n_tested_sw;					n_tested_sw = s_tested_sw * sf * 4;
+
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
+* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
+* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
+
 
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
@@ -394,13 +401,14 @@ n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc		p_vmmc
 n_death_discount	 d_n_new_inf
 
 dcost	ddaly  cost
+n_tested_sw p_diag_sw p_onart_diag_sw p_onart_vl1000_sw
 
 
 ;
 
 proc sort data=y;by run option;run;
 
-data a.long_gen_06Feb26_package_a;
+data a.long_gen_28Feb26_package;
 set y;
 run;
 
@@ -408,8 +416,9 @@ run;
 libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data y;
-set a.long_gen_06Feb26_package_a;
+set a.long_gen_28Feb26_package;
 run; 
+
 
 options nomprint;
   option nospool;
@@ -545,6 +554,6 @@ dcost ddaly cost
 proc sort; by run;run;
 
 
-data a.wide_Zim_06_02_2026_package_a;
+data a.wide_Zim_28_02_2026_package;
 set wide_outputs  ;  
 by run;run; 

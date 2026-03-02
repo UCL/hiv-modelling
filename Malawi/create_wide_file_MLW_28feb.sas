@@ -1,10 +1,12 @@
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
+*turns log back on;
+*options notes source source2 mprint mlogic symbolgen;
 
-*libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+***97 runs;
 
 data a;
-set a.genesis_zim_06feb26_package; 
+set a.GenesisMLW_28Feb26;
 if run=. then delete; 
 
 proc sort;
@@ -13,14 +15,16 @@ by run cald option;run;
 proc freq;table cald option;run;
 
 
-***zim specific;
 data sf;
 set a;
 
-*Zimbabwe;
-if cald=2023;
-s_alive = s_alive_m + s_alive_w ;
-sf = 9198000 / s_alive; 
+*Malawi;
+*Source: World Population Prospect, file "World Population Prospect 2022.pdf";
+*https://population.un.org/wpp/downloads?folder=Standard%20Projections&group=Population
+(Excel sheet, population by select age groups);
+
+if cald=2024;
+sf = 12300000 / s_alive1564; 
 
 keep run sf;
 proc sort; by run;run;
@@ -58,17 +62,25 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
+s_daly = s_dead_daly + s_live_daly;
+
+
 
 s_ddaly_gbd = s_dyll_GBD + s_live_ddaly;
+
 
 
 dead_ddaly_ntd = s_dead_ddaly_ntd * sf * 4 * (0.0022 / 0.0058); 
 *  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
 *  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
 
-ddaly = s_ddaly * sf * 4;
+ddaly = s_ddaly * sf * 4; * discounted dalys;
+daly = s_daly * sf * 4; * undiscounted dalys;
 
-ddaly_gbd = s_ddaly_gbd * sf * 4;
+dead_daly = s_dead_daly * sf * 4; *undiscounted dead dalys;
+live_daly= s_live_daly * sf * 4;  *undiscounted live dalys;
+
+ddaly_gbd = s_ddaly_gbd * sf * 4; *alternative daly calculation;
 
 
 * sensitivity analysis;
@@ -205,15 +217,17 @@ cost_condom_py=1030350/1000000;*FIXED COST;
 cost_FSW_services_pppy=132/1000000;*annual cost per year;
 cost_AdhSupp_pppy=7.89/1000000;* This cost is from MIHPSA Zim and is per client per year;
 
-/*cost_condoms = 0; if option in (99, 3) then*/ cost_condoms = cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+* Not assessing condom use as an option so include the same cost for all scenarios;
+/*cost_condoms = 0; if option in (99, 3) then cost_condoms = cost_condom_py;*/		* Fixed population-level py cost so scaling not needed;
+cost_condoms = cost_condom_py;
 dcost_condoms = cost_condoms * discount;
 
 cost_fsw_services=0; 
-if option ne 0 then cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
-if option = 0 then cost_fsw_services = s_sw_program_visit * (60/1000000) * sf;
+if option=1 then cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
+if option=0 then cost_fsw_services = s_sw_program_visit * (60/1000000) * sf; *cost of FSW running at very low impact, condom provision only;
 dcost_fsw_services = cost_fsw_services * discount;
 
-cost_adh_support = 0; if option ne 0 then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
+cost_adh_support = 0; if option in (99 16) then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
 dcost_adh_support = cost_adh_support * discount;
 
 
@@ -221,7 +235,7 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + 
 					dcot_cost + dtb_cost + dres_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost + 
-					dcost_circ + dcost_condoms + dcost_child_hiv + dcost_non_aids_pre_death + dcost_drug_level_test
+					dcost_circ + dcost_condom_dn + dcost_child_hiv + dcost_non_aids_pre_death + dcost_drug_level_test
 					+ dcost_prep_visit + dcost_prep + dcost_fsw_services  + dcost_self_test ;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
@@ -292,6 +306,7 @@ s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vm
 * n_onart_m;					n_onart_m = s_onart_m * sf;
 * n_onart  ;					n_onart   = s_onart * sf;
 
+* n_diagnosed;					n_diagnosed = s_diag_this_period * sf * 4;
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
 * p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m1564_ / s_hiv1564m ;  
 * p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
@@ -370,12 +385,19 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_death_discount;				n_death_discount = n_death*discount;
 * d_n_new_inf;					d_n_new_inf = n_new_inf * discount;
 
+*to see if sw prog intervention is working;
+* n_tested_sw;					n_tested_sw = s_tested_sw * sf * 4;
+
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
+* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
+* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_onart				 p_onart_m			p_onart_w			n_onart				n_onart_m			n_onart_w
 
+n_diagnosed
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	n_onprep_w			n_onprep_m			n_onprep
 prop_elig_on_prep	 n_prep_ever		prop_1564_onprep	n_onprep_oral		n_onprep_cab		n_onprep_len
@@ -388,27 +410,30 @@ n_selftested		 n_tested
 n_msm_1564_			 p_m_msm			prevalence1549_msm	incidence_msm		p_onprep_msm		n_onprep_msm
 n_agyw				 n_agyw_pg			p_w_agyw			prevalence_agyw		incidence_agyw		p_onprep_agyw		n_onprep_agyw
 
-n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	
+n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	n_death
 n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_postdel_testing
-n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc		p_vmmc
+n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc				p_vmmc
 n_death_discount	 d_n_new_inf
 
-dcost	ddaly  cost
+dcost 				 cost 				dcost_fsw_services  
+ddaly  				 daly				dead_daly				live_daly		ddaly_gbd	
 
+n_tested_sw p_diag_sw p_onart_diag_sw p_onart_vl1000_sw
 
 ;
 
+
 proc sort data=y;by run option;run;
 
-data a.long_gen_06Feb26_package_a;
+data a.long_gen_mlw_28_02_2026;
 set y;
 run;
 
 
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 
 data y;
-set a.long_gen_06Feb26_package_a;
+set a.long_gen_mlw_28_02_2026;
 run; 
 
 options nomprint;
@@ -513,12 +538,14 @@ t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=n_msm_1564_);		%var(v=p_m_msm);			%var(v=prevalence1549_msm);	%var(v=incidence_msm);	%var(v=p_onprep_msm);		%var(v=n_onprep_msm);
 %var(v=n_agyw);				%var(v=p_w_agyw);			%var(v=prevalence_agyw);	%var(v=incidence_agyw);	%var(v=p_onprep_agyw);		%var(v=n_onprep_agyw);
 
-%var(v=n_death_hivrel);		%var(v=n_death_hivrel_m);	%var(v=n_death_hivrel_w);
+%var(v=n_death_hivrel);		%var(v=n_death_hivrel_m);	%var(v=n_death_hivrel_w);	%var(v=n_death);
 %var(v=n_death_discount);	%var(v=d_n_new_inf);
 
-%var(v=dcost);	%var(v=ddaly);	%var(v=cost);
+%var(v=dcost);				%var(v=cost);
+%var(v=ddaly);				%var(v=daly);				%var(v=dead_daly);			%var(v=live_daly);		%var(v=ddaly_gbd);
 
-	 
+%var(v=n_tested_sw); 		%var(v=p_diag_sw); 			%var(v=p_onart_diag_sw); 	%var(v=p_onart_vl1000_sw);
+
 
 data wide_outputs;merge
 n_alive_m		 	n_alive_w			n_alive				n_hivge15m		n_hivge15w		    n_hivge15_
@@ -537,14 +564,18 @@ p_onprep_sw			n_onprep_sw
 n_msm_1564_			p_m_msm				prevalence1549_msm	incidence_msm	p_onprep_msm		n_onprep_msm
 n_agyw				p_w_agyw			prevalence_agyw		incidence_agyw	p_onprep_agyw		n_onprep_agyw
 
-n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death_discount	 d_n_new_inf
+n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death			n_death_discount	d_n_new_inf
 
-dcost ddaly cost
+dcost 				cost	
+ddaly  				daly				dead_daly			live_daly		ddaly_gbd	
+
+n_tested_sw 		p_diag_sw 			p_onart_diag_sw		p_onart_vl1000_sw
+
 ;
 
 proc sort; by run;run;
 
 
-data a.wide_Zim_06_02_2026_package_a;
+data a.wide_gen_mlw_28_02_2026;
 set wide_outputs  ;  
 by run;run; 
