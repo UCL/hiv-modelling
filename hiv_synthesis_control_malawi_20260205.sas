@@ -2440,6 +2440,7 @@ option = &s;
 99	SQ 
 
 Not added: agyw-prep-oral, fsw-prep-oral (mix options already included with lower ICER)
+*** Note. agyw-prep-mix and msm-prep-mix would be the other way round based on discounted ICERs. We have used undiscounted.
 ;
 
 if caldate_never_dot >= &year_interv and option ne 99 then do;
