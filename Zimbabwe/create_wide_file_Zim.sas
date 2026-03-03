@@ -209,8 +209,8 @@ cost_condoms = 0;if option in (99, 3) then cost_condoms = cost_condom_py;		* Fix
 dcost_condoms = cost_condoms * discount;
 
 cost_fsw_services=0;  
+cost_fsw_services = s_sw_program_visit * (60/1000000) * sf; *cost of FSW running at very low impact, condom provision only;
 if option in (99, 1, 2) then cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
-if option=0 then cost_fsw_services = s_sw_program_visit * (60/1000000) * sf; *cost of FSW running at very low impact, condom provision only;
 
 dcost_fsw_services = cost_fsw_services * discount;
 
