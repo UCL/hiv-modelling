@@ -1,7 +1,7 @@
 
 ***THIS PROGRAM IS USED TO COMPARE GRAPHS OF THE DIFFERENT OPTIONS USING DATASET CREATED FROM CALIBRATION GRAPHS PROGRAM;
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
 set a.Zim_options_graphs_07Jan26;
@@ -43,7 +43,7 @@ run;
 */
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Zimbabwe\Zim_options_07_01_26a.doc" startpage=never; 
+ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Zimbabwe\Zim_options_07_01_26b.doc" startpage=never; 
 ods listing close;
 
 
@@ -135,7 +135,7 @@ run;quit;
 proc sgplot data=a; 
 Title    height=1.5 justify=center "ART coverage (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= '%'	labelattrs=(size=12)  values = (0.8 to 0.95 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0.8 to 0.95 by 0.05) valueattrs=(size=10);
 
 label mean_p_onart_99 = "SQ";
 label mean_p_onart_0 = "Base";
@@ -174,7 +174,7 @@ label mean_p_diag_5 = "VMMC increase";
 label mean_p_diag_6 = "Oral PrEP continuation";
 label mean_p_diag_7 = "Oral PrEP and intro of Len";
 label mean_p_diag_8 = "Oral PrEP and scale up of Len";
-label mean_p_diag_10 = "Return interventions";
+label mean_p_diag_19 = "Return interventions";
 
 series  x=cald y=mean_p_diag_99/lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_0/	lineattrs = (color=red thickness = 3 pattern=solid); 

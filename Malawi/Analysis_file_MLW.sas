@@ -126,6 +126,12 @@ d_n_death_hivrel_50y_18 = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_18;
 *d_n_death_hivrel_50y_20 = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_20;
 */
 
+***Overwritten using 28Feb26 correct SW outputs (the difference is calculated using the minimal in the 28Feb file);
+d_n_new_inf_20y_2 = 1808.51;
+d_n_new_inf_50y_2 = 3750.25;
+d_n_death_hivrel_20y_2 = 11.3351; 
+d_n_death_hivrel_50y_2 = 247.795;
+ 
 *Difference in number of new infections over 20 and 50 years;
 *Using output statement in order to merge the 3 year groups later);
 proc means data=b  mean;var 
@@ -407,6 +413,13 @@ diff_netdalys_50y_18 = netdalys_50y_18 - netdalys_50y_1;
 *diff_netdalys_50y_19 = netdalys_50y_19 - netdalys_50y_1;
 *diff_netdalys_50y_20 = netdalys_50y_20 - netdalys_50y_1;
 
+***Overwritten using 28Feb26 correct SW outputs (the difference is calculated using the minimal in the 28Feb file);
+diff_dcost_20y_2 = 5.1929;
+diff_ddaly_20y_2 = 34.9035;
+diff_netdalys_20y_2 = 17274.84;
+diff_dcost_50y_2 = 3.5656;
+diff_ddaly_50y_2 = 1465.15;
+diff_netdalys_50y_2 = 10420.23;
 
 proc means mean lclm uclm;var d_n_death_50y_2 diff_ddaly_50y_2;run;
 
@@ -483,9 +496,6 @@ run;
 proc print data=means_costs_dalys noobs;
 run;
 
-proc print data=c;var run n_death_hivrel_26_76_1 n_death_hivrel_26_76_2 diff_death_50y_2 
-ddaly_26_76_1  ddaly_26_76_2 diff_ddaly_50y_2	daly_26_76_1  daly_26_76_2 diff_daly_50y_2
-;run;
 
 proc means data=c  mean;var 
 diff_dnewinf_20y_2		diff_dnewinf_20y_3		diff_dnewinf_20y_4		diff_dnewinf_20y_5	
@@ -542,6 +552,8 @@ ods html;
 data budget;
 set a;
 
+***Use 28Feb26 file for SW program costs;
+
 ***Need to do this for 20 years. The macro below should work;
 /*
 diff_cost_26y_2  = cost_26_2  - cost_26_1;
@@ -591,7 +603,7 @@ cost_36_1 = cost_36		cost_37_1 = cost_37		cost_38_1 = cost_38		cost_39_1 = cost_
 cost_41_1 = cost_41		cost_42_1 = cost_42		cost_43_1 = cost_43		cost_44_1 = cost_44		cost_45_1 = cost_45
 cost_46_1 = cost_46;
 run;
-/* LOW SW PROG INCORRECTLY CODED;
+
 proc means data=budget mean;var 
 cost_26_2 cost_26_2 cost_27_2 cost_28_2 cost_29_2 cost_30_2 cost_31_2 cost_32_2 cost_33_2 cost_34_2 cost_35_2 cost_36_2 cost_37_2 
 cost_38_2 cost_39_2 cost_40_2 cost_41_2 cost_42_2 cost_43_2 cost_44_2 cost_45_2 cost_46_2;
@@ -604,7 +616,7 @@ cost_36_2 = cost_36		cost_37_2 = cost_37		cost_38_2 = cost_38		cost_39_2 = cost_
 cost_41_2 = cost_41		cost_42_2 = cost_42		cost_43_2 = cost_43		cost_44_2 = cost_44		cost_45_2 = cost_45
 cost_46_2 = cost_46;
 run;
-*/
+
 proc means data=budget mean;var 
 cost_26_3 cost_27_3 cost_28_3 cost_29_3 cost_30_3 cost_31_3 cost_32_3 cost_33_3 cost_34_3 cost_35_3 cost_36_3 cost_37_3
 cost_38_3 cost_39_3 cost_40_3 cost_41_3 cost_42_3 cost_43_3 cost_44_3 cost_45_3 cost_46_3;
@@ -812,36 +824,10 @@ cost_36_18 = cost_36		cost_37_18 = cost_37		cost_38_18 = cost_38		cost_39_18 = c
 cost_41_18 = cost_41		cost_42_18 = cost_42		cost_43_18 = cost_43		cost_44_18 = cost_44		cost_45_18 = cost_45
 cost_46_18 = cost_46;
 run;
-/*
-proc means data=budget mean;var 
-cost_26_19 cost_27_19 cost_28_19 cost_29_19 cost_30_19 cost_31_19 cost_32_19 cost_33_19 cost_34_19 cost_35_19 cost_36_19 
-cost_37_19 cost_38_19 cost_39_19 cost_40_19 cost_41_19 cost_42_19 cost_43_19 cost_44_19 cost_45_19 cost_46_19;
-output out=sc19 mean=;run;
-data sc19; set sc19; group=19;
-rename 
-cost_26_19 = cost_26		cost_27_19 = cost_27		cost_28_19 = cost_28		cost_29_19 = cost_29		cost_30_19 = cost_30
-cost_31_19 = cost_31		cost_32_19 = cost_32		cost_33_19 = cost_33		cost_34_19 = cost_34		cost_35_19 = cost_35
-cost_36_19 = cost_36		cost_37_19 = cost_37		cost_38_19 = cost_38		cost_39_19 = cost_39		cost_40_19 = cost_40
-cost_41_19 = cost_41		cost_42_19 = cost_42		cost_43_19 = cost_43		cost_44_19 = cost_44		cost_45_19 = cost_45
-cost_46_19 = cost_46;
-run;
-*/
-proc means data=budget mean;var 
-cost_26_20 cost_27_20 cost_28_20 cost_29_20 cost_30_20 cost_31_20 cost_32_20 cost_33_20 cost_34_20 cost_35_20 cost_36_20 
-cost_37_20 cost_38_20 cost_39_20 cost_40_20 cost_41_20 cost_42_20 cost_43_20 cost_44_20 cost_45_20 cost_46_20;
-output out=sc20 mean=;run;
-data sc20; set sc20; group=20;
-rename 
-cost_26_20 = cost_26		cost_27_20 = cost_27		cost_28_20 = cost_28		cost_29_20 = cost_29		cost_30_20 = cost_30
-cost_31_20 = cost_31		cost_32_20 = cost_32		cost_33_20 = cost_33		cost_34_20 = cost_34		cost_35_20 = cost_35
-cost_36_20 = cost_36		cost_37_20 = cost_37		cost_38_20 = cost_38		cost_39_20 = cost_39		cost_40_20 = cost_40
-cost_41_20 = cost_41		cost_42_20 = cost_42		cost_43_20 = cost_43		cost_44_20 = cost_44		cost_45_20 = cost_45
-cost_46_20 = cost_46;
-run;
-;
+
 
 data final_means;
-set sc1 /*sc2*/ sc3 sc4 sc5 sc6 sc7 sc8 sc9 sc10 sc11 sc12 sc13 sc14 sc15 sc16 sc17 sc18 /*sc19*/ sc20;
+set sc1 sc2 sc3 sc4 sc5 sc6 sc7 sc8 sc9 sc10 sc11 sc12 sc13 sc14 sc15 sc16 sc17 sc18;
 run;
 proc print;var group cost_26-cost_46;
 run;
@@ -889,10 +875,5 @@ proc transpose data=diff_costs_long_1 out=final_diff_costs(drop=_name_)
   var col1;
 run;
 
-**REMOVE 2 AND 19;
-data final;
-set final_diff_costs;
-if group in (2,19) then delete;
-run;
 
 proc print;var group y_26-y_46;run;

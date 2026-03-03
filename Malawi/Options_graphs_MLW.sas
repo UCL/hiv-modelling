@@ -9,7 +9,7 @@ run;
 
 /***Scenarios;
 0 = Min;
-1 = FSW lower than SQ;
+1 = FSW program restored at SQ;
 2 = VMMC;
 3 = VMMC increase;
 4 = Oral PrEP continuation in KP;
@@ -519,19 +519,19 @@ label mean_n_death_hivrel_6 = "Oral PrEP and scale up of Len";
 label mean_n_death_hivrel_16 = "Return interventions";
 label mean_n_death_hivrel_17 = "VL and CD4 testing";
 
-*series  x=cald y=mean_n_death_hivrel_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_99/lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_n_death_hivrel_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_n_death_hivrel_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-*series  x=cald y=mean_n_death_hivrel_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-*series  x=cald y=mean_n_death_hivrel_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
-*series  x=cald y=mean_n_death_hivrel_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
-*series  x=cald y=mean_n_death_hivrel_5/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
-*series  x=cald y=mean_n_death_hivrel_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
-*series  x=cald y=mean_n_death_hivrel_16/lineattrs = (color=pink thickness = 2 pattern=solid);
-*series  x=cald y=mean_n_death_hivrel_17/lineattrs = (color=green thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_5/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_16/lineattrs = (color=pink thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_17/lineattrs = (color=green thickness = 2 pattern=solid);
 run;quit;
 
-
+/*
 
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Number of all cause deaths (15+)";
@@ -682,7 +682,7 @@ series  x=cald y=mean_p_onart_vl1000_sw_1/	lineattrs = (color=lightgreen thickne
 *series  x=cald y=mean_p_onart_vl1000_sw_16/	lineattrs = (color=pink thickness = 2 pattern=solid);
 
 run;quit;
-
+*/
 ods rtf close;
 ods listing;
 run;

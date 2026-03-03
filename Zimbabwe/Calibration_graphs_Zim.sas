@@ -1,10 +1,10 @@
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data y;
-*set a.long_gen_07Jan26;
+set a.long_gen_07Jan26;
 *set a.long_gen_06Feb26_package;
-set a.long_gen_28Feb26_package;
+*set a.long_gen_28Feb26_package;
 
 run;
 proc freq;table cald;run;
@@ -14,7 +14,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 216;
+%let nfit = 2392;
 *%let nfit = 672;
 
 %let year_end = 2045.00 ;
@@ -141,9 +141,9 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /*-----------------------------------------*/
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
-*%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
+%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
 *%summary_all_options(options=0 1 2 3 4 5 99); *package;
-%summary_all_options(options=0 1 2 3 4 5 6 7 99); *package;
+*%summary_all_options(options=0 1 2 3 4 5 6 7 99); *package;
 
 
 
@@ -178,7 +178,7 @@ set a.Zim_options_graphs_07Jan26;
 RUN;
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = '"C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_calibration_29_01_26.doc' startpage=never; 
+ods rtf file = '"C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_calibration_07_01_26b.doc' startpage=never; 
 ods listing close;
 
 
@@ -390,7 +390,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "ART coverage (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= '%'	labelattrs=(size=12)  values = (0 to 1 by 0.10) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1 by 0.10) valueattrs=(size=10);
 
 label mean_p_onart_0 = "Model";
 label e_p_onart_15ovhivpos_nac = "NAC";
@@ -406,7 +406,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "ART coverage (Males 15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= '%'	labelattrs=(size=12)  values = (0 to 1 by 0.10) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1 by 0.10) valueattrs=(size=10);
 
 label mean_p_onart_m_0 = "Model";
 label o_p_onart_1564m_zimphia = "ZIMPHIA (15-64)";
@@ -420,7 +420,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "ART coverage (Females 15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= '%'	labelattrs=(size=12)  values = (0 to 1 by 0.10) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1 by 0.10) valueattrs=(size=10);
 
 label mean_p_onart_w_0 = "Model";
 label o_p_onart_1564f_zimphia = "ZIMPHIA (15-64)";
@@ -703,7 +703,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Proportion circumcised";
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 0.6 by 0.1)  valueattrs=(size=10);
+yaxis grid label  = 'Proportion'              labelattrs=(size=12)  values = (0 to 0.6 by 0.1)  valueattrs=(size=10);
 
 label mean_p_vmmc_0    = "Model VMMCs";
 label mean_p_mcirc_0    = "Model All circumcisions";
@@ -776,7 +776,7 @@ run;quit;
 
 proc sgplot data=e; 
 title    height=1.5 justify=center "HIV incidence amongst sex workers";
-xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)       valueattrs=(size=10); 
 yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 to 20 by 2)    valueattrs=(size=10);
 
 label mean_incidence_1564sw_0  = "Mean";
@@ -855,7 +855,7 @@ run;quit;
 
 proc sgplot data=e; 
 title    height=1.5 justify=center "HIV incidence amongst MSM";
-xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)       valueattrs=(size=10); 
 yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 to 20 by 2)    valueattrs=(size=10);
 
 label mean_incidence_msm_0  = "Mean";
@@ -927,7 +927,7 @@ run;quit;
 
 proc sgplot data=e; 
 title    height=1.5 justify=center "HIV incidence amongst AGYW";
-xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2030  by 2)       valueattrs=(size=10); 
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)       valueattrs=(size=10); 
 yaxis grid label 		= 'Incidence per 100py' labelattrs=(size=12)    values = (0 to 5 by 1)    valueattrs=(size=10);
 
 label mean_incidence_agyw_0  = "Mean";
@@ -958,7 +958,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 30000 by 2000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 30000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_0 = "Model";
 label o_s_deaths_HIVrel_GARPR = "GARPR all ages";
@@ -974,7 +974,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (Males 15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_m_0 = "Model";
 label o_s_deaths_HIVrel_unaids_m= "UNAIDS 15+";
@@ -988,7 +988,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Number of HIV-related deaths (Males 15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 20000 by 2000 ) valueattrs=(size=10);
 
 label mean_n_death_hivrel_w_0 = "Model";
 label o_s_deaths_HIVrel_unaids_w= "UNAIDS 15+";
