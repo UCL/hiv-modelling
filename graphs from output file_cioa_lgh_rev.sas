@@ -1773,21 +1773,25 @@ run;quit;
 */
 
 
+ods html close;
+ods listing gpath="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\";
+ods graphics / reset imagename="discounted_cost" imagefmt=pdf;
 
-ods html;
-proc sgplot data=d nolegend; 
+proc sgplot data=d noautolegend;
 * Title '';  * Title    height=1.5 justify=center "Discounted cost";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Discounted Cost $m'		labelattrs=(size=12)  values = (0 to  300         by 50    ) valueattrs=(size=10);
 
 loess   x=cald y=p50_dcost_0 / lineattrs = (color=grey thickness = 4) nomarkers;
-band    x=cald lower=p5_dcost_0 upper=p95_dcost_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
+band    x=cald lower=p5_dcost_0 upper=p95_dcost_0 /  fillattrs = (color=grey) legendlabel= "90% range";
 
 loess   x=cald y=p50_dcost_1 / lineattrs = (color=blue      thickness = 4) nomarkers;
-band    x=cald lower=p5_dcost_1 upper=p95_dcost_1 / transparency=0.9 fillattrs = (color=blue     ) legendlabel= "90% range";
+band    x=cald lower=p5_dcost_1 upper=p95_dcost_1 / fillattrs = (color=blue     ) legendlabel= "90% range";
 
-run;quit;
+run;
 
+ods listing close;
+ods html close;
 
 
 /*
