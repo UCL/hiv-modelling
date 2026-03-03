@@ -4,7 +4,7 @@
 libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Mlw";
 
 data a;
-set a.Mlw_options_graphs_28Feb26;
+set a.Mlw_options_graphs_22Feb26;
 run;
 
 /***Scenarios;
@@ -531,6 +531,88 @@ series  x=cald y=mean_n_death_hivrel_1/	lineattrs = (color=lightgreen thickness 
 *series  x=cald y=mean_n_death_hivrel_17/lineattrs = (color=green thickness = 2 pattern=solid);
 run;quit;
 
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Number of all cause deaths (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2076 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)   valueattrs=(size=10);
+
+label mean_n_death_99 = "SQ";
+label mean_n_death_0 = "Base";
+label mean_n_death_1 = "FSW program";
+label mean_n_death_2 = "VMMC";
+label mean_n_death_3 = "VMMC increase";
+label mean_n_death_4 = "Oral PrEP continuation";
+label mean_n_death_5 = "Oral PrEP and intro of Len";
+label mean_n_death_6 = "Oral PrEP and scale up of Len";
+label mean_n_death_16 = "Return interventions";
+label mean_n_death_17 = "VL and CD4 testing";
+
+*series  x=cald y=mean_n_death_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_death_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_5/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_16/lineattrs = (color=pink thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_17/lineattrs = (color=green thickness = 2 pattern=solid);
+run;quit;
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Proportion CD4<200";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2076 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)   values = (0 to 0.2 by 0.02) valueattrs=(size=10);
+
+label mean_p_onart_cd4_l200_0 = "Base";
+label mean_p_onart_cd4_l200_1 = "FSW program";
+
+*series  x=cald y=mean_n_death_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_cd4_l200_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_p_onart_cd4_l200_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+run;quit;
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "p_newp_ge1_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2076 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)   values = (0 to 0.2 by 0.02) valueattrs=(size=10);
+
+label mean_p_newp_ge1__0 = "Base";
+label mean_p_newp_ge1__1 = "FSW program";
+
+*series  x=cald y=mean_n_death_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_newp_ge1__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_p_newp_ge1__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+run;quit;
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "n_new_inf_sw";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2076 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  valueattrs=(size=10);
+
+label mean_n_new_inf_sw_0 = "Base";
+label mean_n_new_inf_sw_1 = "FSW program";
+
+*series  x=cald y=mean_n_death_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_inf_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_new_inf_sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+run;quit;
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "n_sw_program_visit";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2076 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  valueattrs=(size=10);
+
+label mean_n_sw_program_visit_0 = "Base";
+label mean_n_sw_program_visit_1 = "FSW program";
+
+*series  x=cald y=mean_n_death_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_sw_program_visit_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_sw_program_visit_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+run;quit;
 
 
 proc sgplot data=a; 

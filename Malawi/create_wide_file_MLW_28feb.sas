@@ -370,6 +370,8 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_death_hivrel_m;				n_death_hivrel_m = s_death_hivrel_m  * 4* sf;
 * n_death_hivrel_w;				n_death_hivrel_w = s_death_hivrel_w * 4* sf;
 * n_death;						n_death = s_dead_all * 4 * sf;
+* n_death;						n_death = s_dead_all * 4 * sf;
+
 
 * n_hiv_pregnant;				n_hiv_pregnant = s_hiv_pregnant * sf;
 * n_pregnant_onart;				n_pregnant_onart = s_pregnant_onart * sf;
@@ -396,6 +398,9 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
 * Of people on ART, % CD4 < 200;if s_onart_iicu > 0 then  p_onart_cd4_l200 = s_onart_cl200 / s_onart_iicu ;
+* p_newp_ge1;					p_newp_ge1 = s_newp_ge1 / s_alive1564 ;
+* n_new_inf_sw;					n_new_inf_sw = s_primary_sw * 4 * sf;
+* n_sw_program_visit;			n_sw_program_visit = s_sw_program_visit * sf;* Note this is per three months to approximate number of SW reached;
 
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
@@ -423,8 +428,9 @@ n_death_discount	 d_n_new_inf
 dcost 				 cost 				dcost_fsw_services  
 ddaly  				 daly				dead_daly				live_daly		dead_ddaly			live_ddaly	ddaly_gbd	
 
-n_tested_sw p_diag_sw p_onart_diag_sw p_onart_vl1000_sw		p_onart_cd4_l200
-
+n_tested_sw 		 p_diag_sw 			p_onart_diag_sw 		p_onart_vl1000_sw		
+p_onart_cd4_l200	 p_newp_ge1			n_new_inf_sw			n_sw_program_visit
+	
 ;
 
 
@@ -551,7 +557,8 @@ t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=ddaly_gbd);
 
 %var(v=n_tested_sw); 		%var(v=p_diag_sw); 			%var(v=p_onart_diag_sw); 	%var(v=p_onart_vl1000_sw); %var(v=p_onart_cd4_l200);
-
+%var(v=p_newp_ge1);			%var(v=n_new_inf_sw);		%var(v=n_sw_program_visit);
+	
 
 data wide_outputs;merge
 n_alive_m		 	n_alive_w			n_alive				n_hivge15m		n_hivge15w		    n_hivge15_
@@ -576,6 +583,7 @@ dcost 				cost
 ddaly  				daly				dead_daly			live_daly		ddaly_gbd			dead_ddaly		live_ddaly
 
 n_tested_sw 		p_diag_sw 			p_onart_diag_sw		p_onart_vl1000_sw	p_onart_cd4_l200
+p_newp_ge1			n_new_inf_sw		n_sw_program_visit
 
 ;
 

@@ -383,6 +383,11 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
+* Of people on ART, % CD4 < 200;if s_onart_iicu > 0 then  p_onart_cd4_l200 = s_onart_cl200 / s_onart_iicu ;
+* p_newp_ge1;					p_newp_ge1 = s_newp_ge1 / s_alive1564 ;
+* n_new_inf_sw;					n_new_inf_sw = s_primary_sw * 4 * sf;
+* n_sw_program_visit;			n_sw_program_visit = s_sw_program_visit * sf;* Note this is per three months to approximate number of SW reached;
+
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
@@ -401,15 +406,15 @@ n_selftested		 n_tested
 n_msm_1564_			 p_m_msm			prevalence1549_msm	incidence_msm		p_onprep_msm		n_onprep_msm
 n_agyw				 n_agyw_pg			p_w_agyw			prevalence_agyw		incidence_agyw		p_onprep_agyw		n_onprep_agyw
 
-n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	
+n_death_hivrel		 n_death_hivrel_m	n_death_hivrel_w	n_death
 n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_postdel_testing
 n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc				p_vmmc
 n_death_discount	 d_n_new_inf
 
 dcost	ddaly  cost dcost_fsw_services
 
-n_tested_sw p_diag_sw p_onart_diag_sw p_onart_vl1000_sw
-
+n_tested_sw 		 p_diag_sw 			p_onart_diag_sw 	p_onart_vl1000_sw
+p_onart_cd4_l200	 p_newp_ge1			n_new_inf_sw			n_sw_program_visit
 
 ;
 
@@ -530,12 +535,13 @@ t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=n_msm_1564_);		%var(v=p_m_msm);			%var(v=prevalence1549_msm);	%var(v=incidence_msm);	%var(v=p_onprep_msm);		%var(v=n_onprep_msm);
 %var(v=n_agyw);				%var(v=p_w_agyw);			%var(v=prevalence_agyw);	%var(v=incidence_agyw);	%var(v=p_onprep_agyw);		%var(v=n_onprep_agyw);
 
-%var(v=n_death_hivrel);		%var(v=n_death_hivrel_m);	%var(v=n_death_hivrel_w);
+%var(v=n_death_hivrel);		%var(v=n_death_hivrel_m);	%var(v=n_death_hivrel_w);	%var(v=n_death);
 %var(v=n_death_discount);	%var(v=d_n_new_inf);
 
 %var(v=dcost);	%var(v=ddaly);	%var(v=cost);
 
-%var(v=n_tested_sw); %var(v=p_diag_sw); %var(v=p_onart_diag_sw); %var(v=p_onart_vl1000_sw);
+%var(v=n_tested_sw); 		%var(v=p_diag_sw); 			%var(v=p_onart_diag_sw); 	%var(v=p_onart_vl1000_sw); %var(v=p_onart_cd4_l200);
+%var(v=p_newp_ge1);			%var(v=n_new_inf_sw);		%var(v=n_sw_program_visit);
 
 
 data wide_outputs;merge
@@ -555,9 +561,12 @@ p_onprep_sw			n_onprep_sw
 n_msm_1564_			p_m_msm				prevalence1549_msm	incidence_msm	p_onprep_msm		n_onprep_msm
 n_agyw				p_w_agyw			prevalence_agyw		incidence_agyw	p_onprep_agyw		n_onprep_agyw
 
-n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death_discount	 d_n_new_inf
+n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death			n_death_discount	d_n_new_inf
 
-dcost ddaly cost	n_tested_sw p_diag_sw p_onart_diag_sw	p_onart_vl1000_sw
+dcost 				ddaly 				cost	
+n_tested_sw 		p_diag_sw 			p_onart_diag_sw		p_onart_vl1000_sw	p_onart_cd4_l200
+p_newp_ge1			n_new_inf_sw		n_sw_program_visit
+
 ;
 
 proc sort; by run;run;
