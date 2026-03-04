@@ -1,9 +1,11 @@
+***ONLY USED FOR FSW PROGRAM OUTPUTS AS THESE WERE INCORRECTLY CODED INT HE 22FEB RUNS;
+
+
 
 libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 *turns log back on;
 *options notes source source2 mprint mlogic symbolgen;
 
-***97 runs;
 
 data a;
 set a.GenesisMLW_28Feb26;

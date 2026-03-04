@@ -211,7 +211,6 @@ diff_dcost_20y_18 = dcost_26_46_18 - dcost_26_46_1;
 *diff_dcost_20y_19 = dcost_26_46_19 - dcost_26_46_1;
 *diff_dcost_20y_20 = dcost_26_46_20 - dcost_26_46_1;
 
-
 *50 years;
 diff_dcost_50y_2 = dcost_26_76_2 - dcost_26_76_1;
 diff_dcost_50y_3 = dcost_26_76_3 - dcost_26_76_1;
@@ -421,7 +420,6 @@ diff_dcost_50y_2 = 3.5656;
 diff_ddaly_50y_2 = 1465.15;
 diff_netdalys_50y_2 = 10420.23;
 
-proc means mean lclm uclm;var d_n_death_50y_2 diff_ddaly_50y_2;run;
 
 ***Difference in discounted costs;
 proc means data=c  mean;var 

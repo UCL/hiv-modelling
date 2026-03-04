@@ -3,7 +3,7 @@ libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa u
 *turns log back on;
 *options notes source source2 mprint mlogic symbolgen;
 
-***97 runs;
+***72 runs;
 
 data a;
 set a.GenesisMLW_22Feb26;
@@ -214,8 +214,9 @@ cost_AdhSupp_pppy=7.89/1000000;* This cost is from MIHPSA Zim and is per client 
 cost_condoms = cost_condom_py;
 dcost_condoms = cost_condoms * discount;
 
-cost_fsw_services=0; if option in (99, 1) then cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
-if option=0 then cost_fsw_services = s_sw_program_visit * (60/1000000) * sf; *cost of FSW running at very low impact, condom provision only;
+cost_fsw_services=0;  
+cost_fsw_services = s_sw_program_visit * (60/1000000) * sf; *cost of FSW running at very low impact, condom provision only;
+if option in (99, 1) then cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
 dcost_fsw_services = cost_fsw_services * discount;
 
 cost_adh_support = 0; if option in (99 16) then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
