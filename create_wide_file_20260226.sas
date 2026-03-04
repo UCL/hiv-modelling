@@ -444,7 +444,7 @@ test_not_costed
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp = s_sw_newp/s_sw_1564;
 
 * p_reached_sbcc;			p_reached_sbcc = s_sbcc_program_visit / s_alive1564 ;
-* n_sbcc_visit_1524m;  		n_sbcc_visit_1524m = s_sbcc_program_visit_1524m * sf;*No need to multiply by 4 as it lasts for 1 yearl; 
+* n_sbcc_visit_1524m;  		n_sbcc_visit_1524m = s_sbcc_program_visit_1524m * sf;	*No need to multiply by 4 as it lasts for 1 yearl; 
 * n_sbcc_visit_1524w;		n_sbcc_visit_1524w = s_sbcc_program_visit_1524w * sf; 
 * n_sbcc_visit_1524_;		n_sbcc_visit_1524_ = (s_sbcc_program_visit_1524w + s_sbcc_program_visit_1524m) * sf; 
 * n_sbcc_visit_2564_; 		n_sbcc_visit_2564_ = s_sbcc_program_visit_2564_ * sf; 
