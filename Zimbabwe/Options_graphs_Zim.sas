@@ -3,11 +3,60 @@
 
 libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
-data a;
+data a1;
 set a.Zim_options_graphs_07Jan26;
 run;
 
+data a;
+set a1;
 
+*ZNASP targets from Genesis;
+
+if cald=2024 then do; 
+	znasp_testing_target=1905127;
+	znasp_vmmc1529_target=138869;
+	znasp_fsw_target=47523;
+end;
+
+if cald=2026 then do;
+	znasp_testing_target=1614000;
+	znasp_prep_target=57407;
+	znasp_prep_plw_target=5940;
+	znasp_vmmc1529_target=62894;
+	znasp_fsw_target=65473;
+end;
+
+if cald=2027 then do;
+	znasp_testing_target=1613444;
+	znasp_prep_target=86111;
+	znasp_prep_plw_target=6213;
+	znasp_vmmc1529_target=62894;
+	znasp_fsw_target=75169;
+end;
+
+if cald=2028 then do;
+	znasp_testing_target=1612788;
+	znasp_prep_target=89241;
+	znasp_prep_plw_target=6960;
+	znasp_vmmc1529_target=62894;
+	znasp_fsw_target=84864;
+end;
+
+if cald=2029 then do;
+	znasp_testing_target=1612132;
+	znasp_prep_target=96024;
+	znasp_prep_plw_target=6960;
+	znasp_vmmc1529_target=62894;
+	znasp_fsw_target=94560;
+end;
+
+if cald=2030 then do;
+	znasp_testing_target=1611476;
+	znasp_prep_target=100043;
+	znasp_prep_plw_target=6960;
+	znasp_vmmc1529_target=62894;
+	znasp_fsw_target=104256;
+end;
 
 /***Scenarios;
 0 = Min;
@@ -559,8 +608,120 @@ series  x=cald y=mean_p_onart_vl1000_sw_0/	lineattrs = (color=red thickness = 3 
 series  x=cald y=mean_p_onart_vl1000_sw_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 run;quit;
 
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Number of tests (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  valueattrs=(size=10);
+
+label mean_n_tested_99 = "SQ";
+label mean_n_tested_0 = "Base";
+label o_s_tested_1549_py_garcpr = "Global AIDS Response Progress Report";
+label target_s_tested_1549_py_NSP = "NSP";
+label o_s_test_15ov_py_z = "Data shared by Isaac Taramusi";
+label znasp_testing_target = "ZNASP targets";
+
+series  x=cald y=mean_n_tested_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_tested_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+
+scatter x=cald y= o_s_tested_1549_py_garcpr/ markerattrs=(symbol=circle color=red size=10);
+scatter x=cald y= target_s_tested_1549_py_NSP/ markerattrs=(symbol=circle color=blue size=10);
+scatter x=cald y= o_s_test_15ov_py_z/ markerattrs=(symbol=circle color=green size=10);
+
+scatter x=cald y= znasp_testing_target/ markerattrs=(symbol=circle color=purple size=10);
+
+run;quit;
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Currently on PrEP (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 150000 by 10000) valueattrs=(size=10);
+
+label mean_n_onprep_99 = "SQ";
+label mean_n_onprep_0 = "Base";
+label mean_n_onprep_7 = "Oral PrEP and intro of Len";
+label mean_n_onprep_8 = "Oral PrEP and scale up of Len";
+
+series  x=cald y=mean_n_onprep_99/	lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_onprep_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_onprep_7/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
+series  x=cald y=mean_n_onprep_8/	lineattrs = (color=blue thickness = 2 pattern=solid);
+
+scatter x=cald y= znasp_prep_target/ markerattrs=(symbol=circle color=purple size=10);
+
+run;quit;
+
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Number of pregnant/lactating women on PrEP (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  valueattrs=(size=10);
+
+label mean_n_prep_oral_plw_99 = "SQ";
+label mean_n_prep_oral_plw_0 = "Base";
+label mean_n_prep_oral_plw_7 = "Oral PrEP and intro up of Len";
+label mean_n_prep_oral_plw_8 = "Oral PrEP and scale up of Len";
+
+label znasp_prep_target = "ZNASP_prep_plw_target";
+
+series  x=cald y=mean_n_prep_oral_plw_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_prep_oral_plw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_prep_oral_plw_7/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
+series  x=cald y=mean_n_prep_oral_plw_8/	lineattrs = (color=blue thickness = 2 pattern=solid);
+
+scatter x=cald y= znasp_prep_plw_target/ markerattrs=(symbol=circle color=purple size=10);
+
+run;quit;
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "VMMC (15-29)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)   valueattrs=(size=10);
+
+label mean_n_new_vmmc1529m_99 = "SQ";
+label mean_n_new_vmmc1529m_0 = "Base";
+label mean_n_new_vmmc1529m_4 = "VMMC";
+label mean_n_new_vmmc1529m_5 = "VMMC increase";
+
+label znasp_vmmc1529_target = "ZNASP targets";
+label o_s_new_vmmc_all = "Global AIDS Response Progress Report (ALL AGES)";
+
+series  x=cald y=mean_n_new_vmmc1529m_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_vmmc1529m_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_new_vmmc1529m_4/	lineattrs = (color=orange thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_vmmc1529m_5/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+
+scatter x=cald y= znasp_vmmc1529_target/ markerattrs=(symbol=circle color=purple size=10);
+scatter x=cald y= o_s_new_vmmc_all/ markerattrs=(symbol=circle color=green size=10);
+run;quit;
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Number of SW program visits";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)   valueattrs=(size=10);
+
+label mean_n_sw_program_visit_99 = "SQ";
+label mean_n_sw_program_visit_0 = "Base";
+label mean_n_sw_program_visit_2 = "FSW program";
+
+label znasp_vmmc1529_target = "ZNASP targets";
+label o_s_new_vmmc_all = "Global AIDS Response Progress Report (ALL AGES)";
+
+series  x=cald y=mean_n_sw_program_visit_99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_n_sw_program_visit_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_sw_program_visit_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+
+scatter x=cald y= znasp_fsw_target/ markerattrs=(symbol=circle color=purple size=10);
+run;quit;
+
+n_prep_len_plw
+
+proc freq;table mean_n_new_vmmc1529m_4;where cald=2030;run;
 
 ods rtf close;
 ods listing;
 run;
 
+ods listing gpath="C:\Users\lovel\Documents";
+ods graphics on / imagename="SGPlot" imagefmt=png;
+ods html;
