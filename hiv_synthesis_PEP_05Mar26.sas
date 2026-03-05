@@ -9,8 +9,8 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100; 
-%let year_interv = 1991.0 ;	
+%let population = 100000; 
+%let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -783,8 +783,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * a person prep_any_elig=1 will only actually have a chance of starting prep if prep_any_willing=1;
 * lapr and dpv-vr - assume following all apply unless stated ; * lapr - add specific testing routines?
 
-* date_prep_oral_intro;			date_prep_oral_intro=1988.25; 	* Introduction of oral PrEP ;
-* date_prep_oral_intro;			*date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
+* date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
 * prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1  0.2 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
@@ -20374,12 +20373,6 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
-proc print;var 	cald option date_prep_oral_intro
-		eff_rate_choose_stop_prep_oral 	
-		eff_prob_prep_oral_b 
-		eff_rate_test_startprep_any 
-		eff_prob_prep_any_restart_choice 
-		pref_prep_oral ;where age ge 15;run ;
 
 * procs;
 
