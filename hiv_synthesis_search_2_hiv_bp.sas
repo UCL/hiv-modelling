@@ -2462,6 +2462,21 @@ who may be dead and hence have caldate{t} missing;
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
 
+		/*
+
+		I noticed that you had overwritten the prep oral preference parameter, presumably to get more people on oral PrEP instead of injectable PrEP. 
+		Is this needed given you don't have len or cab turned on?   I also tested the code in the options, I thought there may have been a risk of the 
+		following changing every period:
+           eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 10 ;            
+		The code is fine, it stays set at the values in the options, due to the prep_oral_parameters_sio=1. I don't think it will impact anything but I 
+		did notice that in option 0, pref_prep_oral is zero for everyone until I assume this condition is met:
+		if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
+    	  * pref_prep_oral; * pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);              
+		end;  
+		In option =1, this is overwritten to 0.5 for everyone. But as I said, I'm not sure of the impact of this parameter if cab and len are not introduced. 
+
+		*/
+
 
 
 		/*

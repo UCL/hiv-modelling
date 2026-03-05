@@ -51,7 +51,7 @@ p_on_anti_hypert_1549_ p_on_anti_hypert_1539_ p_on_anti_hypert_4049_ p_on_anti_h
 if option in (0 1);
 
 
-%let single_var =  incidence1549_                   ;
+%let single_var =  prop_prep_any                   ;
 
 * prop_prep_any prop_elig_on_prep p_elig_prep;
 
@@ -80,7 +80,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 84 ;
+%let nfit = 200 ;
 
 %let year_end = 2076.00 ;
 run;
@@ -234,7 +234,7 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -252,7 +252,7 @@ run;quit;
 
 * ods html close;
 
-
+*/
 
 /*
 
@@ -329,7 +329,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -345,7 +345,6 @@ band    x=cald lower=p5_prop_prep_any_1 upper=p95_prop_prep_any_1 / transparency
 
 run;quit;
 
-*/
 
 
 
