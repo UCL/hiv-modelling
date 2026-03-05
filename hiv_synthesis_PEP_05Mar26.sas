@@ -9,8 +9,8 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
-%let year_interv = 2026.0 ;	
+%let population = 100; 
+%let year_interv = 1991.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -783,8 +783,8 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * a person prep_any_elig=1 will only actually have a chance of starting prep if prep_any_willing=1;
 * lapr and dpv-vr - assume following all apply unless stated ; * lapr - add specific testing routines?
 
-
-* date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
+* date_prep_oral_intro;			date_prep_oral_intro=1988.25; 	* Introduction of oral PrEP ;
+* date_prep_oral_intro;			*date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
 * prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1  0.2 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
@@ -1162,6 +1162,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
+%include "/home/rmjllob/Zim_parameters.sas";
+
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
@@ -2501,17 +2503,49 @@ if caldate_never_dot >= &year_interv then do;
 who may be dead and hence have caldate{t} missing;
 
 	set_in_options=0;
-	* note that we can use set_in_options=1 when we want to ensure that parameter values specified in the options section are not overwritten.
-	The variable name can be updated to reflect specific parameters;
 
+	* 80% reduction in VMMC;
+	circ_inc_rate_year_i = 2;		
 
- 	*Option 0 is continuation at current rates - status quo;
+	* No injectable PrEP;
+		
+	date_prep_cab_intro=2100;
+	date_prep_len_intro=2100;
+	date_prep_vr_intro=2100;
+	eff_prob_prep_len_b=0;
+	eff_rate_choose_stop_prep_len=1;
 
- 
- 	*Option 1;
+	* No CD4 monitoring, 50% reduction in VL monitoring;
+	absence_cd4_year_i = 1;	
+	eff_prob_vl_meas_done = 0.5 * prob_vl_meas_done; 
+
+	
+ 	*Option 1 - changing parameters to ensure oral PrEP coverage doesn't drop off;
 	if option = 1 then do;
+
+	prep_oral_parameters_sio=1 ;
+
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 10 ;		
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.4;
+		eff_rate_test_startprep_any = 0.7; 
+		eff_prob_prep_any_restart_choice = 0.7;
+		pref_prep_oral = 0.5;
+
+		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
+		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
+		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
+		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
+		pref_prep_oral_sio = pref_prep_oral;
 												 
 	end;
+
+
+
+
+ 	*Option 2 - changing parameters to ensure oral PrEP coverage doesn't drop off;
+
+
+
  
 end;
 
@@ -2596,6 +2630,11 @@ if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_pre
 if . < caldate{t} < date_prep_cab_intro or date_prep_cab_intro=. or caldate{t} >= date_prep_len_intro > . then pref_prep_cab = 0; * once len available we want len to be preferred;
 if . < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then pref_prep_len = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
+
+if prep_oral_parameters_sio=1 then do ;
+		pref_prep_oral = pref_prep_oral_sio;
+end;
+
 
 * highest_prep_pref;
 * does not show people who are not willing to take any PrEP type;
@@ -3114,6 +3153,11 @@ if t ge 2 and &year_interv         <= caldate{t} and circ_inc_rate_year_i = 4 th
       prob_circ = 0;test_link_circ_prob=0;
     end;
 end;
+
+*80% reduction in VMMC as a result of funding cuts;
+if caldate{t} = &year_interv then prob_circ_year_interv=prob_circ;
+if caldate{t} > &year_interv and circ_inc_rate_year_i = 5 then prob_circ = 0.2*prob_circ_year_interv;
+
 
 ***Zim specific;	*JAS Feb24;
 if country = 'Zimbabwe' then do;
@@ -5160,6 +5204,15 @@ end;
 
 
 * PREP INITIATION AND CONTINUATION;
+
+if prep_oral_parameters_sio=1 then do ;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral_sio;		
+		eff_prob_prep_oral_b = prob_prep_oral_b_sio;
+		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
+		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
+		pref_prep_oral = pref_prep_oral_sio;
+end;
+
 /* 
 	PrEP start and restart dates are given by:
 		prep_xxx_current_start_date 		start date of current PrEP course, whether that is first ever PrEP, switching from a different PrEP option, or restarting following a break due to ineligibility or choice
@@ -20321,7 +20374,12 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
-
+proc print;var 	cald option date_prep_oral_intro
+		eff_rate_choose_stop_prep_oral 	
+		eff_prob_prep_oral_b 
+		eff_rate_test_startprep_any 
+		eff_prob_prep_any_restart_choice 
+		pref_prep_oral ;where age ge 15;run ;
 
 * procs;
 
@@ -22986,11 +23044,11 @@ data a ;  set r1 ;
 
 *    Option 0;
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,0);
+%run_update_r1(&year_interv,&year_interv+2,0);
 
 *    Option 1;
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,1);
+%run_update_r1(&year_interv,&year_interv+2,1);
 
 
 

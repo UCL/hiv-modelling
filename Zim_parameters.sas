@@ -15,7 +15,7 @@
 * test_targeting;   		%sample(test_targeting, 1 1.1 1.3, 0.7 0.2 0.1);*Vale - 20220105;
 * an_lin_incr_test;         %sample(an_lin_incr_test, 	
 								0.005 0.01 0.015, 
-								0.6    0.3   0.1);*Vale - 20220105;
+								0.7    0.2   0.05);
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
 * fold_rate_decr_test_future;%sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5 0.75);
 
@@ -46,7 +46,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * SEX WORKERS;	
 * Based on calibraton to AMETHIST and Sisters data;
-* base_rate_sw;				%sample_uniform(base_rate_sw, 0.0010 0.0015 0.0020);
+* base_rate_sw;				%sample_uniform(base_rate_sw, 0.0008 0.0015 0.0018);
 * base_rate_stop_sexwork ;	%sample(base_rate_stop_sexwork, 0.005 0.010 0.015, 0.40 0.40 0.20);
 
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.60;
