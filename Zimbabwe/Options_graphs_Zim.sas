@@ -616,7 +616,7 @@ yaxis grid label	= 'Number'	labelattrs=(size=12)  valueattrs=(size=10);
 label mean_n_tested_99 = "SQ";
 label mean_n_tested_0 = "Base";
 label o_s_tested_1549_py_garcpr = "Global AIDS Response Progress Report";
-label target_s_tested_1549_py_NSP = "NSP";
+label target_s_tested_1549_py_NSP = "NSP targets";
 label o_s_test_15ov_py_z = "Data shared by Isaac Taramusi";
 label znasp_testing_target = "ZNASP targets";
 
@@ -714,9 +714,7 @@ series  x=cald y=mean_n_sw_program_visit_2/	lineattrs = (color=lightgreen thickn
 scatter x=cald y= znasp_fsw_target/ markerattrs=(symbol=circle color=purple size=10);
 run;quit;
 
-n_prep_len_plw
-
-proc freq;table mean_n_new_vmmc1529m_4;where cald=2030;run;
+proc freq;table mean_n_sw_program_visit_2 p5_n_sw_program_visit_2 p95_n_sw_program_visit_2;where cald=2030;run;
 
 ods rtf close;
 ods listing;
