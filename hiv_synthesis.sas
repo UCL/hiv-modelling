@@ -3002,7 +3002,15 @@ if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest =
 
 ***Zim specific;	* JAS Feb24;
 if country = 'Zimbabwe' then do;
-	if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;
+	if 2020.5 le caldate{t} lt 2021.5 then do;
+		rate_1sttest=rate_1sttest*0.3;rate_reptest=rate_reptest*0.3;
+		rate_1sttest_2021=rate_1sttest;rate_reptest_2021=rate_reptest;
+	end;
+   
+	if caldate{t} ge 2021.5 then do;
+		rate_1sttest = rate_1sttest_2021 - ((caldate{t}-2021.5 )*an_lin_incr_test*fold_rate_decr_test_future);
+		rate_reptest = rate_reptest_2021 - ((caldate{t}-2021.5 )*an_lin_incr_test*fold_rate_decr_test_future);
+	end;
 end;
 
 * ts1m;
