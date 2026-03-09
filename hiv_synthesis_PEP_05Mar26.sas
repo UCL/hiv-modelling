@@ -3038,9 +3038,19 @@ end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
-***Zim specific;	* JAS Feb24;
+***Zim specific;	
 if country = 'Zimbabwe' then do;
-	if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;
+
+	if caldate{t} = 2020.5 then do;
+		rate_1sttest_2020=rate_1sttest*0.1;
+		rate_reptest_2020=rate_reptest*0.1;
+	end;
+
+	if caldate{t} > 2020.5 then do;
+		rate_1sttest = max ((rate_1sttest_2020 - ((caldate{t}-2020.5 )*an_lin_incr_test*fold_rate_decr_test_future)), 0);
+		rate_reptest = max ((rate_reptest_2020 - ((caldate{t}-2020.5 )*an_lin_incr_test*fold_rate_decr_test_future)), 0);
+	end;
+
 end;
 
 * ts1m;
@@ -23037,11 +23047,11 @@ data a ;  set r1 ;
 
 *    Option 0;
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+2,0);
+%run_update_r1(&year_interv,&year_interv+10,0);
 
 *    Option 1;
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+2,1);
+%run_update_r1(&year_interv,&year_interv+10,1);
 
 
 
