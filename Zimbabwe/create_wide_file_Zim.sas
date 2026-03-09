@@ -381,6 +381,12 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
+* n_prep_oral_plw; 				n_prep_oral_plw    = s_prep_oral_plw * sf; *Feb2024;
+* n_prep_len_plw; 				n_prep_len_plw    = s_prep_len_plw * sf; *Feb2024;
+* n_new_vmmc1529m;				n_new_vmmc1529m = (s_new_vmmc1519m+s_new_vmmc2024m+s_new_vmmc2529m) * sf * 4;
+* n_sw_program_visit;			n_sw_program_visit = s_sw_program_visit * sf;* Note this is per three months to approximate number of SW reached;
+
+
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
@@ -405,9 +411,9 @@ n_death_discount	 d_n_new_inf
 
 dcost	ddaly  cost
 
-n_tested_sw p_diag_sw p_onart_diag_sw p_onart_vl1000_sw
+n_tested_sw 		 p_diag_sw 			p_onart_diag_sw			 p_onart_vl1000_sw
 
-
+n_prep_oral_plw n_prep_len_plw			n_new_vmmc1529m			n_sw_program_visit
 ;
 
 proc sort data=y;by run option;run;

@@ -4,7 +4,7 @@
 libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a1;
-set a.Zim_options_graphs_07Jan26;
+set a.Zim_options_graphs_06Feb26_pack;
 run;
 
 data a;
@@ -714,7 +714,14 @@ series  x=cald y=mean_n_sw_program_visit_2/	lineattrs = (color=lightgreen thickn
 scatter x=cald y= znasp_fsw_target/ markerattrs=(symbol=circle color=purple size=10);
 run;quit;
 
-proc freq;table mean_n_sw_program_visit_2 p5_n_sw_program_visit_2 p95_n_sw_program_visit_2;where cald=2030;run;
+***To compare sc 1 in combinations with ZNASP targets;
+
+proc freq;table mean_n_onprep_1 p5_n_onprep_1 p95_n_onprep_1;where cald=2030;run;
+proc freq;table mean_n_prep_oral_plw_1 p5_n_prep_oral_plw_1 p95_n_prep_oral_plw_1;where cald=2030;run;
+proc freq;table mean_n_new_vmmc1529m_1 p5_n_new_vmmc1529m_1 p95_n_new_vmmc1529m_1;where cald=2030;run;
+proc freq;table mean_n_sw_program_visit_1 p5_n_sw_program_visit_1 p95_n_sw_program_visit_1;where cald=2030;run;
+
+
 
 ods rtf close;
 ods listing;
