@@ -208,7 +208,7 @@ run;
 
 
 *We need the same number of simulations for each option;
-%let nfit=101;
+%let nfit=165;
 %option_(0);
 %option_(1);
 %option_(2);
@@ -497,15 +497,15 @@ proc print data=d;
 	where cald=2023;
 	var mean_incidence1549__0;
 run;
-* inc = 0.24121 in 2023 (101 runs). 10% less = 0.21709;
+* inc = 0.25702 in 2023 (165 runs). 10% less = 0.23132;
 
 proc print data=d;
 	where cald=2074;
 	var mean_incidence1549__0	mean_incidence1549__1	mean_incidence1549__2	mean_incidence1549__3	mean_incidence1549__4	mean_incidence1549__5	mean_incidence1549__6
 		mean_incidence1549__7	mean_incidence1549__8	mean_incidence1549__9	mean_incidence1549__99;
 run;
-* option 4 brings incidence below the threshold (101 runs) - condoms, vmmc, fsw-prep-mix, adh-supp;
-* marginal between options 4 and 5 - need more runs;
+* option 6 brings incidence below the threshold (165 runs) - condoms, vmmc, fsw-prep-mix, adh-supp, msm-program, fsw-program;
+* marginal with options 4 and 5 - need more runs;
 
 * Incidence 15-64;
 proc sgplot data=d; 
