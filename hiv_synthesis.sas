@@ -763,7 +763,7 @@ end;
 * prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.80 0.20); * does prep use depend on the prevalence of vl > 1000 in population; * cioa_j ;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.05 0.10 0.15);
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
@@ -786,7 +786,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1  0.2 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -3008,11 +3008,9 @@ if country = 'Zimbabwe' then do;
 	end;
 
 	if caldate{t} > 2020.5 then do;
-		rate_1sttest = max ((rate_1sttest_2020 - ((caldate{t}-2020.5 )*an_lin_incr_test*fold_rate_decr_test_future)), 0);
-		rate_reptest = max ((rate_reptest_2020 - ((caldate{t}-2020.5 )*an_lin_incr_test*fold_rate_decr_test_future)), 0);
+		rate_1sttest = max ((rate_1sttest_2020 - ((caldate{t}-2020.5 )*an_lin_incr_test*fold_rate_decr_test_future)), 0.0001);
+		rate_reptest = max ((rate_reptest_2020 - ((caldate{t}-2020.5 )*an_lin_incr_test*fold_rate_decr_test_future)), 0.0001);
 	end;
-
-end;
 
 
 * ts1m;
