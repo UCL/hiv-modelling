@@ -1,12 +1,12 @@
 
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim\28Feb26_package";
-libname b "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP\05Mar26";
+libname b "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data b;
 set a.out:;
 run;
 
-data b.GenesisZim_28Feb26_package;
+data b.GenesisZim_05Mar26;
 set b;
 run;
 
