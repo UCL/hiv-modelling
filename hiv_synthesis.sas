@@ -3011,7 +3011,7 @@ if country = 'Zimbabwe' then do;
 		rate_1sttest = max ((rate_1sttest_2020 - ((caldate{t}-2020.5 )*an_lin_incr_test*fold_rate_decr_test_future)), 0.0001);
 		rate_reptest = max ((rate_reptest_2020 - ((caldate{t}-2020.5 )*an_lin_incr_test*fold_rate_decr_test_future)), 0.0001);
 	end;
-
+end;
 
 * ts1m;
 * rate_1sttest = 1 - (1 - rate_1sttest )**(1/3) ;
