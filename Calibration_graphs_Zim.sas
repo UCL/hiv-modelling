@@ -1,11 +1,8 @@
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data y;
-set a.long_gen_07Jan26;
-*set a.long_gen_06Feb26_package;
-*set a.long_gen_28Feb26_package;
-
+set a.long_gen_PEP_05Mar26;
 run;
 proc freq;table cald;run;
 
@@ -14,8 +11,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2392;
-*%let nfit = 672;
+%let nfit = 40;
 
 %let year_end = 2045.00 ;
 run;
@@ -141,9 +137,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /*-----------------------------------------*/
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
-%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 99);
-*%summary_all_options(options=0 1 2 3 4 5 99); *package;
-*%summary_all_options(options=0 1 2 3 4 5 6 7 99); *package;
+%summary_all_options(options=0 1 99);
 
 
 
@@ -155,30 +149,71 @@ options notes source source2 mprint mlogic symbolgen;
 data d;
 set Master_summary;
 
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026.sas"; by cald;
+%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe_Jan2026.sas"; by cald;
+
+*ZNASP targets from Genesis;
+
+if cald=2024 then do; 
+	znasp_testing_target=1905127;
+	znasp_vmmc1529_target=138869;
+	znasp_fsw_target=47523;
+end;
+
+if cald=2026 then do;
+	znasp_testing_target=1614000;
+	znasp_prep_target=57407;
+	znasp_prep_plw_target=5940;
+	znasp_vmmc1529_target=62894;
+	znasp_fsw_target=65473;
+end;
+
+if cald=2027 then do;
+	znasp_testing_target=1613444;
+	znasp_prep_target=86111;
+	znasp_prep_plw_target=6213;
+	znasp_vmmc1529_target=62894;
+	znasp_fsw_target=75169;
+end;
+
+if cald=2028 then do;
+	znasp_testing_target=1612788;
+	znasp_prep_target=89241;
+	znasp_prep_plw_target=6960;
+	znasp_vmmc1529_target=62894;
+	znasp_fsw_target=84864;
+end;
+
+if cald=2029 then do;
+	znasp_testing_target=1612132;
+	znasp_prep_target=96024;
+	znasp_prep_plw_target=6960;
+	znasp_vmmc1529_target=62894;
+	znasp_fsw_target=94560;
+end;
+
+if cald=2030 then do;
+	znasp_testing_target=1611476;
+	znasp_prep_target=100043;
+	znasp_prep_plw_target=6960;
+	znasp_vmmc1529_target=62894;
+	znasp_fsw_target=104256;
+end;
+
 run;
 
 data e;
 set d;
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_FSW_Zimbabwe.sas"; by cald;
+%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Observed data_FSW_Zimbabwe.sas"; by cald;
 run;
 
-/*
-DATA A.Zim_options_graphs_07Jan26;
-SET E;
-RUN;
-*/
 
-DATA A.Zim_options_graphs_28Feb26_pack;
+DATA A.Zim_pep_options_graphs_05Mar26;
 SET E;
 RUN;
 
-data e;
-set a.Zim_options_graphs_07Jan26;
-RUN;
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = '"C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Zim_calibration_07_01_26b.doc' startpage=never; 
+ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\PEP\Zim_calibration_05_03_26.doc" startpage=never; 
 ods listing close;
 
 
@@ -478,6 +513,28 @@ scatter x=cald y=m_n_onart_w_spectrum / markerattrs=(symbol=circle color=green s
 run;quit;
 
 proc sgplot data=e; 
+Title    height=1.5 justify=center "Number tested (15-64)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to 2035 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12) valueattrs=(size=10);
+
+label mean_n_tested_0 = "Model";
+label o_s_tested_1549_py_garcpr = "GARPR 15-49";
+label target_s_tested_1549_py_NSP = "NSP targets";
+label o_s_test_15ov_py_z = "Isaac Taramusi";
+label znasp_testing_target = "ZNASP targets";
+
+series  x=cald y=mean_n_tested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_0	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_s_tested_1549_py_garcpr/ markerattrs=(symbol=circle color=red size=10);
+scatter x=cald y=target_s_tested_1549_py_NSP/ markerattrs=(symbol=circle color=blue size=10);
+scatter x=cald y=o_s_test_15ov_py_z / markerattrs=(symbol=circle color=green size=10);
+scatter x=cald y=znasp_testing_target/ markerattrs=(symbol=circle color=purple size=10);
+
+run;quit;
+
+
+proc sgplot data=e; 
 Title    height=1.5 justify=center "Proportion diagnosed (15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
@@ -493,6 +550,7 @@ band    x=cald lower=p5_p_diag_0	upper=p95_p_diag_0  / transparency=0.9 fillattr
 scatter x=cald y=o_p_diag_1564_zimphia/ markerattrs=(symbol=circle color=red size=10);
 scatter x=cald y=o_p_diag_15pl_zimphia/ markerattrs=(symbol=circle color=red size=10);
 scatter x=cald y=o_p_diag_1549_dhs / markerattrs=(symbol=circle color=green size=10);
+
 run;quit;
 
 
