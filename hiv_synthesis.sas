@@ -394,7 +394,7 @@ newp_seed = 7;
 							self_test_targeting = stt * test_targeting; 
 
 * date_self_test_intro;		date_self_test_intro = 2018;
-* rate_self_test;			%sample_uniform(rate_self_test, 0.05 0.1 0.3 0.5 );
+* rate_self_test;			%sample_uniform(rate_self_test, 0.01 0.03 0.10);
 
 * self_test_sens;			self_test_sens = 0.93;          
 
@@ -656,13 +656,13 @@ newp_seed = 7;
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
-* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.15 0.85);
+* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.10 0.90);
                               if sw_art_disadv=0  then do; sw_higher_int = 1; rel_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1;end;
 
 						   	  if sw_art_disadv=1  then do; 
-						   		%sample_uniform(sw_higher_int, 2 3);
+						   		%sample_uniform(sw_higher_int, 2 5 10 20);
 						   		%sample_uniform(rel_sw_lower_adh, 0.8 0.9);
-						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 3);
+						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 5 10);
 							  end;
 
 * date_sw_prog_intro;		date_sw_prog_intro=2010;
@@ -676,9 +676,9 @@ newp_seed = 7;
 * rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
 * rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
-* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.05 0.10 0.15);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
-* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.10 0.15 0.25);
+* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.20 0.35 0.50);
 * effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
 * effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.05 0.10);
 * effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.10 0.20);
@@ -763,7 +763,7 @@ end;
 * prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.80 0.20); * does prep use depend on the prevalence of vl > 1000 in population; * cioa_j ;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.05 0.10 0.15);
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
@@ -786,7 +786,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1  0.2 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -2997,12 +2997,20 @@ if t ge 2 and date_start_testing <= caldate{t} then do; * note that date_start_t
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 end;
 
-
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
-***Zim specific;	* JAS Feb24;
+***Zim specific;	
 if country = 'Zimbabwe' then do;
-	if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;
+
+	if caldate{t} = 2020.5 then do;
+		rate_1sttest_2020=rate_1sttest*0.1;
+		rate_reptest_2020=rate_reptest*0.1;
+	end;
+
+	if caldate{t} > 2020.5 then do;
+		rate_1sttest = max ((rate_1sttest_2020 - ((caldate{t}-2020.5 )*an_lin_incr_test*fold_rate_decr_test_future)), 0.0001);
+		rate_reptest = max ((rate_reptest_2020 - ((caldate{t}-2020.5 )*an_lin_incr_test*fold_rate_decr_test_future)), 0.0001);
+	end;
 end;
 
 * ts1m;
