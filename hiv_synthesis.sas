@@ -394,7 +394,7 @@ newp_seed = 7;
 							self_test_targeting = stt * test_targeting; 
 
 * date_self_test_intro;		date_self_test_intro = 2018;
-* rate_self_test;			%sample_uniform(rate_self_test, 0.05 0.1 0.3 0.5 );
+* rate_self_test;			%sample_uniform(rate_self_test, 0.01 0.03 0.10);
 
 * self_test_sens;			self_test_sens = 0.93;          
 
@@ -656,13 +656,13 @@ newp_seed = 7;
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
-* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.15 0.85);
+* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.10 0.90);
                               if sw_art_disadv=0  then do; sw_higher_int = 1; rel_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1;end;
 
 						   	  if sw_art_disadv=1  then do; 
-						   		%sample_uniform(sw_higher_int, 2 3);
+						   		%sample_uniform(sw_higher_int, 2 5 10 20);
 						   		%sample_uniform(rel_sw_lower_adh, 0.8 0.9);
-						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 3);
+						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 5 10);
 							  end;
 
 * date_sw_prog_intro;		date_sw_prog_intro=2010;
@@ -676,9 +676,9 @@ newp_seed = 7;
 * rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
 * rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
-* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.05 0.10 0.15);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
-* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.10 0.15 0.25);
+* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.20 0.35 0.50);
 * effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
 * effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.05 0.10);
 * effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.10 0.20);

@@ -56,22 +56,8 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.10 0.80 0.10);
 
-* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.10 0.90);
-						   	  if sw_art_disadv=1  then do; 
-						   		%sample_uniform(sw_higher_int, 2 5 10 20);
-						   		%sample_uniform(rel_sw_lower_adh, 0.8 0.9);
-						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 5 10);
-							  end;
-
 * rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
-* rate_disengage_sw_program;	%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
-
-* date_sw_prog_intro;		date_sw_prog_intro=2010;
-* sw_program;               %sample(sw_program, 0 1, 0.2 0.8);sw_program=1;*Discuss;
-					            if sw_program = 1  then do; 
-								%sample_uniform(rate_engage_sw_program, 0.10 0.20); 
-								%sample_uniform(rate_disengage_sw_program, 0.02 0.05);
-								end;
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
 
 * CIRCUMCISION;
 
@@ -94,10 +80,6 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 
 ***Too many people on PrEP;
-
-* rate_test_startprep_any; 		*%sample_uniform(rate_test_startprep_any, 0.10 0.15  0.30);
-
-* prob_prep_oral_b;				*%sample_uniform(prob_prep_oral_b, 0.05 0.1);
 
 * pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) ;
 
