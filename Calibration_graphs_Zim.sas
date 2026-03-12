@@ -149,7 +149,7 @@ options notes source source2 mprint mlogic symbolgen;
 data d;
 set Master_summary;
 
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe_Jan2026.sas"; by cald;
+%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe_Jan2026.sas"; by cald;
 
 *ZNASP targets from Genesis;
 

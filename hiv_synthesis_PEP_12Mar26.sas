@@ -2522,10 +2522,11 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;
 
 		prep_oral_parameters_sio=1 ;
+		prep_any_strategy=20;
 
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
-		eff_rate_test_startprep_any = 0.1; 
+		eff_rate_test_startprep_any = 0.2; 
 		eff_prob_prep_any_restart_choice = 0.1;
 		pref_prep_oral = 0.1;
 
@@ -2539,9 +2540,10 @@ who may be dead and hence have caldate{t} missing;
 
 	
  	*Option 2 - 20% coverage;
-	if option = 1 then do;
+	if option = 2 then do;
 
 		prep_oral_parameters_sio=1 ;
+		prep_any_strategy=20;
 
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
@@ -2558,9 +2560,10 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
  	*Option 3 - 30% coverage;
-	if option = 1 then do;
+	if option = 3 then do;
 
 		prep_oral_parameters_sio=1 ;
+		prep_any_strategy=20;
 
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 5 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
@@ -2578,14 +2581,15 @@ who may be dead and hence have caldate{t} missing;
 
 
 	 *Option 4 - 10% coverage with Len;
-	if option = 1 then do;
+	if option = 4 then do;
 
 		prep_oral_parameters_sio=1 ;
+		prep_any_strategy=20;
 
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
-		eff_rate_test_startprep_any = 0.1; 
-		eff_prob_prep_any_restart_choice = 0.1;
+		eff_rate_test_startprep_any = 0.4; *double to allow for Len scale up;
+		eff_prob_prep_any_restart_choice = 0.2;*increase to allow for Len scale up;
 		pref_prep_oral = 0.1;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
@@ -2593,19 +2597,25 @@ who may be dead and hence have caldate{t} missing;
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
-												 
+
+
+		date_prep_len_intro=&year_interv;	
+		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;												 
+
 	end;
 
 	
  	*Option 5 - 20% coverage with Len;
-	if option = 1 then do;
+	if option = 5 then do;
 
 		prep_oral_parameters_sio=1 ;
+		prep_any_strategy=20;
 
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
-		eff_rate_test_startprep_any = 0.2; 
-		eff_prob_prep_any_restart_choice = 0.2;
+		eff_rate_test_startprep_any = 0.4; 
+		eff_prob_prep_any_restart_choice = 0.3;
 		pref_prep_oral = 0.2;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
@@ -2613,17 +2623,22 @@ who may be dead and hence have caldate{t} missing;
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
+
+		date_prep_len_intro=&year_interv;	
+		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;												 
 												 
 	end;
 
  	*Option 6 - 30% coverage with Len;
-	if option = 1 then do;
+	if option = 6 then do;
 
 		prep_oral_parameters_sio=1 ;
+		prep_any_strategy=20;
 
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 5 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
-		eff_rate_test_startprep_any = 0.4; 
+		eff_rate_test_startprep_any = 0.5; 
 		eff_prob_prep_any_restart_choice = 0.4;
 		pref_prep_oral = 0.3;
 
@@ -2632,6 +2647,12 @@ who may be dead and hence have caldate{t} missing;
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
+
+		date_prep_len_intro=&year_interv;	
+		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;												 
+
+
 												 
 	end;
 
@@ -5018,6 +5039,11 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		* MSM PrEP eligibility restricted to 15-64 because HIV risk stops from age 65;
 	end;
 
+
+***New strategy for PEP project - allow all at risk to access PEP;
+	if prep_any_strategy=20 then do;
+		if (newp ge 1) then prep_any_elig=1;
+	end;
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 
@@ -23136,11 +23162,31 @@ data a ;  set r1 ;
 
 *    Option 0;
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+10,0);
+%run_update_r1(&year_interv,&year_interv+50,0);
 
 *    Option 1;
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+10,1);
+%run_update_r1(&year_interv,&year_interv+50,1);
+
+*    Option 2;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,2);
+
+*    Option 3;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,3);
+
+*    Option 4;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,4);
+
+*    Option 5;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,5);
+
+*    Option 6;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,6);
 
 
 
