@@ -43,7 +43,7 @@ run;
 */
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Zimbabwe\Zim_options_07_01_26b.doc" startpage=never; 
+ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\PEP\Zim_options_05_01_26.doc" startpage=never; 
 ods listing close;
 
 
@@ -270,7 +270,7 @@ series  x=cald y=mean_p_onart_vl1000__19/	lineattrs = (color=pink thickness = 2 
 run;quit;
 
 proc sgplot data=a; 
-Title    height=1.5 justify=center "Ever initiated PrEP (15+)";
+Title    height=1.5 justify=center "Ever taken PEP (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 3000000 by 200000) valueattrs=(size=10);
 
@@ -303,9 +303,9 @@ series  x=cald y=mean_n_prep_ever_19/	lineattrs = (color=pink thickness = 2 patt
 run;quit;
 
 proc sgplot data=a; 
-Title    height=1.5 justify=center "Currently on PrEP (15+)";
+Title    height=1.5 justify=center "Currently on PEP (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 300000 by 20000) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 1000000 by 20000) valueattrs=(size=10);
 
 label mean_n_onprep_99 = "SQ";
 label mean_n_onprep_0 = "Base";
@@ -321,7 +321,7 @@ label mean_n_onprep_8 = "PEP_8";
 */
 series  x=cald y=mean_n_onprep_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_n_onprep_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_n_onprep_0/	lineattrs = (color=green thickness = 3 pattern=solid); 
+series  x=cald y=mean_n_onprep_1/	lineattrs = (color=green thickness = 3 pattern=solid); 
 
 /*
 series  x=cald y=mean_n_onprep_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
@@ -336,7 +336,7 @@ series  x=cald y=mean_n_onprep_19/	lineattrs = (color=pink thickness = 2 pattern
 run;quit;
 
 proc sgplot data=a; 
-Title    height=1.5 justify=center "Of those eligible, proportion on PrEP (15+)";
+Title    height=1.5 justify=center "Of those eligible, proportion on PEP (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
@@ -354,7 +354,7 @@ label mean_prop_elig_on_prep_8 = "PEP_8";
 */
 series  x=cald y=mean_prop_elig_on_prep_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_prop_elig_on_prep_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_prop_elig_on_prep_0/	lineattrs = (color=green thickness = 3 pattern=solid); 
+series  x=cald y=mean_prop_elig_on_prep_1/	lineattrs = (color=green thickness = 3 pattern=solid); 
 
 /*
 series  x=cald y=mean_prop_elig_on_prep_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
@@ -388,7 +388,7 @@ label mean_prevalence_1564sw_8 = "PEP_8";
 */
 series  x=cald y=mean_prevalence_1564sw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_1564sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_prevalence_1564sw_0/	lineattrs = (color=green thickness = 3 pattern=solid); 
+series  x=cald y=mean_prevalence_1564sw_1/	lineattrs = (color=green thickness = 3 pattern=solid); 
 
 /*
 series  x=cald y=mean_prevalence_1564sw_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
@@ -440,7 +440,7 @@ run;quit;
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Proportion of FSW on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.30 by 0.03) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.60 by 0.1) valueattrs=(size=10);
 
 label mean_p_onprep_sw_99 = "SQ";
 label mean_p_onprep_sw_0 = "Base";
@@ -541,7 +541,7 @@ run;quit;
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Proportion of AGYW on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.08 by 0.01) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
 
 label mean_p_onprep_agyw_99 = "SQ";
 label mean_p_onprep_agyw_0 = "Base";
