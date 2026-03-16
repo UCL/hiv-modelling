@@ -1670,6 +1670,7 @@ if cald=2020.75 then do;o_s_test_15ov_py_z=1521942; o_pos_rate_15ov_z=0.06; end;
 
 
 
+
 *Source: Global fund reports - sent by Trevor 
 Number people who received HIV counseling and testing and received their results (it includes children),
 and tests conducted by MoH in OI/ART, PMTCT and VCT monthly returns and by PSI.
@@ -1728,6 +1729,9 @@ if cald=2013.25 then do; o_s_rec_htc_Z_GF_all    = 535963;*84% reporting rate, i
 						 o_s_rec_htc_Z_GF_m      = 303539;
 						 o_s_rec_htc_Z_GF_w      = 328834;
 end;
+
+* Source: Global Fund Report 2024;
+if cald=2024.5 then o_s_rec_hts_Z_GF_all = 1905127;
 
 *Email from Karin Hatzold on 2nd May 2016 and 28/06/2016; 
 if cald=2015.75 then do; 
@@ -1850,7 +1854,8 @@ if  cald=2025.75 then do;
 	target_p_diag_1524w_NSP=0.95;
 end;
 
-
+*Source: Global Fund 2024 Report;
+if cald=2024.5 then o_p_diag_GF=0.97;
 
 **** 8d. Testing in female sex workers;
 
