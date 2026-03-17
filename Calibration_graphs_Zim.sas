@@ -1,8 +1,8 @@
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data y;
-set a.long_gen_PEP_05Mar26;
+set a.long_gen_PEP_12Mar26;
 run;
 proc freq;table cald;run;
 
@@ -11,7 +11,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 40;
+%let nfit = 224;
 
 %let year_end = 2045.00 ;
 run;
@@ -137,7 +137,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /*-----------------------------------------*/
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
-%summary_all_options(options=0 1 99);
+%summary_all_options(options=0 1 2 3 4 5 6);
 
 
 
@@ -149,7 +149,7 @@ options notes source source2 mprint mlogic symbolgen;
 data d;
 set Master_summary;
 
-%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe_Jan2026.sas"; by cald;
+%include "C:\Users\loveleen\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe_Jan2026.sas"; by cald;
 
 *ZNASP targets from Genesis;
 
@@ -203,17 +203,17 @@ run;
 
 data e;
 set d;
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Observed data_FSW_Zimbabwe.sas"; by cald;
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Observed data_FSW_Zimbabwe.sas"; by cald;
 run;
 
 
-DATA A.Zim_pep_options_graphs_05Mar26;
+DATA A.Zim_pep_options_graphs_12Mar26;
 SET E;
 RUN;
 
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\PEP\Zim_calibration_05_03_26.doc" startpage=never; 
+ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\PEP\Zim_calibration_12_03_26.doc" startpage=never; 
 ods listing close;
 
 
