@@ -62,7 +62,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 
 	dcost				 ddaly 				n_tested_sw 			p_diag_sw 		p_onart_diag_sw		p_onart_vl1000_sw
 
-	n_prep_oral_plw 	n_prep_len_plw		n_new_vmmc1529m			n_sw_program_visit
+	n_prep_oral_plw 	 n_prep_len_plw		n_new_vmmc1529m			n_sw_program_visit			p_newp_ge1_
 ;
     /* Count number of variables */
     %let count = 0;
