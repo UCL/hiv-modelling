@@ -534,6 +534,7 @@ newp_seed = 7;
 								0.05  0.10 	0.30   0.60, 
 							  	0.25  0.25	0.25   0.25); * change sep22 for pop_wide_tld;
 							* dependent_on_time_step_length ;
+
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
 							* dependent_on_time_step_length ;
 * pr_art_init; 				%sample_uniform(pr_art_init, 0.5 0.7 0.9 0.95 1); 
@@ -2497,7 +2498,8 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 option = &s;
 
 
-if caldate_never_dot >= &year_interv then do;
+if caldate_never_dot >= &year_interv and option ne 99 then do;
+
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -2525,13 +2527,12 @@ who may be dead and hence have caldate{t} missing;
 
 	return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
 
-
 	 *Option 1 VMMC at 60%;
 	if option = 1 then do;
-		circ_inc_rate_year_i = 2;		
+		circ_inc_rate_year_i = 5;		
 	end;
 
-	 *Option 2 scale up of Len;
+	 *Option 2 scale up of Len in all KP;
 	if option = 2 then do;
 
 		prep_any_strategy=23; *this includes all KP;
@@ -2546,124 +2547,71 @@ who may be dead and hence have caldate{t} missing;
 		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
 	end;
 
-	
- 	*Option 2 - 20% coverage;
-	if option = 2 then do;
 
-		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
-
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
-		eff_rate_test_startprep_any = 0.2; 
-		eff_prob_prep_any_restart_choice = 0.2;
-		pref_prep_oral = 0.2;
-
-		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_oral_sio = pref_prep_oral;
-												 
-	end;
-
- 	*Option 3 - 30% coverage;
+	*Option 3: enhanced FSW program;
 	if option = 3 then do;
-
-		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
-
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 5 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
-		eff_rate_test_startprep_any = 0.4; 
-		eff_prob_prep_any_restart_choice = 0.4;
-		pref_prep_oral = 0.3;
-
-		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_oral_sio = pref_prep_oral;
-												 
+	* rate_engage_sw_program;	rate_engage_sw_program = 0.30; 
+	* rate_disengage_sw_program;rate_disengage_sw_program = 0.01;
+	* effect_sw_prog_newp;	   effect_sw_prog_newp		 =	effect_sw_prog_newp * fold_hi_sw_prog_newp;
+	* effect_sw_prog_6mtest;   effect_sw_prog_6mtest	 =	effect_sw_prog_6mtest * fold_hi_sw_prog_6mtest;
+	* effect_sw_prog_int;      effect_sw_prog_int		 = 	effect_sw_prog_int / fold_hi_sw_prog_int;
+	* effect_sw_prog_adh;      effect_sw_prog_adh		 = 	effect_sw_prog_adh * fold_hi_sw_prog_adh;
+	* effect_sw_prog_lossdiag; effect_sw_prog_lossdiag 	 =  effect_sw_prog_lossdiag / fold_hi_sw_prog_lossdiag;
+	* effect_sw_prog_prep_any; effect_sw_prog_prep_any   = 	effect_sw_prog_prep_any * fold_hi_sw_prog_prep;
+	* effect_sw_prog_pers_sti; effect_sw_prog_pers_sti   =	effect_sw_prog_pers_sti * fold_hi_sw_prog_sti;
 	end;
 
+	*Option 4: increase condom use;
+	if option=4 then do;
+		condom_incr_year_i = 1;
+	end;
 
-	 *Option 4 - 10% coverage with Len;
-	if option = 4 then do;
+	*Option 5: restore VMMC at 60%, scale up Len in all KP, increase condom use;
+	if option=5 then do;
+		circ_inc_rate_year_i = 5;	
 
-		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
-
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
-		eff_rate_test_startprep_any = 0.4; *double to allow for Len scale up;
-		eff_prob_prep_any_restart_choice = 0.2;*increase to allow for Len scale up;
-		pref_prep_oral = 0.1;
-
-		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_oral_sio = pref_prep_oral;
-
-
+		prep_any_strategy=23; *this includes all KP;
+		date_prep_oral_intro=&year_interv;									
 		date_prep_len_intro=&year_interv;	
+		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
+		*eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);					* Triple rate of starting oral PrEP compared to SQ;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
 		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;												 
-
-	end;
-
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;
+		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
 	
- 	*Option 5 - 20% coverage with Len;
-	if option = 5 then do;
+		condom_incr_year_i = 1;
+	end;		
 
-		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
+	*Option 6: restore VMMC at 60%, scale up Len in all KP, increase condom use, enhanced SW program;
+	if option=6 then do;
+		circ_inc_rate_year_i = 5;	
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
-		eff_rate_test_startprep_any = 0.4; 
-		eff_prob_prep_any_restart_choice = 0.3;
-		pref_prep_oral = 0.2;
-
-		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_oral_sio = pref_prep_oral;
-
+		prep_any_strategy=23; *this includes all KP;
+		date_prep_oral_intro=&year_interv;									
 		date_prep_len_intro=&year_interv;	
+		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		* Double rate of starting PrEP compared to SQ;
+		*eff_prob_prep_oral_b=min(1,3*prob_prep_oral_b);					* Triple rate of starting oral PrEP compared to SQ;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
 		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;												 
-												 
-	end;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		* Halve rate of stopping oral PrEP compared to SQ;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;
+		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	* Double rate of restarting PrEP after stopping by choice compared to SQ;		 
+	
+		condom_incr_year_i = 1;
 
- 	*Option 6 - 30% coverage with Len;
-	if option = 6 then do;
+	* rate_engage_sw_program;	rate_engage_sw_program = 0.30; 
+	* rate_disengage_sw_program;rate_disengage_sw_program = 0.01;
+	* effect_sw_prog_newp;	   effect_sw_prog_newp		 =	effect_sw_prog_newp * fold_hi_sw_prog_newp;
+	* effect_sw_prog_6mtest;   effect_sw_prog_6mtest	 =	effect_sw_prog_6mtest * fold_hi_sw_prog_6mtest;
+	* effect_sw_prog_int;      effect_sw_prog_int		 = 	effect_sw_prog_int / fold_hi_sw_prog_int;
+	* effect_sw_prog_adh;      effect_sw_prog_adh		 = 	effect_sw_prog_adh * fold_hi_sw_prog_adh;
+	* effect_sw_prog_lossdiag; effect_sw_prog_lossdiag 	 =  effect_sw_prog_lossdiag / fold_hi_sw_prog_lossdiag;
+	* effect_sw_prog_prep_any; effect_sw_prog_prep_any   = 	effect_sw_prog_prep_any * fold_hi_sw_prog_prep;
+	* effect_sw_prog_pers_sti; effect_sw_prog_pers_sti   =	effect_sw_prog_pers_sti * fold_hi_sw_prog_sti;
 
-		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
-
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 5 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
-		eff_rate_test_startprep_any = 0.5; 
-		eff_prob_prep_any_restart_choice = 0.4;
-		pref_prep_oral = 0.3;
-
-		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_oral_sio = pref_prep_oral;
-
-		date_prep_len_intro=&year_interv;	
-		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			* Halve rate of stopping LEN PrEP compared to SQ;												 
-
-
-												 
-	end;
-
+	end;		
  
 end;
 
@@ -4491,6 +4439,12 @@ if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
 end;
 
 
+* Reducing newp by 20% if condom incr =1;
+if caldate{t} >= &year_interv and condom_incr_year_i = 1 then do;
+	u=rand('uniform'); if u < 0.50 then do;newp=newp*0.80;newp=round(newp,1);end;
+end;
+
+
 * Condom intervention - removing the effect of condom provision and promotion for HIV Control baseline;
 *Impact on newp (impact on ep is above);
 xx=rand('uniform');
@@ -5076,7 +5030,9 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 	end;
 
+	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 
+end;
 
 
 	* SELF-TESTING;
@@ -23214,6 +23170,10 @@ data r1 ; set a ;
 *    Option 6;
 data r1 ; set a ;
 %run_update_r1(&year_interv,&year_interv+50,6);
+
+*    Option99;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,99);
 
 
 
