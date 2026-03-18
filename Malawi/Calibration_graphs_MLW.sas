@@ -4,7 +4,7 @@ libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa u
 ods listing;
 
 data y;
-set a.long_gen_mlw_22_02_2026;
+set a.long_gen_mlw_03_03_2026_package;
 run;
 proc freq;table cald option;run;
 
@@ -15,7 +15,7 @@ p_newp_ge1_ = p_newp_ge1;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 1368;
+%let nfit = 736;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -56,7 +56,11 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 	n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m			n_vmmc_all			p_mcirc				/*p_onart_cd4_l200*/
 	n_death_discount	 d_n_new_inf		p_newp_ge1_			n_new_inf_sw		n_sw_program_visit
 
-	dcost	ddaly n_tested_sw p_diag_sw p_onart_diag_sw	p_onart_vl1000_sw
+	dcost				 ddaly
+	n_tested_sw 		 p_diag_sw 			p_onart_diag_sw		p_onart_vl1000_sw
+	p_onart_cd4_l200	 p_newp_ge1			n_new_inf_sw		n_sw_program_visit
+	p_diag_w1524		 p_diag_msm			p_onart_w1524_		p_onart_sw			p_onart_msm
+
 ;
 
     /* Count number of variables */
@@ -138,7 +142,9 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /*-----------------------------------------*/
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
-%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 99);
+*%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 99);
+%summary_all_options(options=0 1 2 3 4 5 6  99);
+
 
 
 *turns log back on;
@@ -154,6 +160,9 @@ DATA A.MLW_options_graphs_22Feb26;
 SET d;
 RUN;
 
+DATA A.MLW_options_graphs_03_03_26_pack;
+SET d;
+RUN;
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\MLW_calibration_18_02_26.doc' startpage=never; 

@@ -4,8 +4,57 @@
 libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Mlw";
 
 data a;
-set a.Mlw_options_graphs_22Feb26;
+set a.MLW_options_graphs_03_03_26_pack;
 run;
+
+data b;
+set a;
+mean_incidence1549__3 = mean_incidence1549__3*10;
+p5_incidence1549__3 = p5_incidence1549__3 *10;
+p95_incidence1549__3 = p95_incidence1549__3 *10;
+	
+mean_incidence1549w_3 = mean_incidence1549w_3 *10;
+p5_incidence1549w_3 = p5_incidence1549w_3 * 10;
+p95_incidence1549w_3 = p95_incidence1549w_3 * 10;
+
+mean_incidence1549m_3 = mean_incidence1549m_3 *10;
+p5_incidence1549m_3 = p5_incidence1549m_3 * 10;
+p95_incidence1549m_3 = p95_incidence1549m_3 * 10;
+
+mean_incidence_agyw_3 = mean_incidence_agyw_3 *10;
+p5_incidence_agyw_3 = p5_incidence_agyw_3 * 10;
+p95_incidence_agyw_3 = p95_incidence_agyw_3 * 10;
+
+run;
+
+proc means;var 
+
+mean_incidence1549__3	p5_incidence1549__3			p95_incidence1549__3
+mean_incidence1549w_3	p5_incidence1549w_3			p95_incidence1549w_3
+mean_incidence1549m_3	p5_incidence1549m_3			p95_incidence1549m_3
+mean_incidence_agyw_3	p5_incidence_agyw_3			p95_incidence_agyw_3
+
+mean_p_diag_3  			p5_p_diag_3  				p95_p_diag_3
+mean_p_diag_w_3  		p5_p_diag_w_3  				p95_p_diag_w_3
+mean_p_diag_m_3 		p5_p_diag_m_3  				p95_p_diag_m_3
+mean_p_diag_w1524_3  	p5_p_diag_w1524_3  			p95_p_diag_w1524_3
+mean_p_diag_sw_3  		p5_p_diag_sw_3  			p95_p_diag_sw_3
+mean_p_diag_msm_3  		p5_p_diag_msm_3  			p95_p_diag_msm_3
+mean_p_onart_3  		p5_p_onart_3  				p95_p_onart_3
+mean_p_onart_w_3  		p5_p_onart_w_3  			p95_p_onart_w_3
+mean_p_onart_m_3  		p5_p_onart_m_3  			p95_p_onart_m_3
+mean_p_onart_w1524__3  	p5_p_onart_w1524__3  		p95_p_onart_w1524__3
+mean_p_onart_sw_3  		p5_p_onart_sw_3  			p95_p_onart_sw_3
+mean_p_onart_msm_3  	p5_p_onart_msm_3  			p95_p_onart_msm_3
+mean_n_vmmc_all_3  		p5_n_vmmc_all_3  			p95_n_vmmc_all_3
+mean_n_sw_program_visit_3 p5_n_sw_program_visit_3  	p95_n_sw_program_visit_3
+mean_n_onprep_agyw_3  	p5_n_onprep_agyw_3  		p95_n_onprep_agyw_3
+mean_n_onprep_w_3  		p5_n_onprep_w_3 			p95_n_onprep_w_3
+mean_n_onprep_m_3  		p5_n_onprep_m_3  			p95_n_onprep_m_3
+mean_n_onprep_sw_3  	p5_n_onprep_sw_3  			p95_n_onprep_sw_3
+mean_n_onprep_msm_3  	p5_n_onprep_msm_3  			p95_n_onprep_msm_3
+;run;
+
 
 /***Scenarios;
 0 = Min;
