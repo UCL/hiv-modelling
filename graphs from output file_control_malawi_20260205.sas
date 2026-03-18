@@ -497,15 +497,15 @@ proc print data=d;
 	where cald=2023;
 	var mean_incidence1549__0;
 run;
-* inc = 0.25702 in 2023 (165 runs). 10% less = 0.23132;
+* inc = 0.25356 in 2023 (206 runs). 10% less = 0.22820;
 
 proc print data=d;
 	where cald=2074;
 	var mean_incidence1549__0	mean_incidence1549__1	mean_incidence1549__2	mean_incidence1549__3	mean_incidence1549__4	mean_incidence1549__5	mean_incidence1549__6
 		mean_incidence1549__7	mean_incidence1549__8	mean_incidence1549__9	mean_incidence1549__99;
 run;
-* option 6 brings incidence below the threshold (165 runs) - condoms, vmmc, fsw-prep-mix, adh-supp, msm-program, fsw-program;
-* marginal with options 4 and 5 - need more runs;
+* option 6 brings incidence below the threshold (206 runs) - condoms, vmmc, fsw-prep-mix, adh-supp, msm-program, fsw-program;
+* constant package from 165 - 206 runs;
 
 * Incidence 15-64;
 proc sgplot data=d; 
