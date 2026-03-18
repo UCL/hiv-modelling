@@ -1161,7 +1161,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/Zim_parameters.sas";
+%include "/home/rmjllob/Zim_parameters_new.sas";
 
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
@@ -2522,7 +2522,6 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;
 
 		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
 
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
@@ -2543,11 +2542,10 @@ who may be dead and hence have caldate{t} missing;
 	if option = 2 then do;
 
 		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
-		eff_rate_test_startprep_any = 0.2; 
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 3 ;		
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.15;
+		eff_rate_test_startprep_any = 0.25; 
 		eff_prob_prep_any_restart_choice = 0.2;
 		pref_prep_oral = 0.2;
 
@@ -2563,12 +2561,11 @@ who may be dead and hence have caldate{t} missing;
 	if option = 3 then do;
 
 		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 5 ;		
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 4 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
-		eff_rate_test_startprep_any = 0.4; 
-		eff_prob_prep_any_restart_choice = 0.4;
+		eff_rate_test_startprep_any = 0.3; 
+		eff_prob_prep_any_restart_choice = 0.3;
 		pref_prep_oral = 0.3;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
@@ -2584,7 +2581,6 @@ who may be dead and hence have caldate{t} missing;
 	if option = 4 then do;
 
 		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
 
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
@@ -2610,12 +2606,11 @@ who may be dead and hence have caldate{t} missing;
 	if option = 5 then do;
 
 		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
-		eff_rate_test_startprep_any = 0.4; 
-		eff_prob_prep_any_restart_choice = 0.3;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 3 ;		
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.15;
+		eff_rate_test_startprep_any = 0.5; 
+		eff_prob_prep_any_restart_choice = 0.4;
 		pref_prep_oral = 0.2;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
@@ -2634,12 +2629,11 @@ who may be dead and hence have caldate{t} missing;
 	if option = 6 then do;
 
 		prep_oral_parameters_sio=1 ;
-		prep_any_strategy=20;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 5 ;		
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 4 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
-		eff_rate_test_startprep_any = 0.5; 
-		eff_prob_prep_any_restart_choice = 0.4;
+		eff_rate_test_startprep_any = 0.6; 
+		eff_prob_prep_any_restart_choice = 0.5;
 		pref_prep_oral = 0.3;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;

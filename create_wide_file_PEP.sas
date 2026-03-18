@@ -4,11 +4,7 @@
 libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data a;
-<<<<<<< HEAD
-set a.GenesisZim_12Mar26; 
-=======
 set a.genesis_zim_pep_12mar26; 
->>>>>>> 6dbb9470019e14d4643be40ace38f0c325b0b6ae
 if run=. then delete; 
 
 proc sort;
