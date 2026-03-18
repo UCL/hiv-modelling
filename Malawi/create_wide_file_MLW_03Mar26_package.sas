@@ -1,5 +1,5 @@
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 *turns log back on;
 *options notes source source2 mprint mlogic symbolgen;
 
@@ -390,6 +390,13 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * n_new_inf_sw;					n_new_inf_sw = s_primary_sw * 4 * sf;
 * n_sw_program_visit;			n_sw_program_visit = s_sw_program_visit * sf;* Note this is per three months to approximate number of SW reached;
 
+* p_diag_w1524;					if s_hiv1524w > 0 then p_diag_w1524 = (s_diag_w1519_+s_diag_w2024_)/(s_hiv1524w);
+* p_diag_msm;					if s_hiv_msm gt 0 then p_diag_msm = s_diag_msm / s_hiv_msm  ;
+* p_onart_w1524_;				if s_hiv1524w gt 0 then p_onart_w1524_ = (s_onart_w1519_ + s_onart_w2024_) / s_hiv1524w; *VCFeb2023;
+* p_onart_sw;					if s_hiv_sw gt 0 then p_onart_sw = s_onart_sw / s_hiv_sw; *VCFeb2023;
+* p_onart_msm;					if s_hiv_msm  > 0 then p_onart_msm = s_onart_msm / s_hiv_msm  ;
+
+
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
@@ -416,7 +423,8 @@ n_death_discount	 d_n_new_inf
 dcost	ddaly  cost dcost_fsw_services
 
 n_tested_sw 		 p_diag_sw 			p_onart_diag_sw 	p_onart_vl1000_sw
-p_onart_cd4_l200	 p_newp_ge1			n_new_inf_sw			n_sw_program_visit
+p_onart_cd4_l200	 p_newp_ge1			n_new_inf_sw		n_sw_program_visit
+p_diag_w1524		 p_diag_msm			p_onart_w1524_		p_onart_sw			p_onart_msm
 
 ;
 
