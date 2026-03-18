@@ -397,7 +397,7 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * p_onart_msm;					if s_hiv_msm  > 0 then p_onart_msm = s_onart_msm / s_hiv_msm  ;
 * prop_sw_program_visit;		prop_sw_program_visit = s_sw_program_visit / s_sw_1564 ;
 * n_prep_ever_1524w;		    n_prep_ever_1524w = (s_prep_oral_ever_1524w + s_prep_len_ever_1524w) * sf;
-* n_prep_oral_ever_sw;			n_prep_oral_ever_sw = (s_prep_oral_ever_sw + s_prep_len_ever_sw) * sf;
+* n_prep_ever_sw;				n_prep_ever_sw = (s_prep_oral_ever_sw + s_prep_len_ever_sw) * sf;
 * n_prep_any_ever_w;			n_prep_any_ever_w = s_prep_any_ever_w * sf;
 * n_prep_any_ever_m;			n_prep_any_ever_m = n_prep_ever - n_prep_any_ever_w;
 

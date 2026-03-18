@@ -27,7 +27,7 @@ p95_incidence_agyw_3 = p95_incidence_agyw_3 * 10;
 
 run;
 
-proc means;var 
+proc means mean;var 
 
 mean_incidence1549__3	p5_incidence1549__3			p95_incidence1549__3
 mean_incidence1549w_3	p5_incidence1549w_3			p95_incidence1549w_3
@@ -47,12 +47,13 @@ mean_p_onart_w1524__3  	p5_p_onart_w1524__3  		p95_p_onart_w1524__3
 mean_p_onart_sw_3  		p5_p_onart_sw_3  			p95_p_onart_sw_3
 mean_p_onart_msm_3  	p5_p_onart_msm_3  			p95_p_onart_msm_3
 mean_n_vmmc_all_3  		p5_n_vmmc_all_3  			p95_n_vmmc_all_3
-mean_n_sw_program_visit_3 p5_n_sw_program_visit_3  	p95_n_sw_program_visit_3
-mean_n_onprep_agyw_3  	p5_n_onprep_agyw_3  		p95_n_onprep_agyw_3
-mean_n_onprep_w_3  		p5_n_onprep_w_3 			p95_n_onprep_w_3
-mean_n_onprep_m_3  		p5_n_onprep_m_3  			p95_n_onprep_m_3
-mean_n_onprep_sw_3  	p5_n_onprep_sw_3  			p95_n_onprep_sw_3
-mean_n_onprep_msm_3  	p5_n_onprep_msm_3  			p95_n_onprep_msm_3
+mean_prop_sw_program_visit_3 p5_prop_sw_program_visit_3  	p95_prop_sw_program_visit_3
+mean_n_prep_ever_1524w_3  	p5_n_prep_ever_1524w_3 		p95_n_prep_ever_1524w_3
+mean_n_prep_any_ever_w_3  	p5_n_prep_any_ever_w_3 		p95_n_prep_any_ever_w_3
+mean_n_prep_any_ever_m_3  	p5_n_prep_any_ever_m_3 		p95_n_prep_any_ever_m_3
+mean_n_prep_ever_sw_3  	p5_n_prep_ever_sw_3  	p95_n_prep_ever_sw_3;
+
+
 ;run;
 
 
