@@ -1,5 +1,5 @@
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 *turns log back on;
 *options notes source source2 mprint mlogic symbolgen;
 
@@ -395,7 +395,11 @@ s_primary1524w = s_primary1519w + s_primary2024w;
 * p_onart_w1524_;				if s_hiv1524w gt 0 then p_onart_w1524_ = (s_onart_w1519_ + s_onart_w2024_) / s_hiv1524w; *VCFeb2023;
 * p_onart_sw;					if s_hiv_sw gt 0 then p_onart_sw = s_onart_sw / s_hiv_sw; *VCFeb2023;
 * p_onart_msm;					if s_hiv_msm  > 0 then p_onart_msm = s_onart_msm / s_hiv_msm  ;
-
+* prop_sw_program_visit;		prop_sw_program_visit = s_sw_program_visit / s_sw_1564 ;
+* n_prep_ever_1524w;		    n_prep_ever_1524w = (s_prep_oral_ever_1524w + s_prep_len_ever_1524w) * sf;
+* n_prep_oral_ever_sw;			n_prep_oral_ever_sw = (s_prep_oral_ever_sw + s_prep_len_ever_sw) * sf;
+* n_prep_any_ever_w;			n_prep_any_ever_w = s_prep_any_ever_w * sf;
+* n_prep_any_ever_m;			n_prep_any_ever_m = n_prep_ever - n_prep_any_ever_w;
 
 keep run 			 option				cald 				n_alive1564_		n_alive1564m		n_alive1564w	n_new_inf
 n_alive_m			 n_alive_w			n_alive				n_hivge15m			n_hivge15w		    n_hivge15_		n_hivge1564_
@@ -424,8 +428,8 @@ dcost	ddaly  cost dcost_fsw_services
 
 n_tested_sw 		 p_diag_sw 			p_onart_diag_sw 	p_onart_vl1000_sw
 p_onart_cd4_l200	 p_newp_ge1			n_new_inf_sw		n_sw_program_visit
-p_diag_w1524		 p_diag_msm			p_onart_w1524_		p_onart_sw			p_onart_msm
-
+p_diag_w1524		 p_diag_msm			p_onart_w1524_		p_onart_sw			p_onart_msm			prop_sw_program_visit
+n_prep_ever_1524w	 n_prep_ever_sw     n_prep_any_ever_w	n_prep_any_ever_m
 ;
 
 

@@ -58,9 +58,9 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 
 	dcost				 ddaly
 	n_tested_sw 		 p_diag_sw 			p_onart_diag_sw		p_onart_vl1000_sw
-	p_onart_cd4_l200	 p_newp_ge1			n_new_inf_sw		n_sw_program_visit
+	p_onart_cd4_l200	 p_newp_ge1			n_new_inf_sw		n_sw_program_visit	prop_sw_program_visit
 	p_diag_w1524		 p_diag_msm			p_onart_w1524_		p_onart_sw			p_onart_msm
-
+	n_prep_ever_1524w	 n_prep_ever_sw     n_prep_any_ever_w	n_prep_any_ever_m
 ;
 
     /* Count number of variables */
