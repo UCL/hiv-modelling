@@ -1,10 +1,14 @@
 
 *libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
+libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data a;
+<<<<<<< HEAD
 set a.GenesisZim_12Mar26; 
+=======
+set a.genesis_zim_pep_12mar26; 
+>>>>>>> 6dbb9470019e14d4643be40ace38f0c325b0b6ae
 if run=. then delete; 
 
 proc sort;
@@ -205,18 +209,13 @@ cost_condom_py=1030350/1000000;*FIXED COST;
 cost_FSW_services_pppy=132/1000000;*annual cost per year;
 cost_AdhSupp_pppy=7.89/1000000;* This cost is from MIHPSA Zim and is per client per year;
 
-cost_condoms = 0;if option in (99, 3) then cost_condoms = cost_condom_py;		* Fixed population-level py cost so scaling not needed;
+cost_condoms = cost_condom_py;		* Fixed population-level py cost so scaling not needed;
 dcost_condoms = cost_condoms * discount;
 
-cost_fsw_services=0;  
-cost_fsw_services = s_sw_program_visit * (60/1000000) * sf; *cost of FSW running at very low impact, condom provision only;
-if option in (99, 1, 2) then cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
-
+cost_fsw_services = s_sw_program_visit * cost_FSW_services_pppy * sf;
 dcost_fsw_services = cost_fsw_services * discount;
 
-
-
-cost_adh_support = 0; if option in (99 19) then cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
+cost_adh_support = s_diag * cost_AdhSupp_pppy * sf;* Assumes the cost is applied to everyone diagnosed;	
 dcost_adh_support = cost_adh_support * discount;
 
 
@@ -322,6 +321,10 @@ s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vm
 
 * prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;
 								if s_prep_any_elig = 0 then prop_elig_on_prep = 0;
+
+* prop_elig_on_oral_prep;		if s_prep_any_elig > 0 then prop_elig_on_oral_prep = (s_onprep_oral_m + s_onprep_oral_w)/ s_prep_any_elig ;
+								if s_prep_any_elig = 0 then prop_elig_on_oral_prep = 0;
+
 * n_prep_ever;					n_prep_ever = s_prep_any_ever * sf;
 
 * n_sw_1564;					n_sw_1564_ = s_sw_1564 * sf;
@@ -395,6 +398,7 @@ p_onart				 p_onart_m			p_onart_w			n_onart				n_onart_m			n_onart_w
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	n_onprep_w			n_onprep_m			n_onprep
 prop_elig_on_prep	 n_prep_ever		prop_1564_onprep	n_onprep_oral		n_onprep_cab		n_onprep_len
+prop_elig_on_oral_prep
 
 n_sw_1564_			 n_sw_1549_			p_w_1564_sw			p_w_1549_sw			prevalence_1564sw	incidence_1564sw
 p_onprep_sw			 n_onprep_sw
