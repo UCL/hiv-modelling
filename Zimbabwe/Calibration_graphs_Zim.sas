@@ -5,7 +5,7 @@ data y;
 *set a.long_gen_07Jan26;
 *set a.long_gen_06Feb26_package;
 *set a.long_gen_28Feb26_package;
-set a.long_gen_znasp_package;
+set a.long_gen_znasp_17Mar26;
 run;
 proc freq;table cald;run;
 
@@ -15,7 +15,7 @@ proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 *%let nfit = 2392;
-%let nfit = 248;
+%let nfit = 88;
 
 %let year_end = 2045.00 ;
 run;
@@ -157,12 +157,12 @@ options notes source source2 mprint mlogic symbolgen;
 data d;
 set Master_summary;
 
-%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026.sas"; by cald;
+%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Jan2026.sas"; by cald;
 run;
 
 data e;
 set d;
-%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_FSW_Zimbabwe.sas"; by cald;
+%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_FSW_Zimbabwe.sas"; by cald;
 
 *Draft ZNASP targets from Genesis;
 
@@ -221,7 +221,7 @@ SET E;
 RUN;
 */
 
-DATA A.Zim_options_graphs_znasp_pack;
+DATA A.Zim_options_graphs_znasp_17Mar26;
 SET E;
 RUN;
 
