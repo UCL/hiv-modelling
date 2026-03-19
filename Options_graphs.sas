@@ -4,7 +4,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
-set a.Zim_pep_options_graphs_12Mar26;
+set a.Zim_pep_options_graphs_16Mar26;
 run;
 
 
@@ -20,7 +20,7 @@ run;
 */
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\PEP\Zim_options_12_01_26.doc" startpage=never; 
+ods rtf file = "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\PEP\Zim_options_16_03_26.doc" startpage=never; 
 ods listing close;
 
 proc sgplot data=a; 
