@@ -1,5 +1,5 @@
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data y;
 set a.long_gen_PEP_16Mar26;
@@ -212,13 +212,19 @@ DATA A.Zim_pep_options_graphs_16Mar26;
 SET E;
 RUN;
 
+data e;
+set a.Zim_pep_options_graphs_16Mar26;
+run;
+
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\PEP\Zim_calibration_12_03_26.doc" startpage=never; 
+ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\PEP\Zim_calibration_16_03_26.doc" startpage=never; 
 ods listing close;
 
 
 ods html;
+
+
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Population (15+)";
@@ -738,7 +744,7 @@ run;quit;
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Number of VMMCs";
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025  by 2)        valueattrs=(size=10); 
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2035  by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 300000 by 25000)  valueattrs=(size=10);
 
 label mean_n_vmmc1549m_0    = "Model 15-49";
