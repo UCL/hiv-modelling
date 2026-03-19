@@ -4,8 +4,22 @@
 libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a1;
-set a.Zim_options_graphs_znasp_pack;
+set a.Zim_options_graphs_znasp_17Mar26;
 run;
+
+proc means;var
+mean_n_tested_0		p5_n_tested_0		p95_n_tested_0
+mean_n_onprep_5		p5_n_onprep_5		p95_n_onprep_5
+mean_n_onprep_w_5	p5_n_onprep_w_5		p95_n_onprep_w_5
+mean_n_onprep_m_5	p5_n_onprep_m_5		p95_n_onprep_m_5
+
+mean_n_prep_oral_plw_5		p5_n_prep_oral_plw_5		p95_n_prep_oral_plw_5
+mean_n_prep_len_plw_5		p5_n_prep_len_plw_5			p95_n_prep_len_plw_5
+mean_n_new_vmmc1529m_5		p5_n_new_vmmc1529m_5		p95_n_new_vmmc1529m_5
+mean_n_sw_program_visit_6	p5_n_sw_program_visit_6		p95_n_sw_program_visit_6
+;where cald=2030;
+run;
+
 
 data a;
 set a1;
