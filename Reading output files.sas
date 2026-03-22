@@ -10,7 +10,7 @@ data b.GenesisZim_19Mar26;
 set b;
 run;
 
-proc freq;table run;run;
+proc freq;table run cald;run;
 
 libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW\03Mar26_package";
 libname b "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
