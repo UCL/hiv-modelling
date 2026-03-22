@@ -1,8 +1,8 @@
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data y;
-set a.long_gen_PEP_16Mar26;
+set a.long_gen_PEP_19Mar26;
 run;
 proc freq;table cald;run;
 
@@ -11,7 +11,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 28;
+%let nfit = 112;
 
 %let year_end = 2045.00 ;
 run;
@@ -208,12 +208,12 @@ set d;
 run;
 
 
-DATA A.Zim_pep_options_graphs_16Mar26;
+DATA A.Zim_pep_options_graphs_19Mar26;
 SET E;
 RUN;
 
 data e;
-set a.Zim_pep_options_graphs_16Mar26;
+set a.Zim_pep_options_graphs_19Mar26;
 run;
 
 
