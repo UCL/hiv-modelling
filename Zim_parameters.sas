@@ -17,7 +17,7 @@
 								0.005 0.01 0.015, 
 								0.6    0.3   0.1);*Vale - 20220105;
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
-* fold_rate_decr_test_future;%sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5 0.75);
+* fold_rate_decr_test_future;*%sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5 0.75);*same as core;
 
 * rate_anc_inc; 			%sample_uniform(rate_anc_inc, 0.025 0.03 0.035); 
 * prob_test_2ndtrim;		%sample_uniform(prob_test_2ndtrim, 0.7 0.75 0.8 0.85 0.0 0.95 1.00);
@@ -83,5 +83,5 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) ;
 
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.10 0.20 0.30);
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.20 0.30 0.40);
 
