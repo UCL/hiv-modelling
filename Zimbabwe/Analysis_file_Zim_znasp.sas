@@ -2,7 +2,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 
 
 data a;
-set a.wide_Zim_17_02_2026_znasp;
+set a.wide_Zim_17_03_2026_znasp;
 run;
 
 
@@ -12,12 +12,13 @@ set a;
 /*
 ***Remember the options have automatically renumbered as a result of the create wide file macro;
 1 = Minimal;
-2 = Restore FSW program, VMMC, return interventions at status quo levels, scale up of Lenacapavir in all key populations;
-3 = Restore FSW program, VMMC, return interventions, CD4/VL testing at status quo levels, scale up of Lenacapavir in all key populations;
-4 = Restore FSW program, return interventions at status quo levels,scale up of VMMC, scale up of Lenacapavir in all key populations;
-5 = Restore FSW program, return interventions, CD4/VL testing at status quo levels, scale up of VMMC, scale up of Lenacapavir in all key populations;
-6 = Restore FSW program, VMMC, return interventions at status quo levels, scale up of Lenacapavir in all key populations;
-7 = SQ;
+2 = VMMC;
+3 = Scale up of Lenacapavir in all key populations;
+4 = Enhanced FSW program;
+5 = Condom increase;
+6 = VMMC, Len, Condom increase;
+7 = VMMC, Len, Condom increase, Enhanced FSW;
+8 = SQ;
 
 */
 
@@ -31,6 +32,8 @@ d_n_new_inf_20y_3  = n_new_inf_26_46_1 - n_new_inf_26_46_3;
 d_n_new_inf_20y_4  = n_new_inf_26_46_1 - n_new_inf_26_46_4;
 d_n_new_inf_20y_5  = n_new_inf_26_46_1 - n_new_inf_26_46_5;
 d_n_new_inf_20y_6  = n_new_inf_26_46_1 - n_new_inf_26_46_6;
+d_n_new_inf_20y_7  = n_new_inf_26_46_1 - n_new_inf_26_46_7;
+
 
 * 50 years;
 d_n_new_inf_50y_2  = n_new_inf_26_76_1 - n_new_inf_26_76_2;
@@ -38,6 +41,8 @@ d_n_new_inf_50y_3  = n_new_inf_26_76_1 - n_new_inf_26_76_3;
 d_n_new_inf_50y_4  = n_new_inf_26_76_1 - n_new_inf_26_76_4;
 d_n_new_inf_50y_5  = n_new_inf_26_76_1 - n_new_inf_26_76_5;
 d_n_new_inf_50y_6  = n_new_inf_26_76_1 - n_new_inf_26_76_6;
+d_n_new_inf_50y_7  = n_new_inf_26_76_1 - n_new_inf_26_76_7;
+
 
 *Deaths;
 
@@ -47,6 +52,8 @@ d_n_death_hivrel_20y_3  = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_3;
 d_n_death_hivrel_20y_4  = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_4;
 d_n_death_hivrel_20y_5  = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_5;
 d_n_death_hivrel_20y_6  = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_6;
+d_n_death_hivrel_20y_7  = n_death_hivrel_26_46_1 - n_death_hivrel_26_46_7;
+
 
 * 50 years;
 d_n_death_hivrel_50y_2  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_2;
@@ -54,28 +61,30 @@ d_n_death_hivrel_50y_3  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_3;
 d_n_death_hivrel_50y_4  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_4;
 d_n_death_hivrel_50y_5  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_5;
 d_n_death_hivrel_50y_6  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_6;
+d_n_death_hivrel_50y_7  = n_death_hivrel_26_76_1 - n_death_hivrel_26_76_7;
+
 
 *Difference in number of new infections over 20 and 50 years;
 *Using output statement in order to merge the 3 year groups later);
 proc means data=b  mean;var 
 d_n_new_inf_20y_2		d_n_new_inf_20y_3		d_n_new_inf_20y_4		d_n_new_inf_20y_5	
-d_n_new_inf_20y_6 		;
+d_n_new_inf_20y_6 		d_n_new_inf_20y_7		;
 output out=means_new_inf_20y mean=;
 run;
 proc means data=b  mean;var 
 d_n_new_inf_50y_2		d_n_new_inf_50y_3		d_n_new_inf_50y_4		d_n_new_inf_50y_5	
-d_n_new_inf_50y_6 		;
+d_n_new_inf_50y_6		d_n_new_inf_50y_7 		;
 output out=means_new_inf_50y mean=;
 run;
 
 proc means data=b  mean;var 
 d_n_death_hivrel_20y_2	d_n_death_hivrel_20y_3		d_n_death_hivrel_20y_4		d_n_death_hivrel_20y_5	
-d_n_death_hivrel_20y_6 	;
+d_n_death_hivrel_20y_6	d_n_death_hivrel_20y_7 	;
 output out=means_death_hivrel_20y mean=;
 run;
 proc means data=b  mean;var 
 d_n_death_hivrel_50y_2	d_n_death_hivrel_50y_3		d_n_death_hivrel_50y_4		d_n_death_hivrel_50y_5	
-d_n_death_hivrel_50y_6 	;
+d_n_death_hivrel_50y_6	d_n_death_hivrel_50y_7 	;
 output out=means_death_hivrel_50y mean=;
 run;
 
@@ -111,6 +120,8 @@ diff_dcost_20y_3 = dcost_26_46_3 - dcost_26_46_1;
 diff_dcost_20y_4 = dcost_26_46_4 - dcost_26_46_1;
 diff_dcost_20y_5 = dcost_26_46_5 - dcost_26_46_1;
 diff_dcost_20y_6 = dcost_26_46_6 - dcost_26_46_1;
+diff_dcost_20y_7 = dcost_26_46_7 - dcost_26_46_1;
+
 
 *50 years;
 diff_dcost_50y_2 = dcost_26_76_2 - dcost_26_76_1;
@@ -118,6 +129,8 @@ diff_dcost_50y_3 = dcost_26_76_3 - dcost_26_76_1;
 diff_dcost_50y_4 = dcost_26_76_4 - dcost_26_76_1;
 diff_dcost_50y_5 = dcost_26_76_5 - dcost_26_76_1;
 diff_dcost_50y_6 = dcost_26_76_6 - dcost_26_76_1;
+diff_dcost_50y_7 = dcost_26_76_7 - dcost_26_76_1;
+
 
 *** discounted new infections;
 * 20 years;
@@ -126,6 +139,8 @@ diff_dnewinf_20y_3  = d_n_new_inf_26_46_1 - d_n_new_inf_26_46_3;
 diff_dnewinf_20y_4  = d_n_new_inf_26_46_1 - d_n_new_inf_26_46_4;
 diff_dnewinf_20y_5  = d_n_new_inf_26_46_1 - d_n_new_inf_26_46_5;
 diff_dnewinf_20y_6  = d_n_new_inf_26_46_1 - d_n_new_inf_26_46_6;
+diff_dnewinf_20y_7  = d_n_new_inf_26_46_1 - d_n_new_inf_26_46_7;
+
 
 * 50 years;
 diff_dnewinf_50y_2  = d_n_new_inf_26_76_1 - d_n_new_inf_26_76_2;
@@ -133,6 +148,8 @@ diff_dnewinf_50y_3  = d_n_new_inf_26_76_1 - d_n_new_inf_26_76_3;
 diff_dnewinf_50y_4  = d_n_new_inf_26_76_1 - d_n_new_inf_26_76_4;
 diff_dnewinf_50y_5  = d_n_new_inf_26_76_1 - d_n_new_inf_26_76_5;
 diff_dnewinf_50y_6  = d_n_new_inf_26_76_1 - d_n_new_inf_26_76_6;
+diff_dnewinf_50y_7  = d_n_new_inf_26_76_1 - d_n_new_inf_26_76_7;
+
 
 *difference in discounted dalys (dalys averted);
 * 20 years;
@@ -142,6 +159,8 @@ diff_ddaly_20y_3  = ddaly_26_46_1 - ddaly_26_46_3;
 diff_ddaly_20y_4  = ddaly_26_46_1 - ddaly_26_46_4;
 diff_ddaly_20y_5  = ddaly_26_46_1 - ddaly_26_46_5;
 diff_ddaly_20y_6  = ddaly_26_46_1 - ddaly_26_46_6;
+diff_ddaly_20y_7  = ddaly_26_46_1 - ddaly_26_46_7;
+
 
 *50 years;
 diff_ddaly_50y_2  = ddaly_26_76_1 - ddaly_26_76_2;
@@ -149,6 +168,8 @@ diff_ddaly_50y_3  = ddaly_26_76_1 - ddaly_26_76_3;
 diff_ddaly_50y_4  = ddaly_26_76_1 - ddaly_26_76_4;
 diff_ddaly_50y_5  = ddaly_26_76_1 - ddaly_26_76_5;
 diff_ddaly_50y_6  = ddaly_26_76_1 - ddaly_26_76_6;
+diff_ddaly_50y_7  = ddaly_26_76_1 - ddaly_26_76_7;
+
 
 *net dalys using $300 - converts costs into DALYs;
 *20 years;
@@ -158,6 +179,8 @@ netdalys_20y_3 =  ddaly_26_46_3 + (dcost_26_46_3)/0.0003;
 netdalys_20y_4 =  ddaly_26_46_4 + (dcost_26_46_4)/0.0003;
 netdalys_20y_5 =  ddaly_26_46_5 + (dcost_26_46_5)/0.0003;
 netdalys_20y_6 =  ddaly_26_46_6 + (dcost_26_46_6)/0.0003;
+netdalys_20y_7 =  ddaly_26_46_7 + (dcost_26_46_7)/0.0003;
+
 
 *net dalys averted;
 diff_netdalys_20y_2 = netdalys_20y_2 - netdalys_20y_1; *take absolute number;
@@ -165,6 +188,8 @@ diff_netdalys_20y_3 = netdalys_20y_3 - netdalys_20y_1;
 diff_netdalys_20y_4 = netdalys_20y_4 - netdalys_20y_1;
 diff_netdalys_20y_5 = netdalys_20y_5 - netdalys_20y_1;
 diff_netdalys_20y_6 = netdalys_20y_6 - netdalys_20y_1;
+diff_netdalys_20y_7 = netdalys_20y_7 - netdalys_20y_1;
+
 
 *50 years;
 netdalys_50y_1 =  ddaly_26_76_1 + (dcost_26_76_1)/0.0003;
@@ -173,6 +198,8 @@ netdalys_50y_3 =  ddaly_26_76_3 + (dcost_26_76_3)/0.0003;
 netdalys_50y_4 =  ddaly_26_76_4 + (dcost_26_76_4)/0.0003;
 netdalys_50y_5 =  ddaly_26_76_5 + (dcost_26_76_5)/0.0003;
 netdalys_50y_6 =  ddaly_26_76_6 + (dcost_26_76_6)/0.0003;
+netdalys_50y_7 =  ddaly_26_76_7 + (dcost_26_76_7)/0.0003;
+
 
 *net dalys averted;
 diff_netdalys_50y_2 = netdalys_50y_2 - netdalys_50y_1; *take absolute number;
@@ -180,6 +207,8 @@ diff_netdalys_50y_3 = netdalys_50y_3 - netdalys_50y_1;
 diff_netdalys_50y_4 = netdalys_50y_4 - netdalys_50y_1;
 diff_netdalys_50y_5 = netdalys_50y_5 - netdalys_50y_1;
 diff_netdalys_50y_6 = netdalys_50y_6 - netdalys_50y_1;
+diff_netdalys_50y_7 = netdalys_50y_7 - netdalys_50y_1;
+
 
 ***INSTEAD OF CALCULATING THE MEAN OF THE MEANS, TAKE MEAN COSTS AND DIVIDE BY MEAN DALYS MANUALLY;
 ***THIS MEANS NOT USING THE ICER OR COST PER INFECTION AVERTED CODE;
@@ -191,6 +220,8 @@ ICER_20y_3 = (diff_dcost_20y_3/diff_ddaly_20y_3)*1000000;
 ICER_20y_4 = (diff_dcost_20y_4/diff_ddaly_20y_4)*1000000;
 ICER_20y_5 = (diff_dcost_20y_5/diff_ddaly_20y_5)*1000000;
 ICER_20y_6 = (diff_dcost_20y_6/diff_ddaly_20y_6)*1000000;
+ICER_20y_7 = (diff_dcost_20y_7/diff_ddaly_20y_7)*1000000;
+
 
 * 50 years;
 ICER_50y_2 = (diff_dcost_50y_2/diff_ddaly_50y_2)*1000000;
@@ -198,6 +229,8 @@ ICER_50y_3 = (diff_dcost_50y_3/diff_ddaly_50y_3)*1000000;
 ICER_50y_4 = (diff_dcost_50y_4/diff_ddaly_50y_4)*1000000;
 ICER_50y_5 = (diff_dcost_50y_5/diff_ddaly_50y_5)*1000000;
 ICER_50y_6 = (diff_dcost_50y_6/diff_ddaly_50y_6)*1000000;
+ICER_50y_7 = (diff_dcost_50y_7/diff_ddaly_50y_7)*1000000;
+
 
 ***Cost per infection averted;
 * 20 years;
@@ -206,6 +239,8 @@ cost_inf_avtd_20y_3 = (diff_dcost_20y_3/diff_dnewinf_20y_3)*1000000;
 cost_inf_avtd_20y_4 = (diff_dcost_20y_4/diff_dnewinf_20y_4)*1000000;
 cost_inf_avtd_20y_5 = (diff_dcost_20y_5/diff_dnewinf_20y_5)*1000000;
 cost_inf_avtd_20y_6 = (diff_dcost_20y_6/diff_dnewinf_20y_6)*1000000;
+cost_inf_avtd_20y_7 = (diff_dcost_20y_7/diff_dnewinf_20y_7)*1000000;
+
 
 * 50 years;
 cost_inf_avtd_50y_2 = (diff_dcost_50y_2/diff_dnewinf_50y_2)*1000000;
@@ -213,51 +248,53 @@ cost_inf_avtd_50y_3 = (diff_dcost_50y_3/diff_dnewinf_50y_3)*1000000;
 cost_inf_avtd_50y_4 = (diff_dcost_50y_4/diff_dnewinf_50y_4)*1000000;
 cost_inf_avtd_50y_5 = (diff_dcost_50y_5/diff_dnewinf_50y_5)*1000000;
 cost_inf_avtd_50y_6 = (diff_dcost_50y_6/diff_dnewinf_50y_6)*1000000;
+cost_inf_avtd_50y_7 = (diff_dcost_50y_7/diff_dnewinf_50y_7)*1000000;
+
 
 
 ***Difference in discounted costs;
 proc means data=c  mean;var 
 diff_dcost_20y_2		diff_dcost_20y_3		diff_dcost_20y_4		diff_dcost_20y_5	
-diff_dcost_20y_6 		;
+diff_dcost_20y_6 		diff_dcost_20y_7		;
 output out=means_costs_20y mean=;
 run;
 proc means data=c  mean;var 
 diff_dcost_50y_2 		diff_dcost_50y_3		diff_dcost_50y_4		diff_dcost_50y_5	
-diff_dcost_50y_6 		;
+diff_dcost_50y_6		diff_dcost_50y_7 		;
 output out=means_costs_50y mean=;
 run;
 
 ***DALYs averted;
 proc means data=c  mean;var 
 diff_ddaly_20y_2	diff_ddaly_20y_3		diff_ddaly_20y_4		diff_ddaly_20y_5	
-diff_ddaly_20y_6 		;
+diff_ddaly_20y_6	diff_ddaly_20y_7 		;
 output out=means_dalys_20y mean=;
 run;
 proc means data=c  mean;var 
 diff_ddaly_50y_2	diff_ddaly_50y_3		diff_ddaly_50y_4		diff_ddaly_50y_5	
-diff_ddaly_50y_6 		;
+diff_ddaly_50y_6	diff_ddaly_50y_7 		;
 output out=means_dalys_50y mean=;
 run;
 
 proc means data=c  mean;var 
 icer_20y_2	icer_20y_3		icer_20y_4		icer_20y_5	
-icer_20y_6 		;
+icer_20y_6	icer_20y_7 		;
 output out=means_icer_20y mean=;
 run;
 proc means data=c  mean;var 
 icer_50y_2	icer_50y_3		icer_50y_4		icer_50y_5	
-icer_50y_6 		;
+icer_50y_6 	icer_50y_7	;
 output out=means_icer_50y mean=;
 run;
 
 proc means data=c  mean;var 
 diff_netdalys_20y_2		diff_netdalys_20y_3		diff_netdalys_20y_4		diff_netdalys_20y_5	
-diff_netdalys_20y_6 		;
+diff_netdalys_20y_6		diff_netdalys_20y_7 		;
 output out=means_diff_netdalys_20y mean=;
 run;
 proc means data=c  mean;var 
-diff_netdalys_50y_2	diff_netdalys_50y_3		diff_netdalys_50y_4		diff_netdalys_50y_5	
-diff_netdalys_50y_6 	;
+diff_netdalys_50y_2		diff_netdalys_50y_3		diff_netdalys_50y_4		diff_netdalys_50y_5	
+diff_netdalys_50y_6		diff_netdalys_50y_7 	;
 output out=means_diff_netdalys_50y mean=;
 run;
 
@@ -291,23 +328,23 @@ run;
 
 proc means data=c  mean;var 
 diff_dnewinf_20y_2		diff_dnewinf_20y_3		diff_dnewinf_20y_4		diff_dnewinf_20y_5	
-diff_dnewinf_20y_6 		;
+diff_dnewinf_20y_6		diff_dnewinf_20y_7 		;
 output out=means_dnewinf_20y mean=;
 run;
 proc means data=c  mean;var 
 diff_dnewinf_50y_2		diff_dnewinf_50y_3		diff_dnewinf_50y_4		diff_dnewinf_50y_5	
-diff_dnewinf_50y_6 		;
+diff_dnewinf_50y_6		diff_dnewinf_50y_7 		;
 output out=means_dnewinf_50y mean=;
 run;
 ***Cost per infection averted;
 proc means data=c  mean;var 
 cost_inf_avtd_20y_2		cost_inf_avtd_20y_3		cost_inf_avtd_20y_4		cost_inf_avtd_20y_5	
-cost_inf_avtd_20y_6 		;
+cost_inf_avtd_20y_6		cost_inf_avtd_20y_7 		;
 output out=means_inf_avt_20y mean=;
 run;
 proc means data=c  mean;var 
 cost_inf_avtd_50y_2		cost_inf_avtd_50y_3		cost_inf_avtd_50y_4		cost_inf_avtd_50y_5	
-cost_inf_avtd_50y_6 		;
+cost_inf_avtd_50y_6		cost_inf_avtd_50y_7 		;
 output out=means_inf_avt_50y mean=;
 run;
 
@@ -359,7 +396,7 @@ diff_cost_26y_20 = cost_26_20 - cost_26_1;
 */
 
 
-%macro diff_cost(start_y=26, end_y=46, start_i=2, end_i=20);
+%macro diff_cost(start_y=26, end_y=46, start_i=2, end_i=7);
 
 %do y = &start_y %to &end_y;
   %do i = &start_i %to &end_i;
@@ -370,7 +407,7 @@ diff_cost_26y_20 = cost_26_20 - cost_26_1;
 %mend diff_cost;
 
 ***calls the macro;
-%diff_cost(start_y=26, end_y=46, start_i=2, end_i=6);
+%diff_cost(start_y=26, end_y=46, start_i=2, end_i=7);
 
 proc means data=budget mean;var 
 cost_26_1 cost_27_1 cost_28_1 cost_29_1 cost_30_1 cost_31_1 cost_32_1 cost_33_1 cost_34_1 cost_35_1 cost_36_1 cost_37_1 
@@ -450,35 +487,48 @@ cost_41_6 = cost_41		cost_42_6 = cost_42		cost_43_6 = cost_43		cost_44_6 = cost_
 cost_46_6 = cost_46;
 run;
 
+proc means data=budget mean;var 
+cost_26_7 cost_27_7 cost_28_7 cost_29_7 cost_30_7 cost_31_7 cost_32_7 cost_33_7 cost_34_7 cost_35_7 cost_36_7 cost_37_7 
+cost_38_7 cost_39_7 cost_40_7 cost_41_7 cost_42_7 cost_43_7 cost_44_7 cost_45_7 cost_46_7;
+output out=sc7 mean=;run;
+data sc7; set sc7; group=7;
+rename 
+cost_26_7 = cost_26		cost_27_7 = cost_27		cost_28_7 = cost_28		cost_29_7 = cost_29		cost_30_7 = cost_30
+cost_31_7 = cost_31		cost_32_7 = cost_32		cost_33_7 = cost_33		cost_34_7 = cost_34		cost_35_7 = cost_35
+cost_36_7 = cost_36		cost_37_7 = cost_37		cost_38_7 = cost_38		cost_39_7 = cost_39		cost_40_7 = cost_40
+cost_41_7 = cost_41		cost_42_7 = cost_42		cost_43_7 = cost_43		cost_44_7 = cost_44		cost_45_7 = cost_45
+cost_46_7 = cost_46;
+run;
+
 
 data final_means;
-set sc1 sc2 sc3 sc4 sc5 sc6 ;
+set sc1 sc2 sc3 sc4 sc5 sc6 sc7;
 run;
 proc print;var group cost_26-cost_46;
 run;
 
 proc means data=budget mean;var
-diff_cost_26y_2-diff_cost_26y_6
-diff_cost_27y_2-diff_cost_27y_6
-diff_cost_28y_2-diff_cost_28y_6
-diff_cost_29y_2-diff_cost_29y_6
-diff_cost_30y_2-diff_cost_30y_6
-diff_cost_31y_2-diff_cost_31y_6
-diff_cost_32y_2-diff_cost_32y_6
-diff_cost_33y_2-diff_cost_33y_6
-diff_cost_34y_2-diff_cost_34y_6
-diff_cost_35y_2-diff_cost_35y_6
-diff_cost_36y_2-diff_cost_36y_6
-diff_cost_37y_2-diff_cost_37y_6
-diff_cost_38y_2-diff_cost_38y_6
-diff_cost_39y_2-diff_cost_39y_6
-diff_cost_40y_2-diff_cost_40y_6
-diff_cost_41y_2-diff_cost_41y_6
-diff_cost_42y_2-diff_cost_42y_6
-diff_cost_43y_2-diff_cost_43y_6
-diff_cost_44y_2-diff_cost_44y_6
-diff_cost_45y_2-diff_cost_45y_6
-diff_cost_46y_2-diff_cost_46y_6;
+diff_cost_26y_2-diff_cost_26y_7
+diff_cost_27y_2-diff_cost_27y_7
+diff_cost_28y_2-diff_cost_28y_7
+diff_cost_29y_2-diff_cost_29y_7
+diff_cost_30y_2-diff_cost_30y_7
+diff_cost_31y_2-diff_cost_31y_7
+diff_cost_32y_2-diff_cost_32y_7
+diff_cost_33y_2-diff_cost_33y_7
+diff_cost_34y_2-diff_cost_34y_7
+diff_cost_35y_2-diff_cost_35y_7
+diff_cost_36y_2-diff_cost_36y_7
+diff_cost_37y_2-diff_cost_37y_7
+diff_cost_38y_2-diff_cost_38y_7
+diff_cost_39y_2-diff_cost_39y_7
+diff_cost_40y_2-diff_cost_40y_7
+diff_cost_41y_2-diff_cost_41y_7
+diff_cost_42y_2-diff_cost_42y_7
+diff_cost_43y_2-diff_cost_43y_7
+diff_cost_44y_2-diff_cost_44y_7
+diff_cost_45y_2-diff_cost_45y_7
+diff_cost_46y_2-diff_cost_46y_7;
 output out=diff_costs mean=;run;
 
 proc transpose data=diff_costs out=diff_costs_long name=varname;run;
@@ -499,11 +549,5 @@ proc transpose data=diff_costs_long_1 out=final_diff_costs(drop=_name_)
   id year;
   var col1;
 run;
-/*
-**REMOVE 2 AND 19;
-data final;
-set final_diff_costs;
-if group in (2,19) then delete;
-run;
-*/
+
 proc print;var group y_26-y_46;run;
