@@ -1,10 +1,10 @@
 
 ***THIS PROGRAM IS USED TO COMPARE GRAPHS OF THE DIFFERENT OPTIONS USING DATASET CREATED FROM CALIBRATION GRAPHS PROGRAM;
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a1;
-set a.Zim_options_graphs_znasp_pack;
+set a.Zim_options_graphs_znasp_17Mar26;
 run;
 
 data a;
@@ -358,7 +358,7 @@ label mean_p_onprep_sw_6 = "VMMC, PrEP, condoms, enhanced FSW program";
 
 series  x=cald y=mean_p_onprep_sw_99/	lineattrs = (color=black thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_0/	lineattrs = (color=red thickness = 2 pattern=solid); 
-series  x=cald y=mean_p_onprep_sw_1/	lineattrs = (color=blue thickness = 2 pattern=solid);
+*series  x=cald y=mean_p_onprep_sw_1/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_3/	lineattrs = (color=teal thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_4/	lineattrs = (color=orange thickness = 2 pattern=solid);

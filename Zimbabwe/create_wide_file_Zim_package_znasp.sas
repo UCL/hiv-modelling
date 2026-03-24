@@ -3,15 +3,22 @@
 
 libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
-data a;
-set a.Genesis_Zim_znasp_17Mar26; 
+data a1;
+set a.genesis_zim_znasp_17mar26; 
 if run=. then delete; 
-
 proc sort;
 by run cald option;run;
 
-proc freq;table cald option;run;
+data a2;
+set a.GenesisZim_znasp_17Mar26a;
+proc sort;
+by run cald option;run;
 
+data a;
+set a1 a2;
+proc sort;
+by run cald option;run;
+proc freq;table cald option;run;
 
 ***zim specific;
 data sf;
@@ -420,10 +427,10 @@ set y;
 run;
 
 
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data y;
-set a.long_gen_znasp_package;
+set a.long_gen_znasp_package_17Mar26;
 run; 
 
 
@@ -561,6 +568,6 @@ dcost ddaly cost
 proc sort; by run;run;
 
 
-data a.wide_Zim_28_02_2026_package;
+data a.wide_Zim_17_03_2026_znasp;
 set wide_outputs  ;  
 by run;run; 
