@@ -666,7 +666,6 @@ newp_seed = 7;
 						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 5 10);
 							  end;
 
-
 ***Focussing on Zim only;
 ***Women at the 'edge of sex work;
 ***(women who don't consider themselves as SW but have concurrent partners with whom they exchange sex for e.g. paying for lifestyle);
@@ -674,7 +673,7 @@ newp_seed = 7;
 
 * WOMEN AT THE EDGE OF SEX WORK (ESW);
 * base_rate_esw;				%sample(base_rate_esw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2); *slightly higher than SW (look in parameter file);
-* base_rate_stop_sexwork;		%sample_uniform(base_rate_stop_sexwork, 0.03 0.05 0.10); *longer duration than SW;
+* base_rate_stop_sexwork;		%sample_uniform(base_rate_stop_esexwork, 0.001 0.005 0.01); *longer duration than SW;
 
 * esw_trans_matrix;   		  %sample(esw_trans_matrix, 1 2, 0.70 0.30);
 
@@ -1258,7 +1257,7 @@ end;
 ***ESW trans matrices;
 *Group 1: 0 newp;
 *Group 2: 1-3 newp;
-*Group 3: 3-8 newp;
+*Group 3: 4-8 newp;
 if esw_trans_matrix=1 then do;
 p_esw_init_newp_g1=0.10; p_esw_init_newp_g2=0.89; p_esw_init_newp_g3= 0.01; 
 
@@ -4190,7 +4189,7 @@ end;
 
 */
 
-***SW;***START HERE;
+***SW;
 
 if t ge 2  then do;
 if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
@@ -4213,8 +4212,11 @@ if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 	* effect of previously having been a sex worker on becoming a sex worker;
 	if ever_sw = 1 then prob_becoming_sw = prob_becoming_sw * rr_sw_prev_sw;
 
-	e = rand('uniform');
+	e = rand('uniform');f = rand('uniform');
 	if e < prob_becoming_sw then sw = 1;
+	if sw ne 1 and f < prob_becoming_sw then esw = 1;
+
+
 
 	***currently SW are no more likely to be willing to take prep than gen pop (because add_prep_any_uptake_sw=0) but we may decide to change;
 	if sw = 1 and ever_sw ne 1 and prep_any_willing = 0 then do;
@@ -4247,8 +4249,6 @@ if t ge 2 and  sw_tm1 ne 1 and sw=1 then do;
 	if ever_sw=1 then date_restart_sw=caldate{t}; 
 end;
 
-
-
 if sw=1 then  ever_sw = 1;
 
 * sw newp levels are 
@@ -4258,6 +4258,25 @@ if sw=1 then  ever_sw = 1;
 4   newp 21-50
 5   newp 51-150
 ;
+
+*initial distribution of newp for esw (need to define tm1 here in order to define number of current partners below);
+if t ge 2 and  esw_tm1 ne 1 and esw=1 then do; 
+	e=rand('uniform');
+	if e < p_esw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 3;
+	if (p_sw_init_newp_g1+p_sw_init_newp_g2) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) then newp_tm1 = 8; 
+	if ever_esw ne 1 then do; 
+		date_start_esw = caldate{t}; age_deb_esw=age;
+	end; 
+	if ever_esw=1 then date_restart_esw=caldate{t}; 
+end;
+
+if esw=1 then  ever_esw = 1;
+* esw newp levels are 
+1 	newp = 0
+2   newp 1-3
+3   newp 4-8
+;
+
 
 * dependent_on_time_step_length ;
 rate_stop_sexwork = base_rate_stop_sexwork; if age >= 40 then rate_stop_sexwork = rate_stop_sexwork * age_effect_stop_sexwork;
@@ -4294,6 +4313,42 @@ if date_stop_sw=caldate{t} then age_stop_sw=age;
 
 if ever_sw=1 then tot_dur_sw=0;
 
+
+***rate stop sex work for esw;
+rate_stop_esexwork = base_rate_stop_esexwork; if age >= 40 then rate_stop_esexwork = rate_stop_esexwork * age_effect_stop_sexwork;
+if t ge 2 then do;
+	if esw_tm1=1 then do;
+		e=rand('uniform');
+		if e < rate_stop_esexwork/(sqrt(rred_rc_base)) or age ge 50 then do; 
+
+			esw=0; date_stop_esw=caldate{t};
+			if sw_program_visit=1 then do;		
+				sw_program_visit=0; 
+				date_last_sw_prog_vis=caldate{t};
+				sw_test_6mthly=0;
+				eff_rate_persist_sti = rate_persist_sti;
+				eff_esw_higher_int = esw_higher_int;
+				*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
+				eff_esw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag ; 
+
+				eff_rate_test_startprep_any=rate_test_startprep_any;
+				eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
+				eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
+				eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
+				eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
+				eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+
+			end;
+
+		end;
+	end;
+end;
+
+age_stop_esw=.;
+if date_stop_esw=caldate{t} then age_stop_esw=age;
+
+if ever_esw=1 then tot_dur_esw=0;
+
 ***Duration of active sw;
 act_dur_sw=0; ***duration of current period of sw;
 if sw=1 then do;
@@ -4306,6 +4361,20 @@ end;
 if ever_sw=1 then do;
 	if sw=1 then tot_dur_eversw=caldate{t}-date_start_sw;
 	if sw ne 1 then tot_dur_eversw=date_stop_sw-date_start_sw;
+end;
+
+***Duration of active esw;
+act_dur_esw=0; ***duration of current period of esw;
+if esw=1 then do;
+	if date_restart_esw =. then act_dur_esw = (caldate{t}-date_start_esw);
+	if date_restart_esw ne . then act_dur_esw = (caldate{t}-date_restart_esw);
+	tot_dur_esw=caldate{t}-date_start_esw;
+end;
+
+***Total duration of all sw, inc inactive;
+if ever_esw=1 then do;
+	if esw=1 then tot_dur_everesw=caldate{t}-date_start_esw;
+	if esw ne 1 then tot_dur_everesw=date_stop_esw-date_start_esw;
 end;
 
 
@@ -4349,6 +4418,39 @@ if age > 30 then newp = min(30,newp);
 end;
 
 
+* transitions between levels for esw * dependent_on_time_step_length ;
+if esw = 1 then do;
+
+* sw newp levels are 
+1 	newp = 0
+2   newp 1-3
+3   newp 4-8
+
+;
+	if t ge 2 then do;
+	* probabilities of transitioning to each level, depending on the current one;
+		select;
+		when (newp_tm1 = 0) 		do; newp_lev1_prob = esw_newp_lev_1_1; newp_lev2_prob = esw_newp_lev_1_2; newp_lev3_prob = esw_newp_lev_1_3; end;
+		when (1 <= newp_tm1 <= 3) 	do; newp_lev1_prob = esw_newp_lev_2_1; newp_lev2_prob = esw_newp_lev_2_2; newp_lev3_prob = esw_newp_lev_2_3; end;
+		when (4 <= newp_tm1 <= 8) 	do; newp_lev1_prob = esw_newp_lev_3_1; newp_lev2_prob = esw_newp_lev_3_2; newp_lev3_prob = esw_newp_lev_3_3;end;
+		otherwise xxx=1;	
+	end;
+
+	* transition to a new level with these probabilities and select newp;
+	e = rand('uniform');
+	if e < newp_lev1_prob then newp=0;
+	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; 
+		q=rand('uniform');
+		if q < 0.6 then newp=1; if 0.6 <= q < 0.85 then newp=2; if 0.85 <= q then newp=3; 
+	end;
+	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do;
+		q=rand('uniform'); newp = 4 + (q*4); newp = round(newp,1); 
+	end;
+end;
+
+*if age > 30 then newp = min(30,newp);
+
+end;
 /*
 
 * ts1m - levels change because this is newp in a 1 month period not 3;
