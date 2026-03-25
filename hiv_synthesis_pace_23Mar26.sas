@@ -4456,9 +4456,6 @@ end;
 /*
 
 
-***START HERE;
-
-
 * ts1m - levels change because this is newp in a 1 month period not 3;
 
 * sw newp levels are 
