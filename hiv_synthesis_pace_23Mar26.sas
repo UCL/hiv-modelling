@@ -1189,6 +1189,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
+* %include "/home/rmjllob/Zim_parameters_new.sas";
 
 
 call symput('caldate1',caldate1);
@@ -1942,6 +1943,7 @@ if esw = 1 then do;
 	else do;
 		select;
 			when (0.90 <= e < 1.00) do; newp_lower = 4; newp_higher = 8; end;
+			otherwise xxx=1;
 		end;
 		* choose uniformly between newp_lower and newp_higher;
 		newp = round(newp_lower + rand('uniform') * (newp_higher - newp_lower), 1);
@@ -4227,7 +4229,7 @@ if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 			else if highest_prep_pref = 2 then prep_cab_willing = 1;
 			else if highest_prep_pref = 3 then prep_len_willing = 1;
 			else if highest_prep_pref = 4 then prep_vr_willing = 1;
-			end;
+		end;
 		
 	end;
 end;
@@ -4400,7 +4402,7 @@ if t ge 2 then do;
 		when (21 <= newp_tm1 <= 50) do; newp_lev1_prob = sw_newp_lev_4_1; newp_lev2_prob = sw_newp_lev_4_2; newp_lev3_prob = sw_newp_lev_4_3; newp_lev4_prob = sw_newp_lev_4_4; end;
 		when (50 < newp_tm1) 		do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
 		otherwise xxx=1;
-end;
+	end;
 
 	* transition to a new level with these probabilities and select newp;
 	e = rand('uniform');
@@ -4452,6 +4454,10 @@ end;
 
 end;
 /*
+
+
+***START HERE;
+
 
 * ts1m - levels change because this is newp in a 1 month period not 3;
 
