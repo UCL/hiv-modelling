@@ -1930,7 +1930,7 @@ end;
 p_esw_init_newp_g1=0.10; p_esw_init_newp_g2=0.89; p_esw_init_newp_g3= 0.01; 
 
 if esw = 1 then do;
-	a=rand('uniform');if a < 0.98 then episodes_sw=1;if a >= 0.98 then episodes_sw=2;
+	a=rand('uniform');if a < 0.98 then episodes_esw=1;if a >= 0.98 then episodes_esw=2;
 
 	e=rand('uniform');
 	if e < 0.10 then newp=0;
@@ -3322,6 +3322,8 @@ if t ge 2 and gender=2 then do;
 	pregnant=0;on_sd_nvp=0;on_dual_nvp=0;
 	if cum_children=. and dead=0 then cum_children=0;
 	if episodes_sw=.     then episodes_sw=0;
+	if episodes_esw=.     then episodes_esw=0;
+
 	if years_ep=.		  then years_ep=0;
 	
 	* dependent_on_time_step_length ;
@@ -4545,7 +4547,7 @@ if (sw=1 or esw=1) and newp ge 1 then do;
 u=rand('uniform'); if u < (1-rred)*p_rred_sw_newp then do; newp=newp/3; newp=round(newp,1);end;
 end;
 
-if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
+if (sw=1 or esw=1) and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
 	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
 end;
 
@@ -4666,9 +4668,13 @@ end;
 
 if t ge 2 then do;
 if sw_tm1 ne 1 and  sw=1 then episodes_sw=episodes_sw+1;
+if esw_tm1 ne 1 and  esw=1 then episodes_esw=episodes_esw+1;
+
 end;
 
 sw_gt1ep=0;if episodes_sw  gt 1 then sw_gt1ep=1;
+esw_gt1ep=0;if episodes_esw  gt 1 then esw_gt1ep=1;
+
 
 
 * OCCURRENCE OF NON-HIV SYMPTOMS THAT LEAD TO TESTING FOR HIV AS PART OF DIAGNOSTIC WORK UP (OR TRIGGERED BY DIAGNOSIS OF TB ETC);
@@ -5148,7 +5154,7 @@ testfor_prep_oral=0; testfor_prep_cab=0;  testfor_prep_len=0; testfor_prep_vr=0;
 if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1  and self_tested ne 1 
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
-	if t ge 2 and sw_test_6mthly=1 and sw=1 and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
+	if t ge 2 and sw_test_6mthly=1 and (sw=1 or esw=1) and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
 		tested=1; tested_as_sw=1; 
 		if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 		np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
@@ -8408,6 +8414,8 @@ naive=1;
 
 * LBM Jul23;
 if sw=1 then eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
+if esw=1 then eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_esw_higher_prob_loss_at_diag) ;
+
 
 * test type;
 
@@ -8942,6 +8950,8 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 	e_eff_prob_loss_at_diag = eff_prob_loss_at_diag ;
 
 	if sw=1 then e_eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
+	if esw=1 then e_eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_esw_higher_prob_loss_at_diag) ;
+
 
 
 * msm;
@@ -9377,6 +9387,8 @@ res_test=.;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
+		if esw=1 then prointer= min(1,prointer * eff_esw_higher_int);
+
 	* new for pop_wide_tld;
 		if pop_wide_tld = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
 		if art_monitoring_strategy=150 and vm_format in (3,4) then prointer = prointer * red_int_risk_poc_vl;																									   
@@ -10217,8 +10229,10 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	
 
 if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have disadvantages;
+if esw=1 then adh = (rel_esw_lower_adh * adh);***lower adh for SW if they have disadvantages;
 
-if sw=1 and sw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
+
+if (sw=1 or esw=1) and sw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
 
 if art_monitoring_strategy = 150 and vm_format in (3,4) then adh = adh + ((1-adh)*incr_adh_poc_vl);																							   
 
@@ -14255,6 +14269,8 @@ if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from cald
 	dead_6m_onart=.; dead_12m_onart=.;dead_24m_onart=.;dead_36m_onart=.;
 	np_ever=.;newp_ever=.;
 	episodes_sw=.;sw_gt1ep=.; age_deb_sw=.; sw=.;
+	episodes_esw=.;esw_gt1ep=.; age_deb_esw=.; esw=.;
+
 	tested_circ=.;tested_anc_prevdiag=.;
 	ever_hiv1_prep_any=.; ever_hiv1_prep_oral=.; visit_prep_oral=.;  ever_stopped_prep_oral_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
 	prep_cab_start=.; prep_len_start=.; prep_oral_start=.;  prep_vr_start=.;  pop_wide_tld_as_art=.;
@@ -14685,6 +14701,7 @@ newpge1_l4p_1529w=0;if gender=2 and 15 <= age < 30 and (newp ge 1 or newp_tm1 ge
 
 sw_1564=0;sw_1549=0;sw_1849=0;sw_1519=0;sw_2024=0;sw_2529=0;sw_3039=0;sw_ov40=0;sw_newp=0;sw1524_newp=0;
 
+***Start here;
 if gender=2 and sw=1 then do;
 	if 15 le age lt 65 then sw_1564=1;
 	if 15 le age lt 50 then sw_1549=1;
