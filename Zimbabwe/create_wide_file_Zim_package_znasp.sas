@@ -1,7 +1,7 @@
 
 *libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
-libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a1;
 set a.genesis_zim_znasp_17mar26; 
@@ -304,6 +304,14 @@ s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vm
 * p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m1564_ / s_hiv1564m ;  
 * p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
 
+* p_diag_w1524;					if s_hiv1524w > 0 then p_diag_w1524 = (s_diag_w1519_+s_diag_w2024_)/(s_hiv1524w);
+* p_onart_diag_w1524_;			if (s_diag_w1519_+s_diag_w2024_) > 0 then p_onart_diag_w1524_ = (s_onart_w1519_ + s_onart_w2024_) / (s_diag_w1519_+s_diag_w2024_); *VCFeb2023;
+* p_onart_vl1000_w1524;			if (s_onart_w1519_ + s_onart_w2024_) >0 then p_onart_vl1000_w1524 = 		s_vl1000_art_1524_w /(s_onart_w1519_ + s_onart_w2024_);
+
+* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw = s_diag_sw / s_sw_1564; *VCFeb2023;
+* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
+* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
+
 * n_selftested;					n_selftested = s_self_tested * 4 * sf;
 * n_tested;						n_tested  = s_tested * 4 * sf;
 
@@ -418,6 +426,7 @@ dcost	ddaly  cost
 n_tested_sw 		 p_diag_sw 			p_onart_diag_sw 		p_onart_vl1000_sw
 n_prep_oral_plw 	 n_prep_len_plw		n_new_vmmc1529m			n_sw_program_visit			p_newp_ge1_
 
+p_diag_w1524		 p_onart_diag_w1524_ p_onart_vl1000_w1524	p_diag_sw		p_onart_diag_sw p_onart_vl1000_sw
 ;
 
 proc sort data=y;by run option;run;
