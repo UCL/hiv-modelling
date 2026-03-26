@@ -3301,3 +3301,16 @@ if cald=2021 then o_incid_agyw_un = 0.8;
 *Source: ZIMPHIA: https://phia.icap.columbia.edu/wp-content/uploads/2020/02/ZIMPHIA-Final-Report_integrated_Web-1.pdf;
 if cald=2015.75 then o_incid_agyw_zimphia=0.46;
 if cald=2020    then o_incid_agyw_zimphia=0.76;
+
+***Cascade;
+if cald=2020 then do;
+	p_o_diag_1524w_phia = 0.772;
+	p_o_onart_1524w_phia = 0.951;
+	p_o_vs_1524w_phia = 0.853;
+end;
+
+if cald=2015.75 then do;
+	p_o_diag_1524w_phia = 0.582;
+	p_o_onart_1524w_phia = 0.893;
+	p_o_vs_1524w_phia = 0.861;
+end;
