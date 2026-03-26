@@ -1,13 +1,11 @@
 
 ***THIS PROGRAM IS USED TO COMPARE GRAPHS OF THE DIFFERENT OPTIONS USING DATASET CREATED FROM CALIBRATION GRAPHS PROGRAM;
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data a;
-set a.Zim_pep_options_graphs_19Mar26;
+set a.Zim_pep_options_graphs_25Mar26;
 run;
-
-
 
 /***Scenarios;
 0 = Min;
@@ -23,6 +21,7 @@ ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\PEP\Zim_options_16_03_26.doc" startpage=never; 
 ods listing close;
 
+ods graphics / gpath="C:\Documents";
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Of those eligible, proportion on PEP (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
