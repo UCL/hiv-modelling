@@ -21,7 +21,10 @@ ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\PEP\Zim_options_16_03_26.doc" startpage=never; 
 ods listing close;
 
-ods graphics / gpath="C:\Documents";
+ods listing gpath="C:\Users\lovel\Documents";
+ods graphics on / imagename="SGPlot" imagefmt=png;
+ods html;
+
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Of those eligible, proportion on PEP (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
