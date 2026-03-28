@@ -44,7 +44,7 @@ n_tested_incl_self = n_self_tested + n_tested;
 if option in (0 1);
 
 
-%let single_var =  dcost                                       ;
+%let single_var =  cost                                       ;
 
 if run in (
 
@@ -1772,6 +1772,7 @@ run;quit;
 
 */
 
+/*
 
 ods html close;
 ods listing gpath="C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\cioa\";
@@ -1793,8 +1794,9 @@ run;
 ods listing close;
 ods html close;
 
+*/
 
-/*
+  
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -1810,7 +1812,7 @@ band    x=cald lower=p5_cost_1 upper=p95_cost_1 / transparency=0.9 fillattrs = (
 
 run;quit;
 
-*/
+  
 
 /*
 
