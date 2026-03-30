@@ -264,6 +264,7 @@ s_alive = s_alive_m + s_alive_w ;
 s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm;
 s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw;
 s_hivge15_ = s_hivge15m + s_hivge15w;
+s_hiv1524w = s_hiv1519w + s_hiv2024w;
 
 s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vmmc3034m + s_new_vmmc3539m + s_new_vmmc4044m +s_new_vmmc4549m;
 
@@ -353,7 +354,6 @@ s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vm
 * n_onprep_msm;					n_onprep_msm = s_onprep_msm * sf;
 
 s_ageg1524w = s_ageg1519w + s_ageg2024w;
-s_hiv1524w = s_hiv1519w + s_hiv2024w;
 s_primary1524w = s_primary1519w + s_primary2024w;
 
 * n_agyw;						n_agyw = s_ageg1524w * sf;

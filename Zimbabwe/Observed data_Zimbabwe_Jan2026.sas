@@ -1850,7 +1850,8 @@ if  cald=2025.75 then do;
 	target_p_diag_1524w_NSP=0.95;
 end;
 
-
+* Source: Global Fund Annual Report 2024;
+if cald = 2024 then o_p_diag_GF = 0.97; 
 
 **** 8d. Testing in female sex workers;
 
@@ -3304,13 +3305,13 @@ if cald=2020    then o_incid_agyw_zimphia=0.76;
 
 ***Cascade;
 if cald=2020 then do;
-	p_o_diag_1524w_phia = 0.772;
-	p_o_onart_1524w_phia = 0.951;
-	p_o_vs_1524w_phia = 0.853;
+	o_p_diag_1524w_phia = 0.772;
+	o_p_onart_1524w_phia = 0.951;
+	o_p_vs_1524w_phia = 0.853;
 end;
 
 if cald=2015.75 then do;
-	p_o_diag_1524w_phia = 0.582;
-	p_o_onart_1524w_phia = 0.893;
-	p_o_vs_1524w_phia = 0.861;
+	o_p_diag_1524w_phia = 0.582;
+	o_p_onart_1524w_phia = 0.893;
+	o_p_vs_1524w_phia = 0.861;
 end;
