@@ -14700,8 +14700,8 @@ newpge1_l4p_1529m=0;if gender=1 and 15 <= age < 30 and (newp ge 1 or newp_tm1 ge
 newpge1_l4p_1529w=0;if gender=2 and 15 <= age < 30 and (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or newp_tm3 ge 1) then newpge1_l4p_1529w=1;
 
 sw_1564=0;sw_1549=0;sw_1849=0;sw_1519=0;sw_2024=0;sw_2529=0;sw_3039=0;sw_ov40=0;sw_newp=0;sw1524_newp=0;
+esw_1564=0;esw_1549=0;esw_1849=0;esw_1519=0;esw_2024=0;esw_2529=0;esw_3039=0;esw_ov40=0;esw_newp=0;esw1524_newp=0;
 
-***Start here;
 if gender=2 and sw=1 then do;
 	if 15 le age lt 65 then sw_1564=1;
 	if 15 le age lt 50 then sw_1549=1;
@@ -14713,6 +14713,19 @@ if gender=2 and sw=1 then do;
 	if 		 age ge 40 then sw_ov40=1;
 	sw_newp=newp;
 	if 15 le age lt 25 then sw1524_newp=newp;
+end;
+
+if gender=2 and esw=1 then do;
+	if 15 le age lt 65 then esw_1564=1;
+	if 15 le age lt 50 then esw_1549=1;
+	if 18 le age lt 50 then esw_1849=1;
+	if 15 le age lt 20 then esw_1519=1;
+	if 20 le age lt 25 then esw_2024=1;
+	if 25 le age lt 30 then esw_2529=1;
+	if 30 le age lt 40 then esw_3039=1;
+	if 		 age ge 40 then esw_ov40=1;
+	esw_newp=newp;
+	if 15 le age lt 25 then esw1524_newp=newp;
 end;
 
 
@@ -14772,6 +14785,58 @@ sw_newp_cat2=0; if sw_newp_cat=2 then sw_newp_cat2=1;
 sw_newp_cat3=0; if sw_newp_cat=3 then sw_newp_cat3=1;
 sw_newp_cat4=0; if sw_newp_cat=4 then sw_newp_cat4=1;
 sw_newp_cat5=0; if sw_newp_cat=5 then sw_newp_cat5=1;
+
+***ESW;
+age_deb_esw1519_=0;age_deb_esw2024_=0;age_deb_esw2529_=0;age_deb_esw3039_=0;age_deb_eswov40_=0;
+actdur_esw_0to3=0;actdur_esw_3to5=0;actdur_esw_6to9=0;actdur_esw_10to19=0;actdur_esw_ov20=0;
+totdur_esw_0to3=0;totdur_esw_3to5=0;totdur_esw_6to9=0;totdur_esw_10to19=0;totdur_esw_ov20=0;
+
+if esw=1 then do;
+if 15 le age_deb_esw lt 20 then age_deb_esw1519_=1;
+if 20 le age_deb_esw lt 25 then age_deb_esw2024_=1;
+if 25 le age_deb_esw lt 30 then age_deb_esw2529_=1;
+if 30 le age_deb_esw lt 40 then age_deb_esw3039_=1;
+if       age_deb_esw ge 40 then age_deb_eswov40_=1;
+
+if 0 lt act_dur_esw lt 3 then actdur_esw_0to3=1;
+if 3 le act_dur_esw lt 6 then actdur_esw_3to5=1;
+if 6 le act_dur_esw lt 10 then actdur_esw_6to9=1;
+if 10 le act_dur_esw lt 20 then actdur_esw_10to19=1;
+if act_dur_esw ge 20 then actdur_esw_ov20=1;
+
+if 0 lt tot_dur_esw lt 3 then totdur_esw_0to3=1;
+if 3 le tot_dur_esw lt 6 then totdur_esw_3to5=1;
+if 6 le tot_dur_esw lt 10 then totdur_esw_6to9=1;
+if 10 le tot_dur_esw lt 20 then totdur_esw_10to19=1;
+if tot_dur_esw ge 20 then totdur_esw_ov20=1;
+end;
+
+totdur_everesw_0to3=0;totdur_everesw_3to5=0;totdur_everesw_6to9=0;totdur_everesw_10to19=0;totdur_everesw_ov20=0;
+if 0 lt tot_dur_everesw lt 3 then totdur_everesw_0to3=1;
+if 3 le tot_dur_everesw lt 6 then totdur_everesw_3to5=1;
+if 6 le tot_dur_everesw lt 10 then totdur_everesw_6to9=1;
+if 10 le tot_dur_everesw lt 20 then totdur_everesw_10to19=1;
+if tot_dur_everesw ge 20 then totdur_everesw_ov20=1;
+
+age_stop_esw1519_=0;age_stop_esw2024_=0;age_stop_esw2529_=0;age_stop_esw3039_=0;age_stop_eswov40_=0;
+if 15 le age_stop_esw lt 20 then age_stop_esw1519_=1;
+if 20 le age_stop_esw lt 25 then age_stop_esw2024_=1;
+if 25 le age_stop_esw lt 30 then age_stop_esw2529_=1;
+if 30 le age_stop_esw lt 40 then age_stop_esw3039_=1;
+if       age_stop_esw ge 40 then age_stop_eswov40_=1;
+
+
+
+esw_newp_cat=.;
+if esw =1 then do;
+if newp=0 then esw_newp_cat=1;
+if 1 <= newp <= 3 then esw_newp_cat=2;
+if 4 <= newp <= 8  then esw_newp_cat=3;
+end;
+
+esw_newp_cat1=0; if esw_newp_cat=1 then esw_newp_cat1=1;
+esw_newp_cat2=0; if esw_newp_cat=2 then esw_newp_cat2=1;
+esw_newp_cat3=0; if esw_newp_cat=3 then esw_newp_cat3=1;
 
 
 *** % of people with at least 1/2 condomless partners by HIV status for Table K in supplementary material;
@@ -15441,7 +15506,16 @@ primary_sw2024_=0;  if sw_2024=1    and primary=1 then primary_sw2024_=1;
 primary_sw2529_=0;  if sw_2529=1    and primary=1 then primary_sw2529_=1;
 primary_sw3039_=0;  if sw_3039=1    and primary=1 then primary_sw3039_=1;
 
+primary_esw=0;   	 if esw=1   		and primary=1 then primary_esw=1;
+primary_esw1519_=0;  if esw_1519=1    and primary=1 then primary_esw1519_=1;
+primary_esw2024_=0;  if esw_2024=1    and primary=1 then primary_esw2024_=1;
+primary_esw2529_=0;  if esw_2529=1    and primary=1 then primary_esw2529_=1;
+primary_esw3039_=0;  if esw_3039=1    and primary=1 then primary_esw3039_=1;
+
+
 sw_vg1000=0;if sw=1                 and vl > 3.0 then sw_vg1000=1;
+esw_vg1000=0;if esw=1               and vl > 3.0 then esw_vg1000=1;
+
 
 
 ***People with long term partners;
@@ -15574,6 +15648,8 @@ end;
 
 ***HIV amongst FSW;
 hiv_sw=0;hiv_sw1849_=0;hiv_sw1549_=0;hiv_sw1519_=0;hiv_sw2024_=0;hiv_sw2529_=0;hiv_sw3039_=0;hiv_swov40_=0;
+hiv_esw=0;hiv_esw1849_=0;hiv_esw1549_=0;hiv_esw1519_=0;hiv_esw2024_=0;hiv_esw2529_=0;hiv_esw3039_=0;hiv_eswov40_=0;
+
 
 if hiv=1 and sw=1 then do;
 	hiv_sw=1;
@@ -15584,6 +15660,17 @@ if hiv=1 and sw=1 then do;
 	if 25 le age lt 30 then hiv_sw2529_=1;
 	if 30 le age lt 40 then hiv_sw3039_=1;
 	if 		 age ge 40 then hiv_swov40_=1;
+end;
+
+if hiv=1 and esw=1 then do;
+	hiv_esw=1;
+	if 18 le age lt 50 then hiv_esw1849_=1;
+	if 15 le age lt 50 then hiv_esw1549_=1;
+	if 15 le age lt 20 then hiv_esw1519_=1;
+	if 20 le age lt 25 then hiv_esw2024_=1;	
+	if 25 le age lt 30 then hiv_esw2529_=1;
+	if 30 le age lt 40 then hiv_esw3039_=1;
+	if 		 age ge 40 then hiv_eswov40_=1;
 end;
 
 
@@ -15601,7 +15688,7 @@ ever_sw_hiv=.;ever_sw_diag=.; dead_=.;dead_diag=.;
 vl1000_onart_1524m=0; vl1000_onart_1524w=0;  vl1000_1524m=0; vl1000_1524w=0; r_len_1524m=0; r_len_1524w=0; r_cab_1524m=0; r_cab_1524w=0; o_len_1524=0; o_cab_1524=0;
 o_len_1524m = 0; o_len_1524w = 0; o_cab_1524m = 0; o_cab_1524w = 0; o_len_vl1000=0; o_cab_vl1000=0; r_len_o_len=0; r_cab_o_cab=0;
 o_len_2534m=0; o_len_3549m=0;o_len_50plm=0;o_len_2534w=0; o_len_3549w=0;o_len_50plw=0; o_len_plw=0;
-
+ever_esw_hiv=.;ever_esw_diag=.; 
 diag_vl1000=.;
 
 if hiv =1 then do;
@@ -15620,6 +15707,9 @@ if hiv =1 then do;
 
 	ever_sw_hiv = ever_sw;
 	if registd=1 then ever_sw_diag=ever_sw;
+	ever_esw_hiv = ever_esw;
+	if registd=1 then ever_esw_diag=ever_esw;
+
 
 	if . < vl < 1.7 then vl50=1; else vl50=0;
 	vg50=1-vl50;
@@ -15773,6 +15863,7 @@ if 15 <= age < 65 then do;
 	i_v5_age5_m_np=0; i_v5_age5_m_ep=0; i_v5_age5_m_newp=0;i_v5_age5_w_np=0; i_v5_age5_w_ep=0; i_v5_age5_w_newp=0;
 	i_v6_age5_m_np=0; i_v6_age5_m_ep=0; i_v6_age5_m_newp=0;i_v6_age5_w_np=0; i_v6_age5_w_ep=0; i_v6_age5_w_newp=0;
 
+	***Discuss;
 	i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw_v6_np=0; 
 
 	* consider primary infection length  * dependent_on_time_step_length ;
@@ -16250,13 +16341,13 @@ vl1000_art_gt6m_1524_	= .;	onart_gt6m_iicu_1524_	= .;	vl1000_art_gt6m_iicu_1524_
 onart_iicu_2549_ 		= .;	vl1000_art_iicu_2549_ 	= .;	onart_gt6m_2549_		= .; 	vl1000_art_gt6m_2549_	= .;
 onart_gt6m_iicu_2549_	= .;	vl1000_art_gt6m_iicu_2549_ = .;	vl1000_art_50pl_ 		= .;	onart_iicu_50pl_ 		= .;
 vl1000_art_iicu_50pl_ 	= .;	onart_gt6m_50pl_		= .; 	vl1000_art_gt6m_50pl_	= .;	onart_gt6m_iicu_50pl_	= .;
-vl1000_art_gt6m_iicu_50pl_ = .;  onart_gt6m_iicu_sw	= .;	vl1000_art_gt6m_iicu_sw = .;
+vl1000_art_gt6m_iicu_50pl_ = .;  onart_gt6m_iicu_sw	= .;	vl1000_art_gt6m_iicu_sw = .;  onart_gt6m_iicu_esw	= .;	vl1000_art_gt6m_iicu_esw = .;
 vl1000_artgt6miicu_w1524evpr=.;onartgt6miicu_w1524evpr=.;
 
 vl1000_art_1524_m = .; vl1000_art_2549_m = .; vl1000_art_50pl_m = .; 
 vl1000_art_1524_w = .; vl1000_art_2549_w = .; vl1000_art_50pl_w = .; 
 
-vl1000_art_sw = .; 
+vl1000_art_sw = .; 	vl1000_art_esw = .; 
 
 if gender=1 then do;
 	vl1000_art_m 		= vl1000_art;
@@ -16368,6 +16459,12 @@ if sw=1 then do;
 	vl1000_art_gt6m_iicu_sw = vl1000_art_gt6m_iicu;
 end;
 
+if esw=1 then do;
+	vl1000_art_esw    		= vl1000_art;
+	onart_gt6m_iicu_esw		= onart_gt6m_iicu;
+	vl1000_art_gt6m_iicu_esw = vl1000_art_gt6m_iicu;
+end;
+
 if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) then do;
 	onartgt6miicu_w1524evpr = onart_gt6m_iicu;
 	vl1000_artgt6miicu_w1524evpr = vl1000_art_gt6m_iicu;
@@ -16376,6 +16473,8 @@ end;
 ***90-90-90 indicators for SW according to whether or not they have visited a SW program;
 diag_sw_inprog=0;diag_sw_noprog=0;onart_sw_inprog=0;onart_sw_noprog=0;vl1000_art_gt6m_iicu_sw_inprog=0;
 vl1000_art_gt6m_iicu_sw_noprog=0;
+diag_esw_inprog=0;diag_esw_noprog=0;onart_esw_inprog=0;onart_esw_noprog=0;vl1000_art_gt6m_iicu_esw_inprog=0;
+vl1000_art_gt6m_iicu_esw_noprog=0;
 
 if sw_program_visit=1 and sw=1 then do;
 diag_sw_inprog=diag_sw; onart_sw_inprog=onart_sw; vl1000_art_gt6m_iicu_sw_inprog=vl1000_art_gt6m_iicu_sw;
@@ -16385,10 +16484,21 @@ if sw_program_visit=0 and sw=1 then do;
 diag_sw_noprog=diag_sw; onart_sw_noprog=onart_sw; vl1000_art_gt6m_iicu_sw_noprog=vl1000_art_gt6m_iicu_sw;
 end;
 
-sti_sw=0;
-if sw=1 then sti_sw=sti;
+if sw_program_visit=1 and esw=1 then do;
+diag_esw_inprog=diag_esw; onart_esw_inprog=onart_esw; vl1000_art_gt6m_iicu_esw_inprog=vl1000_art_gt6m_iicu_esw;
+end;
+
+if sw_program_visit=0 and esw=1 then do;
+diag_esw_noprog=diag_esw; onart_esw_noprog=onart_esw; vl1000_art_gt6m_iicu_esw_noprog=vl1000_art_gt6m_iicu_esw;
+end;
+
+sti_sw=0;if sw=1 then sti_sw=sti;
+sti_esw=0;if esw=1 then sti_sw=sti;
+
 
 vl1000_art_incintcun_sw=.;   if sw=1      then vl1000_art_incintcun_sw    = vl1000_art_iicu;
+vl1000_art_incintcun_esw=.;   if esw=1      then vl1000_art_incintcun_esw    = vl1000_art_iicu;
+
 
 
 *** On ART, VL >1000;
@@ -16476,6 +16586,8 @@ artexp_pwid=0;    if pwid=1 and artexp=1 then artexp_pwid=1;
 artexp_w=0;    if gender=2        and artexp=1 then artexp_w=1;
 artexp_1524_=0;if 15 le age lt 25 and artexp=1 then artexp_1524_=1;
 artexp_sw=0;   if sw=1            and artexp=1 then artexp_sw=1;
+artexp_esw=0;   if esw=1            and artexp=1 then artexp_esw=1;
+
 artexp_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and artexp=1 then artexp_w1524evpreg=1;
  
 if      gender=1 then do; diag_m=registd; epdiag_m=epdiag; epi_m=epi  ; onart_m=onart; eponart_m=epart; end;
@@ -16539,8 +16651,10 @@ if gender = 2 and 35 <= age < 45 then do; if prep_any_elig=1 then elig_prep_any_
 if gender = 2 and 15 <= age < 50 then do; if prep_any_elig=1 then elig_prep_any_w_1549 = 1;  end;
 if gender = 2 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_w_1564 = 1;  end;
 
-elig_prep_any_sw = 0; elig_prep_any_sdc = 0; elig_prep_any_plw = 0; 
+elig_prep_any_sw = 0;elig_prep_any_esw = 0; elig_prep_any_sdc = 0; elig_prep_any_plw = 0; 
 if sw=1 and prep_any_elig = 1 then elig_prep_any_sw = 1;
+if esw=1 and prep_any_elig = 1 then elig_prep_any_esw = 1;
+
 if sdc=1 and prep_any_elig = 1 then elig_prep_any_sdc = 1;
 if plw=1 and prep_any_elig = 1 then elig_prep_any_plw = 1;
 
@@ -16572,6 +16686,13 @@ prep_oral_sw = 0 ; 	if prep_oral =1 and sw=1 then prep_oral_sw = 1 ;
 prep_cab_sw = 0 ; 	if prep_cab  =1 and sw=1 then prep_cab_sw = 1 ;
 prep_len_sw = 0 ; 	if prep_len  =1 and sw=1 then prep_len_sw = 1 ;
 prep_vr_sw = 0 ; 	if prep_vr   =1 and sw=1 then prep_vr_sw = 1 ;
+
+prep_any_esw = 0 ; 	if prep_any  =1 and esw=1 then prep_any_esw = 1 ;
+prep_oral_esw = 0 ; if prep_oral =1 and esw=1 then prep_oral_esw = 1 ;
+prep_cab_esw = 0 ; 	if prep_cab  =1 and esw=1 then prep_cab_esw = 1 ;
+prep_len_esw = 0 ; 	if prep_len  =1 and esw=1 then prep_len_esw = 1 ;
+prep_vr_esw = 0 ; 	if prep_vr   =1 and esw=1 then prep_vr_esw = 1 ;
+
 
 *At start of PrEP;	* lapr - any prep - JAS Nov2021;
 prep_any_start=0; age_prepstart=.; ep_prepstart=.; newp_prepstart=.;
@@ -16783,7 +16904,7 @@ prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
 
 *To calculate proportion of people on PrEP;
 * msm ;
-onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;onprep_w1524_newpge1_=0;onprep_cab_m=0; onprep_cab_w=0; 
+onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0;onprep_esw=0; onprep_1524=0; onprep_1524w=0;onprep_w1524_newpge1_=0;onprep_cab_m=0; onprep_cab_w=0; 
 onprep_len_m=0; onprep_len_w=0; 
 onprep_oral_m=0; onprep_oral_w=0; 
 onprep_vr_w=0;  onprep_msm=0; onprep_oral_msm=0; onprep_cab_msm=0;onprep_len_msm=0;
@@ -16807,6 +16928,8 @@ if prep_any=1 then do;
 	if gender=1 and prep_oral=1 then onprep_oral_m=1;
 	if gender=2 and prep_oral=1 then onprep_oral_w=1;
 	if sw=1 then onprep_sw=1;
+	if esw=1 then onprep_esw=1;
+
 	if (15<=age<25) then onprep_1524=1;
 	if gender=2 and 15 le age lt 25 then onprep_1524w=1;
 	if gender=2 and 15 le age lt 25 and newp >= 1 then onprep_w1524_newpge1_=1;
@@ -16833,91 +16956,115 @@ end;
 
 
 *To calculate number initiated for the first time on different types of PrEP;
-init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;init_prep_oral_plw=0;
+init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_esw=0;init_prep_oral_sdc=0;init_prep_oral_plw=0;
 if caldate&j = prep_oral_first_start_date then do;
 	if gender=2 and 15 le age lt 25 	then init_prep_oral_1524w=1;
 	if gender=2 and sw=1 				then init_prep_oral_sw=1;
+	if gender=2 and esw=1 				then init_prep_oral_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then init_prep_oral_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then init_prep_oral_plw=1;
 end;
-init_prep_cab_1524w=0;init_prep_cab_sw=0;init_prep_cab_sdc=0;init_prep_cab_plw=0;
+init_prep_cab_1524w=0;init_prep_cab_sw=0;init_prep_cab_esw=0;init_prep_cab_sdc=0;init_prep_cab_plw=0;
 if caldate&j = prep_cab_first_start_date then do;
 	if gender=2 and 15 le age lt 25 	then init_prep_cab_1524w=1;
 	if gender=2 and sw=1 				then init_prep_cab_sw=1;
+	if gender=2 and esw=1 				then init_prep_cab_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then init_prep_cab_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then init_prep_cab_plw=1;
 end;
-init_prep_len_1524w=0;init_prep_len_sw=0;init_prep_len_sdc=0;init_prep_len_plw=0;
+init_prep_len_1524w=0;init_prep_len_sw=0;init_prep_len_esw=0;init_prep_len_sdc=0;init_prep_len_plw=0;
 if caldate&j = prep_len_first_start_date then do;
 	if gender=2 and 15 le age lt 25 	then init_prep_len_1524w=1;
 	if gender=2 and sw=1 				then init_prep_len_sw=1;
+	if gender=2 and esw=1 				then init_prep_len_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then init_prep_len_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then init_prep_len_plw=1;
 end;
-init_prep_vr_1524w=0;init_prep_vr_sw=0;init_prep_vr_sdc=0;init_prep_vr_plw=0;
+init_prep_vr_1524w=0;init_prep_vr_sw=0;init_prep_vr_esw=0;init_prep_vr_sdc=0;init_prep_vr_plw=0;
 if caldate&j = prep_vr_first_start_date then do;
 	if gender=2 and 15 le age lt 25 	then init_prep_vr_1524w=1;
 	if gender=2 and sw=1 				then init_prep_vr_sw=1;
+	if gender=2 and esw=1 				then init_prep_vr_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then init_prep_vr_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then init_prep_vr_plw=1;
 end;
 
 * To calculate number who used PrEP in the last year;
-prep_oral_ly_1524w=0;prep_oral_ly_sw=0;prep_oral_ly_sdc=0;prep_oral_ly_plw=0;
+prep_oral_ly_1524w=0;prep_oral_ly_sw=0;prep_oral_ly_esw=0;prep_oral_ly_sdc=0;prep_oral_ly_plw=0;
 if prep_oral_tm3=1 or prep_oral_tm2=1 or prep_oral_tm1=1 or prep_oral=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_oral_ly_1524w=1;
 	if gender=2 and sw=1 				then prep_oral_ly_sw=1;
+	if gender=2 and esw=1 				then prep_oral_ly_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_oral_ly_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then prep_oral_ly_plw=1;
 end;
-prep_cab_ly_1524w=0;prep_cab_ly_sw=0;prep_cab_ly_sdc=0;prep_cab_ly_plw=0;
+prep_cab_ly_1524w=0;prep_cab_ly_sw=0;prep_cab_ly_esw=0;prep_cab_ly_sdc=0;prep_cab_ly_plw=0;
 if prep_cab_tm3=1 or prep_cab_tm2=1 or prep_cab_tm1=1 or prep_cab=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_cab_ly_1524w=1;
 	if gender=2 and sw=1 				then prep_cab_ly_sw=1;
+	if gender=2 and esw=1 				then prep_cab_ly_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_cab_ly_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then prep_cab_ly_plw=1;
 end;
-prep_len_ly_1524w=0;prep_len_ly_sw=0;prep_len_ly_sdc=0;prep_len_ly_plw=0;
+prep_len_ly_1524w=0;prep_len_ly_sw=0;prep_len_ly_esw=0;prep_len_ly_sdc=0;prep_len_ly_plw=0;
 if prep_len_tm3=1 or prep_len_tm2=1 or prep_len_tm1=1 or prep_len=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_len_ly_1524w=1;
 	if gender=2 and sw=1 				then prep_len_ly_sw=1;
+	if gender=2 and esw=1 				then prep_len_ly_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_len_ly_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then prep_len_ly_plw=1;
 end;
-prep_vr_ly_1524w=0;prep_vr_ly_sw=0;prep_vr_ly_sdc=0;prep_vr_ly_plw=0;
+prep_vr_ly_1524w=0;prep_vr_ly_sw=0;prep_vr_ly_esw=0;prep_vr_ly_sdc=0;prep_vr_ly_plw=0;
 if prep_vr_tm3=1 or prep_vr_tm2=1 or prep_vr_tm1=1 or prep_vr=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_vr_ly_1524w=1;
 	if gender=2 and sw=1 				then prep_vr_ly_sw=1;
+	if gender=2 and esw=1 				then prep_vr_ly_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_vr_ly_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then prep_vr_ly_plw=1;
 end;
 
 * To calculate number ever initiated on oral PrEP;
-prep_oral_ever_1524w=0;prep_oral_ever_sw=0;prep_oral_ever_sdc=0;prep_oral_ever_plw=0;
+prep_oral_ever_1524w=0;prep_oral_ever_sw=0;prep_oral_ever_esw=0;prep_oral_ever_sdc=0;prep_oral_ever_plw=0;
 if prep_oral_ever=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_oral_ever_1524w=1;
 	if gender=2 and sw=1 				then prep_oral_ever_sw=1;
+	if gender=2 and esw=1 				then prep_oral_ever_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_oral_ever_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then prep_oral_ever_plw=1;
 end;
-prep_cab_ever_1524w=0;prep_cab_ever_sw=0;prep_cab_ever_sdc=0;prep_cab_ever_plw=0;
+prep_cab_ever_1524w=0;prep_cab_ever_sw=0;prep_cab_ever_esw=0;prep_cab_ever_sdc=0;prep_cab_ever_plw=0;
 if prep_cab_ever=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_cab_ever_1524w=1;
 	if gender=2 and sw=1 				then prep_cab_ever_sw=1;
+	if gender=2 and esw=1 				then prep_cab_ever_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_cab_ever_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then prep_cab_ever_plw=1;
 end;
-prep_len_ever_1524w=0;prep_len_ever_sw=0;prep_len_ever_sdc=0;prep_len_ever_plw=0;
+prep_len_ever_1524w=0;prep_len_ever_sw=0;prep_len_ever_esw=0;prep_len_ever_sdc=0;prep_len_ever_plw=0;
 if prep_len_ever=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_len_ever_1524w=1;
 	if gender=2 and sw=1 				then prep_len_ever_sw=1;
+	if gender=2 and esw=1 				then prep_len_ever_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_len_ever_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then prep_len_ever_plw=1;
 end;
-prep_vr_ever_1524w=0;prep_vr_ever_sw=0;prep_vr_ever_sdc=0;prep_vr_ever_plw=0;
+prep_vr_ever_1524w=0;prep_vr_ever_sw=0;prep_vr_ever_esw=0;prep_vr_ever_sdc=0;prep_vr_ever_plw=0;
 if prep_vr_ever=1 then do;
 	if gender=2 and 15 le age lt 25 	then prep_vr_ever_1524w=1;
 	if gender=2 and sw=1 				then prep_vr_ever_sw=1;
+	if gender=2 and esw=1 				then prep_vr_ever_esw=1;
+
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_vr_ever_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then prep_vr_ever_plw=1;
 end;
@@ -17034,21 +17181,25 @@ if pwid=1 and 15 le age lt 50 then tested1549pwid=tested;
 
 if gender=2 and 15 le age lt 50 then tested1549w=tested;
 tested_sw=.; if sw=1 then tested_sw=tested;
+tested_esw=.; if esw=1 then tested_esw=tested;
+
 
 ***Access to being  tested given some are hard to reach;
-acc_test=0;acc_test_1524_=0;acc_test_2549_=0;acc_test_5064_=0;acc_test_sw=0;
+acc_test=0;acc_test_1524_=0;acc_test_2549_=0;acc_test_5064_=0;acc_test_sw=0;acc_test_esw=0;
 if hard_reach=0 then do;
 	acc_test=1;
 	if 15 le age lt 25 then acc_test_1524_=1;
 	if 25 le age lt 50 then acc_test_2549_=1;
 	if 50 le age lt 65 then acc_test_5064_=1;
 	if sw=1 	     then acc_test_sw=1;
+	if esw=1 	     then acc_test_esw=1;
+
 end;
 
 * ts1m:  this is last 4 periods so 4 months if time step 1 month;
 tested_4p_m1549_=0; tested_4p_m1519_=0; tested_4p_m2024_=0; tested_4p_m2529_=0;tested_4p_m3039_=0; tested_4p_m4049_=0; tested_4p_m5064_=0;
 tested_4p_w1549_=0; tested_4p_w1519_=0; tested_4p_w2024_=0; tested_4p_w2529_=0;tested_4p_w3039_=0; tested_4p_w4049_=0; tested_4p_w5064_=0; 
-tested_4p_sw=0;
+tested_4p_sw=0;tested_4p_esw=0;
 
 if t ge 4 and (tested=1 or tested_tm1=1 or tested_tm2=1 or tested_tm3=1) then do;
 	if gender=1 then do;
@@ -17069,6 +17220,8 @@ if t ge 4 and (tested=1 or tested_tm1=1 or tested_tm2=1 or tested_tm3=1) then do
 		if 40 le age lt 50 then tested_4p_w4049_=1;
 		if 50 le age lt 65 then tested_4p_w5064_=1;
 		if sw=1       		 then tested_4p_sw=1;
+		if esw=1       		 then tested_4p_esw=1;
+
 
 	end;
 end;
@@ -17087,7 +17240,8 @@ ever_tested_pwid1549_=0;ever_tested_pwid1564_=0;
 ever_tested_w1549_=0;ever_tested_w1564_=0;
 ever_tested_w1519_=0;ever_tested_w2024_=0;ever_tested_w2529_=0;ever_tested_w3034_=0;ever_tested_w3539_=0;ever_tested_w4044_=0;
 ever_tested_w4549_=0;ever_tested_w5054_=0;ever_tested_w5559_=0;ever_tested_w6064_=0;  
-ever_tested_sw=0; 	
+ever_tested_sw=0; 	ever_tested_esw=0; 	
+
 
 test_not_costed=0; if tested=1 and cost_test <= 0 then test_not_costed=1;
 
@@ -17098,7 +17252,7 @@ diag_m_1524=0; diag_m_2549=0; diag_m_50pl=0;
 diag_w1549_=0;diag_w1564_=0;
 diag_w1519_=0;diag_w2024_=0;diag_w2529_=0;diag_w3034_=0;diag_w3539_=0;diag_w4044_=0;diag_w4549_=0;diag_w5054_=0;diag_w5559_=0;diag_w6064_=0;  
 diag_w_1524=0; diag_w_2549=0; diag_w_50pl=0;
-diag_sw=0; 	
+diag_sw=0; diag_esw=0; 	
 
 onart_m1549_=0;onart_m1564_=0;
 onart_m1519_=0;onart_m2024_=0;onart_m2529_=0;onart_m3034_=0;onart_m3539_=0;onart_m4044_=0;onart_m4549_=0;onart_m5054_=0;onart_m5559_=0;onart_m6064_=0;
@@ -17107,7 +17261,7 @@ onart_m6569_=0;onart_m7074_=0;onart_m7579_=0;onart_m8084_=0;onart_m85pl_=0;
 onart_w1549_=0;onart_w1564_=0;
 onart_w1519_=0;onart_w2024_=0;onart_w2529_=0;onart_w3034_=0;onart_w3539_=0;onart_w4044_=0;onart_w4549_=0;onart_w5054_=0;onart_w5559_=0;onart_w6064_=0; 
 onart_w6569_=0;onart_w7074_=0;onart_w7579_=0;onart_w8084_=0;onart_w85pl_=0; 
-onart_sw=0; 		
+onart_sw=0; onart_esw=0; 		
 		
 
 
@@ -17163,7 +17317,10 @@ if gender=2 then do;
 	else if 80 le age lt 85 then do; diag_w8084_=registd;  onart_w8084_=onart; end;
 	else if 85 le age       then do; diag_w85pl_=registd;  onart_w85pl_=onart; end;
 	if sw = 1 		   then do;  ever_tested_sw   =ever_tested; diag_sw   =registd; onart_sw   =onart;vs_sw=vl1000; end;
-	if sw ne 1           then      ever_tested_sw=0;
+	if sw ne 1           then    ever_tested_sw=0;
+	if esw = 1 		   then do;  ever_tested_esw   =ever_tested; diag_esw   =registd; onart_esw   =onart;vs_esw=vl1000; end;
+	if esw ne 1           then   ever_tested_esw=0;
+
 end;
 
 if gender=2 and registd=1 and 15 <= age < 25 then diag_w_1524=1; 
@@ -17738,7 +17895,7 @@ _d_t_adh_int_cost = t_adh_int_cost *discount;
 _dpi_cost=pi_cost*discount;
 _dcost_circ = cost_circ*discount;
 _dcost_condom_dn = cost_condom_dn*discount;
-_dcost_sw_program = cost_sw_program*discount;
+_dcost_sw_program = cost_sw_program*discount; ***Discuss...put in 132 in the core file?;
 _dcost_switch_line = cost_switch_line*discount;
 _dcost_child_hiv_at_child_inf = cost_child_hiv_at_child_inf*discount;
 _dcost_child_hiv_mo_art = cost_child_hiv_mo_art*discount;
@@ -17787,7 +17944,7 @@ diag_this_period=.;diag_this_period_m=.;diag_this_period_f=.;diag_this_period_f_
 diag_this_period_f_labdel=.;diag_this_period_f_pd=.; diag_this_period_msm=.;diag_this_period_pwid=.;
 
 diag_this_period_m_sympt=.;diag_this_period_f_sympt=.;
-diag_thisper_anclabpd=.;diag_thisper_progsw=.;diag_thisper_sw=.;diag_thisper_1524f=.;
+diag_thisper_anclabpd=.;diag_thisper_progsw=.;diag_thisper_sw=.;diag_thisper_progesw=.;diag_thisper_esw=.;diag_thisper_1524f=.;
 if date1pos = caldate&j > . then diag_this_period=1;
 if gender=1 and diag_this_period=1 then diag_this_period_m=1;
 if gender=2 and diag_this_period=1 then diag_this_period_f=1;
@@ -17800,7 +17957,10 @@ if gender=2 and diag_this_period=1 and sympt_diag = 1 then diag_this_period_f_sy
 if gender=2 and diag_this_period=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then diag_thisper_anclabpd=1;
 if gender=2 and diag_this_period=1 and tested_as_sw=1 and tested_anc ne 1 and tested_labdel ne 1 and tested_pd ne 1 and 
 (elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then diag_thisper_progsw=1;
+***start here;
 if gender=2 and diag_this_period=1 and sw=1 then diag_thisper_sw=1;
+if gender=2 and diag_this_period=1 and esw=1 then diag_thisper_esw=1;
+
 if gender=2 and diag_this_period=1 and 15 <= age < 25 then diag_thisper_1524f=1;
 
 ***Reason for HIV test;
