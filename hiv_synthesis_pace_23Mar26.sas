@@ -667,8 +667,8 @@ newp_seed = 7;
 							  end;
 
 ***Focussing on Zim only;
-***Women at the 'edge of sex work;
-***(women who don't consider themselves as SW but have concurrent partners with whom they exchange sex for e.g. paying for lifestyle);
+***Women at the edge of sex work;
+***(women who dont consider themselves as SW but have concurrent partners with whom they exchange sex for e.g. paying for lifestyle);
 
 
 * WOMEN AT THE EDGE OF SEX WORK (ESW);
