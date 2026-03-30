@@ -666,6 +666,8 @@ newp_seed = 7;
 						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 5 10);
 							  end;
 
+***ARE ESW MORE LIKELY TO HAVE DISADV COMPARED TO SW IN THE ABSCENCE OF A PROGRAM? MORE VULNERABLE?;
+
 ***Focussing on Zim only;
 ***Women at the edge of sex work;
 ***(women who dont consider themselves as SW but have concurrent partners with whom they exchange sex for e.g. paying for lifestyle);
@@ -686,7 +688,7 @@ newp_seed = 7;
 						   		%sample_uniform(esw_higher_prob_loss_at_diag, 4 8 12);
 							  end;
 
-* rate_engage_esw_program;	 rate_engage_esw_program=0; *set in options;
+* rate_engage_esw_program;	 rate_engage_esw_program=0; *set in options;***CONSIDER SMALL PROBABILITY;
 * rate_disengage_esw_program; rate_disengage_esw_program=0; *set in options;
 
 * date_sw_prog_intro;		date_sw_prog_intro=2010;
@@ -1859,7 +1861,7 @@ end;
 end;
 
 
-
+***START HERE;
 sw = 0; esw=0;
 if gender = 2 and life_sex_risk >= 2 then do;
 	select;
@@ -1875,7 +1877,7 @@ if gender = 2 and life_sex_risk >= 2 then do;
 	if rand('uniform') < prob_sw_init then sw = 1;
 
 	if sw ne 1 then do;
-		if rand('uniform') < prob_sw_init then esw = 1;
+		if rand('uniform') < (prob_sw_init) then esw = 1;
 	end;
 
 
