@@ -3282,7 +3282,7 @@ if t ge 2 and &year_interv         <= caldate{t} and circ_inc_rate_year_i = 4 th
 end;
 
 *Reduction in VMMC as a result of funding cuts;
-if caldate{t} > &year_interv and circ_inc_rate_year_i = 5 then prob_circ = 0.7*prob_circ;
+if caldate{t} > &year_interv and circ_inc_rate_year_i = 5 then prob_circ = 0.6*prob_circ;
 
 
 ***Zim specific;	*JAS Feb24;
