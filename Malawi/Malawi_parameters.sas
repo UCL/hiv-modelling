@@ -24,7 +24,7 @@
 * date_start_testing;       date_start_testing = 2005  ;
 
 
-* test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.5 0.3 0.2); 
+* test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.3 0.4 0.3); 
 
 * an_lin_incr_test;         %sample(an_lin_incr_test,
                                   0.002    0.003   0.005  0.01,
