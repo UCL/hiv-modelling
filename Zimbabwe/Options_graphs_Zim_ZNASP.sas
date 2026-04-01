@@ -1,7 +1,7 @@
 
 ***THIS PROGRAM IS USED TO COMPARE GRAPHS OF THE DIFFERENT OPTIONS USING DATASET CREATED FROM CALIBRATION GRAPHS PROGRAM;
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a1;
 set a.Zim_options_graphs_znasp_17Mar26;
@@ -303,6 +303,30 @@ series  x=cald y=mean_n_onprep_3/	lineattrs = (color=teal thickness = 2 pattern=
 *series  x=cald y=mean_n_onprep_4/	lineattrs = (color=orange thickness = 2 pattern=solid);
 series  x=cald y=mean_n_onprep_5/	lineattrs = (color=maroon thickness = 2 pattern=solid);
 series  x=cald y=mean_n_onprep_6/	lineattrs = (color=purple thickness = 2 pattern=solid);
+run;quit;
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Currently on Len (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 300000 by 20000) valueattrs=(size=10);
+
+*label mean_n_onprep_len_99 = "SQ";
+*label mean_n_onprep_len_0 = "Base";
+*label mean_n_onprep_len_1 = "VMMC";
+label mean_n_onprep_len_2 = "Oral PrEP + Len scale up";
+label mean_n_onprep_len_3 = "Enhanced FSW program";
+*label mean_n_onprep_len_4 = "Condom increase";
+label mean_n_onprep_len_5 = "VMMC, PrEP, condoms";
+label mean_n_onprep_len_6 = "VMMC, PrEP, condoms, enhanced FSW program";
+
+series  x=cald y=mean_n_onprep_len_99/	lineattrs = (color=black thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_onprep_len_0/	lineattrs = (color=red thickness = 2 pattern=solid); 
+*series  x=cald y=mean_n_onprep_len_1/	lineattrs = (color=blue thickness = 2 pattern=solid);
+series  x=cald y=mean_n_onprep_len_2/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_n_onprep_len_3/	lineattrs = (color=teal thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_onprep_len_4/	lineattrs = (color=orange thickness = 2 pattern=solid);
+series  x=cald y=mean_n_onprep_len_5/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_n_onprep_len_6/	lineattrs = (color=purple thickness = 2 pattern=solid);
 run;quit;
 
 
