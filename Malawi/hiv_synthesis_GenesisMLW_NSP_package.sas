@@ -2342,12 +2342,34 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		return_interventions_off = 1 ; * this is switching off the implicit effect of there being interventions to bring people back into care; 
 
 
- 	*Option 1: FSW program with intro of len;
+ 	*Option 1: VMMC;
 	if option = 1 then do;
+		circ_inc_rate_year_i=5; 
+	end;
+		
+	*Option 2: PrEP including Len;
+	if option = 2 then do;
+		prep_any_strategy=23; **all KP;
+		date_prep_oral_intro=&year_interv;									
+		date_prep_len_intro=&year_interv;	
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_len_b=prob_prep_len_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+	end;
+
+	*Option 3: Return interventions;
+	if option = 3 then do;
+		return_interventions_off = 0;
+	end;
+		
+
+	if option = 4 then do;
+		circ_inc_rate_year_i=5; 
 
 		prep_any_strategy=23; **all KP;
-
-		circ_inc_rate_year_i=.; 
 
 		date_prep_oral_intro=&year_interv;									
 		date_prep_len_intro=&year_interv;	
@@ -2357,134 +2379,8 @@ if caldate_never_dot >= &year_interv and option ne 99 then do;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
 		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
 		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-
-	end;
-
-	*Option 2: FSW program with scale up of Len;
-	if option =2 then do;
-		sw_prog_intensity = eff_sw_prog_intensity;
-		effect_sw_prog_6mtest = eff_effect_sw_prog_6mtest;
-		effect_sw_prog_int = eff_effect_sw_prog_int;
-		effect_sw_prog_adh = eff_effect_sw_prog_adh;
-		effect_sw_prog_lossdiag = eff_effect_sw_prog_lossdiag;
-		effect_sw_prog_prep_any = eff_effect_sw_prog_prep_any;
-		effect_sw_prog_pers_sti = eff_effect_sw_prog_pers_sti;
-
-		prep_any_strategy=24;
-		date_prep_oral_intro=&year_interv;								
-		date_prep_len_intro=&year_interv;	
-
-		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		
-		eff_prob_prep_oral_b=prob_prep_oral_b;
-		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			
-		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;			 
-	end;
-
-		*Option 3: FSW program with scale up of Len and VMMC restored at SQ levels, and return interventions;
-	if option =3 then do;
-		sw_prog_intensity = eff_sw_prog_intensity;
-		effect_sw_prog_6mtest = eff_effect_sw_prog_6mtest;
-		effect_sw_prog_int = eff_effect_sw_prog_int;
-		effect_sw_prog_adh = eff_effect_sw_prog_adh;
-		effect_sw_prog_lossdiag = eff_effect_sw_prog_lossdiag;
-		effect_sw_prog_prep_any = eff_effect_sw_prog_prep_any;
-		effect_sw_prog_pers_sti = eff_effect_sw_prog_pers_sti;
-
-		prep_any_strategy=24;
-		date_prep_oral_intro=&year_interv;								
-		date_prep_len_intro=&year_interv;	
-
-		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		
-		eff_prob_prep_oral_b=prob_prep_oral_b;
-		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			
-		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	
-
-		circ_inc_rate_year_i=.;  
-
+		
 		return_interventions_off = 0;
-	end;
-
-	*Option 4: As above with scale up of VMMC;
-	if option =4 then do;
-		sw_prog_intensity = eff_sw_prog_intensity;
-		effect_sw_prog_6mtest = eff_effect_sw_prog_6mtest;
-		effect_sw_prog_int = eff_effect_sw_prog_int;
-		effect_sw_prog_adh = eff_effect_sw_prog_adh;
-		effect_sw_prog_lossdiag = eff_effect_sw_prog_lossdiag;
-		effect_sw_prog_prep_any = eff_effect_sw_prog_prep_any;
-		effect_sw_prog_pers_sti = eff_effect_sw_prog_pers_sti;
-
-		prep_any_strategy=24;
-		date_prep_oral_intro=&year_interv;								
-		date_prep_len_intro=&year_interv;	
-
-		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		
-		eff_prob_prep_oral_b=prob_prep_oral_b;
-		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			
-		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	
-
-		circ_inc_rate_year_i=3;  
-	end;
-
-	*Option 5: As above with CD4 & VL testing restored;
-	if option =5 then do;
-		sw_prog_intensity = eff_sw_prog_intensity;
-		effect_sw_prog_6mtest = eff_effect_sw_prog_6mtest;
-		effect_sw_prog_int = eff_effect_sw_prog_int;
-		effect_sw_prog_adh = eff_effect_sw_prog_adh;
-		effect_sw_prog_lossdiag = eff_effect_sw_prog_lossdiag;
-		effect_sw_prog_prep_any = eff_effect_sw_prog_prep_any;
-		effect_sw_prog_pers_sti = eff_effect_sw_prog_pers_sti;
-
-		prep_any_strategy=24;
-		date_prep_oral_intro=&year_interv;								
-		date_prep_len_intro=&year_interv;	
-
-		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		
-		eff_prob_prep_oral_b=prob_prep_oral_b;
-		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral/2;		
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			
-		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	
-
-		circ_inc_rate_year_i=3;  
-
-		absence_cd4_year_i =0;				
-		absence_vl_year_i =0;		
-		eff_prob_vl_meas_done = prob_vl_meas_done;	
-	end;
-
-	*Option 6: As above with scale up of Len in all KP;
-	if option =6 then do;
-		sw_prog_intensity = eff_sw_prog_intensity;
-		effect_sw_prog_6mtest = eff_effect_sw_prog_6mtest;
-		effect_sw_prog_int = eff_effect_sw_prog_int;
-		effect_sw_prog_adh = eff_effect_sw_prog_adh;
-		effect_sw_prog_lossdiag = eff_effect_sw_prog_lossdiag;
-		effect_sw_prog_prep_any = eff_effect_sw_prog_prep_any;
-		effect_sw_prog_pers_sti = eff_effect_sw_prog_pers_sti;
-
-		prep_any_strategy=23;
-		date_prep_oral_intro=&year_interv;								
-		date_prep_len_intro=&year_interv;	
-
-		eff_rate_test_startprep_any=min(1,2*rate_test_startprep_any);		
-		eff_prob_prep_oral_b=prob_prep_oral_b;
-		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						
-		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len/2;			
-		eff_prob_prep_any_restart_choice=2*prob_prep_any_restart_choice;	
-
-		circ_inc_rate_year_i=3;  
-
-		absence_cd4_year_i =0;				
-		absence_vl_year_i =0;		
-		eff_prob_vl_meas_done = prob_vl_meas_done;	
 	end;
 
 end;
@@ -3192,12 +3088,8 @@ if t ge 2 and &year_interv         <= caldate{t} and circ_inc_rate_year_i = 4 th
     end;
 end;
 
-if circ_inc_rate_year_i = 5 and caldate{t}>=2030 then do; 	*option=5 - continue increasing prob_circ after 2030;
-	if  10 le age lt 14 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_10_14;
-	if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_inc_15_19;
-	if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_20_30;
-	if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) + ((caldate{t}-2023)*circ_inc_rate*rel_incr_circ_post_2023)) * circ_red_30_50;
-end;
+*Reduce VMMC to 60% as a result of funding cuts;
+if caldate{t} > &year_interv and circ_inc_rate_year_i = 5 then prob_circ = 0.6*prob_circ;
 
 
 ***Zim specific;	*JAS Feb24;
@@ -22272,13 +22164,13 @@ data r1; set a;
 
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,4);
-
+/*
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,5);
 
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,6);
-/*
+
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,7);
 
@@ -22312,7 +22204,6 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,17);
 
-/*
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,18);
 
