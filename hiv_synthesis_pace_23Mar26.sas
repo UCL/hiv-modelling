@@ -198,6 +198,8 @@ newp_seed = 7;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
 * rr_sw_life_sex_risk_3;	rr_sw_life_sex_risk_3 = 10;
 * rr_sw_prev_sw;			rr_sw_prev_sw = 10;
+* rr_esw_prev_esw;			rr_esw_prev_esw = 10;*might need to change;
+* rr_esw_prev_sw;			rr_esw_prev_sw = 1; *rate of previously being SW on becoming esw; 
 
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
@@ -674,6 +676,7 @@ newp_seed = 7;
 
 
 * WOMEN AT THE EDGE OF SEX WORK (ESW);
+* fold_esw_init;				fold_esw_init=1;
 * base_rate_esw;				%sample(base_rate_esw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2); *slightly higher than SW (look in parameter file);
 * base_rate_stop_sexwork;		%sample_uniform(base_rate_stop_esexwork, 0.001 0.005 0.01); *longer duration than SW;
 
@@ -1256,6 +1259,8 @@ sw_newp_lev_4_1 = 0.00 ; sw_newp_lev_4_2 = 0.00 ; sw_newp_lev_4_3 = 0.030 ; sw_n
 sw_newp_lev_5_1 = 0.00 ; sw_newp_lev_5_2 = 0.00 ; sw_newp_lev_5_3 = 0.000 ; sw_newp_lev_5_4 = 0.050 ; sw_newp_lev_5_5 = 0.95 ; 
 end;
 end;
+
+***start here;
 
 ***ESW trans matrices;
 *Group 1: 0 newp;
@@ -1861,7 +1866,6 @@ end;
 end;
 
 
-***START HERE;
 sw = 0; esw=0;
 if gender = 2 and life_sex_risk >= 2 then do;
 	select;
@@ -1877,7 +1881,7 @@ if gender = 2 and life_sex_risk >= 2 then do;
 	if rand('uniform') < prob_sw_init then sw = 1;
 
 	if sw ne 1 then do;
-		if rand('uniform') < (prob_sw_init) then esw = 1;
+		if rand('uniform') < (prob_sw_init*fold_esw_init) then esw = 1;
 	end;
 
 
@@ -1929,14 +1933,14 @@ if sw = 1 then do;
 	if age > 30 then newp = min(30,newp);
 end;
 
-p_esw_init_newp_g1=0.10; p_esw_init_newp_g2=0.89; p_esw_init_newp_g3= 0.01; 
+/*p_esw_init_newp_g1=0.10; p_esw_init_newp_g2=0.89; p_esw_init_newp_g3= 0.01; */
 
 if esw = 1 then do;
 	a=rand('uniform');if a < 0.98 then episodes_esw=1;if a >= 0.98 then episodes_esw=2;
 
 	e=rand('uniform');
 	if e < 0.10 then newp=0;
-	else if 0.60 <= e < 0.90 then do; 
+	else if 0.10 <= e < 0.90 then do; 
 		q=rand('uniform');
 		if         q < 0.60 then newp=1;
 		if 0.60 <= q < 0.85 then newp=2;
@@ -2927,7 +2931,7 @@ if caldate{t} = date_sw_prog_intro then eff_sw_program=sw_program;
 if eff_sw_program=1 and (sw=1 or esw=1) then do;
 
 if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
-	if (e < rate_engage_sw_program) or (f < rate_engage_esw_program) then do; * dependent_on_time_step_length ;
+	if (sw=1 and e < rate_engage_sw_program) or (esw=1 and f < rate_engage_esw_program) then do; * dependent_on_time_step_length ;
 		sw_program_visit=1 ; 
 		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
 
@@ -2972,7 +2976,7 @@ end;
 end; 
 
 else if sw_program_visit=1 then do; e=rand('uniform');f=rand('uniform');
-	if (e < eff_rate_disengage_sw_program) or (f < eff_rate_disengage_esw_program) then do;
+	if (sw=1 and e < eff_rate_disengage_sw_program) or (esw=1 and f < eff_rate_disengage_esw_program) then do;
 		sw_program_visit=0 ; 
 		date_last_sw_prog_vis=caldate{t};
 		sw_test_6mthly=0;
@@ -4198,8 +4202,10 @@ end;
 ***SW;
 
 if t ge 2  then do;
-if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 
+if gender = 2 and life_sex_risk >= 2  then do;
+
+if sw_tm1  = 0 and esw ne 1 then do;
 	* effect of age on becoming a sex worker;
 	select;
 		when (15 <= age < 20) sw_age_factor = rr_sw_age_1519;
@@ -4218,9 +4224,34 @@ if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 	* effect of previously having been a sex worker on becoming a sex worker;
 	if ever_sw = 1 then prob_becoming_sw = prob_becoming_sw * rr_sw_prev_sw;
 
-	e = rand('uniform');f = rand('uniform');
+	e = rand('uniform');
 	if e < prob_becoming_sw then sw = 1;
-	if sw ne 1 and f < prob_becoming_sw then esw = 1;
+end;
+
+if esw_tm1  = 0 and sw ne 1 then do;
+	* effect of age on becoming a sex worker;
+	select;
+		when (15 <= age < 20) sw_age_factor = rr_sw_age_1519;
+		when (20 <= age < 25) sw_age_factor = 1;
+		when (25 <= age < 35) sw_age_factor = rr_sw_age_2534;
+		when (35 <= age < 50) sw_age_factor = rr_sw_age_3549;
+		otherwise sw_age_factor = 0;
+	end;
+
+	* dependent_on_time_step_length;
+	prob_becoming_esw = base_rate_esw * sqrt(rred_rc_base) * sw_age_factor;
+
+	* effect of the life sex risk on becoming a sex worker;
+	if life_sex_risk = 3 then prob_becoming_esw = prob_becoming_esw * rr_sw_life_sex_risk_3;
+
+	* effect of previously having been a edge sex worker on becoming a sex worker;
+	if ever_esw = 1 then prob_becoming_esw = prob_becoming_esw * rr_esw_prev_esw;*might be different for esw?;
+	if ever_sw = 1 then prob_becoming_esw = prob_becoming_esw * rr_esw_prev_sw;*currently 1;
+
+	e = rand('uniform');
+	if e < prob_becoming_esw then esw = 1;
+end;
+
 
 
 
