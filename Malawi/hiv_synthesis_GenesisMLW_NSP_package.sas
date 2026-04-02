@@ -20059,7 +20059,7 @@ if prevalence1524m gt 0 then prev_ratio_1524 = prevalence1524w / prevalence1524m
 
 s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
 s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
-s_hivge15 = s_hivge15m + s_hivge15w ;
+s_hivge15 = (s_hivge15m + s_hivge15w) *520 ;*using sacle factor from create wide file;
 if s_hivge15  > 0 then p_vg1000 = s_vg1000 / s_hivge15 ;  p_vl1000 = 1- p_vg1000 ;
 
 
@@ -21001,7 +21001,12 @@ if country = 'Malawi' then do;
 	if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
 	if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
   
-	if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
+	if cald = 2016.5 and 
+	((prevalence1549 < 0.07  or prevalence1549 > 0.13 ) or
+	(s_hivge15 gt 1100000) or
+	(prevalence1549m > 0.10))
+	then do; abort abend; end;
+
 	if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
 end;
 

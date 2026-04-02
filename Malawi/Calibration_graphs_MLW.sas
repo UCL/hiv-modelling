@@ -1,10 +1,11 @@
 
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_mlw";
-ods listing;
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_mlw";
 
 data y;
-set a.long_gen_mlw_03_03_2026_package;
+*set a.long_gen_mlw_03_03_2026_package;
+set a.long_gen_mlw_NSP_package;
+
 run;
 proc freq;table cald option;run;
 
@@ -15,7 +16,7 @@ p_newp_ge1_ = p_newp_ge1;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 736;
+%let nfit = 30;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -143,7 +144,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 /* Step 3: Example call for options 0, 1, 2 */
 /*-----------------------------------------*/
 *%summary_all_options(options=0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 99);
-%summary_all_options(options=0 1 2 3 4 5 6  99);
+%summary_all_options(options=0 1 2 3 4 99);
 
 
 
@@ -153,19 +154,17 @@ options notes source source2 mprint mlogic symbolgen;
 data d;
 set Master_summary;
 
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Malawi\Observed data_Malawi.sas"; by cald;
+%include "C:\Users\Loveleen\Documents\GitHub\hiv-modelling\Malawi\Observed data_Malawi.sas"; by cald;
 run;
 
-DATA A.MLW_options_graphs_22Feb26;
+DATA A.MLW_options_graphs_NSP;
 SET d;
 RUN;
 
-DATA A.MLW_options_graphs_03_03_26_pack;
-SET d;
-RUN;
+
 
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = 'C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\MLW_calibration_18_02_26.doc' startpage=never; 
+ods rtf file = 'C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\MLW_calibration_NSP.doc' startpage=never; 
 ods listing close;
 
 
