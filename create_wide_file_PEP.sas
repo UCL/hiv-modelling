@@ -4,7 +4,7 @@
 libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data a;
-set a.GenesisZim_30Mar26; 
+set a.GenesisZim_31Mar26; 
 if run=. then delete; 
 
 proc sort;
@@ -306,10 +306,11 @@ s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vm
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 
+* n_prep_elig;					n_prep_elig = s_prep_any_elig * sf;
 
 * n_onprep_w;					n_onprep_w = max(s_onprep_w, 0) * sf;
 * n_onprep_m;					n_onprep_m = max(s_onprep_m, 0) * sf;
-* n_onprep;						n_onprep = n_onprep_w + n_onprep_m ;
+* n_onprep;						n_onprep = n_onprep_w + n_onprep_m * sf;
 * prop_1564_onprep;				prop_1564_onprep =   (s_onprep_m + s_onprep_w) / (s_alive1564 - s_hiv1564) ;
 * n_onprep_oral;				n_onprep_oral =   (s_onprep_oral_m + s_onprep_oral_w) * sf;
 * n_onprep_cab;					n_onprep_cab =   (s_onprep_cab_m + s_onprep_cab_w) * sf ;
@@ -413,14 +414,12 @@ dcost	ddaly  cost
 
 n_tested_sw 		 p_diag_sw 			p_onart_diag_sw			 p_onart_vl1000_sw
 
-n_prep_oral_plw n_prep_len_plw			n_new_vmmc1529m			n_sw_program_visit
+n_prep_oral_plw n_prep_len_plw			n_new_vmmc1529m			n_sw_program_visit		n_prep_elig
 ;
 
 proc sort data=y;by run option;run;
 
-
-
-data a.long_gen_PEP_30Mar26;
+data a.long_gen_PEP_31Mar26;
 set y;
 run;
 

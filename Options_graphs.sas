@@ -4,7 +4,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data a;
-set a.Zim_pep_options_graphs_30Mar26;
+set a.Zim_pep_options_graphs_31Mar26;
 run;
 
 
@@ -44,6 +44,17 @@ series  x=cald y=mean_prop_elig_on_oral_prep_4/	lineattrs = (color=green thickne
 series  x=cald y=mean_prop_elig_on_oral_prep_5/	lineattrs = (color=blue thickness = 2 pattern=dash);
 series  x=cald y=mean_prop_elig_on_oral_prep_6/	lineattrs = (color=orange thickness = 2 pattern=dash);
 run;quit;
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Number eligible";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1500000 by 50000) valueattrs=(size=10);
+
+label mean_n_prep_elig_0 = "Base";
+
+series  x=cald y=mean_n_prep_elig_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+run;quit;
+
 
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Currently on PEP (15+)";
