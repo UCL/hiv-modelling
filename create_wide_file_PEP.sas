@@ -414,7 +414,8 @@ dcost	ddaly  cost
 
 n_tested_sw 		 p_diag_sw 			p_onart_diag_sw			 p_onart_vl1000_sw
 
-n_prep_oral_plw n_prep_len_plw			n_new_vmmc1529m			n_sw_program_visit		n_prep_elig
+n_prep_oral_plw 	n_prep_len_plw		n_new_vmmc1529m			n_sw_program_visit		n_prep_elig
+dcost_prep_oral 	cost_prep_visit_oral
 ;
 
 proc sort data=y;by run option;run;
@@ -424,10 +425,10 @@ set y;
 run;
 
 
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
+libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data y;
-set a.long_gen_PEP_05Mar26;
+set a.long_gen_PEP_31Mar26;
 run; 
 
 options nomprint;
@@ -524,7 +525,7 @@ t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;
 
 %var(v=p_diag);	 		 	%var(v=p_diag_m); 			%var(v=p_diag_w);  			%var(v=p_onart_diag);   %var(v=p_onart_diag_m);   	%var(v=p_onart_diag_w);  
 %var(v=p_onart_vl1000_);	%var(v=p_onart_vl1000_m);	%var(v=p_onart_vl1000_w);	%var(v=n_onprep_w);		%var(v=n_onprep_m);			%var(v=n_onprep);
-%var(v=prop_elig_on_prep);	%var(v=n_prep_ever);		
+%var(v=prop_elig_on_prep);	%var(v=n_prep_ever);		%var(v=dcost_prep_oral); 	%var(v=cost_prep_visit_oral);
 
 %var(v=n_sw_1564_);			%var(v=n_sw_1549_);			%var(v=p_w_1564_sw);		%var(v=p_w_1549_sw);	%var(v=prevalence_1564sw);	%var(v=incidence_1564sw);
 %var(v=p_onprep_sw);		%var(v=n_onprep_sw);
@@ -548,7 +549,7 @@ n_new_inf
 
 p_diag	 		 	p_diag_m 			p_diag_w  			p_onart_diag  	p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w	n_onprep_w		n_onprep_m			n_onprep
-prop_elig_on_prep	n_prep_ever		
+prop_elig_on_prep	n_prep_ever			dcost_prep_oral 	cost_prep_visit_oral
 
 n_sw_1564_			n_sw_1549_			p_w_1564_sw			p_w_1549_sw		prevalence_1564sw	incidence_1564sw
 p_onprep_sw			n_onprep_sw
@@ -564,6 +565,6 @@ dcost ddaly cost
 proc sort; by run;run;
 
 
-data a.wide_Zim_PEP_05_03_2026;
+data a.wide_Zim_PEP_31_03_2026;
 set wide_outputs  ;  
 by run;run; 
