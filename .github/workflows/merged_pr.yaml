@@ -1,0 +1,42 @@
+# This workflow ensures that any changes made to this model through pull requests
+# are also tracked in the new repository, so they can be included as
+# the Python model is developed.
+# The changes are recorded in https://github.com/UCL/hivpy/issues/95.
+# For this to run, it requires a secret named PAT_FOR_ISSUE to exist in hiv-modelling.
+# The secret should hold a personal access token with enough permissions to update issue comments in hivpy.
+name: Record merged PRs in the Python repository
+
+on:
+  pull_request:
+    types: [closed]  # this catches merged and otherwise-closed PRs; we filter them later
+    branches: [core]
+
+jobs:
+  record-pr:
+    if: github.event.pull_request.merged == true  # only run on merged PRs
+    runs-on: ubuntu-latest
+    name: Record a merged PR in the new repository
+    steps:
+    # Get the comment in the issue created for this purpose
+    - name: Get the comment we want
+      id: get-previous-comment
+      uses: peter-evans/find-comment@v2
+      with:
+        repository: UCL/hivpy
+        issue-number: 95
+        direction: first
+    # Get the details of the PR and create the new text to describe it
+    - name: Compose the new text to describe this PR
+      id: create-new-text
+      run: |
+        TEXT="${{ github.event.pull_request.title  }} ([#${{ github.event.number }}](${{ github.event.pull_request.html_url }}))"
+        echo "description=${TEXT}" >> $GITHUB_OUTPUT
+    # Add the PR's details to the comment
+    - name: Update comment
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        repository: UCL/hivpy
+        comment-id: ${{ steps.get-previous-comment.outputs.comment-id}}
+        body: |  # by default, this appends, so we don't need the previous text
+          - [ ] ${{steps.create-new-text.outputs.description }}
+        token: ${{ secrets.PAT_FOR_ISSUE }}  # this token should have permissions over issues in the hivpy repo
