@@ -45,6 +45,32 @@ series  x=cald y=mean_prop_elig_on_oral_prep_5/	lineattrs = (color=blue thicknes
 series  x=cald y=mean_prop_elig_on_oral_prep_6/	lineattrs = (color=orange thickness = 2 pattern=dash);
 run;quit;
 
+
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "Of those eligible, proportion on Len (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label mean_prop_elig_on_Len_prep_0 = "Base";
+label mean_prop_elig_on_Len_prep_1 = "Facility based PEP";
+label mean_prop_elig_on_Len_prep_2 = "Community based PEP";
+label mean_prop_elig_on_Len_prep_3 = "Pharmacy based PEP";
+label mean_prop_elig_on_Len_prep_4 = "Facility based PEP with scale up of Len";
+label mean_prop_elig_on_Len_prep_5 = "Community based PEP with scale up of Len";
+label mean_prop_elig_on_Len_prep_6 = "Pharmacy based PEP with scale up of Len";
+
+series  x=cald y=mean_prop_elig_on_Len_prep_4/	lineattrs = (color=green thickness = 2 pattern=dash);
+series  x=cald y=mean_prop_elig_on_Len_prep_5/	lineattrs = (color=blue thickness = 2 pattern=dash);
+series  x=cald y=mean_prop_elig_on_Len_prep_6/	lineattrs = (color=orange thickness = 2 pattern=dash);
+series  x=cald y=mean_prop_elig_on_oral_prep_4/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_prop_elig_on_oral_prep_5/	lineattrs = (color=lightblue thickness = 2 pattern=solid);
+series  x=cald y=mean_prop_elig_on_oral_prep_6/	lineattrs = (color=lightorange thickness = 2 pattern=solid);
+
+run;quit;
+
+
+
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Number eligible";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
@@ -77,6 +103,8 @@ series  x=cald y=mean_n_onprep_oral_4/	lineattrs = (color=green thickness = 2 pa
 series  x=cald y=mean_n_onprep_oral_5/	lineattrs = (color=blue thickness = 2 pattern=dash);
 series  x=cald y=mean_n_onprep_oral_6/	lineattrs = (color=orange thickness = 2 pattern=dash);
 run;quit;
+
+
 
 
 proc sgplot data=a; 

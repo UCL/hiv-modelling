@@ -5,6 +5,11 @@ data a;
 set a.wide_Zim_PEP_31_03_2026;
 run;
 
+proc means;var dcost_prep_oral_26_76_1 dcost_prep_oral_26_76_4 dcost_prep_oral_26_76_7
+dcost_prep_len_26_76_1 dcost_prep_len_26_76_4 dcost_prep_len_26_76_7
+dcost_prep_26_76_1 dcost_prep_26_76_4 dcost_prep_26_76_7
+;run;
+
 
 data b;
 set a;
@@ -124,6 +129,37 @@ diff_dcost_50y_5 = dcost_26_76_5 - dcost_26_76_1;
 diff_dcost_50y_6 = dcost_26_76_6 - dcost_26_76_1;
 diff_dcost_50y_7 = dcost_26_76_7 - dcost_26_76_1;
 
+*50 years prep costs;
+diff_dcost_prep_oral_50y_2 = dcost_prep_oral_26_76_2 - dcost_prep_oral_26_76_1;
+diff_dcost_prep_oral_50y_3 = dcost_prep_oral_26_76_3 - dcost_prep_oral_26_76_1;
+diff_dcost_prep_oral_50y_4 = dcost_prep_oral_26_76_4 - dcost_prep_oral_26_76_1;
+diff_dcost_prep_oral_50y_5 = dcost_prep_oral_26_76_5 - dcost_prep_oral_26_76_1;
+diff_dcost_prep_oral_50y_6 = dcost_prep_oral_26_76_6 - dcost_prep_oral_26_76_1;
+diff_dcost_prep_oral_50y_7 = dcost_prep_oral_26_76_7 - dcost_prep_oral_26_76_1;
+diff_dcost_prep_len_50y_2 = dcost_prep_len_26_76_2 - dcost_prep_len_26_76_1;
+diff_dcost_prep_len_50y_3 = dcost_prep_len_26_76_3 - dcost_prep_len_26_76_1;
+diff_dcost_prep_len_50y_4 = dcost_prep_len_26_76_4 - dcost_prep_len_26_76_1;
+diff_dcost_prep_len_50y_5 = dcost_prep_len_26_76_5 - dcost_prep_len_26_76_1;
+diff_dcost_prep_len_50y_6 = dcost_prep_len_26_76_6 - dcost_prep_len_26_76_1;
+diff_dcost_prep_len_50y_7 = dcost_prep_len_26_76_7 - dcost_prep_len_26_76_1;
+
+*50 years testing costs;
+diff_dtest_cost_50y_2 = dtest_cost_26_76_2 - dtest_cost_26_76_1;
+diff_dtest_cost_50y_3 = dtest_cost_26_76_3 - dtest_cost_26_76_1;
+diff_dtest_cost_50y_4 = dtest_cost_26_76_4 - dtest_cost_26_76_1;
+diff_dtest_cost_50y_5 = dtest_cost_26_76_5 - dtest_cost_26_76_1;
+diff_dtest_cost_50y_6 = dtest_cost_26_76_6 - dtest_cost_26_76_1;
+diff_dtest_cost_50y_7 = dtest_cost_26_76_7 - dtest_cost_26_76_1;
+
+*50 years ART costs;
+diff_dart_cost_y_50y_2 = dart_cost_y_26_76_2 - dart_cost_y_26_76_1;
+diff_dart_cost_y_50y_3 = dart_cost_y_26_76_3 - dart_cost_y_26_76_1;
+diff_dart_cost_y_50y_4 = dart_cost_y_26_76_4 - dart_cost_y_26_76_1;
+diff_dart_cost_y_50y_5 = dart_cost_y_26_76_5 - dart_cost_y_26_76_1;
+diff_dart_cost_y_50y_6 = dart_cost_y_26_76_6 - dart_cost_y_26_76_1;
+diff_dart_cost_y_50y_7 = dart_cost_y_26_76_7 - dart_cost_y_26_76_1;
+
+
 
 *** discounted new infections;
 * 20 years;
@@ -202,7 +238,14 @@ diff_netdalys_50y_5 = netdalys_50y_5 - netdalys_50y_1;
 diff_netdalys_50y_6 = netdalys_50y_6 - netdalys_50y_1;
 diff_netdalys_50y_7 = netdalys_50y_7 - netdalys_50y_1;
 
-
+***Difference in cost components - exploratory;
+proc means;var
+diff_dcost_50y_2	diff_dcost_50y_3	diff_dcost_50y_4	diff_dcost_50y_5	diff_dcost_50y_6	diff_dcost_50y_7 		
+diff_dcost_prep_oral_50y_2	diff_dcost_prep_oral_50y_3	diff_dcost_prep_oral_50y_4	diff_dcost_prep_oral_50y_5	diff_dcost_prep_oral_50y_6	diff_dcost_prep_oral_50y_7 		
+diff_dcost_prep_len_50y_2	diff_dcost_prep_len_50y_3	diff_dcost_prep_len_50y_4	diff_dcost_prep_len_50y_5	diff_dcost_prep_len_50y_6	diff_dcost_prep_len_50y_7 		
+diff_dtest_cost_50y_2	diff_dtest_cost_50y_3	diff_dtest_cost_50y_4	diff_dtest_cost_50y_5	diff_dtest_cost_50y_6	diff_dtest_cost_50y_7 		
+diff_dart_cost_y_50y_2	diff_dart_cost_y_50y_3	diff_dart_cost_y_50y_4	diff_dart_cost_y_50y_5	diff_dart_cost_y_50y_6	diff_dart_cost_y_50y_7 		
+;run;
 
 ***Difference in discounted costs;
 proc means data=c  mean;var 
