@@ -24,7 +24,7 @@
 * date_start_testing;       date_start_testing = 2005  ;
 
 
-* test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.3 0.4 0.3); 
+* test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.2 0.6); 
 
 * an_lin_incr_test;         %sample(an_lin_incr_test,
                                   0.002    0.003   0.005  0.01,
@@ -33,6 +33,10 @@
 
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
                           
+* prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
+								0.02 	0.05 	0.15 	0.35 	0.50, 
+
+								0.80 	0.20	0.00	0.00	0.00	); * change sep22 for pop_wide_tld;
 
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
@@ -76,7 +80,7 @@ rate_int_choice = 0.003;
 
 ***Too many people on PrEP;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.05 0.10 0.15);
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any = 0.05;
 
 * prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05 0.1);
 
