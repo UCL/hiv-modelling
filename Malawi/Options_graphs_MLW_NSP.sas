@@ -77,8 +77,8 @@ ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\Mlw_options_NSP.doc" startpage=never; 
 ods listing close;
 
-ods listing gpath="C:\Users\lovel\Documents";
-ods graphics on / imagename="SGPlot" imagefmt=png;
+*ods listing gpath="C:\Users\lovel\Documents";
+*ods graphics on / imagename="SGPlot" imagefmt=png;
 proc sgplot data=a; 
 Title    height=1.5 justify=center "People living with HIV (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
@@ -95,7 +95,7 @@ series  x=cald y=mean_n_hivge15__99/lineattrs = (color=black thickness = 2 patte
 series  x=cald y=mean_n_hivge15__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_n_hivge15__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_n_hivge15__2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_n_hivge15__3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_n_hivge15__3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_hivge15__4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 run;quit;
 
@@ -115,7 +115,7 @@ series  x=cald y=mean_n_new_inf_99/lineattrs = (color=black thickness = 2 patter
 series  x=cald y=mean_n_new_inf_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_n_new_inf_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_n_new_inf_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_n_new_inf_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_n_new_inf_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_new_inf_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -137,7 +137,7 @@ series  x=cald y=mean_prevalence1549__99/lineattrs = (color=black thickness = 2 
 series  x=cald y=mean_prevalence1549__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_prevalence1549__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549__2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence1549__3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence1549__3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549__4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -158,7 +158,7 @@ series  x=cald y=mean_incidence1549__99/lineattrs = (color=black thickness = 2 p
 series  x=cald y=mean_incidence1549__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_incidence1549__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence1549__3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence1549__3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence1549__4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -180,7 +180,7 @@ series  x=cald y=mean_p_onart_99/lineattrs = (color=black thickness = 2 pattern=
 series  x=cald y=mean_p_onart_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_p_onart_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -201,7 +201,7 @@ series  x=cald y=mean_p_diag_99/lineattrs = (color=black thickness = 2 pattern=s
 series  x=cald y=mean_p_diag_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_p_diag_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_p_diag_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_p_diag_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_diag_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -223,7 +223,7 @@ series  x=cald y=mean_p_onart_diag_99/lineattrs = (color=black thickness = 2 pat
 series  x=cald y=mean_p_onart_diag_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_p_onart_diag_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_diag_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_diag_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_diag_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -245,7 +245,7 @@ series  x=cald y=mean_p_onart_vl1000_99/lineattrs = (color=black thickness = 2 p
 series  x=cald y=mean_p_onart_vl1000_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_p_onart_vl1000_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_vl1000_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_vl1000_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onart_vl1000_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -267,7 +267,7 @@ series  x=cald y=mean_n_prep_ever_99/lineattrs = (color=black thickness = 2 patt
 series  x=cald y=mean_n_prep_ever_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_n_prep_ever_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_n_prep_ever_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_n_prep_ever_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_n_prep_ever_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_prep_ever_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -288,7 +288,7 @@ series  x=cald y=mean_n_onprep_99/lineattrs = (color=black thickness = 2 pattern
 series  x=cald y=mean_n_onprep_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_n_onprep_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_n_onprep_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_n_onprep_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_n_onprep_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_onprep_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -309,7 +309,7 @@ series  x=cald y=mean_prevalence_1564sw_99/lineattrs = (color=black thickness = 
 series  x=cald y=mean_prevalence_1564sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_prevalence_1564sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_1564sw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence_1564sw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_1564sw_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_1564sw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -331,7 +331,7 @@ series  x=cald y=mean_incidence_1564sw_99/lineattrs = (color=black thickness = 2
 series  x=cald y=mean_incidence_1564sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_incidence_1564sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_1564sw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence_1564sw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence_1564sw_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_1564sw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -353,7 +353,7 @@ series  x=cald y=mean_p_onprep_sw_99/lineattrs = (color=black thickness = 2 patt
 series  x=cald y=mean_p_onprep_sw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_p_onprep_sw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onprep_sw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onprep_sw_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_sw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 run;quit;
 
@@ -374,7 +374,7 @@ series  x=cald y=mean_prevalence_agyw_99/lineattrs = (color=black thickness = 2 
 series  x=cald y=mean_prevalence_agyw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_prevalence_agyw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_agyw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence_agyw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence_agyw_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence_agyw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 run;quit;
 
@@ -395,7 +395,7 @@ series  x=cald y=mean_incidence_agyw_99/lineattrs = (color=black thickness = 2 p
 series  x=cald y=mean_incidence_agyw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_incidence_agyw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_agyw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence_agyw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence_agyw_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_agyw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 run;quit;
 
@@ -416,7 +416,7 @@ series  x=cald y=mean_p_onprep_agyw_99/lineattrs = (color=black thickness = 2 pa
 series  x=cald y=mean_p_onprep_agyw_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_p_onprep_agyw_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_agyw_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onprep_agyw_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onprep_agyw_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_agyw_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 run;quit;
 
@@ -436,7 +436,7 @@ series  x=cald y=mean_prevalence1549_msm_99/lineattrs = (color=black thickness =
 series  x=cald y=mean_prevalence1549_msm_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_prevalence1549_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549_msm_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_prevalence1549_msm_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_prevalence1549_msm_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_prevalence1549_msm_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 run;quit;
 
@@ -457,7 +457,7 @@ series  x=cald y=mean_incidence_msm_99/lineattrs = (color=black thickness = 2 pa
 series  x=cald y=mean_incidence_msm_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_incidence_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_msm_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_incidence_msm_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_incidence_msm_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_incidence_msm_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 run;quit;
 
@@ -477,7 +477,7 @@ series  x=cald y=mean_p_onprep_msm_99/lineattrs = (color=black thickness = 2 pat
 series  x=cald y=mean_p_onprep_msm_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_p_onprep_msm_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_msm_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onprep_msm_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onprep_msm_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_p_onprep_msm_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -498,7 +498,7 @@ series  x=cald y=mean_n_vmmc_all_99/lineattrs = (color=black thickness = 2 patte
 series  x=cald y=mean_n_vmmc_all_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_n_vmmc_all_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_n_vmmc_all_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_n_vmmc_all_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_n_vmmc_all_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_vmmc_all_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
@@ -521,7 +521,7 @@ series  x=cald y=mean_n_death_hivrel_99/lineattrs = (color=black thickness = 2 p
 series  x=cald y=mean_n_death_hivrel_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_n_death_hivrel_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 series  x=cald y=mean_n_death_hivrel_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_n_death_hivrel_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+series  x=cald y=mean_n_death_hivrel_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 series  x=cald y=mean_n_death_hivrel_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 run;quit;
 
@@ -547,7 +547,7 @@ label mean_n_death_17 = "VL and CD4 testing";
 series  x=cald y=mean_n_death_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
 series  x=cald y=mean_n_death_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
 *series  x=cald y=mean_n_death_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-*series  x=cald y=mean_n_death_3/	lineattrs = (color=maroon thickness = 2 pattern=solid);
+*series  x=cald y=mean_n_death_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
 *series  x=cald y=mean_n_death_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 *series  x=cald y=mean_n_death_5/	lineattrs = (color=lightpurple thickness = 2 pattern=solid);
 *series  x=cald y=mean_n_death_6/	lineattrs = (color=blue thickness = 2 pattern=solid);
