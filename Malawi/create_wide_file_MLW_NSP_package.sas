@@ -36,8 +36,6 @@ by run ;
 
 * preparatory code ;
 
-
-proc freq;table sf;where cald=2016.5;run;
 * ================================================================================= ;
 
 * discount rate;
