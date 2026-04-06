@@ -1,6 +1,9 @@
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
+***REMEMBER TO INCLUDE ZIM PARAMETERS ON FINAl runs***;
+
+
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
@@ -1161,7 +1164,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * OVERWRITES country specific parameters;
-%include "/home/rmjllob/Zim_parameters_new.sas";
+*%include "/home/rmjllob/Zim_parameters_new.sas";
 
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
@@ -2523,10 +2526,10 @@ who may be dead and hence have caldate{t} missing;
 
 		prep_oral_parameters_sio=1 ;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
-		eff_rate_test_startprep_any = 0.3; 
-		eff_prob_prep_any_restart_choice = 0.3;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral ;		
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
+		eff_rate_test_startprep_any = 0.10; 
+		eff_prob_prep_any_restart_choice = 0.10;
 		pref_prep_oral = 0.3;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
@@ -2543,11 +2546,11 @@ who may be dead and hence have caldate{t} missing;
 
 		prep_oral_parameters_sio=1 ;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 3 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
-		eff_rate_test_startprep_any = 0.3; 
-		eff_prob_prep_any_restart_choice = 0.3;
-		pref_prep_oral = 0.4;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 1.4 ;		
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
+		eff_rate_test_startprep_any = 0.15; 
+		eff_prob_prep_any_restart_choice = 0.15;
+		pref_prep_oral = 0.3;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
@@ -2562,11 +2565,11 @@ who may be dead and hence have caldate{t} missing;
 
 		prep_oral_parameters_sio=1 ;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 4 ;		
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
 		eff_rate_test_startprep_any = 0.3; 
 		eff_prob_prep_any_restart_choice = 0.3;
-		pref_prep_oral = 0.4;
+		pref_prep_oral = 0.3;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
@@ -2582,18 +2585,23 @@ who may be dead and hence have caldate{t} missing;
 
 		prep_oral_parameters_sio=1 ;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
-		eff_rate_test_startprep_any = 0.5; 
-		eff_prob_prep_any_restart_choice = 0.5;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral ;		
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
+		eff_rate_test_startprep_any = 0.10; 
+		eff_prob_prep_any_restart_choice = 0.10;
 		pref_prep_oral = 0.3;
+
+
+		q=rand('uniform');
+		if q < 0.4 then pref_prep_len = 0.2;*lower than oral prep;
+		if q >= 0.6 then pref_prep_len = 0.4;
+
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
-
 
 		date_prep_len_intro=&year_interv;	
 		eff_prob_prep_len_b=min(1,3*prob_prep_len_b);						*Triple rate of starting len;
@@ -2607,11 +2615,16 @@ who may be dead and hence have caldate{t} missing;
 
 		prep_oral_parameters_sio=1 ;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 3 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
-		eff_rate_test_startprep_any = 0.6; 
-		eff_prob_prep_any_restart_choice = 0.5;
-		pref_prep_oral = 0.4;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 1.4 ;		
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.1;
+		eff_rate_test_startprep_any = 0.15; 
+		eff_prob_prep_any_restart_choice = 0.15;
+		pref_prep_oral = 0.3;
+
+		q=rand('uniform');
+		if q < 0.4 then pref_prep_len = 0.2;* lower than oral prep;
+		if q >= 0.6 then pref_prep_len = 0.4;
+
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
@@ -2630,11 +2643,16 @@ who may be dead and hence have caldate{t} missing;
 
 		prep_oral_parameters_sio=1 ;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 4 ;		
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 2 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.2;
-		eff_rate_test_startprep_any = 0.6; 
-		eff_prob_prep_any_restart_choice = 0.5;
-		pref_prep_oral = 0.4;
+		eff_rate_test_startprep_any = 0.3; 
+		eff_prob_prep_any_restart_choice = 0.3;
+		pref_prep_oral = 0.3;
+		
+		q=rand('uniform');
+		if q < 0.4 then pref_prep_len = 0.2;* lower than oral prep hence more likely to start oral;
+		if q >= 0.6 then pref_prep_len = 0.4;
+
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
@@ -3268,7 +3286,7 @@ if t ge 2 and &year_interv         <= caldate{t} and circ_inc_rate_year_i = 4 th
 end;
 
 *Reduction in VMMC as a result of funding cuts;
-if caldate{t} > &year_interv and circ_inc_rate_year_i = 5 then prob_circ = 0.6*prob_circ_year_interv;
+if caldate{t} > &year_interv and circ_inc_rate_year_i = 5 then prob_circ = 0.7*prob_circ_year;
 
 
 ***Zim specific;	*JAS Feb24;
