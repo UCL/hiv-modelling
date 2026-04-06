@@ -40,7 +40,6 @@ by run ;
 
 * preparatory code ;
 
-
 * ================================================================================= ;
 
 * discount rate;
@@ -142,11 +141,25 @@ if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
 
+
+
+
+
+***CHECK ALL PREP VARIABLES***;
 ***Overwrite oral PrEP costs to $40/year;
 
-s_dcost_prep_oral=0;
-cost_prep_oral = s_prep_oral * 40/1000000 * sf;
-s_dcost_prep_oral = cost_prep_oral * discount;
+
+
+
+
+
+s_dcost_prep_oral_40=0;
+cost_prep_oral_40 = s_prep_oral * 40/1000000 * sf;
+s_dcost_prep_oral_40 = cost_prep_oral_40 * discount;
+
+cost_prep_oral = (s_cost_prep_oral * sf*4)/1000;
+cost_prep_visit_oral = (s_cost_prep_visit_oral * sf * 4)/1000;
+
 
 s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_cab +  s_dcost_prep_len ;
 s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_cab + s_dcost_prep_visit_len   ;
@@ -237,12 +250,6 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who
 					dcost_circ + dcost_condoms + dcost_child_hiv + dcost_non_aids_pre_death + dcost_drug_level_test
 					+ dcost_prep_visit + dcost_prep + dcost_fsw_services  + dcost_self_test ;
 
-
-					***LOOK AT NUMBER OF PEOPLE ON PREP;
-proc means;var s_prep_oral
-dcost  dtest_cost   dcost_prep_visit  dcost_prep  ;where option=3 and 2050 <=cald< 2051;run;
-
-proc freq;table option;run;
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost ; 
 
@@ -335,6 +342,7 @@ s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vm
 * n_onprep_oral;				n_onprep_oral =   (s_onprep_oral_m + s_onprep_oral_w) * sf;
 * n_onprep_cab;					n_onprep_cab =   (s_onprep_cab_m + s_onprep_cab_w) * sf ;
 * n_onprep_len;					n_onprep_len =   (s_onprep_len_m + s_onprep_len_w)  * sf ;
+
 
 * prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;
 								if s_prep_any_elig = 0 then prop_elig_on_prep = 0;
@@ -440,9 +448,15 @@ n_tested_sw 		 p_diag_sw 			p_onart_diag_sw			 p_onart_vl1000_sw
 
 n_prep_oral_plw 	n_prep_len_plw		n_new_vmmc1529m			n_sw_program_visit		n_prep_elig
 dcost_prep_oral 	dcost_prep_visit_oral	dcost_prep			dcost_prep_len		 	dcost_prep_visit_len
-dart_cost_y 		dtest_cost ;
+dart_cost_y 		dtest_cost 			cost_prep_oral			cost_prep_oral_40		s_dcost_prep_oral_40
+cost_prep_visit_oral;
 
 proc sort data=y;by run option;run;
+
+proc means;var n_onprep_oral	cost_prep_oral		cost_prep_oral_40	dcost_prep_oral		s_dcost_prep_oral_40
+cost_prep_visit_oral dcost_prep_visit_oral;
+where cald=2050 and option=3;run;
+
 
 data a.long_gen_PEP_31Mar26;
 set y;
