@@ -1,16 +1,24 @@
 
 *libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
-libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
-data a;
+data a1;
 set a.GenesisZim_31Mar26; 
 if run=. then delete; 
+proc sort;by run cald option;run;
 
-proc sort;
-by run cald option;run;
+data a2;
+set a.GenesisZim_31Mar26a; 
+if run=. then delete; 
+proc sort;by run cald option;run;
 
 proc freq;table cald option;run;
+
+data a;
+set a1 a2;
+proc sort;
+by run cald option;run;
 
 
 ***zim specific;
@@ -133,7 +141,14 @@ if s_dcost_prep_ad_adh=. then s_dcost_prep_ad_adh=0;
 if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
-s_dcost_prep = (s_dcost_prep_oral/3) + s_dcost_prep_cab +  s_dcost_prep_len ;
+
+***Overwrite oral PrEP costs to $40/year;
+
+s_dcost_prep_oral=0;
+cost_prep_oral = s_prep_oral * 40/1000000 * sf;
+s_dcost_prep_oral = cost_prep_oral * discount;
+
+s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_cab +  s_dcost_prep_len ;
 s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_cab + s_dcost_prep_visit_len   ;
 
 
@@ -160,7 +175,7 @@ d_t_adh_int_cost = s_d_t_adh_int_cost * sf * 4 / 1000;
 dcost_prep = s_dcost_prep * sf * 4 / 1000; 
 dcost_prep_cab = s_dcost_prep_cab * sf * 4 / 1000; 
 dcost_prep_len = s_dcost_prep_len * sf * 4 / 1000; 
-dcost_prep_oral = (s_dcost_prep_oral/3) * sf * 4 / 1000; 
+dcost_prep_oral = s_dcost_prep_oral * sf * 4 / 1000; 
 dcost_prep_visit  = s_dcost_prep_visit * sf * 4 / 1000; 	
 dcost_prep_visit_cab  = s_dcost_prep_visit_cab * sf * 4 / 1000; 	
 dcost_prep_visit_len  = s_dcost_prep_visit_len * sf * 4 / 1000; 	
@@ -223,6 +238,11 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who
 					+ dcost_prep_visit + dcost_prep + dcost_fsw_services  + dcost_self_test ;
 
 
+					***LOOK AT NUMBER OF PEOPLE ON PREP;
+proc means;var s_prep_oral
+dcost  dtest_cost   dcost_prep_visit  dcost_prep  ;where option=3 and 2050 <=cald< 2051;run;
+
+proc freq;table option;run;
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost ; 
 
