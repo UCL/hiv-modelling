@@ -1,19 +1,66 @@
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 *turns log back on;
 *options notes source source2 mprint mlogic symbolgen;
 
 ***92 runs;
 
-data a;
+data a1;
+*set a.GenesisMLW_NSP_package;
+set a.genesis_mlw_nsp_package;
+if run=. then delete; 
+
+proc sort;by run cald option;run;
+proc freq;table cald option;run;
+
+data a2;
+*set a.GenesisMLW_NSP_package;
 set a.GenesisMLW_NSP_package;
 if run=. then delete; 
 
-proc sort;
-by run cald option;run;
-
+proc sort;by run cald option;run;
 proc freq;table cald option;run;
 
+
+data a3;
+set a1 a2;
+proc sort;by run cald option;run;
+proc freq;table cald option;run;
+
+
+***Remove runs with low p_diag;
+data a;
+set a3;
+
+s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
+
+* p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
+
+if cald=2030 and option=4 and p_diag<0.95 then a=1;
+/*
+proc freq;table p_diag;where option=4 and cald=2030;run ;
+proc freq;table run;where a=1;run;
+*/
+
+if run in (
+7217528
+40260220
+61721983
+121066351
+316450830
+377166528
+387297173
+477402056
+480633436
+542730130
+573347237
+605626256
+701297770
+755832899
+)
+then delete;
+run;
+proc freq;table cald option;run;
 
 data sf;
 set a;
@@ -439,7 +486,7 @@ set y;
 run;
 
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 
 data y;
 set a.long_gen_mlw_NSP_package;
