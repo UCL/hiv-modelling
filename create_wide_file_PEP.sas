@@ -4,9 +4,10 @@
 libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data a1;
-set a.GenesisZim_31Mar26; 
+set a.Genesis_Zim_pep_31Mar26; 
 if run=. then delete; 
 proc sort;by run cald option;run;
+proc freq;table cald option;run;
 
 data a2;
 set a.GenesisZim_31Mar26a; 
@@ -142,26 +143,13 @@ if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
 
 
+***Overwrite oral PrEP costs to $50/year;
 
+s_dcost_prep_oral_50=0;
+cost_prep_oral_50 = (s_prep_oral * 50/1000000 * sf); *Multiplying by 2/3 as assuming it will be used in 2 out of 3 months;
+s_dcost_prep_oral_50 = cost_prep_oral_50 * 0.666 * discount;
 
-
-***CHECK ALL PREP VARIABLES***;
-***Overwrite oral PrEP costs to $40/year;
-
-
-
-
-
-
-s_dcost_prep_oral_40=0;
-cost_prep_oral_40 = s_prep_oral * 40/1000000 * sf;
-s_dcost_prep_oral_40 = cost_prep_oral_40 * discount;
-
-cost_prep_oral = (s_cost_prep_oral * sf*4)/1000;
-cost_prep_visit_oral = (s_cost_prep_visit_oral * sf * 4)/1000;
-
-
-s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_cab +  s_dcost_prep_len ;
+s_dcost_prep = s_dcost_prep_oral_50 + s_dcost_prep_cab +  s_dcost_prep_len ;
 s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_cab + s_dcost_prep_visit_len   ;
 
 
@@ -448,13 +436,11 @@ n_tested_sw 		 p_diag_sw 			p_onart_diag_sw			 p_onart_vl1000_sw
 
 n_prep_oral_plw 	n_prep_len_plw		n_new_vmmc1529m			n_sw_program_visit		n_prep_elig
 dcost_prep_oral 	dcost_prep_visit_oral	dcost_prep			dcost_prep_len		 	dcost_prep_visit_len
-dart_cost_y 		dtest_cost 			cost_prep_oral			cost_prep_oral_40		s_dcost_prep_oral_40
-cost_prep_visit_oral;
+dart_cost_y 		dtest_cost 			cost_prep_oral_50		s_dcost_prep_oral_50;
 
 proc sort data=y;by run option;run;
 
-proc means;var n_onprep_oral	cost_prep_oral		cost_prep_oral_40	dcost_prep_oral		s_dcost_prep_oral_40
-cost_prep_visit_oral dcost_prep_visit_oral;
+proc means;var n_onprep_oral  cost_prep_oral_50	s_dcost_prep_oral_50 dcost_prep_visit_oral;
 where cald=2050 and option=3;run;
 
 
@@ -463,7 +449,7 @@ set y;
 run;
 
 
-libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data y;
 set a.long_gen_PEP_31Mar26;
@@ -575,7 +561,7 @@ t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=n_death_discount);	%var(v=d_n_new_inf);
 
 %var(v=dcost);				%var(v=ddaly);				%var(v=cost);				
-%var(v=dcost_prep);			%var(v=dcost_prep_oral);	%var(v=dcost_prep_visit_oral);	%var(v=dcost_prep_len);		 %var(v=dcost_prep_visit_len);
+%var(v=dcost_prep);			%var(v=dcost_prep_len);		 %var(v=dcost_prep_visit_len);
 %var(v=dart_cost_y); 		%var(v=dtest_cost);
 
 data wide_outputs;merge
@@ -598,7 +584,7 @@ n_agyw				p_w_agyw			prevalence_agyw		incidence_agyw	p_onprep_agyw		n_onprep_agy
 n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death_discount					d_n_new_inf
 
 dcost 				ddaly 				cost				
-dcost_prep			dcost_prep_oral		dcost_prep_visit_oral	dcost_prep_len					dcost_prep_visit_len
+dcost_prep			dcost_prep_len					dcost_prep_visit_len
 dart_cost_y			dtest_cost;
 ;
 
