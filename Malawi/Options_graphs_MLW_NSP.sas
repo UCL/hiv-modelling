@@ -1,7 +1,7 @@
 
 ***THIS PROGRAM IS USED TO COMPARE GRAPHS OF THE DIFFERENT OPTIONS;
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Mlw";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Mlw";
 
 data a;
 set a.MLW_options_graphs_NSP;
@@ -59,7 +59,7 @@ mean_n_onprep_w_4  	p5_n_onprep_w_4 		p95_n_onprep_w_4
 mean_n_onprep_m_4  	p5_n_onprep_m_4 		p95_n_onprep_m_4
 mean_n_onprep_sw_4  	p5_n_onprep_sw_4  	p95_n_onprep_sw_4
 mean_n_onprep_msm_4  	p5_n_onprep_msm_4  	p95_n_onprep_msm_4;
-;where cald=2040;
+;where cald=2030;
 
 ;run;
 
