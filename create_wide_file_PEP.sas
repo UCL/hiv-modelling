@@ -141,16 +141,74 @@ if s_dcost_prep_ad_adh=. then s_dcost_prep_ad_adh=0;
 if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
+cost_FSW_services_pppy=132/1000000;*annual cost per year;
+
+***Overwrite oral PrEP costs as per Collins spreadsheet;
+cost_prep_oral = s_cost_prep_oral * sf * 4 / 1000; **just to compare undiscounted costs with Collins costs;
+cost_prep_visit_oral = s_cost_prep_visit_oral * sf * 4 / 1000; 
 
 
-***Overwrite oral PrEP costs to $50/year;
+if option in (0,1,4) then do;
+s_cost_prep_oral_2m=0; s_dcost_prep_oral_2m=0;s_cost_prep_visit_oral_2m=0; s_dcost_prep_visit_oral_2m=0;
 
-s_dcost_prep_oral_50=0;
-cost_prep_oral_50 = (s_prep_oral * 50/1000000 * sf); *Multiplying by 2/3 as assuming it will be used in 2 out of 3 months;
-s_dcost_prep_oral_50 = cost_prep_oral_50 * 0.666 * discount;
+s_cost_prep_oral_2m = (s_prep_oral * 5.61 * 2 * 4 * sf)/1000000; *assuming 2/3 months usage;
+s_dcost_prep_oral_2m = s_cost_prep_oral_2m * discount; 
 
-s_dcost_prep = s_dcost_prep_oral_50 + s_dcost_prep_cab +  s_dcost_prep_len ;
-s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_cab + s_dcost_prep_visit_len   ;
+s_cost_prep_vis_oral_2m=(s_prep_oral * 2.38 * 2 * 4  * sf)/1000000;
+s_dcost_prep_vis_oral_2m = s_dcost_prep_vis_oral_2m * discount;
+
+s_cost_prep_oral_1m = (s_prep_oral * 5.61 * 1 * 4 * sf)/1000000; *assuming 2/3 months usage;
+s_dcost_prep_oral_1m = s_cost_prep_oral_1m * discount; 
+
+s_cost_prep_vis_oral_1m=(s_prep_oral * 2.38 * 1 * 4  * sf)/1000000;
+s_dcost_prep_vis_oral_1m = s_dcost_prep_vis_oral_1m * discount;
+
+
+end;
+
+if option in (2,5) then do;
+s_cost_prep_oral_2m=0; s_dcost_prep_oral_2m=0;s_cost_prep_visit_oral_2m=0; s_dcost_prep_visit_oral_2m=0;
+
+s_cost_prep_oral_2m = (s_prep_oral * 5.61 * 2 * 4 * sf)/1000000; *assuming 2/3 months usage;
+s_dcost_prep_oral_2m = s_cost_prep_oral_2m * discount; 
+
+s_cost_prep_vis_oral_2m=(s_prep_oral * 1.54 * 2 * 4  * sf)/1000000;
+s_dcost_prep_vis_oral_2m = s_dcost_prep_vis_oral_2m * discount;
+
+s_cost_prep_oral_1m = (s_prep_oral * 5.61 * 1 * 4 * sf)/1000000; *assuming 2/3 months usage;
+s_dcost_prep_oral_1m = s_cost_prep_oral_1m * discount; 
+
+s_cost_prep_vis_oral_1m=(s_prep_oral * 1.54 * 1 * 4  * sf)/1000000;
+s_dcost_prep_vis_oral_1m = s_dcost_prep_vis_oral_1m * discount;
+end;
+
+if option in (3,6) then do;
+s_cost_prep_oral_2m=0; s_dcost_prep_oral_2m=0;s_cost_prep_visit_oral_2m=0; s_dcost_prep_visit_oral_2m=0;
+
+s_cost_prep_oral_2m = (s_prep_oral * 5.08 * 2 * 4 * sf)/1000000; *assuming 2/3 months usage;
+s_dcost_prep_oral_2m = s_cost_prep_oral_2m * discount; 
+
+s_cost_prep_vis_oral_2m=(s_prep_oral * 0.34 * 2 * 4  * sf)/1000000;
+s_dcost_prep_vis_oral_2m = s_dcost_prep_vis_oral_2m * discount;
+
+s_cost_prep_oral_1m = (s_prep_oral * 5.08 * 1 * 4 * sf)/1000000; *assuming 2/3 months usage;
+s_dcost_prep_oral_1m = s_cost_prep_oral_1m * discount; 
+
+s_cost_prep_vis_oral_1m=(s_prep_oral * 0.34 * 1 * 4  * sf)/1000000;
+s_dcost_prep_vis_oral_1m = s_dcost_prep_vis_oral_1m * discount;
+end;
+
+
+s_dcost_prep = s_dcost_prep_cab +  s_dcost_prep_len ;
+s_dcost_prep = s_dcost_prep_cab +  s_dcost_prep_len ;
+
+
+/*
+s_cost_prep_visit_oral=0; s_dcost_prep_visit_oral=0;
+*/
+s_dcost_prep_visit = s_dcost_prep_visit_cab + s_dcost_prep_visit_len   ;
+
+
 
 
 * ts1m - 12 instead of 4; 
@@ -173,11 +231,12 @@ dcost_self_test = s_dcost_self_test * sf * 4 / 1000;
 dcot_cost = s_dcot_cost * sf * 4 / 1000;
 dres_cost = s_dres_cost * sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * sf * 4 / 1000;  
-dcost_prep = s_dcost_prep * sf * 4 / 1000; 
+dcost_prep = s_dcost_prep * sf * 4 / 1000; *oral not included;
+
 dcost_prep_cab = s_dcost_prep_cab * sf * 4 / 1000; 
 dcost_prep_len = s_dcost_prep_len * sf * 4 / 1000; 
 dcost_prep_oral = s_dcost_prep_oral * sf * 4 / 1000; 
-dcost_prep_visit  = s_dcost_prep_visit * sf * 4 / 1000; 	
+dcost_prep_visit  = s_dcost_prep_visit * sf * 4 / 1000; 	*oral not included;
 dcost_prep_visit_cab  = s_dcost_prep_visit_cab * sf * 4 / 1000; 	
 dcost_prep_visit_len  = s_dcost_prep_visit_len * sf * 4 / 1000; 	
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * sf * 4 / 1000; 	 
@@ -236,7 +295,20 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + 
 					dcot_cost + dtb_cost + dres_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost + 
 					dcost_circ + dcost_condoms + dcost_child_hiv + dcost_non_aids_pre_death + dcost_drug_level_test
-					+ dcost_prep_visit + dcost_prep + dcost_fsw_services  + dcost_self_test ;
+					+ dcost_prep_visit + dcost_prep + dcost_prep_oral + dcost_prep_visit_oral + dcost_fsw_services  + dcost_self_test ;
+
+dcost_2m = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + 
+					dcot_cost + dtb_cost + dres_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost + 
+					dcost_circ + dcost_condoms + dcost_child_hiv + dcost_non_aids_pre_death + dcost_drug_level_test
+					+ dcost_prep_visit + dcost_prep + s_dcost_prep_oral_2m + s_dcost_prep_vis_oral_2m + dcost_fsw_services  + dcost_self_test ;
+
+
+dcost_1m = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + 
+					dcot_cost + dtb_cost + dres_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost + 
+					dcost_circ + dcost_condoms + dcost_child_hiv + dcost_non_aids_pre_death + dcost_drug_level_test
+					+ dcost_prep_visit + dcost_prep + s_dcost_prep_oral_1m + s_dcost_prep_vis_oral_1m + dcost_fsw_services  + dcost_self_test ;
+
+
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost + dtb_lam_cost + dtb_proph_cost + dcrag_cost + dcrypm_proph_cost + dsbi_proph_cost ; 
@@ -245,7 +317,7 @@ dcost_clinical_care_hiv = dadc_cost + dnon_tb_who3_cost + dtb_cost + d_t_adh_int
 
 
 cost_clin_care = dcost_clin_care / discount;
-cost = dcost / discount;
+*cost = dcost / discount;
 
 * ================================================================================= ;
 * ================================================================================= ;
@@ -430,18 +502,24 @@ n_hiv_pregnant		 n_pregnant_onart	n_give_birth_with_hiv	n_infbirth_testing	n_pos
 n_vm_this_per		 n_cd4m_this_per	n_vmmc1549m				n_vmmc_all		p_mcirc		p_vmmc
 n_death_discount	 d_n_new_inf
 
-dcost	ddaly  cost
+dcost ddaly  cost
 
 n_tested_sw 		 p_diag_sw 			p_onart_diag_sw			 p_onart_vl1000_sw
 
 n_prep_oral_plw 	n_prep_len_plw		n_new_vmmc1529m			n_sw_program_visit		n_prep_elig
 dcost_prep_oral 	dcost_prep_visit_oral	dcost_prep			dcost_prep_len		 	dcost_prep_visit_len
-dart_cost_y 		dtest_cost 			cost_prep_oral_50		s_dcost_prep_oral_50;
+dart_cost_y 		dtest_cost 			
+
+
+s_cost_prep_oral_2m 	s_dcost_prep_oral_2m	 s_cost_prep_vis_oral_2m 	s_dcost_prep_vis_oral_2m
+cost_prep_oral			cost_prep_visit_oral	
+dcost_2m	dcost_1m
+;
 
 proc sort data=y;by run option;run;
 
-proc means;var n_onprep_oral  cost_prep_oral_50	s_dcost_prep_oral_50 dcost_prep_visit_oral;
-where cald=2050 and option=3;run;
+proc means;var n_onprep_oral cost_prep_oral	cost_prep_visit_oral s_cost_prep_oral_2m s_cost_prep_vis_oral_2m dcost;
+where cald=2050 and option=1;run;
 
 
 data a.long_gen_PEP_31Mar26;
@@ -560,9 +638,11 @@ t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=n_death_hivrel);		%var(v=n_death_hivrel_m);	%var(v=n_death_hivrel_w);
 %var(v=n_death_discount);	%var(v=d_n_new_inf);
 
-%var(v=dcost);				%var(v=ddaly);				%var(v=cost);				
-%var(v=dcost_prep);			%var(v=dcost_prep_len);		 %var(v=dcost_prep_visit_len);
-%var(v=dart_cost_y); 		%var(v=dtest_cost);
+%var(v=dcost_2m);			%var(v=dcost_1m);		 	%var(v=ddaly);				%var(v=dcost);				
+%var(v=dcost_prep);			%var(v=dcost_prep_len);		%var(v=dcost_prep_visit_len);
+%var(v=dart_cost_y); 		%var(v=dtest_cost);			%var(v=s_dcost_prep_oral_2m);%var(v=dcost_prep_oral);
+
+%var(v=s_cost_prep_vis_oral_2m); %var(v=cost_prep_visit_oral);
 
 data wide_outputs;merge
 n_alive_m		 	n_alive_w			n_alive				n_hivge15m		n_hivge15w		    n_hivge15_
@@ -583,14 +663,16 @@ n_agyw				p_w_agyw			prevalence_agyw		incidence_agyw	p_onprep_agyw		n_onprep_agy
 
 n_death_hivrel		n_death_hivrel_m	n_death_hivrel_w	n_death_discount					d_n_new_inf
 
-dcost 				ddaly 				cost				
-dcost_prep			dcost_prep_len					dcost_prep_visit_len
-dart_cost_y			dtest_cost;
+dcost_2m 			dcost_1m			ddaly 				dcost				
+dcost_prep			dcost_prep_len		dcost_prep_visit_len
+dart_cost_y			dtest_cost			s_dcost_prep_oral_2m	dcost_prep_oral
+s_cost_prep_vis_oral_2m cost_prep_visit_oral
+
 ;
 
 proc sort; by run;run;
 
 
-data a.wide_Zim_PEP_31_03_2026;
+data a.wide_Zim_PEP_31_03_2026a;
 set wide_outputs  ;  
 by run;run; 
