@@ -111,7 +111,6 @@ set b;
 
 if run in (900482892, 130668187) then delete;
 
-PROC MEANS;VAR dcost_prep_oral_26_76_3 dcost_prep_oral_2M_26_76_3;RUN;
 *50 years, assuming 2 months usage;
 diff_dcost_50y_2 = dcost_2m_26_76_2 - dcost_2m_26_76_1;
 diff_dcost_50y_3 = dcost_2m_26_76_3 - dcost_2m_26_76_1;

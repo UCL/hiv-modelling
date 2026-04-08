@@ -291,7 +291,7 @@ run;quit;
 proc sgplot data=a; 
 Title    height=1.5 justify=center "Currently on any PrEP (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 400000 by 20000) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  valueattrs=(size=10);
 
 label mean_n_onprep_0 = "Base";
 label mean_n_onprep_1 = "Facility based PEP";
@@ -563,6 +563,29 @@ series  x=cald y=mean_n_death_hivrel_3/	lineattrs = (color=orange thickness = 2 
 series  x=cald y=mean_n_death_hivrel_4/	lineattrs = (color=green thickness = 2 pattern=dash);
 series  x=cald y=mean_n_death_hivrel_5/	lineattrs = (color=blue thickness = 2 pattern=dash);
 series  x=cald y=mean_n_death_hivrel_6/	lineattrs = (color=orange thickness = 2 pattern=dash);
+run;quit;
+
+proc sgplot data=a; 
+Title    height=1.5 justify=center "DALYs (15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'	labelattrs=(size=12)  valueattrs=(size=10);
+
+label mean_ddaly_0 = "Base";
+label mean_ddaly_1 = "Facility based PEP";
+label mean_ddaly_2 = "Community based PEP";
+label mean_ddaly_3 = "Pharmacy based PEP";
+label mean_ddaly_4 = "Facility based PEP with scale up of Len";
+label mean_ddaly_5 = "Community based PEP with scale up of Len";
+label mean_ddaly_6 = "Pharmacy based PEP with scale up of Len";
+
+
+series  x=cald y=mean_ddaly_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_ddaly_1/	lineattrs = (color=green thickness = 2 pattern=solid); 
+series  x=cald y=mean_ddaly_2/	lineattrs = (color=blue thickness = 2 pattern=solid);
+series  x=cald y=mean_ddaly_3/	lineattrs = (color=orange thickness = 2 pattern=solid);
+series  x=cald y=mean_ddaly_4/	lineattrs = (color=green thickness = 2 pattern=dash);
+series  x=cald y=mean_ddaly_5/	lineattrs = (color=blue thickness = 2 pattern=dash);
+series  x=cald y=mean_ddaly_6/	lineattrs = (color=orange thickness = 2 pattern=dash);
 run;quit;
 
 
