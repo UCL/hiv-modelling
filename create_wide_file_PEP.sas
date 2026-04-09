@@ -149,7 +149,7 @@ cost_prep_visit_oral = s_cost_prep_visit_oral * sf * 4 / 1000;
 
 
 if option in (0,1,4) then do;
-s_cost_prep_oral_2m=0; s_dcost_prep_oral_2m=0;s_cost_prep_visit_oral_2m=0; s_dcost_prep_visit_oral_2m=0;
+s_cost_prep_oral_2m=0; s_dcost_prep_oral_2m=0;s_cost_prep_vis_oral_2m=0; s_dcost_prep_vis_oral_2m=0;
 
 s_cost_prep_oral_2m = (s_prep_oral * 5.61 * 2 * 4 * sf)/1000000; *assuming 2/3 months usage;
 s_dcost_prep_oral_2m = s_cost_prep_oral_2m * discount; 
@@ -167,7 +167,7 @@ s_dcost_prep_vis_oral_1m = s_dcost_prep_vis_oral_1m * discount;
 end;
 
 if option in (2,5) then do;
-s_cost_prep_oral_2m=0; s_dcost_prep_oral_2m=0;s_cost_prep_visit_oral_2m=0; s_dcost_prep_visit_oral_2m=0;
+s_cost_prep_oral_2m=0; s_dcost_prep_oral_2m=0;s_cost_prep_vis_oral_2m=0; s_dcost_prep_vis_oral_2m=0;
 
 s_cost_prep_oral_2m = (s_prep_oral * 5.61 * 2 * 4 * sf)/1000000; *assuming 2/3 months usage;
 s_dcost_prep_oral_2m = s_cost_prep_oral_2m * discount; 
@@ -183,7 +183,7 @@ s_dcost_prep_vis_oral_1m = s_dcost_prep_vis_oral_1m * discount;
 end;
 
 if option in (3,6) then do;
-s_cost_prep_oral_2m=0; s_dcost_prep_oral_2m=0;s_cost_prep_visit_oral_2m=0; s_dcost_prep_visit_oral_2m=0;
+s_cost_prep_oral_2m=0; s_dcost_prep_oral_2m=0;s_cost_prep_vis_oral_2m=0; s_dcost_prep_vis_oral_2m=0;
 
 s_cost_prep_oral_2m = (s_prep_oral * 5.08 * 2 * 4 * sf)/1000000; *assuming 2/3 months usage;
 s_dcost_prep_oral_2m = s_cost_prep_oral_2m * discount; 
@@ -197,7 +197,6 @@ s_dcost_prep_oral_1m = s_cost_prep_oral_1m * discount;
 s_cost_prep_vis_oral_1m=(s_prep_oral * 0.34 * 1 * 4  * sf)/1000000;
 s_dcost_prep_vis_oral_1m = s_dcost_prep_vis_oral_1m * discount;
 end;
-
 
 s_dcost_prep = s_dcost_prep_cab +  s_dcost_prep_len ;
 s_dcost_prep = s_dcost_prep_cab +  s_dcost_prep_len ;
@@ -307,7 +306,6 @@ dcost_1m = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_
 					dcot_cost + dtb_cost + dres_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost + 
 					dcost_circ + dcost_condoms + dcost_child_hiv + dcost_non_aids_pre_death + dcost_drug_level_test
 					+ dcost_prep_visit + dcost_prep + s_dcost_prep_oral_1m + s_dcost_prep_vis_oral_1m + dcost_fsw_services  + dcost_self_test ;
-
 
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
@@ -518,7 +516,7 @@ dcost_2m	dcost_1m
 
 proc sort data=y;by run option;run;
 
-proc means;var n_onprep_oral cost_prep_oral	cost_prep_visit_oral s_cost_prep_oral_2m s_cost_prep_vis_oral_2m dcost;
+proc means;var n_onprep_oral cost_prep_oral	cost_prep_visit_oral s_cost_prep_oral_2m s_cost_prep_vis_oral_2m dcost dcost_2m;
 where cald=2050 and option=1;run;
 
 
