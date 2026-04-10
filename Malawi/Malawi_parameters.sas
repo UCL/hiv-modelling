@@ -80,7 +80,7 @@ rate_int_choice = 0.003;
 
 ***Too many people on PrEP;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any = 0.05;
+* rate_test_startprep_any; 		rate_test_startprep_any = 0.05;
 
 * prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05 0.1);
 
