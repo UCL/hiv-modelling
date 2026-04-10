@@ -12,13 +12,13 @@ run;
 
 proc freq;table run cald;run;
 
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW\NSP_package";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW\NSP_package_a";
 libname b "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 data b;
 set a.out:;
 run;
 
-data b.GenesisMLW_NSP_package;
+data b.GenesisMLW_NSP_package_a;
 set b;
 run;
 

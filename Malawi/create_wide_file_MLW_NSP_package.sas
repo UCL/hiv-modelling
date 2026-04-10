@@ -14,8 +14,7 @@ proc sort;by run cald option;run;
 proc freq;table cald option;run;
 
 data a2;
-*set a.GenesisMLW_NSP_package;
-set a.GenesisMLW_NSP_package;
+set a.GenesisMLW_NSP_package_a;
 if run=. then delete; 
 
 proc sort;by run cald option;run;
@@ -27,6 +26,7 @@ set a1 a2;
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
 
+proc freq;table run;where cald =2010;run;
 
 ***Remove runs with low p_diag;
 data a;
