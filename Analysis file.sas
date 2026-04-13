@@ -2,8 +2,8 @@ libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa u
 
 
 data a;
-set a.wide_Zim_PEP_31_03_2026a;*original costs;
-*set a.wide_Zim_PEP_31_03_2026a; *Collins costs;
+*set a.wide_Zim_PEP_31_03_2026a;*original costs;
+set a.wide_Zim_PEP_31_03_2026; *Collins costs;
 proc means;var s_dcost_prep_oral_2m_26_76_3 dcost_prep_oral_26_76_3
 s_cost_prep_vis_oral_2m_26_76_3 cost_prep_visit_oral_26_76_3;
 ;run;
