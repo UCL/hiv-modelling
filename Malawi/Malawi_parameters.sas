@@ -33,11 +33,6 @@
 
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
                           
-* prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
-								0.02 	0.05 	0.15 	0.35 	0.50, 
-
-								0.80 	0.20	0.00	0.00	0.00	); * change sep22 for pop_wide_tld;
-
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
@@ -53,7 +48,7 @@
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
-prob_loss_at_diag = 0.05;  
+prob_loss_at_diag = 0.04;  
 
 reg_option_104 = 1;
 
@@ -80,7 +75,7 @@ rate_int_choice = 0.003;
 
 ***Too many people on PrEP;
 
-* rate_test_startprep_any; 		rate_test_startprep_any = 0.05;
+* rate_test_startprep_any; 		rate_test_startprep_any = 0.03;
 
 * prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05 0.1);
 
