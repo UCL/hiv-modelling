@@ -1,24 +1,24 @@
 
-libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP\31Mar26";
-libname b "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP\31Mar26a";
+libname b "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 data b;
 set a.out:;
 run;
 
-data b.GenesisZim_31Mar26;
+data b.GenesisZim_31Mar26a;
 set b;
 run;
 
 proc freq;table run cald;run;
 
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW\NSP_package_a";
+libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW\NSP_package_b";
 libname b "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_MLW";
 data b;
 set a.out:;
 run;
 
-data b.GenesisMLW_NSP_package_a;
+data b.GenesisMLW_NSP_package_b;
 set b;
 run;
 
