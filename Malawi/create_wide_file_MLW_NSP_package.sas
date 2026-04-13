@@ -6,72 +6,135 @@ libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa u
 ***92 runs;
 
 data a1;
-*set a.GenesisMLW_NSP_package;
 set a.genesis_mlw_nsp_package;
 if run=. then delete; 
-
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
 
 data a2;
-set a.GenesisMLW_NSP_package_a;
+set a.genesis_mlw_nsp_package_a;
 if run=. then delete; 
-
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
-
 
 data a3;
-set a1 a2;
+set a.GenesisMLW_NSP_package_b;
 proc sort;by run cald option;run;
 proc freq;table cald option;run;
 
-proc freq;table run;where cald =2010;run;
+data a4;
+set a1 a2 a3;
+proc sort;by run cald option;run;
+proc freq;table cald option;run;
+
 
 ***Remove runs with low p_diag;
 data a;
-set a3;
+set a4;
 
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
+s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm;
+s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw;
+s_hivge15_ = s_hivge15m + s_hivge15w;
 
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
+* p_onart;						if s_hivge15_ gt 0 then p_onart = s_onart / s_hivge15_; 
 
 if cald=2030 and option=4 and p_diag<0.95 then a=1;
+if cald=2030 and option=4 and p_onart<0.935 then b=1;
+
 /*
 proc freq;table p_diag;where option=4 and cald=2030;run ;
 proc freq;table run;where a=1;run;
+proc freq;table p_onart;where option=4 and cald=2030;run ;
+proc freq;table run;where b=1;run;
+proc freq;table run;where a=1 or b=1;run;
 */
 
 if run in (
 7217528
+9574768
+20031837
+20173250
+36301437
 40260220
 42985738
 61721983
+62983875
+70183623
+74685756
 89239264
+90418628
+93002062
+95886225
+99264665
 118146117
 121066351
 138386647
+159651145
+194459874
+211087136
+244262416
 274931781
+278085313
 291017451
+291644569
+294819044
 316450830
+337627863
+349538062
+350847256
+368917638
+372263258
 377166528
+380875261
 387297173
 388342650
+393385111
+395799707
+407549275
+440745682
+446728960
+468611820
+475745060
 477402056
 480633436
 481364514
+486711615
+490677574
+520594949
+539506013
+540965287
 542730130
 551647403
+552051631
+564784900
+568777477
+569826776
 573347237
 605626256
+652928310
+668639363
 671923178
+691030925
 701297770
+736467288
 739305283
+751404349
 755832899
+819159738
+854614114
+880457221
+886853194
+893646001
 898455466
 910525530
+927249660
+928026117
 955546804
-
+976015926
+992541559
+995417758
 )
 then delete;
 run;
