@@ -48,13 +48,13 @@
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
-prob_loss_at_diag = 0.04;  
+prob_loss_at_diag = 0.03;  
 
 reg_option_104 = 1;
 
 rate_ch_art_init_str_9 = 0.1 ;
 
-rate_int_choice = 0.003;  
+rate_int_choice = 0.0015;  
 
 * SEX WORKERS;				
 
