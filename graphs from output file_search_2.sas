@@ -51,7 +51,7 @@ p_on_anti_hypert_1549_ p_on_anti_hypert_1539_ p_on_anti_hypert_4049_ p_on_anti_h
 if option in (0 1);
 
 
-%let single_var =  prop_prep_any                   ;
+%let single_var =  incidence1549_                 ;
 
 * prop_prep_any prop_elig_on_prep p_elig_prep;
 
@@ -80,7 +80,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 
-%let nfit = 200 ;
+%let nfit = 1000 ;
 
 %let year_end = 2076.00 ;
 run;
@@ -234,7 +234,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -252,7 +252,7 @@ run;quit;
 
 * ods html close;
 
-*/
+
 
 /*
 
@@ -329,13 +329,13 @@ run;quit;
 
 */
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
 * Title '';   Title    height=1.5 justify=center "proportion of people taking prep/pep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to 2075 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.03       by 0.005     ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to  0.04       by 0.005     ) valueattrs=(size=10);
 
 series  x=cald y=p50_prop_prep_any_0 / lineattrs = (color=grey thickness = 4);
 band    x=cald lower=p5_prop_prep_any_0 upper=p95_prop_prep_any_0 / transparency=0.9 fillattrs = (color=grey) legendlabel= "90% range";
@@ -345,7 +345,7 @@ band    x=cald lower=p5_prop_prep_any_1 upper=p95_prop_prep_any_1 / transparency
 
 run;quit;
 
-
+*/
 
 
 /*

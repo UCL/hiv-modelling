@@ -2450,10 +2450,10 @@ who may be dead and hence have caldate{t} missing;
 
 		prep_oral_parameters_sio=1 ;
 	
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 10 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.4;
-		eff_rate_test_startprep_any = 0.7; 
-		eff_prob_prep_any_restart_choice = 0.7;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 5  ;		
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.3;
+		eff_rate_test_startprep_any = 0.6; 
+		eff_prob_prep_any_restart_choice = 0.6;
 		pref_prep_oral = 0.5;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
