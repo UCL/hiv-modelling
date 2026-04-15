@@ -5295,17 +5295,17 @@ if prep_parameters_sio=1 then do ;
 		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
 		pref_prep_oral = pref_prep_oral_sio;
 
-		rate_choose_stop_prep_cab_sio = eff_rate_choose_stop_prep_cab;
-		prob_prep_cab_b_sio = eff_prob_prep_cab_b;
-		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_cab_sio = pref_prep_cab;
+		eff_rate_choose_stop_prep_cab = rate_choose_stop_prep_cab_sio;		
+		eff_prob_prep_cab_b = prob_prep_cab_b_sio;
+		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
+		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
+		pref_prep_cab = pref_prep_cab_sio;
 
-		rate_choose_stop_prep_len_sio = eff_rate_choose_stop_prep_len;
-		prob_prep_len_b_sio = eff_prob_prep_len_b;
-		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_len_sio = pref_prep_len;
+		eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len_sio;		
+		eff_prob_prep_len_b = prob_prep_len_b_sio;
+		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
+		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
+		pref_prep_len = pref_prep_len_sio;
 end;
 
 /* 
