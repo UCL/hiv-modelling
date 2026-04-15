@@ -2321,7 +2321,7 @@ if caldate_never_dot >= &year_interv then do;
 who may be dead and hence have caldate{t} missing;
 
 * note that we can use the set_in_options variable when we want to overwrite parameter values in option;
-
+set_in_options=.;
 
  	*Option 0 is continuation at current rates - status quo;
 	if option=0 then do; **no cab, only oral prep because pref_prep_cab is only set for women ;
