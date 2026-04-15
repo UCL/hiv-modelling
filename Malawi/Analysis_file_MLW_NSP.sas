@@ -216,7 +216,7 @@ diff_dcost_50y_17 = dcost_26_76_17 - dcost_26_76_1;
 diff_dcost_50y_18 = dcost_26_76_18 - dcost_26_76_1;
 *diff_dcost_50y_19 = dcost_26_76_19 - dcost_26_76_1;
 *diff_dcost_50y_20 = dcost_26_76_20 - dcost_26_76_1;
-proc freq;table diff_dcost_50y_5;run;
+
 *** discounted new infections;
 * 20 years;
 diff_dnewinf_20y_2  = d_n_new_inf_26_46_1 - d_n_new_inf_26_46_2;

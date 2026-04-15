@@ -74,7 +74,7 @@ mean_n_onprep_msm_4  	p5_n_onprep_msm_4  	p95_n_onprep_msm_4;
 99 = SQ;
 */
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
-ods rtf file = "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\Mlw_options_NSP.doc" startpage=never; 
+ods rtf file = "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Genesis\Prevention advocacy\Malawi\Mlw_options_NSP.doc" startpage=never; 
 ods listing close;
 
 *ods listing gpath="C:\Users\lovel\Documents";
@@ -82,7 +82,7 @@ ods listing close;
 proc sgplot data=a; 
 Title    height=1.5 justify=center "People living with HIV (15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (1000000 to 1500000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'	labelattrs=(size=12)  values = (0 to 1300000 by 100000) valueattrs=(size=10);
 
 label mean_n_hivge15__99 = "SQ";
 label mean_n_hivge15__0 = "Base";
@@ -234,19 +234,19 @@ Title    height=1.5 justify=center "Of those on ART, proportion virally suppress
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2050 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'	labelattrs=(size=12)  values = (0.96 to 1 by 0.01) valueattrs=(size=10);
 
-label mean_p_onart_vl1000_99 = "SQ";
-label mean_p_onart_vl1000_0 = "Base";
-label mean_p_onart_vl1000_1 = "VMMC";
-label mean_p_onart_vl1000_2 = "PrEP including Len";
-label mean_p_onart_vl1000_3 = "Return interventions";
-label mean_p_onart_vl1000_4 = "Combination";
+label mean_p_onart_vl1000__99 = "SQ";
+label mean_p_onart_vl1000__0 = "Base";
+label mean_p_onart_vl1000__1 = "VMMC";
+label mean_p_onart_vl1000__2 = "PrEP including Len";
+label mean_p_onart_vl1000__3 = "Return interventions";
+label mean_p_onart_vl1000__4 = "Combination";
 
-series  x=cald y=mean_p_onart_vl1000_99/lineattrs = (color=black thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_vl1000_0/	lineattrs = (color=red thickness = 3 pattern=solid); 
-series  x=cald y=mean_p_onart_vl1000_1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_vl1000_2/	lineattrs = (color=orange thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_vl1000_3/	lineattrs = (color=blue thickness = 2 pattern=solid);
-series  x=cald y=mean_p_onart_vl1000_4/	lineattrs = (color=purple thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000__99/lineattrs = (color=black thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000__0/	lineattrs = (color=red thickness = 3 pattern=solid); 
+series  x=cald y=mean_p_onart_vl1000__1/	lineattrs = (color=lightgreen thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000__2/	lineattrs = (color=orange thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000__3/	lineattrs = (color=blue thickness = 2 pattern=solid);
+series  x=cald y=mean_p_onart_vl1000__4/	lineattrs = (color=purple thickness = 2 pattern=solid);
 
 run;quit;
 

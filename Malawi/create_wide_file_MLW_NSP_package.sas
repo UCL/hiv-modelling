@@ -3,7 +3,6 @@ libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa u
 *turns log back on;
 *options notes source source2 mprint mlogic symbolgen;
 
-***92 runs;
 
 data a1;
 set a.genesis_mlw_nsp_package;
@@ -73,6 +72,7 @@ if run in (
 159651145
 194459874
 211087136
+215428456
 244262416
 274931781
 291017451
@@ -120,6 +120,7 @@ if run in (
 736467288
 739305283
 755832899
+768274105
 768830452
 819159738
 880457221
