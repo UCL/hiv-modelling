@@ -539,7 +539,7 @@ dcost_2m	dcost_1m    dcost_2m_fac
 
 proc sort data=y;by run option;run;
 
-
+proc print;var run dcost_2m dcost_2m_fac;where option=2;run;
 
 data a.long_gen_PEP_31Mar26;
 set y;
