@@ -3,7 +3,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 *libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_08Jan26; 
+set a.mm_14Apr26; 
 if run=. then delete; 
 
 proc sort;
@@ -310,7 +310,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 255  ;
+%let nfit = 113 ;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
