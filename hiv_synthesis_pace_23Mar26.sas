@@ -675,6 +675,8 @@ newp_seed = 7;
 ***(women who dont consider themselves as SW but have concurrent partners with whom they exchange sex for e.g. paying for lifestyle);
 
 
+							  ***start here**;
+
 * WOMEN AT THE EDGE OF SEX WORK (ESW);
 * fold_esw_init;				fold_esw_init=1;
 * base_rate_esw;				%sample(base_rate_esw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2); *slightly higher than SW (look in parameter file);
@@ -682,7 +684,7 @@ newp_seed = 7;
 
 * esw_trans_matrix;   		  %sample(esw_trans_matrix, 1 2, 0.70 0.30);
 
-* esw_art_disadv;             %sample(esw_art_disadv, 0 1, 0.10 0.90);
+* esw_art_disadv;             %sample(esw_art_disadv, 0 1, 0.10 0.90);esw_art_disadv=0;
                               if esw_art_disadv=0  then do; esw_higher_int = 1; rel_esw_lower_adh = 1;esw_higher_prob_loss_at_diag = 1;end;
 
 						   	  if esw_art_disadv=1  then do; 
