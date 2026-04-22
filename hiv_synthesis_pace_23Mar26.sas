@@ -684,17 +684,17 @@ newp_seed = 7;
 
 * esw_trans_matrix;   		  %sample(esw_trans_matrix, 1 2, 0.70 0.30);
 
-* esw_art_disadv;             %sample(esw_art_disadv, 0 1, 0.10 0.90);esw_art_disadv=0;
+* esw_art_disadv;             %sample(esw_art_disadv, 0 1, 0.10 0.90);esw_art_disadv=0;*Assume no disadvantage in HIV+ women as per FC email;
                               if esw_art_disadv=0  then do; esw_higher_int = 1; rel_esw_lower_adh = 1;esw_higher_prob_loss_at_diag = 1;end;
 
 						   	  if esw_art_disadv=1  then do; 
-						   		%sample_uniform(esw_higher_int, 5 10 20);
-						   		%sample_uniform(rel_esw_lower_adh, 0.7 0.8);
-						   		%sample_uniform(esw_higher_prob_loss_at_diag, 4 8 12);
+						   		%sample_uniform(esw_higher_int,2 5 10 20);
+						   		%sample_uniform(rel_esw_lower_adh, 0.8 0.9);
+						   		%sample_uniform(esw_higher_prob_loss_at_diag, 2 5 10);
 							  end;
 
-* rate_engage_esw_program;	 rate_engage_esw_program=0; *set in options;***CONSIDER SMALL PROBABILITY;
-* rate_disengage_esw_program; rate_disengage_esw_program=0; *set in options;
+* rate_engage_esw_program;	 rate_engage_esw_program=0.005; *reset in options; *Very few ESW attend;
+* rate_disengage_esw_program; rate_disengage_esw_program=0.05; *reset in options;
 
 * date_sw_prog_intro;		date_sw_prog_intro=2010;
 * sw_program;               %sample(sw_program, 0 1, 0.1 0.9);
