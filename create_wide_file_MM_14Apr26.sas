@@ -3,7 +3,7 @@ libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa u
 *libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_19Apr26; 
+set a.mm_20Apr26; 
 if run=. then delete; 
 
 proc sort;
@@ -310,7 +310,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 510;
+%let nfit = 1284;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -631,15 +631,41 @@ series  x=cald y=median_p_elig_on_prep_mm_1/	lineattrs = (color=green thickness 
 band    x=cald lower=p5_p_elig_on_prep_mm_1 	upper=p95_p_elig_on_prep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 series  x=cald y=median_p_elig_on_prep_mm_2/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_elig_on_prep_mm_2 	upper=p95_p_elig_on_prep_mm_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-/*series  x=cald y=median_p_elig_on_prep_mm_3/	lineattrs = (color=blue thickness = 2);
+series  x=cald y=median_p_elig_on_prep_mm_3/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_p_elig_on_prep_mm_3 	upper=p95_p_elig_on_prep_mm_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=median_p_elig_on_prep_mm_4/	lineattrs = (color=orange thickness = 2);
 band    x=cald lower=p5_p_elig_on_prep_mm_4 	upper=p95_p_elig_on_prep_mm_4  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
 series  x=cald y=median_p_elig_on_prep_mm_5/	lineattrs = (color=purple thickness = 2);
 band    x=cald lower=p5_p_elig_on_prep_mm_5 	upper=p95_p_elig_on_prep_mm_5  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
-*/
+
 
 run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of mobile men currently on any PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
+
+label median_p_elig_on_prep_mm_4 = "Scale up of oral PrEP and CAB-LA";
+label median_p_elig_on_prep_inj_mm_4 = "CAB-LA";
+label median_p_elig_on_prep_oral_mm_4 = "oral PrEP";
+
+
+series  x=cald y=median_p_elig_on_prep_mm_4/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_mm_4 	upper=p95_p_elig_on_prep_mm_4  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
+series  x=cald y=median_p_elig_on_prep_inj_mm_4/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_inj_mm_4 	upper=p95_p_elig_on_prep_inj_mm_4  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+
+series  x=cald y=median_p_elig_on_prep_oral_mm_4/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_oral_mm_4 	upper=p95_p_elig_on_prep_oral_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+run;quit;
+
+prep_dependent_prev_vg1000 --> restrict to prep_dependent_prev_vg1000=0;
+check prep_willing
+number starting and stopping prep
 
 ods rtf close;
 ods listing;
