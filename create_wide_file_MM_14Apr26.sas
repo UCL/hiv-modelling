@@ -743,14 +743,14 @@ band    x=cald lower=p5_n_prep_cab_start_2 	upper=p95_n_prep_cab_start_2  / tran
 run;quit;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of ALL people stopping PrEP";
+Title    height=1.5 justify=center "Number of ALL people no longer eligible for PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_n_stop_prep_oral_elig_4 = "Number stopping oral PrEP when both oral and CAB-LA available (Op 4)";
-label median_n_stop_prep_cab_elig_4 = "Number stopping CAB-LA when both oral and CAB-LA available (Op 4)";
-label median_n_stop_prep_oral_elig_1 = "Number stopping oral PrEP when only oral available (Op 1)";
-label median_n_stop_prep_cab_elig_2 = "Number stopping CAB-LA when only CAB-LA available (Op 2)";
+label median_n_stop_prep_oral_elig_4 = "Number no longer eligible if last PrEP used was oral PrEP (Op 4)";
+label median_n_stop_prep_cab_elig_4 = "Number no longer eligible if last PrEP used was CAB (Op 4)";
+label median_n_stop_prep_oral_elig_1 = "Number no longer eligible if last PrEP used was oral PrEP (Op 1)";
+label median_n_stop_prep_cab_elig_2 = "Number no longer eligible if last PrEP used was CAB (Op 2)";
 
 series  x=cald y=median_n_stop_prep_oral_elig_4/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_n_stop_prep_oral_elig_4 	upper=p95_n_stop_prep_oral_elig_4  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
