@@ -2624,6 +2624,12 @@ if p_onart_diag_w_24 > 0.85;
 if p_onart_vl1000_m_24 > 0.75;
 if p_onart_vl1000_w_24 > 0.80;
 
+/*
+ods html;
+proc print noobs; var run; run;
+ods html close;
+*/
+
 d_p_tested_incl_self_10y_2 = p_tested_incl_self_10y_2 -  p_tested_incl_self_10y_1; 
 
 d_p_diag_10y_2_1 = p_diag_10y_2 - p_diag_10y_1;
