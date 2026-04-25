@@ -1,11 +1,10 @@
-libname a "C:\Users\lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
+libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim_PEP";
 
 
 data a;
 *set a.wide_Zim_PEP_31_03_2026a;*original costs;
 set a.wide_Zim_PEP_31_03_2026; *Collins costs;
-
-
+run;
 
 data b;
 set a;
@@ -110,56 +109,27 @@ set b;
 *remove extreme observations impacting means;
 if run in (39261898,354180866, 773833232 ,900482892, 130668187) then delete;
 
-
 *50 years, assuming 2 months usage;
-diff_dcost_2m_50y_2 = dcost_2m_26_76_2 - dcost_2m_26_76_1;
-diff_dcost_2m_50y_3 = dcost_2m_26_76_3 - dcost_2m_26_76_1;
-diff_dcost_2m_50y_4 = dcost_2m_26_76_4 - dcost_2m_26_76_1;
-diff_dcost_2m_50y_5 = dcost_2m_26_76_5 - dcost_2m_26_76_1;
-diff_dcost_2m_50y_6 = dcost_2m_26_76_6 - dcost_2m_26_76_1;
-diff_dcost_2m_50y_7 = dcost_2m_26_76_7 - dcost_2m_26_76_1;
+diff_dcost_fac_2m_50y_2 = dcost_fac_2m_26_76_2 - dcost_fac_2m_26_76_1;
+diff_dcost_com1_2m_50y_3 = dcost_com1_2m_26_76_3 - dcost_com1_2m_26_76_1;
+diff_dcost_com2_2m_50y_3 = dcost_com2_2m_26_76_3 - dcost_com2_2m_26_76_1;
+diff_dcost_com3_2m_50y_3 = dcost_com3_2m_26_76_3 - dcost_com3_2m_26_76_1;
+diff_dcost_com4_2m_50y_3 = dcost_com4_2m_26_76_3 - dcost_com4_2m_26_76_1;
+diff_dcost_pha1_2m_50y_4 = dcost_pha1_2m_26_76_4 - dcost_pha1_2m_26_76_1;
+diff_dcost_pha2_2m_50y_4 = dcost_pha2_2m_26_76_4 - dcost_pha2_2m_26_76_1;
+diff_dcost_pha3_2m_50y_4 = dcost_pha3_2m_26_76_4 - dcost_pha3_2m_26_76_1;
+diff_dcost_pha4_2m_50y_4 = dcost_pha4_2m_26_76_4 - dcost_pha4_2m_26_76_1;
 
 *50 years, assuming 1 months usage;
-diff_dcost_1m_50y_2 = dcost_1m_26_76_2 - dcost_1m_26_76_1;
-diff_dcost_1m_50y_3 = dcost_1m_26_76_3 - dcost_1m_26_76_1;
-diff_dcost_1m_50y_4 = dcost_1m_26_76_4 - dcost_1m_26_76_1;
-diff_dcost_1m_50y_5 = dcost_1m_26_76_5 - dcost_1m_26_76_1;
-diff_dcost_1m_50y_6 = dcost_1m_26_76_6 - dcost_1m_26_76_1;
-diff_dcost_1m_50y_7 = dcost_1m_26_76_7 - dcost_1m_26_76_1;
-
-*50 years, assuming 2 months usage and all modes costed at facilty level;
-diff_dcost_2m_fac_50y_2 = dcost_2m_fac_26_76_2 - dcost_2m_fac_26_76_1;
-diff_dcost_2m_fac_50y_3 = dcost_2m_fac_26_76_3 - dcost_2m_fac_26_76_1;
-diff_dcost_2m_fac_50y_4 = dcost_2m_fac_26_76_4 - dcost_2m_fac_26_76_1;
-diff_dcost_2m_fac_50y_5 = dcost_2m_fac_26_76_5 - dcost_2m_fac_26_76_1;
-diff_dcost_2m_fac_50y_6 = dcost_2m_fac_26_76_6 - dcost_2m_fac_26_76_1;
-diff_dcost_2m_fac_50y_7 = dcost_2m_fac_26_76_7 - dcost_2m_fac_26_76_1;
-
-*50 years, assuming 1 months usage and all modes costed at facilty level;
-diff_dcost_1m_fac_50y_2 = dcost_1m_fac_26_76_2 - dcost_1m_fac_26_76_1;
-diff_dcost_1m_fac_50y_3 = dcost_1m_fac_26_76_3 - dcost_1m_fac_26_76_1;
-diff_dcost_1m_fac_50y_4 = dcost_1m_fac_26_76_4 - dcost_1m_fac_26_76_1;
-diff_dcost_1m_fac_50y_5 = dcost_1m_fac_26_76_5 - dcost_1m_fac_26_76_1;
-diff_dcost_1m_fac_50y_6 = dcost_1m_fac_26_76_6 - dcost_1m_fac_26_76_1;
-diff_dcost_1m_fac_50y_7 = dcost_1m_fac_26_76_7 - dcost_1m_fac_26_76_1;
-
-
-
-*50 years prep costs;
-diff_dcost_prep_oral_50y_2 = dcost_prep_oral_26_76_2 - dcost_prep_oral_26_76_1;
-diff_dcost_prep_oral_50y_3 = dcost_prep_oral_26_76_3 - dcost_prep_oral_26_76_1;
-diff_dcost_prep_oral_50y_4 = dcost_prep_oral_26_76_4 - dcost_prep_oral_26_76_1;
-diff_dcost_prep_oral_50y_5 = dcost_prep_oral_26_76_5 - dcost_prep_oral_26_76_1;
-diff_dcost_prep_oral_50y_6 = dcost_prep_oral_26_76_6 - dcost_prep_oral_26_76_1;
-diff_dcost_prep_oral_50y_7 = dcost_prep_oral_26_76_7 - dcost_prep_oral_26_76_1;
-
-diff_s_dcost_prep_oral_2m_50y_2 = s_dcost_prep_oral_2m_26_76_2 - s_dcost_prep_oral_2m_26_76_1;
-diff_s_dcost_prep_oral_2m_50y_3 = s_dcost_prep_oral_2m_26_76_3 - s_dcost_prep_oral_2m_26_76_1;
-diff_s_dcost_prep_oral_2m_50y_4 = s_dcost_prep_oral_2m_26_76_4 - s_dcost_prep_oral_2m_26_76_1;
-diff_s_dcost_prep_oral_2m_50y_5 = s_dcost_prep_oral_2m_26_76_5 - s_dcost_prep_oral_2m_26_76_1;
-diff_s_dcost_prep_oral_2m_50y_6 = s_dcost_prep_oral_2m_26_76_6 - s_dcost_prep_oral_2m_26_76_1;
-diff_s_dcost_prep_oral_2m_50y_7 = s_dcost_prep_oral_2m_26_76_7 - s_dcost_prep_oral_2m_26_76_1;
-
+diff_dcost_fac_1m_50y_2 = dcost_fac_1m_26_76_2 - dcost_fac_1m_26_76_1;
+diff_dcost_com1_1m_50y_3 = dcost_com1_1m_26_76_3 - dcost_com1_1m_26_76_1;
+diff_dcost_com2_1m_50y_3 = dcost_com2_1m_26_76_3 - dcost_com2_1m_26_76_1;
+diff_dcost_com3_1m_50y_3 = dcost_com3_1m_26_76_3 - dcost_com3_1m_26_76_1;
+diff_dcost_com4_1m_50y_3 = dcost_com4_1m_26_76_3 - dcost_com4_1m_26_76_1;
+diff_dcost_pha1_1m_50y_4 = dcost_pha1_1m_26_76_4 - dcost_pha1_1m_26_76_1;
+diff_dcost_pha2_1m_50y_4 = dcost_pha2_1m_26_76_4 - dcost_pha2_1m_26_76_1;
+diff_dcost_pha3_1m_50y_4 = dcost_pha3_1m_26_76_4 - dcost_pha3_1m_26_76_1;
+diff_dcost_pha4_1m_50y_4 = dcost_pha4_1m_26_76_4 - dcost_pha4_1m_26_76_1;
 
 * 50 years;
 diff_dnewinf_50y_2  = d_n_new_inf_26_76_1 - d_n_new_inf_26_76_2;
@@ -181,6 +151,7 @@ diff_ddaly_50y_6  = ddaly_26_76_1 - ddaly_26_76_6;
 diff_ddaly_50y_7  = ddaly_26_76_1 - ddaly_26_76_7;
 *net dalys averted;
 
+/*
 *50 years;
 netdalys_50y_1 =  ddaly_26_76_1 + (dcost_2m_26_76_1)/0.0003;
 netdalys_50y_2 =  ddaly_26_76_2 + (dcost_2m_26_76_2)/0.0003;*expect dalys to be lower here;
@@ -198,68 +169,37 @@ diff_netdalys_50y_4 = netdalys_50y_4 - netdalys_50y_1;
 diff_netdalys_50y_5 = netdalys_50y_5 - netdalys_50y_1;
 diff_netdalys_50y_6 = netdalys_50y_6 - netdalys_50y_1;
 diff_netdalys_50y_7 = netdalys_50y_7 - netdalys_50y_1;
-
-
-proc means data=c  mean;var 
-diff_dcost_2m_50y_2 	diff_dcost_2m_50y_3		diff_dcost_2m_50y_4		diff_dcost_2m_50y_5	
-diff_dcost_2m_50y_6		diff_dcost_2m_50y_7 		;
-output out=means_cost_2m_50y mean=;
-run;
-proc means data=c  mean;var 
-diff_dcost_1m_50y_2 	diff_dcost_1m_50y_3		diff_dcost_1m_50y_4		diff_dcost_1m_50y_5	
-diff_dcost_1m_50y_6		diff_dcost_1m_50y_7 		;
-output out=means_cost_1m_50y mean=;
-run;
+*/
 
 proc means data=c  mean;var 
-diff_dcost_2m_fac_50y_2 		diff_dcost_2m_fac_50y_3		diff_dcost_2m_fac_50y_4		diff_dcost_2m_fac_50y_5	
-diff_dcost_2m_fac_50y_6		diff_dcost_2m_fac_50y_7 		;
-output out=means_cost_2m_fac_50y mean=;
+diff_dcost_fac_2m_50y_2		
+diff_dcost_com1_2m_50y_3	diff_dcost_com2_2m_50y_3		diff_dcost_com3_2m_50y_3	diff_dcost_com4_2m_50y_3
+diff_dcost_pha1_2m_50y_4	diff_dcost_pha2_2m_50y_4		diff_dcost_pha3_2m_50y_4	diff_dcost_pha4_2m_50y_4			
+;
 run;
 proc means data=c  mean;var 
-diff_dcost_1m_fac_50y_2 	diff_dcost_1m_fac_50y_3		diff_dcost_1m_fac_50y_4		diff_dcost_1m_fac_50y_5	
-diff_dcost_1m_fac_50y_6		diff_dcost_1m_fac_50y_7 		;
-output out=means_cost_1m_fac_50y mean=;
+diff_dcost_fac_1m_50y_2		
+diff_dcost_com1_1m_50y_3	diff_dcost_com2_1m_50y_3		diff_dcost_com3_1m_50y_3	diff_dcost_com4_1m_50y_3
+diff_dcost_pha1_1m_50y_4	diff_dcost_pha2_1m_50y_4		diff_dcost_pha3_1m_50y_4	diff_dcost_pha4_1m_50y_4			
+;
 run;
 
 proc means data=c  mean;var 
-diff_ddaly_50y_2	diff_ddaly_50y_3		diff_ddaly_50y_4		diff_ddaly_50y_5	
-diff_ddaly_50y_6	diff_ddaly_50y_7 		;
-output out=means_dalys_50y mean=;
+diff_ddaly_50y_2	diff_ddaly_50y_3		diff_ddaly_50y_4				;
 run;
 
 
 proc means data=c  mean;var 
-diff_netdalys_50y_2		diff_netdalys_50y_3		diff_netdalys_50y_4		diff_netdalys_50y_5	
-diff_netdalys_50y_6		diff_netdalys_50y_7 	;
+diff_netdalys_50y_2		diff_netdalys_50y_3		diff_netdalys_50y_4		;
 output out=means_diff_netdalys_50y mean=;
 run;
 
 ***MANUALLY CALCULATE ICER;
-proc transpose data=means_cost_2m_50y out=t_costs_2m_50y(rename=(col1=mean_costs_2m_50y));run;
-proc transpose data=means_cost_1m_50y out=t_costs_1m_50y(rename=(col1=mean_costs_1m_50y));run;
-proc transpose data=means_cost_2m_fac_50y out=t_costs_2m_fac_50y(rename=(col1=mean_costs_2m_fac_50y));run;
-proc transpose data=means_cost_1m_fac_50y out=t_costs_1m_fac_50y(rename=(col1=mean_costs_1m_fac_50y));run;
-proc transpose data=means_dalys_50y out=t_dalys_50y(rename=(col1=mean_dalys_50y));run;
-proc transpose data=means_diff_netdalys_50y out=t_diff_netdalys_50y(rename=(col1=mean_diff_netdalys_50y));run;
 
 
-**Use html so can copy and paste into Excel (could automate but this gives more flexibility);
-ods html;
-data means_costs_dalys;
-    merge t_costs_2m_50y (rename=(_NAME_=scenario))
-		  t_costs_1m_50y
-		  t_costs_2m_fac_50y
-		  t_costs_1m_fac_50y
-		  t_dalys_50y
-		  t_diff_netdalys_50y;
-drop _name_;
-run;
 
-proc print data=means_costs_dalys noobs;
-run;
 
-proc freq data=c;table diff_ddaly_50y_3;run;
+
 
 proc means data=c  mean;var 
 diff_dnewinf_50y_2		diff_dnewinf_50y_3		diff_dnewinf_50y_4		diff_dnewinf_50y_5	
