@@ -747,10 +747,12 @@ Title    height=1.5 justify=center "Number of ALL people no longer eligible for 
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_n_stop_prep_oral_elig_4 = "Number no longer eligible if last PrEP used was oral PrEP (Op 4)";
-label median_n_stop_prep_cab_elig_4 = "Number no longer eligible if last PrEP used was CAB (Op 4)";
-label median_n_stop_prep_oral_elig_1 = "Number no longer eligible if last PrEP used was oral PrEP (Op 1)";
-label median_n_stop_prep_cab_elig_2 = "Number no longer eligible if last PrEP used was CAB (Op 2)";
+label median_n_stop_prep_oral_elig_4 = "If last PrEP used was oral PrEP (Op 4)";
+label median_n_stop_prep_cab_elig_4 = "If last PrEP used was CAB (Op 4)";
+label median_n_stop_prep_oral_elig_1 = "If last PrEP used was oral PrEP (Op 1)";
+label median_n_stop_prep_cab_elig_2 = "If last PrEP used was CAB (Op 2)";
+label median_n_stop_prep_len_elig_3 = "If last PrEP used was Len (Op 3)";
+label median_n_stop_prep_len_elig_5 = "If last PrEP used was Len (Op 5)";
 
 series  x=cald y=median_n_stop_prep_oral_elig_4/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_n_stop_prep_oral_elig_4 	upper=p95_n_stop_prep_oral_elig_4  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
@@ -763,6 +765,13 @@ band    x=cald lower=p5_n_stop_prep_oral_elig_1 	upper=p95_n_stop_prep_oral_elig
 
 series  x=cald y=median_n_stop_prep_cab_elig_2/	lineattrs = (color=red thickness = 2 pattern=dash);
 band    x=cald lower=p5_n_stop_prep_cab_elig_2 	upper=p95_n_stop_prep_cab_elig_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=median_n_stop_prep_len_elig_3/	lineattrs = (color=purple thickness = 2 pattern=dash);
+band    x=cald lower=p5_n_stop_prep_len_elig_3 	upper=p95_n_stop_prep_len_elig_3  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
+series  x=cald y=median_n_stop_prep_len_elig_5/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_stop_prep_len_elig_5 	upper=p95_n_stop_prep_len_elig_5  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
+
+
 run;quit;
 
 
