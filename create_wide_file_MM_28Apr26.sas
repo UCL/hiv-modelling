@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_22apr2026; 
+set a.mm_28apr26; 
 if run=. then delete; 
 
 proc sort;
@@ -320,7 +320,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 600;
+%let nfit = 270;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -451,7 +451,7 @@ options notes source source2 mprint mlogic symbolgen;
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = 'C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
-graphs_14_04_26.doc' startpage=never; 
+graphs_28_04_26.doc' startpage=never; 
 
 
 ***Diagnostic;
@@ -747,10 +747,12 @@ Title    height=1.5 justify=center "Number of ALL people no longer eligible for 
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_n_stop_prep_oral_elig_4 = "Number no longer eligible if last PrEP used was oral PrEP (Op 4)";
-label median_n_stop_prep_cab_elig_4 = "Number no longer eligible if last PrEP used was CAB (Op 4)";
-label median_n_stop_prep_oral_elig_1 = "Number no longer eligible if last PrEP used was oral PrEP (Op 1)";
-label median_n_stop_prep_cab_elig_2 = "Number no longer eligible if last PrEP used was CAB (Op 2)";
+label median_n_stop_prep_oral_elig_4 = "If last PrEP used was oral PrEP (Op 4)";
+label median_n_stop_prep_cab_elig_4 = "If last PrEP used was CAB (Op 4)";
+label median_n_stop_prep_oral_elig_1 = "If last PrEP used was oral PrEP (Op 1)";
+label median_n_stop_prep_cab_elig_2 = "If last PrEP used was CAB (Op 2)";
+label median_n_stop_prep_len_elig_3 = "If last PrEP used was Len (Op 3)";
+label median_n_stop_prep_len_elig_5 = "If last PrEP used was Len (Op 5)";
 
 series  x=cald y=median_n_stop_prep_oral_elig_4/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_n_stop_prep_oral_elig_4 	upper=p95_n_stop_prep_oral_elig_4  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
@@ -763,6 +765,14 @@ band    x=cald lower=p5_n_stop_prep_oral_elig_1 	upper=p95_n_stop_prep_oral_elig
 
 series  x=cald y=median_n_stop_prep_cab_elig_2/	lineattrs = (color=red thickness = 2 pattern=dash);
 band    x=cald lower=p5_n_stop_prep_cab_elig_2 	upper=p95_n_stop_prep_cab_elig_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=median_n_stop_prep_len_elig_3/	lineattrs = (color=purple thickness = 2 pattern=dash);
+band    x=cald lower=p5_n_stop_prep_len_elig_3 	upper=p95_n_stop_prep_len_elig_3  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
+
+series  x=cald y=median_n_stop_prep_len_elig_5/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_stop_prep_len_elig_5 	upper=p95_n_stop_prep_len_elig_5  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
+
+
 run;quit;
 
 
