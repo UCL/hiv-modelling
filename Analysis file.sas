@@ -3,8 +3,21 @@ libname a "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 
 data a;
 *set a.wide_Zim_PEP_31_03_2026a;*original costs;
-set a.wide_Zim_PEP_31_03_2026; *Collins costs;
+*set a.wide_Zim_PEP_31_03_2026; *Collins costs;
+set a.wide_Zim_PEP_31_03_2026_1; *Number on PEP;
+
 run;
+
+***For Elise, PEP numbers;
+data a1;
+set a;
+
+proc means mean;var
+n_pep_yr_26_2	n_pep_yr_27_2	n_pep_yr_28_2	n_pep_yr_29_2	n_pep_yr_30_2
+n_pep_yr_26_3	n_pep_yr_27_3	n_pep_yr_28_3	n_pep_yr_29_3	n_pep_yr_30_3
+n_pep_yr_26_4	n_pep_yr_27_4	n_pep_yr_28_4	n_pep_yr_29_4	n_pep_yr_30_4;
+run;
+
 
 data b;
 set a;

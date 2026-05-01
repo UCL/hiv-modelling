@@ -519,6 +519,9 @@ s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vm
 * n_onprep_cab;					n_onprep_cab =   (s_onprep_cab_m + s_onprep_cab_w) * sf ;
 * n_onprep_len;					n_onprep_len =   (s_onprep_len_m + s_onprep_len_w)  * sf ;
 
+*this is for Genesis, assume PEP initiations are 2 out of 3 months;
+* n_pep_yr;						n_pep_yr =   (s_onprep_oral_m + s_onprep_oral_w) * 2 * 4 * sf;
+
 
 * prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;
 								if s_prep_any_elig = 0 then prop_elig_on_prep = 0;
@@ -630,7 +633,7 @@ dcost_fac_2m		dcost_com1_2m		dcost_com2_2m			dcost_com3_2m		dcost_com4_2m
 dcost_pha1_2m		dcost_pha2_2m		dcost_pha3_2m			dcost_pha4_2m
 dcost_fac_1m		dcost_com1_1m		dcost_com2_1m			dcost_com3_1m		dcost_com4_1m
 dcost_pha1_1m		dcost_pha2_1m		dcost_pha3_1m			dcost_pha4_1m
-
+n_pep_yr
 ;
 
 proc sort data=y;by run option;run;
@@ -759,7 +762,7 @@ t_45 t_46 t_76 t_26_31 t_26_46 t_26_76;
 %var(v=dcost_pha1_2m);		%var(v=dcost_pha2_2m);		%var(v=dcost_pha3_2m);			%var(v=dcost_pha4_2m);
 %var(v=dcost_fac_1m);		%var(v=dcost_com1_1m);		%var(v=dcost_com2_1m);			%var(v=dcost_com3_1m);		%var(v=dcost_com4_1m);
 %var(v=dcost_pha1_1m);		%var(v=dcost_pha2_1m);		%var(v=dcost_pha3_1m);			%var(v=dcost_pha4_1m);
-
+%var(v=n_pep_yr);
 
 data wide_outputs;merge
 n_alive_m		 	n_alive_w			n_alive				n_hivge15m		n_hivge15w		    n_hivge15_
@@ -786,13 +789,13 @@ dcost_fac_2m		dcost_com1_2m		dcost_com2_2m			dcost_com3_2m		dcost_com4_2m
 dcost_pha1_2m		dcost_pha2_2m		dcost_pha3_2m			dcost_pha4_2m
 dcost_fac_1m		dcost_com1_1m		dcost_com2_1m			dcost_com3_1m		dcost_com4_1m
 dcost_pha1_1m		dcost_pha2_1m		dcost_pha3_1m			dcost_pha4_1m
-
+n_pep_yr
 
 ;
 
 proc sort; by run;run;
 
 
-data a.wide_Zim_PEP_31_03_2026;
+data a.wide_Zim_PEP_31_03_2026_1;
 set wide_outputs  ;  
 by run;run; 
