@@ -1,11 +1,11 @@
 
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Genesis_Zim";
 
 data y;
 *set a.long_gen_07Jan26;
 *set a.long_gen_06Feb26_package;
 *set a.long_gen_28Feb26_package;
-set a.long_gen_znasp_17Mar26;
+set a.long_gen_znasp_17Mar26a;
 run;
 proc freq;table cald;run;
 
@@ -48,6 +48,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 	p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 	p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	n_onprep_w			n_onprep_m			n_onprep
 	prop_elig_on_prep	 n_prep_ever		prop_1564_onprep	n_onprep_oral		n_onprep_cab		n_onprep_len
+	prop_elig_on_oral_prep					prop_elig_on_len_prep
 
 	n_sw_1564_			 n_sw_1549_			p_w_1564_sw			p_w_1549_sw			prevalence_1564sw	incidence_1564sw
 	p_onprep_sw			 n_onprep_sw
@@ -227,6 +228,7 @@ RUN;
 */
 
 DATA A.Zim_options_graphs_znasp_17Mar26;
+*DATA A.Zim_options_graphs_znasp_17Mar_a;*the a includes just 2 new variables, prop on len and prop on oral prep;
 SET E;
 RUN;
 
