@@ -193,13 +193,16 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-* rr_sw_age_1519;			rr_sw_age_1519 = 0.80;
+* rr_sw_age_1519;			*rr_sw_age_1519 = 0.80;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
-* rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
+* rr_sw_age_3549;			*rr_sw_age_3549 = 0.03;
 * rr_sw_life_sex_risk_3;	rr_sw_life_sex_risk_3 = 10;
 * rr_sw_prev_sw;			rr_sw_prev_sw = 10;
 * rr_esw_prev_esw;			rr_esw_prev_esw = 10;*might need to change;
 * rr_esw_prev_sw;			rr_esw_prev_sw = 1; *rate of previously being SW on becoming esw; 
+
+* rr_sw_age_1519;			rr_sw_age_1519 = 0.80; *lbm copying across from zim parameter file for initial test runs;
+* rr_sw_age_3549;			rr_sw_age_3549 = 0.50; *lbm copying across from zim parameter file for initial test runs;
 
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
@@ -649,13 +652,20 @@ newp_seed = 7;
 
 
 * SEX WORKERS;
-* age_effect_stop_sexwork;	age_effect_stop_sexwork=3;
+* age_effect_stop_sexwork;	*age_effect_stop_sexwork=3;
+* age_effect_stop_sexwork;	age_effect_stop_sexwork=1.5; *lbm copying across from zim parameter file for initial test runs;
 
-* base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
+* base_rate_sw;				*%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
+* base_rate_sw;				%sample_uniform(base_rate_sw, 0.0010 0.0015 0.0020);*lbm copying across from zim parameter file for initial test runs;
+
 							* dependent_on_time_step_length ;
-* base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
+* base_rate_stop_sexwork;	*%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);*lbm copying across from zim parameter file for initial test runs;
+
+* base_rate_stop_sexwork ;	%sample(base_rate_stop_sexwork, 0.005 0.010 0.015, 0.40 0.40 0.20);
+
 							* dependent_on_time_step_length ;
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.10 0.80 0.10);
+
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
@@ -668,14 +678,11 @@ newp_seed = 7;
 						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 5 10);
 							  end;
 
-***ARE ESW MORE LIKELY TO HAVE DISADV COMPARED TO SW IN THE ABSCENCE OF A PROGRAM? MORE VULNERABLE?;
+* WOMEN AT THE EDGE OF SEX WORK (ESW);
 
 ***Focussing on Zim only;
-***Women at the edge of sex work;
 ***(women who dont consider themselves as SW but have concurrent partners with whom they exchange sex for e.g. paying for lifestyle);
 
-
-							  ***start here**;
 
 * WOMEN AT THE EDGE OF SEX WORK (ESW);
 * fold_esw_init;				fold_esw_init=1;
@@ -688,13 +695,13 @@ newp_seed = 7;
                               if esw_art_disadv=0  then do; esw_higher_int = 1; rel_esw_lower_adh = 1;esw_higher_prob_loss_at_diag = 1;end;
 
 						   	  if esw_art_disadv=1  then do; 
-						   		%sample_uniform(esw_higher_int,2 5 10 20);
+						   		%sample_uniform(esw_higher_int, 2 5 10);
 						   		%sample_uniform(rel_esw_lower_adh, 0.8 0.9);
-						   		%sample_uniform(esw_higher_prob_loss_at_diag, 2 5 10);
+						   		%sample_uniform(esw_higher_prob_loss_at_diag, 2 5);
 							  end;
 
-* rate_engage_esw_program;	 rate_engage_esw_program=0.005; *reset in options; *Very few ESW attend;
-* rate_disengage_esw_program; rate_disengage_esw_program=0.05; *reset in options;
+* rate_engage_esw_program;	 rate_engage_esw_program=0.0001; *set in options;
+* rate_disengage_esw_program; rate_disengage_esw_program=0.05; *set in options;
 
 * date_sw_prog_intro;		date_sw_prog_intro=2010;
 * sw_program;               %sample(sw_program, 0 1, 0.1 0.9);
@@ -704,8 +711,13 @@ newp_seed = 7;
 %sample(sw_prog_intensity, 1 2, 0.8 0.2);*1=low, 2=high;
 
 ***These parameters initially set for all SW programs and then overwritten below for high intensity programs;
-* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
-* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
+* rate_engage_sw_program;	*%sample_uniform(rate_engage_sw_program, 0.05 0.10); *previously 0.10;
+* rate_disengage_sw_program;*%sample_uniform(rate_disengage_sw_program, 0.02 0.04); *previously 0.025;
+
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); *lbm copying across from zim parameter file for initial test runs;
+* rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);*lbm copying across from zim parameter file for initial test runs;
+
+
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
 * effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.05 0.10 0.15);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
@@ -1883,7 +1895,7 @@ if gender = 2 and life_sex_risk >= 2 then do;
 	if rand('uniform') < prob_sw_init then sw = 1;
 
 	if sw ne 1 then do;
-		if rand('uniform') < (prob_sw_init*fold_esw_init) then esw = 1;
+		if rand('uniform') < (prob_sw_init*fold_esw_init) then esw = 1;*currently fold_esw_init=1 as unknown if esw are more likely to start sw than fsw;
 	end;
 
 
@@ -2171,6 +2183,9 @@ eff_esw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag;
 
 eff_rate_persist_sti=rate_persist_sti;
 sw_program_visit=0;
+fsw_program_visit=0;
+esw_program_visit=0;
+
 
 
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
@@ -2607,13 +2622,15 @@ who may be dead and hence have caldate{t} missing;
 	* note that we can use set_in_options=1 when we want to ensure that parameter values specified in the options section are not overwritten.
 	The variable name can be updated to reflect specific parameters;
 
+	*Option 0 - SQ;
+	if option = 0 then do;
+	end;
 
- 	*Option 0 is continuation at current rates - status quo;
-
- 
- 	*Option 1;
+ 	*Option 1 - intervention so women at ESW enter SW program;
 	if option = 1 then do;
-												 
+		rate_engage_esw_program = rate_engage_sw_program;
+		rate_disengage_esw_program = rate_disengage_sw_program;
+				 
 	end;
  
 end;
@@ -2935,6 +2952,9 @@ if eff_sw_program=1 and (sw=1 or esw=1) then do;
 if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
 	if (sw=1 and e < rate_engage_sw_program) or (esw=1 and f < rate_engage_esw_program) then do; * dependent_on_time_step_length ;
 		sw_program_visit=1 ; 
+		if sw=1 then fsw_program_visit=1;
+		if esw=1 then esw_program_visit=1;
+
 		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
 
 		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
@@ -2950,8 +2970,11 @@ if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
 			eff_sw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		end;
 
+		
+		s= rand('uniform'); 
+			prep_any_elig=1;*new for sw and esw (most sw were no longer eligible with prep_any_strategy=20);
 
-		s= rand('uniform'); if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
+			if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
 			prep_any_willing = 1; * lapr and dpv-vr ;
 			* select which prep type individual will be willing to use based on preference;
 			* increase preference for highest preference to ensure pref_prep_oral (or inj)  is above threshold  =1 ; 
@@ -2980,6 +3003,8 @@ end;
 else if sw_program_visit=1 then do; e=rand('uniform');f=rand('uniform');
 	if (sw=1 and e < eff_rate_disengage_sw_program) or (esw=1 and f < eff_rate_disengage_esw_program) then do;
 		sw_program_visit=0 ; 
+		if sw=1 then fsw_program_visit=0;
+		if esw=1 then esw_program_visit=0;
 		date_last_sw_prog_vis=caldate{t};
 		sw_test_6mthly=0;
 		eff_rate_persist_sti = rate_persist_sti;
@@ -2995,7 +3020,8 @@ else if sw_program_visit=1 then do; e=rand('uniform');f=rand('uniform');
 			eff_esw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag ; 
 			*Note that we are assuming the impact on adherence remains even if SW stop visiting the program;
 		end;
-
+		
+		*Note prep_any_elig and prep_any_willing for sw or esw is not being reset - okay?
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 		eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
@@ -4247,13 +4273,12 @@ if esw_tm1  = 0 and sw ne 1 then do;
 	if life_sex_risk = 3 then prob_becoming_esw = prob_becoming_esw * rr_sw_life_sex_risk_3;
 
 	* effect of previously having been a edge sex worker on becoming a sex worker;
-	if ever_esw = 1 then prob_becoming_esw = prob_becoming_esw * rr_esw_prev_esw;*might be different for esw?;
+	if ever_esw = 1 then prob_becoming_esw = prob_becoming_esw * rr_esw_prev_esw;*currently same as sw, 10;
 	if ever_sw = 1 then prob_becoming_esw = prob_becoming_esw * rr_esw_prev_sw;*currently 1;
 
 	e = rand('uniform');
 	if e < prob_becoming_esw then esw = 1;
 end;
-
 
 
 
@@ -5146,6 +5171,21 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 		* MSM PrEP eligibility restricted to 15-64 because HIV risk stops from age 65;
 	end;
+
+	if prep_any_strategy=20 then do;	* as 4 but excludes heterosexual men, lower prop for SW and ESW, and includes msm;	
+		u=rand('uniform');
+		if ((sw ne 1 and esw ne 1) or ((sw=1 or esw=1) and u<0.10)) then do;;
+			if 	(newp ge 1 and gender=2) or 
+				(epdiag=1 and epart ne 1 and gender=2) or 
+      			(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))
+			then prep_any_elig=1; 
+		end;
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
+		* MSM PrEP eligibility restricted to 15-64 because HIV risk stops from age 65;
+
+	end;
+
+
 
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
@@ -15898,7 +15938,7 @@ if 15 <= age < 65 then do;
 	i_v5_age5_m_np=0; i_v5_age5_m_ep=0; i_v5_age5_m_newp=0;i_v5_age5_w_np=0; i_v5_age5_w_ep=0; i_v5_age5_w_newp=0;
 	i_v6_age5_m_np=0; i_v6_age5_m_ep=0; i_v6_age5_m_newp=0;i_v6_age5_w_np=0; i_v6_age5_w_ep=0; i_v6_age5_w_newp=0;
 
-	***Discuss;
+	***esw Discuss;
 	i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw_v6_np=0; 
 
 	* consider primary infection length  * dependent_on_time_step_length ;
@@ -16508,8 +16548,8 @@ end;
 ***90-90-90 indicators for SW according to whether or not they have visited a SW program;
 diag_sw_inprog=0;diag_sw_noprog=0;onart_sw_inprog=0;onart_sw_noprog=0;vl1000_art_gt6m_iicu_sw_inprog=0;
 vl1000_art_gt6m_iicu_sw_noprog=0;
-diag_esw_inprog=0;diag_esw_noprog=0;onart_esw_inprog=0;onart_esw_noprog=0;vl1000_art_gt6m_iicu_esw_inprog=0;
-vl1000_art_gt6m_iicu_esw_noprog=0;
+diag_esw_inprog=0;diag_esw_noprog=0;onart_esw_inprog=0;onart_esw_noprog=0;vl1000_art_gt6m_iicu_esw_inprg=0;
+vl1000_art_gt6m_iicu_esw_noprg=0;
 
 if sw_program_visit=1 and sw=1 then do;
 diag_sw_inprog=diag_sw; onart_sw_inprog=onart_sw; vl1000_art_gt6m_iicu_sw_inprog=vl1000_art_gt6m_iicu_sw;
@@ -16520,11 +16560,11 @@ diag_sw_noprog=diag_sw; onart_sw_noprog=onart_sw; vl1000_art_gt6m_iicu_sw_noprog
 end;
 
 if sw_program_visit=1 and esw=1 then do;
-diag_esw_inprog=diag_esw; onart_esw_inprog=onart_esw; vl1000_art_gt6m_iicu_esw_inprog=vl1000_art_gt6m_iicu_esw;
+diag_esw_inprog=diag_esw; onart_esw_inprog=onart_esw; vl1000_art_gt6m_iicu_esw_inprg=vl1000_art_gt6m_iicu_esw;
 end;
 
 if sw_program_visit=0 and esw=1 then do;
-diag_esw_noprog=diag_esw; onart_esw_noprog=onart_esw; vl1000_art_gt6m_iicu_esw_noprog=vl1000_art_gt6m_iicu_esw;
+diag_esw_noprog=diag_esw; onart_esw_noprog=onart_esw; vl1000_art_gt6m_iicu_esw_noprg=vl1000_art_gt6m_iicu_esw;
 end;
 
 sti_sw=0;if sw=1 then sti_sw=sti;
@@ -17992,7 +18032,8 @@ if gender=2 and diag_this_period=1 and sympt_diag = 1 then diag_this_period_f_sy
 if gender=2 and diag_this_period=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then diag_thisper_anclabpd=1;
 if gender=2 and diag_this_period=1 and tested_as_sw=1 and tested_anc ne 1 and tested_labdel ne 1 and tested_pd ne 1 and 
 (elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then diag_thisper_progsw=1;
-***start here;
+
+
 if gender=2 and diag_this_period=1 and sw=1 then diag_thisper_sw=1;
 if gender=2 and diag_this_period=1 and esw=1 then diag_thisper_esw=1;
 
@@ -18205,6 +18246,8 @@ m_npge1=0; if gender=1 and np ge 1 then m_npge1=1;
 w_npge1=0; if gender=2 and np ge 1 then w_npge1=1;
 w1524_npge1=0; if gender=2 and 15 <= age < 25 and np ge 1 then w1524_npge1=1;
 sw_npge1=0; if sw=1 and np ge 1 then sw_npge1=1;
+esw_npge1=0; if esw=1 and np ge 1 then esw_npge1=1;
+
 
 *** Number of partners >2 / >10;
 npge2=0; if np ge 2 then npge2=1;
@@ -18232,17 +18275,22 @@ if prep_any=1 then newp_this_per_age1524w_onprep=1;
 if prep_any ne 1 then newp_this_per_age1524w_onprep=0;
 end;
 
-newp_this_per_art_or_prep=0;   newp_this_per_art=0;   newp_this_per_prep=0;  newp_this_per_prep_sw=0;  
-newp_this_per_elig_prep_any=0;  newp_this_per_elig_prep_any_sw=0;  newp_this_per_hivneg = 0; newp_this_per_hivneg_1549=0; newp_this_per_1549=0;
-newp_this_per_hivneg_m = 0;newp_this_per_hivneg_msm = 0; newp_this_per_hivneg_w = 0; newp_this_per_hivneg_age1524w = 0; 
-newp_this_per_hivneg_sw = 0;newp_this_per=0; if newp ge 1 then newp_this_per=1;
+newp_this_per_art_or_prep=0;   newp_this_per_art=0;   			newp_this_per_prep=0;  				newp_this_per_prep_sw=0;	newp_this_per_prep_esw=0;  
+newp_this_per_elig_prep_any=0; newp_this_per_elig_prep_any_sw=0;newp_this_per_elig_prep_any_esw=0; 
+newp_this_per_hivneg = 0; 	   newp_this_per_hivneg_1549=0; 	newp_this_per_1549=0;
+newp_this_per_hivneg_m = 0;	   newp_this_per_hivneg_msm = 0;	newp_this_per_hivneg_w = 0; 		newp_this_per_hivneg_age1524w = 0; 
+newp_this_per_hivneg_sw = 0;   newp_this_per_hivneg_esw = 0;	
+
+newp_this_per=0; if newp ge 1 then newp_this_per=1;
 if newp_this_per=1 then do;
 	if onart=1 then newp_this_per_art=1;
 	if prep_any=1 then newp_this_per_prep=1;
 	if sw=1 and prep_any=1 then newp_this_per_prep_sw=1;
+	if esw=1 and prep_any=1 then newp_this_per_prep_esw=1;
 	if prep_any=1 or onart=1 then newp_this_per_art_or_prep=1;
 	if prep_any_elig = 1 then newp_this_per_elig_prep_any=1; 
-	if sw=1 and prep_any_elig = 1 then newp_this_per_elig_prep_any_sw=1; 
+	if sw=1 and prep_any_elig = 1 then newp_this_per_elig_prep_any_sw=1;
+	if esw=1 and prep_any_elig = 1 then newp_this_per_elig_prep_any_esw=1; 
 	if hiv ne 1 then newp_this_per_hivneg=1;
 	if hiv ne 1 and 15 <= age < 50 then newp_this_per_hivneg_1549=1;
 	if 15 <= age < 50 then newp_this_per_1549=1;
@@ -18250,6 +18298,7 @@ if newp_this_per=1 then do;
 	if gender=2 and  hiv ne 1 then newp_this_per_hivneg_w = 1;
 	if gender=2 and  hiv ne 1 and 15 <= age < 25 then newp_this_per_hivneg_age1524w = 1;
 	if sw=1 and  hiv ne 1 then newp_this_per_hivneg_sw = 1;
+	if esw=1 and  hiv ne 1 then newp_this_per_hivneg_esw = 1;
 	if msm=1 and hiv ne 1 then newp_this_per_hivneg_msm = 1;
 	if pwid=1 and hiv ne 1 then newp_this_per_hivneg_pwid = 1;
 
@@ -18261,6 +18310,8 @@ if newp_this_per_hivneg_m = 1 then newp_this_per_hivneg_m_prep = 1;
 if newp_this_per_hivneg_w = 1 then newp_this_per_hivneg_w_prep = 1;
 if newp_this_per_hivneg_age1524w = 1 then newp_tp_hivneg_age1524w_prep = 1;
 if newp_this_per_hivneg_sw = 1 then newp_this_per_hivneg_sw_prep = 1 ;
+if newp_this_per_hivneg_esw = 1 then newp_this_per_hivneg_esw_prep = 1 ;
+
 end;
 
 
@@ -19025,6 +19076,8 @@ newp_ge1_m=0; if gender=1 then newp_ge1_m = newp_ge1;
 
 if gender=2 and 15 <= age < 50 then do;
 sw1549=0; if sw = 1 then sw1549=1; 
+esw1549=0; if esw = 1 then esw1549=1; 
+
 end;
 
 rred_balance_w = .;  if gender=2 then rred_balance_w = rred_balance;
@@ -19038,6 +19091,8 @@ s1_f =. ; if gender = 2 then s1_f = s1;
 s2_f =. ; if gender = 2 then s2_f = s2;
 
 newp_sw = 0;  if sw = 1 then newp_sw = newp; 
+newp_esw = 0; if esw = 1 then newp_esw = newp; 
+
 
 
 *** *HYPERTENSION* by age and gender;
@@ -20438,12 +20493,45 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_totdur_eversw_10to19 + totdur_eversw_10to19;  
 	s_act_dur_sw + act_dur_sw;  s_tot_dur_sw + tot_dur_sw;
 
-	s_sw_program_visit + sw_program_visit ;
+	s_sw_program_visit + sw_program_visit ;s_fsw_program_visit + fsw_program_visit ;
 	s_diag_sw_noprog + diag_sw_noprog; 	s_diag_sw_inprog + diag_sw_inprog;
 	s_onart_sw_noprog + onart_sw_noprog; s_onart_sw_inprog + onart_sw_inprog;
 	s_vl1000_art_gt6m_iicu_sw_noprog + vl1000_art_gt6m_iicu_sw_noprog; s_vl1000_art_gt6m_iicu_sw_inprog + vl1000_art_gt6m_iicu_sw_inprog;
 
+
 	s_sti_sw + sti_sw;
+
+	/*ESW*/
+	s_esw + esw ; s_esw_1549 + esw_1549 ; s_esw_1849 + esw_1849 ; s_esw_1519 + esw_1519 ; s_esw_2024 + esw_2024 ;
+	s_esw_2529 + esw_2529 ; s_esw_3039 + esw_3039 ; s_esw_ov40 + esw_ov40 ; s_ever_esw + ever_esw ; s_esw_1564 + esw_1564 ;
+	s_ever_esw_hiv + ever_esw_hiv ; s_ever_esw_diag + ever_esw_diag ; s_hiv_esw + hiv_esw ; s_hiv_esw1849_ + hiv_esw1849_ ; s_hiv_esw1549_ + hiv_esw1549_ ; 
+  	s_hiv_esw1519_ + hiv_esw1519_ ; s_hiv_esw2024_ + hiv_esw2024_ ; s_hiv_esw2529_ + hiv_esw2529_ ; s_hiv_esw3039_ + hiv_esw3039_ ; s_hiv_eswov40_ + hiv_eswov40_ ;              
+	/*s_i_esw_v1_np + i_esw_v1_np ; s_i_esw_v2_np + i_esw_v2_np ; s_i_esw_v3_np + i_esw_v3_np ; s_i_esw_v4_np + i_esw_v4_np ; 
+	s_i_esw_v5_np + i_esw_v5_np ; s_i_esw_v6_np + i_esw_v6_np ; */s_esw_newp + esw_newp ; s_esw1524_newp + esw1524_newp ; s_esw_newp_cat1 + esw_newp_cat1 ;
+	s_esw_newp_cat2 + esw_newp_cat2 ; s_esw_newp_cat3 + esw_newp_cat3 ; 
+    s_episodes_esw + episodes_esw ; s_esw_gt1ep + esw_gt1ep ;
+	s_vs_esw + vs_esw ;
+
+	s_age_deb_esw1519_ + age_deb_esw1519_;  s_age_deb_esw2024_ + age_deb_esw2024_;  s_age_deb_esw2529_ + age_deb_esw2529_;
+	s_age_deb_esw3039_ + age_deb_esw3039_;  s_age_deb_eswov40_ + age_deb_eswov40_; 
+
+	s_age_stop_esw1519_ + age_stop_esw1519_;  s_age_stop_esw2024_ + age_stop_esw2024_;  s_age_stop_esw2529_ + age_stop_esw2529_;
+	s_age_stop_esw3039_ + age_stop_esw3039_;  s_age_stop_eswov40_ + age_stop_eswov40_; 
+
+	s_actdur_esw_0to3 + actdur_esw_0to3; s_actdur_esw_3to5 + actdur_esw_3to5; s_actdur_esw_6to9 + actdur_esw_6to9;
+	s_actdur_esw_10to19 + actdur_esw_10to19;  
+	s_totdur_esw_0to3 + totdur_esw_0to3; s_totdur_esw_3to5 + totdur_esw_3to5; s_totdur_esw_6to9 + totdur_esw_6to9;
+	s_totdur_esw_10to19 + totdur_esw_10to19;  
+	s_totdur_everesw_0to3 + totdur_everesw_0to3; s_totdur_everesw_3to5 + totdur_everesw_3to5; s_totdur_everesw_6to9 + totdur_everesw_6to9;
+	s_totdur_everesw_10to19 + totdur_everesw_10to19;  
+	s_act_dur_esw + act_dur_esw;  s_tot_dur_esw + tot_dur_esw;
+
+	s_esw_program_visit + esw_program_visit ;
+	s_diag_esw_noprog + diag_esw_noprog; 	s_diag_esw_inprog + diag_esw_inprog;
+	s_onart_esw_noprog + onart_esw_noprog; s_onart_esw_inprog + onart_esw_inprog;
+	s_vl1000_art_gt6m_iicu_esw_noprg + vl1000_art_gt6m_iicu_esw_noprg; s_vl1000_art_gt6m_iicu_esw_inprg + vl1000_art_gt6m_iicu_esw_inprg;
+
+	s_sti_esw + sti_esw;
 
 	/* MSM */
 
@@ -21868,12 +21956,38 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
-s_sw_program_visit
+s_sw_program_visit	s_fsw_program_visit
 
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
 s_sti_sw
+
+/*edge of sex work*/
+s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
+s_ever_esw  s_ever_esw_hiv  s_ever_esw_diag
+s_hiv_esw  s_hiv_esw1849_  s_hiv_esw1549_  s_hiv_esw1519_  s_hiv_esw2024_  s_hiv_esw2529_  s_hiv_esw3039_  s_hiv_eswov40_  
+/*s_i_esw_v1_np 	s_i_esw_v2_np   s_i_esw_v3_np	s_i_esw_v4_np  	s_i_esw_v5_np	s_i_esw_v6_np
+s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
+s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp*/
+s_esw_newp   s_esw1524_newp s_esw_newp_cat1 s_esw_newp_cat2 s_esw_newp_cat3  
+s_episodes_esw  s_esw_gt1ep
+s_vs_esw
+
+s_age_deb_esw1519_  s_age_deb_esw2024_  s_age_deb_esw2529_  s_age_deb_esw3039_  s_age_deb_eswov40_ 
+
+s_age_stop_esw1519_  s_age_stop_esw2024_  s_age_stop_esw2529_  s_age_stop_esw3039_  s_age_stop_eswov40_ 
+
+s_actdur_esw_0to3  s_actdur_esw_3to5  s_actdur_esw_6to9  s_actdur_esw_10to19  
+s_totdur_esw_0to3  s_totdur_esw_3to5  s_totdur_esw_6to9  s_totdur_esw_10to19 
+s_totdur_everesw_0to3  s_totdur_everesw_3to5  s_totdur_everesw_6to9  s_totdur_everesw_10to19 s_act_dur_esw  s_tot_dur_esw
+
+s_esw_program_visit
+
+s_diag_esw_noprog  s_diag_esw_inprog  s_onart_esw_noprog  s_onart_esw_inprog  
+s_vl1000_art_gt6m_iicu_esw_noprg  s_vl1000_art_gt6m_iicu_esw_inprg 
+
+s_sti_esw
 
 
 /* MSM */
@@ -23056,6 +23170,31 @@ s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog
 
 s_sti_sw
 
+/*edge of sex work*/
+s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
+s_ever_esw  s_ever_esw_hiv  s_ever_esw_diag
+s_hiv_esw  s_hiv_esw1849_  s_hiv_esw1549_  s_hiv_esw1519_  s_hiv_esw2024_  s_hiv_esw2529_  s_hiv_esw3039_  s_hiv_eswov40_  
+/*s_i_esw_v1_np 	s_i_esw_v2_np   s_i_esw_v3_np	s_i_esw_v4_np  	s_i_esw_v5_np	s_i_esw_v6_np
+s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
+s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp*/
+s_esw_newp   s_esw1524_newp s_esw_newp_cat1 s_esw_newp_cat2 s_esw_newp_cat3  
+s_episodes_esw  s_esw_gt1ep
+s_vs_esw
+
+s_age_deb_esw1519_  s_age_deb_esw2024_  s_age_deb_esw2529_  s_age_deb_esw3039_  s_age_deb_eswov40_ 
+
+s_age_stop_esw1519_  s_age_stop_esw2024_  s_age_stop_esw2529_  s_age_stop_esw3039_  s_age_stop_eswov40_ 
+
+s_actdur_esw_0to3  s_actdur_esw_3to5  s_actdur_esw_6to9  s_actdur_esw_10to19  
+s_totdur_esw_0to3  s_totdur_esw_3to5  s_totdur_esw_6to9  s_totdur_esw_10to19 
+s_totdur_everesw_0to3  s_totdur_everesw_3to5  s_totdur_everesw_6to9  s_totdur_everesw_10to19 s_act_dur_esw  s_tot_dur_esw
+
+s_esw_program_visit
+
+s_diag_esw_noprog  s_diag_esw_inprog  s_onart_esw_noprog  s_onart_esw_inprog  
+s_vl1000_art_gt6m_iicu_esw_noprg  s_vl1000_art_gt6m_iicu_esw_inprg 
+
+s_sti_esw
 
 /* MSM */
 
@@ -23428,11 +23567,11 @@ data a ;  set r1 ;
 
 *    Option 0;
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,0);
+%run_update_r1(&year_interv,&year_interv+20,0);
 
 *    Option 1;
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,1);
+%run_update_r1(&year_interv,&year_interv+20,1);
 
 
 
@@ -24074,6 +24213,31 @@ s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog
 
 s_sti_sw
 
+/*edge of sex work*/
+s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
+s_ever_esw  s_ever_esw_hiv  s_ever_esw_diag
+s_hiv_esw  s_hiv_esw1849_  s_hiv_esw1549_  s_hiv_esw1519_  s_hiv_esw2024_  s_hiv_esw2529_  s_hiv_esw3039_  s_hiv_eswov40_  
+/*s_i_esw_v1_np 	s_i_esw_v2_np   s_i_esw_v3_np	s_i_esw_v4_np  	s_i_esw_v5_np	s_i_esw_v6_np
+s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
+s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp*/
+s_esw_newp   s_esw1524_newp s_esw_newp_cat1 s_esw_newp_cat2 s_esw_newp_cat3  
+s_episodes_esw  s_esw_gt1ep
+s_vs_esw
+
+s_age_deb_esw1519_  s_age_deb_esw2024_  s_age_deb_esw2529_  s_age_deb_esw3039_  s_age_deb_eswov40_ 
+
+s_age_stop_esw1519_  s_age_stop_esw2024_  s_age_stop_esw2529_  s_age_stop_esw3039_  s_age_stop_eswov40_ 
+
+s_actdur_esw_0to3  s_actdur_esw_3to5  s_actdur_esw_6to9  s_actdur_esw_10to19  
+s_totdur_esw_0to3  s_totdur_esw_3to5  s_totdur_esw_6to9  s_totdur_esw_10to19 
+s_totdur_everesw_0to3  s_totdur_everesw_3to5  s_totdur_everesw_6to9  s_totdur_everesw_10to19 s_act_dur_esw  s_tot_dur_esw
+
+s_esw_program_visit
+
+s_diag_esw_noprog  s_diag_esw_inprog  s_onart_esw_noprog  s_onart_esw_inprog  
+s_vl1000_art_gt6m_iicu_esw_noprg  s_vl1000_art_gt6m_iicu_esw_inprg 
+
+s_sti_esw
 
 /* MSM */
 
