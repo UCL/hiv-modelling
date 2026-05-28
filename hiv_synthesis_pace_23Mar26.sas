@@ -684,7 +684,6 @@ newp_seed = 7;
 ***(women who dont consider themselves as SW but have concurrent partners with whom they exchange sex for e.g. paying for lifestyle);
 
 
-* WOMEN AT THE EDGE OF SEX WORK (ESW);
 * fold_esw_init;				fold_esw_init=1;
 * base_rate_esw;				%sample(base_rate_esw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2); *slightly higher than SW (look in parameter file);
 * base_rate_stop_sexwork;		%sample_uniform(base_rate_stop_esexwork, 0.001 0.005 0.01); *longer duration than SW;
