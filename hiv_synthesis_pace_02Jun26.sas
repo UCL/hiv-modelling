@@ -793,7 +793,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14 19);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14 19);prep_any_strategy=20; 
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -2629,9 +2629,42 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;
 		rate_engage_esw_program = rate_engage_sw_program;
 		rate_disengage_esw_program = rate_disengage_sw_program;
+
+		prep_parameters_sio=1 ;
 		date_prep_len_intro=&year_interv;
- 	end;
- 
+
+		prep_any_strategy=20;
+		
+		if sw=1 or esw=1 then do;
+			eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral ;		
+			eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
+			pref_prep_oral = 0.3;
+										
+			eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len / 2 ;		
+			eff_prob_prep_len_b = prob_prep_len_b + 0.2;
+
+			eff_rate_test_startprep_any = 0.3; 
+			eff_prob_prep_any_restart_choice = 0.3;
+		
+			u=rand('uniform');
+			if caldate_never_dot = &year_interv then do;
+				pref_prep_len=0.4;*start with everyone on len (as this is higher than oral pref);
+				if  u< 0.2 then pref_prep_len = 0.25;*20% still prefer oral;
+			end;
+		end;
+
+		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
+		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
+		pref_prep_oral_sio = pref_prep_oral;
+
+		rate_choose_stop_prep_len_sio = eff_rate_choose_stop_prep_len;
+		prob_prep_len_b_sio = eff_prob_prep_len_b;
+
+		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
+		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
+		pref_prep_len_sio = pref_prep_len;
+	end;
+
 end;
 
 
@@ -2715,6 +2748,11 @@ if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_pre
 if . < caldate{t} < date_prep_cab_intro or date_prep_cab_intro=. or caldate{t} >= date_prep_len_intro > . then pref_prep_cab = 0; * once len available we want len to be preferred;
 if . < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then pref_prep_len = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
+
+if prep_parameters_sio=1 then do ;
+	pref_prep_oral = pref_prep_oral_sio;
+	pref_prep_len = pref_prep_len_sio;
+end;
 
 * highest_prep_pref;
 * does not show people who are not willing to take any PrEP type;
@@ -5181,7 +5219,6 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		end;
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 		* MSM PrEP eligibility restricted to 15-64 because HIV risk stops from age 65;
-
 	end;
 
 
@@ -5470,6 +5507,19 @@ end;
 
 
 * PREP INITIATION AND CONTINUATION;
+if prep_parameters_sio=1 then do ;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral_sio;		
+		eff_prob_prep_oral_b = prob_prep_oral_b_sio;
+		pref_prep_oral = pref_prep_oral_sio;
+
+		eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len_sio;		
+		eff_prob_prep_len_b = prob_prep_len_b_sio;
+		pref_prep_len = pref_prep_len_sio;
+
+		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
+		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
+end;
+
 /* 
 	PrEP start and restart dates are given by:
 		prep_xxx_current_start_date 		start date of current PrEP course, whether that is first ever PrEP, switching from a different PrEP option, or restarting following a break due to ineligibility or choice
