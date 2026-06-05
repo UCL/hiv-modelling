@@ -1,8 +1,8 @@
 
-libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_14may2026; 
+set a.mm_28may2026; 
 if run=. then delete; 
 
 proc sort;
@@ -451,7 +451,7 @@ options notes source source2 mprint mlogic symbolgen;
 ods listing close;
 ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
 ods rtf file = 'C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
-graphs_14_05_26.doc' startpage=never; 
+graphs_28_05_26.doc' startpage=never; 
 
 
 ***Diagnostic;
