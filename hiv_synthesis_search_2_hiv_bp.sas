@@ -2515,11 +2515,19 @@ if caldate{t} >= date_prep_cab_intro and (caldate{t} < date_prep_len_intro or da
 * Oral PrEP effectiveness against non-resistant virus;
 prep_oral_effect_non_res_v = .;  * we only want this defined for people currently on oral prep so set to . at start of loop;
 
+
+
+
 prep_any_tm3=	prep_any_tm2;  prep_any_tm2=	prep_any_tm1; 	prep_any_tm1=	prep_any;
 prep_oral_tm3=	prep_oral_tm2; prep_oral_tm2=	prep_oral_tm1; 	prep_oral_tm1=	prep_oral;
 prep_cab_tm3=	prep_cab_tm2;  prep_cab_tm2=	prep_cab_tm1; 	prep_cab_tm1=	prep_cab;  
 prep_len_tm3=	prep_len_tm2;  prep_len_tm2=	prep_len_tm1; 	prep_len_tm1=	prep_len;  
 prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
+
+prep_any_tm4 = prep_any_tm3;  
+prep_any_tm5 = prep_any_tm4;
+prep_any_tm6 = prep_any_tm5;
+
 
 * Oral prep scale-up over 4 years;
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
@@ -16241,6 +16249,29 @@ if prep_any   ne 1 then do;	* lapr - define which prep? ;
 end;
 
 
+* here here;
+
+prep_past_2_yrs=0;  * below is 17 because referring to past 2 years;
+if 17 <= age < 65 and registd ne 1 and  
+(prep_any = 1 or prep_any_tm1 = 1 or prep_any_tm2 = 1 or prep_any_tm3 = 1 or prep_any_tm4 = 1 or prep_any_tm5 = 1 or prep_any_tm6 = 1 or prep_any_tm7 = 1)
+then prep_past_2_yrs=1;
+
+if prep_past_2_yrs=1 then do;
+	number_periods_prep_past_2_yrs = prep_any + prep_any_tm1 + prep_any_tm2 + prep_any_tm3 + prep_any_tm4 + prep_any_tm5 + prep_any_tm6 + prep_any_tm7  ;
+end;
+
+periods_prep_past_2_yrs_1 = 0;periods_prep_past_2_yrs_2 = 0;periods_prep_past_2_yrs_3 = 0;periods_prep_past_2_yrs_4 = 0;
+periods_prep_past_2_yrs_5 = 0;periods_prep_past_2_yrs_6 = 0;periods_prep_past_2_yrs_7 = 0;periods_prep_past_2_yrs_8 = 0;
+
+if number_periods_prep_past_2_yrs = 1 then periods_prep_past_2_yrs_1 = 1;
+if number_periods_prep_past_2_yrs = 2 then periods_prep_past_2_yrs_2 = 1;
+if number_periods_prep_past_2_yrs = 3 then periods_prep_past_2_yrs_3 = 1;
+if number_periods_prep_past_2_yrs = 4 then periods_prep_past_2_yrs_4 = 1;
+if number_periods_prep_past_2_yrs = 5 then periods_prep_past_2_yrs_5 = 1;
+if number_periods_prep_past_2_yrs = 6 then periods_prep_past_2_yrs_6 = 1;
+if number_periods_prep_past_2_yrs = 7 then periods_prep_past_2_yrs_7 = 1;
+if number_periods_prep_past_2_yrs = 8 then periods_prep_past_2_yrs_8 = 1;
+
 * hiv+ and started art due to being on tld_prep, currently hiv+ and on tld_prep, and vl1000 for these ;
 
 started_art_as_tld_prep_vl1000=.; onart_as_tld_prep=.; onart_as_tld_prep_vl1000=.;
@@ -19691,6 +19722,11 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_started_prep_any_hiv + started_prep_any_hiv;  s_pop_wide_tld_hiv + pop_wide_tld_hiv;  s_pop_wide_tld_prep_elig + pop_wide_tld_prep_elig ; 
 	s_pop_wide_tld_neg_prep_inelig + pop_wide_tld_neg_prep_inelig;
 
+	s_periods_prep_past_2_yrs_1 + periods_prep_past_2_yrs_1;s_periods_prep_past_2_yrs_2 + periods_prep_past_2_yrs_2;
+	s_periods_prep_past_2_yrs_3 + periods_prep_past_2_yrs_3;s_periods_prep_past_2_yrs_4 + periods_prep_past_2_yrs_4;
+	s_periods_prep_past_2_yrs_5 + periods_prep_past_2_yrs_5;s_periods_prep_past_2_yrs_6 + periods_prep_past_2_yrs_6;
+	s_periods_prep_past_2_yrs_7 + periods_prep_past_2_yrs_7; s_periods_prep_past_2_yrs_8 + periods_prep_past_2_yrs_8;
+
 	
 	/*testing and diagnosis*/
 
@@ -21340,7 +21376,8 @@ s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_
 s_prep_elig_onprep_vr 
 s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
-
+s_periods_prep_past_2_yrs_1 s_periods_prep_past_2_yrs_2 s_periods_prep_past_2_yrs_3 
+s_periods_prep_past_2_yrs_4 s_periods_prep_past_2_yrs_5 s_periods_prep_past_2_yrs_6 s_periods_prep_past_2_yrs_7 s_periods_prep_past_2_yrs_8 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -22505,6 +22542,10 @@ s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_
 s_prep_elig_onprep_vr 
 s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
+s_periods_prep_past_2_yrs_1 s_periods_prep_past_2_yrs_2 s_periods_prep_past_2_yrs_3 
+s_periods_prep_past_2_yrs_4 s_periods_prep_past_2_yrs_5 s_periods_prep_past_2_yrs_6 s_periods_prep_past_2_yrs_7 s_periods_prep_past_2_yrs_8 
+
+
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
@@ -23502,6 +23543,8 @@ s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_
 s_prep_elig_onprep_vr 
 s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
+s_periods_prep_past_2_yrs_1 s_periods_prep_past_2_yrs_2 s_periods_prep_past_2_yrs_3 
+s_periods_prep_past_2_yrs_4 s_periods_prep_past_2_yrs_5 s_periods_prep_past_2_yrs_6  s_periods_prep_past_2_yrs_7  s_periods_prep_past_2_yrs_8
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
