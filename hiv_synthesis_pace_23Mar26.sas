@@ -690,7 +690,11 @@ newp_seed = 7;
 
 * esw_trans_matrix;   		  %sample(esw_trans_matrix, 1 2, 0.70 0.30);
 
-* esw_art_disadv;             %sample(esw_art_disadv, 0 1, 0.10 0.90);esw_art_disadv=0;*Assume no disadvantage in HIV+ women as per FC email;
+* esw_art_disadv;             %sample(esw_art_disadv, 0 1, 0.10 0.90);*
+
+
+***CHECK THIS;
+esw_art_disadv=0;*Assume no disadvantage in HIV+ women as per FC email;
                               if esw_art_disadv=0  then do; esw_higher_int = 1; rel_esw_lower_adh = 1;esw_higher_prob_loss_at_diag = 1;end;
 
 						   	  if esw_art_disadv=1  then do; 
