@@ -1273,7 +1273,6 @@ sw_newp_lev_5_1 = 0.00 ; sw_newp_lev_5_2 = 0.00 ; sw_newp_lev_5_3 = 0.000 ; sw_n
 end;
 end;
 
-***start here;
 
 ***ESW trans matrices;
 *Group 1: 0 newp;
@@ -2416,6 +2415,8 @@ if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w)  the
 if (gender=1 and p <= p_hard_reach_htn_m) or (gender=2 and q <= p_hard_reach_htn_w) then hard_reach_htn=1;																										  
 
 ***start here;
+**Here I think we are only setting hard_reach_esw for those in 1989. SW are defined again in Section 3B - after the program 
+- discuss positioning of code and where we should define hard_reach_esw;
 if (esw=1 and r <=p_hard_reach_esw) then do;
 	hard_reach=1;
 	hard_reach_esw=1;
@@ -3017,10 +3018,7 @@ if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
 		end;
 
 		
-		s= rand('uniform'); 
-			prep_any_elig=1;*new for sw and esw (most sw were no longer eligible with prep_any_strategy=20);
-
-***lbm - consider using hard_reach instread of prep_any_strategy;
+		hard_reach_esw=0;hard_reach=0; ***currently assuming one visit to the SW program is enough to permanetly stop being hard to reach;
 
 			if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
 			prep_any_willing = 1; * lapr and dpv-vr ;
