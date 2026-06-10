@@ -229,10 +229,10 @@ dhtn_cost_totcvd4x = dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + (dhtn_cos
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
-***Will need to add the cost of VG when included in HIV Synthesis;
+***Will need to add the cost of VG when included in HIV Synthesis + dcost_avail_self_test ;
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
+		+ dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
 		dcost_sw_program +
 		dhtn_cost_total;
 
@@ -491,9 +491,9 @@ end;
 
 * mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
 */
-* p_diag;						if s_hiv1564  > 0 then p_diag = s_diag / s_hiv1564 ;  p_diag = p_diag * 100;
-* p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m / s_hiv1564m ;  p_diag_m = p_diag_m * 100;
-* p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w / s_hiv1564w ;  p_diag_w = p_diag_w * 100;
+* p_diag;						if s_hiv1564  > 0 then p_diag = s_diag / (s_hiv1564 + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw);
+* p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m / (s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm);
+* p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w / (s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw);
 /*
 * p_diag_m1524;					if s_hiv1524m > 0 then p_diag_m1524 = (s_diag_m1519_+s_diag_m2024_)/(s_hiv1524m);
 * p_diag_w1524;					if s_hiv1524w > 0 then p_diag_w1524 = (s_diag_w1519_+s_diag_w2024_)/(s_hiv1524w);
@@ -1188,18 +1188,18 @@ proc means noprint data=y; var &v; output out=y_15 mean= &v._15; by run option ;
 proc means noprint data=y; var &v; output out=y_23 mean= &v._23; by run option ; where 2023 <= cald < 2024; 
 
 /*proc means noprint data=y; var &v; output out=y_43 mean= &v._43; by run option ; where 2043 <= cald < 2044;
-proc means noprint data=y; var &v; output out=y_73 mean= &v._73; by run option ; where 2073 <= cald < 2074; 
+proc means noprint data=y; var &v; output out=y_73 mean= &v._73; by run option ; where 2073 <= cald < 2074; */
 proc means noprint data=y; var &v; output out=y_2429 mean= &v._2429; by run option ; where 2024 <= cald < 2029; */
 proc means noprint data=y; var &v; output out=y_2434 mean= &v._2434; by run option ; where 2024 <= cald < 2034; 
-/* proc means noprint data=y; var &v; output out=y_2474 mean= &v._2474; by run option ; where 2024 <= cald < 2074; */
+proc means noprint data=y; var &v; output out=y_2474 mean= &v._2474; by run option ; where 2024 <= cald < 2074;
 																												
 /*proc sort data=y_43; by run option ; proc transpose data=y_43 out=t_43 prefix=&v._43_; var &v._43; by run option ; 
 proc sort data=y_73; by run option; proc transpose data=y_73 out=t_73 prefix=&v._73_; var &v._73; by run option ; */
+proc sort data=y_2429; by run option; proc transpose data=y_2429 out=t_2429 prefix=&v._2429_; var &v._2429; by run option ;
 proc sort data=y_2434; by run option; proc transpose data=y_2434 out=t_2434 prefix=&v._2434_; var &v._2434; by run option ;  
-/*proc sort data=y_2429; by run option; proc transpose data=y_2429 out=t_2429 prefix=&v._2429_; var &v._2429; by run option ;
-proc sort data=y_2474; by run option; proc transpose data=y_2474 out=t_2474 prefix=&v._2474_; var &v._2474; by run option ;  */
+proc sort data=y_2474; by run option; proc transpose data=y_2474 out=t_2474 prefix=&v._2474_; var &v._2474; by run option ; 
 
-data &v ; merge   y_15 y_23 y_2434 ; by run option; * REMOVED y_43 y_73 y_2429 y_2474  to shorten output;
+data &v ; merge   y_15 y_23 y_2429 y_2434 y_2474; by run option; * REMOVED y_43 y_73    to shorten output;
 drop _NAME_ _TYPE_ _FREQ_;
 
 
