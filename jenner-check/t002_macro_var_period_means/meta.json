@@ -1,0 +1,8 @@
+{
+  "bundle": "t002_macro_var_period_means",
+  "source_file": "create_wide_file.sas",
+  "source_blob_sha": "3d491a80d0104b3029cc6a7ae59483bb9ac328df",
+  "source_commit": "614ee4c5cd714012ca8818b7cf7cd03bf1ce88b1",
+  "tier": "real_data",
+  "notes": "Exercises the %var macro from create_wide_file.sas (lines 222-247): PROC MEANS cumulative period means + PROC TRANSPOSE to wide + DATA merge to one row per run. External libname output replaced with a small synthesised 'y' dataset matching the run/option/cald column shape the macro reads."
+}

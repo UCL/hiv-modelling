@@ -1,0 +1,8 @@
+{
+  "bundle": "t003_macro_setup_year_suffix",
+  "source_file": "Auto_Table1.sas",
+  "source_blob_sha": "af352d1ad1a7abeabd5dd8ed928d8b2930ad3fa7",
+  "source_commit": "614ee4c5cd714012ca8818b7cf7cd03bf1ce88b1",
+  "tier": "real_data",
+  "notes": "Exercises the %setup year-suffix renaming macro from Auto_Table1.sas (lines 9-79). External libname (a.w_base_...) replaced with an inline wide row carrying year-suffixed columns; macro slices it into one row per year snapshot (subgp)."
+}

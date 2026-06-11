@@ -1,0 +1,8 @@
+{
+  "bundle": "t001_macro_sample_uniform_range",
+  "source_file": "hiv_synthesis.sas",
+  "source_blob_sha": "a53f5265a056fda0840317dbde334f13ef9075d5",
+  "source_commit": "614ee4c5cd714012ca8818b7cf7cd03bf1ce88b1",
+  "tier": "real_data",
+  "notes": "Exercises the %sample_uniform range form (low:high) from hiv_synthesis.sas (lines 79-105). Draws integer values uniformly over 18:22 and 1:3 across a fixed random stream (call streaminit), tabulating the realised distribution with PROC FREQ. No external data needed."
+}

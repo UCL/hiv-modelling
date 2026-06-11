@@ -1,0 +1,22 @@
+                         Realised distribution of my_age over range 18:22 (uniform, ~20% each)                          
+
+                                                   The FREQ Procedure
+
+                                    Cumulative    Cumulative
+my_age    Frequency    Percent     Frequency      Percent
+---------------------------------------------------------------
+18               15     15.00           15        15.00
+19               25     25.00           40        40.00
+20               18     18.00           58        58.00
+21               19     19.00           77        77.00
+22               23     23.00          100       100.00
+                     Realised distribution of prep_any_strategy over range 1:3 (uniform, ~33% each)                     
+
+                                                   The FREQ Procedure
+
+                                               Cumulative    Cumulative
+prep_any_strategy    Frequency    Percent     Frequency      Percent
+--------------------------------------------------------------------------
+1                           34     34.00           34        34.00
+2                           35     35.00           69        69.00
+3                           31     31.00          100       100.00

@@ -1,0 +1,8 @@
+{
+  "bundle": "t004_proc_report_table1",
+  "source_file": "Auto_Table1.sas",
+  "source_blob_sha": "af352d1ad1a7abeabd5dd8ed928d8b2930ad3fa7",
+  "source_commit": "614ee4c5cd714012ca8818b7cf7cd03bf1ce88b1",
+  "tier": "real_data",
+  "notes": "Runs the Table 1 PROC REPORT from Auto_Table1.sas (lines 330-353) verbatim apart from the ODS RTF wrapper (external Dropbox path). Spanning header, ordering var, per-year styled columns. 'final' dataset synthesised with the column shape the report reads."
+}

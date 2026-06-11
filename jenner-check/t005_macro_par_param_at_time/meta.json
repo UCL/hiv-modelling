@@ -1,0 +1,8 @@
+{
+  "bundle": "t005_macro_par_param_at_time",
+  "source_file": "create_wide_file.sas",
+  "source_blob_sha": "3d491a80d0104b3029cc6a7ae59483bb9ac328df",
+  "source_commit": "614ee4c5cd714012ca8818b7cf7cd03bf1ce88b1",
+  "tier": "real_data",
+  "notes": "Exercises the %par macro from create_wide_file.sas (lines 278-282): PROC MEANS to take each sampled parameter's value at cald=2022.5 by run, DATA step to drop _TYPE_/_FREQ_, merged into a wide per-run parameter dataset. External libname output replaced with a small synthesised 'y'."
+}

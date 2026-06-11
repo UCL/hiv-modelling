@@ -1,0 +1,20 @@
+Jenner 0.1.0 (Unlicensed - limited to 100 observations)
+Get a license at https://jenneranalytics.com/license
+
+NOTE: Option OBS changed to 100.
+NOTE: DATA uniform_draws
+
+NOTE: Unlicensed mode - output limited to 100 observations.
+
+NOTE: Wrote uniform_draws (100 rows, 3 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: Option TITLE changed to Realised distribution of my_age over range 18:22 (uniform, ~20% each).
+NOTE: PROC FREQ
+NOTE: ODS plot written: freq_my_age.spec.json
+NOTE: PROC FREQ statement used.
+NOTE: Option TITLE changed to Realised distribution of prep_any_strategy over range 1:3 (uniform, ~33% each).
+NOTE: PROC FREQ
+NOTE: ODS plot written: freq_prep_any_strategy.spec.json
+NOTE: PROC FREQ statement used.
