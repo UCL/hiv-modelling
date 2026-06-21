@@ -15,6 +15,8 @@ run;
 */
 
 
+
+
 proc sort data=b.k_search_2; 
 by run cald option;run;
 
@@ -2413,6 +2415,8 @@ incidence_prep_elig incidence_onprep incidence_prep_elig_non_user
 
 
 
+
+
 proc sort; by run; run;
 
 ***Macro par used to add in values of all sampled parameters - values before intervention;
@@ -2649,6 +2653,9 @@ proc sort; by run;run;
 
 data f; set b.w_search_2_a;
 
+/*
+proc contents data=y; run;
+*/
 
 if prevalence1549w_24 < 0.35 ;
 if prevalence1549m_24 < 0.25 ;

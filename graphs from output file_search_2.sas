@@ -621,7 +621,7 @@ run;quit;
 
 */
 
-/*
+
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -639,7 +639,7 @@ run;quit;
 
 * ods html close;
 
-*/
+
 
 /*
 
@@ -716,7 +716,7 @@ run;quit;
 
 */
 
-  
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
@@ -732,7 +732,7 @@ band    x=cald lower=p5_prop_prep_any_1 upper=p95_prop_prep_any_1 / transparency
 
 run;quit;
 
-
+*/
 
 
 /*
