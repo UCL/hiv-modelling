@@ -1,15 +1,15 @@
 
-*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
+ libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   
+* libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 10000  ; 
 %let year_interv = 2027.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -20614,10 +20614,11 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 * procs;
 
-/*
+
 
 proc freq; tables cald hiv ; where death=.; run;
 
+/*
 
 proc print; var reg_option onart art_monitoring_strategy adh adh_dl o_dol o_3tc o_ten o_cab o_len nactive  r_cab r_len f_cab f_len ;
 where naive=0 and caldate&j ge 2025;
@@ -23228,9 +23229,9 @@ Inputs are:
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
 *    Save dataset at this point;
-data a ;  set r1 ;
+data a.saved ;  set r1 ;
 
-data r1 ; set a ;
+data r1 ; set a.saved ;
 
 *    Option 0 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,0);
