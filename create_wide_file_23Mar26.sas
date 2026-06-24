@@ -3,14 +3,14 @@ CREATE A WIDE FILE WITH MEANS OF KEY OUTPUTS IN SPECIFIC TIME PERIODS;
 
 ***SPECIFY LIBRARY 'A' WHICH IS THE FILEPATH WHERE OUTPUT FILES ARE STORED;
 ***REPLACE FILEPATH BELOW WITH LOCAL FILEPATH;
-libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\PACE2\";
+libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\PACE2\";
 
 
 ***READ IN OUTPUT FILES (NOTE THE MULTIPLE OUTPUT FILES NEED TO BE SET ON TOP OF EACH OTHER BEFORE THIS STEP 
    IF NOT AUTOMATICALLY DONE IN MYRIAD);
 
 data a;
-set a.pace_23Mar26;
+set a.pace_02Jun26;
 if run=. then delete; 
 proc sort;by run cald option;run;
 proc freq;table cald;run;
@@ -308,7 +308,7 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * n_tested_sw;					n_tested_sw = s_tested_sw * sf * 4;
 * p_tested_past_year_sw;		if s_sw_1564 - s_diag_sw > 0 then p_tested_past_year_sw = s_tested_4p_sw /  (s_sw_1564 - s_diag_sw) ;
 
-* p_sw_tested_swprog;			if  (s_fsw_program_visit - s_diag_sw) > 0 then p_sw_tested_swprog = s_tested_as_fsw /  (s_fsw_program_visit - s_diag_sw) ;
+* p_sw_tested_swprog;			if  (s_sw_program_visit - s_diag_sw) > 0 then p_sw_tested_swprog = s_tested_as_sw /  (s_sw_program_visit - s_diag_sw) ;
 
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
 * prop_sw_onprep_oral; 			if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_oral = s_prep_oral_sw/ (s_sw_1564 - s_hiv_sw) ;
