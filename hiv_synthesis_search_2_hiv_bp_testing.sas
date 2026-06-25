@@ -2548,6 +2548,7 @@ prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 prep_any_tm4 = prep_any_tm3;  
 prep_any_tm5 = prep_any_tm4;
 prep_any_tm6 = prep_any_tm5;
+prep_any_tm7 = prep_any_tm6;
 
 
 * Oral prep scale-up over 4 years;
@@ -16279,7 +16280,7 @@ end;
 
 * here here;
 
-prep_past_2_yrs=0;  * below is 17 because referring to past 2 years;
+prep_past_2_yrs=0; number_periods_prep_past_2_yrs = 0; * below is 17 because referring to past 2 years;
 if 17 <= age < 65 and registd ne 1 and  
 (prep_any = 1 or prep_any_tm1 = 1 or prep_any_tm2 = 1 or prep_any_tm3 = 1 or prep_any_tm4 = 1 or prep_any_tm5 = 1 or prep_any_tm6 = 1 or prep_any_tm7 = 1)
 then prep_past_2_yrs=1;

@@ -2548,6 +2548,7 @@ prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 prep_any_tm4 = prep_any_tm3;  
 prep_any_tm5 = prep_any_tm4;
 prep_any_tm6 = prep_any_tm5;
+prep_any_tm7 = prep_any_tm6;
 
 
 * Oral prep scale-up over 4 years;
@@ -16279,7 +16280,7 @@ end;
 
 * here here;
 
-prep_past_2_yrs=0;  * below is 17 because referring to past 2 years;
+prep_past_2_yrs=0; number_periods_prep_past_2_yrs = 0; * below is 17 because referring to past 2 years;
 if 17 <= age < 65 and registd ne 1 and  
 (prep_any = 1 or prep_any_tm1 = 1 or prep_any_tm2 = 1 or prep_any_tm3 = 1 or prep_any_tm4 = 1 or prep_any_tm5 = 1 or prep_any_tm6 = 1 or prep_any_tm7 = 1)
 then prep_past_2_yrs=1;
@@ -20616,7 +20617,23 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 
-proc freq; tables cald hiv ; where death=.; run;
+proc freq; tables cald hiv option   ; where death=.; run;
+
+proc print;  var 
+prep_past_2_yrs
+number_periods_prep_past_2_yrs   prep_any   prep_any_tm1   prep_any_tm2   prep_any_tm3   prep_any_tm4   prep_any_tm5   prep_any_tm6   prep_any_tm7   
+periods_prep_past_2_yrs_1     periods_prep_past_2_yrs_2     periods_prep_past_2_yrs_3     periods_prep_past_2_yrs_4     
+periods_prep_past_2_yrs_5     periods_prep_past_2_yrs_6     periods_prep_past_2_yrs_7     periods_prep_past_2_yrs_8     
+primary_prep_elig  primary       prep_any_elig       
+;
+where prep_any_elig = 1;
+run;
+
+
+
+
+
+
 
 /*
 
@@ -23225,11 +23242,15 @@ Inputs are:
 
 *** RUN PROGRAM; 
 
+/*
+
 *   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
 *    Save dataset at this point;
 data a.saved ;  set r1 ;
+
+*/
 
 data r1 ; set a.saved ;
 
@@ -23237,12 +23258,12 @@ data r1 ; set a.saved ;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
 
-data r1; set a;
+data r1; set a.saved;
 *    Option 1 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
 
-data r1; set a;
+data r1; set a.saved;
 *    Option 2 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,2);
 
