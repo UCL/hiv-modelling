@@ -14,7 +14,7 @@ if cald=2016.75 then do;
 	o_p_fsw_1549w_Fearon=0.012;o_p_fsw_ll_1549w_Fearon=0.009;o_p_fsw_ul_1549w_Fearon=0.018;
 end;
 
-* Source: Liz Fearon, Sungai Chabata, Powerpoint -  Getting to precision ÅEFemale Sex Worker  population size estimates in Zimbabwe;
+* Source: Liz Fearon, Sungai Chabata, Powerpoint -  Getting to precision ÅFemale Sex Worker  population size estimates in Zimbabwe;
 if cald=2022 then do;
 	o_pop_fsw_1549w_Fearon_ICASA=70423;o_pop_fsw_ll_1549w_Fearon=59271;o_pop_fsw_ul_1549w_Fearon=79518;
 	o_p_fsw_1549w_Fearon_ICASA=0.016;o_p_fsw_ll_1549w_Fearon=0.013;o_p_fsw_ul_1549w_Fearon=0.018;

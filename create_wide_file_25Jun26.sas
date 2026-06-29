@@ -767,12 +767,14 @@ run;
 
 data e;
 set d1;
-%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas";by cald;
+%include "C:\Users\Lovel\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe_Jan2026.sas";by cald;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
 ods rtf file = 'C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Zim\PACE\25Jun2026.doc' startpage=never; 
 
+ods listing close;
+ods html style=htmlblue;
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "People living with HIV";
@@ -780,13 +782,20 @@ Title    height=1.5 justify=center "People living with HIV";
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2026 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 13000000)  valueattrs=(size=10);
 label pmean_n_hiv_0	 = "Model";
-label o_livingHIV_1549 = "UNAIDS";
+label o_livingHIV_1549_UNAIDS = "UNAIDS 15-49";
+label o_livingHIV_15plus_UNAIDS = "UNAIDS 15+";
+label o_livingHIV_1564_PHIA = "PHIA 15-64";
+
 
 series  x=cald y=pmean_n_hiv_0  /           lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_hiv_0     upper=p95_n_hiv_0/ transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
-scatter x=cald y= o_livingHIV_1549/ markerattrs = (symbol=circle color=green size = 12);
+scatter x=cald y= o_livingHIV_1549_UNAIDS/ markerattrs = (symbol=circle color=lightgreen size = 12);
+scatter x=cald y= o_livingHIV_15plus_UNAIDS/ markerattrs = (symbol=circle color=darkgreen size = 12);
+scatter x=cald y= o_livingHIV_1564_PHIA/ markerattrs = (symbol=circle color=orange size = 12);
 run;quit;
+
+
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Number of people living with HIV on ART";
@@ -861,12 +870,15 @@ yaxis grid label  = 'Prevalence'              labelattrs=(size=12)  values = (0 
 label pmean_prevalence1549__0= "Model"; 
 label o_prev1549_Z_DHS = "Demographic Health Survey (DHS)";
 label o_prev_1549_zimphia = "ZIMPHIA";
+label m_prev1549_unaids = "UNAIDS";
 
 series  x=cald y=pmean_prevalence1549__0  /           lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_prevalence1549__0     upper=p95_prevalence1549__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
 scatter x=cald y= o_prev1549_Z_DHS/ markerattrs = (symbol=circle color=green size = 12);
 scatter x=cald y= o_prev_1549_zimphia/ markerattrs = (symbol=circle color=blue size = 12);
+scatter x=cald y= m_prev1549_unaids/ markerattrs = (symbol=circle color=orange size = 12);
+
 run;quit;
 
 
@@ -892,8 +904,8 @@ Title    height=1.5 justify=center "FSW Population (age 15-49)";
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2026 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000)  valueattrs=(size=10);
 label pmean_n_sw_1549__0 = "Model";
-label o_pop_fsw_1549w_Fearon = "Fearon et al, 2020";
-label o_pop_fsw_1549w_Fearon_ICASA = "ICASA 2023";
+label o_pop_fsw_1549w_Fearon = "Fearon et al, 2017";
+label o_pop_fsw_1549w_Fearon_ICASA = "Fearon et al 2022";
 
 series  x=cald y=pmean_n_sw_1549__0  /           lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_sw_1549__0     upper=p95_n_sw_1549__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
