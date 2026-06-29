@@ -17,7 +17,7 @@
 								0.005 0.01 0.015, 
 								0.6    0.3   0.1);*Vale - 20220105;
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
-* fold_rate_decr_test_future;*%sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5 0.75);*same as core;
+* fold_rate_decr_test_future;%sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5 0.75);
 
 * rate_anc_inc; 			%sample_uniform(rate_anc_inc, 0.025 0.03 0.035); 
 * prob_test_2ndtrim;		%sample_uniform(prob_test_2ndtrim, 0.7 0.75 0.8 0.85 0.0 0.95 1.00);
@@ -46,7 +46,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * SEX WORKERS;	
 * Based on calibraton to AMETHIST and Sisters data;
-* base_rate_sw;				%sample_uniform(base_rate_sw, 0.0010 0.0015 0.0020);
+* base_rate_sw;				*%sample_uniform(base_rate_sw, 0.0010 0.0015 0.0020);
 * base_rate_stop_sexwork ;	%sample(base_rate_stop_sexwork, 0.005 0.010 0.015, 0.40 0.40 0.20);
 
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.60;
@@ -56,8 +56,14 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.10 0.80 0.10);
 
+
 * rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
 * rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
+
+***Change these parameters as are assuming higher impact than in core and Zim has Sisters program in place;
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest,0.05 0.10 0.15);*consider changing in core as this is now lower than core and Zim should have one of the better programs;
+* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.20 0.35 0.50);
+
 
 * CIRCUMCISION;
 
@@ -81,7 +87,11 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 ***Too many people on PrEP;
 
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.10 0.15  0.30);
+
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05 0.1);
+
 * pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) ;
 
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.20 0.30 0.40);
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.10 0.20 0.30);
 

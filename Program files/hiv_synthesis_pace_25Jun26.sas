@@ -655,8 +655,7 @@ newp_seed = 7;
 * age_effect_stop_sexwork;	*age_effect_stop_sexwork=3;
 * age_effect_stop_sexwork;	age_effect_stop_sexwork=1.5; *lbm copying across from zim parameter file for initial test runs;
 
-* base_rate_sw;				*%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
-* base_rate_sw;				%sample_uniform(base_rate_sw, 0.0010 0.0015 0.0020);*lbm copying across from zim parameter file for initial test runs;
+* base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
 
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	*%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);*lbm copying across from zim parameter file for initial test runs;
