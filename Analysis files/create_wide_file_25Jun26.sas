@@ -10,12 +10,12 @@ libname a "C:\Users\Lovel\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa u
    IF NOT AUTOMATICALLY DONE IN MYRIAD);
 
 data a;
-set a.pace_02Jun26;
+set a.pace_25Jun26;
 if run=. then delete; 
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
-/*
+
 ***SCALE UP SIMULATED POPULATION TO ZIMBABWE;
 data sf;
 set a;
@@ -30,17 +30,7 @@ sf_2024 = (16665409 * 0.581) / s_alive;
 sf=sf_2024;
 keep run sf_2024 sf;
 proc sort; by run;run;
-*/
 
-data sf;
-set a;
-
-if cald=2026.25; ***Update as required;
-s_alive = s_alive_m + s_alive_w ;
-sf_2026 = 10000000 / s_alive; ***If calibrating to a specific setting, change 10000000 to desired 15+ population size;
-sf=sf_2026;
-keep run sf sf_2026;
-proc sort; by run;run;
 
 
 ***APPLY SCALE FACTOR AND CALCULATE KEY EPIDEMIC METRICS INCLUDING COSTS AND DALYS;
@@ -249,6 +239,7 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
 * n_tested;						n_tested = s_tested * sf * 4;
+
 
 
 ***FSW;
@@ -486,9 +477,9 @@ prop_onprep_oral	prop_onprep_len		prop_onprep_len_m	prop_onprep_len_w	prop_onpre
 
 proc sort data=y;by run option;run;
 
-data a.pace_22_06_26_short; set y;run;
+data a.pace_25_06_26_short; set y;run;
 
-data y; set a.pace_22_06_26_short;run;
+data y; set a.pace_25_06_26_short;run;
 
 options nomprint;
   option nospool;
@@ -662,7 +653,7 @@ rel_esw_lower_adh		rate_engage_esw_program		erate_disengage_esw_program*/
 ;proc sort; by run;run;
 
 ***THIS STORES THE NEWLY CREATED WIDE FILE IN LIBRARY A. THIS NEW FILE WILL BE READ INTO THE ANALYSIS PROGRAM;
-data a.wide_pace_22_06_26;
+data a.wide_pace_25_06_26;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
@@ -672,14 +663,14 @@ by run;run;
 ***GRAPHS;
 
 data b;
-set a.fsw_04_08_25_short;
-if cald gt 2025 then delete;
+set a.pace_25_06_26_short;
+if cald gt 2026 then delete;
 proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 100;
-%let year_end = 2025.00 ;
+%let nfit = 20;
+%let year_end = 2026.00 ;
 run;
 proc sort;by cald option ;run;
 
