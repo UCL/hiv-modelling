@@ -1,14 +1,14 @@
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_out\";
 
 /*  
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_out\";
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_search_2;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_search_2_testing;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -17,13 +17,13 @@ run;
 
 
 
-proc sort data=b.k_search_2; 
+proc sort data=b.k_search_2_testing; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
-set b.k_search_2 ;
+set b.k_search_2_testing ;
 
 
 if cald=2026   ;
@@ -42,7 +42,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_search_2 sf;
+merge b.k_search_2_testing sf;
 by run ;
 
 
@@ -1922,9 +1922,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_search_2_a; set y;  
+data    b.l_search_2_testing_a; set y;  
 
-data y ; set b.l_search_2_a; 
+data y ; set b.l_search_2_testing_a; 
 
 
   options nomprint;
@@ -2639,7 +2639,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_search_2_a   ; 
+  data  b.w_search_2_testing_a   ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -2651,7 +2651,7 @@ proc sort; by run;run;
 * libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_out\";
 
 
-data f; set b.w_search_2_a;
+data f; set b.w_search_2_testing_a;
 
 /*
 proc contents data=y; run;
