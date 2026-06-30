@@ -2512,7 +2512,7 @@ who may be dead and hence have caldate{t} missing;
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
 
-		rr_incr_testing_from_year_interv = 2.0;
+		rr_incr_testing_from_year_interv = 10.0;
 
 	end;
 
