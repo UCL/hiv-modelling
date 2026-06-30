@@ -27,7 +27,7 @@ n_esw_1549__26			prop_w_1549_esw_26 		prop_w_ever_esw_26		act_dur_esw_26
 p_esw_age1519__26		p_esw_age2024__26		p_esw_age2529__26 		p_esw_age3039__26 p_esw_age40pl__26  
 p_age_deb_esw1519__26 	p_age_deb_esw2029__26	p_age_deb_esw3039__26	p_age_deb_esw40pl__26
 p_totdur_0to3_esw_26  	p_totdur_3to5_esw_26    p_totdur_6to9_esw_26  	p_totdur_10to19_esw_26 
-p_fesw_newp0__26 		prop_esw_onprep_26
+p_esw_newp0__26 		prop_esw_onprep_26
 p_sti_esw_26
 incidence_esw_26		prevalence_esw_26
 p_diag_esw_26			p_onart_diag_esw_26		p_onart_vl1000_esw_26 	p_esw_prog_vis_26;

@@ -297,7 +297,7 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * av_sw_newp;					if s_sw_1564 gt 0 then av_sw_newp = s_sw_newp/s_sw_1564;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw = s_sw_newp / s_w_newp ;
 
-* p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
+* p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_fsw_program_visit / s_sw_1564 ;
 
 * n_tested_sw;					n_tested_sw = s_tested_sw * sf * 4;
 * p_tested_past_year_sw;		if s_sw_1564 - s_diag_sw > 0 then p_tested_past_year_sw = s_tested_4p_sw /  (s_sw_1564 - s_diag_sw) ;

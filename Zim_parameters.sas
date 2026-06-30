@@ -46,7 +46,8 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * SEX WORKERS;	
 * Based on calibraton to AMETHIST and Sisters data;
-* base_rate_sw;				*%sample_uniform(base_rate_sw, 0.0010 0.0015 0.0020);
+* base_rate_sw;				%sample(base_rate_sw, 0.0010 0.0015 0.0020, 0.2 0.4 0.4);
+
 * base_rate_stop_sexwork ;	%sample(base_rate_stop_sexwork, 0.005 0.010 0.015, 0.40 0.40 0.20);
 
 * rr_sw_age_1519;			rr_sw_age_1519 = 0.60;
