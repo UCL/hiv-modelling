@@ -1,21 +1,21 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
-/*
-* run 105;
-* Matt local machine input;
-libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\test';
-%let tmpfilename = out;
-*/
 
+* run search2_001;
+* Matt local machine input;
+libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026';
+%let tmpfilename = out;
+
+/*
 * Myriad input; 
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
+*/
 
-
- /* proc printto log="synthesis_log.log"; run; */
+ proc printto log="synthesis_log.log"; run;
 
 	
-%let population = 100000 ; 
+%let population = 1000 ; 
 %let year_interv = 2024;
 
 
@@ -24197,4 +24197,4 @@ cab_res_emerge_primary			Is in primary infection and insti resistance emerged in
 
 ;
 
-*proc printto; *run;
+proc printto; run;
