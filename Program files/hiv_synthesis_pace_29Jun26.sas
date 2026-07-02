@@ -164,6 +164,10 @@ newp_seed = 7;
 * p_hard_reach_htn_w;		p_hard_reach_htn_w = p_hard_reach_w - hard_reach_lower_htn;
 * p_hard_reach_htn_m;		p_hard_reach_htn_m = p_hard_reach_m - hard_reach_lower_htn;
 
+* p_hard_reach_esw;			p_hard_reach_esw = 0.85+(rand('uniform')*0.10);
+* p_hard_reach_sw;			p_hard_reach_sw = 0.50+(rand('uniform')*0.10);*some fsw may still use testing services;
+
+
 
 * PREGNANCY AND BREASTFEEDING;
 
@@ -684,19 +688,20 @@ newp_seed = 7;
 
 
 * fold_esw_init;				fold_esw_init=1;
-* base_rate_esw;				%sample(base_rate_esw, 0.0015 0.0020 0.0025, 0.6 0.5 0.1); *slightly higher than SW (look in parameter file);
+* base_rate_esw;				%sample(base_rate_esw, 0.0015 0.0020 0.0025, 0.6 0.3 0.1); *slightly higher than SW (look in parameter file);
 * base_rate_stop_sexwork;		%sample_uniform(base_rate_stop_esexwork, 0.001 0.003 0.005); *longer duration than SW;
 
 * esw_trans_matrix;   		  %sample(esw_trans_matrix, 1 2, 0.70 0.30);
 
-* esw_art_disadv;             %sample(esw_art_disadv, 0 1, 0.10 0.90);
-                              if esw_art_disadv=0  then do; esw_higher_int = 1; rel_esw_lower_adh = 1;esw_higher_prob_loss_at_diag = 1;end;
+* esw_art_disadv;			esw_art_disadv=sw_art_disadv; *this will be relative to SW disadvantages so need to restrict to only those who have a disadv;
 
-						   	  if esw_art_disadv=1  then do; 
-						   		%sample_uniform(esw_higher_int, 2 5 10);
-						   		%sample_uniform(rel_esw_lower_adh, 0.8 0.9);
-						   		%sample_uniform(esw_higher_prob_loss_at_diag, 2 5);
-							  end;
+* fold_esw_higher_int;				%sample_uniform(fold_esw_higher_int, 0.80 0.90 1.00) *disadvantages slightly lower than SW;
+* fold_esw_lower_adh;				fold_esw_lower_adh=rel_sw_lower_adh;
+* fold_esw_higher_loss_at_diag;		%sample_uniform(fold_esw_higher_loss_at_diag, 0.80 0.90 1.00) 
+
+* esw_higher_int;				esw_higher_int = sw_higher_int * fold_esw_higher_int;
+* esw_higher_loss_at_diag;		esw_higher_loss_at_diag = sw_higher_prob_loss_at_diag * fold_esw_higher_loss_at_diag;
+
 
 * rate_engage_esw_program;	 rate_engage_esw_program=0.0001; *set in options;
 * rate_disengage_esw_program; rate_disengage_esw_program=0.05; *set in options;
@@ -792,7 +797,7 @@ end;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA and len) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14 19);prep_any_strategy=20; 
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14 19);
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -2410,12 +2415,17 @@ if mcirc =1 then date_mcirc=0;
 end;
 
 
-p=rand('uniform'); q=rand('uniform');
+p=rand('uniform'); q=rand('uniform');r=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 if (gender=1 and p <= p_hard_reach_htn_m) or (gender=2 and q <= p_hard_reach_htn_w) then hard_reach_htn=1;																										  
 
 if pwid=1 then hard_reach=1;		* MSM are no longer automatically defined as hard to reach Feb 2026;
 
+if (esw=1 and r <=p_hard_reach_esw) or (sw=1 and r <=p_hard_reach_sw) then do;
+	hard_reach=1;
+	hard_reach_sw=1;
+	hard_reach_esw=1;
+end;
 
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
@@ -2632,8 +2642,6 @@ who may be dead and hence have caldate{t} missing;
 		prep_parameters_sio=1 ;
 		date_prep_len_intro=&year_interv;
 
-		prep_any_strategy=20;
-		
 		if sw=1 or esw=1 then do;
 			eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral ;		
 			eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
@@ -2990,7 +2998,7 @@ if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
 		sw_program_visit=1 ; 
 		if sw=1 then fsw_program_visit=1;
 		if esw=1 then esw_program_visit=1;
-
+		
 		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
 
 		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
@@ -3006,9 +3014,13 @@ if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
 			eff_sw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		end;
 
-		
+		***want maximum number of SW to access prep due to being educated through the program;
 		s= rand('uniform'); 
-			prep_any_elig=1;*new for sw and esw (most sw were no longer eligible with prep_any_strategy=20);
+			prep_any_elig=1; *any who weren't eligible now are (most would already be eligible) ;
+
+			*new - set hard_to reach to 0;
+			if hard_reach_esw=1 then hard_reach=0;
+			if hard_reach_sw=1 then hard_reach=0;
 
 			if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
 			prep_any_willing = 1; * lapr and dpv-vr ;
@@ -3057,7 +3069,8 @@ else if sw_program_visit=1 then do; e=rand('uniform');f=rand('uniform');
 			*Note that we are assuming the impact on adherence remains even if SW stop visiting the program;
 		end;
 		
-		*Note prep_any_elig and prep_any_willing for sw or esw is not being reset - okay?
+		*Note prep_any_elig and prep_any_willing for sw or esw is not being reset - okay?;
+		*Also assuming that they continue with hard_reach=0 as they are now aware of prep and testing;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 		eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
@@ -3109,7 +3122,6 @@ end;
 	
 
 if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup_covid = 1 or art_low_adh_disrup_covid = 1) then reg_option = 125 ;
-
 
 
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
@@ -5208,6 +5220,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		* MSM PrEP eligibility restricted to 15-64 because HIV risk stops from age 65;
 	end;
 
+/*
 	if prep_any_strategy=20 then do;	* as 4 but excludes heterosexual men, lower prop for SW and ESW, and includes msm;	
 		u=rand('uniform');
 		if ((sw ne 1 and esw ne 1) or ((sw=1 or esw=1) and u<0.10)) then do;;
@@ -5219,7 +5232,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 		* MSM PrEP eligibility restricted to 15-64 because HIV risk stops from age 65;
 	end;
-
+*/
 
 
 
