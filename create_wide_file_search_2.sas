@@ -1,14 +1,14 @@
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_c_out\";
 
 /*  
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_c_out\";
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_search_2_testing;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_search_2_testing_c;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -17,13 +17,13 @@ run;
 
 
 
-proc sort data=b.k_search_2_testing; 
+proc sort data=b.k_search_2_testing_c; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
-set b.k_search_2_testing ;
+set b.k_search_2_testing_c ;
 
 
 if cald=2026   ;
@@ -42,7 +42,7 @@ proc sort; by run;
 
 data y; 
 
-merge b.k_search_2_testing sf;
+merge b.k_search_2_testing_c sf;
 by run ;
 
 
@@ -675,23 +675,24 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * prop_prep_len_at_inf_diag;	if s_prep_len_at_infection + s_diagprim_prep_len > 0 then prop_prep_len_at_inf_diag =  s_diagprim_prep_len /  (s_prep_len_at_infection + s_diagprim_prep_len);
 
-* prep_past_2_years ;  			prep_past_2_years = (s_periods_prep_past_2_yrs_1 + s_periods_prep_past_2_yrs_2 + s_periods_prep_past_2_yrs_3 + s_periods_prep_past_2_yrs_4 + 
-								s_periods_prep_past_2_yrs_5 + s_periods_prep_past_2_yrs_6 + s_periods_prep_past_2_yrs_7 + s_periods_prep_past_2_yrs_8) * sf; 
+* prep_past_2_years ;  		*	prep_past_2_years = (s_periods_prep_past_2_yrs_1 + s_periods_prep_past_2_yrs_2 + s_periods_prep_past_2_yrs_3 + s_periods_prep_past_2_yrs_4 + 
+								s_periods_prep_past_2_yrs_5 + s_periods_prep_past_2_yrs_6 + s_periods_prep_past_2_yrs_7 + s_periods_prep_past_2_yrs_8) ; 
 
-* per_prep_during_past_2_yr_1;  per_prep_during_past_2_yr_1 = s_periods_prep_past_2_yrs_1 / prep_past_2_years;
-* per_prep_during_past_2_yr_2;  per_prep_during_past_2_yr_2 = s_periods_prep_past_2_yrs_2 / prep_past_2_years;
-* per_prep_during_past_2_yr_3;  per_prep_during_past_2_yr_3 = s_periods_prep_past_2_yrs_3 / prep_past_2_years;
-* per_prep_during_past_2_yr_4;  per_prep_during_past_2_yr_4 = s_periods_prep_past_2_yrs_4 / prep_past_2_years;
-* per_prep_during_past_2_yr_5;  per_prep_during_past_2_yr_5 = s_periods_prep_past_2_yrs_5 / prep_past_2_years;
-* per_prep_during_past_2_yr_6;  per_prep_during_past_2_yr_6 = s_periods_prep_past_2_yrs_6 / prep_past_2_years;
-* per_prep_during_past_2_yr_7;  per_prep_during_past_2_yr_7 = s_periods_prep_past_2_yrs_7 / prep_past_2_years;
-* per_prep_during_past_2_yr_8;  per_prep_during_past_2_yr_8 = s_periods_prep_past_2_yrs_8 / prep_past_2_years;
+* prep_past_2_years;			prep_past_2_years = s_prep_past_2_years * sf;
+
+* per_prep_during_past_2_yr_1;  per_prep_during_past_2_yr_1 = s_periods_prep_past_2_yrs_1 / s_prep_past_2_years;
+* per_prep_during_past_2_yr_2;  per_prep_during_past_2_yr_2 = s_periods_prep_past_2_yrs_2 / s_prep_past_2_years;
+* per_prep_during_past_2_yr_3;  per_prep_during_past_2_yr_3 = s_periods_prep_past_2_yrs_3 / s_prep_past_2_years;
+* per_prep_during_past_2_yr_4;  per_prep_during_past_2_yr_4 = s_periods_prep_past_2_yrs_4 / s_prep_past_2_years;
+* per_prep_during_past_2_yr_5;  per_prep_during_past_2_yr_5 = s_periods_prep_past_2_yrs_5 / s_prep_past_2_years;
+* per_prep_during_past_2_yr_6;  per_prep_during_past_2_yr_6 = s_periods_prep_past_2_yrs_6 / s_prep_past_2_years;
+* per_prep_during_past_2_yr_7;  per_prep_during_past_2_yr_7 = s_periods_prep_past_2_yrs_7 / s_prep_past_2_years;
+* per_prep_during_past_2_yr_8;  per_prep_during_past_2_yr_8 = s_periods_prep_past_2_yrs_8 / s_prep_past_2_years;
 
 
-* incidence_prep_elig;			if s_prep_elig > 0 then incidence_prep_elig = (s_primary_prep_elig * 4 * 100) / s_prep_elig ;
+* incidence_prep_elig;			if s_prep_elig_hivneg > 0 then incidence_prep_elig = (s_primary_prep_elig * 4 * 100) / s_prep_elig_hivneg ;
 * incidence_onprep ; 			if s_prep_any > 0 then incidence_onprep  = (s_primary_prep * 4 * 100) / s_prep_any ;
-* incidence_prep_elig_non_user; if s_prep_elig > 0 then incidence_prep_elig_non_user = ((s_primary_prep_elig - s_primary_prep) * 4 * 100) / (s_prep_elig - s_prep_any) ;
-
+* incidence_prep_elig_nu; 		if s_prep_elig_hivneg > 0 then incidence_prep_elig_nu = ((s_primary_prep_elig - s_primary_prep) * 4 * 100) / (s_prep_elig_hivneg - s_prep_any) ;
 
 
 * n_o_len_at_3m;				n_o_len_at_3m = s_hiv_len_3m * sf;  
@@ -1897,7 +1898,7 @@ prep_past_2_years
 per_prep_during_past_2_yr_1 per_prep_during_past_2_yr_2 per_prep_during_past_2_yr_3 per_prep_during_past_2_yr_4
 per_prep_during_past_2_yr_5 per_prep_during_past_2_yr_6 per_prep_during_past_2_yr_7 per_prep_during_past_2_yr_8
 
-incidence_prep_elig incidence_onprep incidence_prep_elig_non_user
+incidence_prep_elig incidence_onprep incidence_prep_elig_nu
 
 ;
 
@@ -1922,9 +1923,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_search_2_testing_a; set y;  
+data    b.l_search_2_testing_c; set y;  
 
-data y ; set b.l_search_2_testing_a; 
+data y ; set b.l_search_2_testing_c; 
 
 
   options nomprint;
@@ -2221,7 +2222,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=per_prep_during_past_2_yr_1);  %var(v=per_prep_during_past_2_yr_2);  %var(v=per_prep_during_past_2_yr_3);  %var(v=per_prep_during_past_2_yr_4); 
 %var(v=per_prep_during_past_2_yr_5);  %var(v=per_prep_during_past_2_yr_6);  %var(v=per_prep_during_past_2_yr_7);  %var(v=per_prep_during_past_2_yr_8); 
 
-%var(v=incidence_prep_elig);  %var(v=incidence_onprep);  %var(v=incidence_prep_elig_non_user); 
+%var(v=incidence_prep_elig);  %var(v=incidence_onprep);  %var(v=incidence_prep_elig_nu); 
 
 
 
@@ -2409,7 +2410,7 @@ n_dead_allage n_dead_hivneg_anycause n_dead_hivpos_anycause
  per_prep_during_past_2_yr_1 per_prep_during_past_2_yr_2 per_prep_during_past_2_yr_3 per_prep_during_past_2_yr_4
 per_prep_during_past_2_yr_5 per_prep_during_past_2_yr_6 per_prep_during_past_2_yr_7 per_prep_during_past_2_yr_8
 
-incidence_prep_elig incidence_onprep incidence_prep_elig_non_user
+incidence_prep_elig incidence_onprep incidence_prep_elig_nu
 
 ;
 
@@ -2639,7 +2640,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_search_2_testing_a   ; 
+  data  b.w_search_2_testing_c   ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -2648,14 +2649,20 @@ proc sort; by run;run;
 
 
 
-* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_out\";
+* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_c_out\";
 
 
-data f; set b.w_search_2_testing_a;
-
+data f; set b.w_search_2_testing_c ;
 
 /*
-proc contents data=y; run;
+proc print;  var per_prep_during_past_2_yr_1_25  per_prep_during_past_2_yr_1_10y1
+incidence_prep_elig_25 incidence_onprep_25 incidence_prep_elig_nu_25
+incidence_prep_elig_10y_1 incidence_onprep_10y_1 
+; run;
+*/
+
+/*
+proc contents data=f; run;
 */
 
 if prevalence1549w_24 < 0.35 ;
@@ -2846,6 +2853,7 @@ d_n_tested_3y_2_1 = n_tested_3y_2 - n_tested_3y_1 ;
 
 
 d_p_diag_10y_2_1 = p_diag_10y_2 - p_diag_10y_1;
+d_p_diag_10y_3_1 = p_diag_10y_3 - p_diag_10y_1;
 
 d_p_onart_diag_10y_2_1 = p_onart_diag_10y_2 - p_onart_diag_10y_1;
 
@@ -2864,8 +2872,10 @@ r_prevalence_vg1000_10y_2_1 = prevalence_vg1000_10y_2 / prevalence_vg1000_10y_1;
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1 ;
 
 r_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 / n_death_hiv_10y_1 ;
+r_n_death_hiv_10y_3_1 = n_death_hiv_10y_3 / n_death_hiv_10y_1 ;
 
 r_incidence1549_10y_2_1 = incidence1549_10y_2 / incidence1549_10y_1 ;
+r_incidence1549_10y_3_1 = incidence1549_10y_3 / incidence1549_10y_1 ;
 
 r_mtct_prop_10y_2_1 = mtct_prop_10y_2 / mtct_prop_10y_1 ;
 
@@ -2981,12 +2991,15 @@ if 0.90 <= p_vl1000_24 < 0.95 then p_vl1000_24_g=4;
 if 0.95 <= p_vl1000_24        then p_vl1000_24_g=5;
 
 d_prop_elig_on_prep_10y_2 = prop_elig_on_prep_10y_2 - prop_elig_on_prep_10y_1;
+d_prop_elig_on_prep_10y_3 = prop_elig_on_prep_10y_3 - prop_elig_on_prep_10y_1;
 d_prop_elig_on_prep_ehr_10y_2 = prop_elig_on_prep_ehr_10y_2 - prop_elig_on_prep_ehr_10y_1;
-
+d_prop_elig_on_prep_ehr_10y_3 = prop_elig_on_prep_ehr_10y_3 - prop_elig_on_prep_ehr_10y_1;
 
 d_prop_1564_onprep_10y_2 = prop_1564_onprep_10y_2 - prop_1564_onprep_10y_1 ;
+d_prop_1564_onprep_10y_3 = prop_1564_onprep_10y_3 - prop_1564_onprep_10y_1 ;
 
 d_prop_elig_on_prep_50y_1_2 = prop_elig_on_prep_50y_2 - prop_elig_on_prep_50y_1;
+d_prop_elig_on_prep_50y_1_3 = prop_elig_on_prep_50y_3 - prop_elig_on_prep_50y_1;
 
 prevalence1549_percent_24 = prevalence1549_24 * 100;
 
@@ -2997,7 +3010,9 @@ p_onart_vl1000_percent_24 = p_onart_vl1000_24 * 100;
 
 n_tested_all_10y_1 = n_tested_10y_1 + n_self_tested_10y_1;
 n_tested_all_10y_2 = n_tested_10y_2 + n_self_tested_10y_2;
+n_tested_all_10y_3 = n_tested_10y_3 + n_self_tested_10y_3;
 d_n_tested_all_10y_2 = n_tested_all_10y_2 - n_tested_all_10y_1 ;
+d_n_tested_all_10y_3 = n_tested_all_10y_3 - n_tested_all_10y_1 ;
 
 _incr_pref_prep_oral_comm_tld = incr_pref_prep_oral_comm_tld * 100;
 _rr_interrupt_comm_tld = rr_interrupt_comm_tld * 10;
@@ -3012,6 +3027,7 @@ ratio_targeting_self_regular = log(self_test_targeting / test_targeting);
 cost_decline = cost_3y_2 / cost_19 ;
 
 cost_per_person_10y_2 = cost_10y_2 / n_alive_10y_2 ;
+cost_per_person_10y_3 = cost_10y_3 / n_alive_10y_2 ;
 
 ods html;
 title 'Characteristics of the setting scenarios in 2024 (median, 90% range)';
@@ -3036,72 +3052,113 @@ ods html;
 proc means data=f median p5 p95 mean lclm uclm;
 var
 
-n_tested_all_10y_1 n_tested_all_10y_2 
+n_tested_all_10y_1 n_tested_all_10y_2  n_tested_all_10y_3
 
-d_n_tested_all_10y_2 
+d_n_tested_all_10y_2 d_n_tested_all_10y_3
 
-p_tested_incl_self_10y_1 p_tested_incl_self_10y_2 
+p_tested_incl_self_10y_1 p_tested_incl_self_10y_2  p_tested_incl_self_10y_3
 
-d_p_diag_10y_2_1  p_diag_10y_2  p_diag_10y_1
+d_p_diag_10y_2_1 d_p_diag_10y_3_1  p_diag_10y_3  p_diag_10y_2  p_diag_10y_1
 
-d_p_onart_diag_10y_2_1  p_onart_diag_10y_2  p_onart_diag_10y_1
+d_p_onart_diag_10y_2_1 d_p_onart_diag_10y_3_1 p_onart_diag_10y_3  p_onart_diag_10y_2  p_onart_diag_10y_1
 
-d_p_onart_vl1000_10y_2_1  p_onart_vl1000_10y_2  p_onart_vl1000_10y_1
+d_p_onart_vl1000_10y_3_1 d_p_onart_vl1000_10y_2_1  p_onart_vl1000_10y_3   p_onart_vl1000_10y_2  p_onart_vl1000_10y_1
 
-d_p_diag_ehr_10y_2_1  p_diag_ehr_10y_2  p_diag_ehr_10y_1
+d_p_diag_ehr_10y_2_1 d_p_diag_ehr_10y_3_1  p_diag_ehr_10y_3  p_diag_ehr_10y_2  p_diag_ehr_10y_1
 
-d_p_onart_diag_ehr_10y_2_1  p_onart_diag_ehr_10y_2  p_onart_diag_ehr_10y_1
+d_p_onart_diag_ehr_10y_2_1 d_p_onart_diag_ehr_10y_3_1  p_onart_diag_ehr_10y_3  p_onart_diag_ehr_10y_2  p_onart_diag_ehr_10y_1
 
-d_p_onart_vl1000_ehr_10y_2_1  p_onart_vl1000_ehr_10y_2  p_onart_vl1000_ehr_10y_1
+d_p_onart_vl1000_ehr_10y_2_1 d_p_onart_vl1000_ehr_10y_3_1  p_onart_vl1000_ehr_10y_3  p_onart_vl1000_ehr_10y_2  p_onart_vl1000_ehr_10y_1
 
-d_p_vl1000_10y_2_1  p_vl1000_10y_2  p_vl1000_10y_1
+d_p_vl1000_10y_2_1 d_p_vl1000_10y_3_1  p_vl1000_10y_3   p_vl1000_10y_2  p_vl1000_10y_1
 
-d_prevalence_vg1000_10y_2_1  prevalence_vg1000_10y_2  prevalence_vg1000_10y_1
+d_prevalence_vg1000_10y_2_1 d_prevalence_vg1000_10y_3_1  prevalence_vg1000_10y_3  prevalence_vg1000_10y_2  prevalence_vg1000_10y_1
 
-r_prevalence_vg1000_10y_2_1  prevalence_vg1000_10y_2  prevalence_vg1000_10y_1
+r_prevalence_vg1000_10y_2_1 r_prevalence_vg1000_10y_3_1  prevalence_vg1000_10y_3  prevalence_vg1000_10y_2  prevalence_vg1000_10y_1
 
-d_n_death_hiv_10y_2_1  n_death_hiv_10y_2  n_death_hiv_10y_1 
+d_n_death_hiv_10y_2_1 d_n_death_hiv_10y_3_1  n_death_hiv_10y_3  n_death_hiv_10y_2  n_death_hiv_10y_1 
 
-r_n_death_hiv_10y_2_1  n_death_hiv_10y_2  n_death_hiv_10y_1 
+r_n_death_hiv_10y_2_1 r_n_death_hiv_10y_3_1  n_death_hiv_10y_3   n_death_hiv_10y_2  n_death_hiv_10y_1 
 
-r_incidence1549_10y_2_1  incidence1549_10y_2  incidence1549_10y_1 
+r_incidence1549_10y_2_1 r_incidence1549_10y_3_1  incidence1549_10y_3 incidence1549_10y_2  incidence1549_10y_1 
 
-r_n_mtct_10y_2_1  n_mtct_10y_2  n_mtct_10y_1 
+r_n_mtct_10y_2_1 r_n_mtct_10y_3_1  n_mtct_10y_3  n_mtct_10y_2  n_mtct_10y_1 
 
-prop_elig_on_prep_10y_1 prop_elig_on_prep_10y_2  d_prop_elig_on_prep_10y_2 
+prop_elig_on_prep_10y_1 prop_elig_on_prep_10y_2  d_prop_elig_on_prep_10y_2  prop_elig_on_prep_10y_3  d_prop_elig_on_prep_10y_3 
 
-prop_elig_on_prep_ehr_10y_1 prop_elig_on_prep_ehr_10y_2  d_prop_elig_on_prep_ehr_10y_2 
+prop_elig_on_prep_ehr_10y_1 prop_elig_on_prep_ehr_10y_2  d_prop_elig_on_prep_ehr_10y_2 prop_elig_on_prep_ehr_10y_3  d_prop_elig_on_prep_ehr_10y_3 
 
-prop_1564_onprep_10y_1 prop_1564_onprep_10y_2 
+prop_1564_onprep_10y_1 prop_1564_onprep_10y_2 prop_1564_onprep_10y_3 
 
-d_prop_1564_onprep_10y_2 
+d_prop_1564_onprep_10y_2 d_prop_1564_onprep_10y_3
 
-p_prep_adhg80_10y_1  p_prep_adhg80_10y_2  
+p_prep_adhg80_10y_1 p_prep_adhg80_10y_2   p_prep_adhg80_10y_3  
 
-n_prep_any_10y_1 n_prep_any_10y_2 
-n_prep_any_50y_1 n_prep_any_50y_2 
+n_prep_any_10y_1 n_prep_any_10y_2  n_prep_any_10y_3 
+n_prep_any_50y_1 n_prep_any_50y_2 n_prep_any_50y_3
 
-p_mcirc_10y_1 p_mcirc_10y_2  
+p_mcirc_10y_1 p_mcirc_10y_2  p_mcirc_10y_3
 
-p_hard_reach_10y_1 p_hard_reach_10y_2
+p_hard_reach_10y_1 p_hard_reach_10y_2 p_hard_reach_10y32
 
-cost_per_person_10y_2
+cost_per_person_10y_2 cost_per_person_10y_3
 
+per_prep_during_past_2_yr_1_25 per_prep_during_past_2_yr_2_25 per_prep_during_past_2_yr_3_25 per_prep_during_past_2_yr_4_25
+per_prep_during_past_2_yr_5_25 per_prep_during_past_2_yr_6_25 per_prep_during_past_2_yr_7_25 per_prep_during_past_2_yr_8_25
 
+per_prep_during_past_2_yr_1_10y1 per_prep_during_past_2_yr_2_10y1 per_prep_during_past_2_yr_3_10y1 per_prep_during_past_2_yr_4_10y1
+per_prep_during_past_2_yr_5_10y1 per_prep_during_past_2_yr_6_10y1 per_prep_during_past_2_yr_7_10y1 per_prep_during_past_2_yr_8_10y1
+per_prep_during_past_2_yr_1_10y2 per_prep_during_past_2_yr_2_10y2 per_prep_during_past_2_yr_3_10y2 per_prep_during_past_2_yr_4_10y2
+per_prep_during_past_2_yr_5_10y2 per_prep_during_past_2_yr_6_10y2 per_prep_during_past_2_yr_7_10y2 per_prep_during_past_2_yr_8_10y2
+per_prep_during_past_2_yr_1_10y3 per_prep_during_past_2_yr_2_10y3 per_prep_during_past_2_yr_3_10y3 per_prep_during_past_2_yr_4_10y3
+per_prep_during_past_2_yr_5_10y3 per_prep_during_past_2_yr_6_10y3 per_prep_during_past_2_yr_7_10y3 per_prep_during_past_2_yr_8_10y3
 
-per_prep_during_past_2_yr_1_1 per_prep_during_past_2_yr_2_1 per_prep_during_past_2_yr_3_1 per_prep_during_past_2_yr_4_1
-per_prep_during_past_2_yr_5_1 per_prep_during_past_2_yr_6_1 per_prep_during_past_2_yr_7_1 per_prep_during_past_2_yr_8_1
-per_prep_during_past_2_yr_1_2 per_prep_during_past_2_yr_2_2 per_prep_during_past_2_yr_3_2 per_prep_during_past_2_yr_4_2
-per_prep_during_past_2_yr_5_2 per_prep_during_past_2_yr_6_2 per_prep_during_past_2_yr_7_2 per_prep_during_past_2_yr_8_2
+incidence_prep_elig_25 incidence_onprep_25 incidence_prep_elig_nu_25
 
-incidence_prep_elig_1 incidence_onprep_1 incidence_prep_elig_non_user_1
-incidence_prep_elig_2 incidence_onprep_2 incidence_prep_elig_non_user_2
+incidence_prep_elig_10y_1 incidence_onprep_10y_1 incidence_prep_elig_nu_10y_1
+incidence_prep_elig_10y_2 incidence_onprep_10y_2 incidence_prep_elig_nu_10y_2
+incidence_prep_elig_10y_3 incidence_onprep_10y_3 incidence_prep_elig_nu_10y_3
+
+incidence_onprep_10y_1
+incidence_onprep_10y_2
+incidence_onprep_10y_3
 
 ;
 
 run;
 ods html close;
 
+
+
+
+
+
+ods html;
+proc means data=f median p5 p95 mean lclm uclm;
+var
+
+prop_1564_onprep_10y_1 prop_1564_onprep_10y_2 prop_1564_onprep_10y_3 
+
+d_p_diag_10y_2_1 d_p_diag_10y_3_1  p_diag_10y_3  p_diag_10y_1  p_diag_10y_2 
+
+n_tested_all_10y_1 n_tested_all_10y_2  n_tested_all_10y_3
+
+r_n_death_hiv_10y_2_1 r_n_death_hiv_10y_3_1  n_death_hiv_10y_3   n_death_hiv_10y_2  n_death_hiv_10y_1 
+
+r_incidence1549_10y_2_1 r_incidence1549_10y_3_1  incidence1549_10y_3 incidence1549_10y_2  incidence1549_10y_1 
+
+;
+
+run;
+ods html close;
+
+
+
+
+
+ods html;
+proc contents data=f; run;
+ods html close;
 
 
 
