@@ -1212,7 +1212,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
  %include "/home/rmjllob/Zim_parameters.sas";
-
+*%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
 
 call symput('caldate1',caldate1);
 
@@ -3016,7 +3016,7 @@ if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
 
 		***want maximum number of SW to access prep due to being educated through the program;
 		s= rand('uniform'); 
-			prep_any_elig=1; *any who weren't eligible now are (most would already be eligible) ;
+			prep_any_elig=1; *any who werent eligible now are (most would already be eligible) ;
 
 			*new - set hard_to reach to 0;
 			if hard_reach_esw=1 then hard_reach=0;
