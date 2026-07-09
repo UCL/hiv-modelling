@@ -698,13 +698,17 @@ newp_seed = 7;
 * esw_trans_matrix;   		  %sample(esw_trans_matrix, 1 2, 0.70 0.30);
 
 * esw_art_disadv;			esw_art_disadv=sw_art_disadv; *this will be relative to SW disadvantages so need to restrict to only those who have a disadv;
+							if esw_art_disadv=0  then do; esw_higher_int = 1; rel_esw_lower_adh = 1;esw_higher_prob_loss_at_diag = 1;end;
+
 
 * fold_esw_higher_int;				%sample_uniform(fold_esw_higher_int, 0.80 0.90 1.00) *disadvantages slightly lower than SW;
 * fold_esw_higher_loss_at_diag;		%sample_uniform(fold_esw_higher_loss_at_diag, 0.80 0.90 1.00) 
 
+if esw_art_disadv=1  then do;
 * esw_higher_int;				esw_higher_int = sw_higher_int * fold_esw_higher_int;
-* esw_higher_loss_at_diag;		esw_higher_loss_at_diag = sw_higher_prob_loss_at_diag * fold_esw_higher_loss_at_diag;
+* esw_higher_prob_loss_at_diag;	esw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * fold_esw_higher_loss_at_diag;
 * rel_esw_lower_adh;			rel_esw_lower_adh = rel_sw_lower_adh;
+end;
 
 * rate_engage_esw_program;	 rate_engage_esw_program=0.00001; *set in options;
 * rate_disengage_esw_program; rate_disengage_esw_program=0.1; *set in options;
