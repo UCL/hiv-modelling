@@ -392,6 +392,7 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * p_onart_diag_esw;				if s_diag_esw > 0 then p_onart_diag_esw = s_onart_esw / s_diag_esw;
 * p_onart_vl1000_esw;			if s_onart_gt6m_iicu_esw > 0 then p_onart_vl1000_esw = s_vl1000_art_gt6m_iicu_esw / s_onart_gt6m_iicu_esw ;
 
+
 * prevalence_esw;				prevalence_esw = s_hiv_esw1549_ / s_esw_1549; 
 
 * incidence_esw;					if (s_esw_1564  - s_hiv_esw  + s_primary_esw) gt 0 then incidence_esw =(s_primary_esw * 4 * 100) / (s_esw_1564  - s_hiv_esw  + s_primary_esw);
@@ -664,12 +665,12 @@ by run;run;
 
 data b;
 set a.pace_29_06_26_short;
-if cald gt 2026 then delete;
+*if cald gt 2026 then delete;
 proc sort; by cald run ;run;
 
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 12;
+%let nfit = 15;
 %let year_end = 2026.00 ;
 run;
 proc sort;by cald option ;run;
@@ -690,6 +691,10 @@ p_vg1000_ 		p_vl1000_			prevalence_vg1000_
 
 n_sw_1564_      n_sw_1549_		    prop_w_1564_sw		prop_w_1549_sw 	prop_w_ever_sw  
 p_fsw1519_	  	p_fsw2024_		    p_fsw2529_			p_fsw3039_	
+
+n_esw_1564_     n_esw_1549_		    prop_w_1564_esw		prop_w_1549_esw 	prop_w_ever_esw  
+p_esw1519_	  	p_esw2024_		    p_esw2529_			p_esw3039_	
+
 
 p_sw_age1519_	  p_sw_age2024_		p_sw_age2529_ 		p_sw_age3039_ 	p_sw_age40pl_
 p_age_deb_sw1519_ p_age_deb_sw2024_ p_age_deb_sw2529_  	p_age_deb_sw2029_	p_age_deb_sw3039_ p_age_deb_sw40pl_
@@ -754,7 +759,7 @@ merge
 g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 g73 g74 g75  g76  g77  g78 
-g79
+g79  g80  g81  g82  g83  g84  g85  g86  g87  g88
 ;
 by cald;
 run;
@@ -779,7 +784,7 @@ ods html style=htmlblue;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "People living with HIV";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2026 by 2)        valueattrs=(size=10); 
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2040 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 13000000)  valueattrs=(size=10);
 label pmean_n_hiv_0	 = "Model";
 label o_livingHIV_1549_UNAIDS = "UNAIDS 15-49";
@@ -800,7 +805,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Number of people living with HIV on ART";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2026 by 2)        valueattrs=(size=10); 
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2040 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 1200000)  valueattrs=(size=10);
 label pmean_n_onart_0	 = "Model";
 label o_s_onart_adults_garpr = "UNAIDS";
@@ -817,7 +822,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Of those living with HIV, proportion diagnosed";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2026 by 2)        valueattrs=(size=10); 
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2040 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
 label pmean_p_diag_0	 = "Model";
 label o_p_diag_1564_zimphia = "ZIMPHIA";
@@ -833,7 +838,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Of those diagnosed, proportion on ART";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2026 by 2)        valueattrs=(size=10); 
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2040 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
 label pmean_p_onart_diag_0	 = "Model";
 label o_p_onart_1564_diag_zimphia= "ZIMPHIA";
@@ -849,7 +854,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Of those on ART, proportion virally suppressed";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2026 by 2)        valueattrs=(size=10); 
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2040 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'           labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
 label pmean_p_onart_vl1000__0	 = "Model";
 label o_p_vlsupp_1564_Zimphia= "ZIMPHIA";
@@ -865,7 +870,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "HIV prevalence";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2026 by 2)        valueattrs=(size=10); 
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2040 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Prevalence'              labelattrs=(size=12)  values = (0 to 0.3 by 0.05)  valueattrs=(size=10);
 label pmean_prevalence1549__0= "Model"; 
 label o_prev1549_Z_DHS = "Demographic Health Survey (DHS)";
@@ -885,7 +890,7 @@ run;quit;
 proc sgplot data=e; 
 Title    height=1.5 justify=center "HIV incidence";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2026 by 2)        valueattrs=(size=10); 
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2040 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 2 by 0.2)  valueattrs=(size=10);
 label pmean_incidence1549__0= "Model"; 
 label o_HIVincid_1549_Zimphia = "ZIMPHIA";
@@ -899,16 +904,21 @@ run;quit;
 
 
 proc sgplot data=e; 
-Title    height=1.5 justify=center "FSW Population (age 15-49)";
+Title    height=1.5 justify=center "SW Population (age 15-49)";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2026 by 2)        valueattrs=(size=10); 
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2000 to 2046 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000)  valueattrs=(size=10);
-label pmean_n_sw_1549__0 = "Model";
+label pmean_n_sw_1549__0 = "FSW model";
+label pmean_n_esw_1549__0 = "ESW Model";
+
 label o_pop_fsw_1549w_Fearon = "Fearon et al, 2017";
 label o_pop_fsw_1549w_Fearon_ICASA = "Fearon et al 2022";
 
 series  x=cald y=pmean_n_sw_1549__0  /           lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_sw_1549__0     upper=p95_n_sw_1549__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=pmean_n_esw_1549__0  /           lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_esw_1549__0     upper=p95_n_esw_1549__0 / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+
 
 scatter x=cald y=o_pop_fsw_1549w_Fearon / markerattrs = (symbol=circle color= green size = 12);
 scatter x=cald y=o_pop_fsw_1549w_Fearon_ICASA / markerattrs = (symbol=circle color=blue size = 12);
@@ -917,14 +927,20 @@ run;quit;
 proc sgplot data=e; 
 title    height=1.5 justify=center "Proportion of women who are sex workers";
 footnote1 height=0.9  "";
-xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2000 to 2026) 		valueattrs=(size=10); 
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2000 to 2040) 		valueattrs=(size=10); 
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) 		valueattrs=(size=10);
-label pmean_prop_w_1549_sw_0   = "Model";
+label pmean_prop_w_1549_sw_0   = "FSW Model";
+label pmean_prop_w_1549_esw_0   = "ESW Model";
+
 label o_p_fsw_1549w_Fearon		 = "Fearon et al, 2020";
 label o_p_fsw_1549w_Fearon_ICASA = "ICASA 2023";
 
 series  x=cald y=pmean_prop_w_1549_sw_0  / 	 lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_prop_w_1549_sw_0 	 upper=p95_prop_w_1549_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+
+series  x=cald y=pmean_prop_w_1549_esw_0  / 	 lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_prop_w_1549_esw_0 	 upper=p95_prop_w_1549_esw_0 / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
 
 scatter x=cald y=o_p_fsw_1549w_Fearon / markerattrs = (symbol=circle color=green size = 12);
 scatter x=cald y=o_p_fsw_1549w_Fearon_ICASA / markerattrs = (symbol=circle color=blue size = 12);
