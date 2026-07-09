@@ -1,6 +1,10 @@
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
+*Search for;
+*LBM JUL26;
+
+
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
@@ -1210,8 +1214,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
- %include "/home/rmjllob/Zim_parameters.sas";
-*%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
+ *%include "/home/rmjllob/Zim_parameters.sas";
+%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
 
 call symput('caldate1',caldate1);
 
@@ -2185,7 +2189,6 @@ eff_esw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag;
 
 eff_rate_persist_sti=rate_persist_sti;
 sw_program_visit=0;
-fsw_program_visit=0;
 esw_program_visit=0;
 
 
@@ -2414,17 +2417,15 @@ if mcirc =1 then date_mcirc=0;
 end;
 
 
-p=rand('uniform'); q=rand('uniform');r=rand('uniform');
+p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 if (gender=1 and p <= p_hard_reach_htn_m) or (gender=2 and q <= p_hard_reach_htn_w) then hard_reach_htn=1;																										  
 
 if pwid=1 then hard_reach=1;		* MSM are no longer automatically defined as hard to reach Feb 2026;
 
-if (esw=1 and r <=p_hard_reach_esw) or (sw=1 and r <=p_hard_reach_sw) then do;
-	hard_reach=1;
-	hard_reach_sw=1;
-	hard_reach_esw=1;
-end;
+a=rand('uniform');b=rand('uniform');
+if (esw=1 and a <=p_hard_reach_esw) then do;hard_reach_esw=1;hard_reach=0;end;
+if (sw=1 and b <=p_hard_reach_sw) then do; hard_reach_sw=1;hard_reach=0;end;
 
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
@@ -2990,38 +2991,29 @@ if caldate{t} = date_sw_prog_intro then eff_sw_program=sw_program;
 
 * Attendance at SW program (if it exists) and effects of program;
 
-if eff_sw_program=1 and (sw=1 or esw=1) then do;
+if eff_sw_program=1 and sw=1 then do;
 
-if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
-	if (sw=1 and e < rate_engage_sw_program) or (esw=1 and f < rate_engage_esw_program) then do; * dependent_on_time_step_length ;
-		sw_program_visit=1 ; 
-		if sw=1 then fsw_program_visit=1;
-		if esw=1 then esw_program_visit=1;
-		
-		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
+if sw_program_visit=0 then do; e=rand('uniform'); 
+	if (sw=1 and e < rate_engage_sw_program) then do; * dependent_on_time_step_length ;
+		sw_program_visit=1;
 
 		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
 		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
 
-		if sw=1 then do;
-			eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
-			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
-		end;
-
-		if esw=1 then do;
-			eff_sw_higher_int = esw_higher_int * effect_sw_prog_int;
-			eff_sw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
-		end;
-
+		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
+	
 		***want maximum number of SW to access prep due to being educated through the program;
 		s= rand('uniform'); 
-			prep_any_elig=1; *any who werent eligible now are (most would already be eligible) ;
+		prep_any_elig=1; *any who werent eligible now are (most would already be eligible) ;
 
-			*new - set hard_to reach to 0;
-			if hard_reach_esw=1 then hard_reach=0;
-			if hard_reach_sw=1 then hard_reach=0;
+		*new - set hard_reach to 0;
+		if hard_reach_sw=1 then do;
+			hard_reach=0;
+			hard_reach_sw=0;
+		end;
 
-			if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
+		if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
 			prep_any_willing = 1; * lapr and dpv-vr ;
 			* select which prep type individual will be willing to use based on preference;
 			* increase preference for highest preference to ensure pref_prep_oral (or inj)  is above threshold  =1 ; 
@@ -3047,42 +3039,106 @@ if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
 end;
 end; 
 
-else if sw_program_visit=1 then do; e=rand('uniform');f=rand('uniform');
-	if (sw=1 and e < eff_rate_disengage_sw_program) or (esw=1 and f < eff_rate_disengage_esw_program) then do;
+else if sw_program_visit=1 then do; e=rand('uniform');
+	if e < eff_rate_disengage_sw_program then do;
 		sw_program_visit=0 ; 
-		if sw=1 then fsw_program_visit=0;
-		if esw=1 then esw_program_visit=0;
 		date_last_sw_prog_vis=caldate{t};
 		sw_test_6mthly=0;
 		eff_rate_persist_sti = rate_persist_sti;
 
-		if sw=1 then do;
-			eff_sw_higher_int = sw_higher_int;  
-			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+		eff_sw_higher_int = sw_higher_int;  
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
 			*Note that we are assuming the impact on adherence remains even if SW stop visiting the program;
-		end;
-
-		if esw=1 then do;
-			eff_esw_higher_int = esw_higher_int;  
-			eff_esw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag ; 
-			*Note that we are assuming the impact on adherence remains even if SW stop visiting the program;
-		end;
 		
+		*LBM JUL26;
 		*Note prep_any_elig and prep_any_willing for sw or esw is not being reset - okay?;
-		*Also assuming that they continue with hard_reach=0 as they are now aware of prep and testing;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
+		*Also assuming that they continue with hard_reach=0 as they are now aware of prep and testing so I think the below should be removed?;
+		/*eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 		eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
 		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
 		eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
 		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-
-		* lapr and dpv-vr - consider if any needs to change ;
-end; 
-
+*/
+	end; 
 end;
 
-***For ESW, intervention only starts in 2026 so will not update any ESW parameters here;
+
+***Repeat for ESW;
+if eff_sw_program=1 and esw=1 then do;
+
+if esw_program_visit=0 then do; e=rand('uniform');
+	if (esw=1 and e < rate_engage_esw_program) then do; * dependent_on_time_step_length ;
+		esw_program_visit=1;
+
+		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
+		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
+
+		eff_esw_higher_int = esw_higher_int * effect_sw_prog_int;
+		eff_esw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
+	
+		***want maximum number of ESW to access prep due to being educated through the program;
+		s= rand('uniform'); 
+		prep_any_elig=1; *any who werent eligible now are (most would already be eligible) ;
+
+		*new - set hard_reach to 0;
+		if hard_reach_esw=1 then do;
+			hard_reach=0;		
+			hard_reach_esw=0;
+		end;
+
+		if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
+			prep_any_willing = 1; * lapr and dpv-vr ;
+			* select which prep type individual will be willing to use based on preference;
+			* increase preference for highest preference to ensure pref_prep_oral (or inj)  is above threshold  =1 ; 
+			select;
+				when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + pref_prep_oral ; end;
+				when (highest_prep_pref = 2) 	do; prep_cab_willing = 1;	pref_prep_cab=	prep_willingness_threshold + pref_prep_cab ; end;
+				when (highest_prep_pref = 3) 	do; prep_len_willing = 1;	pref_prep_len=	prep_willingness_threshold + pref_prep_len ; end;
+				when (highest_prep_pref = 4)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + pref_prep_vr ; end;	* This will apply only to women;								
+				otherwise xxx=1;
+			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
+			end;
+		end;
+
+		if prep_any_willing=1 then eff_rate_test_startprep_any=1;
+		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
+		eff_rate_choose_stop_prep_cab=0.05;
+		eff_rate_choose_stop_prep_len=0.05;
+		eff_rate_choose_stop_prep_vr=0.05;
+		eff_prob_prep_any_restart_choice=0.7;
+
+		* lapr and dpv-vr - consider if any needs to change ;
+	end;
+end;
+end; 
+
+else if esw_program_visit=1 then do; e=rand('uniform');
+	if e < eff_rate_disengage_esw_program then do;
+		esw_program_visit=0 ; 
+		date_last_esw_prog_vis=caldate{t};
+		sw_test_6mthly=0;
+		eff_rate_persist_sti = rate_persist_sti;
+
+		eff_esw_higher_int = esw_higher_int;  
+		eff_esw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag ; 
+			*Note that we are assuming the impact on adherence remains even if SW stop visiting the program;
+		
+		*Note prep_any_elig and prep_any_willing for sw or esw is not being reset - okay?;
+		*Also assuming that they continue with hard_reach=0 as they are now aware of prep and testing so I think the below should be removed?;
+		/*eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
+		eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
+		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
+		eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+*/
+	end; 
+end;
+
+
+
+***ONLY FOR SW since program for ESW only starts in 2026;
 
 * if covid disruption occurred and has ended, revert to pre-covid disruption parameter values for effect of sw program;
 if sw_program_effects_changed_covid=1 and swprog_disrup_covid ne 1 and covid_disrup_affected = 1 then do;
@@ -4433,14 +4489,15 @@ if t ge 2 then do;
 		if e < rate_stop_esexwork/(sqrt(rred_rc_base)) or age ge 50 then do; 
 
 			esw=0; date_stop_esw=caldate{t};
-			if sw_program_visit=1 then do;		
-				sw_program_visit=0; 
+			if esw_program_visit=1 then do;		
+				esw_program_visit=0; 
 				date_last_sw_prog_vis=caldate{t};
 				sw_test_6mthly=0;
 				eff_rate_persist_sti = rate_persist_sti;
 				eff_esw_higher_int = esw_higher_int;
 				*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 				eff_esw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag ; 
+/* I think PrEP parameters should stay as they are after a program visit;*LBM JUL26;
 
 				eff_rate_test_startprep_any=rate_test_startprep_any;
 				eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
@@ -4448,7 +4505,7 @@ if t ge 2 then do;
 				eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
 				eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
 				eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-
+*/
 			end;
 
 		end;
@@ -4650,11 +4707,19 @@ end;
 
 
 * Reducing newp for FSW according to population change in risk behaviour;
-if (sw=1 or esw=1) and newp ge 1 then do;
+if sw=1 and newp ge 1 then do;
 u=rand('uniform'); if u < (1-rred)*p_rred_sw_newp then do; newp=newp/3; newp=round(newp,1);end;
 end;
 
-if (sw=1 or esw=1) and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
+if esw=1 and newp ge 1 then do;
+u=rand('uniform'); if u < (1-rred)*p_rred_sw_newp then do; newp=newp/3; newp=round(newp,1);end;
+end;
+
+if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
+	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
+end;
+
+if esw=1 and newp ge 1 and eff_sw_program = 1 and esw_program_visit=1 then do;
 	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
 end;
 
@@ -10367,7 +10432,9 @@ if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have dis
 if esw=1 then adh = (rel_esw_lower_adh * adh);***lower adh for SW if they have disadvantages;
 
 
-if (sw=1 or esw=1) and sw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
+if sw=1 and sw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
+if esw=1 and esw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
+
 
 if art_monitoring_strategy = 150 and vm_format in (3,4) then adh = adh + ((1-adh)*incr_adh_poc_vl);																							   
 
@@ -20559,7 +20626,7 @@ s_tested_m_sympt + tested_m_sympt ;
 	s_totdur_eversw_10to19 + totdur_eversw_10to19;  
 	s_act_dur_sw + act_dur_sw;  s_tot_dur_sw + tot_dur_sw;
 
-	s_sw_program_visit + sw_program_visit ;s_fsw_program_visit + fsw_program_visit ;
+	s_sw_program_visit + sw_program_visit ;
 	s_diag_sw_noprog + diag_sw_noprog; 	s_diag_sw_inprog + diag_sw_inprog;
 	s_onart_sw_noprog + onart_sw_noprog; s_onart_sw_inprog + onart_sw_inprog;
 	s_vl1000_art_gt6m_iicu_sw_noprog + vl1000_art_gt6m_iicu_sw_noprog; s_vl1000_art_gt6m_iicu_sw_inprog + vl1000_art_gt6m_iicu_sw_inprog;
@@ -22024,8 +22091,7 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
-s_sw_program_visit	s_fsw_program_visit
-
+s_sw_program_visit	
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
@@ -23236,8 +23302,7 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
-s_sw_program_visit	s_fsw_program_visit
-
+s_sw_program_visit	
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
@@ -24281,8 +24346,7 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
-s_sw_program_visit	s_fsw_program_visit
-
+s_sw_program_visit	
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
