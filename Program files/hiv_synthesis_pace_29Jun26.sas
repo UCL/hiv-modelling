@@ -164,6 +164,10 @@ newp_seed = 7;
 * p_hard_reach_htn_w;		p_hard_reach_htn_w = p_hard_reach_w - hard_reach_lower_htn;
 * p_hard_reach_htn_m;		p_hard_reach_htn_m = p_hard_reach_m - hard_reach_lower_htn;
 
+* p_hard_reach_esw;			p_hard_reach_esw = 0.85+(rand('uniform')*0.10);
+* p_hard_reach_sw;			p_hard_reach_sw = 0.50+(rand('uniform')*0.10);*some fsw may still use testing services;
+
+
 
 * PREGNANCY AND BREASTFEEDING;
 
@@ -655,8 +659,7 @@ newp_seed = 7;
 * age_effect_stop_sexwork;	*age_effect_stop_sexwork=3;
 * age_effect_stop_sexwork;	age_effect_stop_sexwork=1.5; *lbm copying across from zim parameter file for initial test runs;
 
-* base_rate_sw;				*%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
-* base_rate_sw;				%sample_uniform(base_rate_sw, 0.0010 0.0015 0.0020);*lbm copying across from zim parameter file for initial test runs;
+* base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
 
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	*%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);*lbm copying across from zim parameter file for initial test runs;
@@ -685,23 +688,20 @@ newp_seed = 7;
 
 
 * fold_esw_init;				fold_esw_init=1;
-* base_rate_esw;				%sample(base_rate_esw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2); *slightly higher than SW (look in parameter file);
-* base_rate_stop_sexwork;		%sample_uniform(base_rate_stop_esexwork, 0.001 0.005 0.01); *longer duration than SW;
+* base_rate_esw;				%sample(base_rate_esw, 0.0015 0.0020 0.0025, 0.6 0.3 0.1); *slightly higher than SW (look in parameter file);
+* base_rate_stop_sexwork;		%sample_uniform(base_rate_stop_esexwork, 0.001 0.003 0.005); *longer duration than SW;
 
 * esw_trans_matrix;   		  %sample(esw_trans_matrix, 1 2, 0.70 0.30);
 
-* esw_art_disadv;             %sample(esw_art_disadv, 0 1, 0.10 0.90);*
+* esw_art_disadv;			esw_art_disadv=sw_art_disadv; *this will be relative to SW disadvantages so need to restrict to only those who have a disadv;
 
+* fold_esw_higher_int;				%sample_uniform(fold_esw_higher_int, 0.80 0.90 1.00) *disadvantages slightly lower than SW;
+* fold_esw_lower_adh;				fold_esw_lower_adh=rel_sw_lower_adh;
+* fold_esw_higher_loss_at_diag;		%sample_uniform(fold_esw_higher_loss_at_diag, 0.80 0.90 1.00) 
 
-***CHECK THIS;
-esw_art_disadv=0;*Assume no disadvantage in HIV+ women as per FC email;
-                              if esw_art_disadv=0  then do; esw_higher_int = 1; rel_esw_lower_adh = 1;esw_higher_prob_loss_at_diag = 1;end;
+* esw_higher_int;				esw_higher_int = sw_higher_int * fold_esw_higher_int;
+* esw_higher_loss_at_diag;		esw_higher_loss_at_diag = sw_higher_prob_loss_at_diag * fold_esw_higher_loss_at_diag;
 
-						   	  if esw_art_disadv=1  then do; 
-						   		%sample_uniform(esw_higher_int, 2 5 10);
-						   		%sample_uniform(rel_esw_lower_adh, 0.8 0.9);
-						   		%sample_uniform(esw_higher_prob_loss_at_diag, 2 5);
-							  end;
 
 * rate_engage_esw_program;	 rate_engage_esw_program=0.0001; *set in options;
 * rate_disengage_esw_program; rate_disengage_esw_program=0.05; *set in options;
@@ -1211,8 +1211,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
-* %include "/home/rmjllob/Zim_parameters_new.sas";
-
+ %include "/home/rmjllob/Zim_parameters.sas";
+*%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
 
 call symput('caldate1',caldate1);
 
@@ -2415,12 +2415,17 @@ if mcirc =1 then date_mcirc=0;
 end;
 
 
-p=rand('uniform'); q=rand('uniform');
+p=rand('uniform'); q=rand('uniform');r=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 if (gender=1 and p <= p_hard_reach_htn_m) or (gender=2 and q <= p_hard_reach_htn_w) then hard_reach_htn=1;																										  
 
 if pwid=1 then hard_reach=1;		* MSM are no longer automatically defined as hard to reach Feb 2026;
 
+if (esw=1 and r <=p_hard_reach_esw) or (sw=1 and r <=p_hard_reach_sw) then do;
+	hard_reach=1;
+	hard_reach_sw=1;
+	hard_reach_esw=1;
+end;
 
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
@@ -2633,9 +2638,40 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;
 		rate_engage_esw_program = rate_engage_sw_program;
 		rate_disengage_esw_program = rate_disengage_sw_program;
-				 
+
+		prep_parameters_sio=1 ;
+		date_prep_len_intro=&year_interv;
+
+		if sw=1 or esw=1 then do;
+			eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral ;		
+			eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
+			pref_prep_oral = 0.3;
+										
+			eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len / 2 ;		
+			eff_prob_prep_len_b = prob_prep_len_b + 0.2;
+
+			eff_rate_test_startprep_any = 0.3; 
+			eff_prob_prep_any_restart_choice = 0.3;
+		
+			u=rand('uniform');
+			if caldate_never_dot = &year_interv then do;
+				pref_prep_len=0.4;*start with everyone on len (as this is higher than oral pref);
+				if  u< 0.2 then pref_prep_len = 0.25;*20% still prefer oral;
+			end;
+		end;
+
+		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
+		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
+		pref_prep_oral_sio = pref_prep_oral;
+
+		rate_choose_stop_prep_len_sio = eff_rate_choose_stop_prep_len;
+		prob_prep_len_b_sio = eff_prob_prep_len_b;
+
+		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
+		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
+		pref_prep_len_sio = pref_prep_len;
 	end;
- 
+
 end;
 
 
@@ -2719,6 +2755,11 @@ if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_pre
 if . < caldate{t} < date_prep_cab_intro or date_prep_cab_intro=. or caldate{t} >= date_prep_len_intro > . then pref_prep_cab = 0; * once len available we want len to be preferred;
 if . < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then pref_prep_len = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
+
+if prep_parameters_sio=1 then do ;
+	pref_prep_oral = pref_prep_oral_sio;
+	pref_prep_len = pref_prep_len_sio;
+end;
 
 * highest_prep_pref;
 * does not show people who are not willing to take any PrEP type;
@@ -2957,7 +2998,7 @@ if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
 		sw_program_visit=1 ; 
 		if sw=1 then fsw_program_visit=1;
 		if esw=1 then esw_program_visit=1;
-
+		
 		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
 
 		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
@@ -2973,9 +3014,13 @@ if sw_program_visit=0 then do; e=rand('uniform');f=rand('uniform');
 			eff_sw_higher_prob_loss_at_diag = esw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		end;
 
-		
+		***want maximum number of SW to access prep due to being educated through the program;
 		s= rand('uniform'); 
-			prep_any_elig=1;*new for sw and esw (most sw were no longer eligible with prep_any_strategy=20);
+			prep_any_elig=1; *any who werent eligible now are (most would already be eligible) ;
+
+			*new - set hard_to reach to 0;
+			if hard_reach_esw=1 then hard_reach=0;
+			if hard_reach_sw=1 then hard_reach=0;
 
 			if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
 			prep_any_willing = 1; * lapr and dpv-vr ;
@@ -3024,7 +3069,8 @@ else if sw_program_visit=1 then do; e=rand('uniform');f=rand('uniform');
 			*Note that we are assuming the impact on adherence remains even if SW stop visiting the program;
 		end;
 		
-		*Note prep_any_elig and prep_any_willing for sw or esw is not being reset - okay?
+		*Note prep_any_elig and prep_any_willing for sw or esw is not being reset - okay?;
+		*Also assuming that they continue with hard_reach=0 as they are now aware of prep and testing;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 		eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
@@ -3076,7 +3122,6 @@ end;
 	
 
 if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup_covid = 1 or art_low_adh_disrup_covid = 1) then reg_option = 125 ;
-
 
 
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
@@ -5175,6 +5220,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		* MSM PrEP eligibility restricted to 15-64 because HIV risk stops from age 65;
 	end;
 
+/*
 	if prep_any_strategy=20 then do;	* as 4 but excludes heterosexual men, lower prop for SW and ESW, and includes msm;	
 		u=rand('uniform');
 		if ((sw ne 1 and esw ne 1) or ((sw=1 or esw=1) and u<0.10)) then do;;
@@ -5185,9 +5231,8 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		end;
 		if (msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 		* MSM PrEP eligibility restricted to 15-64 because HIV risk stops from age 65;
-
 	end;
-
+*/
 
 
 
@@ -5233,7 +5278,7 @@ if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1  and 
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if t ge 2 and sw_test_6mthly=1 and (sw=1 or esw=1) and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
-		tested=1; tested_as_sw=1; 
+		tested=1; tested_as_sw=1; if sw=1 then tested_as_fsw=1;if esw=1 then tested_as_esw=1;
 		if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 		np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 	end;
@@ -5474,6 +5519,19 @@ end;
 
 
 * PREP INITIATION AND CONTINUATION;
+if prep_parameters_sio=1 then do ;
+		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral_sio;		
+		eff_prob_prep_oral_b = prob_prep_oral_b_sio;
+		pref_prep_oral = pref_prep_oral_sio;
+
+		eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len_sio;		
+		eff_prob_prep_len_b = prob_prep_len_b_sio;
+		pref_prep_len = pref_prep_len_sio;
+
+		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
+		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
+end;
+
 /* 
 	PrEP start and restart dates are given by:
 		prep_xxx_current_start_date 		start date of current PrEP course, whether that is first ever PrEP, switching from a different PrEP option, or restarting following a break due to ineligibility or choice
@@ -16571,7 +16629,7 @@ diag_esw_noprog=diag_esw; onart_esw_noprog=onart_esw; vl1000_art_gt6m_iicu_esw_n
 end;
 
 sti_sw=0;if sw=1 then sti_sw=sti;
-sti_esw=0;if esw=1 then sti_sw=sti;
+sti_esw=0;if esw=1 then sti_esw=sti;
 
 
 vl1000_art_incintcun_sw=.;   if sw=1      then vl1000_art_incintcun_sw    = vl1000_art_iicu;
@@ -19550,7 +19608,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_primary5564m_ep + primary5564m_ep ; s_primary1524w_ep + primary1524w_ep ; s_primary2534w_ep + primary2534w_ep ; s_primary3544w_ep + primary3544w_ep;
     s_primary4554w_ep + primary4554w_ep ; s_primary5564w_ep + primary5564w_ep ;  
 	
-	s_primary_sw + primary_sw ; s_primary_sw1519_ + primary_sw1519_; s_primary_sw2024_ + primary_sw2024_; 
+	s_primary_sw + primary_sw ;		s_primary_esw + primary_esw ;		 s_primary_sw1519_ + primary_sw1519_; s_primary_sw2024_ + primary_sw2024_; 
 	s_primary_sw2529_ + primary_sw2529_; s_primary_sw3039_ + primary_sw3039_;
 
 	s_inf_vlsupp + inf_vlsupp ; s_inf_newp + inf_newp ; s_inf_ep + inf_ep ; s_inf_diag + inf_diag ; s_inf_naive + inf_naive ;
@@ -19814,6 +19872,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_prep_oral_w + prep_oral_w; s_prep_cab_w + prep_cab_w;  s_prep_len_w + prep_len_w; s_prep_oral_m + prep_oral_m; s_prep_vr_w + prep_vr_w;
 	s_prep_cab_m + prep_cab_m; 	s_prep_len_m + prep_len_m; 	s_prep_any_sw + prep_any_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_cab_sw + prep_cab_sw ; 
 	s_prep_len_sw + prep_len_sw ;  s_prep_vr_sw + prep_vr_sw ; 
+	s_prep_any_esw + prep_any_esw ; s_prep_oral_esw + prep_oral_esw ; s_prep_cab_esw + prep_cab_esw ; 
+	s_prep_len_esw + prep_len_esw ;  s_prep_vr_esw + prep_vr_esw ;
 	s_prep_any_w_1524 + prep_any_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_cab_w_1524 + prep_cab_w_1524 ;  s_prep_len_w_1524 + prep_len_w_1524 ; 
 
 	s_prep_any_sdc + prep_any_sdc; s_prep_oral_sdc + prep_oral_sdc; s_prep_cab_sdc + prep_cab_sdc;  s_prep_len_sdc + prep_len_sdc; s_prep_vr_sdc + prep_vr_sdc;
@@ -19965,7 +20025,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tested_4p_m4049_ + tested_4p_m4049_ ; s_tested_4p_m5064_ + tested_4p_m5064_ ; s_tested_4p_w1549_ + tested_4p_w1549_ ; 
 	s_tested_4p_w1519_ + tested_4p_w1519_ ; s_tested_4p_w2024_ + tested_4p_w2024_ ; s_tested_4p_w2529_ + tested_4p_w2529_ ;
 	s_tested_4p_w3039_ + tested_4p_w3039_ ; s_tested_4p_w4049_ + tested_4p_w4049_ ; s_tested_4p_w5064_ + tested_4p_w5064_ ;
- 	s_tested_4p_sw + tested_4p_sw ; s_tested_sw + tested_sw;
+ 	s_tested_4p_sw + tested_4p_sw ;			s_tested_4p_esw + tested_4p_esw ;			 s_tested_sw + tested_sw;s_tested_esw + tested_esw;
 	s_ever_tested_m1549_ + ever_tested_m1549_ ; s_ever_tested_m1519_ + ever_tested_m1519_ ;
     s_ever_tested_m2024_ + ever_tested_m2024_ ; s_ever_tested_m2529_ + ever_tested_m2529_ ; s_ever_tested_m3034_ + ever_tested_m3034_ ;
    	s_ever_tested_m3539_ + ever_tested_m3539_ ; s_ever_tested_m4044_ + ever_tested_m4044_ ; s_ever_tested_m4549_ + ever_tested_m4549_ ;
@@ -19977,7 +20037,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_ever_tested_sw + ever_tested_sw ; 
 	s_elig_test_who4 + elig_test_who4 ; s_elig_test_non_tb_who3 + elig_test_non_tb_who3 ; s_elig_test_tb + elig_test_tb ; s_elig_test_who4_tested + elig_test_who4_tested ;
     s_elig_test_tb_tested + elig_test_tb_tested ; s_elig_test_non_tb_who3_tested + elig_test_non_tb_who3_tested ; s_com_test + com_test ; 
-	s_tested_anc_prevdiag + tested_anc_prevdiag ; s_tested_anc + tested_anc ; s_tested_labdel + tested_labdel ; s_tested_pd + tested_pd ;s_tested_as_sw + tested_as_sw ; s_tested_m_sympt + tested_m_sympt ;    
+	s_tested_anc_prevdiag + tested_anc_prevdiag ; s_tested_anc + tested_anc ; s_tested_labdel + tested_labdel ; s_tested_pd + tested_pd ;s_tested_as_sw + tested_as_sw ;
+	s_tested_as_fsw + tested_as_fsw ;s_tested_as_esw + tested_as_esw ;
+
+s_tested_m_sympt + tested_m_sympt ;    
 	s_tested_f_sympt + tested_f_sympt ; s_tested_f_progsw + tested_f_progsw ; s_tested_m_circ + tested_m_circ ; s_rate_1sttest + rate_1sttest ;
     s_rate_reptest + rate_reptest ; s_newp_lasttest_tested_this_per + newp_lasttest_tested_this_per ; s_acc_test + acc_test ; 
 	s_acc_test_1524_ + acc_test_1524_ ; s_acc_test_2549_ + acc_test_2549_ ; s_acc_test_5064_ + acc_test_5064_ ; s_acc_test_sw + acc_test_sw ;     
@@ -19986,7 +20049,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_diag_m4044_ + diag_m4044_ ; s_diag_m4549_ + diag_m4549_ ; s_diag_m5054_ + diag_m5054_ ; s_diag_m5559_ + diag_m5559_ ; s_diag_m6064_ + diag_m6064_ ; 
     s_diag_w1519_ + diag_w1519_ ; s_diag_w2024_ + diag_w2024_ ; s_diag_w2529_ + diag_w2529_ ; s_diag_w3034_ + diag_w3034_ ; s_diag_w3539_ + diag_w3539_ ;      
     s_diag_w4044_ + diag_w4044_ ; s_diag_w4549_ + diag_w4549_ ; s_diag_w5054_ + diag_w5054_ ; s_diag_w5559_ + diag_w5559_ ; s_diag_w6064_ + diag_w6064_ ; 
-	s_diag_sw + diag_sw ; s_nn_tdr_diag + nn_tdr_diag ; s_diag_this_period + diag_this_period ; s_diag_this_period_m + diag_this_period_m ;
+	s_diag_sw + diag_sw ; s_diag_esw + diag_esw ; s_nn_tdr_diag + nn_tdr_diag ; s_diag_this_period + diag_this_period ; s_diag_this_period_m + diag_this_period_m ;
 	s_diag_this_period_f + diag_this_period_f ; s_diag_this_period_f_non_anc + diag_this_period_f_non_anc ; 
 	s_diag_this_period_f_anc + diag_this_period_f_anc ; s_diag_this_period_f_labdel + diag_this_period_f_labdel ;s_diag_this_period_f_pd + diag_this_period_f_pd ;s_diag_this_period_m_sympt + diag_this_period_m_sympt ; 
 	s_diag_this_period_f_sympt + diag_this_period_f_sympt ; s_diag_thisper_anclabpd + diag_thisper_anclabpd; s_diag_thisper_progsw + diag_thisper_progsw;
@@ -20028,7 +20091,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl1000_art_50pl_ + vl1000_art_50pl_ ; s_onart_iicu_50pl_ + onart_iicu_50pl_ ; s_vl1000_art_iicu_50pl_ + vl1000_art_iicu_50pl_ ;
 	s_onart_gt6m_50pl_ + onart_gt6m_50pl_ ; s_vl1000_art_gt6m_50pl_ + vl1000_art_gt6m_50pl_ ; s_onart_gt6m_iicu_50pl_ + onart_gt6m_iicu_50pl_ ;
  	s_vl1000_art_gt6m_iicu_50pl_ + vl1000_art_gt6m_iicu_50pl_ ; s_vl1000_art_incintcun_sw + vl1000_art_incintcun_sw ;
-	s_vl1000_art_gt6m_iicu_sw + vl1000_art_gt6m_iicu_sw ; s_onart_gt6m_iicu_sw + onart_gt6m_iicu_sw ;
+	s_vl1000_art_gt6m_iicu_sw + vl1000_art_gt6m_iicu_sw ;	s_vl1000_art_gt6m_iicu_esw + vl1000_art_gt6m_iicu_esw ;
+	s_onart_gt6m_iicu_sw + onart_gt6m_iicu_sw ;	s_onart_gt6m_iicu_esw + onart_gt6m_iicu_esw ;
 	s_vl1000_artgt6miicu_w1524evpr + vl1000_artgt6miicu_w1524evpr; s_onartgt6miicu_w1524evpr + onartgt6miicu_w1524evpr;
     s_u_vfail1_dol_this_period + u_vfail1_dol_this_period ; s_o_dol_at_risk_uvfail + o_dol_at_risk_uvfail ; s_elig_treat200 + elig_treat200 ;
     s_elig_treat350 + elig_treat350 ; s_elig_treat500 + elig_treat500 ; s_cl100 + cl100 ; s_cl50 + cl50 ; s_cl200 + cl200 ; s_cl350 + cl350 ;
@@ -20048,7 +20112,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_art_start_m + art_start_m ; s_art_start_w + art_start_w ; s_artexp  + artexp  ;
 	s_artexp_m + artexp_m; s_artexp_w + artexp_w; s_artexp_1524_ + artexp_1524_; s_artexp_sw + artexp_sw; s_artexp_w1524evpreg + artexp_w1524evpreg;
 	s_artexpoff +  artexpoff ; s_onart_m + onart_m ; s_onart_w + onart_w ; 
-    s_onart_sw + onart_sw ; s_onart_w1524evpreg + onart_w1524evpreg; 
+    s_onart_sw + onart_sw ;	s_onart_esw + onart_esw ; s_onart_w1524evpreg + onart_w1524evpreg; 
 	s_art_dur_l6m + art_dur_l6m ; s_art_dur_g6m + art_dur_g6m ; s_art_tdur_l6m + art_tdur_l6m ; s_art_tdur_g6m + art_tdur_g6m ;
 	s_eponart_m + eponart_m ; s_eponart_w + eponart_w ; s_hiv1564_onart + hiv1564_onart ; 
 	s_who3_art_init + who3_art_init ; s_who4_art_init + who4_art_init ; s_art_start_pregnant + art_start_pregnant ;
@@ -21404,7 +21468,7 @@ s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_pr
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
-s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
+s_primary_sw  s_primary_esw	s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
 s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive s_primary_prep_elig s_primary_onprep
 
 /*outputs amongst those infected*/
@@ -21554,6 +21618,8 @@ s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w   	s_r_len_o_len  
 /*prep*/
 s_prep_any 		s_prep_oral 	s_prep_cab 	s_prep_len 		s_prep_vr  s_prep_oral_w  s_prep_cab_w  s_prep_len_w  s_prep_oral_m   s_prep_cab_m  s_prep_len_m  s_prep_vr_w   
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_cab_sw 	s_prep_len_sw 	s_prep_vr_sw  
+s_prep_any_esw 	s_prep_oral_esw 	s_prep_cab_esw 	s_prep_len_esw 	s_prep_vr_esw  
+
 s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_cab s_infected_prep_len 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_cab s_primary_prep_len s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
@@ -21671,7 +21737,7 @@ s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_ancl
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
-s_tested_4p_sw		s_tested_sw
+s_tested_4p_sw		s_tested_4p_esw		s_tested_sw		s_tested_esw
 
 s_ever_tested_m1549_  s_ever_tested_m1519_  s_ever_tested_m2024_  s_ever_tested_m2529_  s_ever_tested_m3034_  s_ever_tested_m3539_
 s_ever_tested_m4044_  s_ever_tested_m4549_  s_ever_tested_m5054_  s_ever_tested_m5559_  s_ever_tested_m6064_ 
@@ -21681,7 +21747,7 @@ s_ever_tested_sw
 
 s_elig_test_who4  s_elig_test_non_tb_who3  s_elig_test_tb  s_elig_test_who4_tested  s_elig_test_tb_tested  s_elig_test_non_tb_who3_tested  
 s_com_test  s_tested_anc_prevdiag  s_tested_anc  s_tested_labdel s_tested_pd		
-s_tested_as_sw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_progsw  s_tested_m_circ  
+s_tested_as_sw  s_tested_as_fsw  s_tested_as_esw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_progsw  s_tested_m_circ  
 s_rate_1sttest   s_rate_reptest  s_newp_lasttest_tested_this_per
 s_acc_test  s_acc_test_1524_  s_acc_test_2549_  s_acc_test_5064_  s_acc_test_sw  
 
@@ -21689,7 +21755,7 @@ s_diag
 s_diag_m1549_  s_diag_m1519_  s_diag_m2024_  s_diag_m2529_  s_diag_m3034_  s_diag_m3539_  s_diag_m4044_  s_diag_m4549_ 
 s_diag_m5054_  s_diag_m5559_  s_diag_m6064_ 
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
-s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
+s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 	s_diag_esw 
 s_nn_tdr_diag
  	s_diag_m_1524  s_diag_m_2549  s_diag_m_50pl 
 	s_diag_w_1524  s_diag_w_2549  s_diag_w_50pl 
@@ -21721,7 +21787,7 @@ s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
-s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
+s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_vl1000_art_gt6m_iicu_esw	s_onart_gt6m_iicu_sw	s_onart_gt6m_iicu_esw
 s_vl1000_artgt6miicu_w1524evpr s_onartgt6miicu_w1524evpr
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
@@ -21732,7 +21798,7 @@ s_onart  		s_int_clinic_not_aw
 s_art_start  	s_art_start_m   s_art_start_w   
 s_artexp  		s_artexp_m 		s_artexp_w 		s_artexp_1524_ 	s_artexp_sw 	s_artexp_w1524evpreg
 s_artexpoff  
-s_onart_m  		s_onart_w		s_onart_sw		s_onart_w1524evpreg
+s_onart_m  		s_onart_w		s_onart_sw		s_onart_esw		s_onart_w1524evpreg
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
 s_onart_m4044_  s_onart_m4549_  s_onart_m5054_  s_onart_m5559_  s_onart_m6064_	
 s_onart_m6569_	s_onart_m7074_	s_onart_m7579_	s_onart_m8084_	s_onart_m85pl_	
@@ -22257,6 +22323,9 @@ msm_rred red_chance_ep_msm prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_fem
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 base_rate_sw 
 sw_art_disadv  sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
+esw_art_disadv  esw_trans_matrix  esw_higher_int esw_higher_prob_loss_at_diag	rel_esw_lower_adh
+rate_engage_esw_program rate_disengage_esw_program 
+
 zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
@@ -22611,7 +22680,7 @@ s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_pr
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
-s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
+s_primary_sw  s_primary_esw	s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
 s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive s_primary_prep_elig s_primary_onprep
 
 /*outputs amongst those infected*/
@@ -22761,6 +22830,8 @@ s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w   	s_r_len_o_len  
 /*prep*/
 s_prep_any 		s_prep_oral 	s_prep_cab 	s_prep_len 		s_prep_vr  s_prep_oral_w  s_prep_cab_w  s_prep_len_w  s_prep_oral_m   s_prep_cab_m  s_prep_len_m  s_prep_vr_w   
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_cab_sw 	s_prep_len_sw 	s_prep_vr_sw  
+s_prep_any_esw 	s_prep_oral_esw 	s_prep_cab_esw 	s_prep_len_esw 	s_prep_vr_esw  
+
 s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_cab s_infected_prep_len 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_cab s_primary_prep_len s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
@@ -22878,7 +22949,7 @@ s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_ancl
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
-s_tested_4p_sw		s_tested_sw
+s_tested_4p_sw		s_tested_4p_esw		s_tested_sw		s_tested_esw
 
 s_ever_tested_m1549_  s_ever_tested_m1519_  s_ever_tested_m2024_  s_ever_tested_m2529_  s_ever_tested_m3034_  s_ever_tested_m3539_
 s_ever_tested_m4044_  s_ever_tested_m4549_  s_ever_tested_m5054_  s_ever_tested_m5559_  s_ever_tested_m6064_ 
@@ -22888,7 +22959,7 @@ s_ever_tested_sw
 
 s_elig_test_who4  s_elig_test_non_tb_who3  s_elig_test_tb  s_elig_test_who4_tested  s_elig_test_tb_tested  s_elig_test_non_tb_who3_tested  
 s_com_test  s_tested_anc_prevdiag  s_tested_anc  s_tested_labdel s_tested_pd		
-s_tested_as_sw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_progsw  s_tested_m_circ  
+s_tested_as_sw  s_tested_as_fsw  s_tested_as_esw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_progsw  s_tested_m_circ  
 s_rate_1sttest   s_rate_reptest  s_newp_lasttest_tested_this_per
 s_acc_test  s_acc_test_1524_  s_acc_test_2549_  s_acc_test_5064_  s_acc_test_sw  
 
@@ -22896,7 +22967,7 @@ s_diag
 s_diag_m1549_  s_diag_m1519_  s_diag_m2024_  s_diag_m2529_  s_diag_m3034_  s_diag_m3539_  s_diag_m4044_  s_diag_m4549_ 
 s_diag_m5054_  s_diag_m5559_  s_diag_m6064_ 
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
-s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
+s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 	s_diag_esw
 s_nn_tdr_diag
  	s_diag_m_1524  s_diag_m_2549  s_diag_m_50pl 
 	s_diag_w_1524  s_diag_w_2549  s_diag_w_50pl 
@@ -22928,7 +22999,7 @@ s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
-s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
+s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_vl1000_art_gt6m_iicu_esw		s_onart_gt6m_iicu_sw	s_onart_gt6m_iicu_esw
 s_vl1000_artgt6miicu_w1524evpr s_onartgt6miicu_w1524evpr
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
@@ -22939,7 +23010,7 @@ s_onart  		s_int_clinic_not_aw
 s_art_start  	s_art_start_m   s_art_start_w   
 s_artexp  		s_artexp_m 		s_artexp_w 		s_artexp_1524_ 	s_artexp_sw 	s_artexp_w1524evpreg
 s_artexpoff  
-s_onart_m  		s_onart_w		s_onart_sw		s_onart_w1524evpreg
+s_onart_m  		s_onart_w		s_onart_sw		s_onart_esw		s_onart_w1524evpreg
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
 s_onart_m4044_  s_onart_m4549_  s_onart_m5054_  s_onart_m5559_  s_onart_m6064_	
 s_onart_m6569_	s_onart_m7074_	s_onart_m7579_	s_onart_m8084_	s_onart_m85pl_	
@@ -23166,7 +23237,7 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
-s_sw_program_visit
+s_sw_program_visit	s_fsw_program_visit
 
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
@@ -23654,7 +23725,7 @@ s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_pr
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
 s_primary1524m_epnewp  s_primary2534m_epnewp  s_primary3544m_epnewp  s_primary4554m_epnewp  s_primary5564m_epnewp 
 s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary4554w_epnewp  s_primary5564w_epnewp
-s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
+s_primary_sw  s_primary_esw		s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
 s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive s_primary_prep_elig s_primary_onprep
 
 /*outputs amongst those infected*/
@@ -23804,6 +23875,8 @@ s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w   	s_r_len_o_len  
 /*prep*/
 s_prep_any 		s_prep_oral 	s_prep_cab 	s_prep_len 		s_prep_vr  s_prep_oral_w  s_prep_cab_w  s_prep_len_w  s_prep_oral_m   s_prep_cab_m  s_prep_len_m  s_prep_vr_w   
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_cab_sw 	s_prep_len_sw 	s_prep_vr_sw  
+s_prep_any_esw 	s_prep_oral_esw 	s_prep_cab_esw 	s_prep_len_esw 	s_prep_vr_esw  
+
 s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_cab s_infected_prep_len 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_cab s_primary_prep_len s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
@@ -23921,7 +23994,7 @@ s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_ancl
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
-s_tested_4p_sw		s_tested_sw
+s_tested_4p_sw		s_tested_4p_esw		s_tested_sw		s_tested_esw
 
 s_ever_tested_m1549_  s_ever_tested_m1519_  s_ever_tested_m2024_  s_ever_tested_m2529_  s_ever_tested_m3034_  s_ever_tested_m3539_
 s_ever_tested_m4044_  s_ever_tested_m4549_  s_ever_tested_m5054_  s_ever_tested_m5559_  s_ever_tested_m6064_ 
@@ -23931,7 +24004,7 @@ s_ever_tested_sw
 
 s_elig_test_who4  s_elig_test_non_tb_who3  s_elig_test_tb  s_elig_test_who4_tested  s_elig_test_tb_tested  s_elig_test_non_tb_who3_tested  
 s_com_test  s_tested_anc_prevdiag  s_tested_anc  s_tested_labdel s_tested_pd		
-s_tested_as_sw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_progsw  s_tested_m_circ  
+s_tested_as_sw  s_tested_as_fsw  s_tested_as_esw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_progsw  s_tested_m_circ  
 s_rate_1sttest   s_rate_reptest  s_newp_lasttest_tested_this_per
 s_acc_test  s_acc_test_1524_  s_acc_test_2549_  s_acc_test_5064_  s_acc_test_sw  
 
@@ -23939,7 +24012,7 @@ s_diag
 s_diag_m1549_  s_diag_m1519_  s_diag_m2024_  s_diag_m2529_  s_diag_m3034_  s_diag_m3539_  s_diag_m4044_  s_diag_m4549_ 
 s_diag_m5054_  s_diag_m5559_  s_diag_m6064_ 
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
-s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
+s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 	s_diag_esw
 s_nn_tdr_diag
  	s_diag_m_1524  s_diag_m_2549  s_diag_m_50pl 
 	s_diag_w_1524  s_diag_w_2549  s_diag_w_50pl 
@@ -23971,7 +24044,7 @@ s_vl1000_art_1524_m    s_vl1000_art_2549_m   s_vl1000_art_50pl_m  	s_vl1000_art_
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
-s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
+s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_vl1000_art_gt6m_iicu_esw		s_onart_gt6m_iicu_sw	s_onart_gt6m_iicu_esw
 s_vl1000_artgt6miicu_w1524evpr s_onartgt6miicu_w1524evpr
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
@@ -23982,7 +24055,7 @@ s_onart  		s_int_clinic_not_aw
 s_art_start  	s_art_start_m   s_art_start_w   
 s_artexp  		s_artexp_m 		s_artexp_w 		s_artexp_1524_ 	s_artexp_sw 	s_artexp_w1524evpreg
 s_artexpoff  
-s_onart_m  		s_onart_w		s_onart_sw		s_onart_w1524evpreg
+s_onart_m  		s_onart_w		s_onart_sw		s_onart_esw		s_onart_w1524evpreg
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
 s_onart_m4044_  s_onart_m4549_  s_onart_m5054_  s_onart_m5559_  s_onart_m6064_	
 s_onart_m6569_	s_onart_m7074_	s_onart_m7579_	s_onart_m8084_	s_onart_m85pl_	
@@ -24209,7 +24282,7 @@ s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
 s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
-s_sw_program_visit
+s_sw_program_visit	s_fsw_program_visit
 
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
@@ -24506,6 +24579,9 @@ msm_rred red_chance_ep_msm prop_m_msm prob_start_pwid prob_stop_pwid rr_pwid_fem
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 base_rate_sw 
 sw_art_disadv  sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
+esw_art_disadv  esw_trans_matrix  esw_higher_int esw_higher_prob_loss_at_diag	rel_esw_lower_adh
+rate_engage_esw_program rate_disengage_esw_program 
+
 zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
