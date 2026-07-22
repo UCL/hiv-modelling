@@ -1,14 +1,15 @@
 options notes source source2 mprint mlogic symbolgen;
 
 
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
+libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi";
 
 *libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\";
 *ods listing;
 
 
 data a;
-set a.cdi_15jan26 a.cdi_15jan26_a;
+*set a.cdi_15jan26 a.cdi_15jan26_a;
+set a.cdi_08Jul26;
 if run=. then delete;
 
 *if prop_v_alert_perm ne 0.3 then delete;
@@ -79,7 +80,7 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 * ================================================================================= ;
 
-%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_costs.sas";
+%include "C:\Users\loveleen\Documents\GitHub\hiv-modelling\Cote d Ivoire\CdI_costs.sas";
 
 * Adjustments to costs for Zimbabwe - HIV Control ;
 * Original costs in 000s of USD;
@@ -512,7 +513,7 @@ dcost_test	dcost_self_test	dcost_art	dcost_condoms	dcost_prep_tot	dcost_vmmc	dco
 run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.long_cdi_control_15Jan26; set y;
+data a.long_cdi_control_08Jul26; set y;
 if cald=. then delete;run;
 
 proc freq;table cald;run;
@@ -628,7 +629,7 @@ OPTIONS
 ** Load data and update variable names for outputs;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-data y; set a.long_cdi_control_15Jan26;
+data y; set a.long_cdi_control_08Jul26;
 
 	year_stock=floor(cald);			* calendar year variable to group stocks when calculating means;
 	year_flow=floor(cald+0.25);		* mid-year to mid-year variable to group flows when calculating means (.75 - .5);
@@ -749,7 +750,7 @@ run;
 ** Set option number here;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-%let op_num=99;
+%let op_num=2;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -817,7 +818,7 @@ run;
 proc transpose data=outputs_&op_num out=outputs_&op_num; run;			/* transpose to change outputs from columns to rows */
 
 proc export data=outputs_&op_num
-	outfile= "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\hiv_control_cdi_15Jan25_new_&op_num..csv" 
+	outfile= "C:\Users\loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\hiv_control_cdi\hiv_control_cdi_08Jul26_new_&op_num..csv" 
 	dbms=csv replace; 
 	putnames=no;
 run;
