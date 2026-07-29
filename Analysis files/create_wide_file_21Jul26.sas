@@ -497,6 +497,9 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run; where 
 ***baseline outputs in 2026;
 proc means  noprint data=y; var &v; output out=y_26 mean= &v._26; by run; where 2026 <= cald < 2027; 
 
+***baseline outputs in 2025;
+proc means  noprint data=y; var &v; output out=y_25 mean= &v._25; by run; where 2025 <= cald < 2026; 
+
 ***outputs in 2030 by option;
 proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2030.0 <= cald < 2031; 
 
@@ -512,7 +515,7 @@ proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; v
 proc sort data=y_26_46; by run; proc transpose data=y_26_46 out=t_26_46 prefix=&v._26_46_; var &v._26_46; by run;
 proc sort data=y_26_76; by run; proc transpose data=y_26_76 out=t_26_76 prefix=&v._26_76_; var &v._26_76; by run;
 
-data &v ; merge y_20 y_26 y_30 t_26_46 t_26_76;
+data &v ; merge y_20 y_26 y_25 y_30 t_26_46 t_26_76;
 
 
 ***MACRO IS USED TO CALCULATE SUMMARY MEASURES FOR THE YEARS ABOVE FOR EACH OUTPUT;
