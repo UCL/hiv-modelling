@@ -168,12 +168,13 @@ newp_seed = 7;
 * p_hard_reach_htn_w;		p_hard_reach_htn_w = p_hard_reach_w - hard_reach_lower_htn;
 * p_hard_reach_htn_m;		p_hard_reach_htn_m = p_hard_reach_m - hard_reach_lower_htn;
 
-* p_hard_reach_esw;			p_hard_reach_esw = 0.50+(rand('uniform')*0.10);
-* p_hard_reach_sw;			p_hard_reach_sw = 0.50+(rand('uniform')*0.10);*some fsw may still use testing services;
+* p_hard_reach_esw;			p_hard_reach_esw = 0.90+(rand('uniform')*0.10);
+* p_hard_reach_sw;			p_hard_reach_sw = 0.90+(rand('uniform')*0.10);*some fsw may still use testing services;
 
 
 
 * PREGNANCY AND BREASTFEEDING;
+
 
 * can_be_pregnant;			can_be_pregnant=0.95;
 * fold_preg1524;			fold_preg1524=2;
@@ -2426,9 +2427,9 @@ if (gender=1 and p <= p_hard_reach_htn_m) or (gender=2 and q <= p_hard_reach_htn
 
 if pwid=1 then hard_reach=1;		* MSM are no longer automatically defined as hard to reach Feb 2026;
 
-a=rand('uniform');b=rand('uniform');
-if (esw=1 and a <=p_hard_reach_esw) then do;hard_reach_esw=1;hard_reach=1;end;
-if (sw=1 and b <=p_hard_reach_sw) then do; hard_reach_sw=1;hard_reach=1;end;
+abc=rand('uniform');def=rand('uniform');
+if (esw=1 and abc <=p_hard_reach_esw) then do;hard_reach_esw=1;hard_reach=1;end;
+if (sw=1 and def <=p_hard_reach_sw) then do; hard_reach_sw=1;hard_reach=1;end;
 
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
@@ -20988,8 +20989,9 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 
-proc print;var cald sw esw hard_reach hard_reach_sw hard_reach_esw tested registd date1pos tested_anc tested_f_sympt;
-where  esw=1 and age ge 15 and hiv=1;run;
+proc print;var cald age sw esw hard_reach hard_reach_sw hard_reach_esw tested registd date1pos tested_anc tested_f_sympt 
+abc def death;
+where  esw=1 and age ge 15;run;
 
 * procs;
 
