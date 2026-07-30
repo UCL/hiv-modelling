@@ -492,6 +492,12 @@ options nomprint;
 
 %macro var(v=);
 
+proc means  noprint data=y; var &v; output out=y_00 mean= &v._00; by run; where 2000 <= cald < 2001; 
+proc means  noprint data=y; var &v; output out=y_05 mean= &v._05; by run; where 2005 <= cald < 2006; 
+proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run; where 2010 <= cald < 2011;
+proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run; where 2015 <= cald < 2016; 
+
+
 ***outputs for PHIA comparison in 2020;
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run; where 2020 <= cald < 2021; 
 
@@ -516,7 +522,7 @@ proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; v
 proc sort data=y_26_46; by run; proc transpose data=y_26_46 out=t_26_46 prefix=&v._26_46_; var &v._26_46; by run;
 proc sort data=y_26_76; by run; proc transpose data=y_26_76 out=t_26_76 prefix=&v._26_76_; var &v._26_76; by run;
 
-data &v ; merge y_20 y_26 y_25 y_30 t_26_46 t_26_76;
+data &v ; merge y_00 y_05 y_10 y_15 y_20 y_26 y_25 y_30 t_26_46 t_26_76;
 
 
 ***MACRO IS USED TO CALCULATE SUMMARY MEASURES FOR THE YEARS ABOVE FOR EACH OUTPUT;

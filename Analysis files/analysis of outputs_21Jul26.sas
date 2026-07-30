@@ -32,6 +32,10 @@ p_sti_esw_25
 incidence_esw_25		prevalence_esw_25		p_tested_past_year_esw_25
 p_diag_esw_25			p_onart_diag_esw_25		p_onart_vl1000_esw_25 	p_esw_prog_vis_25
 
+p_hard_reach_sw_00 p_hard_reach_esw_00
+p_hard_reach_sw_05 p_hard_reach_esw_05
+p_hard_reach_sw_10 p_hard_reach_esw_10
+p_hard_reach_sw_15 p_hard_reach_esw_15
 p_hard_reach_sw_20 p_hard_reach_esw_20;
 
 ;run;
