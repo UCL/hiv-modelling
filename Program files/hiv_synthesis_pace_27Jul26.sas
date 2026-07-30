@@ -168,8 +168,8 @@ newp_seed = 7;
 * p_hard_reach_htn_w;		p_hard_reach_htn_w = p_hard_reach_w - hard_reach_lower_htn;
 * p_hard_reach_htn_m;		p_hard_reach_htn_m = p_hard_reach_m - hard_reach_lower_htn;
 
-* p_hard_reach_esw;			p_hard_reach_esw = 0.50+(rand('uniform')*0.10);
-* p_hard_reach_sw;			p_hard_reach_sw = 0.50+(rand('uniform')*0.10);*some fsw may still use testing services;
+* p_hard_reach_esw;			p_hard_reach_esw = 0.75+(rand('uniform')*0.10);
+* p_hard_reach_sw;			p_hard_reach_sw = 0.75+(rand('uniform')*0.10);*some fsw may still use testing services;
 
 
 
@@ -20635,8 +20635,7 @@ s_tested_m_sympt + tested_m_sympt ;
 	s_onart_sw_noprog + onart_sw_noprog; s_onart_sw_inprog + onart_sw_inprog;
 	s_vl1000_art_gt6m_iicu_sw_noprog + vl1000_art_gt6m_iicu_sw_noprog; s_vl1000_art_gt6m_iicu_sw_inprog + vl1000_art_gt6m_iicu_sw_inprog;
 
-
-	s_sti_sw + sti_sw;
+	s_sti_sw + sti_sw; 	s_hard_reach_sw + hard_reach_sw;
 
 	/*ESW*/
 	s_esw + esw ; s_esw_1549 + esw_1549 ; s_esw_1849 + esw_1849 ; s_esw_1519 + esw_1519 ; s_esw_2024 + esw_2024 ;
@@ -20668,7 +20667,7 @@ s_tested_m_sympt + tested_m_sympt ;
 	s_onart_esw_noprog + onart_esw_noprog; s_onart_esw_inprog + onart_esw_inprog;
 	s_vl1000_art_gt6m_iicu_esw_noprg + vl1000_art_gt6m_iicu_esw_noprg; s_vl1000_art_gt6m_iicu_esw_inprg + vl1000_art_gt6m_iicu_esw_inprg;
 
-	s_sti_esw + sti_esw;
+	s_sti_esw + sti_esw;		s_hard_reach_esw + hard_reach_esw;
 
 	/* MSM */
 
@@ -22099,7 +22098,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sti_sw
+s_sti_sw	s_hard_reach_sw
 
 /*edge of sex work*/
 s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
@@ -22125,7 +22124,7 @@ s_esw_program_visit
 s_diag_esw_noprog  s_diag_esw_inprog  s_onart_esw_noprog  s_onart_esw_inprog  
 s_vl1000_art_gt6m_iicu_esw_noprg  s_vl1000_art_gt6m_iicu_esw_inprg 
 
-s_sti_esw
+s_sti_esw		s_hard_reach_esw
 
 
 /* MSM */
@@ -23310,7 +23309,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sti_sw
+s_sti_sw	s_hard_reach_sw
 
 /*edge of sex work*/
 s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
@@ -23336,7 +23335,7 @@ s_esw_program_visit
 s_diag_esw_noprog  s_diag_esw_inprog  s_onart_esw_noprog  s_onart_esw_inprog  
 s_vl1000_art_gt6m_iicu_esw_noprg  s_vl1000_art_gt6m_iicu_esw_inprg 
 
-s_sti_esw
+s_sti_esw		s_hard_reach_esw
 
 /* MSM */
 
@@ -24354,7 +24353,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sti_sw
+s_sti_sw		s_hard_reach_sw
 
 /*edge of sex work*/
 s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
@@ -24380,7 +24379,7 @@ s_esw_program_visit
 s_diag_esw_noprog  s_diag_esw_inprog  s_onart_esw_noprog  s_onart_esw_inprog  
 s_vl1000_art_gt6m_iicu_esw_noprg  s_vl1000_art_gt6m_iicu_esw_inprg 
 
-s_sti_esw
+s_sti_esw		s_hard_reach_esw
 
 /* MSM */
 

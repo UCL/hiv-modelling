@@ -691,7 +691,7 @@ newp_seed = 7;
 
 
 * fold_esw_init;				fold_esw_init=1;
-* base_rate_esw;				%sample(base_rate_esw, 0.0015 0.0020 0.0025, 0.6 0.3 0.1); *slightly higher than SW (look in parameter file);
+* base_rate_esw;				%sample(base_rate_esw,0.0015 0.0020 0.0025, 0.6 0.3 0.1); *slightly higher than SW (look in parameter file);
 * base_rate_stop_sexwork;		%sample_uniform(base_rate_stop_esexwork, 0.001 0.003 0.005); *longer duration than SW;
 
 * esw_trans_matrix;   		  %sample(esw_trans_matrix, 1 2, 0.70 0.30);
@@ -8620,6 +8620,7 @@ if sw=1 then eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_highe
 if esw=1 then eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_esw_higher_prob_loss_at_diag) ;
 
 
+
 * test type;
 
 *1= PCR (RNA VL) tests - assume window period of 10 days; 
@@ -9154,7 +9155,6 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 
 	if sw=1 then e_eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
 	if esw=1 then e_eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_esw_higher_prob_loss_at_diag) ;
-
 
 
 * msm;
@@ -20988,10 +20988,8 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 
-proc print;var cald sw esw 
-fold_esw_higher_int fold_esw_higher_loss_at_diag eff_sw_higher_prob_loss_at_diag eff_esw_higher_prob_loss_at_diag
- eff_prob_loss_at_diag e_eff_prob_loss_at_diag;
-where sw=1 or esw=1 and age ge 15;run;
+proc print;var cald sw esw hard_reach hard_reach_sw hard_reach_esw tested registd date1pos tested_anc tested_f_sympt;
+where  esw=1 and age ge 15 and hiv=1;run;
 
 * procs;
 

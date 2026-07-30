@@ -10,7 +10,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
    IF NOT AUTOMATICALLY DONE IN MYRIAD);
 
 data a;
-set a.pace_21Jul26;
+set a.pace_27Jul26;
 if run=. then delete; 
 proc sort;by run cald option;run;
 proc freq;table cald;run;
@@ -412,7 +412,8 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * prop_onprep_len_w; if (s_alive1564_w - s_hiv1564m) gt 0 then prop_onprep_len_w = (s_prep_len_w/ (s_alive1564_w - s_hiv1564m))*100 ;
 * prop_onprep_oral_w; if (s_alive1564_w - s_hiv1564m) gt 0 then prop_onprep_oral_w = (s_prep_oral_w/ (s_alive1564_w - s_hiv1564m))*100;
 
-
+* p_hard_reach_sw;				p_hard_reach_sw = s_hard_reach_sw/s_sw_1564;
+* p_hard_reach_esw;				p_hard_reach_esw = s_hard_reach_esw/s_esw_1564;
 
 keep run option cald 
 n_alive				 n_alive1549_		n_onart				n_onart_w			n_onart_m			
@@ -435,7 +436,7 @@ av_sw_newp	 		 p_newp_sw
 p_sw_prog_vis		 n_tested_sw	      p_tested_past_year_sw	p_sw_tested_swprog
 prop_sw_onprep		 prop_sw_onprep_oral  prop_sw_onprep_len
 p_diag_sw			 p_onart_diag_sw	  p_onart_vl1000_sw		
-prevalence_sw	     incidence_sw		  p_sti_sw	
+prevalence_sw	     incidence_sw		  p_sti_sw				p_hard_reach_sw
 
 n_esw_1564_  	 	 n_esw_1549_ 	 	  prop_w_1564_esw		prop_w_1549_esw 	prop_w_ever_esw  
 p_esw1519_	  		 p_esw2024_		  	  p_esw2529_			p_esw3039_	
@@ -450,7 +451,7 @@ av_esw_newp	 		 p_newp_esw
 p_esw_prog_vis		 n_tested_esw	       p_tested_past_year_esw	p_esw_tested_swprog
 prop_esw_onprep		 prop_esw_onprep_oral  prop_esw_onprep_len	
 p_diag_esw			 p_onart_diag_esw	   p_onart_vl1000_esw		
-prevalence_esw	  	 incidence_esw		   p_sti_esw			 
+prevalence_esw	  	 incidence_esw		   p_sti_esw			 	p_hard_reach_esw
 
 /*Sampled parameters*/
 sw_art_disadv	sw_program	effect_sw_prog_newp		effect_sw_prog_6mtest	effect_sw_prog_int	effect_sw_prog_adh
@@ -478,9 +479,9 @@ prop_onprep_oral	prop_onprep_len		prop_onprep_len_m	prop_onprep_len_w	prop_onpre
 
 proc sort data=y;by run option;run;
 
-data a.pace_21_07_26_short; set y;run;
+data a.pace_27_07_26_short; set y;run;
 
-data y; set a.pace_21_07_26_short;run;
+data y; set a.pace_27_07_26_short;run;
 
 options nomprint;
   option nospool;
@@ -541,7 +542,7 @@ data &v ; merge y_20 y_26 y_25 y_30 t_26_46 t_26_76;
 %var(v=p_sw_prog_vis);  %var(v=n_tested_sw);	    %var(v=p_tested_past_year_sw); %var(v=p_sw_tested_swprog);
 %var(v=prop_sw_onprep);	%var(v=prop_sw_onprep_oral);%var(v=prop_sw_onprep_len);	
 %var(v=p_diag_sw);		%var(v=p_onart_diag_sw);	%var(v=p_onart_vl1000_sw);	
-%var(v=prevalence_sw);	%var(v=incidence_sw);		%var(v=p_sti_sw);
+%var(v=prevalence_sw);	%var(v=incidence_sw);		%var(v=p_sti_sw);			%var(v=p_hard_reach_sw);
 
 %var(v=n_esw_1564_);    %var(v=n_esw_1549_);		%var(v=prop_w_1564_esw);	%var(v=prop_w_1549_esw); %var(v=prop_w_ever_esw);  
 %var(v=p_esw1519_);	  	%var(v=p_esw2024_);		    %var(v=p_esw2529_);			%var(v=p_esw3039_);	
@@ -556,7 +557,7 @@ data &v ; merge y_20 y_26 y_25 y_30 t_26_46 t_26_76;
 %var(v=p_esw_prog_vis); %var(v=n_tested_esw);	    %var(v=p_tested_past_year_esw); %var(v=p_esw_tested_swprog);
 %var(v=prop_esw_onprep);%var(v=prop_esw_onprep_oral);%var(v=prop_esw_onprep_len);	
 %var(v=p_diag_esw);		%var(v=p_onart_diag_esw);	%var(v=p_onart_vl1000_esw);	
-%var(v=prevalence_esw);	%var(v=incidence_esw);	    %var(v=p_sti_esw);
+%var(v=prevalence_esw);	%var(v=incidence_esw);	    %var(v=p_sti_esw);			%var(v=p_hard_reach_esw);
 
 %var(v=dcost);			  		%var(v=ddaly);				%var(v=dcost_sw_program);
 %var(v=dart_cost_y);	  		%var(v=dadc_cost);			%var(v=dcd4_cost);			%var(v=dvl_cost);  	%var(v=dvis_cost);	
@@ -595,7 +596,7 @@ av_sw_newp	 		p_newp_sw
 p_sw_prog_vis  		n_tested_sw	    	p_tested_past_year_sw 	p_sw_tested_swprog
 prop_sw_onprep		prop_sw_onprep_oral	prop_sw_onprep_len	
 p_diag_sw			p_onart_diag_sw		p_onart_vl1000_sw	
-prevalence_sw		incidence_sw		p_sti_sw
+prevalence_sw		incidence_sw		p_sti_sw			p_hard_reach_sw
 
 n_esw_1564_    		n_esw_1549_			prop_w_1564_esw		prop_w_1549_esw 	prop_w_ever_esw  
 p_esw1519_	  		p_esw2024_		    p_esw2529_			p_esw3039_	
@@ -610,7 +611,7 @@ av_esw_newp			p_newp_esw
 p_esw_prog_vis 		n_tested_esw	    p_tested_past_year_esw 	p_esw_tested_swprog
 prop_esw_onprep		prop_esw_onprep_oral	prop_esw_onprep_len	
 p_diag_esw			p_onart_diag_esw	p_onart_vl1000_esw	
-prevalence_esw		incidence_esw	    p_sti_esw
+prevalence_esw		incidence_esw	    p_sti_esw			p_hard_reach_esw
 
 dcost			  	ddaly				dcost_sw_program
 dart_cost_y	  		dadc_cost			dcd4_cost			dvl_cost  	dvis_cost	
@@ -657,7 +658,7 @@ rel_esw_lower_adh		rate_engage_esw_program		erate_disengage_esw_program*/
 ;proc sort; by run;run;
 
 ***THIS STORES THE NEWLY CREATED WIDE FILE IN LIBRARY A. THIS NEW FILE WILL BE READ INTO THE ANALYSIS PROGRAM;
-data a.wide_pace_21_07_26;
+data a.wide_pace_27_07_26;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
