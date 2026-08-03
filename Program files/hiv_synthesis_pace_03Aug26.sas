@@ -1,8 +1,12 @@
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
+*It seems hard to reach was only being set for those defined as SW in 1989. Those defined later, in section 3b were not
+going through the hard reach loop. I have now repeated the hard reach code later but think we need to discuss the 
+postioning of the SW code - it has always been after the SW program but shouldn't it be before?;
+
 *Search for;
-*LBM JUL26;
+*LBM26;
 
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -13,7 +17,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 1000 ; 
+%let population = 100000 ; 
 %let year_interv = 2027.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -168,13 +172,12 @@ newp_seed = 7;
 * p_hard_reach_htn_w;		p_hard_reach_htn_w = p_hard_reach_w - hard_reach_lower_htn;
 * p_hard_reach_htn_m;		p_hard_reach_htn_m = p_hard_reach_m - hard_reach_lower_htn;
 
-* p_hard_reach_esw;			p_hard_reach_esw = 0.90+(rand('uniform')*0.10);
-* p_hard_reach_sw;			p_hard_reach_sw = 0.90+(rand('uniform')*0.10);*some fsw may still use testing services;
+* p_hard_reach_esw;			p_hard_reach_esw = 0.75+(rand('uniform')*0.10);
+* p_hard_reach_sw;			p_hard_reach_sw = 0.75+(rand('uniform')*0.10);*some fsw may still use testing services;
 
 
 
 * PREGNANCY AND BREASTFEEDING;
-
 
 * can_be_pregnant;			can_be_pregnant=0.95;
 * fold_preg1524;			fold_preg1524=2;
@@ -685,6 +688,7 @@ newp_seed = 7;
 						   		%sample_uniform(rel_sw_lower_adh, 0.8 0.9);
 						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 5 10);
 							  end;
+
 * WOMEN AT THE EDGE OF SEX WORK (ESW);
 
 ***Focussing on Zim only;
@@ -692,7 +696,7 @@ newp_seed = 7;
 
 
 * fold_esw_init;				fold_esw_init=1;
-* base_rate_esw;				%sample(base_rate_esw,0.0015 0.0020 0.0025, 0.6 0.3 0.1); *slightly higher than SW (look in parameter file);
+* base_rate_esw;				%sample(base_rate_esw, 0.0015 0.0020 0.0025, 0.6 0.3 0.1); *slightly higher than SW (look in parameter file);
 * base_rate_stop_sexwork;		%sample_uniform(base_rate_stop_esexwork, 0.001 0.003 0.005); *longer duration than SW;
 
 * esw_trans_matrix;   		  %sample(esw_trans_matrix, 1 2, 0.70 0.30);
@@ -1902,10 +1906,10 @@ if gender = 2 and life_sex_risk >= 2 then do;
 
 	if life_sex_risk = 3 then prob_sw_init = prob_sw_init * 3;
 
-	if rand('uniform') < 0.5 then sw = 1;
+	if rand('uniform') < prob_sw_init then sw = 1;
 
 	if sw ne 1 then do;
-		if rand('uniform') < (0.6) then esw = 1;*currently fold_esw_init=1 as unknown if esw are more likely to start sw than fsw;
+		if rand('uniform') < (prob_sw_init*fold_esw_init) then esw = 1;*currently fold_esw_init=1 as unknown if esw are more likely to start sw than fsw;
 	end;
 
 
@@ -2427,9 +2431,9 @@ if (gender=1 and p <= p_hard_reach_htn_m) or (gender=2 and q <= p_hard_reach_htn
 
 if pwid=1 then hard_reach=1;		* MSM are no longer automatically defined as hard to reach Feb 2026;
 
-abc=rand('uniform');def=rand('uniform');
-if (esw=1 and abc <=p_hard_reach_esw) then do;hard_reach_esw=1;hard_reach=1;end;
-if (sw=1 and def <=p_hard_reach_sw) then do; hard_reach_sw=1;hard_reach=1;end;
+a=rand('uniform');b=rand('uniform');
+if (esw=1 and a <=p_hard_reach_esw) then do;hard_reach_esw=1;hard_reach=1;end;
+if (sw=1 and b <=p_hard_reach_sw) then do; hard_reach_sw=1;hard_reach=1;end;
 
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
@@ -4360,7 +4364,7 @@ if sw_tm1  = 0 and esw ne 1 then do;
 	if ever_sw = 1 then prob_becoming_sw = prob_becoming_sw * rr_sw_prev_sw;
 
 	e = rand('uniform');
-	if e < prob_becoming_sw then do; sw = 1;sw_later=1;end;
+	if e < prob_becoming_sw then sw = 1;
 end;
 
 if esw_tm1  = 0 and sw ne 1 then do;
@@ -4384,8 +4388,15 @@ if esw_tm1  = 0 and sw ne 1 then do;
 	if ever_sw = 1 then prob_becoming_esw = prob_becoming_esw * rr_esw_prev_sw;*currently 1;
 
 	e = rand('uniform');
-	if e < prob_becoming_esw then do;esw = 1;esw_later=1;end;
+	if e < prob_becoming_esw then esw = 1;
 end;
+
+*Majority of SW/ESW are hard to reach;
+
+*LBM26;
+a=rand('uniform');b=rand('uniform');
+if esw_program_visit ne 1 and esw=1 and a <=p_hard_reach_esw then do;hard_reach_esw=1;hard_reach=1;end;
+if sw_program_visit ne 1 and sw=1 and b <=p_hard_reach_sw then do; hard_reach_sw=1;hard_reach=1;end;
 
 
 
@@ -4466,14 +4477,14 @@ if t ge 2 then do;
 				eff_sw_higher_int = sw_higher_int;
 				*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 				eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-
+/*
 				eff_rate_test_startprep_any=rate_test_startprep_any;
 				eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 				eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
 				eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
 				eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
 				eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-
+*/
 			end;
 
 		end;
@@ -8623,7 +8634,6 @@ if sw=1 then eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_highe
 if esw=1 then eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_esw_higher_prob_loss_at_diag) ;
 
 
-
 * test type;
 
 *1= PCR (RNA VL) tests - assume window period of 10 days; 
@@ -9158,6 +9168,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 
 	if sw=1 then e_eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
 	if esw=1 then e_eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_esw_higher_prob_loss_at_diag) ;
+
 
 
 * msm;
@@ -20637,8 +20648,7 @@ s_tested_m_sympt + tested_m_sympt ;
 	s_onart_sw_noprog + onart_sw_noprog; s_onart_sw_inprog + onart_sw_inprog;
 	s_vl1000_art_gt6m_iicu_sw_noprog + vl1000_art_gt6m_iicu_sw_noprog; s_vl1000_art_gt6m_iicu_sw_inprog + vl1000_art_gt6m_iicu_sw_inprog;
 
-
-	s_sti_sw + sti_sw;		s_hard_reach_sw + hard_reach_sw;
+	s_sti_sw + sti_sw; 	s_hard_reach_sw + hard_reach_sw;
 
 	/*ESW*/
 	s_esw + esw ; s_esw_1549 + esw_1549 ; s_esw_1849 + esw_1849 ; s_esw_1519 + esw_1519 ; s_esw_2024 + esw_2024 ;
@@ -20670,7 +20680,7 @@ s_tested_m_sympt + tested_m_sympt ;
 	s_onart_esw_noprog + onart_esw_noprog; s_onart_esw_inprog + onart_esw_inprog;
 	s_vl1000_art_gt6m_iicu_esw_noprg + vl1000_art_gt6m_iicu_esw_noprg; s_vl1000_art_gt6m_iicu_esw_inprg + vl1000_art_gt6m_iicu_esw_inprg;
 
-	s_sti_esw + sti_esw;	s_hard_reach_esw + hard_reach_esw;
+	s_sti_esw + sti_esw;		s_hard_reach_esw + hard_reach_esw;
 
 	/* MSM */
 
@@ -20989,12 +20999,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
-* p_hard_reach_sw;				if 15 lt age le 64 then  p_hard_reach_sw = s_hard_reach_sw/s_sw_1564;
-* p_hard_reach_esw;				if 15 lt age le 64 then p_hard_reach_esw = s_hard_reach_esw/s_esw_1564;
-
-proc print;var cald age sw esw hard_reach hard_reach_sw hard_reach_esw  
-p_hard_reach_sw p_hard_reach_esw s_hard_reach_sw  s_sw_1564 s_hard_reach_esw s_esw_1564;
-where  (esw=1 or sw=1) and age ge 15;run;
 
 * procs;
 
@@ -22105,7 +22109,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sti_sw		s_hard_reach_sw
+s_sti_sw	s_hard_reach_sw
 
 /*edge of sex work*/
 s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
@@ -23316,7 +23320,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sti_sw		s_hard_reach_sw
+s_sti_sw	s_hard_reach_sw
 
 /*edge of sex work*/
 s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
