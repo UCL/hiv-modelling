@@ -412,8 +412,8 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * prop_onprep_len_w; if (s_alive1564_w - s_hiv1564m) gt 0 then prop_onprep_len_w = (s_prep_len_w/ (s_alive1564_w - s_hiv1564m))*100 ;
 * prop_onprep_oral_w; if (s_alive1564_w - s_hiv1564m) gt 0 then prop_onprep_oral_w = (s_prep_oral_w/ (s_alive1564_w - s_hiv1564m))*100;
 
-* p_hard_reach_sw;				p_hard_reach_sw = s_hard_reach_sw/s_sw_1564;
-* p_hard_reach_esw;				p_hard_reach_esw = s_hard_reach_esw/s_esw_1564;
+* p_hard_reach_sw;				p_hard_reach_sw = s_hard_reach_sw/s_sw_1549;
+* p_hard_reach_esw;				p_hard_reach_esw = s_hard_reach_esw/s_esw_1549;
 
 keep run option cald 
 n_alive				 n_alive1549_		n_onart				n_onart_w			n_onart_m			
