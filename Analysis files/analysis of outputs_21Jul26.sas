@@ -8,7 +8,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 
 
 data a; 
-set a.wide_pace_27_07_26; 
+set a.wide_pace_03_08_26; 
 run;
 
 ***Compare SW and ESW in 2026;
@@ -40,6 +40,8 @@ p_hard_reach_sw_20 p_hard_reach_esw_20;
 
 ;run;
 
+proc means n p50 mean p5 p95;var p_diag_esw_00  p_diag_esw_05  p_diag_esw_10  p_diag_esw_15
+p_diag_sw_00  p_diag_sw_05  p_diag_sw_10  p_diag_sw_15;run;
 
 ***Table A0 - use either 2020 or 2023 estimates - whichever is closest to observed data;
 proc means n p50 mean p5 p95;var n_hiv_23  n_onart_23

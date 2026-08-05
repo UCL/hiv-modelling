@@ -1,8 +1,12 @@
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
+*It seems hard to reach was only being set for those defined as SW in 1989. Those defined later, in section 3b were not
+going through the hard reach loop. I have now repeated the hard reach code later but think we need to discuss the 
+postioning of the SW code - it has always been after the SW program but shouldn't it be before?;
+
 *Search for;
-*LBM JUL26;
+*LBM26;
 
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -13,7 +17,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 1000 ; 
 %let year_interv = 2027.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -713,7 +717,7 @@ end;
 * rate_engage_esw_program;	 rate_engage_esw_program=0.0001; *set in options;
 * rate_disengage_esw_program; rate_disengage_esw_program=0.1; *set in options;
 
-* date_sw_prog_intro;		date_sw_prog_intro=3010;
+* date_sw_prog_intro;		date_sw_prog_intro=2010;
 * sw_program;               %sample(sw_program, 0 1, 0.1 0.9);
 
 * sw_prog_intensity;		if sw_program = 1  then do;
@@ -4360,7 +4364,7 @@ if sw_tm1  = 0 and esw ne 1 then do;
 	if ever_sw = 1 then prob_becoming_sw = prob_becoming_sw * rr_sw_prev_sw;
 
 	e = rand('uniform');
-	if e < prob_becoming_sw then sw = 1;
+	if e < 0.5 then sw = 1;
 end;
 
 if esw_tm1  = 0 and sw ne 1 then do;
@@ -4384,8 +4388,15 @@ if esw_tm1  = 0 and sw ne 1 then do;
 	if ever_sw = 1 then prob_becoming_esw = prob_becoming_esw * rr_esw_prev_sw;*currently 1;
 
 	e = rand('uniform');
-	if e < prob_becoming_esw then esw = 1;
+	if e < 0.5 then esw = 1;
 end;
+
+*Majority of SW/ESW are hard to reach;
+
+*LBM26;
+a=rand('uniform');b=rand('uniform');
+if esw_program_visit ne 1 and esw=1 and a <=p_hard_reach_esw then do;hard_reach_esw=1;hard_reach=1;end;
+if sw_program_visit ne 1 and sw=1 and b <=p_hard_reach_sw then do; hard_reach_sw=1;hard_reach=1;end;
 
 
 
@@ -4457,6 +4468,7 @@ if t ge 2 then do;
 		if d_sw < rate_stop_sexwork/(sqrt(rred_rc_base)) or age ge 50 then do; 
 
 			sw=0; date_stop_sw=caldate{t};
+			hard_reach_sw=0;hard_reach=0;
 			if sw_program_visit=1 then do;		
 				sw_program_visit=0; 
 				date_last_sw_prog_vis=caldate{t};
@@ -4465,14 +4477,14 @@ if t ge 2 then do;
 				eff_sw_higher_int = sw_higher_int;
 				*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 				eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-
+/*
 				eff_rate_test_startprep_any=rate_test_startprep_any;
 				eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 				eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
 				eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
 				eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
 				eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-
+*/
 			end;
 
 		end;
@@ -4493,6 +4505,7 @@ if t ge 2 then do;
 		if e < rate_stop_esexwork/(sqrt(rred_rc_base)) or age ge 50 then do; 
 
 			esw=0; date_stop_esw=caldate{t};
+			hard_reach_esw=0;hard_reach=0;
 			if esw_program_visit=1 then do;		
 				esw_program_visit=0; 
 				date_last_sw_prog_vis=caldate{t};
@@ -20987,7 +21000,8 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
-
+proc print;var cald sw esw age tested tested_anc tested_labdel tested_f_sympt registd hard_reach hard_reach_sw hard_reach_esw who3_event tb adc;
+where (esw=1) and age gt 15;run;
 
 * procs;
 

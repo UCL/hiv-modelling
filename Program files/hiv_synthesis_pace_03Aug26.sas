@@ -4365,6 +4365,8 @@ if sw_tm1  = 0 and esw ne 1 then do;
 
 	e = rand('uniform');
 	if e < prob_becoming_sw then sw = 1;
+	a=rand('uniform');
+	if sw_program_visit ne 1 and sw=1 and a <=p_hard_reach_sw then do; hard_reach_sw=1;hard_reach=1;end;
 end;
 
 if esw_tm1  = 0 and sw ne 1 then do;
@@ -4389,15 +4391,12 @@ if esw_tm1  = 0 and sw ne 1 then do;
 
 	e = rand('uniform');
 	if e < prob_becoming_esw then esw = 1;
+	b=rand('uniform');
+	if esw_program_visit ne 1 and esw=1 and b <=p_hard_reach_esw then do;hard_reach_esw=1;hard_reach=1;end;
+
 end;
 
 *Majority of SW/ESW are hard to reach;
-
-*LBM26;
-a=rand('uniform');b=rand('uniform');
-if esw_program_visit ne 1 and esw=1 and a <=p_hard_reach_esw then do;hard_reach_esw=1;hard_reach=1;end;
-if sw_program_visit ne 1 and sw=1 and b <=p_hard_reach_sw then do; hard_reach_sw=1;hard_reach=1;end;
-
 
 
 	***currently SW are no more likely to be willing to take prep than gen pop (because add_prep_any_uptake_sw=0) but we may decide to change;
