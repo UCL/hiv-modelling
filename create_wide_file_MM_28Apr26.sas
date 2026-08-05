@@ -671,25 +671,43 @@ run;quit;
 
 
 
-***restart here;
-
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of mobile men currently on any PrEP where both CAB-LA and oral PrEP is available";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_p_elig_on_prep_mm_4 = "Scale up of oral PrEP and CAB-LA (Op 4) ";
-label median_p_elig_on_prep_inj_mm_4 = "CAB-LA (Op 4)";
-label median_p_elig_on_prep_oral_mm_4 = "oral PrEP (Op 4)";
+label median_p_elig_on_prep_mm_5 = "Scale up of oral PrEP and CAB-LA (Op 4) ";
+label median_p_elig_on_prep_inj_mm_5 = "CAB-LA (Op 4)";
+label median_p_elig_on_prep_oral_mm_5 = "oral PrEP (Op 4)";
 
-series  x=cald y=median_p_elig_on_prep_mm_4/	lineattrs = (color=orange thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_4 	upper=p95_p_elig_on_prep_mm_4  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_on_prep_mm_5/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_mm_5 	upper=p95_p_elig_on_prep_mm_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_oral_mm_4/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_oral_mm_4 	upper=p95_p_elig_on_prep_oral_4  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_on_prep_oral_mm_5/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_oral_mm_5 	upper=p95_p_elig_on_prep_oral_5  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_inj_mm_4/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_inj_mm_4 	upper=p95_p_elig_on_prep_inj_mm_4  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_on_prep_cab_mm_5/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_cab_mm_5 	upper=p95_p_elig_on_prep_cab_mm_5  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of mobile men currently on any PrEP where both Len and oral PrEP is available";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
+
+label median_p_elig_on_prep_mm_6 = "Scale up of oral PrEP and CAB-LA (Op 4) ";
+label median_p_elig_on_prep_inj_mm_6 = "CAB-LA (Op 4)";
+label median_p_elig_on_prep_oral_mm_6 = "oral PrEP (Op 4)";
+
+series  x=cald y=median_p_elig_on_prep_mm_6/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_mm_6 	upper=p95_p_elig_on_prep_mm_6  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
+series  x=cald y=median_p_elig_on_prep_oral_mm_6/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_oral_mm_6 	upper=p95_p_elig_on_prep_oral_6  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+
+series  x=cald y=median_p_elig_on_prep_len_mm_6/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_len_mm_6 	upper=p95_p_elig_on_prep_len_mm_6  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -698,24 +716,34 @@ Title    height=1.5 justify=center "Proportion of mobile men currently on any Pr
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_p_elig_on_prep_inj_mm_4 = "CAB-LA when both oral and CAB-LA available (Op 4)";
-label median_p_elig_on_prep_oral_mm_4 = "Oral PrEP when both oral and CAB-LA available (Op 4)";
-label median_p_elig_on_prep_inj_mm_2 = "CAB-LA when only CAB-LA available (Op 2)";
-label median_p_elig_on_prep_oral_mm_1 = "Oral PrEP when only oral PrEP available (Op 1)";
+label median_p_elig_on_prep_cab_mm_5 = "CAB-LA when both oral and CAB-LA available (Op 5)";
+label median_p_elig_on_prep_oral_mm_5 = "Oral PrEP when both oral and CAB-LA available (Op 5)";
+label median_p_elig_on_prep_len_mm_6 = "Len when both oral and Len available (Op 6)";
+label median_p_elig_on_prep_oral_mm_6 = "Oral PrEP when both oral and Len available (Op 6)";
 
-series  x=cald y=median_p_elig_on_prep_inj_mm_4/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_inj_mm_4 	upper=p95_p_elig_on_prep_inj_mm_4  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+label median_p_elig_on_prep_cab_mm_3 = "CAB-LA when only CAB-LA available (Op 3)";
+label median_p_elig_on_prep_len_mm_4 = "Len when only Len available (Op 4)";
 
-series  x=cald y=median_p_elig_on_prep_oral_mm_4/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_oral_mm_4 	upper=p95_p_elig_on_prep_oral_4  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+label median_p_elig_on_prep_oral_mm_2 = "Oral PrEP when only oral PrEP available (Op 2)";
 
-series  x=cald y=median_p_elig_on_prep_inj_mm_2/	lineattrs = (color=red thickness = 2 pattern=dash);
-band    x=cald lower=p5_p_elig_on_prep_inj_mm_2 	upper=p95_p_elig_on_prep_inj_mm_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_on_prep_cab_mm_5/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_cab_mm_5 	upper=p95_p_elig_on_prep_cab_mm_5  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_on_prep_oral_mm_5/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_on_prep_oral_mm_5 	upper=p95_p_elig_on_prep_oral_5  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_oral_mm_1/	lineattrs = (color=green thickness = 2 pattern=dash);
-band    x=cald lower=p5_p_elig_on_prep_oral_mm_1 	upper=p95_p_elig_on_prep_oral_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_on_prep_len_mm_6/	lineattrs = (color=blue thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_on_prep_len_mm_6 	upper=p95_p_elig_on_prep_len_mm_6  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_on_prep_oral_mm_6/	lineattrs = (color=green thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_on_prep_oral_mm_6 	upper=p95_p_elig_on_prep_oral_6  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+
+series  x=cald y=median_p_elig_on_prep_cab_mm_3/	lineattrs = (color=red thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_on_prep_cab_mm_3 	upper=p95_p_elig_on_prep_cab_mm_3  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_on_prep_len_mm_4/	lineattrs = (color=blue thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_on_prep_len_mm_4 	upper=p95_p_elig_on_prep_len_mm_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+series  x=cald y=median_p_elig_on_prep_oral_mm_2/	lineattrs = (color=green thickness = 2 pattern=dot);
+band    x=cald lower=p5_p_elig_on_prep_oral_mm_2 	upper=p95_p_elig_on_prep_oral_2  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 run;quit;
-
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of ALL people eligible to take PrEP";
@@ -738,6 +766,11 @@ label median_p_prep_any_willing_4 = "Same for all options";
 series  x=cald y=median_p_prep_any_willing_4/	lineattrs = (color=orange thickness = 2);
 band    x=cald lower=p5_p_prep_any_willing_4 	upper=p95_p_prep_any_willing_4  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
 run;quit;
+
+
+
+
+***restart here;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of ALL people starting PrEP";
