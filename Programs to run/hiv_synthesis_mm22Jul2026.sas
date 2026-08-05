@@ -22376,6 +22376,10 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+20,5);
 
+* 	Option 6;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+20,6);
+
 			
 														 
 
