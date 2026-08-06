@@ -2466,6 +2466,7 @@ set_in_options=.;
 
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
+
 		pref_prep_oral = 0.3;
 										
 		date_prep_len_intro=&year_interv;	
@@ -5331,14 +5332,14 @@ if prep_parameters_sio=1 then do ;
 
 		eff_rate_choose_stop_prep_cab = rate_choose_stop_prep_cab_sio;		
 		eff_prob_prep_cab_b = prob_prep_cab_b_sio;
-		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
-		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
+		*eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
+		*eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio; *defined already;
 		pref_prep_cab = pref_prep_cab_sio;
 
 		eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len_sio;		
 		eff_prob_prep_len_b = prob_prep_len_b_sio;
-		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
-		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
+		*eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
+		*eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
 		pref_prep_len = pref_prep_len_sio;
 end;
 
