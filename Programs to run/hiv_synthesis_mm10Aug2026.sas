@@ -2033,6 +2033,7 @@ red_adh_multi_pill = red_adh_multi_pill_pop * exp(rand('normal')*0.3); red_adh_m
 
 * adherence pattern for oral prep; * simplified to be equal to adhav june 22;
 adhav_prep_oral = adhav; 
+if 	prep_oral_adh_sio > 0 then adhav_prep_oral = prep_oral_adh_sio ;
 
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	* lapr JAS Sept2021 ;
@@ -2351,7 +2352,7 @@ set_in_options=.;
 			hard_reach_due_to_mobile=0;
 			hard_reach=0;
 		end;
-
+		
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
@@ -2415,6 +2416,9 @@ set_in_options=.;
 			if  u< 0.4 then pref_prep_cab = 0.25;*25% still prefer oral;
 		end;
 
+		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
+		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
+		pref_prep_oral_sio = pref_prep_oral;
 
 		rate_choose_stop_prep_cab_sio = eff_rate_choose_stop_prep_cab;
 		prob_prep_cab_b_sio = eff_prob_prep_cab_b;
@@ -2455,7 +2459,8 @@ set_in_options=.;
 			hard_reach_due_to_mobile=0;
 			hard_reach=0;
 		end;
-
+		
+		prep_oral_adh_sio = 0.9;*this is to stop oral prep going down over time which seems to happen when both inj and oral are available;
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
 		*rate_test_startprep_any_sio = eff_rate_test_startprep_any; *defined below;
@@ -2496,6 +2501,10 @@ set_in_options=.;
 			if  u< 0.4 then pref_prep_len = 0.25;*25% still prefer oral;
 		end;
 
+		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
+		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
+		pref_prep_oral_sio = pref_prep_oral;
+
 		rate_choose_stop_prep_len_sio = eff_rate_choose_stop_prep_len;
 		prob_prep_len_b_sio = eff_prob_prep_len_b;
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
@@ -2534,7 +2543,8 @@ set_in_options=.;
 			hard_reach_due_to_mobile=0;
 			hard_reach=0;
 		end;
-
+		
+		prep_oral_adh_sio = 0.9;
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
 		*rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
