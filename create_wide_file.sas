@@ -1,8 +1,9 @@
+/*
+* Matt's local machine input;
 proc printto log="C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105\log_file.log";
 run;
-
-* Matt's local machine input;
 libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105";
+*/
 
 /* Build a macro list of OUT* tables */
 proc sql noprint;
@@ -44,12 +45,14 @@ run;
 /* Clean up */
 proc datasets lib=work nolist; delete part:; quit;
 
-/*
+
 * Myriad input;
 %let sasoutputdir = %scan(&sysparm,1," ");
 libname a "&sasoutputdir/";
+proc printto log="&sasoutputdir/create_wide_log.log";
+run;
 data hiv_synthesis_base; set a.concatenated_data; option FULLSTIMER;
-*/
+
 
 /* proc contents; run;
 * proc print; var cald s_hiv1549; run; */
