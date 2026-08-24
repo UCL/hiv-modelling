@@ -305,6 +305,9 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * n_tested_as_sw;				n_tested_as_sw = s_tested_as_fsw * sf * 4;
 * n_tested_sw_sympt;			n_tested_sw_sympt = s_tested_sw_sympt * sf * 4;
 * n_tested_sw_anc;				n_tested_sw_anc = s_tested_sw_anc * sf * 4;
+* p_tested_sw_sympt;			p_tested_sw_sympt = s_tested_sw_sympt/(s_sw_1564 - s_diag_sw);
+* p_tested_sw_anc;				p_tested_sw_anc = s_tested_sw_anc/(s_sw_1564 - s_diag_sw);
+
 
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
 * prop_sw_onprep_oral; 			if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_oral = s_prep_oral_sw/ (s_sw_1564 - s_hiv_sw) ;
@@ -387,6 +390,8 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * n_tested_as_esw;				n_tested_as_esw = s_tested_as_esw * sf * 4;
 * n_tested_esw_sympt;			n_tested_esw_sympt = s_tested_esw_sympt * sf * 4;
 * n_tested_esw_anc;				n_tested_esw_anc = s_tested_esw_anc * sf * 4;
+* p_tested_esw_sympt;			p_tested_esw_sympt = s_tested_esw_sympt/(s_esw_1564 - s_diag_esw);
+* p_tested_esw_anc;				p_tested_esw_anc = s_tested_esw_anc/(s_esw_1564 - s_diag_esw);
 
 
 
@@ -401,7 +406,7 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 
 * prevalence_esw;				prevalence_esw = s_hiv_esw1549_ / s_esw_1549; 
 
-* incidence_esw;					if (s_esw_1564  - s_hiv_esw  + s_primary_esw) gt 0 then incidence_esw =(s_primary_esw * 4 * 100) / (s_esw_1564  - s_hiv_esw  + s_primary_esw);
+* incidence_esw;				if (s_esw_1564  - s_hiv_esw  + s_primary_esw) gt 0 then incidence_esw =(s_primary_esw * 4 * 100) / (s_esw_1564  - s_hiv_esw  + s_primary_esw);
 
 *sti;							p_sti_esw = s_sti_esw/s_esw_1564;
 
@@ -440,7 +445,7 @@ p_totdur_0to3_sw  	 p_totdur_3to5_sw     p_totdur_6to9_sw  	p_totdur_10to19_sw
 p_fsw_newp0_   	 	 p_fsw_newp1to5_   	  p_fsw_newp6to40_  	p_fsw_newp41to130_  p_fsw_newpov130_
 av_sw_newp	 		 p_newp_sw
 p_sw_prog_vis		 n_tested_sw	      p_tested_past_year_sw	p_sw_tested_swprog	
-n_tested_as_sw		 n_tested_sw_sympt	  n_tested_sw_anc
+n_tested_as_sw		 n_tested_sw_sympt	  n_tested_sw_anc		p_tested_sw_sympt	 p_tested_sw_anc
 
 prop_sw_onprep		 prop_sw_onprep_oral  prop_sw_onprep_len
 p_diag_sw			 p_onart_diag_sw	  p_onart_vl1000_sw		
@@ -457,7 +462,7 @@ p_totdur_0to3_esw  	 p_totdur_3to5_esw     p_totdur_6to9_esw  	p_totdur_10to19_e
 p_esw_newp0_   	 	 p_esw_newp1to3_       p_esw_newp4to8_  	
 av_esw_newp	 		 p_newp_esw
 p_esw_prog_vis		 n_tested_esw	       p_tested_past_year_esw	p_esw_tested_swprog		
-n_tested_as_esw		 n_tested_esw_sympt	   n_tested_esw_anc
+n_tested_as_esw		 n_tested_esw_sympt	   n_tested_esw_anc			p_tested_esw_sympt	 p_tested_esw_anc
 
 prop_esw_onprep		 prop_esw_onprep_oral  prop_esw_onprep_len	
 p_diag_esw			 p_onart_diag_esw	   p_onart_vl1000_esw		
@@ -489,9 +494,9 @@ prop_onprep_oral	prop_onprep_len		prop_onprep_len_m	prop_onprep_len_w	prop_onpre
 
 proc sort data=y;by run option;run;
 
-data a.pace_03_08_26_short; set y;run;
+data a.pace_10_08_26_short; set y;run;
 
-data y; set a.pace_03_08_26_short;run;
+data y; set a.pace_10_08_26_short;run;
 
 options nomprint;
   option nospool;
@@ -556,7 +561,7 @@ data &v ; merge y_00 y_05 y_10 y_15 y_20 y_26 y_25 y_30 t_26_46 t_26_76;
 %var(v=p_fsw_newp0_);   %var(v=p_fsw_newp1to5_);    %var(v=p_fsw_newp6to40_);  	%var(v=p_fsw_newp41to130_);	%var(v=p_fsw_newpov130_);
 %var(v=av_sw_newp);	 	%var(v=p_newp_sw);
 %var(v=p_sw_prog_vis);  %var(v=n_tested_sw);	    %var(v=p_tested_past_year_sw); %var(v=p_sw_tested_swprog);
-%var(v=n_tested_as_sw);	%var(v=n_tested_sw_sympt);	%var(v=n_tested_sw_anc);
+%var(v=n_tested_as_sw);	%var(v=n_tested_sw_sympt);	%var(v=n_tested_sw_anc);	%var(v=p_tested_sw_sympt);	%var(v=p_tested_sw_anc);
 %var(v=prop_sw_onprep);	%var(v=prop_sw_onprep_oral);%var(v=prop_sw_onprep_len);	
 %var(v=p_diag_sw);		%var(v=p_onart_diag_sw);	%var(v=p_onart_vl1000_sw);	
 %var(v=prevalence_sw);	%var(v=incidence_sw);		%var(v=p_sti_sw);			%var(v=p_hard_reach_sw);
@@ -572,7 +577,7 @@ data &v ; merge y_00 y_05 y_10 y_15 y_20 y_26 y_25 y_30 t_26_46 t_26_76;
 %var(v=p_esw_newp0_);   %var(v=p_esw_newp1to3_);    %var(v=p_esw_newp4to8_);  	
 %var(v=av_esw_newp);	%var(v=p_newp_esw);
 %var(v=p_esw_prog_vis); %var(v=n_tested_esw);	    %var(v=p_tested_past_year_esw); %var(v=p_esw_tested_swprog);
-%var(v=n_tested_as_esw);%var(v=n_tested_esw_sympt);	%var(v=n_tested_esw_anc);
+%var(v=n_tested_as_esw);%var(v=n_tested_esw_sympt);	%var(v=n_tested_esw_anc);		%var(v=p_tested_esw_sympt);	%var(v=p_tested_esw_anc);
 %var(v=prop_esw_onprep);%var(v=prop_esw_onprep_oral);%var(v=prop_esw_onprep_len);	
 %var(v=p_diag_esw);		%var(v=p_onart_diag_esw);	%var(v=p_onart_vl1000_esw);	
 %var(v=prevalence_esw);	%var(v=incidence_esw);	    %var(v=p_sti_esw);			%var(v=p_hard_reach_esw);
@@ -612,7 +617,7 @@ p_totdur_0to3_sw 	p_totdur_3to5_sw  	p_totdur_6to9_sw  	p_totdur_10to19_sw
 p_fsw_newp0_  	 	p_fsw_newp1to5_   	p_fsw_newp6to40_  	p_fsw_newp41to130_	p_fsw_newpov130_
 av_sw_newp	 		p_newp_sw
 p_sw_prog_vis  		n_tested_sw	    	p_tested_past_year_sw 	p_sw_tested_swprog	
-n_tested_as_sw		n_tested_sw_sympt	n_tested_sw_anc
+n_tested_as_sw		n_tested_sw_sympt	n_tested_sw_anc		p_tested_sw_sympt	p_tested_sw_anc
 prop_sw_onprep		prop_sw_onprep_oral	prop_sw_onprep_len	
 p_diag_sw			p_onart_diag_sw		p_onart_vl1000_sw	
 prevalence_sw		incidence_sw		p_sti_sw			p_hard_reach_sw
@@ -628,7 +633,7 @@ p_totdur_0to3_esw 	p_totdur_3to5_esw	p_totdur_6to9_esw   p_totdur_10to19_esw
 p_esw_newp0_  		p_esw_newp1to3_     p_esw_newp4to8_  	
 av_esw_newp			p_newp_esw
 p_esw_prog_vis 		n_tested_esw	    p_tested_past_year_esw 	p_esw_tested_swprog		
-n_tested_as_esw		n_tested_esw_sympt	n_tested_esw_anc
+n_tested_as_esw		n_tested_esw_sympt	n_tested_esw_anc	p_tested_esw_sympt	p_tested_esw_anc
 prop_esw_onprep		prop_esw_onprep_oral	prop_esw_onprep_len	
 p_diag_esw			p_onart_diag_esw	p_onart_vl1000_esw	
 prevalence_esw		incidence_esw	    p_sti_esw			p_hard_reach_esw
@@ -678,7 +683,7 @@ rel_esw_lower_adh		rate_engage_esw_program		erate_disengage_esw_program*/
 ;proc sort; by run;run;
 
 ***THIS STORES THE NEWLY CREATED WIDE FILE IN LIBRARY A. THIS NEW FILE WILL BE READ INTO THE ANALYSIS PROGRAM;
-data a.wide_pace_03_08_26;
+data a.wide_pace_10_08_26;
 merge   wide_outputs  wide_par ;  
 by run;run;
 

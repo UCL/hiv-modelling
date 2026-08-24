@@ -21000,8 +21000,12 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
-proc print;var cald sw esw age tested tested_anc tested_labdel tested_f_sympt registd hard_reach hard_reach_sw hard_reach_esw who3_event tb adc;
-where (esw=1) and age gt 15;run;
+proc print;var cald sw esw age 
+ eff_sw_higher_prob_loss_at_diag eff_esw_higher_prob_loss_at_diag eff_sw_higher_int eff_esw_higher_int eff_prob_loss_at_diag
+e_eff_prob_loss_at_diag lost
+;
+where (sw=1 or esw=1) and age gt 15;run;
+
 
 * procs;
 

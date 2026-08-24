@@ -172,8 +172,8 @@ newp_seed = 7;
 * p_hard_reach_htn_w;		p_hard_reach_htn_w = p_hard_reach_w - hard_reach_lower_htn;
 * p_hard_reach_htn_m;		p_hard_reach_htn_m = p_hard_reach_m - hard_reach_lower_htn;
 
-* p_hard_reach_esw;			p_hard_reach_esw = 0.75+(rand('uniform')*0.10);
-* p_hard_reach_sw;			p_hard_reach_sw = 0.75+(rand('uniform')*0.10);*some fsw may still use testing services;
+* p_hard_reach_esw;			p_hard_reach_esw = 0.80+(rand('uniform')*0.10);
+* p_hard_reach_sw;			p_hard_reach_sw = 0.80+(rand('uniform')*0.10);*some fsw may still use testing services;
 
 
 
@@ -18199,8 +18199,6 @@ tested_f_anc=0; if gender=2 and tested=1 and tested_anc = 1 then tested_f_anc=1;
 tested_sw_anc=0; if sw=1 and tested=1 and tested_anc = 1 then tested_sw_anc=1;
 tested_esw_anc=0; if esw=1 and tested=1 and tested_anc = 1 then tested_esw_anc=1;
 
-
-
 tested_f_sympt=0; tested_sw_sympt=0; tested_esw_sympt=0; 
 	if gender=2 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
 	and tested_anc ne 1 then do;
@@ -18216,6 +18214,10 @@ tested_f_non_anc=0; if gender=2 and tested=1 and tested_anc ne 1 then tested_f_n
 tested_ancpd=0; if dt_lastbirth=caldate&j-0.25 and (tested_pd=1 or 
                    (dt_last_test ne . and dt_lastbirth ne . and dt_lastbirth-0.75 lt dt_last_test le dt_lastbirth)) then tested_ancpd=1;
 test_anclabpd=0;if gender=2 and tested=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then test_anclabpd=1;
+test_sw_anclabpd=0;if sw=1 and tested=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then test_sw_anclabpd=1;
+test_esw_anclabpd=0;if esw=1 and tested=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then test_esw_anclabpd=1;
+
+
 tested_1524w=0; if gender=2 and tested=1 and 15 <= age < 25 then tested_1524w=1;
 
 
@@ -20111,7 +20113,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; 
-	s_tested_ancpd + tested_ancpd ; s_test_anclabpd + test_anclabpd ; s_tested_1524w + tested_1524w; s_tested_f_anc + tested_f_anc ;
+	s_tested_ancpd + tested_ancpd ; s_test_anclabpd + test_anclabpd ; s_test_sw_anclabpd + test_sw_anclabpd ; s_test_esw_anclabpd + test_esw_anclabpd ;
+	s_tested_1524w + tested_1524w;  s_tested_f_anc + tested_f_anc ;
 	s_tested_sw_anc + tested_sw_anc ;s_tested_esw_anc + tested_esw_anc ;s_tested_sw_sympt + tested_sw_sympt ;s_tested_esw_sympt + tested_esw_sympt ;
 
 	s_ever_tested_m + ever_tested_m ; s_ever_tested_w + ever_tested_w ; s_firsttest + firsttest ; 
@@ -21826,7 +21829,7 @@ s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_pr
 
 
 /*testing and diagnosis*/
-s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  
+s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_test_sw_anclabpd		s_test_esw_anclabpd	s_tested_1524w s_tested_f_anc  
 s_tested_sw_anc 	  s_tested_esw_anc 		s_tested_sw_sympt 		 s_tested_esw_sympt 
 s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
@@ -23039,7 +23042,7 @@ s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_pr
 
 
 /*testing and diagnosis*/
-s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc 
+s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_test_sw_anclabpd		s_test_esw_anclabpd	s_tested_1524w s_tested_f_anc 
 s_tested_sw_anc 	  s_tested_esw_anc 		s_tested_sw_sympt 		 s_tested_esw_sympt
 s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
@@ -24085,7 +24088,7 @@ s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_pr
 
 
 /*testing and diagnosis*/
-s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  
+s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_test_sw_anclabpd		s_test_esw_anclabpd	s_tested_1524w s_tested_f_anc  
 s_tested_sw_anc 	  s_tested_esw_anc 		s_tested_sw_sympt 		 s_tested_esw_sympt
 s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
