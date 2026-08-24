@@ -45,7 +45,11 @@ p_diag_sw_00  p_diag_sw_05  p_diag_sw_10  p_diag_sw_15;run;
 
 
 proc means n p50 mean p5 p95;var
-p_tested_sw_sympt_25 p_tested_esw_sympt_25 p_tested_sw_anc_25 p_tested_esw_anc_25 p_tested_sw_anclabpd_25 p_tested_esw_anclabpd_25;run;
+p_tested_sw_sympt_25 p_tested_esw_sympt_25 p_tested_sw_anc_25 p_tested_esw_anc_25 
+
+n_tested_sw_anc_25 n_tested_esw_anc_25
+
+p_tested_sw_anclabpd_25 p_tested_esw_anclabpd_25;run;
 
 ***Table A0 - use either 2020 or 2023 estimates - whichever is closest to observed data;
 proc means n p50 mean p5 p95;var n_hiv_23  n_onart_23

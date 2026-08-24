@@ -305,9 +305,9 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * n_tested_as_sw;				n_tested_as_sw = s_tested_as_fsw * sf * 4;
 * n_tested_sw_sympt;			n_tested_sw_sympt = s_tested_sw_sympt * sf * 4;
 * n_tested_sw_anc;				n_tested_sw_anc = s_tested_sw_anc * sf * 4;
-* p_tested_sw_sympt;			p_tested_sw_sympt = s_tested_sw_sympt/(s_sw_1564 - s_diag_sw);
-* p_tested_sw_anc;				p_tested_sw_anc = s_tested_sw_anc/(s_sw_1564 - s_diag_sw);
-* p_tested_sw_anclabpd;			p_tested_sw_anclabpd = s_test_sw_anclabpd/(s_sw_1564 - s_diag_sw);
+* p_tested_sw_sympt;			p_tested_sw_sympt = s_tested_sw_sympt/s_tested_sw;
+* p_tested_sw_anc;				p_tested_sw_anc = s_tested_sw_anc/s_tested_sw;
+* p_tested_sw_anclabpd;			p_tested_sw_anclabpd = s_test_sw_anclabpd/s_tested_sw;
 
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
 * prop_sw_onprep_oral; 			if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_oral = s_prep_oral_sw/ (s_sw_1564 - s_hiv_sw) ;
@@ -390,9 +390,9 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * n_tested_as_esw;				n_tested_as_esw = s_tested_as_esw * sf * 4;
 * n_tested_esw_sympt;			n_tested_esw_sympt = s_tested_esw_sympt * sf * 4;
 * n_tested_esw_anc;				n_tested_esw_anc = s_tested_esw_anc * sf * 4;
-* p_tested_esw_sympt;			p_tested_esw_sympt = s_tested_esw_sympt/(s_esw_1564 - s_diag_esw);
-* p_tested_esw_anc;				p_tested_esw_anc = s_tested_esw_anc/(s_esw_1564 - s_diag_esw);
-* p_tested_esw_anclabpd;		p_tested_esw_anclabpd = s_test_esw_anclabpd/(s_esw_1564 - s_diag_esw);
+* p_tested_esw_sympt;			p_tested_esw_sympt = s_tested_esw_sympt/s_tested_esw;
+* p_tested_esw_anc;				p_tested_esw_anc = s_tested_esw_anc/s_tested_esw;
+* p_tested_esw_anclabpd;		p_tested_esw_anclabpd = s_test_esw_anclabpd/s_tested_esw;
 
 * prop_esw_onprep; 				if (s_esw_1564 - s_hiv_esw) gt 0 then prop_esw_onprep = s_prep_any_esw/ (s_esw_1564 - s_hiv_esw) ;
 * prop_esw_onprep_oral; 		if (s_esw_1564 - s_hiv_esw) gt 0 then prop_esw_onprep_oral = s_prep_oral_esw/ (s_esw_1564 - s_hiv_esw) ;
@@ -490,8 +490,15 @@ prop_onprep_oral	prop_onprep_len		prop_onprep_len_m	prop_onprep_len_w	prop_onpre
 
 
 ;
+proc means mean n;var
+	   				 	
+n_tested_sw_sympt	n_tested_esw_sympt	n_tested_sw_anc	  n_tested_esw_anc	p_tested_sw_sympt	 p_tested_esw_sympt
+p_tested_sw_anc		p_tested_esw_anc	p_tested_esw_anclabpd					p_tested_sw_anclabpd
+;where 2025 <= cald < 2026;run;
 
 proc sort data=y;by run option;run;
+
+
 
 data a.pace_12_08_26_short; set y;run;
 
