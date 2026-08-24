@@ -20032,20 +20032,20 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_ihd_inc_all_modsev_ge65 + ihd_inc_all_modsev_ge65;
 	s_cva_inc_all_modsev_ge65 + cva_inc_all_modsev_ge65;
 
-	s_ihd_prev_ge18 + prior_ihd_ge18; 
-	s_cva_prev_ge18 + prior_cva_ge18;
-	s_ihd_prev_2039 + prior_ihd_2039; s_ihd_prev_2039m + prior_ihd_2039m; s_ihd_prev_2039w + prior_ihd_2039w; 
-	s_cva_prev_2039 + prior_cva_2039; s_cva_prev_2039m + prior_cva_2039m; s_cva_prev_2039w + prior_cva_2039w;
-	s_ihd_prev_4049 + prior_ihd_4049; s_ihd_prev_4049m + prior_ihd_4049m; s_ihd_prev_4049w + prior_ihd_4049w;
-	s_cva_prev_4049 + prior_cva_4049; s_cva_prev_4049m + prior_cva_4049m; s_cva_prev_4049w + prior_cva_4049w;
-	s_ihd_prev_5059 + prior_ihd_5059; s_ihd_prev_5059m + prior_ihd_5059m; s_ihd_prev_5059w + prior_ihd_5059w;
-	s_cva_prev_5059 + prior_cva_5059; s_cva_prev_5059m + prior_cva_5059m; s_cva_prev_5059w + prior_cva_5059w;
-	s_ihd_prev_6069 + prior_ihd_6069; s_ihd_prev_6069m + prior_ihd_6069m; s_ihd_prev_6069w + prior_ihd_6069w;
-	s_cva_prev_6069 + prior_cva_6069; s_cva_prev_6069m + prior_cva_6069m; s_cva_prev_6069w + prior_cva_6069w;
-	s_ihd_prev_7079 + prior_ihd_7079; s_ihd_prev_7079m + prior_ihd_7079m; s_ihd_prev_7079w + prior_ihd_7079w;
-	s_cva_prev_7079 + prior_cva_7079; s_cva_prev_7079m + prior_cva_7079m; s_cva_prev_7079w + prior_cva_7079w;
-	s_ihd_prev_ge80 + prior_ihd_ge80; s_ihd_prev_ge80m + prior_ihd_ge80m; s_ihd_prev_ge80w + prior_ihd_ge80w;
-	s_cva_prev_ge80 + prior_cva_ge80; s_cva_prev_ge80m + prior_cva_ge80m; s_cva_prev_ge80w + prior_cva_ge80w;
+	s_ihd_prev_ge18m + prior_ihd_ge18m; s_ihd_prev_ge18w + prior_ihd_ge18w;
+	s_cva_prev_ge18m + prior_cva_ge18m; s_cva_prev_ge18w + prior_cva_ge18w;
+	s_ihd_prev_2039m + prior_ihd_2039m; s_ihd_prev_2039w + prior_ihd_2039w; 
+	s_cva_prev_2039m + prior_cva_2039m; s_cva_prev_2039w + prior_cva_2039w;
+	s_ihd_prev_4049m + prior_ihd_4049m; s_ihd_prev_4049w + prior_ihd_4049w;
+	s_cva_prev_4049m + prior_cva_4049m; s_cva_prev_4049w + prior_cva_4049w;
+	s_ihd_prev_5059m + prior_ihd_5059m; s_ihd_prev_5059w + prior_ihd_5059w;
+	s_cva_prev_5059m + prior_cva_5059m; s_cva_prev_5059w + prior_cva_5059w;
+	s_ihd_prev_6069m + prior_ihd_6069m; s_ihd_prev_6069w + prior_ihd_6069w;
+	s_cva_prev_6069m + prior_cva_6069m; s_cva_prev_6069w + prior_cva_6069w;
+	s_ihd_prev_7079m + prior_ihd_7079m; s_ihd_prev_7079w + prior_ihd_7079w;
+	s_cva_prev_7079m + prior_cva_7079m; s_cva_prev_7079w + prior_cva_7079w;
+	s_ihd_prev_ge80m + prior_ihd_ge80m; s_ihd_prev_ge80w + prior_ihd_ge80w;
+	s_cva_prev_ge80m + prior_cva_ge80m; s_cva_prev_ge80w + prior_cva_ge80w;
 
 	/*visits and linkage*/
 

@@ -76,8 +76,6 @@ end;
 
 * ================================================================================= ;
 
-ly = s_ly * &sf;  *life years;
-dly = s_dly * &sf; *discounted life years;
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
@@ -112,15 +110,16 @@ ddol_cost = s_dcost_dol * &sf * 4 / 1000;
 
 if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_prep_oral=. then s_dcost_prep_oral=0;
-if s_dcost_prep_inj=. then s_dcost_prep_inj=0;
+if s_dcost_prep_cab=. then s_dcost_prep_cab=0;
+if s_dcost_prep_len=. then s_dcost_prep_len=0;
 if s_dcost_prep_visit=. then s_dcost_prep_visit=0;
 if s_dcost_prep_ac_adh=. then s_dcost_prep_ac_adh=0;
 if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
 ***Vaginal ring cost will also needed to be added here when used in HIV Synthesis;
-s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_inj;
-s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_inj;
+s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_cab + s_dcost_prep_len;
+s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_cab + s_dcost_prep_visit_len;
 
 dvis_cost = s_dvis_cost * &sf * 4 / 1000;
 dart_cost = s_dart_cost * &sf * 4 / 1000; ***This should be the same as dart_cost_y below (and is not used);
@@ -134,11 +133,7 @@ dcot_cost = s_dcot_cost * &sf * 4 / 1000;
 dres_cost = s_dres_cost * &sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
 dcost_prep = s_dcost_prep * &sf * 4 / 1000; 
-dcost_prep_inj = s_dcost_prep_inj * &sf * 4 / 1000; 
-dcost_prep_oral = s_dcost_prep_oral * &sf * 4 / 1000; 
-dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 	
-dcost_prep_visit_inj  = s_dcost_prep_visit_inj * &sf * 4 / 1000; 	
-dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
+dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
 dcost_sw_program = s_dcost_sw_program  * &sf * 4 / 1000; 
 
@@ -149,7 +144,7 @@ dswitchline_cost = s_dcost_switch_line * &sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * &sf * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; 
+
 
 dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 
@@ -192,7 +187,7 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 ***Will need to add the cost of VG when included in HIV Synthesis + dcost_avail_self_test ;
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
+		dcost_prep + dcost_prep_visit + dcost_prep_ac_adh +
 		dcost_sw_program +
 		dhtn_cost_total;
 

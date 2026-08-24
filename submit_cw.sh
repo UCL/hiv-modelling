@@ -27,7 +27,7 @@ combine_job=$(qsub \
     -wd "$finaloutdir" \
     -l h_rt=48:00:00 \
     -l mem=16G \
-    -l tmpfs=1000G \
+    -l tmpfs=100G \
     -v SASINPUT="$inputdir",SASOUTPUTDIR="$finaloutdir" \
     "$inputdir/combine.sh")
 
@@ -48,6 +48,6 @@ qsub \
     -wd "$finaloutdir" \
     -l h_rt=48:00:00 \
     -l mem=16G \
-    -l tmpfs=1000G \
+    -l tmpfs=100G \
     -v sas_infile="$inputdir/create_wide_file.sas",SASOUTPUTDIR="$finaloutdir" \
     "$inputdir/run_create_wide_file.sh"

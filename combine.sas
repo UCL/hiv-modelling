@@ -72,6 +72,8 @@ data a.concatenated_data(compress=binary);
         s_ageg85plw
 
         /* Population / mortality */
+		s_alive_m
+		s_alive_w
         s_dead_allcause_ge18
         s_dead_cvd
         s_dead_cvd_2544
@@ -90,7 +92,6 @@ data a.concatenated_data(compress=binary);
         s_dead_cvd_ge65
         s_dead_cvd_ge80m
         s_dead_cvd_ge80w
-        s_dead_ddaly
         s_dead_hivneg_anycause
         s_dead_hivneg_anycause_ge18
         s_dead_hivneg_cvd_ge18
@@ -135,9 +136,8 @@ data a.concatenated_data(compress=binary);
         s_hiv85plw
 
         /* Life years and DALYs */
-        s_dly
         s_live_ddaly
-        s_ly
+		s_dead_ddaly
 
         /* Costs */
         s_d_t_adh_int_cost
@@ -145,7 +145,6 @@ data a.concatenated_data(compress=binary);
         s_dart_cost
         s_dcd4_cost
         s_dcost_3tc
-        s_dcost_child_hiv
         s_dcost_circ
         s_dcost_condom_dn
         s_dcost_dar
@@ -155,10 +154,12 @@ data a.concatenated_data(compress=binary);
         s_dcost_lpr
         s_dcost_nev
         s_dcost_prep_ac_adh
-        s_dcost_prep_inj
         s_dcost_prep_oral
-        s_dcost_prep_visit_inj
-        s_dcost_prep_visit_oral
+		s_dcost_prep_cab
+		s_dcost_prep_len
+		s_dcost_prep_visit_oral
+		s_dcost_prep_visit_cab
+		s_dcost_prep_visit_len
         s_dcost_sw_program
         s_dcost_switch_line
         s_dcost_taz
