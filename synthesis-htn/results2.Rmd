@@ -455,7 +455,7 @@ fig3 <- ggplot() +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
   scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
   labs(title = "Cost-effectiveness frontier",
-       subtitle = "Per 10 million adults over 50-year time horizon (2024 - 2074), n=3000 setting-scenarios",
+       subtitle = "Per 10 million adults over 50-year time horizon",
        y = "Annual incremental cost (millions $USD)",
        x = "Annual DALYs averted (thousands)") +
   labs(color = "Policy") +

@@ -1,0 +1,135 @@
+---
+title: "modelling grant"
+author: "Matt Hickey"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(readxl)
+library(knitr)
+library(kableExtra)
+library(scales)
+library(RColorBrewer)
+library(patchwork)
+library(ggrepel)
+
+options(tinytex.verbose = TRUE)
+options(scipen = 999)
+
+knitr::opts_chunk$set(echo = FALSE, message = F, fig.height=10, fig.width=15)
+require("knitr")
+opts_knit$set(root.dir = "/Users/sf124046/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration")
+
+load("/Users/sf124046/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration/SynthesisHTN_105.RData")
+
+pct <- function(x) {
+  y <- ifelse(x < 0.1, paste0(round((x * 100), 1), "%"), paste0(round((x * 100), 0), "%"))
+  return(y)
+}
+
+fx_pctmean_range <- function(data) {
+  mean_val <- round(mean(data, na.rm = TRUE) * 100, 1)
+  lower_val <- round(quantile(data, q = 0.05, na.rm = TRUE) * 100, 1)
+  upper_val <- round(quantile(data, q = 0.95, na.rm = TRUE) * 100, 1)
+  result <- paste0(mean_val, "% (", lower_val, "% to ", upper_val, "%)")
+  return(result)
+}
+
+fx_mean_range <- function(data, digits = 2) {
+  mean_val <- round(mean(data, na.rm = TRUE), digits)
+  lower_val <- round(quantile(data, 0.05, na.rm = TRUE), digits)
+  upper_val <- round(quantile(data, 0.95, na.rm = TRUE), digits)
+  result <- paste0(mean_val, " (", lower_val, " to ", upper_val, ")")
+  return(result)
+}
+
+y <- c("2474")
+
+```
+
+## Figure 3. Cost-effectiveness of hypertension treatment policies
+```{r icer}
+plot_icer_base <- plot_icer %>% 
+  rename(policy = source) %>% 
+  filter(cost_cat == "Base case cost assumptions") %>% 
+  mutate(policy = case_when(
+    policy == "SOC" ~ "Status quo",
+    policy == "CCC" ~ "Policy 1",
+    policy == "CHW" ~ "Policy 2"
+  )) %>% 
+  mutate(policy = factor(policy,
+                         levels = c("Status quo", "Policy 1", "Policy 2"))) %>% 
+  mutate(icer_text = ifelse(is.na(icer2), "Status quo", paste0(policy, "\n", "$", icer2, "/DALY")),
+         nudge_y = ifelse(policy == "Policy 1", 6, 
+                          ifelse(policy == "Policy 2", 2, NA)))
+
+df_netdaly <- df_netdaly %>%
+  rename(policy = source) %>%
+  mutate(policy = recode(policy,
+                         "SOC" = "Status quo",
+                         "CCC" = "Policy 1",
+                         "CHW" = "Policy 2")) %>%
+  mutate(policy = factor(policy,
+                         levels = c("Status quo", "Policy 1", "Policy 2")))
+
+ccc_icer <- plot_icer_base %>% filter(policy == "Policy 1") %>% ungroup() %>% select(icer2)
+chw_icer <- plot_icer_base %>% filter(policy == "Policy 2") %>% ungroup() %>% select(icer2)
+
+# Create the overlayed plot
+fig3 <- ggplot() +
+  # First plot: Points from df_netdaly
+  geom_point(data = df_netdaly %>% 
+               filter(year == "2474", cost_cat == "Base case cost assumptions", cost_inc > -10, cost_inc <30, ddaly_averted >-30, ddaly_averted <140),
+             aes(x = ddaly_averted, y = cost_inc, color = policy), alpha = 0.4, size = 0.1) +
+  # Axis lines at x=0 and y=0
+  geom_hline(yintercept = 0, color = "#636363", linetype = "dashed") +
+  geom_vline(xintercept = 0, color = "#636363", linetype = "dashed") +
+  # Second plot: Lines and points from plot_icer_base
+  geom_point(data = plot_icer_base,
+             aes(x = mean_ddaly, y = mean_cost), size = 2.5, alpha = 1, color = "black") +
+  geom_line(data = plot_icer_base,
+            aes(x = mean_ddaly, y = mean_cost),
+            linewidth = 0.8) +
+  geom_point(data = plot_icer_base,
+             aes(x = mean_ddaly, y = mean_cost, color = policy), size = 1.5) +
+  # ggrepel annotations
+  geom_label_repel(data = plot_icer_base, 
+                   aes(x = mean_ddaly, y = mean_cost, color = policy, label = icer_text), 
+                   nudge_y = c(7, -7, -5),
+                   nudge_x = c(-10, 30, 30),
+                   fill = alpha("white", 0.5),
+                   direction = "y",  # Keep labels in a vertical column
+                   hjust = 0.5,  # Left-align the text
+                   segment.size = 0.2,
+                   force = 1,
+                   min.segment.length = 0,
+                   show.legend = FALSE) +
+  # Shared labels, theme, and scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  labs(title = "Cost-effectiveness frontier",
+       subtitle = "Per 10 million adults over 50-year time horizon",
+       y = "Annual incremental cost (millions $USD)",
+       x = "Annual DALYs averted (thousands)") +
+  labs(color = "Policy") +
+  theme_classic() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", color = "#636363"),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom",
+    text = element_text(color = "#636363"),
+    axis.line = element_line(color = "#636363"),
+    axis.ticks = element_line(color = "#636363"),
+    axis.text = element_text(color = "#636363")
+  ) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2")
+
+# Display the combined plot
+print(fig3)
+
+ggsave("results/grant_icer.pdf", plot = fig3, device = "pdf", width = 7.5, height = 5, units = "in", dpi = 600)
+
+```

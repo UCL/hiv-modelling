@@ -34,9 +34,9 @@ df_sas_wide <- df_sas_wide %>%
   select(-c(starts_with("p_diag_"), starts_with("p_onart_"), starts_with("p_vg1000"), starts_with("p_vl1000"), starts_with("prevalence_vg1000"), starts_with("prevalence1549m"), starts_with("prevalence1549w"), starts_with("incidence1549"))) %>% 
   rename(setting_sbp_inc = prob_sbp_increase_2474,
          setting_sbp_cal = sbp_cal_eff_2474,
-         setting_cvd_tx = rr_cvd_tx_2474,
+         setting_cvd_tx = rr_cvd_tx_2474, 
          setting_cvd_tx_eff = rr_cvd_tx_effective_2474,
-         setting_cost_lowqual_cvd = cost_lowqual_cvdcare_2474,
+         setting_cost_lowqual_cvd = rr_cost_lowqual_cvdcare_2474, # updated to rr_ to work with new code. may need to remove rr_ to work with old output
          setting_prob_htn_link = prob_htn_link_2474) %>% 
   select(-c(starts_with("prob_sbp_increase_"), starts_with("sbp_cal_eff_"), starts_with("rr_cvd_tx_"), starts_with("rr_cvd_tx_effective_"), starts_with("prob_htn_link_")))
 
