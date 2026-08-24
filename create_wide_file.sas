@@ -5,47 +5,6 @@ run;
 libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105";
 */
 
-/* Build a macro list of OUT* tables */
-proc sql noprint;
-  select memname
-    into :outlist separated by ' '
-  from dictionary.tables
-  where libname='A' and upcase(memname) like 'OUT%'
-  order by memname;
-quit;
-
-%let n = %sysfunc(countw(&outlist));
-%let CHUNK = 300;   /* number of tables per chunk */
-
-/* Create chunked parts */
-%macro make_parts;
-  %local i j start stop p; %let p=0;
-  %do i=1 %to &n %by &CHUNK;
-    %let p = %eval(&p+1);
-    %let start = &i;
-    %let stop  = %sysfunc(min(&n, %eval(&i+&CHUNK-1)));
-
-    data part&p(compress=binary);
-      set
-      %do j=&start %to &stop;
-        a.%scan(&outlist, &j)
-      %end;
-      ;
-    run;
-  %end;
-  %global n_parts; %let n_parts=&p;
-%mend;
-%make_parts;
-
-/* Final combine */
-data hiv_synthesis_base(compress=binary);
-  set part1-part&n_parts;
-run;
-
-/* Clean up */
-proc datasets lib=work nolist; delete part:; quit;
-
-
 * Myriad input;
 %let sasoutputdir = %scan(&sysparm,1," ");
 libname a "&sasoutputdir/";
