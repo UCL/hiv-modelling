@@ -1,22 +1,22 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
-
+/*
 * run search2_001;
 * Matt local machine input;
 libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026';
 %let tmpfilename = out;
+*/
 
-/*
 * Myriad input; 
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
-*/
+
 
  proc printto log="synthesis_log.log"; run;
 
 	
-%let population = 1000 ; 
-%let year_interv = 2024;
+%let population = 100000 ; 
+%let year_interv = 2026;
 
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -1004,13 +1004,13 @@ prob_symp_hypertension = 0.025;
 		Zhou Lancet 2021 - proportion women in SSA diagnosed 54%, proportion men diagnosed 34% (1.59-fold higher);		
 %sample_uniform(rr_test_sbp_women, 1 1.1 1.2);
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
-prob_test_sbp_undiagnosed = 0.01 * rr_htn_diagnosis;
+prob_test_sbp_undiagnosed = 0.02 * rr_htn_diagnosis;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 10; 
 * RR of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
 
 
-prob_test_sbp_diagnosed = 0.05 * rr_htn_diagnosis; 
+prob_test_sbp_diagnosed = 0.08 * rr_htn_diagnosis; 
 * RR of getting bp tested in a person <40 years of age compared to baseline probability;
 rr_test_sbp_young = 0.5; 
 * relative risk of bp testing for current HIV visit;
@@ -1030,7 +1030,7 @@ comm_test_age = .;
 
 * probability of hypertension treatment initiation and intensification ;
 	* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
-	%sample_uniform(prob_imm_htn_tx_s1, 0.1 0.2 0.3); 
+	%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
 	* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
 	prob_imm_htn_tx_s2 = prob_imm_htn_tx_s1 + 0.3;
 	* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
@@ -2956,6 +2956,7 @@ who may be dead and hence have caldate{t} missing;
 
 
 * HYPERTENSION;
+/*
 	if option = 2 then do;
 		** Patient-centered care only 		
 		*relative risk of BP testing at HIV visit if out of hypertension care;
@@ -3010,12 +3011,12 @@ who may be dead and hence have caldate{t} missing;
 		%sample_uniform(prob_intensify_2_3, 0.02 0.03 0.04);
 
 	end;
-
-	if option = 3 then do;
+*/
+	if option = 2 then do;
 		** CHW community screening without voucher;
 		first_comm_test = 2024;
 		* prob testing in commmunity;
-		%sample_uniform(prob_test_sbp_comm, 0.75 0.80 0.85);
+		%sample_uniform(prob_test_sbp_comm, 0.8 0.85 0.9);
 		* prob link from community testing to clinic;
 		%sample_uniform(prob_htn_link, 0.5 0.6 0.7);
 		* comm test interval;
