@@ -31,13 +31,10 @@ cd "$TMPDIR"
 
 # Give SAS larger startup limits and point WORK at tmpfs.
 # If your site caps these in sasv9.cfg, the SAS log will reveal the effective values.
-export SASV9_OPTIONS="-memsize 64G -sortsize 48G -sumsize 4G -work $TMPDIR -nodms -noterminal"
+export SASV9_OPTIONS="-memsize 16G -sortsize 12G -sumsize 2G -work $TMPDIR -nodms -noterminal"
 
 # Run SAS; write logs/results to your final output directory
 sas -sysin  "$sas_infile" \
     -sysparm "$SASOUTPUTDIR" \
     -log     "$SASOUTPUTDIR/output_${JOB_ID}.log" \
     -print   "$SASOUTPUTDIR/output_${JOB_ID}.lst"
-
-# Archive everything the job wrote to $TMPDIR (optional but handy for debugging)
-tar -czf "$SASOUTPUTDIR/sv_${JOB_ID}.tgz" "$TMPDIR"

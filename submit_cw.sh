@@ -1,55 +1,53 @@
 #!/bin/bash -l
 
-# Default resources (you can override with flags)
-inputdir="${HOME}/hiv-modelling"
-tmpfiles="out"
-combinedsas="combined_data"
-runs="$1"
-jobname="hivmodel"
-model="hiv_synthesis.sas"
-clock="h_rt=24:00:00"
+inputdir="/myriadfs/home/sejj463/hiv-modelling"
+finaloutdir="/myriadfs/home/sejj463/Scratch/combined_data_out"
 account="HIVSynthMod"
 
-while getopts a:i:o:r:j:m:c:t: flag; do
-  case "${flag}" in
-    a) account=${OPTARG};;    # project/account
-    i) inputdir=${OPTARG};;   # folder that has .sas + run script
-    o) combinedsas=${OPTARG};;# not used here, kept for parity
-    r) runs=${OPTARG};;       # not used here, kept for parity
-    j) jobname=${OPTARG};;    # SGE job name
-    m) model=${OPTARG};;      # not used here, kept for parity
-    c) clock=${OPTARG};;      # wallclock, e.g. h_rt=24:00:00
-    t) tmpfiles=${OPTARG};;   # not used here, kept for parity
-  esac
-done
+echo "===== COMBINE + CREATE WIDE ====="
+echo "SAS program directory: $inputdir"
+echo "Input/output directory: $finaloutdir"
 
-finaloutdir="/myriadfs/home/sejj463/Scratch/combined_data_out"
+# Check that the expected input datasets exist
+n_out=$(find "$finaloutdir" -maxdepth 1 -type f -name 'out*.sas7bdat' | wc -l)
 
-echo "===== JOB SUMMARY ======="
-echo "directory of input files: $inputdir"
-if [ -d "$finaloutdir" ]; then
-  echo "Directory $finaloutdir exists"
-else
-  mkdir -p "$finaloutdir"
-  echo "output directory created: $finaloutdir"
+if [ "$n_out" -eq 0 ]; then
+    echo "ERROR: No out*.sas7bdat files found in $finaloutdir"
+    exit 1
 fi
-echo "final output SAS filename (label): $combinedsas"
-echo "tmp output file names start with: $tmpfiles"
-echo "jobname for model runs: $jobname"
-echo "clock is set to: $clock"
-echo "using SAS HIV model file: create_wide_file.sas"
-echo "job is run on account: $account"
 
-# --- Submit the job ---
-# Notes:
-#  - Adjust -pe and -l h_vmem per cluster policy.
-#  - h_vmem is per-core on many SGE clusters; with -pe smp 4 and 32G, that’s ~128G total cap.
+echo "Found $n_out out*.sas7bdat files"
+
+# -------------------------------------------------------------------------
+# Step 1: Combine the OUT* datasets
+# -------------------------------------------------------------------------
+combine_job=$(qsub \
+    -N concatenate \
+    -A "$account" \
+    -wd "$finaloutdir" \
+    -l h_rt=48:00:00 \
+    -l mem=16G \
+    -l tmpfs=1000G \
+    -v SASINPUT="$inputdir",SASOUTPUTDIR="$finaloutdir" \
+    "$inputdir/combine.sh")
+
+echo "$combine_job"
+
+# Extract the job ID from qsub output
+combine_job_id=$(echo "$combine_job" | awk '{print $3}')
+
+echo "Combine job ID: $combine_job_id"
+
+# -------------------------------------------------------------------------
+# Step 2: Create the wide file after combine finishes
+# -------------------------------------------------------------------------
 qsub \
-  -N "$jobname" \
-  -A "$account" \
-  -l "$clock" \
-  -pe smp 4 \
-  -l h_vmem=32G \
-  -l tmpfs=1000G \
-  -v sas_infile="$inputdir/create_wide_file.sas",SASOUTPUTDIR="$finaloutdir" \
-  "$inputdir/run_create_wide_file.sh"
+    -hold_jid "$combine_job_id" \
+    -N create_wide \
+    -A "$account" \
+    -wd "$finaloutdir" \
+    -l h_rt=48:00:00 \
+    -l mem=16G \
+    -l tmpfs=1000G \
+    -v sas_infile="$inputdir/create_wide_file.sas",SASOUTPUTDIR="$finaloutdir" \
+    "$inputdir/run_create_wide_file.sh"

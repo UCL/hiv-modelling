@@ -8,8 +8,6 @@ libname a "C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\synthesis\run105";
 * Myriad input;
 %let sasoutputdir = %scan(&sysparm,1," ");
 libname a "&sasoutputdir/";
-proc printto log="&sasoutputdir/create_wide_log.log";
-run;
 data hiv_synthesis_base; set a.concatenated_data; option FULLSTIMER;
 
 
@@ -1454,5 +1452,3 @@ run;
 
 
 ods html close;
-
-run;

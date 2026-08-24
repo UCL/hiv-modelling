@@ -11,11 +11,15 @@
 #$ -o /dev/null
 #$ -e /dev/null
 #$ -l tmpfs=1000G
-module load sas/9.4/64
+module load sas/9.4-m7/64
 cd $TMPDIR
 for file in `echo $addinfiles | tr ':' ' '` 
 do 
  cp $file . 
 done
-sas $SASINPUT/combine.sas -sysparm "$SASOUTPUTDIR"
-tar cvzf $SASOUTPUTDIR/sv_combine_$JOB_ID.tgz $TMPDIR
+
+export SASV9_OPTIONS="-memsize 16G -sortsize 12G -sumsize 2G -work $TMPDIR -nodms -noterminal"
+
+sas -sysin "$SASINPUT/combine.sas" \
+    -sysparm "$SASOUTPUTDIR" \
+    -log "$SASOUTPUTDIR/combine_${JOB_ID}.log"
