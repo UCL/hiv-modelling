@@ -724,7 +724,7 @@ end;
 * prob_mobile3660_;			%sample_uniform(prob_mobile3660_, 0.02 0.03);
 * prob_mobile60pl;			%sample_uniform(prob_mobile60pl,  0.01 0.02);
 * prob_stop_mobile;			%sample_uniform(prob_stop_mobile, 0.05 0.10);
-* inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 5 10 20 50);*change in sexual behaviour due to being mobile;
+* inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 10 20 50);*change in sexual behaviour due to being mobile;
 * mm_hardreach;				%sample_uniform(mm_hardreach, 0.30 0.50);
 
 
@@ -21160,6 +21160,8 @@ prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd
 
 discount
 
+inc_risk_mob
+
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 condom_change_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
@@ -23246,6 +23248,8 @@ prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_ant
 prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
 
 discount
+
+inc_risk_mob
 
 /*year_i interventions*/
 condom_change_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 

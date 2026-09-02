@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_26Aug26; 
+set a.mm_26Aug2026; 
 if run=. then delete; 
 
 proc sort;
@@ -213,14 +213,14 @@ s_alive = s_alive_m + s_alive_w ;
 * n_prep_any_start;				n_prep_any_start = max(s_prep_any_start, 0) * sf;
 
 * p_elig_prep;					p_elig_prep = s_prep_any_elig/((s_alive1564_m - s_hiv1564m)+(s_alive1564_w - s_hiv1564w)) ;
-* p_elig_on_prep;				if s_prep_any_elig > 0 then p_elig_on_prep = s_prep_any / s_prep_any_elig ;
-								if s_prep_any_elig = 0 then p_elig_on_prep = 0;
-* p_elig_on_prep_cab;			if s_prep_any_elig > 0 then p_elig_on_prep_cab = s_prep_cab / s_prep_any_elig ;
-								if s_prep_any_elig = 0 then p_elig_on_prep_cab = 0;
-* p_elig_on_prep_len;			if s_prep_any_elig > 0 then p_elig_on_prep_len = s_prep_len / s_prep_any_elig ;
-								if s_prep_any_elig = 0 then p_elig_on_prep_len = 0;
-* p_elig_on_prep_oral;			if s_prep_any_elig > 0 then p_elig_on_prep_oral = s_prep_oral / s_prep_any_elig ;
-								if s_prep_any_elig = 0 then p_elig_on_prep_oral = 0;
+* p_elig_onprep;				if s_prep_any_elig > 0 then p_elig_onprep = s_prep_any / s_prep_any_elig ;
+								if s_prep_any_elig = 0 then p_elig_onprep = 0;
+* p_elig_onprep_cab;			if s_prep_any_elig > 0 then p_elig_onprep_cab = s_prep_cab / s_prep_any_elig ;
+								if s_prep_any_elig = 0 then p_elig_onprep_cab = 0;
+* p_elig_onprep_len;			if s_prep_any_elig > 0 then p_elig_onprep_len = s_prep_len / s_prep_any_elig ;
+								if s_prep_any_elig = 0 then p_elig_onprep_len = 0;
+* p_elig_onprep_oral;			if s_prep_any_elig > 0 then p_elig_onprep_oral = s_prep_oral / s_prep_any_elig ;
+								if s_prep_any_elig = 0 then p_elig_onprep_oral = 0;
 
 * n_stop_prep_oral_elig;		n_stop_prep_oral_elig = s_stop_prep_oral_elig * sf;
 * n_stop_prep_cab_elig;			n_stop_prep_cab_elig = s_stop_prep_cab_elig * sf;
@@ -230,31 +230,35 @@ s_alive = s_alive_m + s_alive_w ;
 * n_prep_cab_start;				n_prep_cab_start = s_prep_cab_start * sf;
 * n_prep_len_start;				n_prep_len_start = s_prep_len_start * sf;
 
-
-
-***Not correctly outputted - should be ok next time;
-* p_elig_on_prep_w;			    if s_elig_prep_any_w_1564 > 0 then p_elig_on_prep_w = s_prep_any_w_1564/s_elig_prep_any_w_1564;
-								if s_elig_prep_any_w_1564 = 0 then p_elig_on_prep_w=0;
-* p_elig_on_prep_m;			    if s_elig_prep_any_m_1564 > 0 then p_elig_on_prep_m = s_prep_any_m_1564/s_elig_prep_any_m_1564;
-								if s_elig_prep_any_m_1564 = 0 then p_elig_on_prep_m=0;
+* p_elig_onprep_w;			    if s_elig_prep_any_w_1564 > 0 then p_elig_onprep_w = s_prep_any_w_1564/s_elig_prep_any_w_1564;
+								if s_elig_prep_any_w_1564 = 0 then p_elig_onprep_w=0;
+* p_elig_onprep_m;			    if s_elig_prep_any_m_1564 > 0 then p_elig_onprep_m = s_prep_any_m_1564/s_elig_prep_any_m_1564;
+								if s_elig_prep_any_m_1564 = 0 then p_elig_onprep_m=0;
 *nmm=non mobile men;
 * p_1564m_onprep_nmm;  		    p_1564m_onprep_nmm = (s_onprep_cab_m + s_onprep_oral_m - s_prep_any_mm_1564)/ ((s_alive1564_m - s_hiv1564m) - (s_alive1564mm - s_hiv1564mm));
 * p_hiv_nmm;					p_hiv_nmm = s_hiv1564nmm /s_alive1564nmm ;
 * p_prep_any_ever_nmm;			p_prep_any_ever_nmm = (s_prep_any_ever_m - s_prep_any_ever_mm)/ (s_alive_m - s_alive1564mm);
-* p_elig_on_prep_nmm;			if s_elig_prep_any_nmm_1564_ > 0 then p_elig_on_prep_nmm = (s_onprep_m - s_prep_any_mm_1564) / s_elig_prep_any_nmm_1564_ ;
-* p_elig_on_prep_msm;			if s_elig_prep_any_msm_1564 > 0 then p_elig_on_prep_msm = s_onprep_msm/s_elig_prep_any_msm_1564;
+* p_elig_onprep_nmm;			if s_elig_prep_any_nmm_1564_ > 0 then p_elig_onprep_nmm = (s_onprep_m - s_prep_any_mm_1564) / s_elig_prep_any_nmm_1564_ ;
+* p_elig_onprep_msm;			if s_elig_prep_any_msm_1564 > 0 then p_elig_onprep_msm = s_onprep_msm/s_elig_prep_any_msm_1564;
 
-* p_elig_on_prep_genmen;		if (s_elig_prep_any_nmm_1564_ - s_elig_prep_any_msm_1564 - s_elig_prep_any_pwid_1564)>0 then 
-								p_elig_on_prep_genmen = (s_onprep_m - s_prep_any_mm_1564 - s_onprep_msm - s_onprep_pwid)/(s_elig_prep_any_nmm_1564_ - s_elig_prep_any_msm_1564 - s_elig_prep_any_pwid_1564);
+* p_elig_onprep_genmen;		if (s_elig_prep_any_nmm_1564_ - s_elig_prep_any_msm_1564 - s_elig_prep_any_pwid_1564)>0 then 
+								p_elig_onprep_genmen = (s_onprep_m - s_prep_any_mm_1564 - s_onprep_msm - s_onprep_pwid)/(s_elig_prep_any_nmm_1564_ - s_elig_prep_any_msm_1564 - s_elig_prep_any_pwid_1564);
 ***Mobile men;
+* n_mm;							n_mm = s_alive1564mm * sf;
 * p_mm;							p_mm = s_alive1564mm/s_ageg1564m;
+* p_1524mm;						p_1524mm = (s_alive1519mm + s_alive2024mm) / s_ageg1m;
+* p_2534mm;						p_2534mm = (s_alive2529mm + s_alive3034mm) / s_ageg2m;
+* p_3544mm;						p_3544mm = (s_alive3539mm + s_alive4044mm) / s_ageg3m;
+* p_4554mm;						p_4554mm = (s_alive4549mm + s_alive5054mm) / s_ageg4m;
+* p_5564mm;						p_5564mm = (s_alive5559mm + s_alive6064mm) / s_ageg5m;
 
 * p_hiv_mm;						if s_alive1564mm > 0 then  p_hiv_mm = s_hiv1564mm/s_alive1564mm;
 
 * p_diag_mm;					if s_hiv1564mm  > 0 then p_diag_mm = s_diag_mm1564_ / s_hiv1564mm ;
  
-* p_onart_diag_mm;				if s_diag_mm1564_ > 0 then p_onart_diag_mm = s_onart_iicu / s_diag_mm1564_;
-* p_onart_vl1000_mm;			if s_onart_gt6m_iicu_mm   > 0 then p_onart_vl1000_mm = s_vl1000_art_iicu_mm / s_onart_gt6m_iicu_mm; 
+* p_onart_diag_mm;				if s_diag_mm1564_ > 0 then p_onart_diag_mm = s_onart_iicu_mm / s_diag_mm1564_;
+
+* p_onart_vl1000_mm;			if s_onart_gt6m_iicu_mm   > 0 then p_onart_vl1000_mm = s_vl1000_art_iicu_mm / s_onart_iicu_mm; 
 
 * p_vg1000_mm, p_vl1000_mm;		if s_hiv1564mm  > 0 then p_vg1000_mm = s_vg1000_mm / s_hiv1564mm ;  p_vl1000_mm = 1- p_vg1000_mm ;
 
@@ -268,16 +272,16 @@ s_alive = s_alive_m + s_alive_w ;
 
 * n_tested_mm;					n_tested_mm = s_tested_mm * sf ;
 
-* p_1564mm_onprep_mm;			if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_mm =   max(s_prep_any_mm_1564, 0) / (s_alive1564mm - s_hiv1564mm) ;
-* p_1564mm_onprep_cab_mm;		if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_cab_mm =   max(s_prep_cab_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
-* p_1564mm_onprep_len_mm;		if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_len_mm =   max(s_prep_len_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* p_1564mm_onprep;				if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep =   max(s_prep_any_mm_1564, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* p_1564mm_onprep_cab;			if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_cab =   max(s_prep_cab_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* p_1564mm_onprep_len;			if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_len =   max(s_prep_len_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
 
-* p_1564mm_onprep_oral_mm;		if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_oral_mm =   max(s_prep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+* p_1564mm_onprep_oral;			if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_oral =   max(s_prep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
 
-* p_elig_on_prep_mm;			if s_elig_prep_any_mm_1564_ > 0 then p_elig_on_prep_mm = s_prep_any_mm_1564 / s_elig_prep_any_mm_1564_ ;
-* p_elig_on_prep_oral_mm;		if s_elig_prep_any_mm_1564_ > 0 then p_elig_on_prep_oral_mm = s_prep_oral_mm / s_elig_prep_any_mm_1564_ ;
-* p_elig_on_prep_cab_mm;		if s_elig_prep_any_mm_1564_ > 0 then p_elig_on_prep_cab_mm = s_prep_cab_mm / s_elig_prep_any_mm_1564_ ;
-* p_elig_on_prep_len_mm;		if s_elig_prep_any_mm_1564_ > 0 then p_elig_on_prep_len_mm = s_prep_len_mm / s_elig_prep_any_mm_1564_ ;
+* p_elig_onprep_mm;				if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_mm = s_prep_any_mm_1564 / s_elig_prep_any_mm_1564_ ;
+* p_elig_onprep_oral_mm;		if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_oral_mm = s_prep_oral_mm / s_elig_prep_any_mm_1564_ ;
+* p_elig_onprep_cab_mm;			if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_cab_mm = s_prep_cab_mm / s_elig_prep_any_mm_1564_ ;
+* p_elig_onprep_len_mm;			if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_len_mm = s_prep_len_mm / s_elig_prep_any_mm_1564_ ;
 
 
 
@@ -295,23 +299,25 @@ s_alive = s_alive_m + s_alive_w ;
 * p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive;
 
 
-keep run option cald n_alive_m			n_alive_w			n_alive				p_mm				p_hiv_mm	p_hiv_m
+keep run option cald 
+n_alive_m			n_alive_w			n_alive				n_mm				p_mm		
+p_1524mm			p_2534mm			p_3544mm			p_4554mm			p_5564mm			p_hiv_mm	p_hiv_m
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
 n_onprep_w			 n_onprep_m			n_onprep			p_1564m_onprep   	p_1564w_onprep		n_prep_any_start
-p_elig_on_prep_w	 p_elig_on_prep_m	p_elig_on_prep		p_elig_on_prep_mm	p_elig_on_prep_nmm	p_elig_prep
-p_1564m_onprep_nmm	 p_hiv_nmm			p_prep_any_ever_nmm p_elig_on_prep_genmen
+p_elig_onprep_w	 	p_elig_onprep_m		p_elig_onprep		p_elig_onprep_mm	p_elig_onprep_nmm	p_elig_prep
+p_1564m_onprep_nmm	 p_hiv_nmm			p_prep_any_ever_nmm p_elig_onprep_genmen
 dcost ddaly			 n_prep_oral_start	n_prep_cab_start	n_prep_len_start	
 n_stop_prep_oral_elig	n_stop_prep_cab_elig 	n_stop_prep_len_elig
 
 
-p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm		p_vl1000_mm		prevalence1549_mm	
-prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm		p_1564mm_onprep_mm	p_hiv_mm
-p_1564mm_onprep_cab_mm		p_1564mm_onprep_len_mm				p_1564mm_onprep_oral_mm				p_elig_on_prep_mm
-n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm	n_prep_ever_mm	p_prep_any_ever_mm
-p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm			p_elig_on_prep_cab p_elig_on_prep_len	p_elig_on_prep_oral
-p_elig_on_prep_oral_mm	p_elig_on_prep_cab_mm	p_elig_on_prep_len_mm	p_elig_on_prep_genmen
+p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm			prevalence1549_mm	
+prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			p_1564mm_onprep		p_hiv_mm
+p_1564mm_onprep_cab	p_1564mm_onprep_len	p_1564mm_onprep_oral	
+n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_prep_any_ever_mm
+p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm			p_elig_onprep_cab 	p_elig_onprep_len	p_elig_onprep_oral
+p_elig_onprep_oral_mm	p_elig_onprep_cab_mm	p_elig_onprep_len_mm	p_elig_onprep_genmen
 ;
 
 proc sort data=y;by run option;run;
@@ -328,7 +334,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 304;
+%let nfit = 800;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -355,14 +361,14 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 p_mm				p_hiv_mm			p_hiv_m
 p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		prevalence1549_mm	
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			p_1564mm_onprep_mm	
-p_1564mm_onprep_cab_mm	p_1564mm_onprep_len_mm					p_1564mm_onprep_oral_mm						p_elig_on_prep_mm	
+p_1564mm_onprep_cab_mm	p_1564mm_onprep_len_mm					p_1564mm_onprep_oral_mm							
 n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_prep_any_ever_mm
-p_newp_ge1_mm		p_prep_any_willing	p_1564m_onprep			p_1564w_onprep 		p_elig_on_prep
-p_elig_on_prep_mm	p_elig_on_prep_nmm	p_elig_prep
+p_newp_ge1_mm		p_prep_any_willing	p_1564m_onprep			p_1564w_onprep 		p_elig_onprep
+p_elig_onprep_mm	p_elig_onprep_nmm	p_elig_prep
 p_1564m_onprep_nmm	p_hiv_nmm		
-n_prep_oral_mm		p_elig_on_prep_cab	p_elig_on_prep_len		p_elig_on_prep_oral
-p_elig_on_prep_oral_mm	p_elig_on_prep_cab_mm	p_elig_on_prep_len_mm           		p_elig_on_prep_genmen
-p_elig_on_prep_m	p_elig_on_prep_w 	p_prep_any_ever_nmm	 	n_prep_oral_start	n_prep_cab_start	n_prep_len_start	
+n_prep_oral_mm		p_elig_onprep_cab	p_elig_onprep_len		p_elig_onprep_oral
+p_elig_onprep_oral_mm	p_elig_onprep_cab_mm	p_elig_onprep_len_mm           		p_elig_onprep_genmen
+p_elig_onprep_m	p_elig_onprep_w 	p_prep_any_ever_nmm	 	n_prep_oral_start	n_prep_cab_start	n_prep_len_start	
 n_stop_prep_oral_elig	n_stop_prep_cab_elig 	n_stop_prep_len_elig	
 ;
     /* Count number of variables */
@@ -487,16 +493,16 @@ Title    height=1.5 justify=center "Proportion of people with an indication for 
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2025 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 
-label median_p_elig_on_prep_0 = "All";
-label median_p_elig_on_prep_w_0 = "Women";
-label median_p_elig_on_prep_m_0 = "Men";
+label median_p_elig_onprep_0 = "All";
+label median_p_elig_onprep_w_0 = "Women";
+label median_p_elig_onprep_m_0 = "Men";
 
-series  x=cald y=median_p_elig_on_prep_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_0 	upper=p95_p_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "model 90% range";
-series  x=cald y=median_p_elig_on_prep_w_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_w_0 	upper=p95_p_elig_on_prep_w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "model 90% range";
-series  x=cald y=median_p_elig_on_prep_m_0/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_m_0 	upper=p95_p_elig_on_prep_m_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "model 90% range";
+series  x=cald y=median_p_elig_onprep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_0 	upper=p95_p_elig_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "model 90% range";
+series  x=cald y=median_p_elig_onprep_w_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_w_0 	upper=p95_p_elig_onprep_w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "model 90% range";
+series  x=cald y=median_p_elig_onprep_m_0/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_m_0 	upper=p95_p_elig_onprep_m_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "model 90% range";
 
 run;quit;
 
@@ -506,20 +512,20 @@ Title    height=1.5 justify=center "Proportion of people with an indication for 
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'portion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 
-label median_p_elig_on_prep_oral_0 = "Oral (when injectable is Cab)";
-label median_p_elig_on_prep_cab_0 = "CAB-LA";
-label median_p_elig_on_prep_oral_1 = "Oral (when injectable is Len)";
-label median_p_elig_on_prep_len_1 = "Len";
+label median_p_elig_onprep_oral_0 = "Oral (when injectable is Cab)";
+label median_p_elig_onprep_cab_0 = "CAB-LA";
+label median_p_elig_onprep_oral_1 = "Oral (when injectable is Len)";
+label median_p_elig_onprep_len_1 = "Len";
 /*
-series  x=cald y=median_p_elig_on_prep_oral_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_oral_0 	upper=p95_p_elig_on_prep_oral_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "model 90% range";
-series  x=cald y=median_p_elig_on_prep_cab_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_cab_0 	upper=p95_p_elig_on_prep_cab_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "model 90% range";
+series  x=cald y=median_p_elig_onprep_oral_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_oral_0 	upper=p95_p_elig_onprep_oral_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "model 90% range";
+series  x=cald y=median_p_elig_onprep_cab_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_cab_0 	upper=p95_p_elig_onprep_cab_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "model 90% range";
 */
-series  x=cald y=median_p_elig_on_prep_oral_1/	lineattrs = (color=black thickness = 2 pattern=dash);
-band    x=cald lower=p5_p_elig_on_prep_oral_1 	upper=p95_p_elig_on_prep_oral_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "model 90% range";
-series  x=cald y=median_p_elig_on_prep_len_1/	lineattrs = (color=red thickness = 2 pattern=dash);
-band    x=cald lower=p5_p_elig_on_prep_len_1 	upper=p95_p_elig_on_prep_len_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "model 90% range";
+series  x=cald y=median_p_elig_onprep_oral_1/	lineattrs = (color=black thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_onprep_oral_1 	upper=p95_p_elig_onprep_oral_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "model 90% range";
+series  x=cald y=median_p_elig_onprep_len_1/	lineattrs = (color=red thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_onprep_len_1 	upper=p95_p_elig_onprep_len_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "model 90% range";
 
 run;quit;
 
@@ -583,23 +589,23 @@ Title    height=1.5 justify=center "Of those with an indication for PrEP, propor
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_p_elig_on_prep_mm_0 = "Mobile men (CAB SQ)";
-label median_p_elig_on_prep_nmm_0 = "Non-Mobile men (CAB SQ)";
-label median_p_elig_on_prep_mm_1 = "Mobile men (Len SQ)";
-label median_p_elig_on_prep_nmm_1 = "Non-Mobile men (Len SQ)";
+label median_p_elig_onprep_mm_0 = "Mobile men (CAB SQ)";
+label median_p_elig_onprep_nmm_0 = "Non-Mobile men (CAB SQ)";
+label median_p_elig_onprep_mm_1 = "Mobile men (Len SQ)";
+label median_p_elig_onprep_nmm_1 = "Non-Mobile men (Len SQ)";
 
-series  x=cald y=median_p_elig_on_prep_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_0 	upper=p95_p_elig_on_prep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_0 	upper=p95_p_elig_onprep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_mm_1/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_1 	upper=p95_p_elig_on_prep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_1/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_1 	upper=p95_p_elig_onprep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 
-series  x=cald y=median_p_elig_on_prep_nmm_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_nmm_0 	upper=p95_p_elig_on_prep_nmm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_nmm_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_nmm_0 	upper=p95_p_elig_onprep_nmm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_nmm_1/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_nmm_1 	upper=p95_p_elig_on_prep_nmm_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_nmm_1/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_nmm_1 	upper=p95_p_elig_onprep_nmm_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
 
 run;quit;
@@ -610,19 +616,19 @@ Title    height=1.5 justify=center "Of mobile men with an indication for PrEP, p
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_p_elig_on_prep_oral_mm_0 = "Oral";
-label median_p_elig_on_prep_cab_mm_0 = "Injectable (CAB)";
-label median_p_elig_on_prep_len_mm_1 = "Injectable (Len)";
+label median_p_elig_onprep_oral_mm_0 = "Oral";
+label median_p_elig_onprep_cab_mm_0 = "Injectable (CAB)";
+label median_p_elig_onprep_len_mm_1 = "Injectable (Len)";
 
 
-series  x=cald y=median_p_elig_on_prep_oral_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_oral_mm_0 	upper=p95_p_elig_on_prep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_oral_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_oral_mm_0 	upper=p95_p_elig_onprep_oral_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_cab_mm_0/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_cab_mm_0 	upper=p95_p_elig_on_prep_cab_mm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_cab_mm_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_cab_mm_0 	upper=p95_p_elig_onprep_cab_mm_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_len_mm_1/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_len_mm_1 	upper=p95_p_elig_on_prep_len_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_len_mm_1/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_len_mm_1 	upper=p95_p_elig_onprep_len_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -652,31 +658,31 @@ Title    height=1.5 justify=center "Proportion of mobile men currently on ANY Pr
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_p_elig_on_prep_mm_0 = "Status Quo 1: No PrEP for MM,CAB-LA for high risk women";
-label median_p_elig_on_prep_mm_1 = "Status Quo 2: No PrEP for MM, Len for high risk women";
-label median_p_elig_on_prep_mm_2 = "Scale up of oral PrEP, CAB-LA introduction (Op 2)";
-label median_p_elig_on_prep_mm_3 = "Scale up of oral PrEP, Len introduction (Op 3)";
-label median_p_elig_on_prep_mm_4 = "Scale up of CAB-LA (Op 4)";
-label median_p_elig_on_prep_mm_5 = "Scale up of Len (Op 5)";
-label median_p_elig_on_prep_mm_6 = "Scale up of oral PrEP and CAB-LA (Op 6)";
-label median_p_elig_on_prep_mm_7 = "Scale up of oral PrEP and Len (Op 7)";
+label median_p_elig_onprep_mm_0 = "Status Quo 1: No PrEP for MM,CAB-LA for high risk women";
+label median_p_elig_onprep_mm_1 = "Status Quo 2: No PrEP for MM, Len for high risk women";
+label median_p_elig_onprep_mm_2 = "Scale up of oral PrEP, CAB-LA introduction (Op 2)";
+label median_p_elig_onprep_mm_3 = "Scale up of oral PrEP, Len introduction (Op 3)";
+label median_p_elig_onprep_mm_4 = "Scale up of CAB-LA (Op 4)";
+label median_p_elig_onprep_mm_5 = "Scale up of Len (Op 5)";
+label median_p_elig_onprep_mm_6 = "Scale up of oral PrEP and CAB-LA (Op 6)";
+label median_p_elig_onprep_mm_7 = "Scale up of oral PrEP and Len (Op 7)";
 
-series  x=cald y=median_p_elig_on_prep_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_0 	upper=p95_p_elig_on_prep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_mm_1/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_1 	upper=p95_p_elig_on_prep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_mm_2/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_2 	upper=p95_p_elig_on_prep_mm_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_mm_3/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_3 	upper=p95_p_elig_on_prep_mm_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_mm_4/	lineattrs = (color=orange thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_4 	upper=p95_p_elig_on_prep_mm_4  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_mm_5/	lineattrs = (color=purple thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_5 	upper=p95_p_elig_on_prep_mm_5  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_mm_6/	lineattrs = (color=brown thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_6 	upper=p95_p_elig_on_prep_mm_6  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_mm_7/	lineattrs = (color=pink thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_7 	upper=p95_p_elig_on_prep_mm_7  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_0 	upper=p95_p_elig_onprep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_1/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_1 	upper=p95_p_elig_onprep_mm_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_2/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_2 	upper=p95_p_elig_onprep_mm_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_3/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_3 	upper=p95_p_elig_onprep_mm_3  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_4/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_4 	upper=p95_p_elig_onprep_mm_4  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_5/	lineattrs = (color=purple thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_5 	upper=p95_p_elig_onprep_mm_5  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_6/	lineattrs = (color=brown thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_6 	upper=p95_p_elig_onprep_mm_6  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_7/	lineattrs = (color=pink thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_7 	upper=p95_p_elig_onprep_mm_7  / transparency=0.9 fillattrs = (color=pink) legendlabel= "Model 90% range";
 
 
 run;quit;
@@ -688,22 +694,22 @@ Title    height=1.5 justify=center "Proportion of mobile men currently on any Pr
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_p_elig_on_prep_mm_0= "Status quo (Op 0, Cab available to high risk women) ";
-label median_p_elig_on_prep_mm_5 = "Scale up of oral PrEP and CAB-LA (Op 5) ";
-label median_p_elig_on_prep_cab_mm_5 = "CAB-LA (Op 5)";
-label median_p_elig_on_prep_oral_mm_5 = "oral PrEP (Op 5)";
+label median_p_elig_onprep_mm_0= "Status quo (Op 0, Cab available to high risk women) ";
+label median_p_elig_onprep_mm_5 = "Scale up of oral PrEP and CAB-LA (Op 5) ";
+label median_p_elig_onprep_cab_mm_5 = "CAB-LA (Op 5)";
+label median_p_elig_onprep_oral_mm_5 = "oral PrEP (Op 5)";
 
-series  x=cald y=median_p_elig_on_prep_mm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_0 	upper=p95_p_elig_on_prep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_0 	upper=p95_p_elig_onprep_mm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_mm_5/	lineattrs = (color=orange thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_5 	upper=p95_p_elig_on_prep_mm_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_5/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_5 	upper=p95_p_elig_onprep_mm_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_cab_mm_5/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_cab_mm_5 	upper=p95_p_elig_on_prep_cab_mm_5  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_cab_mm_5/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_cab_mm_5 	upper=p95_p_elig_onprep_cab_mm_5  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_oral_mm_5/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_oral_mm_5 	upper=p95_p_elig_on_prep_oral_5  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_oral_mm_5/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_oral_mm_5 	upper=p95_p_elig_onprep_oral_5  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -712,22 +718,22 @@ Title    height=1.5 justify=center "Proportion of mobile men currently on any Pr
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_p_elig_on_prep_mm_1= "Status quo (Op 1, Len available to high risk women) ";
-label median_p_elig_on_prep_mm_7 = "Scale up of oral PrEP and Len (Op 7) ";
-label median_p_elig_on_prep_len_mm_7 = "Len (Op 7)";
-label median_p_elig_on_prep_oral_mm_7 = "oral PrEP (Op 7)";
+label median_p_elig_onprep_mm_1= "Status quo (Op 1, Len available to high risk women) ";
+label median_p_elig_onprep_mm_7 = "Scale up of oral PrEP and Len (Op 7) ";
+label median_p_elig_onprep_len_mm_7 = "Len (Op 7)";
+label median_p_elig_onprep_oral_mm_7 = "oral PrEP (Op 7)";
 
-series  x=cald y=median_p_elig_on_prep_mm_1/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_1 	upper=p95_p_elig_on_prep_mm_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_1/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_1 	upper=p95_p_elig_onprep_mm_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_mm_7/	lineattrs = (color=orange thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_7 	upper=p95_p_elig_on_prep_mm_7  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_7/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_7 	upper=p95_p_elig_onprep_mm_7  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_oral_mm_7/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_oral_mm_7 	upper=p95_p_elig_on_prep_oral_7  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_oral_mm_7/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_oral_mm_7 	upper=p95_p_elig_onprep_oral_7  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_len_mm_7/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_len_mm_7 	upper=p95_p_elig_on_prep_len_mm_7  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_len_mm_7/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_len_mm_7 	upper=p95_p_elig_onprep_len_mm_7  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -736,62 +742,62 @@ Title    height=1.5 justify=center "Proportion of mobile men currently on oral a
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_p_elig_on_prep_oral_mm_4 = "Oral PrEP when only CAB-LA scaled up (Op 4)"; 
-label median_p_elig_on_prep_cab_mm_4 = "CAB-LA when only CAB-LA scaled up (Op 4)";
-label median_p_elig_on_prep_mm_4 = "PrEP any when only CAB-LA scaled up (Op 4)"; 
+label median_p_elig_onprep_oral_mm_4 = "Oral PrEP when only CAB-LA scaled up (Op 4)"; 
+label median_p_elig_onprep_cab_mm_4 = "CAB-LA when only CAB-LA scaled up (Op 4)";
+label median_p_elig_onprep_mm_4 = "PrEP any when only CAB-LA scaled up (Op 4)"; 
 
-label median_p_elig_on_prep_oral_mm_5 = "Oral PrEP when both oral and CAB-LA scaled up (Op 5)";
-label median_p_elig_on_prep_cab_mm_5 = "CAB-LA when both oral and CAB-LA scaled up (Op 5)";
-label median_p_elig_on_prep_mm_5 = "PrEP any when both oral and CAB-LA scaled up (Op 5)"; 
+label median_p_elig_onprep_oral_mm_5 = "Oral PrEP when both oral and CAB-LA scaled up (Op 5)";
+label median_p_elig_onprep_cab_mm_5 = "CAB-LA when both oral and CAB-LA scaled up (Op 5)";
+label median_p_elig_onprep_mm_5 = "PrEP any when both oral and CAB-LA scaled up (Op 5)"; 
 
-series  x=cald y=median_p_elig_on_prep_oral_mm_4/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_oral_mm_4 	upper=p95_p_elig_on_prep_oral_4  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_cab_mm_4/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_cab_mm_4 	upper=p95_p_elig_on_prep_cab_mm_4  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-*series  x=cald y=median_p_elig_on_prep_mm_4/	lineattrs = (color=black thickness = 2);
-*band    x=cald lower=p5_p_elig_on_prep_mm_4 	upper=p95_p_elig_on_prep_4 / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_oral_mm_4/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_oral_mm_4 	upper=p95_p_elig_onprep_oral_4  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_cab_mm_4/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_cab_mm_4 	upper=p95_p_elig_onprep_cab_mm_4  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=median_p_elig_onprep_mm_4/	lineattrs = (color=black thickness = 2);
+*band    x=cald lower=p5_p_elig_onprep_mm_4 	upper=p95_p_elig_onprep_4 / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_oral_mm_5/	lineattrs = (color=green thickness = 2 pattern=dash);
-band    x=cald lower=p5_p_elig_on_prep_oral_mm_5 	upper=p95_p_elig_on_prep_oral_5  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_cab_mm_5/	lineattrs = (color=red thickness = 2 pattern=dash);
-band    x=cald lower=p5_p_elig_on_prep_cab_mm_5 	upper=p95_p_elig_on_prep_cab_mm_5  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_mm_5/	lineattrs = (color=black thickness = 2 pattern=dash);
-band    x=cald lower=p5_p_elig_on_prep_mm_5 	upper=p95_p_elig_on_prep_5  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_oral_mm_5/	lineattrs = (color=green thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_onprep_oral_mm_5 	upper=p95_p_elig_onprep_oral_5  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_cab_mm_5/	lineattrs = (color=red thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_onprep_cab_mm_5 	upper=p95_p_elig_onprep_cab_mm_5  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_5/	lineattrs = (color=black thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_onprep_mm_5 	upper=p95_p_elig_onprep_5  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 run;quit;
 
-proc freq;table median_p_elig_on_prep_oral_mm_6;run;
+proc freq;table median_p_elig_onprep_oral_mm_6;run;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of mobile men currently on oral and Len by option";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2045 by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)    valueattrs=(size=10);
 
-label median_p_elig_on_prep_oral_mm_6 = "Oral PrEP when only Len scaled up (Op 6)"; 
-label median_p_elig_on_prep_len_mm_6 = "Len when only Len scaled up (Op 6)";
-label median_p_elig_on_prep_mm_6 = "PrEP any when only Len scaled up (Op 6)"; 
+label median_p_elig_onprep_oral_mm_6 = "Oral PrEP when only Len scaled up (Op 6)"; 
+label median_p_elig_onprep_len_mm_6 = "Len when only Len scaled up (Op 6)";
+label median_p_elig_onprep_mm_6 = "PrEP any when only Len scaled up (Op 6)"; 
 
-label median_p_elig_on_prep_len_mm_7 = "Len when both oral and Len scaled up (Op 7)";
-label median_p_elig_on_prep_oral_mm_7 = "Oral PrEP when both oral and Len scaled up (Op 7)";
-label median_p_elig_on_prep_mm_7 = "PrEP any when both oral and Len scaled up (Op 7)"; 
+label median_p_elig_onprep_len_mm_7 = "Len when both oral and Len scaled up (Op 7)";
+label median_p_elig_onprep_oral_mm_7 = "Oral PrEP when both oral and Len scaled up (Op 7)";
+label median_p_elig_onprep_mm_7 = "PrEP any when both oral and Len scaled up (Op 7)"; 
 
-series  x=cald y=median_p_elig_on_prep_oral_mm_6/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_oral_mm_6 	upper=p95_p_elig_on_prep_oral_6 / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_len_mm_6/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_len_mm_6 	upper=p95_p_elig_on_prep_len_mm_6  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_mm_6/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_elig_on_prep_mm_6 	upper=p95_p_elig_on_prep_6 / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_oral_mm_6/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_oral_mm_6 	upper=p95_p_elig_onprep_oral_6 / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_len_mm_6/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_len_mm_6 	upper=p95_p_elig_onprep_len_mm_6  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_6/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_6 	upper=p95_p_elig_onprep_6 / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=median_p_elig_on_prep_oral_mm_7/	lineattrs = (color=green thickness = 2 pattern=dash);
-band    x=cald lower=p5_p_elig_on_prep_oral_mm_7 	upper=p95_p_elig_on_prep_oral_7  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_len_mm_7/	lineattrs = (color=red thickness = 2 pattern=dash);
-band    x=cald lower=p5_p_elig_on_prep_len_mm_7 	upper=p95_p_elig_on_prep_len_mm_7  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=median_p_elig_on_prep_mm_7/	lineattrs = (color=black thickness = 2 pattern=dash);
-band    x=cald lower=p5_p_elig_on_prep_mm_7 	upper=p95_p_elig_on_prep_7  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_oral_mm_7/	lineattrs = (color=green thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_onprep_oral_mm_7 	upper=p95_p_elig_onprep_oral_7  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_len_mm_7/	lineattrs = (color=red thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_onprep_len_mm_7 	upper=p95_p_elig_onprep_len_mm_7  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_7/	lineattrs = (color=black thickness = 2 pattern=dash);
+band    x=cald lower=p5_p_elig_onprep_mm_7 	upper=p95_p_elig_onprep_7  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 run;quit;
 
-proc freq;table median_p_elig_on_prep_mm_2 median_p_elig_on_prep_mm_3 median_p_elig_on_prep_mm_4 median_p_elig_on_prep_mm_5 median_p_elig_on_prep_mm_6;
+proc freq;table median_p_elig_onprep_mm_2 median_p_elig_onprep_mm_3 median_p_elig_onprep_mm_4 median_p_elig_onprep_mm_5 median_p_elig_onprep_mm_6;
 where cald=2030;run;
 
 proc sgplot data=d; 
@@ -891,64 +897,90 @@ ods listing;
 run;
 
 
+***RUN THIS DIRECTLY AFTER RUNNING DATASTEP Y;
+
 ***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;
 * user to decide what years and year ranges to include ;
 
 %macro var(v=);
 
 ***OUTPUTS IN SPECIFIC YEARS - AMEND TO E.G. PROJECT SPECIFIC BASELINE (NOTE THESE ARE NOT BY OPTION);
-proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 2021.0 <= cald < 2022.0; 
+proc means  noprint data=y; var &v; output out=y_26 mean= &v._26; by run; where 2025.0 <= cald < 2026.0; 
 
-***OUTPUTS IN SPECIFIC YEARS BY OPTION - THIS MAY NOT BE NEEDED IN ALL ANALYSES;
-proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
+***OUTPUTS IN SPECIFIC YEARS BY OPTION - INCIDENCE IN 2036;
+proc means noprint data=y; var &v; output out=y_36 mean= &v._36; by run option; where 2036.0 <= cald < 2037.0; 
 
-***OUTPUTS FOR CE ANALYSES OVER 5, 20 AND 50 years BY OPTION;
-proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option ; where 2022.5 <= cald < 2027.50;
-proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option ; where 2022.5 <= cald < 2042.50;
-proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option ; where 2022.5 <= cald < 2072.50;
+***OUTPUTS FOR CE ANALYSES OVER 50 years BY OPTION;
+proc means noprint data=y; var &v; output out=y_26_46 mean= &v._26_46; by run option ; where 2026.0 <= cald < 2046.0;
+/*proc means noprint data=y; var &v; output out=y_26_76 mean= &v._26_76; by run option ; where 2026.0 <= cald < 2076.0;*/
 
 ***SORT OUTPUT DATASETS BY RUN BEFORE MERGING;
-proc sort data=y_22; by run; proc transpose data=y_22 out=t_22 prefix=&v._22_; var &v._22; by run;
-proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
-proc sort data=y_22_27; by run; proc transpose data=y_22_27 out=t_22_27 prefix=&v._22_27_; var &v._22_27; by run;
-proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&v._22_42_; var &v._22_42; by run;
-proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
+proc sort data=y_26; by run; proc transpose data=y_26 out=t_26 prefix=&v._26_; var &v._26; by run;
+proc sort data=y_36; by run; proc transpose data=y_36 out=t_36 prefix=&v._36_; var &v._36; by run;
+proc sort data=y_26_46; by run; proc transpose data=y_26_46 out=t_26_46 prefix=&v._26_46_; var &v._26_46; by run;
+/*proc sort data=y_26_76; by run; proc transpose data=y_26_76 out=t_26_76 prefix=&v._26_76_; var &v._26_76; by run;*/
+
 
 ***MERGE TOGETHER SO THE DATASET NOW CONTAINS MEANS OVER SPECIFIED PERIODS;
-data &v ; merge  y_22 t_30 t_22_27 t_22_42 t_22_72;  
+data &v ; merge  y_26 t_36 t_26_46 /*t_26_46*/; 
 
 
 ***THIS MACRO CALCULATES THE MEANS OVER PERIOD AT EACH OF THE SPECIFIED TIME PERIODS ABOVE ANS STORES THESE IN INDIVIDUAL DATASETS;
 %mend var;
 
+%var(v=n_alive_w);		  %var(v=n_alive);				%var(v=n_mm);				%var(v=p_mm);			 	%var(v=p_hiv_mm);		
+%var(v=p_1524mm);		  %var(v=p_2534mm);				%var(v=p_3544mm);			%var(v=p_4554mm);			%var(v=p_5564mm);	
+%var(v=p_hiv_m);		  %var(v=prevalence1549m); 		%var(v=prevalence1549w); 	%var(v=prevalence1549_); 	%var(v=incidence1549_); 	
+%var(v=incidence1549w);   %var(v=incidence1549m);		%var(v=p_diag);	 			%var(v=p_diag_m);	 	 	%var(v=p_diag_w);
+%var(v=p_onart_diag);  	  %var(v=p_onart_diag_m);   	%var(v=p_onart_diag_w);  	%var(v=p_onart_vl1000_); 	%var(v=p_onart_vl1000_m); 
+%var(v=p_onart_vl1000_w); %var(v=p_vg1000_);			%var(v=p_vl1000_); 			%var(v=prevalence_vg1000_);	%var(v=n_onprep_w);	
+%var(v=n_onprep_m);		  %var(v=n_onprep);				%var(v=p_1564m_onprep);   	%var(v=p_1564w_onprep);	 	%var(v=n_prep_any_start);
+%var(v=p_elig_onprep_w);  %var(v=p_elig_onprep_m);		%var(v=p_elig_onprep);		%var(v=p_elig_onprep_mm);	%var(v=p_elig_onprep_nmm);
+%var(v=p_elig_prep);	  %var(v=p_1564m_onprep_nmm);	%var(v=p_hiv_nmm);			%var(v=p_prep_any_ever_nmm);%var(v=p_elig_onprep_genmen);
+%var(v=n_prep_oral_start);%var(v=n_prep_cab_start);		%var(v=n_prep_len_start); 	%var(v=p_diag_mm);
+%var(v=p_onart_diag_mm);  %var(v=p_onart_vl1000_mm);	%var(v=p_vg1000_mm);		%var(v=p_vl1000_mm);	 	%var(v=prevalence1549_mm);	
+%var(v=prevalence1564_mm);%var(v=incidence1549_mm);		%var(v=incidence1564_mm);	%var(v=n_tested_mm);	 	%var(v=p_1564mm_onprep_mm);	
+%var(v=p_hiv_mm);		
 
-%var(v=p_diag);	 		%var(v=p_diag_m);	 		%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
-%var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);
-%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);
+%var(v=p_1564mm_onprep_cab);%var(v=p_1564mm_onprep_len);%var(v=p_1564mm_onprep_oral);	
+%var(v=p_elig_onprep_mm);%var(v=n_prep_any_mm);		%var(v=n_prep_oral_mm);		%var(v=n_prep_cab_mm);	 	%var(v=n_prep_len_mm);
+%var(v=n_prep_ever_mm);	  %var(v=p_prep_any_ever_mm); 	%var(v=p_newp_ge1_mm);		%var(v=p_prep_any_willing);	%var(v=n_prep_oral_mm);
+%var(v=p_elig_onprep_cab);%var(v=p_elig_onprep_len);	%var(v=p_elig_onprep_oral);%var(v=p_elig_onprep_oral_mm);	
+%var(v=p_elig_onprep_cab_mm);							%var(v=p_elig_onprep_len_mm);							%var(v=p_elig_onprep_genmen);
 
-%var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
-%var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
 %var(v=dcost);	 		%var(v=ddaly);
-
-*/ADD IN PROJECT SPECIFIC OUTPUTS/*;
-
 run;
 
 
 ***MERGE THE DATASETS CREATED ABOVE INTO ONE DATASET;
 data wide_outputs;merge
-p_diag	 		p_diag_m	 		p_diag_w   			p_onart_diag  	p_onart_diag_w
-p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m
-p_vg1000 		p_vl1000			prevalence_vg1000
-prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
-dcost			ddaly
+n_alive_w		  	n_alive				n_mm				p_mm			 	p_hiv_mm
+p_1524mm		 	p_2534mm			p_3544mm			p_4554mm			p_5564mm	
+p_hiv_m		  		prevalence1549m 	prevalence1549w 	prevalence1549_ 	incidence1549_ 	
+incidence1549w  	incidence1549m		p_diag	 			p_diag_m	 	 	p_diag_w
+p_onart_diag  	  	p_onart_diag_m   	p_onart_diag_w  	p_onart_vl1000_ 	p_onart_vl1000_m 
+p_onart_vl1000_w 	p_vg1000_			p_vl1000_ 			prevalence_vg1000_	n_onprep_w	
+n_onprep_m		  	n_onprep			p_1564m_onprep   	p_1564w_onprep	 	n_prep_any_start
+p_elig_onprep_w  	p_elig_onprep_m		p_elig_onprep		p_elig_onprep_mm	p_elig_onprep_nmm
+p_elig_prep	  		p_1564m_onprep_nmm	p_hiv_nmm			p_prep_any_ever_nmm	p_elig_onprep_genmen
+n_prep_oral_start	n_prep_cab_start	n_prep_len_start 	p_diag_mm
+p_onart_diag_mm  	p_onart_vl1000_mm	p_vg1000_mm			p_vl1000_mm	 		prevalence1549_mm	
+prevalence1564_mm	incidence1549_mm	incidence1564_mm	n_tested_mm	 		p_1564mm_onprep_mm	
+p_hiv_mm		
 
-/*ADD IN PROJECT SPECIFIC OUTPUTS*/
+p_1564mm_onprep_cab	p_1564mm_onprep_len	p_1564mm_onprep_oral	
+p_elig_onprep_mm	n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm	 	n_prep_len_mm
+n_prep_ever_mm	  	p_prep_any_ever_mm 	p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm
+p_elig_onprep_cab	p_elig_onprep_len	p_elig_onprep_oral	p_elig_onprep_oral_mm	
+p_elig_onprep_cab_mm	p_elig_onprep_len_mm				p_elig_onprep_genmen
+
+dcost	 		ddaly;
+run;
 ;
 
 proc sort; by run;run;
 
-
+/*
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 %macro par(p=);
 proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2022.5; run;
@@ -956,21 +988,17 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-/*ADD PROJECT SPECIFIC PARAMETERS OF INTEREST*/
-%par(p=sw_art_disadv);		%par(p=sw_program);			%par(p=effect_sw_prog_newp);	%par(p=effect_sw_prog_6mtest);	
-%par(p=effect_sw_prog_int);	%par(p=effect_sw_prog_adh);	%par(p=effect_sw_prog_lossdiag);%par(p=effect_sw_prog_prep_any);
-%par(p=effect_sw_prog_pers_sti); %par(p=sw_trans_matrix);
+%par(p=mm_hardreach);			
 run;
 
 
 data wide_par; merge 
-sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
-effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
-sw_trans_matrix;
+mm_hardreach;
 ;proc sort; by run;run;
-
+*/
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_XXX;
-merge   wide_outputs  wide_par ;  
+data a.wide_MM26Aug26;;
+*merge   wide_outputs  wide_par ;  
+set wide_outputs;
 by run;run;
 
