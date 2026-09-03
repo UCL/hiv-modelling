@@ -1,6 +1,6 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run search2_001;
+* run search2_002;
 * Matt local machine input;
 libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026';
 %let tmpfilename = out;
@@ -23165,6 +23165,8 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,2);
 data r1; set a;
+
+/*
 *    Option 3 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,3);				  
 *    Option 3 - repetition 2;	   
@@ -23173,7 +23175,8 @@ data r1; set a;
 *    Option 3 - repetition 3;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,3);
-
+*/
+/*
 data r1; set a;
 *    Option 4 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,4);				  
@@ -23182,7 +23185,9 @@ data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,4);											 
 *    Option 4 - repetition 3;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,4);										   
+%run_update_r1(&year_interv,&year_interv+50,4);		
+*/
+ 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
