@@ -23143,31 +23143,34 @@ Inputs are:
 
 *    Save dataset at this point;
 data a ;  set r1 ;
-data r1 ; set a ;											  
+										  
 
 *    Option 1 - repetition 1;
+data r1 ; set a ;	
 %run_update_r1(&year_interv,&year_interv+50,1);
-*    Option 1 - repetition 2;
+*    Option 1 - repetition 2; /*
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);						  
 *    Option 1 - repetition 3;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,1);
-										  
+*/						  
 
-data r1; set a;
+
 *    Option 2 - repetition 1;
+data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,2);				  
-*    Option 2 - repetition 2;	   
+*    Option 2 - repetition 2;	/*   
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,2);											  
 *    Option 2 - repetition 3;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,2);
-data r1; set a;
 
+*/
 /*
 *    Option 3 - repetition 1;
+data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,3);				  
 *    Option 3 - repetition 2;	   
 data r1; set a;
@@ -23177,8 +23180,9 @@ data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,3);
 */
 /*
-data r1; set a;
+
 *    Option 4 - repetition 1;
+data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,4);				  
 *    Option 4 - repetition 2;	   
 data r1; set a;
