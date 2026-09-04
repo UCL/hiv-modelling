@@ -1,14 +1,14 @@
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_e_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_g_out\";
 
 /*  
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_e_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_g_out\";
 
 data i1;set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data b.k_search_2_testing_e;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data b.k_search_2_testing_g;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 run;
 
@@ -16,7 +16,7 @@ run;
 
 
 
-proc sort data=b.k_search_2_testing_e out=work.k_search_sorted;
+proc sort data=b.k_search_2_testing_g out=work.k_search_sorted;
    by run cald option;
 run;
 
@@ -373,6 +373,7 @@ s_hiv = s_hivge15 ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
 
 * p_tested_incl_self;			p_tested_incl_self = (s_tested + s_self_tested) / s_alive;
+* p_tested;						p_tested = s_tested / s_alive;
 
 * p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;
 * p_mcirc_1519m;				p_mcirc_1519m = s_mcirc_1519m / s_ageg1519m ;
@@ -1676,7 +1677,7 @@ dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cos
 dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost dvis_cost_no_lencab dvis_cost_lencab  
 dcot_cost       dtb_cost    n_hiv   dcost_drug_level_test p_drug_level_test
-n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
+n_tested_m p_tested p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 prevalence_vg1000_1549 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw  mtct_birth_prop  ddaly_mtct
@@ -1723,7 +1724,7 @@ p_tldsw2_elig_tldsw
 
 p_first_uvl2_dol_r  deathr_dol_r_uvl2
 
-p_tested_incl_self
+p_tested_incl_self 
 
 /* *hypertension */
 pop1524 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85 
@@ -1888,7 +1889,7 @@ artvis0_lower_adh  rate_dead_hivpos_cause1  dcost_self_test  n_prep_oral  prep_d
 
 n_infection_incl_mtct
 
-p_tested_incl_self    p_hard_reach
+p_tested_incl_self    p_hard_reach  p_tested
 
 p_diag_ehr  p_onart_diag_ehr  prop_elig_on_prep_ehr  p_onart_vl1000_ehr   prob_pos_self_test_conf
 
@@ -1924,9 +1925,9 @@ proc freq; tables cald option; where cald=2027.50;
 run;
 
 
-data    b.l_search_2_testing_e; set y;  
+data    b.l_search_2_testing_g; set y;  
 
-data y ; set b.l_search_2_testing_e; 
+data y ; set b.l_search_2_testing_g; 
 
 
   options nomprint;
@@ -2135,6 +2136,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=cost);  %var(v=prevalence15pl);  %var(v=n_self_tested); %var(v=dcost_self_test);
 %var(v=n_prep_oral);
 %var(v=n_pop_wide_tld_as_art) %var(v=n_pop_wide_tld_prep) %var(v=p_oral_pep_not_prep);  %var(v=dcost_sw_program);  %var(v=n_adc); %var(v=p_tested_incl_self);
+%var(v=p_tested);
 
 %var(v=p_diag_ehr);  %var(v=p_onart_diag_ehr);  %var(v=prop_elig_on_prep_ehr);  %var(v=p_onart_vl1000_ehr);
 
@@ -2248,7 +2250,7 @@ dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cos
 ddaly_mtct
 dzdv_cost dten_cost  d3tc_cost  dnev_cost  dlpr_cost  ddar_cost  defa_cost
  ddol_cost  dcab_cost  dlen_cost  cost
-p_tested_incl_self
+p_tested_incl_self  p_tested
 dcost_prep_visit_oral dcost_prep_visit_cab dcost_prep_visit_len   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost  dcost_drug_level_test n_hiv n_alive  p_drug_level_test
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
@@ -2641,7 +2643,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_search_2_testing_e   ; 
+  data  b.w_search_2_testing_g   ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -2650,10 +2652,10 @@ proc sort; by run;run;
 
 
 
-* libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_e_out\";
+   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\search_2\search_2_testing_g_out\";
 
 
-data f; set b.w_search_2_testing_e ;
+data f; set b.w_search_2_testing_g ;
 
 /*
 proc print;  var per_prep_during_past_2_yr_1_25  per_prep_during_past_2_yr_1_10y1
@@ -2666,6 +2668,9 @@ incidence_prep_elig_10y_1 incidence_onprep_10y_1
 proc contents data=f; run;
 */
 
+
+
+
 if prevalence1549w_24 < 0.35 ;
 if prevalence1549m_24 < 0.25 ;
 if incidence1549m_24 < 1.5;
@@ -2677,6 +2682,7 @@ if p_onart_diag_m_24 > 0.80;
 if p_onart_diag_w_24 > 0.85;
 if p_onart_vl1000_m_24 > 0.75;
 if p_onart_vl1000_w_24 > 0.80;
+
 
 
 /*
@@ -2816,6 +2822,7 @@ ce_300_1_2 = 0; if lowest_netdaly300_1_2 = 2 then ce_300_1_2 = 1; x_ce_300_1_2 =
 
 netdaly150_1 = ddaly_50y_1 + (dcost_50y_1 / 0.00015);
 netdaly150_2 = ddaly_50y_2 + (dcost_50y_2 / 0.00015);
+netdaly150_3 = ddaly_50y_3 + (dcost_50y_3 / 0.00015);
 
 min_netdaly150 = min(netdaly150_1, netdaly150_2);
 min_netdaly150_1_2 = min(netdaly150_1, netdaly150_2);
@@ -2840,9 +2847,11 @@ if netdaly_gbd500_2 = min_netdaly_gbd500 then lowest_netdaly_gbd=2;
 
 if netdaly300_1 = min_netdaly300 then lowest_netdaly300=1;
 if netdaly300_2 = min_netdaly300 then lowest_netdaly300=2;
+if netdaly300_3 = min_netdaly300 then lowest_netdaly300=3;
 
 if netdaly150_1 = min_netdaly150 then lowest_netdaly150=1;
 if netdaly150_2 = min_netdaly150 then lowest_netdaly150=2;
+if netdaly150_3 = min_netdaly150 then lowest_netdaly150=3;
 
 min_ddaly_50y = min(ddaly_50y_1, ddaly_50y_2);
 min_ddaly_50y_1_2 = min(ddaly_50y_1, ddaly_50y_2);
@@ -2884,18 +2893,27 @@ d_p_diag_10y_2_1 = p_diag_10y_2 - p_diag_10y_1;
 d_p_diag_10y_3_1 = p_diag_10y_3 - p_diag_10y_1;
 
 d_p_onart_diag_10y_2_1 = p_onart_diag_10y_2 - p_onart_diag_10y_1;
+d_p_onart_diag_10y_3_1 = p_onart_diag_10y_3 - p_onart_diag_10y_1;
 
 d_p_onart_vl1000_10y_2_1 = p_onart_vl1000_10y_2 - p_onart_vl1000_10y_1;
+d_p_onart_vl1000_10y_3_1 = p_onart_vl1000_10y_3 - p_onart_vl1000_10y_1;
 
 d_p_diag_ehr_10y_2_1 = p_diag_ehr_10y_2 - p_diag_ehr_10y_1;
 d_p_onart_diag_ehr_10y_2_1 = p_onart_diag_ehr_10y_2 - p_onart_diag_ehr_10y_1;
 d_p_onart_vl1000_ehr_10y_2_1 = p_onart_vl1000_ehr_10y_2 - p_onart_vl1000_ehr_10y_1;
+d_p_diag_ehr_10y_3_1 = p_diag_ehr_10y_3 - p_diag_ehr_10y_1;
+d_p_onart_diag_ehr_10y_3_1 = p_onart_diag_ehr_10y_3 - p_onart_diag_ehr_10y_1;
+d_p_onart_vl1000_ehr_10y_3_1 = p_onart_vl1000_ehr_10y_3 - p_onart_vl1000_ehr_10y_1;
 
 d_p_vl1000_10y_2_1 = p_vl1000_10y_2 - p_vl1000_10y_1;
+d_p_vl1000_10y_3_1 = p_vl1000_10y_3 - p_vl1000_10y_1;
 
 d_prevalence_vg1000_10y_2_1 = prevalence_vg1000_10y_2 - prevalence_vg1000_10y_1;
 
 r_prevalence_vg1000_10y_2_1 = prevalence_vg1000_10y_2 / prevalence_vg1000_10y_1;
+d_prevalence_vg1000_10y_3_1 = prevalence_vg1000_10y_3 - prevalence_vg1000_10y_1;
+
+r_prevalence_vg1000_10y_3_1 = prevalence_vg1000_10y_3 / prevalence_vg1000_10y_1;
 
 d_n_death_hiv_10y_2_1 = n_death_hiv_10y_2 - n_death_hiv_10y_1 ;
 
@@ -2906,117 +2924,119 @@ r_incidence1549_10y_2_1 = incidence1549_10y_2 / incidence1549_10y_1 ;
 r_incidence1549_10y_3_1 = incidence1549_10y_3 / incidence1549_10y_1 ;
 
 r_mtct_prop_10y_2_1 = mtct_prop_10y_2 / mtct_prop_10y_1 ;
+r_mtct_prop_10y_3_1 = mtct_prop_10y_3 / mtct_prop_10y_1 ;
 
 r_n_mtct_10y_2_1 = n_mtct_10y_2 / n_mtct_10y_1 ;
+r_n_mtct_10y_3_1 = n_mtct_10y_3 / n_mtct_10y_1 ;
 
-p_diag_w_24 = p_diag_w_24 / 100;
-p_diag_m_24 = p_diag_m_24 / 100;
+p_diag_w_25 = p_diag_w_25 / 100;
+p_diag_m_25 = p_diag_m_25 / 100;
 
-if incidence1549m_24 < 0.15 then incidence1549m_24_g=1;
-if 0.15 <= incidence1549m_24 < 0.30 then incidence1549m_24_g=2;
-if 0.30 <= incidence1549m_24 < 0.45 then incidence1549m_24_g=3;
-if 0.45 <= incidence1549m_24 < 0.60 then incidence1549m_24_g=4;
-if 0.60 <= incidence1549m_24 < 0.75 then incidence1549m_24_g=5;
-if 0.75 <= incidence1549m_24        then incidence1549m_24_g=6;
+if incidence1549m_25 < 0.15 then incidence1549m_25_g=1;
+if 0.15 <= incidence1549m_25 < 0.30 then incidence1549m_25_g=2;
+if 0.30 <= incidence1549m_25 < 0.45 then incidence1549m_25_g=3;
+if 0.45 <= incidence1549m_25 < 0.60 then incidence1549m_25_g=4;
+if 0.60 <= incidence1549m_25 < 0.75 then incidence1549m_25_g=5;
+if 0.75 <= incidence1549m_25        then incidence1549m_25_g=6;
 
-if prevalence1549_24 < 0.05 then prevalence1549_24_g=1;
-if 0.05 <= prevalence1549_24 < 0.10 then prevalence1549_24_g=2;
-if 0.10 <= prevalence1549_24 < 0.15 then prevalence1549_24_g=3;
-if 0.15 <= prevalence1549_24 < 0.20 then prevalence1549_24_g=4;
-if 0.20 <= prevalence1549_24        then prevalence1549_24_g=5;
+if prevalence1549_25 < 0.05 then prevalence1549_25_g=1;
+if 0.05 <= prevalence1549_25 < 0.10 then prevalence1549_25_g=2;
+if 0.10 <= prevalence1549_25 < 0.15 then prevalence1549_25_g=3;
+if 0.15 <= prevalence1549_25 < 0.20 then prevalence1549_25_g=4;
+if 0.20 <= prevalence1549_25        then prevalence1549_25_g=5;
 
-if p_diag_m_24 < 0.70 then p_diag_m_24_g=1;
-if 0.70 <= p_diag_m_24 < 0.75 then p_diag_m_24_g=2;
-if 0.75 <= p_diag_m_24 < 0.80 then p_diag_m_24_g=3;
-if 0.80 <= p_diag_m_24 < 0.85 then p_diag_m_24_g=4;
-if 0.85 <= p_diag_m_24 < 0.90 then p_diag_m_24_g=5;
-if 0.90 <= p_diag_m_24        then p_diag_m_24_g=6;
+if p_diag_m_25 < 0.70 then p_diag_m_25_g=1;
+if 0.70 <= p_diag_m_25 < 0.75 then p_diag_m_25_g=2;
+if 0.75 <= p_diag_m_25 < 0.80 then p_diag_m_25_g=3;
+if 0.80 <= p_diag_m_25 < 0.85 then p_diag_m_25_g=4;
+if 0.85 <= p_diag_m_25 < 0.90 then p_diag_m_25_g=5;
+if 0.90 <= p_diag_m_25        then p_diag_m_25_g=6;
 
-if p_onart_diag_m_24 < 0.70 then p_onart_diag_m_24_g=1;
-if 0.70 <= p_onart_diag_m_24 < 0.75 then p_onart_diag_m_24_g=2;
-if 0.75 <= p_onart_diag_m_24 < 0.80 then p_onart_diag_m_24_g=3;
-if 0.80 <= p_onart_diag_m_24 < 0.85 then p_onart_diag_m_24_g=4;
-if 0.85 <= p_onart_diag_m_24 < 0.90 then p_onart_diag_m_24_g=5;
-if 0.90 <= p_onart_diag_m_24 < 0.95 then p_onart_diag_m_24_g=6;
-if 0.95 <= p_onart_diag_m_24        then p_onart_diag_m_24_g=7;
+if p_onart_diag_m_25 < 0.70 then p_onart_diag_m_25_g=1;
+if 0.70 <= p_onart_diag_m_25 < 0.75 then p_onart_diag_m_25_g=2;
+if 0.75 <= p_onart_diag_m_25 < 0.80 then p_onart_diag_m_25_g=3;
+if 0.80 <= p_onart_diag_m_25 < 0.85 then p_onart_diag_m_25_g=4;
+if 0.85 <= p_onart_diag_m_25 < 0.90 then p_onart_diag_m_25_g=5;
+if 0.90 <= p_onart_diag_m_25 < 0.95 then p_onart_diag_m_25_g=6;
+if 0.95 <= p_onart_diag_m_25        then p_onart_diag_m_25_g=7;
 
-if p_onart_vl1000_m_24 < 0.80 then p_onart_vl1000_m_24_g=1;
-if 0.80 <= p_onart_vl1000_m_24 < 0.85 then p_onart_vl1000_m_24_g=2;
-if 0.85 <= p_onart_vl1000_m_24 < 0.90 then p_onart_vl1000_m_24_g=3;
-if 0.90 <= p_onart_vl1000_m_24 < 0.95 then p_onart_vl1000_m_24_g=4;
-if 0.95 <= p_onart_vl1000_m_24        then p_onart_vl1000_m_24_g=5;
-
-
-if incidence1549w_24 < 0.15 then incidence1549w_24_g=1;
-if 0.15 <= incidence1549w_24 < 0.30 then incidence1549w_24_g=2;
-if 0.30 <= incidence1549w_24 < 0.45 then incidence1549w_24_g=3;
-if 0.45 <= incidence1549w_24 < 0.60 then incidence1549w_24_g=4;
-if 0.60 <= incidence1549w_24 < 0.75 then incidence1549w_24_g=5;
-if 0.75 <= incidence1549w_24        then incidence1549w_24_g=6;
-
-if p_diag_24 < 0.75 then p_diag_24_g=1;
-if 0.75 <= p_diag_24 < 0.80 then p_diag_24_g=2;
-if 0.80 <= p_diag_24 < 0.85 then p_diag_24_g=3;
-if 0.85 <= p_diag_24 < 0.90 then p_diag_24_g=4;
-if 0.90 <= p_diag_24        then p_diag_24_g=5;
-
-if p_onart_diag_24 < 0.80 then p_onart_diag_24_g=1;
-if 0.80 <= p_onart_diag_24 < 0.85 then p_onart_diag_24_g=2;
-if 0.85 <= p_onart_diag_24 < 0.90 then p_onart_diag_24_g=3;
-if 0.90 <= p_onart_diag_24 < 0.95 then p_onart_diag_24_g=4;
-if 0.95 <= p_onart_diag_24        then p_onart_diag_24_g=5;
-
-if p_onart_vl1000_24 < 0.80 then p_onart_vl1000_24_g=1;
-if 0.80 <= p_onart_vl1000_24 < 0.85 then p_onart_vl1000_24_g=2;
-if 0.85 <= p_onart_vl1000_24 < 0.90 then p_onart_vl1000_24_g=3;
-if 0.90 <= p_onart_vl1000_24 < 0.95 then p_onart_vl1000_24_g=4;
-if 0.95 <= p_onart_vl1000_24        then p_onart_vl1000_24_g=5;
-
-if prevalence_vg1000_24 < 0.005 then prevalence_vg1000_24_g=1;
-if 0.005 <= prevalence_vg1000_24 < 0.010 then prevalence_vg1000_24_g=2;
-if 0.010 <= prevalence_vg1000_24 < 0.015 then prevalence_vg1000_24_g=3;
-if 0.015 <= prevalence_vg1000_24 < 0.020 then prevalence_vg1000_24_g=4;
-if 0.020 <= prevalence_vg1000_24 < 0.025 then prevalence_vg1000_24_g=5;
-if 0.025 <= prevalence_vg1000_24 < 0.030 then prevalence_vg1000_24_g=6;
-if 0.030 <= prevalence_vg1000_24 < 0.035 then prevalence_vg1000_24_g=7;
-if 0.035 <= prevalence_vg1000_24 < 0.040 then prevalence_vg1000_24_g=8;
-if 0.040 <= prevalence_vg1000_24        then prevalence_vg1000_24_g=9;
-
-if p_diag_vl1000_24 < 0.80 then p_diag_vl1000_24_g=1;
-if 0.80 <= p_diag_vl1000_24 < 0.85 then p_diag_vl1000_24_g=2;
-if 0.85 <= p_diag_vl1000_24 < 0.90 then p_diag_vl1000_24_g=3;
-if 0.90 <= p_diag_vl1000_24 < 0.93 then p_diag_vl1000_24_g=4;
-if 0.93 <= p_diag_vl1000_24        then p_diag_vl1000_24_g=5;
-
-if p_diag_24 < 0.80 then p_diag_24_g=1;
-if 0.80 <= p_diag_24 < 0.85 then p_diag_24_g=2;
-if 0.85 <= p_diag_24 < 0.90 then p_diag_24_g=3;
-if 0.90 <= p_diag_24        then p_diag_24_g=4;
-
-if p_onart_vl1000_24 < 0.85 then p_onart_vl1000_24_g=1;
-if 0.85 <= p_onart_vl1000_24 < 0.90 then p_onart_vl1000_24_g=2;
-if 0.90 <= p_onart_vl1000_24 < 0.95 then p_onart_vl1000_24_g=3;
-if 0.95 <= p_onart_vl1000_24        then p_onart_vl1000_24_g=4;
+if p_onart_vl1000_m_25 < 0.80 then p_onart_vl1000_m_25_g=1;
+if 0.80 <= p_onart_vl1000_m_25 < 0.85 then p_onart_vl1000_m_25_g=2;
+if 0.85 <= p_onart_vl1000_m_25 < 0.90 then p_onart_vl1000_m_25_g=3;
+if 0.90 <= p_onart_vl1000_m_25 < 0.95 then p_onart_vl1000_m_25_g=4;
+if 0.95 <= p_onart_vl1000_m_25        then p_onart_vl1000_m_25_g=5;
 
 
-if p_onart_diag_24 < 0.85 then p_onart_diag_24_g=1;
-if 0.85 <= p_onart_diag_24 < 0.90 then p_onart_diag_24_g=2;
-if 0.90 <= p_onart_diag_24 < 0.95 then p_onart_diag_24_g=3;
-if 0.95 <= p_onart_diag_24        then p_onart_diag_24_g=4;
+if incidence1549w_25 < 0.15 then incidence1549w_25_g=1;
+if 0.15 <= incidence1549w_25 < 0.30 then incidence1549w_25_g=2;
+if 0.30 <= incidence1549w_25 < 0.45 then incidence1549w_25_g=3;
+if 0.45 <= incidence1549w_25 < 0.60 then incidence1549w_25_g=4;
+if 0.60 <= incidence1549w_25 < 0.75 then incidence1549w_25_g=5;
+if 0.75 <= incidence1549w_25        then incidence1549w_25_g=6;
+
+if p_diag_25 < 0.75 then p_diag_25_g=1;
+if 0.75 <= p_diag_25 < 0.80 then p_diag_25_g=2;
+if 0.80 <= p_diag_25 < 0.85 then p_diag_25_g=3;
+if 0.85 <= p_diag_25 < 0.90 then p_diag_25_g=4;
+if 0.90 <= p_diag_25        then p_diag_25_g=5;
+
+if p_onart_diag_25 < 0.80 then p_onart_diag_25_g=1;
+if 0.80 <= p_onart_diag_25 < 0.85 then p_onart_diag_25_g=2;
+if 0.85 <= p_onart_diag_25 < 0.90 then p_onart_diag_25_g=3;
+if 0.90 <= p_onart_diag_25 < 0.95 then p_onart_diag_25_g=4;
+if 0.95 <= p_onart_diag_25        then p_onart_diag_25_g=5;
+
+if p_onart_vl1000_25 < 0.80 then p_onart_vl1000_25_g=1;
+if 0.80 <= p_onart_vl1000_25 < 0.85 then p_onart_vl1000_25_g=2;
+if 0.85 <= p_onart_vl1000_25 < 0.90 then p_onart_vl1000_25_g=3;
+if 0.90 <= p_onart_vl1000_25 < 0.95 then p_onart_vl1000_25_g=4;
+if 0.95 <= p_onart_vl1000_25        then p_onart_vl1000_25_g=5;
+
+if prevalence_vg1000_25 < 0.005 then prevalence_vg1000_25_g=1;
+if 0.005 <= prevalence_vg1000_25 < 0.010 then prevalence_vg1000_25_g=2;
+if 0.010 <= prevalence_vg1000_25 < 0.015 then prevalence_vg1000_25_g=3;
+if 0.015 <= prevalence_vg1000_25 < 0.020 then prevalence_vg1000_25_g=4;
+if 0.020 <= prevalence_vg1000_25 < 0.025 then prevalence_vg1000_25_g=5;
+if 0.025 <= prevalence_vg1000_25 < 0.030 then prevalence_vg1000_25_g=6;
+if 0.030 <= prevalence_vg1000_25 < 0.035 then prevalence_vg1000_25_g=7;
+if 0.035 <= prevalence_vg1000_25 < 0.040 then prevalence_vg1000_25_g=8;
+if 0.040 <= prevalence_vg1000_25        then prevalence_vg1000_25_g=9;
+
+if p_diag_vl1000_25 < 0.80 then p_diag_vl1000_25_g=1;
+if 0.80 <= p_diag_vl1000_25 < 0.85 then p_diag_vl1000_25_g=2;
+if 0.85 <= p_diag_vl1000_25 < 0.90 then p_diag_vl1000_25_g=3;
+if 0.90 <= p_diag_vl1000_25 < 0.93 then p_diag_vl1000_25_g=4;
+if 0.93 <= p_diag_vl1000_25        then p_diag_vl1000_25_g=5;
+
+if p_diag_25 < 0.80 then p_diag_25_g=1;
+if 0.80 <= p_diag_25 < 0.85 then p_diag_25_g=2;
+if 0.85 <= p_diag_25 < 0.90 then p_diag_25_g=3;
+if 0.90 <= p_diag_25        then p_diag_25_g=4;
+
+if p_onart_vl1000_25 < 0.85 then p_onart_vl1000_25_g=1;
+if 0.85 <= p_onart_vl1000_25 < 0.90 then p_onart_vl1000_25_g=2;
+if 0.90 <= p_onart_vl1000_25 < 0.95 then p_onart_vl1000_25_g=3;
+if 0.95 <= p_onart_vl1000_25        then p_onart_vl1000_25_g=4;
 
 
-if incidence1549_24 < 0.15 then incidence1549_24_g=1;
-if 0.15 <= incidence1549_24 < 0.30 then incidence1549_24_g=2;
-if 0.30 <= incidence1549_24 < 0.45 then incidence1549_24_g=3;
-if 0.45 <= incidence1549_24 < 0.60 then incidence1549_24_g=4;
-if 0.60 <= incidence1549_24 < 0.75 then incidence1549_24_g=5;
-if 0.75 <= incidence1549_24        then incidence1549_24_g=6;
+if p_onart_diag_25 < 0.85 then p_onart_diag_25_g=1;
+if 0.85 <= p_onart_diag_25 < 0.90 then p_onart_diag_25_g=2;
+if 0.90 <= p_onart_diag_25 < 0.95 then p_onart_diag_25_g=3;
+if 0.95 <= p_onart_diag_25        then p_onart_diag_25_g=4;
 
-if p_vl1000_24 < 0.80 then p_vl1000_24_g=1;
-if 0.80 <= p_vl1000_24 < 0.85 then p_vl1000_24_g=2;
-if 0.85 <= p_vl1000_24 < 0.90 then p_vl1000_24_g=3;
-if 0.90 <= p_vl1000_24 < 0.95 then p_vl1000_24_g=4;
-if 0.95 <= p_vl1000_24        then p_vl1000_24_g=5;
+
+if incidence1549_25 < 0.15 then incidence1549_25_g=1;
+if 0.15 <= incidence1549_25 < 0.30 then incidence1549_25_g=2;
+if 0.30 <= incidence1549_25 < 0.45 then incidence1549_25_g=3;
+if 0.45 <= incidence1549_25 < 0.60 then incidence1549_25_g=4;
+if 0.60 <= incidence1549_25 < 0.75 then incidence1549_25_g=5;
+if 0.75 <= incidence1549_25        then incidence1549_25_g=6;
+
+if p_vl1000_25 < 0.80 then p_vl1000_25_g=1;
+if 0.80 <= p_vl1000_25 < 0.85 then p_vl1000_25_g=2;
+if 0.85 <= p_vl1000_25 < 0.90 then p_vl1000_25_g=3;
+if 0.90 <= p_vl1000_25 < 0.95 then p_vl1000_25_g=4;
+if 0.95 <= p_vl1000_25        then p_vl1000_25_g=5;
 
 d_prop_elig_on_prep_10y_2 = prop_elig_on_prep_10y_2 - prop_elig_on_prep_10y_1;
 d_prop_elig_on_prep_10y_3 = prop_elig_on_prep_10y_3 - prop_elig_on_prep_10y_1;
@@ -3029,11 +3049,11 @@ d_prop_1564_onprep_10y_3 = prop_1564_onprep_10y_3 - prop_1564_onprep_10y_1 ;
 d_prop_elig_on_prep_50y_1_2 = prop_elig_on_prep_50y_2 - prop_elig_on_prep_50y_1;
 d_prop_elig_on_prep_50y_1_3 = prop_elig_on_prep_50y_3 - prop_elig_on_prep_50y_1;
 
-prevalence1549_percent_24 = prevalence1549_24 * 100;
+prevalence1549_percent_25 = prevalence1549_25 * 100;
 
-p_diag_percent_24 = p_diag_24 * 100;  
-p_onart_diag_percent_24 = p_onart_diag_24 * 100; 
-p_onart_vl1000_percent_24 = p_onart_vl1000_24 * 100;
+p_diag_percent_25 = p_diag_25 * 100;  
+p_onart_diag_percent_25 = p_onart_diag_25 * 100; 
+p_onart_vl1000_percent_25 = p_onart_vl1000_25 * 100;
 
 
 n_tested_all_10y_1 = n_tested_10y_1 + n_self_tested_10y_1;
@@ -3057,23 +3077,113 @@ cost_decline = cost_3y_2 / cost_19 ;
 cost_per_person_10y_2 = cost_10y_2 / n_alive_10y_2 ;
 cost_per_person_10y_3 = cost_10y_3 / n_alive_10y_2 ;
 
+
+
 ods html;
 title 'Characteristics of the setting scenarios in 2024 (median, 90% range)';
 ods noproctitle;
 proc means data=f   n p50  p5  p95 min max ;  
-var prevalence1549w_24 prevalence1549m_24 prevalence1549_24 incidence1549m_24 incidence1549w_24 incidence1549_24 
-p_diag_24 p_diag_w_24 p_diag_m_24 
-p_onart_diag_24 p_onart_diag_w_24  p_onart_diag_m_24  
-p_onart_vl1000_24 p_onart_vl1000_m_24 p_onart_vl1000_w_24
-p_vl1000_24 p_vl1000_w_24 p_vl1000_m_24 
-prevalence_vg1000_24   
-p_onart_cd4_l200_24
-p_onart_vl1000_w_1524_24 p_onart_vl1000_m_1524_24  
-s_alive_24
-p_hard_reach_24
+var prevalence1549w_25 prevalence1549m_25 prevalence1549_25 incidence1549m_25 incidence1549w_25 incidence1549_25 
+p_diag_25 p_diag_w_25 p_diag_m_25 
+p_onart_diag_25 p_onart_diag_w_25  p_onart_diag_m_25  
+p_onart_vl1000_25 p_onart_vl1000_m_25 p_onart_vl1000_w_25
+p_vl1000_25 p_vl1000_w_25 p_vl1000_m_25 
+prevalence_vg1000_25   
+p_onart_cd4_l200_25
+p_onart_vl1000_w_1524_25 p_onart_vl1000_m_1524_25  
+s_alive_25
+p_hard_reach_25
+per_prep_during_past_2_yr_1_25 per_prep_during_past_2_yr_2_25 per_prep_during_past_2_yr_3_25 per_prep_during_past_2_yr_4_25
+per_prep_during_past_2_yr_5_25 per_prep_during_past_2_yr_6_25 per_prep_during_past_2_yr_7_25 per_prep_during_past_2_yr_8_25
+
+incidence_prep_elig_25 incidence_onprep_25 incidence_prep_elig_nu_25
+;
+run;
+
+
+proc means data=f median p5 p95 mean lclm uclm;
+var
+
+p_tested_incl_self_10y_1 p_tested_incl_self_10y_2  p_tested_incl_self_10y_3
+
+n_tested_10y_1 n_tested_10y_2 n_tested_10y_3 
+
+p_diag_10y_1  p_diag_10y_2  p_diag_10y_3
+
+prevalence_vg1000_10y_3  prevalence_vg1000_10y_2  prevalence_vg1000_10y_1
+
+r_n_death_hiv_10y_2_1 r_n_death_hiv_10y_3_1                                                             
+
+incidence1549_10y_3 incidence1549_10y_2  incidence1549_10y_1 r_incidence1549_10y_2_1 r_incidence1549_10y_3_1  
+
+r_n_mtct_10y_2_1 r_n_mtct_10y_3_1 
+
+prop_elig_on_prep_10y_1 prop_elig_on_prep_10y_2   prop_elig_on_prep_10y_3  d_prop_elig_on_prep_10y_2  d_prop_elig_on_prep_10y_3 
+
+prop_1564_onprep_10y_1 prop_1564_onprep_10y_2 prop_1564_onprep_10y_3 
+
+d_prop_1564_onprep_10y_2 d_prop_1564_onprep_10y_3
+
+p_prep_adhg80_10y_1 p_prep_adhg80_10y_2   p_prep_adhg80_10y_3  
+
+per_prep_during_past_2_yr_1_10y1 per_prep_during_past_2_yr_2_10y1 per_prep_during_past_2_yr_3_10y1 per_prep_during_past_2_yr_4_10y1
+per_prep_during_past_2_yr_5_10y1 per_prep_during_past_2_yr_6_10y1 per_prep_during_past_2_yr_7_10y1 per_prep_during_past_2_yr_8_10y1
+
+per_prep_during_past_2_yr_1_10y2 per_prep_during_past_2_yr_2_10y2 per_prep_during_past_2_yr_3_10y2 per_prep_during_past_2_yr_4_10y2
+per_prep_during_past_2_yr_5_10y2 per_prep_during_past_2_yr_6_10y2 per_prep_during_past_2_yr_7_10y2 per_prep_during_past_2_yr_8_10y2
+
+per_prep_during_past_2_yr_1_10y3 per_prep_during_past_2_yr_2_10y3 per_prep_during_past_2_yr_3_10y3 per_prep_during_past_2_yr_4_10y3
+per_prep_during_past_2_yr_5_10y3 per_prep_during_past_2_yr_6_10y3 per_prep_during_past_2_yr_7_10y3 per_prep_during_past_2_yr_8_10y3
+
+incidence_prep_elig_10y_1 incidence_onprep_10y_1 incidence_prep_elig_nu_10y_1
+incidence_prep_elig_10y_2 incidence_onprep_10y_2 incidence_prep_elig_nu_10y_2
+incidence_prep_elig_10y_3 incidence_onprep_10y_3 incidence_prep_elig_nu_10y_3
+
+;
+run;
+
+
+title '';
+proc means data=f mean lclm uclm;
+var 
+
+r_n_death_hiv_50y_2_1 r_n_death_hiv_50y_3_1 
+
+dcost_50y_1 dcost_50y_2 dcost_50y_3
+d_dcost_50y_2_1 d_dcost_50y_3_1
+
+ddaly_50y_1 ddaly_50y_2 ddaly_50y_3
+d_ddaly_50y_2_1  d_ddaly_50y_3_1
+
+netdaly300_1 netdaly300_2 netdaly300_3
+netdaly150_1 netdaly150_2 netdaly150_3 
+
 ;
 run;
 ods html close;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ods html;
@@ -3081,6 +3191,7 @@ proc means data=f median p5 p95 mean lclm uclm;
 var
 
 n_tested_all_10y_1 n_tested_all_10y_2  n_tested_all_10y_3
+n_tested_50y_1 n_tested_50y_2  n_tested_50y_3
 
 d_n_tested_all_10y_2 d_n_tested_all_10y_3
 
@@ -3091,12 +3202,6 @@ d_p_diag_10y_2_1 d_p_diag_10y_3_1  p_diag_10y_3  p_diag_10y_2  p_diag_10y_1
 d_p_onart_diag_10y_2_1 d_p_onart_diag_10y_3_1 p_onart_diag_10y_3  p_onart_diag_10y_2  p_onart_diag_10y_1
 
 d_p_onart_vl1000_10y_3_1 d_p_onart_vl1000_10y_2_1  p_onart_vl1000_10y_3   p_onart_vl1000_10y_2  p_onart_vl1000_10y_1
-
-d_p_diag_ehr_10y_2_1 d_p_diag_ehr_10y_3_1  p_diag_ehr_10y_3  p_diag_ehr_10y_2  p_diag_ehr_10y_1
-
-d_p_onart_diag_ehr_10y_2_1 d_p_onart_diag_ehr_10y_3_1  p_onart_diag_ehr_10y_3  p_onart_diag_ehr_10y_2  p_onart_diag_ehr_10y_1
-
-d_p_onart_vl1000_ehr_10y_2_1 d_p_onart_vl1000_ehr_10y_3_1  p_onart_vl1000_ehr_10y_3  p_onart_vl1000_ehr_10y_2  p_onart_vl1000_ehr_10y_1
 
 d_p_vl1000_10y_2_1 d_p_vl1000_10y_3_1  p_vl1000_10y_3   p_vl1000_10y_2  p_vl1000_10y_1
 
@@ -3127,7 +3232,7 @@ n_prep_any_50y_1 n_prep_any_50y_2 n_prep_any_50y_3
 
 p_mcirc_10y_1 p_mcirc_10y_2  p_mcirc_10y_3
 
-p_hard_reach_10y_1 p_hard_reach_10y_2 p_hard_reach_10y32
+p_hard_reach_10y_1 p_hard_reach_10y_2 p_hard_reach_10y_3
 
 cost_per_person_10y_2 cost_per_person_10y_3
 
@@ -3157,74 +3262,6 @@ run;
 ods html close;
 
 
-
-
-
-
-ods html;
-proc means data=f median p5 p95 mean lclm uclm;
-var
-
-
-per_prep_during_past_2_yr_1_25 per_prep_during_past_2_yr_2_25 per_prep_during_past_2_yr_3_25 per_prep_during_past_2_yr_4_25
-per_prep_during_past_2_yr_5_25 per_prep_during_past_2_yr_6_25 per_prep_during_past_2_yr_7_25 per_prep_during_past_2_yr_8_25
-
-per_prep_during_past_2_yr_1_10y1 per_prep_during_past_2_yr_2_10y1 per_prep_during_past_2_yr_3_10y1 per_prep_during_past_2_yr_4_10y1
-per_prep_during_past_2_yr_5_10y1 per_prep_during_past_2_yr_6_10y1 per_prep_during_past_2_yr_7_10y1 per_prep_during_past_2_yr_8_10y1
-per_prep_during_past_2_yr_1_10y2 per_prep_during_past_2_yr_2_10y2 per_prep_during_past_2_yr_3_10y2 per_prep_during_past_2_yr_4_10y2
-per_prep_during_past_2_yr_5_10y2 per_prep_during_past_2_yr_6_10y2 per_prep_during_past_2_yr_7_10y2 per_prep_during_past_2_yr_8_10y2
-per_prep_during_past_2_yr_1_10y3 per_prep_during_past_2_yr_2_10y3 per_prep_during_past_2_yr_3_10y3 per_prep_during_past_2_yr_4_10y3
-per_prep_during_past_2_yr_5_10y3 per_prep_during_past_2_yr_6_10y3 per_prep_during_past_2_yr_7_10y3 per_prep_during_past_2_yr_8_10y3
-
-incidence_prep_elig_25 incidence_onprep_25 incidence_prep_elig_nu_25
-
-incidence_prep_elig_10y_1 incidence_onprep_10y_1 incidence_prep_elig_nu_10y_1
-incidence_prep_elig_10y_2 incidence_onprep_10y_2 incidence_prep_elig_nu_10y_2
-incidence_prep_elig_10y_3 incidence_onprep_10y_3 incidence_prep_elig_nu_10y_3
-
-incidence_onprep_10y_1
-incidence_onprep_10y_2
-incidence_onprep_10y_3
-
-;
-
-run;
-ods html close;
-
-
-
-
-
-
-
-ods html;
-proc means data=f median p5 p95 mean lclm uclm;
-var
-
-prop_1564_onprep_10y_1 prop_1564_onprep_10y_2 prop_1564_onprep_10y_3 
-
-p_prep_adhg80_10y_1 p_prep_adhg80_10y_2 p_prep_adhg80_10y_3
-
-d_p_diag_10y_2_1 d_p_diag_10y_3_1  p_diag_10y_3  p_diag_10y_1  p_diag_10y_2 
-
-n_tested_all_10y_1 n_tested_all_10y_2  n_tested_all_10y_3
-
-r_n_death_hiv_10y_2_1 r_n_death_hiv_10y_3_1  n_death_hiv_10y_3   n_death_hiv_10y_2  n_death_hiv_10y_1 
-
-r_incidence1549_10y_2_1 r_incidence1549_10y_3_1  incidence1549_10y_3 incidence1549_10y_2  incidence1549_10y_1 
-
-;
-
-run;
-ods html close;
-
-
-
-
-
-ods html;
-proc contents data=f; run;
-ods html close;
 
 
 
@@ -3283,7 +3320,7 @@ ods html close;
 
 
 ods html;
-proc freq; tables (incidence1549_24_g prevalence1549_24_g  p_diag_24_g  p_onart_diag_24_g  p_onart_vl1000_24_g) * lowest_netdaly; run;
+proc freq; tables (incidence1549_25_g prevalence1549_25_g  p_diag_25_g  p_onart_diag_25_g  p_onart_vl1000_25_g) * lowest_netdaly; run;
 ods html close;
 
 
@@ -3315,7 +3352,7 @@ ods html close;
 ods html;
 proc means data=f  n median p5 p95;
 var 
-cost_19 cost_24 
+cost_19 cost_25 
 cost_3y_1 cost_3y_2  cost_decline
 ;
 run;
@@ -3328,7 +3365,7 @@ ods html;
 proc logistic data=f; 
 model x_ce_300_1_2 = 
 
-prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 
+prevalence1549_percent_25  p_diag_percent_25  p_onart_diag_percent_25 p_onart_vl1000_percent_25 
 
 _incr_pref_prep_oral_comm_tld 
 _rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular
@@ -3342,11 +3379,11 @@ ods html close;
 
 ods html;
 proc logistic data=f; 
-model x_ce_500_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 
+model x_ce_500_1_2 = prevalence1549_percent_25  p_diag_percent_25  p_onart_diag_percent_25 p_onart_vl1000_percent_25 
 _incr_pref_prep_oral_comm_tld _rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular;  run;
 
 proc logistic data=f; 
-model x_ce_150_1_2 = prevalence1549_percent_24  p_diag_percent_24  p_onart_diag_percent_24 p_onart_vl1000_percent_24 
+model x_ce_150_1_2 = prevalence1549_percent_25  p_diag_percent_25  p_onart_diag_percent_25 p_onart_vl1000_percent_25 
 _incr_pref_prep_oral_comm_tld _rr_return_comm_tld _rr_interrupt_comm_tld _effect_comm_tld_hard_reach ratio_targeting_self_regular;  run;
 ods html close;
 
@@ -3361,10 +3398,10 @@ proc logistic data=f;
 
 model x_ce_500_1_2 =
 
-prevalence1549_percent_24 
-p_diag_24 
-p_onart_diag_24
-p_onart_vl1000_24
+prevalence1549_percent_25 
+p_diag_25 
+p_onart_diag_25
+p_onart_vl1000_25
 
 ;
 run;
@@ -3373,10 +3410,10 @@ proc logistic data=f;
 
 model x_ce_500_1_2 =
 
-prevalence1549_24 
-p_diag_24 
-p_onart_diag_24
-p_onart_vl1000_24
+prevalence1549_25 
+p_diag_25 
+p_onart_diag_25
+p_onart_vl1000_25
 
 d_prop_elig_on_prep_3y_1_2 
 d_p_onart_diag_3y_1_2 
@@ -3391,20 +3428,20 @@ ods html close;
 ods html;
 proc glm ; model d_netdaly500_2_1 = 
 
-prevalence1549_24  
-p_diag_24 
-p_onart_diag_24 
-p_onart_vl1000_24
+prevalence1549_25  
+p_diag_25 
+p_onart_diag_25 
+p_onart_vl1000_25
 
 / solution ;
 run;
 
 proc glm ; model d_netdaly500_2_1 = 
 
-prevalence1549_24  
-p_diag_24 
-p_onart_diag_24 
-p_onart_vl1000_24 
+prevalence1549_25  
+p_diag_25 
+p_onart_diag_25 
+p_onart_vl1000_25 
 
 d_n_tested_3y_2_1
 d_prop_elig_on_prep_3y_1_2 
@@ -3599,7 +3636,7 @@ d_p_r_len_1524_10y_2_1
 d_p_r_cab_1524_10y_2_1
 d_mtct_prop_10y_2_1 
 ;
-* where p_diag_vl1000_24 < 0.9;
+* where p_diag_vl1000_25 < 0.9;
 run;
 ods html close;
 
@@ -3688,7 +3725,7 @@ ods html close;
 
 proc sort; by rate_int_choice;
 proc means; 
-var p_onart_diag_24;
+var p_onart_diag_25;
 by rate_int_choice;
 run;
 
@@ -3712,12 +3749,12 @@ lowest_netdaly
 * where p_started_lencab_offart_10y_g = 4;
 * where p_len_10y_g = 5;
 
-* where p_diag_vl1000_24_g = 5;
-* where p_diag_24_g = 4;
-* where p_onart_vl1000_24_g = 4; 
-* where p_onart_diag_24_g = 4;
-* where incidence1549_24_g = 5;
-* where prevalence1549_24_g = 6;
+* where p_diag_vl1000_25_g = 5;
+* where p_diag_25_g = 4;
+* where p_onart_vl1000_25_g = 4; 
+* where p_onart_diag_25_g = 4;
+* where incidence1549_25_g = 5;
+* where prevalence1549_25_g = 6;
  
 
 run;
@@ -3727,7 +3764,7 @@ ods html close;
 
 
 
-proc freq; tables p_diag_vl1000_24_g; run;
+proc freq; tables p_diag_vl1000_25_g; run;
 
 
 
@@ -3755,7 +3792,7 @@ footnote;
 proc logistic; 
 model dalys_averted = 
 
-p_diag_vlg1000_24
+p_diag_vlg1000_25
 n_death_hiv_10y_1
 pr_res_len
 rr_res_cab_dol
@@ -3764,7 +3801,7 @@ run;
 
 
 
-proc freq; tables p_diag_vlg1000_24 ; where dalys_averted=0; 
+proc freq; tables p_diag_vlg1000_25 ; where dalys_averted=0; 
 run;
 
 
@@ -3772,80 +3809,80 @@ run;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 =  incidence1549_24   prevalence1549_24   p_diag_24 p_onart_diag_24 p_onart_vl1000_24 / solution; 
+model d_netdaly500_2_1 =  incidence1549_25   prevalence1549_25   p_diag_25 p_onart_diag_25 p_onart_vl1000_25 / solution; 
 run; 
 * ods html close;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 =  prevalence_vg1000_24  / solution; 
+model d_netdaly500_2_1 =  prevalence_vg1000_25  / solution; 
 run; 
 * ods html close;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 =  prevalence_vg1000_24 / solution; 
+model d_netdaly500_2_1 =  prevalence_vg1000_25 / solution; 
 run; 
 * ods html close;
 
 proc logistic;
-model lowest_netdaly = p_diag_vlg1000_24 ; run;
+model lowest_netdaly = p_diag_vlg1000_25 ; run;
 
 proc logistic;
-model lowest_netdaly = p_diag_vlg1000_m_24  ; run; 
+model lowest_netdaly = p_diag_vlg1000_m_25  ; run; 
 
 proc corr;
-var p_diag_vlg1000_m_24 p_diag_vlg1000_w_24 ; run;
+var p_diag_vlg1000_m_25 p_diag_vlg1000_w_25 ; run;
 
 proc logistic;
-model lowest_netdaly = p_diag_vlg1000_24 incidence1549_24 ; run;
+model lowest_netdaly = p_diag_vlg1000_25 incidence1549_25 ; run;
 
 proc logistic;
-model lowest_netdaly = p_diag_vlg1000_w_24 p_diag_vlg1000_m_24 ; run;
+model lowest_netdaly = p_diag_vlg1000_w_25 p_diag_vlg1000_m_25 ; run;
 
 proc logistic;
-model lowest_netdaly = prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24  p_onart_vl1000_24;
+model lowest_netdaly = prevalence1549_25 incidence1549_25 p_diag_25 p_onart_diag_25  p_onart_vl1000_25;
 run;
 
 
-proc corr; var prevalence1549_24 incidence1549_24 p_diag_24 p_onart_diag_24  p_onart_vl1000_24;
+proc corr; var prevalence1549_25 incidence1549_25 p_diag_25 p_onart_diag_25  p_onart_vl1000_25;
 run;
 
 * colinearity in this model;
 proc logistic;
-model lowest_netdaly = prevalence1549w_24 incidence1549w_24 p_diag_w_24 p_onart_diag_w_24  p_onart_vl1000_w_24
-prevalence1549m_24 incidence1549m_24 p_diag_m_24 p_onart_diag_m_24  p_onart_vl1000_m_24;
+model lowest_netdaly = prevalence1549w_25 incidence1549w_25 p_diag_w_25 p_onart_diag_w_25  p_onart_vl1000_w_25
+prevalence1549m_25 incidence1549m_25 p_diag_m_25 p_onart_diag_m_25  p_onart_vl1000_m_25;
 run;
 
 ods html;
-proc corr; var prevalence1549w_24 incidence1549w_24 p_diag_w_24 p_onart_diag_w_24  p_onart_vl1000_w_24
-prevalence1549m_24 incidence1549m_24 p_diag_m_24 p_onart_diag_m_24  p_onart_vl1000_m_24;
+proc corr; var prevalence1549w_25 incidence1549w_25 p_diag_w_25 p_onart_diag_w_25  p_onart_vl1000_w_25
+prevalence1549m_25 incidence1549m_25 p_diag_m_25 p_onart_diag_m_25  p_onart_vl1000_m_25;
 run;
 ods html close;
 
-proc freq; tables prevalence_vg1000_24_g * lowest_netdaly ; 
+proc freq; tables prevalence_vg1000_25_g * lowest_netdaly ; 
 run;
 
-proc freq; tables p_diag_vl1000_24_g * lowest_netdaly ; 
+proc freq; tables p_diag_vl1000_25_g * lowest_netdaly ; 
 run;
 
-proc freq; tables p_diag_vl1000_24_g * incidence1549_24_g * lowest_netdaly ; 
+proc freq; tables p_diag_vl1000_25_g * incidence1549_25_g * lowest_netdaly ; 
 run;
 
 
 
 proc freq; tables lowest_netdaly;
 where 
-0.13 <= prevalence1549w_24 < 0.18 and
-0.06 <= prevalence1549m_24 < 0.12 and
-0.50 <= incidence1549w_24 <  1.00 and 
-0.15 <= incidence1549m_24 <  0.40 and
-0.83 <= p_diag_w_24 < 0.92 and
-0.80 <= p_diag_m_24 < 0.88 and
-0.94 <= p_onart_diag_w_24 < 0.99 and
-0.92 <= p_onart_diag_m_24 < 0.98 and
-0.88 <= p_onart_vl1000_w_24 < 0.93 and
-0.85 <= p_onart_vl1000_m_24 < 0.92
+0.13 <= prevalence1549w_25 < 0.18 and
+0.06 <= prevalence1549m_25 < 0.12 and
+0.50 <= incidence1549w_25 <  1.00 and 
+0.15 <= incidence1549m_25 <  0.40 and
+0.83 <= p_diag_w_25 < 0.92 and
+0.80 <= p_diag_m_25 < 0.88 and
+0.94 <= p_onart_diag_w_25 < 0.99 and
+0.92 <= p_onart_diag_m_25 < 0.98 and
+0.88 <= p_onart_vl1000_w_25 < 0.93 and
+0.85 <= p_onart_vl1000_m_25 < 0.92
 ;
 run;
 
@@ -3857,11 +3894,11 @@ run;
 
 * ods html; 
 proc glm; 
-class  incidence1549m_24_g prevalence1549m_24_g p_diag_m_24_g p_onart_diag_m_24_g  p_onart_vl1000_m_24_g 
- incidence1549w_24_g prevalence1549w_24_g p_diag_w_24_g p_onart_diag_w_24_g  p_onart_vl1000_w_24_g 
+class  incidence1549m_25_g prevalence1549m_25_g p_diag_m_25_g p_onart_diag_m_25_g  p_onart_vl1000_m_25_g 
+ incidence1549w_25_g prevalence1549w_25_g p_diag_w_25_g p_onart_diag_w_25_g  p_onart_vl1000_w_25_g 
 ;
-model d_netdaly500_2_1 =   incidence1549m_24_g prevalence1549m_24_g p_diag_m_24_g p_onart_diag_m_24_g  p_onart_vl1000_m_24_g 
- incidence1549w_24_g prevalence1549w_24_g p_diag_w_24_g p_onart_diag_w_24_g  p_onart_vl1000_w_24_g 
+model d_netdaly500_2_1 =   incidence1549m_25_g prevalence1549m_25_g p_diag_m_25_g p_onart_diag_m_25_g  p_onart_vl1000_m_25_g 
+ incidence1549w_25_g prevalence1549w_25_g p_diag_w_25_g p_onart_diag_w_25_g  p_onart_vl1000_w_25_g 
  / solution; 
 run; 
 * ods html close;
@@ -3869,18 +3906,18 @@ run;
 
 * ods html; 
 proc glm; 
-model lowest_netdaly = prevalence1549_24 incidence1549_24 p_diag_24  p_onart_diag_24  p_onart_vl1000_24 ; 
+model lowest_netdaly = prevalence1549_25 incidence1549_25 p_diag_25  p_onart_diag_25  p_onart_vl1000_25 ; 
 run; 
 * ods html close;
 
 
 * ods html; 
 proc glm; 
-model lowest_netdaly = p_diag_vlg1000_24 ; 
+model lowest_netdaly = p_diag_vlg1000_25 ; 
 run; 
 * ods html close;
 
-proc freq; tables lowest_netdaly  *  prevalence_vg1000_24_g ; run;
+proc freq; tables lowest_netdaly  *  prevalence_vg1000_25_g ; run;
 
 
 
@@ -3888,11 +3925,11 @@ proc freq; tables lowest_netdaly  *  prevalence_vg1000_24_g ; run;
 
 * ods html; 
 proc glm; 
-class  incidence1549m_24_g prevalence1549m_24_g p_diag_m_24_g p_onart_diag_m_24_g  p_onart_vl1000_m_24_g 
- incidence1549w_24_g prevalence1549w_24_g p_diag_w_24_g p_onart_diag_w_24_g  p_onart_vl1000_w_24_g 
+class  incidence1549m_25_g prevalence1549m_25_g p_diag_m_25_g p_onart_diag_m_25_g  p_onart_vl1000_m_25_g 
+ incidence1549w_25_g prevalence1549w_25_g p_diag_w_25_g p_onart_diag_w_25_g  p_onart_vl1000_w_25_g 
 ;
-model d_ddaly_50y_2_1 =   incidence1549m_24_g prevalence1549m_24_g p_diag_m_24_g p_onart_diag_m_24_g  p_onart_vl1000_m_24_g 
- incidence1549w_24_g prevalence1549w_24_g p_diag_w_24_g p_onart_diag_w_24_g  p_onart_vl1000_w_24_g 
+model d_ddaly_50y_2_1 =   incidence1549m_25_g prevalence1549m_25_g p_diag_m_25_g p_onart_diag_m_25_g  p_onart_vl1000_m_25_g 
+ incidence1549w_25_g prevalence1549w_25_g p_diag_w_25_g p_onart_diag_w_25_g  p_onart_vl1000_w_25_g 
  / solution; 
 run; 
 * ods html close;
@@ -3918,21 +3955,21 @@ run;
 
 * ods html; 
 proc glm data=f; 
-model d_netdaly500_2_1 =  incidence1549_24 p_vl1000_24 / solution; 
+model d_netdaly500_2_1 =  incidence1549_25 p_vl1000_25 / solution; 
 run; 
 * ods html close;
 
 
 * ods html; 
 proc glm data=f; 
-model d_netdaly500_2_1 =  incidence1549_24 p_onart_vl1000_24 p_diag_24 p_onart_diag_24 / solution; 
+model d_netdaly500_2_1 =  incidence1549_25 p_onart_vl1000_25 p_diag_25 p_onart_diag_25 / solution; 
 run; 
 * ods html close;
 
 
 * ods html; 
 proc glm data=f; 
-model d_netdaly500_2_1 =  incidence1549_24 prevalence1549_24 p_diag_vl1000_24 / solution; 
+model d_netdaly500_2_1 =  incidence1549_25 prevalence1549_25 p_diag_vl1000_25 / solution; 
 run; 
 * ods html close;
 
@@ -3968,13 +4005,13 @@ run;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 = incidence1549_24 p_onart_vl1000_24 p_vl1000_24 n_death_hiv_24 prevalence_vg1000_24 / solution; 
+model d_netdaly500_2_1 = incidence1549_25 p_onart_vl1000_25 p_vl1000_25 n_death_hiv_25 prevalence_vg1000_25 / solution; 
 run; 
 * ods html close;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 = p_onart_vl1000_24 / solution; 
+model d_netdaly500_2_1 = p_onart_vl1000_25 / solution; 
 run; 
 * ods html close;
 
@@ -3987,7 +4024,7 @@ run;
 
 * ods html; 
 proc glm; 
-model d_netdaly500_2_1 = incidence1549_24   n_death_hiv_24  p_onart_vl1000_24 / solution; 
+model d_netdaly500_2_1 = incidence1549_25   n_death_hiv_25  p_onart_vl1000_25 / solution; 
 run; 
 * ods html close;
 
@@ -4000,41 +4037,41 @@ run;
 
 data er; set f;
 
-incidence1549_24 = incidence1549_24 * 10; 
-p_diag_24 = p_diag_24 * 100;
-p_onart_diag_24 = p_onart_diag_24 * 100;  
-p_onart_vl1000_24 = p_onart_vl1000_24 * 100;
-prevalence1549_24 = prevalence1549_24 * 100;
-p_diag_vl1000_24 = p_diag_vl1000_24 * 100;
+incidence1549_25 = incidence1549_25 * 10; 
+p_diag_25 = p_diag_25 * 100;
+p_onart_diag_25 = p_onart_diag_25 * 100;  
+p_onart_vl1000_25 = p_onart_vl1000_25 * 100;
+prevalence1549_25 = prevalence1549_25 * 100;
+p_diag_vl1000_25 = p_diag_vl1000_25 * 100;
 
 ce = 1 - lowest_netdaly ;
 
 proc logistic;
-model ce = incidence1549_24 p_diag_24 p_onart_diag_24  p_onart_vl1000_24;
+model ce = incidence1549_25 p_diag_25 p_onart_diag_25  p_onart_vl1000_25;
 run;
 
 
 proc logistic;
-model ce = prevalence1549_24 p_diag_24 p_onart_diag_24  p_onart_vl1000_24;
+model ce = prevalence1549_25 p_diag_25 p_onart_diag_25  p_onart_vl1000_25;
 run;
 
 
 proc logistic;
-model ce = incidence1549_24 p_diag_vl1000_24;
+model ce = incidence1549_25 p_diag_vl1000_25;
 run;
 
 proc logistic;
-model ce =  p_diag_vl1000_24;
+model ce =  p_diag_vl1000_25;
 run;
 
 ods html;
 proc freq; tables
-p_diag_vl1000_24_g * lowest_netdaly
-p_diag_24_g * lowest_netdaly
-p_onart_vl1000_24_g * lowest_netdaly
-p_onart_diag_24_g * lowest_netdaly
-incidence1549_24_g * lowest_netdaly
-prevalence1549_24_g * lowest_netdaly
+p_diag_vl1000_25_g * lowest_netdaly
+p_diag_25_g * lowest_netdaly
+p_onart_vl1000_25_g * lowest_netdaly
+p_onart_diag_25_g * lowest_netdaly
+incidence1549_25_g * lowest_netdaly
+prevalence1549_25_g * lowest_netdaly
 ;
 run;
 ods html close;
@@ -4043,8 +4080,8 @@ ods html close;
 
 ods html;
 proc logistic data=f;
-class prevalence1549_24_g p_diag_24_g  p_onart_diag_24_g p_onart_vl1000_24_g ; 
-model x_ce_150_1_2 = prevalence1549_24_g p_diag_24_g  p_onart_diag_24_g p_onart_vl1000_24_g ;  run;
+class prevalence1549_25_g p_diag_25_g  p_onart_diag_25_g p_onart_vl1000_25_g ; 
+model x_ce_150_1_2 = prevalence1549_25_g p_diag_25_g  p_onart_diag_25_g p_onart_vl1000_25_g ;  run;
 ods html close;
 
 
