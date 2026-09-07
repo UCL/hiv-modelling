@@ -2444,6 +2444,8 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;
 		*Specify option 1;
 
+		* HIV intervention;
+
 		prep_oral_parameters_sio=1 ; 
 	
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 5  ;		
@@ -2459,58 +2461,48 @@ who may be dead and hence have caldate{t} missing;
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
 
-	end;
 
-		/*
+		** HYPERTENSION Patient-centered care only 		
+		*relative risk of BP testing at HIV visit if out of hypertension care;
+		rr_test_sbp_hiv =10;
 
-		I noticed that you had overwritten the prep oral preference parameter, presumably to get more people on oral PrEP instead of injectable PrEP. 
-		Is this needed given you don't have len or cab turned on?   I also tested the code in the options, I thought there may have been a risk of the 
-		following changing every period:
-           eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 10 ;            
-		The code is fine, it stays set at the values in the options, due to the prep_oral_parameters_sio=1. I don't think it will impact anything but I 
-		did notice that in option 0, pref_prep_oral is zero for everyone until I assume this condition is met:
-		if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
-    	  * pref_prep_oral; * pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);              
-		end;  
-		In option =1, this is overwritten to 0.5 for everyone. But as I said, I'm not sure of the impact of this parameter if cab and len are not introduced. 
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
+		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_imm_htn_tx_s2, 0.85 0.9 0.95);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
+		%sample_uniform(prob_start_htn_tx_s1, 0.3 0.4 0.5);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_start_htn_tx_s2, 0.9 0.95 1);
+		* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
+		prob_restart_htn_tx_s1 = 1; 
+		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
+		prob_restart_htn_tx_s2 = 1;
 
-		*/
+		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit (+/- 5%)=;
+		%sample_uniform(prob_visit_htn_v1, 0.59 0.62 0.65);
+		%sample_uniform(prob_visit_htn_v2, 0.67 0.71 0.74);
+		%sample_uniform(prob_visit_htn_v3, 0.81 0.85 0.89);
+		%sample_uniform(prob_visit_htn_v4, 0.87 0.92 0.96);
+		%sample_uniform(prob_visit_htn_v5, 0.90 0.94 0.99);
+		%sample_uniform(prob_visit_htn_v6, 0.91 0.95 1);
+		%sample_uniform(prob_visit_htn_v7, 0.92 0.96 1);
 
-		/*
-		* hypertension intervention - left out for now;
+		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
+		interval_visit_hypertension=0.5;
 
-		first_comm_test = &year_interv;
-		* prob testing in commmunity;
-		prob_test_sbp_comm = 1;
-		* prob link from community testing to clinic;
-		prob_htn_link = 1;
-		* comm test interval;
-		comm_test_interval = 1;
-		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 40;
-		*/
+		* integration of hiv and hypertension visits;
+		integration = 1;
 
- 	*Option 1;
-																														  
-	if option = 2 then do;
-		*Specify option 1;
+		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
+		%sample_uniform(prob_intensify_1_2, 0.2 0.3 0.4); 
+		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
+		%sample_uniform(prob_intensify_2_3, 0.01 0.025 0.05); 
 
-		prep_oral_parameters_sio=1 ;
-	
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral / 5  ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.3;
-		eff_rate_test_startprep_any = 0.6; 
-		eff_prob_prep_any_restart_choice = 0.6;
-		pref_prep_oral = 0.5;
+		* cost of hypertension interventions;
+		*cost_htn_link_voucher = 0;
+		*cost_htn_screen_comm = 0.003;
 
-		prep_oral_adh_sio = 1   ;   adhvar_sio = 0;
-		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_oral_sio = pref_prep_oral;
-
-		rr_incr_testing_from_year_interv = 10.0;
 
 	end;
 
@@ -20940,10 +20932,12 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 * procs;
 
-/*
+
 
 proc freq; tables cald hiv ; where death=.; run;
 
+
+/*
 
 proc print; var reg_option onart art_monitoring_strategy adh adh_dl o_dol o_3tc o_ten o_cab o_len nactive  r_cab r_len f_cab f_len ;
 where naive=0 and caldate&j ge 2025;
@@ -23656,13 +23650,7 @@ data r1; set a;
 *    Option 1 - repetition 1;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
-
-data r1; set a;
-*    Option 2 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+50,2);
-
-
-			
+		
 														 
 
 			
