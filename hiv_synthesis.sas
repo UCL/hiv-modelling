@@ -1316,7 +1316,7 @@ cost_switch_line_a = 0.020 ;
 cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ; * note this is reduced by 75% in create wide file;
-sw_program_cost = 0.010 ; * placeholder; *consider varying by intensity;
+sw_program_cost = 0.025 ; * based on SAPPHIRE cost of $132/year, reduced to $100 to account for setting scenarios;
 
 * HYPERTENSION costs (in thousands);
 cost_htn_link_voucher = .;
