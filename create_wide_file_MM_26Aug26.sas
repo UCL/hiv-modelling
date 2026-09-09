@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_26Aug2026; 
+set a.mm_02Sep2026; 
 if run=. then delete; 
 
 proc sort;
@@ -318,6 +318,7 @@ p_1564mm_onprep_cab	p_1564mm_onprep_len	p_1564mm_onprep_oral
 n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_prep_any_ever_mm
 p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm			p_elig_onprep_cab 	p_elig_onprep_len	p_elig_onprep_oral
 p_elig_onprep_oral_mm	p_elig_onprep_cab_mm	p_elig_onprep_len_mm	p_elig_onprep_genmen
+inc_risk_mobile
 ;
 
 proc sort data=y;by run option;run;
@@ -980,7 +981,7 @@ run;
 
 proc sort; by run;run;
 
-/*
+
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 %macro par(p=);
 proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2022.5; run;
@@ -988,17 +989,16 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-%par(p=mm_hardreach);			
+%par(p=inc_risk_mobile);			
 run;
 
 
 data wide_par; merge 
-mm_hardreach;
+inc_risk_mobile;
 ;proc sort; by run;run;
-*/
+
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_MM26Aug26;;
-*merge   wide_outputs  wide_par ;  
-set wide_outputs;
+data a.wide_MM02Sep26;;
+merge   wide_outputs  wide_par ;  
 by run;run;
 
