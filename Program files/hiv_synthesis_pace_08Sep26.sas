@@ -685,7 +685,7 @@ newp_seed = 7;
 
 						   	  if sw_art_disadv=1  then do; 
 						   		%sample_uniform(sw_higher_int, 2 5 10 20);
-						   		%sample_uniform(rel_sw_lower_adh, 0.8 0.9);
+						   		%sample_uniform(rel_sw_lower_adh, 0.7 0.8 0.9);
 						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 5 10);
 							  end;
 
@@ -705,8 +705,8 @@ newp_seed = 7;
 							if esw_art_disadv=0  then do; esw_higher_int = 1; rel_esw_lower_adh = 1;esw_higher_prob_loss_at_diag = 1;end;
 
 
-* fold_esw_higher_int;				%sample_uniform(fold_esw_higher_int, 0.80 0.90 1.00) *disadvantages slightly lower than SW;
-* fold_esw_higher_loss_at_diag;		%sample_uniform(fold_esw_higher_loss_at_diag, 0.80 0.90 1.00) 
+* fold_esw_higher_int;				%sample_uniform(fold_esw_higher_int, 0.30 0.50) *disadvantages lower than SW, 2nd 90 very high, 99%;
+* fold_esw_higher_loss_at_diag;		%sample_uniform(fold_esw_higher_loss_at_diag, 0.30 0.50) 
 
 if esw_art_disadv=1  then do;
 * esw_higher_int;				esw_higher_int = sw_higher_int * fold_esw_higher_int;
@@ -1293,9 +1293,9 @@ end;
 *Group 2: 1-3 newp;
 *Group 3: 4-8 newp;
 if esw_trans_matrix=1 then do;
-p_esw_init_newp_g1=0.10; p_esw_init_newp_g2=0.89; p_esw_init_newp_g3= 0.01; 
+p_esw_init_newp_g1=0.02; p_esw_init_newp_g2=0.97; p_esw_init_newp_g3= 0.01; 
 
-esw_newp_lev_1_1 = 0.99 ;  esw_newp_lev_1_2 = 0.005 ; esw_newp_lev_1_3 = 0.005  ; 
+esw_newp_lev_1_1 = 0.99 ;  esw_newp_lev_1_2 = 0.007 ; esw_newp_lev_1_3 = 0.003  ; 
 esw_newp_lev_2_1 = 0.005 ; esw_newp_lev_2_2 = 0.99 ;  esw_newp_lev_2_3 = 0.005  ;
 esw_newp_lev_3_1 = 0.005 ; esw_newp_lev_3_2 = 0.005 ; esw_newp_lev_3_3 = 0.99  ; 
 end;
@@ -1304,8 +1304,8 @@ if esw_trans_matrix=2 then do;
 p_esw_init_newp_g1=0.05; p_esw_init_newp_g2=0.94; p_esw_init_newp_g3= 0.01; 
 
 esw_newp_lev_1_1 = 0.75 ; esw_newp_lev_1_2 = 0.24 ; esw_newp_lev_1_3 = 0.01  ; 
-esw_newp_lev_2_1 = 0.23 ; esw_newp_lev_2_2 = 0.75 ; esw_newp_lev_2_3 = 0.02  ;
-esw_newp_lev_3_1 = 0.02 ; esw_newp_lev_3_2 = 0.01 ; esw_newp_lev_3_3 = 0.97  ; 
+esw_newp_lev_2_1 = 0.005; esw_newp_lev_2_2 = 0.975 ; esw_newp_lev_2_3 = 0.02  ;
+esw_newp_lev_3_1 = 0.005 ; esw_newp_lev_3_2 = 0.75 ; esw_newp_lev_3_3 = 0.245  ; 
 end;
 
 
@@ -1965,12 +1965,12 @@ if esw = 1 then do;
 	a=rand('uniform');if a < 0.98 then episodes_esw=1;if a >= 0.98 then episodes_esw=2;
 
 	e=rand('uniform');
-	if e < 0.10 then newp=0;
-	else if 0.10 <= e < 0.90 then do; 
+	if e < 0.05 then newp=0;
+	else if 0.05 <= e < 0.90 then do; 
 		q=rand('uniform');
-		if         q < 0.60 then newp=1;
-		if 0.60 <= q < 0.85 then newp=2;
-		if 0.85 <= q        then newp=3;
+		if         q < 0.70 then newp=1;
+		if 0.70 <= q < 0.95 then newp=2;
+		if 0.95 <= q        then newp=3;
 	end;
 	else do;
 		select;
@@ -4603,7 +4603,7 @@ end;
 * transitions between levels for esw * dependent_on_time_step_length ;
 if esw = 1 then do;
 
-* sw newp levels are 
+* esw newp levels are 
 1 	newp = 0
 2   newp 1-3
 3   newp 4-8
@@ -4623,7 +4623,7 @@ if esw = 1 then do;
 	if e < newp_lev1_prob then newp=0;
 	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; 
 		q=rand('uniform');
-		if q < 0.6 then newp=1; if 0.6 <= q < 0.85 then newp=2; if 0.85 <= q then newp=3; 
+		if q < 0.7 then newp=1; if 0.7 <= q < 0.95 then newp=2; if 0.95 <= q then newp=3; 
 	end;
 	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do;
 		q=rand('uniform'); newp = 4 + (q*4); newp = round(newp,1); 
@@ -4737,7 +4737,7 @@ if esw=1 and newp ge 1 and eff_sw_program = 1 and esw_program_visit=1 then do;
 	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
 end;
 
-
+ 
 * Condom intervention - removing the effect of condom provision and promotion for HIV Control baseline;
 *Impact on newp (impact on ep is above);
 xx=rand('uniform');
