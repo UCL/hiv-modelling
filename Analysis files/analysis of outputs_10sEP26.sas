@@ -7,6 +7,9 @@ OUTPUTS;
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\PACE2\";
 
 
+***LOOK AT STRATFYING BY SW_MATRIX to see IF THAT LOWERS PREVALENCE;
+
+
 data a; 
 set a.wide_pace_08_09_26; 
 run;
@@ -39,6 +42,8 @@ p_hard_reach_sw_15 p_hard_reach_esw_15
 p_hard_reach_sw_20 p_hard_reach_esw_20;
 
 ;run;
+
+
 
 proc means n p50 mean p5 p95;var p_diag_esw_00  p_diag_esw_05  p_diag_esw_10  p_diag_esw_15
 p_diag_sw_00  p_diag_sw_05  p_diag_sw_10  p_diag_sw_15;run;
