@@ -364,7 +364,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
     %let var =  
 p_mm				p_hiv_mm			p_hiv_m
 p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		prevalence1549_mm	
-prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			p_1564mm_onprep_mm	
+prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			p_1564mm_onprep	
 p_1564mm_onprep_cab_mm	p_1564mm_onprep_len_mm					p_1564mm_onprep_oral_mm							
 n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_prep_any_ever_mm
 p_newp_ge1_mm		p_prep_any_willing	p_1564m_onprep			p_1564w_onprep 		p_elig_onprep
@@ -943,7 +943,7 @@ data &v ; merge  y_26 t_36 t_26_46 /*t_26_46*/;
 %var(v=p_elig_prep);	  %var(v=p_1564m_onprep_nmm);	%var(v=p_hiv_nmm);			%var(v=p_prep_any_ever_nmm);%var(v=p_elig_onprep_genmen);
 %var(v=n_prep_oral_start);%var(v=n_prep_cab_start);		%var(v=n_prep_len_start); 	%var(v=p_diag_mm);
 %var(v=p_onart_diag_mm);  %var(v=p_onart_vl1000_mm);	%var(v=p_vg1000_mm);		%var(v=p_vl1000_mm);	 	%var(v=prevalence1549_mm);	
-%var(v=prevalence1564_mm);%var(v=incidence1549_mm);		%var(v=incidence1564_mm);	%var(v=n_tested_mm);	 	%var(v=p_1564mm_onprep_mm);	
+%var(v=prevalence1564_mm);%var(v=incidence1549_mm);		%var(v=incidence1564_mm);	%var(v=n_tested_mm);	 	%var(v=p_1564mm_onprep);	
 %var(v=p_hiv_mm);		
 
 %var(v=p_1564mm_onprep_cab);%var(v=p_1564mm_onprep_len);%var(v=p_1564mm_onprep_oral);	
@@ -969,7 +969,7 @@ p_elig_onprep_w  	p_elig_onprep_m		p_elig_onprep		p_elig_onprep_mm	p_elig_onprep
 p_elig_prep	  		p_1564m_onprep_nmm	p_hiv_nmm			p_prep_any_ever_nmm	p_elig_onprep_genmen
 n_prep_oral_start	n_prep_cab_start	n_prep_len_start 	p_diag_mm
 p_onart_diag_mm  	p_onart_vl1000_mm	p_vg1000_mm			p_vl1000_mm	 		prevalence1549_mm	
-prevalence1564_mm	incidence1549_mm	incidence1564_mm	n_tested_mm	 		p_1564mm_onprep_mm	
+prevalence1564_mm	incidence1549_mm	incidence1564_mm	n_tested_mm	 		p_1564mm_onprep	
 p_hiv_mm		
 
 p_1564mm_onprep_cab	p_1564mm_onprep_len	p_1564mm_onprep_oral	
@@ -987,12 +987,12 @@ proc sort; by run;run;
 
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 %macro par(p=);
-proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2022.5; run;
+proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2025.5; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-%par(p=inc_risk_mobile);		%par(p=sex_beh_trans_matrix_m;		%par(p=sex_beh_trans_matrix_w);	
+%par(p=inc_risk_mobile);		%par(p=sex_beh_trans_matrix_m);		%par(p=sex_beh_trans_matrix_w);	
 %par(p=sex_age_mixing_matrix_m);%par(p=sex_age_mixing_matrix_w);
 			
 run;
