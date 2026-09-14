@@ -724,7 +724,7 @@ end;
 * prob_mobile3660_;			%sample_uniform(prob_mobile3660_, 0.02 0.03);
 * prob_mobile60pl;			%sample_uniform(prob_mobile60pl,  0.01 0.02);
 * prob_stop_mobile;			%sample_uniform(prob_stop_mobile, 0.05 0.10);
-* inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 50 125 200);*change in sexual behaviour due to being mobile;
+* inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 100 200 300);*change in sexual behaviour due to being mobile;
 * mm_hardreach;				%sample_uniform(mm_hardreach, 0.30 0.50);
 
 
