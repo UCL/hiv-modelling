@@ -300,16 +300,16 @@ s_alive = s_alive_m + s_alive_w ;
 
 
 keep run option cald 
-n_alive_m			n_alive_w			n_alive				n_mm				p_mm		
-p_1524mm			p_2534mm			p_3544mm			p_4554mm			p_5564mm			p_hiv_mm	p_hiv_m
+n_alive_m			 n_alive_w			n_alive				n_mm				p_mm		
+p_1524mm			 p_2534mm			p_3544mm			p_4554mm			p_5564mm			p_hiv_mm	p_hiv_m
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
 n_onprep_w			 n_onprep_m			n_onprep			p_1564m_onprep   	p_1564w_onprep		n_prep_any_start
-p_elig_onprep_w	 	p_elig_onprep_m		p_elig_onprep		p_elig_onprep_mm	p_elig_onprep_nmm	p_elig_prep
+p_elig_onprep_w	 	 p_elig_onprep_m	p_elig_onprep		p_elig_onprep_mm	p_elig_onprep_nmm	p_elig_prep
 p_1564m_onprep_nmm	 p_hiv_nmm			p_prep_any_ever_nmm p_elig_onprep_genmen
 dcost ddaly			 n_prep_oral_start	n_prep_cab_start	n_prep_len_start	
-n_stop_prep_oral_elig	n_stop_prep_cab_elig 	n_stop_prep_len_elig
+n_stop_prep_oral_elig					n_stop_prep_cab_elig 					n_stop_prep_len_elig
 
 
 p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm			prevalence1549_mm	
@@ -318,10 +318,13 @@ p_1564mm_onprep_cab	p_1564mm_onprep_len	p_1564mm_onprep_oral
 n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_prep_any_ever_mm
 p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm			p_elig_onprep_cab 	p_elig_onprep_len	p_elig_onprep_oral
 p_elig_onprep_oral_mm	p_elig_onprep_cab_mm	p_elig_onprep_len_mm	p_elig_onprep_genmen
-inc_risk_mobile
+inc_risk_mobile		sex_beh_trans_matrix_m		sex_beh_trans_matrix_w	sex_age_mixing_matrix_m			sex_age_mixing_matrix_w
 ;
 
 proc sort data=y;by run option;run;
+
+
+***SCROLL DOWN TO PAST THE GRAPHS TO GENERATE WIDE DATASET;
 
 
 options nomprint;
@@ -989,12 +992,14 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-%par(p=inc_risk_mobile);			
+%par(p=inc_risk_mobile);		%par(p=sex_beh_trans_matrix_m;		%par(p=sex_beh_trans_matrix_w);	
+%par(p=sex_age_mixing_matrix_m);%par(p=sex_age_mixing_matrix_w);
+			
 run;
 
 
 data wide_par; merge 
-inc_risk_mobile;
+inc_risk_mobile		sex_beh_trans_matrix_m	sex_beh_trans_matrix_w		sex_age_mixing_matrix_m		sex_age_mixing_matrix_w;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
