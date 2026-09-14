@@ -9,6 +9,9 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 
 ***LOOK AT STRATFYING BY SW_MATRIX to see IF THAT LOWERS PREVALENCE;
 
+***HAVE CHANGED SW MATRICES, AND LOWERED NUMBERS IN CATEGORIES, MAX 5 PARTNERS NOW;
+***HAVE CHANGED FOLD ART DISADV FOR ESW AND ADHERENCE - CHECK TO SEE IF THESE ALIGN BETTER WITH POWERPOINT;
+
 PROC FREQ;TABLE Esw_trans_matrix;RUN;
 
 
@@ -16,7 +19,7 @@ proc means n p50 mean p5 p95;var prevalence_esw_25;where Esw_trans_matrix=1;run;
 proc means n p50 mean p5 p95;var prevalence_esw_25;where Esw_trans_matrix=2;run;
 
 data a; 
-set a.wide_pace_08_09_26; 
+set a.wide_pace_10_09_26; 
 run;
 
 ***Compare SW and ESW in 2026;
