@@ -10,7 +10,7 @@ CHANGED INC_RISK_MOBILE, SEE IF THIS HAS AN IMPACT. STRATIFY BY THIS TOO IN CREA
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.wide_MM02Sep26;
+set a.wide_MM14Sep26;
 run;
 
 data b;
@@ -26,7 +26,9 @@ p_onart_diag_mm_26  	p_onart_vl1000_mm_26
 p_elig_onprep_m_26		prevalence1549m_26	incidence1549m_26;run;
 
 
-proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_mobile=50;run;
+proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_mobile=100;run;
+proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_mobile=200;run;
+proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_mobile=300;run;
 
 proc freq;table sex_age_mixing_matrix_w	;run;
 
