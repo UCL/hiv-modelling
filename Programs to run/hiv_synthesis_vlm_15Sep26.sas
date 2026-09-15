@@ -2505,13 +2505,39 @@ who may be dead and hence have caldate{t} missing;
 	The variable name can be updated to reflect specific parameters;
 
 
- 	*Option 0 is continuation at current rates - status quo;
-
+ 	*Option 0: status quo - annual VL monitoring (VLM);
  
- 	*Option 1;
+ 	*Option 1: No VLM;
 	if option = 1 then do;
-												 
+		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;				 
 	end;
+
+	 *Option 2: Symptomatic VLM, with confirmatory VL within 6m-12m;
+	if option = 2 then do;
+		art_monitoring_strategy=3;  
+	end;
+
+
+	*Option 3: 3 yearly VLM;
+	if option = 3 then do;
+		art_monitoring_strategy=154;						 
+	end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
 end;
 
@@ -2672,9 +2698,11 @@ newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);
 9. CD4 count monitoring (6 mthly) with single VL confirmation
 10. CD4 monitoring (6 mthly) with VL confirmation
 150. Viral load monitoring (6m, 12m, annual) - WHO
-152. As above with 2 yearly viral load monitoring
+152. As above with 3 yearly viral load monitoring VLM Global Fund paper Sep26
 153. Viral load monitoring (6m, annual) no confirmation
-1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test;
+1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test
+
+1800. No monitoring or switching; *For VLM Global Fund paper Sep 2026;
 
 *
 
@@ -2938,9 +2966,10 @@ if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_pro
 
 * art_monitoring_strategy
 150. Viral load monitoring (6m, 12m, annual) - WHO
-152. As above with 2 yearly viral load monitoring
+152. As above with 3 yearly viral load monitoring
 153. Viral load monitoring (6m, annual) no confirmation
 1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test;
+
 if absence_cd4_year_i =  1 and absence_vl_year_i =  1 then do;
 	art_monitoring_strategy=1; *Clinical monitoring alone;
 end;
@@ -4687,7 +4716,6 @@ if caldate{t} = dt_start_pregn then do;  * dependent_on_time_step_length ;
 end;
 
 if anc=1 then do;
-	***LBM Aug19;
 	if 15 le age lt 50 then do;w1549_birthanc=1;hiv_w1549_birthanc=hiv;end;
 	if 15 le age lt 25 then do;w1524_birthanc=1;hiv_w1524_birthanc=hiv;end;
     if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; 
@@ -8184,7 +8212,6 @@ naive=1;
 *allow for diagnosis in primary infection, i.e. caldate{t}=infection;
 * can get diagnosed during primary infection and hence (re-)initiation of prep (if it happened above in this time step) is reversed ;
 
-* LBM Jul23;
 if sw=1 then eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
 
 * test type;
@@ -11475,9 +11502,9 @@ x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1
 9. CD4 count monitoring (6 mthly) with single VL confirmation
 10. CD4 monitoring (6 mthly) with VL confirmation
 150. Viral load monitoring (6m, 12m, annual) - WHO
-152. As above with 2 yearly viral load monitoring
+152. As above with 3 yearly viral load monitoring VLM Global Fund paper Sep26
 153. Viral load monitoring (6m, annual) no confirmation
-1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test;
+1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test
 
 * reg_option
  
@@ -11784,16 +11811,17 @@ end;
 * art_monitoring_strategy = 150.  viral load monitoring (6m, 12m, annual) - who ;
 * takes account of time delay for DBS or plasma measurement of vl, compared with POC ;
 
-* new for pop_wide_tld;
+***LBM Sep26;
+if  art_monitoring_strategy=150  and visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
+and restart    ne 1 and restart_tm1  ne 1  and t ge 2 then do;  
 
-* added condition below : onartvisit0 ne 1;
-
-
-if caldate{t} le 2025 and art_monitoring_strategy=150  and visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
-and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
-
-	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and 
-	(caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; * jan15;
+	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) /* (a)if the first VL is >6m after starting ART*/
+	or (caldate{t}-yrart = 1.0) /* (b) it is a year after starting ART*/
+	or (time_since_last_vm >= 0.75) /* (c) it is a year since the last VL*/
+	or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 and (caldate&j - date_conf_vl_measure_done >= 0.5 or date_conf_vl_measure_done=.))
+	/* (d) There was a recent vl switch evaluation in the last 6m but somehow it failed as we dont have a recent 
+			date_conf_vl_measure_done */
+	then do;
 		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
@@ -11814,6 +11842,56 @@ and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_fro
 	if (caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
 	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold))
 	then do;  
+			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
+			if o_zdv=1 then f_zdv=1;
+			if o_3tc=1 then f_3tc=1;
+			if o_ten=1 then f_ten=1;
+			if o_nev=1 then f_nev=1;
+			if o_efa=1 then f_efa=1;
+			if o_lpr=1 then f_lpr=1;
+			if o_taz=1 then f_taz=1;
+			if o_dar=1 then f_dar=1;
+			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;
+			if o_len=1 then f_len=1;
+			if o_ole=1 then f_ole=1;
+			if o_isl=1 then f_isl=1;
+	end; 
+end;
+
+
+
+***LBM Sep26;
+
+* art_monitoring_strategy = 152. as 150 with 3 yearly viral load monitoring;
+*VLM Global Fund paper;
+
+*time_of_first_vm = 0.5, defined above i.e. first VL is 6m after ART start;
+
+if art_monitoring_strategy=152  and visit=1 and (artline=1 or int_clinic_not_aw=1) 
+and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and t ge 2 then do;  
+	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) /*if the first VL is >6m after starting ART*/
+	or	(time_since_last_vm >= 2.75) /*or is >=3 years since last VL */
+	or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 and (caldate&j - date_conf_vl_measure_done >= 3 or date_conf_vl_measure_done=.)) 
+
+	then do; 
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 then date_conf_vl_measure_done = caldate{t} ;
+		end;  
+		vl_cost_inc = 1;
+		if vm gt log10(vl_threshold) then do; 
+			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
+			if date_v_alert=. then date_v_alert=caldate{t};
+		end;
+	end;
+
+	if (caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
+	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold))
+	then do;
 			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
 			if o_zdv=1 then f_zdv=1;
 			if o_3tc=1 then f_3tc=1;
@@ -11902,7 +11980,7 @@ end;
 
 
 
-* for monitoring people on len/cab - currently no nothing regardless of viral load ;
+* for monitoring people on len/cab - currently do nothing regardless of viral load ;
 
 if art_monitoring_strategy = 1700 and visit=1 and o_cab=1 and o_len=1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do;  
 	
@@ -11950,47 +12028,6 @@ end;
 if o_dol=1 and (caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold)) then o_dol_2nd_vlg1000 = 1;
 
 
-* art_monitoring_strategy = 152. as 150 with 2 yearly viral load monitoring;
-
-* dependent_on_time_step_length ;
-
-if caldate{t} le 2025 and art_monitoring_strategy=152  and visit=1 and (artline=1 or int_clinic_not_aw=1) 
-and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
-	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (time_since_last_vm >= 1.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 and 
-	(caldate&j - date_conf_vl_measure_done >= 2 or date_conf_vl_measure_done=.)) then do; * jan15;
-		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
-		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 then date_conf_vl_measure_done = caldate{t} ;
-		end;  
-		vl_cost_inc = 1;
-		if vm gt log10(vl_threshold) then do; 
-			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
-			if date_v_alert=. then date_v_alert=caldate{t};
-		end;
-	end;
-
-	if (caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
-	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold))
-	then do;
-			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
-			if o_zdv=1 then f_zdv=1;
-			if o_3tc=1 then f_3tc=1;
-			if o_ten=1 then f_ten=1;
-			if o_nev=1 then f_nev=1;
-			if o_efa=1 then f_efa=1;
-			if o_lpr=1 then f_lpr=1;
-			if o_taz=1 then f_taz=1;
-			if o_dar=1 then f_dar=1;
-			if o_dol=1 then f_dol=1;
-			if o_cab=1 then f_cab=1;
-			if o_len=1 then f_len=1;
-			if o_ole=1 then f_ole=1;
-			if o_isl=1 then f_isl=1;
-	end; 
-end;
 
 
 * art_monitoring_strategy = 153.  viral load monitoring (6m, annual) no confirmation  ;
