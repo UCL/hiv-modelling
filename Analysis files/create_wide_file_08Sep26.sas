@@ -10,7 +10,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
    IF NOT AUTOMATICALLY DONE IN MYRIAD);
 
 data a;
-set a.pace_10sep26;
+set a.pace_14sep26;
 if run=. then delete; 
 proc sort;by run cald option;run;
 proc freq;table cald;run;
@@ -305,9 +305,9 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * n_tested_as_sw;				n_tested_as_sw = s_tested_as_fsw * sf * 4;
 * n_tested_sw_sympt;			n_tested_sw_sympt = s_tested_sw_sympt * sf * 4;
 * n_tested_sw_anc;				n_tested_sw_anc = s_tested_sw_anc * sf * 4;
-* p_tested_sw_sympt;			p_tested_sw_sympt = s_tested_sw_sympt/s_tested_sw;
-* p_tested_sw_anc;				p_tested_sw_anc = s_tested_sw_anc/s_tested_sw;
-* p_tested_sw_anclabpd;			p_tested_sw_anclabpd = s_test_sw_anclabpd/s_tested_sw;
+* p_tested_sw_sympt;			if s_tested_sw >0 then p_tested_sw_sympt = s_tested_sw_sympt/s_tested_sw;
+* p_tested_sw_anc;				if s_tested_sw >0 then p_tested_sw_anc = s_tested_sw_anc/s_tested_sw;
+* p_tested_sw_anclabpd;			if s_tested_sw >0 then p_tested_sw_anclabpd = s_test_sw_anclabpd/s_tested_sw;
 
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
 * prop_sw_onprep_oral; 			if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_oral = s_prep_oral_sw/ (s_sw_1564 - s_hiv_sw) ;
@@ -390,9 +390,9 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * n_tested_as_esw;				n_tested_as_esw = s_tested_as_esw * sf * 4;
 * n_tested_esw_sympt;			n_tested_esw_sympt = s_tested_esw_sympt * sf * 4;
 * n_tested_esw_anc;				n_tested_esw_anc = s_tested_esw_anc * sf * 4;
-* p_tested_esw_sympt;			p_tested_esw_sympt = s_tested_esw_sympt/s_tested_esw;
-* p_tested_esw_anc;				p_tested_esw_anc = s_tested_esw_anc/s_tested_esw;
-* p_tested_esw_anclabpd;		p_tested_esw_anclabpd = s_test_esw_anclabpd/s_tested_esw;
+* p_tested_esw_sympt;			if s_tested_esw gt 0 then p_tested_esw_sympt = s_tested_esw_sympt/s_tested_esw;
+* p_tested_esw_anc;				if s_tested_esw gt 0 then p_tested_esw_anc = s_tested_esw_anc/s_tested_esw;
+* p_tested_esw_anclabpd;		if s_tested_esw gt 0 then p_tested_esw_anclabpd = s_test_esw_anclabpd/s_tested_esw;
 
 * prop_esw_onprep; 				if (s_esw_1564 - s_hiv_esw) gt 0 then prop_esw_onprep = s_prep_any_esw/ (s_esw_1564 - s_hiv_esw) ;
 * prop_esw_onprep_oral; 		if (s_esw_1564 - s_hiv_esw) gt 0 then prop_esw_onprep_oral = s_prep_oral_esw/ (s_esw_1564 - s_hiv_esw) ;
@@ -500,9 +500,9 @@ proc sort data=y;by run option;run;
 
 
 
-data a.pace_10_09_26_short; set y;run;
+data a.pace_14_09_26_short; set y;run;
 
-data y; set a.pace_10_09_26_short;run;
+data y; set a.pace_14_09_26_short;run;
 
 options nomprint;
   option nospool;
@@ -694,7 +694,7 @@ rel_esw_lower_adh		rate_engage_esw_program		erate_disengage_esw_program*/
 ;proc sort; by run;run;
 
 ***THIS STORES THE NEWLY CREATED WIDE FILE IN LIBRARY A. THIS NEW FILE WILL BE READ INTO THE ANALYSIS PROGRAM;
-data a.wide_pace_10_09_26;
+data a.wide_pace_14_09_26;
 merge   wide_outputs  wide_par ;  
 by run;run;
 

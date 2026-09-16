@@ -15,8 +15,8 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
 PROC FREQ;TABLE Esw_trans_matrix;RUN;
 
 
-proc means n p50 mean p5 p95;var prevalence_esw_25;where Esw_trans_matrix=1;run;
-proc means n p50 mean p5 p95;var prevalence_esw_25;where Esw_trans_matrix=2;run;
+proc means n p50 mean p5 p95;var p_esw_newp0__25;where Esw_trans_matrix=1;run;
+proc means n p50 mean p5 p95;var p_esw_newp0__25;where Esw_trans_matrix=2;run;
 
 data a; 
 set a.wide_pace_10_09_26; 
@@ -42,12 +42,6 @@ p_esw_newp0__25 		prop_esw_onprep_25
 p_sti_esw_25
 incidence_esw_25		prevalence_esw_25		p_tested_past_year_esw_25
 p_diag_esw_25			p_onart_diag_esw_25		p_onart_vl1000_esw_25 	p_esw_prog_vis_25
-
-p_hard_reach_sw_00 p_hard_reach_esw_00
-p_hard_reach_sw_05 p_hard_reach_esw_05
-p_hard_reach_sw_10 p_hard_reach_esw_10
-p_hard_reach_sw_15 p_hard_reach_esw_15
-p_hard_reach_sw_20 p_hard_reach_esw_20;
 
 ;run;
 

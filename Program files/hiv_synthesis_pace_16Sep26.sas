@@ -1,8 +1,6 @@
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
-*Search for;
-*LBM JUL26;
 
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -14,7 +12,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2026.0 ;	
+%let year_interv = 2027.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -168,8 +166,8 @@ newp_seed = 7;
 * p_hard_reach_htn_w;		p_hard_reach_htn_w = p_hard_reach_w - hard_reach_lower_htn;
 * p_hard_reach_htn_m;		p_hard_reach_htn_m = p_hard_reach_m - hard_reach_lower_htn;
 
-* p_hard_reach_esw;			p_hard_reach_esw = 0.50+(rand('uniform')*0.10);
-* p_hard_reach_sw;			p_hard_reach_sw = 0.50+(rand('uniform')*0.10);*some fsw may still use testing services;
+* p_hard_reach_esw;			p_hard_reach_esw = 0.80+(rand('uniform')*0.10);
+* p_hard_reach_sw;			p_hard_reach_sw = 0.80+(rand('uniform')*0.10);*some fsw may still use testing services;
 
 
 
@@ -681,7 +679,7 @@ newp_seed = 7;
 
 						   	  if sw_art_disadv=1  then do; 
 						   		%sample_uniform(sw_higher_int, 2 5 10 20);
-						   		%sample_uniform(rel_sw_lower_adh, 0.8 0.9);
+						   		%sample_uniform(rel_sw_lower_adh, 0.5 0.6 0.7 0.8);
 						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 5 10);
 							  end;
 
@@ -701,16 +699,17 @@ newp_seed = 7;
 							if esw_art_disadv=0  then do; esw_higher_int = 1; rel_esw_lower_adh = 1;esw_higher_prob_loss_at_diag = 1;end;
 
 
-* fold_esw_higher_int;				%sample_uniform(fold_esw_higher_int, 0.80 0.90 1.00) *disadvantages slightly lower than SW;
-* fold_esw_higher_loss_at_diag;		%sample_uniform(fold_esw_higher_loss_at_diag, 0.80 0.90 1.00) 
+* fold_esw_higher_int;				%sample_uniform(fold_esw_higher_int, 0.10 0.30) *disadvantages lower than SW, 2nd 90 very high, 99%;
+* fold_esw_higher_loss_at_diag;		%sample_uniform(fold_esw_higher_loss_at_diag, 0.30 0.50); 
+* fold_rel_sw_lower_adh;			%sample_uniform(rel_sw_lower_adh, 1.2 1.5 1.8);
 
 if esw_art_disadv=1  then do;
 * esw_higher_int;				esw_higher_int = sw_higher_int * fold_esw_higher_int;
 * esw_higher_prob_loss_at_diag;	esw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * fold_esw_higher_loss_at_diag;
-* rel_esw_lower_adh;			rel_esw_lower_adh = rel_sw_lower_adh;
+* rel_esw_lower_adh;			rel_esw_lower_adh = rel_sw_lower_adh * rel_sw_lower_adh;rel_esw_lower_adh = max(rel_esw_lower_adh, 1); 
 end;
 
-* rate_engage_esw_program;	 rate_engage_esw_program=0.000001; *set in options;
+* rate_engage_esw_program;	 rate_engage_esw_program=0.0001; *set in options;
 * rate_disengage_esw_program; rate_disengage_esw_program=0.1; *set in options;
 
 * date_sw_prog_intro;		date_sw_prog_intro=2010;
@@ -1284,26 +1283,24 @@ sw_newp_lev_5_1 = 0.00 ; sw_newp_lev_5_2 = 0.00 ; sw_newp_lev_5_3 = 0.000 ; sw_n
 end;
 end;
 
-***start here;
-
 ***ESW trans matrices;
 *Group 1: 0 newp;
 *Group 2: 1-3 newp;
-*Group 3: 4-8 newp;
+*Group 3: 4-5 newp;
 if esw_trans_matrix=1 then do;
-p_esw_init_newp_g1=0.10; p_esw_init_newp_g2=0.89; p_esw_init_newp_g3= 0.01; 
+p_esw_init_newp_g1=0.02; p_esw_init_newp_g2=0.97; p_esw_init_newp_g3= 0.01; 
 
-esw_newp_lev_1_1 = 0.99 ;  esw_newp_lev_1_2 = 0.005 ; esw_newp_lev_1_3 = 0.005  ; 
+esw_newp_lev_1_1 = 0.75 ;  esw_newp_lev_1_2 = 0.24 ; esw_newp_lev_1_3 = 0.01  ; 
 esw_newp_lev_2_1 = 0.005 ; esw_newp_lev_2_2 = 0.99 ;  esw_newp_lev_2_3 = 0.005  ;
 esw_newp_lev_3_1 = 0.005 ; esw_newp_lev_3_2 = 0.005 ; esw_newp_lev_3_3 = 0.99  ; 
 end;
 
 if esw_trans_matrix=2 then do;
-p_esw_init_newp_g1=0.05; p_esw_init_newp_g2=0.94; p_esw_init_newp_g3= 0.01; 
+p_esw_init_newp_g1=0.10; p_esw_init_newp_g2=0.89; p_esw_init_newp_g3= 0.01; 
 
-esw_newp_lev_1_1 = 0.75 ; esw_newp_lev_1_2 = 0.24 ; esw_newp_lev_1_3 = 0.01  ; 
-esw_newp_lev_2_1 = 0.23 ; esw_newp_lev_2_2 = 0.75 ; esw_newp_lev_2_3 = 0.02  ;
-esw_newp_lev_3_1 = 0.02 ; esw_newp_lev_3_2 = 0.01 ; esw_newp_lev_3_3 = 0.97  ; 
+esw_newp_lev_1_1 = 0.30 ; esw_newp_lev_1_2 = 0.69 ; esw_newp_lev_1_3 = 0.01  ; 
+esw_newp_lev_2_1 = 0.005; esw_newp_lev_2_2 = 0.975 ; esw_newp_lev_2_3 = 0.02  ;
+esw_newp_lev_3_1 = 0.005 ; esw_newp_lev_3_2 = 0.75 ; esw_newp_lev_3_3 = 0.245  ; 
 end;
 
 
@@ -1966,13 +1963,13 @@ if esw = 1 then do;
 	if e < 0.10 then newp=0;
 	else if 0.10 <= e < 0.90 then do; 
 		q=rand('uniform');
-		if         q < 0.60 then newp=1;
-		if 0.60 <= q < 0.85 then newp=2;
-		if 0.85 <= q        then newp=3;
+		if         q < 0.70 then newp=1;
+		if 0.70 <= q < 0.95 then newp=2;
+		if 0.95 <= q        then newp=3;
 	end;
 	else do;
 		select;
-			when (0.90 <= e < 1.00) do; newp_lower = 4; newp_higher = 8; end;
+			when (0.90 <= e < 1.00) do; newp_lower = 4; newp_higher = 5; end;
 			otherwise xxx=1;
 		end;
 		* choose uniformly between newp_lower and newp_higher;
@@ -4361,6 +4358,8 @@ if sw_tm1  = 0 and esw ne 1 then do;
 
 	e = rand('uniform');
 	if e < prob_becoming_sw then sw = 1;
+	a=rand('uniform');
+	if sw_program_visit ne 1 and sw=1 and a <=p_hard_reach_sw then do; hard_reach_sw=1;hard_reach=1;end;
 end;
 
 if esw_tm1  = 0 and sw ne 1 then do;
@@ -4385,8 +4384,12 @@ if esw_tm1  = 0 and sw ne 1 then do;
 
 	e = rand('uniform');
 	if e < prob_becoming_esw then esw = 1;
+	b=rand('uniform');
+	if esw_program_visit ne 1 and esw=1 and b <=p_hard_reach_esw then do;hard_reach_esw=1;hard_reach=1;end;
+
 end;
 
+*Majority of SW/ESW are hard to reach;
 
 
 	***currently SW are no more likely to be willing to take prep than gen pop (because add_prep_any_uptake_sw=0) but we may decide to change;
@@ -4433,8 +4436,8 @@ if sw=1 then  ever_sw = 1;
 *initial distribution of newp for esw (need to define tm1 here in order to define number of current partners below);
 if t ge 2 and  esw_tm1 ne 1 and esw=1 then do; 
 	e=rand('uniform');
-	if e < p_esw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 3;
-	if (p_sw_init_newp_g1+p_sw_init_newp_g2) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) then newp_tm1 = 8; 
+	if e < p_esw_init_newp_g1 then newp_tm1 = 0; if p_esw_init_newp_g1 <= e < (p_esw_init_newp_g1+p_esw_init_newp_g2) then newp_tm1 = 3;
+	if (p_esw_init_newp_g1+p_esw_init_newp_g2) <= e < (p_esw_init_newp_g1+p_esw_init_newp_g2+p_esw_init_newp_g3) then newp_tm1 = 5; 
 	if ever_esw ne 1 then do; 
 		date_start_esw = caldate{t}; age_deb_esw=age;
 	end; 
@@ -4445,7 +4448,7 @@ if esw=1 then  ever_esw = 1;
 * esw newp levels are 
 1 	newp = 0
 2   newp 1-3
-3   newp 4-8
+3   newp 4-5
 ;
 
 
@@ -4457,6 +4460,7 @@ if t ge 2 then do;
 		if d_sw < rate_stop_sexwork/(sqrt(rred_rc_base)) or age ge 50 then do; 
 
 			sw=0; date_stop_sw=caldate{t};
+			hard_reach_sw=0;hard_reach=0;
 			if sw_program_visit=1 then do;		
 				sw_program_visit=0; 
 				date_last_sw_prog_vis=caldate{t};
@@ -4465,14 +4469,14 @@ if t ge 2 then do;
 				eff_sw_higher_int = sw_higher_int;
 				*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 				eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-
+/*
 				eff_rate_test_startprep_any=rate_test_startprep_any;
 				eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		
 				eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
 				eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
 				eff_rate_choose_stop_prep_vr =rate_choose_stop_prep_vr ;	*due to availability of vr prep;	
 				eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-
+*/
 			end;
 
 		end;
@@ -4493,6 +4497,7 @@ if t ge 2 then do;
 		if e < rate_stop_esexwork/(sqrt(rred_rc_base)) or age ge 50 then do; 
 
 			esw=0; date_stop_esw=caldate{t};
+			hard_reach_esw=0;hard_reach=0;
 			if esw_program_visit=1 then do;		
 				esw_program_visit=0; 
 				date_last_sw_prog_vis=caldate{t};
@@ -4593,10 +4598,10 @@ end;
 * transitions between levels for esw * dependent_on_time_step_length ;
 if esw = 1 then do;
 
-* sw newp levels are 
+* esw newp levels are 
 1 	newp = 0
 2   newp 1-3
-3   newp 4-8
+3   newp 4-5
 
 ;
 	if t ge 2 then do;
@@ -4604,7 +4609,7 @@ if esw = 1 then do;
 		select;
 		when (newp_tm1 = 0) 		do; newp_lev1_prob = esw_newp_lev_1_1; newp_lev2_prob = esw_newp_lev_1_2; newp_lev3_prob = esw_newp_lev_1_3; end;
 		when (1 <= newp_tm1 <= 3) 	do; newp_lev1_prob = esw_newp_lev_2_1; newp_lev2_prob = esw_newp_lev_2_2; newp_lev3_prob = esw_newp_lev_2_3; end;
-		when (4 <= newp_tm1 <= 8) 	do; newp_lev1_prob = esw_newp_lev_3_1; newp_lev2_prob = esw_newp_lev_3_2; newp_lev3_prob = esw_newp_lev_3_3;end;
+		when (4 <= newp_tm1 <= 5) 	do; newp_lev1_prob = esw_newp_lev_3_1; newp_lev2_prob = esw_newp_lev_3_2; newp_lev3_prob = esw_newp_lev_3_3;end;
 		otherwise xxx=1;	
 	end;
 
@@ -4613,10 +4618,11 @@ if esw = 1 then do;
 	if e < newp_lev1_prob then newp=0;
 	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; 
 		q=rand('uniform');
-		if q < 0.6 then newp=1; if 0.6 <= q < 0.85 then newp=2; if 0.85 <= q then newp=3; 
+		if q < 0.85 then newp=1; if 0.85 <= q < 0.97 then newp=2; if 0.97 <= q then newp=3; 
 	end;
 	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do;
-		q=rand('uniform'); newp = 4 + (q*4); newp = round(newp,1); 
+		q=rand('uniform'); 
+		if q < 0.85 then newp=4; if 0.85 <= q then newp=5; 
 	end;
 end;
 
@@ -4727,7 +4733,7 @@ if esw=1 and newp ge 1 and eff_sw_program = 1 and esw_program_visit=1 then do;
 	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
 end;
 
-
+ 
 * Condom intervention - removing the effect of condom provision and promotion for HIV Control baseline;
 *Impact on newp (impact on ep is above);
 xx=rand('uniform');
@@ -16690,11 +16696,11 @@ if sw_program_visit=0 and sw=1 then do;
 diag_sw_noprog=diag_sw; onart_sw_noprog=onart_sw; vl1000_art_gt6m_iicu_sw_noprog=vl1000_art_gt6m_iicu_sw;
 end;
 
-if sw_program_visit=1 and esw=1 then do;
+if esw_program_visit=1 and esw=1 then do;
 diag_esw_inprog=diag_esw; onart_esw_inprog=onart_esw; vl1000_art_gt6m_iicu_esw_inprg=vl1000_art_gt6m_iicu_esw;
 end;
 
-if sw_program_visit=0 and esw=1 then do;
+if esw_program_visit=0 and esw=1 then do;
 diag_esw_noprog=diag_esw; onart_esw_noprog=onart_esw; vl1000_art_gt6m_iicu_esw_noprg=vl1000_art_gt6m_iicu_esw;
 end;
 
@@ -18184,8 +18190,17 @@ then tested_msm_sympt=1;
 * allocation of tests in women 1 anc  2 symptoms  3  sw;
 tested_f=0; if gender=2 and tested=1 then tested_f=1;
 tested_f_anc=0; if gender=2 and tested=1 and tested_anc = 1 then tested_f_anc=1;
-tested_f_sympt=0; if gender=2 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
-and tested_anc ne 1 then tested_f_sympt=1;
+tested_sw_anc=0; if sw=1 and tested=1 and tested_anc = 1 then tested_sw_anc=1;
+tested_esw_anc=0; if esw=1 and tested=1 and tested_anc = 1 then tested_esw_anc=1;
+
+tested_f_sympt=0; tested_sw_sympt=0; tested_esw_sympt=0; 
+	if gender=2 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
+	and tested_anc ne 1 then do;
+		tested_f_sympt=1;
+		if sw=1 then tested_sw_sympt=1;
+		if esw=1 then tested_esw_sympt=1;
+	end;
+
 tested_f_progsw=0; if gender=2 and tested=1 and tested_as_sw=1 and tested_anc ne 1 and tested_labdel ne 1 and tested_pd ne 1 and 
 (elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then tested_f_progsw=1;
 tested_f_non_anc=0; if gender=2 and tested=1 and tested_anc ne 1 then tested_f_non_anc=1;
@@ -18193,7 +18208,12 @@ tested_f_non_anc=0; if gender=2 and tested=1 and tested_anc ne 1 then tested_f_n
 tested_ancpd=0; if dt_lastbirth=caldate&j-0.25 and (tested_pd=1 or 
                    (dt_last_test ne . and dt_lastbirth ne . and dt_lastbirth-0.75 lt dt_last_test le dt_lastbirth)) then tested_ancpd=1;
 test_anclabpd=0;if gender=2 and tested=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then test_anclabpd=1;
+test_sw_anclabpd=0;if sw=1 and tested=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then test_sw_anclabpd=1;
+test_esw_anclabpd=0;if esw=1 and tested=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then test_esw_anclabpd=1;
+
+
 tested_1524w=0; if gender=2 and tested=1 and 15 <= age < 25 then tested_1524w=1;
+
 
 * tested_at_return is when a previously diagnosed person returns to care - these can be added when summing positive tests;
 tested_at_return=0; if return = 1 then tested_at_return=1;
@@ -20087,7 +20107,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; 
-	s_tested_ancpd + tested_ancpd ; s_test_anclabpd + test_anclabpd ; s_tested_1524w + tested_1524w; s_tested_f_anc + tested_f_anc ;
+	s_tested_ancpd + tested_ancpd ; s_test_anclabpd + test_anclabpd ; s_test_sw_anclabpd + test_sw_anclabpd ; s_test_esw_anclabpd + test_esw_anclabpd ;
+	s_tested_1524w + tested_1524w;  s_tested_f_anc + tested_f_anc ;
+	s_tested_sw_anc + tested_sw_anc ;s_tested_esw_anc + tested_esw_anc ;s_tested_sw_sympt + tested_sw_sympt ;s_tested_esw_sympt + tested_esw_sympt ;
+
 	s_ever_tested_m + ever_tested_m ; s_ever_tested_w + ever_tested_w ; s_firsttest + firsttest ; 
 	s_firsttest_anc + firsttest_anc ; s_firsttest_labdel + firsttest_labdel ; s_firsttest_pd + firsttest_pd ;s_tested1549_ + tested1549_ ;
 	s_tested1549m + tested1549m ; s_tested1549w + tested1549w ; s_tested_4p_m1549_ + tested_4p_m1549_ ; s_tested_4p_m1519_ + tested_4p_m1519_ ;
@@ -20635,8 +20658,7 @@ s_tested_m_sympt + tested_m_sympt ;
 	s_onart_sw_noprog + onart_sw_noprog; s_onart_sw_inprog + onart_sw_inprog;
 	s_vl1000_art_gt6m_iicu_sw_noprog + vl1000_art_gt6m_iicu_sw_noprog; s_vl1000_art_gt6m_iicu_sw_inprog + vl1000_art_gt6m_iicu_sw_inprog;
 
-
-	s_sti_sw + sti_sw;
+	s_sti_sw + sti_sw; 	s_hard_reach_sw + hard_reach_sw;
 
 	/*ESW*/
 	s_esw + esw ; s_esw_1549 + esw_1549 ; s_esw_1849 + esw_1849 ; s_esw_1519 + esw_1519 ; s_esw_2024 + esw_2024 ;
@@ -20668,7 +20690,7 @@ s_tested_m_sympt + tested_m_sympt ;
 	s_onart_esw_noprog + onart_esw_noprog; s_onart_esw_inprog + onart_esw_inprog;
 	s_vl1000_art_gt6m_iicu_esw_noprg + vl1000_art_gt6m_iicu_esw_noprg; s_vl1000_art_gt6m_iicu_esw_inprg + vl1000_art_gt6m_iicu_esw_inprg;
 
-	s_sti_esw + sti_esw;
+	s_sti_esw + sti_esw;		s_hard_reach_esw + hard_reach_esw;
 
 	/* MSM */
 
@@ -20986,8 +21008,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
-
-
 
 
 * procs;
@@ -21803,7 +21823,9 @@ s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_pr
 
 
 /*testing and diagnosis*/
-s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
+s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_test_sw_anclabpd		s_test_esw_anclabpd	s_tested_1524w s_tested_f_anc  
+s_tested_sw_anc 	  s_tested_esw_anc 		s_tested_sw_sympt 		 s_tested_esw_sympt 
+s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
@@ -22099,7 +22121,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sti_sw
+s_sti_sw	s_hard_reach_sw
 
 /*edge of sex work*/
 s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
@@ -22125,7 +22147,7 @@ s_esw_program_visit
 s_diag_esw_noprog  s_diag_esw_inprog  s_onart_esw_noprog  s_onart_esw_inprog  
 s_vl1000_art_gt6m_iicu_esw_noprg  s_vl1000_art_gt6m_iicu_esw_inprg 
 
-s_sti_esw
+s_sti_esw		s_hard_reach_esw
 
 
 /* MSM */
@@ -23014,7 +23036,9 @@ s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_pr
 
 
 /*testing and diagnosis*/
-s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
+s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_test_sw_anclabpd		s_test_esw_anclabpd	s_tested_1524w s_tested_f_anc 
+s_tested_sw_anc 	  s_tested_esw_anc 		s_tested_sw_sympt 		 s_tested_esw_sympt
+s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
@@ -23310,7 +23334,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sti_sw
+s_sti_sw	s_hard_reach_sw
 
 /*edge of sex work*/
 s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
@@ -23336,7 +23360,7 @@ s_esw_program_visit
 s_diag_esw_noprog  s_diag_esw_inprog  s_onart_esw_noprog  s_onart_esw_inprog  
 s_vl1000_art_gt6m_iicu_esw_noprg  s_vl1000_art_gt6m_iicu_esw_inprg 
 
-s_sti_esw
+s_sti_esw		s_hard_reach_esw
 
 /* MSM */
 
@@ -24058,7 +24082,9 @@ s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_pr
 
 
 /*testing and diagnosis*/
-s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
+s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_test_sw_anclabpd		s_test_esw_anclabpd	s_tested_1524w s_tested_f_anc  
+s_tested_sw_anc 	  s_tested_esw_anc 		s_tested_sw_sympt 		 s_tested_esw_sympt
+s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
@@ -24354,7 +24380,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sti_sw
+s_sti_sw		s_hard_reach_sw
 
 /*edge of sex work*/
 s_esw	s_esw_1564	 s_esw_1549   s_esw_1849    s_esw_1519  s_esw_2024  s_esw_2529  s_esw_3039  s_esw_ov40 
@@ -24380,7 +24406,7 @@ s_esw_program_visit
 s_diag_esw_noprog  s_diag_esw_inprog  s_onart_esw_noprog  s_onart_esw_inprog  
 s_vl1000_art_gt6m_iicu_esw_noprg  s_vl1000_art_gt6m_iicu_esw_inprg 
 
-s_sti_esw
+s_sti_esw		s_hard_reach_esw
 
 /* MSM */
 
