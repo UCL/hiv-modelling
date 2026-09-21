@@ -10,7 +10,7 @@ CHANGED INC_RISK_MOBILE, SEE IF THIS HAS AN IMPACT. STRATIFY BY THIS TOO IN CREA
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.wide_MM14Sep26;
+set a.wide_MM16Sep26;
 run;
 
 data b;
