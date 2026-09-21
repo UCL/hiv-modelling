@@ -603,7 +603,7 @@ pop2534 = s_ageg2529m + s_ageg3034m + s_ageg2529w + s_ageg3034w ;
 pop3544 = s_ageg3539m + s_ageg4044m + s_ageg3539w + s_ageg4044w ;
 pop4554 = s_ageg4549m + s_ageg5054m + s_ageg4549w + s_ageg5054w ;
 pop5564 = s_ageg5559m + s_ageg6064m + s_ageg5559w + s_ageg6064w ;
-pop6574 = s_ageg6569m + s_ageg7074m +  + s_ageg6569w + s_ageg7074w ;
+pop6574 = s_ageg6569m + s_ageg7074m + s_ageg6569w + s_ageg7074w ;
 pop7584 = s_ageg7579m + s_ageg8084m + s_ageg7579w + s_ageg8084w;
 popge85 = s_ageg85plm + s_ageg85plw;
 popge18 = s_ageg1819m + s_ageg2024m + s_ageg1819w + s_ageg2024w + pop2534 + pop3544 + pop4554 + pop5564 + pop6574 + pop7584 + popge85 ; 
@@ -1142,19 +1142,17 @@ data y; set a.l_base;
 proc means noprint data=y; var &v; output out=y_15 mean= &v._15; by run option ; where 2013 <= cald < 2017; 
 proc means noprint data=y; var &v; output out=y_23 mean= &v._23; by run option ; where 2023 <= cald < 2024; 
 
-/*proc means noprint data=y; var &v; output out=y_43 mean= &v._43; by run option ; where 2043 <= cald < 2044;
-proc means noprint data=y; var &v; output out=y_73 mean= &v._73; by run option ; where 2073 <= cald < 2074; */
-proc means noprint data=y; var &v; output out=y_2429 mean= &v._2429; by run option ; where 2024 <= cald < 2029; */
-proc means noprint data=y; var &v; output out=y_2434 mean= &v._2434; by run option ; where 2024 <= cald < 2034; 
+/*proc means noprint data=y; var &v; output out=y_43 mean= &v._43; by run option ; where 2043 <= cald < 2044; */
+/*proc means noprint data=y; var &v; output out=y_73 mean= &v._73; by run option ; where 2073 <= cald < 2074; */
+proc means noprint data=y; var &v; output out=y_2429 mean= &v._2429; by run option ; where 2024 <= cald < 2029;
 proc means noprint data=y; var &v; output out=y_2474 mean= &v._2474; by run option ; where 2024 <= cald < 2074;
 																												
-/*proc sort data=y_43; by run option ; proc transpose data=y_43 out=t_43 prefix=&v._43_; var &v._43; by run option ; 
-proc sort data=y_73; by run option; proc transpose data=y_73 out=t_73 prefix=&v._73_; var &v._73; by run option ; */
+/*proc sort data=y_43; by run option; proc transpose data=y_43 out=t_43 prefix=&v._43_; var &v._43; by run option ; */
+/*proc sort data=y_73; by run option; proc transpose data=y_73 out=t_73 prefix=&v._73_; var &v._73; by run option ; */
 proc sort data=y_2429; by run option; proc transpose data=y_2429 out=t_2429 prefix=&v._2429_; var &v._2429; by run option ;
-proc sort data=y_2434; by run option; proc transpose data=y_2434 out=t_2434 prefix=&v._2434_; var &v._2434; by run option ;  
 proc sort data=y_2474; by run option; proc transpose data=y_2474 out=t_2474 prefix=&v._2474_; var &v._2474; by run option ; 
 
-data &v ; merge   y_15 y_23 y_2429 y_2434 y_2474; by run option; * REMOVED y_43 y_73    to shorten output;
+data &v ; merge   y_15 y_23 y_2429 y_2474; by run option; * REMOVED y_43 y_73 to shorten output;
 drop _NAME_ _TYPE_ _FREQ_;
 
 
@@ -1170,7 +1168,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
 		%var(v=ddaly);
 
-*/ADD IN PROJECT SPECIFIC OUTPUTS/*;
+*ADD IN PROJECT SPECIFIC OUTPUTS;
 %var(v=s_alive); %var(v=popsizege18); %var(v=popsizege40);
 %var(v=popge18); %var(v=pop2534); %var(v=pop3544); %var(v=pop4554); %var(v=pop5564); %var(v=pop6574); %var(v=pop7584); %var(v=popge85);
 
