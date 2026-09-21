@@ -283,9 +283,6 @@ s_alive = s_alive_m + s_alive_w ;
 * p_elig_onprep_cab_mm;			if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_cab_mm = s_prep_cab_mm / s_elig_prep_any_mm_1564_ ;
 * p_elig_onprep_len_mm;			if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_len_mm = s_prep_len_mm / s_elig_prep_any_mm_1564_ ;
 
-
-
-
 * n_prep_any_mm;				n_prep_any_mm = s_prep_any_mm_1564 * sf;
 * n_prep_oral_mm;				n_prep_oral_mm = s_prep_oral_mm * sf;
 * n_prep_cab_mm;				n_prep_cab_mm = s_prep_cab_mm * sf;
@@ -297,6 +294,8 @@ s_alive = s_alive_m + s_alive_w ;
 
 * p_newp_ge1_mm;				if s_alive1564mm  > 0 then p_newp_ge1_mm = s_newp_ge1_mm / s_alive1564mm ;
 * p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive;
+
+* p_mm_prog_visit;				p_mm_prog_visit = mm_prog_visit /curr_mobile;
 
 
 keep run option cald 
@@ -317,9 +316,9 @@ prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			p_1564mm_onpr
 p_1564mm_onprep_cab	p_1564mm_onprep_len	p_1564mm_onprep_oral	
 n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_prep_any_ever_mm
 p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm			p_elig_onprep_cab 	p_elig_onprep_len	p_elig_onprep_oral
-p_elig_onprep_oral_mm	p_elig_onprep_cab_mm	p_elig_onprep_len_mm	p_elig_onprep_genmen
-inc_risk_mobile		sex_beh_trans_matrix_m		sex_beh_trans_matrix_w	sex_age_mixing_matrix_m			sex_age_mixing_matrix_w
-;
+p_elig_onprep_oral_mm	p_elig_onprep_cab_mm		p_elig_onprep_len_mm		p_elig_onprep_genmen
+inc_risk_mobile			sex_beh_trans_matrix_m		sex_beh_trans_matrix_w		sex_age_mixing_matrix_m			sex_age_mixing_matrix_w
+inc_risk_newp_mm	p_mm_prog_visit		rate_engage_mm_program	rate_disengage_mm_program;
 
 proc sort data=y;by run option;run;
 
@@ -993,13 +992,14 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %mend par; 
 
 %par(p=inc_risk_mobile);		%par(p=sex_beh_trans_matrix_m);		%par(p=sex_beh_trans_matrix_w);	
-%par(p=sex_age_mixing_matrix_m);%par(p=sex_age_mixing_matrix_w);
+%par(p=sex_age_mixing_matrix_m);%par(p=sex_age_mixing_matrix_w); %par(p=inc_risk_newp_mm);
 			
 run;
 
 
 data wide_par; merge 
-inc_risk_mobile		sex_beh_trans_matrix_m	sex_beh_trans_matrix_w		sex_age_mixing_matrix_m		sex_age_mixing_matrix_w;
+inc_risk_mobile		sex_beh_trans_matrix_m	sex_beh_trans_matrix_w		sex_age_mixing_matrix_m		
+sex_age_mixing_matrix_w	inc_risk_newp_mm;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;

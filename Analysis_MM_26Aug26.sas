@@ -26,9 +26,10 @@ p_onart_diag_mm_26  	p_onart_vl1000_mm_26
 p_elig_onprep_m_26		prevalence1549m_26	incidence1549m_26;run;
 
 
-proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_mobile=100;run;
-proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_mobile=200;run;
-proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_mobile=300;run;
+proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_newp_mm=0.7;run;
+proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_newp_mm=0.8;run;
+proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_newp_mm=0.9;run;
+proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_newp_mm=1;run;
 
 proc freq;table sex_age_mixing_matrix_w	;run;
 
