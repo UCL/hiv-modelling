@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_16Sep2026; 
+set a.mm_21Sep2026; 
 if run=. then delete; 
 
 proc sort;
@@ -293,9 +293,10 @@ s_alive = s_alive_m + s_alive_w ;
 * p_prep_any_ever_mm;			if  s_alive1564mm > 0 then p_prep_any_ever_mm = s_prep_any_ever_mm / s_alive1564mm;
 
 * p_newp_ge1_mm;				if s_alive1564mm  > 0 then p_newp_ge1_mm = s_newp_ge1_mm / s_alive1564mm ;
+* n_newp_mm;					n_newp_mm = s_newp_mm * sf;
 * p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive;
 
-* p_mm_prog_visit;				p_mm_prog_visit = mm_prog_visit /curr_mobile;
+* p_mm_prog_visit;				p_mm_prog_visit = s_mm_prog_visit /s_alive1564mm;
 
 
 keep run option cald 
@@ -318,7 +319,7 @@ n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_
 p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm			p_elig_onprep_cab 	p_elig_onprep_len	p_elig_onprep_oral
 p_elig_onprep_oral_mm	p_elig_onprep_cab_mm		p_elig_onprep_len_mm		p_elig_onprep_genmen
 inc_risk_mobile			sex_beh_trans_matrix_m		sex_beh_trans_matrix_w		sex_age_mixing_matrix_m			sex_age_mixing_matrix_w
-inc_risk_newp_mm	p_mm_prog_visit		rate_engage_mm_program	rate_disengage_mm_program;
+inc_risk_newp_mm	p_mm_prog_visit		rate_engage_mm_program	rate_disengage_mm_program				n_newp_mm;
 
 proc sort data=y;by run option;run;
 
@@ -946,11 +947,11 @@ data &v ; merge  y_26 t_36 t_26_46 /*t_26_46*/;
 %var(v=p_hiv_mm);		
 
 %var(v=p_1564mm_onprep_cab);%var(v=p_1564mm_onprep_len);%var(v=p_1564mm_onprep_oral);	
-%var(v=p_elig_onprep_mm);%var(v=n_prep_any_mm);		%var(v=n_prep_oral_mm);		%var(v=n_prep_cab_mm);	 	%var(v=n_prep_len_mm);
-%var(v=n_prep_ever_mm);	  %var(v=p_prep_any_ever_mm); 	%var(v=p_newp_ge1_mm);		%var(v=p_prep_any_willing);	%var(v=n_prep_oral_mm);
-%var(v=p_elig_onprep_cab);%var(v=p_elig_onprep_len);	%var(v=p_elig_onprep_oral);%var(v=p_elig_onprep_oral_mm);	
+%var(v=p_elig_onprep_mm);	%var(v=n_prep_any_mm);		%var(v=n_prep_oral_mm);		%var(v=n_prep_cab_mm);	 	%var(v=n_prep_len_mm);
+%var(v=n_prep_ever_mm);	  	%var(v=p_prep_any_ever_mm); %var(v=p_newp_ge1_mm);		%var(v=p_prep_any_willing);	%var(v=n_prep_oral_mm);
+%var(v=p_elig_onprep_cab);	%var(v=p_elig_onprep_len);	%var(v=p_elig_onprep_oral);%var(v=p_elig_onprep_oral_mm);	
 %var(v=p_elig_onprep_cab_mm);							%var(v=p_elig_onprep_len_mm);							%var(v=p_elig_onprep_genmen);
-
+%var(v=p_mm_prog_visit);	%var(v=n_newp_mm);	
 %var(v=dcost);	 		%var(v=ddaly);
 run;
 
@@ -976,7 +977,7 @@ p_elig_onprep_mm	n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm	 	n_prep_len_mm
 n_prep_ever_mm	  	p_prep_any_ever_mm 	p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm
 p_elig_onprep_cab	p_elig_onprep_len	p_elig_onprep_oral	p_elig_onprep_oral_mm	
 p_elig_onprep_cab_mm	p_elig_onprep_len_mm				p_elig_onprep_genmen
-
+p_mm_prog_visit		n_newp_mm
 dcost	 		ddaly;
 run;
 ;
@@ -1003,7 +1004,7 @@ sex_age_mixing_matrix_w	inc_risk_newp_mm;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_MM16Sep26;;
+data a.wide_MM21Sep26;;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
