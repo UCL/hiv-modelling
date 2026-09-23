@@ -21,9 +21,9 @@ set a;
 
 proc means n median p5 p95;var
 n_mm_26 				p_mm_26	 			p_1524mm_26		 	p_2534mm_26			p_3544mm_26				p_4554mm_26		
-p_5564mm_26				p_newp_ge1_mm_26	n_newp_mm_26		p_elig_onprep_mm_26	incidence1564_mm_26		prevalence1564_mm_26	
+p_5564mm_26				p_newp_ge1_mm_26	av_mm_newp_26		p_elig_onprep_mm_26	incidence1564_mm_26		prevalence1564_mm_26	
 p_diag_mm_26			p_onart_diag_mm_26  p_onart_vl1000_mm_26	
-p_elig_onprep_m_26		prevalence1549m_26	incidence1549m_26	p_mm_prog_visit_26		;run;
+p_elig_onprep_m_26		prevalence1549m_26	incidence1549m_26	p_mm_prog_visit_36_6		;run;
 
 
 proc means n median p5 p95;var p_newp_ge1_mm_26;where inc_risk_newp_mm=0.7;run;

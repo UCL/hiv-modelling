@@ -292,8 +292,9 @@ s_alive = s_alive_m + s_alive_w ;
 * n_prep_ever_mm;				n_prep_ever_mm = s_prep_any_ever_mm * sf;
 * p_prep_any_ever_mm;			if  s_alive1564mm > 0 then p_prep_any_ever_mm = s_prep_any_ever_mm / s_alive1564mm;
 
-* p_newp_ge1_mm;				if s_alive1564mm  > 0 then p_newp_ge1_mm = s_newp_ge1_mm / s_alive1564mm ;
-* n_newp_mm;					n_newp_mm = s_newp_mm * sf;
+* p_newp_ge1_mm;				if s_alive1564mm > 0 then p_newp_ge1_mm = s_newp_ge1_mm / s_alive1564mm ;
+* av_mm_newp;					if s_alive1564mm > 0 then av_mm_newp = s_newp_mm/s_alive1564mm;
+
 * p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive;
 
 * p_mm_prog_visit;				p_mm_prog_visit = s_mm_prog_visit /s_alive1564mm;
@@ -319,7 +320,7 @@ n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_
 p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm			p_elig_onprep_cab 	p_elig_onprep_len	p_elig_onprep_oral
 p_elig_onprep_oral_mm	p_elig_onprep_cab_mm		p_elig_onprep_len_mm		p_elig_onprep_genmen
 inc_risk_mobile			sex_beh_trans_matrix_m		sex_beh_trans_matrix_w		sex_age_mixing_matrix_m			sex_age_mixing_matrix_w
-inc_risk_newp_mm	p_mm_prog_visit		rate_engage_mm_program	rate_disengage_mm_program				n_newp_mm;
+inc_risk_newp_mm	p_mm_prog_visit		rate_engage_mm_program	rate_disengage_mm_program				av_mm_newp;
 
 proc sort data=y;by run option;run;
 
@@ -951,7 +952,7 @@ data &v ; merge  y_26 t_36 t_26_46 /*t_26_46*/;
 %var(v=n_prep_ever_mm);	  	%var(v=p_prep_any_ever_mm); %var(v=p_newp_ge1_mm);		%var(v=p_prep_any_willing);	%var(v=n_prep_oral_mm);
 %var(v=p_elig_onprep_cab);	%var(v=p_elig_onprep_len);	%var(v=p_elig_onprep_oral);%var(v=p_elig_onprep_oral_mm);	
 %var(v=p_elig_onprep_cab_mm);							%var(v=p_elig_onprep_len_mm);							%var(v=p_elig_onprep_genmen);
-%var(v=p_mm_prog_visit);	%var(v=n_newp_mm);	
+%var(v=p_mm_prog_visit);	%var(v=av_mm_newp);	
 %var(v=dcost);	 		%var(v=ddaly);
 run;
 
@@ -977,7 +978,7 @@ p_elig_onprep_mm	n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm	 	n_prep_len_mm
 n_prep_ever_mm	  	p_prep_any_ever_mm 	p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm
 p_elig_onprep_cab	p_elig_onprep_len	p_elig_onprep_oral	p_elig_onprep_oral_mm	
 p_elig_onprep_cab_mm	p_elig_onprep_len_mm				p_elig_onprep_genmen
-p_mm_prog_visit		n_newp_mm
+p_mm_prog_visit		av_mm_newp
 dcost	 		ddaly;
 run;
 ;
