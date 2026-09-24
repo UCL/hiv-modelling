@@ -10,7 +10,7 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
    IF NOT AUTOMATICALLY DONE IN MYRIAD);
 
 data a;
-set a.pace_16sep26;
+set a.pace_21Sep26;
 if run=. then delete; 
 proc sort;by run cald option;run;
 proc freq;table cald;run;
@@ -695,7 +695,7 @@ rel_esw_lower_adh		rate_engage_esw_program		erate_disengage_esw_program*/
 ;proc sort; by run;run;
 
 ***THIS STORES THE NEWLY CREATED WIDE FILE IN LIBRARY A. THIS NEW FILE WILL BE READ INTO THE ANALYSIS PROGRAM;
-data a.wide_pace_16_09_26;
+data a.wide_pace_21_09_26;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
