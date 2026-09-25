@@ -11611,7 +11611,8 @@ o_dol_2nd_vlg1000 = 0; * see below for defn; * eee;
 
 ***LBM Sep26;
 
-* art_monitoring_strategy = 3. Clinical monitoring with VL confirmation (modelling the confirmatory VL);
+* art_monitoring_strategy=3. Clinical monitoring with VL confirmation (modelling the confirmatory VL);
+* look also at who3 and who4 events where the switch evaluation happens;
 
 if t ge 2 and visit=1 and art_monitoring_strategy=3 
 and 0.5 <= caldate{t}-date_last_vlm_g1000 <= 1.0 /*last VL>1000 was measured between 6-12 months ago*/
@@ -12888,10 +12889,17 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 				end;
 			end;
 
-***LBM Sep26;
-*Where art_monitoring_strategy=3 above, the switch is being initiated whilst this code is saying they have had a switch evaluation;
+***LBM Sep26 check;
+* Here the VL is being measured because of a WHO 3 event, where as before near the top where art_monitoring_strategy=3,  
+the VL is being measured as the confirmatory VL? But in this section, we are also measuring a confirmatory VL with the
+'and . < caldate{t}-date_last_who3 < 1' condition...
 
-			if t ge 2 and (visit=1) and art_monitoring_strategy = 3 and f < prob_who3_diagnosed  then do;
+I'm confused why we have code for art_monitoring_strategy=3 higher up, and again here, when both have
+have conditions on date_who3_4_event_switch_eval;
+
+
+
+			if t ge 2 and (visit=1) and art_monitoring_strategy=3 and f < prob_who3_diagnosed  then do;
 
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 and linefail_tm1=0 and 
 				((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do; 
@@ -13047,12 +13055,16 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 				end;
 			end;
 
-			***LBM Sep26 check - comments as above - this is just so I remember to make any changes here as well;
-***Start here - check timelines for confirmatory VLs;
+			***LBM Sep26 check -  check timelines for confirmatory VLs;
 
 			if t ge 3 and art_monitoring_strategy = 3  and f < prob_who4_diagnosed then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and linefail_tm1=0 
 				and ((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do; 
+				/*Their previous switch evaluation was >6 months ago or missing. This is consistent with WHO3 code;*/
+
+				*For WHO4, a VL is done here, and then confirmed at the top of the code where art_mon_str first=3? (line 11612);
+					 
+
 					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 	if s < eff_prob_vl_meas_done then do; 
 						if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 						if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;

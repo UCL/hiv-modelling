@@ -11611,10 +11611,11 @@ o_dol_2nd_vlg1000 = 0; * see below for defn; * eee;
 
 ***LBM Sep26;
 
-* art_monitoring_strategy = 3. Clinical monitoring with VL confirmation (modelling the confirmatory VL);
+* art_monitoring_strategy=3. Clinical monitoring with VL confirmation (modelling the confirmatory VL);
+* look also at who3 and who4 events where the switch evaluation happens;
 
 if t ge 2 and visit=1 and art_monitoring_strategy=3 
-and 0.5 <= caldate{t}-date_last_vlm_g1000 <= 1.0 /*last VL>1000 was measured between 6-12 months ago*/
+and 0.25 <= caldate{t}-date_last_vlm_g1000 <= 1.0 /*last VL>1000 was measured between 3-12 months ago*/
 and (onart=1 or int_clinic_not_aw=1) and (p_taz ne 1 or p_dar ne 1 or p_lpr ne 1) /*on ART or interrupted without clinic being aware and havent started a PI*/
 and (linefail_tm1 =0)/*this ensures a confirmatory VL is only done if they havent failed a regimen before the last period*/
 and min_time_repeat_vm <= caldate{t}-date_who3_4_event_switch_eval <= 1.0 then do;/*they had a switch evaluation due to symptoms 3-12 months ago (and repeat VL needs to be done by 1 year)*/
@@ -12889,16 +12890,20 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 			end;
 
 ***LBM Sep26;
-*Where art_monitoring_strategy=3 above, the switch is being initiated whilst this code is saying they have had a switch evaluation;
 
-			if t ge 2 and (visit=1) and art_monitoring_strategy = 3 and f < prob_who3_diagnosed  then do;
+* Here the VL is being measured because of a WHO 3 event. If it is the first event, the person doesnt get an evaluation
+  but if it is the second event in a year, they get their VL measured at >1000 and a date for switch evaluation.
+  The confirmatory VL is measured where art_monitoring_strategy=3 higher up;
 
-				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 and linefail_tm1=0 and 
+
+
+			if t ge 2 and (visit=1) and art_monitoring_strategy=3 and f < prob_who3_diagnosed  then do;
+
+				if ((onart=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 and 
 				((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do; 
 
 				/*IF they have been on continuous ART for >1 year OR they started ART >1 year ago AND interrupted with clinic unaware 
 				AND they had a WHO event less than a year ago (i.e. this would be the second WHO3 event within a year) 
-				AND they haven't failed before 
 				AND they had a switch evaluation >6m ago OR theyve never had a switch evaluation/*/
 
 					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 			if s < eff_prob_vl_meas_done then do; 
@@ -13047,12 +13052,13 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 				end;
 			end;
 
-			***LBM Sep26 check - comments as above - this is just so I remember to make any changes here as well;
-***Start here - check timelines for confirmatory VLs;
+			***LBM Sep26;
+			*For WHO4, a VL is done here, and then confirmed at the top of the code where art_mon_strategy=3 for the first time;
 
 			if t ge 3 and art_monitoring_strategy = 3  and f < prob_who4_diagnosed then do;
-				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and linefail_tm1=0 
-				and ((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do; 
+				if ((onart=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) 
+				and ((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do;
+ 
 					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 	if s < eff_prob_vl_meas_done then do; 
 						if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 						if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
