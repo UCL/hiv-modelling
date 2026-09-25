@@ -12899,8 +12899,10 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 
 			if t ge 2 and (visit=1) and art_monitoring_strategy=3 and f < prob_who3_diagnosed  then do;
 
-				if ((onart=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 and 
-				((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do; 
+				if ((onart=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) 
+				and (p_taz ne 1 or p_dar ne 1 or p_lpr ne 1)
+				and . < caldate{t}-date_last_who3 < 1 
+				and ((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do; 
 
 				/*IF they have been on continuous ART for >1 year OR they started ART >1 year ago AND interrupted with clinic unaware 
 				AND they had a WHO event less than a year ago (i.e. this would be the second WHO3 event within a year) 
@@ -13057,6 +13059,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 
 			if t ge 3 and art_monitoring_strategy = 3  and f < prob_who4_diagnosed then do;
 				if ((onart=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) 
+				and (p_taz ne 1 or p_dar ne 1 or p_lpr ne 1)
 				and ((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do;
  
 					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 	if s < eff_prob_vl_meas_done then do; 
