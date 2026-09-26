@@ -1004,13 +1004,13 @@ prob_symp_hypertension = 0.025;
 		Zhou Lancet 2021 - proportion women in SSA diagnosed 54%, proportion men diagnosed 34% (1.59-fold higher);		
 %sample_uniform(rr_test_sbp_women, 1 1.1 1.2);
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
-prob_test_sbp_undiagnosed = 0.02 * rr_htn_diagnosis;
+prob_test_sbp_undiagnosed = 0.01 * rr_htn_diagnosis;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 10; 
 * RR of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
 
 
-prob_test_sbp_diagnosed = 0.08 * rr_htn_diagnosis; 
+prob_test_sbp_diagnosed = 0.05 * rr_htn_diagnosis; 
 * RR of getting bp tested in a person <40 years of age compared to baseline probability;
 rr_test_sbp_young = 0.5; 
 * relative risk of bp testing for current HIV visit;

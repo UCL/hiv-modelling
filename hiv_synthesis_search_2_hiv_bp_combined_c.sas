@@ -1013,12 +1013,12 @@ prob_symp_hypertension = 0.025;
 		Zhou Lancet 2021 - proportion women in SSA diagnosed 54%, proportion men diagnosed 34% (1.59-fold higher);		
 %sample_uniform(rr_test_sbp_women, 1 1.1 1.2);
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
-prob_test_sbp_undiagnosed = 0.01 * rr_htn_diagnosis;
+prob_test_sbp_undiagnosed = 0.02 * rr_htn_diagnosis;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 10; 
 * RR of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
 						 
-prob_test_sbp_diagnosed = 0.05 * rr_htn_diagnosis; 
+prob_test_sbp_diagnosed = 0.08 * rr_htn_diagnosis; 
 * RR of getting bp tested in a person <40 years of age compared to baseline probability;
 rr_test_sbp_young = 0.5; 
 * relative risk of bp testing for current HIV visit;
@@ -1037,7 +1037,7 @@ comm_test_age = .;
 
 * probability of hypertension treatment initiation and intensification ;
 	* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
-	%sample_uniform(prob_imm_htn_tx_s1, 0.1 0.2 0.3); 
+	%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
 	* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
 	prob_imm_htn_tx_s2 = prob_imm_htn_tx_s1 + 0.3;
 	* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
@@ -2259,6 +2259,7 @@ end;
 
 p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
+
 if (gender=1 and p <= p_hard_reach_htn_m) or (gender=2 and q <= p_hard_reach_htn_w) then hard_reach_htn=1;																										  
 
 
@@ -2450,7 +2451,7 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-* note that we can use the sio variable when we want to overwrite parameter values in option;
+* note that we can use the sio (set in options) variable when we want to overwrite parameter values in option;
 
 
  	*Option 0 is continuation at current rates - status quo;
@@ -2531,6 +2532,281 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 end;
+
+
+/*   START
+
+
+* OPTIONS TO IMPLEMENT FROM year_i onwards;
+
+* code in this section can differ from unified program due to specifying exactly what interventions / changes are running; 
+* I suggest that we just leave this shell in the core program as we are not running beyond year_i ;
+
+* INTERVENTIONS / CHANGES in year_interv ;
+
+option = &s;
+
+if caldate_never_dot = &year_interv then do;
+* we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
+who may be dead and hence have caldate{t} missing;
+
+* can add in potential changes in policy after year_interv here -  set specific 'year_i' variables to '1' and specify proportion of
+  runs for which the option should take place;
+	
+* HYPERTENSION;
+
+	if option = 2 then do;
+		** Patient-centered care only 		
+		*relative risk of BP testing at HIV visit if out of hypertension care;
+		rr_test_sbp_hiv =10;
+
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
+		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_imm_htn_tx_s2, 0.9 0.95 1);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
+		%sample_uniform(prob_start_htn_tx_s1, 0.4 0.5 0.6);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_start_htn_tx_s2, 0.95 0.975 1);
+		* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
+		%sample_uniform(prob_restart_htn_tx_s1, 0.9 0.95 1); 
+		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
+		%sample_uniform(prob_restart_htn_tx_s2, 0.95 0.975 1);
+
+		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
+		%sample_uniform(htn_retention_patt, 1 2 3);
+		if htn_retention_patt = 1 then do;
+			prob_visit_htn_v1 = 0.65 ;
+			prob_visit_htn_v2 = 0.75 ;
+			prob_visit_htn_v3 = 0.85 ;
+			prob_visit_htn_v4 = 0.90 ;
+			prob_visit_htn_v5 = 0.95 ;
+		end; 
+		if htn_retention_patt = 2 then do;
+			prob_visit_htn_v1 = 0.70 ;
+			prob_visit_htn_v2 = 0.80 ;
+			prob_visit_htn_v3 = 0.90 ;
+			prob_visit_htn_v4 = 0.95 ;
+			prob_visit_htn_v5 = 0.95 ;
+		end; 
+		if htn_retention_patt = 3 then do;
+			prob_visit_htn_v1 = 0.75 ;
+			prob_visit_htn_v2 = 0.85 ;
+			prob_visit_htn_v3 = 0.95 ;
+			prob_visit_htn_v4 = 0.95 ;
+			prob_visit_htn_v5 = 0.95 ;
+		end; 
+
+		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
+		interval_visit_hypertension=0.5;
+
+		* integration of hiv and hypertension visits;
+		integration = 1;
+
+		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
+		%sample_uniform(prob_intensify_1_2, 0.25 0.30 0.35); 
+		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
+		%sample_uniform(prob_intensify_2_3, 0.02 0.03 0.04);
+
+	end;
+
+	if option = 2 then do;
+		** CHW community screening without voucher;
+		first_comm_test = 2024;
+		* prob testing in commmunity;
+		%sample_uniform(prob_test_sbp_comm, 0.8 0.85 0.9);
+		* prob link from community testing to clinic;
+		%sample_uniform(prob_htn_link, 0.5 0.6 0.7);
+		* comm test interval;
+		comm_test_interval = 1;
+		* comm test age (e.g. all adults vs targeted to >=40);
+		comm_test_age = 40;
+
+		*relative risk of BP testing at HIV visit if out of hypertension care;
+		rr_test_sbp_hiv =10;
+
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
+		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_imm_htn_tx_s2, 0.9 0.95 1);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
+		%sample_uniform(prob_start_htn_tx_s1, 0.4 0.5 0.6);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_start_htn_tx_s2, 0.95 0.975 1);
+		* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
+		%sample_uniform(prob_restart_htn_tx_s1, 0.9 0.95 1); 
+		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
+		%sample_uniform(prob_restart_htn_tx_s2, 0.95 0.975 1);
+
+		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
+		%sample_uniform(htn_retention_patt, 1 2 3);
+		if htn_retention_patt = 1 then do;
+			prob_visit_htn_v1 = 0.65 ;
+			prob_visit_htn_v2 = 0.75 ;
+			prob_visit_htn_v3 = 0.85 ;
+			prob_visit_htn_v4 = 0.90 ;
+			prob_visit_htn_v5 = 0.95 ;
+		end; 
+		if htn_retention_patt = 2 then do;
+			prob_visit_htn_v1 = 0.70 ;
+			prob_visit_htn_v2 = 0.80 ;
+			prob_visit_htn_v3 = 0.90 ;
+			prob_visit_htn_v4 = 0.95 ;
+			prob_visit_htn_v5 = 0.95 ;
+		end; 
+		if htn_retention_patt = 3 then do;
+			prob_visit_htn_v1 = 0.75 ;
+			prob_visit_htn_v2 = 0.85 ;
+			prob_visit_htn_v3 = 0.95 ;
+			prob_visit_htn_v4 = 0.95 ;
+			prob_visit_htn_v5 = 0.95 ;
+		end; 
+
+		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
+		interval_visit_hypertension=0.5;
+
+		* integration of hiv and hypertension visits;
+		integration = 1;
+
+		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
+		%sample_uniform(prob_intensify_1_2, 0.25 0.30 0.35); 
+		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
+		%sample_uniform(prob_intensify_2_3, 0.02 0.03 0.04);
+
+		* cost of hypertension interventions;
+		cost_htn_link_voucher = 0;
+		cost_htn_screen_comm = 0.003;
+	end;
+
+	if option = 4 then do;
+		** CHV Community Screening with voucher;
+		first_comm_test = 2024;
+		* prob testing in commmunity;
+		%sample_uniform(prob_test_sbp_comm, 0.75 0.80 0.85);
+		* prob link from community testing to clinic;
+		%sample_uniform(prob_htn_link, 0.90 0.95 1);
+		* comm test interval;
+		comm_test_interval = 1;
+		* comm test age (e.g. all adults vs targeted to >=40);
+		comm_test_age = 40;
+
+		*relative risk of BP testing at HIV visit if out of hypertension care;
+		rr_test_sbp_hiv =10;
+
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
+		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_imm_htn_tx_s2, 0.9 0.95 1);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
+		%sample_uniform(prob_start_htn_tx_s1, 0.4 0.5 0.6);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_start_htn_tx_s2, 0.95 0.975 1);
+		* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
+		%sample_uniform(prob_restart_htn_tx_s1, 0.9 0.95 1); 
+		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
+		%sample_uniform(prob_restart_htn_tx_s2, 0.95 0.975 1);
+
+		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
+		%sample_uniform(htn_retention_patt, 1 2 3);
+		if htn_retention_patt = 1 then do;
+			prob_visit_htn_v1 = 0.65 ;
+			prob_visit_htn_v2 = 0.75 ;
+			prob_visit_htn_v3 = 0.85 ;
+			prob_visit_htn_v4 = 0.90 ;
+			prob_visit_htn_v5 = 0.95 ;
+		end; 
+		if htn_retention_patt = 2 then do;
+			prob_visit_htn_v1 = 0.70 ;
+			prob_visit_htn_v2 = 0.80 ;
+			prob_visit_htn_v3 = 0.90 ;
+			prob_visit_htn_v4 = 0.95 ;
+			prob_visit_htn_v5 = 0.95 ;
+		end; 
+		if htn_retention_patt = 3 then do;
+			prob_visit_htn_v1 = 0.75 ;
+			prob_visit_htn_v2 = 0.85 ;
+			prob_visit_htn_v3 = 0.95 ;
+			prob_visit_htn_v4 = 0.95 ;
+			prob_visit_htn_v5 = 0.95 ;
+		end; 
+
+		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
+		interval_visit_hypertension=0.5;
+
+		* integration of hiv and hypertension visits;
+		integration = 1;
+
+		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
+		%sample_uniform(prob_intensify_1_2, 0.25 0.30 0.35); 
+		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
+		%sample_uniform(prob_intensify_2_3, 0.02 0.03 0.04);
+
+		* cost of hypertension interventions;
+		cost_htn_link_voucher = 0.005;
+		cost_htn_screen_comm = 0.003;
+	end;
+
+	if option = 5 then do; * PERFECT IMPLEMENTATION;
+		** CHV Community Screening with voucher;
+		first_comm_test = 2024;
+		* prob testing in commmunity;
+		prob_test_sbp_comm = 1;
+		* prob link from community testing to clinic;
+		prob_htn_link = 1;
+		* comm test interval;
+		comm_test_interval = 1;
+		* comm test age (e.g. all adults vs targeted to >=40);
+		comm_test_age = 40;
+
+		*relative risk of BP testing at HIV visit if out of hypertension care;
+		rr_test_sbp_hiv =100;
+
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
+		prob_imm_htn_tx_s1 = 1; 
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
+		prob_imm_htn_tx_s2 = 1;
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
+		prob_start_htn_tx_s1 = 1;
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
+		prob_start_htn_tx_s2 = 1;
+		* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
+		prob_restart_htn_tx_s1 = 1; 
+		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
+		prob_restart_htn_tx_s2 = 1;
+
+		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
+		
+			prob_visit_htn_v1 = 1 ;
+			prob_visit_htn_v2 = 1 ;
+			prob_visit_htn_v3 = 1 ;
+			prob_visit_htn_v4 = 1 ;
+			prob_visit_htn_v5 = 1 ;
+		
+
+		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
+		interval_visit_hypertension=0.5;
+
+		* integration of hiv and hypertension visits;
+		integration = 1;
+
+		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
+		prob_intensify_1_2 = 1; 
+		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
+		prob_intensify_2_3 = 1;
+
+		* hard_reach;
+		hard_reach_htn = 0;
+
+		* cost of hypertension interventions;
+		cost_htn_link_voucher = 0.005;
+		cost_htn_screen_comm = 0.003;
+	end;
+	
+end;
+
+
+
+END   */
 
 
 
@@ -13626,7 +13902,7 @@ if dead ne 1 then do;
 	end;
 end; * end if dead ne 1 statement;
 
-end; * end if dead=0 and death = . and dead_ ne 1 statement	
+end; * end if dead=0 and death = . and dead_ ne 1 statement	;
 
 
 * time known to have been virally suppressed at last vlm;
@@ -14281,6 +14557,8 @@ end;
 if tested=1 then ever_tested=1;
 
 if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from caldate{t} to caldate_never_dot because caldate is missing for people who died in the previous time step JAS Jul23;
+
+* HYPERTENSION;
 	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  visit_hypertension=.; sbp_m=.;
 	dx_htn=. ; on_tx_htn =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
 	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.; prior_ihd =.; prior_cvd =.; prior_cva =.;
@@ -20641,8 +20919,36 @@ run;
 
 */
 
+/*
 
+proc freq; tables cald hiv ; where death=.; run;
 
+proc print; 
+var option caldate&j dead dcause sbp visit_hypertension htn_visit_count sbp_m deintensify_anti_hyp_this_per on_tx_htn sbp_last_start_anti_hyp visit_hypertension_tm1 deintensify_anti_hyp_tm1 previous_anti_hyp ever_on_anti_hyp htn_visit_count  ;
+where htn_over_dx = 1 and ever_on_anti_hyp = 1 ;  
+
+run;
+
+proc print; 
+var option caldate&j prob_htn_link prob_start_htn_tx_s2  ;
+run;
+
+proc print; 
+var option caldate&j death age sbp sbp_comm_m sbp_m sbp_m_tm1 most_recent_sbp_m last_bp_ge140 sbp_last_start_anti_hyp max_sbp tested_bp dx_htn htn_lifestyle_counsel htn_lifestyle_counsel_tm1 visit_hypertension start_anti_hyp_this_per on_tx_htn previous_anti_hyp ever_on_anti_hyp htn_visit_count  ;
+where sbp >=160 and caldate&j >= 2024 ;  
+run;
+
+proc print; 
+var caldate&j age sbp hiv ihd_this_per ihd_severity cva_this_per cva_severity prior_cvd htn_cost_cvd cvd_death_risk xcvd dcause dead live_daly live_ddaly dead_daly;
+where hiv = 1 and age >=40 ;
+run;
+
+hiv 
+ihd_this_per severity_ihd_this_per cva_this_per severity_cva_this_per cvd_death_risk
+visit dx_htn visit_hypertension tested_bp on_tx_htn hard_reach symp_hypertension
+proc freq; tables onartvisit0; where onart=1 and death=.; run;
+
+*/
 
 
 
@@ -21954,7 +22260,8 @@ non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e
 
 prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
 prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
-prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 
+prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
+prob_visit_htn_lifestyle
 
 prob_intensify_1_2 prob_intensify_2_3
 rr_cvd_tx rr_cvd_tx_effective rr_cost_lowqual_cvdcare												  
@@ -23262,12 +23569,62 @@ data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,2);
 
 
-			
-														 
+/* 
 
-			
-														 
+										  
+*** RUN PROGRAM; 
+															   
+*   Run from caldate1 to intervention year;
+%run_update_r1(&caldate1,&year_interv-0.25,0);												  
 
+*    Save dataset at this point;
+data a ;  set r1 ;
+										  
+
+*    Option 1 - repetition 1;
+data r1 ; set a ;	
+%run_update_r1(&year_interv,&year_interv+50,1);
+*    Option 1 - repetition 2; 
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,1);						  
+*    Option 1 - repetition 3;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,1);
+					  
+
+
+*    Option 2 - repetition 1;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,2);				  
+*    Option 2 - repetition 2;	  
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,2);											  
+*    Option 2 - repetition 3;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,2);
+
+*    Option 3 - repetition 1;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,3);				  
+*    Option 3 - repetition 2;	   
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,3);											 
+*    Option 3 - repetition 3;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,3);
+
+
+*    Option 4 - repetition 1;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,4);				  
+*    Option 4 - repetition 2;	   
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,4);											 
+*    Option 4 - repetition 3;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,4);		
+
+*/
 			
 
 
@@ -23297,6 +23654,20 @@ put
 * libname b '/home/rmjllob/Scratch/';
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
+
+
+
+data x; set cum_l1;
+
+* file "/home/rmjlxxx/Scratch/_output_base_28_05_21_&dataset_id";  
+* file "C:\Users\sf124046\Box\sapphire_modelling\synthesis\_output_base_08_09_21_&dataset_id";
+
+put   
+ 
+libname b "&outputdir/"; 
+*libname b 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
+
+
 
 */
 
@@ -24131,7 +24502,8 @@ non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e
 
 prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
 prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
-prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 
+prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
+prob_visit_htn_lifestyle
 
 prob_intensify_1_2 prob_intensify_2_3
 rr_cvd_tx rr_cvd_tx_effective rr_cost_lowqual_cvdcare
