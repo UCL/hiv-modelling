@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_22Sep2026; 
+set a.mm_28Sep26; 
 if run=. then delete; 
 
 proc sort;
@@ -299,6 +299,7 @@ s_alive = s_alive_m + s_alive_w ;
 
 * p_mm_prog_visit;				p_mm_prog_visit = s_mm_prog_visit /s_alive1564mm;
 
+proc print;var p_mm_prog_visit s_mm_prog_visit s_alive1564mm;run;
 
 keep run option cald 
 n_alive_m			 n_alive_w			n_alive				n_mm				p_mm		
@@ -1005,7 +1006,7 @@ sex_age_mixing_matrix_w	inc_risk_newp_mm;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_MM22Sep26;;
+data a.wide_MM28Sep26;;
 merge   wide_outputs  wide_par ;  
 by run;run;
 

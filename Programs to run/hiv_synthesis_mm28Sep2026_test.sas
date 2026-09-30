@@ -11,7 +11,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 1000 ; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -2290,7 +2290,7 @@ if gender=1 and curr_mobile_tm1 ne 1 and adc ne 1 then do; u=rand('uniform');
 	if 18 <= age < 36 and u < prob_mobile1835_ then curr_mobile=1; 
 	if 36 <= age < 60 and u < prob_mobile3660_ then curr_mobile=1;
 	if age >=60 and u < prob_mobile60pl then curr_mobile=1;
-
+curr_mobile=1;
 	if curr_mobile=1 and u < mm_hardreach and hardreach_updated ne 1 then do;
 		hardreach_updated=1;
 		if hard_reach ne 1 then do;
@@ -13976,7 +13976,6 @@ if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from cald
 	tested_circ=.;tested_anc_prevdiag=.;
 	ever_hiv1_prep_any=.; ever_hiv1_prep_oral=.; visit_prep_oral=.;  ever_stopped_prep_oral_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
 	prep_cab_start=.; prep_len_start=.; prep_oral_start=.;  prep_vr_start=.;  pop_wide_tld_as_art=.;
-	curr_mobile=.;
 end;
 
 
@@ -19967,7 +19966,7 @@ run;
 */
 
 
-
+proc print;var caldate&j age curr_mobile alive1564mm mm_prog_visit;where gender=1 and age ge 15;run; 
 
 
 
