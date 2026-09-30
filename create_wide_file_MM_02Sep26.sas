@@ -23,7 +23,7 @@ sf=sf_2025;
 keep run sf sf_2025;
 proc sort; by run;run;
 
-
+*NEED OUTPUTS FOR BALANCE GRAPHSL
 data y; 
 merge a sf;
 by run ;
@@ -327,6 +327,8 @@ proc sort data=y;by run option;run;
 
 
 ***SCROLL DOWN TO PAST THE GRAPHS TO GENERATE WIDE DATASET;
+
+***CHECK BALANCE PRE AND POST 2015;
 
 
 options nomprint;
