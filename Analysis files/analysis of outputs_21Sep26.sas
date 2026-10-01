@@ -6,6 +6,9 @@ OUTPUTS;
 
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\PACE2\";
 
+data a; 
+set a.wide_pace_24_09_26; 
+run;
 
 ***LOOK AT STRATFYING BY SW_MATRIX to see IF THAT LOWERS PREVALENCE;
 
@@ -19,27 +22,25 @@ proc means n p50 mean p5 p95;var p_fsw_newp0__25;where sw_trans_matrix=1;run;
 proc means n p50 mean p5 p95;var p_fsw_newp0__25;where sw_trans_matrix=2;run;
 proc means n p50 mean p5 p95;var p_fsw_newp0__25;where sw_trans_matrix=3;run;
 
-data a; 
-set a.wide_pace_21_09_26; 
-run;
+
 
 ***Compare SW and ESW in 2026;
 
 proc means n p50 mean p5 p95;var
-n_sw_1549__25		prop_w_1549_sw_25 		prop_w_ever_sw_25		act_dur_sw_25 
-p_sw_age1519__25	p_sw_age2024__25		p_sw_age2529__25 		p_sw_age3039__25 p_sw_age40pl__25  
+n_sw_1549__25		 prop_w_1549_sw_25 		prop_w_ever_sw_25		act_dur_sw_25 
+p_sw_age1519__25	 p_sw_age2024__25		p_sw_age2529__25 		p_sw_age3039__25 p_sw_age40pl__25  
 p_age_deb_sw1519__25 p_age_deb_sw2029__25	p_age_deb_sw3039__25	p_age_deb_sw40pl__25
-p_totdur_0to3_sw_25  p_totdur_3to5_sw_25     p_totdur_6to9_sw_25  	p_totdur_10to19_sw_25 
-p_fsw_newp0__25 prop_sw_onprep_25
+p_totdur_0to3_sw_25  p_totdur_3to5_sw_25    p_totdur_6to9_sw_25  	p_totdur_10to19_sw_25 
+p_fsw_newp0__25 	 av_sw_newp_25			prop_sw_onprep_25
 p_sti_sw_25			
-incidence_sw_25		prevalence_sw_25		p_tested_past_year_sw_25
-p_diag_sw_25		p_onart_diag_sw_25		p_onart_vl1000_sw_25 p_sw_prog_vis_25
+incidence_sw_25		 prevalence_sw_25		p_tested_past_year_sw_25
+p_diag_sw_25		 p_onart_diag_sw_25		p_onart_vl1000_sw_25 p_sw_prog_vis_25
 
 n_esw_1549__25			prop_w_1549_esw_25 		prop_w_ever_esw_25		act_dur_esw_25 
 p_esw_age1519__25		p_esw_age2024__25		p_esw_age2529__25 		p_esw_age3039__25 p_esw_age40pl__25  
 p_age_deb_esw1519__25 	p_age_deb_esw2029__25	p_age_deb_esw3039__25	p_age_deb_esw40pl__25
 p_totdur_0to3_esw_25  	p_totdur_3to5_esw_25    p_totdur_6to9_esw_25  	p_totdur_10to19_esw_25 
-p_esw_newp0__25 		prop_esw_onprep_25
+p_esw_newp0__25 		av_Esw_newp_25				prop_esw_onprep_25
 p_sti_esw_25
 incidence_esw_25		prevalence_esw_25		p_tested_past_year_esw_25
 p_diag_esw_25			p_onart_diag_esw_25		p_onart_vl1000_esw_25 	p_esw_prog_vis_25

@@ -669,7 +669,7 @@ newp_seed = 7;
 * base_rate_stop_sexwork ;	%sample(base_rate_stop_sexwork, 0.005 0.010 0.015, 0.40 0.40 0.20);
 
 							* dependent_on_time_step_length ;
-* sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.10 0.80 0.10);
+* sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.10 0.50 0.40);
 
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
@@ -729,10 +729,10 @@ end;
 
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
 * effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.05 0.10 0.15);
-* effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
+* effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50);*lower number means less interruption;
 * effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.20 0.35 0.50);
 * effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
-* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.05 0.10);
+* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.10 0.20);
 * effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.10 0.20);
 
 ***These factors increase the impact of the low intensity SW program by sampled fold factor;
@@ -1290,13 +1290,13 @@ end;
 if esw_trans_matrix=1 then do;
 p_esw_init_newp_g1=0.10; p_esw_init_newp_g2=0.89; p_esw_init_newp_g3= 0.01; 
 
-esw_newp_lev_1_1 = 0.75 ;  esw_newp_lev_1_2 = 0.24 ; esw_newp_lev_1_3 = 0.01  ; 
+esw_newp_lev_1_1 = 0.85 ;  esw_newp_lev_1_2 = 0.14 ; esw_newp_lev_1_3 = 0.01  ; 
 esw_newp_lev_2_1 = 0.005 ; esw_newp_lev_2_2 = 0.99 ;  esw_newp_lev_2_3 = 0.005  ;
 esw_newp_lev_3_1 = 0.01 ; esw_newp_lev_3_2 = 0.24 ; esw_newp_lev_3_3 = 0.75  ; 
 end;
 
 if esw_trans_matrix=2 then do;
-p_esw_init_newp_g1=0.10; p_esw_init_newp_g2=0.89; p_esw_init_newp_g3= 0.01; 
+p_esw_init_newp_g1=0.20; p_esw_init_newp_g2=0.79; p_esw_init_newp_g3= 0.01; 
 
 esw_newp_lev_1_1 = 0.50 ; esw_newp_lev_1_2 = 0.49 ; esw_newp_lev_1_3 = 0.01  ; 
 esw_newp_lev_2_1 = 0.005; esw_newp_lev_2_2 = 0.975 ; esw_newp_lev_2_3 = 0.02  ;
@@ -1960,8 +1960,8 @@ if esw = 1 then do;
 	a=rand('uniform');if a < 0.98 then episodes_esw=1;if a >= 0.98 then episodes_esw=2;
 
 	e=rand('uniform');
-	if e < 0.10 then newp=0;
-	else if 0.10 <= e < 0.90 then do; 
+	if e < 0.15 then newp=0;
+	else if 0.15 <= e < 0.90 then do; 
 		q=rand('uniform');
 		if         q < 0.70 then newp=1;
 		if 0.70 <= q < 0.95 then newp=2;
@@ -1969,7 +1969,7 @@ if esw = 1 then do;
 	end;
 	else do;
 		select;
-			when (0.90 <= e < 1.00) do; newp_lower = 4; newp_higher = 5; end;
+			when (0.95 <= e < 1.00) do; newp_lower = 4; newp_higher = 5; end;
 			otherwise xxx=1;
 		end;
 		* choose uniformly between newp_lower and newp_higher;
@@ -4622,7 +4622,7 @@ if esw = 1 then do;
 	end;
 	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do;
 		q=rand('uniform'); 
-		if q < 0.85 then newp=4; if 0.85 <= q then newp=5; 
+		if q < 0.95 then newp=4; if 0.95 <= q then newp=5; 
 	end;
 end;
 
