@@ -725,8 +725,15 @@ end;
 * prob_mobile60pl;			%sample_uniform(prob_mobile60pl,  0.01 0.02);
 * prob_stop_mobile;			%sample_uniform(prob_stop_mobile, 0.05 0.10);
 * inc_risk_mobile;			%sample_uniform(inc_risk_mobile, 100 200 300);*change in sexual behaviour due to being mobile;
+* inc_risk_newp_mm;			%sample_uniform(inc_risk_newp_mm, 0.70 0.8 0.9 1);*ended up not using this but instead directly reducing newp in mm, see;
+
 * mm_hardreach;				%sample_uniform(mm_hardreach, 0.30 0.50);
 
+
+* mm_program;				mm_program=1;
+* date_mm_prog_intro;		date_mm_prog_intro = 2026;
+* rate_engage_mm_program;	%sample_uniform(rate_engage_mm_program, 0.05 0.10);
+* rate_disengage_mm_program;%sample_uniform(rate_disengage_mm_program, 0.02 0.04);
 
 * CIRCUMCISION;
 
@@ -1887,6 +1894,7 @@ eff_sw_higher_int = sw_higher_int;
 eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
 eff_rate_persist_sti=rate_persist_sti;
 sw_program_visit=0;
+mm_prog_visit=0;
 
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
 
@@ -2200,7 +2208,6 @@ array caldate{8} caldate&g-caldate&h; * calendar date 1980.00 , 1980.25, etc;
 t=&e;
 do until (t=&f);
 
-
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * AUTOMATIC UPDATING FROM T-1 to T;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -2307,8 +2314,6 @@ end;
 
 * OPTIONS TO IMPLEMENT FROM year_i onwards;
 
-* code in this section can differ from unified program due to specifying exactly what interventions / changes are running; 
-* I suggest that we just leave this shell in the core program as we are not running beyond year_i ;
 
 * INTERVENTIONS / CHANGES in year_interv ;
 
@@ -2336,28 +2341,27 @@ set_in_options=.;
 
 	*Option 2: scale up of oral PrEP, and hard to reach set to 0, intro of Cab;
 	*Compare to option 0;
-	if option = 2 then do;
+	if option = 2 then do; *Discuss how best to use mm_prep_sio - only for start, stop and pref paramters?;
+	
 	prep_parameters_sio=1 ;*sio=set in options;
 
 		prep_any_strategy=20;
 		date_prep_cab_intro=&year_interv;
 
-		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral/2 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
-		eff_rate_test_startprep_any = 0.07; 
-		eff_prob_prep_any_restart_choice = 0.07;
-		pref_prep_oral = 0.3;
-
-		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
-			hard_reach_due_to_mobile=0;
-			hard_reach=0;
-		end;
+		if mm_prog_vis=1 then do;
+			eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral/2 ;		
+			eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
+			eff_rate_test_startprep_any = 0.07; 
+			eff_prob_prep_any_restart_choice = 0.07;
+			pref_prep_oral = 0.3;
 		
-		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_oral_sio = pref_prep_oral;
+			rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
+			prob_prep_oral_b_sio = eff_prob_prep_oral_b;
+			rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
+			prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
+			pref_prep_oral_sio = pref_prep_oral;
+
+		end;
 
 	end;
 
@@ -2365,56 +2369,49 @@ set_in_options=.;
 	*Option 3: scale up of oral PrEP, and hard to reach set to 0, intro of Len;
 	*Compare to option 0;
 	if option = 3 then do;
+	
 	prep_parameters_sio=1 ;*sio=set in options;
 
 		prep_any_strategy=20;
 		date_prep_len_intro=&year_interv;
 
+	if mm_prog_vis=1 then do;
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral/2 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
 		eff_rate_test_startprep_any = 0.07; 
 		eff_prob_prep_any_restart_choice = 0.07;
 		pref_prep_oral = 0.3;
 
-		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
-			hard_reach_due_to_mobile=0;
-			hard_reach=0;
-		end;
-
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
-
+	end;
 	end;
 
 	*Option 4: scale up of Cab, and hard to reach set to 0;
 	*Compare to option 0;
 	if option = 4  then do;
-	prep_parameters_sio=1 ;
+
+		prep_parameters_sio=1 ;
 
 		prep_any_strategy=20;
+		date_prep_cab_intro=&year_interv;
 
 		pref_prep_oral = 0.3;
+		
+		u=rand('uniform');
+		if caldate_never_dot = &year_interv then do;
+			pref_prep_cab=0.4;*start with everyone on cab (as this is higher than oral pref);
+			if  u< 0.4 then pref_prep_cab = 0.40;*25% still prefer oral;
+		end;	
 
-		date_prep_cab_intro=&year_interv;	
-
+	if mm_prog_vis=1 then do;
 		eff_rate_choose_stop_prep_cab = rate_choose_stop_prep_cab / 3 ;		
 		eff_prob_prep_cab_b = prob_prep_cab_b + 0.1;
 		eff_rate_test_startprep_any = 0.10; 
 		eff_prob_prep_any_restart_choice = 0.10;
-
-		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
-			hard_reach_due_to_mobile=0;
-			hard_reach=0;
-		end;
-
-		u=rand('uniform');
-		if caldate_never_dot = &year_interv then do;
-			pref_prep_cab=0.4;*start with everyone on cab (as this is higher than oral pref);
-			if  u< 0.4 then pref_prep_cab = 0.25;*25% still prefer oral;
-		end;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
@@ -2427,21 +2424,28 @@ set_in_options=.;
 		pref_prep_cab_sio = pref_prep_cab;
 
 	end;
+	end;
 
 	*Option 5: scale up of oral PrEP and Cab, and hard to reach set to 0;
 	*Compare to option 0;
 
 	if option = 5 then do;
-	prep_parameters_sio=1 ;
+
+		prep_parameters_sio=1 ;
 
 		prep_any_strategy=20;
+		date_prep_cab_intro=&year_interv;
+		pref_prep_oral = 0.3;	
 
+		u=rand('uniform');
+		if caldate_never_dot = &year_interv then do;
+			pref_prep_cab=0.4;*start with everyone on cab (as this is higher than oral pref);
+			if  u< 0.4 then pref_prep_cab = 0.25;*40% still prefer oral;
+		end;	
+
+	if mm_prog_vis=1 then do;
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral/2 ;		
-		eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
-
-		pref_prep_oral = 0.3;
-
-		date_prep_cab_intro=&year_interv;	
+		eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;	
 
 		eff_rate_choose_stop_prep_cab = rate_choose_stop_prep_cab / 3 ;		
 		eff_prob_prep_cab_b = prob_prep_cab_b + 0.1;
@@ -2449,17 +2453,6 @@ set_in_options=.;
 		eff_rate_test_startprep_any = 0.15; 
 		eff_prob_prep_any_restart_choice = 0.15;
 
-		u=rand('uniform');
-		if caldate_never_dot = &year_interv then do;
-			pref_prep_cab=0.4;*start with everyone on cab (as this is higher than oral pref);
-			if  u< 0.4 then pref_prep_cab = 0.25;*25% still prefer oral;
-		end;
-
-		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
-			hard_reach_due_to_mobile=0;
-			hard_reach=0;
-		end;
-		
 		prep_oral_adh_sio = 0.9;*this is to stop oral prep going down over time which seems to happen when both inj and oral are available;
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
@@ -2473,33 +2466,30 @@ set_in_options=.;
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_cab_sio = pref_prep_cab;
 	end;
+	end;
 
 	*Option 6: scale up of Len, and hard to reach set to 0;
 	*Compare to option 1;
 	if option = 6 then do;
+	
 	prep_parameters_sio=1 ;
 
 		prep_any_strategy=20;
+		date_prep_len_intro=&year_interv;
 
 		pref_prep_oral = 0.3;
-
-		date_prep_len_intro=&year_interv;
-	
-		eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len / 3 ;		
-		eff_prob_prep_len_b = prob_prep_len_b + 0.1;
-		eff_rate_test_startprep_any = 0.15; 
-		eff_prob_prep_any_restart_choice = 0.15;												 
-
-		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
-			hard_reach_due_to_mobile=0;
-			hard_reach=0;
-		end;
 
 		u=rand('uniform');
 		if caldate_never_dot = &year_interv then do;
 			pref_prep_len=0.4;*start with everyone on len (as this is higher than oral pref);
 			if  u< 0.4 then pref_prep_len = 0.25;*25% still prefer oral;
 		end;
+
+	if mm_prog_vis=1 then do;
+		eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len / 3 ;		
+		eff_prob_prep_len_b = prob_prep_len_b + 0.1;
+		eff_rate_test_startprep_any = 0.15; 
+		eff_prob_prep_any_restart_choice = 0.15;												 
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
@@ -2511,38 +2501,33 @@ set_in_options=.;
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_len_sio = pref_prep_len;
 	end;
-
+	end;
 
 	*Option 7: scale up of oral PrEP and Len, and hard to reach set to 0;
 	*Compare to option 1;
 	if option = 7 then do;
+	
 	prep_parameters_sio=1 ;
 
 		prep_any_strategy=20;
+		date_prep_len_intro=&year_interv;
+		pref_prep_oral = 0.3;
 
+		u=rand('uniform');
+		if caldate_never_dot = &year_interv then do;
+			pref_prep_len=0.4;*start with everyone on len (as this is higher than oral pref);
+			if  u< 0.4 then pref_prep_len = 0.25;*40% still prefer oral;
+		end;	
+	
+
+	if mm_prog_vis=1 then do;
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral/2 ;		
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
-
-		pref_prep_oral = 0.3;
-										
-		date_prep_len_intro=&year_interv;
 
 		eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len / 3 ;		*match to cab;
 		eff_prob_prep_len_b = prob_prep_len_b + 0.1;
 		eff_rate_test_startprep_any = 0.15; 
 		eff_prob_prep_any_restart_choice = 0.15;
-		
-		u=rand('uniform');
-		if caldate_never_dot = &year_interv then do;
-			pref_prep_len=0.4;*start with everyone on len (as this is higher than oral pref);
-			if  u< 0.4 then pref_prep_len = 0.25;*25% still prefer oral;
-		end;
-
-
-		if curr_mobile=1 and hard_reach_due_to_mobile=1 then do;
-			hard_reach_due_to_mobile=0;
-			hard_reach=0;
-		end;
 		
 		prep_oral_adh_sio = 0.9;
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
@@ -2556,6 +2541,7 @@ set_in_options=.;
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_len_sio = pref_prep_len;
+	end;
 	end;
 
  
@@ -3038,6 +3024,44 @@ end;
 
 * if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
 * reg_option 107 is used for people who seroconverted on prep_inj / cab ;
+
+
+
+***MOBILE MEN program;
+
+***PREP parameters are set within the options code but reset here when they stop visiting the program;
+
+if caldate{t} = date_mm_prog_intro then eff_mm_program=mm_program;
+
+if eff_mm_program=1 and curr_mobile=1 then do;
+	if mm_prog_visit=0 then do; a=rand('uniform');
+		if a < rate_engage_mm_program then do;
+				mm_prog_visit=1;
+				date_1st_mm_prog_vis=caldate{t};*this refers to first date of the current episode;
+
+				if hard_reach_due_to_mobile=1 then do;
+					hard_reach_due_to_mobile=0;
+					hard_reach=0;
+				end;
+		end;
+	end;
+end;
+
+else if mm_prog_visit=1 or curr_mobile ne 1 then do; e=rand('uniform');
+	if (e < rate_disengage_mm_program) then do; *those on len dont need a visit every 3 months so dont want to cost the visit - need to manipulate this in the costs eg if len=1 then mm_prog_costs/2;
+		mm_prog_visit=0 ; 
+		date_last_mm_prog_vis=caldate{t};
+
+		eff_rate_test_startprep_any=0;*reset prep parameters so if no visit, no prep;
+		eff_rate_choose_stop_prep_oral=1;			
+		eff_rate_choose_stop_prep_cab=1;	
+		eff_rate_choose_stop_prep_len=1;		
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+
+	end;
+end;
+
+
 
 
 if caldate{t} = date_sw_prog_intro then eff_sw_program=sw_program;
@@ -3671,6 +3695,15 @@ if sbp_m ne . then most_recent_sbp_m = sbp_m;
 * SEXUAL BEHAVIOUR;
 
 rred_rc=1.0;
+
+***Mobile men - increasing newp given MM are at higher risk;
+
+***Trying instead to increase newp directly as this method only got to ~20% newp>0. Search for mobile men;
+/*
+*This increases ych_risk_beh_newp which is used to define rred_rc;
+xx=rand('uniform');
+if curr_mobile=1 and xx < 0.1 then ych_risk_beh_newp = ych_risk_beh_newp / inc_risk_newp_mm;
+*/
 
 * not * dependent_on_time_step_length ;
 if 1995 < caldate{t} <= 2000 then rred_rc = ych_risk_beh_newp**(caldate{t}-1995);
@@ -4520,14 +4553,27 @@ if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
 	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
 end;
 
-
-
 * Reducing newp by 50% if condom incr =1;
 if caldate{t} = &year_interv and condom_change_year_i = 1 then do;
 	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
 end;
 
 
+* Mobile Men: Assume higher newp in subset of population;
+xx=rand('uniform');
+
+/*
+if change_newp_mm = .  and xx < 0.8 then do;
+		newp = newp + 1;
+		change_newp_mm=1;
+end;
+*/
+
+if curr_mobile=1 and newp=0 then do;
+	if 0.30 < xx < 0.90 then newp = newp + 1;
+	if 0.90 <= xx < 0.97 then newp = newp + 2;
+	if xx >= 0.97 then newp = newp + 3;
+end;
 
 
 e=rand('uniform');
@@ -13923,6 +13969,7 @@ if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from cald
 	tested_circ=.;tested_anc_prevdiag=.;
 	ever_hiv1_prep_any=.; ever_hiv1_prep_oral=.; visit_prep_oral=.;  ever_stopped_prep_oral_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
 	prep_cab_start=.; prep_len_start=.; prep_oral_start=.;  prep_vr_start=.;  pop_wide_tld_as_art=.;
+	curr_mobile=.;
 end;
 
 
@@ -14046,7 +14093,7 @@ end;
 
 ***MOBILE MEN;
 alive1549mm=0;alive1564mm=0;alive1564nmm=0;alive1517mm=0;alive1519mm=0;alive2024mm=0;alive2529mm=0;alive3034mm=0;
-alive3540mm=0;alive4044mm=0;alive4549mm=0;alive5054mm=0;alive5560mm=0;alive6064mm=0;
+alive3540mm=0;alive4044mm=0;alive4549mm=0;alive5054mm=0;alive5560mm=0;alive6064mm=0;alive1584mm=0;
 
 if curr_mobile=1 then do;
 	if 15 <= age < 50 then alive1549mm=1;
@@ -14062,6 +14109,8 @@ if curr_mobile=1 then do;
 	if 50 <= age < 55 then alive5054mm=1;
 	if 55 <= age < 60 then alive5560mm=1;
 	if 60 <= age < 65 then alive6064mm=1;
+
+	if 15 <= age < 85 then alive1584mm=1;
 end;
 
 if curr_mobile ne 1 and gender=1 and 15 <= age < 65 then alive1564nmm=1;
@@ -14274,10 +14323,14 @@ end;
 nnewp_l4p=0;
 nnewp_l4p=(newp+newp_tm1+newp_tm2+newp_tm3);
 
+
 *MOBILE MEN;
-newp_ge1_mm=0;if curr_mobile=1 then do;
+newp_ge1_mm=0; newp_mm=0;
+
+if curr_mobile=1 then do;
 	if newp >= 1 then newp_ge1_mm=1; 
 	if newp=. then newp_ge1_mm=.;
+	newp_mm=newp;
 end;
 
 
@@ -16001,7 +16054,7 @@ if pwid=1 then do;
 end;
 
 *** MOBILE MEN;
-if curr_mobile=1 then do;
+if curr_mobile=1 and 15 le age le 65 then do;
 	vl1000_art_mm 		= vl1000_art;
 
 	onart_iicu_mm		= onart_iicu;
@@ -19748,7 +19801,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_alive1549mm + alive1549mm; s_alive1564mm + alive1564mm; s_alive1517mm + alive1517mm; s_alive1519mm + alive1519mm;
 	s_alive2024mm + alive2024mm; s_alive2529mm + alive2529mm; s_alive3034mm + alive3034mm; s_alive3539mm + alive3539mm;
 	s_alive4044mm + alive4044mm; s_alive4549mm + alive4549mm; s_alive5054mm + alive5054mm; s_alive5559mm + alive5559mm; 
-	s_alive6064mm + alive6064mm; 
+	s_alive6064mm + alive6064mm; s_alive1584mm + alive1584mm; 
 
 	s_alive1564nmm + alive1564nmm;   s_hiv_mm + hiv_mm;			
 	s_hiv_nmm + hiv_nmm; 			  s_hiv1564mm + hiv1564mm; 		   s_hiv1549mm + hiv1549mm;			s_hiv1564nmm + hiv1564nmm;
@@ -19763,8 +19816,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_any_nmm_1564 + prep_any_nmm_1564;  						   s_prep_oral_mm + prep_oral_mm;	s_prep_cab_mm + prep_cab_mm;
 	s_prep_len_mm + prep_len_mm; 	  s_hard_reach_due_to_mobile + hard_reach_due_to_mobile;			s_primary1549mm + primary1549mm;
 	s_primary1564mm + primary1564mm;  s_vl1000_mm	+ vl1000_mm;	   s_vg1000_mm + vg1000_mm;			s_tested_mm + tested_mm;	
-	s_newp_ge1_mm + newp_ge1_mm;
-
+	s_newp_ge1_mm + newp_ge1_mm;	s_newp_mm + newp_mm;
+	s_mm_prog_visit + mm_prog_visit;
 end;
 
 
@@ -21160,7 +21213,7 @@ prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd
 
 discount
 
-inc_risk_mobile
+inc_risk_mobile	inc_risk_newp_mm	mm_program		rate_engage_mm_program		rate_disengage_mm_program
 
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
@@ -21209,7 +21262,7 @@ s_covid
 /* mobile men */
 
 	s_alive1549mm   s_alive1564mm	s_alive1517mm  s_alive1519mm 	s_alive2024mm 	s_alive2529mm  s_alive3034mm 
-	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm 
+	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm  s_alive1584mm
 	s_alive1564nmm    	  s_hiv_mm 			  s_hiv_nmm 		  	s_hiv1564mm 	
 	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
 	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
@@ -21217,7 +21270,7 @@ s_covid
 	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
 	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
 	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
-	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_newp_mm	s_mm_prog_visit
 
 
 /* used in abort statements */
@@ -22209,7 +22262,7 @@ s_covid
 /* mobile men */
 
 	s_alive1549mm   s_alive1564mm	s_alive1517mm  s_alive1519mm 	s_alive2024mm 	s_alive2529mm  s_alive3034mm 
-	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm 
+	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm  s_alive1584mm
 	s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
 	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
 	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
@@ -22217,7 +22270,7 @@ s_covid
 	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
 	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
 	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
-	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_newp_mm	s_mm_prog_visit
 
 /*supp material*/
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
@@ -23249,7 +23302,7 @@ prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd
 
 discount
 
-inc_risk_mobile
+inc_risk_mobile	inc_risk_newp_mm	mm_program	rate_engage_mm_program	rate_disengage_mm_program
 
 /*year_i interventions*/
 condom_change_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
@@ -23297,7 +23350,7 @@ s_covid
 /* mobile men */
 
 	s_alive1549mm   s_alive1564mm	s_alive1517mm  s_alive1519mm 	s_alive2024mm 	s_alive2529mm  s_alive3034mm 
-	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm 	 
+	s_alive3539mm 	s_alive4044mm 	s_alive4549mm  s_alive5054mm    s_alive5559mm 	s_alive6064mm  s_alive1584mm 
 	s_alive1564nmm    	s_hiv_mm 			s_hiv_nmm 		  		s_hiv1564mm 	
 	s_hiv1549mm 		  s_hiv1564nmm 		  s_vl1000_art_mm		s_onart_iicu_mm 	s_vl1000_art_iicu_mm	s_onart_gt6m_mm
 	s_vl1000_art_gt6m_mm  s_onart_gt6m_iicu_mm 						s_vl1000_art_gt6m_iicu_mm 			 		s_ever_tested_mm 
@@ -23305,7 +23358,7 @@ s_covid
 	s_onart_mm1564_  	  s_prep_any_ever_mm  s_elig_prep_any_mm_1564_					s_elig_prep_any_mm_1549_ 
 	s_elig_prep_any_nmm_1564_ 			      s_prep_any_mm_1564 	s_prep_any_mm_1549 	s_prep_any_nmm_1564 	s_prep_oral_mm 	
 	s_prep_cab_mm 		  s_prep_len_mm 	  s_hard_reach_due_to_mobile 				s_primary1549mm 		s_primary1564mm 
-	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		
+	s_vl1000_mm		   	  s_vg1000_mm 	      s_tested_mm 			s_newp_ge1_mm 		s_newp_mm	s_mm_prog_visit
 
 /* used in abort statements */
 

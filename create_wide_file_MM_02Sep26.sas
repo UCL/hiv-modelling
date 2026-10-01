@@ -299,6 +299,17 @@ s_alive = s_alive_m + s_alive_w ;
 
 * p_mm_prog_visit;				if s_alive1564mm then p_mm_prog_visit = s_mm_prog_visit /s_alive1564mm;
 
+*to check balance given we've added newp to MM;
+logw15r = log(w15r+0.0001);
+logw25r = log(w25r+0.0001);
+logw35r = log(w35r+0.0001);
+logw45r = log(w45r+0.0001);
+logw55r = log(w55r+0.0001);
+logm15r = log(m15r+0.0001);
+logm25r = log(m25r+0.0001);
+logm35r = log(m35r+0.0001);
+logm45r = log(m45r+0.0001);
+logm55r = log(m55r+0.0001);
 
 keep run option cald 
 n_alive_m			 n_alive_w			n_alive				n_mm				p_mm		
@@ -320,7 +331,11 @@ n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_
 p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm			p_elig_onprep_cab 	p_elig_onprep_len	p_elig_onprep_oral
 p_elig_onprep_oral_mm	p_elig_onprep_cab_mm		p_elig_onprep_len_mm		p_elig_onprep_genmen
 inc_risk_mobile			sex_beh_trans_matrix_m		sex_beh_trans_matrix_w		sex_age_mixing_matrix_m			sex_age_mixing_matrix_w
-inc_risk_newp_mm	p_mm_prog_visit		rate_engage_mm_program	rate_disengage_mm_program				av_mm_newp;
+inc_risk_newp_mm	p_mm_prog_visit		rate_engage_mm_program	rate_disengage_mm_program				av_mm_newp
+
+logw15r	logw25r	logw35r	logw45r	logw55r logm15r	logm25r	logm35r	logm45r	logm55r
+
+;
 
 proc sort data=y;by run option;run;
 
@@ -341,7 +356,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 800;
+%let nfit = 136;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -377,6 +392,7 @@ n_prep_oral_mm		p_elig_onprep_cab	p_elig_onprep_len		p_elig_onprep_oral
 p_elig_onprep_oral_mm	p_elig_onprep_cab_mm	p_elig_onprep_len_mm           		p_elig_onprep_genmen
 p_elig_onprep_m	p_elig_onprep_w 	p_prep_any_ever_nmm	 	n_prep_oral_start	n_prep_cab_start	n_prep_len_start	
 n_stop_prep_oral_elig	n_stop_prep_cab_elig 	n_stop_prep_len_elig	
+logw15r	logw25r	logw35r	logw45r	logw55r logm15r	logm25r	logm35r	logm45r	logm55r
 ;
     /* Count number of variables */
     %let count = 0;
@@ -459,7 +475,7 @@ n_stop_prep_oral_elig	n_stop_prep_cab_elig 	n_stop_prep_len_elig
 /*-----------------------------------------*/
 %summary_all_options(options=0 1 2 3 4 5 6 7);
 
-
+proc freq data=d;table mean_logw15r_0;RUN;
 
 data d;
 set master_summary;
@@ -897,6 +913,59 @@ band    x=cald lower=p5_n_stop_prep_len_elig_5 	upper=p95_n_stop_prep_len_elig_5
 
 
 run;quit;
+
+ods rtf close;
+ods listing;
+run;
+
+
+***balance;
+ods graphics / reset imagefmt=jpeg height=5in width=7in; run;
+ods rtf file = 'C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\Loveleen\Synthesis model\Mobile Men\
+graphs_balance.doc' startpage=never; 
+
+
+proc sgplot data=d; Title    height=1.5 justify=center "mean_logw15r_0";
+xaxis label = 'Year' labelattrs=(size=12)  values = (1993 to 2045.5 by 2) valueattrs=(size=10);
+yaxis grid label = 'mean_logw15r_0' labelattrs=(size=12) values = (-1 to 1 by 0.5) valueattrs=(size=10);
+series  x=cald y=mean_logw15r_0/lineattrs = (color=black thickness = 2); run;
+proc sgplot data=d; Title    height=1.5 justify=center "mean_logw25r_0";
+xaxis label = 'Year' labelattrs=(size=12)  values = (1993 to 2045.5 by 2) valueattrs=(size=10);
+yaxis grid label = 'mean_logw25r_0' labelattrs=(size=12) values = (-1 to 1 by 0.5) valueattrs=(size=10);
+series  x=cald y=mean_logw25r_0/lineattrs = (color=black thickness = 2); run;
+proc sgplot data=d; Title    height=1.5 justify=center "mean_logw35r_0";
+xaxis label = 'Year' labelattrs=(size=12)  values = (1993 to 2045.5 by 2) valueattrs=(size=10);
+yaxis grid label = 'mean_logw35r_0' labelattrs=(size=12) values = (-1 to 1 by 0.5) valueattrs=(size=10);
+series  x=cald y=mean_logw35r_0/lineattrs = (color=black thickness = 2); run;
+proc sgplot data=d; Title    height=1.5 justify=center "mean_logw45r_0";
+xaxis label = 'Year' labelattrs=(size=12)  values = (1993 to 2045.5 by 2) valueattrs=(size=10);
+yaxis grid label = 'mean_logw45r_0' labelattrs=(size=12) values = (-1 to 1 by 0.5) valueattrs=(size=10);
+series  x=cald y=mean_logw45r_0/lineattrs = (color=black thickness = 2); run;
+proc sgplot data=d; Title    height=1.5 justify=center "mean_logw55r_0";
+xaxis label = 'Year' labelattrs=(size=12)  values = (1993 to 2045.5 by 2) valueattrs=(size=10);
+yaxis grid label = 'mean_logw55r_0' labelattrs=(size=12) values = (-1 to 1 by 0.5) valueattrs=(size=10);
+series  x=cald y=mean_logw55r_0/lineattrs = (color=black thickness = 2); run;
+
+proc sgplot data=d; Title    height=1.5 justify=center "mean_logm15r_0";
+xaxis label = 'Year' labelattrs=(size=12)  values = (1993 to 2045.5 by 2) valueattrs=(size=10);
+yaxis grid label = 'mean_logm15r_0' labelattrs=(size=12) values = (-1 to 1 by 0.5) valueattrs=(size=10);
+series  x=cald y=mean_logm15r_0/lineattrs = (color=black thickness = 2); run;
+proc sgplot data=d; Title    height=1.5 justify=center "mean_logm25r_0";
+xaxis label = 'Year' labelattrs=(size=12)  values = (1993 to 2045.5 by 2) valueattrs=(size=10);
+yaxis grid label = 'mean_logm25r_0' labelattrs=(size=12) values = (-1 to 1 by 0.5) valueattrs=(size=10);
+series  x=cald y=mean_logm25r_0/lineattrs = (color=black thickness = 2); run;
+proc sgplot data=d; Title    height=1.5 justify=center "mean_logm35r_0";
+xaxis label = 'Year' labelattrs=(size=12)  values = (1993 to 2045.5 by 2) valueattrs=(size=10);
+yaxis grid label = 'mean_logm35r_0' labelattrs=(size=12) values = (-1 to 1 by 0.5) valueattrs=(size=10);
+series  x=cald y=mean_logm35r_0/lineattrs = (color=black thickness = 2); run;
+proc sgplot data=d; Title    height=1.5 justify=center "mean_logm45r_0";
+xaxis label = 'Year' labelattrs=(size=12)  values = (1993 to 2045.5 by 2) valueattrs=(size=10);
+yaxis grid label = 'mean_logm45r_0' labelattrs=(size=12) values = (-1 to 1 by 0.5) valueattrs=(size=10);
+series  x=cald y=mean_logm45r_0/lineattrs = (color=black thickness = 2); run;
+proc sgplot data=d; Title    height=1.5 justify=center "mean_logm55r_0";
+xaxis label = 'Year' labelattrs=(size=12)  values = (1993 to 2045.5 by 2) valueattrs=(size=10);
+yaxis grid label = 'mean_logm55r_0' labelattrs=(size=12) values = (-1 to 1 by 0.5) valueattrs=(size=10);
+series  x=cald y=mean_logm55r_0/lineattrs = (color=black thickness = 2); run;
 
 
 ods rtf close;
