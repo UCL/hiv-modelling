@@ -1,6 +1,6 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run search2_002;
+* run search2_006;
 * Matt local machine input;
 libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026';
 %let tmpfilename = out;
@@ -3734,9 +3734,10 @@ select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to incl
 end; 
 
 if on_tx_htn >=1 then a_sbp = a_sbp / rr_sbp_inc_on_antihyp ; *probabilty of SBP increase is reduced if on antihypertensive;
-if caldate{t} > sbp_cal_yr then prob_sbp_increase = prob_sbp_increase + sbp_cal_eff ; * increase SBP rise in future years after designatd year (2015 based on last available GBD data);
+p_sbp_increase = prob_sbp_increase; *02oct2026 fix to create temp variable. this avoids resetting prob_sbp_increase each period after 2015;
+if caldate{t} > sbp_cal_yr then p_sbp_increase = prob_sbp_increase + sbp_cal_eff ; * increase SBP rise in future years after designatd year (2015 based on last available GBD data);
 
-if  a_sbp < prob_sbp_increase then do;
+if  a_sbp < p_sbp_increase then do;
 	sbp = sbp + 1 ; 
 	if on_tx_htn >=1 then sbp_last_start_anti_hyp = sbp_last_start_anti_hyp + 1 ;
 end;
