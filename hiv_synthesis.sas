@@ -2957,7 +2957,7 @@ who may be dead and hence have caldate{t} missing;
 
 * HYPERTENSION;
 /*
-	if option = 2 then do;
+	if option = 1 then do;
 		** Patient-centered care only 		
 		*relative risk of BP testing at HIV visit if out of hypertension care;
 		rr_test_sbp_hiv =10;
@@ -3012,7 +3012,7 @@ who may be dead and hence have caldate{t} missing;
 
 	end;
 */
-	if option = 2 then do;
+	if option = 1 then do;
 		** CHW community screening without voucher;
 		first_comm_test = 2024;
 		* prob testing in commmunity;
@@ -23145,30 +23145,42 @@ Inputs are:
 data a ;  set r1 ;
 										  
 
-*    Option 1 - repetition 1;
+*    Option 0 - repetition 1;
 data r1 ; set a ;	
-%run_update_r1(&year_interv,&year_interv+50,1);
-*    Option 1 - repetition 2; /*
+%run_update_r1(&year_interv,&year_interv+50,0);
+*    Option 0 - repetition 2; /*
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,1);						  
-*    Option 1 - repetition 3;
+%run_update_r1(&year_interv,&year_interv+50,0);						  
+*    Option 0 - repetition 3;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,1);
+%run_update_r1(&year_interv,&year_interv+50,0);
 */						  
 
 
-*    Option 2 - repetition 1;
+*    Option 1 - repetition 1;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,2);				  
-*    Option 2 - repetition 2;	/*   
+%run_update_r1(&year_interv,&year_interv+50,1);				  
+*    Option 1 - repetition 2;	/*   
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,2);											  
-*    Option 2 - repetition 3;
+%run_update_r1(&year_interv,&year_interv+50,1);											  
+*    Option 1 - repetition 3;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,2);
+%run_update_r1(&year_interv,&year_interv+50,1);
 
 */
 /*
+*    Option 2 - repetition 1;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,2);				  
+*    Option 2 - repetition 2;	   
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,2);											 
+*    Option 2 - repetition 3;
+data r1; set a;
+%run_update_r1(&year_interv,&year_interv+50,2);
+*/
+/*
+
 *    Option 3 - repetition 1;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,3);				  
@@ -23177,19 +23189,7 @@ data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,3);											 
 *    Option 3 - repetition 3;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,3);
-*/
-/*
-
-*    Option 4 - repetition 1;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,4);				  
-*    Option 4 - repetition 2;	   
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,4);											 
-*    Option 4 - repetition 3;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+50,4);		
+%run_update_r1(&year_interv,&year_interv+50,3);		
 */
  
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
