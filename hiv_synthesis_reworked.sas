@@ -1,3 +1,6 @@
+/* Additional conservative optimisation: smaller feedback restore
+   and one-pass frequency monitoring. Original working file retained. */
+%symdel _hiv_easy_fb_numeric _hiv_easy_fb_numeric_count _hiv_easy_fb_character _hiv_easy_fb_character_count _hiv_easy_fb_character_length / nowarn;
 /* Conservative I/O optimisation generated from hiv_synthesis_review.txt.
    Scientific transitions, RAND calls, sums, summary formulae and final
    export are preserved. No previously identified scientific bug is fixed. */
@@ -3629,39 +3632,43 @@ data r&da1(drop=
     year_3_infection_diag year_4_infection year_4_infection_diag year_5_infection
     year_5_infection_diag years_since_start_prep yllag_hiv_m yllag_hiv_w yllag_m yllag_total_test
     yllag_w zdv_potency_p75 zero_3tc_activity_m184 zero_tdf_activity_k65r zla zld
+    _hiv_freq_nalive _hiv_freq_n0 _hiv_freq_n1 _hiv_freq_nmissing _hiv_freq_cald _hiv_freq_fallback
 )
      _hiv_raw_sums(drop=_hiv_fb_index);
 set r&da1;
 length _hiv_fb_index 8;
+retain _hiv_freq_cald .;
+retain _hiv_freq_fallback 0;
+
 %_hiv_seed_stream(1,&j,&s);
 %if &initialize = 1 %then %do;
 %_hiv_initialise_people;
 %end;
 
 %if &initialize = 0 %then %do;
-    /* SET executes once. Restore the snapshot before EVERY person because
-       original SET/MERGE reset even parameters mutated in the person loop. */
+    /* SET retains every feedback field. Only fields that can change in
+       the update need restoring before each person. */
     if _n_=1 then do;
         set _hiv_feedback;
-        array _hiv_fb_numeric_values {*} &_hiv_fb_numeric;
-        array _hiv_fb_numeric_saved {&_hiv_fb_numeric_count} _temporary_;
-        do _hiv_fb_index=1 to dim(_hiv_fb_numeric_values);
-            _hiv_fb_numeric_saved{_hiv_fb_index} = _hiv_fb_numeric_values{_hiv_fb_index};
+        array _hiv_easy_fb_numeric_values {*} &_hiv_easy_fb_numeric;
+        array _hiv_easy_fb_numeric_saved {&_hiv_easy_fb_numeric_count} _temporary_;
+        do _hiv_fb_index=1 to dim(_hiv_easy_fb_numeric_values);
+            _hiv_easy_fb_numeric_saved{_hiv_fb_index} = _hiv_easy_fb_numeric_values{_hiv_fb_index};
         end;
-        %if &_hiv_fb_character_count > 0 %then %do;
-            array _hiv_fb_character_values {*} &_hiv_fb_character;
-            array _hiv_fb_character_saved {&_hiv_fb_character_count} $&_hiv_fb_character_length _temporary_;
-            do _hiv_fb_index=1 to dim(_hiv_fb_character_values);
-                _hiv_fb_character_saved{_hiv_fb_index} = _hiv_fb_character_values{_hiv_fb_index};
+        %if &_hiv_easy_fb_character_count > 0 %then %do;
+            array _hiv_easy_fb_character_values {*} &_hiv_easy_fb_character;
+            array _hiv_easy_fb_character_saved {&_hiv_easy_fb_character_count} $&_hiv_easy_fb_character_length _temporary_;
+            do _hiv_fb_index=1 to dim(_hiv_easy_fb_character_values);
+                _hiv_easy_fb_character_saved{_hiv_fb_index} = _hiv_easy_fb_character_values{_hiv_fb_index};
             end;
         %end;
     end;
-    do _hiv_fb_index=1 to dim(_hiv_fb_numeric_values);
-        _hiv_fb_numeric_values{_hiv_fb_index} = _hiv_fb_numeric_saved{_hiv_fb_index};
+    do _hiv_fb_index=1 to dim(_hiv_easy_fb_numeric_values);
+        _hiv_easy_fb_numeric_values{_hiv_fb_index} = _hiv_easy_fb_numeric_saved{_hiv_fb_index};
     end;
-    %if &_hiv_fb_character_count > 0 %then %do;
-        do _hiv_fb_index=1 to dim(_hiv_fb_character_values);
-            _hiv_fb_character_values{_hiv_fb_index} = _hiv_fb_character_saved{_hiv_fb_index};
+    %if &_hiv_easy_fb_character_count > 0 %then %do;
+        do _hiv_fb_index=1 to dim(_hiv_easy_fb_character_values);
+            _hiv_easy_fb_character_values{_hiv_fb_index} = _hiv_easy_fb_character_saved{_hiv_fb_index};
         end;
     %end;
 %end;
@@ -21629,15 +21636,26 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 /* END ORIGINAL UPDATE BODY */
 
+/* Monitoring counts use exactly WHERE death=. across ALL ages.
+   These are separate from the model's adult epidemiological totals. */
+if death=. then do;
+    if _hiv_freq_nalive=0 then _hiv_freq_cald=caldate_never_dot;
+    else if caldate_never_dot ne _hiv_freq_cald then _hiv_freq_fallback=1;
+    _hiv_freq_nalive+1;
+    if hiv=0 then _hiv_freq_n0+1;
+    else if hiv=1 then _hiv_freq_n1+1;
+    else if hiv=. then _hiv_freq_nmissing+1;
+    else _hiv_freq_fallback=1;
+end;
+
+
 output r&da1;
 if serial_no=&population then output _hiv_raw_sums;
 run;
 
 
-/* Reports belong AFTER the explicit OUTPUT/RUN boundary.
-   Controlled by hiv_diagnostics near the top of this model.
-   The view reconstructs reporting labels omitted from compact person state.
-   Explicit DATA= prevents reporting the one-row _HIV_RAW_SUMS by mistake. */
+/* Monitoring stays AFTER OUTPUT/RUN. Use the same table values from a tiny
+   weighted dataset; unusual HIV codes or mixed dates use the original view. */
 %if %symexist(hiv_diagnostics) %then %do;
     %if %superq(hiv_diagnostics)=1 %then %do;
         data _hiv_diagnostic_view / view=_hiv_diagnostic_view;
@@ -21645,11 +21663,35 @@ run;
             cald=caldate_never_dot;
             option=&s;
         run;
-        proc freq data=_hiv_diagnostic_view;
-            tables cald hiv;
-            where death=.;
+        %local _hiv_use_full_frequency;
+        data _null_;
+            set _hiv_raw_sums(keep=_hiv_freq_nalive _hiv_freq_fallback);
+            call symputx('_hiv_use_full_frequency',
+                (_hiv_freq_fallback=1 or _hiv_freq_nalive=0),'L');
         run;
-        /* Individual listings are separate from the requested frequency table. */
+        %if &_hiv_use_full_frequency=1 %then %do;
+            proc freq data=_hiv_diagnostic_view;
+                tables cald hiv;
+                where death=.;
+            run;
+        %end;
+        %else %do;
+            data _hiv_frequency_counts(keep=cald hiv death _hiv_freq_weight);
+                /* SET preserves HIV's original format and label. */
+                set _hiv_raw_sums(keep=hiv _hiv_freq_cald
+                    _hiv_freq_n0 _hiv_freq_n1 _hiv_freq_nmissing);
+                cald=_hiv_freq_cald;
+                death=.;
+                hiv=0; _hiv_freq_weight=_hiv_freq_n0; output;
+                hiv=1; _hiv_freq_weight=_hiv_freq_n1; output;
+                hiv=.; _hiv_freq_weight=_hiv_freq_nmissing; output;
+            run;
+            proc freq data=_hiv_frequency_counts;
+                tables cald hiv;
+                where death=.;
+                weight _hiv_freq_weight;
+            run;
+        %end;
         %if %symexist(hiv_print_people) %then %do;
             %if %superq(hiv_print_people)=1 %then %do;
                 proc print data=_hiv_diagnostic_view;
@@ -24163,25 +24205,25 @@ s_s_m_newp  s_s_w_newp
 run;
 
 /* Determine field types once from the actual one-row feedback descriptor. */
-%if not %symexist(_hiv_fb_numeric_count) %then %do;
-    %global _hiv_fb_numeric _hiv_fb_numeric_count
-            _hiv_fb_character _hiv_fb_character_count _hiv_fb_character_length;
+%if not %symexist(_hiv_easy_fb_numeric_count) %then %do;
+    %global _hiv_easy_fb_numeric _hiv_easy_fb_numeric_count
+            _hiv_easy_fb_character _hiv_easy_fb_character_count _hiv_easy_fb_character_length;
     proc sql noprint;
-        select name into :_hiv_fb_numeric separated by ' '
+        select name into :_hiv_easy_fb_numeric separated by ' '
         from dictionary.columns
-        where libname='WORK' and memname='_HIV_FEEDBACK' and type='num'
+        where libname='WORK' and memname='_HIV_FEEDBACK' and type='num' and upcase(name) in ('ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ART_LOW_ADH_DISRUP_COVID', 'ART_TLD_DISRUP_COVID', 'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH', 'CD4_MONITORING', 'CIRC_INC_RATE_YEAR_I', 'CM_1STVIS_RETURN_VLMG1000', 'CONDOM_CHANGE_YEAR_I', 'CONDOM_DISRUP_COVID', 'COTRIM_DISRUP_COVID', 'COV_DEATH_RISK_MULT', 'CRAG_CD4_L100', 'CRAG_CD4_L200', 'D_HIV_EPI_MW', 'D_HIV_EPI_WM', 'DATE_PREP_CAB_INTRO', 'DISCOUNT', 'EXP_SETTING_LOWER_P_VL1000', 'FX', 'HIGHER_FUTURE_PREP_ORAL_COV', 'HIGHER_NEWP_LESS_ENGAGEMENT', 'HIGHER_NEWP_WITH_LOWER_ADHAV', 'HIVTEST_TYPE_1_INIT_PREP_CAB', 'HIVTEST_TYPE_1_INIT_PREP_LEN', 'HIVTEST_TYPE_1_PREP_CAB', 'HIVTEST_TYPE_1_PREP_LEN', 'INC_DEATH_RATE_AIDS_DISRUP_COVID', 'INCR_MORT_RISK_DOL_WEIGHTG', 'INITIAL_PR_SWITCH_LINE', 'INITIAL_PROB_VL_MEAS_DONE', 'M15R', 'M25R', 'M35R', 'M45R', 'M55R', 'NNRTI_RES_NO_EFFECT', 'NO_ART_DISRUP_COVID', 'NON_HIV_TB_RISK', 'OPTION', 'POC_VL_MONITORING_I', 'POORER_CD4RISE_FAIL_II', 'POP_WIDE_TLD', 'POP_WIDE_TLD_YEAR_I', 'PREP_ANY_STRATEGY', 'PREP_DEPENDENT_PREV_VG1000', 'PREP_ORAL_DISRUP_COVID', 'PROB_PREP_POP_WIDE_TLD', 'PROB_SBP_INCREASE', 'REG_OPTION_107_AFTER_CAB', 'SEX_AGE_MIXING_MATRIX_M', 'SEX_AGE_MIXING_MATRIX_W', 'SEX_BEH_TRANS_MATRIX_M', 'SEX_BEH_TRANS_MATRIX_W', 'SUPER_INFECTION_POP', 'SWITCH_FOR_TOX', 'SWPROG_DISRUP_COVID', 'T_PROP_TAM1', 'T_PROP_TAM2', 'TBLAM_CD4_L100', 'TBLAM_CD4_L200', 'TESTING_DISRUP_COVID', 'TR_RATE_UNDETEC_VL', 'VL_ADH_SWITCH_DISRUP_COVID', 'VMMC_DISRUP_COVID', 'W15R', 'W25R', 'W35R', 'W45R', 'W55R', 'ZDV_POTENCY_P75', 'ZERO_3TC_ACTIVITY_M184', 'ZERO_TDF_ACTIVITY_K65R')
         order by varnum;
-        select count(*) into :_hiv_fb_numeric_count trimmed
+        select count(*) into :_hiv_easy_fb_numeric_count trimmed
         from dictionary.columns
-        where libname='WORK' and memname='_HIV_FEEDBACK' and type='num';
-        select name into :_hiv_fb_character separated by ' '
+        where libname='WORK' and memname='_HIV_FEEDBACK' and type='num' and upcase(name) in ('ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ART_LOW_ADH_DISRUP_COVID', 'ART_TLD_DISRUP_COVID', 'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH', 'CD4_MONITORING', 'CIRC_INC_RATE_YEAR_I', 'CM_1STVIS_RETURN_VLMG1000', 'CONDOM_CHANGE_YEAR_I', 'CONDOM_DISRUP_COVID', 'COTRIM_DISRUP_COVID', 'COV_DEATH_RISK_MULT', 'CRAG_CD4_L100', 'CRAG_CD4_L200', 'D_HIV_EPI_MW', 'D_HIV_EPI_WM', 'DATE_PREP_CAB_INTRO', 'DISCOUNT', 'EXP_SETTING_LOWER_P_VL1000', 'FX', 'HIGHER_FUTURE_PREP_ORAL_COV', 'HIGHER_NEWP_LESS_ENGAGEMENT', 'HIGHER_NEWP_WITH_LOWER_ADHAV', 'HIVTEST_TYPE_1_INIT_PREP_CAB', 'HIVTEST_TYPE_1_INIT_PREP_LEN', 'HIVTEST_TYPE_1_PREP_CAB', 'HIVTEST_TYPE_1_PREP_LEN', 'INC_DEATH_RATE_AIDS_DISRUP_COVID', 'INCR_MORT_RISK_DOL_WEIGHTG', 'INITIAL_PR_SWITCH_LINE', 'INITIAL_PROB_VL_MEAS_DONE', 'M15R', 'M25R', 'M35R', 'M45R', 'M55R', 'NNRTI_RES_NO_EFFECT', 'NO_ART_DISRUP_COVID', 'NON_HIV_TB_RISK', 'OPTION', 'POC_VL_MONITORING_I', 'POORER_CD4RISE_FAIL_II', 'POP_WIDE_TLD', 'POP_WIDE_TLD_YEAR_I', 'PREP_ANY_STRATEGY', 'PREP_DEPENDENT_PREV_VG1000', 'PREP_ORAL_DISRUP_COVID', 'PROB_PREP_POP_WIDE_TLD', 'PROB_SBP_INCREASE', 'REG_OPTION_107_AFTER_CAB', 'SEX_AGE_MIXING_MATRIX_M', 'SEX_AGE_MIXING_MATRIX_W', 'SEX_BEH_TRANS_MATRIX_M', 'SEX_BEH_TRANS_MATRIX_W', 'SUPER_INFECTION_POP', 'SWITCH_FOR_TOX', 'SWPROG_DISRUP_COVID', 'T_PROP_TAM1', 'T_PROP_TAM2', 'TBLAM_CD4_L100', 'TBLAM_CD4_L200', 'TESTING_DISRUP_COVID', 'TR_RATE_UNDETEC_VL', 'VL_ADH_SWITCH_DISRUP_COVID', 'VMMC_DISRUP_COVID', 'W15R', 'W25R', 'W35R', 'W45R', 'W55R', 'ZDV_POTENCY_P75', 'ZERO_3TC_ACTIVITY_M184', 'ZERO_TDF_ACTIVITY_K65R');
+        select name into :_hiv_easy_fb_character separated by ' '
         from dictionary.columns
-        where libname='WORK' and memname='_HIV_FEEDBACK' and type='char'
+        where libname='WORK' and memname='_HIV_FEEDBACK' and type='char' and upcase(name) in ('ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ART_LOW_ADH_DISRUP_COVID', 'ART_TLD_DISRUP_COVID', 'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH', 'CD4_MONITORING', 'CIRC_INC_RATE_YEAR_I', 'CM_1STVIS_RETURN_VLMG1000', 'CONDOM_CHANGE_YEAR_I', 'CONDOM_DISRUP_COVID', 'COTRIM_DISRUP_COVID', 'COV_DEATH_RISK_MULT', 'CRAG_CD4_L100', 'CRAG_CD4_L200', 'D_HIV_EPI_MW', 'D_HIV_EPI_WM', 'DATE_PREP_CAB_INTRO', 'DISCOUNT', 'EXP_SETTING_LOWER_P_VL1000', 'FX', 'HIGHER_FUTURE_PREP_ORAL_COV', 'HIGHER_NEWP_LESS_ENGAGEMENT', 'HIGHER_NEWP_WITH_LOWER_ADHAV', 'HIVTEST_TYPE_1_INIT_PREP_CAB', 'HIVTEST_TYPE_1_INIT_PREP_LEN', 'HIVTEST_TYPE_1_PREP_CAB', 'HIVTEST_TYPE_1_PREP_LEN', 'INC_DEATH_RATE_AIDS_DISRUP_COVID', 'INCR_MORT_RISK_DOL_WEIGHTG', 'INITIAL_PR_SWITCH_LINE', 'INITIAL_PROB_VL_MEAS_DONE', 'M15R', 'M25R', 'M35R', 'M45R', 'M55R', 'NNRTI_RES_NO_EFFECT', 'NO_ART_DISRUP_COVID', 'NON_HIV_TB_RISK', 'OPTION', 'POC_VL_MONITORING_I', 'POORER_CD4RISE_FAIL_II', 'POP_WIDE_TLD', 'POP_WIDE_TLD_YEAR_I', 'PREP_ANY_STRATEGY', 'PREP_DEPENDENT_PREV_VG1000', 'PREP_ORAL_DISRUP_COVID', 'PROB_PREP_POP_WIDE_TLD', 'PROB_SBP_INCREASE', 'REG_OPTION_107_AFTER_CAB', 'SEX_AGE_MIXING_MATRIX_M', 'SEX_AGE_MIXING_MATRIX_W', 'SEX_BEH_TRANS_MATRIX_M', 'SEX_BEH_TRANS_MATRIX_W', 'SUPER_INFECTION_POP', 'SWITCH_FOR_TOX', 'SWPROG_DISRUP_COVID', 'T_PROP_TAM1', 'T_PROP_TAM2', 'TBLAM_CD4_L100', 'TBLAM_CD4_L200', 'TESTING_DISRUP_COVID', 'TR_RATE_UNDETEC_VL', 'VL_ADH_SWITCH_DISRUP_COVID', 'VMMC_DISRUP_COVID', 'W15R', 'W25R', 'W35R', 'W45R', 'W55R', 'ZDV_POTENCY_P75', 'ZERO_3TC_ACTIVITY_M184', 'ZERO_TDF_ACTIVITY_K65R')
         order by varnum;
         select count(*), coalesce(max(length),1)
-        into :_hiv_fb_character_count trimmed, :_hiv_fb_character_length trimmed
+        into :_hiv_easy_fb_character_count trimmed, :_hiv_easy_fb_character_length trimmed
         from dictionary.columns
-        where libname='WORK' and memname='_HIV_FEEDBACK' and type='char';
+        where libname='WORK' and memname='_HIV_FEEDBACK' and type='char' and upcase(name) in ('ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ART_LOW_ADH_DISRUP_COVID', 'ART_TLD_DISRUP_COVID', 'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH', 'CD4_MONITORING', 'CIRC_INC_RATE_YEAR_I', 'CM_1STVIS_RETURN_VLMG1000', 'CONDOM_CHANGE_YEAR_I', 'CONDOM_DISRUP_COVID', 'COTRIM_DISRUP_COVID', 'COV_DEATH_RISK_MULT', 'CRAG_CD4_L100', 'CRAG_CD4_L200', 'D_HIV_EPI_MW', 'D_HIV_EPI_WM', 'DATE_PREP_CAB_INTRO', 'DISCOUNT', 'EXP_SETTING_LOWER_P_VL1000', 'FX', 'HIGHER_FUTURE_PREP_ORAL_COV', 'HIGHER_NEWP_LESS_ENGAGEMENT', 'HIGHER_NEWP_WITH_LOWER_ADHAV', 'HIVTEST_TYPE_1_INIT_PREP_CAB', 'HIVTEST_TYPE_1_INIT_PREP_LEN', 'HIVTEST_TYPE_1_PREP_CAB', 'HIVTEST_TYPE_1_PREP_LEN', 'INC_DEATH_RATE_AIDS_DISRUP_COVID', 'INCR_MORT_RISK_DOL_WEIGHTG', 'INITIAL_PR_SWITCH_LINE', 'INITIAL_PROB_VL_MEAS_DONE', 'M15R', 'M25R', 'M35R', 'M45R', 'M55R', 'NNRTI_RES_NO_EFFECT', 'NO_ART_DISRUP_COVID', 'NON_HIV_TB_RISK', 'OPTION', 'POC_VL_MONITORING_I', 'POORER_CD4RISE_FAIL_II', 'POP_WIDE_TLD', 'POP_WIDE_TLD_YEAR_I', 'PREP_ANY_STRATEGY', 'PREP_DEPENDENT_PREV_VG1000', 'PREP_ORAL_DISRUP_COVID', 'PROB_PREP_POP_WIDE_TLD', 'PROB_SBP_INCREASE', 'REG_OPTION_107_AFTER_CAB', 'SEX_AGE_MIXING_MATRIX_M', 'SEX_AGE_MIXING_MATRIX_W', 'SEX_BEH_TRANS_MATRIX_M', 'SEX_BEH_TRANS_MATRIX_W', 'SUPER_INFECTION_POP', 'SWITCH_FOR_TOX', 'SWPROG_DISRUP_COVID', 'T_PROP_TAM1', 'T_PROP_TAM2', 'TBLAM_CD4_L100', 'TBLAM_CD4_L200', 'TESTING_DISRUP_COVID', 'TR_RATE_UNDETEC_VL', 'VL_ADH_SWITCH_DISRUP_COVID', 'VMMC_DISRUP_COVID', 'W15R', 'W25R', 'W35R', 'W45R', 'W55R', 'ZDV_POTENCY_P75', 'ZERO_3TC_ACTIVITY_M184', 'ZERO_TDF_ACTIVITY_K65R');
     quit;
 %end;
 
