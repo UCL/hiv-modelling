@@ -912,7 +912,7 @@ end;
 								we may want to change atazanavir to darunavir at a certain calendar year;
 
 
-*** QUERY delete whole DPV VR section ;
+*** QUERY delete whole DPV VR section once code is running ;
 * DAPIVIRINE VAGINAL RING PREP ; * dpv-vr;
 * vr code needs more work before using ;
 
@@ -1318,7 +1318,7 @@ av_cost_self_test_avail = 0.001; * this is under pop wide tld with self test kit
 									dont explicitly model self tests use, it only helps status informed tld use - cost ;
 
 * not * dependent_on_time_step_length ;
-* todo: add in crag and tb lam test costs, add in cost of treating tb crypm sbi (may be higher if diagnosed early, + costs of tb crypm prophylaxis;	* QUERY is this covered above? ;
+* todo: add in crag and tb lam test costs, add in cost of treating tb crypm sbi (may be higher if diagnosed early, + costs of tb crypm prophylaxis;	* QUERY is this covered above (other costs section)? ;
 adc_cost_a=(.200); 
 non_tb_who3_cost_a=(.020);
 cd4_cost_a=(.010);
@@ -1340,7 +1340,7 @@ cost_switch_line_a = 0.020 ;
 cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ; * note this is reduced by 75% in create wide file;
-sw_program_cost = 0.010 ; * placeholder; *consider varying by intensity;
+sw_program_cost = 0.025 ; * based on SAPPHIRE cost of $132/year, reduced to $100 to account for setting scenarios;
 
 * HYPERTENSION costs (in thousands);
 cost_htn_link_voucher = .;
@@ -4236,31 +4236,31 @@ if sw = 1 then do;
 
 ;
 
-	* transitions between levels * dependent_on_time_step_length ;
+* transitions between levels * dependent_on_time_step_length ;
 
-	if t ge 2 then do;
-		* probabilities of transitioning to each level, depending on the current one;
-		select;
-			when (newp_tm1 = 0) 		do; newp_lev1_prob = sw_newp_lev_1_1; newp_lev2_prob = sw_newp_lev_1_2; newp_lev3_prob = sw_newp_lev_1_3; newp_lev4_prob = sw_newp_lev_1_4; end;
-			when (1 <= newp_tm1 <= 3) 	do; newp_lev1_prob = sw_newp_lev_2_1; newp_lev2_prob = sw_newp_lev_2_2; newp_lev3_prob = sw_newp_lev_2_3; newp_lev4_prob = sw_newp_lev_2_4; end;
-			when (4 <= newp_tm1 <= 20) 	do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
-			when (21 <= newp_tm1 <= 50) do; newp_lev1_prob = sw_newp_lev_4_1; newp_lev2_prob = sw_newp_lev_4_2; newp_lev3_prob = sw_newp_lev_4_3; newp_lev4_prob = sw_newp_lev_4_4; end;
-			when (50 < newp_tm1) 		do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
-			otherwise xxx=1;
-		end;
+if t ge 2 then do;
+	* probabilities of transitioning to each level, depending on the current one;
+	select;
+		when (newp_tm1 = 0) 		do; newp_lev1_prob = sw_newp_lev_1_1; newp_lev2_prob = sw_newp_lev_1_2; newp_lev3_prob = sw_newp_lev_1_3; newp_lev4_prob = sw_newp_lev_1_4; end;
+		when (1 <= newp_tm1 <= 3) 	do; newp_lev1_prob = sw_newp_lev_2_1; newp_lev2_prob = sw_newp_lev_2_2; newp_lev3_prob = sw_newp_lev_2_3; newp_lev4_prob = sw_newp_lev_2_4; end;
+		when (4 <= newp_tm1 <= 20) 	do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
+		when (21 <= newp_tm1 <= 50) do; newp_lev1_prob = sw_newp_lev_4_1; newp_lev2_prob = sw_newp_lev_4_2; newp_lev3_prob = sw_newp_lev_4_3; newp_lev4_prob = sw_newp_lev_4_4; end;
+		when (50 < newp_tm1) 		do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
+		otherwise xxx=1;
+end;
 
-		* transition to a new level with these probabilities and select newp;
-		e = rand('uniform');
-		if e < newp_lev1_prob then newp=0;
-		else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; q=rand('uniform');
-			if q < 0.7 then newp=1; if 0.7 <= q < 0.85 then newp=2; if 0.85 <= q then newp=3; 
-		end;
-		else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=rand('uniform'); newp = 4 + (q*16); newp = round(newp,1); end;
-		else if newp_lev1_prob + newp_lev2_prob + newp_lev3_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob + newp_lev4_prob then do; q=rand('uniform'); newp = 21 + (q*29); newp = round(newp,1); end;
-		else do; q=rand('uniform'); newp = 51 + (q*100); newp = round(newp,1);  end;
+	* transition to a new level with these probabilities and select newp;
+	e = rand('uniform');
+	if e < newp_lev1_prob then newp=0;
+	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; q=rand('uniform');
+		if q < 0.7 then newp=1; if 0.7 <= q < 0.85 then newp=2; if 0.85 <= q then newp=3; 
 	end;
+	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=rand('uniform'); newp = 4 + (q*16); newp = round(newp,1); end;
+	else if newp_lev1_prob + newp_lev2_prob + newp_lev3_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob + newp_lev4_prob then do; q=rand('uniform'); newp = 21 + (q*29); newp = round(newp,1); end;
+	else do; q=rand('uniform'); newp = 51 + (q*100); newp = round(newp,1);  end;
+end;
 
-	if age > 30 then newp = min(30,newp);
+if age > 30 then newp = min(30,newp);
 
 end;
 
