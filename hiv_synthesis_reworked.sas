@@ -1,11 +1,34 @@
+/* V2-NOTE A01: How to read this optimised version
+The changes from hiv_synthesis_baseline.sas concern intermediate storage, population
+feedback and monitoring. The clinical, demographic, transmission, treatment, cost and
+utility calculations still run. The final export retains its existing variable names and
+definitions. Search V2-NOTE to locate each explanation, and see
+baseline_vs_optimized_v2.txt for the full comparison. New notes use block comments so
+macro-like examples cannot execute.
+*/
 /* Additional conservative optimisation: smaller feedback restore
    and one-pass frequency monitoring. Original working file retained. */
+/* V2-NOTE A02: Clear only the V2 feedback-schema cache
+These macro variables contain names, counts and character lengths for the V2 snapshot
+arrays. Clear them before a new run in the same SAS session so an old schema cannot be
+reused. The separate _hiv_easy_fb_ prefix avoids overwriting the first optimised
+version's _hiv_fb_ cache. NOWARN permits a first run when no cache exists. This does not
+reset any biological parameter, person state or random-number stream.
+*/
 %symdel _hiv_easy_fb_numeric _hiv_easy_fb_numeric_count _hiv_easy_fb_character _hiv_easy_fb_character_count _hiv_easy_fb_character_length / nowarn;
 /* Conservative I/O optimisation generated from hiv_synthesis_review.txt.
    Scientific transitions, RAND calls, sums, summary formulae and final
    export are preserved. No previously identified scientific bug is fixed. */
 
 /* Print CALD/HIV frequencies after every quarter; set to 0 for timing runs. */
+/* V2-NOTE A03: Quarterly frequency output
+One keeps the requested CALD/HIV frequency tables enabled after every update. Zero
+suppresses those procedures for timing runs. The lightweight monitoring counters inside
+the update still execute when printing is disabled. Individual first-50-person listings
+have the separate hiv_print_people switch. Monitoring is outside the scientific DATA
+step; placing a PROC inside that step would terminate it before its explicit OUTPUT
+statements.
+*/
 %let hiv_diagnostics = 1;
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
@@ -17,6 +40,15 @@
        %let tmpfilename = out;
    An already assigned library A is respected when no directory is supplied.
    With no settings, results go to temporary WORK and the log shows its path. */
+/* V2-NOTE A04: Output routing replaces the simple baseline launch scans
+The baseline takes outputdir and tmpfilename directly from two SYSPARM fields and relies
+on its LIBNAME setup. This helper also supports interactive SAS: nonblank caller macro
+values take priority, otherwise it reads SYSPARM; the prefix defaults to out. With no
+directory it respects an already assigned A, otherwise A points to temporary WORK and
+the log explains that choice. Prefix validation leaves room for the numeric run
+identifier. This is launch/output convenience, not the main speed improvement. The final
+dataset is still written only after the scenarios finish.
+*/
 %macro _hiv_configure_output;
     %global outputdir tmpfilename;
     %if not %length(%superq(outputdir)) %then
@@ -64,6 +96,15 @@ options ps=1000 ls=220 cpucount=4 spool fullstimer ;
    Unset SAS_SEED keeps the original clock-seeded behaviour.
    SAS_END_YEAR truncates the scenarios; the historical period is retained.
    Defaults preserve the original population, horizon and output convention. */
+/* V2-NOTE A05: Optional controls already shared with the baseline
+SAS_SEED, SAS_POPULATION and SAS_END_YEAR are also in the seeded baseline; they are not
+V2-specific changes to the scientific model. Blank settings keep the ordinary clock-
+seeded run, default population and full horizon. A supplied population changes the
+number simulated, so comparisons must use the same value. END_YEAR can shorten the
+scenarios for checking, must include the intervention year and must fall on a quarter
+boundary. The historical phase and the model's parameter definitions are otherwise
+preserved.
+*/
 %macro _hiv_apply_controls;
     %global _hiv_seed _hiv_end_year;
     %local _hiv_population;
@@ -110,6 +151,15 @@ options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
 /* The first initializer and update share a stream, as in the original.
    Later quarterly streams use a reproducible quarter/scenario seed schedule. */
+/* V2-NOTE A06: Random streams and reproducible seed schedule
+With a blank base seed this macro emits no STREAMINIT call, leaving SAS to use its
+clock-derived seed. With a positive base seed, phase zero seeds the single parameter
+row; later DATA steps derive seeds from quarter and scenario. The same base, code and
+settings give a reproducible schedule, rather than restarting the same stream every
+quarter. Initialisation and the first update still share one DATA step and one stream,
+as in the baseline. No unused RAND calls were deleted, and the scientific random-call
+order is retained.
+*/
 %macro _hiv_seed_stream(phase,quarter,scenario);
     %if %length(%superq(_hiv_seed)) %then %do;
         %if &phase = 0 %then %do;
@@ -230,6 +280,13 @@ One  row of data defined, containing  parameter values that remain fixed for the
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
+/* V2-NOTE A07: Parameter sampling is retained
+This is the original one-row parameter setup, not a new optimisation. The random run
+identifier and uncertain parameters are still sampled here. Some later parameters are
+stored in the one-row feedback instead of repeated person records, but their definitions
+and the baseline's final-person broadcast behaviour have not been replaced with new
+scientific assumptions.
+*/
 data z;
 %_hiv_seed_stream(0,0,0);
 
@@ -1483,6 +1540,13 @@ Define fixed or initial values for each person individually
 
 
 
+/* V2-NOTE A08: The initial population copy remains
+The baseline's initial expansion of the parameter row to the specified population is
+retained. It establishes the same sequential serial numbers and initial input rows. The
+omitted 100,000-row expansions described later were repeated quarterly feedback copies,
+not this initial population creation. Rows are not deleted merely because people are
+unborn or have died.
+*/
 data r1;set z;
 do i=1 to &population;
 	n=1;
@@ -1496,6 +1560,14 @@ drop i;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
+/* V2-NOTE A09: Initialisation moved into a macro, not into an extra pass
+Baseline leaves DATA R1; SET R1 open and appends the first quarterly update to that DATA
+step. V2 wraps the same per-person initialisation statements here and expands them
+inside the first update when initialize=1. Each person therefore receives initialisation
+followed immediately by the original first transition. Closing a separate initialisation
+DATA step would change the RAND stream boundary; the macro wrapper avoids that change
+and an extra person pass.
+*/
 %macro _hiv_initialise_people;
 
 
@@ -2484,9 +2556,27 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 
 %mend _hiv_initialise_people;
 
+/* V2-NOTE A10: Each quarterly update is now a complete DATA step
+The new initialize argument selects the original initialisation only on the first
+historical quarter. Baseline relied on a DATA step already opened by its caller or the
+preceding macro call. V2 opens and closes its own population update, producing both
+person state and a raw summary in one pass. da1/da2 still express the alternating
+dataset names; their handover now uses a metadata rename after the update rather than a
+population merge.
+*/
 %macro update_r1(da1=,da2=,e=,f=,g=,h=,j=,y=,s=,initialize=0);
 /* Each quarter reads and writes person state once. Running totals and
    transient report fields remain in the PDV and the one-row snapshot. */
+/* V2-NOTE A11: Omitted columns, not omitted calculations
+This output DROP list is a union with overlaps: the baseline's original outgoing drop
+fields, all shared feedback fields, 2,107 transient report fields proved reset before
+use and unused by transitions, and new scratch fields. It prevents those values being
+written into every saved person row. It does not remove the variables from the DATA-step
+PDV or stop their calculations. Report values and running totals are still available for
+sums and the final-person snapshot. Monitoring helpers are also omitted from person
+state, so their sums start afresh next quarter. Exact field lists are recorded in the
+two JSON manifests; the categories should not be added as if every name were distinct.
+*/
 data r&da1(drop=
     _ai_naive_no_pmtct_ _ai_naive_no_pmtct_c_inm_ _ai_naive_no_pmtct_c_nnm_
     _ai_naive_no_pmtct_c_pim_ _ai_naive_no_pmtct_c_r_ _ai_naive_no_pmtct_c_rt184m_
@@ -3635,12 +3725,42 @@ data r&da1(drop=
     _hiv_freq_nalive _hiv_freq_n0 _hiv_freq_n1 _hiv_freq_nmissing _hiv_freq_cald _hiv_freq_fallback
 )
      _hiv_raw_sums(drop=_hiv_fb_index);
+/* V2-NOTE A12: Two outputs have deliberately different widths
+R&DA1 writes compact persistent person state. _HIV_RAW_SUMS keeps the full calculated
+PDV except the cache loop index, including values dropped only from person output.
+Explicit OUTPUT later writes the raw dataset for just the original final serial number.
+Its full width is cheap because it has one row, and is necessary to feed the unchanged
+summary calculations. Neither dataset is the final exported result file.
+*/
+/* V2-NOTE A13: Read compact person state in the original order
+This is the single person input stream for the quarter. Shared feedback fields have been
+excluded from its stored columns so this SET cannot overwrite the separately retained
+feedback snapshot. The order of people, their serial numbers, and their ordinary
+persistent fields remain unchanged. The loop index is declared explicitly and omitted
+from both outputs; this avoids an unreferenced DROP warning on the first, uncached
+quarter.
+*/
 set r&da1;
 length _hiv_fb_index 8;
+/* V2-NOTE A14: Monitoring state lasts for one quarterly DATA step
+Remember the first eligible person's calendar value and whether compression must fall
+back to the population view. The four numeric count variables use SAS sum statements, so
+they initialise to zero and retain values across people within this step. All six
+helpers are excluded from person records; they cannot be loaded with last quarter's
+values on the next SET. These helpers are for frequency display only, not adult
+epidemiology or costs.
+*/
 retain _hiv_freq_cald .;
 retain _hiv_freq_fallback 0;
 
 %_hiv_seed_stream(1,&j,&s);
+/* V2-NOTE A15: First-quarter versus later-quarter setup
+Call the original initialisation here only on the first historical quarter, after
+selecting the same seed stream. The following initialize=0 macro branch loads feedback
+only on later updates. It is excluded at macro expansion time on the first update, not
+merely skipped by a runtime IF: compiling a SET for unavailable feedback would change
+variable retention and require a dataset that does not yet exist.
+*/
 %if &initialize = 1 %then %do;
 %_hiv_initialise_people;
 %end;
@@ -3649,13 +3769,36 @@ retain _hiv_freq_fallback 0;
     /* SET retains every feedback field. Only fields that can change in
        the update need restoring before each person. */
     if _n_=1 then do;
+/* V2-NOTE A16: Read all feedback once; SAS retains its fields
+The one-row SET executes only for _N_=1. SAS retains values read by SET for later
+observations. All 539 feedback fields are loaded, not just the snapshot subset. Because
+none occur in the compact person input, the 465 fields that cannot be written by the
+audited update stay at their retained previous-quarter values. Baseline obtained the
+equivalent starting values by expanding and merging the summary into every person
+record.
+*/
         set _hiv_feedback;
+/* V2-NOTE A17: Save the numeric fields that may change
+The first array names possibly writable numeric feedback variables; the temporary array
+saves their prior-quarter values once. The schema lookup below selects them from the
+actual feedback descriptor. V2 conservatively selects 74 fields overall, including
+harmless extra candidates where token analysis treats a comparison or RHS addition as a
+possible write. Temporary elements are retained in memory and do not create
+person/output columns.
+*/
         array _hiv_easy_fb_numeric_values {*} &_hiv_easy_fb_numeric;
         array _hiv_easy_fb_numeric_saved {&_hiv_easy_fb_numeric_count} _temporary_;
         do _hiv_fb_index=1 to dim(_hiv_easy_fb_numeric_values);
             _hiv_easy_fb_numeric_saved{_hiv_fb_index} = _hiv_easy_fb_numeric_values{_hiv_fb_index};
         end;
         %if &_hiv_easy_fb_character_count > 0 %then %do;
+/* V2-NOTE A19: Character cache preserves types and lengths
+The same snapshot/restore rule applies to character feedback if any selected fields have
+that type. Character storage uses the actual maximum descriptor length, rather than
+coercing text to numbers or truncating values. The macro count check excludes zero-size
+arrays when there are no such fields. The later character restore loop repeats before
+each person, just as the numeric loop does.
+*/
             array _hiv_easy_fb_character_values {*} &_hiv_easy_fb_character;
             array _hiv_easy_fb_character_saved {&_hiv_easy_fb_character_count} $&_hiv_easy_fb_character_length _temporary_;
             do _hiv_fb_index=1 to dim(_hiv_easy_fb_character_values);
@@ -3663,6 +3806,14 @@ retain _hiv_freq_fallback 0;
             end;
         %end;
     end;
+/* V2-NOTE A18: Restore mutable values before every person
+A one-time feedback SET alone is insufficient: parameters such as prob_sbp_increase can
+change during a person's update. Restore these potentially writable values even for the
+first person, so the next person starts from the frozen previous-quarter snapshot,
+matching the old merged input. The 465 read-only restores are newly omitted because
+those fields cannot change. This is a smaller copy loop, not a change to when population
+feedback is calculated or applied.
+*/
     do _hiv_fb_index=1 to dim(_hiv_easy_fb_numeric_values);
         _hiv_easy_fb_numeric_values{_hiv_fb_index} = _hiv_easy_fb_numeric_saved{_hiv_fb_index};
     end;
@@ -3673,6 +3824,14 @@ retain _hiv_freq_fallback 0;
     %end;
 %end;
 
+/* V2-NOTE A20: Scientific body retained
+The following transition, reporting and sum statements retain their baseline order and
+RAND calls. Only four constant life-table storage declarations change inside this
+region. No general shortcut skips dead people, unborn people, PrEP branches, reporting
+formulas or zero additions. Some current-quarter running sums are read by transitions:
+they must not be confused with the frozen prior-quarter feedback. Do not put a PROC
+here; it would close the DATA step before the explicit output boundary.
+*/
 /* BEGIN ORIGINAL UPDATE BODY */
 
 
@@ -5823,6 +5982,13 @@ if -2000 <= d_hiv_epi_mw < -500 then ep_incidence_factor_w = ep_incidence_factor
 if -5000 <= d_hiv_epi_mw < -2000 then ep_incidence_factor_w  = ep_incidence_factor_w  * (abs(d_hiv_epi_mw)/50); 
 if . < d_hiv_epi_mw < -5000 then ep_incidence_factor_w  = ep_incidence_factor_w  * (abs(d_hiv_epi_mw)/3); 
 
+/* V2-NOTE A45: A running current-quarter total is not frozen feedback
+This original transition reads a current-quarter running sum. S_HIV1564 is dropped from
+saved person rows and is not in _HIV_FEEDBACK; its sum statement can retain and
+accumulate values as people are processed in the same original order. Loading last
+quarter's total here, or moving all summation after the person pass, would change model
+behaviour.
+*/
 if s_hiv1564 =0 then do; d_hiv_epi_mw=0; d_hiv_epi_wm=0; end;
 
 e=rand('uniform');  
@@ -15358,6 +15524,14 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
+/* V2-NOTE A44: Reporting still executes despite omitted saved fields
+This entire reporting section is retained. The 2,107 fields omitted from compact output
+were identified only where a first reporting assignment is unconditional, occurs before
+any read, has no self-reference, and the field is not used by transitions. Persistent
+dates, flags and uncertain cases remain stored. Dropping report fields from output
+therefore reduces I/O without discarding their current-quarter calculation or
+aggregation.
+*/
 * SECTION 4
 
 Derive values of additional variables for this 3 month period for each person. 
@@ -18686,6 +18860,13 @@ dyllag_w=0; 		dyllag_m=0;
 dyllag_hiv_w=0; 	dyllag_hiv_m=0;
 
 ***COULD READ THESE IN FROM EXTERNAL SCRIPT***;
+/* V2-NOTE A21: Female undiscounted life table: omitted person columns
+These 77 constants and their lookups are unchanged. Baseline's ordinary array
+automatically created ages_w1 through ages_w77 and stored them on person rows.
+_TEMPORARY_ instead holds one retained in-memory table for this DATA step. Values are
+shared because they are constants, not because individual life-history state has been
+pooled. No table values are modified.
+*/
 array ages_w[77]   
    _temporary_ (68.020, 67.032, 66.044, 65.056, 64.068, 63.080, 62.098, 61.116, 60.134, 59.152,
     58.170, 57.190, 56.210, 55.230, 54.250, 53.270, 52.292, 51.314, 50.336, 49.358,
@@ -18696,6 +18877,11 @@ array ages_w[77]
 	12.280, 11.604, 10.928, 10.252, 9.576, 8.9, 8.345, 7.825, 7.337, 6.879,
 	6.450, 6.048, 5.671, 5.317, 4.986, 4.675, 4.383);
 
+/* V2-NOTE A22: Male undiscounted life table: same storage replacement
+Preserve all 77 male life-expectancy values, indices and calculations. The former
+ages_m1 through ages_m77 dataset columns are newly omitted; the temporary array supplies
+the same constant values in memory.
+*/
 array ages_m[77]
    _temporary_ (65.410, 64.416, 63.422, 62.428, 61.434, 60.440, 59.446, 58.452, 57.458, 56.464, 
 	55.470, 54.478, 53.486, 52.494, 51.502, 50.510, 49.520, 48.530, 47.540, 46.550, 
@@ -18707,6 +18893,11 @@ array ages_m[77]
 	5.457, 5.128, 4.819, 4.528, 4.255, 3.998, 3.757);
 
 *West level 26 life expectancies, discount rate	0.029558802;
+/* V2-NOTE A23: Female discounted life table: values retained
+Only the storage class changes. The discount assumptions, all 77 values and the lookup
+offsets remain those of the baseline. Temporary elements replace the former ages_w_disc1
+through ages_w_disc77 person columns.
+*/
 array ages_w_disc[77]   
    _temporary_ (29.30, 29.17, 29.03, 28.89, 28.74, 28.59, 28.43, 28.27, 28.11, 27.94, 
 	27.77, 27.59, 27.41, 27.22, 27.02, 26.82, 26.62, 26.41, 26.19, 25.97, 
@@ -18717,6 +18908,12 @@ array ages_w_disc[77]
 	10.30, 9.82, 9.34, 8.84, 8.34, 7.83, 7.40, 6.99, 6.60, 6.22, 
 	5.87, 5.54, 5.22, 4.92, 4.64, 4.37, 4.11);
 
+/* V2-NOTE A24: Male discounted life table: completes 308 constant-column omissions
+The fourth 77-element constant table is likewise retained in memory. Across A21-A24, 308
+repeated constant columns are omitted from person storage; no life-expectancy or
+discount calculation is omitted or replaced. These constants were not part of the final
+exported variable list.
+*/
 array ages_m_disc[77]   
    _temporary_ (28.94, 28.79, 28.64, 28.49, 28.33, 28.16, 27.99, 27.82, 27.64, 27.46, 
 	27.27, 27.07, 26.87, 26.66, 26.45, 26.23, 26.00, 25.77, 25.53, 25.29, 
@@ -20278,6 +20475,13 @@ if gender=1 and 75 <= age < 80 then sbp_7579m = sbp;  if gender=1 and 80 <= age 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
+/* V2-NOTE A46: Original sum statements and addition order retained
+More than 3,000 original sum statements still execute with their original eligibility
+conditions, missing-value handling and per-person addition order. Their PDV values
+normally retain across people because the totals are absent from person inputs. The six
+exceptions described at A35 keep their baseline per-person SET semantics. V2 is not a
+rewrite into grouped counters or a replacement of all missing values with zeros.
+*/
 * SECTION 5
 
 * CREATE SUMS OF VARIABLES IN ORDER TO BE ABLE TO CREATE SUMMARIES TO SAVE AND TO FEED BACK INTO NEXT 3 MONTH PERIOD;
@@ -21634,10 +21838,25 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 
+/* V2-NOTE A25: Original calculations end; display-only counters follow
+Everything below up to the explicit OUTPUT is monitoring overhead introduced for the
+requested frequency tables. It runs after all original clinical, reporting and
+population-sum calculations, so it cannot change their inputs or random sequence. Its
+six helper values are kept in the one-row raw snapshot but omitted from saved people and
+the final output contract.
+*/
 /* END ORIGINAL UPDATE BODY */
 
 /* Monitoring counts use exactly WHERE death=. across ALL ages.
    These are separate from the model's adult epidemiological totals. */
+/* V2-NOTE A26: Exact frequency eligibility and fallback
+Count the exact WHERE death=. population across all ages, including children and future
+entrants. Adult model totals use other eligibility rules and cannot substitute. Keep
+separate HIV=0, HIV=1 and ordinary missing-HIV counts. First-person detection uses the
+count, not whether the stored date is missing. Different eligible dates, unusual HIV
+codes or special missing HIV set the fallback flag, so a full view scan preserves the
+original behaviour in cases the three-row representation cannot cover.
+*/
 if death=. then do;
     if _hiv_freq_nalive=0 then _hiv_freq_cald=caldate_never_dot;
     else if caldate_never_dot ne _hiv_freq_cald then _hiv_freq_fallback=1;
@@ -21649,6 +21868,14 @@ if death=. then do;
 end;
 
 
+/* V2-NOTE A27: Explicit output closes the update safely
+Write one compact row for every input person. Write _HIV_RAW_SUMS only for
+serial_no=&population, the same person the baseline's summary scan selected. Explicit
+OUTPUT suppresses automatic output to both datasets; without it the raw table would
+incorrectly contain the whole population. RUN closes the update before any diagnostics.
+This selection relies on the preserved sequential population rows and IDs, not on a
+newly filtered population.
+*/
 output r&da1;
 if serial_no=&population then output _hiv_raw_sums;
 run;
@@ -21658,6 +21885,14 @@ run;
    weighted dataset; unusual HIV codes or mixed dates use the original view. */
 %if %symexist(hiv_diagnostics) %then %do;
     %if %superq(hiv_diagnostics)=1 %then %do;
+/* V2-NOTE A28: Post-update view and full-scan fallback
+The view reads the updated compact population on demand and reconstructs cald from
+caldate_never_dot and option from this macro's scenario. It materialises no new
+population copy. DATA _NULL_ reads the one-row raw counters and sets a local macro flag:
+unusual cases and zero eligible people use this full view in PROC FREQ. Creating the
+view does not itself scan it. Every procedure specifies DATA=, avoiding an accidental
+report on _HIV_RAW_SUMS as SAS's most recently created dataset.
+*/
         data _hiv_diagnostic_view / view=_hiv_diagnostic_view;
             set r&da1;
             cald=caldate_never_dot;
@@ -21676,6 +21911,15 @@ run;
             run;
         %end;
         %else %do;
+/* V2-NOTE A29: Common-case monitoring scan is newly omitted
+Replace the usual 100,000-person frequency read with three rows whose weights are the
+already counted HIV=0, HIV=1 and missing-HIV totals. SET preserves HIV's original
+attributes. The date comes from the first eligible person, checked equal for everyone
+else. Standard PROC FREQ ignores zero weights and excludes missing HIV from that table's
+percentage denominator; the missing row still contributes to the CALD total and
+Frequency Missing. Do not add MISSING or ZEROS options, which would alter the requested
+display. This shortcut affects display, not model totals.
+*/
             data _hiv_frequency_counts(keep=cald hiv death _hiv_freq_weight);
                 /* SET preserves HIV's original format and label. */
                 set _hiv_raw_sums(keep=hiv _hiv_freq_cald
@@ -21692,6 +21936,13 @@ run;
                 weight _hiv_freq_weight;
             run;
         %end;
+/* V2-NOTE A30: Optional individual print and view cleanup
+The separate switch enables original-style first-50-person listings from the full view.
+They are not automatically added to the frequency output. Delete the temporary view
+after the procedures and before the population rename; retaining a view of the old
+alternating filename could leave a dangling reference. All diagnostics execute after the
+update's RUN.
+*/
         %if %symexist(hiv_print_people) %then %do;
             %if %superq(hiv_print_people)=1 %then %do;
                 proc print data=_hiv_diagnostic_view;
@@ -21705,6 +21956,14 @@ run;
         quit;
     %end;
 %end;
+/* V2-NOTE A31: Full-population summary scan is omitted
+Baseline read R&DA1, then discarded all rows except serial_no=&population. V2 captured
+that row while already updating the people, so this separate DATA step reads one row.
+All following summary ratios, KEEP fields and active calibration checks are preserved.
+The original selection IF remains. Keeping this a separate DATA step preserves the
+summary's variable retention/initialisation semantics instead of mixing its formulas
+into the person update PDV.
+*/
 data sums; set _hiv_raw_sums; if serial_no = &population;
 
 ***Variables created below are used to update the program ;
@@ -23183,10 +23442,24 @@ values from that 3 month period
 
 
 
+/* V2-NOTE A32: Cumulative-output logic is preserved
+Append the new quarterly summary to the same alternating cumulative tables. This is
+small summary traffic, not a full population pass. The initial missing row, scenario
+ordering, alternating-table parity and final choice of CUM_L1 are unchanged. In
+particular the legacy endpoint behaviour is retained rather than silently adding a final
+calculated quarter that the baseline exporter omits for an odd endpoint index.
+*/
 data cum_l&da2; set cum_l&da1 sums;
 run;
 
 /* Preserve the original last-person parameter broadcast and aliases. */
+/* V2-NOTE A33: One feedback row replaces the replicated S table
+OMITTED BASELINE PART: DATA S; SET SUMS; DO I=1 TO &population; N=1; OUTPUT; END; DROP
+I. That block wrote identical population-wide values repeatedly every quarter. Here the
+same summary values and N=1 are kept once. The baseline's use of final-person parameter
+values remains intact. This row supplies next-quarter feedback; it is not added to each
+saved person record or used early by later people in the current quarter.
+*/
 data _hiv_feedback; set sums;
 n=1;
 
@@ -23194,6 +23467,13 @@ n=1;
 * these variables below need creating so that can use t_ version in main code and then use s_ in the sum statments - sum statements need the sum
 variable not to exist in the data set;
 
+/* V2-NOTE A34: The original 155 feedback aliases are retained
+These T_ aliases previously ran in the population MERGE step. They now run once on the
+feedback row. Next quarter's transitions read those aliases as before. Keeping prior-
+quarter T_ values separate from current-quarter S_ sum variables prevents input SET
+values from resetting the accumulators. The alias definitions and the values broadcast
+to people are unchanged.
+*/
 t_prop_newp_i_w_1524 = s_prop_newp_i_w_1524 ;  
 t_prop_newp_i_w_2534 = s_prop_newp_i_w_2534  ;  
 t_prop_newp_i_w_3544 = s_prop_newp_i_w_3544  ;  
@@ -23354,6 +23634,15 @@ t_m_newp = s_m_newp;
 t_w_newp = s_w_newp;
 
 
+/* V2-NOTE A35: Original feedback drop rules and counter exceptions
+The original large DROP list is retained here to remove current summary totals from the
+feedback row while keeping its shared parameters and derived values. Do not substitute a
+blanket S_: drop. Six legacy sum variables intentionally remain on person records
+through ordinary SET, outside this feedback cache: s_cost_self_test, s_dyllag_total,
+s_stop_prep_vr_choice, s_test_cost_type1, s_vis_cost_lencab and s_vis_cost_no_lencab.
+Their existing carry/overwrite behaviour is preserved; the optimisation does not attempt
+to correct it.
+*/
 drop 
 
 /*general*/
@@ -24205,6 +24494,15 @@ s_s_m_newp  s_s_w_newp
 run;
 
 /* Determine field types once from the actual one-row feedback descriptor. */
+/* V2-NOTE A36: One-time typed schema lookup for the 74-field subset
+After the first feedback row exists, read its actual names, types, lengths and order
+from DICTIONARY.COLUMNS. Four queries obtain numeric and character lists/counts and the
+maximum character length. Repeated IN lists are the conservatively audited 74 possibly
+writable fields, not new biological parameter choices. The lists are cached for later
+quarters. If the update code gains new writes or indirect assignments, review this
+classification or regenerate it with optimize_easy_wins.py; do not assume a formerly
+read-only field can safely stay outside the restore loop.
+*/
 %if not %symexist(_hiv_easy_fb_numeric_count) %then %do;
     %global _hiv_easy_fb_numeric _hiv_easy_fb_numeric_count
             _hiv_easy_fb_character _hiv_easy_fb_character_count _hiv_easy_fb_character_length;
@@ -24228,11 +24526,26 @@ run;
 %end;
 
 /* Rename the one compact population; no additional population pass. */
+/* V2-NOTE A37: Metadata handover replaces population merge and pending copy
+OMITTED BASELINE PARTS: the full R&DA1/S population MERGE, and the trailing DATA R&DA2;
+SET R&DA2 header that prepared an open step for the next update. That header was
+meaningful in baseline, not simply redundant code. V2 performs its own complete next
+update, so it is unnecessary here. Delete the obsolete destination if present, then
+rename the compact updated population without reading/writing its rows again. Deletion
+avoids a collision when a scenario reset leaves an older alternating dataset. Original
+commented future calibration examples were not active checks.
+*/
 proc datasets library=work nolist;
     %if %sysfunc(exist(work.r&da2)) %then %do; delete r&da2; %end;
     change r&da1=r&da2;
 quit;
 %mend update_r1;
+/* V2-NOTE A38: Initialise people exactly once
+Start this switch at one for the historical run. The driver passes it into the first
+update, then clears it. Subsequent quarters and scenario resets use saved person state
+and feedback, not a fresh set of people or fresh individual random preferences. This
+replaces reliance on the caller's already open initialisation DATA step.
+*/
 %global _hiv_initialise_next;
 %let _hiv_initialise_next=1;
 
@@ -24265,6 +24578,13 @@ Inputs are:
 
   
 
+/* V2-NOTE A39: Driver calendar and optional test horizon
+Quarter indices, calendar dates, array-window indices and alternating dataset indices
+follow the baseline's existing arithmetic. The only new update argument selects
+initialisation, then the switch is cleared. The optional END_YEAR cap and explicit-seed
+helper are shared with the seeded baseline. Do not parallelise calendar steps
+independently: each update needs the completed previous-quarter population feedback.
+*/
 %macro run_update_r1(r1_start_year,r1_end_year,intervention_option);
     %local _hiv_effective_end;
     %let _hiv_effective_end=&r1_end_year;
@@ -24299,17 +24619,37 @@ Inputs are:
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
 *    Save dataset at this point;
+/* V2-NOTE A40: Checkpoint has two pieces
+Baseline saved all state in A because merged person rows also contained shared feedback.
+V2 saves compact people in A and their one-row feedback separately. Together they
+represent the same intervention checkpoint. Keeping only A would lose the shared
+starting values required for both scenarios and risk using the previous scenario's end
+values.
+*/
 data a ;  set r1 ;
 run;
 data _hiv_checkpoint_feedback; set _hiv_feedback; run;
 
 *    Option 0;
+/* V2-NOTE A41: Restore both checkpoint pieces for option zero
+Restore the saved person dataset and its saved feedback before running option zero.
+These copy steps contain no RAND calls. The update itself uses initialize=0, preserving
+each person's saved clinical and behavioural history rather than running the original
+initializer again.
+*/
 data r1 ; set a ;
 run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
 %run_update_r1(&year_interv,&year_interv+50,0);
 
 *    Option 1;
+/* V2-NOTE A42: Option one starts from the same checkpoint
+Reset BOTH people and feedback after option zero. Otherwise option one could inherit the
+final option-zero feedback even though its people had returned to the intervention
+checkpoint. Scientific intervention settings and the original scenario order are
+retained. Fixed-seed runs use the existing scenario-specific reproducible stream
+schedule.
+*/
 data r1 ; set a ;
 run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
@@ -24350,6 +24690,13 @@ put
 */
 
 
+/* V2-NOTE A43: Final export contract is unchanged
+The following original KEEP list exports 3,634 variables with their existing meanings,
+units and run/cald/option rows. It is smaller than the internal 3,639-field summary
+contract. Helper counters, snapshot arrays and loop indices do not become exported
+columns. Naming still combines the prefix with the sampled dataset_id, and final binary
+compression is retained. No permanent result file is written until this final step.
+*/
 data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
 
 
