@@ -2578,16 +2578,6 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 
-
-
-
-
-
-
-
-
-
-
  
 end;
 
@@ -9324,6 +9314,7 @@ end;
 	e_rate_restart=eff_rate_restart;		* lapr - add rla and cla;
 	restart   =0;d=rand('uniform');
 	if t ge 3 and interrupt_choice    = 1 and lost=0 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0 and tcur_tm1=. and interrupt=0 then do;
+* Person interrupted due to choice, are not lost, had a visit, time off ART last period >0 (been off ART >= 6 months), and have not started interruption this period);  
 
 		if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  and date_v_alert > date_last_interrupt > . then e_rate_restart=e_rate_restart*10;
 
@@ -23111,10 +23102,39 @@ data a ;  set r1 ;
 *    Option 0;
 data r1 ; set a ;
 %run_update_r1(&year_interv,&year_interv+50,0);
-
 *    Option 1;
 data r1 ; set a ;
 %run_update_r1(&year_interv,&year_interv+50,1);
+*    Option 2;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,2);
+*    Option 3;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,3);
+*    Option 4;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,4);
+*    Option 5;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,5);
+*    Option 6;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,6);
+*    Option 7;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,7);
+*    Option 8;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,8);
+*    Option 9;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,9);
+*    Option 10;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,10);
+*    Option 11;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,11);
 
 
 
