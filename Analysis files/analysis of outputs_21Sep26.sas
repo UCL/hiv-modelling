@@ -58,6 +58,7 @@ proc means n p50 mean p5 p95;var p_onart_vl1000_sw_25;where rel_sw_lower_adh=0.6
 proc means n p50 mean p5 p95;var p_onart_vl1000_sw_25;where rel_sw_lower_adh=0.7;run;
 
 proc means n p50 mean p5 p95;var p_onart_vl1000_sw_25;where rel_sw_lower_adh=0.8;run;
+rel_sw_lower_adh
 
 proc freq;table rel_sw_lower_adh;run;
 
