@@ -11,7 +11,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 1000 ; 
+%let population = 100000 ; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -19971,9 +19971,6 @@ where naive=0 and caldate&j ge 2025;
 run;
 
 */
-
-
-proc print;var caldate&j age curr_mobile dead mm_prog_visit alive1564mm s_mm_prog_visit s_alive1564mm;where gender=1 and age ge 15;run;
 
 
 
