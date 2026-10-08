@@ -2290,7 +2290,7 @@ if gender=1 and curr_mobile_tm1 ne 1 and adc ne 1 then do; u=rand('uniform');
 	if 18 <= age < 36 and u < prob_mobile1835_ then curr_mobile=1; 
 	if 36 <= age < 60 and u < prob_mobile3660_ then curr_mobile=1;
 	if age >=60 and u < prob_mobile60pl then curr_mobile=1;
-curr_mobile=1;
+
 	if curr_mobile=1 and u < mm_hardreach and hardreach_updated ne 1 then do;
 		hardreach_updated=1;
 		if hard_reach ne 1 then do;
