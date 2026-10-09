@@ -63,35 +63,10 @@ smoke=0;if a < prob_smoke then smoke=1;
 
 ***Need to discuss in which section diet and activity goes;
 
-***Diet: 1=low risk, 2=moderate risk, 3-high risk - conditional on urban/rural;
-* Source: Westbury 2021;
-if urban=1 then do;
-%sample(diet, 1 2 3, 0.25 0.45 0.30);
-end;
-
-if urban=0 then do;
-%sample(diet, 1 2 3, 0.45 0.40 0.15);
-end;
-
-***Physical activity: 1=low, 2=moderate, 3=high - conditional on urban/rural;
-*Source: Assah 2011, Ojiambo 2012;
-if urban=1 then do;
-%sample(phys_act, 1 2 3, 0.50 0.35 0.15);
-end;
-
-if urban=0 then do;
-%sample(phys_act, 1 2 3, 0.15 0.33 0.45);
-end;
 
 
 
-*BMI up to 8% higher amongst those living in urban areas...but diet and physical activity are already conditional 
-on region so have lower multipliers for urban;
-*Want to include diet/phys act separately as this could form the basis of an intervention (though most diabetes models dont do this);
 
-*Defining increase in BMI risk;
-if urban=1 then %sample_uniform (fold_urban_bmi, 1.005 1.01); 
-if urban=0 then fold_urban_bmi=1;
 
 if smoke=1 then %sample_uniform (fold_smoke_bmi, );***DISCUSS - I think stopping smoking increases BMI;
 
@@ -105,8 +80,144 @@ if phys_act=1 then %sample_uniform (fold_phys_act_bmi, 1.03 1.04);
 
 
 
-***Think about bmi distribution at age 15;
-bmi = base_bmi * fold_urban_bmi * fold_smoke_bmi * fold_diet_bmi * fold_phys_act_bmi;
+*BMI for 15 year olds in rural settings, in 1990;
+
+***BMI risk factors
+Age
+Gender
+Urban/rural
+Diet
+Exercise
+Smoking/Alcohol - decided not to include these so far;
+
+**Diabetes risk factors - mostly captured under BMI but may have residual effects, and also consider
+Blood pressure
+Cholesterol
+Family history
+Medical conditions;
+;
+
+***At age 15;
+
+* Source: https://ncdrisc.org/data-downloads-adiposity-urban-rural-ado.html;
+*Gender;
+bmi_15_m = rand('normal', 17.3, 0.5);
+bmi_15_w = rand('normal', 19.1, 0.3);
+
+*Urban/rural;
+*prob_urban;				prob_urban = 0.40 + (rand('uniform')*0.20);
+
+*urban bmi in boys is ~ 0.3 times higher than rural and 0.4 in women;
+urban_fold_bmi_m = 1.03;
+urban_fold_bmi_w = 1.04;
+
+***Diet: 1=low risk, 2=moderate risk, 3-high risk - conditional on urban/rural;
+* Source: Westbury 2021;
+%sample(diet_urban, 1 2 3, 0.25 0.45 0.30);
+%sample(diet_rural 1 2 3, 0.45 0.40 0.15);
+
+%sample(low_risk_diet_fold_bmi, 0.95 0.98);
+%sample(mod_risk_diet_fold_bmi, 1.00 1.02);
+%sample(hig_risk_diet_fold_bmi, 1.03 1.05);
+
+***Physical activity: 1=low, 2=moderate, 3=high - conditional on urban/rural;
+*Source: Assah 2011, Ojiambo 2012;
+%sample(phys_act_urban, 1 2 3, 0.50 0.35 0.15);
+%sample(phys_act_rural, 1 2 3, 0.15 0.33 0.45);
+
+%sample(low_phys_act_fold_bmi, 1.03 1.05);
+%sample(mod_phys_act_fold_bmi, 1.00 1.01);
+%sample(hig_phys_act_fold_bmi, 0.95 0.98);
+
+****;
+
+*urban_fold (conditional on gender);
+if gender = 1 then urban_fold= urban_fold_bmi_m;
+if gender = 2 then urban_fold= urban_fold_bmi_w;
+
+*diet_fold and phys_act_fold (conditional on urban);
+if urban = 1 then do;
+	diet = diet_urban;
+	phys_act = phys_act_urban;
+end;
+
+if rural = 1 then do;
+	diet = diet_rural;
+	phys_act = phys_act_urban;
+end;
+
+if diet = 1 then diet_fold_bmi = low_risk_diet_fold_bmi;
+if diet = 2 then diet_fold_bmi = mod_risk_diet_fold_bmi;
+if diet = 3 then diet_fold_bmi = hig_risk_diet_fold_bmi;
+
+if phys_act = 1 then phys_act_fold_bmi = low_phys_act_fold_bmi;
+if phys_act = 2 then phys_act_fold_bmi = mod_phys_act_fold_bmi;
+if phys_act = 3 then phys_act_fold_bmi = hig_phys_act_fold_bmi;
+
+if age=15 then do;
+	if gender=1 then bmi =  bmi_15_m * urban_fold * diet_fold_bmi * phys_act_fold_bmi;
+	if gender=2 then bmi =  bmi_15_w * urban_fold * diet_fold_bmi * phys_act_fold_bmi;
+end;
+
+
+***Time updated BMI;
+
+***Account for urban/rural, diet and exercise changing over time;
+bmi_tm1 = bmi;
+urban_tm1 =	urban;
+diet_tm1 = diet;
+phsy_act_tm1 = phys_act;
+
+*Setting --> allow movement from rural to urban;
+a=rand('uniform');
+if urban = 0 and a < 0.0001 then urban=1;
+
+*Diet --> a person may change dietary behaviour;
+a=rand('uniform');b=rand('uniform');c=rand('uniform');
+
+if diet_tm1=1 then do;
+	if a < 0.80 then diet=1; 
+	if 0.80 <= a < 0.98 then diet =2;
+	if 0.98 <= a then diet =3;
+end;
+
+if diet_tm1=2 then do;
+	if b < 0.20 then diet=1; 
+	if 0.20 <= b < 0.95 then diet =2;
+	if 0.95 <= b then diet =3;
+end;
+
+if diet_tm1=3 then do;
+	if c < 0.05 then diet=1; 
+	if 0.05 <= c < 0.25 then diet =2;
+	if 0.25 <= c then diet =3;
+end;
+
+
+
+
+*Physical exercise --> a person may change levels of exercise;
+a=rand('uniform');b=rand('uniform');c=rand('uniform');
+
+if phys_act_tm1=1 then do;
+	if a < 0.80 then phys_act=1; 
+	if 0.80 <= a < 0.98 then phys_act =2;
+	if 0.98 <= a then phys_act =3;
+end;
+
+if phys_act_tm1=2 then do;
+	if b < 0.20 then phys_act=1; 
+	if 0.20 <= b < 0.95 then phys_act =2;
+	if 0.95 <= b then phys_act =3;
+end;
+
+if phys_act_tm1=3 then do;
+	if c < 0.05 then phys_act=1; 
+	if 0.05 <= c < 0.25 then phys_act =2;
+	if 0.25 <= c then phys_act =3;
+end;
+
+bmi = bmi_tm1 * 
 
 
 
