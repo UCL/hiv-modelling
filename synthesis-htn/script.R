@@ -17,7 +17,8 @@ pct <- function(x) {
 }
 
 #### Import Synthesis output ####
-df_sas_wide <- read_sas("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/synthesis/w_base_105_d3pct.sas7bdat")
+#df_sas_wide <- read_sas("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/synthesis/w_base_105_d3pct.sas7bdat")
+df_sas_wide <- read_sas("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/search2026/search_4/w_base.sas7bdat")
 df_sas_wide <- df_sas_wide %>% mutate(source = ifelse(option ==1, "SOC",
                                      ifelse(option ==2, "CCC",
                                      ifelse(option ==3, "CHW",

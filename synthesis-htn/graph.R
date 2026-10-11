@@ -7,7 +7,7 @@ library(data.table)
 plan(multisession)  # Use all available cores
 
 # Define the directory containing the SAS files
-filepath <- "~/Library/CloudStorage/Box-Box/1.sapphire_modelling/synthesis/run105/"
+filepath <- "~/Library/CloudStorage/Box-Box/1.sapphire_modelling/search2026/search_4/"
 
 # List all SAS files in the directory
 file_list <- list.files(path = filepath, pattern = "\\.sas7bdat$", full.names = TRUE)
@@ -55,12 +55,9 @@ process_file <- function(file) {
           p_on_tx_htn_ge18 = s_on_tx_htn_ge18 / s_htn_true_ge18,
           p_htn_ctrl_ge18 = s_htn_control_ge18 / s_htn_true_ge18,
           policy = ifelse(option ==1, "SOC",
-                          ifelse(option ==2, "CCC",
-                                 ifelse(option ==3, "CHW",
-                                        ifelse(option ==4, "CHW_link", 
-                                               ifelse(option ==5, "perfect", NA)))))
+                          ifelse(option ==2, "SEARCH", NA))
         ) %>%
-          filter(policy == "SOC" | policy == "CCC" | policy == "CHW") %>% 
+          filter(policy == "SOC" | policy == "SEARCH") %>% 
           filter(!is.na(run))
     },
     error = function(e) {
@@ -87,4 +84,4 @@ df_yr <- df[, lapply(.SD, mean, na.rm = TRUE),
 # Optional: Add the year column back for context if needed
 df_yr[, cald := year]
 
-save.image("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration/run105_long.RData")
+save.image("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration/search4_long.RData")
