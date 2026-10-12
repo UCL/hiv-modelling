@@ -241,7 +241,7 @@ if 40 le age lt 60 then age_fold_bmi = 1.0005;
 if age ge 60 then age_fold_bmi = 0.9995;
 
 bmi = bmi_tm1 * age_fold_bmi * (urban_fold)^1/4 * (fold_ch_diet)^1/4 * fold_ch_phys_act^1/4;
-*Raised to the power to 1/4 to convert annual increases to quartely increases;
+*Raised to the power to 1/4 to convert annual increases to quarterly increases;
 
 ***Diabetes risk;
 
