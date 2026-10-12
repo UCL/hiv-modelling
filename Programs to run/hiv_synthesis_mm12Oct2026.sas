@@ -3711,7 +3711,7 @@ rred_rc=1.0;
 
 ***Mobile men - increasing newp given MM are at higher risk;
 
-***Trying instead to increase newp directly as this method only got to ~20% newp>0. Search for mobile men;
+***Trying instead to increase newp directly as this method only got to ~20% newp>0. Search for Assume higher newp in subset of population;
 /*
 *This increases ych_risk_beh_newp which is used to define rred_rc;
 xx=rand('uniform');
