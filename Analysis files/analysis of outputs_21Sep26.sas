@@ -7,7 +7,7 @@ OUTPUTS;
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\PACE2\";
 
 data a; 
-set a.wide_pace_24_09_26; 
+set a.wide_pace_07_10_26; 
 run;
 
 ***LOOK AT STRATFYING BY SW_MATRIX to see IF THAT LOWERS PREVALENCE;
@@ -22,7 +22,7 @@ proc means n p50 mean p5 p95;var p_fsw_newp0__25;where sw_trans_matrix=1;run;
 proc means n p50 mean p5 p95;var p_fsw_newp0__25;where sw_trans_matrix=2;run;
 proc means n p50 mean p5 p95;var p_fsw_newp0__25;where sw_trans_matrix=3;run;
 
-
+proc freq;table sw_trans_matrix;run;
 
 ***Compare SW and ESW in 2026;
 

@@ -55,10 +55,10 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * age_effect_stop_sexwork;	age_effect_stop_sexwork=1.5;*22% over 40 in AMETHIST, core modelled estimates are 10%;
 
-* sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.10 0.80 0.10);
+* sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.20 0.10 0.70);
 
 
-* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20); 
 * rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
 
 ***Change these parameters as are assuming higher impact than in core and Zim has Sisters program in place;
