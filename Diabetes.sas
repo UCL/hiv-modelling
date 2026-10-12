@@ -60,23 +60,10 @@ a=rand('uniform');
 smoke=0;if a < prob_smoke then smoke=1;
 
 
+***In 1989, set BMIs for everyone (leave out diet and physical activity here for simplicity);
+if urban=1 then do;
+	if age 
 
-***Need to discuss in which section diet and activity goes;
-
-
-
-
-
-
-if smoke=1 then %sample_uniform (fold_smoke_bmi, );***DISCUSS - I think stopping smoking increases BMI;
-
-if diet=1 then fold_diet_bmi=1; *low risk diet;
-if diet=2 then %sample_uniform (fold_diet_bmi, 1.01 1.02);
-if diet=3 then %sample_uniform (fold_diet_bmi, 1.03 1.04);
-
-if phys_act=3 then %sample_uniform (fold_phys_act_bmi, 0.95 0.97);*high physical activity;
-if phys_act=2 then fold_phys_act_bmi=1;
-if phys_act=1 then %sample_uniform (fold_phys_act_bmi, 1.03 1.04);
 
 
 
@@ -154,6 +141,7 @@ if phys_act = 1 then phys_act_fold_bmi = low_phys_act_fold_bmi;
 if phys_act = 2 then phys_act_fold_bmi = mod_phys_act_fold_bmi;
 if phys_act = 3 then phys_act_fold_bmi = hig_phys_act_fold_bmi;
 
+***BMI at age 15 when people enter the model;
 if age=15 then do;
 	if gender=1 then bmi =  bmi_15_m * urban_fold * diet_fold_bmi * phys_act_fold_bmi;
 	if gender=2 then bmi =  bmi_15_w * urban_fold * diet_fold_bmi * phys_act_fold_bmi;
@@ -193,68 +181,21 @@ if diet_tm1=3 then do;
 	if 0.25 <= c then diet =3;
 end;
 
-
-
-
-*Physical exercise --> a person may change levels of exercise;
-a=rand('uniform');b=rand('uniform');c=rand('uniform');
-
-if phys_act_tm1=1 then do;
-	if a < 0.80 then phys_act=1; 
-	if 0.80 <= a < 0.98 then phys_act =2;
-	if 0.98 <= a then phys_act =3;
-end;
-
-if phys_act_tm1=2 then do;
-	if b < 0.20 then phys_act=1; 
-	if 0.20 <= b < 0.95 then phys_act =2;
-	if 0.95 <= b then phys_act =3;
-end;
-
-if phys_act_tm1=3 then do;
-	if c < 0.05 then phys_act=1; 
-	if 0.05 <= c < 0.25 then phys_act =2;
-	if 0.25 <= c then phys_act =3;
-end;
-
-bmi = bmi_tm1 * 
-
-
-
-
-****;
-
-***UPDATING VARIABLES - this will be inserted in the section where variables are updated every 3 months;
-
-urban_tm1=urban;
-diet_tm1=diet;
-phsy_act_tm1=phys_act;
-smoke_tm1=smoke;
-
-*Setting --> allow movement from rural to urban;
-a=rand('uniform');
-if urban = 0 and a < 0.0001 then urban=1;
-
-*Diet --> a person may change dietary behaviour;
-a=rand('uniform');b=rand('uniform');c=rand('uniform');
-
+*New fold factor based on previous diet;
+if diet=diet_tm1 then fold_ch_diet=1.00;
 if diet_tm1=1 then do;
-	if a < 0.80 then diet=1; 
-	if 0.80 <= a < 0.98 then diet =2;
-	if 0.98 <= a then diet =3;
+	if diet = 2 then fold_ch_diet = 1.02; *from low risk to moderate risk diet;
+	if diet = 3 then fold_ch_diet = 1.05; *from low risk to high risk diet;
 end;
-
 if diet_tm1=2 then do;
-	if b < 0.20 then diet=1; 
-	if 0.20 <= b < 0.95 then diet =2;
-	if 0.95 <= b then diet =3;
+	if diet = 1 then fold_ch_diet = 0.98; *from mod risk to low risk diet;
+	if diet = 3 then fold_ch_diet = 1.02; *from mod risk to high risk diet;
+end;
+if diet_tm1=3 then do;
+	if diet = 1 then fold_ch_diet = 0.95; *from high risk to low risk diet;
+	if diet = 2 then fold_ch_diet = 0.98; *from high risk to mod risk diet;
 end;
 
-if diet_tm1=3 then do;
-	if c < 0.05 then diet=1; 
-	if 0.05 <= c < 0.25 then diet =2;
-	if 0.25 <= c then diet =3;
-end;
 
 *Physical exercise --> a person may change levels of exercise;
 a=rand('uniform');b=rand('uniform');c=rand('uniform');
@@ -276,6 +217,34 @@ if phys_act_tm1=3 then do;
 	if 0.05 <= c < 0.25 then phys_act =2;
 	if 0.25 <= c then phys_act =3;
 end;
+
+*New fold factor based on previous physical activity;
+if phys_act=phys_act_tm1 then fold_ch_phys_act=1.00;
+
+if phys_act_tm1=1 then do;
+	if phys_act = 2 then fold_ch_phys_act = 0.98; *from low to moderate phys_act;
+	if phys_act = 3 then fold_ch_phys_act = 0.95; *from low to high phys_act;
+end;
+if phys_act_tm1=2 then do;
+	if phys_act = 1 then fold_ch_phys_act = 1.02; *from mod to low phys_act;
+	if phys_act = 3 then fold_ch_phys_act = 0.97; *from mod to high phys_act;
+end;
+if phys_act_tm1=3 then do;
+	if phys_act = 1 then fold_ch_phys_act = 1.05; *from high to low phys_act;
+	if phys_act = 2 then fold_ch_phys_act = 1.02; *from high to mod phys_act;
+end;
+
+*Age;
+if 15 le age lt 20 then age_fold_bmi = 1.0050; *This is per quarter and equivalent to 2% increase per year;
+if 20 le age lt 40 then age_fold_bmi = 1.0012;
+if 40 le age lt 60 then age_fold_bmi = 1.0005;
+if age ge 60 then age_fold_bmi = 0.9995;
+
+bmi = bmi_tm1 * age_fold_bmi * (urban_fold)^1/4 * (fold_ch_diet)^1/4 * fold_ch_phys_act^1/4;
+*Raised to the power to 1/4 to convert annual increases to quartely increases;
+
+***Diabetes risk;
+
 
 *Smoking --> a person can start or stop smoking, dependant on age;
 if (. < age < 25) or (age ge 55) then prob_start_smoke = prob_start_smoke * 0.80;*reduced probability for younger and older ages;
