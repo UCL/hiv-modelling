@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VLM_2026\";
 
 data a;
-set a.vlm_26Sep2026; 
+set a.vlm_26Sep26; 
 if run=. then delete; 
 
 proc sort;
@@ -17,7 +17,6 @@ set a;
 if cald=2025.25; ***Update as required;
 s_alive = s_alive_m + s_alive_w ;
 
-*sf_2025 = (40912109) / s_alive;  * Mihpsa_SA calibration folder in output files using World Bank;
 sf_2025=10000000/s_alive;
 sf=sf_2025;
 keep run sf sf_2025;
@@ -182,7 +181,6 @@ s_alive = s_alive_m + s_alive_w ;
 * n_alive_w;					n_alive_w = s_alive_w * sf;
 
 ***general population- key outputs;
-* p_hiv_m;						p_hiv_m = s_hiv1564m/s_ageg1564m;
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
 * p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m1564_ / s_hiv1564m ;  
 * p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
@@ -197,6 +195,7 @@ s_alive = s_alive_m + s_alive_w ;
 * p_vg1000_, p_vl1000_;			if s_hiv1564  > 0 then p_vg1000_ = s_vg1000 / s_hiv1564 ;  p_vl1000_ = 1- p_vg1000_ ;
 * prevalence_vg1000_;			if (s_alive1549_w + s_alive1549_m) > 0 then prevalence_vg1000_ = s_vg1000 / (s_alive1549_w + s_alive1549_m);
 
+/*
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
 * prevalence1549_;				prevalence1549_ = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
@@ -310,6 +309,7 @@ logm25r = log(m25r+0.0001);
 logm35r = log(m35r+0.0001);
 logm45r = log(m45r+0.0001);
 logm55r = log(m55r+0.0001);
+*/
 
 keep run option cald 
 n_alive_m			 n_alive_w			n_alive				n_mm				p_mm		
