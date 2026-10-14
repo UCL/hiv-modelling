@@ -4,16 +4,50 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VLM_2026\";
 
 data a;
-set a.wide_vlm_Sep26;
+set a.wide_vlm_26Sep26;
 run;
 
 data b;
 set a;
 
+proc means n median mean p5 p95;var
+
+prevalence1549m_46_1  p_onart_vl1000__46_1  p_vl1000__46_1  p_vg1000__46_1	 prevalence_vg1000__46_1  hivrel_death_rate_46_1  
+prevalence1549m_46_2  p_onart_vl1000__46_2  p_vl1000__46_2  p_vg1000__46_2	 prevalence_vg1000__46_2  hivrel_death_rate_46_2  
+prevalence1549m_46_3  p_onart_vl1000__46_3  p_vl1000__46_3  p_vg1000__46_3	 prevalence_vg1000__46_3  hivrel_death_rate_46_3  
+prevalence1549m_46_4  p_onart_vl1000__46_4  p_vl1000__46_4  p_vg1000__46_4	 prevalence_vg1000__46_4  hivrel_death_rate_46_4
+prevalence1549m_46_5  p_onart_vl1000__46_5  p_vl1000__46_5  p_vg1000__46_5	 prevalence_vg1000__46_5  hivrel_death_rate_46_5
+prevalence1549m_46_6  p_onart_vl1000__46_6  p_vl1000__46_6  p_vg1000__46_6	 prevalence_vg1000__46_6  hivrel_death_rate_46_6
+prevalence1549m_46_7  p_onart_vl1000__46_7  p_vl1000__46_7  p_vg1000__46_7	 prevalence_vg1000__46_7  hivrel_death_rate_46_7
+prevalence1549m_46_8  p_onart_vl1000__46_8  p_vl1000__46_8  p_vg1000__46_8	 prevalence_vg1000__46_8  hivrel_death_rate_46_8
+prevalence1549m_46_9  p_onart_vl1000__46_9  p_vl1000__46_9  p_vg1000__46_9	 prevalence_vg1000__46_9  hivrel_death_rate_46_9
+prevalence1549m_46_10  p_onart_vl1000__46_10  p_vl1000__46_10  p_vg1000__46_10	 prevalence_vg1000__46_10  hivrel_death_rate_46_10
+prevalence1549m_46_11  p_onart_vl1000__46_11  p_vl1000__46_11  p_vg1000__46_11	 prevalence_vg1000__46_11  hivrel_death_rate_46_11
+prevalence1549m_46_12  p_onart_vl1000__46_12  p_vl1000__46_12  p_vg1000__46_12	 prevalence_vg1000__46_12  hivrel_death_rate_46_12
+
+
+;run;
+
+proc means n median mean p5 p95;var 
+
+p_diag_46_1  p_diag_46_2  p_diag_46_3  p_diag_46_4  p_diag_46_5 p_diag_46_6
+p_diag_46_7  p_diag_46_8  p_diag_46_9  p_diag_46_10 p_diag_46_11 p_diag_46_12
+p_onart_diag_46_1  p_onart_diag_46_2  p_onart_diag_46_3  p_onart_diag_46_4  p_onart_diag_46_5 p_onart_diag_46_6
+p_onart_diag_46_7  p_onart_diag_46_8  p_onart_diag_46_9  p_onart_diag_46_10 p_onart_diag_46_11 p_onart_diag_46_12;run;
+
+/*
+
+prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w  	
+incidence1549m			p_diag	 			p_diag_m	 	 	p_diag_w
+p_onart_diag  	  		p_onart_diag_m   	p_onart_diag_w  	p_onart_vl1000_ 	p_onart_vl1000_m 
+p_onart_vl1000_w 		p_vg1000_			p_vl1000_ 			prevalence_vg1000_	
+hivrel_death_rate;
+*/
 
 
 
-proc means n median p5 p95;var
+
+
 n_mm_26 				p_mm_26	 			p_1524mm_26		 	p_2534mm_26			p_3544mm_26				p_4554mm_26		
 p_5564mm_26				p_newp_ge1_mm_26	av_mm_newp_26		p_elig_onprep_mm_26	incidence1564_mm_26		prevalence1564_mm_26	
 p_diag_mm_26			p_onart_diag_mm_26  p_onart_vl1000_mm_26	
