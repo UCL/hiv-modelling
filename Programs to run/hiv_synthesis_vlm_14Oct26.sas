@@ -2507,6 +2507,9 @@ who may be dead and hence have caldate{t} missing;
 ***LBM Sep26 check;
 
  	*Option 0: status quo - annual VL monitoring (VLM);
+	if option = 0 then do;
+		art_monitoring_strategy = 150;
+	end;
  	*This will be the default 150 strategy;
 
  	*Option 1: No VLM;
@@ -2530,7 +2533,10 @@ who may be dead and hence have caldate{t} missing;
 *rate_int_choice sampled at the outset from 0.001, 0.004, 0.008, 0.012;
 
  	*Option 4: status quo - annual VL monitoring (VLM);
- 	if option = 4 then eff_rate_int_choice=0.01; *no idea what this should be really;
+ 	if option = 4 then do;
+		art_monitoring_strategy = 150;
+		eff_rate_int_choice=0.01; *no idea what this should be really;
+	end;
 
  	*Option 5: No VLM;
 	if option = 5 then do;
@@ -2556,7 +2562,10 @@ who may be dead and hence have caldate{t} missing;
 *rate_int_choice sampled at the outset from 0.001, 0.004, 0.008, 0.012;
 
  	*Option 8: status quo - annual VL monitoring (VLM);
- 	if option = 8 then eff_rate_int_choice=0.1; *no idea what this should be really;
+ 	if option = 8 then do;
+		art_monitoring_strategy = 150;
+		eff_rate_int_choice=0.1; *no idea what this should be really;
+	end;
 
  	*Option 9: No VLM;
 	if option = 9 then do;
@@ -3016,7 +3025,7 @@ end;
 if absence_cd4_year_i ne 1 and absence_vl_year_i =  1 then do;
 	art_monitoring_strategy=1; *Clinical monitoring alone;
 end;
-if absence_vl_year_i ne 1 and set_in_options ne 1 then do;
+if absence_vl_year_i ne 1 and art_mon_set_in_options ne 1 then do;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121 125 130) then art_monitoring_strategy=150;  
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
