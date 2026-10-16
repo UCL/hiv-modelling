@@ -14,7 +14,7 @@ libname a "C:\Users\Loveleen\Documents\";
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100; 
+%let population = 10000; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -3037,7 +3037,7 @@ end;
 if absence_cd4_year_i ne 1 and absence_vl_year_i =  1 then do;
 	art_monitoring_strategy=1; *Clinical monitoring alone;
 end;
-if absence_vl_year_i ne 1 and set_in_options ne 1 then do;
+if absence_vl_year_i ne 1 and art_mon_set_in_options ne 1 then do;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121 125 130) then art_monitoring_strategy=150;  
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
@@ -23087,10 +23087,6 @@ Inputs are:
 	option number (s)
 */
 *dependent_on_time_step_length;
-
-
-*LBM Oct26 I have inserted 2026 in place of &caldate1 - correct?;
-  
 
 %macro run_update_r1(r1_start_year,r1_end_year,intervention_option);
 

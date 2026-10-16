@@ -1,15 +1,20 @@
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
+/*
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
+*/
+
+libname a "C:\Users\Loveleen\Documents\";
+%let tmpfilename=out_;
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 10000 ; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -3025,7 +3030,7 @@ end;
 if absence_cd4_year_i ne 1 and absence_vl_year_i =  1 then do;
 	art_monitoring_strategy=1; *Clinical monitoring alone;
 end;
-if absence_vl_year_i ne 1 and set_in_options ne 1 then do;
+if absence_vl_year_i ne 1 and art_mon_set_in_options ne 1 then do;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121 125 130) then art_monitoring_strategy=150;  
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
@@ -23107,7 +23112,9 @@ Inputs are:
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
 *    Save dataset at this point;
-data a ;  set r1 ;
+/*data a ;  set r1 ;*/;
+data a.end2026_&dataset_id ;  set r1 ;
+/*
 
 *    Option 0;
 data r1 ; set a ;
@@ -23148,7 +23155,7 @@ data r1 ; set a ;
 
 
 
-
+*/
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
