@@ -1,17 +1,20 @@
-***CHANGES;
 
-*Op2 has been split into op 2 and op 3 to allow for cab and len intro respectively;
-*value of rate choose stop prep divided by larger number so stopping rates are lower;
+***ALL MEN HAVE CURR_MOBILE=1 TO DEBUG;
 
+
+/*
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
+*/
 
+libname a "C:\Users\Loveleen\Documents\";
+%let tmpfilename=out_;
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 10000 ; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -2290,7 +2293,7 @@ if gender=1 and curr_mobile_tm1 ne 1 and adc ne 1 then do; u=rand('uniform');
 	if 18 <= age < 36 and u < prob_mobile1835_ then curr_mobile=1; 
 	if 36 <= age < 60 and u < prob_mobile3660_ then curr_mobile=1;
 	if age >=60 and u < prob_mobile60pl then curr_mobile=1;
-
+curr_mobile=1;
 	if curr_mobile=1 and u < mm_hardreach and hardreach_updated ne 1 then do;
 		hardreach_updated=1;
 		if hard_reach ne 1 then do;
@@ -22472,9 +22475,10 @@ Inputs are:
 
 *   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
+data a.end2026_&dataset_id ;  set r1 ;
 
-*    Save dataset at this point;
-data a ;  set r1 ;
+
+/*
 data r1 ; set a ;
 
 * 	Option 0 ;
@@ -22510,7 +22514,7 @@ data r1; set a;
 data r1; set a;
 %run_update_r1(&year_interv,&year_interv+20,7);
 
-			
+	*/		
 														 
 
 			
