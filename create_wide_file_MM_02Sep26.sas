@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_01oct2026; 
+set a.mm_14oct2026; 
 if run=. then delete; 
 
 proc sort;
@@ -356,7 +356,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 136;
+%let nfit = 800;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -475,7 +475,6 @@ logw15r	logw25r	logw35r	logw45r	logw55r logm15r	logm25r	logm35r	logm45r	logm55r
 /*-----------------------------------------*/
 %summary_all_options(options=0 1 2 3 4 5 6 7);
 
-proc freq data=d;table mean_logw15r_0;RUN;
 
 data d;
 set master_summary;
