@@ -1,18 +1,21 @@
-***CHANGES;
 
-*Op2 has been split into op 2 and op 3 to allow for cab and len intro respectively;
-*value of rate choose stop prep divided by larger number so stopping rates are lower;
+***ALL MEN HAVE CURR_MOBILE=1 TO DEBUG;
 
+
+/*
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
+*/
 
+libname a "C:\Users\Loveleen\Documents\";
+%let tmpfilename=out_;
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
-%let year_interv = 2026.0 ;	
+%let population = 10000 ; 
+%let year_interv = 2026;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -123,7 +126,7 @@ One  row of data defined, containing  parameter values that remain fixed for the
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
+/*
 data z;
 
 run = rand('uniform')*1000000000;  run=round(run,1);
@@ -149,9 +152,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 * start of epidemic;
 startyr = 1989 + 0.25;  	* overwritten in country-specific include statements (SA, Zim, Malawi, Cote d Ivoire, Kenya) JAS Feb24;
 * ts1m;
-/*
-startyr = 1989 + 1/12;
-*/
+
 
 
 newp_seed = 7;  
@@ -1040,10 +1041,13 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
 
+*/
+call symput('caldate1',1989);*need this here as caldate1 is defined in the commented out section;
 
-call symput('caldate1',caldate1);
+dataset_id=trim(left(run));
+call symput('dataset_id',dataset_id)
 
-
+/*
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
@@ -2145,7 +2149,7 @@ option=.;
 _p1 = rand('uniform'); _p2 = rand('uniform'); _p3 = rand('uniform'); _p4 = rand('uniform'); _p5 = rand('uniform'); _p6 = rand('uniform'); 
 _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand('uniform'); 
 
-
+*/;
 
 
 
@@ -2341,7 +2345,7 @@ set_in_options=.;
 
 	*Option 2: scale up of oral PrEP, and hard to reach set to 0, intro of Cab;
 	*Compare to option 0;
-	if option = 2 then do; *Discuss how best to use mm_prep_sio - only for start, stop and pref paramters?;
+	if option = 2 then do; *Discuss how best to use mm_prep_sio - only for start, stop and pref parameters?;
 	
 	prep_parameters_sio=1 ;*sio=set in options;
 
@@ -2354,14 +2358,17 @@ set_in_options=.;
 			eff_rate_test_startprep_any = 0.07; 
 			eff_prob_prep_any_restart_choice = 0.07;
 			pref_prep_oral = 0.3;
-		
-			rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-			prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-			rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-			prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-			pref_prep_oral_sio = pref_prep_oral;
-
 		end;
+
+		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
+		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
+		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
+		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
+		pref_prep_oral_sio = pref_prep_oral;
+
+		rate_choose_stop_prep_cab_sio = eff_rate_choose_stop_prep_cab;
+		prob_prep_cab_b_sio = eff_prob_prep_cab_b;
+		pref_prep_cab_sio = pref_prep_cab;
 
 	end;
 
@@ -2628,11 +2635,14 @@ if . < caldate{t} < date_prep_cab_intro or date_prep_cab_intro=. or caldate{t} >
 if . < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then pref_prep_len = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
 
+
+
 if prep_parameters_sio=1 then do ;
 	pref_prep_oral = pref_prep_oral_sio;
-	pref_pref_cab = pref_prep_cab_sio;
+	pref_prep_cab = pref_prep_cab_sio;
 	pref_prep_len = pref_prep_len_sio;
 end;
+
 
 * highest_prep_pref;
 * does not show people who are not willing to take any PrEP type;
@@ -3024,6 +3034,7 @@ end;
 
 * if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
 * reg_option 107 is used for people who seroconverted on prep_inj / cab ;
+
 
 
 ***MOBILE MEN program;
@@ -5437,7 +5448,7 @@ end;
 
 
 * PREP INITIATION AND CONTINUATION;
-
+/*
 if prep_parameters_sio=1 then do ;
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral_sio;		
 		eff_prob_prep_oral_b = prob_prep_oral_b_sio;
@@ -5457,7 +5468,7 @@ if prep_parameters_sio=1 then do ;
 		*eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
 		pref_prep_len = pref_prep_len_sio;
 end;
-
+*/
 /* 
 	PrEP start and restart dates are given by:
 		prep_xxx_current_start_date 		start date of current PrEP course, whether that is first ever PrEP, switching from a different PrEP option, or restarting following a break due to ineligibility or choice
@@ -19971,6 +19982,8 @@ run;
 
 */
 
+proc print;var caldate&j option YY mm_prog_visit pref_prep_cab_sio pref_prep_cab pref_prep_oral pref_prep_oral_sio prep_cab_mm prep_oral_mm;
+where curr_mobile=1 and age gt 15 and hiv ne 1;run;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -22467,49 +22480,52 @@ Inputs are:
 
 
 *** RUN PROGRAM; 
-
+/*
 *   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
+data a.end2026_&dataset_id ;  set r1 ;
+*/
 
-*    Save dataset at this point;
-data a ;  set r1 ;
-data r1 ; set a ;
 
+
+/*
 * 	Option 0 ;
-%run_update_r1(&year_interv,&year_interv+20,0);
+data r1 ; set a.end2026_17504327;
+%run_update_r1(&year_interv,&year_interv+2,0);
 
 
 * 	Option 1;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,1);
-
+data r1; set a.end2026_17504327;
+%run_update_r1(&year_interv,&year_interv+2,1);
+*/
 
 * 	Option 2;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,2);
+data r1; set a.end2026_17504327;
+%run_update_r1(&year_interv,&year_interv+2,2);
 
+/*
 * 	Option 3;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,3);
+data r1; set a.end2026_17504327;
+%run_update_r1(&year_interv,&year_interv+2,3);
 
 * 	Option 4;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,4);
+data r1; set a.end2026_17504327;
+%run_update_r1(&year_interv,&year_interv+2,4);
 
 * 	Option 5;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,5);
+data r1; set a.end2026_17504327;
+%run_update_r1(&year_interv,&year_interv+2,5);
 
 * 	Option 6;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,6);
+data r1; set a.end2026_17504327;
+%run_update_r1(&year_interv,&year_interv+2,6);
 
 * 	Option 7;
-data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,7);
+data r1; set a.end2026_17504327;
+%run_update_r1(&year_interv,&year_interv+2,7);
 
-			
-														 
+	
+	*/													 
 
 			
 														 
