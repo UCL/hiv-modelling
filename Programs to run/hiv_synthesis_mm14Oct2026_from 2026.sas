@@ -2312,6 +2312,56 @@ if (curr_mobile=1 or adc=1) and r < prob_stop_mobile then do;
 		hard_reach_due_to_mobile=0;
 	end;
 end;
+
+
+
+***MOBILE MEN program;
+
+***PREP parameters are set within the options code but reset here when they stop visiting the program;
+
+if caldate{t} = date_mm_prog_intro then eff_mm_program=mm_program;
+
+if eff_mm_program=1 and curr_mobile=1 then do;
+	if mm_prog_visit=0 then do; a=rand('uniform');
+		if a < rate_engage_mm_program then do;
+				mm_prog_visit=1;
+				date_1st_mm_prog_vis=caldate{t};*this refers to first date of the current episode;
+
+				if hard_reach_due_to_mobile=1 then do;
+					hard_reach_due_to_mobile=0;
+					hard_reach=0;
+				end;
+		end;
+	end;
+end;
+
+else if mm_prog_visit=1 then do; e=rand('uniform');
+	if (e < rate_disengage_mm_program) then do; *those on len dont need a visit every 3 months so dont want to cost the visit - need to manipulate this in the costs eg if len=1 then mm_prog_costs/2;
+		mm_prog_visit=0 ; 
+		date_last_mm_prog_vis=caldate{t};
+
+		eff_rate_test_startprep_any=0;*reset prep parameters so if no visit, no prep;
+		eff_rate_choose_stop_prep_oral=1;			
+		eff_rate_choose_stop_prep_cab=1;	
+		eff_rate_choose_stop_prep_len=1;		
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+
+	end;
+end;
+
+*if mobile men stop being mobile, reset parameters;
+
+if curr_mobile=0 then do;
+	mm_prog_visit=0 ; 
+	date_last_mm_prog_vis=caldate{t};
+
+	eff_rate_test_startprep_any=0;*reset prep parameters so if no visit, no prep;
+	eff_rate_choose_stop_prep_oral=1;			
+	eff_rate_choose_stop_prep_cab=1;	
+	eff_rate_choose_stop_prep_len=1;		
+	eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+
+end;
 * ==========================================================================================================================================;
 
 
@@ -2347,28 +2397,33 @@ set_in_options=.;
 	*Compare to option 0;
 	if option = 2 then do; *Discuss how best to use mm_prep_sio - only for start, stop and pref parameters?;
 	
-	prep_parameters_sio=1 ;*sio=set in options;
-
+	
+		oral_prep_parameters_sio=1 ;*sio=set in options;
 		prep_any_strategy=20;
 		date_prep_cab_intro=&year_interv;
 
 		if mm_prog_visit=1 then do;
+			
 			eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral/2 ;		
 			eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
 			eff_rate_test_startprep_any = 0.07; 
 			eff_prob_prep_any_restart_choice = 0.07;
-			pref_prep_oral = 0.3;
+			pref_prep_oral = 0.7; ***only oral PrEP scale up so this should be higher than cab pref for most people;
+		
+			rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
+			prob_prep_oral_b_sio = eff_prob_prep_oral_b;
+			rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
+			prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
+			pref_prep_oral_sio = pref_prep_oral;
 		end;
-
-		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_oral_sio = pref_prep_oral;
-
-		rate_choose_stop_prep_cab_sio = eff_rate_choose_stop_prep_cab;
-		prob_prep_cab_b_sio = eff_prob_prep_cab_b;
-		pref_prep_cab_sio = pref_prep_cab;
+		
+		if mm_prog_visit ne 1 then do;
+			rate_choose_stop_prep_oral_sio = rate_choose_stop_prep_oral;
+			prob_prep_oral_b_sio = prob_prep_oral_b;
+			rate_test_startprep_any_sio = rate_test_startprep_any; 
+			prob_prep_any_restart_choice_sio = prob_prep_any_restart_choice;
+			pref_prep_oral_sio = pref_prep_oral;
+		end;
 
 	end;
 
@@ -2377,8 +2432,7 @@ set_in_options=.;
 	*Compare to option 0;
 	if option = 3 then do;
 	
-	prep_parameters_sio=1 ;*sio=set in options;
-
+		oral_prep_parameters_sio=1 ;*sio=set in options;
 		prep_any_strategy=20;
 		date_prep_len_intro=&year_interv;
 
@@ -2387,7 +2441,7 @@ set_in_options=.;
 		eff_prob_prep_oral_b = prob_prep_oral_b + 0.05;
 		eff_rate_test_startprep_any = 0.07; 
 		eff_prob_prep_any_restart_choice = 0.07;
-		pref_prep_oral = 0.3;
+		pref_prep_oral = 0.7;
 
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
@@ -2395,13 +2449,22 @@ set_in_options=.;
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
 	end;
+
+	if mm_prog_visit ne 1 then do;
+		rate_choose_stop_prep_oral_sio = rate_choose_stop_prep_oral;
+		prob_prep_oral_b_sio = prob_prep_oral_b;
+		rate_test_startprep_any_sio = rate_test_startprep_any; 
+		prob_prep_any_restart_choice_sio = prob_prep_any_restart_choice;
+		pref_prep_oral_sio = pref_prep_oral;
+	end;
+
 	end;
 
 	*Option 4: scale up of Cab, and hard to reach set to 0;
 	*Compare to option 0;
 	if option = 4  then do;
 
-		prep_parameters_sio=1 ;
+		cab_prep_parameters_sio=1 ;
 
 		prep_any_strategy=20;
 		date_prep_cab_intro=&year_interv;
@@ -2411,7 +2474,7 @@ set_in_options=.;
 		u=rand('uniform');
 		if caldate_never_dot = &year_interv then do;
 			pref_prep_cab=0.4;*start with everyone on cab (as this is higher than oral pref);
-			if  u< 0.4 then pref_prep_cab = 0.40;*25% still prefer oral;
+			if  u< 0.3 then pref_prep_cab = 0.25;*30% still prefer oral;
 		end;	
 
 	if mm_prog_visit=1 then do;
@@ -2420,17 +2483,21 @@ set_in_options=.;
 		eff_rate_test_startprep_any = 0.10; 
 		eff_prob_prep_any_restart_choice = 0.10;
 
-		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		pref_prep_oral_sio = pref_prep_oral;
-
 		rate_choose_stop_prep_cab_sio = eff_rate_choose_stop_prep_cab;
 		prob_prep_cab_b_sio = eff_prob_prep_cab_b;
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_cab_sio = pref_prep_cab;
-
 	end;
+
+	if mm_prog_visit ne 1 then do;
+		rate_choose_stop_prep_cab_sio = rate_choose_stop_prep_cab;
+		prob_prep_cab_b_sio = prob_prep_cab_b;
+		rate_test_startprep_any_sio = rate_test_startprep_any; 
+		prob_prep_any_restart_choice_sio = prob_prep_any_restart_choice;
+		pref_prep_cab_sio = pref_prep_cab;
+	end;
+
 	end;
 
 	*Option 5: scale up of oral PrEP and Cab, and hard to reach set to 0;
@@ -2438,7 +2505,8 @@ set_in_options=.;
 
 	if option = 5 then do;
 
-		prep_parameters_sio=1 ;
+		oral_prep_parameters_sio=1 ;
+		cab_prep_parameters_sio=1 ;
 
 		prep_any_strategy=20;
 		date_prep_cab_intro=&year_interv;
@@ -2447,7 +2515,7 @@ set_in_options=.;
 		u=rand('uniform');
 		if caldate_never_dot = &year_interv then do;
 			pref_prep_cab=0.4;*start with everyone on cab (as this is higher than oral pref);
-			if  u< 0.4 then pref_prep_cab = 0.25;*40% still prefer oral;
+			if  u< 0.3 then pref_prep_cab = 0.25;*40% still prefer oral;
 		end;	
 
 	if mm_prog_visit=1 then do;
@@ -2463,23 +2531,37 @@ set_in_options=.;
 		prep_oral_adh_sio = 0.9;*this is to stop oral prep going down over time which seems to happen when both inj and oral are available;
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		*rate_test_startprep_any_sio = eff_rate_test_startprep_any; *defined below;
-		*prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
 
 		rate_choose_stop_prep_cab_sio = eff_rate_choose_stop_prep_cab;
 		prob_prep_cab_b_sio = eff_prob_prep_cab_b;
+		pref_prep_cab_sio = pref_prep_cab;
+
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_cab_sio = pref_prep_cab;
 	end;
+
+	if mm_prog_visit ne 1 then do;
+		prep_oral_adh_sio = 0.9;*this is to stop oral prep going down over time which seems to happen when both inj and oral are available;
+		rate_choose_stop_prep_oral_sio = rate_choose_stop_prep_oral;
+		prob_prep_oral_b_sio = prob_prep_oral_b;
+		pref_prep_oral_sio = pref_prep_oral;
+
+		rate_choose_stop_prep_cab_sio = rate_choose_stop_prep_cab;
+		prob_prep_cab_b_sio = prob_prep_cab_b;
+		pref_prep_cab_sio = pref_prep_cab;
+
+		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
+		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
+	end;
+
 	end;
 
 	*Option 6: scale up of Len, and hard to reach set to 0;
 	*Compare to option 1;
 	if option = 6 then do;
 	
-	prep_parameters_sio=1 ;
+		oral_prep_parameters_sio=1 ;
 
 		prep_any_strategy=20;
 		date_prep_len_intro=&year_interv;
@@ -2489,7 +2571,7 @@ set_in_options=.;
 		u=rand('uniform');
 		if caldate_never_dot = &year_interv then do;
 			pref_prep_len=0.4;*start with everyone on len (as this is higher than oral pref);
-			if  u< 0.4 then pref_prep_len = 0.25;*25% still prefer oral;
+			if  u< 0.3 then pref_prep_len = 0.25;*25% still prefer oral;
 		end;
 
 	if mm_prog_visit=1 then do;
@@ -2498,23 +2580,29 @@ set_in_options=.;
 		eff_rate_test_startprep_any = 0.15; 
 		eff_prob_prep_any_restart_choice = 0.15;												 
 
-		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
-		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		pref_prep_oral_sio = pref_prep_oral;
-
 		rate_choose_stop_prep_len_sio = eff_rate_choose_stop_prep_len;
 		prob_prep_len_b_sio = eff_prob_prep_len_b;
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_len_sio = pref_prep_len;
 	end;
+
+	if mm_prog_visit ne 1 then do;
+		rate_choose_stop_prep_len_sio = rate_choose_stop_prep_len;
+		prob_prep_len_b_sio = prob_prep_len_b;
+		rate_test_startprep_any_sio = rate_test_startprep_any; 
+		prob_prep_any_restart_choice_sio = prob_prep_any_restart_choice;
+		pref_prep_len_sio = pref_prep_len;
+	end;
+
 	end;
 
 	*Option 7: scale up of oral PrEP and Len, and hard to reach set to 0;
 	*Compare to option 1;
 	if option = 7 then do;
 	
-	prep_parameters_sio=1 ;
+		oral_prep_parameters_sio=1 ;
+		len_prep_parameters_sio=1 ;
 
 		prep_any_strategy=20;
 		date_prep_len_intro=&year_interv;
@@ -2523,7 +2611,7 @@ set_in_options=.;
 		u=rand('uniform');
 		if caldate_never_dot = &year_interv then do;
 			pref_prep_len=0.4;*start with everyone on len (as this is higher than oral pref);
-			if  u< 0.4 then pref_prep_len = 0.25;*40% still prefer oral;
+			if  u< 0.3 then pref_prep_len = 0.25;*40% still prefer oral;
 		end;	
 	
 
@@ -2539,22 +2627,34 @@ set_in_options=.;
 		prep_oral_adh_sio = 0.9;
 		rate_choose_stop_prep_oral_sio = eff_rate_choose_stop_prep_oral;
 		prob_prep_oral_b_sio = eff_prob_prep_oral_b;
-		*rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
-		*prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
 		pref_prep_oral_sio = pref_prep_oral;
 
 		rate_choose_stop_prep_len_sio = eff_rate_choose_stop_prep_len;
 		prob_prep_len_b_sio = eff_prob_prep_len_b;
+		pref_prep_len_sio = pref_prep_len;
+
 		rate_test_startprep_any_sio = eff_rate_test_startprep_any; 
 		prob_prep_any_restart_choice_sio = eff_prob_prep_any_restart_choice;
-		pref_prep_len_sio = pref_prep_len;
 	end;
+
+	if mm_prog_visit ne 1 then do;
+		prep_oral_adh_sio = 0.9;
+		rate_choose_stop_prep_oral_sio = rate_choose_stop_prep_oral;
+		prob_prep_oral_b_sio = prob_prep_oral_b;
+		pref_prep_oral_sio = pref_prep_oral;
+
+		rate_choose_stop_prep_len_sio = rate_choose_stop_prep_len;
+		prob_prep_len_b_sio = prob_prep_len_b;
+		pref_prep_len_sio = pref_prep_len;
+
+		rate_test_startprep_any_sio = rate_test_startprep_any; 
+		prob_prep_any_restart_choice_sio = prob_prep_any_restart_choice;
 	end;
 
  
 end;
 
-
+end;
 
 *  ======================================================================================================================================== ;
 
@@ -2637,11 +2737,10 @@ if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr
 
 
 
-if prep_parameters_sio=1 then do ;
-	pref_prep_oral = pref_prep_oral_sio;
-	pref_prep_cab = pref_prep_cab_sio;
-	pref_prep_len = pref_prep_len_sio;
-end;
+if oral_prep_parameters_sio=1 then  pref_prep_oral = pref_prep_oral_sio;
+if cab_prep_parameters_sio=1 then 	pref_prep_cab = pref_prep_cab_sio;
+if len_prep_parameters_sio=1 then 	pref_prep_len = pref_prep_len_sio;
+
 
 
 * highest_prep_pref;
@@ -3037,53 +3136,6 @@ end;
 
 
 
-***MOBILE MEN program;
-
-***PREP parameters are set within the options code but reset here when they stop visiting the program;
-
-if caldate{t} = date_mm_prog_intro then eff_mm_program=mm_program;
-
-if eff_mm_program=1 and curr_mobile=1 then do;
-	if mm_prog_visit=0 then do; a=rand('uniform');
-		if a < rate_engage_mm_program then do;
-				mm_prog_visit=1;
-				date_1st_mm_prog_vis=caldate{t};*this refers to first date of the current episode;
-
-				if hard_reach_due_to_mobile=1 then do;
-					hard_reach_due_to_mobile=0;
-					hard_reach=0;
-				end;
-		end;
-	end;
-end;
-
-else if mm_prog_visit=1 then do; e=rand('uniform');
-	if (e < rate_disengage_mm_program) then do; *those on len dont need a visit every 3 months so dont want to cost the visit - need to manipulate this in the costs eg if len=1 then mm_prog_costs/2;
-		mm_prog_visit=0 ; 
-		date_last_mm_prog_vis=caldate{t};
-
-		eff_rate_test_startprep_any=0;*reset prep parameters so if no visit, no prep;
-		eff_rate_choose_stop_prep_oral=1;			
-		eff_rate_choose_stop_prep_cab=1;	
-		eff_rate_choose_stop_prep_len=1;		
-		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-
-	end;
-end;
-
-*if mobile men stop being mobile, reset parameters;
-
-if curr_mobile=0 then do;
-	mm_prog_visit=0 ; 
-	date_last_mm_prog_vis=caldate{t};
-
-	eff_rate_test_startprep_any=0;*reset prep parameters so if no visit, no prep;
-	eff_rate_choose_stop_prep_oral=1;			
-	eff_rate_choose_stop_prep_cab=1;	
-	eff_rate_choose_stop_prep_len=1;		
-	eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
-
-end;
 	
 
 
@@ -5448,27 +5500,30 @@ end;
 
 
 * PREP INITIATION AND CONTINUATION;
-/*
-if prep_parameters_sio=1 then do ;
+
+if oral_prep_parameters_sio=1 then do ;
 		eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral_sio;		
 		eff_prob_prep_oral_b = prob_prep_oral_b_sio;
 		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
 		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
 		pref_prep_oral = pref_prep_oral_sio;
-
+end;
+if cab_prep_parameters_sio=1 then do ;
 		eff_rate_choose_stop_prep_cab = rate_choose_stop_prep_cab_sio;		
 		eff_prob_prep_cab_b = prob_prep_cab_b_sio;
-		*eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
-		*eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio; *defined already;
+		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
+		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio; *defined already;
 		pref_prep_cab = pref_prep_cab_sio;
+end;
 
+if len_prep_parameters_sio=1 then do ;
 		eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len_sio;		
 		eff_prob_prep_len_b = prob_prep_len_b_sio;
-		*eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
-		*eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
+		eff_rate_test_startprep_any = rate_test_startprep_any_sio; 
+		eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice_sio;
 		pref_prep_len = pref_prep_len_sio;
 end;
-*/
+
 /* 
 	PrEP start and restart dates are given by:
 		prep_xxx_current_start_date 		start date of current PrEP course, whether that is first ever PrEP, switching from a different PrEP option, or restarting following a break due to ineligibility or choice
@@ -19982,7 +20037,8 @@ run;
 
 */
 
-proc print;var caldate&j option YY mm_prog_visit pref_prep_cab_sio pref_prep_cab pref_prep_oral pref_prep_oral_sio prep_cab_mm prep_oral_mm;
+proc print;var caldate&j option mm_prog_visit  pref_prep_cab pref_prep_oral prep_cab_mm prep_oral_mm 
+eff_rate_choose_stop_prep_oral rate_choose_stop_prep_oral eff_rate_test_startprep_any;
 where curr_mobile=1 and age gt 15 and hiv ne 1;run;
 
 
@@ -22497,13 +22553,13 @@ data r1 ; set a.end2026_17504327;
 * 	Option 1;
 data r1; set a.end2026_17504327;
 %run_update_r1(&year_interv,&year_interv+2,1);
-*/
+
 
 * 	Option 2;
 data r1; set a.end2026_17504327;
 %run_update_r1(&year_interv,&year_interv+2,2);
 
-/*
+
 * 	Option 3;
 data r1; set a.end2026_17504327;
 %run_update_r1(&year_interv,&year_interv+2,3);
@@ -22511,11 +22567,11 @@ data r1; set a.end2026_17504327;
 * 	Option 4;
 data r1; set a.end2026_17504327;
 %run_update_r1(&year_interv,&year_interv+2,4);
-
+*/
 * 	Option 5;
 data r1; set a.end2026_17504327;
 %run_update_r1(&year_interv,&year_interv+2,5);
-
+/*
 * 	Option 6;
 data r1; set a.end2026_17504327;
 %run_update_r1(&year_interv,&year_interv+2,6);
