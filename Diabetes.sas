@@ -66,99 +66,105 @@ urban=0; if a < prob_urban then urban=1;
 
 
 ***In 1989, set BMIs for everyone (leave out diet and physical activity here for simplicity);
-*SourceL https://www.ncdrisc.org/data-downloads-adiposity-urban-rural.html;
+*Source for 15-17 years olds:https://ncdrisc.org/data-downloads-adiposity-urban-rural-ado.html - NCD_RisC_Nature_2023_BMI_child_adolescent_region;
+*Source for 18+: https://ncdrisc.org/data-downloads-adiposity-urban-rural.html - BMI NCD_RisC_Nature_2019_male_age_specific_countries_calculated averages in 1989;
 *Using the NCDRisk data, compute average BMI for all SSA countries and their SD, then apply a within individual estimated SD;
 *This was done by filtering the NCD risk sheet by sex and then asking AI to compute means and SD for 1989 across settings;
+
 if urban=1 then do;
-	
-	if gender=1 then do;
-		if      15 le age lt 20 then do; bmi_av_country = rand('Normal', 20.244, 0.698); end;
-        else if 20 le age lt 25 then do; bmi_av_country = rand('Normal', 20.746, 0.689); end;
-        else if 25 le age lt 30 then do; bmi_av_country = rand('Normal', 21.318, 0.701); end;
-        else if 30 le age lt 35 then do; bmi_av_country = rand('Normal', 21.738, 0.724); end;
-        else if 35 le age lt 40 then do; bmi_av_country = rand('Normal', 22.022, 0.751); end;
-        else if 40 le age lt 45 then do; bmi_av_country = rand('Normal', 22.189, 0.781); end;
-        else if 45 le age lt 50 then do; bmi_av_country = rand('Normal', 22.256, 0.821); end;
-        else if 50 le age lt 55 then do; bmi_av_country = rand('Normal', 22.236, 0.869); end;
-        else if 55 le age lt 60 then do; bmi_av_country = rand('Normal', 22.133, 0.920); end;
-        else if 60 le age lt 65 then do; bmi_av_country = rand('Normal', 21.953, 0.965); end;
-        else if 65 le age lt 70 then do; bmi_av_country = rand('Normal', 21.711, 1.000); end;
-        else if 70 le age lt 75 then do; bmi_av_country = rand('Normal', 21.431, 1.021); end;
-        else if 75 le age lt 80 then do; bmi_av_country = rand('Normal', 21.137, 1.028); end;
-        else if 80 le age lt 85 then do; bmi_av_country = rand('Normal', 20.853, 1.031); end;
-        else if      85 le age  then do; bmi_av_country = rand('Normal', 20.544, 1.071); end;
+  do until (14.0 le bmi le 60.0);
+	if gender = 1 then do;
+	  
+	    if age = 15          then do; bmi = rand('Normal', 17.895, 2.20); end; 
+	    if age = 16          then do; bmi = rand('Normal', 18.497, 2.20); end;  
+	    if age = 17          then do; bmi = rand('Normal', 19.065, 2.20); end;    
+	    if 18 le age le 19   then do; bmi = rand('Normal', 20.244, 2.50); end;
+	    if 20 le age lt 25   then do; bmi = rand('Normal', 20.746, 2.50); end;
+	    if 25 le age lt 30   then do; bmi = rand('Normal', 21.318, 2.50); end;
+	    if 30 le age lt 35   then do; bmi = rand('Normal', 21.738, 2.50); end;
+	    if 35 le age lt 40   then do; bmi = rand('Normal', 22.022, 2.50); end;
+	    if 40 le age lt 45   then do; bmi = rand('Normal', 22.189, 2.50); end;
+	    if 45 le age lt 50   then do; bmi = rand('Normal', 22.256, 2.50); end;
+	    if 50 le age lt 55   then do; bmi = rand('Normal', 22.236, 2.50); end;
+	    if 55 le age lt 60   then do; bmi = rand('Normal', 22.133, 2.50); end;
+	    if 60 le age lt 65   then do; bmi = rand('Normal', 21.953, 2.50); end;
+	    if 65 le age lt 70   then do; bmi = rand('Normal', 21.711, 2.50); end;
+	    if 70 le age lt 75   then do; bmi = rand('Normal', 21.431, 2.50); end;
+	    if 75 le age lt 80   then do; bmi = rand('Normal', 21.137, 2.50); end;
+	    if 80 le age lt 85   then do; bmi = rand('Normal', 20.853, 2.50); end;
+	    if       85 le age   then do; bmi = rand('Normal', 20.544, 2.50); end;
 	end;
 
 	if gender=2 then do;
-        if      15 le age lt 20 then do; bmi_av_country = rand('Normal', 21.560, 0.845); end;
-        else if 20 le age lt 25 then do; bmi_av_country = rand('Normal', 22.013, 0.996); end;
-        else if 25 le age lt 30 then do; bmi_av_country = rand('Normal', 22.628, 1.240); end;
-        else if 30 le age lt 35 then do; bmi_av_country = rand('Normal', 23.174, 1.450); end;
-        else if 35 le age lt 40 then do; bmi_av_country = rand('Normal', 23.616, 1.616); end;
-        else if 40 le age lt 45 then do; bmi_av_country = rand('Normal', 23.920, 1.747); end;
-        else if 45 le age lt 50 then do; bmi_av_country = rand('Normal', 24.053, 1.858); end;
-        else if 50 le age lt 55 then do; bmi_av_country = rand('Normal', 24.014, 1.950); end;
-        else if 55 le age lt 60 then do; bmi_av_country = rand('Normal', 23.835, 2.007); end;
-        else if 60 le age lt 65 then do; bmi_av_country = rand('Normal', 23.547, 2.015); end;
-        else if 65 le age lt 70 then do; bmi_av_country = rand('Normal', 23.176, 1.974); end;
-        else if 70 le age lt 75 then do; bmi_av_country = rand('Normal', 22.741, 1.902); end;
-        else if 75 le age lt 80 then do; bmi_av_country = rand('Normal', 22.260, 1.821); end;
-        else if 80 le age lt 85 then do; bmi_av_country = rand('Normal', 21.752, 1.761); end;
-        else if      85 le age  then do; bmi_av_country = rand('Normal', 21.092, 1.798); end;
+		if age=15          then do; bmi = rand('Normal', 20.024, 2.20); end; 
+	    if age=16          then do; bmi = rand('Normal', 20.598, 2.20); end;  
+	    if age=17          then do; bmi = rand('Normal', 21.038, 2.20); end;    
+	    if 18 le age le 19 then do; bmi = rand('Normal', 21.560, 2.50); end;
+	    if 20 le age lt 25 then do; bmi = rand('Normal', 22.013, 2.50); end;
+	    if 25 le age lt 30 then do; bmi = rand('Normal', 22.628, 2.50); end;
+	    if 30 le age lt 35 then do; bmi = rand('Normal', 23.174, 2.50); end;
+	    if 35 le age lt 40 then do; bmi = rand('Normal', 23.616, 2.50); end;
+	    if 40 le age lt 45 then do; bmi = rand('Normal', 23.920, 2.50); end;
+	    if 45 le age lt 50 then do; bmi = rand('Normal', 24.053, 2.50); end;
+	    if 50 le age lt 55 then do; bmi = rand('Normal', 24.014, 2.50); end;
+	    if 55 le age lt 60 then do; bmi = rand('Normal', 23.835, 2.50); end;
+	    if 60 le age lt 65 then do; bmi = rand('Normal', 23.547, 2.50); end;
+	    if 65 le age lt 70 then do; bmi = rand('Normal', 23.176, 2.50); end;
+	    if 70 le age lt 75 then do; bmi = rand('Normal', 22.741, 2.50); end;
+	    if 75 le age lt 80 then do; bmi = rand('Normal', 22.260, 2.50); end;
+	    if 80 le age lt 85 then do; bmi = rand('Normal', 21.752, 2.50); end;
+	    if       85 le age then do; bmi = rand('Normal', 21.092, 2.50); end;
 	end;
-	
-        * Truncated to ensure normal BMI - this should resample if implausible values are chosen;
-        do until (14.0 le bmi le 60.0);
-            bmi = rand('Normal', bmi_av_country, 4.0);
-        end;
+  end;
 end;
 
 if urban = 0 then do;
-	if gender=1 then do;
-	if      15 le age lt 20 then do; bmi_av_country = rand('Normal', 19.533, 0.697); end;
-        else if 20 le age lt 25 then do; bmi_av_country = rand('Normal', 19.865, 0.686); end;
-        else if 25 le age lt 30 then do; bmi_av_country = rand('Normal', 20.258, 0.693); end;
-        else if 30 le age lt 35 then do; bmi_av_country = rand('Normal', 20.558, 0.713); end;
-        else if 35 le age lt 40 then do; bmi_av_country = rand('Normal', 20.764, 0.737); end;
-        else if 40 le age lt 45 then do; bmi_av_country = rand('Normal', 20.879, 0.766); end;
-        else if 45 le age lt 50 then do; bmi_av_country = rand('Normal', 20.905, 0.805); end;
-        else if 50 le age lt 55 then do; bmi_av_country = rand('Normal', 20.846, 0.853); end;
-        else if 55 le age lt 60 then do; bmi_av_country = rand('Normal', 20.714, 0.902); end;
-        else if 60 le age lt 65 then do; bmi_av_country = rand('Normal', 20.518, 0.947); end;
-        else if 65 le age lt 70 then do; bmi_av_country = rand('Normal', 20.277, 0.980); end;
-        else if 70 le age lt 75 then do; bmi_av_country = rand('Normal', 20.016, 0.998); end;
-        else if 75 le age lt 80 then do; bmi_av_country = rand('Normal', 19.764, 1.001); end;
-        else if 80 le age lt 85 then do; bmi_av_country = rand('Normal', 19.546, 1.000); end;
-        else if      85 le age  then do; bmi_av_country = rand('Normal', 19.359, 1.034); end;
+  do until (14.0 le bmi le 60.0);
+	if gender = 1 then do;
+    	if age = 15          then do; bmi = rand('Normal', 17.341, 2.20); end; 
+    	if age = 16          then do; bmi = rand('Normal', 17.954, 2.20); end;  
+    	if age = 17          then do; bmi = rand('Normal', 18.536, 2.20); end;    
+    	if 18 le age le 19   then do; bmi = rand('Normal', 19.533, 2.50); end;
+    	if 20 le age lt 25   then do; bmi = rand('Normal', 19.865, 2.50); end;
+   		if 25 le age lt 30   then do; bmi = rand('Normal', 20.258, 2.50); end;
+    	if 30 le age lt 35   then do; bmi = rand('Normal', 20.558, 2.50); end;
+    	if 35 le age lt 40   then do; bmi = rand('Normal', 20.764, 2.50); end;
+    	if 40 le age lt 45   then do; bmi = rand('Normal', 20.879, 2.50); end;
+    	if 45 le age lt 50   then do; bmi = rand('Normal', 20.905, 2.50); end;
+    	if 50 le age lt 55   then do; bmi = rand('Normal', 20.846, 2.50); end;
+    	if 55 le age lt 60   then do; bmi = rand('Normal', 20.714, 2.50); end;
+    	if 60 le age lt 65   then do; bmi = rand('Normal', 20.518, 2.50); end;
+    	if 65 le age lt 70   then do; bmi = rand('Normal', 20.277, 2.50); end;
+    	if 70 le age lt 75   then do; bmi = rand('Normal', 20.016, 2.50); end;
+    	if 75 le age lt 80   then do; bmi = rand('Normal', 19.764, 2.50); end;
+    	if 80 le age lt 85   then do; bmi = rand('Normal', 19.546, 2.50); end;
+    	if       85 le age   then do; bmi = rand('Normal', 19.359, 2.50); end;
 	end;
 
-	if gender=2 then do;
-        if      15 le age lt 20 then do; bmi_av_country = rand('Normal', 20.922, 0.859); end;
-        else if 20 le age lt 25 then do; bmi_av_country = rand('Normal', 20.971, 1.005); end;
-        else if 25 le age lt 30 then do; bmi_av_country = rand('Normal', 21.125, 1.234); end;
-        else if 30 le age lt 35 then do; bmi_av_country = rand('Normal', 21.324, 1.430); end;
-        else if 35 le age lt 40 then do; bmi_av_country = rand('Normal', 21.509, 1.585); end;
-        else if 40 le age lt 45 then do; bmi_av_country = rand('Normal', 21.619, 1.709); end;
-        else if 45 le age lt 50 then do; bmi_av_country = rand('Normal', 21.596, 1.815); end;
-        else if 50 le age lt 55 then do; bmi_av_country = rand('Normal', 21.435, 1.905); end;
-        else if 55 le age lt 60 then do; bmi_av_country = rand('Normal', 21.187, 1.965); end;
-        else if 60 le age lt 65 then do; bmi_av_country = rand('Normal', 20.899, 1.978); end;
-        else if 65 le age lt 70 then do; bmi_av_country = rand('Normal', 20.600, 1.946); end;
-        else if 70 le age lt 75 then do; bmi_av_country = rand('Normal', 20.292, 1.886); end;
-        else if 75 le age lt 80 then do; bmi_av_country = rand('Normal', 19.977, 1.816); end;
-        else if 80 le age lt 85 then do; bmi_av_country = rand('Normal', 19.658, 1.767); end;
-        else if      85 le age  then do; bmi_av_country = rand('Normal', 19.245, 1.812); end;
+	if gender = 2 then do;
+	    if age = 15          then do; bmi = rand('Normal', 19.115, 2.20); end; 
+	    if age = 16          then do; bmi = rand('Normal', 19.705, 2.20); end;  
+	    if age = 17          then do; bmi = rand('Normal', 20.156, 2.20); end;    
+	    if 18 le age le 19   then do; bmi = rand('Normal', 20.922, 2.50); end;
+	    if 20 le age lt 25   then do; bmi = rand('Normal', 20.971, 2.50); end;
+	    if 25 le age lt 30   then do; bmi = rand('Normal', 21.125, 2.50); end;
+	    if 30 le age lt 35   then do; bmi = rand('Normal', 21.324, 2.50); end;
+	    if 35 le age lt 40   then do; bmi = rand('Normal', 21.509, 2.50); end;
+	    if 40 le age lt 45   then do; bmi = rand('Normal', 21.619, 2.50); end;
+	    if 45 le age lt 50   then do; bmi = rand('Normal', 21.596, 2.50); end;
+	    if 50 le age lt 55   then do; bmi = rand('Normal', 21.435, 2.50); end;
+	    if 55 le age lt 60   then do; bmi = rand('Normal', 21.187, 2.50); end;
+	    if 60 le age lt 65   then do; bmi = rand('Normal', 20.899, 2.50); end;
+	    if 65 le age lt 70   then do; bmi = rand('Normal', 20.600, 2.50); end;
+	    if 70 le age lt 75   then do; bmi = rand('Normal', 20.292, 2.50); end;
+	    if 75 le age lt 80   then do; bmi = rand('Normal', 19.977, 2.50); end;
+	    if 80 le age lt 85   then do; bmi = rand('Normal', 19.658, 2.50); end;
+	    if       85 le age   then do; bmi = rand('Normal', 19.245, 2.50); end;
 	end;
-
-        do until (14.0 le bmi le 60.0);
-            bmi = rand('Normal', bmi_av_country, 4.0);
-        end;
+ end;
 end;
 
 *Have not included diet or physical activity here for simplicity;
-But will need to have the correct variables for this formula;
-bmi = bmi_tm1 * age_fold_bmi * (urban_fold)^1/4 * (fold_ch_diet)^1/4 * fold_ch_phys_act^1/4;
-
 ***********;
 
 
@@ -189,23 +195,27 @@ a = rand('uniform');
 urban = 0; 
 if a < prob_urban then urban = 1;
 
-* Source: https://ncdrisc.org/data-downloads-adiposity-urban-rural-ado.html;
-* I took the average BMI for SSA in 1990 and added a calendr year effect;
+* Source: NCD_RisC_Nature_2023_BMI_child_adolescent_region - same as for 15-18 year olds in Section 2;
+* I took the average BMI for a 15 year old in rural SSA in 1990 and added a calendar year effect (since BMI has increased over time even in rural settings);
 *Gender;
+
+if gender=1 then do;
 do until (14.0 le bmi_15_m le 60.0);
-    bmi_15_m = rand('normal', 17.3, 4.0) + (0.005 * (caldate&j - 1989));
+    bmi_15_m = rand('normal', 17.3, 2.2) + (0.005 * (caldate&j - 1989));
+end;
 end;
 
+if gender=2 then do;
 do until (14.0 le bmi_15_w le 60.0);
-    bmi_15_w = rand('normal', 19.1, 4.0) + (0.005 * (caldate&j - 1989));
+    bmi_15_w = rand('normal', 19.1, 2.2) + (0.005 * (caldate&j - 1989));
 end;
-
+end;
 
 *Urban/rural;
 
 *urban bmi in boys is ~ 0.3 times higher than rural and 0.5 in women;
-urban_fold_bmi_m = 1.03;
-urban_fold_bmi_w = 1.05;
+urban_fold_bmi_m = 1; if urban=1 then urban_fold_bmi_m = 1.03;
+urban_fold_bmi_w = 1; if urban=1 then urban_fold_bmi_w = 1.05;
 
 ***Diet: 1=low risk, 2=moderate risk, 3-high risk - conditional on urban/rural;
 * Source: Westbury 2021;
@@ -237,9 +247,9 @@ if urban = 1 then do;
 	phys_act = phys_act_urban;
 end;
 
-if rural = 1 then do;
+if urban = 0 then do;
 	diet = diet_rural;
-	phys_act = phys_act_urban;
+	phys_act = phys_act_rural;
 end;
 
 if diet = 1 then diet_fold_bmi = low_risk_diet_fold_bmi;
@@ -276,18 +286,21 @@ if diet_tm1=1 then do;
 	if a < 0.80 then diet=1; 
 	if 0.80 <= a < 0.98 then diet =2;
 	if 0.98 <= a then diet =3;
+	if diet_tm1 ne diet then ch_diet=1;
 end;
 
 if diet_tm1=2 then do;
 	if b < 0.20 then diet=1; 
 	if 0.20 <= b < 0.95 then diet =2;
 	if 0.95 <= b then diet =3;
+	if diet_tm1 ne diet then ch_diet=1;
 end;
 
 if diet_tm1=3 then do;
 	if c < 0.05 then diet=1; 
 	if 0.05 <= c < 0.25 then diet =2;
 	if 0.25 <= c then diet =3;
+	if diet_tm1 ne diet then ch_diet=1;
 end;
 
 *New fold factor based on previous diet;
@@ -313,18 +326,21 @@ if phys_act_tm1=1 then do;
 	if a < 0.80 then phys_act=1; 
 	if 0.80 <= a < 0.98 then phys_act =2;
 	if 0.98 <= a then phys_act =3;
+	if phys_act_tm1 ne phys_act then phys_act_ch=1;
 end;
 
 if phys_act_tm1=2 then do;
 	if b < 0.20 then phys_act=1; 
 	if 0.20 <= b < 0.95 then phys_act =2;
 	if 0.95 <= b then phys_act =3;
+	if phys_act_tm1 ne phys_act then phys_act_ch=1;
 end;
 
 if phys_act_tm1=3 then do;
 	if c < 0.05 then phys_act=1; 
 	if 0.05 <= c < 0.25 then phys_act =2;
 	if 0.25 <= c then phys_act =3;
+	if phys_act_tm1 ne phys_act then phys_act_ch=1;
 end;
 
 *New fold factor based on previous physical activity;
@@ -349,11 +365,13 @@ if 20 le age lt 40 then age_fold_bmi = 1.0012;
 if 40 le age lt 60 then age_fold_bmi = 1.0005;
 if age ge 60 then age_fold_bmi = 0.9995;
 
-bmi = bmi_tm1 * age_fold_bmi * (urban_fold)^1/4 * (fold_ch_diet)^1/4 * fold_ch_phys_act^1/4;
-*Raised to the power to 1/4 to convert annual increases to quarterly increases;
 
+bmi = bmi_tm1 * age_fold_bmi;
+if urban_tm1=0 and urban=1 then bmi = bmi * (urban_fold)^1/4;
+if diet_ch=1 then bmi = bmi * fold_ch_diet;
+if phys_act_ch=1 then bmi = bmi * fold_ch_phys_act;
 
-
+*Raised to the power to 1/4 to convert annual increases to quarter;
 
 
 
@@ -370,36 +388,3 @@ if (. < age < 25) or (age ge 55) then prob_start_smoke = prob_start_smoke * 0.80
 a=rand('uniform');b=rand('uniform');
 if smoke=0 and a < prob_start_smoke then smoke=1;
 if smoke=1 and b < prob_stop_smoke then smoke=0;
-
-*Age;
-
-*Discuss how to include age based on steps survey table 2;
-
-***what about those with normal bmi?;
-
-***NUMBERS NEED THINKING ABOUT;
-if bmi <=18.5 then do; *underweight;
-	if . < age <=25 then 	fold_inc_age_bmi=1;
-	if 25  < age <=35 then 	fold_inc_age_bmi=0.85;
-	if 35  < age <=45 then 	fold_inc_age_bmi=0.88;
-	if 45  < age <=55 then 	fold_inc_age_bmi=1.01;
-	if age gt 55 then		fold_inc_age_bmi=1.26;
-end;
-if 25.0 < bmi <=29.9 then do; *overweight;
-	if . < age <=25 then 	fold_inc_age_bmi=1;
-	if 25  < age <=35 then 	fold_inc_age_bmi=5;
-	if 35  < age <=45 then 	fold_inc_age_bmi=;
-	if 45  < age <=55 then 	fold_inc_age_bmi=;
-	if age gt 55 then		fold_inc_age_bmi=;
-end;
-
-
-
-bmi = bmi_tm1 * fold_urban_bmi * fold_smoke_bmi * fold_diet_bmi * fold_phys_act_bmi;
-
-Normal weight: BMI 18.5?24.9
-
-Overweight: BMI 25?29.9
-
-Obesity: BMI ?30.
-
