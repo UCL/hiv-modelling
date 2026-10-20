@@ -7,7 +7,7 @@ OUTPUTS;
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\PACE2\";
 
 data a; 
-set a.wide_pace_07_10_26; 
+set a.wide_pace_18_10_26; 
 run;
 
 ***LOOK AT STRATFYING BY SW_MATRIX to see IF THAT LOWERS PREVALENCE;
@@ -58,9 +58,13 @@ proc means n p50 mean p5 p95;var p_onart_vl1000_sw_25;where rel_sw_lower_adh=0.6
 proc means n p50 mean p5 p95;var p_onart_vl1000_sw_25;where rel_sw_lower_adh=0.7;run;
 
 proc means n p50 mean p5 p95;var p_onart_vl1000_sw_25;where rel_sw_lower_adh=0.8;run;
-rel_sw_lower_adh
+
+proc means n p50 mean p5 p95;var prop_sw_onprep_25;where effect_sw_prog_prep_any=0.2;run;
+proc means n p50 mean p5 p95;var prop_sw_onprep_25;where effect_sw_prog_prep_any=0.3;run;
+proc means n p50 mean p5 p95;var prop_sw_onprep_25;where effect_sw_prog_prep_any=0.4;run;
 
 proc freq;table rel_sw_lower_adh;run;
+proc freq;table effect_sw_prog_prep_any;run;
 
 ***Table A0 - use either 2020 or 2023 estimates - whichever is closest to observed data;
 proc means n p50 mean p5 p95;var n_hiv_23  n_onart_23
