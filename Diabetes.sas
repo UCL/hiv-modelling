@@ -2,12 +2,6 @@
 ***Start with a baseline gender specific BMI and then apply risk factors based on age,  smoking, urban/rural, inactivity and diet;
 
 
-*BMI;
-*Estimate of rural BMIs (i.e. in 1985) across 10 representative countries in SSA in those under 30;
-*Source: https://ncdrisc.org/data-downloads-adiposity.html;
-*base_bmi_m;				base_bmi_m = rand('normal', 20.0, 2.2);
-*base_bmi_w;				base_bmi_w = rand('normal', 21.0, 2.2);
-
 *Age specific BMI fold factor;
 *Source: (NCD Risk Factor Collaboration (NCD-RisC) Africa Working Group 2017);
 
@@ -33,20 +27,12 @@
 *Source: https://data.worldbank.org/indicator/SP.URB.TOTL.IN.ZS?locations=ZG&name_desc=false;
 
 *prob_urban;				prob_urban = 0.30 + (rand('uniform')*0.20);
+*urban_fold_bmi_m;			urban_fold_bmi_m = 1.03;
+*urban_fold_bmi_w;			urban_fold_bmi_w = 1.05;
 
 *******************************************;
 
 ***PERSON LEVEL VARIATIONS AT START OF FOLLOW UP IN 1989 - SECTION 2;
-
-*BMI;
-if gender=1 then base_bmi = base_bmi_m;
-if gender=2 then base_bmi = base_bmi_w;
-
-if 15 le age lt 30 then base_bmi = base_bmi * fold_age_bmi1529;
-if 30 le age le 39 then base_bmi = base_bmi * fold_age_bmi3039;
-if 40 le age le 49 then base_bmi = base_bmi * fold_age_bmi4049;
-if 50 le age le 59 then base_bmi = base_bmi * fold_age_bmi5059;
-if age ge 60 	   then base_bmi = base_bmi * fold_age_bmi60pl;
 
 
 *smoking;;
@@ -61,9 +47,6 @@ smoke=0;if a < prob_smoke then smoke=1;
 ***1989;
 a=rand('uniform');
 urban=0; if a < prob_urban then urban=1;
-
-
-
 
 ***In 1989, set BMIs for everyone (leave out diet and physical activity here for simplicity);
 *Source for 15-17 years olds:https://ncdrisc.org/data-downloads-adiposity-urban-rural-ado.html - NCD_RisC_Nature_2023_BMI_child_adolescent_region;
@@ -189,11 +172,11 @@ Medical conditions;
 ***At age 15;
 *I don't think we can define this at the top because using caldate?;
 
-prob_urban = 0.30 + (rand('uniform') * 0.20) + (0.0050 * (caldate&j-1989));*the latter bit here applies a calendar time increase to probability of urban;
+prob_urban_time = prob_urban + (0.0050 * (caldate&j-1989));*the latter bit here applies a calendar time increase to probability of urban;
 
 a = rand('uniform');
 urban = 0; 
-if a < prob_urban then urban = 1;
+if a < prob_urban_time then urban = 1;
 
 * Source: NCD_RisC_Nature_2023_BMI_child_adolescent_region - same as for 15-18 year olds in Section 2;
 * I took the average BMI for a 15 year old in rural SSA in 1990 and added a calendar year effect (since BMI has increased over time even in rural settings);
@@ -211,7 +194,7 @@ do until (14.0 le bmi_15_w le 60.0);
 end;
 end;
 
-*Urban/rural;
+*Urban/rural multiplicative factor;
 
 *urban bmi in boys is ~ 0.3 times higher than rural and 0.5 in women;
 urban_fold_bmi_m = 1; if urban=1 then urban_fold_bmi_m = 1.03;
@@ -367,24 +350,8 @@ if age ge 60 then age_fold_bmi = 0.9995;
 
 
 bmi = bmi_tm1 * age_fold_bmi;
-if urban_tm1=0 and urban=1 then bmi = bmi * (urban_fold)^1/4;
+if urban_tm1=0 and urban=1 then bmi = bmi * (urban_fold);
 if diet_ch=1 then bmi = bmi * fold_ch_diet;
 if phys_act_ch=1 then bmi = bmi * fold_ch_phys_act;
 
-*Raised to the power to 1/4 to convert annual increases to quarter;
 
-
-
-
-
-
-
-***Diabetes risk;
-
-
-*Smoking --> a person can start or stop smoking, dependant on age;
-if (. < age < 25) or (age ge 55) then prob_start_smoke = prob_start_smoke * 0.80;*reduced probability for younger and older ages;
-
-a=rand('uniform');b=rand('uniform');
-if smoke=0 and a < prob_start_smoke then smoke=1;
-if smoke=1 and b < prob_stop_smoke then smoke=0;
