@@ -6677,13 +6677,9 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		if sti=1                        then risk_nip = risk_nip * fold_change_sti;  * higher transmission risk with sti;
 		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4;  * lower transmission risk in men circumcised;
 		if prep_oral   =1 then do;
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));	
+			* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
 			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
 			if pop_wide_tld_prep=1 then do;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
@@ -6904,14 +6900,9 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 	if gender=1 and mcirc   =1   then risk_eip = risk_eip* 0.4;  * lower transmission risk in men circumcised;
 
 		if prep_oral   =1 then do;
-/*			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
-/*			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
-/*			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
-/*			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
-/*			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
-/*			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
 			risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));	
+			* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
 			if pop_wide_tld_prep=1 then do;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
 				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
@@ -7136,13 +7127,9 @@ if t ge 2 and msm=1 and msm_random_this_period < risk_hiv_msm then do; * msm_ran
 		if sti=1                        then risk_msm = risk_msm * fold_change_sti;  * higher transmission risk with sti;
 
 		if prep_oral   =1 then do;
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_msm = risk_msm * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_msm = risk_msm * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_msm = risk_msm * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_msm = risk_msm * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_msm = risk_msm * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_msm = risk_msm * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_msm = risk_msm * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));	
+			* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
 			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
 			if pop_wide_tld_prep=1 then do;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
@@ -7353,13 +7340,9 @@ if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
 	end;
 
 		if prep_oral   =1 then do;
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_pwid = risk_pwid * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_pwid = risk_pwid * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));	
+			* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
 			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
 			if pop_wide_tld_prep=1 then do;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
@@ -7514,7 +7497,7 @@ if hiv=1 then do;
 	need to consider higher levels of res_trans_factor (i.e sampling from 0.8-2 rather that a fixed value of 0.6 
 	and therefore lower prob of mutations being transmitted and surviving) than before to compensate;
 	
-		if prep_oral    ne 1 then do;	* QUERY - any changes needed for cab, len or ami? ;
+		if prep_oral    ne 1 then do;	* QUERY - do we need a similar section cab, len or ami? ;
 			if tam ge 1 then do; u=rand('uniform'); if u < 0.5  then tam = 0 ; end; * may17;
 			if m184m= 1 then do; u=rand('uniform'); if u < 0.8  then m184m=0; end;
 			if k65m = 1 then do; u=rand('uniform'); if u < 0.8  then k65m =0; end; 
