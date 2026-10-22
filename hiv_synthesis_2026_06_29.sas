@@ -1,5 +1,9 @@
 * 29th June 2026: adding MK-8527 (_ami = alimatravir, monthly oral mk-8527), removing VR prep ;
 
+* 22nd Oct 2026:
+- decided not to model ami tail initially
+;
+
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -2431,7 +2435,6 @@ np_tm2=np_tm1;
 registd_tm2 = registd_tm1;
 onart_tm2=onart_tm1;
 sw_tm2 = sw_tm1;
-pwid_tm1 = pwid;
 
 tested_tm1=tested; tested=0;
 self_tested_tm1=self_tested; self_tested=0;
@@ -2465,6 +2468,7 @@ adh_tm1 = adh; adh = .;
 adh_dl_tm1 = adh_dl; adh_dl = .;
 primary_tm1 = primary; primary = .; primary_msm=.; primary_pwid=.;
 sw_tm1=sw;
+pwid_tm1 = pwid;
 hiv_tm1 = hiv; 
 age_tm1=age;
 oth_adc_tm1=oth_adc;
@@ -4933,7 +4937,8 @@ end;
 
 tested_as_sw=.;
 
-testfor_prep_oral=0; testfor_prep_cab=0;  testfor_prep_len=0; testfor_prep_ami=0;
+testfor_prep_any=0; testfor_prep_oral=0; testfor_prep_cab=0;  testfor_prep_len=0; testfor_prep_ami=0;	* QUERY testfor_prep_any not used so can remove after testing;
+tested_prep_monitoring=0; tested_prep_restart=0;
  
 if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1  and self_tested ne 1 
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
@@ -4991,14 +4996,14 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 
 	* TESTING IN RELATION TO PREP ;
+	* available after the first type of PrEP becomes available (usually oral); * JAS Sept2021 ; 
 
 	a=rand('uniform');
 
-	if t ge 4 and caldate{t} ge date_prep_oral_intro and hard_reach=0 and 
+	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_cab_intro, date_prep_len_intro, date_prep_ami_intro) and hard_reach=0 and 
 	((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (pop_wide_tld_prep ne 1 or (pop_wide_tld_prep=1 and a < prob_test_pop_wide_tld_prep))  
 	then do;
 
-	* lapr - testing to start PrEP is available after any type of PrEP becomes available ; * JAS Sept2021 ; 
 
 		*Testing before ever starting PrEP;
 
@@ -5007,7 +5012,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		available with roll-out and interest of PrEP
 		 do not differentiate the probabilty of testing whether they have a short-term or long-term partner;
 
-		if  prep_any_ever ne 1 and tested ne 1 and prep_any_elig=1 and prep_any_willing=1 and hard_reach ne 1 then do;
+		if  prep_any_ever ne 1 and tested ne 1 and prep_any_elig=1 and prep_any_willing=1 and hard_reach ne 1 then do;		* QUERY - do we want to restrict to people who have never had prep before? hard_reach ne 1 specified here and above;
 			a=rand('uniform'); if a < eff_rate_test_startprep_any then do;	
 				*assumes order of introduction is oral -> cab -> len -> ami;
 				select;
@@ -5114,13 +5119,13 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		end;
 
 		*Routine testing while on PREP;
-		else if prep_any_ever=1 and prep_any_elig=1 then do;
+		else if prep_any_ever=1 and prep_any_elig=1 then do;	* QUERY - do we need this condition? ;
 
 			* Oral PrEP ;
 			if prep_oral_tm1=1 then do;  	* dependent_on_time_step_length;
 				if caldate{t}-dt_last_test >= annual_testing_prep_oral then do;
 					a=rand('uniform'); if a < rate_test_onprep_any then do; 
-						tested=1; 
+						tested=1; tested_prep_monitoring=1;
 						dt_last_test=caldate{t}; 
 						np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 					end; 
@@ -5131,7 +5136,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 			else if prep_cab_tm1=1 then do;	* dependent_on_time_step_length;
 				if caldate{t}-dt_last_test >= annual_testing_prep_cab then do;
 					a=rand('uniform'); if a < rate_test_onprep_any then do; 
-						tested=1; 
+						tested=1; tested_prep_monitoring=1;
 						dt_last_test=caldate{t}; 
 						np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 					end; 
@@ -5141,7 +5146,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 			else if prep_len_tm1=1 then do;	* dependent_on_time_step_length;
 				if caldate{t}-dt_last_test >= annual_testing_prep_len then do;
 					a=rand('uniform'); if a < rate_test_onprep_any then do; 
-						tested=1; 
+						tested=1; tested_prep_monitoring=1;
 						dt_last_test=caldate{t}; 
 						np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 					end; 
@@ -5152,7 +5157,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 			else if prep_ami_tm1=1 then do;	* dependent_on_time_step_length;
 				if caldate{t}-dt_last_test >= annual_testing_prep_ami then do;
 					a=rand('uniform'); if a < rate_test_onprep_any then do; 
-						tested=1; 
+						tested=1; tested_prep_monitoring=1;
 						dt_last_test=caldate{t}; 
 						np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 					end; 
@@ -5163,7 +5168,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 			*Re-initiation of PrEP;
 			else if prep_any_tm1 ne 1 then do;	* dependent_on_time_step_length;
 				if stop_prep_any_choice ne 1 then do;
-					tested=1; 
+					tested=1; tested_prep_restart=1;
 					dt_last_test=caldate{t}; 
 					np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 				end;
@@ -20439,7 +20444,8 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 * procs;
 
 proc print; 
-	var cald country gender age death hiv option highest_prep_pref pref_prep_oral pref_prep_cab pref_prep_len pref_prep_ami testfor_prep_any prep_any;
+	var cald /*country gender*/ age death hiv /*option*/ highest_prep_pref /*pref_prep_oral pref_prep_cab pref_prep_len pref_prep_ami*/ 
+	rate_test_onprep_any tested testfor_prep_any tested_prep_monitoring tested_prep_restart prep_oral prep_cab prep_len prep_ami;
 	where serial_no < 50;
 run;
 
