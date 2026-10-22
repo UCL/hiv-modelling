@@ -3699,23 +3699,23 @@ a=rand('uniform');b=rand('uniform');c=rand('uniform');
 
 diet_ch=0;
 if diet_tm1=1 then do;
-	if a < 0.80 then diet=1; 
-	if 0.80 <= a < 0.98 then diet =2;
-	if 0.98 <= a then diet =3;
+	if a < 0.95 then diet=1; 
+	if 0.95 <= a < 0.99 then diet =2;
+	if 0.99 <= a then diet =3;
 	if diet_tm1 ne diet then diet_ch=1;
 end;
 
 if diet_tm1=2 then do;
-	if b < 0.20 then diet=1; 
-	if 0.20 <= b < 0.95 then diet =2;
-	if 0.95 <= b then diet =3;
+	if b < 0.04 then diet=1; 
+	if 0.04 <= b < 0.96 then diet =2;
+	if 0.96 <= b then diet =3;
 	if diet_tm1 ne diet then diet_ch=1;
 end;
 
 if diet_tm1=3 then do;
-	if c < 0.05 then diet=1; 
-	if 0.05 <= c < 0.25 then diet =2;
-	if 0.25 <= c then diet =3;
+	if c < 0.01 then diet=1; 
+	if 0.01 <= c < 0.05 then diet =2;
+	if 0.05 <= c then diet =3;
 	if diet_tm1 ne diet then diet_ch=1;
 end;
 
@@ -3739,23 +3739,23 @@ end;
 a=rand('uniform');b=rand('uniform');c=rand('uniform');
 phys_act_ch=0;
 if phys_act_tm1=1 then do;
-	if a < 0.80 then phys_act=1; 
-	if 0.80 <= a < 0.98 then phys_act =2;
-	if 0.98 <= a then phys_act =3;
+	if a < 0.95 then phys_act=1; 
+	if 0.95 <= a < 0.99 then phys_act =2;
+	if 0.99 <= a then phys_act =3;
 	if phys_act_tm1 ne phys_act then phys_act_ch=1;
 end;
 
 if phys_act_tm1=2 then do;
-	if b < 0.20 then phys_act=1; 
-	if 0.20 <= b < 0.95 then phys_act =2;
-	if 0.95 <= b then phys_act =3;
+	if b < 0.04 then phys_act=1; 
+	if 0.04 <= b < 0.96 then phys_act =2;
+	if 0.96 <= b then phys_act =3;
 	if phys_act_tm1 ne phys_act then phys_act_ch=1;
 end;
 
 if phys_act_tm1=3 then do;
-	if c < 0.05 then phys_act=1; 
-	if 0.05 <= c < 0.25 then phys_act =2;
-	if 0.25 <= c then phys_act =3;
+	if c < 0.01 then phys_act=1; 
+	if 0.01 <= c < 0.05 then phys_act =2;
+	if 0.05 <= c then phys_act =3;
 	if phys_act_tm1 ne phys_act then phys_act_ch=1;
 end;
 
@@ -20658,9 +20658,10 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
-proc print;var caldate&j gender age urban urban_fold diet diet_ch diet_fold_bmi phys_act phys_act_ch phys_act_fold_bmi fold_ch_diet fold_ch_phys_act bmi ;where age ge 15;run;
+
 
 * procs;
+proc print;var caldate&j gender age urban urban_fold diet diet_ch diet_fold_bmi phys_act phys_act_ch phys_act_fold_bmi fold_ch_diet fold_ch_phys_act bmi ;where age ge 15;run;
 
 /*
 										
