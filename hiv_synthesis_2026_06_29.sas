@@ -6904,12 +6904,13 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 	if gender=1 and mcirc   =1   then risk_eip = risk_eip* 0.4;  * lower transmission risk in men circumcised;
 
 		if prep_oral   =1 then do;
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+/*			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
+/*			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
+/*			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
+/*			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
+/*			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
+/*			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));*/
+			risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
 			if pop_wide_tld_prep=1 then do;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
@@ -6935,8 +6936,8 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 		end;
 		*** QUERY check code for ami / MK-8527 - m184v, similar to isl (m184m_p?)? ;
 		if prep_ami   =1 then do; 	* ami;
-			risk_eip = risk_eip * (1-prep_ami_efficacy);
-/*			if m184m_p >= 1 then risk_nip = risk_nip * (1- (0.5 * prep_ami_efficacy));*/
+			risk_eip = risk_eip * (1-prep_ami_efficacy);			* QUERY - add adherence effect (0 / 0.33 / 0.67 / 1);
+/*			if m184m_p >= 1 then risk_nip = risk_nip * (1- (0.5 * prep_ami_efficacy));*/	*QUERY - name variable and set to 0 initially;
 		end;
 
 
