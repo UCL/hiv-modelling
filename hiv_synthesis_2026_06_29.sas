@@ -798,7 +798,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 								* dependent_on_time_step_length ;
 * pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 1.1 1.3 1.5) ;
 
-* rel_prep_oral_adh_younger;	rel_prep_oral_adh_younger=0.8; 	* factor determining how much lower adh to oral prep is in people age < 25 compared to > 25; 
+* rel_prep_oral_adh_younger;	rel_prep_oral_adh_younger=0.8; 	* factor determining relative adherence to oral prep in people age < 25 compared to > 25; 
 																* changed from 0.7 to 0.8 after discussion due to low overall adherence resulting from 0.7;
 
 * higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
@@ -811,7 +811,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * rr_mort_tdf_prep;				%sample(rr_mort_tdf_prep, 1.005 1.01 1.03, 0.65 0.30 0.05);
 
-* pr_184m_oral_prep_primary ; pr_184m_oral_prep_primary = 0.3; ******************* placeholder ;
+* pr_184m_oral_prep_primary ; 	pr_184m_oral_prep_primary = 0.3; ******************* placeholder ;
 * pr_65m_oral_prep_primary ;	pr_65m_oral_prep_primary = 0.1; ******************* placeholder ;
 
 * oral_prep_eff_3tc_ten_res;	%sample_uniform(oral_prep_eff_3tc_ten_res, 0.25 0.5);
@@ -917,8 +917,8 @@ end;
 
 
 * MK-8527 PrEP;	*ami = alimatravir, monthly oral MK-8527 PrEP ;
-
-**** QUERY - do we need to code for resistance? tail?
+* m184v mutation selected in presence of alimatravir (same as islatravir);
+* tail after cessation of product is not coded;
 
 * date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
 	* test; date_prep_ami_intro=1994;	* QUERY - for test runs;
@@ -933,8 +933,9 @@ end;
 * rate_choose_stop_prep_ami; 	%sample_uniform(rate_choose_stop_prep_ami, 0.01  0.03  0.05  0.1 0.15);		* sampled from same distribution as CAB PrEP, could set to same value? ; *QUERY;
 								* dependent_on_time_step_length ;
 
-* pref_prep_ami_beta_s1;		pref_prep_ami_beta_s1 = pref_prep_oral_beta_s1 + 0.1 ; 		* assume more preferable than daily pill;	*QUERY;
-
+* pref_prep_ami_beta_s1;		pref_prep_ami_beta_s1 = pref_prep_oral_beta_s1 + 0.1 ; 		* assume more preferable than daily pill;	*QUERY - compare value to cab/len;
+* prep_ami_effect_res_partner;	prep_ami_effect_res_partner=0;								* 0 = no effect. Initially no impact of resistant virus in partner on ami PrEP efficacy;	* QUERY - could sample this (cab and len use rel effect 0, 0.25, 0.5);
+* prep_ami_adh_uplift;			%sample_uniform(prep_ami_adh_uplift, 0.6 0.8 1);
 
 
 *** POP WIDE TLD * ;  			* intention is probably to take this out from Core when cioa / community tld is added to Core; 
@@ -5775,8 +5776,8 @@ end;
 
 
 *Adherence to oral PrEP - modified Jan2017 f_prep;
-* this will not apply to lapr and ami - the efficacy and risk of resistance will be fixed while on long-acting methods, and efficacy will drop / resistance risk increase in the period after stopping; 
-if prep_oral = 1 and registd ne 1 then do;
+* this will not apply to cab or len - the efficacy and risk of resistance will be fixed, and efficacy will drop / resistance risk increase in the period after stopping; 
+if (prep_oral = 1 or prep_ami=1) and registd ne 1 then do;		* ami prep added JAS Oct2026;
 	adh=adhav_prep_oral + adhvar*normal(0);  
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
@@ -5789,13 +5790,15 @@ if prep_oral = 1 and registd ne 1 then do;
 
 	if adh gt 1 then adh=1; if adh < 0 then adh=0;
 
-end;
+	if prep_ami=1 then do;		* ami prep JAS Oct2026;
+		adh=adh+(1-adh)*prep_ami_adh_uplift;
+	end;
 
-* this could be modified so that we account for suboptimal adherence to prep - so we could make prep a continuous variable
-between 0 and 1 rather than binary 0 or 1; 
+end;
 * assume for now that oral prep is tenofovir/ftc;
 
-prep_oral_past_year=.; 	* lapr and ami - replicate for prep_any and other individual types if needed;
+
+prep_oral_past_year=.; 
 if prep_oral=1 then do; 
 	if prep_oral_first_start_date = caldate{t} > . then tot_yrs_prep_oral = 0.25;	* this variable gives the total py on PrEP;	* dependent_on_time_step_length ;  
 	if caldate{t} gt prep_oral_first_start_date > . then tot_yrs_prep_oral = tot_yrs_prep_oral+0.25; 
@@ -6531,8 +6534,8 @@ k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.;  m184m_p=.;  q151m_p=.;  tam_p=.; 
 p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.; p90m_p=.;  in118m_p=.; in140m_p=.; in148m_p=.; in155m_p=.;  
 in263m_p=.; ca66m_p=.;
 
-*prob infection in 3mths from the infected partner;
 
+*prob infection in 3mths from the infected partner;
 
 if t ge 2 and nip gt 0 then do;
 	d=1;do until (d gt nip);
@@ -6678,16 +6681,18 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			end;  
 		end;
 
-		if gender=2 and       age >= 20 then risk_nip = risk_nip * fold_change_w;  * higher transmission risk in women;
+		if gender=2 and       age >= 20 then risk_nip = risk_nip * fold_change_w;  	* higher transmission risk in women;
 		if gender=2 and 15 <= age <  20 then risk_nip = risk_nip * fold_change_yw;  * higher transmission risk in women;
-		if sti=1                        then risk_nip = risk_nip * fold_change_sti;  * higher transmission risk with sti;
-		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4;  * lower transmission risk in men circumcised;
+		if sti=1                        then risk_nip = risk_nip * fold_change_sti; * higher transmission risk with sti;
+		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4; 			* lower transmission risk in circumcised men;
 		if prep_oral   =1 then do;
-			risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));	
-			* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
-			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
+			if m184m_p=1 and k65m_p=1 then 
+				risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+				* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
+			else
+				risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));							
 			if pop_wide_tld_prep=1 then do;
+				* note this is one situation in which we are assuming a prevention effect of dolutegravir;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
 				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
 				alrady positive from previous exposures;
@@ -6696,20 +6701,32 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
 		end;
-		if prep_cab   =1 then do; 	* lapr;
-			if gender =2 then gender_spec_prep_cab_eff = prep_cab_efficacy; if gender =1 then gender_spec_prep_cab_eff = prep_cab_efficacy**2;
-			risk_nip = risk_nip * (1-gender_spec_prep_cab_eff); 
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+		if prep_cab   =1 then do;
+			if gender =2 then gender_spec_prep_cab_eff = prep_cab_efficacy; if gender =1 then gender_spec_prep_cab_eff = prep_cab_efficacy**2;		* lower cab efficacy for men;
+/*			risk_nip = risk_nip * (1-gender_spec_prep_cab_eff); */
+/*			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));*/
+			* QUERY - is the gender-specific effect implemented twice above? Replace with code below? ;
+			if (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p) >= 1 then 
+				risk_nip = risk_nip * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+			else
+				risk_nip = risk_nip * (1-gender_spec_prep_cab_eff); 
 		end;
-		if prep_len   =1 then do; 	* lapr;
-			if gender =2 then gender_spec_prep_len_eff = prep_len_efficacy; if gender =1 then gender_spec_prep_len_eff = prep_len_efficacy**2;
-			risk_nip = risk_nip * (1-gender_spec_prep_len_eff); 
-			if ca66m_p  = 1 then risk_nip = risk_nip * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));
+		if prep_len   =1 then do;
+			if gender =2 then gender_spec_prep_len_eff = prep_len_efficacy; if gender =1 then gender_spec_prep_len_eff = prep_len_efficacy**2;		* lower len efficacy for men;
+/*			risk_nip = risk_nip * (1-gender_spec_prep_len_eff); */
+/*			if ca66m_p  = 1 then risk_nip = risk_nip * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));*/
+			* QUERY - is the gender-specific effect implemented twice above? Replace with code below? ;
+			if ca66m_p = 1 then 
+				risk_nip = risk_nip * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));
+			else
+				risk_nip = risk_nip * (1-gender_spec_prep_len_eff); 
 		end;
-		*** QUERY check code for ami / MK-8527 - m184v, similar to isl (m184m_p?)? ;
-		if prep_ami   =1 then do; 	* ami;
-			risk_nip = risk_nip * (1-prep_ami_efficacy);
-/*			if m184m_p >= 1 then risk_nip = risk_nip * (1- (0.5 * prep_ami_efficacy));*/
+		* QUERY any gender-specific effect for ami? ;
+		if prep_ami   =1 then do;
+			if m184m_p >= 1 then 
+				risk_nip = risk_nip * (1 - (adh * (1 - prep_ami_effect_res_partner) * prep_ami_efficacy));		* QUERY - prep_ami_effect_res_partner ;
+			else
+				risk_nip = risk_nip * (1 - (adh * prep_ami_efficacy));
 		end;
 
 
@@ -6740,7 +6757,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 					infected_prep_any=1;	if inf_prep_len_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
 				if prep_ami=1 then do; 
-					infected_prep_ami=1;	inf_prep_ami_source_prep_r=0; if m184m_p = 1 then inf_prep_ami_source_prep_r=1;			* QUERY check correct mutation(s);
+					infected_prep_ami=1;	inf_prep_ami_source_prep_r=0; if m184m_p = 1 then inf_prep_ami_source_prep_r=1;
 					infected_prep_any=1;	if inf_prep_ami_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
 				if prep_cab_ever = 1 and currently_in_prep_cab_tail=1 then infected_prep_cab_tail=1;
@@ -6900,44 +6917,53 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 			end;  
 		end;
 
-	if gender=2 and age <  20 then risk_eip = risk_eip * fold_change_yw;* higher transmission risk in women;
-	if gender=2 and age ge 20 then risk_eip = risk_eip * fold_change_w;  * higher transmission risk in women;
-	if sti=1                  then risk_eip = risk_eip * fold_change_sti;  * higher transmission risk with sti;
-	if gender=1 and mcirc   =1   then risk_eip = risk_eip* 0.4;  * lower transmission risk in men circumcised;
+	if gender=2 and age <  20 then risk_eip = risk_eip * fold_change_yw;	* higher transmission risk in women;
+	if gender=2 and age ge 20 then risk_eip = risk_eip * fold_change_w;  	* higher transmission risk in women;
+	if sti=1                  then risk_eip = risk_eip * fold_change_sti;  	* higher transmission risk with sti;
+	if gender=1 and mcirc   =1   then risk_eip = risk_eip* 0.4;  			* lower transmission risk in circumcised men;
 
 		if prep_oral   =1 then do;
-			risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));	
-			* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
+			if m184m_p=1 and k65m_p=1 then 
+				risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+				* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
+			else
+				risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));							
 			if pop_wide_tld_prep=1 then do;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
 				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
 				alrady positive from previous exposures;
-				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;
-																						 
+				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;																	 
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_eip = risk_eip * (1-(adh * prev_efficacy));
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
-
 		end;
-
-		if prep_cab   =1 then do; 	* lapr;
-			if gender =2 then gender_spec_prep_cab_eff = prep_cab_efficacy; if gender =1 then gender_spec_prep_cab_eff = prep_cab_efficacy**2;
-			risk_eip = risk_eip * (1-gender_spec_prep_cab_eff); 
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_eip = risk_eip * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+		if prep_cab   =1 then do;
+			if gender =2 then gender_spec_prep_cab_eff = prep_cab_efficacy; if gender =1 then gender_spec_prep_cab_eff = prep_cab_efficacy**2;		* lower cab efficacy for men;
+/*			risk_eip = risk_eip * (1-gender_spec_prep_cab_eff); */
+/*			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_eip = risk_eip * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));*/
+			* QUERY - is the gender-specific effect implemented twice above? Replace with code below? ;
+			if (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p) >= 1 then 
+				risk_eip = risk_eip * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+			else
+				risk_eip = risk_eip * (1-gender_spec_prep_cab_eff); 
 		end;
-		if prep_len   =1 then do; 	* lapr;
-			if gender =2 then gender_spec_prep_len_eff = prep_len_efficacy; if gender =1 then gender_spec_prep_len_eff = prep_len_efficacy**2;
-			risk_eip = risk_eip * (1-gender_spec_prep_len_eff); 
-			if ca66m_p = 1 then risk_eip = risk_eip * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));
+		if prep_len   =1 then do;
+			if gender =2 then gender_spec_prep_len_eff = prep_len_efficacy; if gender =1 then gender_spec_prep_len_eff = prep_len_efficacy**2;		* lower len efficacy for men;
+/*			risk_eip = risk_eip * (1-gender_spec_prep_len_eff); */
+/*			if ca66m_p  = 1 then risk_eip = risk_eip * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));*/
+			* QUERY - is the gender-specific effect implemented twice above? Replace with code below? ;
+			if ca66m_p = 1 then 
+				risk_eip = risk_eip * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));
+			else
+				risk_eip = risk_eip * (1-gender_spec_prep_len_eff); 
 		end;
-		*** QUERY check code for ami / MK-8527 - m184v, similar to isl (m184m_p?)? ;
-		if prep_ami   =1 then do; 	* ami;
-			risk_eip = risk_eip * (1-prep_ami_efficacy);			* QUERY - add adherence effect (0 / 0.33 / 0.67 / 1);
-/*			if m184m_p >= 1 then risk_nip = risk_nip * (1- (0.5 * prep_ami_efficacy));*/	*QUERY - name variable and set to 0 initially;
+		* QUERY any gender-specific effect for ami? ;
+		if prep_ami   =1 then do;
+			if m184m_p >= 1 then 
+				risk_eip = risk_eip * (1 - (adh * (1 - prep_ami_effect_res_partner) * prep_ami_efficacy));		* QUERY - prep_ami_effect_res_partner ;
+			else
+				risk_eip = risk_eip * (1 - (adh * prep_ami_efficacy));
 		end;
-
-
 
 	b=rand('uniform');
 	if b < risk_eip then do;
@@ -7130,34 +7156,50 @@ if t ge 2 and msm=1 and msm_random_this_period < risk_hiv_msm then do; * msm_ran
 		end;  
 	end;
 
-		if sti=1                        then risk_msm = risk_msm * fold_change_sti;  * higher transmission risk with sti;
+		if sti=1 then risk_msm = risk_msm * fold_change_sti;  * higher transmission risk with sti;
+		* no protective effect of vmmc for msm;
 
 		if prep_oral   =1 then do;
-			risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));	
-			* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
-			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
+			if m184m_p=1 and k65m_p=1 then 
+				risk_msm = risk_msm * (1 - (adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+				* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
+			else
+				risk_msm = risk_msm * (1 - (adh * prep_oral_efficacy));							
 			if pop_wide_tld_prep=1 then do;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
 				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
 				alrady positive from previous exposures;
-				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;
+				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;																	 
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_msm = risk_msm * (1-(adh * prev_efficacy));
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_msm = risk_msm * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
 		end;
-		if prep_cab   =1 then do; 	
-			risk_msm = risk_msm * (1-prep_cab_efficacy); 
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_msm = risk_msm * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+		if prep_cab   =1 then do;
+			if gender =2 then gender_spec_prep_cab_eff = prep_cab_efficacy; if gender =1 then gender_spec_prep_cab_eff = prep_cab_efficacy**2;		* lower cab efficacy for men;
+/*			risk_msm = risk_msm * (1-gender_spec_prep_cab_eff); */
+/*			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_msm = risk_msm * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));*/
+			* QUERY - is the gender-specific effect implemented twice above? Replace with code below? ;
+			if (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p) >= 1 then 
+				risk_msm = risk_msm * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+			else
+				risk_msm = risk_msm * (1 - gender_spec_prep_cab_eff); 
 		end;
-		if prep_len   =1 then do; 	
-			risk_msm = risk_msm * (1-prep_len_efficacy); 
-			if ca66m_p  = 1 then risk_msm = risk_msm * (1 - (prep_len_effect_cam_partner));
+		if prep_len   =1 then do;
+			if gender =2 then gender_spec_prep_len_eff = prep_len_efficacy; if gender =1 then gender_spec_prep_len_eff = prep_len_efficacy**2;		* lower len efficacy for men;
+/*			risk_msm = risk_msm * (1-gender_spec_prep_len_eff); */
+/*			if ca66m_p  = 1 then risk_msm = risk_msm * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));*/
+			* QUERY - is the gender-specific effect implemented twice above? Replace with code below? ;
+			if ca66m_p = 1 then 
+				risk_msm = risk_msm * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));
+			else
+				risk_msm = risk_msm * (1 - gender_spec_prep_len_eff); 
 		end;
-		*** QUERY check code for ami / MK-8527 - m184v, similar to isl (m184m_p?)? ;
-		if prep_ami   =1 then do; 	* ami;
-			risk_msm = risk_msm * (1-prep_ami_efficacy);
-/*			if m184m_p >= 1 then risk_msm = risk_msm * (1- (0.5 * prep_ami_efficacy));*/
+		* QUERY any gender-specific effect for ami? ;
+		if prep_ami   =1 then do;
+			if m184m_p >= 1 then 
+				risk_msm = risk_msm * (1 - (adh * (1 - prep_ami_effect_res_partner) * prep_ami_efficacy));		* QUERY - prep_ami_effect_res_partner ;
+			else
+				risk_msm = risk_msm * (1 - (adh * prep_ami_efficacy));
 		end;
 
 		a=rand('uniform'); if a < risk_msm  then do;
@@ -7186,7 +7228,7 @@ if t ge 2 and msm=1 and msm_random_this_period < risk_hiv_msm then do; * msm_ran
 					infected_prep_any=1;	if inf_prep_len_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
 				if prep_ami=1 then do; 
-					infected_prep_ami=1;	inf_prep_ami_source_prep_r=0; if m184m_p = 1 then inf_prep_ami_source_prep_r=1;			* QUERY check correct mutation(s);
+					infected_prep_ami=1;	inf_prep_ami_source_prep_r=0; if m184m_p = 1 then inf_prep_ami_source_prep_r=1;
 					infected_prep_any=1;	if inf_prep_ami_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
 				if prep_cab_ever = 1 and currently_in_prep_cab_tail=1 then infected_prep_cab_tail=1;
@@ -7346,32 +7388,46 @@ if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
 	end;
 
 		if prep_oral   =1 then do;
-			risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));	
-			* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
-			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
+			if m184m_p=1 and k65m_p=1 then 
+				risk_pwid = risk_pwid * (1 - (adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+				* resistance mutations in infecting partner only reduce oral prep efficacy when both m184v and k65r are present;
+			else
+				risk_pwid = risk_pwid * (1 - (adh * prep_oral_efficacy));							
 			if pop_wide_tld_prep=1 then do;
 				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
 				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
 				alrady positive from previous exposures;
-				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;
+				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;																	 
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_pwid = risk_pwid * (1-(adh * prev_efficacy));
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_pwid = risk_pwid * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
 		end;
-		if prep_cab   =1 then do; 	* lapr;
-			risk_pwid = risk_pwid * (1-prep_cab_efficacy); 
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_pwid = risk_pwid * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+		if prep_cab   =1 then do;
+			if gender =2 then gender_spec_prep_cab_eff = prep_cab_efficacy; if gender =1 then gender_spec_prep_cab_eff = prep_cab_efficacy**2;		* lower cab efficacy for men;
+/*			risk_pwid = risk_pwid * (1-gender_spec_prep_cab_eff); */
+/*			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_pwid = risk_pwid * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));*/
+			* QUERY - is the gender-specific effect implemented twice above? Replace with code below? ;
+			if (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p) >= 1 then 
+				risk_pwid = risk_pwid * (1 - (prep_cab_effect_inm_partner * gender_spec_prep_cab_eff));
+			else
+				risk_pwid = risk_pwid * (1 - gender_spec_prep_cab_eff); 
 		end;
-		if prep_len   =1 then do; 	* lapr;
-			if gender =2 then gender_spec_prep_len_eff = prep_len_efficacy; if gender =1 then gender_spec_prep_len_eff = prep_len_efficacy**2;
-			risk_eip = risk_eip * (1-gender_spec_prep_len_eff); 
-			if ca66m_p = 1 then risk_pwid = risk_pwid * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));
+		if prep_len   =1 then do;
+			if gender =2 then gender_spec_prep_len_eff = prep_len_efficacy; if gender =1 then gender_spec_prep_len_eff = prep_len_efficacy**2;		* lower len efficacy for men;
+/*			risk_pwid = risk_pwid * (1-gender_spec_prep_len_eff); */
+/*			if ca66m_p  = 1 then risk_pwid = risk_pwid * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));*/
+			* QUERY - is the gender-specific effect implemented twice above? Replace with code below? ;
+			if ca66m_p = 1 then 
+				risk_pwid = risk_pwid * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));
+			else
+				risk_pwid = risk_pwid * (1 - gender_spec_prep_len_eff); 
 		end;
-		*** QUERY check code for ami / MK-8527 - m184v, similar to isl (m184m_p?)? ;
-		if prep_ami   =1 then do; 	* ami;
-			risk_nip = risk_nip * (1-prep_ami_efficacy);
-/*			if m184m_p >= 1 then risk_nip = risk_nip * (1- (0.5 * prep_ami_efficacy));*/
+		* QUERY any gender-specific effect for ami? ;
+		if prep_ami   =1 then do;
+			if m184m_p >= 1 then 
+				risk_pwid = risk_pwid * (1 - (adh * (1 - prep_ami_effect_res_partner) * prep_ami_efficacy));		* QUERY - prep_ami_effect_res_partner ;
+			else
+				risk_pwid = risk_pwid * (1 - (adh * prep_ami_efficacy));
 		end;
 
 
@@ -7401,7 +7457,7 @@ if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
 					infected_prep_any=1;	if inf_prep_len_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
 				if prep_ami=1 then do; 
-					infected_prep_ami=1;	inf_prep_ami_source_prep_r=0; if m184m_p = 1 then inf_prep_ami_source_prep_r=1;			* QUERY check correct mutation(s);
+					infected_prep_ami=1;	inf_prep_ami_source_prep_r=0; if m184m_p = 1 then inf_prep_ami_source_prep_r=1;
 					infected_prep_any=1;	if inf_prep_ami_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
 				end;
 				if prep_cab_ever = 1 and currently_in_prep_cab_tail=1 then infected_prep_cab_tail=1;
@@ -20445,8 +20501,9 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 proc print; 
 	var cald /*country gender*/ age death hiv /*option*/ highest_prep_pref /*pref_prep_oral pref_prep_cab pref_prep_len pref_prep_ami*/ 
-	rate_test_onprep_any tested testfor_prep_any tested_prep_monitoring tested_prep_restart prep_oral prep_cab prep_len prep_ami;
-	where serial_no < 50;
+	rate_test_onprep_any tested testfor_prep_any tested_prep_monitoring tested_prep_restart prep_oral prep_cab prep_len prep_ami adh prep_ami_adh_uplift;
+/*	where serial_no < 50;*/
+	where prep_any=1;
 run;
 
 /*proc freq; tables cald hiv prep_any; where death=.; run;*/
