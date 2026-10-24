@@ -1259,7 +1259,7 @@ prep_oral_drug_cost = (0.050 * 1.2) / 4 ; 				* cost per 3 months; * 1.2 is supp
 prep_ami_drug_cost = (0.001 * 1.2) / 4 ; 				* cost per 3 months; * 1.2 is supply chain cost; * $1 ppy AIDS 2026;
 prep_tld_drug_cost = (0.054 * 1.2) / 4 ; 				* cost per 3 months; * 1.2 is supply chain cost;
 cost_prep_oral_clinic = 0.010; 							*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - 3-monthly visit (4 per year);
-cost_prep_cab_clinic = 1.5 * cost_prep_oral_clinic; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - lapr is 1.5 times oral prep due to 6 visits per year;
+cost_prep_cab_clinic = 1.5 * cost_prep_oral_clinic; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - cab is 1.5 times oral prep due to 6 visits per year;
 cost_prep_len_clinic = 0.007; 							*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - len is < oral prep due to 2 visits per year;
 cost_prep_ami_clinic = cost_prep_oral_clinic; 			*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - same as oral PrEP for now, check how many visits needed py;	* QUERY;
 cost_prep_any_clinic_couns = 0.010; 					*Further clinic costs relating to adherence counselling;
@@ -2557,15 +2557,16 @@ else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_or
 else if caldate{t} >= (date_prep_oral_intro + dur_prep_oral_scaleup) and set_in_options ne 1
 	then eff_prob_prep_oral_b = prob_prep_oral_b;
 
-* lapr and ami - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
+* cab, len and ami - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
-* Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
+* Injectable CAB-LA prep scale-up; * JAS Sep2021;
 if 		cab_prep_available ne 1 then eff_prob_prep_cab_b = 0;
 else if . < date_prep_cab_intro <= caldate{t} < (date_prep_cab_intro + dur_prep_cab_scaleup) and set_in_options ne 1
 	then eff_prob_prep_cab_b = 0.05 +  (  (prob_prep_cab_b-0.05) * ( 1 -    (date_prep_cab_intro + dur_prep_cab_scaleup - caldate{t}) / dur_prep_cab_scaleup  )   );
 else if caldate{t} >= (date_prep_cab_intro + dur_prep_cab_scaleup) and set_in_options ne 1
 	then eff_prob_prep_cab_b = prob_prep_cab_b;
 
+* Injectable LEN prep scale-up;
 if 		. < caldate{t} < date_prep_len_intro or date_prep_len_intro=. then eff_prob_prep_len_b = 0;
 else if . < date_prep_len_intro <= caldate{t} < (date_prep_len_intro + dur_prep_len_scaleup) and set_in_options ne 1
 	then eff_prob_prep_len_b = 0.05 +  (  (prob_prep_len_b-0.05) * ( 1 -    (date_prep_len_intro + dur_prep_len_scaleup - caldate{t}) / dur_prep_len_scaleup  )   );
@@ -3204,9 +3205,9 @@ adc_tm1=adc; adc=0;
 who3_event_tm1=who3_event; who3_event=0;
 
 visit_prep_oral=.;	
-visit_prep_cab=.;	* lapr ;
-visit_prep_len=.;	* lapr ;
-visit_prep_ami=.;	* ami ;
+visit_prep_cab=.;
+visit_prep_len=.;
+visit_prep_ami=.;
 ageg_ep=.;
 
 end;
@@ -5198,7 +5199,7 @@ end;
 * Note that date of stop of prep (date_prep_e) only given a value for people who stop tl prep or people on tld prep who stop without having
 (or without been diagnosed with) hiv; *date of stopping prep is now given by prep_xxx_last_stop_date JAS Jul23;
 
-if prep_any_tm1=1 then do;		* lapr - relies on prep types being mutually exclusive ;
+if prep_any_tm1=1 then do;		* note relies on prep types being mutually exclusive ;
 	if prep_any_elig=0 then stop_prep_any_elig=1;
 	select;
 		when (prep_oral_tm1=1)	do;	last_prep_used=1; if prep_any_elig=0 then stop_prep_oral_elig=1;	end;
@@ -5653,12 +5654,12 @@ if pop_wide_tld_prep ne 1 then pop_wide_tld_as_art = 0;
 
 if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
 
-if tested=1 and (hivtest_type_1_prep_cab=1 or hivtest_type_1_init_prep_cab=1) and prep_cab_current_start_date = caldate{t} then do; 	* lapr - updated start date condition to current inj-prep start date JAS Jul23;
+if tested=1 and (hivtest_type_1_prep_cab=1 or hivtest_type_1_init_prep_cab=1) and prep_cab_current_start_date = caldate{t} then do; 	* updated start date condition to current cab-prep start date JAS Jul23;
 	cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; 
 end;		
 if tested=1 and hivtest_type_1_prep_cab=1 and prep_cab = 1 then do; cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; end;
 
-if tested=1 and (hivtest_type_1_prep_len=1 or hivtest_type_1_init_prep_len=1) and prep_len_current_start_date = caldate{t} then do; 	* lapr - updated start date condition to current inj-prep start date JAS Jul23;
+if tested=1 and (hivtest_type_1_prep_len=1 or hivtest_type_1_init_prep_len=1) and prep_len_current_start_date = caldate{t} then do; 	* updated start date condition to current len-prep start date JAS Jul23;
 	cost_test = cost_test_g; cost_test_type1=cost_test; 
 end;		
 if tested=1 and hivtest_type_1_prep_len=1 and prep_len = 1 then do; cost_test = cost_test_g; cost_test_type1=cost_test; end;
@@ -5709,8 +5710,8 @@ if hiv=1 and tested=1 and prep_any=1 then prep_falseneg=1;
 
 
 *PrEP clinic visits - modified Jan2017 f_prep;
-* lapr - assume 3-monthly visits for this section;
-if caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_elig=1 and (pop_wide_tld ne 1 or tested=1) then do;
+* assume 3-monthly visits for this section;
+if caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_elig=1 and (pop_wide_tld ne 1 or tested=1) then do;		* QUERY - double check (pop_wide_tld ne 1 or tested=1) clause ;
 	if prep_any=0 then do;
 		if prep_any_ever ne 1 then do; visit_prep_any=.; visit_prep_oral=.; visit_prep_cab=.; visit_prep_len=.; visit_prep_ami=.; end;
 		else if prep_any_ever=1 then do;
@@ -15261,7 +15262,7 @@ new_mcirc_1549m=0;	if gender=1 and 15 le age lt 50 then do; new_mcirc_1549m=new_
 
 
 * uncertain about this code here below - currently setting all variables to . so they do not come up as errors in proc univariate;
-
+* QUERY - this section is commented out here so can we delete (along with outputs)? ;
 new_1519sw=.;new_2024sw=.;new_2529sw=.;new_3039sw=.;new_ge40sw=.;tot_newp=.;newp_p3m=.;years_ep=.;ever_ep=.;p_ep_py=.;
 
 /*
@@ -16056,7 +16057,7 @@ onart_age1564 = 0;  if 15 <= age < 65 and onart=1 then onart_age1564 = 1;
 
 
 *** Virally supressed on ART;
-if prep_any   ne 1 then do;	* lapr - define which prep? ;
+if prep_any   ne 1 then do;
 	* No time restriction on ART;
 	vl1000_art=.;vl1000_art_age1564=.;
 	if onart = 1 then vl1000_art=vl1000;	if onart = 1 and 15 <= age < 65 then vl1000_art_age1564=vl1000;
@@ -16424,15 +16425,7 @@ prep_cab_sw = 0 ; 	if prep_cab  =1 and sw=1 then prep_cab_sw = 1 ;
 prep_len_sw = 0 ; 	if prep_len  =1 and sw=1 then prep_len_sw = 1 ;
 prep_ami_sw = 0 ; 	if prep_ami  =1 and sw=1 then prep_ami_sw = 1 ;
 
-*At start of PrEP;	* lapr - any prep - JAS Nov2021;
-prep_any_start=0; age_prepstart=.; ep_prepstart=.; newp_prepstart=.;
-if min(prep_oral_first_start_date, prep_cab_first_start_date, prep_len_first_start_date, prep_ami_first_start_date)= caldate&j then do;
-	prep_any_start=1;
-	age_prepstart=age;
-	ep_prepstart=ep;
-	newp_prepstart=newp;
-end;
-
+*At start of any PrEP use;	* JAS Nov2021;
 prep_any_start=0; if prep_any_first_start_date = caldate&j then prep_any_start=1;
 prep_oral_start=0; if prep_oral_first_start_date = caldate&j then prep_oral_start=1;
 prep_cab_start=0; if prep_cab_first_start_date = caldate&j then prep_cab_start=1;
@@ -16444,6 +16437,13 @@ prep_oral_restart=0; if prep_oral_restart_date_choice = caldate&j  then prep_ora
 prep_cab_restart=0; if prep_cab_restart_date_choice = caldate&j  then prep_cab_restart=1;
 prep_len_restart=0; if prep_len_restart_date_choice = caldate&j  then prep_len_restart=1;
 prep_ami_restart=0; if prep_ami_restart_date_choice = caldate&j  then prep_ami_restart=1;
+
+age_prepstart=.; ep_prepstart=.; newp_prepstart=.;
+if prep_any_start=1 then do;
+	age_prepstart=age;
+	ep_prepstart=ep;
+	newp_prepstart=newp;
+end;
 
 *People accidentally started PrEP due to window period - applies to first ever PrEP initiation or re-initiation following a break;  	
 started_prep_oral_in_primary =0; 	if hiv=1 and (prep_oral_first_start_date=caldate&j or prep_oral_restart_date=caldate&j)	and primary = 1 then do; started_prep_oral_in_primary =1; 	started_prep_oral_in_primary_e =1; end;
