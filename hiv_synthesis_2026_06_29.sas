@@ -5236,6 +5236,7 @@ end;
 ********** STARTING PREP *********** ;
 
 *Jul2016 f_prep;
+tested_prep_start_other=0;
 if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_elig=1 then do;
 
 	unisensprep=rand('uniform');
@@ -5274,7 +5275,8 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 				end; 
 
 				* person has not tested explicitly to start PrEP but is willing;
-				else if (tested_prep_oral_start ne 1 and tested_prep_cab_start ne 1 and tested_prep_len_start ne 1 and tested_prep_ami_start ne 1) then do;
+				else if tested_prep_any_start ne 1 then do;
+					tested_prep_start_other=1;
 					r=rand('uniform'); 
 					select;
 						when (highest_prep_pref = 1)	if r < eff_prob_prep_oral_b then do; 	*Oral PrEP preferred and is available from start of PrEP rollout;
@@ -5345,7 +5347,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 
 
 	started_prep_hiv_test_sens=0;
-	if (prep_oral=1 or prep_cab=1 or prep_len=1 or prep_ami=1) and prep_any_current_start_date = caldate{t} and hiv=1 then do; 
+	if prep_any=1 and prep_any_current_start_date = caldate{t} and hiv=1 then do; 
 		started_prep_hiv_test_sens=1;	started_prep_hiv_test_sens_e=1;	end;
 	end;
 
@@ -5371,10 +5373,12 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 
  	if prep_any_ever=1 and max(prep_oral_current_start_date, prep_cab_current_start_date, prep_len_current_start_date, prep_ami_current_start_date) ne caldate{t} 
 	and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
-	* person has used PrEP before but has not started use this period, and is uninfected or tested but undetected;
+	* person has used PrEP before but has not started use this period, and is either not tested this period, or tested and uninfected or false positive;
 
+		*Continuing PrEP use;
 		r=rand('uniform'); 
 		if prep_oral_tm1 = 1 then do; 		* dependent_on_time_step_length;
+			*** QUERY - have people continuing on PrEP tested this period? ;
 			if r < (1-eff_rate_choose_stop_prep_oral) then do; 			* continue to use PrEP;
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	 
 				if highest_prep_pref = 1 then do;						* continue with oral PrEP;
@@ -5407,6 +5411,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 				stop_prep_oral_choice=1; 	continuous_prep_oral_use=0;
 			end;  
 		end;
+
 		else if prep_cab_tm1 = 1 then do; 	* dependent_on_time_step_length;
 			if r < (1-eff_rate_choose_stop_prep_cab) then do; 			* continue to use PrEP; 
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
@@ -5420,7 +5425,6 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 						prep_oral_first_start_date=caldate{t};	prep_oral_ever=1;
 					end;
 				end; 
-
 				if highest_prep_pref = 3 then do;						* switch to len PrEP;
 					switch_prep_from_cab=1;	 	switch_prep_to_len =1;	continuous_prep_cab_use=0;
 					prep_len =1;	continuous_prep_len_use =  0.25;	prep_len_current_start_date=caldate{t};	prep_len_switch_date=caldate{t};
@@ -5428,7 +5432,6 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 						prep_len_first_start_date=caldate{t};	prep_len_ever=1;
 					end;
 				end; 
-
 				if highest_prep_pref = 4 then do;						* switch to ami/MK-8527 PrEP;
 					switch_prep_from_cab=1;	 	switch_prep_to_ami=1;	continuous_prep_cab_use=0;
 					prep_ami=1;		continuous_prep_ami_use =  0.25;	prep_ami_current_start_date=caldate{t};		prep_ami_switch_date=caldate{t};
@@ -5437,13 +5440,11 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 					end;
 				end; 
 			end;
-
 			else do; 	* choose to stop PrEP despite newp>1;
 				stop_prep_any_choice=1; 	continuous_prep_any_use=0;
 				stop_prep_cab_choice=1;		continuous_prep_cab_use=0; 
 			end; 
 		end;
-
 
 		else if prep_len_tm1 = 1 then do; 	* dependent_on_time_step_length;
 			if r < (1-eff_rate_choose_stop_prep_len) then do; 			* continue to use PrEP; 
@@ -5458,7 +5459,6 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 						prep_oral_first_start_date=caldate{t};	prep_oral_ever=1;
 					end;
 				end; 
-
 				if highest_prep_pref = 2 then do; 					* switch to cab  PrEP; * this not possible as len will replace cab;
 					switch_prep_from_len=1;	 	switch_prep_to_cab =1;	continuous_prep_len_use=0;
 					prep_cab =1;	continuous_prep_cab_use =  0.25;	prep_cab_current_start_date=caldate{t};	prep_cab_switch_date=caldate{t};
@@ -5466,7 +5466,6 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 						prep_cab_first_start_date=caldate{t};	prep_cab_ever=1;
 					end;
 				end; 
-
 				if highest_prep_pref = 4 then do;						* switch to ami/MK-8527 PrEP;
 					switch_prep_from_len=1;	 	switch_prep_to_ami=1;	continuous_prep_len_use=0;
 					prep_ami=1;		continuous_prep_ami_use =  0.25;	prep_ami_current_start_date=caldate{t};		prep_ami_switch_date=caldate{t};
@@ -5475,13 +5474,11 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 					end;
 				end; 
 			end;
-
 			else do; 	* choose to stop PrEP despite newp>1;
 				stop_prep_any_choice=1; 	continuous_prep_any_use=0;
 				stop_prep_len_choice=1;		continuous_prep_len_use=0; 
 			end; 
 		end;
-
 
 		else if prep_ami_tm1 = 1 then do; 	* dependent_on_time_step_length;
 			if r < (1-eff_rate_choose_stop_prep_ami) then do; 			* continue to use ami/MK-8527 PrEP; 
@@ -5503,7 +5500,6 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 						prep_cab_first_start_date=caldate{t};	prep_cab_ever=1;
 					end;
 				end; 					
-
 				if highest_prep_pref = 3 then do;						* switch to len        PrEP;
 					switch_prep_from_ami = 1;	 switch_prep_to_len=1;	continuous_prep_ami_use=0;
 					prep_len=1;		continuous_prep_len_use = 0.25;		prep_len_current_start_date=caldate{t};		prep_len_switch_date=caldate{t};
@@ -5511,8 +5507,6 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 						prep_len_first_start_date=caldate{t};	prep_len_ever=1;
 					end;
 				end; 					
-
-
 			end;
 			else do; 	* choose to stop PrEP despite newp>=1;
 				stop_prep_any_choice=1; 	continuous_prep_any_use=0;
@@ -5542,13 +5536,11 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 								prep_cab=1; 	continuous_prep_cab_use=0.25; 	prep_cab_current_start_date=caldate{t};		prep_cab_restart_date=caldate{t};	prep_cab_restart_date_choice=caldate{t};	stop_prep_cab_choice=0; 	
 								if prep_cab_ever ne 1 then prep_cab_first_start_date=caldate{t};
 							end; 					
-
 							when (highest_prep_pref=3)	do; 
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_len=1; 	continuous_prep_len_use=0.25; 	prep_len_current_start_date=caldate{t};		prep_len_restart_date=caldate{t};	prep_len_restart_date_choice=caldate{t};	stop_prep_len_choice=0; 	
 								if prep_len_ever ne 1 then prep_len_first_start_date=caldate{t};
 							end; 					
-
 							when (highest_prep_pref=4)	do; 
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_ami=1; 	continuous_prep_ami_use=0.25;	prep_ami_current_start_date=caldate{t};		prep_ami_restart_date=caldate{t};	prep_ami_restart_date_choice=caldate{t}; 	stop_prep_ami_choice=0; 		
@@ -8805,7 +8797,7 @@ testing strategy 2: testing only those presenting with symptoms (ie who stage 3 
 
 
 * elig_test... variables introduced feb17 to determine why people were getting tested;
-elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;elig_test_tb_tested=0;elig_test_non_tb_who3_tested=0;
+elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;elig_test_tb_tested=0;elig_test_non_tb_who3_tested=0;tested_sympt=0;
 	if t ge 3 and registd ne 1 and tested ne 1 and caldate{t} ge date_start_testing  then do; 
 		if adc_tm1=1                                     then do; rate_test=test_rate_who4; elig_test_who4=1; end; *rate_test*incr_diag_rate_who4;			
 		if adc_tm1=0 and tb_tm2 =0 and tb_tm1 =1         then do; rate_test=test_rate_tb; elig_test_tb=1; end;*rate_test*incr_diag_rate_tb;
@@ -8813,7 +8805,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 
 		if (adc_tm1=1 or (tb_tm2 =0 and tb_tm1 =1) or non_tb_who3_ev_tm1 =1) then do;
 			unitest=rand('uniform');if unitest<rate_test and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
-				tested=1;
+				tested=1; tested_sympt=1;
 				if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 				np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 				sympt_diag=1; sympt_diag_ever=1;
@@ -20504,9 +20496,12 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 proc print; 
 	var cald /*country gender*/ age death hiv /*option*/ highest_prep_pref /*pref_prep_oral pref_prep_cab pref_prep_len pref_prep_ami*/ 
-	rate_test_onprep_any tested tested_prep_any_start tested_prep_monitoring tested_prep_restart prep_oral prep_cab prep_len prep_ami adh prep_ami_adh_uplift;
+/*	rate_test_onprep_any tested tested_prep_any_start tested_prep_monitoring tested_prep_restart tested_prep_start_other prep_any prep_oral prep_cab prep_len prep_ami adh prep_ami_adh_uplift;*/
+	rate_test_onprep_any tested tested_prep_any_start tested_prep_monitoring tested_prep_restart tested_prep_start_other tested_circ tested_symptoms_not_hiv tested_anc tested_labdel tested_pd 
+	tested_due_to_self_test tested_as_sw
+	prep_any prep_oral prep_cab prep_len prep_ami ;
 /*	where serial_no < 50;*/
-	where prep_any=1;
+	where (prep_oral=1 or prep_cab=1 or prep_len=1 or prep_ami=1);
 run;
 
 /*proc freq; tables cald hiv prep_any; where death=.; run;*/
