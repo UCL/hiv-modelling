@@ -1,7 +1,7 @@
 
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run search2_002;
+* run search_009;
 * Matt local machine input;
 libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026';
 %let tmpfilename = out;
@@ -16,8 +16,7 @@ libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026';
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
-*  proc printto log="synthesis_log.log"; run;	
- proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
+* proc printto log="C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026\synthesis_log.log"; run;	
 
 %let population = 100000 ; 
 %let year_interv = 2027.0 ;	
@@ -1013,12 +1012,12 @@ prob_symp_hypertension = 0.025;
 		Zhou Lancet 2021 - proportion women in SSA diagnosed 54%, proportion men diagnosed 34% (1.59-fold higher);		
 %sample_uniform(rr_test_sbp_women, 1 1.1 1.2);
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
-prob_test_sbp_undiagnosed = 0.02 * rr_htn_diagnosis;
+prob_test_sbp_undiagnosed = 0.03 * rr_htn_diagnosis;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 10; 
 * RR of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
 						 
-prob_test_sbp_diagnosed = 0.08 * rr_htn_diagnosis; 
+prob_test_sbp_diagnosed = 0.12 * rr_htn_diagnosis; 
 * RR of getting bp tested in a person <40 years of age compared to baseline probability;
 rr_test_sbp_young = 0.5; 
 * relative risk of bp testing for current HIV visit;
@@ -1030,10 +1029,16 @@ first_comm_test = .;
 prob_test_sbp_comm = 0;
 * prob link from community testing to clinic;
 prob_htn_link = 0;
+a_prob_htn_link = .;
+addprob_htn_link_htnsev = 0;
 * comm test interval;
 comm_test_interval = .;
 * comm test age (e.g. all adults vs targeted to >=40);
 comm_test_age = .;
+
+* HTN interventions;
+telehealth_intervention = 0;
+telehealth_sbp_thresh = .;
 
 * probability of hypertension treatment initiation and intensification ;
 	* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
@@ -1041,7 +1046,7 @@ comm_test_age = .;
 	* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
 	prob_imm_htn_tx_s2 = prob_imm_htn_tx_s1 + 0.3;
 	* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
-	%sample_uniform(prob_start_htn_tx_s1, 0.3 0.4 0.5);
+	%sample_uniform(prob_start_htn_tx_s1, 0.4 0.5 0.6);
 	* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
 	prob_start_htn_tx_s2 = prob_start_htn_tx_s1 + 0.3;
 	* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
@@ -1050,7 +1055,7 @@ comm_test_age = .;
 	prob_restart_htn_tx_s2 = prob_restart_htn_tx_s1;
 	
 	* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
-	%sample_uniform(prob_intensify_1_2, 0.1 0.15 0.2); 
+	%sample_uniform(prob_intensify_1_2, 0.5 0.1 0.2); 
 	* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
 	%sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 
 	
@@ -1058,22 +1063,22 @@ comm_test_age = .;
 * probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
 		%sample_uniform(htn_retention_patt, 1 2 3);
 		if htn_retention_patt = 1 then do;
-			prob_visit_htn_v1 = 0.57 ;
-			prob_visit_htn_v2 = 0.67 ;
+			prob_visit_htn_v1 = 0.60 ; * from 0.57;
+			prob_visit_htn_v2 = 0.70 ; * from 0.67;
 			prob_visit_htn_v3 = 0.76 ;
 			prob_visit_htn_v4 = 0.81 ;
 			prob_visit_htn_v5 = 0.86 ;
 		end; 
 		if htn_retention_patt = 2 then do;
-			prob_visit_htn_v1 = 0.60 ;
-			prob_visit_htn_v2 = 0.70 ;
+			prob_visit_htn_v1 = 0.63 ; * from 0.60;
+			prob_visit_htn_v2 = 0.74 ; * from 0.7;
 			prob_visit_htn_v3 = 0.80 ;
 			prob_visit_htn_v4 = 0.85 ;
 			prob_visit_htn_v5 = 0.90 ;
 		end; 
 		if htn_retention_patt = 3 then do;
-			prob_visit_htn_v1 = 0.63 ;
-			prob_visit_htn_v2 = 0.74 ;
+			prob_visit_htn_v1 = 0.66 ; * from 0.63;
+			prob_visit_htn_v2 = 0.78 ; * from 0.74;
 			prob_visit_htn_v3 = 0.84 ;
 			prob_visit_htn_v4 = 0.89 ;
 			prob_visit_htn_v5 = 0.90 ;
@@ -1292,6 +1297,7 @@ cost_htn_link_voucher = .;
 cost_htn_screen_comm = .;
 cost_htn_visit1 = 0.005;
 cost_htn_visit2 = 0.010;
+cost_htn_telehealth = .;
 %sample_uniform(rr_cost_htn_visitInt, 0 0.5);
 cost_htn_drug1 = 0.0015;
 cost_htn_drug2 = 0.0015;
@@ -1934,7 +1940,7 @@ end;
 * for simplicity assume nobody on anti-hypertensives at baseline in 1989 and no one with prior CVD;
 dx_htn = 0; on_tx_htn = 0; ever_on_anti_hyp=0;
 prior_cvd = 0; prior_cvd_modsev = 0; prior_cva = 0; prior_ihd = 0;
-cva_severity = 0; ihd_severity = 0; 
+cva_severity = 0; ihd_severity = 0; telehealth_eligible = 0;
 
 * define person-specific effect of 1, 2 and 3 anti-hypertensives;
 %sample(effect_anti_hyp_1, 10 20 30, 0.7 0.2 0.1); 
@@ -2400,6 +2406,7 @@ first_cvd = 0;
 severity_cva_this_per = 0;
 severity_ihd_this_per = 0;
 cvd_death_risk = 0;
+telehealth_eligible = telehealth_eligible;
 ep_tm1=ep;
 if t > 1 then do; newp_tm1=newp; newp = .; end;
 np_tm1=np; np = .;
@@ -2559,69 +2566,113 @@ who may be dead and hence have caldate{t} missing;
 		** CHW community screening without voucher;
 		first_comm_test = 2027;
 		* prob testing in commmunity;
-		%sample_uniform(prob_test_sbp_comm, 0.8 0.85 0.9);
+		%sample_uniform(prob_test_sbp_comm, 0.75 0.8 0.85);
 		* prob link from community testing to clinic;
-		%sample_uniform(prob_htn_link, 0.5 0.6 0.7);
+		%sample_uniform(prob_htn_link, 0.4 0.5 0.6);
+		* additional prob of linkage if identified as severe HTN on comm screening;
+		addprob_htn_link_htnsev = 0.2;
 		* comm test interval;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
 		comm_test_age = 40;
 
+		* telehealth eligibility;
+		telehealth_intervention = 1;
+		telehealth_sbp_thresh = 160;
+
 		*relative risk of BP testing at HIV visit if out of hypertension care;
 		rr_test_sbp_hiv =10;
 
-		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
-		%sample_uniform(prob_imm_htn_tx_s1, 0.3 0.4 0.5); 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
 		%sample_uniform(prob_imm_htn_tx_s2, 0.9 0.95 1);
-		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
-		%sample_uniform(prob_start_htn_tx_s1, 0.4 0.5 0.6);
+		* additional probability of initiating antihypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159;
+		%sample_uniform(addprob_start_htn_tx_s1, 0.1 0.2);
 		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
 		%sample_uniform(prob_start_htn_tx_s2, 0.95 0.975 1);
-		* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
-		%sample_uniform(prob_restart_htn_tx_s1, 0.9 0.95 1); 
 		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
 		%sample_uniform(prob_restart_htn_tx_s2, 0.95 0.975 1);
 
-		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
-		%sample_uniform(htn_retention_patt, 1 2 3);
-		if htn_retention_patt = 1 then do;
-			prob_visit_htn_v1 = 0.65 ;
-			prob_visit_htn_v2 = 0.75 ;
-			prob_visit_htn_v3 = 0.85 ;
-			prob_visit_htn_v4 = 0.90 ;
-			prob_visit_htn_v5 = 0.95 ;
-		end; 
-		if htn_retention_patt = 2 then do;
-			prob_visit_htn_v1 = 0.70 ;
-			prob_visit_htn_v2 = 0.80 ;
-			prob_visit_htn_v3 = 0.90 ;
-			prob_visit_htn_v4 = 0.95 ;
-			prob_visit_htn_v5 = 0.95 ;
-		end; 
-		if htn_retention_patt = 3 then do;
-			prob_visit_htn_v1 = 0.75 ;
-			prob_visit_htn_v2 = 0.85 ;
-			prob_visit_htn_v3 = 0.95 ;
-			prob_visit_htn_v4 = 0.95 ;
-			prob_visit_htn_v5 = 0.95 ;
-		end; 
+		* probability of having a hypertension visit (telehealth or clinic) if eligible for telehealth);
+			addprob_visit_htn_v1 = 0.18 ;
+			addprob_visit_htn_v2 = 0.15 ;
+			addprob_visit_htn_v3 = 0.1 ;
+			addprob_visit_htn_v4 = 0.05 ;
+			addprob_visit_htn_v5 = 0.05 ;
+		
 
 		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
-		interval_visit_hypertension=0.5;
+		interval_visit_hypertension=0.25;
 
 		* integration of hiv and hypertension visits;
-		integration = 1;
+		integration = 0;
 
 		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
-		%sample_uniform(prob_intensify_1_2, 0.25 0.30 0.35); 
+		addprob_intensify_1_2 = 0.2; 
 		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
-		%sample_uniform(prob_intensify_2_3, 0.05 0.1 0.2);
+		addprob_intensify_2_3 = 0.1;
 
 		* cost of hypertension interventions;
 		cost_htn_link_voucher = 0;
 		cost_htn_screen_comm = 0.003;
+		cost_htn_telehealth = 0.0125;
 	end;
+
+	if option = 2 then do;
+		** CHW community screening without voucher;
+		first_comm_test = 2027;
+		* prob testing in commmunity;
+		%sample_uniform(prob_test_sbp_comm, 0.75 0.8 0.85);
+		* prob link from community testing to clinic;
+		%sample_uniform(prob_htn_link, 0.4 0.5 0.6);
+		* additional prob of linkage if identified as severe HTN on comm screening;
+		addprob_htn_link_htnsev = 0.2;
+		* comm test interval;
+		comm_test_interval = 1;
+		* comm test age (e.g. all adults vs targeted to >=40);
+		comm_test_age = 40;
+
+		* telehealth eligibility;
+		telehealth_intervention = 1;
+		telehealth_sbp_thresh = 140;
+
+		*relative risk of BP testing at HIV visit if out of hypertension care;
+		rr_test_sbp_hiv =10;
+
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_imm_htn_tx_s2, 0.9 0.95 1);
+		* additional probability of initiating antihypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159;
+		%sample_uniform(addprob_start_htn_tx_s1, 0.1 0.2);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_start_htn_tx_s2, 0.95 0.975 1);
+		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
+		%sample_uniform(prob_restart_htn_tx_s2, 0.95 0.975 1);
+
+		* probability of having a hypertension visit (telehealth or clinic) if eligible for telehealth);
+			addprob_visit_htn_v1 = 0.18 ;
+			addprob_visit_htn_v2 = 0.15 ;
+			addprob_visit_htn_v3 = 0.1 ;
+			addprob_visit_htn_v4 = 0.05 ;
+			addprob_visit_htn_v5 = 0.05 ;
+		
+
+		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
+		interval_visit_hypertension=0.25;
+
+		* integration of hiv and hypertension visits;
+		integration = 0;
+
+		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
+		addprob_intensify_1_2 = 0.2; 
+		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
+		addprob_intensify_2_3 = 0.1;
+
+		* cost of hypertension interventions;
+		cost_htn_link_voucher = 0;
+		cost_htn_screen_comm = 0.003;
+		cost_htn_telehealth = 0.0069;
+	end; 
+
+
 
 /*
 END   */
@@ -3656,9 +3707,7 @@ a_sbp=rand('uniform');  tested_bp = 0; sbp_m=.; visit_hypertension=0; *reset var
 											  
 																							 
 
-select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
-					   
-		
+select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;	
 	when (40 <= age < 65) a_sbp = a_sbp / (sbp_rr * sbp_rr_age) ;  * 27APR24, change to age 40 to <65;
 	otherwise a_sbp = a_sbp / sbp_rr ;
 end; 
@@ -3692,8 +3741,13 @@ end;
 if test_sbp_comm =1 then do;
 	sbp_comm_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_comm_m = round(sbp_comm_m, 1);
 end;
+a_prob_htn_link = prob_htn_link;
+if sbp_comm_m >= telehealth_sbp_thresh and telehealth_intervention = 1 then do; * higher prob of linkage if eligible for telehealth;
+	a_prob_htn_link = prob_htn_link + addprob_htn_link_htnsev;
+	telehealth_eligible = 1;
+end;
 if sbp_comm_m >=140 then do;
-	if a_htn_link < prob_htn_link then tested_bp = 1;
+	if a_htn_link < a_prob_htn_link then tested_bp = 1;
 end;
 
 * tested_bp = whether blood pressure measured in this period (1) or not (0) for people not currently under hypertension care;
@@ -3716,22 +3770,38 @@ if on_tx_htn = 0 and htn_lifestyle_counsel_tm1 = 1 and 160 > sbp_m_tm1 >=140 the
 	 if e < prob_visit_htn_v1 then visit_hypertension = 1;
 end;
 
+
+* retention;
+a_prob_visit_htn_v1 = prob_visit_htn_v1;
+a_prob_visit_htn_v2 = prob_visit_htn_v2;
+a_prob_visit_htn_v3 = prob_visit_htn_v3;
+a_prob_visit_htn_v4 = prob_visit_htn_v4;
+a_prob_visit_htn_v5 = prob_visit_htn_v5;
+
+* adjust retention if telehealth eligible;
+if telehealth_intervention = 1 and telehealth_eligible = 1 then do;
+	a_prob_visit_htn_v1 = prob_visit_htn_v1 + addprob_visit_htn_v1;
+	a_prob_visit_htn_v2 = prob_visit_htn_v2 + addprob_visit_htn_v2;
+	a_prob_visit_htn_v3 = prob_visit_htn_v3 + addprob_visit_htn_v3;
+	a_prob_visit_htn_v4 = prob_visit_htn_v4 + addprob_visit_htn_v4;
+	a_prob_visit_htn_v5 = prob_visit_htn_v5 + addprob_visit_htn_v5;
+end;
 													  
 if most_recent_sbp_m < 140 and on_tx_htn ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
 	e=rand('uniform'); 
-	if htn_visit_count  = 1 and e < prob_visit_htn_v1 then visit_hypertension = 1;
-	if htn_visit_count  = 2 and e < prob_visit_htn_v2 then visit_hypertension = 1;
-	if htn_visit_count  = 3 and e < prob_visit_htn_v3 then visit_hypertension = 1;
-	if htn_visit_count  = 4 and e < prob_visit_htn_v4 then visit_hypertension = 1;
-	if htn_visit_count >= 5 and e < prob_visit_htn_v5 then visit_hypertension = 1;
+	if htn_visit_count  = 1 and e < a_prob_visit_htn_v1 then visit_hypertension = 1;
+	if htn_visit_count  = 2 and e < a_prob_visit_htn_v2 then visit_hypertension = 1;
+	if htn_visit_count  = 3 and e < a_prob_visit_htn_v3 then visit_hypertension = 1;
+	if htn_visit_count  = 4 and e < a_prob_visit_htn_v4 then visit_hypertension = 1;
+	if htn_visit_count >= 5 and e < a_prob_visit_htn_v5 then visit_hypertension = 1;
 end;
 if (most_recent_sbp_m >= 140 and on_tx_htn ge 1) or deintensify_anti_hyp_tm1 = 1 then do;
 	e=rand('uniform'); 
-	if htn_visit_count  = 1 and e < prob_visit_htn_v1 then visit_hypertension = 1;
-	if htn_visit_count  = 2 and e < prob_visit_htn_v2 then visit_hypertension = 1;
-	if htn_visit_count  = 3 and e < prob_visit_htn_v3 then visit_hypertension = 1;
-	if htn_visit_count  = 4 and e < prob_visit_htn_v4 then visit_hypertension = 1;
-	if htn_visit_count >= 5 and e < prob_visit_htn_v5 then visit_hypertension = 1;
+	if htn_visit_count  = 1 and e < a_prob_visit_htn_v1 then visit_hypertension = 1;
+	if htn_visit_count  = 2 and e < a_prob_visit_htn_v2 then visit_hypertension = 1;
+	if htn_visit_count  = 3 and e < a_prob_visit_htn_v3 then visit_hypertension = 1;
+	if htn_visit_count  = 4 and e < a_prob_visit_htn_v4 then visit_hypertension = 1;
+	if htn_visit_count >= 5 and e < a_prob_visit_htn_v5 then visit_hypertension = 1;
 end;
 
 * measurement of bp at clinic;
@@ -3740,7 +3810,7 @@ if tested_bp = 1 then do;
 	sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
 	if sbp_m >= 140 then visit_hypertension = 1;
 	if sbp_m < 140 and on_tx_htn = 0 then last_bp_ge140 = 0;
-												 
+	if sbp_m >= telehealth_sbp_thresh and telehealth_intervention = 1 then telehealth_eligible = 1;											 
 																														  
 	if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
 	 
@@ -3761,7 +3831,9 @@ if (visit_hypertension=1 and sbp_m >= 140 and dx_htn ne 1) then do; *new diagnos
 	last_bp_ge140 = 1; 
 end;
 if (visit_hypertension =1 and sbp_m >= 140 and dx_htn = 1 and ever_on_anti_hyp =0) then do; * hypertension diagnosis but never started treatment;
-	if sbp_m  < 160 and i_sbp < prob_start_htn_tx_s1 then start_anti_hyp_this_per =1 ; 
+	a_prob_start_htn_tx_s1 = prob_start_htn_tx_s1;
+	if telehealth_intervention =1 and telehealth_eligible = 1 then a_prob_start_htn_tx_s1 = prob_start_htn_tx_s1 + addprob_start_htn_tx_s1;
+	if sbp_m  < 160 and i_sbp < a_prob_start_htn_tx_s1 then start_anti_hyp_this_per =1 ; 
 	if sbp_m >= 160 and i_sbp < prob_start_htn_tx_s2 then start_anti_hyp_this_per =1 ; 
 end; 
 if start_anti_hyp_this_per = 1 then do;
@@ -3788,12 +3860,17 @@ if visit_hypertension=1 and sbp_m >= 140 and 1 <= on_tx_htn <= 2 then do;
 	e=rand('uniform'); 
 	select; 
 		when (160 <= sbp_m < 180) e = e /1.5; 
-		when (180 <= sbp_m) e = e / 2; 
-											
+		when (180 <= sbp_m) e = e / 2; 				
 		otherwise e = e;
 	end;
-	if on_tx_htn=2 and e < prob_intensify_2_3 then do; intensify_anti_hyp_this_per_2_3=1 ; on_tx_htn=3; end; 
-	if on_tx_htn=1 and e < prob_intensify_1_2 then do; intensify_anti_hyp_this_per_1_2=1 ; on_tx_htn=2; end; 
+	a_prob_intensify_2_3 = prob_intensify_2_3;
+	a_prob_intensify_1_2 = prob_intensify_1_2;
+	if telehealth_intervention = 1 and telehealth_eligible = 1 then do;
+		a_prob_intensify_2_3 = prob_intensify_2_3 + addprob_intensify_2_3;
+		a_prob_intensify_1_2 = prob_intensify_1_2 + addprob_intensify_1_2;
+	end;
+	if on_tx_htn=2 and e < a_prob_intensify_2_3 then do; intensify_anti_hyp_this_per_2_3=1 ; on_tx_htn=3; end; 
+	if on_tx_htn=1 and e < a_prob_intensify_1_2 then do; intensify_anti_hyp_this_per_1_2=1 ; on_tx_htn=2; end; 
 end;
 
 
@@ -3817,6 +3894,7 @@ if on_tx_htn ge 1 and visit_hypertension = 1 then do;
 	htn_visit_count =  htn_visit_count + 1;
 end;
 
+*highest SBP reached;
 max_sbp = max(sbp, sbp_last_start_anti_hyp);
 if sbp_m ne . then most_recent_sbp_m = sbp_m;
 
@@ -3856,6 +3934,7 @@ end;
 if visit_hypertension = 1 then do;
 	if sbp_m <  140 then htn_cost_clin = cost_htn_visit1;
 	if sbp_m >= 140 then htn_cost_clin = cost_htn_visit2;
+	if telehealth_intervention =1 and telehealth_eligible = 1 then htn_cost_clin = cost_htn_visit1 + cost_htn_telehealth;
 
 	if visit = 1 and integration = 1 then htn_cost_clin = htn_cost_clin * rr_cost_htn_visitInt;
 end;
@@ -22077,8 +22156,8 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   e
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 
-prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
-prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
+prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed
+prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link
 prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 
 prob_visit_htn_lifestyle
 
@@ -23388,8 +23467,8 @@ data r1; set a;
 %run_update_r1(&year_interv,&year_interv+50,2);
 
 
-/* 
 
+/*
 										  
 *** RUN PROGRAM; 
 															   
@@ -24319,8 +24398,8 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 
-prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_htn_link
-prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
+prob_sbp_increase sbp_cal_eff prob_test_sbp_undiagnosed prob_test_sbp_diagnosed
+prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link
 prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 
 prob_visit_htn_lifestyle
 
