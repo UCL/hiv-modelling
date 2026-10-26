@@ -10,7 +10,7 @@ libname a '/home/rmjlaph/Scratch/';
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000  ; 
+%let population = 7000  ; 
 %let year_interv = 2026.0 ;	
 
 %let _hiv_seed = 12345;
@@ -23014,7 +23014,7 @@ data a ;  set r1 ;
 
 *    Option 0;
 data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+10,0);
+%run_update_r1(&year_interv,&year_interv+1 ,0);
 
 /*
 *    Option 1;
