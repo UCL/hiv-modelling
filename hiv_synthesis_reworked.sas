@@ -1,6 +1,6 @@
 
-  libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc';  
-* libname a '/home/rmjlaph/Scratch/'; 
+* libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc';  
+  libname a '/home/rmjlaph/Scratch/'; 
 
 /* V2-NOTE A01: How to read this optimised version
 The changes from hiv_synthesis_baseline.sas concern intermediate storage, population
@@ -33,7 +33,7 @@ have the separate hiv_print_people switch. Monitoring is outside the scientific 
 step; placing a PROC inside that step would terminate it before its explicit OUTPUT
 statements.
 */
-%let hiv_diagnostics = 1;
+%let hiv_diagnostics = 0;
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
@@ -67,8 +67,8 @@ dataset is still written only after the scenarios finish.
     %end;
     %if %length(%superq(outputdir)) %then %do;
        * libname a "%superq(outputdir)";
-	     libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc' ;
-	   * libname a '/home/rmjlaph/Scratch/'; 
+	   * libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc' ;
+	     libname a '/home/rmjlaph/Scratch/'; 
     %end;
     %else %if %sysfunc(libref(a))=0 %then %do;
         %let outputdir=%qsysfunc(pathname(a));
@@ -76,8 +76,8 @@ dataset is still written only after the scenarios finish.
     %else %do;
         %let outputdir=%qsysfunc(pathname(work));
        * libname a "%superq(outputdir)";
-	     libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc';
-	   * libname a '/home/rmjlaph/Scratch/'; 
+	   * libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc';
+	     libname a '/home/rmjlaph/Scratch/'; 
         %put NOTE: No permanent output directory supplied. Output will be in temporary WORK.;
     %end;
     %if %sysfunc(libref(a)) ne 0 %then %do;
@@ -95,7 +95,7 @@ dataset is still written only after the scenarios finish.
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population =  7000   ; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -116,9 +116,9 @@ preserved.
 %macro _hiv_apply_controls;
     %global _hiv_seed _hiv_end_year;
     %local _hiv_population;
-    %let _hiv_seed = %sysget(SAS_SEED);
-    %let _hiv_population = %sysget(SAS_POPULATION);
-    %let _hiv_end_year = %sysget(SAS_END_YEAR);
+    %let _hiv_seed = 12345;
+	%let _hiv_population =;
+	%let _hiv_end_year =;
     %if %length(%superq(_hiv_seed)) %then %do;
         %if %sysfunc(notdigit(%superq(_hiv_seed))) ne 0 %then %do;
             %put ERROR: SAS_SEED must be a positive integer.;
@@ -7246,7 +7246,7 @@ end;
 	* lapr and dpv-vr - as noted above - this will not apply to lapr and dpv-vr - the efficacy and risk of resistance will 
 	be fixed while on injections, and efficacy will drop / resistance risk increase in the periods after stopping; 
 if prep_oral = 1 and registd ne 1 then do;
-	adh=adhav_prep_oral + adhvar*normal(0);  
+	adh=adhav_prep_oral + adhvar*rand('normal');  
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
 	if age < 25 then do;		* JAS Apr2021 ;
@@ -24648,7 +24648,7 @@ initializer again.
 data r1 ; set a ;
 run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
-%run_update_r1(&year_interv,&year_interv+10,0);
+%run_update_r1(&year_interv,&year_interv+1 ,0);
 
 *    Option 1;
 /* V2-NOTE A42: Option one starts from the same checkpoint
@@ -24707,7 +24707,7 @@ contract. Helper counters, snapshot arrays and loop indices do not become export
 columns. Naming still combines the prefix with the sampled dataset_id, and final binary
 compression is retained. No permanent result file is written until this final step.
 */
-data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
+data a.&tmpfilename._reworked_&dataset_id(compress=binary); set cum_l1;
 
 
 keep
@@ -25722,3 +25722,7 @@ proc print; var s_diag_w2529_ ; run;
 
 
 */
+
+
+
+
