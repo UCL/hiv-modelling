@@ -1,3 +1,7 @@
+
+  libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc';  
+* libname a '/home/rmjlaph/Scratch/'; 
+
 /* V2-NOTE A01: How to read this optimised version
 The changes from hiv_synthesis_baseline.sas concern intermediate storage, population
 feedback and monitoring. The clinical, demographic, transmission, treatment, cost and
@@ -62,14 +66,18 @@ dataset is still written only after the scenarios finish.
         %abort cancel;
     %end;
     %if %length(%superq(outputdir)) %then %do;
-        libname a "%superq(outputdir)";
+       * libname a "%superq(outputdir)";
+	     libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc' ;
+	   * libname a '/home/rmjlaph/Scratch/'; 
     %end;
     %else %if %sysfunc(libref(a))=0 %then %do;
         %let outputdir=%qsysfunc(pathname(a));
     %end;
     %else %do;
         %let outputdir=%qsysfunc(pathname(work));
-        libname a "%superq(outputdir)";
+       * libname a "%superq(outputdir)";
+	     libname a 'C:\Users\w3sth\UCL Dropbox\Andrew Phillips\My SAS Files\outcome model\misc';
+	   * libname a '/home/rmjlaph/Scratch/'; 
         %put NOTE: No permanent output directory supplied. Output will be in temporary WORK.;
     %end;
     %if %sysfunc(libref(a)) ne 0 %then %do;
@@ -87,7 +95,7 @@ dataset is still written only after the scenarios finish.
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 100000  ; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -24640,7 +24648,7 @@ initializer again.
 data r1 ; set a ;
 run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
-%run_update_r1(&year_interv,&year_interv+50,0);
+%run_update_r1(&year_interv,&year_interv+10,0);
 
 *    Option 1;
 /* V2-NOTE A42: Option one starts from the same checkpoint
@@ -24650,11 +24658,13 @@ checkpoint. Scientific intervention settings and the original scenario order are
 retained. Fixed-seed runs use the existing scenario-specific reproducible stream
 schedule.
 */
+
+/*
 data r1 ; set a ;
 run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
 %run_update_r1(&year_interv,&year_interv+50,1);
-
+*/
 
 
 
@@ -25702,4 +25712,13 @@ cab_res_emerge_primary			Is in primary infection and insti resistance emerged in
 ;
 
 
+/*
 
+data look; set a.out385647327 ;
+
+proc contents; run;
+
+proc print; var s_diag_w2529_ ; run; 
+
+
+*/
