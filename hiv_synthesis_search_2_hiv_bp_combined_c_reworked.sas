@@ -24,15 +24,16 @@ libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026';
 * Myriad input; 
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
+  libname a '/home/rmjlaph/Scratch/'; 
 
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";   
+ * libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026\synthesis_log.log"; run;	
 
-%let population = 100000 ; 
+%let population = 3000 ; 
 %let year_interv = 2027.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
