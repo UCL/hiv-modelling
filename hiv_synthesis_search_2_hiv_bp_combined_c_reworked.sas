@@ -25244,8 +25244,8 @@ libname b "&outputdir/";
 /* BP-PERF 11: Preserve the existing output member name and CUM_L1 selection.
    SYSPARM still supplies the output directory and filename prefix.
 */
-data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
 
+data a.&tmpfilename.search2_&dataset_id(compress=binary); set cum_l1;
 
 keep
 
