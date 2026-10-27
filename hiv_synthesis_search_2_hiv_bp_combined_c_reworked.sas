@@ -25079,7 +25079,7 @@ run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
 
 *    Option 0 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+50,0);
+%run_update_r1(&year_interv,&year_interv+1,0);
 
 
 data r1 ; set a ;
@@ -25087,7 +25087,7 @@ run;
 * Restore the feedback that belongs to this saved population;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
 *    Option 1 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+50,1);
+%run_update_r1(&year_interv,&year_interv+1,1);
 
 
 data r1 ; set a ;
@@ -25095,7 +25095,7 @@ run;
 * Restore the feedback that belongs to this saved population;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
 *    Option 2 - repetition 1;
-%run_update_r1(&year_interv,&year_interv+50,2);
+%run_update_r1(&year_interv,&year_interv+1,2);
 
 
 
