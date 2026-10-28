@@ -7554,10 +7554,12 @@ if hiv=1 then do;
 	need to consider higher levels of res_trans_factor (i.e sampling from 0.8-2 rather that a fixed value of 0.6 
 	and therefore lower prob of mutations being transmitted and surviving) than before to compensate;
 	
-		if prep_oral    ne 1 then do;	* QUERY - do we need a similar section cab, len or ami? ;
+		if prep_oral ne 1 then do;
 			if tam ge 1 then do; u=rand('uniform'); if u < 0.5  then tam = 0 ; end; * may17;
-			if m184m= 1 then do; u=rand('uniform'); if u < 0.8  then m184m=0; end;
 			if k65m = 1 then do; u=rand('uniform'); if u < 0.8  then k65m =0; end; 
+			if prep_ami ne 1 then do;			* QUERY - added prep_ami here;
+				if m184m= 1 then do; u=rand('uniform'); if u < 0.8  then m184m=0; end;
+			end;
 		end;
         if q151m= 1 then do; u=rand('uniform'); if u < 0.5 then q151m=0; end; 
 
@@ -7578,13 +7580,17 @@ if hiv=1 then do;
 		if p88m = 1 then do; u=rand('uniform'); if u < 0.5 then p88m=0; end;
 		if p90m = 1 then do; u=rand('uniform'); if u < 0.5 then p90m=0; end;
 
-		if in118m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in118m=0; end; 
-		if in140m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in140m=0; end; 
-		if in148m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in148m=0; end; 
-		if in155m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in155m=0; end; 
-		if in263m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in263m=0; end; 
+		if prep_cab ne 10 then do;			* QUERY - added prep_cab here;
+			if in118m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in118m=0; end; 
+			if in140m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in140m=0; end; 
+			if in148m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in148m=0; end; 
+			if in155m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in155m=0; end; 
+			if in263m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in263m=0; end; 
+		end;
 
-		if ca66m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ca then ca66m=0;  end;	
+		if prep_len ne 1 then do;			* QUERY - added prep_len here;
+			if ca66m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ca then ca66m=0;  end;	
+		end;
 
 * xx33; 
 end;
