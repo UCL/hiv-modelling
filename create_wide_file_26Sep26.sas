@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VLM_2026\";
 
 data a;
-set a.vlm_26Sep26; 
+set a.vlm_14oct26; 
 if run=. then delete; 
 
 proc sort;
@@ -207,7 +207,7 @@ s_alive = s_alive_m + s_alive_w ;
 
 * hivrel_death_rate;			if s_hiv1564 gt 0 then hivrel_death_rate = (4 * 100 * s_death_hivrel) / s_hiv1564 ;
 
-* n_vm_this_per;				s_vm_this_per = n_vm_this_per * sf;
+* n_vm_this_per;				n_vm_this_per = s_vm_this_per * sf;
 * p_fail_this_per;				if s_onart gt 0 then p_fail_this_per = s_fail_this_per/s_onart;
 
 keep run option cald 
@@ -215,7 +215,7 @@ n_alive_m			 n_alive_w			n_alive
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
-p_inf_vlsupp		 hivrel_death_rate;
+p_inf_vlsupp		 hivrel_death_rate  n_vm_this_per		p_fail_this_per;
 
 /*
 n_onprep_w			 n_onprep_m			n_onprep			p_1564m_onprep   	p_1564w_onprep		n_prep_any_start
@@ -267,6 +267,8 @@ data &v ; merge  y_26 t_46 /*t_26_46 t_26_46*/;
 %var(v=p_onart_diag);  	  %var(v=p_onart_diag_m);   	%var(v=p_onart_diag_w);  	%var(v=p_onart_vl1000_); 	%var(v=p_onart_vl1000_m); 
 %var(v=p_onart_vl1000_w); %var(v=p_vg1000_);			%var(v=p_vl1000_); 			%var(v=prevalence_vg1000_);
 %var(v=p_inf_vlsupp);	  %var(v=hivrel_death_rate);
+
+%var(v=n_vm_this_per);	  %var(v=p_fail_this_per);
 run;
 		 
 
@@ -277,7 +279,7 @@ prevalence1549m 	prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence154
 incidence1549m		p_diag	 			p_diag_m	 	 	p_diag_w
 p_onart_diag  	  	p_onart_diag_m   	p_onart_diag_w  	p_onart_vl1000_ 	p_onart_vl1000_m 
 p_onart_vl1000_w 	p_vg1000_			p_vl1000_ 			prevalence_vg1000_	p_inf_vlsupp
-hivrel_death_rate;
+hivrel_death_rate	n_vm_this_per	  	p_fail_this_per;
 run;
 
 proc sort; by run;run;
@@ -301,7 +303,7 @@ sex_age_mixing_matrix_w	inc_risk_newp_mm;
 ;proc sort; by run;run;
 */
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_vlm_26Sep26;;
+data a.wide_vlm_14Oct26;;
 merge   wide_outputs  /*wide_par*/ ;  
 by run;run;
 

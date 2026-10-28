@@ -4,7 +4,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VLM_2026\";
 
 data a;
-set a.wide_vlm_26Sep26;
+set a.wide_vlm_14Oct26;
 run;
 
 data b;
@@ -33,8 +33,23 @@ proc means n median mean p5 p95;var
 p_diag_46_1  p_diag_46_2  p_diag_46_3  p_diag_46_4  p_diag_46_5 p_diag_46_6
 p_diag_46_7  p_diag_46_8  p_diag_46_9  p_diag_46_10 p_diag_46_11 p_diag_46_12
 p_onart_diag_46_1  p_onart_diag_46_2  p_onart_diag_46_3  p_onart_diag_46_4  p_onart_diag_46_5 p_onart_diag_46_6
-p_onart_diag_46_7  p_onart_diag_46_8  p_onart_diag_46_9  p_onart_diag_46_10 p_onart_diag_46_11 p_onart_diag_46_12;run;
+p_onart_diag_46_7  p_onart_diag_46_8  p_onart_diag_46_9  p_onart_diag_46_10 p_onart_diag_46_11 p_onart_diag_46_12
+n_vm_this_per_46_1 n_vm_this_per_46_2 n_vm_this_per_46_3 n_vm_this_per_46_4	n_vm_this_per_46_5 n_vm_this_per_46_6
+n_vm_this_per_46_7 n_vm_this_per_46_8 n_vm_this_per_46_9 n_vm_this_per_46_10	n_vm_this_per_46_11 n_vm_this_per_46_12 
 
+p_fail_this_per_46_1 p_fail_this_per_46_2 p_fail_this_per_46_3 p_fail_this_per_46_4	p_fail_this_per_46_5 p_fail_this_per_46_6
+p_fail_this_per_46_7 p_fail_this_per_46_8 p_fail_this_per_46_9 p_fail_this_per_46_10	p_fail_this_per_46_11 p_fail_this_per_46_12 
+
+
+;run;
+
+
+proc means n median mean p5 p95;var 
+p_onart_diag_46_1 p_onart_diag_46_2 p_onart_diag_46_3 p_onart_diag_46_4	p_onart_diag_46_5 p_onart_diag_46_6
+p_onart_diag_46_7 p_onart_diag_46_8 p_onart_diag_46_9 p_onart_diag_46_10	p_onart_diag_46_11 p_onart_diag_46_12 ;
+run;
+
+%var(v=p_fail_this_per);
 /*
 
 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w  	
