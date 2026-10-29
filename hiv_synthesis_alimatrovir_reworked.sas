@@ -59,7 +59,7 @@ options ps=1000 ls=220 cpucount=4 spool fullstimer ;
    Set to 0 only when that listing is not wanted. Model outputs do not depend on it.
    Clear only this version's schema cache when submitting again in the same session.
 */
-%let hiv_print_people = 1; 		* procs - 1=proc print;
+%let hiv_print_people = 0; 		* procs - 1=proc print;
 
 /* Diagnostic variables: edit this one list to change the printed columns.
    SERIAL_NO is added separately as the identifying column.
