@@ -63,7 +63,7 @@ options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 */
 %let hiv_people_vars =
     cald gender age death hiv option
-    prep_any tested prep_oral prep_len prep_ami 
+    prep_any tested self_tested prep_oral prep_len prep_ami 
     pref_prep_oral pref_prep_len pref_prep_ami
     highest_prep_pref
     prep_oral_willing prep_len_willing prep_ami_willing
@@ -21734,7 +21734,7 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 output r&da1;
 if serial_no = &population then output _hiv_raw_sums;
 %if &hiv_print_people = 1 %then %do;
-    if age >= 15 and (death =. or death > 2017) and ((serial_no < 100 and cald < 2018) or prep_any=1) then output _hiv_diagnostic_people;		*procs restrictions;
+    if age >= 15 and (death =. or death > 2017) and ((serial_no < 100 and cald < 2019) or prep_any=1) and tested=0 then output _hiv_diagnostic_people;		*procs restrictions;
 %end;
 run;
 
@@ -24779,6 +24779,8 @@ data _hiv_feedback; set _hiv_checkpoint_feedback; run;
 * CREATE A SET OF 2017 FILES (in the folder specified in libname statement at top of program);
 * ==========================================================================================================;
 
+/*
+
 %run_update_r1(&caldate1,2017-0.25,0);
 data a.saved_2017 ;  set r1 ;  run;
 data a.saved_2017_feedback;     set work._hiv_feedback; run;
@@ -24805,6 +24807,8 @@ data work._hiv_feedback;    set work._hiv_checkpoint_feedback; run;
 data work.r1;    set work.a; run;
 data work._hiv_feedback;      set work._hiv_checkpoint_feedback;  run;
 %run_update_r1(&year_interv,&year_interv+5,1);
+
+*/
 
 * =================================================================================================================;
 
