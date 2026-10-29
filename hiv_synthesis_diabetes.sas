@@ -20218,7 +20218,12 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_ihd_prev_ge80m + prior_ihd_ge80m; s_ihd_prev_ge80w + prior_ihd_ge80w;
 	s_cva_prev_ge80m + prior_cva_ge80m; s_cva_prev_ge80w + prior_cva_ge80w;
 
-     		
+    /* DIABETES */
+
+	s_urban + urban;	s_bmi + bmi; s_diet_ch + diet_ch;	s_phys_act_ch + phys_act_ch;
+
+
+
 	/*visits and linkage*/
 
 	s_visit + visit ; s_lost + lost ; s_linked_to_care + linked_to_care ; s_linked_to_care_this_period + linked_to_care_this_period ;
@@ -20727,8 +20732,10 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 * procs;
-proc print;var caldate&j gender age urban urban_fold diet diet_ch fold_ch_diet date_last_diet_ch phys_act  phys_act_ch
- fold_ch_phys_act date_last_phys_act_ch bmi dead ;where age ge 15;run;
+proc print;var caldate&j gender age urban urban_fold diet diet_ch fold_ch_diet date_last_diet_ch diet_tm1 phys_act  phys_act_ch
+ fold_ch_phys_act date_last_phys_act_ch bmi dead
+bmi_15_m  diet_fold_bmi_15 phys_act_fold_bmi_15
+;where age ge 15;run;
 
 /*
 										
@@ -21776,6 +21783,9 @@ s_yllag_hiv_w s_yllag_hiv_m
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
 s_dyll_Optima80 s_dyll_GBD	 		 
 s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m	 		 
+
+/* DIABETES */
+s_urban		s_bmi	s_diet_ch 	s_phys_act_ch
 
 
 /*visits*/
@@ -22958,6 +22968,8 @@ s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct 
 s_dyll_Optima80 s_dyll_GBD	 		 
 s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m	 		 
 
+/* DIABETES */
+s_urban		s_bmi	s_diet_ch 	s_phys_act_ch
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
@@ -23976,6 +23988,8 @@ s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct 
 s_dyll_Optima80 s_dyll_GBD	 		 
 s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m	 		 
 
+/* DIABETES */
+s_urban		s_bmi	s_diet_ch 	s_phys_act_ch
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
