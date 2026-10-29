@@ -2,10 +2,12 @@
 /* note changes made so that we specify the variables to be printed only once - search hiv_print_people */
 /* Diagnostic printing: see hiv_print_people, hiv_people_vars, and OUTPUT _hiv_diagnostic_people. */
 
+/* new code added 29 oct 2026 */
 /* ALIMATROVIR REWORKED: performance comparison candidate, 27 October 2026.
-   Based on the saved fixed-seed baseline. Parameter sampling, person transitions,
-   reporting equations, sums, feedback rules and final export KEEP are preserved.
-   Changes concern intermediate storage and movement of data. Search AMI-PERF.
+   Based on the saved fixed-seed baseline. Parameter sampling, person transitions
+   and scientific feedback rules are preserved. Search AMI-PERF for storage changes.
+   The primary export now includes all 54 existing AMI summary measures.
+   Two previously omitted reporting sums are kept out of person carryover and feedback.
    Use the accompanying comparison program before adopting this version.
 */
 %let _ami_reworked_start = %sysfunc(datetime());
@@ -2460,6 +2462,9 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 */
 %macro update_r1(da1=,da2=,e=,f=,g=,h=,j=,y=,s=,initialize=0);
 data r&da1(drop=
+    /* new code added 29 oct 2026 */
+    /* Reporting sums stay in _hiv_raw_sums, not in next-quarter person records. */
+    s_prep_ami_at_infection s_stop_prep_ami_choice
     _ai_naive_no_pmtct_ _ai_naive_no_pmtct_c_inm_ _ai_naive_no_pmtct_c_nnm_
     _ai_naive_no_pmtct_c_pim_ _ai_naive_no_pmtct_c_r_ _ai_naive_no_pmtct_c_rt184m_
     _ai_naive_no_pmtct_c_rt65m_ _ai_naive_no_pmtct_c_rttams_ _ai_naive_no_pmtct_e_inm_
@@ -22219,6 +22224,10 @@ drop serial_no ;
 
 keep
 
+/* new code added 29 oct 2026 */
+/* Retain these existing AMI sums in SUMS and the accumulated output history. */
+s_prep_ami_at_infection s_stop_prep_ami_choice
+
 /*general*/
 s_n  cald  run  option
 
@@ -23235,9 +23244,10 @@ values from that 3 month period
 data cum_l&da2; set cum_l&da1 sums;
 run;
 
+/* new code added 29 oct 2026 */
 /* AMI-PERF 07: One feedback row replaces population-sized S and its merge.
-   Keep every alias and the original outgoing DROP unchanged. In particular,
-   do not replace the old VR names with AMI names here during this comparison.
+   Preserve the existing aliases and feedback fields. The two newly retained
+   AMI reporting sums are excluded in DROP below; they are not model feedback.
 */
 data _hiv_feedback; set sums;
 n=1;
@@ -23403,6 +23413,10 @@ t_w_newp = s_w_newp;
 
 
 drop 
+
+/* new code added 29 oct 2026 */
+/* Save these measures in history without broadcasting them into the next update. */
+s_prep_ami_at_infection s_stop_prep_ami_choice
 
 /*general*/
 s_n  cald  
@@ -24878,14 +24892,55 @@ put
 */
 
 
-/* AMI-PERF 11: Preserve the baseline export KEEP and CUM_L1 endpoint.
+/* new code added 29 oct 2026 */
+/* AMI-PERF 11: Retain the existing output columns and CUM_L1 endpoint,
+   and include all AMI summary measures in the primary export KEEP below.
    The distinct AMI_REWORKED suffix avoids overwriting the earlier model's output.
-   A separate full-summary snapshot below also includes new AMI reporting fields.
+   The separate full-summary snapshot below is also retained.
 */
 data a.&tmpfilename._ami_reworked_&dataset_id(compress=binary); set cum_l1;
 
 
 keep
+
+/* new code added 29 oct 2026 */
+/* Alimatrovir: use, willingness and population groups. */
+s_prep_ami s_prep_ami_w s_prep_ami_m
+s_prep_ami_sw s_prep_ami_w_1524 s_prep_ami_sdc s_prep_ami_plw
+s_prep_ami_agyw_pg s_prep_ami_agyw_plw
+s_onprep_ami_w s_onprep_ami_m
+s_on_risk_informed_prep_ami s_prep_elig_onprep_ami
+s_prep_ami_willing s_newp_prep_ami
+
+/* new code added 29 oct 2026 */
+/* Alimatrovir: initiation, restart and previous use. */
+s_prep_ami_start s_prep_ami_restart s_prep_ami_ever
+s_init_prep_ami_1524w s_init_prep_ami_sw s_init_prep_ami_sdc s_init_prep_ami_plw
+s_prep_ami_ever_1524w s_prep_ami_ever_sw s_prep_ami_ever_sdc s_prep_ami_ever_plw
+s_prep_ami_ly_1524w s_prep_ami_ly_sw s_prep_ami_ly_sdc s_prep_ami_ly_plw
+
+/* new code added 29 oct 2026 */
+/* Alimatrovir: stopping and switching. */
+s_stop_prep_ami_choice s_stop_prep_ami_elig
+s_switch_prep_from_ami s_switch_prep_to_ami
+
+/* new code added 29 oct 2026 */
+/* Alimatrovir: duration of use. */
+s_tot_yrs_prep_ami_gt_5 s_tot_yrs_prep_ami_gt_10 s_tot_yrs_prep_ami_gt_20
+
+/* new code added 29 oct 2026 */
+/* Alimatrovir: HIV infection, diagnosis and use at initiation/reinitiation. */
+s_infected_prep_ami s_primary_prep_ami s_hiv1_prep_ami s_diagprim_prep_ami
+s_prep_ami_at_infection s_infected_on_prep_ami
+s_started_prep_ami_in_primary s_started_prep_ami_in_primary_e
+s_started_prep_ami_hiv s_start_restart_prep_ami
+s_start_restart_prep_ami_hiv s_start_restart_prep_ami_prim
+
+/* new code added 29 oct 2026 */
+/* Alimatrovir: drug/visit costs and their discounted equivalents.
+   s_tested_prep_ami_start and ami_higher_potency are already kept below. */
+s_cost_prep_ami s_cost_prep_visit_ami
+s_dcost_prep_ami s_dcost_prep_visit_ami
 
 /*general*/
 cald  run  option
@@ -25889,9 +25944,10 @@ cab_res_emerge_primary			Is in primary infection and insti resistance emerged in
 
 
 
-/* AMI-PERF 12: Extra validation output, after the unchanged primary export.
-   The baseline's primary KEEP currently omits the new AMI summaries. Compare
-   this full CUM_L1 snapshot with the original wrapper's full snapshot too.
+/* new code added 29 oct 2026 */
+/* AMI-PERF 12: Additional full-summary snapshot.
+   The primary export above now includes all AMI summary measures.
+   This full CUM_L1 snapshot also retains the remaining summary columns.
 */
 %let _ami_reworked_elapsed = %sysevalf(%sysfunc(datetime()) - &_ami_reworked_start);
 %put NOTE: ALIMATROVIR_REWORKED_MODEL_SECONDS=&_ami_reworked_elapsed;
