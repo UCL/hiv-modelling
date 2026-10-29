@@ -1,5 +1,6 @@
 
-* for procs see line %if &hiv_print_people = 1 %then %do;
+/* note changes made so that we specify the variables to be printed only once - search hiv_print_people */
+/* Diagnostic printing: see hiv_print_people, hiv_people_vars, and OUTPUT _hiv_diagnostic_people. */
 
 /* ALIMATROVIR REWORKED: performance comparison candidate, 27 October 2026.
    Based on the saved fixed-seed baseline. Parameter sampling, person transitions,
@@ -55,6 +56,23 @@ options ps=1000 ls=220 cpucount=4 spool fullstimer ;
    Clear only this version's schema cache when submitting again in the same session.
 */
 %let hiv_print_people = 1; 		* procs - 1=proc print;
+
+/* Diagnostic variables: edit this one list to change the printed columns.
+   SERIAL_NO is added separately as the identifying column.
+   To select different people, edit the IF before OUTPUT _hiv_diagnostic_people.
+*/
+%let hiv_people_vars =
+    cald gender age death hiv option
+    prep_any tested prep_oral prep_len prep_ami 
+    pref_prep_oral pref_prep_len pref_prep_ami
+    highest_prep_pref
+    prep_oral_willing prep_len_willing prep_ami_willing
+    tested_prep_any_start
+    tested_prep_monitoring tested_prep_restart
+    prep_any_elig prep_any_ever
+    prep_oral_ever prep_len_ever prep_ami_ever
+;
+
 %symdel _ami_fb_numeric _ami_fb_numeric_count
         _ami_fb_character _ami_fb_character_count _ami_fb_character_length / nowarn;
 
@@ -3589,13 +3607,8 @@ data r&da1(drop=
     yllag_w zdv_potency_p75 zero_3tc_activity_m184 zero_tdf_activity_k65r zla zld
 )
      _hiv_raw_sums(drop=_hiv_fb_index)
-%if &hiv_print_people = 1 %then %do;  			/* QUERY - unsure whether this list needs to match other procs list JAS Oct2026 */
-     _hiv_diagnostic_people(keep=serial_no
-    cald gender age death hiv option prep_oral prep_len prep_ami pref_prep_oral pref_prep_len
-    pref_prep_ami highest_prep_pref prep_oral_willing prep_len_willing prep_ami_willing tested
-    tested_prep_any_start tested_prep_monitoring tested_prep_restart prep_any_elig prep_any_ever
-    prep_oral_ever prep_len_ever prep_ami_ever
-     )
+%if &hiv_print_people = 1 %then %do;  			
+     _hiv_diagnostic_people(keep=serial_no &hiv_people_vars)
 %end;
 ;
 set r&da1;
@@ -21721,7 +21734,7 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 output r&da1;
 if serial_no = &population then output _hiv_raw_sums;
 %if &hiv_print_people = 1 %then %do;
-    if age >= 15 and (death =. or death > 2017) and serial_no < 100 then output _hiv_diagnostic_people;		*procs restrictions;
+    if age >= 15 and (death =. or death > 2017) and ((serial_no < 100 and cald < 2018) or prep_any=1) then output _hiv_diagnostic_people;		*procs restrictions;
 %end;
 run;
 
@@ -21732,12 +21745,7 @@ run;
     proc print data=_hiv_diagnostic_people label;
         id serial_no;
         label serial_no='Obs';
-        var																/* procs list */
-    cald gender age death hiv option prep_oral prep_len prep_ami pref_prep_oral pref_prep_len
-    pref_prep_ami highest_prep_pref prep_oral_willing prep_len_willing prep_ami_willing tested
-    tested_prep_any_start tested_prep_monitoring tested_prep_restart prep_any_elig prep_any_ever
-    prep_oral_ever prep_len_ever prep_ami_ever
-        ;
+        var &hiv_people_vars;
     run;
 %end;
 
@@ -24737,9 +24745,9 @@ Inputs are:
 %mend;
 
 
-* here here ;
-
-*** RUN PROGRAM; 
+* ==========================================================================================================;
+*** RUN PROGRAM AS USUAL FROM 1989; 
+* ==========================================================================================================;
 
 /*
 
@@ -24747,42 +24755,92 @@ Inputs are:
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
 *    Save dataset at this point;
-data a.saved_ami ;  set r1 ;
+data a ;  set r1 ; run;
 
-*/
-
-
-
-
-*   Run from caldate1 to intervention year;
-%run_update_r1(&caldate1,&year_interv-0.25,0);
-
-
-*    Save dataset at this point;
-data a ;  set r1 ;
-run;
-
-/* AMI-PERF 10: A checkpoint contains people AND their matching shared feedback. */
+* AMI-PERF 10: A checkpoint contains people AND their matching shared feedback. ;
 data _hiv_checkpoint_feedback; set _hiv_feedback; run;
 
-
 *    Option 0;
-data r1 ; set a ;
-run;
+data r1 ; set a ; run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
 %run_update_r1(&year_interv,&year_interv+5,1);
 
-
-
-/*
-
 *    Option 1;
-data r1 ; set a ;
-run;
+data r1 ; set a ; run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
 */
+
+* ==========================================================================================================;
+
+
+* ==========================================================================================================;
+* CREATE A SET OF 2017 FILES (in the folder specified in libname statement at top of program);
+* ==========================================================================================================;
+
+%run_update_r1(&caldate1,2017-0.25,0);
+data a.saved_2017 ;  set r1 ;  run;
+data a.saved_2017_feedback;     set work._hiv_feedback; run;
+data a.saved_2017_history;    set work.cum_l1; run;
+data a.saved_2017_settings(compress=char);
+    length name $32 value $32767;
+    do name = 'caldate1', 'population', 'year_interv', 'dataset_id', '_hiv_seed', 'hiv_print_people', '_hiv_initialise_next', '_ami_fb_numeric', 
+				'_ami_fb_numeric_count', '_ami_fb_character', '_ami_fb_character_count', '_ami_fb_character_length', 'tmpfilename';
+        if not symexist(name) then do;
+            put 'ERROR: Required checkpoint macro variable is missing: ' name;
+            abort cancel;
+        end;
+        value=symget(name);
+        output;
+    end;
+    keep name value;     stop;
+run;
+%run_update_r1(2017,&year_interv-0.25,0);
+data work.a;     set work.r1; run;
+data work._hiv_checkpoint_feedback;     set work._hiv_feedback; run;
+data work.r1;    set work.a; run;
+data work._hiv_feedback;    set work._hiv_checkpoint_feedback; run;
+%run_update_r1(&year_interv,&year_interv+5,0);
+data work.r1;    set work.a; run;
+data work._hiv_feedback;      set work._hiv_checkpoint_feedback;  run;
+%run_update_r1(&year_interv,&year_interv+5,1);
+
+* =================================================================================================================;
+
+
+* ==========================================================================================================;
+* RUNNING FROM 2017 USING THE SAVED FILES ;
+* ================================================================================================================ ;
+
+* 1. Restore the saved macro settings, including the feedback cache. ;
+data _null_;     set a.saved_2017_settings;     call symputx(name,value,'G'); run;
+* 2. Restore the saved population. ; 
+data work.r1;     set a.saved_2017; run;
+* 3. Restore the matching shared feedback. ; 
+data work._hiv_feedback;     set a.saved_2017_feedback; run;
+* 4. Restore the accumulated output history through 2016.75. ; 
+data work.cum_l1;     set a.saved_2017_history; run;
+* 5. Continue the existing people without initializing them again. ; 
+%let _hiv_initialise_next=0;
+%put NOTE: Restarting at 2017 with base seed &_hiv_seed;
+%put NOTE: Original model start=&caldate1 Intervention year=&year_interv;
+* 6. Run from 2017 through the quarter before intervention. ; 
+%run_update_r1(2017,&year_interv-0.25,0);
+* 7. Save a new checkpoint at the intervention boundary. ; 
+data work.a;    set work.r1; run;
+data work._hiv_checkpoint_feedback;    set work._hiv_feedback; run;
+* 8. Option 0: restore the intervention-boundary checkpoint. ; 
+data work.r1;    set work.a;  run;
+data work._hiv_feedback;     set work._hiv_checkpoint_feedback; run;
+%run_update_r1(&year_interv,&year_interv+5,0);
+* 9. Option 1: restore the SAME intervention-boundary checkpoint. ; 
+data work.r1;    set work.a; run;
+data work._hiv_feedback;   set work._hiv_checkpoint_feedback; run;
+%run_update_r1(&year_interv,&year_interv+5,1);
+
+* ============================================================================================;
+
 
 
 
