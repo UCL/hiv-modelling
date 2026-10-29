@@ -3684,7 +3684,7 @@ hig_phys_act_fold_bmi = low_phys_act_fold_bmi * fold_low_hig_phys_act;
 
 prob_urban_time = prob_urban + (0.0050 * (caldate&j-1989));*the latter bit here applies a calendar time increase to probability of urban;
 
-if age=15 then do;
+if age=15.00 then do;
 * I took the average BMI for a 15 year old in rural SSA in 1990 and added a calendar year effect (since BMI has increased over time even in rural settings);
 
 	* Source: NCD_RisC_Nature_2023_BMI_child_adolescent_region - same as for 15-17 year olds in Section 2;
@@ -3723,9 +3723,9 @@ if age=15 then do;
 		phys_act = phys_act_rural;
 	end;
 
-	if diet = 1 then diet_fold_bmi_15 = low_risk_diet_fold_bmi_15;
-	if diet = 2 then diet_fold_bmi_15 = mod_risk_diet_fold_bmi_15;
-	if diet = 3 then diet_fold_bmi_15 = hig_risk_diet_fold_bmi_15;
+	if diet = 1 then diet_fold_bmi_15 = low_diet_fold_bmi_15;
+	if diet = 2 then diet_fold_bmi_15 = mod_diet_fold_bmi_15;
+	if diet = 3 then diet_fold_bmi_15 = hig_diet_fold_bmi_15;
 	
 	if phys_act = 1 then phys_act_fold_bmi_15 = low_phys_act_fold_bmi_15;
 	if phys_act = 2 then phys_act_fold_bmi_15 = mod_phys_act_fold_bmi_15;
@@ -20733,8 +20733,7 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 * procs;
 proc print;var caldate&j gender age urban urban_fold diet diet_ch fold_ch_diet date_last_diet_ch diet_tm1 phys_act  phys_act_ch
- fold_ch_phys_act date_last_phys_act_ch bmi dead
-bmi_15_m  diet_fold_bmi_15 phys_act_fold_bmi_15
+ fold_ch_phys_act date_last_phys_act_ch bmi death
 ;where age ge 15;run;
 
 /*
