@@ -28,7 +28,7 @@ libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000 ; 
+%let population = 100000 ; 
 %let year_interv = 2026.0 ;	
 
 /* Fixed base seed for reproducible comparison with the reworked version. */
@@ -882,7 +882,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ;
 
 * date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 3000);	* Introduction of injectable cab PrEP ;	* consider len as the only la prep option;
-* date_prep_len_intro;			%sample_uniform(date_prep_len_intro, 2026);	* Introduction of injectable len PrEP ;	* Note for BMGF analysis we will want to sample across (2026, 3000) to introduce ami with and without len;
+* date_prep_len_intro;			%sample(date_prep_len_intro, 2026 3000, 0.5 0.5);	* Introduction of injectable len PrEP ;	* Note for BMGF analysis we will want to sample across (2026, 3000) to introduce ami with and without len;
 * prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
 * prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;						* Assume 5 years to scale up injectable cab prep;
@@ -982,7 +982,7 @@ end;
 * m184v mutation selected in presence of alimatravir (same as islatravir);
 * tail after cessation of product is not coded;
 
-* date_prep_ami_intro;			date_prep_ami_intro=2028;		* Introduction of ami PrEP ;
+* date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
 * prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 					* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
 * dur_prep_ami_scaleup;			dur_prep_ami_scaleup=5;										* Assume 5 years to scale up ami PrEP;
 
@@ -3787,13 +3787,9 @@ who may be dead and hence have caldate{t} missing;
 	* note that we can use set_in_options=1 when we want to ensure that parameter values specified in the options section are not overwritten.
 	The variable name can be updated to reflect specific parameters;
 
-
- 	*Option 0 is continuation at current rates - status quo;
-
- 
  	*Option 1;
 	if option = 1 then do;
-												 
+		date_prep_ami_intro=2028;										 
 	end;
  
 end;
@@ -24749,7 +24745,6 @@ Inputs are:
 *** RUN PROGRAM AS USUAL FROM 1989; 
 * ==========================================================================================================;
 
-/*
 
 *   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
@@ -24770,7 +24765,7 @@ data r1 ; set a ; run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
 %run_update_r1(&year_interv,&year_interv+50,1);
 
-*/
+
 
 * ==========================================================================================================;
 
@@ -24817,6 +24812,8 @@ data work._hiv_feedback;      set work._hiv_checkpoint_feedback;  run;
 * RUNNING FROM 2017 USING THE SAVED FILES ;
 * ================================================================================================================ ;
 
+/*
+
 * 1. Restore the saved macro settings, including the feedback cache. ;
 data _null_;     set a.saved_2017_settings;     call symputx(name,value,'G'); run;
 * 2. Restore the saved population. ; 
@@ -24842,6 +24839,8 @@ data work._hiv_feedback;     set work._hiv_checkpoint_feedback; run;
 data work.r1;    set work.a; run;
 data work._hiv_feedback;   set work._hiv_checkpoint_feedback; run;
 %run_update_r1(&year_interv,&year_interv+5,1);
+
+*/
 
 * ============================================================================================;
 
