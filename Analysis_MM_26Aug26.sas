@@ -19,10 +19,42 @@ p_elig_onprep_m_26		prevalence1549m_26	incidence1549m_26	p_mm_prog_visit_26		;ru
 
 
 proc means n median p5 p95;var
-n_mm_36_1 				p_mm_36_1	 			p_1524mm_36_1		 	p_2534mm_36_1			p_3544mm_36_1				p_4554mm_36_1		
-p_5564mm_36_1				p_newp_ge1_mm_36_1	av_mm_newp_36_1		p_elig_onprep_mm_36_1	incidence1564_mm_36_1		prevalence1564_mm_36_1	
-p_diag_mm_36_1			p_onart_diag_mm_36_1  p_onart_vl1000_mm_36_1	
-p_elig_onprep_m_36_1		prevalence1549m_36_1	incidence1549m_36_1	p_mm_prog_visit_36_1		;run;
+p_elig_onprep_mm_36_1
+p_elig_onprep_mm_36_2
+p_elig_onprep_mm_36_3
+p_elig_onprep_mm_36_4
+p_elig_onprep_mm_36_5
+p_elig_onprep_mm_36_6
+p_elig_onprep_mm_36_7
+p_elig_onprep_mm_36_8
 
+p_elig_onprep_oral_mm_36_1
+p_elig_onprep_oral_mm_36_2
+p_elig_onprep_oral_mm_36_3
+p_elig_onprep_oral_mm_36_4
+p_elig_onprep_oral_mm_36_5
+p_elig_onprep_oral_mm_36_6
+p_elig_onprep_oral_mm_36_7
+p_elig_onprep_oral_mm_36_8
+
+p_elig_onprep_cab_mm_36_1
+p_elig_onprep_cab_mm_36_2
+p_elig_onprep_cab_mm_36_3
+p_elig_onprep_cab_mm_36_4
+p_elig_onprep_cab_mm_36_5
+p_elig_onprep_cab_mm_36_6
+p_elig_onprep_cab_mm_36_7
+p_elig_onprep_cab_mm_36_8
+
+p_elig_onprep_len_mm_36_1
+p_elig_onprep_len_mm_36_2
+p_elig_onprep_len_mm_36_3
+p_elig_onprep_len_mm_36_4
+p_elig_onprep_len_mm_36_5
+p_elig_onprep_len_mm_36_6
+p_elig_onprep_len_mm_36_7
+p_elig_onprep_len_mm_36_8
+
+;run;
 
 proc contents;run;

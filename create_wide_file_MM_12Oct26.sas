@@ -10,6 +10,7 @@ by run cald option;run;
 
 proc freq;table cald option;run;
 
+proc freq;table pref_prep_cab;run;
 
 data sf;
 set a;
@@ -298,6 +299,11 @@ s_alive = s_alive_m + s_alive_w ;
 * p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive;
 
 * p_mm_prog_visit;				if s_alive1564mm then p_mm_prog_visit = s_mm_prog_visit /s_alive1564mm;
+* p_mm_prep_prog_vis;			if s_mm_prog_visit gt 0 then p_mm_prep_prog_vis = s_prep_any_mm_1564 / s_mm_prog_visit;
+* p_mm_prep_oral_prog_vis;		if s_mm_prog_visit gt 0 then p_mm_prep_oral_prog_vis = s_prep_oral_mm / s_mm_prog_visit;
+* p_mm_prep_cab_prog_vis;		if s_mm_prog_visit gt 0 then p_mm_prep_cab_prog_vis = s_prep_cab_mm / s_mm_prog_visit;
+* p_mm_prep_len_prog_vis;		if s_mm_prog_visit gt 0 then p_mm_prep_len_prog_vis = s_prep_len_mm / s_mm_prog_visit;
+* p_mm_prep_ever_prog_vis;		if s_mm_prog_visit gt 0 then p_mm_prep_ever_prog_vis = s_prep_any_ever_prog_mm / s_mm_prog_visit;
 
 *to check balance given we've added newp to MM;
 logw15r = log(w15r+0.0001);
@@ -777,8 +783,8 @@ series  x=cald y=median_p_elig_onprep_oral_mm_4/	lineattrs = (color=green thickn
 band    x=cald lower=p5_p_elig_onprep_oral_mm_4 	upper=p95_p_elig_onprep_oral_4  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 series  x=cald y=median_p_elig_onprep_cab_mm_4/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_elig_onprep_cab_mm_4 	upper=p95_p_elig_onprep_cab_mm_4  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-*series  x=cald y=median_p_elig_onprep_mm_4/	lineattrs = (color=black thickness = 2);
-*band    x=cald lower=p5_p_elig_onprep_mm_4 	upper=p95_p_elig_onprep_4 / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=median_p_elig_onprep_mm_4/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_onprep_mm_4 	upper=p95_p_elig_onprep_4 / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 series  x=cald y=median_p_elig_onprep_oral_mm_5/	lineattrs = (color=green thickness = 2 pattern=dash);
 band    x=cald lower=p5_p_elig_onprep_oral_mm_5 	upper=p95_p_elig_onprep_oral_5  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
