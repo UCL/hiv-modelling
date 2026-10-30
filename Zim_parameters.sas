@@ -58,7 +58,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 * sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3, 0.15 0.05 0.80);
 
 
-* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20); 
+* rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.15); 
 * rate_disengage_sw_program;%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
 
 ***Change these parameters as are assuming higher impact than in core and Zim has Sisters program in place;
