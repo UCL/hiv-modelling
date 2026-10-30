@@ -24895,10 +24895,11 @@ put
 
 
 /* new code added 29 oct 2026 */
+/* new code added 30 oct 2026 */
 /* AMI-PERF 11: Retain the existing output columns and CUM_L1 endpoint,
    and include all AMI summary measures in the primary export KEEP below.
    The distinct AMI_REWORKED suffix avoids overwriting the earlier model's output.
-   The separate full-summary snapshot below is also retained.
+   This KEEP list defines the single run-summary output file.
 */
 data a.&tmpfilename._ami_reworked_&dataset_id(compress=binary); set cum_l1;
 
@@ -25946,24 +25947,20 @@ cab_res_emerge_primary			Is in primary infection and insti resistance emerged in
 
 
 
-/* new code added 29 oct 2026 */
-/* AMI-PERF 12: Additional full-summary snapshot.
-   The primary export above now includes all AMI summary measures.
-   This full CUM_L1 snapshot also retains the remaining summary columns.
+/* new code added 30 oct 2026 */
+/* AMI-PERF 12: Record elapsed time and check run status.
+   The selected-output export above is the only run-summary dataset written.
 */
 %let _ami_reworked_elapsed = %sysevalf(%sysfunc(datetime()) - &_ami_reworked_start);
 %put NOTE: ALIMATROVIR_REWORKED_MODEL_SECONDS=&_ami_reworked_elapsed;
-%macro _ami_save_full_reworked;
+%macro _ami_check_run_status;
     %if &syscc > 4 %then %do;
-        %put ERROR: Reworked run reported an error; full comparison snapshot was not written.;
+        %put ERROR: Reworked run reported an error; check the SAS log.;
         %abort cancel;
     %end;
     %if not %sysfunc(exist(work.cum_l1)) %then %do;
-        %put ERROR: WORK.CUM_L1 is missing; full comparison snapshot was not written.;
+        %put ERROR: WORK.CUM_L1 is missing; check the SAS log.;
         %abort cancel;
     %end;
-    data a.ami_full_reworked_&dataset_id(compress=binary);
-        set work.cum_l1;
-    run;
-%mend _ami_save_full_reworked;
-%_ami_save_full_reworked;
+%mend _ami_check_run_status;
+%_ami_check_run_status;
