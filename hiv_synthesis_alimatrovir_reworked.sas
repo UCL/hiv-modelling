@@ -21,7 +21,7 @@
 * To run from a set time on our laptops, we need to save a dataset locally and comment out the line "libname a "&outputdir/" " below;
 * libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 /*libname a 'C:\Users\rmjlja9\OneDrive - University College London\Alimatravir modelling\model outputs';   */
-libname a '/home/rmjlaph/Scratch/'; 
+  libname a '/home/rmjlaph/Scratch/'; 
 
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -32,7 +32,7 @@ libname a '/home/rmjlaph/Scratch/';
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 1000 ; 
 %let year_interv = 2026.0 ;	
 
 /* Fixed base seed for reproducible comparison with the reworked version. */
@@ -24780,7 +24780,7 @@ data _hiv_checkpoint_feedback; set _hiv_feedback; run;
 *    Option 0;
 data r1 ; set a ; run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
-%run_update_r1(&year_interv,&year_interv+5,1);
+%run_update_r1(&year_interv,&year_interv+50,1);
 
 *    Option 1;
 data r1 ; set a ; run;
