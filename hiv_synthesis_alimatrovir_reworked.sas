@@ -21,7 +21,7 @@
 * To run from a set time on our laptops, we need to save a dataset locally and comment out the line "libname a "&outputdir/" " below;
 * libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 /*libname a 'C:\Users\rmjlja9\OneDrive - University College London\Alimatravir modelling\model outputs';   */
-  libname a '/home/rmjlaph/Scratch/'; 
+  libname a '/home/rmjlaph/Scratch/alimatrovir'; 
 
 
 %let outputdir = %scan(&sysparm,1," ");
