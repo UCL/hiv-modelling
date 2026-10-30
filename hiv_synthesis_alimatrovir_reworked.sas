@@ -25957,16 +25957,24 @@ cab_res_emerge_primary			Is in primary infection and insti resistance emerged in
 /* AMI-PERF 12: Record elapsed time and check run status.
    The selected-output export above is the only run-summary dataset written.
 */
-%let _ami_reworked_elapsed = %sysevalf(%sysfunc(datetime()) - &_ami_reworked_start);
+%let _ami_reworked_elapsed =
+    %sysevalf(%sysfunc(datetime()) - &_ami_reworked_start);
+
 %put NOTE: ALIMATROVIR_REWORKED_MODEL_SECONDS=&_ami_reworked_elapsed;
+
 %macro _ami_check_run_status;
+
     %if &syscc > 4 %then %do;
-        %put ERROR: Reworked run reported an error; check the SAS log.;
+        %put NOTE: Most recent SAS error text: %superq(syserrortext);
+        %put ERROR: Reworked run reported an error (SYSCC=&syscc). Check the earlier SAS log.;
         %abort cancel;
     %end;
+
     %if not %sysfunc(exist(work.cum_l1)) %then %do;
-        %put ERROR: WORK.CUM_L1 is missing; check the SAS log.;
+        %put ERROR: WORK.CUM_L1 is missing. Check the SAS log.;
         %abort cancel;
     %end;
+
 %mend _ami_check_run_status;
+
 %_ami_check_run_status;

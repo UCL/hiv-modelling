@@ -1,7 +1,14 @@
 
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\alimatrovir\";
 
-data b.alimatrovir;  set b._ami:; 
+data b.alimatrovir;  
+
+  set b._ami_reworked_54210667; 
+* set b._ami_reworked_11705524;
+
+proc contents;
+
+proc print; var cald option s_alive_m; 
 
 run;
 
