@@ -32,7 +32,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 1000 ; 
+%let population = 100000 ; 
 %let year_interv = 2026.0 ;	
 
 /* Fixed base seed for reproducible comparison with the reworked version. */
