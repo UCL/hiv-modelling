@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_14oct2026; 
+set a.mm_18Oct26; 
 if run=. then delete; 
 
 proc sort;
@@ -356,7 +356,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 800;
+%let nfit = 752;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -383,7 +383,7 @@ options nonotes nosource nosource2 nomprint nomlogic nosymbolgen;
 p_mm				p_hiv_mm			p_hiv_m
 p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm		prevalence1549_mm	
 prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			p_1564mm_onprep	
-p_1564mm_onprep_cab_mm	p_1564mm_onprep_len_mm					p_1564mm_onprep_oral_mm							
+					
 n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_prep_any_ever_mm
 p_newp_ge1_mm		p_prep_any_willing	p_1564m_onprep			p_1564w_onprep 		p_elig_onprep
 p_elig_onprep_mm	p_elig_onprep_nmm	p_elig_prep
@@ -1010,7 +1010,7 @@ sex_age_mixing_matrix_w	inc_risk_newp_mm;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_MM01Oct26;;
+data a.wide_MM18Oct26;;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
