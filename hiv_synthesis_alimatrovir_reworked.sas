@@ -23190,6 +23190,7 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 
+/*
 
 ***Malawi specific;			*JAS Feb24;
 if country = 'Malawi' then do;
@@ -23224,6 +23225,11 @@ if country = 'Cote d Ivoire' then do;
 	if cald = 2010 and (0.03 > prevalence1549w > 0.08) then do; abort abend; end;
 	if cald = 2022 and (incidence1549 > 0.15) then do; abort abend; end;
 end;
+
+*/
+
+
+
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
