@@ -33,7 +33,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2027.5 ;	
+%let year_interv = 2027.5 ;	 * updated 31 oct 2026;
 
 /* Fixed base seed for reproducible comparison with the reworked version. */
 * %let _hiv_seed = 12345;
