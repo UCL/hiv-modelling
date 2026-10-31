@@ -2781,9 +2781,9 @@ data r&da1(drop=
     r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55 r_ten_tldsw r_vg1000_art_12m_onart
     rate_anc_inc rate_birth_with_infected_child rate_ch_art_init_str_10 rate_ch_art_init_str_3
     rate_ch_art_init_str_4 rate_ch_art_init_str_9 rate_choose_stop_prep_cab
-    rate_choose_stop_prep_len rate_choose_stop_prep_oral rate_choose_stop_prep_ami
+    rate_choose_stop_prep_len rate_choose_stop_prep_oral rate_choose_stop_prep_ami date_prep_len_intro
     rate_crypm_proph_init rate_disengage_sw_program rate_engage_sw_program
-    rate_exp_set_lower_p_vl1000 rate_int_choice rate_lencab_to_tld rate_loss_persistence rate_lost
+    rate_exp_set_lower_p_vl1000 rate_int_choice rate_lencab_to_tld rate_loss_persistence rate_lost date_prep_len_intro
     rate_res_ten rate_restart rate_return rate_return_for_lencab rate_sbi_proph_init
     rate_self_test rate_tb_proph_init rate_test_onprep_any rate_test_startprep_any
     rate_trans_breastfeeding recent_vm_gt1000_dol recent_vm_gt1000_efa recent_vm_gt1000_zdv
@@ -23078,7 +23078,7 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice date_prep_len_intro rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
@@ -24528,7 +24528,7 @@ run;
                 'RATE_CH_ART_INIT_STR_4', 'RATE_CH_ART_INIT_STR_9', 'RATE_CHOOSE_STOP_PREP_CAB',
                 'RATE_CHOOSE_STOP_PREP_LEN', 'RATE_CHOOSE_STOP_PREP_ORAL', 'RATE_CHOOSE_STOP_PREP_AMI',
                 'RATE_CRYPM_PROPH_INIT', 'RATE_DISENGAGE_SW_PROGRAM', 'RATE_ENGAGE_SW_PROGRAM',
-                'RATE_EXP_SET_LOWER_P_VL1000', 'RATE_INT_CHOICE', 'RATE_LENCAB_TO_TLD',
+                'RATE_EXP_SET_LOWER_P_VL1000', 'RATE_INT_CHOICE', 'RATE_LENCAB_TO_TLD','DATE_PREP_LEN_INTRO',
                 'RATE_LOSS_PERSISTENCE', 'RATE_LOST', 'RATE_RES_TEN', 'RATE_RESTART', 'RATE_RETURN',
                 'RATE_RETURN_FOR_LENCAB', 'RATE_SBI_PROPH_INIT', 'RATE_SELF_TEST', 'RATE_TB_PROPH_INIT',
                 'RATE_TEST_ONPREP_ANY', 'RATE_TEST_STARTPREP_ANY', 'RATE_TRANS_BREASTFEEDING',
@@ -25791,7 +25791,7 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice date_prep_len_intro rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
