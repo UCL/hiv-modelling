@@ -24780,12 +24780,12 @@ data _hiv_checkpoint_feedback; set _hiv_feedback; run;
 *    Option 0;
 data r1 ; set a ; run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
-%run_update_r1(&year_interv,&year_interv+50,1);
+%run_update_r1(&year_interv,&year_interv+10,0);
 
 *    Option 1;
 data r1 ; set a ; run;
 data _hiv_feedback; set _hiv_checkpoint_feedback; run;
-%run_update_r1(&year_interv,&year_interv+50,1);
+%run_update_r1(&year_interv,&year_interv+10,1);
 
 
 
