@@ -1830,6 +1830,9 @@ rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz
 incr_mort_risk_dol_weightg   sw_trans_matrix
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 
+prep_ami_efficacy dur_prep_ami_scaleup add_prob_prep_b_ami annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+prep_ami_effect_res_partner prep_ami_adh_uplift
+
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
@@ -2454,6 +2457,9 @@ rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz
 incr_mort_risk_dol_weightg   sw_trans_matrix
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 
+prep_ami_efficacy dur_prep_ami_scaleup add_prob_prep_b_ami annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+prep_ami_effect_res_partner prep_ami_adh_uplift
+
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
@@ -2497,7 +2503,7 @@ prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_vis
 %macro par(p=);
 
 * &p ;
-proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2026; run;
+proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2027; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
@@ -2512,6 +2518,9 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=date_test_rate_plateau );  %par(p=incr_test_rate_sympt ); %par(p=max_freq_testing );
 %par(p=test_targeting ); %par(p=fx );  %par(p=gx );  %par(p=adh_pattern ); %par(p=prob_loss_at_diag ); %par(p=pr_art_init ); 
 %par(p=rate_lost ); %par(p=prob_lost_art ); %par(p=rate_return ); %par(p=rate_restart ); %par(p=rate_int_choice ); %par(p=date_prep_len_intro);
+%par(p=prep_ami_efficacy ); %par(p=dur_prep_ami_scaleup ); %par(p=add_prob_prep_b_ami ); %par(p=annual_testing_prep_ami );
+%par(p=rate_choose_stop_prep_ami ); %par(p=add_pref_prep_ami ); %par(p=pref_prep_ami_beta_s1 ); %par(p=prep_ami_effect_res_partner );
+%par(p=prep_ami_adh_uplift );
 %par(p=clinic_not_aw_int_frac ); %par(p=res_trans_factor_nn ); %par(p=rate_loss_persistence ); %par(p=incr_rate_int_low_adh );
 %par(p=poorer_cd4rise_fail_nn ); %par(p=poorer_cd4rise_fail_ii ); %par(p=rate_res_ten );  
 %par(p=fold_change_mut_risk ); %par(p=adh_effect_of_meas_alert ); %par(p=pr_switch_line ); %par(p=prob_vl_meas_done );
@@ -2587,6 +2596,9 @@ p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg   sw_trans_matrix
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+
+prep_ami_efficacy dur_prep_ami_scaleup add_prob_prep_b_ami annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+prep_ami_effect_res_partner prep_ami_adh_uplift
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -3095,8 +3107,6 @@ netdaly150_1 netdaly150_2
 ;
 run;
 ods html close;
-
-
 
 
 

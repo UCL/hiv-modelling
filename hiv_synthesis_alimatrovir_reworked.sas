@@ -988,7 +988,7 @@ end;
 
 * date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
 * prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 					* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
-* dur_prep_ami_scaleup;			dur_prep_ami_scaleup=5;										* Assume 5 years to scale up ami PrEP;
+* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3 5);										* Assume 5 years to scale up ami PrEP;
 
 * add_prob_prep_b_ami;			%sample_uniform(add_prob_prep_b_ami, 0.2 0.4 0.6);			* sampled from same distribution as CAB PrEP initially;
 * prob_prep_ami_b;				prob_prep_ami_b = prob_prep_oral_b + add_prob_prep_b_ami;	* probability of starting MK-8527 PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
@@ -1003,7 +1003,6 @@ end;
 * prep_ami_effect_res_partner;	prep_ami_effect_res_partner=0;												* 0 = no effect. Initially no impact of resistant virus in partner on ami PrEP efficacy;	
 																											* QUERY - could sample this (cab and len use rel effect 0, 0.25, 0.5);
 * prep_ami_adh_uplift;			%sample_uniform(prep_ami_adh_uplift, 0.6 0.8 1);							* Additional adherence of ami compared to oral PrEP (relative increase between adh and 1);
-
 
 
 *** POP WIDE TLD * ;  			* intention is probably to take this out from Core when cioa / community tld is added to Core; 
@@ -2784,6 +2783,8 @@ data r&da1(drop=
     rate_choose_stop_prep_len rate_choose_stop_prep_oral rate_choose_stop_prep_ami date_prep_len_intro
     rate_crypm_proph_init rate_disengage_sw_program rate_engage_sw_program
     rate_exp_set_lower_p_vl1000 rate_int_choice rate_lencab_to_tld rate_loss_persistence rate_lost date_prep_len_intro
+	prep_ami_efficacy dur_prep_ami_scaleup add_prob_prep_b_ami annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+	prep_ami_effect_res_partner prep_ami_adh_uplift
     rate_res_ten rate_restart rate_return rate_return_for_lencab rate_sbi_proph_init
     rate_self_test rate_tb_proph_init rate_test_onprep_any rate_test_startprep_any
     rate_trans_breastfeeding recent_vm_gt1000_dol recent_vm_gt1000_efa recent_vm_gt1000_zdv
@@ -23079,6 +23080,8 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice date_prep_len_intro rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
+prep_ami_efficacy dur_prep_ami_scaleup add_prob_prep_b_ami annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+prep_ami_effect_res_partner prep_ami_adh_uplift
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
@@ -24529,6 +24532,9 @@ run;
                 'RATE_CHOOSE_STOP_PREP_LEN', 'RATE_CHOOSE_STOP_PREP_ORAL', 'RATE_CHOOSE_STOP_PREP_AMI',
                 'RATE_CRYPM_PROPH_INIT', 'RATE_DISENGAGE_SW_PROGRAM', 'RATE_ENGAGE_SW_PROGRAM',
                 'RATE_EXP_SET_LOWER_P_VL1000', 'RATE_INT_CHOICE', 'RATE_LENCAB_TO_TLD','DATE_PREP_LEN_INTRO',
+				'PREP_AMI_EFFICACY', 'DUR_PREP_AMI_SCALEUP', 'ADD_PROB_PREP_B_AMI',
+                'ANNUAL_TESTING_PREP_AMI', 'RATE_CHOOSE_STOP_PREP_AMI', 'ADD_PREF_PREP_AMI',
+                'PREF_PREP_AMI_BETA_S1', 'PREP_AMI_EFFECT_RES_PARTNER', 'PREP_AMI_ADH_UPLIFT',
                 'RATE_LOSS_PERSISTENCE', 'RATE_LOST', 'RATE_RES_TEN', 'RATE_RESTART', 'RATE_RETURN',
                 'RATE_RETURN_FOR_LENCAB', 'RATE_SBI_PROPH_INIT', 'RATE_SELF_TEST', 'RATE_TB_PROPH_INIT',
                 'RATE_TEST_ONPREP_ANY', 'RATE_TEST_STARTPREP_ANY', 'RATE_TRANS_BREASTFEEDING',
@@ -25791,7 +25797,10 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice date_prep_len_intro rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice date_prep_len_intro 
+prep_ami_efficacy dur_prep_ami_scaleup add_prob_prep_b_ami annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+prep_ami_effect_res_partner prep_ami_adh_uplift
+rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
