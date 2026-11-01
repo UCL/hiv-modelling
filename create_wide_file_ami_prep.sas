@@ -1817,7 +1817,7 @@ external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_
 fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
 date_test_rate_plateau  incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice prob_strong_pref_lencab
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice prob_strong_pref_lencab date_prep_len_intro
 clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
@@ -2441,7 +2441,7 @@ external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_
 fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
 date_test_rate_plateau incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice prob_strong_pref_lencab
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice prob_strong_pref_lencab date_prep_len_intro
 clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
@@ -2511,7 +2511,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=an_lin_incr_test );
 %par(p=date_test_rate_plateau );  %par(p=incr_test_rate_sympt ); %par(p=max_freq_testing );
 %par(p=test_targeting ); %par(p=fx );  %par(p=gx );  %par(p=adh_pattern ); %par(p=prob_loss_at_diag ); %par(p=pr_art_init ); 
-%par(p=rate_lost ); %par(p=prob_lost_art ); %par(p=rate_return ); %par(p=rate_restart ); %par(p=rate_int_choice ); 
+%par(p=rate_lost ); %par(p=prob_lost_art ); %par(p=rate_return ); %par(p=rate_restart ); %par(p=rate_int_choice ); %par(p=date_prep_len_intro);
 %par(p=clinic_not_aw_int_frac ); %par(p=res_trans_factor_nn ); %par(p=rate_loss_persistence ); %par(p=incr_rate_int_low_adh );
 %par(p=poorer_cd4rise_fail_nn ); %par(p=poorer_cd4rise_fail_ii ); %par(p=rate_res_ten );  
 %par(p=fold_change_mut_risk ); %par(p=adh_effect_of_meas_alert ); %par(p=pr_switch_line ); %par(p=prob_vl_meas_done );
@@ -2575,7 +2575,7 @@ external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_
 fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
 date_test_rate_plateau incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice date_prep_len_intro
 clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
@@ -3036,9 +3036,6 @@ p_onart_cd4_l200_25
 p_onart_vl1000_w_1524_25 p_onart_vl1000_m_1524_25  
 s_alive_25
 p_hard_reach_25
-per_prep_during_past_2_yr_1_25 per_prep_during_past_2_yr_2_25 per_prep_during_past_2_yr_3_25 per_prep_during_past_2_yr_4_25
-per_prep_during_past_2_yr_5_25 per_prep_during_past_2_yr_6_25 per_prep_during_past_2_yr_7_25 per_prep_during_past_2_yr_8_25
-
 incidence_prep_elig_25 incidence_onprep_25 incidence_prep_elig_nu_25
 ;
 run;
@@ -3063,9 +3060,20 @@ prop_elig_on_prep_10y_1 prop_elig_on_prep_10y_2  d_prop_elig_on_prep_10y_2
 
 prop_1564_onprep_10y_1 prop_1564_onprep_10y_2
 
+prop_prep_cab_10y_1 prop_prep_cab_10y_2
+prop_prep_len_10y_1 prop_prep_len_10y_2
+prop_prep_ami_10y_1 prop_prep_ami_10y_2
+
+n_prep_oral_10y_1 n_prep_oral_10y_2 
+n_prep_cab_10y_1 n_prep_cab_10y_2
+n_prep_len_10y_1 n_prep_len_10y_2
+n_prep_ami_10y_1 n_prep_ami_10y_2
+
+
 d_prop_1564_onprep_10y_2
 
 ;
+where date_prep_len_intro = 3000;
 run;
 
 
