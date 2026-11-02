@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_18Oct26; 
+set a.mm_30Oct2026; 
 if run=. then delete; 
 
 proc sort;
@@ -299,11 +299,6 @@ s_alive = s_alive_m + s_alive_w ;
 * p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive;
 
 * p_mm_prog_visit;				if s_alive1564mm then p_mm_prog_visit = s_mm_prog_visit /s_alive1564mm;
-* p_mm_prep_prog_vis;			if s_mm_prog_visit gt 0 then p_mm_prep_prog_vis = s_prep_any_mm_1564 / s_mm_prog_visit;
-* p_mm_prep_oral_prog_vis;		if s_mm_prog_visit gt 0 then p_mm_prep_oral_prog_vis = s_prep_oral_mm / s_mm_prog_visit;
-* p_mm_prep_cab_prog_vis;		if s_mm_prog_visit gt 0 then p_mm_prep_cab_prog_vis = s_prep_cab_mm / s_mm_prog_visit;
-* p_mm_prep_len_prog_vis;		if s_mm_prog_visit gt 0 then p_mm_prep_len_prog_vis = s_prep_len_mm / s_mm_prog_visit;
-* p_mm_prep_ever_prog_vis;		if s_mm_prog_visit gt 0 then p_mm_prep_ever_prog_vis = s_prep_any_ever_prog_mm / s_mm_prog_visit;
 
 *to check balance given we've added newp to MM;
 logw15r = log(w15r+0.0001);
@@ -362,7 +357,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 752;
+%let nfit = 800;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -1016,7 +1011,7 @@ sex_age_mixing_matrix_w	inc_risk_newp_mm;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_MM18Oct26;;
+data a.wide_MM30Oct26;;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
