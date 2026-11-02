@@ -1,4 +1,8 @@
 
+* 2 nov 2026: made prob_prep_xxx_b independent of each other to reflect differing availability of each; 
+
+ 
+
 /* note changes made so that we specify the variables to be printed only once - search hiv_print_people */
 /* Diagnostic printing: see hiv_print_people, hiv_people_vars, and OUTPUT _hiv_diagnostic_people. */
 
@@ -892,10 +896,14 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;						* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;						* Assume 5 years to scale up injectable len prep;
 
-* add_prob_prep_b_cab;			%sample_uniform(add_prob_prep_b_cab, 0.2 0.4 0.6);
-* add_prob_prep_b_len;			add_prob_prep_b_len = add_prob_prep_b_cab;
-* prob_prep_cab_b;				prob_prep_cab_b = prob_prep_oral_b + add_prob_prep_b_cab; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
-* prob_prep_len_b;				prob_prep_len_b = prob_prep_oral_b + add_prob_prep_b_len; * since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
+* add_prob_prep_b_cab;			* %sample_uniform(add_prob_prep_b_cab, 0.2 0.4 0.6);
+* add_prob_prep_b_len;			* add_prob_prep_b_len = add_prob_prep_b_cab; * QUERY - I think these should be indepdendent for the 4 types of prep;
+* prob_prep_cab_b;				* prob_prep_cab_b = prob_prep_oral_b + add_prob_prep_b_cab; prob_prep_cab_b = %sample_uniform(prob_prep_cab_b, 0.01 0.05  0.1 0.3);  
+																		* probability of starting inj PrEP in people (who are eligible and willing to take inj prep) 
+																		tested for HIV according to the base rate of testing;
+* prob_prep_len_b;				* prob_prep_len_b = prob_prep_oral_b + add_prob_prep_b_len; prob_prep_len_b = %sample_uniform(prob_prep_len_b, 0.01 0.05  0.1  0.3);  
+																		* since we have different preference for oral and inj, dont think we need separate values 
+																		of this for oral and inj ; * but I think we do to distinguish choice from availability;
 
 * annual_testing_prep_cab;		annual_testing_prep_cab=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 * annual_testing_prep_len;		annual_testing_prep_len=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -990,8 +998,9 @@ end;
 * prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 					* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
 * dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3 5);										* Assume 5 years to scale up ami PrEP;
 
-* add_prob_prep_b_ami;			%sample_uniform(add_prob_prep_b_ami, 0.2 0.4 0.6);			* sampled from same distribution as CAB PrEP initially;
-* prob_prep_ami_b;				prob_prep_ami_b = prob_prep_oral_b + add_prob_prep_b_ami;	* probability of starting MK-8527 PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
+* add_prob_prep_b_ami;			* %sample_uniform(add_prob_prep_b_ami, 0.2 0.4 0.6);			* sampled from same distribution as CAB PrEP initially;
+* prob_prep_ami_b;				* prob_prep_ami_b = prob_prep_oral_b + add_prob_prep_b_ami; prob_prep_ami_b = %sample_uniform(prob_prep_ami_b, 0.01  0.05  0.1  0.3);  
+																			* probability of starting MK-8527 PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
 
 * annual_testing_prep_ami;		annual_testing_prep_ami=0.25;	* frequency of HIV testing for people on MK-8527 PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 
