@@ -1,10 +1,10 @@
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\alimatrovir_2\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\alimatravir_2\";
 
-data b.alimatrovir;  
+data b.alimatravir;  
   set b._ami_reworked_:; 
 
-proc sort data=b.alimatrovir out=work.ami_sorted;
+proc sort data=b.alimatravir out=work.ami_sorted;
    by run cald option;
 run;
 
@@ -1925,9 +1925,9 @@ proc freq; tables cald option; where cald=2028.25;
 run;
 
 
-data    b.l_alimatrovir; set y;  
+data    b.l_alimatravir; set y;  
 
-data y ; set b.l_alimatrovir; 
+data y ; set b.l_alimatravir; 
 
 
   options nomprint;
@@ -2654,7 +2654,7 @@ proc sort; by run;run;
 
 
 
-  data  b.w_alimatrovir   ; 
+  data  b.w_alimatravir   ; 
   merge b.wide_outputs   b.wide_par2    ;
   by run;
 
@@ -2663,10 +2663,10 @@ proc sort; by run;run;
 
 
 
-   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\alimatrovir_2\";
+   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\alimatravir_2\";
 
 
-data f; set b.w_alimatrovir ;
+data f; set b.w_alimatravir ;
 
 
 if prevalence1549w_24 < 0.35 ;
@@ -3085,7 +3085,7 @@ n_prep_ami_10y_1 n_prep_ami_10y_2
 d_prop_1564_onprep_10y_2
 
 ;
-where date_prep_len_intro = 3000;
+ where date_prep_len_intro = 3000;
 run;
 
 
