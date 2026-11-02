@@ -15,7 +15,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 1000 ; 
-%let year_interv = 2026.0 ;	
+%let year_interv = 2027.5 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -820,7 +820,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ;
 
 * date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 3000);	* Introduction of injectable cab PrEP ;	* consider len as the only la prep option;
-* date_prep_len_intro;			%sample_uniform(date_prep_len_intro, 2026);	* Introduction of injectable len PrEP ;	* Note for BMGF analysis we will want to sample across (2026, 3000) to introduce ami with and without len;
+* date_prep_len_intro;			%sample(date_prep_len_intro, 2026 3000, 0.3 0.7);	* Introduction of injectable len PrEP ;	* Note for BMGF analysis we will want to sample across (2026, 3000) to introduce ami with and without len;
 * prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
 * prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;						* Assume 5 years to scale up injectable cab prep;
@@ -920,9 +920,9 @@ end;
 * m184v mutation selected in presence of alimatravir (same as islatravir);
 * tail after cessation of product is not coded;
 
-* date_prep_ami_intro;			date_prep_ami_intro=2028;		* Introduction of ami PrEP ;
+* date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
 * prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 					* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
-* dur_prep_ami_scaleup;			dur_prep_ami_scaleup=5;										* Assume 5 years to scale up ami PrEP;
+* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3 5);										* Assume 5 years to scale up ami PrEP;
 
 * add_prob_prep_b_ami;			%sample_uniform(add_prob_prep_b_ami, 0.2 0.4 0.6);			* sampled from same distribution as CAB PrEP initially;
 * prob_prep_ami_b;				prob_prep_ami_b = prob_prep_oral_b + add_prob_prep_b_ami;	* probability of starting MK-8527 PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
@@ -16559,7 +16559,7 @@ hiv1_prep_any=0; 	   if hiv=1 and prep_any  =1 then do; hiv1_prep_any=1;  ever_h
 hiv1_prep_oral=0; 	   if hiv=1 and prep_oral =1 then do; hiv1_prep_oral=1; ever_hiv1_prep_oral=1; 	end;
 hiv1_prep_cab =0; 	   if hiv=1 and prep_cab  =1 then do; hiv1_prep_cab =1; ever_hiv1_prep_cab =1; 	end;
 hiv1_prep_len =0; 	   if hiv=1 and prep_len  =1 then do; hiv1_prep_len =1; ever_hiv1_prep_len =1; 	end;
-hiv1_prep_ami  =0; 	   if hiv=1 and prep_vr   =1 then do; hiv1_prep_vr  =1; ever_hiv1_prep_vr  =1; 	end;
+hiv1_prep_ami =0; 	   if hiv=1 and prep_ami  =1 then do; hiv1_prep_ami =1; ever_hiv1_prep_ami =1; 	end;
 
 
 	* Note that several outputs below are specific to oral PrEP and could be replicated for lapr and dpv-vr if needed;

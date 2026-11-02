@@ -1,13 +1,14 @@
 
 * 2 nov 2026: made prob_prep_xxx_b independent of each other to reflect differing availability of each; 
+* 22nd Oct 2026: decided not to model ami tail initially ;
+* 29th June 2026: adding MK-8527 (_ami = alimatravir, monthly oral mk-8527), removing VR prep ;
 
- 
 
 /* note changes made so that we specify the variables to be printed only once - search hiv_print_people */
 /* Diagnostic printing: see hiv_print_people, hiv_people_vars, and OUTPUT _hiv_diagnostic_people. */
 
 /* new code added 29 oct 2026 */
-/* ALIMATROVIR REWORKED: performance comparison candidate, 27 October 2026.
+/* ALIMATRAVIR REWORKED: performance comparison candidate, 27 October 2026.
    Based on the saved fixed-seed baseline. Parameter sampling, person transitions
    and scientific feedback rules are preserved. Search AMI-PERF for storage changes.
    The primary export now includes all 54 existing AMI summary measures.
@@ -16,16 +17,12 @@
 */
 %let _ami_reworked_start = %sysfunc(datetime());
 
-* 29th June 2026: adding MK-8527 (_ami = alimatravir, monthly oral mk-8527), removing VR prep ;
 
-* 22nd Oct 2026:
-- decided not to model ami tail initially
-;
 
 * To run from a set time on our laptops, we need to save a dataset locally and comment out the line "libname a "&outputdir/" " below;
 * libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 /*libname a 'C:\Users\rmjlja9\OneDrive - University College London\Alimatravir modelling\model outputs';   */
-  libname a '/home/rmjlaph/Scratch/alimatrovir_2'; 
+  libname a '/home/rmjlaph/Scratch/alimatravir_2'; 
 
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -37,7 +34,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2027.5 ;	 * updated 31 oct 2026;
+%let year_interv = 2028 ;	 * updated 31 oct 2026;
 
 /* Fixed base seed for reproducible comparison with the reworked version. */
 * %let _hiv_seed = 12345;
@@ -843,7 +840,7 @@ end;
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
-* prob_prep_any_restart_choice; %sample_uniform(prob_prep_any_restart_choice, 0.05 0.10 0.20);
+* prob_prep_any_restart_choice; %sample_uniform(prob_prep_any_restart_choice, 0.05 0.10 0.20);	** QUERY - make prep-type specific;
 								* dependent_on_time_step_length ;
 * add_prep_any_uptake_sw;		add_prep_any_uptake_sw=0; 		***this may be sampled at a later date; 
 
@@ -996,7 +993,7 @@ end;
 
 * date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
 * prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 					* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
-* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3 5);										* Assume 5 years to scale up ami PrEP;
+* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3 5);				* QUERY - may need to vary for analysis;
 
 * add_prob_prep_b_ami;			* %sample_uniform(add_prob_prep_b_ami, 0.2 0.4 0.6);			* sampled from same distribution as CAB PrEP initially;
 * prob_prep_ami_b;				* prob_prep_ami_b = prob_prep_oral_b + add_prob_prep_b_ami; prob_prep_ami_b = %sample_uniform(prob_prep_ami_b, 0.01  0.05  0.1  0.3);  
@@ -3644,7 +3641,7 @@ length _hiv_fb_index 8;
 
     /* AMI-PERF 04: Read all prior-quarter feedback once. SET retains its fields.
        Snapshot and restore the fields that the scientific update can modify.
-       The audited subset includes all 52 new alimatrovir summary fields because
+       The audited subset includes all 52 new alimatravir summary fields because
        the baseline broadcasts them into the next-quarter person input.
        Its existing broadcast behavior is preserved for this comparison.
     */
@@ -3800,7 +3797,7 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-	set_in_options=0;
+	set_in_options=0;	* QUERY check this ;
 	* note that we can use set_in_options=1 when we want to ensure that parameter values specified in the options section are not overwritten.
 	The variable name can be updated to reflect specific parameters;
 
@@ -6729,7 +6726,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 			end; 
 		end;
 
-		else if prep_len_tm1 = 1 then do; 	* dependent_on_time_step_length;
+		else if prep_len_tm1 = 1 then do; 	* dependent_on_time_step_length;	** QUERY add code to prevent switching or stopping len during 6 months post-injection;
 			if r < (1-eff_rate_choose_stop_prep_len) then do; 			* continue to use PrEP; 
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
 				if highest_prep_pref = 3 then do;						* continue with cab PrEP;
@@ -9155,7 +9152,7 @@ end;
 
 * QUERY - equivalent needed for ami for sections below? ;
 * A: I think we should err on the side of adding this, but we shouldnt spend too much time on this primary infection testing / resistance issue
-as it is not a big deal for alimatrovir I would say;
+as it is not a big deal for alimatravir I would say;
 
 if caldate{t} = prep_cab_first_start_date then prep_cab_init_prim = 1;
 if caldate{t} = prep_cab_restart_date then prep_cab_reinit_prim = 1;
@@ -17842,7 +17839,7 @@ hiv1_prep_any=0; 	   if hiv=1 and prep_any  =1 then do; hiv1_prep_any=1;  ever_h
 hiv1_prep_oral=0; 	   if hiv=1 and prep_oral =1 then do; hiv1_prep_oral=1; ever_hiv1_prep_oral=1; 	end;
 hiv1_prep_cab =0; 	   if hiv=1 and prep_cab  =1 then do; hiv1_prep_cab =1; ever_hiv1_prep_cab =1; 	end;
 hiv1_prep_len =0; 	   if hiv=1 and prep_len  =1 then do; hiv1_prep_len =1; ever_hiv1_prep_len =1; 	end;
-hiv1_prep_ami  =0; 	   if hiv=1 and prep_ami   =1 then do; hiv1_prep_ami  =1; ever_hiv1_prep_ami  =1; 	end;
+hiv1_prep_ami =0; 	   if hiv=1 and prep_ami  =1 then do; hiv1_prep_ami =1; ever_hiv1_prep_ami =1; 	end;
 
 
 	* Note that several outputs below are specific to oral PrEP and could be replicated for lapr and dpv-vr if needed;
@@ -24646,7 +24643,7 @@ run;
         %put ERROR: Unexpected fields=&_ami_fb_unexpected overlapping person fields=&_ami_fb_overlap.;
         %abort cancel;
     %end;
-    %put NOTE: ALIMATROVIR_FEEDBACK_CACHE numeric=&_ami_fb_numeric_count character=&_ami_fb_character_count;
+    %put NOTE: ALIMATRAVIR_FEEDBACK_CACHE numeric=&_ami_fb_numeric_count character=&_ami_fb_character_count;
 %end;
 
 /* AMI-PERF 09: Hand over the compact population without another copy/merge. */
@@ -25978,7 +25975,7 @@ cab_res_emerge_primary			Is in primary infection and insti resistance emerged in
 %let _ami_reworked_elapsed =
     %sysevalf(%sysfunc(datetime()) - &_ami_reworked_start);
 
-%put NOTE: ALIMATROVIR_REWORKED_MODEL_SECONDS=&_ami_reworked_elapsed;
+%put NOTE: ALIMATRAVIR_REWORKED_MODEL_SECONDS=&_ami_reworked_elapsed;
 
 %macro _ami_check_run_status;
 
