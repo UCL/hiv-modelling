@@ -1,5 +1,5 @@
 
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\alimatrovir\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\alimatrovir_2\";
 
 data b.alimatrovir;  
   set b._ami_reworked_:; 
@@ -2663,7 +2663,7 @@ proc sort; by run;run;
 
 
 
-   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\alimatrovir\";
+   libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\alimatrovir_2\";
 
 
 data f; set b.w_alimatrovir ;
