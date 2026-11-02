@@ -11556,9 +11556,15 @@ x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1
 153. Viral load monitoring (6m, annual) no confirmation
 1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test
 
-	*LBM;
-* VLM at 6 months only
-* Pregnant and lactating women at latest of first ANC visit / 6 months after ART initiation 
+/*
+LBM Sep26 - the following ART monitoring strategies will be compared:
+3.   Clinical monitoring with VL confirmation + pregnant and lactating women (PLW)
+150. Viral load monitoring (6m, 12m, annual) - WHO + PLW
+152. As above with 3 yearly viral load monitoring VLM Global Fund paper Sep26 + PLW
+1800.No VL monitoring - this isnt specifically coded but by default 1800 will equate to no VLM
+154. VLM at 6 months only + PLW
+155. Pregnant and lactating women at latest of first ANC visit / 6 months after ART initiation 
+*/
 
 * reg_option
  
@@ -11617,13 +11623,17 @@ o_dol_2nd_vlg1000 = 0; * see below for defn; * eee;
 
 * art_monitoring_strategy=3. Clinical monitoring with VL confirmation (modelling the confirmatory VL);
 * look also at who3 and who4 events where the switch evaluation happens;
+*VLM Global Fund paper;
+anc_vl=0;
 
-if t ge 2 and visit=1 and art_monitoring_strategy=3 
-and 0.25 <= caldate{t}-date_last_vlm_g1000 <= 1.0 /*last VL>1000 was measured between 3-12 months ago*/
+if  art_monitoring_strategy=3 
+and ((t ge 2 and visit=1 and 0.25 <= caldate{t}-date_last_vlm_g1000 <= 1.0) /*last VL>1000 was measured between 3-12 months ago*/
 and (onart=1 or int_clinic_not_aw=1) and (p_taz ne 1 or p_dar ne 1 or p_lpr ne 1) /*on ART or interrupted without clinic being aware and havent started a PI*/
 and (linefail_tm1 =0)/*this ensures a confirmatory VL is only done if they havent failed a regimen before the last period*/
-and min_time_repeat_vm <= caldate{t}-date_who3_4_event_switch_eval <= 1.0 then do;/*they had a switch evaluation due to symptoms 3-12 months ago (and repeat VL needs to be done by 1 year)*/
+and (min_time_repeat_vm <= caldate{t}-date_who3_4_event_switch_eval <= 1.0)) /*they had a switch evaluation due to symptoms 3-12 months ago (and repeat VL needs to be done by 1 year)*/
+or (anc=1 and anc_vl ne 1) then do; *LBM check *VL measured exactly once whilst in ANC - irresepctive of when a previous VL was done  ;
 
+if anc=1 then anc_vl=1;/*LBM check*/
 s=rand('uniform'); 
 	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm    = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
@@ -11633,7 +11643,7 @@ s=rand('uniform');
 	end;  
 	vl_cost_inc = 1;
 	if vm    gt log10(1000) then do;
-		if date_v_alert=. then date_v_alert=caldate{t};
+		if date_v_alert=. or anc_vl=1 /*LBM check*/ then date_v_alert=caldate{t};
 		linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4 ; vl_fail1=vl;d1stlfail=caldate{t}; date_last_vlm_g1000 = caldate{t};fail_this_per=1;
 		if o_zdv=1 then f_zdv=1;
 		if o_3tc=1 then f_3tc=1;
@@ -11872,8 +11882,10 @@ end;
 * takes account of time delay for DBS or plasma measurement of vl, compared with POC ;
 
 ***LBM Sep26;
-if  art_monitoring_strategy=150  and visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
-and restart    ne 1 and restart_tm1  ne 1  and t ge 2 then do;  
+*VLM Global Fund paper;
+anc_vl=0;
+if  art_monitoring_strategy=150  and (visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
+and restart    ne 1 and restart_tm1  ne 1  and t ge 2) or anc=1 then do;   /*LBM check*/
 
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) /* (a)if the first VL is >6m after starting ART*/
 	or (caldate{t}-yrart = 1.0) /* (b) it is a year after starting ART*/
@@ -11882,18 +11894,24 @@ and restart    ne 1 and restart_tm1  ne 1  and t ge 2 then do;
 	/* (d)  they have had a recent switch evaluation (i.e. VL>1000 within 3- 12 months (and so the proposed 
 			measurement will act as a confirmatory VL) AND if they had a previous confirmatory VL from previous switch evaluations,
 			it needs to be over a year ago*/
+	or anc=1 and anc_vl ne 1 /*LBM check*/
+
 	then do;
+	if anc=1 then anc_vl=1;/*LBM check*/
 		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
 		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
 		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
-		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then date_conf_vl_measure_done = caldate{t} ;
+/*LBM check*/
+*Confirmatory measure time condition not needed for PLW so accept this period as confirmatory measure so loop below using confirmatory measure works okay;
+
+		if (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0) or_anc_vl=1 then date_conf_vl_measure_done = caldate{t} ;
 		end;  
 		vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
-			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
-			if date_v_alert=. then date_v_alert=caldate{t};
+			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1 or anc_vl=1) /*LBM check*/then date_vl_switch_eval=caldate{t}; 
+			if date_v_alert=. or anc_vl=1 /*LBM check*/ then date_v_alert=caldate{t}; 
 		end;
 	end;
 	
@@ -11928,27 +11946,32 @@ end;
 *VLM Global Fund paper;
 
 *time_of_first_vm = 0.5, defined above i.e. first VL is 6m after ART start;
-
-if art_monitoring_strategy=152  and visit=1 and (artline=1 or int_clinic_not_aw=1) 
-and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and t ge 2 then do;  
+anc_vl=0;
+if art_monitoring_strategy=152  and (visit=1 and (artline=1 or int_clinic_not_aw=1) 
+and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and t ge 2) or anc=1 then do;  *LBM check;
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) /*if the first VL is >6m after starting ART*/
 	or	(time_since_last_vm >= 2.75) /*or is >=3 years since last VL */
 	or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 and (caldate&j - date_conf_vl_measure_done >= 3 or date_conf_vl_measure_done=.)) 
 	/*	they have had a recent switch evaluation (i.e. VL>1000 within the last 6 months (arbitrary) (so the proposed 
 			measurement will act as a confirmatory VL) AND if they had a previous confirmatory VL from previous switch evaluations,
 			it needs to be over 3 years ago*/
+	or anc=1 and anc_vl ne 1 /*LBM check*/
 	then do; 
+	if anc=1 then anc_vl =1;/*LBM check*/
 		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
 		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
 		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
-		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 then date_conf_vl_measure_done = caldate{t} ;
+
+		/*LBM check*/		
+		*Confirmatory measure time condition not needed for PLW so accept this period as confirmatory measure so loop below using confirmatory measure works okay;
+		if (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5) or anc_vl=1 then date_conf_vl_measure_done = caldate{t} ;
 		end;  
 		vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
-			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
-			if date_v_alert=. then date_v_alert=caldate{t};
+			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1 or anc_vl=1) /*LBM check*/ then date_vl_switch_eval=caldate{t}; 
+			if date_v_alert=. or anc_vl=1 /*LBM check*/ then date_v_alert=caldate{t};
 		end;
 	end;
 
@@ -11972,6 +11995,92 @@ and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and t ge 2 then do;
 	end; 
 end;
 
+*LBM Sep26;
+*LBM check - new strategy;
+***art_monitoring_strategy = 154 - ONLY at 6 months after ART intiation only or PLW;
+anc_vl=0;
+if art_monitoring_strategy=154 and (visit=1 and caldate{t}-yrart=0.5 and (artline=1 or int_clinic_not_aw=1) 
+and restart ne 1) or (anc=1 and anc_vl ne 1) then do; 
+	if anc=1  then anc_vl =1;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		*Confirmatory measure time condition not needed for PLW so accept this period as confirmatory measure so loop below using confirmatory measure works okay;
+		if (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5) or anc_vl=1 then date_conf_vl_measure_done = caldate{t} ;
+		end;  
+		vl_cost_inc = 1;
+		if vm gt log10(vl_threshold) then do; 
+			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1 or anc_vl=1) /*LBM check*/ then date_vl_switch_eval=caldate{t}; 
+			if date_v_alert=. or anc_vl=1 /*LBM check*/ then date_v_alert=caldate{t};
+		end;
+	end;
+
+	if (caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
+	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold))
+	then do;
+			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; fail_this_per=1;
+			if o_zdv=1 then f_zdv=1;
+			if o_3tc=1 then f_3tc=1;
+			if o_ten=1 then f_ten=1;
+			if o_nev=1 then f_nev=1;
+			if o_efa=1 then f_efa=1;
+			if o_lpr=1 then f_lpr=1;
+			if o_taz=1 then f_taz=1;
+			if o_dar=1 then f_dar=1;
+			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;
+			if o_len=1 then f_len=1;
+			if o_ole=1 then f_ole=1;
+			if o_isl=1 then f_isl=1;
+	end; 
+end;
+
+*LBM check - new strategy;
+***art_monitoring_strategy = 155 - Only PLW;
+anc_vl=0;
+if art_monitoring_strategy=155 and anc=1 and anc_vl ne 1 then do; 
+		anc_vl =1;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		*Confirmatory measure time condition not needed for PLW so accept this period as confirmatory measure so loop below using confirmatory measure works okay;
+		/*if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 then*/ date_conf_vl_measure_done = caldate{t} ;
+		end;  
+		vl_cost_inc = 1;
+		if vm gt log10(vl_threshold) then do; 
+			/* LBM Check - it doesnt matter if they have had a switch before so Ive commented out that condition below */ 
+			date_last_vlm_g1000=caldate{t}; /*if (date_vl_switch_eval=. or time_since_last_vm >= 1)*/ then date_vl_switch_eval=caldate{t}; 
+			if date_v_alert=. or anc_vl=1 /*LBM check*/ then date_v_alert=caldate{t};
+		end;
+	end;
+
+	if (caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
+	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold))
+	then do;
+			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; fail_this_per=1;
+			if o_zdv=1 then f_zdv=1;
+			if o_3tc=1 then f_3tc=1;
+			if o_ten=1 then f_ten=1;
+			if o_nev=1 then f_nev=1;
+			if o_efa=1 then f_efa=1;
+			if o_lpr=1 then f_lpr=1;
+			if o_taz=1 then f_taz=1;
+			if o_dar=1 then f_dar=1;
+			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;
+			if o_len=1 then f_len=1;
+			if o_ole=1 then f_ole=1;
+			if o_isl=1 then f_isl=1;
+	end; 
+end;
+
+
+***LBM check;
+**I'm not sure what this section is doing...do we need to add in the new art monitoring strategies here?;
 
 * this was originally included for the tld_switch comparison - while the art_monitoring strategies other than 150 are not currently turned on they may be in future;
 
