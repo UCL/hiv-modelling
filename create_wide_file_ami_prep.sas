@@ -55,11 +55,11 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 * ================================================================================= ;
 
 
-* discount rate (from year_interv which is 2027.5); 
+* discount rate (from year_interv which is 2028  ); 
 * discount rate is 3%; 
 * The following can be changed if we want instead 10% discount rate - see below for use of discount_adj_5_3 ;
 
-* discount_adj_5_3 = discount * (1.03**(cald - 2027.5)) / (1.05**(cald - 2027.5)) ;
+* discount_adj_5_3 = discount * (1.03**(cald - 2028  )) / (1.05**(cald - 2028  )) ;
 
 * ================================================================================= ;
 
@@ -1942,11 +1942,11 @@ data y ; set b.l_alimatrovir;
 
 data e; set y; keep &v run cald option ;
 
-proc means  noprint data=e; var &v; output out=y_19 mean= &v._19; by run ; where 2018.5 <= cald <= 2019.5; 
-proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2023.5 <= cald <= 2024.75; 
-proc means  noprint data=e; var &v; output out=y_25 mean= &v._25; by run ; where 2024.5 <= cald <= 2025.75; 
-proc means  noprint data=e; var &v; output out=y_26 mean= &v._26; by run ; where 2025.5 <= cald <= 2026.75; 
-proc means  noprint data=e; var &v; output out=y_27 mean= &v._27; by run ; where 2026.5 <= cald <= 2027.75; 
+proc means  noprint data=e; var &v; output out=y_19 mean= &v._19; by run ; where 2019.00 <= cald <= 2019.75; 
+proc means  noprint data=e; var &v; output out=y_24 mean= &v._24; by run ; where 2024.00 <= cald <= 2024.75; 
+proc means  noprint data=e; var &v; output out=y_25 mean= &v._25; by run ; where 2025.00 <= cald <= 2025.75; 
+proc means  noprint data=e; var &v; output out=y_26 mean= &v._26; by run ; where 2026.00 <= cald <= 2026.75; 
+proc means  noprint data=e; var &v; output out=y_27 mean= &v._27; by run ; where 2027.00 <= cald <= 2027.75; 
 
 
 * note: it is critical that this starts at year_interv;
@@ -1956,10 +1956,10 @@ proc means  noprint data=e; var &v; output out=y_27 mean= &v._27; by run ; where
 * note: it is critical that this starts at year_interv;
 
 
-proc means noprint data=e; var &v; output out=y_3y mean= &v._3y; by run option ; where 2027.5 <= cald < 2030.00;   
-proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2027.5 <= cald < 2037.50;   
-proc means noprint data=e; var &v; output out=y_20y mean= &v._20y; by run option ; where 2027.5 <= cald < 2047.50;   
-proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2027.5 <= cald < 2077.50;   
+proc means noprint data=e; var &v; output out=y_3y mean= &v._3y; by run option ; where 2028   <= cald < 2031.00;   
+proc means noprint data=e; var &v; output out=y_10y mean= &v._10y; by run option ; where 2028   <= cald < 2038.00;   
+proc means noprint data=e; var &v; output out=y_20y mean= &v._20y; by run option ; where 2028   <= cald < 2048.00;   
+proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2028   <= cald < 2078.00;   
 																				   
 proc sort data=y_3y    ; by run; proc transpose data=y_3y  out=t_3y  prefix=&v._3y_  ; var &v._3y    ; by run; 																																																						
 proc sort data=y_10y    ; by run; proc transpose data=y_10y  out=t_10y  prefix=&v._10y_  ; var &v._10y    ; by run; 																																																						
