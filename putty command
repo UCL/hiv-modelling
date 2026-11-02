@@ -1,0 +1,3 @@
+Command to run in Putty: 
+
+qsub -v sas infile="$HOME/hiv_synthesis_alimatravir_reworked.sas" "$HOME/run_alimatravir_cluster_workdir_fix.sh"

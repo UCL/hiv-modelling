@@ -1,8 +1,8 @@
+
+* 2 nov 2026: made prob_prep_xxx_b independent of each other to reflect differing availability of each; 
+* 22nd Oct 2026: decided not to model ami tail initially ;
 * 29th June 2026: adding MK-8527 (_ami = alimatravir, monthly oral mk-8527), removing VR prep ;
 
-* 22nd Oct 2026:
-- decided not to model ami tail initially
-;
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
@@ -15,7 +15,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 1000 ; 
-%let year_interv = 2026.0 ;	
+%let year_interv = 2027.5 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -773,7 +773,7 @@ end;
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
-* prob_prep_any_restart_choice; %sample_uniform(prob_prep_any_restart_choice, 0.05 0.10 0.20);
+* prob_prep_any_restart_choice; %sample_uniform(prob_prep_any_restart_choice, 0.05 0.10 0.20);	** QUERY - make prep-type specific;
 								* dependent_on_time_step_length ;
 * add_prep_any_uptake_sw;		add_prep_any_uptake_sw=0; 		***this may be sampled at a later date; 
 
@@ -820,16 +820,16 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ;
 
 * date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 3000);	* Introduction of injectable cab PrEP ;	* consider len as the only la prep option;
-* date_prep_len_intro;			%sample_uniform(date_prep_len_intro, 2026);	* Introduction of injectable len PrEP ;	* Note for BMGF analysis we will want to sample across (2026, 3000) to introduce ami with and without len;
+* date_prep_len_intro;			%sample(date_prep_len_intro, 2026 3000, 0.3 0.7);	* Introduction of injectable len PrEP ;	* Note for BMGF analysis we will want to sample across (2026, 3000) to introduce ami with and without len;
 * prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
 * prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;						* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;						* Assume 5 years to scale up injectable len prep;
 
-* add_prob_prep_b_cab;			%sample_uniform(add_prob_prep_b_cab, 0.2 0.4 0.6);
-* add_prob_prep_b_len;			add_prob_prep_b_len = add_prob_prep_b_cab;
-* prob_prep_cab_b;				prob_prep_cab_b = prob_prep_oral_b + add_prob_prep_b_cab; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
-* prob_prep_len_b;				prob_prep_len_b = prob_prep_oral_b + add_prob_prep_b_len; * since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
+* prob_prep_cab_b;				%sample_uniform(prob_prep_cab_b, 0.01 0.05 0.1 0.3);  
+* prob_prep_len_b;				%sample_uniform(prob_prep_len_b, 0.01 0.05 0.1 0.3);  
+								* probability of starting cab or len PrEP in people (who are eligible and willing to take the specific prep) 
+								tested for HIV according to the base rate of testing;	
 
 * annual_testing_prep_cab;		annual_testing_prep_cab=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 * annual_testing_prep_len;		annual_testing_prep_len=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -920,9 +920,9 @@ end;
 * m184v mutation selected in presence of alimatravir (same as islatravir);
 * tail after cessation of product is not coded;
 
-* date_prep_ami_intro;			date_prep_ami_intro=2028;		* Introduction of ami PrEP ;
+* date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
 * prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 					* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
-* dur_prep_ami_scaleup;			dur_prep_ami_scaleup=5;										* Assume 5 years to scale up ami PrEP;
+* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3 5);										* Assume 5 years to scale up ami PrEP;
 
 * add_prob_prep_b_ami;			%sample_uniform(add_prob_prep_b_ami, 0.2 0.4 0.6);			* sampled from same distribution as CAB PrEP initially;
 * prob_prep_ami_b;				prob_prep_ami_b = prob_prep_oral_b + add_prob_prep_b_ami;	* probability of starting MK-8527 PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
@@ -8649,7 +8649,7 @@ visit_tm1=visit;
 	e_rt184m_tm2=e_rt184m_tm1;	e_rt184m_tm1=e_rt184m;
 	e_rt65m_tm2=e_rt65m_tm1;	e_rt65m_tm1=e_rt65m;
 	e_rt151m_tm2=e_rt151m_tm1;	e_rt151m_tm1=e_rt151m;
-	e_rt103m_tm2=e_rt103m_tm1;	e_rt103m_tm1=e_rt103m; * lapr - missing 101, 138, 188 from LAI code - do those refer to rilpivirine? same for section below;
+	e_rt103m_tm2=e_rt103m_tm1;	e_rt103m_tm1=e_rt103m;
 	e_rt181m_tm2=e_rt181m_tm1;	e_rt181m_tm1=e_rt181m;
 	e_rt190m_tm2=e_rt190m_tm1;	e_rt190m_tm1=e_rt190m;
 	e_pr32m_tm2=e_pr32m_tm1;	e_pr32m_tm1=e_pr32m;
@@ -8705,10 +8705,10 @@ visit_tm1=visit;
 	while this has never been mentioned as a big problem by clinicians;
 	sx=rand('uniform');
 	if super_infection_pop=1 then do;
-		if super_infection_i=1 and sx < super_inf_res then do;		* lapr - rearranged this section to match order of lists above; * deleted duplicated inpm / insm line; * JAS Nov2021;
+		if super_infection_i=1 and sx < super_inf_res then do;		* deleted duplicated inpm / insm line; * JAS Nov2021;
 			c_rttams= max(c_rttams,tam); 	c_rt184m= max(m184m,c_rt184m);
 			c_rt65m= max(k65m ,c_rt65m); 	c_rt151m= max(q151m,c_rt151m); 
-			c_rt103m=max(k103m,c_rt103m);	c_rt181m=max(y181m,c_rt181m);	c_rt190m=max(g190m,c_rt190m); * lapr - missing 101, 138, 188 from LAI code;
+			c_rt103m=max(k103m,c_rt103m);	c_rt181m=max(y181m,c_rt181m);	c_rt190m=max(g190m,c_rt190m);
 			c_pr32m=max(p32m,c_pr32m);		c_pr33m=max(p33m,c_pr33m);
 			c_pr46m=max(p46m,c_pr46m);		c_pr47m=max(p47m,c_pr47m);
 			c_pr50vm=max(p50vm,c_pr50vm);	c_pr50lm=max(p50lm,c_pr50lm);	c_pr54m=max(p54m,c_pr54m);
@@ -8721,7 +8721,7 @@ visit_tm1=visit;
 			p47m=1 or p50lm=1 or p50vm=1 or p54m=1 or p76m=1 or p82m=1 or p84m=1 or p88m=1 or p90m=1 or in118m=1 or in140m=1 or in148m=1  or in155m=1 or in263m=1
 			or ca66m=1 then  
 			super_i_r=1;
-			if k103m=1 or y181m=1 or g190m=1 then super_nnm=1;   * lapr - missing 101, 138, 188 from LAI code;
+			if k103m=1 or y181m=1 or g190m=1 then super_nnm=1;
 		end;
 	end;
 
@@ -8872,7 +8872,7 @@ if registd=1 and registd_tm1=0 and self_tested=1 then diagnosed_self_test = 1;
 * AP 22-7-19;
 * in pop_wide_tld prep use in person with hiv is set to zero when a person becomes diagnosed with hiv; 
 * note that effect of art is determined by adh when on prep and when diagnosed and so onart, so I think this should be working ok;
-if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_wide_tld_prep = 0; prep_oral = 0; prep_any = 0; end; 	* lapr - add possibility of other prep types here? They should all be set to 0 already ;
+if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_wide_tld_prep = 0; prep_oral = 0; prep_any = 0; end;
 
 
 * AP 21-7-19; * dont stop if have been taking tld prep ;
@@ -8880,8 +8880,7 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 		prep_oral = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; mr_3tc=1; mr_ten=1; toffart=0;
 	end;
 
-	* lapr and dpv-vr;
-	if  prep_cab = 1 and registd=1 and registd_tm1=0  then do; 
+	if  prep_cab = 1 and registd=1 and registd_tm1=0  then do; 			** QUERY do we need the infected_prep_oral=1 bit for cab, len and ami? ;
 		prep_cab = 0; o_cab=0; tss_cab   =0; toffart = 0;mr_cab=1;
 	end;
 	if  prep_len = 1 and registd=1 and registd_tm1=0  then do; 
@@ -16559,7 +16558,7 @@ hiv1_prep_any=0; 	   if hiv=1 and prep_any  =1 then do; hiv1_prep_any=1;  ever_h
 hiv1_prep_oral=0; 	   if hiv=1 and prep_oral =1 then do; hiv1_prep_oral=1; ever_hiv1_prep_oral=1; 	end;
 hiv1_prep_cab =0; 	   if hiv=1 and prep_cab  =1 then do; hiv1_prep_cab =1; ever_hiv1_prep_cab =1; 	end;
 hiv1_prep_len =0; 	   if hiv=1 and prep_len  =1 then do; hiv1_prep_len =1; ever_hiv1_prep_len =1; 	end;
-hiv1_prep_ami  =0; 	   if hiv=1 and prep_vr   =1 then do; hiv1_prep_vr  =1; ever_hiv1_prep_vr  =1; 	end;
+hiv1_prep_ami =0; 	   if hiv=1 and prep_ami  =1 then do; hiv1_prep_ami =1; ever_hiv1_prep_ami =1; 	end;
 
 
 	* Note that several outputs below are specific to oral PrEP and could be replicated for lapr and dpv-vr if needed;

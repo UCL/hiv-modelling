@@ -1,13 +1,14 @@
 
 * 2 nov 2026: made prob_prep_xxx_b independent of each other to reflect differing availability of each; 
+* 22nd Oct 2026: decided not to model ami tail initially ;
+* 29th June 2026: adding MK-8527 (_ami = alimatravir, monthly oral mk-8527), removing VR prep ;
 
- 
 
 /* note changes made so that we specify the variables to be printed only once - search hiv_print_people */
 /* Diagnostic printing: see hiv_print_people, hiv_people_vars, and OUTPUT _hiv_diagnostic_people. */
 
 /* new code added 29 oct 2026 */
-/* ALIMATROVIR REWORKED: performance comparison candidate, 27 October 2026.
+/* ALIMATRAVIR REWORKED: performance comparison candidate, 27 October 2026.
    Based on the saved fixed-seed baseline. Parameter sampling, person transitions
    and scientific feedback rules are preserved. Search AMI-PERF for storage changes.
    The primary export now includes all 54 existing AMI summary measures.
@@ -16,16 +17,12 @@
 */
 %let _ami_reworked_start = %sysfunc(datetime());
 
-* 29th June 2026: adding MK-8527 (_ami = alimatravir, monthly oral mk-8527), removing VR prep ;
 
-* 22nd Oct 2026:
-- decided not to model ami tail initially
-;
 
 * To run from a set time on our laptops, we need to save a dataset locally and comment out the line "libname a "&outputdir/" " below;
 * libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 /*libname a 'C:\Users\rmjlja9\OneDrive - University College London\Alimatravir modelling\model outputs';   */
-  libname a '/home/rmjlaph/Scratch/alimatrovir_2'; 
+  libname a '/home/rmjlaph/Scratch/alimatravir_2'; 
 
 
 %let outputdir = %scan(&sysparm,1," ");
@@ -37,7 +34,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 100000 ; 
-%let year_interv = 2027.5 ;	 * updated 31 oct 2026;
+%let year_interv = 2028 ;	 * updated 31 oct 2026;
 
 /* Fixed base seed for reproducible comparison with the reworked version. */
 * %let _hiv_seed = 12345;
@@ -843,7 +840,7 @@ end;
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
-* prob_prep_any_restart_choice; %sample_uniform(prob_prep_any_restart_choice, 0.05 0.10 0.20);
+* prob_prep_any_restart_choice; %sample_uniform(prob_prep_any_restart_choice, 0.05 0.10 0.20);	** QUERY - make prep-type specific;
 								* dependent_on_time_step_length ;
 * add_prep_any_uptake_sw;		add_prep_any_uptake_sw=0; 		***this may be sampled at a later date; 
 
@@ -896,14 +893,10 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;						* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;						* Assume 5 years to scale up injectable len prep;
 
-* add_prob_prep_b_cab;			* %sample_uniform(add_prob_prep_b_cab, 0.2 0.4 0.6);
-* add_prob_prep_b_len;			* add_prob_prep_b_len = add_prob_prep_b_cab; * QUERY - I think these should be indepdendent for the 4 types of prep;
-* prob_prep_cab_b;				* prob_prep_cab_b = prob_prep_oral_b + add_prob_prep_b_cab; prob_prep_cab_b = %sample_uniform(prob_prep_cab_b, 0.01 0.05  0.1 0.3);  
-																		* probability of starting inj PrEP in people (who are eligible and willing to take inj prep) 
-																		tested for HIV according to the base rate of testing;
-* prob_prep_len_b;				* prob_prep_len_b = prob_prep_oral_b + add_prob_prep_b_len; prob_prep_len_b = %sample_uniform(prob_prep_len_b, 0.01 0.05  0.1  0.3);  
-																		* since we have different preference for oral and inj, dont think we need separate values 
-																		of this for oral and inj ; * but I think we do to distinguish choice from availability;
+* prob_prep_cab_b;				%sample_uniform(prob_prep_cab_b, 0.01 0.05 0.1 0.3);  
+* prob_prep_len_b;				%sample_uniform(prob_prep_len_b, 0.01 0.05 0.1 0.3);  
+								* probability of starting cab or len PrEP in people (who are eligible and willing to take the specific prep) 
+								tested for HIV according to the base rate of testing;	
 
 * annual_testing_prep_cab;		annual_testing_prep_cab=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 * annual_testing_prep_len;		annual_testing_prep_len=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -996,11 +989,10 @@ end;
 
 * date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
 * prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 					* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
-* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3 5);										* Assume 5 years to scale up ami PrEP;
+* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3 5);				* QUERY - may need to vary for analysis;
 
-* add_prob_prep_b_ami;			* %sample_uniform(add_prob_prep_b_ami, 0.2 0.4 0.6);			* sampled from same distribution as CAB PrEP initially;
-* prob_prep_ami_b;				* prob_prep_ami_b = prob_prep_oral_b + add_prob_prep_b_ami; prob_prep_ami_b = %sample_uniform(prob_prep_ami_b, 0.01  0.05  0.1  0.3);  
-																			* probability of starting MK-8527 PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
+* prob_prep_ami_b;				%sample_uniform(prob_prep_ami_b, 0.01 0.05 0.1 0.3);  		* sampled from same distribution as CAB & LEN PrEP initially;
+								* probability of starting ami PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
 
 * annual_testing_prep_ami;		annual_testing_prep_ami=0.25;	* frequency of HIV testing for people on MK-8527 PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 
@@ -2498,7 +2490,7 @@ data r&da1(drop=
     actdur_sw_0to3 actdur_sw_10to19 actdur_sw_3to5 actdur_sw_6to9 actdur_sw_ov20 adc_dead
     adc_proph_adc adc_tcur3m_cd4t0l100 adc_tcur3m_cd4t0l200 adc_tcur6m_cd4t0l100
     adc_tcur6m_cd4t0l200 adclam_measured_this_per_adc add_eff_adh_nnrti add_prep_any_uptake_sw
-    add_prob_prep_b_cab add_prob_prep_b_len adh_effect_of_meas_alert adh_ge80_uvl2 adh_ge80_uvl21
+    adh_effect_of_meas_alert adh_ge80_uvl2 adh_ge80_uvl21
     adh_ge80_uvl22 adh_hi adh_hi_a_zld_if_reg_op_116 adh_hi_m adh_hi_msm adh_hi_w adh_low
     adh_low_m adh_low_msm adh_low_w adh_lt80_tldsw adh_lt80_tldsw1 adh_lt80_tldsw2 adh_lt80_uvl2
     adh_lt80_uvl21 adh_lt80_uvl22 adh_med adh_med_m adh_med_msm adh_med_w adh_pattern
@@ -2792,7 +2784,7 @@ data r&da1(drop=
     rate_choose_stop_prep_len rate_choose_stop_prep_oral rate_choose_stop_prep_ami date_prep_len_intro
     rate_crypm_proph_init rate_disengage_sw_program rate_engage_sw_program
     rate_exp_set_lower_p_vl1000 rate_int_choice rate_lencab_to_tld rate_loss_persistence rate_lost date_prep_len_intro
-	prep_ami_efficacy dur_prep_ami_scaleup add_prob_prep_b_ami annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+	prep_ami_efficacy dur_prep_ami_scaleup annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
 	prep_ami_effect_res_partner prep_ami_adh_uplift
     rate_res_ten rate_restart rate_return rate_return_for_lencab rate_sbi_proph_init
     rate_self_test rate_tb_proph_init rate_test_onprep_any rate_test_startprep_any
@@ -3644,7 +3636,7 @@ length _hiv_fb_index 8;
 
     /* AMI-PERF 04: Read all prior-quarter feedback once. SET retains its fields.
        Snapshot and restore the fields that the scientific update can modify.
-       The audited subset includes all 52 new alimatrovir summary fields because
+       The audited subset includes all 52 new alimatravir summary fields because
        the baseline broadcasts them into the next-quarter person input.
        Its existing broadcast behavior is preserved for this comparison.
     */
@@ -3800,7 +3792,7 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-	set_in_options=0;
+	set_in_options=0;	* QUERY check this ;
 	* note that we can use set_in_options=1 when we want to ensure that parameter values specified in the options section are not overwritten.
 	The variable name can be updated to reflect specific parameters;
 
@@ -6729,7 +6721,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 			end; 
 		end;
 
-		else if prep_len_tm1 = 1 then do; 	* dependent_on_time_step_length;
+		else if prep_len_tm1 = 1 then do; 	* dependent_on_time_step_length;	** QUERY add code to prevent switching or stopping len during 6 months post-injection;
 			if r < (1-eff_rate_choose_stop_prep_len) then do; 			* continue to use PrEP; 
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
 				if highest_prep_pref = 3 then do;						* continue with cab PrEP;
@@ -9155,7 +9147,7 @@ end;
 
 * QUERY - equivalent needed for ami for sections below? ;
 * A: I think we should err on the side of adding this, but we shouldnt spend too much time on this primary infection testing / resistance issue
-as it is not a big deal for alimatrovir I would say;
+as it is not a big deal for alimatravir I would say;
 
 if caldate{t} = prep_cab_first_start_date then prep_cab_init_prim = 1;
 if caldate{t} = prep_cab_restart_date then prep_cab_reinit_prim = 1;
@@ -9894,7 +9886,7 @@ visit_tm1=visit;
 	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+0.25;
 	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
 	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
-	mr_cab_tm1=mr_cab; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
+	mr_cab_tm1=mr_cab; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* JAS Nov2021;
 	mr_len_tm1=mr_len; if tss_len ge 0 and o_len_tm1=0 then tss_len = tss_len+0.25;	
 	mr_ole_tm1=mr_ole; if tss_ole ge 0 and o_ole_tm1=0 then tss_ole = tss_ole+0.25;	
 	mr_isl_tm1=mr_isl; if tss_isl ge 0 and o_isl_tm1=0 then tss_isl = tss_isl+0.25;
@@ -9932,7 +9924,7 @@ visit_tm1=visit;
 	e_rt184m_tm2=e_rt184m_tm1;	e_rt184m_tm1=e_rt184m;
 	e_rt65m_tm2=e_rt65m_tm1;	e_rt65m_tm1=e_rt65m;
 	e_rt151m_tm2=e_rt151m_tm1;	e_rt151m_tm1=e_rt151m;
-	e_rt103m_tm2=e_rt103m_tm1;	e_rt103m_tm1=e_rt103m; * lapr - missing 101, 138, 188 from LAI code - do those refer to rilpivirine? same for section below;
+	e_rt103m_tm2=e_rt103m_tm1;	e_rt103m_tm1=e_rt103m;
 	e_rt181m_tm2=e_rt181m_tm1;	e_rt181m_tm1=e_rt181m;
 	e_rt190m_tm2=e_rt190m_tm1;	e_rt190m_tm1=e_rt190m;
 	e_pr32m_tm2=e_pr32m_tm1;	e_pr32m_tm1=e_pr32m;
@@ -9988,10 +9980,10 @@ visit_tm1=visit;
 	while this has never been mentioned as a big problem by clinicians;
 	sx=rand('uniform');
 	if super_infection_pop=1 then do;
-		if super_infection_i=1 and sx < super_inf_res then do;		* lapr - rearranged this section to match order of lists above; * deleted duplicated inpm / insm line; * JAS Nov2021;
+		if super_infection_i=1 and sx < super_inf_res then do;		* deleted duplicated inpm / insm line; * JAS Nov2021;
 			c_rttams= max(c_rttams,tam); 	c_rt184m= max(m184m,c_rt184m);
 			c_rt65m= max(k65m ,c_rt65m); 	c_rt151m= max(q151m,c_rt151m); 
-			c_rt103m=max(k103m,c_rt103m);	c_rt181m=max(y181m,c_rt181m);	c_rt190m=max(g190m,c_rt190m); * lapr - missing 101, 138, 188 from LAI code;
+			c_rt103m=max(k103m,c_rt103m);	c_rt181m=max(y181m,c_rt181m);	c_rt190m=max(g190m,c_rt190m);
 			c_pr32m=max(p32m,c_pr32m);		c_pr33m=max(p33m,c_pr33m);
 			c_pr46m=max(p46m,c_pr46m);		c_pr47m=max(p47m,c_pr47m);
 			c_pr50vm=max(p50vm,c_pr50vm);	c_pr50lm=max(p50lm,c_pr50lm);	c_pr54m=max(p54m,c_pr54m);
@@ -10004,7 +9996,7 @@ visit_tm1=visit;
 			p47m=1 or p50lm=1 or p50vm=1 or p54m=1 or p76m=1 or p82m=1 or p84m=1 or p88m=1 or p90m=1 or in118m=1 or in140m=1 or in148m=1  or in155m=1 or in263m=1
 			or ca66m=1 then  
 			super_i_r=1;
-			if k103m=1 or y181m=1 or g190m=1 then super_nnm=1;   * lapr - missing 101, 138, 188 from LAI code;
+			if k103m=1 or y181m=1 or g190m=1 then super_nnm=1;
 		end;
 	end;
 
@@ -10155,7 +10147,7 @@ if registd=1 and registd_tm1=0 and self_tested=1 then diagnosed_self_test = 1;
 * AP 22-7-19;
 * in pop_wide_tld prep use in person with hiv is set to zero when a person becomes diagnosed with hiv; 
 * note that effect of art is determined by adh when on prep and when diagnosed and so onart, so I think this should be working ok;
-if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_wide_tld_prep = 0; prep_oral = 0; prep_any = 0; end; 	* lapr - add possibility of other prep types here? They should all be set to 0 already ;
+if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_wide_tld_prep = 0; prep_oral = 0; prep_any = 0; end;
 
 
 * AP 21-7-19; * dont stop if have been taking tld prep ;
@@ -10163,8 +10155,7 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 		prep_oral = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; mr_3tc=1; mr_ten=1; toffart=0;
 	end;
 
-	* lapr and dpv-vr;
-	if  prep_cab = 1 and registd=1 and registd_tm1=0  then do; 
+	if  prep_cab = 1 and registd=1 and registd_tm1=0  then do; 			** QUERY do we need the infected_prep_oral=1 bit for cab, len and ami? ;
 		prep_cab = 0; o_cab=0; tss_cab   =0; toffart = 0;mr_cab=1;
 	end;
 	if  prep_len = 1 and registd=1 and registd_tm1=0  then do; 
@@ -10602,7 +10593,7 @@ end;
 
 * RE-INITIATION OF THERAPY AFTER INTERRUPTING -  restart = 1 means restart at time t;
 
-	e_rate_restart=eff_rate_restart;		* lapr - add rla and cla;
+	e_rate_restart=eff_rate_restart;
 	restart   =0;d=rand('uniform');
 	if t ge 3 and interrupt_choice    = 1 and lost=0 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0 and tcur_tm1=. and interrupt=0 then do;
 
@@ -10764,7 +10755,7 @@ if t ge 2  and interrupt=0 and ((linefail_tm1 =1 and line2=0 and (artline_tm1 =1
 	end;
 
 
-	* restart_pi_after_dtg_fail   -  may18;	* lapr - do we need to consider CAB fail as well? ;
+	* restart_pi_after_dtg_fail   -  may18;
 	if reg_option in (103 104 110 111 114 116 117 118 119 125) and f_dol=1 and o_dol=1 and o_taz ne 1 and o_lpr ne 1 and (p_taz=1 or p_lpr=1) then do;
 		if t ge 2  and interrupt=0 and visit=1 then do;   
 			q=rand('uniform'); if q < e_pr_switch_line then restart_pi_after_dtg_fail=1;
@@ -10781,7 +10772,6 @@ if t ge 2  and interrupt=0 and ((linefail_tm1 =1 and line2=0 and (artline_tm1 =1
 		end;
 
 	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and (f_zdv=1 or f_ten=1)) and (p_lpr ne 1 and p_taz ne 1) then do; 
-	* lapr - consider f_cab? - see reg_option 501 in lai code ;
 		if t ge 2 and linefail_tm1=2 and onart_tm1 =0 and restart   =1 and visit=1 then do;
 			pi_after_dtg_fail=1; start_line3=1;line3=1;
 		end;
@@ -10799,7 +10789,6 @@ if t ge 2  and interrupt=0 and ((linefail_tm1 =1 and line2=0 and (artline_tm1 =1
 
 	if reg_option in (103 104 110 111 114 116 117 118 119 120 121 125) and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
 	restart pi so have added on 104 here, along with 111); 
-		* lapr - does f_dol imply f_cab and vice versa? ;
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
 			if p_taz=1 or p_lpr=1 then restart_pi_after_dtg_fail=1;  if p_taz ne 1 and p_lpr ne 1 then do;pi_after_dtg_fail=1;start_line3=1;line3=1;end;
@@ -11175,7 +11164,7 @@ end;
 
 end;
 
-* restart_pi_after_dtg_fail -  ;  * dec17;		* lapr - updated code for LAI? ;
+* restart_pi_after_dtg_fail -  ;  * dec17;
 
 if restart_pi_after_dtg_fail=1  then do;  
 			restart_pi_after_dtg_fail=.;
@@ -11232,7 +11221,7 @@ if onart ne 1 then onartvisit0=0;
 
 	if t ge 2 and onart=1 and restart   =0 then toffart   =.;
 	
-	if onart=1 then do;	* lapr - add cab;
+	if onart=1 then do;
 		mr_zdv=o_zdv;
 		mr_3tc=o_3tc;
 		mr_ten=o_ten;
@@ -11250,7 +11239,7 @@ if onart ne 1 then onartvisit0=0;
 	end;
 
 
-* if o_drug=1 then p_drug=1 (once p_drug=1 it is updated automatically and never over-written with 0);	* lapr - add cab;
+* if o_drug=1 then p_drug=1 (once p_drug=1 it is updated automatically and never over-written with 0);
 	if o_zdv=1 then p_zdv=1;
 	if o_3tc=1 then p_3tc=1;
 	if o_ten=1 then p_ten=1;
@@ -12443,8 +12432,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 	if t ge 2 then do;
 		newmut_tm1=newmut_tm1*fold_change_mut_risk;
 		* if started_prep_hiv_test_sens and prep_oral=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17; 
-		* dependent_on_time_step_length ;	* lapr define which prep? ; 
-																					* removed becuase not necessarily assuming a 1 month test ;		
+		* dependent_on_time_step_length ;			* removed becuase not necessarily assuming a 1 month test ;		
 		if newmut_tm1 gt 1 then newmut_tm1=1;
 	end;
 
@@ -12560,8 +12548,6 @@ if t ge 2 and d lt newmut_tm1 then do;
 			bx=rand('uniform'); if bx < 0.1 and c_rt103m=0 and c_rt190m=0 then c_rt181m=1;
 			cx=rand('uniform'); if cx < 0.1 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
 		end;
-
-		* lapr - add - o_rla here (from LAI) even though we are not considering RPV for this analysis? ;
 
 
 * pr mutations ;
@@ -13825,9 +13811,8 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 	* date of first having resistance (intermediate or resistant) to at least one drug;
 	if res_drug=. then do;
 		if r_zdv >= 0.5 or  r_3tc  >= 0.5 or  r_dar >= 0.5 or   r_efa >= 0.5 or r_nev >= 0.5 or  
-		r_ten >= 0.5 or  r_lpr ge 0.5 or  r_taz ge 0.5 or  r_dol >= 0.5  or r_cab >= 0.5 or r_len >= 0.5 or r_ole >= 0.5 or r_isl >= 0.5
-		then res_drug=caldate{t};							* lapr - added r_cab JAS Nov2021;
-
+		r_ten >= 0.5 or  r_lpr ge 0.5 or  r_taz ge 0.5 or  r_dol >= 0.5  or r_cab >= 0.5 or r_len >= 0.5 or r_ole >= 0.5 or r_isl >= 0.5 or r_ami >= 0.5
+		then res_drug=caldate{t};							* added r_cab JAS Nov2021;	* added r_ami JAS Nov2026;
 	end;
 
 
@@ -17842,10 +17827,10 @@ hiv1_prep_any=0; 	   if hiv=1 and prep_any  =1 then do; hiv1_prep_any=1;  ever_h
 hiv1_prep_oral=0; 	   if hiv=1 and prep_oral =1 then do; hiv1_prep_oral=1; ever_hiv1_prep_oral=1; 	end;
 hiv1_prep_cab =0; 	   if hiv=1 and prep_cab  =1 then do; hiv1_prep_cab =1; ever_hiv1_prep_cab =1; 	end;
 hiv1_prep_len =0; 	   if hiv=1 and prep_len  =1 then do; hiv1_prep_len =1; ever_hiv1_prep_len =1; 	end;
-hiv1_prep_ami  =0; 	   if hiv=1 and prep_ami   =1 then do; hiv1_prep_ami  =1; ever_hiv1_prep_ami  =1; 	end;
+hiv1_prep_ami =0; 	   if hiv=1 and prep_ami  =1 then do; hiv1_prep_ami =1; ever_hiv1_prep_ami =1; 	end;
 
 
-	* Note that several outputs below are specific to oral PrEP and could be replicated for lapr and dpv-vr if needed;
+	* Note that several outputs below are specific to oral PrEP and could be replicated for cab, len and ami if needed;
 if ever_hiv1_prep_oral=1 then do; 
 cur_res_efa_ever_hiv1_prep =0 ; if cur_res_efa = 1 then cur_res_efa_ever_hiv1_prep =1;
 cur_res_dol_ever_hiv1_prep =0 ; if cur_res_dol = 1 then cur_res_dol_ever_hiv1_prep =1;
@@ -23089,7 +23074,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice date_prep_len_intro rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
-prep_ami_efficacy dur_prep_ami_scaleup add_prob_prep_b_ami annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+prep_ami_efficacy dur_prep_ami_scaleup annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
 prep_ami_effect_res_partner prep_ami_adh_uplift
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
@@ -23105,7 +23090,7 @@ prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 nnrti_res_no_effect
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency ami_higher_potency isl_higher_potency  isl_ole_adh_improve
-prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro cablen_extra_pref  add_prob_prep_b_cab add_prob_prep_b_len
+prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro cablen_extra_pref   
 cab_time_to_lower_threshold_g len_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk    zdv_potency_p75 
 double_rate_gas_tox_taz  
@@ -24465,7 +24450,7 @@ run;
         where libname='WORK' and memname='_HIV_FEEDBACK'
           and upcase(name) not in (
                 'ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ADD_EFF_ADH_NNRTI', 'ADD_PREP_ANY_UPTAKE_SW',
-                'ADD_PROB_PREP_B_CAB', 'ADD_PROB_PREP_B_LEN', 'ADH_EFFECT_OF_MEAS_ALERT', 'ADH_PATTERN',
+                'ADH_EFFECT_OF_MEAS_ALERT', 'ADH_PATTERN',
 				'AMI_HIGHER_POTENCY',
                 'AN_LIN_INCR_TEST', 'ART_INIT_DISRUP_COVID', 'ART_LOW_ADH_DISRUP_COVID',
                 'ART_TLD_DISRUP_COVID', 'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH',
@@ -24541,7 +24526,7 @@ run;
                 'RATE_CHOOSE_STOP_PREP_LEN', 'RATE_CHOOSE_STOP_PREP_ORAL', 'RATE_CHOOSE_STOP_PREP_AMI',
                 'RATE_CRYPM_PROPH_INIT', 'RATE_DISENGAGE_SW_PROGRAM', 'RATE_ENGAGE_SW_PROGRAM',
                 'RATE_EXP_SET_LOWER_P_VL1000', 'RATE_INT_CHOICE', 'RATE_LENCAB_TO_TLD','DATE_PREP_LEN_INTRO',
-				'PREP_AMI_EFFICACY', 'DUR_PREP_AMI_SCALEUP', 'ADD_PROB_PREP_B_AMI',
+				'PREP_AMI_EFFICACY', 'DUR_PREP_AMI_SCALEUP',
                 'ANNUAL_TESTING_PREP_AMI', 'RATE_CHOOSE_STOP_PREP_AMI', 'ADD_PREF_PREP_AMI',
                 'PREF_PREP_AMI_BETA_S1', 'PREP_AMI_EFFECT_RES_PARTNER', 'PREP_AMI_ADH_UPLIFT',
                 'RATE_LOSS_PERSISTENCE', 'RATE_LOST', 'RATE_RES_TEN', 'RATE_RESTART', 'RATE_RETURN',
@@ -24646,7 +24631,7 @@ run;
         %put ERROR: Unexpected fields=&_ami_fb_unexpected overlapping person fields=&_ami_fb_overlap.;
         %abort cancel;
     %end;
-    %put NOTE: ALIMATROVIR_FEEDBACK_CACHE numeric=&_ami_fb_numeric_count character=&_ami_fb_character_count;
+    %put NOTE: ALIMATRAVIR_FEEDBACK_CACHE numeric=&_ami_fb_numeric_count character=&_ami_fb_character_count;
 %end;
 
 /* AMI-PERF 09: Hand over the compact population without another copy/merge. */
@@ -25807,7 +25792,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice date_prep_len_intro 
-prep_ami_efficacy dur_prep_ami_scaleup add_prob_prep_b_ami annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+prep_ami_efficacy dur_prep_ami_scaleup annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
 prep_ami_effect_res_partner prep_ami_adh_uplift
 rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
@@ -25824,7 +25809,7 @@ prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 nnrti_res_no_effect
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency ami_higher_potency isl_higher_potency  isl_ole_adh_improve
-prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro cablen_extra_pref  add_prob_prep_b_cab add_prob_prep_b_len
+prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro cablen_extra_pref 
 cab_time_to_lower_threshold_g len_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk    zdv_potency_p75 
 double_rate_gas_tox_taz  
@@ -25978,7 +25963,7 @@ cab_res_emerge_primary			Is in primary infection and insti resistance emerged in
 %let _ami_reworked_elapsed =
     %sysevalf(%sysfunc(datetime()) - &_ami_reworked_start);
 
-%put NOTE: ALIMATROVIR_REWORKED_MODEL_SECONDS=&_ami_reworked_elapsed;
+%put NOTE: ALIMATRAVIR_REWORKED_MODEL_SECONDS=&_ami_reworked_elapsed;
 
 %macro _ami_check_run_status;
 

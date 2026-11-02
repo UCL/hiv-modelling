@@ -10,7 +10,7 @@
 #$ -wd /home/rmjlaph/Scratch
 #$ -o /dev/null
 #$ -e /dev/null
-#$ -l tmpfs=100G
+#$ -l tmpfs=200G
 
 # Updated 30 October 2026 after the WORK-space failure in task 22697.9.
 # For the first full-population test, change the array line above to: #$ -t 1-1
