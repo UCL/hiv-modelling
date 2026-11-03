@@ -6905,7 +6905,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 			if r < (1-eff_rate_choose_stop_prep_len) then do; 			* continue to use PrEP; 
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
 				if highest_prep_pref = 3 then do;						* continue with cab PrEP;
-					prep_len=1;		continuous_prep_len_use = continuous_prep_cab_use + 0.25; 					
+					prep_len=1;		continuous_prep_len_use = continuous_prep_len_use + 0.25; 					
 				end;	
 				if highest_prep_pref = 1 then do;						* switch to oral PrEP;
 					switch_prep_from_len=1;	 	switch_prep_to_oral=1;	continuous_prep_len_use=0;
