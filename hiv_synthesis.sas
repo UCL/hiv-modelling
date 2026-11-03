@@ -7366,7 +7366,7 @@ if t ge 2 and pwid=1 and b < risk_pwid_share_hiv then do;
 		end;
 		if prep_len   =1 then do; 	* lapr and dpv-vr;
 			if gender =2 then gender_spec_prep_len_eff = prep_len_efficacy; if gender =1 then gender_spec_prep_len_eff = prep_len_efficacy**2;
-			risk_eip = risk_eip * (1-gender_spec_prep_len_eff); 
+			risk_pwid = risk_pwid * (1-gender_spec_prep_len_eff); 
 			if ca66m_p = 1 then risk_pwid = risk_pwid * (1 - (prep_len_effect_cam_partner * gender_spec_prep_len_eff));
 		end;
 
