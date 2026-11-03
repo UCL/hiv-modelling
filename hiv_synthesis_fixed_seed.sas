@@ -8224,29 +8224,40 @@ if t ge 2 then do;
 			if prep_len_tm1=1 and prep_len=1 then eff_sens_primary = 0; 	* if prep_len_tm1 ne 1 then it may be that prep_len not yet started ;
 		end;
 
-	*PCR (RNA VL);
-	if hivtest_type=1 or (prep_cab=1 and (prep_cab_restart_date = caldate{t} or prep_cab_first_start_date = caldate{t}) and hivtest_type_1_init_prep_cab=1) 
-		or (prep_cab=1 and hivtest_type_1_prep_cab=1) then do;
-			sens_primary=0.86;
-			eff_sens_primary = sens_primary; if prep_cab_tm1=1 and prep_cab=1 then eff_sens_primary = sens_ttype1_prep_cab_primary;
-		end;
-	if hivtest_type=1 or (prep_len=1 and (prep_len_restart_date = caldate{t} or prep_len_first_start_date = caldate{t}) and hivtest_type_1_init_prep_len=1) 
-		or (prep_len=1 and hivtest_type_1_prep_len=1) then do;
-			sens_primary=0.86;
-			eff_sens_primary = sens_primary; if prep_len_tm1=1 and prep_len=1 then eff_sens_primary = sens_ttype1_prep_len_primary;
-		end;
+* PCR (RNA VL);
+	if hivtest_type=1
+		or (prep_cab=1
+			and (prep_cab_restart_date=caldate{t}
+				or prep_cab_first_start_date=caldate{t})
+			and hivtest_type_1_init_prep_cab=1)
+		or (prep_cab=1 and hivtest_type_1_prep_cab=1)
+		or (prep_len=1
+			and (prep_len_restart_date=caldate{t}
+				or prep_len_first_start_date=caldate{t})
+			and hivtest_type_1_init_prep_len=1)
+		or (prep_len=1 and hivtest_type_1_prep_len=1)
+	then do;
+		sens_primary=0.86;
+		eff_sens_primary=sens_primary;
 
-	*3rd gen (Ab); * note that sens_ttype3_prep_cab_primary = sens_ttype3_prep_len_primary;
-	if hivtest_type=3 and (prep_cab ne 1 or hivtest_type_1_init_prep_cab ne 1) 
-		then do;
-			sens_primary=sens_primary_testtype3; 
-			eff_sens_primary = sens_primary; if (prep_cab_tm1=1 and prep_cab=1) or (pop_wide_tld_prep=1) then eff_sens_primary = sens_ttype3_prep_cab_primary ;
-		end;
-	if hivtest_type=3 and (prep_len ne 1 or hivtest_type_1_init_prep_len ne 1) 
-		then do;
-			sens_primary=sens_primary_testtype3; 
-			eff_sens_primary = sens_primary; if (prep_len_tm1=1 and prep_len=1) or (pop_wide_tld_prep=1) then eff_sens_primary = sens_ttype3_prep_len_primary ;
-		end;
+		if prep_cab_tm1=1 and prep_cab=1 then
+			eff_sens_primary=sens_ttype1_prep_cab_primary;
+
+		if prep_len_tm1=1 and prep_len=1 then
+			eff_sens_primary=sens_ttype1_prep_len_primary;
+	end;
+
+	* 3rd gen (Ab);
+	else if hivtest_type=3 then do;
+		sens_primary=sens_primary_testtype3;
+		eff_sens_primary=sens_primary;
+
+		if (prep_cab_tm1=1 and prep_cab=1) or pop_wide_tld_prep=1 then
+			eff_sens_primary=sens_ttype3_prep_cab_primary;
+
+		if (prep_len_tm1=1 and prep_len=1) or pop_wide_tld_prep=1 then
+			eff_sens_primary=sens_ttype3_prep_len_primary;
+	end;
 
 	u=rand('uniform');
 
