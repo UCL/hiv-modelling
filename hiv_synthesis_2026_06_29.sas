@@ -1,11 +1,12 @@
 
+* 3 nov 2026: removed set_in_options in code;
 * 2 nov 2026: made prob_prep_xxx_b independent of each other to reflect differing availability of each; 
 * 22nd Oct 2026: decided not to model ami tail initially ;
 * 29th June 2026: adding MK-8527 (_ami = alimatravir, monthly oral mk-8527), removing VR prep ;
 
 
-*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
-
+* libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
+/*libname a 'C:\Users\rmjlja9\OneDrive - University College London\Alimatravir modelling\model outputs';   */
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
@@ -15,7 +16,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
 %let population = 1000 ; 
-%let year_interv = 2027.5 ;	
+%let year_interv = 2028 ;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -916,16 +917,16 @@ end;
 
 
 
-* MK-8527 PrEP;	*ami = alimatravir, monthly oral MK-8527 PrEP ;
+* MONTHLY ORAL MK-8527 PrEP;	*ami = alimatravir ;
 * m184v mutation selected in presence of alimatravir (same as islatravir);
 * tail after cessation of product is not coded;
 
 * date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
 * prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 					* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
-* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3 5);										* Assume 5 years to scale up ami PrEP;
+* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3 5);				* QUERY - may need to vary for analysis;
 
-* add_prob_prep_b_ami;			%sample_uniform(add_prob_prep_b_ami, 0.2 0.4 0.6);			* sampled from same distribution as CAB PrEP initially;
-* prob_prep_ami_b;				prob_prep_ami_b = prob_prep_oral_b + add_prob_prep_b_ami;	* probability of starting MK-8527 PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
+* prob_prep_ami_b;				%sample_uniform(prob_prep_ami_b, 0.01 0.05 0.1 0.3);  		* sampled from same distribution as CAB & LEN PrEP initially;
+								* probability of starting ami PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
 
 * annual_testing_prep_ami;		annual_testing_prep_ami=0.25;	* frequency of HIV testing for people on MK-8527 PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 
@@ -934,8 +935,8 @@ end;
 
 * add_pref_prep_ami;			%sample_uniform(add_pref_prep_ami, 0.1 0.2 0.3);
 * pref_prep_ami_beta_s1;		pref_prep_ami_beta_s1 = pref_prep_oral_beta_s1 + add_pref_prep_ami ; 		* assume ami is more preferable than daily oral pill;
-* prep_ami_effect_res_partner;	prep_ami_effect_res_partner=0;												* 0 = no effect. Initially no impact of resistant virus in partner on ami PrEP efficacy;	
-																											* QUERY - could sample this (cab and len use rel effect 0, 0.25, 0.5);
+* prep_ami_effect_res_partner;	prep_ami_effect_res_partner=1;												* Relative effect, 1 = no effect. Initially no impact of resistant virus in partner on ami PrEP efficacy;	
+																											* Note could sample this (cab and len use rel effect 0, 0.25, 0.5);
 * prep_ami_adh_uplift;			%sample_uniform(prep_ami_adh_uplift, 0.6 0.8 1);							* Additional adherence of ami compared to oral PrEP (relative increase between adh and 1);
 
 
@@ -2514,16 +2515,15 @@ if caldate_never_dot >= &year_interv then do;
 who may be dead and hence have caldate{t} missing;
 
 	set_in_options=0;
-	* note that we can use set_in_options=1 when we want to ensure that parameter values specified in the options section are not overwritten.
-	The variable name can be updated to reflect specific parameters;
-
+	* note that we can use set_in_options=1 to ensure that the parameter values specified in the options section are not overwritten later in the code.
+	User must check through code for instances of options parameters being updated after the options section.
+	The set_in_options variable name can be adjusted to reflect specific parameters;
 
  	*Option 0 is continuation at current rates - status quo;
 
- 
  	*Option 1;
 	if option = 1 then do;
-												 
+		date_prep_ami_intro=2028;										 
 	end;
  
 end;
@@ -2748,7 +2748,7 @@ vm_format=2  whb     lab
 vm_format=3  plasma  poc 
 vm_format=4  whb     poc 
 ; 
-		if set_in_options ne 1 then art_monitoring_strategy = 150; 
+		art_monitoring_strategy = 150; 
 		vm_format=2; ***measuring vl using whole blood dbs;   
 		vl_threshold=1000;
 		time_of_first_vm = 0.5;
@@ -2934,7 +2934,7 @@ end;
 
 * Switching on population-wide TLD intervention (pop_wide_tld_year_i);	
 if pop_wide_tld_year_i = 1 then do;
-	pop_wide_tld = 1; if set_in_options ne 1 then prep_any_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
+	pop_wide_tld = 1; prep_any_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
 	higher_future_prep_oral_cov = 0;  * this is instead of current type of prep program;
 end;
 
@@ -2965,7 +2965,7 @@ end;
 if absence_cd4_year_i ne 1 and absence_vl_year_i =  1 then do;
 	art_monitoring_strategy=1; *Clinical monitoring alone;
 end;
-if absence_vl_year_i ne 1 and set_in_options ne 1 then do;
+if absence_vl_year_i ne 1 then do;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121 125 130) then art_monitoring_strategy=150;  
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
@@ -5446,7 +5446,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 			end; 
 		end;
 
-		else if prep_len_tm1 = 1 then do; 	* dependent_on_time_step_length;
+		else if prep_len_tm1 = 1 then do; 	* dependent_on_time_step_length;	** QUERY add code to prevent switching or stopping len during 6 months post-injection;
 			if r < (1-eff_rate_choose_stop_prep_len) then do; 			* continue to use PrEP; 
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
 				if highest_prep_pref = 3 then do;						* continue with cab PrEP;
@@ -5773,7 +5773,7 @@ end;
 *Adherence to oral PrEP - modified Jan2017 f_prep;
 * this will not apply to cab or len - the efficacy and risk of resistance will be fixed, and efficacy will drop / resistance risk increase in the period after stopping; 
 if (prep_oral = 1 or prep_ami=1) and registd ne 1 then do;		* ami prep added JAS Oct2026;
-	adh=adhav_prep_oral + adhvar*normal(0);  
+	adh=adhav_prep_oral + adhvar*rand('normal');
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
 	if age < 25 then do;		* JAS Apr2021 ;
@@ -6710,7 +6710,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		end;
 		if prep_ami   =1 then do;
 			if m184m_p >= 1 then 
-				risk_nip = risk_nip * (1 - (adh * (1 - prep_ami_effect_res_partner) * prep_ami_efficacy));		* QUERY - redefine 0/1 for prep_ami_effect_res_partner? ;
+				risk_nip = risk_nip * (1 - (adh * prep_ami_effect_res_partner * prep_ami_efficacy));
 			else
 				risk_nip = risk_nip * (1 - (adh * prep_ami_efficacy));
 		end;
@@ -7545,7 +7545,7 @@ if hiv=1 then do;
 		if p88m = 1 then do; u=rand('uniform'); if u < 0.5 then p88m=0; end;
 		if p90m = 1 then do; u=rand('uniform'); if u < 0.5 then p90m=0; end;
 
-		if prep_cab ne 10 then do;			* QUERY - added prep_cab here;
+		if prep_cab ne 1 then do;			* QUERY - added prep_cab here;
 			if in118m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in118m=0; end; 
 			if in140m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in140m=0; end; 
 			if in148m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in148m=0; end; 
@@ -7870,10 +7870,7 @@ if prep_len=1 or caldate{t} = prep_len_last_stop_date then do;
 end;
 
 
-* QUERY - equivalent needed for ami for sections below? ;
-* A: I think we should err on the side of adding this, but we shouldnt spend too much time on this primary infection testing / resistance issue
-as it is not a big deal for alimatrovir I would say;
-
+* QUERY - this section below not yet added for ami. Perhaps not necessary;
 if caldate{t} = prep_cab_first_start_date then prep_cab_init_prim = 1;
 if caldate{t} = prep_cab_restart_date then prep_cab_reinit_prim = 1;
 if prep_cab_init_prim=1 and em_inm_res_o_cab_off_3m=1 then prep_cab_init_prim_res=1;
@@ -8611,7 +8608,7 @@ visit_tm1=visit;
 	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+0.25;
 	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
 	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
-	mr_cab_tm1=mr_cab; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
+	mr_cab_tm1=mr_cab; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* JAS Nov2021;
 	mr_len_tm1=mr_len; if tss_len ge 0 and o_len_tm1=0 then tss_len = tss_len+0.25;	
 	mr_ole_tm1=mr_ole; if tss_ole ge 0 and o_ole_tm1=0 then tss_ole = tss_ole+0.25;	
 	mr_isl_tm1=mr_isl; if tss_isl ge 0 and o_isl_tm1=0 then tss_isl = tss_isl+0.25;
@@ -9318,7 +9315,7 @@ end;
 
 * RE-INITIATION OF THERAPY AFTER INTERRUPTING -  restart = 1 means restart at time t;
 
-	e_rate_restart=eff_rate_restart;		* lapr - add rla and cla;
+	e_rate_restart=eff_rate_restart;
 	restart   =0;d=rand('uniform');
 	if t ge 3 and interrupt_choice    = 1 and lost=0 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0 and tcur_tm1=. and interrupt=0 then do;
 
@@ -9480,7 +9477,7 @@ if t ge 2  and interrupt=0 and ((linefail_tm1 =1 and line2=0 and (artline_tm1 =1
 	end;
 
 
-	* restart_pi_after_dtg_fail   -  may18;	* lapr - do we need to consider CAB fail as well? ;
+	* restart_pi_after_dtg_fail   -  may18;
 	if reg_option in (103 104 110 111 114 116 117 118 119 125) and f_dol=1 and o_dol=1 and o_taz ne 1 and o_lpr ne 1 and (p_taz=1 or p_lpr=1) then do;
 		if t ge 2  and interrupt=0 and visit=1 then do;   
 			q=rand('uniform'); if q < e_pr_switch_line then restart_pi_after_dtg_fail=1;
@@ -9497,7 +9494,6 @@ if t ge 2  and interrupt=0 and ((linefail_tm1 =1 and line2=0 and (artline_tm1 =1
 		end;
 
 	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and (f_zdv=1 or f_ten=1)) and (p_lpr ne 1 and p_taz ne 1) then do; 
-	* lapr - consider f_cab? - see reg_option 501 in lai code ;
 		if t ge 2 and linefail_tm1=2 and onart_tm1 =0 and restart   =1 and visit=1 then do;
 			pi_after_dtg_fail=1; start_line3=1;line3=1;
 		end;
@@ -9515,7 +9511,6 @@ if t ge 2  and interrupt=0 and ((linefail_tm1 =1 and line2=0 and (artline_tm1 =1
 
 	if reg_option in (103 104 110 111 114 116 117 118 119 120 121 125) and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
 	restart pi so have added on 104 here, along with 111); 
-		* lapr - does f_dol imply f_cab and vice versa? ;
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
 			if p_taz=1 or p_lpr=1 then restart_pi_after_dtg_fail=1;  if p_taz ne 1 and p_lpr ne 1 then do;pi_after_dtg_fail=1;start_line3=1;line3=1;end;
@@ -9891,7 +9886,7 @@ end;
 
 end;
 
-* restart_pi_after_dtg_fail -  ;  * dec17;		* lapr - updated code for LAI? ;
+* restart_pi_after_dtg_fail -  ;  * dec17;
 
 if restart_pi_after_dtg_fail=1  then do;  
 			restart_pi_after_dtg_fail=.;
@@ -9948,7 +9943,7 @@ if onart ne 1 then onartvisit0=0;
 
 	if t ge 2 and onart=1 and restart   =0 then toffart   =.;
 	
-	if onart=1 then do;	* lapr - add cab;
+	if onart=1 then do;
 		mr_zdv=o_zdv;
 		mr_3tc=o_3tc;
 		mr_ten=o_ten;
@@ -9966,7 +9961,7 @@ if onart ne 1 then onartvisit0=0;
 	end;
 
 
-* if o_drug=1 then p_drug=1 (once p_drug=1 it is updated automatically and never over-written with 0);	* lapr - add cab;
+* if o_drug=1 then p_drug=1 (once p_drug=1 it is updated automatically and never over-written with 0);
 	if o_zdv=1 then p_zdv=1;
 	if o_3tc=1 then p_3tc=1;
 	if o_ten=1 then p_ten=1;
@@ -11159,8 +11154,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 	if t ge 2 then do;
 		newmut_tm1=newmut_tm1*fold_change_mut_risk;
 		* if started_prep_hiv_test_sens and prep_oral=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17; 
-		* dependent_on_time_step_length ;	* lapr define which prep? ; 
-																					* removed becuase not necessarily assuming a 1 month test ;		
+		* dependent_on_time_step_length ;			* removed becuase not necessarily assuming a 1 month test ;		
 		if newmut_tm1 gt 1 then newmut_tm1=1;
 	end;
 
@@ -11276,8 +11270,6 @@ if t ge 2 and d lt newmut_tm1 then do;
 			bx=rand('uniform'); if bx < 0.1 and c_rt103m=0 and c_rt190m=0 then c_rt181m=1;
 			cx=rand('uniform'); if cx < 0.1 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
 		end;
-
-		* lapr - add - o_rla here (from LAI) even though we are not considering RPV for this analysis? ;
 
 
 * pr mutations ;
@@ -12541,9 +12533,8 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 	* date of first having resistance (intermediate or resistant) to at least one drug;
 	if res_drug=. then do;
 		if r_zdv >= 0.5 or  r_3tc  >= 0.5 or  r_dar >= 0.5 or   r_efa >= 0.5 or r_nev >= 0.5 or  
-		r_ten >= 0.5 or  r_lpr ge 0.5 or  r_taz ge 0.5 or  r_dol >= 0.5  or r_cab >= 0.5 or r_len >= 0.5 or r_ole >= 0.5 or r_isl >= 0.5
-		then res_drug=caldate{t};							* lapr - added r_cab JAS Nov2021;
-
+		r_ten >= 0.5 or  r_lpr ge 0.5 or  r_taz ge 0.5 or  r_dol >= 0.5  or r_cab >= 0.5 or r_len >= 0.5 or r_ole >= 0.5 or r_isl >= 0.5 or r_ami >= 0.5
+		then res_drug=caldate{t};							* added r_cab JAS Nov2021;	* added r_ami JAS Nov2026;
 	end;
 
 
@@ -16561,7 +16552,7 @@ hiv1_prep_len =0; 	   if hiv=1 and prep_len  =1 then do; hiv1_prep_len =1; ever_
 hiv1_prep_ami =0; 	   if hiv=1 and prep_ami  =1 then do; hiv1_prep_ami =1; ever_hiv1_prep_ami =1; 	end;
 
 
-	* Note that several outputs below are specific to oral PrEP and could be replicated for lapr and dpv-vr if needed;
+	* Note that several outputs below are specific to oral PrEP and could be replicated for cab, len and ami if needed;
 if ever_hiv1_prep_oral=1 then do; 
 cur_res_efa_ever_hiv1_prep =0 ; if cur_res_efa = 1 then cur_res_efa_ever_hiv1_prep =1;
 cur_res_dol_ever_hiv1_prep =0 ; if cur_res_dol = 1 then cur_res_dol_ever_hiv1_prep =1;
@@ -19452,7 +19443,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_infected_prep_oral + infected_prep_oral ; s_infected_prep_cab + infected_prep_cab ; 		s_infected_prep_len + infected_prep_len ; s_infected_prep_ami + infected_prep_ami ;
 	s_primary_prep_oral + primary_prep_oral; 	s_primary_prep_cab  + primary_prep_cab ; 		s_primary_prep_len  + primary_prep_len ;  s_primary_prep_ami  + primary_prep_ami ;  
 
-	s_hiv1_prep_oral + hiv1_prep_oral ; s_prim_r_prep + prim_r_prep ; 		s_ever_prim_nor_prep + ever_prim_nor_prep ;   s_ever_prim_tdr_prep + ever_prim_tdr_prep;
+	s_prim_r_prep + prim_r_prep ; 		s_ever_prim_nor_prep + ever_prim_nor_prep ;   s_ever_prim_tdr_prep + ever_prim_tdr_prep;
 	s_rt65m_3_prep + rt65m_3_prep ; 	s_rt184m_3_prep + rt184m_3_prep ; 	s_rtm_3_prep + rtm_3_prep ; 
 	s_rt65m_6_prep + rt65m_6_prep ; 	s_rt184m_6_prep + rt184m_6_prep ; 	s_rtm_6_prep + rtm_6_prep ; 
 	s_rt65m_9_prep + rt65m_9_prep ; 	s_rt184m_9_prep + rt184m_9_prep ; 	s_rtm_9_prep + rtm_9_prep ; 	
@@ -19538,14 +19529,17 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_newp_tp_hivneg_age1524w_prep + newp_tp_hivneg_age1524w_prep ;   s_newp_this_per_hivneg_sw_prep + newp_this_per_hivneg_sw_prep;
 	s_pep_not_prep + pep_not_prep; s_pop_wide_tld_as_art + pop_wide_tld_as_art ;
  
-	s_tested_prep_oral_start + tested_prep_oral_start ; s_tested_prep_cab_start + tested_prep_cab_start ;  s_tested_prep_len_start + tested_prep_len_start ;   s_tested_prep_ami_start  + tested_prep_ami_start  ;  
+	s_tested_prep_oral_start + tested_prep_oral_start ; s_tested_prep_cab_start + tested_prep_cab_start ;  
+	s_tested_prep_len_start + tested_prep_len_start ;   s_tested_prep_ami_start  + tested_prep_ami_start  ;  
 	s_prep_oral_ever + prep_oral_ever ; s_prep_cab_ever + prep_cab_ever ;  s_prep_len_ever + prep_len_ever ; s_prep_ami_ever + prep_ami_ever ; 
 	s_last_prep_used + last_prep_used ; 
 	s_stop_prep_any_choice + stop_prep_any_choice ; 
-	s_stop_prep_oral_choice + stop_prep_oral_choice ; s_stop_prep_cab_choice + stop_prep_cab_choice;s_stop_prep_len_choice + stop_prep_len_choice; s_stop_prep_ami_choice + stop_prep_ami_choice; 
-	s_stop_prep_oral_elig + stop_prep_oral_elig ; s_stop_prep_cab_elig + stop_prep_cab_elig ;  s_stop_prep_len_elig + stop_prep_len_elig ; s_stop_prep_ami_elig + stop_prep_ami_elig ;
+	s_stop_prep_oral_choice + stop_prep_oral_choice ; s_stop_prep_cab_choice + stop_prep_cab_choice;
+	s_stop_prep_len_choice + stop_prep_len_choice; s_stop_prep_ami_choice + stop_prep_ami_choice; 
+	s_stop_prep_oral_elig + stop_prep_oral_elig ; s_stop_prep_cab_elig + stop_prep_cab_elig ;  
+	s_stop_prep_len_elig + stop_prep_len_elig ; s_stop_prep_ami_elig + stop_prep_ami_elig ;
 	s_stop_prep_any_elig + stop_prep_any_elig; 	
-	s_prep_oral_willing + prep_oral_willing ;s_prep_cab_willing + prep_cab_willing ; s_prep_len_willing + prep_len_willing ; s_prep_ami_willing + prep_ami_willing ;  
+	s_prep_oral_willing + prep_oral_willing ; s_prep_cab_willing + prep_cab_willing ; s_prep_len_willing + prep_len_willing ; s_prep_ami_willing + prep_ami_willing ;  
 	s_cab_res_o_cab + cab_res_o_cab ; s_cab_res_tail + cab_res_tail ; s_len_res_o_len + len_res_o_len ; s_len_res_tail + len_res_tail ;
 	s_cab_res_primary + cab_res_primary; s_currently_in_prep_cab_tail + currently_in_prep_cab_tail; s_prep_cab_ever_hiv + prep_cab_ever_hiv ;
 	s_len_res_primary + len_res_primary; s_currently_in_prep_len_tail + currently_in_prep_len_tail; s_prep_len_ever_hiv + prep_len_ever_hiv ;
@@ -19553,14 +19547,15 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_hiv_cab_3m + hiv_cab_3m ; s_hiv_cab_6m + hiv_cab_6m ; s_hiv_cab_9m + hiv_cab_9m ;  s_hiv_cab_ge12m + hiv_cab_ge12m;
 	s_hiv_len_3m + hiv_len_3m ; s_hiv_len_6m + hiv_len_6m ; s_hiv_len_9m + hiv_len_9m ;  s_hiv_len_ge12m + hiv_len_ge12m;
-	s_switch_prep_from_oral + switch_prep_from_oral; s_switch_prep_from_cab + switch_prep_from_cab; s_switch_prep_from_len + switch_prep_from_len;  s_switch_prep_from_ami  + switch_prep_from_ami ; 
-	s_switch_prep_to_oral + switch_prep_to_oral; s_switch_prep_to_cab + switch_prep_to_cab;s_switch_prep_to_len + switch_prep_to_len; s_switch_prep_to_ami  + switch_prep_to_ami ; 
-	s_hiv1_prep_any + hiv1_prep_any; s_cur_in_prep_cab_tail_hiv + cur_in_prep_cab_tail_hiv ; s_hiv1_prep_cab + hiv1_prep_cab;
- 	s_cur_in_prep_len_tail_hiv + cur_in_prep_len_tail_hiv ; s_hiv1_prep_len + hiv1_prep_len; s_hiv1_prep_ami  + hiv1_prep_ami ;
-	s_cur_in_prep_cab_tail_no_r + cur_in_prep_cab_tail_no_r ;  s_prep_o_cab_off_3m_prim + prep_o_cab_off_3m_prim ;
-	s_cur_in_prep_len_tail_no_r + cur_in_prep_len_tail_no_r ;  s_prep_o_len_off_3m_prim + prep_o_len_off_3m_prim ;
-	s_prep_primary_prevented + prep_primary_prevented; s_prep_cab_init_prim + prep_cab_init_prim; s_prep_cab_init_prim_res + prep_cab_init_prim_res; 
-	s_prep_len_init_prim + prep_len_init_prim; s_prep_len_init_prim_res + prep_len_init_prim_res; 
+	s_switch_prep_from_oral + switch_prep_from_oral ; s_switch_prep_from_cab + switch_prep_from_cab ; s_switch_prep_from_len + switch_prep_from_len ; s_switch_prep_from_ami  + switch_prep_from_ami ; 
+	s_switch_prep_to_oral + switch_prep_to_oral ; s_switch_prep_to_cab + switch_prep_to_cab ; s_switch_prep_to_len + switch_prep_to_len ; s_switch_prep_to_ami + switch_prep_to_ami ; 
+	s_hiv1_prep_any + hiv1_prep_any ; s_hiv1_prep_oral + hiv1_prep_oral ; s_hiv1_prep_cab + hiv1_prep_cab ; s_hiv1_prep_len + hiv1_prep_len ; s_hiv1_prep_ami  + hiv1_prep_ami ;
+ 	s_cur_in_prep_cab_tail_hiv + cur_in_prep_cab_tail_hiv ;		s_cur_in_prep_len_tail_hiv + cur_in_prep_len_tail_hiv ; 
+	s_cur_in_prep_cab_tail_no_r + cur_in_prep_cab_tail_no_r ;	s_cur_in_prep_len_tail_no_r + cur_in_prep_len_tail_no_r ;
+	s_prep_o_cab_off_3m_prim + prep_o_cab_off_3m_prim ;			s_prep_o_len_off_3m_prim + prep_o_len_off_3m_prim ;
+	s_prep_primary_prevented + prep_primary_prevented; 
+	s_prep_cab_init_prim + prep_cab_init_prim; 					s_prep_len_init_prim + prep_len_init_prim; 
+	s_prep_cab_init_prim_res + prep_cab_init_prim_res; 			s_prep_len_init_prim_res + prep_len_init_prim_res; 
 	s_prep_cab_reinit_prim + prep_cab_reinit_prim; s_prep_cab_reinit_prim_res + prep_cab_reinit_prim_res; 
 	s_prep_len_reinit_prim + prep_len_reinit_prim; s_prep_len_reinit_prim_res + prep_len_reinit_prim_res; 
 	s_cur_in_prep_cab_tail_prim + cur_in_prep_cab_tail_prim ; s_cur_in_prep_len_tail_prim + cur_in_prep_len_tail_prim ; 
@@ -21183,9 +21178,9 @@ s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
 s_onprep_3  s_onprep_6  s_onprep_9  s_onprep_12  s_onprep_18  
 
-s_prep_any_start s_prep_oral_start s_prep_cab_start s_prep_len_start  s_prep_ami_start  
-s_ever_stopped_prep_oral_choice  s_preprestart 
-s_prep_oral_restart	s_prep_cab_restart s_prep_len_restart  s_prep_ami_restart 
+s_prep_any_start	s_prep_oral_start	s_prep_cab_start	s_prep_len_start	s_prep_ami_start  
+s_preprestart		s_prep_oral_restart	s_prep_cab_restart s_prep_len_restart	s_prep_ami_restart 
+s_ever_stopped_prep_oral_choice   
 s_age_prepstart
 
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
@@ -21202,7 +21197,6 @@ s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_eve
 s_prep_cab_ever_1524w   s_prep_cab_ever_sw  s_prep_cab_ever_sdc		s_prep_cab_ever_plw 
 s_prep_len_ever_1524w   s_prep_len_ever_sw  s_prep_len_ever_sdc		s_prep_len_ever_plw 
 s_prep_ami_ever_1524w   s_prep_ami_ever_sw 	s_prep_ami_ever_sdc		s_prep_ami_ever_plw
-
 
 s_agyw_pg 				s_agyw_plw 
 s_prep_any_agyw_pg		s_prep_oral_agyw_pg		s_prep_cab_agyw_pg		s_prep_len_agyw_pg 		s_prep_ami_agyw_pg 
@@ -21223,69 +21217,76 @@ s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw			s_prep_len_plw			s_prep_ami_
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_cab_in_primary		s_started_prep_len_in_primary	s_started_prep_ami_in_primary
 s_prepinfect_rm_p      			s_prepinfect_m184m_p    			s_prepinfect_k65m_p 
-s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam  
-s_prep_any_willing  		   	s_stop_prep_oral_choice				s_stop_prep_any_choice      		s_started_prep_hiv_test_sens  
+s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam
+s_stop_prep_any_choice	s_stop_prep_oral_choice	s_stop_prep_cab_choice	s_stop_prep_len_choice 	s_stop_prep_ami_choice
+s_stop_prep_any_elig	s_stop_prep_oral_elig  	s_stop_prep_cab_elig	s_stop_prep_len_elig 	s_stop_prep_ami_elig	      		
+s_started_prep_hiv_test_sens  
 s_cur_res_prep_drug 		   	s_started_prep_hiv_test_sens_e	
 s_started_prep_any_in_primary_e	s_started_prep_oral_in_primary_e	s_started_prep_cab_in_primary_e		s_started_prep_len_in_primary_e	s_started_prep_ami_in_primary_e
-
-s_prepinfect_m184m_p    		s_prepinfect_k65m_p 
 
 s_cur_res_ten				   	s_cur_res_3tc  		   				s_i_65m 				   			s_cur_res_efa 			
 s_cur_res_ten_vlg1000 		   	s_cur_res_3tc_vlg1000 				s_cur_res_efa_vlg1000				s_ever_hiv1_prep_oral 
 s_cur_res_efa_ever_hiv1_prep   	s_cur_res_ten_ever_hiv1_prep   		s_cur_res_3tc_ever_hiv1_prep   
 s_prep_oral_effect_non_res_v 
-s_prep_3m_after_inf_no_r 	s_prep_3m_after_inf_no_r_184  s_prep_3m_after_inf_no_r_65
-s_prep_6m_after_inf_no_r  s_prep_6m_after_inf_no_r_184  s_prep_6m_after_inf_no_r_65  s_prep_12m_after_inf_no_r  
-s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
-s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
+s_prep_3m_after_inf_no_r 		s_prep_3m_after_inf_no_r_184  		s_prep_3m_after_inf_no_r_65
+s_prep_6m_after_inf_no_r  		s_prep_6m_after_inf_no_r_184  		s_prep_6m_after_inf_no_r_65  		s_prep_12m_after_inf_no_r  
+s_prep_12m_after_inf_no_r_184  	s_prep_12m_after_inf_no_r_65
+s_hiv_prep_reason_1  			s_hiv_prep_reason_2  		s_hiv_prep_reason_3  		s_hiv_prep_reason_4
 
-s_prep_newp s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
-s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w
+s_prep_newp 	s_prep_newpg0  	s_prep_newpg1  	s_prep_newpg2  	s_prep_newpg3  	s_prep_newpg4  
+s_newp_this_per_age1524w_onprep s_newp_this_per_age1524w  	s_prep_any_ever_w_1524  s_prep_any_ever_w
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
 s_prob_prep_any_restart_choice
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
-s_tot_yrs_prep_cab_gt_5  s_tot_yrs_prep_cab_gt_10   s_tot_yrs_prep_cab_gt_20
-s_tot_yrs_prep_len_gt_5  s_tot_yrs_prep_len_gt_10   s_tot_yrs_prep_len_gt_20
-s_tot_yrs_prep_ami_gt_5  s_tot_yrs_prep_ami_gt_10   s_tot_yrs_prep_ami_gt_20
-s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
-s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep_any s_newp_prep_oral s_newp_prep_cab s_newp_prep_len s_newp_prep_ami 
+s_tot_yrs_prep_cab_gt_5  	s_tot_yrs_prep_cab_gt_10   		s_tot_yrs_prep_cab_gt_20
+s_tot_yrs_prep_len_gt_5  	s_tot_yrs_prep_len_gt_10   		s_tot_yrs_prep_len_gt_20
+s_tot_yrs_prep_ami_gt_5  	s_tot_yrs_prep_ami_gt_10   		s_tot_yrs_prep_ami_gt_20
+s_pop_wide_tld_prep	 		s_tld_notest_notprepelig_pos 	s_tld_notest_notprepelig_neg
+s_prep_any_elig_past_year 	s_prep_any_elig_past_3year  	s_prep_any_elig_past_5year 
+s_newp_prep_any 	s_newp_prep_oral 	s_newp_prep_cab 	s_newp_prep_len 	s_newp_prep_ami 
 s_continuous_prep_oral_ge1yr
 			
 s_pop_wide_tld_as_art
 
-s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
-s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep s_pep_not_prep
+s_newp_this_per_hivneg_m   		s_newp_this_per_hivneg_w   		s_newp_this_per_hivneg_age1524w		s_newp_this_per_hivneg_sw  
+s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep	s_newp_tp_hivneg_age1524w_prep		s_newp_this_per_hivneg_sw_prep 
+s_pep_not_prep
 
-s_tested_prep_oral_start  s_tested_prep_cab_start s_tested_prep_len_start s_tested_prep_ami_start   s_prep_oral s_prep_cab s_prep_len s_prep_ami s_prep_oral_ever  s_prep_cab_ever  
-s_prep_len_ever  s_prep_ami_ever s_last_prep_used  s_stop_prep_cab_choice s_stop_prep_len_choice 
-s_stop_prep_oral_elig  s_stop_prep_cab_elig  s_stop_prep_len_elig s_stop_prep_any_elig s_prep_oral_willing s_prep_cab_willing  s_prep_len_willing
-s_prep_oral_at_infection s_prep_cab_at_infection s_prep_len_at_infection 
-s_stop_prep_ami_elig  s_prep_ami_willing 
-
+s_tested_prep_oral_start  	s_tested_prep_cab_start	s_tested_prep_len_start	s_tested_prep_ami_start   
+s_prep_oral_ever  			s_prep_cab_ever  		s_prep_len_ever  		s_prep_ami_ever 
+s_last_prep_used   
+s_prep_any_willing			s_prep_oral_willing 		s_prep_cab_willing  	s_prep_len_willing		s_prep_ami_willing
+s_prep_oral_at_infection 	s_prep_cab_at_infection 	s_prep_len_at_infection s_prep_ami_at_infection
+   
 s_cab_res_o_cab s_cab_res_tail s_cab_res_primary s_currently_in_prep_cab_tail s_prep_cab_ever_hiv s_cab_res_prep_cab_primary
 s_len_res_o_len s_len_res_tail s_len_res_primary s_currently_in_prep_len_tail s_prep_len_ever_hiv s_len_res_prep_len_primary 
 
-s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m   s_hiv_cab_ge12m s_hiv_len_3m s_hiv_len_6m s_hiv_len_9m   s_hiv_len_ge12m
+s_hiv_cab_3m 	s_hiv_cab_6m 	s_hiv_cab_9m   	s_hiv_cab_ge12m 
+s_hiv_len_3m 	s_hiv_len_6m 	s_hiv_len_9m   	s_hiv_len_ge12m
 
-s_switch_prep_from_oral  s_switch_prep_from_cab  s_switch_prep_from_len s_switch_prep_from_ami s_switch_prep_to_oral  s_switch_prep_to_cab 
- s_switch_prep_to_len s_switch_prep_to_ami 
- s_hiv1_prep_any s_hiv1_prep_cab  s_hiv1_prep_len s_hiv1_prep_ami  s_cur_in_prep_cab_tail_hiv  s_cur_in_prep_len_tail_hiv
-s_cur_in_prep_cab_tail_no_r  s_prep_o_cab_off_3m_prim  s_cur_in_prep_len_tail_no_r  s_prep_o_len_off_3m_prim 
+s_switch_prep_from_oral s_switch_prep_from_cab  s_switch_prep_from_len	s_switch_prep_from_ami 
+s_switch_prep_to_oral  	s_switch_prep_to_cab 	s_switch_prep_to_len	s_switch_prep_to_ami 
+s_hiv1_prep_any 		s_hiv1_prep_cab  		s_hiv1_prep_len 		s_hiv1_prep_ami  
+s_cur_in_prep_cab_tail_hiv		s_cur_in_prep_len_tail_hiv
+s_cur_in_prep_cab_tail_no_r		s_cur_in_prep_len_tail_no_r
+s_prep_o_cab_off_3m_prim		s_prep_o_len_off_3m_prim 
 
-s_prep_primary_prevented  s_prep_cab_init_prim  s_prep_len_init_prim  s_prep_cab_init_prim_res s_prep_len_init_prim_res
-s_prep_cab_reinit_prim s_prep_len_reinit_prim  s_prep_cab_reinit_prim_res  s_cur_in_prep_cab_tail_prim 
- s_prep_len_reinit_prim_res  s_cur_in_prep_len_tail_prim 
-s_start_restart_prep_oral_hiv s_start_restart_prep_cab_hiv s_start_restart_prep_len_hiv s_start_restart_prep_ami_hiv s_start_rest_prep_cab_hiv_cabr 
- s_start_rest_prep_len_hiv_lenr 
-s_infected_on_prep_oral s_infected_on_prep_cab  s_infected_on_prep_len s_infected_on_prep_ami  
-s_on_risk_informed_prep_oral s_on_risk_informed_prep_cab s_on_risk_informed_prep_len s_on_risk_informed_prep_ami
-s_start_restart_prep_oral s_start_restart_prep_cab s_start_restart_prep_cab_prim  s_start_rest_prep_cab_prim_cabr
- s_start_restart_prep_len s_start_restart_prep_len_prim  s_start_rest_prep_len_prim_lenr
+s_prep_primary_prevented  
+s_prep_cab_init_prim	s_prep_len_init_prim  	s_prep_cab_init_prim_res 	s_prep_len_init_prim_res
+s_prep_cab_reinit_prim	s_prep_len_reinit_prim  s_prep_cab_reinit_prim_res  s_prep_len_reinit_prim_res
+s_cur_in_prep_cab_tail_prim		s_cur_in_prep_len_tail_prim 
+s_start_restart_prep_oral_hiv	s_start_restart_prep_cab_hiv 	s_start_restart_prep_len_hiv 	s_start_restart_prep_ami_hiv 
+s_start_rest_prep_cab_hiv_cabr	s_start_rest_prep_len_hiv_lenr 
+s_infected_on_prep_oral			s_infected_on_prep_cab  		s_infected_on_prep_len 			s_infected_on_prep_ami  
+s_on_risk_informed_prep_oral 	s_on_risk_informed_prep_cab 	s_on_risk_informed_prep_len 	s_on_risk_informed_prep_ami
+s_start_restart_prep_oral 		s_start_restart_prep_cab 		s_start_restart_prep_cab_prim  	s_start_rest_prep_cab_prim_cabr
+s_start_restart_prep_len s_start_restart_prep_len_prim  s_start_rest_prep_len_prim_lenr
 s_start_restart_prep_ami s_start_restart_prep_ami_prim 
 
-s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_cab  s_prep_elig_onprep_len 
-s_prep_elig_onprep_ami 
-s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_ami_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
+s_all_prep_criteria  	s_all_prep_criteria_hivneg	s_prep_elig_hivneg 		s_prep_elig_hivneg_onprep   
+s_prep_elig_onprep 		s_prep_elig_onprep_cab		s_prep_elig_onprep_len	s_prep_elig_onprep_ami 
+s_started_prep_any_hiv	s_started_prep_cab_hiv		s_started_prep_len_hiv 	s_started_prep_ami_hiv   
+s_pop_wide_tld_hiv   	s_pop_wide_tld_prep_elig	s_pop_wide_tld_neg_prep_inelig 
 
 
 
@@ -21829,7 +21830,7 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
@@ -21844,7 +21845,7 @@ prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 nnrti_res_no_effect
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency ami_higher_potency isl_higher_potency  isl_ole_adh_improve
-prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro cablen_extra_pref  add_prob_prep_b_cab add_prob_prep_b_len
+prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro date_prep_len_intro  cablen_extra_pref   
 cab_time_to_lower_threshold_g len_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk    zdv_potency_p75 
 double_rate_gas_tox_taz  
@@ -21860,10 +21861,14 @@ prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependen
 rel_prep_oral_adh_younger 
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
-prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b prob_prep_len_b prob_prep_vr_b prep_cab_efficacy prep_len_efficacy  prop_pep  pep_efficacy 
-rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr 
+prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b prob_prep_len_b prob_prep_ami_b prep_cab_efficacy prep_len_efficacy  
+prop_pep  pep_efficacy 
+rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_ami 
 prep_cab_effect_inm_partner  prep_len_effect_cam_partner 
 pref_prep_cablen_beta_s1 incr_res_risk_cab_inf_3m  incr_res_risk_len_inf_3m 
+prep_ami_efficacy dur_prep_ami_scaleup annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+prep_ami_effect_res_partner prep_ami_adh_uplift
+
 rr_testing_female
 
 artvis0_lower_adh  pop_wide_prep_adh_effect rate_lencab_to_tld  rel_rate_interrupt_lencab
@@ -21995,7 +22000,7 @@ values from that 3 month period
 
 
 data cum_l&da2; set cum_l&da1 sums;
-
+run;
 
 data s;set sums;
 do i=1 to &population; 
@@ -22223,7 +22228,7 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
-s_diagprim s_diagprim_prep_oral s_diagprim_prep_cab  s_diagprim_prep_len s_diagprim_prep_vr 
+s_diagprim s_diagprim_prep_oral s_diagprim_prep_cab  s_diagprim_prep_len s_diagprim_prep_ami 
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
@@ -22356,117 +22361,131 @@ s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w   	s_r_len_o_len  
 
 
 /*prep*/
-s_prep_any 		s_prep_oral 	s_prep_cab 	s_prep_len 		s_prep_vr  s_prep_oral_w  s_prep_cab_w  s_prep_len_w  s_prep_oral_m   s_prep_cab_m  s_prep_len_m  s_prep_vr_w   
-s_prep_any_sw 	s_prep_oral_sw 	s_prep_cab_sw 	s_prep_len_sw 	s_prep_vr_sw  
-s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
-s_infected_prep_any	s_infected_prep_oral	s_infected_prep_cab s_infected_prep_len 	s_infected_prep_vr 
-s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_cab s_primary_prep_len s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
-s_prep_any_elig  s_ever_prim_tdr_prep
+s_prep_any 		s_prep_oral 			s_prep_cab 				s_prep_len 				s_prep_ami  
+				s_prep_oral_w  			s_prep_cab_w  			s_prep_len_w  			s_prep_ami_w	
+				s_prep_oral_m   		s_prep_cab_m  			s_prep_len_m  			s_prep_ami_m   
+s_prep_any_sw 	s_prep_oral_sw 			s_prep_cab_sw 			s_prep_len_sw 			s_prep_ami_sw  
+s_elig_prep_any_m_1564 	s_elig_prep_any_w_1564
+s_infected_prep_any		
+				s_infected_prep_oral	s_infected_prep_cab 	s_infected_prep_len 	s_infected_prep_ami 
+s_prep_any_ever  
+s_primary_prep  	s_primary_prep_oral 	s_primary_prep_cab 	s_primary_prep_len 		s_primary_prep_ami 
+s_hiv1_prep_oral  	s_prim_r_prep   s_ever_prim_nor_prep  
+s_prep_any_elig 	s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
 s_onprep_3  s_onprep_6  s_onprep_9  s_onprep_12  s_onprep_18  
 
-s_prep_any_start s_prep_cab_start s_prep_len_start s_prep_oral_start s_prep_vr_start  s_ever_stopped_prep_oral_choice  s_preprestart 
-s_prep_cab_restart s_prep_len_restart s_prep_oral_restart s_prep_vr_restart  s_age_prepstart
+s_prep_any_start	s_prep_oral_start	s_prep_cab_start	s_prep_len_start	s_prep_ami_start  
+s_preprestart		s_prep_oral_restart	s_prep_cab_restart s_prep_len_restart	s_prep_ami_restart 
+s_ever_stopped_prep_oral_choice   
+s_age_prepstart
 
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w s_onprep_w1524_newpge1_ 
 s_init_prep_oral_1524w  s_init_prep_oral_sw	s_init_prep_oral_sdc	s_init_prep_oral_plw
 s_init_prep_cab_1524w   s_init_prep_cab_sw  s_init_prep_cab_sdc		s_init_prep_cab_plw
 s_init_prep_len_1524w   s_init_prep_len_sw  s_init_prep_len_sdc		s_init_prep_len_plw
-s_init_prep_vr_1524w    s_init_prep_vr_sw   s_init_prep_vr_sdc 		s_init_prep_vr_plw
+s_init_prep_ami_1524w   s_init_prep_ami_sw s_init_prep_ami_sdc 		s_init_prep_ami_plw
 s_prep_oral_ly_1524w  	s_prep_oral_ly_sw  	s_prep_oral_ly_sdc		s_prep_oral_ly_plw
 s_prep_cab_ly_1524w   	s_prep_cab_ly_sw   	s_prep_cab_ly_sdc 		s_prep_cab_ly_plw
 s_prep_len_ly_1524w   	s_prep_len_ly_sw   	s_prep_len_ly_sdc 		s_prep_len_ly_plw
-s_prep_vr_ly_1524w    	s_prep_vr_ly_sw    	s_prep_vr_ly_sdc 		s_prep_vr_ly_plw
+s_prep_ami_ly_1524w    	s_prep_ami_ly_sw    s_prep_ami_ly_sdc 		s_prep_ami_ly_plw
 s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_ever_plw
 s_prep_cab_ever_1524w   s_prep_cab_ever_sw  s_prep_cab_ever_sdc		s_prep_cab_ever_plw 
 s_prep_len_ever_1524w   s_prep_len_ever_sw  s_prep_len_ever_sdc		s_prep_len_ever_plw 
-s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
-
+s_prep_ami_ever_1524w   s_prep_ami_ever_sw 	s_prep_ami_ever_sdc		s_prep_ami_ever_plw
 
 s_agyw_pg 				s_agyw_plw 
-s_prep_any_agyw_pg		s_prep_oral_agyw_pg		s_prep_cab_agyw_pg		s_prep_len_agyw_pg 		s_prep_vr_agyw_pg 
-s_prep_any_agyw_plw  	s_prep_oral_agyw_plw  	s_prep_cab_agyw_plw 	s_prep_len_agyw_plw  	s_prep_vr_agyw_plw
+s_prep_any_agyw_pg		s_prep_oral_agyw_pg		s_prep_cab_agyw_pg		s_prep_len_agyw_pg 		s_prep_ami_agyw_pg 
+s_prep_any_agyw_plw  	s_prep_oral_agyw_plw  	s_prep_cab_agyw_plw 	s_prep_len_agyw_plw  	s_prep_ami_agyw_plw
 
 s_elig_prep_any_sw 		s_elig_prep_any_sdc		s_elig_prep_any_plw 
 
-s_onprep_oral_m  		s_onprep_oral_w 		s_onprep_vr_w			s_onprep_cab_m 			s_onprep_cab_w 			s_onprep_len_m 			s_onprep_len_w 			 		
-s_elig_prep_any_w_1549 	s_prep_any_w_1549 
+s_onprep_oral_w			s_onprep_cab_w			s_onprep_len_w			s_onprep_ami_w
+s_onprep_oral_m  		s_onprep_cab_m 			s_onprep_len_m 		 	s_onprep_ami_m			 		
+s_elig_prep_any_w_1549 	s_prep_any_w_1549
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
-s_prep_oral_w_1524 		s_prep_cab_w_1524 		s_prep_len_w_1524 		s_prep_vr_w_1524 
-s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc			s_prep_len_sdc			s_prep_vr_sdc
-s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw			s_prep_len_plw			s_prep_vr_plw
+s_prep_oral_w_1524 		s_prep_cab_w_1524 		s_prep_len_w_1524 		s_prep_ami_w_1524 
+s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc			s_prep_len_sdc			s_prep_ami_sdc
+s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw			s_prep_len_plw			s_prep_ami_plw
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
-s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_cab_in_primary		s_started_prep_len_in_primary	s_started_prep_vr_in_primary
+s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_cab_in_primary		s_started_prep_len_in_primary	s_started_prep_ami_in_primary
 s_prepinfect_rm_p      			s_prepinfect_m184m_p    			s_prepinfect_k65m_p 
-s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam  
-s_prep_any_willing  		   	s_stop_prep_oral_choice				s_stop_prep_any_choice      		s_started_prep_hiv_test_sens  
+s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam
+s_stop_prep_any_choice	s_stop_prep_oral_choice	s_stop_prep_cab_choice	s_stop_prep_len_choice 	s_stop_prep_ami_choice
+s_stop_prep_any_elig	s_stop_prep_oral_elig  	s_stop_prep_cab_elig	s_stop_prep_len_elig 	s_stop_prep_ami_elig	      		
+s_started_prep_hiv_test_sens  
 s_cur_res_prep_drug 		   	s_started_prep_hiv_test_sens_e	
-s_started_prep_any_in_primary_e	s_started_prep_oral_in_primary_e	s_started_prep_cab_in_primary_e		s_started_prep_len_in_primary_e	s_started_prep_vr_in_primary_e
-
-s_prepinfect_m184m_p    		s_prepinfect_k65m_p 
+s_started_prep_any_in_primary_e	s_started_prep_oral_in_primary_e	s_started_prep_cab_in_primary_e		s_started_prep_len_in_primary_e	s_started_prep_ami_in_primary_e
 
 s_cur_res_ten				   	s_cur_res_3tc  		   				s_i_65m 				   			s_cur_res_efa 			
 s_cur_res_ten_vlg1000 		   	s_cur_res_3tc_vlg1000 				s_cur_res_efa_vlg1000				s_ever_hiv1_prep_oral 
 s_cur_res_efa_ever_hiv1_prep   	s_cur_res_ten_ever_hiv1_prep   		s_cur_res_3tc_ever_hiv1_prep   
 s_prep_oral_effect_non_res_v 
-s_prep_3m_after_inf_no_r 	s_prep_3m_after_inf_no_r_184  s_prep_3m_after_inf_no_r_65
-s_prep_6m_after_inf_no_r  s_prep_6m_after_inf_no_r_184  s_prep_6m_after_inf_no_r_65  s_prep_12m_after_inf_no_r  
-s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
-s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
+s_prep_3m_after_inf_no_r 		s_prep_3m_after_inf_no_r_184  		s_prep_3m_after_inf_no_r_65
+s_prep_6m_after_inf_no_r  		s_prep_6m_after_inf_no_r_184  		s_prep_6m_after_inf_no_r_65  		s_prep_12m_after_inf_no_r  
+s_prep_12m_after_inf_no_r_184  	s_prep_12m_after_inf_no_r_65
+s_hiv_prep_reason_1  			s_hiv_prep_reason_2  		s_hiv_prep_reason_3  		s_hiv_prep_reason_4
 
-s_prep_newp s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
-s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w
+s_prep_newp 	s_prep_newpg0  	s_prep_newpg1  	s_prep_newpg2  	s_prep_newpg3  	s_prep_newpg4  
+s_newp_this_per_age1524w_onprep s_newp_this_per_age1524w  	s_prep_any_ever_w_1524  s_prep_any_ever_w
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
 s_prob_prep_any_restart_choice
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
-s_tot_yrs_prep_cab_gt_5  s_tot_yrs_prep_cab_gt_10   s_tot_yrs_prep_cab_gt_20
-s_tot_yrs_prep_len_gt_5  s_tot_yrs_prep_len_gt_10   s_tot_yrs_prep_len_gt_20
-s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
-s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
-s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep_any s_newp_prep_oral s_newp_prep_cab s_newp_prep_len s_newp_prep_vr 
+s_tot_yrs_prep_cab_gt_5  	s_tot_yrs_prep_cab_gt_10   		s_tot_yrs_prep_cab_gt_20
+s_tot_yrs_prep_len_gt_5  	s_tot_yrs_prep_len_gt_10   		s_tot_yrs_prep_len_gt_20
+s_tot_yrs_prep_ami_gt_5  	s_tot_yrs_prep_ami_gt_10   		s_tot_yrs_prep_ami_gt_20
+s_pop_wide_tld_prep	 		s_tld_notest_notprepelig_pos 	s_tld_notest_notprepelig_neg
+s_prep_any_elig_past_year 	s_prep_any_elig_past_3year  	s_prep_any_elig_past_5year 
+s_newp_prep_any 	s_newp_prep_oral 	s_newp_prep_cab 	s_newp_prep_len 	s_newp_prep_ami 
 s_continuous_prep_oral_ge1yr
-			
+
 s_pop_wide_tld_as_art
 
-s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
-s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep s_pep_not_prep
+s_newp_this_per_hivneg_m   		s_newp_this_per_hivneg_w   		s_newp_this_per_hivneg_age1524w		s_newp_this_per_hivneg_sw  
+s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep	s_newp_tp_hivneg_age1524w_prep		s_newp_this_per_hivneg_sw_prep 
+s_pep_not_prep
 
-s_tested_prep_oral_start  s_tested_prep_cab_start s_tested_prep_len_start s_testfor_prep_vr   s_prep_oral s_prep_cab s_prep_len s_prep_vr s_prep_oral_ever  s_prep_cab_ever  
-s_prep_len_ever  s_prep_vr_ever s_last_prep_used  s_stop_prep_cab_choice s_stop_prep_len_choice 
-s_stop_prep_oral_elig  s_stop_prep_cab_elig  s_stop_prep_len_elig s_stop_prep_any_elig s_prep_oral_willing s_prep_cab_willing  s_prep_len_willing
-s_prep_oral_at_infection s_prep_cab_at_infection s_prep_len_at_infection 
-s_stop_prep_vr_elig  s_prep_vr_willing 
-
+s_tested_prep_oral_start  	s_tested_prep_cab_start	s_tested_prep_len_start	s_tested_prep_ami_start   
+s_prep_oral_ever  			s_prep_cab_ever  		s_prep_len_ever  		s_prep_ami_ever 
+s_last_prep_used   
+s_prep_any_willing			s_prep_oral_willing 		s_prep_cab_willing  	s_prep_len_willing		s_prep_ami_willing
+s_prep_oral_at_infection 	s_prep_cab_at_infection 	s_prep_len_at_infection s_prep_ami_at_infection
+   
 s_cab_res_o_cab s_cab_res_tail s_cab_res_primary s_currently_in_prep_cab_tail s_prep_cab_ever_hiv s_cab_res_prep_cab_primary
 s_len_res_o_len s_len_res_tail s_len_res_primary s_currently_in_prep_len_tail s_prep_len_ever_hiv s_len_res_prep_len_primary 
 
-s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m   s_hiv_cab_ge12m s_hiv_len_3m s_hiv_len_6m s_hiv_len_9m   s_hiv_len_ge12m
+s_hiv_cab_3m 	s_hiv_cab_6m 	s_hiv_cab_9m   	s_hiv_cab_ge12m 
+s_hiv_len_3m 	s_hiv_len_6m 	s_hiv_len_9m   	s_hiv_len_ge12m
 
-s_switch_prep_from_oral  s_switch_prep_from_cab  s_switch_prep_from_len s_switch_prep_from_vr s_switch_prep_to_oral  s_switch_prep_to_cab 
- s_switch_prep_to_len s_switch_prep_to_vr 
- s_hiv1_prep_any s_hiv1_prep_cab  s_hiv1_prep_len s_hiv1_prep_vr  s_cur_in_prep_cab_tail_hiv  s_cur_in_prep_len_tail_hiv
-s_cur_in_prep_cab_tail_no_r  s_prep_o_cab_off_3m_prim  s_cur_in_prep_len_tail_no_r  s_prep_o_len_off_3m_prim 
+s_switch_prep_from_oral s_switch_prep_from_cab  s_switch_prep_from_len	s_switch_prep_from_ami 
+s_switch_prep_to_oral  	s_switch_prep_to_cab 	s_switch_prep_to_len	s_switch_prep_to_ami 
+s_hiv1_prep_any 		s_hiv1_prep_cab  		s_hiv1_prep_len 		s_hiv1_prep_ami  
+s_cur_in_prep_cab_tail_hiv		s_cur_in_prep_len_tail_hiv
+s_cur_in_prep_cab_tail_no_r		s_cur_in_prep_len_tail_no_r
+s_prep_o_cab_off_3m_prim		s_prep_o_len_off_3m_prim 
 
-s_prep_primary_prevented  s_prep_cab_init_prim  s_prep_len_init_prim  s_prep_cab_init_prim_res s_prep_len_init_prim_res
-s_prep_cab_reinit_prim s_prep_len_reinit_prim  s_prep_cab_reinit_prim_res  s_cur_in_prep_cab_tail_prim 
- s_prep_len_reinit_prim_res  s_cur_in_prep_len_tail_prim 
-s_start_restart_prep_oral_hiv s_start_restart_prep_cab_hiv s_start_restart_prep_len_hiv s_start_restart_prep_vr_hiv s_start_rest_prep_cab_hiv_cabr 
- s_start_rest_prep_len_hiv_lenr 
-s_infected_on_prep_oral s_infected_on_prep_cab  s_infected_on_prep_len s_infected_on_prep_vr  
-s_on_risk_informed_prep_oral s_on_risk_informed_prep_cab s_on_risk_informed_prep_len s_on_risk_informed_prep_vr
-s_start_restart_prep_oral s_start_restart_prep_cab s_start_restart_prep_cab_prim  s_start_rest_prep_cab_prim_cabr
- s_start_restart_prep_len s_start_restart_prep_len_prim  s_start_rest_prep_len_prim_lenr
-s_start_restart_prep_vr s_start_restart_prep_vr_prim 
+s_prep_primary_prevented  
+s_prep_cab_init_prim	s_prep_len_init_prim  	s_prep_cab_init_prim_res 	s_prep_len_init_prim_res
+s_prep_cab_reinit_prim	s_prep_len_reinit_prim  s_prep_cab_reinit_prim_res  s_prep_len_reinit_prim_res
+s_cur_in_prep_cab_tail_prim		s_cur_in_prep_len_tail_prim 
+s_start_restart_prep_oral_hiv	s_start_restart_prep_cab_hiv 	s_start_restart_prep_len_hiv 	s_start_restart_prep_ami_hiv 
+s_start_rest_prep_cab_hiv_cabr	s_start_rest_prep_len_hiv_lenr 
+s_infected_on_prep_oral			s_infected_on_prep_cab  		s_infected_on_prep_len 			s_infected_on_prep_ami  
+s_on_risk_informed_prep_oral 	s_on_risk_informed_prep_cab 	s_on_risk_informed_prep_len 	s_on_risk_informed_prep_ami
+s_start_restart_prep_oral 		s_start_restart_prep_cab 		s_start_restart_prep_cab_prim  	s_start_rest_prep_cab_prim_cabr
+s_start_restart_prep_len s_start_restart_prep_len_prim  s_start_rest_prep_len_prim_lenr
+s_start_restart_prep_ami s_start_restart_prep_ami_prim 
 
-s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_cab  s_prep_elig_onprep_len 
-s_prep_elig_onprep_vr 
-s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
+s_all_prep_criteria  	s_all_prep_criteria_hivneg	s_prep_elig_hivneg 		s_prep_elig_hivneg_onprep   
+s_prep_elig_onprep 		s_prep_elig_onprep_cab		s_prep_elig_onprep_len	s_prep_elig_onprep_ami 
+s_started_prep_any_hiv	s_started_prep_cab_hiv		s_started_prep_len_hiv 	s_started_prep_ami_hiv   
+s_pop_wide_tld_hiv   	s_pop_wide_tld_prep_elig	s_pop_wide_tld_neg_prep_inelig 
 
 
 
@@ -22676,8 +22695,8 @@ s_non_tb_who3_cost	s_cot_cost		s_tb_cost			s_cost_test		s_res_cost		s_cost_circ	
 s_dtb_lam_cost		s_tb_lam_cost	s_dtb_proph_cost	s_tb_proph_cost	s_dcrag_cost	s_crag_cost		s_dcrypm_proph_cost	s_crypm_proph_cost 
 s_dsbi_proph_cost  	s_sbi_proph_cost 
 s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f 		s_cost_prep_visit	s_cost_avail_self_test
-s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_vr
-s_cost_prep_visit_oral 		s_cost_prep_visit_cab		s_cost_prep_visit_len	s_cost_prep_visit_vr  
+s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_ami
+s_cost_prep_visit_oral 		s_cost_prep_visit_cab		s_cost_prep_visit_len	s_cost_prep_visit_ami  
 s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ	s_cost_test_f_anc	s_dcost_self_test
 s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line	s_cost_art_init		s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  		s_cost_zdv 	 	s_cost_ten	s_cost_3tc  	s_cost_nev   
@@ -22690,8 +22709,8 @@ s_dcost_  s_dart_cost   	s_donart_cost  	s_dcd4_cost		s_dvl_cost     			s_dvis_c
 s_dvis_cost_no_lencab 		s_dvis_cost_lencab
 s_dnon_tb_who3_cost 		s_dcot_cost    	s_dtb_cost		s_dtest_cost   			s_dres_cost   	s_dcost_circ	    	s_dcost_condom_dn
 s_dcost_sw_program      	s_d_t_adh_int_cost				s_dtest_cost_m 			s_dtest_cost_f	s_dtest_cost_type1
-s_dcost_prep_oral 			s_dcost_prep_cab   				s_dcost_prep_len  		s_dcost_prep_vr
-s_dcost_prep_visit 			s_dcost_prep_visit_oral 		s_dcost_prep_visit_cab 	s_dcost_prep_visit_len 	s_dcost_prep_visit_vr
+s_dcost_prep_oral 			s_dcost_prep_cab   				s_dcost_prep_len  		s_dcost_prep_ami
+s_dcost_prep_visit 			s_dcost_prep_visit_oral 		s_dcost_prep_visit_cab 	s_dcost_prep_visit_len 	s_dcost_prep_visit_ami
 s_dcost_avail_self_test
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 			s_dcost_test_f_sympt  	s_dcost_test_m_circ 	s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  		s_dpi_cost     			s_dcost_switch_line 	s_dcost_art_init    s_dart_1_cost
@@ -22997,18 +23016,17 @@ s_prop_pwid_vlg1	s_prop_pwid_vlg2	s_prop_pwid_vlg3	s_prop_pwid_vlg4	s_prop_pwid_
 s_m_newp   s_w_newp
 
 
-/* s_ variables in drop but not keep statements */
+/* s_ variables in drop but not keep statements */			/* QUERY - should these be added to keep statements? */
 
-s_ai_naive_no_pmtct_c_inm_  s_ai_naive_no_pmtct_c_pim_  s_ai_naive_no_pmtct_c_r_      s_ai_naive_no_pmtct_c_rt184m_  s_ai_naive_no_pmtct_c_rt65m_  
-s_ai_naive_no_pmtct_c_rttams_ s_ai_naive_no_pmtct_e_inm_   s_ai_naive_no_pmtct_e_nnm_   s_ai_naive_no_pmtct_e_pim_  
-s_ai_naive_no_pmtct_e_r_    s_ai_naive_no_pmtct_e_rt184m_   s_ai_naive_no_pmtct_e_rt65m_   s_ai_naive_no_pmtct_e_rttams_ 
-s_all_ai_        		s_all_ai_c_inm_     s_all_ai_c_nnm_    s_all_ai_c_pim_    s_all_ai_c_r_  
-s_all_ai_c_rt184m_     	s_all_ai_c_rt65m_       s_all_ai_c_rttams_   s_all_ai_e_inm_    s_all_ai_e_nnm_ 
-s_all_ai_e_pim_      	s_all_ai_e_r_       s_all_ai_e_rt184m_     s_all_ai_e_rt65m_    s_all_ai_e_rttams_  
-s_art_attrit_1yr     	s_art_attrit_1yr_on     s_art_attrit_2yr   s_art_attrit_2yr_on   s_art_attrit_3yr   
-s_art_attrit_3yr_on     s_art_attrit_4yr      s_art_attrit_4yr_on  s_art_attrit_5yr   
-s_art_attrit_5yr_on     s_art_attrit_6yr      s_art_attrit_6yr_on   s_art_attrit_7yr   s_art_attrit_7yr_on   
-s_art_attrit_8yr    	s_art_attrit_8yr_on   s_dead_daly   s_epart    s_hiv1564   
+s_ai_naive_no_pmtct_c_r_	s_ai_naive_no_pmtct_e_nnm_   	s_ai_naive_no_pmtct_e_pim_  
+s_ai_naive_no_pmtct_e_r_    s_ai_naive_no_pmtct_e_rt184m_   s_ai_naive_no_pmtct_e_rt65m_	s_ai_naive_no_pmtct_e_rttams_ 
+s_all_ai_        		s_all_ai_c_inm_     s_all_ai_c_nnm_    		s_all_ai_c_pim_			s_all_ai_c_r_  
+s_all_ai_c_rt184m_     	s_all_ai_c_rt65m_   s_all_ai_c_rttams_   	s_all_ai_e_inm_			s_all_ai_e_nnm_ 
+s_all_ai_e_pim_      	s_all_ai_e_r_       s_all_ai_e_rt184m_     	s_all_ai_e_rt65m_		s_all_ai_e_rttams_  
+s_art_attrit_1yr     	s_art_attrit_1yr_on		s_art_attrit_2yr   	s_art_attrit_2yr_on		s_art_attrit_3yr   
+s_art_attrit_3yr_on     s_art_attrit_4yr		s_art_attrit_4yr_on s_art_attrit_5yr   
+s_art_attrit_5yr_on     s_art_attrit_6yr		s_art_attrit_6yr_on s_art_attrit_7yr		s_art_attrit_7yr_on   
+s_art_attrit_8yr    	s_art_attrit_8yr_on		s_epart       
 
 s_s_m_newp  s_s_w_newp
 
@@ -23241,7 +23259,7 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
-s_diagprim s_diagprim_prep_oral s_diagprim_prep_cab  s_diagprim_prep_len s_diagprim_prep_vr 
+s_diagprim s_diagprim_prep_oral s_diagprim_prep_cab  s_diagprim_prep_len s_diagprim_prep_ami 
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
@@ -23374,117 +23392,130 @@ s_r_len_1524m   s_r_len_1524w   s_r_cab_1524m   s_r_cab_1524w   	s_r_len_o_len  
 
 
 /*prep*/
-s_prep_any 		s_prep_oral 	s_prep_cab 	s_prep_len 		s_prep_vr  s_prep_oral_w  s_prep_cab_w  s_prep_len_w  s_prep_oral_m   s_prep_cab_m  s_prep_len_m  s_prep_vr_w   
-s_prep_any_sw 	s_prep_oral_sw 	s_prep_cab_sw 	s_prep_len_sw 	s_prep_vr_sw  
-s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
-s_infected_prep_any	s_infected_prep_oral	s_infected_prep_cab s_infected_prep_len 	s_infected_prep_vr 
-s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_cab s_primary_prep_len s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
-s_prep_any_elig  s_ever_prim_tdr_prep
+s_prep_any 		s_prep_oral 			s_prep_cab 				s_prep_len 				s_prep_ami  
+				s_prep_oral_w  			s_prep_cab_w  			s_prep_len_w  			s_prep_ami_w	
+				s_prep_oral_m   		s_prep_cab_m  			s_prep_len_m  			s_prep_ami_m   
+s_prep_any_sw 	s_prep_oral_sw 			s_prep_cab_sw 			s_prep_len_sw 			s_prep_ami_sw  
+s_elig_prep_any_m_1564 	s_elig_prep_any_w_1564
+s_infected_prep_any		
+				s_infected_prep_oral	s_infected_prep_cab 	s_infected_prep_len 	s_infected_prep_ami 
+s_prep_any_ever  
+s_primary_prep  	s_primary_prep_oral 	s_primary_prep_cab 	s_primary_prep_len 		s_primary_prep_ami 
+s_hiv1_prep_oral  	s_prim_r_prep   s_ever_prim_nor_prep  
+s_prep_any_elig 	s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
 s_onprep_3  s_onprep_6  s_onprep_9  s_onprep_12  s_onprep_18  
 
-s_prep_any_start s_prep_cab_start s_prep_len_start s_prep_oral_start s_prep_vr_start  s_ever_stopped_prep_oral_choice  s_preprestart 
-s_prep_cab_restart s_prep_len_restart s_prep_oral_restart s_prep_vr_restart  s_age_prepstart
+s_prep_any_start	s_prep_oral_start	s_prep_cab_start	s_prep_len_start	s_prep_ami_start  
+s_preprestart		s_prep_oral_restart	s_prep_cab_restart s_prep_len_restart	s_prep_ami_restart 
+s_ever_stopped_prep_oral_choice   
+s_age_prepstart
 
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w s_onprep_w1524_newpge1_ 
 s_init_prep_oral_1524w  s_init_prep_oral_sw	s_init_prep_oral_sdc	s_init_prep_oral_plw
 s_init_prep_cab_1524w   s_init_prep_cab_sw  s_init_prep_cab_sdc		s_init_prep_cab_plw
 s_init_prep_len_1524w   s_init_prep_len_sw  s_init_prep_len_sdc		s_init_prep_len_plw
-s_init_prep_vr_1524w    s_init_prep_vr_sw   s_init_prep_vr_sdc 		s_init_prep_vr_plw
+s_init_prep_ami_1524w   s_init_prep_ami_sw s_init_prep_ami_sdc 		s_init_prep_ami_plw
 s_prep_oral_ly_1524w  	s_prep_oral_ly_sw  	s_prep_oral_ly_sdc		s_prep_oral_ly_plw
 s_prep_cab_ly_1524w   	s_prep_cab_ly_sw   	s_prep_cab_ly_sdc 		s_prep_cab_ly_plw
 s_prep_len_ly_1524w   	s_prep_len_ly_sw   	s_prep_len_ly_sdc 		s_prep_len_ly_plw
-s_prep_vr_ly_1524w    	s_prep_vr_ly_sw    	s_prep_vr_ly_sdc 		s_prep_vr_ly_plw
+s_prep_ami_ly_1524w    	s_prep_ami_ly_sw    s_prep_ami_ly_sdc 		s_prep_ami_ly_plw
 s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_ever_plw
 s_prep_cab_ever_1524w   s_prep_cab_ever_sw  s_prep_cab_ever_sdc		s_prep_cab_ever_plw 
 s_prep_len_ever_1524w   s_prep_len_ever_sw  s_prep_len_ever_sdc		s_prep_len_ever_plw 
-s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
-
+s_prep_ami_ever_1524w   s_prep_ami_ever_sw 	s_prep_ami_ever_sdc		s_prep_ami_ever_plw
 
 s_agyw_pg 				s_agyw_plw 
-s_prep_any_agyw_pg		s_prep_oral_agyw_pg		s_prep_cab_agyw_pg		s_prep_len_agyw_pg 		s_prep_vr_agyw_pg 
-s_prep_any_agyw_plw  	s_prep_oral_agyw_plw  	s_prep_cab_agyw_plw 	s_prep_len_agyw_plw  	s_prep_vr_agyw_plw
+s_prep_any_agyw_pg		s_prep_oral_agyw_pg		s_prep_cab_agyw_pg		s_prep_len_agyw_pg 		s_prep_ami_agyw_pg 
+s_prep_any_agyw_plw  	s_prep_oral_agyw_plw  	s_prep_cab_agyw_plw 	s_prep_len_agyw_plw  	s_prep_ami_agyw_plw
 
 s_elig_prep_any_sw 		s_elig_prep_any_sdc		s_elig_prep_any_plw 
 
-s_onprep_oral_m  		s_onprep_oral_w 		s_onprep_vr_w			s_onprep_cab_m 			s_onprep_cab_w 			s_onprep_len_m 			s_onprep_len_w 			 		
+s_onprep_oral_w			s_onprep_cab_w			s_onprep_len_w			s_onprep_ami_w
+s_onprep_oral_m  		s_onprep_cab_m 			s_onprep_len_m 		 	s_onprep_ami_m			 		
 s_elig_prep_any_w_1549 	s_prep_any_w_1549
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
-s_prep_oral_w_1524 		s_prep_cab_w_1524 		s_prep_len_w_1524 		s_prep_vr_w_1524 
-s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc			s_prep_len_sdc			s_prep_vr_sdc
-s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw			s_prep_len_plw			s_prep_vr_plw
+s_prep_oral_w_1524 		s_prep_cab_w_1524 		s_prep_len_w_1524 		s_prep_ami_w_1524 
+s_prep_any_sdc			s_prep_oral_sdc			s_prep_cab_sdc			s_prep_len_sdc			s_prep_ami_sdc
+s_prep_any_plw			s_prep_oral_plw			s_prep_cab_plw			s_prep_len_plw			s_prep_ami_plw
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
-s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_cab_in_primary		s_started_prep_len_in_primary	s_started_prep_vr_in_primary
+s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_cab_in_primary		s_started_prep_len_in_primary	s_started_prep_ami_in_primary
 s_prepinfect_rm_p      			s_prepinfect_m184m_p    			s_prepinfect_k65m_p 
-s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam  
-s_prep_any_willing  		   	s_stop_prep_oral_choice				s_stop_prep_any_choice      		s_started_prep_hiv_test_sens  
+s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam
+s_stop_prep_any_choice	s_stop_prep_oral_choice	s_stop_prep_cab_choice	s_stop_prep_len_choice 	s_stop_prep_ami_choice
+s_stop_prep_any_elig	s_stop_prep_oral_elig  	s_stop_prep_cab_elig	s_stop_prep_len_elig 	s_stop_prep_ami_elig	      		
+s_started_prep_hiv_test_sens  
 s_cur_res_prep_drug 		   	s_started_prep_hiv_test_sens_e	
-s_started_prep_any_in_primary_e	s_started_prep_oral_in_primary_e	s_started_prep_cab_in_primary_e		s_started_prep_len_in_primary_e	s_started_prep_vr_in_primary_e
-
-s_prepinfect_m184m_p    		s_prepinfect_k65m_p 
+s_started_prep_any_in_primary_e	s_started_prep_oral_in_primary_e	s_started_prep_cab_in_primary_e		s_started_prep_len_in_primary_e	s_started_prep_ami_in_primary_e
 
 s_cur_res_ten				   	s_cur_res_3tc  		   				s_i_65m 				   			s_cur_res_efa 			
 s_cur_res_ten_vlg1000 		   	s_cur_res_3tc_vlg1000 				s_cur_res_efa_vlg1000				s_ever_hiv1_prep_oral 
 s_cur_res_efa_ever_hiv1_prep   	s_cur_res_ten_ever_hiv1_prep   		s_cur_res_3tc_ever_hiv1_prep   
 s_prep_oral_effect_non_res_v 
-s_prep_3m_after_inf_no_r 	s_prep_3m_after_inf_no_r_184  s_prep_3m_after_inf_no_r_65
-s_prep_6m_after_inf_no_r  s_prep_6m_after_inf_no_r_184  s_prep_6m_after_inf_no_r_65  s_prep_12m_after_inf_no_r  
-s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
-s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
+s_prep_3m_after_inf_no_r 		s_prep_3m_after_inf_no_r_184  		s_prep_3m_after_inf_no_r_65
+s_prep_6m_after_inf_no_r  		s_prep_6m_after_inf_no_r_184  		s_prep_6m_after_inf_no_r_65  		s_prep_12m_after_inf_no_r  
+s_prep_12m_after_inf_no_r_184  	s_prep_12m_after_inf_no_r_65
+s_hiv_prep_reason_1  			s_hiv_prep_reason_2  		s_hiv_prep_reason_3  		s_hiv_prep_reason_4
 
-s_prep_newp s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
-s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w
+s_prep_newp 	s_prep_newpg0  	s_prep_newpg1  	s_prep_newpg2  	s_prep_newpg3  	s_prep_newpg4  
+s_newp_this_per_age1524w_onprep s_newp_this_per_age1524w  	s_prep_any_ever_w_1524  s_prep_any_ever_w
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
 s_prob_prep_any_restart_choice
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
-s_tot_yrs_prep_cab_gt_5  s_tot_yrs_prep_cab_gt_10   s_tot_yrs_prep_cab_gt_20
-s_tot_yrs_prep_len_gt_5  s_tot_yrs_prep_len_gt_10   s_tot_yrs_prep_len_gt_20
-s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
-s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
-s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep_any s_newp_prep_oral s_newp_prep_cab s_newp_prep_len s_newp_prep_vr 
+s_tot_yrs_prep_cab_gt_5  	s_tot_yrs_prep_cab_gt_10   		s_tot_yrs_prep_cab_gt_20
+s_tot_yrs_prep_len_gt_5  	s_tot_yrs_prep_len_gt_10   		s_tot_yrs_prep_len_gt_20
+s_tot_yrs_prep_ami_gt_5  	s_tot_yrs_prep_ami_gt_10   		s_tot_yrs_prep_ami_gt_20
+s_pop_wide_tld_prep	 		s_tld_notest_notprepelig_pos 	s_tld_notest_notprepelig_neg
+s_prep_any_elig_past_year 	s_prep_any_elig_past_3year  	s_prep_any_elig_past_5year 
+s_newp_prep_any 	s_newp_prep_oral 	s_newp_prep_cab 	s_newp_prep_len 	s_newp_prep_ami 
 s_continuous_prep_oral_ge1yr
 			
 s_pop_wide_tld_as_art
 
-s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
-s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep s_pep_not_prep
+s_newp_this_per_hivneg_m   		s_newp_this_per_hivneg_w   		s_newp_this_per_hivneg_age1524w		s_newp_this_per_hivneg_sw  
+s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep	s_newp_tp_hivneg_age1524w_prep		s_newp_this_per_hivneg_sw_prep 
+s_pep_not_prep
 
-s_tested_prep_oral_start  s_tested_prep_cab_start s_tested_prep_len_start s_testfor_prep_vr   s_prep_oral s_prep_cab s_prep_len s_prep_vr s_prep_oral_ever  s_prep_cab_ever  
-s_prep_len_ever  s_prep_vr_ever s_last_prep_used  s_stop_prep_cab_choice s_stop_prep_len_choice 
-s_stop_prep_oral_elig  s_stop_prep_cab_elig  s_stop_prep_len_elig s_stop_prep_any_elig s_prep_oral_willing s_prep_cab_willing  s_prep_len_willing
-s_prep_oral_at_infection s_prep_cab_at_infection s_prep_len_at_infection 
-s_stop_prep_vr_elig  s_prep_vr_willing 
-
+s_tested_prep_oral_start  	s_tested_prep_cab_start	s_tested_prep_len_start	s_tested_prep_ami_start   
+s_last_prep_used   
+s_prep_any_willing			s_prep_oral_willing 		s_prep_cab_willing  	s_prep_len_willing		s_prep_ami_willing
+s_prep_oral_at_infection 	s_prep_cab_at_infection 	s_prep_len_at_infection s_prep_ami_at_infection
+   
 s_cab_res_o_cab s_cab_res_tail s_cab_res_primary s_currently_in_prep_cab_tail s_prep_cab_ever_hiv s_cab_res_prep_cab_primary
 s_len_res_o_len s_len_res_tail s_len_res_primary s_currently_in_prep_len_tail s_prep_len_ever_hiv s_len_res_prep_len_primary 
 
-s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m   s_hiv_cab_ge12m s_hiv_len_3m s_hiv_len_6m s_hiv_len_9m   s_hiv_len_ge12m
+s_hiv_cab_3m 	s_hiv_cab_6m 	s_hiv_cab_9m   	s_hiv_cab_ge12m 
+s_hiv_len_3m 	s_hiv_len_6m 	s_hiv_len_9m   	s_hiv_len_ge12m
 
-s_switch_prep_from_oral  s_switch_prep_from_cab  s_switch_prep_from_len s_switch_prep_from_vr s_switch_prep_to_oral  s_switch_prep_to_cab 
- s_switch_prep_to_len s_switch_prep_to_vr 
- s_hiv1_prep_any s_hiv1_prep_cab  s_hiv1_prep_len s_hiv1_prep_vr  s_cur_in_prep_cab_tail_hiv  s_cur_in_prep_len_tail_hiv
-s_cur_in_prep_cab_tail_no_r  s_prep_o_cab_off_3m_prim  s_cur_in_prep_len_tail_no_r  s_prep_o_len_off_3m_prim 
+s_switch_prep_from_oral s_switch_prep_from_cab  s_switch_prep_from_len	s_switch_prep_from_ami 
+s_switch_prep_to_oral  	s_switch_prep_to_cab 	s_switch_prep_to_len	s_switch_prep_to_ami 
+s_hiv1_prep_any 		s_hiv1_prep_cab  		s_hiv1_prep_len 		s_hiv1_prep_ami  
+s_cur_in_prep_cab_tail_hiv		s_cur_in_prep_len_tail_hiv
+s_cur_in_prep_cab_tail_no_r		s_cur_in_prep_len_tail_no_r
+s_prep_o_cab_off_3m_prim		s_prep_o_len_off_3m_prim 
 
-s_prep_primary_prevented  s_prep_cab_init_prim  s_prep_len_init_prim  s_prep_cab_init_prim_res s_prep_len_init_prim_res
-s_prep_cab_reinit_prim s_prep_len_reinit_prim  s_prep_cab_reinit_prim_res  s_cur_in_prep_cab_tail_prim 
- s_prep_len_reinit_prim_res  s_cur_in_prep_len_tail_prim 
-s_start_restart_prep_oral_hiv s_start_restart_prep_cab_hiv s_start_restart_prep_len_hiv s_start_restart_prep_vr_hiv s_start_rest_prep_cab_hiv_cabr 
- s_start_rest_prep_len_hiv_lenr 
-s_infected_on_prep_oral s_infected_on_prep_cab  s_infected_on_prep_len s_infected_on_prep_vr  
-s_on_risk_informed_prep_oral s_on_risk_informed_prep_cab s_on_risk_informed_prep_len s_on_risk_informed_prep_vr
-s_start_restart_prep_oral s_start_restart_prep_cab s_start_restart_prep_cab_prim  s_start_rest_prep_cab_prim_cabr
- s_start_restart_prep_len s_start_restart_prep_len_prim  s_start_rest_prep_len_prim_lenr
-s_start_restart_prep_vr s_start_restart_prep_vr_prim 
+s_prep_primary_prevented  
+s_prep_cab_init_prim	s_prep_len_init_prim  	s_prep_cab_init_prim_res 	s_prep_len_init_prim_res
+s_prep_cab_reinit_prim	s_prep_len_reinit_prim  s_prep_cab_reinit_prim_res  s_prep_len_reinit_prim_res
+s_cur_in_prep_cab_tail_prim		s_cur_in_prep_len_tail_prim 
+s_start_restart_prep_oral_hiv	s_start_restart_prep_cab_hiv 	s_start_restart_prep_len_hiv 	s_start_restart_prep_ami_hiv 
+s_start_rest_prep_cab_hiv_cabr	s_start_rest_prep_len_hiv_lenr 
+s_infected_on_prep_oral			s_infected_on_prep_cab  		s_infected_on_prep_len 			s_infected_on_prep_ami  
+s_on_risk_informed_prep_oral 	s_on_risk_informed_prep_cab 	s_on_risk_informed_prep_len 	s_on_risk_informed_prep_ami
+s_start_restart_prep_oral 		s_start_restart_prep_cab 		s_start_restart_prep_cab_prim  	s_start_rest_prep_cab_prim_cabr
+s_start_restart_prep_len s_start_restart_prep_len_prim  s_start_rest_prep_len_prim_lenr
+s_start_restart_prep_ami s_start_restart_prep_ami_prim 
 
-s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_cab  s_prep_elig_onprep_len 
-s_prep_elig_onprep_vr 
-s_started_prep_cab_hiv s_started_prep_len_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
+s_all_prep_criteria  	s_all_prep_criteria_hivneg	s_prep_elig_hivneg 		s_prep_elig_hivneg_onprep   
+s_prep_elig_onprep 		s_prep_elig_onprep_cab		s_prep_elig_onprep_len	s_prep_elig_onprep_ami 
+s_started_prep_any_hiv	s_started_prep_cab_hiv		s_started_prep_len_hiv 	s_started_prep_ami_hiv   
+s_pop_wide_tld_hiv   	s_pop_wide_tld_prep_elig	s_pop_wide_tld_neg_prep_inelig 
 
 
 
@@ -23694,8 +23725,8 @@ s_non_tb_who3_cost	s_cot_cost		s_tb_cost			s_cost_test		s_res_cost		s_cost_circ	
 s_dtb_lam_cost		s_tb_lam_cost	s_dtb_proph_cost	s_tb_proph_cost	s_dcrag_cost	s_crag_cost		s_dcrypm_proph_cost	s_crypm_proph_cost 
 s_dsbi_proph_cost  	s_sbi_proph_cost 
 s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f 		s_cost_prep_visit	s_cost_avail_self_test
-s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_vr
-s_cost_prep_visit_oral 		s_cost_prep_visit_cab		s_cost_prep_visit_len	s_cost_prep_visit_vr  
+s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_ami
+s_cost_prep_visit_oral 		s_cost_prep_visit_cab		s_cost_prep_visit_len	s_cost_prep_visit_ami  
 s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ	s_cost_test_f_anc	s_dcost_self_test
 s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line	s_cost_art_init		s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  		s_cost_zdv 	 	s_cost_ten	s_cost_3tc  	s_cost_nev   
@@ -23708,8 +23739,8 @@ s_dcost_  s_dart_cost   	s_donart_cost  	s_dcd4_cost		s_dvl_cost     			s_dvis_c
 s_dvis_cost_no_lencab 		s_dvis_cost_lencab
 s_dnon_tb_who3_cost 		s_dcot_cost    	s_dtb_cost		s_dtest_cost   			s_dres_cost   	s_dcost_circ	    	s_dcost_condom_dn
 s_dcost_sw_program      	s_d_t_adh_int_cost				s_dtest_cost_m 			s_dtest_cost_f	s_dtest_cost_type1
-s_dcost_prep_oral 			s_dcost_prep_cab   				s_dcost_prep_len  		s_dcost_prep_vr
-s_dcost_prep_visit 			s_dcost_prep_visit_oral 		s_dcost_prep_visit_cab 	s_dcost_prep_visit_len 	s_dcost_prep_visit_vr
+s_dcost_prep_oral 			s_dcost_prep_cab   				s_dcost_prep_len  		s_dcost_prep_ami
+s_dcost_prep_visit 			s_dcost_prep_visit_oral 		s_dcost_prep_visit_cab 	s_dcost_prep_visit_len 	s_dcost_prep_visit_ami
 s_dcost_avail_self_test
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 			s_dcost_test_f_sympt  	s_dcost_test_m_circ 	s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  		s_dpi_cost     			s_dcost_switch_line 	s_dcost_art_init    s_dart_1_cost
@@ -24028,7 +24059,10 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice date_prep_len_intro 
+prep_ami_efficacy dur_prep_ami_scaleup annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
+prep_ami_effect_res_partner prep_ami_adh_uplift
+rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
@@ -24043,7 +24077,7 @@ prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 nnrti_res_no_effect
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency ami_higher_potency isl_higher_potency  isl_ole_adh_improve
-prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro cablen_extra_pref  add_prob_prep_b_cab add_prob_prep_b_len
+prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro cablen_extra_pref 
 cab_time_to_lower_threshold_g len_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk    zdv_potency_p75 
 double_rate_gas_tox_taz  
@@ -24059,8 +24093,8 @@ prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependen
 rel_prep_oral_adh_younger 
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
-prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b prob_prep_len_b prob_prep_vr_b prep_cab_efficacy prep_len_efficacy  prop_pep  pep_efficacy 
-rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_vr 
+prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b prob_prep_len_b prob_prep_ami_b prep_cab_efficacy prep_len_efficacy  prop_pep  pep_efficacy 
+rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_ami 
 prep_cab_effect_inm_partner  prep_len_effect_cam_partner 
 pref_prep_cablen_beta_s1 incr_res_risk_cab_inf_3m  incr_res_risk_len_inf_3m 
 rr_testing_female
