@@ -2500,97 +2500,128 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
+***options 0 to 6 assume status quo treatment coverage;
+***options 7 to 11 assume 3% drop in treatment coverage;
+***options 12 to 17 assume 20% drop treatment coverage;
+
 	art_mon_set_in_options=1;
 	* note that we can use set_in_options=1 when we want to ensure that parameter values specified in the options section are not overwritten.
 	The variable name can be updated to reflect specific parameters;
 
-***LBM Sep26 check;
-
- 	*Option 0: status quo - annual VL monitoring (VLM);
+***LBM Sep26;
+ 	*Option 0: No VLM;
 	if option = 0 then do;
+		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;				 
+	end;
+
+ 	*Option 1: status quo - annual VL monitoring (VLM);
+	if option = 1 then do;
 		art_monitoring_strategy = 150;
 	end;
  	*This will be the default 150 strategy;
 
- 	*Option 1: No VLM;
-	if option = 1 then do;
-		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;				 
-	end;
-
-	 *Option 2: Symptomatic VLM, with confirmatory VL within 6m-12m;
+ 	*Option 2: 3 yearly VLM;
 	if option = 2 then do;
-		art_monitoring_strategy=3;  
-	end;
-
-
-	*Option 3: 3 yearly VLM; *what about in symptomatics? This applies to art monitoring strategy 150 too - covered elsewhere in the code?;
-	if option = 3 then do;
 		art_monitoring_strategy=152;						 
 	end;
 
-
-***Options 4-7: 3% reduction in treatment availability;
-*rate_int_choice sampled at the outset from 0.001, 0.004, 0.008, 0.012;
-
- 	*Option 4: status quo - annual VL monitoring (VLM);
- 	if option = 4 then do;
-		art_monitoring_strategy = 150;
-		eff_rate_int_choice=0.01; *no idea what this should be really;
+	 *Option 3: Symptomatic VLM, with confirmatory VL within 6m-12m;
+	if option = 3 then do;
+		art_monitoring_strategy=3;  
 	end;
 
- 	*Option 5: No VLM;
+	*Option 4: VLM only at 6 months after ART initiation;
+	if option = 4 then do;
+		art_monitoring_strategy=154;						 
+	end;
+	
+	*Option 5: VLM in pregnant women only;
 	if option = 5 then do;
-		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;	
+		art_monitoring_strategy=155;						 
+	end;
+
+***Options 6-11: 3% reduction in treatment availability;
+*rate_int_choice sampled at the outset from 0.001, 0.004, 0.008, 0.012;
+
+ 	*Option 6: No VLM;
+	if option = 6 then do;
+		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;
 		eff_rate_int_choice=0.01; 
 	end;
 
-	 *Option 6: Symptomatic VLM, with confirmatory VL within 6m-12m;
-	if option = 6 then do;
-		art_monitoring_strategy=3;  
+ 	*Option 7: status quo - annual VL monitoring (VLM);
+	if option = 7 then do;
+		art_monitoring_strategy = 150;
 		eff_rate_int_choice=0.01;
 	end;
+ 	*This will be the default 150 strategy;
 
+ 	*Option 8: 3 yearly VLM;
+	if option = 8 then do;
+		art_monitoring_strategy=152;	
+		eff_rate_int_choice=0.01; 
+	end;
 
-	*Option 7: 3 yearly VLM; *what about in symptomatics? This applies to art monitoring strategy 150 too - covered elsewhere in the code?;
-	if option = 7 then do;
-		art_monitoring_strategy=152;
+	 *Option 9: Symptomatic VLM, with confirmatory VL within 6m-12m;
+	if option = 9 then do;
+		art_monitoring_strategy=3; 
+		eff_rate_int_choice=0.01; 
+	end;
+
+	*Option 10: VLM only at 6 months after ART initiation;
+	if option = 10 then do;
+		art_monitoring_strategy=154;	
+		eff_rate_int_choice=0.01; 
+	end;
+	
+	*Option 11: VLM in pregnant women only;
+	if option = 11 then do;
+		art_monitoring_strategy=155;
 		eff_rate_int_choice=0.01; 
 	end;
 
 
-***Options 8-11: 20% reduction in treatment availability;
+***Options 12-16: 20% reduction in treatment availability;
 *rate_int_choice sampled at the outset from 0.001, 0.004, 0.008, 0.012;
 
- 	*Option 8: status quo - annual VL monitoring (VLM);
- 	if option = 8 then do;
-		art_monitoring_strategy = 150;
-		eff_rate_int_choice=0.1; *no idea what this should be really;
-	end;
-
- 	*Option 9: No VLM;
-	if option = 9 then do;
-		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;	
+ 	*Option 12: No VLM;
+	if option = 12 then do;
+		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;
 		eff_rate_int_choice=0.1; 
 	end;
 
-	 *Option 10: Symptomatic VLM, with confirmatory VL within 6m-12m;
-	if option = 10 then do;
-		art_monitoring_strategy=3;  
+ 	*Option 13: status quo - annual VL monitoring (VLM);
+	if option = 13 then do;
+		art_monitoring_strategy = 150;
 		eff_rate_int_choice=0.1;
 	end;
+ 	*This will be the default 150 strategy;
 
-
-	*Option 11: 3 yearly VLM; *what about in symptomatics? This applies to art monitoring strategy 150 too - covered elsewhere in the code?;
-	if option = 11 then do;
-		art_monitoring_strategy=152;
+ 	*Option 14: 3 yearly VLM;
+	if option = 14 then do;
+		art_monitoring_strategy=152;	
 		eff_rate_int_choice=0.1; 
 	end;
 
+	 *Option 15: Symptomatic VLM, with confirmatory VL within 6m-12m;
+	if option = 15 then do;
+		art_monitoring_strategy=3; 
+		eff_rate_int_choice=0.1; 
+	end;
 
- 
+	*Option 16: VLM only at 6 months after ART initiation;
+	if option = 16 then do;
+		art_monitoring_strategy=154;	
+		eff_rate_int_choice=0.1; 
+	end;
+	
+	*Option 17: VLM in pregnant women only;
+	if option = 17 then do;
+		art_monitoring_strategy=155;
+		eff_rate_int_choice=0.1; 
+	end;
+
 end;
-
-
 
 *  ======================================================================================================================================== ;
 
@@ -23243,6 +23274,24 @@ data r1 ; set a ;
 *    Option 11;
 data r1 ; set a ;
 %run_update_r1(&year_interv,&year_interv+50,11);
+*    Option 12;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,12);
+*    Option 13;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,13);
+*    Option 14;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,14);
+*    Option 15;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,15);
+*    Option 16;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,16);
+*    Option 17;
+data r1 ; set a ;
+%run_update_r1(&year_interv,&year_interv+50,17);
 
 
 
