@@ -8,9 +8,6 @@ if run=. then delete;
 proc sort;
 by run cald option;run;
 
-proc freq;table s_curr_mobile;run;
-
-
 data sf;
 set a;
 
@@ -335,6 +332,8 @@ inc_risk_mobile			sex_beh_trans_matrix_m		sex_beh_trans_matrix_w		sex_age_mixing
 inc_risk_newp_mm	p_mm_prog_visit		rate_engage_mm_program	rate_disengage_mm_program				av_mm_newp
 
 logw15r	logw25r	logw35r	logw45r	logw55r logm15r	logm25r	logm35r	logm45r	logm55r
+newp_factor  ych_risk_beh_newp	p_rred_p	p_hsb_p; 
+run;
 
 ;
 
@@ -959,7 +958,8 @@ data &v ; merge  y_26 t_36 t_26_46 /*t_26_46*/;
 %var(v=p_elig_onprep_cab);	%var(v=p_elig_onprep_len);	%var(v=p_elig_onprep_oral);%var(v=p_elig_onprep_oral_mm);	
 %var(v=p_elig_onprep_cab_mm);							%var(v=p_elig_onprep_len_mm);							%var(v=p_elig_onprep_genmen);
 %var(v=p_mm_prog_visit);	%var(v=av_mm_newp);	
-%var(v=dcost);	 		%var(v=ddaly);
+%var(v=dcost);	 			%var(v=ddaly);				
+
 run;
 
 
@@ -985,7 +985,7 @@ n_prep_ever_mm	  	p_prep_any_ever_mm 	p_newp_ge1_mm		p_prep_any_willing	n_prep_o
 p_elig_onprep_cab	p_elig_onprep_len	p_elig_onprep_oral	p_elig_onprep_oral_mm	
 p_elig_onprep_cab_mm	p_elig_onprep_len_mm				p_elig_onprep_genmen
 p_mm_prog_visit		av_mm_newp
-dcost	 		ddaly;
+dcost	 			ddaly				;
 run;
 ;
 
@@ -1000,14 +1000,16 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %mend par; 
 
 %par(p=inc_risk_mobile);		%par(p=sex_beh_trans_matrix_m);		%par(p=sex_beh_trans_matrix_w);	
-%par(p=sex_age_mixing_matrix_m);%par(p=sex_age_mixing_matrix_w); %par(p=inc_risk_newp_mm);
+%par(p=sex_age_mixing_matrix_m);%par(p=sex_age_mixing_matrix_w); 	%par(p=inc_risk_newp_mm);
+%par(p=newp_factor);			%par(p=ych_risk_beh_newp);			%par(p=p_rred_p);	%par(p=p_hsb_p);
 			
 run;
 
 
 data wide_par; merge 
-inc_risk_mobile		sex_beh_trans_matrix_m	sex_beh_trans_matrix_w		sex_age_mixing_matrix_m		
-sex_age_mixing_matrix_w	inc_risk_newp_mm;
+inc_risk_mobile			sex_beh_trans_matrix_m	sex_beh_trans_matrix_w		sex_age_mixing_matrix_m		
+sex_age_mixing_matrix_w	inc_risk_newp_mm		newp_factor					ych_risk_beh_newp
+p_rred_p				p_hsb_p;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
