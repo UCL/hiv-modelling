@@ -2,15 +2,14 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_30Oct2026; 
+set a.mm_02nov2026; 
 if run=. then delete; 
 
 proc sort;
 by run cald option;run;
 
-proc freq;table cald option;run;
+proc freq;table s_curr_mobile;run;
 
-proc freq;table pref_prep_cab;run;
 
 data sf;
 set a;
@@ -299,6 +298,7 @@ s_alive = s_alive_m + s_alive_w ;
 * p_prep_any_willing;			p_prep_any_willing = s_prep_any_willing/s_alive;
 
 * p_mm_prog_visit;				if s_alive1564mm then p_mm_prog_visit = s_mm_prog_visit /s_alive1564mm;
+
 
 *to check balance given we've added newp to MM;
 logw15r = log(w15r+0.0001);
@@ -1011,7 +1011,7 @@ sex_age_mixing_matrix_w	inc_risk_newp_mm;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_MM30Oct26;;
+data a.wide_MM02Nov26;;
 merge   wide_outputs  wide_par ;  
 by run;run;
 

@@ -4,7 +4,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.wide_MM30Oct26;
+set a.wide_MM02Nov26;
 run;
 
 data b;
@@ -17,6 +17,19 @@ p_5564mm_26				p_newp_ge1_mm_26	av_mm_newp_26		p_elig_onprep_mm_26	incidence1564
 p_diag_mm_26			p_onart_diag_mm_26  p_onart_vl1000_mm_26	
 p_elig_onprep_m_26		prevalence1549m_26	incidence1549m_26	p_mm_prog_visit_26		;run;
 
+proc means n median p5 p95;var
+p_mm_prog_visit_36_1	
+p_mm_prog_visit_36_2
+p_mm_prog_visit_36_3
+p_mm_prog_visit_36_4	
+p_mm_prog_visit_36_5
+p_mm_prog_visit_36_6
+p_mm_prog_visit_36_7
+p_mm_prog_visit_36_8
+
+;run;
+
+***Separate according to whether CAB or Len is SQ;
 
 proc means n median p5 p95;var
 p_elig_onprep_mm_36_1
